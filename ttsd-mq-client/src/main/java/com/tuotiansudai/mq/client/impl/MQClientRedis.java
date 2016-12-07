@@ -26,6 +26,7 @@ public class MQClientRedis implements MQClient, InitializingBean {
 
     private static Logger logger = LoggerFactory.getLogger(MQClientRedis.class);
     private Jedis jedis;
+    private boolean continueRunning = true;
 
     @Override
     public void publishMessage(final MessageTopic topic, final String message) {
@@ -47,8 +48,11 @@ public class MQClientRedis implements MQClient, InitializingBean {
         logger.info("[MQ] subscribe queue: {}", queue.getQueueName());
         // use a new redis client for block request
         Jedis jedis = initJedis();
-        while (true) {
-            List<String> messages = jedis.brpop(0, generateRedisKeyOfQueue(queue));
+        while (continueRunning) {
+            List<String> messages = jedis.brpop(10, generateRedisKeyOfQueue(queue));
+            if (messages.size() == 0) {
+                continue;
+            }
             logger.debug("[MQ] receive a message, prepare to consume");
             try {
                 consumer.accept(messages.get(1));
@@ -56,13 +60,19 @@ public class MQClientRedis implements MQClient, InitializingBean {
                 logger.error("[MQ] consume message failed", e);
                 try {
                     jedis.rpush(generateRedisKeyOfQueue(queue), messages.get(1));
-                    Thread.sleep(30 * 1000);
+                    Thread.sleep(10 * 1000);
                 } catch (InterruptedException ignored) {
-                    System.out.printf("xxx");
                 }
             }
             logger.info("[MQ] consume message success");
         }
+        jedis.close();
+    }
+
+    @Override
+    public void stopSubscribe() {
+        logger.info("[MQ] prepare to stop");
+        continueRunning = false;
     }
 
     private String generateRedisKeyOfQueue(MessageQueue queue) {
