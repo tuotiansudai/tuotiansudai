@@ -12,6 +12,7 @@ import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.UserService;
+import com.tuotiansudai.util.IdentityNumberValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,9 +42,15 @@ public class MobileAppCertificationServiceImpl implements MobileAppCertification
             baseResponseDto.setData(certificationResponseDataDto);
             return baseResponseDto;
         }
+
+        if (!IdentityNumberValidator.validateIdentity(certificationRequestDto.getUserIdCardNumber())) {
+            return new BaseResponseDto(ReturnMessage.CERTIFICATION_FAIL.getCode(), ReturnMessage.CERTIFICATION_FAIL.getMsg());
+        }
+
         if (userService.isIdentityNumberExist(certificationRequestDto.getUserIdCardNumber())) {
             return new BaseResponseDto(ReturnMessage.ID_CARD_IS_EXIST.getCode(), ReturnMessage.ID_CARD_IS_EXIST.getMsg());
         }
+
         BaseDto<PayDataDto> dto = userService.registerAccount(registerAccountDto);
         if (dto.getData().getStatus()) {
             CertificationResponseDataDto certificationResponseDataDto = new CertificationResponseDataDto();
