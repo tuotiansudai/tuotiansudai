@@ -8,7 +8,7 @@ module.exports = function(grunt) {
             basePath: '../',
             baseSassPath: 'src/main/webapp/activity/style/sass',
             baseCssPath: 'src/main/webapp/activity/style/css',
-            baseCssPathPrefixer: 'src/main/webapp/style/cssprefixer',
+            baseCssPathPrefixer: 'src/main/webapp/activity/style/cssprefixer',
             base64CssPath: 'src/main/webapp/activity/style/base64',
             baseCssMinPath: 'src/main/webapp/activity/style/dest',
             baseJsPath: 'src/main/webapp/activity/js',
@@ -118,7 +118,7 @@ module.exports = function(grunt) {
             },
             dataUri: {
                 files: [
-                    '<%= meta.baseCssPath %>/*.css'
+                    '<%= meta.baseCssPathPrefixer %>/*.css'
                 ],
                 tasks: ['dataUri']
             },
