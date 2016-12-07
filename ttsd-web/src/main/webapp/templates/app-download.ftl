@@ -26,7 +26,7 @@
             <b>债权上线·早知道</b>
             <p>最新热门标的实时提醒<br/>
                 信息快人一步，收益抢先到手</p>
-            <i class="icon-clock">开团提醒</i>
+            <i class="icon-clock">开标提醒</i>
         </div>
         <div class="clearfix"></div>
     </div>
