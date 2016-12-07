@@ -102,4 +102,7 @@
         <property name="maxTotal" value="${ask.jedis.pool.maxTotal}"/>
     </bean>
 
+    <!--for test-->
+    <bean id="httpServletRequest" class="org.springframework.mock.web.MockHttpServletRequest"/>
+
 </beans>
