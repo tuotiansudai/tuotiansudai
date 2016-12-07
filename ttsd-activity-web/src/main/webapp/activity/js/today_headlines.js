@@ -108,7 +108,7 @@ require(['jquery', 'layerWrapper', 'template', 'commonFun', 'jquery.validate', '
                     type: 'POST',
                     dataType: 'json',
                     data: {
-                        mobile: $('#mobile').val()
+                        mobile: $('#loginMobile').val()
                     }
                 })
                 .done(function(data) {
