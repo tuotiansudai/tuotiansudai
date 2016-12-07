@@ -49,7 +49,7 @@ public class Iphone7LotteryAspect {
 
     private static final String redisKey = "web:iphone7:lottery:number";
 
-    @AfterReturning(value = "execution(* *..InvestService.investSuccess(..))")
+//    @AfterReturning(value = "execution(* *..InvestService.investSuccess(..))")
     public void afterReturningInvestSuccess(JoinPoint joinPoint) {
         logger.debug("after returning invest,iphone7 aspect starting...");
         InvestModel investModel = (InvestModel) joinPoint.getArgs()[0];

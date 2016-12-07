@@ -822,7 +822,6 @@
         &lt;&gt; 0)
     </select>
 
-
     <select id="findTransferableApplicationPaginationByLoginName" parameterType="map" resultMap="investResultMap"
             useCache="false">
         SELECT
@@ -949,6 +948,31 @@
         <include refid="columns"></include>
         from invest
         where loan_id = #{loanId} and transfer_invest_id is null and status = 'SUCCESS' and (contract_no is null or contract_no = '') order by invest_time asc
+    </select>
+
+    <select id="findInvestAmountScaleTop3" parameterType="map" resultType="java.util.HashMap">
+        select user.city as city, sum(invest.amount) as sumAmount
+        from invest
+        inner join user on invest.login_name = user.login_name
+        where invest.status = 'SUCCESS'
+        and loan_id != '1'
+        <![CDATA[
+        and DATE_FORMAT(invest.invest_time, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d')
+        ]]>
+        group by city
+        order by sumAmount desc
+        limit 0, 3
+    </select>
+
+    <select id="findInvestAmountScale" parameterType="map" resultType="long">
+        select sum(amount) as sumAmount
+        from invest
+        inner join user on invest.login_name = user.login_name
+        where invest.status = 'SUCCESS'
+        and loan_id != '1'
+         <![CDATA[
+        and DATE_FORMAT(invest.invest_time, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d')
+        ]]>
     </select>
 
 </mapper>

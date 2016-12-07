@@ -44,7 +44,7 @@ public class MobileAppCertificationServiceTest extends ServiceTestBase{
     @Test
     public void shouldValidateUserCertificationInfoIsOk(){
         CertificationRequestDto certificationRequestDto = new CertificationRequestDto();
-        certificationRequestDto.setUserIdCardNumber("123456789012345678");
+        certificationRequestDto.setUserIdCardNumber("370405199112286014");
         certificationRequestDto.setUserRealName("拓天");
         certificationRequestDto.setBaseParam(BaseParamTest.getInstance());
         PayDataDto payDataDto = new PayDataDto();
@@ -58,7 +58,7 @@ public class MobileAppCertificationServiceTest extends ServiceTestBase{
 
         BaseResponseDto<CertificationResponseDataDto> baseResponseDto = mobileAppCertificationService.validateUserCertificationInfo(certificationRequestDto);
         assertEquals(ReturnMessage.SUCCESS.getCode(),baseResponseDto.getCode());
-        assertEquals("123456789012345678",baseResponseDto.getData().getUserIdCardNumber());
+        assertEquals("370405199112286014",baseResponseDto.getData().getUserIdCardNumber());
 
     }
 
@@ -80,7 +80,7 @@ public class MobileAppCertificationServiceTest extends ServiceTestBase{
         when(userService.registerAccount(any(RegisterAccountDto.class))).thenReturn(baseDto);
         when(userService.isIdentityNumberExist(anyString())).thenReturn(false);
         BaseResponseDto<CertificationResponseDataDto> baseResponseDto = mobileAppCertificationService.validateUserCertificationInfo(certificationRequestDto);
-        assertEquals("0001",baseResponseDto.getCode());
+        assertEquals("0016",baseResponseDto.getCode());
 
     }
 }
