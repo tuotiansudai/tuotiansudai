@@ -126,11 +126,13 @@
                         </#if>
                         <#if loan.status== 'PREHEAT'>
                         <#--预热中-->
-                            <a href="javascript:void(0)" class="btn-invest btn-normal">
+                            <a href="javascript:void(0)" class="btn-invest btn-normal preheat-btn">
                                 <#if loan.preheatSeconds lte 1800>
-                                    <i class="time-clock"></i><strong
-                                        class="minute_show">00</strong><em>:</em><strong
-                                        class="second_show">00</strong>放标
+
+                                    <span class="preheat" data-time="${loan.preheatSeconds?string.computer}">
+                                        <i class="minute_show"></i>分
+                                        <i class="second_show"></i>秒后开标
+                                    </span>
                                 <#else>
                                 ${(loan.fundraisingStartTime?string("yyyy-MM-dd HH时mm分"))!}放标
                                 </#if>
