@@ -448,7 +448,8 @@ public class UserMessageEventGenerator {
         UserMessageModel existUserMessage = userMessageMapper.findOneMessage(loginName, String.valueOf(membershipId), MessageEventType.MEMBERSHIP_UPGRADE);
         // 如果已经给用户发过此消息，则不再重复发送
         if (existUserMessage != null) {
-            logger.info("membership upgrade message has been send already, won't send again.");
+            logger.info(MessageFormat.format(
+                    "membership upgrade message has been send already, won't send again. loginName:{0}, membershipId:{1}", loginName, String.valueOf(membershipId)));
             return;
         }
 
