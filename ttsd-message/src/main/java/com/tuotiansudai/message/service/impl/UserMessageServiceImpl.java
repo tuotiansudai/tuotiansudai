@@ -113,7 +113,7 @@ public class UserMessageServiceImpl implements UserMessageService {
                     message.getTitle(),
                     message.getTitle(),
                     message.getTemplate(),
-                    message.getCreatedTime()));
+                    message.getActivatedTime()));
         }
     }
 

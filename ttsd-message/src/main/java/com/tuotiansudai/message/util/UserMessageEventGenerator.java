@@ -292,7 +292,7 @@ public class UserMessageEventGenerator {
             String appTitle = MessageFormat.format(messageModel.getAppTitle(), loan.get("name"), AmountConverter.convertCentToString(((BigInteger) investRepay.get("amount")).longValue()));
             String content = MessageFormat.format(messageModel.getTemplate(), loan.get("name"));
 
-            UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), (String) invest.get("loginName"), title, appTitle, content, messageModel.getCreatedTime());
+            UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), (String) invest.get("loginName"), title, appTitle, content, messageModel.getActivatedTime());
             userMessageMapper.create(userMessageModel);
             sendJPushByUserMessageModel(userMessageModel);
         }
@@ -316,7 +316,7 @@ public class UserMessageEventGenerator {
             String appTitle = MessageFormat.format(messageModel.getAppTitle(), AmountConverter.convertCentToString(amount));
             String content = MessageFormat.format(messageModel.getTemplate(), investReferrerReward.get("mobile"), AmountConverter.convertCentToString(amount));
 
-            UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), (String) investReferrerReward.get("referrer"), title, appTitle, content, messageModel.getCreatedTime());
+            UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), (String) investReferrerReward.get("referrer"), title, appTitle, content, messageModel.getActivatedTime());
             userMessageMapper.create(userMessageModel);
             sendJPushByUserMessageModel(userMessageModel);
         }
@@ -362,7 +362,7 @@ public class UserMessageEventGenerator {
                         content = MessageFormat.format(messageModel.getTemplate(), COUPON_NAME_MAPPING.get(couponType), endTime);
                         break;
                 }
-                UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), loginName, title, appTitle, content, messageModel.getCreatedTime());
+                UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), loginName, title, appTitle, content, messageModel.getActivatedTime());
                 userMessageMapper.create(userMessageModel);
                 sendJPushByUserMessageModel(userMessageModel);
             }
@@ -385,7 +385,7 @@ public class UserMessageEventGenerator {
         String appTitle = messageModel.getAppTitle();
         String content = messageModel.getTemplate();
 
-        UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), loginName, title, appTitle, content, messageModel.getCreatedTime());
+        UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), loginName, title, appTitle, content, messageModel.getActivatedTime());
         userMessageMapper.create(userMessageModel);
         sendJPushByUserMessageModel(userMessageModel);
     }
@@ -410,7 +410,7 @@ public class UserMessageEventGenerator {
         String appTitle = MessageFormat.format(messageModel.getAppTitle(), duration / 30);
         String content = MessageFormat.format(messageModel.getTemplate(), simpleDateFormat.format(DateTime.now().withTimeAtStartOfDay().plusDays(duration).toDate()));
 
-        UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), loginName, title, appTitle, content, messageModel.getCreatedTime());
+        UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), loginName, title, appTitle, content, messageModel.getActivatedTime());
         userMessageMapper.create(userMessageModel);
         sendJPushByUserMessageModel(userMessageModel);
     }
@@ -429,7 +429,7 @@ public class UserMessageEventGenerator {
             String userName = userMessageMetaMapper.findUserNameByLoginName(loginName);
             String content = MessageFormat.format(messageModel.getTemplate(), userName);
 
-            UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), loginName, title, appTitle, content, messageModel.getCreatedTime());
+            UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), loginName, title, appTitle, content, messageModel.getActivatedTime());
             userMessageMapper.create(userMessageModel);
             sendJPushByUserMessageModel(userMessageModel);
         });
@@ -448,7 +448,7 @@ public class UserMessageEventGenerator {
         String appTitle = MessageFormat.format(messageModel.getAppTitle(), membershipModel.get("level"));
         String content = MessageFormat.format(messageModel.getTemplate(), membershipModel.get("level"));
 
-        UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), loginName, title, appTitle, content, messageModel.getCreatedTime());
+        UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), loginName, title, appTitle, content, messageModel.getActivatedTime());
         userMessageMapper.create(userMessageModel);
         sendJPushByUserMessageModel(userMessageModel);
     }
@@ -504,7 +504,7 @@ public class UserMessageEventGenerator {
                 appTitle = MessageFormat.format(appTitleTemplate, COUPON_NAME_MAPPING.get(couponType), startTime, endTime);
                 break;
         }
-        UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), (String) userCoupon.get("login_name"), title, appTitle, null, messageModel.getCreatedTime());
+        UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), (String) userCoupon.get("login_name"), title, appTitle, null, messageModel.getActivatedTime());
         userMessageMapper.create(userMessageModel);
         sendJPushByUserMessageModel(userMessageModel);
     }

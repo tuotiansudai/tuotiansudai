@@ -57,7 +57,7 @@ public class UserMessageServiceTest {
         UserModel userTest = getFakeUserTest("userTest");
         userMapper.create(userTest);
         UserMessageModel userMessageModel = new UserMessageModel(webSiteMessageModel.getId(),
-                userTest.getLoginName(), webSiteMessageModel.getTitle(), webSiteMessageModel.getTitle(), webSiteMessageModel.getTemplate(), webSiteMessageModel.getCreatedTime());
+                userTest.getLoginName(), webSiteMessageModel.getTitle(), webSiteMessageModel.getTitle(), webSiteMessageModel.getTemplate(), webSiteMessageModel.getActivatedTime());
 
         userMessageMapper.create(userMessageModel);
 
