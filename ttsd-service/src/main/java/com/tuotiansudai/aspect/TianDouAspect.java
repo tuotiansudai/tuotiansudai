@@ -37,7 +37,7 @@ public class TianDouAspect {
     private UserRoleMapper userRoleMapper;
 
 
-    @After(value = "execution(* *..InvestService.investSuccess(..))")
+//    @After(value = "execution(* *..InvestService.investSuccess(..))")
     public void afterReturningInvestSuccess(JoinPoint joinPoint) {
         logger.debug("after returning invest, tianDou assign starting...");
         DateTime activityStartTime = new DateTime(2016, 4, 1, 0, 0, 0);
