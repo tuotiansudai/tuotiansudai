@@ -11,9 +11,11 @@ public enum MessageQueue {
     AccountRegistered_CompletePointTask("AccountRegistered-CompletePointTask"),
     InvestSuccess_CompletePointTask("InvestSuccess-CompletePointTask"),
     InvestSuccess_MembershipUpdate("InvestSuccess-MembershipUpdate"),
+    InvestSuccess_SendJpushMessage("InvestSuccess-SendJpushMessage"),
     RechargeSuccess_CompletePointTask("RechargeSuccess-CompletePointTask"),
     BindBankCard_CompletePointTask("BindBankCard-CompletePointTask"),
-    TurnOnNoPasswordInvest_CompletePointTask("TurnOnNoPasswordInvest-CompletePointTask");
+    TurnOnNoPasswordInvest_CompletePointTask("TurnOnNoPasswordInvest-CompletePointTask"),
+    MembershipUpgrade_SendJpushMessage("MembershipUpgrade-SendJpushMessage");
 
     private final String queueName;
 
