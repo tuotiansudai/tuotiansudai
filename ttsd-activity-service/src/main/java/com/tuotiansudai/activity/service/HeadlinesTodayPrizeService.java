@@ -31,26 +31,17 @@ public class HeadlinesTodayPrizeService {
     private UserLotteryPrizeMapper userLotteryPrizeMapper;
 
     @Autowired
-    private AccountMapper accountMapper;
-
-    @Autowired
     private CouponAssignmentService couponAssignmentService;
 
     @Autowired
     private LotteryDrawActivityService lotteryDrawActivityService;
 
-    public int getDrawPrizeTime(String mobile) {
-        int lotteryTime = 2;
-        UserModel userModel = userMapper.findByMobile(mobile);
-        if (userModel != null) {
-            return lotteryTime--;
-        }
+    private static final int MAX_LOTTERY_TIMES = 2;
 
-        AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
-        if (accountModel != null) {
-            lotteryTime--;
-        }
-        return lotteryTime;
+    private static final long RED_ENVELOPE_50_YUAN_DRAW_REF_CARNIVAL_COUPON_ID = 325L;
+
+    public int getDrawPrizeTime(String mobile) {
+        return MAX_LOTTERY_TIMES - userLotteryPrizeMapper.findUserLotteryPrizeCountByMobile(mobile, ActivityCategory.HEADLINES_TODAY_ACTIVITY);
     }
 
     @Transactional
@@ -77,7 +68,7 @@ public class HeadlinesTodayPrizeService {
         LotteryPrize headlinesTodayPrize = lotteryDrawActivityService.lotteryDrawPrize(ActivityCategory.HEADLINES_TODAY_ACTIVITY);
         PrizeType prizeType = PrizeType.CONCRETE;
         if (headlinesTodayPrize.equals(LotteryPrize.RED_ENVELOPE_50_YUAN_DRAW_REF_CARNIVAL)) {
-            couponAssignmentService.assignUserCoupon(mobile, 325);
+            couponAssignmentService.assignUserCoupon(mobile, RED_ENVELOPE_50_YUAN_DRAW_REF_CARNIVAL_COUPON_ID);
             prizeType = PrizeType.VIRTUAL;
         }
 
@@ -86,7 +77,7 @@ public class HeadlinesTodayPrizeService {
                 Strings.isNullOrEmpty(userModel.getUserName()) ? "" : userModel.getUserName(),
                 headlinesTodayPrize,
                 DateTime.now().toDate(),
-                ActivityCategory.NATIONAL_PRIZE));
+                ActivityCategory.HEADLINES_TODAY_ACTIVITY));
         return new DrawLotteryResultDto(0, headlinesTodayPrize.name(), prizeType.name(), headlinesTodayPrize.getDescription());
     }
 

@@ -54,13 +54,13 @@ require(['jquery', 'layerWrapper', 'template', 'commonFun', 'jquery.validate', '
                     lottery.times = 0;
                     lottery.click = false;
                     selectTip();
-                    
+
                 } else {
                     if (lottery.times < lottery.cycle) {
                         lottery.speed -= 10;
                     } else if (lottery.times == lottery.cycle) {
                         var index = Math.random()*(lottery.count)|0;
-                        lottery.prize = index; 
+                        lottery.prize = index;
                     } else {
                         if (lottery.times > lottery.cycle + 10 && ((lottery.prize == 0 && lottery.index == 7) || lottery.prize == lottery.index + 1)) {
                             lottery.speed += 110;
@@ -102,9 +102,9 @@ require(['jquery', 'layerWrapper', 'template', 'commonFun', 'jquery.validate', '
         }
         //发送获奖请求
         function getGift(type) {
-            
+
             $.ajax({
-                    url: '/activity/point-draw/task-draw',
+                    url: '/activity/headlines-today/draw',
                     type: 'POST',
                     dataType: 'json',
                     data: {
@@ -116,44 +116,36 @@ require(['jquery', 'layerWrapper', 'template', 'commonFun', 'jquery.validate', '
                         noChanceTip();
                     } else if (data.returnCode == 0) {//获奖数据
                         switch (data.prize) {
-                            case 'M1_PHONE': //锤子M1手机
+                            case 'T1_PHONE': //锤子M1手机
                                 lottery.num = 7;
-                                lottery.text='锤子M1手机';
                                 break;
-                            case 'HUMIDIFIER': //小熊加湿器
+                            case 'INSPISSATE_TOWEL': //加厚纯棉毛巾
                                 lottery.num = 0;
-                                lottery.text='小熊加湿器';
                                 break;
-                            case 'HAIR_DRIER': //飞科电吹风机
+                            case 'FLYCO_HAIR_DRIER': //飞科电吹风机
                                 lottery.num = 1;
-                                lottery.text='飞科电吹风机';
                                 break;
-                            case 'IQIYI_MEMBERSHIP_REF_CARNIVAL': //爱奇艺会员
+                            case 'IQIYI_MEMBERSHIP_MONTH_REF_CARNIVAL': //爱奇艺会员
                                 lottery.num = 5;
-                                lottery.text='爱奇艺会员';
                                 break;
-                            case 'TELEPHONE_FARE_10_REF_CARNIVAL': //10元话费
+                            case 'TELEPHONE_FARE_10_YUAN_REF_CARNIVAL': //10元话费
                                 lottery.num = 2;
-                                lottery.text='10元话费';
                                 break;
-                            case 'BAMBOO_CHARCOAL_PACKAGE': //卡通汽车竹炭包
+                            case 'BAMBOO_BAG': //长嘴狗车内竹炭包
                                 lottery.num = 6;
-                                lottery.text='卡通汽车竹炭包';
                                 break;
-                            case 'INTEREST_COUPON_5_POINT_DRAW_REF_CARNIVAL': //0.5加息券
+                            case 'QQ_EMOTICON_PILLOW': //QQ表情枕
                                 lottery.num = 3;
-                                lottery.text='0.5加息券';
                                 break;
-                            case 'RED_ENVELOPE_50_POINT_DRAW_REF_CARNIVAL': //50元红包
+                            case 'RED_ENVELOPE_50_YUAN_DRAW_REF_CARNIVAL': //50元红包
                                 lottery.num = 4;
-                                lottery.text='50元红包';
                                 break;
                         }
                         lottery.show(lottery.num);
                         if(type=='register'){
-                            $('#attestBox').find('.gift-name').text('注册成功，获得了'+lottery.text);
+                            $('#attestBox').find('.gift-name').text('注册成功，获得了'+data.prizeValue);
                         }else if(type=='user'){
-                            $('#lastBox').find('.gift-name').text('恭喜您解救了'+lottery.text);
+                            $('#lastBox').find('.gift-name').text('恭喜您解救了'+data.prizeValue);
                         }
                     } else if (data.returnCode == 3) {//活动结束
                         layer.msg('当前活动已结束！');
@@ -195,8 +187,8 @@ require(['jquery', 'layerWrapper', 'template', 'commonFun', 'jquery.validate', '
 
         // 获取手机验证码
         $fetchCaptcha.on('click', function(event) {
-            var $this = $(this);
             event.preventDefault();
+            var $this = $(this);
             if ($this.prop('disabled')) {
                 return;
             }
@@ -229,18 +221,22 @@ require(['jquery', 'layerWrapper', 'template', 'commonFun', 'jquery.validate', '
                     }
                     if (!data.status && data.isRestricted) {
                         layer.msg('短信发送频繁,请稍后再试');
+                        return false;
                     }
 
                     if (!data.status && !data.isRestricted) {
                         layer.msg('图形验证码错误');
                         refreshCapt();
+                        return false;
                     }
                 })
                 .fail(function() {
                     layer.msg('请求失败，请重试！');
                     $fetchCaptcha.prop('disabled', false);
                     refreshCapt();
+                    return false;
                 });
+
         });
         //协议弹框
         $('.show-agreement').on('click', function(event) {
@@ -341,7 +337,7 @@ require(['jquery', 'layerWrapper', 'template', 'commonFun', 'jquery.validate', '
             },
             submitHandler: function(form) {
                 $.ajax({
-                    url: '/register/user',
+                    url: '/register/user/noRedirect',
                     data: $(form).serialize(),
                     type: 'POST',
                     dataType: 'json',
@@ -350,8 +346,10 @@ require(['jquery', 'layerWrapper', 'template', 'commonFun', 'jquery.validate', '
                     }
                 }).done(function(data) {
                     $('#loginMobile').val($('#mobile').val());
-                    attestTip();
+                    attestTip('register');
+                    return false;
                 }).fail(function() {
+                    $registerForm.find('.register-user').prop('disabled', false);
                     layer.msg('请求失败，请重试！');
                 });
             }
@@ -379,15 +377,22 @@ require(['jquery', 'layerWrapper', 'template', 'commonFun', 'jquery.validate', '
             refreshLogin();
         }
         //身份认证
-        function attestTip() {
+        function attestTip(kid) {
             layer.closeAll();
-            getGift('register');
+            getGift(kid);
+            kid=='user'?$('#attestBox').find('.gift-title').hide():$('#attestBox').find('.gift-title').show();
             layer.open({
                 type: 1,
                 title: false,
                 closeBtn: 2,
-                content: $('#attestBox')
+                content: $('#attestBox'),
+                cancel: function(index){
+                    layer.closeAll();
+                    $('#loginMobile').val('');
+                    $('#lastBox').find('.gift-title').hide();
+                }
             });
+
         }
         //下载弹框
         function lastTip() {
@@ -448,24 +453,34 @@ require(['jquery', 'layerWrapper', 'template', 'commonFun', 'jquery.validate', '
                 }
             },
             submitHandler: function(form) {
-                $.ajax({
-                    url: '/login',
-                    data: $(form).serialize(),
-                    type: 'POST',
-                    dataType: 'json',
-                    beforeSend: function() {
+                $loginForm.ajaxSubmit({
+                    beforeSubmit: function (arr, $form, options) {
                         $loginForm.find('.register-user').prop('disabled', true);
+                    },
+                    success: function (data) {
+                        if (data.status) {
+                            $('#loginMobile').val($('#username').val());
+                            $('#attestBox').find('.gift-title').hide();
+                            attestTip('user');
+                            return false;
+                        } else {
+                            refreshLogin();
+                            $loginForm.find('.register-user').prop('disabled', false);
+                            layer.msg(data.message);
+                            return false;
+                        }
+                    },
+                    error: function () {
+                        $loginForm.find('.register-user').prop('disabled', false);
+                        refreshLogin();
+                        layer.msg('用户或密码不正确');
+                        return false;
                     }
-                }).done(function(data) {
-                    $('#loginMobile').val($('#mobile').val());
-                    $('#lastBox').find('.gift-title').hide();
-                    attestTip();
-                }).fail(function() {
-                    layer.msg('请求失败，请重试！');
                 });
+
             }
         });
-
+        //实名认证校验
         $attestForm.validate({
             focusCleanup: true,
             focusInvalid: false,
