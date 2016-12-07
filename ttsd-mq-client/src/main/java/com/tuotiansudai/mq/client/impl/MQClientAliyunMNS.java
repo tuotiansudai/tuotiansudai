@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
 public class MQClientAliyunMNS implements MQClient {
@@ -23,6 +24,8 @@ public class MQClientAliyunMNS implements MQClient {
 
     private final MNSClient mnsClient;
     private final Map<MessageTopic, CloudTopic> topicMap;
+    private boolean continueRunning = true;
+    private AtomicInteger subscriberNum = new AtomicInteger(0);
 
     public MQClientAliyunMNS(MNSClient mnsClient) {
         this.mnsClient = mnsClient;
@@ -57,41 +60,51 @@ public class MQClientAliyunMNS implements MQClient {
     public void subscribe(final MessageQueue queue, final Consumer<String> consumer) {
         logger.info("[MQ] subscribe queue: {}", queue.getQueueName());
         CloudQueue cloudQueue = findQueue(queue.getQueueName());
-        while (mnsClient.isOpen()) {
-            Message message = null;
+        subscriberNum.incrementAndGet();
+        while (continueRunning) {
+            listenMessage(cloudQueue, queue.getQueueName(), consumer);
+        }
+        int subscriberNumber = subscriberNum.decrementAndGet();
+        if (subscriberNumber == 0) {
+            logger.info("[MQ] ready to stop");
+            mnsClient.close();
+        }
+    }
+
+    private void listenMessage(CloudQueue cloudQueue, String queueName, Consumer<String> consumer) {
+        Message message = null;
+        try {
+            logger.debug("[MQ] ready to pop message from queue: {}", queueName);
+            message = cloudQueue.popMessage(10);
+            if (message == null) {
+                logger.debug("[MQ] receive no message, try again");
+            } else {
+                logger.debug("[MQ] receive a message, prepare to consume");
+            }
+        } catch (Exception e) {
+            logger.error("[MQ] pop message fail", e);
+        }
+        if (message != null) {
+            logger.info("[MQ] ready to consume message, queue: {}, messageId: {}", queueName, message.getMessageId());
             try {
-                logger.debug("[MQ] ready to pop message from queue: {}", queue.getQueueName());
-                message = cloudQueue.popMessage(30);
-                if (message == null) {
-                    logger.debug("[MQ] receive no message, try again");
-                } else {
-                    logger.debug("[MQ] receive a message, prepare to consume");
+                consumer.accept(message.getMessageBodyAsString());
+                logger.info("[MQ] consume message success, queue: {}, messageId: {}", queueName, message.getMessageId());
+                try {
+                    //删除已经取出消费的消息
+                    cloudQueue.deleteMessage(message.getReceiptHandle());
+                } catch (Exception e) {
+                    logger.error(String.format("[MQ] delete message fail, messageId: %s", message.getMessageId()), e);
                 }
             } catch (Exception e) {
-                if (mnsClient.isOpen()) {
-                    logger.error("[MQ] pop message fail", e);
-                } else {
-                    logger.warn("[MQ] pop message fail: client is already closed.");
-                }
-            }
-            if (message != null) {
-                logger.info("[MQ] ready to consume message, queue: {}, messageId: {}",
-                        queue.getQueueName(), message.getMessageId());
-                try {
-                    consumer.accept(message.getMessageBodyAsString());
-                    logger.info("[MQ] consume message success, queue: {}, messageId: {}",
-                            queue.getQueueName(), message.getMessageId());
-                    try {
-                        //删除已经取出消费的消息
-                        cloudQueue.deleteMessage(message.getReceiptHandle());
-                    } catch (Exception e) {
-                        logger.error(String.format("[MQ] delete message fail, messageId: %s", message.getMessageId()), e);
-                    }
-                } catch (Exception e) {
-                    logger.error(String.format("[MQ] consume message fail, messageId: %s", message.getMessageId()), e);
-                }
+                logger.error(String.format("[MQ] consume message fail, messageId: %s", message.getMessageId()), e);
             }
         }
+    }
+
+    @Override
+    public void stopSubscribe() {
+        logger.info("[MQ] prepare to stop");
+        continueRunning = false;
     }
 
     private CloudTopic findTopic(MessageTopic topic) {
