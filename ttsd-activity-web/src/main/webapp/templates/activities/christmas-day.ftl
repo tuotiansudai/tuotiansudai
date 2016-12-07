@@ -11,7 +11,6 @@
     <div class="reg-tag-current" style="display: none">
         <#include '../module/register.ftl' />
     </div>
-
     <div class="christmas-day-inner">
         <div class="christmas-border box-notice">
             <div class="man-decorate"></div>
@@ -27,7 +26,7 @@
 
         <div class="activity-section-one">
             <div class="christmas-border clearfix">
-                <div class="title-christmas">活动一：为圣诞老人铺路</div>
+                <div class="title-christmas"><span>活动一：为圣诞老人铺路</span></div>
                 <div class="model-content clearfix">
                         <div class="gift-box">
                             <em class="icon-balloon">1重礼</em>
@@ -87,7 +86,7 @@
         <#--活动二未开始-->
         <#if isStart == 0>
             <div class="christmas-border clearfix">
-                <div class="title-christmas">活动二：圣诞拆礼物</div>
+                <div class="title-christmas"><span>活动二：圣诞拆礼物</span></div>
                 <div class="model-content clearfix">
                     <div class="tc color-sec margin-top25">
                         专享标总投资额达到420万，将开启活动二 —— 圣诞拆礼物。快去投资吧！
@@ -106,7 +105,7 @@
 
         <#--活动已经开始-->
             <div class="christmas-border clearfix activity-second">
-                <div class="title-christmas">活动二：圣诞拆礼物</div>
+                <div class="title-christmas"><span>活动二：圣诞拆礼物</span></div>
                 <div class="model-content clearfix">
                     <div class="color-sec info-activity-note">
                         <b class="tc ">活动时间：${christmasPrizeStartTime?string('yyyy-MM-dd HH:mm:ss')}-12.31 24:00</b>

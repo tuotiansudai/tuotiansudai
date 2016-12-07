@@ -125,6 +125,13 @@ body {
       font-weight: bold;
       color: #fff;
       padding-top:60px;
+      span {
+        display: inline-block;
+        position: absolute;
+        top: 60px;
+        left: 50%;
+        transform: translateX(-50%);
+      }
     }
   }
   .model-content {
@@ -649,6 +656,9 @@ body {
         padding-top: 31px;
         font-size: 15px;
         height: 60px;
+        span {
+          top: 30px;
+        }
       }
 
       .man-decorate {
@@ -691,6 +701,11 @@ body {
 
 }
 
+@media screen and(max-width: 400px){
+  .christmas-day-frame .christmas-border .title-christmas span{
+    top: 26px;
+  }
+}
 @media screen and(max-width: 350px){
   .christmas-day-frame .activity-section-two .gift-info-list .record-list-box {
     width: 90%;
@@ -701,5 +716,10 @@ body {
 
   .christmas-day-frame .christmas-border .title-christmas {
     padding-top: 21px;
+    span {
+      top:20px;
+      font-size: 12px;
+
+    }
   }
 }
