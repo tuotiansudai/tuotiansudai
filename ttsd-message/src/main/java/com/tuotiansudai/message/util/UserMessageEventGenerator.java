@@ -169,8 +169,15 @@ public class UserMessageEventGenerator {
         long amount = ((BigInteger) invest.get("amount")).longValue();
         String loginName = (String) invest.get("login_name");
 
+        UserMessageModel existUserMessageModel = userMessageMapper.findOneMessage(loginName, String.valueOf(investId), MessageEventType.INVEST_SUCCESS);
+        if (existUserMessageModel != null) {
+            // 该笔投资已经发送过推送消息了，不再重复发送，保持幂等操作
+            logger.info("invest success message has been send already, won't send again.");
+            return;
+        }
+
         MessageModel messageModel = messageMapper.findActiveByEventType(MessageEventType.INVEST_SUCCESS);
-        if(messageModel == null) return;
+        if (messageModel == null) return;
 
         //Title:恭喜您成功投资{0}元
         //AppTitle:恭喜您成功投资{0}元
@@ -180,6 +187,7 @@ public class UserMessageEventGenerator {
         String content = MessageFormat.format(messageModel.getTemplate(), AmountConverter.convertCentToString(amount));
 
         UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), loginName, title, appTitle, content);
+        userMessageModel.setBusinessId(String.valueOf(investId));
         userMessageMapper.create(userMessageModel);
         sendJPushByUserMessageModel(userMessageModel);
     }
@@ -192,7 +200,7 @@ public class UserMessageEventGenerator {
         String loginName = (String) invest.get("login_name");
 
         MessageModel messageModel = messageMapper.findActiveByEventType(MessageEventType.TRANSFER_SUCCESS);
-        if(messageModel == null) return;
+        if (messageModel == null) return;
 
         //Title:您发起的转让项目转让成功，{0}元已发放至您的账户！
         //AppTitle:您发起的转让项目转让成功，{0}元已发放至您的账户！
@@ -210,7 +218,7 @@ public class UserMessageEventGenerator {
         Map<String, Object> transferApplication = userMessageMetaMapper.findTransferApplicationById(transferApplicationId);
         String loginName = (String) transferApplication.get("login_name");
         MessageModel messageModel = messageMapper.findActiveByEventType(MessageEventType.TRANSFER_FAIL);
-        if(messageModel == null) return;
+        if (messageModel == null) return;
         //Title:您提交的债权转让到期取消，请查看！
         //AppTitle:您提交的债权转让到期取消，请查看！
         //Content:尊敬的用户，我们遗憾地通知您，您发起的转让项目没有转让成功。如有疑问，请致电客服热线400-169-1188，感谢您选择拓天速贷。
@@ -233,7 +241,7 @@ public class UserMessageEventGenerator {
         double rate = baseRate + activityRate;
 
         MessageModel messageModel = messageMapper.findActiveByEventType(MessageEventType.LOAN_OUT_SUCCESS);
-        if(messageModel == null) return;
+        if (messageModel == null) return;
 
         //Title:您投资的{0}已经满额放款，预期年化收益{1}%
         //AppTitle:您投资的{0}已经满额放款，预期年化收益{1}%
@@ -256,7 +264,7 @@ public class UserMessageEventGenerator {
         Map<String, Object> loanRepay = userMessageMetaMapper.findLoanRepayById(loanRepayId);
         List<Map<String, Object>> invests = userMessageMetaMapper.findInvestsByLoanId(((BigInteger) loan.get("id")).longValue());
         MessageModel messageModel = messageMapper.findActiveByEventType(MessageEventType.REPAY_SUCCESS);
-        if(messageModel == null) return;
+        if (messageModel == null) return;
 
         //Title:您投资的{0}已回款{1}元，请前往账户查收！
         //AppTitle:您投资的{0}已回款{1}元，请前往账户查收！
@@ -280,7 +288,7 @@ public class UserMessageEventGenerator {
         Map<String, Object> loanRepay = userMessageMetaMapper.findLoanRepayById(loanRepayId);
         List<Map<String, Object>> invests = userMessageMetaMapper.findInvestsByLoanId(((BigInteger) loan.get("id")).longValue());
         MessageModel messageModel = messageMapper.findActiveByEventType(MessageEventType.ADVANCED_REPAY);
-        if(messageModel == null) return;
+        if (messageModel == null) return;
 
         //Title:您投资的{0}提前还款，{1}元已返还至您的账户！
         //AppTitle:您投资的{0}提前还款，{1}元已返还至您的账户！
@@ -301,7 +309,7 @@ public class UserMessageEventGenerator {
     @Transactional
     public void generateRecommendAwardSuccessEvent(long loanId) {
         MessageModel messageModel = messageMapper.findActiveByEventType(MessageEventType.RECOMMEND_AWARD_SUCCESS);
-        if(messageModel == null) return;
+        if (messageModel == null) return;
 
         //Title:{0}元推荐奖励已存入您的账户，请查收！
         //AppTitle:{0}元推荐奖励已存入您的账户，请查收！
@@ -329,7 +337,7 @@ public class UserMessageEventGenerator {
         String endTime = simpleDateFormat.format(DateTime.now().plusDays(5).withTimeAtStartOfDay().toDate());
         if (times == 1) {
             MessageModel messageModel = messageMapper.findActiveByEventType(MessageEventType.COUPON_5DAYS_EXPIRED_ALERT);
-            if(messageModel == null) return;
+            if (messageModel == null) return;
 
             //Title:您有一张{0}即将失效
             //AppTitle: 您有一张{0}即将失效
@@ -376,7 +384,7 @@ public class UserMessageEventGenerator {
         }
 
         MessageModel messageModel = messageMapper.findActiveByEventType(MessageEventType.MEMBERSHIP_EXPIRED);
-        if(messageModel == null) return;
+        if (messageModel == null) return;
 
         //Title:您的V5会员已到期，请前去购买
         //AppTitle:您的V5会员已到期，请前去购买
@@ -393,7 +401,7 @@ public class UserMessageEventGenerator {
     public void generateMembershipPurchaseEvent(long membershipPurchaseId) {
         Map<String, Object> membershipPurchase = userMessageMetaMapper.findMembershipPurchaseModelById(membershipPurchaseId);
         MembershipPurchaseStatus membershipPurchaseStatus = MembershipPurchaseStatus.valueOf((String) membershipPurchase.get("status"));
-        if(!MembershipPurchaseStatus.SUCCESS.equals(membershipPurchaseStatus)) {
+        if (!MembershipPurchaseStatus.SUCCESS.equals(membershipPurchaseStatus)) {
             return;
         }
         logger.debug("start to send message");
@@ -401,7 +409,7 @@ public class UserMessageEventGenerator {
         int duration = (int) ((long) membershipPurchase.get("duration"));
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd");
         MessageModel messageModel = messageMapper.findActiveByEventType(MessageEventType.MEMBERSHIP_BUY_SUCCESS);
-        if(messageModel == null) return;
+        if (messageModel == null) return;
 
         //Title:恭喜您已成功购买{0}个月V5会员！
         //AppTitle:恭喜您已成功购买{0}个月V5会员！
@@ -417,7 +425,7 @@ public class UserMessageEventGenerator {
 
     public void generateBirthdayEvent() {
         MessageModel messageModel = messageMapper.findActiveByEventType(MessageEventType.BIRTHDAY);
-        if(messageModel == null) return;
+        if (messageModel == null) return;
 
         //Title:拓天速贷为您送上生日祝福，请查收！
         //AppTitle:拓天速贷为您送上生日祝福，请查收！
@@ -436,10 +444,19 @@ public class UserMessageEventGenerator {
     }
 
     public void generateMembershipUpgradeEvent(String loginName, long membershipId) {
+
+        UserMessageModel existUserMessage = userMessageMapper.findOneMessage(loginName, String.valueOf(membershipId), MessageEventType.MEMBERSHIP_UPGRADE);
+        // 如果已经给用户发过此消息，则不再重复发送
+        if (existUserMessage != null) {
+            logger.info(MessageFormat.format(
+                    "membership upgrade message has been send already, won't send again. loginName:{0}, membershipId:{1}", loginName, String.valueOf(membershipId)));
+            return;
+        }
+
         Map<String, Object> membershipModel = userMessageMetaMapper.findMembershipById(membershipId);
 
         MessageModel messageModel = messageMapper.findActiveByEventType(MessageEventType.MEMBERSHIP_UPGRADE);
-        if(messageModel == null) return;
+        if (messageModel == null) return;
 
         //Title:恭喜您会员等级提升至V{0}
         //AppTitle:恭喜您会员等级提升至V{0}
@@ -449,6 +466,7 @@ public class UserMessageEventGenerator {
         String content = MessageFormat.format(messageModel.getTemplate(), membershipModel.get("level"));
 
         UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), loginName, title, appTitle, content);
+        userMessageModel.setBusinessId(String.valueOf(membershipId));
         userMessageMapper.create(userMessageModel);
         sendJPushByUserMessageModel(userMessageModel);
     }
@@ -457,7 +475,7 @@ public class UserMessageEventGenerator {
     @Transactional
     public void generateAssignCouponSuccessEvent(long userCouponId) {
         MessageModel messageModel = messageMapper.findActiveByEventType(MessageEventType.ASSIGN_COUPON_SUCCESS);
-        if(messageModel == null) return;
+        if (messageModel == null) return;
 
         //您获得了{0}，有效期{1}至{2}，<a href="/my-treasure">立即查看</a>。
         String titleTemplate = messageModel.getTitle();

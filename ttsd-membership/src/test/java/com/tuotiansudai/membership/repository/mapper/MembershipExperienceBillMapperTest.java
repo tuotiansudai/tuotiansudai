@@ -33,7 +33,7 @@ public class MembershipExperienceBillMapperTest {
     public void shouldCreateMembershipExperienceBill() throws Exception {
 
         UserModel fakeUser = createFakeUser();
-        MembershipExperienceBillModel membershipExperienceBillModel = new MembershipExperienceBillModel(fakeUser.getLoginName(), 5000, 10000, "投资了5000.增加5000成长值");
+        MembershipExperienceBillModel membershipExperienceBillModel = new MembershipExperienceBillModel(fakeUser.getLoginName(), null, 5000, 10000, "投资了5000.增加5000成长值");
 
         membershipExperienceBillMapper.create(membershipExperienceBillModel);
 
@@ -47,10 +47,10 @@ public class MembershipExperienceBillMapperTest {
     public void shouldUpdateMembershipExperienceBill() throws Exception {
 
         UserModel fakeUser = createFakeUser();
-        MembershipExperienceBillModel membershipExperienceBillModel = new MembershipExperienceBillModel(fakeUser.getLoginName(), 5000, 10000, "投资了5000.增加5000成长值");
+        MembershipExperienceBillModel membershipExperienceBillModel = new MembershipExperienceBillModel(fakeUser.getLoginName(), null, 5000, 10000, "投资了5000.增加5000成长值");
         membershipExperienceBillMapper.create(membershipExperienceBillModel);
 
-        MembershipExperienceBillModel updateMembershipExperienceBillModel = new MembershipExperienceBillModel(fakeUser.getLoginName(), 50000, 80000, "投资了50000.增加50000成长值");
+        MembershipExperienceBillModel updateMembershipExperienceBillModel = new MembershipExperienceBillModel(fakeUser.getLoginName(), null, 50000, 80000, "投资了50000.增加50000成长值");
         membershipExperienceBillMapper.update(updateMembershipExperienceBillModel);
 
         assertThat(updateMembershipExperienceBillModel.getLoginName(), is(fakeUser.getLoginName()));
@@ -63,7 +63,7 @@ public class MembershipExperienceBillMapperTest {
     public void shouldMembershipExperienceBillFindById() throws Exception {
 
         UserModel fakeUser = createFakeUser();
-        MembershipExperienceBillModel membershipExperienceBillModel = new MembershipExperienceBillModel(fakeUser.getLoginName(), 5000, 10000, "投资了5000.增加5000成长值,累计成长值10000");
+        MembershipExperienceBillModel membershipExperienceBillModel = new MembershipExperienceBillModel(fakeUser.getLoginName(), null, 5000, 10000, "投资了5000.增加5000成长值,累计成长值10000");
         membershipExperienceBillMapper.create(membershipExperienceBillModel);
 
         MembershipExperienceBillModel membershipExperienceBillModel1 = membershipExperienceBillMapper.findById(membershipExperienceBillModel.getId());
@@ -78,9 +78,9 @@ public class MembershipExperienceBillMapperTest {
     @Test
     public void shouldMembershipExperienceBillListByLoginName() throws Exception{
         UserModel fakeUser = createFakeUser();
-        MembershipExperienceBillModel membershipExperienceBillModel1 = new MembershipExperienceBillModel(fakeUser.getLoginName(), 5000, 10000, "投资了5000.增加5000成长值");
-        MembershipExperienceBillModel membershipExperienceBillModel2 = new MembershipExperienceBillModel(fakeUser.getLoginName(), 10000, 20000, "投资了10000.增加10000成长值");
-        MembershipExperienceBillModel membershipExperienceBillModel3 = new MembershipExperienceBillModel(fakeUser.getLoginName(), 20000, 20000, "投资了5000.增加5000成长值");
+        MembershipExperienceBillModel membershipExperienceBillModel1 = new MembershipExperienceBillModel(fakeUser.getLoginName(), null, 5000, 10000, "投资了5000.增加5000成长值");
+        MembershipExperienceBillModel membershipExperienceBillModel2 = new MembershipExperienceBillModel(fakeUser.getLoginName(), null, 10000, 20000, "投资了10000.增加10000成长值");
+        MembershipExperienceBillModel membershipExperienceBillModel3 = new MembershipExperienceBillModel(fakeUser.getLoginName(), null, 20000, 20000, "投资了5000.增加5000成长值");
         membershipExperienceBillMapper.create(membershipExperienceBillModel1);
         membershipExperienceBillMapper.create(membershipExperienceBillModel2);
         membershipExperienceBillMapper.create(membershipExperienceBillModel3);
