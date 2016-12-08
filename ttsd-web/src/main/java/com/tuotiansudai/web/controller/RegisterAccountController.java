@@ -17,7 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.validation.Valid;
 
 @Controller
-@RequestMapping(path = "/register/account")
+@RequestMapping(path = "/register")
 public class RegisterAccountController {
 
     @Autowired
@@ -26,7 +26,7 @@ public class RegisterAccountController {
     @Autowired
     private MyAuthenticationUtil myAuthenticationUtil;
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(value = "/account", method = RequestMethod.GET)
     public ModelAndView registerAccount(@RequestParam(name = "redirect", required = false, defaultValue = "/") String redirect) {
         ModelAndView modelAndView = new ModelAndView("/register-account", "responsive", true);
         modelAndView.addObject("redirect", redirect);
@@ -48,6 +48,24 @@ public class RegisterAccountController {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<PayDataDto> registerAccount(@Valid @ModelAttribute RegisterAccountDto registerAccountDto) {
+        if (IdentityNumberValidator.validateIdentity(registerAccountDto.getIdentityNumber())) {
+            registerAccountDto.setLoginName(LoginUserInfo.getLoginName());
+            registerAccountDto.setMobile(LoginUserInfo.getMobile());
+            BaseDto<PayDataDto> baseDto = this.userService.registerAccount(registerAccountDto);
+            myAuthenticationUtil.createAuthentication(LoginUserInfo.getLoginName(), Source.WEB);
+            return baseDto;
+        }
+
+        BaseDto<PayDataDto> baseDto = new BaseDto<>();
+        PayDataDto dataDto = new PayDataDto();
+        baseDto.setData(dataDto);
+        return baseDto;
+    }
+
+
+    @RequestMapping(value="/accountNoRedirect", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<PayDataDto> registerAccountNoRedirect(@Valid @ModelAttribute RegisterAccountDto registerAccountDto) {
         if (IdentityNumberValidator.validateIdentity(registerAccountDto.getIdentityNumber())) {
             registerAccountDto.setLoginName(LoginUserInfo.getLoginName());
             registerAccountDto.setMobile(LoginUserInfo.getMobile());
