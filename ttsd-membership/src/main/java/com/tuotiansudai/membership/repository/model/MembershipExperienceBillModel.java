@@ -3,21 +3,23 @@ package com.tuotiansudai.membership.repository.model;
 import java.io.Serializable;
 import java.util.Date;
 
-public class MembershipExperienceBillModel implements Serializable{
+public class MembershipExperienceBillModel implements Serializable {
 
     private long id;
     private String loginName;
+    private String investId;
     private long experience;
     private long totalExperience;
     private Date createdTime;
     private String description;
 
-    public MembershipExperienceBillModel(){
+    public MembershipExperienceBillModel() {
 
     }
 
-    public MembershipExperienceBillModel(String loginName, long experience, long totalExperience, String description) {
+    public MembershipExperienceBillModel(String loginName, String investId, long experience, long totalExperience, String description) {
         this.loginName = loginName;
+        this.investId = investId;
         this.experience = experience;
         this.totalExperience = totalExperience;
         this.createdTime = new Date();
@@ -38,6 +40,14 @@ public class MembershipExperienceBillModel implements Serializable{
 
     public void setLoginName(String loginName) {
         this.loginName = loginName;
+    }
+
+    public String getInvestId() {
+        return investId;
+    }
+
+    public void setInvestId(String investId) {
+        this.investId = investId;
     }
 
     public long getExperience() {
