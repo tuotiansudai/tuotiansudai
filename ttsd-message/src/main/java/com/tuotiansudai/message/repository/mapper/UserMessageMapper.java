@@ -1,6 +1,7 @@
 package com.tuotiansudai.message.repository.mapper;
 
 import com.tuotiansudai.message.repository.model.MessageChannel;
+import com.tuotiansudai.message.repository.model.MessageEventType;
 import com.tuotiansudai.message.repository.model.UserMessageModel;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -31,4 +32,8 @@ public interface UserMessageMapper {
     long countMessagesByLoginNameAndMessageType(@Param(value = "loginName") String loginName,
                                                 @Param(value = "messageId") long messageId,
                                                 @Param(value = "title") String title);
+
+    UserMessageModel findOneMessage(@Param(value = "loginName") String loginName,
+                                    @Param(value = "businessId") String businessId,
+                                    @Param(value = "eventType") MessageEventType eventType);
 }
