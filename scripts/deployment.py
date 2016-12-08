@@ -49,6 +49,8 @@ class Deployment(object):
         sh('cd ./ttsd-point-mq-consumer/build/distributions && unzip \*.zip')
         sh('cd ./ttsd-activity-mq-consumer && {0} distZip'.format(self._gradle))
         sh('cd ./ttsd-activity-mq-consumer/build/distributions && unzip \*.zip')
+        sh('cd ./ttsd-user-mq-consumer && {0} distZip'.format(self._gradle))
+        sh('cd ./ttsd-user-mq-consumer/build/distributions && unzip \*.zip')
 
     def build_diagnosis(self):
         print "Making diagnosis build..."

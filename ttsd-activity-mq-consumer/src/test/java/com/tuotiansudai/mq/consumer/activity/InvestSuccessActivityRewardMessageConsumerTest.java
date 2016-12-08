@@ -56,7 +56,7 @@ public class InvestSuccessActivityRewardMessageConsumerTest {
         verify(mqClient, times(1)).sendMessage(any(), any());
 
         assertEquals(MessageQueue.CouponAssigning, messageQueueCaptor.getValue());
-        assertEquals("test123:324", messageCaptor.getValue());
+        assertEquals("test123:323", messageCaptor.getValue());
     }
 
     private  InvestSuccessMessage buildMockedInvestSuccessMessage() {

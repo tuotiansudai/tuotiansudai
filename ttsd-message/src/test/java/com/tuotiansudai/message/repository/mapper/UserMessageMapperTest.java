@@ -44,9 +44,11 @@ public class UserMessageMapperTest {
                 Lists.newArrayList(MessageUserGroup.ALL_USER),
                 Lists.newArrayList(MessageChannel.WEBSITE),
                 MessageStatus.TO_APPROVE, new Date(), creator.getLoginName());
+        messageModel.setEventType(MessageEventType.INVEST_SUCCESS);
         messageMapper.create(messageModel);
 
         UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), creator.getLoginName(), messageModel.getTitle(), messageModel.getTitle(), messageModel.getTemplate());
+        userMessageModel.setBusinessId("111");
         userMessageMapper.create(userMessageModel);
 
         List<UserMessageModel> userMessageModels = userMessageMapper.findMessagesByLoginName(creator.getLoginName(), null,null, null);
@@ -58,6 +60,9 @@ public class UserMessageMapperTest {
         assertThat(actualUserMessageModel.getTitle(), is(userMessageModel.getTitle()));
         assertThat(actualUserMessageModel.getContent(), is(userMessageModel.getContent()));
         assertThat(actualUserMessageModel.isRead(), is(userMessageModel.isRead()));
+
+        UserMessageModel model = userMessageMapper.findOneMessage(creator.getLoginName(), "111", MessageEventType.INVEST_SUCCESS);
+        assertNotNull(model);
     }
 
     private UserModel getFakeUser(String loginName) {

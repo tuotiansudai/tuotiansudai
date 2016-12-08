@@ -4,8 +4,10 @@ import java.util.stream.Stream;
 
 public enum MessageTopic {
     InvestSuccess("InvestSuccess",
-            MessageQueue.InvestSuccess_ActivityReward,
-            MessageQueue.InvestSuccess_CompletePointTask);
+                  MessageQueue.InvestSuccess_CompletePointTask,
+                  MessageQueue.InvestSuccess_MembershipUpdate,
+                  MessageQueue.InvestSuccess_SendJpushMessage,
+                  MessageQueue.InvestSuccess_ActivityReward);
 
     final String topicName;
     final MessageQueue[] queues;
