@@ -61,7 +61,7 @@ public class TransferApplicationDetailResponseDataDto extends BaseResponseDataDt
     private String transferStatus;
 
     @ApiModelProperty(value = "截止倒计时", example = "100")
-    private Long countdown;
+    private String countdown;
 
     private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -201,11 +201,11 @@ public class TransferApplicationDetailResponseDataDto extends BaseResponseDataDt
         this.leftDays = leftDays;
     }
 
-    public Long getCountdown() {
+    public String getCountdown() {
         return countdown;
     }
 
-    public void setCountdown(Long countdown) {
+    public void setCountdown(String countdown) {
         this.countdown = countdown;
     }
 
@@ -227,6 +227,6 @@ public class TransferApplicationDetailResponseDataDto extends BaseResponseDataDt
         this.expecedInterest = transferApplicationDetailDto.getExpecedInterest();
         this.deadline = sdf.format(transferApplicationDetailDto.getDeadLine());
         this.transferStatus = transferApplicationDetailDto.getTransferStatus().name();
-        this.countdown = transferApplicationDetailDto.getCountdown();
+        this.countdown = String.valueOf(transferApplicationDetailDto.getCountdown());
     }
 }

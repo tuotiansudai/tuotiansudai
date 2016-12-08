@@ -13,6 +13,7 @@ import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.RandomUtils;
 import org.apache.commons.collections4.CollectionUtils;
@@ -74,6 +75,9 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
     @Autowired
     private RandomUtils randomUtils;
 
+    @Autowired
+    private InvestService investService;
+
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
 
@@ -114,6 +118,10 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
         dataDto.setDuration(loanModel.getDuration());
         String repayTypeName = loanModel.getType().getRepayType();
         dataDto.setRepayTypeName(repayTypeName);
+        dataDto.setNonTransferable(loanDetailsModelActivity.getNonTransferable());
+
+        long expectedInterest = investService.estimateInvestIncome(loanModel.getId(), loginName, MobileAppLoanListV2ServiceImpl.DEFAULT_INVEST_AMOUNT);
+        dataDto.setInterestPerTenThousands(String.valueOf(expectedInterest));
 
         String interestPointName = loanModel.getType().getInterestPointName();
         dataDto.setInterestPointName(interestPointName);

@@ -55,7 +55,7 @@ public class MobileAppLoanListV2ServiceImpl implements MobileAppLoanListV2Servic
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
 
-    private long defaultInvestAmount = 1000000;
+    public static long DEFAULT_INVEST_AMOUNT = 1000000;
 
     @Override
     public BaseResponseDto<LoanListResponseDataDto> generateIndexLoan(String loginName) {
@@ -146,7 +146,7 @@ public class MobileAppLoanListV2ServiceImpl implements MobileAppLoanListV2Servic
             }
             loanResponseDataDto.setInvestFeeRate(String.valueOf(investFeeRate));
 
-            long expectedInterest = investService.estimateInvestIncome(loan.getId(), loginName, defaultInvestAmount);
+            long expectedInterest = investService.estimateInvestIncome(loan.getId(), loginName, DEFAULT_INVEST_AMOUNT);
             loanResponseDataDto.setInterestPerTenThousands(String.valueOf(expectedInterest));
             loanDtoList.add(loanResponseDataDto);
         }
