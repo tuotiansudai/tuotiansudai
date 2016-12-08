@@ -51,6 +51,7 @@ public class UserMessageServiceTest {
                 MessageStatus.APPROVED, new Date(), creator.getLoginName());
 
         webSiteMessageModel.setReadCount(10);
+        webSiteMessageModel.setActivatedTime(new Date());
 
         messageMapper.create(webSiteMessageModel);
 
