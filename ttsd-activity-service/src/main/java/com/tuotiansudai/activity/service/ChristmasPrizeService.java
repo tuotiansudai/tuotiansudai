@@ -101,7 +101,9 @@ public class ChristmasPrizeService {
                 lotteryTime++;
             }
 
-            if(investMapper.sumInvestAmountByLoginNameInvestTimeProductType(userModel.getLoginName(), activityChristmasPrizeStartTime, activityChristmasEndTime, null) > 0){
+            investMapper.sumSuccessInvestCountByLoginName(userModel.getLoginName());
+
+            if(this.isFinishInvest(userModel.getLoginName())){
                 lotteryTime++;
             }
 
@@ -191,6 +193,8 @@ public class ChristmasPrizeService {
     }
 
     public boolean isFinishInvest(String loginName){
-        return investMapper.sumInvestAmountByLoginNameInvestTimeProductType(loginName, activityChristmasStartTime, activityChristmasEndTime, null)  > 0 ? true : false;
+        boolean beforeIsInvest = investMapper.sumInvestAmountByLoginNameInvestTimeProductType(loginName, new DateTime().minusDays(720).toDate(), activityChristmasStartTime, null) > 0;
+        boolean currentIsInvest = investMapper.sumInvestAmountByLoginNameInvestTimeProductType(loginName, activityChristmasStartTime, activityChristmasEndTime, null)  > 0 ;
+        return !beforeIsInvest && currentIsInvest;
     }
 }

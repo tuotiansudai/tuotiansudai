@@ -185,7 +185,10 @@ public class ActivityConsoleUserLotteryService {
             lotteryTime ++;
         }
 
-        if(investMapper.sumInvestAmountByLoginNameInvestTimeProductType(userModel.getLoginName(), startTime, endTime, null) > 0){
+        boolean beforeIsInvest = investMapper.sumInvestAmountByLoginNameInvestTimeProductType(userModel.getLoginName(), new DateTime().minusDays(720).toDate(), activityChristmasStartTime, null) > 0;
+        boolean currentIsInvest = investMapper.sumInvestAmountByLoginNameInvestTimeProductType(userModel.getLoginName(), activityChristmasStartTime, activityChristmasEndTime, null)  > 0 ;
+
+        if(!beforeIsInvest && currentIsInvest){
             lotteryTime++;
         }
 
