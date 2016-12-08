@@ -217,7 +217,7 @@
             <div class="title-tip">
                 <img src="${staticServer}/activity/images/today-headlines/attest-title.png" width="80%">
             </div>
-            <form class="attest-form" id="attestForm" action="/register/accountNoRedirect" method="post" autocomplete="off" novalidate="novalidate">
+            <form class="attest-form" id="attestForm" action="/activity/headlines-today/account" method="post" autocomplete="off" novalidate="novalidate">
                 <ul class="register-list mt-b">
                     <li>
                         <i class="icon-user"></i>

@@ -138,40 +138,6 @@ public class RegisterUserController {
         return new ModelAndView(url);
     }
 
-    @RequestMapping(value = "/noRedirect", method = RequestMethod.POST)
-    @ResponseBody
-    public  BaseDto<BaseDataDto> registerUserNoRedirect(@Valid @ModelAttribute RegisterUserDto registerUserDto, RedirectAttributes redirectAttributes, HttpServletRequest request) {
-        BaseDataDto dataDto = new BaseDataDto();
-        boolean isRegisterSuccess = false;
-        try {
-            if (request.getSession().getAttribute("channel") != null) {
-                registerUserDto.setChannel(String.valueOf(request.getSession().getAttribute("channel")));
-            }
-            logger.info(MessageFormat.format("[Register User {0}] controller starting...", registerUserDto.getMobile()));
-            isRegisterSuccess = this.userService.registerUser(registerUserDto);
-            logger.info(MessageFormat.format("[Register User {0}] controller invoked service ({0})", registerUserDto.getMobile(), String.valueOf(isRegisterSuccess)));
-        } catch (ReferrerRelationException e) {
-            logger.error(e.getLocalizedMessage(), e);
-        }
-
-        if (!isRegisterSuccess) {
-            redirectAttributes.addFlashAttribute("originalFormData", registerUserDto);
-            redirectAttributes.addFlashAttribute("success", false);
-        }
-
-        if (isRegisterSuccess) {
-            logger.info(MessageFormat.format("[Register User {0}] authenticate starting...", registerUserDto.getMobile()));
-            myAuthenticationUtil.createAuthentication(registerUserDto.getMobile(), Source.WEB);
-            dataDto.setStatus(true);
-            logger.info(MessageFormat.format("[Register User {0}] authenticate completed", registerUserDto.getMobile()));
-        }
-
-        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
-        baseDto.setData(dataDto);
-
-        return baseDto;
-    }
-
     @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/is-exist", method = RequestMethod.GET)
     @ResponseBody
     public BaseDto<BaseDataDto> mobileIsExist(@PathVariable String mobile) {

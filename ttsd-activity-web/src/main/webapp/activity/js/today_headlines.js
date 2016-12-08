@@ -337,7 +337,7 @@ require(['jquery', 'layerWrapper', 'template', 'commonFun', 'jquery.validate', '
             },
             submitHandler: function(form) {
                 $.ajax({
-                    url: '/register/user/noRedirect',
+                    url: '/activity/headlines-today/register',
                     data: $(form).serialize(),
                     type: 'POST',
                     dataType: 'json',
@@ -455,6 +455,10 @@ require(['jquery', 'layerWrapper', 'template', 'commonFun', 'jquery.validate', '
             submitHandler: function(form) {
                 $loginForm.ajaxSubmit({
                     beforeSubmit: function (arr, $form, options) {
+                        console.log(arr);
+                        console.log($form);
+                        console.log(options);
+
                         $loginForm.find('.register-user').prop('disabled', true);
                     },
                     success: function (data) {
@@ -541,7 +545,7 @@ require(['jquery', 'layerWrapper', 'template', 'commonFun', 'jquery.validate', '
                 identityNumber: {
                     required: '请输入身份证号',
                     identityCheckValid: '您的身份证号码不正确',
-                    identityCardAge: '年龄未满18周岁',
+                    identityCardAge: '年龄未满18sssss周岁',
                     isExist: "身份证已存在"
                 }
             }
