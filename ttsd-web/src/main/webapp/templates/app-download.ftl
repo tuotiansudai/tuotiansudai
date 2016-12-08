@@ -2,17 +2,78 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <title>拓天速贷APP下载</title>
-    <script src="${staticServer}${jsPath}${js.app_download}" type="text/javascript" charset="utf-8"></script>
-</head>
+    <title>下载拓天速贷</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <link type="text/css" rel="stylesheet" href="${staticServer}${cssPath}${css.app_download}">
 
-<body onload="jump()">
-<div id="wxPic" style="display:none">
-    <div style="position: fixed;width:100%;height:100%;top:0;left:0;background:rgba(0,0,0,.8);text-align: right;">
-        <img style="width: 90%;margin-right:5%" src="${staticServer}/images/sign/actor/wxDownload-new.png"/>
+</head>
+<body>
+<div class="wechat-android " id="wechatAndroid" style="display: none">
+</div>
+
+<div class="normal-frame-out" id="normalFrame" style="display: none">
+    <div class="column-box download-header clearfix">
+        <img src="${staticServer}/images/app-download/logo.jpg">
+    <a href="javascript:void(0)" class="btn-download" id="btnDownload">立即下载</a>
+    </div>
+
+    <div class="column-box bond-box clearfix">
+        <img src="${staticServer}/images/app-download/col1.jpg">
+        <div class="top-decorate"></div>
+        <div class="column-text">
+            <b>债权上线·早知道</b>
+            <p>最新热门标的实时提醒<br/>
+                信息快人一步，收益抢先到手</p>
+            <i class="icon-clock">开标提醒</i>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+
+    <div class="column-box fund-box">
+        <img src="${staticServer}/images/app-download/col2.jpg">
+        <div class="column-text">
+            <b>资金流转·不站岗</b>
+            <p>精心打磨回款日历<br/>
+                每一笔投资尽在掌握，收益数据更直观</p>
+            <i class="icon-calendar">回款日历</i>
+        </div>
+    </div>
+
+    <div class="column-box hand-invest">
+        <img src="${staticServer}/images/app-download/col3.jpg">
+        <div class="column-text">
+            <b>随时随地·掌上投</b>
+            <p>碎片时间做投资<br/>
+                随时随地能玩赚，闲钱不停滞</p>
+            <i class="icon-air">便捷投资</i>
+        </div>
+    </div>
+
+    <div class="column-box safety-account-box clearfix">
+        <img src="${staticServer}/images/app-download/col4.jpg">
+        <div class="column-text">
+            <b>多重保障·更安全</b>
+            <p>数据采用256位加密技术<br/>
+                多重密码保护，快捷支付也安全</p>
+            <i class="icon-lock">账户安全</i>
+            <i class="icon-account">数据与信息账户</i>
+        </div>
+    </div>
+
+    <div class="column-box point-box clearfix">
+        <img src="${staticServer}/images/app-download/col5.jpg">
+        <div class="column-text">
+            <b>一键签到·攒积分</b>
+            <p>不再错过每次签到<br/>
+                每日积分翻倍涨，海量商品随心兑</p>
+            <i class="icon-point">积分商城</i>
+            <i class="icon-hand">一键签到</i>
+        </div>
     </div>
 </div>
 
 <#include "pageLayout/statistic.ftl" />
+<script type="text/javascript" src="${staticServer}${jsPath}${js.global_page}"></script>
+<script type="text/javascript" src="${staticServer}${jsPath}${js.app_download}"></script>
 </body>
 </html>

@@ -10,6 +10,7 @@ public enum MessageQueue {
     UserRegistered_CompletePointTask("UserRegistered-CompletePointTask"),
     AccountRegistered_CompletePointTask("AccountRegistered-CompletePointTask"),
     InvestSuccess_CompletePointTask("InvestSuccess-CompletePointTask"),
+    InvestSuccess_CouponUpdate("InvestSuccess-CouponUpdate"),
     InvestSuccess_MembershipUpdate("InvestSuccess-MembershipUpdate"),
     InvestSuccess_SendJpushMessage("InvestSuccess-SendJpushMessage"),
     RechargeSuccess_CompletePointTask("RechargeSuccess-CompletePointTask"),
