@@ -7,6 +7,7 @@ public class UserMessageModel implements Serializable {
     private long id;
     private long messageId;
     private String loginName;
+    private String businessId;
     private String title;
     private String appTitle;
     private String content;
@@ -48,6 +49,14 @@ public class UserMessageModel implements Serializable {
 
     public void setLoginName(String loginName) {
         this.loginName = loginName;
+    }
+
+    public String getBusinessId() {
+        return businessId;
+    }
+
+    public void setBusinessId(String businessId) {
+        this.businessId = businessId;
     }
 
     public String getTitle() {
