@@ -91,7 +91,7 @@ public class ChristmasPrizeController {
             return steps;
         }
         steps.set(1, 1);
-        if (christmasPrizeService.isFinishInvest(loginName)) {
+        if (christmasPrizeService.isShowFirstInvest(loginName)) {
             steps.set(2, 1);
         }
         return steps;

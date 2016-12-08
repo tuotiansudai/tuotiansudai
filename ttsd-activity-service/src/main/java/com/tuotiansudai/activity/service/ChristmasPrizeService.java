@@ -197,4 +197,8 @@ public class ChristmasPrizeService {
         boolean currentIsInvest = investMapper.sumInvestAmountByLoginNameInvestTimeProductType(loginName, activityChristmasStartTime, activityChristmasEndTime, null)  > 0 ;
         return !beforeIsInvest && currentIsInvest;
     }
+
+    public boolean isShowFirstInvest(String loginName){
+       return investMapper.sumInvestAmountByLoginNameInvestTimeProductType(loginName, new DateTime().minusDays(720).toDate(), activityChristmasEndTime, null) > 0;
+    }
 }
