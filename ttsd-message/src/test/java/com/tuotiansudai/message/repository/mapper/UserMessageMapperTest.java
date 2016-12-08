@@ -45,10 +45,12 @@ public class UserMessageMapperTest {
                 Lists.newArrayList(MessageChannel.WEBSITE),
                 MessageStatus.TO_APPROVE, new Date(), creator.getLoginName());
         messageModel.setEventType(MessageEventType.INVEST_SUCCESS);
+        messageModel.setActivatedTime(new Date());
         messageMapper.create(messageModel);
 
         UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), creator.getLoginName(), messageModel.getTitle(), messageModel.getTitle(), messageModel.getTemplate(), messageModel.getActivatedTime());
         userMessageModel.setBusinessId("111");
+        userMessageModel.setCreatedTime(messageModel.getActivatedTime());
         userMessageMapper.create(userMessageModel);
 
         List<UserMessageModel> userMessageModels = userMessageMapper.findMessagesByLoginName(creator.getLoginName(), null,null, null);
@@ -87,6 +89,7 @@ public class UserMessageMapperTest {
                 Lists.newArrayList(MessageChannel.WEBSITE),
                 MessageStatus.TO_APPROVE, new Date(), userModel.getLoginName());
         messageModel.setEventType(MessageEventType.LOAN_OUT_SUCCESS);
+        messageModel.setActivatedTime(new Date());
         messageMapper.create(messageModel);
 
         long l = userMessageMapper.countMessagesByLoginNameAndMessageType(userModel.getLoginName(), messageModel.getId(), messageModel.getTitle());
