@@ -9,7 +9,9 @@ import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.transfer.dto.TransferApplicationDto;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
+import com.tuotiansudai.transfer.repository.mapper.TransferRuleMapper;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
+import com.tuotiansudai.transfer.repository.model.TransferRuleModel;
 import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -60,6 +62,9 @@ public class InvestTransferServiceTest {
 
     @Autowired
     private LoanRepayMapper loanRepayMapper;
+
+    @Autowired
+    private TransferRuleMapper transferRuleMapper;
 
     public static String redisTransferApplicationNumber = "web:{0}:transferApplicationNumber";
 
@@ -381,5 +386,89 @@ public class InvestTransferServiceTest {
         assertEquals(new DateTime("2016-01-02").toDate(), basePaginationDataDto.getRecords().get(0).getTransferTime());
         assertEquals(new DateTime("2016-01-07").toDate(), basePaginationDataDto.getRecords().get(0).getDeadLine());
         assertEquals(TransferStatus.TRANSFERRING.getDescription(), basePaginationDataDto.getRecords().get(0).getTransferStatus());
+    }
+
+    @Test
+    public void shouldValidTransferIsDayLimitIsOk(){
+        TransferRuleModel transferRuleModel = new TransferRuleModel();
+        transferRuleModel.setId(1);
+        transferRuleModel.setDaysLimit(1);
+        transferRuleMapper.update(transferRuleModel);
+
+        long loanId = idGenerator.generate();
+        createUserByUserId("transferrerTestuser");
+        createUserByUserId("transfereeTestUser");
+        createLoanByUserId("transferrerTestUser", loanId);
+        createLoanRepayModel(loanId);
+
+        assertTrue(!investTransferService.validTransferIsDayLimit(loanId));
+    }
+
+    @Test
+    public void shouldValidTransferIsCanceledIsOk(){
+        String loginName = "transferrerTestuser";
+        long loanId = idGenerator.generate();
+        createUserByUserId(loginName);
+        createUserByUserId("transfereeTestUser");
+        LoanModel loanModel = createLoanByUserId("transferrerTestUser", loanId);
+
+        InvestModel transferrerInvestModel = new InvestModel(idGenerator.generate(), loanId, null, 1, loginName, new Date(), Source.WEB, null, 0.1);
+        transferrerInvestModel.setStatus(InvestStatus.SUCCESS);
+        investMapper.create(transferrerInvestModel);
+
+        InvestModel transfereeInvestModel = new InvestModel(idGenerator.generate(), loanId, null, 1, loginName, new Date(), Source.WEB, null, 0.1);
+        transferrerInvestModel.setStatus(InvestStatus.SUCCESS);
+        investMapper.create(transfereeInvestModel);
+
+        TransferApplicationModel transferApplicationModel = new TransferApplicationModel();
+        transferApplicationModel.setLoginName(loginName);
+        transferApplicationModel.setName("name");
+        transferApplicationModel.setTransferAmount(1000l);
+        transferApplicationModel.setInvestAmount(1200l);
+        transferApplicationModel.setTransferTime(new DateTime("2016-01-02").toDate());
+        transferApplicationModel.setStatus(TransferStatus.TRANSFERRING);
+        transferApplicationModel.setLoanId(loanModel.getId());
+        transferApplicationModel.setTransferInvestId(transferrerInvestModel.getId());
+        transferApplicationModel.setInvestId(transfereeInvestModel.getId());
+        transferApplicationModel.setDeadline(new Date());
+        transferApplicationModel.setApplicationTime(new Date());
+        transferApplicationMapper.create(transferApplicationModel);
+
+        assertTrue(!investTransferService.validTransferIsCanceled(transferrerInvestModel.getId()));
+
+        transferApplicationModel.setStatus(TransferStatus.CANCEL);
+        transferApplicationModel.setApplicationTime(DateTime.now().plusDays(-1).toDate());
+        transferApplicationMapper.update(transferApplicationModel);
+        assertTrue(investTransferService.validTransferIsCanceled(transferrerInvestModel.getId()));
+    }
+
+    public List<LoanRepayModel> createLoanRepayModel(long loanId){
+        List<LoanRepayModel> loanRepayModels = Lists.newArrayList();
+        LoanRepayModel loanRepayModel = new LoanRepayModel();
+        loanRepayModel.setId(idGenerator.generate());
+        loanRepayModel.setDefaultInterest(0);
+        loanRepayModel.setActualInterest(0);
+        loanRepayModel.setPeriod(1);
+        loanRepayModel.setStatus(RepayStatus.REPAYING);
+        loanRepayModel.setLoanId(loanId);
+        loanRepayModel.setRepayDate(DateTime.now().plusDays(-3).toDate());
+        loanRepayModel.setCorpus(0);
+        loanRepayModel.setExpectedInterest(0);
+        loanRepayModels.add(loanRepayModel);
+
+        LoanRepayModel loanRepayModel2 = new LoanRepayModel();
+        loanRepayModel2.setId(idGenerator.generate());
+        loanRepayModel2.setDefaultInterest(0);
+        loanRepayModel2.setActualInterest(0);
+        loanRepayModel2.setPeriod(2);
+        loanRepayModel2.setStatus(RepayStatus.REPAYING);
+        loanRepayModel2.setLoanId(loanId);
+        loanRepayModel2.setRepayDate(DateTime.now().plusDays(-3).toDate());
+        loanRepayModel2.setCorpus(0);
+        loanRepayModel2.setExpectedInterest(0);
+        loanRepayModels.add(loanRepayModel2);
+
+        loanRepayMapper.create(loanRepayModels);
+        return loanRepayModels;
     }
 }

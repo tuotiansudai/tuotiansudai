@@ -60,6 +60,9 @@ public class TransferApplicationDetailResponseDataDto extends BaseResponseDataDt
     @ApiModelProperty(value = "转让状态", example = "SUCCESS")
     private String transferStatus;
 
+    @ApiModelProperty(value = "截止倒计时", example = "100")
+    private Long countdown;
+
     private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     public String getTransferApplicationId() {
@@ -198,6 +201,14 @@ public class TransferApplicationDetailResponseDataDto extends BaseResponseDataDt
         this.leftDays = leftDays;
     }
 
+    public Long getCountdown() {
+        return countdown;
+    }
+
+    public void setCountdown(Long countdown) {
+        this.countdown = countdown;
+    }
+
     public TransferApplicationDetailResponseDataDto(TransferApplicationDetailDto transferApplicationDetailDto) {
         DecimalFormat decimalFormat = new DecimalFormat("######0.##");
         this.transferApplicationId = String.valueOf(transferApplicationDetailDto.getId());
@@ -207,7 +218,7 @@ public class TransferApplicationDetailResponseDataDto extends BaseResponseDataDt
         this.productType = transferApplicationDetailDto.getProductType().name();
         this.productTypeName = transferApplicationDetailDto.getProductType().getName();
         this.loanName = transferApplicationDetailDto.getLoanName();
-        this.loanType = transferApplicationDetailDto.getLoanType() == null?"":transferApplicationDetailDto.getLoanType();
+        this.loanType = transferApplicationDetailDto.getLoanType() == null ? "" : transferApplicationDetailDto.getLoanType();
         this.investAmount = transferApplicationDetailDto.getInvestAmount();
         this.transferAmount = transferApplicationDetailDto.getTransferAmount();
         this.baseRate = decimalFormat.format(transferApplicationDetailDto.getBaseRate());
@@ -216,5 +227,6 @@ public class TransferApplicationDetailResponseDataDto extends BaseResponseDataDt
         this.expecedInterest = transferApplicationDetailDto.getExpecedInterest();
         this.deadline = sdf.format(transferApplicationDetailDto.getDeadLine());
         this.transferStatus = transferApplicationDetailDto.getTransferStatus().name();
+        this.countdown = transferApplicationDetailDto.getCountdown();
     }
 }

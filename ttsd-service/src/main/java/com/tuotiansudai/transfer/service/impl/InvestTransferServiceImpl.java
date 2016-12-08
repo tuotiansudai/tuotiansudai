@@ -220,7 +220,6 @@ public class InvestTransferServiceImpl implements InvestTransferService {
 
     @Override
     public boolean isTransferable(long investId) {
-        DateTime current = new DateTime().withTimeAtStartOfDay();
         InvestModel investModel = investMapper.findById(investId);
         if (investModel == null || investModel.getStatus() != InvestStatus.SUCCESS) {
             logger.debug(MessageFormat.format("{0} is not exist or invest failed", investId));
@@ -235,17 +234,10 @@ public class InvestTransferServiceImpl implements InvestTransferService {
         if(loanDetailsModel != null && loanDetailsModel.getNonTransferable()){
             return false;
         }
-        List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findByTransferInvestId(investId, Lists.newArrayList(TransferStatus.SUCCESS, TransferStatus.TRANSFERRING, TransferStatus.CANCEL));
-        for (TransferApplicationModel transferApplicationModelTemp : transferApplicationModels) {
-            if (transferApplicationModelTemp.getStatus() != TransferStatus.CANCEL) {
-                logger.debug(MessageFormat.format("{0} is transferred", investModel.getLoanId()));
-                return false;
-            }
-            DateTime applyTransferTime = new DateTime(transferApplicationModelTemp.getApplicationTime()).withTimeAtStartOfDay();
-            if (transferApplicationModelTemp.getStatus() == TransferStatus.CANCEL && current.compareTo(applyTransferTime) == 0) {
-                return false;
-            }
 
+        if(!validTransferIsCanceled(investId)){
+            logger.debug(MessageFormat.format("{0} is transferred", investModel.getLoanId()));
+            return false;
         }
 
         LoanRepayModel loanRepayModel = loanRepayMapper.findCurrentLoanRepayByLoanId(investModel.getLoanId());
@@ -253,6 +245,7 @@ public class InvestTransferServiceImpl implements InvestTransferService {
             logger.debug(MessageFormat.format("{0} is completed ", investModel.getLoanId()));
             return false;
         }
+
         TransferRuleModel transferRuleModel = transferRuleMapper.find();
         if (!transferRuleModel.isMultipleTransferEnabled()) {
             TransferApplicationModel transfereeApplicationModel = transferApplicationMapper.findByInvestId(investId);
@@ -263,16 +256,40 @@ public class InvestTransferServiceImpl implements InvestTransferService {
 
         }
 
-        int periodDuration = Days.daysBetween(current.withTimeAtStartOfDay(), new DateTime(loanRepayModel.getRepayDate()).withTimeAtStartOfDay()).getDays();
-
-        if (periodDuration <= transferRuleModel.getDaysLimit()) {
+        if(!validTransferIsDayLimit(investModel.getLoanId())){
             logger.debug(MessageFormat.format("{0} right away repay ", investId));
             return false;
         }
 
         return true;
+    }
 
+    @Override
+    public boolean validTransferIsDayLimit(long loanId){
+        TransferRuleModel transferRuleModel = transferRuleMapper.find();
+        DateTime current = new DateTime().withTimeAtStartOfDay();
+        int periodDuration = Days.daysBetween(current.withTimeAtStartOfDay(), new DateTime(loanRepayMapper.findCurrentLoanRepayByLoanId(loanId).getRepayDate()).withTimeAtStartOfDay()).getDays();
 
+        if (periodDuration <= transferRuleModel.getDaysLimit()) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean validTransferIsCanceled(long investId){
+        DateTime current = new DateTime().withTimeAtStartOfDay();
+        List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findByTransferInvestId(investId, Lists.newArrayList(TransferStatus.SUCCESS, TransferStatus.TRANSFERRING, TransferStatus.CANCEL));
+        for (TransferApplicationModel transferApplicationModelTemp : transferApplicationModels) {
+            if (transferApplicationModelTemp.getStatus() != TransferStatus.CANCEL) {
+                return false;
+            }
+            DateTime applyTransferTime = new DateTime(transferApplicationModelTemp.getApplicationTime()).withTimeAtStartOfDay();
+            if (transferApplicationModelTemp.getStatus() == TransferStatus.CANCEL && current.compareTo(applyTransferTime) == 0) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
