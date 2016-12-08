@@ -1,6 +1,6 @@
 package com.tuotiansudai.mq.consumer.loan;
 
-import com.tuotiansudai.coupon.service.CouponInvestService;
+import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
 import org.slf4j.Logger;
@@ -15,7 +15,7 @@ public class InvestSuccessCouponUpdateMessageConsumer implements MessageConsumer
     private static Logger logger = LoggerFactory.getLogger(InvestSuccessCouponUpdateMessageConsumer.class);
 
     @Autowired
-    private CouponInvestService couponInvestService;
+    private UserCouponService userCouponService;
 
     @Override
     public MessageQueue queue() {
@@ -28,7 +28,7 @@ public class InvestSuccessCouponUpdateMessageConsumer implements MessageConsumer
         logger.info("[MQ] receive message: {}: {}.", this.queue(), message);
         if (!StringUtils.isEmpty(message)) {
             logger.info("[MQ] ready to consume message: Invest Success Coupon Update. investId:{}", message);
-            couponInvestService.updateCouponAndAssign(Long.parseLong(message));
+            userCouponService.updateCouponAndAssign(Long.parseLong(message));
             logger.info("[MQ] consume message success.");
         }
     }
