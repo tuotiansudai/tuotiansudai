@@ -602,7 +602,7 @@ body {
       }
       .gift-info-list {
         width: 95%;
-        height: 367px;
+        height: 350px;
         .hat {
           transform: scale(0.5);
           -ms-transform:scale(0.5);
@@ -625,9 +625,12 @@ body {
         }
 
         .record-list-box {
-          width: 61%;
+          width: 95%;
+          height: 100%;
+          overflow: hidden;
           .record-list {
             font-size: 12px;
+            overflow: hidden;
           }
           .menu-switch {
             font-size: 13px;
