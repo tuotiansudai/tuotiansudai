@@ -54,27 +54,25 @@ var web_globalFun = (function() {
         this.equipment=function() {
             var ua = navigator.userAgent.toLowerCase(),
                 which={};
-            var is_weixin=ua.match(/MicroMessenger/i) == "micromessenger";
-            if(is_weixin) {
-                which.wechat=true;
-                if(ua.match('android')) {
-                    which.kind='android';
-                }
-                else if(ua.match('iphone') || ua.match('ipad')) {
-                    which.kind='weIos';
-                }
+            var is_weixin=ua.match(/MicroMessenger/i) == "micromessenger"; //是否微信
+            var is_alipay=ua.match(/alipayclient/i) == "alipayclient"; //是否支付宝
+            var is_android=ua.match('android');
+            var is_ios=ua.match('iphone') || ua.match('ipad');
+
+            which.ios=is_ios;
+            which.android=is_android;
+            which.wechat=is_weixin;
+            which.alipay=is_alipay;
+
+            if(is_android) {
+                which.kind='android';
             }
             else {
-                which.wechat=false;
-                if(ua.match('android')) {
-                    which.kind='android';
-                }
-                else if(ua.match('iphone') || ua.match('ipad')) {
-                    which.kind='ios';
-                }
+                which.kind = (is_weixin && is_ios) ? 'weIos' : 'ios';
             }
             return which;
         }
+
         this.categoryCodeUrl= {
             'android': 'https://tuotiansudai.com/app/tuotiansudai.apk',
             'ios': 'http://itunes.apple.com/us/app/id1039233966',

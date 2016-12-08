@@ -1,21 +1,24 @@
 window.onload=function() {
     var equipment=globalFun.equipment();
-    alert(equipment.kind);
-    if(equipment.kind=='android') {
-        alert(equipment.wechat);
-        if(equipment.wechat) {
-            globalFun.removeClass(globalFun.$('#wechatAndroid'),'hide');
+
+    //安卓
+    if(equipment.android) {
+        //安卓机 在支付宝和微信 端都需要指示在浏览器端打开下载，其他的直接下载
+        if (equipment.wechat || equipment.alipay) {
+            document.getElementById('wechatAndroid').style.display='block';
         }
         else {
-            alert('ok'+globalFun.categoryCodeUrl[equipment.kind]);
-            //如果是安卓手机打开页面，不管是浏览器还是支付宝，都直接下载
+            // 在浏览器直接打开页面下载地址
             window.location.href = globalFun.categoryCodeUrl[equipment.kind];
         }
     }
     else {
-        globalFun.removeClass(globalFun.$('#normalFrame'),'hide');
+        //苹果
+        document.getElementById('normalFrame').style.display='block';
         globalFun.$('#btnDownload').onclick=function() {
             window.location.href = globalFun.categoryCodeUrl[equipment.kind];
         }
     }
+
+
 }

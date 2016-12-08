@@ -9,10 +9,10 @@
 
 </head>
 <body>
-<div class="wechat-android hide" id="wechatAndroid">
+<div class="wechat-android " id="wechatAndroid" style="display: none">
 </div>
 
-<div class="normal-frame-out hide" id="normalFrame">
+<div class="normal-frame-out" id="normalFrame" style="display: none">
     <div class="column-box download-header clearfix">
         <img src="${staticServer}/images/app-download/logo.jpg">
     <a href="javascript:void(0)" class="btn-download" id="btnDownload">立即下载</a>
