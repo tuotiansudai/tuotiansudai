@@ -26,17 +26,15 @@ repositories {
 configurations {
     all*.exclude group: "log4j", module: "log4j"
     all*.exclude group: "org.slf4j", module: "slf4j-log4j12"
+    all*.exclude group: "mysql", module: "mysql-connector-java"
 }
 
 dependencies {
-    compile project(':ttsd-config')
-    compile project(':ttsd-point-service')
-    compile project(':ttsd-user-service')
-    compile project(':ttsd-mq-client')
+    compile project(':ttsd-client')
     compile project(':ttsd-worker-monitor-reporter')
     compile "org.springframework.boot:spring-boot-starter"
-    compile "org.mybatis.spring.boot:mybatis-spring-boot-starter:1.1.1"
-    compile "mysql:mysql-connector-java:5.1.39"
+    compile 'org.springframework.boot:spring-boot-starter-redis'
+
 
     testCompile "org.springframework.boot:spring-boot-starter-test"
 }

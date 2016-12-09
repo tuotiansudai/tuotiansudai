@@ -3,6 +3,7 @@ package com.tuotiansudai.scheduler;
 import java.util.ResourceBundle;
 
 public class JobConfig {
+    public static final String workerName;
     public static final String schedulerNames;
     public static final int threadCount;
     public static final int threadPriority;
@@ -13,6 +14,7 @@ public class JobConfig {
 
     static {
         ResourceBundle rb = ResourceBundle.getBundle("job-worker");
+        workerName = rb.getString("worker.name").trim();
         schedulerNames = rb.getString("org.quartz.scheduler.names").trim();
         threadCount = Integer.parseInt(rb.getString("org.quartz.threadPool.threadCount").trim());
         threadPriority = Integer.parseInt(rb.getString("org.quartz.threadPool.threadPriority").trim());
