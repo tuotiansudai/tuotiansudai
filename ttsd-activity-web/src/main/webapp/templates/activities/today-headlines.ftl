@@ -23,7 +23,7 @@
         <div class="lottery-group">
             <ul class="lottery-item" id="lottery">
                 <li class="lottery-unit lottery-unit-0">
-                    <img src="${staticServer}/activity/images/today-headlines/gift-one.png" width="54%" class="gift-img">
+                    <img src="${staticServer}/activity/images/today-headlines/gift-one.png" width="59%" class="gift-img">
                     <img src="${staticServer}/activity/images/today-headlines/gift-default.png" width="50%" class="hover-bg">
                 </li>
                 <li class="lottery-unit lottery-unit-1">

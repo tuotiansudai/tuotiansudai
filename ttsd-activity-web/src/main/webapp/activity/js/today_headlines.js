@@ -131,7 +131,7 @@ require(['jquery', 'layerWrapper', 'template', 'jquery.validate', 'jquery.valida
                             case 'TELEPHONE_FARE_10_YUAN_REF_CARNIVAL': //10元话费
                                 lottery.num = 2;
                                 break;
-                            case 'BAMBOO_BAG': //长嘴狗车内竹炭包
+                            case 'BAMBOO_BAG': //卡通汽车竹炭包
                                 lottery.num = 6;
                                 break;
                             case 'QQ_EMOTICON_PILLOW': //QQ表情枕
