@@ -509,36 +509,9 @@ public class InvestServiceImpl implements InvestService {
         investModel.setStatus(InvestStatus.SUCCESS);
         investMapper.update(investModel);
 
-        this.investAchievementService.awardAchievement(investModel);
-
-        InvestInfo investInfo = new InvestInfo();
-        LoanDetailInfo loanDetailInfo = new LoanDetailInfo();
-
-        investInfo.setInvestId(investModel.getId());
-        investInfo.setLoginName(investModel.getLoginName());
-        investInfo.setAmount(investModel.getAmount());
-        investInfo.setStatus(investModel.getStatus().name());
-        investInfo.setTransferStatus(investModel.getTransferStatus().name());
-
-        LoanDetailsModel loanDetailsModel =  loanDetailsMapper.getByLoanId(investModel.getLoanId());
-        if(loanDetailsModel != null){
-            loanDetailInfo.setActivity(loanDetailsModel.isActivity());
-            loanDetailInfo.setActivityDesc(loanDetailsModel.getActivityDesc());
-        }
-        loanDetailInfo.setLoanId(investModel.getLoanId());
-
-        InvestSuccessMessage investSuccessMessage = new InvestSuccessMessage(investInfo, loanDetailInfo);
-
-        String message;
-        try {
-            message = JsonConverter.writeValueAsString(investSuccessMessage);
-        } catch (JsonProcessingException e) {
-           throw new RuntimeException(e);
-        }
-
-        mqWrapperClient.publishMessage(MessageTopic.InvestSuccess, message);
+        //投资成功后发送消息
+        this.publishInvestSuccessMessage(investModel);
     }
-
 
     /**
      * umpay 超投返款的回调
@@ -591,6 +564,40 @@ public class InvestServiceImpl implements InvestService {
         String respData = callbackRequest.getResponseData();
         return respData;
     }
+
+    private void publishInvestSuccessMessage(InvestModel investModel){
+
+        this.investAchievementService.awardAchievement(investModel);
+
+        InvestInfo investInfo = new InvestInfo();
+        LoanDetailInfo loanDetailInfo = new LoanDetailInfo();
+
+        investInfo.setInvestId(investModel.getId());
+        investInfo.setLoginName(investModel.getLoginName());
+        investInfo.setAmount(investModel.getAmount());
+        investInfo.setStatus(investModel.getStatus().name());
+        investInfo.setTransferStatus(investModel.getTransferStatus().name());
+
+        LoanDetailsModel loanDetailsModel =  loanDetailsMapper.getByLoanId(investModel.getLoanId());
+        if(loanDetailsModel != null){
+            loanDetailInfo.setActivity(loanDetailsModel.isActivity());
+            loanDetailInfo.setActivityDesc(loanDetailsModel.getActivityDesc());
+        }
+        loanDetailInfo.setLoanId(investModel.getLoanId());
+
+        InvestSuccessMessage investSuccessMessage = new InvestSuccessMessage(investInfo, loanDetailInfo);
+
+        String message;
+        try {
+            message = JsonConverter.writeValueAsString(investSuccessMessage);
+            mqWrapperClient.publishMessage(MessageTopic.InvestSuccess, message);
+        } catch (JsonProcessingException e) {
+            // 记录日志，发短信通知管理员
+            fatalLog("[MQ] invest success, but send mq message fail", String.valueOf(investSuccessMessage.getInvestInfo().getInvestId()), investSuccessMessage.getInvestInfo().getAmount(), investSuccessMessage.getInvestInfo().getLoginName(), investModel.getLoanId(), e);
+        }
+
+    }
+
 
     private void checkLoanRaisingComplete(long loanId) {
         // 超投，改标的状态为满标 RECHECK
