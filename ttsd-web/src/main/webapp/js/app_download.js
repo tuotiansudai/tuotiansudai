@@ -1,17 +1,24 @@
-function is_weixin() {
-    var ua = navigator.userAgent.toLowerCase();
-    return ua.match(/MicroMessenger/i) == "micromessenger";
-}
+window.onload=function() {
+    var equipment=globalFun.equipment();
 
-function jump() {
-    var u = navigator.userAgent.toLowerCase();
-    if (!is_weixin()) {
-        if (u.indexOf('android') > -1) {
-            location.href = "https://tuotiansudai.com/app/tuotiansudai.apk";
-        } else if (u.indexOf('iphone') > -1 || u.indexOf('ipad') > -1) {
-            location.href = "http://itunes.apple.com/us/app/id1039233966";
+    //安卓
+    if(equipment.android) {
+        //安卓机 在支付宝和微信 端都需要指示在浏览器端打开下载，其他的直接下载
+        if (equipment.wechat || equipment.alipay) {
+            document.getElementById('wechatAndroid').style.display='block';
         }
-    } else {
-        document.getElementById("wxPic").style.display = "block";
+        else {
+            // 在浏览器直接打开页面下载地址
+            window.location.href = globalFun.categoryCodeUrl[equipment.kind];
+        }
     }
+    else {
+        //苹果
+        document.getElementById('normalFrame').style.display='block';
+        globalFun.$('#btnDownload').onclick=function() {
+            window.location.href = globalFun.categoryCodeUrl[equipment.kind];
+        }
+    }
+
+
 }

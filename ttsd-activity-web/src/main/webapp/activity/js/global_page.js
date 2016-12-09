@@ -34,6 +34,37 @@ function globalFun() {
         }
     }
 
+    this.equipment=function() {
+        var ua = navigator.userAgent.toLowerCase(),
+            which={};
+        var is_weixin=ua.match(/MicroMessenger/i) == "micromessenger";
+        if(is_weixin) {
+            which.wechat=true;
+            if(ua.match('android')) {
+                which.kind='android';
+            }
+            else if(ua.match('iphone') || ua.match('ipad')) {
+                which.kind='weIos';
+            }
+        }
+        else {
+            which.wechat=false;
+            if(ua.match('android')) {
+                which.kind='android';
+            }
+            else if(ua.match('iphone') || ua.match('ipad')) {
+                which.kind='ios';
+            }
+        }
+        return which;
+    }
+
+    this.categoryCodeUrl={
+        'android':'https://tuotiansudai.com/app/tuotiansudai.apk',
+        'ios':'http://itunes.apple.com/us/app/id1039233966',
+        'weIos':'http://a.app.qq.com/o/simple.jsp?pkgname=com.tuotiansudai.tuotianclient'
+    }
+
     //主要用来截取url后的参数
     this.parseURL=function(url) {
         var a =  document.createElement('a');
@@ -149,7 +180,16 @@ globalFun.prototype={
     toExperience:function(e) {
         e.stopPropagation();
         e.preventDefault();
-        location.href = "/app/download";
+        var equipment=this.equipment();
+        if(equipment.wechat && equipment.kind=='android') {
+            // 微信,并且是安卓，跳到页面
+            location.href = "/app/download";
+            return;
+        }
+        else {
+            //非微信
+            location.href =this.categoryCodeUrl[equipment.kind];
+        }
     },
     //显示app扫描码
     showAppCode:function() {

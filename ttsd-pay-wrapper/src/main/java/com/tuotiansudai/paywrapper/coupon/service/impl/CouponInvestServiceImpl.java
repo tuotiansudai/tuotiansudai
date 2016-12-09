@@ -1,19 +1,12 @@
 package com.tuotiansudai.paywrapper.coupon.service.impl;
 
-import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
-import com.tuotiansudai.coupon.repository.model.UserGroup;
-import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.paywrapper.coupon.service.CouponInvestService;
 import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.InvestStatus;
-import com.tuotiansudai.repository.model.LoanModel;
-import com.tuotiansudai.util.InterestCalculator;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,9 +22,6 @@ public class CouponInvestServiceImpl implements CouponInvestService {
     static Logger logger = Logger.getLogger(CouponInvestServiceImpl.class);
 
     @Autowired
-    private LoanMapper loanMapper;
-
-    @Autowired
     private InvestMapper investMapper;
 
     @Autowired
@@ -39,9 +29,6 @@ public class CouponInvestServiceImpl implements CouponInvestService {
 
     @Autowired
     private UserCouponMapper userCouponMapper;
-
-    @Autowired
-    private CouponAssignmentService couponAssignmentService;
 
     @Override
     @Transactional
@@ -81,35 +68,4 @@ public class CouponInvestServiceImpl implements CouponInvestService {
         }
     }
 
-    @Override
-    @Transactional
-    public void investCallback(long investId) {
-        InvestModel investModel = investMapper.findById(investId);
-        LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
-        List<UserCouponModel> userCouponModels = userCouponMapper.findByInvestId(investId);
-
-        for (UserCouponModel model : userCouponModels) {
-            CouponModel couponModel = couponMapper.lockById(model.getCouponId());
-            couponModel.setUsedCount(couponModel.getUsedCount() + 1);
-            couponMapper.updateCoupon(couponModel);
-
-            model.setLoanId(loanModel.getId());
-            model.setInvestId(investId);
-            model.setUsedTime(new Date());
-            model.setStatus(InvestStatus.SUCCESS);
-            long expectedInterest = InterestCalculator.estimateCouponExpectedInterest(investModel.getAmount(), loanModel, couponModel);
-            long expectedFee = InterestCalculator.estimateCouponExpectedFee(loanModel, couponModel, investModel.getAmount(), investModel.getInvestFeeRate());
-            model.setExpectedInterest(expectedInterest);
-            model.setExpectedFee(expectedFee);
-            userCouponMapper.update(model);
-        }
-
-        couponAssignmentService.asyncAssignUserCoupon(investModel.getLoginName(), Lists.newArrayList(UserGroup.ALL_USER,
-                UserGroup.INVESTED_USER,
-                UserGroup.IMPORT_USER,
-                UserGroup.AGENT,
-                UserGroup.CHANNEL,
-                UserGroup.STAFF,
-                UserGroup.STAFF_RECOMMEND_LEVEL_ONE));
-    }
 }
