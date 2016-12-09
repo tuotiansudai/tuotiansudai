@@ -1,0 +1,193 @@
+@mixin range-line($angle) {
+
+background-image:linear-gradient($angle, rgba(254, 236, 0, 0.4) 10%, transparent 15%, transparent 50%, rgba(254, 236, 0, 0.4) 70%, rgba(254, 236, 0, 0.4) 67%, transparent 67%, transparent);
+background-size: 9px 40px;
+}
+
+body {
+  background: #b3003c;
+  overflow-x: hidden;
+  color: #ffee00;
+}
+.main-frame {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.pc-img {
+  background: url("/activity/images/new-year/new-banner.jpg") center top no-repeat;
+  height:463px;
+}
+
+.new-year-frame {
+  .normal-button {
+    background: #ffd91a;
+    font-size: 26px;
+    color: #993706;
+    text-align: center;
+    display: inline-block;
+    padding: 15px 0px;
+    border-radius:25px;
+    line-height: 25px;
+    margin-left: 35px;
+    width: 220px;
+    box-shadow: inset 0px -4px 0px #e06c00,inset 0px 2px 1px #fff42c;
+  }
+  .title-main-col {
+    position: relative;
+    width:100%;
+    margin-top:48px;
+    margin-bottom:48px;
+    overflow: hidden;
+    height:30px;
+    i {
+      width:50%;
+      height:30px;
+      float: left;
+    }
+    .line-left {
+      @include range-line(-75deg);
+     }
+    .line-right {
+      @include range-line(75deg);
+    }
+    em {
+      background: #b3003c;
+      display: inline-block;
+      color: #ffee00;
+      font-size: 30px;
+      text-align: center;
+      padding:0px 30px;
+      position: absolute;
+      left:50%;
+      top: 0;
+      transform: translateX(-50%);
+      line-height: 29px;
+    }
+  }
+
+  .box-normal {
+    background: #c23054;
+    border-radius:10px;
+    padding: 20px;
+
+    .activity-note {
+      color: #ffee00;
+      padding-top:15px;
+    }
+  }
+
+  .draw-area-box {
+    width: 80%;
+    margin: 30px auto;
+    text-align: center;
+    position: relative;
+    min-height:780px;
+
+    .draw {
+      position: absolute;
+      width:100%;
+      top:0;
+      left:0;
+    }
+    .gold-egg {
+      position: absolute;
+      bottom: 177px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
+
+  .activity-rule-box {
+    background: #fff2b2;
+    border-radius:15px;
+    margin-top:25px;
+    padding: 22px;
+    .text-box {
+      width:50%;
+      float: left;
+      color: #993706;
+      font-size: 16px;
+      span {
+        display: inline-block;
+        padding-right:20px;
+        border-right: 1px dashed #9f4c00;
+      }
+    }
+    .gift-info-box {
+      width:50%;
+      float: left;
+      text-align: center;
+      .gift-record {
+        width:80%;
+        height:35px;
+        line-height: 35px;
+        text-align: center;
+        border:1px solid #9f4c00;
+        border-radius: 15px;
+        color: #9f4c00;
+        margin: 0 auto;
+        li {
+          width:50%;
+          float: left;
+          font-size: 18px;
+          &.active {
+            background: #9f4c00;
+            color: #fff;
+            border-radius: 15px;
+          }
+        }
+      }
+      .record-list {
+        font-size: 14px;
+        width: 90%;
+        margin-left: 10%;
+        text-align: left;
+        padding-top: 8px;
+        height: 275px;
+        overflow: hidden;
+        .record-model li {
+          line-height: 30px;
+          color: #9f4c00;
+        }
+      }
+
+    }
+  }
+
+  .magic-lamp {
+    position: relative;
+    text-align: center;
+    i {
+      position: absolute;
+      top: -15px;
+      width: 145px;
+      height: 97px;
+      background: url("/activity/images/new-year/deng.png") left top no-repeat;
+      &.lamp-left {
+        left: 0px;
+      }
+      &.lamp-right {
+        right: 0px;
+        transform: rotateY(180deg);
+      }
+    }
+    .slide-text {
+      width:80%;
+      margin:20px auto;
+      height:60px;
+      background: url("/activity/images/new-year/base-bg-text.png") center top no-repeat;
+      overflow: hidden;
+      color: #9f4c00;
+      font-size: 22px;
+      line-height: 40px;
+      span {
+        display: inline-block;
+        padding-top:5px;
+      }
+
+    }
+
+  }
+
+}
