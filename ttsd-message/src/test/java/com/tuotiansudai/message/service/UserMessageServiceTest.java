@@ -51,13 +51,14 @@ public class UserMessageServiceTest {
                 MessageStatus.APPROVED, new Date(), creator.getLoginName());
 
         webSiteMessageModel.setReadCount(10);
+        webSiteMessageModel.setActivatedTime(new Date());
 
         messageMapper.create(webSiteMessageModel);
 
         UserModel userTest = getFakeUserTest("userTest");
         userMapper.create(userTest);
         UserMessageModel userMessageModel = new UserMessageModel(webSiteMessageModel.getId(),
-                userTest.getLoginName(), webSiteMessageModel.getTitle(), webSiteMessageModel.getTitle(), webSiteMessageModel.getTemplate());
+                userTest.getLoginName(), webSiteMessageModel.getTitle(), webSiteMessageModel.getTitle(), webSiteMessageModel.getTemplate(), webSiteMessageModel.getActivatedTime());
 
         userMessageMapper.create(userMessageModel);
 
