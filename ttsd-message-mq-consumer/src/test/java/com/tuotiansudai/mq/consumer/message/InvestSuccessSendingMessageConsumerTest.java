@@ -1,7 +1,12 @@
 package com.tuotiansudai.mq.consumer.message;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.tuotiansudai.message.InvestInfo;
+import com.tuotiansudai.message.InvestSuccessMessage;
+import com.tuotiansudai.message.LoanDetailInfo;
 import com.tuotiansudai.message.util.UserMessageEventGenerator;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
+import com.tuotiansudai.util.JsonConverter;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -31,14 +36,34 @@ public class InvestSuccessSendingMessageConsumerTest {
     @Transactional
     public void shouldConsume() {
 
-        long investId = 1111;
+        InvestSuccessMessage investSuccessMessage = buildMockedInvestSuccessMessage();
 
         final ArgumentCaptor<Long> captor = ArgumentCaptor.forClass(Long.class);
 
         doNothing().when(userMessageEventGenerator).generateInvestSuccessEvent(captor.capture());
 
-        consumer.consume(String.valueOf(investId));
+        try {
+            consumer.consume(JsonConverter.writeValueAsString(investSuccessMessage));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
 
         assertEquals(1111, captor.getValue().longValue());
     }
+
+
+    private InvestSuccessMessage buildMockedInvestSuccessMessage() {
+        InvestInfo investInfo = new InvestInfo();
+        LoanDetailInfo loanDetailInfo = new LoanDetailInfo();
+
+        investInfo.setInvestId(1111);
+        investInfo.setLoginName("loginName");
+        investInfo.setAmount(1000L);
+        investInfo.setStatus("SUCCESS");
+        investInfo.setTransferStatus("TRANSFERABLE");
+
+        InvestSuccessMessage investSuccessMessage = new InvestSuccessMessage(investInfo, loanDetailInfo);
+        return investSuccessMessage;
+    }
+
 }
