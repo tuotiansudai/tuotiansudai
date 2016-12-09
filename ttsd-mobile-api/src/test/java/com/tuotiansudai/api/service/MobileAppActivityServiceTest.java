@@ -111,6 +111,7 @@ public class MobileAppActivityServiceTest extends ServiceTestBase {
         activityModel.setDescription(description);
         activityModel.setWebPictureUrl("testWebPictureUrl");
         activityModel.setAppPictureUrl("testAppPictureUrl");
+        activityModel.setAppVerticalPictureUrl("testAppVerticalPictureUrl");
         activityModel.setActivatedTime(activatedTime);
         activityModel.setExpiredTime(DateTime.parse("2040-07-30T01:20").toDate());
         activityModel.setSource(source);
@@ -174,5 +175,6 @@ public class MobileAppActivityServiceTest extends ServiceTestBase {
         assertEquals("normal4", activityCenterDataDtos.get(1).getDescTitle());
         assertEquals("新手2", activityCenterDataDtos.get(2).getDescTitle());
         assertEquals("normal3", activityCenterDataDtos.get(3).getDescTitle());
+        assertEquals("testAppVerticalPictureUrl",activityCenterDataDtos.get(0).getVerticalImageUrl());
     }
 }
