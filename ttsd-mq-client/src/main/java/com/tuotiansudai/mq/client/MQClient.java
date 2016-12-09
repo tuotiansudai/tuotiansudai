@@ -12,4 +12,6 @@ public interface MQClient {
     void sendMessage(final MessageQueue queue, final String message);
 
     void subscribe(final MessageQueue queue, final Consumer<String> consumer);
+
+    void stopSubscribe();
 }

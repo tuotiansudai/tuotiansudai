@@ -82,15 +82,13 @@ public class MobileAppOperationDataServiceImpl implements MobileAppOperationData
 
     private  List<OperationDataLatestSixMonthResponseDataDto> convertMapToOperationDataLatestSixMonthResponseDataDto(OperationDataDto operationDataDto){
         List<OperationDataLatestSixMonthResponseDataDto> operationDataLatestSixMonthResponseDataDtoList = Lists.newArrayList();
-        int count = 1;
-        for(int i = operationDataDto.getMonth().size() - 1; i >= 0; i--){
-            if(count <= 6){
-                OperationDataLatestSixMonthResponseDataDto operationDataLatestSixMonthResponseDataDto = new OperationDataLatestSixMonthResponseDataDto();
-                operationDataLatestSixMonthResponseDataDto.setName(operationDataDto.getMonth().get(i).substring(operationDataDto.getMonth().get(i).indexOf(".") + 1).concat("月"));
-                operationDataLatestSixMonthResponseDataDto.setAmount(String.valueOf(AmountConverter.convertStringToCent(operationDataDto.getMoney().get(i))));
-                operationDataLatestSixMonthResponseDataDtoList.add(operationDataLatestSixMonthResponseDataDto);
-            }
-            count++;
+        //取最后6个月的数据,正序排列
+        int startSeq = operationDataDto.getMonth().size() >= 6 ? operationDataDto.getMonth().size() - 6 : 0;
+        for(int i = startSeq; i < operationDataDto.getMonth().size(); i++){
+            OperationDataLatestSixMonthResponseDataDto operationDataLatestSixMonthResponseDataDto = new OperationDataLatestSixMonthResponseDataDto();
+            operationDataLatestSixMonthResponseDataDto.setName(operationDataDto.getMonth().get(i).substring(operationDataDto.getMonth().get(i).indexOf(".") + 1).concat("月"));
+            operationDataLatestSixMonthResponseDataDto.setAmount(String.valueOf(AmountConverter.convertStringToCent(operationDataDto.getMoney().get(i))));
+            operationDataLatestSixMonthResponseDataDtoList.add(operationDataLatestSixMonthResponseDataDto);
         }
         return operationDataLatestSixMonthResponseDataDtoList;
     }
