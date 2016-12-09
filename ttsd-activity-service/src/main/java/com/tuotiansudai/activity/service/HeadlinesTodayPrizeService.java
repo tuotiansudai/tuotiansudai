@@ -38,7 +38,7 @@ public class HeadlinesTodayPrizeService {
 
     private static final int MAX_LOTTERY_TIMES = 2;
 
-    private static final long RED_ENVELOPE_50_YUAN_DRAW_REF_CARNIVAL_COUPON_ID = 325L;
+    private static final long RED_ENVELOPE_50_YUAN_DRAW_REF_CARNIVAL_COUPON_ID = 330L;
 
     public int getDrawPrizeTime(String mobile) {
         return MAX_LOTTERY_TIMES - userLotteryPrizeMapper.findUserLotteryPrizeCountByMobile(mobile, ActivityCategory.HEADLINES_TODAY_ACTIVITY);

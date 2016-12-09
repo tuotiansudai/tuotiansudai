@@ -56,7 +56,7 @@ public enum LotteryPrize {
 
     //今日头条拉新
     T1_PHONE("锤子M1手机(预订)",PrizeType.CONCRETE,ActivityCategory.HEADLINES_TODAY_ACTIVITY,0),
-    BAMBOO_BAG("长嘴狗车内竹炭包",PrizeType.CONCRETE,ActivityCategory.HEADLINES_TODAY_ACTIVITY,8),
+    BAMBOO_BAG("卡通汽车竹炭包",PrizeType.CONCRETE,ActivityCategory.HEADLINES_TODAY_ACTIVITY,8),
     FLYCO_HAIR_DRIER("飞科电吹风机",PrizeType.CONCRETE,ActivityCategory.HEADLINES_TODAY_ACTIVITY,1),
     IQIYI_MEMBERSHIP_MONTH_REF_CARNIVAL("爱奇艺会员月卡",PrizeType.CONCRETE,ActivityCategory.HEADLINES_TODAY_ACTIVITY,4),
     TELEPHONE_FARE_10_YUAN_REF_CARNIVAL("10元话费",PrizeType.CONCRETE,ActivityCategory.HEADLINES_TODAY_ACTIVITY,11),
