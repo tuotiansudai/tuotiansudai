@@ -68,7 +68,7 @@ body {
 
   .box-normal {
     background: #c23054;
-    border-radius:10px;
+    border-radius:25px;
     padding: 20px;
 
     .activity-note {
@@ -82,7 +82,7 @@ body {
     margin: 30px auto;
     text-align: center;
     position: relative;
-    min-height:780px;
+    min-height:750px;
 
     .draw {
       position: absolute;
@@ -92,9 +92,29 @@ body {
     }
     .gold-egg {
       position: absolute;
-      bottom: 177px;
+      bottom: 100px;
       left: 50%;
       transform: translateX(-50%);
+      transition: animate-egg linear 2s;
+      transform-origin: 50% 100%;
+
+    }
+
+    @keyframes animate-egg {
+      0% { transform: rotateZ(0deg); }
+      25% { transform: rotateZ(15deg); }
+      50% { transform: rotateZ(0deg); }
+      75% { transform: rotateZ(-15deg); }
+      100% { transform: rotateZ(0deg); }
+
+    }
+
+    @-webkit-keyframes animate-egg{
+      0% { transform: rotateZ(0deg); }
+      25% { transform: rotateZ(15deg); }
+      50% { transform: rotateZ(0deg); }
+      75% { transform: rotateZ(-15deg); }
+      100% { transform: rotateZ(0deg); }
     }
   }
 
@@ -160,16 +180,17 @@ body {
     text-align: center;
     i {
       position: absolute;
-      top: -15px;
+      top: 0px;
       width: 145px;
       height: 97px;
       background: url("/activity/images/new-year/deng.png") left top no-repeat;
+      background-size: 80%;
       &.lamp-left {
-        left: 0px;
+        left: -14px;
+        transform: rotateY(180deg);
       }
       &.lamp-right {
-        right: 0px;
-        transform: rotateY(180deg);
+        right: -14px;
       }
     }
     .slide-text {
@@ -190,4 +211,121 @@ body {
 
   }
 
+  .total-invest-amount {
+    background: #fff2b2;
+    border-radius:30px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    line-height: 30px;
+    dl {
+      width:30%;
+      float: left;
+      margin-left: 5%;
+      color: #9f4c00;
+      font-size: 22px;
+      dd {
+        color: #ff7700;
+      }
+      &.last {
+        width:20%;
+        .btn-to-invest {
+          background: #fd494a;
+          color: #fff;
+          border-radius:10px;
+          display: inline-block;
+          margin-top: 9px;
+          font-size: 24px;
+          padding: 6px 35px;
+        }
+      }
+    }
+  }
+
+  .reward-list-frame {
+    text-align: center;
+    padding-bottom:20px;
+    .reward-box {
+      float: left;
+      width: 40%;
+      height: 445px;
+      color: #9f4c00;
+      margin: 20px 5% 0 5%;
+      background: url("/activity/images/new-year/bg-default.png") center top no-repeat;
+
+      .reward-title {
+        width: 100%;
+        background: url("/activity/images/new-year/deng.png") 66px top no-repeat;
+        background-size: 56%;
+        margin-top: -52px;
+        padding-top: 141px;
+        color: #fff2b2;
+        font-size: 24px;
+
+      }
+      .reward-detail {
+        position: relative;
+        top: 33px;
+        text-align: center;
+        width:100%;
+        height: 72%;
+        em {
+          font-size: 18px;
+          color: #9f4c00;
+          display: block;
+        }
+        img {
+          margin:0 auto;
+          display: block;
+        }
+        i {
+          display: block;
+          color: #333;
+          font-size: 18px;
+          margin-top:7px;
+        }
+        s {
+          display: none;
+          position: absolute;
+          right: 10%;
+          top: 25%;
+          width: 80px;
+          height: 80px;
+          border-radius: 50%;
+          border: 1px solid #a75a0f;
+          text-decoration: none;
+          color: #a75a0f;
+          transform: rotateZ(-30deg);
+          span {
+            border-top: 1px solid #a75a0f;
+            border-bottom: 1px solid #a75a0f;
+            position: absolute;
+            top: 50%;
+            width: 84%;
+            transform: translateY(-50%);
+            left: 9%;
+            font-size: 15px;
+          }
+        }
+      }
+
+      &.finished {
+        background: url("/activity/images/new-year/bg-finished.png") center top no-repeat;
+        .reward-detail {
+          s {
+            display: block;
+          }
+        }
+      }
+    }
+  }
+
+  .reminder-box {
+    background: #fff2b2;
+    border-radius:15px;
+    padding: 20px 5px 20px 20px;
+    font-size: 16px;
+    color: #9f4c00;
+    margin-top:30px;
+    margin-bottom:30px;
+  }
 }
