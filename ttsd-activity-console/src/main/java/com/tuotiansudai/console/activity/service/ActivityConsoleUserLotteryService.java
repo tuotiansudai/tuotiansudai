@@ -96,7 +96,7 @@ public class ActivityConsoleUserLotteryService {
         }
 
         lotteryPrizeViewList = Lists.transform(lotteryPrizeViewList, userLotteryPrizeView -> {
-            userLotteryPrizeView.setInvestCount(investMapper.sumSuccessInvestCountByLoginName(userLotteryPrizeView.getLoginName()) > 0 ? "是" : "否");
+            userLotteryPrizeView.setInvestFlag(investMapper.sumSuccessInvestCountByLoginName(userLotteryPrizeView.getLoginName()) > 0 ? "是" : "否");
             return userLotteryPrizeView;
         });
 
