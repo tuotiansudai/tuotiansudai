@@ -10,7 +10,6 @@ import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.spring.security.MyAuthenticationUtil;
 import com.tuotiansudai.util.IdentityNumberValidator;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -40,7 +39,7 @@ public class HeadlinesTodayController {
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView headlinesToday() {
         ModelAndView modelAndView = new ModelAndView("/activities/headlines-today", "responsive", true);
-        modelAndView.addObject("activityType","national");
+        modelAndView.addObject("activityType", "national");
         return modelAndView;
     }
 
@@ -49,7 +48,6 @@ public class HeadlinesTodayController {
     public DrawLotteryResultDto headlinesTodayDrawPrize(@RequestParam(value = "mobile", required = false) String mobile) {
         return headlinesTodayPrizeService.drawLotteryPrize(Strings.isNullOrEmpty(LoginUserInfo.getMobile()) ? mobile : LoginUserInfo.getMobile());
     }
-
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     @ResponseBody
@@ -85,7 +83,7 @@ public class HeadlinesTodayController {
         return baseDto;
     }
 
-    @RequestMapping(value="/account", method = RequestMethod.POST)
+    @RequestMapping(value = "/account", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<PayDataDto> registerAccountNoRedirect(@Valid @ModelAttribute RegisterAccountDto registerAccountDto) throws Exception {
         if (IdentityNumberValidator.validateIdentity(registerAccountDto.getIdentityNumber())) {
@@ -101,12 +99,5 @@ public class HeadlinesTodayController {
         baseDto.setData(dataDto);
         return baseDto;
     }
-
-
-
-
-
-
-
 
 }

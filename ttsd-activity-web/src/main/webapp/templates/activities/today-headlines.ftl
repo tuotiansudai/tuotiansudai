@@ -221,7 +221,7 @@
                 <ul class="register-list mt-b">
                     <li>
                         <i class="icon-user"></i>
-                        <input type="text" id="username" name="username" class="int-item" placeholder="请输入您的真实姓名">
+                        <input type="text" id="userName" name="userName" class="int-item" placeholder="请输入您的真实姓名">
                     </li>
                     <li>
                         <i class="icon-attest"></i>

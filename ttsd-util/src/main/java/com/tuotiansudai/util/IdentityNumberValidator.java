@@ -101,7 +101,7 @@ public class IdentityNumberValidator {
 
     private static String convert15CardTo18(String idCard) throws Exception {
         String birthday = idCard.substring(6, 12);
-        Date birthDate = null;
+        Date birthDate;
         try {
             birthDate = new SimpleDateFormat("yyMMdd").parse(birthday);
         } catch (ParseException e) {

@@ -1,4 +1,4 @@
-require(['jquery', 'layerWrapper', 'template', 'commonFun', 'jquery.validate', 'jquery.validate.extension', 'jquery.ajax.extension', 'jquery.form'], function($, layer, tpl) {
+require(['jquery', 'layerWrapper', 'template', 'jquery.validate', 'jquery.validate.extension', 'jquery.form', 'jquery.ajax.extension', 'commonFun'], function($, layer, tpl) {
     $(function() {
         var $registerForm = $('#registerForm'),
             $loginForm = $('#loginForm'),
@@ -505,7 +505,6 @@ require(['jquery', 'layerWrapper', 'template', 'commonFun', 'jquery.validate', '
                             $attestForm.find('.register-user').val('立即认证');
                             layer.closeAll();
                             layer.msg('认证成功');
-                            setInterval(lastTip, 3000);
                         } else {
                             layer.msg('认证失败，请检查后重试！');
                             $attestForm.find('.register-user').val('立即认证').prop('disabled', false);
@@ -522,13 +521,12 @@ require(['jquery', 'layerWrapper', 'template', 'commonFun', 'jquery.validate', '
             onkeyup: function(element, event) {
 
                 var excludedKeys = [16, 17, 18, 20, 35, 36, 37, 38, 39, 40, 45, 144, 225];
-
                 if ((event.which !== 9 || this.elementValue(element) !== "") && $.inArray(event.keyCode, excludedKeys) === -1) {
                     this.element(element);
                 }
             },
             rules: {
-                username: {
+                userName: {
                     required: true
                 },
                 identityNumber: {
@@ -539,13 +537,13 @@ require(['jquery', 'layerWrapper', 'template', 'commonFun', 'jquery.validate', '
                 }
             },
             messages: {
-                username: {
+                userName: {
                     required: "请输入姓名"
                 },
                 identityNumber: {
                     required: '请输入身份证号',
                     identityCheckValid: '您的身份证号码不正确',
-                    identityCardAge: '年龄未满18sssss周岁',
+                    identityCardAge: '年龄未满18周岁',
                     isExist: "身份证已存在"
                 }
             }
