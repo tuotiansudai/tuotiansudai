@@ -49,7 +49,7 @@ public class AuditTaskAspectBandCard {
 
     @Around(value = "execution(* com.tuotiansudai.service.BandCardManagerService.updateBankCard(..))")
     public Object aroundEditUser(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
-        logger.debug("around edit user aspect.");
+        logger.info("around edit user aspect.");
         String operatorLoginName = (String) proceedingJoinPoint.getArgs()[0];
         long bankCardId = (long) proceedingJoinPoint.getArgs()[1];
         String ip = (String) proceedingJoinPoint.getArgs()[2];
@@ -60,7 +60,7 @@ public class AuditTaskAspectBandCard {
         boolean isAdmin = Iterators.any(userRoleModelList.iterator(), input -> Role.OPERATOR_ADMIN.equals(input.getRole()) || Role.ADMIN.equals(input.getRole()));
 
         if (redisWrapperClient.hexistsSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId) && isAdmin) {
-            logger.debug(MessageFormat.format("check bank card task aspect. user:{0}, bankCard:{1}",loginName, bankCardId));
+            logger.info(MessageFormat.format("check bank card task aspect. user:{0}, bankCard:{1}",loginName, bankCardId));
             OperationTask<EditUserDto> task = (OperationTask<EditUserDto>) redisWrapperClient.hgetSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId);
             redisWrapperClient.hdelSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId);
             OperationTask notify = new OperationTask();
@@ -86,7 +86,7 @@ public class AuditTaskAspectBandCard {
 
             return proceedingJoinPoint.proceed();
         } else {
-            logger.debug(MessageFormat.format("apply bank card task aspect. user:{0}, bankCard:{1}", loginName, bankCardId));
+            logger.info(MessageFormat.format("apply bank card task aspect. user:{0}, bankCard:{1}", loginName, bankCardId));
             OperationTask<EditUserDto> task = new OperationTask<>();
             task.setTaskType(TaskType.TASK);
             task.setOperationType(OperationType.USER);

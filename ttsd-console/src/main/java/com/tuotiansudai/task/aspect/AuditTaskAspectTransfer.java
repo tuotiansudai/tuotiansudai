@@ -53,7 +53,7 @@ public class AuditTaskAspectTransfer {
     @SuppressWarnings(value = "unchecked")
     @Around(value = "execution(* com.tuotiansudai.transfer.service.TransferRuleService.updateTransferRule(..))")
     public Object aroundUpdateTransferRule(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
-        logger.debug("update transfer rule task aspect starting");
+        logger.info("update transfer rule task aspect starting");
 
         TransferRuleDto transferRuleDto = (TransferRuleDto) proceedingJoinPoint.getArgs()[0];
         String operator = (String) proceedingJoinPoint.getArgs()[1];

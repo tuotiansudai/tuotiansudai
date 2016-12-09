@@ -55,7 +55,7 @@ public class AuditTaskAspectUser {
 
     @Around(value = "execution(* com.tuotiansudai.service.UserService.editUser(..))")
     public Object aroundEditUser(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
-        logger.debug("around edit user aspect.");
+        logger.info("around edit user aspect.");
         String operatorLoginName = (String) proceedingJoinPoint.getArgs()[0];
         EditUserDto editUserDto = (EditUserDto) proceedingJoinPoint.getArgs()[1];
         String ip = (String) proceedingJoinPoint.getArgs()[2];

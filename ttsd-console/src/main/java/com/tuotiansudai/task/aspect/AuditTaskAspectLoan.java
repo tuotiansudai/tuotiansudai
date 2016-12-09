@@ -47,7 +47,7 @@ public class AuditTaskAspectLoan {
 
     @AfterReturning(value = "execution(* com.tuotiansudai.service.LoanCreateService.applyAuditLoan(*))", returning = "returnValue")
     public void afterReturningCreateLoan(JoinPoint joinPoint, BaseDto<PayDataDto> returnValue) {
-        logger.debug("after create loan aspect.");
+        logger.info("after create loan aspect.");
         try {
             if (returnValue.getData().getStatus()) {
                 long loanId = (long) joinPoint.getArgs()[0];
@@ -83,7 +83,7 @@ public class AuditTaskAspectLoan {
 
     @AfterReturning(value = "execution(* com.tuotiansudai.service.LoanCreateService.openLoan(..))", returning = "returnValue")
     public void afterReturningOpenLoan(JoinPoint joinPoint, BaseDto<PayDataDto> returnValue) {
-        logger.debug("after open loan aspect.");
+        logger.info("after open loan aspect.");
         try {
             if (returnValue.getData().getStatus()) {
                 LoanCreateRequestDto loanDto = (LoanCreateRequestDto) joinPoint.getArgs()[0];

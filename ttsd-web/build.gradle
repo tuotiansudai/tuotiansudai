@@ -14,6 +14,5 @@ dependencies {
 }
 
 war {
-    archiveName "ROOT.war"
     destinationDir = file("war")
 }
