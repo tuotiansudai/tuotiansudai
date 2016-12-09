@@ -123,7 +123,7 @@ module.exports = function(grunt) {
             },
             dataUri: {
                 files: [
-                    '<%= meta.baseCssPath %>/*.css'
+                    '<%= meta.baseCssPathPrefixer %>/*.css'
                 ],
                 tasks: ['dataUri']
             },
@@ -199,6 +199,9 @@ module.exports = function(grunt) {
         'connect',
         'watch'
     ]);
+
+    // scss文件压缩的整个流程
+    // scss —  baseCssPath   — baseCssPathPrefixer — base64CssPath  — baseCssMinPath
 
     /* 前端人员开发的时候用，最后发布的时候执行一次 grunt */
     grunt.registerTask('dev',
