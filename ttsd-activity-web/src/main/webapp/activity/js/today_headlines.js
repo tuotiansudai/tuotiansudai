@@ -1,4 +1,4 @@
-require(['jquery', 'layerWrapper', 'template', 'jquery.validate', 'jquery.validate.extension', 'jquery.form', 'jquery.ajax.extension', 'commonFun'], function($, layer, tpl) {
+require(['jquery', 'layerWrapper', 'template','commonFun', 'jquery.validate', 'jquery.validate.extension', 'jquery.form', 'jquery.ajax.extension'], function($, layer, tpl, commonFun) {
     $(function() {
         var $registerForm = $('#registerForm'),
             $loginForm = $('#loginForm'),
@@ -455,10 +455,6 @@ require(['jquery', 'layerWrapper', 'template', 'jquery.validate', 'jquery.valida
             submitHandler: function(form) {
                 $loginForm.ajaxSubmit({
                     beforeSubmit: function (arr, $form, options) {
-                        console.log(arr);
-                        console.log($form);
-                        console.log(options);
-
                         $loginForm.find('.register-user').prop('disabled', true);
                     },
                     success: function (data) {

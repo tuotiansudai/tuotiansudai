@@ -1,4 +1,4 @@
-require(['jquery', 'jquery.validate'], function ($) {
+require(['jquery', 'commonFun','jquery.validate'], function ($,commonFun) {
     var ajaxHelper = function (url, successHandler, options) {
         var isSuccess = false;
         var validator = options.validator;
