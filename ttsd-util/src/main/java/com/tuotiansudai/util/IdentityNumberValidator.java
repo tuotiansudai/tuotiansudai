@@ -2,14 +2,12 @@ package com.tuotiansudai.util;
 
 
 import com.google.common.base.Strings;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
 public class IdentityNumberValidator {
-
 
     private static SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 
@@ -34,7 +32,7 @@ public class IdentityNumberValidator {
     private static String[] Wi = {
             "7", "9", "10", "5", "8", "4", "2", "1", "6", "3", "7", "9", "10", "5", "8", "4", "2"};
 
-    public static boolean validateIdentity(String idCard) throws Exception {
+    public static boolean validateIdentity(String idCard) {
         if (idCard.length() != CHINA_ID_MIN_LENGTH && idCard.length() != CHINA_ID_MAX_LENGTH) {
             return false;
         }
@@ -54,7 +52,7 @@ public class IdentityNumberValidator {
         return Integer.parseInt(idCard.substring(0, 1)) > 0 && Integer.parseInt(idCard.substring(0, 1)) < 9;
     }
 
-    private static String getIdCode17(String idCard) throws Exception {
+    private static String getIdCode17(String idCard) {
         if (idCard.length() == CHINA_ID_MAX_LENGTH) {
             return idCard.substring(0, 17);
         } else if (idCard.length() == CHINA_ID_MIN_LENGTH) {
@@ -99,19 +97,20 @@ public class IdentityNumberValidator {
         return ((Integer.parseInt(sdf.format(new Date())) - Integer.parseInt(idCard.substring(6, 14))) / 10000 >= 18);
     }
 
-    private static String convert15CardTo18(String idCard) throws Exception {
+    private static String convert15CardTo18(String idCard) {
         String birthday = idCard.substring(6, 12);
-        Date birthDate;
+        Date birthDate = null;
         try {
             birthDate = new SimpleDateFormat("yyMMdd").parse(birthday);
         } catch (ParseException e) {
-            throw new Exception("format error!");
+            e.printStackTrace();
+        }finally {
+            Calendar cal = Calendar.getInstance();
+            if (birthDate != null)
+                cal.setTime(birthDate);
+            String sYear = String.valueOf(cal.get(Calendar.YEAR));
+            String code18 = idCard.substring(0, 6) + sYear + idCard.substring(8);
+            return code18 + countCode18(code18);
         }
-        Calendar cal = Calendar.getInstance();
-        if (birthDate != null)
-            cal.setTime(birthDate);
-        String sYear = String.valueOf(cal.get(Calendar.YEAR));
-        String code18 = idCard.substring(0, 6) + sYear + idCard.substring(8);
-        return code18 + countCode18(code18);
     }
 }

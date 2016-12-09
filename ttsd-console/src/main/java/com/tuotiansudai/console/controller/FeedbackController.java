@@ -1,6 +1,5 @@
 package com.tuotiansudai.console.controller;
 
-import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
@@ -9,9 +8,6 @@ import com.tuotiansudai.repository.model.FeedbackType;
 import com.tuotiansudai.repository.model.ProcessStatus;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.FeedbackService;
-import com.tuotiansudai.util.CsvHeaderType;
-import com.tuotiansudai.util.ExportCsvUtil;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -22,11 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.Date;
-import java.util.List;
 
 @Controller
 @RequestMapping(value = "/announce-manage", method = RequestMethod.GET)

@@ -1,8 +1,8 @@
 package com.tuotiansudai.coupon.util;
 
-import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
@@ -31,24 +31,21 @@ public class ExperienceRepaySuccessCollector implements UserCollector {
     }
 
     @Override
-    public boolean contains(long couponId, String loginName) {
-        List<LoanModel> loanModels = loanMapper.findByProductType(LoanStatus.RAISING,Lists.newArrayList(ProductType.EXPERIENCE),ActivityType.NEWBIE);
-        if (CollectionUtils.isEmpty(loanModels)) {
+    public boolean contains(CouponModel couponModel, UserModel userModel) {
+        if (userModel == null) {
             return false;
         }
 
-        for (final LoanModel loanModel : loanModels) {
-            List<InvestModel> investModels = investMapper.findByLoanIdAndLoginName(loanModel.getId(), loginName);
-            boolean isRepayComplete = Iterators.all(investModels.iterator(), new Predicate<InvestModel>() {
-                @Override
-                public boolean apply(InvestModel input) {
-                    return investRepayMapper.findByInvestIdAndPeriod(input.getId(), loanModel.getPeriods()).getStatus() == RepayStatus.COMPLETE;
-                }
-            });
-            if (!isRepayComplete) {
-                return false;
-            }
-        }
-        return true;
+        List<LoanModel> loanModels = loanMapper.findByProductType(LoanStatus.RAISING, Lists.newArrayList(ProductType.EXPERIENCE), ActivityType.NEWBIE);
+
+        List<InvestModel> investModels = Lists.newArrayList();
+
+        loanModels.stream().forEach(loanModel -> investModels.addAll(investMapper.findByLoanIdAndLoginName(loanModel.getId(), userModel.getLoginName())));
+
+        List<InvestRepayModel> investRepayModels = Lists.newArrayList();
+
+        investModels.forEach(investModel -> investRepayModels.addAll(investRepayMapper.findByInvestIdAndPeriodAsc(investModel.getId())));
+
+        return CollectionUtils.isNotEmpty(investRepayModels) && investRepayModels.stream().allMatch(investRepayModel -> investRepayModel.getStatus() == RepayStatus.COMPLETE);
     }
 }

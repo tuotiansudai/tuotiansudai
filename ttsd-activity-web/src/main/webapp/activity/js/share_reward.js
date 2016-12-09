@@ -1,4 +1,4 @@
-require(['jquery','layerWrapper','clipboard','commonFun','logintip','md5','qrcode'], function($,layer,clipboard) {
+require(['jquery','layerWrapper','clipboard','commonFun','logintip','md5','qrcode'], function($,layer,clipboard,commonFun) {
 
 	window['Clipboard']=clipboard;
 

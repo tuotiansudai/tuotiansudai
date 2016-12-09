@@ -1,12 +1,13 @@
 package com.tuotiansudai.coupon.util;
 
 
-import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.model.UserModel;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,14 +26,13 @@ public class StaffRecommendLevelOneCollector implements UserCollector{
     }
 
     @Override
-    public boolean contains(long couponId, final String loginName) {
+    public boolean contains(CouponModel couponModel, UserModel userModel) {
+        if (userModel == null) {
+            return false;
+        }
+
         List<String> referrerRelationModels = userMapper.findAllRecommendation(Maps.newHashMap(ImmutableMap.<String, Object>builder().put("districtName", Lists.newArrayList()).build()));
-        return CollectionUtils.isNotEmpty(referrerRelationModels) && Iterators.any(referrerRelationModels.iterator(), new Predicate<String>() {
-            @Override
-            public boolean apply(String input) {
-                return input.equals(loginName);
-            }
-        });
+        return CollectionUtils.isNotEmpty(referrerRelationModels) && Iterators.any(referrerRelationModels.iterator(), input -> input.equalsIgnoreCase(userModel.getLoginName()));
     }
 
 }

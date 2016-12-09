@@ -11,6 +11,7 @@ import com.tuotiansudai.job.AutoLoanOutJob;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.mq.client.model.MessageQueue;
+import com.tuotiansudai.mq.client.model.MessageTopic;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.coupon.service.CouponInvestService;
@@ -506,7 +507,7 @@ public class InvestServiceImpl implements InvestService {
 
         this.investAchievementService.awardAchievement(investModel);
 
-        mqWrapperClient.sendMessage(MessageQueue.InvestSuccess_CompletePointTask, String.valueOf(investModel.getId()));
+        mqWrapperClient.publishMessage(MessageTopic.InvestSuccess, String.valueOf(investModel.getId()));
     }
 
 
