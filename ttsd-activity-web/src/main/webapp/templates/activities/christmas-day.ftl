@@ -64,7 +64,7 @@
                             </dd>
                             <dd class="count-total">
                                 <span class="fl">已有<em>${userCount}</em>人参与</span>
-                                <span class="fr">总额度：<em>5元</em></span>
+                                <span class="fr">总额度：<em>4,200,000元</em></span>
                             </dd>
 
                         </dl>

@@ -67,7 +67,7 @@ public class ChristmasPrizeService {
 
     private static final long RED_ENVELOPE_20_POINT_DRAW_REF_CARNIVAL_COUPON_ID = 324L;
 
-    public static final long CHRISTMAS_ACTIVITY_2_START_MIN_AMOUNT = 500;
+    public static final long CHRISTMAS_ACTIVITY_2_START_MIN_AMOUNT = 420000000;
 
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private static final int timeout = 60 * 60 * 24 * 20;
@@ -119,7 +119,7 @@ public class ChristmasPrizeService {
 
             //每满2000元均增加一次
             long sumAmount = investMapper.sumInvestAmountByLoginNameInvestTimeProductType(userModel.getLoginName(), activityChristmasPrizeStartTime, activityChristmasEndTime, Lists.newArrayList(ProductType._90, ProductType._180, ProductType._360));
-            lotteryTime += (int)(sumAmount/100);
+            lotteryTime += (int)(sumAmount/200000);
 
             lotteryTime = lotteryTime >= 10 ? 10 : lotteryTime;
 
