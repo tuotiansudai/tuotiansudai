@@ -8,6 +8,7 @@ module.exports = function(grunt) {
             basePath: '../',
             baseSassPath: 'src/main/webapp/activity/style/sass',
             baseCssPath: 'src/main/webapp/activity/style/css',
+            baseCssPathPrefixer: 'src/main/webapp/activity/style/cssprefixer',
             base64CssPath: 'src/main/webapp/activity/style/base64',
             baseCssMinPath: 'src/main/webapp/activity/style/dest',
             baseJsPath: 'src/main/webapp/activity/js',
@@ -20,6 +21,7 @@ module.exports = function(grunt) {
                     dot: true,
                     src: [
                         '<%= meta.baseCssPath %>/*',
+                        '<%= meta.baseCssPathPrefixer %>/*',
                         '<%= meta.base64CssPath %>/*',
                         '<%= meta.baseCssPath %>/*.map',
                         '<%= meta.baseCssMinPath %>/*'
@@ -65,9 +67,24 @@ module.exports = function(grunt) {
                 }]
             }
         },
+        autoprefixer: {
+            options: {
+                // Task-specific options go here.
+                browserslist:['last 2 versions','chrome','ie'],
+                map:true,
+                safe: true
+            },
+            mutiple_files: {
+                // 对项目所有文件的配置
+                expand:true,
+                flatten: true, //是否取代原先文件名
+                src:'<%= meta.baseCssPath %>/*.css',
+                dest:'<%= meta.baseCssPathPrefixer %>/'
+            }
+        },
         dataUri: {
             dist: {
-                src: ['<%= meta.baseCssPath %>/*.css'],
+                src: ['<%= meta.baseCssPathPrefixer %>/*.css'],
                 dest: '<%= meta.base64CssPath %>',
                 options: {
                     target: ['<%=meta.baseImagePath %>/**/*.*'],
@@ -77,17 +94,6 @@ module.exports = function(grunt) {
             }
         },
         cssmin: {
-            //dist: {
-            //    files: [{
-            //        expand: true, // Enable dynamic expansion.
-            //        cwd: '', // Src matches are relative to this path.
-            //        src: ['<%= meta.baseCssPath %>/*.css'], // Actual pattern(s) to match.
-            //        dest: '<%= meta.baseCssMinPath %>/', // Destination path prefix.
-            //        ext: '.min.css', // Dest filepaths will have this extension.
-            //        extDot: 'first', // Extensions in filenames begin after the first dot
-            //        flatten: true
-            //    }]
-            //},
             dist: {
                 files: [{
                     expand: true, // Enable dynamic expansion.
@@ -112,9 +118,15 @@ module.exports = function(grunt) {
             },
             dataUri: {
                 files: [
-                    '<%= meta.baseCssPath %>/*.css'
+                    '<%= meta.baseCssPathPrefixer %>/*.css'
                 ],
                 tasks: ['dataUri']
+            },
+            autoprefixer:{
+                files: [
+                    '<%= meta.baseCssPath %>/*.css'
+                ],
+                tasks: ['autoprefixer']
             },
             cssmin: {
                 files: ['<%= meta.base64CssPath %>/*.css'],
@@ -180,10 +192,13 @@ module.exports = function(grunt) {
         'uglify',
         'sass',
         'cssmin',
+        'autoprefixer',
         'base64',
         'connect',
         'watch'
     ]);
+    // scss文件压缩的整个流程
+    // scss —  baseCssPath   — baseCssPathPrefixer — base64CssPath  — baseCssMinPath
 
     /* 前端人员开发的时候用，最后发布的时候执行一次 grunt */
     grunt.registerTask('dev',
