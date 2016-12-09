@@ -6,6 +6,7 @@ import com.tuotiansudai.mq.client.MQClient;
 import com.tuotiansudai.mq.client.impl.MQClientAliyunMNS;
 import com.tuotiansudai.mq.client.impl.MQClientRedis;
 import com.tuotiansudai.mq.consumer.MessageConsumerFactory;
+import com.tuotiansudai.mq.tools.RedisClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -50,11 +51,16 @@ public class MQConfig {
     }
 
     @Bean
-    public MQClient mqClient(MNSClient mnsClient) {
+    public RedisClient redisClient() {
+        return new RedisClient();
+    }
+
+    @Bean
+    public MQClient mqClient(MNSClient mnsClient, RedisClient redisClient) {
         if (enableAliyumMNS) {
-            return new MQClientAliyunMNS(mnsClient);
+            return new MQClientAliyunMNS(mnsClient, redisClient);
         } else {
-            return new MQClientRedis();
+            return new MQClientRedis(redisClient);
         }
     }
 

@@ -10,6 +10,7 @@ import com.aliyun.mns.model.TopicMessage;
 import com.tuotiansudai.mq.client.MQClient;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.client.model.MessageTopic;
+import com.tuotiansudai.mq.tools.RedisClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,16 +19,16 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
-public class MQClientAliyunMNS implements MQClient {
+public class MQClientAliyunMNS extends MQClient {
 
     private static Logger logger = LoggerFactory.getLogger(MQClientAliyunMNS.class);
 
     private final MNSClient mnsClient;
     private final Map<MessageTopic, CloudTopic> topicMap;
-    private boolean continueRunning = true;
     private AtomicInteger subscriberNum = new AtomicInteger(0);
 
-    public MQClientAliyunMNS(MNSClient mnsClient) {
+    public MQClientAliyunMNS(MNSClient mnsClient, RedisClient redisClient) {
+        super(redisClient);
         this.mnsClient = mnsClient;
         this.topicMap = new HashMap<>();
     }
@@ -61,8 +62,15 @@ public class MQClientAliyunMNS implements MQClient {
         logger.info("[MQ] subscribe queue: {}", queue.getQueueName());
         CloudQueue cloudQueue = findQueue(queue.getQueueName());
         subscriberNum.incrementAndGet();
+        int errorCount = 0;
         while (continueRunning) {
-            listenMessage(cloudQueue, queue.getQueueName(), consumer);
+            boolean result = listenMessage(cloudQueue, queue.getQueueName(), consumer);
+            // 报告消费者状态正常
+            reportConsumerStatus(queue, result);
+            // 异常则计数，正常则清零
+            errorCount = result ? 0 : errorCount + 1;
+            // 失败超过阈值则暂停订阅
+            pauseSubscribeIfExceeds(queue, errorCount);
         }
         int subscriberNumber = subscriberNum.decrementAndGet();
         if (subscriberNumber == 0) {
@@ -71,11 +79,11 @@ public class MQClientAliyunMNS implements MQClient {
         }
     }
 
-    private void listenMessage(CloudQueue cloudQueue, String queueName, Consumer<String> consumer) {
+    private boolean listenMessage(CloudQueue cloudQueue, String queueName, Consumer<String> consumer) {
         Message message = null;
         try {
             logger.debug("[MQ] ready to pop message from queue: {}", queueName);
-            message = cloudQueue.popMessage(10);
+            message = cloudQueue.popMessage(TIME_SLICE_SECONDS);
             if (message == null) {
                 logger.debug("[MQ] receive no message, try again");
             } else {
@@ -83,6 +91,7 @@ public class MQClientAliyunMNS implements MQClient {
             }
         } catch (Exception e) {
             logger.error("[MQ] pop message fail", e);
+            return false;
         }
         if (message != null) {
             logger.info("[MQ] ready to consume message, queue: {}, messageId: {}", queueName, message.getMessageId());
@@ -97,14 +106,10 @@ public class MQClientAliyunMNS implements MQClient {
                 }
             } catch (Exception e) {
                 logger.error(String.format("[MQ] consume message fail, messageId: %s", message.getMessageId()), e);
+                return false;
             }
         }
-    }
-
-    @Override
-    public void stopSubscribe() {
-        logger.info("[MQ] prepare to stop");
-        continueRunning = false;
+        return true;
     }
 
     private CloudTopic findTopic(MessageTopic topic) {

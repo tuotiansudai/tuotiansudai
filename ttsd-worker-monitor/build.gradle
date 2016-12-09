@@ -1,0 +1,48 @@
+apply plugin: 'java'
+apply plugin: 'spring-boot'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+buildscript {
+    repositories {
+        jcenter()
+        maven { url "http://repo.spring.io/snapshot" }
+        maven { url "http://repo.spring.io/milestone" }
+        maven { url "http://central.maven.org/maven2/" }
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.4.0.RELEASE")
+    }
+}
+
+repositories {
+    jcenter()
+    maven { url "http://repo.spring.io/snapshot" }
+    maven { url "http://repo.spring.io/milestone" }
+    maven { url "http://central.maven.org/maven2/" }
+}
+
+springBoot {
+    executable = true
+}
+
+configurations {
+    all*.exclude module: "ttsd-dependency"
+    all*.exclude module: "ttsd-mq-client"
+    all*.exclude group: "log4j", module: "log4j"
+    all*.exclude group: "org.slf4j", module: "slf4j-log4j12"
+    all*.exclude group: "mysql", module: "mysql-connector-java"
+    all*.exclude group: "com.aliyun.oss", module: "aliyun-sdk-oss"
+}
+
+dependencies {
+    compile project(':ttsd-client')
+    compile "org.springframework.boot:spring-boot-starter"
+    compile "org.springframework.boot:spring-boot-starter-data-redis"
+    compile "com.fasterxml.jackson.core:jackson-core:2.6.1"
+    compile "com.fasterxml.jackson.core:jackson-databind:2.6.1"
+    compile "com.squareup.okhttp:okhttp:2.4.0"
+
+    testCompile "org.springframework.boot:spring-boot-starter-test"
+}
