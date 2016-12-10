@@ -16,6 +16,7 @@ public abstract class MQClient {
     private static final Logger logger = LoggerFactory.getLogger(MQClient.class);
     private static final int ERROR_COUNT_THRESHOLD = 10; // 连续失败10次则认为异常
     protected static final int TIME_SLICE_SECONDS = 10; // 每次取消息最多等10秒
+    public static final String HEALTH_REPORT_REDIS_KEY = "worker:health:report";
 
     protected final RedisClient redisClient;
     protected final Jedis sharedJedis;
@@ -44,7 +45,7 @@ public abstract class MQClient {
     protected final void reportConsumerStatus(MessageQueue queue, boolean ok) {
         synchronized (sharedJedis) {
             if (ok) {
-                sharedJedis.hset("worker:health:report", queue.getQueueName(), String.valueOf(Clock.systemUTC().millis()));
+                sharedJedis.hset(HEALTH_REPORT_REDIS_KEY, queue.getQueueName(), String.valueOf(Clock.systemUTC().millis()));
             }
         }
     }
