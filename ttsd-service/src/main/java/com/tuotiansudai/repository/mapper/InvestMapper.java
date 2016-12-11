@@ -273,4 +273,13 @@ public interface InvestMapper {
 
     long findInvestAmountScale(@Param(value = "endDate") Date endDate);
 
+
+    List<InvestModel> findInvestorInvestAndTransferPagination(@Param(value = "loginName") String loginName,
+                                                                  @Param(value = "loanStatus") LoanStatus loanStatus,
+                                                                  @Param(value = "index") int index,
+                                                                  @Param(value = "pageSize") int pageSize);
+
+    long countInvestorInvestAndTransferPagination(@Param(value = "loginName") String loginName,
+                                                      @Param(value = "loanStatus") LoanStatus loanStatus);
+
 }
