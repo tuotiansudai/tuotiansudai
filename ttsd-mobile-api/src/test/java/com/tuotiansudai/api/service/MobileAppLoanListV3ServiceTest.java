@@ -6,20 +6,23 @@ import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.dto.v3_0.LoanListResponseDataDto;
 import com.tuotiansudai.api.dto.v3_0.LoanResponseDataDto;
 import com.tuotiansudai.api.service.v3_0.MobileAppLoanListV3Service;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.LoanDetailsMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.dto.LoanDto;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.util.IdGenerator;
+import org.apache.commons.collections.CollectionUtils;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class MobileAppLoanListV3ServiceTest extends ServiceTestBase {
 
@@ -40,6 +43,12 @@ public class MobileAppLoanListV3ServiceTest extends ServiceTestBase {
 
     @Autowired
     private MobileAppLoanListV3Service mobileAppLoanListV3Service;
+
+    @Autowired
+    private ExtraLoanRateMapper extraLoanRateMapper;
+
+    @Autowired
+    private InvestService investService;
 
     private UserModel createUser(String loginName) {
         UserModel userModel = new UserModel();
@@ -168,5 +177,117 @@ public class MobileAppLoanListV3ServiceTest extends ServiceTestBase {
         loanResponseDataDto = loanListResponseDataDto.getLoanList().get(0);
         assertEquals(ProductType._30.name(), loanResponseDataDto.getProductNewType());
         assertEquals(LoanStatus.RAISING.name().toLowerCase(), loanResponseDataDto.getLoanStatus());
+    }
+
+    @Test
+    public void shouldValidInterestPerTenThousandsIsOk(){
+        String loginName = "testExtraRate";
+        long loanId = idGenerator.generate();
+        UserModel userModel = getUserModelTest(loginName);
+        userMapper.create(userModel);
+        LoanModel loanModel = createLoanByUserId(loginName, loanId);
+        List<ExtraLoanRateModel> extraLoanRateModels = createExtraLoanRate(loanId);
+        extraLoanRateMapper.create(extraLoanRateModels);
+
+        loanDetailsMapper.create(createLoanDetails(loanId));
+
+        InvestModel model = new InvestModel(idGenerator.generate(), loanModel.getId(), null, 1000000L, loginName, new DateTime().withTimeAtStartOfDay().toDate(), Source.WEB, null, 0.1);
+        model.setStatus(InvestStatus.SUCCESS);
+        investMapper.create(model);
+
+        BaseResponseDto<LoanListResponseDataDto> dto = mobileAppLoanListV3Service.generateIndexLoan(loginName);
+
+        List<LoanResponseDataDto> loanList = dto.getData().getLoanList();
+        assertTrue(CollectionUtils.isNotEmpty(loanList));
+        LoanResponseDataDto loanResponseDataDto = loanList.get(0);
+
+        long expectedInterest = investService.estimateInvestIncome(Long.parseLong(loanResponseDataDto.getLoanId()), loginName, 1000000);
+        assertTrue(String.valueOf(expectedInterest).equals(loanResponseDataDto.getInterestPerTenThousands()));
+    }
+
+    private UserModel getUserModelTest(String loginName) {
+        UserModel userModelTest = new UserModel();
+        userModelTest.setLoginName(loginName);
+        userModelTest.setPassword("123abc");
+        userModelTest.setEmail("12345@abc.com");
+        userModelTest.setMobile("13900000000");
+        userModelTest.setRegisterTime(new Date());
+        userModelTest.setStatus(UserStatus.ACTIVE);
+        userModelTest.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
+        return userModelTest;
+    }
+
+    private LoanDetailsModel createLoanDetails(long loanId){
+        LoanDetailsModel loanDetailsModel = new LoanDetailsModel();
+        loanDetailsModel.setId(idGenerator.generate());
+        loanDetailsModel.setDeclaration("声明材料");
+        loanDetailsModel.setExtraSource(Lists.newArrayList(Source.WEB));
+        loanDetailsModel.setLoanId(loanId);
+        return loanDetailsModel;
+    }
+
+    private List<ExtraLoanRateModel> createExtraLoanRate(long loanId) {
+        ExtraLoanRateModel model = new ExtraLoanRateModel();
+        model.setLoanId(loanId);
+        model.setExtraRateRuleId(100001);
+        model.setCreatedTime(new Date());
+        model.setMinInvestAmount(100000);
+        model.setMaxInvestAmount(1000000);
+        model.setRate(0.1);
+        ExtraLoanRateModel model2 = new ExtraLoanRateModel();
+        model2.setLoanId(loanId);
+        model2.setExtraRateRuleId(100001);
+        model2.setCreatedTime(new Date());
+        model2.setMinInvestAmount(1000000);
+        model2.setMaxInvestAmount(5000000);
+        model2.setRate(0.3);
+        ExtraLoanRateModel model3 = new ExtraLoanRateModel();
+        model3.setLoanId(loanId);
+        model3.setExtraRateRuleId(100001);
+        model3.setCreatedTime(new Date());
+        model3.setMinInvestAmount(5000000);
+        model3.setMaxInvestAmount(0);
+        model3.setRate(0.5);
+        List<ExtraLoanRateModel> list = Lists.newArrayList();
+        list.add(model);
+        list.add(model2);
+        list.add(model3);
+        return list;
+    }
+
+
+    private LoanModel createLoanByUserId(String userId, long loanId) {
+        LoanDto loanDto = new LoanDto();
+        loanDto.setLoanerLoginName(userId);
+        loanDto.setLoanerUserName("借款人");
+        loanDto.setLoanerIdentityNumber("111111111111111111");
+        loanDto.setAgentLoginName(userId);
+        loanDto.setBasicRate("16.00");
+        loanDto.setId(loanId);
+        loanDto.setProjectName("店铺资金周转");
+        loanDto.setActivityRate("12");
+        loanDto.setShowOnHome(true);
+        loanDto.setPeriods(30);
+        loanDto.setActivityType(ActivityType.NEWBIE);
+        loanDto.setContractId(123);
+        loanDto.setDescriptionHtml("asdfasdf");
+        loanDto.setDescriptionText("asdfasd");
+        loanDto.setFundraisingEndTime(new Date());
+        loanDto.setFundraisingStartTime(new Date());
+        loanDto.setInvestIncreasingAmount("1");
+        loanDto.setLoanAmount("10000");
+        loanDto.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
+        loanDto.setMaxInvestAmount("100000000000");
+        loanDto.setMinInvestAmount("0");
+        loanDto.setCreatedTime(new Date());
+        loanDto.setLoanStatus(LoanStatus.RAISING);
+        loanDto.setProductType(ProductType.EXPERIENCE);
+        loanDto.setPledgeType(PledgeType.HOUSE);
+        loanDto.setVerifyTime(DateTime.now().toDate());
+        loanDto.setRecheckTime(DateTime.now().toDate());
+        LoanModel loanModel = new LoanModel(loanDto);
+        loanModel.setStatus(LoanStatus.RAISING);
+        loanMapper.create(loanModel);
+        return loanModel;
     }
 }

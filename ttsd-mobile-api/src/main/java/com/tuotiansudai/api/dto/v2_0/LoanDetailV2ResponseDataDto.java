@@ -164,7 +164,7 @@ public class LoanDetailV2ResponseDataDto extends BaseResponseDataDto {
     private PledgeEnterpriseDto pledgeEnterpriseDto;
 
     @ApiModelProperty(value = "是否可以转让", example = "true")
-    private boolean nonTransferable;
+    private boolean transferable;
 
     @ApiModelProperty(value = "万元收益", example = "1000")
     private String interestPerTenThousands;
@@ -569,19 +569,19 @@ public class LoanDetailV2ResponseDataDto extends BaseResponseDataDto {
         this.pledgeEnterpriseDto = pledgeEnterpriseDto;
     }
 
-    public boolean isNonTransferable() {
-        return nonTransferable;
-    }
-
-    public void setNonTransferable(boolean nonTransferable) {
-        this.nonTransferable = nonTransferable;
-    }
-
     public String getInterestPerTenThousands() {
         return interestPerTenThousands;
     }
 
     public void setInterestPerTenThousands(String interestPerTenThousands) {
         this.interestPerTenThousands = interestPerTenThousands;
+    }
+
+    public boolean isTransferable() {
+        return transferable;
+    }
+
+    public void setTransferable(boolean transferable) {
+        this.transferable = transferable;
     }
 }

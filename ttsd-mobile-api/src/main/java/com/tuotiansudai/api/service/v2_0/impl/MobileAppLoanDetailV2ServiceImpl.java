@@ -7,6 +7,7 @@ import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.dto.v1_0.LoanStatus;
 import com.tuotiansudai.api.dto.v2_0.*;
 import com.tuotiansudai.api.service.v2_0.MobileAppLoanDetailV2Service;
+import com.tuotiansudai.api.service.v3_0.impl.MobileAppLoanListV3ServiceImpl;
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
@@ -118,9 +119,9 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
         dataDto.setDuration(loanModel.getDuration());
         String repayTypeName = loanModel.getType().getRepayType();
         dataDto.setRepayTypeName(repayTypeName);
-        dataDto.setNonTransferable(loanDetailsModelActivity.getNonTransferable());
+        dataDto.setTransferable(loanDetailsModelActivity.getNonTransferable());
 
-        long expectedInterest = investService.estimateInvestIncome(loanModel.getId(), loginName, MobileAppLoanListV2ServiceImpl.DEFAULT_INVEST_AMOUNT);
+        long expectedInterest = investService.estimateInvestIncome(loanModel.getId(), loginName, MobileAppLoanListV3ServiceImpl.DEFAULT_INVEST_AMOUNT);
         dataDto.setInterestPerTenThousands(String.valueOf(expectedInterest));
 
         String interestPointName = loanModel.getType().getInterestPointName();
@@ -163,7 +164,7 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
         LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loanModel.getId());
         if (loanDetailsModel != null) {
             dataDto.setDeclaration(loanDetailsModel.getDeclaration());
-            dataDto.setExtraSource(loanDetailsModel.getExtraSource() !=null && loanDetailsModel.getExtraSource().size() ==1 && loanDetailsModel.getExtraSource().contains(Source.WEB) ? Source.WEB.name() : "");
+            dataDto.setExtraSource(loanDetailsModel.getExtraSource() != null && loanDetailsModel.getExtraSource().size() == 1 && loanDetailsModel.getExtraSource().contains(Source.WEB) ? Source.WEB.name() : "");
         }
         dataDto.setActivityType(loanModel.getActivityType());
         dataDto.setRemainTime(calculateRemainTime(loanModel.getFundraisingEndTime(), loanModel.getStatus()));
@@ -197,17 +198,17 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
                     }
             }
         }
-        if(loanModel.getPledgeType() == PledgeType.ENTERPRISE){
+        if (loanModel.getPledgeType() == PledgeType.ENTERPRISE) {
             LoanerEnterpriseDetailsModel loanerEnterpriseDetailsModel = loanerEnterpriseDetailsMapper.getByLoanId(loanModel.getId());
-            if(loanerEnterpriseDetailsModel != null){
+            if (loanerEnterpriseDetailsModel != null) {
                 EnterpriseDto enterpriseDto = new EnterpriseDto(loanerEnterpriseDetailsModel);
-                enterpriseDto.setShareholder(StringUtils.rightPad(StringUtils.left(enterpriseDto.getShareholder(),1),2,"某"));
-                enterpriseDto.setJuristicPerson(StringUtils.rightPad(StringUtils.left(enterpriseDto.getJuristicPerson(),1),2,"某"));
+                enterpriseDto.setShareholder(StringUtils.rightPad(StringUtils.left(enterpriseDto.getShareholder(), 1), 2, "某"));
+                enterpriseDto.setJuristicPerson(StringUtils.rightPad(StringUtils.left(enterpriseDto.getJuristicPerson(), 1), 2, "某"));
 
                 dataDto.setEnterprise(enterpriseDto);
             }
             PledgeEnterpriseModel pledgeEnterpriseModel = pledgeEnterpriseMapper.getByLoanId(loanModel.getId());
-            if(pledgeEnterpriseModel != null){
+            if (pledgeEnterpriseModel != null) {
                 dataDto.setPledgeEnterpriseDto(new PledgeEnterpriseDto(pledgeEnterpriseModel));
             }
         }

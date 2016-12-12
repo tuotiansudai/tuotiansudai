@@ -91,8 +91,8 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
         LoanModel achievementLoanModel = loanMapper.findById(loanId);
         List<LoanAchievementsResponseDto> loanAchievementsResponseDtoList = Lists.newArrayList(
                 getLoanAchievementsResponseDto(UserGroup.FIRST_INVEST_ACHIEVEMENT, achievementLoanModel.getFirstInvestAchievementId(), loginName),
-                getLoanAchievementsResponseDto(UserGroup.LAST_INVEST_ACHIEVEMENT, achievementLoanModel.getLastInvestAchievementId(), loginName),
-                getLoanAchievementsResponseDto(UserGroup.MAX_AMOUNT_ACHIEVEMENT, achievementLoanModel.getMaxAmountAchievementId(), loginName));
+                getLoanAchievementsResponseDto(UserGroup.MAX_AMOUNT_ACHIEVEMENT, achievementLoanModel.getMaxAmountAchievementId(), loginName),
+                getLoanAchievementsResponseDto(UserGroup.LAST_INVEST_ACHIEVEMENT, achievementLoanModel.getLastInvestAchievementId(), loginName));
 
         dto.setCode(ReturnMessage.SUCCESS.getCode());
         dto.setMessage(ReturnMessage.SUCCESS.getMsg());
@@ -213,16 +213,14 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
 
     }
 
-    private LoanAchievementsResponseDto
-    getLoanAchievementsResponseDto(UserGroup userGroup, Long investId, String loginName) {
+    private LoanAchievementsResponseDto getLoanAchievementsResponseDto(UserGroup userGroup, Long investId, String loginName) {
         LoanAchievementsResponseDto investAchievementResponseDto = new LoanAchievementsResponseDto(userGroup);
         List<CouponModel> fistInvestCoupon = couponService.findCouponByUserGroup(Lists.newArrayList(userGroup));
 
         fistInvestCoupon.stream().forEach(
-                input -> investAchievementResponseDto.setCoupon(investAchievementResponseDto.getCoupon() +
-                        (input.getCouponType().equals(CouponType.RED_ENVELOPE) ?
-                                String.format(RED_ENVELOPE_DESCRIPTION, AmountConverter.convertCentToString(input.getAmount())) :
-                                String.format(INVEST_COUPON_DESCRIPTION, (input.getRate() * 100) + "%"))));
+                input -> investAchievementResponseDto.getCoupon().add((input.getCouponType().equals(CouponType.RED_ENVELOPE) ?
+                        String.format(RED_ENVELOPE_DESCRIPTION, AmountConverter.convertCentToString(input.getAmount()).replaceAll("\\.00", "")):
+                        String.format(INVEST_COUPON_DESCRIPTION, (input.getRate() * 100) + "%").replaceAll("\\.0", ""))));
 
         if(investId != null){
             UserModel userModel = userMapper.findByLoginName(investMapper.findById(investId).getLoginName());

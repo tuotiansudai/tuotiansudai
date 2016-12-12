@@ -82,9 +82,6 @@ public class LoanResponseDataDto {
     @ApiModelProperty(value = "抵押", example = "HOUSE,VEHICLE,ENTERPRISE,NONE")
     private PledgeType pledgeType;
 
-    @ApiModelProperty(value = "万元收益", example = "200")
-    private String interestPerTenThousands;
-
     public String getLoanId() { return loanId; }
 
     public void setLoanId(String loanId) { this.loanId = loanId; }
@@ -225,11 +222,4 @@ public class LoanResponseDataDto {
         this.pledgeType = pledgeType;
     }
 
-    public String getInterestPerTenThousands() {
-        return interestPerTenThousands;
-    }
-
-    public void setInterestPerTenThousands(String interestPerTenThousands) {
-        this.interestPerTenThousands = interestPerTenThousands;
-    }
 }

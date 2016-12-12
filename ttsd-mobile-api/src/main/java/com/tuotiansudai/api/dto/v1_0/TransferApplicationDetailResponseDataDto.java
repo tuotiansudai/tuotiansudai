@@ -63,7 +63,7 @@ public class TransferApplicationDetailResponseDataDto extends BaseResponseDataDt
     @ApiModelProperty(value = "截止倒计时", example = "100")
     private String countdown;
 
-    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
     public String getTransferApplicationId() {
         return transferApplicationId;

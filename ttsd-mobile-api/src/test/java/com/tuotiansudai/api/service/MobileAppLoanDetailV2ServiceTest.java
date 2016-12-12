@@ -67,7 +67,7 @@ public class MobileAppLoanDetailV2ServiceTest extends ServiceTestBase{
         baseParam.setUserId(fakeUserModel.getLoginName());
         loanDetailV2RequestDto.setBaseParam(baseParam);
         BaseResponseDto<LoanDetailV2ResponseDataDto>  loanDetail = mobileAppLoanDetailV2Service.findLoanDetail(loanDetailV2RequestDto);
-        assertTrue(loanDetail.getData().isNonTransferable());
+        assertTrue(loanDetail.getData().isTransferable());
         assertTrue(Long.parseLong(loanDetail.getData().getInterestPerTenThousands()) == 42904l);
     }
 
