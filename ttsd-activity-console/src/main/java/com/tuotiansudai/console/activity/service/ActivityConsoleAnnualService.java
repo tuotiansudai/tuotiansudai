@@ -37,7 +37,7 @@ public class ActivityConsoleAnnualService {
 
     public BasePaginationDataDto<AnnualPrizeDto> findAnnualList(Integer index, Integer pageSize, String mobile) {
         List<AnnualPrizeModel> annualPrizeModels = annualPrizeMapper.findAnnualPrizeModels(mobile, index, pageSize);
-        int count = annualPrizeMapper.findAnnualPrizeCount(mobile);
+        long count = annualPrizeMapper.findAnnualPrizeCount(mobile);
 
         List<AnnualPrizeDto> transform = Lists.transform(annualPrizeModels, annual -> {
             List<String> rewardList = new ArrayList<>();

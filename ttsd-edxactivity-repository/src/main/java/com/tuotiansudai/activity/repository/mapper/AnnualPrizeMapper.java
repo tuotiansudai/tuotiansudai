@@ -18,7 +18,7 @@ public interface AnnualPrizeMapper {
                                                          @Param(value = "index") Integer index,
                                                          @Param(value = "pageSize") Integer pageSize);
 
-    int findAnnualPrizeCount(@Param(value = "mobile") String mobile);
+    long findAnnualPrizeCount(@Param(value = "mobile") String mobile);
 
     AnnualPrizeModel find(@Param(value = "mobile") String mobile);
 
