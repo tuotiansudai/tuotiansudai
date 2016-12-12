@@ -1,3 +1,8 @@
+@charset "utf-8";
+@import "module/login_tip";
+@import "module/register_common";
+@import "module/gift_circle_tip";
+
 @mixin range-line($angle) {
 
 background-image:linear-gradient($angle, rgba(254, 236, 0, 0.4) 10%, transparent 15%, transparent 50%, rgba(254, 236, 0, 0.4) 70%, rgba(254, 236, 0, 0.4) 67%, transparent 67%, transparent);
