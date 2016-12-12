@@ -38,11 +38,12 @@ public class AnnualActivityService {
         return param;
     }
 
-    public String[] getTaskProgress(long investAmount){
+    public String[] getTaskProgress(String investAmount){
+        long amount = investAmount.equals("0.00") ? 0 : Long.parseLong(investAmount);
         String[] task = new String[]{"1", "1", "1", "1", "1", "1", "1", "1", "1", "1"};
 
         for(int i = 0; i < investTaskList.size(); i ++){
-            if(investAmount >= investTaskList.get(i)){
+            if(amount >= investTaskList.get(i)){
                 task[i] = "1";
             }
         }
