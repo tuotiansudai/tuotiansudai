@@ -62,7 +62,6 @@ public class CouponAlertServiceImpl implements CouponAlertService {
             String redisValue = redisWrapperClient.hget(COUPON_ALERT_KEY, loginName);
             Set<Long> userCouponIds = objectMapper.readValue(redisValue, new TypeReference<Set<Long>>() {
             });
-            List<Long> Experience588RedEnvelopeList = Lists.newArrayList(315L, 316L, 317L, 318L, 319L);
             CouponAlertDto newbieCouponAlertDto = new CouponAlertDto();
             newbieCouponAlertDto.setCouponType(CouponType.NEWBIE_COUPON);
             CouponAlertDto redEnvelopeCouponAlertDto = new CouponAlertDto();
@@ -80,7 +79,7 @@ public class CouponAlertServiceImpl implements CouponAlertService {
                             newbieCouponAlertDto.setExpiredDate(userCouponModel.getEndTime());
                         }
 
-                        if (couponModel.getCouponType() == CouponType.RED_ENVELOPE && couponModel.getUserGroup() == UserGroup.EXPERIENCE_INVEST_SUCCESS && Experience588RedEnvelopeList.contains(couponModel.getId())) {
+                        if (couponModel.getCouponType() == CouponType.RED_ENVELOPE && couponModel.getUserGroup() == UserGroup.EXPERIENCE_INVEST_SUCCESS) {
                             redEnvelopeCouponAlertDto.getCouponIds().add(userCouponModel.getCouponId());
                             redEnvelopeCouponAlertDto.setAmount(redEnvelopeCouponAlertDto.getAmount() + couponModel.getAmount());
                             redEnvelopeCouponAlertDto.setExpiredDate(userCouponModel.getEndTime());
