@@ -127,8 +127,10 @@ body {
       left: 32%;
       //transform: translateX(-50%);
       transform-origin: 50% 100%;
-      //animation: animate-egg 3s linear infinite;
 
+      &.win-result {
+        animation: animate-egg 3s linear infinite;
+      }
     }
     .gold-hammer {
       position: absolute;
@@ -392,6 +394,24 @@ body {
   }
 }
 
+//弹框
+
+.tip-list {
+  background: #fff url("/activity/images/new-year/bg-pop-newyear.jpg") no-repeat left top;
+  background-size: 100%;
+  border:2px solid rgba(114,31,0,0.7);
+  .text-tip p.des-text {
+    font-size: 24px;
+    padding-top:15px;
+  }
+  .btn-list a {
+    background: #ffea00;
+    border-radius:0;
+    color:#803c1a;
+  }
+
+}
+
 @media screen and(max-width: 700px){
   .main-frame {
     font-size:12px;
@@ -463,6 +483,7 @@ body {
           width:100%;
           li {
             font-size: 13px;
+            cursor: pointer;
           }
         }
       }
