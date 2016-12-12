@@ -91,9 +91,7 @@ public class ExportController {
     }
 
     @RequestMapping(value = "/export-not-work", method = RequestMethod.GET)
-    public void notWorkExport(@RequestParam(name = "mobile", required = false) String mobile,
-                              @RequestParam(name = "activityCategory", required = false, defaultValue = "AUTUMN_PRIZE") ActivityCategory activityCategory,
-                              HttpServletResponse response) throws IOException {
+    public void notWorkExport(HttpServletResponse response) throws IOException {
         response.setCharacterEncoding("UTF-8");
         try {
             response.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode(CsvHeaderType.NotWorkHeader.getDescription() + new DateTime().toString("yyyyMMddHHmmSS") + ".csv", "UTF-8"));
@@ -102,8 +100,23 @@ public class ExportController {
         }
         response.setContentType("application/csv");
 
-        List<List<String>> csvData = activityConsoleExportService.buildNotWorkCsvList(mobile, activityCategory);
+        List<List<String>> csvData = activityConsoleExportService.buildNotWorkCsvList();
 
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.NotWorkHeader, csvData, response.getOutputStream());
+    }
+
+    @RequestMapping(value = "/export-annual", method = RequestMethod.GET)
+    public void annualExport(HttpServletResponse response) throws IOException {
+        response.setCharacterEncoding("UTF-8");
+        try {
+            response.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode(CsvHeaderType.AnnualHeader.getDescription() + new DateTime().toString("yyyyMMddHHmmSS") + ".csv", "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            //logger.error(e.getLocalizedMessage(), e);
+        }
+        response.setContentType("application/csv");
+
+        List<List<String>> csvData = activityConsoleExportService.buildAnnualCsvList();
+
+        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.AnnualHeader, csvData, response.getOutputStream());
     }
 }

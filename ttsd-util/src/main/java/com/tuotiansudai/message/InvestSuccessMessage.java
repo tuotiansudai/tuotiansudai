@@ -7,13 +7,16 @@ public class InvestSuccessMessage {
 
     private LoanDetailInfo loanDetailInfo;
 
+    private UserInfo userInfo;
+
     public InvestSuccessMessage(){
 
     }
 
-    public InvestSuccessMessage(InvestInfo investInfo, LoanDetailInfo loanDetailInfo) {
+    public InvestSuccessMessage(InvestInfo investInfo, LoanDetailInfo loanDetailInfo, UserInfo userInfo) {
         this.investInfo = investInfo;
         this.loanDetailInfo = loanDetailInfo;
+        this.userInfo = userInfo;
     }
 
     public InvestInfo getInvestInfo() {
@@ -32,4 +35,11 @@ public class InvestSuccessMessage {
         this.loanDetailInfo = loanDetailInfo;
     }
 
+    public UserInfo getUserInfo() {
+        return userInfo;
+    }
+
+    public void setUserInfo(UserInfo userInfo) {
+        this.userInfo = userInfo;
+    }
 }

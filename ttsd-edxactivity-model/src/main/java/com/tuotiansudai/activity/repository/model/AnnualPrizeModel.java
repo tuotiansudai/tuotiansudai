@@ -7,17 +7,37 @@ import java.util.Date;
 public class AnnualPrizeModel implements Serializable {
     private long id;
     private String loginName;
+    private String userName;
+    private String mobile;
     private long investAmount;
     private boolean firstSendCoupon;
     private boolean secondSendCoupon;
     private Date updatedTime;
     private Date createdTime;
 
-    public AnnualPrizeModel(String loginName, long investAmount, boolean firstSendCoupon, boolean secondSendCoupon) {
+    public AnnualPrizeModel(String loginName,String userName, String mobile, long investAmount, boolean firstSendCoupon, boolean secondSendCoupon) {
         this.loginName = loginName;
+        this.userName = userName;
+        this.mobile = mobile;
         this.investAmount = investAmount;
         this.firstSendCoupon = firstSendCoupon;
         this.secondSendCoupon = secondSendCoupon;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 
     public long getId() {

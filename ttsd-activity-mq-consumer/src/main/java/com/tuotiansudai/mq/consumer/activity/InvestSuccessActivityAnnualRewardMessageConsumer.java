@@ -7,6 +7,7 @@ import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.message.InvestInfo;
 import com.tuotiansudai.message.InvestSuccessMessage;
 import com.tuotiansudai.message.LoanDetailInfo;
+import com.tuotiansudai.message.UserInfo;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
 import com.tuotiansudai.util.JsonConverter;
@@ -71,6 +72,7 @@ public class InvestSuccessActivityAnnualRewardMessageConsumer implements Message
         Date nowDate = DateTime.now().toDate();
         InvestInfo investInfo = investSuccessMessage.getInvestInfo();
         LoanDetailInfo loanDetailInfo = investSuccessMessage.getLoanDetailInfo();
+        UserInfo userInfo = investSuccessMessage.getUserInfo();
 
         logger.info("[MQ] ready to consume activity annual message: invest reward.");
         Date startTime = DateTime.parse(annualTime.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
@@ -107,7 +109,7 @@ public class InvestSuccessActivityAnnualRewardMessageConsumer implements Message
                     secondSendCoupon = true;
                 }
 
-                annualPrizeModel = new AnnualPrizeModel(investInfo.getLoginName(), investInfo.getAmount(), firstSendCoupon, secondSendCoupon);
+                annualPrizeModel = new AnnualPrizeModel(userInfo.getLoginName(), userInfo.getUserName(), userInfo.getMobile(), investInfo.getAmount(), firstSendCoupon, secondSendCoupon);
                 annualPrizeMapper.create(annualPrizeModel);
             }
 

@@ -14,11 +14,13 @@ public interface AnnualPrizeMapper {
     void create(AnnualPrizeModel annualPrizeModel);
 
 
-    List<AnnualPrizeModel> findAnnualPrizeModels(@Param(value = "loginName") String loginName,
+    List<AnnualPrizeModel> findAnnualPrizeModels(@Param(value = "mobile") String mobile,
                                                          @Param(value = "index") Integer index,
                                                          @Param(value = "pageSize") Integer pageSize);
 
-    AnnualPrizeModel find(@Param(value = "loginName") String loginName);
+    int findAnnualPrizeCount(@Param(value = "mobile") String mobile);
+
+    AnnualPrizeModel find(@Param(value = "mobile") String mobile);
 
     void update(AnnualPrizeModel annualPrizeModel);
 

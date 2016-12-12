@@ -9,6 +9,8 @@
     <resultMap id="annualPrizeModel" type="com.tuotiansudai.activity.repository.model.AnnualPrizeModel">
         <id column="id" property="id"></id>
         <result column="login_name" property="loginName"></result>
+        <result column="user_name" property="userName"></result>
+        <result column="mobile" property="mobile"></result>
         <result column="invest_amount" property="investAmount"></result>
         <result column="first_send_coupon" property="firstSendCoupon"></result>
         <result column="second_send_coupon" property="secondSendCoupon"></result>
@@ -19,11 +21,13 @@
     <insert id="create" parameterType="annualPrizeModel" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO `edxactivity`.`annual_prize`
         (`login_name`,
+        `user_name`,
+        `mobile`,
         `invest_amount`,
         `first_send_coupon`,
         `second_send_coupon`,
         `created_time`)
-        VALUES(#{loginName},#{investAmount},#{firstSendCoupon},#{secondSendCoupon},now())
+        VALUES(#{loginName},#{userName},#{mobile},#{investAmount},#{firstSendCoupon},#{secondSendCoupon},now())
     </insert>
 
     <update id="update" parameterType="annualPrizeModel">
@@ -38,14 +42,20 @@
 
     <select id="findAnnualPrizeModels" parameterType="map" resultMap="annualPrizeModel">
         select * from `edxactivity`.`annual_prize` a
+        <if test="mobile != null and mobile != null">
+            where mobile = #{mobile}
+        </if>
         order by a.created_time DESC
         <if test="index != null and pageSize != null">
             limit #{index}, #{pageSize}
         </if>
     </select>
 
-    <select id="findAnnualPrizeModels" parameterType="map" resultMap="annualPrizeModel">
-        select * from `edxactivity`.`annual_prize` a where login_name = #{loginName}
+    <select id="findAnnualPrizeCount" resultType="long">
+        select count(1) from `edxactivity`.`annual_prize`
+        <if test="mobile != null and mobile != null">
+            where mobile = #{mobile}
+        </if>
     </select>
 
 </mapper>
