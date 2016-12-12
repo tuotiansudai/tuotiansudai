@@ -25,13 +25,13 @@ public class AnnualActivityController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView travelPrize() {
-        ModelAndView modelAndView = new ModelAndView("/activities/mid-autumn", "responsive", true);
+        ModelAndView modelAndView = new ModelAndView("/activities/new-year", "responsive", true);
         modelAndView.addObject("loginName", LoginUserInfo.getLoginName());
         modelAndView.addObject("time", lotteryDrawActivityService.countDrawLotteryTime(LoginUserInfo.getMobile(), ActivityCategory.ANNUAL_ACTIVITY));
         Map<String, String> investAmountTaskMap = annualActivityService.getInvestAmountTask(LoginUserInfo.getLoginName());
         modelAndView.addObject("investAmount", investAmountTaskMap.get("investAmount"));
         modelAndView.addObject("nextAmount", investAmountTaskMap.get("nextAmount"));
-        modelAndView.addObject("task", annualActivityService.getTaskProgress(Long.parseLong(investAmountTaskMap.get("investAmount"))));
+        modelAndView.addObject("task", annualActivityService.getTaskProgress(investAmountTaskMap.get("investAmount")));
         return modelAndView;
     }
 }
