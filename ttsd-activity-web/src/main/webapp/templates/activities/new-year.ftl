@@ -48,21 +48,6 @@
                 </ul>
                 <div class="record-list">
                     <ul class="record-model user-record" >
-                        <li>恭喜130****7149抽中了新马泰七日游</li>
-                        <li>恭喜130****7149抽中了新马泰七日游</li>
-                        <li>恭喜130****7149抽中了新马泰七日游</li>
-                        <li>恭喜130****7149抽中了新马泰七日游</li>
-                        <li>恭喜130****7149抽中了新马泰七日游</li>
-                        <li>恭喜130****7149抽中了新马泰七日游</li>
-                        <li>恭喜130****7149抽中了新马泰七日游</li>
-                        <li>恭喜130****7149抽中了新马泰七日游</li>
-                        <li>恭喜130****7149抽中了新马泰七日游</li>
-                        <li>恭喜130****7149抽中了新马泰七日游</li>
-                        <li>恭喜130****7149抽中了新马泰七日游</li>
-                        <li>恭喜130****7149抽中了新马泰七日游</li>
-                        <li>恭喜130****7149抽中了新马泰七日游</li>
-                        <li>恭喜130****7149抽中了新马泰七日游</li>
-                        <li>恭喜130****7149抽中了新马泰七日游</li>
                     </ul>
                     <ul class="record-model own-record" style="display: none"></ul>
                 </div>
@@ -266,6 +251,14 @@
     </div>
 
 </div>
+        <#include "login-tip.ftl" />
+        <a href="javascript:void(0)" class="show-login no-login-text"></a>
+
+        <div class="tip-list" style="display: none">
+            <div class="close-btn go-close"></div>
+            <div class="text-tip"></div>
+            <div class="btn-list"></div>
+        </div>
 
 </div>
 </@global.main>
