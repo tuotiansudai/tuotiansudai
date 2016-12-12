@@ -71,7 +71,7 @@ public abstract class MQClient {
         }
         synchronized (lockObject) {
             try {
-                logger.info("[MQ] pause to listen queue {} ", queue.getQueueName());
+                logger.warn("[MQ] pause to listen queue {} ", queue.getQueueName());
                 lockObject.wait(TIME_SLICE_SECONDS * 6 * 30 * 1000L);
                 if (continueRunning) {
                     logger.info("[MQ] resume to listen queue {}", queue.getQueueName());
