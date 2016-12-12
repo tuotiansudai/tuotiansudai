@@ -1,9 +1,12 @@
 package com.tuotiansudai.mq.consumer.user;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.tuotiansudai.membership.service.MembershipInvestService;
+import com.tuotiansudai.message.InvestInfo;
+import com.tuotiansudai.message.InvestSuccessMessage;
+import com.tuotiansudai.message.LoanDetailInfo;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.model.InvestModel;
+import com.tuotiansudai.util.JsonConverter;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -15,9 +18,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
@@ -26,34 +27,45 @@ public class InvestSuccessMembershipUpdateMessageConsumerTest {
     @MockBean
     private MembershipInvestService membershipInvestService;
 
-    @MockBean
-    private InvestMapper investMapper;
-
     @Autowired
     @Qualifier("investSuccessMembershipUpdateMessageConsumer")
     private MessageConsumer consumer;
-
 
     @Test
     @Transactional
     public void shouldConsume() {
 
-        InvestModel investModel = new InvestModel();
-        investModel.setLoginName("loginName");
-        investModel.setAmount(1000L);
-        investModel.setId(1);
+        InvestSuccessMessage investSuccessMessage = buildMockedInvestSuccessMessage();
 
         final ArgumentCaptor<String> loginNameCaptor = ArgumentCaptor.forClass(String.class);
         final ArgumentCaptor<Long> amountCaptor = ArgumentCaptor.forClass(Long.class);
         final ArgumentCaptor<Long> investIdCaptor = ArgumentCaptor.forClass(Long.class);
 
-        when(investMapper.findById(anyLong())).thenReturn(investModel);
-
         doNothing().when(membershipInvestService).afterInvestSuccess(loginNameCaptor.capture(), amountCaptor.capture(), investIdCaptor.capture());
 
-        consumer.consume("1");
+        try {
+            consumer.consume(JsonConverter.writeValueAsString(investSuccessMessage));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
         assertEquals("loginName", loginNameCaptor.getValue());
         assertEquals(1000L, amountCaptor.getValue().longValue());
         assertEquals(1, investIdCaptor.getValue().longValue());
     }
+
+    private InvestSuccessMessage buildMockedInvestSuccessMessage() {
+        InvestInfo investInfo = new InvestInfo();
+        LoanDetailInfo loanDetailInfo = new LoanDetailInfo();
+
+        investInfo.setInvestId(1);
+        investInfo.setLoginName("loginName");
+        investInfo.setAmount(1000L);
+        investInfo.setStatus("SUCCESS");
+        investInfo.setTransferStatus("TRANSFERABLE");
+
+        InvestSuccessMessage investSuccessMessage = new InvestSuccessMessage(investInfo, loanDetailInfo);
+        return investSuccessMessage;
+    }
+
 }
