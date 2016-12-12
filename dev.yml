@@ -276,7 +276,7 @@ diagnosis:
   links:
     - "redis-server"
 
-diagnosis:
+worker-monitor:
   image: "anapsix/alpine-java:8_jdk"
   environment:
     - "TZ=Asia/Shanghai"
