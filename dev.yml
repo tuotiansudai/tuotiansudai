@@ -276,6 +276,18 @@ diagnosis:
   links:
     - "redis-server"
 
+diagnosis:
+  image: "anapsix/alpine-java:8_jdk"
+  environment:
+    - "TZ=Asia/Shanghai"
+    - "JAVA_OPTS=-Xmx256m"
+  volumes:
+    - ./ttsd-worker-monitor/build/libs:/opt/worker
+    - /var/log/tuotian/worker-monitor:/var/log/job-worker
+  command: bash -c "java -Xmx256m -jar /opt/worker/ttsd-worker-monitor.jar"
+  links:
+    - "redis-server"
+
 static-server:
   image: "nginx"
   volumes:

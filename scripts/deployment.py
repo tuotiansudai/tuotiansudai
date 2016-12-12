@@ -18,9 +18,9 @@ class Deployment(object):
         self.build_and_unzip_worker()
         self.build_mq_consumer()
         self.build_diagnosis()
+        self.build_worker_monitor()
         self.mk_static_package()
         self.init_docker()
-        self.check_worker_status()
 
     def clean(self):
         print "Cleaning..."
@@ -58,6 +58,10 @@ class Deployment(object):
         print "Making diagnosis build..."
         sh('cd ./ttsd-diagnosis && {0} distZip'.format(self._gradle))
         sh('cd ./ttsd-diagnosis/build/distributions && unzip \*.zip')
+
+    def build_worker_monitor(self):
+        print "Making diagnosis build..."
+        sh('cd ./ttsd-worker-monitor && {0} bootRepackage'.format(self._gradle))
 
     def mkwar(self):
         print "Making war..."
@@ -113,8 +117,3 @@ class Deployment(object):
     def jcversion(self):
         print "Starting jcmin..."
         sh('{0} jcversion'.format(self._paver))
-
-    def check_worker_status(self):
-        print "Waiting to check worker status"
-        time.sleep(60)
-        sh('cd ./ttsd-worker-monitor && {0} consumerCheck'.format(self._gradle))
