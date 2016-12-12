@@ -2,6 +2,7 @@ package com.tuotiansudai.paywrapper.aspect;
 
 import com.google.common.base.Strings;
 import com.tuotiansudai.activity.repository.mapper.NotWorkMapper;
+import com.tuotiansudai.activity.repository.model.ActivityCategory;
 import com.tuotiansudai.activity.repository.model.NotWorkModel;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.dto.BaseDataDto;

@@ -3,6 +3,7 @@ package com.tuotiansudai.console.activity.service;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.tuotiansudai.activity.repository.dto.AnnualPrizeDto;
 import com.tuotiansudai.activity.repository.dto.AutumnExportDto;
 import com.tuotiansudai.activity.repository.dto.NotWorkDto;
 import com.tuotiansudai.activity.repository.mapper.IPhone7InvestLotteryMapper;
@@ -46,6 +47,9 @@ public class ActivityConsoleExportService {
 
     @Autowired
     private UserLotteryPrizeMapper userLotteryPrizeMapper;
+
+    @Autowired
+    private ActivityConsoleAnnualService activityConsoleAnnualService;
 
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.mid.autumn.startTime}\")}")
     private Date activityAutumnStartTime;
@@ -163,7 +167,7 @@ public class ActivityConsoleExportService {
     }
 
     public Map getAllFamilyMap(Date activityMinAutumnStartTime, Date activityMinAutumnEndTime) {
-        List<UserModel> userModels = userMapper.findUsersByRegisterTimeOrReferrer(activityMinAutumnStartTime, activityMinAutumnEndTime,null);
+        List<UserModel> userModels = userMapper.findUsersByRegisterTimeOrReferrer(activityMinAutumnStartTime, activityMinAutumnEndTime, null);
 
         Map<String, List<String>> allFamily = new LinkedHashMap<>();
 
@@ -218,5 +222,13 @@ public class ActivityConsoleExportService {
         List<NotWorkDto> notWorkDtos = activityConsoleNotWorkService.findNotWorkPagination(index, pageSize).getRecords();
 
         return notWorkDtos.stream().map(ExportCsvUtil::dtoToStringList).collect(Collectors.toList());
+    }
+
+    public List<List<String>> buildAnnualCsvList() {
+        //全部导出
+
+        List<AnnualPrizeDto> annualPrizeDtos = activityConsoleAnnualService.findAnnualList(null, null, null).getRecords();
+
+        return annualPrizeDtos.stream().map(ExportCsvUtil::dtoToStringList).collect(Collectors.toList());
     }
 }
