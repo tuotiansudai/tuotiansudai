@@ -23,7 +23,9 @@
             <img src="${staticServer}/activity/images/new-year/panzi.jpg" class="draw">
             <img src="${staticServer}/activity/images/new-year/egg.png" class="gold-egg">
             <img src="${staticServer}/activity/images/new-year/chuizi.png" class="gold-hammer">
-
+            <div class="my-chance">
+                <i></i><span>我的砸蛋机会：0次</span>
+            </div>
         </div>
 
         <div class="button-group tc">

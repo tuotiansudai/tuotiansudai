@@ -83,7 +83,7 @@ body {
     text-align: center;
     position: relative;
     min-height:750px;
-    cursor:url("/activity/images/new-year/test.png"),auto;
+    cursor:url("/activity/images/new-year/pointer.png"),auto;
 
     .draw {
       position: absolute;
@@ -110,6 +110,25 @@ body {
 
     }
 
+    .my-chance {
+      position: absolute;
+      bottom: 79px;
+      left: 50%;
+      z-index: 40;
+      transform: translateX(-50%);
+      color: #993706;
+      font-size: 20px;
+      i {
+        background: url(/activity/images/new-year/pointer.png) left center no-repeat;
+        display: inline-block;
+        width: 27px;
+        transform: rotateZ(30deg);
+        height: 40px;
+        background-size: 80%;
+        vertical-align: middle;
+        margin-top: -8px;
+      }
+    }
     @keyframes animate-egg {
       0% { transform: rotateZ(0deg); }
       25% { transform: rotateZ(3deg); }
