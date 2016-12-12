@@ -59,8 +59,8 @@ public class MembershipInvestServiceTest {
         long investId = random.nextLong();
 
         membershipInvestService.afterInvestSuccess(user.getLoginName(), 100L, investId);
-        MembershipModel purchasedMembership = membershipMapper.findById(userMembershipMapper.findCurrentMaxByLoginName(user.getLoginName()).getMembershipId());
-        assertEquals(membershipModelLevel5.getLevel(), purchasedMembership.getLevel());
+        MembershipModel currentMembership = membershipMapper.findById(userMembershipMapper.findCurrentMaxByLoginName(user.getLoginName()).getMembershipId());
+        assertEquals(membershipModelLevel5.getLevel(), currentMembership.getLevel());
     }
 
     @Test
@@ -74,8 +74,8 @@ public class MembershipInvestServiceTest {
         long investId = random.nextLong();
 
         membershipInvestService.afterInvestSuccess(user.getLoginName(), 100L, investId);
-        MembershipModel purchasedMembership = membershipMapper.findById(userMembershipMapper.findCurrentMaxByLoginName(user.getLoginName()).getMembershipId());
-        assertEquals(membershipModelLevel2.getLevel(), purchasedMembership.getLevel());
+        MembershipModel currentMembership = membershipMapper.findById(userMembershipMapper.findCurrentMaxByLoginName(user.getLoginName()).getMembershipId());
+        assertEquals(membershipModelLevel2.getLevel(), currentMembership.getLevel());
     }
 
     private UserModel createFakeUser(String loginName, String mobile, Date registerTime) {
