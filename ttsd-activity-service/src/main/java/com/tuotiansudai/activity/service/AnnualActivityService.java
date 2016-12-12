@@ -24,9 +24,9 @@ public class AnnualActivityService {
     @Value("#{'${activity.annual.period}'.split('\\~')}")
     private List<String> annualTime = Lists.newArrayList();
 
-    final private List<Long> investTaskList = Lists.newArrayList(500000L, 1000000L, 2000000L, 3000000L, 5000000L, 10000000L, 20000000L, 50000000L, 70000000L);
+    final private List<Long> investTaskList = Lists.newArrayList(500000L, 1000000L, 2000000L, 3000000L, 5000000L, 10000000L, 20000000L, 30000000L, 50000000L, 70000000L);
 
-    public Map<String, String> successInvestAmount(String loginName) {
+    public Map<String, String> getInvestAmountTask(String loginName) {
         Date startTime = DateTime.parse(annualTime.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
         Date endTime = DateTime.parse(annualTime.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
         long investAmount = investMapper.sumSuccessActivityInvestAmount(loginName, LotteryDrawActivityService.ACTIVITY_DESCRIPTION, startTime, endTime);
@@ -34,7 +34,19 @@ public class AnnualActivityService {
         Map<String, String> param = Maps.newHashMap();
         param.put("investAmount", AmountConverter.convertCentToString(investAmount));
         param.put("nextAmount", AmountConverter.convertCentToString(investTaskList.stream().filter(c -> c >= investAmount).findFirst().get() - investAmount));
+
         return param;
+    }
+
+    public String[] getTaskProgress(long investAmount){
+        String[] task = new String[]{"1", "1", "1", "1", "1", "1", "1", "1", "1", "1"};
+
+        for(int i = 0; i < investTaskList.size(); i ++){
+            if(investAmount >= investTaskList.get(i)){
+                task[i] = "1";
+            }
+        }
+        return task;
     }
 
 }

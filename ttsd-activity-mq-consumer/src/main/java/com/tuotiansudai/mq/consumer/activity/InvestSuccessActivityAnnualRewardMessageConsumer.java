@@ -1,9 +1,8 @@
 package com.tuotiansudai.mq.consumer.activity;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.activity.repository.mapper.NotWorkMapper;
-import com.tuotiansudai.activity.repository.model.ActivityCategory;
-import com.tuotiansudai.activity.repository.model.NotWorkModel;
+import com.tuotiansudai.activity.repository.mapper.AnnualPrizeMapper;
+import com.tuotiansudai.activity.repository.model.AnnualPrizeModel;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.message.InvestInfo;
 import com.tuotiansudai.message.InvestSuccessMessage;
@@ -33,12 +32,12 @@ public class InvestSuccessActivityAnnualRewardMessageConsumer implements Message
     private MQWrapperClient mqClient;
 
     @Autowired
-    private NotWorkMapper notWorkMapper;
+    private AnnualPrizeMapper annualPrizeMapper;
 
     @Value("#{'${activity.annual.period}'.split('\\~')}")
     private List<String> annualTime = Lists.newArrayList();
 
-    final private static String LOAN_ANNUAL_ACTIVITY_DESCRIPTION = "活动专享";
+    final private static String LOAN_ANNUAL_ACTIVITY_DESCRIPTION = "新年专享";
 
     final static private long INVEST_20_RED_ENVELOPE_LIMIT = 500000L;
 
@@ -62,7 +61,7 @@ public class InvestSuccessActivityAnnualRewardMessageConsumer implements Message
         }
     }
 
-    private void assignActivityAnnualInvestReward(String message){
+    private void assignActivityAnnualInvestReward(String message) {
         InvestSuccessMessage investSuccessMessage = null;
         try {
             investSuccessMessage = JsonConverter.readValue(message, InvestSuccessMessage.class);
@@ -79,25 +78,44 @@ public class InvestSuccessActivityAnnualRewardMessageConsumer implements Message
 
         if ((startTime.before(nowDate) && endTime.after(nowDate))
                 && loanDetailInfo.isActivity() && loanDetailInfo.getActivityDesc().equals(LOAN_ANNUAL_ACTIVITY_DESCRIPTION)
-                && (!investInfo.getTransferStatus().equals("SUCCESS") && investInfo.getStatus().equals("SUCCESS"))){
+                && (!investInfo.getTransferStatus().equals("SUCCESS") && investInfo.getStatus().equals("SUCCESS"))) {
 
-            NotWorkModel activityInvestRecord = notWorkMapper.findByLoginName(investInfo.getLoginName(), ActivityCategory.ANNUAL_ACTIVITY);
-            long originalInvestAmount = 0l;
-            if(null != activityInvestRecord){
-                originalInvestAmount = activityInvestRecord.getInvestAmount();
-                activityInvestRecord.setInvestAmount(activityInvestRecord.getInvestAmount() + investInfo.getAmount());
-                notWorkMapper.update(activityInvestRecord);
-            }else{
-                activityInvestRecord = new NotWorkModel(investInfo.getLoginName(), null, null, false, ActivityCategory.ANNUAL_ACTIVITY);
-                activityInvestRecord.setInvestAmount(investInfo.getAmount());
-                notWorkMapper.create(activityInvestRecord);
+            AnnualPrizeModel annualPrizeModel = annualPrizeMapper.find(investInfo.getLoginName());
+            boolean firstSendCoupon = false;
+            boolean secondSendCoupon = false;
+            if (null != annualPrizeModel) {
+                annualPrizeModel.setInvestAmount(annualPrizeModel.getInvestAmount() + investInfo.getAmount());
+
+                if(!annualPrizeModel.isFirstSendCoupon() && investInfo.getAmount() >= INVEST_20_RED_ENVELOPE_LIMIT){
+                    firstSendCoupon = true;
+                    annualPrizeModel.setFirstSendCoupon(firstSendCoupon);
+                }
+
+                if(!annualPrizeModel.isSecondSendCoupon() && investInfo.getAmount() >= INVEST_20_RED_ENVELOPE_LIMIT){
+                    secondSendCoupon = true;
+                    annualPrizeModel.setFirstSendCoupon(secondSendCoupon);
+                }
+
+                annualPrizeMapper.update(annualPrizeModel);
+            } else {
+
+                if(investInfo.getAmount() >= INVEST_20_RED_ENVELOPE_LIMIT){
+                    firstSendCoupon = true;
+                }
+
+                if(investInfo.getAmount() >= INVEST_800_RED_ENVELOPE_LIMIT){
+                    secondSendCoupon = true;
+                }
+
+                annualPrizeModel = new AnnualPrizeModel(investInfo.getLoginName(), investInfo.getAmount(), firstSendCoupon, secondSendCoupon);
+                annualPrizeMapper.create(annualPrizeModel);
             }
 
-            if(originalInvestAmount < INVEST_20_RED_ENVELOPE_LIMIT && activityInvestRecord.getInvestAmount() >= INVEST_20_RED_ENVELOPE_LIMIT){
+            if (firstSendCoupon) {
                 mqClient.sendMessage(MessageQueue.CouponAssigning, investSuccessMessage.getInvestInfo().getLoginName() + ":" + INTEREST_COUPON_OF_20_COUPON_ID);
             }
 
-            if(originalInvestAmount < INVEST_800_RED_ENVELOPE_LIMIT && activityInvestRecord.getInvestAmount() >= INVEST_800_RED_ENVELOPE_LIMIT){
+            if (secondSendCoupon) {
                 mqClient.sendMessage(MessageQueue.CouponAssigning, investSuccessMessage.getInvestInfo().getLoginName() + ":" + INTEREST_COUPON_OF_800_COUPON_ID);
             }
         }

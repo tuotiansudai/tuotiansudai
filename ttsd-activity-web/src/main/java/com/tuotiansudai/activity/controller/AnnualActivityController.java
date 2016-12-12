@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Map;
+
 @Controller
 @RequestMapping(path = "/activity/annual")
 public class AnnualActivityController {
@@ -26,7 +28,10 @@ public class AnnualActivityController {
         ModelAndView modelAndView = new ModelAndView("/activities/mid-autumn", "responsive", true);
         modelAndView.addObject("loginName", LoginUserInfo.getLoginName());
         modelAndView.addObject("time", lotteryDrawActivityService.countDrawLotteryTime(LoginUserInfo.getMobile(), ActivityCategory.ANNUAL_ACTIVITY));
-        modelAndView.addObject("investAmount", annualActivityService.successInvestAmount(LoginUserInfo.getLoginName()));
+        Map<String, String> investAmountTaskMap = annualActivityService.getInvestAmountTask(LoginUserInfo.getLoginName());
+        modelAndView.addObject("investAmount", investAmountTaskMap.get("investAmount"));
+        modelAndView.addObject("nextAmount", investAmountTaskMap.get("nextAmount"));
+        modelAndView.addObject("task", annualActivityService.getTaskProgress(Long.parseLong(investAmountTaskMap.get("investAmount"))));
         return modelAndView;
     }
 }
