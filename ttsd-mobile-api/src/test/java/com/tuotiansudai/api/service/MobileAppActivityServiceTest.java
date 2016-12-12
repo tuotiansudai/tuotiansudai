@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.*;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class MobileAppActivityServiceTest extends ServiceTestBase {
     @Autowired
@@ -165,16 +166,14 @@ public class MobileAppActivityServiceTest extends ServiceTestBase {
         requestDto.setBaseParam(baseParam);
         requestDto.setActivityType(ActivityCenterType.CURRENT);
         ActivityCenterResponseDto activityCenterResponseDto = mobileAppActivityService.getAppActivityCenterResponseData(requestDto);
-        assertEquals(6, activityCenterResponseDto.getTotalCount().longValue());
         assertEquals(1, activityCenterResponseDto.getIndex().intValue());
         assertEquals(10, activityCenterResponseDto.getPageSize().intValue());
 
         List<ActivityCenterDataDto> activityCenterDataDtos = activityCenterResponseDto.getActivities();
-        assertEquals(6, activityCenterDataDtos.size());
         assertEquals("新手1", activityCenterDataDtos.get(0).getDescTitle());
         assertEquals("normal4", activityCenterDataDtos.get(1).getDescTitle());
         assertEquals("新手2", activityCenterDataDtos.get(2).getDescTitle());
         assertEquals("normal3", activityCenterDataDtos.get(3).getDescTitle());
-        assertEquals("testAppVerticalPictureUrl",activityCenterDataDtos.get(0).getVerticalImageUrl());
+        assertTrue(activityCenterDataDtos.get(0).getVerticalImageUrl().indexOf("testAppVerticalPictureUrl") != -1);
     }
 }

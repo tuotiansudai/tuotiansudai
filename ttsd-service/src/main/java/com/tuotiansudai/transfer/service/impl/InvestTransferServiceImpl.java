@@ -268,7 +268,13 @@ public class InvestTransferServiceImpl implements InvestTransferService {
     public boolean validTransferIsDayLimit(long loanId){
         TransferRuleModel transferRuleModel = transferRuleMapper.find();
         DateTime current = new DateTime().withTimeAtStartOfDay();
-        int periodDuration = Days.daysBetween(current.withTimeAtStartOfDay(), new DateTime(loanRepayMapper.findCurrentLoanRepayByLoanId(loanId).getRepayDate()).withTimeAtStartOfDay()).getDays();
+        LoanRepayModel currentLoanRepay = loanRepayMapper.findCurrentLoanRepayByLoanId(loanId);
+
+        if(currentLoanRepay == null){
+            return false;
+        }
+
+        int periodDuration = Days.daysBetween(current.withTimeAtStartOfDay(), new DateTime(currentLoanRepay.getRepayDate()).withTimeAtStartOfDay()).getDays();
 
         if (periodDuration <= transferRuleModel.getDaysLimit()) {
             return false;
