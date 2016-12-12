@@ -172,6 +172,17 @@
         ORDER BY membership.level DESC LIMIT 1
     </select>
 
+    <select id="findCurrentUpgradeMaxByLoginName" resultMap="UserMembershipResultMap" parameterType="java.lang.String">
+        SELECT user_membership.*
+        FROM
+        (SELECT *
+        FROM user_membership
+        WHERE login_name = #{loginName}
+        AND expired_time > now() AND type = 'UPGRADE') user_membership
+        JOIN membership ON user_membership.membership_id = membership.id
+        ORDER BY membership.level DESC LIMIT 1
+    </select>
+
     <select id="countMembershipByLevel" resultType="long" parameterType="int">
         select count(1)
         from user_membership
