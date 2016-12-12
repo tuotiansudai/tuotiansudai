@@ -31,6 +31,9 @@ public class HeadlinesTodayPrizeService {
     private UserLotteryPrizeMapper userLotteryPrizeMapper;
 
     @Autowired
+    private AccountMapper accountMapper;
+
+    @Autowired
     private CouponAssignmentService couponAssignmentService;
 
     @Autowired
@@ -80,5 +83,27 @@ public class HeadlinesTodayPrizeService {
                 ActivityCategory.HEADLINES_TODAY_ACTIVITY));
         return new DrawLotteryResultDto(0, headlinesTodayPrize.name(), prizeType.name(), headlinesTodayPrize.getDescription());
     }
+
+    public String userStatus(String mobile){
+        if(StringUtils.isEmpty(mobile)){
+            logger.debug("User not login, please register");
+            return "NOT_REGISTER";
+        }
+
+        UserModel userModel = userMapper.findByMobile(mobile);
+        if(userModel == null){
+            logger.debug("User is not exist, please register");
+            return "NOT_REGISTER";
+        }
+
+        AccountModel accountModel = accountMapper.findByLoginName(userModel.getMobile());
+        if(accountModel == null){
+            logger.debug("user is not account, please to account");
+            return "TO_ACCOUNT";
+        }
+        return "ACCOUNT";
+    }
+
+
 
 }
