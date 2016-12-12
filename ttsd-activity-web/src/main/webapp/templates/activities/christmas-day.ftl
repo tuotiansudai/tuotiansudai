@@ -74,10 +74,10 @@
                         <div class="gift-box clearfix last">
                         <span>
                             活动说明：<br/>
-1、用户投资专享标所获红包将于活动结束后三个工作日内，以红包形式发放，用户可在“我的宝藏”中查看，该红包适用于180天及以上标的，投资50元即可激活；<br/>
-2、为了保证获奖结果的公平性，获奖用户在活动期间所进行的圣诞专享标投标不允许进行债权转让。<br/>
+1.如活动结束后，专享标投满420万，则按参与用户的投资额比例发放20000元红包，该红包投资50元即可使用；如活动结束后，专享标未投满420万，则投资专享标的用户每人发放38元红包，需投资30000元可使用；<br/>
+                            2.用户所获红包将于活动结束后三个工作日内发放，可在“我的财富-我的宝藏”中查看；<br/>
+3、为了保证获奖结果的公平性，获奖用户在活动期间所进行的圣诞专享标投标不允许进行债权转让。<br/>
                         </span>
-                        </div>
                 </div>
             </div>
         </div>
@@ -89,7 +89,8 @@
                 <div class="title-christmas"><span>活动二：圣诞拆礼物</span></div>
                 <div class="model-content clearfix">
                     <div class="tc color-sec margin-top25">
-                        专享标总投资额达到420万，将开启活动二 —— 圣诞拆礼物。快去投资吧！
+                        活动时间：12月24日24:00-13月31日24:00 <br/>
+                        圣诞礼物还在路上，快去投资专享标，帮圣诞老人铺路吧！
                     </div>
                     <div class="tc margin-top25">
                         <a href="/loan-list" class="normal-button-day" target="_blank">马上投资圣诞专享标</a>
@@ -108,7 +109,7 @@
                 <div class="title-christmas"><span>活动二：圣诞拆礼物</span></div>
                 <div class="model-content clearfix">
                     <div class="color-sec info-activity-note">
-                        <b class="tc ">活动时间：${christmasPrizeStartTime?string('yyyy-MM-dd HH:mm:ss')}-12.31 24:00</b>
+                        <b class="tc ">活动时间：12月24日24:00-13月31日24:00</b>
                         蟹蟹各位大大们为圣诞老人铺路，昨晚，他已经偷偷爬过烟囱，把礼物挂在圣诞树上，还等什么，赶快拆礼物吧，Merry Christmas！ <br/>
                         温馨提示：在活动二期限内完成以下操作，才可获得拆礼物机会，每位用户最多可获得10次拆奖机会；
                     </div>
