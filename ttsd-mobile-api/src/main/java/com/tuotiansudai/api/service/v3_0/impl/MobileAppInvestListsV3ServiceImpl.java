@@ -72,7 +72,6 @@ public class MobileAppInvestListsV3ServiceImpl implements MobileAppInvestListsV3
         int pageSize = pageValidUtils.validPageSizeLimit(userInvestListRequestDto.getPageSize());
         int index = (userInvestListRequestDto.getIndex() - 1) * pageSize;
 
-
         List<InvestModel> investModels = investMapper.findInvestorInvestAndTransferPagination(loginName, userInvestListRequestDto.getStatus(), index, pageSize);
 
         UserInvestListResponseDataDto dtoData = new UserInvestListResponseDataDto();
@@ -99,20 +98,27 @@ public class MobileAppInvestListsV3ServiceImpl implements MobileAppInvestListsV3
                 LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(investModel.getLoanId());
                 UserInvestRecordResponseDataDto dto = new UserInvestRecordResponseDataDto(investModel, loanModel, loanDetailsModel);
 
-                if(investModel.getTransferInvestId() != null){
+                if (investModel.getTransferInvestId() != null) {
                     TransferApplicationModel transferApplicationModel = transferApplicationMapper.findByInvestId(investModel.getId());
-                    dto.setLoanName(transferApplicationModel.getName());
-                    dto.setTransferInvestId(String.valueOf(transferApplicationModel.getTransferInvestId()));
-                    dto.setTransferApplicationId(String.valueOf(transferApplicationModel.getId()));
-                    dto.setInvestAmount(String.valueOf(transferApplicationModel.getInvestAmount()));
+                    dto.setLoanName(transferApplicationModel != null ? transferApplicationModel.getName() : "");
+                    dto.setInvestId(transferApplicationModel != null ? String.valueOf(transferApplicationModel.getInvestId()) : "");
+                    dto.setTransferInvestId(transferApplicationModel != null ? String.valueOf(transferApplicationModel.getTransferInvestId()) : "");
+                    dto.setTransferApplicationId(transferApplicationModel != null ? String.valueOf(transferApplicationModel.getId()) : "");
+                    dto.setInvestAmount(transferApplicationModel != null ? String.valueOf(transferApplicationModel.getInvestAmount()) : "");
                     dto.setCategoryType(CategoryType.TRANSFER_LOAN);
-                }else{
+                } else {
                     dto.setLoanName(loanModel.getName());
                     dto.setTransferInvestId("");
                     dto.setTransferApplicationId("");
                     dto.setInvestAmount(String.valueOf(investModel.getAmount()));
                     dto.setCategoryType(CategoryType.LOAN);
                 }
+
+                List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findByTransferInvestId(investModel.getId(), Lists.newArrayList(TransferStatus.TRANSFERRING));
+                if(transferApplicationModels.size() > 0){
+                    dto.setTransferApplicationId(String.valueOf(transferApplicationModels.get(0).getId()));
+                }
+
                 if (loanStatus.equals(LoanStatus.REPAYING) && loanModel.getProductType().equals(ProductType.EXPERIENCE)) {
                     List<UserCouponModel> userCouponModelList = userCouponMapper.findByInvestId(investModel.getId());
                     if (CollectionUtils.isNotEmpty(userCouponModelList)) {
@@ -151,6 +157,16 @@ public class MobileAppInvestListsV3ServiceImpl implements MobileAppInvestListsV3
                     lastRepayDate = new DateTime(loanModel.getStatus() == LoanStatus.COMPLETE ? lastInvestRepayModel.getActualRepayDate() : lastInvestRepayModel.getRepayDate()).toString("yyyy-MM-dd");
                 }
                 dto.setLastRepayDate(StringUtils.trimToEmpty(lastRepayDate));
+
+                String transferStatus = "";
+                if (investModel.getTransferStatus() == TransferStatus.TRANSFERABLE) {
+                    transferStatus = investTransferService.isTransferable(investModel.getId()) ? investModel.getTransferStatus().name() : "";
+                } else if(investModel.getTransferStatus() == TransferStatus.SUCCESS){
+                    transferStatus = investModel.getTransferStatus().name();
+                } else if(investModel.getTransferStatus() == TransferStatus.TRANSFERRING){
+                    transferStatus = investModel.getTransferStatus().name();
+                }
+                dto.setTransferStatus(transferStatus);
 
                 List<UserCouponModel> userCouponModels = userCouponMapper.findUserCouponSuccessByInvestId(investModel.getId());
                 List<CouponType> couponTypes = Lists.newArrayList();

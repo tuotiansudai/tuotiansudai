@@ -270,7 +270,6 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto {
         this.investStatusDesc = investStatus.getMessage();
         this.achievements = invest.getAchievements();
         this.activityDesc = loanDetailsModel != null ? loanDetailsModel.getActivityDesc() : "";
-        this.transferStatus = loanDetailsModel != null ? loanDetailsModel.getNonTransferable() ? "可转让" : "不可转让" : "不可转让";
         this.pledgeType = loan.getPledgeType();
     }
 }
