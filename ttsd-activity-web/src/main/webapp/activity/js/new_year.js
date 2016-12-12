@@ -8,6 +8,11 @@ require(['jquery','drawCircle'], function ($,drawCircle) {
         //为节约手机流量，把pc页面的图片在pc页上显示才增加
         (function() {
             if(redirect=='pc') {
+                var HTML='<div class="body-decorate" id="bodyDecorate"> ' +
+                    '<div class="bg-left"></div> ' +
+                    '<div class="bg-right"></div> ' +
+                    '</div>';
+                $newYearDayFrame.prepend(HTML);
                 $activitySlide.addClass('pc-img');
             }
             else {

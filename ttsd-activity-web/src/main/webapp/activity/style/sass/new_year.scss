@@ -13,13 +13,38 @@ body {
   width: 100%;
   margin: 0 auto;
 }
-
+.new-year-slide img {
+  width:100%;
+}
 .pc-img {
   background: url("/activity/images/new-year/new-banner.jpg") center top no-repeat;
   height:463px;
 }
 
 .new-year-frame {
+  position: relative;
+  .body-decorate {
+    width:100%;
+    height:100%;
+    .bg-left {
+      width:298px;
+      height:100%;
+      position: absolute;
+      left:0;
+      top:0;
+      background: url("/activity/images/new-year/bg-decorate.jpg") left 0px repeat-y;
+    }
+    .bg-right {
+      width:298px;
+      height:100%;
+      position: absolute;
+      right:0;
+      top:0;
+      background: url("/activity/images/new-year/bg-decorate.jpg") right 0px repeat-y;
+      transform: rotateY(180deg);
+    }
+  }
+
   .normal-button {
     background: #ffd91a;
     font-size: 26px;
@@ -70,7 +95,7 @@ body {
     background: #c23054;
     border-radius:25px;
     padding: 20px;
-
+    position: relative;
     .activity-note {
       color: #ffee00;
       padding-top:15px;
@@ -168,7 +193,7 @@ body {
     }
     .gift-info-box {
       width:50%;
-      float: left;
+      float: right;
       text-align: center;
       .gift-record {
         width:80%;
@@ -359,5 +384,177 @@ body {
     color: #9f4c00;
     margin-top:30px;
     margin-bottom:30px;
+  }
+}
+
+@media screen and(max-width: 700px){
+  .main-frame {
+    font-size:12px;
+  }
+
+  .new-year-frame {
+    .normal-button {
+      width: 25%;
+      margin-left: 0;
+      border-radius: 15px;
+      padding: 5px 10px;
+      font-size: 13px;
+    }
+    .box-normal {
+      margin: 10px;
+      padding: 10px;
+      border-radius: 15px;
+    }
+    .title-main-col {
+      margin-top: 24px;
+      margin-bottom: 24px;
+      i {
+        height:20px;
+      }
+      em {
+        font-size: 15px;
+        padding: 0px 9px;
+        line-height: 23px;
+        width: 56%;
+      }
+    }
+    .draw-area-box {
+      width:100%;
+      margin: 5px auto;
+      min-height:315px;
+      .gold-egg {
+        top: 115px;
+        bottom:auto;
+        left: 32%;
+        transform-origin: 50% 100%;
+        width: 36%;
+      }
+      .gold-hammer {
+        bottom:auto;
+        top: 91px;
+        right: 94px;
+        width: 37px;
+      }
+      .my-chance {
+        bottom: auto;
+        font-size: 12px;
+        top: 309px;
+        i {
+          width: 19px;
+        }
+      }
+    }
+    .activity-rule-box {
+      padding: 10px;
+      .gift-info-box {
+        float: none;
+        width:100%;
+        .record-list {
+          margin-left:0;
+          width:100%;
+          font-size: 12px;
+        }
+        .gift-record {
+          width:100%;
+          li {
+            font-size: 13px;
+          }
+        }
+      }
+      .text-box {
+        float: none;
+        width:100%;
+        font-size: 12px;
+        span {
+          border:0;
+          padding-right:0;
+        }
+      }
+    }
+
+    .magic-lamp {
+      i { display: none; }
+      .slide-text {
+        background: #fff2b2;
+        border-radius: 28px;
+        font-size: 15px;
+        height: 50px;
+        line-height: 30px;
+        margin: 10px auto;
+        width: 100%;
+      }
+    }
+
+    .total-invest-amount {
+      dl {
+        width:45%;
+        font-size:13px;
+        line-height: 25px;
+        &.last {
+          float: none;
+          clear:both;
+          width:100%;
+          margin-left: 0;
+          .btn-to-invest {
+            font-size: 15px;
+            padding: 6px 46px;
+          }
+        }
+      }
+    }
+
+    .reward-list-frame {
+      .reward-box {
+        float: none;
+        width:100%;
+        height:auto;
+        margin:10px auto;
+        background-size: 100%;
+        &.finished {
+          background-size: 100%;
+        }
+        .reward-detail {
+          top: 25px;
+          em {
+            font-size: 13px;
+          }
+          .reward-img {
+            width:80%;
+            margin: 0 auto;
+            height: 95px;
+            position: relative;
+            img {
+              position: absolute;
+              top: 50%;
+              left:50%;
+              transform: scale(0.6) translateY(-84%) translateX(-82%);
+            }
+          }
+
+          i {
+            font-size:11px;
+            margin-top:0;
+          }
+          s {
+            transform: scale(0.6) rotateZ(-30deg);
+            right: 10%;
+            top: 28%;
+          }
+        }
+        .reward-title {
+          background-size: 46%;
+          margin-top: 59px;
+          padding-top: 87px;
+          color: #fff2b2;
+          font-size: 14px;
+        }
+      }
+    }
+
+    .reminder-box {
+      font-size: 11px;
+      margin:10px;
+      padding:10px;
+    }
   }
 }

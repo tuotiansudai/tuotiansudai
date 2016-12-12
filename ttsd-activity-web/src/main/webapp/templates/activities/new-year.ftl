@@ -6,7 +6,13 @@
     </@global.isNotAnonymous>
 <div class="new-year-slide" id="newYearSlide"></div>
 
-<div class="new-year-frame page-width" id="newYearDayFrame">
+<div class="new-year-frame" id="newYearDayFrame">
+
+    <#--<div class="body-decorate" id="bodyDecorate">-->
+        <#--<div class="bg-left"></div>-->
+        <#--<div class="bg-right"></div>-->
+     <#--</div>-->
+<div class="page-width">
     <div class="reg-tag-current" style="display: none">
         <#include '../module/register.ftl' />
     </div>
@@ -35,19 +41,6 @@
         </div>
 
         <div class="activity-rule-box clearfix">
-            <div class="text-box">
-                <span>
-                活动规则说明： <br/>
-                1、活动期间每日签到即可获得一次免费砸蛋机会；<br/>
-                2、活动期间每邀请1名好友注册可砸5次，上不封顶；<br/>
-                3、活动期间投资新年专享标，每满5000元即可砸1次，如单笔
-                投资10000元，可直接获得2次砸金蛋机会，每名用户活动
-                期间凭投资最多砸10次；<br/>
-                4、砸蛋机会需在活动有效期内使用，过期作废，请及时使用；<br/>
-                5、活动中有恶意刷奖的行为，一经查出拓天速贷有权追溯已发
-                放的奖励。
-                    </span>
-            </div>
             <div class="gift-info-box">
                 <ul class="gift-record clearfix">
                     <li class="active"><span>中奖记录</span></li>
@@ -74,7 +67,19 @@
                     <ul class="record-model own-record" style="display: none"></ul>
                 </div>
             </div>
-
+            <div class="text-box">
+                <span>
+                活动规则说明： <br/>
+                1、活动期间每日签到即可获得一次免费砸蛋机会；<br/>
+                2、活动期间每邀请1名好友注册可砸5次，上不封顶；<br/>
+                3、活动期间投资新年专享标，每满5000元即可砸1次，如单笔
+                投资10000元，可直接获得2次砸金蛋机会，每名用户活动
+                期间凭投资最多砸10次；<br/>
+                4、砸蛋机会需在活动有效期内使用，过期作废，请及时使用；<br/>
+                5、活动中有恶意刷奖的行为，一经查出拓天速贷有权追溯已发
+                放的奖励。
+                    </span>
+            </div>
         </div>
     </div>
 
@@ -118,112 +123,132 @@
         </div>
 
         <div class="reward-list-frame clearfix">
-            <#--第一盏神灯-->
+        <#--第一盏神灯-->
             <div class="reward-box finished">
                 <div class="reward-detail">
                     <em>累计投资金额：5,000元</em>
-                    <img src="${staticServer}/activity/images/new-year/reward01.png" alt="20元红包2000元激活">
-                    <i>20元红包（2000元激活）</i>
+                    <div class="reward-img">
+                        <img src="${staticServer}/activity/images/new-year/reward01.png" alt="20元红包2000元激活">
+                    </div>
+                     <i>20元红包（2000元激活）</i>
                     <s><span>目标完成</span></s>
                 </div>
                 <div class="reward-title">第一盏神灯：让红包飞</div>
             </div>
-                <#--第二盏神灯-->
+        <#--第二盏神灯-->
             <div class="reward-box finished">
                 <div class="reward-detail">
                     <em>累计投资金额：10,000元</em>
+                    <div class="reward-img">
                     <img src="${staticServer}/activity/images/new-year/reward02.png" alt="爱奇艺会员月卡">
+                    </div>
                     <i>爱奇艺会员月卡</i>
                     <s><span>目标完成</span></s>
                 </div>
                 <div class="reward-title">第二盏神灯：放肆宅</div>
             </div>
-                <#--第三盏神灯-->
-                <div class="reward-box">
-                    <div class="reward-detail">
-                        <em>累计投资金额：20,000元</em>
-                        <img src="${staticServer}/activity/images/new-year/reward03.png" alt="报销50元电影票">
-                        <i>报销50元电影票</i>
-                        <s><span>目标完成</span></s>
-                    </div>
-                    <div class="reward-title">第三盏神灯：贺岁片</div>
+        <#--第三盏神灯-->
+            <div class="reward-box">
+                <div class="reward-detail">
+                    <em>累计投资金额：20,000元</em>
+                    <div class="reward-img">
+                    <img src="${staticServer}/activity/images/new-year/reward03.png" alt="报销50元电影票">
+                        </div>
+                    <i>报销50元电影票</i>
+                    <s><span>目标完成</span></s>
                 </div>
-                <#--第四盏神灯-->
-                <div class="reward-box">
-                    <div class="reward-detail">
-                        <em>累计投资金额：30,000元</em>
-                        <img src="${staticServer}/activity/images/new-year/reward04.png" alt="报销50元电影票">
-                        <i>50元话费</i>
-                        <s><span>目标完成</span></s>
-                    </div>
-                    <div class="reward-title">第四盏神灯：常联系</div>
+                <div class="reward-title">第三盏神灯：贺岁片</div>
+            </div>
+        <#--第四盏神灯-->
+            <div class="reward-box">
+                <div class="reward-detail">
+                    <em>累计投资金额：30,000元</em>
+                    <div class="reward-img">
+                    <img src="${staticServer}/activity/images/new-year/reward04.png" alt="报销50元电影票">
+                        </div>
+                    <i>50元话费</i>
+                    <s><span>目标完成</span></s>
                 </div>
+                <div class="reward-title">第四盏神灯：常联系</div>
+            </div>
 
-                <#--第五盏神灯-->
-                <div class="reward-box">
-                    <div class="reward-detail">
-                        <em>累计投资金额：50,000元</em>
-                        <img src="${staticServer}/activity/images/new-year/reward05.png" alt="100元中国石化加油卡">
-                        <i>100元中国石化加油卡</i>
-                        <s><span>目标完成</span></s>
-                    </div>
-                    <div class="reward-title">第五盏神灯：出行基金</div>
+        <#--第五盏神灯-->
+            <div class="reward-box">
+                <div class="reward-detail">
+                    <em>累计投资金额：50,000元</em>
+                    <div class="reward-img">
+                    <img src="${staticServer}/activity/images/new-year/reward05.png" alt="100元中国石化加油卡">
+                        </div>
+                    <i>100元中国石化加油卡</i>
+                    <s><span>目标完成</span></s>
                 </div>
+                <div class="reward-title">第五盏神灯：出行基金</div>
+            </div>
 
-            <#--第六盏神灯-->
-                <div class="reward-box">
-                    <div class="reward-detail">
-                        <em>累计投资金额：100,000元</em>
-                        <img src="${staticServer}/activity/images/new-year/reward06.png" alt="100元中国石化加油卡">
-                        <i>报销300元火车票</i>
-                        <s><span>目标完成</span></s>
-                    </div>
-                    <div class="reward-title">第六盏神灯：返乡基金</div>
+        <#--第六盏神灯-->
+            <div class="reward-box">
+                <div class="reward-detail">
+                    <em>累计投资金额：100,000元</em>
+                    <div class="reward-img">
+                    <img src="${staticServer}/activity/images/new-year/reward06.png" alt="100元中国石化加油卡">
+                        </div>
+                    <i>报销300元火车票</i>
+                    <s><span>目标完成</span></s>
                 </div>
+                <div class="reward-title">第六盏神灯：返乡基金</div>
+            </div>
 
-            <#--第七盏神灯-->
-                <div class="reward-box">
-                    <div class="reward-detail">
-                        <em>累计投资金额：200,000元</em>
-                        <img src="${staticServer}/activity/images/new-year/reward07.png" alt="700元京东E卡">
-                        <i>700元京东E卡</i>
-                        <s><span>目标完成</span></s>
-                    </div>
-                    <div class="reward-title">第七盏神灯：年货go</div>
+        <#--第七盏神灯-->
+            <div class="reward-box">
+                <div class="reward-detail">
+                    <em>累计投资金额：200,000元</em>
+                    <div class="reward-img">
+                    <img src="${staticServer}/activity/images/new-year/reward07.png" alt="700元京东E卡">
+                        </div>
+                    <i>700元京东E卡</i>
+                    <s><span>目标完成</span></s>
                 </div>
+                <div class="reward-title">第七盏神灯：年货go</div>
+            </div>
 
-            <#--第八盏神灯-->
-                <div class="reward-box">
-                    <div class="reward-detail">
-                        <em>累计投资金额：300,000元</em>
-                        <img src="${staticServer}/activity/images/new-year/reward08.png" alt="800元红包（50元激活）">
-                        <i>800元红包（50元激活）</i>
-                        <s><span>目标完成</span></s>
-                    </div>
-                    <div class="reward-title">第八盏神灯：份子钱</div>
+        <#--第八盏神灯-->
+            <div class="reward-box">
+                <div class="reward-detail">
+                    <em>累计投资金额：300,000元</em>
+                    <div class="reward-img">
+                    <img src="${staticServer}/activity/images/new-year/reward08.png" alt="800元红包（50元激活）">
+                        </div>
+                    <i>800元红包（50元激活）</i>
+                    <s><span>目标完成</span></s>
                 </div>
+                <div class="reward-title">第八盏神灯：份子钱</div>
+            </div>
 
-            <#--第九盏神灯-->
-                <div class="reward-box">
-                    <div class="reward-detail">
-                        <em>累计投资金额：500,000元</em>
-                        <img src="${staticServer}/activity/images/new-year/reward09.png" alt="1600元芒果卡">
-                        <i>1600元芒果卡</i>
-                        <s><span>目标完成</span></s>
-                    </div>
-                    <div class="reward-title">第九盏神灯：旅游基金</div>
+        <#--第九盏神灯-->
+            <div class="reward-box">
+                <div class="reward-detail">
+                    <em>累计投资金额：500,000元</em>
+                    <div class="reward-img">
+                    <img src="${staticServer}/activity/images/new-year/reward09.png" alt="1600元芒果卡">
+                        </div>
+                    <i>1600元芒果卡</i>
+                    <s><span>目标完成</span></s>
                 </div>
+                <div class="reward-title">第九盏神灯：旅游基金</div>
+            </div>
 
-            <#--第十盏神灯-->
-                <div class="reward-box">
-                    <div class="reward-detail">
-                        <em>累计投资金额：700,000元</em>
-                        <img src="${staticServer}/activity/images/new-year/reward10.png" alt="小米手机5">
-                        <i>小米手机5</i>
-                        <s><span>目标完成</span></s>
-                    </div>
-                    <div class="reward-title">第十盏神灯：取悦你</div>
+        <#--第十盏神灯-->
+            <div class="reward-box">
+                <div class="reward-detail">
+                    <em>累计投资金额：700,000元</em>
+                    <div class="reward-img">
+                    <img src="${staticServer}/activity/images/new-year/reward10.png" alt="小米手机5">
+                        </div>
+                    <i>小米手机5</i>
+                    <s><span>目标完成</span></s>
                 </div>
+                <div class="reward-title">第十盏神灯：取悦你</div>
+            </div>
 
 
         </div>
@@ -239,6 +264,8 @@
         5、拓天速贷在法律范围内保留对本活动的最终解释权。 <br/>
         6、市场有风险，投资需谨慎
     </div>
+
+</div>
 
 </div>
 </@global.main>
