@@ -40,11 +40,7 @@
     </select>
 
     <select id="findPagination" resultMap="notWorkResultMap">
-        select * from `edxactivity`.`not_work` where 1=1
-        <if test="mobile != null and mobile != ''">
-          and mobile = #{mobile}
-        </if>
-        limit #{index}, #{pageSize}
+        select * from `edxactivity`.`not_work` limit #{index}, #{pageSize}
     </select>
 
     <select id="findAllCount" resultType="long">
