@@ -62,7 +62,7 @@ public class UserFundResponseDataDto extends BaseResponseDataDto {
     @ApiModelProperty(value = "用户会员过期日yyyy-MM-dd(空表示不过期)", example = "2016-11-25 19:09:01")
     private Date membershipExpiredDate; //用户会员过期日yyyy-MM-dd(空表示不过期)
 
-    public UserFundResponseDataDto(UserFundView userFundView, long balance, long point, int membershipLevel, long membershipPoint, int usableUserCouponCount) {
+    public UserFundResponseDataDto(UserFundView userFundView, long balance, long point, int membershipLevel, long membershipPoint, int usableUserCouponCount, Date membershipExpiredDate) {
         this.balance = balance;
         this.actualTotalInterest = userFundView.getActualTotalInterest();
         this.actualTotalExtraInterest = userFundView.getActualTotalExtraInterest();
@@ -84,6 +84,7 @@ public class UserFundResponseDataDto extends BaseResponseDataDto {
         this.membershipLevel = membershipLevel;
         this.membershipPoint = membershipPoint;
         this.usableUserCouponCount = usableUserCouponCount;
+        this.membershipExpiredDate = membershipExpiredDate;
     }
 
     public long getBalance() {
