@@ -30,13 +30,11 @@ configurations{
 
 dependencies {
     compile project(':ttsd-config')
-    compile project(':ttsd-service')
-    compile project(':ttsd-user-service')
+    compile project(':ttsd-client')
     compile project(':ttsd-mq-client')
+    compile project(':ttsd-edxactivity-repository')
 
     compile "org.springframework.boot:spring-boot-starter"
-    compile "org.mybatis.spring.boot:mybatis-spring-boot-starter:1.1.1"
-    compile "mysql:mysql-connector-java:5.1.39"
 
     testCompile "org.springframework.boot:spring-boot-starter-test"
 }

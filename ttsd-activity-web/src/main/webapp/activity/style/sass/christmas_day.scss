@@ -125,6 +125,13 @@ body {
       font-weight: bold;
       color: #fff;
       padding-top:60px;
+      span {
+        display: inline-block;
+        position: absolute;
+        top: 60px;
+        left: 50%;
+        transform: translateX(-50%);
+      }
     }
   }
   .model-content {
@@ -501,6 +508,15 @@ body {
       margin:10px auto;
       padding: 20px 10px 10px 10px;
       font-size: 12px;
+      b.sub-title-one:before {
+        content: '一重礼：';
+      }
+      b.sub-title-two:before {
+        content: '二重礼：';
+      }
+      b.sub-title-three:before {
+        content: '三重礼：';
+      }
       &.last {
         width:95%;
         height:auto;
@@ -586,7 +602,7 @@ body {
       }
       .gift-info-list {
         width: 95%;
-        height: 367px;
+        height: 350px;
         .hat {
           transform: scale(0.5);
           -ms-transform:scale(0.5);
@@ -609,9 +625,12 @@ body {
         }
 
         .record-list-box {
-          width: 61%;
+          width: 95%;
+          height: 100%;
+          overflow: hidden;
           .record-list {
             font-size: 12px;
+            overflow: hidden;
           }
           .menu-switch {
             font-size: 13px;
@@ -640,6 +659,9 @@ body {
         padding-top: 31px;
         font-size: 15px;
         height: 60px;
+        span {
+          top: 30px;
+        }
       }
 
       .man-decorate {
@@ -682,6 +704,11 @@ body {
 
 }
 
+@media screen and(max-width: 400px){
+  .christmas-day-frame .christmas-border .title-christmas span{
+    top: 26px;
+  }
+}
 @media screen and(max-width: 350px){
   .christmas-day-frame .activity-section-two .gift-info-list .record-list-box {
     width: 90%;
@@ -692,5 +719,10 @@ body {
 
   .christmas-day-frame .christmas-border .title-christmas {
     padding-top: 21px;
+    span {
+      top:20px;
+      font-size: 12px;
+
+    }
   }
 }

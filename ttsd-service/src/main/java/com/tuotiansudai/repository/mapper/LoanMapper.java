@@ -35,7 +35,8 @@ public interface LoanMapper {
                                           @Param(value = "status") LoanStatus status,
                                           @Param(value = "rateStart") double rateStart,
                                           @Param(value = "rateEnd") double rateEnd,
-                                          @Param(value = "index") int index);
+                                          @Param(value = "index") int index,
+                                          @Param(value = "pageSize") int pageSize);
 
     int findLoanListCountMobileApp(@Param(value = "productType") ProductType productType,
                                    @Param(value = "status") LoanStatus status,

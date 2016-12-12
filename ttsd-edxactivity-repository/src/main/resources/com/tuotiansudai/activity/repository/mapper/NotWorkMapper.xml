@@ -39,6 +39,9 @@
 
     <select id="findByLoginName" parameterType="java.lang.String" resultMap="notWorkResultMap">
         select * from `edxactivity`.`not_work` where login_name = #{loginName}
+        <if test="mobile != null and mobile != ''">
+            and activity_category = #{activityCategory}
+        </if>
     </select>
 
     <select id="findPagination" resultMap="notWorkResultMap">

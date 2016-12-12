@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @Repository
@@ -272,5 +273,7 @@ public interface InvestMapper {
                                         @Param(value = "activityDesc") String activityDesc,
                                         @Param(value = "startTime") Date startTime,
                                         @Param(value = "endTime") Date endTime);
+    List<Map<String, String>> findInvestAmountScaleTop3(@Param(value = "endDate") Date endDate);
 
+    long findInvestAmountScale(@Param(value = "endDate") Date endDate);
 }

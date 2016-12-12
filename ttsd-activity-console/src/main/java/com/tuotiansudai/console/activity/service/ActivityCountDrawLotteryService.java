@@ -77,7 +77,7 @@ public class ActivityCountDrawLotteryService {
     //圣诞活动活动任务
     private final List christmasTasks = Lists.newArrayList(ActivityDrawLotteryTask.REGISTER, ActivityDrawLotteryTask.EACH_REFERRER,
             ActivityDrawLotteryTask.EACH_REFERRER_INVEST, ActivityDrawLotteryTask.CERTIFICATION, ActivityDrawLotteryTask.INVEST,
-            ActivityDrawLotteryTask.EACH_INVEST_2000);
+            ActivityDrawLotteryTask.EACH_INVEST_2000, ActivityDrawLotteryTask.FIRST_INVEST);
 
     //元旦活动任务
     private final List newYearsActivityTask = Lists.newArrayList(ActivityDrawLotteryTask.EACH_ACTIVITY_SIGN_IN, ActivityDrawLotteryTask.REFERRER_USER,
@@ -175,6 +175,14 @@ public class ActivityCountDrawLotteryService {
                     long sumAmount = investMapper.sumInvestAmountByLoginNameInvestTimeProductType(userModel.getLoginName(), startTime, endTime, Lists.newArrayList(ProductType._90, ProductType._180, ProductType._360));
                     time += (int) (sumAmount / 200000);
                     time = time >= 10 ? 10 : time;
+                    break;
+                case FIRST_INVEST:
+                    boolean beforeIsInvest = investMapper.sumInvestAmountByLoginNameInvestTimeProductType(userModel.getLoginName(), new DateTime().minusDays(720).toDate(), activityChristmasStartTime, null) > 0;
+                    boolean currentIsInvest = investMapper.sumInvestAmountByLoginNameInvestTimeProductType(userModel.getLoginName(), activityChristmasStartTime, activityChristmasEndTime, null)  > 0 ;
+
+                    if(!beforeIsInvest && currentIsInvest){
+                        time++;
+                    }
                     break;
             }
         }

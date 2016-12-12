@@ -1,4 +1,4 @@
-require(['jquery', 'underscore','drawCircle','commonFun','register_common','logintip'], function ($, _,drawCircle) {
+require(['jquery', 'underscore','drawCircle','register_common','logintip'], function ($, _,drawCircle) {
 
     var $integralDrawPage=$('#integralDrawPage'),
         $oneThousandPoints=$('.one-thousand-points',$integralDrawPage),
@@ -21,8 +21,8 @@ require(['jquery', 'underscore','drawCircle','commonFun','register_common','logi
         area:[]
     };
 
-    var browser = commonFun.browserRedirect();
-    var urlObj=commonFun.parseURL(location.href);
+    var browser = globalFun.browserRedirect();
+    var urlObj=globalFun.parseURL(location.href);
     if (browser == 'mobile') {
         if(urlObj.params.tag=='yes') {
             $('.reg-tag-current').show();

@@ -434,7 +434,6 @@
 
     </select>
 
-
     <select id="findInvestRepayByLoginNameAndRepayTime" parameterType="map" resultMap="investRepayResultMap">
         SELECT r.* FROM invest_repay r LEFT JOIN invest i ON r.invest_id = i.id
         WHERE i.login_name = #{loginName}

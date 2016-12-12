@@ -44,6 +44,12 @@
                     #{item}
                 </foreach>
             </if>
+            <if test="userBillOperationTypes != null and userBillOperationTypes.size != 0">
+                operation_type in
+                <foreach item="item" index="index" collection="userBillOperationTypes" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
             <if test="startTime != null">
                 and created_time >= #{startTime}
             </if>
@@ -62,6 +68,12 @@
             <if test="userBillBusinessType != null and userBillBusinessType.size != 0">
                 business_type in
                 <foreach item="item" index="index" collection="userBillBusinessType" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="userBillOperationTypes != null and userBillOperationTypes.size != 0">
+                operation_type in
+                <foreach item="item" index="index" collection="userBillOperationTypes" open="(" separator="," close=")">
                     #{item}
                 </foreach>
             </if>
@@ -135,4 +147,10 @@
             </if>
         </where>
     </select>
+
+    <select id="findUserSumInterest" resultType="long">
+      select sum(amount) from user_bill
+      where business_type in('ACTIVITY_REWARD', 'REFERRER_REWARD', 'INVEST_COUPON', 'INTEREST_COUPON', 'RED_ENVELOPE', 'LOTTERY_CASH', 'EXTRA_RATE');
+    </select>
+
 </mapper>

@@ -1,6 +1,7 @@
 package com.tuotiansudai.activity.service;
 
 import com.tuotiansudai.activity.repository.mapper.NotWorkMapper;
+import com.tuotiansudai.activity.repository.model.ActivityCategory;
 import com.tuotiansudai.activity.repository.model.NotWorkModel;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ public class NotWorkService {
             80000000L, 120000000L};
 
     public long getUsersActivityInvestAmount(String loginName) {
-        NotWorkModel notWorkModel = notWorkMapper.findByLoginName(loginName);
+        NotWorkModel notWorkModel = notWorkMapper.findByLoginName(loginName, ActivityCategory.NO_WORK_ACTIVITY);
         if (null == notWorkModel) {
             return 0L;
         } else {
@@ -28,7 +29,7 @@ public class NotWorkService {
     }
 
     public long getUsersNeedInvestAmount(String loginName) {
-        NotWorkModel notWorkModel = notWorkMapper.findByLoginName(loginName);
+        NotWorkModel notWorkModel = notWorkMapper.findByLoginName(loginName, ActivityCategory.NO_WORK_ACTIVITY);
         if (null == notWorkModel) {
             return prizeList[0];
         }

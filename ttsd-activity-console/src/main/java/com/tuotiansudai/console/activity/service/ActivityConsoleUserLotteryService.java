@@ -8,7 +8,8 @@ import com.tuotiansudai.activity.repository.model.ActivityCategory;
 import com.tuotiansudai.activity.repository.model.LotteryPrize;
 import com.tuotiansudai.activity.repository.model.UserLotteryPrizeView;
 import com.tuotiansudai.activity.repository.model.UserLotteryTimeView;
-import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,6 +27,21 @@ public class ActivityConsoleUserLotteryService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private AccountMapper accountMapper;
+
+    @Autowired
+    private BankCardMapper bankCardMapper;
+
+    @Autowired
+    private InvestMapper investMapper;
+
+    @Autowired
+    private RechargeMapper rechargeMapper;
+
+    @Autowired
+    private RedisWrapperClient redisWrapperClient;
 
     @Autowired
     private ActivityCountDrawLotteryService commonCountTimeService;
@@ -51,6 +67,8 @@ public class ActivityConsoleUserLotteryService {
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.christmas.endTime}\")}")
     private Date activityChristmasEndTime;
 
+    private static final String redisKey = "web:christmasTime:lottery:startTime";
+
     public List<UserLotteryTimeView> findUserLotteryTimeViews(String mobile, final ActivityCategory prizeType, Integer index, Integer pageSize) {
         List<UserModel> userModels = userMapper.findUserModelByMobile(mobile, index, pageSize);
 
@@ -75,4 +93,5 @@ public class ActivityConsoleUserLotteryService {
     public int findUserLotteryPrizeCountViews(String mobile, LotteryPrize selectPrize, ActivityCategory prizeType, Date startTime, Date endTime) {
         return userLotteryPrizeMapper.findUserLotteryPrizeCountViews(mobile, selectPrize, prizeType, startTime, endTime);
     }
+
 }

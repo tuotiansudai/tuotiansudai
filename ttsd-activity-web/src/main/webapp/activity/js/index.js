@@ -1,4 +1,4 @@
-require(['jquery', 'underscore', 'jquery.ajax.extension', 'commonFun', 'coupon-alert', 'red-envelope-float', 'count_down'], function ($, _) {
+require(['jquery', 'underscore', 'jquery.ajax.extension','coupon-alert', 'red-envelope-float', 'count_down'], function ($, _) {
     $(function () {
         var $bannerBox = $('.banner-box'),
             $imgScroll = $('.banner-img-list', $bannerBox),
@@ -49,7 +49,7 @@ require(['jquery', 'underscore', 'jquery.ajax.extension', 'commonFun', 'coupon-a
             window.location.href = $(this).data("url");
         });
 
-        var viewport = commonFun.browserRedirect();
+        var viewport = globalFun.browserRedirect();
 
         if (viewport == 'pc') {
             $imgScroll.find('img.iphone-img').remove();

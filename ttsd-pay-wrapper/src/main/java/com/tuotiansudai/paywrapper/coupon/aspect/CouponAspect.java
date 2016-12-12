@@ -12,12 +12,10 @@ import com.tuotiansudai.paywrapper.coupon.service.CouponInvestService;
 import com.tuotiansudai.paywrapper.coupon.service.CouponRepayService;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.util.JobManager;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.joda.time.DateTime;
@@ -94,17 +92,6 @@ public class CouponAspect {
             } catch (Exception e) {
                 logger.error(e.getLocalizedMessage(), e);
             }
-        }
-    }
-
-
-    @After(value = "execution(* com.tuotiansudai.paywrapper.service.InvestService.investSuccess(..))")
-    public void afterReturningInvestSuccess(JoinPoint joinPoint) {
-        InvestModel investModel = (InvestModel) joinPoint.getArgs()[0];
-        try {
-            couponInvestService.investCallback(investModel.getId());
-        } catch (Exception e) {
-            logger.error(e.getLocalizedMessage(), e);
         }
     }
 

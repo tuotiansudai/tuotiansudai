@@ -1,9 +1,9 @@
-require(['jquery', 'underscore', 'layerWrapper', 'drawCircle', 'jquery.ajax.extension', 'commonFun', 'register_common', 'logintip'], function($, _, layer,drawCircle) {
+require(['jquery', 'underscore', 'layerWrapper', 'drawCircle', 'jquery.ajax.extension', 'register_common', 'logintip'], function($, _, layer,drawCircle) {
     $(function() {
-        var browser = commonFun.browserRedirect(),
+        var browser = globalFun.browserRedirect(),
             timeCount=0;
         if (browser == 'mobile') {
-            var urlObj = commonFun.parseURL(location.href);
+            var urlObj = globalFun.parseURL(location.href);
             if (urlObj.params.tag == 'yes') {
                 $('.reg-tag-current').show();
             }

@@ -308,7 +308,7 @@ public class MembershipGiveService {
                 if (null != accountModel) {
                     totalExperience = accountModel.getMembershipPoint();
                 }
-                membershipExperienceBillModels.add(new MembershipExperienceBillModel(loginName, 0L, totalExperience,
+                membershipExperienceBillModels.add(new MembershipExperienceBillModel(loginName, null, 0L, totalExperience,
                         MessageFormat.format("获赠期限为{0}天的V{1}会员", membershipGiveModel.getDeadline(), map.get(membershipGiveModel.getMembershipId()))));
             }
         }

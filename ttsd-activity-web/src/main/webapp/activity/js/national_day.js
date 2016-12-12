@@ -4,9 +4,9 @@ require(['jquery', 'underscore', 'template','layerWrapper','drawCircle','commonF
         $tourSlide=$('#tourSlide'),
         $nationalDayCircle=$('#nationalDayCircle'),
         $allInvestAmount=$nationalDayFrame.find('.invest-percent-box em.total-invest');
-    var browser = commonFun.browserRedirect();
+    var browser = globalFun.browserRedirect();
     if (browser == 'mobile') {
-        var urlObj=commonFun.parseURL(location.href);
+        var urlObj=globalFun.parseURL(location.href);
         if(urlObj.params.tag=='yes') {
             $nationalDayFrame.find('.reg-tag-current').show();
         }

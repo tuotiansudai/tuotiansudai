@@ -11,7 +11,6 @@
     <div class="reg-tag-current" style="display: none">
         <#include '../module/register.ftl' />
     </div>
-
     <div class="christmas-day-inner">
         <div class="christmas-border box-notice">
             <div class="man-decorate"></div>
@@ -27,23 +26,23 @@
 
         <div class="activity-section-one">
             <div class="christmas-border clearfix">
-                <div class="title-christmas">活动一：为圣诞老人铺路</div>
+                <div class="title-christmas"><span>活动一：为圣诞老人铺路</span></div>
                 <div class="model-content clearfix">
                         <div class="gift-box">
                             <em class="icon-balloon">1重礼</em>
-                            <b>专享标加息0.5%</b>
+                            <b class="sub-title-one">专享标加息0.5%</b>
                             专享标在现有预期年化收益基础上<i>加息0.5%</i>。
                         </div>
 
                         <div class="gift-box">
                             <em class="icon-balloon">2重礼</em>
-                            <b>用券投资加息1%</b>
+                            <b class="sub-title-two">用券投资加息1%</b>
                             投资圣诞专享标单笔达3万元及以上，即赠送一张0.5%加息券，用券投资专享标<i>加息1%</i>。
                         </div>
 
                         <div class="gift-box">
                             <em class="icon-balloon">3重礼</em>
-                            <b>瓜分20000元红包</b>
+                            <b class="sub-title-three">瓜分20000元红包</b>
                             专享标总额420万，活动结束后，所有投资专享标的用户按投资比例瓜分<i>20000元红包</i>。
                         </div>
 
@@ -56,7 +55,7 @@
                         </div>
                         <div class="clearfix"></div>
                         <dl class="invest-percent-box clearfix">
-                            <dt>目前专享标共投资：<em class="total-invest">${allInvestAmount}</em>元</dt>
+                            <dt>目前专享标共投资：<em class="total-invest">${allInvestAmount}</span></em>元</dt>
                             <dd class="progress-bar">
                                 <#--<i class="progress-end" style="left: calc( 80% - 57px);"></i>-->
                                 <div class="progress-percent" style="width: ${investScale}">
@@ -87,7 +86,7 @@
         <#--活动二未开始-->
         <#if isStart == 0>
             <div class="christmas-border clearfix">
-                <div class="title-christmas">活动二：圣诞拆礼物</div>
+                <div class="title-christmas"><span>活动二：圣诞拆礼物</span></div>
                 <div class="model-content clearfix">
                     <div class="tc color-sec margin-top25">
                         专享标总投资额达到420万，将开启活动二 —— 圣诞拆礼物。快去投资吧！
@@ -106,7 +105,7 @@
 
         <#--活动已经开始-->
             <div class="christmas-border clearfix activity-second">
-                <div class="title-christmas">活动二：圣诞拆礼物</div>
+                <div class="title-christmas"><span>活动二：圣诞拆礼物</span></div>
                 <div class="model-content clearfix">
                     <div class="color-sec info-activity-note">
                         <b class="tc ">活动时间：${christmasPrizeStartTime?string('yyyy-MM-dd HH:mm:ss')}-12.31 24:00</b>
