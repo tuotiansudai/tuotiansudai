@@ -1,7 +1,6 @@
-package com.tuotiansudai.mq.tools;
+package com.tuotiansudai.worker.monitor;
 
-import com.tuotiansudai.mq.client.MQClient;
-import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.StringUtils;
 import redis.clients.jedis.Jedis;
 
 import java.io.FileInputStream;
@@ -25,13 +24,13 @@ public class MQRunningStatusCheck {
         int redisDB = Integer.parseInt(properties.getProperty("common.redis.db"));
 
         Jedis jedis = new Jedis(redisHost, redisPort);
-        if (StringUtils.isNotBlank(redisPassword)) {
+        if (!StringUtils.isEmpty(redisPassword)) {
             jedis.auth(redisPassword);
         }
         jedis.connect();
         jedis.select(redisDB);
 
-        Map<String, String> workerMap = jedis.hgetAll(MQClient.HEALTH_REPORT_REDIS_KEY);
+        Map<String, String> workerMap = jedis.hgetAll(WorkerMonitor.HEALTH_REPORT_REDIS_KEY);
         System.out.println(String.format("worker 状态检查, 共发现 %d 个Worker有运行记录：", workerMap.size()));
         long nowMills = Clock.systemUTC().millis();
         workerMap.forEach((key, value) -> {

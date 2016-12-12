@@ -22,11 +22,3 @@ task initMQ(dependsOn: ':ttsd-config:classes', type: JavaExec) {
     args = [propertiesFile]
 }
 
-task consumerCheck(dependsOn: ':ttsd-config:classes', type: JavaExec) {
-    main = 'com.tuotiansudai.mq.tools.MQRunningStatusCheck'
-    classpath = sourceSets.main.runtimeClasspath
-
-    def propertiesFile = "${project.project(':ttsd-config').buildDir}/resources/main/ttsd-env.properties"
-    args = [propertiesFile]
-}
-

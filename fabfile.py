@@ -1,5 +1,6 @@
 from __future__ import with_statement
 import os
+import time
 from fabric.api import *
 from fabric.contrib.project import upload_project
 
@@ -85,6 +86,10 @@ def compile():
     local('/opt/gradle/latest/bin/gradle clean')
     local('/usr/bin/git clean -fd')
     local('/opt/gradle/latest/bin/gradle compileJava')
+
+
+def check_worker_status():
+    local('/opt/gradle/latest/bin/gradle ttsd-worker-monitor:consumerCheck -PconfigPath=/workspace/v2config/default/ttsd-config/')
 
 
 @roles('static')
@@ -237,6 +242,7 @@ def deploy_all():
     execute(deploy_activity)
     execute(deploy_point)
     execute(deploy_ask)
+    execute(check_worker_status)
 
 
 def pre_deploy():
@@ -286,6 +292,8 @@ def sms():
 def worker():
     pre_deploy()
     execute(deploy_worker)
+    time.sleep(10)
+    execute(check_worker_status)
 
 
 def pay():

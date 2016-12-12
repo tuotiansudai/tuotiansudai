@@ -46,3 +46,12 @@ dependencies {
 
     testCompile "org.springframework.boot:spring-boot-starter-test"
 }
+
+
+task consumerCheck(dependsOn: ':ttsd-config:classes', type: JavaExec) {
+    main = 'com.tuotiansudai.worker.monitor.MQRunningStatusCheck'
+    classpath = sourceSets.main.runtimeClasspath
+
+    def propertiesFile = "${project.project(':ttsd-config').buildDir}/resources/main/ttsd-env.properties"
+    args = [propertiesFile]
+}

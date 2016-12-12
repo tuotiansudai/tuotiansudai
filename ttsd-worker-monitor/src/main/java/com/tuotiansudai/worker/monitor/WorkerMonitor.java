@@ -16,9 +16,9 @@ import java.util.stream.Collectors;
 @Component
 public class WorkerMonitor {
     private static final Logger logger = LoggerFactory.getLogger(WorkerMonitor.class);
+    static final String HEALTH_REPORT_REDIS_KEY = "worker:health:report";
     private static final int HEALTH_CHECK_INTERVAL_SECONDS = 10; // 每10秒检查一次
     private static final int WORKER_GONE_IF_AFTER_SECONDS = 120; // 2分钟没有更新，认为掉线
-    private static final String HEALTH_REPORT_REDIS_KEY = "worker:health:report";
     private final SmsWrapperClient smsWrapperClient;
     private final StringRedisTemplate redisTemplate;
     private final Set<String> missingWorkers;

@@ -1,3 +1,4 @@
+import time
 from paver.shell import sh
 
 
@@ -19,6 +20,7 @@ class Deployment(object):
         self.build_diagnosis()
         self.mk_static_package()
         self.init_docker()
+        self.check_worker_status()
 
     def clean(self):
         print "Cleaning..."
@@ -111,3 +113,8 @@ class Deployment(object):
     def jcversion(self):
         print "Starting jcmin..."
         sh('{0} jcversion'.format(self._paver))
+
+    def check_worker_status(self):
+        print "Waiting to check worker status"
+        time.sleep(60)
+        sh('cd ./ttsd-worker-monitor && {0} consumerCheck'.format(self._gradle))
