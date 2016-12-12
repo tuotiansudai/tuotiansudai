@@ -1,28 +1,9 @@
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="no-work-list.js" headLab="activity-manage" sideLab="notWork" title="活动投资奖励管理">
+<@global.main pageCss="" pageJavascript="" headLab="activity-manage" sideLab="notWork" title="不上班活动管理">
 
 <!-- content area begin -->
 <div class="col-md-10">
-    <form action="/activity-console/activity-manage/not-work-list" method="get" class="form-inline query-build" id="rewardForm">
-        <div class="form-group">
-            <label>用户手机号</label>
-            <input id="login-name" name="mobile" id="mobile" class="form-control" value="${mobile!}"/>
-        </div>
-
-        <div class="form-group">
-            <label>活动类型</label>
-            <select class="selectpicker" name="activityCategory">
-                <#list activityCategoryList as category>
-                    <option value="${category}" <#if activityCategoryList?? && category==activityCategory>selected</#if>>
-                    ${category.description}
-                    </option>
-                </#list>
-            </select>
-        </div>
-        <button type="submit" class="btn btn-sm btn-primary btnSearch">查询</button>
-    </form>
-
     <div class="table-responsive">
         <table class="table table-bordered table-hover ">
             <thead>
@@ -92,13 +73,17 @@
         </table>
     </div>
 
+    <div class="panel panel-default">
+        <a href="/activity-console/activity-manage/export-not-work">请点击此处导出EXCEl</a>
+    </div>
+
     <!-- pagination  -->
-    <nav class="pagination-control">
+    <nav>
         <div>
             <span class="bordern">总共${data.count}条,每页显示${data.pageSize}条</span>
         </div>
         <#if data?has_content>
-            <ul class="pagination  pull-left">
+            <ul class="pagination">
                 <li>
                     <#if data.hasPreviousPage>
                     <a href="?index=${data.index - 1}"
@@ -121,12 +106,8 @@
                 </a>
                 </li>
             </ul>
-            <@security.authorize access="hasAnyAuthority('DATA')">
-                <button class="btn btn-default pull-left export-activity-prize-prize" id="activityPrizeExport" type="button">导出Excel</button>
-            </@security.authorize>
         </#if>
     </nav>
-
     <!-- pagination -->
 </div>
 <!-- content area end -->
