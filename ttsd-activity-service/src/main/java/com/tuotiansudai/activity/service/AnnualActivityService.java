@@ -1,6 +1,7 @@
 package com.tuotiansudai.activity.service;
 
 
+import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.repository.mapper.InvestMapper;
@@ -38,16 +39,16 @@ public class AnnualActivityService {
         return param;
     }
 
-    public String[] getTaskProgress(String investAmount){
+    public String getTaskProgress(String investAmount){
         long amount = investAmount.equals("0.00") ? 0 : Long.parseLong(investAmount);
-        String[] task = new String[]{"1", "1", "1", "1", "1", "1", "1", "1", "1", "1"};
+        String[] task = {"1", "1", "0", "0", "0", "0", "0", "0", "0", "0"};
 
         for(int i = 0; i < investTaskList.size(); i ++){
             if(amount >= investTaskList.get(i)){
                 task[i] = "1";
             }
         }
-        return task;
+        return Joiner.on(",").join(task);
     }
 
 }

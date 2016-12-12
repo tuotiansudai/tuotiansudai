@@ -28,7 +28,9 @@ require(['jquery','drawCircle','logintip','register_common'], function ($,drawCi
 
         (function(drawCircle) {
             //抽奖模块
-            var $rewardGiftBox=$('.draw-area-box',$newYearDayFrame);
+            var $rewardGiftBox=$('.reward-gift-box',$newYearDayFrame);
+            var $rewardTaskStatus=$('#rewardTaskStatus'),
+                $rewardListFrame=$('.reward-list-frame',$newYearDayFrame);
 
             var $MobileNumber=$('#MobileNumber'),
                 pointAllList='/activity/point-draw/all-list',  //中奖记录接口地址
@@ -47,6 +49,13 @@ require(['jquery','drawCircle','logintip','register_common'], function ($,drawCi
                 "mobile":myMobileNumber,
                 "activityCategory":"ANNUAL_ACTIVITY"
             };
+
+            $rewardListFrame.find('.reward-box').each(function(key,option) {
+                var statusObj=$rewardTaskStatus.val().split(',');
+                if(statusObj[key]==1) {
+                    $(option).addClass('finished');
+                }
+            });
 
             var drawCircle=new drawCircle(pointAllList,pointUserList,drawURL,paramData,$rewardGiftBox);
 
@@ -113,16 +122,7 @@ require(['jquery','drawCircle','logintip','register_common'], function ($,drawCi
             });
 
             //点击切换按钮
-            var $giftInfoBox=$('.gift-info-box',$newYearDayFrame)
-            var menuCls=$giftInfoBox.find('.gift-record li');
-            menuCls.on('click',function() {
-                var $this=$(this),
-                    index=$this.index(),
-                    contentCls=$giftInfoBox.find('.record-list ul');
-                $this.addClass('active').siblings().removeClass('active');
-                contentCls.eq(index).show().siblings().hide();
-
-            });
+            drawCircle.PrizeSwitch();
 
         })(drawCircle);
 

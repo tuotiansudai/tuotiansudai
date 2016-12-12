@@ -4,6 +4,7 @@
     <div style="display: none" class="login-name" data-login-name='<@global.security.authentication property="principal.username" />'></div>
     <div style="display: none" class="mobile" id="MobileNumber" data-mobile='<@global.security.authentication property="principal.mobile" />'></div>
     </@global.isNotAnonymous>
+
 <div class="new-year-slide" id="newYearSlide"></div>
 
 <div class="new-year-frame" id="newYearDayFrame">
@@ -23,14 +24,16 @@
         <em>签到砸金蛋，100%中奖</em>
     </div>
 
-    <div class="box-normal clearfix">
+    <div class="box-normal clearfix reward-gift-box">
 
         <div class="draw-area-box">
             <img src="${staticServer}/activity/images/new-year/panzi.jpg" class="draw">
             <img src="${staticServer}/activity/images/new-year/egg.png" class="gold-egg">
             <img src="${staticServer}/activity/images/new-year/chuizi.png" class="gold-hammer">
             <div class="my-chance">
-                <i></i><span>我的砸蛋机会：0次</span>
+                <i></i><span>我的砸蛋机会：${time} 次
+                <input value="${task}" type="hidden" id="rewardTaskStatus">
+            </span>
             </div>
         </div>
 
@@ -109,7 +112,7 @@
 
         <div class="reward-list-frame clearfix">
         <#--第一盏神灯-->
-            <div class="reward-box finished">
+            <div class="reward-box">
                 <div class="reward-detail">
                     <em>累计投资金额：5,000元</em>
                     <div class="reward-img">
@@ -121,7 +124,7 @@
                 <div class="reward-title">第一盏神灯：让红包飞</div>
             </div>
         <#--第二盏神灯-->
-            <div class="reward-box finished">
+            <div class="reward-box">
                 <div class="reward-detail">
                     <em>累计投资金额：10,000元</em>
                     <div class="reward-img">
