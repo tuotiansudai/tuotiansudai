@@ -203,7 +203,7 @@ public class QuestionService {
                 if (Strings.isNullOrEmpty(questionModel.getMobile())) {
                     mobile = questionModel.getFakeMobile();
                 } else {
-                    mobile = questionModel.getMobile();
+                    mobile = MobileEncoder.encode(questionModel.getMobile());
                 }
             }
             return new QuestionDto(questionModel, mobile);

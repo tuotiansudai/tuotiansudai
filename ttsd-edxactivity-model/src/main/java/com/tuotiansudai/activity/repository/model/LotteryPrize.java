@@ -52,7 +52,17 @@ public enum LotteryPrize {
     TELEPHONE_FARE_10_REF_CARNIVAL("10元话费",PrizeType.CONCRETE,ActivityCategory.CARNIVAL_ACTIVITY,5),
     BAMBOO_CHARCOAL_PACKAGE("卡通汽车竹炭包",PrizeType.CONCRETE,ActivityCategory.CARNIVAL_ACTIVITY,8),
     INTEREST_COUPON_5_POINT_DRAW_REF_CARNIVAL("0.5加息券",PrizeType.VIRTUAL,ActivityCategory.CARNIVAL_ACTIVITY,41),
-    RED_ENVELOPE_50_POINT_DRAW_REF_CARNIVAL("50元红包",PrizeType.VIRTUAL,ActivityCategory.CARNIVAL_ACTIVITY,39);
+    RED_ENVELOPE_50_POINT_DRAW_REF_CARNIVAL("50元红包",PrizeType.VIRTUAL,ActivityCategory.CARNIVAL_ACTIVITY,39),
+
+    //圣诞节活动
+    MI_NOTE2_PHONE("小米Note2",PrizeType.CONCRETE,ActivityCategory.CHRISTMAS_ACTIVITY,0),
+    ALOE_CAPSULE("芦荟凝胶",PrizeType.CONCRETE,ActivityCategory.CHRISTMAS_ACTIVITY,5),
+    U_DISK("拓天速贷u盘",PrizeType.CONCRETE,ActivityCategory.CHRISTMAS_ACTIVITY,5),
+    PHONE_FARE_10_REF_CARNIVAL("10元话费",PrizeType.CONCRETE,ActivityCategory.CHRISTMAS_ACTIVITY,15),
+    ELK_PILLOW("麋鹿抱枕",PrizeType.CONCRETE,ActivityCategory.CHRISTMAS_ACTIVITY,10),
+    JOHNSON_HAND_CREAM("强生护手霜",PrizeType.CONCRETE,ActivityCategory.CHRISTMAS_ACTIVITY,10),
+    PUMPKIN_PILLOW("南瓜抱枕",PrizeType.CONCRETE,ActivityCategory.CHRISTMAS_ACTIVITY,10),
+    RED_ENVELOPE_20_POINT_DRAW_REF_CARNIVAL("20元投资红包",PrizeType.VIRTUAL,ActivityCategory.CHRISTMAS_ACTIVITY,45);
 
     String description;
     PrizeType prizeType;

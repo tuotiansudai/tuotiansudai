@@ -199,7 +199,7 @@
         CASE WHEN temp.status in ('RAISING','PREHEAT','RECHECK') THEN verify_time END DESC,
         CASE WHEN temp.status in ('RAISING','PREHEAT','RECHECK') THEN created_time END DESC,
         CASE WHEN temp.status in ('REPAYING','OVERDUE','COMPLETE') THEN recheck_time END DESC
-        limit #{index} , 10
+        limit #{index} , #{pageSize}
     </select>
 
     <select id="findLoanListCountMobileApp" parameterType="map" resultType="int">

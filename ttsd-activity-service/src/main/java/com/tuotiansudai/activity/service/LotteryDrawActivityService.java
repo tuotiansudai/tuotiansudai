@@ -215,7 +215,7 @@ public class LotteryDrawActivityService {
         return 0l;
     }
 
-    private LotteryPrize lotteryDrawPrize(final ActivityCategory activityCategory) {
+    public LotteryPrize lotteryDrawPrize(final ActivityCategory activityCategory) {
         int random = (int) (Math.random() * 100000000);
         final int mod = random % 200;
 

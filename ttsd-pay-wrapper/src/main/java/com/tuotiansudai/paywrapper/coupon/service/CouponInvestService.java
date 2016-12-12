@@ -7,7 +7,5 @@ public interface CouponInvestService {
 
     void invest(long investId, List<Long> userCouponIds);
 
-    void investCallback(long id);
-
     void cancelUserCoupon(long loanId);
 }

@@ -9,6 +9,7 @@
     <resultMap id="MembershipExperienceBillResultMap" type="MembershipExperienceBillModel">
         <id column="id" property="id"/>
         <result column="login_name" property="loginName"/>
+        <result column="invest_id" property="investId"/>
         <result column="experience" property="experience"/>
         <result column="total_experience" property="totalExperience"/>
         <result column="created_time" property="createdTime"/>
@@ -16,20 +17,20 @@
     </resultMap>
 
     <insert id="create" parameterType="MembershipExperienceBillModel" useGeneratedKeys="true" keyProperty="id">
-        insert into membership_experience_bill (login_name, experience, total_experience, created_time, description)
-        value(#{loginName}, #{experience}, #{totalExperience}, #{createdTime}, #{description})
+        insert into membership_experience_bill (login_name, invest_id, experience, total_experience, created_time, description)
+        value(#{loginName}, #{investId}, #{experience}, #{totalExperience}, #{createdTime}, #{description})
     </insert>
 
     <insert id="createBatch" parameterType="MembershipExperienceBillModel">
-        INSERT INTO `aa`.`membership_experience_bill` (login_name, experience, total_experience, created_time, description)
+        INSERT INTO `aa`.`membership_experience_bill` (login_name, invest_id, experience, total_experience, created_time, description)
         VALUES
         <foreach collection="list" item="item" index="index" separator=",">
-            (#{item.loginName}, #{item.experience}, #{item.totalExperience}, #{item.createdTime}, #{item.description})
+            (#{item.loginName}, #{item.investId}, #{item.experience}, #{item.totalExperience}, #{item.createdTime}, #{item.description})
         </foreach>
     </insert>
 
     <update id="update" parameterType="MembershipExperienceBillModel">
-        update membership_experience_bill set login_name = #{loginName}, experience = #{experience}, total_experience = #{totalExperience}, created_time = #{createdTime}, description = #{description} where id = #{id}
+        update membership_experience_bill set login_name = #{loginName}, invest_id = #{investId}, experience = #{experience}, total_experience = #{totalExperience}, created_time = #{createdTime}, description = #{description} where id = #{id}
     </update>
 
     <select id="findById" resultMap="MembershipExperienceBillResultMap" parameterType="long">
@@ -62,6 +63,10 @@
         <if test="endTime != null">
             <![CDATA[ and created_time <= #{endTime} ]]>
         </if>
+    </select>
+
+    <select id="findByLoginNameAndInvestId" resultMap="MembershipExperienceBillResultMap" parameterType="map">
+        select * from membership_experience_bill where login_name = #{loginName} and invest_id = #{investId}
     </select>
 
 </mapper>
