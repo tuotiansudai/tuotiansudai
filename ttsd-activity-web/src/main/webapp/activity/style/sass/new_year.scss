@@ -83,6 +83,7 @@ body {
     text-align: center;
     position: relative;
     min-height:750px;
+    cursor:url("/activity/images/new-year/test.png"),auto;
 
     .draw {
       position: absolute;
@@ -93,29 +94,41 @@ body {
     .gold-egg {
       position: absolute;
       bottom: 100px;
-      left: 50%;
-      transform: translateX(-50%);
-      transition: animate-egg linear 2s;
+      left: 32%;
+      //transform: translateX(-50%);
       transform-origin: 50% 100%;
+      //animation: animate-egg 3s linear infinite;
+
+    }
+    .gold-hammer {
+      position: absolute;
+      top: 221px;
+      right: 144px;
+      width: 100px;
+      transform-origin: 100% 100%;
+      animation: animate-hammer 1s linear infinite;
 
     }
 
     @keyframes animate-egg {
       0% { transform: rotateZ(0deg); }
-      25% { transform: rotateZ(15deg); }
+      25% { transform: rotateZ(3deg); }
       50% { transform: rotateZ(0deg); }
-      75% { transform: rotateZ(-15deg); }
+      75% { transform: rotateZ(-3deg); }
       100% { transform: rotateZ(0deg); }
 
     }
 
-    @-webkit-keyframes animate-egg{
-      0% { transform: rotateZ(0deg); }
-      25% { transform: rotateZ(15deg); }
-      50% { transform: rotateZ(0deg); }
-      75% { transform: rotateZ(-15deg); }
-      100% { transform: rotateZ(0deg); }
+    @keyframes animate-hammer {
+      0% {  transform: rotateZ(0deg);  }
+      25% {  transform: rotateZ(18deg);  }
+      50% {  transform: rotateZ(0deg);  }
+      75% {  transform: rotateZ(-18deg);  }
+      100% { transform: rotateZ(0deg);  }
+
+
     }
+
   }
 
   .activity-rule-box {

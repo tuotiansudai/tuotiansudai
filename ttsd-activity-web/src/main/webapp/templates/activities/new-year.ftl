@@ -22,6 +22,8 @@
         <div class="draw-area-box">
             <img src="${staticServer}/activity/images/new-year/panzi.jpg" class="draw">
             <img src="${staticServer}/activity/images/new-year/egg.png" class="gold-egg">
+            <img src="${staticServer}/activity/images/new-year/chuizi.png" class="gold-hammer">
+
         </div>
 
         <div class="button-group tc">
