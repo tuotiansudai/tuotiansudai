@@ -14,13 +14,12 @@
         <result column="invest_amount" property="investAmount"/>
         <result column="recommended_invest_amount" property="recommendedInvestAmount"/>
         <result column="send_coupon" property="sendCoupon"/>
-        <result column="activity_category" property="activityCategory"/>
     </resultMap>
 
     <insert id="create" parameterType="NotWorkModel" useGeneratedKeys="true" keyProperty="id">
         insert into `edxactivity`.`not_work` (login_name, user_name, mobile, invest_amount, recommended_invest_amount,
-        send_coupon, activity_category)
-        values (#{loginName}, #{userName}, #{mobile}, #{investAmount}, #{recommendedInvestAmount}, #{sendCoupon}, #{activityCategory})
+        send_coupon)
+        values (#{loginName}, #{userName}, #{mobile}, #{investAmount}, #{recommendedInvestAmount}, #{sendCoupon})
     </insert>
 
     <update id="update" parameterType="NotWorkModel">
@@ -31,21 +30,17 @@
         mobile = #{mobile},
         invest_amount = #{investAmount},
         recommended_invest_amount = #{recommendedInvestAmount},
-        send_coupon = #{sendCoupon},
-        activity_category = #{activityCategory}
+        send_coupon = #{sendCoupon}
         where
         id = #{id}
     </update>
 
     <select id="findByLoginName" parameterType="java.lang.String" resultMap="notWorkResultMap">
         select * from `edxactivity`.`not_work` where login_name = #{loginName}
-        <if test="mobile != null and mobile != ''">
-            and activity_category = #{activityCategory}
-        </if>
     </select>
 
     <select id="findPagination" resultMap="notWorkResultMap">
-        select * from `edxactivity`.`not_work` where activity_category = #{activityCategory}
+        select * from `edxactivity`.`not_work` where 1=1
         <if test="mobile != null and mobile != ''">
           and mobile = #{mobile}
         </if>
