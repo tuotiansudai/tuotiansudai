@@ -2,11 +2,14 @@ package com.tuotiansudai.worker.monitor;
 
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
+import com.tuotiansudai.worker.monitor.config.MonitorConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 
 import java.time.Clock;
@@ -16,30 +19,46 @@ import java.util.stream.Collectors;
 @Component
 public class WorkerMonitor {
     private static final Logger logger = LoggerFactory.getLogger(WorkerMonitor.class);
-    static final String HEALTH_REPORT_REDIS_KEY = "worker:health:report";
-    private static final int HEALTH_CHECK_INTERVAL_SECONDS = 10; // 每10秒检查一次
-    private static final int WORKER_GONE_IF_AFTER_SECONDS = 120; // 2分钟没有更新，认为掉线
+    static String HEALTH_REPORT_REDIS_KEY = "worker:health:report";
+    private final Set<String> missingWorkers = new HashSet<>();
+
+    private final Timer healthCheckTimer;
     private final SmsWrapperClient smsWrapperClient;
     private final StringRedisTemplate redisTemplate;
-    private final Set<String> missingWorkers;
+    private final MonitorConfig monitorConfig;
+    private final JavaMailSender mailSender;
+
+    public static void setHealthReportRedisKey(String healthReportRedisKey) {
+        HEALTH_REPORT_REDIS_KEY = healthReportRedisKey;
+    }
 
     @Autowired
-    public WorkerMonitor(SmsWrapperClient smsWrapperClient, StringRedisTemplate redisTemplate) {
+    public WorkerMonitor(SmsWrapperClient smsWrapperClient,
+                         StringRedisTemplate redisTemplate,
+                         MonitorConfig monitorConfig,
+                         JavaMailSender mailSender) {
+        this.healthCheckTimer = new Timer();
         this.smsWrapperClient = smsWrapperClient;
         this.redisTemplate = redisTemplate;
-        this.missingWorkers = new HashSet<>();
+        this.monitorConfig = monitorConfig;
+        this.mailSender = mailSender;
     }
 
     void start() {
-        new Timer().schedule(
+        healthCheckTimer.schedule(
                 new TimerTask() {
                     @Override
                     public void run() {
                         checkAllHealth();
                     }
                 },
-                HEALTH_CHECK_INTERVAL_SECONDS * 1000,
-                HEALTH_CHECK_INTERVAL_SECONDS * 1000);
+                monitorConfig.getHealthCheckIntervalSeconds() * 1000,
+                monitorConfig.getHealthCheckIntervalSeconds() * 1000);
+    }
+
+    void stop() {
+        healthCheckTimer.cancel();
+        healthCheckTimer.purge();
     }
 
     private void checkAllHealth() {
@@ -47,13 +66,13 @@ public class WorkerMonitor {
         HashOperations<String, String, String> ops = redisTemplate.opsForHash();
         Map<String, String> workerMap = ops.entries(HEALTH_REPORT_REDIS_KEY);
 
-        long oldestLivingClock = Clock.systemUTC().millis() - WORKER_GONE_IF_AFTER_SECONDS * 1000;
+        long oldestLivingClock = Clock.systemUTC().millis() - monitorConfig.getMaxSilenceSeconds() * 1000;
         Set<String> newMessingWorkers = workerMap.entrySet().stream()
                 .filter(entry -> isNewMissingWorker(entry.getKey(), entry.getValue(), oldestLivingClock))
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toSet());
         if (!newMessingWorkers.isEmpty()) {
-            smsAlarm(newMessingWorkers);
+            notifyError(newMessingWorkers);
         }
     }
 
@@ -62,38 +81,55 @@ public class WorkerMonitor {
         try {
             lastReportTime = Long.parseLong(lastReportTimeStr);
         } catch (NumberFormatException e) {
-            logger.warn("can not parse last report time '{}' of worker {}", lastReportTimeStr, workerName);
+            logger.warn("[monitor] can not parse last report time '{}' of worker {}", lastReportTimeStr, workerName);
         }
         if (lastReportTime > oldestLivingClock) {
             if (missingWorkers.remove(workerName)) {
-                logger.info("{} come back", workerName);
+                logger.info("[monitor] {} come back", workerName);
                 if (missingWorkers.isEmpty()) {
-                    logger.info("all workers back to normal");
-                    smsOK();
+                    logger.info("[monitor] all workers back to normal");
+                    notifyOK();
                 }
             }
             return false;
         } else {
             boolean isNewItem = missingWorkers.add(workerName);
             if (isNewItem) {
-                logger.info("{} lost", workerName);
+                logger.error("[monitor] {} lost", workerName);
             }
             return isNewItem;
         }
     }
 
-    private void smsOK() {
+    private void notifyOK() {
         String alertMessage = "所有Worker已恢复正常";
-        SmsFatalNotifyDto dto = new SmsFatalNotifyDto(alertMessage);
-        logger.info(alertMessage);
-        smsWrapperClient.sendFatalNotify(dto);
+        sendNotification(alertMessage);
     }
 
-    private void smsAlarm(Set<String> missingWorkers) {
+    private void notifyError(Set<String> missingWorkers) {
         String allMissingWorkers = String.join(",", missingWorkers);
         String alertMessage = String.format("Worker[%s] 掉线", allMissingWorkers);
-        logger.error(alertMessage);
-        SmsFatalNotifyDto dto = new SmsFatalNotifyDto(alertMessage);
-        smsWrapperClient.sendFatalNotify(dto);
+        sendNotification(alertMessage);
+    }
+
+    private void sendNotification(String text) {
+        if (monitorConfig.isSmsNotifyEnabled()) {
+            logger.error("[monitor] send sms {}", text);
+            SmsFatalNotifyDto dto = new SmsFatalNotifyDto(text);
+            smsWrapperClient.sendFatalNotify(dto);
+        }
+        if (monitorConfig.isEmailNotifyEnabled()) {
+            logger.error("[monitor] send email {}", text);
+            sendNotifyEmail(text);
+        }
+    }
+
+    private void sendNotifyEmail(String text) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom(monitorConfig.getEmailNotifySender());
+        message.setTo(monitorConfig.getEmailNotifyRecipients());
+        message.setSubject(String.format("worker monitor [%s]", monitorConfig.getName()));
+        message.setText(text.replace("\n", "\r\n"));
+        mailSender.send(message);
     }
 }

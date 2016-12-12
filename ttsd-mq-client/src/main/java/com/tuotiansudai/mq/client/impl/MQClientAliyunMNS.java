@@ -83,7 +83,7 @@ public class MQClientAliyunMNS extends MQClient {
         Message message = null;
         try {
             logger.debug("[MQ] ready to pop message from queue: {}", queueName);
-            message = cloudQueue.popMessage(TIME_SLICE_SECONDS);
+            message = cloudQueue.popMessage(messagePopPeriodSeconds);
             if (message == null) {
                 logger.debug("[MQ] receive no message, try again");
             } else {

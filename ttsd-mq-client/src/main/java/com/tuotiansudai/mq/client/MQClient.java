@@ -14,9 +14,11 @@ import java.util.function.Consumer;
 
 public abstract class MQClient {
     private static final Logger logger = LoggerFactory.getLogger(MQClient.class);
-    private static final int ERROR_COUNT_THRESHOLD = 10; // 连续失败10次则认为异常
-    protected static final int TIME_SLICE_SECONDS = 10; // 每次取消息最多等10秒
     public static final String HEALTH_REPORT_REDIS_KEY = "worker:health:report";
+
+    protected int messagePopPeriodSeconds = 10; // 从MQ中取消息的周期
+    private int errorCountThreshold = 10; // 连续失败10次则认为异常
+    private int errorSleepSeconds = 60 * 30; // 异常后线程暂停30分钟
 
     protected final RedisClient redisClient;
     protected final Jedis sharedJedis;
@@ -24,6 +26,18 @@ public abstract class MQClient {
     protected volatile boolean continueRunning = true;
 
     private final Map<MessageQueue, Object> sleepingQueueLockMap = new HashMap<>();
+
+    public void setMessagePopPeriodSeconds(int messagePopPeriodSeconds) {
+        this.messagePopPeriodSeconds = messagePopPeriodSeconds;
+    }
+
+    public void setErrorCountThreshold(int errorCountThreshold) {
+        this.errorCountThreshold = errorCountThreshold;
+    }
+
+    public void setErrorSleepSeconds(int errorSleepSeconds) {
+        this.errorSleepSeconds = errorSleepSeconds;
+    }
 
     public MQClient(RedisClient redisClient) {
         this.redisClient = redisClient;
@@ -53,7 +67,7 @@ public abstract class MQClient {
     // 失败超过阈值则暂停某队列的消费30分钟
     protected final void pauseSubscribeIfExceeds(MessageQueue queue, int errorCount) {
         // 计数超过阈值
-        if (errorCount < ERROR_COUNT_THRESHOLD) {
+        if (errorCount < errorCountThreshold) {
             return;
         }
         if (queue == null) {
@@ -72,7 +86,7 @@ public abstract class MQClient {
         synchronized (lockObject) {
             try {
                 logger.warn("[MQ] pause to listen queue {} ", queue.getQueueName());
-                lockObject.wait(TIME_SLICE_SECONDS * 6 * 30 * 1000L);
+                lockObject.wait(errorSleepSeconds * 1000L);
                 if (continueRunning) {
                     logger.info("[MQ] resume to listen queue {}", queue.getQueueName());
                 } else {

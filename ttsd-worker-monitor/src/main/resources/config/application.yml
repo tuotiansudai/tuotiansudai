@@ -1,0 +1,27 @@
+monitor:
+  name: DEV-Monitor
+  health-status-redis-key: worker:health:report
+  health-check-interval-seconds: 10
+  max-silence-seconds: 120
+  sms-notify-enabled: true
+  email-notify-enabled: true
+  email-notify-sender: no-reply@tuotiansudai.com
+  email-notify-recipients:
+    - zhangzhigang@tuotiansudai.com
+
+spring:
+  mail:
+    host: smtp.qiye.163.com
+    prot: 994
+    username: no-reply@tuotiansudai.com
+    password: w62CQIhM6acj
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          ssl:
+            trust: smtp.qiye.163.com
+

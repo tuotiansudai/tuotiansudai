@@ -28,6 +28,13 @@ public class MQConfig {
     @Value("${aliyun.mns.enabled}")
     private boolean enableAliyumMNS;
 
+    @Value("${mq.message.pop.period.seconds}")
+    private int messagePopPeriodSeconds;
+    @Value("${mq.error.count.threshold}")
+    private int errorCountThreshold;
+    @Value("${mq.error.sleep.seconds}")
+    private int errorSleepSeconds;
+
     @Bean
     public AliyunMnsConfig aliyunMnsConfig() {
         if (enableAliyumMNS) {
@@ -57,11 +64,16 @@ public class MQConfig {
 
     @Bean
     public MQClient mqClient(MNSClient mnsClient, RedisClient redisClient) {
+        MQClient mqClient;
         if (enableAliyumMNS) {
-            return new MQClientAliyunMNS(mnsClient, redisClient);
+            mqClient = new MQClientAliyunMNS(mnsClient, redisClient);
         } else {
-            return new MQClientRedis(redisClient);
+            mqClient = new MQClientRedis(redisClient);
         }
+        mqClient.setMessagePopPeriodSeconds(messagePopPeriodSeconds);
+        mqClient.setErrorCountThreshold(errorCountThreshold);
+        mqClient.setErrorSleepSeconds(errorSleepSeconds);
+        return mqClient;
     }
 
     @Bean

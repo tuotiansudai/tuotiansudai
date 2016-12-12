@@ -54,7 +54,7 @@ public class MQClientRedis extends MQClient {
     }
 
     private boolean listenMessage(MessageQueue queue, Consumer<String> consumer, Jedis jedis) {
-        List<String> messages = jedis.brpop(TIME_SLICE_SECONDS, generateRedisKeyOfQueue(queue));
+        List<String> messages = jedis.brpop(messagePopPeriodSeconds, generateRedisKeyOfQueue(queue));
         if (messages.size() == 0) {
             return true;
         }
