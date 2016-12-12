@@ -49,7 +49,7 @@ public class AuditTaskAspectLoan {
 
     static Logger logger = Logger.getLogger(AuditTaskAspectLoan.class);
 
-    @AfterReturning(value = "execution(* com.tuotiansudai.service.LoanCreateService.applyAuditLoan(*))", returning = "returnValue")
+    @AfterReturning(value = "execution(* com.tuotiansudai.console.service.ConsoleLoanCreateService.applyAuditLoan(*))", returning = "returnValue")
     public void afterReturningCreateLoan(JoinPoint joinPoint, BaseDto<PayDataDto> returnValue) {
         logger.debug("after create loan aspect.");
         try {
@@ -85,7 +85,7 @@ public class AuditTaskAspectLoan {
     }
 
 
-    @AfterReturning(value = "execution(* com.tuotiansudai.service.LoanCreateService.openLoan(..))", returning = "returnValue")
+    @AfterReturning(value = "execution(* com.tuotiansudai.console.service.ConsoleLoanCreateService.openLoan(..))", returning = "returnValue")
     public void afterReturningOpenLoan(JoinPoint joinPoint, BaseDto<PayDataDto> returnValue) {
         logger.debug("after open loan aspect.");
         try {

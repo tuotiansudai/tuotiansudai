@@ -50,7 +50,7 @@ public class AuditTaskAspectTransfer {
     static Logger logger = Logger.getLogger(AuditTaskAspectTransfer.class);
 
     @SuppressWarnings(value = "unchecked")
-    @Around(value = "execution(* com.tuotiansudai.transfer.service.TransferRuleService.updateTransferRule(..))")
+    @Around(value = "execution(* com.tuotiansudai.console.service.TransferRuleService.updateTransferRule(..))")
     public Object aroundUpdateTransferRule(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         logger.debug("update transfer rule task aspect starting");
 
