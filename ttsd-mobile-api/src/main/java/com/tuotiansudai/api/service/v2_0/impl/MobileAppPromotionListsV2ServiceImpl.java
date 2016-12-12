@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -32,20 +33,16 @@ public class MobileAppPromotionListsV2ServiceImpl implements MobileAppPromotionL
     private RedisWrapperClient redisWrapperClient;
 
     private static final String PROMOTION_ALERT_KEY = "app:promotion:pop";
+    private static final String DEVICEID_PROMOTION_ID_KEY = "deviceId:{0}:promotionId:{1}";
 
     @Override
     public BaseResponseDto<PromotionListResponseDataDto> generatePromotionList(PromotionRequestDto promotionRequestDto) {
         String deviceId = promotionRequestDto.getBaseParam().getDeviceId();
-
         PromotionListResponseDataDto dtoData = new PromotionListResponseDataDto();
-        if (!redisWrapperClient.hexists(PROMOTION_ALERT_KEY, deviceId)) {
-            List<PromotionModel> promotionModelList = promotionMapper.findPromotionList();
-            dtoData.setTotalCount(CollectionUtils.isNotEmpty(promotionModelList) ? promotionModelList.size() : 0);
-            dtoData.setPopList(convertResponseData(promotionModelList, deviceId));
-        } else {
-            dtoData.setTotalCount(0);
-            dtoData.setPopList(Lists.newArrayList());
-        }
+        List<PromotionModel> promotionModelList = promotionMapper.findPromotionList();
+        List<PromotionRecordResponseDataDto> convertResponseDataList = convertResponseData(promotionModelList, deviceId);
+        dtoData.setTotalCount(convertResponseDataList.size());
+        dtoData.setPopList(convertResponseDataList);
         BaseResponseDto<PromotionListResponseDataDto> dto = new BaseResponseDto<>();
         dto.setCode(ReturnMessage.SUCCESS.getCode());
         dto.setMessage(ReturnMessage.SUCCESS.getMsg());
@@ -53,17 +50,24 @@ public class MobileAppPromotionListsV2ServiceImpl implements MobileAppPromotionL
         return dto;
     }
 
+    private String getRedisKeyFromTemplateByDate(String template, String deviceId, String promotionId) {
+        return MessageFormat.format(template, deviceId, promotionId);
+    }
+
     private List<PromotionRecordResponseDataDto> convertResponseData(List<PromotionModel> promotionModels, String deviceId) {
         List<PromotionRecordResponseDataDto> list = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(promotionModels)) {
             for (PromotionModel promotionModel : promotionModels) {
+                if (redisWrapperClient.hexists(PROMOTION_ALERT_KEY, getRedisKeyFromTemplateByDate(DEVICEID_PROMOTION_ID_KEY, deviceId, String.valueOf(promotionModel.getId())))) {
+                    break;
+                }
                 PromotionRecordResponseDataDto dto = new PromotionRecordResponseDataDto();
                 dto.setImgUrl(staticServer + promotionModel.getImageUrl());
                 dto.setLinkUrl(Strings.isNullOrEmpty(promotionModel.getLinkUrl()) ? promotionModel.getJumpToLink() : promotionModel.getLinkUrl());
                 list.add(dto);
 
                 int timeout = this.getLeftSeconds(promotionModel.getStartTime(), promotionModel.getEndTime());
-                redisWrapperClient.hset(PROMOTION_ALERT_KEY, deviceId, String.valueOf(promotionModel.getId()), timeout);
+                redisWrapperClient.hset(PROMOTION_ALERT_KEY, getRedisKeyFromTemplateByDate(DEVICEID_PROMOTION_ID_KEY, deviceId, String.valueOf(promotionModel.getId())), String.valueOf(promotionModel.getId()), timeout);
             }
         }
         return list;
