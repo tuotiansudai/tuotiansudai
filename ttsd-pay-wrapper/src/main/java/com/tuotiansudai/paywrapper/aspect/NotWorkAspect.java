@@ -106,11 +106,11 @@ public class NotWorkAspect {
             return new BaseDto<>(new BaseDataDto(false, "非活动时间"));
         }
 
-        NotWorkModel notWorkModel = notWorkMapper.findByLoginName(loginName, ActivityCategory.NO_WORK_ACTIVITY);
+        NotWorkModel notWorkModel = notWorkMapper.findByLoginName(loginName);
         if (null == notWorkModel) {
             UserModel userModel = userMapper.findByLoginName(loginName);
             if (null != userModel) {
-                notWorkModel = new NotWorkModel(userModel.getLoginName(), userModel.getUserName(), userModel.getMobile(), false, ActivityCategory.NO_WORK_ACTIVITY);
+                notWorkModel = new NotWorkModel(userModel.getLoginName(), userModel.getUserName(), userModel.getMobile(), false);
                 notWorkModel = updateModelProducer.createAction(notWorkModel);
                 notWorkMapper.create(notWorkModel);
             } else {

@@ -118,7 +118,7 @@ public class LotteryActivityServiceTest {
         Date activityAutumnEndTime = DateUtils.addMonths(DateTime.now().toDate(), 1);
         ReflectionTestUtils.setField(lotteryActivityService, "activityAutumnStartTime", activityAutumnStartTime);
         ReflectionTestUtils.setField(lotteryActivityService, "activityAutumnEndTime", activityAutumnEndTime);
-        DrawLotteryResultDto drawLotteryResultDto = lotteryActivityService.drawLotteryPrize("", null);
+        DrawLotteryResultDto drawLotteryResultDto = lotteryActivityService.drawLotteryPrize("");
         assertTrue(!drawLotteryResultDto.getStatus());
     }
 

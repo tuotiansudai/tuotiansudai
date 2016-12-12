@@ -243,7 +243,7 @@ public class LotteryDrawActivityService {
                 .build()).get(lotteryPrize);
     }
 
-    private LotteryPrize drawLotteryPrize(final ActivityCategory activityCategory) {
+    public LotteryPrize drawLotteryPrize(final ActivityCategory activityCategory) {
         int random = (int) (Math.random() * 100000000);
         final int mod = random % 200;
 
