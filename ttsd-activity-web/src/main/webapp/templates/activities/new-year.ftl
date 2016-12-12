@@ -99,11 +99,11 @@
         <div class="total-invest-amount clearfix">
             <dl>
                 <dt>您的累计投资金额：</dt>
-                <dd>0.00元</dd>
+                <dd>${investAmount}元</dd>
             </dl>
             <dl>
                 <dt>距下一个奖品还差：</dt>
-                <dd>10000.00元</dd>
+                <dd>${nextAmount}元</dd>
             </dl>
             <dl class="last tc">
                 <dd><a href="/loan-list" class="btn-to-invest">立即投资</a> </dd>
