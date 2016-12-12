@@ -39,7 +39,7 @@ public abstract class MQClient {
     public final void stopSubscribe() {
         logger.info("[MQ] prepare to stop");
         continueRunning = false;
-        resumeAllSubscribe();
+        stopAllSubscribeWaiting();
     }
 
     protected final void reportConsumerStatus(MessageQueue queue, boolean ok) {
@@ -85,7 +85,7 @@ public abstract class MQClient {
         sleepingQueueLockMap.remove(queue);
     }
 
-    private void resumeAllSubscribe() {
+    private void stopAllSubscribeWaiting() {
         synchronized (sleepingQueueLockMap) {
             sleepingQueueLockMap.keySet().forEach(queue -> {
                 Object lockObject = sleepingQueueLockMap.get(queue);
