@@ -224,5 +224,6 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto {
         this.investStatus = investStatus;
         this.achievements = invest.getAchievements();
         this.pledgeType = loan.getPledgeType();
+        this.transferStatus = invest.getTransferStatus().name();
     }
 }
