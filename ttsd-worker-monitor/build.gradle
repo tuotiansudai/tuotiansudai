@@ -57,3 +57,16 @@ task consumerCheck(dependsOn: ':ttsd-config:classes', type: JavaExec) {
     def propertiesFile = "${project.project(':ttsd-config').buildDir}/resources/main/ttsd-env.properties"
     args = [propertiesFile]
 }
+
+processResources {
+    def innerConfigPath = "${project.projectDir.getPath()}/src/main/resources"
+    def outerConfigPath = '/workspace/new_version_config/ttsd-worker-monitor'
+    if (project.hasProperty("workerMonitorConfigPath") && new File(workerMonitorConfigPath).isDirectory()) {
+        innerConfigPath = workerMonitorConfigPath
+    } else if (new File(outerConfigPath).isDirectory()) {
+        innerConfigPath = outerConfigPath
+    }
+    from("${innerConfigPath}") {
+        into '/'
+    }
+}

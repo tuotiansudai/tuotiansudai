@@ -3,8 +3,8 @@ monitor:
   health-status-redis-key: worker:health:report
   health-check-interval-seconds: 10
   max-silence-seconds: 120
-  sms-notify-enabled: true
-  email-notify-enabled: true
+  sms-notify-enabled: false
+  email-notify-enabled: false
   email-notify-sender: no-reply@tuotiansudai.com
   email-notify-recipients:
     - zhangzhigang@tuotiansudai.com
