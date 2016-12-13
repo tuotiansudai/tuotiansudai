@@ -58,12 +58,7 @@ public class AuditTaskAspectTransfer {
         String operator = (String) proceedingJoinPoint.getArgs()[1];
         String ip = (String) proceedingJoinPoint.getArgs()[2];
 
-        boolean isOperatorAdmin = Iterators.tryFind(userRoleMapper.findByLoginName(operator).iterator(), new Predicate<UserRoleModel>() {
-            @Override
-            public boolean apply(UserRoleModel input) {
-                return Lists.newArrayList(Role.ADMIN, Role.OPERATOR_ADMIN).contains(input.getRole());
-            }
-        }).isPresent();
+        boolean isOperatorAdmin = Iterators.tryFind(userRoleMapper.findByLoginName(operator).iterator(), input -> Lists.newArrayList(Role.ADMIN, Role.OPERATOR_ADMIN).contains(input.getRole())).isPresent();
 
         String taskKey = TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN;
         String taskId = OperationType.TRANSFER_RULE.name();

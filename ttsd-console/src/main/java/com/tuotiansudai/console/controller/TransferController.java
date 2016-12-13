@@ -3,6 +3,7 @@ package com.tuotiansudai.console.controller;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.console.service.ConsoleInvestTransferService;
 import com.tuotiansudai.console.service.TransferRuleService;
+import com.tuotiansudai.console.service.TransferRuleServiceImpl;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
 import com.tuotiansudai.dto.TransferRuleDto;

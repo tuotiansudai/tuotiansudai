@@ -52,7 +52,7 @@ public class AuditTaskAspectUser {
 
     static Logger logger = Logger.getLogger(AuditTaskAspectUser.class);
 
-    @Around(value = "execution(* com.tuotiansudai.service.UserService.editUser(..))")
+    @Around(value = "execution(* com.tuotiansudai.console.service.ConsoleUserService.editUser(..))")
     public Object aroundEditUser(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         logger.debug("around edit user aspect.");
         String operatorLoginName = (String) proceedingJoinPoint.getArgs()[0];
@@ -147,6 +147,4 @@ public class AuditTaskAspectUser {
                     }
                 })));
     }
-
-
 }
