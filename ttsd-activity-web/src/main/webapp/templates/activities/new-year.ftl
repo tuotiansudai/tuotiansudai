@@ -1,5 +1,5 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.new_year}" pageJavascript="${js.new_year}" activeNav="" activeLeftNav="" title="活动中心_投资活动_拓天速贷" keywords="拓天活动中心,拓天活动,拓天投资列表,拓天速贷" description="拓天速贷活动中心为投资用户提供投资大奖,投资奖励,收益翻倍等福利,让您在赚钱的同时体验更多的投资乐趣.">
+<@global.main pageCss="${css.new_year}" pageJavascript="${js.new_year}" activeNav="" activeLeftNav="" title="新年活动_活动中心_拓天速贷" keywords="拓天速贷,新年砸金蛋,新年开神灯,元旦投资活动" description="拓天速贷元旦投资活动,邀请好友砸金蛋,投资许愿开神灯,投资元旦专享标100%中奖,拓天速贷帮你实现新年愿望.">
     <@global.isNotAnonymous>
     <div style="display: none" class="login-name" data-login-name='<@global.security.authentication property="principal.username" />'></div>
     <div style="display: none" class="mobile" id="MobileNumber" data-mobile='<@global.security.authentication property="principal.mobile" />'></div>
@@ -30,17 +30,23 @@
             <img src="${staticServer}/activity/images/new-year/panzi.jpg" class="draw">
             <img src="${staticServer}/activity/images/new-year/egg.png" class="gold-egg">
             <img src="${staticServer}/activity/images/new-year/chuizi.png" class="gold-hammer">
-            <div class="my-chance">
-                <i></i><span>我的砸蛋机会：${time} 次
+            <div class="my-chance" >
+                <i></i><span>我的砸蛋机会：<em class="my-times" data-times="${time}">${time} </em>次
                 <input value="${task}" type="hidden" id="rewardTaskStatus">
             </span>
             </div>
         </div>
 
         <div class="button-group tc">
-            <a href="#" class="normal-button">签到</a>
-            <a href="#" class="normal-button">邀请好友</a>
-            <a href="#" class="normal-button">马上投资</a>
+            <#if signedIn?? && signedIn>
+                <a href="javascript:void(0);" class="normal-button">已签到</a>
+            <#else >
+                <a href="javascript:void(0);" class="normal-button"  id="signToday">签到</a>
+            </#if>
+
+
+            <a href="/referrer/refer-list" class="normal-button">邀请好友</a>
+            <a href="/loan-list" class="normal-button">马上投资</a>
         </div>
 
         <div class="activity-rule-box clearfix">
@@ -82,14 +88,17 @@
             <i class="lamp-left"></i>
             <i class="lamp-right"></i>
             <div class="slide-text">
-                2016即将画上一个圆满的句号，你的新年愿望是什么？ <br/>
-                是一部心水已久的手机？一次不看价签的买买买？<br/>
-                还是一张回家的车票？一次放空身心的度假之旅？<br/>
-                在这个辞旧迎新的时刻，能帮你实现一个愿望的是朋友<br/>
-                实现两个的是亲戚，实现三个的是爱人<br/>
-                实现五个的是父母<br/>
-                而拓天速贷，帮你实现十个愿望！<br/>
-                新年新气象，当然十全十美！<br/>
+                <ul class="slide-text-list">
+                    <li>2016即将画上一个圆满的句号，你的新年愿望是什么？</li>
+                    <li>是一部心水已久的手机？一次不看价签的买买买？</li>
+                    <li>还是一张回家的车票？一次放空身心的度假之旅？</li>
+                    <li>在这个辞旧迎新的时刻，能帮你实现一个愿望的是朋友</li>
+                    <li>实现两个的是亲戚，实现三个的是爱人</li>
+                    <li>实现五个的是父母</li>
+                    <li>而拓天速贷，帮你实现十个愿望！</li>
+                    <li>新年新气象，当然十全十美！</li>
+                </ul>
+
             </div>
         </div>
 

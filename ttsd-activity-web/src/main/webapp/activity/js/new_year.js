@@ -5,6 +5,31 @@ require(['jquery','drawCircle','logintip','register_common'], function ($,drawCi
         var $newYearDayFrame = $('#newYearDayFrame');
         var $activitySlide=$('#newYearSlide');
 
+
+        //文字连续滚动
+        (function() {
+            var $slideText=$('.slide-text',$newYearDayFrame);
+            var lineHeight = $slideText.find('li').eq(0).height();
+            var textTimer;
+
+            $slideText.hover(function() {
+                clearInterval(textTimer);
+            },function() {
+                textTimer = setInterval(function() {
+                    var $ulList=$slideText.find('.slide-text-list');
+                    $ulList.animate({
+                        "margin-top": -lineHeight + "px"
+                    }, 2000, function() {
+                        $ulList.css({
+                            "margin-top": "0px"
+                        })
+                            .find("li:first")
+                            .appendTo($ulList);
+                    });
+                }, 500);
+            }).trigger('mouseout');
+        })();
+
         //为节约手机流量，把pc页面的图片在pc页上显示才增加
         (function() {
             if(redirect=='pc') {
@@ -40,6 +65,7 @@ require(['jquery','drawCircle','logintip','register_common'], function ($,drawCi
                 $pointerImg=$('.gold-egg',$rewardGiftBox),
                 myMobileNumber=$MobileNumber.length ? $MobileNumber.data('mobile') : '';  //当前登录用户的手机号
 
+            var myTimes=$rewardGiftBox.find('.my-times').data('times'); //初始抽奖次数
             var tipMessage={
                 info:'',
                 button:'',
@@ -57,7 +83,37 @@ require(['jquery','drawCircle','logintip','register_common'], function ($,drawCi
                 }
             });
 
+            //签到
+            drawCircle.prototype.signToday=function(callback,failFun) {
+                var $signToday=$('#signToday');
+                $signToday.on('click',function() {
+                    $.ajax({
+                        url:'/point/sign-in',
+                        type:'POST',
+                        dataType: 'json'
+                    })
+                        .done(function(response) {
+                            callback && callback(response);
+                        })
+                        .fail(function() {
+                            failFun && failFun()
+                        })
+                })
+            }
+
             var drawCircle=new drawCircle(pointAllList,pointUserList,drawURL,paramData,$rewardGiftBox);
+
+            //签到成功
+            drawCircle.signToday(function() {
+                tipMessage.button='<a href="javascript:void(0)" class="go-on go-close">知道了</a>';
+                tipMessage.info='<p class="success-text">签到成功！</p>' +
+                    '<p class="des-text">恭喜您获得10积分，并获得砸金蛋机会一次</p>'
+                drawCircle.tipWindowPop(tipMessage);
+            },function() {
+                tipMessage.button='';
+                tipMessage.info='<p class="login-text">请与客服联系</p>';
+                drawCircle.tipWindowPop(tipMessage);
+            });
 
             //渲染中奖记录
             drawCircle.GiftRecord();
@@ -75,9 +131,11 @@ require(['jquery','drawCircle','logintip','register_common'], function ($,drawCi
                 //延迟1.5秒抽奖
                 setTimeout(function() {
                     drawCircle.beginLuckDraw(function(data) {
-                        //停止礼品盒的动画
+                        //停止鸡蛋的动画
                         $pointerImg.removeClass('win-result');
-                        // drawCircle.showDrawTime(); 抽奖次数
+
+                        // 抽奖次数
+                        $rewardGiftBox.find('.my-times').text(--myTimes);
 
                         if (data.returnCode == 0) {
                             //真实奖品
@@ -125,8 +183,6 @@ require(['jquery','drawCircle','logintip','register_common'], function ($,drawCi
             drawCircle.PrizeSwitch();
 
         })(drawCircle);
-
-
     })
 });
 
