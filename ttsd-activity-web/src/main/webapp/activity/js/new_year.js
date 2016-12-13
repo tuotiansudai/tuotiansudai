@@ -1,4 +1,4 @@
-require(['jquery','drawCircle','commonFun','logintip','register_common'], function ($,drawCircle,commonFun) {
+require(['jquery','drawCircle','logintip','register_common'], function ($,drawCircle) {
     $(function() {
 
         var redirect = globalFun.browserRedirect();
@@ -66,7 +66,6 @@ require(['jquery','drawCircle','commonFun','logintip','register_common'], functi
                 pointAllList='/activity/point-draw/all-list',  //中奖记录接口地址
                 pointUserList='/activity/point-draw/user-list',   //我的奖品接口地址
                 drawURL='/activity/point-draw/task-draw',    //抽奖的接口链接
-                // drawTime='/activity/christmas/drawTime', //抽奖次数
                 $pointerImg=$('.gold-egg',$rewardGiftBox),
                 myMobileNumber=$MobileNumber.length ? $MobileNumber.data('mobile') : '';  //当前登录用户的手机号
 
@@ -135,8 +134,8 @@ require(['jquery','drawCircle','commonFun','logintip','register_common'], functi
 
                         if (data.returnCode == 0) {
                             var prizeType=data.prizeType.toLowerCase();
-                                $(tipGroupObj[prizeType]).find('.prizeValue').text(prizeType);
-                            drawCircle.noRotateFn();
+                                $(tipGroupObj[prizeType]).find('.prizeValue').text(data.prizeValue);
+                            drawCircle.noRotateFn(tipGroupObj[prizeType]);
                         } else if(data.returnCode == 1) {
                             //没有抽奖机会
                             drawCircle.tipWindowPop(tipGroupObj['nochance']);

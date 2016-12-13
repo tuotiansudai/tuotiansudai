@@ -266,10 +266,8 @@
         <#include "login-tip.ftl" />
         <a href="javascript:void(0)" class="show-login no-login-text"></a>
 
-
-
-            <#--真实奖品的提示-->
-        <div class="tip-out-box">
+        <div class="tip-list-frame">
+        <#--真实奖品的提示-->
                 <div class="tip-list" data-return="concrete">
                     <div class="close-btn go-close"></div>
                     <div class="text-tip">
@@ -285,7 +283,7 @@
                     <div class="close-btn go-close"></div>
                     <div class="text-tip">
                         <p class="success-text">恭喜您！</p>
-                        <p class="reward-text">抽中了<em class="prizeValue">dddd</em>！</p>
+                        <p class="reward-text">抽中了<em class="prizeValue"></em>！</p>
                         <p class="des-text">奖品已发放至“我的宝藏”当中。</p>
                     </div>
                     <div class="btn-list"><a href="javascript:void(0)" class="go-on go-close">继续抽奖</a></div>

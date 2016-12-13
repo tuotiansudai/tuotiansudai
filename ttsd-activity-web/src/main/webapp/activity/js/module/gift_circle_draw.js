@@ -149,9 +149,8 @@ define(['jquery', 'rotate', 'lottery_unit','commonFun'], function($,rotate,lotte
 
     //接口调成功以后的弹框显示
     giftCircleDraw.prototype.tipWindowPop=function(tipMessage) {
-        var contentHTML='<div class="tip-out-box">'+tipMessage.outerHTML+'</div>';
-        commonFun.popWindow(contentHTML);
-
+        $(tipMessage).show();
+        commonFun.popWindow(tipMessage.outerHTML);
     }
     //tab switch
     giftCircleDraw.prototype.PrizeSwitch=function() {
