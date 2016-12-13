@@ -88,12 +88,12 @@ public class InvestSuccessActivityAnnualRewardMessageConsumer implements Message
             if (null != annualPrizeModel) {
                 annualPrizeModel.setInvestAmount(annualPrizeModel.getInvestAmount() + investInfo.getAmount());
 
-                if(!annualPrizeModel.isFirstSendCoupon() && investInfo.getAmount() >= INVEST_20_RED_ENVELOPE_LIMIT){
+                if(!annualPrizeModel.isFirstSendCoupon() && annualPrizeModel.getInvestAmount() >= INVEST_20_RED_ENVELOPE_LIMIT){
                     firstSendCoupon = true;
                     annualPrizeModel.setFirstSendCoupon(firstSendCoupon);
                 }
 
-                if(!annualPrizeModel.isSecondSendCoupon() && investInfo.getAmount() >= INVEST_20_RED_ENVELOPE_LIMIT){
+                if(!annualPrizeModel.isSecondSendCoupon() && annualPrizeModel.getInvestAmount() >= INVEST_800_RED_ENVELOPE_LIMIT){
                     secondSendCoupon = true;
                     annualPrizeModel.setFirstSendCoupon(secondSendCoupon);
                 }

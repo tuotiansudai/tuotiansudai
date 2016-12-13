@@ -56,7 +56,7 @@ public class InvestSuccessActivityAnnualRewardMessageConsumerTest {
         ReflectionTestUtils.setField(consumer, "annualTime", Lists.newArrayList(DateTime.now().plusDays(-1).toString(DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")), DateTime.now().plusDays(1).toString(DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss"))));
 
         when(annualPrizeMapper.find(anyString())).thenReturn(null);
-
+        doNothing().when(annualPrizeMapper).create(any(AnnualPrizeModel.class));
         doNothing().when(mqClient).sendMessage(messageQueueCaptor.capture(), messageCaptor.capture());
 
         try {
@@ -68,7 +68,7 @@ public class InvestSuccessActivityAnnualRewardMessageConsumerTest {
         verify(mqClient, times(2)).sendMessage(any(), any());
 
         assertEquals(MessageQueue.CouponAssigning, messageQueueCaptor.getValue());
-        assertEquals("test123:323", messageCaptor.getValue());
+        assertEquals("test123:331", messageCaptor.getValue());
     }
 
     @Test
@@ -95,12 +95,13 @@ public class InvestSuccessActivityAnnualRewardMessageConsumerTest {
         verify(mqClient, times(1)).sendMessage(any(), any());
 
         assertEquals(MessageQueue.CouponAssigning, messageQueueCaptor.getValue());
-        assertEquals("test123:323", messageCaptor.getValue());
+        assertEquals("test123:330", messageCaptor.getValue());
     }
+
 
     @Test
     @Transactional
-    public void shouldAgainInvestSendCouponIsOk() {
+    public void shouldAgainSendCouponIsOk() {
         final ArgumentCaptor<MessageQueue> messageQueueCaptor = ArgumentCaptor.forClass(MessageQueue.class);
         final ArgumentCaptor<String> messageCaptor = ArgumentCaptor.forClass(String.class);
 
@@ -123,7 +124,7 @@ public class InvestSuccessActivityAnnualRewardMessageConsumerTest {
         verify(mqClient, times(1)).sendMessage(any(), any());
 
         assertEquals(MessageQueue.CouponAssigning, messageQueueCaptor.getValue());
-        assertEquals("test123:323", messageCaptor.getValue());
+        assertEquals("test123:330", messageCaptor.getValue());
     }
 
     private  InvestSuccessMessage buildMockedInvestSuccessMessage() {
@@ -139,7 +140,7 @@ public class InvestSuccessActivityAnnualRewardMessageConsumerTest {
 
         loanDetailInfo.setLoanId(200000001);
         loanDetailInfo.setActivity(true);
-        loanDetailInfo.setActivityDesc("元旦专享");
+        loanDetailInfo.setActivityDesc("新年专享");
 
         userInfo.setMobile("123");
         userInfo.setUserName("123");
@@ -149,3 +150,6 @@ public class InvestSuccessActivityAnnualRewardMessageConsumerTest {
         return investSuccessMessage;
     }
 }
+
+
+
