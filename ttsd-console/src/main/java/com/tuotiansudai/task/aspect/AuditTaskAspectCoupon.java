@@ -24,14 +24,14 @@ import java.util.Date;
 public class AuditTaskAspectCoupon {
 
     @Autowired
-    private RedisWrapperClient redisWrapperClient;
+    RedisWrapperClient redisWrapperClient;
 
     @Autowired
-    private UserService userService;
+    UserService userService;
 
     static Logger logger = Logger.getLogger(AuditTaskAspectCoupon.class);
 
-    @AfterReturning(value = "execution(* com.tuotiansudai.console.service.ConsoleCouponService.createCoupon(..))")
+    @AfterReturning(value = "execution(* com.tuotiansudai.coupon.service.CouponService.createCoupon(..))")
     public void afterReturningCreateCoupon(JoinPoint joinPoint) {
         logger.debug("after create coupon aspect.");
         try {
@@ -44,7 +44,7 @@ public class AuditTaskAspectCoupon {
         }
     }
 
-    @AfterReturning(value = "execution(* com.tuotiansudai.console.service.ConsoleCouponService.editCoupon(..))")
+    @AfterReturning(value = "execution(* com.tuotiansudai.coupon.service.CouponService.editCoupon(..))")
     public void afterReturningEditCoupon(JoinPoint joinPoint) {
         logger.debug("after edit coupon aspect.");
         try {
@@ -136,7 +136,7 @@ public class AuditTaskAspectCoupon {
         }
     }
 
-    @AfterReturning(value = "execution(* com.tuotiansudai.console.service.ConsoleCouponService.deleteCoupon(..))")
+    @AfterReturning(value = "execution(* com.tuotiansudai.coupon.service.CouponService.deleteCoupon(..))")
     public void afterReturningDeleteCoupon(JoinPoint joinPoint) {
         logger.debug("after delete coupon aspect.");
         try {
