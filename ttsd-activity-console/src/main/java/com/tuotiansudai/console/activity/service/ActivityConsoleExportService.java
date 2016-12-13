@@ -226,8 +226,9 @@ public class ActivityConsoleExportService {
 
     public List<List<String>> buildAnnualCsvList() {
         //全部导出
-
-        List<AnnualPrizeDto> annualPrizeDtos = activityConsoleAnnualService.findAnnualList(null, null, null).getRecords();
+        final int index = 1;
+        final int pageSize = 1000000;
+        List<AnnualPrizeDto> annualPrizeDtos = activityConsoleAnnualService.findAnnualList(index, pageSize, null).getRecords();
 
         return annualPrizeDtos.stream().map(ExportCsvUtil::dtoToStringList).collect(Collectors.toList());
     }

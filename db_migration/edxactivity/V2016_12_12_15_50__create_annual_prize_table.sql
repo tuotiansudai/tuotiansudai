@@ -4,7 +4,7 @@ CREATE TABLE `annual_prize` (
   `login_name`                  VARCHAR(25) NOT NULL,
   `user_name`                   VARCHAR(25) DEFAULT NULL,
   `mobile`                      VARCHAR(11) NOT NULL,
-  `invest_amount`               INT(20) DEFAULT '0',
+  `invest_amount`               BIGINT(20) DEFAULT '0',
   `first_send_coupon`           TINYINT(1)  NOT NULL DEFAULT '0',
   `second_send_coupon`          TINYINT(1)  NOT NULL DEFAULT '0',
   `updated_time`                DATETIME DEFAULT NULL,

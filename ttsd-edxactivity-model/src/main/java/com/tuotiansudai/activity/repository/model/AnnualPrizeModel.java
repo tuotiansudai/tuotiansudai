@@ -15,6 +15,9 @@ public class AnnualPrizeModel implements Serializable {
     private Date updatedTime;
     private Date createdTime;
 
+    public AnnualPrizeModel() {
+    }
+
     public AnnualPrizeModel(String loginName,String userName, String mobile, long investAmount, boolean firstSendCoupon, boolean secondSendCoupon) {
         this.loginName = loginName;
         this.userName = userName;

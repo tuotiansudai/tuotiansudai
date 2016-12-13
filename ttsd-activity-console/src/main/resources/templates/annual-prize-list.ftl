@@ -1,6 +1,6 @@
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="" headLab="activity-manage" sideLab="notWork" title="不上班活动管理">
+<@global.main pageCss="" pageJavascript="" headLab="activity-manage" sideLab="annual" title="元代活动">
 
 <!-- content area begin -->
 <div class="col-md-10">
@@ -40,7 +40,7 @@
                     <td>
                     ${item.investAmount!}
                     </td>
-                    <td>
+                    <td width="50%">
                     ${item.rewards!}
                     </td>
                 </tr>

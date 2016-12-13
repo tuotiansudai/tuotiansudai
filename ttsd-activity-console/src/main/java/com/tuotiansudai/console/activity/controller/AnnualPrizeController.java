@@ -18,7 +18,7 @@ public class AnnualPrizeController {
     public ModelAndView getAnnualList(@RequestParam(value = "index", defaultValue = "1") int index,
                                       @RequestParam(value = "mobile", required = false) String mobile) {
 
-        ModelAndView modelAndView = new ModelAndView("/not-work-list");
+        ModelAndView modelAndView = new ModelAndView("/annual-prize-list");
         final int pageSize = 10;
         modelAndView.addObject("data", activityConsoleAnnualService.findAnnualList(index, pageSize, mobile));
         return modelAndView;

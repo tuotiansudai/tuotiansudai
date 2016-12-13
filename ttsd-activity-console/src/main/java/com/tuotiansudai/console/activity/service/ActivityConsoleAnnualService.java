@@ -7,6 +7,7 @@ import com.tuotiansudai.activity.repository.dto.AnnualPrizeDto;
 import com.tuotiansudai.activity.repository.mapper.AnnualPrizeMapper;
 import com.tuotiansudai.activity.repository.model.AnnualPrizeModel;
 import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.util.PaginationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,8 +37,8 @@ public class ActivityConsoleAnnualService {
 
 
     public BasePaginationDataDto<AnnualPrizeDto> findAnnualList(Integer index, Integer pageSize, String mobile) {
-        List<AnnualPrizeModel> annualPrizeModels = annualPrizeMapper.findAnnualPrizeModels(mobile, index, pageSize);
         long count = annualPrizeMapper.findAnnualPrizeCount(mobile);
+        List<AnnualPrizeModel> annualPrizeModels = annualPrizeMapper.findAnnualPrizeModels(mobile, PaginationUtil.calculateOffset(index, pageSize, count), pageSize);
 
         List<AnnualPrizeDto> transform = Lists.transform(annualPrizeModels, annual -> {
             List<String> rewardList = new ArrayList<>();

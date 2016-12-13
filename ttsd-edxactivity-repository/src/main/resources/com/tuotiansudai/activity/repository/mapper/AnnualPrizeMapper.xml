@@ -35,7 +35,7 @@
         `invest_amount` = #{investAmount},
         `first_send_coupon` #{firstSendCoupon},
         `second_send_coupon` #{secondSendCoupon},
-        `updated_time` = now();
+        `updated_time` = now()
         where id = #{id}
     </update>
 
