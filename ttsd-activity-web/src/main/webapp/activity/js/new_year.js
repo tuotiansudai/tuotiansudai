@@ -30,14 +30,6 @@ require(['jquery','drawCircle','logintip','register_common'], function ($,drawCi
             }).trigger('mouseout');
         })();
 
-        //签到
-        (function() {
-
-        })();
-
-
-
-
         //为节约手机流量，把pc页面的图片在pc页上显示才增加
         (function() {
             if(redirect=='pc') {
@@ -91,7 +83,37 @@ require(['jquery','drawCircle','logintip','register_common'], function ($,drawCi
                 }
             });
 
+            //签到
+            drawCircle.prototype.signToday=function(callback,failFun) {
+                var $signToday=$('#signToday');
+                $signToday.on('click',function() {
+                    $.ajax({
+                        url:'/point/sign-in',
+                        type:'POST',
+                        dataType: 'json'
+                    })
+                        .done(function(response) {
+                            callback && callback(response);
+                        })
+                        .fail(function() {
+                            failFun && failFun()
+                        })
+                })
+            }
+
             var drawCircle=new drawCircle(pointAllList,pointUserList,drawURL,paramData,$rewardGiftBox);
+
+            //签到成功
+            drawCircle.signToday(function() {
+                tipMessage.button='<a href="javascript:void(0)" class="go-on go-close">知道了</a>';
+                tipMessage.info='<p class="success-text">签到成功！</p>' +
+                    '<p class="des-text">恭喜您获得10积分，并获得砸金蛋机会一次</p>'
+                drawCircle.tipWindowPop(tipMessage);
+            },function() {
+                tipMessage.button='';
+                tipMessage.info='<p class="login-text">请与客服联系</p>';
+                drawCircle.tipWindowPop(tipMessage);
+            });
 
             //渲染中奖记录
             drawCircle.GiftRecord();

@@ -38,7 +38,13 @@
         </div>
 
         <div class="button-group tc">
-            <a href="javascript:void(0);" class="normal-button" id="signToday">签到</a>
+            <#if signedIn?? && signedIn>
+                <a href="javascript:void(0);" class="normal-button">已签到</a>
+            <#else >
+                <a href="javascript:void(0);" class="normal-button"  id="signToday">签到</a>
+            </#if>
+
+
             <a href="/referrer/refer-list" class="normal-button">邀请好友</a>
             <a href="/loan-list" class="normal-button">马上投资</a>
         </div>
