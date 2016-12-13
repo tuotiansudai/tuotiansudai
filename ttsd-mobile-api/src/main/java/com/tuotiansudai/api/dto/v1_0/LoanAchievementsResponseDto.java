@@ -9,30 +9,30 @@ import java.util.List;
 
 public class LoanAchievementsResponseDto extends BaseResponseDataDto{
 
-    private String achievement;
+    private InvestAchievement achievement;
     private String mobile;
     private List<String> coupon;
 
     public LoanAchievementsResponseDto(UserGroup userGroup) {
         switch (userGroup){
             case FIRST_INVEST_ACHIEVEMENT:
-                this.achievement = InvestAchievement.FIRST_INVEST.name();
+                this.achievement = InvestAchievement.FIRST_INVEST;
                 break;
             case MAX_AMOUNT_ACHIEVEMENT:
-                this.achievement = InvestAchievement.MAX_AMOUNT.name();
+                this.achievement = InvestAchievement.MAX_AMOUNT;
                 break;
             case LAST_INVEST_ACHIEVEMENT:
-                this.achievement = InvestAchievement.LAST_INVEST.name();
+                this.achievement = InvestAchievement.LAST_INVEST;
                 break;
         }
         this.coupon = Lists.newArrayList();
     }
 
-    public String getAchievement() {
+    public InvestAchievement getAchievement() {
         return achievement;
     }
 
-    public void setAchievement(String achievement) {
+    public void setAchievement(InvestAchievement achievement) {
         this.achievement = achievement;
     }
 

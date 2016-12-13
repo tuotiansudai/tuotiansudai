@@ -84,6 +84,7 @@ public class MobileAppLoanListV3ServiceTest extends ServiceTestBase {
         loanModel.setPledgeType(PledgeType.HOUSE);
         loanModel.setRaisingCompleteTime(DateTime.parse(raisingCompleteTime).toDate());
         loanModel.setRecheckTime(new Date());
+        loanModel.setVerifyTime(new Date());
         loanMapper.create(loanModel);
         loanMapper.update(loanModel);
 
@@ -142,8 +143,8 @@ public class MobileAppLoanListV3ServiceTest extends ServiceTestBase {
         assertEquals(ReturnMessage.SUCCESS.getCode(), baseResponseDto.getCode());
         assertEquals(ReturnMessage.SUCCESS.getMsg(), baseResponseDto.getMessage());
         loanResponseDataDto = loanListResponseDataDto.getLoanList().get(0);
-        assertEquals(ProductType._360.name(), loanResponseDataDto.getProductNewType());
-        assertEquals(LoanStatus.COMPLETE.name().toLowerCase(), loanResponseDataDto.getLoanStatus());
+        assertEquals(ProductType._30.name(), loanResponseDataDto.getProductNewType());
+        assertEquals(LoanStatus.RAISING.name().toLowerCase(), loanResponseDataDto.getLoanStatus());
         //没有可投标 && 投资过其它标
         investModel.setLoanId(loanModel.getId());
         investMapper.update(investModel);
@@ -153,7 +154,7 @@ public class MobileAppLoanListV3ServiceTest extends ServiceTestBase {
         assertEquals(ReturnMessage.SUCCESS.getMsg(), baseResponseDto.getMessage());
         loanResponseDataDto = loanListResponseDataDto.getLoanList().get(0);
         assertEquals(ProductType._360.name(), loanResponseDataDto.getProductNewType());
-        assertEquals(LoanStatus.COMPLETE.name().toLowerCase(), loanResponseDataDto.getLoanStatus());
+        assertEquals(LoanStatus.RAISING.name().toLowerCase(), loanResponseDataDto.getLoanStatus());
         //有可投标 && 投资过其它标
         createLoan("loaner", ActivityType.NORMAL, ProductType._30, LoanStatus.RAISING, "2010-06-30T01:20");
         createLoan("loaner", ActivityType.NORMAL, ProductType._90, LoanStatus.RAISING, "2010-07-30T01:20");
@@ -164,7 +165,7 @@ public class MobileAppLoanListV3ServiceTest extends ServiceTestBase {
         assertEquals(ReturnMessage.SUCCESS.getCode(), baseResponseDto.getCode());
         assertEquals(ReturnMessage.SUCCESS.getMsg(), baseResponseDto.getMessage());
         loanResponseDataDto = loanListResponseDataDto.getLoanList().get(0);
-        assertEquals(ProductType._180.name(), loanResponseDataDto.getProductNewType());
+        assertEquals(ProductType._360.name(), loanResponseDataDto.getProductNewType());
         assertEquals(LoanStatus.RAISING.name().toLowerCase(), loanResponseDataDto.getLoanStatus());
         //有可投标 && 只投资过体验标
         investModel.setLoanId(experienceLoanId);
