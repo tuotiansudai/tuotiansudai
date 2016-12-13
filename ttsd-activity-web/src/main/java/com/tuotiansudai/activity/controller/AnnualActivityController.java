@@ -4,6 +4,7 @@ package com.tuotiansudai.activity.controller;
 import com.tuotiansudai.activity.repository.model.ActivityCategory;
 import com.tuotiansudai.activity.service.AnnualActivityService;
 import com.tuotiansudai.activity.service.LotteryDrawActivityService;
+import com.tuotiansudai.point.service.SignInService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,6 +24,9 @@ public class AnnualActivityController {
     @Autowired
     private AnnualActivityService annualActivityService;
 
+    @Autowired
+    private SignInService signInService;
+
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView travelPrize() {
         ModelAndView modelAndView = new ModelAndView("/activities/new-year", "responsive", true);
@@ -31,6 +35,7 @@ public class AnnualActivityController {
         Map<String, String> investAmountTaskMap = annualActivityService.getInvestAmountTask(LoginUserInfo.getLoginName());
         modelAndView.addObject("investAmount", investAmountTaskMap.get("investAmount"));
         modelAndView.addObject("nextAmount", investAmountTaskMap.get("nextAmount"));
+        modelAndView.addObject("signedIn", signInService.signInIsSuccess(LoginUserInfo.getLoginName()));
         modelAndView.addObject("task", annualActivityService.getTaskProgress(investAmountTaskMap.get("investAmount")));
         return modelAndView;
     }
