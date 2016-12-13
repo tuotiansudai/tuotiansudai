@@ -44,7 +44,22 @@ public class HeadlinesTodayPrizeService {
     private static final long RED_ENVELOPE_50_YUAN_DRAW_REF_CARNIVAL_COUPON_ID = 330L;
 
     public int getDrawPrizeTime(String mobile) {
-        return MAX_LOTTERY_TIMES - userLotteryPrizeMapper.findUserLotteryPrizeCountByMobile(mobile, ActivityCategory.HEADLINES_TODAY_ACTIVITY);
+        int lotteryTime = 0;
+        UserModel userModel = userMapper.findByMobile(mobile);
+        if(userModel == null){
+            return lotteryTime;
+        }
+
+        if(userModel != null){
+            lotteryTime ++;
+        }
+
+        AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
+        if(userModel != null && accountModel != null ){
+            lotteryTime ++;
+        }
+
+        return MAX_LOTTERY_TIMES - lotteryTime;
     }
 
     @Transactional
@@ -64,7 +79,7 @@ public class HeadlinesTodayPrizeService {
 
         userMapper.lockByLoginName(userModel.getLoginName());
         int drawTime = getDrawPrizeTime(mobile);
-        if (drawTime <= 0) {
+        if (drawTime >= 2) {
             logger.debug(mobile + "is no chance. draw time:" + drawTime);
             return new DrawLotteryResultDto(1);//您暂无抽奖机会，赢取机会后再来抽奖吧！
         }
@@ -86,22 +101,28 @@ public class HeadlinesTodayPrizeService {
 
     public String userStatus(String mobile){
         if(StringUtils.isEmpty(mobile)){
-            logger.debug("User not login, please register");
+            logger.debug("User is not exist, please register");
             return "NOT_REGISTER";
         }
 
         UserModel userModel = userMapper.findByMobile(mobile);
+        AccountModel accountModel = accountMapper.findByLoginName(userModel.getMobile());
+
         if(userModel == null){
             logger.debug("User is not exist, please register");
             return "NOT_REGISTER";
         }
 
-        AccountModel accountModel = accountMapper.findByLoginName(userModel.getMobile());
-        if(accountModel == null){
-            logger.debug("user is not account, please to account");
-            return "TO_ACCOUNT";
+        if(userModel != null && accountModel == null){
+            logger.debug("User is is exist, but not account");
+            return "REGISTER_LOGIN_TO_ACCOUNT";
         }
-        return "ACCOUNT";
+
+        if(userModel != null && accountModel != null){
+            logger.debug("user is not account, please to account");
+            return "ACCOUNT";
+        }
+        return "NOT_REGISTER";
     }
 
 

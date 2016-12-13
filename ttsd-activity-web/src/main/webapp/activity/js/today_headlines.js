@@ -54,7 +54,7 @@ require(['jquery', 'layerWrapper', 'template','commonFun', 'jquery.validate', 'j
                     lottery.prize = -1;
                     lottery.times = 0;
                     lottery.click = false;
-                    // selectTip();
+                    selectTip();
 
                 } else {
                     if (lottery.times < lottery.cycle) {
@@ -128,7 +128,7 @@ require(['jquery', 'layerWrapper', 'template','commonFun', 'jquery.validate', 'j
         function getGift() {
 
             $.ajax({
-                    url: '/activity/headlines-today/draw',
+                    url: '/activity/today-headlines/draw',
                     type: 'POST',
                     dataType: 'json',
                     data: {
@@ -370,7 +370,10 @@ require(['jquery', 'layerWrapper', 'template','commonFun', 'jquery.validate', 'j
                 type: 1,
                 title: false,
                 closeBtn: 2,
-                content: $('#registerBox')
+                content: $('#registerBox'),
+                cancel: function(){
+                    location.reload();
+                }
             });
             refreshCapt();
         }
@@ -381,7 +384,10 @@ require(['jquery', 'layerWrapper', 'template','commonFun', 'jquery.validate', 'j
                 type: 1,
                 title: false,
                 closeBtn: 2,
-                content: $('#loginBox')
+                content: $('#loginBox'),
+                cancel: function(){
+                    location.reload();
+                }
             });
             refreshLogin();
         }
@@ -393,7 +399,10 @@ require(['jquery', 'layerWrapper', 'template','commonFun', 'jquery.validate', 'j
                 type: 1,
                 title: false,
                 closeBtn: 2,
-                content: $('#attestBox')
+                content: $('#attestBox'),
+                cancel: function(){
+                    location.reload();
+                }
             });
 
         }
@@ -405,7 +414,10 @@ require(['jquery', 'layerWrapper', 'template','commonFun', 'jquery.validate', 'j
                 type: 1,
                 title: false,
                 closeBtn: 2,
-                content: $('#lastBox')
+                content: $('#lastBox'),
+                cancel: function(){
+                    location.reload();
+                }
             });
         }
         //没机会弹框
@@ -415,7 +427,10 @@ require(['jquery', 'layerWrapper', 'template','commonFun', 'jquery.validate', 'j
                 type: 1,
                 title: false,
                 closeBtn: 2,
-                content: $('#noChanceBox')
+                content: $('#noChanceBox'),
+                cancel: function(){
+                    location.reload();
+                }
             });
         }
         //去登录按钮事件

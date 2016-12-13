@@ -1,7 +1,7 @@
 <#import "../macro/global.ftl" as global>
 <@global.main pageCss="${css.today_headlines}" pageJavascript="${js.today_headlines}" activeNav="" activeLeftNav="" title="今日头条" keywords="今日头条" description="今日头条">
 <div class="today-headlines-container">
-    <input type="hidden" id="statusText" value="">
+    <input type="hidden" id="statusText" value="${userStatus!}">
     <@global.isNotAnonymous>
     <input type="hidden" id="loginMobile" value="">
     </@global.isNotAnonymous>
@@ -163,7 +163,7 @@
                     </li>
                     <li class="text-c">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                        <input type="hidden" name="redirectToAfterRegisterSucces" value="/activity/today-headlines"/>
+                        <input type="hidden" id="redirectToAfterRegisterSuccess" name="redirectToAfterRegisterSuccess" value="/activity/today-headlines"/>
                         <input type="hidden" name="isStatus" value="register"/>
                         <span class="submit-bg">
                             <input type="submit" class="register-user" value="立即注册">
@@ -223,7 +223,7 @@
             <div class="title-tip">
                 <img src="${staticServer}/activity/images/today-headlines/attest-title.png" width="80%">
             </div>
-            <form class="attest-form" id="attestForm" action="/activity/headlines-today/account" method="post" autocomplete="off" novalidate="novalidate">
+            <form class="attest-form" id="attestForm" action="/register/account" method="post" autocomplete="off" novalidate="novalidate">
                 <ul class="register-list mt-b">
                     <li>
                         <i class="icon-user"></i>

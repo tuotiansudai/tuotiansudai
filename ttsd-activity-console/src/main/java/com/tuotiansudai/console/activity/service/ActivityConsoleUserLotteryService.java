@@ -84,11 +84,13 @@ public class ActivityConsoleUserLotteryService {
 
     public List<UserLotteryPrizeView> findUserLotteryPrizeViewsByHeadlinesToday(String mobile,LotteryPrize selectPrize,ActivityCategory prizeType,Date startTime,Date endTime,Integer index,Integer pageSize, String authenticationType){
         List<UserLotteryPrizeView> lotteryPrizeViewList = userLotteryPrizeMapper.findUserLotteryPrizeViews(mobile, selectPrize, prizeType, startTime, endTime, index, pageSize);
+        //0-代表未实名认证用户
         if(authenticationType.equals("0")){
             return lotteryPrizeViewList.stream()
                     .filter(userLotteryPrizeView -> Strings.isNullOrEmpty(userLotteryPrizeView.getUserName()))
                     .collect(Collectors.toList());
         }
+        //1-代表已实名认证用户
         else if(authenticationType.equals("1")){
             return lotteryPrizeViewList.stream()
                     .filter(userLotteryPrizeView -> !Strings.isNullOrEmpty(userLotteryPrizeView.getUserName()))

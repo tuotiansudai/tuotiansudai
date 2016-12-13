@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping(path = "/headlines-today")
+@RequestMapping(path = "/today-headlines")
 public class HeadlinesTodayController {
     @Autowired
     private HeadlinesTodayPrizeService headlinesTodayPrizeService;
@@ -23,8 +23,8 @@ public class HeadlinesTodayController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView headlinesToday() {
-        ModelAndView modelAndView = new ModelAndView("/activities/headlines-today", "responsive", true);
-
+        System.out.println("ssdfsdfsdfd");
+        ModelAndView modelAndView = new ModelAndView("/activities/today-headlines", "responsive", true);
         modelAndView.addObject("userStatus", headlinesTodayPrizeService.userStatus(LoginUserInfo.getMobile()));
         return modelAndView;
     }
