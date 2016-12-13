@@ -69,6 +69,45 @@ public class MobileAppPromotionServiceTest extends ServiceTestBase {
         assertEquals(0, responseDto.getData().getPopList().size());
     }
 
+    @Test
+    public void shouldWhenMoreThanOnePromotionNoCache() {
+        List<PromotionModel> promotionModelList = Lists.newArrayList();
+        promotionModelList.add(this.getPromotionModel(1001L, new DateTime().minusDays(2).toDate(), new DateTime().plusDays(3).toDate()));
+        promotionModelList.add(this.getPromotionModel(1002L, new DateTime().minusDays(1).toDate(), new DateTime().plusDays(5).toDate()));
+        when(promotionMapper.findPromotionList()).thenReturn(promotionModelList);
+        when(redisWrapperClient.hexists(anyString(), anyString())).thenReturn(false);
+        PromotionRequestDto promotionRequestDto = new PromotionRequestDto();
+        BaseParam baseParam = new BaseParam();
+        baseParam.setDeviceId("testDeviceId");
+        promotionRequestDto.setBaseParam(baseParam);
+
+        BaseResponseDto<PromotionListResponseDataDto> responseDto = mobileAppPromotionListsV2Service.generatePromotionList(promotionRequestDto);
+        responseDto.getData();
+
+        assertEquals(2, Integer.parseInt(responseDto.getData().getTotalCount().toString()));
+        assertEquals(2, responseDto.getData().getPopList().size());
+    }
+
+    @Test
+    public void shouldWhenMoreThanOnePromotionExistCache() {
+        List<PromotionModel> promotionModelList = Lists.newArrayList();
+        promotionModelList.add(this.getPromotionModel(1001L, new DateTime().minusDays(2).toDate(), new DateTime().plusDays(3).toDate()));
+        promotionModelList.add(this.getPromotionModel(1002L, new DateTime().minusDays(1).toDate(), new DateTime().plusDays(5).toDate()));
+        promotionModelList.add(this.getPromotionModel(1003L, new DateTime().minusDays(1).toDate(), new DateTime().plusDays(10).toDate()));
+        when(promotionMapper.findPromotionList()).thenReturn(promotionModelList);
+
+        PromotionRequestDto promotionRequestDto = new PromotionRequestDto();
+        BaseParam baseParam = new BaseParam();
+        baseParam.setDeviceId("testDeviceId");
+        promotionRequestDto.setBaseParam(baseParam);
+        when(redisWrapperClient.hexists(anyString(), anyString())).thenReturn(true);
+        BaseResponseDto<PromotionListResponseDataDto> responseDto = mobileAppPromotionListsV2Service.generatePromotionList(promotionRequestDto);
+        responseDto.getData();
+
+        assertEquals(0, Integer.parseInt(responseDto.getData().getTotalCount().toString()));
+        assertEquals(0, responseDto.getData().getPopList().size());
+    }
+
     private PromotionModel getPromotionModel(long id, Date startTime, Date endTime) {
         PromotionModel promotionModel = new PromotionModel();
         promotionModel.setId(id);
