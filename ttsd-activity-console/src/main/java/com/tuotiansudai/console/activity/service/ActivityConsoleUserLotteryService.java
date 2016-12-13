@@ -60,7 +60,7 @@ public class ActivityConsoleUserLotteryService {
     private Date activityChristmasStartTime;
 
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.christmas.secondStartTime}\")}")
-    private Date activityChristmasSecondEndTime;
+    private Date activityChristmasSecondStartTime;
 
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.christmas.endTime}\")}")
     private Date activityChristmasEndTime;
@@ -114,7 +114,7 @@ public class ActivityConsoleUserLotteryService {
                 endTime = DateTime.parse(carnivalTime.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
                 return findLotteryTimeByAutumnAndNationalAndCarnival(userModel, startTime, endTime);
             case CHRISTMAS_ACTIVITY:
-                startTime = activityChristmasSecondEndTime;
+                startTime = activityChristmasSecondStartTime;
                 endTime = activityChristmasEndTime;
                 return findLotteryTimeByChristmas(userModel, startTime, endTime);
         }

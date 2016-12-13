@@ -55,7 +55,7 @@ public class ChristmasPrizeService {
     private Date activityChristmasStartTime;
 
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.christmas.secondStartTime}\")}")
-    private Date activityChristmasSecondEndTime;
+    private Date activityChristmasSecondStartTime;
 
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.christmas.endTime}\")}")
     private Date activityChristmasEndTime;
@@ -67,12 +67,12 @@ public class ChristmasPrizeService {
     //判断圣诞节活动二是否开启
     public int isStart() {
         Date nowDate = DateTime.now().toDate();
-        return nowDate.after(activityChristmasSecondEndTime) ? 1 : 0;
+        return nowDate.after(activityChristmasSecondStartTime) ? 1 : 0;
     }
 
     public int getDrawPrizeTime(String mobile) {
         int lotteryTime = 0;
-            Date activityChristmasPrizeStartTime = activityChristmasSecondEndTime;
+            Date activityChristmasPrizeStartTime = activityChristmasSecondStartTime;
             UserModel userModel = userMapper.findByMobile(mobile);
             if (userModel == null) {
                 return lotteryTime;
