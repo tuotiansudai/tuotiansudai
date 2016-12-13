@@ -1,8 +1,8 @@
 package com.tuotiansudai.mq.client.impl;
 
-import com.tuotiansudai.mq.client.MQClient;
+import com.tuotiansudai.mq.client.MQConsumer;
 import com.tuotiansudai.mq.client.model.MessageQueue;
-import com.tuotiansudai.mq.client.model.MessageTopic;
+import com.tuotiansudai.mq.config.setting.MessageConsumerSetting;
 import com.tuotiansudai.mq.tools.RedisClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,28 +11,16 @@ import redis.clients.jedis.Jedis;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class MQClientRedis extends MQClient {
-    private static Logger logger = LoggerFactory.getLogger(MQClientRedis.class);
+public class MQConsumerRedis extends MQConsumer {
+    private static Logger logger = LoggerFactory.getLogger(MQConsumerRedis.class);
 
-    public MQClientRedis(RedisClient redisClient) {
-        super(redisClient);
-    }
+    private final RedisClient redisClient;
+    private final MessageConsumerSetting consumerSetting;
 
-    @Override
-    public void publishMessage(final MessageTopic topic, final String message) {
-        logger.info("[MQ] ready to publish message, topic: {}, message: {}", topic.getTopicName(), message);
-        for (MessageQueue messageQueue : topic.getQueues()) {
-            sendMessage(messageQueue, message);
-        }
-    }
-
-    @Override
-    public void sendMessage(final MessageQueue queue, final String message) {
-        logger.info("[MQ] ready to send message, queue: {}, message: {}", queue.getQueueName(), message);
-        synchronized (sharedJedis) {
-            sharedJedis.lpush(generateRedisKeyOfQueue(queue), message);
-        }
-        logger.info("[MQ] push message to queue {} success, message: {}", queue.getQueueName(), message);
+    public MQConsumerRedis(RedisClient redisClient, MessageConsumerSetting consumerSetting) {
+        super(redisClient.newJedis(), consumerSetting);
+        this.redisClient = redisClient;
+        this.consumerSetting = consumerSetting;
     }
 
     @Override
@@ -54,7 +42,7 @@ public class MQClientRedis extends MQClient {
     }
 
     private boolean listenMessage(MessageQueue queue, Consumer<String> consumer, Jedis jedis) {
-        List<String> messages = jedis.brpop(messagePopPeriodSeconds, generateRedisKeyOfQueue(queue));
+        List<String> messages = jedis.brpop(consumerSetting.getMessagePopPeriodSeconds(), generateRedisKeyOfQueue(queue));
         if (messages.size() == 0) {
             return true;
         }

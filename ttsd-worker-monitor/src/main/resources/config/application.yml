@@ -14,7 +14,7 @@ spring:
     host: smtp.qiye.163.com
     prot: 994
     username: no-reply@tuotiansudai.com
-    password: w62CQIhM6acj
+    password:
     properties:
       mail:
         smtp:

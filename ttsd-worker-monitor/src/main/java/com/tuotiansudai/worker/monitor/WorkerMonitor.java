@@ -45,6 +45,7 @@ public class WorkerMonitor {
     }
 
     void start() {
+        logger.info("monitor start on [{}]", monitorConfig.getName());
         healthCheckTimer.schedule(
                 new TimerTask() {
                     @Override

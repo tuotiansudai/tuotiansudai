@@ -48,8 +48,6 @@ public class WorkerMonitorTest {
         monitorConfig.setMaxSilenceSeconds(5);
         monitorConfig.setEmailNotifyEnabled(true);
         monitorConfig.setSmsNotifyEnabled(true);
-        monitorConfig.setEmailNotifySender("no-reply@tuotiansudai.com");
-        monitorConfig.setEmailNotifyRecipients(new String[]{"qa1@tuotiansudai.com", "qa2@tuotiansudai.com"});
 
         when(smsWrapperClient.sendFatalNotify(smsFatalNotifyDtoCaptor.capture())).thenReturn(null);
         doNothing().when(mailSender).send(mailMessageArgumentCaptor.capture());
@@ -63,49 +61,34 @@ public class WorkerMonitorTest {
     @Test
     public void shouldNotify() {
         workerMonitor.start();
+        heartBeat("worker1", "worker2", "worker3", "worker4");
+        heartBeat("worker1", "worker2");
         heartBeat("worker1");
-        heartBeat("worker2");
-        heartBeat("worker3");
-        heartBeat("worker4");
-        waitSeconds(1);
         heartBeat("worker1");
-        heartBeat("worker2");
-        waitSeconds(1);
         heartBeat("worker1");
-        waitSeconds(1);
         heartBeat("worker1");
-        waitSeconds(1);
         heartBeat("worker1");
-        waitSeconds(1);
         heartBeat("worker1");
-        waitSeconds(1);
+        heartBeat("worker1", "worker3", "worker4");
+        heartBeat("worker1", "worker2", "worker3", "worker4");
+        heartBeat("worker1", "worker2", "worker3", "worker4");
         heartBeat("worker1");
-        waitSeconds(1);
         heartBeat("worker1");
-        waitSeconds(1);
         heartBeat("worker1");
-        heartBeat("worker3");
-        heartBeat("worker4");
-        waitSeconds(1);
         heartBeat("worker1");
-        heartBeat("worker2");
-        heartBeat("worker3");
-        heartBeat("worker4");
-        waitSeconds(1);
         heartBeat("worker1");
-        heartBeat("worker2");
-        heartBeat("worker3");
-        heartBeat("worker4");
-        waitSeconds(1);
+        heartBeat("worker1");
         workerMonitor.stop();
         List<SmsFatalNotifyDto> smsMessages = smsFatalNotifyDtoCaptor.getAllValues();
         assertLost(smsMessages.get(0).getErrorMessage(), "worker3,worker4");
         assertLost(smsMessages.get(1).getErrorMessage(), "worker2");
         assertOK(smsMessages.get(2).getErrorMessage());
+        assertLost(smsMessages.get(3).getErrorMessage(), "worker2,worker3,worker4");
         List<SimpleMailMessage> mailMessages = mailMessageArgumentCaptor.getAllValues();
         assertLost(mailMessages.get(0).getText(), "worker3,worker4");
         assertLost(mailMessages.get(1).getText(), "worker2");
         assertOK(mailMessages.get(2).getText());
+        assertLost(mailMessages.get(3).getText(), "worker2,worker3,worker4");
     }
 
     private void assertLost(String message, String workerName) {
@@ -116,8 +99,12 @@ public class WorkerMonitorTest {
         assertEquals("所有Worker已恢复正常", message);
     }
 
-    private void heartBeat(String workerName) {
-        hashOperations.put(WorkerMonitor.HEALTH_REPORT_REDIS_KEY, workerName, String.valueOf(Clock.systemUTC().millis()));
+    private void heartBeat(String... workerNames) {
+        String nowTime = String.valueOf(Clock.systemUTC().millis());
+        for (String workerName : workerNames) {
+            hashOperations.put(WorkerMonitor.HEALTH_REPORT_REDIS_KEY, workerName, nowTime);
+        }
+        waitSeconds(1);
     }
 
     private void waitSeconds(int seconds) {
