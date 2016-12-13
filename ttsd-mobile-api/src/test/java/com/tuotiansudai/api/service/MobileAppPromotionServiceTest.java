@@ -10,17 +10,22 @@ import com.tuotiansudai.api.dto.v2_0.PromotionListResponseDataDto;
 import com.tuotiansudai.api.dto.v2_0.PromotionRequestDto;
 import com.tuotiansudai.api.service.v2_0.impl.MobileAppPromotionListsV2ServiceImpl;
 import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import org.joda.time.DateTime;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
+import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class MobileAppPromotionServiceTest extends ServiceTestBase {
 
@@ -32,6 +37,8 @@ public class MobileAppPromotionServiceTest extends ServiceTestBase {
 
     @Mock
     private RedisWrapperClient redisWrapperClient;
+
+    private static final String PROMOTION_ALERT_KEY = "app:promotion:pop";
 
     @Test
     public void shouldWhenOnlyOnePromotionNotCache() {
@@ -93,19 +100,34 @@ public class MobileAppPromotionServiceTest extends ServiceTestBase {
         List<PromotionModel> promotionModelList = Lists.newArrayList();
         promotionModelList.add(this.getPromotionModel(1001L, new DateTime().minusDays(2).toDate(), new DateTime().plusDays(3).toDate()));
         promotionModelList.add(this.getPromotionModel(1002L, new DateTime().minusDays(1).toDate(), new DateTime().plusDays(5).toDate()));
-        promotionModelList.add(this.getPromotionModel(1003L, new DateTime().minusDays(1).toDate(), new DateTime().plusDays(10).toDate()));
+        promotionModelList.add(this.getPromotionModel(1003L, new DateTime().minusDays(1).toDate(), new DateTime().plusDays(1).toDate()));
+
+        final ArgumentCaptor<String> promotionAlertKeyCaptor = ArgumentCaptor.forClass(String.class);
+        final ArgumentCaptor<String> deviceIdPromotionIdKeyCaptor = ArgumentCaptor.forClass(String.class);
+        final ArgumentCaptor<String> promotionIdCaptor = ArgumentCaptor.forClass(String.class);
+        final ArgumentCaptor<Integer> timeoutCaptor = ArgumentCaptor.forClass(Integer.class);
+
+        when(redisWrapperClient.hexists(anyString(), anyString())).thenReturn(true).thenReturn(true).thenReturn(false);
+
         when(promotionMapper.findPromotionList()).thenReturn(promotionModelList);
+        when(redisWrapperClient.hset(promotionAlertKeyCaptor.capture(), deviceIdPromotionIdKeyCaptor.capture(), promotionIdCaptor.capture(), timeoutCaptor.capture())).thenReturn(1L);
 
         PromotionRequestDto promotionRequestDto = new PromotionRequestDto();
         BaseParam baseParam = new BaseParam();
         baseParam.setDeviceId("testDeviceId");
         promotionRequestDto.setBaseParam(baseParam);
-        when(redisWrapperClient.hexists(anyString(), anyString())).thenReturn(true);
         BaseResponseDto<PromotionListResponseDataDto> responseDto = mobileAppPromotionListsV2Service.generatePromotionList(promotionRequestDto);
         responseDto.getData();
 
-        assertEquals(0, Integer.parseInt(responseDto.getData().getTotalCount().toString()));
-        assertEquals(0, responseDto.getData().getPopList().size());
+        verify(redisWrapperClient, times(1)).hset(anyString(), anyString(), anyString(), anyInt());
+
+        assertEquals(1, Integer.parseInt(responseDto.getData().getTotalCount().toString()));
+        assertEquals(1, responseDto.getData().getPopList().size());
+        assertEquals(PROMOTION_ALERT_KEY, promotionAlertKeyCaptor.getValue());
+        assertEquals("deviceId:testDeviceId:promotionId:1003", deviceIdPromotionIdKeyCaptor.getValue());
+        assertEquals("1003", promotionIdCaptor.getValue());
+        assertEquals("17280", timeoutCaptor.getValue());
+
     }
 
     private PromotionModel getPromotionModel(long id, Date startTime, Date endTime) {

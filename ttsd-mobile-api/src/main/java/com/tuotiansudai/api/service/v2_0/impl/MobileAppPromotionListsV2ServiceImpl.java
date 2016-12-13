@@ -59,7 +59,7 @@ public class MobileAppPromotionListsV2ServiceImpl implements MobileAppPromotionL
         if (CollectionUtils.isNotEmpty(promotionModels)) {
             for (PromotionModel promotionModel : promotionModels) {
                 if (redisWrapperClient.hexists(PROMOTION_ALERT_KEY, getRedisKeyFromTemplateByDate(DEVICEID_PROMOTION_ID_KEY, deviceId, String.valueOf(promotionModel.getId())))) {
-                    break;
+                    continue;
                 }
                 PromotionRecordResponseDataDto dto = new PromotionRecordResponseDataDto();
                 dto.setImgUrl(staticServer + promotionModel.getImageUrl());
