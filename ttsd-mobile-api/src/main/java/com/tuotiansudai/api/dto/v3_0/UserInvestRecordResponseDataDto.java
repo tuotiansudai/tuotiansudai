@@ -22,10 +22,7 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto {
     @ApiModelProperty(value = "投资ID", example = "1001")
     private String investId;
 
-    @ApiModelProperty(value = "债券转让ID", example = "100001")
-    private String transferInvestId;
-
-    @ApiModelProperty(value = "申请债券转让ID", example = "201")
+    @ApiModelProperty(value = "申请债权转让ID", example = "201")
     private String transferApplicationId;
 
     @ApiModelProperty(value = "投资金额", example = "1000")
@@ -37,9 +34,6 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto {
     @ApiModelProperty(value = "投资状态", example = "BID_SUCCESS")
     private InvestStatus investStatus;
 
-    @ApiModelProperty(value = "投资状态描述", example = "投资成功")
-    private String investStatusDesc;
-
     @ApiModelProperty(value = "预计利息", example = "100")
     private String expectedInterest;
 
@@ -49,14 +43,11 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto {
     @ApiModelProperty(value = "到期日", example = "2016-11-25 18:10:01")
     private String lastRepayDate;
 
-    @ApiModelProperty(value = "债券转让状态", example = "TRANSFERABLE(可转让),SUCCESS(已转让)")
+    @ApiModelProperty(value = "债权转让状态", example = "TRANSFERABLE(可转让),SUCCESS(已转让)")
     private String transferStatus;
 
     @ApiModelProperty(value = "称号", example = "FIRST_INVEST(首投),MAX_AMOUNT(标王),LAST_INVEST(尾投)")
     private List<InvestAchievement> achievements;
-
-    @ApiModelProperty(value = "红包类型", example = "RED_ENVELOPE(现金红包),NEWBIE_COUPON(新手体验券),INVEST_COUPON(投资体验券),INTEREST_COUPON(加息券),BIRTHDAY_COUPON(生日福利)")
-    private List<CouponType> userCoupons;
 
     @ApiModelProperty(value = "是否使用券", example = "true")
     private boolean usedCoupon;
@@ -70,14 +61,11 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto {
     @ApiModelProperty(value = "投资加息", example = "10")
     private String extraRate;
 
-    @ApiModelProperty(value = "活动描述", example = "普通投资")
-    private String activityDesc;
-
     @ApiModelProperty(value = "抵押类型", example = "HOUSE:房标,车标:VEHICLE,无抵押物:NONE")
     private PledgeType pledgeType;
 
-    @ApiModelProperty(value = "投资类别", example = "TRANSFER_LOAN:债权转让,LOAN:直投")
-    private CategoryType categoryType;
+    @ApiModelProperty(value = "是否债权转让", example = "true")
+    private boolean isTransferInvest;
 
     public String getLoanId() {
         return loanId;
@@ -127,14 +115,6 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto {
         this.investStatus = investStatus;
     }
 
-    public String getInvestStatusDesc() {
-        return investStatusDesc;
-    }
-
-    public void setInvestStatusDesc(String investStatusDesc) {
-        this.investStatusDesc = investStatusDesc;
-    }
-
     public String getExpectedInterest() {
         return expectedInterest;
     }
@@ -175,14 +155,6 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto {
         this.achievements = achievements;
     }
 
-    public List<CouponType> getUserCoupons() {
-        return userCoupons;
-    }
-
-    public void setUserCoupons(List<CouponType> userCoupons) {
-        this.userCoupons = userCoupons;
-    }
-
     public boolean isUsedCoupon() {
         return usedCoupon;
     }
@@ -215,28 +187,12 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto {
         this.extraRate = extraRate;
     }
 
-    public String getActivityDesc() {
-        return activityDesc;
-    }
-
-    public void setActivityDesc(String activityDesc) {
-        this.activityDesc = activityDesc;
-    }
-
     public PledgeType getPledgeType() {
         return pledgeType;
     }
 
     public void setPledgeType(PledgeType pledgeType) {
         this.pledgeType = pledgeType;
-    }
-
-    public String getTransferInvestId() {
-        return transferInvestId;
-    }
-
-    public void setTransferInvestId(String transferInvestId) {
-        this.transferInvestId = transferInvestId;
     }
 
     public String getTransferApplicationId() {
@@ -247,29 +203,26 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto {
         this.transferApplicationId = transferApplicationId;
     }
 
-    public CategoryType getCategoryType() {
-        return categoryType;
+    public boolean isTransferInvest() {
+        return isTransferInvest;
     }
 
-    public void setCategoryType(CategoryType categoryType) {
-        this.categoryType = categoryType;
+    public void setTransferInvest(boolean transferInvest) {
+        isTransferInvest = transferInvest;
     }
 
     public UserInvestRecordResponseDataDto() {
 
     }
 
-    public UserInvestRecordResponseDataDto(InvestModel invest, LoanModel loan, LoanDetailsModel loanDetailsModel) {
+    public UserInvestRecordResponseDataDto(InvestModel invest, LoanModel loan) {
         InvestStatus investStatus = InvestStatus.convertInvestStatus(invest.getStatus());
         this.loanId = String.valueOf(invest.getLoanId());
         this.investId = String.valueOf(invest.getId());
-        this.transferInvestId = String.valueOf(invest.getTransferInvestId());
         this.investAmount = AmountConverter.convertCentToString(invest.getAmount());
         this.investTime = new DateTime(invest.getTradingTime() == null ? invest.getCreatedTime() : invest.getTradingTime()).toString("yyyy-MM-dd");
         this.investStatus = investStatus;
-        this.investStatusDesc = investStatus.getMessage();
         this.achievements = invest.getAchievements();
-        this.activityDesc = loanDetailsModel != null ? loanDetailsModel.getActivityDesc() : "";
         this.pledgeType = loan.getPledgeType();
     }
 }

@@ -15,6 +15,7 @@ import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.util.IdGenerator;
 import org.junit.Test;
@@ -42,6 +43,9 @@ public class MobileAppInvestListsV3ServiceTest extends ServiceTestBase{
 
     @Mock
     private InvestMapper investMapper;
+
+    @Mock
+    private TransferApplicationMapper transferApplicationMapper;
 
     @Mock
     private LoanMapper loanMapper;
@@ -143,6 +147,8 @@ public class MobileAppInvestListsV3ServiceTest extends ServiceTestBase{
         when(investMapper.findInvestorInvestAndTransferPagination(anyString(), any(LoanStatus.class), anyInt(), anyInt())).thenReturn(investModels);
 
         when(loanMapper.findById(anyInt())).thenReturn(loanModel);
+
+        when(transferApplicationMapper.findByInvestId(anyLong())).thenReturn(null);
 
         when(investRepayMapper.findByInvestIdAndPeriodAsc(anyLong())).thenReturn(investRepayModels);
 
