@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @Repository
@@ -162,8 +163,10 @@ public interface InvestMapper {
                                 @Param(value = "endTime") Date endTime);
 
 
-    long sumInvestAmountIphone7(@Param(value = "startTime") Date startTime,
-                                @Param(value = "endTime") Date endTime);
+    long sumInvestAmountByLoginNameInvestTimeProductType(@Param(value = "loginName") String loginName,
+                                                        @Param(value = "startTime") Date startTime,
+                                                        @Param(value = "endTime") Date endTime,
+                                                         @Param(value = "productTypeList") List<ProductType> productTypeList);
 
     long sumSuccessInvestAmountByLoginName(@Param(value = "loanId") Long loanId, @Param(value = "loginName") String loginName);
 
@@ -265,5 +268,18 @@ public interface InvestMapper {
                                      @Param(value = "contractNo") String contractNo);
 
     List<InvestModel> findNoContractNoInvest(@Param(value = "loanId") long loanId);
+
+    List<Map<String, String>> findInvestAmountScaleTop3(@Param(value = "endDate") Date endDate);
+
+    long findInvestAmountScale(@Param(value = "endDate") Date endDate);
+
+
+    List<InvestModel> findInvestorInvestAndTransferPagination(@Param(value = "loginName") String loginName,
+                                                                  @Param(value = "loanStatus") LoanStatus loanStatus,
+                                                                  @Param(value = "index") int index,
+                                                                  @Param(value = "pageSize") int pageSize);
+
+    long countInvestorInvestAndTransferPagination(@Param(value = "loginName") String loginName,
+                                                      @Param(value = "loanStatus") LoanStatus loanStatus);
 
 }

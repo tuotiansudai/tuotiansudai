@@ -13,6 +13,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -123,7 +124,7 @@ public class LoanRepayMapperTest {
         DateTime repayDate1 = new DateTime().withTimeAtStartOfDay().plusDays(1).minusSeconds(1);
         DateTime repayDate2 = new DateTime().withTimeAtStartOfDay().plusDays(10).minusSeconds(1);
         DateTime actualRepayDate1 = new DateTime();
-        LoanRepayModel fakeLoanRepayModel1 = this.getFakeLoanRepayModel(fakeLoanModel, 1, RepayStatus.COMPLETE,  repayDate1.toDate(), actualRepayDate1.toDate(), 0, 0, 0, 0);
+        LoanRepayModel fakeLoanRepayModel1 = this.getFakeLoanRepayModel(fakeLoanModel, 1, RepayStatus.COMPLETE, repayDate1.toDate(), actualRepayDate1.toDate(), 0, 0, 0, 0);
         LoanRepayModel fakeLoanRepayModel2 = this.getFakeLoanRepayModel(fakeLoanModel, 2, RepayStatus.REPAYING, repayDate2.toDate(), null, 0, 0, 0, 0);
         loanRepayMapper.create(Lists.newArrayList(fakeLoanRepayModel1, fakeLoanRepayModel2));
 
@@ -155,7 +156,7 @@ public class LoanRepayMapperTest {
         loanMapper.create(fakeLoanModel);
         DateTime repayDate1 = new DateTime().withTimeAtStartOfDay().plusDays(1).minusSeconds(1);
         DateTime actualRepayDate1 = new DateTime();
-        LoanRepayModel fakeLoanRepayModel1 = this.getFakeLoanRepayModel(fakeLoanModel, 1, RepayStatus.WAIT_PAY, repayDate1.toDate(),  actualRepayDate1.toDate(), 0, 0, 0, 0);
+        LoanRepayModel fakeLoanRepayModel1 = this.getFakeLoanRepayModel(fakeLoanModel, 1, RepayStatus.WAIT_PAY, repayDate1.toDate(), actualRepayDate1.toDate(), 0, 0, 0, 0);
         loanRepayMapper.create(Lists.newArrayList(fakeLoanRepayModel1));
 
         LoanRepayModel enabledRepay = loanRepayMapper.findEnabledLoanRepayByLoanId(fakeLoanModel.getId());
@@ -253,7 +254,7 @@ public class LoanRepayMapperTest {
         LoanModel fakeLoanModel = this.getFakeLoanModel(LoanStatus.COMPLETE);
         loanMapper.create(fakeLoanModel);
         DateTime repayDate1 = new DateTime().withTimeAtStartOfDay().plusDays(1).minusSeconds(1);
-        LoanRepayModel fakeLoanRepayModel1 = this.getFakeLoanRepayModel(fakeLoanModel, 1, RepayStatus.COMPLETE,  repayDate1.toDate(), new Date(), 0, 0, 0, 0);
+        LoanRepayModel fakeLoanRepayModel1 = this.getFakeLoanRepayModel(fakeLoanModel, 1, RepayStatus.COMPLETE, repayDate1.toDate(), new Date(), 0, 0, 0, 0);
         loanRepayMapper.create(Lists.newArrayList(fakeLoanRepayModel1));
 
         LoanRepayModel enabledRepay = loanRepayMapper.findEnabledLoanRepayByLoanId(fakeLoanModel.getId());
@@ -286,6 +287,36 @@ public class LoanRepayMapperTest {
         List<LoanRepayNotifyModel> loanRepayNotifyToday = loanRepayMapper.findLoanRepayNotifyToday(today);
 
         assertTrue(CollectionUtils.isNotEmpty(loanRepayNotifyToday));
+    }
+
+    @Test
+    public void shouldCalculateOverdueRateWhenNoOverdue() throws Exception {
+        UserModel fakeUserModel = this.getFakeUserModel();
+        assertThat(loanRepayMapper.calculateOverdueRate(fakeUserModel.getLoginName()), is(0.0));
+
+        userMapper.create(fakeUserModel);
+        LoanModel fakeLoanModel = this.getFakeLoanModel(LoanStatus.COMPLETE);
+        loanMapper.create(fakeLoanModel);
+        DateTime repayDate = new DateTime().withTimeAtStartOfDay().plusDays(10).minusSeconds(1);
+        LoanRepayModel fakeLoanRepayModel1 = this.getFakeLoanRepayModel(fakeLoanModel, 1, RepayStatus.COMPLETE, repayDate.toDate(), new Date(), 0, 0, 0, 0);
+        LoanRepayModel fakeLoanRepayModel2 = this.getFakeLoanRepayModel(fakeLoanModel, 1, RepayStatus.COMPLETE, repayDate.toDate(), new Date(), 0, 0, 0, 0);
+        loanRepayMapper.create(Lists.newArrayList(fakeLoanRepayModel1, fakeLoanRepayModel2));
+
+        assertThat(loanRepayMapper.calculateOverdueRate(fakeLoanModel.getAgentLoginName()), is(0.0));
+    }
+
+    @Test
+    public void shouldCalculateOverdueRateWhenOverdue() throws Exception {
+        UserModel fakeUserModel = this.getFakeUserModel();
+
+        userMapper.create(fakeUserModel);
+        LoanModel fakeLoanModel = this.getFakeLoanModel(LoanStatus.COMPLETE);
+        loanMapper.create(fakeLoanModel);
+        LoanRepayModel fakeLoanRepayModel1 = this.getFakeLoanRepayModel(fakeLoanModel, 1, RepayStatus.COMPLETE, new DateTime().withTimeAtStartOfDay().plusDays(10).minusSeconds(1).toDate(), new Date(), 0, 0, 0, 0);
+        LoanRepayModel fakeLoanRepayModel2 = this.getFakeLoanRepayModel(fakeLoanModel, 1, RepayStatus.COMPLETE, new DateTime().withTimeAtStartOfDay().minusDays(10).minusSeconds(1).toDate(), new Date(), 0, 0, 0, 0);
+        loanRepayMapper.create(Lists.newArrayList(fakeLoanRepayModel1, fakeLoanRepayModel2));
+
+        assertThat(loanRepayMapper.calculateOverdueRate(fakeLoanModel.getAgentLoginName()), is(0.5));
     }
 
     private UserModel getFakeUserModel() {
@@ -329,8 +360,7 @@ public class LoanRepayMapperTest {
                                                  long corpus,
                                                  long expectedInterest,
                                                  long actualInterest,
-                                                 long defaultInterest
-    ) {
+                                                 long defaultInterest) {
         LoanRepayModel fakeLoanRepayModel = new LoanRepayModel();
         fakeLoanRepayModel.setId(idGenerator.generate());
         fakeLoanRepayModel.setPeriod(period);
