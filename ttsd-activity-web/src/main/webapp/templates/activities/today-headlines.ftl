@@ -1,7 +1,10 @@
 <#import "../macro/global.ftl" as global>
 <@global.main pageCss="${css.today_headlines}" pageJavascript="${js.today_headlines}" activeNav="" activeLeftNav="" title="今日头条" keywords="今日头条" description="今日头条">
 <div class="today-headlines-container">
+    <input type="hidden" id="statusText" value="">
+    <@global.isNotAnonymous>
     <input type="hidden" id="loginMobile" value="">
+    </@global.isNotAnonymous>
     <div class="top-img-item">
         <img src="${staticServer}/activity/images/today-headlines/top-img.png" alt="今日头条" width="100%">
     </div>
@@ -160,6 +163,8 @@
                     </li>
                     <li class="text-c">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                        <input type="hidden" name="redirectToAfterRegisterSucces" value="/activity/today-headlines"/>
+                        <input type="hidden" name="isStatus" value="register"/>
                         <span class="submit-bg">
                             <input type="submit" class="register-user" value="立即注册">
                         </span>
@@ -197,6 +202,7 @@
                     </li>
                     <li class="text-c mt-20">
                         <input type="hidden" name="source" value="WEB" />
+                        <input type="hidden" name="isStatus" value="login"/>
                         <span class="submit-bg">
                             <input type="submit" class="register-user" value="登录">
                         </span>

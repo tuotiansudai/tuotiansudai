@@ -7,7 +7,8 @@ require(['jquery', 'layerWrapper', 'template','commonFun', 'jquery.validate', 'j
             passwordValid = false,
             captchaValid = false,
             $appCaptcha = $('#appCaptcha', $registerForm),
-            $fetchCaptcha = $('.fetch-captcha', $registerForm);
+            $fetchCaptcha = $('.fetch-captcha', $registerForm),
+            $statusText=$('#statusText');
 
         var lottery = {
             click: false, //防止重复点击
@@ -53,7 +54,7 @@ require(['jquery', 'layerWrapper', 'template','commonFun', 'jquery.validate', 'j
                     lottery.prize = -1;
                     lottery.times = 0;
                     lottery.click = false;
-                    selectTip();
+                    // selectTip();
 
                 } else {
                     if (lottery.times < lottery.cycle) {
@@ -92,16 +93,39 @@ require(['jquery', 'layerWrapper', 'template','commonFun', 'jquery.validate', 'j
                 lottery.click = true;
             }
         });
-        //判断是第几次抽奖
+
+        //页面加载执行判断
+        switch($statusText.val())
+        {
+            case 'REGISTER_LOGIN_TO_ACCOUNT'://实名认证--注册后
+                attestTip();
+                $('#attestBox').find('.gift-title').show();
+                break;
+            case 'LOGIN_TO_ACCOUNT'://实名认证--登录后
+                attestTip();
+                $('#attestBox').find('.gift-title').hide();
+                break;
+        }
+
+        //判断弹什么框
         function selectTip(){
-            if($('#loginMobile').val()!=''){
-                lastTip();
-            }else{
-                registerTip();
+            
+            switch($statusText.val())
+            {
+                case 'NOT_REGISTER'://未注册
+                    registerTip();
+                    break;
+                case 'ACCOUNT'://没机会
+                    noChanceTip();
+                    break;
+                default:
+                    lastTip();
             }
         }
+        
+
         //发送获奖请求
-        function getGift(type) {
+        function getGift() {
 
             $.ajax({
                     url: '/activity/headlines-today/draw',
@@ -142,9 +166,9 @@ require(['jquery', 'layerWrapper', 'template','commonFun', 'jquery.validate', 'j
                                 break;
                         }
                         lottery.show(lottery.num);
-                        if(type=='register'){
+                        if($statusText.val()=='REGISTER_LOGIN_TO_ACCOUNT'){
                             $('#attestBox').find('.gift-name').text('注册成功，获得了'+data.prizeValue);
-                        }else if(type=='user'){
+                        }else if($statusText.val()=='LOGIN_TO_ACCOUNT'){
                             $('#lastBox').find('.gift-name').text('恭喜您解救了'+data.prizeValue);
                         }
                     } else if (data.returnCode == 3) {//活动结束
@@ -336,22 +360,7 @@ require(['jquery', 'layerWrapper', 'template','commonFun', 'jquery.validate', 'j
                 }
             },
             submitHandler: function(form) {
-                $.ajax({
-                    url: '/activity/headlines-today/register',
-                    data: $(form).serialize(),
-                    type: 'POST',
-                    dataType: 'json',
-                    beforeSend: function() {
-                        $registerForm.find('.register-user').prop('disabled', true);
-                    }
-                }).done(function(data) {
-                    $('#loginMobile').val($('#mobile').val());
-                    attestTip('register');
-                    return false;
-                }).fail(function() {
-                    $registerForm.find('.register-user').prop('disabled', false);
-                    layer.msg('请求失败，请重试！');
-                });
+                form.submit();
             }
         });
         //注册弹框显示
@@ -377,27 +386,21 @@ require(['jquery', 'layerWrapper', 'template','commonFun', 'jquery.validate', 'j
             refreshLogin();
         }
         //身份认证
-        function attestTip(kid) {
+        function attestTip() {
             layer.closeAll();
-            getGift(kid);
-            kid=='user'?$('#attestBox').find('.gift-title').hide():$('#attestBox').find('.gift-title').show();
+            getGift();
             layer.open({
                 type: 1,
                 title: false,
                 closeBtn: 2,
-                content: $('#attestBox'),
-                cancel: function(index){
-                    layer.closeAll();
-                    $('#loginMobile').val('');
-                    $('#lastBox').find('.gift-title').hide();
-                }
+                content: $('#attestBox')
             });
 
         }
         //下载弹框
         function lastTip() {
             layer.closeAll();
-            getGift('user');
+            getGift();
             layer.open({
                 type: 1,
                 title: false,
@@ -500,7 +503,9 @@ require(['jquery', 'layerWrapper', 'template','commonFun', 'jquery.validate', 'j
                         if (response.data.status) {
                             $attestForm.find('.register-user').val('立即认证');
                             layer.closeAll();
-                            layer.msg('认证成功');
+                            layer.msg('认证成功',function(){
+                                location.reload();
+                            });
                         } else {
                             layer.msg('认证失败，请检查后重试！');
                             $attestForm.find('.register-user').val('立即认证').prop('disabled', false);
