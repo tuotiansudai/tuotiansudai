@@ -14,13 +14,5 @@ public interface PrepareUserService {
 
     BaseDataDto prepareRegister(PrepareRegisterRequestDto requestDto);
 
-    List<PrepareUserDto> findPrepareUser(String mobile, Date beginTime, Date endTime, int index, int pageSize);
-
-    long findPrepareUserCount(String mobile, Date beginTime, Date endTime);
-
     BaseDataDto register(RegisterUserDto requestDto);
-
-    PrepareUserModel findPrepareUserModelByModel(String mobile);
-
-
 }

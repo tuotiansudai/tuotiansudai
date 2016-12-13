@@ -10,6 +10,4 @@ public interface UserRoleService {
     boolean judgeUserRoleExist(String loginName,Role role);
 
     List<Role> findRoleNameByLoginName(String loginName);
-
-    List<String> queryAllAgent();
 }

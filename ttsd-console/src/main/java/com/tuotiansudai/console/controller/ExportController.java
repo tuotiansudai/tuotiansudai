@@ -1,10 +1,9 @@
 package com.tuotiansudai.console.controller;
 
 import com.tuotiansudai.console.bi.dto.RoleStage;
+import com.tuotiansudai.console.dto.UserItemDataDto;
 import com.tuotiansudai.console.repository.model.UserOperation;
-import com.tuotiansudai.console.service.ExportService;
-import com.tuotiansudai.console.service.InvestAchievementService;
-import com.tuotiansudai.console.service.UserServiceConsole;
+import com.tuotiansudai.console.service.*;
 import com.tuotiansudai.coupon.dto.CouponDto;
 import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
 import com.tuotiansudai.coupon.service.CouponService;
@@ -17,8 +16,6 @@ import com.tuotiansudai.point.repository.model.PointPrizeWinnerViewDto;
 import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.point.service.ProductService;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.service.*;
-import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.util.CsvHeaderType;
 import com.tuotiansudai.util.ExportCsvUtil;
 import org.apache.log4j.Logger;
@@ -44,7 +41,7 @@ public class ExportController {
     private static Logger logger = Logger.getLogger(ExportController.class);
 
     @Autowired
-    private CouponService couponService;
+    private ConsoleCouponService consoleCouponService;
 
     @Autowired
     private UserPointPrizeMapper userPointPrizeMapper;
@@ -59,50 +56,47 @@ public class ExportController {
     private SystemBillService systemBillService;
 
     @Autowired
-    private InvestTransferService investTransferService;
+    private ConsoleInvestTransferService consoleInvestTransferService;
 
     @Autowired
-    private LoanRepayService loanRepayService;
+    private ConsoleLoanRepayService consoleLoanRepayService;
 
     @Autowired
-    private LoanService loanService;
+    private ConsoleLoanService consoleLoanService;
 
     @Autowired
     private ProductService productService;
 
     @Autowired
-    private UserServiceConsole userServiceConsole;
+    private ConsoleUserService consoleUserService;
 
     @Autowired
-    private InvestService investService;
+    private ConsoleInvestService consoleInvestService;
 
     @Autowired
-    RechargeService rechargeService;
+    private ConsoleRechargeService consoleRechargeService;
 
     @Autowired
-    WithdrawService withdrawService;
+    private ConsoleWithdrawService consoleWithdrawService;
 
     @Autowired
-    private UserBillService userBillService;
+    private ConsoleUserBillService consoleUserBillService;
 
     @Autowired
-    private FeedbackService feedbackService;
+    private ConsoleFeedbackService consoleFeedbackService;
 
     @Autowired
     private InvestAchievementService investAchievementService;
 
     @Autowired
-    private ReferrerManageService referrerManageService;
-
-    @Autowired
-    private UserService userService;
+    private ConsoleReferrerManageService consoleReferrerManageService;
 
     @RequestMapping(value = "/coupons", method = RequestMethod.GET)
     public void exportCoupons(HttpServletResponse response) throws IOException {
         fillExportResponse(response, CsvHeaderType.CouponHeader.getDescription());
         int index = 1;
         int pageSize = Integer.MAX_VALUE;
-        List<CouponDto> records = couponService.findNewbieAndInvestCoupons(index, pageSize);
+        List<CouponDto> records = consoleCouponService.findNewbieAndInvestCoupons(index, pageSize);
         List<List<String>> coupons = exportService.buildCoupons(records);
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.CouponHeader, coupons, response.getOutputStream());
     }
@@ -112,7 +106,7 @@ public class ExportController {
         fillExportResponse(response, CsvHeaderType.InterestCouponsHeader.getDescription());
         int index = 1;
         int pageSize = Integer.MAX_VALUE;
-        List<CouponDto> records = couponService.findInterestCoupons(index, pageSize);
+        List<CouponDto> records = consoleCouponService.findInterestCoupons(index, pageSize);
         List<List<String>> interestCoupons = exportService.buildInterestCoupons(records);
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.InterestCouponsHeader, interestCoupons, response.getOutputStream());
     }
@@ -122,7 +116,7 @@ public class ExportController {
         fillExportResponse(response, CsvHeaderType.RedEnvelopesHeader.getDescription());
         int index = 1;
         int pageSize = Integer.MAX_VALUE;
-        List<CouponDto> records = couponService.findRedEnvelopeCoupons(index, pageSize);
+        List<CouponDto> records = consoleCouponService.findRedEnvelopeCoupons(index, pageSize);
         List<List<String>> redEnvelopeCoupons = exportService.buildRedEnvelopeCoupons(records);
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.RedEnvelopesHeader, redEnvelopeCoupons, response.getOutputStream());
     }
@@ -132,7 +126,7 @@ public class ExportController {
         fillExportResponse(response, CsvHeaderType.BirthdayCouponsHeader.getDescription());
         int index = 1;
         int pageSize = Integer.MAX_VALUE;
-        List<CouponDto> records = couponService.findBirthdayCoupons(index, pageSize);
+        List<CouponDto> records = consoleCouponService.findBirthdayCoupons(index, pageSize);
         List<List<String>> birthdayCoupons = exportService.buildBirthdayCoupons(records);
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.BirthdayCouponsHeader, birthdayCoupons, response.getOutputStream());
     }
@@ -192,7 +186,7 @@ public class ExportController {
                                    @RequestParam(name = "loanId", required = false) Long loanId,
                                    @RequestParam(name = "source", required = false) Source source, HttpServletResponse response) throws IOException {
         fillExportResponse(response, CsvHeaderType.TransferListHeader.getDescription());
-        BasePaginationDataDto<TransferApplicationPaginationItemDataDto> basePaginationDataDto = investTransferService.findTransferApplicationPaginationList(transferApplicationId, startTime, endTime, status, transferrerMobile, transfereeMobile, loanId, source, 1, Integer.MAX_VALUE);
+        BasePaginationDataDto<TransferApplicationPaginationItemDataDto> basePaginationDataDto = consoleInvestTransferService.findTransferApplicationPaginationList(transferApplicationId, startTime, endTime, status, transferrerMobile, transfereeMobile, loanId, source, 1, Integer.MAX_VALUE);
         List<List<String>> csvData = exportService.buildTransferListCsvData(basePaginationDataDto.getRecords());
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.TransferListHeader, csvData, response.getOutputStream());
     }
@@ -204,7 +198,7 @@ public class ExportController {
                                 @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
                                 @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime, HttpServletResponse httpServletResponse) throws IOException {
         fillExportResponse(httpServletResponse, CsvHeaderType.LoanRepayHeader.getDescription());
-        BaseDto<BasePaginationDataDto<LoanRepayDataItemDto>> baseDto = loanRepayService.findLoanRepayPagination(1, Integer.MAX_VALUE,
+        BaseDto<BasePaginationDataDto<LoanRepayDataItemDto>> baseDto = consoleLoanRepayService.findLoanRepayPagination(1, Integer.MAX_VALUE,
                 loanId, loginName, startTime, endTime, repayStatus);
         List<List<String>> csvData = exportService.buildLoanRepayCsvData(baseDto.getData().getRecords());
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.LoanRepayHeader, csvData, httpServletResponse.getOutputStream());
@@ -220,7 +214,7 @@ public class ExportController {
                                 @RequestParam(value = "loanName", required = false) String loanName, HttpServletResponse httpServletResponse) throws IOException {
 
         fillExportResponse(httpServletResponse, CsvHeaderType.ConsoleLoanList.getDescription());
-        List<LoanListDto> loanListDtos = loanService.findLoanList(status, loanId, loanName,
+        List<LoanListDto> loanListDtos = consoleLoanService.findLoanList(status, loanId, loanName,
                 startTime == null ? new DateTime(0).toDate() : new DateTime(startTime).withTimeAtStartOfDay().toDate(),
                 endTime == null ? new DateTime(9999, 12, 31, 0, 0, 0).toDate() : new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate(),
                 index, Integer.MAX_VALUE);
@@ -239,7 +233,7 @@ public class ExportController {
         fillExportResponse(response, CsvHeaderType.ConsoleUsers.getDescription());
         int index = 1;
         int pageSize = Integer.MAX_VALUE;
-        BaseDto<BasePaginationDataDto<UserItemDataDto>> baseDto = userServiceConsole.findAllUser(loginName, email, mobile,
+        BaseDto<BasePaginationDataDto<UserItemDataDto>> baseDto = consoleUserService.findAllUser(loginName, email, mobile,
                 beginTime, endTime, source, roleStage, referrerMobile, channel, userOperation, index, pageSize);
         List<List<String>> usersData = exportService.buildUsers(baseDto.getData().getRecords());
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleUsers, usersData, response.getOutputStream());
@@ -258,7 +252,7 @@ public class ExportController {
         fillExportResponse(response, CsvHeaderType.ConsoleInvests.getDescription());
         int index = 1;
         int pageSize = Integer.MAX_VALUE;
-        InvestPaginationDataDto investPagination = investService.getInvestPagination(loanId, investorMobile, channel, source,
+        InvestPaginationDataDto investPagination = consoleInvestService.getInvestPagination(loanId, investorMobile, channel, source,
                 role, startTime, endTime, investStatus, preferenceType, index, pageSize);
         List<InvestPaginationItemDataDto> records = investPagination.getRecords();
         List<List<String>> investsData = exportService.buildInvests(records);
@@ -276,7 +270,7 @@ public class ExportController {
         fillExportResponse(response, CsvHeaderType.ConsoleRecharge.getDescription());
         int index = 1;
         int pageSize = Integer.MAX_VALUE;
-        BaseDto<BasePaginationDataDto<RechargePaginationItemDataDto>> baseDto = rechargeService.findRechargePagination(rechargeId, mobile, source, status, channel, index, pageSize, startTime, endTime);
+        BaseDto<BasePaginationDataDto<RechargePaginationItemDataDto>> baseDto = consoleRechargeService.findRechargePagination(rechargeId, mobile, source, status, channel, index, pageSize, startTime, endTime);
         List<List<String>> rechargeData = exportService.buildRecharge(baseDto.getData().getRecords());
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleRecharge, rechargeData, response.getOutputStream());
 
@@ -292,7 +286,7 @@ public class ExportController {
         fillExportResponse(response, CsvHeaderType.ConsoleWithdraw.getDescription());
         int index = 1;
         int pageSize = Integer.MAX_VALUE;
-        BaseDto<BasePaginationDataDto<WithdrawPaginationItemDataDto>> baseDto = withdrawService.findWithdrawPagination(withdrawId, mobile, status, source, index, pageSize, startTime, endTime);
+        BaseDto<BasePaginationDataDto<WithdrawPaginationItemDataDto>> baseDto = consoleWithdrawService.findWithdrawPagination(withdrawId, mobile, status, source, index, pageSize, startTime, endTime);
         List<List<String>> withdrawData = exportService.buildWithdraw(baseDto.getData().getRecords());
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleWithdraw, withdrawData, response.getOutputStream());
     }
@@ -306,7 +300,7 @@ public class ExportController {
         fillExportResponse(response, CsvHeaderType.ConsoleUserFundsCsvHeader.getDescription());
         int index = 1;
         int pageSize = Integer.MAX_VALUE;
-        List<UserBillPaginationView> userBillModels = userBillService.findUserFunds(userBillBusinessType, userBillOperationType, mobile, startTime, endTime, index, pageSize);
+        List<UserBillPaginationView> userBillModels = consoleUserBillService.findUserFunds(userBillBusinessType, userBillOperationType, mobile, startTime, endTime, index, pageSize);
         List<List<String>> userFundsData = exportService.buildUserFunds(userBillModels);
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleUserFundsCsvHeader, userFundsData, response.getOutputStream());
     }
@@ -318,7 +312,7 @@ public class ExportController {
         fillExportResponse(response, CsvHeaderType.AccountBalance.getDescription());
         int index = 1;
         int pageSize = Integer.MAX_VALUE;
-        List<UserItemDataDto> dataDtos = userServiceConsole.findUsersAccountBalance(mobile, balanceMin, balanceMax, index, pageSize);
+        List<UserItemDataDto> dataDtos = consoleUserService.findUsersAccountBalance(mobile, balanceMin, balanceMax, index, pageSize);
         List<List<String>> accountBalanceData = exportService.buildAccountBalance(dataDtos);
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.AccountBalance, accountBalanceData, response.getOutputStream());
     }
@@ -333,7 +327,7 @@ public class ExportController {
         fillExportResponse(response, CsvHeaderType.Feedback.getDescription());
         int index = 1;
         int pageSize = Integer.MAX_VALUE;
-        BasePaginationDataDto<FeedbackModel> feedbackModels = feedbackService.getFeedbackPagination(mobile, source, type, status, startTime, endTime, index, pageSize);
+        BasePaginationDataDto<FeedbackModel> feedbackModels = consoleFeedbackService.getFeedbackPagination(mobile, source, type, status, startTime, endTime, index, pageSize);
         List<List<String>> feedbackData = exportService.buildFeedBack(feedbackModels.getRecords());
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.Feedback, feedbackData, response.getOutputStream());
     }
@@ -386,7 +380,7 @@ public class ExportController {
         int pageSize = Integer.MAX_VALUE;
         DateTime investDateTime = new DateTime(investEndTime);
         DateTime rewardDateTime = new DateTime(rewardEndTime);
-        List<ReferrerManageView> referrerManageViews = referrerManageService.findReferrerManage(referrerMobile, investMobile, investStartTime, investEndTime != null ? investDateTime.plusDays(1).toDate() : null, level, rewardStartTime, rewardEndTime != null ? rewardDateTime.plusDays(1).toDate() : null, role, source, referrerRewardStatus, index, pageSize);
+        List<ReferrerManageView> referrerManageViews = consoleReferrerManageService.findReferrerManage(referrerMobile, investMobile, investStartTime, investEndTime != null ? investDateTime.plusDays(1).toDate() : null, level, rewardStartTime, rewardEndTime != null ? rewardDateTime.plusDays(1).toDate() : null, role, source, referrerRewardStatus, index, pageSize);
         List<List<String>> referrerManageData = exportService.buildReferrer(referrerManageViews);
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleReferrerManageCsvHeader, referrerManageData, response.getOutputStream());
     }
@@ -402,10 +396,4 @@ public class ExportController {
         }
         httpServletResponse.setContentType("application/csv");
     }
-
-
-
-
-
-
 }
