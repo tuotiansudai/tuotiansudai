@@ -72,7 +72,7 @@ public class MembershipInvestService {
                 logger.info(MessageFormat.format("will upgrade user membership level, loginName:{0}, investId:{1}, newLevel:{2}",
                         loginName, String.valueOf(investId),newMembership.getLevel()));
 
-                UserMembershipModel curUserMembershipModel = userMembershipMapper.findCurrentMaxByLoginName(loginName);
+                UserMembershipModel curUserMembershipModel = userMembershipMapper.findCurrentUpgradeMaxByLoginName(loginName);
                 curUserMembershipModel.setExpiredTime(new Date());
                 userMembershipMapper.update(curUserMembershipModel);
 

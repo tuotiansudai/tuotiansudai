@@ -22,17 +22,13 @@
     }
   }
   .download-one{
-    background:#ee7b2f;
+    background:#ff7201;
     .step-one{
       background: url(/activity/images/download/step-one.png) no-repeat;
       background-position: 720px 40px;
-      @media (max-width:320px) {
-        background-size:50%;
-        background-position:180px 55px;
-      }
-      @media (min-width:375px) and (max-width:700px) {
-        background-size:50%;
-        background-position:200px 55px;
+      @media (max-width:700px) {
+        background: url(/activity/images/download/phone-one.png) no-repeat bottom;
+        background-size:100%;
       }
       .content-item{
         float:left;
@@ -274,17 +270,9 @@
     .step-five{
       background:url('/activity/images/download/five-bg.png') no-repeat;
       background-position:690px 40px;
-      @media (max-width:320px) {
-        background-size: 40%;
-        background-position: 180px 60px;
-      }
-      @media (min-width:375px) and (max-width:400px) {
-        background-size: 40%;
-        background-position: 200px 60px;
-      }
-      @media (min-width:400px) and (max-width:700px) {
-        background-size: 40%;
-        background-position: 220px 35px;
+      @media (max-width:700px) {
+        background:url('/activity/images/download/phone-five.png') no-repeat right center;
+        background-size:80%;
       }
       .content-item{
         float:left;
@@ -343,17 +331,13 @@
     }
   }
   .download-six{
-    background:#fcfcfc;
+    background:#fff;
     .step-six{
       background:url('/activity/images/download/six-bg.png') no-repeat;
       background-position:90px 100px;
-      @media (max-width:320px) {
-        background-size: 35%;
-        background-position: 5px 75px;
-      }
-      @media (min-width:375px) and (max-width:700px) {
-        background-size: 35%;
-        background-position: 25px 55px;
+      @media (max-width:700px) {
+        background:url('/activity/images/download/phone-six.png') no-repeat left bottom;
+        background-size: 80%;
       }
       .title-icon{
         text-align:center;
