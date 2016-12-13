@@ -117,7 +117,7 @@ public class MobileAppInvestListsV3ServiceImpl implements MobileAppInvestListsV3
                 }
 
                 List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findByTransferInvestId(investModel.getId(), Lists.newArrayList(TransferStatus.TRANSFERRING));
-                if(transferApplicationModels.size() > 0){
+                if (transferApplicationModels.size() > 0) {
                     dto.setTransferApplicationId(String.valueOf(transferApplicationModels.get(0).getId()));
                 }
 
@@ -152,7 +152,15 @@ public class MobileAppInvestListsV3ServiceImpl implements MobileAppInvestListsV3
                     }
                 }
                 dto.setActualInterest(AmountConverter.convertCentToString(actualInterest));
-                dto.setExpectedInterest(AmountConverter.convertCentToString(expectedInterest));
+
+                long Discount = 0;
+                List<TransferApplicationModel> transferApplicationModelSuccess = transferApplicationMapper.findByTransferInvestId(investModel.getId(), Lists.newArrayList(TransferStatus.SUCCESS));
+                if (transferApplicationModels.size() > 0) {
+                    Discount = transferApplicationModelSuccess.get(0).getInvestAmount() - transferApplicationModelSuccess.get(0).getTransferAmount();
+                }
+
+                dto.setExpectedInterest(AmountConverter.convertCentToString(dto.getCategoryType() == CategoryType.LOAN ? expectedInterest : expectedInterest + Discount));
+
                 InvestRepayModel lastInvestRepayModel = investRepayMapper.findByInvestIdAndPeriod(investModel.getId(), loanModel.getPeriods());
                 String lastRepayDate = null;
                 if (lastInvestRepayModel != null) {
@@ -163,9 +171,9 @@ public class MobileAppInvestListsV3ServiceImpl implements MobileAppInvestListsV3
                 String transferStatus = "";
                 if (investModel.getTransferStatus() == TransferStatus.TRANSFERABLE) {
                     transferStatus = investTransferService.isTransferable(investModel.getId()) ? investModel.getTransferStatus().name() : "";
-                } else if(investModel.getTransferStatus() == TransferStatus.SUCCESS){
+                } else if (investModel.getTransferStatus() == TransferStatus.SUCCESS) {
                     transferStatus = investModel.getTransferStatus().name();
-                } else if(investModel.getTransferStatus() == TransferStatus.TRANSFERRING){
+                } else if (investModel.getTransferStatus() == TransferStatus.TRANSFERRING) {
                     transferStatus = investModel.getTransferStatus().name();
                 }
                 dto.setTransferStatus(transferStatus);
