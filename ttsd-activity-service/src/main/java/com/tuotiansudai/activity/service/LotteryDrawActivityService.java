@@ -110,9 +110,13 @@ public class LotteryDrawActivityService {
     @Transactional
     public synchronized DrawLotteryResultDto drawPrizeByCompleteTask(String mobile, ActivityCategory activityCategory) {
 
+        if (StringUtils.isEmpty(mobile)) {
+            return new DrawLotteryResultDto(2);//您还未登陆，请登陆后再来抽奖吧！
+        }
+
         UserModel userModel = userMapper.findByMobile(mobile);
         if (userModel == null) {
-            return new DrawLotteryResultDto(1);//该用户不存在！
+            return new DrawLotteryResultDto(2);//该用户不存在！
         }
 
         Date nowDate = DateTime.now().toDate();
@@ -122,10 +126,6 @@ public class LotteryDrawActivityService {
 
         if (!nowDate.before(activityEndTime) || !nowDate.after(activityStartTime)) {
             return new DrawLotteryResultDto(3);//不在活动时间范围内！
-        }
-
-        if (StringUtils.isEmpty(mobile)) {
-            return new DrawLotteryResultDto(2);//您还未登陆，请登陆后再来抽奖吧！
         }
 
         int drawTime = countDrawLotteryTime(mobile, activityCategory);
