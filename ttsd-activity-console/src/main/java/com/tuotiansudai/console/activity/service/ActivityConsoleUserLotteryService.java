@@ -29,21 +29,6 @@ public class ActivityConsoleUserLotteryService {
     private UserMapper userMapper;
 
     @Autowired
-    private AccountMapper accountMapper;
-
-    @Autowired
-    private BankCardMapper bankCardMapper;
-
-    @Autowired
-    private InvestMapper investMapper;
-
-    @Autowired
-    private RechargeMapper rechargeMapper;
-
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
-
-    @Autowired
     private ActivityCountDrawLotteryService commonCountTimeService;
 
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.autumn.startTime}\")}")
@@ -66,8 +51,6 @@ public class ActivityConsoleUserLotteryService {
 
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.christmas.endTime}\")}")
     private Date activityChristmasEndTime;
-
-    private static final String redisKey = "web:christmasTime:lottery:startTime";
 
     public List<UserLotteryTimeView> findUserLotteryTimeViews(String mobile, final ActivityCategory prizeType, Integer index, Integer pageSize) {
         List<UserModel> userModels = userMapper.findUserModelByMobile(mobile, index, pageSize);

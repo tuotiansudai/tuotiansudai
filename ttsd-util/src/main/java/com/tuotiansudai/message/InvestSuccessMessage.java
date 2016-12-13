@@ -13,6 +13,11 @@ public class InvestSuccessMessage {
 
     }
 
+    public InvestSuccessMessage(InvestInfo investInfo, LoanDetailInfo loanDetailInfo) {
+        this.investInfo = investInfo;
+        this.loanDetailInfo = loanDetailInfo;
+    }
+
     public InvestSuccessMessage(InvestInfo investInfo, LoanDetailInfo loanDetailInfo, UserInfo userInfo) {
         this.investInfo = investInfo;
         this.loanDetailInfo = loanDetailInfo;
