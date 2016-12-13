@@ -76,7 +76,7 @@ public class Iphone7LotteryAspect {
         redisWrapperClient.hset(redisKey, lotteryNumber, lotteryNumber);
         logger.debug(MessageFormat.format("invest success: investId_{0},amount_{1},lotteryNumber_{2}",investModel.getId(), investModel.getAmount(), lotteryNumber));
 
-        long totalAmount = investMapper.sumInvestAmountIphone7(activityIphone7StartTime, activityIphone7EndTime);
+        long totalAmount = investMapper.sumInvestAmountByLoginNameInvestTimeProductType(null, activityIphone7StartTime, activityIphone7EndTime, null);
         logger.debug(MessageFormat.format("currentTotalInvestAmount: {0} ", totalAmount));
 
         List<IPhone7LotteryConfigModel> iphone7LotteryConfigModelList = iPhone7LotteryConfigMapper.findAllApproved();
