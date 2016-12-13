@@ -45,7 +45,7 @@ public class Iphone7LotteryService {
     }
 
     public String nextLotteryInvestAmount() {
-        long totalAmount = investMapper.sumInvestAmountIphone7(activityIphone7StartTime, activityIphone7EndTime);
+        long totalAmount = investMapper.sumInvestAmountByLoginNameInvestTimeProductType(null, activityIphone7StartTime, activityIphone7EndTime, null);
         int currentLotteryInvestAmount = iPhone7LotteryConfigMapper.getCurrentLotteryInvestAmount();
         long nextLotteryInvestAmount = (totalAmount - currentLotteryInvestAmount * 1000000) <= 0 ? 50000000 : (50000000 - (totalAmount - currentLotteryInvestAmount * 1000000));
         return AmountConverter.convertCentToString(nextLotteryInvestAmount);

@@ -1,11 +1,11 @@
 package com.tuotiansudai.console.controller;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.console.service.ConsoleLoanRepayService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.LoanRepayDataItemDto;
 import com.tuotiansudai.repository.model.RepayStatus;
-import com.tuotiansudai.service.LoanRepayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -22,7 +22,7 @@ import java.util.List;
 @RequestMapping(value = "/project-manage")
 public class LoanRepayController {
     @Autowired
-    private LoanRepayService loanRepayService;
+    private ConsoleLoanRepayService consoleLoanRepayService;
 
     @RequestMapping(value = "/loan-repay", method = RequestMethod.GET)
     @ResponseBody
@@ -34,7 +34,7 @@ public class LoanRepayController {
                                                 @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime) {
         int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/loan-repay");
-        BaseDto<BasePaginationDataDto<LoanRepayDataItemDto>> baseDto = loanRepayService.findLoanRepayPagination(index, pageSize,
+        BaseDto<BasePaginationDataDto<LoanRepayDataItemDto>> baseDto = consoleLoanRepayService.findLoanRepayPagination(index, pageSize,
                 loanId, loginName, startTime, endTime, repayStatus);
         List<RepayStatus> repayStatusList = Lists.newArrayList(RepayStatus.values());
         modelAndView.addObject("baseDto", baseDto);

@@ -4,16 +4,15 @@ import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.service.UserService;
-import com.tuotiansudai.spring.LoginUserInfo;
+import com.tuotiansudai.console.service.AuditLogService;
 import com.tuotiansudai.dto.EditUserDto;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserRoleModel;
-import com.tuotiansudai.service.AccountService;
-import com.tuotiansudai.service.AuditLogService;
+import com.tuotiansudai.service.UserService;
+import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.task.OperationTask;
 import com.tuotiansudai.task.OperationType;
 import com.tuotiansudai.task.TaskConstant;
@@ -53,7 +52,7 @@ public class AuditTaskAspectUser {
 
     static Logger logger = Logger.getLogger(AuditTaskAspectUser.class);
 
-    @Around(value = "execution(* com.tuotiansudai.service.UserService.editUser(..))")
+    @Around(value = "execution(* com.tuotiansudai.console.service.ConsoleUserService.editUser(..))")
     public Object aroundEditUser(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         logger.info("around edit user aspect.");
         String operatorLoginName = (String) proceedingJoinPoint.getArgs()[0];

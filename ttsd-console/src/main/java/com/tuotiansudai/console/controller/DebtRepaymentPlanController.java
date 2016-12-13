@@ -1,7 +1,7 @@
 package com.tuotiansudai.console.controller;
 
+import com.tuotiansudai.console.service.DebtRepaymentPlanService;
 import com.tuotiansudai.repository.model.RepayStatus;
-import com.tuotiansudai.service.DebtRepaymentPlanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

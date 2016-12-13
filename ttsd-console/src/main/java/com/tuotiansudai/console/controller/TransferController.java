@@ -1,14 +1,14 @@
 package com.tuotiansudai.console.controller;
 
-import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.spring.LoginUserInfo;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.console.service.ConsoleInvestTransferService;
+import com.tuotiansudai.console.service.TransferRuleService;
+import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
 import com.tuotiansudai.dto.TransferRuleDto;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.TransferStatus;
-import com.tuotiansudai.transfer.service.InvestTransferService;
-import com.tuotiansudai.transfer.service.TransferRuleService;
+import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.RequestIPParser;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,7 @@ public class TransferController {
     private TransferRuleService transferRuleService;
 
     @Autowired
-    private InvestTransferService investTransferService;
+    private ConsoleInvestTransferService consoleInvestTransferService;
 
     @RequestMapping(value = "/transfer-rule", method = RequestMethod.GET)
     public ModelAndView getRule(Model model) {
@@ -62,7 +62,7 @@ public class TransferController {
                                                               @RequestParam(name = "source", required = false) Source source,
                                                               @Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index)  {
         int pageSize = 10;
-        BasePaginationDataDto<TransferApplicationPaginationItemDataDto> basePaginationDataDto = investTransferService.findTransferApplicationPaginationList(transferApplicationId, startTime, endTime, status, transferrerMobile, transfereeMobile, loanId, source, index, pageSize);
+        BasePaginationDataDto<TransferApplicationPaginationItemDataDto> basePaginationDataDto = consoleInvestTransferService.findTransferApplicationPaginationList(transferApplicationId, startTime, endTime, status, transferrerMobile, transfereeMobile, loanId, source, index, pageSize);
         ModelAndView mv = new ModelAndView("/transfer-list");
         mv.addObject("data",basePaginationDataDto);
         mv.addObject("transferApplicationId",transferApplicationId);

@@ -31,7 +31,7 @@ public class AuditTaskAspectCoupon {
 
     static Logger logger = Logger.getLogger(AuditTaskAspectCoupon.class);
 
-    @AfterReturning(value = "execution(* com.tuotiansudai.coupon.service.CouponService.createCoupon(..))")
+    @AfterReturning(value = "execution(* com.tuotiansudai.console.service.ConsoleCouponService.createCoupon(..))")
     public void afterReturningCreateCoupon(JoinPoint joinPoint) {
         logger.info("after create coupon aspect.");
         try {
@@ -44,7 +44,7 @@ public class AuditTaskAspectCoupon {
         }
     }
 
-    @AfterReturning(value = "execution(* com.tuotiansudai.coupon.service.CouponService.editCoupon(..))")
+    @AfterReturning(value = "execution(* com.tuotiansudai.console.service.ConsoleCouponService.editCoupon(..))")
     public void afterReturningEditCoupon(JoinPoint joinPoint) {
         logger.info("after edit coupon aspect.");
         try {
@@ -97,7 +97,7 @@ public class AuditTaskAspectCoupon {
         }
     }
 
-    @AfterReturning(value = "execution(* com.tuotiansudai.coupon.service.CouponActivationService.active(..))")
+    @AfterReturning(value = "execution(* com.tuotiansudai.console.service.CouponActivationService.active(..))")
     public void afterReturningActiveCoupon(JoinPoint joinPoint) {
         logger.info("after active coupon aspect.");
         try {
@@ -136,7 +136,7 @@ public class AuditTaskAspectCoupon {
         }
     }
 
-    @AfterReturning(value = "execution(* com.tuotiansudai.coupon.service.CouponService.deleteCoupon(..))")
+    @AfterReturning(value = "execution(* com.tuotiansudai.console.service.ConsoleCouponService.deleteCoupon(..))")
     public void afterReturningDeleteCoupon(JoinPoint joinPoint) {
         logger.info("after delete coupon aspect.");
         try {

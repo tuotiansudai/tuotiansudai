@@ -13,7 +13,7 @@
         <div class="actor-list active">
             <#list data as activityItem>
                 <#if activityItem.longTerm=='longTerm' || (activityItem.expiredTime?? && activityItem.expiredTime?date gte .now?date)>
-                    <div class="activity-box">
+                    <div class="activity-box" data-href="${activityItem.webActivityUrl}">
                         <div class="activity-img">
                             <div class="img-inner">
                                 <img src="${staticServer}${activityItem.webPictureUrl}" alt="${activityItem.description}">
@@ -40,7 +40,7 @@
         <div class="actor-list">
             <#list data as activityItem>
                 <#if activityItem.longTerm == 'notLongTerm' && activityItem.expiredTime??&&activityItem.expiredTime?date lt .now?date>
-                    <div class="activity-box">
+                    <div class="activity-box" data-href="${activityItem.webActivityUrl}">
                         <div class="activity-img">
                             <div class="img-inner">
                                 <img src="${staticServer}${activityItem.webPictureUrl}" alt="${activityItem.description}">

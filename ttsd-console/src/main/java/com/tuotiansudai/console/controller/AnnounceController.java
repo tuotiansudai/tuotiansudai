@@ -1,6 +1,6 @@
 package com.tuotiansudai.console.controller;
 
-import com.tuotiansudai.console.service.AnnounceConsoleService;
+import com.tuotiansudai.console.service.ConsoleAnnounceService;
 import com.tuotiansudai.dto.AnnounceDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
@@ -16,16 +16,16 @@ import org.springframework.web.servlet.ModelAndView;
 public class AnnounceController {
 
     @Autowired
-    private AnnounceConsoleService announceConsoleService;
+    private ConsoleAnnounceService consoleAnnounceService;
 
     @RequestMapping(value = "/announce", method = RequestMethod.GET)
     public ModelAndView announceManage(@RequestParam(value = "id",required = false) Long id,@RequestParam(value = "title",required = false) String title,
                                                 @RequestParam(value = "index",defaultValue = "1",required = false) int index) {
         int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/announce-list");
-        int announceCount = announceConsoleService.findAnnounceCount(id, title);
+        int announceCount = consoleAnnounceService.findAnnounceCount(id, title);
         modelAndView.addObject("announceCount", announceCount);
-        modelAndView.addObject("announceList", announceConsoleService.findAnnounce(id, title, (index - 1) * pageSize, pageSize));
+        modelAndView.addObject("announceList", consoleAnnounceService.findAnnounce(id, title, (index - 1) * pageSize, pageSize));
         modelAndView.addObject("id",id);
         modelAndView.addObject("title",title);
         modelAndView.addObject("index",index);
@@ -46,7 +46,7 @@ public class AnnounceController {
     @RequestMapping(value = "/announce/edit/{id}", method = RequestMethod.GET)
     public ModelAndView userFundsRelease(@PathVariable Long id) {
         ModelAndView modelAndView = new ModelAndView("/announce-edit");
-        modelAndView.addObject("announce", announceConsoleService.findById(id));
+        modelAndView.addObject("announce", consoleAnnounceService.findById(id));
         return modelAndView;
     }
 
@@ -56,7 +56,7 @@ public class AnnounceController {
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto dataDto = new PayDataDto();
         baseDto.setData(dataDto);
-        announceConsoleService.create(announceDto, LoginUserInfo.getLoginName());
+        consoleAnnounceService.create(announceDto, LoginUserInfo.getLoginName());
         dataDto.setStatus(true);
         return baseDto;
     }
@@ -67,7 +67,7 @@ public class AnnounceController {
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto dataDto = new PayDataDto();
         baseDto.setData(dataDto);
-        announceConsoleService.update(announceDto);
+        consoleAnnounceService.update(announceDto);
         dataDto.setStatus(true);
         return baseDto;
     }
@@ -78,7 +78,7 @@ public class AnnounceController {
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto dataDto = new PayDataDto();
         baseDto.setData(dataDto);
-        announceConsoleService.delete(announceDto);
+        consoleAnnounceService.delete(announceDto);
         dataDto.setStatus(true);
         return baseDto;
     }

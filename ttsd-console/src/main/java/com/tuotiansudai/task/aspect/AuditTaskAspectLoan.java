@@ -2,14 +2,15 @@ package com.tuotiansudai.task.aspect;
 
 import com.google.common.base.Strings;
 import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.console.service.AuditLogService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoanCreateRequestDto;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.dto.PayDataDto;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.service.AuditLogService;
 import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.spring.LoginUserInfo;
@@ -38,6 +39,9 @@ public class AuditTaskAspectLoan {
     private UserService userService;
 
     @Autowired
+    private UserMapper userMapper;
+
+    @Autowired
     LoanService loanService;
 
     @Autowired
@@ -45,7 +49,7 @@ public class AuditTaskAspectLoan {
 
     static Logger logger = Logger.getLogger(AuditTaskAspectLoan.class);
 
-    @AfterReturning(value = "execution(* com.tuotiansudai.service.LoanCreateService.applyAuditLoan(*))", returning = "returnValue")
+    @AfterReturning(value = "execution(* com.tuotiansudai.console.service.ConsoleLoanCreateService.applyAuditLoan(*))", returning = "returnValue")
     public void afterReturningCreateLoan(JoinPoint joinPoint, BaseDto<PayDataDto> returnValue) {
         logger.info("after create loan aspect.");
         try {
@@ -66,7 +70,7 @@ public class AuditTaskAspectLoan {
                 task.setCreatedTime(new Date());
 
                 String senderLoginName = loanModel.getCreatedLoginName();
-                UserModel sender = userService.findByLoginName(senderLoginName);
+                UserModel sender = userMapper.findByLoginName(senderLoginName);
                 String senderRealName = sender != null && !Strings.isNullOrEmpty(sender.getUserName()) ? sender.getUserName() : senderLoginName;
 
                 task.setSender(senderLoginName);
@@ -81,7 +85,7 @@ public class AuditTaskAspectLoan {
     }
 
 
-    @AfterReturning(value = "execution(* com.tuotiansudai.service.LoanCreateService.openLoan(..))", returning = "returnValue")
+    @AfterReturning(value = "execution(* com.tuotiansudai.console.service.ConsoleLoanCreateService.openLoan(..))", returning = "returnValue")
     public void afterReturningOpenLoan(JoinPoint joinPoint, BaseDto<PayDataDto> returnValue) {
         logger.info("after open loan aspect.");
         try {

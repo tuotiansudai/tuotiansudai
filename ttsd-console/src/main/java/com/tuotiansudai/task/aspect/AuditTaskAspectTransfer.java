@@ -4,12 +4,11 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.console.service.AuditLogService;
 import com.tuotiansudai.dto.TransferRuleDto;
 import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.repository.model.UserRoleModel;
-import com.tuotiansudai.service.AccountService;
-import com.tuotiansudai.service.AuditLogService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.task.OperationTask;
 import com.tuotiansudai.task.OperationType;
@@ -51,7 +50,7 @@ public class AuditTaskAspectTransfer {
     static Logger logger = Logger.getLogger(AuditTaskAspectTransfer.class);
 
     @SuppressWarnings(value = "unchecked")
-    @Around(value = "execution(* com.tuotiansudai.transfer.service.TransferRuleService.updateTransferRule(..))")
+    @Around(value = "execution(* com.tuotiansudai.console.service.TransferRuleService.updateTransferRule(..))")
     public Object aroundUpdateTransferRule(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         logger.info("update transfer rule task aspect starting");
 

@@ -18,13 +18,13 @@ public class UserMessageModel implements Serializable {
     public UserMessageModel() {
     }
 
-    public UserMessageModel(long messageId, String loginName, String title, String appTitle, String content) {
+    public UserMessageModel(long messageId, String loginName, String title, String appTitle, String content, Date createdTime) {
         this.messageId = messageId;
         this.loginName = loginName;
         this.title = title;
         this.appTitle = appTitle;
         this.content = content;
-        this.createdTime = new Date();
+        this.createdTime = createdTime;
     }
 
     public long getId() {

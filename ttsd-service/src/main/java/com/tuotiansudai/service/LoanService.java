@@ -18,8 +18,4 @@ public interface LoanService {
     int findLoanListCountWeb(String name, LoanStatus status, double rateStart, double rateEnd,int durationStart,int durationEnd);
 
     BaseDto<BasePaginationDataDto> getLoanerLoanData(String loginName, int index, int pageSize, LoanStatus status, Date startTime, Date endTime);
-
-    int findLoanListCount(LoanStatus status, Long loanId, String loanName, Date startTime, Date endTime);
-
-    List<LoanListDto> findLoanList(LoanStatus status, Long loanId, String loanName, Date startTime, Date endTime, int currentPageNo, int pageSize);
 }

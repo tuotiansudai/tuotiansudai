@@ -11,12 +11,8 @@ import com.tuotiansudai.console.bi.repository.model.InvestViscosityDetailTableVi
 import com.tuotiansudai.console.bi.repository.model.InvestViscosityDetailView;
 import com.tuotiansudai.console.bi.repository.model.KeyValueModel;
 import com.tuotiansudai.console.bi.service.BusinessIntelligenceService;
-import com.tuotiansudai.repository.mapper.LoanRepayMapper;
-import com.tuotiansudai.service.InvestService;
-import com.tuotiansudai.service.UserService;
-import com.tuotiansudai.task.OperationTask;
-import com.tuotiansudai.task.TaskConstant;
-import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.console.service.ConsoleInvestService;
+import com.tuotiansudai.console.service.ConsoleUserService;
 import com.tuotiansudai.util.SerializeUtil;
 import org.apache.commons.collections4.ListUtils;
 import org.apache.commons.collections4.Predicate;
@@ -43,17 +39,17 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
     private BusinessIntelligenceMapper businessIntelligenceMapper;
 
     @Autowired
-    private UserService userService;
+    private ConsoleUserService consoleUserService;
 
     @Autowired
-    private InvestService investService;
+    private ConsoleInvestService consoleInvestService;
 
     private int lifeSecond = 2592000;
 
     @Override
     public List<String> getChannels() {
-        List<String> userChannel = userService.findAllUserChannels();
-        List<String> investChannel = investService.findAllInvestChannels();
+        List<String> userChannel = consoleUserService.findAllUserChannels();
+        List<String> investChannel = consoleInvestService.findAllInvestChannels();
         userChannel.removeAll(investChannel);
         userChannel.addAll(investChannel);
         return userChannel;
