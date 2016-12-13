@@ -109,7 +109,7 @@
                 <div class="title-christmas"><span>活动二：圣诞拆礼物</span></div>
                 <div class="model-content clearfix">
                     <div class="color-sec info-activity-note">
-                        <b class="tc ">活动时间：12月24日24:00-13月31日24:00</b>
+                        <b class="tc ">活动时间：12月24日24:00-12月31日24:00</b>
                         蟹蟹各位大大们为圣诞老人铺路，昨晚，他已经偷偷爬过烟囱，把礼物挂在圣诞树上，还等什么，赶快拆礼物吧，Merry Christmas！ <br/>
                         温馨提示：在活动二期限内完成以下操作，才可获得拆礼物机会，每位用户最多可获得10次拆奖机会；
                     </div>
