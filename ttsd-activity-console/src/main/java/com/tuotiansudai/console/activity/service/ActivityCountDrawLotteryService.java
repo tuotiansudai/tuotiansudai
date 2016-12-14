@@ -83,9 +83,12 @@ public class ActivityCountDrawLotteryService {
     private final List newYearsActivityTask = Lists.newArrayList(ActivityDrawLotteryTask.EACH_ACTIVITY_SIGN_IN, ActivityDrawLotteryTask.REFERRER_USER,
             ActivityDrawLotteryTask.EACH_INVEST_5000);
 
-    private final String activityDescription = "新年专享";
+    public static final String ACTIVITY_DESCRIPTION = "新年专享";
+
     //每投资5000奖励抽奖次数
-    private final long EACH_INVEST_AMOUNT = 500000;
+    private final long EACH_INVEST_AMOUNT_50000 = 50L;
+
+    private final long EACH_INVEST_AMOUNT_20000 = 200000;
 
 
     public int countDrawLotteryTime(String mobile, ActivityCategory activityCategory) {
@@ -165,24 +168,18 @@ public class ActivityCountDrawLotteryService {
                     time += referrerUsers.size() * 5;
                     break;
                 case EACH_INVEST_5000:
-                    long sumInvestAmount = investMapper.sumSuccessActivityInvestAmount(userModel.getLoginName(), activityDescription, startTime, endTime);
-                    long investAwardTime = sumInvestAmount / EACH_INVEST_AMOUNT;
+                    long sumInvestAmount = investMapper.sumSuccessActivityInvestAmount(userModel.getLoginName(), ACTIVITY_DESCRIPTION, startTime, endTime);
+                    long investAwardTime = sumInvestAmount / EACH_INVEST_AMOUNT_50000;
                     if (investAwardTime <= 10) {
                         time += investAwardTime;
+                    }else{
+                        time += 10;
                     }
                     break;
                 case EACH_INVEST_2000:
                     long sumAmount = investMapper.sumInvestAmountByLoginNameInvestTimeProductType(userModel.getLoginName(), startTime, endTime, Lists.newArrayList(ProductType._90, ProductType._180, ProductType._360));
-                    time += (int) (sumAmount / 200000);
+                    time += (int) (sumAmount / EACH_INVEST_AMOUNT_20000);
                     time = time >= 10 ? 10 : time;
-                    break;
-                case FIRST_INVEST:
-                    boolean beforeIsInvest = investMapper.sumInvestAmountByLoginNameInvestTimeProductType(userModel.getLoginName(), new DateTime().minusDays(720).toDate(), activityChristmasStartTime, null) > 0;
-                    boolean currentIsInvest = investMapper.sumInvestAmountByLoginNameInvestTimeProductType(userModel.getLoginName(), activityChristmasStartTime, activityChristmasEndTime, null)  > 0 ;
-
-                    if(!beforeIsInvest && currentIsInvest){
-                        time++;
-                    }
                     break;
             }
         }
