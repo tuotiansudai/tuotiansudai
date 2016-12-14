@@ -1,15 +1,14 @@
-package com.tuotiansudai.mq.config;
+package com.tuotiansudai.mq.config.setting;
 
-public class AliyunMnsConfig {
+import org.springframework.beans.factory.annotation.Value;
+
+public class AliyunMnsSetting {
+    @Value("${aliyun.mns.accessKeyId}")
     private String accessKeyId;
+    @Value("${aliyun.mns.accessKeySecret}")
     private String accessKeySecret;
+    @Value("${aliyun.mns.endpoint}")
     private String endpoint;
-
-    public AliyunMnsConfig(String accessKeyId, String accessKeySecret, String endpoint) {
-        this.accessKeyId = accessKeyId;
-        this.accessKeySecret = accessKeySecret;
-        this.endpoint = endpoint;
-    }
 
     public String getAccessKeyId() {
         return accessKeyId;
