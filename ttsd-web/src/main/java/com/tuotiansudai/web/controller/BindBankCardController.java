@@ -51,7 +51,7 @@ public class BindBankCardController {
         UserModel userModel = userService.findByMobile(LoginUserInfo.getMobile());
         view.addObject("userName", userModel.getUserName());
         view.addObject("banks", BankCardUtil.getWithdrawBanks());
-        view.addObject("bankList", bankService.findWebBankList());
+        view.addObject("bankList", bankService.findBankList(0L, 0L));
 
         return view;
     }

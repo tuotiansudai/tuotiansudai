@@ -1,5 +1,6 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.base.Joiner;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
@@ -10,6 +11,9 @@ import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.job.AutoLoanOutJob;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
+import com.tuotiansudai.message.InvestInfo;
+import com.tuotiansudai.message.InvestSuccessMessage;
+import com.tuotiansudai.message.LoanDetailInfo;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.client.model.MessageTopic;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
@@ -30,10 +34,7 @@ import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransfe
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
 import com.tuotiansudai.paywrapper.service.InvestAchievementService;
 import com.tuotiansudai.paywrapper.service.InvestService;
-import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.AutoInvestPlanMapper;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.*;
 import org.apache.commons.collections4.CollectionUtils;
@@ -75,6 +76,9 @@ public class InvestServiceImpl implements InvestService {
 
     @Autowired
     private LoanMapper loanMapper;
+
+    @Autowired
+    private LoanDetailsMapper loanDetailsMapper;
 
     @Autowired
     private AmountTransfer amountTransfer;
@@ -505,11 +509,9 @@ public class InvestServiceImpl implements InvestService {
         investModel.setStatus(InvestStatus.SUCCESS);
         investMapper.update(investModel);
 
-        this.investAchievementService.awardAchievement(investModel);
-
-        mqWrapperClient.publishMessage(MessageTopic.InvestSuccess, String.valueOf(investModel.getId()));
+        //投资成功后发送消息
+        this.publishInvestSuccessMessage(investModel);
     }
-
 
     /**
      * umpay 超投返款的回调
@@ -562,6 +564,40 @@ public class InvestServiceImpl implements InvestService {
         String respData = callbackRequest.getResponseData();
         return respData;
     }
+
+    private void publishInvestSuccessMessage(InvestModel investModel){
+
+        this.investAchievementService.awardAchievement(investModel);
+
+        InvestInfo investInfo = new InvestInfo();
+        LoanDetailInfo loanDetailInfo = new LoanDetailInfo();
+
+        investInfo.setInvestId(investModel.getId());
+        investInfo.setLoginName(investModel.getLoginName());
+        investInfo.setAmount(investModel.getAmount());
+        investInfo.setStatus(investModel.getStatus().name());
+        investInfo.setTransferStatus(investModel.getTransferStatus().name());
+
+        LoanDetailsModel loanDetailsModel =  loanDetailsMapper.getByLoanId(investModel.getLoanId());
+        if(loanDetailsModel != null){
+            loanDetailInfo.setActivity(loanDetailsModel.isActivity());
+            loanDetailInfo.setActivityDesc(loanDetailsModel.getActivityDesc());
+        }
+        loanDetailInfo.setLoanId(investModel.getLoanId());
+
+        InvestSuccessMessage investSuccessMessage = new InvestSuccessMessage(investInfo, loanDetailInfo);
+
+        String message;
+        try {
+            message = JsonConverter.writeValueAsString(investSuccessMessage);
+            mqWrapperClient.publishMessage(MessageTopic.InvestSuccess, message);
+        } catch (JsonProcessingException e) {
+            // 记录日志，发短信通知管理员
+            fatalLog("[MQ] invest success, but send mq message fail", String.valueOf(investSuccessMessage.getInvestInfo().getInvestId()), investSuccessMessage.getInvestInfo().getAmount(), investSuccessMessage.getInvestInfo().getLoginName(), investModel.getLoanId(), e);
+        }
+
+    }
+
 
     private void checkLoanRaisingComplete(long loanId) {
         // 超投，改标的状态为满标 RECHECK

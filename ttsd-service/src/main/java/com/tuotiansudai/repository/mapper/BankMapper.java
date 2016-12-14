@@ -13,9 +13,8 @@ public interface BankMapper {
 
     void update(BankModel model);
 
-    List<BankModel> findBankList();
-
-    List<BankModel> findWebBankList();
+    List<BankModel> findBankList(@Param(value = "singleAmount") Long singleAmount,
+                                 @Param(value = "singleDayAmount") Long singleDayAmount);
 
     BankModel findByBankCode(@Param(value = "bankCode") String bankCode);
 }
