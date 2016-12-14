@@ -9,11 +9,7 @@ public interface BankService {
 
     BankModel findById(long id);
 
-    boolean updateBank(BankModel bankModel);
+    List<BankDto> findBankList(Long singleAmount, Long singleDayAmount);
 
     BankModel findByBankCode(String bankCode);
-
-    List<BankDto> findWebBankList();
-
-    List<BankDto> findBankList();
 }

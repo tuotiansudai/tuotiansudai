@@ -6,6 +6,7 @@ import com.tuotiansudai.anxin.service.AnxinSignService;
 import com.tuotiansudai.anxin.service.impl.AnxinSignServiceImpl;
 import com.tuotiansudai.cfca.dto.AnxinContractType;
 import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.console.service.ConsoleLoanService;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoanListDto;
@@ -38,6 +39,9 @@ public class LoanListController {
     static Logger logger = Logger.getLogger(LoanListController.class);
 
     @Autowired
+    private ConsoleLoanService consoleLoanService;
+
+    @Autowired
     private LoanService loanService;
 
     @Autowired
@@ -60,10 +64,10 @@ public class LoanListController {
                                         @RequestParam(value = "index", required = false, defaultValue = "1") int index,
                                         @RequestParam(value = "loanName", required = false) String loanName) {
         int pageSize = 10;
-        int loanListCount = loanService.findLoanListCount(status, loanId, loanName,
+        int loanListCount = consoleLoanService.findLoanListCount(status, loanId, loanName,
                 startTime == null ? new DateTime(0).toDate() : new DateTime(startTime).withTimeAtStartOfDay().toDate(),
                 endTime == null ? new DateTime(9999, 12, 31, 0, 0, 0).toDate() : new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate());
-        List<LoanListDto> loanListDtos = loanService.findLoanList(status, loanId, loanName,
+        List<LoanListDto> loanListDtos = consoleLoanService.findLoanList(status, loanId, loanName,
                 startTime == null ? new DateTime(0).toDate() : new DateTime(startTime).withTimeAtStartOfDay().toDate(),
                 endTime == null ? new DateTime(9999, 12, 31, 0, 0, 0).toDate() : new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate(),
                 index, pageSize);
