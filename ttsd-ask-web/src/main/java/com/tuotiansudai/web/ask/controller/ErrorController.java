@@ -13,11 +13,12 @@ import java.text.MessageFormat;
 @RequestMapping(path = "/error")
 public class ErrorController {
 
-    @Value("${web.server}")
+    @Value("${ask.server}")
     private String webServer;
 
     @RequestMapping(path = "/{code:^404|500$}", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView error(@PathVariable String code) {
-        return new ModelAndView(MessageFormat.format("redirect:{0}/error/{1}", webServer, code));
+        return new ModelAndView("/error/" + code);
+       // return new ModelAndView(MessageFormat.format("redirect:{0}/error/{1}", webServer, code));
     }
 }
