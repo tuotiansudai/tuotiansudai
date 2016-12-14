@@ -59,6 +59,7 @@ def mk_worker_zip():
     local('cd ./ttsd-activity-mq-consumer && /opt/gradle/latest/bin/gradle distZip -PconfigPath=/workspace/v2config/default/ttsd-config/')
     local('cd ./ttsd-user-mq-consumer && /opt/gradle/latest/bin/gradle distZip -PconfigPath=/workspace/v2config/default/ttsd-config/')
     local('cd ./ttsd-diagnosis && /opt/gradle/latest/bin/gradle distZip -PconfigPath=/workspace/v2config/default/ttsd-config/ -PdiagnosisConfigPath=/workspace/v2config/default/ttsd-diagnosis/')
+    local('cd ./ttsd-worker-monitor && /opt/gradle/latest/bin/gradle bootRepackage -PconfigPath=/workspace/v2config/default/ttsd-config/')
 
 
 def mk_static_zip():
