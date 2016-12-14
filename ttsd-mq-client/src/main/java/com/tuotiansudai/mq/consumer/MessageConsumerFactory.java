@@ -41,6 +41,9 @@ public class MessageConsumerFactory implements ApplicationListener<ContextClosed
     @Override
     public void onApplicationEvent(ContextClosedEvent event) {
         mqConsumer.stopSubscribe();
+        if (consumerThreads == null) {
+            return;
+        }
         for (Thread consumerThread : consumerThreads) {
             try {
                 consumerThread.join();
