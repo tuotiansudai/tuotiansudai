@@ -115,12 +115,12 @@ public class WorkerMonitor {
 
     private void sendNotification(String text) {
         if (monitorConfig.isSmsNotifyEnabled()) {
-            logger.error("[monitor] send sms {}", text);
+            logger.info("[monitor] send sms {}", text);
             SmsFatalNotifyDto dto = new SmsFatalNotifyDto(text);
             smsWrapperClient.sendFatalNotify(dto);
         }
         if (monitorConfig.isEmailNotifyEnabled()) {
-            logger.error("[monitor] send email {}", text);
+            logger.info("[monitor] send email {}", text);
             sendNotifyEmail(text);
         }
     }
