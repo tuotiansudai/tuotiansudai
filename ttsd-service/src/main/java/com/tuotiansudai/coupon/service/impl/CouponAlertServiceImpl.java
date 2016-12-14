@@ -55,6 +55,7 @@ public class CouponAlertServiceImpl implements CouponAlertService {
         if (Strings.isNullOrEmpty(loginName)) {
             return null;
         }
+        loginName = loginName.toLowerCase();
         try {
             if (!redisWrapperClient.hexists(COUPON_ALERT_KEY, loginName)) {
                 redisWrapperClient.hset(COUPON_ALERT_KEY, loginName, objectMapper.writeValueAsString(Sets.<Long>newHashSet()));
