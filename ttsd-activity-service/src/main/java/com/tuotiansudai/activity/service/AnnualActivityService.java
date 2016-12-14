@@ -40,7 +40,7 @@ public class AnnualActivityService {
     }
 
     public String getTaskProgress(String investAmount){
-        long amount = investAmount.equals("0.00") ? 0 : Long.parseLong(investAmount);
+        long amount = investAmount.equals("0.00") ? 0 : AmountConverter.convertStringToCent(investAmount);
         String[] task = {"0", "0", "0", "0", "0", "0", "0", "0", "0", "0"};
 
         for(int i = 0; i < investTaskList.size(); i ++){
