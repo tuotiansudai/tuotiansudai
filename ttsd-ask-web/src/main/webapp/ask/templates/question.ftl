@@ -68,7 +68,7 @@
         <div class="borderBox clearfix best-answer">
             <div class="answers-box ">
                 <dl class="answers-list">
-                    <dd>${bestAnswer.answer}</dd>
+                    <dd>${bestAnswer.answer?replace('\\n','<br/>','i')?replace('\\r','<br/>','i')}</dd>
                     <dd class="date-time-answer"><span>${bestAnswer.mobile}</span>
                         <span class="datetime">${bestAnswer.createdTime?string("yyyy年MM月dd日 HH:mm")}</span>
                         <@global.isAnonymous>

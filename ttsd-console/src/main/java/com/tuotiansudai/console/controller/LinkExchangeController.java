@@ -1,5 +1,6 @@
 package com.tuotiansudai.console.controller;
 
+import com.tuotiansudai.console.service.ConsoleLinkExchangeService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LinkExchangeDto;
 import com.tuotiansudai.dto.PayDataDto;
@@ -15,24 +16,27 @@ import org.springframework.web.servlet.ModelAndView;
 public class LinkExchangeController {
 
     @Autowired
+    private ConsoleLinkExchangeService consoleLinkExchangeService;
+
+    @Autowired
     private LinkExchangeService linkExchangeService;
 
     @RequestMapping(value = "/link-exchange", method = RequestMethod.GET)
-    public ModelAndView linkExchangeManage(@RequestParam(value = "id",required = false) Long id,@RequestParam(value = "title",required = false) String title,
-                                                @RequestParam(value = "index",defaultValue = "1",required = false) int index) {
+    public ModelAndView linkExchangeManage(@RequestParam(value = "id", required = false) Long id, @RequestParam(value = "title", required = false) String title,
+                                           @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
         int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/link-exchange-list");
-        int linkExchangeCount = linkExchangeService.findCountByTitle(title);
+        int linkExchangeCount = consoleLinkExchangeService.findCountByTitle(title);
         modelAndView.addObject("linkExchangeCount", linkExchangeCount);
         modelAndView.addObject("linkExchangeList", linkExchangeService.getLinkExchangeList(title, (index - 1) * pageSize, pageSize));
-        modelAndView.addObject("title",title);
-        modelAndView.addObject("index",index);
-        modelAndView.addObject("pageSize",pageSize);
+        modelAndView.addObject("title", title);
+        modelAndView.addObject("index", index);
+        modelAndView.addObject("pageSize", pageSize);
         long totalPages = PaginationUtil.calculateMaxPage(linkExchangeCount, pageSize);
         boolean hasPreviousPage = index > 1 && index <= totalPages;
         boolean hasNextPage = index < totalPages;
-        modelAndView.addObject("hasPreviousPage",hasPreviousPage);
-        modelAndView.addObject("hasNextPage",hasNextPage);
+        modelAndView.addObject("hasPreviousPage", hasPreviousPage);
+        modelAndView.addObject("hasNextPage", hasNextPage);
         return modelAndView;
     }
 
@@ -44,7 +48,7 @@ public class LinkExchangeController {
     @RequestMapping(value = "/link-exchange/edit/{id}", method = RequestMethod.GET)
     public ModelAndView editLinkExchange(@PathVariable String id) {
         ModelAndView modelAndView = new ModelAndView("/link-exchange-edit");
-        modelAndView.addObject("linkExchange", this.linkExchangeService.getLinkExchangeById(id));
+        modelAndView.addObject("linkExchange", this.consoleLinkExchangeService.getLinkExchangeById(id));
         return modelAndView;
     }
 
@@ -55,7 +59,7 @@ public class LinkExchangeController {
         PayDataDto dataDto = new PayDataDto();
         baseDto.setData(dataDto);
         linkExchangeDto.setId(System.currentTimeMillis());
-        this.linkExchangeService.create(linkExchangeDto);
+        this.consoleLinkExchangeService.create(linkExchangeDto);
         dataDto.setStatus(true);
         return baseDto;
     }
@@ -66,7 +70,7 @@ public class LinkExchangeController {
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto dataDto = new PayDataDto();
         baseDto.setData(dataDto);
-        this.linkExchangeService.update(linkExchangeDto);
+        this.consoleLinkExchangeService.update(linkExchangeDto);
         dataDto.setStatus(true);
         return baseDto;
     }
@@ -77,7 +81,7 @@ public class LinkExchangeController {
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto dataDto = new PayDataDto();
         baseDto.setData(dataDto);
-        this.linkExchangeService.delete(linkExchangeDto);
+        this.consoleLinkExchangeService.delete(linkExchangeDto);
         dataDto.setStatus(true);
         return baseDto;
     }

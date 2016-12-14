@@ -1,5 +1,9 @@
 package com.tuotiansudai.mq.consumer.point;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.tuotiansudai.message.InvestInfo;
+import com.tuotiansudai.message.InvestSuccessMessage;
+import com.tuotiansudai.message.LoanDetailInfo;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
 import com.tuotiansudai.point.repository.model.PointTask;
 import com.tuotiansudai.point.service.PointService;
@@ -7,6 +11,7 @@ import com.tuotiansudai.point.service.PointTaskService;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.InvestStatus;
+import com.tuotiansudai.util.JsonConverter;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -43,6 +48,8 @@ public class InvestSuccessCompletePointTaskConsumerTest extends PointTaskConsume
     public void shouldConsume() {
         long investId = 100001;
         String loginName = "helloworld";
+        InvestSuccessMessage investSuccessMessage = buildMockedInvestSuccessMessage(investId, loginName);
+
         InvestModel mockedInvestModel = buildMockInvestModel(investId, loginName);
 
         final ArgumentCaptor<String> loginNameCaptor = ArgumentCaptor.forClass(String.class);
@@ -53,7 +60,11 @@ public class InvestSuccessCompletePointTaskConsumerTest extends PointTaskConsume
         doNothing().when(pointService).obtainPointInvest(investModelCaptor.capture());
         when(investMapper.findById(investId)).thenReturn(mockedInvestModel);
 
-        consumer.consume(String.valueOf(investId));
+        try {
+            consumer.consume(JsonConverter.writeValueAsString(investSuccessMessage));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
         assertTrue("all loginName is" + loginName,
                 loginNameCaptor.getAllValues().stream().allMatch(s -> s.equalsIgnoreCase(loginName)));
 
@@ -74,4 +85,19 @@ public class InvestSuccessCompletePointTaskConsumerTest extends PointTaskConsume
         investModel.setStatus(InvestStatus.SUCCESS);
         return investModel;
     }
+
+    private InvestSuccessMessage buildMockedInvestSuccessMessage(long investId, String loginName) {
+        InvestInfo investInfo = new InvestInfo();
+        LoanDetailInfo loanDetailInfo = new LoanDetailInfo();
+
+        investInfo.setInvestId(investId);
+        investInfo.setLoginName(loginName);
+        investInfo.setAmount(4000000);
+        investInfo.setStatus("SUCCESS");
+        investInfo.setTransferStatus("TRANSFERABLE");
+
+        InvestSuccessMessage investSuccessMessage = new InvestSuccessMessage(investInfo, loanDetailInfo);
+        return investSuccessMessage;
+    }
+
 }

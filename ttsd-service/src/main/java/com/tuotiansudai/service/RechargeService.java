@@ -16,29 +16,7 @@ public interface RechargeService {
 
     BaseDto<PayFormDataDto> recharge(RechargeDto rechargeDto);
 
-
-    BaseDto<BasePaginationDataDto<RechargePaginationItemDataDto>> findRechargePagination(String rechargeId,
-                                                                                         String mobile,
-                                                                                         RechargeSource source,
-                                                                                         RechargeStatus status,
-                                                                                         String channel,
-                                                                                         int index,
-                                                                                         int pageSize,
-                                                                                         Date startTime,
-                                                                                         Date endTime);
-
-
-    long findSumRechargeAmount(String rechargeId,
-                               String mobile,
-                               RechargeSource source,
-                               RechargeStatus status,
-                               String channel,
-                               Date startTime,
-                               Date endTime);
-
     long sumSuccessRechargeAmount(String loginName);
-
-    List<String> findAllChannel();
 
     RechargeModel findRechargeById(long id);
 }

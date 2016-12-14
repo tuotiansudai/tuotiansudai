@@ -39,6 +39,8 @@ public interface UserMembershipMapper {
 
     UserMembershipModel findCurrentMaxByLoginName(String loginName);
 
+    UserMembershipModel findCurrentUpgradeMaxByLoginName(String loginName);
+
     int findCountUserMembershipItemViews(@Param(value = "loginName") String loginName,
                                          @Param(value = "mobile") String mobile,
                                          @Param(value = "registerStartTime") Date registerStartTime,
