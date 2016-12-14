@@ -49,7 +49,7 @@ public abstract class AbstractRedisWrapperClient {
                 jedis.select(db);
                 break;
             } catch (JedisConnectionException e) {
-                logger.error(MessageFormat.format("fetch jedis failed on {0} times", String.valueOf(timeoutCount + 1)), e);
+                logger.warn(MessageFormat.format("fetch jedis failed on {0} times", String.valueOf(timeoutCount + 1)), e);
                 if (++timeoutCount >= 3) {
                     logger.error("Get Redis pool failure more than 3 times.",e);
                     throw e;
