@@ -3,7 +3,7 @@
 <div class="today-headlines-container">
     <input type="hidden" id="statusText" value="${userStatus!}">
     <@global.isNotAnonymous>
-    <input type="hidden" id="loginMobile" value="">
+    <input type="hidden" id="lotteryTime" value="${lotteryTime!}">
     </@global.isNotAnonymous>
     <div class="top-img-item">
         <img src="${staticServer}/activity/images/today-headlines/top-img.png" alt="今日头条" width="100%">
@@ -163,8 +163,7 @@
                     </li>
                     <li class="text-c">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                        <input type="hidden" id="redirectToAfterRegisterSuccess" name="redirectToAfterRegisterSuccess" value="/activity/today-headlines"/>
-                        <input type="hidden" name="isStatus" value="register"/>
+                        <input type="hidden" id="redirectToAfterRegisterSuccess" name="redirectToAfterRegisterSuccess" value="/activity/today-headlines?fromRedirect=fromRegister"/>
                         <span class="submit-bg">
                             <input type="submit" class="register-user" value="立即注册">
                         </span>
@@ -202,7 +201,6 @@
                     </li>
                     <li class="text-c mt-20">
                         <input type="hidden" name="source" value="WEB" />
-                        <input type="hidden" name="isStatus" value="login"/>
                         <span class="submit-bg">
                             <input type="submit" class="register-user" value="登录">
                         </span>

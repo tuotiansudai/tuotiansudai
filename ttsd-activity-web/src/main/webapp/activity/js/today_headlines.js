@@ -8,7 +8,8 @@ require(['jquery', 'layerWrapper', 'template','commonFun', 'jquery.validate', 'j
             captchaValid = false,
             $appCaptcha = $('#appCaptcha', $registerForm),
             $fetchCaptcha = $('.fetch-captcha', $registerForm),
-            $statusText=$('#statusText');
+            $statusText=$('#statusText'),
+            $lotteryTime=$('#lotteryTime');
 
         var lottery = {
             click: false, //防止重复点击
@@ -78,8 +79,6 @@ require(['jquery', 'layerWrapper', 'template','commonFun', 'jquery.validate', 'j
             }
         };
 
-
-
         lottery.init('lottery');
         $("#lottery .lottery-btn").on('click', function(event) {
             event.preventDefault();
@@ -98,9 +97,17 @@ require(['jquery', 'layerWrapper', 'template','commonFun', 'jquery.validate', 'j
         switch($statusText.val())
         {
             case 'REGISTER_LOGIN_TO_ACCOUNT'://实名认证--注册后
-                attestTip();
-                $('#attestBox').find('.gift-title').show();
-                break;
+                if($lotteryTime.val() == 0){
+                    attestTip();
+                    $('#attestBox').find('.gift-title').hide();
+                    break;
+                }
+                else{
+                    attestTip();
+                    $('#attestBox').find('.gift-title').show();
+                    break;
+                }
+
             case 'LOGIN_TO_ACCOUNT'://实名认证--登录后
                 attestTip();
                 $('#attestBox').find('.gift-title').hide();
@@ -115,9 +122,20 @@ require(['jquery', 'layerWrapper', 'template','commonFun', 'jquery.validate', 'j
                 case 'NOT_REGISTER'://未注册
                     registerTip();
                     break;
-                case 'ACCOUNT'://没机会
-                    noChanceTip();
+                case 'REGISTER_LOGIN_TO_ACCOUNT'://实名认证--登录后
+                    attestTip();
+                    $('#attestBox').find('.gift-title').hide();
                     break;
+                case 'ACCOUNT'://没机会
+                    if($lotteryTime.val() == 0){
+                        noChanceTip();
+                        break;
+                    }
+                    else{
+                        lastTip();
+                        break;
+                    }
+
                 default:
                     lastTip();
             }
@@ -168,7 +186,7 @@ require(['jquery', 'layerWrapper', 'template','commonFun', 'jquery.validate', 'j
                         lottery.show(lottery.num);
                         if($statusText.val()=='REGISTER_LOGIN_TO_ACCOUNT'){
                             $('#attestBox').find('.gift-name').text('注册成功，获得了'+data.prizeValue);
-                        }else if($statusText.val()=='LOGIN_TO_ACCOUNT'){
+                        }else if($statusText.val()=='LOGIN_TO_ACCOUNT' || ($statusText.val()=='ACCOUNT' && $lotteryTime.val() == 1)){
                             $('#lastBox').find('.gift-name').text('恭喜您解救了'+data.prizeValue);
                         }
                     } else if (data.returnCode == 3) {//活动结束
@@ -394,7 +412,9 @@ require(['jquery', 'layerWrapper', 'template','commonFun', 'jquery.validate', 'j
         //身份认证
         function attestTip() {
             layer.closeAll();
-            getGift();
+            if($lotteryTime.val() != 0){
+                getGift();
+            }
             layer.open({
                 type: 1,
                 title: false,
@@ -427,10 +447,7 @@ require(['jquery', 'layerWrapper', 'template','commonFun', 'jquery.validate', 'j
                 type: 1,
                 title: false,
                 closeBtn: 2,
-                content: $('#noChanceBox'),
-                cancel: function(){
-                    location.reload();
-                }
+                content: $('#noChanceBox')
             });
         }
         //去登录按钮事件
