@@ -3,8 +3,13 @@ require(['jquery','drawCircle','logintip','register_common'], function ($,drawCi
 
         var redirect = globalFun.browserRedirect();
         var $newYearDayFrame = $('#newYearDayFrame');
-        var $activitySlide=$('#newYearSlide');
+        var $activitySlide=$('#newYearSlide'),
+            tipGroupObj={};
 
+        $newYearDayFrame.find('.tip-list').each(function(key,option) {
+            var kind=$(option).data('return');
+            tipGroupObj[kind]=option;
+        });
 
         //文字连续滚动
         (function() {
@@ -61,21 +66,16 @@ require(['jquery','drawCircle','logintip','register_common'], function ($,drawCi
                 pointAllList='/activity/point-draw/all-list',  //中奖记录接口地址
                 pointUserList='/activity/point-draw/user-list',   //我的奖品接口地址
                 drawURL='/activity/point-draw/task-draw',    //抽奖的接口链接
-                // drawTime='/activity/christmas/drawTime', //抽奖次数
                 $pointerImg=$('.gold-egg',$rewardGiftBox),
                 myMobileNumber=$MobileNumber.length ? $MobileNumber.data('mobile') : '';  //当前登录用户的手机号
 
             var myTimes=$rewardGiftBox.find('.my-times').data('times'); //初始抽奖次数
-            var tipMessage={
-                info:'',
-                button:'',
-                area:[]
-            };
             var paramData={
                 "mobile":myMobileNumber,
                 "activityCategory":"ANNUAL_ACTIVITY"
             };
 
+            //是否已经完成
             $rewardListFrame.find('.reward-box').each(function(key,option) {
                 var statusObj=$rewardTaskStatus.val().split(',');
                 if(statusObj[key]==1) {
@@ -105,14 +105,9 @@ require(['jquery','drawCircle','logintip','register_common'], function ($,drawCi
 
             //签到成功
             drawCircle.signToday(function() {
-                tipMessage.button='<a href="javascript:void(0)" class="go-on go-close">知道了</a>';
-                tipMessage.info='<p class="success-text">签到成功！</p>' +
-                    '<p class="des-text">恭喜您获得10积分，并获得砸金蛋机会一次</p>'
-                drawCircle.tipWindowPop(tipMessage);
+                drawCircle.tipWindowPop(tipGroupObj['signOk']);
             },function() {
-                tipMessage.button='';
-                tipMessage.info='<p class="login-text">请与客服联系</p>';
-                drawCircle.tipWindowPop(tipMessage);
+                drawCircle.tipWindowPop(tipGroupObj['signNo']);
             });
 
             //渲染中奖记录
@@ -138,26 +133,12 @@ require(['jquery','drawCircle','logintip','register_common'], function ($,drawCi
                         $rewardGiftBox.find('.my-times').text(--myTimes);
 
                         if (data.returnCode == 0) {
-                            //真实奖品
-                            if(data.prizeType=='CONCRETE') {
-                                tipMessage.button='<a href="javascript:void(0)" class="go-on go-close">继续抽奖</a>';
-                                tipMessage.info='<p class="success-text">恭喜您！</p>' +
-                                    '<p class="reward-text">抽中了'+data.prizeValue+'！</p>' +
-                                    '<p class="des-text">拓天客服将会在7个工作日内联系您发放奖品</p>';
-
-                            }
-                            else if(data.prizeType=='VIRTUAL') {
-                                tipMessage.button='<a href="javascript:void(0)" class="go-on go-close">继续抽奖</a>';
-                                tipMessage.info='<p class="success-text">恭喜您！</p>' +
-                                    '<p class="reward-text">'+data.prizeValue+'！</p>' +
-                                    '<p class="des-text">奖品已发放至“我的宝藏”当中。</p>'
-                            }
-                            drawCircle.noRotateFn(tipMessage);
+                            var prizeType=data.prizeType.toLowerCase();
+                                $(tipGroupObj[prizeType]).find('.prizeValue').text(data.prizeValue);
+                            drawCircle.noRotateFn(tipGroupObj[prizeType]);
                         } else if(data.returnCode == 1) {
                             //没有抽奖机会
-                            tipMessage.info='<p class="login-text">您暂无抽奖机会啦～</p><p class="des-text">赢取机会后再来抽奖吧！</p>',
-                                tipMessage.button='<a href="javascript:void(0)" class="go-close">知道了</a>';
-                            drawCircle.tipWindowPop(tipMessage);
+                            drawCircle.tipWindowPop(tipGroupObj['nochance']);
                         }
                         else if (data.returnCode == 2) {
                             //未登录
@@ -165,14 +146,11 @@ require(['jquery','drawCircle','logintip','register_common'], function ($,drawCi
 
                         } else if(data.returnCode == 3){
                             //不在活动时间范围内！
-                            tipMessage.info='<p class="login-text">不在活动时间内~</p>';
-                            drawCircle.tipWindowPop(tipMessage);
+                            drawCircle.tipWindowPop(tipGroupObj['expired']);
 
                         } else if(data.returnCode == 4){
                             //实名认证
-                            tipMessage.info='<p class="login-text">您还未实名认证~</p><p class="des-text">请实名认证后再来抽奖吧！</p>';
-                            tipMessage.button='<a href="javascript:void(0)" class="go-close">知道了</a>';
-                            drawCircle.tipWindowPop(tipMessage);
+                            drawCircle.tipWindowPop(tipGroupObj['authentication']);
                         }
                     });
                 },1500);
