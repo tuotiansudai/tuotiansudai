@@ -3,7 +3,6 @@ package com.tuotiansudai.job;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.sms.PlatformBalanceLowNotifyDto;
 import com.tuotiansudai.service.UMPayRealTimeStatusService;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 @Component
 public class PlatformBalanceMonitorJob implements Job {

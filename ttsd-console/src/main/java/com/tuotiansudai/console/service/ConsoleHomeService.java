@@ -1,43 +1,137 @@
 package com.tuotiansudai.console.service;
 
-public interface ConsoleHomeService {
+import com.tuotiansudai.console.repository.mapper.UserMapperConsole;
+import com.tuotiansudai.enums.WithdrawStatus;
+import com.tuotiansudai.repository.mapper.InvestMapper;
+import com.tuotiansudai.repository.mapper.RechargeMapper;
+import com.tuotiansudai.repository.mapper.WithdrawMapper;
+import com.tuotiansudai.repository.model.InvestStatus;
+import com.tuotiansudai.repository.model.RechargeStatus;
+import com.tuotiansudai.repository.model.Role;
+import org.joda.time.DateTime;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-    int userToday();
+import java.util.Date;
 
-    int user7Days();
+@Service
+public class ConsoleHomeService {
 
-    int user30Days();
+    @Autowired
+    UserMapperConsole userMapperConsole;
 
-    long rechargeToday_Loaner();
+    @Autowired
+    RechargeMapper rechargeMapper;
 
-    long recharge7Days_Loaner();
+    @Autowired
+    WithdrawMapper withdrawMapper;
 
-    long recharge30Days_Loaner();
+    @Autowired
+    InvestMapper investMapper;
 
-    long rechargeToday_NotLoaner();
+    public int userToday() {
+        Date startTime = DateTime.now().withTimeAtStartOfDay().toDate();
+        return userMapperConsole.findAllUserCount(null, null, null, startTime, null, null, null, null, null, null);
+    }
 
-    long recharge7Days_NotLoaner();
+    public int user7Days() {
+        Date startTime = DateTime.now().minusDays(6).withTimeAtStartOfDay().toDate();
+        return userMapperConsole.findAllUserCount(null, null, null, startTime, null, null, null, null, null, null);
+    }
 
-    long recharge30Days_NotLoaner();
+    public int user30Days() {
+        Date startTime = DateTime.now().minusDays(29).withTimeAtStartOfDay().toDate();
+        return userMapperConsole.findAllUserCount(null, null, null, startTime, null, null, null, null, null, null);
+    }
 
-    long withdrawToday_Loaner();
+    public long rechargeToday_Loaner() {
+        Date startTime = DateTime.now().withTimeAtStartOfDay().toDate();
+        return rechargeMapper.findSumRechargeAmount(null, null, null, RechargeStatus.SUCCESS, null, Role.LOANER, startTime, null);
+    }
 
-    long withdraw7Days_Loaner();
+    public long recharge7Days_Loaner() {
+        Date startTime = DateTime.now().minusDays(6).withTimeAtStartOfDay().toDate();
+        return rechargeMapper.findSumRechargeAmount(null, null, null, RechargeStatus.SUCCESS, null, Role.LOANER, startTime, null);
+    }
 
-    long withdraw30Days_Loaner();
+    public long recharge30Days_Loaner() {
+        Date startTime = DateTime.now().minusDays(29).withTimeAtStartOfDay().toDate();
+        return rechargeMapper.findSumRechargeAmount(null, null, null, RechargeStatus.SUCCESS, null, Role.LOANER, startTime, null);
+    }
 
-    long withdrawToday_NotLoaner();
+    public long rechargeToday_NotLoaner() {
+        Date startTime = DateTime.now().withTimeAtStartOfDay().toDate();
+        return getRechargeNotLoaner(startTime);
+    }
 
-    long withdraw7Days_NotLoaner();
+    public long recharge7Days_NotLoaner() {
+        Date startTime = DateTime.now().minusDays(6).withTimeAtStartOfDay().toDate();
+        return getRechargeNotLoaner(startTime);
+    }
 
-    long withdraw30Days_NotLoaner();
+    public long recharge30Days_NotLoaner() {
+        Date startTime = DateTime.now().minusDays(29).withTimeAtStartOfDay().toDate();
+        return getRechargeNotLoaner(startTime);
+    }
 
-    long investToday();
+    private long getRechargeNotLoaner(Date startTime) {
+        long sumRecharge = rechargeMapper.findSumRechargeAmount(null, null, null, RechargeStatus.SUCCESS, null, null, startTime, null);
+        long sumRechargeLoaner = rechargeMapper.findSumRechargeAmount(null, null, null, RechargeStatus.SUCCESS, null, Role.LOANER, startTime, null);
+        return sumRecharge - sumRechargeLoaner;
+    }
 
-    long invest7Days();
+    public long withdrawToday_Loaner() {
+        Date startTime = DateTime.now().withTimeAtStartOfDay().toDate();
+        return withdrawMapper.findSumWithdrawAmount(null, null, WithdrawStatus.SUCCESS, null, Role.LOANER, startTime, null);
+    }
 
-    long invest30Days();
+    public long withdraw7Days_Loaner() {
+        Date startTime = DateTime.now().minusDays(6).withTimeAtStartOfDay().toDate();
+        return withdrawMapper.findSumWithdrawAmount(null, null, WithdrawStatus.SUCCESS, null, Role.LOANER, startTime, null);
+    }
 
-    long getSumInvestAmount();
+    public long withdraw30Days_Loaner() {
+        Date startTime = DateTime.now().minusDays(29).withTimeAtStartOfDay().toDate();
+        return withdrawMapper.findSumWithdrawAmount(null, null, WithdrawStatus.SUCCESS, null, Role.LOANER, startTime, null);
+    }
 
+    public long withdrawToday_NotLoaner() {
+        Date startTime = DateTime.now().withTimeAtStartOfDay().toDate();
+        return getWithdrawNotLoaner(startTime);
+    }
+
+    public long withdraw7Days_NotLoaner() {
+        Date startTime = DateTime.now().minusDays(6).withTimeAtStartOfDay().toDate();
+        return getWithdrawNotLoaner(startTime);
+    }
+
+    public long withdraw30Days_NotLoaner() {
+        Date startTime = DateTime.now().minusDays(29).withTimeAtStartOfDay().toDate();
+        return getWithdrawNotLoaner(startTime);
+    }
+
+    private long getWithdrawNotLoaner(Date startTime) {
+        long sumWithdraw = withdrawMapper.findSumWithdrawAmount(null, null, WithdrawStatus.SUCCESS, null, null, startTime, null);
+        long sumWithdrawLoaner = withdrawMapper.findSumWithdrawAmount(null, null, WithdrawStatus.SUCCESS, null, Role.LOANER, startTime, null);
+        return sumWithdraw - sumWithdrawLoaner;
+    }
+
+    public long investToday() {
+        Date startTime = DateTime.now().withTimeAtStartOfDay().toDate();
+        return investMapper.sumInvestAmount(null, null, null, null, null, startTime, new Date(), InvestStatus.SUCCESS, null);
+    }
+
+    public long invest7Days() {
+        Date startTime = DateTime.now().minusDays(6).withTimeAtStartOfDay().toDate();
+        return investMapper.sumInvestAmount(null, null, null, null, null, startTime, new Date(), InvestStatus.SUCCESS, null);
+    }
+
+    public long invest30Days() {
+        Date startTime = DateTime.now().minusDays(29).withTimeAtStartOfDay().toDate();
+        return investMapper.sumInvestAmount(null, null, null, null, null, startTime, new Date(), InvestStatus.SUCCESS, null);
+    }
+
+    public long getSumInvestAmount() {
+        return investMapper.sumInvestAmount(null, null, null, null, null, null, null, InvestStatus.SUCCESS, null);
+    }
 }

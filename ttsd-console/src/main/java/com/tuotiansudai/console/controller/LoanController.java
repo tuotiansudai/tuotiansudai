@@ -2,14 +2,13 @@ package com.tuotiansudai.console.controller;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.console.service.LoanCreateConsoleService;
+import com.tuotiansudai.console.service.ExtraLoanRateService;
+import com.tuotiansudai.console.service.ConsoleLoanCreateService;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.message.repository.mapper.MessageMapper;
 import com.tuotiansudai.message.repository.model.MessageModel;
 import com.tuotiansudai.repository.mapper.ExtraLoanRateMapper;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.service.ExtraLoanRateService;
-import com.tuotiansudai.service.LoanCreateService;
 import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.RequestIPParser;
@@ -34,10 +33,7 @@ public class LoanController {
     private LoanService loanService;
 
     @Autowired
-    private LoanCreateService loanCreateService;
-
-    @Autowired
-    private LoanCreateConsoleService loanCreateConsoleService;
+    private ConsoleLoanCreateService consoleLoanCreateService;
 
     @Autowired
     private ExtraLoanRateService extraLoanRateService;
@@ -67,13 +63,13 @@ public class LoanController {
     @RequestMapping(value = "/titles", method = RequestMethod.GET)
     @ResponseBody
     public List<LoanTitleModel> findAllTitles() {
-        return loanCreateService.findAllTitles();
+        return consoleLoanCreateService.findAllTitles();
     }
 
     @RequestMapping(value = "/title", method = RequestMethod.POST)
     @ResponseBody
     public LoanTitleModel addTitle(@RequestBody LoanTitleDto loanTitleDto) {
-        return loanCreateService.createTitle(loanTitleDto);
+        return consoleLoanCreateService.createTitle(loanTitleDto);
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
@@ -81,7 +77,7 @@ public class LoanController {
     public BaseDto<BaseDataDto> createLoan(@RequestBody LoanCreateRequestDto loanCreateRequestDto) {
 
         loanCreateRequestDto.getLoan().setCreatedBy(LoginUserInfo.getLoginName());
-        return loanCreateConsoleService.createLoan(loanCreateRequestDto);
+        return consoleLoanCreateService.createLoan(loanCreateRequestDto);
     }
 
     @RequestMapping(value = "/{loanId:^\\d+$}", method = RequestMethod.GET)
@@ -95,7 +91,7 @@ public class LoanController {
         modelAndView.addObject("loanTypes", Lists.newArrayList(LoanType.values()));
         modelAndView.addObject("activityTypes", Lists.newArrayList(ActivityType.NORMAL, ActivityType.NEWBIE));
         modelAndView.addObject("extraSources", Lists.newArrayList(Source.WEB, Source.MOBILE));
-        LoanCreateRequestDto loanCreateRequestDto = loanCreateService.getEditLoanDetails(loanId);
+        LoanCreateRequestDto loanCreateRequestDto = consoleLoanCreateService.getEditLoanDetails(loanId);
         if (redisWrapperClient.hexists(LOAN_MESSAGE_REDIS_KEY, String.valueOf(loanId))) {
             long messageId = Long.valueOf(redisWrapperClient.hget(LOAN_MESSAGE_REDIS_KEY, String.valueOf(loanId)));
             MessageModel messageModel = messageMapper.findById(messageId);
@@ -110,7 +106,7 @@ public class LoanController {
     @ResponseBody
     public BaseDto<BaseDataDto> updateLoan(@RequestBody LoanCreateRequestDto loanCreateRequestDto) {
         loanCreateRequestDto.getLoan().setCreatedBy(LoginUserInfo.getLoginName());
-        return loanCreateConsoleService.updateLoan(loanCreateRequestDto);
+        return consoleLoanCreateService.updateLoan(loanCreateRequestDto);
     }
 
     @RequestMapping(value = "/open", method = RequestMethod.POST)
@@ -118,32 +114,32 @@ public class LoanController {
     public BaseDto<PayDataDto> openLoan(HttpServletRequest request,
                                         @RequestBody LoanCreateRequestDto loanCreateRequestDto) {
         loanCreateRequestDto.getLoan().setVerifyLoginName(LoginUserInfo.getLoginName());
-        return loanCreateService.openLoan(loanCreateRequestDto, RequestIPParser.parse(request));
+        return consoleLoanCreateService.openLoan(loanCreateRequestDto, RequestIPParser.parse(request));
     }
 
     @RequestMapping(value = "/delay", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<PayDataDto> delayLoan(@RequestBody LoanCreateRequestDto loanCreateRequestDto) {
-        return loanCreateService.delayLoan(loanCreateRequestDto);
+        return consoleLoanCreateService.delayLoan(loanCreateRequestDto);
     }
 
     @RequestMapping(value = "/recheck", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<PayDataDto> recheckLoan(@RequestBody LoanCreateRequestDto loanCreateRequestDto) {
         loanCreateRequestDto.getLoan().setRecheckLoginName(LoginUserInfo.getLoginName());
-        return loanCreateService.loanOut(loanCreateRequestDto);
+        return consoleLoanCreateService.loanOut(loanCreateRequestDto);
     }
 
     @RequestMapping(value = "/cancel", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<PayDataDto> cancelLoan(@RequestBody LoanCreateRequestDto loanCreateRequestDto) {
-        return loanCreateService.cancelLoan(loanCreateRequestDto);
+        return consoleLoanCreateService.cancelLoan(loanCreateRequestDto);
     }
 
     @RequestMapping(value = "/apply-audit", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<PayDataDto> applyAuditLoan(@RequestBody LoanCreateRequestDto loanCreateRequestDto) {
-        return loanCreateService.applyAuditLoan(loanCreateRequestDto.getLoan().getId());
+        return consoleLoanCreateService.applyAuditLoan(loanCreateRequestDto.getLoan().getId());
     }
 
     @RequestMapping(value = "/extra-rate-rule", method = RequestMethod.GET)
