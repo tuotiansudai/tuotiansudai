@@ -126,7 +126,7 @@ public class MobileAppPromotionServiceTest extends ServiceTestBase {
         assertEquals(PROMOTION_ALERT_KEY, promotionAlertKeyCaptor.getValue());
         assertEquals("deviceId:testDeviceId:promotionId:1003", deviceIdPromotionIdKeyCaptor.getValue());
         assertEquals("1003", promotionIdCaptor.getValue());
-        assertEquals("17280", timeoutCaptor.getValue());
+        assertEquals("172800", String.valueOf(timeoutCaptor.getValue()));
 
     }
 
