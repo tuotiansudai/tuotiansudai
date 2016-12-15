@@ -84,19 +84,16 @@ public class ActivityConsoleUserLotteryService {
 
     public List<UserLotteryPrizeView> findUserLotteryPrizeViewsByHeadlinesToday(String mobile,LotteryPrize selectPrize,ActivityCategory prizeType,Date startTime,Date endTime,Integer index,Integer pageSize, String authenticationType){
         List<UserLotteryPrizeView> lotteryPrizeViewList = userLotteryPrizeMapper.findUserLotteryPrizeViews(mobile, selectPrize, prizeType, startTime, endTime, index, pageSize);
-        //0-代表未实名认证用户
-        if(authenticationType.equals("0")){
-            return lotteryPrizeViewList.stream()
-                    .filter(userLotteryPrizeView -> Strings.isNullOrEmpty(userLotteryPrizeView.getUserName()))
-                    .collect(Collectors.toList());
-        }
-        //1-代表已实名认证用户
-        else if(authenticationType.equals("1")){
-            return lotteryPrizeViewList.stream()
-                    .filter(userLotteryPrizeView -> !Strings.isNullOrEmpty(userLotteryPrizeView.getUserName()))
-                    .collect(Collectors.toList());
-        }
-
+        //0-代表未实名认证用户 1-代表已实名认证用户
+        lotteryPrizeViewList.stream().filter((UserLotteryPrizeView userLotteryPrizeView) -> {
+            switch (authenticationType) {
+                case "0":
+                    return Strings.isNullOrEmpty(userLotteryPrizeView.getUserName());
+                case "1":
+                    return !Strings.isNullOrEmpty(userLotteryPrizeView.getUserName());
+            }
+            return true;
+        }).collect(Collectors.toList());
         lotteryPrizeViewList = Lists.transform(lotteryPrizeViewList, userLotteryPrizeView -> {
             userLotteryPrizeView.setInvestFlag(investMapper.sumSuccessInvestCountByLoginName(userLotteryPrizeView.getLoginName()) > 0 ? "是" : "否");
             return userLotteryPrizeView;
