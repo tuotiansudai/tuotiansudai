@@ -35,7 +35,7 @@ public class AnnualActivityService {
 
         Map<String, String> param = Maps.newHashMap();
         param.put("investAmount", AmountConverter.convertCentToString(investAmount));
-        Optional<Long> first = investTaskList.stream().filter(c -> c >= investAmount).findFirst();
+        Optional<Long> first = investTaskList.stream().filter(c -> c > investAmount).findFirst();
         param.put("nextAmount", first.isPresent() ? AmountConverter.convertCentToString(first.get() - investAmount) : "0" );
         return param;
     }
