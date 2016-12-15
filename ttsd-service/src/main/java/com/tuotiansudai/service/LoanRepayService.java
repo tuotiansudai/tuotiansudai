@@ -1,18 +1,11 @@
 package com.tuotiansudai.service;
 
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.dto.LoanRepayDataItemDto;
 import com.tuotiansudai.repository.model.LoanRepayModel;
-import com.tuotiansudai.repository.model.RepayStatus;
 
 import java.util.Date;
 import java.util.List;
 
 public interface LoanRepayService {
-
-    BaseDto<BasePaginationDataDto<LoanRepayDataItemDto>> findLoanRepayPagination(int index, int pageSize, Long loanId,
-                                                                                 String loginName, Date startTime, Date endTime, RepayStatus repayStatus);
 
     long findByLoginNameAndTimeSuccessRepay(String loginName, Date startTime, Date endTime);
 

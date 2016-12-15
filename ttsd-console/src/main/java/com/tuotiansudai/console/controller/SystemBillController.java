@@ -1,12 +1,12 @@
 package com.tuotiansudai.console.controller;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.console.service.SystemBillService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.SystemBillPaginationItemDataDto;
 import com.tuotiansudai.repository.model.SystemBillBusinessType;
 import com.tuotiansudai.repository.model.SystemBillOperationType;
-import com.tuotiansudai.service.SystemBillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -23,7 +23,7 @@ import java.util.Date;
 public class SystemBillController {
 
     @Autowired
-    SystemBillService systemBillService;
+    private SystemBillService systemBillService;
 
     @RequestMapping(value = "/system-bill", method = RequestMethod.GET)
     public ModelAndView getSystemBillList(@RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date startTime,

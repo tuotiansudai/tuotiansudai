@@ -1,7 +1,7 @@
 package com.tuotiansudai.console.controller;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.dto.AdminInterventionDto;
+import com.tuotiansudai.console.dto.AdminInterventionDto;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserBillOperationType;

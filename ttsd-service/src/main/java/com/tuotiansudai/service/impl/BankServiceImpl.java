@@ -25,28 +25,10 @@ public class BankServiceImpl implements BankService {
     }
 
     @Override
-    public boolean updateBank(BankModel bankModel) {
-        if(bankModel == null){
-            return false;
-        }
-        bankMapper.update(bankModel);
-        return true;
-    }
+    public List<BankDto> findBankList(Long singleAmount, Long singleDayAmount) {
+        List<BankModel> bankModels = bankMapper.findBankList(singleAmount, singleDayAmount);
 
-    @Override
-    public List<BankDto> findBankList() {
-        List<BankModel> bankModels = bankMapper.findBankList();
-
-        List<BankDto> records = Lists.transform(bankModels, input -> new BankDto(input));
-        return records;
-    }
-
-    @Override
-    public List<BankDto> findWebBankList() {
-        List<BankModel> bankModels = bankMapper.findWebBankList();
-
-        List<BankDto> records = Lists.transform(bankModels, input -> new BankDto(input));
-        return records;
+        return Lists.transform(bankModels, BankDto::new);
     }
 
     @Override

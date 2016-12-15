@@ -2,22 +2,28 @@ package com.tuotiansudai.console.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.console.bi.dto.RoleStage;
+import com.tuotiansudai.console.dto.UserItemDataDto;
 import com.tuotiansudai.console.repository.model.UserOperation;
-import com.tuotiansudai.console.service.UserServiceConsole;
+import com.tuotiansudai.console.service.AuditLogService;
+import com.tuotiansudai.console.service.ConsoleUserService;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.EditUserDto;
-import com.tuotiansudai.dto.UserItemDataDto;
 import com.tuotiansudai.exception.BaseException;
 import com.tuotiansudai.membership.service.UserMembershipService;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.service.*;
+import com.tuotiansudai.service.BindBankCardService;
+import com.tuotiansudai.service.ImpersonateService;
+import com.tuotiansudai.service.InvestService;
+import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.spring.LoginUserInfo;
-import com.tuotiansudai.spring.security.MyAuthenticationUtil;
 import com.tuotiansudai.spring.security.SignInClient;
 import com.tuotiansudai.task.OperationTask;
 import com.tuotiansudai.task.OperationType;
@@ -45,13 +51,10 @@ public class UserController {
     private UserService userService;
 
     @Autowired
-    private UserServiceConsole userServiceConsole;
+    private ConsoleUserService consoleUserService;
 
     @Autowired
     private ImpersonateService impersonateService;
-
-    @Autowired
-    private AccountService accountService;
 
     @Autowired
     private BindBankCardService bindBankCardService;
@@ -60,7 +63,7 @@ public class UserController {
     private RedisWrapperClient redisWrapperClient;
 
     @Autowired
-    private UserRoleService userRoleService;
+    private UserMapper userMapper;
 
     @Autowired
     private InvestService investService;
@@ -90,7 +93,7 @@ public class UserController {
         ModelAndView modelAndView = new ModelAndView("/user-edit");
         if (!redisWrapperClient.hexistsSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId)) {
             if (!model.containsAttribute("user")) {
-                EditUserDto editUserDto = userService.getEditUser(loginName);
+                EditUserDto editUserDto = consoleUserService.getEditUser(loginName);
                 modelAndView.addObject("user", editUserDto);
                 modelAndView.addObject("roles", Role.values());
                 modelAndView.addObject("showCommit", true);
@@ -102,7 +105,7 @@ public class UserController {
             String afterUpdate = description.split(" =></br> ")[1];
             ObjectMapper objectMapper = new ObjectMapper();
             EditUserDto editUserDto = objectMapper.readValue(afterUpdate, EditUserDto.class);
-            UserModel userModel = userService.findByLoginName(loginName);
+            UserModel userModel = consoleUserService.findByLoginName(loginName);
             BankCardModel bankCard = bindBankCardService.getPassedBankCard(loginName);
             if (bankCard != null) {
                 editUserDto.setBankCardNumber(bankCard.getCardNumber());
@@ -124,31 +127,31 @@ public class UserController {
     @RequestMapping(value = "/account/{loginName}/search", method = RequestMethod.GET)
     @ResponseBody
     public List<String> findLoginNames(@PathVariable String loginName) {
-        return userServiceConsole.findAllLoanerLikeLoginName(loginName);
+        return consoleUserService.findAllLoanerLikeLoginName(loginName);
     }
 
     @RequestMapping(value = "/account/{loginName}/query", method = RequestMethod.GET)
     @ResponseBody
     public List<String> findAllLoanerLikeLoginName(@PathVariable String loginName) {
-        return userServiceConsole.findAccountLikeLoginName(loginName);
+        return consoleUserService.findAccountLikeLoginName(loginName);
     }
 
     @RequestMapping(value = "/user/{loginName}/search", method = RequestMethod.GET)
     @ResponseBody
     public List<String> searchLoginName(@PathVariable String loginName) {
-        return userServiceConsole.findLoginNameLike(loginName);
+        return consoleUserService.findLoginNameLike(loginName);
     }
 
     @RequestMapping(value = "/staff/{loginName}/search", method = RequestMethod.GET)
     @ResponseBody
     public List<String> searchStaffName(@PathVariable String loginName) {
-        return userServiceConsole.findStaffNameFromUserLike(loginName);
+        return consoleUserService.findStaffNameFromUserLike(loginName);
     }
 
     @RequestMapping(value = "/mobile/{mobile}/search", method = RequestMethod.GET)
     @ResponseBody
     public List<String> searchMobile(@PathVariable String mobile) {
-        return userServiceConsole.findMobileLike(mobile);
+        return consoleUserService.findMobileLike(mobile);
     }
 
     @RequestMapping(value = "/user/edit", method = RequestMethod.POST)
@@ -157,7 +160,7 @@ public class UserController {
         String ip = RequestIPParser.parse(request);
         ModelAndView modelAndView = new ModelAndView();
         try {
-            userService.editUser(LoginUserInfo.getLoginName(), editUserDto, ip);
+            consoleUserService.editUser(LoginUserInfo.getLoginName(), editUserDto, ip);
             modelAndView.setViewName("redirect:/user-manage/users");
             return modelAndView;
         } catch (BaseException e) {
@@ -180,7 +183,7 @@ public class UserController {
             mv.addObject("referrerMobile", referrerMobile);
             mv.addObject("mobile", mobile);
             mv.addObject("identityNumber", identityNumber);
-            mv.addObject("userList", userServiceConsole.searchAllUsers(loginName, referrerMobile, mobile, identityNumber));
+            mv.addObject("userList", consoleUserService.searchAllUsers(loginName, referrerMobile, mobile, identityNumber));
         }
         return mv;
     }
@@ -198,7 +201,7 @@ public class UserController {
                                     @RequestParam(value = "userOperation", required = false) UserOperation userOperation,
                                     @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
         int pageSize = 10;
-        BaseDto<BasePaginationDataDto<UserItemDataDto>> baseDto = userServiceConsole.findAllUser(loginName, email, mobile,
+        BaseDto<BasePaginationDataDto<UserItemDataDto>> baseDto = consoleUserService.findAllUser(loginName, email, mobile,
                 beginTime, endTime, source, roleStage, referrerMobile, channel, userOperation, index, pageSize);
         ModelAndView mv = new ModelAndView("/user-list");
         mv.addObject("baseDto", baseDto);
@@ -215,7 +218,7 @@ public class UserController {
         mv.addObject("pageIndex", index);
         mv.addObject("pageSize", pageSize);
         List<RoleStage> roleStageList = Lists.newArrayList(RoleStage.values());
-        List<String> channelList = userService.findAllUserChannels();
+        List<String> channelList = consoleUserService.findAllUserChannels();
         mv.addObject("roleStageList", roleStageList);
         mv.addObject("channelList", channelList);
         mv.addObject("sourceList", Source.values());
@@ -242,19 +245,19 @@ public class UserController {
     @RequestMapping(value = "/user/agents", method = RequestMethod.GET)
     @ResponseBody
     public List<String> queryAllAgent() {
-        return userRoleService.queryAllAgent();
+        return userMapper.findAllByRole(Maps.newHashMap(ImmutableMap.<String, Object>builder().put("role", Role.AGENT).put("districtName", Lists.newArrayList()).build()));
     }
 
     @RequestMapping(value = "/user/channels", method = RequestMethod.GET)
     @ResponseBody
     public List<String> queryAllChannel() {
-        return userService.findAllUserChannels();
+        return consoleUserService.findAllUserChannels();
     }
 
     @RequestMapping(value = "/user/{channel}/channel", method = RequestMethod.GET)
     @ResponseBody
     public long queryUserByChannel(@PathVariable String channel) {
-        return userServiceConsole.findUsersCountByChannel(channel);
+        return consoleUserService.findUsersCountByChannel(channel);
     }
 
     @RequestMapping(value = "/userMembership/count", method = RequestMethod.GET)

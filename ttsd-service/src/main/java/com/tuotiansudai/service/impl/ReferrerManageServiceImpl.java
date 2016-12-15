@@ -31,26 +31,6 @@ public class ReferrerManageServiceImpl implements ReferrerManageService {
     private String staffReward;
 
     @Override
-    public List<ReferrerManageView> findReferrerManage(String referrerMobile, String investMobile, Date investStartTime, Date investEndTime, Integer level, Date rewardStartTime, Date rewardEndTime, Role role, Source source, ReferrerRewardStatus referrerRewardStatus, int currentPageNo, int pageSize) {
-        return referrerManageMapper.findReferrerManage(referrerMobile, investMobile, investStartTime, investEndTime, level, rewardStartTime, rewardEndTime, role, source, referrerRewardStatus, (currentPageNo - 1) * pageSize, pageSize);
-    }
-
-    @Override
-    public int findReferrerManageCount(String referrerMobile, String investMobile, Date investStartTime, Date investEndTime, Integer level, Date rewardStartTime, Date rewardEndTime, Role role, Source source, ReferrerRewardStatus referrerRewardStatus) {
-        return referrerManageMapper.findReferrerManageCount(referrerMobile, investMobile, investStartTime, investEndTime, level, rewardStartTime, rewardEndTime, role, source, referrerRewardStatus);
-    }
-
-    @Override
-    public long findReferrerManageInvestAmountSum(String referrerMobile, String investMobile, Date investStartTime, Date investEndTime, Integer level, Date rewardStartTime, Date rewardEndTime, Role role, Source source) {
-        return referrerManageMapper.findReferrerManageInvestAmountSum(referrerMobile, investMobile, investStartTime, investEndTime, level, rewardStartTime, rewardEndTime, role, source);
-    }
-
-    @Override
-    public long findReferrerManageRewardAmountSum(String referrerMobile, String investMobile, Date investStartTime, Date investEndTime, Integer level, Date rewardStartTime, Date rewardEndTime, Role role, Source source) {
-        return referrerManageMapper.findReferrerManageRewardAmountSum(referrerMobile, investMobile, investStartTime, investEndTime, level, rewardStartTime, rewardEndTime, role, source);
-    }
-
-    @Override
     public BasePaginationDataDto<ReferrerRelationView> findReferrerRelationList(String referrerLoginName, String loginName, Date referStartTime, Date referEndTime, int index, int pageSize) {
         String level = getUserRewardDisplayLevel(referrerLoginName);
         referEndTime = new DateTime(referEndTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();

@@ -1,6 +1,7 @@
 package com.tuotiansudai.console.controller;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.console.service.ConsoleBookingLoanService;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.BookingLoanService;
@@ -25,9 +26,11 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "/booking-loan-manage")
 public class BookingLoanController {
+
     static Logger logger = Logger.getLogger(BookingLoanController.class);
+
     @Autowired
-    private BookingLoanService bookingLoanService;
+    private ConsoleBookingLoanService consoleBookingLoanService;
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public ModelAndView bookingLoanList(@RequestParam(value = "productType", required = false) ProductType productType,
@@ -41,9 +44,9 @@ public class BookingLoanController {
                                         @RequestParam(value = "index", required = false, defaultValue = "1") int index) {
         int pageSize = 10;
         ModelAndView mv = new ModelAndView("/booking-loan-list");
-        mv.addObject("bookingLoan", bookingLoanService.bookingLoanList(productType, bookingTimeStartTime, bookingTimeEndTime, mobile, noticeTimeStartTime, noticeTimeEndTime, source, status, index, pageSize));
+        mv.addObject("bookingLoan", consoleBookingLoanService.bookingLoanList(productType, bookingTimeStartTime, bookingTimeEndTime, mobile, noticeTimeStartTime, noticeTimeEndTime, source, status, index, pageSize));
         mv.addObject("productType", productType);
-        mv.addObject("bookingLoanSumList", bookingLoanService.findBookingLoanSumAmountByProductType(productType, bookingTimeStartTime, bookingTimeEndTime, mobile, noticeTimeStartTime, noticeTimeEndTime, source, status));
+        mv.addObject("bookingLoanSumList", consoleBookingLoanService.findBookingLoanSumAmountByProductType(productType, bookingTimeStartTime, bookingTimeEndTime, mobile, noticeTimeStartTime, noticeTimeEndTime, source, status));
         mv.addObject("productTypeList", Lists.newArrayList(ProductType._180, ProductType._90, ProductType._360));
         mv.addObject("bookingTimeStartTime", bookingTimeStartTime);
         mv.addObject("bookingTimeEndTime", bookingTimeEndTime);
@@ -77,10 +80,10 @@ public class BookingLoanController {
             logger.error(e.getMessage());
         }
         httpServletResponse.setContentType("application/csv");
-        List<List<String>> csvData = bookingLoanService.getBookingLoanReportCsvData(productType, bookingTimeStartTime, bookingTimeEndTime, mobile, noticeTimeStartTime, noticeTimeEndTime, source, status);
+        List<List<String>> csvData = consoleBookingLoanService.getBookingLoanReportCsvData(productType, bookingTimeStartTime, bookingTimeEndTime, mobile, noticeTimeStartTime, noticeTimeEndTime, source, status);
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.BookingLoanHeader, csvData, httpServletResponse.getOutputStream());
         ModelAndView mv = new ModelAndView("/booking-loan-list");
-        mv.addObject("bookingLoan", bookingLoanService.bookingLoanList(productType, bookingTimeStartTime, bookingTimeEndTime, mobile, noticeTimeStartTime, noticeTimeEndTime, source, status, index, pageSize));
+        mv.addObject("bookingLoan", consoleBookingLoanService.bookingLoanList(productType, bookingTimeStartTime, bookingTimeEndTime, mobile, noticeTimeStartTime, noticeTimeEndTime, source, status, index, pageSize));
         mv.addObject("productType", productType);
         mv.addObject("productTypeList", Lists.newArrayList(ProductType._180, ProductType._90, ProductType._360));
         mv.addObject("bookingTimeStartTime", bookingTimeStartTime);
@@ -98,8 +101,7 @@ public class BookingLoanController {
 
     @RequestMapping(value = "/{bookingLoanId}/notice", method = RequestMethod.GET)
     public String noticeBookingLoan(@PathVariable long bookingLoanId) {
-        bookingLoanService.noticeBookingLoan(bookingLoanId);
-
+        consoleBookingLoanService.noticeBookingLoan(bookingLoanId);
         return "redirect:/booking-loan-manage/list";
     }
 }
