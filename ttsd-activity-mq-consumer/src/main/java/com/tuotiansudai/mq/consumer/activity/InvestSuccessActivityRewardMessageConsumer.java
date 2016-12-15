@@ -131,7 +131,7 @@ public class InvestSuccessActivityRewardMessageConsumer implements MessageConsum
 
                 if(!annualPrizeModel.isSecondSendCoupon() && annualPrizeModel.getInvestAmount() >= INVEST_800_RED_ENVELOPE_LIMIT){
                     secondSendCoupon = true;
-                    annualPrizeModel.setFirstSendCoupon(secondSendCoupon);
+                    annualPrizeModel.setSecondSendCoupon(secondSendCoupon);
                 }
 
                 annualPrizeMapper.update(annualPrizeModel);
