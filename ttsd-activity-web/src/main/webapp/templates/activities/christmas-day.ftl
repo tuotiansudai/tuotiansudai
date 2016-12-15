@@ -43,7 +43,7 @@
                         <div class="gift-box">
                             <em class="icon-balloon">3重礼</em>
                             <b class="sub-title-three">瓜分20000元红包</b>
-                            专享标总额420万，活动结束后，所有投资专享标的用户按投资比例瓜分<i>20000元红包</i>。
+                            如活动结束后，圣诞专享标投满420万，所有投资专享标的用户按投资比例瓜分<i>20000元红包</i>。
                         </div>
 
                         <div class="gift-box clearfix last">
