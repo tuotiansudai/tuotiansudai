@@ -38,11 +38,17 @@
         </div>
 
         <div class="button-group tc">
-            <#if signedIn?? && signedIn>
-                <a href="javascript:void(0);" class="normal-button">已签到</a>
-            <#else >
-                <a href="javascript:void(0);" class="normal-button"  id="signToday">签到</a>
-            </#if>
+            <@global.isNotAnonymous>
+                <#if signedIn?? && signedIn>
+                    <a href="javascript:void(0);" class="normal-button">已签到</a>
+                <#else >
+                    <a href="javascript:void(0);" class="normal-button"  id="signToday">签到</a>
+                </#if>
+            </@global.isNotAnonymous>
+
+            <@global.isAnonymous>
+                <a href="javascript:void(0);" class="normal-button" id = "loginIn">登录</a>
+            </@global.isAnonymous>
 
 
             <a href="/referrer/refer-list" class="normal-button">邀请好友</a>
@@ -102,7 +108,7 @@
             </div>
         </div>
 
-        <p class="activity-note">活动期间用户投资新年专享标，累计投资金额达到一个目标，即可打开一盏神灯，神灯会送你一个奖励，愿望奖励可累计领取。
+        <p class="activity-note">活动期间用户投资新年专享标，累计投资金额达到一个目标，即可打开一盏神灯，神灯会送你一个奖励，愿望奖励可累计领取。<br/>
             栗子：如拓小天在活动第一天投资5000元，最后一天投资10000元，则拓小天在活动期间共投资了15000元，可开两盏神灯，获得20元红包+爱奇艺会员月卡。</p>
 
         <div class="total-invest-amount clearfix">

@@ -451,7 +451,7 @@ body {
     .draw-area-box {
       width:100%;
       margin: 5px auto;
-      min-height:315px;
+      min-height: 373px;
       .gold-egg {
         top: 115px;
         bottom:auto;
@@ -548,7 +548,7 @@ body {
           background-size: 100%;
         }
         .reward-detail {
-          top: 25px;
+          top: 49px;
           em {
             font-size: 13px;
           }
@@ -577,8 +577,8 @@ body {
         }
         .reward-title {
           background-size: 46%;
-          margin-top: 59px;
-          padding-top: 87px;
+          margin-top: 105px;
+          padding-top: 109px;
           color: #fff2b2;
           font-size: 14px;
         }
@@ -595,6 +595,7 @@ body {
 
 @media screen and(max-width: 400px){
   .new-year-frame .draw-area-box {
+    min-height: 339px;
     .gold-egg {
       top: 99px;
     }

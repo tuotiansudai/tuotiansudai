@@ -4,7 +4,13 @@ require(['jquery','drawCircle','logintip','register_common'], function ($,drawCi
         var redirect = globalFun.browserRedirect();
         var $newYearDayFrame = $('#newYearDayFrame');
         var $activitySlide=$('#newYearSlide');
+        var $loginInBtn=$('#loginIn');
 
+        (function() {
+            $loginInBtn.on('click',function() {
+                $('.no-login-text',$newYearDayFrame).trigger('click');  //弹框登录
+            })
+        })();
 
         //文字连续滚动
         (function() {
@@ -94,6 +100,7 @@ require(['jquery','drawCircle','logintip','register_common'], function ($,drawCi
                     })
                         .done(function(response) {
                             callback && callback(response);
+                            location.reload();
                         })
                         .fail(function() {
                             failFun && failFun()
@@ -144,7 +151,7 @@ require(['jquery','drawCircle','logintip','register_common'], function ($,drawCi
 
                             }
                             else if(data.prizeType=='VIRTUAL') {
-                                tipMessage.button='<a href="javascript:void(0)" class="go-on go-close">继续抽奖</a>';
+                                tipMessage.button='<a href="/my-treasure" class="double-btn">去查看</a><a href="javascript:void(0)" class="go-on go-close">继续抽奖</a>';
                                 tipMessage.info='<p class="success-text">恭喜您！</p>' +
                                     '<p class="reward-text">'+data.prizeValue+'！</p>' +
                                     '<p class="des-text">奖品已发放至“我的宝藏”当中。</p>'
