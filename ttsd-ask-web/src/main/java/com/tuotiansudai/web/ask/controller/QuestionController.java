@@ -62,7 +62,7 @@ public class QuestionController {
         return new ModelAndView("/my-questions", "questions", questionService.findMyQuestions(LoginUserInfo.getLoginName(), index, 10));
     }
 
-    @RequestMapping(path = "/category/{urlTag}", method = RequestMethod.GET)
+    @RequestMapping(path = "/category/{urlTag:(?:securities|bank|futures|p2p|trust|loan|fund|crowd_funding|invest|credit_card|forex|stock|other)}", method = RequestMethod.GET)
     public ModelAndView getQuestionsByCategory(@PathVariable String urlTag,
                                                @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
         Tag tag;
