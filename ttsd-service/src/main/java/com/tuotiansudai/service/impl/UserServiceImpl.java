@@ -1,15 +1,19 @@
 package com.tuotiansudai.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.EditUserException;
 import com.tuotiansudai.exception.ReferrerRelationException;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.*;
+import com.tuotiansudai.util.JsonConverter;
 import com.tuotiansudai.util.MobileLocationUtils;
 import com.tuotiansudai.util.MyShaPasswordEncoder;
 import com.tuotiansudai.util.RandomStringGenerator;
@@ -24,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -41,6 +46,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private SmsWrapperClient smsWrapperClient;
+
+    @Autowired
+    private MQWrapperClient mqWrapperClient;
 
     @Autowired
     private MyShaPasswordEncoder myShaPasswordEncoder;
@@ -164,19 +172,36 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public boolean changePassword(String loginName, String originalPassword, String newPassword, String ip, String platform, String deviceId) {
 
+        boolean returnValue = false;
+
         boolean correct = this.verifyPasswordCorrect(loginName, originalPassword);
 
-        if (!correct) {
-            return false;
+        if (correct) {
+            UserModel userModel = userMapper.findByLoginName(loginName);
+            String mobile = userModel.getMobile();
+
+            userModel.setPassword(myShaPasswordEncoder.encodePassword(newPassword, userModel.getSalt()));
+            userMapper.updateUser(userModel);
+            smsWrapperClient.sendPasswordChangedNotify(mobile);
+
+            returnValue = true;
         }
 
-        UserModel userModel = userMapper.findByLoginName(loginName);
-        String mobile = userModel.getMobile();
+        UserOpLogModel logModel = new UserOpLogModel();
+        logModel.setLoginName(loginName);
+        logModel.setIp(ip);
+        logModel.setDeviceId(deviceId);
+        logModel.setSource(platform == null ? null : Source.valueOf(platform.toUpperCase(Locale.ENGLISH)));
+        logModel.setOpType(UserOpType.CHANGE_PASSWORD);
+        logModel.setCreatedTime(new Date());
+        logModel.setDescription((Boolean) returnValue ? "Success" : "Fail");
 
-        userModel.setPassword(myShaPasswordEncoder.encodePassword(newPassword, userModel.getSalt()));
-        userMapper.updateUser(userModel);
-        smsWrapperClient.sendPasswordChangedNotify(mobile);
-        return true;
+        try {
+            mqWrapperClient.sendMessage(MessageQueue.UserOperateLog, JsonConverter.writeValueAsString(logModel));
+        } catch (JsonProcessingException e) {
+            logger.error("[MQ] 修改密码, send UserOperateLog fail.", e);
+        }
+        return returnValue;
     }
 
     @Override

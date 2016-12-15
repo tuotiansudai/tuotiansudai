@@ -1,24 +1,35 @@
 package com.tuotiansudai.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BindBankCardDto;
 import com.tuotiansudai.dto.PayFormDataDto;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.BankCardMapper;
-import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.BankCardModel;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.BindBankCardService;
 import com.tuotiansudai.service.InvestRepayService;
+import com.tuotiansudai.util.JsonConverter;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
 
 @Service
 public class BindBankCardServiceImpl implements BindBankCardService {
 
+    static Logger logger = Logger.getLogger(BindBankCardServiceImpl.class);
+
     @Autowired
     private PayWrapperClient payWrapperClient;
+
+    @Autowired
+    private MQWrapperClient mqWrapperClient;
 
     @Autowired
     private BankCardMapper bankCardMapper;
@@ -32,7 +43,7 @@ public class BindBankCardServiceImpl implements BindBankCardService {
     @Override
     public BaseDto<PayFormDataDto> bindBankCard(BindBankCardDto dto) {
         AccountModel accountModel = accountMapper.findByLoginName(dto.getLoginName());
-        if(accountModel == null){
+        if (accountModel == null) {
             BaseDto<PayFormDataDto> baseDto = new BaseDto();
             PayFormDataDto payFormDataDto = new PayFormDataDto();
             payFormDataDto.setMessage("您尚未进行实名认证");
@@ -41,12 +52,51 @@ public class BindBankCardServiceImpl implements BindBankCardService {
             return baseDto;
         }
 
-        return payWrapperClient.bindBankCard(dto);
+        BaseDto<PayFormDataDto> baseDto = payWrapperClient.bindBankCard(dto);
+
+        // 发送用户行为日志 MQ消息
+        sendBindCardOpLogMessage(dto);
+
+        return baseDto;
+    }
+
+    private void sendBindCardOpLogMessage(BindBankCardDto dto) {
+        UserOpLogModel logModel = new UserOpLogModel();
+        logModel.setLoginName(dto.getLoginName());
+        logModel.setIp(dto.getIp());
+        logModel.setDeviceId(dto.getDeviceId());
+        logModel.setSource(dto.getSource());
+        logModel.setOpType(UserOpType.BIND_CARD);
+        logModel.setCreatedTime(new Date());
+        try {
+            mqWrapperClient.sendMessage(MessageQueue.UserOperateLog, JsonConverter.writeValueAsString(logModel));
+        } catch (JsonProcessingException e) {
+            logger.error("[MQ] 绑卡, send UserOperateLog fail.", e);
+        }
     }
 
     @Override
     public BaseDto<PayFormDataDto> replaceBankCard(BindBankCardDto dto) {
-        return payWrapperClient.replaceBankCard(dto);
+        BaseDto<PayFormDataDto> retDto = payWrapperClient.replaceBankCard(dto);
+
+        // 发送用户行为日志 MQ消息
+        sendReplaceCardOpLogMessage(dto);
+        return retDto;
+    }
+
+    private void sendReplaceCardOpLogMessage(BindBankCardDto dto) {
+        UserOpLogModel logModel = new UserOpLogModel();
+        logModel.setLoginName(dto.getLoginName());
+        logModel.setIp(dto.getIp());
+        logModel.setDeviceId(dto.getDeviceId());
+        logModel.setSource(dto.getSource());
+        logModel.setOpType(UserOpType.REPLACE_CARD);
+        logModel.setCreatedTime(new Date());
+        try {
+            mqWrapperClient.sendMessage(MessageQueue.UserOperateLog, JsonConverter.writeValueAsString(logModel));
+        } catch (JsonProcessingException e) {
+            logger.error("[MQ] 换卡, send UserOperateLog fail.", e);
+        }
     }
 
     @Override
@@ -66,7 +116,7 @@ public class BindBankCardServiceImpl implements BindBankCardService {
             return true;
         }
 
-        if(accountModel.getBalance() > 0){
+        if (accountModel.getBalance() > 0) {
             return true;
         }
 

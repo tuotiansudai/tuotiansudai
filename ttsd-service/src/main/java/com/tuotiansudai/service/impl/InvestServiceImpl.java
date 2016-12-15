@@ -1,5 +1,6 @@
 package com.tuotiansudai.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.base.*;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
@@ -387,6 +388,22 @@ public class InvestServiceImpl implements InvestService {
             autoInvestPlanMapper.create(autoInvestPlanModel);
         }
 
+        // 发送用户行为日志 MQ消息
+        UserOpLogModel logModel = new UserOpLogModel();
+        logModel.setLoginName(loginName);
+        logModel.setIp(ip);
+        logModel.setDeviceId("");
+        logModel.setSource(Source.WEB);
+        logModel.setOpType(UserOpType.AUTO_INVEST);
+        logModel.setCreatedTime(new Date());
+        logModel.setDescription("Turn On.");
+
+        try {
+            mqWrapperClient.sendMessage(MessageQueue.UserOperateLog, JsonConverter.writeValueAsString(logModel));
+        } catch (JsonProcessingException e) {
+            logger.error("[MQ] turnOnAutoInvest, send UserOperateLog fail.", e);
+        }
+
         return true;
     }
 
@@ -397,6 +414,23 @@ public class InvestServiceImpl implements InvestService {
             return false;
         }
         autoInvestPlanMapper.disable(loginName);
+
+        // 发送用户行为日志 MQ消息
+        UserOpLogModel logModel = new UserOpLogModel();
+        logModel.setLoginName(loginName);
+        logModel.setIp(ip);
+        logModel.setDeviceId("");
+        logModel.setSource(Source.WEB);
+        logModel.setOpType(UserOpType.AUTO_INVEST);
+        logModel.setCreatedTime(new Date());
+        logModel.setDescription("Turn Off.");
+
+        try {
+            mqWrapperClient.sendMessage(MessageQueue.UserOperateLog, JsonConverter.writeValueAsString(logModel));
+        } catch (JsonProcessingException e) {
+            logger.error("[MQ] turnOffAutoInvest, send UserOperateLog fail.", e);
+        }
+
         return true;
     }
 
@@ -429,6 +463,22 @@ public class InvestServiceImpl implements InvestService {
         if (isTurnOn) {
             mqWrapperClient.sendMessage(MessageQueue.TurnOnNoPasswordInvest_CompletePointTask, loginName);
         }
+
+        UserOpLogModel logModel = new UserOpLogModel();
+        logModel.setLoginName(loginName);
+        logModel.setIp(ip);
+        logModel.setDeviceId("");
+        logModel.setSource(Source.WEB);
+        logModel.setOpType(UserOpType.INVEST_NO_PASSWORD);
+        logModel.setCreatedTime(new Date());
+        logModel.setDescription(isTurnOn ? "Turn On" : "Turn Off");
+
+        try {
+            mqWrapperClient.sendMessage(MessageQueue.UserOperateLog, JsonConverter.writeValueAsString(logModel));
+        } catch (JsonProcessingException e) {
+            logger.error("[MQ] switchNoPasswordInvest, send UserOperateLog fail.", e);
+        }
+
         return true;
     }
 
