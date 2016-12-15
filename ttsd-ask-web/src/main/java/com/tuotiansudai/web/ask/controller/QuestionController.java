@@ -62,17 +62,9 @@ public class QuestionController {
         return new ModelAndView("/my-questions", "questions", questionService.findMyQuestions(LoginUserInfo.getLoginName(), index, 10));
     }
 
-    @RequestMapping(path = "/category/{urlTag:(?:securities|bank|futures|p2p|trust|loan|fund|crowd_funding|invest|credit_card|forex|stock|other)}", method = RequestMethod.GET)
-    public ModelAndView getQuestionsByCategory(@PathVariable String urlTag,
+    @RequestMapping(path = "/category/{tag:(?:SECURITIES|BANK|FUTURES|P2P|TRUST|LOAN|FUND|CROWD_FUNDING|INVEST|CREDIT_CARD|FOREX|STOCK|OTHER)}", method = RequestMethod.GET)
+    public ModelAndView getQuestionsByCategory(@PathVariable Tag tag,
                                                @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
-        Tag tag;
-        try {
-            tag = Tag.valueOf(urlTag.toUpperCase());
-        } catch (Exception e) {
-            ModelAndView modelAndView =  new ModelAndView("/error/404");
-            modelAndView.addObject("errorPage","true");
-            return modelAndView;
-        }
         ModelAndView modelAndView = new ModelAndView("/question-category");
         modelAndView.addObject("questions", questionService.findByTag(LoginUserInfo.getLoginName(), tag, index, 10));
         modelAndView.addObject("tag", tag);
