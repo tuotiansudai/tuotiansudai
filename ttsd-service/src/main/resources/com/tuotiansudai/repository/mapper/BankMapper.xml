@@ -34,12 +34,17 @@
         where id = #{id}
     </update>
 
-    <select id="findBankList" resultMap="bankResultMap">
-        select * from bank order by seq, id asc
-    </select>
-
-    <select id="findWebBankList" resultMap="bankResultMap">
-        select * from bank where single_amount > 0 and single_day_amount > 0 order by seq, id asc
+    <select id="findBankList" parameterType="map" resultMap="bankResultMap">
+        select * from bank
+        <where>
+            <if test="singleAmount != null">
+                and single_amount > #{singleAmount}
+            </if>
+            <if test="singleDayAmount != null">
+                and single_day_amount > #{singleDayAmount}
+            </if>
+        </where>
+        order by seq, id asc
     </select>
 
     <select id="findByBankCode" parameterType="java.lang.String" resultMap="bankResultMap">

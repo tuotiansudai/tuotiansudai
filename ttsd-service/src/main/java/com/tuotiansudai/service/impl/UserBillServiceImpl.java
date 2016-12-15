@@ -75,43 +75,4 @@ public class UserBillServiceImpl implements UserBillService {
     public long findSumRewardByLoginName(String loginName) {
         return userBillMapper.findSumRewardByLoginName(loginName);
     }
-
-    @Override
-    public List<UserBillPaginationView> findUserFunds(UserBillBusinessType userBillBusinessType, UserBillOperationType userBillOperationType, String mobile, Date startTime, Date endTime, int index, int pageSize) {
-        Date formattedStartTime;
-        Date formattedEndTime;
-
-        if (startTime == null) {
-            formattedStartTime = new DateTime(0).withTimeAtStartOfDay().toDate();
-        } else {
-            formattedStartTime = new DateTime(startTime).toDate();
-        }
-
-        if (endTime == null) {
-            formattedEndTime = new DateTime().withDate(9999, 12, 31).withTimeAtStartOfDay().toDate();
-        } else {
-            formattedEndTime = new DateTime(endTime).toDate();
-        }
-
-        return userBillMapper.findUserFunds(userBillBusinessType, userBillOperationType, mobile, formattedStartTime, formattedEndTime, (index - 1) * pageSize, pageSize);
-    }
-
-    @Override
-    public int findUserFundsCount(UserBillBusinessType userBillBusinessType, UserBillOperationType userBillOperationType, String mobile, Date startTime, Date endTime) {
-        Date formattedStartTime;
-        Date formattedEndTime;
-
-        if (startTime == null) {
-            formattedStartTime = new DateTime(0).withTimeAtStartOfDay().toDate();
-        } else {
-            formattedStartTime = new DateTime(startTime).toDate();
-        }
-
-        if (endTime == null) {
-            formattedEndTime = new DateTime().withDate(9999, 12, 31).withTimeAtStartOfDay().toDate();
-        } else {
-            formattedEndTime = new DateTime(endTime).toDate();
-        }
-        return userBillMapper.findUserFundsCount(userBillBusinessType, userBillOperationType, mobile, formattedStartTime, formattedEndTime);
-    }
 }

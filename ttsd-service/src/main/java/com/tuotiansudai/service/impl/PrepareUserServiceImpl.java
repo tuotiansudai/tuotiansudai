@@ -1,17 +1,15 @@
 package com.tuotiansudai.service.impl;
 
 
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.PrepareRegisterRequestDto;
-import com.tuotiansudai.dto.PrepareUserDto;
 import com.tuotiansudai.dto.RegisterUserDto;
 import com.tuotiansudai.exception.ReferrerRelationException;
-import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.PrepareUserMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.model.CaptchaType;
+import com.tuotiansudai.repository.model.PrepareUserModel;
+import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.PrepareUserService;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
@@ -21,7 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
-import java.util.List;
 
 @Service
 public class PrepareUserServiceImpl implements PrepareUserService {
@@ -30,12 +27,6 @@ public class PrepareUserServiceImpl implements PrepareUserService {
 
     @Autowired
     private PrepareUserMapper prepareUserMapper;
-
-    @Autowired
-    private AccountMapper accountMapper;
-
-    @Autowired
-    private UserMapper userMapper;
 
     @Autowired
     private UserService userService;
@@ -72,25 +63,6 @@ public class PrepareUserServiceImpl implements PrepareUserService {
     }
 
     @Override
-    public List<PrepareUserDto> findPrepareUser(String mobile, Date beginTime, Date endTime, int index, int pageSize) {
-        List<PrepareUserModel> prepareUserModels = prepareUserMapper.findPrepares(null, mobile, null, beginTime, endTime, (index - 1) * pageSize, pageSize);
-        return fillPrepareUser(prepareUserModels);
-    }
-
-    @Override
-    public long findPrepareUserCount(String mobile, Date beginTime, Date endTime) {
-        return prepareUserMapper.findPrepareCount(null, mobile, null, beginTime, endTime);
-    }
-
-    private List<PrepareUserDto> fillPrepareUser(List<PrepareUserModel> prepareUserModels) {
-        return Lists.transform(prepareUserModels, prepareUserModel -> {
-            UserModel referrerUserModel = userMapper.findByMobile(prepareUserModel.getReferrerMobile());
-            UserModel useUserModel = userMapper.findByMobile(prepareUserModel.getMobile());
-            return new PrepareUserDto(prepareUserModel, referrerUserModel, useUserModel);
-        });
-    }
-
-    @Override
     @Transactional
     public BaseDataDto register(RegisterUserDto requestDto) {
         try {
@@ -101,11 +73,4 @@ public class PrepareUserServiceImpl implements PrepareUserService {
             return new BaseDataDto(false, e.getLocalizedMessage());
         }
     }
-
-    @Override
-    public PrepareUserModel findPrepareUserModelByModel(String mobile) {
-        return prepareUserMapper.findByMobile(mobile);
-    }
-
-
 }
