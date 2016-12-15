@@ -19,7 +19,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class MQTools {
+public class MQMigration {
     public static void main(String[] args) throws IOException {
         if (args.length == 0) {
             return;
