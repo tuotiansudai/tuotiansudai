@@ -83,10 +83,10 @@ public class ContractServiceImpl implements ContractService {
                 }
             }
         }
-        BufferedReader br = new BufferedReader(reader);
         StringBuilder content = new StringBuilder();
-        String str = null;
+        String str;
         try {
+            BufferedReader br = new BufferedReader(reader);
             while ((str = br.readLine()) != null) {
                 content.append(str);
             }
