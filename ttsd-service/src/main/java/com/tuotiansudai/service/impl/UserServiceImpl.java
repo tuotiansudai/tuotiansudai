@@ -34,9 +34,6 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
 
     @Autowired
-    private UserRoleMapper userRoleMapper;
-
-    @Autowired
     private SmsCaptchaService smsCaptchaService;
 
     @Autowired
@@ -49,19 +46,7 @@ public class UserServiceImpl implements UserService {
     private MyShaPasswordEncoder myShaPasswordEncoder;
 
     @Autowired
-    private AccountMapper accountMapper;
-
-    @Autowired
-    private ReferrerRelationService referrerRelationService;
-
-    @Autowired
-    private BindBankCardService bindBankCardService;
-
-    @Autowired
     private PrepareUserMapper prepareUserMapper;
-
-    @Autowired
-    private AutoInvestPlanMapper autoInvestPlanMapper;
 
     @Autowired
     private RegisterUserService registerUserService;
@@ -195,102 +180,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
-    public void editUser(String operatorLoginName, EditUserDto editUserDto, String ip) throws EditUserException, ReferrerRelationException {
-        this.checkUpdateUserData(editUserDto);
-
-        final String loginName = editUserDto.getLoginName();
-
-        String mobile = editUserDto.getMobile();
-        UserModel userModel = userMapper.findByLoginName(loginName);
-        String beforeUpdateUserMobile = userModel.getMobile();
-
-        // update role
-        userRoleMapper.deleteByLoginName(loginName);
-        if (CollectionUtils.isNotEmpty(editUserDto.getRoles())) {
-            List<UserRoleModel> afterUpdateUserRoleModels = Lists.transform(editUserDto.getRoles(), role -> new UserRoleModel(loginName, role));
-            userRoleMapper.create(afterUpdateUserRoleModels);
-        }
-
-        // update referrer
-        this.referrerRelationService.generateRelation(editUserDto.getReferrer(), editUserDto.getLoginName());
-
-        userModel.setStatus(editUserDto.getStatus());
-        userModel.setMobile(mobile);
-        userModel.setEmail(editUserDto.getEmail());
-        userModel.setReferrer(Strings.isNullOrEmpty(editUserDto.getReferrer()) ? null : editUserDto.getReferrer());
-        userModel.setLastModifiedTime(new Date());
-        userModel.setLastModifiedUser(operatorLoginName);
-        userMapper.updateUser(userModel);
-
-        if (!mobile.equals(beforeUpdateUserMobile) && accountMapper.findByLoginName(loginName) != null) {
-            RegisterAccountDto registerAccountDto = new RegisterAccountDto(userModel.getLoginName(),
-                    mobile,
-                    userModel.getUserName(),
-                    userModel.getIdentityNumber());
-            BaseDto<PayDataDto> baseDto = payWrapperClient.register(registerAccountDto);
-            if (!baseDto.getData().getStatus()) {
-                throw new EditUserException(baseDto.getData().getMessage());
-            }
-        }
-    }
-
-    private void checkUpdateUserData(EditUserDto editUserDto) throws EditUserException {
-        String loginName = editUserDto.getLoginName();
-        UserModel editUserModel = userMapper.findByLoginName(loginName);
-
-        if (editUserModel == null) {
-            throw new EditUserException("该用户不存在");
-        }
-
-        String newEmail = editUserDto.getEmail();
-        if (!Strings.isNullOrEmpty(newEmail) && userMapper.findByEmail(newEmail) != null && !editUserModel.getLoginName().equalsIgnoreCase(userMapper.findByEmail(newEmail).getLoginName())) {
-            throw new EditUserException("该邮箱已经存在");
-        }
-
-        String mobile = editUserDto.getMobile();
-        UserModel userModelByMobile = userMapper.findByMobile(mobile);
-        if (!Strings.isNullOrEmpty(mobile) && userModelByMobile != null && !editUserModel.getLoginName().equalsIgnoreCase(userModelByMobile.getLoginName())) {
-            throw new EditUserException("该手机号已经存在");
-        }
-
-        if (editUserDto.getRoles().contains(Role.STAFF) && !Strings.isNullOrEmpty(editUserDto.getReferrer())) {
-            throw new EditUserException("业务员不能设置推荐人");
-        }
-    }
-
-    @Override
-    public EditUserDto getEditUser(String loginName) {
-        UserModel userModel = userMapper.findByLoginName(loginName);
-        List<UserRoleModel> userRoleModels = userRoleMapper.findByLoginName(loginName);
-        List<Role> roles = Lists.newArrayList();
-        for (UserRoleModel userRoleModel : userRoleModels) {
-            roles.add(userRoleModel.getRole());
-        }
-        AutoInvestPlanModel autoInvestPlanModel = autoInvestPlanMapper.findByLoginName(loginName);
-
-        EditUserDto editUserDto = new EditUserDto(userModel, roles, autoInvestPlanModel);
-
-        BankCardModel bankCard = bindBankCardService.getPassedBankCard(loginName);
-        if (bankCard != null) {
-            editUserDto.setBankCardNumber(bankCard.getCardNumber());
-        }
-
-        if (userRoleMapper.findByLoginNameAndRole(userModel.getReferrer(), Role.STAFF) != null) {
-            editUserDto.setReferrerStaff(true);
-        }
-        return editUserDto;
-    }
-
-    @Override
     public boolean verifyPasswordCorrect(String loginName, String password) {
         UserModel userModel = userMapper.findByLoginName(loginName);
         return userModel.getPassword().equals(myShaPasswordEncoder.encodePassword(password, userModel.getSalt()));
-    }
-
-    @Override
-    public List<String> findAllUserChannels() {
-        return userMapper.findAllUserChannels();
     }
 
     @Transactional
@@ -336,11 +228,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserModel findByMobile(String mobile) {
         return userMapper.findByMobile(mobile);
-    }
-
-    @Override
-    public UserModel findByLoginName(String loginName) {
-        return userMapper.findByLoginName(loginName);
     }
 
     @Override

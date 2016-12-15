@@ -27,7 +27,7 @@
                     <i class="time-icon"><img src="${staticServer}/activity/images/download/time-icon.png"></i>
                 </p>
                 <p>
-                    <span>开团提醒</span>
+                    <span>开标提醒</span>
                 </p>
             </div>
         </div>

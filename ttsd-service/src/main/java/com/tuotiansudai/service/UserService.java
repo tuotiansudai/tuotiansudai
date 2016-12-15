@@ -37,13 +37,7 @@ public interface UserService {
      */
     boolean changePassword(String loginName, String originalPassword, String newPassword, String ip, String platform, String deviceId);
 
-    void editUser(String operatorLoginName, EditUserDto editUserDto, String ip) throws EditUserException, ReferrerRelationException;
-
-    EditUserDto getEditUser(String loginName);
-
     boolean verifyPasswordCorrect(String loginName, String password);
-
-    List<String> findAllUserChannels();
 
     void refreshAreaByMobile(List<UserModel> userModels);
 
@@ -54,6 +48,4 @@ public interface UserService {
     boolean mobileIsRegister(String mobile);
 
     UserModel findByMobile(String mobile);
-
-    UserModel findByLoginName(String loginName);
 }

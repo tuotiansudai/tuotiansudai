@@ -29,7 +29,7 @@
             base-package="com.tuotiansudai.service,com.tuotiansudai.repository,com.tuotiansudai.client,com.tuotiansudai.spring,
             com.tuotiansudai.util,com.tuotiansudai.api,com.tuotiansudai.coupon,com.tuotiansudai.aspect,com.tuotiansudai.point,
             com.tuotiansudai.transfer,com.tuotiansudai.api.util,com.tuotiansudai.jpush,com.tuotiansudai.membership,
-            com.tuotiansudai.message,com.tuotiansudai.cache,com.tuotiansudai.anxin.service,com.tuotiansudai.cfca,com.tuotiansudai.mq,com.tuotiansudai.activity.service,com.tuotiansudai.contract.service"/>
+            com.tuotiansudai.message,com.tuotiansudai.cache,com.tuotiansudai.anxin.service,com.tuotiansudai.cfca,com.tuotiansudai.activity.service,com.tuotiansudai.contract.service"/>
 
     <bean id="hikariCPDataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
         <constructor-arg>
@@ -207,5 +207,7 @@
         <property name="maxTotal" value="${mobile.jedis.pool.maxTotal}"/>
         <property name="maxWaitMillis" value="${common.jedis.pool.maxWaitMillis}"/>
     </bean>
+
+    <bean class="com.tuotiansudai.mq.config.MQProducerConfig"/>
 
 </beans>

@@ -276,38 +276,6 @@ public class InvestTransferServiceImpl implements InvestTransferService {
     }
 
     @Override
-    public BasePaginationDataDto<TransferApplicationPaginationItemDataDto> findTransferApplicationPaginationList(Long transferApplicationId, Date startTime, Date endTime, TransferStatus status,
-                                                                                                                 String transferrerMobile, String transfereeMobile, Long loanId, Source source, Integer index, Integer pageSize) {
-        if (startTime == null) {
-            startTime = new DateTime(0).withTimeAtStartOfDay().toDate();
-        } else {
-            startTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
-        }
-
-        if (endTime == null) {
-            endTime = new DateTime().withDate(9999, 12, 31).withTimeAtStartOfDay().toDate();
-        } else {
-            endTime = new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
-        }
-
-        int count = transferApplicationMapper.findCountTransferApplicationPagination(transferApplicationId, startTime, endTime, status, transferrerMobile, transfereeMobile, loanId, source);
-        List<TransferApplicationRecordDto> items = Lists.newArrayList();
-        if (count > 0) {
-            int totalPages = PaginationUtil.calculateMaxPage(count, pageSize);
-            index = index > totalPages ? totalPages : index;
-            items = transferApplicationMapper.findTransferApplicationPaginationList(transferApplicationId, startTime, endTime, status, transferrerMobile, transfereeMobile, loanId, source, (index - 1) * pageSize, pageSize);
-        }
-        List<TransferApplicationPaginationItemDataDto> records = Lists.transform(items, input -> {
-            TransferApplicationPaginationItemDataDto transferApplicationPaginationItemDataDto = new TransferApplicationPaginationItemDataDto(input);
-            return transferApplicationPaginationItemDataDto;
-        });
-
-        BasePaginationDataDto<TransferApplicationPaginationItemDataDto> dto = new BasePaginationDataDto(index, pageSize, count, records);
-        dto.setStatus(true);
-        return dto;
-    }
-
-    @Override
     public BasePaginationDataDto<TransferApplicationPaginationItemDataDto> findWebTransferApplicationPaginationList(String transferrerLoginName, List<TransferStatus> statusList, Integer index, Integer pageSize) {
 
         int count = transferApplicationMapper.findCountTransferApplicationPaginationByLoginName(transferrerLoginName, statusList);

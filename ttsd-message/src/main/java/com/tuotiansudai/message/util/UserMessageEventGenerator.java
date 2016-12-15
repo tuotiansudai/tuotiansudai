@@ -14,6 +14,7 @@ import com.tuotiansudai.message.repository.mapper.UserMessageMapper;
 import com.tuotiansudai.message.repository.mapper.UserMessageMetaMapper;
 import com.tuotiansudai.message.repository.model.MessageEventType;
 import com.tuotiansudai.message.repository.model.MessageModel;
+import com.tuotiansudai.message.repository.model.MessageType;
 import com.tuotiansudai.message.repository.model.UserMessageModel;
 import com.tuotiansudai.repository.mapper.LoginLogMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
@@ -83,7 +84,9 @@ public class UserMessageEventGenerator {
         //Title:5888元体验金已存入您的账户，请查收！
         //AppTitle:5888元体验金已存入您的账户，请查收！
         //Content:哇，您终于来啦！初次见面，岂能无礼？5888元体验金双手奉上，【立即体验】再拿588元红包和3%加息券！
-        UserMessageModel registerUserMessageModel = new UserMessageModel(registerUserSuccessMessage.getId(), loginName, registerUserSuccessMessage.getTitle(), registerUserSuccessMessage.getAppTitle(), registerUserSuccessMessage.getTemplateTxt());
+
+
+        UserMessageModel registerUserMessageModel = new UserMessageModel(registerUserSuccessMessage.getId(), loginName, registerUserSuccessMessage.getTitle(), registerUserSuccessMessage.getAppTitle(), registerUserSuccessMessage.getTemplateTxt(), registerUserSuccessMessage.getType().name().equals(MessageType.EVENT.name()) ? new Date() : registerUserSuccessMessage.getActivatedTime());
         userMessageMapper.create(registerUserMessageModel);
         sendJPushByUserMessageModel(registerUserMessageModel);
 
@@ -98,7 +101,7 @@ public class UserMessageEventGenerator {
             String content = MessageFormat.format(recommendSuccessMessage.getTemplate(), userModel.getMobile());
 
             //您推荐的好友{0}成功注册，若该好友进行投资，您即可获取现金奖励哦
-            UserMessageModel userMessageModel = new UserMessageModel(recommendSuccessMessage.getId(), userModel.getReferrer(), title, appTitle, content);
+            UserMessageModel userMessageModel = new UserMessageModel(recommendSuccessMessage.getId(), userModel.getReferrer(), title, appTitle, content,recommendSuccessMessage.getType().name().equals(MessageType.EVENT.name()) ? new Date() : recommendSuccessMessage.getActivatedTime());
             userMessageMapper.create(userMessageModel);
             sendJPushByUserMessageModel(userMessageModel);
         }
@@ -115,7 +118,7 @@ public class UserMessageEventGenerator {
         String appTitle = messageModel.getAppTitle();
         String content = MessageFormat.format(messageModel.getTemplate(), userModel.getUserName());
 
-        UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), loginName, title, appTitle, content);
+        UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), loginName, title, appTitle, content, messageModel.getType().name().equals(MessageType.EVENT.name()) ? new Date() : messageModel.getActivatedTime());
         userMessageMapper.create(userMessageModel);
         sendJPushByUserMessageModel(userMessageModel);
     }
@@ -157,7 +160,7 @@ public class UserMessageEventGenerator {
         String appTitle = MessageFormat.format(messageModel.getAppTitle(), AmountConverter.convertCentToString(amount));
         String content = MessageFormat.format(messageModel.getTemplate(), AmountConverter.convertCentToString(amount));
         long messageId = messageModel.getId();
-        UserMessageModel userMessageModel = new UserMessageModel(messageId, loginName, title, appTitle, content);
+        UserMessageModel userMessageModel = new UserMessageModel(messageId, loginName, title, appTitle, content, messageModel.getType().name().equals(MessageType.EVENT.name()) ? new Date() : messageModel.getActivatedTime());
         userMessageMapper.create(userMessageModel);
         sendJPushByUserMessageModel(userMessageModel);
     }
@@ -168,8 +171,15 @@ public class UserMessageEventGenerator {
         long amount = ((BigInteger) invest.get("amount")).longValue();
         String loginName = (String) invest.get("login_name");
 
+        UserMessageModel existUserMessageModel = userMessageMapper.findOneMessage(loginName, String.valueOf(investId), MessageEventType.INVEST_SUCCESS);
+        if (existUserMessageModel != null) {
+            // 该笔投资已经发送过推送消息了，不再重复发送，保持幂等操作
+            logger.info("invest success message has been send already, won't send again.");
+            return;
+        }
+
         MessageModel messageModel = messageMapper.findActiveByEventType(MessageEventType.INVEST_SUCCESS);
-        if(messageModel == null) return;
+        if (messageModel == null) return;
 
         //Title:恭喜您成功投资{0}元
         //AppTitle:恭喜您成功投资{0}元
@@ -178,7 +188,8 @@ public class UserMessageEventGenerator {
         String appTitle = MessageFormat.format(messageModel.getAppTitle(), AmountConverter.convertCentToString(amount));
         String content = MessageFormat.format(messageModel.getTemplate(), AmountConverter.convertCentToString(amount));
 
-        UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), loginName, title, appTitle, content);
+        UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), loginName, title, appTitle, content, messageModel.getType().name().equals(MessageType.EVENT.name()) ? new Date() : messageModel.getActivatedTime());
+        userMessageModel.setBusinessId(String.valueOf(investId));
         userMessageMapper.create(userMessageModel);
         sendJPushByUserMessageModel(userMessageModel);
     }
@@ -191,7 +202,7 @@ public class UserMessageEventGenerator {
         String loginName = (String) invest.get("login_name");
 
         MessageModel messageModel = messageMapper.findActiveByEventType(MessageEventType.TRANSFER_SUCCESS);
-        if(messageModel == null) return;
+        if (messageModel == null) return;
 
         //Title:您发起的转让项目转让成功，{0}元已发放至您的账户！
         //AppTitle:您发起的转让项目转让成功，{0}元已发放至您的账户！
@@ -200,7 +211,7 @@ public class UserMessageEventGenerator {
         String appTitle = MessageFormat.format(messageModel.getAppTitle(), AmountConverter.convertCentToString(amount));
         String content = MessageFormat.format(messageModel.getTemplate(), name);
 
-        UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), loginName, title, appTitle, content);
+        UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), loginName, title, appTitle, content, messageModel.getType().name().equals(MessageType.EVENT.name()) ? new Date() : messageModel.getActivatedTime());
         userMessageMapper.create(userMessageModel);
         sendJPushByUserMessageModel(userMessageModel);
     }
@@ -209,7 +220,7 @@ public class UserMessageEventGenerator {
         Map<String, Object> transferApplication = userMessageMetaMapper.findTransferApplicationById(transferApplicationId);
         String loginName = (String) transferApplication.get("login_name");
         MessageModel messageModel = messageMapper.findActiveByEventType(MessageEventType.TRANSFER_FAIL);
-        if(messageModel == null) return;
+        if (messageModel == null) return;
         //Title:您提交的债权转让到期取消，请查看！
         //AppTitle:您提交的债权转让到期取消，请查看！
         //Content:尊敬的用户，我们遗憾地通知您，您发起的转让项目没有转让成功。如有疑问，请致电客服热线400-169-1188，感谢您选择拓天速贷。
@@ -218,7 +229,7 @@ public class UserMessageEventGenerator {
         String appTitle = messageModel.getAppTitle();
         String content = messageModel.getTemplate();
 
-        UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), loginName, title, appTitle, content);
+        UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), loginName, title, appTitle, content, messageModel.getType().name().equals(MessageType.EVENT.name()) ? new Date() : messageModel.getActivatedTime());
         userMessageMapper.create(userMessageModel);
         sendJPushByUserMessageModel(userMessageModel);
     }
@@ -232,7 +243,7 @@ public class UserMessageEventGenerator {
         double rate = baseRate + activityRate;
 
         MessageModel messageModel = messageMapper.findActiveByEventType(MessageEventType.LOAN_OUT_SUCCESS);
-        if(messageModel == null) return;
+        if (messageModel == null) return;
 
         //Title:您投资的{0}已经满额放款，预期年化收益{1}%
         //AppTitle:您投资的{0}已经满额放款，预期年化收益{1}%
@@ -243,7 +254,7 @@ public class UserMessageEventGenerator {
 
         Set<String> investorLoginNames = Sets.newHashSet(userMessageMetaMapper.findSuccessInvestorByLoanId(loanId));
         for (String investor : investorLoginNames) {
-            UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), investor, title, appTitle, content);
+            UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), investor, title, appTitle, content, messageModel.getType().name().equals(MessageType.EVENT.name()) ? new Date() : messageModel.getActivatedTime());
             userMessageMapper.create(userMessageModel);
             sendJPushByUserMessageModel(userMessageModel);
         }
@@ -255,7 +266,7 @@ public class UserMessageEventGenerator {
         Map<String, Object> loanRepay = userMessageMetaMapper.findLoanRepayById(loanRepayId);
         List<Map<String, Object>> invests = userMessageMetaMapper.findInvestsByLoanId(((BigInteger) loan.get("id")).longValue());
         MessageModel messageModel = messageMapper.findActiveByEventType(MessageEventType.REPAY_SUCCESS);
-        if(messageModel == null) return;
+        if (messageModel == null) return;
 
         //Title:您投资的{0}已回款{1}元，请前往账户查收！
         //AppTitle:您投资的{0}已回款{1}元，请前往账户查收！
@@ -267,7 +278,7 @@ public class UserMessageEventGenerator {
             String appTitle = MessageFormat.format(messageModel.getAppTitle(), loan.get("name"), AmountConverter.convertCentToString(((BigInteger) investRepay.get("amount")).longValue()));
             String content = MessageFormat.format(messageModel.getTemplate(), loan.get("name"));
 
-            UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), (String) invest.get("loginName"), title, appTitle, content);
+            UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), (String) invest.get("loginName"), title, appTitle, content, messageModel.getType().name().equals(MessageType.EVENT.name()) ? new Date() : messageModel.getActivatedTime());
             userMessageMapper.create(userMessageModel);
             sendJPushByUserMessageModel(userMessageModel);
         }
@@ -279,7 +290,7 @@ public class UserMessageEventGenerator {
         Map<String, Object> loanRepay = userMessageMetaMapper.findLoanRepayById(loanRepayId);
         List<Map<String, Object>> invests = userMessageMetaMapper.findInvestsByLoanId(((BigInteger) loan.get("id")).longValue());
         MessageModel messageModel = messageMapper.findActiveByEventType(MessageEventType.ADVANCED_REPAY);
-        if(messageModel == null) return;
+        if (messageModel == null) return;
 
         //Title:您投资的{0}提前还款，{1}元已返还至您的账户！
         //AppTitle:您投资的{0}提前还款，{1}元已返还至您的账户！
@@ -291,7 +302,7 @@ public class UserMessageEventGenerator {
             String appTitle = MessageFormat.format(messageModel.getAppTitle(), loan.get("name"), AmountConverter.convertCentToString(((BigInteger) investRepay.get("amount")).longValue()));
             String content = MessageFormat.format(messageModel.getTemplate(), loan.get("name"));
 
-            UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), (String) invest.get("loginName"), title, appTitle, content);
+            UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), (String) invest.get("loginName"), title, appTitle, content, messageModel.getType().name().equals(MessageType.EVENT.name()) ? new Date() : messageModel.getActivatedTime());
             userMessageMapper.create(userMessageModel);
             sendJPushByUserMessageModel(userMessageModel);
         }
@@ -300,7 +311,7 @@ public class UserMessageEventGenerator {
     @Transactional
     public void generateRecommendAwardSuccessEvent(long loanId) {
         MessageModel messageModel = messageMapper.findActiveByEventType(MessageEventType.RECOMMEND_AWARD_SUCCESS);
-        if(messageModel == null) return;
+        if (messageModel == null) return;
 
         //Title:{0}元推荐奖励已存入您的账户，请查收！
         //AppTitle:{0}元推荐奖励已存入您的账户，请查收！
@@ -315,7 +326,7 @@ public class UserMessageEventGenerator {
             String appTitle = MessageFormat.format(messageModel.getAppTitle(), AmountConverter.convertCentToString(amount));
             String content = MessageFormat.format(messageModel.getTemplate(), investReferrerReward.get("mobile"), AmountConverter.convertCentToString(amount));
 
-            UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), (String) investReferrerReward.get("referrer"), title, appTitle, content);
+            UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), (String) investReferrerReward.get("referrer"), title, appTitle, content, messageModel.getType().name().equals(MessageType.EVENT.name()) ? new Date() : messageModel.getActivatedTime());
             userMessageMapper.create(userMessageModel);
             sendJPushByUserMessageModel(userMessageModel);
         }
@@ -328,7 +339,7 @@ public class UserMessageEventGenerator {
         String endTime = simpleDateFormat.format(DateTime.now().plusDays(5).withTimeAtStartOfDay().toDate());
         if (times == 1) {
             MessageModel messageModel = messageMapper.findActiveByEventType(MessageEventType.COUPON_5DAYS_EXPIRED_ALERT);
-            if(messageModel == null) return;
+            if (messageModel == null) return;
 
             //Title:您有一张{0}即将失效
             //AppTitle: 您有一张{0}即将失效
@@ -361,7 +372,7 @@ public class UserMessageEventGenerator {
                         content = MessageFormat.format(messageModel.getTemplate(), COUPON_NAME_MAPPING.get(couponType), endTime);
                         break;
                 }
-                UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), loginName, title, appTitle, content);
+                UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), loginName, title, appTitle, content, messageModel.getType().name().equals(MessageType.EVENT.name()) ? new Date() : messageModel.getActivatedTime());
                 userMessageMapper.create(userMessageModel);
                 sendJPushByUserMessageModel(userMessageModel);
             }
@@ -375,7 +386,7 @@ public class UserMessageEventGenerator {
         }
 
         MessageModel messageModel = messageMapper.findActiveByEventType(MessageEventType.MEMBERSHIP_EXPIRED);
-        if(messageModel == null) return;
+        if (messageModel == null) return;
 
         //Title:您的V5会员已到期，请前去购买
         //AppTitle:您的V5会员已到期，请前去购买
@@ -384,7 +395,7 @@ public class UserMessageEventGenerator {
         String appTitle = messageModel.getAppTitle();
         String content = messageModel.getTemplate();
 
-        UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), loginName, title, appTitle, content);
+        UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), loginName, title, appTitle, content, messageModel.getType().name().equals(MessageType.EVENT.name()) ? new Date() : messageModel.getActivatedTime());
         userMessageMapper.create(userMessageModel);
         sendJPushByUserMessageModel(userMessageModel);
     }
@@ -392,7 +403,7 @@ public class UserMessageEventGenerator {
     public void generateMembershipPurchaseEvent(long membershipPurchaseId) {
         Map<String, Object> membershipPurchase = userMessageMetaMapper.findMembershipPurchaseModelById(membershipPurchaseId);
         MembershipPurchaseStatus membershipPurchaseStatus = MembershipPurchaseStatus.valueOf((String) membershipPurchase.get("status"));
-        if(!MembershipPurchaseStatus.SUCCESS.equals(membershipPurchaseStatus)) {
+        if (!MembershipPurchaseStatus.SUCCESS.equals(membershipPurchaseStatus)) {
             return;
         }
         logger.debug("start to send message");
@@ -400,7 +411,7 @@ public class UserMessageEventGenerator {
         int duration = (int) ((long) membershipPurchase.get("duration"));
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd");
         MessageModel messageModel = messageMapper.findActiveByEventType(MessageEventType.MEMBERSHIP_BUY_SUCCESS);
-        if(messageModel == null) return;
+        if (messageModel == null) return;
 
         //Title:恭喜您已成功购买{0}个月V5会员！
         //AppTitle:恭喜您已成功购买{0}个月V5会员！
@@ -409,14 +420,14 @@ public class UserMessageEventGenerator {
         String appTitle = MessageFormat.format(messageModel.getAppTitle(), duration / 30);
         String content = MessageFormat.format(messageModel.getTemplate(), simpleDateFormat.format(DateTime.now().withTimeAtStartOfDay().plusDays(duration).toDate()));
 
-        UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), loginName, title, appTitle, content);
+        UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), loginName, title, appTitle, content, messageModel.getType().name().equals(MessageType.EVENT.name()) ? new Date() : messageModel.getActivatedTime());
         userMessageMapper.create(userMessageModel);
         sendJPushByUserMessageModel(userMessageModel);
     }
 
     public void generateBirthdayEvent() {
         MessageModel messageModel = messageMapper.findActiveByEventType(MessageEventType.BIRTHDAY);
-        if(messageModel == null) return;
+        if (messageModel == null) return;
 
         //Title:拓天速贷为您送上生日祝福，请查收！
         //AppTitle:拓天速贷为您送上生日祝福，请查收！
@@ -428,17 +439,26 @@ public class UserMessageEventGenerator {
             String userName = userMessageMetaMapper.findUserNameByLoginName(loginName);
             String content = MessageFormat.format(messageModel.getTemplate(), userName);
 
-            UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), loginName, title, appTitle, content);
+            UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), loginName, title, appTitle, content, messageModel.getType().name().equals(MessageType.EVENT.name()) ? new Date() : messageModel.getActivatedTime());
             userMessageMapper.create(userMessageModel);
             sendJPushByUserMessageModel(userMessageModel);
         });
     }
 
     public void generateMembershipUpgradeEvent(String loginName, long membershipId) {
+
+        UserMessageModel existUserMessage = userMessageMapper.findOneMessage(loginName, String.valueOf(membershipId), MessageEventType.MEMBERSHIP_UPGRADE);
+        // 如果已经给用户发过此消息，则不再重复发送
+        if (existUserMessage != null) {
+            logger.info(MessageFormat.format(
+                    "membership upgrade message has been send already, won't send again. loginName:{0}, membershipId:{1}", loginName, String.valueOf(membershipId)));
+            return;
+        }
+
         Map<String, Object> membershipModel = userMessageMetaMapper.findMembershipById(membershipId);
 
         MessageModel messageModel = messageMapper.findActiveByEventType(MessageEventType.MEMBERSHIP_UPGRADE);
-        if(messageModel == null) return;
+        if (messageModel == null) return;
 
         //Title:恭喜您会员等级提升至V{0}
         //AppTitle:恭喜您会员等级提升至V{0}
@@ -447,7 +467,8 @@ public class UserMessageEventGenerator {
         String appTitle = MessageFormat.format(messageModel.getAppTitle(), membershipModel.get("level"));
         String content = MessageFormat.format(messageModel.getTemplate(), membershipModel.get("level"));
 
-        UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), loginName, title, appTitle, content);
+        UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), loginName, title, appTitle, content, messageModel.getType().name().equals(MessageType.EVENT.name()) ? new Date() : messageModel.getActivatedTime());
+        userMessageModel.setBusinessId(String.valueOf(membershipId));
         userMessageMapper.create(userMessageModel);
         sendJPushByUserMessageModel(userMessageModel);
     }
@@ -456,7 +477,7 @@ public class UserMessageEventGenerator {
     @Transactional
     public void generateAssignCouponSuccessEvent(long userCouponId) {
         MessageModel messageModel = messageMapper.findActiveByEventType(MessageEventType.ASSIGN_COUPON_SUCCESS);
-        if(messageModel == null) return;
+        if (messageModel == null) return;
 
         //您获得了{0}，有效期{1}至{2}，<a href="/my-treasure">立即查看</a>。
         String titleTemplate = messageModel.getTitle();
@@ -503,7 +524,7 @@ public class UserMessageEventGenerator {
                 appTitle = MessageFormat.format(appTitleTemplate, COUPON_NAME_MAPPING.get(couponType), startTime, endTime);
                 break;
         }
-        UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), (String) userCoupon.get("login_name"), title, appTitle, null);
+        UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), (String) userCoupon.get("login_name"), title, appTitle, null, messageModel.getType().name().equals(MessageType.EVENT.name()) ? new Date() : messageModel.getActivatedTime());
         userMessageMapper.create(userMessageModel);
         sendJPushByUserMessageModel(userMessageModel);
     }

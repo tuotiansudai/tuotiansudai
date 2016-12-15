@@ -1,6 +1,6 @@
 package com.tuotiansudai.console.controller;
 
-import com.google.common.collect.Lists;
+import com.tuotiansudai.console.service.ConsoleFeedbackService;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
@@ -8,10 +8,6 @@ import com.tuotiansudai.repository.model.FeedbackModel;
 import com.tuotiansudai.repository.model.FeedbackType;
 import com.tuotiansudai.repository.model.ProcessStatus;
 import com.tuotiansudai.repository.model.Source;
-import com.tuotiansudai.service.FeedbackService;
-import com.tuotiansudai.util.CsvHeaderType;
-import com.tuotiansudai.util.ExportCsvUtil;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -22,18 +18,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.Date;
-import java.util.List;
 
 @Controller
 @RequestMapping(value = "/announce-manage", method = RequestMethod.GET)
 public class FeedbackController {
 
     @Autowired
-    private FeedbackService feedbackService;
+    private ConsoleFeedbackService consoleFeedbackService;
 
     @RequestMapping(value = "/feedback", method = RequestMethod.GET)
     public ModelAndView announceManage(@RequestParam(value = "mobile", required = false) String mobile,
@@ -44,7 +36,7 @@ public class FeedbackController {
                                        @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
                                        @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
         int pageSize = 10;
-        BasePaginationDataDto<FeedbackModel> feedbackModelPaginationData = feedbackService.getFeedbackPagination(mobile, source, type, status, startTime, endTime, index, pageSize);
+        BasePaginationDataDto<FeedbackModel> feedbackModelPaginationData = consoleFeedbackService.getFeedbackPagination(mobile, source, type, status, startTime, endTime, index, pageSize);
         ModelAndView mv = new ModelAndView("feedback-list");
         mv.addObject("mobile", mobile);
         mv.addObject("source", source);
@@ -70,18 +62,18 @@ public class FeedbackController {
     @ResponseBody
     @RequestMapping(value = "/updateStatus", method = RequestMethod.POST)
     public String updateStatus(long feedbackId, boolean status) {
-        feedbackService.updateStatus(feedbackId, status ? ProcessStatus.DONE : ProcessStatus.NOT_DONE);
+        consoleFeedbackService.updateStatus(feedbackId, status ? ProcessStatus.DONE : ProcessStatus.NOT_DONE);
         return "true";
     }
 
     @ResponseBody
     @RequestMapping(value = "/updateRemark", method = RequestMethod.POST)
     public BaseDto<BaseDataDto> updateRemark(long feedbackId, String remark) {
-        FeedbackModel feedbackModel = feedbackService.findById(feedbackId);
+        FeedbackModel feedbackModel = consoleFeedbackService.findById(feedbackId);
         BaseDataDto dataDto = new BaseDataDto();
         if (feedbackModel != null) {
             feedbackModel.setRemark(StringUtils.isEmpty(feedbackModel.getRemark()) ? remark : feedbackModel.getRemark() + "|" + remark);
-            feedbackService.updateRemark(feedbackModel);
+            consoleFeedbackService.updateRemark(feedbackModel);
         }
         dataDto.setStatus(true);
         BaseDto<BaseDataDto> baseDto = new BaseDto<>();

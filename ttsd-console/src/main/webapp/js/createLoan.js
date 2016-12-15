@@ -6,7 +6,7 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
 
         var loanDetailsParam = ['declaration', 'extraRateRuleIds', 'extraSource', 'activity', 'activityDesc','nonTransferable', 'pushMessage'];
 
-        var loanerDetailsParam = ['userName', 'identityNumber', 'gender', 'age', 'marriage', 'region', 'income', 'employmentStatus'];
+        var loanerDetailsParam = ['userName', 'identityNumber', 'gender', 'age', 'marriage', 'region', 'income', 'employmentStatus', 'purpose'];
 
         var loanerEnterpriseDetailsParam = ['juristicPerson', 'shareholder', 'address', 'purpose'];
 
@@ -379,9 +379,9 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
                     dataType: 'json',
                     data: JSON.stringify(requestData),
                     contentType: 'application/json; charset=UTF-8'
-                }
-            ).done(function (res) {
+            }).done(function (res) {
                 $currentFormSubmitBtn.removeAttr('disabled');
+                $('#confirm-modal').modal('hide');
                 if (res.data.status) {
                     fromValid = true;
                     location.href = '/project-manage/loan-list';
@@ -392,6 +392,7 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
                 }
             }).fail(function () {
                 $currentFormSubmitBtn.removeAttr('disabled');
+                $('#confirm-modal').modal('hide');
             })
         });
 
@@ -453,8 +454,7 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
                     } else {
                         showErrorMessage('服务端校验失败', extraElement);
                     }
-                })
-                .fail(function () {
+                }).fail(function () {
                     showErrorMessage('服务端操作失败', extraElement);
                 });
         };

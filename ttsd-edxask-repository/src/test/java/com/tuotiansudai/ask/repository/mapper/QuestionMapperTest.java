@@ -1,8 +1,13 @@
 package com.tuotiansudai.ask.repository.mapper;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.ask.repository.dto.QuestionDto;
 import com.tuotiansudai.ask.repository.model.QuestionModel;
+import com.tuotiansudai.ask.repository.model.QuestionStatus;
 import com.tuotiansudai.ask.repository.model.Tag;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.BasePaginationDataDto;
+import org.apache.commons.collections.CollectionUtils;
 import org.hamcrest.core.Is;
 import org.joda.time.DateTime;
 import org.junit.Test;
@@ -14,6 +19,7 @@ import java.util.List;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 public class QuestionMapperTest extends BaseMapperTest {
 
@@ -93,5 +99,27 @@ public class QuestionMapperTest extends BaseMapperTest {
 
         assertThat(questionMapper.findAllHotQuestions("ask", 0, 2).get(0).getId(), is(questionModel1.getId()));
         assertThat(questionMapper.findAllHotQuestions("ask", 0, 2).get(1).getId(), is(questionModel2.getId()));
+    }
+
+    @Test
+    public void shouldGetQuestionsByKeywordsIsOk(){
+        String loginName = "caiBuDao";
+        String mobile = "15500001111";
+        String question = "testQuestion";
+        QuestionModel questionModel = getQuestionModel(loginName, mobile, question);
+        questionMapper.create(questionModel);
+
+        List<QuestionModel> questionModels = questionMapper.findQuestionsByKeywords("testQuestion", 0, 10);
+        assertTrue(CollectionUtils.isEmpty(questionModels));
+
+        questionModel.setStatus(QuestionStatus.UNRESOLVED);
+        questionMapper.update(questionModel);
+
+        questionModels = questionMapper.findQuestionsByKeywords("testQuestion", 0, 10);
+        assertTrue(CollectionUtils.isNotEmpty(questionModels));
+    }
+
+    private QuestionModel getQuestionModel(String loginName, String mobile, String question){
+        return new QuestionModel(loginName, mobile, "fakeMobile", question, "addition", Lists.newArrayList(Tag.SECURITIES, Tag.BANK));
     }
 }

@@ -1,6 +1,6 @@
 package com.tuotiansudai.job;
 
-import com.tuotiansudai.coupon.service.CouponActivationService;
+import com.tuotiansudai.coupon.service.CouponSmsNotifyService;
 import org.apache.log4j.Logger;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
@@ -18,7 +18,7 @@ public class CouponNotifyJob implements Job {
     public final static String COUPON_ID = "COUPON_ID";
 
     @Autowired
-    private CouponActivationService couponActivationService;
+    private CouponSmsNotifyService couponSmsNotifyService;
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
@@ -26,7 +26,7 @@ public class CouponNotifyJob implements Job {
 
         logger.info(MessageFormat.format("Send coupon notify (couponId = {0}) starting", String.valueOf(couponId)));
 
-        couponActivationService.sendSms(couponId);
+        couponSmsNotifyService.sendSms(couponId);
 
         logger.info(MessageFormat.format("Send coupon notify (couponId = {0}) finished", String.valueOf(couponId)));
     }

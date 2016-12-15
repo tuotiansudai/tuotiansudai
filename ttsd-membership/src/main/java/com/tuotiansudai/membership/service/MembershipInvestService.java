@@ -1,12 +1,13 @@
 package com.tuotiansudai.membership.service;
 
-import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.membership.repository.mapper.MembershipExperienceBillMapper;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipExperienceBillModel;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.util.AmountConverter;
@@ -39,19 +40,26 @@ public class MembershipInvestService {
     private UserMembershipEvaluator userMembershipEvaluator;
 
     @Autowired
-    private RedisWrapperClient redisWrapperClient;
+    private MQWrapperClient mqWrapperClient;
 
-    private final String REDIS_MEMBERSHIP_UPGRADE_MESSAGE = "web:membership:upgrade";
 
     @Transactional
     public void afterInvestSuccess(String loginName, long investAmount, long investId) {
         try {
+            if (membershipExperienceBillMapper.findByLoginNameAndInvestId(loginName, investId) != null) {
+                // 检查是否已经处理过，幂等操作
+                logger.info(MessageFormat.format(
+                        "membership point has been processed already, won't do it again. loginName:{0}, investId:{1}", loginName, String.valueOf(investId)));
+                return;
+            }
+
             AccountModel accountModel = accountMapper.findByLoginName(loginName);
             long investMembershipPoint = investAmount / 100;
             accountModel.setMembershipPoint(accountModel.getMembershipPoint() + investMembershipPoint);
             accountMapper.update(accountModel);
 
             MembershipExperienceBillModel billModel = new MembershipExperienceBillModel(loginName,
+                    String.valueOf(investId),
                     investMembershipPoint,
                     accountModel.getMembershipPoint(),
                     MessageFormat.format("您投资了{0}项目{1}元", String.valueOf(investId), AmountConverter.convertCentToString(investAmount)));
@@ -61,16 +69,21 @@ public class MembershipInvestService {
             int level = userMembershipEvaluator.evaluateUpgradeLevel(loginName).getLevel();
             MembershipModel newMembership = membershipMapper.findByExperience(accountModel.getMembershipPoint());
             if (newMembership.getLevel() > level) {
-                UserMembershipModel curUserMembershipModel = userMembershipMapper.findCurrentMaxByLoginName(loginName);
+                logger.info(MessageFormat.format("will upgrade user membership level, loginName:{0}, investId:{1}, newLevel:{2}",
+                        loginName, String.valueOf(investId),newMembership.getLevel()));
+
+                UserMembershipModel curUserMembershipModel = userMembershipMapper.findCurrentUpgradeMaxByLoginName(loginName);
                 curUserMembershipModel.setExpiredTime(new Date());
                 userMembershipMapper.update(curUserMembershipModel);
 
                 UserMembershipModel newUserMembershipModel = UserMembershipModel.createUpgradeUserMembershipModel(loginName, newMembership.getId());
                 userMembershipMapper.create(newUserMembershipModel);
-                redisWrapperClient.hset(REDIS_MEMBERSHIP_UPGRADE_MESSAGE, loginName, String.valueOf(newMembership.getId()));
+
+                mqWrapperClient.sendMessage(MessageQueue.MembershipUpgrade_SendJpushMessage, loginName + ":" + String.valueOf(newMembership.getId()));
             }
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
+            throw e;
         }
     }
 }

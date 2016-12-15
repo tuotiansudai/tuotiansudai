@@ -104,9 +104,10 @@ public class MobileAppUserMessageServiceTest extends ServiceTestBase {
                 Lists.newArrayList(MessageChannel.WEBSITE),
                 null,
                 creator.getLoginName());
+
         messageMapper.create(messageModel);
 
-        UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), creator.getLoginName(), messageModel.getTitle(), messageModel.getTitle(), messageModel.getTemplate());
+        UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), creator.getLoginName(), messageModel.getTitle(), messageModel.getTitle(), messageModel.getTemplate(), messageModel.getActivatedTime());
         userMessageModel.setRead(false);
         userMessageMapper.create(userMessageModel);
         mobileAppUserMessageService.updateReadMessage(String.valueOf(userMessageModel.getId()));

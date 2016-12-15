@@ -93,5 +93,4 @@ public class UserMessageMapperTest {
 //        l = userMessageMapper.countMessagesByLoginNameAndMessageType(userModel.getLoginName(), messageModel.getId(), messageModel.getTitle());
 //        assertTrue(l == 1);
 //    }
-
 }
