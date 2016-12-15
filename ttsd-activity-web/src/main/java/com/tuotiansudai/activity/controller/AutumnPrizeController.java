@@ -108,13 +108,13 @@ public class AutumnPrizeController {
     @ResponseBody
     @RequestMapping(value = "/travel-draw", method = RequestMethod.POST)
     public DrawLotteryResultDto travelDrawPrize(@RequestParam(value = "mobile", required = false) String mobile) {
-        return lotteryActivityService.drawLotteryPrize(Strings.isNullOrEmpty(LoginUserInfo.getMobile()) ? mobile : LoginUserInfo.getMobile() , LotteryPrize.TOURISM);
+        return lotteryActivityService.drawLotteryPrize(Strings.isNullOrEmpty(LoginUserInfo.getMobile()) ? mobile : LoginUserInfo.getMobile());
     }
 
     @ResponseBody
     @RequestMapping(value = "/luxury-draw", method = RequestMethod.POST)
     public DrawLotteryResultDto luxuryDrawPrize(@RequestParam(value = "mobile", required = false) String mobile) {
-        return lotteryActivityService.drawLotteryPrize(Strings.isNullOrEmpty(LoginUserInfo.getMobile()) ? mobile : LoginUserInfo.getMobile(), LotteryPrize.LUXURY);
+        return lotteryActivityService.drawLotteryPrize(Strings.isNullOrEmpty(LoginUserInfo.getMobile()) ? mobile : LoginUserInfo.getMobile());
     }
 
     @ResponseBody

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.activity.repository.mapper.AnnualPrizeMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
+
+    <resultMap id="annualPrizeModel" type="com.tuotiansudai.activity.repository.model.AnnualPrizeModel">
+        <id column="id" property="id"></id>
+        <result column="login_name" property="loginName"></result>
+        <result column="user_name" property="userName"></result>
+        <result column="mobile" property="mobile"></result>
+        <result column="invest_amount" property="investAmount"></result>
+        <result column="first_send_coupon" property="firstSendCoupon"></result>
+        <result column="second_send_coupon" property="secondSendCoupon"></result>
+        <result column="updated_time" property="updatedTime"></result>
+        <result column="created_time" property="createdTime"></result>
+    </resultMap>
+
+    <insert id="create" parameterType="annualPrizeModel" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `edxactivity`.`annual_prize`
+        (`login_name`,
+        `user_name`,
+        `mobile`,
+        `invest_amount`,
+        `first_send_coupon`,
+        `second_send_coupon`,
+        `created_time`)
+        VALUES(#{loginName},#{userName},#{mobile},#{investAmount},#{firstSendCoupon},#{secondSendCoupon},now())
+    </insert>
+
+    <update id="update" parameterType="annualPrizeModel">
+        update annual_prize set
+        `invest_amount` = #{investAmount},
+        `first_send_coupon` #{firstSendCoupon},
+        `second_send_coupon` #{secondSendCoupon},
+        `updated_time` = now()
+        where id = #{id}
+    </update>
+
+
+    <select id="findAnnualPrizeModels" parameterType="map" resultMap="annualPrizeModel">
+        select * from `edxactivity`.`annual_prize` a
+        <if test="mobile != null and mobile != null">
+            where mobile = #{mobile}
+        </if>
+        order by a.created_time DESC
+        <if test="index != null and pageSize != null">
+            limit #{index}, #{pageSize}
+        </if>
+    </select>
+
+    <select id="findAnnualPrizeCount" resultType="long">
+        select count(1) from `edxactivity`.`annual_prize`
+        <if test="mobile != null and mobile != null">
+            where mobile = #{mobile}
+        </if>
+    </select>
+
+</mapper>
