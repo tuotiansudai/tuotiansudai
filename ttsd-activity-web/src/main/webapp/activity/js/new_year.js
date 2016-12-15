@@ -107,7 +107,7 @@ require(['jquery','drawCircle','logintip','register_common'], function ($,drawCi
             drawCircle.signToday(function() {
                 tipMessage.button='<a href="javascript:void(0)" class="go-on go-close">知道了</a>';
                 tipMessage.info='<p class="success-text">签到成功！</p>' +
-                    '<p class="des-text">恭喜您获得10积分，并获得砸金蛋机会一次</p>'
+                    '<p class="des-text">恭喜您获得砸金蛋机会一次</p>'
                 drawCircle.tipWindowPop(tipMessage);
             },function() {
                 tipMessage.button='';
@@ -134,9 +134,6 @@ require(['jquery','drawCircle','logintip','register_common'], function ($,drawCi
                         //停止鸡蛋的动画
                         $pointerImg.removeClass('win-result');
 
-                        // 抽奖次数
-                        $rewardGiftBox.find('.my-times').text(--myTimes);
-
                         if (data.returnCode == 0) {
                             //真实奖品
                             if(data.prizeType=='CONCRETE') {
@@ -153,6 +150,9 @@ require(['jquery','drawCircle','logintip','register_common'], function ($,drawCi
                                     '<p class="des-text">奖品已发放至“我的宝藏”当中。</p>'
                             }
                             drawCircle.noRotateFn(tipMessage);
+                            
+                            // 抽奖次数
+                            $rewardGiftBox.find('.my-times').text(--myTimes);
                         } else if(data.returnCode == 1) {
                             //没有抽奖机会
                             tipMessage.info='<p class="login-text">您暂无抽奖机会啦～</p><p class="des-text">赢取机会后再来抽奖吧！</p>',
