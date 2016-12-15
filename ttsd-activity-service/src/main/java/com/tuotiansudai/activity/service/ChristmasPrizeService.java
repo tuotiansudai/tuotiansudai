@@ -9,7 +9,6 @@ import com.tuotiansudai.activity.repository.model.ActivityCategory;
 import com.tuotiansudai.activity.repository.model.LotteryPrize;
 import com.tuotiansudai.activity.repository.model.PrizeType;
 import com.tuotiansudai.activity.repository.model.UserLotteryPrizeModel;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
@@ -19,13 +18,11 @@ import com.tuotiansudai.repository.model.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
@@ -54,39 +51,28 @@ public class ChristmasPrizeService {
     @Autowired
     private LoanDetailsMapper loanDetailsMapper;
 
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
-
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.christmas.startTime}\")}")
     private Date activityChristmasStartTime;
 
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.christmas.secondStartTime}\")}")
+    private Date activityChristmasSecondStartTime;
+
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.christmas.endTime}\")}")
     private Date activityChristmasEndTime;
-
-    private static final String redisKey = "web:christmasTime:lottery:startTime";
 
     private static final long RED_ENVELOPE_20_POINT_DRAW_REF_CARNIVAL_COUPON_ID = 324L;
 
     public static final long CHRISTMAS_ACTIVITY_2_START_MIN_AMOUNT = 420000000;
 
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    private static final int timeout = 60 * 60 * 24 * 20;
     //判断圣诞节活动二是否开启
-    public int isStart(){
-        long investAmount =  (long)getActivityChristmasInvestAmountAndCount().get("investAmount");
-        if(investAmount >= CHRISTMAS_ACTIVITY_2_START_MIN_AMOUNT && !redisWrapperClient.exists(redisKey) && activityChristmasEndTime.after(new Date()))
-            redisWrapperClient.setex(redisKey, timeout, sdf.format(new Date()));
-        return ((investAmount >= CHRISTMAS_ACTIVITY_2_START_MIN_AMOUNT && redisWrapperClient.exists(redisKey)) || (investAmount >= CHRISTMAS_ACTIVITY_2_START_MIN_AMOUNT && activityChristmasEndTime.before(new Date()))) ? 1 : 0;
-    }
-
-    public Date getChristmasPrizeStartTime(){
-        return redisWrapperClient.exists(redisKey) ? DateTime.parse(redisWrapperClient.get(redisKey), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate() : activityChristmasEndTime;
+    public int isStart() {
+        Date nowDate = DateTime.now().toDate();
+        return nowDate.after(activityChristmasSecondStartTime) ? 1 : 0;
     }
 
     public int getDrawPrizeTime(String mobile) {
         int lotteryTime = 0;
-        if (redisWrapperClient.exists(redisKey)) {
-            Date activityChristmasPrizeStartTime = DateTime.parse(redisWrapperClient.get(redisKey), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+            Date activityChristmasPrizeStartTime = activityChristmasSecondStartTime;
             UserModel userModel = userMapper.findByMobile(mobile);
             if (userModel == null) {
                 return lotteryTime;
@@ -103,7 +89,7 @@ public class ChristmasPrizeService {
 
             investMapper.sumSuccessInvestCountByLoginName(userModel.getLoginName());
 
-            if(this.isFinishInvest(userModel.getLoginName())){
+            if (this.isFinishInvest(userModel.getLoginName())) {
                 lotteryTime++;
             }
 
@@ -119,7 +105,7 @@ public class ChristmasPrizeService {
 
             //每满2000元均增加一次
             long sumAmount = investMapper.sumInvestAmountByLoginNameInvestTimeProductType(userModel.getLoginName(), activityChristmasPrizeStartTime, activityChristmasEndTime, Lists.newArrayList(ProductType._90, ProductType._180, ProductType._360));
-            lotteryTime += (int)(sumAmount/200000);
+            lotteryTime += (int) (sumAmount / 200000);
 
             lotteryTime = lotteryTime >= 10 ? 10 : lotteryTime;
 
@@ -127,16 +113,15 @@ public class ChristmasPrizeService {
             if (lotteryTime > 0) {
                 lotteryTime -= userTime;
             }
-        }
         return lotteryTime;
     }
 
     @Transactional
-    public DrawLotteryResultDto drawLotteryPrize(String mobile){
+    public DrawLotteryResultDto drawLotteryPrize(String mobile) {
         logger.info(mobile + " is drawing the lottery prize.");
 
         Date nowDate = DateTime.now().toDate();
-        if(!nowDate.before(activityChristmasEndTime) || !nowDate.after(activityChristmasStartTime)){
+        if (!nowDate.before(activityChristmasEndTime) || !nowDate.after(activityChristmasStartTime)) {
             return new DrawLotteryResultDto(3);//不在活动时间范围内！
         }
 
@@ -146,14 +131,14 @@ public class ChristmasPrizeService {
         }
 
         UserModel userModel = userMapper.findByMobile(mobile);
-        if(userModel == null){
+        if (userModel == null) {
             logger.info(mobile + "User is not found.");
             return new DrawLotteryResultDto(2);//"该用户不存在！"
         }
 
         userMapper.lockByLoginName(userModel.getLoginName());
         int drawTime = getDrawPrizeTime(mobile);
-        if(drawTime <= 0){
+        if (drawTime <= 0) {
             logger.info(mobile + "is no chance. draw time:" + drawTime);
             return new DrawLotteryResultDto(1);//您暂无拆奖机会，赢取机会后再来抽奖吧！
         }
@@ -161,7 +146,7 @@ public class ChristmasPrizeService {
         LotteryPrize christmasPrize = lotteryDrawActivityService.lotteryDrawPrize(ActivityCategory.CHRISTMAS_ACTIVITY);
 
         PrizeType prizeType = PrizeType.CONCRETE;
-        if(christmasPrize.equals(LotteryPrize.RED_ENVELOPE_20_POINT_DRAW_REF_CARNIVAL)){
+        if (christmasPrize.equals(LotteryPrize.RED_ENVELOPE_20_POINT_DRAW_REF_CARNIVAL)) {
             couponAssignmentService.assignUserCoupon(mobile, RED_ENVELOPE_20_POINT_DRAW_REF_CARNIVAL_COUPON_ID);
             prizeType = PrizeType.VIRTUAL;
         }
@@ -175,30 +160,30 @@ public class ChristmasPrizeService {
         return new DrawLotteryResultDto(0, christmasPrize.name(), prizeType.name(), christmasPrize.getDescription());
     }
 
-    public Map getActivityChristmasInvestAmountAndCount(){
+    public Map getActivityChristmasInvestAmountAndCount() {
         List<InvestModel> investModels = investMapper.countSuccessInvestByInvestTime(null, activityChristmasStartTime, activityChristmasEndTime);
-        Map<String,Object> param = Maps.newConcurrentMap();
+        Map<String, Object> param = Maps.newConcurrentMap();
         long amount = 0l;
         Set userSet = new HashSet();
-        for(InvestModel investModel : investModels){
+        for (InvestModel investModel : investModels) {
             LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(investModel.getLoanId());
-            if(loanDetailsModel != null && loanDetailsModel.isActivity() && loanDetailsModel.getActivityDesc().equals("圣诞专享")){
+            if (loanDetailsModel != null && loanDetailsModel.isActivity() && loanDetailsModel.getActivityDesc().equals("圣诞专享")) {
                 amount += investModel.getAmount();
                 userSet.add(investModel.getLoginName());
             }
         }
-        param.put("investAmount",amount);
-        param.put("investCount",userSet.size());
+        param.put("investAmount", amount);
+        param.put("investCount", userSet.size());
         return param;
     }
 
-    public boolean isFinishInvest(String loginName){
+    public boolean isFinishInvest(String loginName) {
         boolean beforeIsInvest = investMapper.sumInvestAmountByLoginNameInvestTimeProductType(loginName, new DateTime().minusDays(720).toDate(), activityChristmasStartTime, null) > 0;
-        boolean currentIsInvest = investMapper.sumInvestAmountByLoginNameInvestTimeProductType(loginName, activityChristmasStartTime, activityChristmasEndTime, null)  > 0 ;
+        boolean currentIsInvest = investMapper.sumInvestAmountByLoginNameInvestTimeProductType(loginName, activityChristmasStartTime, activityChristmasEndTime, null) > 0;
         return !beforeIsInvest && currentIsInvest;
     }
 
-    public boolean isShowFirstInvest(String loginName){
-       return investMapper.sumInvestAmountByLoginNameInvestTimeProductType(loginName, new DateTime().minusDays(720).toDate(), activityChristmasEndTime, null) > 0;
+    public boolean isShowFirstInvest(String loginName) {
+        return investMapper.sumInvestAmountByLoginNameInvestTimeProductType(loginName, new DateTime().minusDays(720).toDate(), activityChristmasEndTime, null) > 0;
     }
 }
