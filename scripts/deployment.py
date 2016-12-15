@@ -1,3 +1,4 @@
+import time
 from paver.shell import sh
 
 
@@ -17,6 +18,7 @@ class Deployment(object):
         self.build_and_unzip_worker()
         self.build_mq_consumer()
         self.build_diagnosis()
+        self.build_worker_monitor()
         self.mk_static_package()
         self.init_docker()
 
@@ -56,6 +58,10 @@ class Deployment(object):
         print "Making diagnosis build..."
         sh('cd ./ttsd-diagnosis && {0} distZip'.format(self._gradle))
         sh('cd ./ttsd-diagnosis/build/distributions && unzip \*.zip')
+
+    def build_worker_monitor(self):
+        print "Making diagnosis build..."
+        sh('cd ./ttsd-worker-monitor && {0} bootRepackage'.format(self._gradle))
 
     def mkwar(self):
         print "Making war..."
