@@ -116,7 +116,7 @@ public class InvestSuccessActivityRewardMessageConsumer implements MessageConsum
                 && loanDetailInfo.isActivity() && loanDetailInfo.getActivityDesc().equals(LOAN_ANNUAL_ACTIVITY_DESCRIPTION)
                 && (!investInfo.getTransferStatus().equals("SUCCESS") && investInfo.getStatus().equals("SUCCESS"))) {
 
-            AnnualPrizeModel annualPrizeModel = annualPrizeMapper.find(investInfo.getLoginName());
+            AnnualPrizeModel annualPrizeModel = annualPrizeMapper.findByMobile(userInfo.getMobile());
             boolean firstSendCoupon = false;
             boolean secondSendCoupon = false;
             if (null != annualPrizeModel) {

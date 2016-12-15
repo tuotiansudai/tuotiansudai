@@ -95,7 +95,7 @@ public class InvestSuccessActivityRewardMessageConsumerTest {
 
         ReflectionTestUtils.setField(consumer, "annualTime", Lists.newArrayList(DateTime.now().plusDays(-1).toString(DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")), DateTime.now().plusDays(1).toString(DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss"))));
 
-        when(annualPrizeMapper.find(anyString())).thenReturn(null);
+        when(annualPrizeMapper.findByMobile(anyString())).thenReturn(null);
         doNothing().when(annualPrizeMapper).create(any(AnnualPrizeModel.class));
         doNothing().when(mqClient).sendMessage(messageQueueCaptor.capture(), messageCaptor.capture());
 
@@ -122,7 +122,7 @@ public class InvestSuccessActivityRewardMessageConsumerTest {
 
         ReflectionTestUtils.setField(consumer, "annualTime", Lists.newArrayList(DateTime.now().plusDays(-1).toString(DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")), DateTime.now().plusDays(1).toString(DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss"))));
 
-        when(annualPrizeMapper.find(anyString())).thenReturn(null);
+        when(annualPrizeMapper.findByMobile(anyString())).thenReturn(null);
 
         doNothing().when(mqClient).sendMessage(messageQueueCaptor.capture(), messageCaptor.capture());
 
@@ -152,7 +152,7 @@ public class InvestSuccessActivityRewardMessageConsumerTest {
 
         AnnualPrizeModel annualPrizeModel = new AnnualPrizeModel();
         annualPrizeModel.setInvestAmount(100000L);
-        when(annualPrizeMapper.find(anyString())).thenReturn(annualPrizeModel);
+        when(annualPrizeMapper.findByMobile(anyString())).thenReturn(annualPrizeModel);
         doNothing().when(mqClient).sendMessage(messageQueueCaptor.capture(), messageCaptor.capture());
 
         try {
