@@ -89,7 +89,7 @@
                 <div class="title-christmas"><span>活动二：圣诞拆礼物</span></div>
                 <div class="model-content clearfix">
                     <div class="tc color-sec margin-top25">
-                        活动时间：12月24日24:00-13月31日24:00 <br/>
+                        活动时间：12月24日24:00-12月31日24:00 <br/>
                         圣诞礼物还在路上，快去投资专享标，帮圣诞老人铺路吧！
                     </div>
                     <div class="tc margin-top25">
