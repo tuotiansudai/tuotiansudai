@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class AnnualActivityService {
@@ -34,8 +35,8 @@ public class AnnualActivityService {
 
         Map<String, String> param = Maps.newHashMap();
         param.put("investAmount", AmountConverter.convertCentToString(investAmount));
-        param.put("nextAmount", AmountConverter.convertCentToString(investTaskList.stream().filter(c -> c >= investAmount).findFirst().get() - investAmount));
-
+        Optional<Long> first = investTaskList.stream().filter(c -> c >= investAmount).findFirst();
+        param.put("nextAmount", first.isPresent() ? AmountConverter.convertCentToString(first.get() - investAmount) : "0" );
         return param;
     }
 

@@ -20,8 +20,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import sun.plugin2.message.Message;
 
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -121,6 +123,7 @@ public class InvestSuccessActivityRewardMessageConsumer implements MessageConsum
             boolean secondSendCoupon = false;
             if (null != annualPrizeModel) {
                 annualPrizeModel.setInvestAmount(annualPrizeModel.getInvestAmount() + investInfo.getAmount());
+                logger.info(MessageFormat.format("[MQ] annual prize is already exits. firstSendCount:{0}, SecondSendCoupon:{1}, investAmount:{2}", annualPrizeModel.isFirstSendCoupon(), annualPrizeModel.isSecondSendCoupon(), annualPrizeModel.getInvestAmount()));
 
                 if(!annualPrizeModel.isFirstSendCoupon() && annualPrizeModel.getInvestAmount() >= INVEST_20_RED_ENVELOPE_LIMIT){
                     firstSendCoupon = true;
@@ -134,6 +137,7 @@ public class InvestSuccessActivityRewardMessageConsumer implements MessageConsum
 
                 annualPrizeMapper.update(annualPrizeModel);
             } else {
+                logger.info(MessageFormat.format("[MQ] annual prize is not exits. firstSendCount:{0}, SecondSendCoupon:{1}, investAmount:{2}", annualPrizeModel.isFirstSendCoupon(), annualPrizeModel.isSecondSendCoupon(), annualPrizeModel.getInvestAmount()));
 
                 if(investInfo.getAmount() >= INVEST_20_RED_ENVELOPE_LIMIT){
                     firstSendCoupon = true;
@@ -148,10 +152,12 @@ public class InvestSuccessActivityRewardMessageConsumer implements MessageConsum
             }
 
             if (firstSendCoupon) {
+                logger.info(MessageFormat.format("[MQ] execute first coupon assign coupon . loginName:{0}, couponId:{1}", investSuccessMessage.getInvestInfo().getLoginName(), INTEREST_COUPON_OF_20_COUPON_ID));
                 mqClient.sendMessage(MessageQueue.CouponAssigning, investSuccessMessage.getInvestInfo().getLoginName() + ":" + INTEREST_COUPON_OF_20_COUPON_ID);
             }
 
             if (secondSendCoupon) {
+                logger.info(MessageFormat.format("[MQ] execute second coupon assign coupon . loginName:{0}, couponId:{1}", investSuccessMessage.getInvestInfo().getLoginName(), INTEREST_COUPON_OF_20_COUPON_ID));
                 mqClient.sendMessage(MessageQueue.CouponAssigning, investSuccessMessage.getInvestInfo().getLoginName() + ":" + INTEREST_COUPON_OF_800_COUPON_ID);
             }
         }

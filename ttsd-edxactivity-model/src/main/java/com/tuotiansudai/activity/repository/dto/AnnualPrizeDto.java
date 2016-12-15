@@ -2,20 +2,21 @@ package com.tuotiansudai.activity.repository.dto;
 
 
 import com.tuotiansudai.activity.repository.model.AnnualPrizeModel;
+import com.tuotiansudai.util.AmountConverter;
 
 public class AnnualPrizeDto {
 
     private String loginName;
     private String userName;
     private String mobile;
-    private long investAmount;
+    private String investAmount;
     private String rewards;
 
     public AnnualPrizeDto(AnnualPrizeModel annualPrizeModel, String rewards) {
         this.loginName = annualPrizeModel.getLoginName();
         this.userName = annualPrizeModel.getUserName();
         this.mobile = annualPrizeModel.getMobile();
-        this.investAmount = annualPrizeModel.getInvestAmount();
+        this.investAmount = AmountConverter.convertCentToString(annualPrizeModel.getInvestAmount());
         this.rewards = rewards;
     }
 
@@ -43,11 +44,11 @@ public class AnnualPrizeDto {
         this.mobile = mobile;
     }
 
-    public long getInvestAmount() {
+    public String getInvestAmount() {
         return investAmount;
     }
 
-    public void setInvestAmount(long investAmount) {
+    public void setInvestAmount(String investAmount) {
         this.investAmount = investAmount;
     }
 
