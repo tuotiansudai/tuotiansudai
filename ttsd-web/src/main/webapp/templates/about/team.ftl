@@ -32,7 +32,7 @@
             </dl>
         </div>
         <div class="team-box com-list clearfix">
-            <img src="${staticServer}/images/sign/aboutus/user-four.png" width="180" height="220" alt="张东杰先生" class="com-img responsive-width">
+            <img src="${staticServer}/images/sign/aboutus/user-four.jpg" width="180" height="220" alt="张东杰先生" class="com-img responsive-width">
             <dl class="company-user">
                 <dt>张东杰先生<span>副总经理兼运营总监</span></dt>
                 <dd>世界会向那些有目标和远见的人让路。</dd>
