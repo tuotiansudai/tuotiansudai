@@ -12,6 +12,8 @@ public class ErrorController {
 
     @RequestMapping(path = "/{code:^404|500$}", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView error(@PathVariable String code) {
-        return new ModelAndView("/error/" + code);
+        ModelAndView mv = new ModelAndView("/error/" + code);
+        mv.addObject("errorPage", code);
+        return mv;
     }
 }
