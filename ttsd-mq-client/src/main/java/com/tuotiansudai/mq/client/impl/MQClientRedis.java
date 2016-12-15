@@ -53,7 +53,7 @@ public class MQClientRedis implements MQClient, InitializingBean {
             if (messages.size() == 0) {
                 continue;
             }
-            logger.debug("[MQ] receive a message, prepare to consume");
+            logger.info("[MQ] receive a message, prepare to consume");
             try {
                 consumer.accept(messages.get(1));
             } catch (Exception e) {

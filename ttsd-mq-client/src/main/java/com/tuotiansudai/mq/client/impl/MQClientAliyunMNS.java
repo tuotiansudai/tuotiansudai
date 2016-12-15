@@ -74,12 +74,12 @@ public class MQClientAliyunMNS implements MQClient {
     private void listenMessage(CloudQueue cloudQueue, String queueName, Consumer<String> consumer) {
         Message message = null;
         try {
-            logger.debug("[MQ] ready to pop message from queue: {}", queueName);
+            logger.info("[MQ] ready to pop message from queue: {}", queueName);
             message = cloudQueue.popMessage(10);
             if (message == null) {
-                logger.debug("[MQ] receive no message, try again");
+                logger.info("[MQ] receive no message, try again");
             } else {
-                logger.debug("[MQ] receive a message, prepare to consume");
+                logger.info("[MQ] receive a message, prepare to consume");
             }
         } catch (Exception e) {
             logger.error("[MQ] pop message fail", e);
