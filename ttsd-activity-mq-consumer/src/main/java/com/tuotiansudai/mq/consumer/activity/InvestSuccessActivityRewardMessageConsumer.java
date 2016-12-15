@@ -28,7 +28,6 @@ public class InvestSuccessActivityRewardMessageConsumer implements MessageConsum
 
     final static private long INTEREST_COUPON_OF_ZERO_5_PERCENT_COUPON_ID = 323L;
 
-//    final static private long INVEST_LIMIT = 3000000L;
     final static private long INVEST_LIMIT = 3000000L;
 
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.christmas.startTime}\")}")
