@@ -14,6 +14,8 @@ public interface AuditLogMapper {
 
     void create(AuditLogModel auditLogModel);
 
+    AuditLogModel findById(@Param("id") long id);
+
     long count(@Param("operationType") OperationType operationType,
                @Param("targetId") String targetId,
                @Param("operatorMobile") String operatorMobile,

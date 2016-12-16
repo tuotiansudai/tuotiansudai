@@ -42,7 +42,10 @@ public class AuditLogMessageConsumer implements MessageConsumer {
             logger.info("[MQ] ready to consume message: AuditLog. operatorLoginName:{}, operationType:{}, targetId:{}",
                     auditLogModel.getOperatorLoginName(), auditLogModel.getOperationType(), auditLogModel.getTargetId());
 
-            auditLogMapper.create(auditLogModel);
+            // 幂等处理
+            if (auditLogMapper.findById(auditLogModel.getId()) == null) {
+                auditLogMapper.create(auditLogModel);
+            }
         }
         logger.info("[MQ] consume message success.");
     }
