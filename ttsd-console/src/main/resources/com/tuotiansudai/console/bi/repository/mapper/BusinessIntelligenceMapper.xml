@@ -1437,4 +1437,26 @@
             </if>
             ORDER BY created_time
     </select>
+
+    <select id="queryAnxinUserStatus" parameterType="map" resultMap="keyValueMap">
+        SELECT count(1),
+            CASE skip_auth
+            WHEN 1 THEN '开通安心签且开通免验'
+            WHEN 0 THEN '开通安心签未开通免验'
+            END  AS `name`
+        FROM anxin_sign_property
+        GROUP BY `name`
+    </select>
+
+    <select id="queryAnxinInvestSuccess" parameterType="map" resultMap="keyValueMap">
+        SELECT count(1),
+        CASE skip_auth
+        WHEN 1 THEN '开通安心签且开通免验'
+        WHEN 0 THEN '开通安心签未开通免验'
+        END  AS `name`
+        FROM anxin_sign_property
+        GROUP BY `name`
+    </select>
+
+
 </mapper>

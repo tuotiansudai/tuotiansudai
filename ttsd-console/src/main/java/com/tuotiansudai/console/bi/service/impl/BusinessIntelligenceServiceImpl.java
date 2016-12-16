@@ -299,4 +299,11 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
         }
         return keyValueModels;
     }
+
+
+
+    public List<KeyValueModel> queryAnxinUserStatusStatistics(Date startTime, Date endTime){
+
+    }
+
 }

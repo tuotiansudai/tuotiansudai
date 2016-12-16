@@ -185,4 +185,7 @@ require(['jquery','loadEcharts','bootstrapDatetimepicker'],function($,loadEchart
 
     /*平台支出*/
     showReport('#platformOut','/bi/platform-out','platformOutDistribution','金额','Lines');
+
+    /*安心签用户状态统计*/
+    showReport('#anxinUserStatusStatistics','/bi/anxin-user-status-statistics','anxinUserStatusStatistics','数量','Lines');
 });
