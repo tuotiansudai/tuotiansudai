@@ -12,6 +12,7 @@ import com.tuotiansudai.repository.mapper.BankCardMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.BindBankCardService;
 import com.tuotiansudai.service.InvestRepayService;
+import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.JsonConverter;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
@@ -40,6 +41,9 @@ public class BindBankCardServiceImpl implements BindBankCardService {
     @Autowired
     private InvestRepayService investRepayService;
 
+    @Autowired
+    private IdGenerator idGenerator;
+
     @Override
     public BaseDto<PayFormDataDto> bindBankCard(BindBankCardDto dto) {
         AccountModel accountModel = accountMapper.findByLoginName(dto.getLoginName());
@@ -62,7 +66,7 @@ public class BindBankCardServiceImpl implements BindBankCardService {
 
     private void sendBindCardOpLogMessage(BindBankCardDto dto) {
 
-        UserOpLogModel logModel = new UserOpLogModel(dto.getLoginName(), UserOpType.BIND_CARD, dto.getIp(), dto.getDeviceId(), dto.getSource(), null);
+        UserOpLogModel logModel = new UserOpLogModel(idGenerator.generate(), dto.getLoginName(), UserOpType.BIND_CARD, dto.getIp(), dto.getDeviceId(), dto.getSource(), null);
         try {
             mqWrapperClient.sendMessage(MessageQueue.UserOperateLog, JsonConverter.writeValueAsString(logModel));
         } catch (JsonProcessingException e) {
@@ -80,7 +84,7 @@ public class BindBankCardServiceImpl implements BindBankCardService {
     }
 
     private void sendReplaceCardOpLogMessage(BindBankCardDto dto) {
-        UserOpLogModel logModel = new UserOpLogModel(dto.getLoginName(), UserOpType.REPLACE_CARD, dto.getIp(), dto.getDeviceId(), dto.getSource(), null);
+        UserOpLogModel logModel = new UserOpLogModel(idGenerator.generate(), dto.getLoginName(), UserOpType.REPLACE_CARD, dto.getIp(), dto.getDeviceId(), dto.getSource(), null);
         try {
             mqWrapperClient.sendMessage(MessageQueue.UserOperateLog, JsonConverter.writeValueAsString(logModel));
         } catch (JsonProcessingException e) {

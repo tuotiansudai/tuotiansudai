@@ -19,6 +19,7 @@ import com.tuotiansudai.paywrapper.service.AgreementService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.BankCardMapper;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.JsonConverter;
 import org.apache.log4j.Logger;
 import org.springframework.aop.framework.AopContext;
@@ -46,6 +47,9 @@ public class AgreementServiceImpl implements AgreementService {
 
     @Autowired
     private MQWrapperClient mqWrapperClient;
+
+    @Autowired
+    private IdGenerator idGenerator;
 
     @Override
     @Transactional
@@ -81,7 +85,7 @@ public class AgreementServiceImpl implements AgreementService {
             return;
         }
 
-        UserOpLogModel logModel = new UserOpLogModel(dto.getLoginName(), opType, dto.getIp(), dto.getDeviceId(), dto.getSource(), null);
+        UserOpLogModel logModel = new UserOpLogModel(idGenerator.generate(), dto.getLoginName(), opType, dto.getIp(), dto.getDeviceId(), dto.getSource(), null);
 
         try {
             mqWrapperClient.sendMessage(MessageQueue.UserOperateLog, JsonConverter.writeValueAsString(logModel));

@@ -24,7 +24,8 @@ public class UserOpLogModel {
     public UserOpLogModel() {
     }
 
-    public UserOpLogModel(String loginName, UserOpType opType, String ip, String deviceId, Source source, String description) {
+    public UserOpLogModel(long id, String loginName, UserOpType opType, String ip, String deviceId, Source source, String description) {
+        this.id = id;
         this.loginName = loginName;
         this.opType = opType;
         this.ip = ip;

@@ -13,10 +13,7 @@ import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.*;
-import com.tuotiansudai.util.JsonConverter;
-import com.tuotiansudai.util.MobileLocationUtils;
-import com.tuotiansudai.util.MyShaPasswordEncoder;
-import com.tuotiansudai.util.RandomStringGenerator;
+import com.tuotiansudai.util.*;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -58,6 +55,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private RegisterUserService registerUserService;
+
+    @Autowired
+    private IdGenerator idGenerator;
 
     public static String SHA = "SHA";
 
@@ -187,21 +187,27 @@ public class UserServiceImpl implements UserService {
             returnValue = true;
         }
 
+        // 发送用户行为日志 MQ
+        sendUserLogMessageMQ(loginName, ip, platform, deviceId, returnValue);
+        return returnValue;
+    }
+
+    private void sendUserLogMessageMQ(String loginName, String ip, String platform, String deviceId, Boolean returnValue) {
         UserOpLogModel logModel = new UserOpLogModel();
+        logModel.setId(idGenerator.generate());
         logModel.setLoginName(loginName);
         logModel.setIp(ip);
         logModel.setDeviceId(deviceId);
         logModel.setSource(platform == null ? null : Source.valueOf(platform.toUpperCase(Locale.ENGLISH)));
         logModel.setOpType(UserOpType.CHANGE_PASSWORD);
         logModel.setCreatedTime(new Date());
-        logModel.setDescription((Boolean) returnValue ? "Success" : "Fail");
+        logModel.setDescription(returnValue ? "Success" : "Fail");
 
         try {
             mqWrapperClient.sendMessage(MessageQueue.UserOperateLog, JsonConverter.writeValueAsString(logModel));
         } catch (JsonProcessingException e) {
             logger.error("[MQ] 修改密码, send UserOperateLog fail.", e);
         }
-        return returnValue;
     }
 
     @Override

@@ -12,6 +12,7 @@ import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserOpLogModel;
 import com.tuotiansudai.repository.model.UserOpType;
 import com.tuotiansudai.service.BindEmailService;
+import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.JsonConverter;
 import com.tuotiansudai.util.SendCloudMailUtil;
 import com.tuotiansudai.util.UUIDGenerator;
@@ -43,6 +44,9 @@ public class BindEmailServiceImpl implements BindEmailService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private IdGenerator idGenerator;
 
 
     @Value("${web.server}")
@@ -102,6 +106,7 @@ public class BindEmailServiceImpl implements BindEmailService {
         redisWrapperClient.del(bindEmailKey);
 
         UserOpLogModel logModel = new UserOpLogModel();
+        logModel.setId(idGenerator.generate());
         logModel.setLoginName(loginName);
         logModel.setIp(ip);
         logModel.setDeviceId(deviceId);

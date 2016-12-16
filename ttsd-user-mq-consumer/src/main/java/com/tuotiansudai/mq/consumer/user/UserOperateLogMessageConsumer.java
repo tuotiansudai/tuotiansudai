@@ -41,7 +41,10 @@ public class UserOperateLogMessageConsumer implements MessageConsumer {
 
             logger.info("[MQ] ready to consume message: UserOperateLog. loginName:{}, opType:{}", userOpLogModel.getLoginName(), userOpLogModel.getOpType());
 
-            userOpLogMapper.create(userOpLogModel);
+            // 幂等判断
+            if (userOpLogMapper.findById(userOpLogModel.getId()) == null) {
+                userOpLogMapper.create(userOpLogModel);
+            }
         }
         logger.info("[MQ] consume message success.");
     }
