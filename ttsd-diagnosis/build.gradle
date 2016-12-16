@@ -35,7 +35,7 @@ dependencies {
 
 processResources {
     def innerConfigPath = "${project.projectDir.getPath()}/src/main/resources"
-    def outerConfigPath = '${configPath}/ttsd-diagnosis'
+    def outerConfigPath = "${configPath}/ttsd-diagnosis"
     if (new File(outerConfigPath).isDirectory()) {
         innerConfigPath = outerConfigPath
     }

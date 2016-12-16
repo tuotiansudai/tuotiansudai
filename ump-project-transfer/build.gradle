@@ -10,7 +10,7 @@ dependencies {
 
 processResources {
     def innerConfigPath = "${project.projectDir.getPath()}/src/main/resources"
-    def outerConfigPath = '${configPath}/ttsd-pay-wrapper/'
+    def outerConfigPath = "${configPath}/ttsd-pay-wrapper"
 
     if (new File(outerConfigPath).isDirectory()) {
         innerConfigPath = outerConfigPath
