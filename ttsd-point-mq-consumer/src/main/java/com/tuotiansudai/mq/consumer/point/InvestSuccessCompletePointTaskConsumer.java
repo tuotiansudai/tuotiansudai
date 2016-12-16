@@ -1,6 +1,5 @@
 package com.tuotiansudai.mq.consumer.point;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tuotiansudai.message.InvestSuccessMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
@@ -19,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
-import java.io.StringWriter;
 
 @Component
 public class InvestSuccessCompletePointTaskConsumer implements MessageConsumer {
