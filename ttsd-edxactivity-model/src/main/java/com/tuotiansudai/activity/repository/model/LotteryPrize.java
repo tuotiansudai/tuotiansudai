@@ -62,7 +62,7 @@ public enum LotteryPrize {
     ELK_PILLOW("麋鹿抱枕",PrizeType.CONCRETE,ActivityCategory.CHRISTMAS_ACTIVITY,10),
     JOHNSON_HAND_CREAM("强生护手霜",PrizeType.CONCRETE,ActivityCategory.CHRISTMAS_ACTIVITY,10),
     PUMPKIN_PILLOW("南瓜抱枕",PrizeType.CONCRETE,ActivityCategory.CHRISTMAS_ACTIVITY,10),
-    RED_ENVELOPE_20_POINT_DRAW_REF_CARNIVAL("20元投资红包",PrizeType.VIRTUAL,ActivityCategory.CHRISTMAS_ACTIVITY,45);
+    RED_ENVELOPE_20_POINT_DRAW_REF_CARNIVAL("20元投资红包",PrizeType.VIRTUAL,ActivityCategory.CHRISTMAS_ACTIVITY,45),
 
     //今日头条拉新
     T1_PHONE("锤子M1手机(预订)",PrizeType.CONCRETE,ActivityCategory.HEADLINES_TODAY_ACTIVITY,0),
