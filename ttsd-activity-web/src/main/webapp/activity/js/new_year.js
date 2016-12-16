@@ -93,19 +93,17 @@ require(['jquery','drawCircle','logintip','register_common'], function ($,drawCi
             drawCircle.prototype.signToday=function(callback,failFun) {
                 var $signToday=$('#signToday');
                 $signToday.on('click',function() {
-                    //$.ajax({
-                    //    url:'/point/sign-in',
-                    //    type:'POST',
-                    //    dataType: 'json'
-                    //})
-                    //    .done(function(response) {
-                    //        callback && callback(response);
-                    //    })
-                    //    .fail(function() {
-                    //        failFun && failFun()
-                    //    })
-                    callback('ddddddd');
-
+                    $.ajax({
+                        url:'/point/sign-in',
+                        type:'POST',
+                        dataType: 'json'
+                    })
+                        .done(function(response) {
+                            callback && callback(response);
+                        })
+                        .fail(function() {
+                            failFun && failFun()
+                        })
                 })
             }
 
