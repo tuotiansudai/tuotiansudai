@@ -67,14 +67,12 @@ dependencies {
 
 /**
  * parameter: configPath
- * example: gradle ttsd-web:war -PconfigPath=/workspace/new_version_config/ttsd-activity-console
+ * example: gradle ttsd-web:war -PconfigPath=/workspace/deploy-config/ttsd-activity-console
  */
 processResources {
     def innerConfigPath = "${project.projectDir.getPath()}/src/main/resources"
-    def outerConfigPath = '/workspace/new_version_config/ttsd-activity-console'
-    if (project.hasProperty("activityConsoleConfigPath") && new File(activityConsoleConfigPath).isDirectory()) {
-        innerConfigPath = activityConsoleConfigPath
-    } else if (new File(outerConfigPath).isDirectory()) {
+    def outerConfigPath = '/workspace/deploy-config/ttsd-activity-console'
+    if (new File(outerConfigPath).isDirectory()) {
         innerConfigPath = outerConfigPath
     }
     from("${innerConfigPath}") {

@@ -34,14 +34,12 @@ dependencies {
 
 /**
  * parameter: configPath
- * example: gradle ttsd-web:war -PconfigPath=/workspace/new_version_config/ttsd-config
+ * example: gradle ttsd-web:war -PconfigPath=/workspace/deploy-config/ttsd-config
  */
 processResources {
     def innerConfigPath = "${project.projectDir.getPath()}/src/main/resources"
-    def outerConfigPath = '/workspace/new_version_config/ttsd-config'
-    if (project.hasProperty("configPath") && new File(configPath).isDirectory()) {
-        innerConfigPath = configPath
-    } else if (new File(outerConfigPath).isDirectory()) {
+    def outerConfigPath = '/workspace/deploy-config/ttsd-config'
+    if (new File(outerConfigPath).isDirectory()) {
         innerConfigPath = outerConfigPath
     }
     from("${innerConfigPath}/ttsd-env.properties") {

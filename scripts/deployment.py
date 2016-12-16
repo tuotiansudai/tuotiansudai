@@ -31,7 +31,7 @@ class Deployment(object):
         print "Compiling..."
         sh('{0} clean ttsd-config:flywayAA ttsd-config:flywayUMP ttsd-config:flywayAnxin ttsd-config:flywaySms ttsd-config:flywayWorker ttsd-config:flywayAsk ttsd-config:flywayActivity ttsd-config:flywayPoint initMQ war'.format(
             self._gradle))
-        sh('cp /workspace/new_version_config/signin_service/settings_local.py ./signin_service/')
+        sh('cp /workspace/deploy-config/signin_service/settings_local.py ./signin_service/')
 
     def build_and_unzip_worker(self):
         print "Making worker build..."

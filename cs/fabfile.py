@@ -3,7 +3,7 @@ from fabric.api import *
 
 
 env.use_ssh_config = True
-env.ssh_config_path = '/workspace/v2config/config'
+env.ssh_config_path = '/workspace/deploy-config/config'
 env.roledefs = {
     'cs': ['web1'],
 }
