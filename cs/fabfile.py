@@ -3,10 +3,7 @@ from fabric.api import *
 import os
 
 
-if 'TTSD_CONFIG_PATH' in os.environ:
-    config_path = os.environ['TTSD_CONFIG_PATH']
-else:
-    config_path = '/workspace/deploy-config'
+config_path = os.getenv('TTSD_CONFIG_PATH', '/workspace/deploy-config')
 
 env.use_ssh_config = True
 env.ssh_config_path = config_path+'/config'

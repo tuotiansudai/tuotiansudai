@@ -4,16 +4,12 @@ from paver.shell import sh
 
 class Deployment(object):
 
+    _config_path = os.getenv('TTSD_CONFIG_PATH', '/workspace/deploy-config')
     _gradle='/opt/gradle/latest/bin/gradle'
     _dockerCompose='/usr/local/bin/docker-compose'
     _paver='/usr/bin/paver'
 
     _env='QA'
-
-    if 'TTSD_CONFIG_PATH' in os.environ:
-        _config_path = os.environ['TTSD_CONFIG_PATH']
-    else:
-        _config_path = '/workspace/deploy-config'
 
     def deploy(self, env):
         self._env = env
