@@ -118,10 +118,20 @@ comm.popWindow=function(title,content,size,load) {
 
 };
 
+comm.redirectHome = function () {
+    if($('.jump-tip').length>0){
+        setInterval(function(){
+            $('.jump-tip i').text()<1?window.location="/":$('.jump-tip i').text(function(index,num){return parseInt(num)-1});
+        },1000);
+    }
+};
+
 $('#logout-link').click(function() {
     $('#logout-form').submit();
     return false;
 });
+
+
 
 module.exports = comm;
 
