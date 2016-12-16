@@ -85,7 +85,7 @@ public class MobileAppNoPasswordInvestTurnOnServiceImpl implements MobileAppNoPa
             String message = JsonConverter.writeValueAsString(logModel);
             mqWrapperClient.sendMessage(MessageQueue.UserOperateLog, message);
         } catch (JsonProcessingException e) {
-            logger.error("[MQ] 免密投资 send user op log fail.", e);
+            logger.error("[MQ] 打开免密投资 send user op log fail.", e);
         }
     }
 
