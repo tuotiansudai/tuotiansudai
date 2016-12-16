@@ -1,6 +1,6 @@
-package com.tuotiansudai.repository.mapper;
+package com.tuotiansudai.message.repository.mapper;
 
-import com.tuotiansudai.repository.model.AnnounceModel;
+import com.tuotiansudai.message.repository.model.AnnounceModel;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -9,10 +9,9 @@ import java.util.List;
 @Repository
 public interface AnnounceMapper {
 
-    int findAnnounceCount(@Param("id") Long id, @Param("title") String title);
+    int findAnnounceCount(@Param("title") String title);
 
-    List<AnnounceModel> findAnnounce(@Param("id") Long id,
-                                     @Param("title") String title,
+    List<AnnounceModel> findAnnounce(@Param("title") String title,
                                      @Param("index") int index,
                                      @Param("pageSize") int pageSize);
 

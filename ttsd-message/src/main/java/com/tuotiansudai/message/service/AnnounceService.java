@@ -1,8 +1,8 @@
-package com.tuotiansudai.service;
+package com.tuotiansudai.message.service;
 
-import com.tuotiansudai.dto.AnnounceDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.message.dto.AnnounceDto;
 
 public interface AnnounceService {
 

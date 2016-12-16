@@ -1,6 +1,6 @@
 package com.tuotiansudai.api.dto.v1_0;
 
-import com.tuotiansudai.repository.model.AnnounceModel;
+import com.tuotiansudai.message.repository.model.AnnounceModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.StringUtils;
 
@@ -28,7 +28,7 @@ public class NodeDetailResponseDataDto extends BaseResponseDataDto {
     public NodeDetailResponseDataDto() {
 
     }
-    public NodeDetailResponseDataDto(AnnounceModel input,boolean includeContent){
+    public NodeDetailResponseDataDto(AnnounceModel input, boolean includeContent){
 
         this.setNodeId("" + input.getId());
         this.setContent(input.getContent());

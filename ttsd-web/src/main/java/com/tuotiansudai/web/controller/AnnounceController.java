@@ -1,10 +1,10 @@
 package com.tuotiansudai.web.controller;
 
 
-import com.tuotiansudai.dto.AnnounceDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.service.AnnounceService;
+import com.tuotiansudai.message.dto.AnnounceDto;
+import com.tuotiansudai.message.service.AnnounceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;

@@ -1,12 +1,13 @@
-package com.tuotiansudai.service.impl;
+package com.tuotiansudai.message.service.impl;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.dto.AnnounceDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.repository.mapper.AnnounceMapper;
-import com.tuotiansudai.repository.model.AnnounceModel;
-import com.tuotiansudai.service.AnnounceService;
+import com.tuotiansudai.message.dto.AnnounceDto;
+import com.tuotiansudai.message.repository.mapper.AnnounceMapper;
+import com.tuotiansudai.message.repository.model.AnnounceModel;
+import com.tuotiansudai.message.service.AnnounceService;
+import com.tuotiansudai.util.PaginationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,13 +30,11 @@ public class AnnounceServiceImpl implements AnnounceService {
 
     @Override
     public BaseDto<BasePaginationDataDto> getAnnouncementList(int index, int pageSize) {
-        List<AnnounceModel> announceModels = this.announceMapper.findAnnounce(null, null, (index - 1) * pageSize, pageSize);
-        int count = this.announceMapper.findAnnounceCount(null, null);
-        List<AnnounceDto> announceList = Lists.transform(announceModels, input -> new AnnounceDto(input));
-        BaseDto<BasePaginationDataDto> baseDto = new BaseDto<>();
+        int count = this.announceMapper.findAnnounceCount(null);
+        List<AnnounceModel> announceModels = this.announceMapper.findAnnounce(null, PaginationUtil.calculateOffset(index, pageSize, count), pageSize);
+        List<AnnounceDto> announceList = Lists.transform(announceModels, AnnounceDto::new);
         BasePaginationDataDto<AnnounceDto> dataDto = new BasePaginationDataDto<>(index, pageSize, count, announceList);
-        baseDto.setData(dataDto);
         dataDto.setStatus(true);
-        return baseDto;
+        return new BaseDto<>(new BasePaginationDataDto<>(index, pageSize, count, announceList));
     }
 }

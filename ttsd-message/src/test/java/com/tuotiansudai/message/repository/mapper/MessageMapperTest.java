@@ -44,6 +44,8 @@ public class MessageMapperTest {
                 MessageCategory.ACTIVITY,
                 Lists.newArrayList(MessageChannel.WEBSITE),
                 null,
+                null,
+                null,
                 creator.getLoginName());
 
         messageMapper.create(messageModel);

@@ -22,11 +22,11 @@ public interface MessageService {
 
     long createImportUsers(InputStream inputStream) throws IOException;
 
-    BaseDto<BaseDataDto> rejectMessage(long messageId, String checkerName);
+    BaseDto<BaseDataDto> rejectMessage(long messageId, String rejectedBy);
 
-    BaseDto<BaseDataDto> approveMessage(long messageId, String checkerName);
+    BaseDto<BaseDataDto> approveMessage(long messageId, String approvedBy);
 
-    BaseDto<BaseDataDto> deleteMessage(long messageId, String updatedBy);
+    BaseDto<BaseDataDto> deleteMessage(long messageId, String deletedBy);
 
     MessageModel findById(long messageId);
 

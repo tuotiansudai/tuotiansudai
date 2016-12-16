@@ -6,15 +6,11 @@
     <form action="" class="form-inline query-build">
         <div class="row">
             <div class="form-group">
-                <label for="control-label">编号</label>
-                <input type="text" class="form-control jq-id" value="${(id?string('0'))!}">
-            </div>
-            <div class="form-group">
                 <label for="control-label">标题</label>
                 <input type="text" class="form-control jq-title" value="${title!}">
             </div>
             <button class="btn btn-primary search" type="button">查询</button>
-            <button class="btn btn-default pull-right publishAD" type="button"> 发布公告</button>
+            <a href="/announce-manage/announce/create" class="btn btn-primary"> 发布公告</a>
         </div>
     </form>
 
@@ -31,12 +27,12 @@
             <tbody>
                 <#list announceList as announce>
                 <tr>
-                    <td>${(announce.id?string('0'))!}</td>
+                    <td>${(announce.id?c)!}</td>
                     <td>${announce.title!}</td>
                     <td>${(announce.updateTime?string('yyyy-MM-dd'))!}</td>
-                    <td><a href="/announce-manage/announce/edit/${(announce.id?string('0'))!}" class="btn btn-link"> 编辑</a>
-                        | <a href="#" class="btn btn-link jq-delete"
-                             data-id="${(announce.id?string('0'))!}">删除</a></td>
+                    <td><a href="/announce-manage/announce/edit/${(announce.id?c)!}" class="btn btn-link">编辑</a>
+                        | <a href="#" class="btn btn-link jq-delete" data-id="${(announce.id?c)!}">删除</a>
+                    </td>
                 </tr>
                 </#list>
             </tbody>
@@ -48,25 +44,21 @@
         <nav class="pagination-control">
             <div><span class="bordern">总共${announceCount}条,每页显示${pageSize}条</span></div>
             <ul class="pagination pull-left">
+                <#if hasPreviousPage >
                 <li>
-                    <#if hasPreviousPage >
-                    <a href="/announce-manage/announce?id=${(id?string('0'))!}&title=${title!}&index=${index-1}&pageSize=${pageSize}">
-                    <#else>
-                    <a href="#">
-                    </#if>
-                    <span>« Prev</span>
-                </a>
+                    <a href="/announce-manage/announce?title=${title!}&index=${index-1}&pageSize=${pageSize}">
+                        <span>« Prev</span>
+                    </a>
                 </li>
+                </#if>
                 <li><a>${index}</a></li>
+                <#if hasNextPage>
                 <li>
-                    <#if hasNextPage>
-                    <a href="/announce-manage/announce?id=${(id?string('0'))!}&title=${title!}&index=${index+1}&pageSize=${pageSize}">
-                    <#else>
-                    <a href="#">
-                    </#if>
-                    <span>Next »</span>
-                </a>
+                    <a href="/announce-manage/announce?title=${title!}&index=${index+1}&pageSize=${pageSize}">
+                        <span>Next »</span>
+                    </a>
                 </li>
+                </#if>
             </ul>
         </nav>
     </div>

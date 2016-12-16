@@ -41,7 +41,6 @@
             <thead>
             <tr>
                 <th>编号</th>
-
                 <th>收件人</th>
                 <th>标题</th>
                 <th>内容</th>

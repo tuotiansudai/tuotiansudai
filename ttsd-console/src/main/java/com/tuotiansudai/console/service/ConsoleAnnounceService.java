@@ -1,23 +1,17 @@
 package com.tuotiansudai.console.service;
 
-import com.google.common.collect.Lists;
-import com.tuotiansudai.dto.AnnounceDto;
-import com.tuotiansudai.enums.AppUrl;
-import com.tuotiansudai.enums.PushSource;
-import com.tuotiansudai.enums.PushType;
+import com.tuotiansudai.message.dto.AnnounceCreateDto;
+import com.tuotiansudai.message.dto.AnnounceDto;
 import com.tuotiansudai.message.dto.MessageCreateDto;
-import com.tuotiansudai.message.repository.model.*;
+import com.tuotiansudai.message.repository.mapper.AnnounceMapper;
+import com.tuotiansudai.message.repository.model.AnnounceModel;
 import com.tuotiansudai.message.service.MessageService;
-import com.tuotiansudai.repository.mapper.AnnounceMapper;
-import com.tuotiansudai.repository.model.AnnounceModel;
-import com.tuotiansudai.spring.LoginUserInfo;
+import com.tuotiansudai.util.PaginationUtil;
 import org.apache.log4j.Logger;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.text.MessageFormat;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -35,62 +29,35 @@ public class ConsoleAnnounceService {
         return announceMapper.findById(id);
     }
 
-    public List<AnnounceModel> findAnnounce(Long id, String title, int startLimit, int endLimit) {
-        return announceMapper.findAnnounce(id, title, startLimit, endLimit);
+    public List<AnnounceModel> findAnnounce(String title, int index, int pageSize) {
+        return announceMapper.findAnnounce(title,
+                PaginationUtil.calculateOffset(index, pageSize, announceMapper.findAnnounceCount(title)),
+                pageSize);
     }
 
-    public void create(AnnounceDto announceDto, String createdBy) {
-        AnnounceModel announceModel = new AnnounceModel(announceDto);
+    @Transactional
+    public void create(AnnounceCreateDto announceCreateDto, String createdBy) {
+        AnnounceModel announceModel = new AnnounceModel(null, announceCreateDto.getTitle(), announceCreateDto.getContent(), announceCreateDto.getContentText(), announceCreateDto.isShowOnHome());
         announceMapper.create(announceModel);
-        announceDto.setId(announceModel.getId());
+        announceCreateDto.setId(announceModel.getId());
 
-        try {
-            MessageCreateDto messageCreateDto = announceDtoToMessageCompleteDto(announceDto, createdBy);
-            long messageId = messageService.createOrUpdateManualMessage(LoginUserInfo.getLoginName(), messageCreateDto);
-            messageService.approveMessage(messageId, createdBy);
-            logger.info(MessageFormat.format("[AnnounceConsoleService] announce message create success. announceId:{0}", announceDto.getId()));
-        } catch (Exception e) {
-            logger.error(MessageFormat.format("[AnnounceConsoleService] announce message create fail. announceId:{0}", announceDto.getId()), e);
-        }
+        messageService.approveMessage(messageService.createOrUpdateManualMessage(createdBy, announceCreateDto.transferTo()), createdBy);
     }
 
-    public void update(AnnounceDto announceDto) {
-        announceMapper.update(new AnnounceModel(announceDto));
+    public void update(AnnounceCreateDto announceCreateDto) {
+        announceMapper.update(new AnnounceModel(announceCreateDto.getId(),
+                announceCreateDto.getTitle(),
+                announceCreateDto.getContent(),
+                announceCreateDto.getContentText(),
+                announceCreateDto.isShowOnHome()));
     }
 
-    public void delete(AnnounceDto announceDto) {
-        announceMapper.delete(announceDto.getId());
+    public void delete(long id) {
+        announceMapper.delete(id);
     }
 
-    public int findAnnounceCount(Long id, String title) {
-        return announceMapper.findAnnounceCount(id, title);
+    public int findAnnounceCount(String title) {
+        return announceMapper.findAnnounceCount(title);
     }
 
-    private MessageCreateDto announceDtoToMessageCompleteDto(AnnounceDto announceDto, String createdBy) {
-        MessageCreateDto messageCreateDto = new MessageCreateDto();
-
-//        messageCreateDto.setTitle(announceDto.getTitle());
-//        messageCreateDto.setTemplate(announceDto.getContent());
-//        messageCreateDto.setTemplateTxt(announceDto.getContentText());
-//        messageCreateDto.setType(MessageType.MANUAL);
-//        messageCreateDto.setUserGroups(Lists.newArrayList(MessageUserGroup.ALL_USER));
-//        messageCreateDto.setChannels(Lists.newArrayList(MessageChannel.WEBSITE, MessageChannel.APP_MESSAGE));
-//        messageCreateDto.setMessageCategory(MessageCategory.NOTIFY);
-//        messageCreateDto.setWebUrl(MessageFormat.format("/announce/{0}", announceDto.getId()));
-//        messageCreateDto.setAppUrl(AppUrl.NOTIFY);
-//        messageCreateDto.setJpush(true);
-//        messageCreateDto.setPushType(PushType.IMPORTANT_EVENT);
-//        messageCreateDto.setPushSource(PushSource.ALL);
-//        messageCreateDto.setStatus(MessageStatus.APPROVED);
-//        messageCreateDto.setReadCount(0);
-//        messageCreateDto.setActivatedBy(createdBy);
-//        messageCreateDto.setActivatedTime(new Date());
-//        messageCreateDto.setExpiredTime(new DateTime().withDate(9999, 12, 31).toDate());
-//        messageCreateDto.setUpdatedBy(createdBy);
-//        messageCreateDto.setUpdatedTime(new Date());
-//        messageCreateDto.setCreatedBy(createdBy);
-//        messageCreateDto.setCreatedTime(new Date());
-
-        return messageCreateDto;
-    }
 }

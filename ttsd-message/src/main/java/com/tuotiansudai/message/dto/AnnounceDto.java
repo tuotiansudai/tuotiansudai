@@ -1,11 +1,12 @@
-package com.tuotiansudai.repository.model;
+package com.tuotiansudai.message.dto;
 
-import com.tuotiansudai.dto.AnnounceDto;
+import com.tuotiansudai.dto.BaseDataDto;
+import com.tuotiansudai.message.repository.model.AnnounceModel;
 
 import java.io.Serializable;
 import java.util.Date;
 
-public class AnnounceModel implements Serializable {
+public class AnnounceDto extends BaseDataDto implements Serializable {
 
     private long id;
 
@@ -20,6 +21,19 @@ public class AnnounceModel implements Serializable {
     private Date createdTime = new Date();
 
     private Date updateTime = new Date();
+
+    public AnnounceDto() {
+    }
+
+    public AnnounceDto(AnnounceModel model) {
+        this.id = model.getId();
+        this.title = model.getTitle();
+        this.content = model.getContent();
+        this.showOnHome = model.isShowOnHome();
+        this.createdTime = model.getCreatedTime();
+        this.updateTime = model.getUpdateTime();
+        this.contentText = model.getContentText();
+    }
 
     public long getId() {
         return id;
@@ -67,18 +81,6 @@ public class AnnounceModel implements Serializable {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
-    }
-
-    public AnnounceModel(){
-
-    }
-
-    public AnnounceModel(AnnounceDto announceDto) {
-        this.id = announceDto.getId();
-        this.title = announceDto.getTitle();
-        this.content = announceDto.getContent();
-        this.contentText = announceDto.getContentText();
-        this.showOnHome = announceDto.isShowOnHome();
     }
 
     public String getContentText() {

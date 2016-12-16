@@ -26,7 +26,7 @@ public class JPushAlertNewService {
     @Autowired
     private RedisWrapperClient redisWrapperClient;
 
-    private static final String JPUSH_ID_KEY = "api:jpushId:store";
+    private static final String PUSH_ID_KEY = "api:jpushId:store";
 
     public void autoJPushAlertSendToAll(PushAlertModel pushAlertModel) {
         if (null != pushAlertModel) {
@@ -44,7 +44,7 @@ public class JPushAlertNewService {
     public void autoJPushBatchByLoginNames(PushAlertModel pushAlertModel, List<String> loginNames) {
         List<String> registrationIds = Lists.newArrayList();
         for (String loginName : loginNames) {
-            String value = redisWrapperClient.hget(JPUSH_ID_KEY, loginName);
+            String value = redisWrapperClient.hget(PUSH_ID_KEY, loginName);
             if (Strings.isNullOrEmpty(value) && value.split("-").length == 2) {
                 registrationIds.add(value.split("-")[1]);
             }

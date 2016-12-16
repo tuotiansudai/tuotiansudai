@@ -166,6 +166,8 @@ public class MessageServiceImpl implements MessageService {
                 messageCreateDto.getUserGroup(),
                 messageCreateDto.getMessageCategory(),
                 messageCreateDto.getChannels(),
+                messageCreateDto.getWebUrl(),
+                messageCreateDto.getAppUrl(),
                 pushId,
                 createdBy);
         messageMapper.create(messageModel);

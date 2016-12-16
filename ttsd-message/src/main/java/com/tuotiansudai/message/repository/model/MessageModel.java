@@ -35,7 +35,7 @@ public class MessageModel implements Serializable {
     public MessageModel() {
     }
 
-    public MessageModel(String title, String template, MessageUserGroup userGroup, MessageCategory messageCategory, List<MessageChannel> channels, Long pushId, String createdBy) {
+    public MessageModel(String title, String template, MessageUserGroup userGroup, MessageCategory messageCategory, List<MessageChannel> channels, String webUrl, AppUrl appUrl, Long pushId, String createdBy) {
         this.title = title;
         this.appTitle = title;
         this.template = template;
@@ -46,6 +46,8 @@ public class MessageModel implements Serializable {
         this.channels = channels;
         this.status = MessageStatus.TO_APPROVE;
         this.pushId = pushId;
+        this.webUrl = webUrl;
+        this.appUrl = appUrl;
         this.createdBy = createdBy;
         this.createdTime = new Date();
         this.updatedBy = this.createdBy;

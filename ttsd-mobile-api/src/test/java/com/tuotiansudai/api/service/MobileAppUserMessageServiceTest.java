@@ -103,6 +103,8 @@ public class MobileAppUserMessageServiceTest extends ServiceTestBase {
                 MessageCategory.ACTIVITY,
                 Lists.newArrayList(MessageChannel.WEBSITE),
                 null,
+                null,
+                null,
                 creator.getLoginName());
 
         messageMapper.create(messageModel);

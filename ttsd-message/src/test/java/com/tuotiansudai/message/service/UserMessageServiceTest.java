@@ -51,6 +51,8 @@ public class UserMessageServiceTest {
                 MessageCategory.ACTIVITY,
                 Lists.newArrayList(MessageChannel.WEBSITE),
                 null,
+                null,
+                null,
                 creator.getLoginName());
 
         webSiteMessageModel.setReadCount(10);
@@ -84,6 +86,8 @@ public class UserMessageServiceTest {
                 MessageCategory.ACTIVITY,
                 Lists.newArrayList(MessageChannel.WEBSITE),
                 null,
+                null,
+                null,
                 creator.getLoginName());
 
         messageMapper.create(webSiteMessageModel);
@@ -93,6 +97,8 @@ public class UserMessageServiceTest {
                 MessageUserGroup.ALL_USER,
                 MessageCategory.ACTIVITY,
                 Lists.newArrayList(MessageChannel.APP_MESSAGE),
+                null,
+                null,
                 null,
                 creator.getLoginName());
 
