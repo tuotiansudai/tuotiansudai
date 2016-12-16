@@ -43,7 +43,7 @@ public class SmsServiceImpl implements SmsService {
     @Value("${common.environment}")
     private Environment environment;
 
-    @Value("${sms.sending.platform}")
+    @Value("${sms.second.platform}")
     private String platform;
 
     private final String SMS_PLATFORM = "zucp";

@@ -25,19 +25,11 @@ public interface InvestService {
                                                                                    Date endTime,
                                                                                    LoanStatus loanStatus);
 
-    InvestPaginationDataDto getInvestPagination(Long loanId, String investorMobile, String channel, Source source,
-                                                Role role, Date startTime, Date endTime, InvestStatus investStatus,
-                                                PreferenceType preferenceType, int index, int pageSize);
-
     boolean turnOnAutoInvest(String loginName, AutoInvestPlanDto model, String ip);
 
     boolean turnOffAutoInvest(String loginName, String ip);
 
     AutoInvestPlanModel findAutoInvestPlan(String loginName);
-
-    List<String> findAllChannel();
-
-    List<String> findAllInvestChannels();
 
     InvestModel findById(long investId);
 

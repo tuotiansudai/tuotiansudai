@@ -1,6 +1,6 @@
 package com.tuotiansudai.client;
 
-import com.tuotiansudai.mq.client.MQClient;
+import com.tuotiansudai.mq.client.MQProducer;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.client.model.MessageTopic;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,24 +8,18 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.support.TransactionSynchronizationAdapter;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
-import java.util.function.Consumer;
-
 @Component
 public class MQWrapperClient {
 
     @Autowired
-    private MQClient mqClient;
+    private MQProducer mqProducer;
 
     public void publishMessage(final MessageTopic topic, final String message) {
-        runAfterCommit(() -> mqClient.publishMessage(topic, message));
+        runAfterCommit(() -> mqProducer.publishMessage(topic, message));
     }
 
     public void sendMessage(final MessageQueue queue, final String message) {
-        runAfterCommit(() -> mqClient.sendMessage(queue, message));
-    }
-
-    public void subscribe(final MessageQueue queue, Consumer<String> consumer) {
-        mqClient.subscribe(queue, consumer);
+        runAfterCommit(() -> mqProducer.sendMessage(queue, message));
     }
 
     private void runAfterCommit(Runnable runnable) {

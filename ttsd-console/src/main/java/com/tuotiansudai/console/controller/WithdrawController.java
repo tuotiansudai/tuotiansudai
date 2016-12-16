@@ -1,12 +1,12 @@
 package com.tuotiansudai.console.controller;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.console.service.ConsoleWithdrawService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.WithdrawPaginationItemDataDto;
-import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.enums.WithdrawStatus;
-import com.tuotiansudai.service.WithdrawService;
+import com.tuotiansudai.repository.model.Source;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -23,7 +23,7 @@ import java.util.Date;
 public class WithdrawController {
 
     @Autowired
-    WithdrawService withdrawService;
+    private ConsoleWithdrawService consoleWithdrawService;
 
     @RequestMapping(value = "/withdraw", method = RequestMethod.GET)
     public ModelAndView getWithdrawList(@RequestParam(value = "withdrawId", required = false) String withdrawId,
@@ -35,11 +35,11 @@ public class WithdrawController {
                                         @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
         int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/withdraw");
-        BaseDto<BasePaginationDataDto<WithdrawPaginationItemDataDto>> baseDto = withdrawService.findWithdrawPagination(withdrawId, mobile, status, source, index, pageSize, startTime, endTime);
+        BaseDto<BasePaginationDataDto<WithdrawPaginationItemDataDto>> baseDto = consoleWithdrawService.findWithdrawPagination(withdrawId, mobile, status, source, index, pageSize, startTime, endTime);
 
-        long sumAmount = withdrawService.findSumWithdrawAmount(withdrawId, mobile, status, source, startTime, endTime);
+        long sumAmount = consoleWithdrawService.findSumWithdrawAmount(withdrawId, mobile, status, source, startTime, endTime);
 
-        long sumFee = withdrawService.findSumWithdrawFee(withdrawId, mobile, status, source, startTime, endTime);
+        long sumFee = consoleWithdrawService.findSumWithdrawFee(withdrawId, mobile, status, source, startTime, endTime);
 
         modelAndView.addObject("baseDto", baseDto);
         modelAndView.addObject("sumAmount", sumAmount);

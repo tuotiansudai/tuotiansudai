@@ -2,13 +2,11 @@ package com.tuotiansudai.service;
 
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.LoanApplicationDto;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.LoanApplicationMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
-import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,25 +66,6 @@ public class LoanApplicationServiceTest {
         createAccountModel(user2);
     }
 
-    private LoanApplicationModel createLoanApplicationModel(String loginName) {
-        LoanApplicationModel loanApplicationModel = new LoanApplicationModel();
-        loanApplicationModel.setLoginName(loginName);
-        loanApplicationModel.setMobile("18612341234");
-        loanApplicationModel.setUserName("userName");
-        loanApplicationModel.setRegion(LoanApplicationRegion.BEI_JING);
-        loanApplicationModel.setAmount(1);
-        loanApplicationModel.setPeriod(2);
-        loanApplicationModel.setPledgeType(PledgeType.HOUSE);
-        loanApplicationModel.setPledgeInfo("testInfo");
-        loanApplicationModel.setComment("testComment");
-        loanApplicationModel.setCreatedTime(DateTime.parse("2011-1-1").toDate());
-        loanApplicationModel.setUpdatedBy("user1");
-        loanApplicationModel.setUpdatedTime(DateTime.parse("2011-2-1").toDate());
-
-        loanApplicationMapper.create(loanApplicationModel);
-        return loanApplicationModel;
-    }
-
     private LoanApplicationDto fakeLoanApplicationDto(String loginName, int amount, int period) {
         LoanApplicationDto loanApplicationDto = new LoanApplicationDto();
         loanApplicationDto.setLoginName(loginName);
@@ -132,58 +111,5 @@ public class LoanApplicationServiceTest {
         assertEquals(null, loanApplicationView.getComment());
         assertEquals(loanApplicationDto.getLoginName(), loanApplicationView.getUpdatedBy());
         assertEquals("userName", loanApplicationView.getUserName());
-    }
-
-    @Test
-    public void testComment() throws Exception {
-        prepareData();
-        LoanApplicationModel loanApplicationModel = createLoanApplicationModel("user1");
-        List<LoanApplicationModel> loanApplicationViews = loanApplicationMapper.findPagination(0, 1);
-        assertEquals(1, loanApplicationViews.size());
-        LoanApplicationModel loanApplicationView = loanApplicationViews.get(0);
-
-        loanApplicationView.setLoginName("user2");
-        loanApplicationView.setMobile("22222");
-        loanApplicationView.setUserName("userName2");
-        loanApplicationView.setRegion(LoanApplicationRegion.CHENG_DE);
-        loanApplicationView.setAmount(33);
-        loanApplicationView.setPeriod(44);
-        loanApplicationView.setPledgeType(PledgeType.VEHICLE);
-        loanApplicationView.setPledgeInfo("updateInfo");
-        loanApplicationView.setComment("updateComment");
-        loanApplicationView.setUpdatedBy("user2");
-        loanApplicationView.setCreatedTime(DateTime.parse("2019-1-1").toDate());
-        loanApplicationView.setUpdatedTime(DateTime.parse("2020-1-1").toDate());
-        BaseDto<BaseDataDto> baseDto = loanApplicationService.comment(loanApplicationView);
-        assertEquals(true, baseDto.getData().getStatus());
-
-        loanApplicationViews = loanApplicationMapper.findPagination(0, 1);
-        assertEquals(1, loanApplicationViews.size());
-        LoanApplicationModel updateLoanApplicationView = loanApplicationViews.get(0);
-        assertEquals(loanApplicationModel.getId(), updateLoanApplicationView.getId());
-        assertEquals(loanApplicationModel.getLoginName(), updateLoanApplicationView.getLoginName());
-        assertEquals(loanApplicationModel.getRegion(), updateLoanApplicationView.getRegion());
-        assertEquals(loanApplicationModel.getAmount(), updateLoanApplicationView.getAmount());
-        assertEquals(loanApplicationModel.getPeriod(), updateLoanApplicationView.getPeriod());
-        assertEquals(loanApplicationModel.getPledgeType(), updateLoanApplicationView.getPledgeType());
-        assertEquals(loanApplicationModel.getPledgeInfo(), updateLoanApplicationView.getPledgeInfo());
-        assertEquals(loanApplicationView.getComment(), updateLoanApplicationView.getComment());
-        assertEquals(loanApplicationView.getUpdatedBy(), updateLoanApplicationView.getUpdatedBy());
-        assertEquals(loanApplicationModel.getCreatedTime(), updateLoanApplicationView.getCreatedTime());
-
-        loanApplicationView.setId(loanApplicationView.getId() + 100L);
-        baseDto = loanApplicationService.comment(loanApplicationView);
-        assertEquals(false, baseDto.getData().getStatus());
-        assertEquals("该借款申请不存在", baseDto.getData().getMessage());
-    }
-
-    @Test
-    public void testGetPagination() throws Exception {
-        prepareData();
-        createLoanApplicationModel("user1");
-        createLoanApplicationModel("user2");
-
-        BasePaginationDataDto<LoanApplicationModel> basePaginationDataDto = loanApplicationService.getPagination(1, 10);
-        assertEquals(2, basePaginationDataDto.getRecords().size());
     }
 }
