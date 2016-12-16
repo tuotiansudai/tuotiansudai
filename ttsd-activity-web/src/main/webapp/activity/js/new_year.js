@@ -93,18 +93,19 @@ require(['jquery','drawCircle','logintip','register_common'], function ($,drawCi
             drawCircle.prototype.signToday=function(callback,failFun) {
                 var $signToday=$('#signToday');
                 $signToday.on('click',function() {
-                    $.ajax({
-                        url:'/point/sign-in',
-                        type:'POST',
-                        dataType: 'json'
-                    })
-                        .done(function(response) {
-                            callback && callback(response);
-                            location.reload();
-                        })
-                        .fail(function() {
-                            failFun && failFun()
-                        })
+                    //$.ajax({
+                    //    url:'/point/sign-in',
+                    //    type:'POST',
+                    //    dataType: 'json'
+                    //})
+                    //    .done(function(response) {
+                    //        callback && callback(response);
+                    //    })
+                    //    .fail(function() {
+                    //        failFun && failFun()
+                    //    })
+                    callback('ddddddd');
+
                 })
             }
 
@@ -114,7 +115,8 @@ require(['jquery','drawCircle','logintip','register_common'], function ($,drawCi
             drawCircle.signToday(function() {
                 tipMessage.button='<a href="javascript:void(0)" class="go-on go-close">知道了</a>';
                 tipMessage.info='<p class="success-text">签到成功！</p>' +
-                    '<p class="des-text">恭喜您获得砸金蛋机会一次</p>'
+                    '<p class="des-text">恭喜您获得砸金蛋机会一次</p>';
+                $('body').addClass('signToday');
                 drawCircle.tipWindowPop(tipMessage);
             },function() {
                 tipMessage.button='';
