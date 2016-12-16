@@ -4,10 +4,14 @@ import time
 from fabric.api import *
 from fabric.contrib.project import upload_project
 
+if 'TTSD_CONFIG_PATH' in os.environ:
+    config_path = os.environ['TTSD_CONFIG_PATH']
+else:
+    config_path = '/workspace/deploy-config'
 
 env.use_ssh_config = True
 env.always_use_pty = False
-env.ssh_config_path = '/workspace/deploy-config/config'
+env.ssh_config_path = config_path+'/config'
 env.roledefs = {
     'portal': ['beijing', 'shanghai'],
     'pay': ['chongqing', 'tianjin'],
@@ -72,7 +76,7 @@ def mk_static_zip():
 
 def mk_signin_zip():
     for i in ('1', '2'):
-        local('cp /workspace/deploy-config/default/signin_service/{0}/* ./signin_service/'.format(i))
+        local('cp {0}/signin_service/{1}/* ./signin_service/'.format(config_path, i))
         local('cd ./signin_service/ && zip -r signin_{0}.zip *.py *.ini *.yml'.format(i))
 
 

@@ -1,4 +1,4 @@
-import time
+import os
 from paver.shell import sh
 
 
@@ -9,6 +9,11 @@ class Deployment(object):
     _paver='/usr/bin/paver'
 
     _env='QA'
+
+    if 'TTSD_CONFIG_PATH' in os.environ:
+        _config_path = os.environ['TTSD_CONFIG_PATH']
+    else:
+        _config_path = '/workspace/deploy-config'
 
     def deploy(self, env):
         self._env = env
@@ -31,7 +36,7 @@ class Deployment(object):
         print "Compiling..."
         sh('{0} clean ttsd-config:flywayAA ttsd-config:flywayUMP ttsd-config:flywayAnxin ttsd-config:flywaySms ttsd-config:flywayWorker ttsd-config:flywayAsk ttsd-config:flywayActivity ttsd-config:flywayPoint initMQ war'.format(
             self._gradle))
-        sh('cp /workspace/deploy-config/signin_service/settings_local.py ./signin_service/')
+        sh('cp {0}/signin_service/settings_local.py ./signin_service/'.format(self._config_path))
 
     def build_and_unzip_worker(self):
         print "Making worker build..."

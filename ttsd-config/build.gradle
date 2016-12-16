@@ -32,13 +32,9 @@ dependencies {
     compile 'mysql:mysql-connector-java:5.1.39'
 }
 
-/**
- * parameter: configPath
- * example: gradle ttsd-web:war -PconfigPath=/workspace/deploy-config/ttsd-config
- */
 processResources {
     def innerConfigPath = "${project.projectDir.getPath()}/src/main/resources"
-    def outerConfigPath = '/workspace/deploy-config/ttsd-config'
+    def outerConfigPath = "${configPath}/ttsd-config"
     if (new File(outerConfigPath).isDirectory()) {
         innerConfigPath = outerConfigPath
     }

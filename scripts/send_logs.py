@@ -1,9 +1,16 @@
 import datetime
+import os
 from fabric.api import *
+
+if 'TTSD_CONFIG_PATH' in os.environ:
+    config_path = os.environ['TTSD_CONFIG_PATH']
+else:
+    config_path = '/workspace/deploy-config'
+
 
 env.use_ssh_config = True
 env.always_use_pty = False
-env.ssh_config_path = '/workspace/deploy-config/config'
+env.ssh_config_path = config_path+'/config'
 
 
 def build_log_path(type='web'):

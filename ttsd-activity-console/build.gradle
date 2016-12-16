@@ -65,13 +65,9 @@ dependencies {
     testCompile("org.springframework.boot:spring-boot-starter-test")
 }
 
-/**
- * parameter: configPath
- * example: gradle ttsd-web:war -PconfigPath=/workspace/deploy-config/ttsd-activity-console
- */
 processResources {
     def innerConfigPath = "${project.projectDir.getPath()}/src/main/resources"
-    def outerConfigPath = '/workspace/deploy-config/ttsd-activity-console'
+    def outerConfigPath = "${configPath}/ttsd-activity-console"
     if (new File(outerConfigPath).isDirectory()) {
         innerConfigPath = outerConfigPath
     }

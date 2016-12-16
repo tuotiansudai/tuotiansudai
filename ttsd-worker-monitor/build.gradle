@@ -60,7 +60,7 @@ task consumerCheck(dependsOn: ':ttsd-config:classes', type: JavaExec) {
 
 processResources {
     def innerConfigPath = "${project.projectDir.getPath()}/src/main/resources"
-    def outerConfigPath = '/workspace/deploy-config/ttsd-worker-monitor'
+    def outerConfigPath = '${configPath}/ttsd-worker-monitor'
     if (new File(outerConfigPath).isDirectory()) {
         innerConfigPath = outerConfigPath
     }

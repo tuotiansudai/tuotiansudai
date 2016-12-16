@@ -29,7 +29,7 @@ processResources.outputs.upToDateWhen { false }
 
 processResources {
     def innerConfigPath = "${project.projectDir.getPath()}/src/main/resources"
-    def outerConfigPath = '/workspace/deploy-config/ttsd-anxin-sign'
+    def outerConfigPath = '${configPath}/ttsd-anxin-sign'
     if (new File(outerConfigPath).isDirectory()) {
         innerConfigPath = outerConfigPath
     }
