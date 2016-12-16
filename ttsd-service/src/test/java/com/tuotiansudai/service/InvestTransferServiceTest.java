@@ -314,44 +314,6 @@ public class InvestTransferServiceTest {
     }
 
     @Test
-    public void shouldFindTransferApplicationPaginationListIsSuccess(){
-        long loanId = idGenerator.generate();
-        UserModel transferrerModel = createUserByUserId("transferrerTestuser");
-        UserModel transfereeModel = createUserByUserId("transfereeTestUser");
-        LoanModel loanModel = createLoanByUserId("transferrerTestUser", loanId);
-        InvestModel transferrerInvestModel = createInvest(transferrerModel.getLoginName(), loanId);
-        InvestModel transfereeInvestModel = createInvest(transfereeModel.getLoginName(), loanId);
-
-        TransferApplicationModel transferApplicationModel = new TransferApplicationModel();
-        transferApplicationModel.setLoginName(transferrerModel.getLoginName());
-        transferApplicationModel.setName("name");
-        transferApplicationModel.setTransferAmount(1000l);
-        transferApplicationModel.setInvestAmount(1200l);
-        transferApplicationModel.setTransferTime(new DateTime("2016-01-02").toDate());
-        transferApplicationModel.setStatus(TransferStatus.TRANSFERRING);
-        transferApplicationModel.setLoanId(loanModel.getId());
-        transferApplicationModel.setTransferInvestId(transferrerInvestModel.getId());
-        transferApplicationModel.setInvestId(transfereeInvestModel.getId());
-        transferApplicationModel.setDeadline(new Date());
-        transferApplicationModel.setApplicationTime(new Date());
-        transferApplicationMapper.create(transferApplicationModel);
-
-        BasePaginationDataDto<TransferApplicationPaginationItemDataDto> basePaginationDataDto = investTransferService.findTransferApplicationPaginationList(null, null, null, null, null, transfereeModel.getMobile(), null, null, 1, 10);
-
-        assertTrue(basePaginationDataDto.getStatus());
-        assertNotNull(basePaginationDataDto.getRecords().get(0));
-        assertEquals(1, basePaginationDataDto.getIndex());
-        assertEquals(10,basePaginationDataDto.getPageSize());
-        assertEquals(1,basePaginationDataDto.getCount());
-        assertEquals("10.00", basePaginationDataDto.getRecords().get(0).getTransferAmount());
-        assertEquals("12.00", basePaginationDataDto.getRecords().get(0).getInvestAmount());
-        assertEquals(new DateTime("2016-01-02").toDate(), basePaginationDataDto.getRecords().get(0).getTransferTime());
-        assertEquals("TRANSFERRING", basePaginationDataDto.getRecords().get(0).getTransferStatus());
-        assertEquals(transfereeModel.getMobile(), basePaginationDataDto.getRecords().get(0).getTransfereeMobile());
-        assertEquals(transferrerModel.getMobile(), basePaginationDataDto.getRecords().get(0).getTransferrerMobile());
-    }
-
-    @Test
     public void shouldFindWebTransferApplicationPaginationListIsSuccess(){
         long loanId = idGenerator.generate();
         UserModel transferrerModel = createUserByUserId("transferrerTestuser");

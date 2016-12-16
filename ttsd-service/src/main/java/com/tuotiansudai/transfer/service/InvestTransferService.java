@@ -27,17 +27,6 @@ public interface InvestTransferService {
 
     boolean isTransferable(long investId);
 
-    BasePaginationDataDto<TransferApplicationPaginationItemDataDto> findTransferApplicationPaginationList(Long transferApplicationId,
-                                                                                                          Date startTime,
-                                                                                                          Date endTime,
-                                                                                                          TransferStatus status,
-                                                                                                          String transferrerMobile,
-                                                                                                          String transfereeMobile,
-                                                                                                          Long loanId,
-                                                                                                          Source source,
-                                                                                                          Integer index,
-                                                                                                          Integer pageSize);
-
     BasePaginationDataDto<TransferApplicationPaginationItemDataDto> findWebTransferApplicationPaginationList(String transferrerLoginName, List<TransferStatus> statusList, Integer index, Integer pageSize);
 
     BaseDto<BaseDataDto> isInvestTransferable(long transferApplicationId);
