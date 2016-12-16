@@ -81,18 +81,7 @@ public class AgreementServiceImpl implements AgreementService {
             return;
         }
 
-        String loginName = dto.getLoginName();
-        String deviceId = dto.getDeviceId();
-        Source source = dto.getSource();
-        String ip = dto.getIp();
-
-        UserOpLogModel logModel = new UserOpLogModel();
-        logModel.setLoginName(loginName);
-        logModel.setIp(ip);
-        logModel.setDeviceId(deviceId);
-        logModel.setSource(source);
-        logModel.setOpType(opType);
-        logModel.setCreatedTime(new Date());
+        UserOpLogModel logModel = new UserOpLogModel(dto.getLoginName(), opType, dto.getIp(), dto.getDeviceId(), dto.getSource(), null);
 
         try {
             mqWrapperClient.sendMessage(MessageQueue.UserOperateLog, JsonConverter.writeValueAsString(logModel));

@@ -21,6 +21,19 @@ public class UserOpLogModel {
 
     private Date createdTime;
 
+    public UserOpLogModel() {
+    }
+
+    public UserOpLogModel(String loginName, UserOpType opType, String ip, String deviceId, Source source, String description) {
+        this.loginName = loginName;
+        this.opType = opType;
+        this.ip = ip;
+        this.deviceId = deviceId;
+        this.source = source;
+        this.description = description;
+        this.createdTime = new Date();
+    }
+
     public long getId() {
         return id;
     }

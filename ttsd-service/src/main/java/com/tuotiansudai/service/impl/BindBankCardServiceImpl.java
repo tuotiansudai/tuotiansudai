@@ -61,13 +61,8 @@ public class BindBankCardServiceImpl implements BindBankCardService {
     }
 
     private void sendBindCardOpLogMessage(BindBankCardDto dto) {
-        UserOpLogModel logModel = new UserOpLogModel();
-        logModel.setLoginName(dto.getLoginName());
-        logModel.setIp(dto.getIp());
-        logModel.setDeviceId(dto.getDeviceId());
-        logModel.setSource(dto.getSource());
-        logModel.setOpType(UserOpType.BIND_CARD);
-        logModel.setCreatedTime(new Date());
+
+        UserOpLogModel logModel = new UserOpLogModel(dto.getLoginName(), UserOpType.BIND_CARD, dto.getIp(), dto.getDeviceId(), dto.getSource(), null);
         try {
             mqWrapperClient.sendMessage(MessageQueue.UserOperateLog, JsonConverter.writeValueAsString(logModel));
         } catch (JsonProcessingException e) {
@@ -85,13 +80,7 @@ public class BindBankCardServiceImpl implements BindBankCardService {
     }
 
     private void sendReplaceCardOpLogMessage(BindBankCardDto dto) {
-        UserOpLogModel logModel = new UserOpLogModel();
-        logModel.setLoginName(dto.getLoginName());
-        logModel.setIp(dto.getIp());
-        logModel.setDeviceId(dto.getDeviceId());
-        logModel.setSource(dto.getSource());
-        logModel.setOpType(UserOpType.REPLACE_CARD);
-        logModel.setCreatedTime(new Date());
+        UserOpLogModel logModel = new UserOpLogModel(dto.getLoginName(), UserOpType.REPLACE_CARD, dto.getIp(), dto.getDeviceId(), dto.getSource(), null);
         try {
             mqWrapperClient.sendMessage(MessageQueue.UserOperateLog, JsonConverter.writeValueAsString(logModel));
         } catch (JsonProcessingException e) {

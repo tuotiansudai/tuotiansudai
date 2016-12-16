@@ -389,15 +389,7 @@ public class InvestServiceImpl implements InvestService {
         }
 
         // 发送用户行为日志 MQ消息
-        UserOpLogModel logModel = new UserOpLogModel();
-        logModel.setLoginName(loginName);
-        logModel.setIp(ip);
-        logModel.setDeviceId("");
-        logModel.setSource(Source.WEB);
-        logModel.setOpType(UserOpType.AUTO_INVEST);
-        logModel.setCreatedTime(new Date());
-        logModel.setDescription("Turn On.");
-
+        UserOpLogModel logModel = new UserOpLogModel(loginName, UserOpType.AUTO_INVEST, ip, "", Source.WEB, "Turn On.");
         try {
             mqWrapperClient.sendMessage(MessageQueue.UserOperateLog, JsonConverter.writeValueAsString(logModel));
         } catch (JsonProcessingException e) {
@@ -416,15 +408,7 @@ public class InvestServiceImpl implements InvestService {
         autoInvestPlanMapper.disable(loginName);
 
         // 发送用户行为日志 MQ消息
-        UserOpLogModel logModel = new UserOpLogModel();
-        logModel.setLoginName(loginName);
-        logModel.setIp(ip);
-        logModel.setDeviceId("");
-        logModel.setSource(Source.WEB);
-        logModel.setOpType(UserOpType.AUTO_INVEST);
-        logModel.setCreatedTime(new Date());
-        logModel.setDescription("Turn Off.");
-
+        UserOpLogModel logModel = new UserOpLogModel(loginName, UserOpType.AUTO_INVEST, ip, "", Source.WEB, "Turn Off.");
         try {
             mqWrapperClient.sendMessage(MessageQueue.UserOperateLog, JsonConverter.writeValueAsString(logModel));
         } catch (JsonProcessingException e) {
@@ -464,21 +448,12 @@ public class InvestServiceImpl implements InvestService {
             mqWrapperClient.sendMessage(MessageQueue.TurnOnNoPasswordInvest_CompletePointTask, loginName);
         }
 
-        UserOpLogModel logModel = new UserOpLogModel();
-        logModel.setLoginName(loginName);
-        logModel.setIp(ip);
-        logModel.setDeviceId("");
-        logModel.setSource(Source.WEB);
-        logModel.setOpType(UserOpType.INVEST_NO_PASSWORD);
-        logModel.setCreatedTime(new Date());
-        logModel.setDescription(isTurnOn ? "Turn On" : "Turn Off");
-
+        UserOpLogModel logModel = new UserOpLogModel(loginName, UserOpType.INVEST_NO_PASSWORD, ip, "", Source.WEB, isTurnOn ? "Turn On" : "Turn Off");
         try {
             mqWrapperClient.sendMessage(MessageQueue.UserOperateLog, JsonConverter.writeValueAsString(logModel));
         } catch (JsonProcessingException e) {
             logger.error("[MQ] switchNoPasswordInvest, send UserOperateLog fail.", e);
         }
-
         return true;
     }
 
