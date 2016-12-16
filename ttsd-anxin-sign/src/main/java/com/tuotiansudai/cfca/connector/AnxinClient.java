@@ -46,9 +46,6 @@ public class AnxinClient {
     private static final String DATA = "data";
     private static final String SIGNATURE = "signature";
 
-    private static final int DEFAULT_CONNECT_TIMEOUT = 3000;
-    private static final int DEFAULT_READ_TIMEOUT = 10000;
-
     private static final String DEFAULT_SSL_PROTOCOL = "TLSv1.1";
     private static final String DEFAULT_KEY_ALGORITHM = KeyManagerFactory.getDefaultAlgorithm();
     private static final String DEFAULT_TRUST_ALGORITHM = TrustManagerFactory.getDefaultAlgorithm();
@@ -74,8 +71,6 @@ public class AnxinClient {
             httpClient.setSslSocketFactory(sslSocketFactory);
         }
 
-        httpClient.setConnectTimeout(DEFAULT_CONNECT_TIMEOUT, TimeUnit.MILLISECONDS);
-        httpClient.setReadTimeout(DEFAULT_READ_TIMEOUT, TimeUnit.MILLISECONDS);
     }
 
     public String send(String txCode, String requestData) throws PKIException {
