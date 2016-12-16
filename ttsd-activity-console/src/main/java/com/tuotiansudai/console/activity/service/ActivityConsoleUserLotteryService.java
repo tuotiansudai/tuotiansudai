@@ -19,10 +19,12 @@ import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Service
@@ -61,61 +63,64 @@ public class ActivityConsoleUserLotteryService {
     @Value("#{'${activity.carnival.period}'.split('\\~')}")
     private List<String> carnivalTime = Lists.newArrayList();
 
-    public List<UserLotteryTimeView> findUserLotteryTimeViews(String mobile,final ActivityCategory prizeType,Integer index,Integer pageSize) {
-        List<UserModel> userModels = userMapper.findUserModelByMobile(mobile,index, pageSize);
+    public List<UserLotteryTimeView> findUserLotteryTimeViews(String mobile, final ActivityCategory prizeType, Integer index, Integer pageSize) {
+        List<UserModel> userModels = userMapper.findUserModelByMobile(mobile, index, pageSize);
 
         Iterator<UserLotteryTimeView> transform = Iterators.transform(userModels.iterator(), input -> {
-            UserLotteryTimeView model = new UserLotteryTimeView(input.getMobile(),input.getLoginName());
-            model.setUseCount(userLotteryPrizeMapper.findUserLotteryPrizeCountViews(input.getMobile(), null,prizeType, null, null));
-            model.setUnUseCount((findLotteryTime(model.getMobile(),prizeType) - model.getUseCount()));
+            UserLotteryTimeView model = new UserLotteryTimeView(input.getMobile(), input.getLoginName());
+            model.setUseCount(userLotteryPrizeMapper.findUserLotteryPrizeCountViews(input.getMobile(), null, prizeType, null, null));
+            model.setUnUseCount((findLotteryTime(model.getMobile(), prizeType) - model.getUseCount()));
             return model;
         });
 
         return Lists.newArrayList(transform);
     }
 
-    public int findUserLotteryTimeCountViews(String mobile){
-        return userMapper.findUserModelByMobile(mobile,null, null).size();
+    public int findUserLotteryTimeCountViews(String mobile) {
+        return userMapper.findUserModelByMobile(mobile, null, null).size();
     }
 
-    public List<UserLotteryPrizeView> findUserLotteryPrizeViews(String mobile,LotteryPrize selectPrize,ActivityCategory prizeType,Date startTime,Date endTime,Integer index,Integer pageSize){
+    public List<UserLotteryPrizeView> findUserLotteryPrizeViews(String mobile, LotteryPrize selectPrize, ActivityCategory prizeType, Date startTime, Date endTime, Integer index, Integer pageSize) {
         return userLotteryPrizeMapper.findUserLotteryPrizeViews(mobile, selectPrize, prizeType, startTime, endTime, index, pageSize);
     }
 
-    public List<UserLotteryPrizeView> findUserLotteryPrizeViewsByHeadlinesToday(String mobile,LotteryPrize selectPrize,ActivityCategory prizeType,Date startTime,Date endTime,Integer index,Integer pageSize, String authenticationType){
+    public List<UserLotteryPrizeView> findUserLotteryPrizeViewsByHeadlinesToday(String mobile, LotteryPrize selectPrize, ActivityCategory prizeType, Date startTime, Date endTime, Integer index, Integer pageSize, String authenticationType) {
         List<UserLotteryPrizeView> lotteryPrizeViewList = userLotteryPrizeMapper.findUserLotteryPrizeViews(mobile, selectPrize, prizeType, startTime, endTime, index, pageSize);
         //0-代表未实名认证用户 1-代表已实名认证用户
-        lotteryPrizeViewList.stream().filter((UserLotteryPrizeView userLotteryPrizeView) -> {
-            switch (authenticationType) {
-                case "0":
-                    return Strings.isNullOrEmpty(userLotteryPrizeView.getUserName());
-                case "1":
-                    return !Strings.isNullOrEmpty(userLotteryPrizeView.getUserName());
-            }
-            return true;
-        }).collect(Collectors.toList());
+
         lotteryPrizeViewList = Lists.transform(lotteryPrizeViewList, userLotteryPrizeView -> {
             userLotteryPrizeView.setInvestFlag(investMapper.sumSuccessInvestCountByLoginName(userLotteryPrizeView.getLoginName()) > 0 ? "是" : "否");
             return userLotteryPrizeView;
         });
 
-        return lotteryPrizeViewList;
+        return lotteryPrizeViewList.stream()
+                .filter((UserLotteryPrizeView userLotteryPrizeView) ->
+                {
+                    switch (authenticationType) {
+                        case "0":
+                            return Strings.isNullOrEmpty(userLotteryPrizeView.getUserName());
+                        case "1":
+                            return !Strings.isNullOrEmpty(userLotteryPrizeView.getUserName());
+                    }
+                    return true;
+                })
+                .collect(Collectors.toList());
     }
 
-    public int findUserLotteryPrizeCountViews(String mobile,LotteryPrize selectPrize,ActivityCategory prizeType,Date startTime,Date endTime){
+    public int findUserLotteryPrizeCountViews(String mobile, LotteryPrize selectPrize, ActivityCategory prizeType, Date startTime, Date endTime) {
         return userLotteryPrizeMapper.findUserLotteryPrizeCountViews(mobile, selectPrize, prizeType, startTime, endTime);
     }
 
-    private int findLotteryTime(String mobile,ActivityCategory activityCategory){
+    private int findLotteryTime(String mobile, ActivityCategory activityCategory) {
         int lotteryTime = 0;
         UserModel userModel = userMapper.findByMobile(mobile);
-        if(userModel == null){
+        if (userModel == null) {
             return lotteryTime;
         }
 
         Date startTime = null;
         Date endTime = null;
-        switch (activityCategory){
+        switch (activityCategory) {
             case AUTUMN_PRIZE:
                 startTime = activityAutumnStartTime;
                 endTime = activityAutumnEndTime;
@@ -129,36 +134,36 @@ public class ActivityConsoleUserLotteryService {
                 endTime = DateTime.parse(carnivalTime.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
         }
 
-        List<UserModel> userModels = userMapper.findUsersByRegisterTimeOrReferrer(startTime,endTime, userModel.getLoginName());
-        for(UserModel referrerUserModel : userModels){
-            if(referrerUserModel.getRegisterTime().before(endTime) && referrerUserModel.getRegisterTime().after(startTime)){
-                lotteryTime ++;
-                if(investMapper.countInvestorSuccessInvestByInvestTime(referrerUserModel.getLoginName(),startTime,endTime) > 0){
-                    lotteryTime ++;
+        List<UserModel> userModels = userMapper.findUsersByRegisterTimeOrReferrer(startTime, endTime, userModel.getLoginName());
+        for (UserModel referrerUserModel : userModels) {
+            if (referrerUserModel.getRegisterTime().before(endTime) && referrerUserModel.getRegisterTime().after(startTime)) {
+                lotteryTime++;
+                if (investMapper.countInvestorSuccessInvestByInvestTime(referrerUserModel.getLoginName(), startTime, endTime) > 0) {
+                    lotteryTime++;
                 }
             }
         }
 
-        if(userModel.getRegisterTime().before(endTime) && userModel.getRegisterTime().after(startTime)){
-            lotteryTime ++;
+        if (userModel.getRegisterTime().before(endTime) && userModel.getRegisterTime().after(startTime)) {
+            lotteryTime++;
         }
 
         AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
-        if(accountModel != null && accountModel.getRegisterTime().before(endTime) && accountModel.getRegisterTime().after(startTime)){
-            lotteryTime ++;
+        if (accountModel != null && accountModel.getRegisterTime().before(endTime) && accountModel.getRegisterTime().after(startTime)) {
+            lotteryTime++;
         }
 
         BankCardModel bankCardModel = bankCardMapper.findPassedBankCardByLoginName(userModel.getLoginName());
-        if(bankCardModel != null && bankCardModel.getCreatedTime().before(endTime) && bankCardModel.getCreatedTime().after(startTime)){
-            lotteryTime ++;
+        if (bankCardModel != null && bankCardModel.getCreatedTime().before(endTime) && bankCardModel.getCreatedTime().after(startTime)) {
+            lotteryTime++;
         }
 
-        if(rechargeMapper.findRechargeCount(null, userModel.getMobile(), null, RechargeStatus.SUCCESS, null, startTime, endTime) > 0){
-            lotteryTime ++;
+        if (rechargeMapper.findRechargeCount(null, userModel.getMobile(), null, RechargeStatus.SUCCESS, null, startTime, endTime) > 0) {
+            lotteryTime++;
         }
 
-        if(investMapper.countInvestorSuccessInvestByInvestTime(userModel.getLoginName(), startTime, endTime) > 0){
-            lotteryTime ++;
+        if (investMapper.countInvestorSuccessInvestByInvestTime(userModel.getLoginName(), startTime, endTime) > 0) {
+            lotteryTime++;
         }
 
         return lotteryTime;

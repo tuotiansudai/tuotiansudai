@@ -64,7 +64,7 @@
                         <td>${headlinesToday.mobile!}</td>
                         <td>${headlinesToday.lotteryTime?string('yyyy-MM-dd HH:mm')}</td>
                         <td>${headlinesToday.userName!}</td>
-                        <td>${headlinesToday.investCount!}</td>
+                        <td>${headlinesToday.investFlag!}</td>
                     </tr>
                     </#list>
                 </#if>
