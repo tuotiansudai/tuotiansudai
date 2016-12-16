@@ -133,7 +133,7 @@ public class CouponRepayServiceImpl implements CouponRepayService {
 
             InvestModel investModel = investMapper.findById(userCouponModel.getInvestId());
             if (investModel == null || investModel.getStatus() != InvestStatus.SUCCESS || investModel.getTransferStatus() == TransferStatus.SUCCESS) {
-                logger.error(MessageFormat.format("[Coupon Repay {0}] invest({1}) is nonexistent or not success or has transferred",
+                logger.warn(MessageFormat.format("[Coupon Repay {0}] invest({1}) is nonexistent or not success or has transferred",
                         String.valueOf(loanRepayId),
                         investModel == null ? "null" : String.valueOf(investModel.getId())));
                 continue;
