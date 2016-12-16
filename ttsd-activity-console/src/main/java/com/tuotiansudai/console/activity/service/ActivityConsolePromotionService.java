@@ -46,6 +46,7 @@ public class ActivityConsolePromotionService {
         promotionModel.setName(promotionDto.getName());
         promotionModel.setImageUrl(promotionDto.getImageUrl());
         promotionModel.setLinkUrl(promotionDto.getLinkUrl());
+        promotionModel.setJumpToLink(promotionDto.getJumpToLink());
         promotionModel.setStartTime(promotionDto.getStartTime());
         promotionModel.setEndTime(promotionDto.getEndTime());
         promotionModel.setSeq(promotionDto.getSeq());
