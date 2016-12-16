@@ -47,7 +47,7 @@ public class MobileAppCheckVersionController extends MobileAppBaseController {
     @ApiOperation("获取版本")
     public BaseResponseDto<AppVersionResponseDataDto> getAndroidVersion(@RequestBody BaseParamDto dto) {
         BaseResponseDto<AppVersionResponseDataDto> baseResponseDto = new BaseResponseDto<>();
-        AppVersionResponseDataDto dataDto = getLastestVersionInfo(dto.getBaseParam().getPlatform());
+        AppVersionResponseDataDto dataDto = getLatestVersionInfo(dto.getBaseParam().getPlatform());
         if (dataDto != null) {
             baseResponseDto.setData(dataDto);
             baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
@@ -60,7 +60,7 @@ public class MobileAppCheckVersionController extends MobileAppBaseController {
         return baseResponseDto;
     }
 
-    private AppVersionResponseDataDto getLastestVersionInfo(String platform) {
+    private AppVersionResponseDataDto getLatestVersionInfo(String platform) {
         try {
             String jsonString = redisWrapperClient.get(APP_VERSION_INFO_REDIS_KEY);
             if (StringUtils.isBlank(jsonString)) {

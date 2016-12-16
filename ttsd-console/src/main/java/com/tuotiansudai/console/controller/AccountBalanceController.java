@@ -1,7 +1,7 @@
 package com.tuotiansudai.console.controller;
 
-import com.tuotiansudai.console.service.UserServiceConsole;
-import com.tuotiansudai.dto.UserItemDataDto;
+import com.tuotiansudai.console.dto.UserItemDataDto;
+import com.tuotiansudai.console.service.ConsoleUserService;
 import com.tuotiansudai.util.PaginationUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
+
 @Controller
 @RequestMapping(value = "/finance-manage")
 public class AccountBalanceController {
@@ -20,7 +21,7 @@ public class AccountBalanceController {
     static Logger logger = Logger.getLogger(AccountBalanceController.class);
 
     @Autowired
-    private UserServiceConsole userServiceConsole;
+    private ConsoleUserService consoleUserService;
 
 
     @RequestMapping(value = "/account-balance")
@@ -35,10 +36,10 @@ public class AccountBalanceController {
         ModelAndView modelAndView = new ModelAndView("/account-balance");
         modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);
-        List<UserItemDataDto> userItemDataDtoList = userServiceConsole.findUsersAccountBalance(mobile, balanceMin, balanceMax, index, pageSize);
+        List<UserItemDataDto> userItemDataDtoList = consoleUserService.findUsersAccountBalance(mobile, balanceMin, balanceMax, index, pageSize);
         modelAndView.addObject("userAccountList", userItemDataDtoList);
-        long count = userServiceConsole.findUsersAccountBalanceCount(mobile, balanceMin, balanceMax);
-        modelAndView.addObject("sumBalance", userServiceConsole.findUsersAccountBalanceSum(mobile, balanceMin, balanceMax));
+        long count = consoleUserService.findUsersAccountBalanceCount(mobile, balanceMin, balanceMax);
+        modelAndView.addObject("sumBalance", consoleUserService.findUsersAccountBalanceSum(mobile, balanceMin, balanceMax));
         long totalPages = PaginationUtil.calculateMaxPage(count, pageSize);
         boolean hasPreviousPage = index > 1 && index <= totalPages;
         boolean hasNextPage = index < totalPages;

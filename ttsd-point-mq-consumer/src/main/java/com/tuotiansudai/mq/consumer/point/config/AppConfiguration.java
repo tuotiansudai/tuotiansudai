@@ -1,6 +1,5 @@
 package com.tuotiansudai.mq.consumer.point.config;
 
-import com.tuotiansudai.coupon.service.impl.CouponActivationServiceImpl;
 import com.tuotiansudai.point.job.ImitateLotteryJob;
 import com.tuotiansudai.point.service.PointLotteryService;
 import com.tuotiansudai.point.service.impl.PointLotteryServiceImpl;
@@ -21,8 +20,6 @@ import redis.clients.jedis.JedisPoolConfig;
                 PointLotteryService.class,
                 ImitateLotteryJob.class,
                 PointLotteryServiceImpl.class,
-                CouponActivationServiceImpl.class,
-
         })
 })
 @PropertySource(

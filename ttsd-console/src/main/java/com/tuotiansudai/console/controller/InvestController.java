@@ -1,5 +1,7 @@
 package com.tuotiansudai.console.controller;
 
+import com.google.common.collect.Lists;
+import com.tuotiansudai.console.service.ConsoleInvestService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestPaginationDataDto;
 import com.tuotiansudai.dto.InvestRepayDataDto;
@@ -27,6 +29,9 @@ import java.util.List;
 public class InvestController {
 
     @Autowired
+    private ConsoleInvestService consoleInvestService;
+
+    @Autowired
     private InvestService investService;
 
     @Autowired
@@ -47,9 +52,9 @@ public class InvestController {
                                       @RequestParam(name = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
                                       @Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index) {
         int pageSize = 10;
-        InvestPaginationDataDto dataDto = investService.getInvestPagination(loanId, investorMobile, channel, source, role,
+        InvestPaginationDataDto dataDto = consoleInvestService.getInvestPagination(loanId, investorMobile, channel, source, role,
                 startTime, endTime, investStatus, preferenceType, index, pageSize);
-        List<String> channelList = investService.findAllChannel();
+        List<String> channelList = consoleInvestService.findAllChannel();
         ModelAndView mv = new ModelAndView("/invest-list");
         mv.addObject("data", dataDto);
         mv.addObject("mobile", investorMobile);
@@ -72,18 +77,16 @@ public class InvestController {
     @RequestMapping(value = "/invest-repay/{investId:^\\d+$}", method = RequestMethod.GET)
     public ModelAndView getInvestRepayList(@PathVariable long investId) {
         InvestModel investModel = investService.findById(investId);
-        LoanModel loanModel = loanService.findLoanById(investModel.getLoanId());
 
         BaseDto<InvestRepayDataDto> investRepayDto = repayService.findInvestorInvestRepay(investModel.getLoginName(), investModel.getId());
         List<InvestRepayDataItemDto> repayDataItems = investRepayDto.getData().getRecords();
-        if (repayDataItems == null) {
-            repayDataItems = new ArrayList<>(0);
-        }
+
+        repayDataItems = repayDataItems == null ? Lists.newArrayList() : repayDataItems;
 
         ModelAndView mv = new ModelAndView("invest-repay-list");
         mv.addObject("repayList", repayDataItems);
         mv.addObject("invest", investModel);
-        mv.addObject("loan", loanModel);
+        mv.addObject("loan", loanService.findLoanById(investModel.getLoanId()));
         return mv;
     }
 }
