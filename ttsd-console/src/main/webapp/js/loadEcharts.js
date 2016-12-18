@@ -263,7 +263,51 @@ define(['jquery','underscore','echarts','pageNumber'], function ($,_) {
                 };
                 return $.extend({}, MyChartsObject.ChartOptionTemplates.CommonLineOption, option);
 
-    },
+            },
+            aBar: function (data, name,xAxisName) {
+                var bar_datas = MyChartsObject.ChartDataFormate.FormateNOGroupData(data, 'bar');
+                var total = 0;
+                var annualMoney = 0;
+                $.each(bar_datas.data,function (i,item){
+                    total += Number(item.value);
+                    annualMoney += Number(MyChartsObject.datetimeFun.getAnnualMoney(item.name,item.value));
+                });
+
+                total=parseFloat(total).toFixed(2);
+                var option = {
+                    tooltip: {
+                        trigger: 'item',
+                        padding: [2, 2, 2, 2],
+                        formatter: function(option) {
+                            var data=bar_datas.data,
+                                keyName=option.name;
+                            var filterData=_.where(data,{name: keyName})[0];
+                            return "<ul style='list-style:none;text-align: left;padding-left: inherit'>" +
+                                "<li>"+option.seriesName + ':' + filterData.value + "</li>" +
+                                "<ul>";
+                        }
+                    },
+                    xAxis: [{
+                        type: 'category',
+                        name:xAxisName,
+                        data: bar_datas.category
+                    }],
+                    yAxis: [{
+                        name: name || '',
+                        type: 'value',
+                        nameLocation: 'end',
+                        boundaryGap: [0, 0.01]
+                    }],
+                    series: [{
+                        name: name || '',
+                        axisLabel: { interval: 0 },
+                        type: 'bar',
+                        data: bar_datas.data
+                    }]
+
+                };
+                return $.extend({}, MyChartsObject.ChartOptionTemplates.CommonLineOption, option);
+            },
             Pie: function (data, name) {
                 var pie_datas = MyChartsObject.ChartDataFormate.FormateNOGroupData(data,'pie');
                 var total = 0;

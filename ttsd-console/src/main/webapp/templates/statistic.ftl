@@ -408,8 +408,8 @@
                 </div>
                 <div class="panel-body" id="">
                     <form class="form-inline" id="anxinUserStatus">
-                        开始时间： <input type="text" class="form-control start-date" id="startTime" name="startTime">
-                        结束时间：<input type="text" class="form-control end-date" name="endTime" id="endTime">
+                        开始时间： <input type="text" class="form-control anxin-start-date" id="startTime" name="startTime">
+                        结束时间：<input type="text" class="form-control  anxin-end-date" name="endTime" id="endTime">
                         <button class="btn btn-primary" type="button">查询</button>
                     </form>
 
