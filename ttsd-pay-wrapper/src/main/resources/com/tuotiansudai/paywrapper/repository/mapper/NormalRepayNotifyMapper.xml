@@ -29,6 +29,10 @@
         values (#{service}, #{signType}, #{sign}, #{merId}, #{version}, #{orderId}, #{merDate}, #{tradeNo}, #{retCode}, #{retMsg}, #{requestTime}, #{responseTime}, #{requestData}, #{responseData}, 'NOT_DONE')
     </insert>
 
+    <select id="findById" parameterType="map" resultMap="resultMap" resultType="com.tuotiansudai.paywrapper.repository.model.async.callback.NormalRepayNotifyRequestModel">
+        select * from normal_repay_notify_request where status='NOT_DONE' and id = #{id};
+    </select>
+
     <select id="getNormalTodoList" parameterType="map" resultMap="resultMap" resultType="com.tuotiansudai.paywrapper.repository.model.async.callback.NormalRepayNotifyRequestModel">
         <![CDATA[
           select * from normal_repay_notify_request where status='NOT_DONE' order by request_time asc limit #{limitCount};
