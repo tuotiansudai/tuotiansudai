@@ -22,9 +22,9 @@ public class SendRedEnvelopeJob implements Job {
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
-        logger.debug("trigger send red envelope job, prepare do job");
+        logger.info("trigger send red envelope job, prepare do job");
         long loanId = (long) context.getJobDetail().getJobDataMap().get(LOAN_ID_KEY);
-        logger.debug("trigger send red envelope job, loanId : " + String.valueOf(loanId));
+        logger.info("trigger send red envelope job, loanId : " + String.valueOf(loanId));
 
         payWrapperClient.sendRedEnvelopeAfterLoanOut(loanId);
     }

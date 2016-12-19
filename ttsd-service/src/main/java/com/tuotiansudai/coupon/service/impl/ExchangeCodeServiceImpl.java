@@ -87,7 +87,7 @@ public class ExchangeCodeServiceImpl implements ExchangeCodeService {
     }
 
     private void genExchangeCode(long couponId, int count, int lifeSeconds) {
-        logger.debug("generate exchange code, couponId:" + couponId + ", count:" + count + ", lifeSeconds:" + lifeSeconds);
+        logger.info("generate exchange code, couponId:" + couponId + ", count:" + count + ", lifeSeconds:" + lifeSeconds);
 
         String prefix = toBase31Prefix(couponId);
         String randomCode;
@@ -98,7 +98,7 @@ public class ExchangeCodeServiceImpl implements ExchangeCodeService {
                 randomCode = genRandomCode(RANDOM_SIZE);
             }
             redisWrapperClient.hset(EXCHANGE_CODE_KEY + couponId, prefix + randomCode, "0", lifeSeconds);
-            logger.debug("generate exchange code, couponId:" + couponId + ", code:" + prefix + randomCode + ", lifeSeconds:" + lifeSeconds);
+            logger.info("generate exchange code, couponId:" + couponId + ", code:" + prefix + randomCode + ", lifeSeconds:" + lifeSeconds);
         }
     }
 
@@ -212,7 +212,7 @@ public class ExchangeCodeServiceImpl implements ExchangeCodeService {
                 value = value * 31 + index;
             }
         } catch (Exception e) {
-            logger.debug(e.getMessage(), e);
+            logger.info(e.getMessage(), e);
             return 0;
         }
         return value;

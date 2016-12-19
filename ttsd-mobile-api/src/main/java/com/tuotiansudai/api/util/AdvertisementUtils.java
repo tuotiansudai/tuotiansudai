@@ -52,11 +52,11 @@ public class AdvertisementUtils {
                     Method method = clazz.getDeclaredMethod(getMethod);
                     pictureUrl = method.invoke(advertisementPictureResponseDataDto, new Object[]{}).toString().replaceFirst("\\{static\\}", staticDomainName);
                 } catch (NoSuchMethodException e) {
-                    logger.debug("AdvertisementUtils NoSuchMethod: " + getMethod);
+                    logger.info("AdvertisementUtils NoSuchMethod: " + getMethod);
                 } catch (IllegalAccessException e1) {
-                    logger.debug("AdvertisementUtils IllegalAccess: " + e1.getMessage());
+                    logger.info("AdvertisementUtils IllegalAccess: " + e1.getMessage());
                 } catch (InvocationTargetException e2) {
-                    logger.debug("AdvertisementUtils InvocationTarget: " + e2.getMessage());
+                    logger.info("AdvertisementUtils InvocationTarget: " + e2.getMessage());
                 }
             }
             else if(Source.ANDROID == Source.valueOf(requestDto.getBaseParam().getPlatform().toUpperCase())){

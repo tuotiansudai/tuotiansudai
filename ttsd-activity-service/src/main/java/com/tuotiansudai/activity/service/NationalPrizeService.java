@@ -115,7 +115,7 @@ public class NationalPrizeService {
     }
 
     public DrawLotteryResultDto drawLotteryPrize(String mobile){
-        logger.debug(mobile + " is drawing the lottery prize.");
+        logger.info(mobile + " is drawing the lottery prize.");
 
         Date nowDate = DateTime.now().toDate();
         if(!nowDate.before(activityNationalEndTime) || !nowDate.after(activityNationalStartTime)){
@@ -123,19 +123,19 @@ public class NationalPrizeService {
         }
 
         if (StringUtils.isEmpty(mobile)) {
-            logger.debug("User not login. can't draw prize.");
+            logger.info("User not login. can't draw prize.");
             return new DrawLotteryResultDto(2);//您还未登陆，请登陆后再来抽奖吧！
         }
 
         UserModel userModel = userMapper.findByMobile(mobile);
         if(userModel == null){
-            logger.debug(mobile + "User is not found.");
+            logger.info(mobile + "User is not found.");
             return new DrawLotteryResultDto(2);//"该用户不存在！"
         }
 
         int drawTime = getDrawPrizeTime(mobile);
         if(drawTime <= 0){
-            logger.debug(mobile + "is no chance. draw time:" + drawTime);
+            logger.info(mobile + "is no chance. draw time:" + drawTime);
             return new DrawLotteryResultDto(1);//您暂无抽奖机会，赢取机会后再来抽奖吧！
         }
 

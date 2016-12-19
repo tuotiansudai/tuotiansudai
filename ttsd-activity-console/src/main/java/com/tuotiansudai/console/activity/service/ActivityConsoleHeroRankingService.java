@@ -48,7 +48,7 @@ public class ActivityConsoleHeroRankingService {
 
     public List<HeroRankingView> obtainHeroRanking(ActivityCategory activityCategory,Date tradingTime) {
         if (tradingTime == null) {
-            logger.debug("tradingTime is null");
+            logger.info("tradingTime is null");
             return null;
         }
         tradingTime = new DateTime(tradingTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
