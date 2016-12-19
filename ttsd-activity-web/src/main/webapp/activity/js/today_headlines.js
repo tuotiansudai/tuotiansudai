@@ -98,8 +98,8 @@ require(['jquery', 'layerWrapper', 'template','commonFun', 'jquery.validate', 'j
         {
             case 'REGISTER_LOGIN_TO_ACCOUNT'://实名认证--注册后
                 if($lotteryTime.val() == 0){
-                    attestTip();
-                    $('#attestBox').find('.gift-title').hide();
+                    //attestTip();
+                    //$('#attestBox').find('.gift-title').hide();
                     break;
                 }
                 else{
