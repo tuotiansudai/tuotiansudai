@@ -1299,12 +1299,11 @@
             </choose> as `group`
         from
             (
-                select date_format(now(),'%Y')-if(length(identity_number)=18,substring(identity_number,7,4),1900+substring(identity_number,7,2)) as age
-                from
-                    user u
-                    join account a on u.login_name=a.login_name
+                select date_format(now(),'%Y')-if(length(u.identity_number)=18,substring(u.identity_number,7,4),1900+substring(u.identity_number,7,2)) as age
+                from user u
                 where
-                    length(identity_number) in (15,18)
+                    u.identity_number is not null
+                    and length(u.identity_number) in (15,18)
                     and u.register_time between #{startTime} and #{endTime}
                     <if test="province != null and province !=''">
                         and u.province=#{province}
