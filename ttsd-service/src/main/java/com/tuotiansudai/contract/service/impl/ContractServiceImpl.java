@@ -109,8 +109,7 @@ public class ContractServiceImpl implements ContractService {
         if (dataModel.isEmpty()) {
             return "";
         }
-        String strGetContract = getContract("contract", dataModel);
-        return StringUtils.isEmpty(strGetContract) ? "" : strGetContract.replace("&nbsp;", "&#160;");
+        return getContract("contract", dataModel).replace("&nbsp;", "&#160;");
     }
 
     @Override
@@ -139,8 +138,7 @@ public class ContractServiceImpl implements ContractService {
         if (dataModel.isEmpty()) {
             return "";
         }
-        String strGetContract = getContract("transferContract", dataModel);
-        return StringUtils.isEmpty(strGetContract) ? "" : strGetContract.replace("&nbsp;", "&#160;");
+        return getContract("transferContract", dataModel).replace("&nbsp;", "&#160;");
     }
 
 
