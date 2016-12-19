@@ -91,8 +91,13 @@ require(['jquery','loadEcharts','bootstrapDatetimepicker'],function($,loadEchart
     $('.anxin-start-date').val("2016-11-15");
     $('.anxin-end-date').val(loadEcharts.datetimeFun.getBeforeDate(0));
 
-    $('#repayStartTime').val('2016-01-01');
+    $('#repayStartTime').val('2015-01-01');
     $('#repayEndTime').val(loadEcharts.datetimeFun.getBeforeDate(1));
+
+    $('#expenseStartTime').val('2015-01-01');
+    $('#expenseEndTime').val(loadEcharts.datetimeFun.getBeforeDate(1));
+
+
 
     $('.granularity-select').on('change', function(){
         if ($(this).val() == 'Hourly') {

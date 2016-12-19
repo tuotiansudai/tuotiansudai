@@ -267,14 +267,42 @@ define(['jquery','underscore','echarts','pageNumber'], function ($,_) {
             aBar: function (data, name,xAxisName) {
                 var bar_datas = MyChartsObject.ChartDataFormate.FormateNOGroupData(data, 'bar');
                 var total = 0;
-                var annualMoney = 0;
+                var totalVerify = 0;
+                var totalNoVerify = 0;
+                var totalInvestVerify = 0;
+                var totalInvestNoVerify = 0;
                 $.each(bar_datas.data,function (i,item){
-                    total += Number(item.value);
-                    annualMoney += Number(MyChartsObject.datetimeFun.getAnnualMoney(item.name,item.value));
+                     switch (item.name){
+                         case '已开通':
+                             total = item.value;
+                             break;
+                         case '已开通且免验':
+                             totalVerify = item.value;
+                             break;
+                         case '已开通未免验':
+                             totalNoVerify = item.value;
+                             break;
+                         case '已投资且生成合同':
+                             totalInvestVerify = item.value;
+                             break;
+                         case '已投资未生成合同':
+                             totalInvestNoVerify = item.value;
+                             break;
+                         default:
+                             total = 0;
+
+                     }
                 });
 
-                total=parseFloat(total).toFixed(2);
                 var option = {
+                    title:{
+                        text: '已开通总计: ' + total + '个 已开通且免验总计: ' + totalVerify + '个 已开通未免验总计: ' + totalNoVerify + '个\n已投资且生成合同总计: ' + totalInvestVerify + '个 已投资未生成合同总计: ' +  totalInvestNoVerify + "个",
+                        x:40,
+                        y:5,
+                        textStyle:{
+                            fontSize:15
+                        }
+                    },
                     tooltip: {
                         trigger: 'item',
                         padding: [2, 2, 2, 2],
