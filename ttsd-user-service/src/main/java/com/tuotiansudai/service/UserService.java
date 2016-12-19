@@ -1,7 +1,6 @@
 package com.tuotiansudai.service;
 
-import com.tuotiansudai.dto.*;
-import com.tuotiansudai.exception.EditUserException;
+import com.tuotiansudai.dto.RegisterUserDto;
 import com.tuotiansudai.exception.ReferrerRelationException;
 import com.tuotiansudai.repository.model.UserModel;
 
@@ -25,8 +24,6 @@ public interface UserService {
 
     boolean loginNameOrMobileIsExist(String loginNameOrMobile);
 
-    BaseDto<PayDataDto> registerAccount(RegisterAccountDto dto);
-
     /**
      * 修改用户密码
      *
@@ -42,8 +39,6 @@ public interface UserService {
     void refreshAreaByMobile(List<UserModel> userModels);
 
     void refreshAreaByMobileInJob();
-
-    boolean resetUmpayPassword(String loginName, String identityNumber);
 
     boolean mobileIsRegister(String mobile);
 
