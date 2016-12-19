@@ -1,0 +1,14 @@
+{
+  "css": {
+    "loanDetail": "consult_center.css"
+  },
+  "js": {
+    "loanDetail": "consult_center.js"
+  },
+  "staticServer": "http://localhost:8088",
+  "linkExchangeList": [{
+    "linkUrl": 1212,
+    "noFollow": true,
+    "title": 121212
+  }]
+}
