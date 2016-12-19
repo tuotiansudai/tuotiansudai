@@ -46,6 +46,9 @@ public class ActivityConsoleExportService {
     private ActivityConsoleNotWorkService activityConsoleNotWorkService;
 
     @Autowired
+    private ActivityConsoleUserLotteryService activityConsoleUserLotteryService;
+
+    @Autowired
     private UserLotteryPrizeMapper userLotteryPrizeMapper;
 
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.mid.autumn.startTime}\")}")
@@ -167,23 +170,12 @@ public class ActivityConsoleExportService {
         List<UserLotteryPrizeView> userLotteryPrizeViews = userLotteryPrizeMapper.findUserLotteryPrizeViews(mobile, null, prizeType, startTime, endTime, null, null);
         List<List<String>> rows = Lists.newArrayList();
         userLotteryPrizeViews.stream()
-                .filter(
-                        (UserLotteryPrizeView userLotteryPrizeView) -> {
-                            switch (authenticationType) {
-                                case "0":
-                                    return Strings.isNullOrEmpty(userLotteryPrizeView.getUserName());
-                                case "1":
-                                    return !Strings.isNullOrEmpty(userLotteryPrizeView.getUserName());
-                            }
-                            return true;
-                        }
-                )
+                .filter(userLotteryPrizeView -> activityConsoleUserLotteryService.isSpecialAuthType(authenticationType, userLotteryPrizeView))
                 .forEach(userLotteryPrizeView -> rows.add(Lists.newArrayList(
                         userLotteryPrizeView.getMobile(),
                         new DateTime(userLotteryPrizeView.getLotteryTime()).toString("yyyy-MM-dd HH:mm:ss"),
                         userLotteryPrizeView.getUserName(),
                         investMapper.sumSuccessInvestCountByLoginName(userLotteryPrizeView.getLoginName()) > 0 ? "是" : "否")));
-
         return rows;
     }
 
