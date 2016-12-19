@@ -1,5 +1,6 @@
 package com.tuotiansudai.contract.service.impl;
 
+import com.google.common.base.Strings;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.pdf.BaseFont;
 import com.tuotiansudai.contract.service.ContractService;
@@ -13,6 +14,7 @@ import com.tuotiansudai.util.AmountConverter;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.Version;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,6 +85,11 @@ public class ContractServiceImpl implements ContractService {
                 }
             }
         }
+        if (reader == null) {
+            logger.error("template process exception, reader is null");
+            return "";
+        }
+
         StringBuilder content = new StringBuilder();
         String str;
         try {
@@ -102,7 +109,8 @@ public class ContractServiceImpl implements ContractService {
         if (dataModel.isEmpty()) {
             return "";
         }
-        return getContract("contract", dataModel).replace("&nbsp;", "&#160;");
+        String strGetContract = getContract("contract", dataModel);
+        return StringUtils.isEmpty(strGetContract) ? "" : strGetContract.replace("&nbsp;", "&#160;");
     }
 
     @Override
@@ -131,7 +139,8 @@ public class ContractServiceImpl implements ContractService {
         if (dataModel.isEmpty()) {
             return "";
         }
-        return getContract("transferContract", dataModel).replace("&nbsp;", "&#160;");
+        String strGetContract = getContract("transferContract", dataModel);
+        return StringUtils.isEmpty(strGetContract) ? "" : strGetContract.replace("&nbsp;", "&#160;");
     }
 
 
@@ -244,5 +253,4 @@ public class ContractServiceImpl implements ContractService {
         }
         return dataModel;
     }
-
 }
