@@ -2,18 +2,24 @@ package com.tuotiansudai.service;
 
 import com.tuotiansudai.dto.PrepareRegisterRequestDto;
 import com.tuotiansudai.dto.RegisterUserDto;
-import com.tuotiansudai.repository.mapper.BaseMapperTest;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.UUID;
 
-public class PrepareServiceTest extends BaseMapperTest {
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
+@Transactional
+public class PrepareServiceTest {
 
     @Autowired
     private UserMapper userMapper;
