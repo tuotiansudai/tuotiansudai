@@ -45,6 +45,13 @@ public class SignInClient {
             logger.error("[sign in client] username or password or source is empty");
             return null;
         }
+        if (username.length() < 5 || username.length() > 25) {
+            logger.error("[sign in client] Input the username too short or too long, please enter again! ");
+            SignInResult signInResult = new SignInResult();
+            signInResult.setResult(false);
+            signInResult.setMessage("用户名长度不符合规则");
+            return signInResult;
+        }
 
         token = Strings.isNullOrEmpty(token) ? "none" : token;
         deviceId = Strings.isNullOrEmpty(deviceId) ? "" : deviceId;
