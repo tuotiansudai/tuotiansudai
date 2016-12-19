@@ -50,8 +50,8 @@ public class JobController {
 
     @ResponseBody
     @RequestMapping(value = "/async_normal_repay_notify", method = RequestMethod.POST)
-    public BaseDto<PayDataDto> asyncNormalRepayNotify() {
-        return this.normalRepayService.asyncNormalRepayPaybackCallback();
+    public BaseDto<PayDataDto> asyncNormalRepayNotify(@RequestBody long notifyRequestId) {
+        return this.normalRepayService.asyncNormalRepayPaybackCallback(notifyRequestId);
     }
 
     @ResponseBody
