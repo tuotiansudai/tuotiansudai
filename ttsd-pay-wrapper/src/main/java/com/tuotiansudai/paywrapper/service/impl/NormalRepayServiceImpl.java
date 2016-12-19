@@ -469,7 +469,7 @@ public class NormalRepayServiceImpl implements NormalRepayService {
         return asyncNormalRepayNotifyDto;
     }
 
-    public boolean updateNormalRepayNotifyRequestStatus(NormalRepayNotifyRequestModel model) {
+    private boolean updateNormalRepayNotifyRequestStatus(NormalRepayNotifyRequestModel model) {
         try {
             normalRepayNotifyMapper.updateStatus(model.getId(), NotifyProcessStatus.DONE);
         } catch (Exception e) {
