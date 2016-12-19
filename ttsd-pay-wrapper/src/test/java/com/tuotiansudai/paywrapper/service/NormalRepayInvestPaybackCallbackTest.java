@@ -108,6 +108,8 @@ public class NormalRepayInvestPaybackCallbackTest extends RepayBaseTest {
 
         normalRepayNotifyMapper.create(this.getFakeNormalRepayNotifyRequestModel(investRepay1.getId()));
 
+        normalRepayService.asyncNormalRepayPaybackCallback(investRepay1.getId());
+
         InvestRepayModel actualInvestRepay1 = investRepayMapper.findById(investRepay1.getId());
 
         List<UserBillModel> userBills = userBillMapper.findByLoginName(investor.getLoginName());
@@ -166,6 +168,8 @@ public class NormalRepayInvestPaybackCallbackTest extends RepayBaseTest {
 
         normalRepayNotifyMapper.create(this.getFakeNormalRepayNotifyRequestModel(investRepay2.getId()));
 
+        normalRepayService.asyncNormalRepayPaybackCallback(investRepay2.getId());
+
         InvestRepayModel actualInvestRepay2 = investRepayMapper.findById(investRepay2.getId());
 
         List<UserBillModel> userBills = userBillMapper.findByLoginName(investor.getLoginName());
@@ -220,6 +224,8 @@ public class NormalRepayInvestPaybackCallbackTest extends RepayBaseTest {
         investRepayMapper.create(Lists.newArrayList(investRepay1, investRepay2));
 
         normalRepayNotifyMapper.create(this.getFakeNormalRepayNotifyRequestModel(investRepay1.getId()));
+
+        normalRepayService.asyncNormalRepayPaybackCallback(investRepay1.getId());
 
         InvestRepayModel actualInvestRepay1 = investRepayMapper.findById(investRepay1.getId());
 

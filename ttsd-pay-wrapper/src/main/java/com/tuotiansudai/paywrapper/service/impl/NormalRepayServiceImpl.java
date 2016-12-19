@@ -450,16 +450,14 @@ public class NormalRepayServiceImpl implements NormalRepayService {
 
     @Override
     public BaseDto<PayDataDto> asyncNormalRepayPaybackCallback(long notifyRequestId){
-        List<NormalRepayNotifyRequestModel> todoList = normalRepayNotifyMapper.getNormalTodoList(repayProcessListSize);
-        for (NormalRepayNotifyRequestModel model : todoList) {
-            if (updateNormalRepayNotifyRequestStatus(model)) {
-                try {
-                    if(!this.processOneNormalRepayPaybackCallback(model)){
-                        fatalLog("normal repay callback, processOneNormalRepayPaybackCallback fail. investRepayId:" + model.getOrderId(), null);
-                    }
-                } catch (Exception e) {
-                    fatalLog("normal repay callback, processOneNormalRepayPaybackCallback error. investRepayId:" + model.getOrderId(), e);
+        NormalRepayNotifyRequestModel model = normalRepayNotifyMapper.findById(notifyRequestId);
+        if (updateNormalRepayNotifyRequestStatus(model)) {
+            try {
+                if(!this.processOneNormalRepayPaybackCallback(model)){
+                    fatalLog("normal repay callback, processOneNormalRepayPaybackCallback fail. investRepayId:" + model.getOrderId(), null);
                 }
+            } catch (Exception e) {
+                fatalLog("normal repay callback, processOneNormalRepayPaybackCallback error. investRepayId:" + model.getOrderId(), e);
             }
         }
 
