@@ -3,11 +3,6 @@
 <@global.main pageCss="" pageJavascript="headlines-today-list.js" headLab="activity-manage" sideLab="lottery" title="抽奖数据统计">
 
 <div class="col-md-10">
-    <div class="panel panel-default">
-        <div class="panel-body">
-            <a class="btn btn-default btn-primary" href="#" role="button">参与记录</a>
-        </div>
-    </div>
 
     <div class="table-responsive">
         <form action="/activity-console/activity-manage/headlines-today-list" method="get" class="form-inline query-build"
