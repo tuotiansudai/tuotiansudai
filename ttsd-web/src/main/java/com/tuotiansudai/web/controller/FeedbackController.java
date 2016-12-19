@@ -52,7 +52,7 @@ public class FeedbackController {
         boolean result = this.captchaHelper.captchaVerify(captcha, httpServletRequest.getSession(false).getId(), httpServletRequest.getRemoteAddr());
 
         if (!result) {
-            logger.debug("submit feedback failed: captcha does not match actual value");
+            logger.info("submit feedback failed: captcha does not match actual value");
             baseDataDto.setMessage("验证码错误！");
             baseDataDto.setStatus(false);
             baseDto.setSuccess(false);
