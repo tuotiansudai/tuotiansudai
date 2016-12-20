@@ -172,8 +172,6 @@ public class NormalRepayInvestPaybackCallbackTest extends RepayBaseTest {
 
         normalRepayService.asyncNormalRepayPaybackCallback(normalRepayNotifyRequestModel.getId());
 
-        normalRepayNotifyMapper.findById(investRepay2.getId());
-
         InvestRepayModel actualInvestRepay2 = investRepayMapper.findById(investRepay2.getId());
 
         List<UserBillModel> userBills = userBillMapper.findByLoginName(investor.getLoginName());
