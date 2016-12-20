@@ -2,11 +2,17 @@ package com.tuotiansudai.service.impl;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.*;
-import com.tuotiansudai.exception.EditUserException;
+import com.tuotiansudai.enums.MessageEventType;
+import com.tuotiansudai.enums.PushSource;
+import com.tuotiansudai.enums.PushType;
 import com.tuotiansudai.exception.ReferrerRelationException;
+import com.tuotiansudai.message.EventMessage;
+import com.tuotiansudai.message.PushMessage;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.*;
@@ -50,6 +56,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private RegisterUserService registerUserService;
+
+    @Autowired
+    private MQWrapperClient mqWrapperClient;
 
     public static String SHA = "SHA";
 
@@ -157,7 +166,24 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public BaseDto<PayDataDto> registerAccount(RegisterAccountDto dto) {
-        return payWrapperClient.register(dto);
+        BaseDto<PayDataDto> baseDto = payWrapperClient.register(dto);
+        if (baseDto.getData().getStatus()) {
+            //Title:恭喜您认证成功
+            //Content:尊敬的{0}女士/先生，恭喜您认证成功，您的支付密码已经由联动优势发送至注册手机号码中,马上【绑定银行卡】开启赚钱之旅吧！
+            mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(MessageEventType.REGISTER_ACCOUNT_SUCCESS,
+                    Lists.newArrayList(dto.getLoginName()),
+                    MessageEventType.REGISTER_ACCOUNT_SUCCESS.getTitleTemplate(),
+                    MessageFormat.format(MessageEventType.REGISTER_ACCOUNT_SUCCESS.getContentTemplate(), dto.getUserName()),
+                    null
+            ));
+
+            mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(Lists.newArrayList(dto.getLoginName()),
+                    PushSource.ALL,
+                    PushType.REGISTER_ACCOUNT_SUCCESS,
+                    MessageEventType.REGISTER_ACCOUNT_SUCCESS.getTitleTemplate()));
+        }
+
+        return baseDto;
     }
 
     @Override

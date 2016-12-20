@@ -1,11 +1,8 @@
 package com.tuotiansudai.console.service;
 
 import com.tuotiansudai.message.dto.AnnounceCreateDto;
-import com.tuotiansudai.message.dto.AnnounceDto;
-import com.tuotiansudai.message.dto.MessageCreateDto;
 import com.tuotiansudai.message.repository.mapper.AnnounceMapper;
 import com.tuotiansudai.message.repository.model.AnnounceModel;
-import com.tuotiansudai.message.service.MessageService;
 import com.tuotiansudai.util.PaginationUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +20,7 @@ public class ConsoleAnnounceService {
     private AnnounceMapper announceMapper;
 
     @Autowired
-    private MessageService messageService;
+    private ConsoleMessageService consoleMessageService;
 
     public AnnounceModel findById(long id) {
         return announceMapper.findById(id);
@@ -41,7 +38,7 @@ public class ConsoleAnnounceService {
         announceMapper.create(announceModel);
         announceCreateDto.setId(announceModel.getId());
 
-        messageService.approveMessage(messageService.createOrUpdateManualMessage(createdBy, announceCreateDto.transferTo()), createdBy);
+        consoleMessageService.approveMessage(consoleMessageService.createOrUpdateManualMessage(createdBy, announceCreateDto.transferTo()), createdBy);
     }
 
     public void update(AnnounceCreateDto announceCreateDto) {

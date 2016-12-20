@@ -3,10 +3,17 @@ package com.tuotiansudai.transfer.service.impl;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.*;
+import com.tuotiansudai.enums.MessageEventType;
+import com.tuotiansudai.enums.PushSource;
+import com.tuotiansudai.enums.PushType;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.job.TransferApplicationAutoCancelJob;
+import com.tuotiansudai.message.EventMessage;
+import com.tuotiansudai.message.PushMessage;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.transfer.dto.TransferApplicationDto;
@@ -68,6 +75,9 @@ public class InvestTransferServiceImpl implements InvestTransferService {
 
     @Autowired
     private LoanDetailsMapper loanDetailsMapper;
+
+    @Autowired
+    private MQWrapperClient mqWrapperClient;
 
     protected final static String TRANSFER_APPLY_NAME = "ZR{0}-{1}";
 
@@ -185,15 +195,28 @@ public class InvestTransferServiceImpl implements InvestTransferService {
     @Override
     public boolean cancelTransferApplication(long transferApplicationId) {
         TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(transferApplicationId);
-        if (transferApplicationModel != null && transferApplicationModel.getStatus() == TransferStatus.TRANSFERRING) {
-            transferApplicationModel.setStatus(TransferStatus.CANCEL);
-            transferApplicationMapper.update(transferApplicationModel);
-            investMapper.updateTransferStatus(transferApplicationModel.getTransferInvestId(), TransferStatus.TRANSFERABLE);
-            return true;
-        } else {
-            logger.debug("this transfer apply status is not allow cancel, id = " + transferApplicationId);
+        if (transferApplicationModel == null || transferApplicationModel.getStatus() != TransferStatus.TRANSFERRING) {
             return false;
         }
+
+        transferApplicationModel.setStatus(TransferStatus.CANCEL);
+        transferApplicationMapper.update(transferApplicationModel);
+        investMapper.updateTransferStatus(transferApplicationModel.getTransferInvestId(), TransferStatus.TRANSFERABLE);
+
+        //Title:您提交的债权转让到期取消，请查看！
+        //Content:尊敬的用户，我们遗憾地通知您，您发起的转让项目没有转让成功。如有疑问，请致电客服热线400-169-1188，感谢您选择拓天速贷。
+        mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(MessageEventType.LOAN_OUT_SUCCESS,
+                Lists.newArrayList(transferApplicationModel.getLoginName()),
+                MessageEventType.TRANSFER_FAIL.getTitleTemplate(),
+                MessageEventType.TRANSFER_FAIL.getContentTemplate(),
+                null
+        ));
+
+        mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(Lists.newArrayList(transferApplicationModel.getLoginName()),
+                PushSource.ALL,
+                PushType.TRANSFER_FAIL,
+                MessageEventType.TRANSFER_FAIL.getTitleTemplate()));
+        return true;
     }
 
     private void investTransferApplyJob(TransferApplicationModel transferApplicationModel) {
@@ -232,7 +255,7 @@ public class InvestTransferServiceImpl implements InvestTransferService {
             return false;
         }
         LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loanModel.getId());
-        if(loanDetailsModel != null && loanDetailsModel.getNonTransferable()){
+        if (loanDetailsModel != null && loanDetailsModel.getNonTransferable()) {
             return false;
         }
         List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findByTransferInvestId(investId, Lists.newArrayList(TransferStatus.SUCCESS, TransferStatus.TRANSFERRING, TransferStatus.CANCEL));
@@ -297,10 +320,10 @@ public class InvestTransferServiceImpl implements InvestTransferService {
                 InvestModel investModel = investMapper.findById(input.getInvestId());
                 if (input.getTransferStatus() == TransferStatus.CANCEL) {
                     transferApplicationPaginationItemDataDto.setCancelTransfer(true);
-                }else if (investModel != null && !Strings.isNullOrEmpty(investModel.getContractNo()) && !investModel.getContractNo().equals("OLD")){
+                } else if (investModel != null && !Strings.isNullOrEmpty(investModel.getContractNo()) && !investModel.getContractNo().equals("OLD")) {
                     transferApplicationPaginationItemDataDto.setTransferNewSuccess(true);
                     transferApplicationPaginationItemDataDto.setContractNo(investModel.getContractNo());
-                }else{
+                } else {
                     transferApplicationPaginationItemDataDto.setTransferOldSuccess(true);
                 }
             }

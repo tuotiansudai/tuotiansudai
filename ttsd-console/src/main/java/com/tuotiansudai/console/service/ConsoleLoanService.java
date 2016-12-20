@@ -1,6 +1,5 @@
 package com.tuotiansudai.console.service;
 
-import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.ExtraLoanRateItemDto;
 import com.tuotiansudai.dto.LoanListDto;
@@ -74,11 +73,6 @@ public class ConsoleLoanService {
     }
 
     private List<ExtraLoanRateItemDto> fillExtraLoanRate(List<ExtraLoanRateModel> extraLoanRateModels) {
-        return Lists.transform(extraLoanRateModels, new Function<ExtraLoanRateModel, ExtraLoanRateItemDto>() {
-            @Override
-            public ExtraLoanRateItemDto apply(ExtraLoanRateModel model) {
-                return new ExtraLoanRateItemDto(model);
-            }
-        });
+        return Lists.transform(extraLoanRateModels, ExtraLoanRateItemDto::new);
     }
 }

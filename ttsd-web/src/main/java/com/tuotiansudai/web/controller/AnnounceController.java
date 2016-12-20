@@ -28,7 +28,7 @@ public class AnnounceController {
 
     @RequestMapping(value = "/{announceId:^\\d+$}", method = RequestMethod.GET)
     public ModelAndView getAnnounceDetail(@PathVariable long announceId, HttpServletResponse response) {
-        AnnounceDto dto = announceService.getDtoById(announceId);
+        AnnounceDto dto = announceService.getAnnounce(announceId);
 
         if (dto == null) {
             response.setStatus(404);

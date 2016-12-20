@@ -6,7 +6,6 @@ include "ttsd-service",
         "ttsd-job-worker",
         "ttsd-mobile-api",
         'ttsd-membership',
-        "ttsd-message",
         'ttsd-user-service',
         'ttsd-web-common-config',
         'ttsd-user-service',
@@ -17,7 +16,7 @@ include "ttsd-service",
         'ttsd-activity-console',
         'ttsd-anxin-sign',
         'ttsd-util'
-
+include 'ttsd-message-repository', "ttsd-message-service"
 include 'ttsd-edxactivity-model', 'ttsd-edxactivity-repository', 'ttsd-activity-service', 'ttsd-activity-web'
 include 'ttsd-edxpoint-model', 'ttsd-edxpoint-repository', "ttsd-point-service", 'ttsd-point-web'
 include 'ttsd-edxask-model', 'ttsd-edxask-repository', 'ttsd-ask-service', 'ttsd-ask-web'

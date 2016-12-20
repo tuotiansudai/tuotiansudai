@@ -1,15 +1,16 @@
 package com.tuotiansudai.console.controller;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.console.service.ConsoleMessageService;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.enums.AppUrl;
+import com.tuotiansudai.enums.MessageType;
 import com.tuotiansudai.enums.PushSource;
 import com.tuotiansudai.enums.PushType;
 import com.tuotiansudai.message.dto.MessageCreateDto;
 import com.tuotiansudai.message.dto.MessagePaginationItemDto;
 import com.tuotiansudai.message.repository.model.*;
-import com.tuotiansudai.message.service.MessageService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.PaginationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ import java.util.List;
 public class ConsoleMessageController {
 
     @Autowired
-    private MessageService messageService;
+    private ConsoleMessageService consoleMessageService;
 
     @RequestMapping(value = "/manual-message-list", method = RequestMethod.GET)
     @ResponseBody
@@ -39,8 +40,8 @@ public class ConsoleMessageController {
                                           @RequestParam(value = "createdBy", required = false) String createdBy,
                                           @RequestParam(value = "messageStatus", required = false) MessageStatus messageStatus) {
 
-        long messageCount = messageService.findMessageCount(title, messageStatus, createdBy, MessageType.MANUAL);
-        List<MessagePaginationItemDto> list = messageService.findMessagePagination(title, messageStatus, createdBy, MessageType.MANUAL, index, 10);
+        long messageCount = consoleMessageService.findMessageCount(title, messageStatus, createdBy, MessageType.MANUAL);
+        List<MessagePaginationItemDto> list = consoleMessageService.findMessagePagination(title, messageStatus, createdBy, MessageType.MANUAL, index, 10);
 
         ModelAndView modelAndView = new ModelAndView("/message-manual-list");
         modelAndView.addObject("index", index);
@@ -65,8 +66,8 @@ public class ConsoleMessageController {
                                         @RequestParam(value = "createdBy", required = false) String createdBy,
                                         @RequestParam(value = "messageStatus", required = false) MessageStatus messageStatus) {
 
-        long messageCount = messageService.findMessageCount(title, messageStatus, createdBy, MessageType.EVENT);
-        List<MessagePaginationItemDto> list = messageService.findMessagePagination(title, messageStatus, createdBy, MessageType.EVENT, index, 10);
+        long messageCount = consoleMessageService.findMessageCount(title, messageStatus, createdBy, MessageType.EVENT);
+        List<MessagePaginationItemDto> list = consoleMessageService.findMessagePagination(title, messageStatus, createdBy, MessageType.EVENT, index, 10);
 
         ModelAndView modelAndView = new ModelAndView("/message-auto-list");
 
@@ -102,14 +103,14 @@ public class ConsoleMessageController {
     @RequestMapping(value = "/manual-message", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<BaseDataDto> createManualMessage(@RequestBody MessageCreateDto messageCreateDto) {
-        messageService.createOrUpdateManualMessage(LoginUserInfo.getLoginName(), messageCreateDto);
+        consoleMessageService.createOrUpdateManualMessage(LoginUserInfo.getLoginName(), messageCreateDto);
         return new BaseDto<>(new BaseDataDto(true));
     }
 
     @RequestMapping(value = "/manual-message/{messageId}/edit", method = RequestMethod.GET)
     public ModelAndView createManualMessage(@PathVariable long messageId) {
         ModelAndView modelAndView = new ModelAndView("/message-manual-edit");
-        MessageCreateDto messageCreateDto = messageService.getEditMessage(messageId);
+        MessageCreateDto messageCreateDto = consoleMessageService.getEditMessage(messageId);
 
         modelAndView.addObject("dto", messageCreateDto);
         modelAndView.addObject("userGroups", Lists.newArrayList(MessageUserGroup.values()));
@@ -135,7 +136,7 @@ public class ConsoleMessageController {
         InputStream inputStream = null;
         try {
             inputStream = multipartFile.getInputStream();
-            return new BaseDto<>(new BaseDataDto(true, String.valueOf(messageService.createImportUsers(inputStream))));
+            return new BaseDto<>(new BaseDataDto(true, String.valueOf(consoleMessageService.createImportUsers(inputStream))));
         } catch (IOException e) {
             return new BaseDto<>(new BaseDataDto(false, "上传失败!文件内容错误"));
         } finally {
@@ -148,18 +149,18 @@ public class ConsoleMessageController {
     @RequestMapping(value = "/approve/{messageId}", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<BaseDataDto> manualMessageApprove(@PathVariable long messageId) {
-        return messageService.approveMessage(messageId, LoginUserInfo.getLoginName());
+        return consoleMessageService.approveMessage(messageId, LoginUserInfo.getLoginName());
     }
 
     @RequestMapping(value = "/reject/{messageId}", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<BaseDataDto> manualMessageReject(@PathVariable long messageId) {
-        return messageService.rejectMessage(messageId, LoginUserInfo.getLoginName());
+        return consoleMessageService.rejectMessage(messageId, LoginUserInfo.getLoginName());
     }
 
     @RequestMapping(value = "/delete/{messageId}", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<BaseDataDto> manualMessageDelete(@PathVariable long messageId) {
-        return messageService.deleteMessage(messageId, LoginUserInfo.getLoginName());
+        return consoleMessageService.deleteMessage(messageId, LoginUserInfo.getLoginName());
     }
 }

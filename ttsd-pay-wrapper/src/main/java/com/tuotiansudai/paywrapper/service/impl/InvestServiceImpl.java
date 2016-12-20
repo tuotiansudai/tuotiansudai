@@ -2,18 +2,20 @@ package com.tuotiansudai.paywrapper.service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.base.Joiner;
+import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
+import com.tuotiansudai.enums.MessageEventType;
+import com.tuotiansudai.enums.PushSource;
+import com.tuotiansudai.enums.PushType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.job.AutoLoanOutJob;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
-import com.tuotiansudai.message.InvestInfo;
-import com.tuotiansudai.message.InvestSuccessMessage;
-import com.tuotiansudai.message.LoanDetailInfo;
+import com.tuotiansudai.message.*;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.client.model.MessageTopic;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
@@ -509,6 +511,8 @@ public class InvestServiceImpl implements InvestService {
         investModel.setStatus(InvestStatus.SUCCESS);
         investMapper.update(investModel);
 
+        this.investAchievementService.awardAchievement(investModel);
+
         //投资成功后发送消息
         this.publishInvestSuccessMessage(investModel);
     }
@@ -561,13 +565,25 @@ public class InvestServiceImpl implements InvestService {
             checkLoanRaisingComplete(loanId);
         }
 
-        String respData = callbackRequest.getResponseData();
-        return respData;
+        return callbackRequest.getResponseData();
     }
 
     private void publishInvestSuccessMessage(InvestModel investModel){
+        //Title:恭喜您成功投资{0}元
+        //Content:尊敬的用户，您已成功投资房产/车辆抵押借款{0}元，独乐不如众乐，马上【邀请好友投资】还能额外拿1%现金奖励哦！
+        String title = MessageFormat.format(MessageEventType.INVEST_SUCCESS.getTitleTemplate(), AmountConverter.convertCentToString(investModel.getAmount()));
+        String content = MessageFormat.format(MessageEventType.INVEST_SUCCESS.getTitleTemplate(), AmountConverter.convertCentToString(investModel.getAmount()));
+        mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(MessageEventType.INVEST_SUCCESS,
+                Lists.newArrayList(investModel.getLoginName()),
+                title,
+                content,
+                investModel.getId()
+        ));
+        mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(Lists.newArrayList(investModel.getLoginName()),
+                PushSource.ALL,
+                PushType.INVEST_SUCCESS,
+                title));
 
-        this.investAchievementService.awardAchievement(investModel);
 
         InvestInfo investInfo = new InvestInfo();
         LoanDetailInfo loanDetailInfo = new LoanDetailInfo();
@@ -579,25 +595,20 @@ public class InvestServiceImpl implements InvestService {
         investInfo.setTransferStatus(investModel.getTransferStatus().name());
 
         LoanDetailsModel loanDetailsModel =  loanDetailsMapper.getByLoanId(investModel.getLoanId());
+        loanDetailInfo.setLoanId(investModel.getLoanId());
         if(loanDetailsModel != null){
             loanDetailInfo.setActivity(loanDetailsModel.isActivity());
             loanDetailInfo.setActivityDesc(loanDetailsModel.getActivityDesc());
         }
-        loanDetailInfo.setLoanId(investModel.getLoanId());
 
-        InvestSuccessMessage investSuccessMessage = new InvestSuccessMessage(investInfo, loanDetailInfo);
-
-        String message;
         try {
-            message = JsonConverter.writeValueAsString(investSuccessMessage);
-            mqWrapperClient.publishMessage(MessageTopic.InvestSuccess, message);
+            mqWrapperClient.publishMessage(MessageTopic.InvestSuccess, new InvestSuccessMessage(investInfo, loanDetailInfo));
         } catch (JsonProcessingException e) {
             // 记录日志，发短信通知管理员
-            fatalLog("[MQ] invest success, but send mq message fail", String.valueOf(investSuccessMessage.getInvestInfo().getInvestId()), investSuccessMessage.getInvestInfo().getAmount(), investSuccessMessage.getInvestInfo().getLoginName(), investModel.getLoanId(), e);
+            fatalLog("[MQ] invest success, but send mq message fail", String.valueOf(investInfo.getInvestId()), investInfo.getAmount(), investInfo.getLoginName(), investModel.getLoanId(), e);
         }
 
     }
-
 
     private void checkLoanRaisingComplete(long loanId) {
         // 超投，改标的状态为满标 RECHECK
@@ -633,10 +644,6 @@ public class InvestServiceImpl implements InvestService {
 
     private void errorLog(String msg, String orderId, long amount, String loginName, long loanId, Throwable e) {
         logger.error(msg + ",orderId:" + orderId + ",LoginName:" + loginName + ",amount:" + amount + ",loanId:" + loanId, e);
-    }
-
-    private void fatalLog(String errMsg) {
-        this.fatalLog(errMsg, null);
     }
 
     private void fatalLog(String msg, String orderId, long amount, String loginName, long loanId, Throwable e) {

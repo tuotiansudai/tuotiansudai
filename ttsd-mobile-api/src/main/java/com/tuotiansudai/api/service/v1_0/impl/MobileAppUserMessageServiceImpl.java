@@ -6,6 +6,7 @@ import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppUserMessageService;
 import com.tuotiansudai.api.util.PageValidUtils;
 import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.enums.MessageType;
 import com.tuotiansudai.message.repository.mapper.MessageMapper;
 import com.tuotiansudai.message.repository.mapper.UserMessageMapper;
 import com.tuotiansudai.message.repository.model.*;
@@ -43,7 +44,8 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
     @Override
     public BaseResponseDto<UserMessageResponseDataDto> getUserMessages(UserMessagesRequestDto requestDto) {
         String loginName = LoginUserInfo.getLoginName();
-        userMessageServices.generateUserMessages(loginName, MessageChannel.APP_MESSAGE);
+        String mobile = LoginUserInfo.getMobile();
+        userMessageServices.generateUserMessages(loginName, mobile, MessageChannel.APP_MESSAGE);
         UserMessageResponseDataDto messageDataDto = fillMessageDataDto(loginName, requestDto.getIndex(), requestDto.getPageSize());
         BaseResponseDto<UserMessageResponseDataDto> responseDto = new BaseResponseDto<>(ReturnMessage.SUCCESS);
         responseDto.setData(messageDataDto);
@@ -53,7 +55,8 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
     @Override
     public BaseResponseDto<MobileAppUnreadMessageCount> getUnreadMessageCount(BaseParamDto baseParamDto) {
         String loginName = LoginUserInfo.getLoginName();
-        long unreadMessageCount = userMessageServices.getUnreadMessageCount(loginName, MessageChannel.APP_MESSAGE);
+        String mobile = LoginUserInfo.getMobile();
+        long unreadMessageCount = userMessageServices.getUnreadMessageCount(loginName, mobile, MessageChannel.APP_MESSAGE);
         boolean existUnreadMessage = existUnreadMessage(loginName, unreadMessageCount);
         MobileAppUnreadMessageCount messageCount = new MobileAppUnreadMessageCount(unreadMessageCount, existUnreadMessage);
         BaseResponseDto<MobileAppUnreadMessageCount> responseDto = new BaseResponseDto<>(ReturnMessage.SUCCESS);

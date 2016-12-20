@@ -1,6 +1,7 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
@@ -8,11 +9,17 @@ import com.tuotiansudai.dto.Environment;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
+import com.tuotiansudai.enums.MessageEventType;
+import com.tuotiansudai.enums.PushSource;
+import com.tuotiansudai.enums.PushType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.job.NormalRepayCallbackJob;
 import com.tuotiansudai.job.NormalRepayJob;
+import com.tuotiansudai.message.EventMessage;
+import com.tuotiansudai.message.PushMessage;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
@@ -34,6 +41,7 @@ import com.tuotiansudai.paywrapper.service.NormalRepayService;
 import com.tuotiansudai.paywrapper.service.SystemBillService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.JobManager;
 import org.apache.log4j.Logger;
@@ -112,6 +120,9 @@ public class NormalRepayServiceImpl implements NormalRepayService {
 
     @Value(value = "${pay.repay.notify.process.batch.size}")
     private int repayProcessListSize;
+
+    @Autowired
+    private MQWrapperClient mqWrapperClient;
 
     @Override
     public boolean autoRepay(long loanRepayId) {
@@ -504,8 +515,6 @@ public class NormalRepayServiceImpl implements NormalRepayService {
             return false;
         }
 
-        String redisKey = MessageFormat.format(REPAY_REDIS_KEY_TEMPLATE, String.valueOf(loanRepayId));
-        redisWrapperClient.hset(redisKey, String.valueOf(investRepayId), SyncRequestStatus.SUCCESS.name());
         return true;
     }
 
@@ -566,6 +575,7 @@ public class NormalRepayServiceImpl implements NormalRepayService {
     private void processInvestRepay(long loanRepayId, InvestRepayModel currentInvestRepay) throws AmountTransferException {
         long investRepayId = currentInvestRepay.getId();
         InvestModel investModel = investMapper.findById(currentInvestRepay.getInvestId());
+        LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
 
         // interest user bill
         long paybackAmount = currentInvestRepay.getCorpus() + currentInvestRepay.getActualInterest();
@@ -596,15 +606,28 @@ public class NormalRepayServiceImpl implements NormalRepayService {
 
         // update all overdue invest repay
         List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investModel.getId());
-        for (InvestRepayModel investRepayModel : investRepayModels) {
-            if (investRepayModel.getStatus() == RepayStatus.OVERDUE) {
-                investRepayModel.setStatus(RepayStatus.COMPLETE);
-                investRepayModel.setActualRepayDate(currentInvestRepay.getActualRepayDate());
-                investRepayMapper.update(investRepayModel);
-                logger.info(MessageFormat.format("[Normal Repay {0}] invest repay({1}) update overdue invest repay({2}) status to COMPLETE",
-                        String.valueOf(loanRepayId), String.valueOf(currentInvestRepay.getId()), String.valueOf(investRepayModel.getId())));
-            }
-        }
+        investRepayModels.stream().filter(investRepayModel -> investRepayModel.getStatus() == RepayStatus.OVERDUE).forEach(investRepayModel -> {
+            investRepayModel.setStatus(RepayStatus.COMPLETE);
+            investRepayModel.setActualRepayDate(currentInvestRepay.getActualRepayDate());
+            investRepayMapper.update(investRepayModel);
+            logger.info(MessageFormat.format("[Normal Repay {0}] invest repay({1}) update overdue invest repay({2}) status to COMPLETE",
+                    String.valueOf(loanRepayId), String.valueOf(currentInvestRepay.getId()), String.valueOf(investRepayModel.getId())));
+        });
+
+        String redisKey = MessageFormat.format(REPAY_REDIS_KEY_TEMPLATE, String.valueOf(loanRepayId));
+        redisWrapperClient.hset(redisKey, String.valueOf(investRepayId), SyncRequestStatus.SUCCESS.name());
+
+        //Title:您投资的{0}已回款{1}元，请前往账户查收！
+        //Content:尊敬的用户，您投资的{0}项目已回款，期待已久的收益已奔向您的账户，快来查看吧。
+        String title = MessageFormat.format(MessageEventType.REPAY_SUCCESS.getTitleTemplate(), loanModel.getName(), AmountConverter.convertCentToString(currentInvestRepay.getRepayAmount()));
+        String content = MessageFormat.format(MessageEventType.REPAY_SUCCESS.getContentTemplate(), loanModel.getName());
+        mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(MessageEventType.REPAY_SUCCESS,
+                Lists.newArrayList(investModel.getLoginName()),
+                title,
+                content,
+                null
+        ));
+        mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(Lists.newArrayList(investModel.getLoginName()), PushSource.ALL, PushType.REPAY_SUCCESS, title));
     }
 
     private long calculateInvestRepayActualInterest(long investId, InvestRepayModel enabledInvestRepay) {
