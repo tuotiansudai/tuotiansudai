@@ -407,7 +407,7 @@ public class UserMessageEventGenerator {
         if (!MembershipPurchaseStatus.SUCCESS.equals(membershipPurchaseStatus)) {
             return;
         }
-        logger.debug("start to send message");
+        logger.info("start to send message");
         String loginName = (String) membershipPurchase.get("login_name");
         int duration = (int) ((long) membershipPurchase.get("duration"));
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd");

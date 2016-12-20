@@ -262,7 +262,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
     @Override
     public String overInvestTransferPaybackCallback(Map<String, String> paramsMap, String queryString) {
 
-        logger.debug("into over_invest_transfer_payback_callback, queryString: " + queryString);
+        logger.info("into over_invest_transfer_payback_callback, queryString: " + queryString);
 
         BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(
                 paramsMap,
@@ -359,7 +359,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
             if (feeResponseModel.isSuccess()) {
                 systemBillService.transferIn(transferApplicationId, transferFee, SystemBillBusinessType.TRANSFER_FEE,
                         MessageFormat.format(SystemBillDetailTemplate.TRANSFER_FEE_DETAIL_TEMPLATE.getTemplate(), transferInvestModel.getLoginName(), String.valueOf(transferApplicationId), String.valueOf(transferFee)));
-                logger.debug(MessageFormat.format("[Invest Transfer Callback {0}] transfer fee is success", String.valueOf(transferApplicationModel.getInvestId())));
+                logger.info(MessageFormat.format("[Invest Transfer Callback {0}] transfer fee is success", String.valueOf(transferApplicationModel.getInvestId())));
             }
         } catch (PayException e) {
             logger.error(MessageFormat.format("[Invest Transfer Callback {0}] transfer fee is failed", String.valueOf(transferApplicationModel.getInvestId())), e);
@@ -386,7 +386,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
             if (paybackResponseModel.isSuccess()) {
                 amountTransfer.transferInBalance(transferInvestModel.getLoginName(), transferApplicationId, transferApplicationModel.getTransferAmount(), UserBillBusinessType.INVEST_TRANSFER_OUT, null, null);
                 amountTransfer.transferOutBalance(transferInvestModel.getLoginName(), transferApplicationId, transferFee, UserBillBusinessType.TRANSFER_FEE, null, null);
-                logger.debug(MessageFormat.format("[Invest Transfer Callback {0}] transfer payback transferrer is success", String.valueOf(transferApplicationModel.getInvestId())));
+                logger.info(MessageFormat.format("[Invest Transfer Callback {0}] transfer payback transferrer is success", String.valueOf(transferApplicationModel.getInvestId())));
             }
         } catch (PayException | AmountTransferException e) {
             logger.error(MessageFormat.format("[Invest Transfer Callback {0}] transfer payback transferrer is failed", String.valueOf(transferApplicationModel.getInvestId())), e);
@@ -491,7 +491,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
                 logger.info(MessageFormat.format("[Invest Transfer Callback {0}] invest transfer is success", String.valueOf(investId)));
                 ((InvestTransferPurchaseService) AopContext.currentProxy()).postPurchase(investId);
 
-                logger.debug("债权转让：生成合同，转让ID:" + transferApplicationModel.getId());
+                logger.info("债权转让：生成合同，转让ID:" + transferApplicationModel.getId());
                 anxinSignService.createTransferContracts(transferApplicationModel.getId());
             }
         } else {
