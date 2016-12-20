@@ -365,7 +365,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         }
 
         if (CollectionUtils.isNotEmpty((batchNoList))) {
-            logger.debug("[安心签]: 创建job，十分钟后，查询并更新合同状态。loanId:" + String.valueOf(loanId));
+            logger.info("[安心签]: 创建job，十分钟后，查询并更新合同状态。loanId:" + String.valueOf(loanId));
             updateContractResponseHandleJob(batchNoList, loanId, AnxinContractType.LOAN_CONTRACT);
         }
 
@@ -376,7 +376,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
     private Boolean createContractBatch(long loanId, List<CreateContractVO> createContractVOs, List<String> batchNoList) {
         String batchNo = UUIDGenerator.generate();
         try {
-            logger.debug(MessageFormat.format("[安心签] create contract begin, loanId:{0}, batchNo:{1}", String.valueOf(loanId), batchNo));
+            logger.info(MessageFormat.format("[安心签] create contract begin, loanId:{0}, batchNo:{1}", String.valueOf(loanId), batchNo));
             //创建合同
             Tx3202ResVO tx3202ResVO = anxinSignConnectService.createContractBatch3202(loanId, batchNo, AnxinContractType.LOAN_CONTRACT, createContractVOs);
 
@@ -420,7 +420,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         BaseDto baseDto = new BaseDto();
         String batchNo = UUIDGenerator.generate();
         try {
-            logger.debug(MessageFormat.format("[安心签] create transfer contract begin, transferId:{0}, batchNo:{1}", transferApplicationId, batchNo));
+            logger.info(MessageFormat.format("[安心签] create transfer contract begin, transferId:{0}, batchNo:{1}", transferApplicationId, batchNo));
             //创建合同
             Tx3202ResVO tx3202ResVO = anxinSignConnectService.createContractBatch3202(transferApplicationId, batchNo, AnxinContractType.TRANSFER_CONTRACT, createContractVOs);
 
@@ -436,7 +436,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         redisWrapperClient.setex(TRANSFER_BATCH_NO_LIST_KEY + transferApplicationId, BATCH_NO_LIFT_TIME, batchNo);
 
         if (baseDto.isSuccess()) {
-            logger.debug("[安心签]: 创建job，十分钟后，查询并更新合同状态。债权ID:" + transferApplicationId);
+            logger.info("[安心签]: 创建job，十分钟后，查询并更新合同状态。债权ID:" + transferApplicationId);
             updateContractResponseHandleJob(Collections.singletonList(batchNo), transferApplicationId, AnxinContractType.TRANSFER_CONTRACT);
         } else {
             logger.error("[安心签]: create transfer contract error, ready send sms. transferId:" + transferApplicationId);

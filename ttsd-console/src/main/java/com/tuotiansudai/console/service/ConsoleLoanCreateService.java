@@ -311,7 +311,7 @@ public class ConsoleLoanCreateService {
         Date validInvestTime = new DateTime().minusMinutes(30).toDate();
 
         if (investMapper.findWaitingInvestCountAfter(loanId, validInvestTime) > 0) {
-            logger.debug("流标失败，存在等待第三方资金托管确认的投资!");
+            logger.info("流标失败，存在等待第三方资金托管确认的投资!");
             return baseDto;
         }
 

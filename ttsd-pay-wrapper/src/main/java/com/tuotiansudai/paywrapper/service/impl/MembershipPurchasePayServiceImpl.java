@@ -111,7 +111,7 @@ public class MembershipPurchasePayServiceImpl implements MembershipPurchasePaySe
     private void postPurchaseCallback(BaseCallbackRequestModel callbackRequestModel) {
         long orderId;
 
-        logger.debug("Into membership purchase call back.");
+        logger.info("Into membership purchase call back.");
 
         try {
             orderId = Long.parseLong(callbackRequestModel.getOrderId());

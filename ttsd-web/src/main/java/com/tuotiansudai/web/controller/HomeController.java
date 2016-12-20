@@ -75,7 +75,7 @@ public class HomeController {
         ExperienceLoanDto experienceLoanDto = new ExperienceLoanDto(loanMapper.findById(experienceLoanId), investModelList.size() % 100, couponService.findExperienceInvestAmount(investModelList));
         modelAndView.addObject("experienceLoanDto", experienceLoanDto);
         List<BannerModel> bannerModelList = bannerMapper.findBannerIsAuthenticatedOrderByOrder(!Strings.isNullOrEmpty(LoginUserInfo.getLoginName()), Source.WEB);
-        bannerModelList.forEach(bannerModel -> logger.debug(MessageFormat.format("[index]url:{0}", bannerModel.getUrl())));
+        bannerModelList.forEach(bannerModel -> logger.info(MessageFormat.format("[index]url:{0}", bannerModel.getUrl())));
         modelAndView.addObject("bannerList", bannerModelList);
         //债权转让列表显示前两项
         BasePaginationDataDto<TransferApplicationPaginationItemDataDto> transferApplicationItemList = transferService.findAllTransferApplicationPaginationList(null, 0, 0, 1, 2);

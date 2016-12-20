@@ -149,7 +149,9 @@ def deploy_worker():
     put(local_path='./ttsd-user-mq-consumer/build/distributions/*.zip', remote_path='/workspace/')
     put(local_path='./ttsd-diagnosis/build/distributions/*.zip', remote_path='/workspace/')
     put(local_path='./scripts/supervisor/job-worker.ini', remote_path='/etc/supervisord.d/')
+    put(local_path='./scripts/logstash/worker.conf', remote_path='/etc/logstash/conf.d/prod.conf')
     sudo('supervisorctl stop all')
+    restart_logstash_process()
     with cd('/workspace'):
         sudo('rm -rf ttsd-job-worker-all/')
         sudo('rm -rf ttsd-job-worker-jpush/')

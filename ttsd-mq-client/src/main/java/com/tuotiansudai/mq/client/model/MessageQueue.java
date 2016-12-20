@@ -17,7 +17,8 @@ public enum MessageQueue {
     InvestSuccess_ActivityReward("InvestSuccess-ActivityReward"),
     EventMessage("EventMessage"),
     ManualMessage("ManualMessage"),
-    PushMessage("PushMessage");
+    PushMessage("PushMessage"),
+    UserOperateLog("UserOperateLog");
 
     private final String queueName;
 

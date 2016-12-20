@@ -89,7 +89,7 @@ public class MobileAppTransferApplicationV2ServiceImpl implements MobileAppTrans
                 if (!transferRuleModel.isMultipleTransferEnabled()) {
                     TransferApplicationModel transfereeApplicationModel = transferApplicationMapper.findByInvestId(invest.getId());
                     if (transfereeApplicationModel != null) {
-                        logger.debug(MessageFormat.format("{0} MultipleTransferEnabled is false ", invest.getId()));
+                        logger.info(MessageFormat.format("{0} MultipleTransferEnabled is false ", invest.getId()));
                         continue;
                     }
 
