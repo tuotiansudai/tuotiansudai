@@ -8,6 +8,7 @@ import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipType;
 import com.tuotiansudai.paywrapper.repository.mapper.NormalRepayNotifyMapper;
+import com.tuotiansudai.paywrapper.repository.model.async.callback.NormalRepayNotifyRequestModel;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
@@ -25,6 +26,8 @@ import java.util.List;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.anyLong;
+import static org.mockito.Mockito.when;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -170,6 +173,8 @@ public class NormalRepayInvestPaybackCallbackTest extends RepayBaseTest {
 
         normalRepayService.asyncNormalRepayPaybackCallback(investRepay2.getId());
 
+        normalRepayNotifyMapper.findById(investRepay2.getId());
+
         InvestRepayModel actualInvestRepay2 = investRepayMapper.findById(investRepay2.getId());
 
         List<UserBillModel> userBills = userBillMapper.findByLoginName(investor.getLoginName());
@@ -283,7 +288,11 @@ public class NormalRepayInvestPaybackCallbackTest extends RepayBaseTest {
 
         normalRepayNotifyMapper.create(this.getFakeNormalRepayNotifyRequestModel(investRepay2.getId()));
 
+        NormalRepayNotifyRequestModel normalRepayNotifyRequestModel = normalRepayNotifyMapper.findById(investRepay2.getId());
+
         normalRepayService.asyncNormalRepayPaybackCallback(investRepay2.getId());
+
+
 
         InvestRepayModel actualInvestRepay1 = investRepayMapper.findById(investRepay1.getId());
         InvestRepayModel actualInvestRepay2 = investRepayMapper.findById(investRepay2.getId());
