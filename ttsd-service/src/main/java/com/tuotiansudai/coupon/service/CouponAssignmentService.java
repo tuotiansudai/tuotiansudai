@@ -15,5 +15,5 @@ public interface CouponAssignmentService {
 
     UserCouponModel assign(String loginName, long couponId, String exchangeCode);
 
-    void assignInvestAchievementUserCoupon(long loanId, String loginNameOrMobile, long couponId);
+    boolean assignInvestAchievementUserCoupon(long loanId, String loginNameOrMobile, long couponId);
 }

@@ -8,7 +8,13 @@ public enum MessageTopic {
             MessageQueue.InvestSuccess_MembershipUpdate,
             MessageQueue.InvestSuccess_SendJpushMessage,
             MessageQueue.InvestSuccess_CouponUpdate,
-            MessageQueue.InvestSuccess_ActivityReward);
+            MessageQueue.InvestSuccess_ActivityReward),
+    LoanOutSuccess("LoanOutSuccess",
+            MessageQueue.LoanOutSuccess_GenerateRepay,
+            MessageQueue.LoanOutSuccess_RewardReferrer,
+            MessageQueue.LoanOutSuccess_SmsMessage,
+            MessageQueue.LoanOutSuccess_AssignCoupon,
+            MessageQueue.LoanOutSuccess_GenerateAnXinContract);
 
     final String topicName;
     final MessageQueue[] queues;

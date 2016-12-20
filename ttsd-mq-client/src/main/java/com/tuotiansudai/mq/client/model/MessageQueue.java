@@ -17,7 +17,13 @@ public enum MessageQueue {
     BindBankCard_CompletePointTask("BindBankCard-CompletePointTask"),
     TurnOnNoPasswordInvest_CompletePointTask("TurnOnNoPasswordInvest-CompletePointTask"),
     InvestSuccess_ActivityReward("InvestSuccess-ActivityReward"),
-    MembershipUpgrade_SendJpushMessage("MembershipUpgrade-SendJpushMessage");
+    MembershipUpgrade_SendJpushMessage("MembershipUpgrade-SendJpushMessage"),
+    LoanOutSuccess_GenerateRepay("LoanOutSuccess_GenerateRepay"),
+    LoanOutSuccess_RewardReferrer("LoanOutSuccess_RewardReferrer"),
+    LoanOutSuccess_SmsMessage("LoanOutSuccess_SmsMessage"),
+    LoanOutSuccess_AssignCoupon("LoanOutSuccess_AssignCoupon"),
+    LoanOutSuccess_GenerateAnXinContract("LoanOutSuccess_GenerateAnXinContract");
+
 
     private final String queueName;
 

@@ -5,6 +5,8 @@ import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
+import com.tuotiansudai.coupon.repository.model.UserGroup;
+import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.coupon.service.CouponLoanOutService;
@@ -14,16 +16,21 @@ import com.tuotiansudai.paywrapper.repository.model.sync.request.TransferRequest
 import com.tuotiansudai.paywrapper.repository.model.sync.response.TransferResponseModel;
 import com.tuotiansudai.paywrapper.service.SystemBillService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.InvestMapper;
+import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.SystemBillBusinessType;
 import com.tuotiansudai.repository.model.SystemBillDetailTemplate;
 import com.tuotiansudai.util.AmountTransfer;
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CouponLoanOutServiceImpl implements CouponLoanOutService {
@@ -50,8 +57,18 @@ public class CouponLoanOutServiceImpl implements CouponLoanOutService {
     @Autowired
     private SystemBillService systemBillService;
 
+    @Autowired
+    private LoanMapper loanMapper;
+
+    @Autowired
+    private InvestMapper investMapper;
+
+    @Autowired
+    private CouponAssignmentService couponAssignmentService;
+
     @Override
-    public void sendRedEnvelope(long loanId) {
+    public boolean sendRedEnvelope(long loanId) {
+        boolean result = true;
         List<UserCouponModel> userCouponModels = userCouponMapper.findByLoanId(loanId, Lists.newArrayList(CouponType.RED_ENVELOPE));
 
         for (UserCouponModel userCouponModel : userCouponModels) {
@@ -69,6 +86,7 @@ public class CouponLoanOutServiceImpl implements CouponLoanOutService {
                         TransferResponseModel responseModel = paySyncClient.send(TransferMapper.class, requestModel, TransferResponseModel.class);
                         isSuccess = responseModel.isSuccess();
                     } catch (PayException e) {
+                        result = false;
                         logger.error(MessageFormat.format("red envelope coupon transfer in balance failed (userCouponId = {0})", String.valueOf(userCouponModel.getId())), e);
                     }
                 }
@@ -90,10 +108,56 @@ public class CouponLoanOutServiceImpl implements CouponLoanOutService {
                         userCouponModel.setActualInterest(transferAmount);
                         userCouponMapper.update(userCouponModel);
                     } catch (Exception e) {
+                        result = false;
                         logger.error(MessageFormat.format("red envelope coupon transfer in balance failed (userCouponId = {0})", String.valueOf(userCouponModel.getId())), e);
                     }
                 }
             }
         }
+
+        return result;
+    }
+
+    @Override
+    public boolean assignInvestAchievementUserCoupon(long loanId) {
+        LoanModel loanModel = loanMapper.findById(loanId);
+        boolean result = true;
+        if(!createUserCouponModel(loanModel.getFirstInvestAchievementId(), UserGroup.FIRST_INVEST_ACHIEVEMENT, loanId)){
+            logger.error(MessageFormat.format("[标的放款] assign FIRST_INVEST_ACHIEVEMENT is fail, loanId:{0}", String.valueOf(loanId)));
+            result = false;
+        }
+
+        if(!createUserCouponModel(loanModel.getMaxAmountAchievementId(), UserGroup.MAX_AMOUNT_ACHIEVEMENT, loanId)){
+            logger.error(MessageFormat.format("[标的放款] assign MAX_AMOUNT_ACHIEVEMENT is fail, loanId:{0}", String.valueOf(loanId)));
+            result = false;
+        }
+
+        if(!createUserCouponModel(loanModel.getLastInvestAchievementId(), UserGroup.LAST_INVEST_ACHIEVEMENT, loanId)){
+            logger.error(MessageFormat.format("[标的放款] assign LAST_INVEST_ACHIEVEMENT is fail, loanId:{0}", String.valueOf(loanId)));
+            result = false;
+        }
+
+        return result;
+    }
+
+    private boolean createUserCouponModel(Long investId, final UserGroup userGroup, long loanId) {
+        if (investId == null || investId == 0) {
+            logger.error(MessageFormat.format("loan id : {0} nothing {1}", String.valueOf(loanId), userGroup.name()));
+            return false;
+        }
+
+        boolean result = true;
+        List<CouponModel> couponModelList = couponMapper.findAllActiveCoupons();
+
+        List<CouponModel> collect = couponModelList.stream().filter(couponModel -> couponModel.getUserGroup().equals(userGroup)
+                && DateTime.now().toDate().before(couponModel.getEndTime())
+                && DateTime.now().toDate().after(couponModel.getStartTime())).collect(Collectors.toList());
+
+        for (CouponModel couponModel : collect) {
+            if (!couponAssignmentService.assignInvestAchievementUserCoupon(loanId, investMapper.findById(investId).getLoginName(), couponModel.getId())) {
+                result = false;
+            }
+        }
+        return result;
     }
 }

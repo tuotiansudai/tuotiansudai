@@ -40,10 +40,10 @@ public class LoanOutInvestCalculationServiceImpl implements LoanOutInvestCalcula
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void rateIncreases(long loanId) {
+    public boolean rateIncreases(long loanId) {
         List<ExtraLoanRateModel> extraLoanRateModels = extraLoanRateMapper.findByLoanId(loanId);
         if (CollectionUtils.isEmpty(extraLoanRateModels)) {
-            return;
+            return false;
         }
         LoanDetailsModel loanDetailsModel =  loanDetailsMapper.getByLoanId(loanId);
 
@@ -93,6 +93,7 @@ public class LoanOutInvestCalculationServiceImpl implements LoanOutInvestCalcula
                 }
             }
         }
+        return true;
     }
 
 }

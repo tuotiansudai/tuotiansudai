@@ -2,8 +2,10 @@ package com.tuotiansudai.paywrapper.service;
 
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
+import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.LoanStatus;
 
+import java.util.List;
 import java.util.Map;
 
 public interface LoanService {
@@ -35,4 +37,6 @@ public interface LoanService {
     boolean postLoanOut(long loanId);
 
     String cancelPayBackCallback(Map<String, String> paramsMap, String queryString);
+
+    boolean processNotifyForLoanOut(long loanId);
 }

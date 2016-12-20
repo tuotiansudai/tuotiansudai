@@ -60,6 +60,9 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
     @Autowired
     private IdGenerator idGenerator;
 
+    @Autowired
+    private LoanMapper loanMapper;
+
     @Value("#{'${pay.user.reward}'.split('\\|')}")
     private List<Double> referrerUserRoleReward;
 
@@ -67,7 +70,11 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
     private List<Double> referrerStaffRoleReward;
 
     @Override
-    public void rewardReferrer(LoanModel loanModel, List<InvestModel> successInvestList) {
+    public boolean rewardReferrer(long loanId) {
+        boolean result = true;
+        LoanModel loanModel = loanMapper.findById(loanId);
+        List<InvestModel> successInvestList = investMapper.findSuccessInvestsByLoanId(loanId);
+
         int loanDuration = this.calculateLoanDuration(loanModel);
 
         for (InvestModel invest : successInvestList) {
@@ -87,10 +94,12 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
                         logger.error(MessageFormat.format("Referrer reward is failed (investId={0} referrerLoginName={1})",
                                 String.valueOf(invest.getId()),
                                 referrerLoginName));
+                        result = false;
                     }
                 }
             }
         }
+        return result;
     }
 
     private void transferReferrerReward(InvestReferrerRewardModel model) {
