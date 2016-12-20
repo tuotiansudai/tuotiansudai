@@ -215,11 +215,11 @@ public class UserMembershipMapperTest {
     @Test
     public void testFindCurrentMaxByLoginName() throws Exception {
         prepareUserMembershipData();
-        createUserMembershipModel("testUser1", UserMembershipType.UPGRADE, 1);
-        createUserMembershipModel("testUser1", UserMembershipType.UPGRADE, 2);
-        createUserMembershipModel("testUser1", UserMembershipType.GIVEN, 3);
+        createUserMembershipModel("fakeUser1", UserMembershipType.UPGRADE, 1);
+        createUserMembershipModel("fakeUser1", UserMembershipType.UPGRADE, 2);
+        createUserMembershipModel("fakeUser1", UserMembershipType.GIVEN, 3);
 
-        UserMembershipModel userMembershipModel = userMembershipMapper.findCurrentMaxByLoginName("testUser1");
+        UserMembershipModel userMembershipModel = userMembershipMapper.findCurrentMaxByLoginName("fakeUser1");
         assertEquals(3, membershipMapper.findById(userMembershipModel.getMembershipId()).getLevel());
     }
 
