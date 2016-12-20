@@ -39,7 +39,7 @@ public class HeadlinesTodayPrizeService {
     @Autowired
     private LotteryDrawActivityService lotteryDrawActivityService;
 
-    private static final long RED_ENVELOPE_50_YUAN_DRAW_REF_CARNIVAL_COUPON_ID = 330L;
+    private static final long RED_ENVELOPE_50_YUAN_DRAW_REF_CARNIVAL_COUPON_ID = 332L;
 
     public int getDrawPrizeTime(String mobile) {
         int lotteryTime = 0;
