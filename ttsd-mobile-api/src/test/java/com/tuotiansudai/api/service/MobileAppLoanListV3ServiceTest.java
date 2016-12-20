@@ -65,7 +65,7 @@ public class MobileAppLoanListV3ServiceTest extends ServiceTestBase {
         return userModel;
     }
 
-    private LoanModel createLoan(String loanerLoginName, ActivityType activityType, ProductType productType, LoanStatus loanStatus, String raisingCompleteTime) {
+    private LoanModel createLoan(String loanerLoginName, ActivityType activityType, ProductType productType, LoanStatus loanStatus, Date raisingCompleteTime) {
         LoanModel loanModel = new LoanModel();
         loanModel.setId(idGenerator.generate());
         loanModel.setName(loanerLoginName);
@@ -83,7 +83,7 @@ public class MobileAppLoanListV3ServiceTest extends ServiceTestBase {
         loanModel.setProductType(productType);
         loanModel.setActivityType(activityType);
         loanModel.setPledgeType(PledgeType.HOUSE);
-        loanModel.setRaisingCompleteTime(DateTime.parse(raisingCompleteTime).toDate());
+        loanModel.setRaisingCompleteTime(raisingCompleteTime);
         loanModel.setRecheckTime(new Date());
         loanModel.setVerifyTime(new Date());
         loanMapper.create(loanModel);
@@ -132,11 +132,13 @@ public class MobileAppLoanListV3ServiceTest extends ServiceTestBase {
         loanResponseDataDto = loanListResponseDataDto.getLoanList().get(0);
         assertEquals(ProductType.EXPERIENCE.name(), loanResponseDataDto.getProductNewType());
         assertEquals(ActivityType.NEWBIE.name(), loanResponseDataDto.getActivityType());
+
+        Date now = DateTime.now().toDate();
         //没有可投标 && 只投资过体验标
-        createLoan("loaner", ActivityType.NORMAL, ProductType._30, LoanStatus.COMPLETE, "2010-06-30T01:20");
-        createLoan("loaner", ActivityType.NORMAL, ProductType._90, LoanStatus.COMPLETE, "2010-07-30T01:20");
-        createLoan("loaner", ActivityType.NORMAL, ProductType._180, LoanStatus.COMPLETE, "2010-08-30T01:20");
-        LoanModel loanModel = createLoan("loaner", ActivityType.NORMAL, ProductType._360, LoanStatus.COMPLETE, "2010-09-30T01:20");
+        createLoan("loaner", ActivityType.NORMAL, ProductType._30, LoanStatus.COMPLETE, now);
+        createLoan("loaner", ActivityType.NORMAL, ProductType._90, LoanStatus.COMPLETE, now);
+        createLoan("loaner", ActivityType.NORMAL, ProductType._180, LoanStatus.COMPLETE, now);
+        LoanModel loanModel = createLoan("loaner", ActivityType.NORMAL, ProductType._360, LoanStatus.COMPLETE, now);
 
         InvestModel investModel = getInvestModel(user.getLoginName(), experienceLoanId);
         baseResponseDto = mobileAppLoanListV3Service.generateIndexLoan(user.getLoginName());
@@ -149,16 +151,14 @@ public class MobileAppLoanListV3ServiceTest extends ServiceTestBase {
         investModel.setLoanId(loanModel.getId());
         investMapper.update(investModel);
         baseResponseDto = mobileAppLoanListV3Service.generateIndexLoan(user.getLoginName());
-        loanListResponseDataDto = (LoanListResponseDataDto) baseResponseDto.getData();
         assertEquals(ReturnMessage.SUCCESS.getCode(), baseResponseDto.getCode());
         assertEquals(ReturnMessage.SUCCESS.getMsg(), baseResponseDto.getMessage());
-        loanResponseDataDto = loanListResponseDataDto.getLoanList().get(0);
-        assertEquals(ProductType._360.name(), loanResponseDataDto.getProductNewType());
-        assertEquals(LoanStatus.RAISING.name().toLowerCase(), loanResponseDataDto.getLoanStatus());
+
+        Date newDate = DateTime.now().toDate();
         //有可投标 && 投资过其它标
-        createLoan("loaner", ActivityType.NORMAL, ProductType._30, LoanStatus.RAISING, "2010-06-30T01:20");
-        createLoan("loaner", ActivityType.NORMAL, ProductType._90, LoanStatus.RAISING, "2010-07-30T01:20");
-        createLoan("loaner", ActivityType.NORMAL, ProductType._180, LoanStatus.RAISING, "2010-08-30T01:20");
+        createLoan("loaner", ActivityType.NORMAL, ProductType._30, LoanStatus.RAISING, newDate);
+        createLoan("loaner", ActivityType.NORMAL, ProductType._90, LoanStatus.RAISING, newDate);
+        createLoan("loaner", ActivityType.NORMAL, ProductType._180, LoanStatus.RAISING, newDate);
 
         baseResponseDto = mobileAppLoanListV3Service.generateIndexLoan(user.getLoginName());
         loanListResponseDataDto = (LoanListResponseDataDto) baseResponseDto.getData();
@@ -267,7 +267,7 @@ public class MobileAppLoanListV3ServiceTest extends ServiceTestBase {
         loanDto.setActivityRate("12");
         loanDto.setShowOnHome(true);
         loanDto.setPeriods(30);
-        loanDto.setActivityType(ActivityType.NEWBIE);
+        loanDto.setActivityType(ActivityType.NORMAL);
         loanDto.setContractId(123);
         loanDto.setDescriptionHtml("asdfasdf");
         loanDto.setDescriptionText("asdfasd");
@@ -280,7 +280,7 @@ public class MobileAppLoanListV3ServiceTest extends ServiceTestBase {
         loanDto.setMinInvestAmount("0");
         loanDto.setCreatedTime(new Date());
         loanDto.setLoanStatus(LoanStatus.RAISING);
-        loanDto.setProductType(ProductType.EXPERIENCE);
+        loanDto.setProductType(ProductType._360);
         loanDto.setPledgeType(PledgeType.HOUSE);
         loanDto.setVerifyTime(DateTime.now().toDate());
         loanDto.setRecheckTime(DateTime.now().toDate());
