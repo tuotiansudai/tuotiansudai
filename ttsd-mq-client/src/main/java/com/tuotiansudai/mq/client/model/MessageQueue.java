@@ -17,7 +17,8 @@ public enum MessageQueue {
     BindBankCard_CompletePointTask("BindBankCard-CompletePointTask"),
     TurnOnNoPasswordInvest_CompletePointTask("TurnOnNoPasswordInvest-CompletePointTask"),
     InvestSuccess_ActivityReward("InvestSuccess-ActivityReward"),
-    MembershipUpgrade_SendJpushMessage("MembershipUpgrade-SendJpushMessage");
+    MembershipUpgrade_SendJpushMessage("MembershipUpgrade-SendJpushMessage"),
+    UserOperateLog("UserOperateLog");
 
     private final String queueName;
 

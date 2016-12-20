@@ -4,8 +4,6 @@ import com.tuotiansudai.membership.service.MembershipInvestService;
 import com.tuotiansudai.message.InvestSuccessMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.util.JsonConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,9 +20,6 @@ public class InvestSuccessMembershipUpdateMessageConsumer implements MessageCons
 
     @Autowired
     private MembershipInvestService membershipInvestService;
-
-    @Autowired
-    private InvestMapper investMapper;
 
     @Override
     public MessageQueue queue() {
