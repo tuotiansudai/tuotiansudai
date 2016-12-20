@@ -103,5 +103,7 @@
 
     <bean class="com.tuotiansudai.util.MyShaPasswordEncoder"/>
 
+    <bean class="com.tuotiansudai.util.IdGenerator"/>
+
     <bean class="com.tuotiansudai.mq.config.MQProducerConfig"/>
 </beans>
