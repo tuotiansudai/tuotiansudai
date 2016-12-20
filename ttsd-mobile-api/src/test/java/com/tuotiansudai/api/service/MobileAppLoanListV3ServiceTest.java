@@ -158,7 +158,7 @@ public class MobileAppLoanListV3ServiceTest extends ServiceTestBase {
         //有可投标 && 投资过其它标
         createLoan("loaner", ActivityType.NORMAL, ProductType._30, LoanStatus.RAISING, newDate);
         createLoan("loaner", ActivityType.NORMAL, ProductType._90, LoanStatus.RAISING, newDate);
-        createLoan("loaner", ActivityType.NORMAL, ProductType._180, LoanStatus.RAISING, newDate);
+        createLoan("loaner", ActivityType.NORMAL, ProductType._360, LoanStatus.RAISING, newDate);
 
         baseResponseDto = mobileAppLoanListV3Service.generateIndexLoan(user.getLoginName());
         loanListResponseDataDto = (LoanListResponseDataDto) baseResponseDto.getData();
