@@ -18,6 +18,7 @@ public enum MessageQueue {
     TurnOnNoPasswordInvest_CompletePointTask("TurnOnNoPasswordInvest-CompletePointTask"),
     InvestSuccess_ActivityReward("InvestSuccess-ActivityReward"),
     MembershipUpgrade_SendJpushMessage("MembershipUpgrade-SendJpushMessage"),
+    AuditLog("AuditLog"),
     UserOperateLog("UserOperateLog");
 
     private final String queueName;
