@@ -15,7 +15,7 @@
         </encoder>
     </appender>
 
-    <logger name="com.tuotiansudai" level="DEBUG"/>
+    <logger name="com.tuotiansudai.activity.repository.mapper" level="DEBUG"/>
     <root level="INFO">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="FILE"/>

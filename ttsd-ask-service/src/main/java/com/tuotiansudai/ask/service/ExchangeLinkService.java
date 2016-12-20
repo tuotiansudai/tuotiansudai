@@ -30,7 +30,7 @@ public class ExchangeLinkService {
         try {
             date = format.parse(strDate);
         } catch (ParseException e) {
-            logger.debug("The date conversion errors");
+            logger.info("The date conversion errors");
         }
         return date;
     }

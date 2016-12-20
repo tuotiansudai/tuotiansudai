@@ -191,9 +191,9 @@ public class LoanServiceImpl implements LoanService {
             investDto.setAmount(String.valueOf(investModel.getAmount()));
             try {
                 if (this.cancelPayBack(investDto, investModel.getId()).isSuccess()) {
-                    logger.debug(investModel.getId() + " cancel payBack is success!");
+                    logger.info(investModel.getId() + " cancel payBack is success!");
                 } else {
-                    logger.debug(investModel.getId() + " cancel payBack is fail!");
+                    logger.info(investModel.getId() + " cancel payBack is fail!");
                 }
             } catch (Exception e) {
                 logger.error(e.getLocalizedMessage(), e);
@@ -294,7 +294,7 @@ public class LoanServiceImpl implements LoanService {
 
         // 查找所有投资成功的记录
         List<InvestModel> successInvestList = investMapper.findSuccessInvestsByLoanId(loanId);
-        logger.debug("标的放款：查找到" + successInvestList.size() + "条成功的投资，标的ID:" + loanId);
+        logger.info("标的放款：查找到" + successInvestList.size() + "条成功的投资，标的ID:" + loanId);
 
         // 计算投资总金额
         long investAmountTotal = computeInvestAmountTotal(successInvestList);
@@ -308,7 +308,7 @@ public class LoanServiceImpl implements LoanService {
             throw new PayException(MessageFormat.format("标的(loanId={0})借款金额与投资金额不一致", String.valueOf(loanId)));
         }
 
-        logger.debug("[标的放款]：发起联动优势放款请求，标的ID:" + loanId + "，代理人:" + agentPayUserId + "，放款金额:" + investAmountTotal);
+        logger.info("[标的放款]：发起联动优势放款请求，标的ID:" + loanId + "，代理人:" + agentPayUserId + "，放款金额:" + investAmountTotal);
 
         String redisKey = MessageFormat.format(LOAN_OUT_IDEMPOTENT_CHECK_TEMPLATE, String.valueOf(loanId));
         String beforeSendStatus = redisWrapperClient.hget(redisKey, DO_PAY_REQUEST);
@@ -335,13 +335,13 @@ public class LoanServiceImpl implements LoanService {
         }
 
         if (SyncRequestStatus.SUCCESS.name().equals(afterSendStatus)) {
-            logger.debug("[标的放款]：更新标的状态，标的ID:" + loanId);
+            logger.info("[标的放款]：更新标的状态，标的ID:" + loanId);
             this.updateLoanStatus(loanId, LoanStatus.REPAYING);
 
-            logger.debug("[标的放款]：处理该标的的所有投资的账务信息，标的ID:" + loanId);
+            logger.info("[标的放款]：处理该标的的所有投资的账务信息，标的ID:" + loanId);
             this.processInvestForLoanOut(successInvestList,loanId);
 
-            logger.debug("[标的放款]：把借款转给代理人账户，标的ID:" + loanId);
+            logger.info("[标的放款]：把借款转给代理人账户，标的ID:" + loanId);
             this.processLoanAccountForLoanOut(loanId, loan.getAgentLoginName(), investAmountTotal);
 
             this.createLoanOutSuccessHandleJob(loanId);
@@ -370,7 +370,7 @@ public class LoanServiceImpl implements LoanService {
 
         List<InvestModel> successInvestList = investMapper.findSuccessInvestsByLoanId(loanId);
 
-        logger.debug("[标的放款]：生成还款计划，标的ID:" + loanId);
+        logger.info("[标的放款]：生成还款计划，标的ID:" + loanId);
         try {
             repayGeneratorService.generateRepay(loanId);
         } catch (Exception e) {
@@ -378,7 +378,7 @@ public class LoanServiceImpl implements LoanService {
             return false;
         }
 
-        logger.debug("[标的放款]：处理推荐人奖励，标的ID:" + loanId);
+        logger.info("[标的放款]：处理推荐人奖励，标的ID:" + loanId);
         try {
             referrerRewardService.rewardReferrer(loan, successInvestList);
         } catch (Exception e) {
@@ -386,7 +386,7 @@ public class LoanServiceImpl implements LoanService {
             return false;
         }
 
-        logger.debug("[标的放款]：处理短信和邮件通知，标的ID:" + loanId);
+        logger.info("[标的放款]：处理短信和邮件通知，标的ID:" + loanId);
 
         String redisKey = MessageFormat.format(LOAN_OUT_IDEMPOTENT_CHECK_TEMPLATE, String.valueOf(loanId));
         String statusString = redisWrapperClient.hget(redisKey, SMS_AND_EMAIL);
@@ -403,7 +403,7 @@ public class LoanServiceImpl implements LoanService {
             logger.info(MessageFormat.format("[标的放款]:重复发送放款短信邮件通知,标的ID : {0}", String.valueOf(loanId)));
         }
 
-        logger.debug("标的放款：生成合同，标的ID:" + loanId);
+        logger.info("标的放款：生成合同，标的ID:" + loanId);
         try {
             createAnxinContractJob(loanId);
         } catch (Exception e) {
@@ -465,10 +465,10 @@ public class LoanServiceImpl implements LoanService {
     private void processNotifyForLoanOut(long loanId) {
         List<InvestModel> investModels = investMapper.findSuccessInvestsByLoanId(loanId);
 
-        logger.debug(MessageFormat.format("[标的放款]:标的: {0} 放款短信通知", loanId));
+        logger.info(MessageFormat.format("[标的放款]:标的: {0} 放款短信通知", loanId));
         notifyInvestorsLoanOutSuccessfulBySMS(investModels);
 
-        logger.debug(MessageFormat.format("[标的放款]:标的: {0} 放款邮件通知", loanId));
+        logger.info(MessageFormat.format("[标的放款]:标的: {0} 放款邮件通知", loanId));
         notifyInvestorsLoanOutSuccessfulByEmail(investModels);
 
     }

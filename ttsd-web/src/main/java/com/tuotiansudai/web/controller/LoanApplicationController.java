@@ -56,7 +56,7 @@ public class LoanApplicationController {
     public BaseDto<BaseDataDto> create(@RequestBody LoanApplicationDto loanApplicationDto) {
         String loginName = LoginUserInfo.getLoginName();
         if (StringUtils.isEmpty(loginName)) {
-            logger.debug("loginName is Empty!");
+            logger.info("loginName is Empty!");
         }
         loanApplicationDto.setLoginName(null == loginName ? "" : loginName);
         return loanApplicationService.create(loanApplicationDto);

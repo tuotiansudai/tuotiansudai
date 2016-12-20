@@ -191,14 +191,14 @@ public class InvestTransferServiceImpl implements InvestTransferService {
             investMapper.updateTransferStatus(transferApplicationModel.getTransferInvestId(), TransferStatus.TRANSFERABLE);
             return true;
         } else {
-            logger.debug("this transfer apply status is not allow cancel, id = " + transferApplicationId);
+            logger.info("this transfer apply status is not allow cancel, id = " + transferApplicationId);
             return false;
         }
     }
 
     private void investTransferApplyJob(TransferApplicationModel transferApplicationModel) {
         if (!transferApplicationModel.getDeadline().after(new Date())) {
-            logger.debug("investTransferApplyJob create failed, expect deadline is before now, id = " + transferApplicationModel.getId());
+            logger.info("investTransferApplyJob create failed, expect deadline is before now, id = " + transferApplicationModel.getId());
             return;
         }
         try {
@@ -222,12 +222,12 @@ public class InvestTransferServiceImpl implements InvestTransferService {
     public boolean isTransferable(long investId) {
         InvestModel investModel = investMapper.findById(investId);
         if (investModel == null || investModel.getStatus() != InvestStatus.SUCCESS) {
-            logger.debug(MessageFormat.format("{0} is not exist or invest failed", investId));
+            logger.info(MessageFormat.format("{0} is not exist or invest failed", investId));
             return false;
         }
         LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
         if (loanModel.getStatus() != LoanStatus.REPAYING) {
-            logger.debug(MessageFormat.format("{0} is not REPAYING", investModel.getLoanId()));
+            logger.info(MessageFormat.format("{0} is not REPAYING", investModel.getLoanId()));
             return false;
         }
         LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loanModel.getId());
@@ -242,7 +242,7 @@ public class InvestTransferServiceImpl implements InvestTransferService {
 
         LoanRepayModel loanRepayModel = loanRepayMapper.findCurrentLoanRepayByLoanId(investModel.getLoanId());
         if (loanRepayModel == null) {
-            logger.debug(MessageFormat.format("{0} is completed ", investModel.getLoanId()));
+            logger.info(MessageFormat.format("{0} is completed ", investModel.getLoanId()));
             return false;
         }
 
@@ -250,7 +250,7 @@ public class InvestTransferServiceImpl implements InvestTransferService {
         if (!transferRuleModel.isMultipleTransferEnabled()) {
             TransferApplicationModel transfereeApplicationModel = transferApplicationMapper.findByInvestId(investId);
             if (transfereeApplicationModel != null) {
-                logger.debug(MessageFormat.format("{0} MultipleTransferEnabled is false ", investId));
+                logger.info(MessageFormat.format("{0} MultipleTransferEnabled is false ", investId));
                 return false;
             }
 
