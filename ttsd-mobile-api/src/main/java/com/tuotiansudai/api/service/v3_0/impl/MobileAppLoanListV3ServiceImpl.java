@@ -155,7 +155,7 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
         DecimalFormat decimalFormat = new DecimalFormat("######0.##");
         for (LoanModel loan : loanList) {
             LoanResponseDataDto loanResponseDataDto = new LoanResponseDataDto();
-            loanResponseDataDto.setLoanId("" + loan.getId());
+//            loanResponseDataDto.setLoanId("" + loan.getId());
             LoanDetailsModel loanDetailsModelActivity = loanDetailsMapper.getByLoanId(loan.getId());
             loanResponseDataDto.setLoanName(loan.getName());
             loanResponseDataDto.setActivityType(loan.getActivityType().name());

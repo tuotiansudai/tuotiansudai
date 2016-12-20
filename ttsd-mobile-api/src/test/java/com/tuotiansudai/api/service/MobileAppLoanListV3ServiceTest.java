@@ -145,7 +145,6 @@ public class MobileAppLoanListV3ServiceTest extends ServiceTestBase {
         assertEquals(ReturnMessage.SUCCESS.getMsg(), baseResponseDto.getMessage());
         loanResponseDataDto = loanListResponseDataDto.getLoanList().get(0);
         assertNotEquals(ProductType.EXPERIENCE.name(), loanResponseDataDto.getProductNewType());
-        assertEquals(LoanStatus.RAISING.name().toLowerCase(), loanResponseDataDto.getLoanStatus());
         //没有可投标 && 投资过其它标
         investModel.setLoanId(loanModel.getId());
         investMapper.update(investModel);
