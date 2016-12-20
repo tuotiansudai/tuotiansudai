@@ -4,9 +4,9 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
             'loanAmount', 'baseRate', 'activityRate', 'minInvestAmount', 'maxInvestAmount', 'investIncreasingAmount',
             'fundraisingStartTime', 'fundraisingEndTime', 'contractId', 'status'];
 
-        var loanDetailsParam = ['declaration', 'extraRateRuleIds', 'extraSource', 'activity', 'activityDesc'];
+        var loanDetailsParam = ['declaration', 'extraRateRuleIds', 'extraSource', 'activity', 'activityDesc','nonTransferable'];
 
-        var loanerDetailsParam = ['userName', 'identityNumber', 'gender', 'age', 'marriage', 'region', 'income', 'employmentStatus'];
+        var loanerDetailsParam = ['userName', 'identityNumber', 'gender', 'age', 'marriage', 'region', 'income', 'employmentStatus', 'purpose'];
 
         var loanerEnterpriseDetailsParam = ['juristicPerson', 'shareholder', 'address', 'purpose'];
 
@@ -386,16 +386,15 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
                     loanMessageContent: messageContent
                 };
             }
-            $.ajax(
-                {
-                    url: url,
+            $.ajax({
+                url: url,
                     type: 'POST',
                     dataType: 'json',
                     data: JSON.stringify(requestData),
                     contentType: 'application/json; charset=UTF-8'
-                }
-            ).done(function (res) {
+            }).done(function (res) {
                 $currentFormSubmitBtn.removeAttr('disabled');
+                $('#confirm-modal').modal('hide');
                 if (res.data.status) {
                     fromValid = true;
                     location.href = '/project-manage/loan-list';
@@ -406,6 +405,7 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
                 }
             }).fail(function () {
                 $currentFormSubmitBtn.removeAttr('disabled');
+                $('#confirm-modal').modal('hide');
             })
         });
 
@@ -467,8 +467,7 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
                     } else {
                         showErrorMessage('服务端校验失败', extraElement);
                     }
-                })
-                .fail(function () {
+                }).fail(function () {
                     showErrorMessage('服务端操作失败', extraElement);
                 });
         };
@@ -506,7 +505,7 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
             });
             requestData['loan']['loanTitles'] = uploadFile;
             return requestData
-        }
+        };
 
         $('#messageSend').on('change', function () {
             if ($(this).prop('checked') == true) {

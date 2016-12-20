@@ -1,6 +1,8 @@
 package com.tuotiansudai.coupon.util;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.coupon.repository.model.CouponModel;
+import com.tuotiansudai.repository.model.UserModel;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,7 +16,7 @@ public class ExchangerCollector implements UserCollector {
     }
 
     @Override
-    public boolean contains(long couponId, String loginName) {
+    public boolean contains(CouponModel couponModel, UserModel loginName) {
         return true;
     }
 }

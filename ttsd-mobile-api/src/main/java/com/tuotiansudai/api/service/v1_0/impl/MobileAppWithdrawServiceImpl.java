@@ -75,7 +75,7 @@ public class MobileAppWithdrawServiceImpl implements MobileAppWithdrawService {
     }
 
     @Override
-    public BaseResponseDto<WithdrawOperateResponseDataDto> generateWithdrawRequest(WithdrawOperateRequestDto requestDto) {
+    public BaseResponseDto generateWithdrawRequest(WithdrawOperateRequestDto requestDto) {
         BaseResponseDto baseResponseDto = new BaseResponseDto();
         WithdrawDto withdrawDto = requestDto.convertToWithdrawDto();
         String loginName = withdrawDto.getLoginName();

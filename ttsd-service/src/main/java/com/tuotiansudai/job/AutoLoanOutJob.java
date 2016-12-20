@@ -32,11 +32,11 @@ public class AutoLoanOutJob implements Job {
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
-        logger.debug("trigger auto loan out after raising complete job, prepare do job");
+        logger.info("trigger auto loan out after raising complete job, prepare do job");
         long loanId;
         try {
             loanId = (long) context.getJobDetail().getJobDataMap().get(LOAN_ID_KEY);
-            logger.debug("trigger auto loan out after raising complete job, loanId : " + String.valueOf(loanId));
+            logger.info("trigger auto loan out after raising complete job, loanId : " + String.valueOf(loanId));
 
             if (redisWrapperClient.exists(AutoLoanOutJob.LOAN_OUT_IN_PROCESS_KEY + loanId)) {
                 logger.warn("another loan out process is running, stop auto loan out. loanId : " + String.valueOf(loanId));

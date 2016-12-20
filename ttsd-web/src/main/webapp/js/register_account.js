@@ -128,6 +128,7 @@ require(['underscore', 'jquery', 'jquery.validate', 'jquery.validate.extension',
         }
     ];
 
+    //获取历史记录的上一页地址
     function getReferrer() {
         var referrer = '';
         try {

@@ -1,13 +1,10 @@
 package com.tuotiansudai.dto;
 
-import com.google.common.base.Function;
-import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.repository.model.LoanDetailsModel;
 import com.tuotiansudai.repository.model.Source;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import java.util.Collections;
 import java.util.List;
 
 public class LoanCreateDetailsRequestDto {
@@ -23,6 +20,8 @@ public class LoanCreateDetailsRequestDto {
 
     private List<Long> extraRateRuleIds = Lists.newArrayList();
 
+    private boolean nonTransferable;
+
     public LoanCreateDetailsRequestDto() {
     }
 
@@ -31,6 +30,16 @@ public class LoanCreateDetailsRequestDto {
         this.activity = loanDetailsModel.isActivity();
         this.activityDesc = loanDetailsModel.getActivityDesc();
         this.extraSource = loanDetailsModel.getExtraSource();
+        this.nonTransferable = loanDetailsModel.getNonTransferable();
+
+    }
+
+    public boolean getNonTransferable() {
+        return nonTransferable;
+    }
+
+    public void setNonTransferable(boolean nonTransferable) {
+        this.nonTransferable = nonTransferable;
     }
 
     public String getDeclaration() {

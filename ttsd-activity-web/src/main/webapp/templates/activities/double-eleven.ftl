@@ -1,6 +1,6 @@
 <#import "../macro/global.ftl" as global>
 <@global.main pageCss="${css.double_eleven}" pageJavascript="${js.double_eleven}" activeNav="" activeLeftNav="" title="拓天双11活动_活动中心_拓天速贷" keywords="撩妹神器,撩妹礼包,投资活动,拓天速贷" description="拓天速贷双11活动,推出撩妹神器'息'结良缘限时专享标,收益增加1.1%,并送'撩妹礼包',你撩妹,我买单,单身狗抽奖还可获100%中奖机会.">
-<div class="double-eleven-container">
+<div class="double-eleven-container" id="doubleElevenContainer">
     <@global.isNotAnonymous>
         <input type="hidden" value="<@global.security.authentication property="principal.mobile" />" id="MobileNumber"/>
     </@global.isNotAnonymous>
@@ -175,7 +175,57 @@
                             <a href="/referrer/refer-list" class="font-18">立即邀请好友赢抽奖机会</a>
                         </div>
                     </div>
-                    <#include "../model/nine-lottery.ftl"/>
+
+                    <#--抽奖模块开始-->
+
+                    <div class="nine-lottery-group" >
+                        <div class="lottery-left-group">
+                            <h3>我的抽奖机会：<span>0</span>次</h3>
+                            <ul class="lottery-item" id="lotteryBox">
+                                <li class="lottery-unit lottery-unit-0" data-unit="0">
+                                    <img src="${staticServer}/activity/images/model/double-eleven/gift-one.png">
+                                </li>
+                                <li class="lottery-unit lottery-unit-1" data-unit="1">
+                                    <img src="${staticServer}/activity/images/model/double-eleven/gift-two.png">
+                                </li>
+                                <li class="lottery-unit lottery-unit-2" data-unit="2">
+                                    <img src="${staticServer}/activity/images/model/double-eleven/gift-three.png">
+                                </li>
+                                <li class="lottery-unit lottery-unit-7" data-unit="7">
+                                    <img src="${staticServer}/activity/images/model/double-eleven/gift-eight.png">
+                                </li>
+                                <li class="lottery-btn pointer-img">
+                                    <img src="${staticServer}/activity/images/model/double-eleven/lottery-btn.png">
+                                </li>
+                                <li class="lottery-unit lottery-unit-3" data-unit="3">
+                                    <img src="${staticServer}/activity/images/model/double-eleven/gift-four.png">
+                                </li>
+                                <li class="lottery-unit lottery-unit-6" data-unit="6">
+                                    <img src="${staticServer}/activity/images/model/double-eleven/gift-seven.png">
+                                </li>
+                                <li class="lottery-unit lottery-unit-5" data-unit="5">
+                                    <img src="${staticServer}/activity/images/model/double-eleven/gift-six.png">
+                                </li>
+                                <li class="lottery-unit lottery-unit-4" data-unit="4">
+                                    <img src="${staticServer}/activity/images/model/double-eleven/gift-five.png">
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="lottery-right-group" id="lotteryList">
+                            <h3>
+                                <span class="active">中奖纪录</span>
+                                <span>我的奖品</span>
+                            </h3>
+                            <div class="record-group record-list">
+                                <ul class="record-item user-record" id="recordList"></ul>
+                                <ul class="record-item own-record" id="myRecord" style="display: none"></ul>
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <#--结束-->
                 </div>
             </div>
             <div class="model-group tip-text">
@@ -190,6 +240,13 @@
                 </div>
             </div>
         </div>
+    </div>
+    <a href="javascript:void(0)" class="show-login no-login-text"></a>
+
+    <div class="tip-list" style="display: none">
+        <div class="close-btn go-close"></div>
+        <div class="text-tip"></div>
+        <div class="btn-list"></div>
     </div>
 </div>
 <#include "login-tip.ftl" />

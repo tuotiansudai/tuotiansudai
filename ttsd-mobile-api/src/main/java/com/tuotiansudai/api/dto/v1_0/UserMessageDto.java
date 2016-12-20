@@ -10,7 +10,6 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class UserMessageDto implements Serializable {
-
     @ApiModelProperty(value = "标题", example = "1000")
     private long userMessageId;
 

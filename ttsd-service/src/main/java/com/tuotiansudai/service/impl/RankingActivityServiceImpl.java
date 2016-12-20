@@ -91,7 +91,7 @@ public class RankingActivityServiceImpl implements RankingActivityService {
     private RandomUtils randomUtils;
 
     public BaseDto<DrawLotteryDto> drawTianDouPrize(String loginName) {
-        logger.debug(loginName + " is drawing the tiandou prize.");
+        logger.info(loginName + " is drawing the tiandou prize.");
 
         DrawLotteryDto drawLotteryDto = new DrawLotteryDto();
         BaseDto baseDto = new BaseDto();
@@ -108,7 +108,7 @@ public class RankingActivityServiceImpl implements RankingActivityService {
 
         Double tianDouScore = redisWrapperClient.zscore(TIAN_DOU_USER_SCORE_RANK, loginName);
         if (tianDouScore == null || tianDouScore < DRAW_SCORE) {
-            logger.debug(loginName + "'s tianDou is not enough. tianDouScore:" + tianDouScore);
+            logger.info(loginName + "'s tianDou is not enough. tianDouScore:" + tianDouScore);
 
             drawLotteryDto.setMessage("您的天豆不足，投资赚取更多天豆再来抽奖吧！");
             drawLotteryDto.setReturnCode(1);
@@ -127,7 +127,7 @@ public class RankingActivityServiceImpl implements RankingActivityService {
             return baseDto;
         }
 
-        logger.debug(loginName + " drew a prize: " + prize);
+        logger.info(loginName + " drew a prize: " + prize);
 
         UserModel userModel = userMapper.findByLoginName(loginName);
         AccountModel accountModel = accountService.findByLoginName(loginName);

@@ -26,7 +26,7 @@ public class MobileAppTransferApplicationV2Controller extends MobileAppBaseContr
         if (bindingResult.hasErrors()) {
             String errorCode = bindingResult.getFieldError().getDefaultMessage();
             String errorMessage = ReturnMessage.getErrorMsgByCode(errorCode);
-            return new BaseResponseDto<>(errorCode, errorMessage);
+            return new BaseResponseDto(errorCode, errorMessage);
         } else {
             requestDto.getBaseParam().setUserId(getLoginName());
             return mobileAppTransferApplicationV2Service.generateTransferableInvest(requestDto);

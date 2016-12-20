@@ -1,9 +1,9 @@
 package com.tuotiansudai.console.controller;
 
+import com.tuotiansudai.console.service.ConsoleUserBillService;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.repository.model.UserBillOperationType;
 import com.tuotiansudai.repository.model.UserBillPaginationView;
-import com.tuotiansudai.service.UserBillService;
 import com.tuotiansudai.util.PaginationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -21,7 +21,7 @@ import java.util.List;
 public class UserFundsController {
 
     @Autowired
-    private UserBillService userBillService;
+    private ConsoleUserBillService consoleUserBillService;
 
     @RequestMapping(value = "/user-funds", method = RequestMethod.GET)
     public ModelAndView userFunds(@RequestParam(value = "userBillBusinessType", required = false) UserBillBusinessType userBillBusinessType,
@@ -32,8 +32,8 @@ public class UserFundsController {
                                   @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
         int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/user-funds");
-        List<UserBillPaginationView> userBillModels = userBillService.findUserFunds(userBillBusinessType, userBillOperationType, mobile, startTime, endTime, index, pageSize);
-        int userFundsCount = userBillService.findUserFundsCount(userBillBusinessType, userBillOperationType, mobile, startTime, endTime);
+        List<UserBillPaginationView> userBillModels = consoleUserBillService.findUserFunds(userBillBusinessType, userBillOperationType, mobile, startTime, endTime, index, pageSize);
+        int userFundsCount = consoleUserBillService.findUserFundsCount(userBillBusinessType, userBillOperationType, mobile, startTime, endTime);
         modelAndView.addObject("mobile", mobile);
         modelAndView.addObject("startTime", startTime);
         modelAndView.addObject("endTime", endTime);

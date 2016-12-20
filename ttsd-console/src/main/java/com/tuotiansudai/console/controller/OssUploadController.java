@@ -92,7 +92,7 @@ public class OssUploadController {
             try {
                 response.setCharacterEncoding(StandardCharsets.UTF_8.toString());
                 JSONObject jsonObject = uploadFile(request);
-                logger.debug("[OSS UPLOAD] jsonObject: " + jsonObject);
+                logger.info("[OSS UPLOAD] jsonObject: " + jsonObject);
                 response.getWriter().print(jsonObject);
             } catch (Exception e) {
                 logger.error(MessageFormat.format("{0}|{1}","[OSS UPLOAD]",e.getLocalizedMessage()), e);
@@ -122,9 +122,9 @@ public class OssUploadController {
                 absoluteUrl = absoluteUrl.substring(absoluteUrl.indexOf("/upload"), absoluteUrl.length());
             }
             String relativeUrl = absoluteUrl.substring(absoluteUrl.indexOf("/"), absoluteUrl.length());
-            logger.debug(MessageFormat.format("{0}|{1}", "[OSS UPLOAD] originalName:",originalName));
-            logger.debug(MessageFormat.format("{0}|{1}", "[OSS UPLOAD] relativeUrl:",relativeUrl));
-            logger.debug(MessageFormat.format("{0}|{1}", "[OSS UPLOAD] absoluteUrl:",absoluteUrl));
+            logger.info(MessageFormat.format("{0}|{1}", "[OSS UPLOAD] originalName:",originalName));
+            logger.info(MessageFormat.format("{0}|{1}", "[OSS UPLOAD] relativeUrl:",relativeUrl));
+            logger.info(MessageFormat.format("{0}|{1}", "[OSS UPLOAD] absoluteUrl:",absoluteUrl));
             return buildUploadFileResult("SUCCESS", originalName, relativeUrl, absoluteUrl);
         } catch (Exception e) {
             logger.error(MessageFormat.format("{0}|{1}", "[OSS UPLOAD]", e.getLocalizedMessage()), e);

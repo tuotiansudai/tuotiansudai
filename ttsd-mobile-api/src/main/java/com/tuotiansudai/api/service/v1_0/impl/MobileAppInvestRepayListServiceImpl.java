@@ -32,7 +32,7 @@ public class MobileAppInvestRepayListServiceImpl implements MobileAppInvestRepay
     private PageValidUtils pageValidUtils;
 
     @Override
-    public BaseResponseDto<InvestRepayListResponseDataDto> generateUserInvestRepayList(InvestRepayListRequestDto requestDto) {
+    public BaseResponseDto generateUserInvestRepayList(InvestRepayListRequestDto requestDto) {
         String loginName = requestDto.getBaseParam().getUserId();
         String paidStatus = requestDto.getStatus();
         Integer index = requestDto.getIndex();

@@ -1,10 +1,10 @@
 package com.tuotiansudai.console.controller;
 
+import com.tuotiansudai.console.service.AgentService;
 import com.tuotiansudai.dto.AgentDto;
 import com.tuotiansudai.exception.CreateAgentException;
 import com.tuotiansudai.repository.mapper.AgentLevelRateMapper;
 import com.tuotiansudai.repository.model.AgentLevelRateModel;
-import com.tuotiansudai.service.AgentService;
 import com.tuotiansudai.util.PaginationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,6 +18,7 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "/user-manage")
 public class AgentController {
+
     @Autowired
     private AgentService agentService;
 

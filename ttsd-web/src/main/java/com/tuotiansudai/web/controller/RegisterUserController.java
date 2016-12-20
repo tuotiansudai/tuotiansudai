@@ -68,7 +68,7 @@ public class RegisterUserController {
         BaseDataDto baseDataDto;
         if (bindingResult.hasErrors()) {
             String message = bindingResult.getFieldError().getDefaultMessage();
-            logger.debug("[APP SHARE IOS] :" + message);
+            logger.info("[APP SHARE IOS] :" + message);
             baseDataDto = new BaseDataDto(false, message);
             baseDto.setData(baseDataDto);
             return baseDto;
@@ -90,7 +90,7 @@ public class RegisterUserController {
         BaseDataDto baseDataDto;
         if (bindingResult.hasErrors()) {
             String message = bindingResult.getFieldError().getDefaultMessage();
-            logger.debug("[APP SHARE ANDROID] :" + message);
+            logger.info("[APP SHARE ANDROID] :" + message);
             baseDataDto = new BaseDataDto(false, message);
             baseDto.setData(baseDataDto);
             return baseDto;

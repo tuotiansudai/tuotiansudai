@@ -47,6 +47,6 @@ public class MyAuthenticationUtil {
     }
 
     public void removeAuthentication() {
-        SecurityContextHolder.clearContext();
+        SecurityContextHolder.setContext(SecurityContextHolder.createEmptyContext());
     }
 }

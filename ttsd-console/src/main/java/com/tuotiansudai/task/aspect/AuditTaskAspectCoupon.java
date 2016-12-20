@@ -31,9 +31,9 @@ public class AuditTaskAspectCoupon {
 
     static Logger logger = Logger.getLogger(AuditTaskAspectCoupon.class);
 
-    @AfterReturning(value = "execution(* com.tuotiansudai.coupon.service.CouponService.createCoupon(..))")
+    @AfterReturning(value = "execution(* com.tuotiansudai.console.service.ConsoleCouponService.createCoupon(..))")
     public void afterReturningCreateCoupon(JoinPoint joinPoint) {
-        logger.debug("after create coupon aspect.");
+        logger.info("after create coupon aspect.");
         try {
             String creator = (String) joinPoint.getArgs()[0];
             CouponDto couponDto = (CouponDto) joinPoint.getArgs()[1];
@@ -44,9 +44,9 @@ public class AuditTaskAspectCoupon {
         }
     }
 
-    @AfterReturning(value = "execution(* com.tuotiansudai.coupon.service.CouponService.editCoupon(..))")
+    @AfterReturning(value = "execution(* com.tuotiansudai.console.service.ConsoleCouponService.editCoupon(..))")
     public void afterReturningEditCoupon(JoinPoint joinPoint) {
-        logger.debug("after edit coupon aspect.");
+        logger.info("after edit coupon aspect.");
         try {
             String creator = (String) joinPoint.getArgs()[0];
             CouponDto couponDto = (CouponDto) joinPoint.getArgs()[1];
@@ -97,9 +97,9 @@ public class AuditTaskAspectCoupon {
         }
     }
 
-    @AfterReturning(value = "execution(* com.tuotiansudai.coupon.service.CouponActivationService.active(..))")
+    @AfterReturning(value = "execution(* com.tuotiansudai.console.service.CouponActivationService.active(..))")
     public void afterReturningActiveCoupon(JoinPoint joinPoint) {
-        logger.debug("after active coupon aspect.");
+        logger.info("after active coupon aspect.");
         try {
             String operator = (String) joinPoint.getArgs()[0];
             long couponId = (long) joinPoint.getArgs()[1];
@@ -136,9 +136,9 @@ public class AuditTaskAspectCoupon {
         }
     }
 
-    @AfterReturning(value = "execution(* com.tuotiansudai.coupon.service.CouponService.deleteCoupon(..))")
+    @AfterReturning(value = "execution(* com.tuotiansudai.console.service.ConsoleCouponService.deleteCoupon(..))")
     public void afterReturningDeleteCoupon(JoinPoint joinPoint) {
-        logger.debug("after delete coupon aspect.");
+        logger.info("after delete coupon aspect.");
         try {
             long couponId = (long) joinPoint.getArgs()[1];
             String taskId = OperationType.COUPON + "-" + couponId;

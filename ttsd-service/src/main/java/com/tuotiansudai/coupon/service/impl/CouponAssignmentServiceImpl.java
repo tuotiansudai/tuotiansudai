@@ -17,6 +17,7 @@ import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.InvestStatus;
+import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.UserBirthdayUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -133,13 +134,14 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
             return false;
         }
 
-        logger.debug(MessageFormat.format("[Exchange Coupon] user({0}) exchange coupon({1}) with code({2})", loginName, String.valueOf(couponId), exchangeCode));
+        logger.info(MessageFormat.format("[Exchange Coupon] user({0}) exchange coupon({1}) with code({2})", loginName, String.valueOf(couponId), exchangeCode));
         return true;
     }
 
     @Override
     public void assignUserCoupon(String loginNameOrMobile, long couponId) {
-        final String loginName = userMapper.findByLoginNameOrMobile(loginNameOrMobile).getLoginName();
+        UserModel userModel = userMapper.findByLoginNameOrMobile(loginNameOrMobile);
+        final String loginName = userModel.getLoginName();
 
         CouponModel couponModel = couponMapper.findById(couponId);
 
@@ -160,7 +162,7 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
             return;
         }
 
-        boolean contains = collector.contains(couponId, loginName);
+        boolean contains = collector.contains(couponModel, userModel);
         if (!contains) {
             logger.error(MessageFormat.format("[Coupon Assignment] user({0}) is not coupon({1}) user group({2})", loginName, String.valueOf(couponId), couponModel.getUserGroup()));
             return;
@@ -180,7 +182,7 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
             if (userCouponModel == null) {
                 return;
             }
-            logger.debug(MessageFormat.format("[Coupon Assignment] assign user({0}) coupon({1})", loginName, String.valueOf(couponId)));
+            logger.info(MessageFormat.format("[Coupon Assignment] assign user({0}) coupon({1})", loginName, String.valueOf(couponId)));
         }
 
     }
@@ -193,7 +195,8 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
      */
     @Override
     public void asyncAssignUserCoupon(String loginNameOrMobile, final List<UserGroup> userGroups) {
-        final String loginName = userMapper.findByLoginNameOrMobile(loginNameOrMobile).getLoginName().toLowerCase();
+        UserModel userModel = userMapper.findByLoginNameOrMobile(loginNameOrMobile);
+        final String loginName = userModel.getLoginName().toLowerCase();
 
         // 当前可领取的优惠券
         List<CouponModel> coupons = couponMapper.findAllActiveCoupons();
@@ -209,9 +212,9 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
                 .filter(couponModel -> isAssignableCoupon(couponModel, userCouponModels))
                 // 该优惠券和该用户符合该userGroup的规则（资格上检查）
                 // 此处特意将资格检查放在数量检查后面，以提高处理效率
-                .filter(couponModel -> getCollector(couponModel.getUserGroup()).contains(couponModel.getId(), loginName))
+                .filter(couponModel -> getCollector(couponModel.getUserGroup()).contains(couponModel, userModel))
                 // 生成MQ消息内容
-                .map(couponModel -> MessageQueue.CouponAssigning.getMessageFormat().replace("{loginName}", loginName).replace("{couponId}", String.valueOf(couponModel.getId())))
+                .map(couponModel -> loginName + ":" + couponModel.getId())
                 // 发送MQ消息
                 .forEach(message -> mqWrapperClient.sendMessage(MessageQueue.CouponAssigning, message));
         //((CouponAssignmentService) AopContext.currentProxy()).assign(loginName, couponModel.getId(), null);
@@ -264,7 +267,7 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
         if (StringUtils.isNotEmpty(exchangeCode)) {
             int exchangeCodeCount = userCouponMapper.findByExchangeCode(exchangeCode);
             if (exchangeCodeCount > 0) {
-                logger.debug(MessageFormat.format("[Exchange Coupon:] Exchange{0} had been exchanged ", exchangeCode));
+                logger.info(MessageFormat.format("[Exchange Coupon:] Exchange{0} had been exchanged ", exchangeCode));
                 return null;
             }
         }
@@ -303,7 +306,7 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
             }
             userCouponModel.setAchievementLoanId(loanId);
             userCouponMapper.update(userCouponModel);
-            logger.debug(MessageFormat.format("[Coupon Assignment] assign user({0}) coupon({1})", loginName, String.valueOf(couponId)));
+            logger.info(MessageFormat.format("[Coupon Assignment] assign user({0}) coupon({1})", loginName, String.valueOf(couponId)));
         }
     }
 

@@ -1,8 +1,8 @@
 package com.tuotiansudai.console.controller;
 
+import com.tuotiansudai.console.service.AgentService;
 import com.tuotiansudai.dto.AgentDto;
 import com.tuotiansudai.exception.CreateAgentException;
-import com.tuotiansudai.service.AgentService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

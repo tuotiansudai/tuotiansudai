@@ -23,7 +23,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         $isSkipAuth=$('#isSkipAuth'),
         $investForm = $('#investForm');
 
-    var viewport = commonFun.browserRedirect();
+    var viewport = globalFun.browserRedirect();
 
     $('.extra-rate .fa-mobile').on('mouseover', function(event) {
         event.preventDefault();

@@ -5,14 +5,11 @@ import com.tuotiansudai.repository.model.Source;
 import io.swagger.annotations.ApiModelProperty;
 
 public class BankCardReplaceRequestDto extends BaseParamDto{
-
-    @ApiModelProperty(value = "要绑定的新卡号", example = "6222600001111111111")
     private String cardNo;
 
     @ApiModelProperty(value = "银行卡缩写", example = "ICBC")
     private String bankCode;
 
-    @ApiModelProperty(value = "ip", example = "127.0.0.1")
     private String ip;
 
     public String getCardNo() {

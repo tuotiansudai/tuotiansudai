@@ -1,12 +1,13 @@
 package com.tuotiansudai.coupon.util;
 
-import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.Role;
+import com.tuotiansudai.repository.model.UserModel;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,14 +26,13 @@ public class StaffCollector implements UserCollector{
     }
 
     @Override
-    public boolean contains(long couponId, final String loginName) {
+    public boolean contains(CouponModel couponModel, UserModel userModel) {
+        if (userModel == null) {
+            return false;
+        }
+
         List<String> userRoleModels = userMapper.findAllByRole(Maps.newHashMap(ImmutableMap.<String, Object>builder().put("role", Role.STAFF).put("districtName", Lists.newArrayList()).build()));;
-        return CollectionUtils.isNotEmpty(userRoleModels) && Iterators.any(userRoleModels.iterator(), new Predicate<String>() {
-            @Override
-            public boolean apply(String input) {
-                return input.equals(loginName);
-            }
-        });
+        return CollectionUtils.isNotEmpty(userRoleModels) && Iterators.any(userRoleModels.iterator(), input -> input.equalsIgnoreCase(userModel.getLoginName()));
     }
 
 }

@@ -170,21 +170,6 @@ worker-all:
     - "sms-wrapper"
     - "redis-server"
 
-worker-invest:
-  image: "anapsix/alpine-java:8_jdk"
-  environment:
-    - "TZ=Asia/Shanghai"
-    - "JAVA_OPTS=-Xmx1024m"
-  volumes:
-    - /workspace/anxin_sign/:/workspace/anxin_sign
-    - ./ttsd-job-worker/build/distributions:/opt/worker
-    - /var/log/tuotian/worker-invest:/var/log/job-worker
-  command: bash -c "/opt/worker/ttsd-job-worker-invest/bin/ttsd-job-worker"
-  links:
-    - "pay-wrapper"
-    - "sms-wrapper"
-    - "redis-server"
-
 worker-jpush:
   image: "anapsix/alpine-java:8_jdk"
   environment:
@@ -240,6 +225,45 @@ message-mq-consumer:
     - "sms-wrapper"
     - "redis-server"
 
+point-mq-consumer:
+  image: "anapsix/alpine-java:8_jdk"
+  environment:
+    - "TZ=Asia/Shanghai"
+    - "JAVA_OPTS=-Xmx1024m"
+  volumes:
+    - ./ttsd-point-mq-consumer/build/distributions:/opt/worker
+    - /var/log/tuotian/ttsd-point-mq-consumer:/var/log/job-worker
+  command: bash -c "/opt/worker/ttsd-point-mq-consumer/bin/ttsd-point-mq-consumer"
+  links:
+    - "sms-wrapper"
+    - "redis-server"
+
+activity-mq-consumer:
+  image: "anapsix/alpine-java:8_jdk"
+  environment:
+    - "TZ=Asia/Shanghai"
+    - "JAVA_OPTS=-Xmx1024m"
+  volumes:
+    - ./ttsd-activity-mq-consumer/build/distributions:/opt/worker
+    - /var/log/tuotian/ttsd-activity-mq-consumer:/var/log/job-worker
+  command: bash -c "/opt/worker/ttsd-activity-mq-consumer/bin/ttsd-activity-mq-consumer"
+  links:
+    - "sms-wrapper"
+    - "redis-server"
+
+user-mq-consumer:
+  image: "anapsix/alpine-java:8_jdk"
+  environment:
+    - "TZ=Asia/Shanghai"
+    - "JAVA_OPTS=-Xmx1024m"
+  volumes:
+    - ./ttsd-user-mq-consumer/build/distributions:/opt/worker
+    - /var/log/tuotian/ttsd-user-mq-consumer:/var/log/job-worker
+  command: bash -c "/opt/worker/ttsd-user-mq-consumer/bin/ttsd-user-mq-consumer"
+  links:
+    - "sms-wrapper"
+    - "redis-server"
+
 diagnosis:
   image: "anapsix/alpine-java:8_jdk"
   environment:
@@ -251,6 +275,19 @@ diagnosis:
   command: bash -c "/opt/worker/ttsd-diagnosis/bin/ttsd-diagnosis"
   links:
     - "redis-server"
+
+worker-monitor:
+  image: "anapsix/alpine-java:8_jdk"
+  environment:
+    - "TZ=Asia/Shanghai"
+    - "JAVA_OPTS=-Xmx256m"
+  volumes:
+    - ./ttsd-worker-monitor/build/libs:/opt/worker
+    - /var/log/tuotian/worker-monitor:/var/log/job-worker
+  command: bash -c "java -Xmx256m -jar /opt/worker/ttsd-worker-monitor.jar"
+  links:
+    - "redis-server"
+    - "sms-wrapper"
 
 static-server:
   image: "nginx"

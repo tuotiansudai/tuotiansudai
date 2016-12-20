@@ -3,6 +3,7 @@ package com.tuotiansudai.service.impl;
 import com.google.common.base.*;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.coupon.dto.UserCouponDto;
@@ -21,6 +22,7 @@ import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.InvestService;
@@ -108,6 +110,9 @@ public class InvestServiceImpl implements InvestService {
 
     @Autowired
     private UserCouponService userCouponService;
+
+    @Autowired
+    private MQWrapperClient mqWrapperClient;
 
     @Override
     @Transactional
@@ -210,7 +215,7 @@ public class InvestServiceImpl implements InvestService {
         String loginName = investDto.getLoginName();
         long investAmount = AmountConverter.convertStringToCent(investDto.getAmount());
 
-        logger.debug(MessageFormat.format("user({0}) invest (loan = {1} amount = {2}) with user coupon({3})",
+        logger.info(MessageFormat.format("user({0}) invest (loan = {1} amount = {2}) with user coupon({3})",
                 investDto.getLoginName(),
                 String.valueOf(loanId),
                 investDto.getAmount(),
@@ -233,7 +238,7 @@ public class InvestServiceImpl implements InvestService {
                 UserCouponModel userCouponModel = userCouponMapper.findById(userCouponId);
                 CouponModel couponModel = couponMapper.findById(userCouponModel.getCouponId());
                 Date usedTime = userCouponModel.getUsedTime();
-                logger.debug(MessageFormat.format("user({0}) invest (loan = {1} amount = {2}) with user coupon(id = {3} usedTime = {4} status = {5})",
+                logger.info(MessageFormat.format("user({0}) invest (loan = {1} amount = {2}) with user coupon(id = {3} usedTime = {4} status = {5})",
                         investDto.getLoginName(),
                         String.valueOf(loanId),
                         investDto.getAmount(),
@@ -306,7 +311,7 @@ public class InvestServiceImpl implements InvestService {
         }
 
         long count = investMapper.countInvestorInvestPagination(loginName, loanStatus, startTime, endTime);
-        int totalPages = PaginationUtil.calculateMaxPage(count,pageSize);
+        int totalPages = PaginationUtil.calculateMaxPage(count, pageSize);
         index = index > totalPages ? totalPages : index;
 
         List<InvestModel> investModels = investMapper.findInvestorInvestPagination(loginName, loanStatus, (index - 1) * pageSize, pageSize, startTime, endTime);
@@ -348,64 +353,6 @@ public class InvestServiceImpl implements InvestService {
         }
 
         BasePaginationDataDto<InvestorInvestPaginationItemDataDto> dto = new BasePaginationDataDto<>(index, pageSize, count, items);
-        dto.setStatus(true);
-
-        return dto;
-    }
-
-    @Override
-    public InvestPaginationDataDto getInvestPagination(Long loanId, String investorMobile, String channel, Source source,
-                                                       Role role, Date startTime, Date endTime, InvestStatus investStatus,
-                                                       PreferenceType preferenceType, int index, int pageSize) {
-        List<InvestPaginationItemView> items = Lists.newArrayList();
-
-        String investorLoginName = null;
-        if (!StringUtils.isEmpty(investorMobile)) {
-            UserModel userModel = userMapper.findByMobile(investorMobile);
-            if (null != userModel) {
-                investorLoginName = userMapper.findByMobile(investorMobile).getLoginName();
-            } else {
-                investorLoginName = investorMobile;
-            }
-        }
-
-        final long count = investMapper.findCountInvestPagination(loanId, investorLoginName, channel, source, role, startTime, endTime, investStatus, preferenceType);
-        final long investAmountSum = investMapper.sumInvestAmountConsole(loanId, investorLoginName, channel, source, role, startTime, endTime, investStatus, preferenceType);
-        if (count > 0) {
-            int totalPages = PaginationUtil.calculateMaxPage(count, pageSize);
-            index = index > totalPages ? totalPages : index;
-            items = investMapper.findInvestPagination(loanId, investorLoginName, channel, source, role, startTime, endTime, investStatus, preferenceType, (index - 1) * pageSize, pageSize);
-        }
-
-        List<InvestPaginationItemDataDto> records = Lists.transform(items, new Function<InvestPaginationItemView, InvestPaginationItemDataDto>() {
-            @Override
-            public InvestPaginationItemDataDto apply(InvestPaginationItemView view) {
-                InvestPaginationItemDataDto investPaginationItemDataDto = new InvestPaginationItemDataDto(view);
-                CouponModel couponModel = couponMapper.findById(view.getCouponId());
-                if (null != couponModel) {
-                    long couponActualInterest = 0;
-                    if (couponModel.getCouponType().equals(CouponType.RED_ENVELOPE)) {
-                        List<UserCouponModel> userCouponModels = userCouponMapper.findUserCouponSuccessByInvestId(view.getInvestId());
-                        for (UserCouponModel userCouponModel : userCouponModels) {
-                            couponActualInterest += userCouponModel.getActualInterest();
-                        }
-                    } else {
-                        List<CouponRepayModel> couponRepayModels = couponRepayMapper.findByUserCouponByInvestId(view.getInvestId());
-                        for (CouponRepayModel couponRepayModel : couponRepayModels) {
-                            couponActualInterest += couponRepayModel.getActualInterest();
-                        }
-                    }
-                    investPaginationItemDataDto.setCouponActualInterest(couponActualInterest);
-                    investPaginationItemDataDto.setCouponDetail(couponModel);
-                }
-                return investPaginationItemDataDto;
-            }
-        });
-
-        InvestPaginationDataDto dto = new InvestPaginationDataDto(index, pageSize, count, records);
-
-        dto.setSumAmount(investAmountSum);
-
         dto.setStatus(true);
 
         return dto;
@@ -459,16 +406,6 @@ public class InvestServiceImpl implements InvestService {
     }
 
     @Override
-    public List<String> findAllChannel() {
-        return investMapper.findAllChannels();
-    }
-
-    @Override
-    public List<String> findAllInvestChannels() {
-        return investMapper.findAllInvestChannels();
-    }
-
-    @Override
     public InvestModel findById(long investId) {
         return investMapper.findById(investId);
     }
@@ -489,6 +426,9 @@ public class InvestServiceImpl implements InvestService {
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
         accountModel.setNoPasswordInvest(isTurnOn);
         accountMapper.update(accountModel);
+        if (isTurnOn) {
+            mqWrapperClient.sendMessage(MessageQueue.TurnOnNoPasswordInvest_CompletePointTask, loginName);
+        }
         return true;
     }
 
@@ -555,7 +495,7 @@ public class InvestServiceImpl implements InvestService {
     }
 
     @Override
-    public List<InvestModel> findContractFailInvest(long loanId){
+    public List<InvestModel> findContractFailInvest(long loanId) {
         return investMapper.findNoContractNoInvest(loanId);
     }
 

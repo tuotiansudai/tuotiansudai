@@ -92,9 +92,9 @@ public class JPushScheduleAlertServiceImpl implements JPushScheduleAlertService 
     private ScheduleResult createSchedule(String jPushAlertId,SchedulePayload schedulePayload,PushPayload payload){
         ScheduleResult scheduleResult = null;
         try {
-            logger.debug(MessageFormat.format("request:{0}:{1} begin", jPushAlertId, payload.toJSON()));
+            logger.info(MessageFormat.format("request:{0}:{1} begin", jPushAlertId, payload.toJSON()));
             scheduleResult =  getScheduleClient().createSchedule(schedulePayload);
-            logger.debug(MessageFormat.format("request:{0}:{1} end", jPushAlertId, scheduleResult.getResponseCode()));
+            logger.info(MessageFormat.format("request:{0}:{1} end", jPushAlertId, scheduleResult.getResponseCode()));
             redisClient.sadd(APP_PUSH_MSG_ID_KEY + jPushAlertId, String.valueOf(scheduleResult.getResponseCode()));
         } catch (APIConnectionException e) {
             logger.error(e.getLocalizedMessage(), e);

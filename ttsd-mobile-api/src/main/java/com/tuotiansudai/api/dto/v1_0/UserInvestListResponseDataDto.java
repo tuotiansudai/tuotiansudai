@@ -9,7 +9,7 @@ public class UserInvestListResponseDataDto extends BaseResponseDataDto {
     private Integer pageSize;
     private Integer totalCount;
 
-    @ApiModelProperty(value = "转让记录", example = "list")
+    @ApiModelProperty(value = "出借记录", example = "list")
     private List<UserInvestRecordResponseDataDto> investList;
 
     public Integer getIndex() {

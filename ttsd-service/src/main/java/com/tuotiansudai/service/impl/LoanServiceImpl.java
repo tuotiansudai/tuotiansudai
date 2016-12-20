@@ -120,42 +120,6 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public int findLoanListCount(LoanStatus status, Long loanId, String loanName, Date startTime, Date endTime) {
-        return loanMapper.findLoanListCount(status, loanId, loanName, startTime, endTime);
-    }
-
-    @Override
-    public List<LoanListDto> findLoanList(LoanStatus status, Long loanId, String loanName, Date startTime, Date endTime, int currentPageNo, int pageSize) {
-        currentPageNo = (currentPageNo - 1) * 10;
-        List<LoanModel> loanModels = loanMapper.findLoanList(status, loanId, loanName, startTime, endTime, currentPageNo, pageSize);
-        List<LoanListDto> loanListDtos = Lists.newArrayList();
-        for (LoanModel loanModel : loanModels) {
-            LoanListDto loanListDto = new LoanListDto();
-            loanListDto.setId(loanModel.getId());
-            loanListDto.setName(loanModel.getName());
-            loanListDto.setType(loanModel.getType());
-            loanListDto.setAgentLoginName(loanModel.getAgentLoginName());
-            loanListDto.setLoanerUserName(loanModel.getLoanerUserName());
-            loanListDto.setLoanAmount(loanModel.getLoanAmount());
-            loanListDto.setPeriods(loanModel.getPeriods());
-            loanListDto.setBasicRate(String.valueOf(new BigDecimal(loanModel.getBaseRate() * 100).setScale(2, BigDecimal.ROUND_HALF_UP)) + "%");
-            loanListDto.setActivityRate(String.valueOf(new BigDecimal(loanModel.getActivityRate() * 100).setScale(2, BigDecimal.ROUND_HALF_UP)) + "%");
-            loanListDto.setStatus(loanModel.getStatus());
-            loanListDto.setCreatedTime(loanModel.getCreatedTime());
-            loanListDto.setProductType(loanModel.getProductType());
-            loanListDto.setPledgeType(loanModel.getPledgeType());
-            List<ExtraLoanRateModel> extraLoanRateModels = extraLoanRateMapper.findByLoanId(loanModel.getId());
-            if (CollectionUtils.isNotEmpty(extraLoanRateModels)) {
-                loanListDto.setExtraLoanRateModels(fillExtraLoanRate(extraLoanRateModels));
-            }
-            LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loanModel.getId());
-            loanListDto.setExtraSource(loanDetailsModel != null ? loanDetailsModel.getExtraSource() : null);
-            loanListDtos.add(loanListDto);
-        }
-        return loanListDtos;
-    }
-
-    @Override
     public List<LoanItemDto> findLoanItems(String name, LoanStatus status, double rateStart, double rateEnd, int durationStart, int durationEnd, int index) {
         index = (index - 1) * 10;
 
@@ -243,14 +207,5 @@ public class LoanServiceImpl implements LoanService {
     @Override
     public int findLoanListCountWeb(String name, LoanStatus status, double rateStart, double rateEnd, int durationStart, int durationEnd) {
         return loanMapper.findLoanListCountWeb(name, status, rateStart, rateEnd, durationStart, durationEnd);
-    }
-
-    private List<ExtraLoanRateItemDto> fillExtraLoanRate(List<ExtraLoanRateModel> extraLoanRateModels) {
-        return Lists.transform(extraLoanRateModels, new Function<ExtraLoanRateModel, ExtraLoanRateItemDto>() {
-            @Override
-            public ExtraLoanRateItemDto apply(ExtraLoanRateModel model) {
-                return new ExtraLoanRateItemDto(model);
-            }
-        });
     }
 }

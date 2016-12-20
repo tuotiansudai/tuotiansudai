@@ -1,4 +1,4 @@
-require(['jquery', 'underscore', 'layerWrapper', 'commonFun', 'superslide', 'placeholder', 'jquery.validate', 'jquery.validate.extension', 'jquery.form', 'jquery.ajax.extension'], function ($, _, layer) {
+require(['jquery', 'underscore', 'layerWrapper', 'commonFun', 'superslide', 'placeholder', 'jquery.validate', 'jquery.validate.extension', 'jquery.form', 'jquery.ajax.extension'], function ($, _, layer,commonFun) {
     (function () {
         var $landingContainerBox=$('#landingContainerBox');
         var $registerForm = $('.register-user-form',$landingContainerBox),
@@ -13,14 +13,14 @@ require(['jquery', 'underscore', 'layerWrapper', 'commonFun', 'superslide', 'pla
 
         var $popWinBox = $('#popWinBox');
 
-        var bCategory = commonFun.browserRedirect();
+        var bCategory = globalFun.browserRedirect();
 
         if (bCategory == 'mobile') {
             $webRegister.empty();
             $mobileRegister.empty().append($landingTop);
         }
 
-        var urlObj=commonFun.parseURL(location.href),
+        var urlObj=globalFun.parseURL(location.href),
             referNum=urlObj.params.referrer;
 
         if(referNum) {
@@ -31,7 +31,7 @@ require(['jquery', 'underscore', 'layerWrapper', 'commonFun', 'superslide', 'pla
                 $.ajax({
                     url:"/activity/get-realRealName?mobile="+getMobile,
                     type:'GET',
-                    dataType: 'json',
+                    dataType: 'json'
                 }).done(function(data) {
                     //姓名的第一个字母用*替换
                     String.prototype.replaceFirst=function(value) {

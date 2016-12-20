@@ -239,7 +239,7 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
         return dto;
     }
 
-    public BaseResponseDto<TransferApplicationResponseDataDto> transferApplicationList(TransferApplicationListRequestDto requestDto) {
+    public BaseResponseDto transferApplicationList(TransferApplicationListRequestDto requestDto) {
         BaseResponseDto<TransferApplicationResponseDataDto> dto = new BaseResponseDto();
         Integer index = requestDto.getIndex();
         Integer pageSize = pageValidUtils.validPageSizeLimit(requestDto.getPageSize());

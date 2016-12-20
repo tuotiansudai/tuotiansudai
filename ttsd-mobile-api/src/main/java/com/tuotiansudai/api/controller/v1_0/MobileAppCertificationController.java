@@ -34,10 +34,10 @@ public class MobileAppCertificationController extends MobileAppBaseController {
         if (bindingResult.hasErrors()) {
             String errorCode = bindingResult.getFieldError().getDefaultMessage();
             String errorMessage = ReturnMessage.getErrorMsgByCode(errorCode);
-            return new BaseResponseDto<>(errorCode, errorMessage);
+            return new BaseResponseDto(errorCode, errorMessage);
         } else {
             certificationRequestDto.getBaseParam().setUserId(getLoginName());
-            BaseResponseDto baseResponseDto = mobileAppCertificationService.validateUserCertificationInfo(certificationRequestDto);
+            BaseResponseDto<CertificationResponseDataDto> baseResponseDto = mobileAppCertificationService.validateUserCertificationInfo(certificationRequestDto);
             myAuthenticationUtil.createAuthentication(getLoginName(), Source.valueOf(certificationRequestDto.getBaseParam().getPlatform().toUpperCase()));
             return baseResponseDto;
         }

@@ -67,32 +67,6 @@ public class LoanRepayServiceImpl implements LoanRepayService {
     private CouponRepayMapper couponRepayMapper;
 
     @Override
-    public BaseDto<BasePaginationDataDto<LoanRepayDataItemDto>> findLoanRepayPagination(int index, int pageSize, Long loanId,
-                                                                                        String loginName, Date startTime, Date endTime, RepayStatus repayStatus) {
-        if (index < 1) {
-            index = 1;
-        }
-        if (pageSize < 1) {
-            pageSize = 10;
-        }
-
-        BaseDto<BasePaginationDataDto<LoanRepayDataItemDto>> baseDto = new BaseDto<>();
-        int count = loanRepayMapper.findLoanRepayCount(loanId, loginName, repayStatus, startTime, endTime);
-        List<LoanRepayModel> loanRepayModels = loanRepayMapper.findLoanRepayPagination((index - 1) * pageSize, pageSize,
-                loanId, loginName, repayStatus, startTime, endTime);
-        List<LoanRepayDataItemDto> loanRepayDataItemDtos = Lists.newArrayList();
-        for (LoanRepayModel loanRepayModel : loanRepayModels) {
-            LoanRepayDataItemDto loanRepayDataItemDto = new LoanRepayDataItemDto(loanRepayModel);
-            loanRepayDataItemDtos.add(loanRepayDataItemDto);
-        }
-        BasePaginationDataDto<LoanRepayDataItemDto> basePaginationDataDto = new BasePaginationDataDto<>(index, pageSize, count, loanRepayDataItemDtos);
-        basePaginationDataDto.setStatus(true);
-        baseDto.setData(basePaginationDataDto);
-        return baseDto;
-
-    }
-
-    @Override
     public List<LoanRepayModel> findLoanRepayInAccount(String loginName, Date startTime, Date endTime, int startLimit, int endLimit) {
         return this.loanRepayMapper.findByLoginNameAndTimeRepayList(loginName, startTime, endTime, startLimit, endLimit);
     }
@@ -164,7 +138,7 @@ public class LoanRepayServiceImpl implements LoanRepayService {
             loanModel.setStatus(LoanStatus.OVERDUE);
             loanMapper.update(loanModel);
         }
-        logger.debug(MessageFormat.format("loanRepayId:{0} couponRepay status to overdue", loanRepayModel.getId()));
+        logger.info(MessageFormat.format("loanRepayId:{0} couponRepay status to overdue", loanRepayModel.getId()));
         List<CouponRepayModel> couponRepayModels = couponRepayMapper.findCouponRepayByLoanIdAndPeriod(loanModel.getId(), loanRepayModel.getPeriod());
         for (CouponRepayModel couponRepayModel : couponRepayModels) {
             if (couponRepayModel.getRepayDate().before(new Date())) {

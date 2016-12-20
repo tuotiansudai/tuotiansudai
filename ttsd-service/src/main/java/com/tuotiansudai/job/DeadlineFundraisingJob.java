@@ -40,9 +40,9 @@ public class DeadlineFundraisingJob implements Job{
 
         LoanModel loanModel = loanMapper.findById(loanId);
 
-        logger.debug("loanId = " + loanId);
-        logger.debug("status = " + loanModel.getStatus());
-        logger.debug("fundraisingEndTime = " + loanModel.getFundraisingEndTime());
+        logger.info("loanId = " + loanId);
+        logger.info("status = " + loanModel.getStatus());
+        logger.info("fundraisingEndTime = " + loanModel.getFundraisingEndTime());
 
         if (loanModel.getStatus() == LoanStatus.RAISING) {
             loanMapper.updateStatus(loanModel.getId(), LoanStatus.RECHECK);

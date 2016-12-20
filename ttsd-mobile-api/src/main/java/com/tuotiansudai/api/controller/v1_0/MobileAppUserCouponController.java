@@ -46,7 +46,7 @@ public class MobileAppUserCouponController extends MobileAppBaseController {
     public BaseResponseDto assignUserCoupon() {
         String loginName = getLoginName();
 
-        logger.debug(MessageFormat.format("mobile assign coupon user:{0},begin time:{1}", loginName, DateTime.now().toString()));
+        logger.info(MessageFormat.format("mobile assign coupon user:{0},begin time:{1}", loginName, DateTime.now().toString()));
         couponAssignmentService.asyncAssignUserCoupon(loginName, Lists.newArrayList(
                 UserGroup.ALL_USER,
                 UserGroup.INVESTED_USER,
@@ -64,7 +64,7 @@ public class MobileAppUserCouponController extends MobileAppBaseController {
                 UserGroup.MEMBERSHIP_V3,
                 UserGroup.MEMBERSHIP_V4,
                 UserGroup.MEMBERSHIP_V5));
-        logger.debug(MessageFormat.format("mobile assign coupon user:{0},end time:{1}", loginName, DateTime.now().toString()));
+        logger.info(MessageFormat.format("mobile assign coupon user:{0},end time:{1}", loginName, DateTime.now().toString()));
         return new BaseResponseDto(ReturnMessage.SUCCESS);
     }
 

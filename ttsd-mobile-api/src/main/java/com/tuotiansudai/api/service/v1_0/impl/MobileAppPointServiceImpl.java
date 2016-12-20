@@ -7,6 +7,8 @@ import com.tuotiansudai.api.service.v1_0.MobileAppPointService;
 import com.tuotiansudai.api.util.PageValidUtils;
 import com.tuotiansudai.point.repository.dto.SignInPointDto;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
+import com.tuotiansudai.point.repository.mapper.PointTaskMapper;
+import com.tuotiansudai.point.repository.mapper.UserPointTaskMapper;
 import com.tuotiansudai.point.repository.model.PointBillModel;
 import com.tuotiansudai.point.repository.model.PointTask;
 import com.tuotiansudai.point.service.SignInService;
@@ -37,13 +39,19 @@ public class MobileAppPointServiceImpl implements MobileAppPointService {
     private AccountMapper accountMapper;
 
     @Autowired
+    private PointTaskMapper pointTaskMapper;
+
+    @Autowired
     private PageValidUtils pageValidUtils;
 
-    public BaseResponseDto signIn(BaseParamDto baseParamDto) {
+    @Autowired
+    private UserPointTaskMapper userPointTaskMapper;
+
+    public BaseResponseDto<SignInResponseDataDto> signIn(BaseParamDto baseParamDto) {
         String loginName = baseParamDto.getBaseParam().getUserId();
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
         if (accountModel == null) {
-            return new BaseResponseDto(ReturnMessage.USER_IS_NOT_CERTIFICATED.getCode(), ReturnMessage.USER_IS_NOT_CERTIFICATED.getMsg());
+            return new BaseResponseDto<>(ReturnMessage.USER_IS_NOT_CERTIFICATED.getCode(), ReturnMessage.USER_IS_NOT_CERTIFICATED.getMsg());
         }
         SignInPointDto signInPointDto = signInService.signIn(loginName);
 
@@ -65,12 +73,11 @@ public class MobileAppPointServiceImpl implements MobileAppPointService {
         return dto;
     }
 
-    @Override
     public BaseResponseDto<LastSignInTimeResponseDataDto> getLastSignInTime(BaseParamDto baseParamDto) {
         String loginName = baseParamDto.getBaseParam().getUserId();
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
         if (accountModel == null) {
-            return new BaseResponseDto(ReturnMessage.USER_IS_NOT_CERTIFICATED.getCode(), ReturnMessage.USER_IS_NOT_CERTIFICATED.getMsg());
+            return new BaseResponseDto<>(ReturnMessage.USER_IS_NOT_CERTIFICATED.getCode(), ReturnMessage.USER_IS_NOT_CERTIFICATED.getMsg());
         }
         SignInPointDto lastSignInPointDto = signInService.getLastSignIn(loginName);
         LastSignInTimeResponseDataDto dataDto = new LastSignInTimeResponseDataDto();
@@ -97,7 +104,7 @@ public class MobileAppPointServiceImpl implements MobileAppPointService {
         String loginName = pointBillRequestDto.getBaseParam().getUserId();
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
         if (accountModel == null) {
-            return new BaseResponseDto(ReturnMessage.USER_IS_NOT_CERTIFICATED.getCode(), ReturnMessage.USER_IS_NOT_CERTIFICATED.getMsg());
+            return new BaseResponseDto<>(ReturnMessage.USER_IS_NOT_CERTIFICATED.getCode(), ReturnMessage.USER_IS_NOT_CERTIFICATED.getMsg());
         }
         BaseResponseDto dto = new BaseResponseDto();
         Integer index = pointBillRequestDto.getIndex();
@@ -139,7 +146,7 @@ public class MobileAppPointServiceImpl implements MobileAppPointService {
         String loginName = baseParamDto.getBaseParam().getUserId();
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
         if (accountModel == null) {
-            return new BaseResponseDto(ReturnMessage.USER_IS_NOT_CERTIFICATED.getCode(), ReturnMessage.USER_IS_NOT_CERTIFICATED.getMsg());
+            return new BaseResponseDto<>(ReturnMessage.USER_IS_NOT_CERTIFICATED.getCode(), ReturnMessage.USER_IS_NOT_CERTIFICATED.getMsg());
         }
 
         PointResponseDataDto dataDto = new PointResponseDataDto();

@@ -26,7 +26,7 @@ public class MobileAppMembershipServiceImpl implements MobileAppMembershipServic
     private PageValidUtils pageValidUtils;
 
     @Override
-    public BaseResponseDto<MembershipResponseDataDto> getMembershipExperienceBill(MembershipRequestDto requestDto) {
+    public BaseResponseDto getMembershipExperienceBill(MembershipRequestDto requestDto) {
         String loginName = requestDto.getBaseParam().getUserId();
 
         int index = requestDto.getIndex() == null ? 1 : requestDto.getIndex();

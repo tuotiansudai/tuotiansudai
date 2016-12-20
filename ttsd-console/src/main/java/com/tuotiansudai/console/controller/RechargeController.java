@@ -1,12 +1,12 @@
 package com.tuotiansudai.console.controller;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.console.service.ConsoleRechargeService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.RechargePaginationItemDataDto;
 import com.tuotiansudai.repository.model.RechargeSource;
 import com.tuotiansudai.repository.model.RechargeStatus;
-import com.tuotiansudai.service.RechargeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -24,7 +24,7 @@ import java.util.List;
 public class RechargeController {
 
     @Autowired
-    RechargeService rechargeService;
+    private ConsoleRechargeService consoleRechargeService;
 
     @RequestMapping(value = "/recharge", method = RequestMethod.GET)
     public ModelAndView getRechargeList(@RequestParam(value = "rechargeId", required = false) String rechargeId,
@@ -37,10 +37,10 @@ public class RechargeController {
                                         @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
         int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/recharge");
-        BaseDto<BasePaginationDataDto<RechargePaginationItemDataDto>> baseDto = rechargeService.findRechargePagination(rechargeId, mobile, source,
+        BaseDto<BasePaginationDataDto<RechargePaginationItemDataDto>> baseDto = consoleRechargeService.findRechargePagination(rechargeId, mobile, source,
                 status, channel, index, pageSize, startTime, endTime);
-        List<String> channelList = rechargeService.findAllChannel();
-        long sumAmount = rechargeService.findSumRechargeAmount(rechargeId, mobile, source, status, channel, startTime, endTime);
+        List<String> channelList = consoleRechargeService.findAllChannel();
+        long sumAmount = consoleRechargeService.findSumRechargeAmount(rechargeId, mobile, source, status, channel, startTime, endTime);
         modelAndView.addObject("baseDto", baseDto);
         modelAndView.addObject("sumAmount", sumAmount);
         modelAndView.addObject("rechargeStatusList", Lists.newArrayList(RechargeStatus.values()));

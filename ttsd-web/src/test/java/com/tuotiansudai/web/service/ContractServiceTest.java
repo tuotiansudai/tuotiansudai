@@ -77,9 +77,9 @@ public class ContractServiceTest {
         transferApplicationMapper.create(transferApplicationModel);
         AccountModel accountModel = getAccountModel();
         accountMapper.create(accountModel);
-        InvestRepayModel startInvestRepayModel = new InvestRepayModel(1L, investModel.getId(), 1, 233L, 2000L, 2L,
+        InvestRepayModel startInvestRepayModel = new InvestRepayModel(111111L, investModel.getId(), 1, 233L, 2000L, 2L,
                 DateTime.parse("2011-1-1").toDate(), RepayStatus.REPAYING);
-        InvestRepayModel endInvestRepayModel = new InvestRepayModel(2L, investModel.getId(), 3, 233L, 2000L, 2L,
+        InvestRepayModel endInvestRepayModel = new InvestRepayModel(222222L, investModel.getId(), 3, 233L, 2000L, 2L,
                 DateTime.parse("2011-3-1").toDate(), RepayStatus.REPAYING);
         investRepayMapper.create(Lists.newArrayList(startInvestRepayModel, endInvestRepayModel));
 
@@ -113,9 +113,9 @@ public class ContractServiceTest {
         AccountModel accountModel = getAccountModel();
         accountMapper.create(accountModel);
 
-        InvestRepayModel startInvestRepayModel = new InvestRepayModel(1L, transferInvestModel.getId(), 1, 233L, 2000L, 2L,
+        InvestRepayModel startInvestRepayModel = new InvestRepayModel(111111L, transferInvestModel.getId(), 1, 233L, 2000L, 2L,
                 DateTime.parse("2011-1-1").toDate(), RepayStatus.REPAYING);
-        InvestRepayModel endInvestRepayModel = new InvestRepayModel(2L, investModel.getId(), 3, 233L, 2000L, 2L,
+        InvestRepayModel endInvestRepayModel = new InvestRepayModel(222222L, investModel.getId(), 3, 233L, 2000L, 2L,
                 DateTime.parse("2011-3-1").toDate(), RepayStatus.REPAYING);
         investRepayMapper.create(Lists.newArrayList(startInvestRepayModel, endInvestRepayModel));
 
@@ -171,9 +171,9 @@ public class ContractServiceTest {
         AccountModel accountModel = getAccountModel();
         accountMapper.create(accountModel);
 
-        InvestRepayModel startInvestRepayModel = new InvestRepayModel(1L, transferInvestModel.getId(), 1, 233L, 2000L, 2L,
+        InvestRepayModel startInvestRepayModel = new InvestRepayModel(111111L, transferInvestModel.getId(), 1, 233L, 2000L, 2L,
                 DateTime.parse("2011-1-1").toDate(), RepayStatus.REPAYING);
-        InvestRepayModel endInvestRepayModel = new InvestRepayModel(2L, investModel.getId(), 3, 233L, 2000L, 2L,
+        InvestRepayModel endInvestRepayModel = new InvestRepayModel(222222L, investModel.getId(), 3, 233L, 2000L, 2L,
                 DateTime.parse("2011-3-1").toDate(), RepayStatus.REPAYING);
         investRepayMapper.create(Lists.newArrayList(startInvestRepayModel, endInvestRepayModel));
 
@@ -240,7 +240,7 @@ public class ContractServiceTest {
     private LoanerDetailsModel getLoanerDetailsModel(LoanModel loanModel) {
         return new LoanerDetailsModel(loanModel.getId(), loanModel.getLoanerLoginName(),
                 loanModel.getLoanerUserName(), Gender.FEMALE, 12, loanModel.getLoanerIdentityNumber(), Marriage.MARRIED,
-                "", "", "");
+                "", "", "", "purpose");
     }
 
     private InvestModel getInvest(long loanId, String loginName) throws ParseException {

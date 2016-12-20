@@ -203,6 +203,16 @@
                         </#list>
                     </div>
                 </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">是否允许债权转让: </label>
+
+                    <div class="col-sm-4 checkbox">
+                        <label for="nonTransferable">
+                            <input type="checkbox" name="nonTransferable" value="true">（选中后投资此标的不允许债权转让）
+                        </label>
+                    </div>
+
+                </div>
             </div>
         </section>
 

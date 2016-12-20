@@ -180,14 +180,14 @@ public class RepayServiceImpl implements RepayService {
         int lastPeriod = investRepayModels.size();
         List<InvestRepayDataItemDto> records = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(investRepayModels)) {
-            long sumActualInterest = 0l;
-            long sumExpectedInterest = 0l;
+            long sumActualInterest = 0L;
+            long sumExpectedInterest = 0L;
             for(InvestRepayModel investRepayModel : investRepayModels){
                 long expectedAmount = investRepayModel.getCorpus() + investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee();
                 long expectedFee = investRepayModel.getExpectedFee();
                 long actualFee = investRepayModel.getActualFee();
                 long repayAmount = investRepayModel.getRepayAmount();
-                long couponExpectedInterest = 0l;
+                long couponExpectedInterest = 0L;
                 InvestRepayDataItemDto investRepayDataItemDto = new InvestRepayDataItemDto(investRepayModel);
                 CouponRepayModel couponRepayModel = couponRepayMapper.findByUserCouponByInvestIdAndPeriod(investRepayDataItemDto.getInvestId(), investRepayDataItemDto.getPeriod());
                 if(couponRepayModel != null){
@@ -269,6 +269,6 @@ public class RepayServiceImpl implements RepayService {
     }
 
     private static String covertRate(String rate){
-        return rate.indexOf(".00") != -1 ? rate.replaceAll("\\.00", "") : String.valueOf(Double.parseDouble(rate));
+        return rate.contains(".00") ? rate.replaceAll("\\.00", "") : String.valueOf(Double.parseDouble(rate));
     }
 }

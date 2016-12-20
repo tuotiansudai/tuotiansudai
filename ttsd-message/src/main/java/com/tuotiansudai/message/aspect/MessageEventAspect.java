@@ -1,6 +1,5 @@
 package com.tuotiansudai.message.aspect;
 
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.SignInResult;
@@ -28,11 +27,6 @@ public class MessageEventAspect {
     @Autowired
     private UserMessageEventGenerator userMessageEventGenerator;
 
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
-
-    private final String REDIS_MEMBERSHIP_UPGRADE_MESSAGE = "web:membership:upgrade";
-
     @Pointcut("execution(* *..UserService.registerUser(..))")
     public void registerUserPointcut() {
     }
@@ -43,10 +37,6 @@ public class MessageEventAspect {
 
     @Pointcut("execution(* *..WithdrawService.withdrawCallback(..))")
     public void withdrawCallbackPointcut() {
-    }
-
-    @Pointcut("execution(* *..InvestService.investSuccess(..))")
-    public void investSuccessPointcut() {
     }
 
     @Pointcut("execution(* *..InvestTransferPurchaseService.postPurchase(..))")
@@ -127,33 +117,6 @@ public class MessageEventAspect {
         }
     }
 
-    @AfterReturning(value = "investSuccessPointcut()")
-    public void afterReturningInvestSuccess(JoinPoint joinPoint) {
-        Object investModel = joinPoint.getArgs()[0];
-        try {
-            Class<?> aClass = investModel.getClass();
-            Method method = aClass.getMethod("getId");
-            long investId = (long) method.invoke(investModel);
-            userMessageEventGenerator.generateInvestSuccessEvent(investId);
-            logger.info(MessageFormat.format("[Message Event Aspect] after invest success({0}) pointcut finished", String.valueOf(investId)));
-        } catch (Exception e) {
-            logger.error(e.getLocalizedMessage(), e);
-        }
-        try {
-            Class<?> aClass = investModel.getClass();
-            Method method = aClass.getMethod("getLoginName");
-            String loginName = (String) method.invoke(investModel);
-            if (redisWrapperClient.hexists(REDIS_MEMBERSHIP_UPGRADE_MESSAGE, loginName)) {
-                long membershipId = Long.valueOf(redisWrapperClient.hget(REDIS_MEMBERSHIP_UPGRADE_MESSAGE, loginName));
-                userMessageEventGenerator.generateMembershipUpgradeEvent(loginName, membershipId);
-                redisWrapperClient.hdel(REDIS_MEMBERSHIP_UPGRADE_MESSAGE, loginName);
-                logger.info(MessageFormat.format("[Message Event Aspect] after invest success membership upgrade loginName:{0} membershipId:{1} ", loginName, String.valueOf(membershipId)));
-            }
-        } catch (Exception e) {
-            logger.error(e.getLocalizedMessage(), e);
-        }
-    }
-
     @AfterReturning(value = "transferSuccessPointcut()")
     public void afterReturningTransferSuccess(JoinPoint joinPoint) {
         long investId = (Long) joinPoint.getArgs()[0];
@@ -225,7 +188,7 @@ public class MessageEventAspect {
 
     @AfterReturning(value = "loginSuccessPointcut() || refreshSuccessPointcut()", returning = "signInResult")
     public void afterReturningUserLogin(JoinPoint joinPoint, SignInResult signInResult) {
-        logger.debug("[Message Event Aspect] after returning user login start");
+        logger.info("[Message Event Aspect] after returning user login start");
         try {
             if (signInResult != null && signInResult.isResult()) {
                 userMessageEventGenerator.generateCouponExpiredAlertEvent(signInResult.getUserInfo().getLoginName());

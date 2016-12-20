@@ -31,7 +31,7 @@ public class MobileAppExchangeController extends MobileAppBaseController{
             FieldError fieldError = bindingResult.getFieldError();
             String errorCode = fieldError.getDefaultMessage();
             String errorMessage = ReturnMessage.getErrorMsgByCode(errorCode);
-            return new BaseResponseDto<>(errorCode, errorMessage);
+            return new BaseResponseDto(errorCode, errorMessage);
         }
         requestDto.getBaseParam().setUserId(getLoginName());
         return mobileAppExchangeService.exchange(requestDto);

@@ -28,6 +28,7 @@ public class MobileAppMessageController extends MobileAppBaseController {
     }
 
     @RequestMapping(value = "/get/readAll", method = RequestMethod.POST)
+    @ApiOperation("阅读全部信息")
     public BaseResponseDto readAll(@RequestBody BaseParamDto baseParamDto) {
         return mobileAppUserMessageService.readAll(baseParamDto);
     }
