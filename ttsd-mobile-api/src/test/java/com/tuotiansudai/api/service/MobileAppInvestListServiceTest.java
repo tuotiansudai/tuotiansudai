@@ -301,9 +301,5 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
 
         assertTrue(CollectionUtils.isNotEmpty(baseResponseDto.getData().getAchievements()));
         assertTrue(baseResponseDto.getData().getAchievements().size() == 3);
-        assertTrue(baseResponseDto.getData().getAchievements().get(0).getAchievement().equals(InvestAchievement.FIRST_INVEST.name()));
-        assertTrue(baseResponseDto.getData().getAchievements().get(1).getAchievement().equals(InvestAchievement.MAX_AMOUNT.name()));
-        assertTrue(baseResponseDto.getData().getAchievements().get(2).getAchievement().equals(InvestAchievement.LAST_INVEST.name()));
-
     }
 }
