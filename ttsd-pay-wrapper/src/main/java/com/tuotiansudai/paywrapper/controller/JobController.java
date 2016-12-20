@@ -56,8 +56,8 @@ public class JobController {
 
     @ResponseBody
     @RequestMapping(value = "/async_advance_repay_notify", method = RequestMethod.POST)
-    public BaseDto<PayDataDto> asyncAdvanceRepayNotify() {
-        return this.advanceRepayService.asyncAdvanceRepayPaybackCallback();
+    public BaseDto<PayDataDto> asyncAdvanceRepayNotify(@RequestBody long notifyRequestId) {
+        return this.advanceRepayService.asyncAdvanceRepayPaybackCallback(notifyRequestId);
     }
 
     @ResponseBody

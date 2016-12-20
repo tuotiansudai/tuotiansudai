@@ -33,12 +33,6 @@
         select * from normal_repay_notify_request where status='NOT_DONE' and id = #{id};
     </select>
 
-    <select id="getNormalTodoList" parameterType="map" resultMap="resultMap" resultType="com.tuotiansudai.paywrapper.repository.model.async.callback.NormalRepayNotifyRequestModel">
-        <![CDATA[
-          select * from normal_repay_notify_request where status='NOT_DONE' order by request_time asc limit #{limitCount};
-         ]]>
-    </select>
-
     <update id="updateStatus" keyColumn="id" keyProperty="id" parameterType="map">
         update normal_repay_notify_request set status = #{status} where id = #{id}
     </update>

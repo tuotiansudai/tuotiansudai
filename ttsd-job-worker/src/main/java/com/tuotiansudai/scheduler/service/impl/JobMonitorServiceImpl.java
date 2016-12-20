@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.Environment;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
-import com.tuotiansudai.job.AdvanceRepayCallbackJob;
 import com.tuotiansudai.job.CouponRepayNotifyCallbackJob;
 import com.tuotiansudai.job.ExtraRateInvestCallbackJob;
 import com.tuotiansudai.scheduler.repository.mapper.ExecutionLogMapper;
@@ -45,7 +44,6 @@ public class JobMonitorServiceImpl implements JobMonitorService {
 
     public JobMonitorServiceImpl() {
         ignoredJobClasses = Arrays.asList(
-                AdvanceRepayCallbackJob.class,
                 CouponRepayNotifyCallbackJob.class,
                 ExtraRateInvestCallbackJob.class
         );

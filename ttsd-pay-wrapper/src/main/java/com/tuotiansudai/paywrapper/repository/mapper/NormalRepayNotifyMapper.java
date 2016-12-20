@@ -12,8 +12,6 @@ public interface NormalRepayNotifyMapper extends BaseCallbackMapper {
 
     NormalRepayNotifyRequestModel findById(@Param(value = "id") long id);
 
-    List<NormalRepayNotifyRequestModel> getNormalTodoList(@Param(value = "limitCount") int limitCount);
-
     void updateStatus(@Param(value = "id") Long id, @Param(value = "status") NotifyProcessStatus status);
 
 }
