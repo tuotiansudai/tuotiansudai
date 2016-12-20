@@ -1,15 +1,19 @@
 package com.tuotiansudai.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.base.Strings;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
-import com.tuotiansudai.dto.*;
+import com.tuotiansudai.dto.RegisterUserDto;
 import com.tuotiansudai.exception.ReferrerRelationException;
-import com.tuotiansudai.repository.mapper.*;
+import com.tuotiansudai.mq.client.model.MessageQueue;
+import com.tuotiansudai.repository.mapper.PrepareUserMapper;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.service.*;
-import com.tuotiansudai.util.MobileLocationUtils;
-import com.tuotiansudai.util.MyShaPasswordEncoder;
-import com.tuotiansudai.util.RandomStringGenerator;
+import com.tuotiansudai.service.RegisterUserService;
+import com.tuotiansudai.service.SmsCaptchaService;
+import com.tuotiansudai.service.UserService;
+import com.tuotiansudai.util.*;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -21,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -38,6 +43,9 @@ public class UserServiceImpl implements UserService {
     private SmsWrapperClient smsWrapperClient;
 
     @Autowired
+    private MQWrapperClient mqWrapperClient;
+
+    @Autowired
     private MyShaPasswordEncoder myShaPasswordEncoder;
 
     @Autowired
@@ -45,6 +53,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private RegisterUserService registerUserService;
+
+    @Autowired
+    private IdGenerator idGenerator;
 
     public static String SHA = "SHA";
 
@@ -154,19 +165,42 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public boolean changePassword(String loginName, String originalPassword, String newPassword, String ip, String platform, String deviceId) {
 
+        boolean returnValue = false;
+
         boolean correct = this.verifyPasswordCorrect(loginName, originalPassword);
 
-        if (!correct) {
-            return false;
+        if (correct) {
+            UserModel userModel = userMapper.findByLoginName(loginName);
+            String mobile = userModel.getMobile();
+
+            userModel.setPassword(myShaPasswordEncoder.encodePassword(newPassword, userModel.getSalt()));
+            userMapper.updateUser(userModel);
+            smsWrapperClient.sendPasswordChangedNotify(mobile);
+
+            returnValue = true;
         }
 
-        UserModel userModel = userMapper.findByLoginName(loginName);
-        String mobile = userModel.getMobile();
+        // 发送用户行为日志 MQ
+        sendUserLogMessageMQ(loginName, ip, platform, deviceId, returnValue);
+        return returnValue;
+    }
 
-        userModel.setPassword(myShaPasswordEncoder.encodePassword(newPassword, userModel.getSalt()));
-        userMapper.updateUser(userModel);
-        smsWrapperClient.sendPasswordChangedNotify(mobile);
-        return true;
+    private void sendUserLogMessageMQ(String loginName, String ip, String platform, String deviceId, Boolean returnValue) {
+        UserOpLogModel logModel = new UserOpLogModel();
+        logModel.setId(idGenerator.generate());
+        logModel.setLoginName(loginName);
+        logModel.setIp(ip);
+        logModel.setDeviceId(deviceId);
+        logModel.setSource(platform == null ? null : Source.valueOf(platform.toUpperCase(Locale.ENGLISH)));
+        logModel.setOpType(UserOpType.CHANGE_PASSWORD);
+        logModel.setCreatedTime(new Date());
+        logModel.setDescription(returnValue ? "Success" : "Fail");
+
+        try {
+            mqWrapperClient.sendMessage(MessageQueue.UserOperateLog, JsonConverter.writeValueAsString(logModel));
+        } catch (JsonProcessingException e) {
+            logger.error("[MQ] 修改密码, send UserOperateLog fail.", e);
+        }
     }
 
     @Override
