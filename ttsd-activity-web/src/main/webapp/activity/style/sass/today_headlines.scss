@@ -104,25 +104,21 @@ textarea {
         box-sizing: border-box;
         background: url('/activity/images/today-headlines/lottery-bg.png') no-repeat center;
         background-size: 100%;
-
-        @media (max-width:375px) {
-          padding: 25px;
-        }
-        @media (min-width:376px) and (max-width:700px) {
-          padding: 25px;
+        @media (max-width:700px) {
+          width:300px;
+          padding: 25px 15px;
+          position: relative;
+          left:50%;
+          margin-left:-150px;
         }
         li {
           float: left;
           margin: 2px;
           border-radius: 15px;
           box-sizing: border-box;
-          @media (max-width:375px) {
+          @media (max-width:700px) {
             width: 85px;
             height: 62px;
-          }
-          @media (min-width:376px) and (max-width:700px) {
-            width:85px;
-            height:62px;
           }
           &.lottery-btn {
             cursor: pointer;
