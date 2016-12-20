@@ -19,7 +19,8 @@ public enum MessageQueue {
     InvestSuccess_ActivityReward("InvestSuccess-ActivityReward"),
     MembershipUpgrade_SendJpushMessage("MembershipUpgrade-SendJpushMessage"),
     NormalRepayCallback("NormalRepayCallback"),
-    AdvanceRepayCallback("AdvanceRepayCallback");
+    AdvanceRepayCallback("AdvanceRepayCallback"),
+    UserOperateLog("UserOperateLog");
 
     private final String queueName;
 
