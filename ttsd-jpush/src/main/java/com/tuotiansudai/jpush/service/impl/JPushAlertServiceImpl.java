@@ -72,7 +72,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
         JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertModelById(id);
         if (jPushAlertModel != null) {
             if (jPushAlertModel.isAutomatic()) {
-                logger.debug("JPush is failed, this JPush is not manual, id = " + id);
+                logger.info("JPush is failed, this JPush is not manual, id = " + id);
                 return;
             }
             if (jPushAlertModel.getPushUserType().contains(PushUserType.ALL) && jPushAlertModel.getPushDistricts() == null) {
@@ -81,14 +81,14 @@ public class JPushAlertServiceImpl implements JPushAlertService {
             } else {
                 List<String> loginNames = findManualJPushAlertUserLoginName(jPushAlertModel.getPushUserType(), null);
                 if (CollectionUtils.isEmpty(loginNames)) {
-                    logger.debug("this JPush without data, id = " + id);
+                    logger.info("this JPush without data, id = " + id);
                     return;
                 }
             }
             jPushAlertModel.setStatus(PushStatus.SEND_SUCCESS);
             jPushAlertMapper.update(jPushAlertModel);
         } else {
-            logger.debug("this JPush is disabled, id = " + id);
+            logger.info("this JPush is disabled, id = " + id);
         }
     }
 
@@ -152,7 +152,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
 
     @Override
     public void reject(String loginName, long id, String ip) {
-        logger.debug("JPush audit reject, auditor:" + loginName + ", JPush id:" + id);
+        logger.info("JPush audit reject, auditor:" + loginName + ", JPush id:" + id);
         JPushAlertModel jPushModel = jPushAlertMapper.findJPushAlertModelById(id);
         jPushModel.setStatus(PushStatus.REJECTED);
         jPushModel.setAuditor(loginName);
@@ -161,16 +161,16 @@ public class JPushAlertServiceImpl implements JPushAlertService {
 
     @Override
     public void delete(String loginName, long id) {
-        logger.debug("JPush audit delete, operator:" + loginName + ", JPush id:" + id);
+        logger.info("JPush audit delete, operator:" + loginName + ", JPush id:" + id);
         jPushAlertMapper.delete(id);
     }
 
     @Override
     public void storeJPushId(String loginName, String platform, String jPushId) {
         String value = platform == null ? jPushId : platform.toLowerCase() + "-" + jPushId;
-        logger.debug(MessageFormat.format("jpushId:{0} begin", value));
+        logger.info(MessageFormat.format("jpushId:{0} begin", value));
         redisWrapperClient.hset(JPUSH_ID_KEY, loginName, value);
-        logger.debug(MessageFormat.format("jpushId:{0} end", value));
+        logger.info(MessageFormat.format("jpushId:{0} end", value));
     }
 
     @Override
