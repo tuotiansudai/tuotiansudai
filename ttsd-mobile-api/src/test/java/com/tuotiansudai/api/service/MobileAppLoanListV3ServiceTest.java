@@ -22,6 +22,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 public class MobileAppLoanListV3ServiceTest extends ServiceTestBase {
@@ -143,7 +144,7 @@ public class MobileAppLoanListV3ServiceTest extends ServiceTestBase {
         assertEquals(ReturnMessage.SUCCESS.getCode(), baseResponseDto.getCode());
         assertEquals(ReturnMessage.SUCCESS.getMsg(), baseResponseDto.getMessage());
         loanResponseDataDto = loanListResponseDataDto.getLoanList().get(0);
-        assertEquals(ProductType._30.name(), loanResponseDataDto.getProductNewType());
+        assertNotEquals(ProductType.EXPERIENCE.name(), loanResponseDataDto.getProductNewType());
         assertEquals(LoanStatus.RAISING.name().toLowerCase(), loanResponseDataDto.getLoanStatus());
         //没有可投标 && 投资过其它标
         investModel.setLoanId(loanModel.getId());
@@ -189,13 +190,11 @@ public class MobileAppLoanListV3ServiceTest extends ServiceTestBase {
         LoanModel loanModel = createLoanByUserId(loginName, loanId);
         List<ExtraLoanRateModel> extraLoanRateModels = createExtraLoanRate(loanId);
         extraLoanRateMapper.create(extraLoanRateModels);
-
         loanDetailsMapper.create(createLoanDetails(loanId));
 
         InvestModel model = new InvestModel(idGenerator.generate(), loanModel.getId(), null, 1000000L, loginName, new DateTime().withTimeAtStartOfDay().toDate(), Source.WEB, null, 0.1);
         model.setStatus(InvestStatus.SUCCESS);
         investMapper.create(model);
-
         BaseResponseDto<LoanListResponseDataDto> dto = mobileAppLoanListV3Service.generateIndexLoan(loginName);
 
         List<LoanResponseDataDto> loanList = dto.getData().getLoanList();
