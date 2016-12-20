@@ -116,8 +116,9 @@ public class RepayBaseTest {
                 .build());
     }
 
-    protected NormalRepayNotifyRequestModel getFakeNormalRepayNotifyRequestModel(Long orderId){
+    protected NormalRepayNotifyRequestModel getFakeNormalRepayNotifyRequestModel(Long orderId, long id){
         NormalRepayNotifyRequestModel model = new NormalRepayNotifyRequestModel();
+        model.setId(id);
         model.setSign("sign");
         model.setSignType("RSA");
         model.setMerId("mer_id");

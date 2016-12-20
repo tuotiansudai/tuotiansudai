@@ -8,11 +8,13 @@ import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipType;
 import com.tuotiansudai.paywrapper.repository.mapper.NormalRepayNotifyMapper;
+import com.tuotiansudai.paywrapper.repository.model.NotifyProcessStatus;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.NormalRepayNotifyRequestModel;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
 import org.joda.time.DateTime;
+import org.jsoup.select.Evaluator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -95,8 +97,6 @@ public class NormalRepayInvestPaybackCallbackTest extends RepayBaseTest {
         UserMembershipModel userMembershipModel = getFakeUserMemberShip(investor.getLoginName(), UserMembershipType.UPGRADE, 1);
         userMembershipMapper.create(userMembershipModel);
 
-        MembershipModel membershipModel = membershipMapper.findById(userMembershipModel.getMembershipId());
-
         InvestModel invest = new InvestModel(idGenerator.generate(), loan.getId(), null, 10000, investor.getLoginName(), new Date(), Source.WEB, null, 0.1);
         invest.setStatus(InvestStatus.SUCCESS);
         investMapper.create(invest);
@@ -109,9 +109,9 @@ public class NormalRepayInvestPaybackCallbackTest extends RepayBaseTest {
         InvestRepayModel investRepay2 = new InvestRepayModel(idGenerator.generate(), invest.getId(), 2, invest.getAmount(), loanRepay2ExpectedInterest, 100, loanRepay2.getRepayDate(), RepayStatus.REPAYING);
         investRepayMapper.create(Lists.newArrayList(investRepay1, investRepay2));
 
-        normalRepayNotifyMapper.create(this.getFakeNormalRepayNotifyRequestModel(investRepay1.getId()));
+        normalRepayNotifyMapper.create(this.getFakeNormalRepayNotifyRequestModel(investRepay1.getId(), 1000002L));
 
-        normalRepayService.asyncNormalRepayPaybackCallback(investRepay1.getId());
+        normalRepayService.asyncNormalRepayPaybackCallback(1000002L);
 
         InvestRepayModel actualInvestRepay1 = investRepayMapper.findById(investRepay1.getId());
 
@@ -169,9 +169,9 @@ public class NormalRepayInvestPaybackCallbackTest extends RepayBaseTest {
         investRepay2.setCorpus(invest.getAmount());
         investRepayMapper.create(Lists.newArrayList(investRepay1, investRepay2));
 
-        normalRepayNotifyMapper.create(this.getFakeNormalRepayNotifyRequestModel(investRepay2.getId()));
+        normalRepayNotifyMapper.create(this.getFakeNormalRepayNotifyRequestModel(investRepay2.getId(), 1000003L));
 
-        normalRepayService.asyncNormalRepayPaybackCallback(investRepay2.getId());
+        normalRepayService.asyncNormalRepayPaybackCallback(1000003L);
 
         normalRepayNotifyMapper.findById(investRepay2.getId());
 
@@ -228,9 +228,9 @@ public class NormalRepayInvestPaybackCallbackTest extends RepayBaseTest {
         InvestRepayModel investRepay2 = new InvestRepayModel(idGenerator.generate(), invest.getId(), 2, invest.getAmount(), loanRepay2ExpectedInterest, 100, loanRepay2.getRepayDate(), RepayStatus.REPAYING);
         investRepayMapper.create(Lists.newArrayList(investRepay1, investRepay2));
 
-        normalRepayNotifyMapper.create(this.getFakeNormalRepayNotifyRequestModel(investRepay1.getId()));
+        normalRepayNotifyMapper.create(this.getFakeNormalRepayNotifyRequestModel(investRepay1.getId(), 10004L));
 
-        normalRepayService.asyncNormalRepayPaybackCallback(investRepay1.getId());
+        normalRepayService.asyncNormalRepayPaybackCallback(10004L);
 
         InvestRepayModel actualInvestRepay1 = investRepayMapper.findById(investRepay1.getId());
 
@@ -286,13 +286,9 @@ public class NormalRepayInvestPaybackCallbackTest extends RepayBaseTest {
         investRepay2.setActualRepayDate(loanRepay2.getActualRepayDate());
         investRepayMapper.create(Lists.newArrayList(investRepay1, investRepay2));
 
-        normalRepayNotifyMapper.create(this.getFakeNormalRepayNotifyRequestModel(investRepay2.getId()));
+        normalRepayNotifyMapper.create(this.getFakeNormalRepayNotifyRequestModel(investRepay2.getId(), 10005L));
 
-        NormalRepayNotifyRequestModel normalRepayNotifyRequestModel = normalRepayNotifyMapper.findById(investRepay2.getId());
-
-        normalRepayService.asyncNormalRepayPaybackCallback(investRepay2.getId());
-
-
+        normalRepayService.asyncNormalRepayPaybackCallback(10004L);
 
         InvestRepayModel actualInvestRepay1 = investRepayMapper.findById(investRepay1.getId());
         InvestRepayModel actualInvestRepay2 = investRepayMapper.findById(investRepay2.getId());
