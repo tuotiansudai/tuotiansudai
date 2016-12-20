@@ -448,7 +448,7 @@ public class InvestServiceImpl implements InvestService {
                 }
                 BaseDto<PayDataDto> baseDto = this.invokeNoPassword(loanId, autoInvestAmount, autoInvestPlanModel.getLoginName(), Source.AUTO, null, null);
                 if (!baseDto.isSuccess()) {
-                    logger.debug(MessageFormat.format("auto invest failed auto invest plan id is {0} and invest amount is {1} and loanId id {2}", autoInvestPlanModel.getId(), autoInvestAmount, loanId));
+                    logger.info(MessageFormat.format("auto invest failed auto invest plan id is {0} and invest amount is {1} and loanId id {2}", autoInvestPlanModel.getId(), autoInvestAmount, loanId));
                 }
             } catch (Exception e) {
                 logger.error("an error has occur on auto-invest of loan " + loanId + " :" + e.getLocalizedMessage(), e);
@@ -527,7 +527,7 @@ public class InvestServiceImpl implements InvestService {
     @Override
     public String overInvestPaybackCallback(Map<String, String> paramsMap, String queryString) {
 
-        logger.debug("into over_invest_payback_callback, queryString: " + queryString);
+        logger.info("into over_invest_payback_callback, queryString: " + queryString);
 
         BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(
                 paramsMap,

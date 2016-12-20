@@ -45,7 +45,7 @@ public class PaySyncClient implements ApplicationContextAware {
             requestModel.setSign(reqData.getSign());
             requestModel.setRequestData(reqData.getField().toString());
             requestModel.setRequestUrl(reqData.getUrl());
-            logger.debug(reqData.getField());
+            logger.info(reqData.getField());
             createRequest(baseMapperClass, requestModel);
         } catch (ReqDataException e) {
             logger.error(e.getLocalizedMessage(), e);
@@ -74,7 +74,7 @@ public class PaySyncClient implements ApplicationContextAware {
 
         try {
             Map<String, String> resData = payGateWrapper.getResData(responseBodyString);
-            logger.debug(resData);
+            logger.info(resData);
             return createResponse(baseMapperClass, resData, responseModelClass, requestModel.getId());
         } catch (RetDataException | InstantiationException | IllegalAccessException e) {
             logger.error(e.getLocalizedMessage(), e);

@@ -21,6 +21,6 @@ public abstract class UserBillBusinessDiagnosis {
 
     protected void onPass(UserBillModel userBillModel, DiagnosisContext context, String tracedObjectId) {
         context.addTracedObject(userBillModel.getId(), tracedObjectId);
-        logger.debug("  diagnosis UserBill [{}#{}] fine", userBillModel.getBusinessType(), userBillModel.getId());
+        logger.info("  diagnosis UserBill [{}#{}] fine", userBillModel.getBusinessType(), userBillModel.getId());
     }
 }

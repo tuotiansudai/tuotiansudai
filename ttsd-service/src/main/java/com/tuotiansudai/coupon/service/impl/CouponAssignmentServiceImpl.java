@@ -134,7 +134,7 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
             return false;
         }
 
-        logger.debug(MessageFormat.format("[Exchange Coupon] user({0}) exchange coupon({1}) with code({2})", loginName, String.valueOf(couponId), exchangeCode));
+        logger.info(MessageFormat.format("[Exchange Coupon] user({0}) exchange coupon({1}) with code({2})", loginName, String.valueOf(couponId), exchangeCode));
         return true;
     }
 
@@ -182,7 +182,7 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
             if (userCouponModel == null) {
                 return;
             }
-            logger.debug(MessageFormat.format("[Coupon Assignment] assign user({0}) coupon({1})", loginName, String.valueOf(couponId)));
+            logger.info(MessageFormat.format("[Coupon Assignment] assign user({0}) coupon({1})", loginName, String.valueOf(couponId)));
         }
 
     }
@@ -267,7 +267,7 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
         if (StringUtils.isNotEmpty(exchangeCode)) {
             int exchangeCodeCount = userCouponMapper.findByExchangeCode(exchangeCode);
             if (exchangeCodeCount > 0) {
-                logger.debug(MessageFormat.format("[Exchange Coupon:] Exchange{0} had been exchanged ", exchangeCode));
+                logger.info(MessageFormat.format("[Exchange Coupon:] Exchange{0} had been exchanged ", exchangeCode));
                 return null;
             }
         }
@@ -306,7 +306,7 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
             }
             userCouponModel.setAchievementLoanId(loanId);
             userCouponMapper.update(userCouponModel);
-            logger.debug(MessageFormat.format("[Coupon Assignment] assign user({0}) coupon({1})", loginName, String.valueOf(couponId)));
+            logger.info(MessageFormat.format("[Coupon Assignment] assign user({0}) coupon({1})", loginName, String.valueOf(couponId)));
         }
     }
 

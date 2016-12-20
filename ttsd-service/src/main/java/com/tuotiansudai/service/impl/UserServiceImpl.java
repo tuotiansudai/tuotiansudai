@@ -126,7 +126,7 @@ public class UserServiceImpl implements UserService {
             do {
                 tryTimes += 1;
                 if (tryTimes > 20) {
-                    logger.debug(MessageFormat.format("[Register User {0}] auto generate login name reach max times", dto.getMobile()));
+                    logger.info(MessageFormat.format("[Register User {0}] auto generate login name reach max times", dto.getMobile()));
                     return false;
                 }
                 loginName = RandomStringGenerator.generate(LOGIN_NAME_LENGTH);

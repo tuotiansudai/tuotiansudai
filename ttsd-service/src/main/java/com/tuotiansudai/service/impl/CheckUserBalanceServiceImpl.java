@@ -36,7 +36,7 @@ public class CheckUserBalanceServiceImpl implements CheckUserBalanceService {
     private static final int BATCH_SIZE = 10000;
 
     public void checkUserBalance() {
-        logger.debug("start checkUserBalance.");
+        logger.info("start checkUserBalance.");
 
         long totalCount = accountMapper.count();
 
@@ -49,13 +49,13 @@ public class CheckUserBalanceServiceImpl implements CheckUserBalanceService {
         resultMap.put("startTime", new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
 
         while (startIndex < totalCount) {
-            logger.debug("checkUserBalance, run to index: " + startIndex);
+            logger.info("checkUserBalance, run to index: " + startIndex);
             List<AccountModel> accountModelList = accountMapper.findAccountWithBalance(startIndex, BATCH_SIZE);
 
             for (AccountModel account : accountModelList) {
                 Map<String, String> balanceMap = payWrapperClient.getUserBalance(account.getLoginName());
                 if (balanceMap == null) {
-                    logger.debug("check user balance for user " + account.getLoginName() + " fail. skip it.");
+                    logger.info("check user balance for user " + account.getLoginName() + " fail. skip it.");
                     failUserList.add(account.getLoginName());
                     continue;
                 }
@@ -72,6 +72,6 @@ public class CheckUserBalanceServiceImpl implements CheckUserBalanceService {
 
         sendCloudMailUtil.sendUserBalanceCheckingResult(notifyEmailAddressList, resultMap);
 
-        logger.debug("end checkUserBalance.");
+        logger.info("end checkUserBalance.");
     }
 }
