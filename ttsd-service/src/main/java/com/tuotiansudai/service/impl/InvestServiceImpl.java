@@ -216,7 +216,7 @@ public class InvestServiceImpl implements InvestService {
         String loginName = investDto.getLoginName();
         long investAmount = AmountConverter.convertStringToCent(investDto.getAmount());
 
-        logger.debug(MessageFormat.format("user({0}) invest (loan = {1} amount = {2}) with user coupon({3})",
+        logger.info(MessageFormat.format("user({0}) invest (loan = {1} amount = {2}) with user coupon({3})",
                 investDto.getLoginName(),
                 String.valueOf(loanId),
                 investDto.getAmount(),
@@ -239,7 +239,7 @@ public class InvestServiceImpl implements InvestService {
                 UserCouponModel userCouponModel = userCouponMapper.findById(userCouponId);
                 CouponModel couponModel = couponMapper.findById(userCouponModel.getCouponId());
                 Date usedTime = userCouponModel.getUsedTime();
-                logger.debug(MessageFormat.format("user({0}) invest (loan = {1} amount = {2}) with user coupon(id = {3} usedTime = {4} status = {5})",
+                logger.info(MessageFormat.format("user({0}) invest (loan = {1} amount = {2}) with user coupon(id = {3} usedTime = {4} status = {5})",
                         investDto.getLoginName(),
                         String.valueOf(loanId),
                         investDto.getAmount(),

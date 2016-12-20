@@ -150,7 +150,7 @@ public class ProductServiceImpl implements ProductService {
         String errorMessage = "goods order not exist, product Order id = ({0})";
         ProductOrderModel productOrderModel = productOrderMapper.findById(orderId);
         if (productOrderModel == null) {
-            logger.debug(MessageFormat.format(errorMessage, orderId));
+            logger.info(MessageFormat.format(errorMessage, orderId));
             return new BaseDataDto(false, MessageFormat.format(errorMessage, orderId));
         }
         productOrderModel.setConsignment(true);
@@ -165,7 +165,7 @@ public class ProductServiceImpl implements ProductService {
         String errorMessage = "goodsId is not exist, product Order goodsId = ({0})";
         ProductModel productModel = productMapper.findById(goodsId);
         if (productModel == null) {
-            logger.debug(MessageFormat.format(errorMessage, goodsId));
+            logger.info(MessageFormat.format(errorMessage, goodsId));
             return new BaseDataDto(false, MessageFormat.format(errorMessage, goodsId));
         }
         productOrderMapper.batchConsignment(goodsId);

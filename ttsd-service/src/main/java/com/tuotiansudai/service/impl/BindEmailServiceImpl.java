@@ -86,12 +86,12 @@ public class BindEmailServiceImpl implements BindEmailService {
         String bindEmailKey = bindEmailKeyTemplate.replace("{loginName}", loginName).replace("{uuid}", uuid);
         String bindEmailValue = redisWrapperClient.get(bindEmailKey);
         if (StringUtils.isEmpty(bindEmailValue)) {
-            logger.debug(bindEmailKey + "绑定邮箱失败，绑定邮箱链接已经过期!");
+            logger.info(bindEmailKey + "绑定邮箱失败，绑定邮箱链接已经过期!");
             return null;
         }
         String[] loginNameAndEmail = bindEmailValue.split(":");
         if (!loginName.equals(loginNameAndEmail[0])) {
-            logger.debug(MessageFormat.format("绑定邮箱失败，绑定邮箱链接非法! bindEmailKey={0} bindEmailValue={1}", bindEmailKey, bindEmailValue));
+            logger.info(MessageFormat.format("绑定邮箱失败，绑定邮箱链接非法! bindEmailKey={0} bindEmailValue={1}", bindEmailKey, bindEmailValue));
             return null;
         }
         String email = loginNameAndEmail[1];

@@ -38,7 +38,7 @@ public class AuditTaskAspectActivity {
 
     @AfterReturning(value = "execution(* com.tuotiansudai.activity.service.ActivityService.saveOrUpdate(..))", returning = "returnValue")
     public void afterCreateEditRecheckActivity(JoinPoint joinPoint, Object returnValue) {
-        logger.debug("after create edit recheck activity aspect.");
+        logger.info("after create edit recheck activity aspect.");
         try {
             ActivityDto activityDto = (ActivityDto) joinPoint.getArgs()[0];
             ActivityStatus activityStatus = (ActivityStatus) joinPoint.getArgs()[1];

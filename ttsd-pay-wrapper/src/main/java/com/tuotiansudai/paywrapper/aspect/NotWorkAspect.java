@@ -127,26 +127,26 @@ public class NotWorkAspect {
             @Override
             public NotWorkModel createAction(NotWorkModel notWorkModel) {
                 notWorkModel.setInvestAmount(investAmount);
-                logger.debug("not work ready to send coupon");
+                logger.info("not work ready to send coupon");
                 if (investAmount >= PRIZE_COUPON_INVEST_LIMIT) {
                     couponAssignmentService.assign(loginName, PRIZE_COUPON_ID, null);
                     notWorkModel.setSendCoupon(true);
-                    logger.debug("not work send coupon");
+                    logger.info("not work send coupon");
                 }
-                logger.debug("not work send coupon finish");
+                logger.info("not work send coupon finish");
                 return notWorkModel;
             }
 
             @Override
             public NotWorkModel updateAction(NotWorkModel notWorkModel) {
                 notWorkModel.setInvestAmount(notWorkModel.getInvestAmount() + investAmount);
-                logger.debug("not work ready to send coupon");
+                logger.info("not work ready to send coupon");
                 if (!notWorkModel.isSendCoupon() && notWorkModel.getInvestAmount() >= PRIZE_COUPON_INVEST_LIMIT) {
                     couponAssignmentService.assign(loginName, PRIZE_COUPON_ID, null);
                     notWorkModel.setSendCoupon(true);
-                    logger.debug("not work send coupon");
+                    logger.info("not work send coupon");
                 }
-                logger.debug("not work send coupon finish");
+                logger.info("not work send coupon finish");
                 return notWorkModel;
             }
         });
