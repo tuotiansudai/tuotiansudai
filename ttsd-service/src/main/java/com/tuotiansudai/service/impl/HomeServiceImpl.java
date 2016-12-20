@@ -54,7 +54,7 @@ public class HomeServiceImpl implements HomeService {
 
         List<LoanModel> loanModels = loanMapper.findHomeLoan();
 
-        loanModels.forEach(loanModel -> logger.debug(MessageFormat.format("[home loan] loanId:{0}", loanModel.getId())));
+        loanModels.forEach(loanModel -> logger.info(MessageFormat.format("[home loan] loanId:{0}", loanModel.getId())));
 
         return Lists.transform(loanModels, new Function<LoanModel, HomeLoanDto>() {
             @Override

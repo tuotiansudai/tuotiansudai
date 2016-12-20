@@ -29,7 +29,7 @@ public class UserCouponController {
     @ResponseBody
     public void assignUserCoupon() {
         String loginName = LoginUserInfo.getLoginName();
-        logger.debug(MessageFormat.format("pc assign coupon user:{0},begin time:{1}", loginName, DateTime.now().toString()));
+        logger.info(MessageFormat.format("pc assign coupon user:{0},begin time:{1}", loginName, DateTime.now().toString()));
         couponAssignmentService.asyncAssignUserCoupon(loginName, Lists.newArrayList(
                 UserGroup.ALL_USER,
                 UserGroup.INVESTED_USER,
@@ -47,6 +47,6 @@ public class UserCouponController {
                 UserGroup.MEMBERSHIP_V3,
                 UserGroup.MEMBERSHIP_V4,
                 UserGroup.MEMBERSHIP_V5));
-        logger.debug(MessageFormat.format("pc assign coupon user:{0},end time:{1}", loginName, DateTime.now().toString()));
+        logger.info(MessageFormat.format("pc assign coupon user:{0},end time:{1}", loginName, DateTime.now().toString()));
     }
 }

@@ -43,7 +43,7 @@ public class LoanApplicationService {
         try {
             loanApplicationMapper.create(loanApplicationModel);
         } catch (Exception e) {
-            logger.debug(e);
+            logger.info(e);
         }
         return new BaseDto<>(new BaseDataDto(true));
     }
