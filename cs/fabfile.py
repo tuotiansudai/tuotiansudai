@@ -1,9 +1,12 @@
 from __future__ import with_statement
 from fabric.api import *
+import os
 
+
+config_path = os.getenv('TTSD_CONFIG_PATH', '/workspace/deploy-config')
 
 env.use_ssh_config = True
-env.ssh_config_path = '/workspace/v2config/config'
+env.ssh_config_path = config_path+'/config'
 env.roledefs = {
     'cs': ['web1'],
 }
