@@ -18,6 +18,7 @@ public enum MessageQueue {
     EventMessage("EventMessage"),
     ManualMessage("ManualMessage"),
     PushMessage("PushMessage"),
+    AuditLog("AuditLog"),
     UserOperateLog("UserOperateLog");
 
     private final String queueName;
