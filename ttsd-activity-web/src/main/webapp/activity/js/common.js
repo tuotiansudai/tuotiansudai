@@ -107,10 +107,7 @@ define(['jquery'], function ($) {
             $('.close-btn,.go-close',$popWindow).on('click',function() {
                 $popWindow.remove();
                 $shade.remove();
-                //元旦活动签到刷新
-                if($('body').hasClass('signToday')) {
-                    location.reload();
-                }
+
             })
         },
 

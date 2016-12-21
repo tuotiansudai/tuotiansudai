@@ -126,7 +126,6 @@ require(['jquery','drawCircle','commonFun','logintip','register_common'], functi
                 tipMessage.button='<a href="javascript:void(0)" class="go-on go-close">知道了</a>';
                 tipMessage.info='<p class="success-text">签到成功！</p>' +
                     '<p class="des-text">恭喜您获得砸金蛋机会一次</p>';
-                $('body').addClass('signToday');
                 $signToday.text('已签到');
                 $signToday.removeAttr('id');
                 drawCircle.tipWindowPop(tipMessage);
