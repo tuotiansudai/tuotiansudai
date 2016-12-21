@@ -14,13 +14,16 @@ dependencies {
     providedCompile "javax.servlet:javax.servlet-api:3.1.0"
 }
 
-processResources {
-    from("${configPath}/ttsd-pay-wrapper/SignVerProp.properties") {
-        into 'WEB-INF/classes/'
-    }
-}
-
 war {
     archiveName "ROOT.war"
     destinationDir = file("war")
+
+
+    def configPath = System.getenv('TTSD_CONFIG_PATH')
+    if (configPath == null || configPath == '') {
+        configPath = "/workspace/deploy-config"
+    }
+    from("${configPath}/ttsd-pay-wrapper/SignVerProp.properties") {
+        into 'WEB-INF/classes/'
+    }
 }
