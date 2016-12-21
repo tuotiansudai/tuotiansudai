@@ -271,8 +271,10 @@ public class PayCallbackController {
 
     @RequestMapping(value = "/loan_out_notify", method = RequestMethod.GET)
     public ModelAndView loanOutNotify(HttpServletRequest request) {
+        logger.info("loan_out_notify================================begin");
         Map<String, String> paramsMap = this.parseRequestParameters(request);
-        String responseData = this.investTransferPurchaseService.purchaseCallback(paramsMap, request.getQueryString());
+        String responseData = this.loanService.loanOutCallback(paramsMap, request.getQueryString());
+        logger.info("loan_out_notify================================end");
         return new ModelAndView("/callback_response", "content", responseData);
     }
 

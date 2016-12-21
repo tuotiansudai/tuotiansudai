@@ -342,30 +342,6 @@ public class LoanServiceImpl implements LoanService {
             return resp;
 
         }
-
-        if (SyncRequestStatus.SUCCESS.name().equals(afterSendStatus)) {
-
-            logger.debug("[标的放款]：更新标的状态，标的ID:" + loanId);
-            this.updateLoanStatus(loanId, LoanStatus.REPAYING);
-
-            logger.debug("[标的放款]：处理该标的的所有投资的账务信息，标的ID:" + loanId);
-            this.processInvestForLoanOut(successInvestList,loanId);
-
-            logger.debug("[标的放款]：把借款转给代理人账户，标的ID:" + loanId);
-            this.processLoanAccountForLoanOut(loanId, loan.getAgentLoginName(), investAmountTotal);
-
-
-            LoanOutMessage loanOutMessage = new LoanOutMessage(loanId, loan.getAgentLoginName(), investAmountTotal);
-            try {
-                logger.info(MessageFormat.format("[标的放款]: 放款成功,发送更新标的状态MQ消息,标的ID:{0}",loanId));
-                String message = JsonConverter.writeValueAsString(loanOutMessage);
-                mqWrapperClient.publishMessage(MessageTopic.InvestSuccess, message);
-            } catch (JsonProcessingException e) {
-                // 记录日志，发短信通知管理员
-                fatalLog("[MQ] invest success, but send mq message fail", loanId, loan.getAgentLoginName(), investAmountTotal, e);
-            }
-        }
-
         return resp;
     }
 
@@ -593,26 +569,41 @@ public class LoanServiceImpl implements LoanService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public String loanOutCallback(Map<String, String> paramsMap, String queryString) {
+        logger.info("loanOutCallback================================begin");
         BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(
                 paramsMap,
                 queryString,
                 ProjectTransferNotifyMapper.class,
                 ProjectTransferNotifyRequestModel.class);
-        if (callbackRequest == null) {
+        if (callbackRequest == null || Strings.isNullOrEmpty(callbackRequest.getOrderId())) {
             return null;
         }
-        String orderIdOri = callbackRequest.getOrderId();
-        String orderIdStr = orderIdOri == null ? "" : orderIdOri.split(CANCEL_INVEST_PAY_BACK_ORDER_ID_SEPARATOR)[0];
-        long orderId = Long.parseLong(orderIdStr);
-        InvestModel investModel = investMapper.findById(orderId);
-        if (investModel == null) {
-            logger.error(MessageFormat.format("invest callback notify order is not exist (orderId = {0})", orderId));
-            return null;
+        logger.info("loanOutCallback================================callbackRequest.getOrderId() :" + callbackRequest.getOrderId());
+        long loanId = Long.parseLong(callbackRequest.getOrderId());
+
+        LoanModel loan = loanMapper.findById(loanId);
+        List<InvestModel> successInvestList = investMapper.findSuccessInvestsByLoanId(loanId);
+        long investAmountTotal = computeInvestAmountTotal(successInvestList);
+
+        logger.debug("[标的放款]：更新标的状态，标的ID:" + loanId);
+        this.updateLoanStatus(loanId, LoanStatus.REPAYING);
+
+        logger.debug("[标的放款]：处理该标的的所有投资的账务信息，标的ID:" + loanId);
+        this.processInvestForLoanOut(successInvestList,loanId);
+
+        logger.debug("[标的放款]：把借款转给代理人账户，标的ID:" + loanId);
+        this.processLoanAccountForLoanOut(loanId, loan.getAgentLoginName(), investAmountTotal);
+
+        LoanOutMessage loanOutMessage = new LoanOutMessage(loanId, loan.getAgentLoginName(), investAmountTotal);
+        try {
+            logger.info(MessageFormat.format("[标的放款]: 放款成功,发送更新标的状态MQ消息,标的ID:{0}",loanId));
+            String message = JsonConverter.writeValueAsString(loanOutMessage);
+            mqWrapperClient.publishMessage(MessageTopic.InvestSuccess, message);
+        } catch (JsonProcessingException e) {
+            // 记录日志，发短信通知管理员
+            fatalLog("[MQ] invest success, but send mq message fail", loanId, loan.getAgentLoginName(), investAmountTotal, e);
         }
-        if (callbackRequest.isSuccess()) {
-        } else {
-            //TODO SEND_SMS
-        }
+
         String respData = callbackRequest.getResponseData();
         return respData;
     }
