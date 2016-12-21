@@ -1,9 +1,8 @@
-#coding:utf-8
+# coding:utf-8
 
-import redis
 import uuid
+import time
 
-from concurrent.futures import ThreadPoolExecutor
 from tornado import gen
 from tornado.options import define, options, parse_command_line
 import tornado.ioloop
@@ -15,16 +14,9 @@ define("mysql_host", default="192.168.1.151:3306", help="database host")
 define("mysql_database", default="aa", help="database name")
 define("mysql_user", default="root", help="database user")
 define("mysql_password", default="root", help="database password")
-define("access_key", default="sug5lXn8uUiJFc", help="user private access key")
 
 define("wdzj_username", default="test", help="wdzj api username")
 define("wdzj_password", default="test", help="wdzj api password")
-define("redis_host", default="192.168.33.10", help="redis host")
-define("redis_port", default="6379", help="redis port")
-
-executor = ThreadPoolExecutor(5)
-
-_redis = redis.StrictRedis(host=options.redis_host, port=options.redis_port, db=0)
 
 
 class Error404Handler(tornado.web.ErrorHandler):
@@ -36,13 +28,13 @@ class RefreshTokenHanlder(RequestHandler):
     def get(self):
         username, password = self.get_argument('username', None), self.get_argument('password', None)
         if username and password:
-
             if username != options.wdzj_username or password != options.wdzj_password:
                 raise HTTPError(403)
             else:
-                uuid1 = uuid.uuid1()
-                _redis.set("token", uuid1, 3600)
-                self.write({'data': {'token': str(uuid1)}})
+                uuid1 = str(uuid.uuid1())
+                now_time = str(int(round(time.time() * 1000)))
+                self.set_secure_cookie('secKey', uuid1 + ':' + now_time)
+                self.write({'data': {'token': uuid1}})
         else:
             raise HTTPError(400)
 
@@ -50,9 +42,16 @@ class RefreshTokenHanlder(RequestHandler):
 class BaseHandler(RequestHandler):
     @gen.coroutine
     def prepare(self):
-        token = self.request.query_arguments.get('token', [None])[-1]
-        cached_token = _redis.get("token")
-        if not token or cached_token != token:
+        token = self.get_argument('token', None)
+        sec_vals = str(self.get_secure_cookie('secKey')).split(":")
+        if len(sec_vals) != 2:
+            raise HTTPError(403)
+
+        cached_token_val = sec_vals[0]
+        cached_token_time = int(sec_vals[-1])
+        now_time = int(round(time.time() * 1000))
+
+        if not token or now_time - cached_token_time > 3600 * 1000 or cached_token_val != token:
             raise HTTPError(403)
 
     def write_error(self, status_code, **kwargs):
@@ -72,40 +71,42 @@ class LoanDetailHandler(BaseHandler):
         from loan where DATE_FORMAT(raising_complete_time,'%%Y-%%m-%%d') = %s limit %s, %s;
     '''
 
-    investDetailSQL= '''
+    investDetailSQL = '''
         select UPPER(md5(login_name)) as subscribeUserName, CAST(truncate(amount/100,2) as char(10)) as amount, cast(truncate(amount/100,2) as char(10)) as validAmount,
         CAST(invest_time as CHAR(19)) as addDate, 1 as status, 0 as type from invest where loan_id = %s and status = 'SUCCESS'
     '''
 
     def get(self):
-        currentPage = int(self.request.query_arguments.get('page', [None])[-1])
-        pageSize = int(self.request.query_arguments.get('pageSize', [None])[-1])
-        date = self.request.query_arguments.get('date', [None])[-1]
+        try:
+            current_page = int(self.get_argument('page', None))
+            page_size = int(self.get_argument('pageSize', None))
+            date = self.get_argument('date', None)
+        except ValueError:
+            raise HTTPError(400)
 
-        start = (currentPage - 1) * pageSize
+        start = (current_page - 1) * page_size
 
-        totalCount = int(self.settings['db'].get(self.totalCountSQL, date)["totalCount"])
-        totalAmount = float(self.settings['db'].get(self.totalAmountSQL, date)["totalAmount"]) / 100
-        loanDetailRows = self.settings['db'].query(self.loanDetailSQL, date, start, pageSize)
+        total_count = int(self.settings['db'].get(self.totalCountSQL, date)["totalCount"])
+        total_amount = float(self.settings['db'].get(self.totalAmountSQL, date)["totalAmount"]) / 100
+        loan_detail_rows = self.settings['db'].query(self.loanDetailSQL, date, start, page_size)
 
-        for row in loanDetailRows:
-            loanId = str(row['projectId'])
-            if row['repaymentType'] == 'LOAN_INTEREST_MONTHLY_REPAY' or row[
-                'repaymentType'] == 'INVEST_INTEREST_MONTHLY_REPAY':
+        for row in loan_detail_rows:
+            loan_id = str(row['projectId'])
+            if row['repaymentType'] == 'LOAN_INTEREST_MONTHLY_REPAY' \
+                    or row['repaymentType'] == 'INVEST_INTEREST_MONTHLY_REPAY':
                 row['repaymentType'] = 5
             else:
                 row['repaymentType'] = 1
-            row['loanUrl'] = 'https://tuotiansudai.com/loan/' + loanId
+            row['loanUrl'] = 'https://tuotiansudai.com/loan/' + loan_id
             row['successTime'] = row['successTime'].strftime("%Y-%m-%d %H:%M:%S")
-            invest_rows = self.settings['db'].query(self.investDetailSQL, loanId)
-            row['subscribes'] =  invest_rows
+            row['subscribes'] = self.settings['db'].query(self.investDetailSQL, loan_id)
 
-        totalPage = (totalCount - 1) / pageSize + 1
-        totalPage = totalPage if totalPage > 0 else 1
+        total_page = ((total_count - 1) / page_size + 1) or 1
 
         return self.write(
-            {'totalPage': totalPage, 'currentPage': currentPage, 'totalCount': totalCount, 'totalAmount': totalAmount,
-             'date': date, 'borrowList': loanDetailRows})
+            {'totalPage': total_page, 'currentPage': current_page, 'totalCount': total_count,
+             'totalAmount': total_amount,
+             'date': date, 'borrowList': loan_detail_rows})
 
 
 if __name__ == '__main__':
@@ -116,10 +117,12 @@ if __name__ == '__main__':
         host=options.mysql_host, database=options.mysql_database,
         user=options.mysql_user, password=options.mysql_password)
 
+    secure_key = str(uuid.uuid1())
+
     settings = {'debug': True, 'db': db, 'default_handler_class': Error404Handler,
                 'default_handler_args': dict(status_code=404)}
     app = tornado.web.Application([
         (r'/wdzj/refreshToken', RefreshTokenHanlder),
-        (r'/wdzj/loanDetail', LoanDetailHandler)], **settings)
+        (r'/wdzj/loanDetail', LoanDetailHandler)], cookie_secret=secure_key, **settings)
     app.listen(options.port)
     tornado.ioloop.IOLoop.current().start()
