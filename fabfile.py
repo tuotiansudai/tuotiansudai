@@ -27,7 +27,7 @@ env.roledefs = {
 
 
 def migrate():
-    local('/opt/gradle/latest/bin/gradle clean')
+    local('/opt/gradle/latest/bin/gradle ttsd-config:processResources')
     local('/opt/gradle/latest/bin/gradle -Pdatabase=aa ttsd-config:flywayMigrate')
     local('/opt/gradle/latest/bin/gradle -Pdatabase=ump_operations ttsd-config:flywayMigrate')
     local('/opt/gradle/latest/bin/gradle -Pdatabase=sms_operations ttsd-config:flywayMigrate')
