@@ -14,15 +14,13 @@ dependencies {
     providedCompile "javax.servlet:javax.servlet-api:3.1.0"
 }
 
+processResources {
+    from("${configPath}/ttsd-pay-wrapper/SignVerProp.properties") {
+        into 'WEB-INF/classes/'
+    }
+}
+
 war {
     archiveName "ROOT.war"
     destinationDir = file("war")
-    def outerConfigPath = '/workspace/new_version_config/ttsd-pay-wrapper/'
-
-    if (project.hasProperty("payConfigPath") && new File(payConfigPath).isDirectory()) {
-        outerConfigPath = payConfigPath
-    }
-    from("${outerConfigPath}/SignVerProp.properties") {
-        into 'WEB-INF/classes/'
-    }
 }
