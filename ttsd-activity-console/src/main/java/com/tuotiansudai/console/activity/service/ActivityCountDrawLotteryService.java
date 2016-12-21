@@ -4,7 +4,6 @@ package com.tuotiansudai.console.activity.service;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.activity.repository.model.ActivityCategory;
 import com.tuotiansudai.activity.repository.model.ActivityDrawLotteryTask;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.repository.mapper.*;
@@ -40,9 +39,6 @@ public class ActivityCountDrawLotteryService {
     @Autowired
     private PointBillMapper pointBillMapper;
 
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
-
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.autumn.startTime}\")}")
     private Date activityAutumnStartTime;
 
@@ -63,6 +59,9 @@ public class ActivityCountDrawLotteryService {
 
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.christmas.startTime}\")}")
     private Date activityChristmasStartTime;
+
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.christmas.secondStartTime}\")}")
+    private Date activityChristmasSecondStartTime;
 
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.christmas.endTime}\")}")
     private Date activityChristmasEndTime;
@@ -172,7 +171,7 @@ public class ActivityCountDrawLotteryService {
                     long investAwardTime = sumInvestAmount / EACH_INVEST_AMOUNT_50000;
                     if (investAwardTime <= 10) {
                         time += investAwardTime;
-                    }else{
+                    } else {
                         time += 10;
                     }
                     break;
@@ -198,7 +197,7 @@ public class ActivityCountDrawLotteryService {
             case ANNUAL_ACTIVITY:
                 return Lists.newArrayList(DateTime.parse(annualTime.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate(), DateTime.parse(annualTime.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate());
             case CHRISTMAS_ACTIVITY:
-                return Lists.newArrayList(redisWrapperClient.exists(redisKey) ? DateTime.parse(redisWrapperClient.get(redisKey), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate() : activityChristmasEndTime, activityChristmasEndTime);
+                return Lists.newArrayList(activityChristmasSecondStartTime, activityChristmasEndTime);
         }
         return null;
     }

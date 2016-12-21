@@ -1,6 +1,7 @@
 package com.tuotiansudai.console.activity.service;
 
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.activity.repository.mapper.UserLotteryPrizeMapper;
@@ -8,15 +9,19 @@ import com.tuotiansudai.activity.repository.model.ActivityCategory;
 import com.tuotiansudai.activity.repository.model.LotteryPrize;
 import com.tuotiansudai.activity.repository.model.UserLotteryPrizeView;
 import com.tuotiansudai.activity.repository.model.UserLotteryTimeView;
+import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @Service
 public class ActivityConsoleUserLotteryService {
@@ -26,6 +31,9 @@ public class ActivityConsoleUserLotteryService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private InvestMapper investMapper;
 
     @Autowired
     private ActivityCountDrawLotteryService commonCountTimeService;
@@ -73,6 +81,27 @@ public class ActivityConsoleUserLotteryService {
 
     public List<UserLotteryPrizeView> findUserLotteryPrizeViews(String mobile, LotteryPrize selectPrize, ActivityCategory prizeType, Date startTime, Date endTime, Integer index, Integer pageSize) {
         return userLotteryPrizeMapper.findUserLotteryPrizeViews(mobile, selectPrize, prizeType, startTime, endTime, index, pageSize);
+    }
+
+    public List<UserLotteryPrizeView> findUserLotteryPrizeViewsByHeadlinesToday(String mobile, LotteryPrize selectPrize, ActivityCategory prizeType, Date startTime, Date endTime, Integer index, Integer pageSize, String authenticationType) {
+        List<UserLotteryPrizeView> lotteryPrizeViewList = userLotteryPrizeMapper.findUserLotteryPrizeViews(mobile, selectPrize, prizeType, startTime, endTime, index, pageSize);
+        //0-代表未实名认证用户 1-代表已实名认证用户
+        return lotteryPrizeViewList.stream()
+                .filter((UserLotteryPrizeView userLotteryPrizeView) -> isSpecialAuthType(authenticationType, userLotteryPrizeView))
+                .map(userLotteryPrizeView -> {
+                    userLotteryPrizeView.setInvestFlag(investMapper.sumSuccessInvestCountByLoginName(userLotteryPrizeView.getLoginName()) > 0 ? "是" : "否");
+                    return userLotteryPrizeView;
+                }).collect(Collectors.toList());
+    }
+
+    public boolean isSpecialAuthType(String authenticationType, UserLotteryPrizeView userLotteryPrizeView){
+        switch (authenticationType) {
+            case "0":
+                return Strings.isNullOrEmpty(userLotteryPrizeView.getUserName());
+            case "1":
+                return !Strings.isNullOrEmpty(userLotteryPrizeView.getUserName());
+        }
+        return true;
     }
 
     public int findUserLotteryPrizeCountViews(String mobile, LotteryPrize selectPrize, ActivityCategory prizeType, Date startTime, Date endTime) {

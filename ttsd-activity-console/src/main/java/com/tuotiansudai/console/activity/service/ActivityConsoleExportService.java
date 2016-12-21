@@ -28,6 +28,7 @@ import org.springframework.stereotype.Service;
 import java.text.DecimalFormat;
 import java.text.MessageFormat;
 import java.util.*;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Service
@@ -44,6 +45,9 @@ public class ActivityConsoleExportService {
 
     @Autowired
     private ActivityConsoleNotWorkService activityConsoleNotWorkService;
+
+    @Autowired
+    private ActivityConsoleUserLotteryService activityConsoleUserLotteryService;
 
     @Autowired
     private UserLotteryPrizeMapper userLotteryPrizeMapper;
@@ -154,7 +158,7 @@ public class ActivityConsoleExportService {
         }).collect(Collectors.toList());
     }
 
-    public List<List<String>> buildPrizeList(String mobile,LotteryPrize selectPrize,ActivityCategory prizeType,Date startTime,Date endTime) {
+    public List<List<String>> buildPrizeList(String mobile, LotteryPrize selectPrize, ActivityCategory prizeType, Date startTime, Date endTime) {
         List<UserLotteryPrizeView> userLotteryPrizeViews = userLotteryPrizeMapper.findUserLotteryPrizeViews(mobile, selectPrize, prizeType, startTime, endTime, null, null);
         List<List<String>> rows = Lists.newArrayList();
         userLotteryPrizeViews.forEach(userLotteryPrizeView -> rows.add(Lists.newArrayList(
@@ -163,6 +167,19 @@ public class ActivityConsoleExportService {
                 userLotteryPrizeView.getLoginName(),
                 new DateTime(userLotteryPrizeView.getLotteryTime()).toString("yyyy-MM-dd"),
                 userLotteryPrizeView.getPrize().getDescription())));
+        return rows;
+    }
+
+    public List<List<String>> buildHeadlineTodayList(String mobile, ActivityCategory prizeType, Date startTime, Date endTime, String authenticationType) {
+        List<UserLotteryPrizeView> userLotteryPrizeViews = userLotteryPrizeMapper.findUserLotteryPrizeViews(mobile, null, prizeType, startTime, endTime, null, null);
+        List<List<String>> rows = Lists.newArrayList();
+        userLotteryPrizeViews.stream()
+                .filter(userLotteryPrizeView -> activityConsoleUserLotteryService.isSpecialAuthType(authenticationType, userLotteryPrizeView))
+                .forEach(userLotteryPrizeView -> rows.add(Lists.newArrayList(
+                        userLotteryPrizeView.getMobile(),
+                        new DateTime(userLotteryPrizeView.getLotteryTime()).toString("yyyy-MM-dd HH:mm:ss"),
+                        userLotteryPrizeView.getUserName(),
+                        investMapper.sumSuccessInvestCountByLoginName(userLotteryPrizeView.getLoginName()) > 0 ? "是" : "否")));
         return rows;
     }
 
@@ -177,37 +194,37 @@ public class ActivityConsoleExportService {
 
         for (UserModel userModel : userModels) {
             if (Strings.isNullOrEmpty(userModel.getReferrer())) {
-                allFamily.put(userModel.getLoginName(),Lists.newArrayList(userModel.getLoginName()));
+                allFamily.put(userModel.getLoginName(), Lists.newArrayList(userModel.getLoginName()));
                 continue;
             }
-            if(allFamily.values() == null || allFamily.values().size() == 0){
-                allFamily.put(userModel.getReferrer(),Lists.newArrayList(userModel.getReferrer(),userModel.getLoginName()));
+            if (allFamily.values() == null || allFamily.values().size() == 0) {
+                allFamily.put(userModel.getReferrer(), Lists.newArrayList(userModel.getReferrer(), userModel.getLoginName()));
                 continue;
             }
             boolean isFamily = false;
             for (List<String> family : allFamily.values()) {
-                if(family.contains(userModel.getReferrer())){
+                if (family.contains(userModel.getReferrer())) {
                     isFamily = true;
                     family.add(userModel.getLoginName());
                     break;
                 }
             }
 
-            if(!isFamily){
-                allFamily.put(userModel.getReferrer(),Lists.newArrayList(userModel.getReferrer(),userModel.getLoginName()));
+            if (!isFamily) {
+                allFamily.put(userModel.getReferrer(), Lists.newArrayList(userModel.getReferrer(), userModel.getLoginName()));
             }
 
         }
 
         Map<String, List<String>> allFamilyAndNum = new LinkedHashMap<>();
         int num = 0;
-        for(String key : allFamily.keySet()){
+        for (String key : allFamily.keySet()) {
             List<String> family = allFamily.get(key);
-            if(family.size() == 1){
+            if (family.size() == 1) {
                 continue;
             }
-            num ++;
-            allFamilyAndNum.put(MessageFormat.format("团员{0}号家庭",String.valueOf(num)),allFamily.get(key));
+            num++;
+            allFamilyAndNum.put(MessageFormat.format("团员{0}号家庭", String.valueOf(num)), allFamily.get(key));
         }
 
         return allFamilyAndNum;
