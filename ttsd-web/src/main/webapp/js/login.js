@@ -28,6 +28,10 @@ require(['jquery', 'underscore', 'jquery.ajax.extension', 'jquery.validate', 'jq
                             errorMsg = '用户名不能为空';
                             formCheckValid = false;
                         }
+                        else if(value.length<5){
+                            errorMsg = '用户名输入太短';
+                            formCheckValid = false;
+                        }
                         break;
                     case 'password':
                         if (_.isEmpty(value)) {

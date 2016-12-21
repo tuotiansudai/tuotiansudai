@@ -38,4 +38,6 @@ public interface BusinessIntelligenceService {
     List<KeyValueModel> queryPlatformSumRepay(Date startTime, Date endTime,Granularity granularity);
 
     List<KeyValueModel> queryPlatformOut(Date startTime, Date endTime,Granularity granularity);
+
+    List<KeyValueModel> queryAnxinUserStatusStatistics(Date startTime, Date endTime);
 }
