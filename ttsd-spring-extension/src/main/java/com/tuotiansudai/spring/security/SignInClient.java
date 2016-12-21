@@ -45,7 +45,7 @@ public class SignInClient {
             logger.error("[sign in client] username or password or source is empty");
             return null;
         }
-        if (username.length() < 5 || username.length() > 25) {
+        if (length(username) < 5 || length(username) > 25) {
             logger.error("[sign in client] Input the username too short or too long, please enter again! ");
             SignInResult signInResult = new SignInResult();
             signInResult.setResult(false);
@@ -197,5 +197,21 @@ public class SignInClient {
         } while (++tryTimes < RETRY_MAX_TIMES);
 
         throw new IOException();
+    }
+
+    /* 获取字段值的长度，如果含中文字符，则每个中文字符长度为2，否则为1 */
+    private static int length(String value) {
+        int valueLength = 0;
+        String chinese = "[\u0391-\uFFE5]";
+
+        for (int i = 0; i < value.length(); i++) {
+            String temp = value.substring(i, i + 1);
+            if (temp.matches(chinese)) {
+                valueLength += 2;
+            } else {
+                valueLength += 1;
+            }
+        }
+        return valueLength;
     }
 }
