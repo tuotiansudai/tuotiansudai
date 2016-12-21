@@ -109,9 +109,6 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
     @Value("${common.environment}")
     private Environment environment;
 
-    @Value(value = "${pay.invest.notify.process.batch.size}")
-    private int investProcessListSize;
-
     @Autowired
     private CouponRepayMapper couponRepayMapper;
 

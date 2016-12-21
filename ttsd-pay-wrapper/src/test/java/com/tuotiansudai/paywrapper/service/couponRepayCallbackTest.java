@@ -9,7 +9,6 @@ import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.enums.CouponType;
-import com.tuotiansudai.job.CouponRepayNotifyCallbackJob;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.coupon.service.impl.CouponRepayServiceImpl;
 import com.tuotiansudai.paywrapper.repository.mapper.CouponRepayNotifyRequestMapper;
@@ -124,7 +123,6 @@ public class couponRepayCallbackTest {
         List<CouponRepayModel> couponRepayModelList = Lists.newArrayList(couponRepayModel1, couponRepayModel2, couponRepayModel3);
 
         CouponRepayNotifyRequestModel couponRepayNotifyRequestModel = this.mockCouponRepayNotifyRequestModel(couponRepayModel1.getId(), NotifyProcessStatus.NOT_DONE);
-        List<CouponRepayNotifyRequestModel> couponRepayNotifyRequestModelList = Lists.newArrayList(couponRepayNotifyRequestModel);
 
         when(couponRepayMapper.findById(anyLong())).thenReturn(couponRepayModel1);
         when(investMapper.findById(anyLong())).thenReturn(investModel);
@@ -137,11 +135,11 @@ public class couponRepayCallbackTest {
         when(couponRepayMapper.findByUserCouponByInvestId(anyLong())).thenReturn(couponRepayModelList);
         doNothing().when(userCouponMapper).update(any(UserCouponModel.class));
         doNothing().when(systemBillService).transferOut(anyLong(), anyLong(), any(SystemBillBusinessType.class), anyString());
-        when(couponRepayNotifyRequestMapper.getTodoList(anyInt())).thenReturn(couponRepayNotifyRequestModelList);
 
-        couponRepayService.asyncCouponRepayCallback();
+        when(couponRepayNotifyRequestMapper.findById(anyLong())).thenReturn(couponRepayNotifyRequestModel);
 
-        verify(redisWrapperClient, times(1)).decr(CouponRepayNotifyCallbackJob.COUPON_REPAY_JOB_TRIGGER_KEY);
+        couponRepayService.asyncCouponRepayCallback(couponRepayNotifyRequestModel.getId());
+
         verify(couponRepayNotifyRequestMapper, times(1)).updateStatus(couponRepayNotifyRequestModel.getId(), NotifyProcessStatus.DONE);
         assertEquals(RepayStatus.COMPLETE, couponRepayModel1.getStatus());
         assertEquals(RepayStatus.REPAYING, couponRepayModel2.getStatus());
@@ -169,7 +167,6 @@ public class couponRepayCallbackTest {
         List<CouponRepayModel> couponRepayModelList = Lists.newArrayList(couponRepayModel1, couponRepayModel2, couponRepayModel3);
 
         CouponRepayNotifyRequestModel couponRepayNotifyRequestModel = this.mockCouponRepayNotifyRequestModel(couponRepayModel1.getId(), NotifyProcessStatus.NOT_DONE);
-        List<CouponRepayNotifyRequestModel> couponRepayNotifyRequestModelList = Lists.newArrayList(couponRepayNotifyRequestModel);
 
         when(couponRepayMapper.findById(anyLong())).thenReturn(couponRepayModel1);
         when(investMapper.findById(anyLong())).thenReturn(investModel);
@@ -182,11 +179,10 @@ public class couponRepayCallbackTest {
         doNothing().when(userCouponMapper).update(any(UserCouponModel.class));
         when(couponRepayMapper.findByUserCouponByInvestId(anyLong())).thenReturn(couponRepayModelList);
         doNothing().when(systemBillService).transferOut(anyLong(), anyLong(), any(SystemBillBusinessType.class), anyString());
-        when(couponRepayNotifyRequestMapper.getTodoList(anyInt())).thenReturn(couponRepayNotifyRequestModelList);
+        when(couponRepayNotifyRequestMapper.findById(anyLong())).thenReturn(couponRepayNotifyRequestModel);
 
-        couponRepayService.asyncCouponRepayCallback();
+        couponRepayService.asyncCouponRepayCallback(couponRepayNotifyRequestModel.getId());
 
-        verify(redisWrapperClient, times(1)).decr(CouponRepayNotifyCallbackJob.COUPON_REPAY_JOB_TRIGGER_KEY);
         verify(couponRepayNotifyRequestMapper, times(1)).updateStatus(couponRepayNotifyRequestModel.getId(), NotifyProcessStatus.DONE);
         assertEquals(RepayStatus.COMPLETE, couponRepayModel1.getStatus());
         assertEquals(RepayStatus.COMPLETE, couponRepayModel2.getStatus());
@@ -196,12 +192,9 @@ public class couponRepayCallbackTest {
 
     @Test
     public void shouldNoAnyRecords(){
-
         List<CouponRepayNotifyRequestModel> couponRepayNotifyRequestModelList = Lists.newArrayList();
-
-        when(couponRepayNotifyRequestMapper.getTodoList(anyInt())).thenReturn(couponRepayNotifyRequestModelList);
-        couponRepayService.asyncCouponRepayCallback();
-        verify(redisWrapperClient, times(0)).decr(CouponRepayNotifyCallbackJob.COUPON_REPAY_JOB_TRIGGER_KEY);
+        couponRepayService.asyncCouponRepayCallback(100001L);
+        verify(couponRepayNotifyRequestMapper, times(0)).updateStatus(100001L, NotifyProcessStatus.DONE);
     }
 
     protected LoanRepayModel getFakeLoanRepayModel(long loanRepayId, long loanId, int period, long corpus, long expectedInterest, Date expectedRepayDate, Date actualRepayDate, RepayStatus repayStatus) {

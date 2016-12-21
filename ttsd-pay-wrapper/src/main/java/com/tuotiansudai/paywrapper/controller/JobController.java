@@ -62,8 +62,8 @@ public class JobController {
 
     @ResponseBody
     @RequestMapping(value = "/async_coupon_repay_notify", method = RequestMethod.POST)
-    public BaseDto<PayDataDto> asyncCouponRepayNotify() {
-        return this.couponRepayService.asyncCouponRepayCallback();
+    public BaseDto<PayDataDto> asyncCouponRepayNotify(long notifyRequestId) {
+        return this.couponRepayService.asyncCouponRepayCallback(notifyRequestId);
     }
 
     @ResponseBody
@@ -119,7 +119,7 @@ public class JobController {
 
     @ResponseBody
     @RequestMapping(value = "/async_extra_rate_invest_notify", method = RequestMethod.POST)
-    public BaseDto<PayDataDto> asyncExtraRateInvestNotify() {
-        return this.extraRateService.asyncExtraRateInvestCallback();
+    public BaseDto<PayDataDto> asyncExtraRateInvestNotify(long notifyRequestId) {
+        return this.extraRateService.asyncExtraRateInvestCallback(notifyRequestId);
     }
 }

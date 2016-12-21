@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface CouponRepayNotifyRequestMapper extends BaseCallbackMapper {
 
-    List<CouponRepayNotifyRequestModel> getTodoList(@Param(value = "limitCount") int limitCount);
+    CouponRepayNotifyRequestModel findById(@Param(value = "id") long id);
 
     void updateStatus(@Param(value = "id") Long id, @Param(value = "status") NotifyProcessStatus status);
 }

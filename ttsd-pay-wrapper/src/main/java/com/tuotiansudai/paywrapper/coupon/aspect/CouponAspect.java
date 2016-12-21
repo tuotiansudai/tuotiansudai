@@ -9,7 +9,6 @@ import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.job.SendRedEnvelopeJob;
 import com.tuotiansudai.paywrapper.coupon.service.CouponInvestService;
-import com.tuotiansudai.paywrapper.coupon.service.CouponRepayService;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.LoanModel;
@@ -33,9 +32,6 @@ public class CouponAspect {
     private static Logger logger = Logger.getLogger(CouponAspect.class);
 
     @Autowired
-    private CouponRepayService couponRepayService;
-
-    @Autowired
     private CouponInvestService couponInvestService;
 
     @Autowired
@@ -52,34 +48,6 @@ public class CouponAspect {
 
     @Autowired
     private InvestMapper investMapper;
-
-    @AfterReturning(value = "execution(* *..NormalRepayService.paybackInvest(*))", returning = "returnValue")
-    public void afterReturningNormalRepayPaybackInvest(JoinPoint joinPoint, boolean returnValue) {
-        long loanRepayId = (Long) joinPoint.getArgs()[0];
-        logger.info(MessageFormat.format("[normal repay Coupon Repay {0}] after returning payback invest({1}) aspect is starting...",
-                String.valueOf(loanRepayId), String.valueOf(returnValue)));
-
-        if (returnValue) {
-            couponRepayService.repay(loanRepayId, false);
-        }
-
-        logger.info(MessageFormat.format("[normal repay Coupon Repay {0}] after returning payback invest({1}) aspect is done",
-                String.valueOf(loanRepayId), String.valueOf(returnValue)));
-    }
-
-    @AfterReturning(value = "execution(* *..AdvanceRepayService.paybackInvest(*))", returning = "returnValue")
-    public void afterReturningAdvanceRepayPaybackInvest(JoinPoint joinPoint, boolean returnValue) {
-        long loanRepayId = (Long) joinPoint.getArgs()[0];
-        logger.info(MessageFormat.format("[advance repay Coupon Repay {0}] after returning payback invest({1}) aspect is starting...",
-                String.valueOf(loanRepayId), String.valueOf(returnValue)));
-
-        if (returnValue) {
-            couponRepayService.repay(loanRepayId, true);
-        }
-
-        logger.info(MessageFormat.format("[advance repay  Coupon Repay {0}] after returning payback invest({1}) aspect is done",
-                String.valueOf(loanRepayId), String.valueOf(returnValue)));
-    }
 
     @SuppressWarnings(value = "unchecked")
     @AfterReturning(value = "execution(* com.tuotiansudai.paywrapper.service.LoanService.cancelLoan(*))", returning = "returnValue")
