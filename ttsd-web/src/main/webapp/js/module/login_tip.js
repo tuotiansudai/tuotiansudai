@@ -23,19 +23,15 @@ define(['jquery', 'layerWrapper', 'jquery.ajax.extension', 'jquery.validate', 'j
                     $loginSubmitElement.addClass('loading');
                 },
                 success: function(data) {
-                    console.log("begin====" + data);
                     if (data.status) {
-                        console.log("============1");
                         window.location.reload();
                     } else {
-                        console.log("============2");
                         refreshCaptcha();
                         $loginSubmitElement.removeClass('loading');
                         layer.msg(data.message);
                     }
                 },
                 error: function() {
-                    console.log("============3");
                     $loginSubmitElement.removeClass('loading');
                     refreshCaptcha();
                     layer.msg('用户或密码不正确');
