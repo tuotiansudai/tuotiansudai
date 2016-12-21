@@ -18,6 +18,7 @@ import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.UserBirthdayUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -194,7 +195,7 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
      * @param userGroups        指定的userGroup
      */
     @Override
-    public void asyncAssignUserCoupon(String loginNameOrMobile, final List<UserGroup> userGroups) {
+    public List<CouponModel> asyncAssignUserCoupon(String loginNameOrMobile, final List<UserGroup> userGroups) {
         UserModel userModel = userMapper.findByLoginNameOrMobile(loginNameOrMobile);
         final String loginName = userModel.getLoginName().toLowerCase();
 
@@ -204,7 +205,7 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
         // 该用户已领取的优惠券
         final List<UserCouponModel> userCouponModels = userCouponMapper.findByLoginNameAndCouponId(loginName, null);
 
-        coupons.stream()
+        return coupons.stream()
                 // 该用户可领取的优惠券
                 // 该优惠券在参数指定的userGroup里
                 .filter(couponModel -> userGroups.contains(couponModel.getUserGroup()))
@@ -214,12 +215,20 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
                 // 此处特意将资格检查放在数量检查后面，以提高处理效率
                 .filter(couponModel -> getCollector(couponModel.getUserGroup()).contains(couponModel, userModel))
                 // 生成MQ消息内容
-                .map(couponModel -> loginName + ":" + couponModel.getId())
+                .map(couponModel -> sendCouponAssignMessage(couponModel, loginName))
+                .collect(Collectors.toList());
+                /*.map(couponModel -> loginName + ":" + couponModel.getId())
                 // 发送MQ消息
                 .forEach(message -> mqWrapperClient.sendMessage(MessageQueue.CouponAssigning, message));
+                */
+
         //((CouponAssignmentService) AopContext.currentProxy()).assign(loginName, couponModel.getId(), null);
     }
 
+    private CouponModel sendCouponAssignMessage(CouponModel couponModel, String loginName){
+        mqWrapperClient.sendMessage(MessageQueue.CouponAssigning, loginName + ":" + couponModel.getId());
+        return couponModel;
+    }
 
     /**
      * 检查优惠券是否可以被发送给该用户
