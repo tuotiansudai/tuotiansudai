@@ -12,6 +12,8 @@ public interface UserOpLogMapper {
 
     void create(UserOpLogModel model);
 
+    UserOpLogModel findById(@Param("id") long id);
+
     long count(@Param("mobile") String mobile,
                @Param("opType") UserOpType opType,
                @Param("startTime") Date startTime,
