@@ -136,7 +136,7 @@ public class InvestSuccessActivityRewardMessageConsumer implements MessageConsum
 
                 annualPrizeMapper.update(annualPrizeModel);
             } else {
-                logger.info(MessageFormat.format("[MQ] annual prize is not exits. firstSendCount:{0}, SecondSendCoupon:{1}, investAmount:{2}", annualPrizeModel.isFirstSendCoupon(), annualPrizeModel.isSecondSendCoupon(), annualPrizeModel.getInvestAmount()));
+                logger.info(MessageFormat.format("[MQ] annual prize is not exits. firstSendCount:{0}, SecondSendCoupon:{1}, investAmount:{2}", firstSendCoupon, secondSendCoupon, investInfo.getAmount()));
 
                 if(investInfo.getAmount() >= INVEST_20_RED_ENVELOPE_LIMIT){
                     firstSendCoupon = true;
