@@ -94,7 +94,7 @@ public class MockReferrerRewardServiceTest {
 
         when(agentLevelRateMapper.findAgentLevelRateByLoginNameAndLevel(anyString(),anyInt())).thenReturn(agentLevelRateModel);
 
-        referrerRewardService.rewardReferrer(loanModel, successInvestList);
+        referrerRewardService.rewardReferrer(loanModel.getId());
 
         ArgumentCaptor<InvestReferrerRewardModel> investReferrerRewardModelArgumentCaptor = ArgumentCaptor.forClass(InvestReferrerRewardModel.class);
         verify(investReferrerRewardMapper,times(1)).create(investReferrerRewardModelArgumentCaptor.capture());
@@ -140,7 +140,7 @@ public class MockReferrerRewardServiceTest {
 
         when(agentLevelRateMapper.findAgentLevelRateByLoginNameAndLevel(anyString(),anyInt())).thenReturn(null);
 
-        referrerRewardService.rewardReferrer(loanModel, successInvestList);
+        referrerRewardService.rewardReferrer(loanModel.getId());
 
         ArgumentCaptor<InvestReferrerRewardModel> investReferrerRewardModelArgumentCaptor = ArgumentCaptor.forClass(InvestReferrerRewardModel.class);
         verify(investReferrerRewardMapper,times(1)).create(investReferrerRewardModelArgumentCaptor.capture());

@@ -22,8 +22,9 @@ public enum MessageQueue {
     LoanOutSuccess_RewardReferrer("LoanOutSuccess_RewardReferrer"),
     LoanOutSuccess_SmsMessage("LoanOutSuccess_SmsMessage"),
     LoanOutSuccess_AssignCoupon("LoanOutSuccess_AssignCoupon"),
-    LoanOutSuccess_GenerateAnXinContract("LoanOutSuccess_GenerateAnXinContract");
-
+    LoanOutSuccess_GenerateAnXinContract("LoanOutSuccess_GenerateAnXinContract"),
+    AuditLog("AuditLog"),
+    UserOperateLog("UserOperateLog");
 
     private final String queueName;
 

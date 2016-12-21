@@ -247,7 +247,7 @@ public class LoanServiceTest {
         when(loanMapper.findById(anyLong())).thenReturn(loanModel);
         when(investMapper.findSuccessInvestsByLoanId(anyLong())).thenReturn(Lists.newArrayList(investModel));
         doNothing().when(repayGeneratorService).generateRepay(anyLong());
-        doNothing().when(referrerRewardService).rewardReferrer(any(LoanModel.class), anyList());
+        doNothing().when(referrerRewardService).rewardReferrer(anyLong());
         when(userMapper.findByLoginName(anyString())).thenReturn(userModel);
         when(loanMapper.findById(anyLong())).thenReturn(loanModel);
         when(sendCloudMailUtil.sendMailByLoanOut(anyString(), anyMap())).thenReturn(true);

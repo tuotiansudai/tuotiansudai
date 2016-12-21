@@ -121,7 +121,7 @@ public class ExtraRateServiceImpl implements ExtraRateService {
         InvestModel investModel = investMapper.findById(investExtraRateModel.getInvestId());
         AccountModel accountModel = accountMapper.findByLoginName(investModel.getLoginName());
         if (accountModel == null) {
-            logger.debug(MessageFormat.format("user has no account, investId={0} loginName={1} amount={3}",
+            logger.info(MessageFormat.format("user has no account, investId={0} loginName={1} amount={3}",
                     String.valueOf(investModel.getId()),
                     investModel.getLoginName(),
                     String.valueOf(investModel.getAmount())));

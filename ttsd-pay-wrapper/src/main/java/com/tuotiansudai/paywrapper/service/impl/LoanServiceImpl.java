@@ -200,9 +200,9 @@ public class LoanServiceImpl implements LoanService {
             investDto.setAmount(String.valueOf(investModel.getAmount()));
             try {
                 if (this.cancelPayBack(investDto, investModel.getId()).isSuccess()) {
-                    logger.debug(investModel.getId() + " cancel payBack is success!");
+                    logger.info(investModel.getId() + " cancel payBack is success!");
                 } else {
-                    logger.debug(investModel.getId() + " cancel payBack is fail!");
+                    logger.info(investModel.getId() + " cancel payBack is fail!");
                 }
             } catch (Exception e) {
                 logger.error(e.getLocalizedMessage(), e);
@@ -303,7 +303,7 @@ public class LoanServiceImpl implements LoanService {
 
         // 查找所有投资成功的记录
         List<InvestModel> successInvestList = investMapper.findSuccessInvestsByLoanId(loanId);
-        logger.debug("标的放款：查找到" + successInvestList.size() + "条成功的投资，标的ID:" + loanId);
+        logger.info("标的放款：查找到" + successInvestList.size() + "条成功的投资，标的ID:" + loanId);
 
         // 计算投资总金额
         long investAmountTotal = computeInvestAmountTotal(successInvestList);
@@ -317,7 +317,7 @@ public class LoanServiceImpl implements LoanService {
             throw new PayException(MessageFormat.format("标的(loanId={0})借款金额与投资金额不一致", String.valueOf(loanId)));
         }
 
-        logger.debug("[标的放款]：发起联动优势放款请求，标的ID:" + loanId + "，代理人:" + agentPayUserId + "，放款金额:" + investAmountTotal);
+        logger.info("[标的放款]：发起联动优势放款请求，标的ID:" + loanId + "，代理人:" + agentPayUserId + "，放款金额:" + investAmountTotal);
 
         String redisKey = MessageFormat.format(LOAN_OUT_IDEMPOTENT_CHECK_TEMPLATE, String.valueOf(loanId));
         String beforeSendStatus = redisWrapperClient.hget(redisKey, DO_PAY_REQUEST);
@@ -404,7 +404,6 @@ public class LoanServiceImpl implements LoanService {
 //        } catch (Exception e) {
 //            logger.error(MessageFormat.format("放款生成合同失败 (loanId = {0})", String.valueOf(loanId)), e);
 //        }
-
         return true;
     }
 
@@ -455,7 +454,6 @@ public class LoanServiceImpl implements LoanService {
             redisWrapperClient.hset(redisKey, TRANSFER_IN_BALANCE, SyncRequestStatus.FAILURE.name());
             logger.error("transferInBalance Fail while loan out, loan[" + loanId + "]", e);
         }
-
     }
 
     public boolean processNotifyForLoanOut(long loanId) {
