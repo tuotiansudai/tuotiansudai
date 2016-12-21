@@ -65,17 +65,6 @@ dependencies {
     testCompile("org.springframework.boot:spring-boot-starter-test")
 }
 
-processResources {
-    def innerConfigPath = "${project.projectDir.getPath()}/src/main/resources"
-    def outerConfigPath = "${configPath}/ttsd-activity-console"
-    if (new File(outerConfigPath).isDirectory()) {
-        innerConfigPath = outerConfigPath
-    }
-    from("${innerConfigPath}") {
-        into '/'
-    }
-}
-
 war {
     archiveName "ROOT.war"
     destinationDir = file("war")
