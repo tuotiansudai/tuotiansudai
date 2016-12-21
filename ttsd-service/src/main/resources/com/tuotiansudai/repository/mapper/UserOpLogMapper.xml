@@ -27,9 +27,13 @@
     </resultMap>
 
     <insert id="create" parameterType="UserOpLogModel">
-        insert into user_op_log (login_name, op_type, ip, device_id, source, description, created_time)
-        value(#{loginName}, #{opType}, #{ip}, #{deviceId}, #{source}, #{description}, #{createdTime})
+        insert into user_op_log (id, login_name, op_type, ip, device_id, source, description, created_time)
+        value(#{id}, #{loginName}, #{opType}, #{ip}, #{deviceId}, #{source}, #{description}, #{createdTime})
     </insert>
+
+    <select id="findById" parameterType="Long" resultMap="userOpLogModelResultMap">
+        select * from user_op_log where id = #{id}
+    </select>
 
     <select id="getPaginationData" parameterType="map" resultMap="userOpLogViewResultMap">
         select user.mobile, op_type, ip, device_id, user_op_log.source as source, description, created_time from

@@ -1,4 +1,4 @@
-require(['jquery', 'jquery.validate'], function ($) {
+require(['jquery', 'commonFun','jquery.validate'], function ($,commonFun) {
     var ajaxHelper = function (url, successHandler, options) {
         var isSuccess = false;
         var validator = options.validator;
@@ -152,6 +152,32 @@ require(['jquery', 'jquery.validate'], function ($) {
         },
         "请检查您的输入"
     );
+
+    $.validator.addMethod('identityCheckValid',function(value, element) {
+        var checked=commonFun.IdentityCodeValid(value);
+        console.log(checked);
+        return this.optional(element) || checked ;
+
+    },'');
+
+    $.validator.addMethod('identityCardAge',function(value, element) {
+        var checked=commonFun.IdentityCodeValid(value),
+            getAge=value.substring(6,14),
+            currentDay=new Date(),
+            checkedAge=true;
+        if(checked) {
+            var y=currentDay.getFullYear(),
+                m=currentDay.getMonth()+ 1,
+                d=currentDay.getDate();
+            var today = y+''+(m<10?('0'+m):m)+''+(d<10?('0'+d):d);
+            var myAge=Math.floor((today-getAge)/10000);
+            if(myAge<18) {
+                checkedAge=false;
+            }
+        }
+        return this.optional(element) || checkedAge ;
+
+    },'');
 
     $.validator.addMethod("isExist", function (value, element, urlTemplate) {
         return existFunc.call(this, value, element, urlTemplate);

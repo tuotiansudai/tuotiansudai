@@ -4,6 +4,7 @@ require('./questions');
 require('./create-question');
 require('./global_page');
 comm.initToken();
+comm.redirectHome();
 
 
 

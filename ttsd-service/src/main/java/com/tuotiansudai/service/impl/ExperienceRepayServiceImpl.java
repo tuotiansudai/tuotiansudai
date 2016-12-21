@@ -49,7 +49,7 @@ public class ExperienceRepayServiceImpl implements ExperienceRepayService {
 
     @Override
     public void repay(Date repayDate) {
-        logger.debug(MessageFormat.format("[Experience Repay] starting at {0}", new Date().toString()));
+        logger.info(MessageFormat.format("[Experience Repay] starting at {0}", new Date().toString()));
 
         List<LoanModel> loanModels = loanMapper.findByProductType(LoanStatus.RAISING,Lists.newArrayList(ProductType.EXPERIENCE),ActivityType.NEWBIE);
 
@@ -76,10 +76,10 @@ public class ExperienceRepayServiceImpl implements ExperienceRepayService {
                             investRepayModel.setActualRepayDate(repayDate);
                             investRepayModel.setStatus(RepayStatus.COMPLETE);
                             investRepayMapper.update(investRepayModel);
-                            logger.debug(MessageFormat.format("[Experience Repay] invest({0}) repay is success", String.valueOf(investModel.getId())));
+                            logger.info(MessageFormat.format("[Experience Repay] invest({0}) repay is success", String.valueOf(investModel.getId())));
 
                             couponAssignmentService.asyncAssignUserCoupon(investModel.getLoginName(), Lists.newArrayList(UserGroup.EXPERIENCE_REPAY_SUCCESS));
-                            logger.debug(MessageFormat.format("[Experience Repay] assign invest({0}) user coupon is success", String.valueOf(investModel.getId())));
+                            logger.info(MessageFormat.format("[Experience Repay] assign invest({0}) user coupon is success", String.valueOf(investModel.getId())));
 
                             repaySuccessInvestRepayModels.add(investRepayModel);
                         } catch (Exception e) {
@@ -92,7 +92,7 @@ public class ExperienceRepayServiceImpl implements ExperienceRepayService {
 
         this.sendSms(repaySuccessInvestRepayModels);
 
-        logger.debug(MessageFormat.format("[Experience Repay] done at {0}", new Date().toString()));
+        logger.info(MessageFormat.format("[Experience Repay] done at {0}", new Date().toString()));
     }
 
     private void sendSms(List<InvestRepayModel> successInvestRepayModels) {
