@@ -51,11 +51,11 @@ public class MQRunningStatusCheck {
         }
         if (lastReportTime > 0) {
             long passedSeconds = ((nowMills - lastReportTime) / 1000);
-            if (passedSeconds < 180) {
+            if (passedSeconds < 20) {
                 System.out.println(String.format("%50s : %s 秒前更新了状态", worker, passedSeconds));
                 return false;
             } else {
-                System.out.println(String.format("%50s : %s 分钟前更新了状态，可能出现异常", worker, passedSeconds / 60));
+                System.out.println(String.format("%50s : %s 秒前更新了状态，可能出现异常", worker, passedSeconds));
                 return true;
             }
         } else {
