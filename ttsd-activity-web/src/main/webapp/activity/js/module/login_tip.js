@@ -43,7 +43,8 @@ define(['jquery', 'layerWrapper', 'jquery.ajax.extension', 'jquery.validate', 'j
         debug: true,
         rules: {
             username: {
-                required: true
+                required: true,
+                minlength:5
             },
             password: {
                 required: true
@@ -55,7 +56,8 @@ define(['jquery', 'layerWrapper', 'jquery.ajax.extension', 'jquery.validate', 'j
         },
         messages: {
             username: {
-                required: '用户名不能为空'
+                required: '用户名不能为空',
+                minlength:'用户名输入太短'
             },
             password: {
                 required: '密码不能为空'
