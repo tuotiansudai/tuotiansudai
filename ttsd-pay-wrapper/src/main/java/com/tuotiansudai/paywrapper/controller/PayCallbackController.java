@@ -269,6 +269,13 @@ public class PayCallbackController {
         return new ModelAndView("/callback_response", "content", responseData);
     }
 
+    @RequestMapping(value = "/loan_out_notify", method = RequestMethod.GET)
+    public ModelAndView loanOutNotify(HttpServletRequest request) {
+        Map<String, String> paramsMap = this.parseRequestParameters(request);
+        String responseData = this.investTransferPurchaseService.purchaseCallback(paramsMap, request.getQueryString());
+        return new ModelAndView("/callback_response", "content", responseData);
+    }
+
     private Map<String, String> parseRequestParameters(HttpServletRequest request) {
         Map<String, String> paramsMap = Maps.newHashMap();
         Enumeration<String> parameterNames = request.getParameterNames();

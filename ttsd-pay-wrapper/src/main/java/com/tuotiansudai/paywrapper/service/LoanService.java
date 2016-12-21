@@ -39,4 +39,6 @@ public interface LoanService {
     String cancelPayBackCallback(Map<String, String> paramsMap, String queryString);
 
     boolean processNotifyForLoanOut(long loanId);
+
+    String loanOutCallback(Map<String, String> paramsMap, String queryString);
 }

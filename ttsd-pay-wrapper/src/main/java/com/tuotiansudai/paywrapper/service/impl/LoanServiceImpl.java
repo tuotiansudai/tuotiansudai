@@ -590,6 +590,35 @@ public class LoanServiceImpl implements LoanService {
         return respData;
     }
 
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public String loanOutCallback(Map<String, String> paramsMap, String queryString) {
+        BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(
+                paramsMap,
+                queryString,
+                ProjectTransferNotifyMapper.class,
+                ProjectTransferNotifyRequestModel.class);
+        if (callbackRequest == null) {
+            return null;
+        }
+        String orderIdOri = callbackRequest.getOrderId();
+        String orderIdStr = orderIdOri == null ? "" : orderIdOri.split(CANCEL_INVEST_PAY_BACK_ORDER_ID_SEPARATOR)[0];
+        long orderId = Long.parseLong(orderIdStr);
+        InvestModel investModel = investMapper.findById(orderId);
+        if (investModel == null) {
+            logger.error(MessageFormat.format("invest callback notify order is not exist (orderId = {0})", orderId));
+            return null;
+        }
+        if (callbackRequest.isSuccess()) {
+        } else {
+            //TODO SEND_SMS
+        }
+        String respData = callbackRequest.getResponseData();
+        return respData;
+    }
+
+
+
     private void createAnxinContractJob(long businessId) {
         try {
             Date triggerTime = new DateTime().plusMinutes(AnxinCreateContractJob.HANDLE_DELAY_MINUTES).toDate();
