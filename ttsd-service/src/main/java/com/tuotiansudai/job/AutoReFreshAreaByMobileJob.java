@@ -20,10 +20,10 @@ public class AutoReFreshAreaByMobileJob implements Job {
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
-        logger.debug("AutoReFleshAreaByMobileJob===========in");
+        logger.info("AutoReFleshAreaByMobileJob===========in");
 
         userService.refreshAreaByMobileInJob();
 
-        logger.debug("AutoReFleshAreaByMobileJob===========out");
+        logger.info("AutoReFleshAreaByMobileJob===========out");
     }
 }

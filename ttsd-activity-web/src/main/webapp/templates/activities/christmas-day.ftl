@@ -43,14 +43,14 @@
                         <div class="gift-box">
                             <em class="icon-balloon">3重礼</em>
                             <b class="sub-title-three">瓜分20000元红包</b>
-                            专享标总额420万，活动结束后，所有投资专享标的用户按投资比例瓜分<i>20000元红包</i>。
+                            如活动结束后，圣诞专享标投满420万，所有投资专享标的用户按投资比例瓜分<i>20000元红包</i>。
                         </div>
 
                         <div class="gift-box clearfix last">
                         <span>
                             栗子：沈先生预计投资20万，第一笔投资专享标3万元加息0.5%，第二笔使用0.5%加息券投资专享标17万元，可加息1%。同时可获得红包200000*20000/4200000=952元；<br/>
                             小贴士：<br/>
-                            用户所获红包金额=活动期间投资专享标金额*20000/3000000。加息券每人限领1张，有效期3天；
+                            用户所获红包金额=活动期间投资专享标金额*20000/4200000。加息券每人限领1张，有效期3天。
                         </span>
                         </div>
                         <div class="clearfix"></div>
@@ -89,7 +89,7 @@
                 <div class="title-christmas"><span>活动二：圣诞拆礼物</span></div>
                 <div class="model-content clearfix">
                     <div class="tc color-sec margin-top25">
-                        活动时间：12月24日24:00-13月31日24:00 <br/>
+                        活动时间：12月24日24:00-12月31日24:00 <br/>
                         圣诞礼物还在路上，快去投资专享标，帮圣诞老人铺路吧！
                     </div>
                     <div class="tc margin-top25">
@@ -109,7 +109,7 @@
                 <div class="title-christmas"><span>活动二：圣诞拆礼物</span></div>
                 <div class="model-content clearfix">
                     <div class="color-sec info-activity-note">
-                        <b class="tc ">活动时间：12月24日24:00-13月31日24:00</b>
+                        <b class="tc ">活动时间：12月24日24:00-12月31日24:00</b>
                         蟹蟹各位大大们为圣诞老人铺路，昨晚，他已经偷偷爬过烟囱，把礼物挂在圣诞树上，还等什么，赶快拆礼物吧，Merry Christmas！ <br/>
                         温馨提示：在活动二期限内完成以下操作，才可获得拆礼物机会，每位用户最多可获得10次拆奖机会；
                     </div>

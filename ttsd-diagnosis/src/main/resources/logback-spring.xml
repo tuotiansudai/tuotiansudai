@@ -14,7 +14,13 @@
             <pattern>[${LOG_LEVEL_PATTERN:-%5p}] [%d{yyyy-MM-dd HH:mm:ss.SSS zzz}] %C{0}:%L %method - [%t] %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}</pattern>
         </encoder>
     </appender>
-    <logger name="com.tuotiansudai.diagnosis" level="DEBUG"/>
+
+    <logger name="com.tuotiansudai.repository.mapper" level="DEBUG"/>
+    <logger name="com.tuotiansudai.transfer.repository.mapper" level="DEBUG"/>
+    <logger name="com.tuotiansudai.membership.repository.mapper" level="DEBUG"/>
+    <logger name="com.tuotiansudai.coupon.repository.mapper" level="DEBUG"/>
+    <logger name="com.tuotiansudai.activity.repository.autumn.mapper" level="DEBUG"/>
+
     <root level="INFO">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="FILE"/>

@@ -198,6 +198,18 @@ worker-repay:
     - "sms-wrapper"
     - "redis-server"
 
+auditLog-mq-consumer:
+  image: "anapsix/alpine-java:8_jdk"
+  environment:
+    - "TZ=Asia/Shanghai"
+    - "JAVA_OPTS=-Xmx1024m"
+  volumes:
+    - ./ttsd-auditLog-mq-consumer/build/distributions:/opt/worker
+    - /var/log/tuotian/ttsd-auditLog-mq-consumer:/var/log/job-worker
+  command: bash -c "/opt/worker/ttsd-auditLog-mq-consumer/bin/ttsd-auditLog-mq-consumer"
+  links:
+    - "redis-server"
+
 loan-mq-consumer:
   image: "anapsix/alpine-java:8_jdk"
   environment:
@@ -275,6 +287,19 @@ diagnosis:
   command: bash -c "/opt/worker/ttsd-diagnosis/bin/ttsd-diagnosis"
   links:
     - "redis-server"
+
+worker-monitor:
+  image: "anapsix/alpine-java:8_jdk"
+  environment:
+    - "TZ=Asia/Shanghai"
+    - "JAVA_OPTS=-Xmx256m"
+  volumes:
+    - ./ttsd-worker-monitor/build/libs:/opt/worker
+    - /var/log/tuotian/worker-monitor:/var/log/job-worker
+  command: bash -c "java -Xmx256m -jar /opt/worker/ttsd-worker-monitor.jar"
+  links:
+    - "redis-server"
+    - "sms-wrapper"
 
 static-server:
   image: "nginx"

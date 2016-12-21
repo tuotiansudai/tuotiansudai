@@ -1,8 +1,10 @@
+import os
 from paver.shell import sh
 
 
 class Deployment(object):
 
+    _config_path = os.getenv('TTSD_CONFIG_PATH', '/workspace/deploy-config')
     _gradle='/opt/gradle/latest/bin/gradle'
     _dockerCompose='/usr/local/bin/docker-compose'
     _paver='/usr/bin/paver'
@@ -17,6 +19,7 @@ class Deployment(object):
         self.build_and_unzip_worker()
         self.build_mq_consumer()
         self.build_diagnosis()
+        self.build_worker_monitor()
         self.mk_static_package()
         self.init_docker()
 
@@ -29,7 +32,7 @@ class Deployment(object):
         print "Compiling..."
         sh('{0} clean ttsd-config:flywayAA ttsd-config:flywayUMP ttsd-config:flywayAnxin ttsd-config:flywaySms ttsd-config:flywayWorker ttsd-config:flywayAsk ttsd-config:flywayActivity ttsd-config:flywayPoint initMQ war'.format(
             self._gradle))
-        sh('cp /workspace/new_version_config/signin_service/settings_local.py ./signin_service/')
+        sh('cp {0}/signin_service/settings_local.py ./signin_service/'.format(self._config_path))
 
     def build_and_unzip_worker(self):
         print "Making worker build..."
@@ -51,11 +54,18 @@ class Deployment(object):
         sh('cd ./ttsd-activity-mq-consumer/build/distributions && unzip \*.zip')
         sh('cd ./ttsd-user-mq-consumer && {0} distZip'.format(self._gradle))
         sh('cd ./ttsd-user-mq-consumer/build/distributions && unzip \*.zip')
+        sh('cd ./ttsd-auditLog-mq-consumer && {0} distZip'.format(self._gradle))
+        sh('cd ./ttsd-auditLog-mq-consumer/build/distributions && unzip \*.zip')
+
 
     def build_diagnosis(self):
         print "Making diagnosis build..."
         sh('cd ./ttsd-diagnosis && {0} distZip'.format(self._gradle))
         sh('cd ./ttsd-diagnosis/build/distributions && unzip \*.zip')
+
+    def build_worker_monitor(self):
+        print "Making diagnosis build..."
+        sh('cd ./ttsd-worker-monitor && {0} bootRepackage'.format(self._gradle))
 
     def mkwar(self):
         print "Making war..."

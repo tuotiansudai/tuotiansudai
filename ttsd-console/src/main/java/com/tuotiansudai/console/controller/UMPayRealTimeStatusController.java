@@ -1,6 +1,7 @@
 package com.tuotiansudai.console.controller;
 
 import com.google.common.base.Strings;
+import com.tuotiansudai.console.service.ConsoleUMPayRealTimeStatusService;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.UMPayRealTimeStatusService;
@@ -23,7 +24,10 @@ public class UMPayRealTimeStatusController {
     static Logger logger = Logger.getLogger(UMPayRealTimeStatusController.class);
 
     @Autowired
-    private UMPayRealTimeStatusService payRealTimeStatusService;
+    private ConsoleUMPayRealTimeStatusService consoleUMPayRealTimeStatusService;
+
+    @Autowired
+    private UMPayRealTimeStatusService umPayRealTimeStatusService;
 
     @Autowired
     private UserMapper userMapper;
@@ -41,16 +45,16 @@ public class UMPayRealTimeStatusController {
                 case "user":
                     if (!Strings.isNullOrEmpty(mobile)) {
                         UserModel userModel = userMapper.findByMobile(mobile);
-                        data = payRealTimeStatusService.getUserStatus(userModel.getLoginName());
+                        data = consoleUMPayRealTimeStatusService.getUserStatus(userModel.getLoginName());
                     }
                     break;
                 case "platform":
-                    data = payRealTimeStatusService.getPlatformStatus();
+                    data = umPayRealTimeStatusService.getPlatformStatus();
                     break;
                 case "loan":
                     if (!Strings.isNullOrEmpty(loanId)) {
                         try {
-                            data = payRealTimeStatusService.getLoanStatus(Long.parseLong(loanId));
+                            data = consoleUMPayRealTimeStatusService.getLoanStatus(Long.parseLong(loanId));
                         } catch (NumberFormatException e) {
                             logger.error(e.getLocalizedMessage(), e);
                         }
@@ -58,7 +62,7 @@ public class UMPayRealTimeStatusController {
                     break;
                 case "transfer":
                     if (orderId != null && merDate != null && businessType != null) {
-                        data = payRealTimeStatusService.getTransferStatus(orderId, merDate, businessType);
+                        data = consoleUMPayRealTimeStatusService.getTransferStatus(orderId, merDate, businessType);
                     }
                     break;
             }

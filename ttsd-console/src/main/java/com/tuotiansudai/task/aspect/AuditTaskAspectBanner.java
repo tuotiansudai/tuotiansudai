@@ -2,7 +2,7 @@ package com.tuotiansudai.task.aspect;
 
 import com.tuotiansudai.activity.repository.dto.BannerDto;
 import com.tuotiansudai.activity.repository.model.BannerModel;
-import com.tuotiansudai.service.AuditLogService;
+import com.tuotiansudai.console.service.AuditLogService;
 import com.tuotiansudai.task.OperationType;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
@@ -26,7 +26,7 @@ public class AuditTaskAspectBanner {
 
     @AfterReturning(value = "execution(* com.tuotiansudai.activity.service.BannerService.create(..))")
     public void afterReturningCreateBanner(JoinPoint joinPoint) {
-        logger.debug("after create banner aspect.");
+        logger.info("after create banner aspect.");
         try {
             BannerDto bannerDto = (BannerDto) joinPoint.getArgs()[0];
             String loginName = (String) joinPoint.getArgs()[1];
@@ -41,7 +41,7 @@ public class AuditTaskAspectBanner {
 
     @AfterReturning(value = "execution(* com.tuotiansudai.activity.service.BannerService.updateBanner(..))")
     public void afterReturningUpdateBanner(JoinPoint joinPoint) {
-        logger.debug("after update banner aspect.");
+        logger.info("after update banner aspect.");
         try {
             BannerModel bannerModel = (BannerModel) joinPoint.getArgs()[0];
             String loginName = (String) joinPoint.getArgs()[1];

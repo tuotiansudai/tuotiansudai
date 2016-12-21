@@ -116,7 +116,7 @@ public class CouponRepayServiceImpl implements CouponRepayService {
 
     @Override
     public void repay(long loanRepayId, boolean isAdvanced) {
-        logger.debug(MessageFormat.format("[Coupon Repay {0}] coupon repay is starting...", String.valueOf(loanRepayId)));
+        logger.info(MessageFormat.format("[Coupon Repay {0}] coupon repay is starting...", String.valueOf(loanRepayId)));
         String redisKey = MessageFormat.format(REPAY_REDIS_KEY_TEMPLATE, String.valueOf(loanRepayId));
         LoanRepayModel currentLoanRepayModel = this.loanRepayMapper.findById(loanRepayId);
         LoanModel loanModel = loanMapper.findById(currentLoanRepayModel.getLoanId());
@@ -124,7 +124,7 @@ public class CouponRepayServiceImpl implements CouponRepayService {
         List<UserCouponModel> userCouponModels = userCouponMapper.findByLoanId(loanModel.getId(), COUPON_TYPE_LIST);
 
         for (UserCouponModel userCouponModel : userCouponModels) {
-            logger.debug(MessageFormat.format("[Coupon Repay {0}] user coupon({1}) repay is starting...", String.valueOf(loanRepayId), String.valueOf(userCouponModel.getId())));
+            logger.info(MessageFormat.format("[Coupon Repay {0}] user coupon({1}) repay is starting...", String.valueOf(loanRepayId), String.valueOf(userCouponModel.getId())));
 
             CouponModel couponModel = this.couponMapper.findById(userCouponModel.getCouponId());
             if (couponModel.getCouponType() == CouponType.BIRTHDAY_COUPON && currentLoanRepayModel.getPeriod() > 1) {
@@ -133,7 +133,7 @@ public class CouponRepayServiceImpl implements CouponRepayService {
 
             InvestModel investModel = investMapper.findById(userCouponModel.getInvestId());
             if (investModel == null || investModel.getStatus() != InvestStatus.SUCCESS || investModel.getTransferStatus() == TransferStatus.SUCCESS) {
-                logger.error(MessageFormat.format("[Coupon Repay {0}] invest({1}) is nonexistent or not success or has transferred",
+                logger.warn(MessageFormat.format("[Coupon Repay {0}] invest({1}) is nonexistent or not success or has transferred",
                         String.valueOf(loanRepayId),
                         investModel == null ? "null" : String.valueOf(investModel.getId())));
                 continue;
@@ -231,7 +231,7 @@ public class CouponRepayServiceImpl implements CouponRepayService {
                 for (UserCouponModel userCouponModel : userCouponModels) {
                     CouponRepayModel couponRepayModel = couponRepayMapper.findByUserCouponIdAndPeriod(userCouponModel.getId(), period);
                     if (couponRepayModel != null) {
-                        logger.debug(MessageFormat.format("coupon repay is exist (user coupon id = {0})", userCouponModel.getId()));
+                        logger.info(MessageFormat.format("coupon repay is exist (user coupon id = {0})", userCouponModel.getId()));
                         continue;
                     }
                     CouponModel couponModel = couponMapper.findById(userCouponModel.getCouponId());

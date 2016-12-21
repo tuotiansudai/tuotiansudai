@@ -19,8 +19,8 @@ public class TransferApplicationAutoCancelJob implements Job{
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         long id = (long) context.getJobDetail().getJobDataMap().get("Transfer-apply-id");
-        logger.debug("TransferApplyAutoCancelJob===========in, id = " + id);
+        logger.info("TransferApplyAutoCancelJob===========in, id = " + id);
         investTransferService.cancelTransferApplication(id);
-        logger.debug("TransferApplyAutoCancelJob===========out, id = " + id );
+        logger.info("TransferApplyAutoCancelJob===========out, id = " + id );
     }
 }

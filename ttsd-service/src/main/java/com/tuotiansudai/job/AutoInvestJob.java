@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 import java.text.MessageFormat;
 
 @Component
+@Deprecated
 public class AutoInvestJob implements Job {
 
     static Logger logger = Logger.getLogger(AutoInvestJob.class);

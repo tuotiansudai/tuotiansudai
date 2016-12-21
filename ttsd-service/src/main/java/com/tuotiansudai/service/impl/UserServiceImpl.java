@@ -1,18 +1,19 @@
 package com.tuotiansudai.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.EditUserException;
 import com.tuotiansudai.exception.ReferrerRelationException;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.*;
-import com.tuotiansudai.util.MobileLocationUtils;
-import com.tuotiansudai.util.MyShaPasswordEncoder;
-import com.tuotiansudai.util.RandomStringGenerator;
+import com.tuotiansudai.util.*;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -24,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -32,9 +34,6 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserMapper userMapper;
-
-    @Autowired
-    private UserRoleMapper userRoleMapper;
 
     @Autowired
     private SmsCaptchaService smsCaptchaService;
@@ -46,25 +45,19 @@ public class UserServiceImpl implements UserService {
     private SmsWrapperClient smsWrapperClient;
 
     @Autowired
+    private MQWrapperClient mqWrapperClient;
+
+    @Autowired
     private MyShaPasswordEncoder myShaPasswordEncoder;
-
-    @Autowired
-    private AccountMapper accountMapper;
-
-    @Autowired
-    private ReferrerRelationService referrerRelationService;
-
-    @Autowired
-    private BindBankCardService bindBankCardService;
 
     @Autowired
     private PrepareUserMapper prepareUserMapper;
 
     @Autowired
-    private AutoInvestPlanMapper autoInvestPlanMapper;
+    private RegisterUserService registerUserService;
 
     @Autowired
-    private RegisterUserService registerUserService;
+    private IdGenerator idGenerator;
 
     public static String SHA = "SHA";
 
@@ -141,7 +134,7 @@ public class UserServiceImpl implements UserService {
             do {
                 tryTimes += 1;
                 if (tryTimes > 20) {
-                    logger.debug(MessageFormat.format("[Register User {0}] auto generate login name reach max times", dto.getMobile()));
+                    logger.info(MessageFormat.format("[Register User {0}] auto generate login name reach max times", dto.getMobile()));
                     return false;
                 }
                 loginName = RandomStringGenerator.generate(LOGIN_NAME_LENGTH);
@@ -179,118 +172,48 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public boolean changePassword(String loginName, String originalPassword, String newPassword, String ip, String platform, String deviceId) {
 
+        boolean returnValue = false;
+
         boolean correct = this.verifyPasswordCorrect(loginName, originalPassword);
 
-        if (!correct) {
-            return false;
+        if (correct) {
+            UserModel userModel = userMapper.findByLoginName(loginName);
+            String mobile = userModel.getMobile();
+
+            userModel.setPassword(myShaPasswordEncoder.encodePassword(newPassword, userModel.getSalt()));
+            userMapper.updateUser(userModel);
+            smsWrapperClient.sendPasswordChangedNotify(mobile);
+
+            returnValue = true;
         }
 
-        UserModel userModel = userMapper.findByLoginName(loginName);
-        String mobile = userModel.getMobile();
-
-        userModel.setPassword(myShaPasswordEncoder.encodePassword(newPassword, userModel.getSalt()));
-        userMapper.updateUser(userModel);
-        smsWrapperClient.sendPasswordChangedNotify(mobile);
-        return true;
+        // 发送用户行为日志 MQ
+        sendUserLogMessageMQ(loginName, ip, platform, deviceId, returnValue);
+        return returnValue;
     }
 
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public void editUser(String operatorLoginName, EditUserDto editUserDto, String ip) throws EditUserException, ReferrerRelationException {
-        this.checkUpdateUserData(editUserDto);
+    private void sendUserLogMessageMQ(String loginName, String ip, String platform, String deviceId, Boolean returnValue) {
+        UserOpLogModel logModel = new UserOpLogModel();
+        logModel.setId(idGenerator.generate());
+        logModel.setLoginName(loginName);
+        logModel.setIp(ip);
+        logModel.setDeviceId(deviceId);
+        logModel.setSource(platform == null ? null : Source.valueOf(platform.toUpperCase(Locale.ENGLISH)));
+        logModel.setOpType(UserOpType.CHANGE_PASSWORD);
+        logModel.setCreatedTime(new Date());
+        logModel.setDescription(returnValue ? "Success" : "Fail");
 
-        final String loginName = editUserDto.getLoginName();
-
-        String mobile = editUserDto.getMobile();
-        UserModel userModel = userMapper.findByLoginName(loginName);
-        String beforeUpdateUserMobile = userModel.getMobile();
-
-        // update role
-        userRoleMapper.deleteByLoginName(loginName);
-        if (CollectionUtils.isNotEmpty(editUserDto.getRoles())) {
-            List<UserRoleModel> afterUpdateUserRoleModels = Lists.transform(editUserDto.getRoles(), role -> new UserRoleModel(loginName, role));
-            userRoleMapper.create(afterUpdateUserRoleModels);
+        try {
+            mqWrapperClient.sendMessage(MessageQueue.UserOperateLog, JsonConverter.writeValueAsString(logModel));
+        } catch (JsonProcessingException e) {
+            logger.error("[MQ] 修改密码, send UserOperateLog fail.", e);
         }
-
-        // update referrer
-        this.referrerRelationService.generateRelation(editUserDto.getReferrer(), editUserDto.getLoginName());
-
-        userModel.setStatus(editUserDto.getStatus());
-        userModel.setMobile(mobile);
-        userModel.setEmail(editUserDto.getEmail());
-        userModel.setReferrer(Strings.isNullOrEmpty(editUserDto.getReferrer()) ? null : editUserDto.getReferrer());
-        userModel.setLastModifiedTime(new Date());
-        userModel.setLastModifiedUser(operatorLoginName);
-        userMapper.updateUser(userModel);
-
-        if (!mobile.equals(beforeUpdateUserMobile) && accountMapper.findByLoginName(loginName) != null) {
-            RegisterAccountDto registerAccountDto = new RegisterAccountDto(userModel.getLoginName(),
-                    mobile,
-                    userModel.getUserName(),
-                    userModel.getIdentityNumber());
-            BaseDto<PayDataDto> baseDto = payWrapperClient.register(registerAccountDto);
-            if (!baseDto.getData().getStatus()) {
-                throw new EditUserException(baseDto.getData().getMessage());
-            }
-        }
-    }
-
-    private void checkUpdateUserData(EditUserDto editUserDto) throws EditUserException {
-        String loginName = editUserDto.getLoginName();
-        UserModel editUserModel = userMapper.findByLoginName(loginName);
-
-        if (editUserModel == null) {
-            throw new EditUserException("该用户不存在");
-        }
-
-        String newEmail = editUserDto.getEmail();
-        if (!Strings.isNullOrEmpty(newEmail) && userMapper.findByEmail(newEmail) != null && !editUserModel.getLoginName().equalsIgnoreCase(userMapper.findByEmail(newEmail).getLoginName())) {
-            throw new EditUserException("该邮箱已经存在");
-        }
-
-        String mobile = editUserDto.getMobile();
-        UserModel userModelByMobile = userMapper.findByMobile(mobile);
-        if (!Strings.isNullOrEmpty(mobile) && userModelByMobile != null && !editUserModel.getLoginName().equalsIgnoreCase(userModelByMobile.getLoginName())) {
-            throw new EditUserException("该手机号已经存在");
-        }
-
-        if (editUserDto.getRoles().contains(Role.STAFF) && !Strings.isNullOrEmpty(editUserDto.getReferrer())) {
-            throw new EditUserException("业务员不能设置推荐人");
-        }
-    }
-
-    @Override
-    public EditUserDto getEditUser(String loginName) {
-        UserModel userModel = userMapper.findByLoginName(loginName);
-        List<UserRoleModel> userRoleModels = userRoleMapper.findByLoginName(loginName);
-        List<Role> roles = Lists.newArrayList();
-        for (UserRoleModel userRoleModel : userRoleModels) {
-            roles.add(userRoleModel.getRole());
-        }
-        AutoInvestPlanModel autoInvestPlanModel = autoInvestPlanMapper.findByLoginName(loginName);
-
-        EditUserDto editUserDto = new EditUserDto(userModel, roles, autoInvestPlanModel);
-
-        BankCardModel bankCard = bindBankCardService.getPassedBankCard(loginName);
-        if (bankCard != null) {
-            editUserDto.setBankCardNumber(bankCard.getCardNumber());
-        }
-
-        if (userRoleMapper.findByLoginNameAndRole(userModel.getReferrer(), Role.STAFF) != null) {
-            editUserDto.setReferrerStaff(true);
-        }
-        return editUserDto;
     }
 
     @Override
     public boolean verifyPasswordCorrect(String loginName, String password) {
         UserModel userModel = userMapper.findByLoginName(loginName);
         return userModel.getPassword().equals(myShaPasswordEncoder.encodePassword(password, userModel.getSalt()));
-    }
-
-    @Override
-    public List<String> findAllUserChannels() {
-        return userMapper.findAllUserChannels();
     }
 
     @Transactional
@@ -336,11 +259,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserModel findByMobile(String mobile) {
         return userMapper.findByMobile(mobile);
-    }
-
-    @Override
-    public UserModel findByLoginName(String loginName) {
-        return userMapper.findByLoginName(loginName);
     }
 
     @Override
