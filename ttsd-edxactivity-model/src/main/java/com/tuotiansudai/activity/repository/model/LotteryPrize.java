@@ -60,7 +60,7 @@ public enum LotteryPrize {
     BOLSTER("文字君表情抱枕",PrizeType.CONCRETE,ActivityCategory.ANNUAL_ACTIVITY,1),
     RED_ENVELOPE_5("5.8元红包",PrizeType.VIRTUAL,ActivityCategory.ANNUAL_ACTIVITY,3),
     RED_ENVELOPE_3("3.8元红包",PrizeType.VIRTUAL,ActivityCategory.ANNUAL_ACTIVITY,5),
-    RED_ENVELOPE_18("18.8元红包",PrizeType.VIRTUAL,ActivityCategory.ANNUAL_ACTIVITY,45),
+    RED_ENVELOPE_18("18.8元红包",PrizeType.VIRTUAL,ActivityCategory.ANNUAL_ACTIVITY,43),
     RED_ENVELOPE_8("8.8元红包",PrizeType.VIRTUAL,ActivityCategory.ANNUAL_ACTIVITY,45),
     INTEREST_COUPON_2_NEW_YEARS("0.2加息券",PrizeType.VIRTUAL,ActivityCategory.ANNUAL_ACTIVITY,2),
 
