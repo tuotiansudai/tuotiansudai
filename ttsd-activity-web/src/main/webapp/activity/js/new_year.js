@@ -127,6 +127,8 @@ require(['jquery','drawCircle','commonFun','logintip','register_common'], functi
                 tipMessage.info='<p class="success-text">签到成功！</p>' +
                     '<p class="des-text">恭喜您获得砸金蛋机会一次</p>';
                 $signToday.text('已签到');
+                var thisTime = $rewardGiftBox.find('.my-times').text();
+                $rewardGiftBox.find('.my-times').text(thisTime+1);
                 $signToday.removeAttr('id');
                 drawCircle.tipWindowPop(tipMessage);
             },function() {
