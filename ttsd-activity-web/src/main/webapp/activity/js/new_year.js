@@ -1,4 +1,4 @@
-require(['jquery','drawCircle','logintip','register_common'], function ($,drawCircle) {
+require(['jquery','drawCircle','commonFun','logintip','register_common'], function ($,drawCircle,commonFun) {
     $(function() {
 
         var redirect = globalFun.browserRedirect();
@@ -70,7 +70,7 @@ require(['jquery','drawCircle','logintip','register_common'], function ($,drawCi
                 // drawTime='/activity/christmas/drawTime', //抽奖次数
                 $pointerImg=$('.gold-egg',$rewardGiftBox),
                 myMobileNumber=$MobileNumber.length ? $MobileNumber.data('mobile') : '';  //当前登录用户的手机号
-
+            var $signToday=$('#signToday');
             var myTimes=$rewardGiftBox.find('.my-times').data('times'); //初始抽奖次数
             var tipMessage={
                 info:'',
@@ -89,10 +89,22 @@ require(['jquery','drawCircle','logintip','register_common'], function ($,drawCi
                 }
             });
 
+             $.when(commonFun.isUserLogin())
+                 .done(function(){
+                     $('.signedIn-status .normal-button',$rewardGiftBox).show();
+                 })
+                 .fail(function(){
+                     console.log('未登陆');
+                     $loginInBtn.show();
+                 });
+
             //签到
             drawCircle.prototype.signToday=function(callback,failFun) {
-                var $signToday=$('#signToday');
-                $signToday.on('click',function() {
+
+                $signToday.on('click',function(event) {
+                    if(event.target.id!='signToday') {
+                        return;
+                    }
                     $.ajax({
                         url:'/point/sign-in',
                         type:'POST',
@@ -115,6 +127,8 @@ require(['jquery','drawCircle','logintip','register_common'], function ($,drawCi
                 tipMessage.info='<p class="success-text">签到成功！</p>' +
                     '<p class="des-text">恭喜您获得砸金蛋机会一次</p>';
                 $('body').addClass('signToday');
+                $signToday.text('已签到');
+                $signToday.removeAttr('id');
                 drawCircle.tipWindowPop(tipMessage);
             },function() {
                 tipMessage.button='';

@@ -38,18 +38,15 @@
         </div>
 
         <div class="button-group tc">
-            <@global.isNotAnonymous>
+            <a href="javascript:void(0);" class="normal-button" id = "loginIn" style="display: none">登录</a>
+
+            <span class="signedIn-status">
                 <#if signedIn?? && signedIn>
-                    <a href="javascript:void(0);" class="normal-button">已签到</a>
+                    <a href="javascript:void(0);" class="normal-button" style="display: none">已签到</a>
                 <#else >
-                    <a href="javascript:void(0);" class="normal-button"  id="signToday">签到</a>
+                    <a href="javascript:void(0);" class="normal-button"  id="signToday" style="display: none">签到</a>
                 </#if>
-            </@global.isNotAnonymous>
-
-            <@global.isAnonymous>
-                <a href="javascript:void(0);" class="normal-button" id = "loginIn">登录</a>
-            </@global.isAnonymous>
-
+            </span>
 
             <a href="/referrer/refer-list" class="normal-button">邀请好友</a>
             <a href="/loan-list" class="normal-button">马上投资</a>
