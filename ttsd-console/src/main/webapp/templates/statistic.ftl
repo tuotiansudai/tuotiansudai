@@ -361,8 +361,8 @@
                             <option value="Weekly">周</option>
                             <option value="Monthly" selected>月</option>
                         </select>
-                        开始时间： <input type="text" class="form-control start-date" id="repayStartTime" name="startTime">
-                        结束时间：<input type="text" class="form-control end-date" name="endTime" id="repayEndTime">
+                        开始时间： <input type="text" class="form-control start-date" id="expenseStartTime" name="startTime">
+                        结束时间：<input type="text" class="form-control end-date" name="endTime" id="expenseEndTime">
                         <button class="btn btn-primary" type="button">查询</button>
                     </form>
 
@@ -399,6 +399,27 @@
             </div>
         </div>
     </div>
+
+    <div class="row">
+        <div class="col-lg-12 col-sm-12">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h3 class="panel-title">安心签用户状态统计</h3>
+                </div>
+                <div class="panel-body" id="">
+                    <form class="form-inline" id="anxinUserStatus">
+                        开始时间： <input type="text" class="form-control anxin-start-date" id="startTime" name="startTime">
+                        结束时间：<input type="text" class="form-control  anxin-end-date" name="endTime" id="endTime">
+                        <button class="btn btn-primary" type="button">查询</button>
+                    </form>
+                    <div id="anxinUserStatusStatistics" style="width:100%; height:400px;">
+                        <span class="loading-report">加载中...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 </@global.main>
