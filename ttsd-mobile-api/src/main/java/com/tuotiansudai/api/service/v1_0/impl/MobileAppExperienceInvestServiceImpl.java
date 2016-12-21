@@ -69,6 +69,7 @@ public class MobileAppExperienceInvestServiceImpl implements MobileAppExperience
                 investExperienceResponseDataDto.setRate(decimalFormat.format(couponModel.getRate() * 100));
                 investExperienceResponseDataDto.setStartDate(new DateTime().withTimeAtStartOfDay().toString("yyyy-MM-dd"));
                 investExperienceResponseDataDto.setType(couponModel.getCouponType().name());
+                investExperienceResponseDataDto.setCouponSource(couponModel.getCouponSource());
                 investExperienceResponseDataDtos.add(investExperienceResponseDataDto);
             }
         }
