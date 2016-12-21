@@ -94,11 +94,6 @@ require(['jquery', 'Validform', 'bootstrap', 'bootstrapDatetimepicker', 'jquery-
         }
     }).trigger('change');
 
-    $('.jump-link-text').on('focusout',function(e){
-        e.preventDefault();
-        $('.linkUrl').find('option:contains("其他")').val($(this).val()).trigger('click');
-    });
-
     //表单校验初始化参数
     $promotionForm.Validform({
         btnSubmit: '.promotion-confirm',

@@ -58,6 +58,7 @@ def mk_worker_zip():
     local('cd ./ttsd-point-mq-consumer && /opt/gradle/latest/bin/gradle distZip -PconfigPath=/workspace/v2config/default/ttsd-config/')
     local('cd ./ttsd-activity-mq-consumer && /opt/gradle/latest/bin/gradle distZip -PconfigPath=/workspace/v2config/default/ttsd-config/')
     local('cd ./ttsd-user-mq-consumer && /opt/gradle/latest/bin/gradle distZip -PconfigPath=/workspace/v2config/default/ttsd-config/')
+    local('cd ./ttsd-auditLog-mq-consumer && /opt/gradle/latest/bin/gradle distZip -PconfigPath=/workspace/v2config/default/ttsd-config/')
     local('cd ./ttsd-diagnosis && /opt/gradle/latest/bin/gradle distZip -PconfigPath=/workspace/v2config/default/ttsd-config/ -PdiagnosisConfigPath=/workspace/v2config/default/ttsd-diagnosis/')
     local('cd ./ttsd-worker-monitor && /opt/gradle/latest/bin/gradle bootRepackage -PconfigPath=/workspace/v2config/default/ttsd-config/')
 
@@ -147,9 +148,12 @@ def deploy_worker():
     put(local_path='./ttsd-point-mq-consumer/build/distributions/*.zip', remote_path='/workspace/')
     put(local_path='./ttsd-activity-mq-consumer/build/distributions/*.zip', remote_path='/workspace/')
     put(local_path='./ttsd-user-mq-consumer/build/distributions/*.zip', remote_path='/workspace/')
+    put(local_path='./ttsd-auditLog-mq-consumer/build/distributions/*.zip', remote_path='/workspace/')
     put(local_path='./ttsd-diagnosis/build/distributions/*.zip', remote_path='/workspace/')
     put(local_path='./scripts/supervisor/job-worker.ini', remote_path='/etc/supervisord.d/')
+    put(local_path='./scripts/logstash/worker.conf', remote_path='/etc/logstash/conf.d/prod.conf')
     sudo('supervisorctl stop all')
+    restart_logstash_process()
     with cd('/workspace'):
         sudo('rm -rf ttsd-job-worker-all/')
         sudo('rm -rf ttsd-job-worker-jpush/')
@@ -159,6 +163,7 @@ def deploy_worker():
         sudo('rm -rf ttsd-point-mq-consumer/')
         sudo('rm -rf ttsd-activity-mq-consumer/')
         sudo('rm -rf ttsd-user-mq-consumer/')
+        sudo('rm -rf ttsd-auditLog-mq-consumer/')
         sudo('rm -rf ttsd-diagnosis/')
         sudo('unzip \*.zip')
         sudo('supervisorctl reload')

@@ -65,7 +65,7 @@ public class JPushAlertNewService {
             jPushAlertModel.setStatus(PushStatus.SEND_SUCCESS);
             jPushAlertMapper.update(jPushAlertModel);
         } else {
-            logger.debug("Auto JPush is disabled.");
+            logger.info("Auto JPush is disabled.");
         }
     }
 
@@ -95,9 +95,9 @@ public class JPushAlertNewService {
             if (registrationIds.size() == 1000 || (i == loginNames.size() - 1 && registrationIds.size() > 0)) {
                 boolean sendResult = mobileAppJPushClient.sendPushAlertByRegistrationIds(registrationIds, jPushAlertModel.getContent(), extras, jPushAlertModel.getPushSource());
                 if (sendResult) {
-                    logger.debug(MessageFormat.format("第{0}个用户推送成功", i + 1));
+                    logger.info(MessageFormat.format("第{0}个用户推送成功", i + 1));
                 } else {
-                    logger.debug(MessageFormat.format("第{0}个用户推送失败", i + 1));
+                    logger.info(MessageFormat.format("第{0}个用户推送失败", i + 1));
                 }
                 registrationIds.clear();
             }

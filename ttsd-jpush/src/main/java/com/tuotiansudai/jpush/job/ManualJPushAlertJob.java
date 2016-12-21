@@ -21,9 +21,9 @@ public class ManualJPushAlertJob implements Job{
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         long id = (long) context.getJobDetail().getJobDataMap().get(JPUSH_ID);
-        logger.debug("ManualJPushAlertJob===========in, id = " + id);
+        logger.info("ManualJPushAlertJob===========in, id = " + id);
         jPushAlertService.manualJPushAlert(id);
-        logger.debug("ManualJPushAlertJob===========out, id = " + id );
+        logger.info("ManualJPushAlertJob===========out, id = " + id );
     }
 
 }

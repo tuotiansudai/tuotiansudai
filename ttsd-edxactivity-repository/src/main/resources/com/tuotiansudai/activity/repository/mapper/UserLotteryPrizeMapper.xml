@@ -89,6 +89,18 @@
         </where>
     </select>
 
+    <select id="findUserLotteryPrizeCountByMobile" parameterType="map" resultType="int">
+        select count(1) from `edxactivity`.`user_lottery_prize` p
+        <where>
+            <if test="mobile !=null and mobile !='' ">
+                and p.mobile = #{mobile}
+            </if>
+            <if test="activityCategory != null">
+                and activity_category = #{activityCategory}
+            </if>
+        </where>
+    </select>
+
     <select id="findLotteryPrizeByMobileAndPrize" parameterType="map" resultMap="userLotteryPrizeView">
         select lottery_time,mobile,prize from `edxactivity`.`user_lottery_prize`
         <where>
