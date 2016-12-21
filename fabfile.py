@@ -39,7 +39,6 @@ def migrate():
 
 def mk_war():
     local('/usr/local/bin/paver jcversion')
-    local('/opt/gradle/latest/bin/gradle initMQ')
     local('/opt/gradle/latest/bin/gradle ttsd-web:war')
     local('/opt/gradle/latest/bin/gradle ttsd-activity-web:war')
     local('/opt/gradle/latest/bin/gradle ttsd-pay-wrapper:war')
@@ -49,6 +48,7 @@ def mk_war():
     local('/opt/gradle/latest/bin/gradle ttsd-sms-wrapper:war')
     local('/opt/gradle/latest/bin/gradle ttsd-point-web:war')
     local('/opt/gradle/latest/bin/gradle ttsd-ask-web:war')
+    local('/opt/gradle/latest/bin/gradle initMQ')
 
 def mk_worker_zip():
     local('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle distZip')
@@ -59,6 +59,7 @@ def mk_worker_zip():
     local('cd ./ttsd-point-mq-consumer && /opt/gradle/latest/bin/gradle distZip')
     local('cd ./ttsd-activity-mq-consumer && /opt/gradle/latest/bin/gradle distZip')
     local('cd ./ttsd-user-mq-consumer && /opt/gradle/latest/bin/gradle distZip')
+    local('cd ./ttsd-auditLog-mq-consumer && /opt/gradle/latest/bin/gradle distZip')
     local('cd ./ttsd-diagnosis && /opt/gradle/latest/bin/gradle distZip')
     local('cd ./ttsd-worker-monitor && /opt/gradle/latest/bin/gradle bootRepackage')
 
@@ -148,6 +149,7 @@ def deploy_worker():
     put(local_path='./ttsd-point-mq-consumer/build/distributions/*.zip', remote_path='/workspace/')
     put(local_path='./ttsd-activity-mq-consumer/build/distributions/*.zip', remote_path='/workspace/')
     put(local_path='./ttsd-user-mq-consumer/build/distributions/*.zip', remote_path='/workspace/')
+    put(local_path='./ttsd-auditLog-mq-consumer/build/distributions/*.zip', remote_path='/workspace/')
     put(local_path='./ttsd-diagnosis/build/distributions/*.zip', remote_path='/workspace/')
     put(local_path='./scripts/supervisor/job-worker.ini', remote_path='/etc/supervisord.d/')
     put(local_path='./scripts/logstash/worker.conf', remote_path='/etc/logstash/conf.d/prod.conf')
@@ -162,6 +164,7 @@ def deploy_worker():
         sudo('rm -rf ttsd-point-mq-consumer/')
         sudo('rm -rf ttsd-activity-mq-consumer/')
         sudo('rm -rf ttsd-user-mq-consumer/')
+        sudo('rm -rf ttsd-auditLog-mq-consumer/')
         sudo('rm -rf ttsd-diagnosis/')
         sudo('unzip \*.zip')
         sudo('supervisorctl reload')

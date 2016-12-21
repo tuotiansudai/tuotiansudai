@@ -1,10 +1,13 @@
 package com.tuotiansudai.console.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.AuditLogPaginationItemDataDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.AuditLogMapper;
 import com.tuotiansudai.repository.model.AuditLogModel;
 import com.tuotiansudai.repository.model.AuditLogView;
@@ -12,7 +15,9 @@ import com.tuotiansudai.repository.model.UserStatus;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.task.OperationType;
 import com.tuotiansudai.util.IdGenerator;
+import com.tuotiansudai.util.JsonConverter;
 import com.tuotiansudai.util.PaginationUtil;
+import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +29,8 @@ import java.util.List;
 @Service
 public class AuditLogService {
 
+    private static Logger logger = Logger.getLogger(AuditLogService.class);
+
     @Autowired
     private AuditLogMapper auditLogMapper;
 
@@ -32,6 +39,9 @@ public class AuditLogService {
 
     @Autowired
     private RedisWrapperClient redisWrapperClient;
+
+    @Autowired
+    private MQWrapperClient mqWrapperClient;
 
     @Autowired
     private UserService userService;
@@ -49,7 +59,7 @@ public class AuditLogService {
         log.setOperationType(OperationType.USER);
         log.setIp(userIp);
         log.setDescription(description);
-        auditLogMapper.create(log);
+        sendAuditLogMessage(log);
     }
 
     public void createAuditLog(String auditorLoginName, String operatorLoginName, OperationType operationType, String targetId, String description, String auditorIp) {
@@ -61,7 +71,16 @@ public class AuditLogService {
         log.setOperationType(operationType);
         log.setIp(auditorIp);
         log.setDescription(description);
-        auditLogMapper.create(log);
+        sendAuditLogMessage(log);
+    }
+
+    private void sendAuditLogMessage(AuditLogModel log) {
+        try {
+            String message = JsonConverter.writeValueAsString(log);
+            mqWrapperClient.sendMessage(MessageQueue.AuditLog, message);
+        } catch (JsonProcessingException e) {
+            logger.error("[MQ] send audit log message fail.", e);
+        }
     }
 
     public BasePaginationDataDto<AuditLogPaginationItemDataDto> getAuditLogPaginationData(OperationType operationType, String targetId, String operatorMobile, String auditorMobile, Date startTime, Date endTime, int index, int pageSize) {
