@@ -1,7 +1,7 @@
 # coding:utf-8
 
 import uuid
-import time
+import redis
 
 from tornado import gen
 from tornado.options import define, options, parse_command_line
@@ -28,7 +28,7 @@ class Error404Handler(tornado.web.ErrorHandler):
         self.write({'error': "Url not found"})
 
 
-class RefreshTokenHanlder(RequestHandler):
+class RefreshTokenHandler(RequestHandler):
     def get(self):
         username, password = self.get_argument('username', None), self.get_argument('password', None)
         if username and password:
@@ -62,13 +62,13 @@ class LoanDetailHandler(BaseHandler):
     totalAmountSQL = "select IFNULL(sum(loan_amount),0) totalAmount from loan where DATE_FORMAT(raising_complete_time, '%%Y-%%m-%%d') = %s"
 
     loanDetailSQL = '''
-        select id as projectId, `name` as title, loan_amount as amount, 100 as schedule, CONCAT((base_rate + activity_rate)*100,'%%') as interestRate, periods as deadline,
-        '月' as deadlineUnit, 0 as reward, '抵押标' as type, type as repaymentType, agent_login_name as userName, raising_complete_time as successTime
+        select id as projectId, `name` as title, loan_amount as amount, 100 as schedule, CONCAT((base_rate + activity_rate)*100,'%%') as interestRate, duration as deadline,
+        '天' as deadlineUnit, 0 as reward, '抵押标' as type, type as repaymentType, agent_login_name as userName, raising_complete_time as successTime
         from loan where DATE_FORMAT(raising_complete_time,'%%Y-%%m-%%d') = %s limit %s, %s;
     '''
 
     investDetailSQL = '''
-        select UPPER(md5(login_name)) as subscribeUserName, CAST(truncate(amount/100,2) as char(10)) as amount, cast(truncate(amount/100,2) as char(10)) as validAmount,
+        select UPPER(md5(login_name)) as subscribeUserName, CAST(truncate(amount/100,2) as char(10)) as amount, cast(truncate(amount/100,2  ) as char(10)) as validAmount,
         CAST(invest_time as CHAR(19)) as addDate, 1 as status, 0 as type from invest where loan_id = %s and status = 'SUCCESS'
     '''
 
@@ -77,7 +77,7 @@ class LoanDetailHandler(BaseHandler):
             current_page = int(self.get_argument('page', None))
             page_size = int(self.get_argument('pageSize', None))
             date = self.get_argument('date', None)
-        except ValueError:
+        except (ValueError, TypeError):
             raise HTTPError(400)
 
         start = (current_page - 1) * page_size
@@ -104,6 +104,35 @@ class LoanDetailHandler(BaseHandler):
              'totalAmount': total_amount, 'date': date, 'borrowList': loan_detail_rows})
 
 
+class AdvanceRepayHandler(BaseHandler):
+    advanceRepayCountSQL = "select count(distinct(loan_id)) as totalCount from loan_repay where date(actual_repay_date) < date(repay_date) and date(actual_repay_date) = %s;"
+
+    advanceRepaySQL = '''
+        select l.id as projectId, DATEDIFF(r.actual_repay_date, l.raising_complete_time) AS deadline, '天' as deadlineUnit
+        from loan l
+        join (select distinct loan_id, actual_repay_date from loan_repay where date(actual_repay_date) < date(repay_date) and date(actual_repay_date) = %s) r
+        on l.id = r.loan_id
+        order by l.raising_complete_time asc limit %s, %s;
+    '''
+
+    def get(self):
+        try:
+            current_page = int(self.get_argument('page', None))
+            page_size = int(self.get_argument('pageSize', None))
+            date = self.get_argument('date', None)
+        except (ValueError, TypeError):
+            raise HTTPError(400)
+
+        start = (current_page - 1) * page_size
+
+        total_count = int(self.settings['db'].get(self.advanceRepayCountSQL, date)["totalCount"])
+        advance_repay_rows = self.settings['db'].query(self.advanceRepaySQL, date, start, page_size)
+
+        total_page = ((total_count - 1) / page_size + 1) or 1
+
+        return self.write({'totalPage': total_page, 'currentPage': current_page, 'preapys': advance_repay_rows})
+
+
 if __name__ == '__main__':
     parse_command_line()
 
@@ -116,7 +145,8 @@ if __name__ == '__main__':
                 'default_handler_args': dict(status_code=404)}
 
     app = tornado.web.Application([
-        (r'/wdzj/refreshToken', RefreshTokenHanlder),
+        (r'/wdzj/refreshToken', RefreshTokenHandler),
+        (r'/wdzj/advanceRepay', AdvanceRepayHandler),
         (r'/wdzj/loanDetail', LoanDetailHandler)], **settings)
     app.listen(options.port)
     tornado.ioloop.IOLoop.current().start()
