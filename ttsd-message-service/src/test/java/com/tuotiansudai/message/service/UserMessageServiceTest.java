@@ -33,18 +33,10 @@ public class UserMessageServiceTest {
     private UserMessageMapper userMessageMapper;
 
     @Autowired
-    private UserMapper userMapper;
-
-    @Autowired
     private UserMessageService userMessageService;
 
     @Test
     public void shouldFindMessageDetail() throws Exception {
-
-        UserModel creator = getFakeUser("messageCreator");
-        userMapper.create(creator);
-
-
         MessageModel webSiteMessageModel = new MessageModel("title",
                 "message",
                 MessageUserGroup.ALL_USER,
@@ -53,17 +45,15 @@ public class UserMessageServiceTest {
                 null,
                 null,
                 null,
-                creator.getLoginName());
+                "messageCreator");
 
         webSiteMessageModel.setReadCount(10);
         webSiteMessageModel.setActivatedTime(new Date());
 
         messageMapper.create(webSiteMessageModel);
 
-        UserModel userTest = getFakeUserTest("userTest");
-        userMapper.create(userTest);
         UserMessageModel userMessageModel = new UserMessageModel(webSiteMessageModel.getId(),
-                userTest.getLoginName(), webSiteMessageModel.getTitle(), webSiteMessageModel.getTitle(), webSiteMessageModel.getTemplate(), webSiteMessageModel.getActivatedTime());
+                "user", webSiteMessageModel.getTitle(), webSiteMessageModel.getTemplate(), webSiteMessageModel.getActivatedTime());
 
         userMessageMapper.create(userMessageModel);
 
@@ -77,9 +67,6 @@ public class UserMessageServiceTest {
 
     @Test
     public void shouldGetUnreadMessageCount() {
-        UserModel creator = getFakeUser("messageCreator");
-        userMapper.create(creator);
-
         MessageModel webSiteMessageModel = new MessageModel("title",
                 "message",
                 MessageUserGroup.ALL_USER,
@@ -88,7 +75,7 @@ public class UserMessageServiceTest {
                 null,
                 null,
                 null,
-                creator.getLoginName());
+                "messageCreator");
 
         messageMapper.create(webSiteMessageModel);
 
@@ -100,33 +87,8 @@ public class UserMessageServiceTest {
                 null,
                 null,
                 null,
-                creator.getLoginName());
+                "messageCreator");
 
         messageMapper.create(appMessageModel);
     }
-
-    private UserModel getFakeUser(String loginName) {
-        UserModel fakeUser = new UserModel();
-        fakeUser.setLoginName(loginName);
-        fakeUser.setPassword("password");
-        fakeUser.setEmail("email@tuotiansudai.com");
-        fakeUser.setMobile("11900000000");
-        fakeUser.setRegisterTime(new Date());
-        fakeUser.setStatus(UserStatus.ACTIVE);
-        fakeUser.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
-        return fakeUser;
-    }
-
-    private UserModel getFakeUserTest(String loginName) {
-        UserModel fakeUser = new UserModel();
-        fakeUser.setLoginName(loginName);
-        fakeUser.setPassword("userpassword");
-        fakeUser.setEmail("useremail@tuotiansudai.com");
-        fakeUser.setMobile("13900000000");
-        fakeUser.setRegisterTime(new Date());
-        fakeUser.setStatus(UserStatus.ACTIVE);
-        fakeUser.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
-        return fakeUser;
-    }
-
 }

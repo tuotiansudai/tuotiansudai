@@ -39,7 +39,7 @@ public class MessageCreateDto implements Serializable {
     public MessageCreateDto() {
     }
 
-    public MessageCreateDto(MessageModel messageModel, PushAlertModel pushAlertModel) {
+    public MessageCreateDto(MessageModel messageModel, PushModel pushModel) {
         this.id = messageModel.getId();
         this.title = messageModel.getTitle();
         this.template = messageModel.getTemplateTxt();
@@ -48,7 +48,7 @@ public class MessageCreateDto implements Serializable {
         this.messageCategory = messageModel.getMessageCategory();
         this.webUrl = messageModel.getWebUrl();
         this.appUrl = messageModel.getAppUrl();
-        this.push = pushAlertModel != null ? new PushCreateDto(pushAlertModel) : null;
+        this.push = pushModel != null ? new PushCreateDto(pushModel) : null;
     }
 
     public Long getId() {

@@ -40,7 +40,7 @@ public class NodeDetailResponseDataDto extends BaseResponseDataDto {
                 this.desc = input.getContentText();
             }
         }
-        this.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(input.getUpdateTime()));
+        this.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(input.getUpdatedTime()));
         if(includeContent){
             StringBuffer sb = new StringBuffer();
             sb.append("<h1 style=\"text-align:center;\">");

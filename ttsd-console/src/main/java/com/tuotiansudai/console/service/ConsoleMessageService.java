@@ -12,11 +12,11 @@ import com.tuotiansudai.message.dto.MessageCreateDto;
 import com.tuotiansudai.message.dto.MessagePaginationItemDto;
 import com.tuotiansudai.message.dto.PushCreateDto;
 import com.tuotiansudai.message.repository.mapper.MessageMapper;
-import com.tuotiansudai.message.repository.mapper.PushAlertMapper;
+import com.tuotiansudai.message.repository.mapper.PushMapper;
 import com.tuotiansudai.message.repository.model.MessageModel;
 import com.tuotiansudai.message.repository.model.MessageStatus;
 import com.tuotiansudai.message.repository.model.MessageUserGroup;
-import com.tuotiansudai.message.repository.model.PushAlertModel;
+import com.tuotiansudai.message.repository.model.PushModel;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.util.PaginationUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -36,21 +36,21 @@ import java.util.stream.Collectors;
 @Service
 public class ConsoleMessageService {
 
+    private final static String MESSAGE_IMPORT_USER_TEMP_KEY = "message:manual-message:receivers:temp:{0}";
+
+    private final static String MESSAGE_IMPORT_USER_KEY = "message:manual-message:receivers";
+
     @Autowired
     private MessageMapper messageMapper;
 
     @Autowired
-    private PushAlertMapper pushAlertMapper;
+    private PushMapper pushMapper;
 
     @Autowired
     private RedisWrapperClient redisWrapperClient;
 
     @Autowired
     private MQWrapperClient mqWrapperClient;
-
-    public final static String MESSAGE_IMPORT_USER_TEMP_KEY = "message:manual-message:receivers:temp:{0}";
-
-    public final static String MESSAGE_IMPORT_USER_KEY = "message:manual-message:receivers";
 
     public long findMessageCount(String title, MessageStatus messageStatus, String createdBy, MessageType messageType) {
         return messageMapper.findMessageCount(title, messageStatus, createdBy, messageType);
@@ -59,7 +59,7 @@ public class ConsoleMessageService {
     public List<MessagePaginationItemDto> findMessagePagination(String title, MessageStatus messageStatus, String createdBy, MessageType messageType, int index, int pageSize) {
         int offset = PaginationUtil.calculateOffset(index, pageSize, messageMapper.findMessageCount(title, messageStatus, createdBy, messageType));
         List<MessageModel> messageModels = messageMapper.findMessagePagination(title, messageStatus, createdBy, messageType, offset, pageSize);
-        return messageModels.stream().map(messageModel -> new MessagePaginationItemDto(messageModel, pushAlertMapper.findById(messageModel.getPushId()))).collect(Collectors.toList());
+        return messageModels.stream().map(messageModel -> new MessagePaginationItemDto(messageModel, pushMapper.findById(messageModel.getPushId()))).collect(Collectors.toList());
     }
 
     @Transactional
@@ -99,13 +99,13 @@ public class ConsoleMessageService {
         messageModel.setStatus(MessageStatus.APPROVED);
         messageMapper.update(messageModel);
 
-        PushAlertModel pushAlertModel = pushAlertMapper.findById(messageModel.getPushId());
-        if (pushAlertModel != null && MessageType.MANUAL.equals(messageModel.getType())) {
+        PushModel pushModel = pushMapper.findById(messageModel.getPushId());
+        if (pushModel != null && MessageType.MANUAL.equals(messageModel.getType())) {
             mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(
                     messageModel.getUserGroup() == MessageUserGroup.IMPORT_USER ? (List<String>) redisWrapperClient.hgetSeri(MESSAGE_IMPORT_USER_KEY, String.valueOf(messageModel.getId())) : null,
-                    pushAlertModel.getPushSource(),
-                    pushAlertModel.getPushType(),
-                    pushAlertModel.getContent()));
+                    pushModel.getPushSource(),
+                    pushModel.getPushType(),
+                    pushModel.getContent()));
         }
         return new BaseDto<>(new BaseDataDto(true));
     }
@@ -135,8 +135,8 @@ public class ConsoleMessageService {
 
     public MessageCreateDto getEditMessage(long messageId) {
         MessageModel messageModel = messageMapper.findById(messageId);
-        PushAlertModel pushAlertModel = pushAlertMapper.findById(messageModel.getPushId());
-        return new MessageCreateDto(messageModel, pushAlertModel);
+        PushModel pushModel = pushMapper.findById(messageModel.getPushId());
+        return new MessageCreateDto(messageModel, pushModel);
     }
 
     @SuppressWarnings(value = "unchecked")
@@ -165,13 +165,12 @@ public class ConsoleMessageService {
         MessageModel messageModel = messageMapper.findById(messageCreateDto.getId());
 
         if (messageCreateDto.getPush() == null) {
-            pushAlertMapper.deleteById(messageModel.getPushId());
+            pushMapper.deleteById(messageModel.getPushId());
         } else {
             messageModel.setPushId(this.createOrUpdatePush(updatedBy, messageCreateDto.getPush()));
         }
 
         messageModel.setTitle(messageCreateDto.getTitle());
-        messageModel.setAppTitle(messageCreateDto.getTitle());
         messageModel.setTemplate(messageCreateDto.getTemplateTxt());
         messageModel.setTemplateTxt(messageCreateDto.getTemplateTxt());
         messageModel.setUserGroup(messageCreateDto.getUserGroup());
@@ -196,18 +195,18 @@ public class ConsoleMessageService {
         }
 
         if (pushCreateDto.getId() == null) {
-            PushAlertModel pushAlertModel = new PushAlertModel(createdOrUpdatedBy, pushCreateDto);
-            pushAlertMapper.create(pushAlertModel);
-            return pushAlertModel.getId();
+            PushModel pushModel = new PushModel(createdOrUpdatedBy, pushCreateDto);
+            pushMapper.create(pushModel);
+            return pushModel.getId();
         }
 
-        PushAlertModel pushAlertModel = pushAlertMapper.findById(pushCreateDto.getId());
-        pushAlertModel.setUpdatedBy(createdOrUpdatedBy);
-        pushAlertModel.setUpdatedTime(new Date());
-        pushAlertModel.setPushSource(pushCreateDto.getPushSource());
-        pushAlertModel.setPushType(pushCreateDto.getPushType());
-        pushAlertMapper.update(pushAlertModel);
-        return pushAlertModel.getId();
+        PushModel pushModel = pushMapper.findById(pushCreateDto.getId());
+        pushModel.setUpdatedBy(createdOrUpdatedBy);
+        pushModel.setUpdatedTime(new Date());
+        pushModel.setPushSource(pushCreateDto.getPushSource());
+        pushModel.setPushType(pushCreateDto.getPushType());
+        pushMapper.update(pushModel);
+        return pushModel.getId();
     }
 
 }

@@ -20,7 +20,7 @@ public class AnnounceDto extends BaseDataDto implements Serializable {
 
     private Date createdTime = new Date();
 
-    private Date updateTime = new Date();
+    private Date updatedTime = new Date();
 
     public AnnounceDto() {
     }
@@ -31,7 +31,7 @@ public class AnnounceDto extends BaseDataDto implements Serializable {
         this.content = model.getContent();
         this.showOnHome = model.isShowOnHome();
         this.createdTime = model.getCreatedTime();
-        this.updateTime = model.getUpdateTime();
+        this.updatedTime = model.getUpdatedTime();
         this.contentText = model.getContentText();
     }
 
@@ -75,12 +75,12 @@ public class AnnounceDto extends BaseDataDto implements Serializable {
         this.createdTime = createdTime;
     }
 
-    public Date getUpdateTime() {
-        return updateTime;
+    public Date getUpdatedTime() {
+        return updatedTime;
     }
 
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
+    public void setUpdatedTime(Date updatedTime) {
+        this.updatedTime = updatedTime;
     }
 
     public String getContentText() {

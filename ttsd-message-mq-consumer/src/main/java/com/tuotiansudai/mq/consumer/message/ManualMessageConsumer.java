@@ -47,7 +47,7 @@ public class ManualMessageConsumer implements MessageConsumer {
 
             for (long messageId : manualMessage.getMessageIds()) {
                 MessageModel messageModel = messageMapper.findById(messageId);
-                UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), manualMessage.getLoginName(), messageModel.getTitle(), messageModel.getTitle(), messageModel.getTemplate(), messageModel.getActivatedTime());
+                UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), manualMessage.getLoginName(), messageModel.getTitle(), messageModel.getTemplate(), messageModel.getActivatedTime());
                 userMessageMapper.create(userMessageModel);
             }
         } catch (IOException e) {

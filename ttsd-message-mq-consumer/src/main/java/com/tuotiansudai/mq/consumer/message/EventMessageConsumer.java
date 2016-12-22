@@ -43,8 +43,8 @@ public class EventMessageConsumer implements MessageConsumer {
             EventMessage eventMessage = JsonConverter.readValue(message, EventMessage.class);
             MessageModel messageModel = messageMapper.findActiveByEventType(eventMessage.getEventType());
             for (String loginName : eventMessage.getLoginNames()) {
-                UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), loginName, eventMessage.getTitle(), eventMessage.getTitle(), eventMessage.getContent(), new Date());
-                userMessageModel.setBusinessId(eventMessage.getBusinessId() != null ? String.valueOf(eventMessage.getBusinessId()) : null);
+                UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), loginName, eventMessage.getTitle(), eventMessage.getContent(), new Date());
+                userMessageModel.setBusinessId(eventMessage.getBusinessId() != null ? eventMessage.getBusinessId() : null);
                 userMessageMapper.create(userMessageModel);
             }
         } catch (IOException e) {

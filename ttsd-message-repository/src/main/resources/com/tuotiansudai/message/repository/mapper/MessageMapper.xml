@@ -9,7 +9,6 @@
     <resultMap id="messageResultMap" type="MessageModel">
         <id column="id" property="id"/>
         <result column="title" property="title"/>
-        <result column="app_title" property="appTitle"/>
         <result column="template" property="template"/>
         <result column="template_txt" property="templateTxt"/>
         <result column="type" property="type"/>
@@ -33,24 +32,19 @@
     </resultMap>
 
     <insert id="create" parameterType="MessageModel" useGeneratedKeys="true" keyProperty="id">
-        insert into message (`title`, `app_title`, `template`, `template_txt`, `type`, `event_type`, `user_group`,
-        `channels`,
+        insert into message (`title`, `template`, `template_txt`, `type`, `event_type`, `user_group`, `channels`,
         `message_category`, `web_url`, `app_url`, `status`, `read_count`, `push_id`, `activated_by`, `activated_time`,
-        `expired_time`,
-        `updated_by`, `updated_time`, `created_by`,
-        `created_time`, `deleted`)
-        value(#{title}, #{appTitle}, #{template}, #{templateTxt}, #{type}, #{eventType},
+        `expired_time`, `updated_by`, `updated_time`, `created_by`, `created_time`)
+        value(#{title}, #{template}, #{templateTxt}, #{type}, #{eventType},
         #{userGroup},
         #{channels, typeHandler=com.tuotiansudai.message.repository.mybatis.MessageChannelListTypeHandler},
         #{messageCategory}, #{webUrl}, #{appUrl}, #{status}, #{readCount}, #{pushId}, #{activatedBy}, #{activatedTime},
-        #{expiredTime},
-        #{updatedBy}, #{updatedTime}, #{createdBy}, #{createdTime}, 0)
+        #{expiredTime}, #{updatedBy}, #{updatedTime}, #{createdBy}, #{createdTime})
     </insert>
 
     <update id="update" parameterType="MessageModel">
         update message
         set `title` = #{title},
-            `app_title` = #{appTitle},
             `template` = #{template},
             `template_txt` = #{templateTxt},
             `type` = #{type},
@@ -139,7 +133,7 @@
     </select>
 
     <delete id="deleteById">
-        UPDATE `aa`.`message`
+        UPDATE `message`
         SET
         `deleted` = 1,
         `updated_by` = #{updatedBy},

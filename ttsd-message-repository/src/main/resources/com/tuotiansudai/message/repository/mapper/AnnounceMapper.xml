@@ -13,7 +13,7 @@
         <result column="content_text" property="contentText"></result>
         <result column="show_on_home" property="showOnHome"></result>
         <result column="created_time" property="createdTime"></result>
-        <result column="update_time" property="updateTime"></result>
+        <result column="updated_time" property="updatedTime"></result>
     </resultMap>
 
     <select id="findAnnounce" parameterType="map" resultMap="AnnounceResultMap">
@@ -43,13 +43,13 @@
     </select>
 
     <insert id="create" parameterType="AnnounceModel" useGeneratedKeys="true" keyProperty="id">
-        insert into announce (title,content,content_text,show_on_home,created_time,update_time)
-        VALUE (#{title},#{content},#{contentText},#{showOnHome},#{createdTime},#{updateTime})
+        insert into announce (title,content,content_text,show_on_home,created_time,updated_time)
+        VALUE (#{title},#{content},#{contentText},#{showOnHome},#{createdTime},#{updatedTime})
     </insert>
 
     <update id="update" parameterType="AnnounceModel">
         update announce set
-          title = #{title},content = #{content},show_on_home = #{showOnHome},update_time = #{updateTime},content_text = #{contentText}
+          title = #{title},content = #{content},show_on_home = #{showOnHome},updated_time = #{updatedTime},content_text = #{contentText}
          where id = #{id}
     </update>
 

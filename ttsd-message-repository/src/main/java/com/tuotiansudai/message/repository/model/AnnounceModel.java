@@ -17,7 +17,7 @@ public class AnnounceModel implements Serializable {
 
     private Date createdTime = new Date();
 
-    private Date updateTime = new Date();
+    private Date updatedTime = new Date();
 
     public Long getId() {
         return id;
@@ -59,12 +59,12 @@ public class AnnounceModel implements Serializable {
         this.createdTime = createdTime;
     }
 
-    public Date getUpdateTime() {
-        return updateTime;
+    public Date getUpdatedTime() {
+        return updatedTime;
     }
 
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
+    public void setUpdatedTime(Date updatedTime) {
+        this.updatedTime = updatedTime;
     }
 
     public AnnounceModel(){

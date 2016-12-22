@@ -17,17 +17,20 @@ import javax.sql.DataSource;
 
 @Configuration
 @EnableTransactionManagement
-public class MybatisAAConfig {
+public class MybatisConfig {
+
     @Bean
-    public MybatisAAConnectionConfig mybatisAAConnectionConfig() {
-        return new MybatisAAConnectionConfig();
+    public MybatisConnectionConfig mybatisConnectionConfig() {
+        return new MybatisConnectionConfig();
     }
 
-    @Bean(name = "hikariCPAAConfig")
-    public HikariConfig hikariCPAAConfig(MybatisAAConnectionConfig connConfig) {
+    @Bean(name = "hikariCPConfig")
+    public HikariConfig hikariCPConfig(MybatisConnectionConfig connConfig) {
         HikariConfig config = new HikariConfig();
-        config.setJdbcUrl(String.format("jdbc:mysql://%s:%s/aa?useUnicode=true&characterEncoding=UTF-8",
-                connConfig.getDbHost(), connConfig.getDbPort()));
+        config.setJdbcUrl(String.format("jdbc:mysql://%s:%s/%s?useUnicode=true&characterEncoding=UTF-8",
+                connConfig.getDbHost(),
+                connConfig.getDbPort(),
+                connConfig.getSchema()));
         config.setUsername(connConfig.getDbUser());
         config.setPassword(connConfig.getDbPassword());
         config.setDriverClassName("com.mysql.jdbc.Driver");
@@ -37,39 +40,41 @@ public class MybatisAAConfig {
     }
 
     @Bean
-    public DataSource hikariCPAADataSource(@Autowired @Qualifier("hikariCPAAConfig") HikariConfig hikariConfig) {
+    public DataSource hikariCPDataSource(@Autowired @Qualifier("hikariCPConfig") HikariConfig hikariConfig) {
         return new HikariDataSource(hikariConfig);
     }
 
     @Bean
-    public MapperScannerConfigurer aaMapperScannerConfigurer() {
+    public MapperScannerConfigurer mapperScannerConfigurer() {
         MapperScannerConfigurer configurer = new MapperScannerConfigurer();
         configurer.setBasePackage("com.tuotiansudai.message.repository.mapper");
-        configurer.setSqlSessionFactoryBeanName("aaSqlSessionFactory");
+        configurer.setSqlSessionFactoryBeanName("sqlSessionFactory");
         return configurer;
     }
 
     @Bean
-    public DataSourceTransactionManager aaTransactionManager(@Qualifier("hikariCPAADataSource") DataSource hikariCPAADataSource) {
-        return new DataSourceTransactionManager(hikariCPAADataSource);
+    public DataSourceTransactionManager transactionManager(@Qualifier("hikariCPDataSource") DataSource hikariCPDataSource) {
+        return new DataSourceTransactionManager(hikariCPDataSource);
     }
 
     @Bean
-    public SqlSessionFactory aaSqlSessionFactory(@Qualifier("hikariCPAADataSource") DataSource hikariCPAADataSource) throws Exception {
+    public SqlSessionFactory sqlSessionFactory(@Qualifier("hikariCPDataSource") DataSource hikariCPDataSource) throws Exception {
         SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
-        sessionFactory.setDataSource(hikariCPAADataSource);
+        sessionFactory.setDataSource(hikariCPDataSource);
         sessionFactory.setTypeAliasesPackage("com.tuotiansudai.message.repository.model");
         return sessionFactory.getObject();
     }
 
-    public static class MybatisAAConnectionConfig {
+    public static class MybatisConnectionConfig {
         @Value("${common.jdbc.host}")
         private String dbHost;
         @Value("${common.jdbc.port}")
         private String dbPort;
-        @Value("${common.jdbc.username}")
+        @Value("${message.jdbc.schema}")
+        private String schema;
+        @Value("${message.jdbc.username}")
         private String dbUser;
-        @Value("${common.jdbc.password}")
+        @Value("${message.jdbc.password}")
         private String dbPassword;
 
         public String getDbHost() {
@@ -86,6 +91,14 @@ public class MybatisAAConfig {
 
         public void setDbPort(String dbPort) {
             this.dbPort = dbPort;
+        }
+
+        public String getSchema() {
+            return schema;
+        }
+
+        public void setSchema(String schema) {
+            this.schema = schema;
         }
 
         public String getDbUser() {

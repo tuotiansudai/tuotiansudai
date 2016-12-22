@@ -8,7 +8,7 @@ import com.tuotiansudai.message.dto.PushCreateDto;
 import java.io.Serializable;
 import java.util.Date;
 
-public class PushAlertModel implements Serializable {
+public class PushModel implements Serializable {
     private long id;
     private PushType pushType;
     private PushSource pushSource;
@@ -18,10 +18,10 @@ public class PushAlertModel implements Serializable {
     private Date updatedTime;
     private String updatedBy;
 
-    public PushAlertModel() {
+    public PushModel() {
     }
 
-    public PushAlertModel(String createdBy, PushCreateDto pushCreateDto) {
+    public PushModel(String createdBy, PushCreateDto pushCreateDto) {
         this.pushType = pushCreateDto.getPushType();
         this.pushSource = pushCreateDto.getPushSource();
         this.content = pushCreateDto.getContent();

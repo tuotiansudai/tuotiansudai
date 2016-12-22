@@ -1,14 +1,14 @@
 package com.tuotiansudai.message.dto;
 
 import com.tuotiansudai.enums.PushSource;
-import com.tuotiansudai.message.repository.model.PushAlertModel;
+import com.tuotiansudai.message.repository.model.PushModel;
 
 public class PushPaginationItemDto {
 
     private PushSource pushSource;
 
-    public PushPaginationItemDto(PushAlertModel pushAlertModel) {
-        this.pushSource = pushAlertModel.getPushSource();
+    public PushPaginationItemDto(PushModel pushModel) {
+        this.pushSource = pushModel.getPushSource();
     }
 
     public PushSource getPushSource() {

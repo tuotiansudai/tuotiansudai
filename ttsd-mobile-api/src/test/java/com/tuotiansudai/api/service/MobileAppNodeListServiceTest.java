@@ -69,10 +69,8 @@ public class MobileAppNodeListServiceTest extends ServiceTestBase{
         announceModel.setTitle("tile");
         announceModel.setContent("content");
         announceModel.setCreatedTime(new Date());
-        announceModel.setUpdateTime(new Date());
+        announceModel.setUpdatedTime(new Date());
         announceModel.setShowOnHome(false);
         return announceModel;
     }
-
-
 }

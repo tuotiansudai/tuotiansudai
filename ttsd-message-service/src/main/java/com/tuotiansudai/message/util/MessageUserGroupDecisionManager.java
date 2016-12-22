@@ -5,7 +5,6 @@ import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.message.repository.mapper.MessageMapper;
 import com.tuotiansudai.message.repository.model.MessageModel;
 import com.tuotiansudai.message.repository.model.MessageUserGroup;
-import com.tuotiansudai.message.service.MessageService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +16,8 @@ import java.util.List;
 public class MessageUserGroupDecisionManager {
 
     static Logger logger = Logger.getLogger(MessageUserGroupDecisionManager.class);
+
+    private final static String MESSAGE_IMPORT_USER_KEY = "message:manual-message:receivers";
 
     @Autowired
     private MessageMapper messageMapper;
@@ -41,7 +42,7 @@ public class MessageUserGroupDecisionManager {
                 return true;
             case IMPORT_USER:
                 try {
-                    List<String> loginNameOrMobiles = (List<String>) redisWrapperClient.hgetSeri(MessageService.MESSAGE_IMPORT_USER_KEY, String.valueOf(messageId));
+                    List<String> loginNameOrMobiles = (List<String>) redisWrapperClient.hgetSeri(MESSAGE_IMPORT_USER_KEY, String.valueOf(messageId));
                     return CollectionUtils.isNotEmpty(loginNameOrMobiles) && (loginNameOrMobiles.contains(loginName) || loginNameOrMobiles.contains(mobile));
                 } catch (Exception e) {
                     logger.error(e.getLocalizedMessage(), e);

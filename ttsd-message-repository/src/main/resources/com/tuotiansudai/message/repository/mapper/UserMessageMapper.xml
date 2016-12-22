@@ -12,7 +12,6 @@
         <result column="login_name" property="loginName"/>
         <result column="business_id" property="businessId"/>
         <result column="title" property="title"/>
-        <result column="app_title" property="appTitle"/>
         <result column="content" property="content"/>
         <result column="read" property="read"/>
         <result column="read_time" property="readTime"/>
@@ -28,8 +27,8 @@
     </select>
 
     <insert id="create" parameterType="UserMessageModel" useGeneratedKeys="true" keyProperty="id">
-        insert into user_message (`message_id`, `login_name`, `business_id`, `title`, `app_title`, `content`, `read`, `read_time`, `created_time`)
-        value(#{messageId}, #{loginName}, #{businessId}, #{title}, #{appTitle}, #{content}, #{read}, #{readTime}, #{createdTime})
+        insert into user_message (`message_id`, `login_name`, `business_id`, `title`, `content`, `read`, `read_time`, `created_time`)
+        value(#{messageId}, #{loginName}, #{businessId}, #{title}, #{content}, #{read}, #{readTime}, #{createdTime})
     </insert>
 
     <update id="update" parameterType="UserMessageModel">
@@ -38,7 +37,6 @@
             `login_name` = #{loginName},
             `business_id` = #{businessId},
             `title` = #{title},
-            `app_title` = #{appTitle},
             `content` = #{content},
             `read` = #{read},
             `read_time` = #{readTime},
@@ -53,9 +51,6 @@
         <if test="channels != null">
             and find_in_set(#{channels},m.channels)
         </if>
-        <if test="channels != null and channels.name() == 'APP_MESSAGE'">
-            and u.app_title is not null
-        </if>
         order by created_time desc
         <if test="index != null and pageSize != null">
             limit #{index}, #{pageSize}
@@ -68,9 +63,6 @@
         where login_name = #{loginName}
         <if test="channels != null">
             and find_in_set(#{channels},m.channels)
-        </if>
-        <if test="channels != null and channels.name() == 'APP_MESSAGE'">
-            and u.app_title is not null
         </if>
     </select>
 

@@ -12,7 +12,6 @@ import java.util.List;
 public class MessageModel implements Serializable {
     private long id;
     private String title;
-    private String appTitle;
     private String template;
     private String templateTxt;
     private MessageType type;
@@ -38,7 +37,6 @@ public class MessageModel implements Serializable {
 
     public MessageModel(String title, String template, MessageUserGroup userGroup, MessageCategory messageCategory, List<MessageChannel> channels, String webUrl, AppUrl appUrl, Long pushId, String createdBy) {
         this.title = title;
-        this.appTitle = title;
         this.template = template;
         this.templateTxt = template;
         this.type = MessageType.MANUAL;
@@ -70,14 +68,6 @@ public class MessageModel implements Serializable {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getAppTitle() {
-        return appTitle;
-    }
-
-    public void setAppTitle(String appTitle) {
-        this.appTitle = appTitle;
     }
 
     public String getTemplate() {

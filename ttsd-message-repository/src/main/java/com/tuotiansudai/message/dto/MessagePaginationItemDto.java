@@ -43,7 +43,7 @@ public class MessagePaginationItemDto {
 
     private PushPaginationItemDto push;
 
-    public MessagePaginationItemDto(MessageModel messageModel, PushAlertModel pushAlertModel) {
+    public MessagePaginationItemDto(MessageModel messageModel, PushModel pushModel) {
         this.id = messageModel.getId();
         this.title = messageModel.getTitle();
         this.templateTxt = messageModel.getTemplateTxt();
@@ -60,7 +60,7 @@ public class MessagePaginationItemDto {
         this.updatedTime = messageModel.getUpdatedTime();
         this.activatedBy = messageModel.getActivatedBy();
         this.activatedTime = messageModel.getActivatedTime();
-        this.push = pushAlertModel != null ? new PushPaginationItemDto(pushAlertModel) : null;
+        this.push = pushModel != null ? new PushPaginationItemDto(pushModel) : null;
     }
 
     public long getId() {

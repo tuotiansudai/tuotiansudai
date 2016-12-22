@@ -2,7 +2,7 @@ package com.tuotiansudai.message.dto;
 
 import com.tuotiansudai.enums.PushSource;
 import com.tuotiansudai.enums.PushType;
-import com.tuotiansudai.message.repository.model.PushAlertModel;
+import com.tuotiansudai.message.repository.model.PushModel;
 
 import javax.validation.constraints.NotNull;
 
@@ -22,11 +22,11 @@ public class PushCreateDto {
     public PushCreateDto() {
     }
 
-    public PushCreateDto(PushAlertModel pushAlertModel) {
-        this.id = pushAlertModel.getId();
-        this.pushType = pushAlertModel.getPushType();
-        this.pushSource = pushAlertModel.getPushSource();
-        this.content = pushAlertModel.getContent();
+    public PushCreateDto(PushModel pushModel) {
+        this.id = pushModel.getId();
+        this.pushType = pushModel.getPushType();
+        this.pushSource = pushModel.getPushSource();
+        this.content = pushModel.getContent();
     }
 
     public Long getId() {

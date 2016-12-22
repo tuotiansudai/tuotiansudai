@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.tuotiansudai.message.repository.mapper.PushAlertMapper">
+<mapper namespace="com.tuotiansudai.message.repository.mapper.PushMapper">
 
-    <resultMap id="pushAlertResultMap" type="PushAlertModel">
+    <resultMap id="pushResultMap" type="PushModel">
         <id column="id" property="id"/>
         <result column="push_type" property="pushType"/>
         <result column="push_source" property="pushSource"/>
@@ -15,13 +15,13 @@
         <result column="updated_by" property="updatedBy"/>
     </resultMap>
 
-    <insert id="create" parameterType="pushAlertModel" useGeneratedKeys="true" keyProperty="id">
-        insert into jpush_alert (push_type, push_source, content, created_time, created_by, updated_time, updated_by)
+    <insert id="create" parameterType="pushModel" useGeneratedKeys="true" keyProperty="id">
+        insert into push (push_type, push_source, content, created_time, created_by, updated_time, updated_by)
         value(#{pushType}, #{pushSource}, #{content}, #{createdTime}, #{createdBy}, #{updatedTime}, #{updatedBy})
     </insert>
 
-    <update id="update" parameterType="pushAlertModel">
-        update jpush_alert
+    <update id="update" parameterType="pushModel">
+        update push
         set
         push_type = #{pushType},
         push_source = #{pushSource},
@@ -31,11 +31,11 @@
         where id = #{id}
     </update>
 
-    <select id="findById" parameterType="long" resultMap="pushAlertResultMap">
-        select * from jpush_alert where id = #{id}
+    <select id="findById" parameterType="long" resultMap="pushResultMap">
+        select * from push where id = #{id}
     </select>
 
     <delete id="deleteById" parameterType="long">
-        delete from jpush_alert where id = #{id}
+        delete from push where id = #{id}
     </delete>
 </mapper>
