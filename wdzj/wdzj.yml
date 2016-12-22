@@ -6,4 +6,4 @@ wdzj:
     - /var/log/wdzj:/workspace/logs
   ports:
     - "30021:9999"
-  command: bash -c "python api.py --port=9999 --mysql_host=$DB:3306 --mysql_user=$USER --mysql_password=$PASSWORD --wdzj_username=$WDZJ_USER --wdzj_password=$WDZJ_PASSWORD --log_file_prefix=/workspace/logs/wdzj.log"
+  command: bash -c "python api.py --port=9999 --mysql_host=$DB:3306 --mysql_user=$USER --mysql_password=$PASSWORD --wdzj_username=$WDZJ_USER --wdzj_password=$WDZJ_PASSWORD --redis_host=#REDIS_HOST --redis_port=#REDIS_PORT --log_file_prefix=/workspace/logs/wdzj.log"

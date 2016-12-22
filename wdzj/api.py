@@ -17,6 +17,10 @@ define("mysql_password", default="root", help="database password")
 
 define("wdzj_username", default="test", help="wdzj api username")
 define("wdzj_password", default="test", help="wdzj api password")
+define("redis_host", default="192.168.33.10", help="redis host")
+define("redis_port", default="6379", help="redis port")
+
+_redis = redis.StrictRedis(host=options.redis_host, port=options.redis_port, db=0)
 
 
 class Error404Handler(tornado.web.ErrorHandler):
@@ -32,8 +36,7 @@ class RefreshTokenHanlder(RequestHandler):
                 raise HTTPError(403)
             else:
                 uuid1 = str(uuid.uuid1())
-                now_time = str(int(round(time.time() * 1000)))
-                self.set_secure_cookie('secKey', uuid1 + ':' + now_time)
+                _redis.set("token", uuid1, 3600)
                 self.write({'data': {'token': uuid1}})
         else:
             raise HTTPError(400)
@@ -43,15 +46,8 @@ class BaseHandler(RequestHandler):
     @gen.coroutine
     def prepare(self):
         token = self.get_argument('token', None)
-        sec_vals = str(self.get_secure_cookie('secKey')).split(":")
-        if len(sec_vals) != 2:
-            raise HTTPError(403)
-
-        cached_token_val = sec_vals[0]
-        cached_token_time = int(sec_vals[-1])
-        now_time = int(round(time.time() * 1000))
-
-        if not token or now_time - cached_token_time > 3600 * 1000 or cached_token_val != token:
+        cached_token = _redis.get("token")
+        if not token or cached_token != token:
             raise HTTPError(403)
 
     def write_error(self, status_code, **kwargs):
@@ -105,8 +101,7 @@ class LoanDetailHandler(BaseHandler):
 
         return self.write(
             {'totalPage': total_page, 'currentPage': current_page, 'totalCount': total_count,
-             'totalAmount': total_amount,
-             'date': date, 'borrowList': loan_detail_rows})
+             'totalAmount': total_amount, 'date': date, 'borrowList': loan_detail_rows})
 
 
 if __name__ == '__main__':
@@ -117,12 +112,11 @@ if __name__ == '__main__':
         host=options.mysql_host, database=options.mysql_database,
         user=options.mysql_user, password=options.mysql_password)
 
-    secure_key = str(uuid.uuid1())
-
     settings = {'debug': True, 'db': db, 'default_handler_class': Error404Handler,
                 'default_handler_args': dict(status_code=404)}
+
     app = tornado.web.Application([
         (r'/wdzj/refreshToken', RefreshTokenHanlder),
-        (r'/wdzj/loanDetail', LoanDetailHandler)], cookie_secret=secure_key, **settings)
+        (r'/wdzj/loanDetail', LoanDetailHandler)], **settings)
     app.listen(options.port)
     tornado.ioloop.IOLoop.current().start()
