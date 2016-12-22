@@ -1,11 +1,6 @@
 package com.tuotiansudai.enums;
 
 public enum MessageEventType {
-    //old type
-    RECHARGE_SUCCESS("充值成功", "", ""),
-    ASSIGN_COUPON_SUCCESS("获得优惠券", "", ""),
-
-    //new type
     REGISTER_USER_SUCCESS("注册成功", "5888元体验金已存入您的账户，请查收！", "哇，您终于来啦！初次见面，岂能无礼？5888元体验金双手奉上，【立即体验】再拿588元红包和3%加息券！"),
     REGISTER_ACCOUNT_SUCCESS("实名认证成功", "恭喜您认证成功", "尊敬的{0}女士/先生，恭喜您认证成功，您的支付密码已经由联动优势发送至注册手机号码中,马上【绑定银行卡】开启赚钱之旅吧！"),
     WITHDRAW_APPLICATION_SUCCESS("提现申请成功", "您的{0}元提现申请已提交成功", "尊敬的用户，您提交了{0}元提现申请，联动优势将会在1个工作日内进行审批，请耐心等待。"),
