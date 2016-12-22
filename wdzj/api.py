@@ -34,7 +34,7 @@ class RefreshTokenHandler(RequestHandler):
                 raise HTTPError(403)
             else:
                 uuid1 = str(uuid.uuid1())
-                self.settings['_redis'].setex("token", uuid1, 3600)
+                self.settings['_redis'].setex("token", 3600, uuid1)
                 self.write({'data': {'token': uuid1}})
         else:
             raise HTTPError(400)
@@ -57,11 +57,11 @@ class BaseHandler(RequestHandler):
 class LoanDetailHandler(BaseHandler):
     totalCountSQL = "select count(1) as totalCount from loan where DATE_FORMAT(raising_complete_time, '%%Y-%%m-%%d') = %s"
 
-    totalAmountSQL = "select IFNULL(sum(loan_amount),0) totalAmount from loan where DATE_FORMAT(raising_complete_time, '%%Y-%%m-%%d') = %s"
+    totalAmountSQL = "select IFNULL(truncate(sum(loan_amount)/100,2),0) totalAmount from loan where DATE_FORMAT(raising_complete_time, '%%Y-%%m-%%d') = %s"
 
     loanDetailSQL = '''
-        select id as projectId, `name` as title, loan_amount as amount, 100 as schedule, CONCAT((base_rate + activity_rate)*100,'%%') as interestRate, duration as deadline,
-        '天' as deadlineUnit, 0 as reward, '抵押标' as type, type as repaymentType, agent_login_name as userName, raising_complete_time as successTime
+        select id as projectId, `name` as title, CAST(truncate(loan_amount/100, 2) as char(12)) as amount, 100 as schedule, CONCAT((base_rate + activity_rate)*100,'%%') as interestRate, duration as deadline,
+        '天' as deadlineUnit, 0 as reward, '抵押标' as type, type as repaymentType, md5(agent_login_name) as userName, raising_complete_time as successTime
         from loan where DATE_FORMAT(raising_complete_time,'%%Y-%%m-%%d') = %s limit %s, %s;
     '''
 
@@ -75,13 +75,15 @@ class LoanDetailHandler(BaseHandler):
             current_page = int(self.get_argument('page', None))
             page_size = int(self.get_argument('pageSize', None))
             date = self.get_argument('date', None)
-        except (ValueError, TypeError):
+            assert current_page > 0
+            assert page_size > 0
+        except Exception:
             raise HTTPError(400)
 
         start = (current_page - 1) * page_size
 
         total_count = int(self.settings['db'].get(self.totalCountSQL, date)["totalCount"])
-        total_amount = float(self.settings['db'].get(self.totalAmountSQL, date)["totalAmount"]) / 100
+        total_amount = str(self.settings['db'].get(self.totalAmountSQL, date)["totalAmount"])
         loan_detail_rows = self.settings['db'].query(self.loanDetailSQL, date, start, page_size)
 
         for row in loan_detail_rows:
@@ -118,7 +120,9 @@ class AdvanceRepayHandler(BaseHandler):
             current_page = int(self.get_argument('page', None))
             page_size = int(self.get_argument('pageSize', None))
             date = self.get_argument('date', None)
-        except (ValueError, TypeError):
+            assert current_page > 0
+            assert page_size > 0
+        except Exception:
             raise HTTPError(400)
 
         start = (current_page - 1) * page_size
