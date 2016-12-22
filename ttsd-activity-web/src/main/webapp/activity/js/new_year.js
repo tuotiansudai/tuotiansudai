@@ -7,9 +7,17 @@ require(['jquery','drawCircle','commonFun','logintip','register_common'], functi
         var $loginInBtn=$('#loginIn');
 
         (function() {
-            $loginInBtn.on('click',function() {
-                $('.no-login-text',$newYearDayFrame).trigger('click');  //弹框登录
-            })
+            var locationUrl=location.href;
+            var sourceKind=globalFun.parseURL(locationUrl);
+            if(sourceKind.params.source=='app') {
+                location.href="/login";
+            }
+            else {
+                $loginInBtn.on('click',function() {
+                    $('.no-login-text',$newYearDayFrame).trigger('click');  //弹框登录
+                })
+            }
+
         })();
 
         //文字连续滚动
@@ -47,7 +55,7 @@ require(['jquery','drawCircle','commonFun','logintip','register_common'], functi
                 $activitySlide.addClass('pc-img');
             }
             else {
-                $activitySlide.html('<img src='+staticServer+'/activity/images/christmas-day/app-top.jpg>');
+                $activitySlide.html('<img src='+staticServer+'/activity/images/new-year/app-top.jpg>');
 
                 // 是否加载快速注册的功能
                var urlObj=globalFun.parseURL(location.href);
@@ -127,7 +135,7 @@ require(['jquery','drawCircle','commonFun','logintip','register_common'], functi
                 tipMessage.info='<p class="success-text">签到成功！</p>' +
                     '<p class="des-text">恭喜您获得砸金蛋机会一次</p>';
                 $signToday.text('已签到');
-                var thisTime = $rewardGiftBox.find('.my-times').text();
+                var thisTime = Number($rewardGiftBox.find('.my-times').text());
                 $rewardGiftBox.find('.my-times').text(thisTime+1);
                 $signToday.removeAttr('id');
                 drawCircle.tipWindowPop(tipMessage);
