@@ -181,7 +181,8 @@
                 "header":{"text":"问答管理"},
                 "sidebar":[
                     {"name":"questionManage","text":"提问管理","link":"/ask-manage/questions","role":"'ADMIN', 'ASK_ADMIN'"},
-                    {"name":"answerManage","text":"回答管理","link":"/ask-manage/answers","role":"'ADMIN', 'ASK_ADMIN'"}
+                    {"name":"answerManage","text":"回答管理","link":"/ask-manage/answers","role":"'ADMIN', 'ASK_ADMIN'"},
+                    {"name":"includeQuestionManage","text":"收录文章管理","link":"/ask-manage/include-questions","role":"'ADMIN', 'ASK_ADMIN'"}
                 ]
             },
         {

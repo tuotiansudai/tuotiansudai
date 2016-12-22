@@ -3,6 +3,7 @@ package com.tuotiansudai.console.controller;
 import com.tuotiansudai.ask.repository.model.AnswerStatus;
 import com.tuotiansudai.ask.repository.model.QuestionStatus;
 import com.tuotiansudai.ask.service.AnswerService;
+import com.tuotiansudai.ask.service.IncludeQuestionService;
 import com.tuotiansudai.ask.service.QuestionService;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
@@ -27,6 +28,9 @@ public class AskController {
 
     @Autowired
     private AnswerService answerService;
+
+    @Autowired
+    private IncludeQuestionService includeQuestionService;
 
     @RequestMapping(path = "/questions", method = RequestMethod.GET)
     public ModelAndView getQuestions(@RequestParam(value = "question", required = false) String question,
@@ -57,6 +61,13 @@ public class AskController {
         modelAndView.addObject("mobile", mobile);
         modelAndView.addObject("status", status);
         modelAndView.addObject("statusOptions", AnswerStatus.values());
+        return modelAndView;
+    }
+
+    @RequestMapping(path = "/include-questions", method = RequestMethod.GET)
+    public ModelAndView getIncludeQuestions(@RequestParam(value = "index", defaultValue = "1", required = false) int index) {
+        BaseDto<BasePaginationDataDto> includeQuestions = includeQuestionService.findAllIncludeQuestions(index, 5);
+        ModelAndView modelAndView = new ModelAndView("/include-question-list", "includeQuestions", includeQuestions);
         return modelAndView;
     }
 
@@ -91,4 +102,5 @@ public class AskController {
 
         return new BaseDto<>(new BaseDataDto(true));
     }
+
 }
