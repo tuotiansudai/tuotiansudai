@@ -28,6 +28,7 @@ import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.repository.model.Role;
+import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.util.InterestCalculator;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -70,6 +71,9 @@ public class ConsoleCouponService {
 
     @Autowired
     private UserMembershipMapper userMembershipMapper;
+
+    @Autowired
+    private InvestService investService;
 
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
@@ -298,8 +302,7 @@ public class ConsoleCouponService {
             userCouponModel.setInvestAmount(userCouponModel.getInvestId() != null ? investMapper.findById(userCouponModel.getInvestId()).getAmount() : null);
             long interest = 0;
             if(userCouponModel.getUsedTime() != null && loanModel != null){
-                interest = (long) (userCouponModel.getInvestAmount() * (loanModel.getBaseRate() + loanModel.getActivityRate()) / 365 * loanModel.getProductType().getDuration());
-                interest = (long) (interest - interest * 0.1);
+                interest = investService.estimateInvestIncome(loanModel.getId(), loginName, userCouponModel.getInvestAmount());
             }
 
             couponDetailsDtoList.add(new CouponDetailsDto(userCouponModel.getLoginName(), userCouponModel.getUsedTime(), userCouponModel.getInvestAmount(),
