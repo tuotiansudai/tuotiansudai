@@ -34,7 +34,7 @@ class RefreshTokenHandler(RequestHandler):
                 raise HTTPError(403)
             else:
                 uuid1 = str(uuid.uuid1())
-                self.settings['_redis'].set("token", uuid1, 3600)
+                self.settings['_redis'].setex("token", uuid1, 3600)
                 self.write({'data': {'token': uuid1}})
         else:
             raise HTTPError(400)
