@@ -1,6 +1,6 @@
 package com.tuotiansudai.api.service;
 
-import com.tuotiansudai.api.dto.*;
+import com.tuotiansudai.api.dto.BaseParamTest;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.CertificationRequestDto;
 import com.tuotiansudai.api.dto.v1_0.CertificationResponseDataDto;
@@ -11,7 +11,6 @@ import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.RegisterAccountDto;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.UserService;
@@ -24,7 +23,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
-public class MobileAppCertificationServiceTest extends ServiceTestBase{
+public class MobileAppCertificationServiceTest extends ServiceTestBase {
 
     @InjectMocks
     private MobileAppCertificationServiceImpl mobileAppCertificationService;
@@ -42,7 +41,7 @@ public class MobileAppCertificationServiceTest extends ServiceTestBase{
     private AccountService accountService;
 
     @Test
-    public void shouldValidateUserCertificationInfoIsOk(){
+    public void shouldValidateUserCertificationInfoIsOk() {
         CertificationRequestDto certificationRequestDto = new CertificationRequestDto();
         certificationRequestDto.setUserIdCardNumber("370405199112286014");
         certificationRequestDto.setUserRealName("拓天");
@@ -54,16 +53,16 @@ public class MobileAppCertificationServiceTest extends ServiceTestBase{
         baseDto.setData(payDataDto);
         payDataDto.setStatus(true);
 
-        when(userService.registerAccount(any(RegisterAccountDto.class))).thenReturn(baseDto);
+        when(accountService.registerAccount(any(RegisterAccountDto.class))).thenReturn(baseDto);
 
         BaseResponseDto<CertificationResponseDataDto> baseResponseDto = mobileAppCertificationService.validateUserCertificationInfo(certificationRequestDto);
-        assertEquals(ReturnMessage.SUCCESS.getCode(),baseResponseDto.getCode());
-        assertEquals("370405199112286014",baseResponseDto.getData().getUserIdCardNumber());
+        assertEquals(ReturnMessage.SUCCESS.getCode(), baseResponseDto.getCode());
+        assertEquals("370405199112286014", baseResponseDto.getData().getUserIdCardNumber());
 
     }
 
     @Test
-    public void shouldValidateUserCertificationInfoIsFailed(){
+    public void shouldValidateUserCertificationInfoIsFailed() {
         CertificationRequestDto certificationRequestDto = new CertificationRequestDto();
         certificationRequestDto.setUserIdCardNumber("123456789012345678");
         certificationRequestDto.setUserRealName("拓天");
@@ -77,10 +76,10 @@ public class MobileAppCertificationServiceTest extends ServiceTestBase{
 
         when(accountMapper.findByLoginName(anyString())).thenReturn(null);
         when(userMapper.findByLoginName(anyString())).thenReturn(new UserModel());
-        when(userService.registerAccount(any(RegisterAccountDto.class))).thenReturn(baseDto);
+        when(accountService.registerAccount(any(RegisterAccountDto.class))).thenReturn(baseDto);
         when(userService.isIdentityNumberExist(anyString())).thenReturn(false);
         BaseResponseDto<CertificationResponseDataDto> baseResponseDto = mobileAppCertificationService.validateUserCertificationInfo(certificationRequestDto);
-        assertEquals("0016",baseResponseDto.getCode());
+        assertEquals("0016", baseResponseDto.getCode());
 
     }
 }

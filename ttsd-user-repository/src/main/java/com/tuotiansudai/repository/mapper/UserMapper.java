@@ -1,8 +1,6 @@
 package com.tuotiansudai.repository.mapper;
 
-import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.repository.model.UserView;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 

@@ -2,21 +2,17 @@ package com.tuotiansudai.service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.base.Strings;
-import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
-import com.tuotiansudai.dto.*;
-import com.tuotiansudai.enums.MessageEventType;
-import com.tuotiansudai.enums.PushSource;
-import com.tuotiansudai.enums.PushType;
+import com.tuotiansudai.dto.RegisterUserDto;
 import com.tuotiansudai.exception.ReferrerRelationException;
-import com.tuotiansudai.message.EventMessage;
-import com.tuotiansudai.message.PushMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
-import com.tuotiansudai.repository.mapper.*;
+import com.tuotiansudai.repository.mapper.PrepareUserMapper;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.service.*;
+import com.tuotiansudai.service.RegisterUserService;
+import com.tuotiansudai.service.SmsCaptchaService;
+import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.util.*;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -42,8 +38,6 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private SmsCaptchaService smsCaptchaService;
 
-    @Autowired
-    private PayWrapperClient payWrapperClient;
 
     @Autowired
     private SmsWrapperClient smsWrapperClient;
@@ -167,29 +161,6 @@ public class UserServiceImpl implements UserService {
         return false;
     }
 
-    @Override
-    public BaseDto<PayDataDto> registerAccount(RegisterAccountDto dto) {
-        BaseDto<PayDataDto> baseDto = payWrapperClient.register(dto);
-        if (baseDto.getData().getStatus()) {
-            //Title:恭喜您认证成功
-            //Content:尊敬的{0}女士/先生，恭喜您认证成功，您的支付密码已经由联动优势发送至注册手机号码中,马上【绑定银行卡】开启赚钱之旅吧！
-            mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(MessageEventType.REGISTER_ACCOUNT_SUCCESS,
-                    Lists.newArrayList(dto.getLoginName()),
-                    MessageEventType.REGISTER_ACCOUNT_SUCCESS.getTitleTemplate(),
-                    MessageFormat.format(MessageEventType.REGISTER_ACCOUNT_SUCCESS.getContentTemplate(), dto.getUserName()),
-                    null
-            ));
-
-            mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(Lists.newArrayList(dto.getLoginName()),
-                    PushSource.ALL,
-                    PushType.REGISTER_ACCOUNT_SUCCESS,
-                    MessageEventType.REGISTER_ACCOUNT_SUCCESS.getTitleTemplate()));
-        }
-
-        return baseDto;
-    }
-
-    @Override
     @Transactional
     public boolean changePassword(String loginName, String originalPassword, String newPassword, String ip, String platform, String deviceId) {
 
@@ -280,15 +251,5 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserModel findByMobile(String mobile) {
         return userMapper.findByMobile(mobile);
-    }
-
-    @Override
-    public boolean resetUmpayPassword(String loginName, String identityNumber) {
-        UserModel userModel = userMapper.findByLoginName(loginName);
-        if (userModel == null || !userModel.getIdentityNumber().equals(identityNumber)) {
-            return false;
-        }
-        ResetUmpayPasswordDto resetUmpayPasswordDto = new ResetUmpayPasswordDto(loginName, identityNumber);
-        return payWrapperClient.resetUmpayPassword(resetUmpayPasswordDto);
     }
 }
