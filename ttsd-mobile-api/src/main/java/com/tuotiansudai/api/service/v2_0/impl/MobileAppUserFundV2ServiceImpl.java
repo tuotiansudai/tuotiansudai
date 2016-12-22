@@ -32,10 +32,6 @@ public class MobileAppUserFundV2ServiceImpl implements MobileAppUserFundV2Servic
     @Autowired
     private UserCouponService userCouponService;
 
-
-    GIVEN("赠送"),
-    PURCHASED("购买");
-
     @Override
     public BaseResponseDto<UserFundResponseDataDto> getUserFund(String loginName) {
         UserFundView userFundView = userFundMapper.findByLoginName(loginName);
