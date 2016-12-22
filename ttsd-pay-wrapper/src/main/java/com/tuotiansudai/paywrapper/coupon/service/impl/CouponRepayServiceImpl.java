@@ -51,7 +51,6 @@ import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 public class CouponRepayServiceImpl implements CouponRepayService {
@@ -64,9 +63,6 @@ public class CouponRepayServiceImpl implements CouponRepayService {
             CouponType.BIRTHDAY_COUPON);
 
     private static final String COUPON_ORDER_ID_TEMPLATE = "{0}X{1}";
-
-    @Autowired
-    private AccountMapper accountMapper;
 
     @Autowired
     private InvestMapper investMapper;
@@ -153,7 +149,6 @@ public class CouponRepayServiceImpl implements CouponRepayService {
             }
     }
 
-
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void generateCouponRepay(long loanId) {
@@ -166,7 +161,6 @@ public class CouponRepayServiceImpl implements CouponRepayService {
         boolean isPeriodUnitDay = LoanPeriodUnit.DAY == loanModel.getType().getLoanPeriodUnit();
         int totalPeriods = loanModel.getPeriods();
         DateTime lastRepayDate = new DateTime(loanModel.getRecheckTime()).withTimeAtStartOfDay().minusSeconds(1);
-
 
         for (int period = 1; period <= totalPeriods; period++) {
             int currentPeriodDuration = isPeriodUnitDay ? loanModel.getDuration() : InterestCalculator.DAYS_OF_MONTH;

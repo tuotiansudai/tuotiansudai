@@ -22,4 +22,3 @@ public interface CouponRepayService {
     void processOneCallback(CouponRepayNotifyRequestModel callbackRequestModel);
 
 }
-;

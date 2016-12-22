@@ -90,22 +90,16 @@ public class RepayPaybackInvestMessageConsumer implements MessageConsumer {
         if (!StringUtils.isEmpty(message)) {
             String[] msgParts = message.split(":");
             if (msgParts.length == 2) {
-                boolean flag = true;
                 logger.info("[MQ] ready to consume message: repay payback invest.");
                 if(String.valueOf(msgParts[1]).equals("0")){
-                    //flag = couponRepayService.repay(Long.parseLong(msgParts[0]), false);
+                    //正常还款之优惠券还款
+                    this.repay(Long.parseLong(msgParts[0]), false);
                 }else{
-                    //flag = couponRepayService.repay(Long.parseLong(msgParts[0]), true);
+                    //提前还款之优惠券还款
+                    this.repay(Long.parseLong(msgParts[0]), true);
                 }
-                //UserCouponModel userCoupon = couponAssignmentService.assign(msgParts[0], Long.parseLong(msgParts[1]), null);
+                logger.info("[MQ] consume message success.");
 
-                if (flag) {
-                    logger.info("[MQ] repay payback invest success.");
-                    logger.info("[MQ] consume message success.");
-                } else {
-                    logger.info("[MQ] repay payback invest fail.");
-                    logger.info("[MQ] consume message fail.");
-                }
             }
         }
     }
