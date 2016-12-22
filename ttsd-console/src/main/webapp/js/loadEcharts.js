@@ -263,7 +263,79 @@ define(['jquery','underscore','echarts','pageNumber'], function ($,_) {
                 };
                 return $.extend({}, MyChartsObject.ChartOptionTemplates.CommonLineOption, option);
 
-    },
+            },
+            aBar: function (data, name,xAxisName) {
+                var bar_datas = MyChartsObject.ChartDataFormate.FormateNOGroupData(data, 'bar');
+                var total = 0;
+                var totalVerify = 0;
+                var totalNoVerify = 0;
+                var totalInvestVerify = 0;
+                var totalInvestNoVerify = 0;
+                $.each(bar_datas.data,function (i,item){
+                     switch (item.name){
+                         case '已开通':
+                             total = item.value;
+                             break;
+                         case '已开通且免验':
+                             totalVerify = item.value;
+                             break;
+                         case '已开通未免验':
+                             totalNoVerify = item.value;
+                             break;
+                         case '已投资且生成合同':
+                             totalInvestVerify = item.value;
+                             break;
+                         case '已投资未生成合同':
+                             totalInvestNoVerify = item.value;
+                             break;
+                         default:
+                             total = 0;
+
+                     }
+                });
+
+                var option = {
+                    title:{
+                        text: '已开通总计: ' + total + '个 已开通且免验总计: ' + totalVerify + '个 已开通未免验总计: ' + totalNoVerify + '个\n已投资且生成合同总计: ' + totalInvestVerify + '个 已投资未生成合同总计: ' +  totalInvestNoVerify + "个",
+                        x:40,
+                        y:5,
+                        textStyle:{
+                            fontSize:15
+                        }
+                    },
+                    tooltip: {
+                        trigger: 'item',
+                        padding: [2, 2, 2, 2],
+                        formatter: function(option) {
+                            var data=bar_datas.data,
+                                keyName=option.name;
+                            var filterData=_.where(data,{name: keyName})[0];
+                            return "<ul style='list-style:none;text-align: left;padding-left: inherit'>" +
+                                "<li>"+option.seriesName + ':' + filterData.value + "</li>" +
+                                "<ul>";
+                        }
+                    },
+                    xAxis: [{
+                        type: 'category',
+                        name:xAxisName,
+                        data: bar_datas.category
+                    }],
+                    yAxis: [{
+                        name: name || '',
+                        type: 'value',
+                        nameLocation: 'end',
+                        boundaryGap: [0, 0.01]
+                    }],
+                    series: [{
+                        name: name || '',
+                        axisLabel: { interval: 0 },
+                        type: 'bar',
+                        data: bar_datas.data
+                    }]
+
+                };
+                return $.extend({}, MyChartsObject.ChartOptionTemplates.CommonLineOption, option);
+            },
             Pie: function (data, name) {
                 var pie_datas = MyChartsObject.ChartDataFormate.FormateNOGroupData(data,'pie');
                 var total = 0;

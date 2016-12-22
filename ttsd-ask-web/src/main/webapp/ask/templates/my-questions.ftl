@@ -17,7 +17,7 @@
 
                             <#list question.tags as tag>
                             <em class="fr tag">
-                                <a ref="/question/category/${tag.name()?lower_case}">${tag.description}</a>
+                                <a ref="/question/category/${tag.name()}">${tag.description}</a>
                              </em>
                             </#list>
                     </dd>

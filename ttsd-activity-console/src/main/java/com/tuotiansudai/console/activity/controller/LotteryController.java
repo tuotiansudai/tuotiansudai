@@ -20,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/activity-console/activity-manage")
@@ -47,7 +48,7 @@ public class LotteryController {
         modelAndView.addObject("hasPreviousPage", hasPreviousPage);
         modelAndView.addObject("hasNextPage", hasNextPage);
         modelAndView.addObject("mobile", mobile);
-        modelAndView.addObject("prizeTypes", ActivityCategory.getTaskActivityCategory());
+        modelAndView.addObject("prizeTypes", ActivityCategory.getTaskActivityCategory().stream().filter(n -> n != ActivityCategory.HEADLINES_TODAY_ACTIVITY).collect(Collectors.toList()));
         modelAndView.addObject("selectPrize", prizeType == null ? "" : prizeType);
         return modelAndView;
     }

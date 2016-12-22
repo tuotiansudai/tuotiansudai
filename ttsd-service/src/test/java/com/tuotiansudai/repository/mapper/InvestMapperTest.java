@@ -12,6 +12,8 @@ import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -283,9 +285,9 @@ public class InvestMapperTest {
         long loanId = idGenerator.generate();
         UserModel investorModel = createUser("investorModelRound5Test");
         UserModel loanerModel = createUser("loanerModelRound5Test");
-        LoanModel loanModel = createLoanByUserId(loanerModel.getLoginName(), loanId,LoanStatus.REPAYING);
+        LoanModel loanModel = createLoanByUserId(loanerModel.getLoginName(), loanId, LoanStatus.REPAYING);
         createLoanDetailsByLoanId(loanModel);
-        InvestModel investModel = createInvest(investorModel.getLoginName(), loanId, InvestStatus.SUCCESS,TransferStatus.TRANSFERABLE);
+        InvestModel investModel = createInvest(investorModel.getLoginName(), loanId, InvestStatus.SUCCESS, TransferStatus.TRANSFERABLE);
         LoanRepayModel loanRepayModel = getFakeLoanRepayModel(loanModel, 1, RepayStatus.REPAYING, new DateTime().plusDays(6).toDate(), new DateTime().plusDays(6).toDate(), 1000l, 2000l, 3000l, 4000l);
         loanRepayMapper.create(Lists.newArrayList(loanRepayModel));
         InvestRepayModel investRepayModel = getFakeInvestRepayModel(investModel, 1, RepayStatus.REPAYING, new DateTime().plusDays(6).toDate(), new DateTime().plusDays(6).toDate(), 1000l, 2000l, 3000l, 4000l);
@@ -350,9 +352,9 @@ public class InvestMapperTest {
         long loanId = idGenerator.generate();
         UserModel investorModel = createUser("investorModelRound5Test");
         UserModel loanerModel = createUser("loanerModelRound5Test");
-        LoanModel loanModel = createLoanByUserId(loanerModel.getLoginName(), loanId,LoanStatus.REPAYING);
+        LoanModel loanModel = createLoanByUserId(loanerModel.getLoginName(), loanId, LoanStatus.REPAYING);
         createLoanDetailsByLoanId(loanModel);
-        InvestModel investModel = createInvest(investorModel.getLoginName(), loanId, InvestStatus.SUCCESS,TransferStatus.TRANSFERABLE);
+        InvestModel investModel = createInvest(investorModel.getLoginName(), loanId, InvestStatus.SUCCESS, TransferStatus.TRANSFERABLE);
         TransferApplicationModel transferApplicationModel = getFakeTransferApplicationModel(investorModel.getLoginName(), TransferStatus.CANCEL, investModel.getId(), loanModel.getId());
         transferApplicationModel.setApplicationTime(new DateTime().minusDays(1).toDate());
         transferApplicationMapper.create(transferApplicationModel);
@@ -389,7 +391,7 @@ public class InvestMapperTest {
         long loanId = idGenerator.generate();
         UserModel investorModel = createUser("investorModelRound5Test");
         UserModel loanerModel = createUser("loanerModelRound5Test");
-        LoanModel loanModel = createLoanByUserId(loanerModel.getLoginName(), loanId,LoanStatus.REPAYING);
+        LoanModel loanModel = createLoanByUserId(loanerModel.getLoginName(), loanId, LoanStatus.REPAYING);
         createLoanDetailsByLoanId(loanModel);
         InvestModel investModel = createInvest(investorModel.getLoginName(), loanId, InvestStatus.SUCCESS,TransferStatus.TRANSFERABLE);
         LoanRepayModel loanRepayModel = getFakeLoanRepayModel(loanModel, 1, RepayStatus.REPAYING, new DateTime().plusDays(1).toDate(), new DateTime().plusDays(1).toDate(), 1000l, 2000l, 3000l, 4000l);
@@ -902,5 +904,48 @@ public class InvestMapperTest {
 
         long count = investMapper.countInvestorSuccessInvestByInvestTime(User_ID2, DateUtils.addMonths(DateTime.now().toDate(), -1), DateUtils.addMonths(DateTime.now().toDate(), 1));
         assertEquals(count, 1);
+    }
+
+    @Test
+    public void shouldSumInvestAmountConsoleIsOk(){
+        LoanModel fakeLoanModel = new LoanModel();
+        fakeLoanModel.setId(idGenerator.generate());
+        fakeLoanModel.setName(User_ID);
+        fakeLoanModel.setLoanerLoginName(User_ID);
+        fakeLoanModel.setLoanerUserName(User_ID);
+        fakeLoanModel.setLoanerIdentityNumber("111111111111111111");
+        fakeLoanModel.setAgentLoginName(User_ID);
+        fakeLoanModel.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
+        fakeLoanModel.setPeriods(3);
+        fakeLoanModel.setStatus(LoanStatus.RAISING);
+        fakeLoanModel.setActivityType(ActivityType.NORMAL);
+        fakeLoanModel.setFundraisingStartTime(new Date());
+        fakeLoanModel.setFundraisingEndTime(new Date());
+        fakeLoanModel.setDescriptionHtml("html");
+        fakeLoanModel.setDescriptionText("text");
+        fakeLoanModel.setCreatedTime(new Date());
+        fakeLoanModel.setProductType(ProductType._180);
+        fakeLoanModel.setPledgeType(PledgeType.HOUSE);
+        loanMapper.create(fakeLoanModel);
+
+        Date startDate = DateTime.parse("2014-10-01 00:00:00", DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+        Date endDate = DateTime.parse("2014-10-01 23:59:59", DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+
+        long investAmount = investMapper.sumInvestAmountConsole(null, null, null, null, null, startDate, endDate, null, null);
+        assertEquals(investAmount, 0);
+
+        InvestModel investModel2 = this.getFakeInvestModel();
+        investModel2.setLoanId(fakeLoanModel.getId());
+        investModel2.setLoginName(User_ID2);
+        investModel2.setInvestTime(DateTime.now().toDate());
+        investModel2.setStatus(InvestStatus.SUCCESS);
+        investModel2.setInvestTime(DateTime.now().toDate());
+        investModel2.setCreatedTime(DateTime.parse("2014-10-01 15:31:12", DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate());
+        investModel2.setAmount(100);
+        investMapper.create(investModel2);
+
+        investAmount = investMapper.sumInvestAmountConsole(null, null, null, null, null, startDate, endDate, null, null);
+        assertEquals(investAmount, investModel2.getAmount());
+
     }
 }

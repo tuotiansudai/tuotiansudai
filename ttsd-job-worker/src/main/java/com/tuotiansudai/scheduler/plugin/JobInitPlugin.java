@@ -102,7 +102,7 @@ public class JobInitPlugin implements SchedulerPlugin {
                     .withIdentity(jobGroup, jobName)
                     .submit();
         } catch (SchedulerException e) {
-            logger.debug(e.getLocalizedMessage(), e);
+            logger.info(e.getLocalizedMessage(), e);
         }
     }
 
@@ -119,7 +119,7 @@ public class JobInitPlugin implements SchedulerPlugin {
                     .withIdentity(jobGroup, jobName)
                     .submit();
         } catch (SchedulerException e) {
-            logger.debug(e.getLocalizedMessage(), e);
+            logger.info(e.getLocalizedMessage(), e);
         }
     }
 
@@ -130,7 +130,7 @@ public class JobInitPlugin implements SchedulerPlugin {
                     .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 1 * * ? *").inTimeZone(TimeZone.getTimeZone(TIMEZONE_SHANGHAI)))
                     .withIdentity(JobType.CalculateDefaultInterest.name(), JobType.CalculateDefaultInterest.name()).submit();
         } catch (SchedulerException e) {
-            logger.debug(e.getLocalizedMessage(), e);
+            logger.info(e.getLocalizedMessage(), e);
         }
     }
 
@@ -140,7 +140,7 @@ public class JobInitPlugin implements SchedulerPlugin {
                     .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 2 * * ? *").inTimeZone(TimeZone.getTimeZone(TIMEZONE_SHANGHAI)))
                     .withIdentity(JobType.AutoReFreshAreaByMobile.name(), JobType.AutoReFreshAreaByMobile.name()).submit();
         } catch (SchedulerException e) {
-            logger.debug(e.getLocalizedMessage(), e);
+            logger.info(e.getLocalizedMessage(), e);
         }
     }
 
@@ -162,7 +162,7 @@ public class JobInitPlugin implements SchedulerPlugin {
                     .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 14 * * ? *").inTimeZone(TimeZone.getTimeZone(TIMEZONE_SHANGHAI)))
                     .withIdentity(JobType.LoanRepayNotify.name(), JobType.LoanRepayNotify.name()).submit();
         } catch (SchedulerException e) {
-            logger.debug(e.getLocalizedMessage(), e);
+            logger.info(e.getLocalizedMessage(), e);
         }
     }
 
@@ -172,7 +172,7 @@ public class JobInitPlugin implements SchedulerPlugin {
                     .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 12 5 * ? *").inTimeZone(TimeZone.getTimeZone(TIMEZONE_SHANGHAI)))
                     .withIdentity(JobType.BirthdayNotify.name(), JobType.BirthdayNotify.name()).submit();
         } catch (SchedulerException e) {
-            logger.debug(e.getLocalizedMessage(), e);
+            logger.info(e.getLocalizedMessage(), e);
         }
     }
 
@@ -182,7 +182,7 @@ public class JobInitPlugin implements SchedulerPlugin {
                     .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 16 * * ? *").inTimeZone(TimeZone.getTimeZone(TIMEZONE_SHANGHAI)))
                     .withIdentity(JobType.ExperienceRepay.name(), JobType.ExperienceRepay.name()).submit();
         } catch (SchedulerException e) {
-            logger.debug(e.getLocalizedMessage(), e);
+            logger.info(e.getLocalizedMessage(), e);
         }
     }
 
@@ -192,7 +192,7 @@ public class JobInitPlugin implements SchedulerPlugin {
                     .runWithSchedule(CronScheduleBuilder.cronSchedule("0 30 1 ? * 7#1 *").inTimeZone(TimeZone.getTimeZone(TIMEZONE_SHANGHAI)))
                     .withIdentity(JobType.CheckUserBalanceMonthly.name(), JobType.CheckUserBalanceMonthly.name()).submit();
         } catch (SchedulerException e) {
-            logger.debug(e.getLocalizedMessage(), e);
+            logger.info(e.getLocalizedMessage(), e);
         }
     }
 
@@ -209,7 +209,7 @@ public class JobInitPlugin implements SchedulerPlugin {
                     .withIdentity(jobGroup, jobName)
                     .submit();
         } catch (SchedulerException e) {
-            logger.debug(e.getLocalizedMessage(), e);
+            logger.info(e.getLocalizedMessage(), e);
         }
     }
 
@@ -226,7 +226,7 @@ public class JobInitPlugin implements SchedulerPlugin {
                     .withIdentity(jobGroup, jobName)
                     .submit();
         } catch (SchedulerException e) {
-            logger.debug(e.getLocalizedMessage(), e);
+            logger.info(e.getLocalizedMessage(), e);
         }
     }
 
@@ -236,7 +236,7 @@ public class JobInitPlugin implements SchedulerPlugin {
                     .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 9 * * ? *").inTimeZone(TimeZone.getTimeZone(TIMEZONE_SHANGHAI)))
                     .withIdentity(JobType.PlatformBalanceLowNotify.name(), JobType.PlatformBalanceLowNotify.name()).submit();
         } catch (SchedulerException e) {
-            logger.debug(e.getLocalizedMessage(), e);
+            logger.info(e.getLocalizedMessage(), e);
         }
     }
 
@@ -250,7 +250,7 @@ public class JobInitPlugin implements SchedulerPlugin {
                     .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 9 * * ? *").inTimeZone(TimeZone.getTimeZone(TIMEZONE_SHANGHAI)))
                     .withIdentity(JobType.BirthdayMessage.name(), JobType.BirthdayMessage.name()).submit();
         } catch (SchedulerException e) {
-            logger.debug(e.getLocalizedMessage(), e);
+            logger.info(e.getLocalizedMessage(), e);
         }
     }
 }

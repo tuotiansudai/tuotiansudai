@@ -138,7 +138,7 @@ public class LoanRepayServiceImpl implements LoanRepayService {
             loanModel.setStatus(LoanStatus.OVERDUE);
             loanMapper.update(loanModel);
         }
-        logger.debug(MessageFormat.format("loanRepayId:{0} couponRepay status to overdue", loanRepayModel.getId()));
+        logger.info(MessageFormat.format("loanRepayId:{0} couponRepay status to overdue", loanRepayModel.getId()));
         List<CouponRepayModel> couponRepayModels = couponRepayMapper.findCouponRepayByLoanIdAndPeriod(loanModel.getId(), loanRepayModel.getPeriod());
         for (CouponRepayModel couponRepayModel : couponRepayModels) {
             if (couponRepayModel.getRepayDate().before(new Date())) {
