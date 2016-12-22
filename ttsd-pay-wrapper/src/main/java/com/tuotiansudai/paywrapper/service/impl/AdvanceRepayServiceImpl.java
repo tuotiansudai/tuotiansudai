@@ -380,7 +380,7 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
             logger.info(MessageFormat.format("[Advance Repay {0}] update loan({1}) status to COMPLETE is {2}",
                     String.valueOf(loanRepayId), String.valueOf(loanId), String.valueOf(dto.getData().getStatus())));
 
-            mqWrapperClient.sendMessage(MessageQueue.Repay_PaybackInvest, loanRepayId + ":" +  "1");
+            //mqWrapperClient.pu(MessageQueue.Repay_PaybackInvest, loanRepayId + ":" +  "1");
             return dto.getData().getStatus();
         }
 

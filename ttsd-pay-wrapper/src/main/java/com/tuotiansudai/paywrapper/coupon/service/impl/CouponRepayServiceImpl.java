@@ -212,6 +212,13 @@ public class CouponRepayServiceImpl implements CouponRepayService {
         logger.info(MessageFormat.format("[Coupon Repay {0}] coupon repay is async send success", String.valueOf(loanRepayId)));
     }
 
+
+
+
+
+
+    
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void generateCouponRepay(long loanId) {

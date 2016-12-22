@@ -424,7 +424,7 @@ public class NormalRepayServiceImpl implements NormalRepayService {
             logger.info(MessageFormat.format("[Normal Repay {0}] update loan({1}) status to {2} is {3}",
                     String.valueOf(loanRepayId), String.valueOf(loanId), (isLastPeriod ? LoanStatus.COMPLETE.name() : LoanStatus.REPAYING.name()), String.valueOf(dto.getData().getStatus())));
 
-            mqWrapperClient.sendMessage(MessageQueue.Repay_PaybackInvest, loanRepayId + ":" +  "0");
+            //mqWrapperClient.sendMessage(MessageQueue.Repay_PaybackInvest, loanRepayId + ":" +  "0");
             return dto.getData().getStatus();
 
         }
