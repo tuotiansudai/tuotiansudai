@@ -157,7 +157,7 @@ public class UserFundResponseDataDto extends BaseResponseDataDto {
         return membershipPoint;
     }
 
-    public Date getMembershipExpiredDate() {
+    public String getMembershipExpiredDate() {
         return membershipExpiredDate;
     }
 }
