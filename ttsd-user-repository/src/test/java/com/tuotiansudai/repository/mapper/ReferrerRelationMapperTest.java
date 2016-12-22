@@ -3,7 +3,6 @@ package com.tuotiansudai.repository.mapper;
 import com.tuotiansudai.repository.model.ReferrerRelationModel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
-import com.tuotiansudai.util.IdGenerator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,16 +23,15 @@ public class ReferrerRelationMapperTest {
 
     @Autowired
     private ReferrerRelationMapper referrerRelationMapper;
-    @Autowired
-    private IdGenerator idGenerator;
 
     @Autowired
     private UserMapper userMapper;
 
     @Test
     public void shouldCreateReferrerRelation() throws Exception {
-        UserModel  user1 = new UserModel();
-        user1.setId(idGenerator.generate());
+        long newId = System.currentTimeMillis();
+        UserModel user1 = new UserModel();
+        user1.setId(newId);
         user1.setLoginName("test1");
         user1.setPassword("123");
         user1.setMobile("13900000000");
@@ -42,8 +40,8 @@ public class ReferrerRelationMapperTest {
         user1.setStatus(UserStatus.ACTIVE);
         user1.setSalt("123");
         userMapper.create(user1);
-        UserModel  user2 = new UserModel();
-        user2.setId(idGenerator.generate());
+        UserModel user2 = new UserModel();
+        user2.setId(newId + 1);
         user2.setLoginName("test2");
         user2.setPassword("123");
         user2.setMobile("13900000001");
@@ -66,12 +64,13 @@ public class ReferrerRelationMapperTest {
 
     @Test
     public void findReferrerCountByReferrerLoginName() throws Exception {
+        long newId = System.currentTimeMillis();
         ReferrerRelationModel referrerRelationModel = new ReferrerRelationModel();
         referrerRelationModel.setReferrerLoginName("test11");
         referrerRelationModel.setLoginName("test11");
         referrerRelationModel.setLevel(1);
-        UserModel  user1 = new UserModel();
-        user1.setId(idGenerator.generate());
+        UserModel user1 = new UserModel();
+        user1.setId(newId);
         user1.setLoginName("test11");
         user1.setPassword("123");
         user1.setMobile("13900000000");
@@ -83,6 +82,6 @@ public class ReferrerRelationMapperTest {
         userMapper.create(user1);
         referrerRelationMapper.create(referrerRelationModel);
         int count = referrerRelationMapper.findReferrerCountByReferrerLoginName("test11");
-        assertEquals(count,1);
+        assertEquals(count, 1);
     }
 }
