@@ -86,7 +86,7 @@ public class UserFundResponseDataDto extends BaseResponseDataDto {
         this.membershipLevel = membershipLevel;
         this.membershipPoint = membershipPoint;
         this.usableUserCouponCount = usableUserCouponCount;
-        this.membershipExpiredDate = membershipExpiredDate != null ? "有效期至:" + new SimpleDateFormat("yyyy-mm-dd").format(membershipExpiredDate) : null;
+        this.membershipExpiredDate = membershipExpiredDate != null ? "有效期至:" + new SimpleDateFormat("yyyy-MM-dd").format(membershipExpiredDate) : null;
     }
 
     public long getBalance() {
