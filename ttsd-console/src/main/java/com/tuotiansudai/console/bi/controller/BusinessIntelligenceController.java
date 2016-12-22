@@ -219,4 +219,12 @@ public class BusinessIntelligenceController {
             @RequestParam(name = "endTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime) {
         return businessIntelligenceService.queryPlatformOut(startTime, endTime,granularity);
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/anxin-user-status-statistics", method = RequestMethod.GET)
+    public List<KeyValueModel> queryAnxinUserStatusStatistics(
+            @RequestParam(name = "startTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
+            @RequestParam(name = "endTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime) {
+        return businessIntelligenceService.queryAnxinUserStatusStatistics(startTime, endTime);
+    }
 }

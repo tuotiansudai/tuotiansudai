@@ -1,5 +1,6 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.AgreementBusinessType;
@@ -17,8 +18,9 @@ import com.tuotiansudai.paywrapper.repository.model.async.request.PtpMerBindAgre
 import com.tuotiansudai.paywrapper.service.AgreementService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.BankCardMapper;
-import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.BankCardModel;
+import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.util.IdGenerator;
+import com.tuotiansudai.util.JsonConverter;
 import org.apache.log4j.Logger;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
+import java.util.Date;
 import java.util.Map;
 
 @Service
@@ -45,13 +48,19 @@ public class AgreementServiceImpl implements AgreementService {
     @Autowired
     private MQWrapperClient mqWrapperClient;
 
+    @Autowired
+    private IdGenerator idGenerator;
+
     @Override
     @Transactional
     public BaseDto<PayFormDataDto> agreement(AgreementDto dto) {
         AccountModel accountModel = accountMapper.findByLoginName(dto.getLoginName());
 
-
         PtpMerBindAgreementRequestModel ptpMerBindAgreementRequestModel = new PtpMerBindAgreementRequestModel(accountModel.getPayUserId(), dto);
+
+        // 发送用户行为日志 MQ消息
+        sendUserOpLogMessageQueue(dto);
+
         try {
             return payAsyncClient.generateFormData(PtpMerBindAgreementRequestMapper.class, ptpMerBindAgreementRequestModel);
         } catch (PayException e) {
@@ -60,6 +69,28 @@ public class AgreementServiceImpl implements AgreementService {
             payFormDataDto.setMessage(e.getMessage());
             baseDto.setData(payFormDataDto);
             return baseDto;
+        }
+    }
+
+
+    private void sendUserOpLogMessageQueue(AgreementDto dto){
+
+        UserOpType opType;
+
+        if (dto.isAutoInvest() || dto.isNoPasswordInvest()) {
+            opType = UserOpType.NO_PASSWORD_AGREEMENT; // 开通免密支付协议
+        } else if (dto.isFastPay()) {
+            opType = UserOpType.FAST_PAY_AGREEMENT; // 开通快捷支付协议
+        } else {
+            return;
+        }
+
+        UserOpLogModel logModel = new UserOpLogModel(idGenerator.generate(), dto.getLoginName(), opType, dto.getIp(), dto.getDeviceId(), dto.getSource(), null);
+
+        try {
+            mqWrapperClient.sendMessage(MessageQueue.UserOperateLog, JsonConverter.writeValueAsString(logModel));
+        } catch (JsonProcessingException e) {
+            logger.error("[MQ] agreement, send UserOperateLog fail.", e);
         }
     }
 

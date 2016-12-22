@@ -54,6 +54,12 @@ require(['jquery','loadEcharts','bootstrapDatetimepicker'],function($,loadEchart
         format: 'YYYY-MM-DD'
     });
 
+    $('.anxin-start-date,.anxin-end-date').datetimepicker({
+        format: 'YYYY-MM-DD',
+        minDate : '2016-11-15',
+        maxDate : preDate
+    });
+
     loadEcharts.ChartsProvince(function(data) {
         var provinceList=[],i= 0,len=data.length;
         provinceList.push('<option value="">全部省份</option>');
@@ -81,8 +87,17 @@ require(['jquery','loadEcharts','bootstrapDatetimepicker'],function($,loadEchart
     initEndDate=loadEcharts.datetimeFun.getBeforeDate(0);
     $('.start-date').val(initStartDate);
     $('.end-date').val(initEndDate);
-    $('#repayStartTime').val('2016-01-01');
+
+    $('.anxin-start-date').val("2016-11-15");
+    $('.anxin-end-date').val(loadEcharts.datetimeFun.getBeforeDate(0));
+
+    $('#repayStartTime').val('2015-01-01');
     $('#repayEndTime').val(loadEcharts.datetimeFun.getBeforeDate(1));
+
+    $('#expenseStartTime').val('2015-01-01');
+    $('#expenseEndTime').val(loadEcharts.datetimeFun.getBeforeDate(1));
+
+
 
     $('.granularity-select').on('change', function(){
         if ($(this).val() == 'Hourly') {
@@ -136,6 +151,9 @@ require(['jquery','loadEcharts','bootstrapDatetimepicker'],function($,loadEchart
                         option = loadEcharts.ChartOptionTemplates.Lines(data, name);
                         option.title.text = '';
                         break;
+                    case 'aBar':
+                        option = loadEcharts.ChartOptionTemplates.aBar(data, name,xAxisName);
+                        break;
                     default:break;
                 }
                 var container =reportBoxDOM[0],
@@ -185,4 +203,7 @@ require(['jquery','loadEcharts','bootstrapDatetimepicker'],function($,loadEchart
 
     /*平台支出*/
     showReport('#platformOut','/bi/platform-out','platformOutDistribution','金额','Lines');
+
+    /*安心签用户状态统计*/
+    showReport('#anxinUserStatus','/bi/anxin-user-status-statistics','anxinUserStatusStatistics','数量(个)','aBar','用户状态');
 });

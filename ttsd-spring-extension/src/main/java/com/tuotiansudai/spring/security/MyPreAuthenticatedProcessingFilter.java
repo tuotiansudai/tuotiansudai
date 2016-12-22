@@ -25,7 +25,7 @@ public class MyPreAuthenticatedProcessingFilter extends GenericFilterBean {
 
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         if (logger.isDebugEnabled()) {
-            logger.debug("Checking secure context token: " + SecurityContextHolder.getContext().getAuthentication());
+            logger.info("Checking secure context token: " + SecurityContextHolder.getContext().getAuthentication());
         }
 
         SignInResult signInResult = signInClient.verifyToken(LoginUserInfo.getToken(), Source.WEB);

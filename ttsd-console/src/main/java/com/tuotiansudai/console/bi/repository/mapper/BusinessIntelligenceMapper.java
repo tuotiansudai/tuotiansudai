@@ -46,4 +46,8 @@ public interface BusinessIntelligenceMapper {
     List<KeyValueModel> querySystemBillOutByCreatedTime(@Param(value = "startTime") Date startTime,
                                                         @Param(value = "endTime") Date endTime,
                                                         @Param("granularity") Granularity granularity);
+
+    List<KeyValueModel> queryAnxinUserStatus(@Param("startTime") Date startTime, @Param("endTime") Date endTime);
+
+    List<KeyValueModel> queryAnxinInvestSuccess(@Param("startTime") Date startTime, @Param("endTime") Date endTime);
 }

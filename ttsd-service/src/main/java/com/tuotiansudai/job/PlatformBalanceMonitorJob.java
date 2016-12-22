@@ -41,7 +41,7 @@ public class PlatformBalanceMonitorJob implements Job {
 
             String balance = data.get("账户余额");
 
-            logger.debug("platform balance is: " + balance);
+            logger.info("platform balance is: " + balance);
 
             if (Double.parseDouble(balance) <= Double.parseDouble(warningLine)) {
 

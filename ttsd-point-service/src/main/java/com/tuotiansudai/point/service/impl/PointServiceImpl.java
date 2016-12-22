@@ -61,7 +61,7 @@ public class PointServiceImpl implements PointService {
         long point = new BigDecimal((investModel.getAmount()*duration/InterestCalculator.DAYS_OF_YEAR)).divide(new BigDecimal(100), 0, BigDecimal.ROUND_DOWN).longValue();
         point = getMaterialActivityPoint(loanModel.getProductType(),loanModel.getActivityType(), point,investModel.getId());
         pointBillService.createPointBill(investModel.getLoginName(), investModel.getId(), PointBusinessType.INVEST, point);
-        logger.debug(MessageFormat.format("{0} has obtained point {1}", investModel.getId(), point));
+        logger.info(MessageFormat.format("{0} has obtained point {1}", investModel.getId(), point));
     }
 
     @Override
@@ -78,7 +78,7 @@ public class PointServiceImpl implements PointService {
         Date activityBeginTime = DateTime.parse(activityConcretePeriod.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
         Date activityEndTime = DateTime.parse(activityConcretePeriod.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
         if(nowDate.before(activityEndTime) && nowDate.after(activityBeginTime)){
-            logger.debug(MessageFormat.format("{0} has double obtained point {1}", investId, point));
+            logger.info(MessageFormat.format("{0} has double obtained point {1}", investId, point));
             return point * 2;
         }
         return point;
