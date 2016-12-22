@@ -9,14 +9,13 @@ require(['jquery','drawCircle','commonFun','logintip','register_common'], functi
         (function() {
             var locationUrl=location.href;
             var sourceKind=globalFun.parseURL(locationUrl);
-            if(sourceKind.params.source=='app') {
-                location.href="/login";
-            }
-            else {
-                $loginInBtn.on('click',function() {
+            $loginInBtn.on('click',function() {
+                if(sourceKind.params.source=='app') {
+                    location.href="/login";
+                } else {
                     $('.no-login-text',$newYearDayFrame).trigger('click');  //弹框登录
-                })
-            }
+                }
+            })
 
         })();
 
