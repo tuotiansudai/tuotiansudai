@@ -105,7 +105,8 @@ public class ChristmasPrizeService {
 
             //每满2000元均增加一次
             long sumAmount = investMapper.sumInvestAmountByLoginNameInvestTimeProductType(userModel.getLoginName(), activityChristmasPrizeStartTime, activityChristmasEndTime, Lists.newArrayList(ProductType._90, ProductType._180, ProductType._360));
-            lotteryTime += (int) (sumAmount / 200000);
+//            lotteryTime += (int) (sumAmount / 200000);
+            lotteryTime += (int) (sumAmount / 100);
 
             lotteryTime = lotteryTime >= 10 ? 10 : lotteryTime;
 
