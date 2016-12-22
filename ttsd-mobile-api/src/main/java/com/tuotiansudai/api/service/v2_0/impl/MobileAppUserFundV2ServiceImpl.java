@@ -32,7 +32,6 @@ public class MobileAppUserFundV2ServiceImpl implements MobileAppUserFundV2Servic
     @Autowired
     private UserCouponService userCouponService;
 
-
     @Override
     public BaseResponseDto<UserFundResponseDataDto> getUserFund(String loginName) {
         UserFundView userFundView = userFundMapper.findByLoginName(loginName);
@@ -48,7 +47,7 @@ public class MobileAppUserFundV2ServiceImpl implements MobileAppUserFundV2Servic
         long point = accountModel != null ? accountModel.getPoint() : 0;
         long membershipPoint = accountModel != null ? accountModel.getMembershipPoint() : 0;
         int usableUserCouponCount = userCouponService.getUnusedUserCoupons(loginName).size();
-        Date membershipExpiredDate = userMembershipModel != null ? userMembershipModel.getExpiredTime() : null;
+        Date membershipExpiredDate = userMembershipModel != null && (userMembershipModel.getType().name().equals("GIVEN") || userMembershipModel.getType().name().equals("PURCHASED")) ? userMembershipModel.getExpiredTime() : null;
 
         BaseResponseDto<UserFundResponseDataDto> dto = new BaseResponseDto<>(ReturnMessage.SUCCESS);
         dto.setData(new UserFundResponseDataDto(userFundView, balance, point, membershipLevel, membershipPoint, usableUserCouponCount, membershipExpiredDate));
