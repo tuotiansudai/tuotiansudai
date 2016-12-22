@@ -141,7 +141,7 @@ if __name__ == '__main__':
         host=options.mysql_host, database=options.mysql_database,
         user=options.mysql_user, password=options.mysql_password)
 
-    settings = {'debug': True, 'db': db, 'default_handler_class': Error404Handler,
+    settings = {'debug': False, 'db': db, 'default_handler_class': Error404Handler,
                 'default_handler_args': dict(status_code=404)}
 
     app = tornado.web.Application([
