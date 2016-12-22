@@ -20,8 +20,6 @@ define("wdzj_password", default="test", help="wdzj api password")
 define("redis_host", default="192.168.33.10", help="redis host")
 define("redis_port", default="6379", help="redis port")
 
-_redis = redis.StrictRedis(host=options.redis_host, port=options.redis_port, db=0)
-
 
 class Error404Handler(tornado.web.ErrorHandler):
     def write_error(self, *args, **kwargs):
@@ -36,7 +34,7 @@ class RefreshTokenHandler(RequestHandler):
                 raise HTTPError(403)
             else:
                 uuid1 = str(uuid.uuid1())
-                _redis.set("token", uuid1, 3600)
+                self.settings['_redis'].set("token", uuid1, 3600)
                 self.write({'data': {'token': uuid1}})
         else:
             raise HTTPError(400)
@@ -46,7 +44,7 @@ class BaseHandler(RequestHandler):
     @gen.coroutine
     def prepare(self):
         token = self.get_argument('token', None)
-        cached_token = _redis.get("token")
+        cached_token = self.settings['_redis'].get("token")
         if not token or cached_token != token:
             raise HTTPError(403)
 
@@ -141,7 +139,9 @@ if __name__ == '__main__':
         host=options.mysql_host, database=options.mysql_database,
         user=options.mysql_user, password=options.mysql_password)
 
-    settings = {'debug': False, 'db': db, 'default_handler_class': Error404Handler,
+    _redis = redis.StrictRedis(host=options.redis_host, port=options.redis_port, db=0)
+
+    settings = {'debug': False, 'db': db, '_redis': _redis, 'default_handler_class': Error404Handler,
                 'default_handler_args': dict(status_code=404)}
 
     app = tornado.web.Application([
