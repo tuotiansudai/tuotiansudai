@@ -9,6 +9,8 @@ import java.util.List;
 @Repository
 public interface AnnounceMapper {
 
+    AnnounceModel findById(long id);
+
     int findAnnounceCount(@Param("title") String title);
 
     List<AnnounceModel> findAnnounce(@Param("title") String title,
@@ -20,6 +22,4 @@ public interface AnnounceMapper {
     void update(AnnounceModel announceModel);
 
     void delete(long id);
-
-    AnnounceModel findById(long id);
 }

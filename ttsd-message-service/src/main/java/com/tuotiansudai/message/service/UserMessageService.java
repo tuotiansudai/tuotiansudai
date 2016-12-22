@@ -1,8 +1,6 @@
 package com.tuotiansudai.message.service;
 
-import com.google.common.base.Optional;
 import com.google.common.base.Strings;
-import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.BasePaginationDataDto;
@@ -28,17 +26,21 @@ import java.util.stream.Collectors;
 @Service
 public class UserMessageService {
 
-    @Autowired
-    private MessageMapper messageMapper;
+    private final MessageMapper messageMapper;
+
+    private final UserMessageMapper userMessageMapper;
+
+    private final MessageUserGroupDecisionManager messageUserGroupDecisionManager;
+
+    private final MQWrapperClient mqWrapperClient;
 
     @Autowired
-    private UserMessageMapper userMessageMapper;
-
-    @Autowired
-    private MessageUserGroupDecisionManager messageUserGroupDecisionManager;
-
-    @Autowired
-    private MQWrapperClient mqWrapperClient;
+    public UserMessageService(MessageMapper messageMapper, UserMessageMapper userMessageMapper, MessageUserGroupDecisionManager messageUserGroupDecisionManager, MQWrapperClient mqWrapperClient) {
+        this.messageMapper = messageMapper;
+        this.userMessageMapper = userMessageMapper;
+        this.messageUserGroupDecisionManager = messageUserGroupDecisionManager;
+        this.mqWrapperClient = mqWrapperClient;
+    }
 
     public BasePaginationDataDto<UserMessagePaginationItemDto> getUserMessages(String loginName, String mobile, int index, int pageSize) {
         this.generateUserMessages(loginName, mobile, MessageChannel.WEBSITE);
@@ -55,7 +57,7 @@ public class UserMessageService {
         });
 
         List<UserMessagePaginationItemDto> records = userMessageModels.stream().map(userMessageModel -> {
-            MessageModel messageModel = messageMapper.findByIdBesidesDeleted(userMessageModel.getMessageId());
+            MessageModel messageModel = messageMapper.findById(userMessageModel.getMessageId());
             return new UserMessagePaginationItemDto(userMessageModel, messageModel);
         }).collect(Collectors.toList());
 
@@ -68,14 +70,17 @@ public class UserMessageService {
     @Transactional
     public UserMessageModel readMessage(long userMessageId) {
         UserMessageModel userMessageModel = userMessageMapper.findById(userMessageId);
-        if (userMessageModel != null && !userMessageModel.isRead()) {
-            MessageModel messageModel = messageMapper.lockById(userMessageModel.getMessageId());
-            messageModel.setReadCount(messageModel.getReadCount() + 1);
-            messageMapper.update(messageModel);
-            userMessageModel.setRead(true);
-            userMessageModel.setReadTime(new Date());
-            userMessageMapper.update(userMessageModel);
+        if (userMessageModel == null || userMessageModel.isRead()) {
+            return userMessageModel;
         }
+
+        MessageModel messageModel = messageMapper.lockById(userMessageModel.getMessageId());
+        messageModel.setReadCount(messageModel.getReadCount() + 1);
+        messageMapper.update(messageModel);
+
+        userMessageModel.setRead(true);
+        userMessageModel.setReadTime(new Date());
+        userMessageMapper.update(userMessageModel);
 
         return userMessageModel;
     }
@@ -101,7 +106,7 @@ public class UserMessageService {
     }
 
     public String getMessageWebURL(long userMessageId) {
-        return messageMapper.findById(userMessageMapper.findById(userMessageId).getMessageId()).getWebUrl();
+        return messageMapper.findActiveById(userMessageMapper.findById(userMessageId).getMessageId()).getWebUrl();
     }
 
     private List<MessageModel> getUnreadManualMessages(String loginName, String mobile, final MessageChannel messageChannel) {
@@ -110,8 +115,8 @@ public class UserMessageService {
 
         List<MessageModel> unreadManualMessages = Lists.newArrayList();
         messages.stream().filter(message -> message.getChannels().contains(messageChannel)).forEach(message -> {
-            Optional<UserMessageModel> userMessageModelOptional = Iterators.tryFind(userMessageModels.iterator(), model -> model.getMessageId() == message.getId());
-            if (!userMessageModelOptional.isPresent() && messageUserGroupDecisionManager.decide(loginName, mobile, message.getId())) {
+            boolean anyMatch = userMessageModels.stream().anyMatch(userMessageModel -> userMessageModel.getMessageId() == message.getId());
+            if (!anyMatch && messageUserGroupDecisionManager.decide(loginName, mobile, message.getId())) {
                 unreadManualMessages.add(message);
             }
         });

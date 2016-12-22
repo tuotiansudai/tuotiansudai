@@ -15,18 +15,22 @@ import java.util.List;
 @Service
 public class MessageUserGroupDecisionManager {
 
-    static Logger logger = Logger.getLogger(MessageUserGroupDecisionManager.class);
+    private static Logger logger = Logger.getLogger(MessageUserGroupDecisionManager.class);
 
     private final static String MESSAGE_IMPORT_USER_KEY = "message:manual-message:receivers";
 
-    @Autowired
-    private MessageMapper messageMapper;
+    private final MessageMapper messageMapper;
+
+    private final RedisWrapperClient redisWrapperClient;
 
     @Autowired
-    private RedisWrapperClient redisWrapperClient;
+    public MessageUserGroupDecisionManager(MessageMapper messageMapper, RedisWrapperClient redisWrapperClient) {
+        this.messageMapper = messageMapper;
+        this.redisWrapperClient = redisWrapperClient;
+    }
 
     public boolean decide(final String loginName, String mobile, final long messageId) {
-        MessageModel messageModel = this.messageMapper.findById(messageId);
+        MessageModel messageModel = this.messageMapper.findActiveById(messageId);
         MessageUserGroup userGroup = messageModel.getUserGroup();
 
         return this.contains(loginName, mobile, userGroup, messageId);

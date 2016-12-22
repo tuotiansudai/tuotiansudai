@@ -4,9 +4,6 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.message.repository.mapper.MessageMapper;
 import com.tuotiansudai.message.repository.mapper.UserMessageMapper;
 import com.tuotiansudai.message.repository.model.*;
-import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.repository.model.UserStatus;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +12,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
-import java.util.UUID;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -60,7 +56,7 @@ public class UserMessageServiceTest {
         UserMessageModel userMessageModel1 = userMessageService.readMessage(userMessageModel.getId());
 
         assertThat(true, is(userMessageModel1.isRead()));
-        assertThat(11L, is(messageMapper.findById(userMessageModel1.getMessageId()).getReadCount()));
+        assertThat(11L, is(messageMapper.findActiveById(userMessageModel1.getMessageId()).getReadCount()));
 
 
     }

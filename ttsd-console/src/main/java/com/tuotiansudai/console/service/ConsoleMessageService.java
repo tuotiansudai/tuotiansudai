@@ -87,7 +87,7 @@ public class ConsoleMessageService {
     }
 
     public BaseDto<BaseDataDto> approveMessage(long messageId, String approvedBy) {
-        MessageModel messageModel = messageMapper.findById(messageId);
+        MessageModel messageModel = messageMapper.findActiveById(messageId);
         if (messageModel == null || messageModel.getStatus() != MessageStatus.TO_APPROVE) {
             return new BaseDto<>(new BaseDataDto(false, "消息审核失败"));
         }
@@ -111,7 +111,7 @@ public class ConsoleMessageService {
     }
 
     public BaseDto<BaseDataDto> rejectMessage(long messageId, String approvedBy) {
-        MessageModel messageModel = messageMapper.findById(messageId);
+        MessageModel messageModel = messageMapper.findActiveById(messageId);
         if (messageModel == null || messageModel.getStatus() != MessageStatus.TO_APPROVE) {
             return new BaseDto<>(new BaseDataDto(false, "消息审核失败"));
         }
@@ -124,7 +124,7 @@ public class ConsoleMessageService {
     }
 
     public BaseDto<BaseDataDto> deleteMessage(long messageId, String updatedBy) {
-        MessageModel messageModel = messageMapper.findById(messageId);
+        MessageModel messageModel = messageMapper.findActiveById(messageId);
         if (messageModel == null || messageModel.getStatus() != MessageStatus.TO_APPROVE) {
             return new BaseDto<>(new BaseDataDto(false, "消息不存在"));
         }
@@ -134,7 +134,7 @@ public class ConsoleMessageService {
     }
 
     public MessageCreateDto getEditMessage(long messageId) {
-        MessageModel messageModel = messageMapper.findById(messageId);
+        MessageModel messageModel = messageMapper.findActiveById(messageId);
         PushModel pushModel = pushMapper.findById(messageModel.getPushId());
         return new MessageCreateDto(messageModel, pushModel);
     }
@@ -162,7 +162,7 @@ public class ConsoleMessageService {
 
     @SuppressWarnings(value = "unchecked")
     private void updateManualMessage(String updatedBy, MessageCreateDto messageCreateDto) {
-        MessageModel messageModel = messageMapper.findById(messageCreateDto.getId());
+        MessageModel messageModel = messageMapper.findActiveById(messageCreateDto.getId());
 
         if (messageCreateDto.getPush() == null) {
             pushMapper.deleteById(messageModel.getPushId());
@@ -195,7 +195,7 @@ public class ConsoleMessageService {
         }
 
         if (pushCreateDto.getId() == null) {
-            PushModel pushModel = new PushModel(createdOrUpdatedBy, pushCreateDto);
+            PushModel pushModel = new PushModel(createdOrUpdatedBy, pushCreateDto.getPushType(), pushCreateDto.getPushSource(), pushCreateDto.getContent());
             pushMapper.create(pushModel);
             return pushModel.getId();
         }

@@ -5,7 +5,7 @@ CREATE TABLE `announce` (
   `content_text` TEXT,
   `show_on_home` BOOLEAN                  DEFAULT TRUE,
   `created_time` DATETIME        NOT NULL,
-  `update_time`  DATETIME        NOT NULL,
+  `updated_time` DATETIME        NOT NULL,
   PRIMARY KEY (`id`)
 )
   ENGINE = InnoDB

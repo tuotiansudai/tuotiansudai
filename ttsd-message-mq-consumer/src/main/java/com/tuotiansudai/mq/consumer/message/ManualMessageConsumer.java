@@ -1,7 +1,6 @@
 package com.tuotiansudai.mq.consumer.message;
 
 import com.google.common.base.Strings;
-import com.tuotiansudai.message.EventMessage;
 import com.tuotiansudai.message.ManualMessage;
 import com.tuotiansudai.message.repository.mapper.MessageMapper;
 import com.tuotiansudai.message.repository.mapper.UserMessageMapper;
@@ -16,9 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 @Component
 public class ManualMessageConsumer implements MessageConsumer {
@@ -46,7 +42,7 @@ public class ManualMessageConsumer implements MessageConsumer {
             ManualMessage manualMessage = JsonConverter.readValue(message, ManualMessage.class);
 
             for (long messageId : manualMessage.getMessageIds()) {
-                MessageModel messageModel = messageMapper.findById(messageId);
+                MessageModel messageModel = messageMapper.findActiveById(messageId);
                 UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), manualMessage.getLoginName(), messageModel.getTitle(), messageModel.getTemplate(), messageModel.getActivatedTime());
                 userMessageMapper.create(userMessageModel);
             }

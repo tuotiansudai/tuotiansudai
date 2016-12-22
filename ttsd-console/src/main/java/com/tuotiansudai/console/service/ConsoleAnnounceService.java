@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -34,7 +35,7 @@ public class ConsoleAnnounceService {
 
     @Transactional
     public void create(AnnounceCreateDto announceCreateDto, String createdBy) {
-        AnnounceModel announceModel = new AnnounceModel(null, announceCreateDto.getTitle(), announceCreateDto.getContent(), announceCreateDto.getContentText(), announceCreateDto.isShowOnHome());
+        AnnounceModel announceModel = new AnnounceModel(announceCreateDto.getTitle(), announceCreateDto.getContent(), announceCreateDto.getContentText(), announceCreateDto.isShowOnHome());
         announceMapper.create(announceModel);
         announceCreateDto.setId(announceModel.getId());
 
@@ -42,11 +43,14 @@ public class ConsoleAnnounceService {
     }
 
     public void update(AnnounceCreateDto announceCreateDto) {
-        announceMapper.update(new AnnounceModel(announceCreateDto.getId(),
-                announceCreateDto.getTitle(),
-                announceCreateDto.getContent(),
-                announceCreateDto.getContentText(),
-                announceCreateDto.isShowOnHome()));
+        AnnounceModel announceModel = announceMapper.findById(announceCreateDto.getId());
+        announceModel.setTitle(announceCreateDto.getTitle());
+        announceModel.setContent(announceCreateDto.getContent());
+        announceModel.setContentText(announceCreateDto.getContentText());
+        announceModel.setShowOnHome(announceCreateDto.isShowOnHome());
+        announceModel.setUpdatedTime(new Date());
+
+        announceMapper.update(announceModel);
     }
 
     public void delete(long id) {

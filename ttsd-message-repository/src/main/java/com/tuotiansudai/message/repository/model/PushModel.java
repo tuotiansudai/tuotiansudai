@@ -21,10 +21,10 @@ public class PushModel implements Serializable {
     public PushModel() {
     }
 
-    public PushModel(String createdBy, PushCreateDto pushCreateDto) {
-        this.pushType = pushCreateDto.getPushType();
-        this.pushSource = pushCreateDto.getPushSource();
-        this.content = pushCreateDto.getContent();
+    public PushModel(String createdBy, PushType pushType, PushSource pushSource, String content) {
+        this.pushType = pushType;
+        this.pushSource = pushSource;
+        this.content = content;
         this.createdBy = createdBy;
         this.createdTime = new Date();
         this.updatedBy = createdBy;

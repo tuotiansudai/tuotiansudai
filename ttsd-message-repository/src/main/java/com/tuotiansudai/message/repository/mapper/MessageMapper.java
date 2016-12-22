@@ -12,20 +12,20 @@ import java.util.List;
 @Repository
 public interface MessageMapper {
 
-    MessageModel findById(long id);
-
-    MessageModel findByIdBesidesDeleted(long id);
-
-    MessageModel lockById(long id);
-
-    MessageModel findActiveByEventType(@Param(value = "eventType") MessageEventType eventType);
-
     void create(MessageModel messageModel);
 
     void update(MessageModel messageModel);
 
-    void deleteById(@Param(value = "messageId") long messageId,
+    void deleteById(@Param(value = "id") long id,
                     @Param(value = "updatedBy") String updatedBy);
+
+    MessageModel findById(long id);
+
+    MessageModel findActiveById(long id);
+
+    MessageModel lockById(long id);
+
+    MessageModel findActiveByEventType(@Param(value = "eventType") MessageEventType eventType);
 
     long findMessageCount(@Param(value = "title") String title,
                           @Param(value = "messageStatus") MessageStatus messageStatus,
@@ -40,5 +40,4 @@ public interface MessageMapper {
                                              @Param(value = "pageSize") int pageSize);
 
     List<MessageModel> findAssignableManualMessages(String loginName);
-
 }

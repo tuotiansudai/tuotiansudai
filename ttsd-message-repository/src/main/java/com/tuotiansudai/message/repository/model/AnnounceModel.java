@@ -15,9 +15,22 @@ public class AnnounceModel implements Serializable {
 
     private boolean showOnHome;
 
-    private Date createdTime = new Date();
+    private Date createdTime;
 
-    private Date updatedTime = new Date();
+    private Date updatedTime;
+
+    public AnnounceModel(){
+
+    }
+
+    public AnnounceModel(String title, String content, String contentText, boolean showOnHome) {
+        this.title = title;
+        this.content = content;
+        this.contentText = contentText;
+        this.showOnHome = showOnHome;
+        this.createdTime = new Date();
+        this.updatedTime = this.createdTime;
+    }
 
     public Long getId() {
         return id;
@@ -65,18 +78,6 @@ public class AnnounceModel implements Serializable {
 
     public void setUpdatedTime(Date updatedTime) {
         this.updatedTime = updatedTime;
-    }
-
-    public AnnounceModel(){
-
-    }
-
-    public AnnounceModel(Long id, String title, String content, String contentText, boolean showOnHome) {
-        this.id = id;
-        this.title = title;
-        this.content = content;
-        this.contentText = contentText;
-        this.showOnHome = showOnHome;
     }
 
     public String getContentText() {

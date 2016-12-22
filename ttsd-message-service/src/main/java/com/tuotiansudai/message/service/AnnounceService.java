@@ -16,8 +16,12 @@ import java.util.List;
 @Service
 public class AnnounceService {
 
+    private final AnnounceMapper announceMapper;
+
     @Autowired
-    private AnnounceMapper announceMapper;
+    public AnnounceService(AnnounceMapper announceMapper) {
+        this.announceMapper = announceMapper;
+    }
 
     public AnnounceDto getAnnounce(long id) {
         AnnounceModel model = announceMapper.findById(id);

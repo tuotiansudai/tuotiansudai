@@ -2,7 +2,7 @@ CREATE TABLE `user_message` (
   `id`           BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `message_id`   BIGINT UNSIGNED NOT NULL,
   `login_name`   VARCHAR(25)     NOT NULL,
-  `business_id`  BIGINT UNSIGNED NOT NULL,
+  `business_id`  BIGINT UNSIGNED,
   `title`        VARCHAR(100)    NOT NULL,
   `content`      TEXT            NULL,
   `read`         BOOLEAN         NOT NULL DEFAULT FALSE,

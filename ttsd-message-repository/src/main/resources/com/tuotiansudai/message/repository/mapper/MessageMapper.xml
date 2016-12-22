@@ -67,11 +67,11 @@
         where `id` = #{id}
     </update>
 
-    <select id="findById" parameterType="long" resultMap="messageResultMap">
-        select * from message where id = #{id} and deleted = 0;
+    <select id="findActiveById" parameterType="long" resultMap="messageResultMap">
+        select * from message where id = #{id} and deleted is false;
     </select>
 
-    <select id="findByIdBesidesDeleted" parameterType="long" resultMap="messageResultMap">
+    <select id="findById" parameterType="long" resultMap="messageResultMap">
         select * from message where id =#{id}
     </select>
 
@@ -139,7 +139,7 @@
         `updated_by` = #{updatedBy},
         `updated_time` = now()
         WHERE
-        id = #{messageId}
+        id = #{id}
     </delete>
 
 </mapper>

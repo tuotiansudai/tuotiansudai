@@ -71,7 +71,7 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
         List<UserMessageDto> userMessages = userMessageModels.stream().map(userMessageModel -> {
             UserMessageDto userMessageDto = new UserMessageDto(userMessageModel);
 
-            MessageModel messageModel = messageMapper.findByIdBesidesDeleted(userMessageModel.getMessageId());
+            MessageModel messageModel = messageMapper.findById(userMessageModel.getMessageId());
             userMessageDto.setMessageType(messageModel.getMessageCategory() != null ? messageModel.getMessageCategory().getDescription() : "");
             if (messageModel.getType().equals(MessageType.EVENT)) {
                 userMessageDto.setContent(userMessageModel.getTitle());
@@ -119,7 +119,7 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
             return new UserMessageViewDto(userMessageId, null, null, null, null);
         }
         userMessageServices.readMessage(userMessageId);
-        MessageModel messageModel = messageMapper.findByIdBesidesDeleted(userMessageModel.getMessageId());
+        MessageModel messageModel = messageMapper.findById(userMessageModel.getMessageId());
         return new UserMessageViewDto(userMessageModel.getId(), userMessageModel.getTitle(), userMessageModel.getContent(), userMessageModel.getCreatedTime(), messageModel.getAppUrl());
     }
 
