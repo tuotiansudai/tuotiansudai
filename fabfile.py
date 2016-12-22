@@ -27,7 +27,7 @@ env.roledefs = {
 
 
 def migrate():
-    local('/opt/gradle/latest/bin/gradle clean')
+    local('/opt/gradle/latest/bin/gradle ttsd-config:processResources')
     local('/opt/gradle/latest/bin/gradle -Pdatabase=aa ttsd-config:flywayMigrate')
     local('/opt/gradle/latest/bin/gradle -Pdatabase=ump_operations ttsd-config:flywayMigrate')
     local('/opt/gradle/latest/bin/gradle -Pdatabase=sms_operations ttsd-config:flywayMigrate')
@@ -250,7 +250,6 @@ def deploy_all():
     execute(deploy_activity)
     execute(deploy_point)
     execute(deploy_ask)
-    execute(check_worker_status)
 
 
 def pre_deploy():
@@ -300,8 +299,6 @@ def sms():
 def worker():
     pre_deploy()
     execute(deploy_worker)
-    time.sleep(10)
-    execute(check_worker_status)
 
 
 def pay():

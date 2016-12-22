@@ -16,13 +16,11 @@ subprojects {
         maven { url "http://central.maven.org/maven2/" }
     }
 
-    processResources {
-        def configPath = System.getenv('TTSD_CONFIG_PATH')
-        if (configPath == null || configPath == '') {
-            configPath = "/workspace/deploy-config"
-        }
-        ext.configPath = configPath
+    def configPath = System.getenv('TTSD_CONFIG_PATH')
+    if (configPath == null || configPath == '') {
+        configPath = "/workspace/deploy-config"
     }
+    ext.configPath = configPath
 
     dependencies {
         def springVersion = '4.3.1.RELEASE'
