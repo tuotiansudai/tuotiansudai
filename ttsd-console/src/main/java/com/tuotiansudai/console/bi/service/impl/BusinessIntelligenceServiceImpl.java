@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceService {
@@ -297,6 +298,19 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
                 keyValueModel.setName(keyValueModel.getName().substring(0,keyValueModel.getName().indexOf("W") + 1) + (Integer.parseInt(week) + 1));
             }
         }
+        return keyValueModels;
+    }
+
+    public List<KeyValueModel> queryAnxinUserStatusStatistics(Date startTime, Date endTime){
+        List<KeyValueModel> keyValueModels = Lists.newArrayList();
+        List<KeyValueModel> keyValueModels1 = businessIntelligenceMapper.queryAnxinUserStatus(startTime, endTime);
+        List<KeyValueModel> keyValueModels2 = businessIntelligenceMapper.queryAnxinInvestSuccess(startTime, endTime);
+        long totalUserCount = keyValueModels1.stream().mapToLong(p -> Long.parseLong(p.getValue())).sum();
+        keyValueModels.add(new KeyValueModel("已开通", String.valueOf(totalUserCount), null));
+        keyValueModels.addAll(keyValueModels1.stream().filter(n -> n.getName().equals("已开通且免验")).collect(Collectors.toList()));
+        keyValueModels.addAll(keyValueModels1.stream().filter(n -> n.getName().equals("已开通未免验")).collect(Collectors.toList()));
+        keyValueModels.addAll(keyValueModels2.stream().filter(n -> n.getName().equals("已投资且生成合同")).collect(Collectors.toList()));
+        keyValueModels.addAll(keyValueModels2.stream().filter(n -> n.getName().equals("已投资未生成合同")).collect(Collectors.toList()));
         return keyValueModels;
     }
 }

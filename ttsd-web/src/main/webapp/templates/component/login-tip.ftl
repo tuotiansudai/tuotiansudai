@@ -10,7 +10,7 @@
         <form class="form-login" action="/login" method="post">
             <label>
                 <em class="name user"></em>
-                <input class="login-name unlock" type="text" value="" name="username" placeholder="请输入账号/手机号"/>
+                <input class="login-name unlock" type="text" value="" name="username" placeholder="请输入账号/手机号" maxlength="25"/>
             </label>
             <label>
                 <em class="name pass"></em>
