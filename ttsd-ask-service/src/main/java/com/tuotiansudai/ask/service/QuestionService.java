@@ -213,4 +213,8 @@ public class QuestionService {
         data.setStatus(true);
         return new BaseDto<>(data);
     }
+
+    public QuestionModel findById(long id){
+        return questionMapper.findById(id);
+    }
 }

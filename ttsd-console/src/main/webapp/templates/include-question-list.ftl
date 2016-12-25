@@ -1,11 +1,14 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="ask.js" headLab="ask-manage" sideLab="includeQuestionManage" title="收录文章管理">
+<@global.main pageCss="" pageJavascript="include-questions.js" headLab="ask-manage" sideLab="includeQuestionManage" title="收录文章管理">
 
 <!-- content area begin -->
 <div class="col-md-10">
-    <form action="/ask-manage/questions" class="form-inline query-build" method="get">
-        <button type="button" class="btn btn-sm btn-default approve">批量导入</button>
-    </form>
+    <form action="#" class="form-inline query-build" method="get">
+        <div class="file-btn">
+            <input type="file" id="file-in">批量导入
+        </div>
+        <input type="hidden" name="file" id="import-file">
+    </form><br/>
     <div class="table-responsive">
         <table class="table table-bordered table-hover">
             <thead>
@@ -47,7 +50,7 @@
                 <li><a>${includeQuestions.data.index}</a></li>
                 <li>
                     <#if includeQuestions.data.hasNextPage >
-                        <a href="?index=${questions.data.index+1}" aria-label="Next">
+                        <a href="?index=${includeQuestions.data.index+1}" aria-label="Next">
                             <span aria-hidden="true">Next &raquo;</span>
                         </a>
                     </#if>

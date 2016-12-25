@@ -35,5 +35,16 @@ public class IncludeQuestionService {
         return new BaseDto<>(data);
     }
 
+    public IncludeQuestionModel getIncludeQuestionByQuestionId(long questionId) {
+        IncludeQuestionModel includeQuestionModel = includeQuestionMapper.findByQuestionId(questionId);
+        if (includeQuestionModel == null) {
+            return null;
+        }
+        return includeQuestionModel;
+    }
+
+    public void create(IncludeQuestionModel includeQuestionModel){
+        includeQuestionMapper.create(includeQuestionModel);
+    }
 
 }

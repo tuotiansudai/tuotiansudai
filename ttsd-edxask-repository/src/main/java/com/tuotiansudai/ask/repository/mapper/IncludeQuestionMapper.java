@@ -13,6 +13,8 @@ public interface IncludeQuestionMapper {
 
     IncludeQuestionModel findById(@Param(value = "id") long id);
 
+    IncludeQuestionModel findByQuestionId(@Param(value = "questionId") long questionId);
+
     List<IncludeQuestionModel> findAllIncludeQuestions(@Param(value = "index") int index,
                                                        @Param(value = "pageSize") int pageSize);
     long countAllIncludeQuestions();

@@ -26,6 +26,11 @@
         where id = #{id}
     </select>
 
+    <select id="findByQuestionId" parameterType="long" resultMap="includeQuestionResultMap">
+        select *
+        from include_question
+        where question_id = #{questionId}
+    </select>
 
     <select id="findAllIncludeQuestions" parameterType="map" resultMap="includeQuestionResultMap">
         select *
