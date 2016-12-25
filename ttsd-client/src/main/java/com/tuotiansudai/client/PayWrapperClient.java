@@ -350,9 +350,15 @@ public class PayWrapperClient extends BaseClient {
         return syncExecute(String.valueOf(loanId), "/job/auto-loan-out-after-raising-complete", "POST");
     }
 
+    public BaseDto<PayDataDto> couponRepayAfterRepaySuccess(Object couponRepayDto){
+        return syncExecute(couponRepayDto, "/job/coupon-repay-after-repay-success", "POST");
+    }
+
     public BaseDto<PayDataDto> sendRedEnvelopeAfterLoanOut(long loanId){
         return syncExecute(String.valueOf(loanId), "/job/send-red-envelope-after-loan-out", "POST");
     }
+
+
 
 //    public BaseDto<PayDataDto> anxinContractHandle(long loanId){
 //        return syncExecute(String.valueOf(loanId), "/job/anxin-contract-notify", "POST");
