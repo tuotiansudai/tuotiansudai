@@ -30,7 +30,7 @@ public class AdvanceRepayCallbackMessageConsumer implements MessageConsumer {
         logger.info("[MQ] receive message: {}: {}.", this.queue(), message);
         if (!StringUtils.isEmpty(message)) {
             logger.info("[MQ] ready to consume message: advance repay callback.");
-            BaseDto<PayDataDto> result = payWrapperClient.advanceRepayInvestPayback(message);
+            BaseDto<PayDataDto> result = payWrapperClient.advanceRepayInvestPayback(Long.parseLong(message));
             if (!result.isSuccess()) {
                 logger.error("advance repay callback consume fail. notifyRequestId: " + message);
                 throw new RuntimeException("advance repay callback consume fail. notifyRequestId: " + message);

@@ -30,7 +30,7 @@ public class NormalRepayCallbackMessageConsumer implements MessageConsumer {
         logger.info("[MQ] receive message: {}: {}.", this.queue(), message);
         if (!StringUtils.isEmpty(message)) {
             logger.info("[MQ] ready to consume message: normal repay callback.");
-            BaseDto<PayDataDto> result = payWrapperClient.normalRepayInvestPayback(message);
+            BaseDto<PayDataDto> result = payWrapperClient.normalRepayInvestPayback(Long.parseLong(message));
             if (!result.isSuccess()) {
                 logger.error("normal repay callback consume fail. notifyRequestId: " + message);
                 throw new RuntimeException("normal repay callback consume fail. notifyRequestId: " + message);
