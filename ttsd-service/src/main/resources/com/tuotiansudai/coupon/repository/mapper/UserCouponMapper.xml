@@ -284,6 +284,12 @@
             <![CDATA[ AND u.`register_time` <= #{registerEndTime} ]]>
         </if>
         where t.coupon_id = #{couponId}
+        <if test="investStartTime != null">
+            AND t.`used_time` >= #{investStartTime}
+        </if>
+        <if test="investEndTime != null">
+            <![CDATA[ AND t.`used_time` <= #{investEndTime} ]]>
+        </if>
         <if test="isUsed != null and isUsed">
             and t.status = 'SUCCESS'
         </if>
@@ -314,6 +320,12 @@
             <![CDATA[ AND u.`register_time` <= #{registerEndTime} ]]>
         </if>
         where t.coupon_id = #{couponId}
+        <if test="investStartTime != null">
+            AND t.`used_time` >= #{investStartTime}
+        </if>
+        <if test="investEndTime != null">
+            <![CDATA[ AND t.`used_time` <= #{investEndTime} ]]>
+        </if>
         <if test="isUsed != null and isUsed">
             and t.status = 'SUCCESS'
         </if>

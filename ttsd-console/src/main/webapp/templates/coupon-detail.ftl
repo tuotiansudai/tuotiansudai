@@ -1,3 +1,4 @@
+<#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="" pageJavascript="coupon-detail.js" headLab="${headLab!}" sideLab="${sideLabType!}" title="体验券数据统计">
 
@@ -12,17 +13,17 @@
             </div>
 
             <div class="form-group">
-                <label for="control-label">注册时间</label>
+                <label for="control-label">投资时间</label>
 
                 <div class='input-group date' id="registerDateBegin">
-                    <input type='text' class="form-control jq-startTime" value="${(registerStartTime?string('yyyy-MM-dd HH:mm:ss'))!}" name="registerStartTime"/>
+                    <input type='text' class="form-control jq-startTime" value="${(usedStartTime?string('yyyy-MM-dd HH:mm:ss'))!}" name="usedStartTime"/>
 					                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
                 </div>
                 -
                 <div class='input-group date' id="registerDateEnd">
-                    <input type='text' class="form-control jq-endTime" value="${(registerEndTime?string('yyyy-MM-dd HH:mm:ss'))!}" name="registerEndTime"/>
+                    <input type='text' class="form-control jq-endTime" value="${(usedEndTime?string('yyyy-MM-dd HH:mm:ss'))!}" name="usedEndTime"/>
 					                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
@@ -47,18 +48,22 @@
             <button class="btn btn-default reset" type="reset">重置</button>
 
         </div>
+        <input type="hidden" value="${couponId?string('0')}" name="couponId">
     </form>
 
     <div class="table-responsive">
 
             <input type="hidden" value="${couponId?string('0')}" class="coupon-id">
-
+            <label for="control-label">投资金额汇总: ${investAmount /100}</label>
+            <label for="control-label" style="margin-left: 20px;">投资年化金额汇总: ${interest /100}</label>
             <table class="table table-bordered table-hover " style="width:80%;" >
                 <thead>
                     <tr>
                         <th>用户名</th>
                         <th>使用时间</th>
                         <th>投资金额</th>
+                        <th>投资年化金额</th>
+                        <th>项目期限</th>
                         <th>项目编号</th>
                         <th>项目名称</th>
                     </tr>
@@ -81,6 +86,23 @@
                                 未使用
                             </#if>
                         </td>
+
+                        <td>
+                            <#if userCoupon.annualInterest?? && userCoupon.usedTime??>
+                            ${userCoupon.annualInterest /100}
+                            <#else>
+                                未使用
+                            </#if>
+                        </td>
+
+                        <td>
+                            <#if userCoupon.productType?? && userCoupon.usedTime??>
+                                ${userCoupon.productType.duration}天
+                            <#else>
+                                未使用
+                            </#if>
+                        </td>
+
                         <td>
                             <#if userCoupon.loanId?? && userCoupon.usedTime??>
                                 ${userCoupon.loanId?string('0')}
@@ -109,7 +131,7 @@
             <ul class="pagination pull-left">
                 <li>
                     <#if hasPreviousPage >
-                    <a href="/activity-manage/coupon/${couponId?string('0')}/detail?<#if isUsed??>isUsed=${isUsed?c}&</#if>loginName=${loginName!}&registerStartTime=${(registerStartTime?string('yyyy-MM-dd HH:mm:ss'))!}&registerEndTime=${(registerEndTime?string('yyyy-MM-dd HH:mm:ss'))!}&mobile=${mobile!}&index=${index-1}&pageSize=${pageSize}">
+                    <a href="/activity-manage/coupon/${couponId?string('0')}/detail?<#if isUsed??>isUsed=${isUsed?c}&</#if>loginName=${loginName!}&usedStartTime=${(usedStartTime?string('yyyy-MM-dd HH:mm:ss'))!}&usedEndTime=${(usedEndTime?string('yyyy-MM-dd HH:mm:ss'))!}&mobile=${mobile!}&index=${index-1}&pageSize=${pageSize}">
                     <#else>
                     <a href="#">
                     </#if>
@@ -118,13 +140,16 @@
                 <li><a>${index}</a></li>
                 <li>
                     <#if hasNextPage >
-                    <a href="/activity-manage/coupon/${couponId?string('0')}/detail?<#if isUsed??>isUsed=${isUsed?c}&</#if>loginName=${loginName!}&registerStartTime=${(registerStartTime?string('yyyy-MM-dd HH:mm:ss'))!}&registerEndTime=${(registerEndTime?string('yyyy-MM-dd HH:mm:ss'))!}&mobile=${mobile!}&index=${index+1}&pageSize=${pageSize}">
+                    <a href="/activity-manage/coupon/${couponId?string('0')}/detail?<#if isUsed??>isUsed=${isUsed?c}&</#if>loginName=${loginName!}&usedStartTime=${(usedStartTime?string('yyyy-MM-dd HH:mm:ss'))!}&usedEndTime=${(usedEndTime?string('yyyy-MM-dd HH:mm:ss'))!}&mobile=${mobile!}&index=${index+1}&pageSize=${pageSize}">
                     <#else>
                     <a href="#">
                     </#if>
                     <span>Next »</span></a>
                 </li>
             </ul>
+    <@security.authorize access="hasAnyAuthority('DATA')">
+            <button class="btn btn-default pull-left export-birthday-coupons" type="button">导出Excel</button>
+    </@security.authorize>
         </nav>
     </div>
 
