@@ -13,7 +13,7 @@ require(['jquery','drawCircle','commonFun','logintip','register_common'], functi
                 if(sourceKind.params.source=='app') {
                     location.href="/login";
                 } else {
-                    $('.no-login-text',$newYearDayFrame).trigger('click');  //弹框登录
+                    //$('.no-login-text',$newYearDayFrame).trigger('click');  //弹框登录
                 }
             });
 
