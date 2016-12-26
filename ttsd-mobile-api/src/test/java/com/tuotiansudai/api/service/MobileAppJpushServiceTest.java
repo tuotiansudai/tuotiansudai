@@ -20,6 +20,6 @@ public class MobileAppJpushServiceTest extends ServiceTestBase {
     public void shouldStoreJPushIdIsSuccess() {
         mobileAppJpushService.storeJPushId("loginName", "ios", "jpushId");
         String jpushId = redisWrapperClient.hget("api:jpushId:store", "loginName");
-        assertEquals("jpushId", jpushId);
+        assertEquals("ios-jpushId", jpushId);
     }
 }

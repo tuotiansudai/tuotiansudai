@@ -107,8 +107,9 @@ public class MobileAppUserMessageServiceTest extends ServiceTestBase {
                 null,
                 null,
                 creator.getLoginName());
-
+        messageModel.setActivatedTime(new Date());
         messageMapper.create(messageModel);
+
 
         UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), creator.getLoginName(), messageModel.getTitle(), messageModel.getTemplate(), messageModel.getActivatedTime());
         userMessageModel.setRead(false);
