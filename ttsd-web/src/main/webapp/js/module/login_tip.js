@@ -23,19 +23,15 @@ define(['jquery', 'layerWrapper', 'jquery.ajax.extension', 'jquery.validate', 'j
                     $loginSubmitElement.addClass('loading');
                 },
                 success: function(data) {
-                    console.log("begin====" + data);
                     if (data.status) {
-                        console.log("============1");
                         window.location.reload();
                     } else {
-                        console.log("============2");
                         refreshCaptcha();
                         $loginSubmitElement.removeClass('loading');
                         layer.msg(data.message);
                     }
                 },
                 error: function() {
-                    console.log("============3");
                     $loginSubmitElement.removeClass('loading');
                     refreshCaptcha();
                     layer.msg('用户或密码不正确');
@@ -46,7 +42,8 @@ define(['jquery', 'layerWrapper', 'jquery.ajax.extension', 'jquery.validate', 'j
         $loginFormElement.validate({
             rules: {
                 username: {
-                    required: true
+                    required: true,
+                    minlength:5
                 },
                 password: {
                     required: true
@@ -58,7 +55,8 @@ define(['jquery', 'layerWrapper', 'jquery.ajax.extension', 'jquery.validate', 'j
             },
             messages: {
                 username: {
-                    required: '用户名不能为空'
+                    required: '用户名不能为空',
+                    minlength:'用户名输入太短'
                 },
                 password: {
                     required: '密码不能为空'

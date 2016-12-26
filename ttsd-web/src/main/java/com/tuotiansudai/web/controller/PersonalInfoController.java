@@ -102,7 +102,7 @@ public class PersonalInfoController {
         BaseDto<BaseDataDto> baseDto = new BaseDto<>();
         BaseDataDto dataDto = new BaseDataDto();
         baseDto.setData(dataDto);
-        dataDto.setStatus(userService.resetUmpayPassword(LoginUserInfo.getLoginName(), identityNumber));
+        dataDto.setStatus(accountService.resetUmpayPassword(LoginUserInfo.getLoginName(), identityNumber));
         return baseDto;
     }
 }

@@ -15,6 +15,7 @@ import com.tuotiansudai.coupon.repository.model.CouponUserGroupModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponService;
+import com.tuotiansudai.dto.CouponDetailsDto;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.exception.CreateCouponException;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
@@ -27,6 +28,7 @@ import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.repository.model.Role;
+import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.util.InterestCalculator;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -69,6 +71,9 @@ public class ConsoleCouponService {
 
     @Autowired
     private UserMembershipMapper userMembershipMapper;
+
+    @Autowired
+    private InvestService investService;
 
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
@@ -289,17 +294,25 @@ public class ConsoleCouponService {
         }
     }
 
-    public List<UserCouponModel> findCouponDetail(long couponId, Boolean isUsed, String loginName, String mobile, Date registerStartTime, Date registerEndTime, int index, int pageSize) {
-        List<UserCouponModel> userCouponModels = userCouponMapper.findByCouponIdAndStatus(couponId, isUsed, loginName, mobile, registerStartTime, registerEndTime, (index - 1) * pageSize, pageSize);
+    public List<CouponDetailsDto> findCouponDetail(long couponId, Boolean isUsed, String loginName, String mobile, Date registerStartTime, Date registerEndTime, Date usedStartTime, Date usedEndTime, int index, int pageSize) {
+        List<UserCouponModel> userCouponModels = userCouponMapper.findByCouponIdAndStatus(couponId, isUsed, loginName, mobile, registerStartTime, registerEndTime, usedStartTime, usedEndTime, (index - 1) * pageSize, pageSize);
+        List<CouponDetailsDto> couponDetailsDtoList = Lists.newArrayList();
         for (UserCouponModel userCouponModel : userCouponModels) {
-            userCouponModel.setLoanName(userCouponModel.getLoanId() != null ? loanMapper.findById(userCouponModel.getLoanId()).getName() : null);
+            LoanModel loanModel = userCouponModel.getLoanId() != null ? loanMapper.findById(userCouponModel.getLoanId()) : null;
             userCouponModel.setInvestAmount(userCouponModel.getInvestId() != null ? investMapper.findById(userCouponModel.getInvestId()).getAmount() : null);
+            long interest = 0;
+            if(userCouponModel.getUsedTime() != null && loanModel != null){
+                interest = investService.estimateInvestIncome(loanModel.getId(), loginName, userCouponModel.getInvestAmount());
+            }
+
+            couponDetailsDtoList.add(new CouponDetailsDto(userCouponModel.getLoginName(), userCouponModel.getUsedTime(), userCouponModel.getInvestAmount(),
+                    userCouponModel.getLoanId(), loanModel != null ? loanModel.getName() : "", loanModel != null ? loanModel.getProductType() : null, interest));
         }
-        return userCouponModels;
+        return couponDetailsDtoList;
     }
 
-    public int findCouponDetailCount(long couponId, Boolean isUsed, String loginName, String mobile, Date registerStartTime, Date registerEndTime) {
-        return userCouponMapper.findCouponDetailCount(couponId, isUsed, loginName, mobile, registerStartTime, registerEndTime);
+    public int findCouponDetailCount(long couponId, Boolean isUsed, String loginName, String mobile, Date registerStartTime, Date registerEndTime, Date usedStartTime, Date usedEndTime) {
+        return userCouponMapper.findCouponDetailCount(couponId, isUsed, loginName, mobile, registerStartTime, registerEndTime, usedStartTime, usedEndTime);
     }
 
 

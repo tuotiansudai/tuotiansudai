@@ -20,6 +20,7 @@ public enum MessageQueue {
     MembershipUpgrade_SendJpushMessage("MembershipUpgrade-SendJpushMessage"),
     NormalRepayCallback("NormalRepayCallback"),
     AdvanceRepayCallback("AdvanceRepayCallback"),
+    AuditLog("AuditLog"),
     UserOperateLog("UserOperateLog");
 
     private final String queueName;
