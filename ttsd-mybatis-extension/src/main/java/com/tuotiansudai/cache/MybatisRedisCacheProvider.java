@@ -26,6 +26,7 @@ public class MybatisRedisCacheProvider {
         String redisPassword = rb.getString("common.redis.password");
         int redisDb = Integer.parseInt(rb.getString("common.mybatis.cache.db"));
         int redisPoolSize = Integer.parseInt(rb.getString("common.mybatis.cache.redis.pool.maxTotal"));
+        int redisMaxWaitMills = Integer.parseInt(rb.getString("common.jedis.pool.maxWaitMillis"));
 
         if (Objects.equals(redisPassword, "")) {
             redisPassword = null;
@@ -34,7 +35,7 @@ public class MybatisRedisCacheProvider {
         JedisPoolConfig config = new JedisPoolConfig();
         config.setMaxTotal(redisPoolSize);
         config.setMaxIdle(5);
-        config.setMaxWaitMillis(1000 * 60);
+        config.setMaxWaitMillis(redisMaxWaitMills);
         config.setTestOnBorrow(true);
         this.jedisPool = new JedisPool(config, redisHostName, redisPort, Protocol.DEFAULT_TIMEOUT, redisPassword, redisDb);
     }
