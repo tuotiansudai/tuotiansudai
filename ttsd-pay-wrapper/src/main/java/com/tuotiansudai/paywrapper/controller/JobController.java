@@ -122,4 +122,5 @@ public class JobController {
     public BaseDto<PayDataDto> asyncExtraRateInvestNotify() {
         return this.extraRateService.asyncExtraRateInvestCallback();
     }
+
 }
