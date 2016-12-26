@@ -12,12 +12,23 @@ import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.HomeService;
+import com.tuotiansudai.util.JsonConverter;
+import net.sf.json.JSON;
+import net.sf.json.JSONArray;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.text.MessageFormat;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -45,10 +56,10 @@ public class HomeServiceImpl implements HomeService {
     @Autowired
     private LoanDetailsMapper loanDetailsMapper;
 
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
+    @Value("${ask.server}")
+    private String askServer;
 
-    private static final String NO_INCLUDE_QUESTIONS = "web:no_include_ask_questions";
+    private static final String ASK_INTERFACE_URL = "/question/getSiteMap";
 
     public List<HomeLoanDto> getNormalLoans() {
         return getLoans().stream().filter(loan -> !loan.getProductType().equals(ProductType._30) && !loan.getActivityType().equals(ActivityType.NEWBIE)).collect(Collectors.toList());
@@ -124,24 +135,44 @@ public class HomeServiceImpl implements HomeService {
         });
     }
 
+
     @Override
     public List<SiteMapDataDto> getSiteAskMap(){
+        String askJsonString = loadJSON(askServer + ASK_INTERFACE_URL);
+        return JsonToList(askJsonString);
+    }
+
+    public List<SiteMapDataDto> JsonToList(String json) {
         List<SiteMapDataDto> siteMapDataDtoList = Lists.newArrayList();
-        if(redisWrapperClient.exists(NO_INCLUDE_QUESTIONS)){
-            //从redis中去值
-            Map<byte[], byte[]> siteMapListHkey = redisWrapperClient.hgetAllSeri(NO_INCLUDE_QUESTIONS);
-            for (byte[] key : siteMapListHkey.keySet()) {
-                SiteMapDataDto siteMapDataDto = new SiteMapDataDto();
-                try {
-                    siteMapDataDto.setName(new String(key, "UTF-8"));
-                    siteMapDataDto.setLinkUrl(new String(siteMapListHkey.get(key), "UTF-8"));
-                    siteMapDataDtoList.add(siteMapDataDto);
-                } catch (UnsupportedEncodingException e) {
-                    logger.error("siteMap prise error " + e);
-                }
-            }
+        if(json == null || "".equals(json)){
+            return siteMapDataDtoList;
+        }
+        JSONArray jsonarray = JSONArray.fromObject(json);
+        List list = (List)JSONArray.toCollection(jsonarray, SiteMapDataDto.class);
+        Iterator it = list.iterator();
+        while(it.hasNext()){
+            siteMapDataDtoList.add((SiteMapDataDto)it.next());
         }
         return siteMapDataDtoList;
+    }
+
+    public String loadJSON (String url) {
+        StringBuilder json = new StringBuilder();
+        try {
+            URL oracle = new URL(url);
+            URLConnection yc = oracle.openConnection();
+            BufferedReader in = new BufferedReader(new InputStreamReader(yc.getInputStream()));
+            String inputLine;
+            while ( (inputLine = in.readLine()) != null) {
+                json.append(inputLine);
+            }
+            in.close();
+        } catch (MalformedURLException e) {
+            logger.error("access ask url not exist, please check ask url + " + e);
+        } catch (IOException e) {
+            logger.error("access ask url not exist, please check ask url + " + e);
+        }
+        return json.toString();
     }
 
 }

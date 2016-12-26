@@ -20,7 +20,7 @@
     <#--ask具体问题列表-->
         <#list siteMapList as siteMap>
             <#if siteMap??>
-                <a href='${siteMap.name!}' target="_blank">${siteMap.linkUrl!}</a>
+                <a href='${siteMap.linkUrl!}' target="_blank">${siteMap.name!}</a>
             </#if>
         </#list>
     <#--cms具体问题列表-->

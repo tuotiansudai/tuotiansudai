@@ -6,6 +6,7 @@ import com.tuotiansudai.ask.repository.dto.QuestionRequestDto;
 import com.tuotiansudai.ask.repository.dto.QuestionResultDataDto;
 import com.tuotiansudai.ask.repository.model.Tag;
 import com.tuotiansudai.ask.service.AnswerService;
+import com.tuotiansudai.ask.service.IncludeQuestionService;
 import com.tuotiansudai.ask.service.QuestionService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
@@ -29,6 +30,9 @@ public class QuestionController {
 
     @Autowired
     private AnswerService answerService;
+
+    @Autowired
+    private IncludeQuestionService includeQuestionService;
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView question() {
@@ -103,5 +107,10 @@ public class QuestionController {
         return modelAndView;
     }
 
+    @RequestMapping(path = "/getSiteMap", method = RequestMethod.GET)
+    @ResponseBody
+    public List<SiteMapDataDto> getSiteMap() {
+        return includeQuestionService.getSiteMapData();
+    }
 
 }
