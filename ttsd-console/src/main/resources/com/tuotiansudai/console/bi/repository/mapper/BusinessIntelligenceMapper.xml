@@ -1299,21 +1299,19 @@
             </choose> as `group`
         from
             (
-                select date_format(now(),'%Y')-if(length(identity_number)=18,substring(identity_number,7,4),1900+substring(identity_number,7,2)) as age
-                from
-                    account a
-                <if test="province != null and province !=''">
-                join user u
-                    on a.login_name=u.login_name
-                    and u.province=#{province}
-                </if>
+                select date_format(now(),'%Y')-if(length(u.identity_number)=18,substring(u.identity_number,7,4),1900+substring(u.identity_number,7,2)) as age
+                from user u
                 where
-                    length(identity_number) in (15,18)
-                    and a.register_time between #{startTime} and #{endTime}
+                    u.identity_number is not null
+                    and length(u.identity_number) in (15,18)
+                    and u.register_time between #{startTime} and #{endTime}
+                    <if test="province != null and province !=''">
+                        and u.province=#{province}
+                    </if>
                     <if test="isInvestor=='true'">
                     and exists
                         (
-                            select 1 from invest i where i.login_name=a.login_name
+                            select 1 from invest i where i.login_name=u.login_name
                         )
                     </if>
             ) temp
@@ -1437,4 +1435,36 @@
             </if>
             ORDER BY created_time
     </select>
+
+    <select id="queryAnxinUserStatus" parameterType="map" resultMap="keyValueMap">
+        SELECT count(1) AS `value`,
+            CASE skip_auth
+            WHEN 1 THEN '已开通且免验'
+            WHEN 0 THEN '已开通未免验'
+            END  AS `name`
+        FROM anxin_sign_property
+        <where>
+            <if test="startTime !=null" >
+              created_time >= #{startTime}
+            </if>
+            <if test="endTime !=null ">
+              AND created_time &lt;= #{endTime}
+            </if>
+        </where>
+        GROUP BY `name`
+    </select>
+
+    <select id="queryAnxinInvestSuccess" parameterType="map" resultMap="keyValueMap">
+      SELECT COUNT(login_name) AS `value`,
+        CASE
+          WHEN contract_no = 'OLD' THEN '老用户'
+          WHEN contract_no = '' OR contract_no IS NULL THEN '已投资未生成合同'
+          ELSE '已投资且生成合同'
+        END AS `name`
+        FROM invest
+        WHERE invest.`status` = 'SUCCESS'
+        AND EXISTS (SELECT id FROM loan WHERE invest.loan_id = loan.id AND loan.id != 1)
+        GROUP BY `name`
+    </select>
+
 </mapper>

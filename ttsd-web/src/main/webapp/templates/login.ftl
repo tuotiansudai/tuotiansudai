@@ -9,7 +9,7 @@
             <form class="form-login" action="/login" method="post" data-redirect-url="${redirect}">
                 <label>
                     <em class="name">账<i></i>号:</em>
-                    <input class="login-name unlock" type="text" value="" name="username" placeholder="请输入账号/手机号"/>
+                    <input class="login-name unlock" type="text" value="" name="username" placeholder="请输入账号/手机号" maxlength="25"/>
                 </label>
                 <label>
                     <em class="name">密<i></i>码:</em>

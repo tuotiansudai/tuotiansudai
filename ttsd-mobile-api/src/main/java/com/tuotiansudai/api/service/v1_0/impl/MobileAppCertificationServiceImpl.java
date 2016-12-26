@@ -1,14 +1,15 @@
 package com.tuotiansudai.api.service.v1_0.impl;
 
-import com.tuotiansudai.api.dto.v1_0.*;
+import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
+import com.tuotiansudai.api.dto.v1_0.CertificationRequestDto;
+import com.tuotiansudai.api.dto.v1_0.CertificationResponseDataDto;
+import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.service.v1_0.MobileAppCertificationService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.RegisterAccountDto;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.UserService;
@@ -21,6 +22,9 @@ public class MobileAppCertificationServiceImpl implements MobileAppCertification
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private AccountService accountService;
 
     @Autowired
     private UserMapper userMapper;
@@ -51,7 +55,7 @@ public class MobileAppCertificationServiceImpl implements MobileAppCertification
             return new BaseResponseDto(ReturnMessage.ID_CARD_IS_EXIST.getCode(), ReturnMessage.ID_CARD_IS_EXIST.getMsg());
         }
 
-        BaseDto<PayDataDto> dto = userService.registerAccount(registerAccountDto);
+        BaseDto<PayDataDto> dto = accountService.registerAccount(registerAccountDto);
         if (dto.getData().getStatus()) {
             CertificationResponseDataDto certificationResponseDataDto = new CertificationResponseDataDto();
             certificationResponseDataDto.setUserIdCardNumber(certificationRequestDto.getUserIdCardNumber());

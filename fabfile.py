@@ -4,10 +4,11 @@ import time
 from fabric.api import *
 from fabric.contrib.project import upload_project
 
+config_path = os.getenv('TTSD_CONFIG_PATH', '/workspace/deploy-config')
 
 env.use_ssh_config = True
 env.always_use_pty = False
-env.ssh_config_path = '/workspace/v2config/config'
+env.ssh_config_path = config_path+'/config'
 env.roledefs = {
     'portal': ['beijing', 'shanghai'],
     'pay': ['chongqing', 'tianjin'],
@@ -19,47 +20,48 @@ env.roledefs = {
     'api': ['hongkong', 'macau'],
     'cms': ['wuhan'],
     'activity': ['sanya'],
-    'signin' : ['xian'],
-    'ask' : ['taiyuan'],
-    'point' : ['kunming']
+    'signin': ['xian'],
+    'ask': ['taiyuan'],
+    'point': ['kunming']
 }
 
 
 def migrate():
-    local('/opt/gradle/latest/bin/gradle clean')
-    local('/opt/gradle/latest/bin/gradle -PconfigPath=/workspace/v2config/default/ttsd-config/ -Pdatabase=aa ttsd-config:flywayMigrate')
-    local('/opt/gradle/latest/bin/gradle -PconfigPath=/workspace/v2config/default/ttsd-config/ -Pdatabase=ump_operations ttsd-config:flywayMigrate')
-    local('/opt/gradle/latest/bin/gradle -PconfigPath=/workspace/v2config/default/ttsd-config/ -Pdatabase=sms_operations ttsd-config:flywayMigrate')
-    local('/opt/gradle/latest/bin/gradle -PconfigPath=/workspace/v2config/default/ttsd-config/ -Pdatabase=job_worker ttsd-config:flywayMigrate')
-    local('/opt/gradle/latest/bin/gradle -PconfigPath=/workspace/v2config/default/ttsd-config/ -Pdatabase=edxask ttsd-config:flywayMigrate')
-    local('/opt/gradle/latest/bin/gradle -PconfigPath=/workspace/v2config/default/ttsd-config/ -Pdatabase=edxactivity ttsd-config:flywayMigrate')
-    local('/opt/gradle/latest/bin/gradle -PconfigPath=/workspace/v2config/default/ttsd-config/ -Pdatabase=edxpoint ttsd-config:flywayMigrate')
-    local('/opt/gradle/latest/bin/gradle -PconfigPath=/workspace/v2config/default/ttsd-config/ -Pdatabase=anxin_operations ttsd-config:flywayMigrate')
+    local('/opt/gradle/latest/bin/gradle ttsd-config:processResources')
+    local('/opt/gradle/latest/bin/gradle -Pdatabase=aa ttsd-config:flywayMigrate')
+    local('/opt/gradle/latest/bin/gradle -Pdatabase=ump_operations ttsd-config:flywayMigrate')
+    local('/opt/gradle/latest/bin/gradle -Pdatabase=sms_operations ttsd-config:flywayMigrate')
+    local('/opt/gradle/latest/bin/gradle -Pdatabase=job_worker ttsd-config:flywayMigrate')
+    local('/opt/gradle/latest/bin/gradle -Pdatabase=edxask ttsd-config:flywayMigrate')
+    local('/opt/gradle/latest/bin/gradle -Pdatabase=edxactivity ttsd-config:flywayMigrate')
+    local('/opt/gradle/latest/bin/gradle -Pdatabase=edxpoint ttsd-config:flywayMigrate')
+    local('/opt/gradle/latest/bin/gradle -Pdatabase=anxin_operations ttsd-config:flywayMigrate')
 
 def mk_war():
     local('/usr/local/bin/paver jcversion')
-    local('/opt/gradle/latest/bin/gradle initMQ -PconfigPath=/workspace/v2config/default/ttsd-config/')
-    local('/opt/gradle/latest/bin/gradle ttsd-web:war -PconfigPath=/workspace/v2config/default/ttsd-config/')
-    local('/opt/gradle/latest/bin/gradle ttsd-activity-web:war -PconfigPath=/workspace/v2config/default/ttsd-config/')
-    local('/opt/gradle/latest/bin/gradle ttsd-pay-wrapper:war -PconfigPath=/workspace/v2config/default/ttsd-config/ -PpayConfigPath=/workspace/v2config/default/ttsd-pay-wrapper/')
-    local('/opt/gradle/latest/bin/gradle ttsd-console:war -PconfigPath=/workspace/v2config/default/ttsd-config/')
-    local('/opt/gradle/latest/bin/gradle ttsd-activity-console:war -PconfigPath=/workspace/v2config/default/ttsd-config/ -PactivityConsoleConfigPath=/workspace/v2config/default/ttsd-activity-console/')
-    local('/opt/gradle/latest/bin/gradle ttsd-mobile-api:war -PconfigPath=/workspace/v2config/default/ttsd-config/')
-    local('/opt/gradle/latest/bin/gradle ttsd-sms-wrapper:war -PconfigPath=/workspace/v2config/default/ttsd-config/')
-    local('/opt/gradle/latest/bin/gradle ttsd-point-web:war -PconfigPath=/workspace/v2config/default/ttsd-config/')
-    local('/opt/gradle/latest/bin/gradle ttsd-ask-web:war -PconfigPath=/workspace/v2config/default/ttsd-config/')
+    local('/opt/gradle/latest/bin/gradle ttsd-web:war')
+    local('/opt/gradle/latest/bin/gradle ttsd-activity-web:war')
+    local('/opt/gradle/latest/bin/gradle ttsd-pay-wrapper:war')
+    local('/opt/gradle/latest/bin/gradle ttsd-console:war')
+    local('/opt/gradle/latest/bin/gradle ttsd-activity-console:war')
+    local('/opt/gradle/latest/bin/gradle ttsd-mobile-api:war')
+    local('/opt/gradle/latest/bin/gradle ttsd-sms-wrapper:war')
+    local('/opt/gradle/latest/bin/gradle ttsd-point-web:war')
+    local('/opt/gradle/latest/bin/gradle ttsd-ask-web:war')
+    local('/opt/gradle/latest/bin/gradle initMQ')
 
 def mk_worker_zip():
-    local('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle  distZip -PconfigPath=/workspace/v2config/default/ttsd-config/')
-    local('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle  -Pwork=jpush distZip -PconfigPath=/workspace/v2config/default/ttsd-config/')
-    local('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle  -Pwork=repay distZip -PconfigPath=/workspace/v2config/default/ttsd-config/')
-    local('cd ./ttsd-loan-mq-consumer && /opt/gradle/latest/bin/gradle distZip -PconfigPath=/workspace/v2config/default/ttsd-config/')
-    local('cd ./ttsd-message-mq-consumer && /opt/gradle/latest/bin/gradle distZip -PconfigPath=/workspace/v2config/default/ttsd-config/')
-    local('cd ./ttsd-point-mq-consumer && /opt/gradle/latest/bin/gradle distZip -PconfigPath=/workspace/v2config/default/ttsd-config/')
-    local('cd ./ttsd-activity-mq-consumer && /opt/gradle/latest/bin/gradle distZip -PconfigPath=/workspace/v2config/default/ttsd-config/')
-    local('cd ./ttsd-user-mq-consumer && /opt/gradle/latest/bin/gradle distZip -PconfigPath=/workspace/v2config/default/ttsd-config/')
-    local('cd ./ttsd-diagnosis && /opt/gradle/latest/bin/gradle distZip -PconfigPath=/workspace/v2config/default/ttsd-config/ -PdiagnosisConfigPath=/workspace/v2config/default/ttsd-diagnosis/')
-    local('cd ./ttsd-worker-monitor && /opt/gradle/latest/bin/gradle bootRepackage -PconfigPath=/workspace/v2config/default/ttsd-config/')
+    local('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle distZip')
+    local('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle -Pwork=jpush distZip')
+    local('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle -Pwork=repay distZip')
+    local('cd ./ttsd-loan-mq-consumer && /opt/gradle/latest/bin/gradle distZip')
+    local('cd ./ttsd-message-mq-consumer && /opt/gradle/latest/bin/gradle distZip')
+    local('cd ./ttsd-point-mq-consumer && /opt/gradle/latest/bin/gradle distZip')
+    local('cd ./ttsd-activity-mq-consumer && /opt/gradle/latest/bin/gradle distZip')
+    local('cd ./ttsd-user-mq-consumer && /opt/gradle/latest/bin/gradle distZip')
+    local('cd ./ttsd-auditLog-mq-consumer && /opt/gradle/latest/bin/gradle distZip')
+    local('cd ./ttsd-diagnosis && /opt/gradle/latest/bin/gradle distZip')
+    local('cd ./ttsd-worker-monitor && /opt/gradle/latest/bin/gradle bootRepackage')
 
 
 def mk_static_zip():
@@ -72,7 +74,7 @@ def mk_static_zip():
 
 def mk_signin_zip():
     for i in ('1', '2'):
-        local('cp /workspace/v2config/default/signin_service/{0}/* ./signin_service/'.format(i))
+        local('cp {0}/signin_service/{1}/* ./signin_service/'.format(config_path, i))
         local('cd ./signin_service/ && zip -r signin_{0}.zip *.py *.ini *.yml'.format(i))
 
 
@@ -90,7 +92,7 @@ def compile():
 
 
 def check_worker_status():
-    local('/opt/gradle/latest/bin/gradle ttsd-worker-monitor:consumerCheck -PconfigPath=/workspace/v2config/default/ttsd-config/')
+    local('/opt/gradle/latest/bin/gradle ttsd-worker-monitor:consumerCheck')
 
 
 @roles('static')
@@ -147,6 +149,7 @@ def deploy_worker():
     put(local_path='./ttsd-point-mq-consumer/build/distributions/*.zip', remote_path='/workspace/')
     put(local_path='./ttsd-activity-mq-consumer/build/distributions/*.zip', remote_path='/workspace/')
     put(local_path='./ttsd-user-mq-consumer/build/distributions/*.zip', remote_path='/workspace/')
+    put(local_path='./ttsd-auditLog-mq-consumer/build/distributions/*.zip', remote_path='/workspace/')
     put(local_path='./ttsd-diagnosis/build/distributions/*.zip', remote_path='/workspace/')
     put(local_path='./scripts/supervisor/job-worker.ini', remote_path='/etc/supervisord.d/')
     put(local_path='./scripts/logstash/worker.conf', remote_path='/etc/logstash/conf.d/prod.conf')
@@ -161,6 +164,7 @@ def deploy_worker():
         sudo('rm -rf ttsd-point-mq-consumer/')
         sudo('rm -rf ttsd-activity-mq-consumer/')
         sudo('rm -rf ttsd-user-mq-consumer/')
+        sudo('rm -rf ttsd-auditLog-mq-consumer/')
         sudo('rm -rf ttsd-diagnosis/')
         sudo('unzip \*.zip')
         sudo('supervisorctl reload')
@@ -245,7 +249,6 @@ def deploy_all():
     execute(deploy_activity)
     execute(deploy_point)
     execute(deploy_ask)
-    execute(check_worker_status)
 
 
 def pre_deploy():
@@ -295,8 +298,6 @@ def sms():
 def worker():
     pre_deploy()
     execute(deploy_worker)
-    time.sleep(10)
-    execute(check_worker_status)
 
 
 def pay():

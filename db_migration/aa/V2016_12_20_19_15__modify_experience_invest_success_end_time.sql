@@ -1,0 +1,8 @@
+BEGIN;
+
+UPDATE coupon
+SET end_time = '2017-12-31 23:59:59'
+WHERE user_group = 'EXPERIENCE_INVEST_SUCCESS' AND deleted IS FALSE;
+
+COMMIT;
+
