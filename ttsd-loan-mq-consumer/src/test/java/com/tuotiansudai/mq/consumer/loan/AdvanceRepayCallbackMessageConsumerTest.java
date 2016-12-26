@@ -35,7 +35,7 @@ public class AdvanceRepayCallbackMessageConsumerTest {
         when(payWrapperClient.advanceRepayInvestPayback(captor.capture())).thenReturn(new BaseDto<PayDataDto>());
         String message = "1000005";
         consumer.consume(message);
-        assertEquals("1000005", captor.getValue());
+        assertEquals("1000005", String.valueOf(captor.getValue()));
     }
 
     @Test(expected = RuntimeException.class)
