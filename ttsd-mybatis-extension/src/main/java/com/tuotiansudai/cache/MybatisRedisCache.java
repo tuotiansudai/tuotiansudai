@@ -162,8 +162,8 @@ public class MybatisRedisCache implements Cache {
         }
     }
 
-    private Object execute(Consumer<Jedis> consumer) {
-        return executeGet(jedis -> {
+    private void execute(Consumer<Jedis> consumer) {
+        executeGet(jedis -> {
             consumer.accept(jedis);
             return null;
         });
