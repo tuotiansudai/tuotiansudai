@@ -412,10 +412,11 @@ body {
     .gift-info-list {
       background: #045c2d;
       width:600px;
-      height:455px;
+      height:432px;
       position: relative;
       margin: 10px auto;
       border-radius: 20px;
+      overflow: hidden;
       .silk-left {
         position: absolute;
         left:20px;
