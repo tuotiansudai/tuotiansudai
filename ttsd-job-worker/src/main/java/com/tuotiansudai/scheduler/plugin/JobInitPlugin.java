@@ -108,7 +108,7 @@ public class JobInitPlugin implements SchedulerPlugin {
                     .withIdentity(jobGroup, jobName)
                     .submit();
         } catch (SchedulerException e) {
-            logger.debug(e.getLocalizedMessage(), e);
+            logger.info(e.getLocalizedMessage(), e);
         }
     }
 
@@ -125,7 +125,7 @@ public class JobInitPlugin implements SchedulerPlugin {
                     .withIdentity(jobGroup, jobName)
                     .submit();
         } catch (SchedulerException e) {
-            logger.debug(e.getLocalizedMessage(), e);
+            logger.info(e.getLocalizedMessage(), e);
         }
     }
 
