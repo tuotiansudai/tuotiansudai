@@ -10,7 +10,7 @@ public interface CouponRepayService {
 
     void repay(long loanRepayId, boolean isAdvanced);
 
-    void generateCouponRepay(long loanId);
+    boolean generateCouponRepay(long loanId);
 
     String couponRepayCallback(Map<String, String> paramsMap, String queryString);
 

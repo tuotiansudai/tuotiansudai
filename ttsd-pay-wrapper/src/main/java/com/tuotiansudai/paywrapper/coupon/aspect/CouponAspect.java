@@ -38,21 +38,6 @@ public class CouponAspect {
     @Autowired
     private CouponInvestService couponInvestService;
 
-    @Autowired
-    private JobManager jobManager;
-
-    @Autowired
-    private CouponAssignmentService couponAssignmentService;
-
-    @Autowired
-    private LoanMapper loanMapper;
-
-    @Autowired
-    private CouponMapper couponMapper;
-
-    @Autowired
-    private InvestMapper investMapper;
-
     @AfterReturning(value = "execution(* *..NormalRepayService.paybackInvest(*))", returning = "returnValue")
     public void afterReturningNormalRepayPaybackInvest(JoinPoint joinPoint, boolean returnValue) {
         long loanRepayId = (Long) joinPoint.getArgs()[0];
@@ -93,57 +78,6 @@ public class CouponAspect {
                 logger.error(e.getLocalizedMessage(), e);
             }
         }
-    }
-
-    @SuppressWarnings(value = "unchecked")
-    @AfterReturning(value = "execution(* com.tuotiansudai.paywrapper.service.LoanService.postLoanOut(*))", returning = "returnValue")
-    public void afterReturningLoanOut(JoinPoint joinPoint, Object returnValue) {
-        final long loanId = (long) joinPoint.getArgs()[0];
-        boolean isSuccess = (boolean) returnValue;
-        if (isSuccess) {
-            createSendRedEnvelopeJob(loanId);
-        }
-    }
-
-    private void createSendRedEnvelopeJob(long loanId) {
-        try {
-            Date triggerTime = new DateTime().plusMinutes(SendRedEnvelopeJob.SEND_RED_ENVELOPE_DELAY_MINUTES)
-                    .toDate();
-            jobManager.newJob(JobType.SendRedEnvelope, SendRedEnvelopeJob.class)
-                    .addJobData(SendRedEnvelopeJob.LOAN_ID_KEY, loanId)
-                    .withIdentity(JobType.SendRedEnvelope.name(), "Loan-" + loanId)
-                    .replaceExistingJob(true)
-                    .runOnceAt(triggerTime)
-                    .replaceExistingJob(true)
-                    .submit();
-        } catch (SchedulerException e) {
-            logger.error("create send red envelope job for loan[" + loanId + "] fail", e);
-        }
-    }
-
-    @AfterReturning(value = "execution(* com.tuotiansudai.paywrapper.service.LoanService.postLoanOut(*))", returning = "returnValue")
-    public void afterReturningCreateInvestAchievementUserCoupon(JoinPoint joinPoint, boolean returnValue) {
-        if (returnValue) {
-            final long loanId = (long) joinPoint.getArgs()[0];
-            LoanModel loanModel = loanMapper.findById(loanId);
-            createUserCouponModel(loanModel.getFirstInvestAchievementId(), UserGroup.FIRST_INVEST_ACHIEVEMENT, loanId);
-            createUserCouponModel(loanModel.getMaxAmountAchievementId(), UserGroup.MAX_AMOUNT_ACHIEVEMENT, loanId);
-            createUserCouponModel(loanModel.getLastInvestAchievementId(), UserGroup.LAST_INVEST_ACHIEVEMENT, loanId);
-        }
-    }
-
-    private void createUserCouponModel(Long investId, final UserGroup userGroup, long loanId) {
-        if (investId == null || investId == 0) {
-            logger.error(MessageFormat.format("loan id : {0} nothing {1}", String.valueOf(loanId), userGroup.name()));
-            return;
-        }
-
-        List<CouponModel> couponModelList = couponMapper.findAllActiveCoupons();
-
-        couponModelList.stream().filter(couponModel -> couponModel.getUserGroup().equals(userGroup)
-                && DateTime.now().toDate().before(couponModel.getEndTime())
-                && DateTime.now().toDate().after(couponModel.getStartTime()))
-                .forEach(couponModel -> couponAssignmentService.assignInvestAchievementUserCoupon(loanId, investMapper.findById(investId).getLoginName(), couponModel.getId()));
     }
 
 }

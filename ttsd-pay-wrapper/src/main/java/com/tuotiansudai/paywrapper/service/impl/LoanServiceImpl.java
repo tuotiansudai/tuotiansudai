@@ -2,9 +2,7 @@ package com.tuotiansudai.paywrapper.service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.base.Strings;
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
@@ -19,8 +17,7 @@ import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.job.AnxinCreateContractJob;
 import com.tuotiansudai.job.AutoLoanOutJob;
 import com.tuotiansudai.job.JobType;
-import com.tuotiansudai.job.LoanOutSuccessHandleJob;
-import com.tuotiansudai.message.LoanOutInfo;
+import com.tuotiansudai.message.LoanOutSuccessMessage;
 import com.tuotiansudai.mq.client.model.MessageTopic;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
@@ -50,7 +47,6 @@ import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.*;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.quartz.SchedulerException;
@@ -345,68 +341,6 @@ public class LoanServiceImpl implements LoanService {
         return resp;
     }
 
-    private void createLoanOutSuccessHandleJob(long loanId) {
-        try {
-            Date triggerTime = new DateTime().plusMinutes(LoanOutSuccessHandleJob.HANDLE_DELAY_MINUTES).toDate();
-            jobManager.newJob(JobType.LoanOut, LoanOutSuccessHandleJob.class)
-                    .addJobData(LoanOutSuccessHandleJob.LOAN_ID_KEY, loanId)
-                    .withIdentity(JobType.LoanOut.name(), "Loan-" + loanId)
-                    .replaceExistingJob(true)
-                    .runOnceAt(triggerTime)
-                    .submit();
-        } catch (SchedulerException e) {
-            logger.error("create loan out success handle job for loan[" + loanId + "] fail", e);
-        }
-    }
-
-    @Override
-    public boolean postLoanOut(long loanId) {
-//        LoanModel loan = loanMapper.findById(loanId);
-//
-//        List<InvestModel> successInvestList = investMapper.findSuccessInvestsByLoanId(loanId);
-//
-//        logger.debug("[标的放款]：生成还款计划，标的ID:" + loanId);
-//        try {
-//            repayGeneratorService.generateRepay(loanId);
-//        } catch (Exception e) {
-//            logger.error(MessageFormat.format("[标的放款]:生成还款计划失败 (loanId = {0})", String.valueOf(loanId)), e);
-//            return false;
-//        }
-//
-//        logger.debug("[标的放款]：处理推荐人奖励，标的ID:" + loanId);
-//        try {
-//            referrerRewardService.rewardReferrer(loan, successInvestList);
-//        } catch (Exception e) {
-//            logger.error(MessageFormat.format("[标的放款]:发放推荐人奖励失败 (loanId = {0})", String.valueOf(loanId)), e);
-//            return false;
-//        }
-//
-//        logger.debug("[标的放款]：处理短信和邮件通知，标的ID:" + loanId);
-//
-//        String redisKey = MessageFormat.format(LOAN_OUT_IDEMPOTENT_CHECK_TEMPLATE, String.valueOf(loanId));
-//        String statusString = redisWrapperClient.hget(redisKey, SMS_AND_EMAIL);
-//        if (Strings.isNullOrEmpty(statusString) || statusString.equals(SyncRequestStatus.FAILURE.name())) {
-//            try {
-//                redisWrapperClient.hset(redisKey, SMS_AND_EMAIL, SyncRequestStatus.SENT.name());
-//                processNotifyForLoanOut(loanId);
-//                redisWrapperClient.hset(redisKey, SMS_AND_EMAIL, SyncRequestStatus.SUCCESS.name());
-//            } catch (Exception e) {
-//                redisWrapperClient.hset(redisKey, SMS_AND_EMAIL, SyncRequestStatus.FAILURE.name());
-//                logger.error(MessageFormat.format("[标的放款]:放款短信邮件通知失败 (loanId = {0})", String.valueOf(loanId)), e);
-//            }
-//        } else {
-//            logger.info(MessageFormat.format("[标的放款]:重复发送放款短信邮件通知,标的ID : {0}", String.valueOf(loanId)));
-//        }
-
-//        logger.debug("标的放款：生成合同，标的ID:" + loanId);
-//        try {
-//            createAnxinContractJob(loanId);
-//        } catch (Exception e) {
-//            logger.error(MessageFormat.format("放款生成合同失败 (loanId = {0})", String.valueOf(loanId)), e);
-//        }
-        return true;
-    }
-
     private long computeInvestAmountTotal(List<InvestModel> investList) {
         long amount = 0L;
         for (InvestModel investModel : investList) {
@@ -456,6 +390,7 @@ public class LoanServiceImpl implements LoanService {
         }
     }
 
+    @Override
     public boolean processNotifyForLoanOut(long loanId) {
         String redisKey = MessageFormat.format(LOAN_OUT_IDEMPOTENT_CHECK_TEMPLATE, String.valueOf(loanId));
         String statusString = redisWrapperClient.hget(redisKey, SMS_AND_EMAIL);
@@ -487,23 +422,6 @@ public class LoanServiceImpl implements LoanService {
             dto.setMobile(notifyInfo.getMobile());
             dto.setAmount(AmountConverter.convertCentToString(notifyInfo.getAmount()));
             smsWrapperClient.sendInvestNotify(dto);
-        }
-    }
-
-    private void notifyInvestorsLoanOutSuccessfulByEmail(List<InvestModel> investModels) {
-        for (InvestModel investModel : investModels) {
-            UserModel userModel = userMapper.findByLoginName(investModel.getLoginName());
-            LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
-            InvestNotifyInfo notifyInfo = new InvestNotifyInfo(investModel, loanModel, userModel);
-
-            Map<String, String> emailParameters = Maps.newHashMap(new ImmutableMap.Builder<String, String>()
-                    .put("loanName", notifyInfo.getLoanName())
-                    .put("money", AmountConverter.convertCentToString(notifyInfo.getAmount()))
-                    .build());
-            String userEmail = notifyInfo.getEmail();
-            if (StringUtils.isNotEmpty(userEmail)) {
-                sendCloudMailUtil.sendMailByLoanOut(userEmail, emailParameters);
-            }
         }
     }
 
@@ -592,11 +510,11 @@ public class LoanServiceImpl implements LoanService {
         logger.debug("[标的放款]：把借款转给代理人账户，标的ID:" + loanId);
         this.processLoanAccountForLoanOut(loanId, loan.getAgentLoginName(), investAmountTotal);
 
-        LoanOutInfo loanOutInfo = new LoanOutInfo(loanId, loan.getAgentLoginName(), investAmountTotal);
+        LoanOutSuccessMessage loanOutInfo = new LoanOutSuccessMessage(loanId);
         try {
             logger.info(MessageFormat.format("[标的放款]: 放款成功,发送更新标的状态MQ消息,标的ID:{0}",loanId));
             String message = JsonConverter.writeValueAsString(loanOutInfo);
-            mqWrapperClient.publishMessage(MessageTopic.InvestSuccess, message);
+            mqWrapperClient.publishMessage(MessageTopic.LoanOutSuccess, message);
         } catch (JsonProcessingException e) {
             // 记录日志，发短信通知管理员
             fatalLog("[MQ] invest success, but send mq message fail", loanId, loan.getAgentLoginName(), investAmountTotal, e);
@@ -607,8 +525,9 @@ public class LoanServiceImpl implements LoanService {
     }
 
 
-
-    private void createAnxinContractJob(long businessId) {
+    @Override
+    public boolean createAnxinContractJob(long businessId) {
+        boolean result = true;
         try {
             Date triggerTime = new DateTime().plusMinutes(AnxinCreateContractJob.HANDLE_DELAY_MINUTES).toDate();
 
@@ -619,8 +538,10 @@ public class LoanServiceImpl implements LoanService {
                     .runOnceAt(triggerTime)
                     .submit();
         } catch (SchedulerException e) {
+            result = false;
             logger.error("create query contract job for loan/transfer[" + businessId + "] fail", e);
         }
+        return result;
     }
 
     private void fatalLog(String msg, long loanId, String agentLoginName, long investAmountTotal, Throwable e) {

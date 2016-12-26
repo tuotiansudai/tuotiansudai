@@ -358,4 +358,34 @@ public class PayWrapperClient extends BaseClient {
         return syncExecute(String.valueOf(loanId), "/job/referrer-reward-after-loan-out", "POST");
     }
 
+    public BaseDto<PayDataDto> createAnXinContract(long loanId){
+        return syncExecute(String.valueOf(loanId), "/job/create-anxin-contract-after-loan-out", "POST");
+    }
+
+    public BaseDto<PayDataDto> generateRepay(long loanId){
+        return syncExecute(String.valueOf(loanId), "/job/generate-repay-after-loan-out", "POST");
+    }
+
+    public BaseDto<PayDataDto> generateCouponRepay(long loanId){
+        return syncExecute(String.valueOf(loanId), "/job/generate-coupon-repay-after-loan-out", "POST");
+    }
+
+    public BaseDto<PayDataDto> generateExtraRate(long loanId){
+        return syncExecute(String.valueOf(loanId), "/job/generate-extra-rate-after-loan-out", "POST");
+    }
+
+    public BaseDto<PayDataDto> processNotifyForLoanOut(long loanId){
+        return syncExecute(String.valueOf(loanId), "/job/process-notify-after-loan-out", "POST");
+    }
+
+    public BaseDto<PayDataDto> assignInvestAchievementUserCoupon(long loanId){
+        return syncExecute(String.valueOf(loanId), "/job/assign-achievement-coupon-after-loan-out", "POST");
+    }
+
+
+
+
+
+
+
 }

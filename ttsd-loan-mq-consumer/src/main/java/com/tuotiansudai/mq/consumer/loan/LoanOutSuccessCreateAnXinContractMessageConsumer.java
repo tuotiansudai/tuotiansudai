@@ -2,11 +2,11 @@ package com.tuotiansudai.mq.consumer.loan;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.anxin.service.AnxinSignService;
+import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
-import com.tuotiansudai.message.LoanOutInfo;
+import com.tuotiansudai.message.LoanOutSuccessMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
 import com.tuotiansudai.util.JsonConverter;
@@ -30,7 +30,7 @@ public class LoanOutSuccessCreateAnXinContractMessageConsumer implements Message
     private SmsWrapperClient smsWrapperClient;
 
     @Autowired
-    private AnxinSignService anxinSignService;
+    private PayWrapperClient payWrapperClient;
 
     @Override
     public MessageQueue queue() {
@@ -42,9 +42,9 @@ public class LoanOutSuccessCreateAnXinContractMessageConsumer implements Message
     public void consume(String message) {
         logger.info("[MQ] receive message: {}: {}.", this.queue(), message);
         if (!StringUtils.isEmpty(message)) {
-            LoanOutInfo loanOutInfo;
+            LoanOutSuccessMessage loanOutInfo;
             try {
-                loanOutInfo = JsonConverter.readValue(message, LoanOutInfo.class);
+                loanOutInfo = JsonConverter.readValue(message, LoanOutSuccessMessage.class);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -53,7 +53,7 @@ public class LoanOutSuccessCreateAnXinContractMessageConsumer implements Message
             List<String> fatalSmsList = Lists.newArrayList();
 
             logger.info("[MQ] ready to consume message: createLoanContracts is execute, loanId:{0}", loanId);
-            BaseDto baseDto = anxinSignService.createLoanContracts(loanId);
+            BaseDto baseDto = payWrapperClient.createAnXinContract(loanId);
             if (!baseDto.isSuccess()) {
                 fatalSmsList.add("生成安心签失败");
                 logger.error(MessageFormat.format("[MQ] LoanOutSuccess createLoanContracts is fail. loanId:{0}", String.valueOf(loanId)));

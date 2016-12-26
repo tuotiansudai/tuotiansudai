@@ -7,7 +7,7 @@ import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
-import com.tuotiansudai.message.LoanOutInfo;
+import com.tuotiansudai.message.LoanOutSuccessMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
 import com.tuotiansudai.util.JsonConverter;
@@ -50,9 +50,9 @@ public class LoanOutSuccessRewardReferrerMessageConsumer implements MessageConsu
     public void consume(String message) {
         logger.info("[MQ] receive message: {}: {}.", this.queue(), message);
         if (!StringUtils.isEmpty(message)) {
-            LoanOutInfo loanOutInfo;
+            LoanOutSuccessMessage loanOutInfo;
             try {
-                loanOutInfo = JsonConverter.readValue(message, LoanOutInfo.class);
+                loanOutInfo = JsonConverter.readValue(message, LoanOutSuccessMessage.class);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -62,8 +62,7 @@ public class LoanOutSuccessRewardReferrerMessageConsumer implements MessageConsu
 
             logger.info("[标的放款]：处理推荐人奖励，标的ID:" + loanId);
 
-            BaseDto<PayDataDto> baseDto = payWrapperClient.sendRewardReferrer(loanId);
-            if (!baseDto.isSuccess()) {
+            if (!payWrapperClient.sendRewardReferrer(loanId).isSuccess()) {
                 fatalSmsList.add("发放推荐人奖励失败");
                 logger.error(MessageFormat.format("[标的放款]:发放推荐人奖励失败 (loanId = {0})", String.valueOf(loanId)));
             }

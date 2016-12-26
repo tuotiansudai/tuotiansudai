@@ -211,11 +211,12 @@ public class CouponRepayServiceImpl implements CouponRepayService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void generateCouponRepay(long loanId) {
+    public boolean generateCouponRepay(long loanId) {
+        boolean result = true;
         List<InvestModel> successInvestModels = investMapper.findSuccessInvestsByLoanId(loanId);
         if (CollectionUtils.isEmpty(successInvestModels)) {
             logger.error(MessageFormat.format("(invest record is exist (loanId = {0}))", String.valueOf(loanId)));
-            return;
+            return false;
         }
         LoanModel loanModel = loanMapper.findById(loanId);
         boolean isPeriodUnitDay = LoanPeriodUnit.DAY == loanModel.getType().getLoanPeriodUnit();
@@ -261,12 +262,14 @@ public class CouponRepayServiceImpl implements CouponRepayService {
                                 String.valueOf(userCouponModel.getId()),
                                 String.valueOf(period)));
                     } catch (Exception e) {
+                        result = false;
                         logger.error(e.getLocalizedMessage(), e);
                     }
                 }
             }
             lastRepayDate = currentRepayDate;
         }
+        return result;
     }
 
     private void updateCouponRepayBeforeCallback(long actualInterest, long actualFee, long investId, final CouponRepayModel couponRepayModel, boolean isAdvanced) {

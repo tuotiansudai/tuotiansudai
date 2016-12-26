@@ -34,11 +34,11 @@ public interface LoanService {
 
     BaseDto<PayDataDto> cancelLoan(long loanId);
 
-    boolean postLoanOut(long loanId);
-
     String cancelPayBackCallback(Map<String, String> paramsMap, String queryString);
 
     boolean processNotifyForLoanOut(long loanId);
 
     String loanOutCallback(Map<String, String> paramsMap, String queryString);
+
+    boolean createAnxinContractJob(long loanId);
 }
