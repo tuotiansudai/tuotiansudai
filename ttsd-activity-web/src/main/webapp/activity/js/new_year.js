@@ -5,10 +5,10 @@ require(['jquery','drawCircle','commonFun','logintip','register_common'], functi
         var $newYearDayFrame = $('#newYearDayFrame');
         var $activitySlide=$('#newYearSlide');
         var $loginInBtn=$('#loginIn');
+        var locationUrl=location.href;
+        var sourceKind=globalFun.parseURL(locationUrl);
 
         (function() {
-            var locationUrl=location.href;
-            var sourceKind=globalFun.parseURL(locationUrl);
             $loginInBtn.on('click',function() {
                 if(sourceKind.params.source=='app') {
                     location.href="/login";
@@ -190,7 +190,12 @@ require(['jquery','drawCircle','commonFun','logintip','register_common'], functi
                         }
                         else if (data.returnCode == 2) {
                             //未登录
-                            $('.no-login-text',$newYearDayFrame).trigger('click');  //弹框登录
+
+                            if(sourceKind.params.source=='app') {
+                                location.href="/login";
+                            } else {
+                                $('.no-login-text',$newYearDayFrame).trigger('click');  //弹框登录
+                            }
 
                         } else if(data.returnCode == 3){
                             //不在活动时间范围内！
