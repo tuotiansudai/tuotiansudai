@@ -48,7 +48,7 @@
                 </#if>
             </span>
 
-            <a href="/referrer/refer-list" class="normal-button">邀请好友</a>
+            <a href="javascript:void(0);" class="normal-button to-referrer">邀请好友</a>
             <a href="/loan-list" class="normal-button">马上投资</a>
         </div>
 

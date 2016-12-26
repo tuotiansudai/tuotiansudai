@@ -15,7 +15,17 @@ require(['jquery','drawCircle','commonFun','logintip','register_common'], functi
                 } else {
                     $('.no-login-text',$newYearDayFrame).trigger('click');  //弹框登录
                 }
-            })
+            });
+
+            //邀请好友在PC和APP端链接不同
+            $('.to-referrer',$newYearDayFrame).on('click',function() {
+                if(sourceKind.params.source=='app') {
+                    location.href='/app/tuotian/refer-reward';
+                }
+                else {
+                    location.href='/referrer/refer-list';
+                }
+            });
 
         })();
 
