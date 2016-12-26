@@ -31,7 +31,7 @@ public class AdvanceRepayCallbackJob implements Job {
         logger.info("trigger AdvanceRepayCallbackJob job start... ");
         String trigger = redisWrapperClient.get(ADVANCE_REPAY_JOB_TRIGGER_KEY);
         if (trigger != null && Integer.valueOf(trigger) > 0) {
-            payWrapperClient.advanceRepayInvestPayback(null);
+            payWrapperClient.advanceRepayInvestPayback(0);
         }
         logger.info("trigger AdvanceRepayCallbackJob job end...  ");
     }
