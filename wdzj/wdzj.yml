@@ -1,5 +1,5 @@
 wdzj:
-  image: "leoshi/tornado"
+  image: "leoshi/tornado:redis"
   env_file: .env
   volumes:
     - .:/workspace/tuotian
