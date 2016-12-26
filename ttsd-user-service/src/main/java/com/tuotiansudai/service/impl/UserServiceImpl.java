@@ -2,17 +2,17 @@ package com.tuotiansudai.service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.base.Strings;
-import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
-import com.tuotiansudai.dto.*;
-import com.tuotiansudai.exception.EditUserException;
+import com.tuotiansudai.dto.RegisterUserDto;
 import com.tuotiansudai.exception.ReferrerRelationException;
 import com.tuotiansudai.mq.client.model.MessageQueue;
-import com.tuotiansudai.repository.mapper.*;
+import com.tuotiansudai.repository.mapper.PrepareUserMapper;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.service.*;
+import com.tuotiansudai.service.RegisterUserService;
+import com.tuotiansudai.service.SmsCaptchaService;
+import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.util.*;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -38,8 +38,6 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private SmsCaptchaService smsCaptchaService;
 
-    @Autowired
-    private PayWrapperClient payWrapperClient;
 
     @Autowired
     private SmsWrapperClient smsWrapperClient;
@@ -164,11 +162,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public BaseDto<PayDataDto> registerAccount(RegisterAccountDto dto) {
-        return payWrapperClient.register(dto);
-    }
-
-    @Override
     @Transactional
     public boolean changePassword(String loginName, String originalPassword, String newPassword, String ip, String platform, String deviceId) {
 
@@ -259,15 +252,5 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserModel findByMobile(String mobile) {
         return userMapper.findByMobile(mobile);
-    }
-
-    @Override
-    public boolean resetUmpayPassword(String loginName, String identityNumber) {
-        UserModel userModel = userMapper.findByLoginName(loginName);
-        if (userModel == null || !userModel.getIdentityNumber().equals(identityNumber)) {
-            return false;
-        }
-        ResetUmpayPasswordDto resetUmpayPasswordDto = new ResetUmpayPasswordDto(loginName, identityNumber);
-        return payWrapperClient.resetUmpayPassword(resetUmpayPasswordDto);
     }
 }
