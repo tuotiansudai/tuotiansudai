@@ -958,6 +958,9 @@
             invest
         WHERE
             status = 'SUCCESS' AND login_name = #{loginName} AND transfer_invest_id IS NULL
+            <if test="startTime != null &amp;&amp; endTime != null">
+                and created_time between #{startTime} and #{endTime}
+            </if>
             AND loan_id IN (
                 SELECT
                     l.id
@@ -968,10 +971,6 @@
                 WHERE
                     d.activity = 1
                         AND d.activity_desc = #{activityDesc}
-
-                <if test="startTime != null &amp;&amp; endTime != null">
-                    and created_time between #{startTime} and #{endTime}
-                </if>
             )
     </select>
 
