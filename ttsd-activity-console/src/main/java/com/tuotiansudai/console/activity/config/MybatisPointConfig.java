@@ -20,12 +20,12 @@ import javax.sql.DataSource;
 @EnableTransactionManagement
 public class MybatisPointConfig {
     @Bean
-    public MybatisActivityConnectionConfig mybatisActivityConnectionConfig() {
-        return new MybatisActivityConnectionConfig();
+    public MybatisPointConnectionConfig mybatisPointConnectionConfig() {
+        return new MybatisPointConnectionConfig();
     }
 
     @Bean(name = "hikariCPPointConfig")
-    public HikariConfig hikariCPPointConfig(MybatisActivityConnectionConfig connConfig) {
+    public HikariConfig hikariCPPointConfig(MybatisPointConnectionConfig connConfig) {
         HikariConfig config = new HikariConfig();
         config.setJdbcUrl(String.format("jdbc:mysql://%s:%s/%s?useUnicode=true&characterEncoding=UTF-8",
                 connConfig.getDbHost(), connConfig.getDbPort(), connConfig.getDbName()));
@@ -38,34 +38,33 @@ public class MybatisPointConfig {
     }
 
     @Bean
-    @Primary
-    public DataSource hikariCPActivityDataSource(
+    public DataSource hikariCPPointDataSource(
             @Autowired @Qualifier("hikariCPPointConfig") HikariConfig hikariConfig) {
         return new HikariDataSource(hikariConfig);
     }
 
     @Bean
-    public MapperScannerConfigurer activityMapperScannerConfigurer() {
+    public MapperScannerConfigurer pointMapperScannerConfigurer() {
         MapperScannerConfigurer configurer = new MapperScannerConfigurer();
         configurer.setBasePackage("com.tuotiansudai.point.repository.mapper");
-        configurer.setSqlSessionFactoryBeanName("sqlSessionFactory");
+        configurer.setSqlSessionFactoryBeanName("pointSqlSessionFactory");
         return configurer;
     }
 
     @Bean
-    public DataSourceTransactionManager transactionManager(@Qualifier("hikariCPPointDataSource") DataSource hikariCPPointDataSource) {
+    public DataSourceTransactionManager pointTransactionManager(@Qualifier("hikariCPPointDataSource") DataSource hikariCPPointDataSource) {
         return new DataSourceTransactionManager(hikariCPPointDataSource);
     }
 
     @Bean
-    public SqlSessionFactory sqlSessionFactory(@Qualifier("hikariCPPointDataSource") DataSource hikariCPPointDataSource) throws Exception {
+    public SqlSessionFactory pointSqlSessionFactory(@Qualifier("hikariCPPointDataSource") DataSource hikariCPPointDataSource) throws Exception {
         SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
         sessionFactory.setDataSource(hikariCPPointDataSource);
         sessionFactory.setTypeAliasesPackage("com.tuotiansudai.point.repository.model");
         return sessionFactory.getObject();
     }
 
-    public static class MybatisActivityConnectionConfig {
+    public static class MybatisPointConnectionConfig {
         @Value("${common.jdbc.host}")
         private String dbHost;
         @Value("${common.jdbc.port}")

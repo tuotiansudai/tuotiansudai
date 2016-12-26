@@ -1,22 +1,21 @@
 package com.tuotiansudai.activity.repository.mapper;
 
 
-import com.tuotiansudai.activity.repository.model.*;
+import com.tuotiansudai.activity.repository.model.AnnualPrizeModel;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Repository;
 
-import java.util.Date;
 import java.util.List;
 
-@Repository
+@Mapper
 public interface AnnualPrizeMapper {
 
     void create(AnnualPrizeModel annualPrizeModel);
 
 
     List<AnnualPrizeModel> findAnnualPrizeModels(@Param(value = "mobile") String mobile,
-                                                         @Param(value = "index") Integer index,
-                                                         @Param(value = "pageSize") Integer pageSize);
+                                                 @Param(value = "index") Integer index,
+                                                 @Param(value = "pageSize") Integer pageSize);
 
     long findAnnualPrizeCount(@Param(value = "mobile") String mobile);
 
