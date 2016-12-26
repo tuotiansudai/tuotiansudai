@@ -23,6 +23,7 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -395,5 +396,20 @@ public class ExportController {
             logger.error(e.getLocalizedMessage(), e);
         }
         httpServletResponse.setContentType("application/csv");
+    }
+
+    @RequestMapping(value = "/coupons-details", method = RequestMethod.GET)
+    public void exportCouponDetails(@RequestParam(value = "couponId", required = false) long couponId, @RequestParam(value = "isUsed", required = false) Boolean isUsed,
+                                     @RequestParam(value = "usedStartTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date usedStartTime,
+                                     @RequestParam(value = "usedEndTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date usedEndTime,
+                                     @RequestParam(value = "loginName", required = false) String loginName,
+                                     @RequestParam(value = "mobile", required = false) String mobile,
+                                     HttpServletResponse response) throws IOException {
+        fillExportResponse(response, CsvHeaderType.BirthdayCouponsHeader.getDescription());
+        int index = 1;
+        int pageSize = Integer.MAX_VALUE;
+        List<CouponDetailsDto> userCoupons = consoleCouponService.findCouponDetail(couponId, isUsed, loginName, mobile, null, null, usedStartTime, usedEndTime, index, pageSize);
+        List<List<String>> userCouponData = exportService.buildCouponDetailsDtoList(userCoupons);
+        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.CouponDetailsHeader, userCouponData, response.getOutputStream());
     }
 }
