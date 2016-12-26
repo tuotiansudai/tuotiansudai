@@ -70,11 +70,11 @@ public class MybatisPointConfig {
         private String dbHost;
         @Value("${common.jdbc.port}")
         private String dbPort;
-        @Value("${activity.jdbc.username}")
+        @Value("${point.jdbc.username}")
         private String dbUser;
-        @Value("${activity.jdbc.password}")
+        @Value("${point.jdbc.password}")
         private String dbPassword;
-        @Value("${activity.jdbc.schema}")
+        @Value("${point.jdbc.schema}")
         private String dbName;
 
         private int minimumIdle = 1;
