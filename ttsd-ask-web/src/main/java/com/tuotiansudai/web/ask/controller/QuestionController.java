@@ -59,14 +59,14 @@ public class QuestionController {
 
     @RequestMapping(path = "/my-questions", method = RequestMethod.GET)
     public ModelAndView getMyQuestions(@RequestParam(value = "index", defaultValue = "1", required = false) int index) {
-        return new ModelAndView("/my-questions", "questions", questionService.findMyQuestions(LoginUserInfo.getLoginName(), index, 10));
+        return new ModelAndView("/my-questions", "questions", questionService.findMyQuestions(LoginUserInfo.getLoginName(), index));
     }
 
     @RequestMapping(path = "/category/{tag:(?:SECURITIES|BANK|FUTURES|P2P|TRUST|LOAN|FUND|CROWD_FUNDING|INVEST|CREDIT_CARD|FOREX|STOCK|OTHER)}", method = RequestMethod.GET)
     public ModelAndView getQuestionsByCategory(@PathVariable Tag tag,
                                                @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
         ModelAndView modelAndView = new ModelAndView("/question-category");
-        modelAndView.addObject("questions", questionService.findByTag(LoginUserInfo.getLoginName(), tag, index, 10));
+        modelAndView.addObject("questions", questionService.findByTag(LoginUserInfo.getLoginName(), tag, index));
         modelAndView.addObject("tag", tag);
         return modelAndView;
     }
@@ -79,7 +79,7 @@ public class QuestionController {
         }
         ModelAndView modelAndView = new ModelAndView("search-data");
         String loginName = LoginUserInfo.getLoginName();
-        BaseDto<BasePaginationDataDto> data = questionService.getQuestionsByKeywords(keyword, loginName, index, 10);
+        BaseDto<BasePaginationDataDto> data = questionService.getQuestionsByKeywords(keyword, loginName, index);
         modelAndView.addObject("keywordQuestions", data);
         modelAndView.addObject("keyword", keyword);
 

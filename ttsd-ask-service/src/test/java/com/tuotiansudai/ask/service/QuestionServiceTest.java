@@ -41,13 +41,13 @@ public class QuestionServiceTest {
         questionModel.setStatus(QuestionStatus.UNRESOLVED);
         questionMapper.create(questionModel);
 
-        BaseDto<BasePaginationDataDto> basePaginationDataDtoBaseDto = questionService.getQuestionsByKeywords("testQuestion", loginName, 1, 10);
+        BaseDto<BasePaginationDataDto> basePaginationDataDtoBaseDto = questionService.getQuestionsByKeywords("testQuestion", loginName, 1);
 
         List<QuestionDto> questionDtoList = basePaginationDataDtoBaseDto.getData().getRecords();
         assertTrue(CollectionUtils.isNotEmpty(questionDtoList));
         assertTrue(questionDtoList.get(0).getMobile().equals(mobile));
 
-        basePaginationDataDtoBaseDto = questionService.getQuestionsByKeywords("testQuestion", "test1", 1, 10);
+        basePaginationDataDtoBaseDto = questionService.getQuestionsByKeywords("testQuestion", "test1", 1);
         questionDtoList = basePaginationDataDtoBaseDto.getData().getRecords();
         assertTrue(!questionDtoList.get(0).getMobile().equals(mobile));
     }
