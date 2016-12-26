@@ -249,7 +249,6 @@ def deploy_all():
     execute(deploy_activity)
     execute(deploy_point)
     execute(deploy_ask)
-    execute(check_worker_status)
 
 
 def pre_deploy():
@@ -299,8 +298,6 @@ def sms():
 def worker():
     pre_deploy()
     execute(deploy_worker)
-    time.sleep(10)
-    execute(check_worker_status)
 
 
 def pay():

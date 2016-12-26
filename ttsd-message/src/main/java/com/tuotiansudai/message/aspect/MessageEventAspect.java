@@ -31,7 +31,7 @@ public class MessageEventAspect {
     public void registerUserPointcut() {
     }
 
-    @Pointcut("execution(* *..UserService.registerAccount(..))")
+    @Pointcut("execution(* *..AccountService.registerAccount(..))")
     public void registerAccountPointcut() {
     }
 

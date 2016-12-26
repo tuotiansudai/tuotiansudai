@@ -18,7 +18,6 @@ war {
     archiveName "ROOT.war"
     destinationDir = file("war")
 
-    println("${configPath}/ttsd-pay-wrapper/SignVerProp.properties")
     from("${configPath}/ttsd-pay-wrapper/SignVerProp.properties") {
         into 'WEB-INF/classes/'
     }

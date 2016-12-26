@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import static org.hamcrest.core.Is.is;
@@ -33,12 +32,6 @@ public class UserMapperTest {
 
     @Autowired
     private ReferrerRelationMapper referrerRelationMapper;
-
-    @Autowired
-    private LoanMapper loanMapper;
-
-    @Autowired
-    private InvestMapper investMapper;
 
     @Test
     public void shouldFindAllUsers() throws Exception {
