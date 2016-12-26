@@ -65,4 +65,6 @@ public interface QuestionMapper {
                                                 @Param(value = "pageSize") int pageSize);
 
     long countQuestionsByKeywords(@Param(value = "keywords") String keywords);
+
+    List<QuestionModel> findApprovedNoInclude();
 }

@@ -169,4 +169,13 @@
     <select id="countQuestionsByKeywords" resultType="long">
         select COUNT(1) from question where status not in ('UNAPPROVED', 'REJECTED') and question like concat('%', #{keywords}, '%');
     </select>
+
+    <select id="findApprovedNoInclude" parameterType="map" resultMap="questionResultMap">
+        SELECT *
+        FROM question q
+        WHERE status NOT IN ('UNAPPROVED', 'REJECTED')
+        AND NOT EXISTS(SELECT 1 FROM include_question WHERE include_question.question_id = q.id)
+        ORDER BY q.created_time DESC
+    </select>
+
 </mapper>

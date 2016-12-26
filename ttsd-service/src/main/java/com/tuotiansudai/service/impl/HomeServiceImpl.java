@@ -2,10 +2,12 @@ package com.tuotiansudai.service.impl;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.dto.HomeLoanDto;
+import com.tuotiansudai.dto.SiteMapDataDto;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
@@ -14,8 +16,10 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.UnsupportedEncodingException;
 import java.text.MessageFormat;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -40,6 +44,11 @@ public class HomeServiceImpl implements HomeService {
 
     @Autowired
     private LoanDetailsMapper loanDetailsMapper;
+
+    @Autowired
+    private RedisWrapperClient redisWrapperClient;
+
+    private static final String NO_INCLUDE_QUESTIONS = "web:no_include_ask_questions";
 
     public List<HomeLoanDto> getNormalLoans() {
         return getLoans().stream().filter(loan -> !loan.getProductType().equals(ProductType._30) && !loan.getActivityType().equals(ActivityType.NEWBIE)).collect(Collectors.toList());
@@ -114,4 +123,25 @@ public class HomeServiceImpl implements HomeService {
             }
         });
     }
+
+    @Override
+    public List<SiteMapDataDto> getSiteAskMap(){
+        List<SiteMapDataDto> siteMapDataDtoList = Lists.newArrayList();
+        if(redisWrapperClient.exists(NO_INCLUDE_QUESTIONS)){
+            //从redis中去值
+            Map<byte[], byte[]> siteMapListHkey = redisWrapperClient.hgetAllSeri(NO_INCLUDE_QUESTIONS);
+            for (byte[] key : siteMapListHkey.keySet()) {
+                SiteMapDataDto siteMapDataDto = new SiteMapDataDto();
+                try {
+                    siteMapDataDto.setName(new String(key, "UTF-8"));
+                    siteMapDataDto.setLinkUrl(new String(siteMapListHkey.get(key), "UTF-8"));
+                    siteMapDataDtoList.add(siteMapDataDto);
+                } catch (UnsupportedEncodingException e) {
+                    logger.error("siteMap prise error " + e);
+                }
+            }
+        }
+        return siteMapDataDtoList;
+    }
+
 }

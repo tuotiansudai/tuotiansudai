@@ -1,5 +1,6 @@
 package com.tuotiansudai.web.ask.controller;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.ask.repository.dto.QuestionDto;
 import com.tuotiansudai.ask.repository.dto.QuestionRequestDto;
 import com.tuotiansudai.ask.repository.dto.QuestionResultDataDto;
@@ -8,6 +9,7 @@ import com.tuotiansudai.ask.service.AnswerService;
 import com.tuotiansudai.ask.service.QuestionService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.dto.SiteMapDataDto;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @RequestMapping(path = "/question")
@@ -85,4 +88,20 @@ public class QuestionController {
 
         return modelAndView;
     }
+
+    @RequestMapping(path = "/hot-category-list", method = RequestMethod.GET)
+    public ModelAndView getQuestionColumn() {
+        ModelAndView modelAndView = new ModelAndView("hot-category-list");
+        List<SiteMapDataDto> siteMapDataDtoList = Lists.newArrayList();
+        for(Tag tag: Tag.values()){
+            SiteMapDataDto siteMapDataDto = new SiteMapDataDto();
+            siteMapDataDto.setName(tag.getDescription());
+            siteMapDataDto.setLinkUrl("/question/category/"+tag.name());
+            siteMapDataDtoList.add(siteMapDataDto);
+        }
+        modelAndView.addObject("hotCategoryList", siteMapDataDtoList);
+        return modelAndView;
+    }
+
+
 }

@@ -11,7 +11,6 @@ import com.tuotiansudai.dto.HomeLoanDto;
 import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.LoanDetailsMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.ExperienceLoanDto;
 import com.tuotiansudai.repository.model.InvestModel;
@@ -86,6 +85,8 @@ public class HomeController {
         if (enterpriseLoans.size() > 0) {
             modelAndView.addObject("enterpriseLoans", homeService.getEnterpriseLoans());
         }
+        modelAndView.addObject("siteMapList", homeService.getSiteAskMap());
+
         return modelAndView;
     }
 
@@ -97,4 +98,6 @@ public class HomeController {
             return new ModelAndView("/csrf");
         }
     }
+
+
 }
