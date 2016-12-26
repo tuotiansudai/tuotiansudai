@@ -1,7 +1,7 @@
 package com.tuotiansudai.message;
 
 
-public class LoanOutMessage {
+public class LoanOutInfo {
 
     private long loanId;
 
@@ -9,7 +9,7 @@ public class LoanOutMessage {
 
     private long investAmountTotal;
 
-    public LoanOutMessage(long loanId, String agentLoginName, long investAmountTotal) {
+    public LoanOutInfo(long loanId, String agentLoginName, long investAmountTotal) {
         this.loanId = loanId;
         this.agentLoginName = agentLoginName;
         this.investAmountTotal = investAmountTotal;

@@ -20,7 +20,7 @@ import com.tuotiansudai.job.AnxinCreateContractJob;
 import com.tuotiansudai.job.AutoLoanOutJob;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.job.LoanOutSuccessHandleJob;
-import com.tuotiansudai.message.LoanOutMessage;
+import com.tuotiansudai.message.LoanOutInfo;
 import com.tuotiansudai.mq.client.model.MessageTopic;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
@@ -592,10 +592,10 @@ public class LoanServiceImpl implements LoanService {
         logger.debug("[标的放款]：把借款转给代理人账户，标的ID:" + loanId);
         this.processLoanAccountForLoanOut(loanId, loan.getAgentLoginName(), investAmountTotal);
 
-        LoanOutMessage loanOutMessage = new LoanOutMessage(loanId, loan.getAgentLoginName(), investAmountTotal);
+        LoanOutInfo loanOutInfo = new LoanOutInfo(loanId, loan.getAgentLoginName(), investAmountTotal);
         try {
             logger.info(MessageFormat.format("[标的放款]: 放款成功,发送更新标的状态MQ消息,标的ID:{0}",loanId));
-            String message = JsonConverter.writeValueAsString(loanOutMessage);
+            String message = JsonConverter.writeValueAsString(loanOutInfo);
             mqWrapperClient.publishMessage(MessageTopic.InvestSuccess, message);
         } catch (JsonProcessingException e) {
             // 记录日志，发短信通知管理员

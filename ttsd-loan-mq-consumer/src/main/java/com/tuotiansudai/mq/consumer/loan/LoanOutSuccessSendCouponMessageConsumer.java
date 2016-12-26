@@ -5,22 +5,18 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
-import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
-import com.tuotiansudai.message.LoanOutMessage;
+import com.tuotiansudai.message.LoanOutInfo;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
-import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.SystemBillMapper;
 import com.tuotiansudai.repository.model.LoanModel;
-import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.JsonConverter;
 import org.apache.commons.collections.CollectionUtils;
 import org.joda.time.DateTime;
@@ -68,14 +64,14 @@ public class LoanOutSuccessSendCouponMessageConsumer implements MessageConsumer 
     public void consume(String message) {
         logger.info("[MQ] receive message: {}: {}.", this.queue(), message);
         if (!StringUtils.isEmpty(message)) {
-            LoanOutMessage loanOutMessage;
+            LoanOutInfo loanOutInfo;
             try {
-                loanOutMessage = JsonConverter.readValue(message, LoanOutMessage.class);
+                loanOutInfo = JsonConverter.readValue(message, LoanOutInfo.class);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
 
-            long loanId = loanOutMessage.getLoanId();
+            long loanId = loanOutInfo.getLoanId();
             List<String> fatalSmsList = Lists.newArrayList();
 
             logger.info("[MQ] ready to consume message: sendRedEnvelope is execute, loanId:{0}", loanId);

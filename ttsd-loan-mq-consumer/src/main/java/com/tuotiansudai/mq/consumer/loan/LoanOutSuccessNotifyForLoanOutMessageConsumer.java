@@ -8,7 +8,7 @@ import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.Environment;
 import com.tuotiansudai.dto.sms.InvestSmsNotifyDto;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
-import com.tuotiansudai.message.LoanOutMessage;
+import com.tuotiansudai.message.LoanOutInfo;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
 import com.tuotiansudai.repository.mapper.InvestMapper;
@@ -75,14 +75,14 @@ public class LoanOutSuccessNotifyForLoanOutMessageConsumer implements MessageCon
     public void consume(String message) {
         logger.info("[MQ] receive message: {}: {}.", this.queue(), message);
         if (!StringUtils.isEmpty(message)) {
-            LoanOutMessage loanOutMessage;
+            LoanOutInfo loanOutInfo;
             try {
-                loanOutMessage = JsonConverter.readValue(message, LoanOutMessage.class);
+                loanOutInfo = JsonConverter.readValue(message, LoanOutInfo.class);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
 
-            long loanId = loanOutMessage.getLoanId();
+            long loanId = loanOutInfo.getLoanId();
             List<String> fatalSmsList = Lists.newArrayList();
 
             logger.info("[标的放款]：发送放款短信通知，标的ID:" + loanId);

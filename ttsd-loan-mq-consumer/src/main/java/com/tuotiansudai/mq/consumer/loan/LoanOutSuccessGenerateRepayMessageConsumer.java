@@ -11,7 +11,7 @@ import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.enums.CouponType;
-import com.tuotiansudai.message.LoanOutMessage;
+import com.tuotiansudai.message.LoanOutInfo;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
 import com.tuotiansudai.repository.mapper.*;
@@ -89,14 +89,14 @@ public class LoanOutSuccessGenerateRepayMessageConsumer implements MessageConsum
     public void consume(String message) {
         logger.info("[MQ] receive message: {}: {}.", this.queue(), message);
         if (!StringUtils.isEmpty(message)) {
-            LoanOutMessage loanOutMessage;
+            LoanOutInfo loanOutInfo;
             try {
-                loanOutMessage = JsonConverter.readValue(message, LoanOutMessage.class);
+                loanOutInfo = JsonConverter.readValue(message, LoanOutInfo.class);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
 
-            long loanId = loanOutMessage.getLoanId();
+            long loanId = loanOutInfo.getLoanId();
             List<String> fatalSmsList = Lists.newArrayList();
 
             logger.info("[MQ] ready to consume message: generateRepay is execute, loanId:{0}", loanId);
@@ -117,11 +117,12 @@ public class LoanOutSuccessGenerateRepayMessageConsumer implements MessageConsum
             }
 
             logger.info("[MQ] ready to consume message: rateIncreases is execute, loanId:{0}", loanId);
-            if (!rateIncreases(loanId)) {
+            try {
+                rateIncreases(loanId);
+            }catch (Exception e){
                 fatalSmsList.add("阶梯加息错误");
                 logger.error(MessageFormat.format("[MQ] LoanOutSuccess rateIncreases is fail. loanId:{0}", String.valueOf(loanId)));
             }
-
 
             if (CollectionUtils.isNotEmpty(fatalSmsList)) {
                 fatalSmsList.add(MessageFormat.format("标的ID:{0}", loanId));
@@ -257,10 +258,10 @@ public class LoanOutSuccessGenerateRepayMessageConsumer implements MessageConsum
         }
     }
 
-    private boolean rateIncreases(long loanId) {
+    private void rateIncreases(long loanId) {
         List<ExtraLoanRateModel> extraLoanRateModels = extraLoanRateMapper.findByLoanId(loanId);
         if (org.apache.commons.collections4.CollectionUtils.isEmpty(extraLoanRateModels)) {
-            return false;
+            return;
         }
         LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loanId);
 
@@ -309,6 +310,5 @@ public class LoanOutSuccessGenerateRepayMessageConsumer implements MessageConsum
                 }
             }
         }
-        return true;
     }
 }
