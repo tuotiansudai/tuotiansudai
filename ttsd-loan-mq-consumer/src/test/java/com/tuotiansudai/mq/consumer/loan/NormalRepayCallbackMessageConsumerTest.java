@@ -14,6 +14,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
@@ -30,16 +31,16 @@ public class NormalRepayCallbackMessageConsumerTest {
 
     @Test
     public void shouldConsume() {
-        final ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+        final ArgumentCaptor<Long> captor = ArgumentCaptor.forClass(Long.class);
         when(payWrapperClient.normalRepayInvestPayback(captor.capture())).thenReturn(new BaseDto<PayDataDto>());
         String message = "12345";
         consumer.consume(message);
-        assertEquals("12345", captor.getValue());
+        assertEquals("12345", String.valueOf(captor.getValue()));
     }
 
     @Test(expected = RuntimeException.class)
     public void shouldConsumeFail() {
-        when(payWrapperClient.normalRepayInvestPayback(anyString())).thenReturn(new BaseDto<PayDataDto>(false));
+        when(payWrapperClient.normalRepayInvestPayback(anyLong())).thenReturn(new BaseDto<PayDataDto>(false));
         String message = "12345";
         consumer.consume(message);
     }
