@@ -4,6 +4,7 @@ import com.tuotiansudai.api.dto.v1_0.BaseResponseDataDto;
 import com.tuotiansudai.repository.model.UserFundView;
 import io.swagger.annotations.ApiModelProperty;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class UserFundResponseDataDto extends BaseResponseDataDto {
@@ -59,10 +60,11 @@ public class UserFundResponseDataDto extends BaseResponseDataDto {
     @ApiModelProperty(value = "会员成长值", example = "10")
     private long membershipPoint; //会员成长值
 
-    @ApiModelProperty(value = "用户会员过期日yyyy-MM-dd(空表示不过期)", example = "2016-11-25 19:09:01")
-    private Date membershipExpiredDate; //用户会员过期日yyyy-MM-dd(空表示不过期)
+    @ApiModelProperty(value = "用户会员过期日yyyy-MM-dd(空表示不过期)", example = "有效期至:2016-11-25")
+    private String membershipExpiredDate; //用户会员过期日yyyy-MM-dd(空表示不过期)
 
-    public UserFundResponseDataDto(UserFundView userFundView, long balance, long point, int membershipLevel, long membershipPoint, int usableUserCouponCount) {
+
+    public UserFundResponseDataDto(UserFundView userFundView, long balance, long point, int membershipLevel, long membershipPoint, int usableUserCouponCount, Date membershipExpiredDate) {
         this.balance = balance;
         this.actualTotalInterest = userFundView.getActualTotalInterest();
         this.actualTotalExtraInterest = userFundView.getActualTotalExtraInterest();
@@ -84,6 +86,7 @@ public class UserFundResponseDataDto extends BaseResponseDataDto {
         this.membershipLevel = membershipLevel;
         this.membershipPoint = membershipPoint;
         this.usableUserCouponCount = usableUserCouponCount;
+        this.membershipExpiredDate = membershipExpiredDate != null ? "有效期至:" + new SimpleDateFormat("yyyy-MM-dd").format(membershipExpiredDate) : null;
     }
 
     public long getBalance() {
@@ -154,7 +157,7 @@ public class UserFundResponseDataDto extends BaseResponseDataDto {
         return membershipPoint;
     }
 
-    public Date getMembershipExpiredDate() {
+    public String getMembershipExpiredDate() {
         return membershipExpiredDate;
     }
 }
