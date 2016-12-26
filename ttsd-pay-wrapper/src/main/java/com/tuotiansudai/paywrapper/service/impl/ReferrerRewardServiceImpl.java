@@ -1,6 +1,5 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
-import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
@@ -19,7 +18,6 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.text.MessageFormat;
@@ -102,9 +100,7 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
         return result;
     }
 
-    @Override
-    private boolean transferReferrerReward(InvestReferrerRewardModel model) {
-        boolean result = true;
+    private void transferReferrerReward(InvestReferrerRewardModel model) {
         String referrerLoginName = model.getReferrerLoginName();
         long orderId = model.getId();
         long amount = model.getAmount();
@@ -118,7 +114,7 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
                     model.getReferrerLoginName(),
                     model.getReferrerRole().name(),
                     String.valueOf(model.getAmount())));
-            return false;
+            return;
         }
 
         if (amount == 0) {
@@ -131,7 +127,6 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
                 TransferResponseModel responseModel = paySyncClient.send(TransferMapper.class, requestModel, TransferResponseModel.class);
                 model.setStatus(responseModel.isSuccess() ? ReferrerRewardStatus.SUCCESS : ReferrerRewardStatus.FAILURE);
             } catch (Exception e) {
-                result = false;
                 logger.error(MessageFormat.format("referrer reward is failed, investId={0} referrerLoginName={1} referrerRole={2} amount={3}",
                         String.valueOf(model.getInvestId()),
                         model.getReferrerLoginName(),
@@ -152,11 +147,9 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
                 systemBillService.transferOut(orderId, amount, SystemBillBusinessType.REFERRER_REWARD, detail);
             }
         } catch (Exception e) {
-            result = false;
             logger.error(MessageFormat.format("referrer reward transfer in balance failed (investId = {0})", String.valueOf(model.getInvestId())));
         }
 
-        return result;
     }
 
     private long calculateReferrerReward(long amount, int loanDuration, int level, Role role, String referrerLoginName) {

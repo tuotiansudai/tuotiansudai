@@ -6,6 +6,7 @@ import com.tuotiansudai.paywrapper.coupon.service.CouponLoanOutService;
 import com.tuotiansudai.paywrapper.coupon.service.CouponRepayService;
 import com.tuotiansudai.paywrapper.extrarate.service.ExtraRateService;
 import com.tuotiansudai.paywrapper.service.*;
+import com.tuotiansudai.paywrapper.service.impl.ReferrerRewardServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -41,6 +42,9 @@ public class JobController {
 
     @Autowired
     private ExtraRateService extraRateService;
+
+    @Autowired
+    private ReferrerRewardServiceImpl referrerRewardService;
 
     @ResponseBody
     @RequestMapping(value = "/async_invest_notify", method = RequestMethod.POST)
@@ -113,8 +117,13 @@ public class JobController {
 
     @ResponseBody
     @RequestMapping(value = "/send-red-envelope-after-loan-out", method = RequestMethod.POST)
-    public void sendRedEnvelopeAfterLoanOut(@RequestBody long loanId) {
-        couponLoanOutService.sendRedEnvelope(loanId);
+    public BaseDto<PayDataDto> sendRedEnvelopeAfterLoanOut(@RequestBody long loanId) {
+        boolean isSuccess = couponLoanOutService.sendRedEnvelope(loanId);
+        BaseDto<PayDataDto> dto = new BaseDto<>();
+        PayDataDto dataDto = new PayDataDto();
+        dto.setData(dataDto);
+        dataDto.setStatus(isSuccess);
+        return dto;
     }
 
     @ResponseBody
@@ -123,4 +132,14 @@ public class JobController {
         return this.extraRateService.asyncExtraRateInvestCallback();
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/referrer-reward-after-loan-out", method = RequestMethod.POST)
+    public BaseDto<PayDataDto> sendRewardReferrer(@RequestBody long loanId) {
+        boolean isSuccess = referrerRewardService.rewardReferrer(loanId);
+        BaseDto<PayDataDto> dto = new BaseDto<>();
+        PayDataDto dataDto = new PayDataDto();
+        dto.setData(dataDto);
+        dataDto.setStatus(isSuccess);
+        return dto;
+    }
 }

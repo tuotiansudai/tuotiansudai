@@ -51,7 +51,8 @@ public class CouponLoanOutServiceImpl implements CouponLoanOutService {
     private SystemBillService systemBillService;
 
     @Override
-    public void sendRedEnvelope(long loanId) {
+    public boolean sendRedEnvelope(long loanId) {
+        boolean result = true;
         List<UserCouponModel> userCouponModels = userCouponMapper.findByLoanId(loanId, Lists.newArrayList(CouponType.RED_ENVELOPE));
 
         for (UserCouponModel userCouponModel : userCouponModels) {
@@ -70,6 +71,7 @@ public class CouponLoanOutServiceImpl implements CouponLoanOutService {
                         isSuccess = responseModel.isSuccess();
                     } catch (PayException e) {
                         isSuccess = false;
+                        result =  isSuccess;
                         logger.error(MessageFormat.format("red envelope coupon transfer in balance failed (userCouponId = {0})", String.valueOf(userCouponModel.getId())), e);
                     }
                 }
@@ -91,10 +93,13 @@ public class CouponLoanOutServiceImpl implements CouponLoanOutService {
                         userCouponModel.setActualInterest(transferAmount);
                         userCouponMapper.update(userCouponModel);
                     } catch (Exception e) {
+                        result =  false;
                         logger.error(MessageFormat.format("red envelope coupon transfer in balance failed (userCouponId = {0})", String.valueOf(userCouponModel.getId())), e);
                     }
                 }
             }
         }
+
+        return result;
     }
 }
