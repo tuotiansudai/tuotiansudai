@@ -2,21 +2,27 @@ package com.tuotiansudai.paywrapper.service;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.anxin.service.AnxinSignService;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.SmsDataDto;
 import com.tuotiansudai.dto.sms.InvestSmsNotifyDto;
+import com.tuotiansudai.enums.UserBillBusinessType;
+import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.job.AnxinCreateContractJob;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.job.LoanOutSuccessHandleJob;
+import com.tuotiansudai.mq.client.model.MessageTopic;
+import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PayGateWrapper;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.MerBindProjectMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.MerUpdateProjectMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferMapper;
+import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.MerBindProjectRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.MerUpdateProjectRequestModel;
@@ -49,6 +55,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import static org.hamcrest.core.Is.is;
@@ -60,6 +67,7 @@ import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml", "classpath:dispatcher-servlet.xml"})
@@ -116,6 +124,12 @@ public class LoanServiceTest {
 
     @Mock
     private AnxinSignService anxinSignService;
+
+    @Mock
+    private PayAsyncClient payAsyncClient;
+
+    @Mock
+    private MQWrapperClient mqWrapperClient;
 
     @Before
     public void init() {
@@ -232,11 +246,13 @@ public class LoanServiceTest {
     }
 
     @Test
-    public void shouldPostLoanOutIsOk() throws PayException, SchedulerException {
+    public void shouldPostLoanOutIsOk() throws PayException, SchedulerException, AmountTransferException {
         UserModel userModel = getUserModelTest();
         LoanModel loanModel = getFakeLoan(userModel.getLoginName(), userModel.getLoginName(), LoanStatus.RAISING, ActivityType.NORMAL);
         InvestModel investModel = new InvestModel();
         TriggeredJobBuilder triggeredJobBuilder = mock(TriggeredJobBuilder.class);
+        BaseCallbackRequestModel baseCallbackRequestModel = new BaseCallbackRequestModel();
+        baseCallbackRequestModel.setOrderId("123");
 
 
         when(triggeredJobBuilder.addJobData(anyObject(), anyLong())).thenReturn(triggeredJobBuilder);
@@ -247,7 +263,7 @@ public class LoanServiceTest {
         when(loanMapper.findById(anyLong())).thenReturn(loanModel);
         when(investMapper.findSuccessInvestsByLoanId(anyLong())).thenReturn(Lists.newArrayList(investModel));
         doNothing().when(repayGeneratorService).generateRepay(anyLong());
-        doNothing().when(referrerRewardService).rewardReferrer(anyLong());
+        when(referrerRewardService.rewardReferrer(anyLong())).thenReturn(true);
         when(userMapper.findByLoginName(anyString())).thenReturn(userModel);
         when(loanMapper.findById(anyLong())).thenReturn(loanModel);
         when(sendCloudMailUtil.sendMailByLoanOut(anyString(), anyMap())).thenReturn(true);
@@ -256,16 +272,16 @@ public class LoanServiceTest {
         when(redisWrapperClient.hset(anyString(), anyString(), anyString())).thenReturn(1l);
         when(anxinSignService.createLoanContracts(anyLong())).thenReturn(new BaseDto());
         when(jobManager.newJob(any(JobType.class), eq(AnxinCreateContractJob.class))).thenReturn(triggeredJobBuilder);
+        when(payAsyncClient.parseCallbackRequest(any(Map.class), anyString(), any(Class.class), any(Class.class))).thenReturn(baseCallbackRequestModel);
+        doNothing().when(mqWrapperClient).publishMessage(any(MessageTopic.class), anyString());
+        MerUpdateProjectResponseModel merUpdateProjectResponseModel = new MerUpdateProjectResponseModel();
+        merUpdateProjectResponseModel.setRetCode("0000");
+        when(paySyncClient.send(eq(MerUpdateProjectMapper.class), any(MerUpdateProjectRequestModel.class), eq(MerUpdateProjectResponseModel.class))).thenReturn(merUpdateProjectResponseModel);
 
-        loanService.postLoanOut(loanModel.getId());
-        verify(smsWrapperClient, times(1)).sendInvestNotify(any(InvestSmsNotifyDto.class));
-        verify(sendCloudMailUtil,times(1)).sendMailByLoanOut(anyString(), anyMap());
-
-        when(redisWrapperClient.hget(anyString(), anyString())).thenReturn(SyncRequestStatus.SUCCESS.name());
-        loanService.postLoanOut(loanModel.getId());
-        verify(smsWrapperClient,times(1)).sendInvestNotify(any(InvestSmsNotifyDto.class));
-        verify(sendCloudMailUtil,times(1)).sendMailByLoanOut(anyString(), anyMap());
-
+        loanService.loanOutCallback(null, null);
+        verify(mqWrapperClient, times(1)).publishMessage(any(MessageTopic.class), anyString());
+        verify(paySyncClient, times(1)).send(eq(MerUpdateProjectMapper.class), any(MerUpdateProjectRequestModel.class), eq(MerUpdateProjectResponseModel.class));
+        verify(amountTransfer, times(1)).transferInBalance(anyString(), anyLong(), anyLong(), any(UserBillBusinessType.class), anyString(), anyString());
     }
 
     public UserModel getUserModelTest() {

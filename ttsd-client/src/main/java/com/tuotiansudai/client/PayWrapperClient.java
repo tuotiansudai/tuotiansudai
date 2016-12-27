@@ -381,11 +381,4 @@ public class PayWrapperClient extends BaseClient {
     public BaseDto<PayDataDto> assignInvestAchievementUserCoupon(long loanId){
         return syncExecute(String.valueOf(loanId), "/job/assign-achievement-coupon-after-loan-out", "POST");
     }
-
-
-
-
-
-
-
 }

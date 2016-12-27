@@ -37,15 +37,16 @@ import com.tuotiansudai.paywrapper.repository.model.sync.response.MerBindProject
 import com.tuotiansudai.paywrapper.repository.model.sync.response.MerUpdateProjectResponseModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
 import com.tuotiansudai.paywrapper.service.LoanService;
-import com.tuotiansudai.paywrapper.service.ReferrerRewardService;
-import com.tuotiansudai.paywrapper.service.RepayGeneratorService;
 import com.tuotiansudai.paywrapper.service.UMPayRealTimeStatusService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.util.*;
+import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.AmountTransfer;
+import com.tuotiansudai.util.JobManager;
+import com.tuotiansudai.util.JsonConverter;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -95,16 +96,7 @@ public class LoanServiceImpl implements LoanService {
     private UserMapper userMapper;
 
     @Autowired
-    private RepayGeneratorService repayGeneratorService;
-
-    @Autowired
     private PaySyncClient paySyncClient;
-
-    @Autowired
-    private SendCloudMailUtil sendCloudMailUtil;
-
-    @Autowired
-    private ReferrerRewardService referrerRewardService;
 
     @Autowired
     private UMPayRealTimeStatusService umPayRealTimeStatusService;
@@ -318,7 +310,7 @@ public class LoanServiceImpl implements LoanService {
         String redisKey = MessageFormat.format(LOAN_OUT_IDEMPOTENT_CHECK_TEMPLATE, String.valueOf(loanId));
         String beforeSendStatus = redisWrapperClient.hget(redisKey, DO_PAY_REQUEST);
         ProjectTransferResponseModel resp = new ProjectTransferResponseModel();
-        if (Strings.isNullOrEmpty(beforeSendStatus) || beforeSendStatus.equals(SyncRequestStatus.FAILURE.name())){
+        if (Strings.isNullOrEmpty(beforeSendStatus) || beforeSendStatus.equals(SyncRequestStatus.FAILURE.name())) {
             try {
                 redisWrapperClient.hset(redisKey, DO_PAY_REQUEST, SyncRequestStatus.SENT.name());
                 ProjectTransferRequestModel requestModel = ProjectTransferRequestModel.newLoanOutRequest(
@@ -349,14 +341,14 @@ public class LoanServiceImpl implements LoanService {
         return amount;
     }
 
-    private void processInvestForLoanOut(List<InvestModel> investList,long loanId) {
+    private void processInvestForLoanOut(List<InvestModel> investList, long loanId) {
         if (CollectionUtils.isEmpty(investList)) {
             return;
         }
 
         String redisKey = MessageFormat.format(LOAN_OUT_IDEMPOTENT_CHECK_TEMPLATE, String.valueOf(loanId));
         investList.forEach(invest -> {
-            String transferKey = MessageFormat.format(TRANSFER_OUT_FREEZE,invest.getId());
+            String transferKey = MessageFormat.format(TRANSFER_OUT_FREEZE, invest.getId());
             try {
                 String statusString = redisWrapperClient.hget(redisKey, transferKey);
                 if (Strings.isNullOrEmpty(statusString) || statusString.equals(SyncRequestStatus.FAILURE.name())) {
@@ -403,11 +395,11 @@ public class LoanServiceImpl implements LoanService {
                 redisWrapperClient.hset(redisKey, SMS_AND_EMAIL, SyncRequestStatus.SUCCESS.name());
             } catch (Exception e) {
                 redisWrapperClient.hset(redisKey, SMS_AND_EMAIL, SyncRequestStatus.FAILURE.name());
-                logger.error(MessageFormat.format("[标的放款]:放款短信邮件通知失败 (loanId = {0})", String.valueOf(loanId)), e);
+                logger.error(MessageFormat.format("[标的放款]:放款短信通知失败 (loanId = {0})", String.valueOf(loanId)), e);
                 return false;
             }
         } else {
-            logger.info(MessageFormat.format("[标的放款]:重复发送放款短信邮件通知,标的ID : {0}", String.valueOf(loanId)));
+            logger.info(MessageFormat.format("[标的放款]:重复发送放款短信通知,标的ID : {0}", String.valueOf(loanId)));
         }
         return true;
     }
@@ -505,14 +497,14 @@ public class LoanServiceImpl implements LoanService {
         this.updateLoanStatus(loanId, LoanStatus.REPAYING);
 
         logger.debug("[标的放款]：处理该标的的所有投资的账务信息，标的ID:" + loanId);
-        this.processInvestForLoanOut(successInvestList,loanId);
+        this.processInvestForLoanOut(successInvestList, loanId);
 
         logger.debug("[标的放款]：把借款转给代理人账户，标的ID:" + loanId);
         this.processLoanAccountForLoanOut(loanId, loan.getAgentLoginName(), investAmountTotal);
 
         LoanOutSuccessMessage loanOutInfo = new LoanOutSuccessMessage(loanId);
         try {
-            logger.info(MessageFormat.format("[标的放款]: 放款成功,发送更新标的状态MQ消息,标的ID:{0}",loanId));
+            logger.info(MessageFormat.format("[标的放款]: 放款成功,发送更新标的状态MQ消息,标的ID:{0}", loanId));
             String message = JsonConverter.writeValueAsString(loanOutInfo);
             mqWrapperClient.publishMessage(MessageTopic.LoanOutSuccess, message);
         } catch (JsonProcessingException e) {
@@ -551,7 +543,7 @@ public class LoanServiceImpl implements LoanService {
 
     private void fatalLog(String errMsg, Throwable e) {
         logger.fatal(errMsg, e);
-        smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(MessageFormat.format("投资业务错误。详细信息：{0}", MessageFormat.format("{0},{1}", environment, errMsg))));
+        smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(MessageFormat.format("放款错误。详细信息：{0}", MessageFormat.format("{0},{1}", environment, errMsg))));
     }
 
 }

@@ -45,7 +45,7 @@ public class JobController {
     private ExtraRateService extraRateService;
 
     @Autowired
-    private ReferrerRewardServiceImpl referrerRewardService;
+    private ReferrerRewardService referrerRewardService;
 
     @Autowired
     private RepayGeneratorService repayGeneratorService;
@@ -102,17 +102,6 @@ public class JobController {
         PayDataDto dataDto = new PayDataDto();
         dataDto.setStatus(isSuccess);
         dto.setData(dataDto);
-        return dto;
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/loan-out-success-notify", method = RequestMethod.POST)
-    public BaseDto<PayDataDto> loanOut(@RequestBody long loanId) {
-        boolean isSuccess = loanService.postLoanOut(loanId);
-        BaseDto<PayDataDto> dto = new BaseDto<>();
-        PayDataDto dataDto = new PayDataDto();
-        dto.setData(dataDto);
-        dataDto.setStatus(isSuccess);
         return dto;
     }
 
