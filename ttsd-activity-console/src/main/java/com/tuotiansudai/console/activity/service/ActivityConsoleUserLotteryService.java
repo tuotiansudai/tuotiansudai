@@ -214,7 +214,8 @@ public class ActivityConsoleUserLotteryService {
         }
 
         long sumAmount = investMapper.sumInvestAmountByLoginNameInvestTimeProductType(userModel.getLoginName(), startTime, endTime, Lists.newArrayList(ProductType._90, ProductType._180, ProductType._360));
-        lotteryTime += (int) (sumAmount / 200000);
+//        lotteryTime += (int) (sumAmount / 200000);
+        lotteryTime += (int) (sumAmount / 100);
 
         lotteryTime = lotteryTime >= 10 ? 10 : lotteryTime;
 
