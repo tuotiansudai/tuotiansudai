@@ -523,4 +523,37 @@ public class ExportService {
         }
         return rows;
     }
+
+    public List<List<String>> buildCouponDetailsDtoList(List<CouponDetailsDto> couponDetailsDtoList){
+        List<List<String>> rows = Lists.newArrayList();
+        int index = 1;
+
+        long investAmount = 0l;
+        long interest = 0l;
+        for(CouponDetailsDto couponDetailsDto : couponDetailsDtoList){
+            investAmount += couponDetailsDto.getInvestAmount() != null ? couponDetailsDto.getInvestAmount() : 0l;
+            interest += couponDetailsDto.getAnnualInterest() != null ? couponDetailsDto.getAnnualInterest() : 0l;
+        }
+
+        for(CouponDetailsDto couponDetailsDto : couponDetailsDtoList){
+            List<String> row = Lists.newArrayList();
+            row.add(couponDetailsDto.getLoginName());
+            row.add(new DateTime(couponDetailsDto.getUsedTime()).toString("yyyy-MM-dd HH:mm:ss"));
+            row.add(couponDetailsDto.getInvestAmount() != null ? AmountConverter.convertCentToString(couponDetailsDto.getInvestAmount()) : "未使用");
+            row.add(couponDetailsDto.getAnnualInterest() != null ? AmountConverter.convertCentToString(couponDetailsDto.getAnnualInterest()) : "未使用");
+            row.add(couponDetailsDto.getProductType() != null ? couponDetailsDto.getProductType().getDuration() + "天" : "未使用");
+            row.add(couponDetailsDto.getLoanId() != null ? String.valueOf(couponDetailsDto.getLoanId()) : "未使用");
+            row.add(couponDetailsDto.getLoanName() != null ? String.valueOf(couponDetailsDto.getLoanName()) : "未使用");
+            if(index == 1){
+                row.add(String.valueOf(investAmount));
+                row.add(String.valueOf(interest));
+            }else{
+                row.add("0");
+                row.add("0");
+            }
+            index++;
+            rows.add(row);
+        }
+        return rows;
+    }
 }
