@@ -168,23 +168,6 @@ require(['jquery','drawCircle','commonFun','logintip','register_common'], functi
             //**********************开始抽奖**********************//
             $pointerImg.on('click',function() {
 
-                //如果没有登录直接弹框登录,不走抽奖程序
-
-                $.when(commonFun.isUserLogin())
-                    .done(function(){
-                        //已登录
-                    })
-                    .fail(function(){
-                        //未登陆
-                        if(sourceKind.params.source=='app') {
-                            location.href="/login";
-                        } else {
-                            $('.no-login-text',$newYearDayFrame).trigger('click');  //弹框登录
-                        }
-                        return;
-
-                    });
-
                 //判断是否正在抽奖
                 if($pointerImg.hasClass('win-result')) {
                     return;//不能重复抽奖
@@ -222,7 +205,12 @@ require(['jquery','drawCircle','commonFun','logintip','register_common'], functi
                             drawCircle.tipWindowPop(tipMessage);
                         }
                         else if (data.returnCode == 2) {
-
+                            //未登陆
+                            if(sourceKind.params.source=='app') {
+                                location.href="/login";
+                            } else {
+                                $('.no-login-text',$newYearDayFrame).trigger('click');  //弹框登录
+                            }
 
                         } else if(data.returnCode == 3){
                             //不在活动时间范围内！
