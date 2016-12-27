@@ -26,7 +26,7 @@ public class AnnualActivityService {
     @Value("#{'${activity.annual.period}'.split('\\~')}")
     private List<String> annualTime = Lists.newArrayList();
 
-    final private List<Long> investTaskList = Lists.newArrayList(100L, 200L, 220L, 230L, 240L, 250L, 260L, 300L, 310L, 320L);
+    final private List<Long> investTaskList = Lists.newArrayList(500000L, 1000000L, 2000000L, 3000000L, 5000000L, 10000000L, 20000000L, 30000000L, 50000000L, 70000000L);
 
     public Map<String, String> getInvestAmountTask(String loginName) {
         Date startTime = DateTime.parse(annualTime.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
