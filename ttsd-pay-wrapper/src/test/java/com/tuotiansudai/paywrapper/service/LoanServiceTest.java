@@ -2,6 +2,7 @@ package com.tuotiansudai.paywrapper.service;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.anxin.service.AnxinSignService;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
@@ -11,6 +12,7 @@ import com.tuotiansudai.dto.sms.InvestSmsNotifyDto;
 import com.tuotiansudai.job.AnxinCreateContractJob;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.job.LoanOutSuccessHandleJob;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayGateWrapper;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
@@ -76,9 +78,6 @@ public class LoanServiceTest {
     private AccountMapper accountMapper;
 
     @Mock
-    private PayGateWrapper payGateWrapper;
-
-    @Mock
     private PaySyncClient paySyncClient;
 
     @Mock
@@ -91,13 +90,7 @@ public class LoanServiceTest {
     private RedisWrapperClient redisWrapperClient;
 
     @Mock
-    private AmountTransfer amountTransfer;
-
-    @Mock
     private JobManager jobManager;
-
-    @Mock
-    private SchedulerBuilder schedulerBuilder;
 
     @Mock
     private RepayGeneratorService repayGeneratorService;
@@ -116,6 +109,9 @@ public class LoanServiceTest {
 
     @Mock
     private AnxinSignService anxinSignService;
+
+    @Mock
+    private MQWrapperClient mqWrapperClient;
 
     @Before
     public void init() {
@@ -185,7 +181,7 @@ public class LoanServiceTest {
         LoanModel loanModel = this.fakeLoanModel();
         loanModel.setStatus(LoanStatus.RECHECK);
         List<InvestModel> investModels = Lists.newArrayList(getFakeInvestModel(loanModel.getId(), 0, loginName));
-        BaseDto<PayDataDto> baseDto = new BaseDto();
+        BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto payDataDto = new PayDataDto();
         payDataDto.setStatus(true);
         baseDto.setData(payDataDto);
@@ -215,6 +211,7 @@ public class LoanServiceTest {
         when(accountMapper.findByLoginName(anyString())).thenReturn(accountModel);
         when(paySyncClient.send(eq(MerUpdateProjectMapper.class), any(MerUpdateProjectRequestModel.class), eq(MerUpdateProjectResponseModel.class))).thenReturn(merUpdateProjectResponseModel);
         when(jobManager.newJob(any(JobType.class), eq(LoanOutSuccessHandleJob.class))).thenReturn(triggeredJobBuilder);
+        doNothing().when(mqWrapperClient).sendMessage(any(MessageQueue.class), anyObject());
 
         BaseDto<PayDataDto> baseDto1 = loanService.loanOut(loanModel.getId());
         verify(paySyncClient, times(1)).send(eq(ProjectTransferMapper.class), any(ProjectTransferRequestModel.class), eq(ProjectTransferResponseModel.class));

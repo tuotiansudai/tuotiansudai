@@ -377,7 +377,6 @@ public class NormalRepayServiceImpl implements NormalRepayService {
                 } else {
                     try {
                         this.processInvestRepay(loanRepayId, investRepayModel);
-                        redisWrapperClient.hset(redisKey, String.valueOf(investRepayModel.getId()), SyncRequestStatus.SUCCESS.name());
                     } catch (Exception e) {
                         redisWrapperClient.hset(redisKey, String.valueOf(investRepayModel.getId()), SyncRequestStatus.FAILURE.name());
                         logger.error(MessageFormat.format("[Normal Repay {0}] invest payback({1}) payback throw exception",
@@ -416,7 +415,7 @@ public class NormalRepayServiceImpl implements NormalRepayService {
                 }
             } else {
                 redisWrapperClient.hset(redisKey, String.valueOf(loanRepayId), SyncRequestStatus.SUCCESS.name());
-                logger.info(MessageFormat.format("[Advance Repay {0}] invest fee is 0 set redis status to SUCCESS", String.valueOf(loanRepayId)));
+                logger.info(MessageFormat.format("[Normal Repay {0}] invest fee is 0 set redis status to SUCCESS", String.valueOf(loanRepayId)));
             }
         }
 
@@ -622,11 +621,7 @@ public class NormalRepayServiceImpl implements NormalRepayService {
         String title = MessageFormat.format(MessageEventType.REPAY_SUCCESS.getTitleTemplate(), loanModel.getName(), AmountConverter.convertCentToString(currentInvestRepay.getRepayAmount()));
         String content = MessageFormat.format(MessageEventType.REPAY_SUCCESS.getContentTemplate(), loanModel.getName());
         mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(MessageEventType.REPAY_SUCCESS,
-                Lists.newArrayList(investModel.getLoginName()),
-                title,
-                content,
-                null
-        ));
+                Lists.newArrayList(investModel.getLoginName()), title, content, investRepayId));
         mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(Lists.newArrayList(investModel.getLoginName()), PushSource.ALL, PushType.REPAY_SUCCESS, title));
     }
 
@@ -694,7 +689,7 @@ public class NormalRepayServiceImpl implements NormalRepayService {
         }
 
         SyncRequestStatus syncRequestStatus = SyncRequestStatus.valueOf(redisWrapperClient.hget(redisKey, String.valueOf(currentLoanRepayModel.getId())));
-        logger.info(MessageFormat.format("[Normal Repay {0}] invest fee redis status is {2}", String.valueOf(currentLoanRepayModel.getId()), syncRequestStatus.name()));
+        logger.info(MessageFormat.format("[Normal Repay {0}] invest fee redis status is {1}", String.valueOf(currentLoanRepayModel.getId()), syncRequestStatus.name()));
         if (syncRequestStatus == SyncRequestStatus.FAILURE) {
             isSuccess = false;
         }
