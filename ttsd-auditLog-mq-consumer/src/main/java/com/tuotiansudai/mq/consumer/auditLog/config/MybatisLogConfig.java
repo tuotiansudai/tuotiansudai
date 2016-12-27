@@ -17,16 +17,16 @@ import javax.sql.DataSource;
 
 @Configuration
 @EnableTransactionManagement
-public class MybatisAAConfig {
+public class MybatisLogConfig {
     @Bean
-    public MybatisAAConnectionConfig mybatisAAConnectionConfig() {
-        return new MybatisAAConnectionConfig();
+    public MybatisLogConnectionConfig mybatisLogConnectionConfig() {
+        return new MybatisLogConnectionConfig();
     }
 
-    @Bean(name = "hikariCPAAConfig")
-    public HikariConfig hikariCPAAConfig(MybatisAAConnectionConfig connConfig) {
+    @Bean(name = "hikariCPLogConfig")
+    public HikariConfig hikariCPLogConfig(MybatisLogConnectionConfig connConfig) {
         HikariConfig config = new HikariConfig();
-        config.setJdbcUrl(String.format("jdbc:mysql://%s:%s/aa?useUnicode=true&characterEncoding=UTF-8",
+        config.setJdbcUrl(String.format("jdbc:mysql://%s:%s/edxlog?useUnicode=true&characterEncoding=UTF-8",
                 connConfig.getDbHost(), connConfig.getDbPort()));
         config.setUsername(connConfig.getDbUser());
         config.setPassword(connConfig.getDbPassword());
@@ -37,39 +37,39 @@ public class MybatisAAConfig {
     }
 
     @Bean
-    public DataSource hikariCPAADataSource(@Autowired @Qualifier("hikariCPAAConfig") HikariConfig hikariConfig) {
+    public DataSource hikariCPLogDataSource(@Autowired @Qualifier("hikariCPLogConfig") HikariConfig hikariConfig) {
         return new HikariDataSource(hikariConfig);
     }
 
     @Bean
-    public MapperScannerConfigurer aaMapperScannerConfigurer() {
+    public MapperScannerConfigurer logMapperScannerConfigurer() {
         MapperScannerConfigurer configurer = new MapperScannerConfigurer();
-        configurer.setBasePackage("com.tuotiansudai.repository.mapper");
-        configurer.setSqlSessionFactoryBeanName("aaSqlSessionFactory");
+        configurer.setBasePackage("com.tuotiansudai.log.repository.mapper");
+        configurer.setSqlSessionFactoryBeanName("logSqlSessionFactory");
         return configurer;
     }
 
     @Bean
-    public DataSourceTransactionManager aaTransactionManager(@Qualifier("hikariCPAADataSource") DataSource hikariCPAADataSource) {
-        return new DataSourceTransactionManager(hikariCPAADataSource);
+    public DataSourceTransactionManager logTransactionManager(@Qualifier("hikariCPLogDataSource") DataSource hikariCPLogDataSource) {
+        return new DataSourceTransactionManager(hikariCPLogDataSource);
     }
 
     @Bean
-    public SqlSessionFactory aaSqlSessionFactory(@Qualifier("hikariCPAADataSource") DataSource hikariCPAADataSource) throws Exception {
+    public SqlSessionFactory logSqlSessionFactory(@Qualifier("hikariCPLogDataSource") DataSource hikariCPLogDataSource) throws Exception {
         SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
-        sessionFactory.setDataSource(hikariCPAADataSource);
-        sessionFactory.setTypeAliasesPackage("com.tuotiansudai.repository.model");
+        sessionFactory.setDataSource(hikariCPLogDataSource);
+        sessionFactory.setTypeAliasesPackage("com.tuotiansudai.log.repository.model");
         return sessionFactory.getObject();
     }
 
-    public static class MybatisAAConnectionConfig {
+    public static class MybatisLogConnectionConfig {
         @Value("${common.jdbc.host}")
         private String dbHost;
         @Value("${common.jdbc.port}")
         private String dbPort;
-        @Value("${common.jdbc.username}")
+        @Value("${log.jdbc.username}")
         private String dbUser;
-        @Value("${common.jdbc.password}")
+        @Value("${log.jdbc.password}")
         private String dbPassword;
 
         public String getDbHost() {
