@@ -10,5 +10,5 @@ CREATE TABLE `annual_prize` (
   `updated_time`                DATETIME DEFAULT NULL,
   `created_time`                DATETIME DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `UNIQUE_NOT_WORK_LOGIN_NAME` (`login_name`)
+  UNIQUE KEY `UNIQUE_ANNUAL_PRIZE_LOGIN_NAME` (`login_name`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8;

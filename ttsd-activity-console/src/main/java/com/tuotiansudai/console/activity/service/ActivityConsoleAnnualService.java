@@ -23,16 +23,16 @@ public class ActivityConsoleAnnualService {
     private AnnualPrizeMapper annualPrizeMapper;
 
     final private Map<Long, String> annualRewardMap = new HashMap<Long, String>() {{
-        put(100L, "20元红包");
-        put(200L, "爱奇艺会员月卡");
-        put(220L, "报销50元电影票");
-        put(230L, "50元话费");
-        put(240L, "100元中国石化加油卡");
-        put(250L, "报销300元火车票");
-        put(260L, "700元京东E卡");
-        put(300L, "800元红包");
-        put(310L, "1600元芒果卡");
-        put(320L, "小米手机5");
+        put(500000L, "20元红包");
+        put(1000000L, "爱奇艺会员月卡");
+        put(2000000L, "报销50元电影票");
+        put(3000000L, "50元话费");
+        put(5000000L, "100元中国石化加油卡");
+        put(10000000L, "报销300元火车票");
+        put(20000000L, "700元京东E卡");
+        put(30000000L, "800元红包");
+        put(50000000L, "1600元芒果卡");
+        put(70000000L, "小米手机5");
     }};
 
 

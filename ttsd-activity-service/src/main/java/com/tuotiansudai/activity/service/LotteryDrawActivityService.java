@@ -106,9 +106,9 @@ public class LotteryDrawActivityService {
     public static final String ACTIVITY_DESCRIPTION = "新年专享";
 
     //每投资5000奖励抽奖次数
-    private final long EACH_INVEST_AMOUNT_50000 = 50L;
+    private final long EACH_INVEST_AMOUNT_50000 = 500000L;
 
-    private final long EACH_INVEST_AMOUNT_20000 = 200000;
+    private final long EACH_INVEST_AMOUNT_20000 = 200000L;
 
     @Transactional
     public synchronized DrawLotteryResultDto drawPrizeByCompleteTask(String mobile, ActivityCategory activityCategory) {
