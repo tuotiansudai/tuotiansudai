@@ -1,8 +1,7 @@
-package com.tuotiansudai.repository.mapper;
+package com.tuotiansudai.log.repository.mapper;
 
-import com.tuotiansudai.repository.model.UserOpLogModel;
-import com.tuotiansudai.repository.model.UserOpLogView;
-import com.tuotiansudai.repository.model.UserOpType;
+import com.tuotiansudai.log.repository.model.UserOpLogModel;
+import com.tuotiansudai.log.repository.model.UserOpType;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
@@ -19,7 +18,7 @@ public interface UserOpLogMapper {
                @Param("startTime") Date startTime,
                @Param("endTime") Date endTime);
 
-    List<UserOpLogView> getPaginationData(@Param("mobile") String mobile,
+    List<UserOpLogModel> getPaginationData(@Param("mobile") String mobile,
                                            @Param("opType") UserOpType opType,
                                            @Param("startTime") Date startTime,
                                            @Param("endTime") Date endTime,
