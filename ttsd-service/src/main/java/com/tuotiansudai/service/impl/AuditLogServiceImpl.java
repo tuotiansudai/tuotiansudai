@@ -1,19 +1,17 @@
-package com.tuotiansudai.console.service;
+package com.tuotiansudai.service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.dto.AuditLogPaginationItemDataDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.log.repository.mapper.AuditLogMapper;
+import com.tuotiansudai.log.repository.model.AuditLogModel;
+import com.tuotiansudai.log.repository.model.OperationType;
 import com.tuotiansudai.mq.client.model.MessageQueue;
-import com.tuotiansudai.repository.mapper.AuditLogMapper;
-import com.tuotiansudai.repository.model.AuditLogModel;
-import com.tuotiansudai.repository.model.AuditLogView;
 import com.tuotiansudai.repository.model.UserStatus;
+import com.tuotiansudai.service.AuditLogService;
 import com.tuotiansudai.service.UserService;
-import com.tuotiansudai.task.OperationType;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.JsonConverter;
 import com.tuotiansudai.util.PaginationUtil;
@@ -27,9 +25,9 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class AuditLogService {
+public class AuditLogServiceImpl implements AuditLogService {
 
-    private static Logger logger = Logger.getLogger(AuditLogService.class);
+    private static Logger logger = Logger.getLogger(AuditLogServiceImpl.class);
 
     @Autowired
     private AuditLogMapper auditLogMapper;
@@ -56,6 +54,7 @@ public class AuditLogService {
         log.setId(idGenerator.generate());
         log.setTargetId(loginName);
         log.setOperatorLoginName(operatorLoginName);
+        log.setOperatorMobile(userService.getMobile(operatorLoginName));
         log.setOperationType(OperationType.USER);
         log.setIp(userIp);
         log.setDescription(description);
@@ -66,7 +65,9 @@ public class AuditLogService {
         AuditLogModel log = new AuditLogModel();
         log.setId(idGenerator.generate());
         log.setOperatorLoginName(operatorLoginName);
+        log.setOperatorMobile(userService.getMobile(operatorLoginName));
         log.setAuditorLoginName(auditorLoginName);
+        log.setAuditorMobile(userService.getMobile(auditorLoginName));
         log.setTargetId(targetId);
         log.setOperationType(operationType);
         log.setIp(auditorIp);
@@ -83,7 +84,7 @@ public class AuditLogService {
         }
     }
 
-    public BasePaginationDataDto<AuditLogPaginationItemDataDto> getAuditLogPaginationData(OperationType operationType, String targetId, String operatorMobile, String auditorMobile, Date startTime, Date endTime, int index, int pageSize) {
+    public BasePaginationDataDto<AuditLogModel> getAuditLogPaginationData(OperationType operationType, String targetId, String operatorMobile, String auditorMobile, Date startTime, Date endTime, int index, int pageSize) {
         if (startTime == null) {
             startTime = new DateTime(0).withTimeAtStartOfDay().toDate();
         } else {
@@ -98,21 +99,14 @@ public class AuditLogService {
 
         long count = auditLogMapper.count(operationType, targetId, operatorMobile, auditorMobile, startTime, endTime);
 
-        List<AuditLogView> data = Lists.newArrayList();
+        List<AuditLogModel> data = Lists.newArrayList();
         if (count > 0) {
             int totalPages = PaginationUtil.calculateMaxPage(count, pageSize);
             index = index > totalPages ? totalPages : index;
             data = auditLogMapper.getPaginationData(operationType, targetId, operatorMobile, auditorMobile, startTime, endTime, (index - 1) * pageSize, pageSize);
         }
 
-        List<AuditLogPaginationItemDataDto> records = Lists.transform(data, new Function<AuditLogView, AuditLogPaginationItemDataDto>() {
-            @Override
-            public AuditLogPaginationItemDataDto apply(AuditLogView input) {
-                return new AuditLogPaginationItemDataDto(input.getAuditorMobile(), input.getOperatorMobile(), input.getTargetId(), input.getOperationType(), input.getIp(), input.getDescription(), input.getOperationTime());
-            }
-        });
-
-        return new BasePaginationDataDto<>(index, pageSize, count, records);
+        return new BasePaginationDataDto<>(index, pageSize, count, data);
     }
 
     public String clearMybatisCache() {
