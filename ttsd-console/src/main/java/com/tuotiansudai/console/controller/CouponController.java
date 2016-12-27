@@ -19,6 +19,7 @@ import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.coupon.service.ExchangeCodeService;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.CouponDetailsDto;
 import com.tuotiansudai.dto.ImportExcelDto;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.exception.CreateCouponException;
@@ -375,21 +376,31 @@ public class CouponController {
 
     @RequestMapping(value = "/coupon/{couponId:^\\d+$}/detail", method = RequestMethod.GET)
     public ModelAndView couponDetail(@PathVariable long couponId, @RequestParam(value = "isUsed", required = false) Boolean isUsed,
-                                     @RequestParam(value = "registerStartTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date registerStartTime,
-                                     @RequestParam(value = "registerEndTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date registerEndTime,
+                                     @RequestParam(value = "usedStartTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date usedStartTime,
+                                     @RequestParam(value = "usedEndTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date usedEndTime,
                                      @RequestParam(value = "loginName", required = false) String loginName,
                                      @RequestParam(value = "mobile", required = false) String mobile,
                                      @RequestParam(value = "index", required = false, defaultValue = "1") int index) {
         int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/coupon-detail");
-        List<UserCouponModel> userCoupons = consoleCouponService.findCouponDetail(couponId, isUsed, loginName, mobile, registerStartTime, registerEndTime, index, pageSize);
-        int userCouponsCount = consoleCouponService.findCouponDetailCount(couponId, isUsed, loginName, mobile, registerStartTime, registerEndTime);
+        List<CouponDetailsDto> userCoupons = consoleCouponService.findCouponDetail(couponId, isUsed, loginName, mobile, null, null, usedStartTime, usedEndTime, index, pageSize);
+        int userCouponsCount = consoleCouponService.findCouponDetailCount(couponId, isUsed, loginName, mobile, null, null, usedStartTime, usedEndTime);
+
+        long investAmount = 0l;
+        long interest = 0l;
+        for(CouponDetailsDto couponDetailsDto : userCoupons){
+            investAmount += couponDetailsDto.getInvestAmount() != null ? couponDetailsDto.getInvestAmount() : 0l;
+            interest += couponDetailsDto.getAnnualInterest() != null ? couponDetailsDto.getAnnualInterest() : 0l;
+        }
+
         CouponModel couponModel = consoleCouponService.findCouponById(couponId);
+        modelAndView.addObject("investAmount", investAmount);
+        modelAndView.addObject("interest", interest);
         modelAndView.addObject("userCoupons", userCoupons);
         modelAndView.addObject("isUsed", isUsed);
         modelAndView.addObject("couponId", couponId);
-        modelAndView.addObject("registerStartTime", registerStartTime);
-        modelAndView.addObject("registerEndTime", registerEndTime);
+        modelAndView.addObject("usedStartTime", usedStartTime);
+        modelAndView.addObject("usedEndTime", usedEndTime);
         modelAndView.addObject("loginName", loginName);
         modelAndView.addObject("mobile", mobile);
         modelAndView.addObject("index", index);

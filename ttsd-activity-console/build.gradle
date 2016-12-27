@@ -46,6 +46,10 @@ dependencies {
         exclude module: 'ttsd-dependency'
     };
 
+    compile(project(":ttsd-edxpoint-repository")) {
+        exclude module: 'ttsd-dependency'
+    };
+
     compile project(':ttsd-util'),
             'org.springframework.boot:spring-boot-starter-mail',
             "org.springframework.boot:spring-boot-starter-web",
@@ -63,17 +67,6 @@ dependencies {
             'com.squareup.okhttp:okhttp:2.7.5'
     providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
     testCompile("org.springframework.boot:spring-boot-starter-test")
-}
-
-processResources {
-    def innerConfigPath = "${project.projectDir.getPath()}/src/main/resources"
-    def outerConfigPath = "${configPath}/ttsd-activity-console"
-    if (new File(outerConfigPath).isDirectory()) {
-        innerConfigPath = outerConfigPath
-    }
-    from("${innerConfigPath}") {
-        into '/'
-    }
 }
 
 war {
