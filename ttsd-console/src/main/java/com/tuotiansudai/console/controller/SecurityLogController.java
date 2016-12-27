@@ -7,8 +7,8 @@ import com.tuotiansudai.console.service.UserOpLogService;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.log.repository.model.AuditLogModel;
 import com.tuotiansudai.log.repository.model.OperationType;
-import com.tuotiansudai.repository.model.UserOpLogView;
-import com.tuotiansudai.repository.model.UserOpType;
+import com.tuotiansudai.log.repository.model.UserOpLogModel;
+import com.tuotiansudai.log.repository.model.UserOpType;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -104,7 +104,7 @@ public class SecurityLogController {
                                   @RequestParam(name = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
                                   @Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index) {
         int pageSize = 10;
-        BasePaginationDataDto<UserOpLogView> data = userOpLogService.getUserOpLogPaginationData(mobile, opType, startTime, endTime, index, pageSize);
+        BasePaginationDataDto<UserOpLogModel> data = userOpLogService.getUserOpLogPaginationData(mobile, opType, startTime, endTime, index, pageSize);
 
         ModelAndView modelAndView = new ModelAndView("/user-op-log");
 

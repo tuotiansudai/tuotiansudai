@@ -12,4 +12,10 @@ sourceSets {
     test.runtimeClasspath += configurations.providedCompile
 }
 
+dependencies {
+    compile project(':ttsd-util')
+
+    testCompile project(':ttsd-config')
+}
+
 processResources.outputs.upToDateWhen { false }

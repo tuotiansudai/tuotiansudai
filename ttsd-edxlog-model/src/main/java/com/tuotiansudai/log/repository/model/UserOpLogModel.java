@@ -1,16 +1,43 @@
-package com.tuotiansudai.repository.model;
+package com.tuotiansudai.log.repository.model;
+
+
+import com.tuotiansudai.repository.model.Source;
 
 import java.util.Date;
 
-public class UserOpLogView {
+public class UserOpLogModel {
+
     private long id;
+
+    private String loginName;
+
     private String mobile;
+
     private UserOpType opType;
+
     private String ip;
+
     private String deviceId;
+
     private Source source;
+
     private String description;
+
     private Date createdTime;
+
+    public UserOpLogModel() {
+    }
+
+    public UserOpLogModel(long id, String loginName, UserOpType opType, String ip, String deviceId, Source source, String description) {
+        this.id = id;
+        this.loginName = loginName;
+        this.opType = opType;
+        this.ip = ip;
+        this.deviceId = deviceId;
+        this.source = source;
+        this.description = description;
+        this.createdTime = new Date();
+    }
 
     public long getId() {
         return id;
@@ -18,6 +45,14 @@ public class UserOpLogView {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getLoginName() {
+        return loginName;
+    }
+
+    public void setLoginName(String loginName) {
+        this.loginName = loginName;
     }
 
     public String getMobile() {
