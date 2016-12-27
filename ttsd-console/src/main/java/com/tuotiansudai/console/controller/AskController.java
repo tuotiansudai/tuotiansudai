@@ -20,6 +20,7 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -47,7 +48,10 @@ public class AskController {
     @Autowired
     private IncludeQuestionService includeQuestionService;
 
-    private static final String PREFIX = "http://ask.tuotiansudai.com/question";
+    @Value("${ask.server}")
+    private String askServer;
+
+    private static final String PREFIX = "/question";
 
     @RequestMapping(path = "/questions", method = RequestMethod.GET)
     public ModelAndView getQuestions(@RequestParam(value = "question", required = false) String question,
@@ -119,7 +123,7 @@ public class AskController {
 
             String strVal = getStringVal(hssfCell);
             String questionId = strVal.substring(strVal.lastIndexOf("/") + 1);
-            if(!strVal.startsWith(PREFIX)){
+            if(!strVal.startsWith(askServer + PREFIX)){
                 listFailed.add(strVal);
             }else{
                 IncludeQuestionModel includeQuestionModel = includeQuestionService.getIncludeQuestionByQuestionId(Long.parseLong(questionId));
