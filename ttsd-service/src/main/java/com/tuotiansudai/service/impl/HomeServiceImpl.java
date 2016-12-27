@@ -28,9 +28,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.text.MessageFormat;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -59,7 +57,11 @@ public class HomeServiceImpl implements HomeService {
     @Value("${ask.server}")
     private String askServer;
 
+    @Value("${cms.server}")
+    private String cmsServer;
+
     private static final String ASK_INTERFACE_URL = "/question/getSiteMap";
+
 
     public List<HomeLoanDto> getNormalLoans() {
         return getLoans().stream().filter(loan -> !loan.getProductType().equals(ProductType._30) && !loan.getActivityType().equals(ActivityType.NEWBIE)).collect(Collectors.toList());
@@ -137,7 +139,7 @@ public class HomeServiceImpl implements HomeService {
 
 
     @Override
-    public List<SiteMapDataDto> getSiteAskMap(){
+    public List<SiteMapDataDto> getSiteMapData(){
         String askJsonString = loadJSON(askServer + ASK_INTERFACE_URL);
         return JsonToList(askJsonString);
     }
@@ -153,6 +155,9 @@ public class HomeServiceImpl implements HomeService {
         while(it.hasNext()){
             siteMapDataDtoList.add((SiteMapDataDto)it.next());
         }
+
+        Collections.sort(siteMapDataDtoList, (o1, o2) -> Integer.compare(o1.getSeq(),o2.getSeq()));
+
         return siteMapDataDtoList;
     }
 

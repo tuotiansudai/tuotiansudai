@@ -1,9 +1,12 @@
 package com.tuotiansudai.dto;
 
-public class SiteMapDataDto {
+import java.io.Serializable;
+
+public class SiteMapDataDto implements Serializable {
 
     private String name;
     private String linkUrl;
+    private Integer seq;
 
     public String getName() {
         return name;
@@ -19,5 +22,13 @@ public class SiteMapDataDto {
 
     public void setLinkUrl(String linkUrl) {
         this.linkUrl = linkUrl;
+    }
+
+    public Integer getSeq() {
+        return seq;
+    }
+
+    public void setSeq(Integer seq) {
+        this.seq = seq;
     }
 }

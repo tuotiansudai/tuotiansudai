@@ -113,4 +113,11 @@ public class QuestionController {
         return includeQuestionService.getSiteMapData();
     }
 
+    @RequestMapping(path = "/cms-category-list", method = RequestMethod.GET)
+    public ModelAndView getCmsColumn() {
+        ModelAndView modelAndView = new ModelAndView("cms-category-list");
+        modelAndView.addObject("cmsCategoryList", includeQuestionService.getCmsSiteMapCategory());
+        return modelAndView;
+    }
+
 }

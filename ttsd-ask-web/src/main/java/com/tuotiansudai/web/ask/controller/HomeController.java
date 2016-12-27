@@ -39,8 +39,6 @@ public class HomeController {
         modelAndView.addObject("questions", data);
         modelAndView.addObject("group", group);
 
-        modelAndView.addObject("redis", includeQuestionService.getSiteMapData());
-
         return modelAndView;
     }
 

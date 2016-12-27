@@ -14,5 +14,5 @@ public interface HomeService {
 
     List<HomeLoanDto> getEnterpriseLoans();
 
-    List<SiteMapDataDto> getSiteAskMap();
+    List<SiteMapDataDto> getSiteMapData();
 }
