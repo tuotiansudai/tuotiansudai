@@ -143,7 +143,7 @@ public class ChristmasPrizeService {
             return new DrawLotteryResultDto(1);//您暂无拆奖机会，赢取机会后再来抽奖吧！
         }
 
-        LotteryPrize christmasPrize = lotteryDrawActivityService.lotteryDrawPrize(ActivityCategory.CHRISTMAS_ACTIVITY);
+        LotteryPrize christmasPrize = lotteryDrawActivityService.drawLotteryPrize(ActivityCategory.CHRISTMAS_ACTIVITY);
 
         PrizeType prizeType = PrizeType.CONCRETE;
         if (christmasPrize.equals(LotteryPrize.RED_ENVELOPE_20_POINT_DRAW_REF_CARNIVAL)) {
