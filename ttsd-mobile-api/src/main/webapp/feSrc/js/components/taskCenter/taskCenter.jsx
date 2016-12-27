@@ -5,8 +5,10 @@ import ajax from 'utils/ajax';
 import IScroll from 'iscroll/build/iscroll-probe';
 import imagesLoaded from 'imagesloaded';
 import classNames from 'classnames';
-import taskLineLeft from './line-left.png';
-import taskLineRight from './line-right.png';
+//import taskLineLeft from './line-left.png';
+//import taskLineRight from './line-right.png';
+import titleOne from './title-one.png';
+import titleTwo from './title-two.png';
 import task_banner from './task-banner.png';
 
 const pageSize = 10;
@@ -70,9 +72,7 @@ class NewbieTaskGroup extends React.Component {
             return (
             <div className="NewbieTaskGroup">
                 <div className="HeaderGroup">
-                <img src={taskLineLeft} width="50%"/>
-                <span className="HeaderTitle">新手任务</span>
-                <img src={taskLineRight} width="50%"/>
+                <img src={titleOne} />
             </div>
                 <div className="scroll-wrap clearfix">
                 {rows}
@@ -109,9 +109,7 @@ class AdvanceTaskGroup extends React.Component {
         return (
             <div className="AdvanceTaskGroup">
                 <div className="HeaderGroup" ref="HeaderGroup">
-                <img src={taskLineLeft} />
-                <span className="HeaderTitle">进阶任务</span>
-                <img src={taskLineRight} />
+                <img src={titleTwo} />
             </div>
 
                 <div className="scroll-wrap clearfix">
