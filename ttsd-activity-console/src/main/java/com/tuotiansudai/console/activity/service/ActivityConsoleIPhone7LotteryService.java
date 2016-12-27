@@ -11,8 +11,6 @@ import com.tuotiansudai.activity.repository.model.IPhone7LotteryConfigModel;
 import com.tuotiansudai.activity.repository.model.IPhone7LotteryConfigStatus;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.log.repository.mapper.AuditLogMapper;
-import com.tuotiansudai.log.repository.model.AuditLogModel;
 import com.tuotiansudai.log.repository.model.OperationType;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
@@ -37,9 +35,6 @@ public class ActivityConsoleIPhone7LotteryService {
 
     @Autowired
     private IPhone7LotteryConfigMapper configMapper;
-
-    @Autowired
-    private AuditLogMapper auditLogMapper;
 
     @Autowired
     private AuditLogService auditLogService;
