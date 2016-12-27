@@ -1,6 +1,6 @@
 .main {
     margin: 0;
-    background-color: #0f3d70;
+    background-color: #ffefaf;
     height: auto;
     overflow: auto;
     :global { 
@@ -27,7 +27,7 @@
         }
         div {
             font-size: 20px; /*px*/
-            color: #0f3d70;
+            color: #ffefaf;
             text-align: center;
         }
         p {
@@ -48,12 +48,10 @@
             z-index:100;
             height: 60px; /*px*/
             line-height: 60px;/*px*/
-          margin: 0 auto;
-          margin-top: -60px; /*px*/
+            margin: 0 auto;
         }
         .MenuBox ul {
             border-radius: 5px;
-            border: 1px solid #ff5959;
             height: 100%;
             width:100%;
             margin: 0px auto;
@@ -65,13 +63,13 @@
             width: 50%;
             height:100%;
             text-align: center;
-            color: #ff5959;
-            background-color: #0f3d70;
-            font-size: 28px;  /*px*/
+            color: #808080;
+            background-color: #fff;
+            font-size: 26px;  /*px*/
             font-style: normal;
             &.active {
-                color: #ffffff;
-            background-color: #ff5959;
+                color: #ff473c;
+                border-bottom:1px solid #ff473c;
             }
             -webkit-transform: translate3d(0, 0, 0);
         }

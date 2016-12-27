@@ -5,9 +5,9 @@ import ajax from 'utils/ajax';
 import IScroll from 'iscroll/build/iscroll-probe';
 import imagesLoaded from 'imagesloaded';
 import classNames from 'classnames';
-import taskLineLeft from './task_line_left.png';
-import taskLineRight from './task_line_right.png';
-import task_banner from './task_banner1.png';
+import taskLineLeft from './line-left.png';
+import taskLineRight from './line-right.png';
+import task_banner from './task-banner.png';
 
 const pageSize = 10;
 const MenuData = {
@@ -70,9 +70,9 @@ class NewbieTaskGroup extends React.Component {
             return (
             <div className="NewbieTaskGroup">
                 <div className="HeaderGroup">
-                <img src={taskLineLeft} />
+                <img src={taskLineLeft} width="50%"/>
                 <span className="HeaderTitle">新手任务</span>
-                <img src={taskLineRight}/>
+                <img src={taskLineRight} width="50%"/>
             </div>
                 <div className="scroll-wrap clearfix">
                 {rows}

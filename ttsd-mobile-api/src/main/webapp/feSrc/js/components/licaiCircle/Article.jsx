@@ -55,6 +55,7 @@ class Article extends React.Component {
 	render() {
 		return (
 		    <div ref="scrollWrap" className={main}>
+		    	<a className="back-link" href="#/media-center"></a>
 				<article>
 					<h1>{this.state.data.title}</h1>
 					<section className="meta">
