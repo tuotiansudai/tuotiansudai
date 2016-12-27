@@ -33,6 +33,7 @@
             <div class="my-chance" >
                 <i></i><span>我的砸蛋机会：<em class="my-times" data-times="${time}">${time} </em>次
                 <input value="${task}" type="hidden" id="rewardTaskStatus">
+                <input value="${inActivityDate}" type="hidden" id="inActivityDate">
             </span>
             </div>
         </div>

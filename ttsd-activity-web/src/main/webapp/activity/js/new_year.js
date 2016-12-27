@@ -140,12 +140,17 @@ require(['jquery','drawCircle','commonFun','logintip','register_common'], functi
 
             //签到成功
             drawCircle.signToday(function() {
+                var signAlert = "";
+                if($("#inActivityDate").val() == "true"){
+                    signAlert = '<p class="des-text">恭喜您获得砸金蛋机会一次</p>';
+                }
                 tipMessage.button='<a href="javascript:void(0)" class="go-on go-close">知道了</a>';
-                tipMessage.info='<p class="success-text">签到成功！</p>' +
-                    '<p class="des-text">恭喜您获得砸金蛋机会一次</p>';
+                tipMessage.info='<p class="success-text">签到成功！</p>' + signAlert;
                 $signToday.text('已签到');
                 var thisTime = Number($rewardGiftBox.find('.my-times').text());
-                $rewardGiftBox.find('.my-times').text(thisTime+1);
+                if($("#inActivityDate").val() == "true"){
+                    $rewardGiftBox.find('.my-times').text(thisTime+1);
+                }
                 $signToday.removeAttr('id');
                 drawCircle.tipWindowPop(tipMessage);
             },function() {

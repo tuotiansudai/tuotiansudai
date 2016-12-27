@@ -37,6 +37,7 @@ public class AnnualActivityService {
         param.put("investAmount", AmountConverter.convertCentToString(investAmount));
         Optional<Long> first = investTaskList.stream().filter(c -> c > investAmount).findFirst();
         param.put("nextAmount", first.isPresent() ? AmountConverter.convertCentToString(first.get() - investAmount) : "0" );
+        param.put("inActivityDate", String.valueOf(DateTime.now().toDate().before(endTime) && DateTime.now().toDate().after(startTime)));
         return param;
     }
 
