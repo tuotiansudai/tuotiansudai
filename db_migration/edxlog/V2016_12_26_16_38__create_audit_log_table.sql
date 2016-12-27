@@ -12,10 +12,3 @@ CREATE TABLE `audit_log` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8
 
-
-insert into audit_log (auditor_login_name, auditor_mobile,operator_login_name, operator_mobile,target_id,operation_type,ip,operation_time, description)
-select l.auditor_login_name, auditor.mobile as auditor_mobile, l.operator_login_name, operator.mobile as operator_mobile, l.target_id,l.operation_type,
-l.ip,l.operation_time,l.description
-from aa.audit_log l
-left join aa.user auditor on l.auditor_login_name = auditor.login_name
-join aa.user operator on l.operator_login_name=operator.login_name;
