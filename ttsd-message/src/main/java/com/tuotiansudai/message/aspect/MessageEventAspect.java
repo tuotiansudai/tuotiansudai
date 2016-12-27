@@ -174,11 +174,8 @@ public class MessageEventAspect {
 
     @AfterReturning("rewardReferrerSuccessPointcut()")
     public void afterReturningRewardReferrer(JoinPoint joinPoint) {
-        Object loanModel = joinPoint.getArgs()[0];
         try {
-            Class<?> aClass = loanModel.getClass();
-            Method method = aClass.getMethod("getId");
-            long loanId = (long) method.invoke(loanModel);
+            long loanId = (long) joinPoint.getArgs()[0];
             userMessageEventGenerator.generateRecommendAwardSuccessEvent(loanId);
             logger.info(MessageFormat.format("[Message Event Aspect] after reward referrer success({0}) pointcut finished", String.valueOf(loanId)));
         } catch (Exception e) {

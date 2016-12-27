@@ -477,7 +477,6 @@ public class LoanServiceImpl implements LoanService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public String loanOutCallback(Map<String, String> paramsMap, String queryString) {
-        logger.info("loanOutCallback================================begin");
         BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(
                 paramsMap,
                 queryString,
@@ -486,7 +485,7 @@ public class LoanServiceImpl implements LoanService {
         if (callbackRequest == null || Strings.isNullOrEmpty(callbackRequest.getOrderId())) {
             return null;
         }
-        logger.info("loanOutCallback================================callbackRequest.getOrderId() :" + callbackRequest.getOrderId());
+        logger.info("[标的放款]: 放款回调,标的ID:" + callbackRequest.getOrderId());
         long loanId = Long.parseLong(callbackRequest.getOrderId());
 
         LoanModel loan = loanMapper.findById(loanId);
