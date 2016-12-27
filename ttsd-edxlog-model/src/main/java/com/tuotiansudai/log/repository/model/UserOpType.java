@@ -1,4 +1,4 @@
-package com.tuotiansudai.repository.model;
+package com.tuotiansudai.log.repository.model;
 
 
 public enum UserOpType {

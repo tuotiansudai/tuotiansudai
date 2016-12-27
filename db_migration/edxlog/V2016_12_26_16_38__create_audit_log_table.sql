@@ -11,4 +11,3 @@ CREATE TABLE `audit_log` (
   `description` text,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8
-

@@ -7,6 +7,8 @@ import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.service.v1_0.MobileAppNoPasswordInvestTurnOffService;
 import com.tuotiansudai.api.util.AppVersionUtil;
 import com.tuotiansudai.client.MQWrapperClient;
+import com.tuotiansudai.log.repository.model.UserOpLogModel;
+import com.tuotiansudai.log.repository.model.UserOpType;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
