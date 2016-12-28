@@ -1,7 +1,5 @@
 apply plugin: 'java'
 
-version = '1.0'
-
 configurations {
     providedCompile
 }
@@ -15,7 +13,10 @@ sourceSets {
 dependencies {
     compile project(':ttsd-dependency'),
             project(":ttsd-config"),
-            project(":ttsd-util")
+            project(":ttsd-user-repository"),
+            project(":ttsd-membership"),
+            project(":ttsd-util"),
+            project(":ttsd-client")
 }
 
 processResources.outputs.upToDateWhen { false }

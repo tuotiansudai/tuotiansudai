@@ -2,7 +2,6 @@ from __future__ import with_statement
 from fabric.api import *
 import os
 
-
 config_path = os.getenv('TTSD_CONFIG_PATH', '/workspace/deploy-config')
 
 env.use_ssh_config = True

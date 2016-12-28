@@ -20,8 +20,6 @@ define("wdzj_password", default="test", help="wdzj api password")
 define("redis_host", default="192.168.33.10", help="redis host")
 define("redis_port", default="6379", help="redis port")
 
-_redis = redis.StrictRedis(host=options.redis_host, port=options.redis_port, db=0)
-
 
 class Error404Handler(tornado.web.ErrorHandler):
     def write_error(self, *args, **kwargs):
@@ -36,7 +34,7 @@ class RefreshTokenHandler(RequestHandler):
                 raise HTTPError(403)
             else:
                 uuid1 = str(uuid.uuid1())
-                _redis.set("token", uuid1, 3600)
+                self.settings['_redis'].setex("token", 3600, uuid1)
                 self.write({'data': {'token': uuid1}})
         else:
             raise HTTPError(400)
@@ -46,7 +44,7 @@ class BaseHandler(RequestHandler):
     @gen.coroutine
     def prepare(self):
         token = self.get_argument('token', None)
-        cached_token = _redis.get("token")
+        cached_token = self.settings['_redis'].get("token")
         if not token or cached_token != token:
             raise HTTPError(403)
 
@@ -59,11 +57,11 @@ class BaseHandler(RequestHandler):
 class LoanDetailHandler(BaseHandler):
     totalCountSQL = "select count(1) as totalCount from loan where DATE_FORMAT(raising_complete_time, '%%Y-%%m-%%d') = %s"
 
-    totalAmountSQL = "select IFNULL(sum(loan_amount),0) totalAmount from loan where DATE_FORMAT(raising_complete_time, '%%Y-%%m-%%d') = %s"
+    totalAmountSQL = "select IFNULL(truncate(sum(loan_amount)/100,2),0) totalAmount from loan where DATE_FORMAT(raising_complete_time, '%%Y-%%m-%%d') = %s"
 
     loanDetailSQL = '''
-        select id as projectId, `name` as title, loan_amount as amount, 100 as schedule, CONCAT((base_rate + activity_rate)*100,'%%') as interestRate, duration as deadline,
-        '天' as deadlineUnit, 0 as reward, '抵押标' as type, type as repaymentType, agent_login_name as userName, raising_complete_time as successTime
+        select id as projectId, `name` as title, CAST(truncate(loan_amount/100, 2) as char(12)) as amount, 100 as schedule, CONCAT((base_rate + activity_rate)*100,'%%') as interestRate, duration as deadline,
+        '天' as deadlineUnit, 0 as reward, '抵押标' as type, type as repaymentType, md5(agent_login_name) as userName, raising_complete_time as successTime
         from loan where DATE_FORMAT(raising_complete_time,'%%Y-%%m-%%d') = %s limit %s, %s;
     '''
 
@@ -77,13 +75,15 @@ class LoanDetailHandler(BaseHandler):
             current_page = int(self.get_argument('page', None))
             page_size = int(self.get_argument('pageSize', None))
             date = self.get_argument('date', None)
-        except (ValueError, TypeError):
+            assert current_page > 0
+            assert page_size > 0
+        except Exception:
             raise HTTPError(400)
 
         start = (current_page - 1) * page_size
 
         total_count = int(self.settings['db'].get(self.totalCountSQL, date)["totalCount"])
-        total_amount = float(self.settings['db'].get(self.totalAmountSQL, date)["totalAmount"]) / 100
+        total_amount = str(self.settings['db'].get(self.totalAmountSQL, date)["totalAmount"])
         loan_detail_rows = self.settings['db'].query(self.loanDetailSQL, date, start, page_size)
 
         for row in loan_detail_rows:
@@ -120,7 +120,9 @@ class AdvanceRepayHandler(BaseHandler):
             current_page = int(self.get_argument('page', None))
             page_size = int(self.get_argument('pageSize', None))
             date = self.get_argument('date', None)
-        except (ValueError, TypeError):
+            assert current_page > 0
+            assert page_size > 0
+        except Exception:
             raise HTTPError(400)
 
         start = (current_page - 1) * page_size
@@ -141,7 +143,9 @@ if __name__ == '__main__':
         host=options.mysql_host, database=options.mysql_database,
         user=options.mysql_user, password=options.mysql_password)
 
-    settings = {'debug': True, 'db': db, 'default_handler_class': Error404Handler,
+    _redis = redis.StrictRedis(host=options.redis_host, port=options.redis_port, db=0)
+
+    settings = {'debug': False, 'db': db, '_redis': _redis, 'default_handler_class': Error404Handler,
                 'default_handler_args': dict(status_code=404)}
 
     app = tornado.web.Application([

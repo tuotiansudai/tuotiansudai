@@ -951,6 +951,29 @@
         where loan_id = #{loanId} and transfer_invest_id is null and status = 'SUCCESS' and (contract_no is null or contract_no = '') order by invest_time asc
     </select>
 
+    <select id="sumSuccessActivityInvestAmount" parameterType="map" resultType="long">
+        SELECT
+            IFNULL(SUM(amount), 0)
+        FROM
+            invest
+        WHERE
+            status = 'SUCCESS' AND login_name = #{loginName} AND transfer_invest_id IS NULL
+            <if test="startTime != null &amp;&amp; endTime != null">
+                and created_time between #{startTime} and #{endTime}
+            </if>
+            AND loan_id IN (
+                SELECT
+                    l.id
+                FROM
+                    loan l
+                        JOIN
+                    loan_details d ON l.id = d.loan_id
+                WHERE
+                    d.activity = 1
+                        AND d.activity_desc = #{activityDesc}
+            )
+    </select>
+
     <select id="findInvestAmountScaleTop3" parameterType="map" resultType="java.util.HashMap">
         select user.city as city, sum(invest.amount) as sumAmount
         from invest
@@ -975,5 +998,4 @@
         and DATE_FORMAT(invest.invest_time, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d')
         ]]>
     </select>
-
 </mapper>
