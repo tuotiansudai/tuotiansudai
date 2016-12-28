@@ -44,11 +44,6 @@ require(['jquery','drawCircle','logintip','register_common'], function ($,drawCi
             $pointerImg=$('.pointer-img',$rewardGiftBox),
             myMobileNumber=$MobileNumber.length ? $MobileNumber.data('mobile') : '';  //当前登录用户的手机号
 
-        var tipMessage={
-            info:'',
-            button:'',
-            area:[]
-        };
         var paramData={
             "mobile":myMobileNumber,
             "activityCategory":"CHRISTMAS_ACTIVITY"

@@ -3,7 +3,8 @@ require(['jquery', 'underscore','drawCircle','register_common','logintip'], func
     var $integralDrawPage=$('#integralDrawPage'),
         $oneThousandPoints=$('.one-thousand-points',$integralDrawPage),
         $tenThousandPoints=$('.ten-thousand-points',$integralDrawPage),
-        $myPropertyPoint=$('.gift-circle-detail .my-property',$integralDrawPage);
+        $myPropertyPoint=$('.gift-circle-detail .my-property',$integralDrawPage),
+        tipGroupObj={};
     //以下为抽奖转盘
     var $MobileNumber=$('#MobileNumber'),
         pointAllList='/activity/point-draw/all-list',  //中奖记录接口地址
@@ -11,15 +12,15 @@ require(['jquery', 'underscore','drawCircle','register_common','logintip'], func
         drawURL='/activity/point-draw/draw',    //抽奖的接口链接
         myMobileNumber=$MobileNumber.length ? $MobileNumber.data('mobile') : '';  //当前登录用户的手机号
 
+    $integralDrawPage.find('.tip-list-frame .tip-list').each(function(key,option) {
+        var kind=$(option).data('return');
+        tipGroupObj[kind]=option;
+    });
+
     $oneThousandPoints.find('.gift-circle-out').after($('.draw-instructions',$oneThousandPoints));
     $tenThousandPoints.find('.gift-circle-out').after($('.draw-instructions',$tenThousandPoints));
 
     $myPropertyPoint.text(myPoint);
-    var tipMessage={
-        info:'',
-        button:'',
-        area:[]
-    };
 
     var browser = globalFun.browserRedirect();
     var urlObj=globalFun.parseURL(location.href);
@@ -28,6 +29,7 @@ require(['jquery', 'underscore','drawCircle','register_common','logintip'], func
             $('.reg-tag-current').show();
         }
     }
+
 
     //************************1000积分抽好礼*****************************/
     var oneData={
@@ -80,46 +82,27 @@ require(['jquery', 'underscore','drawCircle','register_common','logintip'], func
                     angleNum=45*3-20;
                     break;
             }
-            //真实奖品
-            if(data.prizeType=='CONCRETE') {
-                tipMessage.button='<a href="javascript:void(0)" class="go-on go-close">继续抽奖</a>';
-                tipMessage.info='<p class="success-text">恭喜您！</p>' +
-                    '<p class="reward-text">抽中了'+data.prizeValue+'！</p>' +
-                    '<p class="des-text">拓天客服将会在7个工作日内联系您发放奖品</p>';
+            var prizeType=data.prizeType.toLowerCase();
+            $(tipGroupObj[prizeType]).find('.prizeValue').text(data.prizeValue);
 
-            }
-            else if(data.prizeType=='VIRTUAL') {
-                tipMessage.button='<a href="javascript:void(0)" class="go-on go-close">继续抽奖</a>';
-                tipMessage.info='<p class="success-text">恭喜您！</p>' +
-                    '<p class="reward-text">'+data.prizeValue+'！</p>' +
-                    '<p class="des-text">奖品已发放至“我的宝藏”当中。</p>'
-            }
+            drawCircle.rotateFn(angleNum,tipGroupObj[prizeType]);
 
-            drawCircleOne.rotateFn(angleNum,tipMessage);
         } else if(data.returnCode == 1) {
             //积分不足
-            tipMessage.info='<p class="login-text">您的积分不足~</p><p class="des-text">投资赚取更多积分再来抽奖吧！</p>',
-                tipMessage.button='<a href="javascript:void(0)" class="go-close">知道了</a>';
-            drawCircleOne.tipWindowPop(tipMessage);
+            drawCircle.tipWindowPop(tipGroupObj['nopoint']);
         }
         else if (data.returnCode == 2) {
             //未登录
-            //tipMessage.info='<p class="login-text">您还未登录~</p><p class="des-text">请登录后再来抽奖吧！</p>',
-            //tipMessage.button='<a href="javascript:void(0)" class="go-close">知道了</a>';
-            //drawCircleOne.tipWindowPop(tipMessage);
 
             $('.no-login-text',$integralDrawPage).trigger('click');  //弹框登录
 
         } else if(data.returnCode == 3){
             //不在活动时间范围内！
-            tipMessage.info='<p class="login-text">不在活动时间内~</p>';
-            drawCircleOne.tipWindowPop(tipMessage);
+            drawCircle.tipWindowPop(tipGroupObj['expired']);
 
         } else if(data.returnCode == 4){
             //实名认证
-            tipMessage.info='<p class="login-text">您还未实名认证~</p><p class="des-text">请实名认证后再来抽奖吧！</p>';
-            tipMessage.button='<a href="javascript:void(0)" class="go-close">知道了</a>';
-            drawCircleOne.tipWindowPop(tipMessage);
+            drawCircle.tipWindowPop(tipGroupObj['authentication']);
         }
     });
 
@@ -178,46 +161,25 @@ require(['jquery', 'underscore','drawCircle','register_common','logintip'], func
                     break;
             }
 
-            //真实奖品
-            if(data.prizeType=='CONCRETE') {
-                tipMessage.button='<a href="javascript:void(0)" class="go-on go-close">继续抽奖</a>';
-                tipMessage.info='<p class="success-text">恭喜您！</p>' +
-                    '<p class="reward-text">抽中了'+data.prizeValue+'！</p>' +
-                    '<p class="des-text">拓天客服将会在7个工作日内联系您发放奖品</p>';
+            var prizeType=data.prizeType.toLowerCase();
+            $(tipGroupObj[prizeType]).find('.prizeValue').text(data.prizeValue);
 
-
-            }
-            else if(data.prizeType=='VIRTUAL') {
-                tipMessage.button='<a href="javascript:void(0)" class="go-on go-close">继续抽奖</a>';
-                tipMessage.info='<p class="success-text">恭喜您！</p>' +
-                    '<p class="reward-text">'+data.prizeValue+'！</p>' +
-                    '<p class="des-text">奖品已发放至“我的宝藏”当中。</p>'
-            }
-
-            drawCircleTen.rotateFn(angleNum,tipMessage);
+            drawCircle.rotateFn(angleNum,tipGroupObj[prizeType]);
         } else if(data.returnCode == 1) {
             //积分不足
-            tipMessage.info='<p class="login-text">您的积分不足~</p><p class="des-text">投资赚取更多积分再来抽奖吧！</p>',
-                tipMessage.button='<a href="javascript:void(0)" class="go-close">知道了</a>';
-            drawCircleTen.tipWindowPop(tipMessage);
+            drawCircle.tipWindowPop(tipGroupObj['nopoint']);
         }
         else if (data.returnCode == 2) {
             //未登录
-            //tipMessage.info='<p class="login-text">您还未登录~</p><p class="des-text">请登录后再来抽奖吧！</p>',
-            //    tipMessage.button='<a href="javascript:void(0)" class="go-close">知道了</a>';
-            //drawCircleTen.tipWindowPop(tipMessage);
             $('.no-login-text',$integralDrawPage).trigger('click');  //弹框登录
 
         } else if(data.returnCode == 3){
             //不在活动时间范围内！
-            tipMessage.info='<p class="login-text">不在活动时间内~</p>';
-            drawCircleTen.tipWindowPop(tipMessage);
+            tdrawCircle.tipWindowPop(tipGroupObj['expired']);
 
         } else if(data.returnCode == 4){
             //实名认证
-            tipMessage.info='<p class="login-text">您还未实名认证~</p><p class="des-text">请实名认证后再来抽奖吧！</p>';
-            tipMessage.button='<a href="javascript:void(0)" class="go-close">知道了</a>';
-            drawCircleTen.tipWindowPop(tipMessage);
+            drawCircle.tipWindowPop(tipGroupObj['authentication']);
         }
     });
     //点击切换按钮
