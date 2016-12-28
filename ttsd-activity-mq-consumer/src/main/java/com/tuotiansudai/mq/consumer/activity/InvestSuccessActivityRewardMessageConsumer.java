@@ -53,9 +53,9 @@ public class InvestSuccessActivityRewardMessageConsumer implements MessageConsum
 
     final private static String LOAN_ANNUAL_ACTIVITY_DESCRIPTION = "新年专享";
 
-    final static private long INVEST_20_RED_ENVELOPE_LIMIT = 500000L;
+    final static private long INVEST_20_RED_ENVELOPE_LIMIT = 50L;
 
-    final static private long INVEST_800_RED_ENVELOPE_LIMIT = 30000000L;
+    final static private long INVEST_800_RED_ENVELOPE_LIMIT = 700L;
 
     final static private long INTEREST_COUPON_OF_20_COUPON_ID = 330;
 
