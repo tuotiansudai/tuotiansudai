@@ -52,8 +52,14 @@ public class SmsServiceImpl implements SmsService {
     @Override
     public BaseDto<SmsDataDto> sendRegisterCaptcha(String mobile, String captcha, String ip) {
         BaseDto<SmsDataDto> smsDateDto = smsClient.sendSMS(RegisterCaptchaMapper.class, mobile, SmsTemplate.SMS_REGISTER_CAPTCHA_TEMPLATE, captcha, ip);
+        if(!smsDateDto.getData().getStatus()) {
+            logger.info(MessageFormat.format("[SmsServiceImpl][sendRegisterCaptcha] Register sms fail.mobile:{0}, captcha:{1}, ip:{2}", mobile, captcha, ip));
+        }
         if(!smsDateDto.getData().getStatus() && platform.equals(SMS_PLATFORM)){
             smsDateDto = this.sendRegisterCaptchaByMd(mobile, captcha,ip);
+            if(!smsDateDto.getData().getStatus()) {
+                logger.info(MessageFormat.format("[SmsServiceImpl][sendRegisterCaptcha] MD Register sms fail.mobile:{0}, captcha:{1}, ip:{2}", mobile, captcha, ip));
+            }
         }
         return smsDateDto;
     }
