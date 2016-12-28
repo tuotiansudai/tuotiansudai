@@ -1,13 +1,13 @@
-package com.tuotiansudai.log.service.impl;
+package com.tuotiansudai.log.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.log.repository.model.AuditLogModel;
 import com.tuotiansudai.log.repository.model.OperationType;
-import com.tuotiansudai.log.service.AuditLogService;
 import com.tuotiansudai.mq.client.model.MessageQueue;
+import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
-import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.JsonConverter;
 import org.apache.log4j.Logger;
@@ -16,9 +16,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class AuditLogServiceImpl implements AuditLogService {
+public class AuditLogService {
 
-    private static Logger logger = Logger.getLogger(AuditLogServiceImpl.class);
+    private static Logger logger = Logger.getLogger(AuditLogService.class);
 
     @Autowired
     private IdGenerator idGenerator;
@@ -27,19 +27,19 @@ public class AuditLogServiceImpl implements AuditLogService {
     private MQWrapperClient mqWrapperClient;
 
     @Autowired
-    private UserService userService;
+    private UserMapper userMapper;
 
     @Transactional
     public void createUserActiveLog(String loginName, String operatorLoginName, UserStatus userStatus, String userIp) {
 
         String operation = userStatus == UserStatus.ACTIVE ? " 解禁" : " 禁止";
-        String description = operatorLoginName + operation + "了用户［" + userService.getRealName(loginName) + "］。";
+        String description = operatorLoginName + operation + "了用户［" + getRealName(loginName) + "］。";
 
         AuditLogModel log = new AuditLogModel();
         log.setId(idGenerator.generate());
         log.setTargetId(loginName);
         log.setOperatorLoginName(operatorLoginName);
-        log.setOperatorMobile(userService.getMobile(operatorLoginName));
+        log.setOperatorMobile(this.getMobile(operatorLoginName));
         log.setOperationType(OperationType.USER);
         log.setIp(userIp);
         log.setDescription(description);
@@ -50,9 +50,9 @@ public class AuditLogServiceImpl implements AuditLogService {
         AuditLogModel log = new AuditLogModel();
         log.setId(idGenerator.generate());
         log.setOperatorLoginName(operatorLoginName);
-        log.setOperatorMobile(userService.getMobile(operatorLoginName));
+        log.setOperatorMobile(this.getMobile(operatorLoginName));
         log.setAuditorLoginName(auditorLoginName);
-        log.setAuditorMobile(userService.getMobile(auditorLoginName));
+        log.setAuditorMobile(this.getMobile(auditorLoginName));
         log.setTargetId(targetId);
         log.setOperationType(operationType);
         log.setIp(auditorIp);
@@ -69,4 +69,14 @@ public class AuditLogServiceImpl implements AuditLogService {
         }
     }
 
+
+    private String getRealName(String loginNameOrMobile) {
+        UserModel userModel = userMapper.findByLoginNameOrMobile(loginNameOrMobile);
+        return userModel == null ? loginNameOrMobile : userModel.getUserName();
+    }
+
+    private String getMobile(String loginName) {
+        UserModel userModel = userMapper.findByLoginName(loginName);
+        return userModel != null ? userModel.getMobile() : null;
+    }
 }
