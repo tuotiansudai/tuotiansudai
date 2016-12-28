@@ -63,6 +63,19 @@ public class AssignWeiXinRedEnvelopJob implements Job {
     }
 
     private Long getCouponId(Integer level){
-        
+        switch (level){
+            case 1:
+                return 333l;
+            case 2:
+                return 334l;
+            case 3:
+                return 335l;
+            case 5:
+                return 336l;
+            case 7:
+                return 337l;
+            default:
+                return 338l;
+        }
     }
 }
