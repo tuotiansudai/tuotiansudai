@@ -285,4 +285,19 @@
         and exists(select 1 from invest where invest.login_name = user.login_name and invest.status = 'SUCCESS' and invest.loan_id != '1')
     </select>
 
+    <select id="findUserModelByChannel" parameterType="map" resultMap="userResultMap">
+        SELECT
+            *
+        FROM
+            user
+        WHERE
+            channel = #{channel}
+            AND referrer IS NOT NULL
+            <if test="startTime != null">
+                AND register_time &gt;= #{startTime}
+            </if>
+            <if test="endTime != null">
+                AND register_time &lt;= #{endTime}
+            </if>
+    </select>
 </mapper>

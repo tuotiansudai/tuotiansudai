@@ -1,9 +1,12 @@
 package com.tuotiansudai.repository.mapper;
 
+import com.aliyun.mns.common.utils.DateUtil;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.repository.model.*;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.time.DateUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -199,6 +202,23 @@ public class UserMapperTest {
     public void testGetUserCount() {
         long userCount = userMapper.findUsersCount();
         assertTrue(userCount > 0);
+    }
+
+    @Test
+    public void shouldFindUserModelByChannelIsOk(){
+        UserModel userModel = getUserModelTest();
+        userMapper.create(userModel);
+
+        UserModel referrerUserModel = getUserModelTest();
+        referrerUserModel.setMobile("12344444400");
+        referrerUserModel.setLoginName("referrerLoginName");
+        referrerUserModel.setChannel("test");
+        referrerUserModel.setReferrer(userModel.getLoginName());
+        userMapper.create(referrerUserModel);
+
+        List<UserModel> userModels = userMapper.findUserModelByChannel(referrerUserModel.getChannel(), DateUtils.addDays(userModel.getRegisterTime(), -1), DateUtils.addDays(userModel.getRegisterTime(), 1));
+        assertTrue(CollectionUtils.isNotEmpty(userModels));
+        assertEquals(userModels.get(0).getLoginName(), referrerUserModel.getLoginName());
     }
 
 }
