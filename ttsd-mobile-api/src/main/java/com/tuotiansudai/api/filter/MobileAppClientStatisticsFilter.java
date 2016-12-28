@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.text.MessageFormat;
 
 @Component("appClientStatisticsFilter")
 public class MobileAppClientStatisticsFilter implements Filter {
@@ -55,12 +56,13 @@ public class MobileAppClientStatisticsFilter implements Filter {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         String requestJson = "";
+        BaseParamDto dto = null;
         try {
             requestJson = ((BufferedRequestWrapper) request).getInputStreamString();
-            BaseParamDto dto = objectMapper.readValue(requestJson, BaseParamDto.class);
+            dto = objectMapper.readValue(requestJson, BaseParamDto.class);
             return dto.getBaseParam();
-        } catch (IOException e) {
-            log.error("app client json invalid:" + requestJson, e);
+        } catch (IOException|NullPointerException e) {
+            log.error(MessageFormat.format("app client json invalid:{0}, dto is null:{1}", requestJson, null == dto));
         }
         return null;
     }
