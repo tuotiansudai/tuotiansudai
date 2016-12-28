@@ -1,4 +1,4 @@
-package com.tuotiansudai.service;
+package com.tuotiansudai.log.service;
 
 import com.tuotiansudai.log.repository.model.OperationType;
 import com.tuotiansudai.repository.model.UserStatus;

@@ -1,12 +1,12 @@
-package com.tuotiansudai.service.impl;
+package com.tuotiansudai.log.service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.log.repository.model.AuditLogModel;
 import com.tuotiansudai.log.repository.model.OperationType;
+import com.tuotiansudai.log.service.AuditLogService;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.model.UserStatus;
-import com.tuotiansudai.service.AuditLogService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.JsonConverter;

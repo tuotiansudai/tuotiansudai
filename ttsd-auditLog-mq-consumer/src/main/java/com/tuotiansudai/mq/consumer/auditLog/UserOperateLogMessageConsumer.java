@@ -1,4 +1,4 @@
-package com.tuotiansudai.mq.consumer.user;
+package com.tuotiansudai.mq.consumer.auditLog;
 
 import com.tuotiansudai.log.repository.mapper.UserOpLogMapper;
 import com.tuotiansudai.log.repository.model.UserOpLogModel;

@@ -3,7 +3,7 @@ package com.tuotiansudai.task.aspect;
 import com.tuotiansudai.activity.repository.dto.ActivityDto;
 import com.tuotiansudai.activity.repository.model.ActivityStatus;
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.service.AuditLogService;
+import com.tuotiansudai.log.service.AuditLogService;
 import com.tuotiansudai.log.repository.model.OperationType;
 import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.service.UserService;

@@ -13,6 +13,8 @@ import org.springframework.context.annotation.PropertySource;
 @ComponentScan(basePackages = {"com.tuotiansudai.console.activity",
         "com.tuotiansudai.cache",
         "com.tuotiansudai.client",
+        "com.tuotiansudai.util",
+        "com.tuotiansudai.log.service",
         "com.tuotiansudai.repository",
         "com.tuotiansudai.spring"})
 @Import(MQProducerConfig.class)
