@@ -67,16 +67,16 @@ class NewbieTaskGroup extends React.Component {
                         </div>
                         <ButtonStatus stocked={option.completed} description={option.description} value={option.number} location={option.url} />
                    </div>);
-        });
+            });
             return (
-            <div className="NewbieTaskGroup">
-                <div className="HeaderGroup">
-                <img src={titleOne} />
-            </div>
-                <div className="scroll-wrap clearfix">
-                {rows}
+                <div className="NewbieTaskGroup">
+                    <div className="HeaderGroup">
+                    <img src={titleOne} />
                 </div>
-            </div>
+                    <div className="scroll-wrap clearfix">
+                    {rows}
+                    </div>
+                </div>
             );
 
         }
