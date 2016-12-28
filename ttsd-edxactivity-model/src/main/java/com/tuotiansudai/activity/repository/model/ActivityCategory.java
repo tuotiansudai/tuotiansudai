@@ -13,6 +13,8 @@ public enum ActivityCategory {
     HERO_RANKING("英雄榜",ConsumeCategory.ACCOUNT_POINT_BY_NO_POINT),
     NEW_HERO_RANKING("英豪榜",ConsumeCategory.ACCOUNT_POINT_BY_NO_POINT),
     CARNIVAL_ACTIVITY("双11狂欢",ConsumeCategory.TASK_COUNT),
+    NO_WORK_ACTIVITY("不上班", ConsumeCategory.TASK_COUNT),
+    ANNUAL_ACTIVITY("元旦活动",ConsumeCategory.TASK_COUNT),
     CHRISTMAS_ACTIVITY("圣诞节活动",ConsumeCategory.TASK_COUNT),
     HEADLINES_TODAY_ACTIVITY("今日头条拉新抽奖活动",ConsumeCategory.TASK_COUNT);
 

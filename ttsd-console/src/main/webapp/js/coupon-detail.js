@@ -41,6 +41,10 @@ require(['jquery','bootstrap', 'bootstrapSelect','bootstrapDatetimepicker','jque
             window.location.href = "/activity-manage/coupon/"+couponId+"/detail";
         });
 
+        $('.export-birthday-coupons').click(function () {
+            location.href = "/export/coupons-details?"+$(".query-build").serialize();
+        });
+
 
     });
 

@@ -26,7 +26,7 @@ public class MobileAppHomeV3Controller extends MobileAppBaseController {
     @RequestMapping(value = "/get/index", method = RequestMethod.POST)
     @ApiOperation("首页")
     public BaseResponseDto<LoanListResponseDataDto> index() {
-        logger.info(MessageFormat.format("generateIndexLoan3 loginName:{0}", LoginUserInfo.getLoginName()));
+        logger.info(MessageFormat.format("generateIndexLoan3 loginName:{0}", getLoginName()));
         logger.info(MessageFormat.format("generateIndexLoan3 mobile:{0}", LoginUserInfo.getMobile()));
         logger.info(MessageFormat.format("generateIndexLoan3 token:{0}", LoginUserInfo.getToken()));
         return mobileAppLoanListV3Service.generateIndexLoan(getLoginName());
