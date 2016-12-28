@@ -50,7 +50,7 @@ require(['jquery', 'Validform', 'bootstrap', 'bootstrapDatetimepicker', 'jquery-
                     if ($self.hasClass('promotionImageUrl')) {
                         $('.promotionImageUrl').val(data.title);
                         $('.imageUrl').html('');
-                        $('.imageUrl').append('<img style="width:100%" src="/' + data.title + '" alt="缩略图">');
+                        $('.imageUrl').append('<img style="width:100%" src="' + data.title + '" alt="缩略图">');
                     }
                 }
             });
