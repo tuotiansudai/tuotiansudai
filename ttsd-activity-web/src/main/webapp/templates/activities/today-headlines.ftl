@@ -116,6 +116,9 @@
                 </div>
             </div>
         </div>
+        <div class="company-name-item">
+            拓天伟业（北京）金融信息服务有限公司
+        </div>
         <div class="download-group">
             <div class="download-bg">
                 <div class="download-btn" data-href="/app/download">
