@@ -62,7 +62,7 @@ public class MobileAppClientStatisticsFilter implements Filter {
             dto = objectMapper.readValue(requestJson, BaseParamDto.class);
             return dto.getBaseParam();
         } catch (IOException|NullPointerException e) {
-            log.error(MessageFormat.format("app client json invalid:{0}, dto is null:{1}", requestJson, null == dto));
+            log.error(MessageFormat.format("app client json invalid:{0}, dto is null:{1}", requestJson, null == dto), e);
         }
         return null;
     }
