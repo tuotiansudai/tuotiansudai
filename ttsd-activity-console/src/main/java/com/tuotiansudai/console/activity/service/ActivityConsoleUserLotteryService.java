@@ -9,10 +9,9 @@ import com.tuotiansudai.activity.repository.model.ActivityCategory;
 import com.tuotiansudai.activity.repository.model.LotteryPrize;
 import com.tuotiansudai.activity.repository.model.UserLotteryPrizeView;
 import com.tuotiansudai.activity.repository.model.UserLotteryTimeView;
-import com.tuotiansudai.repository.mapper.*;
-import com.tuotiansudai.repository.model.*;
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
+import com.tuotiansudai.repository.mapper.InvestMapper;
+import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.model.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -34,16 +33,10 @@ public class ActivityConsoleUserLotteryService {
     private UserMapper userMapper;
 
     @Autowired
-    private AccountMapper accountMapper;
-
-    @Autowired
-    private BankCardMapper bankCardMapper;
-
-    @Autowired
     private InvestMapper investMapper;
 
     @Autowired
-    private RechargeMapper rechargeMapper;
+    private ActivityCountDrawLotteryService commonCountTimeService;
 
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.autumn.startTime}\")}")
     private Date activityAutumnStartTime;
@@ -75,7 +68,7 @@ public class ActivityConsoleUserLotteryService {
         Iterator<UserLotteryTimeView> transform = Iterators.transform(userModels.iterator(), input -> {
             UserLotteryTimeView model = new UserLotteryTimeView(input.getMobile(), input.getLoginName());
             model.setUseCount(userLotteryPrizeMapper.findUserLotteryPrizeCountViews(input.getMobile(), null, prizeType, null, null));
-            model.setUnUseCount((findLotteryTime(model.getMobile(), prizeType) - model.getUseCount()));
+            model.setUnUseCount((commonCountTimeService.countDrawLotteryTime(model.getMobile(), prizeType) - model.getUseCount()));
             return model;
         });
 
@@ -113,111 +106,5 @@ public class ActivityConsoleUserLotteryService {
 
     public int findUserLotteryPrizeCountViews(String mobile, LotteryPrize selectPrize, ActivityCategory prizeType, Date startTime, Date endTime) {
         return userLotteryPrizeMapper.findUserLotteryPrizeCountViews(mobile, selectPrize, prizeType, startTime, endTime);
-    }
-
-    private int findLotteryTime(String mobile, ActivityCategory activityCategory) {
-        int lotteryTime = 0;
-        UserModel userModel = userMapper.findByMobile(mobile);
-        if (userModel == null) {
-            return lotteryTime;
-        }
-
-        Date startTime = null;
-        Date endTime = null;
-        switch (activityCategory) {
-            case AUTUMN_PRIZE:
-                startTime = activityAutumnStartTime;
-                endTime = activityAutumnEndTime;
-                return findLotteryTimeByAutumnAndNationalAndCarnival(userModel, startTime, endTime);
-            case NATIONAL_PRIZE:
-                startTime = activityNationalStartTime;
-                endTime = activityNationalEndTime;
-                return findLotteryTimeByAutumnAndNationalAndCarnival(userModel, startTime, endTime);
-            case CARNIVAL_ACTIVITY:
-                startTime = DateTime.parse(carnivalTime.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
-                endTime = DateTime.parse(carnivalTime.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
-                return findLotteryTimeByAutumnAndNationalAndCarnival(userModel, startTime, endTime);
-            case CHRISTMAS_ACTIVITY:
-                startTime = activityChristmasSecondStartTime;
-                endTime = activityChristmasEndTime;
-                return findLotteryTimeByChristmas(userModel, startTime, endTime);
-        }
-        return lotteryTime;
-    }
-
-    private int findLotteryTimeByAutumnAndNationalAndCarnival(UserModel userModel, Date startTime, Date endTime) {
-        int lotteryTime = 0;
-
-        List<UserModel> userModels = userMapper.findUsersByRegisterTimeOrReferrer(startTime, endTime, userModel.getLoginName());
-        for (UserModel referrerUserModel : userModels) {
-            if (referrerUserModel.getRegisterTime().before(endTime) && referrerUserModel.getRegisterTime().after(startTime)) {
-                lotteryTime++;
-                if (investMapper.countInvestorSuccessInvestByInvestTime(referrerUserModel.getLoginName(), startTime, endTime) > 0) {
-                    lotteryTime++;
-                }
-            }
-        }
-
-        if (userModel.getRegisterTime().before(endTime) && userModel.getRegisterTime().after(startTime)) {
-            lotteryTime++;
-        }
-
-        AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
-        if (accountModel != null && accountModel.getRegisterTime().before(endTime) && accountModel.getRegisterTime().after(startTime)) {
-            lotteryTime++;
-        }
-
-        BankCardModel bankCardModel = bankCardMapper.findPassedBankCardByLoginName(userModel.getLoginName());
-        if (bankCardModel != null && bankCardModel.getCreatedTime().before(endTime) && bankCardModel.getCreatedTime().after(startTime)) {
-            lotteryTime++;
-        }
-
-        if (rechargeMapper.findRechargeCount(null, userModel.getMobile(), null, RechargeStatus.SUCCESS, null, startTime, endTime) > 0) {
-            lotteryTime++;
-        }
-
-        if (investMapper.countInvestorSuccessInvestByInvestTime(userModel.getLoginName(), startTime, endTime) > 0) {
-            lotteryTime++;
-        }
-
-        return lotteryTime;
-    }
-
-
-    private int findLotteryTimeByChristmas(UserModel userModel, Date startTime, Date endTime) {
-        int lotteryTime = 0;
-
-        List<UserModel> userModels = userMapper.findUsersByRegisterTimeOrReferrer(startTime, endTime, userModel.getLoginName());
-        for (UserModel referrerUserModel : userModels) {
-            if (referrerUserModel.getRegisterTime().before(endTime) && referrerUserModel.getRegisterTime().after(startTime)) {
-                lotteryTime++;
-                if (investMapper.countInvestorSuccessInvestByInvestTime(referrerUserModel.getLoginName(), startTime, endTime) > 0) {
-                    lotteryTime++;
-                }
-            }
-        }
-
-        if (userModel.getRegisterTime().before(endTime) && userModel.getRegisterTime().after(startTime)) {
-            lotteryTime++;
-        }
-
-        AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
-        if (accountModel != null && accountModel.getRegisterTime().before(endTime) && accountModel.getRegisterTime().after(startTime)) {
-            lotteryTime++;
-        }
-
-        boolean beforeIsInvest = investMapper.sumInvestAmountByLoginNameInvestTimeProductType(userModel.getLoginName(), new DateTime().minusDays(720).toDate(), activityChristmasStartTime, null) > 0;
-        boolean currentIsInvest = investMapper.sumInvestAmountByLoginNameInvestTimeProductType(userModel.getLoginName(), activityChristmasStartTime, activityChristmasEndTime, null) > 0;
-
-        if (!beforeIsInvest && currentIsInvest) {
-            lotteryTime++;
-        }
-
-        long sumAmount = investMapper.sumInvestAmountByLoginNameInvestTimeProductType(userModel.getLoginName(), startTime, endTime, Lists.newArrayList(ProductType._90, ProductType._180, ProductType._360));
-        lotteryTime += (int) (sumAmount / 200000);
-
-        lotteryTime = lotteryTime >= 10 ? 10 : lotteryTime;
-
-        return lotteryTime;
     }
 }
