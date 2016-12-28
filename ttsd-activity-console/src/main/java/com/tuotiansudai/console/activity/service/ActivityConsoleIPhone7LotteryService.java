@@ -14,7 +14,7 @@ import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.log.repository.model.OperationType;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.service.AuditLogService;
+import com.tuotiansudai.log.service.AuditLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

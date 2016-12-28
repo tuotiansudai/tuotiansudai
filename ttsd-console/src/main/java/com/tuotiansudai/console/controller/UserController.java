@@ -15,6 +15,7 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.EditUserDto;
 import com.tuotiansudai.exception.BaseException;
+import com.tuotiansudai.log.service.AuditLogService;
 import com.tuotiansudai.membership.service.UserMembershipService;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
