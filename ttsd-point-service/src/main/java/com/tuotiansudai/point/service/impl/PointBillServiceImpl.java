@@ -101,11 +101,11 @@ public class PointBillServiceImpl implements PointBillService {
 
         List<PointBillModel> items = Lists.newArrayList();
 
-        long count = pointBillMapper.findCountPointBillPagination(loginName, startTime, endTime, businessTypes);
+        long count = pointBillMapper.findCountPointBillPagination(loginName, null, startTime, endTime, businessTypes);
         if (count > 0) {
             int totalPages = PaginationUtil.calculateMaxPage(count, pageSize);
             index = index > totalPages ? totalPages : index;
-            items = pointBillMapper.findPointBillPagination(loginName, (index - 1) * pageSize, pageSize, startTime, endTime, businessTypes);
+            items = pointBillMapper.findPointBillPagination(loginName, null, (index - 1) * pageSize, pageSize, startTime, endTime, businessTypes);
         }
         List<PointBillPaginationItemDataDto> records = items.stream()
                 .map(PointBillPaginationItemDataDto::new)

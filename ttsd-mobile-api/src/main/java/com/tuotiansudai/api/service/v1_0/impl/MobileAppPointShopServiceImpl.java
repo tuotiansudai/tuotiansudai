@@ -130,66 +130,27 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
     }
 
     @Override
-    public BaseResponseDto<ProductListResponseDto> findPointHome(BaseParamDto baseParamDto) {
-        List<ExchangeCouponView> exchangeCoupons = Lists.newArrayList();
+    public BaseResponseDto<ProductListResponseDto> findPointHome(ProductListRequestDto productListRequestDto) {
 
-        List<ProductModel> couponProducts = productMapper.findAllProductsByGoodsType(Lists.newArrayList(GoodsType.COUPON));
-        for (ProductModel productModel : couponProducts) {
-            CouponModel couponModel = couponMapper.findById(productModel.getCouponId());
-            ExchangeCouponView exchangeCouponView = new ExchangeCouponView(productModel.getPoints(), productModel.getSeq(), productModel.getImageUrl(), productModel.getId(), couponModel);
-            exchangeCoupons.add(exchangeCouponView);
+        String goodsType = productListRequestDto.getGoodsType() == null? "" :productListRequestDto.getGoodsType();
+        List<ProductDetailResponseDto> virtualProductsList = Lists.newArrayList();
+        List<ProductDetailResponseDto> physicalsProductsList = Lists.newArrayList();
+        switch (goodsType){
+            case "VIRTUAL":
+                virtualProductsList = this.getVirtualList();
+                break;
+            case "PHYSICAL":
+                physicalsProductsList = this.getphysicalsProductsList();
+                break;
+            default:
+                virtualProductsList = this.getVirtualList();
+                physicalsProductsList = this.getphysicalsProductsList();
         }
 
-        List<ProductModel> virtualProducts = productMapper.findAllProductsByGoodsType(Lists.newArrayList(GoodsType.VIRTUAL));
-        List<ProductModel> physicalsProducts = productMapper.findAllProductsByGoodsType(Lists.newArrayList(GoodsType.PHYSICAL));
-
-        Iterator<ProductDetailResponseDto> couponList = Iterators.transform(exchangeCoupons.iterator(), new Function<ExchangeCouponView, ProductDetailResponseDto>() {
-            @Override
-            public ProductDetailResponseDto apply(ExchangeCouponView exchangeCouponView) {
-                return new ProductDetailResponseDto(exchangeCouponView, bannerServer);
-            }
-        });
-
-        Iterator<ProductDetailResponseDto> virtualList = Iterators.transform(virtualProducts.iterator(), new Function<ProductModel, ProductDetailResponseDto>() {
-            @Override
-            public ProductDetailResponseDto apply(ProductModel input) {
-                return new ProductDetailResponseDto(input.getId(), bannerServer + input.getImageUrl(), input.getName(), input.getPoints(), input.getType(), 1000, input.getSeq(), input.getUpdatedTime());
-            }
-        });
-
-        Iterator<ProductDetailResponseDto> physicals = Iterators.transform(physicalsProducts.iterator(), new Function<ProductModel, ProductDetailResponseDto>() {
-            @Override
-            public ProductDetailResponseDto apply(ProductModel input) {
-                return new ProductDetailResponseDto(input.getId(), bannerServer + input.getImageUrl(), input.getName(), input.getPoints(), input.getType(), 1000, input.getSeq(), input.getUpdatedTime());
-            }
-        });
-
-        List virtualShopList = Lists.newArrayList(virtualList);
-        if (couponList != null) {
-            virtualShopList.addAll(Lists.newArrayList(couponList));
-        }
-
-        Collections.sort(virtualShopList, new Comparator<ProductDetailResponseDto>() {
-            @Override
-            public int compare(ProductDetailResponseDto o1, ProductDetailResponseDto o2) {
-                int result = 0;
-                if (o1.getSeq() > o2.getSeq()) {
-                    result = 1;
-                } else if (o1.getSeq() < o2.getSeq()) {
-                    result = -1;
-                }
-                if (0 == result && null != o1.getUpdatedTime() && null != o2.getUpdatedTime()) {
-                    return o2.getUpdatedTime().compareTo(o1.getUpdatedTime());
-                } else {
-                    return result;
-                }
-            }
-        });
-
-        AccountModel accountModel = accountMapper.findByLoginName(baseParamDto.getBaseParam().getUserId());
+        AccountModel accountModel = accountMapper.findByLoginName(productListRequestDto.getBaseParam().getUserId());
         ProductListResponseDto productListResponseDto = new ProductListResponseDto();
-        productListResponseDto.setVirtuals(virtualShopList);
-        productListResponseDto.setPhysicals(Lists.newArrayList(physicals));
+        productListResponseDto.setVirtuals(virtualProductsList);
+        productListResponseDto.setPhysicals(physicalsProductsList);
         productListResponseDto.setMyPoints(accountModel != null ? String.valueOf(accountModel.getPoint()) : "0");
         BaseResponseDto baseResponseDto = new BaseResponseDto();
         baseResponseDto.setData(productListResponseDto);
@@ -227,6 +188,56 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
         baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
         return baseResponseDto;
     }
+
+
+    private List<ProductDetailResponseDto> getVirtualList(){
+        List<ExchangeCouponView> exchangeCoupons = Lists.newArrayList();
+        List<ProductModel> couponProducts = productMapper.findAllProductsByGoodsType(Lists.newArrayList(GoodsType.COUPON));
+        for (ProductModel productModel : couponProducts) {
+            CouponModel couponModel = couponMapper.findById(productModel.getCouponId());
+            ExchangeCouponView exchangeCouponView = new ExchangeCouponView(productModel.getPoints(), productModel.getSeq(), productModel.getImageUrl(), productModel.getId(), couponModel);
+            exchangeCoupons.add(exchangeCouponView);
+        }
+
+        List<ProductModel> virtualProducts = productMapper.findAllProductsByGoodsType(Lists.newArrayList(GoodsType.VIRTUAL));
+
+        Iterator<ProductDetailResponseDto> couponList = Iterators.transform(exchangeCoupons.iterator(), exchangeCouponView -> new ProductDetailResponseDto(exchangeCouponView, bannerServer));
+
+        Iterator<ProductDetailResponseDto> virtualList = Iterators.transform(virtualProducts.iterator(), input -> new ProductDetailResponseDto(input.getId(), bannerServer + input.getImageUrl(), input.getName(), input.getPoints(), input.getType(), 1000, input.getSeq(), input.getUpdatedTime()));
+
+        List virtualShopList = Lists.newArrayList(virtualList);
+        if (couponList != null) {
+            virtualShopList.addAll(Lists.newArrayList(couponList));
+        }
+
+        Collections.sort(virtualShopList, new Comparator<ProductDetailResponseDto>() {
+            @Override
+            public int compare(ProductDetailResponseDto o1, ProductDetailResponseDto o2) {
+                int result = 0;
+                if (o1.getSeq() > o2.getSeq()) {
+                    result = 1;
+                } else if (o1.getSeq() < o2.getSeq()) {
+                    result = -1;
+                }
+                if (0 == result && null != o1.getUpdatedTime() && null != o2.getUpdatedTime()) {
+                    return o2.getUpdatedTime().compareTo(o1.getUpdatedTime());
+                } else {
+                    return result;
+                }
+            }
+        });
+        return virtualShopList;
+
+    }
+
+
+    private List<ProductDetailResponseDto> getphysicalsProductsList(){
+        List<ProductModel> physicalsProducts = productMapper.findAllProductsByGoodsType(Lists.newArrayList(GoodsType.PHYSICAL));
+        Iterator<ProductDetailResponseDto> physicals = Iterators.transform(physicalsProducts.iterator(), input -> new ProductDetailResponseDto(input.getId(), bannerServer + input.getImageUrl(), input.getName(), input.getPoints(), input.getType(), 1000, input.getSeq(), input.getUpdatedTime()));
+
+        return Lists.newArrayList(physicals);
+    }
+
 
     @Override
     @Transactional

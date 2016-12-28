@@ -357,7 +357,7 @@ public class LotteryDrawActivityService {
                     }
                     break;
                 case EACH_ACTIVITY_SIGN_IN:
-                    time += pointBillMapper.findCountPointBillPagination(userModel.getLoginName(), startTime, endTime, Lists.newArrayList(PointBusinessType.SIGN_IN));
+                    time += pointBillMapper.findCountPointBillPagination(userModel.getLoginName(), null, startTime, endTime, Lists.newArrayList(PointBusinessType.SIGN_IN));
                     break;
                 case REFERRER_USER:
                     List<UserModel> referrerUsers = userMapper.findUsersByRegisterTimeOrReferrer(startTime, endTime, userModel.getLoginName());
