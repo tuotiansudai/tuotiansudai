@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class AnnualActivityService {
@@ -34,13 +35,14 @@ public class AnnualActivityService {
 
         Map<String, String> param = Maps.newHashMap();
         param.put("investAmount", AmountConverter.convertCentToString(investAmount));
-        param.put("nextAmount", AmountConverter.convertCentToString(investTaskList.stream().filter(c -> c >= investAmount).findFirst().get() - investAmount));
-
+        Optional<Long> first = investTaskList.stream().filter(c -> c > investAmount).findFirst();
+        param.put("nextAmount", first.isPresent() ? AmountConverter.convertCentToString(first.get() - investAmount) : "0" );
+        param.put("inActivityDate", String.valueOf(DateTime.now().toDate().before(endTime) && DateTime.now().toDate().after(startTime)));
         return param;
     }
 
     public String getTaskProgress(String investAmount){
-        long amount = investAmount.equals("0.00") ? 0 : Long.parseLong(investAmount);
+        long amount = investAmount.equals("0.00") ? 0 : AmountConverter.convertStringToCent(investAmount);
         String[] task = {"0", "0", "0", "0", "0", "0", "0", "0", "0", "0"};
 
         for(int i = 0; i < investTaskList.size(); i ++){

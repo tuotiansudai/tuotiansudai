@@ -1,15 +1,39 @@
-require(['jquery','drawCircle','logintip','register_common'], function ($,drawCircle) {
+require(['jquery','drawCircle','commonFun','logintip','register_common'], function ($,drawCircle,commonFun) {
     $(function() {
 
         var redirect = globalFun.browserRedirect();
         var $newYearDayFrame = $('#newYearDayFrame');
-        var $activitySlide=$('#newYearSlide'),
-            tipGroupObj={};
+        var $activitySlide=$('#newYearSlide');
+        var $loginInBtn=$('#loginIn');
+        var locationUrl=location.href;
+        var sourceKind=globalFun.parseURL(locationUrl);
+        var tipGroupObj={};
 
         $newYearDayFrame.find('.tip-list').each(function(key,option) {
             var kind=$(option).data('return');
             tipGroupObj[kind]=option;
         });
+
+        (function() {
+            $loginInBtn.on('click',function() {
+                if(sourceKind.params.source=='app') {
+                    location.href="/login";
+                } else {
+                    $('.no-login-text',$newYearDayFrame).trigger('click');  //弹框登录
+                }
+            });
+
+            //邀请好友在PC和APP端链接不同
+            $('.to-referrer',$newYearDayFrame).on('click',function() {
+                if(sourceKind.params.source=='app') {
+                    location.href='/app/tuotian/refer-reward';
+                }
+                else {
+                    location.href='/referrer/refer-list';
+                }
+            });
+
+        })();
 
         //文字连续滚动
         (function() {
@@ -46,7 +70,7 @@ require(['jquery','drawCircle','logintip','register_common'], function ($,drawCi
                 $activitySlide.addClass('pc-img');
             }
             else {
-                $activitySlide.html('<img src='+staticServer+'/activity/images/christmas-day/app-top.jpg>');
+                $activitySlide.html('<img src='+staticServer+'/activity/images/new-year/app-top.jpg>');
 
                 // 是否加载快速注册的功能
                var urlObj=globalFun.parseURL(location.href);
@@ -68,7 +92,7 @@ require(['jquery','drawCircle','logintip','register_common'], function ($,drawCi
                 drawURL='/activity/point-draw/task-draw',    //抽奖的接口链接
                 $pointerImg=$('.gold-egg',$rewardGiftBox),
                 myMobileNumber=$MobileNumber.length ? $MobileNumber.data('mobile') : '';  //当前登录用户的手机号
-
+            var $signToday=$('#signToday');
             var myTimes=$rewardGiftBox.find('.my-times').data('times'); //初始抽奖次数
             var paramData={
                 "mobile":myMobileNumber,
@@ -83,10 +107,22 @@ require(['jquery','drawCircle','logintip','register_common'], function ($,drawCi
                 }
             });
 
+             $.when(commonFun.isUserLogin())
+                 .done(function(){
+                     $('.signedIn-status .normal-button',$rewardGiftBox).show();
+                 })
+                 .fail(function(){
+                     console.log('未登陆');
+                     $loginInBtn.show();
+                 });
+
             //签到
             drawCircle.prototype.signToday=function(callback,failFun) {
-                var $signToday=$('#signToday');
-                $signToday.on('click',function() {
+
+                $signToday.on('click',function(event) {
+                    if(event.target.id!='signToday') {
+                        return;
+                    }
                     $.ajax({
                         url:'/point/sign-in',
                         type:'POST',
@@ -105,7 +141,16 @@ require(['jquery','drawCircle','logintip','register_common'], function ($,drawCi
 
             //签到成功
             drawCircle.signToday(function() {
-                drawCircle.tipWindowPop(tipGroupObj['signOk']);
+                drawCircle.tipWindowPop(tipGroupObj['signOk'],function() {
+                    $signToday.text('已签到');
+                    var thisTime = Number($rewardGiftBox.find('.my-times').text());
+                    if($("#inActivityDate").val() == "true"){
+                          $rewardGiftBox.find('.my-times').text(thisTime+1);
+                        }
+
+                    $signToday.removeAttr('id');
+                });
+
             },function() {
                 drawCircle.tipWindowPop(tipGroupObj['signNo']);
             });
@@ -118,6 +163,7 @@ require(['jquery','drawCircle','logintip','register_common'], function ($,drawCi
 
             //**********************开始抽奖**********************//
             $pointerImg.on('click',function() {
+
                 //判断是否正在抽奖
                 if($pointerImg.hasClass('win-result')) {
                     return;//不能重复抽奖
@@ -129,20 +175,24 @@ require(['jquery','drawCircle','logintip','register_common'], function ($,drawCi
                         //停止鸡蛋的动画
                         $pointerImg.removeClass('win-result');
 
-                        // 抽奖次数
-                        $rewardGiftBox.find('.my-times').text(--myTimes);
-
                         if (data.returnCode == 0) {
                             var prizeType=data.prizeType.toLowerCase();
                                 $(tipGroupObj[prizeType]).find('.prizeValue').text(data.prizeValue);
                             drawCircle.noRotateFn(tipGroupObj[prizeType]);
+
+                            // 抽奖次数
+                            $rewardGiftBox.find('.my-times').text(--myTimes);
                         } else if(data.returnCode == 1) {
                             //没有抽奖机会
                             drawCircle.tipWindowPop(tipGroupObj['nochance']);
                         }
                         else if (data.returnCode == 2) {
-                            //未登录
-                            $('.no-login-text',$newYearDayFrame).trigger('click');  //弹框登录
+                            //未登陆
+                            if(sourceKind.params.source=='app') {
+                                location.href="/login";
+                            } else {
+                                $('.no-login-text',$newYearDayFrame).trigger('click');  //弹框登录
+                            }
 
                         } else if(data.returnCode == 3){
                             //不在活动时间范围内！

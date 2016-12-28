@@ -63,7 +63,7 @@ public class SignInServiceImpl implements SignInService {
         userModel.setSignInCount(signInPointDto.getSignInCount());
         userMapper.updateUser(userModel);
         pointBillService.createPointBill(loginName, null, PointBusinessType.SIGN_IN, signInPointDto.getSignInPoint());
-        logger.debug(MessageFormat.format("{0} sign in success {1} 次", loginName, signInPointDto.getSignInCount()));
+        logger.info(MessageFormat.format("{0} sign in success {1} 次", loginName, signInPointDto.getSignInCount()));
         return signInPointDto;
     }
 

@@ -37,6 +37,7 @@ public class AnnualActivityController {
         modelAndView.addObject("nextAmount", investAmountTaskMap.get("nextAmount"));
         modelAndView.addObject("signedIn", signInService.signInIsSuccess(LoginUserInfo.getLoginName()));
         modelAndView.addObject("task", annualActivityService.getTaskProgress(investAmountTaskMap.get("investAmount")));
+        modelAndView.addObject("inActivityDate", investAmountTaskMap.get("inActivityDate"));
         return modelAndView;
     }
 }

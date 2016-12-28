@@ -33,19 +33,23 @@
             <div class="my-chance" >
                 <i></i><span>我的砸蛋机会：<em class="my-times" data-times="${time}">${time} </em>次
                 <input value="${task}" type="hidden" id="rewardTaskStatus">
+                <input value="${inActivityDate}" type="hidden" id="inActivityDate">
             </span>
             </div>
         </div>
 
         <div class="button-group tc">
-            <#if signedIn?? && signedIn>
-                <a href="javascript:void(0);" class="normal-button">已签到</a>
-            <#else >
-                <a href="javascript:void(0);" class="normal-button"  id="signToday">签到</a>
-            </#if>
+            <a href="javascript:void(0);" class="normal-button" id = "loginIn" style="display: none">登录</a>
 
+            <span class="signedIn-status">
+                <#if signedIn?? && signedIn>
+                    <a href="javascript:void(0);" class="normal-button" style="display: none">已签到</a>
+                <#else >
+                    <a href="javascript:void(0);" class="normal-button"  id="signToday" style="display: none">签到</a>
+                </#if>
+            </span>
 
-            <a href="/referrer/refer-list" class="normal-button">邀请好友</a>
+            <a href="javascript:void(0);" class="normal-button to-referrer">邀请好友</a>
             <a href="/loan-list" class="normal-button">马上投资</a>
         </div>
 
@@ -66,12 +70,9 @@
                 活动规则说明： <br/>
                 1、活动期间每日签到即可获得一次免费砸蛋机会；<br/>
                 2、活动期间每邀请1名好友注册可砸5次，上不封顶；<br/>
-                3、活动期间投资新年专享标，每满5000元即可砸1次，如单笔
-                投资10000元，可直接获得2次砸金蛋机会，每名用户活动
-                期间凭投资最多砸10次；<br/>
+                3、活动期间投资新年专享标，每满5000元即可砸1次，如单笔投资10000元，可直接获得2次砸金蛋机会，每名用户活动期间凭投资最多砸10次；<br/>
                 4、砸蛋机会需在活动有效期内使用，过期作废，请及时使用；<br/>
-                5、活动中有恶意刷奖的行为，一经查出拓天速贷有权追溯已发
-                放的奖励。
+                5、活动中有恶意刷奖的行为，一经查出拓天速贷有权追溯已发放的奖励。
                     </span>
             </div>
         </div>
@@ -89,10 +90,14 @@
             <i class="lamp-right"></i>
             <div class="slide-text">
                 <ul class="slide-text-list">
-                    <li>2016即将画上一个圆满的句号，你的新年愿望是什么？</li>
-                    <li>是一部心水已久的手机？一次不看价签的买买买？</li>
-                    <li>还是一张回家的车票？一次放空身心的度假之旅？</li>
-                    <li>在这个辞旧迎新的时刻，能帮你实现一个愿望的是朋友</li>
+                    <li>2016即将画上一个圆满的句号，</li>
+                    <li>你的新年愿望是什么？</li>
+                    <li>是一部心水已久的手机？</li>
+                    <li>一次不看价签的买买买？</li>
+                    <li>还是一张回家的车票？</li>
+                    <li>一次放空身心的度假之旅？</li>
+                    <li>在这个辞旧迎新的时刻，</li>
+                    <li>能帮你实现一个愿望的是朋友</li>
                     <li>实现两个的是亲戚，实现三个的是爱人</li>
                     <li>实现五个的是父母</li>
                     <li>而拓天速贷，帮你实现十个愿望！</li>
@@ -102,7 +107,7 @@
             </div>
         </div>
 
-        <p class="activity-note">活动期间用户投资新年专享标，累计投资金额达到一个目标，即可打开一盏神灯，神灯会送你一个奖励，愿望奖励可累计领取。
+        <p class="activity-note">活动期间用户投资新年专享标，累计投资金额达到一个目标，即可打开一盏神灯，神灯会送你一个奖励，愿望奖励可累计领取。<br/>
             栗子：如拓小天在活动第一天投资5000元，最后一天投资10000元，则拓小天在活动期间共投资了15000元，可开两盏神灯，获得20元红包+爱奇艺会员月卡。</p>
 
         <div class="total-invest-amount clearfix">
@@ -272,7 +277,7 @@
                     <div class="close-btn go-close"></div>
                     <div class="text-tip">
                         <p class="success-text">恭喜您！</p>
-                        <p class="reward-text">抽中了<em class="prizeValue">dddd</em>！</p>
+                        <p class="reward-text">抽中了<em class="prizeValue"></em>！</p>
                         <p class="des-text">拓天客服将会在7个工作日内联系您发放奖品</p>
                     </div>
                     <div class="btn-list"><a href="javascript:void(0)" class="go-on go-close">继续抽奖</a></div>
@@ -323,7 +328,7 @@
                     <div class="close-btn go-close"></div>
                     <div class="text-tip">
                         <p class="success-text">签到成功！</p>
-                        <p class="des-text">恭喜您获得10积分，并获得砸金蛋机会一次</p>
+                        <p class="des-text">恭喜您获得砸金蛋机会一次</p>
                     </div>
                     <div class="btn-list"><a href="javascript:void(0)" class="go-close">知道了</a></div>
                 </div>

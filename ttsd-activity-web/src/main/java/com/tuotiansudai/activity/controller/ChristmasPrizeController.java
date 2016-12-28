@@ -8,7 +8,6 @@ import com.tuotiansudai.activity.repository.model.UserLotteryPrizeView;
 import com.tuotiansudai.activity.service.ChristmasPrizeService;
 import com.tuotiansudai.activity.service.LotteryDrawActivityService;
 import com.tuotiansudai.service.AccountService;
-import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.AmountConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +49,6 @@ public class ChristmasPrizeController {
         modelAndView.addObject("userCount", param.get("investCount"));
         modelAndView.addObject("isStart", christmasPrizeService.isStart());
         modelAndView.addObject("steps", generateSteps(loginName));
-        modelAndView.addObject("christmasPrizeStartTime", christmasPrizeService.getChristmasPrizeStartTime());
 
         return modelAndView;
     }

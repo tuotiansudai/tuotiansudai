@@ -99,13 +99,16 @@ public class LotteryDrawActivityService {
             ActivityDrawLotteryTask.EACH_INVEST_5000);
 
     //圣诞活动活动任务
-    private final List christmasTasks = Lists.newArrayList(ActivityDrawLotteryTask.REGISTER, ActivityDrawLotteryTask.EACH_REFERRER,
-            ActivityDrawLotteryTask.EACH_REFERRER_INVEST, ActivityDrawLotteryTask.CERTIFICATION, ActivityDrawLotteryTask.INVEST,
-            ActivityDrawLotteryTask.EACH_INVEST_2000);
+        private final List christmasTasks = Lists.newArrayList(ActivityDrawLotteryTask.REGISTER, ActivityDrawLotteryTask.EACH_REFERRER,
+                ActivityDrawLotteryTask.EACH_REFERRER_INVEST, ActivityDrawLotteryTask.CERTIFICATION, ActivityDrawLotteryTask.INVEST,
+                ActivityDrawLotteryTask.EACH_INVEST_2000);
 
     public static final String ACTIVITY_DESCRIPTION = "新年专享";
+
     //每投资5000奖励抽奖次数
-    private final long EACH_INVEST_AMOUNT = 500000;
+    private final long EACH_INVEST_AMOUNT_50000 = 500000L;
+
+    private final long EACH_INVEST_AMOUNT_20000 = 200000L;
 
     @Transactional
     public synchronized DrawLotteryResultDto drawPrizeByCompleteTask(String mobile, ActivityCategory activityCategory) {
@@ -362,14 +365,16 @@ public class LotteryDrawActivityService {
                     break;
                 case EACH_INVEST_5000:
                     long sumInvestAmount = investMapper.sumSuccessActivityInvestAmount(userModel.getLoginName(), ACTIVITY_DESCRIPTION, startTime, endTime);
-                    long investAwardTime = sumInvestAmount / EACH_INVEST_AMOUNT;
+                    long investAwardTime = sumInvestAmount / EACH_INVEST_AMOUNT_50000;
                     if (investAwardTime <= 10) {
                         time += investAwardTime;
+                    }else{
+                        time += 10;
                     }
                     break;
                 case EACH_INVEST_2000:
                     long sumAmount = investMapper.sumInvestAmountByLoginNameInvestTimeProductType(userModel.getLoginName(), startTime, endTime, Lists.newArrayList(ProductType._90, ProductType._180, ProductType._360));
-                    time += (int) (sumAmount / 200000);
+                    time += (int) (sumAmount / EACH_INVEST_AMOUNT_20000);
                     time = time >= 10 ? 10 : time;
                     break;
             }

@@ -25,73 +25,6 @@ public class LinkExchangeServiceImpl implements LinkExchangeService {
     @Autowired
     private RedisWrapperClient redisWrapperClient;
 
-    private SimpleDateFormat dfs = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-    @Override
-    public int findCountByTitle(String title){
-        if(StringUtils.isNotEmpty(title)){
-            List<LinkExchangeDto> linkExchangeDtoList = redisToLinkExchangeDtoList();
-            List<LinkExchangeDto> linkExchangeDtoListByTitle = new ArrayList<LinkExchangeDto>();
-            for(int i =0; i <linkExchangeDtoList.size();i++ ){
-                if(title != null && linkExchangeDtoList.get(i).getTitle().contains(title)){
-                    linkExchangeDtoListByTitle.add(linkExchangeDtoList.get(i));
-                }
-            }
-            return linkExchangeDtoListByTitle.size();
-
-        }else{
-            return redisWrapperClient.hgetValuesSeri(LINK_EXCHANGE_KEY).size();
-        }
-    }
-
-    @Override
-    public LinkExchangeDto getLinkExchangeById(String id) {
-        LinkExchangeDto linkExchangeDto = new LinkExchangeDto();
-        String values = redisWrapperClient.hget(LINK_EXCHANGE_KEY, id);
-        if(values != null){
-            String[] linkExchangeDtaValues = values.split("\\|");
-            linkExchangeDto.setId(Long.parseLong(linkExchangeDtaValues[0]));
-            linkExchangeDto.setTitle(linkExchangeDtaValues[1]);
-            linkExchangeDto.setLinkUrl(linkExchangeDtaValues[2]);
-            linkExchangeDto.setUpdateTime(new Date());
-            linkExchangeDto.setCreatedTime(strToDate(linkExchangeDtaValues[4]));
-            final int linkExchangeDtoStringOriginSize = 5;  //旧数据长度是5
-            //noFollow字段是后加入的，需要判断长度用来兼容旧数据
-            if (linkExchangeDtoStringOriginSize < linkExchangeDtaValues.length) {
-                linkExchangeDto.setNoFollow(Boolean.valueOf(linkExchangeDtaValues[5]));
-            } else {
-                linkExchangeDto.setNoFollow(false);
-            }
-        }
-        return linkExchangeDto;
-    }
-
-    @Override
-    public void create(LinkExchangeDto linkExchangeDto) {
-        Map<String, String> map = new HashMap<String, String>();
-        map.put(String.valueOf(linkExchangeDto.getId()), linkExchangeDto.convertToString());
-        redisWrapperClient.hmset(LINK_EXCHANGE_KEY, map);
-    }
-
-    @Override
-    public void update(LinkExchangeDto linkExchangeDto) {
-        String values = redisWrapperClient.hget(LINK_EXCHANGE_KEY,String.valueOf(linkExchangeDto.getId()));
-        if(values != null) {
-            String[] linkExchangeDtaValues = values.split("\\|");
-            linkExchangeDto.setId(Long.parseLong(linkExchangeDtaValues[0]));
-            linkExchangeDto.setTitle(linkExchangeDto.getTitle());
-            linkExchangeDto.setLinkUrl(linkExchangeDto.getLinkUrl());
-            linkExchangeDto.setUpdateTime(new Date());
-            linkExchangeDto.setCreatedTime(strToDate(linkExchangeDtaValues[4]));
-            redisWrapperClient.hset(LINK_EXCHANGE_KEY, String.valueOf(linkExchangeDto.getId()), linkExchangeDto.convertToString());
-        }
-    }
-
-    @Override
-    public void delete(LinkExchangeDto linkExchangeDto) {
-        redisWrapperClient.hdel(LINK_EXCHANGE_KEY, String.valueOf(linkExchangeDto.getId()));
-    }
-
     @Override
     public List<LinkExchangeDto> getLinkExchangeList(String title, int index, int pageSize) {
         List<LinkExchangeDto> linkExchangeDtoList = this.redisToLinkExchangeDtoList();
@@ -113,8 +46,9 @@ public class LinkExchangeServiceImpl implements LinkExchangeService {
         Collections.reverse(linkExchangeDtos);
         return linkExchangeDtos;
     }
+
     private  List<LinkExchangeDto> redisToLinkExchangeDtoList(){
-        List<LinkExchangeDto> linkExchangeDtoList = new ArrayList<LinkExchangeDto>();
+        List<LinkExchangeDto> linkExchangeDtoList = new ArrayList<>();
         Map<byte[],byte[]> linkListHkey = redisWrapperClient.hgetAllSeri(LINK_EXCHANGE_KEY);
         for (byte[] key : linkListHkey.keySet()) {
             String linkListHValue = "";
@@ -138,12 +72,7 @@ public class LinkExchangeServiceImpl implements LinkExchangeService {
             }
             linkExchangeDtoList.add(linkExchangeDto);
         }
-        Collections.sort(linkExchangeDtoList, new Comparator<LinkExchangeDto>(){
-            @Override
-            public int compare(LinkExchangeDto o1, LinkExchangeDto o2) {
-                return Longs.compare(o2.getId(), o1.getId());
-            }
-        });
+        Collections.sort(linkExchangeDtoList, (o1, o2) -> Longs.compare(o2.getId(), o1.getId()));
         return linkExchangeDtoList;
     }
 
@@ -153,7 +82,7 @@ public class LinkExchangeServiceImpl implements LinkExchangeService {
         try {
             date = format.parse(strDate);
         } catch (ParseException e) {
-            logger.debug("The date conversion errors");
+            logger.info("The date conversion errors");
         }
         return date;
     }

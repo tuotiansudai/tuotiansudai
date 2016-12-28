@@ -119,4 +119,24 @@ public class ExportController {
 
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.AnnualHeader, csvData, response.getOutputStream());
     }
+
+    @RequestMapping(value = "/export-headlines-today-record", method = RequestMethod.GET)
+    public void headlinesTodayRecordExport(@RequestParam(name = "mobile", required = false) String mobile,
+                                  @RequestParam(name = "prizeType", required = false, defaultValue = "HEADLINES_TODAY_ACTIVITY") ActivityCategory activityCategory,
+                                  @RequestParam(value = "authenticationType", required = false) String authenticationType,
+                                  @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
+                                  @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
+                                  HttpServletResponse response) throws IOException {
+        response.setCharacterEncoding("UTF-8");
+        try {
+            response.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode(CsvHeaderType.HeadlinesTodayHeader.getDescription() + new DateTime().toString("yyyyMMddHHmmSS") + ".csv", "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+        response.setContentType("application/csv");
+
+        List<List<String>> csvData = activityConsoleExportService.buildHeadlineTodayList(mobile, activityCategory, startTime, endTime, authenticationType);
+
+        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.HeadlinesTodayHeader, csvData, response.getOutputStream());
+    }
 }

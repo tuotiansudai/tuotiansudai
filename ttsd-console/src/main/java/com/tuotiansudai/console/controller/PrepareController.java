@@ -1,6 +1,7 @@
 package com.tuotiansudai.console.controller;
 
 
+import com.tuotiansudai.console.service.ConsolePrepareUserService;
 import com.tuotiansudai.dto.PrepareUserDto;
 import com.tuotiansudai.service.PrepareUserService;
 import com.tuotiansudai.util.PaginationUtil;
@@ -24,7 +25,7 @@ public class PrepareController {
     private static Logger logger = Logger.getLogger(CouponController.class);
 
     @Autowired
-    private PrepareUserService prepareService;
+    private ConsolePrepareUserService consolePrepareUserService;
 
     @RequestMapping(value = "/prepare-users", method = RequestMethod.GET)
     public ModelAndView findPrepareUser(@RequestParam(name = "mobile", required = false) String mobile,
@@ -38,9 +39,9 @@ public class PrepareController {
         modelAndView.addObject("mobile", mobile);
         modelAndView.addObject("beginTime", beginTime);
         modelAndView.addObject("endTime", endTime);
-        List<PrepareUserDto> prepareUsers = prepareService.findPrepareUser(mobile, beginTime, endTime, index, pageSize);
+        List<PrepareUserDto> prepareUsers = consolePrepareUserService.findPrepareUser(mobile, beginTime, endTime, index, pageSize);
         modelAndView.addObject("prepareUsers", prepareUsers);
-        long prepareUserCount = prepareService.findPrepareUserCount(mobile, beginTime, endTime);
+        long prepareUserCount = consolePrepareUserService.findPrepareUserCount(mobile, beginTime, endTime);
         modelAndView.addObject("prepareUserCount", prepareUserCount);
         long totalPages = PaginationUtil.calculateMaxPage(prepareUserCount, pageSize);
         boolean hasPreviousPage = index > 1 && index <= totalPages;
