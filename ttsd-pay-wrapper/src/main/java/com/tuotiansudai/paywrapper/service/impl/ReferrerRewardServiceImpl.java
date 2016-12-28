@@ -96,7 +96,7 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
                             investReferrerRewardMapper.create(model);
                             boolean status = this.transferReferrerReward(model);
                             if (status) {
-                                this.sendMessage(invest.getLoginName(), referrerLoginName, reward);
+                                this.sendMessage(invest.getLoginName(), referrerLoginName, reward, model.getId());
                             }
                         }
                     } catch (Exception e) {
@@ -222,17 +222,13 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
         return level > this.referrerUserRoleReward.size() ? 0 : this.referrerUserRoleReward.get(level - 1);
     }
 
-    private void sendMessage(String loginName, String referrerLoginName, long reward) {
+    private void sendMessage(String loginName, String referrerLoginName, long reward, long businessId) {
         //Title:{0}元推荐奖励已存入您的账户，请查收！
         //Content:尊敬的用户，您推荐的好友{0}投资成功，您已获得{1}元现金奖励。
         String title = MessageFormat.format(MessageEventType.RECOMMEND_AWARD_SUCCESS.getTitleTemplate(), AmountConverter.convertCentToString(reward));
         String content = MessageFormat.format(MessageEventType.RECOMMEND_AWARD_SUCCESS.getContentTemplate(), userMapper.findByLoginName(loginName).getMobile(), AmountConverter.convertCentToString(reward));
         mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(MessageEventType.RECOMMEND_AWARD_SUCCESS,
-                Lists.newArrayList(referrerLoginName),
-                title,
-                content,
-                null
-        ));
+                Lists.newArrayList(referrerLoginName), title, content, businessId));
         mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(Lists.newArrayList(referrerLoginName), PushSource.ALL, PushType.RECOMMEND_AWARD_SUCCESS, title));
     }
 }

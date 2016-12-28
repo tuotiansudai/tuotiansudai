@@ -577,8 +577,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
                 Lists.newArrayList(transferApplicationModel.getLoginName()),
                 title,
                 content,
-                null
-        ));
+                transferApplicationModel.getId()));
 
         mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(Lists.newArrayList(transferApplicationModel.getLoginName()),
                 PushSource.ALL,

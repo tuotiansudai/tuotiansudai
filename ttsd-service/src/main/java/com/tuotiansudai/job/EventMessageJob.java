@@ -7,8 +7,11 @@ import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.enums.MessageEventType;
+import com.tuotiansudai.enums.PushSource;
+import com.tuotiansudai.enums.PushType;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.message.EventMessage;
+import com.tuotiansudai.message.PushMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.util.AmountConverter;
@@ -58,6 +61,7 @@ public class EventMessageJob implements Job {
             String userName = userMapper.findByLoginName(loginName).getUserName();
             String content = MessageFormat.format(MessageEventType.BIRTHDAY.getContentTemplate(), userName);
             mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(MessageEventType.BIRTHDAY, Lists.newArrayList(loginName), title, content, null));
+            mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(Lists.newArrayList(loginName), PushSource.ALL, PushType.BIRTHDAY, title));
         });
     }
 
@@ -67,7 +71,8 @@ public class EventMessageJob implements Job {
         //Content:尊敬的用户，您的V5会员已到期，V5会员可享受服务费7折优惠，平台也将会在V5会员生日时送上神秘礼包哦。请及时续费以免耽误您获得投资奖励！
         String title = MessageEventType.MEMBERSHIP_EXPIRED.getTitleTemplate();
         String content = MessageEventType.MEMBERSHIP_EXPIRED.getContentTemplate();
-        mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(MessageEventType.MEMBERSHIP_EXPIRED, Lists.newArrayList(membershipExpiredUsers), title, content, null));
+        mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(MessageEventType.MEMBERSHIP_EXPIRED, membershipExpiredUsers, title, content, null));
+        mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(membershipExpiredUsers, PushSource.ALL, PushType.MEMBERSHIP_EXPIRED, title));
     }
 
     private void couponExpiredAfterFiveDays() {
@@ -98,7 +103,8 @@ public class EventMessageJob implements Job {
                     content = MessageFormat.format(MessageEventType.COUPON_5DAYS_EXPIRED_ALERT.getContentTemplate(), couponModel.getCouponType().getName(), endTime);
                     break;
             }
-            mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(MessageEventType.COUPON_5DAYS_EXPIRED_ALERT, Lists.newArrayList(userCouponModel.getLoginName()), title, content, null));
+            mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(MessageEventType.COUPON_5DAYS_EXPIRED_ALERT, Lists.newArrayList(userCouponModel.getLoginName()), title, content, userCouponModel.getId()));
+            mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(Lists.newArrayList(userCouponModel.getLoginName()), PushSource.ALL, PushType.COUPON_5DAYS_EXPIRED_ALERT, title));
         }
     }
 }

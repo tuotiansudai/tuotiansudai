@@ -193,7 +193,7 @@ public class InvestTransferServiceImpl implements InvestTransferService {
     }
 
     @Override
-    public boolean cancelTransferApplication(long transferApplicationId) {
+    public boolean cancelTransferApplicationManually(long transferApplicationId) {
         TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(transferApplicationId);
         if (transferApplicationModel == null || transferApplicationModel.getStatus() != TransferStatus.TRANSFERRING) {
             return false;
@@ -203,19 +203,33 @@ public class InvestTransferServiceImpl implements InvestTransferService {
         transferApplicationMapper.update(transferApplicationModel);
         investMapper.updateTransferStatus(transferApplicationModel.getTransferInvestId(), TransferStatus.TRANSFERABLE);
 
+        return true;
+    }
+
+
+    @Override
+    public boolean cancelTransferApplication(long transferApplicationId) {
+        boolean status = this.cancelTransferApplicationManually(transferApplicationId);
+
+        if (!status) {
+            return false;
+        }
+
+        TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(transferApplicationId);
+
         //Title:您提交的债权转让到期取消，请查看！
         //Content:尊敬的用户，我们遗憾地通知您，您发起的转让项目没有转让成功。如有疑问，请致电客服热线400-169-1188，感谢您选择拓天速贷。
         mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(MessageEventType.LOAN_OUT_SUCCESS,
                 Lists.newArrayList(transferApplicationModel.getLoginName()),
                 MessageEventType.TRANSFER_FAIL.getTitleTemplate(),
                 MessageEventType.TRANSFER_FAIL.getContentTemplate(),
-                null
-        ));
+                transferApplicationId));
 
         mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(Lists.newArrayList(transferApplicationModel.getLoginName()),
                 PushSource.ALL,
                 PushType.TRANSFER_FAIL,
                 MessageEventType.TRANSFER_FAIL.getTitleTemplate()));
+
         return true;
     }
 
