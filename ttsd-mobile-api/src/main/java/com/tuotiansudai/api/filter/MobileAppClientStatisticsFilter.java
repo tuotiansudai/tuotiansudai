@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.text.MessageFormat;
 
 @Component("appClientStatisticsFilter")
 public class MobileAppClientStatisticsFilter implements Filter {
@@ -48,7 +47,7 @@ public class MobileAppClientStatisticsFilter implements Filter {
                 statistics.statClientParams(param);
             }
         } catch (Exception e) {
-            log.error(e);
+            log.error(e.getLocalizedMessage(), e);
         }
     }
 
@@ -56,13 +55,12 @@ public class MobileAppClientStatisticsFilter implements Filter {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         String requestJson = "";
-        BaseParamDto dto = null;
         try {
             requestJson = ((BufferedRequestWrapper) request).getInputStreamString();
-            dto = objectMapper.readValue(requestJson, BaseParamDto.class);
+            BaseParamDto dto = objectMapper.readValue(requestJson, BaseParamDto.class);
             return dto.getBaseParam();
-        } catch (IOException|NullPointerException e) {
-            log.error(MessageFormat.format("app client json invalid:{0}, dto is null:{1}", requestJson, null == dto), e);
+        } catch (IOException e) {
+            log.error("app client json invalid:" + requestJson, e);
         }
         return null;
     }
