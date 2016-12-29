@@ -174,14 +174,23 @@ require(['jquery','drawCircle','commonFun','logintip','register_common'], functi
                     drawCircle.beginLuckDraw(function(data) {
                         //停止鸡蛋的动画
                         $pointerImg.removeClass('win-result');
-
                         if (data.returnCode == 0) {
+                            var treasureUrl;
+                            if(sourceKind.params.source=='app') {
+                                treasureUrl='app/tuotian/myfortune-unuse';
+                            } else {
+                                treasureUrl='/my-treasure';
+                            }
+
                             var prizeType=data.prizeType.toLowerCase();
                                 $(tipGroupObj[prizeType]).find('.prizeValue').text(data.prizeValue);
+                            $(tipGroupObj[prizeType]).find('.my-treasure').attr('href',treasureUrl);
+                            // 抽奖次数
+                            if(myTimes>0) {
+                                $rewardGiftBox.find('.my-times').text(--myTimes);
+                            }
                             drawCircle.noRotateFn(tipGroupObj[prizeType]);
 
-                            // 抽奖次数
-                            $rewardGiftBox.find('.my-times').text(--myTimes);
                         } else if(data.returnCode == 1) {
                             //没有抽奖机会
                             drawCircle.tipWindowPop(tipGroupObj['nochance']);

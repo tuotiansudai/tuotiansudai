@@ -291,7 +291,7 @@
                         <p class="reward-text">抽中了<em class="prizeValue"></em>！</p>
                         <p class="des-text">奖品已发放至“我的宝藏”当中。</p>
                     </div>
-                    <div class="btn-list"><a href="javascript:void(0)" class="go-on go-close">继续抽奖</a></div>
+                    <div class="btn-list"><a href="javascript:void(0)" class="double-btn my-treasure">去查看</a> <a href="javascript:void(0)" class="go-on go-close">继续抽奖</a></div>
                 </div>
 
              <#--没有抽奖机会-->
