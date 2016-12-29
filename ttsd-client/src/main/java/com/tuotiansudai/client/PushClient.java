@@ -84,7 +84,7 @@ public class PushClient {
         List<String> registrationIds = Lists.newArrayList();
         for (String loginName : pushMessage.getLoginNames()) {
             String value = redisWrapperClient.hget(PUSH_ID_KEY, loginName);
-            if (Strings.isNullOrEmpty(value) && value.split("-").length == 2) {
+            if (!Strings.isNullOrEmpty(value) && value.split("-").length == 2) {
                 registrationIds.add(value.split("-")[1]);
             }
         }
@@ -127,7 +127,7 @@ public class PushClient {
 
     private boolean send(PushPayload payload) {
         if (payload == null) {
-            logger.error("[JPush] payload is null");
+            logger.error("[Push] payload is null");
             return false;
         }
         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), payload.toJSON().toString());
@@ -145,10 +145,10 @@ public class PushClient {
                 if (HttpStatus.valueOf(response.code()).is2xxSuccessful()) {
                     return true;
                 }
-                logger.error(MessageFormat.format("[JPush] push is not 2xx (request={0}, code={1}, response={2}, tryTimes={3})",
+                logger.error(MessageFormat.format("[Push] push is not 2xx (request={0}, code={1}, response={2}, tryTimes={3})",
                         payload.toJSON().toString(), response.code(), response.body().string(), String.valueOf(tryTimes)));
             } catch (Exception e) {
-                logger.error(MessageFormat.format("[JPush] push IOException (request={0}, tryTimes={3})", payload.toJSON().getAsString(), String.valueOf(tryTimes)), e);
+                logger.error(MessageFormat.format("[Push] push IOException (request={0}, tryTimes={3})", payload.toJSON().getAsString(), String.valueOf(tryTimes)), e);
             }
         } while (++tryTimes < 4);
 
