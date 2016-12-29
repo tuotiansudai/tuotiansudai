@@ -23,8 +23,8 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-public class AssignWeiXinRedEnvelopJob implements Job {
-    static Logger logger = Logger.getLogger(AssignWeiXinRedEnvelopJob.class);
+public class AssignRedEnvelopSplitJob implements Job {
+    static Logger logger = Logger.getLogger(AssignRedEnvelopSplitJob.class);
 
     @Autowired
     private UserMapper userMapper;

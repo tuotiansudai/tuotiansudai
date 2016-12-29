@@ -2,12 +2,9 @@ package com.tuotiansudai.activity.service;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
-import com.tuotiansudai.coupon.repository.model.UserCouponModel;
-import com.tuotiansudai.coupon.repository.model.UserCouponView;
 import com.tuotiansudai.enums.AppUrl;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserChannel;
-import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.AmountConverter;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -15,13 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 @Service
-public class WeiXinReferrerActivityService {
+public class RedEnvelopSplitActivityService {
 
     @Autowired
     private UserMapper userMapper;
@@ -47,7 +43,7 @@ public class WeiXinReferrerActivityService {
     }
 
     public String getShardReferrerurl(){
-        StringBuffer url = new StringBuffer(AppUrl.WEIXIN_REFERRER.name());
+        StringBuffer url = new StringBuffer(AppUrl.RED_ENVELOP_SPLIT.name());
 
 
         return url.toString();
