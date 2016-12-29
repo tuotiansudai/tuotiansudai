@@ -112,14 +112,14 @@ public class PushClient {
 
     private Audience getAudience(List<String> registrationIds) {
         Audience.Builder builder = Audience.newBuilder();
-        if (!Environment.isProduction(environment)) {
-            builder.addAudienceTarget(AudienceTarget.tag("test"));
-        }
-
         if (CollectionUtils.isNotEmpty(registrationIds)) {
             builder.addAudienceTarget(AudienceTarget.registrationId(registrationIds));
+        }
+
+        if (Environment.isProduction(environment)) {
+            builder.setAll(CollectionUtils.isEmpty(registrationIds));
         } else {
-            builder.setAll(true);
+            builder.addAudienceTarget(AudienceTarget.tag("test"));
         }
 
         return builder.build();

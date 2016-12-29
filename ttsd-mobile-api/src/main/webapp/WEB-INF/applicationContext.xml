@@ -203,7 +203,7 @@
     </bean>
 
     <bean id="messageSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-        <property name="dataSource" ref="anxinHikariCPDataSource"/>
+        <property name="dataSource" ref="messageHikariCPDataSource"/>
         <property name="typeAliasesPackage" value="com.tuotiansudai.message.repository.model"/>
         <property name="configLocation" value="WEB-INF/mybatis-configuration.xml"/>
     </bean>
