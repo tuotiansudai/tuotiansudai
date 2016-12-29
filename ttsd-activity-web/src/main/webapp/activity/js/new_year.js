@@ -189,7 +189,14 @@ require(['jquery','drawCircle','commonFun','logintip','register_common'], functi
 
                             }
                             else if(data.prizeType=='VIRTUAL') {
-                                tipMessage.button='<a href="/my-treasure" class="double-btn">去查看</a><a href="javascript:void(0)" class="go-on go-close">继续抽奖</a>';
+                                var treasureUrl;
+                                if(sourceKind.params.source=='app') {
+                                    location.href="/login";
+                                    treasureUrl='app/tuotian/myfortune-unuse';
+                                } else {
+                                    treasureUrl='/my-treasure';
+                                }
+                                tipMessage.button='<a href="'+treasureUrl+'" class="double-btn">去查看</a><a href="javascript:void(0)" class="go-on go-close">继续抽奖</a>';
                                 tipMessage.info='<p class="success-text">恭喜您！</p>' +
                                     '<p class="reward-text">'+data.prizeValue+'！</p>' +
                                     '<p class="des-text">奖品已发放至“我的宝藏”当中。</p>'
@@ -197,7 +204,10 @@ require(['jquery','drawCircle','commonFun','logintip','register_common'], functi
                             drawCircle.noRotateFn(tipMessage);
                             
                             // 抽奖次数
-                            $rewardGiftBox.find('.my-times').text(--myTimes);
+                            if(myTimes>0) {
+                                $rewardGiftBox.find('.my-times').text(--myTimes);
+                            }
+
                         } else if(data.returnCode == 1) {
                             //没有抽奖机会
                             tipMessage.info='<p class="login-text">您暂无抽奖机会啦～</p><p class="des-text">赢取机会后再来抽奖吧！</p>',
