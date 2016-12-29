@@ -77,13 +77,7 @@ public class RegisterUserServiceImpl implements RegisterUserService {
                 Lists.newArrayList(userModel.getLoginName()),
                 MessageEventType.REGISTER_USER_SUCCESS.getTitleTemplate(),
                 MessageEventType.REGISTER_USER_SUCCESS.getContentTemplate(),
-                null
-        ));
-
-        mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(Lists.newArrayList(userModel.getLoginName()),
-                PushSource.ALL,
-                PushType.REGISTER_USER_SUCCESS,
-                MessageEventType.REGISTER_USER_SUCCESS.getTitleTemplate()));
+                null));
 
         if (!Strings.isNullOrEmpty(userModel.getReferrer())) {
             //Title:您推荐的好友 {0} 已成功注册
@@ -93,10 +87,9 @@ public class RegisterUserServiceImpl implements RegisterUserService {
                     Lists.newArrayList(userModel.getReferrer()),
                     MessageFormat.format(MessageEventType.RECOMMEND_SUCCESS.getTitleTemplate(), userModel.getMobile()),
                     MessageFormat.format(MessageEventType.RECOMMEND_SUCCESS.getContentTemplate(), userModel.getMobile()),
-                    null
-            ));
+                    null));
 
-            mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(Lists.newArrayList(userModel.getLoginName()),
+            mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(Lists.newArrayList(userModel.getReferrer()),
                     PushSource.ALL,
                     PushType.RECOMMEND_SUCCESS,
                     MessageFormat.format(MessageEventType.RECOMMEND_SUCCESS.getTitleTemplate(), userModel.getMobile())));
