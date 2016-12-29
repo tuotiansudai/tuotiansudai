@@ -10,7 +10,62 @@ body {
 }
 
 .red-envelop-container {
-  background: url('/activity/images/red_envelop_split/we-top.jpg') left top no-repeat;
+  margin:0 10px;
+  background: #df3121 url('/activity/images/red_envelop_split/bg-head.jpg') left top no-repeat;
   background-size: 100%;
   min-height: 760px;
+  padding-top: 245px;
+
+  .normal-button {
+    background: #ffdf00;
+    text-align: center;
+    color: #e94935;
+    font-size: 18px;
+    padding: 10px 5px;
+    display: block;
+    border-radius: 25px;
+    box-shadow: 0 4px 0px #eebb00;
+    border: 0;
+    width: 100%;
+    margin-top: 10px;
+  }
+  .invite-box {
+    text-align: center;
+    .message-tip {
+      background: rgba(255,255,255,0.2);
+      border-radius:20px;
+      border:1px solid #fff700;
+      color: #fff;
+      font-size: 20px;
+      padding: 8px 20px;
+    }
+    .amount {
+      color: #fff700;
+      font-size: 40px;
+      font-weight: normal;
+      display: block;
+      line-height: 1;
+      margin-top: 20px;
+      i {
+        font-size: 80px;
+      }
+    }
+    .kind {
+      font-size:18px;
+      color: #fff;
+    }
+
+  }
+
+  .register-step {
+    margin:30px;
+    input[type="text"] {
+      width: 100%;
+      padding:13px 4px;
+      box-sizing: border-box;
+      border:1px solid rgba(0,0,0,0.4);
+      border-radius:10px;
+
+    }
+  }
 }
