@@ -1,7 +1,6 @@
 package com.tuotiansudai.console.service;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.enums.OperationType;
 import com.tuotiansudai.log.repository.mapper.AuditLogMapper;
@@ -19,9 +18,6 @@ public class AuditLogQueryService {
 
     @Autowired
     private AuditLogMapper auditLogMapper;
-
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
 
     public BasePaginationDataDto<AuditLogModel> getAuditLogPaginationData(OperationType operationType, String targetId, String operatorMobile, String auditorMobile, Date startTime, Date endTime, int index, int pageSize) {
         if (startTime == null) {
@@ -46,10 +42,6 @@ public class AuditLogQueryService {
         }
 
         return new BasePaginationDataDto<>(index, pageSize, count, data);
-    }
-
-    public String clearMybatisCache() {
-        return redisWrapperClient.clearMybatisCache();
     }
 
 }

@@ -10,10 +10,12 @@ import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.JsonConverter;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.Locale;
 
+@Service
 public class UserOpLogService {
 
     private static Logger logger = Logger.getLogger(UserOpLogService.class);

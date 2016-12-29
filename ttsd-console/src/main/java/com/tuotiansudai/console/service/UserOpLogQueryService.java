@@ -14,7 +14,7 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class UserOpLogService {
+public class UserOpLogQueryService {
 
     @Autowired
     private UserOpLogMapper userOpLogMapper;
