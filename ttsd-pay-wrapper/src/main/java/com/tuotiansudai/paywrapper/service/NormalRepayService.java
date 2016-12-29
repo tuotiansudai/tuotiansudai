@@ -22,6 +22,6 @@ public interface NormalRepayService {
 
     boolean paybackInvest(long loanRepayId);
 
-    BaseDto<PayDataDto> asyncNormalRepayPaybackCallback();
+    BaseDto<PayDataDto> asyncNormalRepayPaybackCallback(long notifyRequestId);
 
 }

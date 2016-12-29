@@ -3,6 +3,7 @@ package com.tuotiansudai.paywrapper.service.impl;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.coupon.repository.mapper.CouponRepayMapper;
@@ -13,10 +14,10 @@ import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.exception.AmountTransferException;
-import com.tuotiansudai.job.AdvanceRepayCallbackJob;
 import com.tuotiansudai.job.AdvanceRepayJob;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.job.NormalRepayJob;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
@@ -116,6 +117,9 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
 
     @Autowired
     private SmsWrapperClient smsWrapperClient;
+
+    @Autowired
+    private MQWrapperClient mqWrapperClient;
 
     @Value("${common.environment}")
     private Environment environment;
@@ -399,22 +403,20 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
             return null;
         }
 
-        redisWrapperClient.incr(AdvanceRepayCallbackJob.ADVANCE_REPAY_JOB_TRIGGER_KEY);
+        mqWrapperClient.sendMessage(MessageQueue.AdvanceRepayCallback, String.valueOf(callbackRequest.getId()));
         return callbackRequest.getResponseData();
     }
 
     @Override
-    public BaseDto<PayDataDto> asyncAdvanceRepayPaybackCallback(){
-        List<AdvanceRepayNotifyRequestModel> todoList = advanceRepayNotifyMapper.getAdvanceTodoList(repayProcessListSize);
-        for (AdvanceRepayNotifyRequestModel model : todoList) {
-            if (updateAdvanceRepayNotifyRequestStatus(model)) {
-                try {
-                   if(!this.processOneInvestPaybackCallback(model)){
-                       fatalLog("advance repay callback, processOneInvestPaybackCallback fail. investRepayId:" + model.getOrderId(), null);
-                   }
-                } catch (Exception e) {
-                    fatalLog("advance repay callback, processOneInvestPaybackCallback error. investRepayId:" + model.getOrderId(), e);
-                }
+    public BaseDto<PayDataDto> asyncAdvanceRepayPaybackCallback(long notifyRequestId){
+        AdvanceRepayNotifyRequestModel model = advanceRepayNotifyMapper.findById(notifyRequestId);
+        if (updateAdvanceRepayNotifyRequestStatus(model)) {
+            try {
+               if(!this.processOneInvestPaybackCallback(model)){
+                   fatalLog("advance repay callback, processOneInvestPaybackCallback fail. investRepayId:" + model.getOrderId(), null);
+               }
+            } catch (Exception e) {
+                fatalLog("advance repay callback, processOneInvestPaybackCallback error. investRepayId:" + model.getOrderId(), e);
             }
         }
 
@@ -428,7 +430,6 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
 
     private boolean updateAdvanceRepayNotifyRequestStatus(AdvanceRepayNotifyRequestModel model) {
         try {
-            redisWrapperClient.decr(AdvanceRepayCallbackJob.ADVANCE_REPAY_JOB_TRIGGER_KEY);
             advanceRepayNotifyMapper.updateStatus(model.getId(), NotifyProcessStatus.DONE);
         } catch (Exception e) {
             fatalLog("update_advance_repay_notify_status_fail, orderId:" + model.getOrderId() + ",id:" + model.getId(), null);
