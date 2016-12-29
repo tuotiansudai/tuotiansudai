@@ -191,7 +191,6 @@ require(['jquery','drawCircle','commonFun','logintip','register_common'], functi
                             else if(data.prizeType=='VIRTUAL') {
                                 var treasureUrl;
                                 if(sourceKind.params.source=='app') {
-                                    location.href="/login";
                                     treasureUrl='app/tuotian/myfortune-unuse';
                                 } else {
                                     treasureUrl='/my-treasure';
@@ -201,12 +200,11 @@ require(['jquery','drawCircle','commonFun','logintip','register_common'], functi
                                     '<p class="reward-text">'+data.prizeValue+'！</p>' +
                                     '<p class="des-text">奖品已发放至“我的宝藏”当中。</p>'
                             }
-                            drawCircle.noRotateFn(tipMessage);
-                            
                             // 抽奖次数
                             if(myTimes>0) {
                                 $rewardGiftBox.find('.my-times').text(--myTimes);
                             }
+                            drawCircle.noRotateFn(tipMessage);
 
                         } else if(data.returnCode == 1) {
                             //没有抽奖机会
