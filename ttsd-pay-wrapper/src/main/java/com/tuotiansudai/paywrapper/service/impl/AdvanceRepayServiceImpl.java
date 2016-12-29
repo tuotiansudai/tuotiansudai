@@ -3,6 +3,7 @@ package com.tuotiansudai.paywrapper.service.impl;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.coupon.repository.mapper.CouponRepayMapper;
@@ -17,6 +18,7 @@ import com.tuotiansudai.job.AdvanceRepayCallbackJob;
 import com.tuotiansudai.job.AdvanceRepayJob;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.job.NormalRepayJob;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
@@ -116,6 +118,9 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
 
     @Autowired
     private SmsWrapperClient smsWrapperClient;
+
+    @Autowired
+    private MQWrapperClient mqWrapperClient;
 
     @Value("${common.environment}")
     private Environment environment;
@@ -374,6 +379,8 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
             BaseDto<PayDataDto> dto = loanService.updateLoanStatus(loanId, LoanStatus.COMPLETE);
             logger.info(MessageFormat.format("[Advance Repay {0}] update loan({1}) status to COMPLETE is {2}",
                     String.valueOf(loanRepayId), String.valueOf(loanId), String.valueOf(dto.getData().getStatus())));
+
+            //mqWrapperClient.pu(MessageQueue.Repay_PaybackInvest, loanRepayId + ":" +  "1");
             return dto.getData().getStatus();
         }
 

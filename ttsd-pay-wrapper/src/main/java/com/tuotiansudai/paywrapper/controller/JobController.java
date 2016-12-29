@@ -1,11 +1,15 @@
 package com.tuotiansudai.paywrapper.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.CouponRepayDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.paywrapper.coupon.service.CouponLoanOutService;
 import com.tuotiansudai.paywrapper.coupon.service.CouponRepayService;
 import com.tuotiansudai.paywrapper.extrarate.service.ExtraRateService;
 import com.tuotiansudai.paywrapper.service.*;
+import com.tuotiansudai.util.JsonConverter;
+import org.omg.CORBA.Object;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -62,8 +66,8 @@ public class JobController {
 
     @ResponseBody
     @RequestMapping(value = "/async_coupon_repay_notify", method = RequestMethod.POST)
-    public BaseDto<PayDataDto> asyncCouponRepayNotify() {
-        return this.couponRepayService.asyncCouponRepayCallback();
+    public BaseDto<PayDataDto> asyncCouponRepayNotify(long notifyRequestId) {
+        return this.couponRepayService.asyncCouponRepayCallback(notifyRequestId);
     }
 
     @ResponseBody
@@ -119,7 +123,13 @@ public class JobController {
 
     @ResponseBody
     @RequestMapping(value = "/async_extra_rate_invest_notify", method = RequestMethod.POST)
-    public BaseDto<PayDataDto> asyncExtraRateInvestNotify() {
-        return this.extraRateService.asyncExtraRateInvestCallback();
+    public BaseDto<PayDataDto> asyncExtraRateInvestNotify(long notifyRequestId) {
+        return this.extraRateService.asyncExtraRateInvestCallback(notifyRequestId);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/coupon-repay-after-repay-success", method = RequestMethod.POST)
+    public void couponRepayAfterRepaySuccess(@RequestBody CouponRepayDto couponRepayDto) throws Exception {
+        this.couponRepayService.sendCouponRepayAmount(couponRepayDto);
     }
 }

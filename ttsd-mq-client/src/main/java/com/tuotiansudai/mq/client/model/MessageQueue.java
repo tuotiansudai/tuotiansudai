@@ -6,6 +6,8 @@ public enum MessageQueue {
     CouponAssigning("CouponAssigning"),
     InvestCallback("InvestCallback"),
     TransferInvestCallback("TransferInvestCallback"),
+    CouponRepayCallback("CouponRepayCallback"),
+    ExtraRateRepayCallback("ExtraRateRepayCallback"),
     CouponAssigned_UserMessageSending("CouponAssigned-UserMessageSending"),
     UserRegistered_CompletePointTask("UserRegistered-CompletePointTask"),
     AccountRegistered_CompletePointTask("AccountRegistered-CompletePointTask"),
@@ -19,7 +21,8 @@ public enum MessageQueue {
     InvestSuccess_ActivityReward("InvestSuccess-ActivityReward"),
     MembershipUpgrade_SendJpushMessage("MembershipUpgrade-SendJpushMessage"),
     AuditLog("AuditLog"),
-    UserOperateLog("UserOperateLog");
+    UserOperateLog("UserOperateLog"),
+    Repay_PaybackInvest("Repay_PaybackInvest");
 
     private final String queueName;
 

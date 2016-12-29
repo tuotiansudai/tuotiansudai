@@ -1,6 +1,7 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
@@ -13,8 +14,10 @@ import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.job.NormalRepayCallbackJob;
 import com.tuotiansudai.job.NormalRepayJob;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
+import com.tuotiansudai.paywrapper.coupon.service.CouponRepayService;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.NormalRepayNotifyMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferMapper;
@@ -106,6 +109,12 @@ public class NormalRepayServiceImpl implements NormalRepayService {
 
     @Autowired
     private SmsWrapperClient smsWrapperClient;
+
+    @Autowired
+    private MQWrapperClient mqWrapperClient;
+
+    @Autowired
+    private CouponRepayService couponRepayService;
 
     @Value("${common.environment}")
     private Environment environment;
@@ -414,7 +423,10 @@ public class NormalRepayServiceImpl implements NormalRepayService {
             BaseDto<PayDataDto> dto = loanService.updateLoanStatus(loanId, isLastPeriod ? LoanStatus.COMPLETE : LoanStatus.REPAYING);
             logger.info(MessageFormat.format("[Normal Repay {0}] update loan({1}) status to {2} is {3}",
                     String.valueOf(loanRepayId), String.valueOf(loanId), (isLastPeriod ? LoanStatus.COMPLETE.name() : LoanStatus.REPAYING.name()), String.valueOf(dto.getData().getStatus())));
+
+            //mqWrapperClient.sendMessage(MessageQueue.Repay_PaybackInvest, loanRepayId + ":" +  "0");
             return dto.getData().getStatus();
+
         }
 
         try {

@@ -2,6 +2,7 @@ package com.tuotiansudai.paywrapper.coupon.service.impl;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
@@ -11,12 +12,13 @@ import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.CouponRepayDto;
 import com.tuotiansudai.dto.Environment;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.enums.UserBillBusinessType;
-import com.tuotiansudai.job.CouponRepayNotifyCallbackJob;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.coupon.service.CouponRepayService;
@@ -50,7 +52,6 @@ import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 public class CouponRepayServiceImpl implements CouponRepayService {
@@ -63,9 +64,6 @@ public class CouponRepayServiceImpl implements CouponRepayService {
             CouponType.BIRTHDAY_COUPON);
 
     private static final String COUPON_ORDER_ID_TEMPLATE = "{0}X{1}";
-
-    @Autowired
-    private AccountMapper accountMapper;
 
     @Autowired
     private InvestMapper investMapper;
@@ -106,6 +104,9 @@ public class CouponRepayServiceImpl implements CouponRepayService {
     @Autowired
     private SmsWrapperClient smsWrapperClient;
 
+    @Autowired
+    private MQWrapperClient mqWrapperClient;
+
     @Value("${common.environment}")
     private Environment environment;
 
@@ -115,98 +116,38 @@ public class CouponRepayServiceImpl implements CouponRepayService {
     private final static String REPAY_REDIS_KEY_TEMPLATE = "COUPON_REPAY:{0}";
 
     @Override
-    public void repay(long loanRepayId, boolean isAdvanced) {
-        logger.info(MessageFormat.format("[Coupon Repay {0}] coupon repay is starting...", String.valueOf(loanRepayId)));
-        String redisKey = MessageFormat.format(REPAY_REDIS_KEY_TEMPLATE, String.valueOf(loanRepayId));
-        LoanRepayModel currentLoanRepayModel = this.loanRepayMapper.findById(loanRepayId);
-        LoanModel loanModel = loanMapper.findById(currentLoanRepayModel.getLoanId());
-        List<LoanRepayModel> loanRepayModels = this.loanRepayMapper.findByLoanIdOrderByPeriodAsc(currentLoanRepayModel.getLoanId());
-        List<UserCouponModel> userCouponModels = userCouponMapper.findByLoanId(loanModel.getId(), COUPON_TYPE_LIST);
+    public void sendCouponRepayAmount(CouponRepayDto couponRepayDto) throws Exception {
+            try {
+                String redisKey = MessageFormat.format(REPAY_REDIS_KEY_TEMPLATE, String.valueOf(couponRepayDto.getLoanRepayId()));
+                TransferWithNotifyRequestModel requestModel = TransferWithNotifyRequestModel.newCouponRepayRequest(MessageFormat.format(COUPON_ORDER_ID_TEMPLATE, String.valueOf(couponRepayDto.getCouponRepayId()), String.valueOf(new Date().getTime())),
+                        couponRepayDto.getPayUserId(),
+                        String.valueOf(couponRepayDto.getTransferAmount()));
 
-        for (UserCouponModel userCouponModel : userCouponModels) {
-            logger.info(MessageFormat.format("[Coupon Repay {0}] user coupon({1}) repay is starting...", String.valueOf(loanRepayId), String.valueOf(userCouponModel.getId())));
+                String statusString = redisWrapperClient.hget(redisKey, String.valueOf(couponRepayDto.getCouponRepayId()));
+                if (Strings.isNullOrEmpty(statusString) || SyncRequestStatus.FAILURE.equals(SyncRequestStatus.valueOf(statusString))) {
+                    redisWrapperClient.hset(redisKey, String.valueOf(couponRepayDto.getCouponRepayId()), SyncRequestStatus.SENT.name());
+                    logger.info(MessageFormat.format("[Coupon Repay loanRepayId {0}] couponRepayModel.id ({1}) send payback request",
+                            String.valueOf(couponRepayDto.getLoanRepayId()), String.valueOf(couponRepayDto.getCouponRepayId())));
 
-            CouponModel couponModel = this.couponMapper.findById(userCouponModel.getCouponId());
-            if (couponModel.getCouponType() == CouponType.BIRTHDAY_COUPON && currentLoanRepayModel.getPeriod() > 1) {
-                continue;
-            }
-
-            InvestModel investModel = investMapper.findById(userCouponModel.getInvestId());
-            if (investModel == null || investModel.getStatus() != InvestStatus.SUCCESS || investModel.getTransferStatus() == TransferStatus.SUCCESS) {
-                logger.warn(MessageFormat.format("[Coupon Repay {0}] invest({1}) is nonexistent or not success or has transferred",
-                        String.valueOf(loanRepayId),
-                        investModel == null ? "null" : String.valueOf(investModel.getId())));
-                continue;
-            }
-            CouponRepayModel couponRepayModel = couponRepayMapper.findByUserCouponIdAndPeriod(userCouponModel.getId(), currentLoanRepayModel.getPeriod());
-
-            if (couponRepayModel == null) {
-                logger.error(MessageFormat.format("Coupon Repay loanRepayId:{0},userCouponId:{1},period:{2} is nonexistent",
-                        currentLoanRepayModel.getLoanId(),
-                        userCouponModel.getId(),
-                        currentLoanRepayModel.getPeriod()));
-                continue;
-            }
-
-            long investAmount = investModel.getAmount();
-            long actualInterest = InterestCalculator.calculateCouponActualInterest(investAmount, couponModel, userCouponModel, loanModel, currentLoanRepayModel, loanRepayModels);
-            if (actualInterest < 0) {
-                continue;
-            }
-            long actualFee = (long) (actualInterest * investModel.getInvestFeeRate());
-            long transferAmount = actualInterest - actualFee;
-            logger.info(MessageFormat.format("[Coupon Repay {0}] user coupon({1}) is {2}, repay amount is  {3}({4} - {5})",
-                    String.valueOf(currentLoanRepayModel.getId()),
-                    String.valueOf(userCouponModel.getId()),
-                    couponModel.getCouponType().name(),
-                    String.valueOf(transferAmount),
-                    String.valueOf(actualInterest),
-                    String.valueOf(actualFee)));
-
-            userCouponModel.setActualInterest(userCouponModel.getActualInterest() + actualInterest);
-            userCouponModel.setActualFee(userCouponModel.getActualFee() + actualFee);
-            userCouponMapper.update(userCouponModel);
-
-            this.updateCouponRepayBeforeCallback(actualInterest, actualFee, investModel.getId(), couponRepayModel, isAdvanced);
-
-            if (transferAmount > 0) {
-                try {
-                    TransferWithNotifyRequestModel requestModel = TransferWithNotifyRequestModel.newCouponRepayRequest(MessageFormat.format(COUPON_ORDER_ID_TEMPLATE, String.valueOf(couponRepayModel.getId()), String.valueOf(new Date().getTime())),
-                            accountMapper.findByLoginName(userCouponModel.getLoginName()).getPayUserId(),
-                            String.valueOf(transferAmount));
-
-                    String statusString = redisWrapperClient.hget(redisKey, String.valueOf(couponRepayModel.getId()));
-                    if (Strings.isNullOrEmpty(statusString) || SyncRequestStatus.FAILURE.equals(SyncRequestStatus.valueOf(statusString))) {
-                        redisWrapperClient.hset(redisKey, String.valueOf(couponRepayModel.getId()), SyncRequestStatus.SENT.name());
-                        logger.info(MessageFormat.format("[Coupon Repay loanRepayId {0}] couponRepayModel.id ({1}) send payback request",
-                                String.valueOf(loanRepayId), String.valueOf(couponRepayModel.getId())));
-
-                        TransferResponseModel responseModel = paySyncClient.send(TransferMapper.class, requestModel, TransferResponseModel.class);
-                        boolean isPaySuccess = responseModel.isSuccess();
-                        redisWrapperClient.hset(redisKey, String.valueOf(couponRepayModel.getId()), isPaySuccess ? SyncRequestStatus.SUCCESS.name() : SyncRequestStatus.FAILURE.name());
-                        logger.info(MessageFormat.format("[Coupon Repay {0}] user coupon({1}) transfer status is {2}\n" +
-                                        "[Coupon Repay loanRepayId {3}] couponRepayModel.id ({4}) payback response is {5}",
-                                String.valueOf(currentLoanRepayModel.getId()), String.valueOf(userCouponModel.getId()),
-                                String.valueOf(isPaySuccess), String.valueOf(loanRepayId),
-                                String.valueOf(couponRepayModel.getId()), String.valueOf(isPaySuccess)));
-                    }
-
-                    logger.info(MessageFormat.format("[Coupon Repay {0}] user coupon({1})",
-                            String.valueOf(currentLoanRepayModel.getId()),
-                            String.valueOf(userCouponModel.getId())));
-                } catch (PayException e) {
-                    logger.error(MessageFormat.format("[Coupon Repay {0}] user coupon({1}) transfer is failed\n" +
-                                    "[Coupon Repay loanRepayId {2}] couponRepayModel.id ({3}) payback throw exception",
-                            String.valueOf(currentLoanRepayModel.getId()), String.valueOf(userCouponModel.getId()),
-                            String.valueOf(loanRepayId), String.valueOf(couponRepayModel.getId()), e));
+                    TransferResponseModel responseModel = paySyncClient.send(TransferMapper.class, requestModel, TransferResponseModel.class);
+                    boolean isPaySuccess = responseModel.isSuccess();
+                    redisWrapperClient.hset(redisKey, String.valueOf(couponRepayDto.getCouponRepayId()), isPaySuccess ? SyncRequestStatus.SUCCESS.name() : SyncRequestStatus.FAILURE.name());
+                    logger.info(MessageFormat.format("[Coupon Repay {0}] user coupon({1}) transfer status is {2}\n" +
+                                    "[Coupon Repay loanRepayId {3}] couponRepayModel.id ({4}) payback response is {5}",
+                            String.valueOf(couponRepayDto.getLoanRepayId()), String.valueOf(couponRepayDto.getUserCouponId()),
+                            String.valueOf(isPaySuccess), String.valueOf(couponRepayDto.getLoanRepayId()),
+                            String.valueOf(couponRepayDto.getCouponRepayId()), String.valueOf(isPaySuccess)));
                 }
-            }
-            else{
-                this.updateCouponRepayAfterCallback(investModel.getId(), couponRepayModel, isAdvanced);
-            }
-        }
 
-        logger.info(MessageFormat.format("[Coupon Repay {0}] coupon repay is async send success", String.valueOf(loanRepayId)));
+                logger.info(MessageFormat.format("[Coupon Repay {0}] user coupon({1})",
+                        String.valueOf(couponRepayDto.getLoanRepayId()),
+                        String.valueOf(couponRepayDto.getUserCouponId())));
+            } catch (PayException e) {
+                logger.error(MessageFormat.format("[Coupon Repay {0}] user coupon({1}) transfer is failed\n" +
+                                "[Coupon Repay loanRepayId {2}] couponRepayModel.id ({3}) payback throw exception",
+                        String.valueOf(couponRepayDto.getLoanRepayId()), String.valueOf(couponRepayDto.getUserCouponId()),
+                        String.valueOf(couponRepayDto.getLoanRepayId()), String.valueOf(couponRepayDto.getCouponRepayId()), e));
+            }
     }
 
     @Override
@@ -221,7 +162,6 @@ public class CouponRepayServiceImpl implements CouponRepayService {
         boolean isPeriodUnitDay = LoanPeriodUnit.DAY == loanModel.getType().getLoanPeriodUnit();
         int totalPeriods = loanModel.getPeriods();
         DateTime lastRepayDate = new DateTime(loanModel.getRecheckTime()).withTimeAtStartOfDay().minusSeconds(1);
-
 
         for (int period = 1; period <= totalPeriods; period++) {
             int currentPeriodDuration = isPeriodUnitDay ? loanModel.getDuration() : InterestCalculator.DAYS_OF_MONTH;
@@ -269,52 +209,9 @@ public class CouponRepayServiceImpl implements CouponRepayService {
         }
     }
 
-    private void updateCouponRepayBeforeCallback(long actualInterest, long actualFee, long investId, final CouponRepayModel couponRepayModel, boolean isAdvanced) {
-        try{
-            couponRepayModel.setActualInterest(actualInterest);
-            couponRepayModel.setActualFee(actualFee);
-            couponRepayModel.setRepayAmount(actualInterest - actualFee);
-            couponRepayModel.setActualRepayDate(new Date());
-            couponRepayMapper.update(couponRepayModel);
-            if (isAdvanced) {
-                List<CouponRepayModel> advancedCouponRepayModels = Lists.newArrayList(couponRepayMapper.findByUserCouponByInvestId(investId).stream().filter(input -> input.getPeriod() > couponRepayModel.getPeriod()).collect(Collectors.toList()));
-                for (CouponRepayModel advancedCouponRepayModel : advancedCouponRepayModels) {
-                    if (advancedCouponRepayModel.getStatus() == RepayStatus.REPAYING) {
-                        advancedCouponRepayModel.setActualRepayDate(new Date());
-                        couponRepayMapper.update(advancedCouponRepayModel);
-                        logger.info(MessageFormat.format("[Advance Repay] update other ActualRepayDate coupon repay({0})",
-                                 String.valueOf(advancedCouponRepayModel.getId())));
-                    }
-                }
-            }
-        }catch(Exception e){
-            fatalLog("updateCouponRepayBeforeCallback Exception. currentCouponRepayModelId:" + couponRepayModel.getId(), e);
-        }
-
-    }
-
-    private void updateCouponRepayAfterCallback(long investId, final CouponRepayModel couponRepayModel, boolean isAdvanced) {
-        try{
-            couponRepayModel.setStatus(RepayStatus.COMPLETE);
-            couponRepayMapper.update(couponRepayModel);
-            if (isAdvanced) {
-                List<CouponRepayModel> advancedCouponRepayModels = Lists.newArrayList(couponRepayMapper.findByUserCouponByInvestId(investId).stream().filter(input -> input.getPeriod() > couponRepayModel.getPeriod()).collect(Collectors.toList()));
-                for (CouponRepayModel advancedCouponRepayModel : advancedCouponRepayModels) {
-                    if (advancedCouponRepayModel.getStatus() == RepayStatus.REPAYING) {
-                        advancedCouponRepayModel.setStatus(RepayStatus.COMPLETE);
-                        couponRepayMapper.update(advancedCouponRepayModel);
-                        logger.info(MessageFormat.format("[Advance Repay] update other REPAYING coupon repay({0}) status to COMPLETE",
-                                String.valueOf(advancedCouponRepayModel.getId())));
-                    }
-                }
-            }
-        }catch (Exception e){
-            fatalLog("updateCouponRepayAfterCallback Exception. currentCouponRepayModelId:" + couponRepayModel.getId(), e);
-        }
-    }
 
     @Override
-    public String couponRepayCallback(Map<String, String> paramsMap, String originalQueryString){
+    public String couponRepayCallback(Map<String, String> paramsMap, String originalQueryString) {
         BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(
                 paramsMap,
                 originalQueryString,
@@ -323,21 +220,21 @@ public class CouponRepayServiceImpl implements CouponRepayService {
         if (callbackRequest == null) {
             return null;
         }
-        redisWrapperClient.incr(CouponRepayNotifyCallbackJob.COUPON_REPAY_JOB_TRIGGER_KEY);
+        mqWrapperClient.sendMessage(MessageQueue.CouponRepayCallback, String.valueOf(callbackRequest.getId()));
         return callbackRequest.getResponseData();
     }
 
     @Override
-    public BaseDto<PayDataDto> asyncCouponRepayCallback() {
-        List<CouponRepayNotifyRequestModel> todoList = couponRepayNotifyRequestMapper.getTodoList(couponRepayProcessListSize);
+    public BaseDto<PayDataDto> asyncCouponRepayCallback(long notifyRequestId) {
+        CouponRepayNotifyRequestModel model = couponRepayNotifyRequestMapper.findById(notifyRequestId);
 
-        todoList.stream().filter(model -> updateCouponRepayNotifyRequestStatus(model)).forEach(model -> {
+        if (updateCouponRepayNotifyRequestStatus(model)) {
             try {
                 this.processOneCallback(model);
             } catch (Exception e) {
-                fatalLog("coupon repay callback, processOneCallback error. couponRepayId:" + model.getOrderId(), e);
+                fatalLog("coupon repay callback, processOneCallback error. couponRepayId:" + model.getOrderId() + ", id:" + model.getId(), e);
             }
-        });
+        }
 
         BaseDto<PayDataDto> asyncCouponRepayNotifyDto = new BaseDto<>();
         PayDataDto baseDataDto = new PayDataDto();
@@ -348,8 +245,11 @@ public class CouponRepayServiceImpl implements CouponRepayService {
     }
 
     private boolean updateCouponRepayNotifyRequestStatus(CouponRepayNotifyRequestModel model) {
+        if(model == null){
+            logger.info("CouponRepayNotifyRequestModel is null");
+            return false;
+        }
         try {
-            redisWrapperClient.decr(CouponRepayNotifyCallbackJob.COUPON_REPAY_JOB_TRIGGER_KEY);
             couponRepayNotifyRequestMapper.updateStatus(model.getId(), NotifyProcessStatus.DONE);
         } catch (Exception e) {
             fatalLog("update_coupon_repay_notify_status_fail, orderId:" + model.getOrderId() + ",id:" + model.getId(), e);
@@ -374,7 +274,7 @@ public class CouponRepayServiceImpl implements CouponRepayService {
 
                 redisWrapperClient.hset(MessageFormat.format(REPAY_REDIS_KEY_TEMPLATE, String.valueOf(loanRepayModel.getId())), String.valueOf(couponRepayId), SyncRequestStatus.SUCCESS.name());
 
-                this.updateCouponRepayAfterCallback(investModel.getId(), couponRepayModel, isAdvanced);
+                //this.updateCouponRepayAfterCallback(investModel.getId(), couponRepayModel, isAdvanced);
 
                 amountTransfer.transferInBalance(couponRepayModel.getLoginName(),
                         couponRepayModel.getUserCouponId(),
@@ -393,13 +293,13 @@ public class CouponRepayServiceImpl implements CouponRepayService {
                         String.valueOf(couponRepayModel.getActualInterest() - couponRepayModel.getActualFee()));
 
                 systemBillService.transferOut(couponRepayModel.getUserCouponId(), (couponRepayModel.getActualInterest() - couponRepayModel.getActualFee()), SystemBillBusinessType.COUPON, detail);
-                
+
                 logger.info(MessageFormat.format("[Coupon Repay {0}] user coupon({1}) update user bill and system bill is success",
                         String.valueOf(couponRepayModel.getId()),
-                    String.valueOf(couponRepayModel.getUserCouponId())));
+                        String.valueOf(couponRepayModel.getUserCouponId())));
             }
         } catch (Exception e) {
-            redisWrapperClient.hset(MessageFormat.format(REPAY_REDIS_KEY_TEMPLATE, String.valueOf(loanRepayModel.getId())), String.valueOf(couponRepayId),  SyncRequestStatus.FAILURE.name());
+            redisWrapperClient.hset(MessageFormat.format(REPAY_REDIS_KEY_TEMPLATE, String.valueOf(loanRepayModel.getId())), String.valueOf(couponRepayId), SyncRequestStatus.FAILURE.name());
 
             logger.error(MessageFormat.format("[Coupon Repay {0}] user coupon({1}) update user bill is failed",
                     String.valueOf(couponRepayModel.getId()),
