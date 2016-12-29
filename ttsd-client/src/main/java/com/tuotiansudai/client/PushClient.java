@@ -76,7 +76,7 @@ public class PushClient {
     }
 
     public void sendJPush(PushMessage pushMessage) {
-        if (CollectionUtils.isNotEmpty(pushMessage.getLoginNames())) {
+        if (CollectionUtils.isEmpty(pushMessage.getLoginNames())) {
             send(buildPushPayload(null, pushMessage.getContent(), pushMessage.getPushSource(), Maps.newHashMap()));
             return;
         }
