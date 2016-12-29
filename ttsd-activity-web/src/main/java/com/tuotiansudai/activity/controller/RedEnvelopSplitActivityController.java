@@ -22,6 +22,7 @@ public class RedEnvelopSplitActivityController {
         ModelAndView modelAndView = new ModelAndView("/activities/rank-list");
         modelAndView.addObject("referrerCount", redEnvelopSplitActivityService.getReferrerCount(loginName));
         modelAndView.addObject("redEnvelopAmount", redEnvelopSplitActivityService.getReferrerRedEnvelop(loginName));
+        modelAndView.addObject("referrerUrl", redEnvelopSplitActivityService.getShareReferrerUrl(loginName));
         return modelAndView;
     }
 }

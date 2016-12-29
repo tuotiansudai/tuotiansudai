@@ -1,6 +1,7 @@
 package com.tuotiansudai.activity.service;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.activity.repository.dto.RedEnvelopSplitActivityDto;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.enums.AppUrl;
 import com.tuotiansudai.repository.mapper.UserMapper;
@@ -27,6 +28,8 @@ public class RedEnvelopSplitActivityService {
 
     private static List<Long> coupons = Lists.newArrayList(333L, 334L, 335L, 336L, 337L, 338L);
 
+    private static String REFERRER_TITLE = "您的好友%s送你三重好礼";
+
     private static String REFERRER_DESCRIPTION = "完成注册即可领取8.88元现金红包+5888元体验金+588元优惠券";
 
     @Value("#{'${activity.weiXin.red.envelop.period}'.split('\\~')}")
@@ -42,7 +45,8 @@ public class RedEnvelopSplitActivityService {
         return AmountConverter.convertCentToString(userCouponMapper.findSumRedEnvelopeByLoginNameAndCouponId(loginName, coupons));
     }
 
-    public String getShardReferrerurl(){
+    public String getShareReferrerUrl(String loginName){
+        RedEnvelopSplitActivityDto redEnvelopSplitActivityDto = new RedEnvelopSplitActivityDto(REFERRER_TITLE, REFERRER_DESCRIPTION, "");
         StringBuffer url = new StringBuffer(AppUrl.RED_ENVELOP_SPLIT.name());
 
 
