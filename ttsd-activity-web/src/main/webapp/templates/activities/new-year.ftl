@@ -45,7 +45,7 @@
                 <#if signedIn?? && signedIn>
                     <a href="javascript:void(0);" class="normal-button" style="display: none">已签到</a>
                 <#else >
-                    <a href="javascript:void(0);" class="normal-button"  id="signToday" style="display: none">签到</a>
+                <button type="button" class="normal-button"  id="signToday" style="display: none">签到</button>
                 </#if>
             </span>
 
