@@ -1,7 +1,11 @@
 package com.tuotiansudai.ask.service;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.ask.dto.CmsCategoryDto;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+import com.tuotiansudai.ask.dto.SiteMapCmsCategoryDto;
+import com.tuotiansudai.ask.dto.SiteMapCmsDetailsDto;
 import com.tuotiansudai.ask.repository.mapper.QuestionMapper;
 import com.tuotiansudai.ask.repository.model.QuestionModel;
 import com.tuotiansudai.client.RedisWrapperClient;
@@ -19,10 +23,8 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class EmbodyQuestionService {
@@ -37,6 +39,9 @@ public class EmbodyQuestionService {
 
     @Autowired
     private QuestionMapper questionMapper;
+
+    @Autowired
+    private OkHttpClient httpClient;
 
     @Value("${cms.server}")
     private String cmsServer;
@@ -55,6 +60,8 @@ public class EmbodyQuestionService {
     private static final String CMS_CATEGORY_INFO = "/category-info?format=json";
 
     private static final String CMS_POSTS_INFO = "/posts-info?format=json&category=";
+
+    private static final int CATEGORY_ROOT = 1;
 
     private static final int CATEGORY_ORDER = 2;
 
@@ -104,23 +111,21 @@ public class EmbodyQuestionService {
         if (cmsCategoryJsonString == null || "".equals(cmsCategoryJsonString)) {
             return siteMapCategoryList;
         }
-
-        try {
-            JsonConverter.readValue(cmsCategoryJsonString, CmsCategoryDto.class);
-
-        } catch (IOException e) {
-            logger.error("jsonConverter parse is error " + e);
-        }
         JSONArray categoryJsonArray = JSONArray.fromObject(cmsCategoryJsonString);
         Iterator categoryIt = categoryJsonArray.iterator();
         //找出根目录
         while (categoryIt.hasNext()) {
-            SiteMapDataDto siteMapDataDto = new SiteMapDataDto();
             JSONObject obj = (JSONObject) categoryIt.next();
-            if (obj.getString("parent") == "null" || "".equals(obj.getString("parent"))) {
-                siteMapDataDto.setName(obj.getString("name") + "|" + obj.getString("slug"));
-                siteMapDataDto.setLinkUrl(cmsServer + "/" + obj.getString("slug"));
-                siteMapCategoryList.add(siteMapDataDto);
+            try {
+                SiteMapDataDto siteMapDataDto = new SiteMapDataDto();
+                SiteMapCmsCategoryDto siteMapCmsCategoryDto = JsonConverter.readValue(String.valueOf(obj), SiteMapCmsCategoryDto.class);
+                if(siteMapCmsCategoryDto.getParent() == null){
+                    siteMapDataDto.setName(siteMapCmsCategoryDto.getName() + "|" + siteMapCmsCategoryDto.getSlug());
+                    siteMapDataDto.setLinkUrl(cmsServer + "/" + siteMapCmsCategoryDto.getSlug());
+                    siteMapCategoryList.add(siteMapDataDto);
+                }
+            } catch (IOException e) {
+                logger.error("jsonConverter parse is error " + e);
             }
         }
         return this.getCmsSiteMapAllCategory(siteMapCategoryList, cmsCategoryJsonString);
@@ -133,19 +138,24 @@ public class EmbodyQuestionService {
             SiteMapDataDto siteMapDataDtoOneLevel = new SiteMapDataDto();
             siteMapDataDtoOneLevel.setName(siteMapDataDto.getName().substring(0, siteMapDataDto.getName().indexOf("|")));
             siteMapDataDtoOneLevel.setLinkUrl(siteMapDataDto.getLinkUrl());
-            siteMapDataDtoOneLevel.setSeq(1);
+            siteMapDataDtoOneLevel.setSeq(CATEGORY_ROOT);
             siteMapCategoryAllList.add(siteMapDataDtoOneLevel);
 
             JSONArray categoryJsonArray = JSONArray.fromObject(cmsCategoryJsonString);
             Iterator categoryIt = categoryJsonArray.iterator();
             while (categoryIt.hasNext()) {
                 JSONObject obj = (JSONObject) categoryIt.next();
-                if (obj.getString("parent").equals(siteMapDataDto.getName().substring(siteMapDataDto.getName().indexOf("|") + 1, siteMapDataDto.getName().length()))) {
-                    SiteMapDataDto siteMapDataDtoSecondLevel = new SiteMapDataDto();
-                    siteMapDataDtoSecondLevel.setName(obj.getString("name"));
-                    siteMapDataDtoSecondLevel.setLinkUrl(cmsServer + "/" + obj.getString("parent") + "/" + obj.getString("slug"));
-                    siteMapDataDtoSecondLevel.setSeq(2);
-                    siteMapCategoryAllList.add(siteMapDataDtoSecondLevel);
+                try {
+                    SiteMapCmsCategoryDto siteMapCmsCategoryDto = JsonConverter.readValue(String.valueOf(obj), SiteMapCmsCategoryDto.class);
+                    if (siteMapCmsCategoryDto.getParent().equals(siteMapDataDto.getName().substring(siteMapDataDto.getName().indexOf("|") + 1, siteMapDataDto.getName().length()))) {
+                        SiteMapDataDto siteMapDataDtoSecondLevel = new SiteMapDataDto();
+                        siteMapDataDtoSecondLevel.setName(siteMapCmsCategoryDto.getName());
+                        siteMapDataDtoSecondLevel.setLinkUrl(cmsServer + "/" + siteMapCmsCategoryDto.getParent() + "/" + siteMapCmsCategoryDto.getSlug());
+                        siteMapDataDtoSecondLevel.setSeq(CATEGORY_ORDER);
+                        siteMapCategoryAllList.add(siteMapDataDtoSecondLevel);
+                    }
+                } catch (IOException e) {
+                    logger.error("jsonConverter category parse is error " + e);
                 }
             }
         }
@@ -172,6 +182,7 @@ public class EmbodyQuestionService {
             }
         } else {
             String cmsCategoryJsonString = loadJSON(cmsServer + CMS_CATEGORY_INFO);
+            SiteMapCmsCategoryDto siteMapCmsCategoryDto = new SiteMapCmsCategoryDto();
             if (cmsCategoryJsonString == null || "".equals(cmsCategoryJsonString)) {
                 return siteMapDataDtoList;
             }
@@ -180,30 +191,36 @@ public class EmbodyQuestionService {
             while (categoryIt.hasNext()) {
                 SiteMapDataDto siteMapDataDto = new SiteMapDataDto();
                 JSONObject obj = (JSONObject) categoryIt.next();
-                String cmsPostsJsonString = loadJSON(cmsServer + CMS_POSTS_INFO + obj.getString("slug"));
-                if (!"".equals(cmsPostsJsonString)) {
-                    JSONArray postsJsonArray = JSONArray.fromObject(cmsPostsJsonString);
-                    Iterator postsIt = postsJsonArray.iterator();
-                    while (postsIt.hasNext()) {
-                        SiteMapDataDto siteMapPostsDataDto = new SiteMapDataDto();
-                        JSONObject postsObj = (JSONObject) postsIt.next();
-                        siteMapPostsDataDto.setName(postsObj.getString("title"));
-                        siteMapPostsDataDto.setLinkUrl(postsObj.getString("url"));
-                        siteMapPostsDataDtoList.add(siteMapPostsDataDto);
-                        siteMapPostsDataDto.setSeq(DETAIL_ORDER);
-                        //因为网站读取从redis的值时需要排序,所以添加时value用 (title + "||" +排序) 的格式,以便前台读取时可以排序,详细文章用3,栏目分类用2
-                        redisWrapperClient.hset(CMS_CATEGORY, postsObj.getString("url"), postsObj.getString("title") + "||" + DETAIL_ORDER, timeout);
+                try {
+                    siteMapCmsCategoryDto = JsonConverter.readValue(String.valueOf(obj), SiteMapCmsCategoryDto.class);
+                    String cmsPostsJsonString = loadJSON(cmsServer + CMS_POSTS_INFO + siteMapCmsCategoryDto.getSlug());
+                    if (!"".equals(cmsPostsJsonString)) {
+                        JSONArray postsJsonArray = JSONArray.fromObject(cmsPostsJsonString);
+                        Iterator postsIt = postsJsonArray.iterator();
+                        while (postsIt.hasNext()) {
+                            SiteMapDataDto siteMapPostsDataDto = new SiteMapDataDto();
+                            JSONObject postsObj = (JSONObject) postsIt.next();
+                            SiteMapCmsDetailsDto siteMapCmsDetailsDto = JsonConverter.readValue(String.valueOf(postsObj), SiteMapCmsDetailsDto.class);
+                            siteMapPostsDataDto.setName(siteMapCmsDetailsDto.getTitle());
+                            siteMapPostsDataDto.setLinkUrl(siteMapCmsDetailsDto.getUrl());
+                            siteMapPostsDataDtoList.add(siteMapPostsDataDto);
+                            siteMapPostsDataDto.setSeq(DETAIL_ORDER);
+                            //因为网站读取从redis的值时需要排序,所以添加时value用 (title + "||" +排序) 的格式,以便前台读取时可以排序,详细文章用3,栏目分类用2
+                            redisWrapperClient.hset(CMS_CATEGORY, siteMapCmsDetailsDto.getUrl(), siteMapCmsDetailsDto.getTitle() + "||" + DETAIL_ORDER, timeout);
+                        }
                     }
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
 
-                if (obj.getString("name") != null) {
-                    siteMapDataDto.setName(obj.getString("name"));
+                if (siteMapCmsCategoryDto.getName() != null) {
+                    siteMapDataDto.setName(siteMapCmsCategoryDto.getName());
                 }
-                String linkUrl = cmsServer + (obj.getString("parent") != null ? "/" + obj.getString("parent") : "") + "/" + obj.getString("slug");
+                String linkUrl = cmsServer + (siteMapCmsCategoryDto.getParent() != null ? "/" + siteMapCmsCategoryDto.getParent() : "") + "/" + siteMapCmsCategoryDto.getSlug();
                 siteMapDataDto.setLinkUrl(linkUrl);
                 siteMapDataDto.setSeq(CATEGORY_ORDER);
                 siteMapDataDtoList.add(siteMapDataDto);
-                redisWrapperClient.hset(CMS_CATEGORY, linkUrl, obj.getString("name") + "||" + CATEGORY_ORDER, timeout);
+                redisWrapperClient.hset(CMS_CATEGORY, linkUrl, siteMapCmsCategoryDto.getName() + "||" + CATEGORY_ORDER, timeout);
             }
             siteMapDataDtoList.addAll(siteMapPostsDataDtoList);
         }
@@ -256,23 +273,19 @@ public class EmbodyQuestionService {
     }
 
     private String loadJSON(String url) {
-        StringBuilder json = new StringBuilder();
         try {
-            URL oracle = new URL(url);
-            URLConnection yc = oracle.openConnection();
-            BufferedReader in = new BufferedReader(new InputStreamReader(yc.getInputStream()));
-            String inputLine;
-            while ((inputLine = in.readLine()) != null) {
-                json.append(inputLine);
-            }
-            in.close();
-        } catch (MalformedURLException e) {
-            logger.error("access cms url not exist, please check cms url + " + e);
+            Request request = new Request.Builder().url(url).get().build();
+            logger.info("send cms request ");
+            httpClient.setConnectTimeout(5, TimeUnit.SECONDS);
+            httpClient.setRetryOnConnectionFailure(false);
+            Response response = httpClient.newCall(request).execute();
+            String responseBodyString = response.body().string();
+            logger.info("cms response, body: " + responseBodyString);
+            return responseBodyString;
         } catch (IOException e) {
-            logger.error("access cms url not exist, please check cms url + " + e);
+            logger.error(e.getLocalizedMessage(), e);
+            return "";
         }
-        return json.toString();
     }
-
 
 }

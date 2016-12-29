@@ -2,7 +2,9 @@ package com.tuotiansudai.service.impl;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.client.RedisWrapperClient;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
@@ -12,23 +14,18 @@ import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.HomeService;
-import com.tuotiansudai.util.JsonConverter;
-import net.sf.json.JSON;
 import net.sf.json.JSONArray;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.text.MessageFormat;
-import java.util.*;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Service
@@ -54,14 +51,13 @@ public class HomeServiceImpl implements HomeService {
     @Autowired
     private LoanDetailsMapper loanDetailsMapper;
 
+    @Autowired
+    private OkHttpClient httpClient;
+
     @Value("${ask.server}")
     private String askServer;
 
-    @Value("${cms.server}")
-    private String cmsServer;
-
-    private static final String ASK_INTERFACE_URL = "/question/getSiteMap";
-
+    private static final String SITEMAP = "/question/getSiteMap";
 
     public List<HomeLoanDto> getNormalLoans() {
         return getLoans().stream().filter(loan -> !loan.getProductType().equals(ProductType._30) && !loan.getActivityType().equals(ActivityType.NEWBIE)).collect(Collectors.toList());
@@ -137,10 +133,9 @@ public class HomeServiceImpl implements HomeService {
         });
     }
 
-
     @Override
     public List<SiteMapDataDto> getSiteMapData(){
-        String askJsonString = loadJSON(askServer + ASK_INTERFACE_URL);
+        String askJsonString = loadJSON(askServer + SITEMAP);
         return JsonToList(askJsonString);
     }
 
@@ -162,22 +157,19 @@ public class HomeServiceImpl implements HomeService {
     }
 
     public String loadJSON (String url) {
-        StringBuilder json = new StringBuilder();
         try {
-            URL oracle = new URL(url);
-            URLConnection yc = oracle.openConnection();
-            BufferedReader in = new BufferedReader(new InputStreamReader(yc.getInputStream()));
-            String inputLine;
-            while ( (inputLine = in.readLine()) != null) {
-                json.append(inputLine);
-            }
-            in.close();
-        } catch (MalformedURLException e) {
-            logger.error("access ask url not exist, please check ask url + " + e);
+            Request request = new Request.Builder().url(url).get().build();
+            logger.info("send ask request ");
+            httpClient.setConnectTimeout(3, TimeUnit.SECONDS);
+            httpClient.setRetryOnConnectionFailure(false);
+            Response response = httpClient.newCall(request).execute();
+            String responseBodyString = response.body().string();
+            logger.info("ask response, body: " + responseBodyString);
+            return responseBodyString;
         } catch (IOException e) {
-            logger.error("access ask url not exist, please check ask url + " + e);
+            logger.error(e.getLocalizedMessage(), e);
+            return "";
         }
-        return json.toString();
     }
 
 }

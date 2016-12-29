@@ -20,7 +20,7 @@ public class HomeController {
     private QuestionService questionService;
 
     @Autowired
-    private EmbodyQuestionService includeQuestionService;
+    private EmbodyQuestionService embodyQuestionService;
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView index(@RequestParam(value = "group", defaultValue = "ALL", required = false) QuestionGroup group,

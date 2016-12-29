@@ -1,8 +1,6 @@
 package com.tuotiansudai.ask.dto;
 
-import java.io.Serializable;
-
-public class CmsCategoryDto implements Serializable{
+public class SiteMapCmsCategoryDto{
 
     private String parent;
     private String name;
