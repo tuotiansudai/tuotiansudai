@@ -19,7 +19,7 @@ public class RedEnvelopSplitActivityController {
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView loadPageData() {
         String loginName = LoginUserInfo.getLoginName();
-        ModelAndView modelAndView = new ModelAndView("/activities/rank-list");
+        ModelAndView modelAndView = new ModelAndView("/activities/test", "responsive", true);
         modelAndView.addObject("referrerCount", redEnvelopSplitActivityService.getReferrerCount(loginName));
         modelAndView.addObject("redEnvelopAmount", redEnvelopSplitActivityService.getReferrerRedEnvelop(loginName));
         modelAndView.addObject("referrerUrl", redEnvelopSplitActivityService.getShareReferrerUrl(loginName));

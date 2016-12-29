@@ -45,7 +45,7 @@ public enum AppUrl {
     LOAN_TRANSFER_DETAIL("转让标的详情页", "app/tuotian/transfer-loan-detail/{0}"),
     ACTIVITY_CENTER_HISTORY("活动中心-往期活动", "app/tuotian/activity-center-history"),
     REPAY_CALENDAR("回款日历", "app/tuotian/repay-calendar"),
-    RED_ENVELOP_SPLIT("红包裂变", "app/tuotian/red-envelop-split?param={0}"),
+    RED_ENVELOP_SPLIT("红包裂变", "app/tuotian/red-envelop-split?param=%s"),
     OTHER("其他", ""),
     NONE("无", null);
 

@@ -1,19 +1,25 @@
 package com.tuotiansudai.activity.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.activity.repository.dto.RedEnvelopSplitActivityDto;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.enums.AppUrl;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserChannel;
+import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.JsonConverter;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 
@@ -35,22 +41,44 @@ public class RedEnvelopSplitActivityService {
     @Value("#{'${activity.weiXin.red.envelop.period}'.split('\\~')}")
     private List<String> weiXinPeriod = Lists.newArrayList();
 
-    public int getReferrerCount(String loginName){
+    public int getReferrerCount(String loginName) {
+        if(Strings.isNullOrEmpty(loginName)){
+            return 0;
+        }
         Date startTime = DateTime.parse(weiXinPeriod.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
         Date endTime = DateTime.parse(weiXinPeriod.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
         return userMapper.findUserModelByChannel(loginName, Arrays.asList(UserChannel.values()), startTime, endTime).size();
     }
 
-    public String getReferrerRedEnvelop(String loginName){
+    public String getReferrerRedEnvelop(String loginName) {
+        if(Strings.isNullOrEmpty(loginName)){
+            return "";
+        }
         return AmountConverter.convertCentToString(userCouponMapper.findSumRedEnvelopeByLoginNameAndCouponId(loginName, coupons));
     }
 
-    public String getShareReferrerUrl(String loginName){
-        RedEnvelopSplitActivityDto redEnvelopSplitActivityDto = new RedEnvelopSplitActivityDto(REFERRER_TITLE, REFERRER_DESCRIPTION, "");
-        StringBuffer url = new StringBuffer(AppUrl.RED_ENVELOP_SPLIT.name());
+    public String getShareReferrerUrl(String loginName) {
+        if(Strings.isNullOrEmpty(loginName)){
+            return "";
+        }
 
+        UserModel userModel = userMapper.findByLoginName(loginName);
+        RedEnvelopSplitActivityDto redEnvelopSplitActivityDto = new RedEnvelopSplitActivityDto(String.format(REFERRER_TITLE, userModel.getUserName()),
+                REFERRER_DESCRIPTION, "http://192.168.60.196:8888/loan-list");
+        String paramJson = "";
+        try {
+            paramJson = JsonConverter.writeValueAsString(redEnvelopSplitActivityDto);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
 
-        return url.toString();
+        String base64 = "";
+        try {
+            base64 = Base64.getEncoder().encodeToString(paramJson.getBytes("utf-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return String.format(AppUrl.RED_ENVELOP_SPLIT.getPath(), base64);
     }
 
 }
