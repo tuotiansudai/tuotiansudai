@@ -359,6 +359,7 @@
         coupon c
         WHERE
         u.coupon_id = c.id
+        and u.end_time > now()
         AND c.product_types = 'EXPERIENCE')
     </select>
 
