@@ -1,44 +1,39 @@
 package com.tuotiansudai.ask.service;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.ask.repository.mapper.IncludeQuestionMapper;
+import com.tuotiansudai.ask.dto.CmsCategoryDto;
 import com.tuotiansudai.ask.repository.mapper.QuestionMapper;
-import com.tuotiansudai.ask.repository.model.IncludeQuestionModel;
 import com.tuotiansudai.ask.repository.model.QuestionModel;
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.SiteMapDataDto;
-import com.tuotiansudai.util.PaginationUtil;
+import com.tuotiansudai.util.JsonConverter;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
+import javax.servlet.http.HttpServletRequest;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
-public class IncludeQuestionService {
+public class EmbodyQuestionService {
 
-    private static final Logger logger = Logger.getLogger(IncludeQuestionService.class);
+    private static final Logger logger = Logger.getLogger(EmbodyQuestionService.class);
 
     @Autowired
     private RedisWrapperClient redisWrapperClient;
 
     @Autowired
-    private IncludeQuestionMapper includeQuestionMapper;
+    private QuestionService questionService;
 
     @Autowired
     private QuestionMapper questionMapper;
@@ -49,13 +44,13 @@ public class IncludeQuestionService {
     @Value("${ask.server}")
     private String askServer;
 
-    private static final String NO_INCLUDE_QUESTIONS = "web:no_include_ask_questions";
+    private static final String NO_EMBODY_QUESTIONS = "web:no_embody_ask_questions";
 
-    private static final String CMS_CATEGORY = "cms:no_include_questions";
+    private static final String CMS_CATEGORY = "cms:no_embody_questions";
 
-    private static final String prefix = "/question/";
+    private static final String PREFIX = "/question/";
 
-    private static final int timeout = 24 * 60 * 60 * 1000;
+    private static final int timeout = 24 * 60 * 60;
 
     private static final String CMS_CATEGORY_INFO = "/category-info?format=json";
 
@@ -65,33 +60,6 @@ public class IncludeQuestionService {
 
     private static final int DETAIL_ORDER = 3;
 
-    public IncludeQuestionModel getIncludeQuestion(long id) {
-        IncludeQuestionModel includeQuestionModel = includeQuestionMapper.findById(id);
-        if (includeQuestionModel == null) {
-            return null;
-        }
-        return includeQuestionModel;
-    }
-
-    public BaseDto<BasePaginationDataDto> findAllIncludeQuestions(int index, int pageSize) {
-        long count = includeQuestionMapper.countAllIncludeQuestions();
-        List<IncludeQuestionModel> allIncludeQuestions = includeQuestionMapper.findAllIncludeQuestions(PaginationUtil.calculateOffset(index, pageSize, count), pageSize);
-        BasePaginationDataDto<IncludeQuestionModel> data = new BasePaginationDataDto<>(PaginationUtil.validateIndex(index, pageSize, count), pageSize, count, allIncludeQuestions);
-        data.setStatus(true);
-        return new BaseDto<>(data);
-    }
-
-    public IncludeQuestionModel getIncludeQuestionByQuestionId(long questionId) {
-        IncludeQuestionModel includeQuestionModel = includeQuestionMapper.findByQuestionId(questionId);
-        if (includeQuestionModel == null) {
-            return null;
-        }
-        return includeQuestionModel;
-    }
-
-    public void create(IncludeQuestionModel includeQuestionModel) {
-        includeQuestionMapper.create(includeQuestionModel);
-    }
 
     public List<SiteMapDataDto> getSiteMapData() {
         List<SiteMapDataDto> siteMapDataDtoList = this.getAskSiteMapData();
@@ -101,9 +69,9 @@ public class IncludeQuestionService {
 
     private List<SiteMapDataDto> getAskSiteMapData() {
         List<SiteMapDataDto> siteMapDataDtoList = Lists.newArrayList();
-        if (redisWrapperClient.exists(NO_INCLUDE_QUESTIONS)) {
+        if (redisWrapperClient.exists(NO_EMBODY_QUESTIONS)) {
             //从redis中取值
-            Map<byte[], byte[]> siteMapListHkey = redisWrapperClient.hgetAllSeri(NO_INCLUDE_QUESTIONS);
+            Map<byte[], byte[]> siteMapListHkey = redisWrapperClient.hgetAllSeri(NO_EMBODY_QUESTIONS);
             for (byte[] key : siteMapListHkey.keySet()) {
                 try {
                     SiteMapDataDto siteMapDataDto = new SiteMapDataDto();
@@ -117,14 +85,14 @@ public class IncludeQuestionService {
             }
         } else {
             //从数据库中取值,并放入redis
-            List<QuestionModel> questionModelList = questionMapper.findApprovedNoInclude();
+            List<QuestionModel> questionModelList = questionMapper.findApprovedNotEmbodyQuestions();
             for (QuestionModel questionModel : questionModelList) {
                 SiteMapDataDto siteMapDataDto = new SiteMapDataDto();
                 siteMapDataDto.setName(questionModel.getQuestion());
-                siteMapDataDto.setLinkUrl(askServer + prefix + questionModel.getId());
+                siteMapDataDto.setLinkUrl(askServer + PREFIX + questionModel.getId());
                 siteMapDataDto.setSeq(DETAIL_ORDER);
                 siteMapDataDtoList.add(siteMapDataDto);
-                redisWrapperClient.hset(NO_INCLUDE_QUESTIONS, askServer + prefix + questionModel.getId(), questionModel.getQuestion(), timeout);
+                redisWrapperClient.hset(NO_EMBODY_QUESTIONS, askServer + PREFIX + questionModel.getId(), questionModel.getQuestion(), timeout);
             }
         }
         return siteMapDataDtoList;
@@ -135,6 +103,13 @@ public class IncludeQuestionService {
         String cmsCategoryJsonString = loadJSON(cmsServer + CMS_CATEGORY_INFO);
         if (cmsCategoryJsonString == null || "".equals(cmsCategoryJsonString)) {
             return siteMapCategoryList;
+        }
+
+        try {
+            JsonConverter.readValue(cmsCategoryJsonString, CmsCategoryDto.class);
+
+        } catch (IOException e) {
+            logger.error("jsonConverter parse is error " + e);
         }
         JSONArray categoryJsonArray = JSONArray.fromObject(cmsCategoryJsonString);
         Iterator categoryIt = categoryJsonArray.iterator();
@@ -233,6 +208,51 @@ public class IncludeQuestionService {
             siteMapDataDtoList.addAll(siteMapPostsDataDtoList);
         }
         return siteMapDataDtoList;
+    }
+
+    public BaseDataDto createImportEmbodyQuestion(HttpServletRequest httpServletRequest) throws IOException {
+        MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) httpServletRequest;
+        MultipartFile multipartFile = multipartHttpServletRequest.getFile("file");
+        InputStream inputStream = null;
+        BaseDataDto baseDataDto = new BaseDataDto();
+        List<String> listSuccess = new ArrayList<>();
+        List<String> listFailed = new ArrayList<>();
+        if (!multipartFile.getOriginalFilename().endsWith(".csv")) {
+            return new BaseDataDto(false, "上传失败!文件必须是csv格式");
+        }
+        try {
+            inputStream = multipartFile.getInputStream();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+            String strVal;
+            while (null != (strVal = bufferedReader.readLine())) {
+                String questionId = strVal.substring(strVal.lastIndexOf("/") + 1);
+                if (!strVal.startsWith(askServer + PREFIX)) {
+                    listFailed.add(strVal);
+                    continue;
+                }
+                QuestionModel questionModel = questionService.findById(Long.parseLong(questionId));
+                if (questionModel != null && !questionModel.isEmbody()) {
+                    questionService.updateEmbodyById(Long.parseLong(questionId));
+                    listSuccess.add(strVal);
+                }
+                else{
+                    listFailed.add(strVal);
+                }
+            }
+        } catch (IOException e) {
+            return new BaseDataDto(false, "上传失败!文件内容错误");
+        } finally {
+            if (null != inputStream) {
+                inputStream.close();
+            }
+        }
+        baseDataDto.setStatus(true);
+        baseDataDto.setMessage("批量导入成功! 其中 " + listSuccess.size() + " 条导入成功, "+listFailed.size()+" 条导入失败");
+        //清除缓存
+        if(listSuccess.size() > 0){
+            redisWrapperClient.del(NO_EMBODY_QUESTIONS);
+        }
+        return baseDataDto;
     }
 
     private String loadJSON(String url) {

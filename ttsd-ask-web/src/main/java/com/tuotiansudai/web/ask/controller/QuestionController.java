@@ -6,7 +6,7 @@ import com.tuotiansudai.ask.repository.dto.QuestionRequestDto;
 import com.tuotiansudai.ask.repository.dto.QuestionResultDataDto;
 import com.tuotiansudai.ask.repository.model.Tag;
 import com.tuotiansudai.ask.service.AnswerService;
-import com.tuotiansudai.ask.service.IncludeQuestionService;
+import com.tuotiansudai.ask.service.EmbodyQuestionService;
 import com.tuotiansudai.ask.service.QuestionService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
@@ -32,7 +32,7 @@ public class QuestionController {
     private AnswerService answerService;
 
     @Autowired
-    private IncludeQuestionService includeQuestionService;
+    private EmbodyQuestionService includeQuestionService;
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView question() {

@@ -66,5 +66,10 @@ public interface QuestionMapper {
 
     long countQuestionsByKeywords(@Param(value = "keywords") String keywords);
 
-    List<QuestionModel> findApprovedNoInclude();
+    List<QuestionModel> findApprovedNotEmbodyQuestions();
+
+    List<QuestionModel> findEmbodyAllQuestions(@Param(value = "index") int index,
+                                               @Param(value = "pageSize") int pageSize);
+
+    long countEmbodyAllQuestions();
 }

@@ -1,5 +1,5 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="include-questions.js" headLab="ask-manage" sideLab="includeQuestionManage" title="收录文章管理">
+<@global.main pageCss="" pageJavascript="embody-questions.js" headLab="ask-manage" sideLab="embodyQuestionManage" title="收录文章管理">
 
 <!-- content area begin -->
 <div class="col-md-10">
@@ -18,10 +18,10 @@
             </tr>
             </thead>
             <tbody>
-                <#list includeQuestions.data.records as includeQuestion>
+                <#list embodyQuestions.data.records as embodyQuestion>
                 <tr>
-                    <td>${includeQuestion.questionTitle!}</td>
-                    <td><a href="${includeQuestion.questionLink!}" target="_blank">${includeQuestion.questionLink!}</a></td>
+                    <td>${embodyQuestion.question!}</td>
+                    <td><a href="${embodyQuestion.linkUrl!}" target="_blank">${embodyQuestion.linkUrl!}</a></td>
                 </tr>
                 <#else>
                 <tr>
@@ -35,22 +35,22 @@
 
     <!-- pagination  -->
     <nav class="pagination-control">
-        <#if includeQuestions.data.count &gt; 0>
+        <#if embodyQuestions.data.count &gt; 0>
             <div>
-                <span class="bordern">总共${includeQuestions.data.count}条,每页显示${includeQuestions.data.pageSize}条</span>
+                <span class="bordern">总共${embodyQuestions.data.count}条,每页显示${embodyQuestions.data.pageSize}条</span>
             </div>
             <ul class="pagination pull-left">
                 <li>
-                    <#if includeQuestions.data.hasPreviousPage >
-                        <a href="?index=${includeQuestions.data.index-1}" aria-label="Previous">
+                    <#if embodyQuestions.data.hasPreviousPage >
+                        <a href="?index=${embodyQuestions.data.index-1}" aria-label="Previous">
                             <span aria-hidden="true">&laquo; Prev</span>
                         </a>
                     </#if>
                 </li>
-                <li><a>${includeQuestions.data.index}</a></li>
+                <li><a>${embodyQuestions.data.index}</a></li>
                 <li>
-                    <#if includeQuestions.data.hasNextPage >
-                        <a href="?index=${includeQuestions.data.index+1}" aria-label="Next">
+                    <#if embodyQuestions.data.hasNextPage >
+                        <a href="?index=${embodyQuestions.data.index+1}" aria-label="Next">
                             <span aria-hidden="true">Next &raquo;</span>
                         </a>
                     </#if>
