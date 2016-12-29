@@ -14,6 +14,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -212,11 +213,11 @@ public class UserMapperTest {
         UserModel referrerUserModel = getUserModelTest();
         referrerUserModel.setMobile("12344444400");
         referrerUserModel.setLoginName("referrerLoginName");
-        referrerUserModel.setChannel("test");
+        referrerUserModel.setChannel(UserChannel.Q_ZONE.name());
         referrerUserModel.setReferrer(userModel.getLoginName());
         userMapper.create(referrerUserModel);
 
-        List<UserModel> userModels = userMapper.findUserModelByChannel(referrerUserModel.getChannel(), DateUtils.addDays(userModel.getRegisterTime(), -1), DateUtils.addDays(userModel.getRegisterTime(), 1));
+        List<UserModel> userModels = userMapper.findUserModelByChannel(userModel.getLoginName(), Arrays.asList(UserChannel.values()), DateUtils.addDays(userModel.getRegisterTime(), -1), DateUtils.addDays(userModel.getRegisterTime(), 1));
         assertTrue(CollectionUtils.isNotEmpty(userModels));
         assertEquals(userModels.get(0).getLoginName(), referrerUserModel.getLoginName());
     }

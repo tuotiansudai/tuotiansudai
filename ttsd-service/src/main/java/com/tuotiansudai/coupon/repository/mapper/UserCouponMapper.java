@@ -67,4 +67,7 @@ public interface UserCouponMapper {
     int findByExchangeCode(@Param("exchangeCode") String exchangeCode);
 
     List<UserCouponModel> findUsedExperienceByLoginName(@Param("loginName") String loginName);
+
+    long findSumRedEnvelopeByLoginNameAndCouponId(@Param("loginName") String loginName,
+                                                  @Param("coupons") List<Long> coupons);
 }

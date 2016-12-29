@@ -1,5 +1,6 @@
 package com.tuotiansudai.repository.mapper;
 
+import com.tuotiansudai.repository.model.UserChannel;
 import com.tuotiansudai.repository.model.UserModel;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -67,7 +68,8 @@ public interface UserMapper {
 
     long findCountInvestCityScale(@Param(value = "endDate") Date endDate);
 
-    List<UserModel> findUserModelByChannel(@Param(value = "channel") String channel,
+    List<UserModel> findUserModelByChannel(@Param(value = "referrer") String referrer,
+                                           @Param(value = "userChannels") List<UserChannel> userChannels,
                                            @Param(value = "startTime") Date startTime,
                                            @Param(value = "endTime") Date endTime);
 

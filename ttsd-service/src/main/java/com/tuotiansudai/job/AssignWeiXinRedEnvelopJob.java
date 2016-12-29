@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.model.UserChannel;
 import com.tuotiansudai.repository.model.UserModel;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -43,7 +45,7 @@ public class AssignWeiXinRedEnvelopJob implements Job {
         Date endTime = DateTime.parse(weiXinPeriod.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
         Map<String, Integer> referrerCountMap = Maps.newConcurrentMap();
 
-        List<UserModel> registerUserModels = userMapper.findUserModelByChannel(ACTIVITY_WX_CHANNEL, startTime, endTime);
+        List<UserModel> registerUserModels = userMapper.findUserModelByChannel(null, Arrays.asList(UserChannel.values()), startTime, endTime);
         for(UserModel userModel : registerUserModels){
             if(referrerCountMap.get(userModel.getReferrer()) == null){
                 referrerCountMap.put(userModel.getReferrer(), 1);

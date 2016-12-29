@@ -110,6 +110,22 @@ public class UserCouponMapperTest {
         assertEquals(userCouponModelList.get(0).getCoupon().getComment(), couponModel.getComment());
     }
 
+    @Test
+    public void shouldFindSumRedEnvelopeByLoginNameAndCouponIdIsOk(){
+        UserModel userModel = fakeUserModel();
+        userMapper.create(userModel);
+
+        CouponModel couponModel = fakeCouponModel();
+        couponModel.setCouponType(CouponType.RED_ENVELOPE);
+        couponMapper.create(couponModel);
+
+        UserCouponModel userCouponModel = fakeUserCouponModel(couponModel.getId());
+        userCouponMapper.create(userCouponModel);
+
+        long sumRedEnvelopeByLoginNameAndCouponId = userCouponMapper.findSumRedEnvelopeByLoginNameAndCouponId(userModel.getLoginName(), Lists.newArrayList(couponModel.getId()));
+        assertEquals(sumRedEnvelopeByLoginNameAndCouponId, couponModel.getAmount());
+    }
+
     private UserCouponModel fakeUserCouponModel(long couponId) {
         return new UserCouponModel("couponTest", couponId, new Date(), new Date());
     }

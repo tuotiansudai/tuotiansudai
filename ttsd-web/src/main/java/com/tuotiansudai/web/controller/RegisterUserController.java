@@ -2,10 +2,13 @@ package com.tuotiansudai.web.controller;
 
 
 import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
+import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.ReferrerRelationException;
 import com.tuotiansudai.repository.model.CaptchaType;
 import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.repository.model.UserChannel;
 import com.tuotiansudai.service.PrepareUserService;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
@@ -50,6 +53,11 @@ public class RegisterUserController {
 
     @Autowired
     private MyAuthenticationUtil myAuthenticationUtil;
+
+    @Autowired
+    private CouponAssignmentService couponAssignmentService;
+
+    private static final Long WEIXIN_REFERRER_COUPON_ID = 339L;
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView registerRedirect() {
@@ -133,6 +141,11 @@ public class RegisterUserController {
             logger.info(MessageFormat.format("[Register User {0}] authenticate starting...", registerUserDto.getMobile()));
             myAuthenticationUtil.createAuthentication(registerUserDto.getMobile(), Source.WEB);
             logger.info(MessageFormat.format("[Register User {0}] authenticate completed", registerUserDto.getMobile()));
+
+            if(!Strings.isNullOrEmpty(registerUserDto.getChannel()) && Lists.newArrayList(UserChannel.values()).contains(UserChannel.valueOf(registerUserDto.getChannel()))){
+                logger.info(MessageFormat.format("[Register User {0}] assign weiXin referrer 8.88 red envelop ",registerUserDto.getMobile()));
+                couponAssignmentService.assignUserCoupon(registerUserDto.getMobile(), WEIXIN_REFERRER_COUPON_ID);
+            }
         }
 
         String successUrl = Strings.isNullOrEmpty(registerUserDto.getRedirectToAfterRegisterSuccess()) ? "/" : registerUserDto.getRedirectToAfterRegisterSuccess();
