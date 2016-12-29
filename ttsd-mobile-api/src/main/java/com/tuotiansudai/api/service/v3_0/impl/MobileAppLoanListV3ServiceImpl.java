@@ -9,7 +9,6 @@ import com.tuotiansudai.api.dto.v3_0.LoanResponseDataDto;
 import com.tuotiansudai.api.service.v3_0.MobileAppLoanListV3Service;
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
-import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.ExtraLoanRateMapper;
@@ -78,15 +77,15 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
                 investMapper.findCountSuccessByLoginNameAndProductTypes(loginName, allProductTypesCondition) == 0) {
 
             List<LoanModel> loanModels;
-            if(!StringUtils.isEmpty(loginName) && CollectionUtils.isNotEmpty(userCouponMapper.findUsedExperienceByLoginName(loginName))){
+            if (StringUtils.isEmpty(loginName) || (!StringUtils.isEmpty(loginName)) && CollectionUtils.isNotEmpty(userCouponMapper.findUsedExperienceByLoginName(loginName))) {
                 loanModels = loanMapper.findByProductType(LoanStatus.RAISING, Lists.newArrayList(Lists.newArrayList(ProductType.EXPERIENCE)), ActivityType.NEWBIE);
-            }else{
+            } else {
                 loanModels = loanMapper.findByProductType(LoanStatus.RAISING, noContainExperienceLoans, null);
             }
 
             if (loanModels.size() <= 0) {
                 logger.error("[MobileAppLoanListV3ServiceImpl][generateIndexLoan]新手体验标不存在!");
-            } else if (loanModels.size() == 1) {
+            } else if (loanModels.size() > 0) {
                 loanModel = loanModels.get(0);
             } else {
                 logger.warn("[MobileAppLoanListV3ServiceImpl][generateIndexLoan]新手体验标不存在!");
