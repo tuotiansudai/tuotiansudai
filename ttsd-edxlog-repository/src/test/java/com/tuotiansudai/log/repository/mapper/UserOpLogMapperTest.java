@@ -1,7 +1,7 @@
 package com.tuotiansudai.log.repository.mapper;
 
+import com.tuotiansudai.enums.UserOpType;
 import com.tuotiansudai.log.repository.model.UserOpLogModel;
-import com.tuotiansudai.log.repository.model.UserOpType;
 import com.tuotiansudai.repository.model.Source;
 import org.junit.Test;
 import org.junit.runner.RunWith;

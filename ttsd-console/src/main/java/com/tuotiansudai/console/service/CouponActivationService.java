@@ -8,7 +8,7 @@ import com.tuotiansudai.job.CouponNotifyJob;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.log.repository.model.OperationType;
+import com.tuotiansudai.enums.OperationType;
 import com.tuotiansudai.log.service.AuditLogService;
 import com.tuotiansudai.util.JobManager;
 import org.apache.log4j.Logger;

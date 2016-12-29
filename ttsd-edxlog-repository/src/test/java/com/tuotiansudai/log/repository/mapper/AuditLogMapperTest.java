@@ -1,7 +1,7 @@
 package com.tuotiansudai.log.repository.mapper;
 
+import com.tuotiansudai.enums.OperationType;
 import com.tuotiansudai.log.repository.model.AuditLogModel;
-import com.tuotiansudai.log.repository.model.OperationType;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

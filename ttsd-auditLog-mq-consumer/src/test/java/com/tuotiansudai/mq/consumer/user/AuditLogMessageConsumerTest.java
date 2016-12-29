@@ -1,7 +1,7 @@
 package com.tuotiansudai.mq.consumer.user;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.tuotiansudai.log.repository.model.OperationType;
+import com.tuotiansudai.enums.OperationType;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
 import com.tuotiansudai.log.repository.mapper.AuditLogMapper;
 import com.tuotiansudai.log.repository.model.AuditLogModel;

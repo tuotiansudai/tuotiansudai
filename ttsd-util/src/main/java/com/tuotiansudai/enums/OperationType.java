@@ -1,4 +1,4 @@
-package com.tuotiansudai.log.repository.model;
+package com.tuotiansudai.enums;
 
 import java.io.Serializable;
 

@@ -1,6 +1,7 @@
 package com.tuotiansudai.log.repository.model;
 
 
+import com.tuotiansudai.enums.UserOpType;
 import com.tuotiansudai.repository.model.Source;
 
 import java.util.Date;

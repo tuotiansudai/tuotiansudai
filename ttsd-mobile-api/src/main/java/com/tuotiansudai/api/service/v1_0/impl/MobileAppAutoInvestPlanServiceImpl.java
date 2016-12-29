@@ -1,21 +1,13 @@
 package com.tuotiansudai.api.service.v1_0.impl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.tuotiansudai.api.dto.v1_0.AutoInvestPlanDataDto;
-import com.tuotiansudai.api.dto.v1_0.AutoInvestPlanRequestDto;
-import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
-import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
+import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppAutoInvestPlanService;
-import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.log.repository.model.UserOpLogModel;
-import com.tuotiansudai.log.repository.model.UserOpType;
-import com.tuotiansudai.mq.client.model.MessageQueue;
+import com.tuotiansudai.enums.UserOpType;
+import com.tuotiansudai.log.service.UserOpLogService;
 import com.tuotiansudai.repository.mapper.AutoInvestPlanMapper;
 import com.tuotiansudai.repository.model.AutoInvestPlanModel;
-import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.IdGenerator;
-import com.tuotiansudai.util.JsonConverter;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
-import java.util.Locale;
 
 @Service
 public class MobileAppAutoInvestPlanServiceImpl implements MobileAppAutoInvestPlanService {
@@ -37,24 +28,25 @@ public class MobileAppAutoInvestPlanServiceImpl implements MobileAppAutoInvestPl
     private IdGenerator idGenerator;
 
     @Autowired
-    private MQWrapperClient mqWrapperClient;
+    private UserOpLogService userOpLogService;
+
 
     @Override
     @Transactional
-    public BaseResponseDto<AutoInvestPlanDataDto> buildAutoInvestPlan(AutoInvestPlanRequestDto autoInvestPlanRequestDto) {
+    public BaseResponseDto<AutoInvestPlanDataDto> buildAutoInvestPlan(AutoInvestPlanRequestDto dto) {
         BaseResponseDto baseDto = new BaseResponseDto();
-        String id = autoInvestPlanRequestDto.getAutoPlanId();
-        String loginName = autoInvestPlanRequestDto.getBaseParam().getUserId();
+        String id = dto.getAutoPlanId();
+        String loginName = dto.getBaseParam().getUserId();
 
-        long minInvestAmount = AmountConverter.convertStringToCent(autoInvestPlanRequestDto.getMinInvestAmount());
-        long maxInvestAmount = AmountConverter.convertStringToCent(autoInvestPlanRequestDto.getMaxInvestAmount());
+        long minInvestAmount = AmountConverter.convertStringToCent(dto.getMinInvestAmount());
+        long maxInvestAmount = AmountConverter.convertStringToCent(dto.getMaxInvestAmount());
 
         if (minInvestAmount > maxInvestAmount) {
             return new BaseResponseDto(ReturnMessage.MIN_NOT_EXCEED_MAX_INVEST_AMOUNT.getCode(), ReturnMessage.MIN_NOT_EXCEED_MAX_INVEST_AMOUNT.getMsg());
         }
 
         if (StringUtils.isEmpty(id)) {
-            AutoInvestPlanModel autoInvestPlanModel = autoInvestPlanRequestDto.convertDtoToModel();
+            AutoInvestPlanModel autoInvestPlanModel = dto.convertDtoToModel();
             autoInvestPlanModel.setId(idGenerator.generate());
             autoInvestPlanModel.setCreatedTime(new Date());
             autoInvestPlanMapper.create(autoInvestPlanModel);
@@ -63,7 +55,7 @@ public class MobileAppAutoInvestPlanServiceImpl implements MobileAppAutoInvestPl
             if (autoInvestPlanModelOrigin == null) {
                 return new BaseResponseDto(ReturnMessage.AUTO_INVEST_PLAN_NOT_EXIST.getCode(), loginName + ReturnMessage.AUTO_INVEST_PLAN_NOT_EXIST.getMsg());
             }
-            AutoInvestPlanModel autoInvestPlanModel = autoInvestPlanRequestDto.convertDtoToModel();
+            AutoInvestPlanModel autoInvestPlanModel = dto.convertDtoToModel();
             autoInvestPlanModel.setCreatedTime(autoInvestPlanModelOrigin.getCreatedTime());
             autoInvestPlanMapper.update(autoInvestPlanModel);
 
@@ -75,28 +67,9 @@ public class MobileAppAutoInvestPlanServiceImpl implements MobileAppAutoInvestPl
         baseDto.setData(autoInvestPlanDataDto);
 
         // 发送用户行为日志 MQ
-        sendUserOpLogMessage(autoInvestPlanRequestDto);
+        BaseParam baseParam = dto.getBaseParam();
+        userOpLogService.sendUserOpLogMQ(baseParam.getUserId(), dto.getIp(), baseParam.getPlatform(), baseParam.getDeviceId(),
+                UserOpType.AUTO_INVEST, dto.isEnabled() ? "Turn On" : "Turn Off");
         return baseDto;
-    }
-
-    private void sendUserOpLogMessage(AutoInvestPlanRequestDto dto) {
-
-        UserOpLogModel logModel = new UserOpLogModel();
-        logModel.setId(idGenerator.generate());
-        logModel.setLoginName(dto.getBaseParam().getUserId());
-        logModel.setIp(dto.getIp());
-        logModel.setDeviceId(dto.getBaseParam().getDeviceId());
-        String platform = dto.getBaseParam().getPlatform();
-        logModel.setSource(platform == null ? null : Source.valueOf(platform.toUpperCase(Locale.ENGLISH)));
-        logModel.setOpType(UserOpType.AUTO_INVEST);
-        logModel.setCreatedTime(new Date());
-        logModel.setDescription(dto.isEnabled() ? "Turn On" : "Turn Off");
-
-        try {
-            String message = JsonConverter.writeValueAsString(logModel);
-            mqWrapperClient.sendMessage(MessageQueue.UserOperateLog, message);
-        } catch (JsonProcessingException e) {
-            logger.error("[MQ] 自动投标 send user op log fail.", e);
-        }
     }
 }

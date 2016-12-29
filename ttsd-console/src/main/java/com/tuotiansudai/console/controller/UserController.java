@@ -23,7 +23,7 @@ import com.tuotiansudai.service.*;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.spring.security.SignInClient;
 import com.tuotiansudai.task.OperationTask;
-import com.tuotiansudai.log.repository.model.OperationType;
+import com.tuotiansudai.enums.OperationType;
 import com.tuotiansudai.task.TaskConstant;
 import com.tuotiansudai.util.RequestIPParser;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -10,7 +10,7 @@ import com.tuotiansudai.service.UserRoleService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.task.OperationTask;
-import com.tuotiansudai.log.repository.model.OperationType;
+import com.tuotiansudai.enums.OperationType;
 import com.tuotiansudai.task.TaskConstant;
 import com.tuotiansudai.task.TaskType;
 import com.tuotiansudai.util.RequestIPParser;

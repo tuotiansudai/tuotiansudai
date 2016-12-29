@@ -1,7 +1,7 @@
 package com.tuotiansudai.log.repository.mapper;
 
+import com.tuotiansudai.enums.UserOpType;
 import com.tuotiansudai.log.repository.model.UserOpLogModel;
-import com.tuotiansudai.log.repository.model.UserOpType;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;

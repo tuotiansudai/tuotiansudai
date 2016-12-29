@@ -6,7 +6,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.log.service.AuditLogService;
 import com.tuotiansudai.dto.EditUserDto;
-import com.tuotiansudai.log.repository.model.OperationType;
+import com.tuotiansudai.enums.OperationType;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.Role;

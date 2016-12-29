@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.log.repository.mapper.UserOpLogMapper;
 import com.tuotiansudai.log.repository.model.UserOpLogModel;
-import com.tuotiansudai.log.repository.model.UserOpType;
+import com.tuotiansudai.enums.UserOpType;
 import com.tuotiansudai.util.PaginationUtil;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;

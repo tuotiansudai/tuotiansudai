@@ -4,7 +4,7 @@ import com.tuotiansudai.activity.repository.dto.ActivityDto;
 import com.tuotiansudai.activity.repository.model.ActivityStatus;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.log.service.AuditLogService;
-import com.tuotiansudai.log.repository.model.OperationType;
+import com.tuotiansudai.enums.OperationType;
 import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.task.OperationTask;
