@@ -29,7 +29,7 @@ public class ManualMessageConsumer implements MessageConsumer {
 
     @Override
     public MessageQueue queue() {
-        return MessageQueue.PushMessage;
+        return MessageQueue.ManualMessage;
     }
 
     @Override

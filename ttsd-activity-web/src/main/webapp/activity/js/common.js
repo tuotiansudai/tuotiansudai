@@ -107,6 +107,7 @@ define(['jquery'], function ($) {
             $('.close-btn,.go-close',$popWindow).on('click',function() {
                 $popWindow.remove();
                 $shade.remove();
+
             })
         },
 

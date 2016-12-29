@@ -109,6 +109,9 @@ public class InvestServiceImpl implements InvestService {
     @Autowired
     private MQWrapperClient mqWrapperClient;
 
+    @Autowired
+    private UserMapper userMapper;
+
     @Value("${common.environment}")
     private Environment environment;
 
@@ -587,7 +590,12 @@ public class InvestServiceImpl implements InvestService {
 
         InvestInfo investInfo = new InvestInfo();
         LoanDetailInfo loanDetailInfo = new LoanDetailInfo();
+        UserInfo userInfo = new UserInfo();
 
+        UserModel userModel = userMapper.findByLoginName(investModel.getLoginName());
+        userInfo.setLoginName(userModel.getLoginName());
+        userInfo.setUserName(userModel.getUserName());
+        userInfo.setMobile(userModel.getMobile());
         investInfo.setInvestId(investModel.getId());
         investInfo.setLoginName(investModel.getLoginName());
         investInfo.setAmount(investModel.getAmount());
@@ -600,7 +608,6 @@ public class InvestServiceImpl implements InvestService {
             loanDetailInfo.setActivity(loanDetailsModel.isActivity());
             loanDetailInfo.setActivityDesc(loanDetailsModel.getActivityDesc());
         }
-
         try {
             mqWrapperClient.publishMessage(MessageTopic.InvestSuccess, new InvestSuccessMessage(investInfo, loanDetailInfo));
         } catch (JsonProcessingException e) {
