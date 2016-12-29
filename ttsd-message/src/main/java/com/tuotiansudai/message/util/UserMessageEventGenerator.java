@@ -9,7 +9,7 @@ import com.tuotiansudai.enums.MembershipPurchaseStatus;
 import com.tuotiansudai.enums.WithdrawStatus;
 import com.tuotiansudai.jpush.repository.model.JPushAlertModel;
 import com.tuotiansudai.jpush.service.JPushAlertNewService;
-import com.tuotiansudai.jpush.service.JPushAlertService;
+import com.tuotiansudai.log.repository.mapper.LoginLogMapper;
 import com.tuotiansudai.message.repository.mapper.MessageMapper;
 import com.tuotiansudai.message.repository.mapper.UserMessageMapper;
 import com.tuotiansudai.message.repository.mapper.UserMessageMetaMapper;
@@ -17,7 +17,6 @@ import com.tuotiansudai.message.repository.model.MessageEventType;
 import com.tuotiansudai.message.repository.model.MessageModel;
 import com.tuotiansudai.message.repository.model.MessageType;
 import com.tuotiansudai.message.repository.model.UserMessageModel;
-import com.tuotiansudai.repository.mapper.LoginLogMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.AmountConverter;
@@ -60,9 +59,6 @@ public class UserMessageEventGenerator {
 
     @Autowired
     private UserMessageMetaMapper userMessageMetaMapper;
-
-    @Autowired
-    private LoginLogMapper loginLogMapper;
 
     @Autowired
     private JPushAlertNewService jPushAlertNewService;
@@ -333,52 +329,52 @@ public class UserMessageEventGenerator {
         }
     }
 
-    @Transactional
-    public void generateCouponExpiredAlertEvent(String loginName) {
-        long times = loginLogMapper.countSuccessTimesOnDate(loginName, new Date(), MessageFormat.format("login_log_{0}", new DateTime().toString("yyyyMM")));
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日");
-        String endTime = simpleDateFormat.format(DateTime.now().plusDays(5).withTimeAtStartOfDay().toDate());
-        if (times == 1) {
-            MessageModel messageModel = messageMapper.findActiveByEventType(MessageEventType.COUPON_5DAYS_EXPIRED_ALERT);
-            if (messageModel == null) return;
-
-            //Title:您有一张{0}即将失效
-            //AppTitle: 您有一张{0}即将失效
-            //Content:尊敬的用户，您有一张{0}即将失效(有效期至:{1})，请尽快使用！
-
-            List<Map<String, Object>> userCouponModels = userMessageMetaMapper.findCouponWillExpire(loginName);
-            for (Map<String, Object> userCoupon : userCouponModels) {
-                String title;
-                String appTitle;
-                String content;
-                String couponType = (String) userCoupon.get("type");
-                switch (couponType) {
-                    case "RED_ENVELOPE":
-                    case "NEWBIE_COUPON":
-                    case "INVEST_COUPON":
-                        long amount = (long) userCoupon.get("amount");
-                        title = MessageFormat.format(messageModel.getTitle(), AmountConverter.convertCentToString(amount) + "元" + COUPON_NAME_MAPPING.get(couponType));
-                        appTitle = MessageFormat.format(messageModel.getAppTitle(), AmountConverter.convertCentToString(amount) + "元" + COUPON_NAME_MAPPING.get(couponType));
-                        content = MessageFormat.format(messageModel.getTemplate(), AmountConverter.convertCentToString(amount) + "元" + COUPON_NAME_MAPPING.get(couponType), endTime);
-                        break;
-                    case "INTEREST_COUPON":
-                        double rate = (double) userCoupon.get("rate");
-                        title = MessageFormat.format(messageModel.getTitle(), new BigDecimal(rate).multiply(new BigDecimal(100)).setScale(1, BigDecimal.ROUND_HALF_UP).toString() + "%" + COUPON_NAME_MAPPING.get(couponType));
-                        appTitle = MessageFormat.format(messageModel.getAppTitle(), new BigDecimal(rate).multiply(new BigDecimal(100)).setScale(1, BigDecimal.ROUND_HALF_UP).toString() + "%" + COUPON_NAME_MAPPING.get(couponType));
-                        content = MessageFormat.format(messageModel.getAppTitle(), new BigDecimal(rate).multiply(new BigDecimal(100)).setScale(1, BigDecimal.ROUND_HALF_UP).toString() + "%" + COUPON_NAME_MAPPING.get(couponType), endTime);
-                        break;
-                    default:
-                        title = MessageFormat.format(messageModel.getTitle(), COUPON_NAME_MAPPING.get(couponType));
-                        appTitle = MessageFormat.format(messageModel.getAppTitle(), COUPON_NAME_MAPPING.get(couponType));
-                        content = MessageFormat.format(messageModel.getTemplate(), COUPON_NAME_MAPPING.get(couponType), endTime);
-                        break;
-                }
-                UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), loginName, title, appTitle, content, messageModel.getType().name().equals(MessageType.EVENT.name()) ? new Date() : messageModel.getActivatedTime());
-                userMessageMapper.create(userMessageModel);
-                sendJPushByUserMessageModel(userMessageModel);
-            }
-        }
-    }
+//    @Transactional
+//    public void generateCouponExpiredAlertEvent(String loginName) {
+//        long times = loginLogMapper.countSuccessTimesOnDate(loginName, new Date(), MessageFormat.format("login_log_{0}", new DateTime().toString("yyyyMM")));
+//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日");
+//        String endTime = simpleDateFormat.format(DateTime.now().plusDays(5).withTimeAtStartOfDay().toDate());
+//        if (times == 1) {
+//            MessageModel messageModel = messageMapper.findActiveByEventType(MessageEventType.COUPON_5DAYS_EXPIRED_ALERT);
+//            if (messageModel == null) return;
+//
+//            //Title:您有一张{0}即将失效
+//            //AppTitle: 您有一张{0}即将失效
+//            //Content:尊敬的用户，您有一张{0}即将失效(有效期至:{1})，请尽快使用！
+//
+//            List<Map<String, Object>> userCouponModels = userMessageMetaMapper.findCouponWillExpire(loginName);
+//            for (Map<String, Object> userCoupon : userCouponModels) {
+//                String title;
+//                String appTitle;
+//                String content;
+//                String couponType = (String) userCoupon.get("type");
+//                switch (couponType) {
+//                    case "RED_ENVELOPE":
+//                    case "NEWBIE_COUPON":
+//                    case "INVEST_COUPON":
+//                        long amount = (long) userCoupon.get("amount");
+//                        title = MessageFormat.format(messageModel.getTitle(), AmountConverter.convertCentToString(amount) + "元" + COUPON_NAME_MAPPING.get(couponType));
+//                        appTitle = MessageFormat.format(messageModel.getAppTitle(), AmountConverter.convertCentToString(amount) + "元" + COUPON_NAME_MAPPING.get(couponType));
+//                        content = MessageFormat.format(messageModel.getTemplate(), AmountConverter.convertCentToString(amount) + "元" + COUPON_NAME_MAPPING.get(couponType), endTime);
+//                        break;
+//                    case "INTEREST_COUPON":
+//                        double rate = (double) userCoupon.get("rate");
+//                        title = MessageFormat.format(messageModel.getTitle(), new BigDecimal(rate).multiply(new BigDecimal(100)).setScale(1, BigDecimal.ROUND_HALF_UP).toString() + "%" + COUPON_NAME_MAPPING.get(couponType));
+//                        appTitle = MessageFormat.format(messageModel.getAppTitle(), new BigDecimal(rate).multiply(new BigDecimal(100)).setScale(1, BigDecimal.ROUND_HALF_UP).toString() + "%" + COUPON_NAME_MAPPING.get(couponType));
+//                        content = MessageFormat.format(messageModel.getAppTitle(), new BigDecimal(rate).multiply(new BigDecimal(100)).setScale(1, BigDecimal.ROUND_HALF_UP).toString() + "%" + COUPON_NAME_MAPPING.get(couponType), endTime);
+//                        break;
+//                    default:
+//                        title = MessageFormat.format(messageModel.getTitle(), COUPON_NAME_MAPPING.get(couponType));
+//                        appTitle = MessageFormat.format(messageModel.getAppTitle(), COUPON_NAME_MAPPING.get(couponType));
+//                        content = MessageFormat.format(messageModel.getTemplate(), COUPON_NAME_MAPPING.get(couponType), endTime);
+//                        break;
+//                }
+//                UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), loginName, title, appTitle, content, messageModel.getType().name().equals(MessageType.EVENT.name()) ? new Date() : messageModel.getActivatedTime());
+//                userMessageMapper.create(userMessageModel);
+//                sendJPushByUserMessageModel(userMessageModel);
+//            }
+//        }
+//    }
 
     public void generateMembershipExpiredEvent(String loginName) {
         boolean isExisted = userMessageMetaMapper.isExpiredLevelFiveMembershipExisted(loginName);

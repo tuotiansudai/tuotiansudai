@@ -13,9 +13,12 @@ sourceSets {
 }
 
 dependencies {
-    compile project(':ttsd-util')
-
-    testCompile project(':ttsd-config')
+    compile project(':ttsd-dependency'),
+            project(':ttsd-config'),
+            project(':ttsd-client'),
+            project(":ttsd-user-repository"),
+            project(":ttsd-edxlog-repository"),
+            project(":ttsd-edxlog-model")
 }
 
 processResources.outputs.upToDateWhen { false }

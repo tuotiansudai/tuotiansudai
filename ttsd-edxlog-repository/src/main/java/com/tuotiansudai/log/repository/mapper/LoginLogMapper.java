@@ -1,6 +1,6 @@
-package com.tuotiansudai.repository.mapper;
+package com.tuotiansudai.log.repository.mapper;
 
-import com.tuotiansudai.repository.model.LoginLogModel;
+import com.tuotiansudai.log.repository.model.LoginLogModel;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 

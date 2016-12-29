@@ -4,7 +4,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.service.AuditLogService;
+import com.tuotiansudai.log.service.AuditLogService;
 import com.tuotiansudai.dto.EditUserDto;
 import com.tuotiansudai.log.repository.model.OperationType;
 import com.tuotiansudai.repository.mapper.UserMapper;

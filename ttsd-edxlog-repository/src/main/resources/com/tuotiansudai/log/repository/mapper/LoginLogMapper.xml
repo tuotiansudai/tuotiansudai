@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.tuotiansudai.repository.mapper.LoginLogMapper">
+<mapper namespace="com.tuotiansudai.log.repository.mapper.LoginLogMapper">
 
     <resultMap id="loginLogModelResultMap" type="LoginLogModel">
         <id column="id" property="id"></id>

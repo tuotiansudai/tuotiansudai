@@ -2,7 +2,7 @@ package com.tuotiansudai.task.aspect;
 
 import com.tuotiansudai.activity.repository.dto.BannerDto;
 import com.tuotiansudai.activity.repository.model.BannerModel;
-import com.tuotiansudai.service.AuditLogService;
+import com.tuotiansudai.log.service.AuditLogService;
 import com.tuotiansudai.log.repository.model.OperationType;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;

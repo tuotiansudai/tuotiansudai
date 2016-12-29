@@ -26,4 +26,5 @@ include 'ttsd-diagnosis', 'ttsd-worker-monitor'
 include 'ump-project-transfer'
 include 'ttsd-edxlog-model'
 include 'ttsd-edxlog-repository'
+include 'ttsd-log-service'
 

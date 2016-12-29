@@ -2,7 +2,7 @@ package com.tuotiansudai.task.aspect;
 
 import com.google.common.base.Strings;
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.service.AuditLogService;
+import com.tuotiansudai.log.service.AuditLogService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoanCreateRequestDto;
 import com.tuotiansudai.dto.LoanDto;

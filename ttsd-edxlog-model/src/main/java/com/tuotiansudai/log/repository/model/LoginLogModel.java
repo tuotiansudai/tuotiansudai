@@ -1,4 +1,6 @@
-package com.tuotiansudai.repository.model;
+package com.tuotiansudai.log.repository.model;
+
+import com.tuotiansudai.repository.model.Source;
 
 import java.io.Serializable;
 import java.util.Date;

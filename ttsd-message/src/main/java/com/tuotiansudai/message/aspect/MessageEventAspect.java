@@ -186,19 +186,19 @@ public class MessageEventAspect {
         }
     }
 
-    @AfterReturning(value = "loginSuccessPointcut() || refreshSuccessPointcut()", returning = "signInResult")
-    public void afterReturningUserLogin(JoinPoint joinPoint, SignInResult signInResult) {
-        logger.info("[Message Event Aspect] after returning user login start");
-        try {
-            if (signInResult != null && signInResult.isResult()) {
-                userMessageEventGenerator.generateCouponExpiredAlertEvent(signInResult.getUserInfo().getLoginName());
-                userMessageEventGenerator.generateMembershipExpiredEvent(signInResult.getUserInfo().getLoginName());
-                logger.info(MessageFormat.format("[Message Event Aspect] after login success({0}) pointcut finished", signInResult.getUserInfo().getLoginName()));
-            }
-        } catch (Exception e) {
-            logger.error("[Message Event Aspect] after login success({0}) pointcut is fail", e);
-        }
-    }
+//    @AfterReturning(value = "loginSuccessPointcut() || refreshSuccessPointcut()", returning = "signInResult")
+//    public void afterReturningUserLogin(JoinPoint joinPoint, SignInResult signInResult) {
+//        logger.info("[Message Event Aspect] after returning user login start");
+//        try {
+//            if (signInResult != null && signInResult.isResult()) {
+//                userMessageEventGenerator.generateCouponExpiredAlertEvent(signInResult.getUserInfo().getLoginName());
+//                userMessageEventGenerator.generateMembershipExpiredEvent(signInResult.getUserInfo().getLoginName());
+//                logger.info(MessageFormat.format("[Message Event Aspect] after login success({0}) pointcut finished", signInResult.getUserInfo().getLoginName()));
+//            }
+//        } catch (Exception e) {
+//            logger.error("[Message Event Aspect] after login success({0}) pointcut is fail", e);
+//        }
+//    }
 
     @SuppressWarnings(value = "unchecked")
     @AfterReturning(value = "cancelInvestTrasnferPointcut()", returning = "returnValue")
