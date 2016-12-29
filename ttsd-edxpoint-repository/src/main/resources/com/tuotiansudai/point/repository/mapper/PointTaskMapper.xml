@@ -25,7 +25,7 @@
         select * from point_task where id = #{id}
     </select>
 
-    <select id="findByName" resultMap="pointTaskResultMap">
-        select * from point_task where name = #{pointTask}
+    <select id="findCountAllTask" resultType="long">
+        SELECT IFNULL(COUNT(id),0) FROM point_task WHERE active IS TRUE
     </select>
 </mapper>

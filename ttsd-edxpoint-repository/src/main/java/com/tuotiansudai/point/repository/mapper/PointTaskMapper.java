@@ -16,4 +16,6 @@ public interface PointTaskMapper {
 
     PointTaskModel findById(long id);
 
+    long findCountAllTask();
+
 }

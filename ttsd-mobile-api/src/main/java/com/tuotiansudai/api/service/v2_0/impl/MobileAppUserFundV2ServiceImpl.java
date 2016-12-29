@@ -8,6 +8,8 @@ import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
+import com.tuotiansudai.point.repository.mapper.PointTaskMapper;
+import com.tuotiansudai.point.repository.mapper.UserPointTaskMapper;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserFundMapper;
 import com.tuotiansudai.repository.model.AccountModel;
@@ -32,6 +34,12 @@ public class MobileAppUserFundV2ServiceImpl implements MobileAppUserFundV2Servic
     @Autowired
     private UserCouponService userCouponService;
 
+    @Autowired
+    private UserPointTaskMapper userPointTaskMapper;
+
+    @Autowired
+    private PointTaskMapper pointTaskMapper;
+
     @Override
     public BaseResponseDto<UserFundResponseDataDto> getUserFund(String loginName) {
         UserFundView userFundView = userFundMapper.findByLoginName(loginName);
@@ -42,15 +50,19 @@ public class MobileAppUserFundV2ServiceImpl implements MobileAppUserFundV2Servic
 
         UserMembershipModel userMembershipModel = userMembershipEvaluator.evaluateUserMembership(loginName, new Date());
 
+        long finishedTaskCount = userPointTaskMapper.findFinishTaskByLoginName(loginName);
+        long allTaskCount = pointTaskMapper.findCountAllTask();
+
         int membershipLevel = evaluate != null ? evaluate.getLevel() : 0;
         long balance = accountModel != null ? accountModel.getBalance() : 0;
         long point = accountModel != null ? accountModel.getPoint() : 0;
         long membershipPoint = accountModel != null ? accountModel.getMembershipPoint() : 0;
         int usableUserCouponCount = userCouponService.getUnusedUserCoupons(loginName).size();
         Date membershipExpiredDate = userMembershipModel != null && (userMembershipModel.getType().name().equals("GIVEN") || userMembershipModel.getType().name().equals("PURCHASED")) ? userMembershipModel.getExpiredTime() : null;
+        long unfinishedTaskCount = allTaskCount - finishedTaskCount;
 
         BaseResponseDto<UserFundResponseDataDto> dto = new BaseResponseDto<>(ReturnMessage.SUCCESS);
-        dto.setData(new UserFundResponseDataDto(userFundView, balance, point, membershipLevel, membershipPoint, usableUserCouponCount, membershipExpiredDate));
+        dto.setData(new UserFundResponseDataDto(userFundView, balance, point, membershipLevel, membershipPoint, usableUserCouponCount, membershipExpiredDate, unfinishedTaskCount));
 
         return dto;
     }
