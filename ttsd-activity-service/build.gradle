@@ -19,6 +19,7 @@ dependencies {
             project(':ttsd-client'),
             project(':ttsd-edxactivity-repository'),
             project(':ttsd-service'),
+            project(':ttsd-point-service'),
             project(":ttsd-user-service")
 }
 

@@ -49,7 +49,7 @@ public abstract class AbstractRedisWrapperClient {
                 jedis.select(db);
                 break;
             } catch (JedisConnectionException e) {
-                logger.error(MessageFormat.format("fetch jedis failed on {0} times", String.valueOf(timeoutCount + 1)), e);
+                logger.warn(MessageFormat.format("fetch jedis failed on {0} times", String.valueOf(timeoutCount + 1)), e);
                 if (++timeoutCount >= 3) {
                     logger.error("Get Redis pool failure more than 3 times.",e);
                     throw e;
@@ -64,10 +64,10 @@ public abstract class AbstractRedisWrapperClient {
 
             jedisPoolConfig.setMaxTotal(maxTotal);
             jedisPoolConfig.setMaxWaitMillis(maxWaitMillis);
-            logger.debug("redisHost=" + redisHost);
-            logger.debug("redisPort=" + redisPort);
-            logger.debug("maxTotal=" + jedisPoolConfig.getMaxTotal());
-            logger.debug("MaxWaitMillis=" + jedisPoolConfig.getMaxWaitMillis());
+            logger.info("redisHost=" + redisHost);
+            logger.info("redisPort=" + redisPort);
+            logger.info("maxTotal=" + jedisPoolConfig.getMaxTotal());
+            logger.info("MaxWaitMillis=" + jedisPoolConfig.getMaxWaitMillis());
             jedisPool = new JedisPool(jedisPoolConfig, redisHost, redisPort);
         }
         return jedisPool;

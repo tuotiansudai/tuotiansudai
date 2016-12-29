@@ -1,10 +1,10 @@
 package com.tuotiansudai.console.controller;
 
+import com.tuotiansudai.console.service.ConsoleLoanApplicationService;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.repository.model.LoanApplicationModel;
-import com.tuotiansudai.service.LoanApplicationService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,13 +16,13 @@ import org.springframework.web.servlet.ModelAndView;
 public class LoanApplicationController {
 
     @Autowired
-    LoanApplicationService loanApplicationService;
+    private ConsoleLoanApplicationService consoleLoanApplicationService;
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     ModelAndView getViewList(@RequestParam(value = "index", defaultValue = "1") int index) {
         int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/loan-application-list");
-        BasePaginationDataDto<LoanApplicationModel> basePaginationDataDto = loanApplicationService.getPagination(index, pageSize);
+        BasePaginationDataDto<LoanApplicationModel> basePaginationDataDto = consoleLoanApplicationService.getPagination(index, pageSize);
         modelAndView.addObject("dataDto", basePaginationDataDto);
 
         return modelAndView;
@@ -32,6 +32,6 @@ public class LoanApplicationController {
     @ResponseBody
     BaseDto<BaseDataDto> commentLoanApplication(@RequestBody LoanApplicationModel loanApplicationModel) {
         loanApplicationModel.setUpdatedBy(LoginUserInfo.getLoginName());
-        return loanApplicationService.comment(loanApplicationModel);
+        return consoleLoanApplicationService.comment(loanApplicationModel);
     }
 }

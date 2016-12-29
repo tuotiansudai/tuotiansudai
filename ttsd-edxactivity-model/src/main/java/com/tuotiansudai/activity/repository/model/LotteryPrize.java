@@ -54,6 +54,16 @@ public enum LotteryPrize {
     INTEREST_COUPON_5_POINT_DRAW_REF_CARNIVAL("0.5加息券",PrizeType.VIRTUAL,ActivityCategory.CARNIVAL_ACTIVITY,41),
     RED_ENVELOPE_50_POINT_DRAW_REF_CARNIVAL("50元红包",PrizeType.VIRTUAL,ActivityCategory.CARNIVAL_ACTIVITY,39),
 
+    //元旦活动
+    MINI_REFRIGERATOR("迷你冰箱",PrizeType.CONCRETE,ActivityCategory.ANNUAL_ACTIVITY,0),
+    ANNUAL_U_DISK("拓天速贷U盘",PrizeType.CONCRETE,ActivityCategory.ANNUAL_ACTIVITY,1),
+    BOLSTER("文字君表情抱枕",PrizeType.CONCRETE,ActivityCategory.ANNUAL_ACTIVITY,1),
+    RED_ENVELOPE_5("5.8元红包",PrizeType.VIRTUAL,ActivityCategory.ANNUAL_ACTIVITY,3),
+    RED_ENVELOPE_3("3.8元红包",PrizeType.VIRTUAL,ActivityCategory.ANNUAL_ACTIVITY,5),
+    RED_ENVELOPE_18("18.8元红包",PrizeType.VIRTUAL,ActivityCategory.ANNUAL_ACTIVITY,43),
+    RED_ENVELOPE_8("8.8元红包",PrizeType.VIRTUAL,ActivityCategory.ANNUAL_ACTIVITY,45),
+    INTEREST_COUPON_2_NEW_YEARS("0.2加息券",PrizeType.VIRTUAL,ActivityCategory.ANNUAL_ACTIVITY,2),
+
     //圣诞节活动
     MI_NOTE2_PHONE("小米Note2",PrizeType.CONCRETE,ActivityCategory.CHRISTMAS_ACTIVITY,0),
     ALOE_CAPSULE("芦荟凝胶",PrizeType.CONCRETE,ActivityCategory.CHRISTMAS_ACTIVITY,5),
@@ -62,7 +72,17 @@ public enum LotteryPrize {
     ELK_PILLOW("麋鹿抱枕",PrizeType.CONCRETE,ActivityCategory.CHRISTMAS_ACTIVITY,10),
     JOHNSON_HAND_CREAM("强生护手霜",PrizeType.CONCRETE,ActivityCategory.CHRISTMAS_ACTIVITY,10),
     PUMPKIN_PILLOW("南瓜抱枕",PrizeType.CONCRETE,ActivityCategory.CHRISTMAS_ACTIVITY,10),
-    RED_ENVELOPE_20_POINT_DRAW_REF_CARNIVAL("20元投资红包",PrizeType.VIRTUAL,ActivityCategory.CHRISTMAS_ACTIVITY,45);
+    RED_ENVELOPE_20_POINT_DRAW_REF_CARNIVAL("20元投资红包",PrizeType.VIRTUAL,ActivityCategory.CHRISTMAS_ACTIVITY,45),
+
+    //今日头条拉新
+    T1_PHONE("锤子M1手机(预订)",PrizeType.CONCRETE,ActivityCategory.HEADLINES_TODAY_ACTIVITY,0),
+    BAMBOO_BAG("卡通汽车竹炭包",PrizeType.CONCRETE,ActivityCategory.HEADLINES_TODAY_ACTIVITY,8),
+    FLYCO_HAIR_DRIER("飞科电吹风机",PrizeType.CONCRETE,ActivityCategory.HEADLINES_TODAY_ACTIVITY,1),
+    IQIYI_MEMBERSHIP_MONTH_REF_CARNIVAL("爱奇艺会员月卡",PrizeType.CONCRETE,ActivityCategory.HEADLINES_TODAY_ACTIVITY,4),
+    TELEPHONE_FARE_10_YUAN_REF_CARNIVAL("10元话费",PrizeType.CONCRETE,ActivityCategory.HEADLINES_TODAY_ACTIVITY,11),
+    QQ_EMOTICON_PILLOW("QQ表情靠枕",PrizeType.CONCRETE,ActivityCategory.HEADLINES_TODAY_ACTIVITY,8),
+    INSPISSATE_TOWEL("加厚纯棉毛巾",PrizeType.CONCRETE,ActivityCategory.HEADLINES_TODAY_ACTIVITY,13),
+    RED_ENVELOPE_50_YUAN_DRAW_REF_CARNIVAL("50元红包",PrizeType.VIRTUAL,ActivityCategory.HEADLINES_TODAY_ACTIVITY,55);
 
     String description;
     PrizeType prizeType;

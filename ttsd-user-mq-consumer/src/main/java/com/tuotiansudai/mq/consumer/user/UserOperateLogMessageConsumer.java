@@ -1,0 +1,51 @@
+package com.tuotiansudai.mq.consumer.user;
+
+import com.tuotiansudai.mq.client.model.MessageQueue;
+import com.tuotiansudai.mq.consumer.MessageConsumer;
+import com.tuotiansudai.repository.mapper.UserOpLogMapper;
+import com.tuotiansudai.repository.model.UserOpLogModel;
+import com.tuotiansudai.util.JsonConverter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
+
+import java.io.IOException;
+
+@Component
+public class UserOperateLogMessageConsumer implements MessageConsumer {
+    private static Logger logger = LoggerFactory.getLogger(UserOperateLogMessageConsumer.class);
+
+    @Autowired
+    private UserOpLogMapper userOpLogMapper;
+
+    @Override
+    public MessageQueue queue() {
+        return MessageQueue.UserOperateLog;
+    }
+
+    @Transactional
+    @Override
+    public void consume(String message) {
+
+        logger.info("[MQ] receive message: {}: {}.", this.queue(), message);
+        if (!StringUtils.isEmpty(message)) {
+            UserOpLogModel userOpLogModel;
+            try {
+                userOpLogModel = JsonConverter.readValue(message, UserOpLogModel.class);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            logger.info("[MQ] ready to consume message: UserOperateLog. loginName:{}, opType:{}", userOpLogModel.getLoginName(), userOpLogModel.getOpType());
+
+            // 幂等判断
+            if (userOpLogMapper.findById(userOpLogModel.getId()) == null) {
+                userOpLogMapper.create(userOpLogModel);
+            }
+        }
+        logger.info("[MQ] consume message success.");
+    }
+}

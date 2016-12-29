@@ -1,5 +1,6 @@
 package com.tuotiansudai.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.base.*;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
@@ -215,7 +216,7 @@ public class InvestServiceImpl implements InvestService {
         String loginName = investDto.getLoginName();
         long investAmount = AmountConverter.convertStringToCent(investDto.getAmount());
 
-        logger.debug(MessageFormat.format("user({0}) invest (loan = {1} amount = {2}) with user coupon({3})",
+        logger.info(MessageFormat.format("user({0}) invest (loan = {1} amount = {2}) with user coupon({3})",
                 investDto.getLoginName(),
                 String.valueOf(loanId),
                 investDto.getAmount(),
@@ -238,7 +239,7 @@ public class InvestServiceImpl implements InvestService {
                 UserCouponModel userCouponModel = userCouponMapper.findById(userCouponId);
                 CouponModel couponModel = couponMapper.findById(userCouponModel.getCouponId());
                 Date usedTime = userCouponModel.getUsedTime();
-                logger.debug(MessageFormat.format("user({0}) invest (loan = {1} amount = {2}) with user coupon(id = {3} usedTime = {4} status = {5})",
+                logger.info(MessageFormat.format("user({0}) invest (loan = {1} amount = {2}) with user coupon(id = {3} usedTime = {4} status = {5})",
                         investDto.getLoginName(),
                         String.valueOf(loanId),
                         investDto.getAmount(),
@@ -359,64 +360,6 @@ public class InvestServiceImpl implements InvestService {
     }
 
     @Override
-    public InvestPaginationDataDto getInvestPagination(Long loanId, String investorMobile, String channel, Source source,
-                                                       Role role, Date startTime, Date endTime, InvestStatus investStatus,
-                                                       PreferenceType preferenceType, int index, int pageSize) {
-        List<InvestPaginationItemView> items = Lists.newArrayList();
-
-        String investorLoginName = null;
-        if (!StringUtils.isEmpty(investorMobile)) {
-            UserModel userModel = userMapper.findByMobile(investorMobile);
-            if (null != userModel) {
-                investorLoginName = userMapper.findByMobile(investorMobile).getLoginName();
-            } else {
-                investorLoginName = investorMobile;
-            }
-        }
-
-        final long count = investMapper.findCountInvestPagination(loanId, investorLoginName, channel, source, role, startTime, endTime, investStatus, preferenceType);
-        final long investAmountSum = investMapper.sumInvestAmountConsole(loanId, investorLoginName, channel, source, role, startTime, endTime, investStatus, preferenceType);
-        if (count > 0) {
-            int totalPages = PaginationUtil.calculateMaxPage(count, pageSize);
-            index = index > totalPages ? totalPages : index;
-            items = investMapper.findInvestPagination(loanId, investorLoginName, channel, source, role, startTime, endTime, investStatus, preferenceType, (index - 1) * pageSize, pageSize);
-        }
-
-        List<InvestPaginationItemDataDto> records = Lists.transform(items, new Function<InvestPaginationItemView, InvestPaginationItemDataDto>() {
-            @Override
-            public InvestPaginationItemDataDto apply(InvestPaginationItemView view) {
-                InvestPaginationItemDataDto investPaginationItemDataDto = new InvestPaginationItemDataDto(view);
-                CouponModel couponModel = couponMapper.findById(view.getCouponId());
-                if (null != couponModel) {
-                    long couponActualInterest = 0;
-                    if (couponModel.getCouponType().equals(CouponType.RED_ENVELOPE)) {
-                        List<UserCouponModel> userCouponModels = userCouponMapper.findUserCouponSuccessByInvestId(view.getInvestId());
-                        for (UserCouponModel userCouponModel : userCouponModels) {
-                            couponActualInterest += userCouponModel.getActualInterest();
-                        }
-                    } else {
-                        List<CouponRepayModel> couponRepayModels = couponRepayMapper.findByUserCouponByInvestId(view.getInvestId());
-                        for (CouponRepayModel couponRepayModel : couponRepayModels) {
-                            couponActualInterest += couponRepayModel.getActualInterest();
-                        }
-                    }
-                    investPaginationItemDataDto.setCouponActualInterest(couponActualInterest);
-                    investPaginationItemDataDto.setCouponDetail(couponModel);
-                }
-                return investPaginationItemDataDto;
-            }
-        });
-
-        InvestPaginationDataDto dto = new InvestPaginationDataDto(index, pageSize, count, records);
-
-        dto.setSumAmount(investAmountSum);
-
-        dto.setStatus(true);
-
-        return dto;
-    }
-
-    @Override
     @Transactional
     public boolean turnOnAutoInvest(String loginName, AutoInvestPlanDto dto, String ip) {
         if (Strings.isNullOrEmpty(loginName)) {
@@ -445,6 +388,14 @@ public class InvestServiceImpl implements InvestService {
             autoInvestPlanMapper.create(autoInvestPlanModel);
         }
 
+        // 发送用户行为日志 MQ消息
+        UserOpLogModel logModel = new UserOpLogModel(idGenerator.generate(), loginName, UserOpType.AUTO_INVEST, ip, "", Source.WEB, "Turn On.");
+        try {
+            mqWrapperClient.sendMessage(MessageQueue.UserOperateLog, JsonConverter.writeValueAsString(logModel));
+        } catch (JsonProcessingException e) {
+            logger.error("[MQ] turnOnAutoInvest, send UserOperateLog fail.", e);
+        }
+
         return true;
     }
 
@@ -455,22 +406,21 @@ public class InvestServiceImpl implements InvestService {
             return false;
         }
         autoInvestPlanMapper.disable(loginName);
+
+        // 发送用户行为日志 MQ消息
+        UserOpLogModel logModel = new UserOpLogModel(idGenerator.generate(), loginName, UserOpType.AUTO_INVEST, ip, "", Source.WEB, "Turn Off.");
+        try {
+            mqWrapperClient.sendMessage(MessageQueue.UserOperateLog, JsonConverter.writeValueAsString(logModel));
+        } catch (JsonProcessingException e) {
+            logger.error("[MQ] turnOffAutoInvest, send UserOperateLog fail.", e);
+        }
+
         return true;
     }
 
     @Override
     public AutoInvestPlanModel findAutoInvestPlan(String loginName) {
         return autoInvestPlanMapper.findByLoginName(loginName);
-    }
-
-    @Override
-    public List<String> findAllChannel() {
-        return investMapper.findAllChannels();
-    }
-
-    @Override
-    public List<String> findAllInvestChannels() {
-        return investMapper.findAllInvestChannels();
     }
 
     @Override
@@ -496,6 +446,13 @@ public class InvestServiceImpl implements InvestService {
         accountMapper.update(accountModel);
         if (isTurnOn) {
             mqWrapperClient.sendMessage(MessageQueue.TurnOnNoPasswordInvest_CompletePointTask, loginName);
+        }
+
+        UserOpLogModel logModel = new UserOpLogModel(idGenerator.generate(), loginName, UserOpType.INVEST_NO_PASSWORD, ip, "", Source.WEB, isTurnOn ? "Turn On" : "Turn Off");
+        try {
+            mqWrapperClient.sendMessage(MessageQueue.UserOperateLog, JsonConverter.writeValueAsString(logModel));
+        } catch (JsonProcessingException e) {
+            logger.error("[MQ] switchNoPasswordInvest, send UserOperateLog fail.", e);
         }
         return true;
     }

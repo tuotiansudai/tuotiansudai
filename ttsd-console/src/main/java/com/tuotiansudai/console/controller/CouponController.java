@@ -1,8 +1,13 @@
 package com.tuotiansudai.console.controller;
 
 import com.google.common.base.Function;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.console.service.ConsoleCouponService;
+import com.tuotiansudai.console.service.ConsoleUserService;
+import com.tuotiansudai.console.service.CouponActivationService;
 import com.tuotiansudai.coupon.dto.CouponDto;
 import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
 import com.tuotiansudai.coupon.repository.mapper.CouponUserGroupMapper;
@@ -10,23 +15,22 @@ import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.CouponUserGroupModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
-import com.tuotiansudai.coupon.service.CouponActivationService;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.coupon.service.ExchangeCodeService;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.CouponDetailsDto;
 import com.tuotiansudai.dto.ImportExcelDto;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.exception.CreateCouponException;
 import com.tuotiansudai.point.repository.mapper.UserPointPrizeMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.ProductType;
+import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.UserRoleService;
-import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.*;
-import javafx.scene.control.Pagination;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -65,7 +69,7 @@ public class CouponController {
     static Logger logger = Logger.getLogger(CouponController.class);
 
     @Autowired
-    private CouponService couponService;
+    private ConsoleCouponService consoleCouponService;
 
     @Autowired
     private CouponActivationService couponActivationService;
@@ -77,13 +81,10 @@ public class CouponController {
     private UserMapper userMapper;
 
     @Autowired
-    private UserService userService;
+    private ConsoleUserService consoleUserService;
 
     @Autowired
     private CouponUserGroupMapper couponUserGroupMapper;
-
-    @Autowired
-    private UserRoleService userRoleService;
 
     @Autowired
     private UserPointPrizeMapper userPointPrizeMapper;
@@ -103,7 +104,7 @@ public class CouponController {
         }
         response.setContentType("application/csv");
         List<List<String>> data = Lists.newArrayList();
-        CouponModel couponModel = couponService.findCouponById(couponId);
+        CouponModel couponModel = consoleCouponService.findCouponById(couponId);
         List<String> exchangeCodes = exchangeCodeService.getExchangeCodes(couponId);
 
         for (int i = 0; i < exchangeCodes.size(); i++) {
@@ -148,7 +149,7 @@ public class CouponController {
         ModelAndView modelAndView = new ModelAndView("/red-envelope");
         modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));
         modelAndView.addObject("userGroups", Lists.newArrayList(UserGroup.values()));
-        long initNum = couponService.findEstimatedCount(UserGroup.ALL_USER);
+        long initNum = consoleCouponService.findEstimatedCount(UserGroup.ALL_USER);
         modelAndView.addObject("initNum", initNum);
         return modelAndView;
     }
@@ -159,7 +160,7 @@ public class CouponController {
         modelAndView.addObject("couponTypes", Lists.newArrayList(CouponType.values()));
         modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));
         modelAndView.addObject("userGroups", Lists.newArrayList(UserGroup.values()));
-        long initNum = couponService.findEstimatedCount(UserGroup.ALL_USER);
+        long initNum = consoleCouponService.findEstimatedCount(UserGroup.ALL_USER);
         modelAndView.addObject("initNum", initNum);
         return modelAndView;
     }
@@ -177,9 +178,9 @@ public class CouponController {
         Long id = exchangeCouponDto.getId();
         try {
             if (id != null) {
-                couponService.editCoupon(loginName, exchangeCouponDto);
+                consoleCouponService.editCoupon(loginName, exchangeCouponDto);
             } else {
-                couponService.createCoupon(loginName, exchangeCouponDto);
+                consoleCouponService.createCoupon(loginName, exchangeCouponDto);
             }
             if (exchangeCouponDto.getCouponType() == CouponType.INTEREST_COUPON) {
                 modelAndView.setViewName("redirect:/activity-manage/interest-coupons");
@@ -217,7 +218,7 @@ public class CouponController {
         ModelAndView modelAndView = new ModelAndView("/interest-coupon");
         modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));
         modelAndView.addObject("userGroups", Lists.newArrayList(UserGroup.values()));
-        long initNum = couponService.findEstimatedCount(UserGroup.ALL_USER);
+        long initNum = consoleCouponService.findEstimatedCount(UserGroup.ALL_USER);
         modelAndView.addObject("initNum", initNum);
         return modelAndView;
     }
@@ -225,7 +226,7 @@ public class CouponController {
     @RequestMapping(value = "/coupon/{id:^\\d+$}/edit", method = RequestMethod.GET)
     @ResponseBody
     public ModelAndView edit(@PathVariable long id, Model model) {
-        CouponModel couponModel = couponService.findCouponById(id);
+        CouponModel couponModel = consoleCouponService.findCouponById(id);
         ModelAndView modelAndView;
         switch (couponModel.getCouponType()) {
             case INTEREST_COUPON:
@@ -254,8 +255,8 @@ public class CouponController {
         modelAndView.addObject("userGroups", Lists.newArrayList(UserGroup.values()));
         CouponUserGroupModel couponUserGroupModel = couponUserGroupMapper.findByCouponId(couponModel.getId());
         if (couponUserGroupModel != null) {
-            modelAndView.addObject("agents", userRoleService.queryAllAgent());
-            modelAndView.addObject("channels", userService.findAllUserChannels());
+            modelAndView.addObject("agents", userMapper.findAllByRole(Maps.newHashMap(ImmutableMap.<String, Object>builder().put("role", Role.AGENT).put("districtName", Lists.newArrayList()).build())));
+            modelAndView.addObject("channels", consoleUserService.findAllUserChannels());
             modelAndView.addObject("agentsOrChannels", couponUserGroupModel.getUserGroupItems());
         }
         if (couponModel.getUserGroup() == UserGroup.IMPORT_USER && redisWrapperClient.hexists(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())), "success")) {
@@ -301,7 +302,7 @@ public class CouponController {
     @RequestMapping(value = "/coupon/user-group/{userGroup}/estimate", method = RequestMethod.GET)
     @ResponseBody
     public long findEstimatedCount(@PathVariable UserGroup userGroup) {
-        return couponService.findEstimatedCount(userGroup);
+        return consoleCouponService.findEstimatedCount(userGroup);
     }
 
     @RequestMapping(value = "/interest-coupons", method = RequestMethod.GET)
@@ -310,8 +311,8 @@ public class CouponController {
         ModelAndView modelAndView = new ModelAndView("/interest-coupons");
         modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);
-        modelAndView.addObject("coupons", couponService.findInterestCoupons(index, pageSize));
-        int couponsCount = couponService.findInterestCouponsCount();
+        modelAndView.addObject("coupons", consoleCouponService.findInterestCoupons(index, pageSize));
+        int couponsCount = consoleCouponService.findInterestCouponsCount();
         modelAndView.addObject("couponsCount", couponsCount);
         long totalPages = PaginationUtil.calculateMaxPage(couponsCount ,pageSize);
         boolean hasPreviousPage = index > 1 && index <= totalPages;
@@ -327,8 +328,8 @@ public class CouponController {
         ModelAndView modelAndView = new ModelAndView("/red-envelopes");
         modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);
-        modelAndView.addObject("coupons", couponService.findRedEnvelopeCoupons(index, pageSize));
-        int couponsCount = couponService.findRedEnvelopeCouponsCount();
+        modelAndView.addObject("coupons", consoleCouponService.findRedEnvelopeCoupons(index, pageSize));
+        int couponsCount = consoleCouponService.findRedEnvelopeCouponsCount();
         modelAndView.addObject("couponsCount", couponsCount);
         long totalPages = PaginationUtil.calculateMaxPage(couponsCount, pageSize);
         boolean hasPreviousPage = index > 1 && index <= totalPages;
@@ -344,8 +345,8 @@ public class CouponController {
         ModelAndView modelAndView = new ModelAndView("/birthday-coupons");
         modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);
-        modelAndView.addObject("coupons", couponService.findBirthdayCoupons(index, pageSize));
-        int couponsCount = couponService.findBirthdayCouponsCount();
+        modelAndView.addObject("coupons", consoleCouponService.findBirthdayCoupons(index, pageSize));
+        int couponsCount = consoleCouponService.findBirthdayCouponsCount();
         modelAndView.addObject("couponsCount", couponsCount);
         long totalPages = PaginationUtil.calculateMaxPage(couponsCount ,pageSize);
         boolean hasPreviousPage = index > 1 && index <= totalPages;
@@ -362,8 +363,8 @@ public class CouponController {
         ModelAndView modelAndView = new ModelAndView("/coupons");
         modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);
-        modelAndView.addObject("coupons", couponService.findNewbieAndInvestCoupons(index, pageSize));
-        int couponsCount = couponService.findNewbieAndInvestCouponsCount();
+        modelAndView.addObject("coupons", consoleCouponService.findNewbieAndInvestCoupons(index, pageSize));
+        int couponsCount = consoleCouponService.findNewbieAndInvestCouponsCount();
         modelAndView.addObject("couponsCount", couponsCount);
         long totalPages = PaginationUtil.calculateMaxPage(couponsCount, pageSize);
         boolean hasPreviousPage = index > 1 && index <= totalPages;
@@ -375,21 +376,31 @@ public class CouponController {
 
     @RequestMapping(value = "/coupon/{couponId:^\\d+$}/detail", method = RequestMethod.GET)
     public ModelAndView couponDetail(@PathVariable long couponId, @RequestParam(value = "isUsed", required = false) Boolean isUsed,
-                                     @RequestParam(value = "registerStartTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date registerStartTime,
-                                     @RequestParam(value = "registerEndTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date registerEndTime,
+                                     @RequestParam(value = "usedStartTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date usedStartTime,
+                                     @RequestParam(value = "usedEndTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date usedEndTime,
                                      @RequestParam(value = "loginName", required = false) String loginName,
                                      @RequestParam(value = "mobile", required = false) String mobile,
                                      @RequestParam(value = "index", required = false, defaultValue = "1") int index) {
         int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/coupon-detail");
-        List<UserCouponModel> userCoupons = couponService.findCouponDetail(couponId, isUsed, loginName, mobile, registerStartTime, registerEndTime, index, pageSize);
-        int userCouponsCount = couponService.findCouponDetailCount(couponId, isUsed, loginName, mobile, registerStartTime, registerEndTime);
-        CouponModel couponModel = couponService.findCouponById(couponId);
+        List<CouponDetailsDto> userCoupons = consoleCouponService.findCouponDetail(couponId, isUsed, loginName, mobile, null, null, usedStartTime, usedEndTime, index, pageSize);
+        int userCouponsCount = consoleCouponService.findCouponDetailCount(couponId, isUsed, loginName, mobile, null, null, usedStartTime, usedEndTime);
+
+        long investAmount = 0l;
+        long interest = 0l;
+        for(CouponDetailsDto couponDetailsDto : userCoupons){
+            investAmount += couponDetailsDto.getInvestAmount() != null ? couponDetailsDto.getInvestAmount() : 0l;
+            interest += couponDetailsDto.getAnnualInterest() != null ? couponDetailsDto.getAnnualInterest() : 0l;
+        }
+
+        CouponModel couponModel = consoleCouponService.findCouponById(couponId);
+        modelAndView.addObject("investAmount", investAmount);
+        modelAndView.addObject("interest", interest);
         modelAndView.addObject("userCoupons", userCoupons);
         modelAndView.addObject("isUsed", isUsed);
         modelAndView.addObject("couponId", couponId);
-        modelAndView.addObject("registerStartTime", registerStartTime);
-        modelAndView.addObject("registerEndTime", registerEndTime);
+        modelAndView.addObject("usedStartTime", usedStartTime);
+        modelAndView.addObject("usedEndTime", usedEndTime);
         modelAndView.addObject("loginName", loginName);
         modelAndView.addObject("mobile", mobile);
         modelAndView.addObject("index", index);
@@ -429,7 +440,7 @@ public class CouponController {
         BaseDataDto dataDto = new BaseDataDto();
         baseDto.setData(dataDto);
         String loginName = LoginUserInfo.getLoginName();
-        dataDto.setStatus(couponService.deleteCoupon(loginName, couponId));
+        dataDto.setStatus(consoleCouponService.deleteCoupon(loginName, couponId));
         return baseDto;
     }
 
@@ -526,5 +537,4 @@ public class CouponController {
         modelAndView.addObject("pointPrizeWinnerGroupDetails", userPointPrizeMapper.findByPointPrizeId(pointPrizeId));
         return modelAndView;
     }
-
 }

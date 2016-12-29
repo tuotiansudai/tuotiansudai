@@ -31,7 +31,7 @@ import javax.validation.Valid;
 import java.text.MessageFormat;
 
 @Controller
-@RequestMapping(path = "/register/user")
+@RequestMapping(path = "/register")
 public class RegisterUserController {
 
     private final static Logger logger = Logger.getLogger(RegisterUserController.class);
@@ -52,23 +52,26 @@ public class RegisterUserController {
     private MyAuthenticationUtil myAuthenticationUtil;
 
     @RequestMapping(method = RequestMethod.GET)
-
+    public ModelAndView registerRedirect() {
+        return new ModelAndView("redirect:/register/user");
+    }
+    
+    @RequestMapping(path = "/user", method = RequestMethod.GET)
     public ModelAndView registerUser(HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView("/register-user");
         modelAndView.addObject("referrer", userService.getMobile(request.getParameter("referrer")));
-
         modelAndView.addObject("responsive", true);
         return modelAndView;
     }
 
-    @RequestMapping(value = "/shared-prepare", method = RequestMethod.POST)
+    @RequestMapping(value = "/user/shared-prepare", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<BaseDataDto> prepareRegister(@Valid @ModelAttribute PrepareRegisterRequestDto requestDto, BindingResult bindingResult, HttpServletResponse response) {
         BaseDto<BaseDataDto> baseDto = new BaseDto<>();
         BaseDataDto baseDataDto;
         if (bindingResult.hasErrors()) {
             String message = bindingResult.getFieldError().getDefaultMessage();
-            logger.debug("[APP SHARE IOS] :" + message);
+            logger.info("[APP SHARE IOS] :" + message);
             baseDataDto = new BaseDataDto(false, message);
             baseDto.setData(baseDataDto);
             return baseDto;
@@ -83,14 +86,14 @@ public class RegisterUserController {
         return baseDto;
     }
 
-    @RequestMapping(value = "/shared", method = RequestMethod.POST)
+    @RequestMapping(value = "/user/shared", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<BaseDataDto> register(@Valid @ModelAttribute RegisterUserDto requestDto, BindingResult bindingResult, HttpServletResponse response) {
         BaseDto<BaseDataDto> baseDto = new BaseDto<>();
         BaseDataDto baseDataDto;
         if (bindingResult.hasErrors()) {
             String message = bindingResult.getFieldError().getDefaultMessage();
-            logger.debug("[APP SHARE ANDROID] :" + message);
+            logger.info("[APP SHARE ANDROID] :" + message);
             baseDataDto = new BaseDataDto(false, message);
             baseDto.setData(baseDataDto);
             return baseDto;
@@ -106,7 +109,7 @@ public class RegisterUserController {
         return baseDto;
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(path = "/user", method = RequestMethod.POST)
     @ResponseBody
     public ModelAndView registerUser(@Valid @ModelAttribute RegisterUserDto registerUserDto, RedirectAttributes redirectAttributes, HttpServletRequest request) {
         boolean isRegisterSuccess = false;
@@ -138,7 +141,7 @@ public class RegisterUserController {
         return new ModelAndView(url);
     }
 
-    @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/is-exist", method = RequestMethod.GET)
+    @RequestMapping(value = "/user/mobile/{mobile:^\\d{11}$}/is-exist", method = RequestMethod.GET)
     @ResponseBody
     public BaseDto<BaseDataDto> mobileIsExist(@PathVariable String mobile) {
         BaseDataDto dataDto = new BaseDataDto();
@@ -150,7 +153,7 @@ public class RegisterUserController {
 
     }
 
-    @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/is-register", method = RequestMethod.GET)
+    @RequestMapping(value = "/user/mobile/{mobile:^\\d{11}$}/is-register", method = RequestMethod.GET)
     @ResponseBody
     public BaseDto<BaseDataDto> mobileIsRegister(@PathVariable String mobile) {
         BaseDataDto dataDto = new BaseDataDto();
@@ -160,7 +163,7 @@ public class RegisterUserController {
         return baseDto;
     }
 
-    @RequestMapping(value = "/login-name/{loginName}/is-exist", method = RequestMethod.GET)
+    @RequestMapping(value = "/user/login-name/{loginName}/is-exist", method = RequestMethod.GET)
     @ResponseBody
     public BaseDto<BaseDataDto> loginNameIsExist(@PathVariable String loginName) {
         BaseDataDto dataDto = new BaseDataDto();
@@ -171,7 +174,7 @@ public class RegisterUserController {
         return baseDto;
     }
 
-    @RequestMapping(value = "/referrer/{loginNameOrMobile}/is-exist", method = RequestMethod.GET)
+    @RequestMapping(value = "/user/referrer/{loginNameOrMobile}/is-exist", method = RequestMethod.GET)
     @ResponseBody
     public BaseDto<BaseDataDto> loginNameOrMobileIsExist(@PathVariable String loginNameOrMobile) {
         BaseDataDto dataDto = new BaseDataDto();
@@ -182,7 +185,7 @@ public class RegisterUserController {
         return baseDto;
     }
 
-    @RequestMapping(path = "/send-register-captcha", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
+    @RequestMapping(path = "/user/send-register-captcha", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
     public BaseDto<SmsDataDto> sendRegisterCaptcha(HttpServletRequest httpServletRequest,
                                                    @Valid @ModelAttribute RegisterCaptchaDto dto) {
@@ -197,14 +200,14 @@ public class RegisterUserController {
         return baseDto;
     }
 
-    @RequestMapping(path = "/{mobile:^\\d{11}$}/send-register-captcha", method = RequestMethod.GET)
+    @RequestMapping(path = "/user/{mobile:^\\d{11}$}/send-register-captcha", method = RequestMethod.GET)
     @ResponseBody
     public BaseDto<SmsDataDto> sendRegisterCaptcha(HttpServletRequest httpServletRequest, @PathVariable String mobile) {
 
         return smsCaptchaService.sendRegisterCaptcha(mobile, RequestIPParser.parse(httpServletRequest));
     }
 
-    @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/captcha/{captcha:^\\d{6}$}/verify", method = RequestMethod.GET)
+    @RequestMapping(value = "/user/mobile/{mobile:^\\d{11}$}/captcha/{captcha:^\\d{6}$}/verify", method = RequestMethod.GET)
     @ResponseBody
     public BaseDto<BaseDataDto> verifyCaptchaIsValid(@PathVariable String mobile, @PathVariable String captcha) {
         BaseDataDto dataDto = new BaseDataDto();
@@ -215,7 +218,7 @@ public class RegisterUserController {
         return baseDto;
     }
 
-    @RequestMapping(value = "/image-captcha", method = RequestMethod.GET)
+    @RequestMapping(value = "/user/image-captcha", method = RequestMethod.GET)
     public void registerImageCaptcha(HttpServletRequest request, HttpServletResponse response) {
         int captchaWidth = 80;
         int captchaHeight = 38;

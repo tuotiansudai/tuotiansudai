@@ -11,12 +11,8 @@ import com.tuotiansudai.console.bi.repository.model.InvestViscosityDetailTableVi
 import com.tuotiansudai.console.bi.repository.model.InvestViscosityDetailView;
 import com.tuotiansudai.console.bi.repository.model.KeyValueModel;
 import com.tuotiansudai.console.bi.service.BusinessIntelligenceService;
-import com.tuotiansudai.repository.mapper.LoanRepayMapper;
-import com.tuotiansudai.service.InvestService;
-import com.tuotiansudai.service.UserService;
-import com.tuotiansudai.task.OperationTask;
-import com.tuotiansudai.task.TaskConstant;
-import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.console.service.ConsoleInvestService;
+import com.tuotiansudai.console.service.ConsoleUserService;
 import com.tuotiansudai.util.SerializeUtil;
 import org.apache.commons.collections4.ListUtils;
 import org.apache.commons.collections4.Predicate;
@@ -28,6 +24,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceService {
@@ -43,17 +40,17 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
     private BusinessIntelligenceMapper businessIntelligenceMapper;
 
     @Autowired
-    private UserService userService;
+    private ConsoleUserService consoleUserService;
 
     @Autowired
-    private InvestService investService;
+    private ConsoleInvestService consoleInvestService;
 
     private int lifeSecond = 2592000;
 
     @Override
     public List<String> getChannels() {
-        List<String> userChannel = userService.findAllUserChannels();
-        List<String> investChannel = investService.findAllInvestChannels();
+        List<String> userChannel = consoleUserService.findAllUserChannels();
+        List<String> investChannel = consoleInvestService.findAllInvestChannels();
         userChannel.removeAll(investChannel);
         userChannel.addAll(investChannel);
         return userChannel;
@@ -301,6 +298,19 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
                 keyValueModel.setName(keyValueModel.getName().substring(0,keyValueModel.getName().indexOf("W") + 1) + (Integer.parseInt(week) + 1));
             }
         }
+        return keyValueModels;
+    }
+
+    public List<KeyValueModel> queryAnxinUserStatusStatistics(Date startTime, Date endTime){
+        List<KeyValueModel> keyValueModels = Lists.newArrayList();
+        List<KeyValueModel> keyValueModels1 = businessIntelligenceMapper.queryAnxinUserStatus(startTime, endTime);
+        List<KeyValueModel> keyValueModels2 = businessIntelligenceMapper.queryAnxinInvestSuccess(startTime, endTime);
+        long totalUserCount = keyValueModels1.stream().mapToLong(p -> Long.parseLong(p.getValue())).sum();
+        keyValueModels.add(new KeyValueModel("已开通", String.valueOf(totalUserCount), null));
+        keyValueModels.addAll(keyValueModels1.stream().filter(n -> n.getName().equals("已开通且免验")).collect(Collectors.toList()));
+        keyValueModels.addAll(keyValueModels1.stream().filter(n -> n.getName().equals("已开通未免验")).collect(Collectors.toList()));
+        keyValueModels.addAll(keyValueModels2.stream().filter(n -> n.getName().equals("已投资且生成合同")).collect(Collectors.toList()));
+        keyValueModels.addAll(keyValueModels2.stream().filter(n -> n.getName().equals("已投资未生成合同")).collect(Collectors.toList()));
         return keyValueModels;
     }
 }

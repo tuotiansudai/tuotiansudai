@@ -3,6 +3,7 @@ package com.tuotiansudai.point.service.impl;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
+import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.ExchangeCouponView;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
@@ -44,7 +45,7 @@ public class ProductServiceImpl implements ProductService {
     private ProductMapper productMapper;
 
     @Autowired
-    private CouponService couponService;
+    private CouponMapper couponMapper;
 
     @Autowired
     private UserMapper userMapper;
@@ -149,7 +150,7 @@ public class ProductServiceImpl implements ProductService {
         String errorMessage = "goods order not exist, product Order id = ({0})";
         ProductOrderModel productOrderModel = productOrderMapper.findById(orderId);
         if (productOrderModel == null) {
-            logger.debug(MessageFormat.format(errorMessage, orderId));
+            logger.info(MessageFormat.format(errorMessage, orderId));
             return new BaseDataDto(false, MessageFormat.format(errorMessage, orderId));
         }
         productOrderModel.setConsignment(true);
@@ -164,7 +165,7 @@ public class ProductServiceImpl implements ProductService {
         String errorMessage = "goodsId is not exist, product Order goodsId = ({0})";
         ProductModel productModel = productMapper.findById(goodsId);
         if (productModel == null) {
-            logger.debug(MessageFormat.format(errorMessage, goodsId));
+            logger.info(MessageFormat.format(errorMessage, goodsId));
             return new BaseDataDto(false, MessageFormat.format(errorMessage, goodsId));
         }
         productOrderMapper.batchConsignment(goodsId);
@@ -199,7 +200,7 @@ public class ProductServiceImpl implements ProductService {
 
     private ProductDto convertProductDtoToCouponType(ProductDto productDto) {
         ProductDto convertProductDto = new ProductDto();
-        CouponModel couponModel = couponService.findCouponById(productDto.getCouponId());
+        CouponModel couponModel = couponMapper.findById(productDto.getCouponId());
         switch (couponModel.getCouponType()) {
             case RED_ENVELOPE:
                 convertProductDto.setName(AmountConverter.convertCentToString(couponModel.getAmount()) + "元现金红包");
@@ -241,7 +242,7 @@ public class ProductServiceImpl implements ProductService {
                 productShowItemDtos = productMapper.findExchangeableProductsList(goodsType, index, pageSize)
                         .stream()
                         .map(m -> {
-                            CouponModel couponModel = couponService.findExchangeableCouponById(m.getCouponId());
+                            CouponModel couponModel = couponMapper.findExchangeableCouponById(m.getCouponId());
                             return new ExchangeCouponView(m.getPoints(), m.getSeq(), m.getImageUrl(), m.getId(), couponModel);
                         })
                         .map(this::convertProductShowItemDto)
@@ -283,7 +284,7 @@ public class ProductServiceImpl implements ProductService {
             case COUPON:
                 ProductModel productModelCoupon = productMapper.findById(id);
                 if (null != productModelCoupon) {
-                    CouponModel couponModel = couponService.findCouponById(productModelCoupon.getCouponId());
+                    CouponModel couponModel = couponMapper.findById(productModelCoupon.getCouponId());
                     if (null != couponModel) {
                         ExchangeCouponView exchangeCouponView = new ExchangeCouponView(
                                 productModelCoupon.getPoints(),
@@ -439,7 +440,7 @@ public class ProductServiceImpl implements ProductService {
     public List<ExchangeCouponDto> findCouponExchanges(int index, int pageSize) {
         List<ProductModel> productModelList = productMapper.findAllProducts(GoodsType.COUPON, (index - 1) * pageSize, pageSize);
         return productModelList.stream()
-                .map(input -> couponService.findCouponById(input.getCouponId()))
+                .map(input -> couponMapper.findById(input.getCouponId()))
                 .map(input -> {
                     ExchangeCouponDto exchangeCouponDto = new ExchangeCouponDto(input);
                     ProductModel productModel = productMapper.findByCouponId(input.getId());

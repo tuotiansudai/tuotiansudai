@@ -16,7 +16,6 @@ import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManagerFactory;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.security.KeyStore;
@@ -31,9 +30,6 @@ public class AnxinClient {
     @Autowired
     private OkHttpClient httpClient;
 
-    @Value("${anxin.jks.path}")
-    private String JKS_PATH;
-
     @Value("${anxin.jks.pwd}")
     private String JKS_PWD;
 
@@ -46,46 +42,26 @@ public class AnxinClient {
     @Value("${anxin.plat.id}")
     private String PLAT_ID;
 
+    private static final String JKS_CLASS_PATH = "anxinsign.jks";
     private static final String DATA = "data";
     private static final String SIGNATURE = "signature";
 
-    private static final int DEFAULT_CONNECT_TIMEOUT = 3000;
-    private static final int DEFAULT_READ_TIMEOUT = 10000;
-
     private static final String DEFAULT_SSL_PROTOCOL = "TLSv1.1";
     private static final String DEFAULT_KEY_ALGORITHM = KeyManagerFactory.getDefaultAlgorithm();
-    private static final String DEFAULT_KEY_STORE_TYPE = KeyStore.getDefaultType();
     private static final String DEFAULT_TRUST_ALGORITHM = TrustManagerFactory.getDefaultAlgorithm();
-    private static final String DEFAULT_TRUST_STORE_TYPE = KeyStore.getDefaultType();
+
+    private KeyStore anxinSignKey;
 
     @PostConstruct
     public void initSSL() throws GeneralSecurityException, IOException {
+        anxinSignKey = SecurityUtil.loadAnxinSignKey(JKS_CLASS_PATH, JKS_PWD);
+
         logger.info("into AnxinClient initSSl method. Thread id: " + Thread.currentThread().getId());
         KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(DEFAULT_KEY_ALGORITHM);
-        KeyStore keyStore = KeyStore.getInstance(DEFAULT_KEY_STORE_TYPE);
-        FileInputStream keyStoreFis = null;
-        try {
-            keyStoreFis = new FileInputStream(JKS_PATH);
-            keyStore.load(keyStoreFis, JKS_PWD.toCharArray());
-            keyManagerFactory.init(keyStore, JKS_PWD.toCharArray());
-        } finally {
-            if (keyStoreFis != null) {
-                keyStoreFis.close();
-            }
-        }
+        keyManagerFactory.init(anxinSignKey, JKS_PWD.toCharArray());
 
         TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(DEFAULT_TRUST_ALGORITHM);
-        KeyStore trustStore = KeyStore.getInstance(DEFAULT_TRUST_STORE_TYPE);
-        FileInputStream trustStoreFis = null;
-        try {
-            trustStoreFis = new FileInputStream(JKS_PATH);
-            trustStore.load(trustStoreFis, JKS_PWD.toCharArray());
-            trustManagerFactory.init(trustStore);
-        } finally {
-            if (trustStoreFis != null) {
-                trustStoreFis.close();
-            }
-        }
+        trustManagerFactory.init(anxinSignKey);
 
         SSLContext sslContext = SSLContext.getInstance(DEFAULT_SSL_PROTOCOL);
         sslContext.init(keyManagerFactory.getKeyManagers(), trustManagerFactory.getTrustManagers(), new SecureRandom());
@@ -95,15 +71,13 @@ public class AnxinClient {
             httpClient.setSslSocketFactory(sslSocketFactory);
         }
 
-        httpClient.setConnectTimeout(DEFAULT_CONNECT_TIMEOUT, TimeUnit.MILLISECONDS);
-        httpClient.setReadTimeout(DEFAULT_READ_TIMEOUT, TimeUnit.MILLISECONDS);
     }
 
     public String send(String txCode, String requestData) throws PKIException {
 
         String url = URL + "platId/" + PLAT_ID + "/txCode/" + txCode + "/transaction";
 
-        String signature = SecurityUtil.p7SignMessageDetach(JKS_PATH, JKS_PWD, ALIAS, requestData);
+        String signature = SecurityUtil.p7SignMessageDetach(anxinSignKey, JKS_PWD, ALIAS, requestData);
 
         FormEncodingBuilder formEncodingBuilder = new FormEncodingBuilder();
         formEncodingBuilder.add(DATA, requestData);

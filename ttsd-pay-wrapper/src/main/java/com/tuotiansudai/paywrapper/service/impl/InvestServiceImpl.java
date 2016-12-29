@@ -14,6 +14,7 @@ import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.message.InvestInfo;
 import com.tuotiansudai.message.InvestSuccessMessage;
 import com.tuotiansudai.message.LoanDetailInfo;
+import com.tuotiansudai.message.UserInfo;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.client.model.MessageTopic;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
@@ -106,6 +107,9 @@ public class InvestServiceImpl implements InvestService {
 
     @Autowired
     private MQWrapperClient mqWrapperClient;
+
+    @Autowired
+    private UserMapper userMapper;
 
     @Value("${common.environment}")
     private Environment environment;
@@ -444,7 +448,7 @@ public class InvestServiceImpl implements InvestService {
                 }
                 BaseDto<PayDataDto> baseDto = this.invokeNoPassword(loanId, autoInvestAmount, autoInvestPlanModel.getLoginName(), Source.AUTO, null, null);
                 if (!baseDto.isSuccess()) {
-                    logger.debug(MessageFormat.format("auto invest failed auto invest plan id is {0} and invest amount is {1} and loanId id {2}", autoInvestPlanModel.getId(), autoInvestAmount, loanId));
+                    logger.info(MessageFormat.format("auto invest failed auto invest plan id is {0} and invest amount is {1} and loanId id {2}", autoInvestPlanModel.getId(), autoInvestAmount, loanId));
                 }
             } catch (Exception e) {
                 logger.error("an error has occur on auto-invest of loan " + loanId + " :" + e.getLocalizedMessage(), e);
@@ -523,7 +527,7 @@ public class InvestServiceImpl implements InvestService {
     @Override
     public String overInvestPaybackCallback(Map<String, String> paramsMap, String queryString) {
 
-        logger.debug("into over_invest_payback_callback, queryString: " + queryString);
+        logger.info("into over_invest_payback_callback, queryString: " + queryString);
 
         BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(
                 paramsMap,
@@ -571,7 +575,12 @@ public class InvestServiceImpl implements InvestService {
 
         InvestInfo investInfo = new InvestInfo();
         LoanDetailInfo loanDetailInfo = new LoanDetailInfo();
+        UserInfo userInfo = new UserInfo();
 
+        UserModel userModel = userMapper.findByLoginName(investModel.getLoginName());
+        userInfo.setLoginName(userModel.getLoginName());
+        userInfo.setUserName(userModel.getUserName());
+        userInfo.setMobile(userModel.getMobile());
         investInfo.setInvestId(investModel.getId());
         investInfo.setLoginName(investModel.getLoginName());
         investInfo.setAmount(investModel.getAmount());
@@ -585,7 +594,7 @@ public class InvestServiceImpl implements InvestService {
         }
         loanDetailInfo.setLoanId(investModel.getLoanId());
 
-        InvestSuccessMessage investSuccessMessage = new InvestSuccessMessage(investInfo, loanDetailInfo);
+        InvestSuccessMessage investSuccessMessage = new InvestSuccessMessage(investInfo, loanDetailInfo, userInfo);
 
         String message;
         try {
