@@ -243,6 +243,14 @@ public class LotteryDrawActivityService {
                 .put(LotteryPrize.RED_ENVELOPE_18, 327L)
                 .put(LotteryPrize.RED_ENVELOPE_8, 328L)
                 .put(LotteryPrize.INTEREST_COUPON_2_NEW_YEARS, 329L)
+                .put(LotteryPrize.SPRING_FESTIVAL_RED_ENVELOP_68, 333L)
+                .put(LotteryPrize.SPRING_FESTIVAL_RED_ENVELOP_58, 334L)
+                .put(LotteryPrize.SPRING_FESTIVAL_RED_ENVELOP_38, 335L)
+                .put(LotteryPrize.SPRING_FESTIVAL_RED_ENVELOP_18, 336L)
+                .put(LotteryPrize.SPRING_FESTIVAL_RED_ENVELOP_88, 337L)
+                .put(LotteryPrize.SPRING_FESTIVAL_RED_ENVELOP_188, 338L)
+                .put(LotteryPrize.SPRING_FESTIVAL_INTEREST_COUPON_5, 339L)
+                .put(LotteryPrize.SPRING_FESTIVAL_INTEREST_COUPON_2, 3340L)
                 .build()).get(lotteryPrize);
     }
 
