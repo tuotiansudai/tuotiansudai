@@ -105,7 +105,20 @@ public class ExportController {
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.NotWorkHeader, csvData, response.getOutputStream());
     }
 
+    @RequestMapping(value = "/export-annual", method = RequestMethod.GET)
+    public void annualExport(HttpServletResponse response) throws IOException {
+        response.setCharacterEncoding("UTF-8");
+        try {
+            response.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode(CsvHeaderType.AnnualHeader.getDescription() + new DateTime().toString("yyyyMMddHHmmSS") + ".csv", "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            //logger.error(e.getLocalizedMessage(), e);
+        }
+        response.setContentType("application/csv");
 
+        List<List<String>> csvData = activityConsoleExportService.buildAnnualCsvList();
+
+        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.AnnualHeader, csvData, response.getOutputStream());
+    }
 
     @RequestMapping(value = "/export-headlines-today-record", method = RequestMethod.GET)
     public void headlinesTodayRecordExport(@RequestParam(name = "mobile", required = false) String mobile,

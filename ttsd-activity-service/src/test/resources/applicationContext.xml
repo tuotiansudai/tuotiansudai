@@ -91,6 +91,27 @@
         </constructor-arg>
     </bean>
 
+    <bean id="pointHikariCPDataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+        <constructor-arg>
+            <bean class="com.zaxxer.hikari.HikariConfig">
+                <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+                <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/edxpoint?useUnicode=true&amp;characterEncoding=UTF-8"/>
+                <property name="username" value="${point.jdbc.username}"/>
+                <property name="password" value="${point.jdbc.password}"/>
+                <property name="minimumIdle" value="${point.point.minimumIdle}"/>
+                <property name="maximumPoolSize" value="${point.point.maximumPoolSize}"/>
+                <property name="idleTimeout" value="${common.jdbc.idleTimeout}"/>
+                <property name="dataSourceProperties">
+                    <props>
+                        <prop key="cachePrepStmts">${common.jdbc.cachePrepStmts}</prop>
+                        <prop key="prepStmtCacheSize">${common.jdbc.prepStmtCacheSize}</prop>
+                        <prop key="prepStmtCacheSqlLimit">${common.jdbc.prepStmtCacheSqlLimit}</prop>
+                    </props>
+                </property>
+            </bean>
+        </constructor-arg>
+    </bean>
+
     <!-- transaction manager, use JtaTransactionManager for global tx -->
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="hikariCPDataSource"/>
@@ -100,9 +121,18 @@
         <property name="dataSource" ref="aaHikariCPDataSource"/>
     </bean>
 
+    <bean id="pointTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="pointHikariCPDataSource"/>
+    </bean>
+
     <bean id="aaSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="aaHikariCPDataSource"/>
         <property name="typeAliasesPackage" value="com.tuotiansudai.repository.model,com.tuotiansudai.transfer.repository.model,com.tuotiansudai.coupon.repository.model,com.tuotiansudai.membership.repository.model"/>
+    </bean>
+
+    <bean id="pointSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="pointHikariCPDataSource"/>
+        <property name="typeAliasesPackage" value="com.tuotiansudai.point.repository.model"/>
     </bean>
 
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
@@ -119,6 +149,11 @@
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
         <property name="basePackage" value="com.tuotiansudai.activity.repository.mapper"/>
+    </bean>
+
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="sqlSessionFactoryBeanName" value="pointSqlSessionFactory"/>
+        <property name="basePackage" value="com.tuotiansudai.point.repository.mapper"/>
     </bean>
 
     <bean id="jobStoreBuilder" class="com.tuotiansudai.util.quartz.JobStoreBuilder">

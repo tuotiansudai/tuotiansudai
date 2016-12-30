@@ -1,0 +1,628 @@
+@charset "utf-8";
+@import "module/login_tip";
+@import "module/register_common";
+@import "module/gift_circle_tip";
+
+@mixin range-line($angle) {
+
+background-image:linear-gradient($angle, rgba(254, 236, 0, 0.4) 10%, transparent 15%, transparent 50%, rgba(254, 236, 0, 0.4) 70%, rgba(254, 236, 0, 0.4) 67%, transparent 67%, transparent);
+background-size: 9px 40px;
+}
+
+body {
+  background: #b3003c;
+  overflow-x: hidden;
+  color: #ffee00;
+}
+.main-frame {
+  width: 100%;
+  margin: 0 auto;
+}
+.new-year-slide img {
+  width:100%;
+}
+.pc-img {
+  background: url("/activity/images/new-year/new-banner.jpg") center top no-repeat;
+  height:463px;
+}
+
+.new-year-frame {
+  position: relative;
+  .body-decorate {
+    width:100%;
+    height:100%;
+    .bg-left {
+      width:298px;
+      height:100%;
+      position: absolute;
+      left:0;
+      top:0;
+      background: url("/activity/images/new-year/bg-decorate.jpg") left 0px repeat-y;
+    }
+    .bg-right {
+      width:298px;
+      height:100%;
+      position: absolute;
+      right:0;
+      top:0;
+      background: url("/activity/images/new-year/bg-decorate.jpg") right 0px repeat-y;
+      transform: rotateY(180deg);
+    }
+  }
+
+  .normal-button {
+    background: #ffd91a;
+    font-size: 26px;
+    color: #993706;
+    text-align: center;
+    display: inline-block;
+    padding: 15px 0px;
+    border-radius:25px;
+    line-height: 25px;
+    margin-left: 35px;
+    width: 220px;
+    border:0;
+    box-shadow: inset 0px -4px 0px #e06c00,inset 0px 2px 1px #fff42c;
+  }
+  .title-main-col {
+    position: relative;
+    width:100%;
+    margin-top:48px;
+    margin-bottom:48px;
+    overflow: hidden;
+    height:30px;
+    i {
+      width:50%;
+      height:30px;
+      float: left;
+    }
+    .line-left {
+      @include range-line(-75deg);
+     }
+    .line-right {
+      @include range-line(75deg);
+    }
+    em {
+      background: #b3003c;
+      display: inline-block;
+      color: #ffee00;
+      font-size: 30px;
+      text-align: center;
+      padding:0px 30px;
+      position: absolute;
+      left:50%;
+      top: 0;
+      transform: translateX(-50%);
+      line-height: 29px;
+    }
+  }
+
+  .box-normal {
+    background: #c23054;
+    border-radius:25px;
+    padding: 20px;
+    position: relative;
+    .activity-note {
+      color: #ffee00;
+      padding: 15px 30px 5px 30px;
+      font-size: 15px;
+    }
+  }
+
+  .draw-area-box {
+    width: 80%;
+    margin: 30px auto;
+    text-align: center;
+    position: relative;
+    min-height:750px;
+    cursor:url("/activity/images/new-year/pointer.png"),auto;
+
+    .draw {
+      position: absolute;
+      width:100%;
+      top:0;
+      left:0;
+    }
+    .gold-egg {
+      position: absolute;
+      bottom: 100px;
+      left: 32%;
+      //transform: translateX(-50%);
+      transform-origin: 50% 100%;
+
+      &.win-result {
+        animation: animate-egg 0.5s linear infinite;
+      }
+    }
+    .gold-hammer {
+      position: absolute;
+      top: 221px;
+      right: 144px;
+      width: 100px;
+      transform-origin: 100% 100%;
+      animation: animate-hammer 1s linear infinite;
+
+    }
+
+    .my-chance {
+      position: absolute;
+      bottom: 79px;
+      left: 50%;
+      z-index: 40;
+      transform: translateX(-50%);
+      color: #993706;
+      font-size: 20px;
+      i {
+        background: url(/activity/images/new-year/pointer.png) left center no-repeat;
+        display: inline-block;
+        width: 27px;
+        transform: rotateZ(30deg);
+        height: 40px;
+        background-size: 80%;
+        vertical-align: middle;
+        margin-top: -8px;
+      }
+    }
+    @keyframes animate-egg {
+      0% { transform: rotateZ(0deg); }
+      25% { transform: rotateZ(3deg); }
+      50% { transform: rotateZ(0deg); }
+      75% { transform: rotateZ(-3deg); }
+      100% { transform: rotateZ(0deg); }
+
+    }
+
+    @keyframes animate-hammer {
+      0% {  transform: rotateZ(0deg);  }
+      25% {  transform: rotateZ(18deg);  }
+      50% {  transform: rotateZ(0deg);  }
+      75% {  transform: rotateZ(-18deg);  }
+      100% { transform: rotateZ(0deg);  }
+
+
+    }
+
+  }
+
+  .activity-rule-box {
+    background: #fff2b2;
+    border-radius:15px;
+    margin-top:25px;
+    padding: 22px;
+    line-height: 36px;
+    .text-box {
+      width:50%;
+      float: left;
+      color: #993706;
+      font-size: 16px;
+      span {
+        display: inline-block;
+        padding-right:15px;
+        border-right: 1px dashed #9f4c00;
+      }
+    }
+    .gift-info-box {
+      width:50%;
+      float: right;
+      text-align: center;
+      .gift-record {
+        width:80%;
+        height:35px;
+        line-height: 35px;
+        text-align: center;
+        border:1px solid #9f4c00;
+        border-radius: 15px;
+        color: #9f4c00;
+        margin: 0 auto;
+        li {
+          width:50%;
+          float: left;
+          font-size: 18px;
+          cursor: pointer;
+          &.active {
+            background: #9f4c00;
+            color: #fff;
+            border-radius: 15px;
+          }
+        }
+      }
+      .record-list {
+        font-size: 14px;
+        width: 90%;
+        margin-left: 10%;
+        text-align: left;
+        padding-top: 8px;
+        height: 275px;
+        overflow: hidden;
+        .record-model li {
+          line-height: 30px;
+          color: #9f4c00;
+        }
+      }
+
+    }
+  }
+
+  .magic-lamp {
+    position: relative;
+    text-align: center;
+    i {
+      position: absolute;
+      top: 0px;
+      width: 145px;
+      height: 97px;
+      background: url("/activity/images/new-year/deng.png") left top no-repeat;
+      background-size: 80%;
+      &.lamp-left {
+        left: -14px;
+        transform: rotateY(180deg);
+      }
+      &.lamp-right {
+        right: -14px;
+      }
+    }
+    .slide-text {
+      width:80%;
+      margin:20px auto;
+      height:60px;
+      background: url("/activity/images/new-year/base-bg-text.png") center top no-repeat;
+      overflow: hidden;
+      color: #9f4c00;
+      font-size: 22px;
+      line-height: 40px;
+      cursor: pointer;
+      .slide-text-list {
+        height:100%;
+        li {
+          display: block;
+          padding-top:0px;
+          line-height: 50px;
+        }
+      }
+    }
+  }
+
+  .total-invest-amount {
+    background: #fff2b2;
+    border-radius:30px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    line-height: 30px;
+    dl {
+      width:30%;
+      float: left;
+      margin-left: 5%;
+      color: #9f4c00;
+      font-size: 22px;
+      dd {
+        color: #ff7700;
+      }
+      &.last {
+        width:20%;
+        .btn-to-invest {
+          background: #fd494a;
+          color: #fff;
+          border-radius:10px;
+          display: inline-block;
+          margin-top: 9px;
+          font-size: 24px;
+          padding: 6px 35px;
+        }
+      }
+    }
+  }
+
+  .reward-list-frame {
+    text-align: center;
+    padding-bottom:20px;
+    .reward-box {
+      float: left;
+      width: 40%;
+      height: 445px;
+      color: #9f4c00;
+      margin: 20px 5% 0 5%;
+      background: url("/activity/images/new-year/bg-default.png") center top no-repeat;
+
+      .reward-title {
+        width: 100%;
+        background: url("/activity/images/new-year/deng.png") 66px top no-repeat;
+        background-size: 56%;
+        margin-top: -52px;
+        padding-top: 141px;
+        color: #fff2b2;
+        font-size: 24px;
+
+      }
+      .reward-detail {
+        position: relative;
+        top: 33px;
+        text-align: center;
+        width:100%;
+        height: 72%;
+        em {
+          font-size: 18px;
+          color: #9f4c00;
+          display: block;
+        }
+        img {
+          margin:0 auto;
+          display: block;
+        }
+        i {
+          display: block;
+          color: #333;
+          font-size: 18px;
+          margin-top:7px;
+        }
+        s {
+          display: none;
+          position: absolute;
+          right: 10%;
+          top: 25%;
+          width: 80px;
+          height: 80px;
+          border-radius: 50%;
+          border: 1px solid #a75a0f;
+          text-decoration: none;
+          color: #a75a0f;
+          transform: rotateZ(-30deg);
+          span {
+            border-top: 1px solid #a75a0f;
+            border-bottom: 1px solid #a75a0f;
+            position: absolute;
+            top: 50%;
+            width: 84%;
+            transform: translateY(-50%);
+            left: 9%;
+            font-size: 15px;
+          }
+        }
+      }
+
+      &.finished {
+        background: url("/activity/images/new-year/bg-finished.png") center top no-repeat;
+        .reward-detail {
+          s {
+            display: block;
+          }
+        }
+      }
+    }
+  }
+
+  .reminder-box {
+    background: #fff2b2;
+    border-radius:15px;
+    padding: 20px 5px 20px 20px;
+    font-size: 16px;
+    color: #9f4c00;
+    margin-top:30px;
+    margin-bottom:30px;
+    position: relative;
+  }
+}
+
+//弹框
+
+.tip-list {
+  background: #fff url("/activity/images/new-year/bg-pop-newyear.jpg") no-repeat left top;
+  background-size: 100%;
+  border:2px solid rgba(114,31,0,0.7);
+  .text-tip p.des-text {
+    font-size: 24px;
+    padding-top:15px;
+  }
+  .btn-list a {
+    background: #ffea00;
+    border-radius:0;
+    color:#803c1a;
+  }
+
+}
+
+@media screen and(max-width: 700px){
+  .main-frame {
+    font-size:12px;
+  }
+
+  .new-year-frame {
+    .normal-button {
+      width: 25%;
+      margin-left: 0;
+      border-radius: 15px;
+      padding: 5px 10px;
+      font-size: 13px;
+    }
+    .box-normal {
+      margin: 10px;
+      padding: 10px;
+      border-radius: 15px;
+    }
+    .title-main-col {
+      margin-top: 15px;
+      margin-bottom: 15px;
+      i {
+        height:20px;
+      }
+      em {
+        font-size: 15px;
+        padding: 0px 9px;
+        line-height: 23px;
+        width: 56%;
+      }
+    }
+    .draw-area-box {
+      width:100%;
+      margin: 5px auto;
+      min-height: 373px;
+      .gold-egg {
+        top: 115px;
+        bottom:auto;
+        left: 32%;
+        transform-origin: 50% 100%;
+        width: 36%;
+      }
+      .gold-hammer {
+        bottom:auto;
+        top: 91px;
+        right: 94px;
+        width: 37px;
+      }
+      .my-chance {
+        bottom: auto;
+        font-size: 12px;
+        top: 309px;
+        i {
+          width: 19px;
+        }
+      }
+    }
+    .activity-rule-box {
+      padding: 10px;
+      .gift-info-box {
+        float: none;
+        width:100%;
+        .record-list {
+          margin-left:0;
+          width:100%;
+          font-size: 12px;
+          max-height: 275px;
+          height:auto;
+        }
+        .gift-record {
+          width:100%;
+          li {
+            font-size: 13px;
+            cursor: pointer;
+          }
+        }
+      }
+      .text-box {
+        float: none;
+        width:100%;
+        font-size: 12px;
+        padding-top: 10px;
+        span {
+          border:0;
+          padding-right:0;
+        }
+      }
+    }
+
+    .magic-lamp {
+      i { display: none; }
+      .slide-text {
+        background: #fff2b2;
+        border-radius: 28px;
+        font-size: 15px;
+        height: 50px;
+        line-height: 30px;
+        margin: 10px auto;
+        width: 100%;
+      }
+    }
+
+    .total-invest-amount {
+      dl {
+        width:45%;
+        font-size:13px;
+        line-height: 25px;
+        &.last {
+          float: none;
+          clear:both;
+          width:100%;
+          margin-left: 0;
+          .btn-to-invest {
+            font-size: 15px;
+            padding: 6px 46px;
+          }
+        }
+      }
+    }
+
+    .reward-list-frame {
+      .reward-box {
+        float: none;
+        width:100%;
+        height:auto;
+        margin:10px auto;
+        background-size: 100%;
+        &.finished {
+          background-size: 100%;
+        }
+        .reward-detail {
+          top: 49px;
+          em {
+            font-size: 13px;
+          }
+          .reward-img {
+            width:80%;
+            margin: 0 auto;
+            height: 95px;
+            position: relative;
+            img {
+              position: absolute;
+              top: 50%;
+              left:50%;
+              transform: scale(0.6) translateY(-84%) translateX(-82%);
+            }
+          }
+
+          i {
+            font-size:11px;
+            margin-top:0;
+          }
+          s {
+            transform: scale(0.6) rotateZ(-30deg);
+            right: 10%;
+            top: 28%;
+          }
+        }
+        .reward-title {
+          background-size: 46%;
+          margin-top: 105px;
+          padding-top: 109px;
+          color: #fff2b2;
+          font-size: 14px;
+        }
+      }
+    }
+
+    .reminder-box {
+      font-size: 11px;
+      margin:10px;
+      padding:10px;
+    }
+  }
+}
+
+@media screen and(max-width: 400px){
+  .new-year-frame .draw-area-box {
+    min-height: 339px;
+    .gold-egg {
+      top: 99px;
+    }
+    .my-chance {
+      top: 274px;
+    }
+  }
+}
+
+@media screen and(max-width: 350px){
+
+  .new-year-frame .draw-area-box {
+    min-height: 280px;
+    .gold-egg {
+      top: 83px;
+    }
+    .my-chance {
+      top: 229px;
+    }
+    .gold-hammer {
+      right: 55px;
+    }
+  }
+  .new-year-frame .title-main-col em  {
+    width: 62%;
+  }
+}

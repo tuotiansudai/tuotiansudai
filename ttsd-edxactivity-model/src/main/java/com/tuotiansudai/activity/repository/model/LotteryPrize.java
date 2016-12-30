@@ -54,6 +54,16 @@ public enum LotteryPrize {
     INTEREST_COUPON_5_POINT_DRAW_REF_CARNIVAL("0.5加息券",PrizeType.VIRTUAL,ActivityCategory.CARNIVAL_ACTIVITY,41),
     RED_ENVELOPE_50_POINT_DRAW_REF_CARNIVAL("50元红包",PrizeType.VIRTUAL,ActivityCategory.CARNIVAL_ACTIVITY,39),
 
+    //元旦活动
+    MINI_REFRIGERATOR("迷你冰箱",PrizeType.CONCRETE,ActivityCategory.ANNUAL_ACTIVITY,0),
+    ANNUAL_U_DISK("拓天速贷U盘",PrizeType.CONCRETE,ActivityCategory.ANNUAL_ACTIVITY,1),
+    BOLSTER("文字君表情抱枕",PrizeType.CONCRETE,ActivityCategory.ANNUAL_ACTIVITY,1),
+    RED_ENVELOPE_5("5.8元红包",PrizeType.VIRTUAL,ActivityCategory.ANNUAL_ACTIVITY,3),
+    RED_ENVELOPE_3("3.8元红包",PrizeType.VIRTUAL,ActivityCategory.ANNUAL_ACTIVITY,5),
+    RED_ENVELOPE_18("18.8元红包",PrizeType.VIRTUAL,ActivityCategory.ANNUAL_ACTIVITY,43),
+    RED_ENVELOPE_8("8.8元红包",PrizeType.VIRTUAL,ActivityCategory.ANNUAL_ACTIVITY,45),
+    INTEREST_COUPON_2_NEW_YEARS("0.2加息券",PrizeType.VIRTUAL,ActivityCategory.ANNUAL_ACTIVITY,2),
+
     //圣诞节活动
     MI_NOTE2_PHONE("小米Note2",PrizeType.CONCRETE,ActivityCategory.CHRISTMAS_ACTIVITY,0),
     ALOE_CAPSULE("芦荟凝胶",PrizeType.CONCRETE,ActivityCategory.CHRISTMAS_ACTIVITY,5),
