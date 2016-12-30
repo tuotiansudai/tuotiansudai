@@ -122,6 +122,7 @@ require(['jquery','drawCircle','commonFun','logintip','register_common'], functi
                     if(event.target.id!='signToday') {
                         return;
                     }
+                    $(this).prop('disabled',true);
                     $.ajax({
                         url:'/point/sign-in',
                         type:'POST',
