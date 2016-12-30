@@ -21,7 +21,7 @@
             </div>
         </div>
         <div class="title-group">
-            <img src="${staticServer}/activity/images/today-headlines/title-one.png" width="80%">
+            <img src="${staticServer}/activity/images/today-headlines/title-one-1229.png" width="80%">
         </div>
         <div class="lottery-group">
             <ul class="lottery-item" id="lottery">
@@ -42,7 +42,7 @@
                     <img src="${staticServer}/activity/images/today-headlines/gift-default.png" width="50%" class="hover-bg">
                 </li>
                 <li class="lottery-btn">
-                    <img src="${staticServer}/activity/images/today-headlines/lottery-btn.png" width="100%">
+                    <img src="${staticServer}/activity/images/today-headlines/lottery-btn-1229.png" width="100%">
                 </li>
                 <li class="lottery-unit lottery-unit-3">
                     <img src="${staticServer}/activity/images/today-headlines/gift-four.png" width="62%" class="gift-img">
@@ -67,10 +67,11 @@
                 <div class="intro-item">
                     <dl class="rule-item">
                         <dt>温馨提示：</dt>
-                        <dd><i>1</i><span>红包奖励将于中奖后即时发放，可在“我的账户-我的宝藏”中查看；</span></dd>
-                        <dd><i>2</i><span>您在本活动获得的话费、爱奇艺会员及实物奖品，请致电拓天速贷客服领取，拓天速贷将于接到电话后7个工作日内安排发放，逾期未领或联系不上则视为放弃，部分地区邮费自付。客服电话4001691188，服务时间为9:00-20:00；</span></dd>
-                        <dd><i>3</i><span>拓天速贷在法律范围内保留对本活动的最终解释权；</span></dd>
-                        <dd><i>4</i><span>市场有风险，投资需谨慎。</span></dd>
+                        <dd><i>1</i><span>每完成注册、实名认证均可抽奖，100%中奖。</span></dd>
+                        <dd><i>2</i><span>红包奖励将于中奖后即时发放，可在“我的账户-我的宝藏”中查看；</span></dd>
+                        <dd><i>3</i><span>您在本活动获得的话费、爱奇艺会员及实物奖品，请致电拓天速贷客服领取，拓天速贷将于接到电话后7个工作日内安排发放，逾期未领或联系不上则视为放弃，部分地区邮费自付。客服电话4001691188，服务时间为9:00-20:00；</span></dd>
+                        <dd><i>4</i><span>拓天速贷在法律范围内保留对本活动的最终解释权；</span></dd>
+                        <dd><i>5</i><span>市场有风险，投资需谨慎。</span></dd>
                     </dl>
                 </div>
             </div>
@@ -115,6 +116,9 @@
                     </ul>
                 </div>
             </div>
+        </div>
+        <div class="company-name-item">
+            拓天伟业（北京）金融信息服务有限公司
         </div>
         <div class="download-group">
             <div class="download-bg">

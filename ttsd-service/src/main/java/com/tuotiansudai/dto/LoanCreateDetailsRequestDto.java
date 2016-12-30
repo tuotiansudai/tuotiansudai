@@ -22,6 +22,8 @@ public class LoanCreateDetailsRequestDto {
 
     private boolean nonTransferable;
 
+    private String pushMessage;
+
     public LoanCreateDetailsRequestDto() {
     }
 
@@ -31,7 +33,7 @@ public class LoanCreateDetailsRequestDto {
         this.activityDesc = loanDetailsModel.getActivityDesc();
         this.extraSource = loanDetailsModel.getExtraSource();
         this.nonTransferable = loanDetailsModel.getNonTransferable();
-
+        this.pushMessage = loanDetailsModel.getPushMessage();
     }
 
     public boolean getNonTransferable() {
@@ -80,5 +82,13 @@ public class LoanCreateDetailsRequestDto {
 
     public void setExtraRateRuleIds(List<Long> extraRateRuleIds) {
         this.extraRateRuleIds = extraRateRuleIds;
+    }
+
+    public String getPushMessage() {
+        return pushMessage;
+    }
+
+    public void setPushMessage(String pushMessage) {
+        this.pushMessage = pushMessage;
     }
 }

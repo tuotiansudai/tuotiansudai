@@ -75,7 +75,7 @@ require(['jquery', 'bootstrap', 'Validform', 'bootstrapDatetimepicker', 'Validfo
             }).done(function (data) {
                 if (data.state) {
                     $('.form-imageUrl').val(data.title);
-                    $('.imageUrlImage').html('<img style="width:100%" src="/' + data.title + '" >');
+                    $('.imageUrlImage').html('<img style="width:100%" src="' + data.title + '" >');
                 }
             });
         }).fail(function (message) {
