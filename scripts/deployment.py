@@ -30,7 +30,7 @@ class Deployment(object):
 
     def compile(self):
         print "Compiling..."
-        sh('{0} clean ttsd-config:flywayAA ttsd-config:flywayUMP ttsd-config:flywayAnxin ttsd-config:flywaySms ttsd-config:flywayWorker ttsd-config:flywayAsk ttsd-config:flywayActivity ttsd-config:flywayPoint ttsd-config:flywayLog initMQ war'.format(
+        sh('{0} clean ttsd-config:flywayAA ttsd-config:flywayUMP ttsd-config:flywayAnxin ttsd-config:flywaySms ttsd-config:flywayWorker ttsd-config:flywayAsk ttsd-config:flywayActivity ttsd-config:flywayPoint ttsd-config:flywayMessage ttsd-config:flywayLog initMQ war'.format(
             self._gradle))
         sh('cp {0}/signin_service/settings_local.py ./signin_service/'.format(self._config_path))
 

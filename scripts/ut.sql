@@ -23,6 +23,9 @@ grant select,insert,update,delete,create,drop,alter,index on anxin_operations.* 
 grant select,insert,update,delete,create,drop,alter,index on edxlog.* to sdlog@'%' identified by 'sdlog';
 grant select,insert,update,delete,create,drop,alter,index on edxlog.* to sdlog@'localhost' identified by 'sdlog';
 
+grant select,insert,update,delete,create,drop,alter,index on edxmessage.* to sdmessage@'%' identified by 'sdmessage';
+grant select,insert,update,delete,create,drop,alter,index on edxmessage.* to sdmessage@'localhost' identified by 'sdmessage';
+
 update mysql.user set password=password('root') where user='root';
 
 flush privileges;
