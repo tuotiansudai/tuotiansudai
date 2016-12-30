@@ -5,7 +5,7 @@
         <#list loan.loan.loanTitles as loanTitle>
         var initialPreview = [];
         <#list loanTitle.applicationMaterialUrls?split(",") as title>
-            initialPreview.push("<img src='${staticServer}${title}' class='file-preview-image' alt='${title}' title='${title}'>");
+            initialPreview.push("<img src='${title}' class='file-preview-image' alt='${title}' title='${title}'>");
         </#list>
         rereq['${loanTitle.titleId?string.computer}'] = initialPreview;
         </#list>
