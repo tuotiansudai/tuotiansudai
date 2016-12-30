@@ -2,7 +2,7 @@ package com.tuotiansudai.task.aspect;
 
 import com.google.common.base.Strings;
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.console.service.AuditLogService;
+import com.tuotiansudai.log.service.AuditLogService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoanCreateRequestDto;
 import com.tuotiansudai.dto.LoanDto;
@@ -15,7 +15,7 @@ import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.task.OperationTask;
-import com.tuotiansudai.task.OperationType;
+import com.tuotiansudai.log.repository.model.OperationType;
 import com.tuotiansudai.task.TaskConstant;
 import com.tuotiansudai.task.TaskType;
 import org.apache.log4j.Logger;

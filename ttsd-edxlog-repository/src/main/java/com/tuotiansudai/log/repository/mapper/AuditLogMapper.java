@@ -1,8 +1,7 @@
-package com.tuotiansudai.repository.mapper;
+package com.tuotiansudai.log.repository.mapper;
 
-import com.tuotiansudai.repository.model.AuditLogModel;
-import com.tuotiansudai.repository.model.AuditLogView;
-import com.tuotiansudai.task.OperationType;
+import com.tuotiansudai.log.repository.model.AuditLogModel;
+import com.tuotiansudai.log.repository.model.OperationType;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -23,10 +22,10 @@ public interface AuditLogMapper {
                @Param("startTime") Date startTime,
                @Param("endTime") Date endTime);
 
-    List<AuditLogView> getPaginationData(@Param("operationType") OperationType operationType,
+    List<AuditLogModel> getPaginationData(@Param("operationType") OperationType operationType,
                                           @Param("targetId") String targetId,
-                                         @Param("operatorMobile") String operatorMobile,
-                                         @Param("auditorMobile") String auditorMobile,
+                                          @Param("operatorMobile") String operatorMobile,
+                                          @Param("auditorMobile") String auditorMobile,
                                           @Param("startTime") Date startTime,
                                           @Param("endTime") Date endTime,
                                           @Param("index") int index,

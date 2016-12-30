@@ -1,9 +1,9 @@
 package com.tuotiansudai.mq.consumer.auditLog;
 
+import com.tuotiansudai.log.repository.mapper.AuditLogMapper;
+import com.tuotiansudai.log.repository.model.AuditLogModel;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
-import com.tuotiansudai.repository.mapper.AuditLogMapper;
-import com.tuotiansudai.repository.model.AuditLogModel;
 import com.tuotiansudai.util.JsonConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -114,6 +114,11 @@ flyway {
         password = properties.getProperty("point.jdbc.password")
     }
 
+    if ('edxlog'.equals(defaultDatabase)) {
+        user = properties.getProperty("log.jdbc.username")
+        password = properties.getProperty("log.jdbc.password")
+    }
+
     if ('anxin_operations'.equals(defaultDatabase)) {
         user = properties.getProperty("anxin.jdbc.username")
         password = properties.getProperty("anxin.jdbc.password")
@@ -286,6 +291,27 @@ task flywayPoint(type: FlywayMigrateTask) {
     extension.url = properties.getProperty("common.environment").equals("PRODUCTION") ? "jdbc:mysql://${defaultHost}:${defaultPort}/edxpoint?useUnicode=true&characterEncoding=UTF-8" : "jdbc:mysql://${defaultHost}:${defaultPort}?useUnicode=true&characterEncoding=UTF-8"
     extension.user = properties.getProperty("point.jdbc.username")
     extension.password = properties.getProperty("point.jdbc.password")
+}
+
+task flywayLog(type: FlywayMigrateTask) {
+    def properties = getEnvProperties()
+    def defaultHost = properties.getProperty("common.jdbc.host")
+    def defaultPort = properties.getProperty("common.jdbc.port")
+    extension = new FlywayExtension()
+    if (project.hasProperty('dbhost')) {
+        defaultHost = dbhost;
+    }
+    if (project.hasProperty('dbport')) {
+        defaultPort = dbport;
+    }
+    extension.outOfOrder = true
+    extension.validateOnMigrate = false
+    extension.locations = ["filesystem:db_migration/edxlog"]
+    extension.schemas = ["edxlog"]
+
+    extension.url = properties.getProperty("common.environment").equals("PRODUCTION") ? "jdbc:mysql://${defaultHost}:${defaultPort}/edxlog?useUnicode=true&characterEncoding=UTF-8" : "jdbc:mysql://${defaultHost}:${defaultPort}?useUnicode=true&characterEncoding=UTF-8"
+    extension.user = properties.getProperty("log.jdbc.username")
+    extension.password = properties.getProperty("log.jdbc.password")
 }
 
 
