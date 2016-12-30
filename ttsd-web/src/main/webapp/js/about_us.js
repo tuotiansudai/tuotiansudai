@@ -11,7 +11,7 @@ require(['jquery','mustache','text!tpl/notice-list.mustache','load-swiper','laye
         if($noticeList.length) {
             var requestData={"index":1,"pageSize":10};
             paginationElement.loadPagination(requestData, function (data) {
-                var html = Mustache.render(ListTemplate, data.data);
+                var html = Mustache.render(ListTemplate, data);
                 $noticeList.html(html);
                 $noticeList.find('time').each(function(key,option) {
                     var getTime=$(option).text();

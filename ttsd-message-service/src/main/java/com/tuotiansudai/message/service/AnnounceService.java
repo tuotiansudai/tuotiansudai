@@ -36,6 +36,6 @@ public class AnnounceService {
         List<AnnounceDto> announceList = announceModels.stream().map(AnnounceDto::new).collect(Collectors.toList());
         BasePaginationDataDto<AnnounceDto> dataDto = new BasePaginationDataDto<>(index, pageSize, count, announceList);
         dataDto.setStatus(true);
-        return new BaseDto<>(new BasePaginationDataDto<>(index, pageSize, count, announceList));
+        return new BaseDto<>(dataDto);
     }
 }
