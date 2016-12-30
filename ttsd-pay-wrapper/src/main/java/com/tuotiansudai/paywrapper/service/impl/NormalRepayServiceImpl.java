@@ -15,7 +15,6 @@ import com.tuotiansudai.enums.PushType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.job.JobType;
-import com.tuotiansudai.job.NormalRepayCallbackJob;
 import com.tuotiansudai.job.NormalRepayJob;
 import com.tuotiansudai.message.EventMessage;
 import com.tuotiansudai.message.PushMessage;
@@ -115,14 +114,11 @@ public class NormalRepayServiceImpl implements NormalRepayService {
     @Autowired
     private SmsWrapperClient smsWrapperClient;
 
-    @Value("${common.environment}")
-    private Environment environment;
-
-    @Value(value = "${pay.repay.notify.process.batch.size}")
-    private int repayProcessListSize;
-
     @Autowired
     private MQWrapperClient mqWrapperClient;
+
+    @Value("${common.environment}")
+    private Environment environment;
 
     @Override
     public boolean autoRepay(long loanRepayId) {
@@ -449,22 +445,21 @@ public class NormalRepayServiceImpl implements NormalRepayService {
             return null;
         }
 
-        redisWrapperClient.incr(NormalRepayCallbackJob.NORMAL_REPAY_JOB_TRIGGER_KEY);
+        mqWrapperClient.sendMessage(MessageQueue.NormalRepayCallback, String.valueOf(callbackRequest.getId()));
+
         return callbackRequest.getResponseData();
     }
 
     @Override
-    public BaseDto<PayDataDto> asyncNormalRepayPaybackCallback(){
-        List<NormalRepayNotifyRequestModel> todoList = normalRepayNotifyMapper.getNormalTodoList(repayProcessListSize);
-        for (NormalRepayNotifyRequestModel model : todoList) {
-            if (updateNormalRepayNotifyRequestStatus(model)) {
-                try {
-                    if(!this.processOneNormalRepayPaybackCallback(model)){
-                        fatalLog("normal repay callback, processOneNormalRepayPaybackCallback fail. investRepayId:" + model.getOrderId(), null);
-                    }
-                } catch (Exception e) {
-                    fatalLog("normal repay callback, processOneNormalRepayPaybackCallback error. investRepayId:" + model.getOrderId(), e);
+    public BaseDto<PayDataDto> asyncNormalRepayPaybackCallback(long notifyRequestId){
+        NormalRepayNotifyRequestModel model = normalRepayNotifyMapper.findById(notifyRequestId);
+        if (updateNormalRepayNotifyRequestStatus(model)) {
+            try {
+                if(!this.processOneNormalRepayPaybackCallback(model)){
+                    fatalLog("normal repay callback, processOneNormalRepayPaybackCallback fail. investRepayId:" + model.getOrderId(), null);
                 }
+            } catch (Exception e) {
+                fatalLog("normal repay callback, processOneNormalRepayPaybackCallback error. investRepayId:" + model.getOrderId(), e);
             }
         }
 
@@ -478,7 +473,6 @@ public class NormalRepayServiceImpl implements NormalRepayService {
 
     private boolean updateNormalRepayNotifyRequestStatus(NormalRepayNotifyRequestModel model) {
         try {
-            redisWrapperClient.decr(NormalRepayCallbackJob.NORMAL_REPAY_JOB_TRIGGER_KEY);
             normalRepayNotifyMapper.updateStatus(model.getId(), NotifyProcessStatus.DONE);
         } catch (Exception e) {
             fatalLog("update_normal_repay_notify_status_fail, orderId:" + model.getOrderId() + ",id:" + model.getId(), e);

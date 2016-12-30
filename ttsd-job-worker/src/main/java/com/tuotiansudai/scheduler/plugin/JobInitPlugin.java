@@ -84,6 +84,12 @@ public class JobInitPlugin implements SchedulerPlugin {
         if (JobType.EventMessage.name().equals(schedulerName)) {
             eventMessageJob();
         }
+        if (JobType.NormalRepayCallBack.name().equalsIgnoreCase(schedulerName)) {
+            deleteNormalRepayCallBackJob();
+        }
+        if (JobType.AdvanceRepayCallBack.name().equalsIgnoreCase(schedulerName)) {
+            deleteAdvanceRepayCallBackJob();
+        }
     }
 
     @Override
@@ -124,7 +130,6 @@ public class JobInitPlugin implements SchedulerPlugin {
             logger.info(e.getLocalizedMessage(), e);
         }
     }
-
 
     private void createCalculateDefaultInterest() {
         try {
@@ -248,6 +253,14 @@ public class JobInitPlugin implements SchedulerPlugin {
 
     private void deleteBirthdayMessageSendJob() {
         jobManager.deleteJob(JobType.BirthdayMessage, JobType.BirthdayMessage.name(), JobType.BirthdayMessage.name());
+    }
+
+    private void deleteNormalRepayCallBackJob() {
+        jobManager.deleteJob(JobType.NormalRepayCallBack, JobType.NormalRepayCallBack.name(), JobType.NormalRepayCallBack.name());
+    }
+
+    private void deleteAdvanceRepayCallBackJob() {
+        jobManager.deleteJob(JobType.AdvanceRepayCallBack, JobType.AdvanceRepayCallBack.name(), JobType.AdvanceRepayCallBack.name());
     }
 
     private void eventMessageJob() {

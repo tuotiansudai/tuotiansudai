@@ -18,6 +18,8 @@ public enum MessageQueue {
     EventMessage("EventMessage"),
     ManualMessage("ManualMessage"),
     PushMessage("PushMessage"),
+    NormalRepayCallback("NormalRepayCallback"),
+    AdvanceRepayCallback("AdvanceRepayCallback"),
     AuditLog("AuditLog"),
     UserOperateLog("UserOperateLog");
 
