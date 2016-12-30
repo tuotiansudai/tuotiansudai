@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppUserMessageService;
 import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.enums.MessageType;
 import com.tuotiansudai.message.repository.mapper.MessageMapper;
 import com.tuotiansudai.message.repository.mapper.UserMessageMapper;
 import com.tuotiansudai.message.repository.model.*;
@@ -82,7 +83,7 @@ public class MobileAppUserMessageServiceTest extends ServiceTestBase {
         messageModel.setTitle("test");
         messageModel.setTemplate("测试模板猜猜猜");
         messageModel.setType(MessageType.MANUAL);
-        messageModel.setUserGroups(Lists.newArrayList(MessageUserGroup.ALL_USER));
+        messageModel.setUserGroup(MessageUserGroup.ALL_USER);
         messageModel.setChannels(Lists.newArrayList(MessageChannel.APP_MESSAGE));
         messageModel.setStatus(MessageStatus.APPROVED);
         messageModel.setExpiredTime(new DateTime(new Date()).plusDays(1).toDate());
@@ -98,14 +99,19 @@ public class MobileAppUserMessageServiceTest extends ServiceTestBase {
         UserModel creator = getFakeUser("messageCreator");
         userMapper.create(creator);
 
-        MessageModel messageModel = new MessageModel("title", "template", MessageType.MANUAL,
-                Lists.newArrayList(MessageUserGroup.ALL_USER, MessageUserGroup.IMPORT_USER),
+        MessageModel messageModel = new MessageModel("title", "template",
+                MessageUserGroup.ALL_USER,
+                MessageCategory.ACTIVITY,
                 Lists.newArrayList(MessageChannel.WEBSITE),
-                MessageStatus.TO_APPROVE, new Date(), creator.getLoginName());
+                null,
+                null,
+                null,
+                creator.getLoginName());
         messageModel.setActivatedTime(new Date());
         messageMapper.create(messageModel);
 
-        UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), creator.getLoginName(), messageModel.getTitle(), messageModel.getTitle(), messageModel.getTemplate(), messageModel.getActivatedTime());
+
+        UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), creator.getLoginName(), messageModel.getTitle(), messageModel.getTemplate(), messageModel.getActivatedTime());
         userMessageModel.setRead(false);
         userMessageMapper.create(userMessageModel);
         mobileAppUserMessageService.updateReadMessage(String.valueOf(userMessageModel.getId()));

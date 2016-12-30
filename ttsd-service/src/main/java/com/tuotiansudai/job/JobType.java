@@ -31,8 +31,6 @@ public enum JobType {
     AutoLoanOut("满标自动放款"),
     SendRedEnvelope("放款发红包"),
     CouponNotify("优惠券短信通知"),
-    GetPushReport("获取推送统计数据"),
-    ManualJPushAlert("手动推送"),
     BirthdayNotify("生日月用户短信提醒"),
     TransferApplyAutoCancel("债权转让申请到期自动取消"),
     ImitateLottery("模拟抽奖"),
@@ -42,6 +40,7 @@ public enum JobType {
     PlatformBalanceLowNotify("平台账户余额不足提醒"),
     ContractResponse("更新合同状态"),
     BirthdayMessage("生日消息发送"),
+    EventMessage("每日事件触发消息"),
     CreateAnXinContract("创建安心签合同");
 
     private final String description;
