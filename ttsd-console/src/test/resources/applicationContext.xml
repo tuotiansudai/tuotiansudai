@@ -20,7 +20,7 @@
     <!-- enable component scanning (beware that this does not enable mapper scanning!) -->
     <context:component-scan base-package="com.tuotiansudai.service,com.tuotiansudai.repository,com.tuotiansudai.client,com.tuotiansudai.spring,com.tuotiansudai.console.util,
                     com.tuotiansudai.util,com.tuotiansudai.coupon,com.tuotiansudai.jpush,com.tuotiansudai.console.bi,com.tuotiansudai.point,com.tuotiansudai.task.aspect,com.tuotiansudai.transfer,com.tuotiansudai.console.service,com.tuotiansudai.membership,com.tuotiansudai.message,
-                    com.tuotiansudai.cache,com.tuotiansudai.ask.service,com.tuotiansudai.anxin.service,com.tuotiansudai.cfca,com.tuotiansudai.activity.service,com.tuotiansudai.contract.service"/>
+                    com.tuotiansudai.cache,com.tuotiansudai.ask.service,com.tuotiansudai.anxin.service,com.tuotiansudai.cfca,com.tuotiansudai.activity.service,com.tuotiansudai.contract.service,com.tuotiansudai.log.service"/>
 
     <bean id="hikariCPDataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
         <constructor-arg>
@@ -127,6 +127,27 @@
         </constructor-arg>
     </bean>
 
+    <bean id="logHikariCPDataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+        <constructor-arg>
+            <bean class="com.zaxxer.hikari.HikariConfig">
+                <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+                <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/${log.jdbc.schema}?useUnicode=true&amp;characterEncoding=UTF-8"/>
+                <property name="username" value="${log.jdbc.username}"/>
+                <property name="password" value="${log.jdbc.password}"/>
+                <property name="minimumIdle" value="${console.log.minimumIdle}"/>
+                <property name="maximumPoolSize" value="${console.log.maximumPoolSize}"/>
+                <property name="idleTimeout" value="${common.jdbc.idleTimeout}"/>
+                <property name="dataSourceProperties">
+                    <props>
+                        <prop key="cachePrepStmts">${common.jdbc.cachePrepStmts}</prop>
+                        <prop key="prepStmtCacheSize">${common.jdbc.prepStmtCacheSize}</prop>
+                        <prop key="prepStmtCacheSqlLimit">${common.jdbc.prepStmtCacheSqlLimit}</prop>
+                    </props>
+                </property>
+            </bean>
+        </constructor-arg>
+    </bean>
+
     <!-- transaction manager, use JtaTransactionManager for global tx -->
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="hikariCPDataSource"/>
@@ -166,6 +187,10 @@
         <property name="typeAliasesPackage" value="com.tuotiansudai.activity.repository.model"/>
     </bean>
 
+    <bean id="logSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="logHikariCPDataSource"/>
+        <property name="typeAliasesPackage" value="com.tuotiansudai.log.repository.model"/>
+    </bean>
 
     <!-- scan for mappers and let them be autowired -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
@@ -187,6 +212,11 @@
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="sqlSessionFactoryBeanName" value="activitySqlSessionFactory"/>
         <property name="basePackage" value="com.tuotiansudai.activity.repository.mapper"/>
+    </bean>
+
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="sqlSessionFactoryBeanName" value="logSessionFactory"/>
+        <property name="basePackage" value="com.tuotiansudai.log.repository.mapper"/>
     </bean>
 
     <bean id="okHttpClient" class="com.squareup.okhttp.OkHttpClient"/>

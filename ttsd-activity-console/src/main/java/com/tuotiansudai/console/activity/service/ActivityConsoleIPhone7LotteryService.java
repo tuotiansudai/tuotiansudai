@@ -1,23 +1,20 @@
 package com.tuotiansudai.console.activity.service;
 
 import com.google.common.base.Strings;
+import com.tuotiansudai.activity.repository.dto.IPhone7InvestLotteryStatDto;
+import com.tuotiansudai.activity.repository.dto.IPhone7InvestLotteryWinnerDto;
 import com.tuotiansudai.activity.repository.mapper.IPhone7InvestLotteryMapper;
 import com.tuotiansudai.activity.repository.mapper.IPhone7LotteryConfigMapper;
 import com.tuotiansudai.activity.repository.model.IPhone7InvestLotteryStatView;
 import com.tuotiansudai.activity.repository.model.IPhone7InvestLotteryWinnerView;
 import com.tuotiansudai.activity.repository.model.IPhone7LotteryConfigModel;
 import com.tuotiansudai.activity.repository.model.IPhone7LotteryConfigStatus;
-import com.tuotiansudai.activity.repository.dto.IPhone7InvestLotteryStatDto;
-import com.tuotiansudai.activity.repository.dto.IPhone7InvestLotteryWinnerDto;
+import com.tuotiansudai.log.service.AuditLogService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.AuditLogMapper;
+import com.tuotiansudai.log.repository.model.OperationType;
 import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.AuditLogModel;
 import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.task.OperationType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,7 +37,7 @@ public class ActivityConsoleIPhone7LotteryService {
     private IPhone7LotteryConfigMapper configMapper;
 
     @Autowired
-    private AuditLogMapper auditLogMapper;
+    private AuditLogService auditLogService;
 
     public BaseDto<BasePaginationDataDto> listStat(String mobile, int pageIndex, int pageSize) {
         String loginName = null;
@@ -123,13 +120,6 @@ public class ActivityConsoleIPhone7LotteryService {
     }
 
     private void createAuditLog(String auditorLoginName, String operatorLoginName, OperationType operationType, String targetId, String description, String auditorIp) {
-        AuditLogModel log = new AuditLogModel();
-        log.setOperatorLoginName(operatorLoginName);
-        log.setAuditorLoginName(auditorLoginName);
-        log.setTargetId(targetId);
-        log.setOperationType(operationType);
-        log.setIp(auditorIp);
-        log.setDescription(description);
-        auditLogMapper.create(log);
+        auditLogService.createAuditLog(auditorLoginName, operatorLoginName, operationType, targetId, description, auditorIp);
     }
 }
