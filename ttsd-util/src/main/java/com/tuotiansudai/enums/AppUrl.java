@@ -1,7 +1,7 @@
 package com.tuotiansudai.enums;
 
 public enum AppUrl {
-    MY_ASSESS("我的主页面", "app/tuotian/myfortune"),
+    MY_ASSESS("我的主页面", "app/tuotian/myfund"),
     MY_ACCOUNT("个人资料", "app/tuotian/myAccount"),
     SETTING("设置", "app/tuotian/setting"),
     FAST_PAY("开通快捷支付页面", "app/tuotian/open-fastpay"),
