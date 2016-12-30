@@ -75,7 +75,7 @@ public class AnnounceCreateDto {
         PushCreateDto pushCreateDto = new PushCreateDto();
         pushCreateDto.setPushType(PushType.IMPORTANT_EVENT);
         pushCreateDto.setPushSource(PushSource.ALL);
-        pushCreateDto.setContent(this.content);
+        pushCreateDto.setContent(this.contentText);
         messageCreateDto.setPush(pushCreateDto);
 
         return messageCreateDto;
