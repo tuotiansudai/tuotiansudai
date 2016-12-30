@@ -14,11 +14,12 @@ sourceSets {
 
 dependencies {
     compile project(':ttsd-dependency'),
-            project(':ttsd-client'),
+            project(':ttsd-mybatis-extension'),
             project(':ttsd-util'),
             project(':ttsd-edxask-model')
 
     testCompile project(':ttsd-config')
+    testCompile "commons-collections:commons-collections:3.2.2"
 }
 
 processResources.outputs.upToDateWhen { false }

@@ -1,11 +1,15 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.dto.WithdrawDto;
-import com.tuotiansudai.enums.UserBillBusinessType;
+import com.tuotiansudai.enums.*;
 import com.tuotiansudai.exception.AmountTransferException;
+import com.tuotiansudai.message.EventMessage;
+import com.tuotiansudai.message.PushMessage;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.CustWithdrawalsMapper;
@@ -22,7 +26,7 @@ import com.tuotiansudai.repository.mapper.WithdrawMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.BankCardModel;
 import com.tuotiansudai.repository.model.WithdrawModel;
-import com.tuotiansudai.enums.WithdrawStatus;
+import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.log4j.Logger;
@@ -57,6 +61,9 @@ public class WithdrawServiceImpl implements WithdrawService {
 
     @Autowired
     private AmountTransfer amountTransfer;
+
+    @Autowired
+    private MQWrapperClient mqWrapperClient;
 
     /**
      * 联动优势提现手续费2元(200分)
@@ -131,6 +138,24 @@ public class WithdrawServiceImpl implements WithdrawService {
             withdrawModel.setApplyNotifyTime(new Date());
             withdrawModel.setApplyNotifyMessage(callbackRequestModel.getRetMsg());
             withdrawMapper.update(withdrawModel);
+
+            if (withdrawModel.getStatus() == WithdrawStatus.APPLY_SUCCESS) {
+                //Title:您的{0}元提现申请已提交成功
+                //Content:尊敬的用户，您提交了{0}元提现申请，联动优势将会在1个工作日内进行审批，请耐心等待。
+                String title = MessageFormat.format(MessageEventType.WITHDRAW_APPLICATION_SUCCESS.getTitleTemplate(), AmountConverter.convertCentToString(amount));
+                String content = MessageFormat.format(MessageEventType.WITHDRAW_APPLICATION_SUCCESS.getContentTemplate(), AmountConverter.convertCentToString(amount));
+                mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(MessageEventType.WITHDRAW_APPLICATION_SUCCESS,
+                        Lists.newArrayList(withdrawModel.getLoginName()),
+                        title,
+                        content,
+                        withdrawModel.getId()
+                ));
+
+                mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(Lists.newArrayList(withdrawModel.getLoginName()),
+                        PushSource.ALL,
+                        PushType.WITHDRAW_APPLICATION_SUCCESS,
+                        title));
+            }
         } catch (NumberFormatException e) {
             logger.error(MessageFormat.format("Withdraw callback order is not a number (orderId = {0})", callbackRequestModel.getOrderId()));
             logger.error(e.getLocalizedMessage(), e);
@@ -163,6 +188,23 @@ public class WithdrawServiceImpl implements WithdrawService {
             withdrawModel.setNotifyTime(new Date());
             withdrawModel.setNotifyMessage(callbackRequestModel.getRetMsg());
             withdrawMapper.update(withdrawModel);
+            if (withdrawModel.getStatus() == WithdrawStatus.SUCCESS) {
+                //Title:您的{0}元提现已到账,请查收
+                //Content:尊敬的用户，您提交的{0}元提现申请已成功通过审核，请及时查收款项，感谢您选择拓天速贷。
+                String title = MessageFormat.format(MessageEventType.WITHDRAW_SUCCESS.getTitleTemplate(), AmountConverter.convertCentToString(amount));
+                String content = MessageFormat.format(MessageEventType.WITHDRAW_SUCCESS.getContentTemplate(), AmountConverter.convertCentToString(amount));
+                mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(MessageEventType.WITHDRAW_SUCCESS,
+                        Lists.newArrayList(withdrawModel.getLoginName()),
+                        title,
+                        content,
+                        withdrawModel.getId()
+                ));
+
+                mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(Lists.newArrayList(withdrawModel.getLoginName()),
+                        PushSource.ALL,
+                        PushType.WITHDRAW_SUCCESS,
+                        title));
+            }
         } catch (NumberFormatException e) {
             logger.error(MessageFormat.format("Withdraw callback order is not a number (orderId = {0})", callbackRequestModel.getOrderId()));
             logger.error(e.getLocalizedMessage(), e);

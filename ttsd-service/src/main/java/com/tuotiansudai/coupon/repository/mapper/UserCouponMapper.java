@@ -67,4 +67,6 @@ public interface UserCouponMapper {
     int findByExchangeCode(@Param("exchangeCode") String exchangeCode);
 
     List<UserCouponModel> findUsedExperienceByLoginName(@Param("loginName") String loginName);
+
+    List<UserCouponModel> findExpireAfterFiveDays();
 }
