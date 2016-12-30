@@ -45,14 +45,15 @@ public class SignInServiceImpl implements SignInService {
     @Autowired
     private CouponAssignmentService couponAssignmentService;
 
-    private static final long SIGN_IN_FULL_COUPON_ID = 1L;
+    private static final long SIGN_IN_FULL_COUPON_ID = 338L;
+    private static final int SIGN_IN_REWARD_PERIOD = 58;
 
     private enum SignInReward {
-        REWARD_OF_8_DAY(8, 0L),
-        REWARD_OF_18_DAY(18, 1L),
-        REWARD_OF_28_DAY(28, 2L),
-        REWARD_OF_38_DAY(38, 3L),
-        REWARD_OF_58_DAY(58, 4L),
+        REWARD_OF_8_DAY(8, 333L),
+        REWARD_OF_18_DAY(18, 334L),
+        REWARD_OF_28_DAY(28, 335L),
+        REWARD_OF_38_DAY(38, 336L),
+        REWARD_OF_58_DAY(58, 337L),
         NONE(0, null);
 
         final private int dayLimit;
@@ -88,12 +89,13 @@ public class SignInServiceImpl implements SignInService {
             signInPointDto = new SignInPointDto(lastSignInPointDto.getSignInCount() + 1, new Date(), getCurrentSignInPoint(lastSignInPointDto.getSignInCount() + 1), getNextSignInPoint(lastSignInPointDto.getSignInCount() + 1), false);
             signInPointDto.setFull(isFull(signInPointDto.getSignInCount()));
             signInPointDto.setCurrentRewardDesc(getCurrentRewardDesc(signInPointDto));
-            signInPointDto.setNextRewardDesc(getNextRewardDesc(signInPointDto));
         } else {
             signInPointDto = lastSignInPointDto;
             signInPointDto.setStatus(false);
             signInPointDto.setMessage("今天已经签到过了，请明天再来!");
         }
+
+        signInPointDto.setNextRewardDesc(getNextRewardDesc(signInPointDto));
 
         if (!signInPointDto.isSignIn()) {
             signInPointDto.setStatus(true);
@@ -187,7 +189,6 @@ public class SignInServiceImpl implements SignInService {
     }
 
     private SignInReward getNextSignInReward(int signInCount) {
-        final int SIGN_IN_REWARD_PERIOD = 58;
         int signInRewardDay = signInCount % SIGN_IN_REWARD_PERIOD;
         SignInReward curReward = SignInReward.REWARD_OF_58_DAY;
         for (SignInReward signInReward : SignInReward.values()) {
@@ -222,7 +223,7 @@ public class SignInServiceImpl implements SignInService {
         SignInReward signInReward = getSignInReward(signInPointDto.getSignInCount());
         if (SignInReward.NONE != signInReward) {
             CouponModel couponModel = couponService.findExchangeableCouponById(signInReward.getCouponId());
-            return MessageFormat.format("已连续签到{0}天, 获得{1}元{2}", signInPointDto.getSignInCount(), AmountConverter.convertCentToString(couponModel.getAmount()), couponModel.getCouponType().getName());
+            return MessageFormat.format("获得{0}元{1}", AmountConverter.convertCentToString(couponModel.getAmount()), couponModel.getCouponType().getName());
         } else {
             return null;
         }
@@ -234,6 +235,6 @@ public class SignInServiceImpl implements SignInService {
         }
         SignInReward signInReward = getNextSignInReward(signInPointDto.getSignInCount());
         CouponModel couponModel = couponService.findExchangeableCouponById(signInReward.getCouponId());
-        return MessageFormat.format("已连续签到{0}天, 再签到{2}天可再获得{3}元{4}", signInPointDto.getSignInCount(), signInReward.getDayLimit() - signInPointDto.getSignInCount(), AmountConverter.convertCentToString(couponModel.getAmount()), couponModel.getCouponType().getName());
+        return MessageFormat.format("再签到{0}天可再获得{1}元{2}", signInReward.getDayLimit() - (signInPointDto.getSignInCount() % SIGN_IN_REWARD_PERIOD), AmountConverter.convertCentToString(couponModel.getAmount()), couponModel.getCouponType().getName());
     }
 }
