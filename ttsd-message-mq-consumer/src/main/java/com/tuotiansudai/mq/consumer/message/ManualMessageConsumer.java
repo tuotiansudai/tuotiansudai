@@ -15,17 +15,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.text.MessageFormat;
 
 @Component
 public class ManualMessageConsumer implements MessageConsumer {
 
     private static Logger logger = LoggerFactory.getLogger(ManualMessageConsumer.class);
 
-    @Autowired
-    private MessageMapper messageMapper;
+    private final MessageMapper messageMapper;
+
+    private final UserMessageMapper userMessageMapper;
 
     @Autowired
-    private UserMessageMapper userMessageMapper;
+    public ManualMessageConsumer(MessageMapper messageMapper, UserMessageMapper userMessageMapper) {
+        this.messageMapper = messageMapper;
+        this.userMessageMapper = userMessageMapper;
+    }
 
     @Override
     public MessageQueue queue() {
@@ -35,6 +40,7 @@ public class ManualMessageConsumer implements MessageConsumer {
     @Override
     public void consume(String message) {
         if (Strings.isNullOrEmpty(message)) {
+            logger.error("[ManualMessageConsumer] message is empty");
             return;
         }
 
@@ -46,8 +52,8 @@ public class ManualMessageConsumer implements MessageConsumer {
                 UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), manualMessage.getLoginName(), messageModel.getTitle(), messageModel.getTemplate(), messageModel.getActivatedTime());
                 userMessageMapper.create(userMessageModel);
             }
-        } catch (IOException e) {
-            logger.error(e.getLocalizedMessage(), e);
+        } catch (Exception e) {
+            logger.error(MessageFormat.format("[ManualMessageConsumer] {0}", message), e);
         }
     }
 }

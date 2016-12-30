@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.Date;
 
 @Component
@@ -22,11 +23,15 @@ public class EventMessageConsumer implements MessageConsumer {
 
     private static Logger logger = LoggerFactory.getLogger(EventMessageConsumer.class);
 
-    @Autowired
-    private MessageMapper messageMapper;
+    private final MessageMapper messageMapper;
+
+    private final UserMessageMapper userMessageMapper;
 
     @Autowired
-    private UserMessageMapper userMessageMapper;
+    public EventMessageConsumer(MessageMapper messageMapper, UserMessageMapper userMessageMapper) {
+        this.messageMapper = messageMapper;
+        this.userMessageMapper = userMessageMapper;
+    }
 
     @Override
     public MessageQueue queue() {
@@ -36,6 +41,7 @@ public class EventMessageConsumer implements MessageConsumer {
     @Override
     public void consume(String message) {
         if (Strings.isNullOrEmpty(message)) {
+            logger.error("[EventMessageConsumer] message is empty");
             return;
         }
 
@@ -47,8 +53,8 @@ public class EventMessageConsumer implements MessageConsumer {
                 userMessageModel.setBusinessId(eventMessage.getBusinessId() != null ? eventMessage.getBusinessId() : null);
                 userMessageMapper.create(userMessageModel);
             }
-        } catch (IOException e) {
-            logger.error(e.getLocalizedMessage(), e);
+        } catch (Exception e) {
+            logger.error(MessageFormat.format("[EventMessageConsumer] {0}", message), e);
         }
     }
 }
