@@ -237,6 +237,18 @@
             </div>
         </div>
 
+        <h3><span>消息中心信息</span></h3>
+        <hr class="top-line"/>
+        <div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">推送消息</label>
+
+                <div class="col-sm-3">
+                    <input name="pushMessage" type="text" class="form-control">
+                </div>
+            </div>
+        </div>
+
         <h3><span>审核材料</span></h3>
         <hr class="top-line"/>
         <div>
@@ -248,34 +260,6 @@
                 </div>
             </div>
             <div class="upload-box"></div>
-        </div>
-
-        <h3><span>消息中心信息</span></h3>
-        <hr class="top-line"/>
-        <div>
-            <div class="form-group">
-                <label class="col-sm-1 control-label">是否发送信息: </label>
-
-                <div class="col-sm-4 checkbox">
-                    <input type="checkbox" class="message-send" name="message-send" id="messageSend">
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="col-sm-2 control-label">推送信息标题</label>
-
-                <div class="col-sm-3">
-                    <input name="message-title" type="text" class="form-control" id="messageTitle" disabled>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="col-sm-2 control-label">推送信息内容</label>
-
-                <div class="col-sm-3">
-                    <input name="message-content" type="text" class="form-control" id="messageContent" disabled>
-                </div>
-            </div>
         </div>
 
         <div class="form-group">

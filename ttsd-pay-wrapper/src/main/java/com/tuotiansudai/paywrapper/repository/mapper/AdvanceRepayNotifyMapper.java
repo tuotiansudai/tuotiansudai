@@ -10,10 +10,7 @@ import java.util.List;
 @Repository
 public interface AdvanceRepayNotifyMapper extends BaseCallbackMapper {
 
-    List<AdvanceRepayNotifyRequestModel> getAdvanceTodoList(@Param(value = "limitCount") int limitCount);
+    AdvanceRepayNotifyRequestModel findById(@Param(value = "id") long id);
 
     void updateStatus(@Param(value = "id") Long id, @Param(value = "status") NotifyProcessStatus status);
-
-
-
 }

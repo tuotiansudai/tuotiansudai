@@ -6,6 +6,7 @@ import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppUserMessageService;
 import com.tuotiansudai.api.util.PageValidUtils;
 import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.enums.MessageType;
 import com.tuotiansudai.message.repository.mapper.MessageMapper;
 import com.tuotiansudai.message.repository.mapper.UserMessageMapper;
 import com.tuotiansudai.message.repository.model.*;
@@ -43,7 +44,8 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
     @Override
     public BaseResponseDto<UserMessageResponseDataDto> getUserMessages(UserMessagesRequestDto requestDto) {
         String loginName = LoginUserInfo.getLoginName();
-        userMessageServices.generateUserMessages(loginName, MessageChannel.APP_MESSAGE);
+        String mobile = LoginUserInfo.getMobile();
+        userMessageServices.generateUserMessages(loginName, mobile, MessageChannel.APP_MESSAGE);
         UserMessageResponseDataDto messageDataDto = fillMessageDataDto(loginName, requestDto.getIndex(), requestDto.getPageSize());
         BaseResponseDto<UserMessageResponseDataDto> responseDto = new BaseResponseDto<>(ReturnMessage.SUCCESS);
         responseDto.setData(messageDataDto);
@@ -53,7 +55,8 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
     @Override
     public BaseResponseDto<MobileAppUnreadMessageCount> getUnreadMessageCount(BaseParamDto baseParamDto) {
         String loginName = LoginUserInfo.getLoginName();
-        long unreadMessageCount = userMessageServices.getUnreadMessageCount(loginName, MessageChannel.APP_MESSAGE);
+        String mobile = LoginUserInfo.getMobile();
+        long unreadMessageCount = userMessageServices.getUnreadMessageCount(loginName, mobile, MessageChannel.APP_MESSAGE);
         boolean existUnreadMessage = existUnreadMessage(loginName, unreadMessageCount);
         MobileAppUnreadMessageCount messageCount = new MobileAppUnreadMessageCount(unreadMessageCount, existUnreadMessage);
         BaseResponseDto<MobileAppUnreadMessageCount> responseDto = new BaseResponseDto<>(ReturnMessage.SUCCESS);
@@ -68,10 +71,10 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
         List<UserMessageDto> userMessages = userMessageModels.stream().map(userMessageModel -> {
             UserMessageDto userMessageDto = new UserMessageDto(userMessageModel);
 
-            MessageModel messageModel = messageMapper.findByIdBesidesDeleted(userMessageModel.getMessageId());
+            MessageModel messageModel = messageMapper.findById(userMessageModel.getMessageId());
             userMessageDto.setMessageType(messageModel.getMessageCategory() != null ? messageModel.getMessageCategory().getDescription() : "");
             if (messageModel.getType().equals(MessageType.EVENT)) {
-                userMessageDto.setContent(userMessageModel.getAppTitle());
+                userMessageDto.setContent(userMessageModel.getTitle());
             } else if (messageModel.getType().equals(MessageType.MANUAL)) {
                 if(Strings.isNullOrEmpty(messageModel.getTemplateTxt())) {
                     userMessageDto.setContent(messageModel.getTemplate());
@@ -116,7 +119,7 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
             return new UserMessageViewDto(userMessageId, null, null, null, null);
         }
         userMessageServices.readMessage(userMessageId);
-        MessageModel messageModel = messageMapper.findByIdBesidesDeleted(userMessageModel.getMessageId());
+        MessageModel messageModel = messageMapper.findById(userMessageModel.getMessageId());
         return new UserMessageViewDto(userMessageModel.getId(), userMessageModel.getTitle(), userMessageModel.getContent(), userMessageModel.getCreatedTime(), messageModel.getAppUrl());
     }
 

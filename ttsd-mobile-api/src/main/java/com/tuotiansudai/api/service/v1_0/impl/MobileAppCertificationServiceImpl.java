@@ -48,11 +48,11 @@ public class MobileAppCertificationServiceImpl implements MobileAppCertification
         }
 
         if (!IdentityNumberValidator.validateIdentity(certificationRequestDto.getUserIdCardNumber())) {
-            return new BaseResponseDto(ReturnMessage.CERTIFICATION_FAIL.getCode(), ReturnMessage.CERTIFICATION_FAIL.getMsg());
+            return new BaseResponseDto<>(ReturnMessage.CERTIFICATION_FAIL.getCode(), ReturnMessage.CERTIFICATION_FAIL.getMsg());
         }
 
         if (userService.isIdentityNumberExist(certificationRequestDto.getUserIdCardNumber())) {
-            return new BaseResponseDto(ReturnMessage.ID_CARD_IS_EXIST.getCode(), ReturnMessage.ID_CARD_IS_EXIST.getMsg());
+            return new BaseResponseDto<>(ReturnMessage.ID_CARD_IS_EXIST.getCode(), ReturnMessage.ID_CARD_IS_EXIST.getMsg());
         }
 
         BaseDto<PayDataDto> dto = accountService.registerAccount(registerAccountDto);

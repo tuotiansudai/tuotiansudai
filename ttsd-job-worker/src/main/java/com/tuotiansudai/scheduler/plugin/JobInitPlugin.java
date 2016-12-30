@@ -1,7 +1,6 @@
 package com.tuotiansudai.scheduler.plugin;
 
 import com.tuotiansudai.job.*;
-import com.tuotiansudai.message.job.BirthdayMessageSendJob;
 import com.tuotiansudai.util.JobManager;
 import org.apache.log4j.Logger;
 import org.quartz.CronScheduleBuilder;
@@ -77,10 +76,19 @@ public class JobInitPlugin implements SchedulerPlugin {
             platformBalanceLowNotifyJob();
         }
         if (JobType.BirthdayMessage.name().equals(schedulerName)) {
-            birthdayMessageSendJob();
+            deleteBirthdayMessageSendJob();
         }
         if (JobType.CalculateTravelLuxuryPrize.name().equalsIgnoreCase(schedulerName)) {
             deleteCalculateTravelLuxuryPrizeJob();
+        }
+        if (JobType.EventMessage.name().equals(schedulerName)) {
+            eventMessageJob();
+        }
+        if (JobType.NormalRepayCallBack.name().equalsIgnoreCase(schedulerName)) {
+            deleteNormalRepayCallBackJob();
+        }
+        if (JobType.AdvanceRepayCallBack.name().equalsIgnoreCase(schedulerName)) {
+            deleteAdvanceRepayCallBackJob();
         }
     }
 
@@ -122,7 +130,6 @@ public class JobInitPlugin implements SchedulerPlugin {
             logger.info(e.getLocalizedMessage(), e);
         }
     }
-
 
     private void createCalculateDefaultInterest() {
         try {
@@ -244,11 +251,23 @@ public class JobInitPlugin implements SchedulerPlugin {
         jobManager.deleteJob(JobType.CalculateTravelLuxuryPrize, JobType.CalculateTravelLuxuryPrize.name(), JobType.CalculateTravelLuxuryPrize.name());
     }
 
-    private void birthdayMessageSendJob() {
+    private void deleteBirthdayMessageSendJob() {
+        jobManager.deleteJob(JobType.BirthdayMessage, JobType.BirthdayMessage.name(), JobType.BirthdayMessage.name());
+    }
+
+    private void deleteNormalRepayCallBackJob() {
+        jobManager.deleteJob(JobType.NormalRepayCallBack, JobType.NormalRepayCallBack.name(), JobType.NormalRepayCallBack.name());
+    }
+
+    private void deleteAdvanceRepayCallBackJob() {
+        jobManager.deleteJob(JobType.AdvanceRepayCallBack, JobType.AdvanceRepayCallBack.name(), JobType.AdvanceRepayCallBack.name());
+    }
+
+    private void eventMessageJob() {
         try {
-            jobManager.newJob(JobType.BirthdayMessage, BirthdayMessageSendJob.class).replaceExistingJob(true)
-                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 9 * * ? *").inTimeZone(TimeZone.getTimeZone(TIMEZONE_SHANGHAI)))
-                    .withIdentity(JobType.BirthdayMessage.name(), JobType.BirthdayMessage.name()).submit();
+            jobManager.newJob(JobType.EventMessage, EventMessageJob.class).replaceExistingJob(true)
+                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 10 * * ? *").inTimeZone(TimeZone.getTimeZone(TIMEZONE_SHANGHAI)))
+                    .withIdentity(JobType.EventMessage.name(), JobType.EventMessage.name()).submit();
         } catch (SchedulerException e) {
             logger.info(e.getLocalizedMessage(), e);
         }
