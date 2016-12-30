@@ -62,22 +62,22 @@
         </div>
 
         <div class="border-dashed-square earn-commission clearfix">
-            <div class="arrow-step"></div>
-            <div class="arrow-step"></div>
+            <div class="arrow-step one"></div>
+            <div class="arrow-step two"></div>
             <dl class="earn-list clearfix">
-                <dd>
+                <dd class="one">
                     <em class="icon-tag"></em>
                     <span class="btn-bar">
                         <i class="arr-left"></i><b>发送邀请链接给好友</b><i class="arr-right"></i>
                     </span>
                 </dd>
-                <dd>
+                <dd class="two">
                     <em class="icon-tag"></em>
                     <span class="btn-bar">
                         <i class="arr-left"></i><b>好友注册并购买</b><i class="arr-right"></i>
                     </span>
                 </dd>
-                <dd>
+                <dd class="three">
                     <em class="icon-tag"></em>
                     <span class="btn-bar">
                         <i class="arr-left"></i><b>您获得好友投资本金预期年化收益的1%</b><i class="arr-right"></i>
@@ -94,19 +94,19 @@
         </div>
 
         <div class="border-dashed-square earn-commission2 clearfix">
-            <div class="arrow-step"></div>
-            <div class="arrow-step"></div>
+            <div class="arrow-step one"></div>
+            <div class="arrow-step two"></div>
 
             <div class="invite-group-list">
-                <div class="invite-group">
+                <div class="invite-group one">
                     <em class="icon-tag"></em>
                     <span>好友邀请其他人注册并购买</span>
                 </div>
-                <div class="invite-group">
+                <div class="invite-group two">
                     <em class="icon-tag"></em>
                     <span>您获得投资本金预期年化收益的1%</span>
                 </div>
-                <div class="invite-group">
+                <div class="invite-group three">
                     <em class="icon-tag"></em>
                     <span>好友获得投资本金预期年化收益的1%</span>
                 </div>
@@ -234,7 +234,7 @@
                     <td>156****8605</td>
                     <td>推荐好友投资获得奖励已超过12,000元</td>
                 </tr>
-                <tr>
+                <tr class="even">
                     <td>02</td>
                     <td>135****8850</td>
                     <td>推荐好友投资获得奖励已超过11,000元</td>
@@ -244,7 +244,7 @@
                     <td>186****3390</td>
                     <td>推荐好友投资获得奖励已超过7,000元</td>
                 </tr>
-                <tr>
+                <tr class="even">
                     <td>04</td>
                     <td>186****3306</td>
                     <td>推荐好友投资获得奖励已超过6,000元</td>

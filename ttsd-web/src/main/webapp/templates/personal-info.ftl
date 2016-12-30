@@ -60,7 +60,7 @@
         </#if>
         <li><span class="info-title"> 免密投资</span>
             <#if noPasswordInvest>
-                <em class="info">您已开启免密投资，投资理财快人一步</em>
+                <em class="info">您已开启免密投资，投资快人一步</em>
                 <span class="binding-set">
                     <i class="fa fa-check-circle ok"></i>已开启<a class="setlink setTurnOffNoPasswordInvest" href="javascript:void(0);">关闭</a>
                 </span>

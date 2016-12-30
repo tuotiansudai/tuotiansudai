@@ -3,6 +3,13 @@
     <div class="about-us-container" id="WhetherApp">
         <h2 class="column-title"><em>拓天公告</em></h2>
         <div id="noticeList"></div>
+        <script type="text/html" id="noticeListTpl">
+        	<ul class="notice-list">
+			    {{each records}}
+			    <li><i>●</i><a href="/announce/{{$value.id}}">{{$value.title}}</a> <span>{{$value.updateTime.substr(0,10)}}</span></li>
+			    {{/each}}
+			</ul>
+        </script>
         <div class="pagination" data-url="/announce/list"></div>
     </div>
 </@global.main>
