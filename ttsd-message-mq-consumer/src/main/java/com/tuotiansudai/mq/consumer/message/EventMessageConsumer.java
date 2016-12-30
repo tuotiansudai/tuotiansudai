@@ -9,6 +9,7 @@ import com.tuotiansudai.message.repository.model.UserMessageModel;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
 import com.tuotiansudai.util.JsonConverter;
+import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +48,17 @@ public class EventMessageConsumer implements MessageConsumer {
 
         try {
             EventMessage eventMessage = JsonConverter.readValue(message, EventMessage.class);
+            if (eventMessage == null || Strings.isNullOrEmpty(eventMessage.getTitle()) || Strings.isNullOrEmpty(eventMessage.getContent()) || eventMessage.getEventType() == null || CollectionUtils.isEmpty(eventMessage.getLoginNames())) {
+                logger.error(MessageFormat.format("[EventMessageConsumer] message({0}) is invalid", message));
+                return;
+            }
+
             MessageModel messageModel = messageMapper.findActiveByEventType(eventMessage.getEventType());
+            if (messageModel == null) {
+                logger.error(MessageFormat.format("[EventMessageConsumer] message({0}) event type not found", message));
+                return;
+            }
+
             for (String loginName : eventMessage.getLoginNames()) {
                 UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), loginName, eventMessage.getTitle(), eventMessage.getContent(), new Date());
                 userMessageModel.setBusinessId(eventMessage.getBusinessId() != null ? eventMessage.getBusinessId() : null);

@@ -39,7 +39,13 @@ public class PushMessageConsumer implements MessageConsumer {
         }
 
         try {
-            pushClient.sendJPush(JsonConverter.readValue(message, PushMessage.class));
+            PushMessage pushMessage = JsonConverter.readValue(message, PushMessage.class);
+            if (pushMessage == null || pushMessage.getPushType() == null || pushMessage.getPushSource() == null || Strings.isNullOrEmpty(pushMessage.getContent())) {
+                logger.error(MessageFormat.format("[PushMessageConsumer] message ({0}) is invalid", message));
+                return;
+            }
+
+            pushClient.sendJPush(pushMessage);
         } catch (Exception e) {
             logger.error(MessageFormat.format("[PushMessageConsumer] {0}", message), e);
         }

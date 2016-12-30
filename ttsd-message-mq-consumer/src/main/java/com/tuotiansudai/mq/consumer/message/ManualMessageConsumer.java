@@ -9,6 +9,7 @@ import com.tuotiansudai.message.repository.model.UserMessageModel;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
 import com.tuotiansudai.util.JsonConverter;
+import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,8 +48,17 @@ public class ManualMessageConsumer implements MessageConsumer {
         try {
             ManualMessage manualMessage = JsonConverter.readValue(message, ManualMessage.class);
 
+            if (manualMessage == null || CollectionUtils.isEmpty(manualMessage.getMessageIds())) {
+                logger.error(MessageFormat.format("[ManualMessageConsumer] message({0}) is invalid", message));
+                return;
+            }
+
             for (long messageId : manualMessage.getMessageIds()) {
                 MessageModel messageModel = messageMapper.findActiveById(messageId);
+                if (messageModel == null) {
+                    logger.error(MessageFormat.format("[ManualMessageConsumer] message({0}) not found", message));
+                    continue;
+                }
                 UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), manualMessage.getLoginName(), messageModel.getTitle(), messageModel.getTemplate(), messageModel.getActivatedTime());
                 userMessageMapper.create(userMessageModel);
             }
