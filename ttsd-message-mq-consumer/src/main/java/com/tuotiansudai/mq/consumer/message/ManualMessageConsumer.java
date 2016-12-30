@@ -59,8 +59,10 @@ public class ManualMessageConsumer implements MessageConsumer {
                     logger.error(MessageFormat.format("[ManualMessageConsumer] message({0}) not found", message));
                     continue;
                 }
-                UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), manualMessage.getLoginName(), messageModel.getTitle(), messageModel.getTemplate(), messageModel.getActivatedTime());
-                userMessageMapper.create(userMessageModel);
+                if (userMessageMapper.countByLoginNameAndMessageId(manualMessage.getLoginName(), messageId) == 0) {
+                    UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), manualMessage.getLoginName(), messageModel.getTitle(), messageModel.getTemplate(), messageModel.getActivatedTime());
+                    userMessageMapper.create(userMessageModel);
+                }
             }
         } catch (Exception e) {
             logger.error(MessageFormat.format("[ManualMessageConsumer] {0}", message), e);

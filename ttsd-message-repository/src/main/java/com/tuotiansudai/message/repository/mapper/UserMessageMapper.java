@@ -26,4 +26,7 @@ public interface UserMessageMapper {
     void update(UserMessageModel model);
 
     UserMessageModel findById(long id);
+
+    long countByLoginNameAndMessageId(@Param("loginName") String loginName,
+                                      @Param("messageId") long messageId);
 }
