@@ -165,6 +165,9 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
     private List<LoanResponseDataDto> convertLoanDto(String loginName, List<LoanModel> loanList) {
         List<LoanResponseDataDto> loanDtoList = Lists.newArrayList();
         DecimalFormat decimalFormat = new DecimalFormat("######0.##");
+        if(CollectionUtils.isEmpty(loanList)){
+            return loanDtoList;
+        }
         for (LoanModel loan : loanList) {
             LoanResponseDataDto loanResponseDataDto = new LoanResponseDataDto();
             loanResponseDataDto.setLoanId("" + loan.getId());

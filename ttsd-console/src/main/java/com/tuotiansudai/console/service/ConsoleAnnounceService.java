@@ -76,7 +76,7 @@ public class ConsoleAnnounceService {
         messageCompleteDto.setChannels(Lists.newArrayList(MessageChannel.WEBSITE, MessageChannel.APP_MESSAGE));
         messageCompleteDto.setMessageCategory(MessageCategory.NOTIFY);
         messageCompleteDto.setWebUrl(MessageFormat.format("/announce/{0}", announceDto.getId()));
-        messageCompleteDto.setAppUrl(AppUrl.NOTIFY);
+        messageCompleteDto.setAppUrl(AppUrl.MESSAGE_CENTER_LIST);
         messageCompleteDto.setJpush(true);
         messageCompleteDto.setPushType(PushType.IMPORTANT_EVENT);
         messageCompleteDto.setPushSource(PushSource.ALL);
