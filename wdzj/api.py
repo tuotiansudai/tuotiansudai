@@ -60,9 +60,9 @@ class LoanDetailHandler(BaseHandler):
     totalAmountSQL = "select IFNULL(truncate(sum(loan_amount)/100,2),0) totalAmount from loan where DATE_FORMAT(raising_complete_time, '%%Y-%%m-%%d') = %s"
 
     loanDetailSQL = '''
-        select id as projectId, `name` as title, CAST(truncate(loan_amount/100, 2) as char(12)) as amount, 100 as schedule, CONCAT((base_rate + activity_rate)*100,'%%') as interestRate, duration as deadline,
-        '天' as deadlineUnit, 0 as reward, '抵押标' as type, type as repaymentType, md5(agent_login_name) as userName, raising_complete_time as successTime
-        from loan where DATE_FORMAT(raising_complete_time,'%%Y-%%m-%%d') = %s limit %s, %s;
+        select l.id as projectId, l.`name` as title, CAST(truncate(l.loan_amount/100, 2) as char(12)) as amount, 100 as schedule, CONCAT((l.base_rate + l.activity_rate)*100,'%%') as interestRate, l.duration as deadline,
+        '天' as deadlineUnit, 0 as reward, '抵押标' as type, l.type as repaymentType, UPPER(md5(ld.identity_number)) as userName, l.raising_complete_time as successTime
+        from loan l join loaner_details ld on ld.loan_id = l.id where DATE_FORMAT(l.raising_complete_time,'%%Y-%%m-%%d') = %s limit %s, %s;
     '''
 
     investDetailSQL = '''

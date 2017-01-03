@@ -1,5 +1,6 @@
 package com.tuotiansudai.paywrapper.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.anxin.service.AnxinSignService;
 import com.tuotiansudai.client.MQWrapperClient;
@@ -7,16 +8,14 @@ import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
-import com.tuotiansudai.dto.SmsDataDto;
 import com.tuotiansudai.dto.sms.InvestSmsNotifyDto;
-import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.job.AnxinCreateContractJob;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.job.LoanOutSuccessHandleJob;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.client.model.MessageTopic;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
-import com.tuotiansudai.paywrapper.client.PayGateWrapper;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.MerBindProjectMapper;
@@ -36,17 +35,18 @@ import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.JobManager;
 import com.tuotiansudai.util.SendCloudMailUtil;
-import com.tuotiansudai.util.quartz.SchedulerBuilder;
 import com.tuotiansudai.util.quartz.TriggeredJobBuilder;
 import com.umpay.api.exception.ReqDataException;
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.*;
+import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.quartz.SchedulerException;
 import org.quartz.core.QuartzSchedulerResources;
 import org.springframework.test.context.ContextConfiguration;
@@ -59,15 +59,16 @@ import java.util.Map;
 import java.util.UUID;
 
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.anyBoolean;
+import static org.mockito.Mockito.anyMap;
+import static org.mockito.Mockito.anyObject;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.verify;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml", "classpath:dispatcher-servlet.xml"})
@@ -84,9 +85,6 @@ public class LoanServiceTest {
     private AccountMapper accountMapper;
 
     @Mock
-    private PayGateWrapper payGateWrapper;
-
-    @Mock
     private PaySyncClient paySyncClient;
 
     @Mock
@@ -99,13 +97,7 @@ public class LoanServiceTest {
     private RedisWrapperClient redisWrapperClient;
 
     @Mock
-    private AmountTransfer amountTransfer;
-
-    @Mock
     private JobManager jobManager;
-
-    @Mock
-    private SchedulerBuilder schedulerBuilder;
 
     @Mock
     private RepayGeneratorService repayGeneratorService;
@@ -186,7 +178,7 @@ public class LoanServiceTest {
         return loanModel;
     }
 
-    private InvestModel getFakeInvestModel(long loanId,long investId,String loginName) {
+    private InvestModel getFakeInvestModel(long loanId, long investId, String loginName) {
         InvestModel model = new InvestModel(1, loanId, null, 1000000L, loginName, new DateTime().withTimeAtStartOfDay().toDate(), Source.WEB, null, 0.1);
         model.setStatus(InvestStatus.SUCCESS);
         return model;
@@ -199,7 +191,7 @@ public class LoanServiceTest {
         LoanModel loanModel = this.fakeLoanModel();
         loanModel.setStatus(LoanStatus.RECHECK);
         List<InvestModel> investModels = Lists.newArrayList(getFakeInvestModel(loanModel.getId(), 0, loginName));
-        BaseDto<PayDataDto> baseDto = new BaseDto();
+        BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto payDataDto = new PayDataDto();
         payDataDto.setStatus(true);
         baseDto.setData(payDataDto);
@@ -229,12 +221,13 @@ public class LoanServiceTest {
         when(accountMapper.findByLoginName(anyString())).thenReturn(accountModel);
         when(paySyncClient.send(eq(MerUpdateProjectMapper.class), any(MerUpdateProjectRequestModel.class), eq(MerUpdateProjectResponseModel.class))).thenReturn(merUpdateProjectResponseModel);
         when(jobManager.newJob(any(JobType.class), eq(LoanOutSuccessHandleJob.class))).thenReturn(triggeredJobBuilder);
+        doNothing().when(mqWrapperClient).sendMessage(any(MessageQueue.class), anyObject());
 
         BaseDto<PayDataDto> baseDto1 = loanService.loanOut(loanModel.getId());
         verify(paySyncClient, times(1)).send(eq(ProjectTransferMapper.class), any(ProjectTransferRequestModel.class), eq(ProjectTransferResponseModel.class));
-        verify(redisWrapperClient,times(1)).setnx(anyString(), anyString());
-        verify(redisWrapperClient,times(2)).hset(anyString(), anyString(), anyString());
-        verify(redisWrapperClient,times(2)).hget(anyString(), anyString());
+        verify(redisWrapperClient, times(1)).setnx(anyString(), anyString());
+        verify(redisWrapperClient, times(2)).hset(anyString(), anyString(), anyString());
+        verify(redisWrapperClient, times(2)).hget(anyString(), anyString());
         assertTrue(baseDto1.getData().getStatus());
 
         loanModel.setStatus(LoanStatus.RECHECK);
@@ -246,7 +239,7 @@ public class LoanServiceTest {
     }
 
     @Test
-    public void shouldPostLoanOutIsOk() throws PayException, SchedulerException, AmountTransferException {
+    public void shouldPostLoanOutIsOk() throws PayException, SchedulerException, AmountTransferException, JsonProcessingException {
         UserModel userModel = getUserModelTest();
         LoanModel loanModel = getFakeLoan(userModel.getLoginName(), userModel.getLoginName(), LoanStatus.RAISING, ActivityType.NORMAL);
         InvestModel investModel = new InvestModel();
@@ -281,7 +274,6 @@ public class LoanServiceTest {
         loanService.loanOutCallback(null, null);
         verify(mqWrapperClient, times(1)).publishMessage(any(MessageTopic.class), anyString());
         verify(paySyncClient, times(1)).send(eq(MerUpdateProjectMapper.class), any(MerUpdateProjectRequestModel.class), eq(MerUpdateProjectResponseModel.class));
-        verify(amountTransfer, times(1)).transferInBalance(anyString(), anyLong(), anyLong(), any(UserBillBusinessType.class), anyString(), anyString());
     }
 
     public UserModel getUserModelTest() {
@@ -296,7 +288,7 @@ public class LoanServiceTest {
         return userModelTest;
     }
 
-    private LoanModel getFakeLoan(String loanerLoginName, String agentLoginName, LoanStatus loanStatus,ActivityType activityType) {
+    private LoanModel getFakeLoan(String loanerLoginName, String agentLoginName, LoanStatus loanStatus, ActivityType activityType) {
         LoanModel fakeLoanModel = new LoanModel();
         fakeLoanModel.setId(111l);
         fakeLoanModel.setName("loanName");

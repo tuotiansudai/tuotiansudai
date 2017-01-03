@@ -47,7 +47,7 @@ public class MobileAppClientStatisticsFilter implements Filter {
                 statistics.statClientParams(param);
             }
         } catch (Exception e) {
-            log.error(e);
+            log.error(e.getLocalizedMessage(), e);
         }
     }
 

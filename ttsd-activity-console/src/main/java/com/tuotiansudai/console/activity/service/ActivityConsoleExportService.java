@@ -3,6 +3,7 @@ package com.tuotiansudai.console.activity.service;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.tuotiansudai.activity.repository.dto.AnnualPrizeDto;
 import com.tuotiansudai.activity.repository.dto.AutumnExportDto;
 import com.tuotiansudai.activity.repository.dto.NotWorkDto;
 import com.tuotiansudai.activity.repository.mapper.IPhone7InvestLotteryMapper;
@@ -50,6 +51,9 @@ public class ActivityConsoleExportService {
 
     @Autowired
     private UserLotteryPrizeMapper userLotteryPrizeMapper;
+
+    @Autowired
+    private ActivityConsoleAnnualService activityConsoleAnnualService;
 
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.mid.autumn.startTime}\")}")
     private Date activityAutumnStartTime;
@@ -235,5 +239,14 @@ public class ActivityConsoleExportService {
         List<NotWorkDto> notWorkDtos = activityConsoleNotWorkService.findNotWorkPagination(index, pageSize).getRecords();
 
         return notWorkDtos.stream().map(ExportCsvUtil::dtoToStringList).collect(Collectors.toList());
+    }
+
+    public List<List<String>> buildAnnualCsvList() {
+        //全部导出
+        final int index = 1;
+        final int pageSize = 1000000;
+        List<AnnualPrizeDto> annualPrizeDtos = activityConsoleAnnualService.findAnnualList(index, pageSize, null).getRecords();
+
+        return annualPrizeDtos.stream().map(ExportCsvUtil::dtoToStringList).collect(Collectors.toList());
     }
 }

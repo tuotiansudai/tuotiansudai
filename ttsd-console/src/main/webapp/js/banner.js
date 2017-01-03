@@ -74,12 +74,12 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapSel
                         if ($self.hasClass('webImageUrl')) {
                             $('.banner-webImageUrl').val(data.title);
                             $('.webImageUrlImage').html('');
-                            $('.webImageUrlImage').append('<img style="width:100%" src="/' + data.title + '" alt="大图">');
+                            $('.webImageUrlImage').append('<img style="width:100%" src="' + data.title + '" alt="大图">');
                         }
                         if ($self.hasClass('appImageUrl')) {
                             $('.banner-appImageUrl').val(data.title)
                             $('.appImageUrlImage').html('');
-                            $('.appImageUrlImage').append('<img style="width:100%" src="/' + data.title + '" alt="小图">');
+                            $('.appImageUrlImage').append('<img style="width:100%" src="' + data.title + '" alt="小图">');
                         }
                     }
                 });
