@@ -40,6 +40,9 @@ public class RedEnvelopSplitActivityService {
 
     private static List<Long> coupons = Lists.newArrayList(333L, 334L, 335L, 336L, 337L, 338L);
 
+    @Value("${web.server}")
+    private String domainName;
+
     private static String REFERRER_TITLE = "您的好友%s送你三重好礼";
 
     private static String REFERRER_DESCRIPTION = "完成注册即可领取8.88元现金红包+5888元体验金+588元优惠券";
@@ -70,7 +73,7 @@ public class RedEnvelopSplitActivityService {
 
         UserModel userModel = userMapper.findByLoginName(loginName);
         RedEnvelopSplitActivityDto redEnvelopSplitActivityDto = new RedEnvelopSplitActivityDto(String.format(REFERRER_TITLE, userModel.getUserName()),
-                REFERRER_DESCRIPTION, "http://192.168.60.196:8888/loan-list");
+                REFERRER_DESCRIPTION, domainName + "activity/red-envelop-split/referrer");
         String paramJson = "";
         try {
             paramJson = JsonConverter.writeValueAsString(redEnvelopSplitActivityDto);
