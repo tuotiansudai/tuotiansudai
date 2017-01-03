@@ -181,6 +181,35 @@ define(['jquery'], function ($) {
             .always(function() {
                 callbackAlways && callbackAlways();
             });
+    },
+        //倒计时
+        countDownLoan:function(option,callback) {
+        var defaultOpt={
+            btnDom:'',
+            time:60,
+            textCounting:'秒后重新发送'
+        };
+        var options = $.extend({},defaultOpt,option),
+            downtimer;
+        var $countBtn= options.btnDom;
+
+        var countDownStart=function() {
+            $countBtn.text(options.time-- + options.textCounting).prop('disabled',true).addClass('count-downing');
+            if(options.time==0) {
+                //结束倒计时
+                clearInterval(downtimer);
+                callback && callback();
+                $countBtn.text('重新发送').prop('disabled',false).removeClass('count-downing');
+
+            }
+        }
+        if(options.time>0) {
+            countDownStart();//立即调用一次，解决延迟加载的问题
+            $countBtn.val(options.textCounting);
+            downtimer=setInterval(function () {
+                countDownStart();
+            },1000);
+        }
     }
     };
 

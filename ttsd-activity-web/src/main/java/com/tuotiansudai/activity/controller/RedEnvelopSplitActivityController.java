@@ -17,10 +17,7 @@ import com.tuotiansudai.spring.security.MyAuthenticationUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
@@ -64,9 +61,10 @@ public class RedEnvelopSplitActivityController {
                                  @RequestParam(value = "channel", required = false) String channel) {
         ModelAndView modelAndView = new ModelAndView("/activities/red-envelop-referrer", "responsive", true);
         modelAndView.addObject("loginName", loginName);
-        modelAndView.addObject("channel", channel);
+        modelAndView.addObject("channels", channel);
         UserModel userModel = userMapper.findByLoginName(loginName);
         modelAndView.addObject("userName", userModel != null ? userModel.getUserName() : null);
+        modelAndView.addObject("registerStatus", "referrer");
         return modelAndView;
     }
 
@@ -79,13 +77,26 @@ public class RedEnvelopSplitActivityController {
         modelAndView.addObject("registerStatus", "before");
         modelAndView.addObject("loginName", loginName);
         modelAndView.addObject("mobile", mobile);
+        modelAndView.addObject("channels", channel);
+        modelAndView.addObject("userName", "");
         return modelAndView;
     }
 
     @RequestMapping(value = "/user-register", method = RequestMethod.POST)
-    public ModelAndView userRegister(@Valid @ModelAttribute RegisterUserDto registerUserDto) {
+    @ResponseBody
+    public boolean userRegister(@RequestParam(value = "referrer", required = false) String loginName,
+                                     @RequestParam(value = "captcha", required = false) String captcha,
+                                     @RequestParam(value = "password", required = false) String password,
+                                     @RequestParam(value = "mobile", required = false) String mobile,
+                                     @RequestParam(value = "channel", required = false) String channel) {
 
         boolean isRegisterSuccess = false;
+        RegisterUserDto registerUserDto = new RegisterUserDto();
+        registerUserDto.setMobile(mobile);
+        registerUserDto.setChannel(channel);
+        registerUserDto.setReferrer(loginName);
+        registerUserDto.setCaptcha(captcha);
+        registerUserDto.setPassword(password);
         try {
             logger.info(MessageFormat.format("[Register User {0}] controller starting...", registerUserDto.getMobile()));
             isRegisterSuccess = this.userService.registerUser(registerUserDto);
@@ -105,10 +116,7 @@ public class RedEnvelopSplitActivityController {
                 couponAssignmentService.assignUserCoupon(registerUserDto.getMobile(), WEIXIN_REFERRER_COUPON_ID);
             }
         }
-
-        ModelAndView modelAndView = new ModelAndView("/activities/red-envelop-referrer", "responsive", true);
-        modelAndView.addObject("registerStatus", "alreadyRegister");
-        return modelAndView;
+        return isRegisterSuccess;
     }
 
 }

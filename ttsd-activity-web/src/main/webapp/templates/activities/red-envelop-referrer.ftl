@@ -4,11 +4,17 @@
 
         <div class="register-section-box">
             <div class="invite-box">
-                <em class="message-tip">您的好友王强送你</em>
+                <#if registerStatus=='referrer'>
+                <em class="message-tip">您的好友${userName}送你</em>
+                </#if>
+                <#if registerStatus=='before'>
+                    <em class="message-tip">恭喜您！您已获得</em>
+                </#if>
                 <span class="amount"><i>8.88</i>元</span>
                 <span class="kind">现金红包</span>
             </div>
 
+    <#if registerStatus=='referrer'>
             <div class="flow-box step-one">
                 <form id="phoneForm" name="phoneForm" method="post" action="/activity/red-envelop-split/before-register">
                     <input type="text" name="mobile" placeholder="请输入您的手机号">
@@ -17,32 +23,36 @@
                     <button type="submit" class="normal-button">立即领取8.88元红包</button>
                 </form>
             </div>
-
+    </#if>
+    <#if registerStatus=='before'>
             <div class="flow-box step-two">
                 <span class="reward-msg">
                     <em>将红包存入您的账户，开始提现吧！</em>
-                    点击“获取验证码”，将会给<i class="phone">13026387149</i>发送短信验证码
+                    点击“获取验证码”，将会给<i class="phone">${mobile}</i>发送短信验证码
                 </span>
-                <form id="captchaForm" name="captchaForm" action="/user-register" method="post">
+                <form id="registerForm" name="registerForm" >
                     <span class="get-captcha">
                          <input type="text" name="captcha" placeholder="请输入您的验证码">
                         <button type="button" class="btn-captcha">获取验证码</button>
                     </span>
 
-                    <input type="text" name="phone" placeholder="请设置您的登录密码(6-20位数字字母组合)">
+                    <input type="text" name="password" placeholder="请设置您的登录密码(6-20位数字字母组合)">
+                    <input type="hidden" name="mobile" value="${mobile}">
+                    <input type="hidden" name="channel" value="${channels}">
+                    <input type="hidden" name="referrer" value="${loginName}">
                     <button type="submit" class="normal-button">立即领取8.88元红包</button>
                     <span class="agreement">领取即同意拓天速贷《服务协议》</span>
                 </form>
             </div>
+    </#if>
 
-            <div class="flow-box step-three">
+            <div class="flow-box step-three" style="display: none">
                 <span class="reward-msg">
                     <em>恭喜您！您已将红包存入账户。</em>
                     <em>立即使用红包提现吧！</em>
                 </span>
-                    <button type="button" class="normal-button">立即下载APP提现</button>
+                    <button type="button" class="normal-button" id="downloadApp">立即下载APP提现</button>
             </div>
-
         </div>
 
         <div class="benefit-box">

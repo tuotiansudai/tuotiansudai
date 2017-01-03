@@ -1,10 +1,8 @@
 require(['jquery', 'layerWrapper','commonFun','validator'], function($,layer,commonFun,validator) {
 
     $(function() {
+        var $redEnvelopReferrer=$('#redEnvelopReferrer');
         var $redEnvelopSplit=$('#redEnvelopSplit');
-        var  $redEnvelopReferrer=$('#redEnvelopReferrer');
-        var phoneForm = document.getElementById('phoneForm');
-
         //会员发红包
         (function () {
             if(!$redEnvelopSplit.length) {
@@ -23,11 +21,11 @@ require(['jquery', 'layerWrapper','commonFun','validator'], function($,layer,com
         //被邀请人注册
         //第一步，输入手机号
         (function() {
-            if(!$redEnvelopReferrer.length) {
+            var phoneForm=globalFun.$('#phoneForm');
+            if(!phoneForm) {
                 return;
             }
             var validatorMobile = new validator();
-            var phoneForm=globalFun.$('#phoneForm');
             var locationUrl=location.href;
             var parseURL=globalFun.parseURL(locationUrl),
                 channel=parseURL.params.channel,
@@ -55,12 +53,106 @@ require(['jquery', 'layerWrapper','commonFun','validator'], function($,layer,com
                     return;
                 }
                 else {
-                    debugger
                     phoneForm.submit();
                 }
             }
+        })();
 
+        //第二步：获取验证码注册
+        (function() {
+            var registerForm=globalFun.$('#registerForm');
+            var $fetchCaptcha=$(registerForm).find('.btn-captcha');
+            if(!$(registerForm).length) {
+                return;
+            }
 
+            var validatorRegister = new validator();
+            validatorRegister.add(registerForm.captcha, [{
+                strategy: 'isNonEmpty',
+                errorMsg: '验证码不能为空'
+            },{
+                strategy: 'isNumber:6',
+                errorMsg: '验证码为6位数字'
+            }]);
+
+            validatorRegister.add(registerForm.password, [{
+                strategy: 'isNonEmpty',
+                errorMsg: '密码不能为空'
+            }, {
+                strategy: 'checkPassword',
+                errorMsg: '密码为6位至20位，不能全是数字'
+            }]);
+
+            //获取手机验证码
+            $fetchCaptcha.on('click',function(event) {
+                var $this=$(this);
+                var mobile=registerForm.mobile.value;
+                event.preventDefault();
+                $this.prop('disabled',true);
+
+                var ajaxOption={
+                        url: '/register/user/'+mobile+'/send-register-captcha',
+                        type:'POST'
+                    };
+                commonFun.useAjax(ajaxOption,function(responseData) {
+                    $fetchCaptcha.prop('disabled',false);
+                    //刷新验证码
+                    var data = responseData.data;
+                    if (data.status && !data.isRestricted) {
+                        //获取手机验证码成功，关闭弹框，并开始倒计时
+                        commonFun.countDownLoan({
+                            btnDom:$fetchCaptcha
+                        });
+
+                    } else if (!data.status && data.isRestricted) {
+                        layer.msg('短信发送频繁，请稍后再试');
+
+                    } else if (!data.status && !data.isRestricted) {
+                        layer.msg('图形验证码不正确');
+                    }
+                });
+
+            });
+
+            registerForm.onsubmit = function(event) {
+                event.preventDefault();
+                var reInputs=$(registerForm).find('input:visible');
+                var errorMsg;
+
+                for(var i=0,len=reInputs.length;i<len;i++) {
+                    errorMsg = validatorRegister.start(reInputs[i]);
+                    if(errorMsg) {
+                        layer.msg(errorMsg);
+                        break;
+                    }
+                }
+                if (!errorMsg) {
+                    commonFun.useAjax({
+                        url: '/activity/red-envelop-split/user-register',
+                        type:'POST',
+                        data:$(registerForm).serialize()
+                    },function(responseData) {
+                        if(responseData) {
+                            var $stepTwo=$('.step-two',$redEnvelopReferrer);
+                            var $stepThree=$('.step-three',$redEnvelopReferrer);
+                            $stepTwo.hide();
+                            $stepThree.show();
+                        }
+                        else {
+                            layer.msg('验证码不正确');
+                        }
+                    });
+                }
+            };
+        })();
+
+        //第三步：下载APP提现
+        (function() {
+            var downloadApp=globalFun.$('#downloadApp');
+            if(!downloadApp) {
+                return;
+            }
+            globalFun.addEventHandler(downloadApp,'click',globalFun.toExperience.bind(this));
         })();
     })
 });

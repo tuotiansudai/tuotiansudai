@@ -112,6 +112,7 @@
                 <beans:value>/activity/autumn/**</beans:value>
                 <beans:value>/activity/point-draw/task-draw</beans:value>
                 <beans:value>/activity/red-envelop-split/before-register</beans:value>
+                <beans:value>/activity/red-envelop-split/user-register</beans:value>
             </beans:list>
         </beans:property>
     </beans:bean>

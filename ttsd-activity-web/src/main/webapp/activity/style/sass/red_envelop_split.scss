@@ -105,6 +105,9 @@ body {
           border-left: 1px solid #99978d;
           border-top-left-radius: 0;
           border-bottom-left-radius: 0;
+          &[disabled="disabled"] {
+            color: #ccc;
+          }
         }
       }
 
