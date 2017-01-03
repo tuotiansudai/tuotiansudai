@@ -55,7 +55,6 @@ class Article extends React.Component {
 	render() {
 		return (
 		    <div ref="scrollWrap" className={main}>
-		    	<a className="back-link" href="#/media-center"></a>
 				<article>
 					<h1>{this.state.data.title}</h1>
 					<section className="meta">
@@ -72,6 +71,7 @@ class Article extends React.Component {
 						<Praise className="pull-right" likeCount={this.state.data.likeCount} id={this.state.data.articleId}></Praise>
 					</section>
 				</article>
+				<a className="back-link" href="#/media-center"></a>
 			</div>
 		);
 	}
