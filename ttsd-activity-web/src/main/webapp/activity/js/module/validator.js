@@ -133,7 +133,7 @@ define(['jquery','commonFun'], function ($,commonFun) {
             commonFun.useAjax({
                 type:'GET',
                 async: false,
-                url:'/register/mobile/'+this.value+'/is-register'
+                url:'/register/user/mobile/'+this.value+'/is-exist'
             },function(response) {
                 if(response.data.status) {
                     // 如果为true说明手机已存在或已注册

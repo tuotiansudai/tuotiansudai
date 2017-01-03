@@ -55,6 +55,7 @@ require(['jquery', 'layerWrapper','commonFun','validator'], function($,layer,com
                     return;
                 }
                 else {
+                    debugger
                     phoneForm.submit();
                 }
             }

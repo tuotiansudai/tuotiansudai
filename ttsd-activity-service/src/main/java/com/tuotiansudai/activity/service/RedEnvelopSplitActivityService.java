@@ -88,6 +88,11 @@ public class RedEnvelopSplitActivityService {
     }
 
     public void beforeRegisterUser(String loginName, String referrerMobile, String channel){
+
+        if(prepareUserMapper.findByMobile(referrerMobile) != null){
+            return;
+        }
+
         UserModel userModel = userMapper.findByLoginName(loginName);
         PrepareUserModel prepareUserModel = new PrepareUserModel();
         prepareUserModel.setReferrerLoginName(loginName);

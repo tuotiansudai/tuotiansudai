@@ -62,7 +62,7 @@ public class RedEnvelopSplitActivityController {
     }
 
     @RequestMapping(value = "/before-register", method = RequestMethod.POST)
-    public ModelAndView register(@RequestParam(value = "loginName", required = false) String loginName,
+    public ModelAndView beforeRegister(@RequestParam(value = "loginName", required = false) String loginName,
                                  @RequestParam(value = "mobile", required = false) String mobile,
                                  @RequestParam(value = "channel", required = false) String channel) {
         redEnvelopSplitActivityService.beforeRegisterUser(loginName, mobile, channel);
@@ -70,12 +70,11 @@ public class RedEnvelopSplitActivityController {
         modelAndView.addObject("registerStatus", "before");
         modelAndView.addObject("loginName", loginName);
         modelAndView.addObject("mobile", mobile);
-        modelAndView.addObject("channel", channel);
         return modelAndView;
     }
 
     @RequestMapping(value = "/user-register", method = RequestMethod.POST)
-    public ModelAndView register(@Valid @ModelAttribute RegisterUserDto registerUserDto) {
+    public ModelAndView userRegister(@Valid @ModelAttribute RegisterUserDto registerUserDto) {
 
         boolean isRegisterSuccess = false;
         try {

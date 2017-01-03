@@ -10,7 +10,7 @@
             </div>
 
             <div class="flow-box step-one">
-                <form id="phoneForm" name="phoneForm" method="post" action="/before-register">
+                <form id="phoneForm" name="phoneForm" method="post" action="/activity/red-envelop-split/before-register">
                     <input type="text" name="mobile" placeholder="请输入您的手机号">
                     <input type="hidden" name="loginName" value="">
                     <input type="hidden" name="channel" value="">
