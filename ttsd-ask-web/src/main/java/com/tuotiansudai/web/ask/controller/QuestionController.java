@@ -1,8 +1,8 @@
 package com.tuotiansudai.web.ask.controller;
 
-import com.tuotiansudai.ask.repository.dto.QuestionDto;
-import com.tuotiansudai.ask.repository.dto.QuestionRequestDto;
-import com.tuotiansudai.ask.repository.dto.QuestionResultDataDto;
+import com.tuotiansudai.ask.dto.QuestionDto;
+import com.tuotiansudai.ask.dto.QuestionRequestDto;
+import com.tuotiansudai.ask.dto.QuestionResultDataDto;
 import com.tuotiansudai.ask.repository.model.Tag;
 import com.tuotiansudai.ask.service.AnswerService;
 import com.tuotiansudai.ask.service.QuestionService;
