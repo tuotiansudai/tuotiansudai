@@ -7,8 +7,10 @@ import com.tuotiansudai.activity.service.RedEnvelopSplitActivityService;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.dto.RegisterUserDto;
 import com.tuotiansudai.exception.ReferrerRelationException;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserChannel;
+import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.spring.security.MyAuthenticationUtil;
@@ -42,6 +44,9 @@ public class RedEnvelopSplitActivityController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private UserMapper userMapper;
+
     private static final Long WEIXIN_REFERRER_COUPON_ID = 339L;
 
     @RequestMapping(method = RequestMethod.GET)
@@ -55,9 +60,13 @@ public class RedEnvelopSplitActivityController {
     }
 
     @RequestMapping(value = "/referrer", method = RequestMethod.GET)
-    public ModelAndView referrer(@RequestParam(value = "loginName", required = false) String loginName) {
+    public ModelAndView referrer(@RequestParam(value = "loginName", required = false) String loginName,
+                                 @RequestParam(value = "channel", required = false) String channel) {
         ModelAndView modelAndView = new ModelAndView("/activities/red-envelop-referrer", "responsive", true);
         modelAndView.addObject("loginName", loginName);
+        modelAndView.addObject("channel", channel);
+        UserModel userModel = userMapper.findByLoginName(loginName);
+        modelAndView.addObject("userName", userModel != null ? userModel.getUserName() : null);
         return modelAndView;
     }
 
