@@ -22,7 +22,7 @@ public class SignInPointDto extends BaseDataDto implements Serializable {
 
     private boolean full;
 
-    //当天是否签到
+    //发送请求时当天是否签到
     private boolean signIn;
 
     public SignInPointDto(int signInCount, Date signInDate, int signInPoint, int nextSignInPoint, boolean signIn) {

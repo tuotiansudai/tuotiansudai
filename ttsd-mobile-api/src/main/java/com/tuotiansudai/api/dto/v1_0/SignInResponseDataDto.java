@@ -14,7 +14,7 @@ public class SignInResponseDataDto extends BaseResponseDataDto {
     @ApiModelProperty(value = "下次可获得积分", example = "40")
     private int nextSignInPoint;
 
-    @ApiModelProperty(value = "当前获得签到奖励", example = "已连续签到XX天，获得XX元现金红包")
+    @ApiModelProperty(value = "当前获得签到奖励", example = "获得XX元现金红包")
     private String currentRewardDesc;
 
     @ApiModelProperty(value = "下次获得签到奖励", example = "再签到10天可再获得10元现金红包哦")
@@ -23,7 +23,7 @@ public class SignInResponseDataDto extends BaseResponseDataDto {
     @ApiModelProperty(value = "是否获得全勤奖", example = "true")
     private boolean full;
 
-    @ApiModelProperty(value = "是否已签到", example = "true")
+    @ApiModelProperty(value = "请求时当天是否已签到", example = "true")
     private boolean signIn;
 
     public SignInResponseDataDto(SignInPointDto signInPointDto) {
