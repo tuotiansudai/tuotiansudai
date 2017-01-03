@@ -1,10 +1,12 @@
 package com.tuotiansudai.paywrapper.service;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.enums.UserBillBusinessType;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferMapper;
 import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferRequestModel;
@@ -12,10 +14,7 @@ import com.tuotiansudai.paywrapper.repository.model.sync.request.BaseSyncRequest
 import com.tuotiansudai.paywrapper.repository.model.sync.response.BaseSyncResponseModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
 import com.tuotiansudai.paywrapper.service.impl.NormalRepayServiceImpl;
-import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.InvestRepayMapper;
-import com.tuotiansudai.repository.mapper.LoanRepayMapper;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountTransfer;
 import org.joda.time.DateTime;
@@ -45,6 +44,9 @@ public class NormalRepayPaybackInvestMockTest {
     private NormalRepayServiceImpl normalRepayService;
 
     @Mock
+    private LoanMapper loanMapper;
+
+    @Mock
     private LoanRepayMapper loanRepayMapper;
 
     @Mock
@@ -67,6 +69,9 @@ public class NormalRepayPaybackInvestMockTest {
 
     @Mock
     private RedisWrapperClient redisWrapperClient;
+
+    @Mock
+    private MQWrapperClient mqWrapperClient;
 
     @Before
     public void init() {
@@ -255,6 +260,10 @@ public class NormalRepayPaybackInvestMockTest {
         loanRepay1.setActualRepayDate(new Date());
         LoanRepayModel loanRepay2 = new LoanRepayModel(2, loanId, 2, 1, 0, new DateTime().plusDays(30).withTime(23, 59, 59, 0).toDate(), RepayStatus.REPAYING);
 
+        LoanModel loanModel = new LoanModel();
+        loanModel.setName("loanName");
+        doNothing().when(mqWrapperClient).sendMessage(any(MessageQueue.class), anyObject());
+        when(loanMapper.findById(loanId)).thenReturn(loanModel);
         when(loanRepayMapper.findById(loanRepay1.getId())).thenReturn(loanRepay1);
         when(loanRepayMapper.findLastLoanRepay(loanId)).thenReturn(loanRepay2);
 

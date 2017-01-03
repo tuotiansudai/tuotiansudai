@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.dto.SignInResult;
-import com.tuotiansudai.jpush.service.JPushAlertService;
+import com.tuotiansudai.client.PushClient;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.spring.security.SignInClient;
 import org.apache.log4j.Logger;
@@ -30,7 +30,7 @@ public class MyMobileSimpleUrlLogoutSuccessHandler extends SimpleUrlLogoutSucces
     private SignInClient signInClient;
 
     @Autowired
-    private JPushAlertService jPushAlertService;
+    private PushClient pushClient;
 
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -61,7 +61,7 @@ public class MyMobileSimpleUrlLogoutSuccessHandler extends SimpleUrlLogoutSucces
 
         SignInResult signInResult = signInClient.verifyToken(token, Source.MOBILE);
         if (signInResult != null && loginOutResult.getUserInfo() != null) {
-            jPushAlertService.delStoreJPushId(loginOutResult.getUserInfo().getLoginName());
+            pushClient.removeJPushId(loginOutResult.getUserInfo().getLoginName());
         }
     }
 }

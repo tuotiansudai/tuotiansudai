@@ -2,16 +2,8 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype','jquery-ui','csr
     $(function () {
 
         $('.search').click(function(){
-            if ($('.jq-id').val() != "" && !$('.jq-id').val().match("^[0-9]*$")) {
-                $('.jq-id').val('0');
-            }
-            var id = $('.jq-id').val();
             var title = $('.jq-title').val();
-            window.location.href = '/announce-manage/announce?id='+id+'&title='+title+'&index=1&pageSize=10';
-        });
-
-        $('.publishAD').click(function(){
-            window.location.href = '/announce-manage/announce/add';
+            window.location.href = '/announce-manage/announce?title=' + title;
         });
 
         $('.jq-delete').click(function(event) {
@@ -19,14 +11,11 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype','jquery-ui','csr
                 return;
             }
             event.preventDefault();
-            var dataForm = JSON.stringify({
-                "id":$(this).data('id')
-            });
+
             $.ajax({
-                url: '/announce-manage/announce/delete',
+                url: '/announce-manage/announce/delete/' + $(this).data('id'),
                 type: 'POST',
                 dataType: 'json',
-                data: dataForm,
                 contentType: 'application/json; charset=UTF-8'
             })
             .done(function (res) {

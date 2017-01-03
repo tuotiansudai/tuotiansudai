@@ -7,18 +7,23 @@
   -o-transform:scale($sizing);
 }
 //弹框,用于抽奖弹框的样式
-.tip-out-box {
+
+.shade-body-mask {
+  width: 100%;
+  background: rgba(0,0,0,0.4);
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.tip-list {
   position: fixed;
   z-index: 1000;
-}
-
-.tip-list {
   background:none;
   background-size:100% ;
   width:460px;
   height:370px;
-  position: relative;
   border-radius: 20px;
+  display: none;
   .close-btn {
     width:28px;
     height: 28px;

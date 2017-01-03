@@ -1,12 +1,18 @@
 package com.tuotiansudai.membership.service;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
+import com.tuotiansudai.enums.MessageEventType;
+import com.tuotiansudai.enums.PushSource;
+import com.tuotiansudai.enums.PushType;
 import com.tuotiansudai.membership.repository.mapper.MembershipExperienceBillMapper;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipExperienceBillModel;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
+import com.tuotiansudai.message.EventMessage;
+import com.tuotiansudai.message.PushMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.model.AccountModel;
@@ -69,21 +75,31 @@ public class MembershipInvestService {
             int level = userMembershipEvaluator.evaluateUpgradeLevel(loginName).getLevel();
             MembershipModel newMembership = membershipMapper.findByExperience(accountModel.getMembershipPoint());
             if (newMembership.getLevel() > level) {
-                logger.info(MessageFormat.format("will upgrade user membership level, loginName:{0}, investId:{1}, newLevel:{2}",
-                        loginName, String.valueOf(investId),newMembership.getLevel()));
-
                 UserMembershipModel curUserMembershipModel = userMembershipMapper.findCurrentUpgradeMaxByLoginName(loginName);
                 curUserMembershipModel.setExpiredTime(new Date());
                 userMembershipMapper.update(curUserMembershipModel);
 
                 UserMembershipModel newUserMembershipModel = UserMembershipModel.createUpgradeUserMembershipModel(loginName, newMembership.getId());
                 userMembershipMapper.create(newUserMembershipModel);
-
-                mqWrapperClient.sendMessage(MessageQueue.MembershipUpgrade_SendJpushMessage, loginName + ":" + String.valueOf(newMembership.getId()));
+                this.sendMessage(loginName, newMembership.getLevel());
             }
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
             throw e;
         }
+    }
+
+    private void sendMessage(String loginName, int level) {
+        //Title:恭喜您会员等级提升至V{0}
+        //Content:尊敬的用户，恭喜您会员等级提升至V{0}，拓天速贷为您准备了更多会员特权，快来查看吧。
+        String title = MessageFormat.format(MessageEventType.MEMBERSHIP_UPGRADE.getTitleTemplate(), String.valueOf(level));
+        String content = MessageFormat.format(MessageEventType.MEMBERSHIP_UPGRADE.getContentTemplate(), loginName, String.valueOf(level));
+        mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(MessageEventType.MEMBERSHIP_UPGRADE,
+                Lists.newArrayList(loginName),
+                title,
+                content,
+                null
+        ));
+        mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(Lists.newArrayList(loginName), PushSource.ALL, PushType.MEMBERSHIP_UPGRADE, title));
     }
 }

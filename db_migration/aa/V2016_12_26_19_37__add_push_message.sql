@@ -1,0 +1,1 @@
+ALTER TABLE loan_details ADD COLUMN `push_message` VARCHAR(100);
