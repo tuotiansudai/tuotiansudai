@@ -4,90 +4,90 @@ define(['jquery','commonFun'], function ($,commonFun) {
     var strategies = {
         isNonEmpty: function(errorMsg) {
             if (this.value === '') {
-                defineCls.addClass(this,'error');
+                globalFun.addClass(this,'error');
                 return errorMsg;
             }
             else {
-                defineCls.removeClass(this,'error');
+                globalFun.removeClass(this,'error');
             }
         },
         minLength: function(errorMsg,length) {
             if (this.value.length < Number(length)) {
-                defineCls.addClass(this,'error');
+                globalFun.addClass(this,'error');
                 return errorMsg;
             }
             else {
-                defineCls.removeClass(this,'error');
+                globalFun.removeClass(this,'error');
             }
         },
         maxLength: function(errorMsg,length) {
             if (this.value.length > Number(length)) {
-                defineCls.addClass(this,'error');
+                globalFun.addClass(this,'error');
                 return errorMsg;
             }
             else {
-                defineCls.removeClass(this,'error');
+                globalFun.removeClass(this,'error');
             }
         },
         isNumber:function(errorMsg,length) {
             if(length) {
                 var reg=new RegExp('^\\d{'+length+'}$','g');
                 if(reg.test(this.value)) {
-                    defineCls.removeClass(this,'error');
+                    globalFun.removeClass(this,'error');
                 }
                 else {
-                    defineCls.addClass(this,'error');
+                    globalFun.addClass(this,'error');
                     return errorMsg;
                 }
             }
         },
         isChinese:function (errorMsg) {
             if(/^[\u4E00-\u9FA5]+$/.test(this.value)) {
-                defineCls.removeClass(this,'error');
+                globalFun.removeClass(this,'error');
             }
             else {
-                defineCls.addClass(this,'error');
+                globalFun.addClass(this,'error');
                 return errorMsg;
             }
 
         },
         equalLength:function(errorMsg,length) {
             if (this.value.length!=Number(length)) {
-                defineCls.addClass(this,'error');
+                globalFun.addClass(this,'error');
                 return errorMsg;
             }
             else {
-                defineCls.removeClass(this,'error');
+                globalFun.removeClass(this,'error');
             }
         },
         checkPassword:function(errorMsg) {
             var regBool=/^(?=.*[^\d])(.{6,20})$/.test(this.value);
             if (!regBool) {
-                defineCls.addClass(this,'error');
+                globalFun.addClass(this,'error');
                 return errorMsg;
             }
             else {
-                defineCls.removeClass(this,'error');
+                globalFun.removeClass(this,'error');
             }
         },
         isMobile: function(errorMsg) {
             if (!/(^1[0-9]{10}$)/.test(this.value)) {
-                defineCls.addClass(this,'error');
+                globalFun.addClass(this,'error');
                 return errorMsg;
             }
             else {
-                defineCls.removeClass(this,'error');
+                globalFun.removeClass(this,'error');
             }
         },
         identityValid:function(errorMsg) {
             //验证身份证号
             var cardValid=commonFun.IdentityCodeValid(this.value);
             if(!cardValid) {
-                defineCls.addClass(this,'error');
+                globalFun.addClass(this,'error');
                 return errorMsg;
             }
             else {
-                defineCls.removeClass(this,'error');
+                globalFun.removeClass(this,'error');
             }
         },
         ageValid:function(errorMsg) {
@@ -96,11 +96,11 @@ define(['jquery','commonFun'], function ($,commonFun) {
             if(cardValid) {
                 var ageValid=commonFun.checkedAge(this.value);
                 if(!ageValid) {
-                    defineCls.addClass(this,'error');
+                    globalFun.addClass(this,'error');
                     return errorMsg;
                 }
                 else {
-                    defineCls.removeClass(this,'error');
+                    globalFun.removeClass(this,'error');
                 }
             }
         },
@@ -118,11 +118,11 @@ define(['jquery','commonFun'], function ($,commonFun) {
                 if(response.data.status) {
                     // 身份证已存在
                     getResult=errorMsg;
-                    defineCls.addClass(that,'error');
+                    globalFun.addClass(that,'error');
                 }
                 else {
                     getResult='';
-                    defineCls.removeClass(that,'error');
+                    globalFun.removeClass(that,'error');
                 }
             });
             return getResult;
@@ -130,7 +130,7 @@ define(['jquery','commonFun'], function ($,commonFun) {
         isMobileExist:function(errorMsg) {
             var getResult='',
                 that=this;
-            useAjax({
+            commonFun.useAjax({
                 type:'GET',
                 async: false,
                 url:'/register/mobile/'+this.value+'/is-register'
@@ -138,31 +138,11 @@ define(['jquery','commonFun'], function ($,commonFun) {
                 if(response.data.status) {
                     // 如果为true说明手机已存在或已注册
                     getResult=errorMsg;
-                    defineCls.addClass(that,'error');
+                    globalFun.addClass(that,'error');
                 }
                 else {
                     getResult='';
-                    defineCls.removeClass(that,'error');
-                }
-            });
-            return getResult;
-        },
-        isMobileExistRetrieve:function(errorMsg) {
-            var getResult='',
-                that=this;
-            useAjax({
-                type:'GET',
-                async: false,
-                url:'/mobile-retrieve-password/mobile/'+this.value+'/is-exist'
-            },function(response) {
-                if(!response.data.status) {
-                    // 如果为true说明手机已存在或已注册
-                    getResult=errorMsg;
-                    defineCls.addClass(that,'error');
-                }
-                else {
-                    getResult='';
-                    defineCls.removeClass(that,'error');
+                    globalFun.removeClass(that,'error');
                 }
             });
             return getResult;
@@ -207,7 +187,6 @@ define(['jquery','commonFun'], function ($,commonFun) {
                          break;//跳出for循环
                      }
                  }
-
                  return getErrorMsg;
              });
          }
@@ -217,11 +196,9 @@ define(['jquery','commonFun'], function ($,commonFun) {
              if (errorMsg) {
                  return errorMsg;
              }
-
          }
-
-
-
     }
+
+    return ValidatorForm;
 
 });
