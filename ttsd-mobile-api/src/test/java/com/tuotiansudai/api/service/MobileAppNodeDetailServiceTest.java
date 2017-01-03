@@ -4,8 +4,8 @@ import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.NodeDetailRequestDto;
 import com.tuotiansudai.api.dto.v1_0.NodeDetailResponseDataDto;
 import com.tuotiansudai.api.service.v1_0.impl.MobileAppNodeDetailServiceImpl;
-import com.tuotiansudai.repository.mapper.AnnounceMapper;
-import com.tuotiansudai.repository.model.AnnounceModel;
+import com.tuotiansudai.message.repository.mapper.AnnounceMapper;
+import com.tuotiansudai.message.repository.model.AnnounceModel;
 import com.tuotiansudai.util.IdGenerator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,10 +25,13 @@ import static org.mockito.Mockito.when;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
 public class MobileAppNodeDetailServiceTest extends ServiceTestBase{
+
     @InjectMocks
     private MobileAppNodeDetailServiceImpl mobileAppNodeDetailService;
+
     @Mock
     private AnnounceMapper announceMapper;
+
     @Autowired
     private IdGenerator idGenerator;
 
@@ -52,7 +55,7 @@ public class MobileAppNodeDetailServiceTest extends ServiceTestBase{
         announceModel.setTitle("tile");
         announceModel.setContent("content");
         announceModel.setCreatedTime(new Date());
-        announceModel.setUpdateTime(new Date());
+        announceModel.setUpdatedTime(new Date());
         announceModel.setShowOnHome(false);
         return announceModel;
     }

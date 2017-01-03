@@ -68,4 +68,6 @@ public interface UserMembershipMapper {
     long findCountMembershipByLevel(@Param(value = "level") long level);
 
     List<String> findLoginNameMembershipByLevel(@Param(value = "level") long level);
+
+    List<String> findLevelFiveMembershipExpiredUsers();
 }
