@@ -77,6 +77,6 @@ public class AuditLogService {
 
     private String getMobile(String loginName) {
         UserModel userModel = userMapper.findByLoginName(loginName);
-        return userModel != null ? userModel.getMobile() : null;
+        return userModel != null ? userModel.getMobile() : "";
     }
 }
