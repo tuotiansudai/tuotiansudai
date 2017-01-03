@@ -6,7 +6,10 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.activity.repository.dto.RedEnvelopSplitActivityDto;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.enums.AppUrl;
+import com.tuotiansudai.repository.mapper.PrepareUserMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.model.PrepareUserModel;
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserChannel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.AmountConverter;
@@ -31,6 +34,9 @@ public class RedEnvelopSplitActivityService {
 
     @Autowired
     private UserCouponMapper userCouponMapper;
+
+    @Autowired
+    private PrepareUserMapper prepareUserMapper;
 
     private static List<Long> coupons = Lists.newArrayList(333L, 334L, 335L, 336L, 337L, 338L);
 
@@ -79,6 +85,17 @@ public class RedEnvelopSplitActivityService {
             e.printStackTrace();
         }
         return String.format(AppUrl.RED_ENVELOP_SPLIT.getPath(), base64);
+    }
+
+    public void beforeRegisterUser(String loginName, String referrerMobile, String channel){
+        UserModel userModel = userMapper.findByLoginName(loginName);
+        PrepareUserModel prepareUserModel = new PrepareUserModel();
+        prepareUserModel.setReferrerLoginName(loginName);
+        prepareUserModel.setReferrerMobile(userModel != null ? userModel.getMobile() : null);
+        prepareUserModel.setMobile(referrerMobile);
+        prepareUserModel.setCreatedTime(new Date());
+        prepareUserModel.setChannel(channel);
+        prepareUserMapper.create(prepareUserModel);
     }
 
 }
