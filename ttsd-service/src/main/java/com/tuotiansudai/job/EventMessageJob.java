@@ -15,6 +15,7 @@ import com.tuotiansudai.message.PushMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.util.AmountConverter;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
@@ -67,6 +68,10 @@ public class EventMessageJob implements Job {
 
     private void membershipExpiredMessage() {
         List<String> membershipExpiredUsers = userMembershipMapper.findLevelFiveMembershipExpiredUsers();
+        if (CollectionUtils.isEmpty(membershipExpiredUsers)) {
+            logger.info("[EventMessageJob] today is no user whose membership is expired");
+            return;
+        }
         //Title:您的V5会员已到期，请前去购买
         //Content:尊敬的用户，您的V5会员已到期，V5会员可享受服务费7折优惠，平台也将会在V5会员生日时送上神秘礼包哦。请及时续费以免耽误您获得投资奖励！
         String title = MessageEventType.MEMBERSHIP_EXPIRED.getTitleTemplate();
