@@ -131,6 +131,7 @@ public enum ReturnMessage {
     TRANSFER_ALREADY_CANCELED_TODAY("0076","该项目今天已经申请过转让，当日不能再进行转让申请。"),
     TRANSFER_IMPEND_REPAYING("0078","该项目即将回款，请在本期回款完成后再申请转让。"),
     TRANSFER_IS_OVERDUE("0079","该项目正处于逾期当中，暂时无法申请转让。"),
+    REPAY_IS_GENERATION_IN("0082","回款计划生成中，暂不可申请转让。"),
 
 
     /******意见反馈******/

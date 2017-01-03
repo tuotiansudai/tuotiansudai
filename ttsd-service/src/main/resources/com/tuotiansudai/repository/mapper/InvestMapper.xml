@@ -1005,7 +1005,7 @@
         join loan on invest.loan_id = loan.id
         where invest.login_name = #{loginName}
         <if test="loanStatus.name() == 'COMPLETE' ">
-            and (loan.status = #{loanStatus}
+            and (loan.status in ('REPAYING','COMPLETE')
             OR ((#{loanStatus} = 'REPAYING' AND loan.product_type = 'EXPERIENCE' AND TO_DAYS(NOW()) -
             TO_DAYS(invest_time) &lt; loan.duration)
             OR (#{loanStatus} = 'COMPLETE' AND loan.product_type = 'EXPERIENCE' AND TO_DAYS(NOW()) -

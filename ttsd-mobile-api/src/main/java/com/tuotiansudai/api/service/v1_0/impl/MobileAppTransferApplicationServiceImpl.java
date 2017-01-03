@@ -135,6 +135,12 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
         BigDecimal discountBig = new BigDecimal(transferRuleMapper.find().getDiscount());
         long transferAmount = AmountConverter.convertStringToCent(requestDto.getTransferAmount());
         long discountLower = investAmountBig.subtract(discountBig.multiply(investAmountBig)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
+        List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(transferApplicationDto.getTransferInvestId());
+
+        if(CollectionUtils.isEmpty(investRepayModels)){
+            return new BaseResponseDto(ReturnMessage.REPAY_IS_GENERATION_IN.getCode(), ReturnMessage.REPAY_IS_GENERATION_IN.getMsg());
+        }
+
         if (transferAmount > investModel.getAmount() || transferAmount < discountLower) {
             return new BaseResponseDto(ReturnMessage.TRANSFER_AMOUNT_OUT_OF_RANGE.getCode(), ReturnMessage.TRANSFER_AMOUNT_OUT_OF_RANGE.getMsg());
         }
