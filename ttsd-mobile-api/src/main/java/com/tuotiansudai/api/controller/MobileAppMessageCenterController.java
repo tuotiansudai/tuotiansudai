@@ -22,7 +22,7 @@ public class MobileAppMessageCenterController {
     @ResponseBody
     public BaseResponseDto<UserMessageViewDto> getUserMessage(@PathVariable long userMessageId) {
         UserMessageViewDto userMessageViewDto = mobileAppUserMessageService.getUserMessageModelById(userMessageId);
-        BaseResponseDto<UserMessageViewDto> baseResponseDto = new BaseResponseDto(ReturnMessage.SUCCESS.getCode(), ReturnMessage.SUCCESS.getMsg());
+        BaseResponseDto<UserMessageViewDto> baseResponseDto = new BaseResponseDto<>(ReturnMessage.SUCCESS.getCode(), ReturnMessage.SUCCESS.getMsg());
 
         baseResponseDto.setData(userMessageViewDto);
 

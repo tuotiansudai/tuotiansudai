@@ -5,16 +5,20 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.anxin.service.AnxinSignService;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.coupon.repository.mapper.CouponRepayMapper;
 import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
+import com.tuotiansudai.enums.MessageEventType;
+import com.tuotiansudai.enums.PushSource;
+import com.tuotiansudai.enums.PushType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
+import com.tuotiansudai.message.EventMessage;
+import com.tuotiansudai.message.PushMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
@@ -39,6 +43,7 @@ import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
+import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.collections4.CollectionUtils;
@@ -83,9 +88,6 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
     private PaySyncClient paySyncClient;
 
     @Autowired
-    private RedisWrapperClient redisWrapperClient;
-
-    @Autowired
     private MQWrapperClient mqWrapperClient;
 
     @Autowired
@@ -108,9 +110,6 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
 
     @Value("${common.environment}")
     private Environment environment;
-
-    @Value(value = "${pay.invest.notify.process.batch.size}")
-    private int investProcessListSize;
 
     @Autowired
     private CouponRepayMapper couponRepayMapper;
@@ -343,6 +342,8 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
         this.transferPayback(transferInvestModel, transferApplicationModel);
 
         this.transferFee(transferInvestModel, transferApplicationModel);
+
+        this.sendMessage(transferApplicationModel);
     }
 
     private void transferFee(InvestModel transferInvestModel, TransferApplicationModel transferApplicationModel) {
@@ -563,4 +564,21 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
         return investModel;
     }
 
+    private void sendMessage(TransferApplicationModel transferApplicationModel) {
+        //Title:您发起的转让项目转让成功，{0}元已发放至您的账户！
+        //Content:尊敬的用户，您发起的转让项目{0}已经转让成功，资金已经到达您的账户，感谢您选择拓天速贷。
+
+        String title = MessageFormat.format(MessageEventType.TRANSFER_SUCCESS.getTitleTemplate(), AmountConverter.convertCentToString(transferApplicationModel.getTransferAmount()));
+        String content = MessageFormat.format(MessageEventType.TRANSFER_SUCCESS.getContentTemplate(), transferApplicationModel.getName());
+        mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(MessageEventType.TRANSFER_SUCCESS,
+                Lists.newArrayList(transferApplicationModel.getLoginName()),
+                title,
+                content,
+                transferApplicationModel.getId()));
+
+        mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(Lists.newArrayList(transferApplicationModel.getLoginName()),
+                PushSource.ALL,
+                PushType.TRANSFER_SUCCESS,
+                title));
+    }
 }

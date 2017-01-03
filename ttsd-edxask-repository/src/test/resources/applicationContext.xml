@@ -14,7 +14,7 @@
         http://www.springframework.org/schema/aop
         http://www.springframework.org/schema/aop/spring-aop.xsd">
 
-    <context:property-placeholder location="classpath*:ttsd-env.properties,classpath*:ask-redis-key-template.properties"/>
+    <context:property-placeholder location="classpath*:ttsd-env.properties"/>
 
     <!-- enable autowire -->
     <context:annotation-config />
@@ -101,8 +101,6 @@
     <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
         <property name="maxTotal" value="${ask.jedis.pool.maxTotal}"/>
     </bean>
-
-    <bean class="com.tuotiansudai.client.MybatisRedisCacheWrapperClient"/>
 
     <bean id="httpClient" class="com.squareup.okhttp.OkHttpClient"/>
 

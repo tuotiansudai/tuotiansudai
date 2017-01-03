@@ -1,9 +1,10 @@
 package com.tuotiansudai.console.controller;
 
 import com.tuotiansudai.console.service.ConsoleAnnounceService;
-import com.tuotiansudai.dto.AnnounceDto;
+import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
+import com.tuotiansudai.message.dto.AnnounceCreateDto;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.PaginationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,39 +13,36 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping(value = "/announce-manage", method = RequestMethod.GET)
+@RequestMapping(value = "/announce-manage")
 public class AnnounceController {
 
     @Autowired
     private ConsoleAnnounceService consoleAnnounceService;
 
     @RequestMapping(value = "/announce", method = RequestMethod.GET)
-    public ModelAndView announceManage(@RequestParam(value = "id",required = false) Long id,@RequestParam(value = "title",required = false) String title,
-                                                @RequestParam(value = "index",defaultValue = "1",required = false) int index) {
+    public ModelAndView announceManage(@RequestParam(value = "title", required = false) String title,
+                                       @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
         int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/announce-list");
-        int announceCount = consoleAnnounceService.findAnnounceCount(id, title);
+        int announceCount = consoleAnnounceService.findAnnounceCount(title);
+
         modelAndView.addObject("announceCount", announceCount);
-        modelAndView.addObject("announceList", consoleAnnounceService.findAnnounce(id, title, (index - 1) * pageSize, pageSize));
-        modelAndView.addObject("id",id);
-        modelAndView.addObject("title",title);
-        modelAndView.addObject("index",index);
-        modelAndView.addObject("pageSize",pageSize);
-        long totalPages = PaginationUtil.calculateMaxPage(announceCount, pageSize);
-        boolean hasPreviousPage = index > 1 && index <= totalPages;
-        boolean hasNextPage = index < totalPages;
-        modelAndView.addObject("hasPreviousPage",hasPreviousPage);
-        modelAndView.addObject("hasNextPage",hasNextPage);
+        modelAndView.addObject("announceList", consoleAnnounceService.findAnnounce(title, index, pageSize));
+        modelAndView.addObject("title", title);
+        modelAndView.addObject("index", index);
+        modelAndView.addObject("pageSize", pageSize);
+        modelAndView.addObject("hasPreviousPage", index > 1);
+        modelAndView.addObject("hasNextPage", index < PaginationUtil.calculateMaxPage(announceCount, pageSize));
         return modelAndView;
     }
 
-    @RequestMapping(value = "/announce/add", method = RequestMethod.GET)
+    @RequestMapping(value = "/announce/create", method = RequestMethod.GET)
     public ModelAndView announce() {
         return new ModelAndView("/announce-edit");
     }
 
     @RequestMapping(value = "/announce/edit/{id}", method = RequestMethod.GET)
-    public ModelAndView userFundsRelease(@PathVariable Long id) {
+    public ModelAndView create(@PathVariable Long id) {
         ModelAndView modelAndView = new ModelAndView("/announce-edit");
         modelAndView.addObject("announce", consoleAnnounceService.findById(id));
         return modelAndView;
@@ -52,34 +50,31 @@ public class AnnounceController {
 
     @RequestMapping(value = "/announce/create", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<PayDataDto> create(@RequestBody AnnounceDto announceDto) {
-        BaseDto<PayDataDto> baseDto = new BaseDto<>();
+    public BaseDto<BaseDataDto> create(@RequestBody AnnounceCreateDto announceDto) {
         PayDataDto dataDto = new PayDataDto();
-        baseDto.setData(dataDto);
-        consoleAnnounceService.create(announceDto, LoginUserInfo.getLoginName());
         dataDto.setStatus(true);
+        BaseDto<BaseDataDto> baseDto = new BaseDto<>(dataDto);
+        consoleAnnounceService.create(announceDto, LoginUserInfo.getLoginName());
         return baseDto;
     }
 
     @RequestMapping(value = "/announce/update", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<PayDataDto> update(@RequestBody AnnounceDto announceDto) {
-        BaseDto<PayDataDto> baseDto = new BaseDto<>();
+    public BaseDto<BaseDataDto> update(@RequestBody AnnounceCreateDto announceCreateDto) {
         PayDataDto dataDto = new PayDataDto();
-        baseDto.setData(dataDto);
-        consoleAnnounceService.update(announceDto);
         dataDto.setStatus(true);
+        BaseDto<BaseDataDto> baseDto = new BaseDto<>(dataDto);
+        consoleAnnounceService.update(announceCreateDto);
         return baseDto;
     }
 
-    @RequestMapping(value = "/announce/delete", method = RequestMethod.POST)
+    @RequestMapping(value = "/announce/delete/{announceId}", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<PayDataDto> delete(@RequestBody AnnounceDto announceDto) {
-        BaseDto<PayDataDto> baseDto = new BaseDto<>();
+    public BaseDto<BaseDataDto> delete(@PathVariable long announceId) {
         PayDataDto dataDto = new PayDataDto();
-        baseDto.setData(dataDto);
-        consoleAnnounceService.delete(announceDto);
         dataDto.setStatus(true);
+        BaseDto<BaseDataDto> baseDto = new BaseDto<>(dataDto);
+        consoleAnnounceService.delete(announceId);
         return baseDto;
     }
 }
