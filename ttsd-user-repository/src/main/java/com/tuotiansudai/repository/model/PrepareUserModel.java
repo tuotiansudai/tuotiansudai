@@ -8,7 +8,7 @@ public class PrepareUserModel implements Serializable {
     private long id;
     private String referrerMobile;
     private String mobile;
-    private Source channel;
+    private String channel;
     private Date createdTime;
     private String referrerLoginName;
 
@@ -36,11 +36,11 @@ public class PrepareUserModel implements Serializable {
         this.mobile = mobile;
     }
 
-    public Source getChannel() {
+    public String getChannel() {
         return channel;
     }
 
-    public void setChannel(Source channel) {
+    public void setChannel(String channel) {
         this.channel = channel;
     }
 
