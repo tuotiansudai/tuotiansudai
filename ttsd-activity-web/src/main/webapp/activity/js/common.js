@@ -84,7 +84,20 @@ define(['jquery'], function ($) {
             }
             return pass;
         },
-
+        checkedAge:function(birthday) {
+            var getAge=birthday.substring(6,14),
+                currentDay=new Date(),
+                checkedAge=true;
+            var y=currentDay.getFullYear(),
+                m=currentDay.getMonth()+ 1,
+                d=currentDay.getDate();
+            var today = y+''+(m<10?('0'+m):m)+''+(d<10?('0'+d):d);
+            var myAge=Math.floor((today-getAge)/10000);
+            if(myAge<18) {
+                checkedAge=false;
+            }
+            return checkedAge;
+        },
         popWindow:function(contentHtml,area) {
             var $shade=$('<div class="shade-body-mask"></div>');
             var $popWindow=$(contentHtml),
@@ -141,7 +154,34 @@ define(['jquery'], function ($) {
                 });
 
             return LoginDefer.promise(); // 返回promise对象
+        },
+        useAjax:function(opt,callbackDone,callbackAlways) {
+
+        var defaultOpt={
+            type:'POST',
+            dataType: 'json'
+        };
+        var option=$.extend(defaultOpt,opt);
+
+        if(option.type=='POST') {
+            //防止跨域，只有post请求需要，get请求不需要
+            var token = $("meta[name='_csrf']").attr("content");
+            var header = $("meta[name='_csrf_header']").attr("content");
+            $(document).ajaxSend(function(e, xhr, options) {
+                xhr.setRequestHeader(header, token);
+            });
         }
+        $.ajax(option)
+            .done(function(data) {
+                callbackDone && callbackDone(data);
+            })
+            .fail(function(data) {
+                console.error('接口错误，请联系客服');
+            })
+            .always(function() {
+                callbackAlways && callbackAlways();
+            });
+    }
     };
 
     return commonFun;

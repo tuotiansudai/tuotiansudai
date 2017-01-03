@@ -25,4 +25,17 @@ public class RedEnvelopSplitActivityController {
         modelAndView.addObject("referrerUrl", redEnvelopSplitActivityService.getShareReferrerUrl(loginName));
         return modelAndView;
     }
+
+    @RequestMapping(value = "/referrer", method = RequestMethod.GET)
+    public ModelAndView referrer() {
+        ModelAndView modelAndView = new ModelAndView("/activities/red-envelop-referrer", "responsive", true);
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/before-register", method = RequestMethod.POST)
+    public ModelAndView register() {
+        ModelAndView modelAndView = new ModelAndView("/activities/red-envelop-referrer", "responsive", true);
+        modelAndView.addObject("registerStatus", "1");
+        return modelAndView;
+    }
 }
