@@ -68,6 +68,9 @@ public class RedEnvelopSplitActivityController {
         redEnvelopSplitActivityService.beforeRegisterUser(loginName, mobile, channel);
         ModelAndView modelAndView = new ModelAndView("/activities/red-envelop-referrer", "responsive", true);
         modelAndView.addObject("registerStatus", "before");
+        modelAndView.addObject("loginName", loginName);
+        modelAndView.addObject("mobile", mobile);
+        modelAndView.addObject("channel", channel);
         return modelAndView;
     }
 
