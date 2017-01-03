@@ -16,6 +16,12 @@ dependencies {
 }
 
 war {
-    archiveName "ROOT.war"
+    archiveName "ttsd-console.war"
     destinationDir = file("war")
+}
+
+task renameWar {
+    doLast {
+        file("${project.projectDir.getPath()}/war/ttsd-console.war").renameTo(file("${project.projectDir.getPath()}/war/ROOT.war"))
+    }
 }
