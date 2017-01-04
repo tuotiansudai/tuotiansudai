@@ -10,11 +10,11 @@ import com.tuotiansudai.enums.AppUrl;
 import com.tuotiansudai.repository.mapper.PrepareUserMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.PrepareUserModel;
-import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserChannel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.JsonConverter;
+import com.tuotiansudai.util.MobileEncryptor;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +55,7 @@ public class RedEnvelopSplitActivityService {
     private List<String> weiXinPeriod = Lists.newArrayList();
 
     public int getReferrerCount(String loginName) {
-        if(Strings.isNullOrEmpty(loginName)){
+        if (Strings.isNullOrEmpty(loginName)) {
             return 0;
         }
         Date startTime = DateTime.parse(weiXinPeriod.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
@@ -64,14 +64,14 @@ public class RedEnvelopSplitActivityService {
     }
 
     public String getReferrerRedEnvelop(String loginName) {
-        if(Strings.isNullOrEmpty(loginName)){
+        if (Strings.isNullOrEmpty(loginName)) {
             return "";
         }
         return AmountConverter.convertCentToString(userCouponMapper.findSumRedEnvelopeByLoginNameAndCouponId(loginName, coupons));
     }
 
     public String getShareReferrerUrl(String loginName) {
-        if(Strings.isNullOrEmpty(loginName)){
+        if (Strings.isNullOrEmpty(loginName)) {
             return "";
         }
 
@@ -94,9 +94,9 @@ public class RedEnvelopSplitActivityService {
         return String.format(AppUrl.RED_ENVELOP_SPLIT.getPath(), base64);
     }
 
-    public void beforeRegisterUser(String loginName, String referrerMobile, String channel){
+    public void beforeRegisterUser(String loginName, String referrerMobile, String channel) {
 
-        if(prepareUserMapper.findByMobile(referrerMobile) != null){
+        if (prepareUserMapper.findByMobile(referrerMobile) != null) {
             return;
         }
 
@@ -110,12 +110,11 @@ public class RedEnvelopSplitActivityService {
         prepareUserMapper.create(prepareUserModel);
     }
 
-    public List<RedEnvelopSplitReferrerDto> getReferrerList(String loginName){
+    public List<RedEnvelopSplitReferrerDto> getReferrerList(String loginName) {
         Date startTime = DateTime.parse(weiXinPeriod.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
         Date endTime = DateTime.parse(weiXinPeriod.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
         List<UserModel> userModels = userMapper.findUserModelByChannel(loginName, Lists.newArrayList(UserChannel.values()), startTime, endTime, DEFAULT_PAGE_SIZE);
-//        return userModels.stream().map(userModel -> new RedEnvelopSplitReferrerDto(userModel.getMobile(), userModel.getRegisterTime())).collect(Collectors.toList());
-        return Lists.newArrayList(new RedEnvelopSplitReferrerDto("152****1234", DateTime.now().toDate()), new RedEnvelopSplitReferrerDto("152****1234", DateTime.now().toDate()));
+        return userModels.stream().map(userModel -> new RedEnvelopSplitReferrerDto(MobileEncryptor.encryptWebMiddleMobile(userModel.getMobile()), userModel.getRegisterTime())).collect(Collectors.toList());
     }
 
 }
