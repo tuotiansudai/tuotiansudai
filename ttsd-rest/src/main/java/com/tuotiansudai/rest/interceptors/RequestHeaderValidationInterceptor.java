@@ -19,7 +19,7 @@ public class RequestHeaderValidationInterceptor implements HandlerInterceptor {
         if (isLoginNameRequired(handler)) {
             String loginName = RestUserInfo.getCurrentLoginName();
             if (StringUtils.isEmpty(loginName)) {
-                throw new BadRequestException(RestErrorCode.LoginNameNotPresent, "can not retrieve login name from basic authorization header");
+                throw new BadRequestException(RestErrorCode.LoginNameNotPresent, "can not retrieve login name from request header [userId]");
             }
         }
         return true;
