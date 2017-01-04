@@ -137,6 +137,7 @@ require(['jquery', 'layerWrapper','commonFun','validator'], function($,layer,com
                             var $stepThree=$('.step-three',$redEnvelopReferrer);
                             $stepTwo.hide();
                             $stepThree.show();
+                            $('.message-tip',$redEnvelopReferrer).hide();
                         }
                         else {
                             layer.msg('验证码不正确');
@@ -152,7 +153,7 @@ require(['jquery', 'layerWrapper','commonFun','validator'], function($,layer,com
             if(!downloadApp) {
                 return;
             }
-            globalFun.addEventHandler(downloadApp,'click',globalFun.toExperience.bind(this));
+            globalFun.addEventHandler(downloadApp,'click',globalFun.toExperience.bind(globalFun));
         })();
     })
 });

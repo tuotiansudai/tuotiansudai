@@ -180,7 +180,7 @@ globalFun.prototype={
     toExperience:function(e) {
         e.stopPropagation();
         e.preventDefault();
-        var equipment=globalFun.equipment();
+        var equipment=this.equipment();
         if(equipment.wechat && equipment.kind=='android') {
             // 微信,并且是安卓，跳到页面
             location.href = "/app/download";
@@ -188,7 +188,7 @@ globalFun.prototype={
         }
         else {
             //非微信
-            location.href =globalFun.categoryCodeUrl[equipment.kind];
+            location.href =this.categoryCodeUrl[equipment.kind];
         }
     },
     //显示app扫描码
