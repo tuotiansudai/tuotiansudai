@@ -983,18 +983,14 @@
         from(
         select if(FLOOR(ifnull(sum(amount), 0) /#{baseAmount})> 20, 20, FLOOR(sum(amount) /#{baseAmount})) as count
         from invest
+        join loan on invest.loan_id = loan.id
         where invest.status= 'SUCCESS'
         and invest.`login_name`= #{loginName}
-        AND invest.transfer_invest_id IS NULL
+        and invest.transfer_invest_id IS NULL
+        and loan.product_type != 'EXPERIENCE'
         <if test="startTime != null and endTime != null">
             and invest.trading_time between #{startTime} and #{endTime}
         </if>
-        AND invest.loan_id IN(
-        SELECT l.id
-        FROM loan l JOIN loan_details d ON l.id= d.loan_id
-        WHERE d.activity= 1
-        AND d.activity_desc= #{activityDesc}
-        )
         group by date_format(`trading_time`, '%Y-%m-%d')) drawCount;
 
     </select>

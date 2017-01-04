@@ -248,6 +248,12 @@ public class LotteryDrawActivityService {
                 .put(LotteryPrize.RED_ENVELOPE_18, 327L)
                 .put(LotteryPrize.RED_ENVELOPE_8, 328L)
                 .put(LotteryPrize.INTEREST_COUPON_2_NEW_YEARS, 329L)
+                .put(LotteryPrize.LANTERN_FESTIVAL_RED_ENVELOPE_5, 357L)
+                .put(LotteryPrize.LANTERN_FESTIVAL_RED_ENVELOPE_8, 358L)
+                .put(LotteryPrize.LANTERN_FESTIVAL_RED_ENVELOPE_10, 359L)
+                .put(LotteryPrize.LANTERN_FESTIVAL_RED_ENVELOPE_40, 360L)
+                .put(LotteryPrize.LANTERN_FESTIVAL_RED_ENVELOPE_30, 361L)
+                .put(LotteryPrize.LANTERN_FESTIVAL_INTEREST_COUPON_5, 362L)
                 .build()).get(lotteryPrize);
     }
 
@@ -385,7 +391,7 @@ public class LotteryDrawActivityService {
                     time = time >= 10 ? 10 : time;
                     break;
                 case EACH_INVEST_1000:
-                    time = investMapper.sumDrawCountByLoginName(userModel.getLoginName(),"元旦专享",startTime,endTime,100000);
+                    time = investMapper.sumDrawCountByLoginName(userModel.getLoginName(),startTime,endTime,100000);
                     break;
             }
         }

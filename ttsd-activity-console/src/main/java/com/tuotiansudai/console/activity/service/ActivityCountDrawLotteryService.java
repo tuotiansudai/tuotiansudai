@@ -8,6 +8,7 @@ import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.util.DateConvertUtil;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,6 +66,11 @@ public class ActivityCountDrawLotteryService {
 
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.christmas.endTime}\")}")
     private Date activityChristmasEndTime;
+
+    @Value(value = "${activity.lanternFestival.startTime}")
+    private String lanternFestivalStartTime;
+    @Value(value = "${activity.lanternFestival.endTime}")
+    private String lanternFestivalEndTime;
 
     private static final String redisKey = "web:christmasTime:lottery:startTime";
 
@@ -182,6 +188,10 @@ public class ActivityCountDrawLotteryService {
                     time += (int) (sumAmount / EACH_INVEST_AMOUNT_20000);
                     time = time >= 10 ? 10 : time;
                     break;
+                case EACH_INVEST_1000:
+                    time = investMapper.sumDrawCountByLoginName(userModel.getLoginName(),startTime,endTime,100000);
+                    break;
+
             }
         }
         return time;
@@ -200,6 +210,9 @@ public class ActivityCountDrawLotteryService {
                 return Lists.newArrayList(DateTime.parse(annualTime.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate(), DateTime.parse(annualTime.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate());
             case CHRISTMAS_ACTIVITY:
                 return Lists.newArrayList(activityChristmasSecondStartTime, activityChristmasEndTime);
+            case LANTERN_FESTIVAL_ACTIVITY:
+                return Lists.newArrayList(DateTime.parse(lanternFestivalStartTime,DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate(),
+                        DateTime.parse(lanternFestivalEndTime,DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate());
         }
         return null;
     }

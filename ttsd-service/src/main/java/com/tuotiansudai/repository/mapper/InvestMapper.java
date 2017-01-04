@@ -275,7 +275,6 @@ public interface InvestMapper {
                                         @Param(value = "endTime") Date endTime);
 
     int sumDrawCountByLoginName(@Param(value = "loginName") String loginName,
-                                 @Param(value = "activityDesc") String activityDesc,
                                  @Param(value = "startTime") Date startTime,
                                  @Param(value = "endTime") Date endTime,
                                  @Param(value = "baseAmount") long baseAmount);
