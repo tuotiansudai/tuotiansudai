@@ -3,8 +3,6 @@ package com.tuotiansudai.activity.controller;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.activity.repository.dto.RedEnvelopSplitActivityDto;
-import com.tuotiansudai.activity.repository.dto.RedEnvelopSplitReferrerDto;
 import com.tuotiansudai.activity.service.RedEnvelopSplitActivityService;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.dto.RegisterUserDto;
@@ -19,12 +17,13 @@ import com.tuotiansudai.spring.security.MyAuthenticationUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.validation.Valid;
 import java.text.MessageFormat;
-import java.util.List;
 
 @Controller
 @RequestMapping(value = "/activity/red-envelop-split")
@@ -74,8 +73,8 @@ public class RedEnvelopSplitActivityController {
 
     @RequestMapping(value = "/before-register", method = RequestMethod.POST)
     public ModelAndView beforeRegister(@RequestParam(value = "loginName", required = false) String loginName,
-                                 @RequestParam(value = "mobile", required = false) String mobile,
-                                 @RequestParam(value = "channel", required = false) String channel) {
+                                       @RequestParam(value = "mobile", required = false) String mobile,
+                                       @RequestParam(value = "channel", required = false) String channel) {
         redEnvelopSplitActivityService.beforeRegisterUser(loginName, mobile, channel);
         ModelAndView modelAndView = new ModelAndView("/activities/red-envelop-referrer", "responsive", true);
         modelAndView.addObject("registerStatus", "before");
@@ -89,10 +88,10 @@ public class RedEnvelopSplitActivityController {
     @RequestMapping(value = "/user-register", method = RequestMethod.POST)
     @ResponseBody
     public boolean userRegister(@RequestParam(value = "referrer", required = false) String loginName,
-                                     @RequestParam(value = "captcha", required = false) String captcha,
-                                     @RequestParam(value = "password", required = false) String password,
-                                     @RequestParam(value = "mobile", required = false) String mobile,
-                                     @RequestParam(value = "channel", required = false) String channel) {
+                                @RequestParam(value = "captcha", required = false) String captcha,
+                                @RequestParam(value = "password", required = false) String password,
+                                @RequestParam(value = "mobile", required = false) String mobile,
+                                @RequestParam(value = "channel", required = false) String channel) {
 
         boolean isRegisterSuccess = false;
         RegisterUserDto registerUserDto = new RegisterUserDto();
@@ -115,14 +114,13 @@ public class RedEnvelopSplitActivityController {
             myAuthenticationUtil.createAuthentication(registerUserDto.getMobile(), Source.WEB);
             logger.info(MessageFormat.format("[Register User {0}] authenticate completed", registerUserDto.getMobile()));
 
-            if(!Strings.isNullOrEmpty(registerUserDto.getChannel()) && Lists.newArrayList(UserChannel.values()).contains(UserChannel.valueOf(registerUserDto.getChannel()))){
-                logger.info(MessageFormat.format("[Register User {0}] assign weiXin referrer 8.88 red envelop ",registerUserDto.getMobile()));
+            if (!Strings.isNullOrEmpty(registerUserDto.getChannel()) && Lists.newArrayList(UserChannel.values()).contains(UserChannel.valueOf(registerUserDto.getChannel()))) {
+                logger.info(MessageFormat.format("[Register User {0}] assign weiXin referrer 8.88 red envelop ", registerUserDto.getMobile()));
                 couponAssignmentService.assignUserCoupon(registerUserDto.getMobile(), WEIXIN_REFERRER_COUPON_ID);
             }
         }
         return isRegisterSuccess;
     }
-
 
 
 }

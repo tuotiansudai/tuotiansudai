@@ -15,6 +15,7 @@ import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.JsonConverter;
 import com.tuotiansudai.util.MobileEncryptor;
+import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
+import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Date;
@@ -30,6 +32,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class RedEnvelopSplitActivityService {
+
+    private final static Logger logger = Logger.getLogger(RedEnvelopSplitActivityService.class);
 
     @Autowired
     private UserMapper userMapper;
@@ -40,10 +44,10 @@ public class RedEnvelopSplitActivityService {
     @Autowired
     private PrepareUserMapper prepareUserMapper;
 
-    private static List<Long> coupons = Lists.newArrayList(333L, 334L, 335L, 336L, 337L, 338L);
-
     @Value("${web.server}")
     private String domainName;
+
+    private static List<Long> coupons = Lists.newArrayList(333L, 334L, 335L, 336L, 337L, 338L);
 
     private static String REFERRER_TITLE = "您的好友%s送你三重好礼";
 
@@ -72,12 +76,14 @@ public class RedEnvelopSplitActivityService {
 
     public String getShareReferrerUrl(String loginName) {
         if (Strings.isNullOrEmpty(loginName)) {
-            return "";
+            return AppUrl.LOGIN.getPath();
         }
 
         UserModel userModel = userMapper.findByLoginName(loginName);
         RedEnvelopSplitActivityDto redEnvelopSplitActivityDto = new RedEnvelopSplitActivityDto(String.format(REFERRER_TITLE, userModel.getUserName()),
-                REFERRER_DESCRIPTION, domainName + "activity/red-envelop-split/referrer");
+                REFERRER_DESCRIPTION, domainName + "/activity/red-envelop-split/referrer");
+
+        logger.info(MessageFormat.format("[redEnvelopSplit] shard url:{0}", redEnvelopSplitActivityDto.getShareUrl()));
         String paramJson = "";
         try {
             paramJson = JsonConverter.writeValueAsString(redEnvelopSplitActivityDto);
@@ -91,7 +97,7 @@ public class RedEnvelopSplitActivityService {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        return String.format(AppUrl.RED_ENVELOP_SPLIT.getPath(), base64);
+        return String.format(AppUrl.SHARE.getPath(), base64);
     }
 
     public void beforeRegisterUser(String loginName, String referrerMobile, String channel) {
