@@ -15,6 +15,7 @@ import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.JsonConverter;
 import com.tuotiansudai.util.MobileEncryptor;
+import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
+import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Date;
@@ -30,6 +32,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class RedEnvelopSplitActivityService {
+
+    private final static Logger logger = Logger.getLogger(RedEnvelopSplitActivityService.class);
 
     @Autowired
     private UserMapper userMapper;
@@ -78,6 +82,8 @@ public class RedEnvelopSplitActivityService {
         UserModel userModel = userMapper.findByLoginName(loginName);
         RedEnvelopSplitActivityDto redEnvelopSplitActivityDto = new RedEnvelopSplitActivityDto(String.format(REFERRER_TITLE, userModel.getUserName()),
                 REFERRER_DESCRIPTION, domainName + "activity/red-envelop-split/referrer");
+
+        logger.info(MessageFormat.format("[redEnvelopSplit] shard url:{0}", redEnvelopSplitActivityDto.getShareUrl()));
         String paramJson = "";
         try {
             paramJson = JsonConverter.writeValueAsString(redEnvelopSplitActivityDto);
