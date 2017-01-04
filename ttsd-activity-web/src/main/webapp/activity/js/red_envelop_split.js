@@ -43,7 +43,7 @@ require(['jquery', 'layerWrapper','commonFun','validator'], function($,layer,com
                 errorMsg: '手机号格式不正确'
             },{
                 strategy: 'isMobileExist',
-                errorMsg: '手机号不存在'
+                errorMsg: '手机号已存在'
             }]);
 
             phoneForm.onsubmit = function(event) {
