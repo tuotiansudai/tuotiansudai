@@ -45,7 +45,7 @@ public class AssignRedEnvelopSplitJob implements Job {
         Date endTime = DateTime.parse(weiXinPeriod.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
         Map<String, Integer> referrerCountMap = Maps.newConcurrentMap();
 
-        List<UserModel> registerUserModels = userMapper.findUserModelByChannel(null, Arrays.asList(UserChannel.values()), startTime, endTime);
+        List<UserModel> registerUserModels = userMapper.findUserModelByChannel(null, Arrays.asList(UserChannel.values()), startTime, endTime, null);
         for(UserModel userModel : registerUserModels){
             if(referrerCountMap.get(userModel.getReferrer()) == null){
                 referrerCountMap.put(userModel.getReferrer(), 1);

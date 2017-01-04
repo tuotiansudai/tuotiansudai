@@ -314,5 +314,9 @@
         <if test="endTime != null">
             AND register_time &lt;= #{endTime}
         </if>
+
+        <if test="pageSize != null">
+            limit 0 , #{pageSize}
+        </if>
     </select>
 </mapper>

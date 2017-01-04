@@ -3,6 +3,8 @@ package com.tuotiansudai.activity.controller;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.activity.repository.dto.RedEnvelopSplitActivityDto;
+import com.tuotiansudai.activity.repository.dto.RedEnvelopSplitReferrerDto;
 import com.tuotiansudai.activity.service.RedEnvelopSplitActivityService;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.dto.RegisterUserDto;
@@ -22,6 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.text.MessageFormat;
+import java.util.List;
 
 @Controller
 @RequestMapping(value = "/activity/red-envelop-split")
@@ -53,6 +56,7 @@ public class RedEnvelopSplitActivityController {
         modelAndView.addObject("referrerCount", redEnvelopSplitActivityService.getReferrerCount(loginName));
         modelAndView.addObject("redEnvelopAmount", redEnvelopSplitActivityService.getReferrerRedEnvelop(loginName));
         modelAndView.addObject("referrerUrl", redEnvelopSplitActivityService.getShareReferrerUrl(loginName));
+        modelAndView.addObject("referrerList", redEnvelopSplitActivityService.getReferrerList(loginName));
         return modelAndView;
     }
 
@@ -118,5 +122,7 @@ public class RedEnvelopSplitActivityController {
         }
         return isRegisterSuccess;
     }
+
+
 
 }
