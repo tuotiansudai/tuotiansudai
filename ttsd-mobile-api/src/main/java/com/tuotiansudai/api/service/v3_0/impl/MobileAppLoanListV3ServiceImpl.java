@@ -142,6 +142,9 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
                 if (soldLoanModels.size() > 0) {
                     loanModel = soldLoanModels.get(0);
                     for (LoanModel curLoanModel : soldLoanModels) {
+                        if(curLoanModel.getRaisingCompleteTime() == null){
+                            continue;
+                        }
                         if (loanModel.getRaisingCompleteTime().before(curLoanModel.getRaisingCompleteTime())) {
                             loanModel = curLoanModel;
                         }

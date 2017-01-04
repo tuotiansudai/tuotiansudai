@@ -22,6 +22,7 @@ import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
+import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -62,6 +63,9 @@ public class MobileAppInvestListsV3ServiceImpl implements MobileAppInvestListsV3
     @Autowired
     private PageValidUtils pageValidUtils;
 
+    @Autowired
+    private InvestTransferService investTransferService;
+
     @Override
     public BaseResponseDto<UserInvestListResponseDataDto> generateUserInvestList(UserInvestListRequestDto userInvestListRequestDto) {
         String loginName = userInvestListRequestDto.getBaseParam().getUserId();
@@ -98,7 +102,7 @@ public class MobileAppInvestListsV3ServiceImpl implements MobileAppInvestListsV3
                 dto.setInvestId(transferApplicationModel != null ? String.valueOf(transferApplicationModel.getInvestId()) : String.valueOf(investModel.getId()));
                 dto.setTransferApplicationId(transferApplicationModel != null ? String.valueOf(transferApplicationModel.getId()) : "");
                 dto.setInvestAmount(transferApplicationModel != null ? AmountConverter.convertCentToString(transferApplicationModel.getInvestAmount()) : AmountConverter.convertCentToString(investModel.getAmount()));
-                dto.setTransferInvest(transferApplicationModel == null ? true : false);
+                dto.setTransferInvest(transferApplicationModel != null ? true : false);
 
                 if (loanStatus.equals(LoanStatus.REPAYING) && loanModel.getProductType().equals(ProductType.EXPERIENCE)) {
                     List<UserCouponModel> userCouponModelList = userCouponMapper.findByInvestId(investModel.getId());
@@ -149,7 +153,7 @@ public class MobileAppInvestListsV3ServiceImpl implements MobileAppInvestListsV3
                 dto.setExpectedInterest(AmountConverter.convertCentToString(expectedInterest));
 
                 dto.setLastRepayDate(StringUtils.trimToEmpty(lastRepayDate));
-                dto.setTransferStatus(investModel.getTransferStatus().name());
+                dto.setTransferStatus(investTransferService.isTransferable(investModel.getId()) ? TransferStatus.TRANSFERABLE.name() : TransferStatus.NONTRANSFERABLE.name());
                 List<UserCouponModel> userCouponModels = userCouponMapper.findUserCouponSuccessByInvestId(investModel.getId());
                 List<CouponType> couponTypes = Lists.newArrayList();
                 for (UserCouponModel userCouponModel : userCouponModels) {
