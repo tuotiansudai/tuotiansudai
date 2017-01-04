@@ -104,6 +104,8 @@ public class ActivityCountDrawLotteryService {
                 return countDrawLotteryTime(userModel, activityCategory, newYearsActivityTask);
             case CHRISTMAS_ACTIVITY:
                 return countDrawLotteryTime(userModel, activityCategory, christmasTasks);
+            case LANTERN_FESTIVAL_ACTIVITY:
+                return countDrawLotteryTime(userModel,activityCategory,Lists.newArrayList(ActivityDrawLotteryTask.EACH_INVEST_1000));
         }
         return lotteryTime;
     }

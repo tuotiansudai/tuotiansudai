@@ -90,6 +90,11 @@ public class LotteryDrawActivityService {
     @Value("${activity.autumn.endTime}")
     private String autumnEndTime;
 
+    @Value(value = "${activity.lanternFestival.startTime}")
+    private String lanternFestivalStartTime;
+    @Value(value = "${activity.lanternFestival.endTime}")
+    private String lanternFestivalEndTime;
+
     //往期活动任务
     private final List activityTasks = Lists.newArrayList(ActivityDrawLotteryTask.REGISTER, ActivityDrawLotteryTask.EACH_REFERRER,
             ActivityDrawLotteryTask.EACH_REFERRER_INVEST, ActivityDrawLotteryTask.CERTIFICATION, ActivityDrawLotteryTask.BANK_CARD,
@@ -301,6 +306,8 @@ public class LotteryDrawActivityService {
                 return countDrawLotteryTime(userModel, activityCategory, newYearsActivityTask);
             case CHRISTMAS_ACTIVITY:
                 return countDrawLotteryTime(userModel, activityCategory, christmasTasks);
+            case LANTERN_FESTIVAL_ACTIVITY:
+                return countDrawLotteryTime(userModel, activityCategory, Lists.newArrayList(ActivityDrawLotteryTask.EACH_INVEST_1000));
         }
         return lotteryTime;
     }
@@ -377,6 +384,9 @@ public class LotteryDrawActivityService {
                     time += (int) (sumAmount / EACH_INVEST_AMOUNT_20000);
                     time = time >= 10 ? 10 : time;
                     break;
+                case EACH_INVEST_1000:
+                    time = investMapper.sumDrawCountByLoginName(userModel.getLoginName(),"元旦专享",startTime,endTime,100000);
+                    break;
             }
         }
 
@@ -415,6 +425,7 @@ public class LotteryDrawActivityService {
                 .put(ActivityCategory.ANNUAL_ACTIVITY, annualTime)
                 .put(ActivityCategory.NATIONAL_PRIZE, Lists.newArrayList(nationalStartTime, nationalEndTime))
                 .put(ActivityCategory.AUTUMN_PRIZE, Lists.newArrayList(autumnStartTime, autumnEndTime))
+                .put(ActivityCategory.LANTERN_FESTIVAL_ACTIVITY, Lists.newArrayList(lanternFestivalStartTime, lanternFestivalEndTime))
                 .build()).get(activityCategory);
     }
 
