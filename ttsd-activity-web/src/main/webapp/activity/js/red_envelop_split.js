@@ -93,7 +93,8 @@ require(['jquery', 'layerWrapper','commonFun','validator'], function($,layer,com
 
                 var ajaxOption={
                         url: '/register/user/'+mobile+'/send-register-captcha',
-                        type:'POST'
+                        type: 'get',
+                        dataType: 'json'
                     };
                 commonFun.useAjax(ajaxOption,function(responseData) {
                     $fetchCaptcha.prop('disabled',false);
