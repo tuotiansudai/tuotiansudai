@@ -1,6 +1,7 @@
 <#import "../macro/global.ftl" as global>
 <@global.main pageCss="${css.red_envelop_split}" pageJavascript="${js.red_envelop_split}" activeNav="" activeLeftNav="" title="邀请好友送红包" keywords="拓天速贷,新手投资,新手加息券,新手红包" description="一次体验，受益终生，拓天速贷一周年，这是用心的回馈">
-    <div class="red-envelop-container" id="redEnvelopSplit">
+
+<div class="red-envelop-container" id="redEnvelopSplit">
 
         <div class="register-section-box">
             <div class="invite-box">
@@ -83,34 +84,40 @@
             </div>
 
             <div class="envelop-box clearfix" style="display: none">
-                <div class="anonymous-box" style="display: none">
+            <@global.isAnonymous>
+                <div class="anonymous-box">
                     <span>您还未登录，登录完成后，再来查看吧！</span>
                     <a class="normal-button" href="/login">去登录</a>
                 </div>
-
+                </@global.isAnonymous>
+            <@global.isNotAnonymous>
                 <div class="unanonymous-box clearfix">
                     <ul class="my-red-envelop clearfix">
                         <li>成功邀请人数<br/>
-                            <em>2</em>人
+                            <em>${referrerCount}</em>人
                         </li>
                         <li>赚取红包<br/>
-                            <em>3.88</em>元
+                            <em>${redEnvelopAmount}</em>元
                         </li>
                     </ul>
                     <div class="my-red-list clearfix">
-                        <span class="no-data" style="display: none">
+                        <#if referrerList??>
+                            <ul>
+                                <#list referrerList as referrer>
+                                    <li>
+                                        <span class="fl">${referrer.mobile}<br>已注册</span>
+                                        <span class="fr">${referrer.registerTime?string("yyyy-MM-dd")}</span>
+                                    </li>
+                                </#list>
+                            </ul>
+                        <#else>
+                            <span class="no-data">
                             您还未成功邀请好友注册，快去邀请好友拿红包吧！
                         </span>
-                        <li>
-                            <span class="fl">180****2145<br>已注册</span>
-                            <span class="fr">累计1.88元红包</span>
-                        </li>
-                        <li>
-                            <span class="fl">180****2145<br>已注册</span>
-                            <span class="fr">累计1.88元红包</span>
-                        </li>
+                        </#if>
                     </div>
                 </div>
+            </@global.isNotAnonymous>
             </div>
         </div>
     </div>

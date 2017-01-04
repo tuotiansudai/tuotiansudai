@@ -8,6 +8,7 @@ require(['jquery', 'layerWrapper','commonFun','validator'], function($,layer,com
             if(!$redEnvelopSplit.length) {
                 return;
             }
+
             $('.envelop-button span',$redEnvelopSplit).on('click',function() {
                 var $this=$(this),
                     thisNum=$this.index();

@@ -114,7 +114,8 @@ public class RedEnvelopSplitActivityService {
         Date startTime = DateTime.parse(weiXinPeriod.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
         Date endTime = DateTime.parse(weiXinPeriod.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
         List<UserModel> userModels = userMapper.findUserModelByChannel(loginName, Lists.newArrayList(UserChannel.values()), startTime, endTime, DEFAULT_PAGE_SIZE);
-        return userModels.stream().map(userModel -> new RedEnvelopSplitReferrerDto(userModel.getMobile(), userModel.getRegisterTime())).collect(Collectors.toList());
+//        return userModels.stream().map(userModel -> new RedEnvelopSplitReferrerDto(userModel.getMobile(), userModel.getRegisterTime())).collect(Collectors.toList());
+        return Lists.newArrayList(new RedEnvelopSplitReferrerDto("152****1234", DateTime.now().toDate()), new RedEnvelopSplitReferrerDto("152****1234", DateTime.now().toDate()));
     }
 
 }
