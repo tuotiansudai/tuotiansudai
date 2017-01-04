@@ -26,6 +26,10 @@
         select * from user_message where login_name = #{loginName};
     </select>
 
+    <select id="countByLoginNameAndMessageId" parameterType="map" resultType="long">
+        select count(1) from user_message where login_name = #{loginName} and message_id = #{messageId};
+    </select>
+
     <insert id="create" parameterType="UserMessageModel" useGeneratedKeys="true" keyProperty="id">
         insert into user_message (`message_id`, `login_name`, `business_id`, `title`, `content`, `read`, `read_time`, `created_time`)
         value(#{messageId}, #{loginName}, #{businessId}, #{title}, #{content}, #{read}, #{readTime}, #{createdTime})

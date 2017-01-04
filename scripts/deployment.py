@@ -30,7 +30,7 @@ class Deployment(object):
 
     def compile(self):
         print "Compiling..."
-        sh('{0} clean ttsd-config:flywayAA ttsd-config:flywayUMP ttsd-config:flywayAnxin ttsd-config:flywaySms ttsd-config:flywayWorker ttsd-config:flywayAsk ttsd-config:flywayActivity ttsd-config:flywayPoint ttsd-config:flywayMessage initMQ war'.format(
+        sh('{0} clean ttsd-config:flywayAA ttsd-config:flywayUMP ttsd-config:flywayAnxin ttsd-config:flywaySms ttsd-config:flywayWorker ttsd-config:flywayAsk ttsd-config:flywayActivity ttsd-config:flywayPoint ttsd-config:flywayMessage initMQ war renameWar'.format(
             self._gradle))
         sh('cp {0}/signin_service/settings_local.py ./signin_service/'.format(self._config_path))
 
@@ -66,20 +66,6 @@ class Deployment(object):
     def build_worker_monitor(self):
         print "Making diagnosis build..."
         sh('cd ./ttsd-worker-monitor && {0} bootRepackage'.format(self._gradle))
-
-    def mkwar(self):
-        print "Making war..."
-        if self._env == 'QA' :
-            sh('{0} war'.format(self._gradle))
-        else :
-            sh('{0} ttsd-web:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
-            sh('{0} ttsd-activity-web:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
-            sh('{0} ttsd-pay-wrapper:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
-            sh('{0} ttsd-console:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
-            sh('{0} ttsd-mobile-api:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
-            sh('{0} ttsd-sms-wrapper:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
-            sh('{0} ttsd-point-web:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
-        self.build_and_unzip_worker()
 
     def mk_static_package(self):
         print "Making static package..."
