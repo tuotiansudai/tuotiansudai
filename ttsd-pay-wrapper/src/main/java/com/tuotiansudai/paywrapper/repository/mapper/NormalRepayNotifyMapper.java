@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface NormalRepayNotifyMapper extends BaseCallbackMapper {
 
-    List<NormalRepayNotifyRequestModel> getNormalTodoList(@Param(value = "limitCount") int limitCount);
+    NormalRepayNotifyRequestModel findById(@Param(value = "id") long id);
 
     void updateStatus(@Param(value = "id") Long id, @Param(value = "status") NotifyProcessStatus status);
 

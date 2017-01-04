@@ -294,7 +294,7 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
     public void shouldTransferApplicationCancelIsSuccess() throws Exception {
         TransferCancelRequestDto transferCancelRequestDto = new TransferCancelRequestDto();
         transferCancelRequestDto.setTransferApplicationId(100000L);
-        when(investTransferService.cancelTransferApplication(transferCancelRequestDto.getTransferApplicationId())).thenReturn(true);
+        when(investTransferService.cancelTransferApplicationManually(transferCancelRequestDto.getTransferApplicationId())).thenReturn(true);
         BaseResponseDto baseResponseDto = mobileAppTransferApplicationService.transferApplicationCancel(transferCancelRequestDto);
         assertEquals(ReturnMessage.SUCCESS.getCode(), baseResponseDto.getCode());
     }

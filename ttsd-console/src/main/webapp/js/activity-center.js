@@ -36,13 +36,13 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapDat
                         if ($self.hasClass('webPicture')) {
                             $('.webPictureUrl').val(data.title);
                             $('.webPictureImage').html('');
-                            $('.webPictureImage').append('<img style="width:100%" src="/' + data.title + '" alt="缩略图">');
+                            $('.webPictureImage').append('<img style="width:100%" src="' + data.title + '" alt="缩略图">');
 
                         }
                         if ($self.hasClass('appPicture')) {
                             $('.appPictureUrl').val(data.title)
                             $('.appPictureImage').html('');
-                            $('.appPictureImage').append('<img style="width:100%" src="/' + data.title + '" alt="展示图">');
+                            $('.appPictureImage').append('<img style="width:100%" src="' + data.title + '" alt="展示图">');
                         }
 
                         if ($self.hasClass('appVerticalPicture')) {

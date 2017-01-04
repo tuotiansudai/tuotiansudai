@@ -231,8 +231,7 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
 
     @Override
     public BaseResponseDto transferApplicationCancel(TransferCancelRequestDto transferCancelRequestDto) {
-        boolean isSuccess = investTransferService.cancelTransferApplication(transferCancelRequestDto.getTransferApplicationId());
-        if (isSuccess) {
+        if (investTransferService.cancelTransferApplicationManually(transferCancelRequestDto.getTransferApplicationId())) {
             return new BaseResponseDto(ReturnMessage.SUCCESS.getCode(), ReturnMessage.SUCCESS.getMsg());
         } else {
             return new BaseResponseDto(ReturnMessage.TRANSFER_CANCEL_IS_FAIL.getCode(), ReturnMessage.TRANSFER_CANCEL_IS_FAIL.getMsg());
@@ -241,7 +240,7 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
 
     @Override
     public BaseResponseDto<TransferPurchaseResponseDataDto> transferPurchase(TransferPurchaseRequestDto requestDto) {
-        BaseResponseDto<TransferPurchaseResponseDataDto> dto = new BaseResponseDto();
+        BaseResponseDto<TransferPurchaseResponseDataDto> dto = new BaseResponseDto<>();
         TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(Long.parseLong(requestDto.getTransferApplicationId()));
 
         TransferPurchaseResponseDataDto transferPurchaseResponseDataDto = new TransferPurchaseResponseDataDto();

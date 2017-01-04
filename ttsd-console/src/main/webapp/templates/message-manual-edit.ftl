@@ -2,30 +2,25 @@
 <@global.main pageCss="" pageJavascript="message-manual-edit.js" headLab="message-manage" sideLab="createManualMessage" title="创建手动站内信">
 
 <!-- content area begin -->
-<div class="col-md-10">
+<div class="col-md-10" xmlns="http://www.w3.org/1999/html">
     <form action="/message-manage/manual-message/create" method="post" class="form-horizontal message-form">
         <div class="form-group">
-            <input type="text" name="id" class="message-id" hidden="hidden" value="${(dto.id?c)!"0"}">
-            <label class="col-sm-1 control-label">收件人: </label>
+            <input type="hidden" name="id" class="message-id" value="${(dto.id?c)!}">
 
-            <div class="col-sm-4 receiver-type" id="userGroup">
+            <label class="col-sm-1 control-label">接收人: </label>
+            <div class="col-sm-3 radio">
                 <#list userGroups as userGroup>
                     <label>
-                        <input type="checkbox" name="userGroups"
-                               <#if userGroup.name()=='ALL_USER'>class="allGroups"
-                               <#elseif userGroup.name()=='IMPORT_USER'>class="importGroups"
-                               <#else>class="userGroups"</#if>
-                               <#if selectedUserGroups?seq_contains(userGroup.name())>checked="checked"</#if>
-                               value="${userGroup.name()}">
-                    ${userGroup.getDescription()}
+                        <input type="radio" name="userGroup" value="${userGroup.name()}"
+                               <#if selectedUserGroup.name() == userGroup.name()>checked="checked"</#if>
+                               value="${userGroup.name()}">${userGroup.getDescription()}
                     </label>
                 </#list>
             </div>
-            <input type="text" name="importUsersId" hidden="hidden" class="importUsersId" value="${importUsersId!0}">
 
-            <div class="file-btn">
-                <input type="file" id="importBtn">
-                导入用户
+            <div class="file-btn <#if selectedUserGroup.name() == 'ALL_USER'>hidden</#if>">
+                <input type="file" id="importBtn">导入用户
+                <input type="hidden" id="importUsersFlag" value="${(dto.importUsersFlag?c)!}">
             </div>
         </div>
 
@@ -36,15 +31,13 @@
                 <input type="text" name="title" class="form-control message-title"
                        value="${(dto.title)!}"/>
             </div>
-            <span>不超过40字</span>
         </div>
 
         <div class="form-group">
             <label class="col-sm-1 control-label">编辑内容: </label>
 
-            <div class="col-sm-10">
-                <script id="editor"
-                        type="text/plain">${(dto.template)!}</script>
+            <div class="col-sm-6">
+                <script id="editor" type="text/plain">${(dto.template)!}</script>
                 <input type="hidden" name="template" class="message-template"/>
             </div>
         </div>
@@ -68,9 +61,9 @@
             <label class="col-sm-1 control-label">消息类型</label>
             <div class="col-sm-4">
                 <select class="selectpicker messageCategory" name="messageCategory">
-                    <#list manualMessageTypes as messageCategory>
+                    <#list messageCategories as messageCategory>
                         <option value="${messageCategory.name()}"
-                                <#if (selectedManualMessageType?? && selectedManualMessageType == messageCategory) || ((dto.messageCategory)?? && dto.messageCategory == messageCategory)>selected</#if>>${messageCategory.getDescription()}</option>
+                                <#if ((dto.messageCategory)?? && dto.messageCategory == messageCategory) || messageCategory_index == 0>selected="selected"</#if>>${messageCategory.getDescription()}</option>
                     </#list>
                 </select>
             </div>
@@ -80,8 +73,7 @@
             <label class="col-sm-1 control-label">WEB跳转页面: </label>
 
             <div class="col-sm-4">
-                <input type="text" name="webUrl" class="form-control message-web-url"
-                       value="${(dto.webUrl)!}"/>
+                <input type="text" name="webUrl" class="form-control message-web-url" value="${(dto.webUrl)!}"/>
             </div>
         </div>
 
@@ -102,13 +94,14 @@
             <label class="col-sm-1 control-label">APP推送: </label>
 
             <div class="col-sm-4 checkbox">
-                <label for="extra">
-                    <input type="checkbox" class="message-jpush" name="jpush" id="extra"
-                           <#if (dto.jpush)?? && dto.jpush>checked</#if>>选中后此消息创建推送
+                <label for="push">
+                    <input type="checkbox" class="message-jpush" id="push" <#if (dto.push)??>checked="checked"</#if>>选中后此消息创建推送
+                    <input type="hidden" value="${(dto.push.id?c)!}">
                 </label>
             </div>
         </div>
-        <div class="check-item" style="display:none;">
+
+        <div class="push-check-item" style="display:none;">
             <div class="form-group">
                 <label class="col-sm-1 control-label">推送类型: </label>
                 <div class="col-sm-4">
@@ -116,7 +109,9 @@
                         <#list pushTypes as pushType>
                             <#if pushType.getType()=='MANUAL'>
                                 <option value="${pushType.name()}"
-                                        <#if jPushAlert?? && jPushAlert.pushType == pushType || ((dto.pushType)?? && dto.pushType == pushType)>selected</#if>>${pushType.getDescription()}</option>
+                                        <#if ((dto.push.id)?? && dto.push.pushType.name() == pushType.name()) || pushType_index == 0>selected="selected"</#if>>
+                                    ${pushType.getDescription()}
+                                </option>
                             </#if>
                         </#list>
                     </select>
@@ -126,10 +121,12 @@
             <div class="form-group">
                 <label class="col-sm-1 control-label">推送渠道: </label>
                 <div class="col-sm-4">
-                    <select class="selectpicker message-pushSource" name="message-pushSource">
+                    <select class="selectpicker message-pushSource" name="pushSource">
                         <#list pushSources as pushSource>
                             <option value="${pushSource.name()}"
-                                    <#if jPushAlert?? && jPushAlert.pushSource == pushSource || ((dto.pushSource)?? && dto.pushSource == pushSource)>selected</#if>>${pushSource.name()}</option>
+                                    <#if ((dto.push.id)?? && dto.push.pushSource.name() == pushSource.name()) || pushSource_index == 0>selected="selected"</#if>>
+                                ${pushSource.name()}
+                            </option>
                         </#list>
                     </select>
                 </div>
@@ -144,6 +141,35 @@
             </div>
         </div>
     </form>
+
+    <!-- Modal -->
+    <div class="modal fade" id="confirm-modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h5>确认提交？</h5>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-default btn-submit">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="error-modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h5></h5>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <!-- content area end -->
 </@global.main>
