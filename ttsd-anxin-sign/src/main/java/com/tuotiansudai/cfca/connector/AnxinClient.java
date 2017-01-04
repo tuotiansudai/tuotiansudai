@@ -69,6 +69,7 @@ public class AnxinClient {
         SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
 
         if (sslSocketFactory != null) {
+            logger.info("initSSL, sslSocketFactory is not null");
             httpClient.setSslSocketFactory(sslSocketFactory);
         }
 
@@ -87,7 +88,7 @@ public class AnxinClient {
         Request request = new Request.Builder().url(url).post(formEncodingBuilder.build()).build();
 
         try {
-            logger.info("send anxin request, txCode: " + txCode);
+            logger.info("send anxin request, txCode: " + txCode + ", signature: " + signature);
             Response response = httpClient.newCall(request).execute();
             String responseBodyString = response.body().string();
             logger.info("send anxin response, txCode: " + txCode + ", body: " + responseBodyString);

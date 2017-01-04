@@ -6,8 +6,8 @@ import com.tuotiansudai.api.dto.v1_0.NodeDetailRequestDto;
 import com.tuotiansudai.api.dto.v1_0.NodeDetailResponseDataDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.service.v1_0.MobileAppNodeDetailService;
-import com.tuotiansudai.repository.mapper.AnnounceMapper;
-import com.tuotiansudai.repository.model.AnnounceModel;
+import com.tuotiansudai.message.repository.mapper.AnnounceMapper;
+import com.tuotiansudai.message.repository.model.AnnounceModel;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,12 +15,16 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class MobileAppNodeDetailServiceImpl implements MobileAppNodeDetailService {
+
     @Value("${mobile.app.imageUrl.pattern}")
     private String urlPattern;
+
     @Value("${web.server}")
     private String domainName;
+
     @Autowired
     private AnnounceMapper announceMapper;
+
     @Override
     public BaseResponseDto<NodeDetailResponseDataDto> generateNodeDetail(NodeDetailRequestDto requestDto) {
         BaseResponseDto<NodeDetailResponseDataDto> dto = new BaseResponseDto<>();

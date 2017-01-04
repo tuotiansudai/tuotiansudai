@@ -4,19 +4,25 @@ import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.tuotiansudai.anxin.service.AnxinSignService;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.sms.InvestSmsNotifyDto;
+import com.tuotiansudai.enums.MessageEventType;
+import com.tuotiansudai.enums.PushSource;
+import com.tuotiansudai.enums.PushType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.job.AnxinCreateContractJob;
 import com.tuotiansudai.job.AutoLoanOutJob;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.job.LoanOutSuccessHandleJob;
+import com.tuotiansudai.message.EventMessage;
+import com.tuotiansudai.message.PushMessage;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
@@ -57,6 +63,7 @@ import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class LoanServiceImpl implements LoanService {
@@ -120,7 +127,7 @@ public class LoanServiceImpl implements LoanService {
     private RedisWrapperClient redisWrapperClient;
 
     @Autowired
-    private AnxinSignService anxinSignService;
+    private MQWrapperClient mqWrapperClient;
 
     @Transactional(rollbackFor = Exception.class)
     public BaseDto<PayDataDto> createLoan(long loanId) {
@@ -259,6 +266,8 @@ public class LoanServiceImpl implements LoanService {
             } finally {
                 redisWrapperClient.del(AutoLoanOutJob.LOAN_OUT_IN_PROCESS_KEY + loanId);
             }
+
+            this.sendMessage(loanId);
         } else {
             payDataDto.setStatus(true);
             payDataDto.setCode(BaseSyncResponseModel.SUCCESS_CODE);
@@ -553,11 +562,8 @@ public class LoanServiceImpl implements LoanService {
                     logger.error(e.getLocalizedMessage(), e);
                 }
             }
-        } else {
-            //TODO SEND_SMS
         }
-        String respData = callbackRequest.getResponseData();
-        return respData;
+        return callbackRequest.getResponseData();
     }
 
     private void createAnxinContractJob(long businessId) {
@@ -575,4 +581,17 @@ public class LoanServiceImpl implements LoanService {
         }
     }
 
+    private void sendMessage(long loanId) {
+        //Title:您投资的{0}已经满额放款，预期年化收益{1}%
+        //Content:尊敬的用户，您投资的{0}项目已经满额放款，预期年化收益{1}%，快来查看收益吧。
+        LoanModel loanModel = loanMapper.findById(loanId);
+        List<String> loginNames =  investMapper.findSuccessInvestsByLoanId(loanId).stream().map(InvestModel::getLoginName).collect(Collectors.toList());
+        String title = MessageFormat.format(MessageEventType.LOAN_OUT_SUCCESS.getTitleTemplate(), loanModel.getName(), (loanModel.getBaseRate() + loanModel.getActivityRate()) * 100);
+        String content = MessageFormat.format(MessageEventType.LOAN_OUT_SUCCESS.getContentTemplate(), loanModel.getName(), (loanModel.getBaseRate() + loanModel.getActivityRate()) * 100);
+
+        mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(MessageEventType.LOAN_OUT_SUCCESS,
+                loginNames, title, content, loanId));
+
+        mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(loginNames, PushSource.ALL, PushType.LOAN_OUT_SUCCESS, title));
+    }
 }

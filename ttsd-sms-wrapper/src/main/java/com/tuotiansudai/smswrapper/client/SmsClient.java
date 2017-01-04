@@ -143,6 +143,7 @@ public class SmsClient implements ApplicationContextAware {
         httpPost.addHeader("CheckSum", checkSum);
         httpPost.addHeader("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
 
+        String requestEntityString = "";
         try {
             String mobileJson = objectMapper.writeValueAsString(mobileList);
             String paramJson = objectMapper.writeValueAsString(paramList);
@@ -154,12 +155,21 @@ public class SmsClient implements ApplicationContextAware {
             nvps.add(new BasicNameValuePair("params", paramJson));
 
             httpPost.setEntity(new UrlEncodedFormEntity(nvps, "utf-8"));
+            try {
+                requestEntityString = EntityUtils.toString(httpPost.getEntity());
+            } catch (Exception e) {
+                logger.error("[SmsClient][sendSMS]parse request entity error.", e);
+            }
 
             // 执行请求
             HttpResponse response = getHttpClient().execute(httpPost);
 
             // 执行结果  {"code":200,"msg":"sendid","obj":1}
             String resultCode = getRetCode(EntityUtils.toString(response.getEntity(), "utf-8"));
+            if(!"200".equals(resultCode)) {
+                logger.error(MessageFormat.format("[SmsClient][sendSMS]Send sms result fail.request:{0}, response:{1}",
+                        EntityUtils.toString(httpPost.getEntity()), EntityUtils.toString(response.getEntity())));
+            }
             dto.setSuccess(resultCode.equals(String.valueOf(HttpStatus.OK.value())));
 
             String content = template.generateContent(paramList);
@@ -168,7 +178,7 @@ public class SmsClient implements ApplicationContextAware {
                 this.createSmsModel(baseMapperClass, mobile, content, resultCode);
             }
         } catch (IOException e) {
-            logger.error(e.getLocalizedMessage(), e);
+            logger.error(MessageFormat.format("[SmsClient][sendSMS]Send sms result fail.request:{0}", requestEntityString), e);
         }
 
         if (!Strings.isNullOrEmpty(restrictedIP)) {

@@ -5,9 +5,7 @@ include "ttsd-service",
         "ttsd-sms-wrapper",
         "ttsd-job-worker",
         "ttsd-mobile-api",
-        "ttsd-jpush",
         'ttsd-membership',
-        "ttsd-message",
         'ttsd-web-common-config',
         'ttsd-config',
         'ttsd-client',
@@ -16,7 +14,7 @@ include "ttsd-service",
         'ttsd-activity-console',
         'ttsd-anxin-sign',
         'ttsd-util'
-
+include 'ttsd-message-repository', "ttsd-message-service"
 include 'ttsd-user-repository', 'ttsd-user-service'
 include 'ttsd-edxactivity-model', 'ttsd-edxactivity-repository', 'ttsd-activity-service', 'ttsd-activity-web'
 include 'ttsd-edxpoint-model', 'ttsd-edxpoint-repository', "ttsd-point-service", 'ttsd-point-web'
@@ -24,4 +22,4 @@ include 'ttsd-edxask-model', 'ttsd-edxask-repository', 'ttsd-ask-service', 'ttsd
 include 'ttsd-mq-client', 'ttsd-loan-mq-consumer', 'ttsd-message-mq-consumer', 'ttsd-point-mq-consumer', 'ttsd-user-mq-consumer', 'ttsd-activity-mq-consumer', 'ttsd-auditLog-mq-consumer'
 include 'ttsd-diagnosis', 'ttsd-worker-monitor'
 include 'ump-project-transfer'
-
+include 'ttsd-mybatis-extension'
