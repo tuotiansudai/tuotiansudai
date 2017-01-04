@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.activity.repository.dto.RedEnvelopSplitActivityDto;
+import com.tuotiansudai.activity.repository.dto.RedEnvelopSplitReferrerDto;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.enums.AppUrl;
 import com.tuotiansudai.repository.mapper.PrepareUserMapper;
@@ -25,6 +26,7 @@ import java.util.Arrays;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class RedEnvelopSplitActivityService {
@@ -47,6 +49,8 @@ public class RedEnvelopSplitActivityService {
 
     private static String REFERRER_DESCRIPTION = "完成注册即可领取8.88元现金红包+5888元体验金+588元优惠券";
 
+    private static Integer DEFAULT_PAGE_SIZE = 10;
+
     @Value("#{'${activity.weiXin.red.envelop.period}'.split('\\~')}")
     private List<String> weiXinPeriod = Lists.newArrayList();
 
@@ -56,7 +60,7 @@ public class RedEnvelopSplitActivityService {
         }
         Date startTime = DateTime.parse(weiXinPeriod.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
         Date endTime = DateTime.parse(weiXinPeriod.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
-        return userMapper.findUserModelByChannel(loginName, Arrays.asList(UserChannel.values()), startTime, endTime).size();
+        return userMapper.findUserModelByChannel(loginName, Arrays.asList(UserChannel.values()), startTime, endTime, null).size();
     }
 
     public String getReferrerRedEnvelop(String loginName) {
@@ -104,6 +108,13 @@ public class RedEnvelopSplitActivityService {
         prepareUserModel.setCreatedTime(new Date());
         prepareUserModel.setChannel(channel);
         prepareUserMapper.create(prepareUserModel);
+    }
+
+    public List<RedEnvelopSplitReferrerDto> getReferrerList(String loginName){
+        Date startTime = DateTime.parse(weiXinPeriod.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+        Date endTime = DateTime.parse(weiXinPeriod.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+        List<UserModel> userModels = userMapper.findUserModelByChannel(loginName, Lists.newArrayList(UserChannel.values()), startTime, endTime, DEFAULT_PAGE_SIZE);
+        return userModels.stream().map(userModel -> new RedEnvelopSplitReferrerDto(userModel.getMobile(), userModel.getRegisterTime())).collect(Collectors.toList());
     }
 
 }

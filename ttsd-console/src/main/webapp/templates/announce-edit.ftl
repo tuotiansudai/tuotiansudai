@@ -1,5 +1,5 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="announce-edit.js" headLab="announceMan" sideLab="announceMan" title="发布公告">
+<@global.main pageCss="" pageJavascript="announce-edit.js" headLab="announce-manage" sideLab="announceMan" title="发布公告">
 
 <!-- content area begin -->
 <div class="col-md-10">
@@ -12,17 +12,18 @@
 
                 <div class="col-sm-4">
                     <input type="text" class="form-control jq-title" placeholder="" datatype="*" errormsg="标题不能为空"
-                           <#if announce??>value="${announce.title!}"</#if>>
+                           value="${(announce.title)!}">
                 </div>
             </div>
+
             <div class="form-group">
                 <label class="col-sm-1 control-label">项目描述: </label>
 
-                <div class="col-sm-10">
-                    <script id="editor"
-                            type="text/plain"><#if announce??>${announce.content!}</#if></script>
+                <div class="col-sm-6">
+                    <script id="editor" type="text/plain">${(announce.content)!}</script>
                 </div>
             </div>
+
             <div class="form-group">
                 <label class="col-sm-1 control-label">属性: </label>
 
@@ -37,12 +38,13 @@
                     </div>
                 </div>
             </div>
+
             <div class="form-group">
                 <label class="col-sm-2 control-label"></label>
 
-                <div class="col-sm-4 form-error">
-                </div>
+                <div class="col-sm-4 form-error"></div>
             </div>
+
             <div class="form-group">
                 <label class="col-sm-1 control-label">操作: </label>
 

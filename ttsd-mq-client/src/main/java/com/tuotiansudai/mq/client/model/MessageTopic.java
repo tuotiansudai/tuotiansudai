@@ -6,7 +6,6 @@ public enum MessageTopic {
     InvestSuccess("InvestSuccess",
             MessageQueue.InvestSuccess_CompletePointTask,
             MessageQueue.InvestSuccess_MembershipUpdate,
-            MessageQueue.InvestSuccess_SendJpushMessage,
             MessageQueue.InvestSuccess_CouponUpdate,
             MessageQueue.InvestSuccess_ActivityReward);
 

@@ -4,8 +4,7 @@ dependencies {
     compile project(':ttsd-web-common-config'),
             project(':ttsd-service'),
             project(':ttsd-point-service'),
-            project(':ttsd-message'),
-            project(':ttsd-jpush'),
+            project(':ttsd-message-repository'),
             project(':ttsd-ask-service'),
             project(':ttsd-activity-service'),
             fileTree(dir: 'libs', include: '**/*.jar'),
@@ -17,6 +16,12 @@ dependencies {
 }
 
 war {
-    archiveName "ROOT.war"
+    archiveName "ttsd-console.war"
     destinationDir = file("war")
+}
+
+task renameWar {
+    doLast {
+        file("${project.projectDir.getPath()}/war/ttsd-console.war").renameTo(file("${project.projectDir.getPath()}/war/ROOT.war"))
+    }
 }

@@ -217,7 +217,7 @@ public class UserMapperTest {
         referrerUserModel.setReferrer(userModel.getLoginName());
         userMapper.create(referrerUserModel);
 
-        List<UserModel> userModels = userMapper.findUserModelByChannel(userModel.getLoginName(), Arrays.asList(UserChannel.values()), DateUtils.addDays(userModel.getRegisterTime(), -1), DateUtils.addDays(userModel.getRegisterTime(), 1));
+        List<UserModel> userModels = userMapper.findUserModelByChannel(userModel.getLoginName(), Arrays.asList(UserChannel.values()), DateUtils.addDays(userModel.getRegisterTime(), -1), DateUtils.addDays(userModel.getRegisterTime(), 1), null);
         assertTrue(CollectionUtils.isNotEmpty(userModels));
         assertEquals(userModels.get(0).getLoginName(), referrerUserModel.getLoginName());
     }

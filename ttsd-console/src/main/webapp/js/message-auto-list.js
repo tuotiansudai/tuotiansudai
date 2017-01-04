@@ -6,7 +6,6 @@ require(['jquery','bootstrap', 'bootstrapDatetimepicker','csrf'], function($) {
             }else{
                 var $self = $(this),
                     thisLink = $self.attr('data-link');
-                console.log(thisLink);
                 $.ajax({
                     url: thisLink,
                     type: 'post',
@@ -25,7 +24,6 @@ require(['jquery','bootstrap', 'bootstrapDatetimepicker','csrf'], function($) {
             }else{
                 var $self = $(this),
                     thisLink = $self.attr('data-link');
-                console.log(thisLink);
                 $.ajax({
                     url: thisLink,
                     type: 'post',

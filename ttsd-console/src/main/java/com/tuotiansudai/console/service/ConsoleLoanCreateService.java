@@ -3,17 +3,10 @@ package com.tuotiansudai.console.service;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.*;
-import com.tuotiansudai.enums.AppUrl;
-import com.tuotiansudai.enums.PushSource;
-import com.tuotiansudai.enums.PushType;
 import com.tuotiansudai.job.DeadlineFundraisingJob;
 import com.tuotiansudai.job.FundraisingStartJob;
 import com.tuotiansudai.job.JobType;
-import com.tuotiansudai.message.dto.MessageCompleteDto;
-import com.tuotiansudai.message.repository.model.*;
-import com.tuotiansudai.message.service.MessageService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountConverter;
@@ -27,7 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -85,15 +77,7 @@ public class ConsoleLoanCreateService {
     private AnxinSignPropertyMapper anxinSignPropertyMapper;
 
     @Autowired
-    private MessageService messageService;
-
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
-
-    @Autowired
     private PayWrapperClient payWrapperClient;
-
-    private final static String LOAN_MESSAGE_REDIS_KEY = "web:loan:loanMessageMap";
 
     @Transactional
     public BaseDto<BaseDataDto> createLoan(LoanCreateRequestDto loanCreateRequestDto) {
@@ -137,9 +121,6 @@ public class ConsoleLoanCreateService {
         if (loanCreateRequestDto.getLoanerEnterpriseDetails() != null) {
             pledgeEnterpriseMapper.create(new PledgeEnterpriseModel(loanId, loanCreateRequestDto.getPledgeEnterprise()));
         }
-
-        loanCreateRequestDto.getLoan().setId(loanId);
-        editLoanMessage(loanCreateRequestDto);
 
         return new BaseDto<>(new BaseDataDto(true));
     }
@@ -201,8 +182,6 @@ public class ConsoleLoanCreateService {
         if (loanCreateRequestDto.getLoanerEnterpriseDetails() != null) {
             pledgeEnterpriseMapper.create(new PledgeEnterpriseModel(loanId, loanCreateRequestDto.getPledgeEnterprise()));
         }
-
-        editLoanMessage(loanCreateRequestDto);
 
         if (fundraisingEndTimeChanged) {
             createDeadLineFundraisingJob(loanModel);
@@ -441,58 +420,5 @@ public class ConsoleLoanCreateService {
         } catch (SchedulerException e) {
             logger.error("create fundraising start job for loan[" + loanModel.getId() + "] fail", e);
         }
-    }
-
-    private void editLoanMessage(LoanCreateRequestDto loanCreateRequestDto) {
-        try {
-            if (redisWrapperClient.hexists(LOAN_MESSAGE_REDIS_KEY, String.valueOf(loanCreateRequestDto.getLoan().getId()))) {
-                long messageId = Long.valueOf(redisWrapperClient.hget(LOAN_MESSAGE_REDIS_KEY, String.valueOf(loanCreateRequestDto.getLoan().getId())));
-                if (null == loanCreateRequestDto.getLoanMessage()) {
-                    redisWrapperClient.hdel(LOAN_MESSAGE_REDIS_KEY, String.valueOf(loanCreateRequestDto.getLoan().getId()));
-                    messageService.deleteMessage(messageId, loanCreateRequestDto.getLoan().getCreatedBy());
-                } else {
-                    MessageCompleteDto messageCompleteDto = loanCreateRequestDtoToMessageCompleteDto(loanCreateRequestDto);
-                    messageCompleteDto.setId(messageId);
-                    messageService.createAndEditManualMessage(messageCompleteDto, 0L);
-                }
-            } else {
-                if (null != loanCreateRequestDto.getLoanMessage()) {
-                    MessageCompleteDto messageCompleteDto = loanCreateRequestDtoToMessageCompleteDto(loanCreateRequestDto);
-                    long messageId = messageService.createAndEditManualMessage(messageCompleteDto, 0L);
-                    redisWrapperClient.hset(LOAN_MESSAGE_REDIS_KEY, String.valueOf(loanCreateRequestDto.getLoan().getId()), String.valueOf(messageId));
-                }
-            }
-            logger.info(MessageFormat.format("[LoanCreateConsoleService] loan message create finished. loanId:{0}", loanCreateRequestDto.getLoan().getId()));
-        } catch (Exception e) {
-            logger.error(MessageFormat.format("[LoanCreateConsoleService] loan message create fail. loanId:{0}", loanCreateRequestDto.getLoan().getId()), e);
-        }
-    }
-
-    private MessageCompleteDto loanCreateRequestDtoToMessageCompleteDto(LoanCreateRequestDto loanCreateRequestDto) {
-        MessageCompleteDto messageCompleteDto = new MessageCompleteDto();
-
-        messageCompleteDto.setTitle(loanCreateRequestDto.getLoanMessage().getLoanMessageTitle());
-        messageCompleteDto.setTemplate(loanCreateRequestDto.getLoanMessage().getLoanMessageContent());
-        messageCompleteDto.setTemplateTxt(loanCreateRequestDto.getLoanMessage().getLoanMessageContent());
-        messageCompleteDto.setType(MessageType.MANUAL);
-        messageCompleteDto.setUserGroups(Lists.newArrayList(MessageUserGroup.ALL_USER));
-        messageCompleteDto.setChannels(Lists.newArrayList(MessageChannel.WEBSITE, MessageChannel.APP_MESSAGE));
-        messageCompleteDto.setMessageCategory(MessageCategory.SYSTEM);
-        messageCompleteDto.setWebUrl(MessageFormat.format("/loan-list", loanCreateRequestDto.getLoan().getId()));
-        messageCompleteDto.setAppUrl(AppUrl.INVEST_NORMAL);
-        messageCompleteDto.setJpush(true);
-        messageCompleteDto.setPushType(PushType.IMPORTANT_EVENT);
-        messageCompleteDto.setPushSource(PushSource.ALL);
-        messageCompleteDto.setStatus(MessageStatus.APPROVED);
-        messageCompleteDto.setReadCount(0);
-        messageCompleteDto.setActivatedBy(null);
-        messageCompleteDto.setActivatedTime(null);
-        messageCompleteDto.setExpiredTime(new DateTime().withDate(9999, 12, 31).toDate());
-        messageCompleteDto.setUpdatedBy(loanCreateRequestDto.getLoan().getCreatedBy());
-        messageCompleteDto.setUpdatedTime(new Date());
-        messageCompleteDto.setCreatedBy(loanCreateRequestDto.getLoan().getCreatedBy());
-        messageCompleteDto.setCreatedTime(new Date());
-
-        return messageCompleteDto;
     }
 }
