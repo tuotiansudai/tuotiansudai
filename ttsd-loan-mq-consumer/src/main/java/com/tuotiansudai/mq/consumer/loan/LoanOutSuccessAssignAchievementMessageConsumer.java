@@ -22,8 +22,8 @@ import java.text.MessageFormat;
 import java.util.List;
 
 @Component
-public class LoanOutSuccessNotifyForLoanOutMessageConsumer implements MessageConsumer {
-    private static Logger logger = LoggerFactory.getLogger(LoanOutSuccessNotifyForLoanOutMessageConsumer.class);
+public class LoanOutSuccessAssignAchievementMessageConsumer implements MessageConsumer {
+    private static Logger logger = LoggerFactory.getLogger(LoanOutSuccessAssignAchievementMessageConsumer.class);
 
     @Autowired
     private SmsWrapperClient smsWrapperClient;
@@ -33,7 +33,7 @@ public class LoanOutSuccessNotifyForLoanOutMessageConsumer implements MessageCon
 
     @Override
     public MessageQueue queue() {
-        return MessageQueue.LoanOutSuccess_SmsMessage;
+        return MessageQueue.LoanOutSuccess_AssignAchievement;
     }
 
     @Transactional
@@ -51,20 +51,21 @@ public class LoanOutSuccessNotifyForLoanOutMessageConsumer implements MessageCon
             long loanId = loanOutInfo.getLoanId();
             List<String> fatalSmsList = Lists.newArrayList();
 
-            logger.info("[MQ]：LoanOutSuccess process notify，loanId:" + loanId);
-            if (!payWrapperClient.processNotifyForLoanOut(loanId).isSuccess()) {
-                fatalSmsList.add("发送放款短信通知失败");
-                logger.error(MessageFormat.format("[MQ]: LoanOutSuccess process notify is fail (loanId = {0})", String.valueOf(loanId)));
+            logger.info(MessageFormat.format("[MQ] LoanOutSuccess assignInvestAchievementUserCoupon is execute , (loanId : {0}) ", String.valueOf(loanId)));
+            if (!payWrapperClient.assignInvestAchievementUserCoupon(loanId).isSuccess()) {
+                fatalSmsList.add("发送标王奖励失败");
+                logger.error(MessageFormat.format("[MQ] LoanOutSuccess assignInvestAchievementUserCoupon is fail. loanId:{0}", String.valueOf(loanId)));
             }
+
 
             if (CollectionUtils.isNotEmpty(fatalSmsList)) {
                 fatalSmsList.add(MessageFormat.format("标的ID:{0}", loanId));
                 smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(Joiner.on(",").join(fatalSmsList)));
-                logger.error(MessageFormat.format("[MQ] LoanOutSuccess process notify is fail, sms sending. loanId:{0}, queue:{1}", String.valueOf(loanId), MessageQueue.LoanOutSuccess_SmsMessage));
-                throw new RuntimeException("[MQ] LoanOutSuccess_SmsMessage is fail. loanOutInfo: " + message);
+                logger.error(MessageFormat.format("[MQ] LoanOutSuccess_AssignCoupon is fail, sms sending. loanId:{0}, queue:{1}", String.valueOf(loanId)), MessageQueue.LoanOutSuccess_AssignAchievement);
+                throw new RuntimeException("[MQ] LoanOutSuccess_AssignAchievement is fail. loanOutInfo: " + message);
             }
 
-            logger.info("[MQ] LoanOutSuccess consume LoanOutSuccess_SmsMessage success.");
+            logger.info("[MQ] LoanOutSuccess consume LoanOutSuccess_AssignAchievement success.");
         }
     }
 }

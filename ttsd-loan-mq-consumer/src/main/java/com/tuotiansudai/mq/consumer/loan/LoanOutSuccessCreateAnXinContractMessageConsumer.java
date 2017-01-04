@@ -40,7 +40,7 @@ public class LoanOutSuccessCreateAnXinContractMessageConsumer implements Message
     @Transactional
     @Override
     public void consume(String message) {
-        logger.info("[MQ] receive message: {}: {}.", this.queue(), message);
+        logger.info("[MQ] LoanOutSuccess receive message: {0}: {1}.", this.queue(), message);
         if (!StringUtils.isEmpty(message)) {
             LoanOutSuccessMessage loanOutInfo;
             try {
@@ -52,7 +52,7 @@ public class LoanOutSuccessCreateAnXinContractMessageConsumer implements Message
             long loanId = loanOutInfo.getLoanId();
             List<String> fatalSmsList = Lists.newArrayList();
 
-            logger.info("[MQ] ready to consume message: createLoanContracts is execute, loanId:{0}", loanId);
+            logger.info("[MQ] LoanOutSuccess ready to consume message: createLoanContracts is execute, loanId:{0}", loanId);
             BaseDto baseDto = payWrapperClient.createAnXinContract(loanId);
             if (!baseDto.isSuccess()) {
                 fatalSmsList.add("生成安心签失败");
@@ -62,10 +62,11 @@ public class LoanOutSuccessCreateAnXinContractMessageConsumer implements Message
             if (CollectionUtils.isNotEmpty(fatalSmsList)) {
                 fatalSmsList.add(MessageFormat.format("标的ID:{0}", loanId));
                 smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(Joiner.on(",").join(fatalSmsList)));
-                logger.error(MessageFormat.format("[MQ] LoanOutSuccess_GenerateAnXinContract fail sms sending. loanId:{0}", String.valueOf(loanId)));
+                logger.error(MessageFormat.format("[MQ] LoanOutSuccess createLoanContracts is fail, sms sending. loanId:{0}, queue:{1}", String.valueOf(loanId), MessageQueue.LoanOutSuccess_GenerateAnXinContract));
+                throw new RuntimeException("[MQ] LoanOutSuccess_GenerateAnXinContract is fail. loanOutInfo: " + message);
             }
 
-            logger.info("[MQ] consume LoanOutSuccess_GenerateAnXinContract success.");
+            logger.info("[MQ] LoanOutSuccess consume LoanOutSuccess_GenerateAnXinContract success.");
         }
     }
 }

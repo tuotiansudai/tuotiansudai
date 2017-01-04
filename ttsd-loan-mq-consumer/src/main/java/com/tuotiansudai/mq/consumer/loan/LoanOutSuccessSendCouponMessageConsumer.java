@@ -39,7 +39,7 @@ public class LoanOutSuccessSendCouponMessageConsumer implements MessageConsumer 
     @Transactional
     @Override
     public void consume(String message) {
-        logger.info("[MQ] receive message: {}: {}.", this.queue(), message);
+        logger.info("[MQ] LoanOutSuccess receive message: {0}: {1}.", this.queue(), message);
         if (!StringUtils.isEmpty(message)) {
             LoanOutSuccessMessage loanOutInfo;
             try {
@@ -51,26 +51,20 @@ public class LoanOutSuccessSendCouponMessageConsumer implements MessageConsumer 
             long loanId = loanOutInfo.getLoanId();
             List<String> fatalSmsList = Lists.newArrayList();
 
-            logger.info("[MQ] ready to consume message: sendRedEnvelope is execute, loanId:{0}", loanId);
+            logger.info("[MQ] LoanOutSuccess ready to consume message: sendRedEnvelope is execute, loanId:{0}", loanId);
             if (!payWrapperClient.sendRedEnvelopeAfterLoanOut(loanId).isSuccess()) {
                 fatalSmsList.add("发送现金红包失败");
                 logger.error(MessageFormat.format("[MQ] LoanOutSuccess sendRedEnvelope is fail. loanId:{0}", String.valueOf(loanId)));
             }
 
-            logger.info(MessageFormat.format("[MQ] assignInvestAchievementUserCoupon is execute , (loanId : {0}) ", String.valueOf(loanId)));
-            if (!payWrapperClient.assignInvestAchievementUserCoupon(loanId).isSuccess()) {
-                fatalSmsList.add("发送标王奖励失败");
-                logger.error(MessageFormat.format("[MQ] LoanOutSuccess assignInvestAchievementUserCoupon is fail. loanId:{0}", String.valueOf(loanId)));
-            }
-
-
             if (CollectionUtils.isNotEmpty(fatalSmsList)) {
                 fatalSmsList.add(MessageFormat.format("标的ID:{0}", loanId));
                 smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(Joiner.on(",").join(fatalSmsList)));
-                logger.error(MessageFormat.format("[MQ] LoanOutSuccess_AssignCoupon fail sms sending. loanId:{0}", String.valueOf(loanId)));
+                logger.error(MessageFormat.format("[MQ] LoanOutSuccess_AssignCoupon is fail, sms sending. loanId:{0}, queue:{1}", String.valueOf(loanId)), MessageQueue.LoanOutSuccess_AssignCoupon);
+                throw new RuntimeException("[MQ] LoanOutSuccess_AssignCoupon is fail. loanOutInfo: " + message);
             }
 
-            logger.info("[MQ] consume LoanOutSuccess_AssignCoupon success.");
+            logger.info("[MQ] LoanOutSuccess consume LoanOutSuccess_AssignCoupon success.");
         }
     }
 }

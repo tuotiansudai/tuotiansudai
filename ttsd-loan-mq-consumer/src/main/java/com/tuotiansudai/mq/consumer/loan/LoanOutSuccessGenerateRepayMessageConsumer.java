@@ -39,7 +39,7 @@ public class LoanOutSuccessGenerateRepayMessageConsumer implements MessageConsum
     @Transactional
     @Override
     public void consume(String message) {
-        logger.info("[MQ] receive message: {}: {}.", this.queue(), message);
+        logger.info("[MQ] LoanOutSuccess generate coupon receive message: {0}: {1}.", this.queue(), message);
         if (!StringUtils.isEmpty(message)) {
             LoanOutSuccessMessage loanOutInfo;
             try {
@@ -51,19 +51,19 @@ public class LoanOutSuccessGenerateRepayMessageConsumer implements MessageConsum
             long loanId = loanOutInfo.getLoanId();
             List<String> fatalSmsList = Lists.newArrayList();
 
-            logger.info("[MQ] ready to consume message: generateRepay is execute, loanId:{0}", loanId);
+            logger.info("[MQ] LoanOutSuccess ready to consume message: generate repay is execute, loanId:{0}", loanId);
             if (!payWrapperClient.generateRepay(loanId).isSuccess()) {
                 fatalSmsList.add("生成标的回款计划失败");
-                logger.error(MessageFormat.format("[MQ] LoanOutSuccess generateRepay is fail. loanId:{0}", String.valueOf(loanId)));
+                logger.error(MessageFormat.format("[MQ] LoanOutSuccess generate repay is fail. loanId:{0}", String.valueOf(loanId)));
             }
 
-            logger.info(MessageFormat.format("[MQ] generateCouponRepay is execute , (loanId : {0}) ", String.valueOf(loanId)));
+            logger.info(MessageFormat.format("[MQ] LoanOutSuccess generate couponRepay is execute , (loanId : {0}) ", String.valueOf(loanId)));
             if (!payWrapperClient.generateCouponRepay(loanId).isSuccess()) {
                 fatalSmsList.add("生成优惠券回款计划失败");
-                logger.error(MessageFormat.format("loan out : generate coupon payment fail, (loanId : {0})", String.valueOf(loanId)));
+                logger.error(MessageFormat.format("[MQ] LoanOutSuccess generate coupon payment fail, (loanId : {0})", String.valueOf(loanId)));
             }
 
-            logger.info("[MQ] ready to consume message: rateIncreases is execute, loanId:{0}", loanId);
+            logger.info("[MQ] LoanOutSuccess ready to consume message: rateIncreases is execute, loanId:{0}", loanId);
             if (!payWrapperClient.generateExtraRate(loanId).isSuccess()) {
                 fatalSmsList.add("生成阶梯加息错误");
                 logger.error(MessageFormat.format("[MQ] LoanOutSuccess rateIncreases is fail. loanId:{0}", String.valueOf(loanId)));
@@ -72,10 +72,11 @@ public class LoanOutSuccessGenerateRepayMessageConsumer implements MessageConsum
             if (CollectionUtils.isNotEmpty(fatalSmsList)) {
                 fatalSmsList.add(MessageFormat.format("标的ID:{0}", loanId));
                 smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(Joiner.on(",").join(fatalSmsList)));
-                logger.error(MessageFormat.format("[MQ] LoanOutSuccess_GenerateRepay fail sms sending. loanId:{0}", String.valueOf(loanId)));
+                logger.error(MessageFormat.format("[MQ] LoanOutSuccess generate is fail, sms sending. loanId:{0}, queue:{1}", String.valueOf(loanId), MessageQueue.LoanOutSuccess_GenerateRepay));
+                throw new RuntimeException("[MQ] LoanOutSuccess_GenerateRepay is fail. loanOutInfo: " + message);
             }
 
-            logger.info("[MQ] consume LoanOutSuccess_GenerateRepay success.");
+            logger.info("[MQ] LoanOutSuccess consume LoanOutSuccess_GenerateRepay success.");
         }
     }
 }
