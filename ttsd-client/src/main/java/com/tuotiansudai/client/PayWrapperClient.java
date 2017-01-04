@@ -351,34 +351,34 @@ public class PayWrapperClient extends BaseClient {
     }
 
     public BaseDto<PayDataDto> sendRedEnvelopeAfterLoanOut(long loanId){
-        return syncExecute(String.valueOf(loanId), "/job/send-red-envelope-after-loan-out", "POST");
+        return syncExecute(String.valueOf(loanId), "/loan-out/send-red-envelope-after-loan-out", "POST");
     }
 
     public BaseDto<PayDataDto> sendRewardReferrer(long loanId){
-        return syncExecute(String.valueOf(loanId), "/job/referrer-reward-after-loan-out", "POST");
+        return syncExecute(String.valueOf(loanId), "/loan-out/referrer-reward-after-loan-out", "POST");
     }
 
     public BaseDto<PayDataDto> createAnXinContract(long loanId){
-        return syncExecute(String.valueOf(loanId), "/job/create-anxin-contract-after-loan-out", "POST");
+        return syncExecute(String.valueOf(loanId), "/loan-out/create-anxin-contract-after-loan-out", "POST");
     }
 
     public BaseDto<PayDataDto> generateRepay(long loanId){
-        return syncExecute(String.valueOf(loanId), "/job/generate-repay-after-loan-out", "POST");
+        return syncExecute(String.valueOf(loanId), "/loan-out/generate-repay-after-loan-out", "POST");
     }
 
     public BaseDto<PayDataDto> generateCouponRepay(long loanId){
-        return syncExecute(String.valueOf(loanId), "/job/generate-coupon-repay-after-loan-out", "POST");
+        return syncExecute(String.valueOf(loanId), "/loan-out/generate-coupon-repay-after-loan-out", "POST");
     }
 
     public BaseDto<PayDataDto> generateExtraRate(long loanId){
-        return syncExecute(String.valueOf(loanId), "/job/generate-extra-rate-after-loan-out", "POST");
+        return syncExecute(String.valueOf(loanId), "/loan-out/generate-extra-rate-after-loan-out", "POST");
     }
 
     public BaseDto<PayDataDto> processNotifyForLoanOut(long loanId){
-        return syncExecute(String.valueOf(loanId), "/job/process-notify-after-loan-out", "POST");
+        return syncExecute(String.valueOf(loanId), "/loan-out/process-notify-after-loan-out", "POST");
     }
 
     public BaseDto<PayDataDto> assignInvestAchievementUserCoupon(long loanId){
-        return syncExecute(String.valueOf(loanId), "/job/assign-achievement-coupon-after-loan-out", "POST");
+        return syncExecute(String.valueOf(loanId), "/loan-out/assign-achievement-coupon-after-loan-out", "POST");
     }
 }
