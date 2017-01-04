@@ -46,9 +46,6 @@ public class RedEnvelopSplitActivityService {
 
     private static List<Long> coupons = Lists.newArrayList(333L, 334L, 335L, 336L, 337L, 338L);
 
-    @Value("${web.server}")
-    private String domainName;
-
     private static String REFERRER_TITLE = "您的好友%s送你三重好礼";
 
     private static String REFERRER_DESCRIPTION = "完成注册即可领取8.88元现金红包+5888元体验金+588元优惠券";
@@ -81,7 +78,7 @@ public class RedEnvelopSplitActivityService {
 
         UserModel userModel = userMapper.findByLoginName(loginName);
         RedEnvelopSplitActivityDto redEnvelopSplitActivityDto = new RedEnvelopSplitActivityDto(String.format(REFERRER_TITLE, userModel.getUserName()),
-                REFERRER_DESCRIPTION, domainName + "activity/red-envelop-split/referrer");
+                REFERRER_DESCRIPTION, "activity/red-envelop-split/referrer");
 
         logger.info(MessageFormat.format("[redEnvelopSplit] shard url:{0}", redEnvelopSplitActivityDto.getShareUrl()));
         String paramJson = "";
@@ -97,7 +94,7 @@ public class RedEnvelopSplitActivityService {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        return String.format(AppUrl.RED_ENVELOP_SPLIT.getPath(), base64);
+        return String.format(AppUrl.SHARE.getPath(), base64);
     }
 
     public void beforeRegisterUser(String loginName, String referrerMobile, String channel) {
