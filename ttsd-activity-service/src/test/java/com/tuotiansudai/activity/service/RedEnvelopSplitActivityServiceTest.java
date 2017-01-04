@@ -13,6 +13,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.UnsupportedEncodingException;
@@ -44,13 +45,14 @@ public class RedEnvelopSplitActivityServiceTest {
     public void shouldGetShareReferrerUrlIs() throws UnsupportedEncodingException {
         UserModel userModel = getUserModelTest();
         when(userMapper.findByLoginName(userModel.getLoginName())).thenReturn(userModel);
+        ReflectionTestUtils.setField(redEnvelopSplitActivityService, "domainName", "local");
 
         String url = redEnvelopSplitActivityService.getShareReferrerUrl(userModel.getLoginName());
         String base64 = url.substring(url.indexOf("param=") + 6, url.length());
 
         String json = new String(Base64.getDecoder().decode(base64), "utf-8");
         assertTrue(!Strings.isNullOrEmpty(url));
-        assertEquals(json, "{\"title\":\"您的好友王琦送你三重好礼\",\"description\":\"完成注册即可领取8.88元现金红包+5888元体验金+588元优惠券\",\"shareUrl\":\"activity/red-envelop-split/referrer\"}");
+        assertEquals(json, "{\"title\":\"您的好友王琦送你三重好礼\",\"description\":\"完成注册即可领取8.88元现金红包+5888元体验金+588元优惠券\",\"shareUrl\":\"local/activity/red-envelop-split/referrer\"}");
     }
 
     private UserModel getUserModelTest() {

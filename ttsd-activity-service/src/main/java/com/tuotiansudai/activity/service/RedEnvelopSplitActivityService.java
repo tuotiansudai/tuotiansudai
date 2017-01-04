@@ -44,6 +44,9 @@ public class RedEnvelopSplitActivityService {
     @Autowired
     private PrepareUserMapper prepareUserMapper;
 
+    @Value("${web.server}")
+    private String domainName;
+
     private static List<Long> coupons = Lists.newArrayList(333L, 334L, 335L, 336L, 337L, 338L);
 
     private static String REFERRER_TITLE = "您的好友%s送你三重好礼";
@@ -78,7 +81,7 @@ public class RedEnvelopSplitActivityService {
 
         UserModel userModel = userMapper.findByLoginName(loginName);
         RedEnvelopSplitActivityDto redEnvelopSplitActivityDto = new RedEnvelopSplitActivityDto(String.format(REFERRER_TITLE, userModel.getUserName()),
-                REFERRER_DESCRIPTION, "activity/red-envelop-split/referrer");
+                REFERRER_DESCRIPTION, domainName + "/activity/red-envelop-split/referrer");
 
         logger.info(MessageFormat.format("[redEnvelopSplit] shard url:{0}", redEnvelopSplitActivityDto.getShareUrl()));
         String paramJson = "";
