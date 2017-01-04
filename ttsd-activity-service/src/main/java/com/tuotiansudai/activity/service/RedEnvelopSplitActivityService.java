@@ -76,7 +76,7 @@ public class RedEnvelopSplitActivityService {
 
     public String getShareReferrerUrl(String loginName) {
         if (Strings.isNullOrEmpty(loginName)) {
-            return "";
+            return AppUrl.LOGIN.getPath();
         }
 
         UserModel userModel = userMapper.findByLoginName(loginName);
