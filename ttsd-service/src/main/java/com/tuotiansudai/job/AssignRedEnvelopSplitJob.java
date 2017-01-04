@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -35,12 +36,11 @@ public class AssignRedEnvelopSplitJob implements Job {
     @Value("#{'${activity.weiXin.red.envelop.period}'.split('\\~')}")
     private List<String> weiXinPeriod = Lists.newArrayList();
 
-    private final static String ACTIVITY_WX_CHANNEL = "weixin";
-
     private final static Integer[] referrerLevels = {1, 2, 3, 5, 7, 10};
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
+        logger.info("[RedEnvelopSplit] assign reward activity. start");
         Date startTime = DateTime.parse(weiXinPeriod.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
         Date endTime = DateTime.parse(weiXinPeriod.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
         Map<String, Integer> referrerCountMap = Maps.newConcurrentMap();
@@ -52,16 +52,20 @@ public class AssignRedEnvelopSplitJob implements Job {
                 continue;
             }
 
+            logger.info(MessageFormat.format("[RedEnvelopSplit] loginName:{0}, referrerCount{1}.", userModel.getReferrer(), referrerCountMap.get(userModel.getReferrer()) + 1));
             referrerCountMap.put(userModel.getReferrer(), (referrerCountMap.get(userModel.getReferrer()) + 1));
         }
 
         referrerCountMap.forEach((k, v) -> {
             for(Integer level : referrerLevels){
                 if(v >= level){
+                    logger.info(MessageFormat.format("[RedEnvelopSplit] assign redEnvelop loginName:{0}, couponId:{1}, level:{2}.", k, getCouponId(level), level));
                     couponAssignmentService.assignUserCoupon(k, getCouponId(level));
                 }
             }
         });
+
+        logger.info("[RedEnvelopSplit] assign reward activity. end");
     }
 
     private Long getCouponId(Integer level){
