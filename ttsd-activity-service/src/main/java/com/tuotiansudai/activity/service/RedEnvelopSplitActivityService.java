@@ -10,6 +10,7 @@ import com.tuotiansudai.enums.AppUrl;
 import com.tuotiansudai.repository.mapper.PrepareUserMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.PrepareUserModel;
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserChannel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.AmountConverter;
@@ -24,7 +25,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
 import java.text.MessageFormat;
-import java.util.Arrays;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
@@ -64,7 +64,13 @@ public class RedEnvelopSplitActivityService {
         }
         Date startTime = DateTime.parse(weiXinPeriod.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
         Date endTime = DateTime.parse(weiXinPeriod.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
-        return userMapper.findUserModelByChannel(loginName, Arrays.asList(UserChannel.values()), startTime, endTime, null).size();
+
+        return getReferrerCount(loginName, startTime, endTime).size();
+    }
+
+    public List<UserModel> getReferrerCount(String loginName, Date startTime, Date endTime) {
+        List<UserModel> userModels = userMapper.findUsersByRegisterTimeOrReferrer(startTime, endTime, loginName);
+        return userModels.stream().filter(userModel -> UserChannel.valueOf(userModel.getChannel()) != null).collect(Collectors.toList());
     }
 
     public String getReferrerRedEnvelop(String loginName) {
@@ -85,18 +91,16 @@ public class RedEnvelopSplitActivityService {
 
         logger.info(MessageFormat.format("[redEnvelopSplit] shard url:{0}", redEnvelopSplitActivityDto.getShareUrl()));
         String paramJson = "";
-        try {
-            paramJson = JsonConverter.writeValueAsString(redEnvelopSplitActivityDto);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-
         String base64 = "";
         try {
+            paramJson = JsonConverter.writeValueAsString(redEnvelopSplitActivityDto);
             base64 = Base64.getEncoder().encodeToString(paramJson.getBytes("utf-8"));
+        } catch (JsonProcessingException e) {
+            logger.info(MessageFormat.format("[redEnvelopSplit] json converter fail, userName:{0}, shardUrl:{1}", userModel.getUserName(), redEnvelopSplitActivityDto.getShareUrl()));
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            logger.info(MessageFormat.format("[redEnvelopSplit] base64 converter fail, json:{0}", paramJson));
         }
+
         return String.format(AppUrl.SHARE.getPath(), base64);
     }
 
@@ -112,15 +116,20 @@ public class RedEnvelopSplitActivityService {
         prepareUserModel.setReferrerMobile(userModel != null ? userModel.getMobile() : null);
         prepareUserModel.setMobile(referrerMobile);
         prepareUserModel.setCreatedTime(new Date());
-        prepareUserModel.setChannel(channel);
+        prepareUserModel.setChannel(Source.MOBILE);
+        prepareUserModel.setRegisterChannel(UserChannel.valueOf(channel));
         prepareUserMapper.create(prepareUserModel);
     }
 
     public List<RedEnvelopSplitReferrerDto> getReferrerList(String loginName) {
         Date startTime = DateTime.parse(weiXinPeriod.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
         Date endTime = DateTime.parse(weiXinPeriod.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
-        List<UserModel> userModels = userMapper.findUserModelByChannel(loginName, Lists.newArrayList(UserChannel.values()), startTime, endTime, DEFAULT_PAGE_SIZE);
-        return userModels.stream().map(userModel -> new RedEnvelopSplitReferrerDto(MobileEncryptor.encryptWebMiddleMobile(userModel.getMobile()), userModel.getRegisterTime())).collect(Collectors.toList());
+
+        List<UserModel> referrerUsers = getReferrerCount(loginName, startTime, endTime);
+        if (referrerUsers.size() > DEFAULT_PAGE_SIZE) {
+            referrerUsers.subList(0, DEFAULT_PAGE_SIZE);
+        }
+        return referrerUsers.stream().map(userModel -> new RedEnvelopSplitReferrerDto(MobileEncryptor.encryptWebMiddleMobile(userModel.getMobile()), userModel.getRegisterTime())).collect(Collectors.toList());
     }
 
 }

@@ -18,10 +18,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.text.MessageFormat;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Component
 public class AssignRedEnvelopSplitJob implements Job {
@@ -32,6 +32,7 @@ public class AssignRedEnvelopSplitJob implements Job {
 
     @Autowired
     private CouponAssignmentService couponAssignmentService;
+
 
     @Value("#{'${activity.weiXin.red.envelop.period}'.split('\\~')}")
     private List<String> weiXinPeriod = Lists.newArrayList();
@@ -45,9 +46,9 @@ public class AssignRedEnvelopSplitJob implements Job {
         Date endTime = DateTime.parse(weiXinPeriod.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
         Map<String, Integer> referrerCountMap = Maps.newConcurrentMap();
 
-        List<UserModel> registerUserModels = userMapper.findUserModelByChannel(null, Arrays.asList(UserChannel.values()), startTime, endTime, null);
-        for(UserModel userModel : registerUserModels){
-            if(referrerCountMap.get(userModel.getReferrer()) == null){
+        List<UserModel> registerUserModels = getReferrerCount(startTime, endTime);
+        for (UserModel userModel : registerUserModels) {
+            if (referrerCountMap.get(userModel.getReferrer()) == null) {
                 referrerCountMap.put(userModel.getReferrer(), 1);
                 continue;
             }
@@ -57,8 +58,8 @@ public class AssignRedEnvelopSplitJob implements Job {
         }
 
         referrerCountMap.forEach((k, v) -> {
-            for(Integer level : referrerLevels){
-                if(v >= level){
+            for (Integer level : referrerLevels) {
+                if (v >= level) {
                     logger.info(MessageFormat.format("[RedEnvelopSplit] assign redEnvelop loginName:{0}, couponId:{1}, level:{2}.", k, getCouponId(level), level));
                     couponAssignmentService.assignUserCoupon(k, getCouponId(level));
                 }
@@ -68,8 +69,8 @@ public class AssignRedEnvelopSplitJob implements Job {
         logger.info("[RedEnvelopSplit] assign reward activity. end");
     }
 
-    private Long getCouponId(Integer level){
-        switch (level){
+    private Long getCouponId(Integer level) {
+        switch (level) {
             case 1:
                 return 333l;
             case 2:
@@ -83,5 +84,10 @@ public class AssignRedEnvelopSplitJob implements Job {
             default:
                 return 338l;
         }
+    }
+
+    private List<UserModel> getReferrerCount(Date startTime, Date endTime) {
+        List<UserModel> userModels = userMapper.findUsersByRegisterTimeOrReferrer(startTime, endTime, null);
+        return userModels.stream().filter(userModel -> UserChannel.valueOf(userModel.getChannel()) != null).collect(Collectors.toList());
     }
 }

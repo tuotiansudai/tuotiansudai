@@ -53,7 +53,7 @@ public class PrepareUserServiceImpl implements PrepareUserService {
             prepareUserModel.setReferrerMobile(requestDto.getReferrerMobile());
             prepareUserModel.setMobile(requestDto.getMobile());
             prepareUserModel.setCreatedTime(new Date());
-            prepareUserModel.setChannel(Source.IOS.name());
+            prepareUserModel.setChannel(Source.IOS);
             prepareUserMapper.create(prepareUserModel);
             return new BaseDataDto(true, null);
         } catch (Exception e) {
