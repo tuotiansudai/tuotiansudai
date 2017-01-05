@@ -1,7 +1,9 @@
 package com.tuotiansudai.rest.config;
 
+import com.tuotiansudai.rest.exceptions.RestErrorAttributes;
 import com.tuotiansudai.rest.filter.EnvironmentSettingFilter;
-import com.tuotiansudai.rest.interceptors.BasicAuthenticationInterceptor;
+import com.tuotiansudai.rest.interceptors.RequestHeaderValidationInterceptor;
+import org.springframework.boot.autoconfigure.web.ErrorAttributes;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,7 +15,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new BasicAuthenticationInterceptor());
+        registry.addInterceptor(new RequestHeaderValidationInterceptor());
         super.addInterceptors(registry);
     }
 
@@ -24,5 +26,10 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         registrationBean.setFilter(new EnvironmentSettingFilter());
         registrationBean.setOrder(1);
         return registrationBean;
+    }
+
+    @Bean
+    public ErrorAttributes errorAttributes() {
+        return new RestErrorAttributes();
     }
 }

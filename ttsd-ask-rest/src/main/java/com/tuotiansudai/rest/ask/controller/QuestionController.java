@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.net.URI;
 
 @RestController
@@ -27,7 +28,7 @@ public class QuestionController {
 
     @PostMapping
     @UserInfoRequired
-    public ResponseEntity<QuestionModel> create(@RequestBody QuestionRequestDto questionPostDto) {
+    public ResponseEntity<QuestionModel> create(@Valid @RequestBody QuestionRequestDto questionPostDto) {
         QuestionModel questionModel = questionService.create(questionPostDto, RestUserInfo.getCurrentLoginName());
         return ResponseEntity.created(URI.create("/questions/" + questionModel.getId()))
                 .body(questionModel);
