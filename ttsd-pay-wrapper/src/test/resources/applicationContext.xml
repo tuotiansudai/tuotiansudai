@@ -169,6 +169,10 @@
         <property name="dataSource" ref="activityHikariCPDataSource"/>
     </bean>
 
+    <bean id="pointTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="pointHikariCPDataSource"/>
+    </bean>
+
     <bean id="paySqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="payHikariCPDataSource"/>
         <property name="typeAliasesPackage"

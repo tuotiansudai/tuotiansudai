@@ -153,36 +153,6 @@ public class PointTaskServiceTest {
         assertThat(accountMapper.findByLoginName(referrer.getLoginName()).getPoint(), is(50L));
     }
 
-    //    @Test
-//    该任务已取消
-    public void shouldCompletedEachReferrerInvestTask() throws Exception {
-        LoanModel fakeLoan = this.createFakeLoan(ProductType._30);
-        UserModel referrer = this.createFakeUser("referrer", null);
-        UserModel newbie1 = this.createFakeUser("newbie1", referrer.getLoginName());
-        this.createFakeInvest(newbie1.getLoginName(), fakeLoan.getId(), 100000L);
-
-        pointTaskService.completeAdvancedTask(PointTask.EACH_REFERRER_INVEST, newbie1.getLoginName());
-
-        assertThat(userPointTaskMapper.findMaxTaskLevelByLoginName(referrer.getLoginName(), PointTask.EACH_REFERRER_INVEST), is(1L));
-        assertThat(accountMapper.findByLoginName(referrer.getLoginName()).getPoint(), is(1000L));
-
-        UserModel newbie2 = this.createFakeUser("newbie2", referrer.getLoginName());
-        this.createFakeInvest(newbie2.getLoginName(), fakeLoan.getId(), 200000L);
-
-        pointTaskService.completeAdvancedTask(PointTask.EACH_REFERRER_INVEST, newbie2.getLoginName());
-
-        assertThat(userPointTaskMapper.findMaxTaskLevelByLoginName(referrer.getLoginName(), PointTask.EACH_REFERRER_INVEST), is(2L));
-        assertThat(accountMapper.findByLoginName(referrer.getLoginName()).getPoint(), is(2000L));
-
-        UserModel newbie3 = this.createFakeUser("newbie3", referrer.getLoginName());
-        this.createFakeInvest(newbie3.getLoginName(), fakeLoan.getId(), 99999L);
-
-        pointTaskService.completeAdvancedTask(PointTask.EACH_REFERRER_INVEST, newbie3.getLoginName());
-
-        assertThat(userPointTaskMapper.findMaxTaskLevelByLoginName(referrer.getLoginName(), PointTask.EACH_REFERRER_INVEST), is(2L));
-        assertThat(accountMapper.findByLoginName(referrer.getLoginName()).getPoint(), is(2000L));
-    }
-
     @Test
     public void shouldCompletedFirstInvest180InvestTask() {
         String loginName = "investor";
