@@ -1,6 +1,7 @@
 package com.tuotiansudai.enums;
 
 public enum AppUrl {
+    LOGIN("登录", "app/tuotian/login"),
     MY_ASSESS("我的主页面", "app/tuotian/myfund"),
     MY_ACCOUNT("个人资料", "app/tuotian/myAccount"),
     SETTING("设置", "app/tuotian/setting"),
