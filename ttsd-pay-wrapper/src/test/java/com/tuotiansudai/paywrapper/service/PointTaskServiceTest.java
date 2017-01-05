@@ -61,7 +61,7 @@ public class PointTaskServiceTest {
 
     @Test
     public void shouldCompletedEachSumInvestTask() {
-        String loginName = "investor";
+        String loginName = "eachSumInvestor";
         this.createFakeUser(loginName, null);
         LoanModel fakeLoan = this.createFakeLoan(ProductType._30);
 
@@ -90,7 +90,7 @@ public class PointTaskServiceTest {
 
     @Test
     public void shouldCompletedEachSingleInvestTask() {
-        String loginName = "investor";
+        String loginName = "eachSingleInvestor";
         this.createFakeUser(loginName, null);
         LoanModel fakeLoan = this.createFakeLoan(ProductType._30);
         this.createFakeInvest(loginName, fakeLoan.getId(), 50000000L);
@@ -116,7 +116,7 @@ public class PointTaskServiceTest {
 
     @Test
     public void shouldCompletedEachRecommendTask() throws Exception {
-        UserModel referrer = this.createFakeUser("referrer", null);
+        UserModel referrer = this.createFakeUser("eachRecommendReferrer", null);
         UserModel newbie1 = this.createFakeUser("newbie1", referrer.getLoginName());
 
         pointTaskService.completeAdvancedTask(PointTask.EACH_RECOMMEND, newbie1.getLoginName());
@@ -155,7 +155,7 @@ public class PointTaskServiceTest {
 
     @Test
     public void shouldCompletedFirstInvest180InvestTask() {
-        String loginName = "investor";
+        String loginName = "firstInvest180Investor";
         this.createFakeUser(loginName, null);
         LoanModel fakeLoan = this.createFakeLoan(ProductType._180);
         this.createFakeInvest(loginName, fakeLoan.getId(), 1L);
@@ -177,8 +177,8 @@ public class PointTaskServiceTest {
     }
 
     @Test
-    public void shouldCompletedFirstInvest3600InvestTask() {
-        String loginName = "investor";
+    public void shouldCompletedFirstInvest360InvestTask() {
+        String loginName = "firstInvest360investor";
         this.createFakeUser(loginName, null);
         LoanModel fakeLoan = this.createFakeLoan(ProductType._360);
         this.createFakeInvest(loginName, fakeLoan.getId(), 1L);
