@@ -20,7 +20,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         noPasswordInvest = amountInputElement.data('no-password-invest'),
         autoInvestOn = amountInputElement.data('auto-invest-on'),
         $minInvestAmount = $('.text-input-amount').data('min-invest-amount'),
-        $isSkipAuth=$('#isSkipAuth'),
+        $isAuthenticationRequired=$('#isAuthenticationRequired'),
         $investForm = $('#investForm');
 
     var viewport = globalFun.browserRedirect();
@@ -595,7 +595,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                 },
                 btn2:function(){
                     cnzzPush.trackClick("68标的详情页","马上投资确认框","确认");
-                    if($isSkipAuth.val()=='true'){//判断是否开启安心签免验
+                    if($isAuthenticationRequired.val()==='false'){//判断是否开启安心签免验
                         sendSubmitRequest();
                     }else{
                         getSkipPhoneTip();
@@ -606,7 +606,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             return;
         }
         //正常投资
-        if($isSkipAuth.val()=='true'){//判断是否开启安心签免验
+        if($isAuthenticationRequired.val()=='false'){//判断是否开启安心签免验
             $investForm.submit();
         }else{
             getSkipPhoneTip();
@@ -960,7 +960,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                 if(data.success){
                     $('#isAnxinUser').val('true') && $('.skip-group').hide();
                     if(data.skipAuth=='true'){
-                        $('#isSkipAuth').val('true');
+                        $isAuthenticationRequired.val('false');
                     }
                     skipSuccess();
                 }else{
