@@ -75,8 +75,11 @@ public class RedEnvelopSplitActivityService {
     }
 
     public List<UserModel> getReferrerCount(String loginName, Date startTime, Date endTime) {
+        if(Strings.isNullOrEmpty(loginName)){
+            return Lists.newArrayList();
+        }
         List<UserModel> userModels = userMapper.findUsersByRegisterTimeOrReferrer(startTime, endTime, loginName);
-        return userModels.stream().filter(userModel -> UserChannel.valueOf(userModel.getChannel()) != null).collect(Collectors.toList());
+        return userModels.stream().filter(userModel -> asUserChannel(userModel.getChannel())).collect(Collectors.toList());
     }
 
     public String getReferrerRedEnvelop(String loginName) {
@@ -147,6 +150,14 @@ public class RedEnvelopSplitActivityService {
             referrerUsers.subList(0, DEFAULT_PAGE_SIZE);
         }
         return referrerUsers.stream().map(userModel -> new RedEnvelopSplitReferrerDto(MobileEncryptor.encryptWebMiddleMobile(userModel.getMobile()), userModel.getRegisterTime())).collect(Collectors.toList());
+    }
+
+    public static boolean asUserChannel(String str) {
+        for (UserChannel me : UserChannel.values()) {
+            if (me.name().equalsIgnoreCase(str))
+                return true;
+        }
+        return false;
     }
 
 }
