@@ -325,7 +325,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
 
     @Override
-    public BaseDto createLoanContracts(long loanId) {
+    public BaseDto createLoanContracts(long loanId, boolean isCreateJob) {
         redisWrapperClient.setex(LOAN_CONTRACT_IN_CREATING_KEY + loanId, CREATE_CONTRACT_MAX_IN_DOING_TIME, "1");
 
         LoanModel loanModel = loanMapper.findById(loanId);
@@ -370,7 +370,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
             smsWrapperClient.sendGenerateContractErrorNotify(new GenerateContractErrorNotifyDto(mobileList, loanId));
         }
 
-        if (CollectionUtils.isNotEmpty((batchNoList))) {
+        if (CollectionUtils.isNotEmpty((batchNoList)) && isCreateJob) {
             logger.info("[安心签]: 创建job，十分钟后，查询并更新合同状态。loanId:" + String.valueOf(loanId));
             updateContractResponseHandleJob(batchNoList, loanId, AnxinContractType.LOAN_CONTRACT);
         }
@@ -601,6 +601,18 @@ public class AnxinSignServiceImpl implements AnxinSignService {
                 .forEach(resView -> investMapper.updateContractNoById(resView.getInvestId(), resView.getContractNo()));
 
         return waitingBatchNoList;
+    }
+
+    @Override
+    public boolean queryContract(long businessId){
+        try{
+            String batchStr = redisWrapperClient.get(AnxinSignServiceImpl.LOAN_BATCH_NO_LIST_KEY + businessId);
+            queryContract(businessId, Lists.newArrayList(batchStr.split(",")), AnxinContractType.LOAN_CONTRACT);
+        }catch (Exception ex){
+            logger.info("query anXin contract fail," + ex);
+            return false;
+        }
+        return true;
     }
 
 

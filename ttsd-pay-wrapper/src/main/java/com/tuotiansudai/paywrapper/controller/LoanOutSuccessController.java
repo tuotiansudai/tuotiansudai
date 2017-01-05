@@ -1,6 +1,7 @@
 package com.tuotiansudai.paywrapper.controller;
 
 
+import com.tuotiansudai.anxin.service.AnxinSignService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.paywrapper.coupon.service.CouponLoanOutService;
@@ -36,6 +37,9 @@ public class LoanOutSuccessController {
     private CouponRepayService couponRepayService;
 
     @Autowired
+    private AnxinSignService anxinSignService;
+
+    @Autowired
     private LoanOutInvestCalculationService loanOutInvestCalculationService;
 
     @ResponseBody
@@ -52,11 +56,22 @@ public class LoanOutSuccessController {
     @ResponseBody
     @RequestMapping(value = "/create-anxin-contract-after-loan-out", method = RequestMethod.POST)
     public BaseDto<PayDataDto> createAnXinContract(@RequestBody long loanId) {
-        boolean isSuccess = loanService.createAnxinContractJob(loanId);
+        BaseDto baseDto = anxinSignService.createLoanContracts(loanId, false);
         BaseDto<PayDataDto> dto = new BaseDto<>();
         PayDataDto dataDto = new PayDataDto();
         dto.setData(dataDto);
-        dataDto.setStatus(isSuccess);
+        dataDto.setStatus(baseDto.isSuccess());
+        return dto;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/query-anxin-contract-after-loan-out", method = RequestMethod.POST)
+    public BaseDto<PayDataDto> queryAnXinContract(@RequestBody long loanId) {
+        boolean result = anxinSignService.queryContract(loanId);
+        BaseDto<PayDataDto> dto = new BaseDto<>();
+        PayDataDto dataDto = new PayDataDto();
+        dto.setData(dataDto);
+        dataDto.setStatus(result);
         return dto;
     }
 

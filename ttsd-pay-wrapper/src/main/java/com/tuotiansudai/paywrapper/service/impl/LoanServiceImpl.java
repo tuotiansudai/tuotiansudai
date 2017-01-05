@@ -337,8 +337,8 @@ public class LoanServiceImpl implements LoanService {
             resp.setRetMsg(MessageFormat.format("[标的放款]:发起放款联动优势请求重复,标的ID : {0}", String.valueOf(loanId)));
             logger.error(resp.getRetMsg());
             return resp;
-
         }
+
         return resp;
     }
 

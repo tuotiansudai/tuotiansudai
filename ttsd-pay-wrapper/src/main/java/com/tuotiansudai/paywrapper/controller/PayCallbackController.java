@@ -278,6 +278,15 @@ public class PayCallbackController {
         return new ModelAndView("/callback_response", "content", responseData);
     }
 
+    @RequestMapping(value = "/transfer_referrer_reward", method = RequestMethod.GET)
+    public ModelAndView transferReferrerReward(HttpServletRequest request) {
+        logger.info("[标的放款] loan out success transfer referrer reward start");
+        Map<String, String> paramsMap = this.parseRequestParameters(request);
+        String responseData = this.loanService.loanOutCallback(paramsMap, request.getQueryString());
+        logger.info(MessageFormat.format("[标的放款] loan out success transfer referrer reward end , responseData:{0}", responseData));
+        return new ModelAndView("/callback_response", "content", responseData);
+    }
+
     private Map<String, String> parseRequestParameters(HttpServletRequest request) {
         Map<String, String> paramsMap = Maps.newHashMap();
         Enumeration<String> parameterNames = request.getParameterNames();

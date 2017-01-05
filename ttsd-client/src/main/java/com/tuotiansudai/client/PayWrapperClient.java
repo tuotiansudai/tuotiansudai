@@ -362,6 +362,10 @@ public class PayWrapperClient extends BaseClient {
         return syncExecute(String.valueOf(loanId), "/loan-out/create-anxin-contract-after-loan-out", "POST");
     }
 
+    public BaseDto<PayDataDto> queryAnXinContract(long loanId){
+        return syncExecute(String.valueOf(loanId), "/loan-out/query-anxin-contract-after-loan-out", "POST");
+    }
+
     public BaseDto<PayDataDto> generateRepay(long loanId){
         return syncExecute(String.valueOf(loanId), "/loan-out/generate-repay-after-loan-out", "POST");
     }

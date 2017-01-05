@@ -263,7 +263,7 @@ public class LoanServiceTest {
         when(smsWrapperClient.sendInvestNotify(any(InvestSmsNotifyDto.class))).thenReturn(new BaseDto<>());
         when(redisWrapperClient.hget(anyString(), anyString())).thenReturn("");
         when(redisWrapperClient.hset(anyString(), anyString(), anyString())).thenReturn(1l);
-        when(anxinSignService.createLoanContracts(anyLong())).thenReturn(new BaseDto());
+        when(anxinSignService.createLoanContracts(anyLong(), anyBoolean())).thenReturn(new BaseDto());
         when(jobManager.newJob(any(JobType.class), eq(AnxinCreateContractJob.class))).thenReturn(triggeredJobBuilder);
         when(payAsyncClient.parseCallbackRequest(any(Map.class), anyString(), any(Class.class), any(Class.class))).thenReturn(baseCallbackRequestModel);
         doNothing().when(mqWrapperClient).publishMessage(any(MessageTopic.class), anyString());

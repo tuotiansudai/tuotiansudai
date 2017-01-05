@@ -32,6 +32,8 @@ public class LoanOutSuccessCreateAnXinContractMessageConsumer implements Message
     @Autowired
     private PayWrapperClient payWrapperClient;
 
+    private long DEFAULT_MINUTE = 1000 * 60 * 15;
+
     @Override
     public MessageQueue queue() {
         return MessageQueue.LoanOutSuccess_GenerateAnXinContract;
@@ -59,6 +61,19 @@ public class LoanOutSuccessCreateAnXinContractMessageConsumer implements Message
                 logger.error(MessageFormat.format("[MQ] LoanOutSuccess createLoanContracts is fail. loanId:{0}", String.valueOf(loanId)));
             }
 
+            try {
+                Thread.sleep(DEFAULT_MINUTE);
+            } catch (InterruptedException e) {
+                logger.info("[MQ] LoanOutSuccess sleep 15 minute.");
+            }
+
+            baseDto = payWrapperClient.queryAnXinContract(loanId);
+            if (!baseDto.isSuccess()) {
+                fatalSmsList.add("查询安心签失败");
+                logger.error(MessageFormat.format("[MQ] LoanOutSuccess queryLoanContracts is fail. loanId:{0}", String.valueOf(loanId)));
+            }
+
+            logger.info("[MQ] LoanOutSuccess execute query contract status .");
             if (CollectionUtils.isNotEmpty(fatalSmsList)) {
                 fatalSmsList.add(MessageFormat.format("标的ID:{0}", loanId));
                 smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(Joiner.on(",").join(fatalSmsList)));
