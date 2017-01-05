@@ -1,5 +1,15 @@
 require(['jquery', 'layerWrapper','commonFun','validator'], function($,layer,commonFun,validator) {
 
+    //如果是pc页面需要调整padding值
+    (function() {
+        var redirect=globalFun.browserRedirect();
+        if(redirect=='pc') {
+            var wh=$(document).width(),
+                pad=0.55*wh;
+            $('.register-section-box').css("padding-top",pad);
+        }
+    })();
+
     $(function() {
         var $redEnvelopReferrer=$('#redEnvelopReferrer');
         var $redEnvelopSplit=$('#redEnvelopSplit');
