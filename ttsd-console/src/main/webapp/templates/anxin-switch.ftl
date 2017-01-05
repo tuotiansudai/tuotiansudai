@@ -17,7 +17,7 @@
             </div>
 
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <button class="btn btn-sm btn-primary query" type="submit">查询</button>
+            <button class="btn btn-sm btn-primary query" type="submit">修改开关</button>
         </div>
     </form>
 
@@ -30,7 +30,7 @@
             </div>
 
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <button class="btn btn-sm btn-primary query" type="submit">提交</button>
+            <button class="btn btn-sm btn-primary query" type="submit">修改白名单</button>
         </div>
     </form>
 

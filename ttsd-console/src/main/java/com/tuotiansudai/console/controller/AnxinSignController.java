@@ -52,12 +52,12 @@ public class AnxinSignController {
 
     @RequestMapping(path = "/switch", method = RequestMethod.POST)
     public ModelAndView updateSwitch(@RequestParam boolean anxinSwitch) {
-        redisWrapperClient.hset("anxin-sign:switch", "whitelist", String.valueOf(anxinSwitch));
+        redisWrapperClient.hset("anxin-sign:switch", "switch", String.valueOf(anxinSwitch));
         return new ModelAndView("redirect:/anxin-sign/switch");
     }
 
     @RequestMapping(path = "/whitelist", method = RequestMethod.POST)
-    public ModelAndView addWhitelist(@RequestParam String mobile) {
+    public ModelAndView updateWhitelist(@RequestParam String mobile) {
         UserModel userModel = userService.findByMobile(mobile);
         String whitelist = redisWrapperClient.hget("anxin-sign:switch", "whitelist");
         if (userModel != null) {
