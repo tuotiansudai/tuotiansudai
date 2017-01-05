@@ -80,7 +80,7 @@ public class HeroRankingControllerTest {
         loanModel.setStatus(LoanStatus.COMPLETE);
 
         when(heroRankingService.obtainHeroRanking(any(ActivityCategory.class),any(Date.class))).thenReturn(heroRankingViews);
-        when(randomUtils.encryptMobile(anyString(),anyString(),any(Source.class))).thenReturn(heroRankingView.getLoginName());
+        when(randomUtils.encryptMobileForCurrentLoginName(anyString(),anyString(),any(Source.class))).thenReturn(heroRankingView.getLoginName());
         when(loanMapper.findById(anyLong())).thenReturn(loanModel);
 
         this.mockMvc.perform(get("/activity/hero-ranking/invest/2016-07-05"))

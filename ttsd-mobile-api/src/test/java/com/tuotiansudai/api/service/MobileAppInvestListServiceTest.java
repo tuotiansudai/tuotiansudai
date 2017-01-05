@@ -118,7 +118,7 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
 
         when(investMapper.findCountByStatus(anyLong(), any(InvestStatus.class))).thenReturn(3L);
 
-        when(randomUtils.encryptMobile(anyString(), anyString(), anyLong(), any(Source.class))).thenReturn("log***");
+        when(randomUtils.encryptMobileForCurrentLoginName(anyString(), anyString(), anyLong(), any(Source.class))).thenReturn("log***");
         when(pageValidUtils.validPageSizeLimit(anyInt())).thenReturn(10);
 
         InvestListRequestDto investListRequestDto = new InvestListRequestDto();

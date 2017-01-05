@@ -75,7 +75,7 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
             investRecordResponseDataDto = Lists.transform(investModels, new Function<InvestModel, InvestRecordResponseDataDto>() {
                 @Override
                 public InvestRecordResponseDataDto apply(InvestModel input) {
-                    input.setLoginName(randomUtils.encryptMobile(loginName, input.getLoginName(), input.getId(),Source.MOBILE));
+                    input.setLoginName(randomUtils.encryptMobileForCurrentLoginName(loginName, input.getLoginName(), input.getId(),Source.MOBILE));
                     return new InvestRecordResponseDataDto(input);
                 }
             });
