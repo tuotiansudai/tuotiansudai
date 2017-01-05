@@ -9,6 +9,15 @@ var basePath = path.join(__dirname, 'resources'),
     publicPath='/build/',
     outputPath=path.join(basePath, 'build');
 
+var staticPath = path.join(basePath, 'static'),
+    publicPath=path.join(staticPath, 'public'),
+    askPath=path.join(staticPath, 'ask'),
+    webPath=path.join(staticPath, 'web'),
+    pointPath=path.join(staticPath, 'point'),
+    activityPath=path.join(staticPath, 'activity'),
+    mobilePath=path.join(staticPath, 'mobile');
+
+
 plugins.push(new webpack.ProvidePlugin({
     $: "jquery",
     jQuery: "jquery",
@@ -33,7 +42,8 @@ plugins.push(new webpack.optimize.UglifyJsPlugin({
 
 module.exports = objectAssign(commonOptions, {
     entry: {
-        test: path.join(basePath, 'js/test.jsx'),
+        global_page: path.join(publicPath, 'js/global_page.jsx'),
+        ask_main: path.resolve(askPath, 'js/mainSite.jsx'),
         //添加要打包在vendors里面的库
         vendor: ["jquery", "underscore"]
     },

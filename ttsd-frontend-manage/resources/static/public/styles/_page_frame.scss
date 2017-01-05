@@ -240,7 +240,7 @@
     .logo {
       float: left;
       .logo-bg {
-        background: url("/images/global/logo-index.png") left center no-repeat;
+        background: url("../images/logo-index.png") left center no-repeat;
         width: 420px;
         height: 50px;
         display: block;
@@ -258,7 +258,7 @@
         display: inline-block;
         width:52px;
         height:52px;
-        background: url("/images/global/app-code.png") left top no-repeat;
+        background: url("../images/app-code.png") left top no-repeat;
         background-size: 100%;
         vertical-align: middle;
       }
@@ -271,7 +271,7 @@
          }
       }
       .img-app-pc-top {
-        background: url("/images/global/app-code.png") left top no-repeat;
+        background: url("../images/app-code.png") left top no-repeat;
         width:162px;
         height:162px;
         position: absolute;
@@ -301,7 +301,7 @@
           width:15px;
           height: 8px;
           margin-left: 7px;
-          background: url("../../images/global/icon-sub.png") left top no-repeat;
+          background: url("../images/icon-sub.png") left top no-repeat;
         }
         ul.sub-menu-list {
           display: none;
@@ -347,7 +347,7 @@
             color: #ff770f;
           }
           .icon-has-submenu {
-            background: url("../../images/global/icon-sub-hover.png") left top no-repeat;
+            background: url("../images/icon-sub-hover.png") left top no-repeat;
           }
           ul.sub-menu-list {
             display: block;
@@ -362,7 +362,7 @@
             color: #fff;
           }
           .icon-has-submenu {
-            background: url("../../images/global/icon-active-bottom.png") left top no-repeat;
+            background: url("../images/icon-active-bottom.png") left top no-repeat;
           }
           &:hover {
             .icon-has-submenu {
@@ -393,7 +393,7 @@
     position: relative;
     margin: 0 auto;
     .logo {
-      background: url("/images/global/logo-index.png") left center no-repeat;
+      background: url("../images/logo-index.png") left center no-repeat;
       width: 370px;
       height: 50px;
       display: block;
@@ -524,7 +524,7 @@
         float:left;
         width:100px;
         height:100px;
-        background-image: url(/images/compress/global_20160904.png);
+        background-image: url("../images/global_20160904.png");
         background-position: -308px -100px;
         -webkit-background-size: 408px 290px;
         -moz-background-size: 408px 290px;

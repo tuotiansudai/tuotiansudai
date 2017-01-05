@@ -1,38 +1,13 @@
-let commonFun={
-    refreshCaptcha:function() {
+
+    function refreshCaptcha(url) {
         $('#imageCaptcha').on('click',function() {
-            let captcha='/image-captcha?' + new Date().getTime().toString();
+            let captcha= url +'?'+ new Date().getTime().toString();
             this.value='';
             this.setAttribute('src',captcha);
         })
-    },
-    //加密
-    compile:function (strId,realId) {
-        let realId=realId+'';
-        let strIdObj=strId.split(''),
-            realLen=realId.length;
-        for(let i=0;i<11;i++) {
-            strIdObj[2*i+2]=realId[i]?realId[i]:'a';
-        }
-        return strIdObj.join('');
-
-    },
-    //解密
-    uncompile:function (strId) {
-        let strId=strId+'';
-        let strIdObj=strId.split(''),
-            realId=[];
-        for(let i=0;i<11;i++) {
-            realId[i]=strIdObj[2*i+2];
-        }
-
-        let stringRealId=realId.join(''),
-            getNum=stringRealId.match(/\d/gi);
-        return getNum.join('');
-    },
-
+    }
     /* init radio style */
-    initRadio:function($radio,$radioLabel) {
+    function initRadio($radio,$radioLabel) {
         let numRadio=$radio.length;
         if(numRadio) {
             $radio.each(function(key,option) {
@@ -50,10 +25,10 @@ let commonFun={
             });
 
         }
-    },
+    }
 
     // 验证身份证有效性
-    IdentityCodeValid:function(code) {
+    function IdentityCodeValid(code) {
         let city={11:"北京",12:"天津",13:"河北",14:"山西",15:"内蒙古",21:"辽宁",22:"吉林",23:"黑龙江 ",31:"上海",32:"江苏",33:"浙江",34:"安徽",35:"福建",36:"江西",37:"山东",41:"河南",42:"湖北 ",43:"湖南",44:"广东",45:"广西",46:"海南",50:"重庆",51:"四川",52:"贵州",53:"云南",54:"西藏 ",61:"陕西",62:"甘肃",63:"青海",64:"宁夏",65:"新疆",71:"台湾",81:"香港",82:"澳门",91:"国外 "};
         let pass= true;
 
@@ -88,9 +63,9 @@ let commonFun={
             }
         }
         return pass;
-    },
+    }
     //检测年龄是否大于18
-    checkedAge:function(birthday) {
+    function checkedAge(birthday) {
         let getAge=birthday.substring(6,14),
             currentDay=new Date(),
             checkedAge=true;
@@ -103,9 +78,9 @@ let commonFun={
             checkedAge=false;
         }
         return checkedAge;
-    },
+    }
     //弹框样式
-    popWindow:function(contentHtml,area) {
+    function popWindow(contentHtml,area) {
         let $shade=$('<div class="shade-body-mask"></div>');
         let $popWindow=$(contentHtml),
             size= $.extend({width:'460px',height:'370px'},area);
@@ -128,10 +103,10 @@ let commonFun={
             $shade.remove();
 
         })
-    },
+    }
 
     // 验证用户是否处于登陆状态
-    isUserLogin:function() {
+    function isUserLogin() {
         let LoginDefer=$.Deferred(); //在函数内部，新建一个Deferred对象
         $.ajax({
             url: '/isLogin',
@@ -152,44 +127,44 @@ let commonFun={
             });
 
         return LoginDefer.promise(); // 返回promise对象
-    },
-    useAjax:function(opt,callbackDone,callbackAlways) {
+    }
 
-    let defaultOpt={
-        type:'POST',
-        dataType: 'json'
-    };
-    let option=$.extend(defaultOpt,opt);
+    function useAjax(opt,callbackDone,callbackAlways) {
+        let defaultOpt={
+            type:'POST',
+            dataType: 'json'
+        };
+        let option=$.extend(defaultOpt,opt);
 
-    //防止跨域，只有post请求需要，get请求不需要
-    $(document).ajaxSend(function(e, xhr, options) {
-        let token = $("meta[name='_csrf']").attr("content");
-        let header = $("meta[name='_csrf_header']").attr("content");
-        xhr.setRequestHeader(header, token);
-    });
-    //当ajax请求失败的时候重定向页面
-    $(document).ajaxError(function (event, jqXHR, ajaxSettings, thrownError) {
-        if (jqXHR.status == 403) {
-            if (jqXHR.responseText) {
-                let data = JSON.parse(jqXHR.responseText);
-                window.location.href = data.directUrl + (data.refererUrl ? "?redirect=" + data.refererUrl : '');
-            }
-        }
-    });
-
-    $.ajax(option)
-        .done(function(data) {
-            callbackDone && callbackDone(data);
-        })
-        .fail(function(data) {
-            console.error('接口错误，请联系客服');
-        })
-        .always(function() {
-            callbackAlways && callbackAlways();
+        //防止跨域，只有post请求需要，get请求不需要
+        $(document).ajaxSend(function(e, xhr, options) {
+            let token = $("meta[name='_csrf']").attr("content");
+            let header = $("meta[name='_csrf_header']").attr("content");
+            xhr.setRequestHeader(header, token);
         });
-    },
+        //当ajax请求失败的时候重定向页面
+        $(document).ajaxError(function (event, jqXHR, ajaxSettings, thrownError) {
+            if (jqXHR.status == 403) {
+                if (jqXHR.responseText) {
+                    let data = JSON.parse(jqXHR.responseText);
+                    window.location.href = data.directUrl + (data.refererUrl ? "?redirect=" + data.refererUrl : '');
+                }
+            }
+        });
+
+        $.ajax(option)
+            .done(function(data) {
+                callbackDone && callbackDone(data);
+            })
+            .fail(function(data) {
+                console.error('接口错误，请联系客服');
+            })
+            .always(function() {
+                callbackAlways && callbackAlways();
+            });
+    }
     //倒计时
-    countDownLoan:function(option,callback) {
+    function countDownLoan(option,callback) {
     let defaultOpt={
         btnDom:'',
         time:60,
@@ -215,13 +190,13 @@ let commonFun={
             countDownStart();
         },1000);
     }
-},
-    MathDecimal:{
+}
+    let MathDecimal={
         MathFloor(math) {
             //小数点保留2位小数，不要四舍五入,但是不强制2位小数点
             let re = /([0-9]+\.[0-9]{2})[0-9]*/;
-            let math = math + '';
-            let aNew = math.replace(re, "$1");
+            let mathString = math + '';
+            let aNew = mathString.replace(re, "$1");
             return aNew;
         },
         MathRound(math) {
@@ -229,15 +204,38 @@ let commonFun={
             let newNum = Math.round(math * 100) / 100;
             return newNum;
         }
-    }
-};
+    };
+    let decrypt={
+        //加密
+        compile:function (strId,realId) {
+            let realIdStr=realId+'';
+            let strIdObj=realIdStr.split(''),
+                realLen=realIdStr.length;
+            for(let i=0;i<11;i++) {
+                strIdObj[2*i+2]=realIdStr[i]?realIdStr[i]:'a';
+            }
+            return strIdObj.join('');
 
-$('#logout-link').click(function() {
-    $('#logout-form').submit();
-    return false;
-});
+        },
+        //解密
+        uncompile:function (strId) {
+            let strIdString=strId+'';
+            let strIdObj=strIdString.split(''),
+                realId=[];
+            for(let i=0;i<11;i++) {
+                realId[i]=strIdObj[2*i+2];
+            }
 
-export {commonFun};
+            let stringRealId=realId.join(''),
+                getNum=stringRealId.match(/\d/gi);
+            return getNum.join('');
+        },
+    };
+
+
+export {
+    refreshCaptcha,initRadio,IdentityCodeValid,checkedAge,popWindow,isUserLogin,
+    useAjax,countDownLoan,MathDecimal,decrypt};
 
 
 
