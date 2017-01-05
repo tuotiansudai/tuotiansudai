@@ -7,10 +7,19 @@ body {
 .main-frame {
   width: 100%;
   margin: 0 auto;
+    .register-skin{
+      width: 100%!important;
+      height:100%!important;
+      top: 0!important;
+      left: 50%!important;
+      margin-left: -50%!important;
+    }
 }
 
 .red-envelop-container {
-  margin:0 10px;
+  padding: 0 10px;
+  background: url("/activity/images/red_envelop_split/bg-top.jpg") left -27px no-repeat;
+  background-size: contain;
   input[type="text"] {
     width: 100%;
     padding:13px 6px;
@@ -25,7 +34,7 @@ body {
     background-size: 100%;
     border-bottom-left-radius: 15px;
     border-bottom-right-radius: 15px;
-    padding-top: 245px;
+    padding-top: 225px;
   }
   .normal-button {
     background: #ffdf00;
@@ -57,7 +66,7 @@ body {
       font-weight: normal;
       display: block;
       line-height: 1;
-      margin-top: 20px;
+      margin-top: 6px;
       i {
         font-size: 80px;
       }
@@ -121,6 +130,11 @@ body {
     }
   }
 
+  .title-benefit {
+    img {
+      width:100%;
+    }
+  }
   .benefit-box {
     margin:5px;
     dl {
@@ -220,7 +234,7 @@ body {
           line-height: 20px;
           box-sizing: border-box;
         }
-        &:nth-child(2) {
+        &.middle {
           i {
             padding: 12px;
           }

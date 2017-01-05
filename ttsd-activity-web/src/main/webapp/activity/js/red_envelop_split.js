@@ -1,5 +1,15 @@
 require(['jquery', 'layerWrapper','commonFun','validator'], function($,layer,commonFun,validator) {
 
+    //如果是pc页面需要调整padding值
+    (function() {
+        var redirect=globalFun.browserRedirect();
+        if(redirect=='pc') {
+            var wh=$(document).width(),
+                pad=0.55*wh;
+            $('.register-section-box').css("padding-top",pad);
+        }
+    })();
+
     $(function() {
         var $redEnvelopReferrer=$('#redEnvelopReferrer');
         var $redEnvelopSplit=$('#redEnvelopSplit');
@@ -8,6 +18,7 @@ require(['jquery', 'layerWrapper','commonFun','validator'], function($,layer,com
             if(!$redEnvelopSplit.length) {
                 return;
             }
+            $('.envelop-box',$redEnvelopSplit).eq(1).hide();
 
             $('.envelop-button span',$redEnvelopSplit).on('click',function() {
                 var $this=$(this),
@@ -43,7 +54,7 @@ require(['jquery', 'layerWrapper','commonFun','validator'], function($,layer,com
                 errorMsg: '手机号格式不正确'
             },{
                 strategy: 'isMobileExist',
-                errorMsg: '手机号不存在'
+                errorMsg: '手机号已存在'
             }]);
 
             phoneForm.onsubmit = function(event) {
@@ -66,6 +77,19 @@ require(['jquery', 'layerWrapper','commonFun','validator'], function($,layer,com
             if(!$(registerForm).length) {
                 return;
             }
+            //弹出注册服务协议
+            $('.agreement',$(registerForm)).on('click',function() {
+                layer.open({
+                    type: 1,
+                    title: '拓天速贷服务协议',
+                    shadeClose: true,
+                    move: false,
+                    scrollbar: true,
+                    skin:'register-skin',
+                    content: $('#agreementBox')
+                });
+
+            });
 
             var validatorRegister = new validator();
             validatorRegister.add(registerForm.captcha, [{

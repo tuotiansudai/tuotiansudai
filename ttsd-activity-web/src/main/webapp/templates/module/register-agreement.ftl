@@ -1,3 +1,4 @@
+<#--注册协议-->
 <div id="agreementBox" style="display: none;">
     <div class="pad-m">
         <p>

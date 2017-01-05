@@ -5,8 +5,8 @@
 
         <div class="register-section-box">
             <div class="invite-box">
-                <em class="message-tip">您的好友王强送你</em>
-                <span class="amount"><i>8.88</i>元</span>
+                <em class="message-tip">您有20.88元红包待领取！</em>
+                <span class="amount"><i>20.88</i>元</span>
                 <span class="kind">现金红包</span>
             </div>
 
@@ -27,7 +27,7 @@
                 <div class="activity-rule">
                     <span><i>给好友发送邀请链接</i></span>
                     <span class="arrow"></span>
-                    <span><i>好友完成注册领取8.88元红包</i></span>
+                    <span class="middle"><i>好友完成注册领取8.88元红包</i></span>
                     <span class="arrow"></span>
                     <span><i>邀请成功赚取红包</i></span>
                 </div>
@@ -76,14 +76,14 @@
                             </tr>
                         </table>
                     </li>
-                    <li><i>5</i>活动结束后3个工作日内，红包即发放至“我的账户”——“优惠券”当中；</li>
+                    <li><i>5</i>活动结束后3个工作日内，红包即发放至“我的”——“优惠券”当中；</li>
                     <li><i>6</i>分享有效期：M月M日——N月N日；</li>
                     <li><i>7</i>活动遵守拓天速贷法律声明，最终解释权归拓天速贷平台所有 。</li>
 
                 </ul>
             </div>
 
-            <div class="envelop-box clearfix" style="display: none">
+            <div class="envelop-box clearfix">
             <@global.isAnonymous>
                 <div class="anonymous-box">
                     <span>您还未登录，登录完成后，再来查看吧！</span>
