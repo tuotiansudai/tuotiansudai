@@ -5,7 +5,9 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.activity.repository.dto.RedEnvelopSplitActivityDto;
 import com.tuotiansudai.activity.repository.dto.RedEnvelopSplitReferrerDto;
+import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
+import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.enums.AppUrl;
 import com.tuotiansudai.repository.mapper.PrepareUserMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
@@ -16,6 +18,7 @@ import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.JsonConverter;
 import com.tuotiansudai.util.MobileEncryptor;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -43,6 +46,9 @@ public class RedEnvelopSplitActivityService {
 
     @Autowired
     private PrepareUserMapper prepareUserMapper;
+
+    @Autowired
+    private CouponMapper couponMapper;
 
     @Value("${web.server}")
     private String domainName;
@@ -77,7 +83,18 @@ public class RedEnvelopSplitActivityService {
         if (Strings.isNullOrEmpty(loginName)) {
             return "";
         }
-        return AmountConverter.convertCentToString(userCouponMapper.findSumRedEnvelopeByLoginNameAndCouponId(loginName, coupons));
+
+        return getSumRedEnvelopByLoginName(loginName, coupons);
+    }
+
+    public String getSumRedEnvelopByLoginName(String loginName, List<Long> couponIds){
+        long sumAmount = 0l;
+        List<Long> couponAmounts = couponIds.stream().filter(id -> CollectionUtils.isNotEmpty(userCouponMapper.findByLoginNameAndCouponId(loginName, id)))
+                .map(id -> couponMapper.findById(id).getAmount()).collect(Collectors.toList());
+        for(Long amount : couponAmounts){
+            sumAmount += amount;
+        }
+        return AmountConverter.convertCentToString(sumAmount);
     }
 
     public String getShareReferrerUrl(String loginName) {
@@ -86,7 +103,7 @@ public class RedEnvelopSplitActivityService {
         }
 
         UserModel userModel = userMapper.findByLoginName(loginName);
-        RedEnvelopSplitActivityDto redEnvelopSplitActivityDto = new RedEnvelopSplitActivityDto(String.format(REFERRER_TITLE, userModel.getUserName()),
+        RedEnvelopSplitActivityDto redEnvelopSplitActivityDto = new RedEnvelopSplitActivityDto(String.format(REFERRER_TITLE, userModel.getUserName() == null ? "" : userModel.getUserName()),
                 REFERRER_DESCRIPTION, domainName + "/activity/red-envelop-split/referrer");
 
         logger.info(MessageFormat.format("[redEnvelopSplit] shard url:{0}", redEnvelopSplitActivityDto.getShareUrl()));
