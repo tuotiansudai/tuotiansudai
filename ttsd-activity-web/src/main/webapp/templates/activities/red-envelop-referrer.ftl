@@ -55,6 +55,10 @@
             </div>
         </div>
 
+        <div class="title-benefit">
+            <img src="${staticServer}/activity/images/red_envelop_split/title.png">
+        </div>
+
         <div class="benefit-box">
             <dl class="benefit-column">
                 <dt>预期收益高</dt>
@@ -73,6 +77,8 @@
                 <dd><i>50</i>元起投</dd>
             </dl>
         </div>
+
+        <#include "../module/register-agreement.ftl"/>
     </div>
 
 </@global.main>

@@ -8,6 +8,7 @@ require(['jquery', 'layerWrapper','commonFun','validator'], function($,layer,com
             if(!$redEnvelopSplit.length) {
                 return;
             }
+            $('.envelop-box',$redEnvelopSplit).eq(1).hide();
 
             $('.envelop-button span',$redEnvelopSplit).on('click',function() {
                 var $this=$(this),
@@ -66,6 +67,10 @@ require(['jquery', 'layerWrapper','commonFun','validator'], function($,layer,com
             if(!$(registerForm).length) {
                 return;
             }
+            //弹出注册服务协议
+            $('.agreement',$(registerForm)).on('click',function() {
+                alert('pop');
+            });
 
             var validatorRegister = new validator();
             validatorRegister.add(registerForm.captcha, [{
