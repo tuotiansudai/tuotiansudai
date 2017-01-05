@@ -69,7 +69,16 @@ require(['jquery', 'layerWrapper','commonFun','validator'], function($,layer,com
             }
             //弹出注册服务协议
             $('.agreement',$(registerForm)).on('click',function() {
-                alert('pop');
+                layer.open({
+                    type: 1,
+                    title: '拓天速贷服务协议',
+                    shadeClose: true,
+                    move: false,
+                    scrollbar: true,
+                    skin:'register-skin',
+                    content: $('#agreementBox')
+                });
+
             });
 
             var validatorRegister = new validator();

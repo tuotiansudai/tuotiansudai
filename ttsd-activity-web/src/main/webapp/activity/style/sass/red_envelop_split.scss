@@ -7,6 +7,13 @@ body {
 .main-frame {
   width: 100%;
   margin: 0 auto;
+    .register-skin{
+      width: 100%!important;
+      height:100%!important;
+      top: 0!important;
+      left: 50%!important;
+      margin-left: -50%!important;
+    }
 }
 
 .red-envelop-container {
