@@ -1,18 +1,4 @@
 var comm = {};
-comm.pathNameKey = function (key) {
-    var parm = location.search.split('?')[1], parmObj;
-    if (parm == undefined) {
-        return '';
-    }
-    else {
-        parmObj = parm.split('&');
-        for (var i = 0, len = parmObj.length; i < len; i++) {
-            if (parmObj[i].split('=')[0] == key) {
-                return parmObj[i].split('=')[1];
-            }
-        }
-    }
-};
 
 comm.parseURL=function(url) {
     var a =  document.createElement('a');
@@ -42,21 +28,6 @@ comm.parseURL=function(url) {
     };
 };
 
-comm.serializeObject = function (formData) {
-
-    var o = {};
-    $.each(formData, function () {
-        if (o[this.name]) {
-            if (!o[this.name].push) {
-                o[this.name] = [o[this.name]];
-            }
-            o[this.name].push(this.value || '');
-        } else {
-            o[this.name] = this.value || '';
-        }
-    });
-    return o;
-};
 
 comm.initToken = function () {
     var token = $("meta[name='_csrf']").attr("content");
@@ -115,23 +86,7 @@ comm.popWindow=function(title,content,size,load) {
         else {
              $('.popWindow-overlay,.popWindow').show();
         }
-
 };
-
-comm.redirectHome = function () {
-    if($('.jump-tip').length>0){
-        setInterval(function(){
-            $('.jump-tip i').text()<1?window.location="/":$('.jump-tip i').text(function(index,num){return parseInt(num)-1});
-        },1000);
-    }
-};
-
-$('#logout-link').click(function() {
-    $('#logout-form').submit();
-    return false;
-});
-
-
 
 module.exports = comm;
 

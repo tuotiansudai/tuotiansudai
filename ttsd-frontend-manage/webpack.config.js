@@ -4,10 +4,12 @@ var objectAssign = require('object-assign');
 var commonOptions = require('./webpack.common');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
-var basePath = path.join(__dirname, 'resources/static'),
+var basePath = path.join(__dirname, 'resources'),
+	staticPath = path.join(basePath, 'static'),
+	askPath=path.join(staticPath, 'ask'),
 	plugins=[],
-	publicPath='http://localhost:3008/distdev/',
-	outputPath=path.join(basePath, 'distdev');
+	publicPath='http://localhost:3008/develop/',
+	outputPath=path.join(basePath, 'develop');
 
 plugins.push(new webpack.ProvidePlugin({
 	$: "jquery",
@@ -27,7 +29,7 @@ plugins.push(new webpack.HotModuleReplacementPlugin());
 
 module.exports = objectAssign(commonOptions, {
 	entry: {
-		test: path.join(basePath, 'ask/test.jsx'),
+		test: path.join(askPath, 'test.jsx'),
 		//添加要打包在vendors里面的库
 		vendor: ["jquery", "underscore"]
 	},

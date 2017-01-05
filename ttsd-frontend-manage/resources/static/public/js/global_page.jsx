@@ -151,6 +151,7 @@ var web_globalFun = (function() {
 
             this.addEventHandler(this.$('#iphone-app-pop'),'mouseover',this.showAppCode.bind(this));
             this.addEventHandler(this.$('#iphone-app-pop'),'mouseleave',this.hideAppCode.bind(this));
+            this.logOut();
 
         },
         showMainMenu:function(e) {
@@ -220,6 +221,12 @@ var web_globalFun = (function() {
             this.toggleClass(objBtn,"active");
             ulHeight=this.hasClass(objBtn,"active")?'auto':'30px';
             ulLIst.style.height=ulHeight;
+        },
+        //点击注销，退出登陆
+        logOut:function() {
+            this.addEventHandler(this.$('#logout-link'),'click',function() {
+                this.$('#logout-form').submit();
+            });
         },
         decorateRadioCheck:function($input,$radioLabel) {
             var numRadio=$input.length;

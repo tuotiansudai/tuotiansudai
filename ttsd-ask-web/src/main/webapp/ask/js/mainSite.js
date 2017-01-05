@@ -3,8 +3,7 @@ var comm = require("./commonFun");
 require('./questions');
 require('./create-question');
 require('./global_page');
-comm.initToken();
-comm.redirectHome();
+// comm.initToken();
 
 
 
