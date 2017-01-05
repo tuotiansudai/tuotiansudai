@@ -45,6 +45,7 @@ public enum AppUrl {
     LOAN_TRANSFER_DETAIL("转让标的详情页", "app/tuotian/transfer-loan-detail/{0}"),
     ACTIVITY_CENTER_HISTORY("活动中心-往期活动", "app/tuotian/activity-center-history"),
     REPAY_CALENDAR("回款日历", "app/tuotian/repay-calendar"),
+    SHARE("分享弹框", "app/tuotian/share?param=%s"),
     OTHER("其他", ""),
     NONE("无", null);
 

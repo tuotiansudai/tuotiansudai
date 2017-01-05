@@ -395,6 +395,24 @@
         select count(*) from user_coupon where exchange_code = #{exchangeCode}
     </select>
 
+    <select id="findSumRedEnvelopeByLoginNameAndCouponId" parameterType="map" resultType="long">
+        SELECT
+        IFNULL(SUM(c.amount), 0)
+        FROM
+        coupon c
+        JOIN
+        user_coupon uc ON c.id = uc.coupon_id
+        WHERE
+        uc.login_name = #{loginName}
+        AND c.`coupon_type` = 'RED_ENVELOPE'
+        <if test="coupons != null and coupons.size != 0">
+            AND c.id in
+            <foreach item="item" index="index" collection="coupons" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
     <select id="findExpireAfterFiveDays" resultMap="userCouponResultMap">
         select *
         from user_coupon

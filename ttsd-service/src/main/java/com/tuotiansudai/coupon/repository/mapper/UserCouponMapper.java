@@ -68,5 +68,8 @@ public interface UserCouponMapper {
 
     List<UserCouponModel> findUsedExperienceByLoginName(@Param("loginName") String loginName);
 
+    long findSumRedEnvelopeByLoginNameAndCouponId(@Param("loginName") String loginName,
+                                                  @Param("coupons") List<Long> coupons);
+
     List<UserCouponModel> findExpireAfterFiveDays();
 }
