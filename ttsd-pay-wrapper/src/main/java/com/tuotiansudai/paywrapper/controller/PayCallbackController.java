@@ -271,10 +271,10 @@ public class PayCallbackController {
 
     @RequestMapping(value = "/loan_out_notify", method = RequestMethod.GET)
     public ModelAndView loanOutNotify(HttpServletRequest request) {
-        logger.info("loan_out_notify================================begin");
+        logger.info("[标的放款] loan out success notify start");
         Map<String, String> paramsMap = this.parseRequestParameters(request);
         String responseData = this.loanService.loanOutCallback(paramsMap, request.getQueryString());
-        logger.info("loan_out_notify================================end");
+        logger.info(MessageFormat.format("[标的放款] loan out success notify end , responseData:{0}", responseData));
         return new ModelAndView("/callback_response", "content", responseData);
     }
 
