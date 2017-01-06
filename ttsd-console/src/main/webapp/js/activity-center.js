@@ -48,7 +48,7 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapDat
                         if ($self.hasClass('appVerticalPicture')) {
                             $('.appVerticalPictureUrl').val(data.title)
                             $('.appVerticalPictureImage').html('');
-                            $('.appVerticalPictureImage').append('<img style="width:100%" src="/' + data.title + '" alt="展示图">');
+                            $('.appVerticalPictureImage').append('<img style="width:100%" src="' + data.title + '" alt="展示图">');
                         }
 
                     }
