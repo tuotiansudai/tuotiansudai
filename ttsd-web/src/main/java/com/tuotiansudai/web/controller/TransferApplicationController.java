@@ -66,7 +66,8 @@ public class TransferApplicationController {
         ModelAndView modelAndView = new ModelAndView("/transfer-detail");
         modelAndView.addObject("transferApplication", dto);
         modelAndView.addObject("loanDto", loanDto);
-        modelAndView.addObject("anxinProp", anxinProp != null ? anxinProp : new AnxinSignPropertyModel());
+        modelAndView.addObject("anxinAuthenticationRequired", anxinSignService.isAuthenticationRequired(loginName));
+        modelAndView.addObject("anxinUser", anxinProp != null && anxinProp.isAnxinUser());
         modelAndView.addObject("transferApplicationReceiver", transferService.getTransferee(transferApplicationId, LoginUserInfo.getLoginName()));
         return modelAndView;
     }
