@@ -17,7 +17,7 @@
         <result column="description" property="description"/>
     </resultMap>
 
-    <insert id="create" parameterType="AuditLogModel" useGeneratedKeys="true" keyProperty="id">
+    <insert id="create" parameterType="AuditLogModel">
         insert into audit_log (id, auditor_login_name, auditor_mobile, operator_login_name, operator_mobile, target_id, operation_type, ip, operation_time, description)
         value(#{id}, #{auditorLoginName}, #{auditorMobile}, #{operatorLoginName}, #{operatorMobile}, #{targetId}, #{operationType}, #{ip}, #{operationTime}, #{description})
     </insert>

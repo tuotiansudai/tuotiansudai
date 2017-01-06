@@ -14,6 +14,15 @@
         <result column="success" property="success"></result>
     </resultMap>
 
+    <insert id="create" parameterType="map">
+        insert into ${table} (id, login_name, source, ip, device, login_time, success)
+        value(#{model.id}, #{model.loginName}, #{model.source}, #{model.ip}, #{model.device}, #{model.loginTime}, #{model.success})
+    </insert>
+
+    <select id="findById" parameterType="map" resultMap="loginLogModelResultMap">
+        select * from ${table} where id = #{id}
+    </select>
+
     <select id="getPaginationData" parameterType="map" resultMap="loginLogModelResultMap">
         select *
         from ${table}
@@ -41,10 +50,4 @@
         </where>
     </select>
 
-    <select id="countSuccessTimesOnDate" parameterType="map" resultType="long">
-        select count(1) from ${table}
-        where (login_name = #{loginName} or login_name = (select mobile from user where user.login_name = #{loginName}))
-        and success is TRUE
-        and date_format(#{date},'%Y-%m-%d') = date_format(login_time,'%Y-%m-%d')
-    </select>
 </mapper>
