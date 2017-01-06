@@ -40,16 +40,7 @@ def migrate():
 
 def mk_war():
     local('/usr/local/bin/paver jcversion')
-    local('/opt/gradle/latest/bin/gradle ttsd-web:war')
-    local('/opt/gradle/latest/bin/gradle ttsd-activity-web:war')
-    local('/opt/gradle/latest/bin/gradle ttsd-pay-wrapper:war')
-    local('/opt/gradle/latest/bin/gradle ttsd-console:war')
-    local('/opt/gradle/latest/bin/gradle ttsd-activity-console:war')
-    local('/opt/gradle/latest/bin/gradle ttsd-mobile-api:war')
-    local('/opt/gradle/latest/bin/gradle ttsd-sms-wrapper:war')
-    local('/opt/gradle/latest/bin/gradle ttsd-point-web:war')
-    local('/opt/gradle/latest/bin/gradle ttsd-ask-web:war')
-    local('/opt/gradle/latest/bin/gradle initMQ')
+    local('/opt/gradle/latest/bin/gradle war renameWar initMQ')
 
 def mk_worker_zip():
     local('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle distZip')

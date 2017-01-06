@@ -5,7 +5,6 @@ version = '1.0'
 configurations {
     providedCompile
 }
-
 sourceSets {
     main.compileClasspath += configurations.providedCompile
     test.compileClasspath += configurations.providedCompile
@@ -14,9 +13,10 @@ sourceSets {
 
 dependencies {
     compile project(':ttsd-dependency'),
-            project(":ttsd-config"),
-            project(":ttsd-client"),
-            project(":ttsd-util")
+            project(':ttsd-config'),
+            project(':ttsd-mybatis-extension'),
+            project(':ttsd-util')
+    testCompile project(':ttsd-client')
 }
 
 processResources.outputs.upToDateWhen { false }
