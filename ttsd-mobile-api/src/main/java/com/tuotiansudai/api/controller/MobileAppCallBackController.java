@@ -14,9 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.text.MessageFormat;
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.Map;
 
 @Controller
@@ -38,16 +36,30 @@ public class MobileAppCallBackController {
     @Autowired
     private LoanService loanService;
 
-    @RequestMapping(value = "/membership-purchase", method = RequestMethod.GET)
-    public ModelAndView callBack(HttpServletRequest request) {
-        ModelAndView mv = new ModelAndView("/callback-template");
-        mv.addAllObjects(this.generateViewObject(MobileFrontCallbackService.MEMBERSHIP_PURCHASE, request));
-        return mv;
-    }
-
     @RequestMapping(value = "/{service}", method = RequestMethod.GET)
     public ModelAndView callBack(@PathVariable String service, HttpServletRequest request) {
-        ModelAndView mv = new ModelAndView("/callBackTemplate");
+        ModelAndView mv;
+
+        switch (MobileFrontCallbackService.getService(service)){
+            case PTP_MER_BIND_AGREEMENT:
+            case PTP_MER_REPLACE_CARD:
+            case MEMBERSHIP_PURCHASE:
+            case PTP_MER_NO_PASSWORD_INVEST:
+                mv = new ModelAndView("/success");
+                break;
+            case PROJECT_TRANSFER_INVEST:
+            case PROJECT_TRANSFER_NOPASSWORD_INVEST:
+            case PROJECT_TRANSFER_TRANSFER:
+            case PROJECT_TRANSFER_NOPASSWORD_TRANSFER:
+            case PTP_MER_BIND_CARD:
+            case MER_RECHARGE_PERSON:
+            case CUST_WITHDRAWALS:
+                mv = new ModelAndView("/success-info");
+                break;
+            default:
+                mv = new ModelAndView("/success");
+        }
+
         MobileFrontCallbackService mobileFrontCallbackService = MobileFrontCallbackService.getService(service);
         Map<String, String> paramsMap = this.parseRequestParameters(request);
         String amount = mobileFrontCallbackService.getServiceName().equalsIgnoreCase("project_transfer_no_password_invest")
@@ -65,6 +77,7 @@ public class MobileAppCallBackController {
             mv.addObject("investName", retMaps.get("investName"));
             mv.addObject("loanId", retMaps.get("loanId"));
             mv.addObject("replaceCardContent", retMaps.get("replaceCardContent"));
+            mv.addObject("purchaseMembershipContent", retMaps.get("purchaseMembershipContent"));
             mv.addObject("href", retMaps.get("href"));
         } else {
             String retMsg = paramsMap.get("ret_msg");
@@ -98,6 +111,7 @@ public class MobileAppCallBackController {
         String loanId = "";
         String withdrawAmount = "";
         String replaceCardContent = "";
+        String purchaseMembershipContent = "";
         switch (service){
             case CUST_WITHDRAWALS:
                     WithdrawModel withdrawModel = withdrawService.findById(Long.parseLong(orderId));
@@ -141,11 +155,11 @@ public class MobileAppCallBackController {
             case PTP_MER_BIND_CARD:
                     BankCardModel bankCardModel = bindBankCardService.getBankCardById(Long.parseLong(orderId));
                     cardNumber = bankCardModel.getCardNumber();
+                    bankName = BankCardUtil.getBankName(bankCardModel.getBankCode());
                     break;
             case PTP_MER_REPLACE_CARD:
                     replaceCardContent = "换卡申请最快两个小时处理完成";
                     break;
-
         }
 
         retMaps.put("message", isCallbackSuccess ? service.getMessage() : retMsg);
@@ -159,15 +173,7 @@ public class MobileAppCallBackController {
         retMaps.put("loanId", loanId);
         retMaps.put("withdrawAmount", withdrawAmount);
         retMaps.put("replaceCardContent", replaceCardContent);
+        retMaps.put("purchaseMembershipContent", purchaseMembershipContent);
         return retMaps;
-    }
-
-    private Map<String, Object> generateViewObject(MobileFrontCallbackService service, HttpServletRequest httpServletRequest) {
-        Map<String, String> paramsMap = this.parseRequestParameters(httpServletRequest);
-        boolean isCallbackSuccess = "0000".equalsIgnoreCase(paramsMap.get("ret_code"));
-        HashMap<String, Object> viewObject = Maps.newHashMap();
-        viewObject.put("href", service.getConfirmUrl(isCallbackSuccess));
-        viewObject.put("message", isCallbackSuccess ? service.getMessage() : paramsMap.get("ret_msg"));
-        return viewObject;
     }
 }

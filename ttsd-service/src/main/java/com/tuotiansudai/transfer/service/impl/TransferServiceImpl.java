@@ -241,6 +241,7 @@ public class TransferServiceImpl implements TransferService {
         transferApplicationDetailDto.setLoanType(loanModel.getType().getRepayType());
         transferApplicationDetailDto.setDeadLine(transferApplicationModel.getDeadline());
         String beforeDeadLine;
+        long countdown = 0;
         Date now = new Date();
         if (transferApplicationModel.getStatus() == TransferStatus.SUCCESS) {
             beforeDeadLine = "已转让";
@@ -249,6 +250,7 @@ public class TransferServiceImpl implements TransferService {
         } else {
             if (now.before(transferApplicationModel.getDeadline())) {
                 long seconds = (transferApplicationModel.getDeadline().getTime() - now.getTime()) / 1000;
+                countdown = seconds;
                 int days = (int) (seconds / (60 * 60 * 24));
                 int hours = (int) ((seconds % (60 * 60 * 24)) / (60 * 60));
                 int minutes = (int) ((seconds % (60 * 60)) / 60);
@@ -257,6 +259,7 @@ public class TransferServiceImpl implements TransferService {
                 beforeDeadLine = "已过期";
             }
         }
+        transferApplicationDetailDto.setCountdown(countdown);
         transferApplicationDetailDto.setBeforeDeadLine(beforeDeadLine);
         transferApplicationDetailDto.setTransferStatus(transferApplicationModel.getStatus());
         transferApplicationDetailDto.setTransferrer(randomUtils.encryptMobile(loginName, transferApplicationModel.getLoginName(), transferApplicationModel.getTransferInvestId(), Source.WEB));

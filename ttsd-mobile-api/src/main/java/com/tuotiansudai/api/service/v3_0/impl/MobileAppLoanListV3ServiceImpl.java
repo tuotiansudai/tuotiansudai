@@ -8,6 +8,7 @@ import com.tuotiansudai.api.dto.v3_0.LoanListResponseDataDto;
 import com.tuotiansudai.api.dto.v3_0.LoanResponseDataDto;
 import com.tuotiansudai.api.service.v3_0.MobileAppLoanListV3Service;
 import com.tuotiansudai.api.util.CommonUtils;
+import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.ExtraLoanRateMapper;
@@ -16,7 +17,9 @@ import com.tuotiansudai.repository.mapper.LoanDetailsMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.ExperienceLoanDetailService;
+import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.util.AmountConverter;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -55,19 +58,34 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
 
+    @Autowired
+    private InvestService investService;
+
+    @Autowired
+    private UserCouponMapper userCouponMapper;
+
+    public static long DEFAULT_INVEST_AMOUNT = 1000000;
+
     @Override
     public BaseResponseDto<LoanListResponseDataDto> generateIndexLoan(String loginName) {
         List<ProductType> noContainExperienceLoans = Lists.newArrayList(ProductType._30, ProductType._90, ProductType._180, ProductType._360);
         List<ProductType> allProductTypesCondition = Lists.newArrayList(ProductType.EXPERIENCE, ProductType._30, ProductType._90, ProductType._180, ProductType._360);
 
         LoanModel loanModel = null;
+        //没登录 or 没投资过任何标
         if (StringUtils.isEmpty(loginName) ||
                 investMapper.findCountSuccessByLoginNameAndProductTypes(loginName, allProductTypesCondition) == 0) {
-            //没登录 or 没投资过任何标
-            List<LoanModel> loanModels = loanMapper.findByProductType(LoanStatus.RAISING, Lists.newArrayList(Lists.newArrayList(ProductType.EXPERIENCE)), ActivityType.NEWBIE);
+
+            List<LoanModel> loanModels;
+            if (StringUtils.isEmpty(loginName) || (!StringUtils.isEmpty(loginName)) && CollectionUtils.isNotEmpty(userCouponMapper.findUsedExperienceByLoginName(loginName))) {
+                loanModels = loanMapper.findByProductType(LoanStatus.RAISING, Lists.newArrayList(Lists.newArrayList(ProductType.EXPERIENCE)), ActivityType.NEWBIE);
+            } else {
+                loanModels = loanMapper.findByProductType(LoanStatus.RAISING, noContainExperienceLoans, null);
+            }
+
             if (loanModels.size() <= 0) {
                 logger.error("[MobileAppLoanListV3ServiceImpl][generateIndexLoan]新手体验标不存在!");
-            } else if (loanModels.size() == 1) {
+            } else if (loanModels.size() > 0) {
                 loanModel = loanModels.get(0);
             } else {
                 logger.warn("[MobileAppLoanListV3ServiceImpl][generateIndexLoan]新手体验标不存在!");
@@ -124,6 +142,9 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
                 if (soldLoanModels.size() > 0) {
                     loanModel = soldLoanModels.get(0);
                     for (LoanModel curLoanModel : soldLoanModels) {
+                        if(curLoanModel.getRaisingCompleteTime() == null){
+                            continue;
+                        }
                         if (loanModel.getRaisingCompleteTime().before(curLoanModel.getRaisingCompleteTime())) {
                             loanModel = curLoanModel;
                         }
@@ -147,6 +168,9 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
     private List<LoanResponseDataDto> convertLoanDto(String loginName, List<LoanModel> loanList) {
         List<LoanResponseDataDto> loanDtoList = Lists.newArrayList();
         DecimalFormat decimalFormat = new DecimalFormat("######0.##");
+        if(CollectionUtils.isEmpty(loanList)){
+            return loanDtoList;
+        }
         for (LoanModel loan : loanList) {
             LoanResponseDataDto loanResponseDataDto = new LoanResponseDataDto();
             loanResponseDataDto.setLoanId("" + loan.getId());
@@ -202,6 +226,8 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
                 loanResponseDataDto.setExtraSource((loanDetailsModel != null && loanDetailsModel.getExtraSource() != null) ? ((loanDetailsModel.getExtraSource().size() == 1 && loanDetailsModel.getExtraSource().contains(Source.WEB)) ? Source.WEB.name() : "") : "");
             }
 
+            long expectedInterest = investService.estimateInvestIncome(loan.getId(), loginName, DEFAULT_INVEST_AMOUNT);
+            loanResponseDataDto.setInterestPerTenThousands(String.valueOf(expectedInterest));
             loanDtoList.add(loanResponseDataDto);
         }
         return loanDtoList;
