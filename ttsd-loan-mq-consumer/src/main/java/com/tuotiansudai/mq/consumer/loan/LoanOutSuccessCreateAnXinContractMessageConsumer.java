@@ -39,7 +39,6 @@ public class LoanOutSuccessCreateAnXinContractMessageConsumer implements Message
         return MessageQueue.LoanOutSuccess_GenerateAnXinContract;
     }
 
-    @Transactional
     @Override
     public void consume(String message) {
         logger.info("[MQ] LoanOutSuccess receive message: {0}: {1}.", this.queue(), message);
