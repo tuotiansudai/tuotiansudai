@@ -26,12 +26,12 @@
             <div class="title-item">
                 <span class="title-sm">点亮窗花拆红包</span>
             </div>
-            <h3 class="title-info">活动期间，每日在本活动页面签到即可领取1个福袋。</h3>
+            <h3 class="title-info">活动期间累计投资满一定金额，可点亮一个窗花，获得该窗花对应的红包奖励</h3>
             <div class="bag-item">
                 <img src="${staticServer}/activity/images/spring-festival/bag-img.png">
             </div>
             <div class="btn-item">
-                <span>签到领福袋</span>
+                <span>立即投资拆红包</span>
             </div>
         </div>
         <div class="model-container">
@@ -40,12 +40,12 @@
             <div class="title-item">
                 <span class="title-sm mx-title">节日投资，拿年货大礼包</span>
             </div>
-            <h3 class="title-info">活动期间，每日在本活动页面签到即可领取1个福袋。</h3>
+            <h3 class="title-info">根据用户活动期间累计投资额，可领取相应的大礼包奖励</h3>
             <div class="bag-item">
                 <img src="${staticServer}/activity/images/spring-festival/bag-img.png">
             </div>
             <div class="btn-item">
-                <span>签到领福袋</span>
+                <span>立即投资拿礼包</span>
             </div>
         </div>
         <div class="model-container mb-50">
