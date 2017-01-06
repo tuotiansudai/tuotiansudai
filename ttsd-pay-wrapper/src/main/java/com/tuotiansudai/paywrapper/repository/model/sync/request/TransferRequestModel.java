@@ -44,16 +44,16 @@ public class TransferRequestModel extends BaseAsyncRequestModel {
     }
 
     public static TransferRequestModel newTransferReferrerRewardRequest(String orderId, String payUserId, String amount) {
-        TransferRequestModel model = new TransferRequestModel();
-        model.service = UmPayService.TRANSFER.getServiceName();
-        model.orderId = orderId;
-        model.particUserId = payUserId;
-        model.amount = amount;
-        model.particAccType = UmPayParticAccType.INDIVIDUAL.getCode();
-        model.transAction = UmPayTransAction.OUT.getCode();
-        model.merDate = new SimpleDateFormat("yyyyMMdd").format(new Date());
+        TransferRequestModel model = newRequest(orderId, payUserId, amount);
         model.retUrl = MessageFormat.format("{0}/account", CALLBACK_HOST_PROPS.get("pay.callback.web.host"));
         model.notifyUrl = MessageFormat.format("{0}/{1}", CALLBACK_HOST_PROPS.get("pay.callback.back.host"), "transfer_referrer_reward");
+        return model;
+    }
+
+    public static TransferRequestModel newTransferCouponRequest(String orderId, String payUserId, String amount) {
+        TransferRequestModel model = newRequest(orderId, payUserId, amount);
+        model.retUrl = MessageFormat.format("{0}/account", CALLBACK_HOST_PROPS.get("pay.callback.web.host"));
+        model.notifyUrl = MessageFormat.format("{0}/{1}", CALLBACK_HOST_PROPS.get("pay.callback.back.host"), "transfer_coupon");
         return model;
     }
 

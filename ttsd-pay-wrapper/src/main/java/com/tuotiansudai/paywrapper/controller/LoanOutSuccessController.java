@@ -4,6 +4,7 @@ package com.tuotiansudai.paywrapper.controller;
 import com.tuotiansudai.anxin.service.AnxinSignService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
+import com.tuotiansudai.paywrapper.coupon.service.AchievementCouponService;
 import com.tuotiansudai.paywrapper.coupon.service.CouponLoanOutService;
 import com.tuotiansudai.paywrapper.coupon.service.CouponRepayService;
 import com.tuotiansudai.paywrapper.extrarate.service.LoanOutInvestCalculationService;
@@ -42,10 +43,13 @@ public class LoanOutSuccessController {
     @Autowired
     private LoanOutInvestCalculationService loanOutInvestCalculationService;
 
+    @Autowired
+    private AchievementCouponService achievementCouponService;
+
     @ResponseBody
     @RequestMapping(value = "/assign-achievement-coupon-after-loan-out", method = RequestMethod.POST)
     public BaseDto<PayDataDto> assignInvestAchievementUserCoupon(@RequestBody long loanId) {
-        boolean isSuccess = couponLoanOutService.assignInvestAchievementUserCoupon(loanId);
+        boolean isSuccess = achievementCouponService.assignInvestAchievementUserCoupon(loanId);
         BaseDto<PayDataDto> dto = new BaseDto<>();
         PayDataDto dataDto = new PayDataDto();
         dto.setData(dataDto);
@@ -150,6 +154,17 @@ public class LoanOutSuccessController {
     @RequestMapping(value = "/transfer-referrer-reward-after-loan-out", method = RequestMethod.POST)
     public BaseDto<PayDataDto> transferReferrerRewardAfterLoanOut(@RequestBody long loanId) {
         boolean isSuccess = referrerRewardService.transferReferrerReward(loanId);
+        BaseDto<PayDataDto> dto = new BaseDto<>();
+        PayDataDto dataDto = new PayDataDto();
+        dto.setData(dataDto);
+        dataDto.setStatus(isSuccess);
+        return dto;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/transfer-red-envelop-after-loan-out", method = RequestMethod.POST)
+    public BaseDto<PayDataDto> transferRedEnvelopAfterLoanOut(@RequestBody long userCouponId) {
+        boolean isSuccess = couponLoanOutService.sendRedEnvelopTransferInBalance(userCouponId);
         BaseDto<PayDataDto> dto = new BaseDto<>();
         PayDataDto dataDto = new PayDataDto();
         dto.setData(dataDto);

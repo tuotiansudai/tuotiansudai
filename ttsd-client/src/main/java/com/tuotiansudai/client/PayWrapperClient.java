@@ -386,7 +386,11 @@ public class PayWrapperClient extends BaseClient {
         return syncExecute(String.valueOf(loanId), "/loan-out/assign-achievement-coupon-after-loan-out", "POST");
     }
 
-    public BaseDto<PayDataDto> transferReferrerRwardForLoanOut(long loanId){
+    public BaseDto<PayDataDto> transferReferrerRewardForLoanOut(long loanId){
         return syncExecute(String.valueOf(loanId), "/loan-out/transfer-referrer-reward-after-loan-out", "POST");
+    }
+
+    public BaseDto<PayDataDto> transferRedEnvelopForLoanOut(long loanId){
+        return syncExecute(String.valueOf(loanId), "/loan-out/transfer-red-envelop-after-loan-out", "POST");
     }
 }

@@ -64,7 +64,7 @@ public class LoanOutSuccessCreateAnXinContractMessageConsumer implements Message
             try {
                 Thread.sleep(DEFAULT_MINUTE);
             } catch (InterruptedException e) {
-                logger.info("[MQ] LoanOutSuccess sleep 15 minute.");
+                logger.info("[MQ] LoanOutSuccess createLoanContracts sleep 15 minute.");
             }
 
             baseDto = payWrapperClient.queryAnXinContract(loanId);

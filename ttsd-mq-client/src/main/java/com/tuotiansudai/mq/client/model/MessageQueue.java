@@ -29,7 +29,8 @@ public enum MessageQueue {
     AdvanceRepayCallback("AdvanceRepayCallback"),
     AuditLog("AuditLog"),
     UserOperateLog("UserOperateLog"),
-    TransferReferrerRewardCallback("TransferReferrerRewardCallback");
+    TransferReferrerRewardCallback("TransferReferrerRewardCallback"),
+    TransferRedEnvelopCallback("TransferRedEnvelopCallback");
 
     private final String queueName;
 

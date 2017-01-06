@@ -39,7 +39,7 @@ public class LoanOutSuccessSendCouponMessageConsumer implements MessageConsumer 
     @Transactional
     @Override
     public void consume(String message) {
-        logger.info("[MQ] LoanOutSuccess receive message: {0}: {1}.", this.queue(), message);
+        logger.info("[MQ] LoanOutSuccess LoanOutSuccess_AssignCoupon receive message: {0}: {1}.", this.queue(), message);
         if (!StringUtils.isEmpty(message)) {
             LoanOutSuccessMessage loanOutInfo;
             try {

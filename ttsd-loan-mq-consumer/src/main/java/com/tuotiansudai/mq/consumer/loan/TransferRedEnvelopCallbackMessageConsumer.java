@@ -13,29 +13,29 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 @Component
-public class TransferReferrerRewardCallbackMessageConsumer implements MessageConsumer {
-    private static Logger logger = LoggerFactory.getLogger(TransferReferrerRewardCallbackMessageConsumer.class);
+public class TransferRedEnvelopCallbackMessageConsumer implements MessageConsumer {
+    private static Logger logger = LoggerFactory.getLogger(TransferRedEnvelopCallbackMessageConsumer.class);
 
     @Autowired
     private PayWrapperClient payWrapperClient;
 
     @Override
     public MessageQueue queue() {
-        return MessageQueue.TransferRedEnvelopCallback;
+        return MessageQueue.TransferReferrerRewardCallback;
     }
 
     @Transactional
     @Override
     public void consume(String message) {
-        logger.info("[MQ] LoanOutSuccess TransferRedEnvelopCallback receive message: {}: {}.", this.queue(), message);
+        logger.info("[MQ] LoanOutSuccess TransferReferrerRewardCallback receive message: {}: {}.", this.queue(), message);
         if (!StringUtils.isEmpty(message)) {
-            logger.info("[MQ] LoanOutSuccess ready to consume message: transfer referrer reward callback.");
+            logger.info("[MQ] LoanOutSuccess ready to consume message: transfer redEnvelop callback.");
             BaseDto<PayDataDto> result = payWrapperClient.transferReferrerRewardForLoanOut(Long.parseLong(message));
             if (!result.isSuccess()) {
-                logger.error("LoanOutSuccess transfer referrer callback consume fail. notifyRequestId: " + message);
-                throw new RuntimeException("transfer referrer callback consume fail. notifyRequestId: " + message);
+                logger.error("LoanOutSuccess transfer redEnvelop callback consume fail. notifyRequestId: " + message);
+                throw new RuntimeException("transfer redEnvelop callback consume fail. notifyRequestId: " + message);
             }
-            logger.info("[MQ] LoanOutSuccess consume TransferRedEnvelopCallback message success.");
+            logger.info("[MQ] LoanOutSuccess consume TransferReferrerRewardCallback message success.");
         }
     }
 }
