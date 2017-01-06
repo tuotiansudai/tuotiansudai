@@ -89,7 +89,8 @@
                     <span>您还未登录，登录完成后，再来查看吧！</span>
                     <a class="normal-button" href="/login">去登录</a>
                 </div>
-                </@global.isAnonymous>
+             </@global.isAnonymous>
+
             <@global.isNotAnonymous>
                 <div class="unanonymous-box clearfix">
                     <ul class="my-red-envelop clearfix">
