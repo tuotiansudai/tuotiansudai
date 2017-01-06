@@ -44,3 +44,5 @@ ttsd-activity-web/src/main/webapp/activity/style/base64/*.css
 ttsd-activity-web/src/main/webapp/activity/style/cssprefixer
 
 ttsd-ask-web/src/main/webapp/ask/dist
+
+ttsd-frontend-manage/resources/develop
