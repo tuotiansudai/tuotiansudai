@@ -74,6 +74,7 @@ public class InvestSuccessActivityRewardMessageConsumer implements MessageConsum
         if (!StringUtils.isEmpty(message)) {
             this.assignActivityChristmasInterestCoupon(message);
             this.assignActivityAnnualInvestReward(message);
+            this.assignActivitySpringFestivalInvestReward(message);
         }
     }
 
@@ -82,7 +83,7 @@ public class InvestSuccessActivityRewardMessageConsumer implements MessageConsum
         try {
             investSuccessMessage = JsonConverter.readValue(message, InvestSuccessMessage.class);
         } catch (IOException e) {
-           throw new RuntimeException(e);
+            throw new RuntimeException(e);
         }
         Date nowDate = DateTime.now().toDate();
 
@@ -124,12 +125,12 @@ public class InvestSuccessActivityRewardMessageConsumer implements MessageConsum
                 annualPrizeModel.setInvestAmount(annualPrizeModel.getInvestAmount() + investInfo.getAmount());
                 logger.info(MessageFormat.format("[MQ] annual prize is already exits. firstSendCount:{0}, SecondSendCoupon:{1}, investAmount:{2}", annualPrizeModel.isFirstSendCoupon(), annualPrizeModel.isSecondSendCoupon(), annualPrizeModel.getInvestAmount()));
 
-                if(!annualPrizeModel.isFirstSendCoupon() && annualPrizeModel.getInvestAmount() >= INVEST_20_RED_ENVELOPE_LIMIT){
+                if (!annualPrizeModel.isFirstSendCoupon() && annualPrizeModel.getInvestAmount() >= INVEST_20_RED_ENVELOPE_LIMIT) {
                     firstSendCoupon = true;
                     annualPrizeModel.setFirstSendCoupon(firstSendCoupon);
                 }
 
-                if(!annualPrizeModel.isSecondSendCoupon() && annualPrizeModel.getInvestAmount() >= INVEST_800_RED_ENVELOPE_LIMIT){
+                if (!annualPrizeModel.isSecondSendCoupon() && annualPrizeModel.getInvestAmount() >= INVEST_800_RED_ENVELOPE_LIMIT) {
                     secondSendCoupon = true;
                     annualPrizeModel.setSecondSendCoupon(secondSendCoupon);
                 }
@@ -138,11 +139,11 @@ public class InvestSuccessActivityRewardMessageConsumer implements MessageConsum
             } else {
                 logger.info(MessageFormat.format("[MQ] annual prize is not exits. firstSendCount:{0}, SecondSendCoupon:{1}, investAmount:{2}", firstSendCoupon, secondSendCoupon, investInfo.getAmount()));
 
-                if(investInfo.getAmount() >= INVEST_20_RED_ENVELOPE_LIMIT){
+                if (investInfo.getAmount() >= INVEST_20_RED_ENVELOPE_LIMIT) {
                     firstSendCoupon = true;
                 }
 
-                if(investInfo.getAmount() >= INVEST_800_RED_ENVELOPE_LIMIT){
+                if (investInfo.getAmount() >= INVEST_800_RED_ENVELOPE_LIMIT) {
                     secondSendCoupon = true;
                 }
 
@@ -162,5 +163,28 @@ public class InvestSuccessActivityRewardMessageConsumer implements MessageConsum
         }
 
         logger.info("[MQ] assign annual reward end.");
+    }
+
+    private void assignActivitySpringFestivalInvestReward(String message) {
+        logger.info("[MQ] assign springFestival reward begin.");
+        InvestSuccessMessage investSuccessMessage = null;
+        try {
+            investSuccessMessage = JsonConverter.readValue(message, InvestSuccessMessage.class);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        Date nowDate = DateTime.now().toDate();
+        InvestInfo investInfo = investSuccessMessage.getInvestInfo();
+        LoanDetailInfo loanDetailInfo = investSuccessMessage.getLoanDetailInfo();
+        UserInfo userInfo = investSuccessMessage.getUserInfo();
+
+        logger.info("[MQ] ready to consume activity springFestival message: invest reward.");
+        Date startTime = DateTime.parse(annualTime.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+        Date endTime = DateTime.parse(annualTime.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+
+        if ((startTime.before(nowDate) && endTime.after(nowDate))
+                && loanDetailInfo.isActivity() && (!investInfo.getTransferStatus().equals("SUCCESS") && investInfo.getStatus().equals("SUCCESS"))) {
+
+        }
     }
 }
