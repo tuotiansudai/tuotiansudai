@@ -28,8 +28,8 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml", "classpath:spring-session.xml"})
-@Transactional(value = "activityTransactionManager")
+@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
+@Transactional
 public class HeroRankingServiceTest {
     @Autowired
     private InvestMapper investMapper;

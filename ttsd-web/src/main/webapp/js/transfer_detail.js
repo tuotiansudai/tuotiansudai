@@ -3,7 +3,7 @@ require(['jquery', 'pagination', 'layerWrapper', 'coupon-alert', 'red-envelope-f
         $errorTip = $('.errorTip', $transferDetailCon),
         $questionList = $('.question-list', $transferDetailCon),
         $detailRecord = $('.detail-record', $transferDetailCon),
-        $isSkipAuth = $('#isSkipAuth');
+        $isAnxinAuthenticationRequired = $('#isAnxinAuthenticationRequired');
 
     $detailRecord.find('li').on('click', function() {
         var $this = $(this),
@@ -11,7 +11,7 @@ require(['jquery', 'pagination', 'layerWrapper', 'coupon-alert', 'red-envelope-f
         $this.addClass('active').siblings('li').removeClass('active');
         $('.detail-record-info', $transferDetailCon).eq(num).show().siblings('.detail-record-info').hide();
 
-    })
+    });
 
     function showInputErrorTips(message) {
         layer.msg(message);
@@ -127,9 +127,8 @@ require(['jquery', 'pagination', 'layerWrapper', 'coupon-alert', 'red-envelope-f
                                     return false;
                                 }
                             }
-                            if($isSkipAuth.val()=='true'){
+                            if($isAnxinAuthenticationRequired.val()=='false'){
                                 $transferForm.submit();
-                                return;
                             }else{
                                 getSkipPhoneTip();
                                 return false;
@@ -258,7 +257,7 @@ require(['jquery', 'pagination', 'layerWrapper', 'coupon-alert', 'red-envelope-f
                     if(data.success){
                         $('#isAnxinUser').val('true');
                         if(data.data.message=='skipAuth'){
-                            $('#isSkipAuth').val('true');
+                            $isAnxinAuthenticationRequired.val('false');
                         }
                         $('.skip-group').hide();
                         skipSuccess();
