@@ -14,8 +14,8 @@ var basePath = path.join(__dirname, 'resources'),
     activityPath=path.join(staticPath, 'activity'),
     mobilePath=path.join(staticPath, 'mobile');
 
-var outputPath=path.join(basePath, 'build'),
-    devServerPath='http://localhost:3008/build/',
+var outputPath=path.join(basePath, 'prod'),
+    devServerPath='/',
     commonOptions={},
     plugins=[];
 
