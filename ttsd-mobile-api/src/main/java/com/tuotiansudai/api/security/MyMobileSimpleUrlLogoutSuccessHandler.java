@@ -36,8 +36,6 @@ public class MyMobileSimpleUrlLogoutSuccessHandler extends SimpleUrlLogoutSucces
 
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        logger.error("MyMobileSimpleUrlLogoutSuccessHandler " + (Strings.isNullOrEmpty(LoginUserInfo.getLoginName()) ? "null"  : LoginUserInfo.getLoginName()));
-
         BaseResponseDto baseResponseDto = new BaseResponseDto();
         baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
         baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
