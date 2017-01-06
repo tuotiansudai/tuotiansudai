@@ -187,6 +187,7 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
         when(loanMapper.findById(anyLong())).thenReturn(loanModel);
         when(investTransferService.validTransferIsDayLimit(anyLong())).thenReturn(true);
         when(investTransferService.validTransferIsCanceled(anyLong())).thenReturn(true);
+        when(investRepayMapper.findByInvestIdAndPeriodAsc(anyLong())).thenReturn(Lists.newArrayList(new InvestRepayModel()));
         TransferApplyRequestDto transferApplyRequestDto = new TransferApplyRequestDto();
         BaseParam baseParam = new BaseParam();
         baseParam.setPlatform("Android");
@@ -224,6 +225,7 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
         when(loanMapper.findById(anyLong())).thenReturn(loanModel);
         when(investTransferService.validTransferIsDayLimit(anyLong())).thenReturn(true);
         when(investTransferService.validTransferIsCanceled(anyLong())).thenReturn(false);
+        when(investRepayMapper.findByInvestIdAndPeriodAsc(anyLong())).thenReturn(Lists.newArrayList(new InvestRepayModel()));
 
         TransferApplyRequestDto transferApplyRequestDto = new TransferApplyRequestDto();
         BaseParam baseParam = new BaseParam();
