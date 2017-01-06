@@ -46,7 +46,11 @@
                 </dl>
 
                 <div class="weixin-code">
-                    <em class="img-code"></em>
+                    <em class="img-code">
+                        <!--[if gte IE 8]>
+                        <span style="font-size:12px">请使用更高版本浏览器查看</span>
+                        <![endif]-->
+                    </em>
                     <span>将扫码后的页面<br/>分享给好友即可邀请</span>
                 </div>
             </div>
@@ -215,7 +219,7 @@
                     <div class="weixin-code">
                         <em class="img-code">
                             <!--[if gte IE 8]>
-                            请使用更高版本浏览器查看
+                            <span style="font-size:12px">请使用更高版本浏览器查看</span>
                             <![endif]-->
                         </em>
                         <span>将扫码后的页面<br/>分享给好友即可邀请</span>
