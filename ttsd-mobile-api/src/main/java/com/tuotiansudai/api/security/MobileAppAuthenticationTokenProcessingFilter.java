@@ -11,6 +11,7 @@ import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.dto.v2_0.BaseParamDto;
 import com.tuotiansudai.dto.SignInResult;
 import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.spring.MyUser;
 import com.tuotiansudai.spring.security.SignInClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,6 +86,10 @@ public class MobileAppAuthenticationTokenProcessingFilter extends GenericFilterB
                 return;
             }
         }
+
+        logger.error("MobileAppAuthenticationTokenProcessingFilter " + ((HttpServletRequest) request).getRequestURL());
+        logger.error("MobileAppAuthenticationTokenProcessingFilter " + (Strings.isNullOrEmpty(LoginUserInfo.getLoginName()) ? "null" : LoginUserInfo.getLoginName()));
+
         chain.doFilter(bufferedRequestWrapper, response);
     }
 
