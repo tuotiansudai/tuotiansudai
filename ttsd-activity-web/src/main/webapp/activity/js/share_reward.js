@@ -12,6 +12,12 @@ require(['jquery','layerWrapper','clipboard','commonFun','logintip','md5','qrcod
 		layer.closeAll();
 	});
 	if($copyButton.length) {
+
+        if (window["context"] == undefined) {
+            if (!window.location.origin) {
+                window.location.origin = window.location.protocol + "//" + window.location.hostname+ (window.location.port ? ':' + window.location.port: '');
+            }
+        }
 		//已登录已认证,复制功能
 		var $clipboardText=$('.input-invite',$shareReward);
 		var mobile=$clipboardText.data('mobile')+'',

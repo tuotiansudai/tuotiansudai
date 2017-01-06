@@ -12,6 +12,10 @@ require(['jquery','template','load-swiper','layerWrapper','load_echarts','pagina
             var requestData={"index":1,"pageSize":10};
             paginationElement.loadPagination(requestData, function (data) {
                 $noticeList.html(tpl('noticeListTpl', data));
+                $noticeList.find('span').each(function(key,option) {
+                    var getTime=$(option).text();
+                    $(option).text(getTime.substr(0,10));
+                });
                 if(/app/gi.test(location.search)) {
                     $noticeList.find('li a').each(function(key,option) {
                        var thisURL= $(option).attr('href')+'?source=app';

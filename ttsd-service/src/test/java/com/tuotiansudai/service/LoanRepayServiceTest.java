@@ -32,8 +32,6 @@ import static org.mockito.Mockito.*;
 @Transactional
 public class LoanRepayServiceTest {
 
-    //TODO: 合并自动还款的代码后，将本测试类中的代码解注即可
-
     @InjectMocks
     private LoanRepayServiceImpl loanRepayService;
 
@@ -110,25 +108,25 @@ public class LoanRepayServiceTest {
 
     }
 
-//    @Test
-//    public void shouldNotSendLoanRepayNotifySmsAutoRepaySuccess() {
-//
-//        LoanRepayNotifyModel repayNotifyModel1 = this.getFakeLoanRepayNotify(100000, "loginName1", "13911111111", 111111111);
-//        LoanRepayNotifyModel repayNotifyModel2 = this.getFakeLoanRepayNotify(200000, "loginName1", "13911111111", 222222222);
-//        List<LoanRepayNotifyModel> repayNotifyModelList = Lists.newArrayList(repayNotifyModel1, repayNotifyModel2);
-//
-//        when(loanRepayMapper.findLoanRepayNotifyToday(any(String.class))).thenReturn(repayNotifyModelList);
-//
-//        when(smsWrapperClient.sendLoanRepayNotify(any(LoanRepayNotifyDto.class))).thenReturn(new BaseDto<SmsDataDto>());
-//
-//        when(payWrapperClient.autoRepay(anyLong())).thenReturn(getAutoRepayReturnDto(true));
-//
-//        ReflectionTestUtils.setField(loanRepayService, "repayRemindMobileList", Lists.newArrayList("18611445119", "18611112222"));
-//        loanRepayService.loanRepayNotify();
-//
-//        verify(smsWrapperClient, times(0)).sendLoanRepayNotify(any(LoanRepayNotifyDto.class));
-//
-//    }
+    @Test
+    public void shouldNotSendLoanRepayNotifySmsAutoRepaySuccess() {
+
+        LoanRepayNotifyModel repayNotifyModel1 = this.getFakeLoanRepayNotify(100000, "loginName1", "13911111111");
+        LoanRepayNotifyModel repayNotifyModel2 = this.getFakeLoanRepayNotify(200000, "loginName1", "13911111111");
+        List<LoanRepayNotifyModel> repayNotifyModelList = Lists.newArrayList(repayNotifyModel1, repayNotifyModel2);
+
+        when(loanRepayMapper.findLoanRepayNotifyToday(any(String.class))).thenReturn(repayNotifyModelList);
+
+        when(smsWrapperClient.sendLoanRepayNotify(any(RepayNotifyDto.class))).thenReturn(new BaseDto<SmsDataDto>());
+
+        when(payWrapperClient.autoRepay(anyLong())).thenReturn(getAutoRepayReturnDto(true));
+
+        ReflectionTestUtils.setField(loanRepayService, "repayRemindMobileList", Lists.newArrayList("18611445119", "18611112222"));
+        loanRepayService.loanRepayNotify();
+
+        verify(smsWrapperClient, times(0)).sendLoanRepayNotify(any(RepayNotifyDto.class));
+
+    }
 
     private BaseDto<PayDataDto> getAutoRepayReturnDto(boolean status) {
         BaseDto<PayDataDto> autoRepayReturn = new BaseDto<>();

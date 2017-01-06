@@ -213,7 +213,11 @@
                     </dl>
 
                     <div class="weixin-code">
-                        <em class="img-code"></em>
+                        <em class="img-code">
+                            <!--[if gte IE 8]>
+                            请使用更高版本浏览器查看
+                            <![endif]-->
+                        </em>
                         <span>将扫码后的页面<br/>分享给好友即可邀请</span>
                     </div>
                 </div>

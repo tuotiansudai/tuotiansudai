@@ -6,7 +6,7 @@
         <script type="text/html" id="noticeListTpl">
         	<ul class="notice-list">
 			    {{each records}}
-			    <li><i>●</i><a href="/announce/{{$value.id}}">{{$value.title}}</a> <span>{{$value.updateTime.substr(0,10)}}</span></li>
+			    <li><i>●</i><a href="/announce/{{$value.id}}">{{$value.title}}</a> <span>{{$value.updateTime}}</span></li>
 			    {{/each}}
 			</ul>
         </script>
