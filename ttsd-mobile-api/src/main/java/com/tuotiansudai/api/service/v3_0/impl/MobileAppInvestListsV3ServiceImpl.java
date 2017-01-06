@@ -153,7 +153,7 @@ public class MobileAppInvestListsV3ServiceImpl implements MobileAppInvestListsV3
                 dto.setExpectedInterest(AmountConverter.convertCentToString(expectedInterest));
 
                 dto.setLastRepayDate(StringUtils.trimToEmpty(lastRepayDate));
-                dto.setTransferStatus(investTransferService.isTransferable(investModel.getId()) ? TransferStatus.TRANSFERABLE.name() : investModel.getTransferStatus().name());
+                dto.setTransferStatus(investTransferService.isTransferable(investModel.getId()) ? TransferStatus.TRANSFERABLE.name() : (investModel.getTransferStatus().equals(TransferStatus.TRANSFERABLE) ? TransferStatus.NONTRANSFERABLE.name() : investModel.getTransferStatus().name()));
                 List<UserCouponModel> userCouponModels = userCouponMapper.findUserCouponSuccessByInvestId(investModel.getId());
                 List<CouponType> couponTypes = Lists.newArrayList();
                 for (UserCouponModel userCouponModel : userCouponModels) {
