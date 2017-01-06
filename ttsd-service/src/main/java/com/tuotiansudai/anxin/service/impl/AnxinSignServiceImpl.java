@@ -82,9 +82,6 @@ public class AnxinSignServiceImpl implements AnxinSignService {
     @Autowired
     private ContractService contractService;
 
-    @Autowired
-    private InvestService investService;
-
     private static final String LOAN_CONTRACT_AGENT_SIGN = "agentUserName";
 
     private static final String LOAN_CONTRACT_INVESTOR_SIGN = "investorUserName";
@@ -625,7 +622,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
                 logger.info(MessageFormat.format("execute query contract over. businessId:{0}", String.valueOf(businessId)));
 
                 // 没有待处理的 batchNo 了，检查该 businessId 下的投资是否已经全部成功
-                List<InvestModel> contractFailList = investService.findContractFailInvest(businessId);
+                List<InvestModel> contractFailList = investMapper.findNoContractNoInvest(businessId);
                 if (org.apache.commons.collections4.CollectionUtils.isNotEmpty(contractFailList)) {
                     logger.error(MessageFormat.format("some batch is fail. send sms. businessId:{0}", String.valueOf(businessId)));
                     // 有失败的，发短信
