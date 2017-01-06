@@ -86,10 +86,6 @@ public class MobileAppAuthenticationTokenProcessingFilter extends GenericFilterB
                 return;
             }
         }
-
-        logger.error("MobileAppAuthenticationTokenProcessingFilter " + ((HttpServletRequest) request).getRequestURL());
-        logger.error("MobileAppAuthenticationTokenProcessingFilter " + (Strings.isNullOrEmpty(LoginUserInfo.getLoginName()) ? "null" : LoginUserInfo.getLoginName()));
-
         chain.doFilter(bufferedRequestWrapper, response);
     }
 
