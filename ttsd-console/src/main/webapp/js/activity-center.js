@@ -12,7 +12,7 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapDat
 
         var _URL = window.URL || window.webkitURL;
 
-        $('.appPicture,.webPicture').on('change', function () {
+        $('.appPicture,.webPicture,.appVerticalPicture').on('change', function () {
             var $self = $(this),
                 imageWidth,
                 imageHeight;
@@ -44,6 +44,13 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapDat
                             $('.appPictureImage').html('');
                             $('.appPictureImage').append('<img style="width:100%" src="' + data.title + '" alt="展示图">');
                         }
+
+                        if ($self.hasClass('appVerticalPicture')) {
+                            $('.appVerticalPictureUrl').val(data.title)
+                            $('.appVerticalPictureImage').html('');
+                            $('.appVerticalPictureImage').append('<img style="width:100%" src="/' + data.title + '" alt="展示图">');
+                        }
+
                     }
                 });
             }).fail(function (message) {
@@ -56,6 +63,12 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapDat
                     $('.appPictureImage').html('');
                     $('.appPictureUrl').val('');
                     showErrorMessage(message, $('.appPictureUrl', $activityCenterForm));
+                }
+
+                if ($self.hasClass('appVerticalPicture')) {
+                    $('.appVerticalPictureImage').html('');
+                    $('.appVerticalPictureUrl').val('');
+                    showErrorMessage(message, $('.appVerticalPictureUrl', $activityCenterForm));
                 }
 
             });

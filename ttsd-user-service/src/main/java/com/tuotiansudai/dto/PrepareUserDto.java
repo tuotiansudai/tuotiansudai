@@ -11,7 +11,7 @@ public class PrepareUserDto {
     private long id;
     private String mobile;
     private String referrerName;
-    private String channel;
+    private Source channel;
     private boolean register;
     private Date registerTime;
     private Date useTime;
@@ -52,11 +52,11 @@ public class PrepareUserDto {
         this.referrerName = referrerName;
     }
 
-    public String getChannel() {
+    public Source getChannel() {
         return channel;
     }
 
-    public void setChannel(String channel) {
+    public void setChannel(Source channel) {
         this.channel = channel;
     }
 

@@ -68,11 +68,4 @@ public interface UserMapper {
 
     long findCountInvestCityScale(@Param(value = "endDate") Date endDate);
 
-    List<UserModel> findUserModelByChannel(@Param(value = "referrer") String referrer,
-                                           @Param(value = "userChannels") List<UserChannel> userChannels,
-                                           @Param(value = "startTime") Date startTime,
-                                           @Param(value = "endTime") Date endTime,
-                                           @Param(value = "pageSize") Integer pageSize);
-
-
 }

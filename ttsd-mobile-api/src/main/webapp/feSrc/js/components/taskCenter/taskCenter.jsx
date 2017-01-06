@@ -5,9 +5,10 @@ import ajax from 'utils/ajax';
 import IScroll from 'iscroll/build/iscroll-probe';
 import imagesLoaded from 'imagesloaded';
 import classNames from 'classnames';
-import taskLineLeft from './task_line_left.png';
-import taskLineRight from './task_line_right.png';
-import task_banner from './task_banner1.png';
+import titleOne from './title-one.png';
+import titleTwo from './title-two.png';
+import task_banner from './task-banner.png';
+import moneyIcon from './money-icon.png';
 
 const pageSize = 10;
 const MenuData = {
@@ -39,7 +40,7 @@ class ButtonStatus extends React.Component {
            button=<button className={description? 'TaskItemCompleteBtn' : 'TaskItemCompleteBtn column-one'}  disabled>已完成</button>;
         }
         return button;
-    }  
+    }
     };
 
 class NewbieTaskGroup extends React.Component {
@@ -52,8 +53,8 @@ class NewbieTaskGroup extends React.Component {
         let jumto=this.props.jumpToEvent;
         let keyNum;
         if(newbieTasks) {
-            newbieTasks.forEach(function(option,key) { 
-            keyNum=key+1; 
+            newbieTasks.forEach(function(option,key) {
+            keyNum=key+1;
             rows.push(<div className={option.completed ? 'TaskItemNewbie completed-tasks' : 'TaskItemNewbie'} key={key} >
                         <div className="SerialNum" >0{keyNum}</div>
                             <div className="TaskContent">
@@ -66,25 +67,23 @@ class NewbieTaskGroup extends React.Component {
                         </div>
                         <ButtonStatus stocked={option.completed} description={option.description} value={option.number} location={option.url} />
                    </div>);
-        });
+            });
             return (
-            <div className="NewbieTaskGroup">
-                <div className="HeaderGroup">
-                <img src={taskLineLeft} />
-                <span className="HeaderTitle">新手任务</span>
-                <img src={taskLineRight}/>
-            </div>
-                <div className="scroll-wrap clearfix">
-                {rows}
+                <div className="NewbieTaskGroup">
+                    <div className="HeaderGroup">
+                    <img src={titleOne} />
                 </div>
-            </div>
+                    <div className="scroll-wrap clearfix">
+                    {rows}
+                    </div>
+                </div>
             );
 
-        }  
+        }
         else {
             return (<div></div>);
         }
-             
+
     }
 }
 class AdvanceTaskGroup extends React.Component {
@@ -92,7 +91,7 @@ class AdvanceTaskGroup extends React.Component {
         let AdvanceData=this.props.data;
         let rows=[];
         if(AdvanceData) {
-            AdvanceData.forEach(function(option,key) { 
+            AdvanceData.forEach(function(option,key) {
 
             rows.push(<div className="TaskItemNewbie" key={key}>
                     <div className="TaskAdvanceContent">
@@ -109,9 +108,7 @@ class AdvanceTaskGroup extends React.Component {
         return (
             <div className="AdvanceTaskGroup">
                 <div className="HeaderGroup" ref="HeaderGroup">
-                <img src={taskLineLeft} />
-                <span className="HeaderTitle">进阶任务</span>
-                <img src={taskLineRight} />
+                <img src={titleTwo} />
             </div>
 
                 <div className="scroll-wrap clearfix">
@@ -254,7 +251,7 @@ class taskCenter extends React.Component {
 
                     });
                     this.myScroll.on('scroll', function () {
-                        let curY = Math.abs(this.myScroll.y) + menuHeight;
+                        let curY = Math.abs(this.myScroll.y) - menuHeight/2;
                         this.fixTopMenu(curY);
                     }.bind(this));
 

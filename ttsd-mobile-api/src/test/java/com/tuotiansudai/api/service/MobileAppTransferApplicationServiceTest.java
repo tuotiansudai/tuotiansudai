@@ -12,6 +12,7 @@ import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.transfer.dto.TransferApplicationDto;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
@@ -166,20 +167,26 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
         transferRuleModel.setLevelOneFee(0.01);
         transferRuleModel.setLevelOneLower(1);
         transferRuleModel.setLevelOneUpper(29);
-
         transferRuleModel.setLevelTwoFee(0.005);
         transferRuleModel.setLevelTwoLower(30);
         transferRuleModel.setLevelTwoUpper(90);
-
         transferRuleModel.setLevelThreeFee(0.005);
         transferRuleModel.setLevelThreeLower(91);
         transferRuleModel.setLevelThreeUpper(365);
-
         transferRuleModel.setDiscount(0.005);
+        transferRuleModel.setDaysLimit(10);
+
         InvestModel investModel = createInvest("testuser", loanId);
+
+        LoanModel loanModel = new LoanModel();
+        loanModel.setStatus(LoanStatus.RAISING);
+
         when(investTransferService.investTransferApply(any(TransferApplicationDto.class))).thenReturn(true);
         when(investMapper.findById(anyLong())).thenReturn(investModel);
         when(transferRuleMapper.find()).thenReturn(transferRuleModel);
+        when(loanMapper.findById(anyLong())).thenReturn(loanModel);
+        when(investTransferService.validTransferIsDayLimit(anyLong())).thenReturn(true);
+        when(investTransferService.validTransferIsCanceled(anyLong())).thenReturn(true);
         TransferApplyRequestDto transferApplyRequestDto = new TransferApplyRequestDto();
         BaseParam baseParam = new BaseParam();
         baseParam.setPlatform("Android");
@@ -188,6 +195,54 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
         transferApplyRequestDto.setTransferAmount("99.50");
         BaseResponseDto baseResponseDto = mobileAppTransferApplicationService.transferApply(transferApplyRequestDto);
         assertEquals(ReturnMessage.SUCCESS.getCode(), baseResponseDto.getCode());
+    }
+
+    @Test
+    public void shouldTransferApplyValidIsSuccess() throws Exception {
+        long loanId = idGenerator.generate();
+        TransferRuleModel transferRuleModel = new TransferRuleModel();
+        transferRuleModel.setLevelOneFee(0.01);
+        transferRuleModel.setLevelOneLower(1);
+        transferRuleModel.setLevelOneUpper(29);
+        transferRuleModel.setLevelTwoFee(0.005);
+        transferRuleModel.setLevelTwoLower(30);
+        transferRuleModel.setLevelTwoUpper(90);
+        transferRuleModel.setLevelThreeFee(0.005);
+        transferRuleModel.setLevelThreeLower(91);
+        transferRuleModel.setLevelThreeUpper(365);
+        transferRuleModel.setDiscount(0.005);
+        transferRuleModel.setDaysLimit(10);
+
+        InvestModel investModel = createInvest("testuser", loanId);
+
+        LoanModel loanModel = new LoanModel();
+        loanModel.setStatus(LoanStatus.RAISING);
+
+        when(investTransferService.investTransferApply(any(TransferApplicationDto.class))).thenReturn(true);
+        when(investMapper.findById(anyLong())).thenReturn(investModel);
+        when(transferRuleMapper.find()).thenReturn(transferRuleModel);
+        when(loanMapper.findById(anyLong())).thenReturn(loanModel);
+        when(investTransferService.validTransferIsDayLimit(anyLong())).thenReturn(true);
+        when(investTransferService.validTransferIsCanceled(anyLong())).thenReturn(false);
+
+        TransferApplyRequestDto transferApplyRequestDto = new TransferApplyRequestDto();
+        BaseParam baseParam = new BaseParam();
+        baseParam.setPlatform("Android");
+        transferApplyRequestDto.setBaseParam(baseParam);
+        transferApplyRequestDto.setTransferInvestId("123");
+        transferApplyRequestDto.setTransferAmount("99.50");
+        BaseResponseDto baseResponseDto = mobileAppTransferApplicationService.transferApply(transferApplyRequestDto);
+        assertEquals(ReturnMessage.TRANSFER_ALREADY_CANCELED_TODAY.getCode(), baseResponseDto.getCode());
+
+        when(investTransferService.validTransferIsDayLimit(anyLong())).thenReturn(false);
+        baseResponseDto = mobileAppTransferApplicationService.transferApply(transferApplyRequestDto);
+        assertEquals(ReturnMessage.TRANSFER_IMPEND_REPAYING.getCode(), baseResponseDto.getCode());
+
+        LoanModel overdueLoanModel = new LoanModel();
+        overdueLoanModel.setStatus(LoanStatus.OVERDUE);
+        when(loanMapper.findById(anyLong())).thenReturn(overdueLoanModel);
+        baseResponseDto = mobileAppTransferApplicationService.transferApply(transferApplyRequestDto);
+        assertEquals(ReturnMessage.TRANSFER_IS_OVERDUE.getCode(), baseResponseDto.getCode());
     }
 
     @Test

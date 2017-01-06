@@ -14,6 +14,7 @@ import com.tuotiansudai.message.repository.model.UserMessageModel;
 import com.tuotiansudai.message.util.MessageUserGroupDecisionManager;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.util.PaginationUtil;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -101,6 +102,10 @@ public class UserMessageService {
 
     public void generateUserMessages(String loginName, String mobile, MessageChannel messageChannel) {
         List<MessageModel> unreadManualMessages = getUnreadManualMessages(loginName, mobile, messageChannel);
+        if (CollectionUtils.isEmpty(unreadManualMessages)) {
+            return;
+        }
+
         List<Long> messageIds = unreadManualMessages.stream().map(MessageModel::getId).collect(Collectors.toList());
         mqWrapperClient.sendMessage(MessageQueue.ManualMessage, new ManualMessage(loginName, messageIds));
     }

@@ -22,9 +22,11 @@ public class TransferApplicationFormDto implements Serializable {
 
     private int holdDays;
 
-    private AnxinSignPropertyModel anxinProp;
+    private boolean anxinUser;
 
-    public TransferApplicationFormDto(long transferInvestId, long investAmount, long transferAmountLower, double transferFeeRate, long transferFee, Date expiredDate, int holdDays, AnxinSignPropertyModel anxinProp) {
+    private boolean anxinAuthenticationRequired;
+
+    public TransferApplicationFormDto(long transferInvestId, long investAmount, long transferAmountLower, double transferFeeRate, long transferFee, Date expiredDate, int holdDays, boolean isAnxinUser, boolean isAnxinAuthenticationRequired) {
         this.transferInvestId = transferInvestId;
         this.investAmount = AmountConverter.convertCentToString(investAmount);
         this.transferAmountLower = AmountConverter.convertCentToString(transferAmountLower);
@@ -32,7 +34,8 @@ public class TransferApplicationFormDto implements Serializable {
         this.transferFeeRate = transferFeeRate;
         this.expiredDate = expiredDate;
         this.holdDays = holdDays;
-        this.anxinProp = anxinProp == null ? new AnxinSignPropertyModel() : anxinProp;
+        this.anxinUser = isAnxinUser;
+        this.anxinAuthenticationRequired = isAnxinAuthenticationRequired;
     }
 
     public long getTransferInvestId() {
@@ -63,11 +66,11 @@ public class TransferApplicationFormDto implements Serializable {
         return holdDays;
     }
 
-    public AnxinSignPropertyModel getAnxinProp() {
-        return anxinProp;
+    public boolean isAnxinUser() {
+        return anxinUser;
     }
 
-    public void setAnxinProp(AnxinSignPropertyModel anxinProp) {
-        this.anxinProp = anxinProp;
+    public boolean isAnxinAuthenticationRequired() {
+        return anxinAuthenticationRequired;
     }
 }

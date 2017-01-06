@@ -285,7 +285,7 @@ public class JobInitPlugin implements SchedulerPlugin {
         try {
             jobManager.newJob(JobType.SendRedEnvelopSplit, AssignRedEnvelopSplitJob.class)
                     .withIdentity(JobType.SendRedEnvelopSplit.name(), JobType.SendRedEnvelopSplit.name())
-                    .replaceExistingJob(true)
+                    .replaceExistingJob(false)
                     .runOnceAt(DateTime.parse(RED_ENVELOP_SPLIT_ACTIVITY, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate()).submit();
         } catch (SchedulerException e) {
             logger.error(e.getLocalizedMessage(), e);
