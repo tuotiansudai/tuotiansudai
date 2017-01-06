@@ -94,7 +94,7 @@
                 </div>
                 <#if !(dto??) || dto??&&dto.status != 'TO_APPROVE'>
                     <div class="col-sm-4 appVerticalPicture">
-                        <input type="file" name="appVerticalPictureUrl" imageWidth="500" imageHeight="660"/>
+                        <input type="file" name="appVerticalPictureImage" imageWidth="500" imageHeight="660"/>
                     </div>
                     <div class="col-sm-4 text-danger">
                         (图片大小为:500px * 660px)
