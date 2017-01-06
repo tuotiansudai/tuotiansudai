@@ -1,15 +1,12 @@
 var path = require('path');
+var glob=require('glob');
 var webpack = require('webpack');
+var WebpackMd5Hash = require('webpack-md5-hash');
 var objectAssign = require('object-assign');
-var commonOptions = require('./webpack.common');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 var basePath = path.join(__dirname, 'resources'),
-    plugins=[],
-    publicPath='/build/',
-    outputPath=path.join(basePath, 'build');
-
-var staticPath = path.join(basePath, 'static'),
+    staticPath = path.join(basePath, 'static'),
     publicPath=path.join(staticPath, 'public'),
     askPath=path.join(staticPath, 'ask'),
     webPath=path.join(staticPath, 'web'),
@@ -17,18 +14,42 @@ var staticPath = path.join(basePath, 'static'),
     activityPath=path.join(staticPath, 'activity'),
     mobilePath=path.join(staticPath, 'mobile');
 
+var outputPath=path.join(basePath, 'build'),
+    devServerPath='http://localhost:3008/build/',
+    commonOptions={},
+    plugins=[];
+
+
+/**
+ * 动态查找所有入口文件
+ */
+
+var files = glob.sync(path.join(staticPath, '*/js/*.jsx'));
+var newEntries = {};
+
+files.forEach(function(file){
+    // console.log(file);
+    var substr = file.match(/resources\/static(\S*)\.jsx/)[1];
+    newEntries[substr] = file;
+
+});
+
+//添加要打包在vendors里面的库
+newEntries['vendor']=["jquery", "underscore"];
+
+commonOptions.entry = newEntries;
 
 plugins.push(new webpack.ProvidePlugin({
     $: "jquery",
     jQuery: "jquery",
     "window.jQuery": "jquery"
 }));
-plugins.push(new ExtractTextPlugin("css/[name].css"));
+plugins.push(new ExtractTextPlugin("[name].[chunkhash].css"));
 
 //把入口文件里面的数组打包成verdors.js
 plugins.push(new webpack.optimize.CommonsChunkPlugin({
     name: "vendor",//和上面配置的入口对应
-    filename: "vendorFun.js"//导出的文件的名称
+    filename: "public/js/vendorFun.js"//导出的文件的名称
 }));
 
 //压缩
@@ -40,17 +61,59 @@ plugins.push(new webpack.optimize.UglifyJsPlugin({
     }
 }));
 
+
 module.exports = objectAssign(commonOptions, {
-    entry: {
-        global_page: path.join(publicPath, 'js/global_page.jsx'),
-        ask_main: path.resolve(askPath, 'js/mainSite.jsx'),
-        //添加要打包在vendors里面的库
-        vendor: ["jquery", "underscore"]
-    },
     output: {
-        filename:"[name].js",
+        filename:"[name].[chunkhash].js",
         path:outputPath,
-        publicPath:publicPath
+        publicPath:devServerPath
+    },
+    module: {
+        loaders: [{
+            test: /\.(js|jsx)$/,
+            loaders: ['babel'],
+            exclude: /(node_modules)/
+        },{
+            test: /\.css$/,
+            loader: ExtractTextPlugin.extract("style-loader", "css-loader")
+        },{
+            test: /\.scss$/,
+            loader: ExtractTextPlugin.extract("style-loader", "css-loader!sass-loader")
+        },{
+            test: /\.(png|jpg|gif|woff|woff2)$/,
+            loader: 'url-loader?limit=5120&name=ask/images/[name].[hash:8].[ext]'
+        }]
+    },
+    resolve: {
+        extensions: ['', '.js', '.jsx'],
+        alias: {
+            publicJs:path.join(publicPath, 'js'),
+            publicStyle:path.join(publicPath, 'styles'),
+
+            askJs:path.join(askPath, 'js'),
+            askStyle:path.join(askPath, 'styles'),
+
+            webJs:path.join(webPath, 'js'),
+            webStyle:path.join(webPath, 'styles'),
+
+            activityJs:path.join(activityPath, 'js'),
+            activityStyle:path.join(activityPath, 'styles'),
+
+            pointJs:path.join(pointPath, 'js'),
+            pointStyle:path.join(pointPath, 'styles'),
+
+            mobileJs:path.join(mobilePath, 'js'),
+            mobileStyle:path.join(mobilePath, 'styles')
+
+        }
+    },
+    postcss: function() {
+        return [
+            require('autoprefixer')({
+                browsers: ['last 2 versions']
+            }),
+            px2rem({remUnit: 75})
+        ];
     },
     cache: true,
     plugins: plugins

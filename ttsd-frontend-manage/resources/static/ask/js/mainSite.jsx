@@ -1,12 +1,16 @@
 
 import {popWindow,useAjax,refreshCaptcha,countDownLoan} from "publicJs/common";
-import "publicJStyle/global.scss";
-import "./custom_plugins";
-import "./questions";
-import "./create_question";
+
+import "askStyle/questions.scss";
+import "askJs/components/custom_plugins";
+import "askJs/components/questions";
+import "askJs/components/create_question";
 
 //刷新验证码
 refreshCaptcha('/captcha');
+
+var test='89000';
+console.log(test);
 
 
 

@@ -5,7 +5,7 @@
         <li class="active"><a href="/question/my-questions">我的提问</a></li>
         <li><a href="/answer/my-answers">我的回答</a></li>
     </ul>
-    <div class="borderBox clearfix">
+    <div class="border-ask-box clearfix">
         <div class="answers-box">
             <#list questions.data.records as question>
                 <dl class="answers-list">

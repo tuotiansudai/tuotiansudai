@@ -102,7 +102,7 @@
 </div>
 <#--ad image-->
     </#if>
-<div class="main-frame full-screen clearfix">
+<div class="main-frame full-screen clearfix main-frame-ask">
 
 <#--banner-->
     <#if !errorPage??>
@@ -141,7 +141,7 @@
 </div>
 
     <#include "../pageLayout/footer.ftl" />
-
+<script src="${staticServer}/public/js/vendorFun.js"></script>
 <script src="${staticServer}${jsPath}${pageJavascript}" type="text/javascript"></script>
 
 </body>

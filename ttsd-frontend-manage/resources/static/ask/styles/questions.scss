@@ -1,9 +1,46 @@
-@import 'variables';
+@mixin border-color ($color) {
+  border:1px solid $color;
+}
 
+.banner-box {
+  background: red url("../images/ba01.jpg") no-repeat;
+  height:140px;
+  a {
+    display: block;
+    height:100%;
+  }
+}
 .main-frame-ask {
   .mobile-menu {
     display: none;
   }
+  .border-ask-box {
+    //border: 1px solid #e5e5e5;
+    @include border-color(#e5e5e5);
+    padding: 20px;
+    height: auto;
+    background: #fff;
+  }
+
+  .btn {
+    padding: 8px 22px;
+    font-size: 18px;
+    background: #ff9d1a;
+    border:0;
+    color: #fff;
+  }
+
+  .red-color {
+    color: red;
+  }
+
+  .m-title {
+    font-size:18px;
+    color:#333333;
+    font-weight: bold;
+    line-height: 50px;
+  }
+
 
   .pc-search-box {
     width: 75%;
@@ -35,7 +72,7 @@
     .ad-answer {
       width:700px;
       height:90px;
-      background: url('../../images/sign/ad-answer.jpg') 0 0 no-repeat;
+      background: url('../images/ad-answer.jpg') 0 0 no-repeat;
       a {
         display: block;
         height:100%;
@@ -47,11 +84,11 @@
     @include border-color(#e5e5e5);
     padding: 8px 20px 8px 40px;
     padding-right: 20px!important;
-    background: url('../../images/icons/zan-n.png') 20px 7px no-repeat;
+    background: url('../images/zan-n.png') 20px 7px no-repeat;
     color: #808080;
     cursor: pointer;
     &.active {
-      background-image: url(../../images/icons/zan.png);
+      background-image: url("../images/zan.png");
       color: #ff7200;
       cursor: default;
     }
@@ -181,7 +218,7 @@
           }
         }
       }
-      .borderBox {
+      .border-ask-box {
         padding:0;
       }
     }
@@ -208,7 +245,7 @@
           top:38px;
           width:92px;
           height:92px;
-          background: url('../../images/icons/profile.jpg');
+          background: url('../images/profile.jpg');
         }
         .welcome-info {
           position: absolute;
@@ -225,7 +262,7 @@
             display: none;
           }
           a {
-            color: nth($linkColor,2);
+            color: #ff752a;
             text-decoration: underline;
           }
         }
@@ -271,7 +308,7 @@
               display: block;
               padding: 3px 0;
               &.active,&:hover {
-                background: nth($btnColor1,1);
+                background: #ff9d1a;
                 color:#fff;
               }
             }
@@ -282,7 +319,7 @@
         display: inline-block;
         width:290px;
         height:240px;
-        background: url('../../images/welfare.jpg') no-repeat;
+        background: url('../images/welfare.jpg') no-repeat;
       }
     }
 
@@ -342,7 +379,7 @@
       .best-answer-sign {
         width: 70px;
         height: 70px;
-        background: url('../../images/icons/best-answer.png') no-repeat;
+        background: url('../images/best-answer.png') no-repeat;
         position: absolute;
         bottom: 35px;
         right:190px;
@@ -478,7 +515,7 @@
         height: 20px;
         display: block;
         cursor: pointer;
-        background: url("../../images/icons/close-btn.png") no-repeat center center;
+        background: url("../../public/images/close-btn.png") no-repeat center center;
       }
     }
     p {
@@ -497,11 +534,14 @@
 @media screen and (max-width: 700px) {
 
   body { line-height: 25px;}
+  .banner-box {
+    display: none;
+  }
   .main-frame-ask {
     .btn {
       font-size:13px;
     }
-    .borderBox {
+    .border-ask-box {
       border-left-width: 0;
       border-right-width: 0;
     }
@@ -520,9 +560,6 @@
     .page-width,.main-frame { width:100%; }
     .main-frame {
       margin-bottom:20px;
-    }
-    .banner-box {
-      display: none;
     }
 
     .pc-search-box {
@@ -581,7 +618,7 @@
     .download-mobile {
       display: block;
       height:110px;
-      background: url("../../images/sign/downloadApp.jpg") no-repeat center center;
+      background: url("../images/downloadApp.jpg") no-repeat center center;
       background-size: cover;
       a {
         display: block;
@@ -607,7 +644,7 @@
           width: 28px;
           height: 30px;
           display: inline-block;
-          background: url("../../images/icons/arrow-bo.png") no-repeat left center;
+          background: url("../../public/images/arrow-bo.png") no-repeat left center;
           float: right;
           margin-right:10px;
           background-size: 80%;
@@ -626,7 +663,7 @@
             display: block;
             padding: 3px 0;
             &.active,&:hover {
-              background: nth($btnColor1,1);
+              background: #ff9d1a;
               color:#fff;
             }
           }

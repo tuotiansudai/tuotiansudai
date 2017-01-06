@@ -27,7 +27,7 @@
 
 <div class="article-content fl">
     <div class="category-title">分类为<span>${tag.description}</span> 下的问题</div>
-    <div class="borderBox clearfix">
+    <div class="border-ask-box clearfix">
         <div class="answers-box">
             <#list questions.data.records as question>
                 <dl class="answers-list">

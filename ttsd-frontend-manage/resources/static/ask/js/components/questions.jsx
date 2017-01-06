@@ -1,4 +1,4 @@
-import {parseURL} from "publicJs/common";
+import {globalFun} from "publicJs/global_page";
 /* hot question for mobile */
 var $hotCategory=$('.hot-question-category');
 $hotCategory.find('.m-title').on('click',function() {
@@ -9,7 +9,7 @@ $hotCategory.find('.m-title').on('click',function() {
 var $homeTagContainer = $('#homeTagContainer');
 var locationUrl=window.location.href ;
 
-var urlParams=comm.parseURL(locationUrl);
+var urlParams=globalFun.parseURL(locationUrl);
 
 if($homeTagContainer.length) {
 

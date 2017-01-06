@@ -4,7 +4,7 @@
     <ul class="switch-menu clearfix">
         <li><a href="/">全部问题</a></li>
     </ul>
-    <div class="borderBox clearfix">
+    <div class="border-ask-box clearfix">
         <div class="answers-box" id="searchResultBox">
             <#list keywordQuestions.data.records as question>
                 <dl class="answers-list">

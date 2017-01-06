@@ -1,3 +1,4 @@
+import "publicStyle/global.scss";
 //ie8不支持bind方法，这里做兼容处理
 if (!Function.prototype.bind) {
     Function.prototype.bind = function (oThis) {
@@ -298,6 +299,8 @@ function cnzzPushConstructor() {
 }
 let cnzzPush = new cnzzPushConstructor();
 // ********** cnzz统计 END **********
+
+export {globalFun,cnzzPush}
 
 
 

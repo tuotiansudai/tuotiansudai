@@ -5,7 +5,7 @@
 </#if>
 <@global.main pageCss="${(css.main)!'main.css'}" pageJavascript="${(js.main)!'main.js'}" title="${question.question!}" keywords="${question.question!}" description="${descrition}">
 <div class="article-content fl answer-container" id="questionDetailTag">
-    <div class="borderBox clearfix">
+    <div class="border-ask-box clearfix">
         <div class="answers-box">
             <dl class="answers-list">
                 <dt>${question.question}</dt>
@@ -65,7 +65,7 @@
     </div>
 
     <#if bestAnswer??>
-        <div class="borderBox clearfix best-answer">
+        <div class="border-ask-box clearfix best-answer">
             <div class="answers-box ">
                 <dl class="answers-list">
                     <dd>${bestAnswer.answer?replace('\\n','<br/>','i')?replace('\\r','<br/>','i')}</dd>
@@ -90,7 +90,7 @@
     <div class="ad-answer"><a href="https://tuotiansudai.com/activity/share-reward" target="_blank"></a></div>
 
     <#if answers.data.records?has_content>
-        <div class="borderBox clearfix margin-top-10">
+        <div class="border-ask-box clearfix margin-top-10">
             <div class="answers-box ">
                 <div class="other-title">
                     <#if bestAnswer??>其他回答<#else>全部回答</#if>

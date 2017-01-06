@@ -1,4 +1,4 @@
-define(['jquery','commonFun'], function ($,commonFun) {
+
 
     /*******策略对象********/
     var strategies = {
@@ -151,7 +151,7 @@ define(['jquery','commonFun'], function ($,commonFun) {
     };
 // *****Validator验证类*******
 
-     function ValidatorForm(cache,checkOption) {
+   function ValidatorForm(cache,checkOption) {
          this.cache = [];
          this.checkOption = {};
          this.newStrategy=function(name,callback) {
@@ -199,6 +199,6 @@ define(['jquery','commonFun'], function ($,commonFun) {
          }
     }
 
-    return ValidatorForm;
+   export {ValidatorForm}
 
-});
+
