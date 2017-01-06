@@ -5,6 +5,7 @@ import org.springframework.boot.autoconfigure.web.ErrorAttributes;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
@@ -35,6 +36,9 @@ public class RestErrorAttributes extends DefaultErrorAttributes
         if (cause != null) {
             if (cause instanceof RestException) {
                 return ((RestException) cause).getErrorCode();
+            }
+            if (cause instanceof MethodArgumentNotValidException) {
+                return RestErrorCode.RequestDataValidFailed;
             }
             return RestErrorCode.UnexpectedError;
         }

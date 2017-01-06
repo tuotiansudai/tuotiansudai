@@ -4,21 +4,19 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.ask.dto.QuestionDto;
-import com.tuotiansudai.ask.dto.QuestionRequestDto;
 import com.tuotiansudai.ask.dto.QuestionResultDataDto;
+import com.tuotiansudai.ask.dto.QuestionWithCaptchaRequestDto;
 import com.tuotiansudai.ask.repository.mapper.AnswerMapper;
 import com.tuotiansudai.ask.repository.mapper.QuestionMapper;
 import com.tuotiansudai.ask.repository.model.AnswerModel;
 import com.tuotiansudai.ask.repository.model.QuestionModel;
 import com.tuotiansudai.ask.repository.model.QuestionStatus;
 import com.tuotiansudai.ask.repository.model.Tag;
-import com.tuotiansudai.ask.utils.FakeMobileUtil;
-import com.tuotiansudai.ask.utils.SensitiveWordsFilter;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.rest.client.AskRestClient;
 import com.tuotiansudai.util.MobileEncoder;
 import com.tuotiansudai.util.PaginationUtil;
 import org.apache.log4j.Logger;
@@ -57,7 +55,10 @@ public class QuestionService {
     @Autowired
     private CaptchaHelperService captchaHelperService;
 
-    public QuestionResultDataDto createQuestion(String loginName, QuestionRequestDto questionRequestDto) {
+    @Autowired
+    private AskRestClient askRestClient;
+
+    public QuestionResultDataDto createQuestion(String loginName, QuestionWithCaptchaRequestDto questionRequestDto) {
         QuestionResultDataDto dataDto = new QuestionResultDataDto();
         if (!captchaHelperService.captchaVerify(questionRequestDto.getCaptcha())) {
             return dataDto;
@@ -66,16 +67,7 @@ public class QuestionService {
         dataDto.setQuestionSensitiveValid(true);
         dataDto.setAdditionSensitiveValid(true);
 
-        UserModel userModel = userMapper.findByLoginName(loginName);
-
-        QuestionModel questionModel = new QuestionModel(loginName,
-                userModel.getMobile(),
-                FakeMobileUtil.generateFakeMobile(userModel.getMobile()),
-                SensitiveWordsFilter.replace(questionRequestDto.getQuestion()),
-                SensitiveWordsFilter.replace(questionRequestDto.getAddition()),
-                questionRequestDto.getTags());
-
-        questionMapper.create(questionModel);
+        askRestClient.create(questionRequestDto);
 
         dataDto.setStatus(true);
 

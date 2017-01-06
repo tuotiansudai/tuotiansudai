@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {FeignClientConfig.class}, webEnvironment = SpringBootTest.WebEnvironment.NONE)
@@ -20,14 +21,18 @@ public class AskRestClientTest {
     private AskRestClient askRestClient;
 
     @Test
+    public void shouldLoadApplicationContext() {
+        assertNotNull(askRestClient);
+    }
+
+    @Test
     @Ignore
-    public void shouldPostQuestion() {
+    public void shouldCreateQuestion() {
         MDC.put("requestId", "xxxxxxx");
-        MDC.put("userId", "yyyyy");
+        MDC.put("userId", "yyy");
         QuestionRequestDto requestDto = new QuestionRequestDto();
         requestDto.setAddition("addition");
         requestDto.setQuestion("question");
-        requestDto.setCaptcha("11111");
         requestDto.setTags(null);
 
         QuestionModel questionModel = askRestClient.create(requestDto);

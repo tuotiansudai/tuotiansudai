@@ -18,10 +18,6 @@ public class QuestionRequestDto implements Serializable {
 
     private List<Tag> tags;
 
-    @NotEmpty
-    @Pattern(regexp = "^[0-9]{5}$")
-    private String captcha;
-
     public String getQuestion() {
         return question;
     }
@@ -44,13 +40,5 @@ public class QuestionRequestDto implements Serializable {
 
     public void setTags(List<Tag> tags) {
         this.tags = tags;
-    }
-
-    public String getCaptcha() {
-        return captcha;
-    }
-
-    public void setCaptcha(String captcha) {
-        this.captcha = captcha;
     }
 }
