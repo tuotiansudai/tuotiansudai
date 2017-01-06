@@ -69,10 +69,10 @@
                 </div>
                 <#if !(dto??) || dto??&&dto.status != 'TO_APPROVE'>
                     <div class="col-sm-4 appPicture">
-                        <input type="file" name="appPictureImage" imageWidth="750" imageHeight="340"/>
+                        <input type="file" name="appPictureImage" imageWidth="750" imageHeight="350"/>
                     </div>
                     <div class="col-sm-4 text-danger">
-                        (图片大小为:750px * 340px)
+                        (图片大小为:750px * 350px)
                     </div>
                 </#if>
             </div>
