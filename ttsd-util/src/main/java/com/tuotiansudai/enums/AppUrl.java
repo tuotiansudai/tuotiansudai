@@ -21,7 +21,7 @@ public enum AppUrl {
     MESSAGE_CENTER_LIST("消息中心列表页", "app/tuotian/message-list"),
     REFER_REWARD("首页>邀请好友", "app/tuotian/refer-reward"),
     RECOMMEND_MY_REWARD("邀请好友>我的奖励", "app/tuotian/refer-reward-list"),
-    SHARE("分享弹框", "app/tuotian/share?param={0}"),
+    SHARE("分享弹框", "app/tuotian/share?param=%s"),
     OTHER("其他", ""),
     NONE("无", null);
 
