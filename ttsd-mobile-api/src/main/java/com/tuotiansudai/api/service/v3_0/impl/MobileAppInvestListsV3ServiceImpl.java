@@ -97,9 +97,11 @@ public class MobileAppInvestListsV3ServiceImpl implements MobileAppInvestListsV3
                 LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
                 UserInvestRecordResponseDataDto dto = new UserInvestRecordResponseDataDto(investModel, loanModel);
 
-                TransferApplicationModel transferApplicationModel = transferApplicationMapper.findByInvestId(investModel.getId());
+                TransferApplicationModel transferApplicationModel;
+                List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findByTransferInvestId(investModel.getId(), Lists.newArrayList(TransferStatus.TRANSFERRING));
+                transferApplicationModel = CollectionUtils.isNotEmpty(transferApplicationModels) ? transferApplicationModels.get(0) : null;
                 dto.setLoanName(transferApplicationModel != null ? transferApplicationModel.getName() : loanModel.getName());
-                dto.setInvestId(transferApplicationModel != null ? String.valueOf(transferApplicationModel.getInvestId()) : String.valueOf(investModel.getId()));
+                dto.setInvestId(transferApplicationModel != null ? String.valueOf(transferApplicationModel.getTransferInvestId()) : String.valueOf(investModel.getId()));
                 dto.setTransferApplicationId(transferApplicationModel != null ? String.valueOf(transferApplicationModel.getId()) : "");
                 dto.setInvestAmount(transferApplicationModel != null ? AmountConverter.convertCentToString(transferApplicationModel.getInvestAmount()) : AmountConverter.convertCentToString(investModel.getAmount()));
                 dto.setTransferInvest(transferApplicationModel != null ? true : false);
