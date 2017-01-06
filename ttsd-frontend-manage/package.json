@@ -4,7 +4,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack-dev-server --inline ",
-    "build": "rm -rf ./resources/build & webpack --config webpack.production.js"
+    "build": "rm -rf ./resources/prod & webpack --config webpack.production.js"
   },
   "devDependencies": {
     "autoprefixer": "^6.3.6",
