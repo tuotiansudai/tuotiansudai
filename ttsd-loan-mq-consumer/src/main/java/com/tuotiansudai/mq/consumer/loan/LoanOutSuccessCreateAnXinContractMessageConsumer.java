@@ -63,10 +63,12 @@ public class LoanOutSuccessCreateAnXinContractMessageConsumer implements Message
 
             try {
                 Thread.sleep(DEFAULT_MINUTE);
-            } catch (InterruptedException e) {
                 logger.info("[MQ] LoanOutSuccess createLoanContracts sleep 15 minute.");
+            } catch (InterruptedException e) {
+                logger.info("[MQ] LoanOutSuccess createLoanContracts sleep 15 minute fail.");
             }
 
+            logger.info("[MQ] LoanOutSuccess createLoanContracts query anXin contract start .");
             baseDto = payWrapperClient.queryAnXinContract(loanId);
             if (!baseDto.isSuccess()) {
                 fatalSmsList.add("查询安心签失败");

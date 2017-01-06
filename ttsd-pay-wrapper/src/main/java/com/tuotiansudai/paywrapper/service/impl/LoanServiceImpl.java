@@ -62,6 +62,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
@@ -510,8 +511,7 @@ public class LoanServiceImpl implements LoanService {
         LoanOutSuccessMessage loanOutInfo = new LoanOutSuccessMessage(loanId);
         try {
             logger.info(MessageFormat.format("[标的放款]: 放款成功,发送更新标的状态MQ消息,标的ID:{0}", String.valueOf(loanId)));
-            String message = JsonConverter.writeValueAsString(loanOutInfo);
-            mqWrapperClient.publishMessage(MessageTopic.LoanOutSuccess, message);
+            mqWrapperClient.publishMessage(MessageTopic.LoanOutSuccess, loanOutInfo);
         } catch (JsonProcessingException e) {
             // 记录日志，发短信通知管理员
             fatalLog("[MQ] invest success, but send mq message fail", loanId, loan.getAgentLoginName(), investAmountTotal, e);

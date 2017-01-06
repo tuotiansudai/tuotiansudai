@@ -60,7 +60,12 @@ public class LoanOutSuccessController {
     @ResponseBody
     @RequestMapping(value = "/create-anxin-contract-after-loan-out", method = RequestMethod.POST)
     public BaseDto<PayDataDto> createAnXinContract(@RequestBody long loanId) {
-        BaseDto baseDto = anxinSignService.createLoanContracts(loanId, false);
+        BaseDto baseDto;
+        try{
+            baseDto = anxinSignService.createLoanContracts(loanId, false);
+        }catch (Exception e){
+            baseDto = new BaseDto(false);
+        }
         BaseDto<PayDataDto> dto = new BaseDto<>();
         PayDataDto dataDto = new PayDataDto();
         dto.setData(dataDto);
