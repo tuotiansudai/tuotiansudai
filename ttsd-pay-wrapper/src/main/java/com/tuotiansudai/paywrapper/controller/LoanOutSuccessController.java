@@ -146,4 +146,15 @@ public class LoanOutSuccessController {
         return dto;
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/transfer-referrer-reward-after-loan-out", method = RequestMethod.POST)
+    public BaseDto<PayDataDto> transferReferrerRewardAfterLoanOut(@RequestBody long loanId) {
+        boolean isSuccess = referrerRewardService.transferReferrerReward(loanId);
+        BaseDto<PayDataDto> dto = new BaseDto<>();
+        PayDataDto dataDto = new PayDataDto();
+        dto.setData(dataDto);
+        dataDto.setStatus(isSuccess);
+        return dto;
+    }
+
 }

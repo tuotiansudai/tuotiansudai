@@ -28,7 +28,8 @@ public enum MessageQueue {
     NormalRepayCallback("NormalRepayCallback"),
     AdvanceRepayCallback("AdvanceRepayCallback"),
     AuditLog("AuditLog"),
-    UserOperateLog("UserOperateLog");
+    UserOperateLog("UserOperateLog"),
+    TransferReferrerRewardCallback("TransferReferrerRewardCallback");
 
     private final String queueName;
 

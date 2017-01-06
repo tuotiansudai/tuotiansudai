@@ -64,6 +64,9 @@ public class PayCallbackController {
     @Autowired
     private ExtraRateService extraRateService;
 
+    @Autowired
+    private ReferrerRewardService referrerRewardService;
+
     @RequestMapping(value = "/recharge_notify", method = RequestMethod.GET)
     public ModelAndView rechargeNotify(HttpServletRequest request) {
         Map<String, String> paramsMap = this.parseRequestParameters(request);
@@ -282,7 +285,7 @@ public class PayCallbackController {
     public ModelAndView transferReferrerReward(HttpServletRequest request) {
         logger.info("[标的放款] loan out success transfer referrer reward start");
         Map<String, String> paramsMap = this.parseRequestParameters(request);
-        String responseData = this.loanService.loanOutCallback(paramsMap, request.getQueryString());
+        String responseData =  this.referrerRewardService.transferReferrerRewardCallBack(paramsMap, request.getQueryString());
         logger.info(MessageFormat.format("[标的放款] loan out success transfer referrer reward end , responseData:{0}", responseData));
         return new ModelAndView("/callback_response", "content", responseData);
     }

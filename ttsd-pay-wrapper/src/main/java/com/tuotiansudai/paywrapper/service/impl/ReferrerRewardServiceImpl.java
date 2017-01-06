@@ -1,5 +1,6 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
@@ -10,8 +11,14 @@ import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.message.EventMessage;
 import com.tuotiansudai.message.PushMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
+import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
+import com.tuotiansudai.paywrapper.repository.mapper.NormalRepayNotifyMapper;
+import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferNotifyMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.TransferMapper;
+import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.async.callback.NormalRepayNotifyRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.async.callback.ProjectTransferNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.TransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.TransferResponseModel;
 import com.tuotiansudai.paywrapper.service.ReferrerRewardService;
@@ -31,6 +38,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ReferrerRewardServiceImpl implements ReferrerRewardService {
@@ -75,6 +83,9 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
 
     @Autowired
     private MQWrapperClient mqWrapperClient;
+
+    @Autowired
+    private PayAsyncClient payAsyncClient;
 
     @Value("#{'${pay.user.reward}'.split('\\|')}")
     private List<Double> referrerUserRoleReward;
@@ -137,6 +148,7 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
 
         if (amount == 0) {
             model.setStatus(ReferrerRewardStatus.SUCCESS);
+            transferReferrerReward(model.getId());
         }
 
         if (amount > 0) {
@@ -153,7 +165,38 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
                 model.setStatus(ReferrerRewardStatus.FAILURE);
             }
         }
+        return true;
+    }
 
+    @Override
+    public String transferReferrerRewardCallBack(Map<String, String> paramsMap, String queryString){
+        logger.info("[标的放款] referrer reward transfer call back begin.");
+        BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(
+                paramsMap,
+                queryString,
+                ProjectTransferNotifyMapper.class,
+                ProjectTransferNotifyRequestModel.class);
+        if (callbackRequest == null || Strings.isNullOrEmpty(callbackRequest.getOrderId())) {
+            return null;
+        }
+
+        if (callbackRequest == null) {
+            logger.error(MessageFormat.format("[Normal Repay] invest payback callback parse is failed (queryString = {0})", queryString));
+            return null;
+        }
+
+        logger.info(MessageFormat.format("[标的放款] send message NormalRepayCallback, queryString:{0}", queryString));
+        mqWrapperClient.sendMessage(MessageQueue.NormalRepayCallback, String.valueOf(callbackRequest.getId()));
+
+        String respData = callbackRequest.getResponseData();
+        return respData;
+    }
+
+    @Override
+    public boolean transferReferrerReward(long orderId){
+        InvestReferrerRewardModel model = investReferrerRewardMapper.findById(orderId);
+        String referrerLoginName = model.getReferrerLoginName();
+        long amount = model.getAmount();
         try {
             investReferrerRewardMapper.update(model);
             if (model.getStatus() == ReferrerRewardStatus.SUCCESS) {
@@ -171,11 +214,11 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
             String detail = MessageFormat.format(SystemBillDetailTemplate.REFERRER_REWARD_DETAIL_TEMPLATE.getTemplate(), referrerLoginName, investModel.getLoginName(), String.valueOf(model.getInvestId()));
             logger.info(MessageFormat.format("[标的放款]:记录系统奖励,投资ID:{0},推荐人奖励:{1},奖励类型:{2}", orderId, amount, SystemBillBusinessType.REFERRER_REWARD));
             systemBillService.transferOut(orderId, amount, SystemBillBusinessType.REFERRER_REWARD, detail);
-            return true;
         } catch (Exception e) {
             logger.error(MessageFormat.format("referrer reward transfer in balance failed (investId = {0})", String.valueOf(model.getInvestId())));
+            return false;
         }
-        return false;
+        return true;
     }
 
     private long calculateReferrerReward(long amount, int loanDuration, int level, Role role, String referrerLoginName) {
