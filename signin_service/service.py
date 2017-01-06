@@ -3,9 +3,11 @@ import hashlib
 import json
 import uuid
 import redis
-from models import User, LoginLog, db
+from models import User, LoginLog
 import settings
 from logging_config import logger
+import producer
+
 
 pool = redis.ConnectionPool(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB)
 CAPTCHA_FORMAT = "CAPTCHA:LOGIN:{0}"
@@ -154,10 +156,9 @@ class LoginManager(object):
             return self._fail_login('用户不存在', save_log=False)
 
     def _save_log(self, is_success):
-        login_log = LoginLog(login_name=self.form.username.data, source=self.form.source.data, ip=self.ip_address,
-                             device=self.form.device_id.data, success=is_success)
-        db.session.add(login_log)
-        db.session.commit()
+        login_log = LoginLog(self.form.username.data, self.form.source.data, self.ip_address,
+                             self.form.device_id.data, is_success)
+        producer.get_producer().send_message(json.dumps(login_log.__dict__))
 
 
 def active(username):

@@ -1,7 +1,5 @@
-import datetime
+import time
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import func
-from sqlalchemy.ext.declarative import declared_attr
 
 db = SQLAlchemy()
 
@@ -29,15 +27,11 @@ class UserRole(db.Model):
         return '<Role %s:%s>' % (self.role, self.username)
 
 
-class LoginLog(db.Model):
-    @declared_attr
-    def __tablename__(cls):
-        return "login_log_%s" % datetime.datetime.now().strftime('%Y%m')
-
-    id = db.Column(db.BIGINT, primary_key=True)
-    login_name = db.Column(db.String(25))
-    source = db.Column(db.String(10))
-    ip = db.Column(db.String(16))
-    device = db.Column(db.String(255))
-    login_time = db.Column(db.DateTime(timezone=True), default=func.now())
-    success = db.Column(db.Boolean)
+class LoginLog:
+    def __init__(self, login_name, source, ip, device, success):
+        self.login_name = login_name
+        self.source = source
+        self.ip = ip
+        self.device = device
+        self.login_time = int(time.time()*1000)
+        self.success = success
