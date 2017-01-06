@@ -17,18 +17,18 @@ public class InvestorDto implements Serializable {
 
     private String maxAvailableInvestAmount = "0";
 
-    private boolean skipAuth;
+    private boolean authenticationRequired;
 
     private boolean anxinUser;
 
-    public InvestorDto(AccountModel accountModel, boolean remindNoPassword, long maxAvailableInvestAmount, boolean skipAuth, boolean isAnxinUser) {
+    public InvestorDto(AccountModel accountModel, boolean remindNoPassword, long maxAvailableInvestAmount, boolean authenticationRequired, boolean isAnxinUser) {
         if (accountModel != null) {
             this.balance = accountModel.getBalance();
             this.autoInvest = accountModel.isAutoInvest();
             this.noPasswordInvest = accountModel.isNoPasswordInvest();
             this.remindNoPassword = remindNoPassword;
             this.maxAvailableInvestAmount = AmountConverter.convertCentToString(maxAvailableInvestAmount);
-            this.skipAuth = skipAuth;
+            this.authenticationRequired = authenticationRequired;
             this.anxinUser = isAnxinUser;
         }
     }
@@ -53,19 +53,11 @@ public class InvestorDto implements Serializable {
         return maxAvailableInvestAmount;
     }
 
-    public boolean isSkipAuth() {
-        return skipAuth;
-    }
-
-    public void setSkipAuth(boolean skipAuth) {
-        this.skipAuth = skipAuth;
+    public boolean isAuthenticationRequired() {
+        return authenticationRequired;
     }
 
     public boolean isAnxinUser() {
         return anxinUser;
-    }
-
-    public void setAnxinUser(boolean anxinUser) {
-        this.anxinUser = anxinUser;
     }
 }
