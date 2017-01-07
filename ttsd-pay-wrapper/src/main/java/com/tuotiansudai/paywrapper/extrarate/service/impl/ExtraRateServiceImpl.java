@@ -101,6 +101,11 @@ public class ExtraRateServiceImpl implements ExtraRateService {
         if (isLastPeriod) {
             List<InvestExtraRateModel> investExtraRateModels = investExtraRateMapper.findByLoanId(loanId);
             for (InvestExtraRateModel investExtraRateModel : investExtraRateModels) {
+                if(RepayStatus.COMPLETE == investExtraRateModel.getStatus()){
+                    logger.info(MessageFormat.format("[Normal Repay {0}] investExtraRateId:{1} status is COMPLETE",
+                            String.valueOf(loanRepayId),String.valueOf(investExtraRateModel.getId())));
+                    continue;
+                }
                 long actualInterest = investExtraRateModel.getExpectedInterest();
                 long actualFee = investExtraRateModel.getExpectedFee();
                 try {

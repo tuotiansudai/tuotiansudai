@@ -164,6 +164,27 @@ public class NormalRepayPaybackInvestMockTest {
         ArgumentCaptor<String> redisValueArgumentCaptor = ArgumentCaptor.forClass(String.class);
         verify(redisWrapperClient, times(6)).hset(redisKey1ArgumentCaptor.capture(), redisKey2ArgumentCaptor.capture(), redisValueArgumentCaptor.capture());
     }
+    @Test
+    public void shouldPayBackThePeriodWhenInvestRepayIsComplete(){
+        long loanId = 1;
+        LoanRepayModel loanRepay1 = new LoanRepayModel(1, loanId, 1, 10, 10, new DateTime().minusDays(30).withTime(23, 59, 59, 0).toDate(), RepayStatus.COMPLETE);
+        loanRepay1.setActualInterest(10);
+        loanRepay1.setActualRepayDate(new DateTime().minusDays(30).toDate());
+        LoanRepayModel loanRepay2 = new LoanRepayModel(2, loanId, 2, 30, 10, new DateTime().withTime(23, 59, 59, 0).toDate(), RepayStatus.REPAYING);
+        loanRepay2.setActualInterest(10);
+        loanRepay2.setActualRepayDate(new DateTime().withMillisOfSecond(0).toDate());
+
+        when(loanRepayMapper.findById(loanRepay2.getId())).thenReturn(loanRepay2);
+        when(loanRepayMapper.findLastLoanRepay(loanId)).thenReturn(loanRepay2);
+
+        String investor1LoginName = "investor1";
+        String investor2LoginName = "investor2";
+        InvestModel invest1 = new InvestModel(1, loanId, null, 10, investor1LoginName, new Date(), Source.WEB, null, 0.1);
+        InvestModel invest2 = new InvestModel(2, loanId, null, 20, investor2LoginName, new Date(), Source.WEB, null, 0.1);
+        List<InvestModel> successInvests = Lists.newArrayList(invest1, invest2);
+        when(investMapper.findSuccessInvestsByLoanId(loanId)).thenReturn(successInvests);
+        assertTrue(normalRepayService.paybackInvest(loanRepay2.getId()));
+    }
 
     @Test
     public void shouldPaybackLastPeriodWhenLoanIsRepaying() throws Exception {

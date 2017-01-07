@@ -228,7 +228,7 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
         LoanRepayModel currentLoanRepay = loanRepayMapper.findById(loanRepayId);
 
         if (currentLoanRepay.getStatus() != RepayStatus.WAIT_PAY) {
-            logger.error(MessageFormat.format("[Advance Repay {0}] loan repay callback status is not WAIT_PAY", String.valueOf(loanRepayId)));
+            logger.error(MessageFormat.format("[Advance Repay {0}] loan repay callback status is {1}", String.valueOf(loanRepayId),currentLoanRepay.getStatus()));
             return callbackRequest.getResponseData();
         }
 
@@ -263,6 +263,10 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
         for (InvestModel investModel : successInvests) {
             //投资人当期还款计划
             InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(investModel.getId(), currentLoanRepay.getPeriod());
+            if(RepayStatus.COMPLETE == investRepayModel.getStatus()){
+                logger.info(String.format("[Normal Repay %s] investRepay %s  status is COMPLETE",String.valueOf(currentLoanRepay.getRepayAmount()),String.valueOf(investRepayModel.getId())));
+                continue;
+            }
             //实际利息
             long actualInterest = InterestCalculator.calculateInvestRepayInterest(loanModel, investModel, lastRepayDate, currentRepayDate);
             //实际手续费
@@ -317,6 +321,10 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
             //投资人当期还款计划
             InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(investModel.getId(), currentLoanRepay.getPeriod());
 
+            if(RepayStatus.COMPLETE == investRepayModel.getStatus()){
+                logger.info(String.format("[Advance Repay %s] investRepay %s  status is COMPLETE",String.valueOf(currentLoanRepay.getRepayAmount()),String.valueOf(investRepayModel.getId())));
+                continue;
+            }
             interestWithoutFee += investRepayModel.getActualInterest() - investRepayModel.getActualFee();
 
             SyncRequestStatus syncRequestStatus = SyncRequestStatus.valueOf(redisWrapperClient.hget(redisKey, String.valueOf(investRepayModel.getId())));
