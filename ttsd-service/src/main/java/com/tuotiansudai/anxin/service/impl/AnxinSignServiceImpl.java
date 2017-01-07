@@ -131,6 +131,16 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         return anxinProp != null && anxinProp.getAnxinUserId() != null && anxinProp.getProjectCode() != null;
     }
 
+    @Override
+    public boolean isAuthenticationRequired(String loginName) {
+        boolean anxinSwitch = Strings.isNullOrEmpty(redisWrapperClient.hget("anxin-sign:switch", "switch")) ? true : Boolean.valueOf(redisWrapperClient.hget("anxin-sign:switch", "switch"));
+        String whitelist = Strings.isNullOrEmpty(redisWrapperClient.hget("anxin-sign:switch", "whitelist")) ? "" : redisWrapperClient.hget("anxin-sign:switch", "whitelist");
+        if (!anxinSwitch && !whitelist.contains(userMapper.findByLoginName(loginName).getMobile())) {
+            return false;
+        }
+        AnxinSignPropertyModel model = anxinSignPropertyMapper.findByLoginName(loginName);
+        return model == null || !model.isSkipAuth();
+    }
 
     /**
      * 获取用户的安心签相关属性

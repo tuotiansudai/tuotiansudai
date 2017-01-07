@@ -1,5 +1,6 @@
 package com.tuotiansudai.coupon.service;
 
+import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 
@@ -11,7 +12,7 @@ public interface CouponAssignmentService {
 
     void assignUserCoupon(String loginNameOrMobile, long couponId);
 
-    void asyncAssignUserCoupon(String loginNameOrMobile, List<UserGroup> userGroups);
+    List<CouponModel> asyncAssignUserCoupon(String loginNameOrMobile, List<UserGroup> userGroups);
 
     UserCouponModel assign(String loginName, long couponId, String exchangeCode);
 

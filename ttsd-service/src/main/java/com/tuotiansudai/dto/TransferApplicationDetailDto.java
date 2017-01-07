@@ -57,6 +57,7 @@ public class TransferApplicationDetailDto extends BaseDataDto {
 
     private Date transferTime;
 
+    private Long countdown;
 
 
     public TransferApplicationDetailDto() {
@@ -246,4 +247,11 @@ public class TransferApplicationDetailDto extends BaseDataDto {
         this.transferTime = transferTime;
     }
 
+    public Long getCountdown() {
+        return countdown;
+    }
+
+    public void setCountdown(Long countdown) {
+        this.countdown = countdown;
+    }
 }
