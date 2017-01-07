@@ -103,7 +103,6 @@ public class MobileAppInvestListsV3ServiceImpl implements MobileAppInvestListsV3
                     transferApplicationModel = CollectionUtils.isNotEmpty(transferApplicationModels) ? transferApplicationModels.get(0) : null;
                 }
                 dto.setLoanName(transferApplicationModel != null ? transferApplicationModel.getName() : loanModel.getName());
-                dto.setInvestId(transferApplicationModel != null ? String.valueOf(transferApplicationModel.getTransferInvestId()) : String.valueOf(investModel.getId()));
                 dto.setTransferApplicationId(transferApplicationModel != null ? String.valueOf(transferApplicationModel.getId()) : "");
                 dto.setInvestAmount(transferApplicationModel != null ? AmountConverter.convertCentToString(transferApplicationModel.getInvestAmount()) : AmountConverter.convertCentToString(investModel.getAmount()));
                 dto.setTransferInvest(transferApplicationModel != null ? true : false);
