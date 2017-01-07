@@ -13,15 +13,18 @@ require(['jquery','layerWrapper','clipboard','commonFun','logintip','md5','qrcod
 	});
 	if($copyButton.length) {
 
+
+		//已登录已认证,复制功能
+		var $clipboardText=$('.input-invite',$shareReward);
+		var mobile=$clipboardText.data('mobile')+'',
+			md5Mobile=$.md5(mobile);
+
         if (window["context"] == undefined) {
             if (!window.location.origin) {
                 window.location.origin = window.location.protocol + "//" + window.location.hostname+ (window.location.port ? ':' + window.location.port: '');
             }
         }
-		//已登录已认证,复制功能
-		var $clipboardText=$('.input-invite',$shareReward);
-		var mobile=$clipboardText.data('mobile')+'',
-			md5Mobile=$.md5(mobile);
+
 		var md5String=commonFun.compile(md5Mobile,mobile),
 			origin=location.origin;
 
