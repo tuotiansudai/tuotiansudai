@@ -24,7 +24,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -53,7 +55,7 @@ public class MobileAppLoanDetailV2ServiceTest extends ServiceTestBase{
 
     @Test
     public void shouldFindLoanDetailIsOk(){
-        UserModel fakeUserModel = this.getFakeUserModel();
+        UserModel fakeUserModel = this.getUserModelTest();
         userMapper.create(fakeUserModel);
         LoanModel fakeLoan = this.getFakeLoan(fakeUserModel.getLoginName(), fakeUserModel.getLoginName());
         loanMapper.create(fakeLoan);
@@ -68,6 +70,7 @@ public class MobileAppLoanDetailV2ServiceTest extends ServiceTestBase{
         loanDetailV2RequestDto.setBaseParam(baseParam);
         BaseResponseDto<LoanDetailV2ResponseDataDto>  loanDetail = mobileAppLoanDetailV2Service.findLoanDetail(loanDetailV2RequestDto);
         assertTrue(loanDetail.getData().isNonTransferable());
+        assertEquals(loanDetail.getData().getContent(),"个人经营借款理财项目，总额10001元期限30日，年化利率28%，先到先抢！！！");
         assertTrue(Long.parseLong(loanDetail.getData().getInterestPerTenThousands()) == 42904l);
     }
 
@@ -131,7 +134,7 @@ public class MobileAppLoanDetailV2ServiceTest extends ServiceTestBase{
         loanDto.setFundraisingEndTime(new Date());
         loanDto.setFundraisingStartTime(new Date());
         loanDto.setInvestIncreasingAmount("1");
-        loanDto.setLoanAmount("10000");
+        loanDto.setLoanAmount("10001");
         loanDto.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
         loanDto.setMaxInvestAmount("100000000000");
         loanDto.setMinInvestAmount("0");
@@ -139,6 +142,7 @@ public class MobileAppLoanDetailV2ServiceTest extends ServiceTestBase{
         loanDto.setLoanStatus(LoanStatus.RAISING);
         loanDto.setProductType(ProductType._30);
         loanDto.setPledgeType(PledgeType.HOUSE);
+        loanDto.setDuration(30);
         loanDto.setVerifyTime(DateTime.now().toDate());
         loanDto.setRecheckTime(DateTime.now().toDate());
         LoanModel loanModel = new LoanModel(loanDto);
@@ -146,14 +150,15 @@ public class MobileAppLoanDetailV2ServiceTest extends ServiceTestBase{
         return loanModel;
     }
 
-    private UserModel getFakeUserModel() {
-        UserModel fakeUserModel = new UserModel();
-        fakeUserModel.setLoginName("loginName");
-        fakeUserModel.setMobile("13900000000");
-        fakeUserModel.setPassword("password");
-        fakeUserModel.setSalt("salt");
-        fakeUserModel.setRegisterTime(new Date());
-        fakeUserModel.setStatus(UserStatus.ACTIVE);
-        return fakeUserModel;
+    public UserModel getUserModelTest() {
+        UserModel userModelTest = new UserModel();
+        userModelTest.setLoginName("helloworld");
+        userModelTest.setPassword("123abc");
+        userModelTest.setEmail("12345@abc.com");
+        userModelTest.setMobile("13900000000");
+        userModelTest.setRegisterTime(new Date());
+        userModelTest.setStatus(UserStatus.ACTIVE);
+        userModelTest.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
+        return userModelTest;
     }
 }
