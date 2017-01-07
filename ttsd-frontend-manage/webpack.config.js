@@ -40,9 +40,9 @@ files.forEach(function(file){
 });
 
 //添加要打包在vendors里面的库
-newEntries['vendor']=["jquery", "underscore"];
+// newEntries['vendor']=["jquery", "underscore"];
 commonOptions.entry = newEntries;
-console.log(newEntries);
+// console.log(newEntries);
 
 plugins.push(new webpack.ProvidePlugin({
 	$: "jquery",
@@ -53,14 +53,13 @@ plugins.push(new ExtractTextPlugin("[name].css"));
 plugins.push(new WebpackMd5Hash());
 
 //把入口文件里面的数组打包成verdors.js
-plugins.push(new webpack.optimize.CommonsChunkPlugin({
-	name: "vendor",//和上面配置的入口对应
-	filename: "public/js/vendorFun.js"//导出的文件的名称
-}));
+// plugins.push(new webpack.optimize.CommonsChunkPlugin({
+// 	name: "vendor",//和上面配置的入口对应
+// 	filename: "public/js/vendorFun.js"//导出的文件的名称
+// }));
 
 //开发模式
 plugins.push(new webpack.HotModuleReplacementPlugin());
-
 
 module.exports = objectAssign(commonOptions, {
 	output: {

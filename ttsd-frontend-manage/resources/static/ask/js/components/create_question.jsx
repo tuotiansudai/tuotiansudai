@@ -1,5 +1,6 @@
 /* create question */
-import {popWindow,refreshCaptcha,useAjax} from "publicJs/common";
+import {refreshCaptcha,useAjax} from "publicJs/common";
+import popWindow from "./popWindow";
 
 var $createQuestion=$('#createQuestion');
 var $questionDetailTag=$('#questionDetailTag');

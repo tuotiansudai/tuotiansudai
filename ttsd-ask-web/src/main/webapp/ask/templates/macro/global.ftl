@@ -142,7 +142,6 @@
 </div>
 
     <#include "../pageLayout/footer.ftl" />
-<script src="${staticServer}/public/js/vendorFun.js"></script>
 <script src="${staticServer}/public/js/global_page.js"></script>
 <script src="${staticServer}${jsPath}${pageJavascript}" type="text/javascript"></script>
 

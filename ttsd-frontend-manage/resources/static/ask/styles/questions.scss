@@ -24,9 +24,27 @@
   .mobile-menu {
     display: none;
   }
+
+  .pagination {
+    text-align: center;
+    margin-top:20px;
+    a {
+      display: inline-block;
+      background: #fff;
+      line-height: 15px;
+      padding: 8px 12px;
+      margin-left:auto;
+      margin-right:auto;
+      border:1px solid #e5e5e5;
+      &.active {
+        background:#ff9700;
+        color: #fff;
+      }
+    }
+  }
+
   .border-ask-box {
-    //border: 1px solid #e5e5e5;
-    @include border-color(#e5e5e5);
+    border: 1px solid #e5e5e5;
     padding: 20px;
     height: auto;
     background: #fff;
@@ -38,6 +56,7 @@
     background: #ff9d1a;
     border:0;
     color: #fff;
+    letter-spacing: 1px;
   }
 
   .red-color {
