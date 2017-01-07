@@ -2,6 +2,7 @@ package com.tuotiansudai.mq.consumer.activity;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.activity.repository.mapper.AnnualPrizeMapper;
+import com.tuotiansudai.activity.repository.mapper.InvestRewardMapper;
 import com.tuotiansudai.activity.repository.model.AnnualPrizeModel;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.message.InvestInfo;
@@ -35,6 +36,9 @@ public class InvestSuccessActivityRewardMessageConsumer implements MessageConsum
 
     @Autowired
     private AnnualPrizeMapper annualPrizeMapper;
+
+    @Autowired
+    private InvestRewardMapper investRewardMapper;
 
     final private static String LOAN_ACTIVITY_DESCRIPTION = "圣诞专享";
 

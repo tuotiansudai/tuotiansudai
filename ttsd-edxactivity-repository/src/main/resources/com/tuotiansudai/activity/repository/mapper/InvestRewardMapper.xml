@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.activity.repository.mapper.InvestRewardMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
+
+    <resultMap id="investRewardModel" type="com.tuotiansudai.activity.repository.model.InvestRewardModel">
+        <id column="id" property="id"></id>
+        <result column="login_name" property="loginName"></result>
+        <result column="user_name" property="userName"></result>
+        <result column="mobile" property="mobile"></result>
+        <result column="invest_amount" property="investAmount"></result>
+        <result column="reward_grade" property="rewardGrade"></result>
+        <result column="updated_time" property="updatedTime"></result>
+        <result column="created_time" property="createdTime"></result>
+    </resultMap>
+
+    <insert id="create" parameterType="investRewardModel" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `edxactivity`.`invest_reward`
+        (`login_name`,
+        `user_name`,
+        `mobile`,
+        `invest_amount`,
+        `reward_grade`,
+        `created_time`)
+        VALUES(#{loginName},#{userName},#{mobile},#{investAmount},#{rewardGrade},now())
+    </insert>
+
+    <update id="update" parameterType="investRewardModel">
+        update invest_reward set
+        `invest_amount` = #{investAmount},
+        `reward_grade` = #{rewardGrade},
+        `updated_time` = now()
+        where id = #{id}
+    </update>
+
+
+    <select id="findInvestRewardModels" parameterType="map" resultMap="investRewardModel">
+        select * from `edxactivity`.`invest_reward` a
+        <if test="mobile != null and mobile != null">
+            where mobile = #{mobile}
+        </if>
+        order by a.created_time DESC
+        <if test="index != null and pageSize != null">
+            limit #{index}, #{pageSize}
+        </if>
+    </select>
+
+    <select id="findInvestRwardCount" resultType="long">
+        select count(1) from `edxactivity`.`invest_reward`
+        <if test="mobile != null and mobile != null">
+            where mobile = #{mobile}
+        </if>
+    </select>
+
+    <select id="findByMobile" parameterType="string" resultMap="investRewardModel">
+        select * from `edxactivity`.`invest_reward` where mobile = #{mobile}
+    </select>
+
+</mapper>
