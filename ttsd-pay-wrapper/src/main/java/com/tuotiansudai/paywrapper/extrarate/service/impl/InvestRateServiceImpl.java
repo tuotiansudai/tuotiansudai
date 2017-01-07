@@ -42,7 +42,7 @@ public class InvestRateServiceImpl implements InvestRateService {
     private void updateInvestExtraRate(InvestExtraRateModel investExtraRateModel){
         investExtraRateModel.setActualRepayDate(new Date());
         investExtraRateModel.setStatus(RepayStatus.COMPLETE);
-        investExtraRateMapper.updateActualRepayDate(investExtraRateModel);
+        investExtraRateMapper.updateActualRepayDateStatus(investExtraRateModel);
     }
 
     public void updateInvestExtraRate(InvestExtraRateModel investExtraRateModel, long actualInterest, long actualFee, long amount) {
