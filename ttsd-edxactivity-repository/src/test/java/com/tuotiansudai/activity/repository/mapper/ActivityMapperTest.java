@@ -58,6 +58,7 @@ public class ActivityMapperTest {
         activityModel.setDescription("testDescription");
         activityModel.setWebPictureUrl("testWebPictureUrl");
         activityModel.setAppPictureUrl("testAppPictureUrl");
+        activityModel.setAppVerticalPictureUrl("testWebPictureUrl");
         activityModel.setActivatedTime(activatedTime);
         activityModel.setExpiredTime(expiredTime);
         activityModel.setSource(source);
@@ -133,6 +134,7 @@ public class ActivityMapperTest {
         updatedActivityModel.setDescription("Description");
         updatedActivityModel.setWebPictureUrl("WebPictureUrl");
         updatedActivityModel.setAppPictureUrl("AppPictureUrl");
+        updatedActivityModel.setAppVerticalPictureUrl("AppPictureUrl");
         updatedActivityModel.setActivatedTime(DateTime.parse("2015-07-30T01:20").toDate());
         updatedActivityModel.setExpiredTime(DateTime.parse("2015-07-30T01:20").toDate());
         updatedActivityModel.setSource(Lists.newArrayList(Source.IOS));

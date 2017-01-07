@@ -163,6 +163,12 @@ public class LoanDetailV2ResponseDataDto extends BaseResponseDataDto {
     @ApiModelProperty(value = "企业抵押", example = "model")
     private PledgeEnterpriseDto pledgeEnterpriseDto;
 
+    @ApiModelProperty(value = "是否可以转让", example = "true")
+    private boolean nonTransferable;
+
+    @ApiModelProperty(value = "万元收益", example = "1000")
+    private String interestPerTenThousands;
+
     public Long getLoanId() {
         return loanId;
     }
@@ -561,5 +567,21 @@ public class LoanDetailV2ResponseDataDto extends BaseResponseDataDto {
 
     public void setPledgeEnterpriseDto(PledgeEnterpriseDto pledgeEnterpriseDto) {
         this.pledgeEnterpriseDto = pledgeEnterpriseDto;
+    }
+
+    public String getInterestPerTenThousands() {
+        return interestPerTenThousands;
+    }
+
+    public void setInterestPerTenThousands(String interestPerTenThousands) {
+        this.interestPerTenThousands = interestPerTenThousands;
+    }
+
+    public boolean isNonTransferable() {
+        return nonTransferable;
+    }
+
+    public void setNonTransferable(boolean nonTransferable) {
+        this.nonTransferable = nonTransferable;
     }
 }

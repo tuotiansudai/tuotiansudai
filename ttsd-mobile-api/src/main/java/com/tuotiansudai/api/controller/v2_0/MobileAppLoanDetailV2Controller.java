@@ -8,6 +8,7 @@ import com.tuotiansudai.api.dto.v2_0.LoanDetailV2ResponseDataDto;
 import com.tuotiansudai.api.service.v2_0.MobileAppLoanDetailV2Service;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,6 +21,7 @@ import javax.validation.Valid;
 @RestController
 @Api(description = "V2.0标的详情")
 public class MobileAppLoanDetailV2Controller extends MobileAppBaseController {
+    static Logger logger = Logger.getLogger(MobileAppLoanDetailV2Controller.class);
 
     @Autowired
     private MobileAppLoanDetailV2Service mobileAppLoanDetailV2Service;

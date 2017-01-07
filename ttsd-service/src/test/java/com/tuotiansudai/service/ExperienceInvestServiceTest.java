@@ -35,6 +35,7 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.anyListOf;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -76,7 +77,7 @@ public class ExperienceInvestServiceTest {
 
         MockitoAnnotations.initMocks(this);
         ReflectionTestUtils.setField(experienceInvestService, "couponAssignmentService", couponAssignmentService);
-        doNothing().when(couponAssignmentService).asyncAssignUserCoupon(anyString(), anyListOf(UserGroup.class));
+        when(couponAssignmentService.asyncAssignUserCoupon(anyString(), anyListOf(UserGroup.class))).thenReturn(Lists.newArrayList());
 
         experienceInvestService.invest(this.getFakeInvestDto(investor, fakeExperienceLoan, fakeUserCoupon));
 
