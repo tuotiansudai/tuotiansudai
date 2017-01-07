@@ -1,4 +1,4 @@
-require(['jquery','mustache','text!tpl/notice-list.mustache','load-swiper','layerWrapper','load_echarts','pagination','fancybox'], function ($,Mustache,ListTemplate,loadSwiper,layer,loadEcharts) {
+require(['jquery','template','load-swiper','layerWrapper','load_echarts','pagination','fancybox'], function ($,tpl,loadSwiper,layer,loadEcharts) {
     $(function () {
         var $noticeList=$('#noticeList'),
             $noticeDetail=$('#noticeDetail'),
@@ -11,15 +11,13 @@ require(['jquery','mustache','text!tpl/notice-list.mustache','load-swiper','laye
         if($noticeList.length) {
             var requestData={"index":1,"pageSize":10};
             paginationElement.loadPagination(requestData, function (data) {
-                var html = Mustache.render(ListTemplate, data);
-                $noticeList.html(html);
-                $noticeList.find('time').each(function(key,option) {
+                $noticeList.html(tpl('noticeListTpl', data));
+                $noticeList.find('span').each(function(key,option) {
                     var getTime=$(option).text();
                     $(option).text(getTime.substr(0,10));
                 });
                 if(/app/gi.test(location.search)) {
-                    var noticeList=$('.notice-list');
-                    noticeList.find('li a').each(function(key,option) {
+                    $noticeList.find('li a').each(function(key,option) {
                        var thisURL= $(option).attr('href')+'?source=app';
                         $(option).attr('href',thisURL);
                     });
