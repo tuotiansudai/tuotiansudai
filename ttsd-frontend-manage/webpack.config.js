@@ -81,7 +81,7 @@ module.exports = objectAssign(commonOptions, {
 			loader: ExtractTextPlugin.extract("style-loader", "css-loader!sass-loader")
 		},{
 			test: /\.(png|jpg|gif|woff|woff2)$/,
-			loader: 'url-loader?limit=5120&name=ask/images/[name].[ext]'
+			loader: 'url-loader?limit=5120&name=[path][name].[ext]'
 
 		}]
 	},
