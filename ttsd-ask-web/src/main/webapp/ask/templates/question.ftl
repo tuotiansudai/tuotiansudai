@@ -3,7 +3,7 @@
 <#if bestAnswer??>
     <#assign descrition="${bestAnswer.answer}">
 </#if>
-<@global.main pageCss="${(css.main)!'main.css'}" pageJavascript="${(js.main)!'main.js'}" title="${question.question!}" keywords="${question.question!}" description="${descrition}">
+<@global.main pageCss="${(css.mainSite)!'mainSite.css'}" pageJavascript="${(js.mainSite)!'mainSite.js'}" title="${question.question!}" keywords="${question.question!}" description="${descrition}">
 <div class="article-content fl answer-container" id="questionDetailTag">
     <div class="border-ask-box clearfix">
         <div class="answers-box">

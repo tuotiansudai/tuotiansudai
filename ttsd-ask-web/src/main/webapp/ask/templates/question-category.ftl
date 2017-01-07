@@ -23,7 +23,7 @@
         <#break>
     </#if>
 </#list>
-<@global.main pageCss="${(css.main)!'main.css'}" pageJavascript="${(js.main)!'main.js'}" title="${title}" keywords="${keywords}" description="${description}">
+<@global.main pageCss="${(css.mainSite)!'mainSite.css'}" pageJavascript="${(js.mainSite)!'mainSite.js'}" title="${title}" keywords="${keywords}" description="${description}">
 
 <div class="article-content fl">
     <div class="category-title">分类为<span>${tag.description}</span> 下的问题</div>

@@ -1,5 +1,5 @@
 /* create question */
-import {popWindow} from "publicJs/common";
+import {popWindow,refreshCaptcha,useAjax} from "publicJs/common";
 
 var $createQuestion=$('#createQuestion');
 var $questionDetailTag=$('#questionDetailTag');
@@ -150,6 +150,55 @@ var utils = {
         }
     }
 };
+
+$.fn.checkFrom = function () {
+    return this.each(function () {
+        var $ele = $(this);
+        var name=this.name,
+            value=$ele.val();
+        switch(name) {
+            case 'question':
+                utils.validLen($ele, 1,100);
+                break;
+            case 'addition':
+                utils.validLen($ele, 1,500);
+                break;
+            case 'captcha':
+                utils.validLen($ele,5,5);
+                break;
+            case 'answer':
+                utils.validLen($ele, 10,1000);
+                break;
+            default:
+                utils.radioChecked($ele)
+                break;
+        }
+
+    });
+};
+$.fn.autoTextarea = function(options) {
+    var defaults={
+        maxHeight:null,
+        minHeight:$(this).height()
+    };
+    var opts = $.extend({},defaults,options);
+    return $(this).each(function() {
+        $(this).bind("paste cut keydown keyup focus blur",function(){
+            var height,style=this.style;
+            this.style.height = opts.minHeight + 'px';
+            if (this.scrollHeight > opts.minHeight) {
+                if (opts.maxHeight && this.scrollHeight > opts.maxHeight) {
+                    height = opts.maxHeight;
+                    style.overflowY = 'scroll';
+                } else {
+                    height = this.scrollHeight;
+                    style.overflowY = 'hidden';
+                }
+                style.height = height + 'px';
+            }
+        });
+    });
+};
 //我来回答
 if($questionDetailTag.length) {
     var $formAnswer=$('.formAnswer',$questionDetailTag),
@@ -181,60 +230,54 @@ if($questionDetailTag.length) {
             .replace(/\r/g,'\\r')
             .replace(/\s/g,'　');
         $formAnswer.find('textarea').val(temp);
-            $.ajax({
-                url: "/answer",
-                data: $formAnswer.serialize(),
-                type: 'POST',
-                dataType: 'json',
-                beforeSend:function() {
-                    $formAnswerSubmit.prop('disabled',true);
+
+        useAjax({
+            url: "/answer",
+            data: $formAnswer.serialize(),
+            beforeSend:function() {
+                $formAnswerSubmit.prop('disabled',true);
+            }
+        },function(responseData) {
+            var response=responseData.data;
+            $formAnswerSubmit.prop('disabled',false);
+            if (response.status) {
+                popWindow('','回答成功!',{ width:'200px'},true);
+                setTimeout(function() {
+                    $('.popWindow,.popWindow-overlay').fadeOut();
+                    window.location.reload();
+                },3000);
+            }
+            else {
+                refreshCaptcha();
+                if(response.isCaptchaValid) {
+                    if(!response.isAnswerSensitiveValid) {
+                        $formAnswer.find('.answer').next().show().text('您输入的内容不能包含敏感词');
+                    }
                 }
-            }).done(function(responseData) {
-                 var response=responseData.data;
-                    if (response.status) {
-                        comm.popWindow('','回答成功!',{ width:'200px'},true);
-                        setTimeout(function() {
-                        $('.popWindow,.popWindow-overlay').fadeOut();
-                        window.location.reload();
-                    },3000);
-                    }
-                    else {
-                        refreshCaptcha();
-                        if(response.isCaptchaValid) { 
-                            if(!response.isAnswerSensitiveValid) {
-                                $formAnswer.find('.answer').next().show().text('您输入的内容不能包含敏感词');
-                            }
-                        }
-                        else {
-                            $formAnswer.find('.captcha').parent().find('.error').show().text('验证码错误');
-                        }
-                    }
-            })
-                .fail(function(data) {
-                    comm.popWindow('','接口调用失败',{ width:'300px'});
-                })
-                .complete(function() {
-                    $formAnswerSubmit.prop('disabled',false);
-                });
+                else {
+                    $formAnswer.find('.captcha').parent().find('.error').show().text('验证码错误');
+                }
+            }
+        });
+
 
     });
     //采纳此条信息
     $('.mark-this-answer',$questionDetailTag).on('click',function() {
         var $this=$(this);
         var answerId=$this.next('.answerId').data('id');
-        $.ajax({
-            url:'/answer/'+answerId+'/best',
-            type:'POST'
-        }).done(function(responseData) {
+        useAjax({
+            url:'/answer/'+answerId+'/best'
+        },function(responseData) {
             var response=responseData.data;
             if(response.status) {
-                comm.popWindow('','成功采纳此条信息!',{ width:'200px'},true);
+                popWindow('','成功采纳此条信息!',{ width:'200px'},true);
                 setTimeout(function() {
-                        $('.popWindow,.popWindow-overlay').fadeOut();
-                        window.location.reload();
-                    },3000);
-               
-           }
+                    $('.popWindow,.popWindow-overlay').fadeOut();
+                    window.location.reload();
+                },3000);
+
+            }
         });
     });
 
@@ -244,10 +287,9 @@ if($questionDetailTag.length) {
             value=$.trim($this.text());
         var answerId=$this.parent().find('.answerId').data('id');
 
-        $.ajax({
-            url:'/answer/'+answerId+'/favor',
-            type:'POST'
-        }).done(function(data) {
+        useAjax({
+            url:'/answer/'+answerId+'/favor'
+        },function(data) {
             if(data.data.status) {
                 $this.addClass('active');
                 $this.text(value-0+1);
@@ -256,7 +298,7 @@ if($questionDetailTag.length) {
     });
 
     $('.agree-ok-no',$questionDetailTag).on('click',function() {
-        comm.popWindow('','<span class="clearfix">需要登录才能点赞哦～ </span><a href="https://tuotiansudai.com/login" class="btn-normal to-login">去登录</a>',{ width:'400px'});
+        popWindow('','<span class="clearfix">需要登录才能点赞哦～ </span><a href="https://tuotiansudai.com/login" class="btn-normal to-login">去登录</a>',{ width:'400px'});
     });
 }
 
@@ -296,52 +338,37 @@ if($createQuestion.length) {
                       .replace(/\r/g,'\\r')
                       .replace(/\s/g,'　');
 
-        // var question=$('.question',$formQuestion).val();
-        // var tag=$('.tag-list input.tag:checked',$formQuestion);
-
         $formQuestion.find('textarea').val(question);
-
-            $.ajax({
-                    url: "/question",
-                    data: $formQuestion.serialize(),
-                    type: 'POST',
-                    dataType: 'json',
-                    beforeSend:function(xhr) {
-                        $formSubmit.prop('disabled',true);
+        useAjax({
+            url: "/question",
+            data: $formQuestion.serialize(),
+            beforeSend:function(xhr) {
+                $formSubmit.prop('disabled',true);
+            }
+        },function(responseData) {
+            var response=responseData.data;
+            $formSubmit.prop('disabled',false);
+            if (response.status) {
+                location.href='question/my-questions';
+            }
+            else {
+                refreshCaptcha();
+                if(response.isCaptchaValid) {
+                    if(!response.isQuestionSensitiveValid) {
+                        $question.next().show().text('您输入的内容不能包含敏感词');
+                        return;
                     }
-                }).done(function(responseData) {
-                     var response=responseData.data;
-
-                    if (response.status) {
-                        location.href='question/my-questions';
+                    if(response.isQuestionSensitiveValid && !response.isAdditionSensitiveValid) {
+                        $addition.next().show().text('您输入的内容不能包含敏感词');
                     }
-                    else {
-                        refreshCaptcha();
-                        if(response.isCaptchaValid) {
-                                if(!response.isQuestionSensitiveValid) {
-                                    $question.next().show().text('您输入的内容不能包含敏感词');
-                                    return;
-                                }
-                                if(response.isQuestionSensitiveValid && !response.isAdditionSensitiveValid) {
-                                    $addition.next().show().text('您输入的内容不能包含敏感词');
-                                }
-
-                        }
-                        else {
-                            $captcha.parent().find('.error').show().text('验证码错误');
-                        }
+                }
+                else {
+                    $captcha.parent().find('.error').show().text('验证码错误');
+                }
 
 
-                    }
-                })
-                .fail(function(data) {
-                        comm.popWindow('','接口调用失败',{ width:'300px'});
-                })
-                .complete(function(data) {
-                   $formSubmit.prop('disabled',false);
-                });
-
-
+            }
+        });
     });
 }
 

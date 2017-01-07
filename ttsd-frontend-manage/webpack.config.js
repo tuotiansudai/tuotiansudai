@@ -19,7 +19,6 @@ var outputPath=path.join(basePath, 'develop'),
 	commonOptions={},
 	plugins=[];
 
-
 /**
  * 动态查找所有入口文件
  */
@@ -28,16 +27,22 @@ var files = glob.sync(path.join(staticPath, '*/js/*.jsx'));
 var newEntries = {};
 
 files.forEach(function(file){
-	// console.log(file);
 	var substr = file.match(/resources\/static(\S*)\.jsx/)[1];
-	newEntries[substr] = file;
-
+	var strObj=substr.split('/');
+	if(strObj[1]=='public') {
+		if(/global_page/.test(strObj)) {
+			newEntries[substr] = file;
+		}
+	}
+	else {
+		newEntries[substr] = file;
+	}
 });
 
 //添加要打包在vendors里面的库
 newEntries['vendor']=["jquery", "underscore"];
-
 commonOptions.entry = newEntries;
+console.log(newEntries);
 
 plugins.push(new webpack.ProvidePlugin({
 	$: "jquery",
@@ -45,6 +50,7 @@ plugins.push(new webpack.ProvidePlugin({
 	"window.jQuery": "jquery"
 }));
 plugins.push(new ExtractTextPlugin("[name].css"));
+plugins.push(new WebpackMd5Hash());
 
 //把入口文件里面的数组打包成verdors.js
 plugins.push(new webpack.optimize.CommonsChunkPlugin({
@@ -54,7 +60,7 @@ plugins.push(new webpack.optimize.CommonsChunkPlugin({
 
 //开发模式
 plugins.push(new webpack.HotModuleReplacementPlugin());
-plugins.push(new WebpackMd5Hash());
+
 
 module.exports = objectAssign(commonOptions, {
 	output: {

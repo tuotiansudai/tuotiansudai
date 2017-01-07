@@ -1,4 +1,3 @@
-import {globalFun} from "publicJs/global_page";
 /* hot question for mobile */
 var $hotCategory=$('.hot-question-category');
 $hotCategory.find('.m-title').on('click',function() {
@@ -8,7 +7,6 @@ $hotCategory.find('.m-title').on('click',function() {
 /* home page for switch menu to show different page */
 var $homeTagContainer = $('#homeTagContainer');
 var locationUrl=window.location.href ;
-
 var urlParams=globalFun.parseURL(locationUrl);
 
 if($homeTagContainer.length) {

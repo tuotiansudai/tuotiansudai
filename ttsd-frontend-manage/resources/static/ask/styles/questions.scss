@@ -11,6 +11,16 @@
   }
 }
 .main-frame-ask {
+  input,textarea,select {
+    @include border-color(#e5e5e5);
+    width:96%;
+    padding: 6px 10px;
+    font-size:14px;
+
+  }
+  .input-short {
+    width:100px;
+  }
   .mobile-menu {
     display: none;
   }

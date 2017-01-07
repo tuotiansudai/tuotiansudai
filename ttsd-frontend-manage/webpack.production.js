@@ -19,7 +19,6 @@ var outputPath=path.join(basePath, 'prod'),
     commonOptions={},
     plugins=[];
 
-
 /**
  * 动态查找所有入口文件
  */
@@ -28,29 +27,21 @@ var files = glob.sync(path.join(staticPath, '*/js/*.jsx'));
 var newEntries = {};
 
 files.forEach(function(file){
-    // console.log(file);
     var substr = file.match(/resources\/static(\S*)\.jsx/)[1];
-    newEntries[substr] = file;
-
+    var strObj=substr.split('/');
+    if(strObj[1]=='public') {
+        if(/global_page/.test(strObj)) {
+            newEntries[substr] = file;
+        }
+    }
+    else {
+        newEntries[substr] = file;
+    }
 });
-
-//添加要打包在vendors里面的库
-newEntries['vendor']=["jquery", "underscore"];
-
 commonOptions.entry = newEntries;
 
-plugins.push(new webpack.ProvidePlugin({
-    $: "jquery",
-    jQuery: "jquery",
-    "window.jQuery": "jquery"
-}));
 plugins.push(new ExtractTextPlugin("[name].[chunkhash].css"));
-
-//把入口文件里面的数组打包成verdors.js
-plugins.push(new webpack.optimize.CommonsChunkPlugin({
-    name: "vendor",//和上面配置的入口对应
-    filename: "public/js/vendorFun.js"//导出的文件的名称
-}));
+plugins.push(new WebpackMd5Hash());
 
 //压缩
 plugins.push(new webpack.optimize.UglifyJsPlugin({
@@ -60,7 +51,6 @@ plugins.push(new webpack.optimize.UglifyJsPlugin({
         drop_console: true
     }
 }));
-
 
 module.exports = objectAssign(commonOptions, {
     output: {

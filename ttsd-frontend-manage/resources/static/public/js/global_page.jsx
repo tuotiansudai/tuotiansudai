@@ -288,8 +288,8 @@ var Proxy_GlobalFun=function() {
     return instance;
 }
 
-var globalFun =new Proxy_GlobalFun();
-globalFun.init();
+window.globalFun =new Proxy_GlobalFun();
+window.globalFun.init();
 
 // ********* cnzz统计 BEGIN ***********
 function cnzzPushConstructor() {
@@ -297,10 +297,9 @@ function cnzzPushConstructor() {
         _czc.push(['_trackEvent', category, action, label]);
     }
 }
-let cnzzPush = new cnzzPushConstructor();
+window.cnzzPush = new cnzzPushConstructor();
 // ********** cnzz统计 END **********
 
-export {globalFun,cnzzPush}
 
 
 
