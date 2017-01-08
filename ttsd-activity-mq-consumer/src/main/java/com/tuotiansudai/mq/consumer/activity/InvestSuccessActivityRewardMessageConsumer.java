@@ -1,9 +1,12 @@
 package com.tuotiansudai.mq.consumer.activity;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.tuotiansudai.activity.repository.mapper.AnnualPrizeMapper;
 import com.tuotiansudai.activity.repository.mapper.InvestRewardMapper;
 import com.tuotiansudai.activity.repository.model.AnnualPrizeModel;
+import com.tuotiansudai.activity.repository.model.InvestRewardModel;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.message.InvestInfo;
 import com.tuotiansudai.message.InvestSuccessMessage;
@@ -55,6 +58,9 @@ public class InvestSuccessActivityRewardMessageConsumer implements MessageConsum
     @Value("#{'${activity.annual.period}'.split('\\~')}")
     private List<String> annualTime = Lists.newArrayList();
 
+    @Value("#{'${activity.spring.festival.period}'.split('\\~')}")
+    private List<String> springFestivalTime = Lists.newArrayList();
+
     final private static String LOAN_ANNUAL_ACTIVITY_DESCRIPTION = "新年专享";
 
     final static private long INVEST_20_RED_ENVELOPE_LIMIT = 500000L;
@@ -65,6 +71,7 @@ public class InvestSuccessActivityRewardMessageConsumer implements MessageConsum
 
     final static private long INTEREST_COUPON_OF_800_COUPON_ID = 331;
 
+    final static private List<Long> springFestivalTasks = Lists.newArrayList(100000L, 500000L, 1200000L, 3000000L);
 
     @Override
     public MessageQueue queue() {
@@ -183,12 +190,75 @@ public class InvestSuccessActivityRewardMessageConsumer implements MessageConsum
         UserInfo userInfo = investSuccessMessage.getUserInfo();
 
         logger.info("[MQ] ready to consume activity springFestival message: invest reward.");
-        Date startTime = DateTime.parse(annualTime.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
-        Date endTime = DateTime.parse(annualTime.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
-
-        if ((startTime.before(nowDate) && endTime.after(nowDate))
+        Date startTime = DateTime.parse(springFestivalTime.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+        Date endTime = DateTime.parse(springFestivalTime.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+        Long investGrade;
+        int currentGrade = 1;
+        InvestRewardModel investRewardModel;
+        final String loginName = investSuccessMessage.getInvestInfo().getLoginName();
+        if (userInfo != null && (startTime.before(nowDate) && endTime.after(nowDate))
                 && loanDetailInfo.isActivity() && (!investInfo.getTransferStatus().equals("SUCCESS") && investInfo.getStatus().equals("SUCCESS"))) {
+            investRewardModel = investRewardMapper.findByMobile(userInfo.getMobile());
+            if (null != investRewardModel) {
+                investRewardModel.setInvestAmount(investRewardModel.getInvestAmount() + investInfo.getAmount());
+                logger.info(MessageFormat.format("[MQ] springFestival reward is exits. investAmount:{0}, currentGrade:{1}", investInfo.getAmount(), investRewardModel.getRewardGrade()));
+                investGrade = getInvestTaskGrade(investInfo.getAmount());
+                currentGrade += investRewardModel.getRewardGrade();
+                if(investGrade != investRewardModel.getRewardGrade()){
+                    investRewardModel.setRewardGrade(investGrade);
+                }
 
+                investRewardMapper.update(investRewardModel);
+            } else {
+                logger.info(MessageFormat.format("[MQ] springFestival reward is not exits. investAmount:{0}", investInfo.getAmount()));
+                investGrade = getInvestTaskGrade(investInfo.getAmount());
+                investRewardModel = new InvestRewardModel(userInfo.getLoginName(), userInfo.getUserName(), userInfo.getMobile(), investInfo.getAmount(), investGrade);
+                investRewardMapper.create(investRewardModel);
+            }
+
+            getInvestReward(currentGrade, investGrade).stream().forEach(investReward -> {
+                logger.info(MessageFormat.format("[MQ] execute second coupon assign coupon . loginName:{0}, couponId:{1}", loginName, investReward));
+                mqClient.sendMessage(MessageQueue.CouponAssigning, loginName + ":" + investReward);
+            });
         }
     }
+
+    private Long getInvestTaskGrade(long investAmount) {
+        Long investGrade = 0L;
+        for (Long taskAmount : springFestivalTasks) {
+            if (investAmount >= taskAmount) {
+                investGrade = getInvestGradeByInvestAmount(taskAmount);
+                continue;
+            }
+            break;
+        }
+        return investGrade;
+    }
+
+    private Long getInvestGradeByInvestAmount(Long taskAmount) {
+        return Maps.newHashMap(ImmutableMap.<Long, Long>builder()
+                .put(100000L, 1L)
+                .put(500000L, 2L)
+                .put(1200000L, 3L)
+                .put(3000000L, 4L)
+                .build()).get(taskAmount);
+    }
+
+    private List getInvestRewardByInvestGrade(Integer investGrade) {
+        return Maps.newHashMap(ImmutableMap.<Integer, List>builder()
+                .put(1, Lists.newArrayList(341L, 342L))
+                .put(2, Lists.newArrayList(343L, 344L))
+                .put(3, Lists.newArrayList(345L, 346L, 347L, 348L))
+                .put(4, Lists.newArrayList(349L, 350L, 351L, 352L))
+                .build()).get(investGrade);
+    }
+
+    private List getInvestReward(int currentGrade, Long investGrade) {
+        List investRewardList = Lists.newArrayList();
+        for (int i = currentGrade; i <= investGrade; i++) {
+            investRewardList.addAll(getInvestRewardByInvestGrade(i));
+        }
+        return investRewardList;
+    }
+
 }

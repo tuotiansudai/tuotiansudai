@@ -16,7 +16,7 @@ public class InvestRewardModel implements Serializable {
 
     public InvestRewardModel(){}
 
-    public InvestRewardModel(String loginName, String userName, String mobile, long investAmount, long rewardGrade) {
+    public InvestRewardModel(String loginName, String userName, String mobile, long investAmount, Long rewardGrade) {
         this.loginName = loginName;
         this.userName = userName;
         this.mobile = mobile;
