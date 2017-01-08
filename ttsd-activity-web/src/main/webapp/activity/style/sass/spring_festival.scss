@@ -38,7 +38,7 @@
       box-sizing:border-box;
       margin-top:30px;
       background:#faedbc;
-      padding:30px 65px;
+      padding:30px 100px;
       box-sizing:border-box;
       &.mb-50{
         margin-bottom:50px;
@@ -111,6 +111,64 @@
           &:hover{
             box-shadow: 0 2px #a32517;
             top: 2px;
+          }
+        }
+      }
+      .rule-list{
+        float:left;
+        width:100%;
+        margin-top:70px;
+        li{
+          font-size:14px;
+          color:#981e23;
+        }
+      }
+      .red-bag-item{
+        float:left;
+        width:100%;
+        margin-top:-20px;
+        .money-item{
+          width:960px;
+          margin:0 -40px;
+          li{
+            float:left;
+            width:400px;
+            height:400px;
+            margin:15px 40px;
+            background:#fffbe5;
+            box-sizing:border-box;
+            padding:30px 85px 20px;
+            &.active{
+              .money-content{
+                background:url('/activity/images/spring-festival/flower-active-bg.png') no-repeat center;
+                background-size:100%;
+              }
+            }
+            h3{
+              font-size:16px;
+              color:#981e23;
+              margin:0;
+              text-align:center;
+              line-height:18px;
+              span{
+                color:#e70c1b;
+              }
+            }
+            .money-content{
+              display:inline-block;
+              width:230px;
+              height:230px;
+              background:url('/activity/images/spring-festival/flower-bg.png') no-repeat center;
+              background-size:100%;
+              box-sizing:border-box;
+              padding:70px 0;
+              text-align:center;
+              margin:20px 0 15px;
+            }
+            .text-item{
+              display:inline-block;
+              width:100%;
+            }
           }
         }
       }
