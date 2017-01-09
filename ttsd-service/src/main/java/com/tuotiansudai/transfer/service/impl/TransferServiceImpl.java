@@ -241,6 +241,7 @@ public class TransferServiceImpl implements TransferService {
         transferApplicationDetailDto.setLoanType(loanModel.getType().getRepayType());
         transferApplicationDetailDto.setDeadLine(transferApplicationModel.getDeadline());
         String beforeDeadLine;
+        long countdown = 0;
         Date now = new Date();
         if (transferApplicationModel.getStatus() == TransferStatus.SUCCESS) {
             beforeDeadLine = "已转让";
@@ -249,6 +250,7 @@ public class TransferServiceImpl implements TransferService {
         } else {
             if (now.before(transferApplicationModel.getDeadline())) {
                 long seconds = (transferApplicationModel.getDeadline().getTime() - now.getTime()) / 1000;
+                countdown = seconds;
                 int days = (int) (seconds / (60 * 60 * 24));
                 int hours = (int) ((seconds % (60 * 60 * 24)) / (60 * 60));
                 int minutes = (int) ((seconds % (60 * 60)) / 60);
@@ -257,17 +259,18 @@ public class TransferServiceImpl implements TransferService {
                 beforeDeadLine = "已过期";
             }
         }
+        transferApplicationDetailDto.setCountdown(countdown);
         transferApplicationDetailDto.setBeforeDeadLine(beforeDeadLine);
         transferApplicationDetailDto.setTransferStatus(transferApplicationModel.getStatus());
         transferApplicationDetailDto.setTransferrer(randomUtils.encryptMobileForCurrentLoginName(loginName, transferApplicationModel.getLoginName(), transferApplicationModel.getTransferInvestId(), Source.WEB));
         long investId = transferApplicationModel.getStatus() == TransferStatus.SUCCESS ? transferApplicationModel.getInvestId() : transferApplicationModel.getTransferInvestId();
         List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investId);
+        transferApplicationDetailDto.setExpecedInterest(AmountConverter.convertCentToString(InterestCalculator.calculateTransferInterest(transferApplicationModel, investRepayModels, investFeeRate)));
         if (transferApplicationModel.getStatus() == TransferStatus.TRANSFERRING) {
             AccountModel accountModel = accountMapper.findByLoginName(loginName);
             InvestModel investModel = investMapper.findById(transferApplicationModel.getTransferInvestId());
             transferApplicationDetailDto.setLoginName(randomUtils.encryptMobileForCurrentLoginName(loginName, investModel.getLoginName(), investModel.getId(), Source.MOBILE));
             transferApplicationDetailDto.setBalance(accountModel != null ? AmountConverter.convertCentToString(accountModel.getBalance()) : "0.00");
-            transferApplicationDetailDto.setExpecedInterest(AmountConverter.convertCentToString(InterestCalculator.calculateTransferInterest(transferApplicationModel, investRepayModels, investFeeRate)));
         } else if (transferApplicationModel.getStatus() == TransferStatus.SUCCESS) {
             InvestModel investModel = investMapper.findById(transferApplicationModel.getInvestId());
             transferApplicationDetailDto.setLoginName(randomUtils.encryptMobileForCurrentLoginName(loginName, investModel.getLoginName(), investModel.getId(), Source.MOBILE));

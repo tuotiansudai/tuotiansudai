@@ -1,6 +1,5 @@
 package com.tuotiansudai.api.service.v1_0.impl;
 
-import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
@@ -9,10 +8,11 @@ import com.google.common.collect.UnmodifiableIterator;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppInvestListService;
 import com.tuotiansudai.api.util.PageValidUtils;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.InvestRepayMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.LoanRepayMapper;
+import com.tuotiansudai.coupon.repository.model.CouponModel;
+import com.tuotiansudai.coupon.repository.model.UserGroup;
+import com.tuotiansudai.coupon.service.CouponService;
+import com.tuotiansudai.enums.CouponType;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.LoanStatus;
@@ -55,6 +55,16 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
     @Autowired
     private PageValidUtils pageValidUtils;
 
+    @Autowired
+    private UserMapper userMapper;
+
+    @Autowired
+    private CouponService couponService;
+
+    private static String RED_ENVELOPE_DESCRIPTION = "%s元现金红包";
+
+    private static String INVEST_COUPON_DESCRIPTION = "%s加息券";
+
     @Override
     public BaseResponseDto generateInvestList(InvestListRequestDto investListRequestDto) {
         BaseResponseDto dto = new BaseResponseDto();
@@ -72,14 +82,17 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
         List<InvestModel> investModels = investMapper.findByStatus(loanId, (index - 1) * pageSize, pageSize, InvestStatus.SUCCESS);
         List<InvestRecordResponseDataDto> investRecordResponseDataDto = null;
         if (CollectionUtils.isNotEmpty(investModels)) {
-            investRecordResponseDataDto = Lists.transform(investModels, new Function<InvestModel, InvestRecordResponseDataDto>() {
-                @Override
-                public InvestRecordResponseDataDto apply(InvestModel input) {
-                    input.setLoginName(randomUtils.encryptMobileForCurrentLoginName(loginName, input.getLoginName(), input.getId(),Source.MOBILE));
-                    return new InvestRecordResponseDataDto(input);
-                }
+            investRecordResponseDataDto = Lists.transform(investModels, input -> {
+                input.setLoginName(randomUtils.encryptMobileForCurrentLoginName(loginName, input.getLoginName(), input.getId(), Source.MOBILE));
+                return new InvestRecordResponseDataDto(input);
             });
         }
+
+        LoanModel achievementLoanModel = loanMapper.findById(loanId);
+        List<LoanAchievementsResponseDto> loanAchievementsResponseDtoList = Lists.newArrayList(
+                getLoanAchievementsResponseDto(UserGroup.FIRST_INVEST_ACHIEVEMENT, achievementLoanModel.getFirstInvestAchievementId(), loginName),
+                getLoanAchievementsResponseDto(UserGroup.MAX_AMOUNT_ACHIEVEMENT, achievementLoanModel.getMaxAmountAchievementId(), loginName),
+                getLoanAchievementsResponseDto(UserGroup.LAST_INVEST_ACHIEVEMENT, achievementLoanModel.getLastInvestAchievementId(), loginName));
 
         dto.setCode(ReturnMessage.SUCCESS.getCode());
         dto.setMessage(ReturnMessage.SUCCESS.getMsg());
@@ -88,6 +101,7 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
         investListResponseDataDto.setIndex(index);
         investListResponseDataDto.setPageSize(pageSize);
         investListResponseDataDto.setTotalCount((int) count);
+        investListResponseDataDto.setAchievements(loanAchievementsResponseDtoList);
 
         //TODO:fake
         LoanModel loanModel = loanMapper.findById(41650602422768L);
@@ -111,7 +125,7 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
         int index = (requestDto.getIndex() - 1) * pageSize;
         List<InvestModel> investList;
         int investListCount;
-        if(isTransferApplicationTransferable(requestDto)){
+        if (isTransferApplicationTransferable(requestDto)) {
             investList = investMapper.findByLoginNameExceptTransfer(loginName, index, pageSize, false);
             UnmodifiableIterator<InvestModel> filter = Iterators.filter(investList.iterator(), new Predicate<InvestModel>() {
                 @Override
@@ -123,14 +137,14 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
             int fromIndex = index;
             int toIndex = fromIndex + pageSize;
             investListCount = investList.size();
-            if(fromIndex >= investList.size()){
+            if (fromIndex >= investList.size()) {
                 fromIndex = investList.size();
             }
-            if(toIndex >= investList.size()){
+            if (toIndex >= investList.size()) {
                 toIndex = investList.size();
             }
-            investList = investList.subList(fromIndex,toIndex);
-        }else{
+            investList = investList.subList(fromIndex, toIndex);
+        } else {
             investList = investMapper.findByLoginNameExceptTransfer(loginName, index, pageSize, true);
             investListCount = (int) investMapper.findCountByLoginNameExceptTransfer(loginName);
         }
@@ -197,5 +211,22 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
         }
         return list;
 
+    }
+
+    private LoanAchievementsResponseDto getLoanAchievementsResponseDto(UserGroup userGroup, Long investId, String loginName) {
+        LoanAchievementsResponseDto investAchievementResponseDto = new LoanAchievementsResponseDto(userGroup);
+        List<CouponModel> fistInvestCoupon = couponService.findCouponByUserGroup(Lists.newArrayList(userGroup));
+
+        fistInvestCoupon.forEach(
+                input -> investAchievementResponseDto.getCoupon().add((input.getCouponType().equals(CouponType.RED_ENVELOPE) ?
+                        String.format(RED_ENVELOPE_DESCRIPTION, AmountConverter.convertCentToString(input.getAmount()).replaceAll("\\.00", "")):
+                        String.format(INVEST_COUPON_DESCRIPTION, (input.getRate() * 100) + "%").replaceAll("\\.0", ""))));
+
+        if(investId != null){
+            UserModel userModel = userMapper.findByLoginName(investMapper.findById(investId).getLoginName());
+            investAchievementResponseDto.setMobile(randomUtils.encryptMobileForCurrentLoginName(loginName, userModel.getLoginName(), investId, Source.MOBILE));
+        }
+
+        return investAchievementResponseDto;
     }
 }

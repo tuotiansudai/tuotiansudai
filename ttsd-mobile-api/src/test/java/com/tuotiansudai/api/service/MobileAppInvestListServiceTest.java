@@ -5,10 +5,11 @@ import com.tuotiansudai.api.dto.BaseParamTest;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.impl.MobileAppInvestListServiceImpl;
 import com.tuotiansudai.api.util.PageValidUtils;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.InvestRepayMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.LoanRepayMapper;
+import com.tuotiansudai.coupon.repository.model.CouponModel;
+import com.tuotiansudai.coupon.repository.model.UserGroup;
+import com.tuotiansudai.coupon.service.CouponService;
+import com.tuotiansudai.enums.CouponType;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.LoanStatus;
@@ -17,6 +18,7 @@ import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.RandomUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.hamcrest.core.Is;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -30,6 +32,7 @@ import java.util.List;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.when;
 
@@ -66,6 +69,12 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
 
     @Mock
     private PageValidUtils pageValidUtils;
+
+    @Mock
+    private CouponService couponService;
+
+    @Mock
+    private UserMapper userMapper;
 
     private static int INVEST_COUNT = 110;
     private static long INTEREST = 1100L;
@@ -120,6 +129,9 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
 
         when(randomUtils.encryptMobileForCurrentLoginName(anyString(), anyString(), anyLong(), any(Source.class))).thenReturn("log***");
         when(pageValidUtils.validPageSizeLimit(anyInt())).thenReturn(10);
+        when(couponService.findCouponByUserGroup(anyList())).thenReturn(Lists.newArrayList());
+        when(userMapper.findByLoginName(anyString())).thenReturn(new UserModel());
+        when(loanMapper.findById(anyLong())).thenReturn(new LoanModel());
 
         InvestListRequestDto investListRequestDto = new InvestListRequestDto();
         BaseParam baseParam = new BaseParam();
@@ -200,5 +212,94 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
         assertEquals(com.tuotiansudai.api.dto.v1_0.InvestStatus.BID_SUCCESS.getCode(), dataDto.getInvestList().get(0).getInvestStatus());
         assertEquals(com.tuotiansudai.api.dto.v1_0.LoanStatus.RAISING.getCode(), dataDto.getInvestList().get(0).getLoanStatus());
         assertThat(dataDto.getInvestList().get(0).getTransferStatus(), is(TransferStatus.TRANSFERABLE.name()));
+    }
+
+
+    @Test
+    public void shouldLoanAchievementsIsOk() {
+        InvestModel investModel1 = new InvestModel();
+        investModel1.setId(1);
+        investModel1.setAmount(1000000L);
+        investModel1.setInvestTime(new Date());
+        investModel1.setInvestTime(new Date());
+        investModel1.setId(idGenerator.generate());
+        investModel1.setIsAutoInvest(false);
+        investModel1.setLoginName("loginName1");
+        investModel1.setLoanId(idGenerator.generate());
+        investModel1.setSource(Source.ANDROID);
+        investModel1.setStatus(InvestStatus.SUCCESS);
+        investModel1.setAchievements(Lists.newArrayList(InvestAchievement.MAX_AMOUNT));
+
+        InvestModel investModel2 = new InvestModel();
+        investModel2.setId(2);
+        investModel2.setAmount(1100000L);
+        investModel2.setInvestTime(new Date());
+        investModel2.setInvestTime(new Date());
+        investModel2.setId(idGenerator.generate());
+        investModel2.setIsAutoInvest(false);
+        investModel2.setLoginName("loginName2");
+        investModel2.setLoanId(idGenerator.generate());
+        investModel2.setSource(Source.WEB);
+        investModel2.setStatus(InvestStatus.SUCCESS);
+        investModel2.setAchievements(Lists.newArrayList(InvestAchievement.LAST_INVEST));
+
+        InvestModel investModel3 = new InvestModel();
+        investModel3.setId(3);
+        investModel3.setAmount(1200000L);
+        investModel3.setInvestTime(new Date());
+        investModel3.setInvestTime(new Date());
+        investModel3.setId(idGenerator.generate());
+        investModel3.setIsAutoInvest(false);
+        investModel3.setLoginName("loginName3");
+        investModel3.setLoanId(idGenerator.generate());
+        investModel3.setSource(Source.IOS);
+        investModel3.setStatus(InvestStatus.SUCCESS);
+        investModel3.setAchievements(Lists.newArrayList(InvestAchievement.FIRST_INVEST));
+
+        List<InvestModel> investModels = Lists.newArrayList();
+        investModels.add(investModel1);
+        investModels.add(investModel2);
+        investModels.add(investModel3);
+
+        LoanModel loanModel = new LoanModel();
+        loanModel.setFirstInvestAchievementId(investModel1.getId());
+        loanModel.setLastInvestAchievementId(investModel2.getId());
+        loanModel.setMaxAmountAchievementId(investModel3.getId());
+
+        CouponModel couponModel = new CouponModel();
+        couponModel.setUserGroup(UserGroup.FIRST_INVEST_ACHIEVEMENT);
+        couponModel.setCouponType(CouponType.RED_ENVELOPE);
+        couponModel.setAmount(1000);
+        CouponModel couponModel1 = new CouponModel();
+        couponModel1.setUserGroup(UserGroup.FIRST_INVEST_ACHIEVEMENT);
+        couponModel1.setCouponType(CouponType.INVEST_COUPON);
+        couponModel1.setRate(0.002);
+
+        UserModel userModel = new UserModel();
+        userModel.setMobile("15210001111");
+
+        List<CouponModel> couponModels = Lists.newArrayList(couponModel,couponModel1);
+
+        when(investMapper.findByStatus(anyLong(), anyInt(), anyInt(), any(InvestStatus.class))).thenReturn(investModels);
+        when(investMapper.findCountByStatus(anyLong(), any(InvestStatus.class))).thenReturn(3L);
+        when(randomUtils.encryptMobileForCurrentLoginName(anyString(), anyString(), anyLong(), any(Source.class))).thenReturn("log***");
+        when(pageValidUtils.validPageSizeLimit(anyInt())).thenReturn(10);
+        when(couponService.findCouponByUserGroup(anyList())).thenReturn(couponModels);
+        when(userMapper.findByLoginName(anyString())).thenReturn(userModel);
+        when(loanMapper.findById(anyLong())).thenReturn(loanModel);
+        when(investMapper.findById(anyLong())).thenReturn(investModel1);
+        when(randomUtils.encryptMobileForCurrentLoginName(anyString(),anyString(),anyLong(),any(Source.class))).thenReturn("152**11");
+
+        InvestListRequestDto investListRequestDto = new InvestListRequestDto();
+        BaseParam baseParam = new BaseParam();
+        baseParam.setUserId("");
+        investListRequestDto.setBaseParam(baseParam);
+        investListRequestDto.setLoanId("1111");
+        investListRequestDto.setIndex(1);
+        investListRequestDto.setPageSize(10);
+        BaseResponseDto<InvestListResponseDataDto> baseResponseDto = mobileAppInvestListService.generateInvestList(investListRequestDto);
+
+        assertTrue(CollectionUtils.isNotEmpty(baseResponseDto.getData().getAchievements()));
+        assertTrue(baseResponseDto.getData().getAchievements().size() == 3);
     }
 }

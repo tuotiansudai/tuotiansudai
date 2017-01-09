@@ -63,6 +63,7 @@ public class MobileAppActivityServiceImpl implements MobileAppActivityService {
         for (ActivityModel activityModel : activityModels) {
             ActivityCenterDataDto activityCenterDataDto = new ActivityCenterDataDto(activityModel);
             activityCenterDataDto.setImageUrl(staticServer + activityModel.getAppPictureUrl());
+            activityCenterDataDto.setVerticalImageUrl(staticServer + activityModel.getAppVerticalPictureUrl());
             activityCenterDataDtos.add(activityCenterDataDto);
         }
         ActivityCenterResponseDto activityCenterResponseDto = new ActivityCenterResponseDto();
