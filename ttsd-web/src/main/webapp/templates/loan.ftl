@@ -284,7 +284,7 @@
                                 </#if>
                             </@global.role>
 
-                            <input type="hidden" value="${loan.investor.skipAuth?c}" id="isSkipAuth">
+                            <input type="hidden" value="${loan.investor.authenticationRequired?c}" id="isAuthenticationRequired">
                             <input type="hidden" value="${loan.investor.anxinUser?c}" id="isAnxinUser">
                             <@global.role hasRole="'INVESTOR'">
                             <#if !loan.investor.anxinUser>
