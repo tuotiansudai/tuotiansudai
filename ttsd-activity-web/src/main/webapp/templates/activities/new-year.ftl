@@ -45,7 +45,7 @@
                 <#if signedIn?? && signedIn>
                     <a href="javascript:void(0);" class="normal-button" style="display: none">已签到</a>
                 <#else >
-                    <a href="javascript:void(0);" class="normal-button"  id="signToday" style="display: none">签到</a>
+                <button type="button" class="normal-button"  id="signToday" style="display: none">签到</button>
                 </#if>
             </span>
 
@@ -70,12 +70,9 @@
                 活动规则说明： <br/>
                 1、活动期间每日签到即可获得一次免费砸蛋机会；<br/>
                 2、活动期间每邀请1名好友注册可砸5次，上不封顶；<br/>
-                3、活动期间投资新年专享标，每满5000元即可砸1次，如单笔
-                投资10000元，可直接获得2次砸金蛋机会，每名用户活动
-                期间凭投资最多砸10次；<br/>
+                3、活动期间投资新年专享标，每满5000元即可砸1次，如单笔投资10000元，可直接获得2次砸金蛋机会，每名用户活动期间凭投资最多砸10次；<br/>
                 4、砸蛋机会需在活动有效期内使用，过期作废，请及时使用；<br/>
-                5、活动中有恶意刷奖的行为，一经查出拓天速贷有权追溯已发
-                放的奖励。
+                5、活动中有恶意刷奖的行为，一经查出拓天速贷有权追溯已发放的奖励。
                     </span>
             </div>
         </div>
@@ -274,10 +271,77 @@
         <#include "login-tip.ftl" />
         <a href="javascript:void(0)" class="show-login no-login-text"></a>
 
-        <div class="tip-list" style="display: none">
-            <div class="close-btn go-close"></div>
-            <div class="text-tip"></div>
-            <div class="btn-list"></div>
+        <div class="tip-list-frame">
+        <#--真实奖品的提示-->
+                <div class="tip-list" data-return="concrete">
+                    <div class="close-btn go-close"></div>
+                    <div class="text-tip">
+                        <p class="success-text">恭喜您！</p>
+                        <p class="reward-text">抽中了<em class="prizeValue"></em>！</p>
+                        <p class="des-text">拓天客服将会在7个工作日内联系您发放奖品</p>
+                    </div>
+                    <div class="btn-list"><a href="javascript:void(0)" class="go-on go-close">继续抽奖</a></div>
+                </div>
+
+            <#--虚拟奖品的提示-->
+                <div class="tip-list" data-return="virtual">
+                    <div class="close-btn go-close"></div>
+                    <div class="text-tip">
+                        <p class="success-text">恭喜您！</p>
+                        <p class="reward-text">抽中了<em class="prizeValue"></em>！</p>
+                        <p class="des-text">奖品已发放至“我的宝藏”当中。</p>
+                    </div>
+                    <div class="btn-list"><a href="javascript:void(0)" class="double-btn my-treasure">去查看</a> <a href="javascript:void(0)" class="go-on go-close">继续抽奖</a></div>
+                </div>
+
+             <#--没有抽奖机会-->
+                <div class="tip-list" data-return="nochance">
+                    <div class="close-btn go-close"></div>
+                    <div class="text-tip">
+                        <p class="login-text">您暂无抽奖机会啦～</p>
+                        <p class="des-text">赢取机会后再来抽奖吧！</p>
+                    </div>
+                    <div class="btn-list"><a href="javascript:void(0)" class="go-close">知道了</a></div>
+                </div>
+
+              <#--不在活动时间范围内-->
+                <div class="tip-list" data-return="expired">
+                    <div class="close-btn go-close"></div>
+                    <div class="text-tip">
+                        <p class="login-text">不在活动时间内~</p>
+                    </div>
+                    <div class="btn-list"><a href="javascript:void(0)" class="go-close">知道了</a></div>
+                </div>
+
+                <#--实名认证-->
+                <div class="tip-list" data-return="authentication">
+                    <div class="close-btn go-close"></div>
+                    <div class="text-tip">
+                        <p class="login-text">您还未实名认证~</p>
+                        <p class="des-text">请实名认证后再来抽奖吧！</p>
+                    </div>
+                    <div class="btn-list"><a href="javascript:void(0)" class="go-close">知道了</a></div>
+                </div>
+
+                <#--签到成功-->
+                <div class="tip-list" data-return="signOk">
+                    <div class="close-btn go-close"></div>
+                    <div class="text-tip">
+                        <p class="success-text">签到成功！</p>
+                        <p class="des-text">恭喜您获得砸金蛋机会一次</p>
+                    </div>
+                    <div class="btn-list"><a href="javascript:void(0)" class="go-close">知道了</a></div>
+                </div>
+
+            <#--签到失败-->
+                <div class="tip-list" data-return="signNo">
+                    <div class="close-btn go-close"></div>
+                    <div class="text-tip">
+                        <p class="login-text">请与客服联系</p>
+                    </div>
+                    <div class="btn-list"><a href="javascript:void(0)" class="go-close">知道了</a></div>
+                </div>
+
         </div>
 
 </div>

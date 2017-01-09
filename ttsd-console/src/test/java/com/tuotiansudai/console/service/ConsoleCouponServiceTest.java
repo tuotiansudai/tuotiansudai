@@ -8,6 +8,7 @@ import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
+import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.dto.RegisterUserDto;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.exception.CreateCouponException;
@@ -16,6 +17,7 @@ import com.tuotiansudai.repository.mapper.SmsCaptchaMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.UserService;
+import com.tuotiansudai.util.IdGenerator;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,8 +31,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -55,6 +56,12 @@ public class ConsoleCouponServiceTest {
     @Autowired
     private UserCouponMapper userCouponMapper;
 
+    @Autowired
+    private IdGenerator idGenerator;
+
+    @Autowired
+    private CouponService couponService;
+
     @Test
     public void shouldCreateCouponIsSuccess() throws CreateCouponException {
         UserModel userModel = fakeUserModel();
@@ -67,7 +74,7 @@ public class ConsoleCouponServiceTest {
     }
 
     @Test
-    public void shouldCreateInterestCouponSuccess() throws CreateCouponException{
+    public void shouldCreateInterestCouponSuccess() throws CreateCouponException {
         UserModel userModel = fakeUserModel();
         userMapper.create(userModel);
         ExchangeCouponDto exchangeCouponDto = fakeCouponDto(CouponType.INVEST_COUPON, UserGroup.ALL_USER);
@@ -141,9 +148,73 @@ public class ConsoleCouponServiceTest {
 
         List<UserCouponModel> userCouponModels = userCouponMapper.findByLoginName(registerUserDto.getLoginName(), null);
         CouponModel couponModel1 = couponMapper.findById(couponModel.getId());
- //       assertEquals(true, CollectionUtils.isNotEmpty(userCouponModels));
- //       assertEquals(1, couponModel1.getIssuedCount());
+        //       assertEquals(true, CollectionUtils.isNotEmpty(userCouponModels));
+        //       assertEquals(1, couponModel1.getIssuedCount());
 
+    }
+
+    @Test
+    public void shouldFindCouponByUserGroupIsOk() {
+        String loginName = "testCoupon";
+        UserModel userModel = fakeUserModel();
+        userModel.setLoginName(loginName);
+        userMapper.create(userModel);
+
+        List<CouponModel> firstCoupons = couponService.findCouponByUserGroup(Lists.newArrayList(UserGroup.FIRST_INVEST_ACHIEVEMENT));
+        List<CouponModel> lastCoupons = couponService.findCouponByUserGroup(Lists.newArrayList(UserGroup.LAST_INVEST_ACHIEVEMENT));
+        List<CouponModel> maxCoupons = couponService.findCouponByUserGroup(Lists.newArrayList(UserGroup.MAX_AMOUNT_ACHIEVEMENT));
+        List<CouponModel> allCoupons = couponService.findCouponByUserGroup(Lists.newArrayList(UserGroup.FIRST_INVEST_ACHIEVEMENT,
+                UserGroup.LAST_INVEST_ACHIEVEMENT, UserGroup.MAX_AMOUNT_ACHIEVEMENT, UserGroup.MEMBERSHIP_V4));
+
+        couponMapper.create(fakeCouponModel(loginName, UserGroup.FIRST_INVEST_ACHIEVEMENT));
+        couponMapper.create(fakeCouponModel(loginName, UserGroup.LAST_INVEST_ACHIEVEMENT));
+        couponMapper.create(fakeCouponModel(loginName, UserGroup.MAX_AMOUNT_ACHIEVEMENT));
+        couponMapper.create(fakeCouponModel(loginName, UserGroup.MEMBERSHIP_V4));
+
+        List<CouponModel> newCoupons = couponService.findCouponByUserGroup(Lists.newArrayList(UserGroup.FIRST_INVEST_ACHIEVEMENT));
+        assertTrue((firstCoupons.size() + 1) == newCoupons.size());
+        newCoupons = couponService.findCouponByUserGroup(Lists.newArrayList(UserGroup.LAST_INVEST_ACHIEVEMENT));
+        assertTrue((lastCoupons.size() + 1) == newCoupons.size());
+        newCoupons = couponService.findCouponByUserGroup(Lists.newArrayList(UserGroup.MAX_AMOUNT_ACHIEVEMENT));
+        assertTrue((maxCoupons.size() + 1) == newCoupons.size());
+        newCoupons = couponService.findCouponByUserGroup(Lists.newArrayList(UserGroup.FIRST_INVEST_ACHIEVEMENT,
+                UserGroup.LAST_INVEST_ACHIEVEMENT, UserGroup.MAX_AMOUNT_ACHIEVEMENT, UserGroup.MEMBERSHIP_V4));
+        assertTrue((allCoupons.size() + 4) == newCoupons.size());
+    }
+
+    private CouponModel fakeCouponModel(String loginName, UserGroup userGroup) {
+        CouponModel couponModel = new CouponModel();
+        couponModel.setId(idGenerator.generate());
+        couponModel.setAmount(1000L);
+        couponModel.setRate(0.1);
+        couponModel.setBirthdayBenefit(0.5);
+        couponModel.setMultiple(false);
+        couponModel.setStartTime(DateTime.now().plusDays(-1).toDate());
+        couponModel.setEndTime(DateTime.now().plusDays(1).toDate());
+        couponModel.setDeadline(10);
+        couponModel.setUsedCount(500L);
+        couponModel.setTotalCount(1000L);
+        couponModel.setActive(true);
+        couponModel.setShared(true);
+        couponModel.setCreatedTime(new Date());
+        couponModel.setCreatedBy(loginName);
+        couponModel.setActivatedBy(loginName);
+        couponModel.setActivatedTime(new Date());
+        couponModel.setUpdatedBy(loginName);
+        couponModel.setUpdatedTime(new Date());
+        couponModel.setIssuedCount(200);
+        couponModel.setActualAmount(120);
+        couponModel.setInvestLowerLimit(100);
+        couponModel.setProductTypes(Lists.newArrayList(ProductType._30, ProductType._90));
+        couponModel.setCouponType(CouponType.INVEST_COUPON);
+        couponModel.setSmsAlert(true);
+        couponModel.setUserGroup(UserGroup.FIRST_INVEST_ACHIEVEMENT);
+        couponModel.setTotalInvestAmount(150);
+        couponModel.setDeleted(false);
+        couponModel.setImportIsRight(true);
+        couponModel.setCouponSource("couponSource");
+        couponModel.setUserGroup(userGroup);
+        return couponModel;
     }
 
     private UserModel fakeUserModel() {

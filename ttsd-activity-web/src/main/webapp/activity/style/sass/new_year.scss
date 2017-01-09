@@ -61,6 +61,7 @@ body {
     line-height: 25px;
     margin-left: 35px;
     width: 220px;
+    border:0;
     box-shadow: inset 0px -4px 0px #e06c00,inset 0px 2px 1px #fff42c;
   }
   .title-main-col {
@@ -103,7 +104,8 @@ body {
     position: relative;
     .activity-note {
       color: #ffee00;
-      padding-top:15px;
+      padding: 15px 30px 5px 30px;
+      font-size: 15px;
     }
   }
 
@@ -187,6 +189,7 @@ body {
     border-radius:15px;
     margin-top:25px;
     padding: 22px;
+    line-height: 36px;
     .text-box {
       width:50%;
       float: left;
@@ -194,7 +197,7 @@ body {
       font-size: 16px;
       span {
         display: inline-block;
-        padding-right:20px;
+        padding-right:15px;
         border-right: 1px dashed #9f4c00;
       }
     }

@@ -4,6 +4,7 @@ import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.JpushRequestDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.service.v1_0.MobileAppJpushService;
+import com.tuotiansudai.spring.LoginUserInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.log4j.Logger;
@@ -20,6 +21,7 @@ import java.text.MessageFormat;
 @RestController
 @Api(description = "记录用户JPUSH ID")
 public class MobileAppJpushController extends MobileAppBaseController {
+
     static Logger log = Logger.getLogger(MobileAppJpushController.class);
 
     @Autowired
@@ -27,17 +29,9 @@ public class MobileAppJpushController extends MobileAppBaseController {
 
     @RequestMapping(value = "/jpush", method = RequestMethod.POST)
     @ApiOperation("记录用户JPUSH ID")
-    public BaseResponseDto storeJPushId(@Valid @RequestBody JpushRequestDto jPushRequestDto,BindingResult bindingResult){
-        if (bindingResult.hasErrors()) {
-            String errorCode = bindingResult.getFieldError().getDefaultMessage();
-            String errorMessage = ReturnMessage.getErrorMsgByCode(errorCode);
-            log.debug(MessageFormat.format("{0}:{1}",errorCode,errorMessage));
-            return new BaseResponseDto(errorCode, errorMessage);
-        } else {
-            jPushRequestDto.getBaseParam().setUserId(getLoginName());
-            return mobileAppJPushService.storeJpushId(jPushRequestDto);
-        }
-
+    public BaseResponseDto storeJPushId(@Valid @RequestBody JpushRequestDto jPushRequestDto) {
+        jPushRequestDto.getBaseParam().setUserId(LoginUserInfo.getLoginName());
+        return mobileAppJPushService.storeJPushId(LoginUserInfo.getLoginName(), jPushRequestDto.getBaseParam().getPlatform(), jPushRequestDto.getJpushId());
     }
 
 }

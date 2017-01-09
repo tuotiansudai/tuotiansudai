@@ -6,8 +6,7 @@ dependencies {
     compile project(':ttsd-web-common-config'),
             project(':ttsd-service'),
             project(':ttsd-point-service'),
-            project(':ttsd-message'),
-            project(':ttsd-jpush'),
+            project(':ttsd-message-service'),
             project(':ttsd-activity-service'),
             project(':ttsd-util'),
             project(':ttsd-edxactivity-repository'),
@@ -21,6 +20,12 @@ dependencies {
 }
 
 war {
-    archiveName "ROOT.war"
+    archiveName "ttsd-mobile-api.war"
     destinationDir = file("war")
+}
+
+task renameWar {
+    doLast {
+        file("${project.projectDir.getPath()}/war/ttsd-mobile-api.war").renameTo(file("${project.projectDir.getPath()}/war/ROOT.war"))
+    }
 }
