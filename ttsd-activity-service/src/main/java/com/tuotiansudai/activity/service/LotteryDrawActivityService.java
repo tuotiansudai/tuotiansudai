@@ -90,6 +90,9 @@ public class LotteryDrawActivityService {
     @Value("${activity.autumn.endTime}")
     private String autumnEndTime;
 
+    @Value("#{'${activity.spring.festival.period}'.split('\\~')}")
+    private List<String> springFestivalTime = Lists.newArrayList();
+
     //往期活动任务
     private final List activityTasks = Lists.newArrayList(ActivityDrawLotteryTask.REGISTER, ActivityDrawLotteryTask.EACH_REFERRER,
             ActivityDrawLotteryTask.EACH_REFERRER_INVEST, ActivityDrawLotteryTask.CERTIFICATION, ActivityDrawLotteryTask.BANK_CARD,
@@ -99,9 +102,12 @@ public class LotteryDrawActivityService {
             ActivityDrawLotteryTask.EACH_INVEST_5000);
 
     //圣诞活动活动任务
-        private final List christmasTasks = Lists.newArrayList(ActivityDrawLotteryTask.REGISTER, ActivityDrawLotteryTask.EACH_REFERRER,
-                ActivityDrawLotteryTask.EACH_REFERRER_INVEST, ActivityDrawLotteryTask.CERTIFICATION, ActivityDrawLotteryTask.INVEST,
-                ActivityDrawLotteryTask.EACH_INVEST_2000);
+    private final List christmasTasks = Lists.newArrayList(ActivityDrawLotteryTask.REGISTER, ActivityDrawLotteryTask.EACH_REFERRER,
+            ActivityDrawLotteryTask.EACH_REFERRER_INVEST, ActivityDrawLotteryTask.CERTIFICATION, ActivityDrawLotteryTask.INVEST,
+            ActivityDrawLotteryTask.EACH_INVEST_2000);
+
+    //春节活动任务
+    private final List springFestivalTasks = Lists.newArrayList(ActivityDrawLotteryTask.EACH_ACTIVITY_SIGN_IN);
 
     public static final String ACTIVITY_DESCRIPTION = "新年专享";
 
@@ -309,6 +315,8 @@ public class LotteryDrawActivityService {
                 return countDrawLotteryTime(userModel, activityCategory, newYearsActivityTask);
             case CHRISTMAS_ACTIVITY:
                 return countDrawLotteryTime(userModel, activityCategory, christmasTasks);
+            case SPRING_FESTIVAL_ACTIVITY:
+                return countDrawLotteryTime(userModel, activityCategory, springFestivalTasks);
         }
         return lotteryTime;
     }
@@ -376,7 +384,7 @@ public class LotteryDrawActivityService {
                     long investAwardTime = sumInvestAmount / EACH_INVEST_AMOUNT_50000;
                     if (investAwardTime <= 10) {
                         time += investAwardTime;
-                    }else{
+                    } else {
                         time += 10;
                     }
                     break;
@@ -423,6 +431,7 @@ public class LotteryDrawActivityService {
                 .put(ActivityCategory.ANNUAL_ACTIVITY, annualTime)
                 .put(ActivityCategory.NATIONAL_PRIZE, Lists.newArrayList(nationalStartTime, nationalEndTime))
                 .put(ActivityCategory.AUTUMN_PRIZE, Lists.newArrayList(autumnStartTime, autumnEndTime))
+                .put(ActivityCategory.SPRING_FESTIVAL_ACTIVITY, springFestivalTime)
                 .build()).get(activityCategory);
     }
 
