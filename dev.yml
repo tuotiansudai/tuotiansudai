@@ -7,6 +7,7 @@ sign-in:
     - "20001:80"
   links:
     - "redis-server"
+  command: ["/usr/bin/supervisord"]
 
 web:
   image: "andreptb/tomcat:8-jdk8"
