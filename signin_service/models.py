@@ -25,13 +25,3 @@ class UserRole(db.Model):
 
     def __repr__(self):
         return '<Role %s:%s>' % (self.role, self.username)
-
-
-class LoginLog:
-    def __init__(self, login_name, source, ip, device, success):
-        self.login_name = login_name
-        self.source = source
-        self.ip = ip
-        self.device = device
-        self.login_time = int(time.time()*1000)
-        self.success = success

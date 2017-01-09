@@ -156,9 +156,15 @@ class LoginManager(object):
             return self._fail_login('用户不存在', save_log=False)
 
     def _save_log(self, is_success):
-        login_log = LoginLog(self.form.username.data, self.form.source.data, self.ip_address,
-                             self.form.device_id.data, is_success)
-        producer.send_message(json.dumps(login_log.__dict__))
+        login_log = dict(
+            login_name=self.form.username.data,
+            source=self.form.source.data,
+            ip=self.ip_address,
+            device=self.form.device_id.data,
+            login_time=int(time.time() * 1000),
+            success=is_success
+        )
+        producer.send_message(json.dumps(login_log))
 
 
 def active(username):
