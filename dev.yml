@@ -43,6 +43,7 @@ console:
     - "redis-server"
     - "static-server"
     - "sign-in"
+    - "ask-rest-service"
 
 activity-console:
   image: "andreptb/tomcat:8-jdk8"
@@ -271,8 +272,6 @@ user-mq-consumer:
 
 ask-rest-service:
   image: "anapsix/alpine-java:8_jdk"
-  ports:
-    - "20030:8080"
   environment:
     - "TZ=Asia/Shanghai"
     - "JAVA_OPTS=-Xmx1024m"
@@ -354,3 +353,4 @@ ask:
     - "redis-server"
     - "static-server"
     - "sign-in"
+    - "ask-rest-service"
