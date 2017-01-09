@@ -32,10 +32,10 @@
             <if test="loginName != null and loginName != ''">
                 and login_name = #{loginName}
             </if>
-            <if test="pointType == 'earn'">
+            <if test="pointType == 'INCOME'">
                 and point >= 0
             </if>
-            <if test="pointType == 'use'">
+            <if test="pointType == 'EXPENSE'">
                 <![CDATA[ and point < 0 ]]>
             </if>
             <if test="businessTypes != null and businessTypes.size() > 0 ">
