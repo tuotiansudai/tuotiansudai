@@ -248,7 +248,7 @@ public class EmbodyQuestionService {
                     continue;
                 }
                 QuestionModel questionModel = questionService.findById(Long.parseLong(questionId));
-                if (questionModel != null && !questionModel.isEmbody()) {
+                if (questionModel != null && !questionModel.isEmbody() && (questionModel.getStatus() == QuestionStatus.UNAPPROVED || questionModel.getStatus() == QuestionStatus.RESOLVED)) {
                     questionService.updateEmbodyById(Long.parseLong(questionId));
                     listSuccess.add(strVal);
                 }
