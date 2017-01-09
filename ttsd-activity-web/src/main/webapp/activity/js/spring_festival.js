@@ -28,6 +28,7 @@ require(['jquery', 'layerWrapper','commonFun','jquery.ajax.extension','logintip'
             })
             .done(function(data) {
                 $('#numText').text(data.prize);
+                $self.addClass('active').text('已签到');
                 layer.open({
                   type: 1,
                   move:false,
