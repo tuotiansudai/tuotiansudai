@@ -272,18 +272,18 @@ public class LoanDetailServiceImpl implements LoanDetailService {
             if (loanModel.getFirstInvestAchievementId() != null) {
                 InvestModel firstInvest = investMapper.findById(loanModel.getFirstInvestAchievementId());
                 achievementDto.setFirstInvestAchievementDate(firstInvest.getTradingTime());
-                achievementDto.setFirstInvestAchievementMobile(randomUtils.encryptMobileForCurrentLoginName(loginName, firstInvest.getLoginName(), Source.WEB));
+                achievementDto.setFirstInvestAchievementMobile(randomUtils.encryptMobileForCurrentLoginName(loginName, firstInvest.getLoginName(),  loanModel.getFirstInvestAchievementId(), Source.WEB));
             }
             if (loanModel.getMaxAmountAchievementId() != null) {
                 InvestModel maxInvest = investMapper.findById(loanModel.getMaxAmountAchievementId());
                 long amount = investMapper.sumSuccessInvestAmountByLoginName(loanModel.getId(), maxInvest.getLoginName());
                 achievementDto.setMaxAmountAchievementAmount(AmountConverter.convertCentToString(amount));
-                achievementDto.setMaxAmountAchievementMobile(randomUtils.encryptMobileForCurrentLoginName(loginName, maxInvest.getLoginName(), Source.WEB));
+                achievementDto.setMaxAmountAchievementMobile(randomUtils.encryptMobileForCurrentLoginName(loginName, maxInvest.getLoginName(), loanModel.getMaxAmountAchievementId(), Source.WEB));
             }
             if (loanModel.getLastInvestAchievementId() != null) {
                 InvestModel lastInvest = investMapper.findById(loanModel.getLastInvestAchievementId());
                 achievementDto.setLastInvestAchievementDate(lastInvest.getTradingTime());
-                achievementDto.setLastInvestAchievementMobile(randomUtils.encryptMobileForCurrentLoginName(loginName, lastInvest.getLoginName(), Source.WEB));
+                achievementDto.setLastInvestAchievementMobile(randomUtils.encryptMobileForCurrentLoginName(loginName, lastInvest.getLoginName(), loanModel.getLastInvestAchievementId(), Source.WEB));
             }
             loanDto.setAchievement(achievementDto);
 

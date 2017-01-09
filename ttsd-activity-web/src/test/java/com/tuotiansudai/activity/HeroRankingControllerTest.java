@@ -79,8 +79,8 @@ public class HeroRankingControllerTest {
         LoanModel loanModel = new LoanModel();
         loanModel.setStatus(LoanStatus.COMPLETE);
 
-        when(heroRankingService.obtainHeroRanking(any(ActivityCategory.class),any(Date.class))).thenReturn(heroRankingViews);
-        when(randomUtils.encryptMobileForCurrentLoginName(anyString(),anyString(),any(Source.class))).thenReturn(heroRankingView.getLoginName());
+        when(heroRankingService.obtainHeroRanking(any(ActivityCategory.class), any(Date.class))).thenReturn(heroRankingViews);
+        when(randomUtils.encryptMobileForCurrentLoginName(anyString(), anyString(), null, any(Source.class))).thenReturn(heroRankingView.getLoginName());
         when(loanMapper.findById(anyLong())).thenReturn(loanModel);
 
         this.mockMvc.perform(get("/activity/hero-ranking/invest/2016-07-05"))

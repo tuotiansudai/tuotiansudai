@@ -28,33 +28,29 @@ public class RandomUtils {
     @Autowired
     private UserMapper userMapper;
 
-    public String encryptMobileForCurrentLoginName(String loginName, String investorLoginName, long investId, Source source) {
-        String investorMobile = userMapper.findByLoginName(investorLoginName).getMobile();
+    public String encryptMobileForCurrentLoginName(String loginName, String encryptLoginName, Long investId, Source source) {
+        String  originalMobile = userMapper.findByLoginName(encryptLoginName).getMobile();
 
-        if (investorLoginName.equalsIgnoreCase(loginName)) {
-            return investorMobile;
-        }
-
-        return source.equals(Source.WEB) ? MobileEncryptor.encryptWebMiddleMobile(encryptMobile) : MobileEncryptor.encryptAppMiddleMobile(encryptMobile)
-    }
-
-    public String encryptMobileForCurrentLoginName(String loginName, String encryptLoginName, Source source) {
         if (encryptLoginName.equalsIgnoreCase(loginName)) {
-            return userMapper.findByLoginName(loginName).getMobile();
+            return originalMobile;
         }
 
-        String mobile = userMapper.findByLoginName(encryptLoginName).getMobile();
+        String originalOrFakeMobile = this.getOriginalOrFakeMobile(investId, originalMobile);
 
-        return source.equals(Source.WEB) ? MobileEncryptor.encryptWebMiddleMobile(mobile) : MobileEncryptor.encryptAppMiddleMobile(mobile)
+        return source.equals(Source.WEB) ? MobileEncryptor.encryptWebMiddleMobile(originalOrFakeMobile) : MobileEncryptor.encryptAppMiddleMobile(originalOrFakeMobile);
     }
 
-    private String getOriginalOrFakeMobile(long investId, String originalMobile) {
+    private String getOriginalOrFakeMobile(Long investId, String originalMobile) {
+        if (investId == null) {
+            return originalMobile;
+        }
+
         String redisKey = MessageFormat.format(REDIS_KEY_TEMPLATE, String.valueOf(investId), originalMobile);
 
-        if (showRandomLoginNameList.contains(investorLoginName) && !redisWrapperClient.exists(redisKey)) {
-            redisWrapperClient.set(redisKey, investorMobile.substring(0, 3) + MobileEncryptor.showChar(4) + generateNumString());
+        if (showRandomLoginNameList.contains(originalMobile) && !redisWrapperClient.exists(redisKey)) {
+            redisWrapperClient.set(redisKey, originalMobile.substring(0, 3) + MobileEncryptor.showChar(4) + generateNumString());
         }
-        String encryptMobile = redisWrapperClient.exists(redisKey) ? redisWrapperClient.get(redisKey) : investorMobile;
+        return redisWrapperClient.exists(redisKey) ? redisWrapperClient.get(redisKey) : originalMobile;
     }
 
     private String generateNumString() {

@@ -158,7 +158,7 @@ public class PointLotteryServiceImpl implements PointLotteryService {
         List<UserPointPrizeModel> userPointPrizeModels = userPointPrizeMapper.findAllDescCreatedTime();
         return userPointPrizeModels.stream().map(input -> {
             String loginName = input.isReality() ?
-                    randomUtils.encryptMobileForCurrentLoginName(null, input.getLoginName(), Source.WEB) :
+                    randomUtils.encryptMobileForCurrentLoginName(null, input.getLoginName(), null, Source.WEB) :
                     input.getLoginName();
             return new UserPointPrizeDto(loginName,
                     pointPrizeMapper.findById(input.getPointPrizeId()).getDescription(),
