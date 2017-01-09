@@ -6,7 +6,7 @@ public interface CouponLoanOutService {
 
     boolean sendRedEnvelope(long loanId);
 
-    String transferRedEnvelopCallBack(Map<String, String> paramsMap, String queryString);
+    String transferRedEnvelopNotify(Map<String, String> paramsMap, String queryString);
 
-    boolean sendRedEnvelopTransferInBalance(long userCouponId);
+    boolean sendRedEnvelopTransferInBalanceCallBack(long userCouponId);
 }

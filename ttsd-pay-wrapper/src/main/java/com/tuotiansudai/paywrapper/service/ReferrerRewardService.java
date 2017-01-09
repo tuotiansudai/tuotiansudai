@@ -6,7 +6,7 @@ public interface ReferrerRewardService {
 
     boolean rewardReferrer(long loanId);
 
-    boolean transferReferrerReward(long orderId);
+    boolean transferReferrerCallBack(long orderId);
 
-    String transferReferrerRewardCallBack(Map<String, String> paramsMap, String queryString);
+    String transferReferrerRewardNotify(Map<String, String> paramsMap, String queryString);
 }

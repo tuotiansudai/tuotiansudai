@@ -169,7 +169,7 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
     }
 
     @Override
-    public String transferReferrerRewardCallBack(Map<String, String> paramsMap, String queryString) {
+    public String transferReferrerRewardNotify(Map<String, String> paramsMap, String queryString) {
         logger.info("[标的放款] transfer referrer reward  call back begin.");
         BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(
                 paramsMap,
@@ -201,7 +201,8 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
     }
 
     @Override
-    public boolean transferReferrerReward(long investReferrerRewardId) {
+    public boolean transferReferrerCallBack(long investReferrerRewardId) {
+        logger.info("[标的放款] transfer referrer callBack start.");
         InvestReferrerRewardModel investReferrerRewardModel = investReferrerRewardMapper.findById(investReferrerRewardId);
         if (investReferrerRewardModel.getStatus().equals(ReferrerRewardStatus.SUCCESS)) {
             return true;
@@ -216,8 +217,8 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
         long amount = investReferrerRewardModel.getAmount();
         long orderId = investReferrerRewardModel.getId();
         try {
-            investReferrerRewardMapper.update(investReferrerRewardModel);
             if (investReferrerRewardModel.getStatus() == ReferrerRewardStatus.SUCCESS) {
+                investReferrerRewardMapper.update(investReferrerRewardModel);
                 logger.info(MessageFormat.format("[标的放款]:发送推荐人奖励,推荐人:{0},投资ID:{1},推荐人奖励:{2}", referrerLoginName, orderId, amount));
                 amountTransfer.transferInBalance(referrerLoginName, orderId, amount, UserBillBusinessType.REFERRER_REWARD, null, null);
                 InvestModel investModel = investMapper.findById(investReferrerRewardModel.getInvestId());

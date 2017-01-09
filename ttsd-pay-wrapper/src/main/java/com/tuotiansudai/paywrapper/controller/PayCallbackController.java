@@ -283,21 +283,21 @@ public class PayCallbackController {
         return new ModelAndView("/callback_response", "content", responseData);
     }
 
-    @RequestMapping(value = "/transfer_referrer_reward", method = RequestMethod.GET)
+    @RequestMapping(value = "/transfer_referrer_reward_notify", method = RequestMethod.GET)
     public ModelAndView transferReferrerReward(HttpServletRequest request) {
-        logger.info("[标的放款] loan out success transfer referrer reward start");
+        logger.info("[标的放款] transfer_referrer_reward_notify start");
         Map<String, String> paramsMap = this.parseRequestParameters(request);
-        String responseData =  this.referrerRewardService.transferReferrerRewardCallBack(paramsMap, request.getQueryString());
-        logger.info(MessageFormat.format("[标的放款] loan out success transfer referrer reward end , responseData:{0}", responseData));
+        String responseData =  this.referrerRewardService.transferReferrerRewardNotify(paramsMap, request.getQueryString());
+        logger.info(MessageFormat.format("[标的放款] transfer_referrer_reward_notify end , responseData:{0}", responseData));
         return new ModelAndView("/callback_response", "content", responseData);
     }
 
-    @RequestMapping(value = "/transfer_coupon", method = RequestMethod.GET)
+    @RequestMapping(value = "/transfer_coupon_notify", method = RequestMethod.GET)
     public ModelAndView transferRedEnvelopCallBack(HttpServletRequest request) {
-        logger.info("[标的放款] loan out success transfer redEnvelop start");
+        logger.info("[标的放款] transfer_coupon_notify start");
         Map<String, String> paramsMap = this.parseRequestParameters(request);
-        String responseData =  this.couponLoanOutService.transferRedEnvelopCallBack(paramsMap, request.getQueryString());
-        logger.info(MessageFormat.format("[标的放款] loan out success transfer redEnvelop end , responseData:{0}", responseData));
+        String responseData =  this.couponLoanOutService.transferRedEnvelopNotify(paramsMap, request.getQueryString());
+        logger.info(MessageFormat.format("[标的放款] transfer_referrer_reward_notify end , responseData:{0}", responseData));
         return new ModelAndView("/callback_response", "content", responseData);
     }
 

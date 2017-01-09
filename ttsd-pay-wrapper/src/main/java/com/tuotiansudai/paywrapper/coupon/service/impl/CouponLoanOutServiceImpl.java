@@ -93,7 +93,7 @@ public class CouponLoanOutServiceImpl implements CouponLoanOutService {
     }
 
     @Override
-    public String transferRedEnvelopCallBack(Map<String, String> paramsMap, String queryString) {
+    public String transferRedEnvelopNotify(Map<String, String> paramsMap, String queryString) {
         logger.info("[标的放款] transfer red envelop call back begin.");
         BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(
                 paramsMap,
@@ -122,9 +122,12 @@ public class CouponLoanOutServiceImpl implements CouponLoanOutService {
     }
 
     @Override
-    public boolean sendRedEnvelopTransferInBalance(long userCouponId) {
-        logger.info(MessageFormat.format("[标的放款] send redEnvelop transfer in balance, userCouponId:{0}", String.valueOf(userCouponId)));
+    public boolean sendRedEnvelopTransferInBalanceCallBack(long userCouponId) {
+        logger.info(MessageFormat.format("[标的放款] send redEnvelop transfer in balance callBack, userCouponId:{0}", String.valueOf(userCouponId)));
         UserCouponModel userCouponModel = userCouponMapper.findById(userCouponId);
+        if (userCouponModel.getActualInterest() == 0) {
+            return true;
+        }
         CouponModel couponModel = this.couponMapper.findById(userCouponModel.getCouponId());
         long transferAmount = couponModel.getAmount();
         try {

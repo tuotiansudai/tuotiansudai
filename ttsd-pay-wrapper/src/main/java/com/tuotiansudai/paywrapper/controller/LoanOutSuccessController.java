@@ -158,7 +158,7 @@ public class LoanOutSuccessController {
     @ResponseBody
     @RequestMapping(value = "/transfer-referrer-reward-callback", method = RequestMethod.POST)
     public BaseDto<PayDataDto> transferReferrerRewardCallBack(@RequestBody long investReferrerRewardId) {
-        boolean isSuccess = referrerRewardService.transferReferrerReward(investReferrerRewardId);
+        boolean isSuccess = referrerRewardService.transferReferrerCallBack(investReferrerRewardId);
         BaseDto<PayDataDto> dto = new BaseDto<>();
         PayDataDto dataDto = new PayDataDto();
         dto.setData(dataDto);
@@ -169,7 +169,7 @@ public class LoanOutSuccessController {
     @ResponseBody
     @RequestMapping(value = "/transfer-red-envelop-callback", method = RequestMethod.POST)
     public BaseDto<PayDataDto> transferRedEnvelopForCallBack(@RequestBody long userCouponId) {
-        boolean isSuccess = couponLoanOutService.sendRedEnvelopTransferInBalance(userCouponId);
+        boolean isSuccess = couponLoanOutService.sendRedEnvelopTransferInBalanceCallBack(userCouponId);
         BaseDto<PayDataDto> dto = new BaseDto<>();
         PayDataDto dataDto = new PayDataDto();
         dto.setData(dataDto);
