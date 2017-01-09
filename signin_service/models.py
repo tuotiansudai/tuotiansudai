@@ -1,4 +1,3 @@
-import time
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()

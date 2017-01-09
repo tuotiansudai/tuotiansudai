@@ -3,7 +3,7 @@ import hashlib
 import json
 import uuid
 import redis
-from models import User, LoginLog
+from models import User
 import settings
 from logging_config import logger
 from producer import producer
