@@ -4,6 +4,20 @@
 	height: 100%;
 	overflow: hidden;
 	:global {
+		.back-link{
+			position: fixed;
+			top:30px;/*px*/
+			left:20px;/*px*/
+			background:url('back-icon.png') no-repeat center;
+			background-size:100%;
+			width:80px;/*px*/
+			height:80px;/*px*/
+			line-height:80px;/*px*/
+			text-align:center;
+			border-radius:80px;/*px*/
+			font-size:40px;/*px*/
+			color:#fff;
+		}
 		article {
 			padding: 40px 30px;
 			font-size: 28px;/*px*/

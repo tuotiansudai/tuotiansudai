@@ -13,15 +13,16 @@ import java.util.List;
 
 public class InvestRecordResponseDataDto {
 
-    @ApiModelProperty(value = "用户名", example = "王拓天")
+    @ApiModelProperty(value = "出借人", example = "王拓天")
     private String userName;
 
-    @ApiModelProperty(value = "投资时间", example = "2016-11-24 12:22:12")
+    @ApiModelProperty(value = "出借时间", example = "2016-11-24 12:22:12")
     private String investTime;
 
-    @ApiModelProperty(value = "投资金额", example = "100")
+    @ApiModelProperty(value = "出借金额", example = "100")
     private String investMoney;
 
+    @ApiModelProperty(value = "标王称号", example = "FIRST_INVEST(首投),MAX_AMOUNT(标王),LAST_INVEST(尾投)")
     private List<InvestAchievement> achievements;
 
     public String getUserName() {

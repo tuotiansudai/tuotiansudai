@@ -15,6 +15,7 @@
         <result column="description" property="description"/>
         <result column="web_picture_url" property="webPictureUrl"/>
         <result column="app_picture_url" property="appPictureUrl"/>
+        <result column="app_vertical_picture_url" property="appVerticalPictureUrl"/>
         <result column="activated_time" property="activatedTime"/>
         <result column="expired_time" property="expiredTime"/>
         <result column="source" property="source"
@@ -34,11 +35,11 @@
 
     <insert id="create" parameterType="ActivityModel" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO `edxactivity`.`activity`
-        (title, web_activity_url, app_activity_url, jump_to_link, description, web_picture_url, app_picture_url, activated_time,
+        (title, web_activity_url, app_activity_url, app_vertical_picture_url, jump_to_link, description, web_picture_url, app_picture_url, activated_time,
         expired_time, source, status, created_by, created_time, updated_by, updated_time, activated_by,share_title,
         share_content,share_url,seq,long_term)
         VALUES
-        (#{title}, #{webActivityUrl}, #{appActivityUrl}, #{jumpToLink}, #{description}, #{webPictureUrl}, #{appPictureUrl}, #{activatedTime},
+        (#{title}, #{webActivityUrl}, #{appActivityUrl}, #{appVerticalPictureUrl}, #{jumpToLink}, #{description}, #{webPictureUrl}, #{appPictureUrl}, #{activatedTime},
         #{expiredTime}, #{source,typeHandler=com.tuotiansudai.util.mybatis.SourceListTypeHandler}, #{status}, #{createdBy}, #{createdTime}, #{updatedBy},#{updatedTime}, #{activatedBy},
         #{shareTitle},#{shareContent},#{shareUrl},#{seq},#{longTerm})
     </insert>
@@ -53,6 +54,7 @@
         description = #{description},
         web_picture_url = #{webPictureUrl},
         app_picture_url = #{appPictureUrl},
+        app_vertical_picture_url = #{appVerticalPictureUrl},
         activated_time = #{activatedTime},
         expired_time = #{expiredTime},
         source = #{source,typeHandler=com.tuotiansudai.util.mybatis.SourceListTypeHandler},

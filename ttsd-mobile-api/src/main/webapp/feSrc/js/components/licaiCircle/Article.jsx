@@ -43,6 +43,11 @@ class Article extends React.Component {
 			}.bind(this)
 		});
 	}
+
+	goTo(event) {
+        let href = event.target.dataset.href;
+        window.location.href = href;
+    }
 	componentDidUpdate() {
 		imagesLoaded(this.refs.scrollWrap).on('always', () => {
 			this.destroyIscroll.call(this);
@@ -71,6 +76,7 @@ class Article extends React.Component {
 						<Praise className="pull-right" likeCount={this.state.data.likeCount} id={this.state.data.articleId}></Praise>
 					</section>
 				</article>
+				<a className="back-link" onTouchTap={this.goTo.bind(this)} data-href="#/media-center"></a>
 			</div>
 		);
 	}

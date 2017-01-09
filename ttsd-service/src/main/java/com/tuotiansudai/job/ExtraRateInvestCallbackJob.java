@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class ExtraRateInvestCallbackJob implements Job {
 
-    static Logger logger = Logger.getLogger(LoanRepayNotifyJob.class);
+    static Logger logger = Logger.getLogger(ExtraRateInvestCallbackJob.class);
 
     public static final int RUN_INTERVAL_SECONDS = 2;
 

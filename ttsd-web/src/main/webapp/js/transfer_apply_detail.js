@@ -1,7 +1,7 @@
 require(['jquery', 'layerWrapper', 'jquery.validate', 'coupon-alert', 'red-envelope-float', 'jquery.ajax.extension','anxin_qian'], function ($, layer) {
     var $createForm = $('#createForm'),
         $agreement = $createForm.find('.agreement'),
-        $isSkipAuth=$('#isSkipAuth');
+        $isAnxinAuthenticationRequired=$('#isAnxinAuthenticationRequired');
     $createForm.validate({
         debug: true,
         rules: {
@@ -37,7 +37,7 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'coupon-alert', 'red-envel
                         type: 'GET'
                     }).done(function (data) {
                         if (true == data.data.status) {
-                            if($isSkipAuth.val()=='true'){
+                            if($isAnxinAuthenticationRequired.val()=='false'){
                                 sendData();
                                 layer.closeAll();
                             }else{
@@ -221,7 +221,7 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'coupon-alert', 'red-envel
                 if(data.success){
                     $('#isAnxinUser').val('true') && $('.skip-group').hide();
                     if(data.skipAuth=='true'){
-                        $('#isSkipAuth').val('true');
+                        $isAnxinAuthenticationRequired.val('false');
                     }
                     skipSuccess();
                 }else{
