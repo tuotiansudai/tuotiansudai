@@ -1,8 +1,6 @@
 package com.tuotiansudai.message;
 
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 public class LoanOutSuccessMessage {
 
     private long loanId;

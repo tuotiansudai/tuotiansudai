@@ -39,32 +39,33 @@ public class LoanOutSuccessNotifyForLoanOutMessageConsumer implements MessageCon
     @Transactional
     @Override
     public void consume(String message) {
-        logger.info("[MQ] LoanOutSuccess receive message: {}: {}.", this.queue(), message);
+        logger.info("[标的放款MQ] LoanOutSuccess_SmsMessage receive message: {}: {}.", this.queue(), message);
         if (!StringUtils.isEmpty(message)) {
             LoanOutSuccessMessage loanOutInfo;
             try {
                 loanOutInfo = JsonConverter.readValue(message, LoanOutSuccessMessage.class);
             } catch (IOException e) {
+                logger.error("[标的放款MQ] LoanOutSuccess_SmsMessage json convert LoanOutSuccessMessage is fail, message:{}", message);
                 throw new RuntimeException(e);
             }
 
             long loanId = loanOutInfo.getLoanId();
             List<String> fatalSmsList = Lists.newArrayList();
 
-            logger.info("[MQ]：LoanOutSuccess process notify，loanId:" + loanId);
+            logger.info("[标的放款MQ] LoanOutSuccess_SmsMessage is execute，loanId:" + loanId);
             if (!payWrapperClient.processNotifyForLoanOut(loanId).isSuccess()) {
                 fatalSmsList.add("发送放款短信通知失败");
-                logger.error(MessageFormat.format("[MQ]: LoanOutSuccess process notify is fail (loanId = {0})", String.valueOf(loanId)));
+                logger.error(MessageFormat.format("[标的放款MQ] LoanOutSuccess_SmsMessage is fail (loanId = {0})", String.valueOf(loanId)));
             }
 
             if (CollectionUtils.isNotEmpty(fatalSmsList)) {
                 fatalSmsList.add(MessageFormat.format("标的ID:{0}", loanId));
                 smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(Joiner.on(",").join(fatalSmsList)));
-                logger.error(MessageFormat.format("[MQ] LoanOutSuccess process notify is fail, sms sending. loanId:{0}, queue:{1}", String.valueOf(loanId), MessageQueue.LoanOutSuccess_SmsMessage));
-                throw new RuntimeException("[MQ] LoanOutSuccess_SmsMessage is fail. loanOutInfo: " + message);
+                logger.error(MessageFormat.format("[标的放款MQ] LoanOutSuccess_SmsMessage is fail, sms sending. loanId:{0}, queue:{1}", String.valueOf(loanId), MessageQueue.LoanOutSuccess_SmsMessage));
+                throw new RuntimeException("[标的放款MQ] LoanOutSuccess_SmsMessage is fail. loanOutInfo: " + message);
             }
 
-            logger.info("[MQ] LoanOutSuccess consume LoanOutSuccess_SmsMessage success.");
+            logger.info("[标的放款MQ] LoanOutSuccess_SmsMessage consume success.");
         }
     }
 }

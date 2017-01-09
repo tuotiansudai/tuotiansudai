@@ -7,9 +7,8 @@ import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
-import com.tuotiansudai.coupon.repository.model.UserGroup;
-import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.enums.CouponType;
+import com.tuotiansudai.message.TransferRedEnvelopCallbackMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
@@ -23,14 +22,10 @@ import com.tuotiansudai.paywrapper.repository.model.sync.request.TransferRequest
 import com.tuotiansudai.paywrapper.repository.model.sync.response.TransferResponseModel;
 import com.tuotiansudai.paywrapper.service.SystemBillService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.SystemBillBusinessType;
 import com.tuotiansudai.repository.model.SystemBillDetailTemplate;
 import com.tuotiansudai.util.AmountTransfer;
 import org.apache.log4j.Logger;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +33,6 @@ import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 public class CouponLoanOutServiceImpl implements CouponLoanOutService {
@@ -77,7 +71,6 @@ public class CouponLoanOutServiceImpl implements CouponLoanOutService {
         List<UserCouponModel> userCouponModels = userCouponMapper.findByLoanId(loanId, Lists.newArrayList(CouponType.RED_ENVELOPE));
 
         for (UserCouponModel userCouponModel : userCouponModels) {
-
             // 实际收益为0，表示这个红包还没有发给用户，现在可以发送（幂等操作）
             if (userCouponModel.getActualInterest() == 0) {
                 CouponModel couponModel = this.couponMapper.findById(userCouponModel.getCouponId());
@@ -90,7 +83,7 @@ public class CouponLoanOutServiceImpl implements CouponLoanOutService {
                         TransferResponseModel responseModel = paySyncClient.send(TransferMapper.class, requestModel, TransferResponseModel.class);
                         result = !result ? false : responseModel.isSuccess();
                     } catch (PayException e) {
-                        result =  false;
+                        result = false;
                         logger.error(MessageFormat.format("red envelope coupon transfer in balance failed (userCouponId = {0})", String.valueOf(userCouponModel.getId())), e);
                     }
                 }
@@ -100,31 +93,36 @@ public class CouponLoanOutServiceImpl implements CouponLoanOutService {
     }
 
     @Override
-    public String transferRedEnvelopCallBack(Map<String, String> paramsMap, String queryString){
-        logger.info("[标的放款] red envelop transfer call back begin.");
+    public String transferRedEnvelopCallBack(Map<String, String> paramsMap, String queryString) {
+        logger.info("[标的放款] transfer red envelop call back begin.");
         BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(
                 paramsMap,
                 queryString,
                 ProjectTransferNotifyMapper.class,
                 ProjectTransferNotifyRequestModel.class);
+
         if (callbackRequest == null || Strings.isNullOrEmpty(callbackRequest.getOrderId())) {
+            logger.error(MessageFormat.format("[标的放款] transfer red envelop payback callback parse is failed (queryString = {0})", queryString));
             return null;
         }
 
-        if (callbackRequest == null) {
-            logger.error(MessageFormat.format("[标的放款] red envelop transfer payback callback parse is failed (queryString = {0})", queryString));
-            return null;
-        }
+        long userCouponId = Long.parseLong(callbackRequest.getOrderId());
+        UserCouponModel userCouponModel = userCouponMapper.findById(userCouponId);
+        TransferRedEnvelopCallbackMessage transferRedEnvelopCallbackMessage = new TransferRedEnvelopCallbackMessage(userCouponModel.getLoanId(),
+                userCouponModel.getInvestId(),
+                userCouponModel.getLoginName(),
+                userCouponId);
 
-        logger.info(MessageFormat.format("[标的放款] send message TransferRedEnvelopCallback, queryString:{0}", queryString));
-        mqWrapperClient.sendMessage(MessageQueue.TransferRedEnvelopCallback, String.valueOf(callbackRequest.getId()));
+        logger.info(MessageFormat.format("[标的放款] send message TransferRedEnvelopCallback,loanId:{0}, investId:{1}, loginName:{2} queryString:{3}, orderId:{4}",
+                userCouponModel.getLoanId(), userCouponModel.getInvestId(), userCouponModel.getLoanName(), queryString, callbackRequest.getOrderId()));
+        mqWrapperClient.sendMessage(MessageQueue.TransferRedEnvelopCallback, transferRedEnvelopCallbackMessage);
 
         String respData = callbackRequest.getResponseData();
         return respData;
     }
 
     @Override
-    public boolean sendRedEnvelopTransferInBalance(long userCouponId){
+    public boolean sendRedEnvelopTransferInBalance(long userCouponId) {
         logger.info(MessageFormat.format("[标的放款] send redEnvelop transfer in balance, userCouponId:{0}", String.valueOf(userCouponId)));
         UserCouponModel userCouponModel = userCouponMapper.findById(userCouponId);
         CouponModel couponModel = this.couponMapper.findById(userCouponModel.getCouponId());

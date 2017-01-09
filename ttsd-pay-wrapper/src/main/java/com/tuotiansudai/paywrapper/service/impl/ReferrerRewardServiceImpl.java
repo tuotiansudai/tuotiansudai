@@ -10,6 +10,7 @@ import com.tuotiansudai.enums.PushType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.message.EventMessage;
 import com.tuotiansudai.message.PushMessage;
+import com.tuotiansudai.message.TransferReferrerRewardCallbackMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
@@ -170,23 +171,30 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
 
     @Override
     public String transferReferrerRewardCallBack(Map<String, String> paramsMap, String queryString){
-        logger.info("[标的放款] referrer reward transfer call back begin.");
+        logger.info("[标的放款] transfer referrer reward  call back begin.");
         BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(
                 paramsMap,
                 queryString,
                 ProjectTransferNotifyMapper.class,
                 ProjectTransferNotifyRequestModel.class);
         if (callbackRequest == null || Strings.isNullOrEmpty(callbackRequest.getOrderId())) {
+            logger.error(MessageFormat.format("[标的放款] TransferReferrerRewardCallback payback callback parse is failed (queryString = {0})", queryString));
             return null;
         }
 
-        if (callbackRequest == null) {
-            logger.error(MessageFormat.format("[Normal Repay] invest payback callback parse is failed (queryString = {0})", queryString));
-            return null;
-        }
+        long investReferrerRewardId = Long.parseLong(callbackRequest.getOrderId());
 
-        logger.info(MessageFormat.format("[标的放款] send message NormalRepayCallback, queryString:{0}", queryString));
-        mqWrapperClient.sendMessage(MessageQueue.NormalRepayCallback, String.valueOf(callbackRequest.getId()));
+        InvestReferrerRewardModel investReferrerRewardModel = investReferrerRewardMapper.findById(investReferrerRewardId);
+        InvestModel investModel = investMapper.findById(investReferrerRewardModel.getInvestId());
+        TransferReferrerRewardCallbackMessage transferReferrerRewardCallbackMessage = new TransferReferrerRewardCallbackMessage(investModel.getLoanId(),
+                investReferrerRewardModel.getInvestId(), investModel.getLoginName(), investReferrerRewardModel.getReferrerLoginName(),
+                investReferrerRewardId);
+
+        logger.info(MessageFormat.format("[标的放款] send mq TransferReferrerRewardCallback, loanId:{0}, investId:{1}, loginName:{2}, referrer:{3}, queryString:{4}",
+                transferReferrerRewardCallbackMessage.getLoanId(), transferReferrerRewardCallbackMessage.getInvestId(),
+                transferReferrerRewardCallbackMessage.getLoginName(), transferReferrerRewardCallbackMessage.getReferrer(),
+                queryString));
+        mqWrapperClient.sendMessage(MessageQueue.TransferReferrerRewardCallback, transferReferrerRewardCallbackMessage);
 
         String respData = callbackRequest.getResponseData();
         return respData;
