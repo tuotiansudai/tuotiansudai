@@ -2,12 +2,16 @@ package com.tuotiansudai.activity.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.tuotiansudai.activity.repository.dto.RedEnvelopSplitActivityDto;
 import com.tuotiansudai.activity.repository.dto.RedEnvelopSplitReferrerDto;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
+import com.tuotiansudai.coupon.repository.model.UserGroup;
+import com.tuotiansudai.coupon.util.UserCollector;
 import com.tuotiansudai.enums.AppUrl;
 import com.tuotiansudai.repository.mapper.PrepareUserMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
@@ -82,12 +86,30 @@ public class RedEnvelopSplitActivityService {
         return userModels.stream().filter(userModel -> asUserChannel(userModel.getChannel())).collect(Collectors.toList());
     }
 
-    public String getReferrerRedEnvelop(String loginName) {
-        if (Strings.isNullOrEmpty(loginName)) {
-            return "";
+    public String getReferrerRedEnvelop(int referrerCount) {
+        long sumAmount = 0l;
+
+        if(referrerCount >= 1){
+            sumAmount += 188l;
         }
 
-        return getSumRedEnvelopByLoginName(loginName, coupons);
+        if(referrerCount >= 2){
+            sumAmount += 588l;
+        }
+
+        if(referrerCount >= 3){
+            sumAmount += 988l;
+        }
+
+        if(referrerCount >= 7){
+            sumAmount += 1388l;
+        }
+
+        if(referrerCount >= 10){
+            sumAmount += 2088l;
+        }
+
+        return AmountConverter.convertCentToString(sumAmount);
     }
 
     public String getSumRedEnvelopByLoginName(String loginName, List<Long> couponIds){
