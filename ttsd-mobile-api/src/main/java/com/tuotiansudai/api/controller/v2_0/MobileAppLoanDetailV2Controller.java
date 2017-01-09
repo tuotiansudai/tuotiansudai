@@ -6,7 +6,6 @@ import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.dto.v2_0.LoanDetailV2RequestDto;
 import com.tuotiansudai.api.dto.v2_0.LoanDetailV2ResponseDataDto;
 import com.tuotiansudai.api.service.v2_0.MobileAppLoanDetailV2Service;
-import com.tuotiansudai.spring.LoginUserInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.log4j.Logger;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.text.MessageFormat;
 
 @RestController
 @Api(description = "V2.0标的详情")
@@ -31,9 +29,6 @@ public class MobileAppLoanDetailV2Controller extends MobileAppBaseController {
     @RequestMapping(value = "/get/loan", method = RequestMethod.POST)
     @ApiOperation("标的详情")
     public BaseResponseDto<LoanDetailV2ResponseDataDto> queryLoanDetail(@Valid @RequestBody LoanDetailV2RequestDto requestDto, BindingResult bindingResult) {
-        logger.info(MessageFormat.format("queryLoanDetail loginName:{0}", LoginUserInfo.getLoginName()));
-        logger.info(MessageFormat.format("queryLoanDetail mobile:{0}", LoginUserInfo.getMobile()));
-        logger.info(MessageFormat.format("queryLoanDetail token:{0}", LoginUserInfo.getToken()));
         if (bindingResult.hasErrors()) {
             String errorCode = bindingResult.getFieldError().getDefaultMessage();
             String errorMessage = ReturnMessage.getErrorMsgByCode(errorCode);

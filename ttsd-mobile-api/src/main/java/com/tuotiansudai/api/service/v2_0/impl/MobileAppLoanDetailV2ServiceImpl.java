@@ -91,7 +91,7 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
 
     private String title = "拓天速贷引领投资热，开启互金新概念";
 
-    private String content = "个人经营借款理财项目，总额{0}元期限{1}{2}，年化利率{3}%，先到先抢！！！";
+    private String content = "个人经营借款理财项目，总额{0}元期限{1}天，年化利率{2}%，先到先抢！！！";
 
     @Override
     public BaseResponseDto<LoanDetailV2ResponseDataDto> findLoanDetail(LoanDetailV2RequestDto requestDto) {
@@ -177,6 +177,7 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
         dataDto.setCardinalNumber(AmountConverter.convertCentToString(loanModel.getInvestIncreasingAmount()));
         dataDto.setMaxInvestMoney(AmountConverter.convertCentToString(loanModel.getMaxInvestAmount()));
         dataDto.setInvestedCount(investMapper.countSuccessInvest(loanModel.getId()));
+        dataDto.setDuration(loanModel.getDuration());
 
         dataDto.setMinInvestMoneyCent(String.valueOf(loanModel.getMinInvestAmount()));
         dataDto.setCardinalNumberCent(String.valueOf(loanModel.getInvestIncreasingAmount()));
@@ -256,7 +257,7 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
                     AmountConverter.convertCentToString(loanModel.getLoanAmount()), new DateTime(2016, 7, 28, 0, 0, 0).toString("yyyy-MM-dd HH:mm:ss")));
         }
         dataDto.setTitle(title);
-        dataDto.setContent(MessageFormat.format(content, dataDto.getLoanMoney(), dataDto.getDeadline(), dataDto.getRepayUnit(), dataDto.getRatePercent()));
+        dataDto.setContent(MessageFormat.format(content, dataDto.getLoanMoney().replaceAll("\\.00", ""), dataDto.getDuration(), dataDto.getRatePercent()));
         dataDto.setProductNewType(loanModel.getProductType() != null ? loanModel.getProductType().name() : "");
         List<ExtraLoanRateModel> extraLoanRateModels = extraLoanRateMapper.findByLoanId(loanModel.getId());
         if (CollectionUtils.isNotEmpty(extraLoanRateModels)) {

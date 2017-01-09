@@ -6,7 +6,13 @@ import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.dto.v3_0.LoanListResponseDataDto;
 import com.tuotiansudai.api.dto.v3_0.LoanResponseDataDto;
 import com.tuotiansudai.api.service.v3_0.MobileAppLoanListV3Service;
+import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
+import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
+import com.tuotiansudai.coupon.repository.model.CouponModel;
+import com.tuotiansudai.coupon.repository.model.UserCouponModel;
+import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.dto.LoanDto;
+import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.InvestService;
@@ -50,6 +56,12 @@ public class MobileAppLoanListV3ServiceTest extends ServiceTestBase {
 
     @Autowired
     private InvestService investService;
+
+    @Autowired
+    private CouponMapper couponMapper;
+
+    @Autowired
+    private UserCouponMapper userCouponMapper;
 
     private UserModel createUser(String loginName) {
         UserModel userModel = new UserModel();
@@ -106,6 +118,9 @@ public class MobileAppLoanListV3ServiceTest extends ServiceTestBase {
     public void testGenerateIndexLoan() throws Exception {
         UserModel user = createUser("testUser");
         createUser("loaner");
+        getFakeExperienceLoan("loaner");
+        CouponModel fakeNewbieCoupon = getFakeNewbieCoupon(user);
+        getFakeUserCoupon(user, fakeNewbieCoupon);
         //数据库中默认有新手体验标
         final long experienceLoanId = 1L;
         //没有投资过的
@@ -288,5 +303,60 @@ public class MobileAppLoanListV3ServiceTest extends ServiceTestBase {
         loanModel.setStatus(LoanStatus.RAISING);
         loanMapper.create(loanModel);
         return loanModel;
+    }
+
+    private LoanModel getFakeExperienceLoan(String loginName) {
+        LoanModel fakeLoanModel = new LoanModel();
+        fakeLoanModel.setId(idGenerator.generate());
+        fakeLoanModel.setName("loanName");
+        fakeLoanModel.setLoanAmount(10000L);
+        fakeLoanModel.setLoanerLoginName(loginName);
+        fakeLoanModel.setLoanerUserName("借款人");
+        fakeLoanModel.setLoanerIdentityNumber("id");
+        fakeLoanModel.setAgentLoginName(loginName);
+        fakeLoanModel.setType(LoanType.LOAN_INTEREST_LUMP_SUM_REPAY);
+        fakeLoanModel.setPeriods(1);
+        fakeLoanModel.setStatus(LoanStatus.RAISING);
+        fakeLoanModel.setActivityType(ActivityType.NEWBIE);
+        fakeLoanModel.setProductType(ProductType.EXPERIENCE);
+        fakeLoanModel.setBaseRate(0.15);
+        fakeLoanModel.setActivityRate(0);
+        fakeLoanModel.setDuration(3);
+        fakeLoanModel.setFundraisingStartTime(new Date());
+        fakeLoanModel.setFundraisingEndTime(new Date());
+        fakeLoanModel.setDescriptionHtml("html");
+        fakeLoanModel.setDescriptionText("text");
+        fakeLoanModel.setRecheckTime(new Date());
+        fakeLoanModel.setPledgeType(PledgeType.HOUSE);
+
+        loanMapper.create(fakeLoanModel);
+        return fakeLoanModel;
+    }
+
+    private CouponModel getFakeNewbieCoupon(UserModel creator) {
+        CouponModel couponModel = new CouponModel();
+        couponModel.setAmount(588800);
+        couponModel.setActivatedBy(creator.getLoginName());
+        couponModel.setActive(true);
+        couponModel.setCreatedTime(new Date());
+        couponModel.setStartTime(new DateTime().withTimeAtStartOfDay().toDate());
+        couponModel.setEndTime(new DateTime(couponModel.getStartTime()).plusDays(1).toDate());
+        couponModel.setDeadline(10);
+        couponModel.setCreatedBy(creator.getLoginName());
+        couponModel.setTotalCount(10L);
+        couponModel.setUsedCount(0L);
+        couponModel.setInvestLowerLimit(0L);
+        couponModel.setUserGroup(UserGroup.EXPERIENCE_INVEST_SUCCESS);
+        couponModel.setCouponType(CouponType.NEWBIE_COUPON);
+        couponModel.setProductTypes(Lists.newArrayList(ProductType.EXPERIENCE));
+        couponModel.setCouponSource("couponSource");
+        couponMapper.create(couponModel);
+        return couponModel;
+    }
+
+    private UserCouponModel getFakeUserCoupon(UserModel investor, CouponModel couponModel) {
+        UserCouponModel userCouponModel = new UserCouponModel(investor.getLoginName(), couponModel.getId(), new Date(), new DateTime().plusDays(couponModel.getDeadline()).toDate());
+        userCouponMapper.create(userCouponModel);
+        return userCouponModel;
     }
 }
