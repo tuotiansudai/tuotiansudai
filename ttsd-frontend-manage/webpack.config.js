@@ -1,9 +1,12 @@
 var path = require('path');
 var glob=require('glob');
+var AssetsPlugin = require('assets-webpack-plugin');
 var webpack = require('webpack');
 var WebpackMd5Hash = require('webpack-md5-hash');
 var objectAssign = require('object-assign');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
+
+var geFileList = require('./getFiles');
 
 var basePath = path.join(__dirname, 'resources'),
 	staticPath = path.join(basePath, 'static'),
@@ -15,9 +18,14 @@ var basePath = path.join(__dirname, 'resources'),
 	mobilePath=path.join(staticPath, 'mobile');
 
 var outputPath=path.join(basePath, 'develop'),
-	devServerPath='/',
+	devServerPath='http://localhost:3008/',
 	commonOptions={},
 	plugins=[];
+
+
+//生成json map
+var askFileList=new geFileList("./resources/develop/ask",outputPath+'/json-ask.json');
+askFileList.init();
 
 /**
  * 动态查找所有入口文件
@@ -31,7 +39,8 @@ files.forEach(function(file){
 	var strObj=substr.split('/');
 	if(strObj[1]=='public') {
 		if(/global_page/.test(strObj)) {
-			newEntries[substr] = file;
+			var publicUrl=substr.replace(/\/js/g,'');
+			newEntries[publicUrl] = file;
 		}
 	}
 	else {
@@ -42,7 +51,6 @@ files.forEach(function(file){
 //添加要打包在vendors里面的库
 // newEntries['vendor']=["jquery", "underscore"];
 commonOptions.entry = newEntries;
-// console.log(newEntries);
 
 plugins.push(new webpack.ProvidePlugin({
 	$: "jquery",
@@ -58,8 +66,26 @@ plugins.push(new WebpackMd5Hash());
 // 	filename: "public/js/vendorFun.js"//导出的文件的名称
 // }));
 
+//生成json文件的列表索引插件
+plugins.push(new AssetsPlugin({
+	filename: 'assets-resources.json',
+	fullPath: false,
+	includeManifest: 'manifest',
+	prettyPrint: true,
+	update: true,
+	path: outputPath,
+	metadata: {version: 123}
+}));
+
+plugins.push(new webpack.DefinePlugin({
+	'process.env': {
+		'NODE_ENV': '"dev"'
+	}
+}));
+
 //开发模式
 plugins.push(new webpack.HotModuleReplacementPlugin());
+
 
 module.exports = objectAssign(commonOptions, {
 	output: {
@@ -78,11 +104,23 @@ module.exports = objectAssign(commonOptions, {
 		},{
 			test: /\.scss$/,
 			loader: ExtractTextPlugin.extract("style-loader", "css-loader!sass-loader")
-		},{
-			test: /\.(png|jpg|gif|woff|woff2)$/,
-			loader: 'url-loader?limit=5120&name=[path][name].[ext]'
-
-		}]
+		},  {
+			test: /\.(png|jpg|gif|woff|svg)$/,
+			loader: 'url',
+			query: {
+				limit: 5120,
+				RegExp:'resources',
+				name: '[path][name].[ext]'
+			}
+		}
+		// 	{
+		// 	test: /\.(png|jpg|gif|woff|woff2)$/,
+		// 	loader: "url-loader?limit=5120",
+		// 	query: {
+		// 		name: "[1]"
+		// 	}
+		// }
+		]
 	},
 	resolve: {
 		extensions: ['', '.js', '.jsx'],

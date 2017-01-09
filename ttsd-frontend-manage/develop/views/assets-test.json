@@ -1,0 +1,13 @@
+{
+  "/ask/js/mainSite": {
+    "js": "/ask/js/mainSite.js",
+    "css": "/ask/js/mainSite.css"
+  },
+  "/public/global_page": {
+    "js": "/public/global_page.js",
+    "css": "/public/global_page.css"
+  },
+  "metadata": {
+    "version": 123
+  }
+}

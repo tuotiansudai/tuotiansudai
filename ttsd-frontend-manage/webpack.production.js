@@ -15,7 +15,7 @@ var basePath = path.join(__dirname, 'resources'),
     mobilePath=path.join(staticPath, 'mobile');
 
 var outputPath=path.join(basePath, 'prod'),
-    devServerPath='/',
+    devServerPath='http://localhost:3008/prod',
     commonOptions={},
     plugins=[];
 
@@ -31,7 +31,8 @@ files.forEach(function(file){
     var strObj=substr.split('/');
     if(strObj[1]=='public') {
         if(/global_page/.test(strObj)) {
-            newEntries[substr] = file;
+            var publicUrl=substr.replace(/\/js/g,'');
+            newEntries[publicUrl] = file;
         }
     }
     else {
@@ -39,6 +40,8 @@ files.forEach(function(file){
     }
 });
 commonOptions.entry = newEntries;
+console.log(newEntries);
+console.log('[chunkhash]');
 
 plugins.push(new ExtractTextPlugin("[name].[chunkhash].css"));
 plugins.push(new WebpackMd5Hash());
@@ -49,6 +52,23 @@ plugins.push(new webpack.optimize.UglifyJsPlugin({
         warnings: false,
         drop_debugger: true,
         drop_console: true
+    }
+}));
+
+//生成json文件的列表索引插件
+plugins.push(new AssetsPlugin({
+    filename: 'assets-resources.json',
+    fullPath: false,
+    includeManifest: 'manifest',
+    prettyPrint: true,
+    update: true,
+    path: outputPath,
+    metadata: {version: 123}
+}));
+
+plugins.push(new webpack.DefinePlugin({
+    'process.env': {
+        'NODE_ENV': '"dev"'
     }
 }));
 
@@ -108,4 +128,6 @@ module.exports = objectAssign(commonOptions, {
     cache: true,
     plugins: plugins
 });
+
+
 

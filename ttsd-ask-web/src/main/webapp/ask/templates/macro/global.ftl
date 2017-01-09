@@ -80,7 +80,7 @@
     <meta name="_csrf" content="${(_csrf.token)!}"/>
     <meta name="_csrf_header" content="${(_csrf.headerName)!}"/>
     <link href="${staticServer}/images/favicon.ico" rel="shortcut icon" type="image/x-icon"/>
-    <link rel="stylesheet" type="text/css" href="${staticServer}/public/js/global_page.css" charset="utf-8"/>
+    <link rel="stylesheet" type="text/css" href="${staticServer}/public/global_page.css" charset="utf-8"/>
     <#if pageCss?? && pageCss != "">
         <link rel="stylesheet" type="text/css" href="${staticServer}${cssPath}${pageCss}" charset="utf-8"/>
     </#if>
@@ -142,7 +142,7 @@
 </div>
 
     <#include "../pageLayout/footer.ftl" />
-<script src="${staticServer}/public/js/global_page.js"></script>
+<script src="${staticServer}/public/global_page.js"></script>
 <script src="${staticServer}${jsPath}${pageJavascript}" type="text/javascript"></script>
 
 </body>
