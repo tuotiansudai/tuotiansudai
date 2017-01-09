@@ -1,3 +1,4 @@
+@import "module/login_tip";
 .main-frame {
   width: 100%;
   margin: 0 auto;
@@ -62,6 +63,9 @@
       }
       &.mb-50{
         margin-bottom:50px;
+        @media (max-width:700px) {
+          margin-bottom:25px;
+        }
       }
       .tree{
         position: absolute;
@@ -169,10 +173,24 @@
             font-size:14px;
             border-radius:5px;
             box-shadow: 0 2px #b30003;
+            &.active{
+              box-shadow: 0 2px #bbb;
+              &:hover{
+                box-shadow: 0 2px #bbb;
+              }
+            }
           }
           &:hover{
             box-shadow: 0 2px #a32517;
             top: 2px;
+          }
+          &.active{
+            background:#ccc;
+            box-shadow: 0 4px #bbb;
+            &:hover{
+              box-shadow: 0 4px #bbb;
+              top: 0;
+            }
           }
         }
       }
@@ -180,9 +198,15 @@
         float:left;
         width:100%;
         margin-top:70px;
+        @media (max-width:700px) {
+          margin-top:10px;
+        }
         li{
           font-size:14px;
           color:#981e23;
+          @media (max-width:700px) {
+            font-size:12px;
+          }
         }
       }
       .red-bag-item{
@@ -209,8 +233,10 @@
             padding:30px 85px 20px;
             @media (max-width:700px) {
               width:100%;
+              height:auto;
               margin:10px 0;
               padding:15px 20px 10px;
+              text-align:center;
             }
             &.active{
               .money-content{
@@ -247,9 +273,6 @@
               @media (max-width:700px) {
                 width:200px;
                 height:200px;
-                position: relative;
-                left: 50%;
-                margin-left: -100px;
                 padding:65px 0;
               }
               p{
@@ -281,12 +304,23 @@
               border-radius:10px;
               visibility:hidden;
               box-sizing:border-box;
+              @media (max-width:700px) {
+                width:150px;
+                height:40px;
+                font-size:18px;
+                line-height:40px;
+                border:1px solid #a20904;
+              }
             }
           }
         }
         .gift-item{
           width:960px;
           margin:0 -40px;
+          @media (max-width:700px) {
+            width:100%;
+            margin:0;
+          }
           li{
             float:left;
             width:400px;
@@ -295,10 +329,21 @@
             background:#fffbe5;
             box-sizing:border-box;
             position: relative;
+            @media (max-width:700px) {
+              width:100%;
+              height:auto;
+              margin:10px 0;
+              padding:15px 20px 10px;
+              text-align:center;
+            }
             .angle{
               width:120px;
               height:78px;
               position: absolute;
+              @media (max-width:700px) {
+                width:60px;
+                height:39px;
+              }
               &.angle-left-top{
                 top:5px;
                 left:5px;
@@ -330,6 +375,9 @@
               color:#981e23;
               margin: 5px 0;
               font-weight:bold;
+              @media (max-width:700px) {
+                font-size:16px;
+              }
             }
             .gift-info{
               text-align:center;
@@ -338,6 +386,9 @@
                 color:#981e23;
                 margin-bottom: 0;
                 line-height: 18px;
+                @media (max-width:700px) {
+                  font-size:12px;
+                }
               }
             }
             .gift-img{
@@ -345,6 +396,15 @@
               line-height:300px;
               text-align:center;
               position: relative;
+              @media (max-width:700px) {
+                line-height:200px;
+                img{
+                  width:80%;
+                  &.sky-img{
+                    width:50%;
+                  }
+                }
+              }
               .coupon-item{
                 position: absolute;
                 top:0;
@@ -356,13 +416,25 @@
                 border-radius:50%;
                 box-sizing: border-box;
                 padding: 18px 0;
+                @media (max-width:700px) {
+                  width:60px;
+                  height:60px;
+                  right:0;
+                }
                 p{
                   font-size:16px;
                   color:#fffbe5;
                   margin-bottom:0;
                   line-height: 24px;
+                  @media (max-width:700px) {
+                    font-size:12px;
+                    line-height:12px;
+                  }
                   span{
                     font-size:26px;
+                    @media (max-width:700px) {
+                      font-size:16px;
+                    }
                   }
                 }
               }
@@ -376,6 +448,10 @@
         font-size:16px;
         color:#981e23;
         margin-bottom:10px;
+        @media (max-width:700px) {
+          font-size:12px;
+          line-height: 18px;
+        }
       }
     }
   }
@@ -393,6 +469,9 @@
       position: relative;
       box-sizing:border-box;
       text-align:center;
+      @media (max-width:700px) {
+        width:280px;
+      }
       .tip{
         position: absolute;
         width:60px;
@@ -426,6 +505,9 @@
         margin:20px 0;
         font-size:24px;
         color:#981e23;
+        @media (max-width:700px) {
+          font-size:20px;
+        }
       }
       .top-com{
         display:inline-block;

@@ -3,14 +3,52 @@
  * [author]:xuqiang
  * [date]:2017-01-09
  */
-require(['jquery', 'layerWrapper', 'template','jquery.ajax.extension'], function ($,layer,tpl) {
+require(['jquery', 'layerWrapper','commonFun','jquery.ajax.extension','logintip'], function ($,layer,commonFun) {
     $(function() {
-        // layer.open({
-        //   type: 1,
-        //   move:false,
-        //   area:['400px','300px'],
-        //   title:false,
-        //   content: $('#moneyTip')
-        // });       
+        var sourceKind=globalFun.parseURL(location.href);
+        //判断是否登录
+        $.when(commonFun.isUserLogin())
+         .done(function(){
+             $('.check-in',$('.spring-festival-container')).show();
+         })
+         .fail(function(){
+            $('#loginCheck').show();
+         });
+        //登录后签到事件
+        $('#checkIn').on('click', function(event) {
+            event.preventDefault();
+            var $self=$(this);
+            $.ajax({
+                url: '/activity/point-draw/task-draw',
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    "activityCategory":"SPRING_FESTIVAL_ACTIVITY"
+                }
+            })
+            .done(function(data) {
+                $('#numText').text(data.prize);
+                $self.addClass('active').text('已签到');
+                layer.open({
+                  type: 1,
+                  move:false,
+                  area:$(window).width()>700?['400px','300px']:['280px','300px'],
+                  title:false,
+                  content: $('#moneyTip')
+                });
+            })
+            .fail(function() {
+                layer.msg('请求失败，请重试！');
+            });
+        });
+        //签到前判断设备
+        $('#loginCheck').on('click', function(event) {
+            event.preventDefault();
+            if(sourceKind.params.source=='app') {
+                location.href="/login";
+            } else {
+                $('.no-login-text',$('.spring-festival-container')).trigger('click');  //弹框登录
+            }
+        }); 
     });        
 });

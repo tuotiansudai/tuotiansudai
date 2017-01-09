@@ -18,7 +18,13 @@
                 <img src="${staticServer}/activity/images/spring-festival/bag-icon.png" width="100%" class="bag-icon">
             </div>
             <div class="btn-item">
-                <span>签到领福袋</span>
+                <span id="loginCheck" style="display:none">去登录签到</span>
+                
+                <#if signedIn?? && signedIn>
+                    <span class="check-in active" style="display:none">已签到</span>
+                <#else >
+                    <span class="check-in" id="checkIn" style="display:none">签到领福袋</span>
+                </#if>
             </div>
         </div>
         <div class="model-container">
@@ -139,7 +145,7 @@
                                 <p><span>+0.5</span>%</p>
                                 <p>加息券</p>
                             </div>
-                            <img src="${staticServer}/activity/images/spring-festival/gift-three.png">
+                            <img src="${staticServer}/activity/images/spring-festival/gift-three.png" class="sky-img">
                         </div>
                     </li>
                     <li>
@@ -197,7 +203,7 @@
                 </div>
                 <div class="right-coupon">
                     <p>
-                        <span class="num-text">6.53</span>
+                        <span class="num-text" id="numText">0.00</span>
                         <span class="unit-text">元</span>
                     </p>
                 </div>
@@ -207,5 +213,7 @@
             </div>
         </div>
     </div>
+    <a href="javascript:void(0)" class="show-login no-login-text"></a>
+    <#include "login-tip.ftl" />
 </div>
 </@global.main>
