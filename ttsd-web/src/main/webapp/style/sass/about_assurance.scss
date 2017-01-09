@@ -8,10 +8,6 @@
 .pad-box {
   padding:20px 0 50px 0;
 }
-//.page-width {
-//  height:auto;
-//  overflow: auto;
-//}
 .column-title-ac {
   font-size:30px;
   font-weight: bold;
@@ -408,7 +404,7 @@
 			font-size:16px;
 			color: #4c4c4c;
 		  }
-		  &:nth-child(2) {
+		  &.two {
 			margin-left: 112px;
 			margin-right:112px;
 		  }
@@ -442,22 +438,22 @@
 		border-radius: 10px;
 		left: -10px;
 		z-index: 5;
-		&:nth-child(1) {
+		&.one {
 			top:0;
 		}
-		&:nth-child(2) {
+		&.two {
 		  top:100px;
 		}
-		&:nth-child(3) {
+		&.three {
 		  top:200px;
 		}
-		&:nth-child(4) {
+		&.four {
 		  top:300px;
 		}
-		&:nth-child(5) {
+		&.five {
 		  top:400px;
 		}
-		&:nth-child(6) {
+		&.six {
 		  top:500px;
 		}
 	  }
@@ -489,11 +485,11 @@
 		  left: -10px;
 		}
 	  }
-	  &:nth-child(1) {
+	  &.one {
 		left: 113px;
 		top: 21px;
 	  }
-	  &:nth-child(2) {
+	  &.two {
 		right: 118px;
 		top: 126px;
 		.triangle {
@@ -508,11 +504,11 @@
 		  }
 		}
 	  }
-	  &:nth-child(3) {
+	  &.three {
 		left: 113px;
 		top: 225px;
 	  }
-	  &:nth-child(4) {
+	  &.four {
 		right: 118px;
 		top: 329px;
 		.triangle {
@@ -527,14 +523,14 @@
 		  }
 		}
 	  }
-	  &:nth-child(5) {
+	  &.five {
 		left: 113px;
 		top: 431px;
 		.triangle {
 		  top:30px;
 		}
 	  }
-	  &:nth-child(6) {
+	  &.six {
 		right: 118px;
 		top: 525px;
 		.triangle {
@@ -901,6 +897,7 @@
   position: fixed;
   bottom:0px;
   background: rgba(0,0,0,0.25) ;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#25000000, endColorstr=#25000000);
   left:0;
   width:100%;
   z-index: 100;

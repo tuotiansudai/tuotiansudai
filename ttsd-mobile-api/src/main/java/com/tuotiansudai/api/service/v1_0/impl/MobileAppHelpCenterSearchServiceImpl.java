@@ -19,8 +19,9 @@ public class MobileAppHelpCenterSearchServiceImpl implements MobileAppHelpCenter
 
     @Override
     public BaseResponseDto<HelpCenterSearchListResponseDataDto> getHelpCenterSearchResult(HelpCenterSearchRequestDto requestDto) {
-
-        List<HelpCenterModel>  helpCenterModels =  helpCenterMapper.findAllHelpCenterByTitleOrCategoryOrHot(requestDto.getKeywords(), requestDto.getCategory() != null ? requestDto.getCategory().toUpperCase() : null, requestDto.getHot());
+        //为了解决ios7.1以下系统的自动转换问题,iso7以下传的是1,ios7以上传的是true
+        String hot = requestDto.getHot() != null ? (requestDto.getHot().equals("1") || requestDto.getHot().equals("true")) ? "true" : null : null;
+        List<HelpCenterModel>  helpCenterModels =  helpCenterMapper.findAllHelpCenterByTitleOrCategoryOrHot(requestDto.getKeywords(), requestDto.getCategory() != null ? requestDto.getCategory().toUpperCase() : null, hot);
         List<HelpCenterSearchResponseDataDto> helpCenterSearchResponseDataDtoList = Lists.newArrayList();
         if(CollectionUtils.isNotEmpty(helpCenterModels)){
             helpCenterSearchResponseDataDtoList = Lists.transform(helpCenterModels, helpCenterModel -> new HelpCenterSearchResponseDataDto(helpCenterModel));

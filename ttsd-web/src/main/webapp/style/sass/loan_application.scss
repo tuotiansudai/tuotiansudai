@@ -39,10 +39,14 @@ $width: 700px;
     width: 100%;
 
     .top-images {
+      display:block;
       @include mobilehide();
     }
     .top-images-phone {
-      @include PChide();
+      display:none;
+      @media (max-width: $width) {
+        display:block;
+      }
     }
 	}
   .content-group {
@@ -191,11 +195,17 @@ $width: 700px;
               }
 						}
             &.phone-info {
-              @include PChide();
+              display:none;
               text-align: left;
+              @media (max-width:$width) {
+                display:block;
+              }
             }
             &.pc-info {
-              @include mobilehide();
+              display: block;
+              @media (max-width:$width) {
+                display:none;
+              }
             }
 					}
 				}

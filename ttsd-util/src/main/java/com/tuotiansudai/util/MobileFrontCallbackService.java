@@ -18,7 +18,7 @@ public enum MobileFrontCallbackService {
     /**
      * 无密投资协议
      */
-    PTP_MER_NO_PASSWORD_INVEST("ptp_mer_no_password_invest", "开通无密投资成功", "tuotian://nopasswordinvest/{0}"),
+    PTP_MER_NO_PASSWORD_INVEST("ptp_mer_no_password_invest", "恭喜您开通无密投资成功", "tuotian://nopasswordinvest/{0}"),
     /**
      * 个人账户充值
      */
