@@ -5,6 +5,7 @@ import com.tuotiansudai.api.dto.v3_0.LoanListResponseDataDto;
 import com.tuotiansudai.api.service.v3_0.MobileAppLoanListV3Service;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -13,6 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Api(description = "V3.0首页")
 public class MobileAppHomeV3Controller extends MobileAppBaseController {
+
+    static Logger logger = Logger.getLogger(MobileAppHomeV3Controller.class);
+
     @Autowired
     private MobileAppLoanListV3Service mobileAppLoanListV3Service;
 

@@ -46,6 +46,6 @@ public class InvestRewardMapperTest {
     }
 
     private InvestRewardModel getInvestRewardModel(String mobile){
-        return new InvestRewardModel("test", "test", mobile, 1, 0);
+        return new InvestRewardModel("test", "test", mobile, 1, 0L);
     }
 }
