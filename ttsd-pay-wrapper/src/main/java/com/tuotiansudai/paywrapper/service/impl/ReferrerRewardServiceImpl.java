@@ -14,11 +14,9 @@ import com.tuotiansudai.message.TransferReferrerRewardCallbackMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
-import com.tuotiansudai.paywrapper.repository.mapper.NormalRepayNotifyMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferNotifyMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.TransferMapper;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
-import com.tuotiansudai.paywrapper.repository.model.async.callback.NormalRepayNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.ProjectTransferNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.TransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.TransferResponseModel;
@@ -156,21 +154,22 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
             try {
                 TransferRequestModel requestModel = TransferRequestModel.newTransferReferrerRewardRequest(String.valueOf(orderId), accountModel.getPayUserId(), String.valueOf(amount));
                 TransferResponseModel responseModel = paySyncClient.send(TransferMapper.class, requestModel, TransferResponseModel.class);
-                model.setStatus(responseModel.isSuccess() ? ReferrerRewardStatus.SUCCESS : ReferrerRewardStatus.FAILURE);
+                logger.info(MessageFormat.format("[标的放款] pay sync transfer referrer reward, result:{0}, investReferrerRewardId:{1}, loginName:{2}", responseModel.isSuccess(),
+                        String.valueOf(orderId), accountModel.getLoginName()));
             } catch (Exception e) {
-                logger.error(MessageFormat.format("referrer reward is failed, investId={0} referrerLoginName={1} referrerRole={2} amount={3}",
+                logger.error(MessageFormat.format("[标的放款] referrer reward is failed, investId={0} referrerLoginName={1} referrerRole={2} amount={3}",
                         String.valueOf(model.getInvestId()),
                         model.getReferrerLoginName(),
                         model.getReferrerRole().name(),
                         String.valueOf(model.getAmount())), e);
-                model.setStatus(ReferrerRewardStatus.FAILURE);
+                return false;
             }
         }
         return true;
     }
 
     @Override
-    public String transferReferrerRewardCallBack(Map<String, String> paramsMap, String queryString){
+    public String transferReferrerRewardCallBack(Map<String, String> paramsMap, String queryString) {
         logger.info("[标的放款] transfer referrer reward  call back begin.");
         BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(
                 paramsMap,
@@ -185,9 +184,6 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
         long investReferrerRewardId = Long.parseLong(callbackRequest.getOrderId());
 
         InvestReferrerRewardModel investReferrerRewardModel = investReferrerRewardMapper.findById(investReferrerRewardId);
-
-        investReferrerRewardModel.setStatus(callbackRequest.isSuccess() ? ReferrerRewardStatus.SUCCESS : ReferrerRewardStatus.FAILURE);
-        investReferrerRewardMapper.update(investReferrerRewardModel);
 
         InvestModel investModel = investMapper.findById(investReferrerRewardModel.getInvestId());
         TransferReferrerRewardCallbackMessage transferReferrerRewardCallbackMessage = new TransferReferrerRewardCallbackMessage(investModel.getLoanId(),
@@ -205,11 +201,17 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
     }
 
     @Override
-    public boolean transferReferrerReward(long orderId){
-        return recordTransferReferrerReward(investReferrerRewardMapper.findById(orderId));
+    public boolean transferReferrerReward(long investReferrerRewardId) {
+        InvestReferrerRewardModel investReferrerRewardModel = investReferrerRewardMapper.findById(investReferrerRewardId);
+        if (investReferrerRewardModel.getStatus().equals(ReferrerRewardStatus.SUCCESS)) {
+            return true;
+        }
+
+        investReferrerRewardModel.setStatus(ReferrerRewardStatus.SUCCESS);
+        return recordTransferReferrerReward(investReferrerRewardModel);
     }
 
-    private boolean recordTransferReferrerReward(InvestReferrerRewardModel investReferrerRewardModel){
+    private boolean recordTransferReferrerReward(InvestReferrerRewardModel investReferrerRewardModel) {
         String referrerLoginName = investReferrerRewardModel.getReferrerLoginName();
         long amount = investReferrerRewardModel.getAmount();
         long orderId = investReferrerRewardModel.getId();
