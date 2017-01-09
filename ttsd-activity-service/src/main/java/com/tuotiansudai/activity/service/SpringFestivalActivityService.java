@@ -37,4 +37,10 @@ public class SpringFestivalActivityService {
         return Joiner.on(",").join(task);
     }
 
+    public boolean isActivityTime(){
+        Date startTime = DateTime.parse(springFestivalTime.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+        Date endTime = DateTime.parse(springFestivalTime.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+        return DateTime.now().toDate().before(endTime) && DateTime.now().toDate().after(startTime);
+    }
+
 }

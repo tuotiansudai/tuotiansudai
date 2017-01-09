@@ -42,6 +42,11 @@ require(['jquery', 'layerWrapper','commonFun','jquery.ajax.extension','logintip'
                 $('.no-login-text',$('.spring-festival-container')).trigger('click');  //弹框登录
             }
         });
+        //领福袋
+        $('#drawBtn').on('click', function(event) {
+            event.preventDefault();
+            taskDraw($(this));
+        });
         //抽奖
         function taskDraw(dom){
             $.ajax({
@@ -53,15 +58,19 @@ require(['jquery', 'layerWrapper','commonFun','jquery.ajax.extension','logintip'
                 }
             })
             .done(function(data) {
-                $('#numText').text(data.prizeValue);
-                dom.addClass('active').text('已签到');
-                layer.open({
-                    type: 1,
-                    move:false,
-                    area:$(window).width()>700?['400px','300px']:['280px','300px'],
-                    title:false,
-                    content: $('#moneyTip')
-                });
+                if(data.data.returnCode == 1){
+                    layer.msg('今日已签到，请明天再来！');
+                }else{
+                    $('#numText').text(data.prizeValue);
+                    dom.addClass('active').text('已签到');
+                    layer.open({
+                        type: 1,
+                        move:false,
+                        area:$(window).width()>700?['400px','300px']:['280px','300px'],
+                        title:false,
+                        content: $('#moneyTip')
+                    });
+                }
             })
             .fail(function() {
                 layer.msg('请求失败，请重试！');

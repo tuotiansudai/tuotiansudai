@@ -18,12 +18,17 @@
                 <img src="${staticServer}/activity/images/spring-festival/bag-icon.png" width="100%" class="bag-icon">
             </div>
             <div class="btn-item">
-                <span id="loginCheck" style="display:none">去登录签到</span>
-                
-                <#if signedIn?? && signedIn>
-                    <span class="check-in active" style="display:none">已签到</span>
-                <#else >
-                    <span class="check-in" id="checkIn" style="display:none">签到领福袋</span>
+                <#if isActivity?? && !isActivity>
+                    <span class="check-in active" >活动已结束</span>
+                <#else>
+                    <span id="loginCheck" style="display:none">去登录签到</span>
+                    <#if signedIn?? && signedIn && isDraw?? && isDraw>
+                        <span class="check-in active" style="display:none">已签到</span>
+                    <#elseif signedIn?? && !signedIn && isDraw?? && !isDraw>
+                        <span class="check-in" id="checkIn" style="display:none">签到领福袋</span>
+                    <#elseif signedIn?? && !signedIn && isDraw?? && isDraw>
+                        <span class="check-in" id="drawBtn" style="display:none">领取福袋</span>
+                    </#if>
                 </#if>
             </div>
         </div>

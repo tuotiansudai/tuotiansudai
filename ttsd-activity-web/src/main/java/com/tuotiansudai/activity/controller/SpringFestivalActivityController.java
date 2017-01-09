@@ -1,5 +1,6 @@
 package com.tuotiansudai.activity.controller;
 
+import com.tuotiansudai.activity.service.LotteryDrawActivityService;
 import com.tuotiansudai.activity.service.SpringFestivalActivityService;
 import com.tuotiansudai.point.service.SignInService;
 import com.tuotiansudai.spring.LoginUserInfo;
@@ -17,6 +18,9 @@ public class SpringFestivalActivityController {
     private SpringFestivalActivityService springFestivalActivityService;
 
     @Autowired
+    private LotteryDrawActivityService lotteryDrawActivityService;
+
+    @Autowired
     private SignInService signInService;
 
     @RequestMapping(method = RequestMethod.GET)
@@ -25,6 +29,8 @@ public class SpringFestivalActivityController {
         String loginName = LoginUserInfo.getLoginName();
         modelAndView.addObject("taskProgress", springFestivalActivityService.getTaskProgress(loginName));
         modelAndView.addObject("signedIn", signInService.signInIsSuccess(loginName));
+        modelAndView.addObject("isDraw", lotteryDrawActivityService.toDayIsDrawByMobile(LoginUserInfo.getMobile()) > 0 ? true : false);
+        modelAndView.addObject("isActivity", springFestivalActivityService.isActivityTime());
         modelAndView.addObject("loginName", loginName);
         return modelAndView;
     }
