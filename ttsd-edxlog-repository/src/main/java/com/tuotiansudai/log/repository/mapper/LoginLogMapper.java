@@ -12,9 +12,6 @@ public interface LoginLogMapper {
     void create(@Param("table") String table,
                 @Param("model") LoginLogModel model);
 
-    LoginLogModel findById(@Param("table") String table,
-                           @Param("id") long id);
-
     long count(@Param("mobile") String mobile,
                @Param("success") Boolean success,
                @Param("table") String table);

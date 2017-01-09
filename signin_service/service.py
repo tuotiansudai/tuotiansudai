@@ -158,11 +158,11 @@ class LoginManager(object):
 
     def _save_log(self, is_success):
         login_log = dict(
-            login_name=self.form.username.data,
+            loginName=self.form.username.data,
             source=self.form.source.data,
             ip=self.ip_address,
             device=self.form.device_id.data,
-            login_time=int(time.time() * 1000),
+            loginTime=int(time.time() * 1000),
             success=is_success
         )
         producer.send_message(json.dumps(login_log))

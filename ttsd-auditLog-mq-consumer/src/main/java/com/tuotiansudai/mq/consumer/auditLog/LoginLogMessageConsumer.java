@@ -45,12 +45,9 @@ public class LoginLogMessageConsumer implements MessageConsumer {
             SimpleDateFormat formatter = new SimpleDateFormat("yyyyMM");
             String table = "login_log_" + formatter.format(loginDate);
 
-            logger.info("[MQ] ready to consume message: LoginLogModel. id:{}, loginName:{}", loginLogModel.getId(), loginLogModel.getLoginName());
+            logger.info("[MQ] ready to consume message: LoginLogModel. loginName:{}", loginLogModel.getLoginName());
 
-            // 幂等判断
-            if (loginLogMapper.findById(table, loginLogModel.getId()) == null) {
-                loginLogMapper.create(table, loginLogModel);
-            }
+            loginLogMapper.create(table, loginLogModel);
         }
         logger.info("[MQ] consume message success.");
     }

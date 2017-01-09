@@ -15,13 +15,9 @@
     </resultMap>
 
     <insert id="create" parameterType="map">
-        insert into ${table} (id, login_name, source, ip, device, login_time, success)
-        value(#{model.id}, #{model.loginName}, #{model.source}, #{model.ip}, #{model.device}, #{model.loginTime}, #{model.success})
+        insert into ${table} (login_name, source, ip, device, login_time, success)
+        value(#{model.loginName}, #{model.source}, #{model.ip}, #{model.device}, #{model.loginTime}, #{model.success})
     </insert>
-
-    <select id="findById" parameterType="map" resultMap="loginLogModelResultMap">
-        select * from ${table} where id = #{id}
-    </select>
 
     <select id="getPaginationData" parameterType="map" resultMap="loginLogModelResultMap">
         select *

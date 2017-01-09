@@ -24,8 +24,7 @@ public class LoginLogModel implements Serializable {
     public LoginLogModel() {
     }
 
-    public LoginLogModel(long id, String loginName, Source source, String ip, String device, boolean success) {
-        this.id = id;
+    public LoginLogModel(String loginName, Source source, String ip, String device, boolean success) {
         this.loginName = loginName;
         this.source = source;
         this.ip = ip;

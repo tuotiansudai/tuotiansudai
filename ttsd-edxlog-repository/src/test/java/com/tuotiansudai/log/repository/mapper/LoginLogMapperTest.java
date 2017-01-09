@@ -12,8 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static org.junit.Assert.assertNotNull;
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
 @Transactional
@@ -29,11 +27,9 @@ public class LoginLogMapperTest {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMM");
         String table = "login_log_" + simpleDateFormat.format(new Date());
         loginLogMapper.create(table, loginLogModel);
-        LoginLogModel getModel = loginLogMapper.findById(table, loginLogModel.getId());
-        assertNotNull(getModel);
     }
 
     private LoginLogModel fakeLoginLogModel(String loginName) {
-        return new LoginLogModel(1111111, loginName, Source.WEB, "192.111.11.1", "asdf", true);
+        return new LoginLogModel(loginName, Source.WEB, "192.111.11.1", "asdf", true);
     }
 }
