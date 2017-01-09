@@ -15,7 +15,6 @@ import com.tuotiansudai.ask.repository.model.Tag;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.rest.client.AskRestClient;
 import com.tuotiansudai.util.MobileEncoder;
 import com.tuotiansudai.util.PaginationUtil;
@@ -47,9 +46,6 @@ public class QuestionService {
     private AnswerMapper answerMapper;
 
     @Autowired
-    private UserMapper userMapper;
-
-    @Autowired
     private RedisWrapperClient redisWrapperClient;
 
     @Autowired
@@ -67,10 +63,12 @@ public class QuestionService {
         dataDto.setQuestionSensitiveValid(true);
         dataDto.setAdditionSensitiveValid(true);
 
-        askRestClient.create(questionRequestDto);
-
-        dataDto.setStatus(true);
-
+        try {
+            askRestClient.createQuestion(questionRequestDto);
+            dataDto.setStatus(true);
+        } catch (Exception e) {
+            logger.error("create question failed", e);
+        }
         return dataDto;
     }
 

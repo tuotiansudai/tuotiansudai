@@ -6,15 +6,13 @@ import com.tuotiansudai.rest.client.exceptions.RestException;
 import feign.Response;
 import feign.codec.ErrorDecoder;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 
 public class RestErrorDecoder implements ErrorDecoder {
     private static Logger logger = Logger.getLogger(RestErrorDecoder.class);
 
-    @Autowired
-    private ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
     public Exception decode(String methodKey, Response response) {

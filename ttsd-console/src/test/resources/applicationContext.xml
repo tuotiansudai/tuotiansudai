@@ -235,4 +235,5 @@
 
     <bean class="com.tuotiansudai.mq.config.MQProducerConfig"/>
 
+    <bean class="com.tuotiansudai.rest.FeignClientConfig"/>
 </beans>

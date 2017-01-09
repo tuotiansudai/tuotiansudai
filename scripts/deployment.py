@@ -18,6 +18,7 @@ class Deployment(object):
         self.compile()
         self.build_and_unzip_worker()
         self.build_mq_consumer()
+        self.build_rest_service()
         self.build_diagnosis()
         self.build_worker_monitor()
         self.mk_static_package()
@@ -57,6 +58,10 @@ class Deployment(object):
         sh('cd ./ttsd-auditLog-mq-consumer && {0} distZip'.format(self._gradle))
         sh('cd ./ttsd-auditLog-mq-consumer/build/distributions && unzip \*.zip')
 
+    def build_rest_service(self):
+        print "Making rest services build..."
+        sh('cd ./ttsd-ask-rest && {0} distZip'.format(self._gradle))
+        sh('cd ./ttsd-ask-rest/build/distributions && unzip \*.zip')
 
     def build_diagnosis(self):
         print "Making diagnosis build..."

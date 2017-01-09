@@ -8,6 +8,7 @@ repositories {
 }
 
 dependencies {
+    compile project(':ttsd-config')
     compile project(':ttsd-util')
     compile project(':ttsd-edxask-model')
     compile 'org.springframework.cloud:spring-cloud-starter-feign:1.2.3.RELEASE'

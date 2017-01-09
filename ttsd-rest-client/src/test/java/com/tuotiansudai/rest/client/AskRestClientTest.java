@@ -25,17 +25,17 @@ public class AskRestClientTest {
         assertNotNull(askRestClient);
     }
 
-    @Test
     @Ignore
+    @Test
     public void shouldCreateQuestion() {
         MDC.put("requestId", "xxxxxxx");
-        MDC.put("userId", "yyy");
+        MDC.put("userId", "yyyy");
         QuestionRequestDto requestDto = new QuestionRequestDto();
         requestDto.setAddition("addition");
         requestDto.setQuestion("question");
         requestDto.setTags(null);
 
-        QuestionModel questionModel = askRestClient.create(requestDto);
+        QuestionModel questionModel = askRestClient.createQuestion(requestDto);
         assertEquals(requestDto.getAddition(), questionModel.getAddition());
     }
 }

@@ -2,14 +2,18 @@ package com.tuotiansudai.rest;
 
 import com.tuotiansudai.rest.client.codec.RestErrorDecoder;
 import com.tuotiansudai.rest.client.interceptors.RequestHeaderInterceptor;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.web.HttpMessageConvertersAutoConfiguration;
 import org.springframework.cloud.netflix.feign.EnableFeignClients;
+import org.springframework.cloud.netflix.feign.FeignAutoConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 
-@EnableAutoConfiguration
+@Configuration
+@Import({FeignAutoConfiguration.class, HttpMessageConvertersAutoConfiguration.class})
 @EnableFeignClients
-@PropertySource({"classpath:feign.properties"})
+@PropertySource({"classpath:feign.properties", "classpath:ttsd-env.properties"})
 public class FeignClientConfig {
     @Bean
     public RequestHeaderInterceptor requestHeaderInterceptor() {
