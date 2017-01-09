@@ -35,6 +35,12 @@
   .wp{
     width:1100px;
     margin:0 auto;
+    @media (max-width:700px) {
+      display:inline-block;
+      width:100%;
+      padding:0 10px;
+      box-sizing:border-box;
+    }
     &:after{
       content:'';
       display:block;
@@ -45,11 +51,15 @@
       width:100%;
       position: relative;
       border:6px solid #e70c1c;
-      box-sizing:border-box;
       margin-top:30px;
       background:#faedbc;
       padding:30px 100px;
       box-sizing:border-box;
+      @media (max-width:700px) {
+        margin-top:15px;
+        padding:15px;
+        border:3px solid #e70c1c;
+      }
       &.mb-50{
         margin-bottom:50px;
       }
@@ -58,6 +68,9 @@
         top:-6px;
         width:247px;
         height:161px;
+        @media (max-width:700px) {
+          display:none;
+        }
         &.tree-left{
           left:-4px;
           background:url('/activity/images/spring-festival/tree-left.png') no-repeat center;
@@ -83,9 +96,23 @@
           color:#faedbc;
           background:url('/activity/images/spring-festival/title-sm-bg.png') no-repeat center;
           background-size:100%;
+          @media (max-width:700px) {
+            width:100%;
+            height:30px;
+            line-height:30px;
+            font-size:18px;
+            background-size:80%;
+          }
           &.mx-title{
             width:500px;
             background:url('/activity/images/spring-festival/title-mx-bg.png') no-repeat center;
+            @media (max-width:700px) {
+              width:100%;
+              height:30px;
+              line-height:30px;
+              font-size:18px;
+              background-size: 100%;
+            }
           }
         }
       }
@@ -96,11 +123,28 @@
         color:#981e23;
         text-align:center;
         margin:30px 0 20px;
+        @media (max-width:700px) {
+          font-size:12px;
+          margin:15px 0 10px;
+          line-height: 18px;
+        }
       }
       .bag-item{
         float:left;
         width:100%;
         text-align:center;
+        .bag-img{
+          display:block;
+          @media (max-width:700px) {
+            display:none;
+          }
+        }
+        .bag-icon{
+          display:none;
+          @media (max-width:700px) {
+            display:block;
+          }
+        }
       }
       .btn-item{
         float:left;
@@ -110,7 +154,7 @@
           display:inline-block;
           width:250px;
           height:60px;
-          line-height:64px;
+          line-height:60px;
           box-shadow: 0 4px #b30003;
           position: relative;
           background:#d60004;
@@ -118,6 +162,14 @@
           font-size:24px;
           color:#fffbe5;
           cursor:pointer;
+          @media (max-width:700px) {
+            width:125px;
+            height:30px;
+            line-height:30px;
+            font-size:14px;
+            border-radius:5px;
+            box-shadow: 0 2px #b30003;
+          }
           &:hover{
             box-shadow: 0 2px #a32517;
             top: 2px;
@@ -137,9 +189,16 @@
         float:left;
         width:100%;
         margin-top:-20px;
+        @media (max-width:700px) {
+          margin-top:0;
+        }
         .money-item{
           width:960px;
           margin:0 -40px;
+          @media (max-width:700px) {
+            width:100%;
+            margin:0;
+          }
           li{
             float:left;
             width:400px;
@@ -148,6 +207,11 @@
             background:#fffbe5;
             box-sizing:border-box;
             padding:30px 85px 20px;
+            @media (max-width:700px) {
+              width:100%;
+              margin:10px 0;
+              padding:15px 20px 10px;
+            }
             &.active{
               .money-content{
                 background:url('/activity/images/spring-festival/flower-active-bg.png') no-repeat center;
@@ -180,14 +244,28 @@
               padding:85px 0;
               text-align:center;
               margin:20px 0 15px;
+              @media (max-width:700px) {
+                width:200px;
+                height:200px;
+                position: relative;
+                left: 50%;
+                margin-left: -100px;
+                padding:65px 0;
+              }
               p{
                 margin-bottom:0;
                 font-size:24px;
                 color:#999;
                 line-height:28px;
+                @media (max-width:700px) {
+                  font-size:20px;
+                }
                 span{
                   font-size:46px;
                   font-weight:bold;
+                  @media (max-width:700px) {
+                    font-size:30px;
+                  }
                 }
               }
             }
@@ -202,6 +280,7 @@
               border:2px solid #a20904;
               border-radius:10px;
               visibility:hidden;
+              box-sizing:border-box;
             }
           }
         }
@@ -304,6 +383,7 @@
     float:left;
     width:100%;
     box-sizing:border-box;
+    display:none;
     .content-item{
       display:inline-block;
       width:400px;

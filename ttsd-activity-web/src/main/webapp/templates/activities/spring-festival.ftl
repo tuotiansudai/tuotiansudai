@@ -14,7 +14,8 @@
             </div>
             <h3 class="title-info">活动期间，每日在本活动页面签到即可领取1个福袋。</h3>
             <div class="bag-item">
-                <img src="${staticServer}/activity/images/spring-festival/bag-img.png">
+                <img src="${staticServer}/activity/images/spring-festival/bag-img.png" class="bag-img">
+                <img src="${staticServer}/activity/images/spring-festival/bag-icon.png" width="100%" class="bag-icon">
             </div>
             <div class="btn-item">
                 <span>签到领福袋</span>
