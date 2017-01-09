@@ -34,6 +34,9 @@ public class InvestExperienceResponseDataDto {
     @ApiModelProperty(value = "标的类型", example = "30,90,180,360")
     private List<ProductType> productNewTypes;
 
+    @ApiModelProperty(value = "优惠券来源", example = "拓天速贷赠送")
+    private String couponSource;
+
     public String getUserCouponId() {
         return userCouponId;
     }
@@ -106,4 +109,11 @@ public class InvestExperienceResponseDataDto {
         this.productNewTypes = productNewTypes;
     }
 
+    public String getCouponSource() {
+        return couponSource;
+    }
+
+    public void setCouponSource(String couponSource) {
+        this.couponSource = couponSource;
+    }
 }

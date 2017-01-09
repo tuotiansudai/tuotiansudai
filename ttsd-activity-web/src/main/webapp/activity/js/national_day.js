@@ -1,10 +1,17 @@
 require(['jquery', 'underscore', 'template','layerWrapper','drawCircle','commonFun','register_common'], function ($, _,tpl,layer,drawCircle) {
 
     var $nationalDayFrame=$('#nationalDayFrame'),
+        tipGroupObj={},
         $tourSlide=$('#tourSlide'),
         $nationalDayCircle=$('#nationalDayCircle'),
         $allInvestAmount=$nationalDayFrame.find('.invest-percent-box em.total-invest');
     var browser = globalFun.browserRedirect();
+
+    $nationalDayFrame.find('.tip-list-frame .tip-list').each(function(key,option) {
+        var kind=$(option).data('return');
+        tipGroupObj[kind]=option;
+    });
+
     if (browser == 'mobile') {
         var urlObj=globalFun.parseURL(location.href);
         if(urlObj.params.tag=='yes') {
@@ -50,21 +57,6 @@ require(['jquery', 'underscore', 'template','layerWrapper','drawCircle','commonF
     var realInvestAmount=addSeparator(allAmountInteger);
     $allInvestAmount.text(realInvestAmount+allAmountDecimal);
 
-    //$('.button-area',$tourSlide).find('li').on('click',function(event) {
-    //    var $this=$(this),
-    //        num=$this.index();
-    //    $tourSlide.addClass('fixed-menu');
-    //    $('.seizeSeat',$nationalDayFrame).show();
-    //    var contentOffset = $('.section-outer',$nationalDayFrame).eq(num).offset().top;
-    //    if(num==0) {
-    //        $(window).scrollTop(600);
-    //    }
-    //    else {
-    //        $(window).scrollTop(contentOffset-137);
-    //    }
-    //
-    //});
-
     //以下为抽奖转盘
     var $pointer = $('.pointer-img',$nationalDayFrame);
     var $MobileNumber=$('#MobileNumber'),
@@ -89,38 +81,46 @@ require(['jquery', 'underscore', 'template','layerWrapper','drawCircle','commonF
         drawCircle.beginLotteryDraw(function(data) {
             //抽奖接口成功后奖品指向位置
             if (data.returnCode == 0) {
+                var angleNum=0;
                 switch (data.prize) {
                     case 'MANGO_CARD_100':
-                        drawCircle.rotateFn(347, '100元芒果卡',data.prizeType);
+                        angleNum=347;
                         break;
                     case 'RED_INVEST_15':
-                        drawCircle.rotateFn(30, '15元投资红包',data.prizeType);
+                        angleNum=30;
                         break;
                     case 'RED_INVEST_50':
-                        drawCircle.rotateFn(120, '50元投资红包',data.prizeType);
+                        angleNum=120;
                         break;
                     case 'TELEPHONE_FARE_10':
-                        drawCircle.rotateFn(265, '10元话费',data.prizeType);
+                        angleNum=265;
                         break;
                     case 'IQIYI_MEMBERSHIP':
-                        drawCircle.rotateFn(80, '1个月爱奇艺会员',data.prizeType);
+                        angleNum=80;
                         break;
                     case 'CINEMA_TICKET':
-                        drawCircle.rotateFn(310, '电影票一张',data.prizeType);
+                        angleNum=310;
                         break;
                     case 'FLOWER_CUP':
-                        drawCircle.rotateFn(170, '青花瓷杯子',data.prizeType);
+                        angleNum=170;
                         break;
                     case 'MEMBERSHIP_V5':
-                        drawCircle.rotateFn(347, '1个月V5会员',data.prizeType);
+                        angleNum=347;
                         break;
                 }
+
+                var prizeType=data.prizeType.toLowerCase();
+                $(tipGroupObj[prizeType]).find('.prizeValue').text(data.prizeValue);
+                drawCircle.rotateFn(angleNum,tipGroupObj[prizeType]);
+
             } else if (data.returnCode == 2) {
-                $('#tipList').html(tpl('tipListTpl', {tiptext:data.message,istype:'nologin'})).show().find('.tip-dom').show();
+                $('.no-login-text',$integralDrawPage).trigger('click');  //弹框登录
             } else if(data.returnCode == 3){
-                $('#tipList').html(tpl('tipListTpl', {tiptext:data.message,istype:'timeout'})).show().find('.tip-dom').show();
+                //不在活动时间范围内！
+                drawCircle.tipWindowPop(tipGroupObj['expired']);
             } else {
-                $('#tipList').html(tpl('tipListTpl', {tiptext:data.message,istype:'notimes'})).show().find('.tip-dom').show();
+                //实名认证
+                drawCircle.tipWindowPop(tipGroupObj['authentication']);
             }
         });
     });

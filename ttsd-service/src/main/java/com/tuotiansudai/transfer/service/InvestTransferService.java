@@ -23,6 +23,8 @@ public interface InvestTransferService {
 
     boolean cancelTransferApplication(long transferApplicationId);
 
+    boolean cancelTransferApplicationManually(long transferApplicationId);
+
     Date getDeadlineFromNow();
 
     boolean isTransferable(long investId);
@@ -37,4 +39,8 @@ public interface InvestTransferService {
                                                                          Date startTime,
                                                                          Date endTime,
                                                                          LoanStatus loanStatus);
+
+    boolean validTransferIsCanceled(long investId);
+
+    boolean validTransferIsDayLimit(long loanId);
 }

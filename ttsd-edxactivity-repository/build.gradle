@@ -16,7 +16,7 @@ dependencies {
     compile project(':ttsd-dependency'),
             project(':ttsd-config'),
             project(':ttsd-util'),
-            project(':ttsd-client'),
+            project(':ttsd-mybatis-extension'),
             project(':ttsd-edxactivity-model')
 
     testCompile project(':ttsd-user-service')

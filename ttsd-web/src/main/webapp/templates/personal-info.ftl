@@ -60,17 +60,17 @@
         </#if>
         <li><span class="info-title"> 免密投资</span>
             <#if noPasswordInvest>
-                <em class="info">您已开启免密投资，投资理财快人一步</em>
+                <em class="info">您已开启免密投资，投资快人一步</em>
                 <span class="binding-set">
                     <i class="fa fa-check-circle ok"></i>已开启<a class="setlink setTurnOffNoPasswordInvest" href="javascript:void(0);">关闭</a>
                 </span>
             <#elseif autoInvest>
-                <em class="info">您已授权自动投标，可直接开启免密投资，及时选择心仪标的，理财快人一步</em>
+                <em class="info">您已授权自动投标，可直接开启免密投资，及时选择心仪标的，投资快人一步</em>
                 <span class="binding-set">
                     <i class="fa fa-times-circle no"></i>未开启<a class="setlink setNoPasswordInvest" data-url="/no-password-invest/enabled" href="javascript:void(0);">开启</a>
                 </span>
             <#else>
-                <em class="info">开启免密投资后，您可及时选择心仪标的，理财快人一步</em>
+                <em class="info">开启免密投资后，您可及时选择心仪标的，投资快人一步</em>
                 <span class="binding-set">
                     <i class="fa fa-times-circle no"></i>未开启<a class="setlink setTurnOnNoPasswordInvest" href="javascript:void(0);">开启</a>
                 </span>
@@ -139,7 +139,7 @@
 
 <div id="turnOnNoPasswordInvestDOM" class="pad-m popLayer" style="display: none;">
     <form name="turnOnNoPasswordInvestForm" action="${requestContext.getContextPath()}/agreement" method="post"  <@global.role hasRole="'INVESTOR', 'LOANER'">target="_blank"</@global.role>>
-        <div class="tc text-m">推荐您开通免密投资功能，简化投资过程，理财快人一步。</div>
+        <div class="tc text-m">推荐您开通免密投资功能，简化投资过程，投资快人一步。</div>
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <input type="hidden" name="noPasswordInvest" value="true"/>
         <div class="tc person-info-btn" style="margin-top:50px;">
@@ -151,7 +151,7 @@
 <div id="turnOffNoPasswordInvestDOM" class="pad-m popLayer" style="display: none; ">
     <form id="imageCaptchaForm" name="imageCaptchaForm" action="${requestContext.getContextPath()}/no-password-invest/send-captcha" method="post">
         <dl>
-            <dt>推荐您开通免密投资功能，简化投资过程，理财快人一步，确认关闭吗？</dt>
+            <dt>推荐您开通免密投资功能，简化投资过程，投资快人一步，确认关闭吗？</dt>
             <dd class="mt-20">
                 <span>图形验证码：</span>
                 <input type="text" class="input-control image-captcha-text" name="imageCaptcha" maxlength="5" placeholder="请输入图形验证码"/>

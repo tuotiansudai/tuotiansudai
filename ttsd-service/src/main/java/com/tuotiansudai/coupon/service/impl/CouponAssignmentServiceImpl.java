@@ -1,5 +1,6 @@
 package com.tuotiansudai.coupon.service.impl;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -14,13 +15,18 @@ import com.tuotiansudai.coupon.service.ExchangeCodeService;
 import com.tuotiansudai.coupon.util.InvestAchievementUserCollector;
 import com.tuotiansudai.coupon.util.UserCollector;
 import com.tuotiansudai.enums.CouponType;
+import com.tuotiansudai.enums.MessageEventType;
+import com.tuotiansudai.enums.PushSource;
+import com.tuotiansudai.enums.PushType;
+import com.tuotiansudai.message.EventMessage;
+import com.tuotiansudai.message.PushMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.UserBirthdayUtil;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.aop.framework.AopContext;
@@ -29,10 +35,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.tuotiansudai.enums.CouponType.*;
 
 @Service
 public class CouponAssignmentServiceImpl implements CouponAssignmentService {
@@ -194,7 +204,7 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
      * @param userGroups        指定的userGroup
      */
     @Override
-    public void asyncAssignUserCoupon(String loginNameOrMobile, final List<UserGroup> userGroups) {
+    public List<CouponModel> asyncAssignUserCoupon(String loginNameOrMobile, final List<UserGroup> userGroups) {
         UserModel userModel = userMapper.findByLoginNameOrMobile(loginNameOrMobile);
         final String loginName = userModel.getLoginName().toLowerCase();
 
@@ -204,7 +214,7 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
         // 该用户已领取的优惠券
         final List<UserCouponModel> userCouponModels = userCouponMapper.findByLoginNameAndCouponId(loginName, null);
 
-        coupons.stream()
+        return coupons.stream()
                 // 该用户可领取的优惠券
                 // 该优惠券在参数指定的userGroup里
                 .filter(couponModel -> userGroups.contains(couponModel.getUserGroup()))
@@ -214,12 +224,20 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
                 // 此处特意将资格检查放在数量检查后面，以提高处理效率
                 .filter(couponModel -> getCollector(couponModel.getUserGroup()).contains(couponModel, userModel))
                 // 生成MQ消息内容
-                .map(couponModel -> loginName + ":" + couponModel.getId())
+                .map(couponModel -> sendCouponAssignMessage(couponModel, loginName))
+                .collect(Collectors.toList());
+                /*.map(couponModel -> loginName + ":" + couponModel.getId())
                 // 发送MQ消息
                 .forEach(message -> mqWrapperClient.sendMessage(MessageQueue.CouponAssigning, message));
+                */
+
         //((CouponAssignmentService) AopContext.currentProxy()).assign(loginName, couponModel.getId(), null);
     }
 
+    private CouponModel sendCouponAssignMessage(CouponModel couponModel, String loginName){
+        mqWrapperClient.sendMessage(MessageQueue.CouponAssigning, loginName + ":" + couponModel.getId());
+        return couponModel;
+    }
 
     /**
      * 检查优惠券是否可以被发送给该用户
@@ -247,6 +265,11 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
     public UserCouponModel assign(String loginName, long couponId, String exchangeCode) {
         CouponModel couponModel = couponMapper.lockById(couponId);
 
+        if (!Strings.isNullOrEmpty(exchangeCode) && userCouponMapper.findByExchangeCode(exchangeCode) > 0) {
+            logger.info(MessageFormat.format("[Exchange Coupon:] Exchange{0} had been exchanged ", exchangeCode));
+            return null;
+        }
+
         List<UserCouponModel> assignedUserCoupons = userCouponMapper.findByLoginNameAndCouponId(loginName, couponId);
         if (!couponModel.isMultiple() && CollectionUtils.isNotEmpty(assignedUserCoupons)) {
             logger.error(MessageFormat.format("[Coupon Assignment] coupon({0}) has been assigned to user({1})", String.valueOf(couponId), loginName));
@@ -258,21 +281,41 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
 
         Date startTime = new DateTime().withTimeAtStartOfDay().toDate();
         Date endTime = couponModel.getDeadline() == 0 ? couponModel.getEndTime() : new DateTime().plusDays(couponModel.getDeadline() + 1).withTimeAtStartOfDay().minusSeconds(1).toDate();
-        if (couponModel.getCouponType() == CouponType.BIRTHDAY_COUPON) {
-            DateTime userBirthday = UserBirthdayUtil.getUserBirthday(userMapper.findByLoginName(loginName).getIdentityNumber());
+        DateTime userBirthday = UserBirthdayUtil.getUserBirthday(userMapper.findByLoginName(loginName).getIdentityNumber());
+        if (couponModel.getCouponType() == CouponType.BIRTHDAY_COUPON && userBirthday != null) {
             startTime = new DateTime().withMonthOfYear(userBirthday.getMonthOfYear()).dayOfMonth().withMinimumValue().withTimeAtStartOfDay().toDate();
             endTime = new DateTime().withMonthOfYear(userBirthday.getMonthOfYear()).dayOfMonth().withMaximumValue().withTime(23, 59, 59, 0).toDate();
         }
+
         UserCouponModel userCouponModel = new UserCouponModel(loginName, couponModel.getId(), startTime, endTime);
-        if (StringUtils.isNotEmpty(exchangeCode)) {
-            int exchangeCodeCount = userCouponMapper.findByExchangeCode(exchangeCode);
-            if (exchangeCodeCount > 0) {
-                logger.info(MessageFormat.format("[Exchange Coupon:] Exchange{0} had been exchanged ", exchangeCode));
-                return null;
-            }
-        }
         userCouponModel.setExchangeCode(exchangeCode);
         userCouponMapper.create(userCouponModel);
+
+        HashMap<CouponType, String> titleTemplate = Maps.newHashMap(ImmutableMap.<CouponType, String>builder()
+                .put(RED_ENVELOPE, "{0}元现金红包")
+                .put(NEWBIE_COUPON, "{0}元新手体验金")
+                .put(INVEST_COUPON, "{0}元投资体验券")
+                .put(INTEREST_COUPON, "{0}%加息券")
+                .put(BIRTHDAY_COUPON, "生日福利券")
+                .build());
+
+
+        //Title:恭喜您获得了一张{0}！
+        //Content:尊敬的用户，恭喜您获得了一张{0}，有效期至{1}！
+        String couponName = titleTemplate.get(couponModel.getCouponType());
+        if (Lists.newArrayList(RED_ENVELOPE, NEWBIE_COUPON, INVEST_COUPON).contains(couponModel.getCouponType())) {
+            couponName = MessageFormat.format(couponName, AmountConverter.convertCentToString(couponModel.getAmount()));
+        }
+        if (INTEREST_COUPON == couponModel.getCouponType()) {
+            couponName = MessageFormat.format(couponName, new BigDecimal(couponModel.getRate()).multiply(new BigDecimal(100)).setScale(1, BigDecimal.ROUND_HALF_UP).toString());
+        }
+
+        String title = MessageFormat.format(MessageEventType.ASSIGN_COUPON_SUCCESS.getTitleTemplate(), couponName);
+        String content = MessageFormat.format(MessageEventType.ASSIGN_COUPON_SUCCESS.getContentTemplate(), couponName, new DateTime(userCouponModel.getEndTime()).toString("yyyy年MM月dd日"));
+        EventMessage message = new EventMessage(MessageEventType.ASSIGN_COUPON_SUCCESS,
+                Lists.newArrayList(loginName), title, content, userCouponModel.getId());
+        mqWrapperClient.sendMessage(MessageQueue.EventMessage, message);
+        mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(Lists.newArrayList(loginName), PushSource.ALL, PushType.ASSIGN_COUPON_SUCCESS, title));
         return userCouponModel;
     }
 

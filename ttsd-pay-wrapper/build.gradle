@@ -4,9 +4,7 @@ apply from: 'db_migration.gradle'
 dependencies {
     compile fileTree(dir: 'libs', include: '**/*.jar'),
             project(':ttsd-service'),
-            project(':ttsd-message'),
             project(':ttsd-point-service'),
-            project(':ttsd-jpush'),
             project(':ttsd-edxactivity-repository'),
             project(':ttsd-anxin-sign'),
             project(':ttsd-membership')
@@ -15,10 +13,16 @@ dependencies {
 }
 
 war {
-    archiveName "ROOT.war"
+    archiveName "ttsd-pay-wrapper.war"
     destinationDir = file("war")
 
     from("${configPath}/ttsd-pay-wrapper/SignVerProp.properties") {
         into 'WEB-INF/classes/'
+    }
+}
+
+task renameWar {
+    doLast {
+        file("${project.projectDir.getPath()}/war/ttsd-pay-wrapper.war").renameTo(file("${project.projectDir.getPath()}/war/ROOT.war"))
     }
 }

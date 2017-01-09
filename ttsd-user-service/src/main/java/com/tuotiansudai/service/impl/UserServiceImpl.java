@@ -161,7 +161,6 @@ public class UserServiceImpl implements UserService {
         return false;
     }
 
-    @Override
     @Transactional
     public boolean changePassword(String loginName, String originalPassword, String newPassword, String ip, String platform, String deviceId) {
 

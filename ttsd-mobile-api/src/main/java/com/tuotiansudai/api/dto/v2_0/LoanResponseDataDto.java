@@ -221,4 +221,5 @@ public class LoanResponseDataDto {
     public void setPledgeType(PledgeType pledgeType) {
         this.pledgeType = pledgeType;
     }
+
 }
