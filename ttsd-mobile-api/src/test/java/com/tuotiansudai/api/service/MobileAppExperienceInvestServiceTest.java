@@ -11,8 +11,8 @@ import com.tuotiansudai.api.service.v1_0.impl.MobileAppExperienceInvestServiceIm
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
-import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
+import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestDto;
@@ -27,7 +27,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Date;
 import java.util.List;
 
 import static org.hamcrest.core.Is.is;
@@ -52,6 +51,9 @@ public class MobileAppExperienceInvestServiceTest extends ServiceTestBase {
     @Mock
     private MobileAppChannelService mobileAppChannelService;
 
+    @Mock
+    private CouponAssignmentService couponAssignmentService;
+
     @Autowired
     private IdGenerator idGenerator;
 
@@ -75,40 +77,32 @@ public class MobileAppExperienceInvestServiceTest extends ServiceTestBase {
 
         when(experienceInvestService.invest(any(InvestDto.class))).thenReturn(baseDto);
 
-        List<UserCouponModel> userCouponModels = Lists.newArrayList();
-        UserCouponModel userCouponModel = new UserCouponModel();
-        long userCouponId = idGenerator.generate();
-        long couponId = idGenerator.generate();
-        userCouponModel.setId(userCouponId);
-        userCouponModel.setLoanId(couponId);
-        Date start = new Date();
-        Date end = new Date();
-        userCouponModel.setStartTime(start);
-        userCouponModel.setEndTime(end);
-        userCouponModels.add(userCouponModel);
-        when(userCouponMapper.findByLoginName(anyString(), anyList())).thenReturn(userCouponModels);
+        List<CouponModel> couponModels = Lists.newArrayList();
 
         CouponModel couponModel = new CouponModel();
-        couponModel.setId(couponId);
+        couponModel.setId(idGenerator.generate());
         couponModel.setUserGroup(UserGroup.EXPERIENCE_INVEST_SUCCESS);
         couponModel.setAmount(588800);
         couponModel.setInvestLowerLimit(100000);
         couponModel.setCouponType(CouponType.NEWBIE_COUPON);
         couponModel.setProductTypes(Lists.newArrayList(ProductType._180));
         couponModel.setRate(0.14);
-        when(couponMapper.findById(anyLong())).thenReturn(couponModel);
+        couponModel.setDeadline(1);
+        couponModels.add(couponModel);
+
+        when(couponAssignmentService.asyncAssignUserCoupon(anyString(),anyList())).thenReturn(couponModels);
 
         BaseResponseDto<InvestExperienceResponseDto> baseResponseDto = mobileAppExperienceInvestService.experienceInvest(investRequestDto);
 
+
         assertThat(baseResponseDto.getData().getCoupons().get(0).getType(), is(couponModel.getCouponType().name()));
         assertThat(baseResponseDto.getData().getCoupons().get(0).getAmount(), is(AmountConverter.convertCentToString(couponModel.getAmount())));
-        assertThat(baseResponseDto.getData().getCoupons().get(0).getEndDate(), is(new DateTime(userCouponModel.getEndTime()).toString("yyyy-MM-dd")));
-        assertThat(baseResponseDto.getData().getCoupons().get(0).getStartDate(), is(new DateTime(userCouponModel.getStartTime()).toString("yyyy-MM-dd")));
+        assertThat(baseResponseDto.getData().getCoupons().get(0).getEndDate(), is(couponModel.getDeadline() == 0 ? new DateTime(couponModel.getEndTime()).toString("yyyy-MM-dd") : new DateTime().plusDays(couponModel.getDeadline() + 1).withTimeAtStartOfDay().minusSeconds(1).toString("yyyy-MM-dd")));
+        assertThat(baseResponseDto.getData().getCoupons().get(0).getStartDate(), is(new DateTime(couponModel.getStartTime()).toString("yyyy-MM-dd")));
         assertThat(baseResponseDto.getData().getCoupons().get(0).getInvestLowerLimit(), is(AmountConverter.convertCentToString(couponModel.getInvestLowerLimit())));
         assertThat(baseResponseDto.getData().getCoupons().get(0).getName(), is(couponModel.getCouponType().getName()));
         assertThat(baseResponseDto.getData().getCoupons().get(0).getProductNewTypes(), is(couponModel.getProductTypes()));
         assertThat(baseResponseDto.getData().getCoupons().get(0).getRate(), is("14"));
-        assertThat(baseResponseDto.getData().getCoupons().get(0).getUserCouponId(), is(String.valueOf(userCouponModel.getId())));
     }
 
 }
