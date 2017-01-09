@@ -24,7 +24,7 @@ require(['jquery', 'layerWrapper','commonFun','jquery.ajax.extension','logintip'
                 dataType: 'json'
             })
             .done(function(data) {
-                if(data.status){
+                if(data.data.status){
                     taskDraw($self);
                 }
             })
