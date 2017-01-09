@@ -2,16 +2,11 @@ package com.tuotiansudai.activity.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.base.Strings;
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.tuotiansudai.activity.repository.dto.RedEnvelopSplitActivityDto;
 import com.tuotiansudai.activity.repository.dto.RedEnvelopSplitReferrerDto;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
-import com.tuotiansudai.coupon.repository.model.UserCouponModel;
-import com.tuotiansudai.coupon.repository.model.UserGroup;
-import com.tuotiansudai.coupon.util.UserCollector;
 import com.tuotiansudai.enums.AppUrl;
 import com.tuotiansudai.repository.mapper.PrepareUserMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
@@ -57,8 +52,6 @@ public class RedEnvelopSplitActivityService {
     @Value("${web.server}")
     private String domainName;
 
-    private static List<Long> coupons = Lists.newArrayList(333L, 334L, 335L, 336L, 337L, 338L);
-
     private static String REFERRER_TITLE = "您的好友%s送你三重好礼";
 
     private static String REFERRER_DESCRIPTION = "完成注册即可领取8.88元现金红包+5888元体验金+588元优惠券";
@@ -79,7 +72,7 @@ public class RedEnvelopSplitActivityService {
     }
 
     public List<UserModel> getReferrerCount(String loginName, Date startTime, Date endTime) {
-        if(Strings.isNullOrEmpty(loginName)){
+        if (Strings.isNullOrEmpty(loginName)) {
             return Lists.newArrayList();
         }
         List<UserModel> userModels = userMapper.findUsersByRegisterTimeOrReferrer(startTime, endTime, loginName);
@@ -89,38 +82,28 @@ public class RedEnvelopSplitActivityService {
     public String getReferrerRedEnvelop(int referrerCount) {
         long sumAmount = 0l;
 
-        if(referrerCount >= 1){
-            sumAmount += 188l;
+        if (referrerCount == 1) {
+            sumAmount = 188l;
+        } else if (referrerCount == 2) {
+            sumAmount = 388l;
+        } else if (referrerCount >= 3 && referrerCount < 5) {
+            sumAmount = 588l;
+        } else if (referrerCount >= 5 && referrerCount < 7) {
+            sumAmount = 988l;
+        } else if (referrerCount >= 7 && referrerCount < 10) {
+            sumAmount = 1388l;
         }
-
-        if(referrerCount >= 2){
-            sumAmount += 388l;
+        if (referrerCount >= 10) {
+            sumAmount = 2088l;
         }
-
-        if(referrerCount >= 3){
-            sumAmount += 588l;
-        }
-
-        if(referrerCount >= 5){
-            sumAmount += 988l;
-        }
-
-        if(referrerCount >= 7){
-            sumAmount += 1388l;
-        }
-
-        if(referrerCount >= 10){
-            sumAmount += 2088l;
-        }
-
         return AmountConverter.convertCentToString(sumAmount);
     }
 
-    public String getSumRedEnvelopByLoginName(String loginName, List<Long> couponIds){
+    public String getSumRedEnvelopByLoginName(String loginName, List<Long> couponIds) {
         long sumAmount = 0l;
         List<Long> couponAmounts = couponIds.stream().filter(id -> CollectionUtils.isNotEmpty(userCouponMapper.findByLoginNameAndCouponId(loginName, id)))
                 .map(id -> couponMapper.findById(id).getAmount()).collect(Collectors.toList());
-        for(Long amount : couponAmounts){
+        for (Long amount : couponAmounts) {
             sumAmount += amount;
         }
         return AmountConverter.convertCentToString(sumAmount);

@@ -7,6 +7,7 @@ import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserChannel;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.util.AmountConverter;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -37,8 +38,6 @@ public class AssignRedEnvelopSplitJob implements Job {
     @Value("#{'${activity.weiXin.red.envelop.period}'.split('\\~')}")
     private List<String> weiXinPeriod = Lists.newArrayList();
 
-    private final static Integer[] referrerLevels = {1, 2, 3, 5, 7, 10};
-
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         logger.info("[RedEnvelopSplit] assign reward activity. start");
@@ -58,32 +57,31 @@ public class AssignRedEnvelopSplitJob implements Job {
         }
 
         referrerCountMap.forEach((k, v) -> {
-            for (Integer level : referrerLevels) {
-                if (v >= level) {
-                    logger.info(MessageFormat.format("[RedEnvelopSplit] assign redEnvelop loginName:{0}, couponId:{1}, level:{2}.", k, getCouponId(level), level));
-                    couponAssignmentService.assignUserCoupon(k, getCouponId(level));
-                }
-            }
+            logger.info(MessageFormat.format("[RedEnvelopSplit] assign redEnvelop loginName:{0}, couponId:{1}, level:{2}.", k, getCouponId(v), v));
+            couponAssignmentService.assignUserCoupon(k, getCouponId(v));
         });
 
         logger.info("[RedEnvelopSplit] assign reward activity. end");
     }
 
-    private Long getCouponId(Integer level) {
-        switch (level) {
-            case 1:
-                return 333l;
-            case 2:
-                return 334l;
-            case 3:
-                return 335l;
-            case 5:
-                return 336l;
-            case 7:
-                return 337l;
-            default:
-                return 338l;
+    public String getCouponId(int referrerCount) {
+        long sumAmount = 0l;
+
+        if (referrerCount == 1) {
+            sumAmount = 333l;
+        } else if (referrerCount == 2) {
+            sumAmount = 334l;
+        } else if (referrerCount >= 3 && referrerCount < 5) {
+            sumAmount = 335l;
+        } else if (referrerCount >= 5 && referrerCount < 7) {
+            sumAmount = 336l;
+        } else if (referrerCount >= 7 && referrerCount < 10) {
+            sumAmount = 337l;
         }
+        if (referrerCount >= 10) {
+            sumAmount = 338l;
+        }
+        return AmountConverter.convertCentToString(sumAmount);
     }
 
     private List<UserModel> getReferrerCount(Date startTime, Date endTime) {
