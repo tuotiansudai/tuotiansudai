@@ -210,7 +210,7 @@ public class EmbodyQuestionService {
                         }
                     }
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    logger.error("cms JsonConverter read error:" + e);
                 }
 
                 if (siteMapCmsCategoryDto.getName() != null) {
