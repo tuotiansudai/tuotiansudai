@@ -19,27 +19,19 @@ require(['jquery', 'layerWrapper','commonFun','jquery.ajax.extension','logintip'
             event.preventDefault();
             var $self=$(this);
             $.ajax({
-                url: '/activity/point-draw/task-draw',
-                type: 'POST',
-                dataType: 'json',
-                data: {
-                    "activityCategory":"SPRING_FESTIVAL_ACTIVITY"
-                }
+                url:'/point/sign-in',
+                type:'POST',
+                dataType: 'json'
             })
             .done(function(data) {
-                $('#numText').text(data.prize);
-                $self.addClass('active').text('已签到');
-                layer.open({
-                  type: 1,
-                  move:false,
-                  area:$(window).width()>700?['400px','300px']:['280px','300px'],
-                  title:false,
-                  content: $('#moneyTip')
-                });
+                if(data.status){
+                    taskDraw($self);
+                }
             })
             .fail(function() {
-                layer.msg('请求失败，请重试！');
+                layer.msg('请求失败,请重试!');
             });
+
         });
         //签到前判断设备
         $('#loginCheck').on('click', function(event) {
@@ -49,6 +41,31 @@ require(['jquery', 'layerWrapper','commonFun','jquery.ajax.extension','logintip'
             } else {
                 $('.no-login-text',$('.spring-festival-container')).trigger('click');  //弹框登录
             }
-        }); 
+        });
+        //抽奖
+        function taskDraw(dom){
+            $.ajax({
+                url: '/activity/point-draw/task-draw',
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    "activityCategory":"SPRING_FESTIVAL_ACTIVITY"
+                }
+            })
+            .done(function(data) {
+                $('#numText').text(data.prizeValue);
+                dom.addClass('active').text('已签到');
+                layer.open({
+                    type: 1,
+                    move:false,
+                    area:$(window).width()>700?['400px','300px']:['280px','300px'],
+                    title:false,
+                    content: $('#moneyTip')
+                });
+            })
+            .fail(function() {
+                layer.msg('请求失败，请重试！');
+            });
+        }
     });        
 });

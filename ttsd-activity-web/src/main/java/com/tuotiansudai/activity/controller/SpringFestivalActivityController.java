@@ -22,9 +22,10 @@ public class SpringFestivalActivityController {
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView national() {
         ModelAndView modelAndView = new ModelAndView("/activities/spring-festival", "responsive", true);
-        modelAndView.addObject("taskProgress", springFestivalActivityService.getTaskProgress(LoginUserInfo.getLoginName()));
-        modelAndView.addObject("signedIn", signInService.signInIsSuccess(LoginUserInfo.getLoginName()));
-        modelAndView.addObject("loginName", LoginUserInfo.getLoginName());
+        String loginName = LoginUserInfo.getLoginName();
+        modelAndView.addObject("taskProgress", springFestivalActivityService.getTaskProgress(loginName));
+        modelAndView.addObject("signedIn", signInService.signInIsSuccess(loginName));
+        modelAndView.addObject("loginName", loginName);
         return modelAndView;
     }
 }
