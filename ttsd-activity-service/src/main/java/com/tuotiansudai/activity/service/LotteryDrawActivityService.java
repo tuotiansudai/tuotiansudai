@@ -156,18 +156,21 @@ public class LotteryDrawActivityService {
     }
 
     @Transactional
-    public synchronized DrawLotteryResultDto drawPrizeByPoint(String mobile, ActivityCategory activityCategory) {
+    public synchronized DrawLotteryResultDto drawPrizeByPoint(String mobile, ActivityCategory activityCategory, boolean longTermActivity) {
         UserModel userModel = userMapper.findByMobile(mobile);
         if (userModel == null) {
             return new DrawLotteryResultDto(2);//"该用户不存在！"
         }
 
-        Date nowDate = DateTime.now().toDate();
-        List<String> activityTime = getActivityTime(activityCategory);
-        Date activityStartTime = DateTime.parse(activityTime.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
-        Date activityEndTime = DateTime.parse(activityTime.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
-        if (!nowDate.before(activityEndTime) || !nowDate.after(activityStartTime)) {
-            return new DrawLotteryResultDto(3);//不在活动时间范围内！
+        //长期活动不执行
+        if(!longTermActivity){
+            Date nowDate = DateTime.now().toDate();
+            List<String> activityTime = getActivityTime(activityCategory);
+            Date activityStartTime = DateTime.parse(activityTime.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+            Date activityEndTime = DateTime.parse(activityTime.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+            if (!nowDate.before(activityEndTime) || !nowDate.after(activityStartTime)) {
+                return new DrawLotteryResultDto(3);//不在活动时间范围内！
+            }
         }
 
         if (Strings.isNullOrEmpty(mobile)) {
