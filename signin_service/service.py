@@ -6,7 +6,7 @@ import redis
 from models import User, LoginLog
 import settings
 from logging_config import logger
-import producer
+from producer import producer
 
 
 pool = redis.ConnectionPool(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB)
@@ -158,7 +158,7 @@ class LoginManager(object):
     def _save_log(self, is_success):
         login_log = LoginLog(self.form.username.data, self.form.source.data, self.ip_address,
                              self.form.device_id.data, is_success)
-        producer.get_producer().send_message(json.dumps(login_log.__dict__))
+        producer.send_message(json.dumps(login_log.__dict__))
 
 
 def active(username):
