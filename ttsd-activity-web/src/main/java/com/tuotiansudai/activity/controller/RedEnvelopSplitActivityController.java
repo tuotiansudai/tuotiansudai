@@ -53,8 +53,9 @@ public class RedEnvelopSplitActivityController {
     public ModelAndView loadPageData() {
         String loginName = LoginUserInfo.getLoginName();
         ModelAndView modelAndView = new ModelAndView("/activities/red-envelop-split", "responsive", true);
-        modelAndView.addObject("referrerCount", redEnvelopSplitActivityService.getReferrerCount(loginName));
-        modelAndView.addObject("redEnvelopAmount", redEnvelopSplitActivityService.getReferrerRedEnvelop(loginName));
+        int referrerCount = redEnvelopSplitActivityService.getReferrerCount(loginName);
+        modelAndView.addObject("referrerCount", referrerCount);
+        modelAndView.addObject("redEnvelopAmount", redEnvelopSplitActivityService.getReferrerRedEnvelop(referrerCount));
         modelAndView.addObject("referrerUrl", redEnvelopSplitActivityService.getShareReferrerUrl(loginName));
         modelAndView.addObject("referrerList", redEnvelopSplitActivityService.getReferrerList(loginName));
         return modelAndView;

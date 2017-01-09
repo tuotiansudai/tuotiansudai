@@ -94,10 +94,14 @@ public class RedEnvelopSplitActivityService {
         }
 
         if(referrerCount >= 2){
-            sumAmount += 588l;
+            sumAmount += 388l;
         }
 
         if(referrerCount >= 3){
+            sumAmount += 588l;
+        }
+
+        if(referrerCount >= 5){
             sumAmount += 988l;
         }
 
