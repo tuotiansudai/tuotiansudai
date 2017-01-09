@@ -3,7 +3,17 @@
   margin: 0 auto;
   font-size:14px;
 }
-
+.layui-layer-setwin{
+   .layui-layer-close2{
+    width:25px!important;
+    height:25px!important;
+    right: -35px!important;
+    top: -35px!important;
+    background:url('/activity/images/spring-festival/close-btn.png') no-repeat center;
+    background-size:100%;
+    background-position: 0 0 !important;
+   }
+}
 .spring-festival-container{
   background:#b2242b;
   .top-container{
@@ -96,7 +106,7 @@
         float:left;
         width:100%;
         text-align:center;
-        span{
+        span,a{
           display:inline-block;
           width:250px;
           height:60px;
@@ -142,6 +152,12 @@
               .money-content{
                 background:url('/activity/images/spring-festival/flower-active-bg.png') no-repeat center;
                 background-size:100%;
+                p{
+                  color:#e70c1b;
+                }
+              }
+              .text-item{
+                visibility:visible;
               }
             }
             h3{
@@ -161,14 +177,266 @@
               background:url('/activity/images/spring-festival/flower-bg.png') no-repeat center;
               background-size:100%;
               box-sizing:border-box;
-              padding:70px 0;
+              padding:85px 0;
               text-align:center;
               margin:20px 0 15px;
+              p{
+                margin-bottom:0;
+                font-size:24px;
+                color:#999;
+                line-height:28px;
+                span{
+                  font-size:46px;
+                  font-weight:bold;
+                }
+              }
             }
             .text-item{
               display:inline-block;
               width:100%;
+              height:50px;
+              line-height:50px;
+              font-size:24px;
+              color:#981e23;
+              text-align:center;
+              border:2px solid #a20904;
+              border-radius:10px;
+              visibility:hidden;
             }
+          }
+        }
+        .gift-item{
+          width:960px;
+          margin:0 -40px;
+          li{
+            float:left;
+            width:400px;
+            height:400px;
+            margin:15px 40px;
+            background:#fffbe5;
+            box-sizing:border-box;
+            position: relative;
+            .angle{
+              width:120px;
+              height:78px;
+              position: absolute;
+              &.angle-left-top{
+                top:5px;
+                left:5px;
+                background:url('/activity/images/spring-festival/left-top.png') no-repeat center;
+                background-size:100%;
+              }
+              &.angle-right-top{
+                top:5px;
+                right:5px;
+                background:url('/activity/images/spring-festival/right-top.png') no-repeat center;
+                background-size:100%;
+              }
+              &.angle-left-bottom{
+                bottom:5px;
+                left:5px;
+                background:url('/activity/images/spring-festival/left-bottom.png') no-repeat center;
+                background-size:100%;
+              }
+              &.angle-right-bottom{
+                bottom:5px;
+                right:5px;
+                background:url('/activity/images/spring-festival/right-bottom.png') no-repeat center;
+                background-size:100%;
+              }
+            }
+            h5{
+              text-align:center;
+              font-size:24px;
+              color:#981e23;
+              margin: 5px 0;
+              font-weight:bold;
+            }
+            .gift-info{
+              text-align:center;
+              p{
+                font-size:16px;
+                color:#981e23;
+                margin-bottom: 0;
+                line-height: 18px;
+              }
+            }
+            .gift-img{
+              width:100%;
+              line-height:300px;
+              text-align:center;
+              position: relative;
+              .coupon-item{
+                position: absolute;
+                top:0;
+                right:20px;
+                width:90px;
+                height:90px;
+                text-align:center;
+                background:#e70a1a;
+                border-radius:50%;
+                box-sizing: border-box;
+                padding: 18px 0;
+                p{
+                  font-size:16px;
+                  color:#fffbe5;
+                  margin-bottom:0;
+                  line-height: 24px;
+                  span{
+                    font-size:26px;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      .tip-item{
+        float:left;
+        width:100%;
+        font-size:16px;
+        color:#981e23;
+        margin-bottom:10px;
+      }
+    }
+  }
+  .money-tip{
+    float:left;
+    width:100%;
+    box-sizing:border-box;
+    .content-item{
+      display:inline-block;
+      width:400px;
+      height:300px;
+      border:3px solid #e70c1c;
+      background:#fffbe5;
+      position: relative;
+      box-sizing:border-box;
+      text-align:center;
+      .tip{
+        position: absolute;
+        width:60px;
+        height:60px;
+        &.tip-left-top{
+          top:0;
+          left:0;
+          background:url('/activity/images/spring-festival/tip-left-top.png') no-repeat center;
+          background-size:100%;
+        }
+        &.tip-right-top{
+          top:0;
+          right:0;
+          background:url('/activity/images/spring-festival/tip-right-top.png') no-repeat center;
+          background-size:100%;
+        }
+        &.tip-left-bottom{
+          bottom:0;
+          left:0;
+          background:url('/activity/images/spring-festival/tip-left-bottom.png') no-repeat center;
+          background-size:100%;
+        }
+        &.tip-right-bottom{
+          bottom:0;
+          right:0;
+          background:url('/activity/images/spring-festival/tip-right-bottom.png') no-repeat center;
+          background-size:100%;
+        }
+      }
+      h3{
+        margin:20px 0;
+        font-size:24px;
+        color:#981e23;
+      }
+      .top-com{
+        display:inline-block;
+        width:230px;
+        height:106px;
+        background:#fff;
+        overflow:hidden;
+        .left-name {
+          float: left;
+          width: 50px;
+          height: 106px;
+          background: #ff752a;
+          color: #fff;
+          font-size: 16px;
+          text-align: center;
+          line-height: 22px;
+          border-radius: 5px;
+          position: relative;
+          span {
+            display: inline-block;
+            vertical-align: middle;
+            width: 30px;
+            margin-left: 5px;
+          }
+          em {
+            display: inline-block;
+            width: 0;
+            height: 100%;
+            vertical-align: middle;
+          }
+          i {
+            position: absolute;
+            left: 45px;
+            width: 10px;
+            height: 10px;
+            border: 1px solid #ff752a;
+            background: #fffbe5;
+            border-radius: 50%;
+            &.circle-top {
+              top: -5px;
+            }
+            &.circle-bottom {
+              bottom: -5px;
+            }
+          }
+        }
+        .right-coupon {
+          float: left;
+          width: 180px;
+          height: 106px;
+          padding-left: 20px;
+          border: 1px solid #ff752a;
+          border-radius: 5px;
+          background: url('/activity/images/spring-festival/bag-bg.png') no-repeat right bottom;
+          box-sizing:border-box;
+          p {
+            margin-bottom: 0;
+            color: #ff752a;
+            line-height: 20px;
+            span{
+              line-height:106px;
+              &.num-text{
+                font-size:40px;
+              }
+              &.unit-text{
+                font-size:16px;
+              }
+            }
+          }
+        }
+      }
+      .btn-item{
+        display:inline-block;
+        width:100%;
+        text-align:center;
+        margin-top:20px;
+        a{
+          display: inline-block;
+          width: 180px;
+          height: 44px;
+          line-height: 44px;
+          box-shadow: 0 4px #b30003;
+          position: relative;
+          background: #d60004;
+          border-radius: 10px;
+          font-size: 20px;
+          color: #fffbe5;
+          cursor: pointer;
+          &:hover{
+            box-shadow: 0 2px #a32517;
+            top: 2px;
           }
         }
       }
