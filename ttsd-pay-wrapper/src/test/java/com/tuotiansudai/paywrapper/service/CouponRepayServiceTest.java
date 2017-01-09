@@ -377,7 +377,7 @@ public class CouponRepayServiceTest {
         couponRepayModel.setLoginName(userModel.getLoginName());
         couponRepayModel.setCouponId(couponModel.getId());
         couponRepayModel.setUserCouponId(userCouponModel.getId());
-        couponRepayModel.setStatus(RepayStatus.COMPLETE);
+        couponRepayModel.setStatus(RepayStatus.REPAYING);
 
         String redisKey = MessageFormat.format(REPAY_REDIS_KEY_TEMPLATE, String.valueOf(currentLoanRepay.getId()));
 

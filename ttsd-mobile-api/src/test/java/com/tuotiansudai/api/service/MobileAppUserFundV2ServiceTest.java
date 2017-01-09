@@ -137,7 +137,7 @@ public class MobileAppUserFundV2ServiceTest extends ServiceTestBase {
         investExtraRateModel2.setLoginName(myUserFund.getLoginName());
         investExtraRateModel2.setExpectedInterest(20);
         investExtraRateModel2.setExpectedFee(2);
-        investExtraRateModel1.setStatus(RepayStatus.REPAYING);
+        investExtraRateModel2.setStatus(RepayStatus.REPAYING);
         investExtraRateMapper.create(investExtraRateModel2);
 
 
