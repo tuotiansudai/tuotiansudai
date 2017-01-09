@@ -8,6 +8,16 @@ public class LoanDetailInfo {
 
     private String activityDesc;
 
+    private String productType;
+
+    public String getProductType() {
+        return productType;
+    }
+
+    public void setProductType(String productType) {
+        this.productType = productType;
+    }
+
     public long getLoanId() {
         return loanId;
     }

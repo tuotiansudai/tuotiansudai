@@ -1,5 +1,6 @@
 package com.tuotiansudai.mq.consumer.activity;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -196,7 +197,9 @@ public class InvestSuccessActivityRewardMessageConsumer implements MessageConsum
         int currentGrade = 1;
         InvestRewardModel investRewardModel;
         final String loginName = investSuccessMessage.getInvestInfo().getLoginName();
-        if (userInfo != null && (startTime.before(nowDate) && endTime.after(nowDate))
+
+        if (userInfo != null && Strings.isNullOrEmpty(loanDetailInfo.getProductType()) && loanDetailInfo.getProductType() != "_30"
+                && (startTime.before(nowDate) && endTime.after(nowDate))
                 && loanDetailInfo.isActivity() && (!investInfo.getTransferStatus().equals("SUCCESS") && investInfo.getStatus().equals("SUCCESS"))) {
             investRewardModel = investRewardMapper.findByMobile(userInfo.getMobile());
             if (null != investRewardModel) {
@@ -204,7 +207,7 @@ public class InvestSuccessActivityRewardMessageConsumer implements MessageConsum
                 logger.info(MessageFormat.format("[MQ] springFestival reward is exits. investAmount:{0}, currentGrade:{1}", investInfo.getAmount(), investRewardModel.getRewardGrade()));
                 investGrade = getInvestTaskGrade(investInfo.getAmount());
                 currentGrade += investRewardModel.getRewardGrade();
-                if(investGrade != investRewardModel.getRewardGrade()){
+                if (investGrade != investRewardModel.getRewardGrade()) {
                     investRewardModel.setRewardGrade(investGrade);
                 }
 

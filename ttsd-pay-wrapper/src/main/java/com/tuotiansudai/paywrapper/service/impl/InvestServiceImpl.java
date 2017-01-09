@@ -601,6 +601,7 @@ public class InvestServiceImpl implements InvestService {
 
         LoanDetailsModel loanDetailsModel =  loanDetailsMapper.getByLoanId(investModel.getLoanId());
         loanDetailInfo.setLoanId(investModel.getLoanId());
+        loanDetailInfo.setProductType(loanMapper.findById(investModel.getLoanId()).getProductType().name());
         if(loanDetailsModel != null){
             loanDetailInfo.setActivity(loanDetailsModel.isActivity());
             loanDetailInfo.setActivityDesc(loanDetailsModel.getActivityDesc());
