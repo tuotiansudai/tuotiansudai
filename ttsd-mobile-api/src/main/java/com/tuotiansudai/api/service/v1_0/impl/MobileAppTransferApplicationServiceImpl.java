@@ -17,14 +17,9 @@ import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
-import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.InvestRepayMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.model.InvestModel;
-import com.tuotiansudai.repository.model.InvestRepayModel;
-import com.tuotiansudai.repository.model.LoanModel;
-import com.tuotiansudai.repository.model.TransferStatus;
+import com.tuotiansudai.repository.mapper.*;
+import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.transfer.dto.TransferApplicationDto;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.transfer.repository.mapper.TransferRuleMapper;
@@ -45,7 +40,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -85,6 +82,10 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
 
     @Autowired
     private PageValidUtils pageValidUtils;
+
+    @Autowired
+    private LoanRepayMapper loanRepayMapper;
+
 
     @Override
     public BaseResponseDto<TransferApplicationResponseDataDto> generateTransferApplication(TransferApplicationRequestDto requestDto) {
@@ -134,8 +135,26 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
         BigDecimal discountBig = new BigDecimal(transferRuleMapper.find().getDiscount());
         long transferAmount = AmountConverter.convertStringToCent(requestDto.getTransferAmount());
         long discountLower = investAmountBig.subtract(discountBig.multiply(investAmountBig)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
+        List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(transferApplicationDto.getTransferInvestId());
+
+        if(CollectionUtils.isEmpty(investRepayModels)){
+            return new BaseResponseDto(ReturnMessage.REPAY_IS_GENERATION_IN.getCode(), ReturnMessage.REPAY_IS_GENERATION_IN.getMsg());
+        }
+
         if (transferAmount > investModel.getAmount() || transferAmount < discountLower) {
             return new BaseResponseDto(ReturnMessage.TRANSFER_AMOUNT_OUT_OF_RANGE.getCode(), ReturnMessage.TRANSFER_AMOUNT_OUT_OF_RANGE.getMsg());
+        }
+
+        if(loanMapper.findById(investModel.getLoanId()).getStatus() == LoanStatus.OVERDUE){
+            return new BaseResponseDto(ReturnMessage.TRANSFER_IS_OVERDUE.getCode(), ReturnMessage.TRANSFER_IS_OVERDUE.getMsg());
+        }
+
+        if(!investTransferService.validTransferIsDayLimit(investModel.getLoanId())){
+            return new BaseResponseDto(ReturnMessage.TRANSFER_IMPEND_REPAYING.getCode(), ReturnMessage.TRANSFER_IMPEND_REPAYING.getMsg());
+        }
+
+        if (!investTransferService.validTransferIsCanceled(investModel.getId())) {
+            return new BaseResponseDto(ReturnMessage.TRANSFER_ALREADY_CANCELED_TODAY.getCode(), ReturnMessage.TRANSFER_ALREADY_CANCELED_TODAY.getMsg());
         }
 
         if (!investTransferService.investTransferApply(transferApplicationDto)) {

@@ -18,6 +18,9 @@ public class InvestListResponseDataDto extends BaseResponseDataDto {
     @ApiModelProperty(value = "投资记录", example = "list")
     private List<InvestRecordResponseDataDto> investRecord;
 
+    @ApiModelProperty(value = "标王信息", example = "list")
+    private List<LoanAchievementsResponseDto> achievements;
+
     public Integer getIndex() {
         return index;
     }
@@ -50,5 +53,11 @@ public class InvestListResponseDataDto extends BaseResponseDataDto {
         this.investRecord = investRecord;
     }
 
+    public List<LoanAchievementsResponseDto> getAchievements() {
+        return achievements;
+    }
 
+    public void setAchievements(List<LoanAchievementsResponseDto> achievements) {
+        this.achievements = achievements;
+    }
 }

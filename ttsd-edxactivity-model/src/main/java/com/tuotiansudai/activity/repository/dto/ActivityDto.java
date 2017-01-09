@@ -17,6 +17,7 @@ public class ActivityDto {
     private String description;
     private String webPictureUrl;
     private String appPictureUrl;
+    private String appVerticalPictureUrl;
     private String jumpToLink;
     private String longTerm;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
@@ -47,6 +48,7 @@ public class ActivityDto {
         this.description = activityModel.getDescription();
         this.webPictureUrl = activityModel.getWebPictureUrl();
         this.appPictureUrl = activityModel.getAppPictureUrl();
+        this.appVerticalPictureUrl = activityModel.getAppVerticalPictureUrl();
         this.longTerm = activityModel.isLongTerm()?"longTerm":"notLongTerm";
         this.activatedTime = activityModel.getActivatedTime();
         this.expiredTime = activityModel.getExpiredTime();
@@ -236,5 +238,13 @@ public class ActivityDto {
 
     public void setJumpToLink(String jumpToLink) {
         this.jumpToLink = jumpToLink;
+    }
+
+    public String getAppVerticalPictureUrl() {
+        return appVerticalPictureUrl;
+    }
+
+    public void setAppVerticalPictureUrl(String appVerticalPictureUrl) {
+        this.appVerticalPictureUrl = appVerticalPictureUrl;
     }
 }

@@ -10,6 +10,7 @@ import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
+import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestDto;
@@ -34,10 +35,7 @@ public class MobileAppExperienceInvestServiceImpl implements MobileAppExperience
     private MobileAppChannelService mobileAppChannelService;
 
     @Autowired
-    private UserCouponMapper userCouponMapper;
-
-    @Autowired
-    private CouponMapper couponMapper;
+    private CouponAssignmentService couponAssignmentService;
 
     @Override
     public BaseResponseDto<InvestExperienceResponseDto> experienceInvest(InvestRequestDto investRequestDto) {
@@ -59,20 +57,19 @@ public class MobileAppExperienceInvestServiceImpl implements MobileAppExperience
     private List<InvestExperienceResponseDataDto> convertInvestExperienceResponseDataDto (String loginName) {
         DecimalFormat decimalFormat = new DecimalFormat("######0.##");
         List<InvestExperienceResponseDataDto> investExperienceResponseDataDtos = Lists.newArrayList();
-        List<UserCouponModel> userCouponModels = userCouponMapper.findByLoginName(loginName, null);
-        for (UserCouponModel userCouponModel : userCouponModels) {
-            CouponModel couponModel = couponMapper.findById(userCouponModel.getCouponId());
+        List<CouponModel> couponModels = couponAssignmentService.asyncAssignUserCoupon(loginName, Lists.newArrayList(UserGroup.EXPERIENCE_INVEST_SUCCESS));
+        for (CouponModel couponModel : couponModels) {
             if (couponModel.getUserGroup() == UserGroup.EXPERIENCE_INVEST_SUCCESS) {
                 InvestExperienceResponseDataDto investExperienceResponseDataDto = new InvestExperienceResponseDataDto();
                 investExperienceResponseDataDto.setAmount(AmountConverter.convertCentToString(couponModel.getAmount()));
-                investExperienceResponseDataDto.setEndDate(new DateTime(userCouponModel.getEndTime()).toString("yyyy-MM-dd"));
+                investExperienceResponseDataDto.setEndDate(couponModel.getDeadline() == 0 ? new DateTime(couponModel.getEndTime()).toString("yyyy-MM-dd") : new DateTime().plusDays(couponModel.getDeadline() + 1).withTimeAtStartOfDay().minusSeconds(1).toString("yyyy-MM-dd"));
                 investExperienceResponseDataDto.setInvestLowerLimit(AmountConverter.convertCentToString(couponModel.getInvestLowerLimit()));
                 investExperienceResponseDataDto.setName(couponModel.getCouponType().getName());
                 investExperienceResponseDataDto.setProductNewTypes(couponModel.getProductTypes());
                 investExperienceResponseDataDto.setRate(decimalFormat.format(couponModel.getRate() * 100));
-                investExperienceResponseDataDto.setStartDate(new DateTime(userCouponModel.getStartTime()).toString("yyyy-MM-dd"));
-                investExperienceResponseDataDto.setUserCouponId(String.valueOf(userCouponModel.getId()));
+                investExperienceResponseDataDto.setStartDate(new DateTime().withTimeAtStartOfDay().toString("yyyy-MM-dd"));
                 investExperienceResponseDataDto.setType(couponModel.getCouponType().name());
+                investExperienceResponseDataDto.setCouponSource(couponModel.getCouponSource());
                 investExperienceResponseDataDtos.add(investExperienceResponseDataDto);
             }
         }

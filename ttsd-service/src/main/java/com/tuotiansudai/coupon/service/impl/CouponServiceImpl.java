@@ -6,6 +6,7 @@ import com.tuotiansudai.coupon.repository.mapper.CouponUserGroupMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
+import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
@@ -25,6 +26,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CouponServiceImpl implements CouponService {
@@ -85,5 +87,10 @@ public class CouponServiceImpl implements CouponService {
     @Override
     public CouponModel findExchangeableCouponById(long couponId){
         return couponMapper.findExchangeableCouponById(couponId);
+    }
+
+    @Override
+    public List<CouponModel> findCouponByUserGroup(List<UserGroup> userGroups) {
+        return couponMapper.findAllActiveCoupons().stream().filter(input -> userGroups.contains(input.getUserGroup())).collect(Collectors.toList());
     }
 }

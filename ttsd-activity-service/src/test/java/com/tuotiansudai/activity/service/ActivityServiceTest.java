@@ -115,6 +115,7 @@ public class ActivityServiceTest {
         activityModel.setDescription("testDescription");
         activityModel.setWebPictureUrl("testWebPictureUrl");
         activityModel.setAppPictureUrl("testAppPictureUrl");
+        activityModel.setAppVerticalPictureUrl("testAppPictureUrl");
         activityModel.setActivatedTime(activatedTime);
         activityModel.setExpiredTime(expiredTime);
         activityModel.setSource(Lists.newArrayList(Source.WEB));
@@ -170,6 +171,7 @@ public class ActivityServiceTest {
         activityDto.setAppActivityUrl("AppActivityUrl");
         activityDto.setWebPictureUrl("WebPictureUrl");
         activityDto.setAppPictureUrl("AppPictureUrl");
+        activityDto.setAppVerticalPictureUrl("AppPictureUrl");
         activityDto.setExpiredTime(new DateTime().withTimeAtStartOfDay().toDate());
         activityDto.setSource(Lists.newArrayList(Source.ANDROID));
         activityDto.setStatus(activityStatus);
