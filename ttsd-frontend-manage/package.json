@@ -2,11 +2,13 @@
   "name": "frontendmanage",
   "version": "0.1.0",
   "scripts": {
-    "start": "export NODE_ENV=dev && webpack-dev-server --inline && npm run json",
-    "start2": "export NODE_ENV=dev && webpack --watch && npm run json",
-    "build": "export NODE_ENV=production && rm -rf ./resources/prod && webpack --watch --config webpack.production.js && npm run json",
+    "start": "webpack-dev-server --inline && npm run json",
+    "devjson": "webpack  && npm run json",
+    "build": "npm run rmprod && webpack --config webpack.production.js && npm run json",
+    "prodjson":"webpack --config webpack.production.js && npm run json",
     "json":"nodemon -L getFiles.js",
-    "test":"webpack & npm run json"
+    "test":"webpack & npm run json",
+    "rmprod":"rm -rf ./resources/prod/ask && rm -rf ./resources/prod/public"
   },
   "devDependencies": {
     "assets-webpack-plugin": "^3.5.0",

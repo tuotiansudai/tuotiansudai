@@ -1,9 +1,12 @@
 var path = require('path');
 var glob=require('glob');
+var AssetsPlugin = require('assets-webpack-plugin');
 var webpack = require('webpack');
 var WebpackMd5Hash = require('webpack-md5-hash');
 var objectAssign = require('object-assign');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
+
+var geFileList = require('./getFiles');
 
 var basePath = path.join(__dirname, 'resources'),
     staticPath = path.join(basePath, 'static'),
@@ -15,9 +18,14 @@ var basePath = path.join(__dirname, 'resources'),
     mobilePath=path.join(staticPath, 'mobile');
 
 var outputPath=path.join(basePath, 'prod'),
-    devServerPath='http://localhost:3008/prod',
+    devServerPath='/',
     commonOptions={},
     plugins=[];
+
+//生成json map
+// ask json
+var askFileList=new geFileList(outputPath+'/ask',outputPath+'/json-ask.json');
+askFileList.init();
 
 /**
  * 动态查找所有入口文件
@@ -40,8 +48,7 @@ files.forEach(function(file){
     }
 });
 commonOptions.entry = newEntries;
-console.log(newEntries);
-console.log('[chunkhash]');
+
 
 plugins.push(new ExtractTextPlugin("[name].[chunkhash].css"));
 plugins.push(new WebpackMd5Hash());
@@ -66,12 +73,6 @@ plugins.push(new AssetsPlugin({
     metadata: {version: 123}
 }));
 
-plugins.push(new webpack.DefinePlugin({
-    'process.env': {
-        'NODE_ENV': '"dev"'
-    }
-}));
-
 module.exports = objectAssign(commonOptions, {
     output: {
         filename:"[name].[chunkhash].js",
@@ -91,7 +92,7 @@ module.exports = objectAssign(commonOptions, {
             loader: ExtractTextPlugin.extract("style-loader", "css-loader!sass-loader")
         },{
             test: /\.(png|jpg|gif|woff|woff2)$/,
-            loader: 'url-loader?limit=5120&name=[path][name].[hash:8].[ext]'
+            loader: 'url-loader?limit=5120&name=images/[name].[hash:8].[ext]'
         }]
     },
     resolve: {

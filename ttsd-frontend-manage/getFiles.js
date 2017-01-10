@@ -1,7 +1,6 @@
 var fs = require('fs');
 var path = require('path');
-var basePath = path.join(__dirname, 'resources'),
-    jsonMapPath = path.join(basePath, 'jsonMap');
+var basePath = path.join(__dirname, 'resources');
 //遍历文件夹，获取所有文件夹里面的文件信息
 
 function geFileList(folderPath,fileName)
@@ -55,14 +54,12 @@ function geFileList(folderPath,fileName)
                 nameNoSuffix=thisName.split('.')[0];
                 strJSON["jsFile"][nameNoSuffix]=thisName;
                 strJSON["jsFile"]["size"]=(item.size/1024).toFixed(2) +"/kb";
-                strJSON["jsFile"]["path"]=item.path;
             }
             else if(/\.css$/.test(thisName)) {
                 //判断是否为css文件
                 nameNoSuffix=thisName.split('.')[0];
                 strJSON["cssFile"][nameNoSuffix]=thisName;
                 strJSON["cssFile"]["size"]=(item.size/1024).toFixed(2) +"/kb";
-                strJSON["cssFile"]["path"]=item.path;
             }
         }
 
@@ -71,11 +68,12 @@ function geFileList(folderPath,fileName)
     }
     this.init=function() {
         var that=this;
+        console.log('test01');
         //判断打包的时候文件路径是否存在
         fs.exists(this.folderPath, function (exists) {
             if(exists) {
-                that.readFile(that.folderPath);
-                that.formatHandler();
+              that.readFile(that.folderPath);
+              that.formatHandler();
             }
         });
     }

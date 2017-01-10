@@ -18,14 +18,16 @@ var basePath = path.join(__dirname, 'resources'),
 	mobilePath=path.join(staticPath, 'mobile');
 
 var outputPath=path.join(basePath, 'develop'),
-	devServerPath='http://localhost:3008/',
+	devServerPath='/',
 	commonOptions={},
 	plugins=[];
 
 
 //生成json map
-var askFileList=new geFileList("./resources/develop/ask",outputPath+'/json-ask.json');
+// ask json
+var askFileList=new geFileList(outputPath+"/ask",outputPath+'/json-ask.json');
 askFileList.init();
+
 
 /**
  * 动态查找所有入口文件
@@ -77,12 +79,6 @@ plugins.push(new AssetsPlugin({
 	metadata: {version: 123}
 }));
 
-plugins.push(new webpack.DefinePlugin({
-	'process.env': {
-		'NODE_ENV': '"dev"'
-	}
-}));
-
 //开发模式
 plugins.push(new webpack.HotModuleReplacementPlugin());
 
@@ -104,23 +100,10 @@ module.exports = objectAssign(commonOptions, {
 		},{
 			test: /\.scss$/,
 			loader: ExtractTextPlugin.extract("style-loader", "css-loader!sass-loader")
-		},  {
-			test: /\.(png|jpg|gif|woff|svg)$/,
-			loader: 'url',
-			query: {
-				limit: 5120,
-				RegExp:'resources',
-				name: '[path][name].[ext]'
-			}
-		}
-		// 	{
-		// 	test: /\.(png|jpg|gif|woff|woff2)$/,
-		// 	loader: "url-loader?limit=5120",
-		// 	query: {
-		// 		name: "[1]"
-		// 	}
-		// }
-		]
+		},{
+			test: /\.(png|jpg|gif|woff|woff2)$/,
+			loader: 'url-loader?limit=5120&name=images/[name].[hash:8].[ext]'
+		}]
 	},
 	resolve: {
 		extensions: ['', '.js', '.jsx'],
