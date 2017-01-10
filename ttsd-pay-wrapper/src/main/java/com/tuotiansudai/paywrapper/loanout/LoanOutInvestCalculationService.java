@@ -1,4 +1,4 @@
-package com.tuotiansudai.paywrapper.extrarate.service;
+package com.tuotiansudai.paywrapper.loanout;
 
 
 public interface LoanOutInvestCalculationService {

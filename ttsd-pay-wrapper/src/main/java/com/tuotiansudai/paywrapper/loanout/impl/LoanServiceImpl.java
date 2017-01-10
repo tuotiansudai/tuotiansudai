@@ -1,4 +1,4 @@
-package com.tuotiansudai.paywrapper.service.impl;
+package com.tuotiansudai.paywrapper.loanout.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.base.Strings;
@@ -17,9 +17,7 @@ import com.tuotiansudai.enums.PushSource;
 import com.tuotiansudai.enums.PushType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.exception.AmountTransferException;
-import com.tuotiansudai.job.AnxinCreateContractJob;
 import com.tuotiansudai.job.AutoLoanOutJob;
-import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.message.EventMessage;
 import com.tuotiansudai.message.LoanOutSuccessMessage;
 import com.tuotiansudai.message.PushMessage;
@@ -28,6 +26,7 @@ import com.tuotiansudai.mq.client.model.MessageTopic;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
+import com.tuotiansudai.paywrapper.loanout.LoanService;
 import com.tuotiansudai.paywrapper.repository.mapper.MerBindProjectMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.MerUpdateProjectMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferMapper;
@@ -42,7 +41,6 @@ import com.tuotiansudai.paywrapper.repository.model.sync.response.BaseSyncRespon
 import com.tuotiansudai.paywrapper.repository.model.sync.response.MerBindProjectResponseModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.MerUpdateProjectResponseModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
-import com.tuotiansudai.paywrapper.service.LoanService;
 import com.tuotiansudai.paywrapper.service.UMPayRealTimeStatusService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
@@ -52,17 +50,13 @@ import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.JobManager;
-import com.tuotiansudai.util.JsonConverter;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
-import org.joda.time.DateTime;
-import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
@@ -519,26 +513,6 @@ public class LoanServiceImpl implements LoanService {
 
         String respData = callbackRequest.getResponseData();
         return respData;
-    }
-
-
-    @Override
-    public boolean createAnxinContractJob(long businessId) {
-        boolean result = true;
-        try {
-            Date triggerTime = new DateTime().plusMinutes(AnxinCreateContractJob.HANDLE_DELAY_MINUTES).toDate();
-
-            jobManager.newJob(JobType.CreateAnXinContract, AnxinCreateContractJob.class)
-                    .addJobData(AnxinCreateContractJob.BUSINESS_ID, businessId)
-                    .withIdentity(JobType.CreateAnXinContract.name(), "businessId-" + businessId)
-                    .replaceExistingJob(true)
-                    .runOnceAt(triggerTime)
-                    .submit();
-        } catch (SchedulerException e) {
-            result = false;
-            logger.error("create query contract job for loan/transfer[" + businessId + "] fail", e);
-        }
-        return result;
     }
 
     private void fatalLog(String msg, long loanId, String agentLoginName, long investAmountTotal, Throwable e) {

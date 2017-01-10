@@ -2,12 +2,10 @@ package com.tuotiansudai.paywrapper.controller;
 
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
-import com.tuotiansudai.paywrapper.coupon.service.CouponLoanOutService;
-import com.tuotiansudai.paywrapper.coupon.service.CouponRepayService;
+import com.tuotiansudai.paywrapper.loanout.CouponRepayService;
 import com.tuotiansudai.paywrapper.extrarate.service.ExtraRateService;
-import com.tuotiansudai.paywrapper.extrarate.service.LoanOutInvestCalculationService;
+import com.tuotiansudai.paywrapper.loanout.LoanService;
 import com.tuotiansudai.paywrapper.service.*;
-import com.tuotiansudai.paywrapper.service.impl.ReferrerRewardServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;

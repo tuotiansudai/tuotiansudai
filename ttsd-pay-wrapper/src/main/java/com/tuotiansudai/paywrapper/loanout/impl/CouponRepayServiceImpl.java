@@ -1,4 +1,4 @@
-package com.tuotiansudai.paywrapper.coupon.service.impl;
+package com.tuotiansudai.paywrapper.loanout.impl;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
@@ -19,7 +19,7 @@ import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.job.CouponRepayNotifyCallbackJob;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
-import com.tuotiansudai.paywrapper.coupon.service.CouponRepayService;
+import com.tuotiansudai.paywrapper.loanout.CouponRepayService;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.CouponRepayNotifyRequestMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.TransferMapper;

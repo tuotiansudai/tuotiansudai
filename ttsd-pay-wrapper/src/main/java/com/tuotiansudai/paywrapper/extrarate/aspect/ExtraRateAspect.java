@@ -1,7 +1,7 @@
 package com.tuotiansudai.paywrapper.extrarate.aspect;
 
 import com.tuotiansudai.paywrapper.extrarate.service.ExtraRateService;
-import com.tuotiansudai.paywrapper.extrarate.service.LoanOutInvestCalculationService;
+import com.tuotiansudai.paywrapper.loanout.LoanOutInvestCalculationService;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;

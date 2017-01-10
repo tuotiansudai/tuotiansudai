@@ -65,7 +65,7 @@ public class LoanOutSuccessRewardReferrerMessageConsumer implements MessageConsu
             try {
                 result = payWrapperClient.sendRewardReferrer(loanId).isSuccess();
             } catch (Exception e) {
-                logger.error(MessageFormat.format("[标的放款MQ] LoanOutSuccess_RewardReferrer ConnectTimeoutException, message:{0}", e));
+                logger.error(MessageFormat.format("[标的放款MQ] LoanOutSuccess_RewardReferrer is fail, message:{0}", e));
             }
             if (!result) {
                 fatalSmsList.add("发放推荐人奖励失败");

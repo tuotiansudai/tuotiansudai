@@ -1,4 +1,4 @@
-package com.tuotiansudai.paywrapper.coupon.service.impl;
+package com.tuotiansudai.paywrapper.loanout.impl;
 
 
 import com.tuotiansudai.client.MQWrapperClient;
@@ -7,7 +7,7 @@ import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.mq.client.model.MessageQueue;
-import com.tuotiansudai.paywrapper.coupon.service.AchievementCouponService;
+import com.tuotiansudai.paywrapper.loanout.AchievementCouponService;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.LoanModel;

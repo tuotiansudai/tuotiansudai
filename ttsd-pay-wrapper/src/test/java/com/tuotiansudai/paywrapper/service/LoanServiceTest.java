@@ -18,6 +18,8 @@ import com.tuotiansudai.mq.client.model.MessageTopic;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
+import com.tuotiansudai.paywrapper.loanout.ReferrerRewardService;
+import com.tuotiansudai.paywrapper.loanout.RepayGeneratorService;
 import com.tuotiansudai.paywrapper.repository.mapper.MerBindProjectMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.MerUpdateProjectMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferMapper;
@@ -29,7 +31,7 @@ import com.tuotiansudai.paywrapper.repository.model.sync.request.SyncRequestStat
 import com.tuotiansudai.paywrapper.repository.model.sync.response.MerBindProjectResponseModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.MerUpdateProjectResponseModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
-import com.tuotiansudai.paywrapper.service.impl.LoanServiceImpl;
+import com.tuotiansudai.paywrapper.loanout.impl.LoanServiceImpl;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;

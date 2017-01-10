@@ -49,7 +49,13 @@ public class TransferRedEnvelopCallbackMessageConsumer implements MessageConsume
             logger.info("[标的放款MQ] TransferReferrerRewardCallback ready to consume message: loanId:{}, investId:{}, loginName:{}, userCouponId:{}",
                     transferRedEnvelopCallbackMessage.getLoanId(), transferRedEnvelopCallbackMessage.getInvestId(),
                     transferRedEnvelopCallbackMessage.getLoginName(), transferRedEnvelopCallbackMessage.getUserCouponId());
-            BaseDto<PayDataDto> result = payWrapperClient.transferRedEnvelopForCallBack(transferRedEnvelopCallbackMessage.getUserCouponId());
+            BaseDto<PayDataDto> result;
+            try {
+                result = payWrapperClient.transferRedEnvelopForCallBack(transferRedEnvelopCallbackMessage.getUserCouponId());
+            }catch (Exception e){
+                result = new BaseDto<>(false);
+                logger.error("[标的放款MQ] TransferReferrerRewardCallback callback consume fail. message: " + e);
+            }
             if (!result.isSuccess()) {
                 logger.error("[标的放款MQ] TransferReferrerRewardCallback callback consume fail. notifyRequestId: " + message);
                 smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("发放推荐人奖励回调错误"));

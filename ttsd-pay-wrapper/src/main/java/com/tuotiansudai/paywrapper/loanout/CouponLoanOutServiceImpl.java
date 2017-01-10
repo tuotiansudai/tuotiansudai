@@ -1,4 +1,4 @@
-package com.tuotiansudai.paywrapper.coupon.service.impl;
+package com.tuotiansudai.paywrapper.loanout;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
@@ -12,7 +12,6 @@ import com.tuotiansudai.message.TransferRedEnvelopCallbackMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
-import com.tuotiansudai.paywrapper.coupon.service.CouponLoanOutService;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferNotifyMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.TransferMapper;

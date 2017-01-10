@@ -1,4 +1,4 @@
-package com.tuotiansudai.paywrapper.service.impl;
+package com.tuotiansudai.paywrapper.loanout.impl;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterators;
@@ -20,7 +20,7 @@ import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackR
 import com.tuotiansudai.paywrapper.repository.model.async.callback.ProjectTransferNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.TransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.TransferResponseModel;
-import com.tuotiansudai.paywrapper.service.ReferrerRewardService;
+import com.tuotiansudai.paywrapper.loanout.ReferrerRewardService;
 import com.tuotiansudai.paywrapper.service.SystemBillService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;

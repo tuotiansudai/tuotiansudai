@@ -1,32 +1,31 @@
-package com.tuotiansudai.paywrapper.service;
+package com.tuotiansudai.paywrapper.loanout;
 
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
-import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.LoanStatus;
 
-import java.util.List;
 import java.util.Map;
 
 public interface LoanService {
 
     /**
-     * @function 创建标的
      * @param loanId
      * @return
+     * @function 创建标的
      */
     BaseDto<PayDataDto> createLoan(long loanId);
 
     /**
-     * @function 更新标的状态
      * @param loanId
      * @param loanStatus
      * @return
+     * @function 更新标的状态
      */
     BaseDto<PayDataDto> updateLoanStatus(long loanId, LoanStatus loanStatus);
 
     /**
      * 放款
+     *
      * @param loanId
      * @return
      */
@@ -40,5 +39,4 @@ public interface LoanService {
 
     String loanOutCallback(Map<String, String> paramsMap, String queryString);
 
-    boolean createAnxinContractJob(long loanId);
 }

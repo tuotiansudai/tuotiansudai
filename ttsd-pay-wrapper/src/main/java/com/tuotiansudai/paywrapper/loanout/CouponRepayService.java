@@ -1,4 +1,4 @@
-package com.tuotiansudai.paywrapper.coupon.service;
+package com.tuotiansudai.paywrapper.loanout;
 
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;

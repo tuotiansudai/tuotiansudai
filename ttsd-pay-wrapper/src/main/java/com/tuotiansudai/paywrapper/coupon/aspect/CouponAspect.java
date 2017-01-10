@@ -1,31 +1,17 @@
 package com.tuotiansudai.paywrapper.coupon.aspect;
 
-import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
-import com.tuotiansudai.coupon.repository.model.CouponModel;
-import com.tuotiansudai.coupon.repository.model.UserGroup;
-import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
-import com.tuotiansudai.job.JobType;
-import com.tuotiansudai.job.SendRedEnvelopeJob;
 import com.tuotiansudai.paywrapper.coupon.service.CouponInvestService;
-import com.tuotiansudai.paywrapper.coupon.service.CouponRepayService;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.model.LoanModel;
-import com.tuotiansudai.util.JobManager;
+import com.tuotiansudai.paywrapper.loanout.CouponRepayService;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
-import org.joda.time.DateTime;
-import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.text.MessageFormat;
-import java.util.Date;
-import java.util.List;
 
 @Component
 @Aspect
@@ -67,7 +53,7 @@ public class CouponAspect {
     }
 
     @SuppressWarnings(value = "unchecked")
-    @AfterReturning(value = "execution(* com.tuotiansudai.paywrapper.service.LoanService.cancelLoan(*))", returning = "returnValue")
+    @AfterReturning(value = "execution(* com.tuotiansudai.paywrapper.loanout.LoanService.cancelLoan(*))", returning = "returnValue")
     public void afterReturningCancelLoan(JoinPoint joinPoint, Object returnValue) {
         long loanId = (long) joinPoint.getArgs()[0];
         BaseDto<PayDataDto> baseDto = (BaseDto<PayDataDto>) returnValue;

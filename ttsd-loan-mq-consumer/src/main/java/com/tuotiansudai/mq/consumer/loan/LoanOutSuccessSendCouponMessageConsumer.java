@@ -54,7 +54,13 @@ public class LoanOutSuccessSendCouponMessageConsumer implements MessageConsumer 
             List<String> fatalSmsList = Lists.newArrayList();
 
             logger.info("[标的放款MQ] LoanOutSuccess_AssignCoupon is execute, loanId:{0}", loanId);
-            if (!payWrapperClient.sendRedEnvelopeAfterLoanOut(loanId).isSuccess()) {
+            boolean result = true;
+            try{
+                result = payWrapperClient.sendRedEnvelopeAfterLoanOut(loanId).isSuccess();
+            }catch (Exception e){
+                logger.error(MessageFormat.format("[标的放款MQ] LoanOutSuccess_AssignCoupon is fail, message:{0}", e));
+            }
+            if (!result) {
                 fatalSmsList.add("发送现金红包失败");
                 logger.error(MessageFormat.format("[标的放款MQ] LoanOutSuccess_AssignCoupon is fail. loanId:{0}", String.valueOf(loanId)));
             }

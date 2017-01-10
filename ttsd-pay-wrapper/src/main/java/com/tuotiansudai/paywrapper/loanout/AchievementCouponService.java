@@ -1,4 +1,4 @@
-package com.tuotiansudai.paywrapper.coupon.service;
+package com.tuotiansudai.paywrapper.loanout;
 
 
 public interface AchievementCouponService {
