@@ -1,12 +1,13 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.AgreementBusinessType;
 import com.tuotiansudai.dto.AgreementDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;
+import com.tuotiansudai.enums.UserOpType;
+import com.tuotiansudai.log.service.UserOpLogService;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
@@ -18,9 +19,8 @@ import com.tuotiansudai.paywrapper.repository.model.async.request.PtpMerBindAgre
 import com.tuotiansudai.paywrapper.service.AgreementService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.BankCardMapper;
-import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.util.IdGenerator;
-import com.tuotiansudai.util.JsonConverter;
+import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.BankCardModel;
 import org.apache.log4j.Logger;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
-import java.util.Date;
 import java.util.Map;
 
 @Service
@@ -49,7 +48,7 @@ public class AgreementServiceImpl implements AgreementService {
     private MQWrapperClient mqWrapperClient;
 
     @Autowired
-    private IdGenerator idGenerator;
+    private UserOpLogService userOpLogService;
 
     @Override
     @Transactional
@@ -59,7 +58,9 @@ public class AgreementServiceImpl implements AgreementService {
         PtpMerBindAgreementRequestModel ptpMerBindAgreementRequestModel = new PtpMerBindAgreementRequestModel(accountModel.getPayUserId(), dto);
 
         // 发送用户行为日志 MQ消息
-        sendUserOpLogMessageQueue(dto);
+        UserOpType opType = getUserOpType(dto);
+        if (opType != null)
+            userOpLogService.sendUserOpLogMQ(dto.getLoginName(), dto.getIp(), dto.getSource().name(), dto.getDeviceId(), opType, null);
 
         try {
             return payAsyncClient.generateFormData(PtpMerBindAgreementRequestMapper.class, ptpMerBindAgreementRequestModel);
@@ -72,25 +73,13 @@ public class AgreementServiceImpl implements AgreementService {
         }
     }
 
-
-    private void sendUserOpLogMessageQueue(AgreementDto dto){
-
-        UserOpType opType;
-
+    private UserOpType getUserOpType(AgreementDto dto) {
         if (dto.isAutoInvest() || dto.isNoPasswordInvest()) {
-            opType = UserOpType.NO_PASSWORD_AGREEMENT; // 开通免密支付协议
+            return UserOpType.NO_PASSWORD_AGREEMENT; // 开通免密支付协议
         } else if (dto.isFastPay()) {
-            opType = UserOpType.FAST_PAY_AGREEMENT; // 开通快捷支付协议
+            return UserOpType.FAST_PAY_AGREEMENT; // 开通快捷支付协议
         } else {
-            return;
-        }
-
-        UserOpLogModel logModel = new UserOpLogModel(idGenerator.generate(), dto.getLoginName(), opType, dto.getIp(), dto.getDeviceId(), dto.getSource(), null);
-
-        try {
-            mqWrapperClient.sendMessage(MessageQueue.UserOperateLog, JsonConverter.writeValueAsString(logModel));
-        } catch (JsonProcessingException e) {
-            logger.error("[MQ] agreement, send UserOperateLog fail.", e);
+            return null;
         }
     }
 
