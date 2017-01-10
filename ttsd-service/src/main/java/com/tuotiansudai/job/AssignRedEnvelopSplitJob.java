@@ -3,7 +3,9 @@ package com.tuotiansudai.job;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserChannel;
 import com.tuotiansudai.repository.model.UserModel;
@@ -35,6 +37,8 @@ public class AssignRedEnvelopSplitJob implements Job {
     @Autowired
     private CouponAssignmentService couponAssignmentService;
 
+    @Autowired
+    private MQWrapperClient mqClient;
 
     @Value("#{'${activity.weiXin.red.envelop.period}'.split('\\~')}")
     private List<String> weiXinPeriod = Lists.newArrayList();
@@ -59,30 +63,27 @@ public class AssignRedEnvelopSplitJob implements Job {
 
         referrerCountMap.forEach((k, v) -> {
             logger.info(MessageFormat.format("[RedEnvelopSplit] assign redEnvelop loginName:{0}, couponId:{1}, level:{2}.", k, getCouponId(v), v));
-            couponAssignmentService.assignUserCoupon(k, getCouponId(v));
+            mqClient.sendMessage(MessageQueue.CouponAssigning, k + ":" + getCouponId(v));
         });
 
         logger.info("[RedEnvelopSplit] assign reward activity. end");
     }
 
-    public String getCouponId(int referrerCount) {
-        long sumAmount = 0l;
-
+    public long getCouponId(int referrerCount) {
         if (referrerCount == 1) {
-            sumAmount = 333l;
+            return 333l;
         } else if (referrerCount == 2) {
-            sumAmount = 334l;
+            return 334l;
         } else if (referrerCount >= 3 && referrerCount < 5) {
-            sumAmount = 335l;
+            return 335l;
         } else if (referrerCount >= 5 && referrerCount < 7) {
-            sumAmount = 336l;
+            return 336l;
         } else if (referrerCount >= 7 && referrerCount < 10) {
-            sumAmount = 337l;
+            return 337l;
+        } else if (referrerCount >= 10) {
+            return 338l;
         }
-        if (referrerCount >= 10) {
-            sumAmount = 338l;
-        }
-        return AmountConverter.convertCentToString(sumAmount);
+        return 0;
     }
 
     private List<UserModel> getReferrerCount(Date startTime, Date endTime) {
