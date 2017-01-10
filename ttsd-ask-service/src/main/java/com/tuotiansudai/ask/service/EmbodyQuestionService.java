@@ -220,7 +220,7 @@ public class EmbodyQuestionService {
                 if (siteMapCmsCategoryDto.getName() != null) {
                     siteMapDataDto.setName(siteMapCmsCategoryDto.getName());
                 }
-                String linkUrl = cmsServer + (siteMapCmsCategoryDto.getParent() != null ? "/" + siteMapCmsCategoryDto.getParent() : "") + "/" + siteMapCmsCategoryDto.getSlug();
+                String linkUrl = CMS_CATEGORY_PREFIX + (siteMapCmsCategoryDto.getParent() != null ? "/" + siteMapCmsCategoryDto.getParent() : "") + "/" + siteMapCmsCategoryDto.getSlug();
                 siteMapDataDto.setLinkUrl(linkUrl);
                 siteMapDataDto.setSeq(CATEGORY_ORDER);
                 siteMapDataDtoList.add(siteMapDataDto);
