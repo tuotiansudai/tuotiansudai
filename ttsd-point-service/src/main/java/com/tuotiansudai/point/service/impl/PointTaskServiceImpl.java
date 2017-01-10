@@ -110,6 +110,8 @@ public class PointTaskServiceImpl implements PointTaskService {
                     }
                     break;
                 case EACH_RECOMMEND:
+//                    String referrer = userMapper.findByLoginName(loginName).getReferrer();
+                    
                 case FIRST_REFERRER_INVEST:
                     String referrer = userMapper.findByLoginName(loginName).getReferrer();
                     long referrerMaxTaskLevel = userPointTaskMapper.findMaxTaskLevelByLoginName(referrer, pointTask);
@@ -166,12 +168,6 @@ public class PointTaskServiceImpl implements PointTaskService {
                         pointTaskDto.setTitle(MessageFormat.format(pointTask.getTitle(),
                                 AmountConverter.convertCentToString(FIRST_INVEST_10000_AMOUNT)));
                         pointTaskDto.setPoint(FIRST_INVEST_10000_POINT);
-                        break;
-                    case EACH_RECOMMEND:
-                        pointTaskDto.setTitle(pointTask.getTitle());
-                        pointTaskDto.setPoint(pointTaskModel.getPoint());
-                        pointTaskDto.setDescription(MessageFormat.format("已邀请{0}名好友注册",
-                                String.valueOf(referrerRelationMapper.findByReferrerLoginNameAndLevel(loginName, 1).size())));
                         break;
                     default:
                         pointTaskDto.setTitle(pointTask.getTitle());
