@@ -52,9 +52,9 @@ public class RedEnvelopSplitActivityService {
     @Value("${web.server}")
     private String domainName;
 
-    private static String REFERRER_TITLE = "您的好友%s送你三重好礼";
+    private static String REFERRER_TITLE = "您的好友%s送你8.88元现金红包";
 
-    private static String REFERRER_DESCRIPTION = "完成注册即可领取8.88元现金红包+5888元体验金+588元优惠券";
+    private static String REFERRER_DESCRIPTION = "完成注册即可领取8.88元现金红包";
 
     private static Integer DEFAULT_PAGE_SIZE = 10;
 
