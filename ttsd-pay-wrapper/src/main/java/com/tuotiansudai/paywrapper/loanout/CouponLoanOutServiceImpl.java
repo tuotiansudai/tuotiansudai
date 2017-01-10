@@ -124,7 +124,7 @@ public class CouponLoanOutServiceImpl implements CouponLoanOutService {
     public boolean sendRedEnvelopTransferInBalanceCallBack(long userCouponId) {
         logger.info(MessageFormat.format("[标的放款] send redEnvelop transfer in balance callBack, userCouponId:{0}", String.valueOf(userCouponId)));
         UserCouponModel userCouponModel = userCouponMapper.findById(userCouponId);
-        if (userCouponModel.getActualInterest() == 0) {
+        if (userCouponModel.getActualInterest() != 0) {
             return true;
         }
         CouponModel couponModel = this.couponMapper.findById(userCouponModel.getCouponId());
