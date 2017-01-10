@@ -84,13 +84,7 @@
             </div>
 
             <div class="envelop-box clearfix">
-            <@global.isAnonymous>
-                <div class="anonymous-box">
-                    <span>您还未登录，登录完成后，再来查看吧！</span>
-                    <a class="normal-button" href="/login">去登录</a>
-                </div>
-                </@global.isAnonymous>
-            <@global.isNotAnonymous>
+            <#if loginName?? >
                 <div class="unanonymous-box clearfix">
                     <ul class="my-red-envelop clearfix">
                         <li>成功邀请人数<br/>
@@ -117,7 +111,12 @@
                         </#if>
                     </div>
                 </div>
-            </@global.isNotAnonymous>
+             <#else>
+                 <div class="anonymous-box">
+                     <span>您还未登录，登录完成后，再来查看吧！</span>
+                     <a class="normal-button" href="/login">去登录</a>
+                 </div>
+            </#if>
             </div>
         </div>
     </div>

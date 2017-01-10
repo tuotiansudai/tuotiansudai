@@ -14,6 +14,7 @@ import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.spring.security.MyAuthenticationUtil;
+import com.tuotiansudai.util.MobileEncryptor;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -52,8 +53,10 @@ public class RedEnvelopSplitActivityController {
     public ModelAndView loadPageData() {
         String loginName = LoginUserInfo.getLoginName();
         ModelAndView modelAndView = new ModelAndView("/activities/red-envelop-split", "responsive", true);
-        modelAndView.addObject("referrerCount", redEnvelopSplitActivityService.getReferrerCount(loginName));
-        modelAndView.addObject("redEnvelopAmount", redEnvelopSplitActivityService.getReferrerRedEnvelop(loginName));
+        int referrerCount = redEnvelopSplitActivityService.getReferrerCount(loginName);
+        modelAndView.addObject("loginName", loginName);
+        modelAndView.addObject("referrerCount", referrerCount);
+        modelAndView.addObject("redEnvelopAmount", redEnvelopSplitActivityService.getReferrerRedEnvelop(referrerCount));
         modelAndView.addObject("referrerUrl", redEnvelopSplitActivityService.getShareReferrerUrl(loginName));
         modelAndView.addObject("referrerList", redEnvelopSplitActivityService.getReferrerList(loginName));
         return modelAndView;
@@ -66,7 +69,7 @@ public class RedEnvelopSplitActivityController {
         modelAndView.addObject("loginName", loginName);
         modelAndView.addObject("channels", channel);
         UserModel userModel = userMapper.findByLoginName(loginName);
-        modelAndView.addObject("userName", userModel != null && userModel.getUserName() != null ? userModel.getUserName() : (userModel != null ? userModel.getMobile() : loginName));
+        modelAndView.addObject("userName", userModel != null && userModel.getUserName() != null ? userModel.getUserName() : (userModel != null ? MobileEncryptor.encryptWebMiddleMobile(userModel.getMobile()): loginName));
         modelAndView.addObject("registerStatus", "referrer");
         return modelAndView;
     }

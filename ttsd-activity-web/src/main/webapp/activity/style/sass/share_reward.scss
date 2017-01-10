@@ -225,19 +225,19 @@ body {
         width:33%;
         float:left;
         text-align: center;
-        &:nth-child(1) {
+        &.one {
           em {
             background: url("/activity/images/share-reward/icon-t01.png") no-repeat left top;
            background-size: 100%;
           }
         }
-        &:nth-child(2) {
+        &.two {
           em {
             background: url("/activity/images/share-reward/icon-t02.png") no-repeat left top;
             background-size: 100%;
           }
         }
-        &:nth-child(3) {
+        &.three {
           em {
             background: url("/activity/images/share-reward/icon-t03.png") no-repeat left top;
             background-size: 100%;
@@ -254,10 +254,10 @@ body {
     .arrow-step {
       position: absolute;
       top:80px;
-      &:nth-child(1) {
+      &.one {
         left: 260px;
       }
-      &:nth-child(2) {
+      &.two {
         left: 560px;
       }
 
@@ -270,10 +270,10 @@ body {
     .arrow-step {
       position: absolute;
       left: 306px;
-      &:nth-child(1) {
+      &.one {
         top: 70px;
       }
-      &:nth-child(2) {
+      &.two {
         top: 258px;
       }
     }
@@ -284,7 +284,7 @@ body {
         span {
           display: block;
         }
-        &:nth-child(1) {
+        &.one {
           left:120px;
           top: 90px;
           text-align: center;
@@ -293,7 +293,7 @@ body {
           }
 
         }
-        &:nth-child(2) {
+        &.two {
           left: 450px;
           top: 7px;
           span {
@@ -305,7 +305,7 @@ body {
           }
 
         }
-        &:nth-child(3) {
+        &.three {
           left: 450px;
           top: 186px;
           span {
@@ -385,7 +385,7 @@ body {
             width:20%;
           }
         }
-        &:nth-child(2n) {
+        &.even {
           background: #b2ebff;
         }
       }
@@ -540,26 +540,23 @@ body {
     .earn-commission {
       .arrow-step {
         top: 54px;
-        &:nth-child(1) {
+        &.one {
           left: 29%;
         }
-        &:nth-child(2) {
+        &.two {
           left: 62%;
         }
       }
       .earn-list {
         dd {
-          &:nth-child(1) {
+          &.one {
             text-align: left;
           }
-          &:nth-child(2) {
+          &.two {
             text-align: center;
-
-
           }
-          &:nth-child(3) {
+          &.three {
             text-align: right;
-
           }
           .btn-bar {
             display: none;
@@ -583,10 +580,10 @@ body {
       height:270px;
       .arrow-step {
         left: 40%;
-        &:nth-child(1) {
+        &.one {
           top:54px;
         }
-        &:nth-child(2) {
+        &.two {
           top:153px;
         }
       }
@@ -595,7 +592,7 @@ body {
         .invite-group {
           width:34%;
 
-          &:nth-child(1) {
+          &.one {
             left: 5%;
             top:56px;
             em {
@@ -606,7 +603,7 @@ body {
               display: none;
             }
           }
-          &:nth-child(2) {
+          &.two {
             left: 57%;
             em {
               background: url("/activity/images/share-reward/icon-t13.png") no-repeat left top;
@@ -616,7 +613,7 @@ body {
               display: none;
             }
           }
-          &:nth-child(3) {
+          &.three {
             left: 57%;
             top:112px;
             em {

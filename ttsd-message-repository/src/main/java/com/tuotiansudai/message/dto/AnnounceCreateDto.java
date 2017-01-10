@@ -71,7 +71,7 @@ public class AnnounceCreateDto {
         messageCreateDto.setUserGroup(MessageUserGroup.ALL_USER);
         messageCreateDto.setChannels(Lists.newArrayList(MessageChannel.WEBSITE, MessageChannel.APP_MESSAGE));
         messageCreateDto.setMessageCategory(MessageCategory.NOTIFY);
-        messageCreateDto.setAppUrl(AppUrl.NOTIFY);
+        messageCreateDto.setAppUrl(AppUrl.MESSAGE_CENTER_LIST);
         PushCreateDto pushCreateDto = new PushCreateDto();
         pushCreateDto.setPushType(PushType.IMPORTANT_EVENT);
         pushCreateDto.setPushSource(PushSource.ALL);

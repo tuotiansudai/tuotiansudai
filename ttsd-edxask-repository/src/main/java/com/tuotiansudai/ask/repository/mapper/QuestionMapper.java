@@ -65,4 +65,11 @@ public interface QuestionMapper {
                                                 @Param(value = "pageSize") int pageSize);
 
     long countQuestionsByKeywords(@Param(value = "keywords") String keywords);
+
+    List<QuestionModel> findApprovedNotEmbodyQuestions();
+
+    List<QuestionModel> findEmbodyAllQuestions(@Param(value = "index") int index,
+                                               @Param(value = "pageSize") int pageSize);
+
+    long countEmbodyAllQuestions();
 }
