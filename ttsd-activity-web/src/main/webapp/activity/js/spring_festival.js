@@ -35,7 +35,7 @@ require(['jquery', 'layerWrapper','commonFun','jquery.ajax.extension','logintip'
                 dataType: 'json'
             })
             .done(function(data) {
-                if(data.data.message != '' || data.data.message != null){
+                if(data.data.message != '' && data.data.message != null){
                     layer.msg(data.data.message);
                 }else{
                     taskDraw($self);
