@@ -40,7 +40,7 @@
                     <input type="hidden" name="mobile" value="${mobile}">
                     <input type="hidden" name="channel" value="${channels}">
                     <input type="hidden" name="referrer" value="${loginName}">
-                    <button type="submit" class="normal-button">立即领取8.88元红包</button>
+                    <button type="submit" class="normal-button">立即将红包存入账户</button>
                     <span class="agreement">领取即同意拓天速贷《服务协议》</span>
                 </form>
             </div>

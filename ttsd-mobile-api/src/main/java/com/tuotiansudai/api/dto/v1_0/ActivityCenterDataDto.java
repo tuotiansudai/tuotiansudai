@@ -10,8 +10,10 @@ import java.util.Date;
 public class ActivityCenterDataDto {
     @ApiModelProperty(value = "描述", example = "红包、会员、神秘大奖应有尽有！")
     private String descTitle;
-    @ApiModelProperty(value = "图片地址", example = "13800138000")
+    @ApiModelProperty(value = "横图地址", example = "ttps://tuotiansudai.com/ss.jpg")
     private String imageUrl;
+    @ApiModelProperty(value = "竖图地址", example = "ttps://tuotiansudai.com/ss.jpg")
+    private String verticalImageUrl;
     @ApiModelProperty(value = "活动链接", example = "https://tuotiansudai.com/activity/hero-ranking")
     private String activityUrl;
     @ApiModelProperty(value = "标题", example = "周年庆")
@@ -38,6 +40,7 @@ public class ActivityCenterDataDto {
         this.sharedUrl = activityModel.getShareUrl();
         this.activatedTime = activityModel.getActivatedTime();
         this.expiredTime = activityModel.getExpiredTime();
+        this.verticalImageUrl = activityModel.getAppVerticalPictureUrl();
     }
 
     public String getDescTitle() {
@@ -102,5 +105,13 @@ public class ActivityCenterDataDto {
 
     public void setExpiredTime(Date expiredTime) {
         this.expiredTime = expiredTime;
+    }
+
+    public String getVerticalImageUrl() {
+        return verticalImageUrl;
+    }
+
+    public void setVerticalImageUrl(String verticalImageUrl) {
+        this.verticalImageUrl = verticalImageUrl;
     }
 }

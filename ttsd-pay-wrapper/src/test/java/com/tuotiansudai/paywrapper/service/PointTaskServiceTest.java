@@ -61,7 +61,7 @@ public class PointTaskServiceTest {
 
     @Test
     public void shouldCompletedEachSumInvestTask() {
-        String loginName = "investor";
+        String loginName = "eachSumInvestor";
         this.createFakeUser(loginName, null);
         LoanModel fakeLoan = this.createFakeLoan(ProductType._30);
 
@@ -90,7 +90,7 @@ public class PointTaskServiceTest {
 
     @Test
     public void shouldCompletedEachSingleInvestTask() {
-        String loginName = "investor";
+        String loginName = "eachSingleInvestor";
         this.createFakeUser(loginName, null);
         LoanModel fakeLoan = this.createFakeLoan(ProductType._30);
         this.createFakeInvest(loginName, fakeLoan.getId(), 50000000L);
@@ -116,7 +116,7 @@ public class PointTaskServiceTest {
 
     @Test
     public void shouldCompletedEachRecommendTask() throws Exception {
-        UserModel referrer = this.createFakeUser("referrer", null);
+        UserModel referrer = this.createFakeUser("eachRecommendReferrer", null);
         UserModel newbie1 = this.createFakeUser("newbie1", referrer.getLoginName());
 
         pointTaskService.completeAdvancedTask(PointTask.EACH_RECOMMEND, newbie1.getLoginName());
@@ -153,39 +153,9 @@ public class PointTaskServiceTest {
         assertThat(accountMapper.findByLoginName(referrer.getLoginName()).getPoint(), is(50L));
     }
 
-    //    @Test
-//    该任务已取消
-    public void shouldCompletedEachReferrerInvestTask() throws Exception {
-        LoanModel fakeLoan = this.createFakeLoan(ProductType._30);
-        UserModel referrer = this.createFakeUser("referrer", null);
-        UserModel newbie1 = this.createFakeUser("newbie1", referrer.getLoginName());
-        this.createFakeInvest(newbie1.getLoginName(), fakeLoan.getId(), 100000L);
-
-        pointTaskService.completeAdvancedTask(PointTask.EACH_REFERRER_INVEST, newbie1.getLoginName());
-
-        assertThat(userPointTaskMapper.findMaxTaskLevelByLoginName(referrer.getLoginName(), PointTask.EACH_REFERRER_INVEST), is(1L));
-        assertThat(accountMapper.findByLoginName(referrer.getLoginName()).getPoint(), is(1000L));
-
-        UserModel newbie2 = this.createFakeUser("newbie2", referrer.getLoginName());
-        this.createFakeInvest(newbie2.getLoginName(), fakeLoan.getId(), 200000L);
-
-        pointTaskService.completeAdvancedTask(PointTask.EACH_REFERRER_INVEST, newbie2.getLoginName());
-
-        assertThat(userPointTaskMapper.findMaxTaskLevelByLoginName(referrer.getLoginName(), PointTask.EACH_REFERRER_INVEST), is(2L));
-        assertThat(accountMapper.findByLoginName(referrer.getLoginName()).getPoint(), is(2000L));
-
-        UserModel newbie3 = this.createFakeUser("newbie3", referrer.getLoginName());
-        this.createFakeInvest(newbie3.getLoginName(), fakeLoan.getId(), 99999L);
-
-        pointTaskService.completeAdvancedTask(PointTask.EACH_REFERRER_INVEST, newbie3.getLoginName());
-
-        assertThat(userPointTaskMapper.findMaxTaskLevelByLoginName(referrer.getLoginName(), PointTask.EACH_REFERRER_INVEST), is(2L));
-        assertThat(accountMapper.findByLoginName(referrer.getLoginName()).getPoint(), is(2000L));
-    }
-
     @Test
     public void shouldCompletedFirstInvest180InvestTask() {
-        String loginName = "investor";
+        String loginName = "firstInvest180Investor";
         this.createFakeUser(loginName, null);
         LoanModel fakeLoan = this.createFakeLoan(ProductType._180);
         this.createFakeInvest(loginName, fakeLoan.getId(), 1L);
@@ -207,8 +177,8 @@ public class PointTaskServiceTest {
     }
 
     @Test
-    public void shouldCompletedFirstInvest3600InvestTask() {
-        String loginName = "investor";
+    public void shouldCompletedFirstInvest360InvestTask() {
+        String loginName = "firstInvest360investor";
         this.createFakeUser(loginName, null);
         LoanModel fakeLoan = this.createFakeLoan(ProductType._360);
         this.createFakeInvest(loginName, fakeLoan.getId(), 1L);

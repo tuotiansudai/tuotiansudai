@@ -51,7 +51,7 @@ public class PrepareUserMapperTest{
         PrepareUserModel prepareUserModel = new PrepareUserModel();
         prepareUserModel.setReferrerMobile(referrerMobile);
         prepareUserModel.setMobile(mobile);
-        prepareUserModel.setChannel(Source.ANDROID.name());
+        prepareUserModel.setChannel(Source.ANDROID);
         prepareUserModel.setCreatedTime(new Date());
         return prepareUserModel;
     }

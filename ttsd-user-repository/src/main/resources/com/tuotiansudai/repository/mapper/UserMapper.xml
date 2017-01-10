@@ -285,38 +285,4 @@
         and exists(select 1 from invest where invest.login_name = user.login_name and invest.status = 'SUCCESS' and invest.loan_id != '1')
     </select>
 
-    <select id="findUserModelByChannel" parameterType="map" resultMap="userResultMap">
-        SELECT
-            *
-        FROM
-            user
-        WHERE
-
-        <if test="referrer != null and referrer != ''">
-            referrer = #{referrer}
-        </if>
-
-        <if test="referrer == null or referrer == ''">
-            referrer IS NOT NULL
-        </if>
-
-        <if test="userChannels != null and userChannels.size != 0">
-            AND channel in
-            <foreach item="item" index="index" collection="userChannels" open="(" separator="," close=")">
-                #{item}
-            </foreach>
-        </if>
-
-        <if test="startTime != null">
-            AND register_time &gt;= #{startTime}
-        </if>
-
-        <if test="endTime != null">
-            AND register_time &lt;= #{endTime}
-        </if>
-
-        <if test="pageSize != null">
-            limit 0 , #{pageSize}
-        </if>
-    </select>
 </mapper>

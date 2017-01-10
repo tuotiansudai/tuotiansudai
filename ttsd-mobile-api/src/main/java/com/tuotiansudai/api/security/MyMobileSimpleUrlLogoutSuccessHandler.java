@@ -1,11 +1,13 @@
 package com.tuotiansudai.api.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Strings;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.dto.SignInResult;
 import com.tuotiansudai.client.PushClient;
 import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.spring.security.SignInClient;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

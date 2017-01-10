@@ -1,5 +1,6 @@
 package com.tuotiansudai.scheduler.plugin;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.job.*;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.util.JobManager;
@@ -12,7 +13,9 @@ import org.quartz.SchedulerException;
 import org.quartz.SimpleScheduleBuilder;
 import org.quartz.spi.ClassLoadHelper;
 import org.quartz.spi.SchedulerPlugin;
+import org.springframework.beans.factory.annotation.Value;
 
+import java.util.List;
 import java.util.TimeZone;
 
 public class JobInitPlugin implements SchedulerPlugin {
@@ -25,7 +28,8 @@ public class JobInitPlugin implements SchedulerPlugin {
 
     private final String TIMEZONE_SHANGHAI = "Asia/Shanghai";
 
-    private final String RED_ENVELOP_SPLIT_ACTIVITY = "2017-01-04 14:30:00";
+    @Value("#{'${activity.weiXin.red.envelop.period}'.split('\\~')}")
+    private List<String> weiXinPeriod = Lists.newArrayList();
 
     public JobInitPlugin(JobManager jobManager) {
         this.jobManager = jobManager;
@@ -285,8 +289,8 @@ public class JobInitPlugin implements SchedulerPlugin {
         try {
             jobManager.newJob(JobType.SendRedEnvelopSplit, AssignRedEnvelopSplitJob.class)
                     .withIdentity(JobType.SendRedEnvelopSplit.name(), JobType.SendRedEnvelopSplit.name())
-                    .replaceExistingJob(true)
-                    .runOnceAt(DateTime.parse(RED_ENVELOP_SPLIT_ACTIVITY, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate()).submit();
+                    .replaceExistingJob(false)
+                    .runOnceAt(DateTime.parse(weiXinPeriod.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate()).submit();
         } catch (SchedulerException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
