@@ -3,19 +3,20 @@ package com.tuotiansudai.console.controller;
 import com.tuotiansudai.ask.repository.model.AnswerStatus;
 import com.tuotiansudai.ask.repository.model.QuestionStatus;
 import com.tuotiansudai.ask.service.AnswerService;
+import com.tuotiansudai.ask.service.EmbodyQuestionService;
 import com.tuotiansudai.ask.service.QuestionService;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -27,6 +28,14 @@ public class AskController {
 
     @Autowired
     private AnswerService answerService;
+
+    @Autowired
+    private EmbodyQuestionService embodyQuestionService;
+
+    @Value("${ask.server}")
+    private String askServer;
+
+    private static final String PREFIX = "/question";
 
     @RequestMapping(path = "/questions", method = RequestMethod.GET)
     public ModelAndView getQuestions(@RequestParam(value = "question", required = false) String question,
@@ -60,6 +69,20 @@ public class AskController {
         return modelAndView;
     }
 
+    @RequestMapping(path = "/embody-questions", method = RequestMethod.GET)
+    public ModelAndView getEmbodyQuestions(@RequestParam(value = "index", defaultValue = "1", required = false) int index) {
+        BaseDto<BasePaginationDataDto> embodyQuestions = questionService.findEmbodyAllQuestions(index, 10);
+        ModelAndView modelAndView = new ModelAndView("/embody-question-list", "embodyQuestions", embodyQuestions);
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/import-excel", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDataDto importUsers(HttpServletRequest httpServletRequest) throws IOException {
+        return embodyQuestionService.createImportEmbodyQuestion(httpServletRequest);
+    }
+
+
     @RequestMapping(path = "/question/approve", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<BaseDataDto> approveQuestion(@RequestParam List<Long> ids) {
@@ -91,4 +114,5 @@ public class AskController {
 
         return new BaseDto<>(new BaseDataDto(true));
     }
+
 }
