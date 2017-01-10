@@ -4,8 +4,6 @@ import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.message.LoanOutSuccessMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
@@ -63,7 +61,13 @@ public class LoanOutSuccessRewardReferrerMessageConsumer implements MessageConsu
             List<String> fatalSmsList = Lists.newArrayList();
 
             logger.info("[标的放款MQ] LoanOutSuccess_RewardReferrer is execute，loanId:" + loanId);
-            if (!payWrapperClient.sendRewardReferrer(loanId).isSuccess()) {
+            boolean result = true;
+            try {
+                result = payWrapperClient.sendRewardReferrer(loanId).isSuccess();
+            } catch (Exception e) {
+                logger.error(MessageFormat.format("[标的放款MQ] LoanOutSuccess_RewardReferrer ConnectTimeoutException, message:{0}", e));
+            }
+            if (!result) {
                 fatalSmsList.add("发放推荐人奖励失败");
                 logger.error(MessageFormat.format("[标的放款MQ] LoanOutSuccess_RewardReferrer is fail (loanId = {0})", String.valueOf(loanId)));
             }

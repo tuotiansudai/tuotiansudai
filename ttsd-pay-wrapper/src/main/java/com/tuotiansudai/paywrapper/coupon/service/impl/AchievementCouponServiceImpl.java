@@ -1,10 +1,12 @@
 package com.tuotiansudai.paywrapper.coupon.service.impl;
 
 
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.coupon.service.AchievementCouponService;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
@@ -34,6 +36,9 @@ public class AchievementCouponServiceImpl implements AchievementCouponService{
 
     @Autowired
     private CouponMapper couponMapper;
+
+    @Autowired
+    private MQWrapperClient mqWrapperClient;
 
     @Override
     public boolean assignInvestAchievementUserCoupon(long loanId){
@@ -71,10 +76,9 @@ public class AchievementCouponServiceImpl implements AchievementCouponService{
                 && DateTime.now().toDate().after(couponModel.getStartTime())).collect(Collectors.toList());
 
         for (CouponModel couponModel : collect) {
-            if (!couponAssignmentService.assignInvestAchievementUserCoupon(loanId, investMapper.findById(investId).getLoginName(), couponModel.getId())) {
-                result = false;
-            }
+            mqWrapperClient.sendMessage(MessageQueue.CouponAssigning, investMapper.findById(investId).getLoginName() + ":" + couponModel.getId());
         }
+
         return result;
     }
 }
