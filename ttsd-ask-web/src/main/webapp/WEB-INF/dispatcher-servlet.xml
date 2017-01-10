@@ -46,6 +46,7 @@
         <property name="singleton" value="true"/>
         <property name="javascriptLocation" value="${ask.js.path}"/>
         <property name="cssLocation" value="${ask.css.path}"/>
+        <property name="staticResourceDiscoveryUrl" value="$(static.resource.discovery.url)"/>
         <property name="sourceMap">
             <map>
                 <entry key="webServer" value="${web.server}"/>
