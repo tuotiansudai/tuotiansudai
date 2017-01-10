@@ -12,14 +12,19 @@ require(['jquery', 'layerWrapper','commonFun','jquery.ajax.extension','logintip'
              $('.check-in',$('.spring-festival-container')).show();
          })
          .fail(function(){
-             if(sourceKind.params.source=='app') {
-                 $('#loginCheck').show();
-                 $('.check-in',$('.spring-festival-container')).hide();
-             } else {
-                 $('.check-in',$('.spring-festival-container')).show();
-                 $('#loginCheck').hide();
-             }
+             $('#loginCheck').show();
          });
+
+        //签到前判断设备
+        $('#loginCheck').on('click', function(event) {
+            event.preventDefault();
+            if(sourceKind.params.source=='app') {
+                location.href="/login";
+            } else {
+                $('.no-login-text',$('.spring-festival-container')).trigger('click');  //弹框登录
+            }
+        });
+
         //登录后签到事件
         $('#checkIn').on('click', function(event) {
             event.preventDefault();
@@ -30,7 +35,7 @@ require(['jquery', 'layerWrapper','commonFun','jquery.ajax.extension','logintip'
                 dataType: 'json'
             })
             .done(function(data) {
-                if(data.data.message != '' && data.data.message != null){
+                if(data.data.message != '' || data.data.message != null){
                     layer.msg(data.data.message);
                 }else{
                     taskDraw($self);
@@ -41,15 +46,7 @@ require(['jquery', 'layerWrapper','commonFun','jquery.ajax.extension','logintip'
             });
 
         });
-        //签到前判断设备
-        $('#loginCheck').on('click', function(event) {
-            event.preventDefault();
-            if(sourceKind.params.source=='app') {
-                location.href="/login";
-            } else {
-                $('.no-login-text',$('.spring-festival-container')).trigger('click');  //弹框登录
-            }
-        });
+
         //领福袋
         $('#drawBtn').on('click', function(event) {
             event.preventDefault();
@@ -69,7 +66,9 @@ require(['jquery', 'layerWrapper','commonFun','jquery.ajax.extension','logintip'
                 if(data.returnCode == 1){
                     layer.msg('今日已签到，请明天再来！');
                 }else if(data.returnCode == 0){
-                    $('#numText').text(data.prizeValue);
+                    $('#numBite').text(data.prizeValue.split(':')[1]=='现金红包'?'元':'%');
+                    $('#bagType').text(data.prizeValue.split(':')[1]);
+                    $('#numText').text(data.prizeValue.split(':')[0]);
                     dom.addClass('active').text('已签到');
                     layer.open({
                         type: 1,
