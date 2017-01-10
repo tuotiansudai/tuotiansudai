@@ -8,6 +8,7 @@ import com.tuotiansudai.ask.dto.SiteMapCmsCategoryDto;
 import com.tuotiansudai.ask.dto.SiteMapCmsDetailsDto;
 import com.tuotiansudai.ask.repository.mapper.QuestionMapper;
 import com.tuotiansudai.ask.repository.model.QuestionModel;
+import com.tuotiansudai.ask.repository.model.QuestionStatus;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.SiteMapDataDto;
@@ -248,7 +249,7 @@ public class EmbodyQuestionService {
                     continue;
                 }
                 QuestionModel questionModel = questionService.findById(Long.parseLong(questionId));
-                if (questionModel != null && !questionModel.isEmbody() && (questionModel.getStatus().name().equals("UNAPPROVED") || questionModel.getStatus().name().equals("RESOLVED"))) {
+                if (questionModel != null && !questionModel.isEmbody() && (questionModel.getStatus() == QuestionStatus.RESOLVED || questionModel.getStatus() == QuestionStatus.UNRESOLVED)) {
                     questionService.updateEmbodyById(Long.parseLong(questionId));
                     listSuccess.add(strVal);
                 }
@@ -264,7 +265,7 @@ public class EmbodyQuestionService {
             }
         }
         baseDataDto.setStatus(true);
-        baseDataDto.setMessage("批量导入成功! 其中 " + listSuccess.size() + " 条导入成功, "+listFailed.size()+" 条导入失败");
+        baseDataDto.setMessage("批量导入完成! 其中 " + listSuccess.size() + " 条导入成功, "+listFailed.size()+" 条导入失败");
         //清除缓存
         if(listSuccess.size() > 0){
             redisWrapperClient.del(NO_EMBODY_QUESTIONS);
