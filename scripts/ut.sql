@@ -20,6 +20,9 @@ grant select,insert,update,delete,create,drop,alter,index on edxask.* to sdask@'
 grant select,insert,update,delete,create,drop,alter,index on anxin_operations.* to sdanxin@'%' identified by 'sdanxin';
 grant select,insert,update,delete,create,drop,alter,index on anxin_operations.* to sdanxin@'localhost' identified by 'sdanxin';
 
+grant select,insert,update,delete,create,drop,alter,index on edxlog.* to sdlog@'%' identified by 'sdlog';
+grant select,insert,update,delete,create,drop,alter,index on edxlog.* to sdlog@'localhost' identified by 'sdlog';
+
 grant select,insert,update,delete,create,drop,alter,index on edxmessage.* to sdmessage@'%' identified by 'sdmessage';
 grant select,insert,update,delete,create,drop,alter,index on edxmessage.* to sdmessage@'localhost' identified by 'sdmessage';
 
