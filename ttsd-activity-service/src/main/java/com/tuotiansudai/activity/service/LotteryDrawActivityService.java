@@ -17,6 +17,7 @@ import com.tuotiansudai.membership.repository.model.MembershipLevel;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipType;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
+import com.tuotiansudai.point.repository.model.PointBillModel;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
@@ -191,12 +192,6 @@ public class LotteryDrawActivityService {
 
         grantPrize(mobile, userModel.getLoginName(), lotteryPrize);
 
-        if (lotteryPrize.getPrizeType().equals(PrizeType.VIRTUAL)) {
-            couponAssignmentService.assignUserCoupon(mobile, getCouponId(lotteryPrize));
-        } else if (lotteryPrize.equals(LotteryPrize.MEMBERSHIP_V5)) {
-            createUserMembershipModel(userModel.getLoginName(), MembershipLevel.V5.getLevel());
-        }
-
         try {
             userLotteryPrizeMapper.create(new UserLotteryPrizeModel(mobile, userModel.getLoginName(), userModel.getUserName(), lotteryPrize, DateTime.now().toDate(), activityCategory));
         } catch (Exception e) {
@@ -227,6 +222,15 @@ public class LotteryDrawActivityService {
         userMembershipMapper.create(userMembershipModel);
     }
 
+    private void createPointBillModel(String loginName, int point, LotteryPrize lotteryPrize) {
+        PointBillModel pointBillModel = new PointBillModel(loginName,
+                null,
+                point,
+                PointBusinessType.LOTTERY,
+                MessageFormat.format("抽中{0}", lotteryPrize.getDescription()));
+        pointBillMapper.create(pointBillModel);
+    }
+
     private long getCouponId(LotteryPrize lotteryPrize) {
         return Maps.newHashMap(ImmutableMap.<LotteryPrize, Long>builder()
                 .put(LotteryPrize.RED_ENVELOPE_100, 305L)
@@ -246,6 +250,10 @@ public class LotteryDrawActivityService {
                 .put(LotteryPrize.RED_ENVELOPE_18, 327L)
                 .put(LotteryPrize.RED_ENVELOPE_8, 328L)
                 .put(LotteryPrize.INTEREST_COUPON_2_NEW_YEARS, 329L)
+                .put(LotteryPrize.POINT_SHOP_RED_ENVELOPE_10, 355L)
+                .put(LotteryPrize.POINT_SHOP_RED_ENVELOPE_50, 356L)
+                .put(LotteryPrize.POINT_SHOP_INTEREST_COUPON_2, 357L)
+                .put(LotteryPrize.POINT_SHOP_INTEREST_COUPON_5, 358L)
                 .build()).get(lotteryPrize);
     }
 
@@ -285,6 +293,14 @@ public class LotteryDrawActivityService {
         } else if (lotteryPrize.equals(LotteryPrize.MEMBERSHIP_V5)) {
             prizeType = PrizeType.MEMBERSHIP;
             createUserMembershipModel(loginName, MembershipLevel.V5.getLevel());
+        }
+        else if (lotteryPrize.equals(LotteryPrize.POINT_SHOP_POINT_500)) {
+            prizeType = PrizeType.POINT;
+            createPointBillModel(loginName, 500, lotteryPrize);
+        }
+        else if (lotteryPrize.equals(LotteryPrize.POINT_SHOP_POINT_3000)) {
+            prizeType = PrizeType.POINT;
+            createPointBillModel(loginName, 3000, lotteryPrize);
         }
         return prizeType;
     }

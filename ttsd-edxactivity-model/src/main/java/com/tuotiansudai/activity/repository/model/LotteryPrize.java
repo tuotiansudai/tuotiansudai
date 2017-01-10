@@ -89,10 +89,10 @@ public enum LotteryPrize {
     POINT_SHOP_RED_ENVELOPE_50("50元红包",PrizeType.VIRTUAL,ActivityCategory.POINT_SHOP_DRAW_1000,12),
     POINT_SHOP_INTEREST_COUPON_2("0.2%加息劵",PrizeType.VIRTUAL,ActivityCategory.POINT_SHOP_DRAW_1000,10),
     POINT_SHOP_INTEREST_COUPON_5("0.5%加息劵",PrizeType.VIRTUAL,ActivityCategory.POINT_SHOP_DRAW_1000,9),
-    POINT_SHOP_POINT_500("500积分",PrizeType.VIRTUAL,ActivityCategory.POINT_SHOP_DRAW_1000,48),
-    POINT_SHOP_POINT_3000("3000积分",PrizeType.VIRTUAL,ActivityCategory.POINT_SHOP_DRAW_1000,8),
+    POINT_SHOP_POINT_500("500积分",PrizeType.POINT,ActivityCategory.POINT_SHOP_DRAW_1000,48),
+    POINT_SHOP_POINT_3000("3000积分",PrizeType.POINT,ActivityCategory.POINT_SHOP_DRAW_1000,8),
     POINT_SHOP_PHONE_CHARGE_10("10元话费",PrizeType.CONCRETE,ActivityCategory.POINT_SHOP_DRAW_1000,1),
-    POINT_SHOP_JD_10("100元京东E卡",PrizeType.CONCRETE,ActivityCategory.POINT_SHOP_DRAW_1000,0);
+    POINT_SHOP_JD_100("100元京东E卡",PrizeType.CONCRETE,ActivityCategory.POINT_SHOP_DRAW_1000,0);
 
     String description;
     PrizeType prizeType;

@@ -8,7 +8,7 @@ import io.swagger.annotations.ApiModelProperty;
 
 import java.text.SimpleDateFormat;
 
-public class PointDrawResultResponseDto {
+public class PointDrawResultResponseDto extends BaseResponseDataDto {
 
     @ApiModelProperty(value = "抽奖奖品位置", example = "1")
     private long seq;
@@ -19,14 +19,16 @@ public class PointDrawResultResponseDto {
     @ApiModelProperty(value = "奖品名称", example = "10元红包")
     private String prizeName;
 
-    @ApiModelProperty(value = "奖品类型", example = "CONCRETE-真实奖品，VIRTUAL：虚拟奖品")
+    @ApiModelProperty(value = "奖品类型", example = "CONCRETE-真实奖品，VIRTUAL：虚拟奖品, POINT:积分")
     private String prizeType;
 
     public PointDrawResultResponseDto(DrawLotteryResultDto drawLotteryResultDto) {
         this.returnCode = drawLotteryResultDto.getReturnCode();
-        this.seq = this.getSeq(drawLotteryResultDto.getPrize());
-        this.prizeName = drawLotteryResultDto.getPrizeValue();
-        this.prizeType = this.getPrizeTypeBylotteryPrize(drawLotteryResultDto.getPrize());
+        if(this.returnCode == 0){
+            this.seq = this.getSeq(drawLotteryResultDto.getPrize());
+            this.prizeName = drawLotteryResultDto.getPrizeValue();
+            this.prizeType = this.getPrizeTypeBylotteryPrize(drawLotteryResultDto.getPrize());
+        }
     }
 
     private long getSeq(String lotteryPrize){
@@ -55,15 +57,16 @@ public class PointDrawResultResponseDto {
     private String getPrizeTypeBylotteryPrize(String lotteryPrize){
         switch (lotteryPrize){
             case "POINT_SHOP_RED_ENVELOPE_10":
-            case "POINT_SHOP_POINT_500":
             case "POINT_SHOP_INTEREST_COUPON_2":
             case "POINT_SHOP_RED_ENVELOPE_50":
-            case "POINT_SHOP_POINT_3000":
             case "POINT_SHOP_INTEREST_COUPON_5":
-                return "";
-            case "POINT_SHOP_JD_10":
+                return "VIRTUAL";
+            case "POINT_SHOP_POINT_500":
+            case "POINT_SHOP_POINT_3000":
+                return "POINT";
+            case "POINT_SHOP_JD_100":
             case "POINT_SHOP_PHONE_CHARGE_10":
-                return "";
+                return "CONCRETE";
         }
         return "";
     }

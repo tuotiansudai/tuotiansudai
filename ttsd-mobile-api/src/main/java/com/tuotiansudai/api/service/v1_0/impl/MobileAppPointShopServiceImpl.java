@@ -5,6 +5,9 @@ import com.google.common.base.Function;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.activity.repository.dto.DrawLotteryResultDto;
+import com.tuotiansudai.activity.repository.model.ActivityCategory;
+import com.tuotiansudai.activity.service.LotteryDrawActivityService;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppPointShopService;
 import com.tuotiansudai.api.util.PageValidUtils;
@@ -17,13 +20,12 @@ import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.point.repository.mapper.ProductMapper;
 import com.tuotiansudai.point.repository.mapper.ProductOrderMapper;
 import com.tuotiansudai.point.repository.mapper.UserAddressMapper;
-import com.tuotiansudai.point.repository.model.GoodsType;
-import com.tuotiansudai.point.repository.model.ProductModel;
-import com.tuotiansudai.point.repository.model.ProductOrderViewDto;
-import com.tuotiansudai.point.repository.model.UserAddressModel;
+import com.tuotiansudai.point.repository.model.*;
+import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.point.service.ProductService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.spring.LoginUserInfo;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,6 +70,12 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
 
     @Autowired
     private PageValidUtils pageValidUtils;
+
+    @Autowired
+    private LotteryDrawActivityService lotteryDrawActivityService;
+
+    @Autowired
+    private PointBillService pointBillService;
 
     @Override
     public BaseResponseDto updateUserAddress(UserAddressRequestDto userAddressRequestDto) {
@@ -268,6 +276,44 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
 
         productService.buyProduct(accountModel.getLoginName(), Long.parseLong(productDetailRequestDto.getProductId()), productModel.getType(), productDetailRequestDto.getNum(), CollectionUtils.isEmpty(userAddressModels) ? null : userAddressModels.get(0).getId());
         return new BaseResponseDto(ReturnMessage.SUCCESS.getCode(), ReturnMessage.SUCCESS.getMsg());
+    }
+
+    @Transactional
+    public BaseResponseDto<PointDrawResultResponseDto> lotteryDrawByPoint(BaseParamDto baseParamDto){
+        DrawLotteryResultDto drawLotteryResultDto = lotteryDrawActivityService.drawPrizeByPoint(LoginUserInfo.getMobile(), ActivityCategory.POINT_SHOP_DRAW_1000, true);
+        PointDrawResultResponseDto pointDrawResultResponseDto = new PointDrawResultResponseDto(drawLotteryResultDto);
+        int returnCode = (int)pointDrawResultResponseDto.getReturnCode();
+        BaseResponseDto baseResponseDto = new BaseResponseDto();
+        if (drawLotteryResultDto.isDrawLotterySuccess()) {
+            pointBillService.createPointBill(LoginUserInfo.getLoginName(), null, PointBusinessType.LOTTERY, -1000, PointBusinessType.LOTTERY.getDescription());
+            baseResponseDto.setData(pointDrawResultResponseDto);
+            baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
+            baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
+        }else{
+            switch(returnCode){
+                case 1:
+                    baseResponseDto.setCode(ReturnMessage.INSUFFICIENT_POINTS_BALANCE.getCode());
+                    baseResponseDto.setMessage(ReturnMessage.INSUFFICIENT_POINTS_BALANCE.getMsg());
+                    break;
+                case 2:
+                    baseResponseDto.setCode(ReturnMessage.USER_IS_NOT_EXISTS.getCode());
+                    baseResponseDto.setMessage(ReturnMessage.USER_IS_NOT_EXISTS.getMsg());
+                    break;
+                case 3:
+                    baseResponseDto.setCode(ReturnMessage.USER_ADDRESS_IS_EXPIRED.getCode());
+                    baseResponseDto.setMessage(ReturnMessage.USER_ADDRESS_IS_EXPIRED.getMsg());
+                    break;
+                case 4:
+                    baseResponseDto.setCode(ReturnMessage.USER_ADDRESS_IS_NOT_ACCOUNT.getCode());
+                    baseResponseDto.setMessage(ReturnMessage.USER_ADDRESS_IS_NOT_ACCOUNT.getMsg());
+                    break;
+                default:
+                    baseResponseDto.setCode(ReturnMessage.FAIL.getCode());
+                    baseResponseDto.setMessage(ReturnMessage.FAIL.getMsg());
+            }
+        }
+
+        return baseResponseDto;
     }
 
     private UserAddressModel convertUserAddressModel(UserAddressRequestDto userAddressRequestDto) {
