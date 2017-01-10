@@ -24,7 +24,9 @@ require(['jquery', 'layerWrapper','commonFun','jquery.ajax.extension','logintip'
                 dataType: 'json'
             })
             .done(function(data) {
-                if(data.data.status){
+                if(data.data.message == '' || data.data.message == null){
+                    layer.msg(data.data.message);
+                }else{
                     taskDraw($self);
                 }
             })
@@ -58,9 +60,9 @@ require(['jquery', 'layerWrapper','commonFun','jquery.ajax.extension','logintip'
                 }
             })
             .done(function(data) {
-                if(data.data.returnCode == 1){
+                if(data.returnCode == 1){
                     layer.msg('今日已签到，请明天再来！');
-                }else{
+                }else if(data.returnCode == 0){
                     $('#numText').text(data.prizeValue);
                     dom.addClass('active').text('已签到');
                     layer.open({
