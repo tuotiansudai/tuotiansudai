@@ -10,6 +10,7 @@ CREATE TABLE `login_log_201701` (
   KEY `INDEX_LOGIN_LOG_201701_LOGIN_NAME` (`login_name`)
 )
   ENGINE = InnoDB
+  AUTO_INCREMENT = 1001
   DEFAULT CHARSET = utf8;
 
 CREATE TABLE `login_log_201702` (
@@ -167,4 +168,3 @@ CREATE TABLE `login_log_201712` (
 )
   ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
-
