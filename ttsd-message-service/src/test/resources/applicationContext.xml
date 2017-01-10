@@ -48,6 +48,7 @@
         </constructor-arg>
     </bean>
 
+
     <!-- transaction manager, use JtaTransactionManager for global tx -->
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="hikariCPDataSource"/>
