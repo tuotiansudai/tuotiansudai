@@ -25,7 +25,7 @@ public class JobInitPlugin implements SchedulerPlugin {
 
     private final String TIMEZONE_SHANGHAI = "Asia/Shanghai";
 
-    private final String RED_ENVELOP_SPLIT_ACTIVITY = "2017-01-09 12:00:00";
+    private final String RED_ENVELOP_SPLIT_ACTIVITY = "2017-01-10 15:35:00";
 
     public JobInitPlugin(JobManager jobManager) {
         this.jobManager = jobManager;

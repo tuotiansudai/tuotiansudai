@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -86,6 +87,8 @@ public class AssignRedEnvelopSplitJob implements Job {
 
     private List<UserModel> getReferrerCount(Date startTime, Date endTime) {
         List<UserModel> userModels = userMapper.findUsersByRegisterTimeOrReferrer(startTime, endTime, null);
-        return userModels.stream().filter(userModel -> UserChannel.valueOf(userModel.getChannel()) != null).collect(Collectors.toList());
+        List<String> userChannels = Lists.newArrayList(UserChannel.values()).stream().map(userChannel -> userChannel.name()).collect(Collectors.toList());
+        return userModels.stream().filter(userModel -> userChannels.contains(userModel.getChannel())).collect(Collectors.toList());
     }
+
 }
