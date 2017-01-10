@@ -12,7 +12,13 @@ require(['jquery', 'layerWrapper','commonFun','jquery.ajax.extension','logintip'
              $('.check-in',$('.spring-festival-container')).show();
          })
          .fail(function(){
-            $('#loginCheck').show();
+             if(sourceKind.params.source=='app') {
+                 $('#loginCheck').show();
+                 $('.check-in',$('.spring-festival-container')).hide();
+             } else {
+                 $('.check-in',$('.spring-festival-container')).show();
+                 $('#loginCheck').hide();
+             }
          });
         //登录后签到事件
         $('#checkIn').on('click', function(event) {
@@ -24,7 +30,7 @@ require(['jquery', 'layerWrapper','commonFun','jquery.ajax.extension','logintip'
                 dataType: 'json'
             })
             .done(function(data) {
-                if(data.data.message == '' || data.data.message == null){
+                if(data.data.message != '' && data.data.message != null){
                     layer.msg(data.data.message);
                 }else{
                     taskDraw($self);
