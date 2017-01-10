@@ -198,9 +198,9 @@ public class InvestSuccessActivityRewardMessageConsumer implements MessageConsum
         InvestRewardModel investRewardModel;
         final String loginName = investSuccessMessage.getInvestInfo().getLoginName();
 
-        if (userInfo != null && Strings.isNullOrEmpty(loanDetailInfo.getProductType()) && loanDetailInfo.getProductType() != "_30"
-                && (startTime.before(nowDate) && endTime.after(nowDate))
+        if (userInfo != null && loanDetailInfo.getProductType() != "_30" && (startTime.before(nowDate) && endTime.after(nowDate))
                 && loanDetailInfo.isActivity() && (!investInfo.getTransferStatus().equals("SUCCESS") && investInfo.getStatus().equals("SUCCESS"))) {
+            logger.info("[MQ] springFestival record reward .");
             investRewardModel = investRewardMapper.findByMobile(userInfo.getMobile());
             if (null != investRewardModel) {
                 investRewardModel.setInvestAmount(investRewardModel.getInvestAmount() + investInfo.getAmount());
@@ -219,6 +219,7 @@ public class InvestSuccessActivityRewardMessageConsumer implements MessageConsum
                 investRewardMapper.create(investRewardModel);
             }
 
+            logger.info("[MQ] springFestival currentGrade:{}, investGrade:{}", String.valueOf(currentGrade), String.valueOf(investGrade));
             getInvestReward(currentGrade, investGrade).stream().forEach(investReward -> {
                 logger.info(MessageFormat.format("[MQ] execute second coupon assign coupon . loginName:{0}, couponId:{1}", loginName, investReward));
                 mqClient.sendMessage(MessageQueue.CouponAssigning, loginName + ":" + investReward);
