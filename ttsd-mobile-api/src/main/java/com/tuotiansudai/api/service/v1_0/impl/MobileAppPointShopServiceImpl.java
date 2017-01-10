@@ -13,10 +13,7 @@ import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.ExchangeCouponView;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.coupon.service.CouponService;
-import com.tuotiansudai.point.repository.mapper.PointBillMapper;
-import com.tuotiansudai.point.repository.mapper.ProductMapper;
-import com.tuotiansudai.point.repository.mapper.ProductOrderMapper;
-import com.tuotiansudai.point.repository.mapper.UserAddressMapper;
+import com.tuotiansudai.point.repository.mapper.*;
 import com.tuotiansudai.point.repository.model.GoodsType;
 import com.tuotiansudai.point.repository.model.ProductModel;
 import com.tuotiansudai.point.repository.model.ProductOrderViewDto;
@@ -68,6 +65,12 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
 
     @Autowired
     private PageValidUtils pageValidUtils;
+
+    @Autowired
+    private UserPointTaskMapper userPointTaskMapper;
+
+    @Autowired
+    private PointTaskMapper pointTaskMapper;
 
     @Override
     public BaseResponseDto updateUserAddress(UserAddressRequestDto userAddressRequestDto) {
@@ -132,10 +135,10 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
     @Override
     public BaseResponseDto<ProductListResponseDto> findPointHome(ProductListRequestDto productListRequestDto) {
 
-        String goodsType = productListRequestDto.getGoodsType() == null? "" :productListRequestDto.getGoodsType();
+        String goodsType = productListRequestDto.getGoodsType() == null ? "" : productListRequestDto.getGoodsType();
         List<ProductDetailResponseDto> virtualProductsList = Lists.newArrayList();
         List<ProductDetailResponseDto> physicalsProductsList = Lists.newArrayList();
-        switch (goodsType){
+        switch (goodsType) {
             case "VIRTUAL":
                 virtualProductsList = this.getVirtualList();
                 break;
@@ -148,10 +151,14 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
         }
 
         AccountModel accountModel = accountMapper.findByLoginName(productListRequestDto.getBaseParam().getUserId());
+        long finishedTaskCount = userPointTaskMapper.findFinishTaskByLoginName(productListRequestDto.getBaseParam().getUserId());
+        long allTaskCount = pointTaskMapper.findCountAllTask();
+        long unfinishedTaskCount = allTaskCount - finishedTaskCount;
         ProductListResponseDto productListResponseDto = new ProductListResponseDto();
         productListResponseDto.setVirtuals(virtualProductsList);
         productListResponseDto.setPhysicals(physicalsProductsList);
         productListResponseDto.setMyPoints(accountModel != null ? String.valueOf(accountModel.getPoint()) : "0");
+        productListResponseDto.setUnFinishedTaskCount(unfinishedTaskCount >= 0 ? unfinishedTaskCount : 0);
         BaseResponseDto baseResponseDto = new BaseResponseDto();
         baseResponseDto.setData(productListResponseDto);
         baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
@@ -190,7 +197,7 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
     }
 
 
-    private List<ProductDetailResponseDto> getVirtualList(){
+    private List<ProductDetailResponseDto> getVirtualList() {
         List<ExchangeCouponView> exchangeCoupons = Lists.newArrayList();
         List<ProductModel> couponProducts = productMapper.findAllProductsByGoodsType(Lists.newArrayList(GoodsType.COUPON));
         for (ProductModel productModel : couponProducts) {
@@ -231,7 +238,7 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
     }
 
 
-    private List<ProductDetailResponseDto> getphysicalsProductsList(){
+    private List<ProductDetailResponseDto> getphysicalsProductsList() {
         List<ProductModel> physicalsProducts = productMapper.findAllProductsByGoodsType(Lists.newArrayList(GoodsType.PHYSICAL));
         Iterator<ProductDetailResponseDto> physicals = Iterators.transform(physicalsProducts.iterator(), input -> new ProductDetailResponseDto(input.getId(), bannerServer + input.getImageUrl(), input.getName(), input.getPoints(), input.getType(), 1000, input.getSeq(), input.getUpdatedTime()));
 
