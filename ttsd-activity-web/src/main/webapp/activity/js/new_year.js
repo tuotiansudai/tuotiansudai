@@ -93,7 +93,7 @@ require(['jquery','drawCircle','commonFun','logintip','register_common'], functi
                 $pointerImg=$('.gold-egg',$rewardGiftBox),
                 myMobileNumber=$MobileNumber.length ? $MobileNumber.data('mobile') : '';  //当前登录用户的手机号
             var $signToday=$('#signToday');
-            var myTimes=$rewardGiftBox.find('.my-times').data('times'); //初始抽奖次数
+            var myTimes=Number($rewardGiftBox.find('.my-times').data('times')); //初始抽奖次数
             var paramData={
                 "mobile":myMobileNumber,
                 "activityCategory":"ANNUAL_ACTIVITY"
@@ -188,7 +188,8 @@ require(['jquery','drawCircle','commonFun','logintip','register_common'], functi
                             $(tipGroupObj[prizeType]).find('.my-treasure').attr('href',treasureUrl);
                             // 抽奖次数
                             if(myTimes>0) {
-                                $rewardGiftBox.find('.my-times').text(--myTimes);
+                                myTimes=myTimes-1;
+                                $rewardGiftBox.find('.my-times').text(myTimes);
                             }
                             drawCircle.noRotateFn(tipGroupObj[prizeType]);
 
