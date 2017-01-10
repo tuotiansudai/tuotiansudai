@@ -80,9 +80,9 @@
     <meta name="_csrf" content="${(_csrf.token)!}"/>
     <meta name="_csrf_header" content="${(_csrf.headerName)!}"/>
     <link href="${staticServer}/images/favicon.ico" rel="shortcut icon" type="image/x-icon"/>
-    <link rel="stylesheet" type="text/css" href="${staticServer}/public/global_page.css" charset="utf-8"/>
+    <link rel="stylesheet" type="text/css" href="${staticServer}${css.global_page!}" charset="utf-8"/>
     <#if pageCss?? && pageCss != "">
-        <link rel="stylesheet" type="text/css" href="${staticServer}${cssPath}${pageCss}" charset="utf-8"/>
+        <link rel="stylesheet" type="text/css" href="${staticServer}${pageCss}" charset="utf-8"/>
     </#if>
 
     <#include "../cnzz.ftl"/>
@@ -142,8 +142,7 @@
 </div>
 
     <#include "../pageLayout/footer.ftl" />
-<script src="${staticServer}/public/global_page.js"></script>
-<script src="${staticServer}${jsPath}${pageJavascript}" type="text/javascript"></script>
+<script src="${staticServer}${js.global_page!}"></script>
 
 </body>
 </html>
