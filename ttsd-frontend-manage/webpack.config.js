@@ -16,7 +16,7 @@ var basePath = path.join(__dirname, 'resources'),
 	activityPath=path.join(staticPath, 'activity'),
 	mobilePath=path.join(staticPath, 'mobile');
 
-var outputPath=path.join(basePath, 'develop'),
+var outputPath=path.join(basePath, 'develop'),//打包文件路径
 	devServerPath='/',
 	commonOptions={},
 	plugins=[];
@@ -25,13 +25,15 @@ var outputPath=path.join(basePath, 'develop'),
 //NODE_ENV:dev 开发环境
 //NODE_ENV:production 线上部署环境
 //NODE_ENV:devJson 开发环境,只在生成json map的时候用
-const NODE_ENV=process.env.NODE_ENV;
-console.log(NODE_ENV);
-
-//生成json map
-// ask json
-var askFileList=new geFileList(outputPath+"/ask",outputPath+'/json-ask.json');
-askFileList.init();
+// const NODE_ENV=process.env.NODE_ENV;
+// console.log(NODE_ENV);
+// if(NODE_ENV=='dev') {
+// 	outputPath=path.join(basePath, 'develop');
+// }
+// else if(NODE_ENV=='devjson') {
+// 	outputPath=path.join(basePath, '/develop/getJsonFiles/');
+// }
+// console.log(outputPath);
 
 
 /**
