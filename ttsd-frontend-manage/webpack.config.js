@@ -5,7 +5,6 @@ var webpack = require('webpack');
 var WebpackMd5Hash = require('webpack-md5-hash');
 var objectAssign = require('object-assign');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
-
 var geFileList = require('./getFiles');
 
 var basePath = path.join(__dirname, 'resources'),
@@ -22,6 +21,12 @@ var outputPath=path.join(basePath, 'develop'),
 	commonOptions={},
 	plugins=[];
 
+//用来判断类型
+//NODE_ENV:dev 开发环境
+//NODE_ENV:production 线上部署环境
+//NODE_ENV:devJson 开发环境,只在生成json map的时候用
+const NODE_ENV=process.env.NODE_ENV;
+console.log(NODE_ENV);
 
 //生成json map
 // ask json
