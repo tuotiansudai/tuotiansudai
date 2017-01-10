@@ -23,10 +23,10 @@
                 <#else>
                     <span id="loginCheck" style="display:none">去登录签到</span>
                     <#if signedIn?? && signedIn && isDraw?? && isDraw>
-                        <span class="check-in active" style="display:none">已签到</span>
+                        <span class="check-in active"style="display:none">已签到</span>
                     <#elseif signedIn?? && !signedIn && isDraw?? && !isDraw>
                         <span class="check-in" id="checkIn" style="display:none">签到领福袋</span>
-                    <#elseif signedIn?? && !signedIn && isDraw?? && isDraw>
+                    <#elseif signedIn?? && signedIn && isDraw?? && !isDraw>
                         <span class="check-in" id="drawBtn" style="display:none">领取福袋</span>
                     </#if>
                 </#if>
