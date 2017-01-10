@@ -52,18 +52,16 @@ function geFileList(folderPath,fileName)
             var itemPath = item.path.match(/ttsd-frontend-manage\/resources\/(\S*)/)[1];
             var pathObj=itemPath.split('/');
             pathObj.shift();
-
+            var pathStr='/'+pathObj.join('/');
             if(/\.js$/.test(thisName)) {
                 //判断是否为js文件
                 nameNoSuffix=thisName.split('.')[0];
-                strJSON["jsFile"][nameNoSuffix]=pathObj.join('/');
-                // strJSON["jsFile"]["size"]=(item.size/1024).toFixed(2) +"/kb";
+                strJSON["jsFile"][nameNoSuffix]=pathStr;
             }
             else if(/\.css$/.test(thisName)) {
                 //判断是否为css文件
                 nameNoSuffix=thisName.split('.')[0];
-                strJSON["cssFile"][nameNoSuffix]=pathObj.join('/');
-                // strJSON["cssFile"]["size"]=(item.size/1024).toFixed(2) +"/kb";
+                strJSON["cssFile"][nameNoSuffix]=pathStr;
             }
         }
 
