@@ -1,21 +1,20 @@
 package com.tuotiansudai.service.impl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.enums.UserOpType;
+import com.tuotiansudai.log.service.UserOpLogService;
 import com.tuotiansudai.message.EMailMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.repository.model.UserOpLogModel;
-import com.tuotiansudai.repository.model.UserOpType;
 import com.tuotiansudai.service.BindEmailService;
-import com.tuotiansudai.util.*;
+import com.tuotiansudai.util.SendCloudTemplate;
+import com.tuotiansudai.util.UUIDGenerator;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +23,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
-import java.util.Date;
-import java.util.Locale;
 import java.util.Map;
 
 @Service
@@ -37,13 +34,13 @@ public class BindEmailServiceImpl implements BindEmailService {
     private RedisWrapperClient redisWrapperClient;
 
     @Autowired
-    private MQWrapperClient mqWrapperClient;
-
-    @Autowired
     private UserMapper userMapper;
 
     @Autowired
-    private IdGenerator idGenerator;
+    private UserOpLogService userOpLogService;
+
+    @Autowired
+    private MQWrapperClient mqWrapperClient;
 
     @Value("${web.server}")
     private String webServer;
@@ -106,21 +103,10 @@ public class BindEmailServiceImpl implements BindEmailService {
         userMapper.updateUser(userModel);
         redisWrapperClient.del(bindEmailKey);
 
-        UserOpLogModel logModel = new UserOpLogModel();
-        logModel.setId(idGenerator.generate());
-        logModel.setLoginName(loginName);
-        logModel.setIp(ip);
-        logModel.setDeviceId(deviceId);
-        logModel.setSource(platform == null ? null : Source.valueOf(platform.toUpperCase(Locale.ENGLISH)));
-        logModel.setOpType(UserOpType.BIND_CHANGE_EMAIL);
-        logModel.setCreatedTime(new Date());
-        logModel.setDescription(email != null ? "Success, Email: " + email : "Fail");
+        //发送用户行为日志 MQ
+        userOpLogService.sendUserOpLogMQ(loginName, ip, platform, deviceId, UserOpType.BIND_CHANGE_EMAIL,
+                email != null ? "Success, Email: " + email : "Fail");
 
-        try {
-            mqWrapperClient.sendMessage(MessageQueue.UserOperateLog, JsonConverter.writeValueAsString(logModel));
-        } catch (JsonProcessingException e) {
-            logger.error("[MQ] 绑定邮箱, 修改邮箱, send UserOperateLog fail.", e);
-        }
         return email;
     }
 

@@ -1,13 +1,15 @@
 package com.tuotiansudai.console.controller;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.console.service.AuditLogService;
+import com.tuotiansudai.console.service.AuditLogQueryService;
 import com.tuotiansudai.console.service.LoginLogService;
-import com.tuotiansudai.console.service.UserOpLogService;
-import com.tuotiansudai.dto.*;
-import com.tuotiansudai.repository.model.UserOpLogView;
-import com.tuotiansudai.repository.model.UserOpType;
-import com.tuotiansudai.task.OperationType;
+import com.tuotiansudai.console.service.UserOpLogQueryService;
+import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.dto.LoginLogPaginationItemDataDto;
+import com.tuotiansudai.enums.OperationType;
+import com.tuotiansudai.enums.UserOpType;
+import com.tuotiansudai.log.repository.model.AuditLogModel;
+import com.tuotiansudai.log.repository.model.UserOpLogModel;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -15,7 +17,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.constraints.Min;
@@ -29,10 +30,10 @@ public class SecurityLogController {
     private LoginLogService loginLogService;
 
     @Autowired
-    private AuditLogService auditLogService;
+    private AuditLogQueryService auditLogQueryService;
 
     @Autowired
-    private UserOpLogService userOpLogService;
+    private UserOpLogQueryService userOpLogQueryService;
 
     @RequestMapping(path = "/login-log", method = RequestMethod.GET)
     public ModelAndView loginLog(@RequestParam(name = "mobile", required = false) String mobile,
@@ -77,7 +78,7 @@ public class SecurityLogController {
                                  @RequestParam(name = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
                                  @Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index) {
         int pageSize = 10;
-        BasePaginationDataDto<AuditLogPaginationItemDataDto> data = auditLogService.getAuditLogPaginationData(operationType, targetId, operatorMobile, auditorMobile, startTime, endTime, index, pageSize);
+        BasePaginationDataDto<AuditLogModel> data = auditLogQueryService.getAuditLogPaginationData(operationType, targetId, operatorMobile, auditorMobile, startTime, endTime, index, pageSize);
 
         ModelAndView modelAndView = new ModelAndView("/audit-log");
 
@@ -103,7 +104,7 @@ public class SecurityLogController {
                                   @RequestParam(name = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
                                   @Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index) {
         int pageSize = 10;
-        BasePaginationDataDto<UserOpLogView> data = userOpLogService.getUserOpLogPaginationData(mobile, opType, startTime, endTime, index, pageSize);
+        BasePaginationDataDto<UserOpLogModel> data = userOpLogQueryService.getUserOpLogPaginationData(mobile, opType, startTime, endTime, index, pageSize);
 
         ModelAndView modelAndView = new ModelAndView("/user-op-log");
 
@@ -119,23 +120,4 @@ public class SecurityLogController {
         return modelAndView;
     }
 
-    @RequestMapping(path = "/clear-db-cache", method = RequestMethod.GET)
-    public ModelAndView clearDbCache() {
-        ModelAndView modelAndView = new ModelAndView("/clear-db-cache");
-        return modelAndView;
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/clear-db-cache", method = RequestMethod.POST)
-    public BaseDto<BaseDataDto> clearCache() {
-        String statusCode = auditLogService.clearMybatisCache();
-
-        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
-        BaseDataDto baseDataDto = new BaseDataDto();
-        baseDto.setData(baseDataDto);
-        baseDataDto.setMessage(statusCode);
-        baseDataDto.setStatus(true);
-        baseDto.setSuccess(true);
-        return baseDto;
-    }
 }
