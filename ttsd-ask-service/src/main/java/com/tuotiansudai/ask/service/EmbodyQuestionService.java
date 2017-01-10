@@ -62,6 +62,8 @@ public class EmbodyQuestionService {
 
     private static final String CMS_POSTS_INFO = "/posts-info?format=json&category=";
 
+    private static final String CMS_CATEGORY_PREFIX = "http://content.tuotiansudai.com";
+
     private static final int CATEGORY_ROOT = 1;
 
     private static final int CATEGORY_ORDER = 2;
@@ -122,7 +124,7 @@ public class EmbodyQuestionService {
                 SiteMapCmsCategoryDto siteMapCmsCategoryDto = JsonConverter.readValue(String.valueOf(obj), SiteMapCmsCategoryDto.class);
                 if(siteMapCmsCategoryDto.getParent() == null){
                     siteMapDataDto.setName(siteMapCmsCategoryDto.getName() + "|" + siteMapCmsCategoryDto.getSlug());
-                    siteMapDataDto.setLinkUrl(cmsServer + "/" + siteMapCmsCategoryDto.getSlug());
+                    siteMapDataDto.setLinkUrl(CMS_CATEGORY_PREFIX + "/" + siteMapCmsCategoryDto.getSlug());
                     siteMapCategoryList.add(siteMapDataDto);
                 }
             } catch (IOException e) {
