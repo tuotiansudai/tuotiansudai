@@ -2,7 +2,7 @@
   "name": "frontendmanage",
   "version": "0.1.0",
   "scripts": {
-    "start": "webpack-dev-server --inline && npm run json",
+    "start": "webpack-dev-server --inline",
     "devjson": "webpack  && npm run json",
     "build": "npm run rmprod && webpack --config webpack.production.js && npm run json",
     "prodjson":"webpack --config webpack.production.js && npm run json",
