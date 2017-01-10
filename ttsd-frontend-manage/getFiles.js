@@ -49,17 +49,21 @@ function geFileList(folderPath,fileName)
                 thisName=item.name,
                 nameNoSuffix;
 
+            var itemPath = item.path.match(/ttsd-frontend-manage\/resources\/(\S*)/)[1];
+            var pathObj=itemPath.split('/');
+            pathObj.shift();
+
             if(/\.js$/.test(thisName)) {
                 //判断是否为js文件
                 nameNoSuffix=thisName.split('.')[0];
-                strJSON["jsFile"][nameNoSuffix]=thisName;
-                strJSON["jsFile"]["size"]=(item.size/1024).toFixed(2) +"/kb";
+                strJSON["jsFile"][nameNoSuffix]=pathObj.join('/');
+                // strJSON["jsFile"]["size"]=(item.size/1024).toFixed(2) +"/kb";
             }
             else if(/\.css$/.test(thisName)) {
                 //判断是否为css文件
                 nameNoSuffix=thisName.split('.')[0];
-                strJSON["cssFile"][nameNoSuffix]=thisName;
-                strJSON["cssFile"]["size"]=(item.size/1024).toFixed(2) +"/kb";
+                strJSON["cssFile"][nameNoSuffix]=pathObj.join('/');
+                // strJSON["cssFile"]["size"]=(item.size/1024).toFixed(2) +"/kb";
             }
         }
 
@@ -68,11 +72,11 @@ function geFileList(folderPath,fileName)
     }
     this.init=function() {
         var that=this;
-        console.log('test01');
         //判断打包的时候文件路径是否存在
         fs.exists(this.folderPath, function (exists) {
             if(exists) {
               that.readFile(that.folderPath);
+              that.readFile(basePath+'/develop/public');
               that.formatHandler();
             }
         });
