@@ -201,7 +201,7 @@
             <h3>恭喜您获得福袋礼品</h3>
             <div class="top-com">
                 <div class="left-name">
-                    <span>现金红包</span>
+                    <span id="bagType"></span>
                     <em></em>
                     <i class="circle-top"></i>
                     <i class="circle-bottom"></i>
@@ -209,7 +209,7 @@
                 <div class="right-coupon">
                     <p>
                         <span class="num-text" id="numText">0.00</span>
-                        <span class="unit-text">元</span>
+                        <span class="unit-text" id="numBite"></span>
                     </p>
                 </div>
             </div>
