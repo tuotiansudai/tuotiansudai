@@ -140,6 +140,7 @@ public class EmbodyQuestionService {
         for (SiteMapDataDto siteMapDataDto : siteMapCategoryList) {
             SiteMapDataDto siteMapDataDtoOneLevel = new SiteMapDataDto();
             siteMapDataDtoOneLevel.setName(siteMapDataDto.getName().substring(0, siteMapDataDto.getName().indexOf("|")));
+
             siteMapDataDtoOneLevel.setLinkUrl(siteMapDataDto.getLinkUrl());
             siteMapDataDtoOneLevel.setSeq(CATEGORY_ROOT);
             siteMapCategoryAllList.add(siteMapDataDtoOneLevel);
@@ -153,7 +154,7 @@ public class EmbodyQuestionService {
                     if (siteMapCmsCategoryDto.getParent().equals(siteMapDataDto.getName().substring(siteMapDataDto.getName().indexOf("|") + 1, siteMapDataDto.getName().length()))) {
                         SiteMapDataDto siteMapDataDtoSecondLevel = new SiteMapDataDto();
                         siteMapDataDtoSecondLevel.setName(siteMapCmsCategoryDto.getName());
-                        siteMapDataDtoSecondLevel.setLinkUrl(cmsServer + "/" + siteMapCmsCategoryDto.getParent() + "/" + siteMapCmsCategoryDto.getSlug());
+                        siteMapDataDtoSecondLevel.setLinkUrl(CMS_CATEGORY_PREFIX + "/" + siteMapCmsCategoryDto.getParent() + "/" + siteMapCmsCategoryDto.getSlug());
                         siteMapDataDtoSecondLevel.setSeq(CATEGORY_ORDER);
                         siteMapCategoryAllList.add(siteMapDataDtoSecondLevel);
                     }
