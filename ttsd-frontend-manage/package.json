@@ -4,7 +4,7 @@
   "scripts": {
     "start": " webpack-dev-server --inline",
     "jsondev":"export NODE_ENV=dev && webpack && nodemon -L getFiles.js",
-    "jsonprod":"export NODE_ENV=production && npm run rmprod && webpack --config webpack.production.js && nodemon -L getFiles.js",
+    "build":"export NODE_ENV=production && npm run rmprod && webpack --config webpack.production.js && nodemon -L getFiles.js",
     "rmprod":"rm -rf ./resources/prod"
   },
   "devDependencies": {
