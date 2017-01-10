@@ -185,12 +185,12 @@ require(['jquery','drawCircle','commonFun','logintip','register_common'], functi
                             var prizeType=data.prizeType.toLowerCase();
                                 $(tipGroupObj[prizeType]).find('.prizeValue').text(data.prizeValue);
                             $(tipGroupObj[prizeType]).find('.my-treasure').attr('href',treasureUrl);
-                            var myTimes = Number($rewardGiftBox.find('.my-times').text());
+                            var myTimes = parseInt($rewardGiftBox.find('.my-times').text());
                             // 抽奖次数
-                            if(myTimes>0) {
-                                myTimes=myTimes-1;
-                                $rewardGiftBox.find('.my-times').text(myTimes);
-                            }
+                            $rewardGiftBox.find('.my-times').text(function() {
+                                return myTimes>0?(myTimes-1):0;
+                            });
+
                             drawCircle.noRotateFn(tipGroupObj[prizeType]);
 
                         } else if(data.returnCode == 1) {
