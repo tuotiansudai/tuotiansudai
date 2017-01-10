@@ -46,6 +46,10 @@ dependencies {
         exclude module: 'ttsd-dependency'
     };
 
+    compile(project(":ttsd-log-service")) {
+        exclude module: 'ttsd-dependency'
+    };
+
     compile(project(":ttsd-edxpoint-repository")) {
         exclude module: 'ttsd-dependency'
     };
