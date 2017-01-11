@@ -1,5 +1,6 @@
 package com.tuotiansudai.ask.service;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -110,6 +111,7 @@ public class EmbodyQuestionService {
 
     public List<SiteMapDataDto> getCmsSiteMapCategory() {
         List<SiteMapDataDto> siteMapCategoryList = new LinkedList<>();
+
         String cmsCategoryJsonString = loadJSON(cmsServer + CMS_CATEGORY_INFO);
         if (cmsCategoryJsonString == null || "".equals(cmsCategoryJsonString)) {
             return siteMapCategoryList;
@@ -151,7 +153,7 @@ public class EmbodyQuestionService {
                 JSONObject obj = (JSONObject) categoryIt.next();
                 try {
                     SiteMapCmsCategoryDto siteMapCmsCategoryDto = JsonConverter.readValue(String.valueOf(obj), SiteMapCmsCategoryDto.class);
-                    if (siteMapCmsCategoryDto.getParent().equals(siteMapDataDto.getName().substring(siteMapDataDto.getName().indexOf("|") + 1, siteMapDataDto.getName().length()))) {
+                    if (!Strings.isNullOrEmpty(siteMapCmsCategoryDto.getParent()) && siteMapCmsCategoryDto.getParent().equals(siteMapDataDto.getName().substring(siteMapDataDto.getName().indexOf("|") + 1, siteMapDataDto.getName().length()))) {
                         SiteMapDataDto siteMapDataDtoSecondLevel = new SiteMapDataDto();
                         siteMapDataDtoSecondLevel.setName(siteMapCmsCategoryDto.getName());
                         siteMapDataDtoSecondLevel.setLinkUrl(CMS_CATEGORY_PREFIX + "/" + siteMapCmsCategoryDto.getParent() + "/" + siteMapCmsCategoryDto.getSlug());
@@ -194,28 +196,28 @@ public class EmbodyQuestionService {
             Iterator categoryIt = categoryJsonArray.iterator();
             while (categoryIt.hasNext()) {
                 SiteMapDataDto siteMapDataDto = new SiteMapDataDto();
-                JSONObject obj = (JSONObject) categoryIt.next();
-                try {
-                    siteMapCmsCategoryDto = JsonConverter.readValue(String.valueOf(obj), SiteMapCmsCategoryDto.class);
-                    String cmsPostsJsonString = loadJSON(cmsServer + CMS_POSTS_INFO + siteMapCmsCategoryDto.getSlug());
-                    if (!"".equals(cmsPostsJsonString)) {
-                        JSONArray postsJsonArray = JSONArray.fromObject(cmsPostsJsonString);
-                        Iterator postsIt = postsJsonArray.iterator();
-                        while (postsIt.hasNext()) {
-                            SiteMapDataDto siteMapPostsDataDto = new SiteMapDataDto();
-                            JSONObject postsObj = (JSONObject) postsIt.next();
-                            SiteMapCmsDetailsDto siteMapCmsDetailsDto = JsonConverter.readValue(String.valueOf(postsObj), SiteMapCmsDetailsDto.class);
-                            siteMapPostsDataDto.setName(siteMapCmsDetailsDto.getTitle());
-                            siteMapPostsDataDto.setLinkUrl(siteMapCmsDetailsDto.getUrl());
-                            siteMapPostsDataDtoList.add(siteMapPostsDataDto);
-                            siteMapPostsDataDto.setSeq(DETAIL_ORDER);
-                            //因为网站读取从redis的值时需要排序,所以添加时value用 (title + "||" +排序) 的格式,以便前台读取时可以排序,详细文章用3,栏目分类用2
-                            redisWrapperClient.hset(CMS_CATEGORY, siteMapCmsDetailsDto.getUrl(), siteMapCmsDetailsDto.getTitle() + "||" + DETAIL_ORDER, timeout);
-                        }
-                    }
-                } catch (IOException e) {
-                    logger.error("cms JsonConverter read error:" + e);
-                }
+//                JSONObject obj = (JSONObject) categoryIt.next();
+//                try {
+//                    siteMapCmsCategoryDto = JsonConverter.readValue(String.valueOf(obj), SiteMapCmsCategoryDto.class);
+//                    String cmsPostsJsonString = loadJSON(cmsServer + CMS_POSTS_INFO + siteMapCmsCategoryDto.getSlug());
+//                    if (!"".equals(cmsPostsJsonString)) {
+//                        JSONArray postsJsonArray = JSONArray.fromObject(cmsPostsJsonString);
+//                        Iterator postsIt = postsJsonArray.iterator();
+//                        while (postsIt.hasNext()) {
+//                            SiteMapDataDto siteMapPostsDataDto = new SiteMapDataDto();
+//                            JSONObject postsObj = (JSONObject) postsIt.next();
+//                            SiteMapCmsDetailsDto siteMapCmsDetailsDto = JsonConverter.readValue(String.valueOf(postsObj), SiteMapCmsDetailsDto.class);
+//                            siteMapPostsDataDto.setName(siteMapCmsDetailsDto.getTitle());
+//                            siteMapPostsDataDto.setLinkUrl(siteMapCmsDetailsDto.getUrl());
+//                            siteMapPostsDataDtoList.add(siteMapPostsDataDto);
+//                            siteMapPostsDataDto.setSeq(DETAIL_ORDER);
+//                            //因为网站读取从redis的值时需要排序,所以添加时value用 (title + "||" +排序) 的格式,以便前台读取时可以排序,详细文章用3,栏目分类用2
+//                            redisWrapperClient.hset(CMS_CATEGORY, siteMapCmsDetailsDto.getUrl(), siteMapCmsDetailsDto.getTitle() + "||" + DETAIL_ORDER, timeout);
+//                        }
+//                    }
+//                } catch (IOException e) {
+//                    logger.error("cms JsonConverter read error:" + e);
+//                }
 
                 if (siteMapCmsCategoryDto.getName() != null) {
                     siteMapDataDto.setName(siteMapCmsCategoryDto.getName());

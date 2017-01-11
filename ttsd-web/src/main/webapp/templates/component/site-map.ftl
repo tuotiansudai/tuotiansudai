@@ -1,6 +1,8 @@
 <div style="display: none">
     <#--ask主站-->
         <a href='http://ask.tuotiansudai.com' target="_blank">ASK站</a>
+    <#--cms主站-->
+        <a href='http://content.tuotiansudai.com' target="_blank">CMS站</a>
     <#--ask栏目列表-->
         <a href='http://ask.tuotiansudai.com/question/hot-category-list' target="_blank">ASK栏目列表</a>
     <#--cms栏目列表-->
@@ -19,10 +21,12 @@
         <a href='http://ask.tuotiansudai.com/question/category/TRUST' target="_blank">信托</a>
         <a href='http://ask.tuotiansudai.com/question/category/SECURITIES' target="_blank">证券</a>
         <a href='http://ask.tuotiansudai.com/question/category/CROWD_FUNDING' target="_blank">众筹</a>
-    <#--ask具体问题列表和cms分类信息及具体问题列表,按照cms分类在前的顺序-->
-        <#list siteMapList as siteMap>
-            <#if siteMap??>
-                <a href='${siteMap.linkUrl!}' target="_blank">${siteMap.name!}</a>
-            </#if>
-        </#list>
+    <#--cms分类信息列表-->
+        <#if siteMapList??>
+            <#list siteMapList as siteMap>
+                <#if siteMap??>
+                    <a href='${siteMap.linkUrl!}' target="_blank">${siteMap.name!}</a>
+                </#if>
+            </#list>
+        </#if>
 </div>
