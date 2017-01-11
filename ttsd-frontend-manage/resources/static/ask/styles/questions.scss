@@ -10,7 +10,28 @@
     height:100%;
   }
 }
+
 .main-frame-ask {
+  .btn-main {
+    font-size: 18px;
+    font-weight: 400;
+    display: inline-block;
+    padding: 8px 22px;
+    margin-bottom: 0;
+    text-align: center;
+    letter-spacing: 1px;
+    line-height: 1.3;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border: 0;
+    color: #fff;
+    background: #ff7200;
+  }
   input,textarea,select {
     @include border-color(#e5e5e5);
     width:96%;
