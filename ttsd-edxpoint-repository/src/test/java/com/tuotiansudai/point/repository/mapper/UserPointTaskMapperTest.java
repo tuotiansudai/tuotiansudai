@@ -29,19 +29,8 @@ public class UserPointTaskMapperTest {
 
     @Test
     public void shouldCreatePointBillModel() throws Exception {
-        PointTaskModel pointTaskModel = new PointTaskModel();
-        pointTaskModel.setName(PointTask.REGISTER);
-        pointTaskModel.setPoint(1);
-        pointTaskModel.setActive(true);
-        pointTaskModel.setMaxLevel(1);
-        pointTaskModel.setMultiple(false);
-        pointTaskModel.setCreatedTime(new Date());
-        pointTaskMapper.create(pointTaskModel);
-
         String fakeLoginName = "fakeUser";
-
-        userPointTaskMapper.create(new UserPointTaskModel(fakeLoginName, pointTaskModel.getId(), 1000, 1));
-
+        userPointTaskMapper.create(new UserPointTaskModel(fakeLoginName, pointTaskMapper.findByName(PointTask.REGISTER).getId(), 1000, 1));
 
         assertThat(userPointTaskMapper.findByLoginName(fakeLoginName).size(), is(1));
     }

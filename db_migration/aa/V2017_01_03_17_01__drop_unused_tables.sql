@@ -1,0 +1,16 @@
+DROP TABLE activity;
+DROP TABLE banner;
+DROP TABLE announce;
+DROP TABLE user_message;
+DROP TABLE jpush_alert;
+DROP TABLE message;
+DROP TABLE user_point_prize;
+DROP TABLE user_point_task;
+DROP TABLE user_point_task_backup;
+DROP TABLE point_task;
+DROP TABLE point_bill;
+DROP TABLE point_bill_backup;
+DROP TABLE point_prize;
+DROP TABLE product_order;
+DROP TABLE user_address;
+DROP TABLE product;

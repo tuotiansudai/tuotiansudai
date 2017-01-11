@@ -1,5 +1,6 @@
 package com.tuotiansudai.web.ask.controller;
 
+import com.tuotiansudai.ask.service.EmbodyQuestionService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.ask.service.QuestionService;
@@ -18,6 +19,9 @@ public class HomeController {
     @Autowired
     private QuestionService questionService;
 
+    @Autowired
+    private EmbodyQuestionService embodyQuestionService;
+
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView index(@RequestParam(value = "group", defaultValue = "ALL", required = false) QuestionGroup group,
                               @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
@@ -34,6 +38,7 @@ public class HomeController {
 
         modelAndView.addObject("questions", data);
         modelAndView.addObject("group", group);
+
         return modelAndView;
     }
 

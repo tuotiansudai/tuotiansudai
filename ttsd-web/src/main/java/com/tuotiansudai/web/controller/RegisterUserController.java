@@ -9,9 +9,9 @@ import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.PrepareUserService;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
+import com.tuotiansudai.spring.security.CaptchaHelper;
 import com.tuotiansudai.spring.security.MyAuthenticationUtil;
 import com.tuotiansudai.util.CaptchaGenerator;
-import com.tuotiansudai.spring.security.CaptchaHelper;
 import com.tuotiansudai.util.RequestIPParser;
 import nl.captcha.Captcha;
 import nl.captcha.servlet.CaptchaServletUtil;
@@ -55,7 +55,7 @@ public class RegisterUserController {
     public ModelAndView registerRedirect() {
         return new ModelAndView("redirect:/register/user");
     }
-    
+
     @RequestMapping(path = "/user", method = RequestMethod.GET)
     public ModelAndView registerUser(HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView("/register-user");

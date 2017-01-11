@@ -49,7 +49,7 @@
     <div class="page-width pad-box clearfix">
         <div class="column-title-ac"><i></i>项目二审<i></i></div>
         <div class="project-examine-two">
-            <div class="square-box-info">
+            <div class="square-box-info one">
                 <i class="triangle"><em></em></i>
                 <dl>
                     <dt>1、客户面访</dt>
@@ -57,7 +57,7 @@
                 </dl>
             </div>
 
-            <div class="square-box-info">
+            <div class="square-box-info two">
                 <i class="triangle"><em></em></i>
                 <dl>
                     <dt>2、材料初审</dt>
@@ -65,7 +65,7 @@
                 </dl>
             </div>
 
-            <div class="square-box-info">
+            <div class="square-box-info three">
                 <i class="triangle"><em></em></i>
                 <dl>
                     <dt>3、银行核证</dt>
@@ -73,7 +73,7 @@
                 </dl>
             </div>
 
-            <div class="square-box-info">
+            <div class="square-box-info four">
                 <i class="triangle"><em></em></i>
                 <dl>
                     <dt>4、上门家访</dt>
@@ -81,14 +81,14 @@
                 </dl>
             </div>
 
-            <div class="square-box-info">
+            <div class="square-box-info five">
                 <i class="triangle"><em></em></i>
                 <dl>
                     <dt>5、陪打征信</dt>
                     <dd>风控部陪客户去央行征信中心打印征信报告</dd>
                 </dl>
             </div>
-            <div class="square-box-info">
+            <div class="square-box-info six">
                 <i class="triangle"><em></em></i>
                 <dl>
                     <dt>6、风控复审</dt>
@@ -96,12 +96,12 @@
                 </dl>
             </div>
         <div class="ellipse-shape-center">
-            <div class="squareNum">1</div>
-            <div class="squareNum">2</div>
-            <div class="squareNum">3</div>
-            <div class="squareNum">4</div>
-            <div class="squareNum">5</div>
-            <div class="squareNum">6</div>
+            <div class="squareNum one">1</div>
+            <div class="squareNum two">2</div>
+            <div class="squareNum three">3</div>
+            <div class="squareNum four">4</div>
+            <div class="squareNum five">5</div>
+            <div class="squareNum six">6</div>
             <div class="vertical-line"></div>
 
         </div>
@@ -117,7 +117,7 @@
                     <dt><em><img src="${staticServer}/images/sign/assure/end01.png" alt="风控流程"></em>材料复核</dt>
                     <dd>总经理助理核实借款材料与风控报告的一致性</dd>
                 </dl>
-                <dl>
+                <dl class="two">
                     <dt><em><img src="${staticServer}/images/sign/assure/end02.png" alt="风控流程"></em>量化评级</dt>
                     <dd>对应拓天速贷系统，量化借款人的安全等级与借款额度</dd>
                 </dl>

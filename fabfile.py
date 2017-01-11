@@ -37,6 +37,7 @@ def migrate():
     local('/opt/gradle/latest/bin/gradle -Pdatabase=edxpoint ttsd-config:flywayMigrate')
     local('/opt/gradle/latest/bin/gradle -Pdatabase=anxin_operations ttsd-config:flywayMigrate')
     local('/opt/gradle/latest/bin/gradle -Pdatabase=edxmessage ttsd-config:flywayMigrate')
+    local('/opt/gradle/latest/bin/gradle -Pdatabase=edxlog ttsd-config:flywayMigrate')
 
 def mk_war():
     local('/usr/local/bin/paver jcversion')

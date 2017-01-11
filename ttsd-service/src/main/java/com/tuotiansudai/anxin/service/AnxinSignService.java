@@ -10,6 +10,8 @@ public interface AnxinSignService {
 
     boolean hasAuthed(String loginName);
 
+    boolean isAuthenticationRequired(String loginName);
+
     AnxinSignPropertyModel getAnxinSignProp(String loginName);
 
     BaseDto createAccount3001(String loginName);
