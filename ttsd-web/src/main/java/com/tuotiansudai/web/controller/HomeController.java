@@ -88,7 +88,7 @@ public class HomeController {
         if (enterpriseLoans.size() > 0) {
             modelAndView.addObject("enterpriseLoans", homeService.getEnterpriseLoans());
         }
-        modelAndView.addObject("siteMapList", homeService.getSiteMapData());
+        //modelAndView.addObject("siteMapList", homeService.getSiteMapData());
 
         return modelAndView;
     }

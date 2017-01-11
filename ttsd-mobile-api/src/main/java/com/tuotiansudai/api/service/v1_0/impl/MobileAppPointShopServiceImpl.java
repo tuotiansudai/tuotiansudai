@@ -1,7 +1,6 @@
 package com.tuotiansudai.api.service.v1_0.impl;
 
 
-import com.google.common.base.Function;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
@@ -11,9 +10,7 @@ import com.tuotiansudai.api.util.PageValidUtils;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.ExchangeCouponView;
-import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.coupon.service.CouponService;
-import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.point.repository.mapper.ProductMapper;
 import com.tuotiansudai.point.repository.mapper.ProductOrderMapper;
 import com.tuotiansudai.point.repository.mapper.UserAddressMapper;
@@ -102,7 +99,7 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
         Integer index = baseParamDto.getIndex();
         Integer pageSize = baseParamDto.getPageSize();
         if (index == null || index <= 0) {
-            index = 0;
+            index = 1;
         }
 
         pageSize = pageValidUtils.validPageSizeLimit(pageSize);
@@ -111,12 +108,7 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
         List<ProductOrderViewDto> productOrderListByLoginName = productOrderMapper.findProductOrderListByLoginName(baseParamDto.getBaseParam().getUserId(), index, pageSize);
         ProductListOrderResponseDto productListOrderResponseDto = new ProductListOrderResponseDto();
         if (CollectionUtils.isNotEmpty(productOrderListByLoginName)) {
-            Iterator<ProductOrderResponseDto> transform = Iterators.transform(productOrderListByLoginName.iterator(), new Function<ProductOrderViewDto, ProductOrderResponseDto>() {
-                @Override
-                public ProductOrderResponseDto apply(ProductOrderViewDto input) {
-                    return new ProductOrderResponseDto(input);
-                }
-            });
+            Iterator<ProductOrderResponseDto> transform = Iterators.transform(productOrderListByLoginName.iterator(), input -> new ProductOrderResponseDto(input));
             productListOrderResponseDto.setOrders(Lists.newArrayList(transform));
             productListOrderResponseDto.setIndex(baseParamDto.getIndex());
             productListOrderResponseDto.setPageSize(baseParamDto.getPageSize());
@@ -143,26 +135,11 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
         List<ProductModel> virtualProducts = productMapper.findAllProductsByGoodsType(Lists.newArrayList(GoodsType.VIRTUAL));
         List<ProductModel> physicalsProducts = productMapper.findAllProductsByGoodsType(Lists.newArrayList(GoodsType.PHYSICAL));
 
-        Iterator<ProductDetailResponseDto> couponList = Iterators.transform(exchangeCoupons.iterator(), new Function<ExchangeCouponView, ProductDetailResponseDto>() {
-            @Override
-            public ProductDetailResponseDto apply(ExchangeCouponView exchangeCouponView) {
-                return new ProductDetailResponseDto(exchangeCouponView, bannerServer);
-            }
-        });
+        Iterator<ProductDetailResponseDto> couponList = Iterators.transform(exchangeCoupons.iterator(), exchangeCouponView -> new ProductDetailResponseDto(exchangeCouponView, bannerServer));
 
-        Iterator<ProductDetailResponseDto> virtualList = Iterators.transform(virtualProducts.iterator(), new Function<ProductModel, ProductDetailResponseDto>() {
-            @Override
-            public ProductDetailResponseDto apply(ProductModel input) {
-                return new ProductDetailResponseDto(input.getId(), bannerServer + input.getImageUrl(), input.getName(), input.getPoints(), input.getType(), 1000, input.getSeq(), input.getUpdatedTime());
-            }
-        });
+        Iterator<ProductDetailResponseDto> virtualList = Iterators.transform(virtualProducts.iterator(), input -> new ProductDetailResponseDto(input.getId(), bannerServer + input.getImageUrl(), input.getName(), input.getPoints(), input.getType(), 1000, input.getSeq(), input.getUpdatedTime()));
 
-        Iterator<ProductDetailResponseDto> physicals = Iterators.transform(physicalsProducts.iterator(), new Function<ProductModel, ProductDetailResponseDto>() {
-            @Override
-            public ProductDetailResponseDto apply(ProductModel input) {
-                return new ProductDetailResponseDto(input.getId(), bannerServer + input.getImageUrl(), input.getName(), input.getPoints(), input.getType(), 1000, input.getSeq(), input.getUpdatedTime());
-            }
-        });
+        Iterator<ProductDetailResponseDto> physicals = Iterators.transform(physicalsProducts.iterator(), input -> new ProductDetailResponseDto(input.getId(), bannerServer + input.getImageUrl(), input.getName(), input.getPoints(), input.getType(), 1000, input.getSeq(), input.getUpdatedTime()));
 
         List virtualShopList = Lists.newArrayList(virtualList);
         if (couponList != null) {
