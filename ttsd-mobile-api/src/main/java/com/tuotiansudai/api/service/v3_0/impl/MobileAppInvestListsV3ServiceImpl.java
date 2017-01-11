@@ -30,7 +30,6 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.DecimalFormat;
 import java.util.List;
 
 @Service
@@ -91,17 +90,19 @@ public class MobileAppInvestListsV3ServiceImpl implements MobileAppInvestListsV3
 
     private List<UserInvestRecordResponseDataDto> convertResponseData(List<InvestModel> investModels, LoanStatus loanStatus) {
         List<UserInvestRecordResponseDataDto> list = Lists.newArrayList();
-        DecimalFormat decimalFormat = new DecimalFormat("######0.##");
         if (CollectionUtils.isNotEmpty(investModels)) {
             for (InvestModel investModel : investModels) {
                 LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
                 UserInvestRecordResponseDataDto dto = new UserInvestRecordResponseDataDto(investModel, loanModel);
 
                 TransferApplicationModel transferApplicationModel;
-                List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findByTransferInvestId(investModel.getId(), Lists.newArrayList(TransferStatus.TRANSFERRING));
-                transferApplicationModel = CollectionUtils.isNotEmpty(transferApplicationModels) ? transferApplicationModels.get(0) : null;
+                if (investModel.getTransferInvestId() != null) {
+                    transferApplicationModel = transferApplicationMapper.findByInvestId(investModel.getId());
+                } else {
+                    List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findByTransferInvestId(investModel.getId(), Lists.newArrayList(TransferStatus.TRANSFERRING));
+                    transferApplicationModel = CollectionUtils.isNotEmpty(transferApplicationModels) ? transferApplicationModels.get(0) : null;
+                }
                 dto.setLoanName(transferApplicationModel != null ? transferApplicationModel.getName() : loanModel.getName());
-                dto.setInvestId(transferApplicationModel != null ? String.valueOf(transferApplicationModel.getTransferInvestId()) : String.valueOf(investModel.getId()));
                 dto.setTransferApplicationId(transferApplicationModel != null ? String.valueOf(transferApplicationModel.getId()) : "");
                 dto.setInvestAmount(transferApplicationModel != null ? AmountConverter.convertCentToString(transferApplicationModel.getInvestAmount()) : AmountConverter.convertCentToString(investModel.getAmount()));
                 dto.setTransferInvest(transferApplicationModel != null ? true : false);

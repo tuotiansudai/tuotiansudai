@@ -15,8 +15,16 @@ require(['jquery', 'mustache', 'text!/tpl/refer-table.mustache', 'text!/tpl/refe
 
         var mobile=$clipboardText.data('mobile')+'',
             md5Mobile=$.md5(mobile);
+
+        if (window["context"] == undefined) {
+            if (!window.location.origin) {
+                window.location.origin = window.location.protocol + "//" + window.location.hostname+ (window.location.port ? ':' + window.location.port: '');
+            }
+        }
+
         var md5String=commonFun.compile(md5Mobile,mobile),
             origin=location.origin;
+
         $clipboardText.val(origin+'/activity/landing-page?referrer='+md5String);
 
         //动态生成二维码

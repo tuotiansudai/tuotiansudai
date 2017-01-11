@@ -18,7 +18,7 @@
         <#if service == 'ptp_mer_bind_card'>
             <li>
                 <span class="info-title">开户银行</span>
-                <span class="info-text">${bankName}</span>
+                <span class="info-text"><#if bankName??>${bankName}</#if></span>
             </li>
             <li>
                 <span class="info-title">银行卡号:</span>
@@ -58,7 +58,7 @@
             </li>
             <li>
                 <span class="info-title">所投项目</span>
-                <span class="info-text">${investName}</span>
+                <span class="info-text">${investName!}</span>
             </li>
             <li>
                 <span class="info-title">项目编号</span>

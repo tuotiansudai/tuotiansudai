@@ -1,6 +1,7 @@
 package com.tuotiansudai.task;
 
 import com.google.common.primitives.Longs;
+import com.tuotiansudai.enums.OperationType;
 
 import java.io.Serializable;
 import java.util.Date;

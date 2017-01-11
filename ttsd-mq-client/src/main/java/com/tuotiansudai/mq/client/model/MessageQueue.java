@@ -30,7 +30,8 @@ public enum MessageQueue {
     AuditLog("AuditLog"),
     UserOperateLog("UserOperateLog"),
     TransferReferrerRewardCallback("TransferReferrerRewardCallback"),
-    TransferRedEnvelopCallback("TransferRedEnvelopCallback");
+    TransferRedEnvelopCallback("TransferRedEnvelopCallback"),
+    LoginLog("LoginLog");
 
     private final String queueName;
 

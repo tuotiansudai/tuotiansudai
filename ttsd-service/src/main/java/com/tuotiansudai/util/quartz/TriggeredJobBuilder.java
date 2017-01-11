@@ -159,16 +159,21 @@ public class TriggeredJobBuilder {
         logger.info("prepare submit job " + jobClazz.getName() + " to scheduler " + scheduler.getSchedulerName());
         JobDetail jobDetail = getJobDetail();
         Trigger jobTrigger = getJobTrigger(jobDetail);
+        boolean isExistsJob = scheduler.checkExists(jobDetail.getKey());
 
         if (replaceExistingJob) {
             if (jobKey == null) {
                 throw new SchedulerException("jobKey is null, please set it via method: withIdentity");
             }
-            if (scheduler.checkExists(jobDetail.getKey())) {
+            if (isExistsJob) {
                 scheduler.deleteJob(jobDetail.getKey());
+                isExistsJob = false;
             }
         }
-        scheduler.scheduleJob(jobDetail, jobTrigger);
+
+        if(!isExistsJob){
+            scheduler.scheduleJob(jobDetail, jobTrigger);
+        }
         logger.info("submit job " + jobClazz.getName() + " to scheduler " + scheduler.getSchedulerName() + " success");
     }
 }
