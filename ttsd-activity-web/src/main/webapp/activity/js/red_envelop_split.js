@@ -28,6 +28,19 @@ require(['jquery', 'layerWrapper','commonFun','validator'], function($,layer,com
                 $('.envelop-box',$redEnvelopSplit).eq(thisNum).show().siblings('.envelop-box').hide();
             });
 
+            //立即邀请好友赚红包，如果url连接上有source=share,不需要跳转
+            //
+            $('.to-invite-friend',$redEnvelopSplit).on('click',function() {
+                var $this=$(this),
+                    url=$this.data('url');
+                var parseURL=globalFun.parseURL(url);
+                if(parseURL.params.source=='share') {
+                    layer.msg('本活动仅限使用拓天速贷app参加，请下载app后再进行邀请。');
+                }
+                else {
+                    location.href=url;
+                }
+            });
         })();
 
         //被邀请人注册
