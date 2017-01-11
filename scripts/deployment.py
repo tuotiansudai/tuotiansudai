@@ -9,7 +9,7 @@ class Deployment(object):
     _dockerCompose='/usr/local/bin/docker-compose'
     _paver='/usr/bin/paver'
 
-    _env='QA'
+    _env=''
 
     def deploy(self, env):
         self._env = env
@@ -31,7 +31,7 @@ class Deployment(object):
 
     def generate_config_file(self):
         print "Generate config file..."
-        config_deploy.deploy("./ttsd-config/src/main/resources/", "{0}/ttsd-config/ttsd-env.properties".format(self._config_path))
+        config_deploy.deploy(self._env, "./ttsd-config/src/main/resources/", "{0}/ttsd-config/ttsd-env.properties".format(self._config_path))
 
 
     def compile(self):

@@ -1,14 +1,12 @@
 # encoding=utf-8
-import os
 
-def deploy(source_folder, dist_file):
+def deploy(env, source_folder, dist_file):
     # 读取ttsd-env-QA-common.properties 生成一个 dict 对象 qa_common_prop
     qa_common_prop = load_properties("{0}envs/QA-common.properties".format(source_folder))
 
     # 读取当前系统环境变量 env
-    env = os.getenv('env')
     if not env:
-        print "Fail: system environment variable 'env' not assigned!"
+        print "Fail: env was not set!"
         return
 
     # 读取 ttsd-env-${env}.properties, 生成一个 dict 对象 env_prop
