@@ -119,16 +119,16 @@ public class PointTaskServiceTest {
         UserModel referrer = this.createFakeUser("eachRecommendReferrer", null);
         UserModel newbie1 = this.createFakeUser("newbie1", referrer.getLoginName());
 
-        pointTaskService.completeAdvancedTask(PointTask.EACH_RECOMMEND, newbie1.getLoginName());
+        pointTaskService.completeAdvancedTask(PointTask.EACH_RECOMMEND_REGISTER, newbie1.getLoginName());
 
-        assertThat(userPointTaskMapper.findMaxTaskLevelByLoginName(referrer.getLoginName(), PointTask.EACH_RECOMMEND), is(1L));
+        assertThat(userPointTaskMapper.findMaxTaskLevelByLoginName(referrer.getLoginName(), PointTask.EACH_RECOMMEND_REGISTER), is(1L));
         assertThat(accountMapper.findByLoginName(referrer.getLoginName()).getPoint(), is(50L));
 
         UserModel newbie2 = this.createFakeUser("newbie2", referrer.getLoginName());
 
-        pointTaskService.completeAdvancedTask(PointTask.EACH_RECOMMEND, newbie2.getLoginName());
+        pointTaskService.completeAdvancedTask(PointTask.EACH_RECOMMEND_REGISTER, newbie2.getLoginName());
 
-        assertThat(userPointTaskMapper.findMaxTaskLevelByLoginName(referrer.getLoginName(), PointTask.EACH_RECOMMEND), is(1L));
+        assertThat(userPointTaskMapper.findMaxTaskLevelByLoginName(referrer.getLoginName(), PointTask.EACH_RECOMMEND_REGISTER), is(1L));
         assertThat(accountMapper.findByLoginName(referrer.getLoginName()).getPoint(), is(50L));
     }
 
