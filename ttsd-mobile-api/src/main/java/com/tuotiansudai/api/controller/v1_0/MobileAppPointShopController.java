@@ -59,4 +59,12 @@ public class MobileAppPointShopController extends MobileAppBaseController {
         return mobileAppPointShopService.productExchange(productDetailRequestDto);
     }
 
+    @RequestMapping(value = "/get/prize", method = RequestMethod.POST)
+    @ApiOperation("积分抽奖")
+    public BaseResponseDto lotteryDrawByPoint(@RequestBody BaseParamDto baseParamDto) {
+        baseParamDto.getBaseParam().setUserId(getLoginName());
+        return mobileAppPointShopService.lotteryDrawByPoint(baseParamDto);
+    }
+
+
 }
