@@ -194,12 +194,6 @@ public class LotteryDrawActivityService {
 
         grantPrize(mobile, userModel.getLoginName(), lotteryPrize);
 
-        if (lotteryPrize.getPrizeType().equals(PrizeType.VIRTUAL)) {
-            couponAssignmentService.assignUserCoupon(mobile, getCouponId(lotteryPrize));
-        } else if (lotteryPrize.equals(LotteryPrize.MEMBERSHIP_V5)) {
-            createUserMembershipModel(userModel.getLoginName(), MembershipLevel.V5.getLevel());
-        }
-
         try {
             userLotteryPrizeMapper.create(new UserLotteryPrizeModel(mobile, userModel.getLoginName(), userModel.getUserName(), lotteryPrize, DateTime.now().toDate(), activityCategory));
         } catch (Exception e) {
@@ -288,8 +282,6 @@ public class LotteryDrawActivityService {
         PrizeType prizeType = PrizeType.VIRTUAL;
         if (lotteryPrize.getPrizeType().equals(PrizeType.VIRTUAL)) {
             couponAssignmentService.assignUserCoupon(mobile, getCouponId(lotteryPrize));
-        } else if (lotteryPrize.equals(LotteryPrize.MEMBERSHIP_V5)) {
-            createUserMembershipModel(loginName, MembershipLevel.V5.getLevel());
         } else if (lotteryPrize.equals(LotteryPrize.RED_INVEST_15) || lotteryPrize.equals(LotteryPrize.RED_INVEST_50)) {
             couponAssignmentService.assignUserCoupon(mobile, getCouponId(lotteryPrize));
             prizeType = PrizeType.VIRTUAL;

@@ -1,15 +1,21 @@
 package com.tuotiansudai.scheduler.plugin;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.job.*;
+import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.util.JobManager;
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 import org.quartz.CronScheduleBuilder;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.SimpleScheduleBuilder;
 import org.quartz.spi.ClassLoadHelper;
 import org.quartz.spi.SchedulerPlugin;
+import org.springframework.beans.factory.annotation.Value;
 
+import java.util.List;
 import java.util.TimeZone;
 
 public class JobInitPlugin implements SchedulerPlugin {
@@ -21,6 +27,9 @@ public class JobInitPlugin implements SchedulerPlugin {
     private String schedulerName;
 
     private final String TIMEZONE_SHANGHAI = "Asia/Shanghai";
+
+    @Value("#{'${activity.weiXin.red.envelop.period}'.split('\\~')}")
+    private List<String> weiXinPeriod = Lists.newArrayList();
 
     public JobInitPlugin(JobManager jobManager) {
         this.jobManager = jobManager;
@@ -89,6 +98,9 @@ public class JobInitPlugin implements SchedulerPlugin {
         }
         if (JobType.AdvanceRepayCallBack.name().equalsIgnoreCase(schedulerName)) {
             deleteAdvanceRepayCallBackJob();
+        }
+        if(JobType.SendRedEnvelopSplit.name().equalsIgnoreCase(schedulerName)){
+            createRedEnvelopSplitJob();
         }
     }
 
@@ -270,6 +282,17 @@ public class JobInitPlugin implements SchedulerPlugin {
                     .withIdentity(JobType.EventMessage.name(), JobType.EventMessage.name()).submit();
         } catch (SchedulerException e) {
             logger.info(e.getLocalizedMessage(), e);
+        }
+    }
+
+    private void createRedEnvelopSplitJob() {
+        try {
+            jobManager.newJob(JobType.SendRedEnvelopSplit, AssignRedEnvelopSplitJob.class)
+                    .withIdentity(JobType.SendRedEnvelopSplit.name(), JobType.SendRedEnvelopSplit.name())
+                    .replaceExistingJob(false)
+                    .runOnceAt(DateTime.parse(weiXinPeriod.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate()).submit();
+        } catch (SchedulerException e) {
+            logger.error(e.getLocalizedMessage(), e);
         }
     }
 }
