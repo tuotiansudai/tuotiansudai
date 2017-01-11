@@ -291,7 +291,9 @@ public class PointTaskServiceImpl implements PointTaskService {
                 return true;
             case EACH_RECOMMEND_REFERRER_INVEST:
 //                return accountMapper.findByLoginName(referrer) != null && CollectionUtils.isEmpty(userPointTaskMapper.findByLoginNameAndTask(referrer, pointTask)ch
-                return true;
+                if(investMapper.sumSuccessInvestCountByLoginName(loginName) == 1 || investMapper.sumSuccessInvestCountByLoginName(loginName) == 0){
+                    return true;
+                }
             case FIRST_REFERRER_INVEST:
                 return accountMapper.findByLoginName(referrer) != null && userPointTaskMapper.findMaxTaskLevelByLoginName(referrer, pointTask) == 0;
             case FIRST_INVEST_180:
