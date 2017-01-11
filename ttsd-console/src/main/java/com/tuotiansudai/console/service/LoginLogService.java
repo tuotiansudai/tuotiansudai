@@ -8,6 +8,7 @@ import com.tuotiansudai.log.repository.model.LoginLogModel;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.PaginationUtil;
+import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,14 +28,22 @@ public class LoginLogService {
     @Autowired
     private UserMapper userMapper;
 
-    public BasePaginationDataDto<LoginLogPaginationItemDataDto> getLoginLogPaginationData(String mobile, Boolean success, int index, int pageSize, int year, int month) {
+    public BasePaginationDataDto<LoginLogPaginationItemDataDto> getLoginLogPaginationData(String loginNameMobile, Boolean success, int index, int pageSize, int year, int month) {
         String loginLogTableName = this.getLoginLogTableName(new DateTime(year, month, 1, 0, 0).toDate());
 
-        UserModel userModel = userMapper.findByLoginNameOrMobile(mobile);
+        String loginName = null;
+        String mobile = null;
+        if (StringUtils.isNotEmpty(loginNameMobile)) {
+            UserModel userModel = userMapper.findByLoginNameOrMobile(loginNameMobile);
+            if (userModel != null) {
+                loginName = userModel.getLoginName();
+                mobile = userModel.getMobile();
+            }
+        }
 
-        long count = loginLogMapper.count(userModel.getLoginName(), userModel.getMobile(), success, loginLogTableName);
+        long count = loginLogMapper.count(loginName, mobile, success, loginLogTableName);
 
-        List<LoginLogModel> data = loginLogMapper.getPaginationData(userModel.getLoginName(), userModel.getMobile(), success, PaginationUtil.calculateOffset(index, pageSize, count), pageSize, loginLogTableName);
+        List<LoginLogModel> data = loginLogMapper.getPaginationData(loginName, mobile, success, PaginationUtil.calculateOffset(index, pageSize, count), pageSize, loginLogTableName);
 
         List<LoginLogPaginationItemDataDto> records = Lists.transform(data, input -> new LoginLogPaginationItemDataDto(input.getLoginName(), input.getSource(), input.getIp(), input.getDevice(), input.getLoginTime(), input.isSuccess()));
 
