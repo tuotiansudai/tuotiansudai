@@ -8,7 +8,6 @@ import com.tuotiansudai.log.repository.model.LoginLogModel;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.PaginationUtil;
-import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,15 +30,9 @@ public class LoginLogService {
     public BasePaginationDataDto<LoginLogPaginationItemDataDto> getLoginLogPaginationData(String loginNameMobile, Boolean success, int index, int pageSize, int year, int month) {
         String loginLogTableName = this.getLoginLogTableName(new DateTime(year, month, 1, 0, 0).toDate());
 
-        String loginName = null;
-        String mobile = null;
-        if (StringUtils.isNotEmpty(loginNameMobile)) {
-            UserModel userModel = userMapper.findByLoginNameOrMobile(loginNameMobile);
-            if (userModel != null) {
-                loginName = userModel.getLoginName();
-                mobile = userModel.getMobile();
-            }
-        }
+        UserModel userModel = userMapper.findByLoginNameOrMobile(loginNameMobile);
+        String loginName = userModel != null ? userModel.getLoginName() : loginNameMobile;
+        String mobile = userModel != null ? userModel.getMobile() : loginNameMobile;
 
         long count = loginLogMapper.count(loginName, mobile, success, loginLogTableName);
 
