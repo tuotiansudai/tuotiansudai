@@ -93,6 +93,8 @@ public class PointTaskServiceImpl implements PointTaskService {
             PointTaskModel pointTaskModel = pointTaskMapper.findByName(pointTask);
             long maxTaskLevel = userPointTaskMapper.findMaxTaskLevelByLoginName(loginName, pointTask);
             String pointBillNote;
+            String referrer;
+            long referrerMaxTaskLevel;
             switch (pointTask) {
                 case EACH_SUM_INVEST:
                     //累计投资满5000元返100积分，只能完成一次
@@ -110,11 +112,14 @@ public class PointTaskServiceImpl implements PointTaskService {
                     }
                     break;
                 case EACH_RECOMMEND:
-//                    String referrer = userMapper.findByLoginName(loginName).getReferrer();
-                    
+                    referrer = userMapper.findByLoginName(loginName).getReferrer();
+                    referrerMaxTaskLevel = userPointTaskMapper.findMaxTaskLevelByLoginName(referrer, pointTask);
+                    userPointTaskMapper.create(new UserPointTaskModel(referrer, pointTaskModel.getId(), pointTaskModel.getPoint(), referrerMaxTaskLevel + 1));
+                    pointBillNote = MessageFormat.format("{0}奖励{1}积分", pointTask.getTitle(), String.valueOf(pointTaskModel.getPoint()));
+                    pointBillService.createTaskPointBill(referrer, pointTaskModel.getId(), pointTaskModel.getPoint(), pointBillNote);
                 case FIRST_REFERRER_INVEST:
-                    String referrer = userMapper.findByLoginName(loginName).getReferrer();
-                    long referrerMaxTaskLevel = userPointTaskMapper.findMaxTaskLevelByLoginName(referrer, pointTask);
+                    referrer = userMapper.findByLoginName(loginName).getReferrer();
+                    referrerMaxTaskLevel = userPointTaskMapper.findMaxTaskLevelByLoginName(referrer, pointTask);
                     userPointTaskMapper.create(new UserPointTaskModel(referrer, pointTaskModel.getId(), pointTaskModel.getPoint(), referrerMaxTaskLevel + 1));
                     pointBillNote = MessageFormat.format("{0}奖励{1}积分", pointTask.getTitle(), String.valueOf(pointTaskModel.getPoint()));
                     pointBillService.createTaskPointBill(referrer, pointTaskModel.getId(), pointTaskModel.getPoint(), pointBillNote);
