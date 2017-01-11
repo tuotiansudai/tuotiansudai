@@ -379,6 +379,9 @@ public class LotteryDrawActivityService {
                     if(DateTime.now().toDate().before(endTime) && DateTime.now().toDate().after(startTime)){
                         time += pointBillMapper.findCountPointBillPagination(userModel.getLoginName(), DateTime.now().withTimeAtStartOfDay().toDate(),
                                 DateTime.now().plusDays(1).withTimeAtStartOfDay().plusMillis(-1).toDate(), Lists.newArrayList(PointBusinessType.SIGN_IN));
+
+                        return time > 0 ? time - userLotteryPrizeMapper.findUserLotteryPrizeCountViews(userModel.getMobile(), null, activityCategory,
+                                DateTime.now().withTimeAtStartOfDay().toDate(), DateTime.now().plusDays(1).withTimeAtStartOfDay().plusMillis(-1).toDate()) : time;
                     }
                     break;
                 case REFERRER_USER:
@@ -466,7 +469,7 @@ public class LotteryDrawActivityService {
         return activityTime.get(1).replaceAll("-", "/");
     }
 
-    public int toDayIsDrawByMobile(String mobile){
+    public int toDayIsDrawByMobile(String mobile) {
         return userLotteryPrizeMapper.findUserLotteryPrizeCountViews(mobile, null, ActivityCategory.SPRING_FESTIVAL_ACTIVITY,
                 DateTime.now().withTimeAtStartOfDay().toDate(), DateTime.now().plusDays(1).withTimeAtStartOfDay().plusMillis(-1).toDate());
     }
