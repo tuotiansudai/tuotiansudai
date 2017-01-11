@@ -1,10 +1,12 @@
 package com.tuotiansudai.service.impl;
 
 import com.google.common.base.Function;
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
+import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
@@ -56,6 +58,11 @@ public class HomeServiceImpl implements HomeService {
 
     @Value("${ask.server}")
     private String askServer;
+
+    private String askSiteMapKey = "ask:sitemap";
+
+    @Autowired
+    private RedisWrapperClient redisWrapperClient;
 
     private static final String SITEMAP = "/question/getSiteMap";
 
@@ -134,29 +141,37 @@ public class HomeServiceImpl implements HomeService {
     }
 
     @Override
-    public List<SiteMapDataDto> getSiteMapData(){
-        String askJsonString = loadJSON(askServer + SITEMAP);
-        return JsonToList(askJsonString);
+    public List<SiteMapDataDto> getSiteMapData() {
+        String redisJson = redisWrapperClient.get(askSiteMapKey);
+        if (Strings.isNullOrEmpty(redisJson)) {
+            String loadJSON = loadJSON(askServer + SITEMAP);
+            if (!Strings.isNullOrEmpty(loadJSON)) {
+                redisWrapperClient.setex(askSiteMapKey, 24 * 60 * 60, loadJSON);
+            }
+            return JsonToList(loadJSON);
+        }
+
+        return JsonToList(redisJson);
     }
 
     public List<SiteMapDataDto> JsonToList(String json) {
         List<SiteMapDataDto> siteMapDataDtoList = Lists.newArrayList();
-        if(json == null || "".equals(json)){
+        if (json == null || "".equals(json)) {
             return siteMapDataDtoList;
         }
         JSONArray jsonarray = JSONArray.fromObject(json);
-        List list = (List)JSONArray.toCollection(jsonarray, SiteMapDataDto.class);
+        List list = (List) JSONArray.toCollection(jsonarray, SiteMapDataDto.class);
         Iterator it = list.iterator();
-        while(it.hasNext()){
-            siteMapDataDtoList.add((SiteMapDataDto)it.next());
+        while (it.hasNext()) {
+            siteMapDataDtoList.add((SiteMapDataDto) it.next());
         }
 
-        Collections.sort(siteMapDataDtoList, (o1, o2) -> Integer.compare(o1.getSeq(),o2.getSeq()));
+        Collections.sort(siteMapDataDtoList, (o1, o2) -> Integer.compare(o1.getSeq(), o2.getSeq()));
 
         return siteMapDataDtoList;
     }
 
-    public String loadJSON (String url) {
+    public String loadJSON(String url) {
         try {
             Request request = new Request.Builder().url(url).get().build();
             logger.info("send ask request ");
