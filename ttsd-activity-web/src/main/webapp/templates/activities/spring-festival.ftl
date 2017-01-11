@@ -38,10 +38,10 @@
             <div class="title-item">
                 <span class="title-sm">点亮窗花拆红包</span>
             </div>
-            <h3 class="title-info">活动期间累计投资满一定金额，可点亮一个窗花，获得该窗花对应的红包奖励</h3>
+            <h3 class="title-info">活动期间累计投资满一定金额，可点亮一个窗花，获得该窗花对应的红包奖励 ${taskProgress[0]},${taskProgress[1]},${taskProgress[2]},${taskProgress[3]}</h3>
             <div class="red-bag-item">
                 <ul class="money-item clearfix">
-                    <li class="<#if taskProgress[0] == '1'>active</#if>">
+                    <li class="<#if taskProgress[0] == 1>active</#if>">
                         <h3>累计投资满1000元可点亮窗花一<br />获得<span>30元</span>现金红包</h3>
                         <div class="money-content">
                             <p><span>30</span>元</p>
@@ -51,7 +51,7 @@
                             已获得该奖励
                         </div>
                     </li>
-                    <li class="<#if taskProgress[1] == '1'>active</#if>">
+                    <li class="<#if taskProgress[1] == 1>active</#if>">
                         <h3>累计投资满5000元可点亮窗花二<br />获得<span>60元</span>现金红包</h3>
                         <div class="money-content">
                             <p><span>60</span>元</p>
@@ -61,7 +61,7 @@
                             已获得该奖励
                         </div>
                     </li>
-                    <li class="<#if taskProgress[2] == '1'>active</#if>">
+                    <li class="<#if taskProgress[2] == 1>active</#if>">
                         <h3>累计投资满12000元可点亮窗花三<br />获得<span>160元</span>现金红包</h3>
                         <div class="money-content">
                             <p><span>160</span>元</p>
@@ -71,7 +71,7 @@
                             已获得该奖励
                         </div>
                     </li>
-                    <li class="<#if taskProgress[3] == '1'>active</#if>">
+                    <li class="<#if taskProgress[3] == 1>active</#if>">
                         <h3>累计投资满30000元可点亮窗花四<br />获得<span>240元</span>现金红包</h3>
                         <div class="money-content">
                             <p><span>240</span>元</p>
