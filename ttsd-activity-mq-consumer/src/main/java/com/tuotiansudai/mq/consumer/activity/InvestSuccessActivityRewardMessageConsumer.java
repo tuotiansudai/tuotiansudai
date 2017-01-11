@@ -205,8 +205,8 @@ public class InvestSuccessActivityRewardMessageConsumer implements MessageConsum
             investRewardModel = investRewardMapper.findByMobile(userInfo.getMobile());
             if (null != investRewardModel) {
                 investRewardModel.setInvestAmount(investRewardModel.getInvestAmount() + investInfo.getAmount());
-                logger.info(MessageFormat.format("[MQ] springFestival reward is exits. investAmount:{0}, currentGrade:{1}", investInfo.getAmount(), investRewardModel.getRewardGrade()));
-                investGrade = getInvestTaskGrade(investInfo.getAmount());
+                logger.info(MessageFormat.format("[MQ] springFestival reward is exits. investAmount:{0},historyInvestAmount:{1} currentGrade:{2}", investInfo.getAmount(),investRewardModel.getInvestAmount(), investRewardModel.getRewardGrade()));
+                investGrade = getInvestTaskGrade(investRewardModel.getInvestAmount());
                 currentGrade += investRewardModel.getRewardGrade();
                 if (investGrade != investRewardModel.getRewardGrade()) {
                     investRewardModel.setRewardGrade(investGrade);
