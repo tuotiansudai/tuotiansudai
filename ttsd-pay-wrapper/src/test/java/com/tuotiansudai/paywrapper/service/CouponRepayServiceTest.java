@@ -240,7 +240,7 @@ public class CouponRepayServiceTest {
         couponRepayModel.setCouponId(couponModel.getId());
         couponRepayModel.setUserCouponId(userCouponModel.getId());
         couponRepayModel.setPeriod(loanRepay.getPeriod());
-        couponRepayModel.setStatus(RepayStatus.COMPLETE);
+        couponRepayModel.setStatus(RepayStatus.REPAYING);
 
         when(loanRepayMapper.findById(loanRepay.getId())).thenReturn(loanRepay);
         when(loanMapper.findById(loanRepay.getLoanId())).thenReturn(loanModel);
