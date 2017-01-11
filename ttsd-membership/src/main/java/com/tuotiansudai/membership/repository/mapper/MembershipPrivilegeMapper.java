@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
+import java.util.List;
 
 @Repository
 public interface MembershipPrivilegeMapper {
@@ -16,4 +17,10 @@ public interface MembershipPrivilegeMapper {
 
     MembershipPrivilegeModel findValidPrivilegeModelByLoginName(@Param(value = "loginName") String loginName,
                                                                 @Param(value = "currentDate") Date currentDate);
+
+    List<String> findMembershipPrivilegeExpiredUsers();
+
+
+
+
 }

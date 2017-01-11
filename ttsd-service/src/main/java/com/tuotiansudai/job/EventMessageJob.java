@@ -9,6 +9,7 @@ import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.enums.MessageEventType;
 import com.tuotiansudai.enums.PushSource;
 import com.tuotiansudai.enums.PushType;
+import com.tuotiansudai.membership.repository.mapper.MembershipPrivilegeMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.message.EventMessage;
 import com.tuotiansudai.message.PushMessage;
@@ -33,9 +34,6 @@ public class EventMessageJob implements Job {
     private UserMapper userMapper;
 
     @Autowired
-    private UserMembershipMapper userMembershipMapper;
-
-    @Autowired
     private UserCouponMapper userCouponMapper;
 
     @Autowired
@@ -44,11 +42,14 @@ public class EventMessageJob implements Job {
     @Autowired
     private MQWrapperClient mqWrapperClient;
 
+    @Autowired
+    private MembershipPrivilegeMapper membershipPrivilegeMapper;
+
     static Logger logger = Logger.getLogger(EventMessageJob.class);
 
     public void execute(JobExecutionContext context) throws JobExecutionException {
         this.birthdayMessage();
-        this.membershipExpiredMessage();
+        this.membershipPrivilegeExpiredMessage();
         this.couponExpiredAfterFiveDays();
     }
 
@@ -66,18 +67,18 @@ public class EventMessageJob implements Job {
         });
     }
 
-    private void membershipExpiredMessage() {
-        List<String> membershipExpiredUsers = userMembershipMapper.findLevelFiveMembershipExpiredUsers();
-        if (CollectionUtils.isEmpty(membershipExpiredUsers)) {
-            logger.info("[EventMessageJob] today is no user whose membership is expired");
+    private void membershipPrivilegeExpiredMessage() {
+        List<String> membershipPrivilegeExpiredUsers = membershipPrivilegeMapper.findMembershipPrivilegeExpiredUsers();
+        if (CollectionUtils.isEmpty(membershipPrivilegeExpiredUsers)) {
+            logger.info("[EventMessageJob] today is no user whose membership privilege is expired");
             return;
         }
         //Title:您购买的增值特权已过期
         //Content:尊敬的用户，您购买的增值特权已过期，增值特权可享受服务费7折优惠，请及时续费。
         String title = MessageEventType.MEMBERSHIP_PRIVILEGE_EXPIRED.getTitleTemplate();
         String content = MessageEventType.MEMBERSHIP_PRIVILEGE_EXPIRED.getContentTemplate();
-        mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(MessageEventType.MEMBERSHIP_PRIVILEGE_EXPIRED, membershipExpiredUsers, title, content, null));
-        mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(membershipExpiredUsers, PushSource.ALL, PushType.MEMBERSHIP_EXPIRED, title));
+        mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(MessageEventType.MEMBERSHIP_PRIVILEGE_EXPIRED, membershipPrivilegeExpiredUsers, title, content, null));
+        mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(membershipPrivilegeExpiredUsers, PushSource.ALL, PushType.MEMBERSHIP_EXPIRED, title));
     }
 
     private void couponExpiredAfterFiveDays() {
