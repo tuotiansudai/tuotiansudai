@@ -291,8 +291,6 @@ public class LoanServiceImpl implements LoanService {
         // 将已失效的投资记录状态置为失败
         investMapper.cleanWaitingInvest(loanId);
 
-        String agentPayUserId = accountMapper.findByLoginName(loan.getAgentLoginName()).getPayUserId();
-
         // 查找所有投资成功的记录
         List<InvestModel> successInvestList = investMapper.findSuccessInvestsByLoanId(loanId);
         logger.info("标的放款：查找到" + successInvestList.size() + "条成功的投资，标的ID:" + loanId);
@@ -309,7 +307,8 @@ public class LoanServiceImpl implements LoanService {
             throw new PayException(MessageFormat.format("标的(loanId={0})借款金额与投资金额不一致", String.valueOf(loanId)));
         }
 
-        logger.info("[标的放款]：发起联动优势放款请求，标的ID:" + loanId + "，代理人:" + agentPayUserId + "，放款金额:" + investAmountTotal);
+
+        logger.info("[标的放款]：发起联动优势放款请求，标的ID:" + loanId + "，代理人:" + loan.getAgentLoginName() + "，放款金额:" + investAmountTotal);
 
         String redisKey = MessageFormat.format(LOAN_OUT_IDEMPOTENT_CHECK_TEMPLATE, String.valueOf(loanId));
         String beforeSendStatus = redisWrapperClient.hget(redisKey, DO_PAY_REQUEST);
@@ -318,22 +317,20 @@ public class LoanServiceImpl implements LoanService {
             try {
                 redisWrapperClient.hset(redisKey, DO_PAY_REQUEST, SyncRequestStatus.SENT.name());
                 ProjectTransferRequestModel requestModel = ProjectTransferRequestModel.newLoanOutRequest(
-                        String.valueOf(loanId), String.valueOf(loanId), agentPayUserId, String.valueOf(investAmountTotal));
+                        String.valueOf(loanId), String.valueOf(loanId),
+                        accountMapper.findByLoginName(loan.getAgentLoginName()).getPayUserId(),
+                        String.valueOf(investAmountTotal));
                 resp = paySyncClient.send(ProjectTransferMapper.class, requestModel, ProjectTransferResponseModel.class);
-                redisWrapperClient.hset(redisKey, DO_PAY_REQUEST, SyncRequestStatus.SUCCESS.name());
+                redisWrapperClient.hset(redisKey, DO_PAY_REQUEST, resp.isSuccess() ? SyncRequestStatus.SUCCESS.name() : SyncRequestStatus.FAILURE.name());
+                return resp;
             } catch (PayException e) {
                 logger.error(MessageFormat.format("[标的放款]:发起放款联动优势请求失败,标的ID : {0}", String.valueOf(loanId)), e);
+                throw new PayException(MessageFormat.format("[标的放款]:发起放款联动优势请求失败,标的ID : {0}", String.valueOf(loanId)));
             }
         }
 
-        String afterSendStatus = redisWrapperClient.hget(redisKey, DO_PAY_REQUEST);
-
-        if (SyncRequestStatus.SENT.name().equals(afterSendStatus)) {
-            resp.setRetMsg(MessageFormat.format("[标的放款]:发起放款联动优势请求重复,标的ID : {0}", String.valueOf(loanId)));
-            logger.error(resp.getRetMsg());
-            return resp;
-        }
-
+        resp.setRetMsg(MessageFormat.format("[标的放款]:发起放款联动优势请求重复,标的ID : {0}", String.valueOf(loanId)));
+        logger.error(resp.getRetMsg());
         return resp;
     }
 
@@ -484,12 +481,27 @@ public class LoanServiceImpl implements LoanService {
                 ProjectTransferNotifyMapper.class,
                 ProjectTransferNotifyRequestModel.class);
         if (callbackRequest == null || Strings.isNullOrEmpty(callbackRequest.getOrderId())) {
+            logger.error("[标的放款]: callback request parse failed or order id is empty");
             return null;
         }
-        logger.info("[标的放款]: 放款回调,标的ID:" + callbackRequest.getOrderId());
-        long loanId = Long.parseLong(callbackRequest.getOrderId());
 
+        long loanId = Long.parseLong(callbackRequest.getOrderId());
         LoanModel loan = loanMapper.findById(loanId);
+
+        if (loan == null) {
+            logger.error(MessageFormat.format("[标的放款]: loan({0}) is not existed", callbackRequest.getOrderId()));
+            return callbackRequest.getResponseData();
+        }
+
+        String redisKey = MessageFormat.format(LOAN_OUT_IDEMPOTENT_CHECK_TEMPLATE, String.valueOf(loanId));
+        redisWrapperClient.hset(redisKey, DO_PAY_REQUEST, callbackRequest.isSuccess() ? SyncRequestStatus.SUCCESS.name() : SyncRequestStatus.FAILURE.name());
+
+        if (!callbackRequest.isSuccess()) {
+            return callbackRequest.getResponseData();
+        }
+
+        logger.info("[标的放款]: 放款回调,标的ID:" + loanId);
+
         List<InvestModel> successInvestList = investMapper.findSuccessInvestsByLoanId(loanId);
         long investAmountTotal = computeInvestAmountTotal(successInvestList);
 
@@ -511,8 +523,7 @@ public class LoanServiceImpl implements LoanService {
             fatalLog("[MQ] invest success, but send mq message fail", loanId, loan.getAgentLoginName(), investAmountTotal, e);
         }
 
-        String respData = callbackRequest.getResponseData();
-        return respData;
+        return callbackRequest.getResponseData();
     }
 
     private void fatalLog(String msg, long loanId, String agentLoginName, long investAmountTotal, Throwable e) {
