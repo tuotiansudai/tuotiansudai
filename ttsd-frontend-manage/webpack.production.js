@@ -69,8 +69,7 @@ plugins.push(new AssetsPlugin({
     includeManifest: 'manifest',
     prettyPrint: true,
     update: true,
-    path: outputPath,
-    metadata: {version: 123}
+    path: outputPath
 }));
 
 module.exports = objectAssign(commonOptions, {
