@@ -5,10 +5,8 @@ import com.tuotiansudai.activity.controller.HeroRankingController;
 import com.tuotiansudai.activity.repository.model.ActivityCategory;
 import com.tuotiansudai.activity.service.HeroRankingService;
 import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.model.HeroRankingView;
-import com.tuotiansudai.repository.model.LoanModel;
-import com.tuotiansudai.repository.model.LoanStatus;
-import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.RandomUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -50,8 +48,10 @@ public class HeroRankingControllerTest {
 
     @InjectMocks
     private HeroRankingController heroRankingController;
+
     @Mock
-    private RandomUtils randomUtils;
+    private UserMapper userMapper;
+
     @Mock
     private LoanMapper loanMapper;
 
@@ -80,8 +80,10 @@ public class HeroRankingControllerTest {
         loanModel.setStatus(LoanStatus.COMPLETE);
 
         when(heroRankingService.obtainHeroRanking(any(ActivityCategory.class), any(Date.class))).thenReturn(heroRankingViews);
-        when(randomUtils.encryptMobileForCurrentLoginName(anyString(), anyString(), null, any(Source.class))).thenReturn(heroRankingView.getLoginName());
         when(loanMapper.findById(anyLong())).thenReturn(loanModel);
+        UserModel userModel = new UserModel();
+        userModel.setMobile(heroRankingView.getMobile());
+        when(userMapper.findByLoginName(anyString())).thenReturn(userModel);
 
         this.mockMvc.perform(get("/activity/hero-ranking/invest/2016-07-05"))
                 .andExpect(status().isOk())
