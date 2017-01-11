@@ -2,8 +2,6 @@ package com.tuotiansudai.scheduler.plugin;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.job.*;
-import com.tuotiansudai.repository.model.LoanModel;
-import com.tuotiansudai.util.JobManager;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -99,7 +97,7 @@ public class JobInitPlugin implements SchedulerPlugin {
         if (JobType.AdvanceRepayCallBack.name().equalsIgnoreCase(schedulerName)) {
             deleteAdvanceRepayCallBackJob();
         }
-        if(JobType.SendRedEnvelopSplit.name().equalsIgnoreCase(schedulerName)){
+        if (JobType.SendRedEnvelopSplit.name().equalsIgnoreCase(schedulerName)) {
             createRedEnvelopSplitJob();
         }
     }

@@ -32,8 +32,6 @@ dependencies {
             'org.xhtmlrenderer:core-renderer:R8',
             'org.jsoup:jsoup:1.8.3',
             'dom4j:dom4j:1.6.1',
-            'org.quartz-scheduler:quartz:2.2.1',
-            'org.quartz-scheduler:quartz-jobs:2.2.1',
             'com.google.code.gson:gson:2.4',
             'org.springframework:spring-aspects:4.2.0.RELEASE',
             'net.sf.ezmorph:ezmorph:1.0.6'

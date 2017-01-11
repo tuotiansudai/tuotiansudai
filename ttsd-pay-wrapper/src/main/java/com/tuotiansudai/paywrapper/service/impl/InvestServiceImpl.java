@@ -13,6 +13,7 @@ import com.tuotiansudai.enums.PushType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.job.AutoLoanOutJob;
+import com.tuotiansudai.job.JobManager;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.message.*;
@@ -38,7 +39,10 @@ import com.tuotiansudai.paywrapper.service.InvestAchievementService;
 import com.tuotiansudai.paywrapper.service.InvestService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.util.*;
+import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.AmountTransfer;
+import com.tuotiansudai.util.AutoInvestMonthPeriod;
+import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.Logger;
@@ -568,7 +572,7 @@ public class InvestServiceImpl implements InvestService {
         return callbackRequest.getResponseData();
     }
 
-    private void publishInvestSuccessMessage(InvestModel investModel){
+    private void publishInvestSuccessMessage(InvestModel investModel) {
         //Title:恭喜您成功投资{0}元
         //Content:尊敬的用户，您已成功投资房产/车辆抵押借款{0}元，独乐不如众乐，马上【邀请好友投资】还能额外拿1%现金奖励哦！
         String title = MessageFormat.format(MessageEventType.INVEST_SUCCESS.getTitleTemplate(), AmountConverter.convertCentToString(investModel.getAmount()));
@@ -599,9 +603,9 @@ public class InvestServiceImpl implements InvestService {
         investInfo.setStatus(investModel.getStatus().name());
         investInfo.setTransferStatus(investModel.getTransferStatus().name());
 
-        LoanDetailsModel loanDetailsModel =  loanDetailsMapper.getByLoanId(investModel.getLoanId());
+        LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(investModel.getLoanId());
         loanDetailInfo.setLoanId(investModel.getLoanId());
-        if(loanDetailsModel != null){
+        if (loanDetailsModel != null) {
             loanDetailInfo.setActivity(loanDetailsModel.isActivity());
             loanDetailInfo.setActivityDesc(loanDetailsModel.getActivityDesc());
         }
