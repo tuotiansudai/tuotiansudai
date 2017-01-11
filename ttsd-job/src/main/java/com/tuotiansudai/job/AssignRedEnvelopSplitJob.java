@@ -4,12 +4,10 @@ package com.tuotiansudai.job;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserChannel;
 import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.util.AmountConverter;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -21,7 +19,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.text.MessageFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -33,9 +30,6 @@ public class AssignRedEnvelopSplitJob implements Job {
 
     @Autowired
     private UserMapper userMapper;
-
-    @Autowired
-    private CouponAssignmentService couponAssignmentService;
 
     @Autowired
     private MQWrapperClient mqClient;

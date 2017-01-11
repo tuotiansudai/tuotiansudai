@@ -15,6 +15,7 @@ sourceSets {
 dependencies {
     compile 'com.google.guava:guava:19.0',
             'joda-time:joda-time:2.9.4',
+            'net.sf.json-lib:json-lib:2.4:jdk15',
             fileTree(dir: 'libs', include: '**/*.jar')
 
     providedCompile 'com.fasterxml.jackson.core:jackson-databind:2.8.2',

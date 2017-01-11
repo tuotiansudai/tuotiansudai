@@ -25,4 +25,5 @@ include 'ump-project-transfer'
 include 'ttsd-edxlog-model', 'ttsd-edxlog-repository', 'ttsd-log-service'
 include 'ttsd-mybatis-extension'
 include 'ttsd-quartz-extension'
+include 'ttsd-job'
 
