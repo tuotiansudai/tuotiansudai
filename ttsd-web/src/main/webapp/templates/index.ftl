@@ -338,4 +338,5 @@
     <#include "component/coupon-alert.ftl" />
     <#include "component/login-tip.ftl" />
     <#include "component/red-envelope-float.ftl" />
+    <#include "component/site-map.ftl" />
 </@global.main>
