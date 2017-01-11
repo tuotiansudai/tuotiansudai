@@ -46,12 +46,10 @@ public class FreeMarkerVariablesMap extends MapFactoryBean implements ResourceLo
         map.put("jsPath", javascriptLocation);
         map.put("cssPath", cssLocation);
 
-        Map<String, String> javascriptResource = buildStaticFiles(javascriptLocation, ".js");
-        Map<String, String> cssResource = buildStaticFiles(cssLocation, ".css");
-
         StaticResourceDto staticResourceDto = this.discoverStaticResource();
-        javascriptResource.putAll(staticResourceDto.getJsFile());
-        cssResource.putAll(staticResourceDto.getCssFile());
+
+        Map<String, String> javascriptResource = Strings.isNullOrEmpty(javascriptLocation) ? staticResourceDto.getJsFile() : buildStaticFiles(javascriptLocation, ".js");
+        Map<String, String> cssResource = Strings.isNullOrEmpty(cssLocation) ? staticResourceDto.getCssFile() : buildStaticFiles(cssLocation, ".css");
 
         map.put("js", javascriptResource);
         map.put("css", cssResource);
@@ -111,7 +109,8 @@ public class FreeMarkerVariablesMap extends MapFactoryBean implements ResourceLo
             if (!HttpStatus.valueOf(response.code()).is2xxSuccessful()) {
                 throw new RuntimeException("static server response is not 2XX");
             }
-            return JsonConverter.readValue(response.body().string(), StaticResourceDto.class);
+            String responseBody = response.body().string();
+            return JsonConverter.readValue(responseBody, StaticResourceDto.class);
         } catch (IOException e) {
             throw new RuntimeException(e.getLocalizedMessage(), e);
         }
