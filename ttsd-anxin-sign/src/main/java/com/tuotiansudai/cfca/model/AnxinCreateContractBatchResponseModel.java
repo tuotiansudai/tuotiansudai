@@ -29,6 +29,7 @@ public class AnxinCreateContractBatchResponseModel implements Serializable {
         this.batchNo = batchNo;
         this.retMessage = retMessage;
         this.retCode = retCode;
+        this.createdTime = new Date();
     }
 
     public AnxinCreateContractBatchResponseModel(long businessId, Tx3202ResVO tx3202ResVO, CreateContractVO contractVO) {

@@ -5,7 +5,7 @@ require(['jquery', 'bootstrap','jquery-ui','csrf'], function ($) {
                 return false;
             }
             $.ajax({
-                url: '/security-log/clear-db-cache',
+                url: '/cache-manage/clear-db-cache',
                 type: 'POST',
                 dataType: 'json'
             })

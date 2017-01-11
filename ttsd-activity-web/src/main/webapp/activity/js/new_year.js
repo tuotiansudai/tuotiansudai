@@ -93,7 +93,6 @@ require(['jquery','drawCircle','commonFun','logintip','register_common'], functi
                 $pointerImg=$('.gold-egg',$rewardGiftBox),
                 myMobileNumber=$MobileNumber.length ? $MobileNumber.data('mobile') : '';  //当前登录用户的手机号
             var $signToday=$('#signToday');
-            var myTimes=$rewardGiftBox.find('.my-times').data('times'); //初始抽奖次数
             var paramData={
                 "mobile":myMobileNumber,
                 "activityCategory":"ANNUAL_ACTIVITY"
@@ -186,14 +185,17 @@ require(['jquery','drawCircle','commonFun','logintip','register_common'], functi
                             var prizeType=data.prizeType.toLowerCase();
                                 $(tipGroupObj[prizeType]).find('.prizeValue').text(data.prizeValue);
                             $(tipGroupObj[prizeType]).find('.my-treasure').attr('href',treasureUrl);
+                            var myTimes = parseInt($rewardGiftBox.find('.my-times').text());
                             // 抽奖次数
-                            if(myTimes>0) {
-                                $rewardGiftBox.find('.my-times').text(--myTimes);
-                            }
+                            $rewardGiftBox.find('.my-times').text(function() {
+                                return myTimes>0?(myTimes-1):0;
+                            });
+
                             drawCircle.noRotateFn(tipGroupObj[prizeType]);
 
                         } else if(data.returnCode == 1) {
                             //没有抽奖机会
+                            $rewardGiftBox.find('.my-times').text('0');
                             drawCircle.tipWindowPop(tipGroupObj['nochance']);
                         }
                         else if (data.returnCode == 2) {

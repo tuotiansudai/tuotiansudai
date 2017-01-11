@@ -39,4 +39,8 @@ public interface InvestTransferService {
                                                                          Date startTime,
                                                                          Date endTime,
                                                                          LoanStatus loanStatus);
+
+    boolean validTransferIsCanceled(long investId);
+
+    boolean validTransferIsDayLimit(long loanId);
 }

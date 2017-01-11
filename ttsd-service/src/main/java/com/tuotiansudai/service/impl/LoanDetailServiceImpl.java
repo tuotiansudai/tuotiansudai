@@ -4,6 +4,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.anxin.service.AnxinSignService;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
@@ -94,6 +95,9 @@ public class LoanDetailServiceImpl implements LoanDetailService {
 
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${invest.achievement.start.time}\")}")
     private Date achievementStartTime;
+
+    @Autowired
+    private AnxinSignService anxinSignService;
 
     @Override
     public LoanDetailDto getLoanDetail(String loginName, long loanId) {
@@ -186,11 +190,11 @@ public class LoanDetailServiceImpl implements LoanDetailService {
         }
 
         AnxinSignPropertyModel anxinProp = anxinSignPropertyMapper.findByLoginName(loginName);
-        boolean anxinSkipAuth = anxinProp != null && anxinProp.isSkipAuth();
+        boolean isAuthenticationRequired = anxinSignService.isAuthenticationRequired(loginName);
         boolean isAnxinUser = anxinProp != null && StringUtils.isNotEmpty(anxinProp.getAnxinUserId());
 
         InvestorDto investorDto = new InvestorDto(accountMapper.findByLoginName(loginName), this.isRemindNoPassword(loginName),
-                this.calculateMaxAvailableInvestAmount(loginName, loanModel, investedAmount), anxinSkipAuth, isAnxinUser);
+                this.calculateMaxAvailableInvestAmount(loginName, loanModel, investedAmount), isAuthenticationRequired, isAnxinUser);
 
         LoanDetailDto loanDto = new LoanDetailDto(loanModel,
                 loanDetailsMapper.getByLoanId(loanModel.getId()),

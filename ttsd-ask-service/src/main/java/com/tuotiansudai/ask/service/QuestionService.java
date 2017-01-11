@@ -3,6 +3,7 @@ package com.tuotiansudai.ask.service;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.ask.repository.dto.EmbodyQuestionDto;
 import com.tuotiansudai.ask.repository.dto.QuestionDto;
 import com.tuotiansudai.ask.repository.dto.QuestionRequestDto;
 import com.tuotiansudai.ask.repository.dto.QuestionResultDataDto;
@@ -15,19 +16,29 @@ import com.tuotiansudai.ask.repository.model.Tag;
 import com.tuotiansudai.ask.utils.FakeMobileUtil;
 import com.tuotiansudai.ask.utils.SensitiveWordsFilter;
 import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.MobileEncoder;
 import com.tuotiansudai.util.PaginationUtil;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -56,6 +67,11 @@ public class QuestionService {
 
     @Autowired
     private CaptchaHelperService captchaHelperService;
+
+    @Value("${ask.server}")
+    private String askServer;
+
+    private static final String PREFIX = "/question";
 
     public QuestionResultDataDto createQuestion(String loginName, QuestionRequestDto questionRequestDto) {
         QuestionResultDataDto dataDto = new QuestionResultDataDto();
@@ -213,4 +229,32 @@ public class QuestionService {
         data.setStatus(true);
         return new BaseDto<>(data);
     }
+
+    public QuestionModel findById(long id) {
+        return questionMapper.findById(id);
+    }
+
+    public BaseDto<BasePaginationDataDto> findEmbodyAllQuestions(int index, int pageSize) {
+        long count = questionMapper.countEmbodyAllQuestions();
+        List<QuestionModel> embodyAllQuestions = questionMapper.findEmbodyAllQuestions(PaginationUtil.calculateOffset(index, pageSize, count), pageSize);
+        return generateEmbodyPaginationData(index, pageSize, count, embodyAllQuestions);
+    }
+
+    private BaseDto<BasePaginationDataDto> generateEmbodyPaginationData(int index, int pageSize, long count, List<QuestionModel> questionModels) {
+        List<EmbodyQuestionDto> items = Lists.transform(questionModels, input -> new EmbodyQuestionDto(input));
+        BasePaginationDataDto<EmbodyQuestionDto> data = new BasePaginationDataDto<>(PaginationUtil.validateIndex(index, pageSize, count), pageSize, count, items);
+        data.setStatus(true);
+        return new BaseDto<>(data);
+    }
+
+
+    public void updateEmbodyById(long id) {
+        QuestionModel questionModel = questionMapper.findById(id);
+        questionModel.setEmbody(true);
+        questionMapper.update(questionModel);
+    }
+
+
+
 }
+

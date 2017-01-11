@@ -171,6 +171,7 @@ public class LoanRepayServiceImpl implements LoanRepayService {
             try {
                 BaseDto<PayDataDto> response = payWrapperClient.autoRepay(model.getId());
                 if (response.isSuccess() && response.getData().getStatus()) {
+                    logger.info("auto repay success, loanRepayId: " + model.getId() + ", continue to next.");
                     continue;
                 }
             } catch (Exception e) {
@@ -185,11 +186,13 @@ public class LoanRepayServiceImpl implements LoanRepayService {
             } else {
                 notifyMap.put(model.getMobile(), notifyMap.get(model.getMobile()) + model.getRepayAmount());
             }
+            logger.info("notify count: " + notifyMap.size());
         }
 
         if (loanRepayNotifyModelList.size() > 0) {
             for (Map.Entry entry : notifyMap.entrySet()) {
                 long amount = (Long) entry.getValue();
+                logger.info("will send loanRepay notify, mobile: " + entry.getKey() + ", amount: " + amount);
                 if (amount > 0) {
                     logger.info("sent loan repay notify sms message to " + entry.getKey() + ", money:" + entry.getValue());
                     RepayNotifyDto dto = new RepayNotifyDto();

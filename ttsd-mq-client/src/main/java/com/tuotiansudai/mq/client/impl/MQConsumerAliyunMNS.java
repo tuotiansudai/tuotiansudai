@@ -2,6 +2,7 @@ package com.tuotiansudai.mq.client.impl;
 
 import com.aliyun.mns.client.CloudQueue;
 import com.aliyun.mns.client.MNSClient;
+import com.aliyun.mns.common.ServiceException;
 import com.aliyun.mns.model.Message;
 import com.tuotiansudai.mq.client.MQConsumer;
 import com.tuotiansudai.mq.client.model.MessageQueue;
@@ -60,7 +61,11 @@ public class MQConsumerAliyunMNS extends MQConsumer {
             } else {
                 logger.info("[MQ] receive a message, prepare to consume");
             }
+        } catch (ServiceException serviceException) {
+            // 对于 ServiceException 类型的异常，仅记录异常，但不报告错误
+            logger.error("[MQ] pop message fail", serviceException);
         } catch (Exception e) {
+            // 其它情况的异常需要报告错误
             logger.error("[MQ] pop message fail", e);
             return false;
         }
