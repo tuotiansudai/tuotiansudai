@@ -21,7 +21,7 @@ import java.util.Map;
 @Component
 public class PrizeImageUtils {
 
-    @Value("${web.static.server}")
+    @Value("${mobile.static.server}")
     private String staticDomainName;
 
     private static Logger logger = Logger.getLogger(MobileAppPrizeImageListServiceImpl.class);

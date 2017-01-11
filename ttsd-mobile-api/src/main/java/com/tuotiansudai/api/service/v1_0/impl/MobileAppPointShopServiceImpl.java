@@ -1,12 +1,12 @@
 package com.tuotiansudai.api.service.v1_0.impl;
 
-
 import com.google.common.base.Function;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.activity.repository.dto.DrawLotteryResultDto;
 import com.tuotiansudai.activity.repository.model.ActivityCategory;
+import com.tuotiansudai.activity.repository.model.UserLotteryPrizeView;
 import com.tuotiansudai.activity.service.LotteryDrawActivityService;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppPointShopService;
@@ -14,9 +14,7 @@ import com.tuotiansudai.api.util.PageValidUtils;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.ExchangeCouponView;
-import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.coupon.service.CouponService;
-import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.point.repository.mapper.ProductMapper;
 import com.tuotiansudai.point.repository.mapper.ProductOrderMapper;
 import com.tuotiansudai.point.repository.mapper.UserAddressMapper;
@@ -315,6 +313,50 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
 
         return baseResponseDto;
     }
+
+    @Override
+    public BaseResponseDto<MyPrizeListResponseDto> findPrizeListByLoginName(BaseParamDto baseParamDto){
+        List<UserLotteryPrizeView> userLotteryPrizeViewList =  lotteryDrawActivityService.findDrawLotteryPrizeRecordByMobile(LoginUserInfo.getMobile(), ActivityCategory.POINT_SHOP_DRAW_1000);
+        MyPrizeListResponseDto myPrizeListResponseDto = new MyPrizeListResponseDto();
+        if (CollectionUtils.isNotEmpty(userLotteryPrizeViewList)) {
+            Iterator<PrizeResponseDto> transform = Iterators.transform(userLotteryPrizeViewList.iterator(), new Function<UserLotteryPrizeView, PrizeResponseDto>() {
+                @Override
+                public PrizeResponseDto apply(UserLotteryPrizeView input) {
+                    return new PrizeResponseDto(input);
+                }
+            });
+            myPrizeListResponseDto.setMyPrizeList(Lists.newArrayList(transform));
+        }
+
+        BaseResponseDto baseResponseDto = new BaseResponseDto();
+        baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
+        baseResponseDto.setData(myPrizeListResponseDto);
+        baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
+        return baseResponseDto;
+    }
+
+    @Override
+    public BaseResponseDto<PrizeListResponseDto> findPrizeList(BaseParamDto baseParamDto){
+        List<UserLotteryPrizeView> userLotteryPrizeViewList =  lotteryDrawActivityService.findDrawLotteryPrizeRecord(null, ActivityCategory.POINT_SHOP_DRAW_1000);
+        userLotteryPrizeViewList = userLotteryPrizeViewList.subList(0,20);
+        PrizeListResponseDto prizeListResponseDto = new PrizeListResponseDto();
+        if (CollectionUtils.isNotEmpty(userLotteryPrizeViewList)) {
+            Iterator<PrizeResponseDto> transform = Iterators.transform(userLotteryPrizeViewList.iterator(), new Function<UserLotteryPrizeView, PrizeResponseDto>() {
+                @Override
+                public PrizeResponseDto apply(UserLotteryPrizeView input) {
+                    return new PrizeResponseDto(input);
+                }
+            });
+            prizeListResponseDto.setPrizeList(Lists.newArrayList(transform));
+        }
+
+        BaseResponseDto baseResponseDto = new BaseResponseDto();
+        baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
+        baseResponseDto.setData(prizeListResponseDto);
+        baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
+        return baseResponseDto;
+    }
+
 
     private UserAddressModel convertUserAddressModel(UserAddressRequestDto userAddressRequestDto) {
         return new UserAddressModel(userAddressRequestDto.getBaseParam().getUserId(),
