@@ -2,7 +2,7 @@ package com.tuotiansudai.membership.dto;
 
 import com.tuotiansudai.repository.model.Source;
 
-public class MembershipPurchaseDto {
+public class MembershipPrivilegePurchaseDto {
 
     private String loginName;
 
@@ -10,22 +10,19 @@ public class MembershipPurchaseDto {
 
     private String userName;
 
-    private int level;
-
     private int duration;
 
     private long amount;
 
     private Source source;
 
-    public MembershipPurchaseDto() {
+    public MembershipPrivilegePurchaseDto() {
     }
 
-    public MembershipPurchaseDto(String loginName, String mobile, String userName, int level, int duration, long amount, Source source) {
+    public MembershipPrivilegePurchaseDto(String loginName, String mobile, String userName, int duration, long amount, Source source) {
         this.loginName = loginName;
         this.mobile = mobile;
         this.userName = userName;
-        this.level = level;
         this.duration = duration;
         this.amount = amount;
         this.source = source;
@@ -53,14 +50,6 @@ public class MembershipPurchaseDto {
 
     public void setUserName(String userName) {
         this.userName = userName;
-    }
-
-    public int getLevel() {
-        return level;
-    }
-
-    public void setLevel(int level) {
-        this.level = level;
     }
 
     public int getDuration() {

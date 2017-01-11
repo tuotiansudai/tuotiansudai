@@ -72,11 +72,11 @@ public class EventMessageJob implements Job {
             logger.info("[EventMessageJob] today is no user whose membership is expired");
             return;
         }
-        //Title:您的V5会员已到期，请前去购买
-        //Content:尊敬的用户，您的V5会员已到期，V5会员可享受服务费7折优惠，平台也将会在V5会员生日时送上神秘礼包哦。请及时续费以免耽误您获得投资奖励！
-        String title = MessageEventType.MEMBERSHIP_EXPIRED.getTitleTemplate();
-        String content = MessageEventType.MEMBERSHIP_EXPIRED.getContentTemplate();
-        mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(MessageEventType.MEMBERSHIP_EXPIRED, membershipExpiredUsers, title, content, null));
+        //Title:您购买的增值特权已过期
+        //Content:尊敬的用户，您购买的增值特权已过期，增值特权可享受服务费7折优惠，请及时续费。
+        String title = MessageEventType.MEMBERSHIP_PRIVILEGE_EXPIRED.getTitleTemplate();
+        String content = MessageEventType.MEMBERSHIP_PRIVILEGE_EXPIRED.getContentTemplate();
+        mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(MessageEventType.MEMBERSHIP_PRIVILEGE_EXPIRED, membershipExpiredUsers, title, content, null));
         mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(membershipExpiredUsers, PushSource.ALL, PushType.MEMBERSHIP_EXPIRED, title));
     }
 

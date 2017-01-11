@@ -3,10 +3,11 @@ package com.tuotiansudai.diagnosis.bill.diagnoses;
 import com.tuotiansudai.diagnosis.bill.UserBillBusinessDiagnosis;
 import com.tuotiansudai.diagnosis.support.DiagnosisContext;
 import com.tuotiansudai.diagnosis.support.SingleObjectDiagnosis;
+import com.tuotiansudai.enums.MembershipPrivilegePurchaseStatus;
 import com.tuotiansudai.enums.UserBillBusinessType;
-import com.tuotiansudai.membership.repository.mapper.MembershipPurchaseMapper;
-import com.tuotiansudai.membership.repository.model.MembershipPurchaseModel;
 import com.tuotiansudai.enums.MembershipPurchaseStatus;
+import com.tuotiansudai.membership.repository.mapper.MembershipPrivilegePurchaseMapper;
+import com.tuotiansudai.membership.repository.model.MembershipPrivilegePurchaseModel;
 import com.tuotiansudai.repository.model.UserBillModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,26 +18,26 @@ import org.springframework.stereotype.Component;
 public class MembershipPurchaseDiagnosis extends UserBillBusinessDiagnosis {
     private static Logger logger = LoggerFactory.getLogger(MembershipPurchaseDiagnosis.class);
 
-    private final MembershipPurchaseMapper membershipPurchaseMapper;
+    private final MembershipPrivilegePurchaseMapper membershipPrivilegePurchaseMapper;
 
     @Autowired
-    public MembershipPurchaseDiagnosis(MembershipPurchaseMapper membershipPurchaseMapper) {
-        this.membershipPurchaseMapper = membershipPurchaseMapper;
+    public MembershipPurchaseDiagnosis(MembershipPrivilegePurchaseMapper membershipPrivilegePurchaseMapper) {
+        this.membershipPrivilegePurchaseMapper = membershipPrivilegePurchaseMapper;
     }
 
     @Override
     public UserBillBusinessType getSupportedBusinessType() {
-        return UserBillBusinessType.MEMBERSHIP_PURCHASE;
+        return UserBillBusinessType.MEMBERSHIP_PRIVILEGE_PURCHASE;
     }
 
     @Override
     public void diagnosis(UserBillModel userBillModel, DiagnosisContext context) {
-        MembershipPurchaseModel tracedObject = membershipPurchaseMapper.findById(userBillModel.getOrderId());
+        MembershipPrivilegePurchaseModel tracedObject = membershipPrivilegePurchaseMapper.findById(userBillModel.getOrderId());
         SingleObjectDiagnosis
                 // exist
                 .init(userBillModel, tracedObject, this::buildTracedObjectId)
                 // status
-                .check(m -> m.getStatus() == MembershipPurchaseStatus.SUCCESS,
+                .check(m -> m.getStatus() == MembershipPrivilegePurchaseStatus.SUCCESS,
                         m -> String.format("wrong status [expect:SUCCESS, actual:%s]", m.getStatus()))
                 // owner
                 .check(m -> userBillModel.getLoginName().equals(m.getLoginName()),
@@ -52,7 +53,7 @@ public class MembershipPurchaseDiagnosis extends UserBillBusinessDiagnosis {
                 .success(r -> onPass(userBillModel, context, buildTracedObjectId(tracedObject)));
     }
 
-    private String buildTracedObjectId(MembershipPurchaseModel model) {
-        return "MembershipPurchase:" + model.getId();
+    private String buildTracedObjectId(MembershipPrivilegePurchaseModel model) {
+        return "MembershipPrivilegePurchase:" + model.getId();
     }
 }

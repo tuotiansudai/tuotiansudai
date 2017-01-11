@@ -30,9 +30,9 @@ public class TransferAsynRequestModel extends BaseAsyncRequestModel {
 
     }
 
-    public static TransferAsynRequestModel createMembershipPurchaseRequestModel(String orderId, String payUserId, String amount, Source source) {
-        String retUrl = MessageFormat.format("{0}/callback/{1}", getCallbackMobileHost(), MobileFrontCallbackService.MEMBERSHIP_PURCHASE.getServiceName());
-        String notifyUrl = MessageFormat.format("{0}/{1}", getCallbackBackHost(), "membership-purchase-notify");
+    public static TransferAsynRequestModel createMembershipPrivilegePurchaseRequestModel(String orderId, String payUserId, String amount, Source source) {
+        String retUrl = MessageFormat.format("{0}/callback/{1}", getCallbackMobileHost(), MobileFrontCallbackService.MEMBERSHIP_PRIVILEGE_PURCHASE.getServiceName());
+        String notifyUrl = MessageFormat.format("{0}/{1}", getCallbackBackHost(), "membership-privilege-purchase-notify");
         TransferAsynRequestModel asynRequestModel = new TransferAsynRequestModel(orderId, payUserId, amount, retUrl, notifyUrl);
         if (Lists.newArrayList(Source.ANDROID, Source.IOS).contains(source)) {
             asynRequestModel.setSourceV("HTML5");

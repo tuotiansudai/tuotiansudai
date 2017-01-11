@@ -2,8 +2,8 @@ package com.tuotiansudai.paywrapper.controller;
 
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;
-import com.tuotiansudai.membership.dto.MembershipPurchaseDto;
-import com.tuotiansudai.paywrapper.service.MembershipPurchasePayService;
+import com.tuotiansudai.membership.dto.MembershipPrivilegePurchaseDto;
+import com.tuotiansudai.paywrapper.service.MembershipPrivilegePurchasePayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class MembershipPurchaseController {
 
     @Autowired
-    private MembershipPurchasePayService membershipPurchasePayService;
+    private MembershipPrivilegePurchasePayService membershipPrivilegePurchasePayService;
 
-    @RequestMapping(value = "/membership-purchase", method = RequestMethod.POST)
+    @RequestMapping(value = "/membership-privilege-purchase", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<PayFormDataDto> membershipPurchase(@RequestBody MembershipPurchaseDto dto) {
-        return membershipPurchasePayService.purchase(dto);
+    public BaseDto<PayFormDataDto> membershipPurchase(@RequestBody MembershipPrivilegePurchaseDto dto) {
+        return membershipPrivilegePurchasePayService.purchase(dto);
     }
 }
