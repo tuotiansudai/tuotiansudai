@@ -107,7 +107,7 @@ public class LotteryDrawActivityService {
             ActivityDrawLotteryTask.EACH_INVEST_2000);
 
     //春节活动任务
-    private final List springFestivalTasks = Lists.newArrayList(ActivityDrawLotteryTask.EACH_ACTIVITY_SIGN_IN);
+    private final List springFestivalTasks = Lists.newArrayList(ActivityDrawLotteryTask.TODAY_ACTIVITY_SIGN_IN);
 
     public static final String ACTIVITY_DESCRIPTION = "新年专享";
 
@@ -137,12 +137,12 @@ public class LotteryDrawActivityService {
             return new DrawLotteryResultDto(3);//不在活动时间范围内！
         }
 
+        userMapper.lockByLoginName(userModel.getLoginName());
+
         int drawTime = countDrawLotteryTime(mobile, activityCategory);
         if (drawTime <= 0) {
             return new DrawLotteryResultDto(1);//您暂无抽奖机会，赢取机会后再来抽奖吧！
         }
-
-        userMapper.lockByLoginName(userModel.getLoginName());
 
         LotteryPrize lotteryPrize = drawLotteryPrize(activityCategory);
         if (lotteryPrize.getPrizeType().equals(PrizeType.VIRTUAL)) {
@@ -374,6 +374,12 @@ public class LotteryDrawActivityService {
                     break;
                 case EACH_ACTIVITY_SIGN_IN:
                     time += pointBillMapper.findCountPointBillPagination(userModel.getLoginName(), startTime, endTime, Lists.newArrayList(PointBusinessType.SIGN_IN));
+                    break;
+                case TODAY_ACTIVITY_SIGN_IN:
+                    if(DateTime.now().toDate().before(endTime) && DateTime.now().toDate().after(startTime)){
+                        time += pointBillMapper.findCountPointBillPagination(userModel.getLoginName(), DateTime.now().withTimeAtStartOfDay().toDate(),
+                                DateTime.now().plusDays(1).withTimeAtStartOfDay().plusMillis(-1).toDate(), Lists.newArrayList(PointBusinessType.SIGN_IN));
+                    }
                     break;
                 case REFERRER_USER:
                     List<UserModel> referrerUsers = userMapper.findUsersByRegisterTimeOrReferrer(startTime, endTime, userModel.getLoginName());
