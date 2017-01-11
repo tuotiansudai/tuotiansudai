@@ -33,7 +33,8 @@ require(['jquery', 'layerWrapper','commonFun','validator'], function($,layer,com
             $('.to-invite-friend',$redEnvelopSplit).on('click',function() {
                 var $this=$(this),
                     url=$this.data('url');
-                var parseURL=globalFun.parseURL(url);
+                var locationUrl=location.href;
+                var parseURL=globalFun.parseURL(locationUrl);
                 if(parseURL.params.source=='share') {
                     layer.msg('本活动仅限使用拓天速贷app参加，请下载app后再进行邀请。');
                 }
