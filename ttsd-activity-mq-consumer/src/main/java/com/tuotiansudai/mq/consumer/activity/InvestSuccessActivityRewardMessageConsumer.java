@@ -1,6 +1,5 @@
 package com.tuotiansudai.mq.consumer.activity;
 
-import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -198,8 +197,10 @@ public class InvestSuccessActivityRewardMessageConsumer implements MessageConsum
         InvestRewardModel investRewardModel;
         final String loginName = investSuccessMessage.getInvestInfo().getLoginName();
 
-        if (userInfo != null && loanDetailInfo.getProductType() != "_30" && (startTime.before(nowDate) && endTime.after(nowDate))
-                && loanDetailInfo.isActivity() && (!investInfo.getTransferStatus().equals("SUCCESS") && investInfo.getStatus().equals("SUCCESS"))) {
+        if (userInfo != null && loanDetailInfo.getProductType() != "_30"
+                && (startTime.before(nowDate) && endTime.after(nowDate))
+                && !investInfo.getTransferStatus().equals("SUCCESS")
+                && investInfo.getStatus().equals("SUCCESS")) {
             logger.info("[MQ] springFestival record reward .");
             investRewardModel = investRewardMapper.findByMobile(userInfo.getMobile());
             if (null != investRewardModel) {
