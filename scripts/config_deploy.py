@@ -13,7 +13,7 @@ def deploy(env, source_folder, dist_file):
     # 读取每个环境特有的配置 envs/${env}.properties, 生成一个 dict 对象 env_prop
     env_prop = load_properties("{0}envs/{1}.properties".format(source_folder, env))
 
-    # 从redis里读取 安全性配置（三方系统账号密码）
+    # 从redis里读取 三方账号配置
     _r = redis.StrictRedis(host='192.168.1.30', port=6379, db=2)
     sec_prop = _r.hgetall('qa_common_account')
 
@@ -56,7 +56,6 @@ def load_properties(file_path):
     f.close()
     return props
 
-
 def compare_a_b(a, b):
     a_prop = load_properties(a)
     b_prop = load_properties(b)
@@ -67,7 +66,6 @@ def compare_a_b(a, b):
             print "b don't has key " + key
         elif b_prop[key] != a_prop[key]:
             print "key: %s, a_val: %s, b_val: %s" % (key, a_prop[key], b_prop[key])
-
 
 def verify(config_path):
     print 'verify config file ...'
