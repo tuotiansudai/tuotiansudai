@@ -7,6 +7,7 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.Environment;
 import com.tuotiansudai.dto.SmsDataDto;
 import com.tuotiansudai.dto.sms.InvestSmsNotifyDto;
+import com.tuotiansudai.dto.sms.LoanRaisingCompleteNotifyDto;
 import com.tuotiansudai.dto.sms.SmsCouponNotifyDto;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.enums.CouponType;
@@ -21,6 +22,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -52,8 +54,8 @@ public class SmsServiceImpl implements SmsService {
     @Override
     public BaseDto<SmsDataDto> sendRegisterCaptcha(String mobile, String captcha, String ip) {
         BaseDto<SmsDataDto> smsDateDto = smsClient.sendSMS(RegisterCaptchaMapper.class, mobile, SmsTemplate.SMS_REGISTER_CAPTCHA_TEMPLATE, captcha, ip);
-        if(!smsDateDto.getData().getStatus() && platform.equals(SMS_PLATFORM)){
-            smsDateDto = this.sendRegisterCaptchaByMd(mobile, captcha,ip);
+        if (!smsDateDto.getData().getStatus() && platform.equals(SMS_PLATFORM)) {
+            smsDateDto = this.sendRegisterCaptchaByMd(mobile, captcha, ip);
         }
         return smsDateDto;
     }
@@ -97,7 +99,7 @@ public class SmsServiceImpl implements SmsService {
                 + notifyDto.getCouponType().getName();
 
         List<String> paramList = ImmutableList.<String>builder().add(couponName).add(notifyDto.getExpiredDate()).build();
-        return smsClient.sendSMS(CouponNotifyMapper.class, notifyDto.getMobile(),SmsTemplate.SMS_COUPON_NOTIFY_TEMPLATE, paramList, "");
+        return smsClient.sendSMS(CouponNotifyMapper.class, notifyDto.getMobile(), SmsTemplate.SMS_COUPON_NOTIFY_TEMPLATE, paramList, "");
     }
 
     @Override
@@ -131,13 +133,13 @@ public class SmsServiceImpl implements SmsService {
     }
 
     @Override
-    public BaseDto<SmsDataDto> couponNotifyByMd(SmsCouponNotifyDto notifyDto){
-        logger.info(MessageFormat.format("coupon notify send. couponId:{0}",notifyDto.getCouponType()));
+    public BaseDto<SmsDataDto> couponNotifyByMd(SmsCouponNotifyDto notifyDto) {
+        logger.info(MessageFormat.format("coupon notify send. couponId:{0}", notifyDto.getCouponType()));
         String couponName = (notifyDto.getCouponType() == CouponType.INTEREST_COUPON ? MessageFormat.format("+{0}%", notifyDto.getRate()) : MessageFormat.format("{0}元", notifyDto.getAmount()))
                 + notifyDto.getCouponType().getName();
 
         List<String> paramList = ImmutableList.<String>builder().add(couponName).add(notifyDto.getExpiredDate()).build();
-        if(platform.equals(SMS_PLATFORM)){
+        if (platform.equals(SMS_PLATFORM)) {
             logger.info("coupon notify send by md platform");
             return mdSmsClient.sendSMS(CouponNotifyMapper.class, notifyDto.getMobile(), SmsTemplate.SMS_COUPON_NOTIFY_TEMPLATE, paramList, "");
         }
@@ -150,6 +152,7 @@ public class SmsServiceImpl implements SmsService {
         return mdSmsClient.sendSMS(RegisterCaptchaMapper.class, mobile, SmsTemplate.SMS_REGISTER_CAPTCHA_TEMPLATE, captcha, ip);
     }
 
+    @Override
     public BaseDto<SmsDataDto> platformBalanceLowNotify(List<String> mobiles, String warningLine) {
         return smsClient.sendSMS(PlatformBalanceLowNotifyMapper.class, mobiles, SmsTemplate.SMS_PLATFORM_BALANCE_LOW_NOTIFY_TEMPLATE, warningLine, "");
     }
@@ -158,4 +161,13 @@ public class SmsServiceImpl implements SmsService {
     public BaseDto<SmsDataDto> generateContractNotify(List<String> mobiles, long businessId) {
         return smsClient.sendSMS(GenerateContractErrorNotifyMapper.class, mobiles, SmsTemplate.SMS_GENERATE_CONTRACT_ERROR_NOTIFY_TEMPLATE, String.valueOf(businessId), "");
     }
+
+    @Override
+    public BaseDto<SmsDataDto> loanRaisingCompleteNotify(LoanRaisingCompleteNotifyDto dto) {
+        String[] paramArr = {dto.getLoanRaisingStartDate(), dto.getLoanName(), dto.getLoanAmount(), dto.getLoanDuration(),
+                dto.getLoanerName(), dto.getAgentName(), dto.getLoanRaisingCompleteTime()};
+        List<String> paramList = Arrays.asList(paramArr);
+        return smsClient.sendSMS(LoanRaisingCompleteNotifyMapper.class, dto.getMobiles(), SmsTemplate.LOAN_RAISING_COMPLETE_NOTIFY_TEMPLATE, paramList, "");
+    }
+
 }
