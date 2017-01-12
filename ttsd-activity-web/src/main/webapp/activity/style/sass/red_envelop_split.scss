@@ -1,6 +1,13 @@
 body {
   background: #ffea80;
 }
+.layui-layer-msg {
+  right:10%!important;
+  .layui-layer-content {
+    padding: 12px 5px!important;
+  }
+}
+
 .header-container,.nav-container,.footer-container {
   display: none;
 }
@@ -209,20 +216,20 @@ body {
       margin-right: 1px;
     }
     .activity-rule {
-      display: -moz-box;
-      display: -webkit-box;
-      display: -webkit-flex;
-      display: -ms-flexbox;
-      display: flex;
       margin-bottom: 15px;
+      margin-left: 3px;
       span {
         display: block;
-        flex:2;
-        text-align: center;
+        float: left;
+        &.square {
+          text-align: center;
+          width:29%;
+        }
         &.arrow {
-          flex:1;
+          width:6%;
           background: url("/activity/images/red_envelop_split/icon-arrow.png") center center no-repeat;
-          background-size: 40%;
+          background-size: 80%;
+          margin-top: 27px;
         }
         i {
           display: block;
@@ -234,13 +241,13 @@ body {
           margin: 0 auto;
           color: #fff;
           font-size: 12px;
-          padding: 24px 12px;
+          padding: 24px 5px;
           line-height: 20px;
           box-sizing: border-box;
         }
         &.middle {
           i {
-            padding: 12px;
+            padding: 12px 7px;
           }
         }
       }
@@ -322,4 +329,18 @@ body {
       }
     }
   }
+}
+
+@media screen and(max-width: 350px){
+  .red-envelop-container .register-section-box {
+    padding-top: 176px;
+  }
+  .red-envelop-container .red-envelop-detail .activity-rule span i {
+    transform: scale(0.8);
+    margin-left: -2%;
+  }
+  .red-envelop-container .red-envelop-detail .activity-rule span.arrow {
+    background-size: 70%;
+  }
+
 }

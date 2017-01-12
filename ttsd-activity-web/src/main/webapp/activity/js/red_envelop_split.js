@@ -36,7 +36,7 @@ require(['jquery', 'layerWrapper','commonFun','validator'], function($,layer,com
                 var locationUrl=location.href;
                 var parseURL=globalFun.parseURL(locationUrl);
                 if(parseURL.params.source=='share') {
-                    layer.msg('本活动仅限使用拓天速贷app参加，请下载app后再进行邀请。');
+                    layer.msg('本活动仅限使用拓天速贷app参加，<br/>请下载app后再进行邀请。', {offset: ['', '10%']});
                 }
                 else {
                     location.href=url;
