@@ -40,7 +40,6 @@ def deploy(env, source_folder, dist_file):
                 dist.write(l + "\n")
     f.close()
     dist.close()
-    verify()
 
 
 # 读取properties 文件, 生成 dict 对象
@@ -67,10 +66,10 @@ def compare_a_b(a, b):
         if not b_prop.has_key(key):
             print "b don't has key " + key
         elif b_prop[key] != a_prop[key]:
-            print "key: %s, a_val: %s, b_val: %s" % (key, a_prop[key],  b_prop[key])
+            print "key: %s, a_val: %s, b_val: %s" % (key, a_prop[key], b_prop[key])
 
 
-def verify():
+def verify(config_path):
     print 'verify config file ...'
-    compare_a_b('ttsd-env.properties','ttsd-env.properties.20170112')
-    compare_a_b('ttsd-env.properties.20170112','ttsd-env.properties')
+    compare_a_b(config_path + 'ttsd-env.properties', config_path + 'ttsd-env.properties.20170112')
+    compare_a_b(config_path + 'ttsd-env.properties.20170112', config_path + 'ttsd-env.properties')
