@@ -1,0 +1,21 @@
+.main-frame .left-nav {
+  width: auto;
+  height: auto;
+  float: none;
+  background: none;
+  margin-bottom: 15px; }
+  .main-frame .left-nav li {
+    border-width: 0px;
+    margin: 0 15px;
+    display: inline-block; }
+    .main-frame .left-nav li a {
+      font-size: 18px;
+      color: #0e050a; }
+      .main-frame .left-nav li a:hover {
+        background: none; }
+      .main-frame .left-nav li a.active {
+        border-bottom: 4px solid #ff9c1b;
+        background: transparent;
+        color: #ff9c1b; }
+
+/*# sourceMappingURL=top_sub_menu.css.map */

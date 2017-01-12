@@ -1,0 +1,207 @@
+body {
+  font-family: Microsoft YaHei,Helvetica, sans-serif;
+  font-size: 12px;
+  background: #fdf3e9;
+  padding: 0;
+  margin: 0;
+  line-height: 22px; }
+
+.hide {
+  display: none; }
+
+.clearfix:after, .clearfix:before {
+  content: "";
+  display: block;
+  clear: both;
+  line-height: 0;
+  height: 0;
+  font-size: 0; }
+
+.column-text {
+  margin-top: 20px;
+  color: #ee7c2f; }
+  .column-text b {
+    font-size: 17px;
+    color: #3e3f50;
+    display: inline-block; }
+  .column-text p {
+    font-size: 10px; }
+  .column-text i {
+    padding-top: 29px;
+    display: inline-block;
+    font-style: normal;
+    margin-top: 10px; }
+    .column-text i.icon-clock {
+      background: url("../../images/app-download/base-clock.png") center top no-repeat;
+      background-size: 50%; }
+    .column-text i.icon-calendar {
+      background: url("../../images/app-download/base-calendar.png") center top no-repeat;
+      background-size: 50%; }
+    .column-text i.icon-air {
+      background: url("../../images/app-download/base-air.png") center top no-repeat;
+      background-size: 50%; }
+    .column-text i.icon-lock {
+      background: url("../../images/app-download/base-lock.png") center top no-repeat;
+      background-size: 50%; }
+    .column-text i.icon-account {
+      background: url("../../images/app-download/base-account.png") center top no-repeat;
+      background-size: 33% 50%; }
+    .column-text i.icon-point {
+      background: url("../../images/app-download/base-point.png") center top no-repeat;
+      background-size: 50%; }
+    .column-text i.icon-hand {
+      background: url("../../images/app-download/base-hand.png") center top no-repeat;
+      background-size: 50%; }
+
+.download-header {
+  text-align: center;
+  padding: 50px 0;
+  position: relative;
+  z-index: 10; }
+  .download-header img {
+    width: 50%; }
+  .download-header .btn-download {
+    width: 50%;
+    background: #ff5400;
+    color: #fff;
+    height: 40px;
+    line-height: 40px;
+    font-size: 18px;
+    display: inline-block;
+    margin-top: 30px;
+    text-decoration: none; }
+
+.column-box {
+  position: relative; }
+  .column-box:nth-child(2n) {
+    background: #fff; }
+    .column-box:nth-child(2n) .column-text {
+      color: #b2b2b2; }
+
+.bond-box {
+  padding-top: 54px;
+  padding-bottom: 23px;
+  z-index: 2; }
+  .bond-box .top-decorate {
+    position: absolute;
+    width: 100%;
+    height: 100px;
+    background: #fbf3e9;
+    border-radius: 50%;
+    top: -29%;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+            transform: translateX(-50%); }
+    .bond-box .top-decorate:after {
+      content: '';
+      display: inline-block;
+      width: 0px;
+      height: 0px;
+      border-left: 15px solid transparent;
+      border-right: 15px solid transparent;
+      position: absolute;
+      bottom: -15px;
+      left: 45%;
+      border-top: 15px solid #fbf3e9; }
+  .bond-box img {
+    width: 49%;
+    float: left;
+    margin-right: 20px; }
+  .bond-box:after {
+    content: '';
+    display: inline-block;
+    width: 0px;
+    height: 0px;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    position: absolute;
+    bottom: -15px;
+    left: 45%;
+    border-top: 15px solid #fbf3e9;
+    border-top: 15px solid #fff; }
+
+.fund-box img {
+  width: 100%;
+  margin-top: 90px;
+  margin-bottom: -7px; }
+.fund-box .column-text {
+  position: absolute;
+  top: 20px;
+  left: 20px; }
+
+.hand-invest {
+  background: none !important; }
+  .hand-invest img {
+    width: 100%; }
+  .hand-invest .column-text {
+    background: rgba(29, 61, 108, 0.4);
+    padding: 30px 12px;
+    display: inline-block;
+    position: absolute;
+    top: -15px;
+    right: 10px; }
+
+.safety-account-box img {
+  float: right;
+  width: 42%;
+  margin: 30px 20px; }
+.safety-account-box .column-text {
+  margin-left: 20px; }
+  .safety-account-box .column-text i {
+    margin-right: 10px; }
+
+.point-box {
+  padding-top: 20px; }
+  .point-box:before {
+    content: '';
+    display: inline-block;
+    width: 0px;
+    height: 0px;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    position: absolute;
+    bottom: -15px;
+    left: 45%;
+    border-top: 15px solid #fbf3e9;
+    top: 0;
+    bottom: auto; }
+  .point-box img {
+    width: 35%;
+    margin: 10px 20px;
+    float: left; }
+
+.wechat-android {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  text-align: right;
+  background: rgba(0, 0, 0, 0.8) url("/images/app-download/wxDownload-new.png") center top no-repeat;
+  background-size: contain; }
+
+@media screen and (max-width: 350px) {
+  .column-text {
+    -webkit-transform: scale(0.7);
+            transform: scale(0.7);
+    margin-top: -20px; }
+
+  .bond-box {
+    padding-bottom: 0; }
+    .bond-box img {
+      margin-top: 20px; }
+
+  .safety-account-box .column-text {
+    margin-left: -29px;
+    margin-top: 7px; }
+
+  .fund-box .column-text {
+    top: 26px;
+    left: -6px; }
+
+  .point-box {
+    padding-top: 10px; }
+    .point-box .column-text {
+      margin-top: -10px; } }
+
+/*# sourceMappingURL=app_download.css.map */

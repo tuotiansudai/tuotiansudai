@@ -1,0 +1,962 @@
+/* common css*/
+.full-screen {
+  width: 100%; }
+
+.bg-white {
+  background: #fff; }
+
+.pad-box {
+  padding: 20px 0 50px 0; }
+
+.column-title-ac {
+  font-size: 30px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 10px; }
+  .column-title-ac i {
+    width: 8px;
+    height: 8px;
+    border-radius: 4px;
+    background: #808080;
+    display: inline-block;
+    margin-left: 20px;
+    margin-right: 20px;
+    vertical-align: middle; }
+
+.quick-top-link {
+  height: 118px;
+  padding-top: 14px;
+  overflow: hidden; }
+  .quick-top-link li {
+    width: 33%;
+    height: 115px;
+    float: left;
+    display: block;
+    text-align: center;
+    font-size: 16px; }
+    .quick-top-link li a {
+      color: #cccccc;
+      padding-top: 65px;
+      display: inline-block; }
+    .quick-top-link li.guide {
+      background: url("/images/sign/assure/icon-newer.png") center top no-repeat; }
+      .quick-top-link li.guide.active {
+        background-image: url("/images/sign/assure/icon-newer-active.png"); }
+        .quick-top-link li.guide.active a {
+          color: #ff8b00; }
+    .quick-top-link li.risk {
+      background: url("/images/sign/assure/icon-risk.png") center top no-repeat; }
+      .quick-top-link li.risk.active {
+        background-image: url("/images/sign/assure/icon-risk-active.png"); }
+        .quick-top-link li.risk.active a {
+          color: #ff8b00; }
+    .quick-top-link li.assure {
+      background: url("/images/sign/assure/icon-assure.png") center top no-repeat; }
+      .quick-top-link li.assure.active {
+        background-image: url("/images/sign/assure/icon-assure-active.png"); }
+        .quick-top-link li.assure.active a {
+          color: #ff8b00; }
+
+.square-box-info {
+  border: 1px dashed #6dbb7c;
+  background: #fff;
+  border-radius: 15px;
+  position: absolute;
+  padding: 10px;
+  width: 35%;
+  font-size: 16px; }
+  .square-box-info dt {
+    font-size: 20px;
+    font-weight: bold; }
+  .square-box-info .triangle {
+    width: 20px;
+    height: 20px;
+    background: url("/images/sign/assure/arrow-right.png") no-repeat center top;
+    position: absolute;
+    right: -15px;
+    top: 35px; }
+  .square-box-info:nth-child(1) {
+    left: 60px;
+    top: 24px; }
+  .square-box-info:nth-child(2) {
+    right: 60px;
+    top: 138px; }
+    .square-box-info:nth-child(2) .triangle {
+      left: -16px;
+      background: url("/images/sign/assure/arrow-left.png") no-repeat center top; }
+  .square-box-info:nth-child(3) {
+    left: 60px;
+    top: 265px; }
+  .square-box-info:nth-child(4) {
+    right: 60px;
+    top: 380px; }
+    .square-box-info:nth-child(4) .triangle {
+      left: -16px;
+      background: url("/images/sign/assure/arrow-left.png") no-repeat center top; }
+
+.rectangle-box {
+  border: 1px solid #3776cb;
+  padding: 10px;
+  width: 355px;
+  color: #4c4c4c;
+  font-size: 16px;
+  border-radius: 20px;
+  background: #fff;
+  margin-left: 20px;
+  margin-right: 20px; }
+  .rectangle-box dt {
+    font-size: 24px;
+    font-weight: bold; }
+  .rectangle-box:hover {
+    background: #3776cb;
+    color: #fff; }
+
+.btn-guide {
+  background: #db6558;
+  padding: 3px 60px;
+  color: #fff;
+  font-weight: bold;
+  font-size: 24px;
+  border-bottom: 4px solid #cc4b3d;
+  display: inline-block; }
+  .btn-guide:hover {
+    background: #e6402e;
+    color: #fff; }
+
+.assurance-container .main-banner {
+  background: #4ebe76; }
+  .assurance-container .main-banner img {
+    width: 100%; }
+.assurance-container .fund-safety-box .safe-title {
+  text-align: center;
+  font-size: 18px;
+  padding-bottom: 20px; }
+.assurance-container .fund-safety-box .safe-info-list {
+  font-size: 14px;
+  color: #4c4c4c; }
+  .assurance-container .fund-safety-box .safe-info-list dl {
+    width: 265px;
+    float: left; }
+    .assurance-container .fund-safety-box .safe-info-list dl:nth-child(2) {
+      margin-left: 100px;
+      margin-right: 100px; }
+    .assurance-container .fund-safety-box .safe-info-list dl dt {
+      height: 123px;
+      text-align: center;
+      width: 25%;
+      margin: 0 auto;
+      display: table-cell;
+      vertical-align: middle;
+      font-size: 18px; }
+      .assurance-container .fund-safety-box .safe-info-list dl dt.list01 {
+        background: url("/images/sign/assure/safe-01.png") no-repeat center top;
+        color: #db6558; }
+      .assurance-container .fund-safety-box .safe-info-list dl dt.list02 {
+        background: url("/images/sign/assure/safe-02.png") no-repeat center top;
+        color: #3776cb; }
+      .assurance-container .fund-safety-box .safe-info-list dl dt.list03 {
+        background: url("/images/sign/assure/safe-03.png") no-repeat center top;
+        color: #6dbb7c; }
+    .assurance-container .fund-safety-box .safe-info-list dl dd {
+      padding-top: 20px; }
+.assurance-container .trade-risk-box {
+  text-align: center; }
+  .assurance-container .trade-risk-box dd {
+    padding: 10px 20px;
+    background: #fff;
+    border: 1px dotted #6dbb7c;
+    border-radius: 10px;
+    width: 80%;
+    height: auto;
+    overflow: auto;
+    margin: 30px auto;
+    color: #6dbb7c; }
+    .assurance-container .trade-risk-box dd b {
+      font-size: 20px; }
+    .assurance-container .trade-risk-box dd p {
+      text-align: left;
+      color: currentColor;
+      font-size: 16px; }
+    .assurance-container .trade-risk-box dd:hover {
+      background: #6dbb7c;
+      color: #fff; }
+.assurance-container .private-safety-box dd {
+  background: url("/images/sign/assure/icon-dot.png") no-repeat left 10px;
+  padding-left: 35px;
+  font-size: 18px;
+  color: #4c4c4c;
+  margin-bottom: 20px; }
+.assurance-container .data-info-safety {
+  height: 500px;
+  padding-top: 30px;
+  position: relative; }
+  .assurance-container .data-info-safety .axis-center {
+    background: url("/images/sign/assure/order.png") no-repeat center top;
+    width: 102px;
+    height: 458px;
+    position: absolute;
+    left: 45%;
+    top: 15px; }
+  .assurance-container .data-info-safety .square-box-info {
+    border: 1px dashed #6dbb7c;
+    background: #fff;
+    border-radius: 15px;
+    position: absolute;
+    padding: 10px;
+    width: 35%;
+    font-size: 16px; }
+    .assurance-container .data-info-safety .square-box-info dt {
+      font-size: 20px;
+      font-weight: bold; }
+    .assurance-container .data-info-safety .square-box-info .triangle {
+      width: 20px;
+      height: 20px;
+      background: url("/images/sign/assure/arrow-right.png") no-repeat center top;
+      position: absolute;
+      right: -15px;
+      top: 35px; }
+    .assurance-container .data-info-safety .square-box-info:nth-child(1) {
+      left: 60px;
+      top: 24px; }
+    .assurance-container .data-info-safety .square-box-info:nth-child(2) {
+      right: 60px;
+      top: 138px; }
+      .assurance-container .data-info-safety .square-box-info:nth-child(2) .triangle {
+        left: -16px;
+        background: url("/images/sign/assure/arrow-left.png") no-repeat center top; }
+    .assurance-container .data-info-safety .square-box-info:nth-child(3) {
+      left: 60px;
+      top: 265px; }
+    .assurance-container .data-info-safety .square-box-info:nth-child(4) {
+      right: 60px;
+      top: 380px; }
+      .assurance-container .data-info-safety .square-box-info:nth-child(4) .triangle {
+        left: -16px;
+        background: url("/images/sign/assure/arrow-left.png") no-repeat center top; }
+
+.risk-flow-container .main-banner {
+  background: #1877d3; }
+  .risk-flow-container .main-banner img {
+    width: 100%; }
+.risk-flow-container .project-examination-box {
+  padding-bottom: 60px;
+  padding-top: 30px;
+  height: 500px; }
+  .risk-flow-container .project-examination-box.hack {
+    height: auto; }
+  .risk-flow-container .project-examination-box .page-width {
+    position: relative;
+    height: 100%; }
+    .risk-flow-container .project-examination-box .page-width .ellipse-shape {
+      position: absolute;
+      width: 99%;
+      height: 209px;
+      border-radius: 100px;
+      border: 2px solid #3776cb;
+      top: 110px;
+      z-index: 10; }
+  .risk-flow-container .project-examination-box .project-info-list {
+    margin-left: 60px;
+    height: auto;
+    overflow: auto;
+    position: absolute;
+    z-index: 30;
+    margin-top: -15px; }
+    .risk-flow-container .project-examination-box .project-info-list dl {
+      color: #4d4d4d;
+      font-size: 14px;
+      float: left;
+      width: 235px;
+      margin-left: 50px;
+      margin-top: 40px; }
+      .risk-flow-container .project-examination-box .project-info-list dl dt {
+        font-size: 18px;
+        color: #3776cb;
+        text-align: center; }
+        .risk-flow-container .project-examination-box .project-info-list dl dt em {
+          width: 28px;
+          height: 28px;
+          border-radius: 14px;
+          line-height: 28px;
+          color: #fff;
+          background: #3776cb;
+          display: block;
+          margin: 5px auto; }
+      .risk-flow-container .project-examination-box .project-info-list dl dd {
+        border: 1px solid #3776cb;
+        border-radius: 8px;
+        padding: 6px 12px; }
+      .risk-flow-container .project-examination-box .project-info-list dl.active dt {
+        color: #ff8b00; }
+        .risk-flow-container .project-examination-box .project-info-list dl.active dt em {
+          background: #ff8b00; }
+      .risk-flow-container .project-examination-box .project-info-list dl.active dd {
+        border: 1px solid #ff8b00; }
+  .risk-flow-container .project-examination-box .project-examine-last dl {
+    width: 258px;
+    float: left; }
+    .risk-flow-container .project-examination-box .project-examine-last dl dt {
+      font-size: 22px;
+      color: #3776cb;
+      font-weight: bold;
+      text-align: center; }
+      .risk-flow-container .project-examination-box .project-examine-last dl dt em {
+        display: block;
+        width: 206px;
+        height: 206px;
+        line-height: 206px;
+        border-radius: 103px;
+        background: #3776cb;
+        margin: 20px auto; }
+        .risk-flow-container .project-examination-box .project-examine-last dl dt em:hover {
+          -moz-transform: scale(1.2);
+          -webkit-transform: scale(1.2);
+          -o-transform: scale(1.2); }
+    .risk-flow-container .project-examination-box .project-examine-last dl dd {
+      font-size: 16px;
+      color: #4c4c4c; }
+    .risk-flow-container .project-examination-box .project-examine-last dl.two {
+      margin-left: 112px;
+      margin-right: 112px; }
+.risk-flow-container .project-examine-two {
+  position: relative;
+  height: 660px; }
+  .risk-flow-container .project-examine-two .ellipse-shape-center {
+    position: absolute;
+    left: 50%;
+    top: 70px; }
+    .risk-flow-container .project-examine-two .ellipse-shape-center .vertical-line {
+      height: 520px;
+      width: 1px;
+      border-left: 1px dashed #3776cb;
+      position: absolute;
+      z-index: 0; }
+    .risk-flow-container .project-examine-two .ellipse-shape-center .squareNum {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: #3776cb;
+      color: #fff;
+      line-height: 20px;
+      text-align: center;
+      border-radius: 10px;
+      left: -10px;
+      z-index: 5; }
+      .risk-flow-container .project-examine-two .ellipse-shape-center .squareNum.one {
+        top: 0; }
+      .risk-flow-container .project-examine-two .ellipse-shape-center .squareNum.two {
+        top: 100px; }
+      .risk-flow-container .project-examine-two .ellipse-shape-center .squareNum.three {
+        top: 200px; }
+      .risk-flow-container .project-examine-two .ellipse-shape-center .squareNum.four {
+        top: 300px; }
+      .risk-flow-container .project-examine-two .ellipse-shape-center .squareNum.five {
+        top: 400px; }
+      .risk-flow-container .project-examine-two .ellipse-shape-center .squareNum.six {
+        top: 500px; }
+  .risk-flow-container .project-examine-two .square-box-info {
+    border: 1px solid #3776cb;
+    color: #666;
+    font-size: 14px;
+    width: 30%; }
+    .risk-flow-container .project-examine-two .square-box-info dt {
+      font-size: 16px; }
+    .risk-flow-container .project-examine-two .square-box-info .triangle {
+      width: 0px;
+      height: 0px;
+      background: none;
+      border: 9px solid transparent;
+      border-left: 9px solid #3776cb;
+      right: -18px;
+      top: 44px; }
+      .risk-flow-container .project-examine-two .square-box-info .triangle em {
+        display: block;
+        width: 0;
+        height: 0;
+        border: 9px solid transparent;
+        border-left: 9px solid #fff;
+        position: absolute;
+        top: -9px;
+        left: -10px; }
+    .risk-flow-container .project-examine-two .square-box-info.one {
+      left: 113px;
+      top: 21px; }
+    .risk-flow-container .project-examine-two .square-box-info.two {
+      right: 118px;
+      top: 126px; }
+      .risk-flow-container .project-examine-two .square-box-info.two .triangle {
+        right: auto;
+        left: -18px;
+        border: 9px solid transparent;
+        border-right: 9px solid #3776cb; }
+        .risk-flow-container .project-examine-two .square-box-info.two .triangle em {
+          border: 9px solid transparent;
+          border-right: 9px solid #fff;
+          left: -8px; }
+    .risk-flow-container .project-examine-two .square-box-info.three {
+      left: 113px;
+      top: 225px; }
+    .risk-flow-container .project-examine-two .square-box-info.four {
+      right: 118px;
+      top: 329px; }
+      .risk-flow-container .project-examine-two .square-box-info.four .triangle {
+        right: auto;
+        left: -18px;
+        border: 9px solid transparent;
+        border-right: 9px solid #3776cb; }
+        .risk-flow-container .project-examine-two .square-box-info.four .triangle em {
+          border: 9px solid transparent;
+          border-right: 9px solid #fff;
+          left: -8px; }
+    .risk-flow-container .project-examine-two .square-box-info.five {
+      left: 113px;
+      top: 431px; }
+      .risk-flow-container .project-examine-two .square-box-info.five .triangle {
+        top: 30px; }
+    .risk-flow-container .project-examine-two .square-box-info.six {
+      right: 118px;
+      top: 525px; }
+      .risk-flow-container .project-examine-two .square-box-info.six .triangle {
+        right: auto;
+        left: -18px;
+        border: 9px solid transparent;
+        border-right: 9px solid #3776cb; }
+        .risk-flow-container .project-examine-two .square-box-info.six .triangle em {
+          border: 9px solid transparent;
+          border-right: 9px solid #fff;
+          left: -8px; }
+.risk-flow-container .post-lending-box {
+  position: relative;
+  height: 245px; }
+  .risk-flow-container .post-lending-box .line-top-bar {
+    height: 30px;
+    background: url("/images/sign/assure/line-top.png") center top no-repeat; }
+  .risk-flow-container .post-lending-box .lending-steps {
+    width: 87%;
+    margin: 10px auto; }
+    .risk-flow-container .post-lending-box .lending-steps dl {
+      float: left;
+      width: 208px;
+      margin-left: 36px;
+      margin-right: 20px;
+      border: 1px dashed #3776cb;
+      padding: 10px;
+      color: #3776cb;
+      position: relative;
+      border-radius: 10px; }
+      .risk-flow-container .post-lending-box .lending-steps dl dt {
+        font-size: 18px; }
+        .risk-flow-container .post-lending-box .lending-steps dl dt em {
+          width: 25px;
+          height: 15px;
+          background: url("/images/sign/assure/arrow-top.png") no-repeat;
+          position: absolute;
+          left: 45%;
+          top: -10px; }
+
+.new-guide-container .line {
+  width: 100%;
+  height: 1px;
+  background: #db6558;
+  background: -webkit-linear-gradient(to right, rgba(219, 101, 88, 0), #db6558, rgba(219, 101, 88, 0));
+  background: -webkit-linear-gradient(left, rgba(219, 101, 88, 0), #db6558, rgba(219, 101, 88, 0));
+  background: linear-gradient(to right, rgba(219, 101, 88, 0), #db6558, rgba(219, 101, 88, 0));
+  background: -o-linear-gradient(to right, rgba(219, 101, 88, 0), #db6558, rgba(219, 101, 88, 0));
+  margin-top: 30px;
+  margin-bottom: 30px; }
+  .new-guide-container .line.hack {
+    display: none; }
+.new-guide-container .main-banner {
+  background: #e95b56; }
+  .new-guide-container .main-banner img {
+    width: 100%; }
+.new-guide-container .section-box-one p {
+  margin-top: 10px;
+  font-size: 16px; }
+.new-guide-container .section-box-two {
+  overflow: hidden; }
+  .new-guide-container .section-box-two dl {
+    margin-left: 80px; }
+    .new-guide-container .section-box-two dl dt {
+      position: relative;
+      color: #333333;
+      font-size: 20px;
+      padding-left: 85px; }
+      .new-guide-container .section-box-two dl dt span {
+        position: absolute;
+        font-size: 80px;
+        font-weight: bold;
+        color: #b2b2b2;
+        display: inline-block;
+        left: -10px;
+        top: -40px;
+        font-family: arial;
+        letter-spacing: -3px; }
+    .new-guide-container .section-box-two dl dd {
+      padding-left: 85px;
+      color: #808080; }
+      .new-guide-container .section-box-two dl dd.img-load {
+        padding-left: 70px;
+        padding-top: 10px;
+        position: relative; }
+        .new-guide-container .section-box-two dl dd.img-load .arrow-rise {
+          position: absolute;
+          top: 33px;
+          left: 200px;
+          width: 294px;
+          height: 294px;
+          background: url("/images/sign/assure/arrow-rise.png") no-repeat;
+          -webkit-animation: rise 3s infinite linear;
+          animation: rise 3s infinite linear;
+          -webkit-transform-origin: 40px 200px;
+          -moz-transform-origin: 40px 200px; }
+@-webkit-keyframes rise {
+  0% {
+    -webkit-transform: scale(0.1, 0.1);
+    -moz-transform: scale(0.1, 0.1); }
+  50% {
+    -webkit-transform: scale(0.5, 0.5);
+    -moz-transform: scale(0.5, 0.5); }
+  100% {
+    -webkit-transform: scale(1, 1);
+    -moz-transform: scale(1, 1); } }
+@keyframes rise {
+  0% {
+    -webkit-transform: scale(0.1, 0.1);
+    -moz-transform: scale(0.1, 0.1); }
+  50% {
+    -webkit-transform: scale(0.5, 0.5);
+    -moz-transform: scale(0.5, 0.5); }
+  100% {
+    -webkit-transform: scale(1, 1);
+    -moz-transform: scale(1, 1); } }
+      .new-guide-container .section-box-two dl dd.high-profit {
+        height: 345px;
+        background: url("/images/sign/assure/bg-wen.png") center center no-repeat;
+        position: relative; }
+        .new-guide-container .section-box-two dl dd.high-profit .high-box {
+          border: 1px solid #db6558;
+          border-radius: 10px;
+          width: 265px;
+          padding: 10px;
+          box-sizing: border-box;
+          font-size: 15px;
+          text-align: center;
+          background: #fff;
+          position: relative;
+          color: #666666; }
+          .new-guide-container .section-box-two dl dd.high-profit .high-box:nth-child(1) {
+            position: absolute;
+            top: 30px;
+            left: 0px; }
+          .new-guide-container .section-box-two dl dd.high-profit .high-box:nth-child(2) {
+            position: absolute;
+            top: 30px;
+            right: 0px; }
+          .new-guide-container .section-box-two dl dd.high-profit .high-box:nth-child(3) {
+            position: absolute;
+            top: 230px;
+            left: 0px; }
+          .new-guide-container .section-box-two dl dd.high-profit .high-box:nth-child(4) {
+            position: absolute;
+            top: 230px;
+            right: 0px; }
+          .new-guide-container .section-box-two dl dd.high-profit .high-box span {
+            display: block; }
+            .new-guide-container .section-box-two dl dd.high-profit .high-box span.line-align {
+              background: #db6558;
+              background: -webkit-linear-gradient(to right, rgba(219, 101, 88, 0), #db6558, rgba(219, 101, 88, 0));
+              background: -webkit-linear-gradient(left, rgba(219, 101, 88, 0), #db6558, rgba(219, 101, 88, 0));
+              background: linear-gradient(to right, rgba(219, 101, 88, 0), #db6558, rgba(219, 101, 88, 0));
+              background: -o-linear-gradient(to right, rgba(219, 101, 88, 0), #db6558, rgba(219, 101, 88, 0));
+              height: 1px; }
+            .new-guide-container .section-box-two dl dd.high-profit .high-box span.line-valign {
+              background: #db6558;
+              background: -webkit-linear-gradient(to bottom, rgba(219, 101, 88, 0), #db6558, rgba(219, 101, 88, 0));
+              background: -webkit-linear-gradient(top, rgba(219, 101, 88, 0), #db6558, rgba(219, 101, 88, 0));
+              background: linear-gradient(to bottom, rgba(219, 101, 88, 0), #db6558, rgba(219, 101, 88, 0));
+              background: -o-linear-gradient(to bottom, rgba(219, 101, 88, 0), #db6558, rgba(219, 101, 88, 0));
+              width: 1px; }
+          .new-guide-container .section-box-two dl dd.high-profit .high-box.square-normal span.line-align {
+            position: absolute;
+            top: 50%;
+            width: 100%; }
+          .new-guide-container .section-box-two dl dd.high-profit .high-box.square-normal span.line-valign {
+            position: absolute;
+            left: 50%;
+            height: 100%;
+            top: 0; }
+          .new-guide-container .section-box-two dl dd.high-profit .high-box:hover {
+            background: #db6558;
+            color: #fff; }
+            .new-guide-container .section-box-two dl dd.high-profit .high-box:hover span.line-align {
+              background: #db6558;
+              background: -webkit-linear-gradient(to right, rgba(255, 255, 255, 0), white, rgba(255, 255, 255, 0));
+              background: -webkit-linear-gradient(left, rgba(255, 255, 255, 0), white, rgba(255, 255, 255, 0));
+              background: linear-gradient(to right, rgba(255, 255, 255, 0), white, rgba(255, 255, 255, 0));
+              background: -o-linear-gradient(to right, rgba(255, 255, 255, 0), white, rgba(255, 255, 255, 0));
+              height: 1px; }
+            .new-guide-container .section-box-two dl dd.high-profit .high-box:hover span.line-valign {
+              background: #db6558;
+              background: -webkit-linear-gradient(to bottom, rgba(255, 255, 255, 0), white, rgba(255, 255, 255, 0));
+              background: -webkit-linear-gradient(top, rgba(255, 255, 255, 0), white, rgba(255, 255, 255, 0));
+              background: linear-gradient(to bottom, rgba(255, 255, 255, 0), white, rgba(255, 255, 255, 0));
+              background: -o-linear-gradient(to bottom, rgba(255, 255, 255, 0), white, rgba(255, 255, 255, 0));
+              width: 1px; }
+    .new-guide-container .section-box-two dl.box-03 dd.benefit-img {
+      padding-top: 53px; }
+    .new-guide-container .section-box-two dl.box-04 dd.benefit-img {
+      padding-top: 30px; }
+.new-guide-container .section-box-three .sub-title-one, .new-guide-container .section-box-three .sub-title-two {
+  position: relative;
+  width: 100%;
+  height: 30px;
+  margin-top: 20px; }
+  .new-guide-container .section-box-three .sub-title-one .line-align, .new-guide-container .section-box-three .sub-title-two .line-align {
+    width: 100%;
+    height: 1px;
+    background: #db6558;
+    position: absolute;
+    top: 10px; }
+  .new-guide-container .section-box-three .sub-title-one .title-word, .new-guide-container .section-box-three .sub-title-two .title-word {
+    position: absolute;
+    height: 40px;
+    background: #ffffff;
+    width: 140px;
+    position: absolute;
+    left: 150px;
+    top: -16px;
+    font-size: 28px;
+    color: #db6558;
+    text-align: center; }
+    .new-guide-container .section-box-three .sub-title-one .title-word i, .new-guide-container .section-box-three .sub-title-two .title-word i {
+      width: 4px;
+      height: 4px;
+      border-radius: 2px;
+      background: #db6558;
+      display: inline-block;
+      vertical-align: middle;
+      margin-top: 25px; }
+.new-guide-container .section-box-three .sub-title-two {
+  margin-top: 40px; }
+  .new-guide-container .section-box-three .sub-title-two .title-word {
+    left: 700px;
+    width: 160px; }
+.new-guide-container .section-box-three .mortgage-list {
+  margin-bottom: 50px; }
+  .new-guide-container .section-box-three .mortgage-list li {
+    display: inline-block;
+    width: 148px;
+    height: 148px;
+    border-radius: 74px;
+    background: #db6558;
+    color: #fff;
+    text-align: center;
+    font-size: 16px;
+    margin-left: 45px;
+    margin-right: 45px; }
+    .new-guide-container .section-box-three .mortgage-list li span {
+      display: inline-block;
+      padding-top: 40px; }
+.new-guide-container .section-box-three .creditor-right-info img {
+  margin-right: 60px; }
+.new-guide-container .section-box-three .creditor-right-info .btn-guide {
+  margin-top: 30px; }
+.new-guide-container .section-box-four img {
+  margin-bottom: 30px; }
+.new-guide-container .section-box-five .code-ma {
+  color: #4c4c4c;
+  font-size: 20px; }
+  .new-guide-container .section-box-five .code-ma span {
+    display: inline-block;
+    margin: 20px 60px;
+    font-weight: bold; }
+    .new-guide-container .section-box-five .code-ma span img {
+      border: 1px solid #e6e6e6;
+      margin-bottom: 20px; }
+
+.bottom-close, .bottom-open {
+  height: 138px;
+  position: fixed;
+  bottom: 0px;
+  background: rgba(0, 0, 0, 0.25);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#25000000, endColorstr=#25000000);
+  left: 0;
+  width: 100%;
+  z-index: 100; }
+
+.bottom-close {
+  width: 200px;
+  background: url("/images/sign/assure/bottom-close.png") no-repeat;
+  cursor: pointer; }
+
+.bottom-open .page-width {
+  position: relative;
+  top: -41px; }
+  .bottom-open .page-width .ren {
+    background: url("/images/sign/assure/bottom-ren.png") left 0px no-repeat;
+    width: 649px;
+    height: 207px;
+    display: inline-block;
+    vertical-align: middle;
+    background-size: 100%; }
+  .bottom-open .page-width .btn-normal {
+    margin-top: 40px;
+    margin-left: 30px;
+    display: inline-block; }
+  .bottom-open .page-width .to-close {
+    height: 80%;
+    width: 40px;
+    border-right: 1px solid #fff;
+    padding-right: 10px;
+    display: inline-block;
+    color: #fff;
+    display: inline-block;
+    margin-top: 90px;
+    cursor: pointer; }
+    .bottom-open .page-width .to-close i {
+      display: inline-block;
+      font-size: 20px; }
+    .bottom-open .page-width .to-close span {
+      display: inline-block;
+      vertical-align: middle;
+      padding-left: 6px; }
+
+@media screen and (max-width: 700px) {
+  .btn-guide {
+    padding: 3px 25px;
+    font-size: 12px;
+    margin-top: 10px !important; }
+
+  .pad-box {
+    padding: 10px 0 10px 0; }
+
+  .page-width {
+    padding: 10px; }
+
+  .header.page-width {
+    padding: 0; }
+
+  .quick-top-link {
+    display: none; }
+
+  .column-title-ac {
+    font-size: 15px; }
+
+  .column-title-ac i {
+    width: 4px;
+    height: 4px;
+    margin-right: 10px;
+    margin-left: 10px; }
+
+  .new-guide-container .line {
+    margin-top: 15px;
+    margin-bottom: 15px; }
+    .new-guide-container .line.hack {
+      display: block;
+      margin-bottom: 25px; }
+  .new-guide-container .section-box-one p {
+    font-size: 12px;
+    margin-bottom: 0; }
+  .new-guide-container .section-box-two dl {
+    margin-left: 10px; }
+    .new-guide-container .section-box-two dl dt {
+      font-size: 12px;
+      padding-left: 40px; }
+      .new-guide-container .section-box-two dl dt span {
+        top: -23px;
+        font-size: 40px;
+        font-weight: normal; }
+    .new-guide-container .section-box-two dl dd {
+      padding-left: 40px;
+      font-size: 10px; }
+      .new-guide-container .section-box-two dl dd.img-load {
+        padding-left: 0; }
+        .new-guide-container .section-box-two dl dd.img-load img {
+          width: 100%; }
+        .new-guide-container .section-box-two dl dd.img-load .arrow-rise {
+          position: absolute;
+          top: 15px;
+          left: 56px;
+          width: 50%;
+          height: 90px;
+          background-size: contain;
+          -webkit-transform-origin: 20px 90px;
+          -moz-transform-origin: 20px 90px; }
+  .new-guide-container .section-box-two dl dd.high-profit {
+    background: none;
+    padding-left: 0;
+    margin-top: 20px; }
+    .new-guide-container .section-box-two dl dd.high-profit .high-box {
+      position: relative !important;
+      left: auto !important;
+      right: auto !important;
+      top: auto !important;
+      width: 80%;
+      font-size: 12px;
+      margin: 10px auto;
+      background: #db6558;
+      color: #fff; }
+      .new-guide-container .section-box-two dl dd.high-profit .high-box span.line-align {
+        background: #db6558;
+        background: -webkit-linear-gradient(to right, rgba(255, 255, 255, 0), white, rgba(255, 255, 255, 0));
+        background: -webkit-linear-gradient(left, rgba(255, 255, 255, 0), white, rgba(255, 255, 255, 0));
+        background: linear-gradient(to right, rgba(255, 255, 255, 0), white, rgba(255, 255, 255, 0));
+        background: -o-linear-gradient(to right, rgba(255, 255, 255, 0), white, rgba(255, 255, 255, 0));
+        height: 1px; }
+      .new-guide-container .section-box-two dl dd.high-profit .high-box span.line-valign {
+        background: #db6558;
+        background: -webkit-linear-gradient(to bottom, rgba(255, 255, 255, 0), white, rgba(255, 255, 255, 0));
+        background: -webkit-linear-gradient(top, rgba(255, 255, 255, 0), white, rgba(255, 255, 255, 0));
+        background: linear-gradient(to bottom, rgba(255, 255, 255, 0), white, rgba(255, 255, 255, 0));
+        background: -o-linear-gradient(to bottom, rgba(255, 255, 255, 0), white, rgba(255, 255, 255, 0));
+        width: 1px; }
+  .new-guide-container .section-box-two dl.box-03.fl {
+    float: none; }
+  .new-guide-container .section-box-two dl.box-04.fr {
+    float: none; }
+  .new-guide-container .section-box-two dl dd.benefit-img {
+    padding-top: 20px !important;
+    padding-left: 0;
+    text-align: center;
+    padding-bottom: 20px; }
+    .new-guide-container .section-box-two dl dd.benefit-img img {
+      width: 60%; }
+  .new-guide-container .section-box-three .sub-title-one .title-word {
+    width: 90px;
+    left: 50px;
+    top: -16px;
+    font-size: 14px;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 50px; }
+  .new-guide-container .section-box-three .sub-title-two {
+    margin-top: 20px; }
+    .new-guide-container .section-box-three .sub-title-two .title-word {
+      top: -16px;
+      font-size: 14px;
+      text-align: center;
+      vertical-align: middle;
+      line-height: 50px;
+      left: auto;
+      width: 100px;
+      right: 30px; }
+  .new-guide-container .section-box-three .mortgage-list {
+    text-align: center;
+    margin-bottom: 20px; }
+    .new-guide-container .section-box-three .mortgage-list li {
+      display: inline-block;
+      width: 110px;
+      height: 110px;
+      text-align: center;
+      font-size: 11px;
+      margin: 10px; }
+      .new-guide-container .section-box-three .mortgage-list li span {
+        padding-top: 25px; }
+  .new-guide-container .section-box-three .creditor-right-info img {
+    width: 70%;
+    display: block;
+    float: none;
+    margin-right: 0;
+    margin: 0 auto 20px auto; }
+    .new-guide-container .section-box-three .creditor-right-info img .btn-guide {
+      margin-top: 10px; }
+  .new-guide-container .section-box-four img {
+    width: 100%; }
+  .new-guide-container .section-box-five .code-ma {
+    font-size: 12px; }
+    .new-guide-container .section-box-five .code-ma span {
+      margin: 0;
+      width: 45%; }
+      .new-guide-container .section-box-five .code-ma span img {
+        width: 90%; }
+
+  .assurance-container .fund-safety-box .safe-title {
+    font-size: 11px; }
+  .assurance-container .fund-safety-box .safe-info-list {
+    font-size: 12px; }
+    .assurance-container .fund-safety-box .safe-info-list dl {
+      clear: both;
+      height: auto;
+      overflow: auto;
+      width: 100%;
+      float: none;
+      margin-left: 0 !important;
+      margin-right: 0 !important; }
+      .assurance-container .fund-safety-box .safe-info-list dl dt {
+        width: 29%;
+        font-size: 13px;
+        float: left;
+        background-size: 100%; }
+        .assurance-container .fund-safety-box .safe-info-list dl dt em {
+          margin-top: 20px;
+          display: inline-block; }
+        .assurance-container .fund-safety-box .safe-info-list dl dt.list01, .assurance-container .fund-safety-box .safe-info-list dl dt.list02, .assurance-container .fund-safety-box .safe-info-list dl dt.list03 {
+          background-size: 100%; }
+        .assurance-container .fund-safety-box .safe-info-list dl dt.list02 em, .assurance-container .fund-safety-box .safe-info-list dl dt.list03 em {
+          margin-top: 30px; }
+      .assurance-container .fund-safety-box .safe-info-list dl dd {
+        padding-top: 0px;
+        float: right;
+        width: 65%; }
+  .assurance-container .trade-risk-box dd {
+    margin: 10px auto;
+    width: 100%;
+    box-sizing: border-box; }
+    .assurance-container .trade-risk-box dd b {
+      font-size: 15px; }
+    .assurance-container .trade-risk-box dd p {
+      font-size: 12px; }
+  .assurance-container .private-safety-box dd {
+    font-size: 12px;
+    margin-bottom: 10px; }
+  .assurance-container .data-info-safety {
+    height: 300px; }
+    .assurance-container .data-info-safety .axis-center {
+      width: 50px;
+      height: 278px;
+      left: 43%;
+      top: 15px;
+      background-size: contain; }
+    .assurance-container .data-info-safety .square-box-info {
+      font-size: 11px;
+      width: 37%;
+      z-index: 20;
+      padding: 5px !important;
+      border-radius: 5px; }
+      .assurance-container .data-info-safety .square-box-info .triangle {
+        top: 15px; }
+      .assurance-container .data-info-safety .square-box-info dt {
+        font-size: 12px; }
+      .assurance-container .data-info-safety .square-box-info:nth-child(1) {
+        left: 0px;
+        top: 10px; }
+      .assurance-container .data-info-safety .square-box-info:nth-child(2) {
+        right: 0px;
+        top: 68px;
+        left: auto; }
+      .assurance-container .data-info-safety .square-box-info:nth-child(3) {
+        left: 0px;
+        top: 135px; }
+      .assurance-container .data-info-safety .square-box-info:nth-child(4) {
+        right: 0px;
+        top: 200px;
+        left: auto; }
+
+  .bottom-open {
+    display: none; } }
+@media screen and (max-width: 350px) {
+  .assurance-container .data-info-safety {
+    height: 255px;
+    overflow: hidden; }
+    .assurance-container .data-info-safety .axis-center {
+      height: 278px;
+      width: 40px; }
+    .assurance-container .data-info-safety .square-box-info:nth-child(2) {
+      top: 58px; }
+    .assurance-container .data-info-safety .square-box-info:nth-child(3) {
+      top: 111px; }
+    .assurance-container .data-info-safety .square-box-info:nth-child(4) {
+      top: 162px; } }
+
+/*# sourceMappingURL=about_assurance.css.map */
