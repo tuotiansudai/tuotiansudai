@@ -10,7 +10,6 @@ import com.tuotiansudai.enums.MessageEventType;
 import com.tuotiansudai.enums.PushSource;
 import com.tuotiansudai.enums.PushType;
 import com.tuotiansudai.membership.repository.mapper.MembershipPrivilegeMapper;
-import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.message.EventMessage;
 import com.tuotiansudai.message.PushMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;

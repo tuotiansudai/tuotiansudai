@@ -14,6 +14,7 @@ import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.job.AutoLoanOutJob;
 import com.tuotiansudai.job.JobType;
+import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.message.*;
 import com.tuotiansudai.mq.client.model.MessageQueue;
@@ -136,13 +137,16 @@ public class InvestServiceImpl implements InvestService {
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.autumn.endTime}\")}")
     private Date activityAutumnEndTime;
 
+    @Autowired
+    private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
+
     @Override
     @Transactional
     public BaseDto<PayFormDataDto> invest(InvestDto dto) {
         AccountModel accountModel = accountMapper.findByLoginName(dto.getLoginName());
 
         String loginName = dto.getLoginName();
-        double rate = userMembershipEvaluator.evaluate(loginName).getFee();
+        double rate = membershipPrivilegePurchaseService.obtainServiceFee(loginName);
 
         InvestModel investModel = new InvestModel(idGenerator.generate(), Long.parseLong(dto.getLoanId()), null, AmountConverter.convertStringToCent(dto.getAmount()), dto.getLoginName(), new Date(), dto.getSource(), dto.getChannel(), rate);
         LoanModel loanModel = loanMapper.findById(Long.parseLong(dto.getLoanId()));
@@ -184,7 +188,7 @@ public class InvestServiceImpl implements InvestService {
         baseDto.setData(payDataDto);
 
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
-        double rate = userMembershipEvaluator.evaluate(loginName).getFee();
+        double rate = membershipPrivilegePurchaseService.obtainServiceFee(loginName);
 
         InvestModel investModel = new InvestModel(idGenerator.generate(), loanId, null, amount, loginName, new Date(), source, channel, rate);
         LoanModel loanModel = loanMapper.findById(loanId);

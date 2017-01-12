@@ -1,11 +1,14 @@
 package com.tuotiansudai.api.controller;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.tuotiansudai.api.controller.v1_0.MobileAppAgreementController;
 import com.tuotiansudai.api.controller.v1_0.MobileAppMembershipPrivilegePurchaseController;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppAgreementService;
 import com.tuotiansudai.api.service.v1_0.MobileAppMembershipPrivilegePurchaseService;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.membership.repository.model.MembershipPrivilegePriceType;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -44,6 +47,15 @@ public class MobileAppMembershipPrivilegePurchaseControllerTest extends Controll
     }
 
     @Test
-    public void should
+    public void shouldPurchaseIsSuccess() throws Exception {
+        BaseResponseDto<MembershipPrivilegePurchaseResponseDataDto> baseResponseDto = new BaseResponseDto<>(ReturnMessage.SUCCESS);
+        MembershipPrivilegePurchaseResponseDataDto membershipPrivilegePurchaseResponseDataDto = new MembershipPrivilegePurchaseResponseDataDto();
+        membershipPrivilegePurchaseResponseDataDto.setUrl("url");
+        membershipPrivilegePurchaseResponseDataDto.setRequestData("requestData");
+        baseResponseDto.setData(membershipPrivilegePurchaseResponseDataDto);
+        when(mobileAppMembershipPrivilegePurchaseService.purchase(any(MembershipPrivilegePurchaseRequestDto.class))).thenReturn(baseResponseDto);
+        doRequestWithServiceMockedTest("/get/membership-privilege-purchase", new MembershipPrivilegePurchaseRequestDto());
+        assertEquals(ReturnMessage.SUCCESS.getCode(), successResponseDto.getCode());
+    }
 
 }

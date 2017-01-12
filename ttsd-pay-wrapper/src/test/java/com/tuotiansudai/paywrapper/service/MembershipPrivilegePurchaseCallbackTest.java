@@ -13,8 +13,10 @@ import com.tuotiansudai.repository.mapper.SystemBillMapper;
 import com.tuotiansudai.repository.mapper.UserBillMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.util.DateConvertUtil;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.ibatis.javassist.compiler.ast.Member;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,6 +25,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -90,8 +93,8 @@ public class MembershipPrivilegePurchaseCallbackTest extends RepayBaseTest {
         MembershipPrivilegePurchaseModel membershipPrivilegePurchaseModelReturn = membershipPrivilegePurchaseMapper.findById(membershipPrivilegePurchaseModel.getId());
         assertNotNull(membershipPrivilegePurchaseModelReturn);
         assertThat(membershipPrivilegePurchaseModelReturn.getStatus(), is(MembershipPrivilegePurchaseStatus.SUCCESS));
-
-        MembershipPrivilegeModel membershipPrivilegeModel = membershipPrivilegeMapper.findValidPrivilegeModelByLoginName(userModel.getLoginName(),new Date());
+        Date currentDate = DateConvertUtil.plusMinutes(LocalDateTime.now(),5);
+        MembershipPrivilegeModel membershipPrivilegeModel = membershipPrivilegeMapper.findValidPrivilegeModelByLoginName(userModel.getLoginName(),currentDate);
 
         assertNotNull(membershipPrivilegeModel);
         assertThat(membershipPrivilegeModel.getLoginName(),is(userModel.getLoginName()));
