@@ -224,8 +224,33 @@ public class PointTaskServiceTest {
     }
 
     @Test
-    public void shouldEachRecommendInvestIsOk(){
-        
+    public void shouldFirstInvestReferrerCompleteEachRecommendInvestRewardIsOk(){
+        UserModel referrerUserModel = createFakeUser("referrerLoginName", null);
+        UserModel testName = createFakeUser("testName", referrerUserModel.getLoginName());
+        LoanModel loanModel = createFakeLoan(ProductType._180);
+        createFakeInvest(testName.getLoginName(), loanModel.getId(), 10l);
+
+        pointTaskService.completeAdvancedTask(PointTask.EACH_RECOMMEND_INVEST, testName.getLoginName());
+
+        List<UserPointTaskModel> userPointTaskModels = userPointTaskMapper.findByLoginName(referrerUserModel.getLoginName());
+        Optional<UserPointTaskModel> completeTask = userPointTaskModels.stream().findFirst().filter(userPointTaskModel -> pointTaskMapper.findById(userPointTaskModel.getPointTaskId()).getName().equals(PointTask.EACH_RECOMMEND_INVEST));
+        assertTrue(completeTask.isPresent());
+        assertEquals(completeTask.get().getPoint(), 200l);
+    }
+
+    @Test
+    public void shouldSecondInvestReferrerCompleteEachRecommendInvestRewardIsOk(){
+        UserModel referrerUserModel = createFakeUser("referrerLoginName", null);
+        UserModel testName = createFakeUser("testName", referrerUserModel.getLoginName());
+        LoanModel loanModel = createFakeLoan(ProductType._180);
+        createFakeInvest(testName.getLoginName(), loanModel.getId(), 10l);
+        createFakeInvest(testName.getLoginName(), loanModel.getId(), 110l);
+
+        pointTaskService.completeAdvancedTask(PointTask.EACH_RECOMMEND_INVEST, testName.getLoginName());
+
+        List<UserPointTaskModel> userPointTaskModels = userPointTaskMapper.findByLoginName(referrerUserModel.getLoginName());
+        Optional<UserPointTaskModel> completeTask = userPointTaskModels.stream().findFirst().filter(userPointTaskModel -> pointTaskMapper.findById(userPointTaskModel.getPointTaskId()).getName().equals(PointTask.EACH_RECOMMEND_INVEST));
+        assertTrue(!completeTask.isPresent());
     }
 
     @Test
