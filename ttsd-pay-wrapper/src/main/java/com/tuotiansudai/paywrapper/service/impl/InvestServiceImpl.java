@@ -629,8 +629,12 @@ public class InvestServiceImpl implements InvestService {
         // 更新筹款完成时间
         loanMapper.updateRaisingCompleteTime(loanId, new Date());
 
-        // 发送满标提醒
-        sendLoanRaisingCompleteNotify(loanId);
+        try {
+            // 发送满标提醒
+            sendLoanRaisingCompleteNotify(loanId);
+        } catch (Exception e) {
+            logger.error("send loan raising complete notify failed.", e);
+        }
 
         createAutoLoanOutJob(loanId);
     }
@@ -663,6 +667,7 @@ public class InvestServiceImpl implements InvestService {
 
         LoanRaisingCompleteNotifyDto dto = new LoanRaisingCompleteNotifyDto(loanRaisingCompleteNotifyMobileList, loanRaisingStartDate, loanName, loanAmountStr,
                 loanDuration, loanerName, agentUserName, loanRaisingCompleteTime);
+        logger.info("will send loan raising complete notify, loanId:" + loanId);
         smsWrapperClient.sendLoanRaisingCompleteNotify(dto);
     }
 
