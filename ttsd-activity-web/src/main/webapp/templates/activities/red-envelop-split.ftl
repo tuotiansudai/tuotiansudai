@@ -24,12 +24,12 @@
                 <span>我的红包</span>
             </div>
             <div class="envelop-box clearfix">
-                <div class="activity-rule">
-                    <span><i>给好友发送邀请链接</i></span>
-                    <span class="arrow"></span>
-                    <span class="middle"><i>好友完成注册领取8.88元红包</i></span>
-                    <span class="arrow"></span>
-                    <span><i>邀请成功赚取红包</i></span>
+                <div class="activity-rule clearfix">
+                    <span class="square"><i>给好友发送邀请链接</i></span>
+                    <span class="arrow">&nbsp;</span>
+                    <span class="square middle"><i>好友完成注册领取8.88元红包</i></span>
+                    <span class="arrow">&nbsp;</span>
+                    <span class="square"><i>邀请成功赚取红包</i></span>
                 </div>
 
                 <ul class="activity-msg-list">
