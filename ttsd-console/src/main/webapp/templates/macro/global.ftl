@@ -184,7 +184,8 @@
                 "header":{"text":"问答管理"},
                 "sidebar":[
                     {"name":"questionManage","text":"提问管理","link":"/ask-manage/questions","role":"'ADMIN', 'ASK_ADMIN'"},
-                    {"name":"answerManage","text":"回答管理","link":"/ask-manage/answers","role":"'ADMIN', 'ASK_ADMIN'"}
+                    {"name":"answerManage","text":"回答管理","link":"/ask-manage/answers","role":"'ADMIN', 'ASK_ADMIN'"},
+                    {"name":"embodyQuestionManage","text":"收录文章管理","link":"/ask-manage/embody-questions","role":"'ADMIN', 'ASK_ADMIN'"}
                 ]
             },
         {

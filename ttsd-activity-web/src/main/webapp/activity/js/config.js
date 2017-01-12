@@ -43,7 +43,8 @@ var require = {
         'drawCircle': staticServer+'/activity/js/dest/gift_circle_draw.min',
         'logintip': staticServer+'/activity/js/dest/login_tip.min',
         'register_common': staticServer+'/activity/js/dest/register_common.min',
-        'lottery_unit':staticServer+'/activity/js/dest/lottery_unit.min'
+        'lottery_unit':staticServer+'/activity/js/dest/lottery_unit.min',
+        'validator':staticServer+'/activity/js/dest/validator.min'
     },
     'waitSeconds':0,
     'shim': {

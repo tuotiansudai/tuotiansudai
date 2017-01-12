@@ -6,6 +6,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.ask.dto.QuestionDto;
 import com.tuotiansudai.ask.dto.QuestionResultDataDto;
 import com.tuotiansudai.ask.dto.QuestionWithCaptchaRequestDto;
+import com.tuotiansudai.ask.repository.dto.EmbodyQuestionDto;
 import com.tuotiansudai.ask.repository.mapper.AnswerMapper;
 import com.tuotiansudai.ask.repository.mapper.QuestionMapper;
 import com.tuotiansudai.ask.repository.model.AnswerModel;
@@ -203,4 +204,31 @@ public class QuestionService {
         data.setStatus(true);
         return new BaseDto<>(data);
     }
+
+    public QuestionModel findById(long id) {
+        return questionMapper.findById(id);
+    }
+
+    public BaseDto<BasePaginationDataDto> findEmbodyAllQuestions(int index, int pageSize) {
+        long count = questionMapper.countEmbodyAllQuestions();
+        List<QuestionModel> embodyAllQuestions = questionMapper.findEmbodyAllQuestions(PaginationUtil.calculateOffset(index, pageSize, count), pageSize);
+        return generateEmbodyPaginationData(index, pageSize, count, embodyAllQuestions);
+    }
+
+    private BaseDto<BasePaginationDataDto> generateEmbodyPaginationData(int index, int pageSize, long count, List<QuestionModel> questionModels) {
+        List<EmbodyQuestionDto> items = Lists.transform(questionModels, input -> new EmbodyQuestionDto(input));
+        BasePaginationDataDto<EmbodyQuestionDto> data = new BasePaginationDataDto<>(PaginationUtil.validateIndex(index, pageSize, count), pageSize, count, items);
+        data.setStatus(true);
+        return new BaseDto<>(data);
+    }
+
+
+    public void updateEmbodyById(long id) {
+        QuestionModel questionModel = questionMapper.findById(id);
+        questionModel.setEmbody(true);
+        questionMapper.update(questionModel);
+    }
+
+
 }
+
