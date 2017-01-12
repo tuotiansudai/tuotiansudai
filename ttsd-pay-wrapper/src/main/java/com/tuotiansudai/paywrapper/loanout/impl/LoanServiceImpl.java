@@ -49,7 +49,6 @@ import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.AmountTransfer;
-import com.tuotiansudai.util.JobManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -71,7 +70,7 @@ public class LoanServiceImpl implements LoanService {
 
     private final static String CANCEL_INVEST_PAY_BACK_ORDER_ID_TEMPLATE = "{0}" + CANCEL_INVEST_PAY_BACK_ORDER_ID_SEPARATOR + "{1}";
 
-    private final static String LOAN_OUT_IDEMPOTENT_CHECK_TEMPLATE = "LOAN_OUT_IDEMPOTENT_CHECK:{0}";
+    public final static String LOAN_OUT_IDEMPOTENT_CHECK_TEMPLATE = "LOAN_OUT_IDEMPOTENT_CHECK:{0}";
 
     private final static String DO_PAY_REQUEST = "DO_PAY_REQUEST";
 
@@ -110,9 +109,6 @@ public class LoanServiceImpl implements LoanService {
 
     @Autowired
     private PayAsyncClient payAsyncClient;
-
-    @Autowired
-    private JobManager jobManager;
 
     @Autowired
     private RedisWrapperClient redisWrapperClient;

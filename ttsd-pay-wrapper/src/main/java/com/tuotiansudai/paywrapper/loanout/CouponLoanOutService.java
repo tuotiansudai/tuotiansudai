@@ -1,5 +1,7 @@
 package com.tuotiansudai.paywrapper.loanout;
 
+import com.tuotiansudai.exception.AmountTransferException;
+
 import java.util.Map;
 
 public interface CouponLoanOutService {
@@ -8,5 +10,5 @@ public interface CouponLoanOutService {
 
     String transferRedEnvelopNotify(Map<String, String> paramsMap, String queryString);
 
-    boolean sendRedEnvelopTransferInBalanceCallBack(long userCouponId);
+    boolean sendRedEnvelopTransferInBalanceCallBack(long userCouponId) throws AmountTransferException;
 }

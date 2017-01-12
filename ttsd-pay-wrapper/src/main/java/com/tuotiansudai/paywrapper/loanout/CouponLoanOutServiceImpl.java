@@ -3,20 +3,24 @@ package com.tuotiansudai.paywrapper.loanout;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
+import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.enums.CouponType;
+import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.message.TransferRedEnvelopCallbackMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
+import com.tuotiansudai.paywrapper.loanout.impl.LoanServiceImpl;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferNotifyMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.TransferMapper;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.ProjectTransferNotifyRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.sync.request.SyncRequestStatus;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.TransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.TransferResponseModel;
 import com.tuotiansudai.paywrapper.service.SystemBillService;
@@ -64,12 +68,22 @@ public class CouponLoanOutServiceImpl implements CouponLoanOutService {
     @Autowired
     private MQWrapperClient mqWrapperClient;
 
+    @Autowired
+    private RedisWrapperClient redisWrapperClient;
+
+    private final static String SEND_RED_ENVELOP = "SEND_RED_ENVELOP";
+
     @Override
     public boolean sendRedEnvelope(long loanId) {
         boolean result = true;
-        //TODO redis 幂等
-        List<UserCouponModel> userCouponModels = userCouponMapper.findByLoanId(loanId, Lists.newArrayList(CouponType.RED_ENVELOPE));
+        String redisKey = MessageFormat.format(LoanServiceImpl.LOAN_OUT_IDEMPOTENT_CHECK_TEMPLATE, String.valueOf(loanId));
+        String beforeSendStatus = redisWrapperClient.hget(redisKey, SEND_RED_ENVELOP);
 
+        if (!Strings.isNullOrEmpty(beforeSendStatus) && beforeSendStatus.equals(SyncRequestStatus.SUCCESS.name())) {
+            return true;
+        }
+
+        List<UserCouponModel> userCouponModels = userCouponMapper.findByLoanId(loanId, Lists.newArrayList(CouponType.RED_ENVELOPE));
         for (UserCouponModel userCouponModel : userCouponModels) {
             // 实际收益为0，表示这个红包还没有发给用户，现在可以发送（幂等操作）
             if (userCouponModel.getActualInterest() == 0) {
@@ -89,6 +103,8 @@ public class CouponLoanOutServiceImpl implements CouponLoanOutService {
                 }
             }
         }
+
+        redisWrapperClient.hset(redisKey, SEND_RED_ENVELOP, result ? SyncRequestStatus.SUCCESS.name() : SyncRequestStatus.FAILURE.name());
         return result;
     }
 
@@ -106,10 +122,17 @@ public class CouponLoanOutServiceImpl implements CouponLoanOutService {
             return null;
         }
 
-        //TODO callback not success return, userCouponModel == null
+        if (!callbackRequest.isSuccess()) {
+            return callbackRequest.getResponseData();
+        }
 
         long userCouponId = Long.parseLong(callbackRequest.getOrderId());
         UserCouponModel userCouponModel = userCouponMapper.findById(userCouponId);
+        if (userCouponModel == null) {
+            logger.error(MessageFormat.format("[标的放款] TransferRedEnvelopCallback payback callback failed, order id({0}) is not exist", callbackRequest.getOrderId()));
+            return callbackRequest.getResponseData();
+        }
+
         TransferRedEnvelopCallbackMessage transferRedEnvelopCallbackMessage = new TransferRedEnvelopCallbackMessage(userCouponModel.getLoanId(),
                 userCouponModel.getInvestId(),
                 userCouponModel.getLoginName(),
@@ -123,8 +146,7 @@ public class CouponLoanOutServiceImpl implements CouponLoanOutService {
     }
 
     @Override
-    //TODO: 抛异常回滚数据
-    public boolean sendRedEnvelopTransferInBalanceCallBack(long userCouponId) {
+    public boolean sendRedEnvelopTransferInBalanceCallBack(long userCouponId) throws AmountTransferException {
         logger.info(MessageFormat.format("[标的放款] send redEnvelop transfer in balance callBack, userCouponId:{0}", String.valueOf(userCouponId)));
         UserCouponModel userCouponModel = userCouponMapper.findById(userCouponId);
         if (userCouponModel.getActualInterest() != 0) {
@@ -149,7 +171,7 @@ public class CouponLoanOutServiceImpl implements CouponLoanOutService {
             userCouponMapper.update(userCouponModel);
         } catch (Exception e) {
             logger.error(MessageFormat.format("red envelope coupon transfer in balance failed (userCouponId = {0})", String.valueOf(userCouponModel.getId())), e);
-            return false;
+            throw e;
         }
         return true;
     }
