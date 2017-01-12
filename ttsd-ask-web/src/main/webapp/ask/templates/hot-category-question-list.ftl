@@ -1,7 +1,5 @@
-<ul>
-    <#list hotCategoryList as hotCategory>
-        <li>
-            <a href="${hotCategory.linkUrl!}" target="_blank">${hotCategory.name!}</a>
-        </li>
+<#if siteMapDataDtoList??>
+    <#list siteMapDataDtoList as siteMapDataDto>
+            <a href="${siteMapDataDto.linkUrl!}" target="_blank">${siteMapDataDto.name!}</a>
     </#list>
-</ul>
+</#if>

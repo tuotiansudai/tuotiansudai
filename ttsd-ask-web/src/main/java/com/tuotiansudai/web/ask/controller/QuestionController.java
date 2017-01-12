@@ -93,7 +93,7 @@ public class QuestionController {
         return modelAndView;
     }
 
-    @RequestMapping(path = "/hot-category-list", method = RequestMethod.GET)
+    @RequestMapping(path = "/sitemap/hot-category-list", method = RequestMethod.GET)
     public ModelAndView getQuestionColumn() {
         ModelAndView modelAndView = new ModelAndView("hot-category-list");
         List<SiteMapDataDto> siteMapDataDtoList = Lists.newArrayList();
@@ -107,20 +107,22 @@ public class QuestionController {
         return modelAndView;
     }
 
-    @RequestMapping(path = "/getSiteMap", method = RequestMethod.GET)
-    @ResponseBody
-    public List<SiteMapDataDto> getSiteMap() {
-        return embodyQuestionService.getSiteMapData();
-    }
-
-    @RequestMapping(path = "/cms-category-list", method = RequestMethod.GET)
-    public ModelAndView getCmsColumn() {
-        ModelAndView modelAndView = new ModelAndView("cms-category-list");
-        modelAndView.addObject("cmsCategoryList", embodyQuestionService.getCmsSiteMapCategory());
+    @RequestMapping(path = "/sitemap/category/{tag:(?:SECURITIES|BANK|FUTURES|P2P|TRUST|LOAN|FUND|CROWD_FUNDING|INVEST|CREDIT_CARD|FOREX|STOCK|OTHER)}", method = RequestMethod.GET)
+    public ModelAndView getQuestionsByCategoryList(@PathVariable Tag tag) {
+        ModelAndView modelAndView = new ModelAndView("/hot-category-question-list");
+        modelAndView.addObject("siteMapDataDtoList", embodyQuestionService.getAskSiteMapData(tag));
         return modelAndView;
     }
 
-    @RequestMapping(path = "/cms-category-article-list", method = RequestMethod.GET)
+
+    @RequestMapping(path = "/sitemap/cms-category-list", method = RequestMethod.GET)
+    public ModelAndView getCmsColumn() {
+        ModelAndView modelAndView = new ModelAndView("cms-category-list");
+//        modelAndView.addObject("cmsCategoryList", embodyQuestionService.getCmsSiteMapCategory());
+        return modelAndView;
+    }
+
+    @RequestMapping(path = "/sitemap//cms-category-article-list", method = RequestMethod.GET)
     public ModelAndView getCmsArticleList(@RequestParam(value = "category", defaultValue = "") String category) {
         ModelAndView modelAndView = new ModelAndView("cms-category-article-list");
         // modelAndView.addObject("cmsCategoryArticleList", embodyQuestionService.getCmsSiteMapCategoryArticle(category));

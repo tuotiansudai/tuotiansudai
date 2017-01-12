@@ -27,6 +27,7 @@ import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -54,18 +55,11 @@ public class HomeServiceImpl implements HomeService {
     private LoanDetailsMapper loanDetailsMapper;
 
     @Autowired
-    private OkHttpClient httpClient;
-
-    @Value("${ask.server}")
-    private String askServer;
-
-    private String askSiteMapKey = "ask:sitemap";
-
-    @Autowired
     private RedisWrapperClient redisWrapperClient;
 
-    private static final String SITEMAP = "/question/getSiteMap";
+    private static final String NO_EMBODY_QUESTIONS = "web:no_embody_ask_questions";
 
+    private static final String CMS_CATEGORY = "cms:no_embody_questions";
     public List<HomeLoanDto> getNormalLoans() {
         return getLoans().stream().filter(loan -> !loan.getProductType().equals(ProductType._30) && !loan.getActivityType().equals(ActivityType.NEWBIE)).collect(Collectors.toList());
     }
@@ -142,17 +136,15 @@ public class HomeServiceImpl implements HomeService {
 
     @Override
     public List<SiteMapDataDto> getSiteMapData() {
-        String redisJson = redisWrapperClient.get(askSiteMapKey);
-        if (Strings.isNullOrEmpty(redisJson)) {
-            String loadJSON = loadJSON(askServer + SITEMAP);
-            if (!Strings.isNullOrEmpty(loadJSON)) {
-                redisWrapperClient.setex(askSiteMapKey, 24 * 60 * 60, loadJSON);
-            }
-            return JsonToList(loadJSON);
-        }
+        return null;
 
-        return JsonToList(redisJson);
     }
+
+
+
+
+
+
 
     public List<SiteMapDataDto> JsonToList(String json) {
         List<SiteMapDataDto> siteMapDataDtoList = Lists.newArrayList();
@@ -171,20 +163,5 @@ public class HomeServiceImpl implements HomeService {
         return siteMapDataDtoList;
     }
 
-    public String loadJSON(String url) {
-        try {
-            Request request = new Request.Builder().url(url).get().build();
-            logger.info("send ask request ");
-            httpClient.setConnectTimeout(3, TimeUnit.SECONDS);
-            httpClient.setRetryOnConnectionFailure(false);
-            Response response = httpClient.newCall(request).execute();
-            String responseBodyString = response.body().string();
-            logger.info("ask response, body: " + responseBodyString);
-            return responseBodyString;
-        } catch (IOException e) {
-            logger.error(e.getLocalizedMessage(), e);
-            return "";
-        }
-    }
 
 }
