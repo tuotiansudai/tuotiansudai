@@ -21,6 +21,7 @@ class UTRunner(object):
     def config_file(self):
         print "Generate config file..."
         config_deploy.deploy('UT', "./ttsd-config/src/main/resources/", "{0}/ttsd-config/ttsd-env.properties".format(self._config_path))
+        config_deploy.verify(self._config_path)
 
     def init_docker(self):
         print "Initialing docker..."
