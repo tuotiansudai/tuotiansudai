@@ -71,5 +71,5 @@ def compare_a_b(a, b):
 
 def verify(config_path):
     print 'verify config file ...'
-    compare_a_b(config_path + 'ttsd-env.properties', config_path + 'ttsd-env.properties.20170112')
-    compare_a_b(config_path + 'ttsd-env.properties.20170112', config_path + 'ttsd-env.properties')
+    compare_a_b(config_path + '/ttsd-env.properties', config_path + '/ttsd-env.properties.20170112')
+    compare_a_b(config_path + '/ttsd-env.properties.20170112', config_path + '/ttsd-env.properties')
