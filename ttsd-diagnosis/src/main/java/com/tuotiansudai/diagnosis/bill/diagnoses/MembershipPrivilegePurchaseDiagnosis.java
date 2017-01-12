@@ -5,7 +5,6 @@ import com.tuotiansudai.diagnosis.support.DiagnosisContext;
 import com.tuotiansudai.diagnosis.support.SingleObjectDiagnosis;
 import com.tuotiansudai.enums.MembershipPrivilegePurchaseStatus;
 import com.tuotiansudai.enums.UserBillBusinessType;
-import com.tuotiansudai.enums.MembershipPurchaseStatus;
 import com.tuotiansudai.membership.repository.mapper.MembershipPrivilegePurchaseMapper;
 import com.tuotiansudai.membership.repository.model.MembershipPrivilegePurchaseModel;
 import com.tuotiansudai.repository.model.UserBillModel;
@@ -15,13 +14,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class MembershipPurchaseDiagnosis extends UserBillBusinessDiagnosis {
-    private static Logger logger = LoggerFactory.getLogger(MembershipPurchaseDiagnosis.class);
+public class MembershipPrivilegePurchaseDiagnosis extends UserBillBusinessDiagnosis {
+    private static Logger logger = LoggerFactory.getLogger(MembershipPrivilegePurchaseDiagnosis.class);
 
     private final MembershipPrivilegePurchaseMapper membershipPrivilegePurchaseMapper;
 
     @Autowired
-    public MembershipPurchaseDiagnosis(MembershipPrivilegePurchaseMapper membershipPrivilegePurchaseMapper) {
+    public MembershipPrivilegePurchaseDiagnosis(MembershipPrivilegePurchaseMapper membershipPrivilegePurchaseMapper) {
         this.membershipPrivilegePurchaseMapper = membershipPrivilegePurchaseMapper;
     }
 

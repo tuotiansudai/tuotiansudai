@@ -6,11 +6,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
+@RestController
 @Api(description = "增值特权购买")
 public class MobileAppMembershipPrivilegePurchaseController extends MobileAppBaseController{
     @Autowired
@@ -18,7 +16,7 @@ public class MobileAppMembershipPrivilegePurchaseController extends MobileAppBas
 
     @RequestMapping(value = "/get/membership-privilege-price", method = RequestMethod.POST)
     @ApiOperation("增值特权购买价格列表")
-    public BaseResponseDto<MembershipPrivilegePriceResponseDto> obtainMembershipPrivilegePrices(){
+    public BaseResponseDto<MembershipPrivilegePriceResponseDto> obtainMembershipPrivilegePrices(@RequestBody BaseParamDto baseParam){
         BaseResponseDto<MembershipPrivilegePriceResponseDto> baseResponseDto = new BaseResponseDto<>(ReturnMessage.SUCCESS);
         baseResponseDto.setData(mobileAppMembershipPrivilegePurchaseService.obtainMembershipPrivilegePrices());
         return baseResponseDto;
@@ -27,6 +25,7 @@ public class MobileAppMembershipPrivilegePurchaseController extends MobileAppBas
     @RequestMapping(value = "/get/membership-privilege-purchase", method = RequestMethod.POST)
     @ApiOperation("增值特权购买")
     public BaseResponseDto<MembershipPrivilegePurchaseResponseDataDto> purchase(@RequestBody MembershipPrivilegePurchaseRequestDto requestDto) {
+        requestDto.getBaseParam().setUserId(getLoginName());
         return mobileAppMembershipPrivilegePurchaseService.purchase(requestDto);
     }
 

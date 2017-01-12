@@ -38,10 +38,15 @@ public class MobileAppMembershipPrivilegePurchaseServiceImpl implements MobileAp
 
     @Override
     public BaseResponseDto<MembershipPrivilegePurchaseResponseDataDto> purchase(MembershipPrivilegePurchaseRequestDto requestDto) {
-        BaseResponseDto<MembershipPrivilegePurchaseResponseDataDto> response = new BaseResponseDto<>(ReturnMessage.MEMBERSHIP_PURCHASE_FAILED);
+        BaseResponseDto<MembershipPrivilegePurchaseResponseDataDto> response = new BaseResponseDto<>(ReturnMessage.MEMBERSHIP_PRIVILEGE_PURCHASE_FAILED);
 
         try {
-            BaseDto<PayFormDataDto> formData = membershipPrivilegePurchaseService.purchase(LoginUserInfo.getLoginName(), requestDto.getDuration(), Source.valueOf(requestDto.getBaseParam().getPlatform().toUpperCase()));
+            MembershipPrivilegePriceType membershipPrivilegePriceType = MembershipPrivilegePriceType.getPriceTypeByDuration(requestDto.getDuration());
+            if(membershipPrivilegePriceType == null){
+                logger.info(String.format("[membership privilege purchase] duration%s is invalid",String.valueOf(requestDto.getDuration())));
+                return response;
+            }
+            BaseDto<PayFormDataDto> formData = membershipPrivilegePurchaseService.purchase(requestDto.getBaseParam().getUserId(), membershipPrivilegePriceType, Source.valueOf(requestDto.getBaseParam().getPlatform().toUpperCase()));
             if (formData.isSuccess()) {
                 response = new BaseResponseDto<>(ReturnMessage.SUCCESS);
                 MembershipPrivilegePurchaseResponseDataDto dataDto = new MembershipPrivilegePurchaseResponseDataDto();
@@ -51,10 +56,10 @@ public class MobileAppMembershipPrivilegePurchaseServiceImpl implements MobileAp
             }
         } catch (MembershipPrivilegeIsPurchasedException e) {
             logger.error(e.getLocalizedMessage(), e);
-            response = new BaseResponseDto<>(ReturnMessage.MEMBERSHIP_IS_PURCHASED);
+            response = new BaseResponseDto<>(ReturnMessage.MEMBERSHIP_PRIVILEGE_IS_PURCHASED);
         } catch (NotEnoughAmountException e) {
             logger.error(e.getLocalizedMessage(), e);
-            response = new BaseResponseDto<>(ReturnMessage.MEMBERSHIP_PURCHASE_NO_ENOUGH_AMOUNT);
+            response = new BaseResponseDto<>(ReturnMessage.MEMBERSHIP_PRIVILEGE_PURCHASE_NO_ENOUGH_AMOUNT);
         } catch (UnsupportedEncodingException e) {
             logger.error(e.getLocalizedMessage(), e);
         }

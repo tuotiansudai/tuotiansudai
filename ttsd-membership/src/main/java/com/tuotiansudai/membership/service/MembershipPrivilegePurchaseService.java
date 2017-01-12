@@ -36,12 +36,11 @@ public class MembershipPrivilegePurchaseService {
     @Autowired
     private MembershipPrivilegeMapper membershipPrivilegeMapper;
 
-    public BaseDto<PayFormDataDto> purchase(String loginName,int duration, Source source) throws MembershipPrivilegeIsPurchasedException, NotEnoughAmountException {
-        logger.info(String.format("[membership privilege purchase:] user(%s) purchase duration(%s)",loginName,String.valueOf(duration)));
+    public BaseDto<PayFormDataDto> purchase(String loginName,MembershipPrivilegePriceType membershipPrivilegePriceType, Source source) throws MembershipPrivilegeIsPurchasedException, NotEnoughAmountException {
+        logger.info(String.format("[membership privilege purchase:] user(%s) purchase duration(%s)",loginName,String.valueOf(membershipPrivilegePriceType.getDuration())));
         if(membershipPrivilegeMapper.findValidPrivilegeModelByLoginName(loginName,new Date()) != null){
             throw new MembershipPrivilegeIsPurchasedException();
         }
-        MembershipPrivilegePriceType membershipPrivilegePriceType = MembershipPrivilegePriceType.getPriceTypeByDuration(duration);
         UserModel userModel = userMapper.findByLoginNameOrMobile(loginName);
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
 
