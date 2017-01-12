@@ -38,7 +38,7 @@
             <div class="title-item">
                 <span class="title-sm">点亮窗花拆红包</span>
             </div>
-            <h3 class="title-info">活动期间累计投资满一定金额，可点亮一个窗花，获得该窗花对应的红包奖励 ${taskProgress[0]},${taskProgress[1]},${taskProgress[2]},${taskProgress[3]}</h3>
+            <h3 class="title-info">活动期间累计投资满一定金额，可点亮一个窗花，获得该窗花对应的红包奖励</h3>
             <div class="red-bag-item">
                 <ul class="money-item clearfix">
                     <li class="<#if taskProgress[0] == 1>active</#if>">
