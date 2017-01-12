@@ -3,36 +3,36 @@ package com.tuotiansudai.message;
 
 public class TransferRedEnvelopCallbackMessage {
 
-    private long loanId;
+    private Long loanId;
 
-    private long investId;
+    private Long investId;
 
     private String loginName;
 
-    private long userCouponId;
+    private Long userCouponId;
 
     public TransferRedEnvelopCallbackMessage(){}
 
-    public TransferRedEnvelopCallbackMessage(long loanId, long investId, String loginName, long userCouponId) {
+    public TransferRedEnvelopCallbackMessage(Long loanId, Long investId, String loginName, Long userCouponId) {
         this.loanId = loanId;
         this.investId = investId;
         this.loginName = loginName;
         this.userCouponId = userCouponId;
     }
 
-    public long getLoanId() {
+    public Long getLoanId() {
         return loanId;
     }
 
-    public void setLoanId(long loanId) {
+    public void setLoanId(Long loanId) {
         this.loanId = loanId;
     }
 
-    public long getInvestId() {
+    public Long getInvestId() {
         return investId;
     }
 
-    public void setInvestId(long investId) {
+    public void setInvestId(Long investId) {
         this.investId = investId;
     }
 
@@ -44,11 +44,11 @@ public class TransferRedEnvelopCallbackMessage {
         this.loginName = loginName;
     }
 
-    public long getUserCouponId() {
+    public Long getUserCouponId() {
         return userCouponId;
     }
 
-    public void setUserCouponId(long userCouponId) {
+    public void setUserCouponId(Long userCouponId) {
         this.userCouponId = userCouponId;
     }
 }

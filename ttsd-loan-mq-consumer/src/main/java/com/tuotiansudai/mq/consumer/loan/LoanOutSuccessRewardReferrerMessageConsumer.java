@@ -69,12 +69,14 @@ public class LoanOutSuccessRewardReferrerMessageConsumer implements MessageConsu
 
         long loanId = loanOutInfo.getLoanId();
 
-        logger.info("[标的放款MQ] LoanOutSuccess_RewardReferrer is execute，loanId:" + loanId);
-        boolean result = false;
+        logger.info("[标的放款MQ] LoanOutSuccess_RewardReferrer is executing，loanId:" + loanId);
+        boolean result;
         try {
             result = payWrapperClient.sendRewardReferrer(loanId).isSuccess();
         } catch (Exception e) {
-            logger.error(MessageFormat.format("[标的放款MQ] LoanOutSuccess_RewardReferrer is fail, message:{0}", e));
+            logger.error(MessageFormat.format("[标的放款MQ] LoanOutSuccess_RewardReferrer sendRewardReferrer is fail,loanId({0}), error:{0}",String.valueOf(loanId), e));
+            smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("放款发放推荐人奖励失败, 业务处理异常"));
+            return;
         }
 
         if (!result) {

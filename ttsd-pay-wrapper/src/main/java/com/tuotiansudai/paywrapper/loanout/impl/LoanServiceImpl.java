@@ -342,9 +342,10 @@ public class LoanServiceImpl implements LoanService {
     }
 
     //将成功的投资人冻结金额转出
-    private void processInvestFreezeAmountForLoanOut(List<InvestModel> investList, long loanId) {
+    private boolean processInvestFreezeAmountForLoanOut(List<InvestModel> investList, long loanId) {
+        boolean result = true;
         String redisKey = MessageFormat.format(LOAN_OUT_IDEMPOTENT_CHECK_TEMPLATE, String.valueOf(loanId));
-        investList.forEach(invest -> {
+        for (InvestModel invest : investList) {
             String transferKey = MessageFormat.format(TRANSFER_OUT_FREEZE, String.valueOf(invest.getId()));
             try {
                 String statusString = redisWrapperClient.hget(redisKey, transferKey);
@@ -358,14 +359,16 @@ public class LoanServiceImpl implements LoanService {
                     redisWrapperClient.hset(redisKey, transferKey, SyncRequestStatus.SUCCESS.name());
                 }
             } catch (Exception e) {
+                result = false;
                 redisWrapperClient.hset(redisKey, transferKey, SyncRequestStatus.FAILURE.name());
                 logger.error(MessageFormat.format("[标的放款]: loanId({0}) transfer out freeze failed invest({1})", String.valueOf(loanId), String.valueOf(invest.getId())));
             }
-        });
+        }
+        return result;
     }
 
     // 把借款转给代理人账户
-    private void processLoanAgentAccountForLoanOut(long loanId, String agentLoginName, long amount) {
+    private boolean processLoanAgentAccountForLoanOut(long loanId, String agentLoginName, long amount) {
         String redisKey = MessageFormat.format(LOAN_OUT_IDEMPOTENT_CHECK_TEMPLATE, String.valueOf(loanId));
         try {
             String statusString = redisWrapperClient.hget(redisKey, TRANSFER_IN_BALANCE);
@@ -376,7 +379,9 @@ public class LoanServiceImpl implements LoanService {
         } catch (Exception e) {
             redisWrapperClient.hset(redisKey, TRANSFER_IN_BALANCE, SyncRequestStatus.FAILURE.name());
             logger.error(MessageFormat.format("[标的放款]: loanId({0}) transfer in agent account failed)", String.valueOf(loanId)));
+            return false;
         }
+        return true;
     }
 
     @Override
@@ -508,12 +513,14 @@ public class LoanServiceImpl implements LoanService {
         }
 
         logger.debug("[标的放款]：处理该标的的所有投资的账务信息，标的ID:" + loanId);
-        //TODO : 发失败短信
-        this.processInvestFreezeAmountForLoanOut(successInvestList, loanId);
+        if (!this.processInvestFreezeAmountForLoanOut(successInvestList, loanId)) {
+            this.fatalLog(loanId, "处理该标的的所有投资的账务信息失败", null);
+        }
 
         logger.debug("[标的放款]：把借款转给代理人账户，标的ID:" + loanId);
-        //TODO : 发失败短信
-        this.processLoanAgentAccountForLoanOut(loanId, loan.getAgentLoginName(), investAmountTotal);
+        if (!this.processLoanAgentAccountForLoanOut(loanId, loan.getAgentLoginName(), investAmountTotal)) {
+            this.fatalLog(loanId, "把借款转给代理人账户失败", null);
+        }
 
         LoanOutSuccessMessage loanOutInfo = new LoanOutSuccessMessage(loanId);
         try {

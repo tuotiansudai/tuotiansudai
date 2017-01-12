@@ -3,19 +3,20 @@ package com.tuotiansudai.message;
 
 public class TransferReferrerRewardCallbackMessage {
 
-    private long loanId;
+    private Long loanId;
 
-    private long investId;
+    private Long investId;
 
     private String loginName;
 
     private String referrer;
 
-    private long referrerRewardId;
+    private Long referrerRewardId;
 
-    public TransferReferrerRewardCallbackMessage(){}
+    public TransferReferrerRewardCallbackMessage() {
+    }
 
-    public TransferReferrerRewardCallbackMessage(long loanId, long investId, String loginName, String referrer, long referrerRewardId) {
+    public TransferReferrerRewardCallbackMessage(Long loanId, Long investId, String loginName, String referrer, Long referrerRewardId) {
         this.loanId = loanId;
         this.investId = investId;
         this.loginName = loginName;
@@ -23,27 +24,19 @@ public class TransferReferrerRewardCallbackMessage {
         this.referrerRewardId = referrerRewardId;
     }
 
-    public long getReferrerRewardId() {
-        return referrerRewardId;
-    }
-
-    public void setReferrerRewardId(long referrerRewardId) {
-        this.referrerRewardId = referrerRewardId;
-    }
-
-    public long getLoanId() {
+    public Long getLoanId() {
         return loanId;
     }
 
-    public void setLoanId(long loanId) {
+    public void setLoanId(Long loanId) {
         this.loanId = loanId;
     }
 
-    public long getInvestId() {
+    public Long getInvestId() {
         return investId;
     }
 
-    public void setInvestId(long investId) {
+    public void setInvestId(Long investId) {
         this.investId = investId;
     }
 
@@ -61,5 +54,13 @@ public class TransferReferrerRewardCallbackMessage {
 
     public void setReferrer(String referrer) {
         this.referrer = referrer;
+    }
+
+    public Long getReferrerRewardId() {
+        return referrerRewardId;
+    }
+
+    public void setReferrerRewardId(Long referrerRewardId) {
+        this.referrerRewardId = referrerRewardId;
     }
 }
