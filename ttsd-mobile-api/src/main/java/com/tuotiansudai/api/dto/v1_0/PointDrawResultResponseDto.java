@@ -1,20 +1,12 @@
 package com.tuotiansudai.api.dto.v1_0;
 
-
 import com.tuotiansudai.activity.repository.dto.DrawLotteryResultDto;
-import com.tuotiansudai.activity.repository.model.LotteryPrize;
-import com.tuotiansudai.point.repository.model.ProductOrderViewDto;
 import io.swagger.annotations.ApiModelProperty;
-
-import java.text.SimpleDateFormat;
 
 public class PointDrawResultResponseDto extends BaseResponseDataDto {
 
     @ApiModelProperty(value = "抽奖奖品位置", example = "1")
     private long seq;
-
-    @ApiModelProperty(value = "抽奖状态码", example = "0-成功 1-用户不存在 2-未登录 3-积分不足")
-    private long returnCode;
 
     @ApiModelProperty(value = "奖品名称", example = "10元红包")
     private String prizeName;
@@ -23,17 +15,16 @@ public class PointDrawResultResponseDto extends BaseResponseDataDto {
     private String prizeType;
 
     public PointDrawResultResponseDto(DrawLotteryResultDto drawLotteryResultDto) {
-        this.returnCode = drawLotteryResultDto.getReturnCode();
-        if(this.returnCode == 0){
+        if (drawLotteryResultDto.getReturnCode() == 0) {
             this.seq = this.getSeq(drawLotteryResultDto.getPrize());
             this.prizeName = drawLotteryResultDto.getPrizeValue();
             this.prizeType = this.getPrizeTypeBylotteryPrize(drawLotteryResultDto.getPrize());
         }
     }
 
-    private long getSeq(String lotteryPrize){
+    private long getSeq(String lotteryPrize) {
 
-        switch (lotteryPrize){
+        switch (lotteryPrize) {
             case "POINT_SHOP_RED_ENVELOPE_10":
                 return 1;
             case "POINT_SHOP_POINT_500":
@@ -54,8 +45,8 @@ public class PointDrawResultResponseDto extends BaseResponseDataDto {
         return 1;
     }
 
-    private String getPrizeTypeBylotteryPrize(String lotteryPrize){
-        switch (lotteryPrize){
+    private String getPrizeTypeBylotteryPrize(String lotteryPrize) {
+        switch (lotteryPrize) {
             case "POINT_SHOP_RED_ENVELOPE_10":
             case "POINT_SHOP_INTEREST_COUPON_2":
             case "POINT_SHOP_RED_ENVELOPE_50":
@@ -78,14 +69,6 @@ public class PointDrawResultResponseDto extends BaseResponseDataDto {
 
     public void setSeq(long seq) {
         this.seq = seq;
-    }
-
-    public long getReturnCode() {
-        return returnCode;
-    }
-
-    public void setReturnCode(long returnCode) {
-        this.returnCode = returnCode;
     }
 
     public String getPrizeName() {

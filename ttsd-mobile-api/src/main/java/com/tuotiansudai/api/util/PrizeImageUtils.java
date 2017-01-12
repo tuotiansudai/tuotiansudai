@@ -41,7 +41,7 @@ public class PrizeImageUtils {
             }
         }
         PrizeImageListResponseDataDto dataDto = new PrizeImageListResponseDataDto();
-        dataDto.setPrizeImageResponseDataDtoList(prizeImages);
+        dataDto.setPrizeImageList(prizeImages);
         return dataDto;
     }
 

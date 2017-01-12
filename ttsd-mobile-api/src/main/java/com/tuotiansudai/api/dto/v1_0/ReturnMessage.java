@@ -166,7 +166,7 @@ public enum ReturnMessage {
 
     USER_IS_NOT_EXISTS("0120", "用户不存在"),
     USER_ADDRESS_IS_EXPIRED("0121", "不在活动时间范围内"),
-    USER_ADDRESS_IS_NOT_ACCOUNT("0121", "未实名认证"),
+    USER_ADDRESS_IS_NOT_ACCOUNT("0122", "未实名认证"),
 
     /******会员购买******/
     MEMBERSHIP_PURCHASE_FAILED("0200", "会员购买失败"),

@@ -7,13 +7,13 @@ import java.util.List;
 public class PrizeImageListResponseDataDto extends BaseResponseDataDto {
 
     @ApiModelProperty(value = "抽奖转盘图片列表", example = "null")
-    private List<PrizeImageResponseDataDto> prizeImageResponseDataDtoList;
+    private List<PrizeImageResponseDataDto> prizeImageList;
 
-    public List<PrizeImageResponseDataDto> getPrizeImageResponseDataDtoList() {
-        return prizeImageResponseDataDtoList;
+    public List<PrizeImageResponseDataDto> getPrizeImageList() {
+        return prizeImageList;
     }
 
-    public void setPrizeImageResponseDataDtoList(List<PrizeImageResponseDataDto> prizeImageResponseDataDtoList) {
-        this.prizeImageResponseDataDtoList = prizeImageResponseDataDtoList;
+    public void setPrizeImageList(List<PrizeImageResponseDataDto> prizeImageList) {
+        this.prizeImageList = prizeImageList;
     }
 }
