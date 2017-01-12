@@ -44,6 +44,7 @@ console:
     - "redis-server"
     - "static-server"
     - "sign-in"
+    - "ask-rest-service"
 
 activity-console:
   image: "andreptb/tomcat:8-jdk8"
@@ -270,6 +271,19 @@ user-mq-consumer:
     - "sms-wrapper"
     - "redis-server"
 
+ask-rest-service:
+  image: "anapsix/alpine-java:8_jdk"
+  environment:
+    - "TZ=Asia/Shanghai"
+    - "JAVA_OPTS=-Xmx1024m"
+  volumes:
+    - ./ttsd-ask-rest/build/distributions:/opt/worker
+    - /var/log/tuotian/ttsd-ask-rest:/var/log/tuotian
+  command: bash -c "/opt/worker/ttsd-ask-rest/bin/ttsd-ask-rest"
+  links:
+    - "sms-wrapper"
+    - "redis-server"
+
 diagnosis:
   image: "anapsix/alpine-java:8_jdk"
   environment:
@@ -340,3 +354,4 @@ ask:
     - "redis-server"
     - "static-server"
     - "sign-in"
+    - "ask-rest-service"

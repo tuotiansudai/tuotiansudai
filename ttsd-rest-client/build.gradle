@@ -1,0 +1,17 @@
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile project(':ttsd-config')
+    compile project(':ttsd-util')
+    compile project(':ttsd-edxask-model')
+    compile 'org.springframework.cloud:spring-cloud-starter-feign:1.2.3.RELEASE'
+
+    testCompile 'org.springframework.boot:spring-boot-starter-test:1.4.0.RELEASE'
+}
