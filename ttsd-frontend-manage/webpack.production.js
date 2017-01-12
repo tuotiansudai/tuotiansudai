@@ -2,11 +2,9 @@ var path = require('path');
 var glob=require('glob');
 var AssetsPlugin = require('assets-webpack-plugin');
 var webpack = require('webpack');
-var WebpackMd5Hash = require('webpack-md5-hash');
+// var WebpackMd5Hash = require('webpack-md5-hash');
 var objectAssign = require('object-assign');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
-
-var geFileList = require('./getFiles');
 
 var basePath = path.join(__dirname, 'resources'),
     staticPath = path.join(basePath, 'static'),
@@ -21,11 +19,6 @@ var outputPath=path.join(basePath, 'prod'),
     devServerPath='/',
     commonOptions={},
     plugins=[];
-
-//生成json map
-// ask json
-var askFileList=new geFileList(outputPath+'/ask',outputPath+'/json-ask.json');
-askFileList.init();
 
 /**
  * 动态查找所有入口文件
@@ -51,7 +44,7 @@ commonOptions.entry = newEntries;
 
 
 plugins.push(new ExtractTextPlugin("[name].[chunkhash].css"));
-plugins.push(new WebpackMd5Hash());
+// plugins.push(new WebpackMd5Hash());
 
 //压缩
 plugins.push(new webpack.optimize.UglifyJsPlugin({
