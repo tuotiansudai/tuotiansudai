@@ -33,7 +33,7 @@ public class CouponAssigningMessageConsumer implements MessageConsumer {
                 couponAssignmentService.assign(msgParts[0], Long.parseLong(msgParts[1]), null);
             }if(msgParts.length == 3){
                 logger.info("[MQ] ready to consume message: assigning achievement coupon.");
-                couponAssignmentService.assignInvestAchievementUserCoupon(Long.parseLong(msgParts[1]), msgParts[0], Long.parseLong(msgParts[2]));
+                couponAssignmentService.assignInvestAchievementUserCoupon(msgParts[0], Long.parseLong(msgParts[1]), Long.parseLong(msgParts[2]));
             }
         }
     }

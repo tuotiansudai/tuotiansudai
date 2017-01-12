@@ -8,6 +8,7 @@ import com.tuotiansudai.enums.MessageEventType;
 import com.tuotiansudai.enums.PushSource;
 import com.tuotiansudai.enums.PushType;
 import com.tuotiansudai.enums.UserBillBusinessType;
+import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.message.EventMessage;
 import com.tuotiansudai.message.PushMessage;
 import com.tuotiansudai.message.TransferReferrerRewardCallbackMessage;
@@ -33,6 +34,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.text.MessageFormat;
@@ -147,7 +149,11 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
 
         if (amount == 0) {
             model.setStatus(ReferrerRewardStatus.SUCCESS);
-            recordTransferReferrerReward(model);
+            try {
+                recordTransferReferrerReward(model);
+            } catch (Exception ignored) {
+                logger.error(ignored.getLocalizedMessage(), ignored);
+            }
         }
 
         if (amount > 0) {
@@ -181,9 +187,16 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
             return null;
         }
 
-        long investReferrerRewardId = Long.parseLong(callbackRequest.getOrderId());
+        if (!callbackRequest.isSuccess()) {
+            return callbackRequest.getResponseData();
+        }
 
+        long investReferrerRewardId = Long.parseLong(callbackRequest.getOrderId());
         InvestReferrerRewardModel investReferrerRewardModel = investReferrerRewardMapper.findById(investReferrerRewardId);
+        if (investReferrerRewardModel == null) {
+            logger.error(MessageFormat.format("[标的放款] TransferReferrerRewardCallback payback callback failed, order id({0}) is not exist", callbackRequest.getOrderId()));
+            return callbackRequest.getResponseData();
+        }
 
         InvestModel investModel = investMapper.findById(investReferrerRewardModel.getInvestId());
         TransferReferrerRewardCallbackMessage transferReferrerRewardCallbackMessage = new TransferReferrerRewardCallbackMessage(investModel.getLoanId(),
@@ -196,12 +209,12 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
                 queryString));
         mqWrapperClient.sendMessage(MessageQueue.TransferReferrerRewardCallback, transferReferrerRewardCallbackMessage);
 
-        String respData = callbackRequest.getResponseData();
-        return respData;
+        return callbackRequest.getResponseData();
     }
 
     @Override
-    public boolean transferReferrerCallBack(long investReferrerRewardId) {
+    @Transactional(rollbackFor = Exception.class)
+    public boolean transferReferrerCallBack(long investReferrerRewardId) throws AmountTransferException {
         logger.info("[标的放款] transfer referrer callBack start.");
         InvestReferrerRewardModel investReferrerRewardModel = investReferrerRewardMapper.findById(investReferrerRewardId);
         if (investReferrerRewardModel.getStatus().equals(ReferrerRewardStatus.SUCCESS)) {
@@ -212,7 +225,7 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
         return recordTransferReferrerReward(investReferrerRewardModel);
     }
 
-    private boolean recordTransferReferrerReward(InvestReferrerRewardModel investReferrerRewardModel) {
+    private boolean recordTransferReferrerReward(InvestReferrerRewardModel investReferrerRewardModel) throws AmountTransferException {
         String referrerLoginName = investReferrerRewardModel.getReferrerLoginName();
         long amount = investReferrerRewardModel.getAmount();
         long orderId = investReferrerRewardModel.getId();
@@ -228,7 +241,7 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
             }
         } catch (Exception e) {
             logger.error(MessageFormat.format("referrer reward transfer in balance failed (investId = {0})", String.valueOf(investReferrerRewardModel.getInvestId())));
-            return false;
+            throw e;
         }
         return true;
     }
@@ -261,15 +274,15 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
             return null;
         }
 
-        if (Iterators.tryFind(userRoleModels.iterator(), input -> input.getRole() == Role.STAFF).isPresent()) {
+        if (userRoleModels.stream().anyMatch(userRoleModel -> userRoleModel.getRole() == Role.STAFF)) {
             return Role.STAFF;
         }
 
-        if (Iterators.tryFind(userRoleModels.iterator(), input -> input.getRole() == Role.INVESTOR).isPresent()) {
+        if (userRoleModels.stream().anyMatch(userRoleModel -> userRoleModel.getRole() == Role.INVESTOR)) {
             return Role.INVESTOR;
         }
 
-        if (Iterators.tryFind(userRoleModels.iterator(), input -> input.getRole() == Role.USER).isPresent()) {
+        if (userRoleModels.stream().anyMatch(userRoleModel -> userRoleModel.getRole() == Role.USER)) {
             return Role.USER;
         }
 

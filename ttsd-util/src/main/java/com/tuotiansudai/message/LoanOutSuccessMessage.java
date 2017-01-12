@@ -1,21 +1,23 @@
 package com.tuotiansudai.message;
 
 
-public class LoanOutSuccessMessage {
+import java.io.Serializable;
 
-    private long loanId;
+public class LoanOutSuccessMessage implements Serializable {
+
+    private Long loanId;
 
     public LoanOutSuccessMessage(){}
 
-    public LoanOutSuccessMessage(long loanId) {
+    public LoanOutSuccessMessage(Long loanId) {
         this.loanId = loanId;
     }
 
-    public long getLoanId() {
+    public Long getLoanId() {
         return loanId;
     }
 
-    public void setLoanId(long loanId) {
+    public void setLoanId(Long loanId) {
         this.loanId = loanId;
     }
 }

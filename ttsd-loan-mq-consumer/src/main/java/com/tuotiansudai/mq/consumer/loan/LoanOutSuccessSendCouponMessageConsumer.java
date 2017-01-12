@@ -47,6 +47,7 @@ public class LoanOutSuccessSendCouponMessageConsumer implements MessageConsumer 
             } catch (IOException e) {
                 logger.error("[标的放款MQ] LoanOutSuccess_AssignCoupon json convert LoanOutSuccessMessage is fail, message:{}", message);
                 smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("发送现金红包失败"));
+                //TODO: no throw
                 throw new RuntimeException(e);
             }
 

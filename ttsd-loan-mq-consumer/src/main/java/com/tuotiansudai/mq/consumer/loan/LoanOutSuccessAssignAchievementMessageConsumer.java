@@ -1,6 +1,7 @@
 package com.tuotiansudai.mq.consumer.loan;
 
 import com.google.common.base.Joiner;
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
@@ -36,38 +37,39 @@ public class LoanOutSuccessAssignAchievementMessageConsumer implements MessageCo
         return MessageQueue.LoanOutSuccess_AssignAchievement;
     }
 
-    @Transactional
     @Override
     public void consume(String message) {
         logger.info("[标的放款MQ] LoanOutSuccess_AssignAchievement receive message: {}: {}.", this.queue(), message);
-        if (!StringUtils.isEmpty(message)) {
-            LoanOutSuccessMessage loanOutInfo;
-            try {
-                loanOutInfo = JsonConverter.readValue(message, LoanOutSuccessMessage.class);
-            } catch (IOException e) {
-                logger.error("[标的放款MQ] LoanOutSuccess_AssignAchievement json convert LoanOutSuccessMessage is fail, message:{}", message);
-                smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("发送标王奖励失败"));
-                throw new RuntimeException(e);
-            }
-
-            long loanId = loanOutInfo.getLoanId();
-            List<String> fatalSmsList = Lists.newArrayList();
-
-            logger.info(MessageFormat.format("[标的放款MQ] LoanOutSuccess_AssignAchievement  assignInvestAchievementUserCoupon is execute , (loanId : {0}) ", String.valueOf(loanId)));
-            if (!payWrapperClient.assignInvestAchievementUserCoupon(loanId).isSuccess()) {
-                fatalSmsList.add("发送标王奖励失败");
-                logger.error(MessageFormat.format("[标的放款MQ] LoanOutSuccess_AssignAchievement assignInvestAchievementUserCoupon is fail. loanId:{0}", String.valueOf(loanId)));
-            }
-
-
-            if (CollectionUtils.isNotEmpty(fatalSmsList)) {
-                fatalSmsList.add(MessageFormat.format("标的ID:{0}", loanId));
-                smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(Joiner.on(",").join(fatalSmsList)));
-                logger.error(MessageFormat.format("[标的放款MQ] LoanOutSuccess_AssignAchievement is fail, sms sending. loanId:{0}, queue:{1}", String.valueOf(loanId)), MessageQueue.LoanOutSuccess_AssignAchievement);
-                throw new RuntimeException("[标的放款MQ] LoanOutSuccess_AssignAchievement is fail. loanOutInfo: " + message);
-            }
-
-            logger.info("[[标的放款MQ] LoanOutSuccess_AssignAchievement consume success.");
+        if (Strings.isNullOrEmpty(message)) {
+            logger.error("[标的放款MQ] LoanOutSuccess_AssignAchievement receive message is empty");
+            smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("发送标王奖励失败, MQ消息为空"));
+            return;
         }
+
+        LoanOutSuccessMessage loanOutInfo;
+        try {
+            loanOutInfo = JsonConverter.readValue(message, LoanOutSuccessMessage.class);
+            if (loanOutInfo.getLoanId() == null) {
+                logger.error("[标的放款MQ] LoanOutSuccess_AssignAchievement loanId is empty");
+                smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("发送标王奖励失败, 消息中loanId为空"));
+                return;
+            }
+        } catch (IOException e) {
+            logger.error("[标的放款MQ] LoanOutSuccess_AssignAchievement json convert LoanOutSuccessMessage is fail, message:{}", message);
+            smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("发送标王奖励失败, 解析消息失败"));
+            return;
+        }
+
+        long loanId = loanOutInfo.getLoanId();
+
+        logger.info(MessageFormat.format("[标的放款MQ] LoanOutSuccess_AssignAchievement assignInvestAchievementUserCoupon is executing , (loanId : {0}) ", String.valueOf(loanId)));
+
+        if (!payWrapperClient.assignInvestAchievementUserCoupon(loanId).isSuccess()) {
+            smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(MessageFormat.format("标的ID:{0}, 发送标王奖励失败, 优惠券发放失败", String.valueOf(loanId))));
+            logger.error(MessageFormat.format("[标的放款MQ] LoanOutSuccess_AssignAchievement assignInvestAchievementUserCoupon is fail. loanId:{0}", String.valueOf(loanId)));
+            throw new RuntimeException(MessageFormat.format("[标的放款MQ] LoanOutSuccess_AssignAchievement assignInvestAchievementUserCoupon is fail. loanId:{0}", String.valueOf(loanId)));
+        }
+
+        logger.info("[[标的放款MQ] LoanOutSuccess_AssignAchievement consume success.");
     }
 }

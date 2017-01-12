@@ -4,6 +4,7 @@ package com.tuotiansudai.paywrapper.controller;
 import com.tuotiansudai.anxin.service.AnxinSignService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
+import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.paywrapper.loanout.AchievementCouponService;
 import com.tuotiansudai.paywrapper.loanout.CouponLoanOutService;
 import com.tuotiansudai.paywrapper.loanout.CouponRepayService;
@@ -158,7 +159,12 @@ public class LoanOutSuccessController {
     @ResponseBody
     @RequestMapping(value = "/transfer-referrer-reward-callback", method = RequestMethod.POST)
     public BaseDto<PayDataDto> transferReferrerRewardCallBack(@RequestBody long investReferrerRewardId) {
-        boolean isSuccess = referrerRewardService.transferReferrerCallBack(investReferrerRewardId);
+        boolean isSuccess = true;
+        try {
+            referrerRewardService.transferReferrerCallBack(investReferrerRewardId);
+        } catch (AmountTransferException e) {
+            isSuccess = false;
+        }
         BaseDto<PayDataDto> dto = new BaseDto<>();
         PayDataDto dataDto = new PayDataDto();
         dto.setData(dataDto);

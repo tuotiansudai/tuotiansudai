@@ -67,6 +67,7 @@ public class CouponLoanOutServiceImpl implements CouponLoanOutService {
     @Override
     public boolean sendRedEnvelope(long loanId) {
         boolean result = true;
+        //TODO redis 幂等
         List<UserCouponModel> userCouponModels = userCouponMapper.findByLoanId(loanId, Lists.newArrayList(CouponType.RED_ENVELOPE));
 
         for (UserCouponModel userCouponModel : userCouponModels) {
@@ -80,7 +81,7 @@ public class CouponLoanOutServiceImpl implements CouponLoanOutService {
                             String.valueOf(transferAmount));
                     try {
                         TransferResponseModel responseModel = paySyncClient.send(TransferMapper.class, requestModel, TransferResponseModel.class);
-                        result = !result ? false : responseModel.isSuccess();
+                        result = result && responseModel.isSuccess();
                     } catch (PayException e) {
                         result = false;
                         logger.error(MessageFormat.format("red envelope coupon transfer in balance failed (userCouponId = {0})", String.valueOf(userCouponModel.getId())), e);
@@ -105,6 +106,8 @@ public class CouponLoanOutServiceImpl implements CouponLoanOutService {
             return null;
         }
 
+        //TODO callback not success return, userCouponModel == null
+
         long userCouponId = Long.parseLong(callbackRequest.getOrderId());
         UserCouponModel userCouponModel = userCouponMapper.findById(userCouponId);
         TransferRedEnvelopCallbackMessage transferRedEnvelopCallbackMessage = new TransferRedEnvelopCallbackMessage(userCouponModel.getLoanId(),
@@ -116,11 +119,11 @@ public class CouponLoanOutServiceImpl implements CouponLoanOutService {
                 userCouponModel.getLoanId(), userCouponModel.getInvestId(), userCouponModel.getLoanName(), queryString, callbackRequest.getOrderId()));
         mqWrapperClient.sendMessage(MessageQueue.TransferRedEnvelopCallback, transferRedEnvelopCallbackMessage);
 
-        String respData = callbackRequest.getResponseData();
-        return respData;
+        return callbackRequest.getResponseData();
     }
 
     @Override
+    //TODO: 抛异常回滚数据
     public boolean sendRedEnvelopTransferInBalanceCallBack(long userCouponId) {
         logger.info(MessageFormat.format("[标的放款] send redEnvelop transfer in balance callBack, userCouponId:{0}", String.valueOf(userCouponId)));
         UserCouponModel userCouponModel = userCouponMapper.findById(userCouponId);

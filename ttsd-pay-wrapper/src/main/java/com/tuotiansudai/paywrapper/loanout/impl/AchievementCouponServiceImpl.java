@@ -5,7 +5,6 @@ import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
-import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.loanout.AchievementCouponService;
 import com.tuotiansudai.repository.mapper.InvestMapper;
@@ -21,12 +20,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class AchievementCouponServiceImpl implements AchievementCouponService{
+public class AchievementCouponServiceImpl implements AchievementCouponService {
 
     static Logger logger = Logger.getLogger(AchievementCouponServiceImpl.class);
-
-    @Autowired
-    private CouponAssignmentService couponAssignmentService;
 
     @Autowired
     private InvestMapper investMapper;
@@ -41,7 +37,7 @@ public class AchievementCouponServiceImpl implements AchievementCouponService{
     private MQWrapperClient mqWrapperClient;
 
     @Override
-    public boolean assignInvestAchievementUserCoupon(long loanId){
+    public boolean assignInvestAchievementUserCoupon(long loanId) {
         LoanModel loanModel = loanMapper.findById(loanId);
         boolean result = true;
         if (!createUserCouponModel(loanModel.getFirstInvestAchievementId(), UserGroup.FIRST_INVEST_ACHIEVEMENT, loanId)) {
@@ -68,17 +64,14 @@ public class AchievementCouponServiceImpl implements AchievementCouponService{
             return false;
         }
 
-        boolean result = true;
         List<CouponModel> couponModelList = couponMapper.findAllActiveCoupons();
 
-        List<CouponModel> collect = couponModelList.stream().filter(couponModel -> couponModel.getUserGroup().equals(userGroup)
+        couponModelList.stream().filter(couponModel -> couponModel.getUserGroup().equals(userGroup)
                 && DateTime.now().toDate().before(couponModel.getEndTime())
-                && DateTime.now().toDate().after(couponModel.getStartTime())).collect(Collectors.toList());
-
-        for (CouponModel couponModel : collect) {
-            mqWrapperClient.sendMessage(MessageQueue.CouponAssigning, investMapper.findById(investId).getLoginName() + ":" + couponModel.getId());
-        }
-
-        return result;
+                && DateTime.now().toDate().after(couponModel.getStartTime()))
+                .collect(Collectors.toList())
+                .forEach(couponModel -> mqWrapperClient.sendMessage(MessageQueue.CouponAssigning,
+                        investMapper.findById(investId).getLoginName() + ":" + loanId + ":" + couponModel.getId()));
+        return true;
     }
 }

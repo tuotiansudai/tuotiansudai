@@ -320,7 +320,7 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
     }
 
     @Override
-    public boolean assignInvestAchievementUserCoupon(long loanId, String loginNameOrMobile, long couponId) {
+    public boolean assignInvestAchievementUserCoupon(String loginNameOrMobile, long loanId, long couponId) {
         final String loginName = userMapper.findByLoginNameOrMobile(loginNameOrMobile).getLoginName();
 
         CouponModel couponModel = couponMapper.findById(couponId);

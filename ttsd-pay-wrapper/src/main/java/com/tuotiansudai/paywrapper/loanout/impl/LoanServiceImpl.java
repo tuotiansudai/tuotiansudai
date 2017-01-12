@@ -50,7 +50,6 @@ import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.JobManager;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -342,14 +341,11 @@ public class LoanServiceImpl implements LoanService {
         return amount;
     }
 
-    private void processInvestForLoanOut(List<InvestModel> investList, long loanId) {
-        if (CollectionUtils.isEmpty(investList)) {
-            return;
-        }
-
+    //将成功的投资人冻结金额转出
+    private void processInvestFreezeAmountForLoanOut(List<InvestModel> investList, long loanId) {
         String redisKey = MessageFormat.format(LOAN_OUT_IDEMPOTENT_CHECK_TEMPLATE, String.valueOf(loanId));
         investList.forEach(invest -> {
-            String transferKey = MessageFormat.format(TRANSFER_OUT_FREEZE, invest.getId());
+            String transferKey = MessageFormat.format(TRANSFER_OUT_FREEZE, String.valueOf(invest.getId()));
             try {
                 String statusString = redisWrapperClient.hget(redisKey, transferKey);
                 if (Strings.isNullOrEmpty(statusString) || statusString.equals(SyncRequestStatus.FAILURE.name())) {
@@ -361,15 +357,15 @@ public class LoanServiceImpl implements LoanService {
                             null);
                     redisWrapperClient.hset(redisKey, transferKey, SyncRequestStatus.SUCCESS.name());
                 }
-            } catch (AmountTransferException e) {
+            } catch (Exception e) {
                 redisWrapperClient.hset(redisKey, transferKey, SyncRequestStatus.FAILURE.name());
-                logger.error("transferOutFreeze Fail while loan out, invest [" + invest.getId() + "]", e);
+                logger.error(MessageFormat.format("[标的放款]: loanId({0}) transfer out freeze failed invest({1})", String.valueOf(loanId), String.valueOf(invest.getId())));
             }
         });
     }
 
     // 把借款转给代理人账户
-    private void processLoanAccountForLoanOut(long loanId, String agentLoginName, long amount) {
+    private void processLoanAgentAccountForLoanOut(long loanId, String agentLoginName, long amount) {
         String redisKey = MessageFormat.format(LOAN_OUT_IDEMPOTENT_CHECK_TEMPLATE, String.valueOf(loanId));
         try {
             String statusString = redisWrapperClient.hget(redisKey, TRANSFER_IN_BALANCE);
@@ -379,7 +375,7 @@ public class LoanServiceImpl implements LoanService {
             }
         } catch (Exception e) {
             redisWrapperClient.hset(redisKey, TRANSFER_IN_BALANCE, SyncRequestStatus.FAILURE.name());
-            logger.error("transferInBalance Fail while loan out, loan[" + loanId + "]", e);
+            logger.error(MessageFormat.format("[标的放款]: loanId({0}) transfer in agent account failed)", String.valueOf(loanId)));
         }
     }
 
@@ -506,34 +502,36 @@ public class LoanServiceImpl implements LoanService {
         long investAmountTotal = computeInvestAmountTotal(successInvestList);
 
         logger.debug("[标的放款]：更新标的状态，标的ID:" + loanId);
-        this.updateLoanStatus(loanId, LoanStatus.REPAYING);
+        BaseDto<PayDataDto> baseDto = this.updateLoanStatus(loanId, LoanStatus.REPAYING);
+        if (!baseDto.getData().getStatus()) {
+            this.fatalLog(loanId, "更新标的状态失败", null);
+        }
 
         logger.debug("[标的放款]：处理该标的的所有投资的账务信息，标的ID:" + loanId);
-        this.processInvestForLoanOut(successInvestList, loanId);
+        //TODO : 发失败短信
+        this.processInvestFreezeAmountForLoanOut(successInvestList, loanId);
 
         logger.debug("[标的放款]：把借款转给代理人账户，标的ID:" + loanId);
-        this.processLoanAccountForLoanOut(loanId, loan.getAgentLoginName(), investAmountTotal);
+        //TODO : 发失败短信
+        this.processLoanAgentAccountForLoanOut(loanId, loan.getAgentLoginName(), investAmountTotal);
 
         LoanOutSuccessMessage loanOutInfo = new LoanOutSuccessMessage(loanId);
         try {
-            logger.info(MessageFormat.format("[标的放款]: 放款成功,发送更新标的状态MQ消息,标的ID:{0}", String.valueOf(loanId)));
             mqWrapperClient.publishMessage(MessageTopic.LoanOutSuccess, loanOutInfo);
+            logger.info(MessageFormat.format("[标的放款]: 放款成功,发送MQ消息,标的ID:{0}", String.valueOf(loanId)));
         } catch (JsonProcessingException e) {
             // 记录日志，发短信通知管理员
-            fatalLog("[MQ] invest success, but send mq message fail", loanId, loan.getAgentLoginName(), investAmountTotal, e);
+            fatalLog(loanId, "发送MQ消息失败", e);
         }
 
         return callbackRequest.getResponseData();
     }
 
-    private void fatalLog(String msg, long loanId, String agentLoginName, long investAmountTotal, Throwable e) {
-        String errMsg = msg + ",loanId:" + loanId + ",agentLoginName:" + agentLoginName + ",investAmountTotal:" + investAmountTotal;
-        fatalLog(errMsg, e);
-    }
-
-    private void fatalLog(String errMsg, Throwable e) {
-        logger.fatal(errMsg, e);
-        smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(MessageFormat.format("放款错误。详细信息：{0}", MessageFormat.format("{0},{1}", environment, errMsg))));
+    private void fatalLog(long loanId, String errorMessage, Throwable e) {
+        String errMsg = MessageFormat.format("loanId({0}), {1}", String.valueOf(loanId), errorMessage);
+        logger.error(errMsg, e);
+        smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(MessageFormat.format("放款错误。详细信息：{0}",
+                MessageFormat.format("{0},{1}", environment, errMsg))));
     }
 
     private void sendMessage(long loanId) {

@@ -36,7 +36,6 @@ public class LoanOutSuccessNotifyForLoanOutMessageConsumer implements MessageCon
         return MessageQueue.LoanOutSuccess_SmsMessage;
     }
 
-    @Transactional
     @Override
     public void consume(String message) {
         logger.info("[标的放款MQ] LoanOutSuccess_SmsMessage receive message: {}: {}.", this.queue(), message);
@@ -46,6 +45,7 @@ public class LoanOutSuccessNotifyForLoanOutMessageConsumer implements MessageCon
                 loanOutInfo = JsonConverter.readValue(message, LoanOutSuccessMessage.class);
             } catch (IOException e) {
                 logger.error("[标的放款MQ] LoanOutSuccess_SmsMessage json convert LoanOutSuccessMessage is fail, message:{}", message);
+                //TODO: no throw
                 throw new RuntimeException(e);
             }
 
