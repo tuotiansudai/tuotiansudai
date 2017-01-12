@@ -20,9 +20,8 @@ def deploy(env, source_folder, dist_file):
     # 逐行读取 ttsd-env.properties, 如果不是注释也不是空行，则split by "=",
     # 依次从 sec_prop > env_prop > qa_common_prop 中读取key，
     # 如果存在就替换原值，并将结果写入到结果文件 dist_file 中。
-    dist = open(dist_file, "w")
 
-    with open("{0}/ttsd-env.properties".format(source_folder), "r") as f:
+    with open("{0}/ttsd-env.properties".format(source_folder), "r") as f, open(dist_file, "w") as dist:
         for line in f:
             l = line.strip()
             if l and not l.startswith("#"):
@@ -38,7 +37,6 @@ def deploy(env, source_folder, dist_file):
                 dist.write(key + "=" + value + "\n")
             else:
                 dist.write(l + "\n")
-    dist.close()
 
 
 # 读取properties 文件, 生成 dict 对象
@@ -54,6 +52,7 @@ def load_properties(file_path):
                 props[key] = value
     return props
 
+
 def compare_a_b(a, b):
     a_prop = load_properties(a)
     b_prop = load_properties(b)
@@ -65,7 +64,10 @@ def compare_a_b(a, b):
         elif b_prop[key] != a_prop[key]:
             print "key: %s, a_val: %s, b_val: %s" % (key, a_prop[key], b_prop[key])
 
+
 def verify(config_path):
     print 'verify config file ...'
-    compare_a_b(config_path + '/ttsd-config/ttsd-env.properties', config_path + '/ttsd-config/ttsd-env.properties.20170112')
-    compare_a_b(config_path + '/ttsd-config/ttsd-env.properties.20170112', config_path + '/ttsd-config/ttsd-env.properties')
+    compare_a_b(config_path + '/ttsd-config/ttsd-env.properties',
+                config_path + '/ttsd-config/ttsd-env.properties.20170112')
+    compare_a_b(config_path + '/ttsd-config/ttsd-env.properties.20170112',
+                config_path + '/ttsd-config/ttsd-env.properties')
