@@ -62,6 +62,8 @@ public class EmbodyQuestionService {
 
     private static final String CMS_POSTS_INFO = "/posts-info?format=json&category=";
 
+    private static final String CMS_CATEGORY_PREFIX = "http://content.tuotiansudai.com";
+
     private static final int CATEGORY_ROOT = 1;
 
     private static final int CATEGORY_ORDER = 2;
@@ -122,7 +124,7 @@ public class EmbodyQuestionService {
                 SiteMapCmsCategoryDto siteMapCmsCategoryDto = JsonConverter.readValue(String.valueOf(obj), SiteMapCmsCategoryDto.class);
                 if(siteMapCmsCategoryDto.getParent() == null){
                     siteMapDataDto.setName(siteMapCmsCategoryDto.getName() + "|" + siteMapCmsCategoryDto.getSlug());
-                    siteMapDataDto.setLinkUrl(cmsServer + "/" + siteMapCmsCategoryDto.getSlug());
+                    siteMapDataDto.setLinkUrl(CMS_CATEGORY_PREFIX + "/" + siteMapCmsCategoryDto.getSlug());
                     siteMapCategoryList.add(siteMapDataDto);
                 }
             } catch (IOException e) {
@@ -138,6 +140,7 @@ public class EmbodyQuestionService {
         for (SiteMapDataDto siteMapDataDto : siteMapCategoryList) {
             SiteMapDataDto siteMapDataDtoOneLevel = new SiteMapDataDto();
             siteMapDataDtoOneLevel.setName(siteMapDataDto.getName().substring(0, siteMapDataDto.getName().indexOf("|")));
+
             siteMapDataDtoOneLevel.setLinkUrl(siteMapDataDto.getLinkUrl());
             siteMapDataDtoOneLevel.setSeq(CATEGORY_ROOT);
             siteMapCategoryAllList.add(siteMapDataDtoOneLevel);
@@ -151,7 +154,7 @@ public class EmbodyQuestionService {
                     if (siteMapCmsCategoryDto.getParent().equals(siteMapDataDto.getName().substring(siteMapDataDto.getName().indexOf("|") + 1, siteMapDataDto.getName().length()))) {
                         SiteMapDataDto siteMapDataDtoSecondLevel = new SiteMapDataDto();
                         siteMapDataDtoSecondLevel.setName(siteMapCmsCategoryDto.getName());
-                        siteMapDataDtoSecondLevel.setLinkUrl(cmsServer + "/" + siteMapCmsCategoryDto.getParent() + "/" + siteMapCmsCategoryDto.getSlug());
+                        siteMapDataDtoSecondLevel.setLinkUrl(CMS_CATEGORY_PREFIX + "/" + siteMapCmsCategoryDto.getParent() + "/" + siteMapCmsCategoryDto.getSlug());
                         siteMapDataDtoSecondLevel.setSeq(CATEGORY_ORDER);
                         siteMapCategoryAllList.add(siteMapDataDtoSecondLevel);
                     }
@@ -217,7 +220,7 @@ public class EmbodyQuestionService {
                 if (siteMapCmsCategoryDto.getName() != null) {
                     siteMapDataDto.setName(siteMapCmsCategoryDto.getName());
                 }
-                String linkUrl = cmsServer + (siteMapCmsCategoryDto.getParent() != null ? "/" + siteMapCmsCategoryDto.getParent() : "") + "/" + siteMapCmsCategoryDto.getSlug();
+                String linkUrl = CMS_CATEGORY_PREFIX + (siteMapCmsCategoryDto.getParent() != null ? "/" + siteMapCmsCategoryDto.getParent() : "") + "/" + siteMapCmsCategoryDto.getSlug();
                 siteMapDataDto.setLinkUrl(linkUrl);
                 siteMapDataDto.setSeq(CATEGORY_ORDER);
                 siteMapDataDtoList.add(siteMapDataDto);

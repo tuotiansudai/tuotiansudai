@@ -16,11 +16,6 @@ require(['jquery', 'csrf', 'jquery-ui', 'bootstrapSelect', 'bootstrap'], functio
             $.get('/user-manage/mobile/' + query.term + '/search', function (respData) {
                 return process(respData);
             });
-        },
-        change: function (event, ui) {
-            if (!ui.item) {
-                this.value = '';
-            }
         }
     });
 
