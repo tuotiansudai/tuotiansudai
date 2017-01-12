@@ -1,4 +1,4 @@
-package com.tuotiansudai.ask.repository.dto;
+package com.tuotiansudai.ask.dto;
 
 import com.tuotiansudai.ask.repository.model.QuestionModel;
 import com.tuotiansudai.ask.repository.model.QuestionStatus;
