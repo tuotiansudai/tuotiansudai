@@ -193,6 +193,16 @@
 				<h3>
 					<img src="${staticServer}/activity/images/lantern-festival/title-wx.png">
 				</h3>
+				<div class="wx-item">
+					<p>扫描二维码，关注“拓天速贷财富”，并回复“猜灯谜”；</p>
+					<p>每天中午12点，微信公众号更新三条灯谜，用户回复“猜灯谜”可获取题目，将答案回复至后台，</p>
+					<p>有机会获得红包奖励</p>
+					<p>活动结束后，累计答对最多的用户，将获得发光地球仪一个。</p>
+					<p>
+						<img src="${staticServer}/activity/images/lantern-festival/title-wx.png">
+						<img src="${staticServer}/activity/images/lantern-festival/title-wx.png">
+					</p>
+				</div>
 			</div>
 		</div>
 	</div>
