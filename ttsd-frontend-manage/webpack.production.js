@@ -2,6 +2,8 @@ var path = require('path');
 var glob=require('glob');
 var AssetsPlugin = require('assets-webpack-plugin');
 var webpack = require('webpack');
+//打包之前清空打包文件夹里的文件
+var CleanWebpackPlugin = require('clean-webpack-plugin');
 // var WebpackMd5Hash = require('webpack-md5-hash');
 var objectAssign = require('object-assign');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
@@ -45,6 +47,12 @@ commonOptions.entry = newEntries;
 
 plugins.push(new ExtractTextPlugin("[name].[chunkhash].css"));
 // plugins.push(new WebpackMd5Hash());
+
+plugins.push(new CleanWebpackPlugin(['prod'], {
+    root: basePath,
+    verbose: true,
+    dry: false
+}));
 
 //压缩
 plugins.push(new webpack.optimize.UglifyJsPlugin({

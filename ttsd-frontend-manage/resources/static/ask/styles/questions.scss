@@ -1,6 +1,15 @@
 @mixin border-color ($color) {
   border:1px solid $color;
 }
+.test1 {
+  color: red;
+}
+.test2 {
+  color: red;
+}
+.test3 {
+  color: red;
+}
 .banner-box {
   background: red url("../images/ba01.jpg") no-repeat;
   height:140px;
