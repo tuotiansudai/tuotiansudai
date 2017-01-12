@@ -197,7 +197,9 @@ public class InvestSuccessActivityRewardMessageConsumer implements MessageConsum
         InvestRewardModel investRewardModel;
         final String loginName = investSuccessMessage.getInvestInfo().getLoginName();
 
-        if (userInfo != null && loanDetailInfo.getProductType() != "_30"
+        logger.info(MessageFormat.format("[MQ] ready to consume activity springFestival executing: loanDuration({0}), transferStatus({1}), status({2})", loanDetailInfo.getDuration(),
+                investInfo.getTransferStatus(), investInfo.getStatus()));
+        if (userInfo != null && loanDetailInfo.getDuration() != 30
                 && (startTime.before(nowDate) && endTime.after(nowDate))
                 && !investInfo.getTransferStatus().equals("SUCCESS")
                 && investInfo.getStatus().equals("SUCCESS")) {
@@ -205,7 +207,7 @@ public class InvestSuccessActivityRewardMessageConsumer implements MessageConsum
             investRewardModel = investRewardMapper.findByMobile(userInfo.getMobile());
             if (null != investRewardModel) {
                 investRewardModel.setInvestAmount(investRewardModel.getInvestAmount() + investInfo.getAmount());
-                logger.info(MessageFormat.format("[MQ] springFestival reward is exits. investAmount:{0},historyInvestAmount:{1} currentGrade:{2}", investInfo.getAmount(),investRewardModel.getInvestAmount(), investRewardModel.getRewardGrade()));
+                logger.info(MessageFormat.format("[MQ] springFestival reward is exits. investAmount:{0},historyInvestAmount:{1} currentGrade:{2}", investInfo.getAmount(), investRewardModel.getInvestAmount(), investRewardModel.getRewardGrade()));
                 investGrade = getInvestTaskGrade(investRewardModel.getInvestAmount());
                 currentGrade += investRewardModel.getRewardGrade();
                 if (investGrade != investRewardModel.getRewardGrade()) {

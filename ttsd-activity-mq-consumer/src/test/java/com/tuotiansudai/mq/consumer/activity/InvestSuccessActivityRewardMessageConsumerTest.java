@@ -182,7 +182,7 @@ public class InvestSuccessActivityRewardMessageConsumerTest {
         InvestSuccessMessage investSuccessMessage = buildMockedInvestAnnualSuccessMessage();
         investSuccessMessage.getLoanDetailInfo().setActivityDesc("normal");
         investSuccessMessage.getInvestInfo().setAmount(100000L);
-        investSuccessMessage.getLoanDetailInfo().setProductType("_180");
+        investSuccessMessage.getLoanDetailInfo().setDuration(180);
 
         ReflectionTestUtils.setField(consumer, "springFestivalTime", Lists.newArrayList(DateTime.now().plusDays(-1).toString(DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")), DateTime.now().plusDays(1).toString(DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss"))));
         when(investRewardMapper.findByMobile(anyString())).thenReturn(null);
@@ -207,7 +207,7 @@ public class InvestSuccessActivityRewardMessageConsumerTest {
         InvestSuccessMessage investSuccessMessage = buildMockedInvestAnnualSuccessMessage();
         investSuccessMessage.getLoanDetailInfo().setActivityDesc("normal");
         investSuccessMessage.getInvestInfo().setAmount(3000000L);
-        investSuccessMessage.getLoanDetailInfo().setProductType("_180");
+        investSuccessMessage.getLoanDetailInfo().setDuration(180);
 
         ReflectionTestUtils.setField(consumer, "springFestivalTime", Lists.newArrayList(DateTime.now().plusDays(-1).toString(DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")), DateTime.now().plusDays(1).toString(DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss"))));
         when(investRewardMapper.findByMobile(anyString())).thenReturn(null);
@@ -232,7 +232,7 @@ public class InvestSuccessActivityRewardMessageConsumerTest {
         InvestSuccessMessage investSuccessMessage = buildMockedInvestAnnualSuccessMessage();
         investSuccessMessage.getLoanDetailInfo().setActivityDesc("normal");
         investSuccessMessage.getInvestInfo().setAmount(500000L);
-        investSuccessMessage.getLoanDetailInfo().setProductType("_180");
+        investSuccessMessage.getLoanDetailInfo().setDuration(180);
 
         InvestRewardModel investRewardModel = new InvestRewardModel("test", "test", "test", 1000L, 0L);
 
@@ -259,7 +259,7 @@ public class InvestSuccessActivityRewardMessageConsumerTest {
         InvestSuccessMessage investSuccessMessage = buildMockedInvestAnnualSuccessMessage();
         investSuccessMessage.getLoanDetailInfo().setActivityDesc("normal");
         investSuccessMessage.getInvestInfo().setAmount(3000000L);
-        investSuccessMessage.getLoanDetailInfo().setProductType("_180");
+        investSuccessMessage.getLoanDetailInfo().setDuration(180);
 
         InvestRewardModel investRewardModel = new InvestRewardModel("test", "test", "test", 1000L, 2L);
 
@@ -276,6 +276,8 @@ public class InvestSuccessActivityRewardMessageConsumerTest {
 
         verify(mqClient, times(8)).sendMessage(any(), any());
     }
+
+
 
     private  InvestSuccessMessage buildMockedInvestAnnualSuccessMessage() {
         InvestInfo investInfo = new InvestInfo();
