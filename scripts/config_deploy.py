@@ -52,3 +52,21 @@ def load_properties(file_path):
                 props[key] = value
     return props
 
+def compare_a_b(a, b):
+    a_prop = load_properties(a)
+    b_prop = load_properties(b)
+    print "a len: %s" % len(a_prop)
+    print "b len: %s" % len(b_prop)
+    for key in a_prop:
+        if not b_prop.has_key(key):
+            print "b don't has key " + key
+        elif b_prop[key] != a_prop[key]:
+            print "key: %s, a_val: %s, b_val: %s" % (key, a_prop[key], b_prop[key])
+
+
+def verify(config_path):
+    print 'verify config file ...'
+    compare_a_b(config_path + '/ttsd-config/ttsd-env.properties',
+                config_path + '/ttsd-config/ttsd-env.properties.20170112')
+    compare_a_b(config_path + '/ttsd-config/ttsd-env.properties.20170112',
+                config_path + '/ttsd-config/ttsd-env.properties')
