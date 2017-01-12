@@ -79,12 +79,13 @@ public class PointTaskServiceImpl implements PointTaskService {
             userPointTaskMapper.create(new UserPointTaskModel(loginName, pointTaskModel.getId(), pointTaskModel.getPoint(), maxTaskLevel + 1));
             pointBillService.createTaskPointBill(loginName, pointTaskModel.getId(), pointTaskModel.getPoint(), pointTask.getDescription());
 
-            if (pointTask.equals(PointTask.EACH_RECOMMEND_REFERRER_BANK_CARD)) {
+            if (pointTask.equals(PointTask.BIND_BANK_CARD)) {
+                PointTaskModel bankCardTaskModel = pointTaskMapper.findByName(PointTask.EACH_RECOMMEND_BANK_CARD);
                 String referrer = userMapper.findByLoginName(loginName).getReferrer();
-                long referrerMaxTaskLevel = userPointTaskMapper.findMaxTaskLevelByLoginName(referrer, pointTask);
-                userPointTaskMapper.create(new UserPointTaskModel(referrer, pointTaskModel.getId(), pointTaskModel.getPoint(), referrerMaxTaskLevel + 1));
-                String pointBillNote = MessageFormat.format("{0}奖励{1}积分", pointTask.getTitle(), String.valueOf(pointTaskModel.getPoint()));
-                pointBillService.createTaskPointBill(referrer, pointTaskModel.getId(), pointTaskModel.getPoint(), pointBillNote);
+                long referrerMaxTaskLevel = userPointTaskMapper.findMaxTaskLevelByLoginName(referrer, PointTask.EACH_RECOMMEND_BANK_CARD);
+                userPointTaskMapper.create(new UserPointTaskModel(referrer, bankCardTaskModel.getId(), bankCardTaskModel.getPoint(), referrerMaxTaskLevel + 1));
+                String pointBillNote = MessageFormat.format("{0}奖励{1}积分", PointTask.EACH_RECOMMEND_BANK_CARD.getTitle(), String.valueOf(bankCardTaskModel.getPoint()));
+                pointBillService.createTaskPointBill(referrer, bankCardTaskModel.getId(), bankCardTaskModel.getPoint(), pointBillNote);
             }
         }
 
@@ -117,7 +118,7 @@ public class PointTaskServiceImpl implements PointTaskService {
                         pointBillService.createTaskPointBill(loginName, pointTaskModel.getId(), FIRST_INVEST_10000_POINT, pointBillNote);
                     }
                     break;
-                case EACH_RECOMMEND_REFERRER_INVEST:
+                case EACH_RECOMMEND_INVEST:
                     userPointTaskMapper.create(new UserPointTaskModel(loginName, pointTaskModel.getId(), pointTaskModel.getPoint(), FIRST_TASK_LEVEL));
                     pointBillNote = MessageFormat.format("{0}奖励{1}积分", AmountConverter.convertCentToString(pointTaskModel.getPoint()), String.valueOf(FIRST_INVEST_10000_POINT));
                     pointBillService.createTaskPointBill(loginName, pointTaskModel.getId(), pointTaskModel.getPoint(), pointBillNote);
@@ -289,8 +290,7 @@ public class PointTaskServiceImpl implements PointTaskService {
                 return CollectionUtils.isEmpty(userPointTaskMapper.findByLoginNameAndTask(loginName, pointTask));
             case EACH_RECOMMEND:
                 return true;
-            case EACH_RECOMMEND_REFERRER_INVEST:
-//                return accountMapper.findByLoginName(referrer) != null && CollectionUtils.isEmpty(userPointTaskMapper.findByLoginNameAndTask(referrer, pointTask)ch
+            case EACH_RECOMMEND_INVEST:
                 if(investMapper.sumSuccessInvestCountByLoginName(loginName) == 1 || investMapper.sumSuccessInvestCountByLoginName(loginName) == 0){
                     return true;
                 }
