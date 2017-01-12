@@ -38,7 +38,6 @@ def deploy(env, source_folder, dist_file):
                 dist.write(key + "=" + value + "\n")
             else:
                 dist.write(l + "\n")
-    f.close()
     dist.close()
 
 
@@ -53,7 +52,6 @@ def load_properties(file_path):
                 key = key_value[0].strip()
                 value = '='.join(key_value[1:]).strip()
                 props[key] = value
-    f.close()
     return props
 
 def compare_a_b(a, b):
