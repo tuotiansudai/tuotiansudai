@@ -14,7 +14,7 @@
                 <span class="reward-msg">
                     <em>送好友8.88元红包，好友注册，您即可领取最高20.88元的现金红包哦！</em>
                 </span>
-                <a href="${referrerUrl}" class="normal-button" >立即邀请赚红包</a>
+                <a href="javascript:void(0)" data-url="${referrerUrl}" class="normal-button to-invite-friend" >立即邀请赚红包</a>
             </div>
         </div>
 

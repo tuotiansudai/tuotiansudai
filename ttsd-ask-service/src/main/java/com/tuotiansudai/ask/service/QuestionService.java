@@ -3,42 +3,29 @@ package com.tuotiansudai.ask.service;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.ask.dto.QuestionDto;
+import com.tuotiansudai.ask.dto.QuestionResultDataDto;
+import com.tuotiansudai.ask.dto.QuestionWithCaptchaRequestDto;
 import com.tuotiansudai.ask.repository.dto.EmbodyQuestionDto;
-import com.tuotiansudai.ask.repository.dto.QuestionDto;
-import com.tuotiansudai.ask.repository.dto.QuestionRequestDto;
-import com.tuotiansudai.ask.repository.dto.QuestionResultDataDto;
 import com.tuotiansudai.ask.repository.mapper.AnswerMapper;
 import com.tuotiansudai.ask.repository.mapper.QuestionMapper;
 import com.tuotiansudai.ask.repository.model.AnswerModel;
 import com.tuotiansudai.ask.repository.model.QuestionModel;
 import com.tuotiansudai.ask.repository.model.QuestionStatus;
 import com.tuotiansudai.ask.repository.model.Tag;
-import com.tuotiansudai.ask.utils.FakeMobileUtil;
-import com.tuotiansudai.ask.utils.SensitiveWordsFilter;
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.rest.client.AskRestClient;
 import com.tuotiansudai.util.MobileEncoder;
 import com.tuotiansudai.util.PaginationUtil;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -60,20 +47,15 @@ public class QuestionService {
     private AnswerMapper answerMapper;
 
     @Autowired
-    private UserMapper userMapper;
-
-    @Autowired
     private RedisWrapperClient redisWrapperClient;
 
     @Autowired
     private CaptchaHelperService captchaHelperService;
 
-    @Value("${ask.server}")
-    private String askServer;
+    @Autowired
+    private AskRestClient askRestClient;
 
-    private static final String PREFIX = "/question";
-
-    public QuestionResultDataDto createQuestion(String loginName, QuestionRequestDto questionRequestDto) {
+    public QuestionResultDataDto createQuestion(String loginName, QuestionWithCaptchaRequestDto questionRequestDto) {
         QuestionResultDataDto dataDto = new QuestionResultDataDto();
         if (!captchaHelperService.captchaVerify(questionRequestDto.getCaptcha())) {
             return dataDto;
@@ -82,19 +64,12 @@ public class QuestionService {
         dataDto.setQuestionSensitiveValid(true);
         dataDto.setAdditionSensitiveValid(true);
 
-        UserModel userModel = userMapper.findByLoginName(loginName);
-
-        QuestionModel questionModel = new QuestionModel(loginName,
-                userModel.getMobile(),
-                FakeMobileUtil.generateFakeMobile(userModel.getMobile()),
-                SensitiveWordsFilter.replace(questionRequestDto.getQuestion()),
-                SensitiveWordsFilter.replace(questionRequestDto.getAddition()),
-                questionRequestDto.getTags());
-
-        questionMapper.create(questionModel);
-
-        dataDto.setStatus(true);
-
+        try {
+            askRestClient.createQuestion(questionRequestDto);
+            dataDto.setStatus(true);
+        } catch (Exception e) {
+            logger.error("create question failed", e);
+        }
         return dataDto;
     }
 
@@ -253,7 +228,6 @@ public class QuestionService {
         questionModel.setEmbody(true);
         questionMapper.update(questionModel);
     }
-
 
 
 }

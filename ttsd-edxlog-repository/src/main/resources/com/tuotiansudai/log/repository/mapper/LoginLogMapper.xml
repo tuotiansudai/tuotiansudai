@@ -24,7 +24,7 @@
         from ${table}
         <where>
             <if test="mobile != null and mobile != '' ">
-                and (login_name = #{mobile} or login_name = (select login_name from user where user.mobile = #{mobile}))
+                and (login_name = #{mobile} or login_name = #{loginName})
             </if>
             <if test="success != null">
                 and success = #{success}
@@ -38,7 +38,7 @@
         select count(1) from ${table}
         <where>
             <if test="mobile != null and mobile != '' ">
-                and (login_name = #{mobile} or login_name = (select login_name from user where user.mobile = #{mobile}))
+                and (login_name = #{mobile} or login_name = #{loginName})
             </if>
             <if test="success != null">
                 and success = #{success}

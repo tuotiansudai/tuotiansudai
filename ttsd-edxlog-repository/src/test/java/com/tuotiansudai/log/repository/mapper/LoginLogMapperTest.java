@@ -11,6 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -21,12 +24,18 @@ public class LoginLogMapperTest {
     private LoginLogMapper loginLogMapper;
 
     @Test
-    public void shouldCreateAndFind() {
+    public void shouldCreateAndFindAndGetPaginationData() {
         String loginName = "aaaa";
         LoginLogModel loginLogModel = fakeLoginLogModel(loginName);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMM");
         String table = "login_log_" + simpleDateFormat.format(new Date());
         loginLogMapper.create(table, loginLogModel);
+
+        long count = loginLogMapper.count(loginName, "1932", true, table);
+        assertTrue (count > 0);
+
+        List<LoginLogModel> data = loginLogMapper.getPaginationData(loginName, "1871", true, 0, 10, table);
+        assertTrue (data.size() > 0);
     }
 
     private LoginLogModel fakeLoginLogModel(String loginName) {

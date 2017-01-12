@@ -1,4 +1,4 @@
-package com.tuotiansudai.ask.repository.dto;
+package com.tuotiansudai.ask.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.tuotiansudai.dto.BaseDataDto;
