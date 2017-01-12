@@ -30,7 +30,6 @@ class Deployment(object):
     def config_file(self, env):
         print "Generate config file..."
         config_deploy.deploy(env, "./ttsd-config/src/main/resources/", "{0}/ttsd-config/ttsd-env.properties".format(self._config_path))
-        config_deploy.verify(self._config_path)
 
     def compile(self):
         print "Compiling..."
