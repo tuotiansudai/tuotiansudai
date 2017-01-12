@@ -361,29 +361,30 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
         SyncRequestStatus syncRequestStatus = SyncRequestStatus.valueOf(redisWrapperClient.hget(redisKey, String.valueOf(loanRepayId)));
         logger.info(MessageFormat.format("[Advance Repay {0}] invest fee redis status is {1} total amount is {2}",
                 String.valueOf(loanRepayId), syncRequestStatus.name(), String.valueOf(feeAmount)));
+        if (Lists.newArrayList(SyncRequestStatus.READY, SyncRequestStatus.FAILURE).contains(syncRequestStatus)) {
+            if (feeAmount > 0) {
+                // transfer investor fee(callback url: advance_repay_invest_fee_notify)
+                try {
+                    ProjectTransferRequestModel repayInvestFeeRequest = ProjectTransferRequestModel.newAdvanceRepayInvestFeeRequest(String.valueOf(loanId),
+                            MessageFormat.format(REPAY_ORDER_ID_TEMPLATE, String.valueOf(loanRepayId), String.valueOf(new Date().getTime())),
+                            String.valueOf(feeAmount));
 
-        if (feeAmount > 0) {
-            // transfer investor fee(callback url: advance_repay_invest_fee_notify)
-            try {
-                ProjectTransferRequestModel repayInvestFeeRequest = ProjectTransferRequestModel.newAdvanceRepayInvestFeeRequest(String.valueOf(loanId),
-                        MessageFormat.format(REPAY_ORDER_ID_TEMPLATE, String.valueOf(loanRepayId), String.valueOf(new Date().getTime())),
-                        String.valueOf(feeAmount));
+                    redisWrapperClient.hset(redisKey, String.valueOf(loanRepayId), SyncRequestStatus.SENT.name());
+                    logger.info(MessageFormat.format("[Advance Repay {0}] invest fee send payback request", String.valueOf(loanRepayId)));
 
-                redisWrapperClient.hset(redisKey, String.valueOf(loanRepayId), SyncRequestStatus.SENT.name());
-                logger.info(MessageFormat.format("[Advance Repay {0}] invest fee send payback request", String.valueOf(loanRepayId)));
+                    ProjectTransferResponseModel repayInvestFeeResponse = this.paySyncClient.send(ProjectTransferMapper.class, repayInvestFeeRequest, ProjectTransferResponseModel.class);
 
-                ProjectTransferResponseModel repayInvestFeeResponse = this.paySyncClient.send(ProjectTransferMapper.class, repayInvestFeeRequest, ProjectTransferResponseModel.class);
-
-                redisWrapperClient.hset(redisKey, String.valueOf(loanRepayId),
-                        repayInvestFeeResponse.isSuccess() ? SyncRequestStatus.SUCCESS.name() : SyncRequestStatus.FAILURE.name());
-                logger.info(MessageFormat.format("[Advance Repay {0}] invest fee payback response is {1}",
-                        String.valueOf(loanRepayId), String.valueOf(repayInvestFeeResponse.isSuccess())));
-            } catch (PayException e) {
-                logger.error(MessageFormat.format("[Advance Repay {0}] invest fee payback amount({1}) throw exception", String.valueOf(loanRepayId), String.valueOf(feeAmount)), e);
+                    redisWrapperClient.hset(redisKey, String.valueOf(loanRepayId),
+                            repayInvestFeeResponse.isSuccess() ? SyncRequestStatus.SUCCESS.name() : SyncRequestStatus.FAILURE.name());
+                    logger.info(MessageFormat.format("[Advance Repay {0}] invest fee payback response is {1}",
+                            String.valueOf(loanRepayId), String.valueOf(repayInvestFeeResponse.isSuccess())));
+                } catch (PayException e) {
+                    logger.error(MessageFormat.format("[Advance Repay {0}] invest fee payback amount({1}) throw exception", String.valueOf(loanRepayId), String.valueOf(feeAmount)), e);
+                }
+            } else {
+                redisWrapperClient.hset(redisKey, String.valueOf(loanRepayId), SyncRequestStatus.SUCCESS.name());
+                logger.info(MessageFormat.format("[Advance Repay {0}] invest fee is 0 set redis status to SUCCESS", String.valueOf(loanRepayId)));
             }
-        } else {
-            redisWrapperClient.hset(redisKey, String.valueOf(loanRepayId), SyncRequestStatus.SUCCESS.name());
-            logger.info(MessageFormat.format("[Advance Repay {0}] invest fee is 0 set redis status to SUCCESS", String.valueOf(loanRepayId)));
         }
 
         if (this.isPaybackInvestSuccess(currentLoanRepay, successInvests)) {
