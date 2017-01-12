@@ -142,11 +142,6 @@ public class ContractServiceTest {
         assertEquals(transferMap.get("msg1"), "甲方持有债权30天以内的，收取转让本金的0.01%作为服务费用。");
         assertEquals(transferMap.get("msg2"), "甲方持有债权30天以上，90天以内的，收取转让本金的0.005%作为服务费用。");
         assertEquals(transferMap.get("msg3"), "甲方持有债权90天以上的，暂不收取转服务费用。");
-
-        transferMap = contractService.collectTransferContractModel(transferApplicationModel.getId());
-        assertEquals(transferMap.get("msg1"), "甲方持有债权30天以内的，收取转让本金的0.01%作为服务费用。");
-        assertEquals(transferMap.get("msg2"), "甲方持有债权30天以上，90天以内的，收取转让本金的0.005%作为服务费用。");
-        assertEquals(transferMap.get("msg3"), "甲方持有债权90天以上的，暂不收取转服务费用。");
     }
 
     @Test
