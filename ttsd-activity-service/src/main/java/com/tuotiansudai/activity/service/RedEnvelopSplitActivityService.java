@@ -133,7 +133,7 @@ public class RedEnvelopSplitActivityService {
         return String.format(AppUrl.SHARE.getPath(), base64);
     }
 
-    public void beforeRegisterUser(String loginName, String referrerMobile, String channel) {
+    public void beforeRegisterUser(String loginName, String referrerMobile, UserChannel channel) {
 
         if (prepareUserMapper.findByMobile(referrerMobile) != null) {
             return;
@@ -146,7 +146,7 @@ public class RedEnvelopSplitActivityService {
         prepareUserModel.setMobile(referrerMobile);
         prepareUserModel.setCreatedTime(new Date());
         prepareUserModel.setChannel(Source.MOBILE);
-        prepareUserModel.setRegisterChannel(UserChannel.valueOf(channel));
+        prepareUserModel.setRegisterChannel(channel);
         prepareUserMapper.create(prepareUserModel);
     }
 
