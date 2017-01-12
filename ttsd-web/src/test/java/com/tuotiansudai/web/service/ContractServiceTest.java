@@ -140,8 +140,19 @@ public class ContractServiceTest {
         assertEquals(transferMap.get("transferTime"), simpleDateFormat.format(transferApplicationModel.getTransferTime()));
         assertEquals(transferMap.get("leftPeriod"), String.valueOf(transferApplicationModel.getLeftPeriod()));
         assertEquals(transferMap.get("msg1"), "甲方持有债权30天以内的，收取转让本金的0.01%作为服务费用。");
-        assertEquals(transferMap.get("msg2"), "甲方持有债权30天以上，90天以内的，收取转让本金的0.01%作为服务费用。");
+        assertEquals(transferMap.get("msg2"), "甲方持有债权30天以上，90天以内的，收取转让本金的0.005%作为服务费用。");
         assertEquals(transferMap.get("msg3"), "甲方持有债权90天以上的，暂不收取转服务费用。");
+
+        TransferRuleModel transferRuleModel = transferRuleMapper.find();
+        transferRuleModel.setLevelOneFee(1);
+        transferRuleModel.setLevelTwoFee(0.7);
+        transferRuleModel.setLevelThreeFee(0.5);
+        transferRuleMapper.update(transferRuleModel);
+
+        transferMap = contractService.collectTransferContractModel(transferApplicationModel.getId());
+        assertEquals(transferMap.get("msg1"), "甲方持有债权30天以内的，收取转让本金的1%作为服务费用。");
+        assertEquals(transferMap.get("msg2"), "甲方持有债权30天以上，90天以内的，收取转让本金的0.7%作为服务费用。");
+        assertEquals(transferMap.get("msg3"), "甲方持有债权90天以上的，收取转让本金的0.5%作为服务费用。");
     }
 
     @Test
@@ -198,7 +209,7 @@ public class ContractServiceTest {
         assertEquals(transferMap.get("transferTime"), simpleDateFormat.format(transferApplicationModel.getTransferTime()));
         assertEquals(transferMap.get("leftPeriod"), String.valueOf(transferApplicationModel.getLeftPeriod()));
         assertEquals(transferMap.get("msg1"), "甲方持有债权30天以内的，收取转让本金的0.01%作为服务费用。");
-        assertEquals(transferMap.get("msg2"), "甲方持有债权30天以上，90天以内的，收取转让本金的0.01%作为服务费用。");
+        assertEquals(transferMap.get("msg2"), "甲方持有债权30天以上，90天以内的，收取转让本金的0.005%作为服务费用。");
         assertEquals(transferMap.get("msg3"), "甲方持有债权90天以上的，暂不收取转服务费用。");
     }
 
