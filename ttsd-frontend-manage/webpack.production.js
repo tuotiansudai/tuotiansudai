@@ -51,7 +51,8 @@ plugins.push(new ExtractTextPlugin("[name].[chunkhash].css"));
 plugins.push(new CleanWebpackPlugin(['prod'], {
     root: basePath,
     verbose: true,
-    dry: false
+    dry: false,
+    watch:true
 }));
 
 //压缩

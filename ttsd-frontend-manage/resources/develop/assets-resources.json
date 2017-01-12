@@ -9,5 +9,8 @@
   },
   "metadata": {
     "version": 123
+  },
+  "/ask/js/test": {
+    "js": "/ask/js/test.js"
   }
 }

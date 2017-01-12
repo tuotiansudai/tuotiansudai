@@ -3,10 +3,11 @@
   "version": "0.1.0",
   "scripts": {
     "start": "npm run json && webpack-dev-server --inline",
-    "jsondev": "webpack && nodemon -L getJsonFiles.js",
     "build": "export NODE_ENV=production && webpack --config webpack.production.js && node getJsonFiles.js",
-    "rmprod": "rm -rf ./resources/prod",
-    "json": "nodemon getJsonFiles.js&"
+    "jsondev": "webpack && node getJsonFiles.js",
+    "test":"export NODE_ENV=production && npm run watchprod && npm run json",
+    "watchprod":"webpack --watch --config webpack.production.js&",
+    "json": "nodemon -L getJsonFiles.js&"
   },
   "devDependencies": {
     "assets-webpack-plugin": "^3.5.0",
