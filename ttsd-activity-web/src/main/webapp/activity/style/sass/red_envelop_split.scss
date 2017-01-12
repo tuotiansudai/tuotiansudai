@@ -209,6 +209,10 @@ body {
       margin-right: 1px;
     }
     .activity-rule {
+      display: -moz-box;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
       display: flex;
       margin-bottom: 15px;
       span {
