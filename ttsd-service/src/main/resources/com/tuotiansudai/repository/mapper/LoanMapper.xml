@@ -766,10 +766,10 @@
                     #{productType}
                 </foreach>
             </if>
-            <if test="loanStatus.name() == 'RAISING'">
+            <if test="loanStatus != null and loanStatus.name() == 'RAISING'">
                 and loan.status in ('RAISING','PREHEAT')
             </if>
-            <if test="loanStatus.name() == 'COMPLETE'">
+            <if test="loanStatus != null and loanStatus.name() == 'COMPLETE'">
                 and loan.status in ('RECHECK','REPAYING','OVERDUE','COMPLETE')
             </if>
             <if test="activityType !=null ">
