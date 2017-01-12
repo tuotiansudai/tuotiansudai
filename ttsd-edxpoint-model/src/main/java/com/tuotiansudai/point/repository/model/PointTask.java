@@ -10,7 +10,7 @@ public enum PointTask {
 
     EACH_SUM_INVEST("累计投资满{0}元", "累计投资满5000 奖励100"),
     FIRST_SINGLE_INVEST("单笔投资满{0}元", "单笔投资满10000 奖励200"),
-    EACH_RECOMMEND_REGISTER("每次邀请好友注册", "每邀请好友注册奖励100积分"),
+    EACH_RECOMMEND("每次邀请好友注册", "每邀请好友注册奖励100积分"),
     EACH_RECOMMEND_REFERRER_BANK_CARD("邀请好友绑卡", "邀请好友绑卡奖励100积分"),
     EACH_RECOMMEND_REFERRER_INVEST("邀请好友投资", "邀请好友投资奖励200积分"),
     EACH_REFERRER_INVEST("每邀请好友投资满1000元", "好友每投1000元奖1000财豆，还拿年化1%现金奖励"), //取消
