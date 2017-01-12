@@ -1,7 +1,6 @@
 @mixin border-color ($color) {
   border:1px solid $color;
 }
-
 .banner-box {
   background: red url("../images/ba01.jpg") no-repeat;
   height:140px;
@@ -10,7 +9,6 @@
     height:100%;
   }
 }
-
 .main-frame-ask {
   .btn-main {
     font-size: 18px;
