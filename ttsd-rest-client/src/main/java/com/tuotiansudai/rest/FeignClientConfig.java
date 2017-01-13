@@ -2,6 +2,7 @@ package com.tuotiansudai.rest;
 
 import com.tuotiansudai.rest.client.codec.RestErrorDecoder;
 import com.tuotiansudai.rest.client.interceptors.RequestHeaderInterceptor;
+import feign.Logger;
 import org.springframework.boot.autoconfigure.web.HttpMessageConvertersAutoConfiguration;
 import org.springframework.cloud.netflix.feign.EnableFeignClients;
 import org.springframework.cloud.netflix.feign.FeignAutoConfiguration;
@@ -23,5 +24,10 @@ public class FeignClientConfig {
     @Bean
     public RestErrorDecoder restErrorDecoder() {
         return new RestErrorDecoder();
+    }
+
+    @Bean
+    Logger.Level feignLoggerLevel() {
+        return Logger.Level.FULL;
     }
 }

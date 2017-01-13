@@ -128,6 +128,7 @@ public class AdvanceRepayInvestPaybackCallbackTest extends RepayBaseTest {
         assertThat(actualInvestRepay2.getActualRepayDate().getTime(), is(loanRepay2.getActualRepayDate().getTime()));
     }
 
+
     @Test
     public void shouldCallbackLastPeriodWhenLoanIsRepaying() throws Exception {
         UserModel loaner = this.getFakeUser("loaner");
