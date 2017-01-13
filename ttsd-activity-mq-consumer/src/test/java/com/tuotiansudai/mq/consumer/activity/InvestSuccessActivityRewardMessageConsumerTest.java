@@ -3,7 +3,9 @@ package com.tuotiansudai.mq.consumer.activity;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.activity.repository.mapper.AnnualPrizeMapper;
+import com.tuotiansudai.activity.repository.mapper.InvestRewardMapper;
 import com.tuotiansudai.activity.repository.model.AnnualPrizeModel;
+import com.tuotiansudai.activity.repository.model.InvestRewardModel;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.message.InvestInfo;
 import com.tuotiansudai.message.InvestSuccessMessage;
@@ -42,6 +44,9 @@ public class InvestSuccessActivityRewardMessageConsumerTest {
     @MockBean
     private AnnualPrizeMapper annualPrizeMapper;
 
+    @MockBean
+    private InvestRewardMapper investRewardMapper;
+
     @Test
     @Transactional
     public void shouldConsume() {
@@ -54,6 +59,7 @@ public class InvestSuccessActivityRewardMessageConsumerTest {
         ReflectionTestUtils.setField(consumer, "activityChristmasEndTime", new DateTime().plusDays(3).toDate());
 
         doNothing().when(mqClient).sendMessage(messageQueueCaptor.capture(), messageCaptor.capture());
+        when(investRewardMapper.findByMobile(anyString())).thenReturn(null);
 
         try {
             consumer.consume(JsonConverter.writeValueAsString(investSuccessMessage));
@@ -105,10 +111,10 @@ public class InvestSuccessActivityRewardMessageConsumerTest {
             e.printStackTrace();
         }
 
-        verify(mqClient, times(2)).sendMessage(any(), any());
+        verify(mqClient, times(14)).sendMessage(any(), any());
 
         assertEquals(MessageQueue.CouponAssigning, messageQueueCaptor.getValue());
-        assertEquals("test123:331", messageCaptor.getValue());
+        assertEquals("test123:359", messageCaptor.getValue());
     }
 
     @Test
@@ -132,10 +138,10 @@ public class InvestSuccessActivityRewardMessageConsumerTest {
             e.printStackTrace();
         }
 
-        verify(mqClient, times(1)).sendMessage(any(), any());
+        verify(mqClient, times(5)).sendMessage(any(), any());
 
         assertEquals(MessageQueue.CouponAssigning, messageQueueCaptor.getValue());
-        assertEquals("test123:330", messageCaptor.getValue());
+        assertEquals("test123:351", messageCaptor.getValue());
     }
 
 
@@ -166,6 +172,112 @@ public class InvestSuccessActivityRewardMessageConsumerTest {
         assertEquals(MessageQueue.CouponAssigning, messageQueueCaptor.getValue());
         assertEquals("test123:330", messageCaptor.getValue());
     }
+
+    @Test
+    @Transactional
+    public void shouldSpringFestivalCompleteFirstTaskIsOk(){
+        final ArgumentCaptor<MessageQueue> messageQueueCaptor = ArgumentCaptor.forClass(MessageQueue.class);
+        final ArgumentCaptor<String> messageCaptor = ArgumentCaptor.forClass(String.class);
+
+        InvestSuccessMessage investSuccessMessage = buildMockedInvestAnnualSuccessMessage();
+        investSuccessMessage.getLoanDetailInfo().setActivityDesc("normal");
+        investSuccessMessage.getInvestInfo().setAmount(100000L);
+        investSuccessMessage.getLoanDetailInfo().setDuration(180);
+
+        ReflectionTestUtils.setField(consumer, "springFestivalTime", Lists.newArrayList(DateTime.now().plusDays(-1).toString(DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")), DateTime.now().plusDays(1).toString(DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss"))));
+        when(investRewardMapper.findByMobile(anyString())).thenReturn(null);
+        doNothing().when(mqClient).sendMessage(messageQueueCaptor.capture(), messageCaptor.capture());
+        doNothing().when(investRewardMapper).create(any());
+
+        try {
+            consumer.consume(JsonConverter.writeValueAsString(investSuccessMessage));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        verify(mqClient, times(2)).sendMessage(any(), any());
+    }
+
+    @Test
+    @Transactional
+    public void shouldSpringFestivalCompleteAllTaskIsOk(){
+        final ArgumentCaptor<MessageQueue> messageQueueCaptor = ArgumentCaptor.forClass(MessageQueue.class);
+        final ArgumentCaptor<String> messageCaptor = ArgumentCaptor.forClass(String.class);
+
+        InvestSuccessMessage investSuccessMessage = buildMockedInvestAnnualSuccessMessage();
+        investSuccessMessage.getLoanDetailInfo().setActivityDesc("normal");
+        investSuccessMessage.getInvestInfo().setAmount(3000000L);
+        investSuccessMessage.getLoanDetailInfo().setDuration(180);
+
+        ReflectionTestUtils.setField(consumer, "springFestivalTime", Lists.newArrayList(DateTime.now().plusDays(-1).toString(DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")), DateTime.now().plusDays(1).toString(DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss"))));
+        when(investRewardMapper.findByMobile(anyString())).thenReturn(null);
+        doNothing().when(mqClient).sendMessage(messageQueueCaptor.capture(), messageCaptor.capture());
+        doNothing().when(investRewardMapper).create(any());
+
+        try {
+            consumer.consume(JsonConverter.writeValueAsString(investSuccessMessage));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        verify(mqClient, times(12)).sendMessage(any(), any());
+    }
+
+    @Test
+    @Transactional
+    public void shouldSpringFestivalSecondInvestIsOk(){
+        final ArgumentCaptor<MessageQueue> messageQueueCaptor = ArgumentCaptor.forClass(MessageQueue.class);
+        final ArgumentCaptor<String> messageCaptor = ArgumentCaptor.forClass(String.class);
+
+        InvestSuccessMessage investSuccessMessage = buildMockedInvestAnnualSuccessMessage();
+        investSuccessMessage.getLoanDetailInfo().setActivityDesc("normal");
+        investSuccessMessage.getInvestInfo().setAmount(500000L);
+        investSuccessMessage.getLoanDetailInfo().setDuration(180);
+
+        InvestRewardModel investRewardModel = new InvestRewardModel("test", "test", "test", 1000L, 0L);
+
+        ReflectionTestUtils.setField(consumer, "springFestivalTime", Lists.newArrayList(DateTime.now().plusDays(-1).toString(DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")), DateTime.now().plusDays(1).toString(DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss"))));
+        when(investRewardMapper.findByMobile(anyString())).thenReturn(investRewardModel);
+        doNothing().when(mqClient).sendMessage(messageQueueCaptor.capture(), messageCaptor.capture());
+        doNothing().when(investRewardMapper).create(any());
+
+        try {
+            consumer.consume(JsonConverter.writeValueAsString(investSuccessMessage));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        verify(mqClient, times(4)).sendMessage(any(), any());
+    }
+
+    @Test
+    @Transactional
+    public void shouldSpringFestivalSecondInvestCompleteAllTaskIsOk(){
+        final ArgumentCaptor<MessageQueue> messageQueueCaptor = ArgumentCaptor.forClass(MessageQueue.class);
+        final ArgumentCaptor<String> messageCaptor = ArgumentCaptor.forClass(String.class);
+
+        InvestSuccessMessage investSuccessMessage = buildMockedInvestAnnualSuccessMessage();
+        investSuccessMessage.getLoanDetailInfo().setActivityDesc("normal");
+        investSuccessMessage.getInvestInfo().setAmount(3000000L);
+        investSuccessMessage.getLoanDetailInfo().setDuration(180);
+
+        InvestRewardModel investRewardModel = new InvestRewardModel("test", "test", "test", 1000L, 2L);
+
+        ReflectionTestUtils.setField(consumer, "springFestivalTime", Lists.newArrayList(DateTime.now().plusDays(-1).toString(DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")), DateTime.now().plusDays(1).toString(DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss"))));
+        when(investRewardMapper.findByMobile(anyString())).thenReturn(investRewardModel);
+        doNothing().when(mqClient).sendMessage(messageQueueCaptor.capture(), messageCaptor.capture());
+        doNothing().when(investRewardMapper).create(any());
+
+        try {
+            consumer.consume(JsonConverter.writeValueAsString(investSuccessMessage));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        verify(mqClient, times(8)).sendMessage(any(), any());
+    }
+
+
 
     private  InvestSuccessMessage buildMockedInvestAnnualSuccessMessage() {
         InvestInfo investInfo = new InvestInfo();
