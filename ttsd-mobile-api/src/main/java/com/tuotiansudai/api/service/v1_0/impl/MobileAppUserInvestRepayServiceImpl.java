@@ -12,6 +12,7 @@ import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
+import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.membership.service.UserMembershipService;
 import com.tuotiansudai.repository.mapper.InvestExtraRateMapper;
@@ -62,6 +63,9 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
 
     @Autowired
     private InvestExtraRateMapper investExtraRateMapper;
+
+    @Autowired
+    private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
 
     @Autowired
     private LoanMapper loanMapper;
@@ -151,6 +155,8 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
             userInvestRepayResponseDataDto.setInvestRepays(investRepayList);
             MembershipModel membershipModel = userMembershipEvaluator.evaluateSpecifiedDate(investModel.getLoginName(), investModel.getInvestTime());
             userInvestRepayResponseDataDto.setMembershipLevel(String.valueOf(membershipModel.getLevel()));
+            double investFeeRate = membershipPrivilegePurchaseService.obtainServiceFee(investModel.getLoginName());
+            userInvestRepayResponseDataDto.setServiceFeeDesc(ServiceFeeReduce.getDescriptionByRate(investFeeRate));
             List<UserCouponModel> userCouponModels = userCouponMapper.findByInvestId(investModel.getId());
 
             List<String> usedCoupons = Lists.transform(userCouponModels, new Function<UserCouponModel, String>() {

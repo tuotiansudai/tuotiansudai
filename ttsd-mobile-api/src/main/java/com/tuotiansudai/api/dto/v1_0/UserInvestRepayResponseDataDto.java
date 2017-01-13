@@ -61,6 +61,9 @@ public class UserInvestRepayResponseDataDto extends BaseResponseDataDto {
     @ApiModelProperty(value = "会员等级", example = "2")
     private String membershipLevel;
 
+    @ApiModelProperty(value = "服务费折扣描述", example = "服务费七折")
+    private String serviceFeeDesc;
+
     @ApiModelProperty(value = "所有优惠券", example = "[1%加息券]")
     private List<String> usedCoupons = new ArrayList<>();
 
@@ -242,5 +245,13 @@ public class UserInvestRepayResponseDataDto extends BaseResponseDataDto {
 
     public void setUsedCoupons(List<String> usedCoupons) {
         this.usedCoupons = usedCoupons;
+    }
+
+    public String getServiceFeeDesc() {
+        return serviceFeeDesc;
+    }
+
+    public void setServiceFeeDesc(String serviceFeeDesc) {
+        this.serviceFeeDesc = serviceFeeDesc;
     }
 }

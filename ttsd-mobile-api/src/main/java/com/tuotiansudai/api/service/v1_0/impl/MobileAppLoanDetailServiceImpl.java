@@ -9,6 +9,7 @@ import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.contract.service.ContractService;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
+import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
@@ -77,6 +78,9 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
 
     @Autowired
     private ContractService contractService;
+
+    @Autowired
+    private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
 
     @Override
     public BaseResponseDto<LoanDetailResponseDataDto> generateLoanDetail(LoanDetailRequestDto loanDetailRequestDto) {
@@ -209,8 +213,7 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
             loanDetailResponseDataDto.setExtraSource(loanDetailsModel.getExtraSource() != null ? (loanDetailsModel.getExtraSource().size() == 1 && loanDetailsModel.getExtraSource().contains(Source.WEB)) ? Source.WEB.name() : "" : "");
         }
 
-        MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
-        double investFeeRate = membershipModel == null ? defaultFee : membershipModel.getFee();
+        double investFeeRate = membershipPrivilegePurchaseService.obtainServiceFee(loginName);
         if(ProductType.EXPERIENCE == loan.getProductType()){
             investFeeRate = this.defaultFee;
         }

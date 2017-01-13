@@ -50,7 +50,7 @@ public class CouponServiceImpl implements CouponService {
     private double defaultFee;
 
     @Autowired
-    private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService
+    private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
 
     @Override
     public long estimateCouponExpectedInterest(String loginName, long loanId, List<Long> couponIds, long amount) {
