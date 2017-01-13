@@ -114,7 +114,7 @@ public class InvestSuccessActivityRewardMessageConsumerTest {
         verify(mqClient, times(14)).sendMessage(any(), any());
 
         assertEquals(MessageQueue.CouponAssigning, messageQueueCaptor.getValue());
-        assertEquals("test123:352", messageCaptor.getValue());
+        assertEquals("test123:359", messageCaptor.getValue());
     }
 
     @Test
@@ -141,7 +141,7 @@ public class InvestSuccessActivityRewardMessageConsumerTest {
         verify(mqClient, times(5)).sendMessage(any(), any());
 
         assertEquals(MessageQueue.CouponAssigning, messageQueueCaptor.getValue());
-        assertEquals("test123:344", messageCaptor.getValue());
+        assertEquals("test123:351", messageCaptor.getValue());
     }
 
 
@@ -170,7 +170,7 @@ public class InvestSuccessActivityRewardMessageConsumerTest {
         verify(mqClient, times(3)).sendMessage(any(), any());
 
         assertEquals(MessageQueue.CouponAssigning, messageQueueCaptor.getValue());
-        assertEquals("test123:342", messageCaptor.getValue());
+        assertEquals("test123:349", messageCaptor.getValue());
     }
 
     @Test
