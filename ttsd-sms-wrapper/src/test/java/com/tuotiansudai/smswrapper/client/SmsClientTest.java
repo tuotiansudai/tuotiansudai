@@ -1,13 +1,12 @@
 package com.tuotiansudai.smswrapper.client;
 
+import com.google.common.collect.Lists;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
-import com.squareup.okhttp.mockwebserver.RecordedRequest;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.SmsDataDto;
 import com.tuotiansudai.smswrapper.SmsTemplate;
 import com.tuotiansudai.smswrapper.repository.mapper.RegisterCaptchaMapper;
-import okio.Buffer;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,7 +17,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.net.URL;
-import java.net.URLDecoder;
 
 import static org.junit.Assert.assertTrue;
 
@@ -54,7 +52,7 @@ public class SmsClientTest {
         this.smsClient.setUrl(url.toString());
 
         String mobile = "13900000000";
-        BaseDto<SmsDataDto> dto = this.smsClient.sendSMS(RegisterCaptchaMapper.class, mobile, SmsTemplate.SMS_BIRTHDAY_NOTIFY_TEMPLATE, "", "127.0.0.1");
+        BaseDto<SmsDataDto> dto = this.smsClient.sendSMS(RegisterCaptchaMapper.class, Lists.newArrayList(mobile), SmsTemplate.SMS_BIRTHDAY_NOTIFY_TEMPLATE, Lists.newArrayList(), "127.0.0.1");
 
         assertTrue(dto.isSuccess());
     }

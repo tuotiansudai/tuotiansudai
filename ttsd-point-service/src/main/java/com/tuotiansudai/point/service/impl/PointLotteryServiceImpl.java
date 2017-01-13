@@ -13,7 +13,6 @@ import com.tuotiansudai.point.service.PointLotteryService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.Source;
-import com.tuotiansudai.util.DateUtil;
 import com.tuotiansudai.util.RandomUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
@@ -23,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -149,7 +149,7 @@ public class PointLotteryServiceImpl implements PointLotteryService {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String begin = formatter.format(new Date());
         String end = formatShortTime.format(new Date()) + LAST_EXPIRY_TIME;
-        int expiryTime = DateUtil.differenceSeconds(begin, end);
+        int expiryTime = differenceSeconds(begin, end);
         redisWrapperClient.setex(MessageFormat.format(redisShareTemple, loginName, formatShortTime.format(new Date()).replace("-", "")), expiryTime, "1");
     }
 
@@ -158,7 +158,7 @@ public class PointLotteryServiceImpl implements PointLotteryService {
         List<UserPointPrizeModel> userPointPrizeModels = userPointPrizeMapper.findAllDescCreatedTime();
         return userPointPrizeModels.stream().map(input -> {
             String loginName = input.isReality() ?
-                    randomUtils.encryptMobile(null, input.getLoginName(), Source.WEB) :
+                    randomUtils.encryptMobileForCurrentLoginName(null, input.getLoginName(), null, Source.WEB) :
                     input.getLoginName();
             return new UserPointPrizeDto(loginName,
                     pointPrizeMapper.findById(input.getPointPrizeId()).getDescription(),
@@ -172,6 +172,19 @@ public class PointLotteryServiceImpl implements PointLotteryService {
         return userPointPrizeModels.stream()
                 .map(input -> new UserPointPrizeDto(input.getLoginName(), pointPrizeMapper.findById(input.getPointPrizeId()).getDescription(), input.getCreatedTime()))
                 .collect(Collectors.toList());
+    }
+
+    private int differenceSeconds(String date1, String date2) {
+        SimpleDateFormat dfs = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date begin = null;
+        Date end = null;
+        try {
+            begin = dfs.parse(date1);
+            end = dfs.parse(date2);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return (int)(end.getTime() - begin.getTime()) / 1000;
     }
 
 }

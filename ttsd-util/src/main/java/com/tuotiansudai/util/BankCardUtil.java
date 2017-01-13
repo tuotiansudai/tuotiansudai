@@ -3,12 +3,10 @@ package com.tuotiansudai.util;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
 
-@Component
 public class BankCardUtil {
 
     private static final Map<String, String> BANK_CODE_MAPPING = Maps.newHashMap(ImmutableMap.<String, String>builder()

@@ -11,7 +11,7 @@ public class RequestIPParser {
 
     private static Logger logger = Logger.getLogger(RequestIPParser.class);
 
-    private static String UNKNOWN = "unknown";
+    private final static String UNKNOWN = "unknown";
 
     public static String parse(HttpServletRequest request) {
         String ip = request.getHeader("x-forwarded-for");

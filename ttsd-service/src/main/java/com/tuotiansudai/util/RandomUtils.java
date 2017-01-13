@@ -28,61 +28,37 @@ public class RandomUtils {
     @Autowired
     private UserMapper userMapper;
 
-    private String generateNumString(int length) {
+    public String encryptMobileForCurrentLoginName(String loginName, String encryptLoginName, Long investId, Source source) {
+        String  originalMobile = userMapper.findByLoginName(encryptLoginName).getMobile();
+
+        if (encryptLoginName.equalsIgnoreCase(loginName)) {
+            return originalMobile;
+        }
+
+        String originalOrFakeMobile = this.getOriginalOrFakeMobile(investId, originalMobile);
+
+        return source.equals(Source.WEB) ? MobileEncryptor.encryptWebMiddleMobile(originalOrFakeMobile) : MobileEncryptor.encryptAppMiddleMobile(originalOrFakeMobile);
+    }
+
+    private String getOriginalOrFakeMobile(Long investId, String originalMobile) {
+        if (investId == null) {
+            return originalMobile;
+        }
+
+        String redisKey = MessageFormat.format(REDIS_KEY_TEMPLATE, String.valueOf(investId), originalMobile);
+
+        if (showRandomLoginNameList.contains(originalMobile) && !redisWrapperClient.exists(redisKey)) {
+            redisWrapperClient.set(redisKey, originalMobile.substring(0, 3) + MobileEncryptor.showChar(4) + generateNumString());
+        }
+        return redisWrapperClient.exists(redisKey) ? redisWrapperClient.get(redisKey) : originalMobile;
+    }
+
+    private String generateNumString() {
         StringBuilder stringBuilder = new StringBuilder();
         Random random = new Random();
-        for (int i = 0; i < length; i++) {
+        for (int i = 0; i < 4; i++) {
             stringBuilder.append(numberChar.charAt(random.nextInt(numberChar.length())));
         }
         return stringBuilder.toString();
-    }
-
-    public String encryptMobile(String loginName, String investorLoginName, long investId, Source source) {
-        String userMobile;
-        String investUserMobile = userMapper.findByLoginName(investorLoginName).getMobile();
-        if (StringUtils.isNotEmpty(loginName)) {
-            userMobile = userMapper.findByLoginName(loginName).getMobile();
-            if (investUserMobile.equalsIgnoreCase(userMobile)) {
-                return investUserMobile;
-            }
-        }
-        String redisKey = MessageFormat.format(REDIS_KEY_TEMPLATE, String.valueOf(investId), investUserMobile);
-        if (showRandomLoginNameList.contains(investorLoginName) && !redisWrapperClient.exists(redisKey)) {
-            redisWrapperClient.set(redisKey, investUserMobile.substring(0, 3) + MobileEncryptor.showChar(4) + generateNumString(4));
-        }
-        String encryptMobile = redisWrapperClient.exists(redisKey) ? redisWrapperClient.get(redisKey) : investUserMobile;
-        if (source.equals(Source.WEB)) {
-            return MobileEncryptor.encryptWebMiddleMobile(encryptMobile);
-        } else {
-            return MobileEncryptor.encryptAppMiddleMobile(encryptMobile);
-        }
-    }
-
-    public String encryptMobileForApp(String loginName, String encryptLoginName) {
-        if (encryptLoginName.equalsIgnoreCase(loginName)) {
-            return "您的位置";
-        }
-
-        return MobileEncryptor.encryptAppMiddleMobile(userMapper.findByLoginName(encryptLoginName).getMobile());
-    }
-
-    public String encryptMobileForWeb(String loginName, String encryptLoginName) {
-        if (encryptLoginName.equalsIgnoreCase(loginName)) {
-            return "您的位置";
-        }
-
-        return MobileEncryptor.encryptWebMiddleMobile(userMapper.findByLoginName(encryptLoginName).getMobile());
-    }
-
-    public String encryptMobile(String loginName, String encryptLoginName, Source source) {
-        if (encryptLoginName.equalsIgnoreCase(loginName)) {
-            return userMapper.findByLoginName(loginName).getMobile();
-        }
-
-        if (source.equals(Source.WEB)) {
-            return MobileEncryptor.encryptWebMiddleMobile(userMapper.findByLoginName(encryptLoginName).getMobile());
-        }
-
-        return MobileEncryptor.encryptAppMiddleMobile(userMapper.findByLoginName(encryptLoginName).getMobile());
     }
 }

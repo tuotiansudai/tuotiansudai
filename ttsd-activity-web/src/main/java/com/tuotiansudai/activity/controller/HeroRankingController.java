@@ -4,10 +4,12 @@ import com.tuotiansudai.activity.repository.model.ActivityCategory;
 import com.tuotiansudai.activity.service.HeroRankingService;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.HeroRankingView;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.spring.LoginUserInfo;
+import com.tuotiansudai.util.MobileEncryptor;
 import com.tuotiansudai.util.RandomUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.joda.time.DateTime;
@@ -29,10 +31,10 @@ public class HeroRankingController {
     private HeroRankingService heroRankingService;
 
     @Autowired
-    private RandomUtils randomUtils;
+    private LoanMapper loanMapper;
 
     @Autowired
-    private LoanMapper loanMapper;
+    private UserMapper userMapper;
 
     @RequestMapping(method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView loadPageData() {
@@ -100,7 +102,7 @@ public class HeroRankingController {
                     heroRankingView.setLoginName("您的位置");
                     continue;
                 }
-                heroRankingView.setLoginName(randomUtils.encryptMobileForWeb(loginName, heroRankingView.getLoginName()));
+                heroRankingView.setLoginName(this.encryptMobileForWeb(loginName, heroRankingView.getLoginName()));
 
             }
 
@@ -117,6 +119,14 @@ public class HeroRankingController {
         }
         baseListDataDto.setStatus(true);
         return baseListDataDto;
+    }
+
+    private String encryptMobileForWeb(String loginName, String encryptLoginName) {
+        if (encryptLoginName.equalsIgnoreCase(loginName)) {
+            return "您的位置";
+        }
+
+        return MobileEncryptor.encryptWebMiddleMobile(userMapper.findByLoginName(encryptLoginName).getMobile());
     }
 
 

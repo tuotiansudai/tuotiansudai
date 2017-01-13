@@ -83,7 +83,7 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
         List<InvestRecordResponseDataDto> investRecordResponseDataDto = null;
         if (CollectionUtils.isNotEmpty(investModels)) {
             investRecordResponseDataDto = Lists.transform(investModels, input -> {
-                input.setLoginName(randomUtils.encryptMobile(loginName, input.getLoginName(), input.getId(), Source.MOBILE));
+                input.setLoginName(randomUtils.encryptMobileForCurrentLoginName(loginName, input.getLoginName(), input.getId(), Source.MOBILE));
                 return new InvestRecordResponseDataDto(input);
             });
         }
@@ -217,14 +217,14 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
         LoanAchievementsResponseDto investAchievementResponseDto = new LoanAchievementsResponseDto(userGroup);
         List<CouponModel> fistInvestCoupon = couponService.findCouponByUserGroup(Lists.newArrayList(userGroup));
 
-        fistInvestCoupon.stream().forEach(
+        fistInvestCoupon.forEach(
                 input -> investAchievementResponseDto.getCoupon().add((input.getCouponType().equals(CouponType.RED_ENVELOPE) ?
                         String.format(RED_ENVELOPE_DESCRIPTION, AmountConverter.convertCentToString(input.getAmount()).replaceAll("\\.00", "")):
                         String.format(INVEST_COUPON_DESCRIPTION, (input.getRate() * 100) + "%").replaceAll("\\.0", ""))));
 
         if(investId != null){
             UserModel userModel = userMapper.findByLoginName(investMapper.findById(investId).getLoginName());
-            investAchievementResponseDto.setMobile(randomUtils.encryptMobile(loginName, userModel.getLoginName(), investId, Source.MOBILE));
+            investAchievementResponseDto.setMobile(randomUtils.encryptMobileForCurrentLoginName(loginName, userModel.getLoginName(), investId, Source.MOBILE));
         }
 
         return investAchievementResponseDto;
