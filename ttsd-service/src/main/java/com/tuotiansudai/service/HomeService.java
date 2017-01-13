@@ -15,8 +15,4 @@ public interface HomeService {
     List<HomeLoanDto> getEnterpriseLoans();
 
     List<SiteMapDataDto> siteMapData();
-
-    List<SiteMapDataDto> getCmsSiteMapCategory();
-
-    List<SiteMapDataDto> getCmsSiteMapCategoryArticle(String parent, String category);
 }

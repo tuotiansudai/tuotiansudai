@@ -100,19 +100,4 @@ public class HomeController {
         }
     }
 
-    @RequestMapping(path = "/sitemap/cms-category-list", method = RequestMethod.GET)
-    public ModelAndView getCmsColumn() {
-        ModelAndView modelAndView = new ModelAndView("/sitemap/cms-category-list");
-        modelAndView.addObject("cmsCategoryList", homeService.getCmsSiteMapCategory());
-        return modelAndView;
-    }
-
-    @RequestMapping(path = "/sitemap/{parent}/{category}", method = RequestMethod.GET)
-    public ModelAndView getCmsArticleList(@PathVariable String parent,
-                                          @PathVariable String category) {
-        ModelAndView modelAndView = new ModelAndView("/sitemap/cms-category-article-list");
-        modelAndView.addObject("cmsCategoryArticleList", homeService.getCmsSiteMapCategoryArticle(parent, category));
-        return modelAndView;
-    }
-
 }

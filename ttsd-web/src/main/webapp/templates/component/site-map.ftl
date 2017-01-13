@@ -8,7 +8,7 @@
     <#--ask栏目列表-->
         <a href='${askDomain}/question/sitemap/hot-category-list' target="_blank">ASK栏目列表</a>
     <#--cms栏目列表-->
-        <a href='http://localhost:8080/sitemap/cms-category-list' target="_blank">CMS栏目列表</a>
+        <a href='http://content.tuotiansudai.com/sitemap/cms-category-list' target="_blank">CMS栏目列表</a>
     <#--ask分类信息-->
         <a href='${askDomain}/question/sitemap/category/INVEST' target="_blank">理财</a>
         <a href='${askDomain}/question/sitemap/category/STOCK' target="_blank">股票</a>
