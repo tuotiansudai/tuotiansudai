@@ -253,10 +253,10 @@ public class InvestSuccessActivityRewardMessageConsumer implements MessageConsum
 
     private List getInvestRewardByInvestGrade(Integer investGrade) {
         return Maps.newHashMap(ImmutableMap.<Integer, List>builder()
-                .put(1, Lists.newArrayList(341L, 342L))
-                .put(2, Lists.newArrayList(343L, 344L))
-                .put(3, Lists.newArrayList(345L, 346L, 347L, 348L))
-                .put(4, Lists.newArrayList(349L, 350L, 351L, 352L))
+                .put(1, Lists.newArrayList(348L, 349L))
+                .put(2, Lists.newArrayList(350L, 351L))
+                .put(3, Lists.newArrayList(352L, 353L, 354L, 355L))
+                .put(4, Lists.newArrayList(356L, 357L, 358L, 359L))
                 .build()).get(investGrade);
     }
 
