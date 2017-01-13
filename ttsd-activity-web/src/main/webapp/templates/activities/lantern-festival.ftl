@@ -61,8 +61,8 @@
                                当前排名：<a href="javascript:void(0)" class="get-rank show-login">登录查看</a>
                            </@global.isAnonymous>
 							<@global.isNotAnonymous>
-		                       <#if investRanking??&&investRanking gt 0>
-		                           当前排名:&nbsp;<strong><#if investRanking gte 20>20+ <#else >${investRanking}</strong>名 </#if>
+		                       <#if investRanking?? &&investRanking &gt; 0>
+		                           当前排名:&nbsp;<strong><#if investRanking &gt; 20>20+ <#else >${investRanking}&nbsp;</strong>名 </#if>
 		                       <#else >
 		                           未参与排行
 		                       </#if>
@@ -73,14 +73,10 @@
 						<i class="icon-money"></i>
 						<span>
 							<@global.isAnonymous>
-                               今日投资额：<a href="javascript:void(0)" class="get-rank show-login">登录查看</a>
+                               今日投资额：0.00
                            </@global.isAnonymous>
                            <@global.isNotAnonymous>
-		                       <#if investRanking??&&investRanking gt 0>
-		                           今日投资额：<strong><#if investRanking gte 20>20+ <#else >${investRanking}</strong></#if>
-		                       <#else >
-		                           0.00
-		                       </#if>
+		                        今日投资额：<strong>${investAmount}</strong>
 		                   </@global.isNotAnonymous>
 						</span>
 					</li>
@@ -117,26 +113,26 @@
                         {{each records}}
                         <tr>
                             <td>
-                            if($index==0){
+							{{if $index==0}}
                             	<img src="${staticServer}/activity/images/lantern-festival/list-one.png">
-                            }else if($index==1){
+                            {{else if $index==1}}
                             	<img src="${staticServer}/activity/images/lantern-festival/list-two.png">
-                            }else if($index==2){
+                            {{else if $index==2}}
                             	<img src="${staticServer}/activity/images/lantern-festival/list-three.png">
-                            }else{
+                            {{else}}
                             	{{$index+1}}
-                            }
+                            {{/if}}
                             </td>
                             <td>{{$value.loginName}}</td>
                             <td>{{$value.centSumAmount}}</td>
                             <td>
-                            	if($index==0){
-	                            	神秘大奖
-	                            }else if($index>0 && $index<5){
+                            	{{if $index==0}}
+	                            	至尊大奖
+	                            {{else if $index>0 && $index<5}}
 	                            	200元红包
-	                            }else{
+	                            {{else}}
 	                            	100元红包
-	                            }
+	                            {{/if}}
                             </td>
                         </tr>
                         {{/each}}

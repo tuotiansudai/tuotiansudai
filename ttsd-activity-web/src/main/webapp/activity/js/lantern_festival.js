@@ -60,7 +60,7 @@ require(['jquery','drawCircle','template','layerWrapper','logintip'], function (
     //投资排行
     function heroRank(date) {
         $.ajax({
-            url: '/activity/hero-ranking/invest/' + date,
+            url: '/activity/lantern-festival/invest/' + date,
             type: 'GET',
             dataType: 'json'
         })

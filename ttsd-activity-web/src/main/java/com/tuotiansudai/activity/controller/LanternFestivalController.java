@@ -43,8 +43,8 @@ public class LanternFestivalController {
         ModelAndView modelAndView = new ModelAndView("/activities/lantern-festival", "responsive", true);
         String loginName = LoginUserInfo.getLoginName();
         Map param = heroRankingService.obtainHeroRankingAndInvestAmountByLoginName(ActivityCategory.LANTERN_FESTIVAL_ACTIVITY, new Date(), loginName);
-        modelAndView.addObject("investRanking", param.get("investRanking"));
-        modelAndView.addObject("investAmount", param.get("investAmount"));
+        modelAndView.addObject("investRanking", Integer.parseInt(String.valueOf(param.get("investRanking"))));
+        modelAndView.addObject("investAmount", String.valueOf(param.get("investAmount")));
         modelAndView.addObject("currentTime", DateConvertUtil.currentDate());
         modelAndView.addObject("mysteriousPrizeDto", heroRankingService.obtainMysteriousPrizeDto(new DateTime().toString("yyyy-MM-dd")));
         List<String> activityTime = heroRankingService.getActivityPeriod(ActivityCategory.LANTERN_FESTIVAL_ACTIVITY);
