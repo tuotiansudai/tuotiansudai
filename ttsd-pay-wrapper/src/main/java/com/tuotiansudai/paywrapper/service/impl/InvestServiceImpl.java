@@ -641,7 +641,7 @@ public class InvestServiceImpl implements InvestService {
 
     private void sendLoanRaisingCompleteNotify(long loanId) {
         LoanModel loanModel = loanMapper.findById(loanId);
-        SimpleDateFormat sdfDate = new SimpleDateFormat("mm月dd日");
+        SimpleDateFormat sdfDate = new SimpleDateFormat("MM月dd日");
 
         String loanRaisingStartDate = sdfDate.format(loanModel.getFundraisingStartTime());
 
