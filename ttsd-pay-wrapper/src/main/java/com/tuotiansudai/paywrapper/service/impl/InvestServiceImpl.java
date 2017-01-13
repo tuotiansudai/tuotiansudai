@@ -652,7 +652,7 @@ public class InvestServiceImpl implements InvestService {
         if (loanAmount % 1000000 == 0)
             loanAmountStr = String.valueOf(loanAmount / 1000000);
         else
-            loanAmountStr = String.valueOf(new BigDecimal(loanAmount / 1000000).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+            loanAmountStr = String.valueOf(new BigDecimal(Float.valueOf(loanAmount) / 1000000).setScale(2, BigDecimal.ROUND_HALF_UP));
 
         String loanDuration = String.valueOf(loanModel.getDuration());
 
