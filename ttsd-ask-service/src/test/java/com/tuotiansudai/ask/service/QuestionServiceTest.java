@@ -2,7 +2,7 @@ package com.tuotiansudai.ask.service;
 
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.ask.repository.dto.QuestionDto;
+import com.tuotiansudai.ask.dto.QuestionDto;
 import com.tuotiansudai.ask.repository.mapper.QuestionMapper;
 import com.tuotiansudai.ask.repository.model.QuestionModel;
 import com.tuotiansudai.ask.repository.model.QuestionStatus;
