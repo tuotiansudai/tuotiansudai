@@ -1,9 +1,9 @@
 package com.tuotiansudai.web.ask.controller;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.ask.repository.dto.QuestionDto;
-import com.tuotiansudai.ask.repository.dto.QuestionRequestDto;
-import com.tuotiansudai.ask.repository.dto.QuestionResultDataDto;
+import com.tuotiansudai.ask.dto.QuestionDto;
+import com.tuotiansudai.ask.dto.QuestionResultDataDto;
+import com.tuotiansudai.ask.dto.QuestionWithCaptchaRequestDto;
 import com.tuotiansudai.ask.repository.model.Tag;
 import com.tuotiansudai.ask.service.AnswerService;
 import com.tuotiansudai.ask.service.EmbodyQuestionService;
@@ -41,7 +41,7 @@ public class QuestionController {
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<QuestionResultDataDto> question(@Valid @ModelAttribute QuestionRequestDto questionRequestDto) {
+    public BaseDto<QuestionResultDataDto> question(@Valid @ModelAttribute QuestionWithCaptchaRequestDto questionRequestDto) {
         return new BaseDto<>(questionService.createQuestion(LoginUserInfo.getLoginName(), questionRequestDto));
     }
 
@@ -50,8 +50,8 @@ public class QuestionController {
                                  @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
         QuestionDto question = questionService.getQuestion(LoginUserInfo.getLoginName(), questionId);
         if (question == null) {
-            ModelAndView modelAndView =  new ModelAndView("/error/404");
-            modelAndView.addObject("errorPage","true");
+            ModelAndView modelAndView = new ModelAndView("/error/404");
+            modelAndView.addObject("errorPage", "true");
             return modelAndView;
         }
 
@@ -81,7 +81,7 @@ public class QuestionController {
     @RequestMapping(path = "/search", method = RequestMethod.GET)
     public ModelAndView getQuestionsByKeyword(@RequestParam(value = "keyword", defaultValue = "") String keyword,
                                               @RequestParam(value = "index", required = false, defaultValue = "1") int index) {
-        if(StringUtils.isEmpty(keyword)) {
+        if (StringUtils.isEmpty(keyword)) {
             return new ModelAndView("redirect:/?group=HOT&index=1");
         }
         ModelAndView modelAndView = new ModelAndView("search-data");
@@ -97,10 +97,10 @@ public class QuestionController {
     public ModelAndView getQuestionColumn() {
         ModelAndView modelAndView = new ModelAndView("hot-category-list");
         List<SiteMapDataDto> siteMapDataDtoList = Lists.newArrayList();
-        for(Tag tag: Tag.values()){
+        for (Tag tag : Tag.values()) {
             SiteMapDataDto siteMapDataDto = new SiteMapDataDto();
             siteMapDataDto.setName(tag.getDescription());
-            siteMapDataDto.setLinkUrl("/question/category/"+tag.name());
+            siteMapDataDto.setLinkUrl("/question/category/" + tag.name());
             siteMapDataDtoList.add(siteMapDataDto);
         }
         modelAndView.addObject("hotCategoryList", siteMapDataDtoList);

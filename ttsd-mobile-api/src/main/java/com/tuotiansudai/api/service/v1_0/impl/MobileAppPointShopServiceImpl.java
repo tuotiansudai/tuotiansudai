@@ -108,7 +108,7 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
         Integer index = baseParamDto.getIndex();
         Integer pageSize = baseParamDto.getPageSize();
         if (index == null || index <= 0) {
-            index = 0;
+            index = 1;
         }
 
         pageSize = pageValidUtils.validPageSizeLimit(pageSize);
@@ -117,12 +117,7 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
         List<ProductOrderViewDto> productOrderListByLoginName = productOrderMapper.findProductOrderListByLoginName(baseParamDto.getBaseParam().getUserId(), index, pageSize);
         ProductListOrderResponseDto productListOrderResponseDto = new ProductListOrderResponseDto();
         if (CollectionUtils.isNotEmpty(productOrderListByLoginName)) {
-            Iterator<ProductOrderResponseDto> transform = Iterators.transform(productOrderListByLoginName.iterator(), new Function<ProductOrderViewDto, ProductOrderResponseDto>() {
-                @Override
-                public ProductOrderResponseDto apply(ProductOrderViewDto input) {
-                    return new ProductOrderResponseDto(input);
-                }
-            });
+            Iterator<ProductOrderResponseDto> transform = Iterators.transform(productOrderListByLoginName.iterator(), input -> new ProductOrderResponseDto(input));
             productListOrderResponseDto.setOrders(Lists.newArrayList(transform));
             productListOrderResponseDto.setIndex(baseParamDto.getIndex());
             productListOrderResponseDto.setPageSize(baseParamDto.getPageSize());
@@ -149,26 +144,11 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
         List<ProductModel> virtualProducts = productMapper.findAllProductsByGoodsType(Lists.newArrayList(GoodsType.VIRTUAL));
         List<ProductModel> physicalsProducts = productMapper.findAllProductsByGoodsType(Lists.newArrayList(GoodsType.PHYSICAL));
 
-        Iterator<ProductDetailResponseDto> couponList = Iterators.transform(exchangeCoupons.iterator(), new Function<ExchangeCouponView, ProductDetailResponseDto>() {
-            @Override
-            public ProductDetailResponseDto apply(ExchangeCouponView exchangeCouponView) {
-                return new ProductDetailResponseDto(exchangeCouponView, bannerServer);
-            }
-        });
+        Iterator<ProductDetailResponseDto> couponList = Iterators.transform(exchangeCoupons.iterator(), exchangeCouponView -> new ProductDetailResponseDto(exchangeCouponView, bannerServer));
 
-        Iterator<ProductDetailResponseDto> virtualList = Iterators.transform(virtualProducts.iterator(), new Function<ProductModel, ProductDetailResponseDto>() {
-            @Override
-            public ProductDetailResponseDto apply(ProductModel input) {
-                return new ProductDetailResponseDto(input.getId(), bannerServer + input.getImageUrl(), input.getName(), input.getPoints(), input.getType(), 1000, input.getSeq(), input.getUpdatedTime());
-            }
-        });
+        Iterator<ProductDetailResponseDto> virtualList = Iterators.transform(virtualProducts.iterator(), input -> new ProductDetailResponseDto(input.getId(), bannerServer + input.getImageUrl(), input.getName(), input.getPoints(), input.getType(), 1000, input.getSeq(), input.getUpdatedTime()));
 
-        Iterator<ProductDetailResponseDto> physicals = Iterators.transform(physicalsProducts.iterator(), new Function<ProductModel, ProductDetailResponseDto>() {
-            @Override
-            public ProductDetailResponseDto apply(ProductModel input) {
-                return new ProductDetailResponseDto(input.getId(), bannerServer + input.getImageUrl(), input.getName(), input.getPoints(), input.getType(), 1000, input.getSeq(), input.getUpdatedTime());
-            }
-        });
+        Iterator<ProductDetailResponseDto> physicals = Iterators.transform(physicalsProducts.iterator(), input -> new ProductDetailResponseDto(input.getId(), bannerServer + input.getImageUrl(), input.getName(), input.getPoints(), input.getType(), 1000, input.getSeq(), input.getUpdatedTime()));
 
         List virtualShopList = Lists.newArrayList(virtualList);
         if (couponList != null) {
@@ -277,7 +257,7 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
     }
 
     @Transactional
-    public BaseResponseDto<PointDrawResultResponseDto> lotteryDrawByPoint(BaseParamDto baseParamDto){
+    public BaseResponseDto<PointDrawResultResponseDto> lotteryDrawByPoint(BaseParamDto baseParamDto) {
         DrawLotteryResultDto drawLotteryResultDto = lotteryDrawActivityService.drawPrizeByPoint(LoginUserInfo.getMobile(), ActivityCategory.POINT_SHOP_DRAW_1000, true);
         PointDrawResultResponseDto pointDrawResultResponseDto = new PointDrawResultResponseDto(drawLotteryResultDto);
         int returnCode = drawLotteryResultDto.getReturnCode();
@@ -287,8 +267,8 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
             baseResponseDto.setData(pointDrawResultResponseDto);
             baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
             baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
-        }else{
-            switch(returnCode){
+        } else {
+            switch (returnCode) {
                 case 1:
                     baseResponseDto.setCode(ReturnMessage.INSUFFICIENT_POINTS_BALANCE.getCode());
                     baseResponseDto.setMessage(ReturnMessage.INSUFFICIENT_POINTS_BALANCE.getMsg());
@@ -315,8 +295,8 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
     }
 
     @Override
-    public BaseResponseDto<MyPrizeListResponseDto> findPrizeListByLoginName(BaseParamDto baseParamDto){
-        List<UserLotteryPrizeView> userLotteryPrizeViewList =  lotteryDrawActivityService.findDrawLotteryPrizeRecordByMobile(LoginUserInfo.getMobile(), ActivityCategory.POINT_SHOP_DRAW_1000);
+    public BaseResponseDto<MyPrizeListResponseDto> findPrizeListByLoginName(BaseParamDto baseParamDto) {
+        List<UserLotteryPrizeView> userLotteryPrizeViewList = lotteryDrawActivityService.findDrawLotteryPrizeRecordByMobile(LoginUserInfo.getMobile(), ActivityCategory.POINT_SHOP_DRAW_1000);
         MyPrizeListResponseDto myPrizeListResponseDto = new MyPrizeListResponseDto();
         if (CollectionUtils.isNotEmpty(userLotteryPrizeViewList)) {
             Iterator<PrizeResponseDto> transform = Iterators.transform(userLotteryPrizeViewList.iterator(), new Function<UserLotteryPrizeView, PrizeResponseDto>() {
@@ -336,17 +316,12 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
     }
 
     @Override
-    public BaseResponseDto<PrizeListResponseDto> findPrizeList(BaseParamDto baseParamDto){
-        List<UserLotteryPrizeView> userLotteryPrizeViewList =  lotteryDrawActivityService.findDrawLotteryPrizeRecord(null, ActivityCategory.POINT_SHOP_DRAW_1000);
-        userLotteryPrizeViewList = userLotteryPrizeViewList.subList(0,20);
+    public BaseResponseDto<PrizeListResponseDto> findPrizeList(BaseParamDto baseParamDto) {
+        List<UserLotteryPrizeView> userLotteryPrizeViewList = lotteryDrawActivityService.findDrawLotteryPrizeRecord(null, ActivityCategory.POINT_SHOP_DRAW_1000);
+        userLotteryPrizeViewList = userLotteryPrizeViewList.subList(0, 20);
         PrizeListResponseDto prizeListResponseDto = new PrizeListResponseDto();
         if (CollectionUtils.isNotEmpty(userLotteryPrizeViewList)) {
-            Iterator<PrizeResponseDto> transform = Iterators.transform(userLotteryPrizeViewList.iterator(), new Function<UserLotteryPrizeView, PrizeResponseDto>() {
-                @Override
-                public PrizeResponseDto apply(UserLotteryPrizeView input) {
-                    return new PrizeResponseDto(input);
-                }
-            });
+            Iterator<PrizeResponseDto> transform = Iterators.transform(userLotteryPrizeViewList.iterator(), input -> new PrizeResponseDto(input));
             prizeListResponseDto.setPrizeList(Lists.newArrayList(transform));
         }
 
