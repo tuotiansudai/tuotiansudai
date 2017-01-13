@@ -1,4 +1,4 @@
-package com.tuotiansudai.ask.repository.dto;
+package com.tuotiansudai.ask.dto;
 
 import com.tuotiansudai.ask.repository.model.Tag;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -17,10 +17,6 @@ public class QuestionRequestDto implements Serializable {
     private String addition;
 
     private List<Tag> tags;
-
-    @NotEmpty
-    @Pattern(regexp = "^[0-9]{5}$")
-    private String captcha;
 
     public String getQuestion() {
         return question;
@@ -44,13 +40,5 @@ public class QuestionRequestDto implements Serializable {
 
     public void setTags(List<Tag> tags) {
         this.tags = tags;
-    }
-
-    public String getCaptcha() {
-        return captcha;
-    }
-
-    public void setCaptcha(String captcha) {
-        this.captcha = captcha;
     }
 }
