@@ -164,8 +164,8 @@ public class SmsServiceImpl implements SmsService {
 
     @Override
     public BaseDto<SmsDataDto> loanRaisingCompleteNotify(LoanRaisingCompleteNotifyDto dto) {
-        String[] paramArr = {dto.getLoanRaisingStartDate(), dto.getLoanName(), dto.getLoanAmount(), dto.getLoanDuration(),
-                dto.getLoanerName(), dto.getAgentName(), dto.getLoanRaisingCompleteTime()};
+        String[] paramArr = {dto.getLoanRaisingStartDate(), dto.getLoanDuration(), dto.getLoanAmount(),
+                dto.getLoanRaisingCompleteTime(), "借款人：" + dto.getLoanerName(), "代理人：" + dto.getAgentName()};
         List<String> paramList = Arrays.asList(paramArr);
         return smsClient.sendSMS(LoanRaisingCompleteNotifyMapper.class, dto.getMobiles(), SmsTemplate.LOAN_RAISING_COMPLETE_NOTIFY_TEMPLATE, paramList, "");
     }
