@@ -2,10 +2,9 @@ var path = require('path');
 var glob=require('glob');
 var AssetsPlugin = require('assets-webpack-plugin');
 var webpack = require('webpack');
-var WebpackMd5Hash = require('webpack-md5-hash');
 var objectAssign = require('object-assign');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
-var geFileList = require('./getFiles');
+var CopyWebpackPlugin = require('copy-webpack-plugin'); //复制文件
 
 var basePath = path.join(__dirname, 'resources'),
 	staticPath = path.join(basePath, 'static'),
@@ -19,22 +18,9 @@ var basePath = path.join(__dirname, 'resources'),
 var outputPath=path.join(basePath, 'develop'),//打包文件路径
 	devServerPath='/',
 	commonOptions={},
+	webpackdevServer='',
 	plugins=[];
-
-//用来判断类型
-//NODE_ENV:dev 开发环境
-//NODE_ENV:production 线上部署环境
-//NODE_ENV:devJson 开发环境,只在生成json map的时候用
-// const NODE_ENV=process.env.NODE_ENV;
-// console.log(NODE_ENV);
-// if(NODE_ENV=='dev') {
-// 	outputPath=path.join(basePath, 'develop');
-// }
-// else if(NODE_ENV=='devjson') {
-// 	outputPath=path.join(basePath, '/develop/getJsonFiles/');
-// }
-// console.log(outputPath);
-
+const NODE_ENV=process.env.NODE_ENV;
 
 /**
  * 动态查找所有入口文件
@@ -57,8 +43,6 @@ files.forEach(function(file){
 	}
 });
 
-//添加要打包在vendors里面的库
-// newEntries['vendor']=["jquery", "underscore"];
 commonOptions.entry = newEntries;
 
 plugins.push(new webpack.ProvidePlugin({
@@ -66,14 +50,6 @@ plugins.push(new webpack.ProvidePlugin({
 	jQuery: "jquery",
 	"window.jQuery": "jquery"
 }));
-plugins.push(new ExtractTextPlugin("[name].css"));
-plugins.push(new WebpackMd5Hash());
-
-//把入口文件里面的数组打包成verdors.js
-// plugins.push(new webpack.optimize.CommonsChunkPlugin({
-// 	name: "vendor",//和上面配置的入口对应
-// 	filename: "public/js/vendorFun.js"//导出的文件的名称
-// }));
 
 //生成json文件的列表索引插件
 plugins.push(new AssetsPlugin({
@@ -85,14 +61,62 @@ plugins.push(new AssetsPlugin({
 	path: outputPath,
 	metadata: {version: 123}
 }));
+plugins.push(new CopyWebpackPlugin([
+	{ from: staticPath+'/inlineImages',to: 'images'}
+]));
 
-//开发模式
-plugins.push(new webpack.HotModuleReplacementPlugin());
+if(NODE_ENV=='production') {
+	//生产环境
+	var outFilename="[name].[chunkhash].js";
+	outputPath=path.join(basePath, 'prod'); //打包文件路径
+	//生成带hash的css
+	plugins.push(new ExtractTextPlugin("[name].[chunkhash].css"));
 
+	//打包之前先删除打包文件里的文件方便重新打包
+	plugins.push(new CleanWebpackPlugin(['prod'], {
+		root: basePath,
+		verbose: true,
+		dry: false,
+		watch:true
+	}));
+
+	//压缩
+	plugins.push(new webpack.optimize.UglifyJsPlugin({
+		compress: {
+			warnings: false,
+			drop_debugger: true,
+			drop_console: true
+		}
+	}));
+
+}
+else if(NODE_ENV=='dev') {
+	var outFilename="[name].js";
+	plugins.push(new ExtractTextPlugin("[name].css"));
+	//开发环境
+	plugins.push(new webpack.HotModuleReplacementPlugin());
+	webpackdevServer={
+		contentBase: basePath,
+		historyApiFallback: true,
+		hot: true,
+		devtool: 'eval',
+		host: '0.0.0.0',
+		port: 3008,
+		inline: true,
+		noInfo: false
+		// proxy: {
+		// 	'*': {
+		// 		target: 'http://localhost:8088',
+		// 		secure: false
+		// 	}
+		// }
+	};
+
+}
 
 module.exports = objectAssign(commonOptions, {
 	output: {
-		filename:"[name].js",
+		filename:outFilename,
 		path:outputPath,
 		publicPath:devServerPath
 	},
@@ -145,21 +169,6 @@ module.exports = objectAssign(commonOptions, {
 	},
 	cache: true,
 	plugins: plugins,
-	devServer:{
-		contentBase: basePath,
-		historyApiFallback: true,
-		hot: true,
-		devtool: 'eval',
-		host: '0.0.0.0',
-		port: 3008,
-		inline: true,
-		noInfo: false
-		// proxy: {
-		// 	'*': {
-		// 		target: 'http://localhost:8088',
-		// 		secure: false
-		// 	}
-		// }
-	}
+	devServer:webpackdevServer
 });
 

@@ -19,7 +19,7 @@
     </@security.authorize>
 </#macro>
 
-<#macro main pageCss pageJavascript="" activeNav="" activeLeftNav="" title="拓天速贷" keywords="" description="" site='main'>
+<#macro main pageCss pageJavascript="" activeNav="" activeLeftNav="" staticServer="${staticServer}" title="拓天速贷" keywords="" description="" site='main'>
     <#local mainMenus=[
     {"title":"首页", "url":"/","category":"16顶部导航","navigation":"true"},
     {"title":"我要投资", "url":"/loan-list","category":"17顶部导航","navigation":"true","leftNavs":[
@@ -83,14 +83,11 @@
     <meta name="_csrf_header" content="${(_csrf.headerName)!}"/>
     <meta name="360-site-verification" content="8f78c77592779bad6fb5acc422271b6f" />
     <link href="${staticServer}/images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-    <link rel="stylesheet" type="text/css" href="${staticServer}${cssPath}${css.global}" charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="${staticServer}${css.global_page!}" charset="utf-8"/>
     <#if pageCss?? && pageCss != "">
-    <link rel="stylesheet" type="text/css" href="${staticServer}${cssPath}${pageCss}" charset="utf-8" />
+        <link rel="stylesheet" type="text/css" href="${staticServer}${pageCss}" charset="utf-8"/>
     </#if>
-    <!--[if lte IE 8]>
-        <link rel="stylesheet" href="${staticServer}${cssPath}ie_hack_grid.css">
-    <![endif]-->
-    <!-- -->
+
     <#include "../pageLayout/cnzz.ftl"/>
     <!-- growing io -->
     <#include "../pageLayout/growing-io.ftl"/>
@@ -137,17 +134,9 @@
     </@security.authorize>
 
 </script>
-<script type="text/javascript" src="${staticServer}${jsPath}${js.global_page}"></script>
-<script src="${staticServer}${jsPath}${js.config}" type="text/javascript" charset="utf-8"></script>
-
-<#if pageJavascript?? && pageJavascript?length gt 0>
-<script src="${staticServer}/js/libs/require-2.1.20.min.js" type="text/javascript" charset="utf-8" defer="defer" async="async"
-        data-main="${staticServer}${jsPath}${pageJavascript}">
-
-</script>
-</#if>
 
 <#include "../pageLayout/statistic.ftl" />
+<script src="${staticServer}${js.global_page!}"></script>
 </body>
 </html>
 </#macro>

@@ -51,7 +51,7 @@ $pointColor:#ff5400;
 
 //vip loan
 .loan-tag-vip {
-  background: url("/images/homepage/icon-vip.png") left -1px no-repeat;
+  background: url("../images/homepage/icon-vip.png") left -1px no-repeat;
   padding-left:31px;
   height:20px;
   line-height: 16px;
@@ -75,7 +75,7 @@ $pointColor:#ff5400;
   .icon-tip {
     width: 32px;
     height: 32px;
-    background: url("/images/icons/success-tip.png") 0px 0px no-repeat;
+    background: url("../images/icons/success-tip.png") 0px 0px no-repeat;
     position: absolute;
     top: 30px;
     background-size: 100%;
@@ -362,7 +362,7 @@ $pointColor:#ff5400;
       box-sizing: border-box;
       padding: 35px 35px 10px;
       background-color: rgba(0,0,0,0.4);
-      background: url("../../images/homepage/base-bg-transport.png") left top repeat\9;
+      background: url("../images/homepage/base-bg-transport.png") left top repeat\9;
       color:#fff;
       i a {
         color:#ff752a;
@@ -410,7 +410,7 @@ $pointColor:#ff5400;
           position: absolute;
           top:7px;
           left:0;
-          background:url('../../images/homepage/icon-line.png') no-repeat center;
+          background:url('../images/homepage/icon-line.png') no-repeat center;
         }
         &:after{
           content:'';
@@ -419,7 +419,7 @@ $pointColor:#ff5400;
           position: absolute;
           top:7px;
           right:0;
-          background:url('../../images/homepage/icon-line.png') no-repeat center;
+          background:url('../images/homepage/icon-line.png') no-repeat center;
         }
       }
     }
@@ -438,7 +438,7 @@ $pointColor:#ff5400;
         text-align: center;
         border-right: 1px solid #e6e6e6;
         color: #999;
-        background: url(../../images/homepage/icon-notice.png) left center no-repeat;
+        background: url('../images/homepage/icon-notice.png') left center no-repeat;
       }
       .notice-text {
         margin-left: 134px;
@@ -482,14 +482,14 @@ $pointColor:#ff5400;
           padding-left:90px;
         }
         &.guide {
-          background: url(/images/homepage/icon-guide.png) left center no-repeat;
+          background: url('../images/homepage/icon-guide.png') left center no-repeat;
         }
         &.risk {
-          background: url(/images/homepage/icon-risk.png) left center no-repeat;
+          background: url('../images/homepage/icon-risk.png') left center no-repeat;
         }
         &.assurance {
           width:27%;
-          background: url(/images/homepage/icon-assurce.png) left center no-repeat;
+          background: url('../images/homepage/icon-assurce.png') left center no-repeat;
         }
         b {
           font-size: 20px;
@@ -521,12 +521,12 @@ $pointColor:#ff5400;
         position: absolute;
         top:-5px;
         right:0;
-        background:#fff url(../../images/homepage/icon-newer.png) right 0 no-repeat;
+        background:#fff url('../images/homepage/icon-newer.png') right 0 no-repeat;
 
       }
       &.hack-newbie {
         .tag-icon {
-          background: #fff url(../../images/homepage/icon-newuse.png) right 0 no-repeat;
+          background: #fff url('../images/homepage/icon-newuse.png') right 0 no-repeat;
         }
       }
       .con-inner {
@@ -573,7 +573,7 @@ $pointColor:#ff5400;
       }
     }
     ul {
-      background: url("/images/homepage/media.png")  right top no-repeat;
+      background: url("../images/homepage/media.png")  right top no-repeat;
       margin-top:15px;
       margin-bottom:15px;
       li {
@@ -720,7 +720,7 @@ $pointColor:#ff5400;
     .book-info {
       display: inline-block;
       padding-top: 7px;
-      background: url("../../images/homepage/clock-tip-s.png") left 13px no-repeat;
+      background: url("../images/homepage/clock-tip-s.png") left 13px no-repeat;
       display: inline-block;
       padding-left: 30px;
       font-size:16px;

@@ -7,6 +7,7 @@ var CleanWebpackPlugin = require('clean-webpack-plugin');
 // var WebpackMd5Hash = require('webpack-md5-hash');
 var objectAssign = require('object-assign');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
+var CopyWebpackPlugin = require('copy-webpack-plugin'); //复制文件
 
 var basePath = path.join(__dirname, 'resources'),
     staticPath = path.join(basePath, 'static'),
@@ -73,6 +74,10 @@ plugins.push(new AssetsPlugin({
     update: true,
     path: outputPath
 }));
+
+plugins.push(new CopyWebpackPlugin([
+    { from: staticPath+'/inlineImages',to: 'images'}
+]));
 
 module.exports = objectAssign(commonOptions, {
     output: {
