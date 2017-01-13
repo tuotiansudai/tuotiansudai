@@ -7,7 +7,8 @@ public enum UserChannel {
     WX_ZONE("微信朋友圈"),
     QQ_FRIEND("QQ好友"),
     Q_ZONE("QQ空间"),
-    SMS("短信");
+    SMS("短信"),
+    APP_SHARE("APP分享");
 
     private String description;
 
