@@ -42,7 +42,7 @@ require(['jquery', 'layerWrapper','commonFun','jquery.ajax.extension','logintip'
                 }
             })
             .fail(function() {
-                layer.msg('请求失败,请重试!');
+                //layer.msg('请求失败,请重试!');
             });
 
         });
@@ -80,7 +80,7 @@ require(['jquery', 'layerWrapper','commonFun','jquery.ajax.extension','logintip'
                 }
             })
             .fail(function() {
-                layer.msg('请求失败，请重试！');
+                //layer.msg('请求失败，请重试！');
             });
         }
     });        
