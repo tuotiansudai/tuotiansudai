@@ -43,7 +43,6 @@
     <mvc:resources mapping="/robots.txt" location="/robots.txt"/>
 
     <bean id="staticResourceVersionMap" class="com.tuotiansudai.web.config.freemarker.FreeMarkerVariablesMap">
-        <property name="staticResourceDiscoveryUrl" value="${static.resource.discovery.url}/json-ask.json"/>
         <property name="singleton" value="true"/>
         <property name="sourceMap">
             <map>
