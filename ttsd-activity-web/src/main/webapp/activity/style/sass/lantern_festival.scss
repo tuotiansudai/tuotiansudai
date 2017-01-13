@@ -253,8 +253,8 @@
             text-align:center;
             cursor:pointer;
             &.win-result{
-              -webkit-animation-duration: 0.15s;
-              animation-duration: 0.15s;
+              -webkit-animation-duration: 0.5s;
+              animation-duration: 0.5s;
               -webkit-animation-iteration-count: infinite;
               animation-iteration-count: infinite;
               -webkit-animation-name: win-effect;
@@ -452,6 +452,9 @@
               margin-left:10px;
               @media (max-width:700px) {
                 font-size:14px;
+              }
+              a{
+                text-decoration: underline;
               }
             }
           }

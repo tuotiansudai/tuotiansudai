@@ -121,7 +121,7 @@ require(['jquery','drawCircle','template','layerWrapper','logintip'], function (
             }
             $pointerImg.addClass('win-result');
 
-            //延迟1.5秒抽奖
+            //延迟1秒抽奖
             setTimeout(function() {
                 drawCircle.beginLuckDraw(function(data) {
                     //停止礼品盒的动画
@@ -150,7 +150,7 @@ require(['jquery','drawCircle','template','layerWrapper','logintip'], function (
                         drawCircle.tipWindowPop(tipGroupObj['authentication']);
                     }
                 });
-            },1500);
+            },1000);
         });
 
         //点击切换按钮

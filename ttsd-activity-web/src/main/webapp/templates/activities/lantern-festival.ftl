@@ -71,7 +71,18 @@
 					</li>
 					<li>
 						<i class="icon-money"></i>
-						<span>今日投资额：<strong>5,000.00</strong>元</span>
+						<span>
+							<@global.isAnonymous>
+                               今日投资额：<a href="javascript:void(0)" class="get-rank show-login">登录查看</a>
+                           </@global.isAnonymous>
+                           <@global.isNotAnonymous>
+		                       <#if investRanking??&&investRanking gt 0>
+		                           今日投资额：<strong><#if investRanking gte 20>20+ <#else >${investRanking}</strong></#if>
+		                       <#else >
+		                           0.00
+		                       </#if>
+		                   </@global.isNotAnonymous>
+						</span>
 					</li>
 				</ul>
 				<div class="today-gift">
