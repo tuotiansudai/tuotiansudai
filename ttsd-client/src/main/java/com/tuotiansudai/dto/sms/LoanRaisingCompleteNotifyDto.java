@@ -31,6 +31,9 @@ public class LoanRaisingCompleteNotifyDto implements Serializable {
     @NotEmpty
     private String loanRaisingCompleteTime;
 
+    public LoanRaisingCompleteNotifyDto() {
+    }
+
     public LoanRaisingCompleteNotifyDto(List<String> mobiles, String loanRaisingStartDate, String loanName, String loanAmount,
                                         String loanDuration, String loanerName, String agentName, String loanRaisingCompleteTime) {
         this.mobiles = mobiles;
