@@ -256,6 +256,9 @@
               margin:0;
               text-align:center;
               line-height:18px;
+              @media (max-width:700px){
+                font-size:14px;
+              }
               span{
                 color:#e70c1b;
               }
