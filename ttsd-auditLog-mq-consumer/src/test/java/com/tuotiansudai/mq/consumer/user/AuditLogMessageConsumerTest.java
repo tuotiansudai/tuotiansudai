@@ -1,10 +1,10 @@
 package com.tuotiansudai.mq.consumer.user;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.tuotiansudai.enums.OperationType;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
-import com.tuotiansudai.repository.mapper.AuditLogMapper;
-import com.tuotiansudai.repository.model.AuditLogModel;
-import com.tuotiansudai.task.OperationType;
+import com.tuotiansudai.log.repository.mapper.AuditLogMapper;
+import com.tuotiansudai.log.repository.model.AuditLogModel;
 import com.tuotiansudai.util.JsonConverter;
 import org.junit.Test;
 import org.junit.runner.RunWith;

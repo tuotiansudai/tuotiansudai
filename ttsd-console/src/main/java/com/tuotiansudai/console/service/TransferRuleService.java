@@ -4,7 +4,7 @@ import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.TransferRuleDto;
 import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.task.OperationTask;
-import com.tuotiansudai.task.OperationType;
+import com.tuotiansudai.enums.OperationType;
 import com.tuotiansudai.task.TaskConstant;
 import com.tuotiansudai.transfer.repository.mapper.TransferRuleMapper;
 import com.tuotiansudai.transfer.repository.model.TransferRuleModel;

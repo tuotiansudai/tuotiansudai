@@ -2,20 +2,30 @@ package com.tuotiansudai.service.impl;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.dto.HomeLoanDto;
+import com.tuotiansudai.dto.SiteMapDataDto;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.HomeService;
+import net.sf.json.JSONArray;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.text.MessageFormat;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Service
@@ -40,6 +50,14 @@ public class HomeServiceImpl implements HomeService {
 
     @Autowired
     private LoanDetailsMapper loanDetailsMapper;
+
+    @Autowired
+    private OkHttpClient httpClient;
+
+    @Value("${ask.server}")
+    private String askServer;
+
+    private static final String SITEMAP = "/question/getSiteMap";
 
     public List<HomeLoanDto> getNormalLoans() {
         return getLoans().stream().filter(loan -> !loan.getProductType().equals(ProductType._30) && !loan.getActivityType().equals(ActivityType.NEWBIE)).collect(Collectors.toList());
@@ -114,4 +132,44 @@ public class HomeServiceImpl implements HomeService {
             }
         });
     }
+
+    @Override
+    public List<SiteMapDataDto> getSiteMapData(){
+        String askJsonString = loadJSON(askServer + SITEMAP);
+        return JsonToList(askJsonString);
+    }
+
+    public List<SiteMapDataDto> JsonToList(String json) {
+        List<SiteMapDataDto> siteMapDataDtoList = Lists.newArrayList();
+        if(json == null || "".equals(json)){
+            return siteMapDataDtoList;
+        }
+        JSONArray jsonarray = JSONArray.fromObject(json);
+        List list = (List)JSONArray.toCollection(jsonarray, SiteMapDataDto.class);
+        Iterator it = list.iterator();
+        while(it.hasNext()){
+            siteMapDataDtoList.add((SiteMapDataDto)it.next());
+        }
+
+        Collections.sort(siteMapDataDtoList, (o1, o2) -> Integer.compare(o1.getSeq(),o2.getSeq()));
+
+        return siteMapDataDtoList;
+    }
+
+    public String loadJSON (String url) {
+        try {
+            Request request = new Request.Builder().url(url).get().build();
+            logger.info("send ask request ");
+            httpClient.setConnectTimeout(3, TimeUnit.SECONDS);
+            httpClient.setRetryOnConnectionFailure(false);
+            Response response = httpClient.newCall(request).execute();
+            String responseBodyString = response.body().string();
+            logger.info("ask response, body: " + responseBodyString);
+            return responseBodyString;
+        } catch (IOException e) {
+            logger.error(e.getLocalizedMessage(), e);
+            return "";
+        }
+    }
+
 }

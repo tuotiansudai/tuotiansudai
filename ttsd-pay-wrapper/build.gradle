@@ -5,6 +5,7 @@ dependencies {
     compile fileTree(dir: 'libs', include: '**/*.jar'),
             project(':ttsd-service'),
             project(':ttsd-point-service'),
+            project(':ttsd-log-service'),
             project(':ttsd-edxactivity-repository'),
             project(':ttsd-anxin-sign'),
             project(':ttsd-membership')
