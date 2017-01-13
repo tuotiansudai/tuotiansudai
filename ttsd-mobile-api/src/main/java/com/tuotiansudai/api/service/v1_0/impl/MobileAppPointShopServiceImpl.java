@@ -1,6 +1,5 @@
 package com.tuotiansudai.api.service.v1_0.impl;
 
-import com.google.common.base.Function;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
@@ -299,12 +298,7 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
         List<UserLotteryPrizeView> userLotteryPrizeViewList = lotteryDrawActivityService.findDrawLotteryPrizeRecordByMobile(LoginUserInfo.getMobile(), ActivityCategory.POINT_SHOP_DRAW_1000);
         MyPrizeListResponseDto myPrizeListResponseDto = new MyPrizeListResponseDto();
         if (CollectionUtils.isNotEmpty(userLotteryPrizeViewList)) {
-            Iterator<PrizeResponseDto> transform = Iterators.transform(userLotteryPrizeViewList.iterator(), new Function<UserLotteryPrizeView, PrizeResponseDto>() {
-                @Override
-                public PrizeResponseDto apply(UserLotteryPrizeView input) {
-                    return new PrizeResponseDto(input);
-                }
-            });
+            Iterator<PrizeResponseDto> transform = Iterators.transform(userLotteryPrizeViewList.iterator(), input -> new PrizeResponseDto(input));
             myPrizeListResponseDto.setMyPrizeList(Lists.newArrayList(transform));
         }
 
