@@ -22,6 +22,9 @@ var outputPath=path.join(basePath, 'develop'),//打包文件路径
 	plugins=[];
 const NODE_ENV=process.env.NODE_ENV;
 
+var publicPathJS=path.join(publicPath, 'js'),
+	publicLibs=path.join(publicPathJS, 'libs');
+
 /**
  * 动态查找所有入口文件
  */
@@ -139,13 +142,14 @@ module.exports = objectAssign(commonOptions, {
 	resolve: {
 		extensions: ['', '.js', '.jsx'],
 		alias: {
-			publicJs:path.join(publicPath, 'js'),
+			publicJs:publicPathJS,
 			publicStyle:path.join(publicPath, 'styles'),
 
 			askJs:path.join(askPath, 'js'),
 			askStyle:path.join(askPath, 'styles'),
 
 			webJs:path.join(webPath, 'js'),
+			webModule:path.join(webPath, 'js/module'),
 			webStyle:path.join(webPath, 'styles'),
 
 			activityJs:path.join(activityPath, 'js'),
@@ -155,7 +159,11 @@ module.exports = objectAssign(commonOptions, {
 			pointStyle:path.join(pointPath, 'styles'),
 
 			mobileJs:path.join(mobilePath, 'js'),
-			mobileStyle:path.join(mobilePath, 'styles')
+			mobileStyle:path.join(mobilePath, 'styles'),
+
+			'layer':publicLibs+'/layer/layer.js',
+			'autoNumeric':publicLibs+'/autoNumeric.js',
+			'jquery.validate':publicLibs+'/jquery.validate-1.14.0.min.js'
 
 		}
 	},

@@ -14,3 +14,5 @@ define(['jquery'], function ($) {
         }
     });
 });
+
+//如果用ajaxUse，上面的就不需要的，因为已经包装在ajaxUse函数里了

@@ -1,4 +1,4 @@
-define([], function () {
+
 
     function cloneObj(oldObj) { //复制对象方法
         if (typeof(oldObj) != 'object') return oldObj;
@@ -314,8 +314,8 @@ define([], function () {
         }.bind(this)
     }
 
-    return {"runImg":runImg,"startMarquee":startMarquee};
-});
+    export { runImg,startMarquee };
+
 
 
 
