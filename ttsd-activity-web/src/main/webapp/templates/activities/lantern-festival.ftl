@@ -6,14 +6,15 @@
     <div style="display: none" class="mobile" id="MobileNumber" data-mobile='<@global.security.authentication property="principal.mobile" />'></div>
     </@global.isNotAnonymous>
 	<div class="top-intro-img">
-		<img src="${staticServer}/activity/images/lantern-festival/top-img.jpg" width="100%" class="top-img">
-		<img src="${staticServer}/activity/images/lantern-festival/top-img-phone.jpg" width="100%" class="top-img-phone">
+		<img src="${staticServer}/activity/images/lantern-festival/top-img.jpg" width="100%" class="img-item">
+		<img src="${staticServer}/activity/images/lantern-festival/top-img-phone.jpg" width="100%" class="img-item-phone">
 	</div>
 	<div class="actor-content-group bg-one">
 		<div class="wp clearfix">
 			<div class="tree-model">
 				<h3>
-					<img src="${staticServer}/activity/images/lantern-festival/title-one.png">
+					<img src="${staticServer}/activity/images/lantern-festival/title-one.png" class="img-item">
+					<img src="${staticServer}/activity/images/lantern-festival/title-one-phone.png" width="100%" class="img-item-phone">
 				</h3>
 				<div class="info-item">
 					活动期间投资额每满1000元即可获得一次摇一摇机会，如单笔投资10000元，可直接摇10次，用户每日最多可摇20次，当日超出部分的投资额不予累计。
@@ -22,7 +23,7 @@
 					<div class="time-item">
 						我的抽奖机会:<span class="draw-time">1</span>次
 					</div>
-					<div class="rotate-btn">
+					<div class="rotate-btn pointer-img">
 						<img src="${staticServer}/activity/images/lantern-festival/tree-icon.png">
 					</div>
 					<div class="record-list-box">
@@ -42,7 +43,8 @@
 			</div>
 			<div class="list-model">
 				<h3>
-					<img src="${staticServer}/activity/images/lantern-festival/title-two.png">
+					<img src="${staticServer}/activity/images/lantern-festival/title-two.png" class="img-item">
+					<img src="${staticServer}/activity/images/lantern-festival/title-two-phone.png" width="100%" class="img-item-phone">
 				</h3>
 				<div class="info-item">
 					活动期间，根据用户当日的累计投资总额进行排名，当日前十名用户可以获得相应奖励，其中第一名的用户将夺得当日至尊大奖。
@@ -71,100 +73,103 @@
 					</div>
 				</div>
 				<h3 class="mt-50">
-					<img src="${staticServer}/activity/images/lantern-festival/title-list.png">
+					<img src="${staticServer}/activity/images/lantern-festival/title-list.png" class="img-item">
+					<img src="${staticServer}/activity/images/lantern-festival/title-list.png" width="100%" class="img-item-phone">
 				</h3>
-				<table class="list-table">
-					<thead>
-						<tr>
-							<th>排名</th>
-							<th>用户</th>
-							<th>投资额</th>
-							<th>奖励</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>
-								<img src="${staticServer}/activity/images/lantern-festival/list-one.png">
-							</td>
-							<td>18888376626</td>
-							<td>500,000.00</td>
-							<td>至尊大奖</td>
-						</tr>
-						<tr>
-							<td>
-								<img src="${staticServer}/activity/images/lantern-festival/list-two.png">
-							</td>
-							<td>18888376626</td>
-							<td>500,000.00</td>
-							<td>至尊大奖</td>
-						</tr>
-						<tr>
-							<td>
-								<img src="${staticServer}/activity/images/lantern-festival/list-three.png">
-							</td>
-							<td>18888376626</td>
-							<td>500,000.00</td>
-							<td>至尊大奖</td>
-						</tr>
-						<tr>
-							<td>
-								4
-							</td>
-							<td>18888376626</td>
-							<td>500,000.00</td>
-							<td>至尊大奖</td>
-						</tr>
-						<tr>
-							<td>
-								5
-							</td>
-							<td>18888376626</td>
-							<td>500,000.00</td>
-							<td>至尊大奖</td>
-						</tr>
-						<tr>
-							<td>
-								6
-							</td>
-							<td>18888376626</td>
-							<td>500,000.00</td>
-							<td>至尊大奖</td>
-						</tr>
-						<tr>
-							<td>
-								7
-							</td>
-							<td>18888376626</td>
-							<td>500,000.00</td>
-							<td>至尊大奖</td>
-						</tr>
-						<tr>
-							<td>
-								8
-							</td>
-							<td>18888376626</td>
-							<td>500,000.00</td>
-							<td>至尊大奖</td>
-						</tr>
-						<tr>
-							<td>
-								9
-							</td>
-							<td>18888376626</td>
-							<td>500,000.00</td>
-							<td>至尊大奖</td>
-						</tr>
-						<tr>
-							<td>
-								10
-							</td>
-							<td>18888376626</td>
-							<td>500,000.00</td>
-							<td>至尊大奖</td>
-						</tr>
-					</tbody>
-				</table>
+				<div class="table-group">
+					<table class="list-table">
+						<thead>
+							<tr>
+								<th>排名</th>
+								<th>用户</th>
+								<th>投资额</th>
+								<th>奖励</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>
+									<img src="${staticServer}/activity/images/lantern-festival/list-one.png">
+								</td>
+								<td>18888376626</td>
+								<td>500,000.00</td>
+								<td>至尊大奖</td>
+							</tr>
+							<tr>
+								<td>
+									<img src="${staticServer}/activity/images/lantern-festival/list-two.png">
+								</td>
+								<td>18888376626</td>
+								<td>500,000.00</td>
+								<td>至尊大奖</td>
+							</tr>
+							<tr>
+								<td>
+									<img src="${staticServer}/activity/images/lantern-festival/list-three.png">
+								</td>
+								<td>18888376626</td>
+								<td>500,000.00</td>
+								<td>至尊大奖</td>
+							</tr>
+							<tr>
+								<td>
+									4
+								</td>
+								<td>18888376626</td>
+								<td>500,000.00</td>
+								<td>至尊大奖</td>
+							</tr>
+							<tr>
+								<td>
+									5
+								</td>
+								<td>18888376626</td>
+								<td>500,000.00</td>
+								<td>至尊大奖</td>
+							</tr>
+							<tr>
+								<td>
+									6
+								</td>
+								<td>18888376626</td>
+								<td>500,000.00</td>
+								<td>至尊大奖</td>
+							</tr>
+							<tr>
+								<td>
+									7
+								</td>
+								<td>18888376626</td>
+								<td>500,000.00</td>
+								<td>至尊大奖</td>
+							</tr>
+							<tr>
+								<td>
+									8
+								</td>
+								<td>18888376626</td>
+								<td>500,000.00</td>
+								<td>至尊大奖</td>
+							</tr>
+							<tr>
+								<td>
+									9
+								</td>
+								<td>18888376626</td>
+								<td>500,000.00</td>
+								<td>至尊大奖</td>
+							</tr>
+							<tr>
+								<td>
+									10
+								</td>
+								<td>18888376626</td>
+								<td>500,000.00</td>
+								<td>至尊大奖</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 				<div class="other-list">
 					<p>
 						<span>查看前一天排行</span>
@@ -189,18 +194,19 @@
 					<dd>6、拓天速贷在法律范围内保留对本活动的最终解释权。</dd>
 				</dl>
 			</div>
-			<div class="wx-model">
+			<div class="wx-model text-c">
 				<h3>
-					<img src="${staticServer}/activity/images/lantern-festival/title-wx.png">
+					<img src="${staticServer}/activity/images/lantern-festival/title-wx.png" class="img-item">
+					<img src="${staticServer}/activity/images/lantern-festival/title-wx-phone.png" width="100%" class="img-item-phone">
 				</h3>
 				<div class="wx-item">
-					<p>扫描二维码，关注“拓天速贷财富”，并回复“猜灯谜”；</p>
+					<p>扫描二维码，关注<strong>“拓天速贷财富”</strong>，并回复<strong>“猜灯谜”</strong>；</p>
 					<p>每天中午12点，微信公众号更新三条灯谜，用户回复“猜灯谜”可获取题目，将答案回复至后台，</p>
 					<p>有机会获得红包奖励</p>
-					<p>活动结束后，累计答对最多的用户，将获得发光地球仪一个。</p>
-					<p>
-						<img src="${staticServer}/activity/images/lantern-festival/title-wx.png">
-						<img src="${staticServer}/activity/images/lantern-festival/title-wx.png">
+					<p class="wx-tip">活动结束后，累计答对最多的用户，将获得发光地球仪一个。</p>
+					<p class="text-c">
+						<img src="${staticServer}/activity/images/lantern-festival/wx-one.jpg">
+						<img src="${staticServer}/activity/images/lantern-festival/wx-two.jpg">
 					</p>
 				</div>
 			</div>
@@ -259,26 +265,6 @@
                 </div>
                 <div class="btn-list"><a href="javascript:void(0)" class="go-close">知道了</a></div>
             </div>
-
-        <#--签到成功-->
-            <div class="tip-list" data-return="signOk">
-                <div class="close-btn go-close"></div>
-                <div class="text-tip">
-                    <p class="success-text">签到成功！</p>
-                    <p class="des-text">恭喜您获得10积分，并获得砸金蛋机会一次</p>
-                </div>
-                <div class="btn-list"><a href="javascript:void(0)" class="go-close">知道了</a></div>
-            </div>
-
-        <#--签到失败-->
-            <div class="tip-list" data-return="signNo">
-                <div class="close-btn go-close"></div>
-                <div class="text-tip">
-                    <p class="login-text">请与客服联系</p>
-                </div>
-                <div class="btn-list"><a href="javascript:void(0)" class="go-close">知道了</a></div>
-            </div>
-
         </div>
 </div>
 </@global.main>

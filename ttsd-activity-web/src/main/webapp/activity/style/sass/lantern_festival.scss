@@ -1,10 +1,120 @@
 @import "module/login_tip";
-$width: 700px;
-
-
+@import "module/gift_circle_tip";
+.tip-list-frame{
+  display:none;
+}
+.tip-list {
+  width:470px;
+  background: #db291b url('/activity/images/lantern-festival/circle-bg.png') no-repeat left top;
+  background-size: 103%;
+  border: 2px solid #532a09;
+  .close-btn{
+    width:40px;
+    height:40px;
+    top:-20px;
+    right:-20px;
+    background:url('/activity/images/lantern-festival/close-btn.png') no-repeat center;
+    background-size:100%;
+  }
+  .btn-list{
+    a{
+      background: #f7bf0d;
+      color: #970000;
+      box-shadow:0 4px 0 #ff9600;
+    }
+  }
+}
+@-webkit-keyframes win-effect{
+  0% {
+    -webkit-transform: rotate(2deg);
+    transform: rotate(2deg);
+    -webkit-transform-origin: 50% 100%;
+    transform-origin: 50% 100%
+  }
+  20% {
+    -webkit-transform: rotate(10deg);
+    transform: rotate(10deg);
+    -webkit-transform-origin: 50% 100%;
+    transform-origin: 50% 100%
+  }
+  40% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+    -webkit-transform-origin: 50% 100%;
+    transform-origin: 50% 100%
+  }
+  60% {
+    -webkit-transform: rotate(-2deg);
+    transform: rotate(-2deg);
+    -webkit-transform-origin: 50% 100%;
+    transform-origin: 50% 100%
+  }
+  80% {
+    -webkit-transform: rotate(-10deg);
+    transform: rotate(-10deg);
+    -webkit-transform-origin: 50% 100%;
+    transform-origin: 50% 100%
+  }
+  100% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+    -webkit-transform-origin: 50% 100%;
+    transform-origin: 50% 100%
+  }
+}
+@keyframes win-effect{
+  0% {
+    -webkit-transform: rotate(2deg);
+    transform: rotate(2deg);
+    -webkit-transform-origin: 50% 100%;
+    transform-origin: 50% 100%
+  }
+  20% {
+    -webkit-transform: rotate(10deg);
+    transform: rotate(10deg);
+    -webkit-transform-origin: 50% 100%;
+    transform-origin: 50% 100%
+  }
+  40% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+    -webkit-transform-origin: 50% 100%;
+    transform-origin: 50% 100%
+  }
+  60% {
+    -webkit-transform: rotate(-2deg);
+    transform: rotate(-2deg);
+    -webkit-transform-origin: 50% 100%;
+    transform-origin: 50% 100%
+  }
+  80% {
+    -webkit-transform: rotate(-10deg);
+    transform: rotate(-10deg);
+    -webkit-transform-origin: 50% 100%;
+    transform-origin: 50% 100%
+  }
+  100% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+    -webkit-transform-origin: 50% 100%;
+    transform-origin: 50% 100%
+  }
+}
 .main-frame {
   width: 100%;
   margin: 0;
+}
+.img-item {
+  display:block;
+  @media (max-width:700px) {
+    display:none;
+  }
+}
+.img-item-phone {
+  display:none;
+  @media (max-width:700px) {
+    display:block;
+  }
 }
 .activity-container {
   float: left;
@@ -17,19 +127,6 @@ $width: 700px;
   .top-intro-img {
     float: left;
     width: 100%;
-
-    .top-img {
-      display:block;
-      @media (max-width:$width) {
-        display:none;
-      }
-    }
-    .top-img-phone {
-      display:none;
-      @media (max-width:$width) {
-        display:block;
-      }
-    }
   }
   .actor-content-group {
     float: left;
@@ -45,9 +142,9 @@ $width: 700px;
     .wp {
       width: 1000px;
       margin: 0 auto;
-      @media (max-width:$width) {
+      @media (max-width:700px) {
         width: 100%;
-        padding: 0 10px;
+        padding: 0 5px;
         box-sizing: border-box;
       }
       &:after {
@@ -62,12 +159,18 @@ $width: 700px;
         background: url('/activity/images/lantern-festival/tree-bg.png') no-repeat center;
         background-size:100%;
         box-sizing:border-box;
-        @media (max-width:$width) {
-          margin: 10px 0 0;
+        @media (max-width:700px) {
+          background: url('/activity/images/lantern-festival/tree-bg-phone.png') no-repeat center;
+          background-size:100%;
+          padding: 60px 15px;
+          height: auto;
         }
         h3{
           margin-bottom:20px;
           text-align:center;
+          @media (max-width:700px) {
+            margin-bottom: 10px;
+          }
         }
         .info-item{
           display:inline-block;
@@ -80,11 +183,37 @@ $width: 700px;
           line-height:20px;
           font-size:16px;
           color:#970000;
+          @media (min-width:320px) and (max-width:374px) {
+            height:auto;
+            font-size:12px;
+            padding:5px 0;
+            background: url('/activity/images/lantern-festival/info-bg-phone.png') no-repeat center;
+            background-size:100%;
+          }
+          @media (min-width:375px) and (max-width:413px) {
+            height:auto;
+            font-size:12px;
+            padding:15px;
+            background: url('/activity/images/lantern-festival/info-bg-phone.png') no-repeat center;
+            background-size:100%;
+          }
+          @media (min-width:414px) and (max-width:700px) {
+            height:auto;
+            font-size:12px;
+            padding:20px;
+            background: url('/activity/images/lantern-festival/info-bg-phone.png') no-repeat center;
+            background-size:100%;
+          }
         }
         .gift-item{
           display:inline-block;
           width:100%;
           margin-top:20px;
+          @media (max-width:700px) {
+            margin-top:0;
+            box-sizing: border-box;
+            padding: 0 20px;
+          }
           .time-item{
             display:inline-block;
             width:240px;
@@ -96,6 +225,12 @@ $width: 700px;
             font-size:16px;
             color:#4f1359;
             margin-bottom: 20px;
+            @media (max-width:700px) {
+              width: 170px;
+              height: 40px;
+              line-height: 40px;
+              font-size: 14px;
+            }
             span{
               display:inline-block;
               width:25px;
@@ -105,6 +240,11 @@ $width: 700px;
               border-radius:50%;
               background:#fff;
               margin:0 5px;
+              @media (max-width:700px) {
+                width:20px;
+                height:20px;
+                line-height:20px;
+              }
             }
           }
           .rotate-btn{
@@ -112,17 +252,40 @@ $width: 700px;
             width:100%;
             text-align:center;
             cursor:pointer;
+            &.win-result{
+              -webkit-animation-duration: 0.15s;
+              animation-duration: 0.15s;
+              -webkit-animation-iteration-count: infinite;
+              animation-iteration-count: infinite;
+              -webkit-animation-name: win-effect;
+              animation-name: win-effect;
+              -webkit-animation-timing-function: ease-in-out;
+              animation-timing-function: ease-in-out;
+            }
+            @media (max-width:700px) {
+              img{
+                width:50%;
+              }
+            }
           }
           .record-list-box{
             display:inline-block;
             width:400px;
             margin-top:30px;
+            @media (max-width:700px) {
+              width:100%;
+              margin-top:10px;
+            }
             .menu-switch{
               float:left;
               width:100%;
               line-height:40px;
               border-radius:40px;
               overflow: hidden;
+              @media (max-width:700px) {
+                line-height:35px;
+                border-radius:35px;
+              }
               span{
                 float:left;
                 width:50%;
@@ -149,6 +312,12 @@ $width: 700px;
               text-indent:4em;
               line-height: 35px;
               overflow:hidden;
+              @media (max-width:700px) {
+                width:90%;
+                height:90px;
+                margin:0 5%;
+                border-bottom:3px solid #f3b878;
+              }
               i{
                 width:32px;
                 height:32px;
@@ -178,16 +347,26 @@ $width: 700px;
         background-size:100%;
         box-sizing:border-box;
         margin-top:20px;
-        @media (max-width:$width) {
-          margin: 10px 0 0;
+        @media (max-width:700px) {
+          height:auto;
+          background: url('/activity/images/lantern-festival/list-bg-phone.png') no-repeat center;
+          background-size:100%;
+          padding:60px 15px;
+          margin-top:10px;
         }
         h3{
           display:inline-block;
           width:100%;
           margin-bottom:20px;
           text-align:center;
+          @media (max-width:700px) {
+            margin-bottom: 10px;
+          }
           &.mt-50{
             margin-top:50px;
+            @media (max-width:700px) {
+              margin:10px 0;
+            }
           }
         }
         .info-item{
@@ -201,19 +380,54 @@ $width: 700px;
           line-height:20px;
           font-size:16px;
           color:#970000;
+          @media (min-width:320px) and (max-width:374px) {
+            height:auto;
+            font-size:12px;
+            padding:5px 0;
+            background: url('/activity/images/lantern-festival/info-bg-phone.png') no-repeat center;
+            background-size:100%;
+          }
+          @media (min-width:375px) and (max-width:413px) {
+            height:auto;
+            font-size:12px;
+            padding:15px;
+            background: url('/activity/images/lantern-festival/info-bg-phone.png') no-repeat center;
+            background-size:100%;
+          }
+          @media (min-width:414px) and (max-width:700px) {
+            height:auto;
+            font-size:12px;
+            padding:20px;
+            background: url('/activity/images/lantern-festival/info-bg-phone.png') no-repeat center;
+            background-size:100%;
+          }
         }
         .list-info{
           display:inline-block;
           width:100%;
           margin-top:20px;
+          @media (max-width:700px) {
+            margin-top:0;
+            box-sizing: border-box;
+            padding-left: 40px;
+          }
           li{
             float:left;
             width:33.333333%;
             line-height:60px;
+            @media (max-width:700px) {
+              width:100%;
+              line-height:30px;
+              margin:5px 0;
+            }
             i{
               float:left;
               width:60px;
               height:60px;
+              @media (max-width:700px) {
+                width:30px;
+                height:30px;
+              }
               &.icon-date{
                 background:url('/activity/images/lantern-festival/icon-date.png') no-repeat center;
                 background-size:100%;
@@ -232,6 +446,9 @@ $width: 700px;
               font-size:16px;
               color:#731b22;
               margin-left:10px;
+              @media (max-width:700px) {
+                font-size:14px;
+              }
             }
           }
         }
@@ -240,6 +457,9 @@ $width: 700px;
           width:100%;
           text-align:center;
           margin-top:30px;
+          @media (max-width:700px) {
+            margin-top:0;
+          }
           .gift-img-item{
             display:inline-block;
             width:315px;
@@ -249,6 +469,14 @@ $width: 700px;
             text-align:center;
             background:url('/activity/images/lantern-festival/gift-bg.png') no-repeat center;
             background-size:100%;
+            @media (max-width:700px) {
+              width:150px;
+              height:150px;
+              line-height:150px;
+              img{
+                width:50%;
+              }
+            }
           }
           .gift-name{
             display:inline-block;
@@ -259,26 +487,58 @@ $width: 700px;
               color:#731b22;
               margin-bottom:0;
               line-height:20px;
+              @media (max-width:700px) {
+                width:50%;
+                float:left;
+              }
               &.name-text{
                 font-size:20px;
                 font-weight:bold;
+                @media (max-width:700px) {
+                  text-align:right;
+                  font-size:16px;
+                }
               }
               &.tip-text{
                 font-size:14px;
+                @media (max-width:700px) {
+                  text-align:left;
+                }
               }
             }
           }
         }
-        .list-table{
-          th{
-            background:none;
-            font-size:16px;
-            color:#731b22;
+        .table-group{
+          float:left;
+          width:100%;
+          @media (max-width:320px) {
+            overflow: hidden;
+            height: 180px;
+            overflow-y: scroll;
           }
-          td{
-            font-size:14px;
-            color:#731b22;
-            line-height:40px;
+          .list-table{
+            th{
+              background:none;
+              font-size:16px;
+              color:#731b22;
+              @media (max-width:700px) {
+                font-size:14px;
+                padding:0;
+              }
+            }
+            td{
+              font-size:14px;
+              color:#731b22;
+              line-height:40px;
+              @media (max-width:700px) {
+                font-size:12px;
+                line-height:30px;
+                padding:0;
+                img{
+                  width:40%;
+                }
+              }
+            }
           }
         }
         .other-list{
@@ -309,6 +569,13 @@ $width: 700px;
               box-shadow: 0 4px 0 #bb4a33;
               margin-top:30px;
               position: relative;
+              @media (max-width:700px) {
+                width: 160px;
+                height: 35px;
+                line-height: 35px;
+                font-size: 14px;
+                margin-top: 10px;
+              }
               &:hover{
                 top:2px;
                 box-shadow: 0 2px 0 #bb4a33;
@@ -327,21 +594,35 @@ $width: 700px;
         box-sizing:border-box;
         margin-top:20px;
         text-align:center;
-        @media (max-width:$width) {
-          margin: 10px 0 0;
+        @media (max-width:700px) {
+          background: none;
+          height:auto;
+          padding:0 15px;
+          margin-top:0;
         }
         .rule-list{
           display:inline-block;
           width:680px;
           text-align:left;
+          @media (max-width:700px) {
+            width:100%;
+          }
           dt{
             font-size:16px;
             color:#970000;
             font-weight:bold;
+            @media (max-width:700px) {
+              font-size:14px;
+              color:#fff;
+            }
           }
           dd{
             font-size:14px;
             color:#970000;
+            @media (max-width:700px) {
+              font-size:12px;
+              color:#fff;
+            }
           }
         }
       }
@@ -354,38 +635,57 @@ $width: 700px;
         background-size:100%;
         box-sizing:border-box;
         margin-top:20px;
-        @media (max-width:$width) {
-          margin: 10px 0 0;
+        @media (max-width:700px) {
+          height:auto;
+          padding:60px 15px;
+          margin-top:10px;
+          background: url('/activity/images/lantern-festival/wx-bg-phone.png') no-repeat center;
+          background-size:100%;
         }
         h3{
           margin-bottom:20px;
           text-align:center;
+          @media (max-width:700px) {
+            margin-bottom:0;
+          }
         }
         .wx-item{
-          float:left;
-          width:100%;
-          text-align:center;
+          display:inline-block;
+          width:620px;
+          text-align:left;
+          @media (max-width:700px) {
+            width:100%;
+          }
+          p{
+            font-size:14px;
+            color:#731b22;
+            margin-bottom: 0;
+            @media (max-width:700px) {
+              font-size:12px;
+            }
+            &.wx-tip{
+              margin:30px 0 20px;
+              @media (max-width:700px) {
+                margin:0 0 10px;
+              }
+            }
+            strong{
+              font-size:16px;
+              @media (max-width:700px) {
+                font-size:14px;
+              }
+            }
+            img{
+              display:inline-block;
+              margin:0 50px;
+              @media (max-width:700px) {
+                width:30%;
+                margin:0 10px;
+              }
+            }
+          }
         }
       }
-    }
-  }
-  .tip-list {
-    position: fixed;
-    z-index: 1000;
-    width: 460px;
-    height: 370px;
-    border-radius: 20px;
-    display: none;
-    // background: #fff url("/activity/images/christmas-day/bg-pop-christmas.jpg") no-repeat left top;
-    background-size: 100%;
-    border:2px solid #532a09;
-    .text-tip p.des-text {
-      font-size: 24px;
-      padding-top:15px;
-    }
-    .btn-list a {
-      background: #035b2e;
-      border-radius:0;
     }
   }
 }

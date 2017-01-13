@@ -105,5 +105,9 @@ require(['jquery','drawCircle','logintip','register_common'], function ($,drawCi
 
     })(drawCircle);
 
+    if($(window).width()<700){
+    	$('.bg-two .wp',$lanternFrame).append($('.bg-two .rule-model',$lanternFrame));
+    }
+    
 
 });
