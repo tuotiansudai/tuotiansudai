@@ -258,7 +258,6 @@ public class HomeServiceImpl implements HomeService {
 
     }
 
-
     public void setTestRedis() {
         redisWrapperClient.hset(CMS_CATEGORY + LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE), "理财", "http://content.tuotiansudai.com/licai");
         redisWrapperClient.hset(CMS_CATEGORY + LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE), "大学生理财", "http://content.tuotiansudai.com/licai/daxueshenglicai");
