@@ -1,5 +1,9 @@
 apply plugin: 'war'
 
+configurations{
+    all*.exclude group: "ch.qos.logback"
+}
+
 dependencies {
     compile project(':ttsd-ask-service'),
             project(':ttsd-web-common-config'),
