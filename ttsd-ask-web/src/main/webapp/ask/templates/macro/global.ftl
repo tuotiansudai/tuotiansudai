@@ -143,6 +143,7 @@
 
     <#include "../pageLayout/footer.ftl" />
 <script src="${staticServer}${js.global_page!}"></script>
+<script src="${staticServer}${pageJavascript}" type="text/javascript"></script>
 
 </body>
 </html>
