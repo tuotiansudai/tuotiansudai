@@ -3,33 +3,94 @@
  * [author]:xuqiang
  * [date]:2017-01-12
  */
-require(['jquery','drawCircle','template','logintip','register_common'], function ($,drawCircle,tpl) {
+require(['jquery','drawCircle','template','layerWrapper','logintip'], function ($,drawCircle,tpl,layer) {
 
-    var $lanternFrame=$('#lanternFrame');
-    var tipGroupObj={};
+    var $lanternFrame=$('#lanternFrame'),
+        tipGroupObj={},
+        $TodayAwards=$('#TodayAwards'),
+        $investRankingButton=$('#investRanking-button'),
+        $heroNext=$('#heroNext'),
+        $referPre=$('#referPre'),
+        todayDate= $.trim($TodayAwards.val());
 
     $lanternFrame.find('.tip-list-frame .tip-list').each(function(key,option) {
         var kind=$(option).data('return');
         tipGroupObj[kind]=option;
     });
 
-    
+    if(todayDate.replace(/-/gi,'')>=20170220) {
+        $heroNext.hide();
+        $referNext.hide();
+    }
+    //获取前一天或者后一天的日期
+    function GetDateStr(date,AddDayCount) {
+        var dd = new Date(date);
+        dd.setDate(dd.getDate()+AddDayCount);//获取AddDayCount天后的日期
+        var y = dd.getFullYear();
+        var m = dd.getMonth()+1;//获取当前月份的日期
+        var d = dd.getDate();
+
+        return y + "-" + (m < 10 ? ('0' + m) : m) + "-" + (d < 10 ? ('0' + d) : d);
+    }
+    $investRankingButton.find('span').on('click',function(event) {
+        var $HistoryAwards=$('#HistoryAwards');
+        var dateSpilt=$HistoryAwards.val(),
+            currDate;
+        if(/heroPre/.test(event.target.id)) {
+            currDate=GetDateStr(dateSpilt,-1); //前一天
+        }
+        else if(/heroNext/.test(event.target.id)){
+            currDate=GetDateStr(dateSpilt,1); //后一天
+        }
+        if(currDate.replace(/-/gi,'')>=20170220) {
+            $heroNext.hide();
+        }
+        else {
+            $heroNext.show();
+        }
+        if(currDate.replace(/-/gi,'')<=20170206) {
+            $heroPre.hide();
+        }
+        else {
+            $heroPre.show();
+        }
+        $HistoryAwards.val(currDate);
+        heroRank(currDate);
+    });
+    //投资排行
+    function heroRank(date) {
+        $.ajax({
+            url: '/activity/hero-ranking/invest/' + date,
+            type: 'GET',
+            dataType: 'json'
+        })
+        .done(function(data) {
+            if(data.status) {
+                var $contentRanking=$('#investRanking-tbody').parents('table');
+                $('#investRanking-tbody').html(tpl('tplTable',data));
+            }
+        })
+        .fail(function() {
+            layer.msg('请求失败，请重试！');
+        });
+    }
+    heroRank($TodayAwards.val());
 
     (function(drawCircle) {
         //抽奖模块
        var $rewardGiftBox=$('.reward-gift-box',$lanternFrame);
 
         var $MobileNumber=$('#MobileNumber'),
-            pointAllList='/activity/christmas/all-list',  //中奖记录接口地址
-            pointUserList='/activity/christmas/user-list',   //我的奖品接口地址
-            drawURL='/activity/christmas/draw',    //抽奖的接口链接
-            drawTime='/activity/christmas/drawTime', //抽奖次数
+            pointAllList='/activity/lantern-festival/all-prize-list',  //中奖记录接口地址
+            pointUserList='/activity/lantern-festival/user-prize-list',   //我的奖品接口地址
+            drawURL='/activity/lantern-festival/prize',    //抽奖的接口链接
+            drawTime='/activity/lantern-festival/drawTime', //抽奖次数
             $pointerImg=$('.pointer-img',$rewardGiftBox),
             myMobileNumber=$MobileNumber.length ? $MobileNumber.data('mobile') : '';  //当前登录用户的手机号
 
         var paramData={
             "mobile":myMobileNumber,
-            "activityCategory":"CHRISTMAS_ACTIVITY"
+            "activityCategory":"LANTERN_FESTIVAL_ACTIVITY"
         };
 
         drawCircle.prototype.showDrawTime=function() {
@@ -47,7 +108,7 @@ require(['jquery','drawCircle','template','logintip','register_common'], functio
         drawCircle.GiftRecord(3);
 
         //渲染我的奖品
-        drawCircle.MyGift();
+        drawCircle.MyGift(3);
 
         //渲染我的抽奖次数
         drawCircle.showDrawTime();

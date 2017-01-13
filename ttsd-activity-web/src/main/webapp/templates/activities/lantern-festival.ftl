@@ -77,6 +77,8 @@
 					<img src="${staticServer}/activity/images/lantern-festival/title-list.png" width="100%" class="img-item-phone">
 				</h3>
 				<div class="table-group">
+					<input type="hidden" id="TodayAwards" value="<#if currentTime??>${currentTime?string('yyyy-MM-dd')}</#if>">
+					<input type="hidden" id="HistoryAwards" value="">
 					<table class="list-table">
 						<thead>
 							<tr>
@@ -86,93 +88,43 @@
 								<th>奖励</th>
 							</tr>
 						</thead>
-						<tbody>
-							<tr>
-								<td>
-									<img src="${staticServer}/activity/images/lantern-festival/list-one.png">
-								</td>
-								<td>18888376626</td>
-								<td>500,000.00</td>
-								<td>至尊大奖</td>
-							</tr>
-							<tr>
-								<td>
-									<img src="${staticServer}/activity/images/lantern-festival/list-two.png">
-								</td>
-								<td>18888376626</td>
-								<td>500,000.00</td>
-								<td>至尊大奖</td>
-							</tr>
-							<tr>
-								<td>
-									<img src="${staticServer}/activity/images/lantern-festival/list-three.png">
-								</td>
-								<td>18888376626</td>
-								<td>500,000.00</td>
-								<td>至尊大奖</td>
-							</tr>
-							<tr>
-								<td>
-									4
-								</td>
-								<td>18888376626</td>
-								<td>500,000.00</td>
-								<td>至尊大奖</td>
-							</tr>
-							<tr>
-								<td>
-									5
-								</td>
-								<td>18888376626</td>
-								<td>500,000.00</td>
-								<td>至尊大奖</td>
-							</tr>
-							<tr>
-								<td>
-									6
-								</td>
-								<td>18888376626</td>
-								<td>500,000.00</td>
-								<td>至尊大奖</td>
-							</tr>
-							<tr>
-								<td>
-									7
-								</td>
-								<td>18888376626</td>
-								<td>500,000.00</td>
-								<td>至尊大奖</td>
-							</tr>
-							<tr>
-								<td>
-									8
-								</td>
-								<td>18888376626</td>
-								<td>500,000.00</td>
-								<td>至尊大奖</td>
-							</tr>
-							<tr>
-								<td>
-									9
-								</td>
-								<td>18888376626</td>
-								<td>500,000.00</td>
-								<td>至尊大奖</td>
-							</tr>
-							<tr>
-								<td>
-									10
-								</td>
-								<td>18888376626</td>
-								<td>500,000.00</td>
-								<td>至尊大奖</td>
-							</tr>
+						<tbody id="investRanking-tbody">
 						</tbody>
 					</table>
+					<script type="text/html" id="tplTable">
+                        {{each records}}
+                        <tr>
+                            <td>
+                            if($index==0){
+                            	<img src="${staticServer}/activity/images/lantern-festival/list-one.png">
+                            }else if($index==1){
+                            	<img src="${staticServer}/activity/images/lantern-festival/list-two.png">
+                            }else if($index==2){
+                            	<img src="${staticServer}/activity/images/lantern-festival/list-three.png">
+                            }else{
+                            	{{$index+1}}
+                            }
+                            </td>
+                            <td>{{$value.loginName}}</td>
+                            <td>{{$value.centSumAmount}}</td>
+                            <td>
+                            	if($index==0){
+	                            	神秘大奖
+	                            }else if($index>0 && $index<5){
+	                            	200元红包
+	                            }else{
+	                            	100元红包
+	                            }
+                            </td>
+                        </tr>
+                        {{/each}}
+
+                    </script>
 				</div>
 				<div class="other-list">
-					<p>
-						<span>查看前一天排行</span>
+					<p class="text-c" id="investRanking-button">
+						<span id="heroPre">查看前一天排行</span>
+						<span id="heroNext">查看后一天排行</span>
 					</p>
 					<p>
 						<a href="/loan-list" class="list-btn">立即投资抢排行</a>
