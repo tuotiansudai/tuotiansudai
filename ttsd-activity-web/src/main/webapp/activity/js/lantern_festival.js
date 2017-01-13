@@ -3,7 +3,7 @@
  * [author]:xuqiang
  * [date]:2017-01-12
  */
-require(['jquery','drawCircle','logintip','register_common'], function ($,drawCircle) {
+require(['jquery','drawCircle','template','logintip','register_common'], function ($,drawCircle,tpl) {
 
     var $lanternFrame=$('#lanternFrame');
     var tipGroupObj={};
@@ -41,10 +41,10 @@ require(['jquery','drawCircle','logintip','register_common'], function ($,drawCi
                 $('.draw-time',$rewardGiftBox).text(data);
             })
         }
-        var drawCircle=new drawCircle(pointAllList,pointUserList,drawURL,paramData,$rewardGiftBox);
+        var drawCircle=new drawCircle(pointAllList,pointUserList,drawURL,paramData,$rewardGiftBox,3);
 
         //渲染中奖记录
-        drawCircle.GiftRecord();
+        drawCircle.GiftRecord(3);
 
         //渲染我的奖品
         drawCircle.MyGift();
