@@ -19,7 +19,8 @@
 
     <aop:aspectj-autoproxy expose-proxy="true" proxy-target-class="true"/>
 
-    <context:property-placeholder location="classpath*:ttsd-env.properties,classpath*:ttsd-biz.properties,classpath*:ask-redis-key-template.properties"/>
+    <context:property-placeholder
+            location="classpath*:ttsd-env.properties,classpath*:ttsd-biz.properties,classpath*:ask-redis-key-template.properties"/>
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
     <tx:annotation-driven transaction-manager="pointTransactionManager"/>
@@ -28,13 +29,14 @@
 
     <context:component-scan base-package="com.tuotiansudai.service,com.tuotiansudai.repository,com.tuotiansudai.client,com.tuotiansudai.cache,com.tuotiansudai.spring,com.tuotiansudai.console.service,com.tuotiansudai.console.util,
           com.tuotiansudai.util,com.tuotiansudai.coupon,com.tuotiansudai.console.bi,com.tuotiansudai.point,com.tuotiansudai.task.aspect,com.tuotiansudai.transfer,com.tuotiansudai.membership,
-          com.tuotiansudai.ask.service,com.tuotiansudai.anxin.service,com.tuotiansudai.cfca,com.tuotiansudai.activity.service,com.tuotiansudai.contract.service"/>
+          com.tuotiansudai.ask.service,com.tuotiansudai.anxin.service,com.tuotiansudai.cfca,com.tuotiansudai.activity.service,com.tuotiansudai.contract.service,com.tuotiansudai.log.service"/>
 
     <bean id="hikariCPDataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
         <constructor-arg>
             <bean class="com.zaxxer.hikari.HikariConfig">
                 <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-                <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/aa?useUnicode=true&amp;characterEncoding=UTF-8"/>
+                <property name="jdbcUrl"
+                          value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/aa?useUnicode=true&amp;characterEncoding=UTF-8"/>
                 <property name="username" value="${common.jdbc.username}"/>
                 <property name="password" value="${common.jdbc.password}"/>
                 <property name="minimumIdle" value="${console.aa.minimumIdle}"/>
@@ -55,7 +57,8 @@
         <constructor-arg>
             <bean class="com.zaxxer.hikari.HikariConfig">
                 <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-                <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/job_worker?useUnicode=true&amp;characterEncoding=UTF-8"/>
+                <property name="jdbcUrl"
+                          value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/job_worker?useUnicode=true&amp;characterEncoding=UTF-8"/>
                 <property name="username" value="${common.jdbc.username}"/>
                 <property name="password" value="${common.jdbc.password}"/>
                 <property name="minimumIdle" value="${console.job.minimumIdle}"/>
@@ -76,7 +79,8 @@
         <constructor-arg>
             <bean class="com.zaxxer.hikari.HikariConfig">
                 <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-                <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/${ask.jdbc.schema}?useUnicode=true&amp;characterEncoding=UTF-8"/>
+                <property name="jdbcUrl"
+                          value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/${ask.jdbc.schema}?useUnicode=true&amp;characterEncoding=UTF-8"/>
                 <property name="username" value="${ask.jdbc.username}"/>
                 <property name="password" value="${ask.jdbc.password}"/>
                 <property name="minimumIdle" value="${console.ask.minimumIdle}"/>
@@ -97,7 +101,8 @@
         <constructor-arg>
             <bean class="com.zaxxer.hikari.HikariConfig">
                 <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-                <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/${point.jdbc.schema}?useUnicode=true&amp;characterEncoding=UTF-8"/>
+                <property name="jdbcUrl"
+                          value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/${point.jdbc.schema}?useUnicode=true&amp;characterEncoding=UTF-8"/>
                 <property name="username" value="${point.jdbc.username}"/>
                 <property name="password" value="${point.jdbc.password}"/>
                 <property name="minimumIdle" value="${console.point.minimumIdle}"/>
@@ -118,7 +123,8 @@
         <constructor-arg>
             <bean class="com.zaxxer.hikari.HikariConfig">
                 <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-                <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/${activity.jdbc.schema}?useUnicode=true&amp;characterEncoding=UTF-8"/>
+                <property name="jdbcUrl"
+                          value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/${activity.jdbc.schema}?useUnicode=true&amp;characterEncoding=UTF-8"/>
                 <property name="username" value="${activity.jdbc.username}"/>
                 <property name="password" value="${activity.jdbc.password}"/>
                 <property name="minimumIdle" value="${console.activity.minimumIdle}"/>
@@ -139,7 +145,8 @@
         <constructor-arg>
             <bean class="com.zaxxer.hikari.HikariConfig">
                 <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-                <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/${anxin.jdbc.schema}?useUnicode=true&amp;characterEncoding=UTF-8"/>
+                <property name="jdbcUrl"
+                          value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/${anxin.jdbc.schema}?useUnicode=true&amp;characterEncoding=UTF-8"/>
                 <property name="username" value="${anxin.jdbc.username}"/>
                 <property name="password" value="${anxin.jdbc.password}"/>
                 <property name="minimumIdle" value="${anxin.anxin.minimumIdle}"/>
@@ -160,7 +167,8 @@
         <constructor-arg>
             <bean class="com.zaxxer.hikari.HikariConfig">
                 <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-                <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/${message.jdbc.schema}?useUnicode=true&amp;characterEncoding=UTF-8"/>
+                <property name="jdbcUrl"
+                          value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/${message.jdbc.schema}?useUnicode=true&amp;characterEncoding=UTF-8"/>
                 <property name="username" value="${message.jdbc.username}"/>
                 <property name="password" value="${message.jdbc.password}"/>
                 <property name="minimumIdle" value="${console.message.minimumIdle}"/>
@@ -176,6 +184,29 @@
             </bean>
         </constructor-arg>
     </bean>
+
+    <bean id="logHikariCPDataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+        <constructor-arg>
+            <bean class="com.zaxxer.hikari.HikariConfig">
+                <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+                <property name="jdbcUrl"
+                          value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/${log.jdbc.schema}?useUnicode=true&amp;characterEncoding=UTF-8"/>
+                <property name="username" value="${log.jdbc.username}"/>
+                <property name="password" value="${log.jdbc.password}"/>
+                <property name="minimumIdle" value="${console.log.minimumIdle}"/>
+                <property name="maximumPoolSize" value="${console.log.maximumPoolSize}"/>
+                <property name="idleTimeout" value="${common.jdbc.idleTimeout}"/>
+                <property name="dataSourceProperties">
+                    <props>
+                        <prop key="cachePrepStmts">${common.jdbc.cachePrepStmts}</prop>
+                        <prop key="prepStmtCacheSize">${common.jdbc.prepStmtCacheSize}</prop>
+                        <prop key="prepStmtCacheSqlLimit">${common.jdbc.prepStmtCacheSqlLimit}</prop>
+                    </props>
+                </property>
+            </bean>
+        </constructor-arg>
+    </bean>
+
 
     <!-- transaction manager, use JtaTransactionManager for global tx -->
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
@@ -239,6 +270,12 @@
         <property name="typeAliasesPackage" value="com.tuotiansudai.message.repository.model"/>
     </bean>
 
+    <bean id="logSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="logHikariCPDataSource"/>
+        <property name="typeAliasesPackage" value="com.tuotiansudai.log.repository.model"/>
+        <property name="configLocation" value="WEB-INF/mybatis-configuration.xml"/>
+    </bean>
+
     <!-- scan for mappers and let them be autowired -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
@@ -271,6 +308,11 @@
         <property name="basePackage" value="com.tuotiansudai.message.repository.mapper"/>
     </bean>
 
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="sqlSessionFactoryBeanName" value="logSessionFactory"/>
+        <property name="basePackage" value="com.tuotiansudai.log.repository.mapper"/>
+    </bean>
+
     <bean id="okHttpClient" class="com.squareup.okhttp.OkHttpClient"/>
 
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
@@ -281,4 +323,6 @@
     </bean>
 
     <bean class="com.tuotiansudai.mq.config.MQProducerConfig"/>
+
+    <bean class="com.tuotiansudai.rest.FeignClientConfig"/>
 </beans>

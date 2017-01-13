@@ -65,10 +65,10 @@
 				</ul>
 				<div class="today-gift">
 					<div class="gift-img-item">
-						<img src="${staticServer}/activity/images/lantern-festival/gift-img.png">
+                        <img src="<#if mysteriousPrizeDto??>${staticServer}${mysteriousPrizeDto.imageUrl}</#if>">
 					</div>
 					<div class="gift-name">
-						<p class="name-text">今日至尊大奖</p>
+						<p class="name-text"><#if mysteriousPrizeDto??>${mysteriousPrizeDto.prizeName}</#if></p>
 						<p class="tip-text">（当日第一名可得）</p>
 					</div>
 				</div>
