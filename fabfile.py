@@ -22,7 +22,8 @@ env.roledefs = {
     'activity': ['sanya'],
     'signin': ['xian'],
     'ask': ['taiyuan'],
-    'point': ['kunming']
+    'point': ['kunming'],
+    'rest': ['shijiazhuang']
 }
 
 
@@ -37,23 +38,33 @@ def migrate():
     local('/opt/gradle/latest/bin/gradle -Pdatabase=edxpoint ttsd-config:flywayMigrate')
     local('/opt/gradle/latest/bin/gradle -Pdatabase=anxin_operations ttsd-config:flywayMigrate')
     local('/opt/gradle/latest/bin/gradle -Pdatabase=edxmessage ttsd-config:flywayMigrate')
+    local('/opt/gradle/latest/bin/gradle -Pdatabase=edxlog ttsd-config:flywayMigrate')
+
 
 def mk_war():
     local('/usr/local/bin/paver jcversion')
     local('/opt/gradle/latest/bin/gradle war renameWar initMQ')
 
+
 def mk_worker_zip():
     local('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle distZip')
     local('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle -Pwork=jpush distZip')
     local('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle -Pwork=repay distZip')
+    local('cd ./ttsd-diagnosis && /opt/gradle/latest/bin/gradle distZip')
+    local('cd ./ttsd-worker-monitor && /opt/gradle/latest/bin/gradle bootRepackage')
+
+
+def mk_mq_consumer():
     local('cd ./ttsd-loan-mq-consumer && /opt/gradle/latest/bin/gradle distZip')
     local('cd ./ttsd-message-mq-consumer && /opt/gradle/latest/bin/gradle distZip')
     local('cd ./ttsd-point-mq-consumer && /opt/gradle/latest/bin/gradle distZip')
     local('cd ./ttsd-activity-mq-consumer && /opt/gradle/latest/bin/gradle distZip')
     local('cd ./ttsd-user-mq-consumer && /opt/gradle/latest/bin/gradle distZip')
     local('cd ./ttsd-auditLog-mq-consumer && /opt/gradle/latest/bin/gradle distZip')
-    local('cd ./ttsd-diagnosis && /opt/gradle/latest/bin/gradle distZip')
-    local('cd ./ttsd-worker-monitor && /opt/gradle/latest/bin/gradle bootRepackage')
+
+
+def mk_rest_service():
+    local('cd ./ttsd-ask-rest && /opt/gradle/latest/bin/gradle distZip')
 
 
 def mk_static_zip():
@@ -73,6 +84,8 @@ def mk_signin_zip():
 def build():
     mk_war()
     mk_worker_zip()
+    mk_mq_consumer()
+    mk_rest_service()
     mk_static_zip()
     mk_signin_zip()
 
@@ -229,6 +242,17 @@ def deploy_point():
     sudo('service nginx restart')
 
 
+@roles('rest')
+def deploy_ask_rest():
+    upload_project(local_dir='./ttsd-ask-rest/build/distributions/ttsd-ask-rest.zip', remote_dir='/workspace/rest-service')
+    with cd('/workspace/rest-service'):
+        sudo('/usr/local/bin/docker-compose -f ask-rest.yml stop')
+        sudo('/usr/local/bin/docker-compose -f ask-rest.yml rm -f')
+        sudo('rm -rf ttsd-ask-rest')
+        sudo('unzip ttsd-ask-rest.zip')
+        sudo('/usr/local/bin/docker-compose -f ask-rest.yml up -d')
+
+
 def deploy_all():
     execute(deploy_static)
     execute(deploy_sign_in)
@@ -240,6 +264,7 @@ def deploy_all():
     execute(deploy_web)
     execute(deploy_activity)
     execute(deploy_point)
+    execute(deploy_ask_rest)
     execute(deploy_ask)
 
 
@@ -268,6 +293,7 @@ def activity():
 
 def ask():
     pre_deploy()
+    execute(deploy_ask_rest)
     execute(deploy_ask)
     execute(deploy_static)
 

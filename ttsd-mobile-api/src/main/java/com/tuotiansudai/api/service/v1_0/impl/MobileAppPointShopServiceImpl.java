@@ -1,7 +1,6 @@
 package com.tuotiansudai.api.service.v1_0.impl;
 
 
-import com.google.common.base.Function;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
@@ -11,9 +10,11 @@ import com.tuotiansudai.api.util.PageValidUtils;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.ExchangeCouponView;
-import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.point.repository.mapper.*;
+import com.tuotiansudai.point.repository.mapper.ProductMapper;
+import com.tuotiansudai.point.repository.mapper.ProductOrderMapper;
+import com.tuotiansudai.point.repository.mapper.UserAddressMapper;
 import com.tuotiansudai.point.repository.model.GoodsType;
 import com.tuotiansudai.point.repository.model.ProductModel;
 import com.tuotiansudai.point.repository.model.ProductOrderViewDto;
@@ -105,7 +106,7 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
         Integer index = baseParamDto.getIndex();
         Integer pageSize = baseParamDto.getPageSize();
         if (index == null || index <= 0) {
-            index = 0;
+            index = 1;
         }
 
         pageSize = pageValidUtils.validPageSizeLimit(pageSize);
@@ -114,12 +115,7 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
         List<ProductOrderViewDto> productOrderListByLoginName = productOrderMapper.findProductOrderListByLoginName(baseParamDto.getBaseParam().getUserId(), index, pageSize);
         ProductListOrderResponseDto productListOrderResponseDto = new ProductListOrderResponseDto();
         if (CollectionUtils.isNotEmpty(productOrderListByLoginName)) {
-            Iterator<ProductOrderResponseDto> transform = Iterators.transform(productOrderListByLoginName.iterator(), new Function<ProductOrderViewDto, ProductOrderResponseDto>() {
-                @Override
-                public ProductOrderResponseDto apply(ProductOrderViewDto input) {
-                    return new ProductOrderResponseDto(input);
-                }
-            });
+            Iterator<ProductOrderResponseDto> transform = Iterators.transform(productOrderListByLoginName.iterator(), input -> new ProductOrderResponseDto(input));
             productListOrderResponseDto.setOrders(Lists.newArrayList(transform));
             productListOrderResponseDto.setIndex(baseParamDto.getIndex());
             productListOrderResponseDto.setPageSize(baseParamDto.getPageSize());

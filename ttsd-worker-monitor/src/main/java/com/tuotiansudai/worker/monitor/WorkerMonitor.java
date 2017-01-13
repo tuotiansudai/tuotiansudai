@@ -63,9 +63,15 @@ public class WorkerMonitor {
     }
 
     private void checkAllHealth() {
-        // redis hgetAll
-        HashOperations<String, String, String> ops = redisTemplate.opsForHash();
-        Map<String, String> workerMap = ops.entries(HEALTH_REPORT_REDIS_KEY);
+        Map<String, String> workerMap;
+        try {
+            // redis hgetAll
+            HashOperations<String, String, String> ops = redisTemplate.opsForHash();
+            workerMap = ops.entries(HEALTH_REPORT_REDIS_KEY);
+        } catch (Exception e) {
+            logger.error("[monitor] query worker status from redis failed", e);
+            return;
+        }
 
         long oldestLivingClock = Clock.systemUTC().millis() - monitorConfig.getMaxSilenceSeconds() * 1000;
         Set<String> newMessingWorkers = workerMap.entrySet().stream()
@@ -117,11 +123,19 @@ public class WorkerMonitor {
         if (monitorConfig.isSmsNotifyEnabled()) {
             logger.info("[monitor] send sms {}", text);
             SmsFatalNotifyDto dto = new SmsFatalNotifyDto(text);
-            smsWrapperClient.sendFatalNotify(dto);
+            try {
+                smsWrapperClient.sendFatalNotify(dto);
+            } catch (Exception e) {
+                logger.error("[monitor] send sms {} failed", text, e);
+            }
         }
         if (monitorConfig.isEmailNotifyEnabled()) {
             logger.info("[monitor] send email {}", text);
-            sendNotifyEmail(text);
+            try {
+                sendNotifyEmail(text);
+            } catch (Exception e) {
+                logger.error("[monitor] send email{} failed", text, e);
+            }
         }
     }
 

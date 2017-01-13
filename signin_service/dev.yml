@@ -7,3 +7,4 @@ signin:
     - /var/log/signin:/var/log/signin
   ports:
     - "31000:80"
+  command: ["/usr/bin/supervisord"]
