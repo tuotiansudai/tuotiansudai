@@ -42,7 +42,6 @@ public class LanternFestivalController {
     public ModelAndView lanternFestival() {
         ModelAndView modelAndView = new ModelAndView("/activities/lantern-festival", "responsive", true);
         String loginName = LoginUserInfo.getLoginName();
-        modelAndView.addObject("time", lotteryDrawActivityService.countDrawLotteryTime(LoginUserInfo.getMobile(), ActivityCategory.LANTERN_FESTIVAL_ACTIVITY));
         Map param = heroRankingService.obtainHeroRankingAndInvestAmountByLoginName(ActivityCategory.LANTERN_FESTIVAL_ACTIVITY, new Date(), loginName);
         modelAndView.addObject("investRanking", param.get("investRanking"));
         modelAndView.addObject("investAmount", param.get("investAmount"));
@@ -89,6 +88,12 @@ public class LanternFestivalController {
     @ResponseBody
     public DrawLotteryResultDto prize() {
         return lotteryDrawActivityService.drawPrizeByCompleteTask(LoginUserInfo.getMobile(), ActivityCategory.LANTERN_FESTIVAL_ACTIVITY);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/drawTime", method = RequestMethod.GET)
+    public int getDrawTime() {
+        return lotteryDrawActivityService.countDrawLotteryTime(LoginUserInfo.getMobile(), ActivityCategory.LANTERN_FESTIVAL_ACTIVITY);
     }
 
     @RequestMapping(value = "/user-prize-list", method = RequestMethod.GET)

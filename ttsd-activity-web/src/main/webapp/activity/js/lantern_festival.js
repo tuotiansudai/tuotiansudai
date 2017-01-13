@@ -20,16 +20,16 @@ require(['jquery','drawCircle','logintip','register_common'], function ($,drawCi
        var $rewardGiftBox=$('.reward-gift-box',$lanternFrame);
 
         var $MobileNumber=$('#MobileNumber'),
-            pointAllList='/activity/christmas/all-list',  //中奖记录接口地址
-            pointUserList='/activity/christmas/user-list',   //我的奖品接口地址
-            drawURL='/activity/christmas/draw',    //抽奖的接口链接
-            drawTime='/activity/christmas/drawTime', //抽奖次数
+            pointAllList='/activity/lantern-festival/all-prize-list',  //中奖记录接口地址
+            pointUserList='/activity/lantern-festival/user-prize-list',   //我的奖品接口地址
+            drawURL='/activity/lantern-festival/prize',    //抽奖的接口链接
+            drawTime='/activity/lantern-festival/drawTime', //抽奖次数
             $pointerImg=$('.pointer-img',$rewardGiftBox),
             myMobileNumber=$MobileNumber.length ? $MobileNumber.data('mobile') : '';  //当前登录用户的手机号
 
         var paramData={
             "mobile":myMobileNumber,
-            "activityCategory":"CHRISTMAS_ACTIVITY"
+            "activityCategory":"LANTERN_FESTIVAL_ACTIVITY"
         };
 
         drawCircle.prototype.showDrawTime=function() {
