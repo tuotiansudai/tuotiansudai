@@ -47,6 +47,7 @@ require(['jquery','drawCircle','template','layerWrapper','logintip'], function (
         else {
             $heroNext.show();
         }
+        
         if(currDate.replace(/-/gi,'')<=20170206) {
             $heroPre.hide();
         }

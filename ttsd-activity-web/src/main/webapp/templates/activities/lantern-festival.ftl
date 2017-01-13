@@ -96,11 +96,11 @@
 				</div>
 				<h3 class="mt-50">
 					<img src="${staticServer}/activity/images/lantern-festival/title-list.png" class="img-item">
-					<img src="${staticServer}/activity/images/lantern-festival/title-list.png" width="100%" class="img-item-phone">
+					<img src="${staticServer}/activity/images/lantern-festival/title-list-phone.png" width="100%" class="img-item-phone">
 				</h3>
 				<div class="table-group">
 					<input type="hidden" id="TodayAwards" value="<#if currentTime??>${currentTime?string('yyyy-MM-dd')}</#if>">
-					<input type="hidden" id="HistoryAwards" value="">
+					<input type="hidden" id="HistoryAwards" value="<#if currentTime??>${currentTime?string('yyyy-MM-dd')}</#if>">
 					<table class="list-table">
 						<thead>
 							<tr>
