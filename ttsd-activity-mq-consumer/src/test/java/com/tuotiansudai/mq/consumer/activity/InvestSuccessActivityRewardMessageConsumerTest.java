@@ -170,7 +170,7 @@ public class InvestSuccessActivityRewardMessageConsumerTest {
         verify(mqClient, times(1)).sendMessage(any(), any());
 
         assertEquals(MessageQueue.CouponAssigning, messageQueueCaptor.getValue());
-        assertEquals("test123:349", messageCaptor.getValue());
+        assertEquals("test123:330", messageCaptor.getValue());
     }
 
     @Test
