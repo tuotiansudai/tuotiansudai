@@ -56,7 +56,18 @@
 					</li>
 					<li>
 						<i class="icon-list"></i>
-						<span>当前排名：<strong>20</strong>名</span>
+						<span>
+							<@global.isAnonymous>
+                               当前排名：<a href="javascript:void(0)" class="get-rank no-login-text">登录查看</a>
+                           </@global.isAnonymous>
+							<@global.isNotAnonymous>
+		                       <#if investRanking??&&investRanking gt 0>
+		                           当前排名:&nbsp;<strong><#if investRanking gte 20>20+ <#else >${investRanking}</strong>名 </#if>
+		                       <#else >
+		                           未参与排行
+		                       </#if>
+		                   </@global.isNotAnonymous>
+						</span>
 					</li>
 					<li>
 						<i class="icon-money"></i>
