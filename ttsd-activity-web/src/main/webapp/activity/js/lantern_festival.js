@@ -10,7 +10,7 @@ require(['jquery','drawCircle','template','layerWrapper','logintip'], function (
         $TodayAwards=$('#TodayAwards'),
         $investRankingButton=$('#investRanking-button'),
         $heroNext=$('#heroNext'),
-        $referPre=$('#referPre'),
+        $heroPre=$('#heroPre'),
         todayDate= $.trim($TodayAwards.val());
 
     $lanternFrame.find('.tip-list-frame .tip-list').each(function(key,option) {
@@ -20,7 +20,6 @@ require(['jquery','drawCircle','template','layerWrapper','logintip'], function (
 
     if(todayDate.replace(/-/gi,'')>=20170220) {
         $heroNext.hide();
-        $referNext.hide();
     }
     //获取前一天或者后一天的日期
     function GetDateStr(date,AddDayCount) {
