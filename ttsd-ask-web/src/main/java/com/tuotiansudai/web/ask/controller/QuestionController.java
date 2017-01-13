@@ -50,8 +50,8 @@ public class QuestionController {
                                  @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
         QuestionDto question = questionService.getQuestion(LoginUserInfo.getLoginName(), questionId);
         if (question == null) {
-            ModelAndView modelAndView =  new ModelAndView("/error/404");
-            modelAndView.addObject("errorPage","true");
+            ModelAndView modelAndView = new ModelAndView("/error/404");
+            modelAndView.addObject("errorPage", "true");
             return modelAndView;
         }
 
@@ -81,7 +81,7 @@ public class QuestionController {
     @RequestMapping(path = "/search", method = RequestMethod.GET)
     public ModelAndView getQuestionsByKeyword(@RequestParam(value = "keyword", defaultValue = "") String keyword,
                                               @RequestParam(value = "index", required = false, defaultValue = "1") int index) {
-        if(StringUtils.isEmpty(keyword)) {
+        if (StringUtils.isEmpty(keyword)) {
             return new ModelAndView("redirect:/?group=HOT&index=1");
         }
         ModelAndView modelAndView = new ModelAndView("search-data");
@@ -97,10 +97,10 @@ public class QuestionController {
     public ModelAndView getQuestionColumn() {
         ModelAndView modelAndView = new ModelAndView("hot-category-list");
         List<SiteMapDataDto> siteMapDataDtoList = Lists.newArrayList();
-        for(Tag tag: Tag.values()){
+        for (Tag tag : Tag.values()) {
             SiteMapDataDto siteMapDataDto = new SiteMapDataDto();
             siteMapDataDto.setName(tag.getDescription());
-            siteMapDataDto.setLinkUrl("/question/category/"+tag.name());
+            siteMapDataDto.setLinkUrl("/question/category/" + tag.name());
             siteMapDataDtoList.add(siteMapDataDto);
         }
         modelAndView.addObject("hotCategoryList", siteMapDataDtoList);
@@ -111,21 +111,6 @@ public class QuestionController {
     public ModelAndView getQuestionsByCategoryList(@PathVariable Tag tag) {
         ModelAndView modelAndView = new ModelAndView("/hot-category-question-list");
         modelAndView.addObject("siteMapDataDtoList", embodyQuestionService.getAskSiteMapData(tag));
-        return modelAndView;
-    }
-
-
-    @RequestMapping(path = "/sitemap/cms-category-list", method = RequestMethod.GET)
-    public ModelAndView getCmsColumn() {
-        ModelAndView modelAndView = new ModelAndView("cms-category-list");
-//        modelAndView.addObject("cmsCategoryList", embodyQuestionService.getCmsSiteMapCategory());
-        return modelAndView;
-    }
-
-    @RequestMapping(path = "/sitemap//cms-category-article-list", method = RequestMethod.GET)
-    public ModelAndView getCmsArticleList(@RequestParam(value = "category", defaultValue = "") String category) {
-        ModelAndView modelAndView = new ModelAndView("cms-category-article-list");
-        // modelAndView.addObject("cmsCategoryArticleList", embodyQuestionService.getCmsSiteMapCategoryArticle(category));
         return modelAndView;
     }
 

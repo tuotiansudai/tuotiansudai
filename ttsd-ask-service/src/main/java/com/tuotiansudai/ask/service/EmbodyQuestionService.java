@@ -1,5 +1,6 @@
 package com.tuotiansudai.ask.service;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.ask.repository.mapper.QuestionMapper;
 import com.tuotiansudai.ask.repository.model.QuestionModel;
@@ -22,7 +23,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class EmbodyQuestionService {
@@ -43,46 +43,51 @@ public class EmbodyQuestionService {
 
     private static final String NO_EMBODY_QUESTIONS = "web:no_embody_ask_questions";
 
-    private static final String CMS_CATEGORY = "cms:no_embody_questions";
-
     private static final String PREFIX = "/question/";
 
     private static final int timeout = 24 * 60 * 60;
 
     private static final int DETAIL_ORDER = 3;
 
+    private static final String ASK_COUNT_SEPARATOR = "\1";
+
+    private static final String ASK_CONTENT_SEPARATOR = "\0";
+
     public List<SiteMapDataDto> getAskSiteMapData(Tag tag) {
-        List<SiteMapDataDto> siteMapDataDtoList = Lists.newArrayList();
+        List<SiteMapDataDto> askSiteMapDataDtoList = Lists.newArrayList();
         if (redisWrapperClient.hexists(NO_EMBODY_QUESTIONS, String.valueOf(tag))) {
             //从redis中取值
-           String value = redisWrapperClient.hget(NO_EMBODY_QUESTIONS, String.valueOf(tag));
-            String[] arrValue = value.split("--");
-            for (int i =0;i < arrValue.length;i++) {
-                try {
-                    SiteMapDataDto siteMapDataDto = new SiteMapDataDto();
-                    siteMapDataDto.setName(arrValue[i].substring(arrValue[i].indexOf("|") + 1, arrValue[i].length()));
-                    siteMapDataDto.setLinkUrl(arrValue[i].substring(0, arrValue[i].indexOf("|")));
-                    siteMapDataDto.setSeq(DETAIL_ORDER);
-                    siteMapDataDtoList.add(siteMapDataDto);
-                } catch (Exception e) {
-                    logger.error("read redis error " + e);
+            try {
+                String AskQuestionValue = redisWrapperClient.hget(NO_EMBODY_QUESTIONS, String.valueOf(tag));
+                String[] questionArrValue = AskQuestionValue.split(ASK_COUNT_SEPARATOR);
+                for (int i = 0; i < questionArrValue.length; i++) {
+                    SiteMapDataDto askSiteMapDataDto = new SiteMapDataDto();
+                    askSiteMapDataDto.setName(questionArrValue[i].substring(questionArrValue[i].indexOf(ASK_CONTENT_SEPARATOR) + 1, questionArrValue[i].length()));
+                    askSiteMapDataDto.setLinkUrl(questionArrValue[i].substring(0, questionArrValue[i].indexOf(ASK_CONTENT_SEPARATOR)));
+                    askSiteMapDataDto.setSeq(DETAIL_ORDER);
+                    askSiteMapDataDtoList.add(askSiteMapDataDto);
                 }
+            } catch (Exception e) {
+                logger.error("read ask sitemap from redis error " + e);
             }
         } else {
             //从数据库中取值,并放入redis
             List<QuestionModel> questionModelList = questionMapper.findApprovedNotEmbodyQuestions(tag);
-            String value = "";
+            StringBuilder stringBuilder = new StringBuilder();
             for (QuestionModel questionModel : questionModelList) {
                 SiteMapDataDto siteMapDataDto = new SiteMapDataDto();
                 siteMapDataDto.setName(questionModel.getQuestion());
                 siteMapDataDto.setLinkUrl(askServer + PREFIX + questionModel.getId());
                 siteMapDataDto.setSeq(DETAIL_ORDER);
-                value += askServer + PREFIX + questionModel.getId()+ "|" + questionModel.getQuestion() + "--";
-                siteMapDataDtoList.add(siteMapDataDto);
+                stringBuilder.append(askServer).append(PREFIX).append(questionModel.getId()).append(ASK_CONTENT_SEPARATOR).append(questionModel.getQuestion()).append(ASK_COUNT_SEPARATOR);
+                askSiteMapDataDtoList.add(siteMapDataDto);
+            }
+            if (!Strings.isNullOrEmpty(stringBuilder.toString())) {
+                String value = Strings.isNullOrEmpty(stringBuilder.toString()) ? "" : stringBuilder.toString().substring(0, stringBuilder.toString().length() - 1);
                 redisWrapperClient.hset(NO_EMBODY_QUESTIONS, String.valueOf(tag), value, timeout);
             }
         }
-        return siteMapDataDtoList;
+        return askSiteMapDataDtoList;
     }
 
     public BaseDataDto createImportEmbodyQuestion(HttpServletRequest httpServletRequest) throws IOException {
