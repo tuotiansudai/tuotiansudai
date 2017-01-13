@@ -58,7 +58,7 @@
 						<i class="icon-list"></i>
 						<span>
 							<@global.isAnonymous>
-                               当前排名：<a href="javascript:void(0)" class="get-rank no-login-text">登录查看</a>
+                               当前排名：<a href="javascript:void(0)" class="get-rank show-login">登录查看</a>
                            </@global.isAnonymous>
 							<@global.isNotAnonymous>
 		                       <#if investRanking??&&investRanking gt 0>
