@@ -51,7 +51,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -652,7 +651,7 @@ public class InvestServiceImpl implements InvestService {
         if (loanAmount % 1000000 == 0)
             loanAmountStr = String.valueOf(loanAmount / 1000000);
         else
-            loanAmountStr = String.valueOf(new BigDecimal(Float.valueOf(loanAmount) / 1000000).setScale(2, BigDecimal.ROUND_FLOOR));
+            loanAmountStr = String.valueOf((double) (loanAmount / 10000) / 100);
 
         String loanDuration = String.valueOf(loanModel.getDuration());
 
