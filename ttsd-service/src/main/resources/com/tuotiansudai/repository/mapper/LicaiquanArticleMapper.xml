@@ -79,8 +79,7 @@
         <if test="section != null  ">
             AND section = #{section}
         </if>
-        ORDER BY CASE WHEN timing_time != null or timing_time = '' THEN timing_time END DESC,
-        created_time DESC
+        ORDER BY created_time DESC
         LIMIT #{index},#{pageSize}
     </select>
 

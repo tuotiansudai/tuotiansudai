@@ -156,16 +156,4 @@ public class LicaiquanArticleMapperTest {
         assertEquals(licaiquanArticleModel.getCreatorLoginName(), modifiedLicaiquanArticleModel.getCreatorLoginName());
         assertEquals(licaiquanArticleModel.getUpdatedTime(), modifiedLicaiquanArticleModel.getUpdatedTime());
     }
-
-    @Test
-    public void shouldFindArticleByArticleSectionTypeSortIsOk(){
-        prepareUsers();
-        List<LicaiquanArticleModel>  licaiquanArticleModels = licaiquanArticleMapper.findArticleByArticleSectionType(ArticleSectionType.INDUSTRY_NEWS, Integer.MIN_VALUE, Integer.MAX_VALUE);
-        LicaiquanArticleModel licaiquanArticleModel = createLicaiquanArticleModel();
-        licaiquanArticleModel.setCreatedTime(DateTime.now().toDate());
-        licaiquanArticleMapper.createArticle(licaiquanArticleModel);
-
-        List<LicaiquanArticleModel> newLicaiQuanList = licaiquanArticleMapper.findArticleByArticleSectionType(ArticleSectionType.INDUSTRY_NEWS, Integer.MIN_VALUE, Integer.MAX_VALUE);
-        assertEquals(newLicaiQuanList.size(), licaiquanArticleModels.size() + 2);
-    }
 }
