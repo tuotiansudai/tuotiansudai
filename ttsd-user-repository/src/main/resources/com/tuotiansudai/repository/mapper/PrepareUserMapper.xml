@@ -30,9 +30,6 @@
             <if test="channel != null">
                 and p.channel = #{channel}
             </if>
-            <if test="registerChannel != null">
-                and p.register_channel = #{registerChannel}
-            </if>
             <if test="beginTime != null">
                 and p.created_time &gt;= #{beginTime}
             </if>
@@ -55,9 +52,6 @@
             </if>
             <if test="channel != null">
                 and p.channel = #{channel}
-            </if>
-            <if test="registerChannel != null">
-                and p.register_channel = #{registerChannel}
             </if>
             <if test="beginTime != null">
                 and p.created_time &gt;= #{beginTime}

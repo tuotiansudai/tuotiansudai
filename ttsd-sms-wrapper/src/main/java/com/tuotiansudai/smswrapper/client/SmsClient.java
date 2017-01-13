@@ -42,11 +42,11 @@ public class SmsClient implements ApplicationContextAware {
 
     private static ApplicationContext applicationContext;
 
-    static Logger logger = Logger.getLogger(SmsClient.class);
+    private static Logger logger = Logger.getLogger(SmsClient.class);
 
-    private static String SMS_IP_RESTRICTED_REDIS_KEY_TEMPLATE = "sms_ip_restricted:{0}";
+    private final static String SMS_IP_RESTRICTED_REDIS_KEY_TEMPLATE = "sms_ip_restricted:{0}";
 
-    private static String WYY_SMS_SEND_COUNT_BY_TODAY_TEMPLATE = "wyy_sms_send_count_by_today:{0}";
+    private final static String WYY_SMS_SEND_COUNT_BY_TODAY_TEMPLATE = "wyy_sms_send_count_by_today:{0}";
 
     private final static int sendSize = 100;
 
@@ -81,21 +81,8 @@ public class SmsClient implements ApplicationContextAware {
         return httpClient;
     }
 
-
-    public BaseDto<SmsDataDto> sendSMS(Class<? extends BaseMapper> baseMapperClass, String mobile, SmsTemplate template, String param, String restrictedIP) {
-        List<String> mobileList = Lists.newArrayList(mobile);
-        List<String> paramList = Lists.newArrayList(param);
-        return sendSMS(baseMapperClass, mobileList, template, paramList, restrictedIP);
-    }
-
-    public BaseDto<SmsDataDto> sendSMS(Class<? extends BaseMapper> baseMapperClass, String mobile, SmsTemplate template, List<String> paramList, String restrictedIP) {
-        List<String> mobileList = Lists.newArrayList(mobile);
-        return sendSMS(baseMapperClass, mobileList, template, paramList, restrictedIP);
-    }
-
-    public BaseDto<SmsDataDto> sendSMS(Class<? extends BaseMapper> baseMapperClass, List<String> mobileList, SmsTemplate template, String param, String restrictedIP) {
-        List<String> paramList = Lists.newArrayList(param);
-        return sendSMS(baseMapperClass, mobileList, template, paramList, restrictedIP);
+    public BaseDto<SmsDataDto> sendSMS(Class<? extends BaseMapper> baseMapperClass, List<String> mobileList, SmsTemplate template, List<String> paramList) {
+        return sendSMS(baseMapperClass, mobileList, template, paramList, "");
     }
 
     public BaseDto<SmsDataDto> sendSMS(Class<? extends BaseMapper> baseMapperClass, List<String> mobileList, SmsTemplate template, List<String> paramList, String restrictedIP) {
@@ -103,13 +90,13 @@ public class SmsClient implements ApplicationContextAware {
         SmsDataDto data = new SmsDataDto();
         dto.setData(data);
 
-        if(Lists.<String>newArrayList(Environment.SMOKE.name(),Environment.STAGING.name(),Environment.DEV.name()).contains(environment)){
+        if(Lists.newArrayList(Environment.SMOKE.name(),Environment.STAGING.name(),Environment.DEV.name()).contains(environment)){
             logger.info("[短信发送] 该环境不发送短信");
             return dto;
         }
 
         if(Environment.QA.name().equals(environment)){
-            String redisKey = MessageFormat.format(this.WYY_SMS_SEND_COUNT_BY_TODAY_TEMPLATE, "SMS");
+            String redisKey = MessageFormat.format(WYY_SMS_SEND_COUNT_BY_TODAY_TEMPLATE, "SMS");
             String hKey = DateTime.now().withTimeAtStartOfDay().toString("yyyyMMdd");
             String redisValue = redisWrapperClient.hget(redisKey, hKey);
 
@@ -170,7 +157,7 @@ public class SmsClient implements ApplicationContextAware {
                 logger.error(MessageFormat.format("[SmsClient][sendSMS]Send sms result fail.request:{0}, response:{1}",
                         EntityUtils.toString(httpPost.getEntity()), EntityUtils.toString(response.getEntity())));
             }
-            dto.setSuccess(resultCode.equals(String.valueOf(HttpStatus.OK.value())));
+            dto.setSuccess(String.valueOf(HttpStatus.OK.value()).equals(resultCode));
 
             String content = template.generateContent(paramList);
 
@@ -204,7 +191,7 @@ public class SmsClient implements ApplicationContextAware {
         }
         return null;
     }
-
+    
     private BaseMapper getMapperByClass(Class clazz) {
         String fullName = clazz.getName();
         String[] strings = fullName.split("\\.");

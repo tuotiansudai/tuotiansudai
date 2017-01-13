@@ -1,12 +1,9 @@
 package com.tuotiansudai.ask.repository.mapper;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.ask.repository.dto.QuestionDto;
 import com.tuotiansudai.ask.repository.model.QuestionModel;
 import com.tuotiansudai.ask.repository.model.QuestionStatus;
 import com.tuotiansudai.ask.repository.model.Tag;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.BasePaginationDataDto;
 import org.apache.commons.collections.CollectionUtils;
 import org.hamcrest.core.Is;
 import org.joda.time.DateTime;

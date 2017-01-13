@@ -10,22 +10,16 @@ import java.security.MessageDigest;
 public class CheckSumBuilder {
 
     //计算并获取checkSum
-    public static String getCheckSum(String appSecret, String nonce, String curTime) {
-        return encode("sha1", appSecret + nonce + curTime);
+    static String getCheckSum(String appSecret, String nonce, String curTime) {
+        return encode(appSecret + nonce + curTime);
     }
 
-    //计算并获取md5
-    public static String getMD5(String requestBody) {
-        return encode("md5", requestBody);
-    }
-
-    private static String encode(String algorithm, String value) {
+    private static String encode(String value) {
         if (value == null) {
             return null;
         }
         try {
-            MessageDigest messageDigest
-                    = MessageDigest.getInstance(algorithm);
+            MessageDigest messageDigest = MessageDigest.getInstance("sha1");
             messageDigest.update(value.getBytes());
             return getFormattedText(messageDigest.digest());
         } catch (Exception e) {
@@ -36,9 +30,9 @@ public class CheckSumBuilder {
     private static String getFormattedText(byte[] bytes) {
         int len = bytes.length;
         StringBuilder buf = new StringBuilder(len * 2);
-        for (int j = 0; j < len; j++) {
-            buf.append(HEX_DIGITS[(bytes[j] >> 4) & 0x0f]);
-            buf.append(HEX_DIGITS[bytes[j] & 0x0f]);
+        for (byte aByte : bytes) {
+            buf.append(HEX_DIGITS[(aByte >> 4) & 0x0f]);
+            buf.append(HEX_DIGITS[aByte & 0x0f]);
         }
         return buf.toString();
     }
