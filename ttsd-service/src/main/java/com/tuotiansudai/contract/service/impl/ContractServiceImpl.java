@@ -196,19 +196,19 @@ public class ContractServiceImpl implements ContractService {
         String msg2;
         String msg3;
         if (transferRuleModel.getLevelOneFee() != 0) {
-            msg1 = MessageFormat.format("甲方持有债权30天以内的，收取转让本金的{0}%作为服务费用。", transferRuleModel.getLevelOneFee());
+            msg1 = MessageFormat.format("甲方持有债权30天以内的，收取转让本金的{0}%作为服务费用。", transferRuleModel.getLevelOneFee() * 100);
         } else {
             msg1 = "甲方持有债权30天以内的，暂不收取转服务费用。";
         }
 
         if (transferRuleModel.getLevelTwoFee() != 0) {
-            msg2 = MessageFormat.format("甲方持有债权30天以上，90天以内的，收取转让本金的{0}%作为服务费用。", transferRuleModel.getLevelTwoFee());
+            msg2 = MessageFormat.format("甲方持有债权30天以上，90天以内的，收取转让本金的{0}%作为服务费用。", transferRuleModel.getLevelTwoFee()  * 100);
         } else {
             msg2 = "甲方持有债权30天以上，90天以内的，暂不收取转服务费用。";
         }
 
         if (transferRuleModel.getLevelThreeFee() != 0) {
-            msg3 = MessageFormat.format("甲方持有债权90天以上的，收取转让本金的{0}%作为服务费用。", transferRuleModel.getLevelThreeFee());
+            msg3 = MessageFormat.format("甲方持有债权90天以上的，收取转让本金的{0}%作为服务费用。", transferRuleModel.getLevelThreeFee()  * 100);
         } else {
             msg3 = "甲方持有债权90天以上的，暂不收取转服务费用。";
         }
