@@ -2,7 +2,7 @@ import layer from 'layer/layer';
 // import 'layer/skin/layer.css';
 
 layer.config({
-    path: staticServer+'/layer'
+    path: staticServer+'/public'
 });
 
 export {layer}

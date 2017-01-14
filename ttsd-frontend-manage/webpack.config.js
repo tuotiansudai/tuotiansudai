@@ -5,6 +5,7 @@ var webpack = require('webpack');
 var objectAssign = require('object-assign');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var CopyWebpackPlugin = require('copy-webpack-plugin'); //复制文件
+var CleanWebpackPlugin = require('clean-webpack-plugin');  //清空文件夹里的文件
 var libsObj=require('./libsConfig.js');
 
 // console.log(libsObj);
@@ -24,6 +25,7 @@ var outputPath=path.join(basePath, 'develop'),//打包文件路径
 	commonOptions={},
 	webpackdevServer='',
 	plugins=[];
+var outFilename="[name].js";
 const NODE_ENV=process.env.NODE_ENV;
 
 /**
@@ -67,12 +69,12 @@ plugins.push(new AssetsPlugin({
 }));
 plugins.push(new CopyWebpackPlugin([
 	{ from: staticPath+'/inlineImages',to: 'images'},
-	{ from: publicPathJS+'/libs/layer',to: 'public'}
+	{ from: publicPathJS+'/libs/layer/skin',to: 'public/skin'}
 ]));
 
 if(NODE_ENV=='production') {
 	//生产环境
-	var outFilename="[name].[chunkhash].js";
+	outFilename="[name].[chunkhash].js";
 	outputPath=path.join(basePath, 'prod'); //打包文件路径
 	//生成带hash的css
 	plugins.push(new ExtractTextPlugin("[name].[chunkhash].css"));
@@ -96,7 +98,6 @@ if(NODE_ENV=='production') {
 
 }
 else if(NODE_ENV=='dev') {
-	var outFilename="[name].js";
 	plugins.push(new ExtractTextPlugin("[name].css"));
 	//开发环境
 	plugins.push(new webpack.HotModuleReplacementPlugin());

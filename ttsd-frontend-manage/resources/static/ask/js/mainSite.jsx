@@ -6,7 +6,10 @@ import "askJs/components/questions";
 import "askJs/components/create_question";
 
 //刷新验证码
-refreshCaptcha('/captcha');
+$('#imageCaptcha').on('click',function() {
+    refreshCaptcha('/captcha');
+});
+
 
 
 
