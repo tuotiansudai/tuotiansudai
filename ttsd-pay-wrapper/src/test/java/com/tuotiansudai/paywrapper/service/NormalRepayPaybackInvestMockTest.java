@@ -1,10 +1,12 @@
 package com.tuotiansudai.paywrapper.service;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.enums.UserBillBusinessType;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferMapper;
 import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferRequestModel;
@@ -12,10 +14,7 @@ import com.tuotiansudai.paywrapper.repository.model.sync.request.BaseSyncRequest
 import com.tuotiansudai.paywrapper.repository.model.sync.response.BaseSyncResponseModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
 import com.tuotiansudai.paywrapper.service.impl.NormalRepayServiceImpl;
-import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.InvestRepayMapper;
-import com.tuotiansudai.repository.mapper.LoanRepayMapper;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountTransfer;
 import org.joda.time.DateTime;
@@ -45,6 +44,9 @@ public class NormalRepayPaybackInvestMockTest {
     private NormalRepayServiceImpl normalRepayService;
 
     @Mock
+    private LoanMapper loanMapper;
+
+    @Mock
     private LoanRepayMapper loanRepayMapper;
 
     @Mock
@@ -67,6 +69,9 @@ public class NormalRepayPaybackInvestMockTest {
 
     @Mock
     private RedisWrapperClient redisWrapperClient;
+
+    @Mock
+    private MQWrapperClient mqWrapperClient;
 
     @Before
     public void init() {
@@ -158,6 +163,64 @@ public class NormalRepayPaybackInvestMockTest {
         ArgumentCaptor<String> redisKey2ArgumentCaptor = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<String> redisValueArgumentCaptor = ArgumentCaptor.forClass(String.class);
         verify(redisWrapperClient, times(6)).hset(redisKey1ArgumentCaptor.capture(), redisKey2ArgumentCaptor.capture(), redisValueArgumentCaptor.capture());
+    }
+    @Test
+    public void shouldPayBackThePeriodWhenInvestRepayIsComplete() throws Exception{
+        long loanId = 1;
+        LoanRepayModel loanRepay1 = new LoanRepayModel(1, loanId, 1, 10, 10, new DateTime().minusDays(30).withTime(23, 59, 59, 0).toDate(), RepayStatus.REPAYING);
+        loanRepay1.setActualInterest(10);
+        loanRepay1.setActualRepayDate(new DateTime().minusDays(30).toDate());
+        LoanRepayModel loanRepay2 = new LoanRepayModel(2, loanId, 2, 30, 10, new DateTime().withTime(23, 59, 59, 0).toDate(), RepayStatus.COMPLETE);
+        loanRepay2.setActualInterest(10);
+        loanRepay2.setActualRepayDate(new DateTime().withMillisOfSecond(0).toDate());
+
+        when(loanRepayMapper.findById(loanRepay2.getId())).thenReturn(loanRepay2);
+        when(loanRepayMapper.findLastLoanRepay(loanId)).thenReturn(loanRepay2);
+
+        String investor1LoginName = "investor1";
+        String investor2LoginName = "investor2";
+        InvestModel invest1 = new InvestModel(1, loanId, null, 10, investor1LoginName, new Date(), Source.WEB, null, 0.1);
+        InvestModel invest2 = new InvestModel(2, loanId, null, 20, investor2LoginName, new Date(), Source.WEB, null, 0.1);
+        List<InvestModel> successInvests = Lists.newArrayList(invest1, invest2);
+        when(investMapper.findSuccessInvestsByLoanId(loanId)).thenReturn(successInvests);
+
+        InvestRepayModel invest1InvestRepay2 = new InvestRepayModel(2, invest1.getId(), 1, 10, 3, 0, loanRepay2.getRepayDate(), RepayStatus.WAIT_PAY);
+        invest1InvestRepay2.setActualInterest(invest1InvestRepay2.getExpectedInterest());
+        invest1InvestRepay2.setActualFee(invest1InvestRepay2.getExpectedFee());
+        invest1InvestRepay2.setActualRepayDate(loanRepay1.getActualRepayDate());
+        invest1InvestRepay2.setRepayAmount(invest1InvestRepay2.getCorpus() + invest1InvestRepay2.getActualInterest() - invest1InvestRepay2.getActualFee());
+        when(investRepayMapper.findByInvestIdAndPeriod(invest1.getId(), loanRepay2.getPeriod())).thenReturn(invest1InvestRepay2);
+
+        InvestRepayModel invest2InvestRepay2 = new InvestRepayModel(2, invest2.getId(), 1, 20, 6, 1, loanRepay2.getRepayDate(), RepayStatus.COMPLETE);
+        invest2InvestRepay2.setActualInterest(invest2InvestRepay2.getExpectedInterest());
+        invest2InvestRepay2.setActualFee(invest2InvestRepay2.getExpectedFee());
+        invest2InvestRepay2.setActualRepayDate(loanRepay1.getActualRepayDate());
+        invest2InvestRepay2.setRepayAmount(invest2InvestRepay2.getCorpus() + invest2InvestRepay2.getActualInterest() - invest2InvestRepay2.getActualFee());
+        when(investRepayMapper.findByInvestIdAndPeriod(invest2.getId(), loanRepay2.getPeriod())).thenReturn(invest2InvestRepay2);
+
+        when(redisWrapperClient.hget(anyString(), anyString())).thenReturn("READY");
+
+        AccountModel investor1Account = new AccountModel(investor1LoginName, investor1LoginName, investor1LoginName, new Date());
+        when(accountMapper.findByLoginName(invest1.getLoginName())).thenReturn(investor1Account);
+        AccountModel investor2Account = new AccountModel(investor2LoginName, investor2LoginName, investor2LoginName, new Date());
+        when(accountMapper.findByLoginName(invest2.getLoginName())).thenReturn(investor2Account);
+
+        ProjectTransferResponseModel responseModel = new ProjectTransferResponseModel();
+        responseModel.setRetCode(BaseSyncResponseModel.SUCCESS_CODE);
+        when(paySyncClient.send(eq(ProjectTransferMapper.class), any(ProjectTransferRequestModel.class), eq(ProjectTransferResponseModel.class))).thenReturn(responseModel);
+
+        BaseDto<PayDataDto> baseDto = new BaseDto<>();
+        PayDataDto payDataDto = new PayDataDto();
+        baseDto.setData(payDataDto);
+        payDataDto.setStatus(true);
+
+        when(loanService.updateLoanStatus(anyLong(), any(LoanStatus.class))).thenReturn(baseDto);
+
+        assertTrue(normalRepayService.paybackInvest(loanRepay2.getId()));
+
+        ArgumentCaptor<ProjectTransferRequestModel> requestModelArgumentCaptor = ArgumentCaptor.forClass(ProjectTransferRequestModel.class);
+        verify(paySyncClient, times(2)).send(eq(ProjectTransferMapper.class), requestModelArgumentCaptor.capture(), eq(ProjectTransferResponseModel.class));
+
     }
 
     @Test
@@ -255,6 +318,10 @@ public class NormalRepayPaybackInvestMockTest {
         loanRepay1.setActualRepayDate(new Date());
         LoanRepayModel loanRepay2 = new LoanRepayModel(2, loanId, 2, 1, 0, new DateTime().plusDays(30).withTime(23, 59, 59, 0).toDate(), RepayStatus.REPAYING);
 
+        LoanModel loanModel = new LoanModel();
+        loanModel.setName("loanName");
+        doNothing().when(mqWrapperClient).sendMessage(any(MessageQueue.class), anyObject());
+        when(loanMapper.findById(loanId)).thenReturn(loanModel);
         when(loanRepayMapper.findById(loanRepay1.getId())).thenReturn(loanRepay1);
         when(loanRepayMapper.findLastLoanRepay(loanId)).thenReturn(loanRepay2);
 

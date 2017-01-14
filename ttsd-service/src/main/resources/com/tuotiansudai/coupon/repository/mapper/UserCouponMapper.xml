@@ -359,6 +359,7 @@
         coupon c
         WHERE
         u.coupon_id = c.id
+        and u.end_time > now()
         AND c.product_types = 'EXPERIENCE')
     </select>
 
@@ -395,5 +396,11 @@
         select count(*) from user_coupon where exchange_code = #{exchangeCode}
     </select>
 
+    <select id="findExpireAfterFiveDays" resultMap="userCouponResultMap">
+        select *
+        from user_coupon
+        where (user_coupon.status != 'SUCCESS' or user_coupon.status is null)
+        and datediff(user_coupon.end_time, now()) = 5
+    </select>
 
 </mapper>

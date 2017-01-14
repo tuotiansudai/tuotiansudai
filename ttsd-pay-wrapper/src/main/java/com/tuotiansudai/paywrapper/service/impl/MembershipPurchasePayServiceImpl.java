@@ -1,18 +1,21 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
+import com.google.common.collect.Lists;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;
-import com.tuotiansudai.enums.UserBillBusinessType;
+import com.tuotiansudai.enums.*;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.membership.dto.MembershipPurchaseDto;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.MembershipPurchaseMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipPurchaseModel;
-import com.tuotiansudai.enums.MembershipPurchaseStatus;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipType;
-import com.tuotiansudai.message.util.UserMessageEventGenerator;
+import com.tuotiansudai.message.EventMessage;
+import com.tuotiansudai.message.PushMessage;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.TransferAsynMapper;
@@ -34,6 +37,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
+import java.util.Date;
 import java.util.Map;
 
 @Service
@@ -66,7 +70,7 @@ public class MembershipPurchasePayServiceImpl implements MembershipPurchasePaySe
     private SystemBillService systemBillService;
 
     @Autowired
-    private UserMessageEventGenerator userMessageEventGenerator;
+    private MQWrapperClient mqWrapperClient;
 
     @Override
     public BaseDto<PayFormDataDto> purchase(MembershipPurchaseDto dto) {
@@ -142,15 +146,19 @@ public class MembershipPurchasePayServiceImpl implements MembershipPurchasePaySe
         }
         membershipPurchaseMapper.update(membershipPurchaseModel);
 
+        Date expiredTime = new DateTime().plusDays(membershipPurchaseModel.getDuration() + 1).withTimeAtStartOfDay().minusSeconds(1).toDate();
         userMembershipMapper.create(new UserMembershipModel(membershipPurchaseModel.getLoginName(),
                 membershipMapper.findByLevel(membershipPurchaseModel.getLevel()).getId(),
-                new DateTime().plusDays(membershipPurchaseModel.getDuration() + 1).withTimeAtStartOfDay().minusSeconds(1).toDate(),
+                expiredTime,
                 UserMembershipType.PURCHASED));
 
-        try{
-            userMessageEventGenerator.generateMembershipPurchaseEvent(orderId);
-        } catch (Exception e) {
-            logger.error("Message membership purchase send fail", e);
-        }
+        //Title:恭喜您已成功购买{0}个月V5会员！
+        //Content:尊敬的用户，恭喜您已成功购买V5会员，有效期至{0}，【马上投资】享受会员特权吧！
+        String title = MessageFormat.format(MessageEventType.MEMBERSHIP_BUY_SUCCESS.getTitleTemplate(), membershipPurchaseModel.getDuration() / 30);
+        String content = MessageFormat.format(MessageEventType.MEMBERSHIP_BUY_SUCCESS.getContentTemplate(), new DateTime(expiredTime).toString("yyyy-MM-dd"));
+        mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(MessageEventType.MEMBERSHIP_BUY_SUCCESS,
+                Lists.newArrayList(membershipPurchaseModel.getLoginName()), title, content, membershipPurchaseModel.getId()));
+        mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(Lists.newArrayList(membershipPurchaseModel.getLoginName()),
+                PushSource.ALL, PushType.MEMBERSHIP_BUY_SUCCESS, title));
     }
 }

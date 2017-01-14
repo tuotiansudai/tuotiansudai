@@ -1,0 +1,1 @@
+ALTER TABLE `aa`.`prepare_user` ADD COLUMN `register_channel` VARCHAR(32) NULL;

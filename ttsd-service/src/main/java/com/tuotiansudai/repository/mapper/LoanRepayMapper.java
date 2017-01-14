@@ -65,4 +65,5 @@ public interface LoanRepayMapper {
     double calculateOverdueRate(@Param(value = "agent") String agentLoginName);
 
     long findSumActualInterest(@Param(value = "endDate") Date endDate);
+
 }

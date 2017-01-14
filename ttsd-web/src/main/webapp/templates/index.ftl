@@ -67,7 +67,7 @@
                 <dd class="guide">
                     <a href="/about/guide" onclick="cnzzPush.trackClick('28首页','安全保障模块','1')" target="_blank">
                         <b class="clearfix">稳健收益 较低门槛</b>
-                        <span>预期年化收益可达13%，<br>投资门槛50元起投</span>
+                        <span>预期年化收益10%~13%，<br>投资门槛50元起投</span>
                     </a>
                 </dd>
                 <dd class="risk">
@@ -330,7 +330,13 @@
         </form>
     </div>
 </div>
+
+<div class="new-year-float">
+    <a href="/activity/annual" target="_blank"><img src="${staticServer}/images/homepage/new-year-float.png"></a>
+</div>
+
     <#include "component/coupon-alert.ftl" />
     <#include "component/login-tip.ftl" />
     <#include "component/red-envelope-float.ftl" />
+    <#--<#include "component/site-map.ftl" />-->
 </@global.main>

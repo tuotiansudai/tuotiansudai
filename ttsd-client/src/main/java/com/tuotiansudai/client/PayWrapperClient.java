@@ -147,12 +147,12 @@ public class PayWrapperClient extends BaseClient {
         return syncExecute(notifyRequestId, "/job/async_invest_notify", "POST");
     }
 
-    public BaseDto<PayDataDto> normalRepayInvestPayback() {
-        return syncExecute(null, "/job/async_normal_repay_notify", "POST");
+    public BaseDto<PayDataDto> normalRepayInvestPayback(long notifyRequestId) {
+        return syncExecute(notifyRequestId, "/job/async_normal_repay_notify", "POST");
     }
 
-    public BaseDto<PayDataDto> advanceRepayInvestPayback() {
-        return syncExecute(null, "/job/async_advance_repay_notify", "POST");
+    public BaseDto<PayDataDto> advanceRepayInvestPayback(long notifyRequestId) {
+        return syncExecute(notifyRequestId, "/job/async_advance_repay_notify", "POST");
     }
 
     public BaseDto<PayDataDto> couponRepayCallback() {
@@ -353,12 +353,4 @@ public class PayWrapperClient extends BaseClient {
     public BaseDto<PayDataDto> sendRedEnvelopeAfterLoanOut(long loanId){
         return syncExecute(String.valueOf(loanId), "/job/send-red-envelope-after-loan-out", "POST");
     }
-
-//    public BaseDto<PayDataDto> anxinContractHandle(long loanId){
-//        return syncExecute(String.valueOf(loanId), "/job/anxin-contract-notify", "POST");
-//    }
-//
-//    public BaseDto<PayDataDto> anxinTransferContractHandle(long loanId){
-//        return syncExecute(String.valueOf(loanId), "/job/anxin-transfer_contract-notify", "POST");
-//    }
 }

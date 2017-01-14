@@ -269,8 +269,21 @@ public interface InvestMapper {
 
     List<InvestModel> findNoContractNoInvest(@Param(value = "loanId") long loanId);
 
+    long sumSuccessActivityInvestAmount(@Param(value = "loginName") String loginName,
+                                        @Param(value = "activityDesc") String activityDesc,
+                                        @Param(value = "startTime") Date startTime,
+                                        @Param(value = "endTime") Date endTime);
     List<Map<String, String>> findInvestAmountScaleTop3(@Param(value = "endDate") Date endDate);
 
     long findInvestAmountScale(@Param(value = "endDate") Date endDate);
+
+
+    List<InvestModel> findInvestorInvestAndTransferPagination(@Param(value = "loginName") String loginName,
+                                                                  @Param(value = "loanStatus") LoanStatus loanStatus,
+                                                                  @Param(value = "index") int index,
+                                                                  @Param(value = "pageSize") int pageSize);
+
+    long countInvestorInvestAndTransferPagination(@Param(value = "loginName") String loginName,
+                                                      @Param(value = "loanStatus") LoanStatus loanStatus);
 
 }

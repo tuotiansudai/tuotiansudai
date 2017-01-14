@@ -105,4 +105,10 @@ public class SmsController {
     public BaseDto<SmsDataDto> generateContractErrorNotify(@RequestBody GenerateContractErrorNotifyDto notifyDto) {
         return smsService.generateContractNotify(notifyDto.getMobiles(), notifyDto.getBusinessId());
     }
+
+    @RequestMapping(value = "/loan-raising-complete-notify", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<SmsDataDto> loanRaisingCompleteNotify(@RequestBody LoanRaisingCompleteNotifyDto notifyDto) {
+        return smsService.loanRaisingCompleteNotify(notifyDto);
+    }
 }

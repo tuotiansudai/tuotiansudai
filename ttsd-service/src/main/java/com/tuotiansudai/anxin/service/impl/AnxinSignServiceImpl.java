@@ -128,6 +128,16 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         return anxinProp != null && anxinProp.getAnxinUserId() != null && anxinProp.getProjectCode() != null;
     }
 
+    @Override
+    public boolean isAuthenticationRequired(String loginName) {
+        boolean anxinSwitch = Strings.isNullOrEmpty(redisWrapperClient.hget("anxin-sign:switch", "switch")) ? true : Boolean.valueOf(redisWrapperClient.hget("anxin-sign:switch", "switch"));
+        String whitelist = Strings.isNullOrEmpty(redisWrapperClient.hget("anxin-sign:switch", "whitelist")) ? "" : redisWrapperClient.hget("anxin-sign:switch", "whitelist");
+        if (!anxinSwitch && !whitelist.contains(userMapper.findByLoginName(loginName).getMobile())) {
+            return false;
+        }
+        AnxinSignPropertyModel model = anxinSignPropertyMapper.findByLoginName(loginName);
+        return model == null || !model.isSkipAuth();
+    }
 
     /**
      * 获取用户的安心签相关属性
@@ -147,12 +157,18 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         userMapper.lockByLoginName(loginName);
 
         try {
+            UserModel userModel = userMapper.findByLoginName(loginName);
+
+            if (userModel == null) {
+                logger.error("create anxin user not exist, loginName:" + loginName);
+                return failBaseDto("请求参数错误：用户不存在");
+            }
+
             if (hasAnxinAccount(loginName)) {
                 logger.error(loginName + " already have anxin-sign account. can't create anymore.");
                 return new BaseDto();
             }
 
-            UserModel userModel = userMapper.findByLoginName(loginName);
 
             Tx3001ResVO tx3001ResVO = anxinSignConnectService.createAccount3001(userModel);
 

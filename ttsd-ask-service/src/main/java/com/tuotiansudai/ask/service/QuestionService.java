@@ -3,22 +3,20 @@ package com.tuotiansudai.ask.service;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.ask.repository.dto.QuestionDto;
-import com.tuotiansudai.ask.repository.dto.QuestionRequestDto;
-import com.tuotiansudai.ask.repository.dto.QuestionResultDataDto;
+import com.tuotiansudai.ask.dto.QuestionDto;
+import com.tuotiansudai.ask.dto.QuestionResultDataDto;
+import com.tuotiansudai.ask.dto.QuestionWithCaptchaRequestDto;
+import com.tuotiansudai.ask.repository.dto.EmbodyQuestionDto;
 import com.tuotiansudai.ask.repository.mapper.AnswerMapper;
 import com.tuotiansudai.ask.repository.mapper.QuestionMapper;
 import com.tuotiansudai.ask.repository.model.AnswerModel;
 import com.tuotiansudai.ask.repository.model.QuestionModel;
 import com.tuotiansudai.ask.repository.model.QuestionStatus;
 import com.tuotiansudai.ask.repository.model.Tag;
-import com.tuotiansudai.ask.utils.FakeMobileUtil;
-import com.tuotiansudai.ask.utils.SensitiveWordsFilter;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.rest.client.AskRestClient;
 import com.tuotiansudai.util.MobileEncoder;
 import com.tuotiansudai.util.PaginationUtil;
 import org.apache.log4j.Logger;
@@ -49,15 +47,15 @@ public class QuestionService {
     private AnswerMapper answerMapper;
 
     @Autowired
-    private UserMapper userMapper;
-
-    @Autowired
     private RedisWrapperClient redisWrapperClient;
 
     @Autowired
     private CaptchaHelperService captchaHelperService;
 
-    public QuestionResultDataDto createQuestion(String loginName, QuestionRequestDto questionRequestDto) {
+    @Autowired
+    private AskRestClient askRestClient;
+
+    public QuestionResultDataDto createQuestion(String loginName, QuestionWithCaptchaRequestDto questionRequestDto) {
         QuestionResultDataDto dataDto = new QuestionResultDataDto();
         if (!captchaHelperService.captchaVerify(questionRequestDto.getCaptcha())) {
             return dataDto;
@@ -66,19 +64,12 @@ public class QuestionService {
         dataDto.setQuestionSensitiveValid(true);
         dataDto.setAdditionSensitiveValid(true);
 
-        UserModel userModel = userMapper.findByLoginName(loginName);
-
-        QuestionModel questionModel = new QuestionModel(loginName,
-                userModel.getMobile(),
-                FakeMobileUtil.generateFakeMobile(userModel.getMobile()),
-                SensitiveWordsFilter.replace(questionRequestDto.getQuestion()),
-                SensitiveWordsFilter.replace(questionRequestDto.getAddition()),
-                questionRequestDto.getTags());
-
-        questionMapper.create(questionModel);
-
-        dataDto.setStatus(true);
-
+        try {
+            askRestClient.createQuestion(questionRequestDto);
+            dataDto.setStatus(true);
+        } catch (Exception e) {
+            logger.error("create question failed", e);
+        }
         return dataDto;
     }
 
@@ -213,4 +204,31 @@ public class QuestionService {
         data.setStatus(true);
         return new BaseDto<>(data);
     }
+
+    public QuestionModel findById(long id) {
+        return questionMapper.findById(id);
+    }
+
+    public BaseDto<BasePaginationDataDto> findEmbodyAllQuestions(int index, int pageSize) {
+        long count = questionMapper.countEmbodyAllQuestions();
+        List<QuestionModel> embodyAllQuestions = questionMapper.findEmbodyAllQuestions(PaginationUtil.calculateOffset(index, pageSize, count), pageSize);
+        return generateEmbodyPaginationData(index, pageSize, count, embodyAllQuestions);
+    }
+
+    private BaseDto<BasePaginationDataDto> generateEmbodyPaginationData(int index, int pageSize, long count, List<QuestionModel> questionModels) {
+        List<EmbodyQuestionDto> items = Lists.transform(questionModels, input -> new EmbodyQuestionDto(input));
+        BasePaginationDataDto<EmbodyQuestionDto> data = new BasePaginationDataDto<>(PaginationUtil.validateIndex(index, pageSize, count), pageSize, count, items);
+        data.setStatus(true);
+        return new BaseDto<>(data);
+    }
+
+
+    public void updateEmbodyById(long id) {
+        QuestionModel questionModel = questionMapper.findById(id);
+        questionModel.setEmbody(true);
+        questionMapper.update(questionModel);
+    }
+
+
 }
+

@@ -13,6 +13,7 @@ public class LoanDetailsModel implements Serializable {
     private boolean activity;
     private String activityDesc;
     private boolean nonTransferable;
+    private String pushMessage;
 
     public LoanDetailsModel() {
     }
@@ -32,6 +33,7 @@ public class LoanDetailsModel implements Serializable {
         this.activity = loanDetails.isActivity();
         this.activityDesc = loanDetails.isActivity() ? loanDetails.getActivityDesc() : null;
         this.nonTransferable = loanDetails.getNonTransferable();
+        this.pushMessage = loanDetails.getPushMessage();
     }
 
     public long getId() {
@@ -88,5 +90,13 @@ public class LoanDetailsModel implements Serializable {
 
     public void setNonTransferable(boolean nonTransferable) {
         this.nonTransferable = nonTransferable;
+    }
+
+    public String getPushMessage() {
+        return pushMessage;
+    }
+
+    public void setPushMessage(String pushMessage) {
+        this.pushMessage = pushMessage;
     }
 }

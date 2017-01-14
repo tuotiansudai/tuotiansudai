@@ -90,7 +90,7 @@ public class HeadlinesTodayPrizeService {
             return new DrawLotteryResultDto(1);//您暂无抽奖机会，赢取机会后再来抽奖吧！
         }
 
-        LotteryPrize headlinesTodayPrize = lotteryDrawActivityService.lotteryDrawPrize(ActivityCategory.HEADLINES_TODAY_ACTIVITY);
+        LotteryPrize headlinesTodayPrize = lotteryDrawActivityService.drawLotteryPrize(ActivityCategory.HEADLINES_TODAY_ACTIVITY);
         PrizeType prizeType = PrizeType.CONCRETE;
         if (headlinesTodayPrize.equals(LotteryPrize.RED_ENVELOPE_50_YUAN_DRAW_REF_CARNIVAL)) {
             couponAssignmentService.assignUserCoupon(mobile, RED_ENVELOPE_50_YUAN_DRAW_REF_CARNIVAL_COUPON_ID);

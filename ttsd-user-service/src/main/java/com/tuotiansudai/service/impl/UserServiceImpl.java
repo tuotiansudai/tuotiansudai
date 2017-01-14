@@ -1,19 +1,24 @@
 package com.tuotiansudai.service.impl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.base.Strings;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.RegisterUserDto;
+import com.tuotiansudai.enums.UserOpType;
 import com.tuotiansudai.exception.ReferrerRelationException;
-import com.tuotiansudai.mq.client.model.MessageQueue;
+import com.tuotiansudai.log.service.UserOpLogService;
 import com.tuotiansudai.repository.mapper.PrepareUserMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.model.CaptchaType;
+import com.tuotiansudai.repository.model.PrepareUserModel;
+import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.RegisterUserService;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
-import com.tuotiansudai.util.*;
+import com.tuotiansudai.util.IdGenerator;
+import com.tuotiansudai.util.MobileLocationUtils;
+import com.tuotiansudai.util.MyShaPasswordEncoder;
+import com.tuotiansudai.util.RandomStringGenerator;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -25,7 +30,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -53,6 +57,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private RegisterUserService registerUserService;
+
+    @Autowired
+    private UserOpLogService userOpLogService;
 
     @Autowired
     private IdGenerator idGenerator;
@@ -161,7 +168,6 @@ public class UserServiceImpl implements UserService {
         return false;
     }
 
-    @Override
     @Transactional
     public boolean changePassword(String loginName, String originalPassword, String newPassword, String ip, String platform, String deviceId) {
 
@@ -181,26 +187,8 @@ public class UserServiceImpl implements UserService {
         }
 
         // 发送用户行为日志 MQ
-        sendUserLogMessageMQ(loginName, ip, platform, deviceId, returnValue);
+        userOpLogService.sendUserOpLogMQ(loginName, ip, platform, deviceId, UserOpType.CHANGE_PASSWORD, returnValue ? "Success" : "Fail");
         return returnValue;
-    }
-
-    private void sendUserLogMessageMQ(String loginName, String ip, String platform, String deviceId, Boolean returnValue) {
-        UserOpLogModel logModel = new UserOpLogModel();
-        logModel.setId(idGenerator.generate());
-        logModel.setLoginName(loginName);
-        logModel.setIp(ip);
-        logModel.setDeviceId(deviceId);
-        logModel.setSource(platform == null ? null : Source.valueOf(platform.toUpperCase(Locale.ENGLISH)));
-        logModel.setOpType(UserOpType.CHANGE_PASSWORD);
-        logModel.setCreatedTime(new Date());
-        logModel.setDescription(returnValue ? "Success" : "Fail");
-
-        try {
-            mqWrapperClient.sendMessage(MessageQueue.UserOperateLog, JsonConverter.writeValueAsString(logModel));
-        } catch (JsonProcessingException e) {
-            logger.error("[MQ] 修改密码, send UserOperateLog fail.", e);
-        }
     }
 
     @Override

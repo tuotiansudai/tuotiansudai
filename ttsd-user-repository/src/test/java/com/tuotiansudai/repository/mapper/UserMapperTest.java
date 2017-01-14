@@ -200,5 +200,4 @@ public class UserMapperTest {
         long userCount = userMapper.findUsersCount();
         assertTrue(userCount > 0);
     }
-
 }

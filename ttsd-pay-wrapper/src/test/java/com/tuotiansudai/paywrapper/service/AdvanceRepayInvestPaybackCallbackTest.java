@@ -8,6 +8,7 @@ import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipType;
 import com.tuotiansudai.paywrapper.repository.mapper.AdvanceRepayNotifyMapper;
+import com.tuotiansudai.paywrapper.repository.model.async.callback.AdvanceRepayNotifyRequestModel;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
@@ -103,9 +104,10 @@ public class AdvanceRepayInvestPaybackCallbackTest extends RepayBaseTest {
         InvestRepayModel investRepay2 = new InvestRepayModel(idGenerator.generate(), invest.getId(), 2, invest.getAmount(), loanRepay2ExpectedInterest, 100, loanRepay2.getRepayDate(), RepayStatus.REPAYING);
         investRepayMapper.create(Lists.newArrayList(investRepay1, investRepay2));
 
-        advanceRepayNotifyMapper.create(this.getFakeAdvanceRepayNotifyRequestModel(investRepay1.getId()));
+        AdvanceRepayNotifyRequestModel advanceRepayNotifyRequestModel = this.getFakeAdvanceRepayNotifyRequestModel(investRepay1.getId());
+        advanceRepayNotifyMapper.create(advanceRepayNotifyRequestModel);
 
-        advanceRepayService.asyncAdvanceRepayPaybackCallback();
+        advanceRepayService.asyncAdvanceRepayPaybackCallback(advanceRepayNotifyRequestModel.getId());
 
         InvestRepayModel actualInvestRepay1 = investRepayMapper.findById(investRepay1.getId());
         InvestRepayModel actualInvestRepay2 = investRepayMapper.findById(investRepay2.getId());
@@ -125,6 +127,7 @@ public class AdvanceRepayInvestPaybackCallbackTest extends RepayBaseTest {
         assertThat(actualInvestRepay2.getStatus(), is(RepayStatus.COMPLETE));
         assertThat(actualInvestRepay2.getActualRepayDate().getTime(), is(loanRepay2.getActualRepayDate().getTime()));
     }
+
 
     @Test
     public void shouldCallbackLastPeriodWhenLoanIsRepaying() throws Exception {
@@ -167,9 +170,10 @@ public class AdvanceRepayInvestPaybackCallbackTest extends RepayBaseTest {
 
         investRepayMapper.create(Lists.newArrayList(investRepay1, investRepay2));
 
-        advanceRepayNotifyMapper.create(this.getFakeAdvanceRepayNotifyRequestModel(investRepay2.getId()));
+        AdvanceRepayNotifyRequestModel advanceRepayNotifyRequestModel = this.getFakeAdvanceRepayNotifyRequestModel(investRepay2.getId());
+        advanceRepayNotifyMapper.create(advanceRepayNotifyRequestModel);
 
-        advanceRepayService.asyncAdvanceRepayPaybackCallback();
+        advanceRepayService.asyncAdvanceRepayPaybackCallback(advanceRepayNotifyRequestModel.getId());
 
         InvestRepayModel actualInvestRepay1 = investRepayMapper.findById(investRepay1.getId());
         InvestRepayModel actualInvestRepay2 = investRepayMapper.findById(investRepay2.getId());

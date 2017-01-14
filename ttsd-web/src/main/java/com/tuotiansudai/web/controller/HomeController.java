@@ -10,13 +10,12 @@ import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.HomeLoanDto;
 import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
 import com.tuotiansudai.enums.CouponType;
+import com.tuotiansudai.message.service.AnnounceService;
 import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.LoanDetailsMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.ExperienceLoanDto;
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.Source;
-import com.tuotiansudai.service.AnnounceService;
 import com.tuotiansudai.service.HomeService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.transfer.service.TransferService;
@@ -29,9 +28,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class HomeController {
@@ -86,6 +88,8 @@ public class HomeController {
         if (enterpriseLoans.size() > 0) {
             modelAndView.addObject("enterpriseLoans", homeService.getEnterpriseLoans());
         }
+        //modelAndView.addObject("siteMapList", homeService.getSiteMapData());
+
         return modelAndView;
     }
 
@@ -97,4 +101,5 @@ public class HomeController {
             return new ModelAndView("/csrf");
         }
     }
+
 }

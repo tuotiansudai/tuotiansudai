@@ -1,6 +1,7 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
@@ -8,11 +9,16 @@ import com.tuotiansudai.dto.Environment;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
+import com.tuotiansudai.enums.MessageEventType;
+import com.tuotiansudai.enums.PushSource;
+import com.tuotiansudai.enums.PushType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.job.JobType;
-import com.tuotiansudai.job.NormalRepayCallbackJob;
 import com.tuotiansudai.job.NormalRepayJob;
+import com.tuotiansudai.message.EventMessage;
+import com.tuotiansudai.message.PushMessage;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
@@ -34,6 +40,7 @@ import com.tuotiansudai.paywrapper.service.NormalRepayService;
 import com.tuotiansudai.paywrapper.service.SystemBillService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.JobManager;
 import org.apache.log4j.Logger;
@@ -107,11 +114,11 @@ public class NormalRepayServiceImpl implements NormalRepayService {
     @Autowired
     private SmsWrapperClient smsWrapperClient;
 
+    @Autowired
+    private MQWrapperClient mqWrapperClient;
+
     @Value("${common.environment}")
     private Environment environment;
-
-    @Value(value = "${pay.repay.notify.process.batch.size}")
-    private int repayProcessListSize;
 
     @Override
     public boolean autoRepay(long loanRepayId) {
@@ -242,7 +249,7 @@ public class NormalRepayServiceImpl implements NormalRepayService {
         LoanRepayModel currentLoanRepay = loanRepayMapper.findById(loanRepayId);
 
         if (currentLoanRepay.getStatus() != RepayStatus.WAIT_PAY) {
-            logger.error(MessageFormat.format("[Normal Repay {0}] loan repay callback status is not WAIT_PAY", String.valueOf(loanRepayId)));
+            logger.error(MessageFormat.format("[Normal Repay {0}] loan repay callback status is {1}", String.valueOf(loanRepayId),currentLoanRepay.getStatus()));
             return callbackRequest.getResponseData();
         }
 
@@ -280,6 +287,10 @@ public class NormalRepayServiceImpl implements NormalRepayService {
         for (InvestModel investModel : successInvests) {
             //投资人当期还款计划
             InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(investModel.getId(), currentLoanRepay.getPeriod());
+            if(RepayStatus.COMPLETE == investRepayModel.getStatus()){
+                logger.info(String.format("[Normal Repay %s] investRepay %s  status is COMPLETE",String.valueOf(currentLoanRepay.getRepayAmount()),String.valueOf(investRepayModel.getId())));
+                continue;
+            }
             //实际利息
             long actualInterest = this.calculateInvestRepayActualInterest(investModel.getId(), investRepayModel);
             //实际手续费
@@ -321,7 +332,6 @@ public class NormalRepayServiceImpl implements NormalRepayService {
     public boolean paybackInvest(long loanRepayId) {
         LoanRepayModel currentLoanRepay = loanRepayMapper.findById(loanRepayId);
         long loanId = currentLoanRepay.getLoanId();
-
         //投资人实收利息总计
         long interestWithoutFee = 0;
 
@@ -333,6 +343,10 @@ public class NormalRepayServiceImpl implements NormalRepayService {
             //投资人当期还款计划
             InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(investModel.getId(), currentLoanRepay.getPeriod());
 
+            if(RepayStatus.COMPLETE == investRepayModel.getStatus()){
+                logger.info(String.format("[Normal Repay %s] investRepay %s  status is COMPLETE",String.valueOf(currentLoanRepay.getRepayAmount()),String.valueOf(investRepayModel.getId())));
+                continue;
+            }
             interestWithoutFee += investRepayModel.getActualInterest() - investRepayModel.getActualFee();
 
             SyncRequestStatus syncRequestStatus = SyncRequestStatus.valueOf(redisWrapperClient.hget(redisKey, String.valueOf(investRepayModel.getId())));
@@ -366,7 +380,6 @@ public class NormalRepayServiceImpl implements NormalRepayService {
                 } else {
                     try {
                         this.processInvestRepay(loanRepayId, investRepayModel);
-                        redisWrapperClient.hset(redisKey, String.valueOf(investRepayModel.getId()), SyncRequestStatus.SUCCESS.name());
                     } catch (Exception e) {
                         redisWrapperClient.hset(redisKey, String.valueOf(investRepayModel.getId()), SyncRequestStatus.FAILURE.name());
                         logger.error(MessageFormat.format("[Normal Repay {0}] invest payback({1}) payback throw exception",
@@ -384,6 +397,7 @@ public class NormalRepayServiceImpl implements NormalRepayService {
                 String.valueOf(loanRepayId), syncRequestStatus.name(), String.valueOf(feeAmount)));
 
         if (Lists.newArrayList(SyncRequestStatus.READY, SyncRequestStatus.FAILURE).contains(syncRequestStatus)) {
+
             if (feeAmount > 0) {
                 // transfer investor fee(callback url: repay_invest_fee_notify)
                 try {
@@ -405,7 +419,7 @@ public class NormalRepayServiceImpl implements NormalRepayService {
                 }
             } else {
                 redisWrapperClient.hset(redisKey, String.valueOf(loanRepayId), SyncRequestStatus.SUCCESS.name());
-                logger.info(MessageFormat.format("[Advance Repay {0}] invest fee is 0 set redis status to SUCCESS", String.valueOf(loanRepayId)));
+                logger.info(MessageFormat.format("[Normal Repay {0}] invest fee is 0 set redis status to SUCCESS", String.valueOf(loanRepayId)));
             }
         }
 
@@ -439,22 +453,21 @@ public class NormalRepayServiceImpl implements NormalRepayService {
             return null;
         }
 
-        redisWrapperClient.incr(NormalRepayCallbackJob.NORMAL_REPAY_JOB_TRIGGER_KEY);
+        mqWrapperClient.sendMessage(MessageQueue.NormalRepayCallback, String.valueOf(callbackRequest.getId()));
+
         return callbackRequest.getResponseData();
     }
 
     @Override
-    public BaseDto<PayDataDto> asyncNormalRepayPaybackCallback(){
-        List<NormalRepayNotifyRequestModel> todoList = normalRepayNotifyMapper.getNormalTodoList(repayProcessListSize);
-        for (NormalRepayNotifyRequestModel model : todoList) {
-            if (updateNormalRepayNotifyRequestStatus(model)) {
-                try {
-                    if(!this.processOneNormalRepayPaybackCallback(model)){
-                        fatalLog("normal repay callback, processOneNormalRepayPaybackCallback fail. investRepayId:" + model.getOrderId(), null);
-                    }
-                } catch (Exception e) {
-                    fatalLog("normal repay callback, processOneNormalRepayPaybackCallback error. investRepayId:" + model.getOrderId(), e);
+    public BaseDto<PayDataDto> asyncNormalRepayPaybackCallback(long notifyRequestId){
+        NormalRepayNotifyRequestModel model = normalRepayNotifyMapper.findById(notifyRequestId);
+        if (updateNormalRepayNotifyRequestStatus(model)) {
+            try {
+                if(!this.processOneNormalRepayPaybackCallback(model)){
+                    fatalLog("normal repay callback, processOneNormalRepayPaybackCallback fail. investRepayId:" + model.getOrderId(), null);
                 }
+            } catch (Exception e) {
+                fatalLog("normal repay callback, processOneNormalRepayPaybackCallback error. investRepayId:" + model.getOrderId(), e);
             }
         }
 
@@ -468,7 +481,6 @@ public class NormalRepayServiceImpl implements NormalRepayService {
 
     private boolean updateNormalRepayNotifyRequestStatus(NormalRepayNotifyRequestModel model) {
         try {
-            redisWrapperClient.decr(NormalRepayCallbackJob.NORMAL_REPAY_JOB_TRIGGER_KEY);
             normalRepayNotifyMapper.updateStatus(model.getId(), NotifyProcessStatus.DONE);
         } catch (Exception e) {
             fatalLog("update_normal_repay_notify_status_fail, orderId:" + model.getOrderId() + ",id:" + model.getId(), e);
@@ -504,8 +516,6 @@ public class NormalRepayServiceImpl implements NormalRepayService {
             return false;
         }
 
-        String redisKey = MessageFormat.format(REPAY_REDIS_KEY_TEMPLATE, String.valueOf(loanRepayId));
-        redisWrapperClient.hset(redisKey, String.valueOf(investRepayId), SyncRequestStatus.SUCCESS.name());
         return true;
     }
 
@@ -566,6 +576,7 @@ public class NormalRepayServiceImpl implements NormalRepayService {
     private void processInvestRepay(long loanRepayId, InvestRepayModel currentInvestRepay) throws AmountTransferException {
         long investRepayId = currentInvestRepay.getId();
         InvestModel investModel = investMapper.findById(currentInvestRepay.getInvestId());
+        LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
 
         // interest user bill
         long paybackAmount = currentInvestRepay.getCorpus() + currentInvestRepay.getActualInterest();
@@ -596,15 +607,24 @@ public class NormalRepayServiceImpl implements NormalRepayService {
 
         // update all overdue invest repay
         List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investModel.getId());
-        for (InvestRepayModel investRepayModel : investRepayModels) {
-            if (investRepayModel.getStatus() == RepayStatus.OVERDUE) {
-                investRepayModel.setStatus(RepayStatus.COMPLETE);
-                investRepayModel.setActualRepayDate(currentInvestRepay.getActualRepayDate());
-                investRepayMapper.update(investRepayModel);
-                logger.info(MessageFormat.format("[Normal Repay {0}] invest repay({1}) update overdue invest repay({2}) status to COMPLETE",
-                        String.valueOf(loanRepayId), String.valueOf(currentInvestRepay.getId()), String.valueOf(investRepayModel.getId())));
-            }
-        }
+        investRepayModels.stream().filter(investRepayModel -> investRepayModel.getStatus() == RepayStatus.OVERDUE).forEach(investRepayModel -> {
+            investRepayModel.setStatus(RepayStatus.COMPLETE);
+            investRepayModel.setActualRepayDate(currentInvestRepay.getActualRepayDate());
+            investRepayMapper.update(investRepayModel);
+            logger.info(MessageFormat.format("[Normal Repay {0}] invest repay({1}) update overdue invest repay({2}) status to COMPLETE",
+                    String.valueOf(loanRepayId), String.valueOf(currentInvestRepay.getId()), String.valueOf(investRepayModel.getId())));
+        });
+
+        String redisKey = MessageFormat.format(REPAY_REDIS_KEY_TEMPLATE, String.valueOf(loanRepayId));
+        redisWrapperClient.hset(redisKey, String.valueOf(investRepayId), SyncRequestStatus.SUCCESS.name());
+
+        //Title:您投资的{0}已回款{1}元，请前往账户查收！
+        //Content:尊敬的用户，您投资的{0}项目已回款，期待已久的收益已奔向您的账户，快来查看吧。
+        String title = MessageFormat.format(MessageEventType.REPAY_SUCCESS.getTitleTemplate(), loanModel.getName(), AmountConverter.convertCentToString(currentInvestRepay.getRepayAmount()));
+        String content = MessageFormat.format(MessageEventType.REPAY_SUCCESS.getContentTemplate(), loanModel.getName());
+        mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(MessageEventType.REPAY_SUCCESS,
+                Lists.newArrayList(investModel.getLoginName()), title, content, investRepayId));
+        mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(Lists.newArrayList(investModel.getLoginName()), PushSource.ALL, PushType.REPAY_SUCCESS, title));
     }
 
     private long calculateInvestRepayActualInterest(long investId, InvestRepayModel enabledInvestRepay) {
@@ -671,7 +691,7 @@ public class NormalRepayServiceImpl implements NormalRepayService {
         }
 
         SyncRequestStatus syncRequestStatus = SyncRequestStatus.valueOf(redisWrapperClient.hget(redisKey, String.valueOf(currentLoanRepayModel.getId())));
-        logger.info(MessageFormat.format("[Normal Repay {0}] invest fee redis status is {2}", String.valueOf(currentLoanRepayModel.getId()), syncRequestStatus.name()));
+        logger.info(MessageFormat.format("[Normal Repay {0}] invest fee redis status is {1}", String.valueOf(currentLoanRepayModel.getId()), syncRequestStatus.name()));
         if (syncRequestStatus == SyncRequestStatus.FAILURE) {
             isSuccess = false;
         }

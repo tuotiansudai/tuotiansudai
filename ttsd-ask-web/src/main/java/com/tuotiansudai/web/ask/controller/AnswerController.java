@@ -1,7 +1,7 @@
 package com.tuotiansudai.web.ask.controller;
 
-import com.tuotiansudai.ask.repository.dto.AnswerRequestDto;
-import com.tuotiansudai.ask.repository.dto.AnswerResultDataDto;
+import com.tuotiansudai.ask.dto.AnswerRequestDto;
+import com.tuotiansudai.ask.dto.AnswerResultDataDto;
 import com.tuotiansudai.ask.service.AnswerService;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;

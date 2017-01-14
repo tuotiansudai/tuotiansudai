@@ -126,6 +126,7 @@ public class MobileAppUserFundV2ServiceTest extends ServiceTestBase {
         investExtraRateModel1.setLoginName(myUserFund.getLoginName());
         investExtraRateModel1.setActualInterest(10);
         investExtraRateModel1.setActualFee(1);
+        investExtraRateModel1.setStatus(RepayStatus.REPAYING);
         investExtraRateMapper.create(investExtraRateModel1);
 
         InvestExtraRateModel investExtraRateModel2 = new InvestExtraRateModel();
@@ -136,6 +137,7 @@ public class MobileAppUserFundV2ServiceTest extends ServiceTestBase {
         investExtraRateModel2.setLoginName(myUserFund.getLoginName());
         investExtraRateModel2.setExpectedInterest(20);
         investExtraRateModel2.setExpectedFee(2);
+        investExtraRateModel2.setStatus(RepayStatus.REPAYING);
         investExtraRateMapper.create(investExtraRateModel2);
 
 
