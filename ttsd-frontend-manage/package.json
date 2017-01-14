@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "scripts": {
     "start": "export NODE_ENV=dev && npm run json && webpack-dev-server --inline",
-    "build": "export NODE_ENV=production && webpack --config webpack.production.js && node getJsonFiles.js",
+    "build": "export NODE_ENV=production && webpack && node getJsonFiles.js",
     "jsondev": "webpack && node getJsonFiles.js",
     "test": "export NODE_ENV=production && npm run watchprod && npm run json",
     "watchprod": "webpack --watch --config webpack.production.js&",
@@ -37,9 +37,9 @@
     "webpack-md5-hash": "0.0.5"
   },
   "dependencies": {
+    "freemarker.js": "^1.2.2",
     "jquery": "~2.1.4",
-    "underscore": "^1.8.3",
-    "freemarker.js": "^1.2.2"
+    "underscore": "^1.8.3"
   },
   "description": "",
   "main": "",

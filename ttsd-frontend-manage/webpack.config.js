@@ -5,7 +5,9 @@ var webpack = require('webpack');
 var objectAssign = require('object-assign');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var CopyWebpackPlugin = require('copy-webpack-plugin'); //复制文件
+var libsObj=require('./libsConfig.js');
 
+// console.log(libsObj);
 var basePath = path.join(__dirname, 'resources'),
 	staticPath = path.join(basePath, 'static'),
 	publicPath=path.join(staticPath, 'public'),
@@ -15,15 +17,14 @@ var basePath = path.join(__dirname, 'resources'),
 	activityPath=path.join(staticPath, 'activity'),
 	mobilePath=path.join(staticPath, 'mobile');
 
+var publicPathJS=path.join(publicPath, 'js');
+
 var outputPath=path.join(basePath, 'develop'),//打包文件路径
 	devServerPath='/',
 	commonOptions={},
 	webpackdevServer='',
 	plugins=[];
 const NODE_ENV=process.env.NODE_ENV;
-
-var publicPathJS=path.join(publicPath, 'js'),
-	publicLibs=path.join(publicPathJS, 'libs');
 
 /**
  * 动态查找所有入口文件
@@ -65,7 +66,8 @@ plugins.push(new AssetsPlugin({
 	metadata: {version: 123}
 }));
 plugins.push(new CopyWebpackPlugin([
-	{ from: staticPath+'/inlineImages',to: 'images'}
+	{ from: staticPath+'/inlineImages',to: 'images'},
+	{ from: publicPathJS+'/libs/layer',to: 'public'}
 ]));
 
 if(NODE_ENV=='production') {
@@ -144,6 +146,7 @@ module.exports = objectAssign(commonOptions, {
 		alias: {
 			publicJs:publicPathJS,
 			publicStyle:path.join(publicPath, 'styles'),
+			publicLib:path.join(publicPathJS, 'libs'),
 
 			askJs:path.join(askPath, 'js'),
 			askStyle:path.join(askPath, 'styles'),
@@ -161,9 +164,23 @@ module.exports = objectAssign(commonOptions, {
 			mobileJs:path.join(mobilePath, 'js'),
 			mobileStyle:path.join(mobilePath, 'styles'),
 
-			'layer':publicLibs+'/layer/layer.js',
-			'autoNumeric':publicLibs+'/autoNumeric.js',
-			'jquery.validate':publicLibs+'/jquery.validate-1.14.0.min.js'
+			text: libsObj.text,
+			clipboard: libsObj.clipboard,
+			md5: libsObj.md5,
+			qrcode: libsObj.qrcode,
+			jqueryValidate: libsObj.jqueryValidate,
+			jqueryForm: libsObj.jqueryForm,
+			autoNumeric: libsObj.autoNumeric,
+			mustache: libsObj.mustache,
+			moment: libsObj.moment,
+			daterangepicker: libsObj.daterangepicker,
+			layer:libsObj.layer,
+			echarts: libsObj.echarts,
+			fullPage:libsObj.fullPage,
+			swiper:libsObj.swiper,
+			rotate: libsObj.rotate,
+			template:libsObj.template,
+			fancybox:libsObj.fancybox
 
 		}
 	},
