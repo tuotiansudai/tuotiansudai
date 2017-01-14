@@ -82,6 +82,9 @@ public class ActivityCountDrawLotteryService {
     private final List newYearsActivityTask = Lists.newArrayList(ActivityDrawLotteryTask.EACH_ACTIVITY_SIGN_IN, ActivityDrawLotteryTask.REFERRER_USER,
             ActivityDrawLotteryTask.EACH_INVEST_5000);
 
+    //春节活动任务
+    private final List springFestivalActivityTasks = Lists.newArrayList(ActivityDrawLotteryTask.EACH_ACTIVITY_SIGN_IN);
+
     public static final String ACTIVITY_DESCRIPTION = "新年专享";
 
     //每投资5000奖励抽奖次数
@@ -104,6 +107,8 @@ public class ActivityCountDrawLotteryService {
                 return countDrawLotteryTime(userModel, activityCategory, newYearsActivityTask);
             case CHRISTMAS_ACTIVITY:
                 return countDrawLotteryTime(userModel, activityCategory, christmasTasks);
+            case SPRING_FESTIVAL_ACTIVITY:
+                return countDrawLotteryTime(userModel, activityCategory, springFestivalActivityTasks);
         }
         return lotteryTime;
     }
