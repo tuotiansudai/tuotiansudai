@@ -3,6 +3,7 @@ package com.tuotiansudai.repository.mapper;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.repository.model.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,9 +30,6 @@ public class UserMapperTest {
 
     @Autowired
     private UserRoleMapper userRoleMapper;
-
-    @Autowired
-    private ReferrerRelationMapper referrerRelationMapper;
 
     @Test
     public void shouldFindAllUsers() throws Exception {
@@ -88,40 +86,6 @@ public class UserMapperTest {
         List<String> agentList = userMapper.findAllByRole(Maps.newHashMap(ImmutableMap.<String, Object>builder().put("role", Role.AGENT).put("districtName", Lists.newArrayList("天津")).build()));
 
         assertThat(agentList.get(0), is("hellokitty"));
-    }
-
-    @Test
-    public void shouldFindAllRecommendation() throws Exception {
-        UserModel userModel = this.getUserModelTest();
-        userMapper.create(userModel);
-        userModel.setProvince("北京");
-        userMapper.updateUser(userModel);
-        UserRoleModel userRoleModel = new UserRoleModel("helloworld", Role.STAFF);
-        userRoleMapper.create(Lists.newArrayList(userRoleModel));
-
-        UserModel userModelTest = new UserModel();
-        userModelTest.setLoginName("hellokitty");
-        userModelTest.setPassword("123abc");
-        userModelTest.setEmail("12345@abc.com");
-        userModelTest.setMobile("13900000001");
-        userModelTest.setRegisterTime(new Date());
-        userModelTest.setStatus(UserStatus.ACTIVE);
-        userModelTest.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
-        userMapper.create(userModelTest);
-        userModelTest.setProvince("天津");
-        userMapper.updateUser(userModelTest);
-
-        ReferrerRelationModel referrerRelationModel = new ReferrerRelationModel();
-        referrerRelationModel.setLoginName("hellokitty");
-        referrerRelationModel.setReferrerLoginName("helloworld");
-        referrerRelationModel.setLevel(1);
-
-        referrerRelationMapper.create(referrerRelationModel);
-
-        List<String> list = userMapper.findAllRecommendation(Maps.newHashMap(ImmutableMap.<String, Object>builder().put("districtName", Lists.newArrayList("天津")).build()));
-
-        assertThat(list.get(0), is("hellokitty"));
-
     }
 
     @Test

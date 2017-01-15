@@ -11,6 +11,7 @@ import com.tuotiansudai.console.repository.mapper.UserMapperConsole;
 import com.tuotiansudai.console.repository.model.UserOperation;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.OperationType;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.exception.EditUserException;
 import com.tuotiansudai.exception.ReferrerRelationException;
 import com.tuotiansudai.enums.OperationType;
@@ -110,7 +111,7 @@ public class ConsoleUserService {
         }
         AutoInvestPlanModel autoInvestPlanModel = autoInvestPlanMapper.findByLoginName(loginName);
 
-        EditUserDto editUserDto = new EditUserDto(userModel, roles, autoInvestPlanModel);
+        EditUserDto editUserDto = new EditUserDto(userModel, roles, autoInvestPlanModel != null && autoInvestPlanModel.isEnabled());
 
         BankCardModel bankCard = bindBankCardService.getPassedBankCard(loginName);
         if (bankCard != null) {

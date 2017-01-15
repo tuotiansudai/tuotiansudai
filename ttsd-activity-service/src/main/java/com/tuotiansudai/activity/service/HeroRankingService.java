@@ -12,7 +12,7 @@ import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.HeroRankingView;
-import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
+import com.tuotiansudai.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.MobileEncryptor;
 import org.apache.commons.collections4.CollectionUtils;

@@ -1,20 +1,16 @@
 package com.tuotiansudai.contract.service.impl;
 
-import com.google.common.base.Strings;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.pdf.BaseFont;
 import com.tuotiansudai.contract.service.ContractService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
-import com.tuotiansudai.transfer.repository.mapper.TransferRuleMapper;
-import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
-import com.tuotiansudai.transfer.repository.model.TransferRuleModel;
+import com.tuotiansudai.repository.model.TransferApplicationModel;
+import com.tuotiansudai.repository.model.TransferRuleModel;
 import com.tuotiansudai.util.AmountConverter;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.Version;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;

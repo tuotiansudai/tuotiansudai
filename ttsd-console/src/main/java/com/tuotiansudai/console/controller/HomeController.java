@@ -4,7 +4,7 @@ import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.console.service.ConsoleHomeService;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.repository.model.Role;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.log.service.AuditLogService;
 import com.tuotiansudai.service.UserRoleService;
 import com.tuotiansudai.service.UserService;

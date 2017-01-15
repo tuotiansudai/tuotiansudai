@@ -6,9 +6,9 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.anxin.service.AnxinSignService;
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
-import com.tuotiansudai.coupon.repository.model.CouponModel;
-import com.tuotiansudai.coupon.repository.model.UserGroup;
+import com.tuotiansudai.repository.mapper.CouponMapper;
+import com.tuotiansudai.repository.model.CouponModel;
+import com.tuotiansudai.repository.model.UserGroup;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.repository.mapper.*;
@@ -193,8 +193,15 @@ public class LoanDetailServiceImpl implements LoanDetailService {
         boolean isAuthenticationRequired = anxinSignService.isAuthenticationRequired(loginName);
         boolean isAnxinUser = anxinProp != null && StringUtils.isNotEmpty(anxinProp.getAnxinUserId());
 
-        InvestorDto investorDto = new InvestorDto(accountMapper.findByLoginName(loginName), this.isRemindNoPassword(loginName),
-                this.calculateMaxAvailableInvestAmount(loginName, loanModel, investedAmount), isAuthenticationRequired, isAnxinUser);
+        AccountModel accountModel = accountMapper.findByLoginName(loginName);
+
+        InvestorDto investorDto = accountModel == null ? new InvestorDto() : new InvestorDto(accountModel.getBalance(),
+                accountModel.isAutoInvest(),
+                accountModel.isNoPasswordInvest(),
+                this.isRemindNoPassword(loginName),
+                this.calculateMaxAvailableInvestAmount(loginName, loanModel, investedAmount),
+                isAuthenticationRequired,
+                isAnxinUser);
 
         LoanDetailDto loanDto = new LoanDetailDto(loanModel,
                 loanDetailsMapper.getByLoanId(loanModel.getId()),
@@ -214,7 +221,7 @@ public class LoanDetailServiceImpl implements LoanDetailService {
                     .put("申请地区", loanerDetail.getRegion())
                     .put("收入水平", loanerDetail.getIncome())
                     .put("就业情况", loanerDetail.getEmploymentStatus())
-                    .put("借款用途", Strings.isNullOrEmpty(loanerDetail.getPurpose()) ? "" :  loanerDetail.getPurpose())
+                    .put("借款用途", Strings.isNullOrEmpty(loanerDetail.getPurpose()) ? "" : loanerDetail.getPurpose())
                     .put("逾期率", MessageFormat.format("{0}%", new BigDecimal(loanRepayMapper.calculateOverdueRate(loanModel.getAgentLoginName()) * 100).setScale(0, BigDecimal.ROUND_DOWN).toString()))
                     .build());
         }
@@ -276,7 +283,7 @@ public class LoanDetailServiceImpl implements LoanDetailService {
             if (loanModel.getFirstInvestAchievementId() != null) {
                 InvestModel firstInvest = investMapper.findById(loanModel.getFirstInvestAchievementId());
                 achievementDto.setFirstInvestAchievementDate(firstInvest.getTradingTime());
-                achievementDto.setFirstInvestAchievementMobile(randomUtils.encryptMobileForCurrentLoginName(loginName, firstInvest.getLoginName(),  loanModel.getFirstInvestAchievementId(), Source.WEB));
+                achievementDto.setFirstInvestAchievementMobile(randomUtils.encryptMobileForCurrentLoginName(loginName, firstInvest.getLoginName(), loanModel.getFirstInvestAchievementId(), Source.WEB));
             }
             if (loanModel.getMaxAmountAchievementId() != null) {
                 InvestModel maxInvest = investMapper.findById(loanModel.getMaxAmountAchievementId());

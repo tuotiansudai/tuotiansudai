@@ -26,4 +26,5 @@ include 'ump-project-transfer'
 include 'ttsd-edxlog-model', 'ttsd-edxlog-repository', 'ttsd-log-service'
 include 'ttsd-mybatis-extension'
 include 'ttsd-rest-client'
+include 'ttsd-aa-model', 'ttsd-aa-repository'
 
