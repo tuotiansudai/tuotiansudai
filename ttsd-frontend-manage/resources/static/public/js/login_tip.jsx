@@ -88,12 +88,11 @@ loginInForm.onsubmit = function(event) {
             } else {
                 refreshCaptcha(loginInForm.imageCaptcha,'/login/captcha');
                 globalFun.removeClass(thisButton,'loading');
-                layer.msg(data.message);
+                errorDom.text(data.message);
             }
         });
 
     }
 };
-
 
 export default popLoginTip;

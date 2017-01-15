@@ -72,6 +72,21 @@ plugins.push(new CopyWebpackPlugin([
 	{ from: publicPathJS+'/libs/layer/skin',to: 'public/skin'}
 ]));
 
+plugins.push(new webpack.DllReferencePlugin({
+	context: outputPath+'/public/plugins',
+	manifest: require('jquery-manifest.json')
+}));
+
+plugins.push(new webpack.DllReferencePlugin({
+	context: outputPath+'/public/plugins',
+	manifest: require('echarts-manifest.json')
+}));
+
+plugins.push(new webpack.DllReferencePlugin({
+	context: outputPath+'/public/plugins',
+	manifest: require('layer-manifest.json')
+}));
+
 if(NODE_ENV=='production') {
 	//生产环境
 	outFilename="[name].[chunkhash].js";
