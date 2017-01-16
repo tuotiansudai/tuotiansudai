@@ -81,7 +81,7 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
             if (StringUtils.isEmpty(loginName) || (!StringUtils.isEmpty(loginName)) && CollectionUtils.isNotEmpty(userCouponMapper.findUsedExperienceByLoginName(loginName))) {
                 loanModels = loanMapper.findByProductType(LoanStatus.RAISING, Lists.newArrayList(Lists.newArrayList(ProductType.EXPERIENCE)), ActivityType.NEWBIE);
             } else {
-                loanModels = loanMapper.findByProductType(LoanStatus.RAISING, noContainExperienceLoans, null);
+                loanModels = loanMapper.findByProductType(null, noContainExperienceLoans, null);
             }
 
             if (loanModels.size() <= 0) {

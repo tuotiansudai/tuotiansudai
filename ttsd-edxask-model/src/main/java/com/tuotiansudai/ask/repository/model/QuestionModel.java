@@ -34,6 +34,8 @@ public class QuestionModel implements Serializable {
 
     private QuestionStatus status;
 
+    private boolean embody;
+
     private Date createdTime;
 
     public QuestionModel() {
@@ -159,6 +161,14 @@ public class QuestionModel implements Serializable {
 
     public void setStatus(QuestionStatus status) {
         this.status = status;
+    }
+
+    public boolean isEmbody() {
+        return embody;
+    }
+
+    public void setEmbody(boolean embody) {
+        this.embody = embody;
     }
 
     public Date getCreatedTime() {

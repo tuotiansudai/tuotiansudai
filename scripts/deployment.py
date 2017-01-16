@@ -1,6 +1,6 @@
 import os
 from paver.shell import sh
-
+import config_deploy
 
 class Deployment(object):
 
@@ -9,15 +9,14 @@ class Deployment(object):
     _dockerCompose='/usr/local/bin/docker-compose'
     _paver='/usr/bin/paver'
 
-    _env='QA'
-
     def deploy(self, env):
-        self._env = env
         self.clean()
+        self.config_file(env)
         self.jcversion()
         self.compile()
         self.build_and_unzip_worker()
         self.build_mq_consumer()
+        self.build_rest_service()
         self.build_diagnosis()
         self.build_worker_monitor()
         self.mk_static_package()
@@ -28,9 +27,14 @@ class Deployment(object):
         print self._gradle
         sh('/usr/bin/git clean -fd', ignore_error=True)
 
+    def config_file(self, env):
+        print "Generate config file..."
+        config_deploy.deploy(env, "./ttsd-config/src/main/resources/", "{0}/ttsd-config/ttsd-env.properties".format(self._config_path))
+
     def compile(self):
         print "Compiling..."
-        sh('{0} clean ttsd-config:flywayAA ttsd-config:flywayUMP ttsd-config:flywayAnxin ttsd-config:flywaySms ttsd-config:flywayWorker ttsd-config:flywayAsk ttsd-config:flywayActivity ttsd-config:flywayPoint ttsd-config:flywayMessage initMQ war renameWar'.format(
+        sh('{0} clean ttsd-config:flywayAA ttsd-config:flywayUMP ttsd-config:flywayAnxin ttsd-config:flywaySms ttsd-config:flywayWorker '
+           'ttsd-config:flywayAsk ttsd-config:flywayActivity ttsd-config:flywayPoint ttsd-config:flywayMessage ttsd-config:flywayLog initMQ war renameWar'.format(
             self._gradle))
         sh('cp {0}/signin_service/settings_local.py ./signin_service/'.format(self._config_path))
 
@@ -57,6 +61,10 @@ class Deployment(object):
         sh('cd ./ttsd-auditLog-mq-consumer && {0} distZip'.format(self._gradle))
         sh('cd ./ttsd-auditLog-mq-consumer/build/distributions && unzip \*.zip')
 
+    def build_rest_service(self):
+        print "Making rest services build..."
+        sh('cd ./ttsd-ask-rest && {0} distZip'.format(self._gradle))
+        sh('cd ./ttsd-ask-rest/build/distributions && unzip \*.zip')
 
     def build_diagnosis(self):
         print "Making diagnosis build..."

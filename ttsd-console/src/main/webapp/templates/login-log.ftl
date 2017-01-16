@@ -5,7 +5,7 @@
 <div class="col-md-10">
     <form action="/" class="form-inline query-build">
         <div class="form-group">
-            <label for="mobile">手机号</label>
+            <label for="mobile">用户名/手机号:</label>
             <input type="text" id="login-mobile" name="mobile" class="form-control ui-autocomplete-input" datatype="*"
                    autocomplete="off" value="${mobile!}"/>
         </div>

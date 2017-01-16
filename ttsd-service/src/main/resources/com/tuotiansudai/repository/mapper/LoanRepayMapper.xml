@@ -280,7 +280,6 @@
         select * from loan_repay where status != 'COMPLETE'
     </select>
 
-
     <resultMap id="loanRepayNotifyResultMap" type="LoanRepayNotifyModel">
         <result column="repay_amount" property="repayAmount"/>
         <result column="loan_name" property="loanName"/>
