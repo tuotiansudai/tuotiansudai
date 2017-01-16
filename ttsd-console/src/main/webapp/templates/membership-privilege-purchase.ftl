@@ -53,7 +53,6 @@
                 <th>编号</th>
                 <th>手机号</th>
                 <th>姓名</th>
-                <th>购买等级</th>
                 <th>购买期限（天）</th>
                 <th>购买金额（元）</th>
                 <th>来源</th>
@@ -66,7 +65,6 @@
                     <td>${item.id}</td>
                     <td>${item.mobile}</td>
                     <td>${item.userName}</td>
-                    <td>${item.level}</td>
                     <td>${item.duration}</td>
                     <td>${item.amount}</td>
                     <td>${item.source}</td>

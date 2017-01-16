@@ -1,6 +1,7 @@
 package com.tuotiansudai.membership.repository.mapper;
 
 import com.tuotiansudai.membership.repository.model.MembershipPrivilegeModel;
+import com.tuotiansudai.repository.model.Source;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -19,8 +20,5 @@ public interface MembershipPrivilegeMapper {
                                                                 @Param(value = "currentDate") Date currentDate);
 
     List<String> findMembershipPrivilegeExpiredUsers();
-
-
-
 
 }

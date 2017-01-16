@@ -44,6 +44,4 @@
         select login_name from membership_privilege where datediff(now(), end_time) = 1 and privilege='SERVICE_FEE';
     </select>
 
-
-
 </mapper>
