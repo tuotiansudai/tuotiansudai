@@ -20,7 +20,7 @@
 					<img src="${staticServer}/activity/images/lantern-festival/title-one-phone.png" width="100%" class="img-item-phone">
 				</h3>
 				<div class="info-item">
-					活动期间投资额每满1000元即可获得一次摇一摇机会，如单笔投资10000元，可直接摇10次，用户每日最多可摇20次，当日超出部分的投资额不予累计。
+					活动期间投资额每满1000元即可获得一次摇一摇机会，如单笔投资10000元，可直接获得10次摇一摇机会，用户每日最多可获得20次摇一摇机会，当日超出部分的投资额不予累计。
 				</div>
 				<div class="gift-item text-c reward-gift-box">
 					<div class="time-item">
