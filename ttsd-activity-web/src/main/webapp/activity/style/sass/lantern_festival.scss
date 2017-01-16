@@ -1,4 +1,5 @@
 @import "module/login_tip";
+@import "module/register_common";
 @import "module/gift_circle_tip";
 .tip-list-frame{
   display:none;
@@ -8,6 +9,40 @@
   background: #db291b url('/activity/images/lantern-festival/circle-bg.png') no-repeat left top;
   background-size: 103%;
   border: 2px solid #532a09;
+  @media (max-width:700px) {
+    width:300px!important;
+    height:240px!important;
+    top:50%!important;
+    left: 50%!important;
+    margin-left: -150px!important;
+    margin-top:-120px!important;
+    .text-tip{
+      height:auto;
+      p{
+        &.success-text{
+          font-size:20px;
+          line-height:35px;
+        }
+        &.reward-text{
+          font-size:20px;
+          line-height:35px;
+        }
+        &.login-text{
+          font-size: 20px;
+          padding-top: 30px;
+        }
+        &.des-text{
+          font-size:14px;
+        }
+      }
+    }
+    .btn-list{
+      a{
+        padding: 8px 30px;
+        font-size: 16px;
+      }
+    }
+  }
   .close-btn{
     width:40px;
     height:40px;
@@ -15,6 +50,12 @@
     right:-20px;
     background:url('/activity/images/lantern-festival/close-btn.png') no-repeat center;
     background-size:100%;
+    @media (max-width:700px) {
+      width:28px;
+      height:28px;
+      top:-15px;
+      right:-5px;
+    }
   }
   .btn-list{
     a{
@@ -105,7 +146,7 @@
   margin: 0;
 }
 .img-item {
-  display:block;
+  display:inline-block;
   @media (max-width:700px) {
     display:none;
   }
@@ -113,7 +154,7 @@
 .img-item-phone {
   display:none;
   @media (max-width:700px) {
-    display:block;
+    display:inline-block;
   }
 }
 .activity-container {

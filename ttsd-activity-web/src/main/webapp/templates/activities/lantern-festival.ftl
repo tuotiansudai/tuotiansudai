@@ -11,6 +11,9 @@
 	</div>
 	<div class="actor-content-group bg-one">
 		<div class="wp clearfix">
+		<div class="reg-tag-current" style="display: none">
+	        <#include '../module/register.ftl' />
+	    </div>
 			<div class="tree-model">
 				<h3>
 					<img src="${staticServer}/activity/images/lantern-festival/title-one.png" class="img-item">
@@ -21,7 +24,7 @@
 				</div>
 				<div class="gift-item text-c reward-gift-box">
 					<div class="time-item">
-						我的抽奖机会:<span class="draw-time">1</span>次
+						我的抽奖机会:<span class="draw-time">0</span>次
 					</div>
 					<div class="rotate-btn pointer-img">
 						<img src="${staticServer}/activity/images/lantern-festival/tree-icon.png">
@@ -52,11 +55,11 @@
 				<ul class="list-info">
 					<li>
 						<i class="icon-date"></i>
-						<span>日期：<strong>2016.12.29</strong></span>
+						<span>日期：<strong id="HistoryAwards"><#if currentTime??>${currentTime?string('yyyy.MM.dd')}</#if></strong></span>
 					</li>
 					<li>
 						<i class="icon-list"></i>
-						<span>
+						<span class="app-list-text">
 							<@global.isAnonymous>
                                当前排名：<a href="javascript:void(0)" class="get-rank show-login">登录查看</a>
                            </@global.isAnonymous>
@@ -71,12 +74,12 @@
 					</li>
 					<li>
 						<i class="icon-money"></i>
-						<span>
+						<span class="app-loan-text">
 							<@global.isAnonymous>
-                               今日投资额：0.00
+                               今日投资额：0.00元
                            </@global.isAnonymous>
                            <@global.isNotAnonymous>
-		                        今日投资额：<strong>${investAmount}</strong>
+		                        今日投资额：<strong>${investAmount}</strong>元
 		                   </@global.isNotAnonymous>
 						</span>
 					</li>
@@ -95,8 +98,9 @@
 					<img src="${staticServer}/activity/images/lantern-festival/title-list-phone.png" width="100%" class="img-item-phone">
 				</h3>
 				<div class="table-group">
+                    <input type="hidden" id="activityStartTime" value="${activityStartTime!}">
+                    <input type="hidden" id="activityEndTime" value="${activityEndTime!}">
 					<input type="hidden" id="TodayAwards" value="<#if currentTime??>${currentTime?string('yyyy-MM-dd')}</#if>">
-					<input type="hidden" id="HistoryAwards" value="<#if currentTime??>${currentTime?string('yyyy-MM-dd')}</#if>">
 					<table class="list-table">
 						<thead>
 							<tr>
