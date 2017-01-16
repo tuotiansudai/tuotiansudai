@@ -1,3 +1,8 @@
+configurations {
+    all*.exclude group: 'bouncycastle', module: "bcmail-jdk14"
+    all*.exclude group: 'bouncycastle', module: "bcprov-jdk14"
+}
+
 dependencies {
     def springVersion = '4.3.1.RELEASE'
     def springSecurityVersion = '4.1.1.RELEASE'
