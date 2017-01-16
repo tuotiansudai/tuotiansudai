@@ -1,21 +1,24 @@
 package com.tuotiansudai.rest;
 
+import com.tuotiansudai.rest.client.AskRestClient;
 import com.tuotiansudai.rest.client.codec.RestErrorDecoder;
 import com.tuotiansudai.rest.client.interceptors.RequestHeaderInterceptor;
+import feign.Feign;
 import feign.Logger;
-import org.springframework.boot.autoconfigure.web.HttpMessageConvertersAutoConfiguration;
-import org.springframework.cloud.netflix.feign.EnableFeignClients;
-import org.springframework.cloud.netflix.feign.FeignAutoConfiguration;
+import feign.jackson.JacksonDecoder;
+import feign.jackson.JacksonEncoder;
+import feign.slf4j.Slf4jLogger;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 
 @Configuration
-@Import({FeignAutoConfiguration.class, HttpMessageConvertersAutoConfiguration.class})
-@EnableFeignClients
-@PropertySource({"classpath:feign.properties", "classpath:ttsd-env.properties"})
+@PropertySource({"classpath:ttsd-env.properties"})
 public class FeignClientConfig {
+    @Value("${ask.rest.server}")
+    private String askRestServer;
+
     @Bean
     public RequestHeaderInterceptor requestHeaderInterceptor() {
         return new RequestHeaderInterceptor();
@@ -27,7 +30,27 @@ public class FeignClientConfig {
     }
 
     @Bean
-    Logger.Level feignLoggerLevel() {
-        return Logger.Level.FULL;
+    public JacksonEncoder jacksonEncoder() {
+        return new JacksonEncoder();
+    }
+
+    @Bean
+    public JacksonDecoder jacksonDecoder() {
+        return new JacksonDecoder();
+    }
+
+    @Bean
+    public AskRestClient askRestClient(JacksonDecoder jacksonDecoder,
+                                       JacksonEncoder jacksonEncoder,
+                                       RestErrorDecoder restErrorDecoder,
+                                       RequestHeaderInterceptor requestHeaderInterceptor) {
+        return Feign.builder()
+                .logger(new Slf4jLogger())
+                .encoder(jacksonEncoder)
+                .decoder(jacksonDecoder)
+                .errorDecoder(restErrorDecoder)
+                .requestInterceptor(requestHeaderInterceptor)
+                .logLevel(Logger.Level.FULL)
+                .target(AskRestClient.class, askRestServer);
     }
 }
