@@ -25,7 +25,6 @@ var outputPath=path.join(basePath, 'develop'),//打包文件路径
 	plugins=[];
 var outFilename="[name].js";
 var NODE_ENV=process.env.NODE_ENV;
-console.log('run ****************************************************************'+NODE_ENV);
 /**
  * 动态查找所有入口文件
  */

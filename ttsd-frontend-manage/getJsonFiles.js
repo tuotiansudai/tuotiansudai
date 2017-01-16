@@ -9,7 +9,6 @@ if(NODE_ENV=='production') {
     outputPath=path.join(basePath, 'prod');
     // 生成生产环境的json文件
 }
-console.log('test test ****************************************************************'+NODE_ENV);
 function getJsonFileList(projectCategory,formatName){
     this.formatName=outputPath+'/'+formatName;
     this.projectCategory=projectCategory;
