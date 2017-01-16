@@ -22,7 +22,9 @@ public enum MessageQueue {
     AdvanceRepayCallback("AdvanceRepayCallback"),
     AuditLog("AuditLog"),
     UserOperateLog("UserOperateLog"),
-    LoginLog("LoginLog");
+    LoginLog("LoginLog"),
+    RepaySuccess_Coupon("RepaySuccess-Coupon"),
+    RepaySuccess_Extra("RepaySuccess-Extra");
 
     private final String queueName;
 
