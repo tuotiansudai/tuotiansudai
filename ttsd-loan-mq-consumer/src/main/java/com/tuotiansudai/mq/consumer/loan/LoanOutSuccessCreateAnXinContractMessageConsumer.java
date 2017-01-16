@@ -80,7 +80,7 @@ public class LoanOutSuccessCreateAnXinContractMessageConsumer implements Message
 
         logger.info("[标的放款MQ] LoanOutSuccess_GenerateAnXinContract queryLoanContracts start .");
         baseDto = payWrapperClient.queryAnXinContract(loanId);
-        if (!baseDto.isSuccess()) {
+        if (baseDto == null || !baseDto.isSuccess()) {
             fatalSmsList.add("查询安心签失败");
             logger.error(MessageFormat.format("[标的放款MQ] LoanOutSuccess_GenerateAnXinContract queryLoanContracts is fail. loanId:{0}", String.valueOf(loanId)));
         }

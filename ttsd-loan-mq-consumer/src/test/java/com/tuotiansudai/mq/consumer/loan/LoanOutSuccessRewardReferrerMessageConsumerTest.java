@@ -53,7 +53,9 @@ public class LoanOutSuccessRewardReferrerMessageConsumerTest {
         LoanOutSuccessMessage loanOutSuccessMessage = buildMockedLoanOutSuccessMessage();
         when(payWrapperClient.sendRewardReferrer(anyLong())).thenReturn(new BaseDto<>(false));
 
-        consumer.consume(JsonConverter.writeValueAsString(loanOutSuccessMessage));
+        try {
+            consumer.consume(JsonConverter.writeValueAsString(loanOutSuccessMessage));
+        }catch (RuntimeException e){}
         verify(smsWrapperClient, times(1)).sendFatalNotify(any(SmsFatalNotifyDto.class));
     }
 

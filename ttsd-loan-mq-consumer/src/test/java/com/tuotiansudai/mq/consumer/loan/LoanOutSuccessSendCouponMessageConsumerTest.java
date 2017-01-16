@@ -54,7 +54,9 @@ public class LoanOutSuccessSendCouponMessageConsumerTest {
         when(payWrapperClient.sendRedEnvelopeAfterLoanOut(anyLong())).thenReturn(new BaseDto<>(false));
         when(payWrapperClient.assignInvestAchievementUserCoupon(anyLong())).thenReturn(new BaseDto<>(false));
 
-        consumer.consume(JsonConverter.writeValueAsString(loanOutSuccessMessage));
+        try {
+            consumer.consume(JsonConverter.writeValueAsString(loanOutSuccessMessage));
+        }catch (RuntimeException e){}
         verify(smsWrapperClient, times(1)).sendFatalNotify(any(SmsFatalNotifyDto.class));
     }
 
