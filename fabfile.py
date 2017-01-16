@@ -342,8 +342,7 @@ def get_7days_before(date_format="%Y-%m-%d"):
 def remove_tomcat_logs():
     iso_date = get_7days_before()
     with cd('/var/log/tomcat'):
-        run('rm -f *{0}*.log'.format(iso_date))
-        run('rm -f *{0}*.txt'.format(iso_date))
+        run('rm -f *{0}*'.format(iso_date))
 
 
 def remove_nginx_logs():
@@ -392,7 +391,7 @@ def remove_api_logs():
 def remove_worker_logs():
     iso_date = get_7days_before()
     with cd('/var/log/job-worker'):
-        run('rm -f *{0}.log'.format(iso_date))
+        run('rm -f *{0}*'.format(iso_date))
 
 
 @roles('static')

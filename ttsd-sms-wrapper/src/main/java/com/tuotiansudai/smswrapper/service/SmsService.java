@@ -3,6 +3,7 @@ package com.tuotiansudai.smswrapper.service;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.SmsDataDto;
 import com.tuotiansudai.dto.sms.InvestSmsNotifyDto;
+import com.tuotiansudai.dto.sms.LoanRaisingCompleteNotifyDto;
 import com.tuotiansudai.dto.sms.SmsCouponNotifyDto;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 
@@ -43,4 +44,6 @@ public interface SmsService {
     BaseDto<SmsDataDto> platformBalanceLowNotify(List<String> mobiles, String warningValue);
 
     BaseDto<SmsDataDto> generateContractNotify(List<String> mobiles, long businessId);
+
+    BaseDto<SmsDataDto> loanRaisingCompleteNotify(LoanRaisingCompleteNotifyDto dto);
 }
