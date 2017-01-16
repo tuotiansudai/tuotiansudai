@@ -10,6 +10,7 @@ public enum ActivityDrawLotteryTask {
     RECHARGE("充值", 1),
     INVEST("投资", 1),
     EACH_ACTIVITY_SIGN_IN("活动签到", 1),
+    TODAY_ACTIVITY_SIGN_IN("当日活动签到", 1),
     REFERRER_USER("邀请好友送5次机会", 5),
     FIRST_INVEST("首次投资", 1),
     EACH_INVEST_2000("每投资2000", 1),
