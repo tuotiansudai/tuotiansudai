@@ -24,7 +24,8 @@ public enum MessageQueue {
     UserOperateLog("UserOperateLog"),
     LoginLog("LoginLog"),
     RepaySuccess_Coupon("RepaySuccess-Coupon"),
-    RepaySuccess_Extra("RepaySuccess-Extra");
+    RepaySuccess_Extra("RepaySuccess-Extra"),
+    RepaySuccess_ModifyTransfer("RepaySuccess-ModifyTransfer");
 
     private final String queueName;
 

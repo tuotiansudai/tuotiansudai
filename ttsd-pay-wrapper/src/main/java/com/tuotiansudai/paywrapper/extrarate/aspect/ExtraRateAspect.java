@@ -30,35 +30,6 @@ public class ExtraRateAspect {
         extraRateService.transferPurchase(investId);
     }
 
-    @AfterReturning(value = "execution(* *..NormalRepayService.paybackInvest(*))", returning = "returnValue")
-    public void afterReturningNormalRepayPaybackInvest(JoinPoint joinPoint, boolean returnValue) {
-        long loanRepayId = (Long) joinPoint.getArgs()[0];
-        logger.info(MessageFormat.format("[Normal Repay {0}] extra rate after returning payback invest({1}) aspect is starting...",
-                String.valueOf(loanRepayId), String.valueOf(returnValue)));
-
-        if (returnValue) {
-            extraRateService.normalRepay(loanRepayId);
-        }
-
-        logger.info(MessageFormat.format("[Normal Repay {0}] extra rate after returning payback invest({1}) aspect is done",
-                String.valueOf(loanRepayId), String.valueOf(returnValue)));
-
-    }
-
-    @AfterReturning(value = "execution(* *..AdvanceRepayService.paybackInvest(*))", returning = "returnValue")
-    public void afterReturningAdvanceRepayPaybackInvest(JoinPoint joinPoint, boolean returnValue) {
-        long loanRepayId = (Long) joinPoint.getArgs()[0];
-        logger.info(MessageFormat.format("[Advance Repay {0}] extra rate after returning payback invest({1}) aspect is starting...",
-                String.valueOf(loanRepayId), String.valueOf(returnValue)));
-
-        if (returnValue) {
-            extraRateService.advanceRepay(loanRepayId);
-        }
-
-        logger.info(MessageFormat.format("[Advance Repay {0}] extra rate after returning payback invest({1}) aspect is done",
-                String.valueOf(loanRepayId), String.valueOf(returnValue)));
-    }
-
     @AfterReturning(value = "execution(* *..LoanService.postLoanOut(*))", returning = "returnValue")
     public void afterReturningLoanOutInvestCalculation(JoinPoint joinPoint, boolean returnValue) {
         if (returnValue) {

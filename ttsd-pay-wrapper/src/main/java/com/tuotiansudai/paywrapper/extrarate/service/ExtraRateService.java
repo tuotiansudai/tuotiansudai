@@ -10,7 +10,7 @@ import java.util.Map;
 
 public interface ExtraRateService {
 
-    void normalRepay(long loanRepayId);
+    boolean normalRepay(long loanRepayId);
 
     boolean advanceRepay(long loanRepayId);
 

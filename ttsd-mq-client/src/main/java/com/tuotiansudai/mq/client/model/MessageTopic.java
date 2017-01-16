@@ -10,7 +10,8 @@ public enum MessageTopic {
             MessageQueue.InvestSuccess_ActivityReward),
     RepaySuccess("repaySuccess",
             MessageQueue.RepaySuccess_Coupon,
-            MessageQueue.RepaySuccess_Extra);
+            MessageQueue.RepaySuccess_Extra,
+            MessageQueue.RepaySuccess_ModifyTransfer);
 
     final String topicName;
     final MessageQueue[] queues;

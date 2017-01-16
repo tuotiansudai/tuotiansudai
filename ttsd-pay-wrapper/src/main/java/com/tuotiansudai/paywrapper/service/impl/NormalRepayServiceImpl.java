@@ -1,5 +1,6 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
@@ -18,7 +19,9 @@ import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.job.NormalRepayJob;
 import com.tuotiansudai.message.EventMessage;
 import com.tuotiansudai.message.PushMessage;
+import com.tuotiansudai.message.RepaySuccessMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
+import com.tuotiansudai.mq.client.model.MessageTopic;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
@@ -431,10 +434,12 @@ public class NormalRepayServiceImpl implements NormalRepayService {
             return dto.getData().getStatus();
         }
 
+        RepaySuccessMessage repaySuccessMessage = new RepaySuccessMessage(loanRepayId, false);
         try {
-            this.createRepayJob(loanRepayId, 60);
-        } catch (SchedulerException e) {
-            logger.error(MessageFormat.format("[Normal Repay {0}] create repay job failed", String.valueOf(loanRepayId)));
+            mqWrapperClient.publishMessage(MessageTopic.RepaySuccess, repaySuccessMessage);
+        } catch (JsonProcessingException e) {
+            // 记录日志，发短信通知管理员
+            fatalLog(MessageFormat.format("还款发送MQ消息失败", String.valueOf(loanRepayId)), e);
         }
 
         return false;

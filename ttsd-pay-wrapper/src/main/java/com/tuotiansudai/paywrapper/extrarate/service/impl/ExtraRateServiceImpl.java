@@ -94,7 +94,8 @@ public class ExtraRateServiceImpl implements ExtraRateService {
     }
 
     @Override
-    public void normalRepay(long loanRepayId) {
+    public boolean normalRepay(long loanRepayId) {
+        boolean result = true;
         LoanRepayModel currentLoanRepay = loanRepayMapper.findById(loanRepayId);
         long loanId = currentLoanRepay.getLoanId();
         boolean isLastPeriod = loanRepayMapper.findLastLoanRepay(loanId).getPeriod() == currentLoanRepay.getPeriod();
@@ -111,6 +112,7 @@ public class ExtraRateServiceImpl implements ExtraRateService {
                 try {
                     this.sendExtraRateAmount(loanRepayId, investExtraRateModel, actualInterest, actualFee);
                 } catch (Exception e) {
+                    result = false;
                     logger.error(MessageFormat.format("[Normal Repay {0}] extra rate is failed, investId={0} loginName={1} amount={3}",
                             String.valueOf(loanRepayId),
                             String.valueOf(investExtraRateModel.getInvestId()),
@@ -119,6 +121,8 @@ public class ExtraRateServiceImpl implements ExtraRateService {
                 }
             }
         }
+
+        return result;
     }
 
     private void sendExtraRateAmount(long loanRepayId, InvestExtraRateModel investExtraRateModel, long actualInterest, long actualFee) throws Exception {

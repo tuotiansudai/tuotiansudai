@@ -354,7 +354,15 @@ public class PayWrapperClient extends BaseClient {
         return syncExecute(String.valueOf(loanId), "/job/send-red-envelope-after-loan-out", "POST");
     }
 
-    public BaseDto<PayDataDto> couponRepay(long loanRepayId) {
-        return syncExecute(loanRepayId, "/repay-success/coupon-repay", "POST");
+    public BaseDto<PayDataDto> couponRepay(Object repayDto) {
+        return syncExecute(repayDto, "/repay-success/coupon-repay", "POST");
+    }
+
+    public BaseDto<PayDataDto> extraRepay(Object repayDto) {
+        return syncExecute(repayDto, "/repay-success/extra-repay", "POST");
+    }
+
+    public BaseDto<PayDataDto> advanceTransfer(Object repayDto) {
+        return syncExecute(repayDto, "/repay-success/advance-transfer", "POST");
     }
 }

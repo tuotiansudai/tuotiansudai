@@ -1,7 +1,9 @@
-package com.tuotiansudai.paywrapper.aspect;
+package com.tuotiansudai.paywrapper.service.impl;
+
 
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.sms.SmsCancelTransferLoanNotifyDto;
+import com.tuotiansudai.paywrapper.service.AdvanceTransferService;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.LoanRepayMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
@@ -9,20 +11,14 @@ import com.tuotiansudai.repository.model.TransferStatus;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
 import org.apache.log4j.Logger;
-import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.AfterReturning;
-import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.text.MessageFormat;
 import java.util.List;
 
-@Aspect
-@Component
-public class AdvancedRepayAspect {
+public class AdvanceTransferServiceImpl implements AdvanceTransferService {
 
-    private static Logger logger = Logger.getLogger(AdvancedRepayAspect.class);
+    private static Logger logger = Logger.getLogger(AdvanceTransferServiceImpl.class);
 
     @Autowired
     LoanRepayMapper loanRepayMapper;
@@ -39,18 +35,12 @@ public class AdvancedRepayAspect {
     @Autowired
     SmsWrapperClient smsWrapperClient;
 
-    @AfterReturning(value = "execution(* *..AdvanceRepayService.paybackInvest(*))", returning = "returnValue")
-    public void afterReturningInvestSuccess(JoinPoint joinPoint, boolean returnValue) {
-        long loanRepayId = (Long) joinPoint.getArgs()[0];
+    @Override
+    public boolean modifyTransfer(long loanRepayId) {
+        boolean result = true;
 
         logger.info(MessageFormat.format("[advanced repay {0}] return Value ({1}) aspect is starting...",
-                String.valueOf(loanRepayId), String.valueOf(returnValue)));
-
-        if (!returnValue) {
-            logger.info(MessageFormat.format("[advanced repay {0}] return Value ({1}) aspect is done",
-                    String.valueOf(loanRepayId), String.valueOf(returnValue)));
-            return;
-        }
+                String.valueOf(loanRepayId), String.valueOf(loanRepayId)));
 
         long loanId = loanRepayMapper.findById(loanRepayId).getLoanId();
 
@@ -67,6 +57,8 @@ public class AdvancedRepayAspect {
         }
 
         logger.info(MessageFormat.format("[advanced repay {0}] return Value ({1}) aspect is done",
-                String.valueOf(loanRepayId), String.valueOf(returnValue)));
+                String.valueOf(loanRepayId), String.valueOf(loanRepayId)));
+
+        return result;
     }
 }
