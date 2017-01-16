@@ -40,6 +40,7 @@ function getJsonFileList(projectCategory,formatName){
                 var keyNameObj=textFile[key];
                 this.jsonFormat['jsFile'][outFileName]=keyNameObj.js;
                 this.jsonFormat['cssFile'][outFileName]=keyNameObj.css;
+
             }
         }
         var strJsonObj=JSON.stringify(this.jsonFormat);
@@ -54,6 +55,10 @@ function getJsonFileList(projectCategory,formatName){
             }
         });
     }
+}
+
+function readJqueryPlugin() {
+
 }
 
 //ask,web,activity,point,mobile站点打包生成的的json文件名

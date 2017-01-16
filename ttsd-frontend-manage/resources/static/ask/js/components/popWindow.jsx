@@ -1,3 +1,4 @@
+var $=window.jquery_library(1);
 function popWindow(title,content,size,load) {
     var isload=load?true:false;
     if(!$('.popWindow').length) {

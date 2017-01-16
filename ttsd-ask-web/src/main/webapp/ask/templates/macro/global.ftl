@@ -142,6 +142,7 @@
 </div>
 
     <#include "../pageLayout/footer.ftl" />
+<script src="${staticServer}develop/plugins/jquery.dll.js"></script>
 <script src="${staticServer}${js.global_page!}"></script>
 <script src="${staticServer}${pageJavascript}" type="text/javascript"></script>
 
