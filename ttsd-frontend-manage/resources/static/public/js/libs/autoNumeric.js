@@ -32,6 +32,8 @@
 * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 * OTHER DEALINGS IN THE SOFTWARE.
 */
+
+var jQuery = window.jquery_library(396);
 (function ($) {
     "use strict";
     /*jslint browser: true*/

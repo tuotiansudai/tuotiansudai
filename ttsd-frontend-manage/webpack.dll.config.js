@@ -40,8 +40,8 @@ module.exports = {
     entry: {
         'jquery': ['jquery'],
         'echarts':['echarts'],
-        'layer':['layer'],
-        'jqueryPlugin':['clipboard','md5','swiper','fancybox']
+        'layer':['layer']
+        // 'jqueryPlugin':['clipboard','md5','swiper','fancybox']
     },
     output: {
         path: path.join(outputPath, 'public/plugins'),
@@ -51,7 +51,8 @@ module.exports = {
     plugins: [
         new webpack.DllPlugin({
             path: path.join(outputPath, 'public/plugins', '[name]-manifest.json'),
-            name: '[name]_library'
+            name: '[name]_library',
+            context: __dirname
         })
     ]
 };

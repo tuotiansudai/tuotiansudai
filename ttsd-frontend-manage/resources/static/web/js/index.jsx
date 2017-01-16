@@ -1,12 +1,17 @@
 import {runImg,startMarquee} from 'webModule/image_show_slider';
-import {layer} from 'publicJs/wrapper_layer';
-import 'autoNumeric';
+
+// import {layer} from 'publicJs/wrapper_layer';
+
 import {useAjax,isUserLogin} from 'publicJs/common';
-import 'webModule/coupon_alert';
+// import 'webModule/coupon_alert';
 import {ValidatorForm} from 'publicJs/validator';
-import popLoginTip from 'publicJs/login_tip';
+// import popLoginTip from 'publicJs/login_tip';
 
+// import {layer} from 'layer_library';
 
+var $ = window.jquery_library(396);
+import 'autoNumeric';
+debugger
 import 'webStyle/home_page_v2.scss'
 
 let $homePageContainer = $('#homePageContainer'),

@@ -2,9 +2,9 @@
   "name": "frontendmanage",
   "version": "0.1.0",
   "scripts": {
-    "start": "export NODE_ENV=dev && npm run json && webpack-dev-server --inline && npm run plugin",
-    "start2": "export NODE_ENV=dev && npm run json && webpack && npm run plugin",
-    "build": "export NODE_ENV=production && webpack && node getJsonFiles.js && npm run plugin",
+    "start": "export NODE_ENV=dev && npm run json && webpack-dev-server --inline",
+    "start2": "export NODE_ENV=dev && npm run json &&  webpack",
+    "build": "export NODE_ENV=production && webpack && node getJsonFiles.js",
     "test": "export NODE_ENV=production && npm run watchprod && npm run json",
     "watchprod": "webpack --watch --config webpack.production.js&",
     "json": "nodemon -L getJsonFiles.js&",

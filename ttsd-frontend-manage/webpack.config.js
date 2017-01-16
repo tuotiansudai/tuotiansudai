@@ -51,11 +51,11 @@ files.forEach(function(file){
 
 commonOptions.entry = newEntries;
 
-plugins.push(new webpack.ProvidePlugin({
-	$: "jquery",
-	jQuery: "jquery",
-	"window.jQuery": "jquery"
-}));
+// plugins.push(new webpack.ProvidePlugin({
+// 	$: "jquery",
+// 	jQuery: "jquery",
+// 	"window.jQuery": "jquery"
+// }));
 
 //生成json文件的列表索引插件
 plugins.push(new AssetsPlugin({
@@ -73,18 +73,18 @@ plugins.push(new CopyWebpackPlugin([
 ]));
 
 plugins.push(new webpack.DllReferencePlugin({
-	context: outputPath+'/public/plugins',
-	manifest: require('jquery-manifest.json')
+	context: __dirname,
+	manifest: require(outputPath+'/public/plugins/jquery-manifest.json')
 }));
 
 plugins.push(new webpack.DllReferencePlugin({
-	context: outputPath+'/public/plugins',
-	manifest: require('echarts-manifest.json')
+	context: __dirname,
+	manifest: require(outputPath+'/public/plugins/echarts-manifest.json')
 }));
 
 plugins.push(new webpack.DllReferencePlugin({
-	context: outputPath+'/public/plugins',
-	manifest: require('layer-manifest.json')
+	context: __dirname,
+	manifest: require(outputPath+'/public/plugins/layer-manifest.json')
 }));
 
 if(NODE_ENV=='production') {

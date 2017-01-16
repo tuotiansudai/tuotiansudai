@@ -1,0 +1,19 @@
+{
+  "name": "jqueryPlugin_library",
+  "content": {
+    "./node_modules/clipboard/lib/clipboard.js": 397,
+    "./node_modules/clipboard/lib/clipboard-action.js": 398,
+    "./node_modules/clipboard/node_modules/select/src/select.js": 399,
+    "./node_modules/clipboard/node_modules/tiny-emitter/index.js": 400,
+    "./node_modules/clipboard/node_modules/good-listener/src/listen.js": 401,
+    "./node_modules/clipboard/node_modules/good-listener/src/is.js": 402,
+    "./node_modules/clipboard/node_modules/good-listener/node_modules/delegate/src/delegate.js": 403,
+    "./node_modules/clipboard/node_modules/good-listener/node_modules/delegate/src/closest.js": 404,
+    "./node_modules/md5/md5.js": 405,
+    "./node_modules/md5/node_modules/crypt/crypt.js": 406,
+    "./node_modules/md5/node_modules/charenc/charenc.js": 407,
+    "./node_modules/md5/node_modules/is-buffer/index.js": 408,
+    "./node_modules/swiper/dist/js/swiper.js": 409,
+    "./node_modules/fancybox/dist/js/jquery.fancybox.cjs.js": 410
+  }
+}
