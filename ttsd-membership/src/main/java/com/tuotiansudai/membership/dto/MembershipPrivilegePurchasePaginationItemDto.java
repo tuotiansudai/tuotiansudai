@@ -1,6 +1,6 @@
 package com.tuotiansudai.membership.dto;
 
-import com.tuotiansudai.membership.repository.model.MembershipPrivilegeModel;
+import com.tuotiansudai.membership.repository.model.MembershipPrivilegePriceType;
 import com.tuotiansudai.membership.repository.model.MembershipPrivilegePurchaseModel;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.util.AmountConverter;
@@ -16,7 +16,7 @@ public class MembershipPrivilegePurchasePaginationItemDto implements Serializabl
 
     private String userName;
 
-    private int duration;
+    private MembershipPrivilegePriceType privilegePriceType;
 
     private String amount;
 
@@ -28,7 +28,7 @@ public class MembershipPrivilegePurchasePaginationItemDto implements Serializabl
         this.id = model.getId();
         this.mobile = model.getMobile();
         this.userName = model.getUserName();
-        this.duration = model.getPrivilegePriceType().getDuration();
+        this.privilegePriceType = model.getPrivilegePriceType();
         this.amount = AmountConverter.convertCentToString(model.getAmount());
         this.source = model.getSource();
         this.createdTime = model.getCreatedTime();
@@ -46,12 +46,12 @@ public class MembershipPrivilegePurchasePaginationItemDto implements Serializabl
         return userName;
     }
 
-    public int getDuration() {
-        return duration;
-    }
-
     public String getAmount() {
         return amount;
+    }
+
+    public MembershipPrivilegePriceType getPrivilegePriceType() {
+        return privilegePriceType;
     }
 
     public Source getSource() {

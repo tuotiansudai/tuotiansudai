@@ -51,7 +51,7 @@
             and mobile = #{mobile}
         </if>
         <if test="membershipPrivilegePriceType != null">
-            and duration = #{membershipPrivilegePriceType}
+            and privilege_price_type = #{membershipPrivilegePriceType}
         </if>
         <if test="source != null">
             and source = #{source}

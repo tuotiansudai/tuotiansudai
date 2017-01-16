@@ -1,5 +1,6 @@
 package com.tuotiansudai.console.controller;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.membership.repository.model.MembershipPrivilegePriceType;
 import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
 import com.tuotiansudai.repository.model.Source;
@@ -34,6 +35,7 @@ public class MembershipPrivilegePurchaseController {
         modelAndView.addObject("source", source);
         modelAndView.addObject("startTime", startTime);
         modelAndView.addObject("endTime", endTime);
+        modelAndView.addObject("priceTypeList", Lists.newArrayList(MembershipPrivilegePriceType.values()));
 
         return modelAndView;
     }

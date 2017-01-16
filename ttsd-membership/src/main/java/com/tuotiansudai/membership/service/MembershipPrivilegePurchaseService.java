@@ -5,6 +5,7 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.membership.dto.MembershipPrivilegePurchaseDto;
+import com.tuotiansudai.membership.dto.MembershipPrivilegePurchasePaginationItemDto;
 import com.tuotiansudai.membership.exception.MembershipPrivilegeIsPurchasedException;
 import com.tuotiansudai.membership.exception.NotEnoughAmountException;
 import com.tuotiansudai.membership.repository.mapper.MembershipPrivilegeMapper;
@@ -26,6 +27,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class MembershipPrivilegePurchaseService {
@@ -92,10 +94,12 @@ public class MembershipPrivilegePurchaseService {
     public BaseDto<BasePaginationDataDto> getMembershipPurchaseList(String mobile, MembershipPrivilegePriceType membershipPrivilegePriceType, Source source, Date startTime, Date endTime, int index, int pageSize){
         long count = membershipPrivilegePurchaseMapper.findCountMembershipPrivilegePagination(mobile,membershipPrivilegePriceType,source,startTime,endTime);
         List<MembershipPrivilegePurchaseModel> membershipPrivilegeModels = membershipPrivilegePurchaseMapper.findMembershipPrivilegePagination(mobile,membershipPrivilegePriceType,source,startTime,endTime, PaginationUtil.calculateOffset(index, pageSize, count),pageSize);
-
-        BasePaginationDataDto paginationDataDto = new BasePaginationDataDto(PaginationUtil.validateIndex(index, pageSize, count),pageSize,count,membershipPrivilegeModels);
+        List<MembershipPrivilegePurchasePaginationItemDto> itemDtos = membershipPrivilegeModels
+                .stream()
+                .map(membershipPrivilegePurchaseModel -> new MembershipPrivilegePurchasePaginationItemDto(membershipPrivilegePurchaseModel)).collect(Collectors.toList());
+        BasePaginationDataDto paginationDataDto = new BasePaginationDataDto(PaginationUtil.validateIndex(index, pageSize, count),pageSize,count,itemDtos);
         paginationDataDto.setStatus(true);
-        return new BaseDto<BasePaginationDataDto>(paginationDataDto);
+        return new BaseDto<>(paginationDataDto);
 
     }
 
