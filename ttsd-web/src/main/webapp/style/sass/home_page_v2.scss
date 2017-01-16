@@ -5,19 +5,6 @@ $normalColor:#666;
 $keyColor:#ff9c1b;
 $pointColor:#ff5400;
 
-//元旦活动结束后，需要删除
-.new-year-float {
-  position: fixed;
-  right:0;
-  bottom: 338px;
-  z-index: 100;
-  img {
-    width:100px;
-  }
-  @media screen and (max-width: 700px) {
-    display: none;
-  }
-}
 /* project schedule progress */
 .progress-bar {
   position: relative;
