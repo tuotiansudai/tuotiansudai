@@ -28,7 +28,7 @@ public class AskRestClientTest {
     @Test
     public void shouldCreateQuestion() {
         MDC.put("requestId", "xxxxxxx");
-        MDC.put("userId", "gaoyinglong");
+        MDC.put("userId", "yyyy");
         QuestionRequestDto requestDto = new QuestionRequestDto();
         requestDto.setAddition("addition");
         requestDto.setQuestion("question");
