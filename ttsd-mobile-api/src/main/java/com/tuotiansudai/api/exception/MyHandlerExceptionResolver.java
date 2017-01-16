@@ -21,7 +21,11 @@ public class MyHandlerExceptionResolver implements HandlerExceptionResolver {
 
     @Override
     public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
-        log.error(ex.getLocalizedMessage(), ex);
+        if (ex instanceof org.apache.catalina.connector.ClientAbortException) {
+            log.warn(ex.getLocalizedMessage(), ex);
+        } else  {
+            log.error(ex.getLocalizedMessage(), ex);
+        }
 
         try {
             if(!response.isCommitted()){
@@ -39,8 +43,7 @@ public class MyHandlerExceptionResolver implements HandlerExceptionResolver {
         }catch (IOException io){
             log.warn(io.getMessage());
         } catch (Exception e) {
-
-            log.error(e.getLocalizedMessage(), e);
+            log.warn(e.getLocalizedMessage(), e);
         }
         return new ModelAndView();
     }
