@@ -51,26 +51,9 @@ getJsonFileList.prototype.formatHandler = function(textFile) {
     this.writeFile(strJsonObj);
 }
 
-getJsonFileList.prototype.readPluginFloder=function(path) {
+getJsonFileList.prototype.addJqueryPlugin=function(path) {
     // var pluginPath=outputPath+'/plugins';
-    var filesList=this.filesList;
-    var files = fs.readdirSync(path);//需要用到同步读取
-    files.forEach(function(file) {
-
-        var states = fs.statSync(path+'/'+file);
-        if(states.isDirectory())
-        {
-            this.readPluginFloder(path+'/'+file,filesList);
-        }
-        else {
-            var suffix=file.split('.'),
-                len=suffix.length;
-            if(suffix[len-1]=='js') {
-                var keyName=suffix[0];
-                this.jsonFormat['jsFile'][keyName]='/plugins/'+file;
-            }
-        }
-    }.bind(this));
+    this.jsonFormat['jsFile']['jquery']='/plugins/'+file;
 }
 
 getJsonFileList.prototype.init=function() {
@@ -80,13 +63,9 @@ getJsonFileList.prototype.init=function() {
     fs.exists(this.mapPath, function (exists) {
         if(exists) {
             that.readFile();
+            that.addJqueryPlugin();
         }
     });
-    // fs.exists(pluginUrl, function (exists) {
-    //     if(exists) {
-    //         that.readPluginFloder(outputPath+'/plugins');
-    //     }
-    // });
 
 }
 

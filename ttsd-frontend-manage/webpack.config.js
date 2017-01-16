@@ -47,20 +47,13 @@ files.forEach(function(file){
 	}
 });
 
-pluginFiles.forEach(function(file) {
-	var substr = file.match(/resources\/static(\S*)\.dll\.js/)[1];
-	console.log(substr);
-	newEntries[substr] = file;
-
-});
+//无需打包，只需要复制文件
+// pluginFiles.forEach(function(file) {
+// 	var substr = file.match(/resources\/static(\S*)\.dll\.js/)[1];
+// 	newEntries[substr] = file;
+// });
 
 commonOptions.entry = newEntries;
-
-plugins.push(new webpack.DefinePlugin({
-	'process.env': {
-		'NODE_ENV': '""'
-	}
-}));
 
 if(NODE_ENV=='production') {
 	//生产环境
