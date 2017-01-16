@@ -57,10 +57,6 @@ public class ConsoleLiCaiQuanArticleService {
             liCaiQuanArticleDto.setArticleId(articleId);
             liCaiQuanArticleDto.setCreateTime(new Date());
         } else {
-            LicaiquanArticleModel licaiquanArticleModel = licaiquanArticleMapper.findArticleById(liCaiQuanArticleDto.getArticleId());
-            if (licaiquanArticleModel != null) {
-                liCaiQuanArticleDto.setCreateTime(new Date());
-            }
             liCaiQuanArticleDto.setUpdateTime(new Date());
         }
         liCaiQuanArticleDto.setArticleStatus(ArticleStatus.TO_APPROVE);
