@@ -55,7 +55,7 @@
 				<ul class="list-info">
 					<li>
 						<i class="icon-date"></i>
-						<span>日期：<strong id="HistoryAwards"><#if currentTime??>${currentTime?string('yyyy.MM.dd')}</#if></strong></span>
+						<span>日期：<strong id="HistoryAwards"><#if currentTime??>${currentTime?string('yyyy-MM-dd')}</#if></strong></span>
 					</li>
 					<li>
 						<i class="icon-list"></i>
