@@ -36,6 +36,8 @@ public class InvestExtraRateModel implements Serializable {
 
     private boolean isTransfer;
 
+    private RepayStatus status;
+
     public long getId() {
         return id;
     }
@@ -154,5 +156,13 @@ public class InvestExtraRateModel implements Serializable {
 
     public void setLoginName(String loginName) {
         this.loginName = loginName;
+    }
+
+    public RepayStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(RepayStatus status) {
+        this.status = status;
     }
 }
