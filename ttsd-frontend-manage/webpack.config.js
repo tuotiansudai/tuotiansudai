@@ -77,15 +77,15 @@ plugins.push(new webpack.DllReferencePlugin({
 	manifest: require(outputPath+'/public/plugins/jquery-manifest.json')
 }));
 
-plugins.push(new webpack.DllReferencePlugin({
-	context: __dirname,
-	manifest: require(outputPath+'/public/plugins/echarts-manifest.json')
-}));
+// plugins.push(new webpack.DllReferencePlugin({
+// 	context: __dirname,
+// 	manifest: require(outputPath+'/public/plugins/echarts-manifest.json')
+// }));
 
-plugins.push(new webpack.DllReferencePlugin({
-	context: __dirname,
-	manifest: require(outputPath+'/public/plugins/layer-manifest.json')
-}));
+// plugins.push(new webpack.DllReferencePlugin({
+// 	context: __dirname,
+// 	manifest: require(outputPath+'/public/plugins/layer-manifest.json')
+// }));
 
 if(NODE_ENV=='production') {
 	//生产环境

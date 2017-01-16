@@ -1,7 +1,7 @@
 import {layer} from 'publicJs/wrapper_layer';
 import {useAjax,refreshCaptcha,isUserLogin} from 'publicJs/common';
 import {ValidatorForm} from 'publicJs/validator';
-
+var $ = window.jquery_library(1);
 var $loginTipBox=$('#loginTip');
 let loginInForm = document.getElementById('loginInForm');
 let errorDom=$(loginInForm).find('.error-box');

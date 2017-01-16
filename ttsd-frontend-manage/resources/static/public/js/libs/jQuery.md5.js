@@ -29,6 +29,7 @@
 	 * @param {jQuery} {md5:function(string))
 	 * @return string
 	 */
+	var jQuery = window.jquery_library(1);
 	(function($){
 		var rotateLeft = function(lValue, iShiftBits) {
 			return (lValue << iShiftBits) | (lValue >>> (32 - iShiftBits));

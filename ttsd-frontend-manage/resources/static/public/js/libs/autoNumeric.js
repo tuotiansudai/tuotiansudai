@@ -33,7 +33,7 @@
 * OTHER DEALINGS IN THE SOFTWARE.
 */
 
-var jQuery = window.jquery_library(396);
+var jQuery = window.jquery_library(1);
 (function ($) {
     "use strict";
     /*jslint browser: true*/

@@ -8,7 +8,7 @@
     "test": "export NODE_ENV=production && npm run watchprod && npm run json",
     "watchprod": "webpack --watch --config webpack.production.js&",
     "json": "nodemon -L getJsonFiles.js&",
-    "plugin":"webpack --config  webpack.dll.config.js"
+    "plugin": "webpack --config  webpack.dll.config.js"
   },
   "devDependencies": {
     "assets-webpack-plugin": "^3.5.0",
@@ -44,7 +44,7 @@
     "fancybox": "^3.0.0",
     "freemarker.js": "^1.2.2",
     "jquery": "~2.1.4",
-    "layer": "^0.1.0",
+    "layer": "git+https://github.com/sentsin/layer.git",
     "md5": "^2.2.1",
     "swiper": "^3.4.1",
     "underscore": "^1.8.3"

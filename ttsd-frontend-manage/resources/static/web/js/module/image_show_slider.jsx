@@ -1,6 +1,4 @@
-
-
-    function cloneObj(oldObj) { //复制对象方法
+function cloneObj(oldObj) { //复制对象方法
         if (typeof(oldObj) != 'object') return oldObj;
         if (oldObj == null) return oldObj;
         var newObj = new Object();

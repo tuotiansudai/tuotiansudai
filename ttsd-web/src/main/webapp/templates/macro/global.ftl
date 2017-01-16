@@ -125,19 +125,8 @@
     </#switch>
 </#if>
 
-<script type="text/javascript" charset="utf-8">
-    var staticServer = '${staticServer}';
-    <@security.authorize access="isAuthenticated()">
-    document.getElementById("logout-link").onclick = function () {
-        document.getElementById("logout-form").submit();
-    };
-    </@security.authorize>
-
-</script>
-
 <#include "../pageLayout/statistic.ftl" />
 <script src="${staticServer}/develop/public/plugins/jquery.dll.js"></script>
-<script src="${staticServer}/develop/public/plugins/echarts.dll.js"></script>
 <script src="${staticServer}${js.global_page!}"></script>
 <script src="${staticServer}${pageJavascript}" type="text/javascript"></script>
 </body>

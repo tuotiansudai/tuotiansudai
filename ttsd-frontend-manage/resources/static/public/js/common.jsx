@@ -1,4 +1,4 @@
-
+var $ = window.jquery_library(1);
     function refreshCaptcha(dom,url) {
         let captcha= url +'?'+ new Date().getTime().toString();
         dom.setAttribute('src',captcha);
