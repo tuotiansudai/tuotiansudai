@@ -24,13 +24,14 @@ var outputPath=path.join(basePath, 'develop'),//打包文件路径
 	webpackdevServer='',
 	plugins=[];
 var outFilename="[name].js";
-const NODE_ENV=process.env.NODE_ENV;
-
+var NODE_ENV=process.env.NODE_ENV;
+console.log('run ****************************************************************'+NODE_ENV);
 /**
  * 动态查找所有入口文件
  */
 
 var files = glob.sync(path.join(staticPath, '*/js/*.jsx'));
+var pluginFiles = glob.sync(path.join(staticPath, '*/plugins/*.js'));
 var newEntries = {};
 
 files.forEach(function(file){
@@ -47,7 +48,20 @@ files.forEach(function(file){
 	}
 });
 
+pluginFiles.forEach(function(file) {
+	var substr = file.match(/resources\/static(\S*)\.dll\.js/)[1];
+	console.log(substr);
+	newEntries[substr] = file;
+
+});
+
 commonOptions.entry = newEntries;
+
+plugins.push(new webpack.DefinePlugin({
+	'process.env': {
+		'NODE_ENV': '""'
+	}
+}));
 
 if(NODE_ENV=='production') {
 	//生产环境
