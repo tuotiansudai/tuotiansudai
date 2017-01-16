@@ -226,7 +226,8 @@ public class ExtraRateServiceImpl implements ExtraRateService {
     }
 
     @Override
-    public void advanceRepay(long loanRepayId) {
+    public boolean advanceRepay(long loanRepayId) {
+        boolean result = true;
         LoanRepayModel currentLoanRepay = loanRepayMapper.findById(loanRepayId);
         long loanId = currentLoanRepay.getLoanId();
         LoanModel loanModel = loanMapper.findById(loanId);
@@ -244,6 +245,7 @@ public class ExtraRateServiceImpl implements ExtraRateService {
             try {
                 this.sendExtraRateAmount(loanRepayId, investExtraRateModel, actualInterest, actualFee);
             } catch (Exception e) {
+                result = false;
                 logger.error(MessageFormat.format("[Advance Repay {0}] extra rate is failed, investId={0} loginName={1} amount={3}",
                         String.valueOf(loanRepayId),
                         String.valueOf(investExtraRateModel.getInvestId()),
@@ -251,6 +253,7 @@ public class ExtraRateServiceImpl implements ExtraRateService {
                         String.valueOf(investExtraRateModel.getAmount())), e);
             }
         }
+        return result;
     }
 
     private void fatalLog(String errMsg, Throwable e) {

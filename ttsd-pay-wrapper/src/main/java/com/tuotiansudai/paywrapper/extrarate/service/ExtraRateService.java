@@ -12,7 +12,7 @@ public interface ExtraRateService {
 
     void normalRepay(long loanRepayId);
 
-    void advanceRepay(long loanRepayId);
+    boolean advanceRepay(long loanRepayId);
 
     void transferPurchase(long investId);
 

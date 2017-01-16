@@ -65,6 +65,7 @@ public class RepaySuccessCouponMessageConsumer implements MessageConsumer {
             smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(MessageFormat.format("优惠券还款失败, loanRepayId:{0}", String.valueOf(repaySuccessMessage.getLoanRepayId()))));
             throw new RuntimeException("invest callback consume fail. loanRepayId: " + message);
         }
+
         logger.info("[还款MQ] consume message success.");
     }
 }
