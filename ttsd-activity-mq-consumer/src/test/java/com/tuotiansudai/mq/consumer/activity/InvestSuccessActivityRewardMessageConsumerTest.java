@@ -144,35 +144,6 @@ public class InvestSuccessActivityRewardMessageConsumerTest {
         assertEquals("test123:351", messageCaptor.getValue());
     }
 
-
-    @Test
-    @Transactional
-    public void shouldAgainSendCouponIsOk() {
-        final ArgumentCaptor<MessageQueue> messageQueueCaptor = ArgumentCaptor.forClass(MessageQueue.class);
-        final ArgumentCaptor<String> messageCaptor = ArgumentCaptor.forClass(String.class);
-
-        InvestSuccessMessage investSuccessMessage = buildMockedInvestAnnualSuccessMessage();
-        investSuccessMessage.getInvestInfo().setAmount(400000L);
-
-        ReflectionTestUtils.setField(consumer, "annualTime", Lists.newArrayList(DateTime.now().plusDays(-1).toString(DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")), DateTime.now().plusDays(1).toString(DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss"))));
-
-        AnnualPrizeModel annualPrizeModel = new AnnualPrizeModel();
-        annualPrizeModel.setInvestAmount(100000L);
-        when(annualPrizeMapper.findByMobile(anyString())).thenReturn(annualPrizeModel);
-        doNothing().when(mqClient).sendMessage(messageQueueCaptor.capture(), messageCaptor.capture());
-
-        try {
-            consumer.consume(JsonConverter.writeValueAsString(investSuccessMessage));
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-
-        verify(mqClient, times(1)).sendMessage(any(), any());
-
-        assertEquals(MessageQueue.CouponAssigning, messageQueueCaptor.getValue());
-        assertEquals("test123:330", messageCaptor.getValue());
-    }
-
     @Test
     @Transactional
     public void shouldSpringFestivalCompleteFirstTaskIsOk(){
