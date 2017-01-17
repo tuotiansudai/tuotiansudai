@@ -49,6 +49,7 @@ getJsonFileList.prototype.formatHandler = function(textFile) {
     }
     this.addJqueryPlugin(outputPath+'/public/plugins'); //读取jquery文件
     // console.log(this.jsonFormat);
+
     var strJsonObj=JSON.stringify(this.jsonFormat);
     this.writeFile(strJsonObj);
 }
@@ -83,7 +84,6 @@ getJsonFileList.prototype.init=function() {
             that.readFile();
         }
     });
-
 }
 
 //ask,web,activity,point,mobile站点打包生成的的json文件名
