@@ -175,8 +175,7 @@
 				</h3>
 				<div class="wx-item">
 					<p>扫描二维码，关注<strong>“拓天速贷财富”</strong>，并回复<strong>“猜灯谜”</strong>；</p>
-					<p>每天中午12点，微信公众号更新三条灯谜，用户回复“猜灯谜”可获取题目，将答案回复至后台，</p>
-					<p>有机会获得红包奖励</p>
+					<p>每天中午12点，微信公众号更新三条灯谜，用户回复“猜灯谜”可获取题目，将答案回复至后台，有机会获得红包奖励</p>
 					<p class="wx-tip">活动结束后，累计答对最多的用户，将获得发光地球仪一个。</p>
 					<p class="text-c">
 						<img src="${staticServer}/activity/images/lantern-festival/wx-one.jpg">
