@@ -50,14 +50,6 @@ public class LanternFestivalController {
         List<String> activityTime = heroRankingService.getActivityPeriod(ActivityCategory.LANTERN_FESTIVAL_ACTIVITY);
         modelAndView.addObject("activityStartTime", activityTime.get(0));
         modelAndView.addObject("activityEndTime", activityTime.get(1));
-        if (DateConvertUtil.stringToLocalDateTime(activityTime.get(1)).isAfter(LocalDateTime.now())) {
-            modelAndView.addObject("activityStatus", "true");
-            modelAndView.addObject("currentTime", DateConvertUtil.currentDate());
-        } else {
-            modelAndView.addObject("activityStatus", "false");
-            modelAndView.addObject("currentTime",activityTime.get(1));
-        }
-
         return modelAndView;
 
     }
