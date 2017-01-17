@@ -2,6 +2,7 @@ package com.tuotiansudai.web.controller;
 
 import com.tuotiansudai.anxin.service.AnxinSignService;
 import com.tuotiansudai.contract.service.ContractService;
+import com.tuotiansudai.contract.service.impl.ContractServiceImpl;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -32,36 +33,37 @@ public class ContractController {
     @RequestMapping(value = "/investor/loanId/{loanId}/investId/{investId}", method = RequestMethod.GET)
     public void generateInvestorContract(@PathVariable long loanId, @PathVariable long investId, HttpServletRequest httpServletRequest,
                                          HttpServletResponse response) throws ServletException, IOException {
-        String loginName = LoginUserInfo.getLoginName();
+        byte[] pdf = contractService.printContractPdf(ContractServiceImpl.LOAN_CONTRACT, LoginUserInfo.getLoginName(), loanId, investId);
+
         try {
-            String pdfString = contractService.generateInvestorContract(loginName, loanId, investId);
-            if (StringUtils.isEmpty(pdfString)) {
-                httpServletRequest.getRequestDispatcher("/error/404").forward(httpServletRequest, response);
-                return;
-            }
             response.reset();
-            response.addHeader("Content-Disposition", String.format("attachment;filename=%s.pdf", investId));
+            response.addHeader("Content-Disposition", String.format("attachment;filename=%s.pdf", String.valueOf(investId)));
+            response.addHeader("Content-Length", "" + pdf.length);
+            OutputStream ous = new BufferedOutputStream(response.getOutputStream());
             response.setContentType("application/octet-stream");
-            contractService.generateContractPdf(pdfString, response.getOutputStream());
+            ous.write(pdf);
+            ous.flush();
+            ous.close();
         } catch (Exception e) {
-            logger.error(e.getLocalizedMessage(), e);
+            e.printStackTrace();
         }
     }
 
     @RequestMapping(value = "/transfer/transferApplicationId/{transferApplicationId}", method = RequestMethod.GET)
     public void generateTransferContract(@PathVariable long transferApplicationId, HttpServletRequest httpServletRequest, HttpServletResponse response) throws IOException, ServletException {
+        byte[] pdf = contractService.printContractPdf(ContractServiceImpl.TRANSFER_CONTRACT, LoginUserInfo.getLoginName(), transferApplicationId, null);
+
         try {
-            String pdfString = contractService.generateTransferContract(transferApplicationId);
-            if (StringUtils.isEmpty(pdfString)) {
-                httpServletRequest.getRequestDispatcher("/error/404").forward(httpServletRequest, response);
-                return;
-            }
             response.reset();
-            response.addHeader("Content-Disposition", String.format("attachment;filename=%s.pdf", transferApplicationId));
+            response.addHeader("Content-Disposition", String.format("attachment;filename=%s.pdf", String.valueOf(transferApplicationId)));
+            response.addHeader("Content-Length", "" + pdf.length);
+            OutputStream ous = new BufferedOutputStream(response.getOutputStream());
             response.setContentType("application/octet-stream");
-            contractService.generateContractPdf(pdfString, response.getOutputStream());
+            ous.write(pdf);
+            ous.flush();
+            ous.close();
         } catch (Exception e) {
-            logger.error(e.getLocalizedMessage(), e);
+            e.printStackTrace();
         }
     }
 

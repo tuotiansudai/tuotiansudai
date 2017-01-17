@@ -34,7 +34,6 @@ dependencies {
             'log4j:log4j:1.2.17',
             'joda-time:joda-time:2.9.4',
             'org.joda:joda-money:0.10.0',
-            'org.xhtmlrenderer:core-renderer:R8',
             'org.jsoup:jsoup:1.8.3',
             'dom4j:dom4j:1.6.1',
             'org.quartz-scheduler:quartz:2.2.1',
