@@ -156,18 +156,16 @@ require(['jquery','drawCircle','template','layerWrapper','commonFun','logintip',
                     location.href="/login";
                  });
             } else {
-                //判断是否正在抽奖
-                if($pointerImg.hasClass('win-result')) {
-                    return;//不能重复抽奖
-                }
-                $pointerImg.addClass('win-result');
                 getGift();
-                
             }
-            
         });
 
         function getGift(){
+            //判断是否正在抽奖
+            if($pointerImg.hasClass('win-result')) {
+                return;//不能重复抽奖
+            }
+            $pointerImg.addClass('win-result');
             //延迟1秒抽奖
             setTimeout(function() {
                 drawCircle.beginLuckDraw(function(data) {
