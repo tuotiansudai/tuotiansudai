@@ -55,6 +55,8 @@ public class SmsWrapperClient extends BaseClient {
 
     private final static String NEW_USER_RECEIVE_MEMBERSHIP_URI = "/sms/new-user-receive-membership";
 
+    private final static String LOAN_RAISING_COMPLETE_NOTIFY_URI = "/sms/loan-raising-complete-notify";
+
     public BaseDto<SmsDataDto> sendRegisterCaptchaSms(SmsCaptchaDto dto) {
         return send(dto, REGISTER_CAPTCHA_SMS_URI);
     }
@@ -113,6 +115,10 @@ public class SmsWrapperClient extends BaseClient {
 
     public BaseDto<SmsDataDto> sendNewUserReceiveMembership(SmsUserReceiveMembershipDto dto) {
         return send(dto, NEW_USER_RECEIVE_MEMBERSHIP_URI);
+    }
+
+    public BaseDto<SmsDataDto> sendLoanRaisingCompleteNotify(LoanRaisingCompleteNotifyDto dto) {
+        return send(dto, LOAN_RAISING_COMPLETE_NOTIFY_URI);
     }
 
     private BaseDto<SmsDataDto> send(Object requestData, String requestPath) {

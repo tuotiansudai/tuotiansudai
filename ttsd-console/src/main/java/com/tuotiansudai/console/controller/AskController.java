@@ -43,7 +43,7 @@ public class AskController {
                                      @RequestParam(value = "status", required = false) QuestionStatus status,
                                      @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
 
-        BaseDto<BasePaginationDataDto> questions = questionService.findQuestionsForConsole(question, mobile, status, index, 10);
+        BaseDto<BasePaginationDataDto> questions = questionService.findQuestionsForConsole(question, mobile, status, index);
 
         ModelAndView modelAndView = new ModelAndView("/question-list", "questions", questions);
         modelAndView.addObject("question", question);
