@@ -32,7 +32,7 @@ var NODE_ENV=process.env.NODE_ENV;
  */
 
 var files = glob.sync(path.join(staticPath, '*/js/*.jsx'));
-var pluginFiles = glob.sync(path.join(staticPath, '*/plugins/*.js'));
+// var pluginFiles = glob.sync(path.join(staticPath, '*/plugins/*.js'));
 var newEntries = {};
 
 files.forEach(function(file){
@@ -55,10 +55,6 @@ files.forEach(function(file){
 // });
 
 commonOptions.entry = newEntries;
-
-plugins.push(new CopyWebpackPlugin([
-	{ from: publicPath+'/plugins',to: 'public/plugins'}
-]));
 
 if(NODE_ENV=='production') {
 	//生产环境
@@ -106,9 +102,12 @@ else if(NODE_ENV=='dev') {
 		// 	}
 		// }
 	};
-
 }
-
+plugins.push(new CopyWebpackPlugin([
+	{ from: publicPathJS+'/plugins',to: 'public/plugins'},
+	{ from: staticPath+'/inlineImages',to: 'images'},
+	{ from: publicPathJS+'/libs/layer/skin',to: 'public/skin'}
+]));
 //生成json文件的列表索引插件
 plugins.push(new AssetsPlugin({
 	filename: 'assets-resources.json',
@@ -119,14 +118,10 @@ plugins.push(new AssetsPlugin({
 	path: outputPath,
 	metadata: {version: 123}
 }));
-plugins.push(new CopyWebpackPlugin([
-	{ from: staticPath+'/inlineImages',to: 'images'},
-	{ from: publicPathJS+'/libs/layer/skin',to: 'public/skin'}
-]));
 
 plugins.push(new webpack.DllReferencePlugin({
 	context: __dirname,
-	manifest: require(outputPath+'/public/plugins/jquery-manifest.json')
+	manifest: require(publicPathJS+'/plugins/jquery-manifest.json')
 }));
 
 // plugins.push(new webpack.DllReferencePlugin({
@@ -139,11 +134,6 @@ plugins.push(new webpack.DllReferencePlugin({
 // 	manifest: require(outputPath+'/public/plugins/layer-manifest.json')
 // }));
 
-
-plugins.push(new webpack.DllReferencePlugin({
-	context: __dirname,
-	manifest: require(publicPath+'/plugins/jquery-manifest.json')
-}));
 
 module.exports = objectAssign(commonOptions, {
 	output: {

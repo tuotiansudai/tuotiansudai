@@ -9,5 +9,9 @@
   },
   "metadata": {
     "version": 123
+  },
+  "/web/js/index": {
+    "js": "/web/js/index.js",
+    "css": "/web/js/index.css"
   }
 }

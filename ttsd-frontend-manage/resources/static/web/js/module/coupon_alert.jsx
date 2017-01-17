@@ -1,4 +1,3 @@
-var $ = window.jquery_library(1);
 var couponAlertFrame = globalFun.$('#couponAlertFrame');
 if(couponAlertFrame) {
     var  beginGetFree = globalFun.$('#beginGetFree'),
