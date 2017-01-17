@@ -60,7 +60,6 @@
                 <thead>
                     <tr>
                         <th>用户名</th>
-                        <th>实际花费积分</th>
                         <th>使用时间</th>
                         <th>投资金额</th>
                         <th>投资年化金额</th>
@@ -73,7 +72,6 @@
                     <#list userCoupons as userCoupon>
                     <tr>
                         <td>${userCoupon.loginName}</td>
-                        <td>0</td>
                         <td>
                             <#if userCoupon.usedTime??>
                                 ${userCoupon.usedTime?string('yyyy-MM-dd HH:mm')}

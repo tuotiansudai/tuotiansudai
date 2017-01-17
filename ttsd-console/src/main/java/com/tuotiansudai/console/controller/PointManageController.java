@@ -347,8 +347,32 @@ public class PointManageController {
     }
 
 
-    @RequestMapping(value = "/coupon/{couponId:^\\d+$}/detail", method = RequestMethod.GET)
-    public ModelAndView couponDetail(@PathVariable long couponId, @RequestParam(value = "isUsed", required = false) Boolean isUsed,
+    @RequestMapping(value = "/order/{couponId:^\\d+$}/detail", method = RequestMethod.GET)
+    public ModelAndView findProductOrderByCouponId(@PathVariable long couponId,
+                                                   @RequestParam(value = "index", required = false, defaultValue = "1") int index) {
+        int pageSize = 10;
+        ModelAndView modelAndView = new ModelAndView();
+        ProductModel productModel = productService.findProductByCouponId(couponId);
+
+        modelAndView.addObject("orders", productService.findProductOrderList(productModel.getId(), null, index, pageSize));
+        modelAndView.addObject("product", productService.findById(productModel.getId()));
+        long ordersCount = productService.findProductOrderCount(productModel.getId());
+        modelAndView.addObject("productId", productModel.getId());
+        modelAndView.addObject("index", index);
+        modelAndView.addObject("pageSize", pageSize);
+        long totalPages = PaginationUtil.calculateMaxPage(ordersCount, pageSize);
+        boolean hasPreviousPage = index > 1 && index <= totalPages;
+        boolean hasNextPage = index < totalPages;
+        modelAndView.addObject("hasPreviousPage", hasPreviousPage);
+        modelAndView.addObject("hasNextPage", hasNextPage);
+        modelAndView.addObject("ordersCount", ordersCount);
+        modelAndView.setViewName("/orders-list");
+        return modelAndView;
+    }
+
+
+    @RequestMapping(value = "/coupon/{couponId:^\\d+$}/{createdTime}/detail", method = RequestMethod.GET)
+    public ModelAndView couponDetailByCouponIdCreatedTime(@PathVariable long couponId, @PathVariable(value = "createdTime") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date createdTime, @RequestParam(value = "isUsed", required = false) Boolean isUsed,
                                      @RequestParam(value = "usedStartTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date usedStartTime,
                                      @RequestParam(value = "usedEndTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date usedEndTime,
                                      @RequestParam(value = "loginName", required = false) String loginName,
@@ -356,17 +380,8 @@ public class PointManageController {
                                      @RequestParam(value = "index", required = false, defaultValue = "1") int index) {
         int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/coupon-detail");
-        ProductModel productModel = productService.findProductByCouponId(couponId);
-        List<ProductOrderDto> productOrderDtoList = productService.findProductOrderList(productModel != null ? productModel.getId() : null, null, index, pageSize);
-        List<CouponDetailsDto> userCoupons = Lists.newArrayList();
-        for(ProductOrderDto productOrderDto: productOrderDtoList){
-
-            userCoupons = consoleCouponService.findCouponDetail(productOrderDto.getProductId(), isUsed, loginName, mobile, null, null, usedStartTime, usedEndTime, index, pageSize);
-            int userCouponsCount = consoleCouponService.findCouponDetailCount(couponId, isUsed, loginName, mobile, null, null, usedStartTime, usedEndTime);
-        }
-
-
-
+        List<CouponDetailsDto> userCoupons = consoleCouponService.findCouponDetail(couponId, isUsed, loginName, mobile, createdTime != null ? createdTime : null, null, null, usedStartTime, usedEndTime, index, pageSize);
+        int userCouponsCount = consoleCouponService.findCouponDetailCount(couponId, isUsed, loginName, mobile, null, null, usedStartTime, usedEndTime);
 
         long investAmount = 0l;
         long interest = 0l;
@@ -414,5 +429,65 @@ public class PointManageController {
         modelAndView.addObject("headLab", headLab);
         return modelAndView;
     }
+
+    @RequestMapping(value = "/coupon/{couponId:^\\d+$}/detail", method = RequestMethod.GET)
+    public ModelAndView couponDetailByCouponIdCreatedTime(@PathVariable long couponId, @RequestParam(value = "isUsed", required = false) Boolean isUsed,
+                                                          @RequestParam(value = "usedStartTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date usedStartTime,
+                                                          @RequestParam(value = "usedEndTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date usedEndTime,
+                                                          @RequestParam(value = "loginName", required = false) String loginName,
+                                                          @RequestParam(value = "mobile", required = false) String mobile,
+                                                          @RequestParam(value = "index", required = false, defaultValue = "1") int index) {
+        int pageSize = 10;
+        ModelAndView modelAndView = new ModelAndView("/coupon-detail");
+        List<CouponDetailsDto> userCoupons = consoleCouponService.findCouponDetail(couponId, isUsed, loginName, mobile, null, null, null, usedStartTime, usedEndTime, index, pageSize);
+        int userCouponsCount = consoleCouponService.findCouponDetailCount(couponId, isUsed, loginName, mobile, null, null, usedStartTime, usedEndTime);
+
+        long investAmount = 0l;
+        long interest = 0l;
+        for (CouponDetailsDto couponDetailsDto : userCoupons) {
+            investAmount += couponDetailsDto.getInvestAmount() != null ? couponDetailsDto.getInvestAmount() : 0l;
+            interest += couponDetailsDto.getAnnualInterest() != null ? couponDetailsDto.getAnnualInterest() : 0l;
+        }
+
+        CouponModel couponModel = consoleCouponService.findCouponById(couponId);
+        modelAndView.addObject("investAmount", investAmount);
+        modelAndView.addObject("interest", interest);
+        modelAndView.addObject("userCoupons", userCoupons);
+        modelAndView.addObject("isUsed", isUsed);
+        modelAndView.addObject("couponId", couponId);
+        modelAndView.addObject("usedStartTime", usedStartTime);
+        modelAndView.addObject("usedEndTime", usedEndTime);
+        modelAndView.addObject("loginName", loginName);
+        modelAndView.addObject("mobile", mobile);
+        modelAndView.addObject("index", index);
+        modelAndView.addObject("pageSize", pageSize);
+        modelAndView.addObject("userCouponsCount", userCouponsCount);
+        long totalPages = PaginationUtil.calculateMaxPage(userCouponsCount, pageSize);
+        boolean hasPreviousPage = index > 1 && index <= totalPages;
+        boolean hasNextPage = index < totalPages;
+        modelAndView.addObject("hasPreviousPage", hasPreviousPage);
+        modelAndView.addObject("hasNextPage", hasNextPage);
+        String sideLabType;
+        String headLab;
+        if (couponModel.getCouponType() == CouponType.INTEREST_COUPON) {
+            sideLabType = "statisticsInterestCoupon";
+        } else if (couponModel.getCouponType() == CouponType.RED_ENVELOPE) {
+            sideLabType = "statisticsRedEnvelope";
+        } else if (couponModel.getCouponType() == CouponType.BIRTHDAY_COUPON) {
+            sideLabType = "statisticsBirthdayCoupon";
+        } else {
+            sideLabType = "statisticsCoupon";
+        }
+        if (couponModel.getUserGroup() == UserGroup.EXCHANGER) {
+            sideLabType = "couponExchangeManage";
+            headLab = "point-manage";
+        } else {
+            headLab = "activity-manage";
+        }
+        modelAndView.addObject("sideLabType", sideLabType);
+        modelAndView.addObject("headLab", headLab);
+        return modelAndView;
+    }
+
 
 }

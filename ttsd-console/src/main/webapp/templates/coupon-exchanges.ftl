@@ -142,7 +142,7 @@
                     </td>
                     <td>
                         <#if isExchange == "true">
-                            <a href="/point-manage/coupon/${exchangeCoupon.id?string('0')}/detail"
+                            <a href="/point-manage/order/${exchangeCoupon.id?string('0')}/detail"
                                class="btn-link">查看详情</a>
                         <#else>
                             <a href="/activity-manage/coupon/${exchangeCoupon.id?string('0')}/detail"

@@ -304,8 +304,8 @@ public class ConsoleCouponService {
         }
     }
 
-    public List<CouponDetailsDto> findCouponDetail(long couponId, Boolean isUsed, String loginName, String mobile, Date registerStartTime, Date registerEndTime, Date usedStartTime, Date usedEndTime, int index, int pageSize) {
-        List<UserCouponModel> userCouponModels = userCouponMapper.findByCouponIdAndStatus(couponId, isUsed, loginName, mobile, registerStartTime, registerEndTime, usedStartTime, usedEndTime, (index - 1) * pageSize, pageSize);
+    public List<CouponDetailsDto> findCouponDetail(long couponId, Boolean isUsed, String loginName, String mobile, Date createdTime, Date registerStartTime, Date registerEndTime, Date usedStartTime, Date usedEndTime, int index, int pageSize) {
+        List<UserCouponModel> userCouponModels = userCouponMapper.findByCouponIdAndStatus(couponId, isUsed, loginName, mobile, createdTime, registerStartTime, registerEndTime, usedStartTime, usedEndTime, (index - 1) * pageSize, pageSize);
         List<CouponDetailsDto> couponDetailsDtoList = Lists.newArrayList();
         for (UserCouponModel userCouponModel : userCouponModels) {
             LoanModel loanModel = userCouponModel.getLoanId() != null ? loanMapper.findById(userCouponModel.getLoanId()) : null;
