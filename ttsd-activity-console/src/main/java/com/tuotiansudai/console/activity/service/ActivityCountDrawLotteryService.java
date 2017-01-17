@@ -2,6 +2,7 @@ package com.tuotiansudai.console.activity.service;
 
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.activity.repository.mapper.UserLotteryPrizeMapper;
 import com.tuotiansudai.activity.repository.model.ActivityCategory;
 import com.tuotiansudai.activity.repository.model.ActivityDrawLotteryTask;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
@@ -71,6 +72,9 @@ public class ActivityCountDrawLotteryService {
     private String lanternFestivalStartTime;
     @Value(value = "${activity.lanternFestival.endTime}")
     private String lanternFestivalEndTime;
+
+    @Autowired
+    private UserLotteryPrizeMapper userLotteryPrizeMapper;
 
     private static final String redisKey = "web:christmasTime:lottery:startTime";
 
@@ -189,7 +193,7 @@ public class ActivityCountDrawLotteryService {
                     time = time >= 10 ? 10 : time;
                     break;
                 case EACH_INVEST_1000:
-                    time = investMapper.sumDrawCountByLoginName(userModel.getLoginName(),startTime,endTime,100000);
+                    time = investMapper.sumDrawCountByLoginName(userModel.getLoginName(),startTime,endTime,100);
                     break;
 
             }
