@@ -21,10 +21,14 @@ public class MyHandlerExceptionResolver implements HandlerExceptionResolver {
 
     @Override
     public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
-        log.error(ex.getLocalizedMessage(), ex);
+        if (ex instanceof org.apache.catalina.connector.ClientAbortException) {
+            log.warn(ex.getLocalizedMessage(), ex);
+        } else {
+            log.error(ex.getLocalizedMessage(), ex);
+        }
 
         try {
-            if(!response.isCommitted()){
+            if (!response.isCommitted()) {
                 response.reset();
 
                 response.setContentType("application/json; charset=UTF-8");
@@ -34,14 +38,13 @@ public class MyHandlerExceptionResolver implements HandlerExceptionResolver {
 
                 String jsonString = objectMapper.writeValueAsString(dto);
                 out.print(jsonString);
-
             }
-        }catch (IOException io){
+        } catch (IOException io) {
             log.warn(io.getMessage());
         } catch (Exception e) {
-
             log.error(e.getLocalizedMessage(), e);
         }
+
         return new ModelAndView();
     }
 }
