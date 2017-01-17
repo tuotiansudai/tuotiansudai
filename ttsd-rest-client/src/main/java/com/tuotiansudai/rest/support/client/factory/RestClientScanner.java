@@ -3,6 +3,8 @@ package com.tuotiansudai.rest.support.client.factory;
 import com.tuotiansudai.rest.support.client.annotations.RestClient;
 import com.tuotiansudai.rest.support.client.codec.RestErrorDecoder;
 import com.tuotiansudai.rest.support.client.interceptors.RequestHeaderInterceptor;
+import feign.Request;
+import feign.Retryer;
 import feign.jackson.JacksonDecoder;
 import feign.jackson.JacksonEncoder;
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
@@ -17,14 +19,18 @@ import java.util.Arrays;
 import java.util.Set;
 
 public class RestClientScanner extends ClassPathBeanDefinitionScanner {
+    private final Request.Options options;
+    private final Retryer retryer;
     private final JacksonDecoder jacksonDecoder;
     private final JacksonEncoder jacksonEncoder;
     private final RestErrorDecoder restErrorDecoder;
     private final RequestHeaderInterceptor requestHeaderInterceptor;
     private final ApplicationContext applicationContext;
 
-    public RestClientScanner(BeanDefinitionRegistry registry, ApplicationContext applicationContext, JacksonDecoder jacksonDecoder, JacksonEncoder jacksonEncoder, RestErrorDecoder restErrorDecoder, RequestHeaderInterceptor requestHeaderInterceptor) {
+    public RestClientScanner(BeanDefinitionRegistry registry, Request.Options options, Retryer retryer, ApplicationContext applicationContext, JacksonDecoder jacksonDecoder, JacksonEncoder jacksonEncoder, RestErrorDecoder restErrorDecoder, RequestHeaderInterceptor requestHeaderInterceptor) {
         super(registry);
+        this.options = options;
+        this.retryer = retryer;
         this.applicationContext = applicationContext;
         this.jacksonDecoder = jacksonDecoder;
         this.jacksonEncoder = jacksonEncoder;
@@ -59,6 +65,8 @@ public class RestClientScanner extends ClassPathBeanDefinitionScanner {
             definition.setBeanClass(RestClientFactoryBean.class);
             definition.getPropertyValues()
                     .add("applicationContext", this.applicationContext)
+                    .add("options", this.options)
+                    .add("retryer", this.retryer)
                     .add("jacksonDecoder", this.jacksonDecoder)
                     .add("jacksonEncoder", this.jacksonEncoder)
                     .add("restErrorDecoder", this.restErrorDecoder)
