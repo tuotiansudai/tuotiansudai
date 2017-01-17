@@ -617,13 +617,14 @@ $pointColor:#ff5400;
         border:1px solid #e6e6e6;
         text-align: center;
         position: relative;
-        img {
-          position: absolute;
-          top:0;
-          bottom:0;
-          left:0;
-          right:0;
-          margin:auto;
+        &.logo-lian {
+          background: url('../images/homepage/logo-lian.png') center center no-repeat;
+        }
+        &.logo-jing {
+          background: url('../images/homepage/logo-jing.png') center center no-repeat;
+        }
+        &.logo-cfca {
+          background: url('../images/homepage/logo-cfca.png') center center no-repeat;
         }
         &:hover {
           box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.07), -1px -1px 8px rgba(0, 0, 0,0.07);

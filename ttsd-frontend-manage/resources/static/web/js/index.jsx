@@ -1,11 +1,10 @@
 import {runImg,startMarquee} from 'webModule/image_show_slider';
-
 import {useAjax,isUserLogin} from 'publicJs/common';
 import 'webModule/coupon_alert';
 import {ValidatorForm} from 'publicJs/validator';
 import popLoginTip from 'publicJs/login_tip';
-
-// import 'autoNumeric';
+import 'publicJs/plugins/autoNumeric';
+// globalFun.createScript(pluginsJSON.autoNumeric);
 import 'webStyle/home_page_v2.scss';
 let $homePageContainer = $('#homePageContainer'),
     $imgScroll = $('.banner-img-list', $homePageContainer);

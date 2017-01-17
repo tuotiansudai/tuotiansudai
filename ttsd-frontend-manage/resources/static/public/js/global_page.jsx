@@ -225,8 +225,9 @@ var web_globalFun = (function() {
         },
         //点击注销，退出登陆
         logOut:function() {
-            this.addEventHandler(this.$('#logout-link'),'click',function() {
-                this.$('#logout-form').submit();
+            var that=this;
+            that.addEventHandler(that.$('#logout-link'),'click',function() {
+                that.$('#logout-form').submit();
             });
         },
         decorateRadioCheck:function($input,$radioLabel) {
@@ -257,19 +258,21 @@ var web_globalFun = (function() {
             document.getElementsByTagName("head")[0].appendChild(link);
         },
         // 动态插入script标签
-        createScript:function(name, callback){
+        createScript:function(url, callback){
             var oScript = document.createElement('script');
             oScript.type = 'text/javascript';
             oScript.async = true;
-            oScript.src = staticServerurl;
+            oScript.src = staticServer+url;
             // IE9及以上浏览器，Firefox，Chrome，Opera ,
             // IE8及以下浏览器 只支持onreadystatechange
             oScript.onload = function(){
                 callback && callback();
             }
             //插入到body底部
+            // var jquery=this.$('#scJquery');
             var bodyEle=document.getElementsByTagName('body')[0];
-            bodyEle.appendChild(oScript);
+            // debugger
+            // bodyEle.appendChild(oScript);
         }
     }
     return globalFun;

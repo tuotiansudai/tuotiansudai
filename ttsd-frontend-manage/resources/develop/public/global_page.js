@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "c66d1a5b43a9baded69e"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "d08af3112110ba74b049"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -849,17 +849,15 @@
 	            var oScript = document.createElement('script');
 	            oScript.type = 'text/javascript';
 	            oScript.async = true;
-	            oScript.src = url;
+	            oScript.src = staticServer + url;
 	            // IE9及以上浏览器，Firefox，Chrome，Opera ,
 	            // IE8及以下浏览器 只支持onreadystatechange
 	            oScript.onload = function () {
 	                callback && callback();
 	            };
-	            var s = document.getElementsByTagName('script')[0];
-	            s.parentNode.insertBefore(oScript, s);
-
-	            // var headEle=document.getElementsByTagName('head')[0];
-	            //  headEle.appendChild(oScript);
+	            //插入到body底部
+	            var bodyEle = document.getElementsByTagName('body')[0];
+	            bodyEle.appendChild(oScript);
 	        }
 	    };
 	    return globalFun;
