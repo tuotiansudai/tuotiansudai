@@ -12,10 +12,7 @@ import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.LoanRepayDataItemDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.sms.RepayNotifyDto;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.InvestRepayMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.LoanRepayMapper;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.LoanRepayService;
 import com.tuotiansudai.util.AmountConverter;
@@ -29,10 +26,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.text.MessageFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class LoanRepayServiceImpl implements LoanRepayService {
@@ -66,6 +60,9 @@ public class LoanRepayServiceImpl implements LoanRepayService {
     @Autowired
     private CouponRepayMapper couponRepayMapper;
 
+    @Autowired
+    private InvestExtraRateMapper investExtraRateMapper;
+
     @Override
     public List<LoanRepayModel> findLoanRepayInAccount(String loginName, Date startTime, Date endTime, int startLimit, int endLimit) {
         return this.loanRepayMapper.findByLoginNameAndTimeRepayList(loginName, startTime, endTime, startLimit, endLimit);
@@ -82,10 +79,12 @@ public class LoanRepayServiceImpl implements LoanRepayService {
         for (LoanRepayModel loanRepayModel : loanRepayModels) {
             try {
                 calculateDefaultInterestEveryLoan(loanRepayModel);
+
             } catch (Exception e) {
                 logger.error(e.getLocalizedMessage(), e);
             }
         }
+
     }
 
     private boolean isNeedCalculateDefaultInterestLoanRepay(LoanRepayModel loanRepayModel) {
@@ -137,6 +136,15 @@ public class LoanRepayServiceImpl implements LoanRepayService {
             loanRepayMapper.update(loanRepayModel);
             loanModel.setStatus(LoanStatus.OVERDUE);
             loanMapper.update(loanModel);
+            boolean isLastPeriod = loanRepayMapper.findLastLoanRepay(loanRepayModel.getLoanId()).getPeriod() == loanRepayModel.getPeriod();
+            if(isLastPeriod){
+                List<InvestExtraRateModel> investExtraRateModels = investExtraRateMapper.findByLoanId(loanRepayModel.getLoanId());
+                investExtraRateModels.stream().forEach(investExtraRateModel -> {
+                    investExtraRateModel.setStatus(RepayStatus.OVERDUE);
+                    investExtraRateMapper.update(investExtraRateModel);
+                });
+                logger.info(String.format("investExtraRate status to overdue"));
+            }
         }
         logger.info(MessageFormat.format("loanRepayId:{0} couponRepay status to overdue", loanRepayModel.getId()));
         List<CouponRepayModel> couponRepayModels = couponRepayMapper.findCouponRepayByLoanIdAndPeriod(loanModel.getId(), loanRepayModel.getPeriod());
@@ -146,6 +154,7 @@ public class LoanRepayServiceImpl implements LoanRepayService {
                 couponRepayMapper.update(couponRepayModel);
             }
         }
+
     }
 
     @Override

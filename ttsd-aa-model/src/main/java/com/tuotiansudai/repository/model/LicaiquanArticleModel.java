@@ -100,9 +100,10 @@ public class LicaiquanArticleModel implements Serializable {
         this.thumb = dto.getThumbPicture();
         this.showPicture = dto.getShowPicture();
         this.content = dto.getContent();
-        this.createdTime = dto.getCreateTime();
+        this.createdTime = dto.getTimingTime() != null ? dto.getTimingTime() : dto.getCreateTime();
         this.updatedTime = dto.getUpdateTime();
         this.timingTime = dto.getTimingTime();
+
     }
 
     public long getId() {

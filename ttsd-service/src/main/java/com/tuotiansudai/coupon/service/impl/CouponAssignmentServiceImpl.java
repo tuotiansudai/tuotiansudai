@@ -272,7 +272,7 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
 
         List<UserCouponModel> assignedUserCoupons = userCouponMapper.findByLoginNameAndCouponId(loginName, couponId);
         if (!couponModel.isMultiple() && CollectionUtils.isNotEmpty(assignedUserCoupons)) {
-            logger.error(MessageFormat.format("[Coupon Assignment] coupon({0}) has been assigned to user({1})", String.valueOf(couponId), loginName));
+            logger.warn(MessageFormat.format("[Coupon Assignment] coupon({0}) has been assigned to user({1})", String.valueOf(couponId), loginName));
             return null;
         }
 

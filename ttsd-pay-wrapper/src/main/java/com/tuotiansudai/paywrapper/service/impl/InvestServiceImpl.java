@@ -6,6 +6,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.*;
+import com.tuotiansudai.dto.sms.LoanRaisingCompleteNotifyDto;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.enums.MessageEventType;
 import com.tuotiansudai.enums.PushSource;
@@ -13,6 +14,7 @@ import com.tuotiansudai.enums.PushType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.job.AutoLoanOutJob;
+import com.tuotiansudai.job.JobManager;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.message.*;
@@ -38,7 +40,10 @@ import com.tuotiansudai.paywrapper.service.InvestAchievementService;
 import com.tuotiansudai.paywrapper.service.InvestService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.util.*;
+import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.AmountTransfer;
+import com.tuotiansudai.util.AutoInvestMonthPeriod;
+import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.Logger;
@@ -51,6 +56,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -78,6 +84,9 @@ public class InvestServiceImpl implements InvestService {
 
     @Autowired
     private LoanMapper loanMapper;
+
+    @Autowired
+    private LoanerDetailsMapper loanerDetailsMapper;
 
     @Autowired
     private LoanDetailsMapper loanDetailsMapper;
@@ -129,6 +138,9 @@ public class InvestServiceImpl implements InvestService {
 
     @Value(value = "activity.autumn.luxury.invest")
     private String activityAutumnLuxuryInvestKey;
+
+    @Value("#{'${loan.raising.complete.notify.mobiles}'.split('\\|')}")
+    private List<String> loanRaisingCompleteNotifyMobileList;
 
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.autumn.startTime}\")}")
     private Date activityAutumnStartTime;
@@ -568,7 +580,7 @@ public class InvestServiceImpl implements InvestService {
         return callbackRequest.getResponseData();
     }
 
-    private void publishInvestSuccessMessage(InvestModel investModel){
+    private void publishInvestSuccessMessage(InvestModel investModel) {
         //Title:恭喜您成功投资{0}元
         //Content:尊敬的用户，您已成功投资房产/车辆抵押借款{0}元，独乐不如众乐，马上【邀请好友投资】还能额外拿1%现金奖励哦！
         String title = MessageFormat.format(MessageEventType.INVEST_SUCCESS.getTitleTemplate(), AmountConverter.convertCentToString(investModel.getAmount()));
@@ -599,9 +611,10 @@ public class InvestServiceImpl implements InvestService {
         investInfo.setStatus(investModel.getStatus().name());
         investInfo.setTransferStatus(investModel.getTransferStatus().name());
 
-        LoanDetailsModel loanDetailsModel =  loanDetailsMapper.getByLoanId(investModel.getLoanId());
+        LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(investModel.getLoanId());
         loanDetailInfo.setLoanId(investModel.getLoanId());
-        if(loanDetailsModel != null){
+        loanDetailInfo.setDuration(loanMapper.findById(investModel.getLoanId()).getProductType().getDuration());
+        if (loanDetailsModel != null) {
             loanDetailInfo.setActivity(loanDetailsModel.isActivity());
             loanDetailInfo.setActivityDesc(loanDetailsModel.getActivityDesc());
         }
@@ -615,12 +628,51 @@ public class InvestServiceImpl implements InvestService {
     }
 
     private void checkLoanRaisingComplete(long loanId) {
-        // 超投，改标的状态为满标 RECHECK
+        // 改标的状态为满标 RECHECK
         loanMapper.updateStatus(loanId, LoanStatus.RECHECK);
         // 更新筹款完成时间
         loanMapper.updateRaisingCompleteTime(loanId, new Date());
 
+        try {
+            // 发送满标提醒
+            sendLoanRaisingCompleteNotify(loanId);
+        } catch (Exception e) {
+            logger.error("send loan raising complete notify failed.", e);
+        }
+
         createAutoLoanOutJob(loanId);
+    }
+
+    private void sendLoanRaisingCompleteNotify(long loanId) {
+        LoanModel loanModel = loanMapper.findById(loanId);
+        SimpleDateFormat sdfDate = new SimpleDateFormat("MM月dd日");
+
+        String loanRaisingStartDate = sdfDate.format(loanModel.getFundraisingStartTime());
+
+        String loanName = loanModel.getName();
+
+        long loanAmount = loanModel.getLoanAmount();
+        String loanAmountStr; // 单位：万
+        if (loanAmount % 1000000 == 0)
+            loanAmountStr = String.valueOf(loanAmount / 1000000);
+        else
+            loanAmountStr = String.valueOf((double) (loanAmount / 10000) / 100);
+
+        String loanDuration = String.valueOf(loanModel.getDuration());
+
+        LoanerDetailsModel loanerModel = loanerDetailsMapper.getByLoanId(loanId);
+        String loanerName = loanerModel == null ? "" : loanerModel.getUserName();
+
+        UserModel agentModel = userMapper.findByLoginName(loanModel.getAgentLoginName());
+        String agentUserName = agentModel == null ? "" : agentModel.getUserName();
+
+        SimpleDateFormat sdfTime = new SimpleDateFormat("HH点mm分");
+        String loanRaisingCompleteTime = sdfTime.format(loanModel.getRaisingCompleteTime());
+
+        LoanRaisingCompleteNotifyDto dto = new LoanRaisingCompleteNotifyDto(loanRaisingCompleteNotifyMobileList, loanRaisingStartDate, loanName, loanAmountStr,
+                loanDuration, loanerName, agentUserName, loanRaisingCompleteTime);
+        logger.info("will send loan raising complete notify, loanId:" + loanId);
+        smsWrapperClient.sendLoanRaisingCompleteNotify(dto);
     }
 
     private void createAutoLoanOutJob(long loanId) {

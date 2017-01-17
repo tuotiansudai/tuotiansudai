@@ -142,8 +142,16 @@
         <property name="dataSource" ref="activityHikariCPDataSource"/>
     </bean>
 
-    <bean id="jobStoreBuilder" class="com.tuotiansudai.util.quartz.JobStoreBuilder">
-        <property name="dataSource" ref="jobHikariCPDataSource"/>
+    <bean id="jobStoreBuilder" class="com.tuotiansudai.quartz.JobStoreBuilder">
+        <constructor-arg ref="jobHikariCPDataSource"/>
+    </bean>
+
+    <bean id="schedulerBuilder" class="com.tuotiansudai.quartz.SchedulerBuilder">
+        <constructor-arg ref="jobStoreBuilder"/>
+    </bean>
+
+    <bean id="jobManager" class="com.tuotiansudai.job.JobManager">
+        <constructor-arg ref="schedulerBuilder"/>
     </bean>
 
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">

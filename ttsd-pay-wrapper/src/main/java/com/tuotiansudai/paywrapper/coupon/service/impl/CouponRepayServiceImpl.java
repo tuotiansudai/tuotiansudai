@@ -142,7 +142,16 @@ public class CouponRepayServiceImpl implements CouponRepayService {
 
             if (couponRepayModel == null) {
                 logger.error(MessageFormat.format("Coupon Repay loanRepayId:{0},userCouponId:{1},period:{2} is nonexistent",
-                        currentLoanRepayModel.getLoanId(),
+                        currentLoanRepayModel.getId(),
+                        userCouponModel.getId(),
+                        currentLoanRepayModel.getPeriod()));
+                continue;
+            }
+
+            if(couponRepayModel.getStatus() == RepayStatus.COMPLETE){
+                logger.error(MessageFormat.format("Coupon Repay:{0} loanRepayId:{1},userCouponId:{2} status is COMPLETE",
+                        couponRepayModel.getId(),
+                        currentLoanRepayModel.getId(),
                         userCouponModel.getId(),
                         currentLoanRepayModel.getPeriod()));
                 continue;

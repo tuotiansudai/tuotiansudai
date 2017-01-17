@@ -961,17 +961,15 @@
             <if test="startTime != null &amp;&amp; endTime != null">
                 and created_time between #{startTime} and #{endTime}
             </if>
-            AND loan_id IN (
-                SELECT
-                    l.id
-                FROM
-                    loan l
-                        JOIN
-                    loan_details d ON l.id = d.loan_id
-                WHERE
-                    d.activity = 1
-                        AND d.activity_desc = #{activityDesc}
-            )
+            <if test="activityDesc != null">
+                AND loan_id IN (
+                    SELECT l.id
+                    FROM loan l
+                    JOIN loan_details d ON l.id = d.loan_id
+                    WHERE
+                    d.activity = 1 AND d.activity_desc = #{activityDesc}
+                )
+            </if>
     </select>
 
     <select id="findInvestAmountScaleTop3" parameterType="map" resultType="java.util.HashMap">

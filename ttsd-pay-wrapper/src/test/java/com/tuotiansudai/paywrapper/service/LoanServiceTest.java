@@ -9,6 +9,7 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.sms.InvestSmsNotifyDto;
 import com.tuotiansudai.job.AnxinCreateContractJob;
+import com.tuotiansudai.job.JobManager;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.job.LoanOutSuccessHandleJob;
 import com.tuotiansudai.mq.client.model.MessageQueue;
@@ -25,13 +26,12 @@ import com.tuotiansudai.paywrapper.repository.model.sync.response.MerBindProject
 import com.tuotiansudai.paywrapper.repository.model.sync.response.MerUpdateProjectResponseModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
 import com.tuotiansudai.paywrapper.service.impl.LoanServiceImpl;
+import com.tuotiansudai.quartz.TriggeredJobBuilder;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.util.JobManager;
-import com.tuotiansudai.util.quartz.TriggeredJobBuilder;
 import com.umpay.api.exception.ReqDataException;
 import org.joda.time.DateTime;
 import org.junit.Before;
@@ -165,7 +165,7 @@ public class LoanServiceTest {
         return loanModel;
     }
 
-    private InvestModel getFakeInvestModel(long loanId,long investId,String loginName) {
+    private InvestModel getFakeInvestModel(long loanId, long investId, String loginName) {
         InvestModel model = new InvestModel(1, loanId, null, 1000000L, loginName, new DateTime().withTimeAtStartOfDay().toDate(), Source.WEB, null, 0.1);
         model.setStatus(InvestStatus.SUCCESS);
         return model;
@@ -212,9 +212,9 @@ public class LoanServiceTest {
 
         BaseDto<PayDataDto> baseDto1 = loanService.loanOut(loanModel.getId());
         verify(paySyncClient, times(1)).send(eq(ProjectTransferMapper.class), any(ProjectTransferRequestModel.class), eq(ProjectTransferResponseModel.class));
-        verify(redisWrapperClient,times(1)).setnx(anyString(), anyString());
-        verify(redisWrapperClient,times(2)).hset(anyString(), anyString(), anyString());
-        verify(redisWrapperClient,times(2)).hget(anyString(), anyString());
+        verify(redisWrapperClient, times(1)).setnx(anyString(), anyString());
+        verify(redisWrapperClient, times(2)).hset(anyString(), anyString(), anyString());
+        verify(redisWrapperClient, times(2)).hget(anyString(), anyString());
         assertTrue(baseDto1.getData().getStatus());
 
         loanModel.setStatus(LoanStatus.RECHECK);
@@ -270,7 +270,7 @@ public class LoanServiceTest {
         return userModelTest;
     }
 
-    private LoanModel getFakeLoan(String loanerLoginName, String agentLoginName, LoanStatus loanStatus,ActivityType activityType) {
+    private LoanModel getFakeLoan(String loanerLoginName, String agentLoginName, LoanStatus loanStatus, ActivityType activityType) {
         LoanModel fakeLoanModel = new LoanModel();
         fakeLoanModel.setId(111l);
         fakeLoanModel.setName("loanName");

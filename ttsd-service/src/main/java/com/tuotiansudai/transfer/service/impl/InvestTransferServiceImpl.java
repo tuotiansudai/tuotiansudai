@@ -29,7 +29,7 @@ import com.tuotiansudai.repository.model.TransferRuleModel;
 import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.transfer.util.TransferRuleUtil;
 import com.tuotiansudai.util.CalculateLeftDays;
-import com.tuotiansudai.util.JobManager;
+import com.tuotiansudai.job.JobManager;
 import com.tuotiansudai.util.PaginationUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;

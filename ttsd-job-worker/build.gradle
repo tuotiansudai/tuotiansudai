@@ -3,21 +3,22 @@ apply plugin: 'java'
 
 dependencies {
     compile project(':ttsd-service'),
+            project(':ttsd-quartz-extension'),
             project(':ttsd-point-service'),
             project(':ttsd-edxactivity-repository')
 }
 
-processResources.outputs.upToDateWhen{ false }
+processResources.outputs.upToDateWhen { false }
 processResources {
 
     def defaultProperties = 'all'
     if (project.hasProperty('work')) {
         defaultProperties = work;
     }
-    String params = 'all,jpush,invest,repay';
+    String params = 'all,jpush,repay';
 
-    if(params.indexOf(defaultProperties) < 0){
-        throw new GradleException("param is error,only all,jpush,invest,repay")
+    if (params.indexOf(defaultProperties) < 0) {
+        throw new GradleException("param is error,only all,jpush,repay")
     }
 
     def innerConfigPath = "${project.projectDir.getPath()}/src/main/resources"

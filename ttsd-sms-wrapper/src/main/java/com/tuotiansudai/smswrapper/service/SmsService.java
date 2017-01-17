@@ -7,6 +7,7 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.Environment;
 import com.tuotiansudai.dto.SmsDataDto;
 import com.tuotiansudai.dto.sms.InvestSmsNotifyDto;
+import com.tuotiansudai.dto.sms.LoanRaisingCompleteNotifyDto;
 import com.tuotiansudai.dto.sms.SmsCouponNotifyDto;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.enums.CouponType;
@@ -20,6 +21,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -125,6 +127,13 @@ public class SmsService {
     }
 
     public BaseDto<SmsDataDto> generateContractNotify(List<String> mobiles, long businessId) {
-        return smsClient.sendSMS(GenerateContractErrorNotifyMapper.class, mobiles, SmsTemplate.SMS_GENERATE_CONTRACT_ERROR_NOTIFY_TEMPLATE, Lists.newArrayList(String.valueOf(businessId)));
+        return smsClient.sendSMS(GenerateContractErrorNotifyMapper.class, mobiles, SmsTemplate.SMS_GENERATE_CONTRACT_ERROR_NOTIFY_TEMPLATE, Lists.newArrayList(String.valueOf(businessId)), "");
+    }
+
+    public BaseDto<SmsDataDto> loanRaisingCompleteNotify(LoanRaisingCompleteNotifyDto dto) {
+        String[] paramArr = {dto.getLoanRaisingStartDate(), dto.getLoanDuration(), dto.getLoanAmount(),
+                dto.getLoanRaisingCompleteTime(), "借款人：" + dto.getLoanerName(), "代理人：" + dto.getAgentName()};
+        List<String> paramList = Arrays.asList(paramArr);
+        return smsClient.sendSMS(LoanRaisingCompleteNotifyMapper.class, dto.getMobiles(), SmsTemplate.SMS_LOAN_RAISING_COMPLETE_NOTIFY_TEMPLATE, paramList, "");
     }
 }

@@ -7,12 +7,11 @@ import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.Tuple;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static org.terracotta.quartz.collections.SerializationHelper.serialize;
+import static com.tuotiansudai.util.SerializeUtil.serialize;
 
 @Component
 public class RedisWrapperClient extends AbstractRedisWrapperClient {

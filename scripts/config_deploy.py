@@ -14,7 +14,7 @@ def deploy(env, source_folder, dist_file):
     env_prop = load_properties("{0}envs/{1}.properties".format(source_folder, env))
 
     # 从redis里读取 三方账号配置
-    _r = redis.StrictRedis(host='192.168.1.30', port=6379, db=2)
+    _r = redis.StrictRedis(host=('192.168.1.30' if env!='CI1' else '127.0.0.1'), port=6379, db=2)
     sec_prop = _r.hgetall('qa_common_account')
 
     # 逐行读取 ttsd-env.properties, 如果不是注释也不是空行，则split by "=",
