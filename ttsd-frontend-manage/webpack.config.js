@@ -55,6 +55,10 @@ files.forEach(function(file){
 
 commonOptions.entry = newEntries;
 
+plugins.push(new CopyWebpackPlugin([
+	{ from: publicPath+'/plugins',to: 'public/plugins'}
+]));
+
 if(NODE_ENV=='production') {
 	//生产环境
 	outFilename="[name].[chunkhash].js";

@@ -1,8 +1,6 @@
 /* create question */
 import {refreshCaptcha,useAjax} from "publicJs/common";
 import popWindow from "./popWindow";
-
-var $=window.jquery_library(1);
 var $createQuestion=$('#createQuestion');
 var $questionDetailTag=$('#questionDetailTag');
 

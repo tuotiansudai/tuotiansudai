@@ -291,6 +291,8 @@ var Proxy_GlobalFun=function() {
 window.globalFun =new Proxy_GlobalFun();
 window.globalFun.init();
 
+window.jQuery = window.$ = window.jquery_library(1);
+
 // ********* cnzz统计 BEGIN ***********
 function cnzzPushConstructor() {
     this.trackClick=function(category, action, label) {

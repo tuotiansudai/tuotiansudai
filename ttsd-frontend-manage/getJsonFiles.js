@@ -47,23 +47,40 @@ getJsonFileList.prototype.formatHandler = function(textFile) {
             this.jsonFormat['cssFile'][outFileName]=keyNameObj.css;
         }
     }
+    this.addJqueryPlugin(outputPath+'/public/plugins'); //读取jquery文件
+    console.log(this.jsonFormat);
     var strJsonObj=JSON.stringify(this.jsonFormat);
     this.writeFile(strJsonObj);
 }
 
 getJsonFileList.prototype.addJqueryPlugin=function(path) {
-    // var pluginPath=outputPath+'/plugins';
-    this.jsonFormat['jsFile']['jquery']='/plugins/'+file;
+
+    var filesList=this.filesList;
+    var files = fs.readdirSync(path);//需要用到同步读取
+    files.forEach(function(file) {
+        var states = fs.statSync(path+'/'+file);
+        if(states.isDirectory())
+        {
+            this.readPluginFloder(path+'/'+file,filesList);
+        }
+        else {
+            var suffix=file.split('.'),
+                len=suffix.length;
+            if(suffix[len-1]=='js') {
+                var keyName=suffix[0];
+                this.jsonFormat['jsFile'][keyName]='/public/plugins/'+file;
+            }
+        }
+    }.bind(this))
+
 }
 
 getJsonFileList.prototype.init=function() {
-    var that=this,
-        pluginUrl=outputPath+'/plugins';
+    var that=this;
     //判断打包的时候文件路径是否存在
     fs.exists(this.mapPath, function (exists) {
         if(exists) {
             that.readFile();
-            that.addJqueryPlugin();
         }
     });
 

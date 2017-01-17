@@ -25,6 +25,17 @@ module.exports = {
             path: path.join(publicPath, 'plugins', '[name]-manifest.json'),
             name: '[name]_library',
             context: __dirname
+        }),
+        //压缩
+        new webpack.optimize.UglifyJsPlugin({
+            compress: {
+                warnings: false,
+                drop_debugger: true,
+                drop_console: true
+            }
         })
     ]
 };
+
+
+

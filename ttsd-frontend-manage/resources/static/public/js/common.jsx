@@ -1,4 +1,4 @@
-var $=window.jquery_library(1);
+
     function refreshCaptcha(url) {
         $('#imageCaptcha').on('click',function() {
             let captcha= url +'?'+ new Date().getTime().toString();
