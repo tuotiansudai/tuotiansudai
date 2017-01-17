@@ -3,42 +3,29 @@ package com.tuotiansudai.ask.service;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.ask.dto.QuestionDto;
+import com.tuotiansudai.ask.dto.QuestionResultDataDto;
+import com.tuotiansudai.ask.dto.QuestionWithCaptchaRequestDto;
 import com.tuotiansudai.ask.repository.dto.EmbodyQuestionDto;
-import com.tuotiansudai.ask.repository.dto.QuestionDto;
-import com.tuotiansudai.ask.repository.dto.QuestionRequestDto;
-import com.tuotiansudai.ask.repository.dto.QuestionResultDataDto;
 import com.tuotiansudai.ask.repository.mapper.AnswerMapper;
 import com.tuotiansudai.ask.repository.mapper.QuestionMapper;
 import com.tuotiansudai.ask.repository.model.AnswerModel;
 import com.tuotiansudai.ask.repository.model.QuestionModel;
 import com.tuotiansudai.ask.repository.model.QuestionStatus;
 import com.tuotiansudai.ask.repository.model.Tag;
-import com.tuotiansudai.ask.utils.FakeMobileUtil;
-import com.tuotiansudai.ask.utils.SensitiveWordsFilter;
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.rest.client.AskRestClient;
 import com.tuotiansudai.util.MobileEncoder;
 import com.tuotiansudai.util.PaginationUtil;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -60,20 +47,15 @@ public class QuestionService {
     private AnswerMapper answerMapper;
 
     @Autowired
-    private UserMapper userMapper;
-
-    @Autowired
     private RedisWrapperClient redisWrapperClient;
 
     @Autowired
     private CaptchaHelperService captchaHelperService;
 
-    @Value("${ask.server}")
-    private String askServer;
+    @Autowired
+    private AskRestClient askRestClient;
 
-    private static final String PREFIX = "/question";
-
-    public QuestionResultDataDto createQuestion(String loginName, QuestionRequestDto questionRequestDto) {
+    public QuestionResultDataDto createQuestion(String loginName, QuestionWithCaptchaRequestDto questionRequestDto) {
         QuestionResultDataDto dataDto = new QuestionResultDataDto();
         if (!captchaHelperService.captchaVerify(questionRequestDto.getCaptcha())) {
             return dataDto;
@@ -82,19 +64,12 @@ public class QuestionService {
         dataDto.setQuestionSensitiveValid(true);
         dataDto.setAdditionSensitiveValid(true);
 
-        UserModel userModel = userMapper.findByLoginName(loginName);
-
-        QuestionModel questionModel = new QuestionModel(loginName,
-                userModel.getMobile(),
-                FakeMobileUtil.generateFakeMobile(userModel.getMobile()),
-                SensitiveWordsFilter.replace(questionRequestDto.getQuestion()),
-                SensitiveWordsFilter.replace(questionRequestDto.getAddition()),
-                questionRequestDto.getTags());
-
-        questionMapper.create(questionModel);
-
-        dataDto.setStatus(true);
-
+        try {
+            askRestClient.createQuestion(questionRequestDto);
+            dataDto.setStatus(true);
+        } catch (Exception e) {
+            logger.error("create question failed", e);
+        }
         return dataDto;
     }
 
@@ -146,23 +121,23 @@ public class QuestionService {
         return generatePaginationData(loginName, index, pageSize, count, allHotQuestions, true);
     }
 
-    public BaseDto<BasePaginationDataDto> findMyQuestions(String loginName, int index, int pageSize) {
+    public BaseDto<BasePaginationDataDto> findMyQuestions(String loginName, int index) {
         redisWrapperClient.hset(newAnswerAlertKey, loginName, SIMPLE_DATE_FORMAT.format(new Date()));
         long count = questionMapper.countByLoginName(loginName);
-        List<QuestionModel> myQuestions = questionMapper.findByLoginName(loginName, PaginationUtil.calculateOffset(index, pageSize, count), pageSize);
-        return generatePaginationData(loginName, index, pageSize, count, myQuestions, false);
+        List<QuestionModel> myQuestions = questionMapper.findByLoginName(loginName, PaginationUtil.calculateOffset(index, 10, count), 10);
+        return generatePaginationData(loginName, index, 10, count, myQuestions, false);
     }
 
-    public BaseDto<BasePaginationDataDto> findByTag(String loginName, Tag tag, int index, int pageSize) {
+    public BaseDto<BasePaginationDataDto> findByTag(String loginName, Tag tag, int index) {
         long count = questionMapper.countByTag(loginName, tag);
-        List<QuestionModel> questions = questionMapper.findByTag(loginName, tag, PaginationUtil.calculateOffset(index, pageSize, count), pageSize);
-        return generatePaginationData(loginName, index, pageSize, count, questions, true);
+        List<QuestionModel> questions = questionMapper.findByTag(loginName, tag, PaginationUtil.calculateOffset(index, 10, count), 10);
+        return generatePaginationData(loginName, index, 10, count, questions, true);
     }
 
-    public BaseDto<BasePaginationDataDto> findQuestionsForConsole(String question, String mobile, QuestionStatus status, int index, int pageSize) {
+    public BaseDto<BasePaginationDataDto> findQuestionsForConsole(String question, String mobile, QuestionStatus status, int index) {
         long count = questionMapper.countQuestionsForConsole(question, mobile, status);
-        List<QuestionModel> myQuestions = questionMapper.findQuestionsForConsole(question, mobile, status, PaginationUtil.calculateOffset(index, pageSize, count), pageSize);
-        return generatePaginationData(null, index, pageSize, count, myQuestions, false);
+        List<QuestionModel> myQuestions = questionMapper.findQuestionsForConsole(question, mobile, status, PaginationUtil.calculateOffset(index, 10, count), 10);
+        return generatePaginationData(null, index, 10, count, myQuestions, false);
     }
 
     public boolean isNewAnswerExists(String loginName) {
@@ -204,9 +179,9 @@ public class QuestionService {
         return new BaseDto<>(data);
     }
 
-    public BaseDto<BasePaginationDataDto> getQuestionsByKeywords(String keywords, String loginName, int index, int pageSize) {
+    public BaseDto<BasePaginationDataDto> getQuestionsByKeywords(String keywords, String loginName, int index) {
         long count = questionMapper.countQuestionsByKeywords(keywords);
-        List<QuestionModel> questionModels = questionMapper.findQuestionsByKeywords(keywords, PaginationUtil.calculateOffset(index, pageSize, count), pageSize);
+        List<QuestionModel> questionModels = questionMapper.findQuestionsByKeywords(keywords, PaginationUtil.calculateOffset(index, 10, count), 10);
         List<QuestionDto> items = questionModels.stream().map(questionModel -> {
             String mobile;
             if (questionModel.getLoginName().equals(loginName)) {
@@ -225,7 +200,7 @@ public class QuestionService {
             return new QuestionDto(questionModel, mobile);
         }).collect(Collectors.toList());
 
-        BasePaginationDataDto<QuestionDto> data = new BasePaginationDataDto<>(PaginationUtil.validateIndex(index, pageSize, count), pageSize, count, items);
+        BasePaginationDataDto<QuestionDto> data = new BasePaginationDataDto<>(PaginationUtil.validateIndex(index, 10, count), 10, count, items);
         data.setStatus(true);
         return new BaseDto<>(data);
     }
@@ -253,7 +228,6 @@ public class QuestionService {
         questionModel.setEmbody(true);
         questionMapper.update(questionModel);
     }
-
 
 
 }

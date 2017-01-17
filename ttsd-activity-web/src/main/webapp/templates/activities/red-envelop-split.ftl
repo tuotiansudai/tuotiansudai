@@ -14,7 +14,7 @@
                 <span class="reward-msg">
                     <em>送好友8.88元红包，好友注册，您即可领取最高20.88元的现金红包哦！</em>
                 </span>
-                <a href="${referrerUrl}" class="normal-button" >立即邀请赚红包</a>
+                <a href="javascript:void(0)" data-url="${referrerUrl}" class="normal-button to-invite-friend" >立即邀请赚红包</a>
             </div>
         </div>
 
@@ -24,12 +24,12 @@
                 <span>我的红包</span>
             </div>
             <div class="envelop-box clearfix">
-                <div class="activity-rule">
-                    <span><i>给好友发送邀请链接</i></span>
-                    <span class="arrow"></span>
-                    <span class="middle"><i>好友完成注册领取8.88元红包</i></span>
-                    <span class="arrow"></span>
-                    <span><i>邀请成功赚取红包</i></span>
+                <div class="activity-rule clearfix">
+                    <span class="square"><i>给好友发送邀请链接</i></span>
+                    <span class="arrow">&nbsp;</span>
+                    <span class="square middle"><i>好友完成注册领取8.88元红包</i></span>
+                    <span class="arrow">&nbsp;</span>
+                    <span class="square"><i>邀请成功赚取红包</i></span>
                 </div>
 
                 <ul class="activity-msg-list">

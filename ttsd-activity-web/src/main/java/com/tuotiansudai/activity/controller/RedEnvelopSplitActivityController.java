@@ -63,13 +63,13 @@ public class RedEnvelopSplitActivityController {
     }
 
     @RequestMapping(value = "/referrer", method = RequestMethod.GET)
-    public ModelAndView referrer(@RequestParam(value = "loginName", required = false) String loginName,
-                                 @RequestParam(value = "channel", required = false) String channel) {
+    public ModelAndView referrer(@RequestParam(defaultValue = "微信红包", value = "loginName", required = false) String loginName,
+                                 @RequestParam(defaultValue = "WX_FRIEND", value = "channel", required = false) UserChannel channel) {
         ModelAndView modelAndView = new ModelAndView("/activities/red-envelop-referrer", "responsive", true);
         modelAndView.addObject("loginName", loginName);
         modelAndView.addObject("channels", channel);
         UserModel userModel = userMapper.findByLoginName(loginName);
-        modelAndView.addObject("userName", userModel != null && userModel.getUserName() != null ? userModel.getUserName() : (userModel != null ? MobileEncryptor.encryptWebMiddleMobile(userModel.getMobile()): loginName));
+        modelAndView.addObject("userName", userModel != null && !Strings.isNullOrEmpty(userModel.getUserName()) ? userModel.getUserName() : (userModel != null && !Strings.isNullOrEmpty(userModel.getMobile()) ? MobileEncryptor.encryptWebMiddleMobile(userModel.getMobile()) : loginName));
         modelAndView.addObject("registerStatus", "referrer");
         return modelAndView;
     }
@@ -77,7 +77,7 @@ public class RedEnvelopSplitActivityController {
     @RequestMapping(value = "/before-register", method = RequestMethod.POST)
     public ModelAndView beforeRegister(@RequestParam(value = "loginName", required = false) String loginName,
                                        @RequestParam(value = "mobile", required = false) String mobile,
-                                       @RequestParam(value = "channel", required = false) String channel) {
+                                       @RequestParam(value = "channel", required = false) UserChannel channel) {
         redEnvelopSplitActivityService.beforeRegisterUser(loginName, mobile, channel);
         ModelAndView modelAndView = new ModelAndView("/activities/red-envelop-referrer", "responsive", true);
         modelAndView.addObject("registerStatus", "before");

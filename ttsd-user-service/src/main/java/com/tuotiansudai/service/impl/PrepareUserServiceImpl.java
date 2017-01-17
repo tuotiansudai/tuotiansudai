@@ -6,10 +6,7 @@ import com.tuotiansudai.dto.PrepareRegisterRequestDto;
 import com.tuotiansudai.dto.RegisterUserDto;
 import com.tuotiansudai.exception.ReferrerRelationException;
 import com.tuotiansudai.repository.mapper.PrepareUserMapper;
-import com.tuotiansudai.repository.model.CaptchaType;
-import com.tuotiansudai.repository.model.PrepareUserModel;
-import com.tuotiansudai.repository.model.Source;
-import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.PrepareUserService;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
@@ -54,6 +51,7 @@ public class PrepareUserServiceImpl implements PrepareUserService {
             prepareUserModel.setMobile(requestDto.getMobile());
             prepareUserModel.setCreatedTime(new Date());
             prepareUserModel.setChannel(Source.IOS);
+            prepareUserModel.setRegisterChannel(UserChannel.APP_SHARE);
             prepareUserMapper.create(prepareUserModel);
             return new BaseDataDto(true, null);
         } catch (Exception e) {
