@@ -1,11 +1,8 @@
 
-    function refreshCaptcha(url) {
-        $('#imageCaptcha').on('click',function() {
-            let captcha= url +'?'+ new Date().getTime().toString();
-            this.value='';
-            this.setAttribute('src',captcha);
-        })
-    }
+function refreshCaptcha(dom,url) {
+    let captcha= url +'?'+ new Date().getTime().toString();
+    dom.setAttribute('src',captcha);
+}
     /* init radio style */
     function initRadio($radio,$radioLabel) {
         let numRadio=$radio.length;

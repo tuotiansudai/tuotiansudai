@@ -54,7 +54,7 @@
 
                     <@global.isNotAnonymous>
                         <input type="text" placeholder="请输入验证码" class="captcha" name="captcha" maxlength="5">
-                        <img src="/captcha" alt="" class="captchaImg">
+                        <img src="/captcha" alt="" class="captchaImg" id="imageCaptcha">
                         <button type="button" class="btn fr formSubmit" disabled>提交答案</button>
                         <i class="error" style="display: none">验证码不正确</i>
                     </@global.isNotAnonymous>

@@ -48,7 +48,7 @@ getJsonFileList.prototype.formatHandler = function(textFile) {
         }
     }
     this.addJqueryPlugin(outputPath+'/public/plugins'); //读取jquery文件
-    console.log(this.jsonFormat);
+    // console.log(this.jsonFormat);
     var strJsonObj=JSON.stringify(this.jsonFormat);
     this.writeFile(strJsonObj);
 }
