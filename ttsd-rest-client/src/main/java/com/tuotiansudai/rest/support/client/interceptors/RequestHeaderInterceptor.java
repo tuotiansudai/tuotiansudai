@@ -1,4 +1,4 @@
-package com.tuotiansudai.rest.client.interceptors;
+package com.tuotiansudai.rest.support.client.interceptors;
 
 import feign.RequestInterceptor;
 import feign.RequestTemplate;

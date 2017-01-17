@@ -1,23 +1,17 @@
 package com.tuotiansudai.rest;
 
-import com.tuotiansudai.rest.client.AskRestClient;
-import com.tuotiansudai.rest.client.codec.RestErrorDecoder;
-import com.tuotiansudai.rest.client.interceptors.RequestHeaderInterceptor;
-import feign.Feign;
-import feign.Logger;
+import com.tuotiansudai.rest.support.client.codec.RestErrorDecoder;
+import com.tuotiansudai.rest.support.client.factory.RestClientScannerConfigurer;
+import com.tuotiansudai.rest.support.client.interceptors.RequestHeaderInterceptor;
 import feign.jackson.JacksonDecoder;
 import feign.jackson.JacksonEncoder;
-import feign.slf4j.Slf4jLogger;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
 @Configuration
-@PropertySource({"classpath:ttsd-env.properties"})
+@PropertySource({"classpath:ttsd-env.properties", "classpath:ttsd-env-test.properties"})
 public class FeignClientConfig {
-    @Value("${ask.rest.server}")
-    private String askRestServer;
 
     @Bean
     public RequestHeaderInterceptor requestHeaderInterceptor() {
@@ -40,17 +34,17 @@ public class FeignClientConfig {
     }
 
     @Bean
-    public AskRestClient askRestClient(JacksonDecoder jacksonDecoder,
-                                       JacksonEncoder jacksonEncoder,
-                                       RestErrorDecoder restErrorDecoder,
-                                       RequestHeaderInterceptor requestHeaderInterceptor) {
-        return Feign.builder()
-                .logger(new Slf4jLogger())
-                .encoder(jacksonEncoder)
-                .decoder(jacksonDecoder)
-                .errorDecoder(restErrorDecoder)
-                .requestInterceptor(requestHeaderInterceptor)
-                .logLevel(Logger.Level.FULL)
-                .target(AskRestClient.class, askRestServer);
+    public RestClientScannerConfigurer restClientScannerConfigurer(
+            JacksonDecoder jacksonDecoder,
+            JacksonEncoder jacksonEncoder,
+            RestErrorDecoder restErrorDecoder,
+            RequestHeaderInterceptor requestHeaderInterceptor) {
+        RestClientScannerConfigurer configurer = new RestClientScannerConfigurer(
+                jacksonDecoder,
+                jacksonEncoder,
+                restErrorDecoder,
+                requestHeaderInterceptor);
+        configurer.setBasePackages("com.tuotiansudai.rest.client");
+        return configurer;
     }
 }
