@@ -21,6 +21,10 @@ import com.tuotiansudai.exception.CreateCouponException;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
+import com.tuotiansudai.point.repository.mapper.ProductMapper;
+import com.tuotiansudai.point.repository.mapper.ProductOrderMapper;
+import com.tuotiansudai.point.repository.model.ProductModel;
+import com.tuotiansudai.point.repository.model.ProductOrderModel;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
@@ -77,6 +81,12 @@ public class ConsoleCouponService {
 
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
+
+    @Autowired
+    private ProductOrderMapper productOrderMapper;
+
+    @Autowired
+    private ProductMapper productMapper;
 
     private static String redisKeyTemplate = "console:{0}:importcouponuser";
 
@@ -304,7 +314,6 @@ public class ConsoleCouponService {
             if(userCouponModel.getUsedTime() != null && loanModel != null){
                 interest = investService.estimateInvestIncome(loanModel.getId(), loginName, userCouponModel.getInvestAmount());
             }
-
             couponDetailsDtoList.add(new CouponDetailsDto(userCouponModel.getLoginName(), userCouponModel.getUsedTime(), userCouponModel.getInvestAmount(),
                     userCouponModel.getLoanId(), loanModel != null ? loanModel.getName() : "", loanModel != null ? loanModel.getProductType() : null, interest));
         }

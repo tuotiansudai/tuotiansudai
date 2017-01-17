@@ -38,6 +38,7 @@
             <thead>
             <tr>
                 <th>用户名</th>
+                <th>实际消耗积分</th>
                 <th>兑换时间</th>
                 <th>兑换数量</th>
                 <th>姓名</th>
@@ -51,6 +52,7 @@
                 <#list orders as order>
                 <tr>
                     <td>${order.loginName}</td>
+                    <td>${order.actualPoints!}</td>
                     <td>${(order.createdTime?string('yyyy-MM-dd HH:mm:ss'))!}</td>
                     <td>${order.num?string('0')}</td>
                     <td>${order.contact}</td>

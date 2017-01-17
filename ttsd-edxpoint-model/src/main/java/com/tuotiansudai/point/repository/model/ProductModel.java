@@ -15,6 +15,7 @@ public class ProductModel implements Serializable {
     private long totalCount;
     private long usedCount;
     private long points;
+    private long actualPoints;
     private Date startTime;
     private Date endTime;
     private boolean active;
@@ -73,6 +74,14 @@ public class ProductModel implements Serializable {
 
     public void setPoints(long points) {
         this.points = points;
+    }
+
+    public long getActualPoints() {
+        return actualPoints;
+    }
+
+    public void setActualPoints(long actualPoints) {
+        this.actualPoints = actualPoints;
     }
 
     public Integer getSeq() {

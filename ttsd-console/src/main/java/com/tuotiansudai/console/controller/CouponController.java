@@ -24,6 +24,8 @@ import com.tuotiansudai.dto.ImportExcelDto;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.exception.CreateCouponException;
 import com.tuotiansudai.point.repository.mapper.UserPointPrizeMapper;
+import com.tuotiansudai.point.repository.model.ProductModel;
+import com.tuotiansudai.point.service.ProductService;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.repository.model.Role;
@@ -91,6 +93,9 @@ public class CouponController {
 
     @Autowired
     private ExchangeCodeService exchangeCodeService;
+
+    @Autowired
+    private ProductService productService;
 
     private static String redisKeyTemplate = "console:{0}:importcouponuser";
 
@@ -296,9 +301,6 @@ public class CouponController {
         return baseDto;
     }
 
-
-
-
     @RequestMapping(value = "/coupon/user-group/{userGroup}/estimate", method = RequestMethod.GET)
     @ResponseBody
     public long findEstimatedCount(@PathVariable UserGroup userGroup) {
@@ -391,6 +393,11 @@ public class CouponController {
         for(CouponDetailsDto couponDetailsDto : userCoupons){
             investAmount += couponDetailsDto.getInvestAmount() != null ? couponDetailsDto.getInvestAmount() : 0l;
             interest += couponDetailsDto.getAnnualInterest() != null ? couponDetailsDto.getAnnualInterest() : 0l;
+        }
+
+        ProductModel productModel = productService.findProductByCouponId(couponId);
+        if(productModel != null){
+
         }
 
         CouponModel couponModel = consoleCouponService.findCouponById(couponId);
