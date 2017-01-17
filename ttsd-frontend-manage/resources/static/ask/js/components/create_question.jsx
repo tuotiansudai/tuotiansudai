@@ -248,7 +248,7 @@ if($questionDetailTag.length) {
                 },3000);
             }
             else {
-                refreshCaptcha();
+                refreshCaptcha($formAnswer.find('.captchaImg')[0],'/captcha');
                 if(response.isCaptchaValid) {
                     if(!response.isAnswerSensitiveValid) {
                         $formAnswer.find('.answer').next().show().text('您输入的内容不能包含敏感词');
@@ -352,7 +352,7 @@ if($createQuestion.length) {
                 location.href='question/my-questions';
             }
             else {
-                refreshCaptcha();
+                refreshCaptcha($formQuestion.find('.captchaImg')[0],'/captcha');
                 if(response.isCaptchaValid) {
                     if(!response.isQuestionSensitiveValid) {
                         $question.next().show().text('您输入的内容不能包含敏感词');

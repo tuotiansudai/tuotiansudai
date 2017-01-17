@@ -62,7 +62,7 @@
                         </@global.isAnonymous>
 
                         <@global.isNotAnonymous>
-                            <button class="btn formSubmit" disabled type="button">提问</button>
+                            <button class="btn formSubmit" name="btnQuestion" disabled type="button">提问</button>
                         </@global.isNotAnonymous>
 
                     </dd>
