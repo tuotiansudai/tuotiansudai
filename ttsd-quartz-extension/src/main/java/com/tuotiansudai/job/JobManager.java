@@ -1,14 +1,11 @@
-package com.tuotiansudai.util;
+package com.tuotiansudai.job;
 
-import com.tuotiansudai.job.JobType;
-import com.tuotiansudai.util.quartz.SchedulerBuilder;
-import com.tuotiansudai.util.quartz.ThreadPoolBuilder;
-import com.tuotiansudai.util.quartz.TriggeredJobBuilder;
+import com.tuotiansudai.quartz.SchedulerBuilder;
+import com.tuotiansudai.quartz.ThreadPoolBuilder;
+import com.tuotiansudai.quartz.TriggeredJobBuilder;
 import org.quartz.*;
 import org.quartz.spi.ThreadPool;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 /**
  * example:
@@ -35,13 +32,15 @@ import org.springframework.stereotype.Component;
  *     .submit();
  * </pre>
  */
-@Component
 public class JobManager implements InitializingBean {
 
     private ThreadPool threadPool;
 
-    @Autowired
-    private SchedulerBuilder schedulerBuilder;
+    private final SchedulerBuilder schedulerBuilder;
+
+    public JobManager(SchedulerBuilder schedulerBuilder) {
+        this.schedulerBuilder = schedulerBuilder;
+    }
 
     public TriggeredJobBuilder newJob(Class<? extends Job> jobClazz) {
         return newJob(JobType.Default, jobClazz);
