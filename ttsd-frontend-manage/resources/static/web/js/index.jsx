@@ -4,7 +4,6 @@ import 'webModule/coupon_alert';
 import {ValidatorForm} from 'publicJs/validator';
 import popLoginTip from 'publicJs/login_tip';
 import 'publicJs/plugins/autoNumeric';
-// globalFun.createScript(pluginsJSON.autoNumeric);
 import 'webStyle/home_page_v2.scss';
 let $homePageContainer = $('#homePageContainer'),
     $imgScroll = $('.banner-img-list', $homePageContainer);

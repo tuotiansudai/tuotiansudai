@@ -261,7 +261,6 @@ var web_globalFun = (function() {
         createScript:function(url, callback){
             var oScript = document.createElement('script');
             oScript.type = 'text/javascript';
-            oScript.async = true;
             oScript.src = staticServer+url;
             // IE9及以上浏览器，Firefox，Chrome，Opera ,
             // IE8及以下浏览器 只支持onreadystatechange
@@ -269,10 +268,8 @@ var web_globalFun = (function() {
                 callback && callback();
             }
             //插入到body底部
-            // var jquery=this.$('#scJquery');
-            var bodyEle=document.getElementsByTagName('body')[0];
-            // debugger
-            // bodyEle.appendChild(oScript);
+            var globalElem=this.$('#globalPage');
+            globalElem.parentNode.insertBefore(oScript,globalElem);
         }
     }
     return globalFun;

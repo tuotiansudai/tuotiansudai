@@ -145,8 +145,7 @@
                     </div>
                 </div>
             </#list>
-            <a href="/activity/landing-page" target="_blank"><img src="${staticServer}/images/homepage/hot-bag-a.png"
-                                                                  alt="注册送588元红包" class="fr"></a>
+            <a href="/activity/landing-page" target="_blank" class="hot-bag"></a>
         </div>
 
     <#--优选债权-->

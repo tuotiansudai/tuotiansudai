@@ -1,0 +1,6 @@
+{
+  "name": "underscore_library",
+  "content": {
+    "./node_modules/underscore/underscore.js": 3
+  }
+}

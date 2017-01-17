@@ -125,13 +125,13 @@ plugins.push(new webpack.DllReferencePlugin({
 
 // plugins.push(new webpack.DllReferencePlugin({
 // 	context: __dirname,
-// 	manifest: require(outputPath+'/public/plugins/echarts-manifest.json')
+// 	manifest: require(publicPathJS+'/plugins/echarts-manifest.json')
 // }));
 
-// plugins.push(new webpack.DllReferencePlugin({
-// 	context: __dirname,
-// 	manifest: require(outputPath+'/public/plugins/layer-manifest.json')
-// }));
+plugins.push(new webpack.DllReferencePlugin({
+	context: __dirname,
+	manifest: require(publicPathJS+'/plugins/underscore-manifest.json')
+}));
 
 
 module.exports = objectAssign(commonOptions, {

@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "d08af3112110ba74b049"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "a20fd03a014d369231ae"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -814,8 +814,9 @@
 	        },
 	        //点击注销，退出登陆
 	        logOut: function logOut() {
-	            this.addEventHandler(this.$('#logout-link'), 'click', function () {
-	                this.$('#logout-form').submit();
+	            var that = this;
+	            that.addEventHandler(that.$('#logout-link'), 'click', function () {
+	                that.$('#logout-form').submit();
 	            });
 	        },
 	        decorateRadioCheck: function decorateRadioCheck($input, $radioLabel) {
@@ -856,8 +857,10 @@
 	                callback && callback();
 	            };
 	            //插入到body底部
+	            // var jquery=this.$('#scJquery');
 	            var bodyEle = document.getElementsByTagName('body')[0];
-	            bodyEle.appendChild(oScript);
+	            // debugger
+	            // bodyEle.appendChild(oScript);
 	        }
 	    };
 	    return globalFun;

@@ -13,5 +13,9 @@
   "/web/js/index": {
     "js": "/web/js/index.js",
     "css": "/web/js/index.css"
+  },
+  "/web/js/login": {
+    "js": "/web/js/login.js",
+    "css": "/web/js/login.css"
   }
 }

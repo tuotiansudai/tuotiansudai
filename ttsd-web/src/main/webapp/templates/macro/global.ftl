@@ -129,13 +129,13 @@
 <script>
     window.staticServer='${staticServer}';
     window.pluginsJSON={
-        autoNumeric:'${js.autoNumeric}'
+        underscore:'${js.underscore}'
     }
     <#--console.log(${js});-->
 
 </script>
-<script src="${staticServer}${js.jquery}" id="scJquery"></script>
-<script src="${staticServer}${js.global_page!}"></script>
+<script src="${staticServer}${js.jquery}" ></script>
+<script src="${staticServer}${js.global_page!}" id="globalPage"></script>
 <script src="${staticServer}${pageJavascript}" type="text/javascript"></script>
 </body>
 </html>
