@@ -14,7 +14,7 @@ import org.springframework.context.annotation.PropertySource;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 @Configuration
-@PropertySource({"classpath:ttsd-env.properties", "classpath:ttsd-env-test.properties"})
+@PropertySource(value = {"classpath:ttsd-env.properties", "classpath:ttsd-env-test.properties"}, ignoreResourceNotFound = true)
 public class FeignClientConfig {
 
     @Bean
