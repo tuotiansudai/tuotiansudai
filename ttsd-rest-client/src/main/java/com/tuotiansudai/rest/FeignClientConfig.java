@@ -39,7 +39,7 @@ public class FeignClientConfig {
 
     @Bean
     public Request.Options feignRequestOptions() {
-        return new Request.Options(1000, 1000);
+        return new Request.Options(5000, 10000);
     }
 
     @Bean
