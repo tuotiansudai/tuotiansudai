@@ -1,14 +1,16 @@
 <div style="display: none">
-    <#--<#assign askDomain="http://ask.tuotiansudai.com"/>-->
-    <#assign askDomain="http://localhost:8050"/>
+    <#assign askDomain="http://ask.tuotiansudai.com"/>
+    <#assign cmsDomain="http://content.tuotiansudai.com"/>
+    <#--<#assign askDomain="http://localhost:8050"/>-->
+    <#--<#assign cmsDomain="http://192.168.60.136:8000"/>-->
     <#--ask主站-->
-        <a href='http://ask.tuotiansudai.com' target="_blank">ASK站</a>
+        <a href='${askDomain}' target="_blank">ASK站</a>
     <#--cms主站-->
-        <a href='http://content.tuotiansudai.com' target="_blank">CMS站</a>
+        <a href='${cmsDomain}' target="_blank">CMS站</a>
     <#--ask栏目列表-->
         <a href='${askDomain}/question/sitemap/hot-category-list' target="_blank">ASK栏目列表</a>
     <#--cms栏目列表-->
-        <a href='http://content.tuotiansudai.com/sitemap/cms-category-list' target="_blank">CMS栏目列表</a>
+        <a href='${cmsDomain}/sitemap/categories.html' target="_blank">CMS栏目列表</a>
     <#--ask分类信息-->
         <a href='${askDomain}/question/sitemap/category/INVEST' target="_blank">理财</a>
         <a href='${askDomain}/question/sitemap/category/STOCK' target="_blank">股票</a>

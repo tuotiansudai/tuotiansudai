@@ -49,7 +49,7 @@ public class HomeServiceImpl implements HomeService {
     @Autowired
     private SiteMapRedisWrapperClient siteMapRedisWrapperClient;
 
-    private static final String CMS_CATEGORY = "cms:sitemap:category";
+    private static final String CMS_CATEGORY = "cms:sitemap:category:{0}";
 
     public List<HomeLoanDto> getNormalLoans() {
         return getLoans().stream().filter(loan -> !loan.getProductType().equals(ProductType._30) && !loan.getActivityType().equals(ActivityType.NEWBIE)).collect(Collectors.toList());
@@ -127,9 +127,9 @@ public class HomeServiceImpl implements HomeService {
     @Override
     public List<SiteMapDataDto> siteMapData() {
         List<SiteMapDataDto> cmsSiteMapDataDtoList = Lists.newArrayList();
-        if (siteMapRedisWrapperClient.exists(CMS_CATEGORY + LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE))) {
+        if (siteMapRedisWrapperClient.exists(MessageFormat.format(CMS_CATEGORY, LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE)))) {
             //从redis中取值
-            Map<String, String> cmsSiteMap = siteMapRedisWrapperClient.hgetAll(CMS_CATEGORY + LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE));
+            Map<String, String> cmsSiteMap = siteMapRedisWrapperClient.hgetAll(MessageFormat.format(CMS_CATEGORY, LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE)));
             for (String key : cmsSiteMap.keySet()) {
                 try {
                     SiteMapDataDto cmsSiteMapDataDto = new SiteMapDataDto();
