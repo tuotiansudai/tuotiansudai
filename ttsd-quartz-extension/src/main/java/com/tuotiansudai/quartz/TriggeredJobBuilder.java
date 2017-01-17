@@ -1,12 +1,12 @@
-package com.tuotiansudai.util.quartz;
+package com.tuotiansudai.quartz;
 
 
-import com.tuotiansudai.util.UUIDGenerator;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.quartz.*;
+import org.springframework.util.StringUtils;
 
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * 可触发的Job构建器
@@ -76,11 +76,11 @@ public class TriggeredJobBuilder {
     }
 
     public TriggeredJobBuilder withIdentity(String group, String name) {
-        if (StringUtils.isBlank(group)) {
+        if (StringUtils.isEmpty(group)) {
             group = DEFAULT_JOB_GROUP;
         }
-        if (StringUtils.isBlank(name)) {
-            name = UUIDGenerator.generate();
+        if (StringUtils.isEmpty(name)) {
+            name = UUID.randomUUID().toString().replace("-", "");
         }
         this.jobKey = JobKey.jobKey(name, group);
         this.triggerKey = TriggerKey.triggerKey(name, group);
@@ -123,7 +123,7 @@ public class TriggeredJobBuilder {
         if (jobKey != null) {
             jobBuilder.withIdentity(jobKey);
         }
-        if (StringUtils.isBlank(jobDescription)) {
+        if (StringUtils.isEmpty(jobDescription)) {
             jobBuilder.withDescription(jobDescription);
         }
         JobDetail jobDetail = jobBuilder.build();
@@ -171,7 +171,7 @@ public class TriggeredJobBuilder {
             }
         }
 
-        if(!isExistsJob){
+        if (!isExistsJob) {
             scheduler.scheduleJob(jobDetail, jobTrigger);
         }
         logger.info("submit job " + jobClazz.getName() + " to scheduler " + scheduler.getSchedulerName() + " success");

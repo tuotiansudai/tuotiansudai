@@ -1,4 +1,4 @@
-package com.tuotiansudai.util.quartz;
+package com.tuotiansudai.quartz;
 
 import org.apache.log4j.Logger;
 import org.quartz.Scheduler;
@@ -7,16 +7,17 @@ import org.quartz.spi.JobStore;
 import org.quartz.spi.SchedulerPlugin;
 import org.quartz.spi.ThreadPool;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
-@Component
 public class SchedulerBuilder {
     static Logger logger = Logger.getLogger(SchedulerBuilder.class);
 
-    @Autowired
-    private JobStoreBuilder jobStoreBuilder;
+    private final JobStoreBuilder jobStoreBuilder;
+
+    public SchedulerBuilder(JobStoreBuilder jobStoreBuilder) {
+        this.jobStoreBuilder = jobStoreBuilder;
+    }
 
     public Scheduler buildScheduler(String schedulerName, ThreadPool threadPool) throws SchedulerException {
         JobStore jobStore = jobStoreBuilder.buildJdbcJobStore(schedulerName);

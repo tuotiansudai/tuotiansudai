@@ -22,6 +22,7 @@ dependencies {
             project(":ttsd-util"),
             project(":ttsd-edxactivity-model"),
             project(":ttsd-anxin-sign"),
+            project(":ttsd-quartz-extension"),
             'com.itextpdf:itextpdf:5.5.10',
             'com.itextpdf:itext-asian:5.2.0'
 
