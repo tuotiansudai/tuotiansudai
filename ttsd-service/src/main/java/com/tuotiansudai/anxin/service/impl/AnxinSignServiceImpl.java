@@ -259,7 +259,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
             String projectCode = redisWrapperClient.get(TEMP_PROJECT_CODE_KEY + loginName);
 
             if (StringUtils.isEmpty(projectCode)) {
-                logger.error("project code is expired. loginName:" + loginName + ", anxinUserId:" + anxinUserId);
+                logger.warn("project code is expired. loginName:" + loginName + ", anxinUserId:" + anxinUserId);
                 return failBaseDto("验证码已过期，请重新获取");
             }
 
