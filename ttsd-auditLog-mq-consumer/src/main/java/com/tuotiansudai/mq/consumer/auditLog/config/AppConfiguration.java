@@ -9,7 +9,6 @@ import redis.clients.jedis.JedisPoolConfig;
 @ComponentScan(basePackages = {
         "com.tuotiansudai.log.repository",
         "com.tuotiansudai.util",
-        "com.tuotiansudai.cache",
         "com.tuotiansudai.client"
 })
 @PropertySource(

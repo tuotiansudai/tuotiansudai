@@ -1,4 +1,4 @@
-package com.tuotiansudai.util.quartz;
+package com.tuotiansudai.quartz;
 
 import org.quartz.impl.jdbcjobstore.InvalidConfigurationException;
 import org.quartz.impl.jdbcjobstore.JobStoreTX;
@@ -16,7 +16,11 @@ public class JobStoreBuilder implements InitializingBean {
 
     private static final String Job_Store_Table_Prefix = "QRTZ_";
 
-    private DataSource dataSource;
+    private final DataSource dataSource;
+
+    public JobStoreBuilder(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
     public JobStore buildJdbcJobStore(String schedulerName) {
         return buildJdbcJobStore(schedulerName, 60000, 20, true, 15000);
@@ -49,9 +53,5 @@ public class JobStoreBuilder implements InitializingBean {
 
     public DataSource getDataSource() {
         return dataSource;
-    }
-
-    public void setDataSource(DataSource dataSource) {
-        this.dataSource = dataSource;
     }
 }

@@ -19,6 +19,7 @@ import com.tuotiansudai.enums.PushType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.job.AdvanceRepayJob;
+import com.tuotiansudai.job.JobManager;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.job.NormalRepayJob;
 import com.tuotiansudai.message.EventMessage;
@@ -46,7 +47,6 @@ import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.InterestCalculator;
-import com.tuotiansudai.util.JobManager;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.quartz.SchedulerException;
@@ -421,13 +421,13 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
     }
 
     @Override
-    public BaseDto<PayDataDto> asyncAdvanceRepayPaybackCallback(long notifyRequestId){
+    public BaseDto<PayDataDto> asyncAdvanceRepayPaybackCallback(long notifyRequestId) {
         AdvanceRepayNotifyRequestModel model = advanceRepayNotifyMapper.findById(notifyRequestId);
         if (updateAdvanceRepayNotifyRequestStatus(model)) {
             try {
-               if(!this.processOneInvestPaybackCallback(model)){
-                   fatalLog("advance repay callback, processOneInvestPaybackCallback fail. investRepayId:" + model.getOrderId(), null);
-               }
+                if (!this.processOneInvestPaybackCallback(model)) {
+                    fatalLog("advance repay callback, processOneInvestPaybackCallback fail. investRepayId:" + model.getOrderId(), null);
+                }
             } catch (Exception e) {
                 fatalLog("advance repay callback, processOneInvestPaybackCallback error. investRepayId:" + model.getOrderId(), e);
             }
@@ -451,7 +451,7 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
         return true;
     }
 
-    private boolean processOneInvestPaybackCallback(AdvanceRepayNotifyRequestModel callbackRequestModel){
+    private boolean processOneInvestPaybackCallback(AdvanceRepayNotifyRequestModel callbackRequestModel) {
 
         long investRepayId = Long.parseLong(callbackRequestModel.getOrderId().split(REPAY_ORDER_ID_SEPARATOR)[0]);
         InvestRepayModel currentInvestRepay = investRepayMapper.findById(investRepayId);
@@ -473,7 +473,7 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
         } catch (Exception e) {
             logger.error(MessageFormat.format("[Advance Repay {0}] processInvestRepay fail ({1}) status({2})",
                     String.valueOf(loanRepayId), String.valueOf(investRepayId), currentInvestRepay.getStatus().name()));
-           return false;
+            return false;
         }
         String redisKey = MessageFormat.format(REPAY_REDIS_KEY_TEMPLATE, String.valueOf(loanRepayId));
         redisWrapperClient.hset(redisKey, String.valueOf(investRepayId), SyncRequestStatus.SUCCESS.name());

@@ -31,7 +31,7 @@ import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
-import com.tuotiansudai.util.JobManager;
+import com.tuotiansudai.job.JobManager;
 import com.tuotiansudai.util.UUIDGenerator;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -262,7 +262,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
             String projectCode = redisWrapperClient.get(TEMP_PROJECT_CODE_KEY + loginName);
 
             if (StringUtils.isEmpty(projectCode)) {
-                logger.error("project code is expired. loginName:" + loginName + ", anxinUserId:" + anxinUserId);
+                logger.warn("project code is expired. loginName:" + loginName + ", anxinUserId:" + anxinUserId);
                 return failBaseDto("验证码已过期，请重新获取");
             }
 
