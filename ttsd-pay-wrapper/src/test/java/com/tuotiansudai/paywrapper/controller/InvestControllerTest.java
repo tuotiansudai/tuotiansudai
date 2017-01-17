@@ -594,6 +594,7 @@ public class InvestControllerTest {
         lm.setFundraisingEndTime(new Date());
         lm.setStatus(LoanStatus.RAISING);
         lm.setPledgeType(PledgeType.HOUSE);
+        lm.setProductType(ProductType._180);
         loanMapper.create(lm);
     }
 

@@ -13,7 +13,7 @@
         </div>
 
     <footer class="fr">
-        拓天速贷客服中心
+        拓天速贷运营中心
         <br/>
         <span class="update-time"> ${(announce.updatedTime?string("yyyy年MM月dd日"))!}</span></footer>
     </div>

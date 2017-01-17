@@ -6,7 +6,6 @@ var objectAssign = require('object-assign');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var CopyWebpackPlugin = require('copy-webpack-plugin'); //复制文件
 var CleanWebpackPlugin = require('clean-webpack-plugin');  //清空文件夹里的文件
-var libsObj=require('./libsConfig.js');
 
 // console.log(libsObj);
 var basePath = path.join(__dirname, 'resources'),
@@ -26,13 +25,14 @@ var outputPath=path.join(basePath, 'develop'),//打包文件路径
 	webpackdevServer='',
 	plugins=[];
 var outFilename="[name].js";
-const NODE_ENV=process.env.NODE_ENV;
+var NODE_ENV=process.env.NODE_ENV;
 
 /**
  * 动态查找所有入口文件
  */
 
 var files = glob.sync(path.join(staticPath, '*/js/*.jsx'));
+var pluginFiles = glob.sync(path.join(staticPath, '*/plugins/*.js'));
 var newEntries = {};
 
 files.forEach(function(file){
@@ -48,44 +48,17 @@ files.forEach(function(file){
 		newEntries[substr] = file;
 	}
 });
+//无需打包，只需要复制文件
+// pluginFiles.forEach(function(file) {
+// 	var substr = file.match(/resources\/static(\S*)\.dll\.js/)[1];
+// 	newEntries[substr] = file;
+// });
 
 commonOptions.entry = newEntries;
 
-// plugins.push(new webpack.ProvidePlugin({
-// 	$: "jquery",
-// 	jQuery: "jquery",
-// 	"window.jQuery": "jquery"
-// }));
-
-//生成json文件的列表索引插件
-plugins.push(new AssetsPlugin({
-	filename: 'assets-resources.json',
-	fullPath: false,
-	includeManifest: 'manifest',
-	prettyPrint: true,
-	update: true,
-	path: outputPath,
-	metadata: {version: 123}
-}));
 plugins.push(new CopyWebpackPlugin([
-	{ from: staticPath+'/inlineImages',to: 'images'},
-	{ from: publicPathJS+'/libs/layer/skin',to: 'public/skin'}
+	{ from: publicPath+'/plugins',to: 'public/plugins'}
 ]));
-
-plugins.push(new webpack.DllReferencePlugin({
-	context: __dirname,
-	manifest: require(outputPath+'/public/plugins/jquery-manifest.json')
-}));
-
-// plugins.push(new webpack.DllReferencePlugin({
-// 	context: __dirname,
-// 	manifest: require(outputPath+'/public/plugins/echarts-manifest.json')
-// }));
-
-// plugins.push(new webpack.DllReferencePlugin({
-// 	context: __dirname,
-// 	manifest: require(outputPath+'/public/plugins/layer-manifest.json')
-// }));
 
 if(NODE_ENV=='production') {
 	//生产环境
@@ -99,7 +72,8 @@ if(NODE_ENV=='production') {
 		root: basePath,
 		verbose: true,
 		dry: false,
-		watch:true
+		watch:true,
+		exclude: ['plugins']
 	}));
 
 	//压缩
@@ -134,6 +108,42 @@ else if(NODE_ENV=='dev') {
 	};
 
 }
+
+//生成json文件的列表索引插件
+plugins.push(new AssetsPlugin({
+	filename: 'assets-resources.json',
+	fullPath: false,
+	includeManifest: 'manifest',
+	prettyPrint: true,
+	update: true,
+	path: outputPath,
+	metadata: {version: 123}
+}));
+plugins.push(new CopyWebpackPlugin([
+	{ from: staticPath+'/inlineImages',to: 'images'},
+	{ from: publicPathJS+'/libs/layer/skin',to: 'public/skin'}
+]));
+
+plugins.push(new webpack.DllReferencePlugin({
+	context: __dirname,
+	manifest: require(outputPath+'/public/plugins/jquery-manifest.json')
+}));
+
+// plugins.push(new webpack.DllReferencePlugin({
+// 	context: __dirname,
+// 	manifest: require(outputPath+'/public/plugins/echarts-manifest.json')
+// }));
+
+// plugins.push(new webpack.DllReferencePlugin({
+// 	context: __dirname,
+// 	manifest: require(outputPath+'/public/plugins/layer-manifest.json')
+// }));
+
+
+plugins.push(new webpack.DllReferencePlugin({
+	context: __dirname,
+	manifest: require(publicPath+'/plugins/jquery-manifest.json')
+}));
 
 module.exports = objectAssign(commonOptions, {
 	output: {
@@ -178,25 +188,7 @@ module.exports = objectAssign(commonOptions, {
 			pointStyle:path.join(pointPath, 'styles'),
 
 			mobileJs:path.join(mobilePath, 'js'),
-			mobileStyle:path.join(mobilePath, 'styles'),
-
-			text: libsObj.text,
-			clipboard: libsObj.clipboard,
-			md5: libsObj.md5,
-			qrcode: libsObj.qrcode,
-			jqueryValidate: libsObj.jqueryValidate,
-			jqueryForm: libsObj.jqueryForm,
-			autoNumeric: libsObj.autoNumeric,
-			mustache: libsObj.mustache,
-			moment: libsObj.moment,
-			daterangepicker: libsObj.daterangepicker,
-			layer:libsObj.layer,
-			echarts: libsObj.echarts,
-			fullPage:libsObj.fullPage,
-			swiper:libsObj.swiper,
-			rotate: libsObj.rotate,
-			template:libsObj.template,
-			fancybox:libsObj.fancybox
+			mobileStyle:path.join(mobilePath, 'styles')
 
 		}
 	},

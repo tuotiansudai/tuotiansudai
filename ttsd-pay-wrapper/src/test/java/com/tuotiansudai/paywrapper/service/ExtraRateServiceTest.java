@@ -126,6 +126,29 @@ public class ExtraRateServiceTest{
     }
 
     @Test
+    public void shouldNormalRepayStatusIsComplete(){
+        DateTime recheckTime = new DateTime().withDate(2016, 3, 1);
+        LoanModel fakeLoan = this.createFakeLoan(LoanType.LOAN_INTEREST_MONTHLY_REPAY, 1000000, 2, 0.12, recheckTime.toDate());
+        long loanRepay1ExpectedInterest = 1000;
+        long loanRepay2ExpectedInterest = 1000;
+        LoanRepayModel loanRepay1 = this.getFakeLoanRepayModel(idGenerator.generate(), fakeLoan.getId(), 1, 0, loanRepay1ExpectedInterest, new DateTime().withTime(23, 59, 59, 0).toDate(), new DateTime().withMillisOfSecond(0).toDate(), RepayStatus.COMPLETE);
+        loanRepay1.setActualInterest(loanRepay1ExpectedInterest);
+        LoanRepayModel loanRepay2 = this.getFakeLoanRepayModel(idGenerator.generate(), fakeLoan.getId(), 2, fakeLoan.getLoanAmount(), loanRepay2ExpectedInterest, new DateTime().plusDays(30).withTime(23, 59, 59, 0).toDate(), loanRepay1.getActualRepayDate(), RepayStatus.REPAYING);
+        loanRepayMapper.create(Lists.newArrayList(loanRepay1, loanRepay2));
+        UserModel userModel = this.createFakeUser("investor", 1000000, 0);
+        InvestModel investModel = this.createFakeInvest(fakeLoan.getId(), null, 1000000, userModel.getLoginName(), recheckTime.minusDays(10).toDate(), InvestStatus.SUCCESS, TransferStatus.TRANSFERABLE);
+        this.createFakeInvestExtraRate(fakeLoan.getId(), investModel.getId(), investModel.getAmount(), investModel.getLoginName(),RepayStatus.REPAYING);
+        ExtraRateNotifyRequestModel extraRateNotifyRequestModel = this.getFakeExtraRateNotifyRequestModel(investModel.getId());
+        extraRateNotifyRequestMapper.create(extraRateNotifyRequestModel);
+
+        extraRateService.normalRepay(loanRepay2.getId());
+
+        extraRateService.asyncExtraRateInvestCallback();
+        InvestExtraRateModel investExtraRateModel = investExtraRateMapper.findByInvestId(investModel.getId());
+        assertThat(investExtraRateModel.getStatus(),is(RepayStatus.COMPLETE));
+
+    }
+    @Test
     public void shouldNormalRepayOk() throws PayException{
         DateTime recheckTime = new DateTime().withDate(2016, 3, 1);
         LoanModel fakeLoan = this.createFakeLoan(LoanType.LOAN_INTEREST_MONTHLY_REPAY, 1000000, 2, 0.12, recheckTime.toDate());
@@ -137,7 +160,7 @@ public class ExtraRateServiceTest{
         loanRepayMapper.create(Lists.newArrayList(loanRepay1, loanRepay2));
         UserModel userModel = this.createFakeUser("investor", 1000000, 0);
         InvestModel investModel = this.createFakeInvest(fakeLoan.getId(), null, 1000000, userModel.getLoginName(), recheckTime.minusDays(10).toDate(), InvestStatus.SUCCESS, TransferStatus.TRANSFERABLE);
-        this.createFakeInvestExtraRate(fakeLoan.getId(), investModel.getId(), investModel.getAmount(), investModel.getLoginName());
+        this.createFakeInvestExtraRate(fakeLoan.getId(), investModel.getId(), investModel.getAmount(), investModel.getLoginName(),RepayStatus.REPAYING);
         ExtraRateNotifyRequestModel extraRateNotifyRequestModel = this.getFakeExtraRateNotifyRequestModel(investModel.getId());
         extraRateNotifyRequestMapper.create(extraRateNotifyRequestModel);
 
@@ -173,7 +196,7 @@ public class ExtraRateServiceTest{
         loanRepayMapper.create(Lists.newArrayList(loanRepay1, loanRepay2));
         UserModel userModel = this.createFakeUser("investor", 1000000, 0);
         InvestModel investModel = this.createFakeInvest(fakeLoan.getId(), null, 1000000, userModel.getLoginName(), recheckTime.minusDays(10).toDate(), InvestStatus.SUCCESS, TransferStatus.SUCCESS);
-        InvestExtraRateModel investExtraRateModel = this.createFakeInvestExtraRate(fakeLoan.getId(), investModel.getId(), investModel.getAmount(), investModel.getLoginName());
+        InvestExtraRateModel investExtraRateModel = this.createFakeInvestExtraRate(fakeLoan.getId(), investModel.getId(), investModel.getAmount(), investModel.getLoginName(),RepayStatus.REPAYING);
         investExtraRateModel.setTransfer(true);
         investExtraRateMapper.update(investExtraRateModel);
 
@@ -202,7 +225,7 @@ public class ExtraRateServiceTest{
         loanRepayMapper.create(Lists.newArrayList(loanRepay1, loanRepay2));
         UserModel userModel = this.createFakeUser("investor", 1000000, 0);
         InvestModel investModel = this.createFakeInvest(fakeLoan.getId(), null, 1000000, userModel.getLoginName(), recheckTime.minusDays(10).toDate(), InvestStatus.SUCCESS, TransferStatus.SUCCESS);
-        this.createFakeInvestExtraRate(fakeLoan.getId(), investModel.getId(), investModel.getAmount(), investModel.getLoginName());
+        this.createFakeInvestExtraRate(fakeLoan.getId(), investModel.getId(), investModel.getAmount(), investModel.getLoginName(),RepayStatus.REPAYING);
 
         extraRateService.normalRepay(loanRepay1.getId());
 
@@ -229,7 +252,7 @@ public class ExtraRateServiceTest{
         loanRepayMapper.create(Lists.newArrayList(loanRepay1, loanRepay2));
         UserModel userModel = this.createFakeUser("investor", 1000000, 0);
         InvestModel investModel = this.createFakeInvest(fakeLoan.getId(), null, 1000000, userModel.getLoginName(), recheckTime.minusDays(10).toDate(), InvestStatus.SUCCESS, TransferStatus.TRANSFERABLE);
-        this.createFakeInvestExtraRate(fakeLoan.getId(), investModel.getId(), investModel.getAmount(), investModel.getLoginName());
+        this.createFakeInvestExtraRate(fakeLoan.getId(), investModel.getId(), investModel.getAmount(), investModel.getLoginName(),RepayStatus.REPAYING);
 
         ExtraRateNotifyRequestModel extraRateNotifyRequestModel = this.getFakeExtraRateNotifyRequestModel(investModel.getId());
         extraRateNotifyRequestMapper.create(extraRateNotifyRequestModel);
@@ -267,7 +290,7 @@ public class ExtraRateServiceTest{
         loanRepayMapper.create(Lists.newArrayList(loanRepay1, loanRepay2));
         UserModel userModel = this.createFakeUser("investor", 1000000, 0);
         InvestModel investModel = this.createFakeInvest(fakeLoan.getId(), null, 1000000, userModel.getLoginName(), recheckTime.minusDays(10).toDate(), InvestStatus.SUCCESS, TransferStatus.SUCCESS);
-        InvestExtraRateModel investExtraRateModel = this.createFakeInvestExtraRate(fakeLoan.getId(), investModel.getId(), investModel.getAmount(), investModel.getLoginName());
+        InvestExtraRateModel investExtraRateModel = this.createFakeInvestExtraRate(fakeLoan.getId(), investModel.getId(), investModel.getAmount(), investModel.getLoginName(),RepayStatus.REPAYING);
         investExtraRateModel.setTransfer(true);
         investExtraRateMapper.update(investExtraRateModel);
 
@@ -292,7 +315,7 @@ public class ExtraRateServiceTest{
         UserModel transferee = this.createFakeUser("transferee", 1000000, 0);
         InvestModel fakeTransferInvest = this.createFakeInvest(fakeLoan.getId(), null, 1000000, transferrer.getLoginName(), recheckTime.minusDays(10).toDate(), InvestStatus.SUCCESS, TransferStatus.SUCCESS);
         InvestModel fakeTransfeeInvest = this.createFakeInvest(fakeLoan.getId(), fakeTransferInvest.getId(), 1000000, transferee.getLoginName(), recheckTime.minusDays(10).toDate(), InvestStatus.SUCCESS, TransferStatus.TRANSFERRING);
-        this.createFakeInvestExtraRate(fakeLoan.getId(), fakeTransferInvest.getId(), fakeTransferInvest.getAmount(), fakeTransferInvest.getLoginName());
+        this.createFakeInvestExtraRate(fakeLoan.getId(), fakeTransferInvest.getId(), fakeTransferInvest.getAmount(), fakeTransferInvest.getLoginName(),RepayStatus.REPAYING);
         extraRateService.transferPurchase(fakeTransfeeInvest.getId());
 
         InvestExtraRateModel investExtraRateModel = investExtraRateMapper.findByInvestId(fakeTransferInvest.getId());
@@ -305,7 +328,7 @@ public class ExtraRateServiceTest{
         return fakeLoanRepay;
     }
 
-    private InvestExtraRateModel createFakeInvestExtraRate(long loanId, long investId, long amount, String loginName) {
+    private InvestExtraRateModel createFakeInvestExtraRate(long loanId, long investId, long amount, String loginName,RepayStatus status) {
         InvestExtraRateModel investExtraRateModel = new InvestExtraRateModel();
         investExtraRateModel.setLoanId(loanId);
         investExtraRateModel.setInvestId(investId);
@@ -316,6 +339,7 @@ public class ExtraRateServiceTest{
         investExtraRateModel.setExpectedFee(5);
         investExtraRateModel.setRepayDate(new DateTime().plusDays(20).toDate());
         investExtraRateModel.setCreatedTime(new Date());
+        investExtraRateModel.setStatus(status);
         investExtraRateMapper.create(investExtraRateModel);
         return investExtraRateModel;
     }

@@ -72,7 +72,7 @@ def mk_static_zip():
     local('cd ./ttsd-mobile-api/src/main/webapp && zip -r static_api.zip api/')
     local('cd ./ttsd-activity-web/src/main/webapp && zip -r static_activity.zip activity/')
     local('cd ./ttsd-point-web/src/main/webapp && zip -r static_point.zip point/')
-    local('cd ./ttsd-ask-web/src/main/webapp && zip -r static_ask.zip ask/')
+    local('cd ./ttsd-frontend-manage/resources/prod && zip -r static_ask.zip *')
 
 
 def mk_signin_zip():
@@ -106,7 +106,7 @@ def deploy_static():
     upload_project(local_dir='./ttsd-mobile-api/src/main/webapp/static_api.zip', remote_dir='/workspace')
     upload_project(local_dir='./ttsd-activity-web/src/main/webapp/static_activity.zip', remote_dir='/workspace')
     upload_project(local_dir='./ttsd-point-web/src/main/webapp/static_point.zip', remote_dir='/workspace')
-    upload_project(local_dir='./ttsd-ask-web/src/main/webapp/static_ask.zip', remote_dir='/workspace')
+    upload_project(local_dir='./ttsd-frontend-manage/resources/prod/static_ask.zip', remote_dir='/workspace')
     with cd('/workspace'):
         sudo('rm -rf static/')
         sudo('unzip static.zip -d static')
@@ -342,8 +342,7 @@ def get_7days_before(date_format="%Y-%m-%d"):
 def remove_tomcat_logs():
     iso_date = get_7days_before()
     with cd('/var/log/tomcat'):
-        run('rm -f *{0}*.log'.format(iso_date))
-        run('rm -f *{0}*.txt'.format(iso_date))
+        run('rm -f *{0}*'.format(iso_date))
 
 
 def remove_nginx_logs():
@@ -392,7 +391,7 @@ def remove_api_logs():
 def remove_worker_logs():
     iso_date = get_7days_before()
     with cd('/var/log/job-worker'):
-        run('rm -f *{0}.log'.format(iso_date))
+        run('rm -f *{0}*'.format(iso_date))
 
 
 @roles('static')

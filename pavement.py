@@ -71,14 +71,14 @@ def remove_old_container(name):
 
 
 @task
-def qa():
+def qa(options):
     """
     Deploy Staging/QA environment
     """
     from scripts.deployment import Deployment
 
     deployment = Deployment()
-    deployment.deploy('QA')
+    deployment.deploy(options.env)
 
 @task
 def dev():

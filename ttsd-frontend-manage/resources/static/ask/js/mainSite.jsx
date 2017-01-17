@@ -7,7 +7,9 @@ import "askJs/components/create_question";
 
 //刷新验证码
 $('#imageCaptcha').on('click',function() {
-    refreshCaptcha('/captcha');
+    refreshCaptcha(this,'/captcha');
+    this.parentElement.children[0].value='';
+
 });
 
 

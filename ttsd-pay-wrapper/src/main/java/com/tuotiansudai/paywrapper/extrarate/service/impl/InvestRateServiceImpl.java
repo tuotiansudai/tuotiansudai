@@ -5,6 +5,7 @@ import com.tuotiansudai.paywrapper.extrarate.service.InvestRateService;
 import com.tuotiansudai.paywrapper.service.SystemBillService;
 import com.tuotiansudai.repository.mapper.InvestExtraRateMapper;
 import com.tuotiansudai.repository.model.InvestExtraRateModel;
+import com.tuotiansudai.repository.model.RepayStatus;
 import com.tuotiansudai.repository.model.SystemBillBusinessType;
 import com.tuotiansudai.repository.model.SystemBillDetailTemplate;
 import com.tuotiansudai.util.AmountTransfer;
@@ -40,7 +41,8 @@ public class InvestRateServiceImpl implements InvestRateService {
 
     private void updateInvestExtraRate(InvestExtraRateModel investExtraRateModel){
         investExtraRateModel.setActualRepayDate(new Date());
-        investExtraRateMapper.updateActualRepayDate(investExtraRateModel);
+        investExtraRateModel.setStatus(RepayStatus.COMPLETE);
+        investExtraRateMapper.updateActualRepayDateStatus(investExtraRateModel);
     }
 
     public void updateInvestExtraRate(InvestExtraRateModel investExtraRateModel, long actualInterest, long actualFee, long amount) {
