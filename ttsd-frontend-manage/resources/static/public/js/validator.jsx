@@ -47,19 +47,32 @@ function removeElement(element) {
                 showErrorAfter && removeElement(this);
             }
         },
-        isNumber:function(errorMsg,len,showErrorAfter) {
-                let length = len || 1;
+        isNumber:function(errorMsg,length,showErrorAfter) {
+            if(length) {
                 var reg=new RegExp('^\\d{'+length+'}$','g');
                 if(reg.test(this.value)) {
                     globalFun.removeClass(this,'error');
-                    showErrorAfter && createElement(this,errorMsg);
+                    showErrorAfter && removeElement(this);
                 }
                 else {
                     globalFun.addClass(this,'error');
-                    showErrorAfter && removeElement(this);
+                    showErrorAfter && createElement(this,errorMsg);
                     return errorMsg;
                 }
+            }
+            else {
+                //判断是非为数字，无需固定判断长度
+               if(/^\d+[.]{0,1}\d*$/.test(this.value)) {
+                   globalFun.removeClass(this,'error');
+                   showErrorAfter && removeElement(this);
+               }
+               else {
+                   globalFun.addClass(this,'error');
+                   showErrorAfter && createElement(this,errorMsg);
+                   return errorMsg;
+               }
 
+            }
         },
         isChinese:function (errorMsg,showErrorAfter) {
             if(/^[\u4E00-\u9FA5]+$/.test(this.value)) {

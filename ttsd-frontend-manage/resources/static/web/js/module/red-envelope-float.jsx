@@ -1,6 +1,6 @@
 import 'webModule/drag';
 import {ValidatorForm} from 'publicJs/validator';
-import {useAjax} from 'publicJs/common';
+import {useAjax,refreshCaptcha} from 'publicJs/common';
 
 let $redEnvelopFrame=$('#redEnvelopFloatFrame');
 
@@ -123,7 +123,43 @@ let $redEnvelopFrame=$('#redEnvelopFloatFrame');
 
 
 //意见反馈
-let feedForm=globalFun.$('#feedForm');
+(function() {
+    let $feedbackConatiner=$('#feedbackConatiner');
+    let feedForm=globalFun.$('#feedForm');
+    let $typeList=$('.type-list',$feedbackConatiner);
+    let imageCaptcha=globalFun.$('#imageCaptcha');
+
+    //弹出已经反馈层
+    $('.fix-nav-list .show-feed',$redEnvelopFrame).on('click', function(event) {
+        event.preventDefault();
+        //刷新验证码
+
+        refreshCaptcha(imageCaptcha,'/feedback/captcha?');
+        var $self=$(this);
+        $self.addClass('active');
+        $feedbackConatiner.show();
+    });
+
+    //模拟select下拉框
+    $('dt,i',$typeList).on('click', function(event) {
+        event.preventDefault();
+        var $self=$(this),
+            $list=$self.siblings('dd');
+        $list.slideToggle('fast');
+    });
+
+    $('dd',$typeList).on('click', function(event) {
+        event.preventDefault();
+        var $self=$(this),
+            $parent=$self.parent('.type-list'),
+            $dt=$parent.find('dt'),
+            $dd=$parent.find('dd');
+        $dt.text($self.text()).attr('data-type',$self.attr('data-type'));
+        $dd.hide();
+    });
+
+})();
+
 
 // define(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension','drag'], function ($,layer) {
 //     (function() {

@@ -77,7 +77,7 @@
 		<div class="content-list">
 			<label class="name-text">验证码：</label>
 			<input type="text" class="code-text int-text" name="captcha" value="" id="captchaText" maxlength="5">
-			<img src="" id="captcha">
+			<img src="" id="imageCaptcha">
 			<label class="error captcha-error" id="captchaError">验证码错误！</label>
 		</div>
 		<div class="content-list tc">
