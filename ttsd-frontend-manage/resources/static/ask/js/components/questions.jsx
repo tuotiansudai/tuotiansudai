@@ -1,5 +1,4 @@
 /* hot question for mobile */
-var $=window.jquery_library(1);
 var $hotCategory=$('.hot-question-category');
 $hotCategory.find('.m-title').on('click',function() {
     $hotCategory.find('.qa-list').toggle();

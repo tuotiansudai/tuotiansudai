@@ -53,7 +53,7 @@
                         <@global.isNotAnonymous>
                             <input type="text" placeholder="请输入验证码" class="captcha input-short" name="captcha" maxlength="5">
                         </@global.isNotAnonymous>
-                        <img src="/captcha" class="captchaImg" alt="">
+                        <img src="/captcha" class="captchaImg" alt="" id="imageCaptcha">
                         <span class="error " style="display: none">请输入验证码</span>
                     </dd>
                     <dd class="tc ask-button">
@@ -62,7 +62,7 @@
                         </@global.isAnonymous>
 
                         <@global.isNotAnonymous>
-                            <button class="btn formSubmit" disabled type="button">提问</button>
+                            <button class="btn formSubmit" name="btnQuestion" disabled type="button">提问</button>
                         </@global.isNotAnonymous>
 
                     </dd>

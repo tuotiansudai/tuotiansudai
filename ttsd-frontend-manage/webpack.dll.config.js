@@ -11,7 +11,7 @@ module.exports = {
         'jquery': ['jquery','layer']
     },
     output: {
-        path: path.join(publicPath, 'plugins'),
+        path: path.join(publicPath, 'js/plugins'),
         filename: '[name].dll.js',
         library: '[name]_library'
     },
@@ -22,9 +22,17 @@ module.exports = {
             "window.jQuery": "jquery"
         }),
         new webpack.DllPlugin({
-            path: path.join(publicPath, 'plugins', '[name]-manifest.json'),
+            path: path.join(publicPath, 'js/plugins', '[name]-manifest.json'),
             name: '[name]_library',
             context: __dirname
+        }),
+        //压缩
+        new webpack.optimize.UglifyJsPlugin({
+            compress: {
+                warnings: false,
+                drop_debugger: true,
+                drop_console: true
+            }
         })
     ]
 };

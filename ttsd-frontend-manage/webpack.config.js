@@ -7,6 +7,7 @@ var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var CopyWebpackPlugin = require('copy-webpack-plugin'); //复制文件
 var CleanWebpackPlugin = require('clean-webpack-plugin');  //清空文件夹里的文件
 
+// console.log(libsObj);
 var basePath = path.join(__dirname, 'resources'),
 	staticPath = path.join(basePath, 'static'),
 	publicPath=path.join(staticPath, 'public'),
@@ -25,12 +26,13 @@ var outputPath=path.join(basePath, 'develop'),//打包文件路径
 	plugins=[];
 var outFilename="[name].js";
 var NODE_ENV=process.env.NODE_ENV;
+
 /**
  * 动态查找所有入口文件
  */
 
 var files = glob.sync(path.join(staticPath, '*/js/*.jsx'));
-var pluginFiles = glob.sync(path.join(staticPath, '*/plugins/*.js'));
+// var pluginFiles = glob.sync(path.join(staticPath, '*/plugins/*.js'));
 var newEntries = {};
 
 files.forEach(function(file){
@@ -46,21 +48,13 @@ files.forEach(function(file){
 		newEntries[substr] = file;
 	}
 });
-
-pluginFiles.forEach(function(file) {
-	var substr = file.match(/resources\/static(\S*)\.dll\.js/)[1];
-	console.log(substr);
-	newEntries[substr] = file;
-
-});
+//无需打包，只需要复制文件
+// pluginFiles.forEach(function(file) {
+// 	var substr = file.match(/resources\/static(\S*)\.dll\.js/)[1];
+// 	newEntries[substr] = file;
+// });
 
 commonOptions.entry = newEntries;
-
-plugins.push(new webpack.DefinePlugin({
-	'process.env': {
-		'NODE_ENV': '""'
-	}
-}));
 
 if(NODE_ENV=='production') {
 	//生产环境
@@ -108,9 +102,10 @@ else if(NODE_ENV=='dev') {
 		// 	}
 		// }
 	};
-
 }
-
+plugins.push(new CopyWebpackPlugin([
+	{ from: publicPathJS+'/plugins',to: 'public/plugins'}
+]));
 //生成json文件的列表索引插件
 plugins.push(new AssetsPlugin({
 	filename: 'assets-resources.json',
@@ -124,8 +119,19 @@ plugins.push(new AssetsPlugin({
 
 plugins.push(new webpack.DllReferencePlugin({
 	context: __dirname,
-	manifest: require(publicPath+'/plugins/jquery-manifest.json')
+	manifest: require(publicPathJS+'/plugins/jquery-manifest.json')
 }));
+
+// plugins.push(new webpack.DllReferencePlugin({
+// 	context: __dirname,
+// 	manifest: require(outputPath+'/public/plugins/echarts-manifest.json')
+// }));
+
+// plugins.push(new webpack.DllReferencePlugin({
+// 	context: __dirname,
+// 	manifest: require(outputPath+'/public/plugins/layer-manifest.json')
+// }));
+
 
 module.exports = objectAssign(commonOptions, {
 	output: {

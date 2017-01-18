@@ -47,16 +47,18 @@ getJsonFileList.prototype.formatHandler = function(textFile) {
             this.jsonFormat['cssFile'][outFileName]=keyNameObj.css;
         }
     }
+    this.addJqueryPlugin(outputPath+'/public/plugins'); //读取jquery文件
+    // console.log(this.jsonFormat);
+
     var strJsonObj=JSON.stringify(this.jsonFormat);
     this.writeFile(strJsonObj);
 }
 
-getJsonFileList.prototype.readPluginFloder=function(path) {
-    // var pluginPath=outputPath+'/plugins';
+getJsonFileList.prototype.addJqueryPlugin=function(path) {
+
     var filesList=this.filesList;
     var files = fs.readdirSync(path);//需要用到同步读取
     files.forEach(function(file) {
-
         var states = fs.statSync(path+'/'+file);
         if(states.isDirectory())
         {
@@ -67,27 +69,21 @@ getJsonFileList.prototype.readPluginFloder=function(path) {
                 len=suffix.length;
             if(suffix[len-1]=='js') {
                 var keyName=suffix[0];
-                this.jsonFormat['jsFile'][keyName]='/plugins/'+file;
+                this.jsonFormat['jsFile'][keyName]='/public/plugins/'+file;
             }
         }
-    }.bind(this));
+    }.bind(this))
+
 }
 
 getJsonFileList.prototype.init=function() {
-    var that=this,
-        pluginUrl=outputPath+'/plugins';
+    var that=this;
     //判断打包的时候文件路径是否存在
     fs.exists(this.mapPath, function (exists) {
         if(exists) {
             that.readFile();
         }
     });
-    // fs.exists(pluginUrl, function (exists) {
-    //     if(exists) {
-    //         that.readPluginFloder(outputPath+'/plugins');
-    //     }
-    // });
-
 }
 
 //ask,web,activity,point,mobile站点打包生成的的json文件名
