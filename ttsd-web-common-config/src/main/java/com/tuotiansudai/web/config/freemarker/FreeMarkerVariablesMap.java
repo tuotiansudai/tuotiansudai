@@ -108,9 +108,14 @@ public class FreeMarkerVariablesMap extends MapFactoryBean implements ResourceLo
         try {
             Response response = okHttpClient.newCall(request).execute();
             if (!HttpStatus.valueOf(response.code()).is2xxSuccessful()) {
-                throw new RuntimeException(MessageFormat.format("static server response is {0}, request url ", response.code(), this.staticResourceDiscoveryUrl));
+                throw new RuntimeException(MessageFormat.format("static server response is {0}, request url {1}", response.code(), this.staticResourceDiscoveryUrl));
             }
+
             String responseBody = response.body().string();
+            logger.info(MessageFormat.format("static server response is {0}, request url {1}, response {2}",
+                    response.code(),
+                    this.staticResourceDiscoveryUrl,
+                    responseBody));
             return JsonConverter.readValue(responseBody, StaticResourceDto.class);
         } catch (IOException e) {
             throw new RuntimeException(e.getLocalizedMessage(), e);
