@@ -243,7 +243,7 @@ public class ProductServiceImpl implements ProductService {
                         .stream()
                         .map(m -> {
                             CouponModel couponModel = couponMapper.findExchangeableCouponById(m.getCouponId());
-                            return new ExchangeCouponView(m.getPoints(), m.getSeq(), m.getImageUrl(), m.getId(), couponModel);
+                            return new ExchangeCouponView(m.getPoints(), m.getActualPoints(), m.getSeq(), m.getImageUrl(), m.getId(), couponModel);
                         })
                         .map(this::convertProductShowItemDto)
                         .collect(Collectors.toList());
@@ -288,6 +288,7 @@ public class ProductServiceImpl implements ProductService {
                     if (null != couponModel) {
                         ExchangeCouponView exchangeCouponView = new ExchangeCouponView(
                                 productModelCoupon.getPoints(),
+                                productModelCoupon.getActualPoints(),
                                 productModelCoupon.getSeq(),
                                 productModelCoupon.getImageUrl(),
                                 id,
@@ -307,6 +308,7 @@ public class ProductServiceImpl implements ProductService {
             return new ProductOrderModel(
                     productShowItemDto.getId(),
                     productShowItemDto.getPoints(),
+                    productShowItemDto.getActualPoints(),
                     amount,
                     productShowItemDto.getPoints() * amount,
                     userAddressModel.getContact(),
@@ -320,6 +322,7 @@ public class ProductServiceImpl implements ProductService {
             return new ProductOrderModel(
                     productShowItemDto.getId(),
                     productShowItemDto.getPoints(),
+                    productShowItemDto.getActualPoints(),
                     amount,
                     productShowItemDto.getPoints() * amount,
                     userModel.getUserName(),
@@ -334,6 +337,7 @@ public class ProductServiceImpl implements ProductService {
             return new ProductOrderModel(
                     productModel.getId(),
                     productShowItemDto.getPoints(),
+                    productShowItemDto.getActualPoints(),
                     amount,
                     productShowItemDto.getPoints() * amount,
                     userModel.getUserName(),
@@ -470,6 +474,7 @@ public class ProductServiceImpl implements ProductService {
                 exchangeCouponView.getCouponModel().getTotalCount(),
                 exchangeCouponView.getCouponModel().getIssuedCount(),
                 exchangeCouponView.getExchangePoint(),
+                exchangeCouponView.getActualPoints(),
                 exchangeCouponView.getSeq(),
                 exchangeCouponView.getImageUrl(),
                 exchangeCouponView.getCouponModel().getCouponType(),

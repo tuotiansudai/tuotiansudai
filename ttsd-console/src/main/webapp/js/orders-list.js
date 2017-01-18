@@ -55,6 +55,13 @@ require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'csrf'], function ($)
         });
 
 
+        $('body').delegate('.btnShowAll', 'click', function (e) {
+            e.preventDefault();
+            var $self = $(this),
+                thisId = $self.attr('data-id');//data id
+            location.href = "/point-manage/coupon/" + thisId + "/detail";
+        });
+
         $('.export-product').click(function (e) {
             e.preventDefault();
             var $self = $(this),

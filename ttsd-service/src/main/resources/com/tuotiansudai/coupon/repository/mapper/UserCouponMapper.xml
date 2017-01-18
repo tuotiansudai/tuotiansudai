@@ -277,6 +277,9 @@
         <if test="mobile != null and mobile != ''">
             AND u.`mobile` = #{mobile}
         </if>
+        <if test="createdTime != null">
+            AND t.`created_time` = #{createdTime}
+        </if>
         <if test="registerStartTime != null">
             AND u.`register_time` >= #{registerStartTime}
         </if>
