@@ -267,11 +267,7 @@ if($questionDetailTag.length) {
         },function(responseData) {
             var response=responseData.data;
             if(response.status) {
-                popWindow('','成功采纳此条信息!',{ width:'200px'},true);
-                setTimeout(function() {
-                    $('.popWindow,.popWindow-overlay').fadeOut();
-                    window.location.reload();
-                },3000);
+                layer.msg('成功采纳此条信息');
 
             }
         });
@@ -294,7 +290,13 @@ if($questionDetailTag.length) {
     });
 
     $('.agree-ok-no',$questionDetailTag).on('click',function() {
-        popWindow('','<span class="clearfix">需要登录才能点赞哦～ </span><a href="https://tuotiansudai.com/login" class="btn-normal to-login">去登录</a>',{ width:'400px'});
+        layer.open({
+            type:'1',
+            area:['400px','300px'],
+            shadeClose: false,
+            content:'<span class="clearfix">需要登录才能点赞哦～ </span><a href="https://tuotiansudai.com/login" class="btn-normal to-login">去登录</a>'
+
+        });
     });
 }
 
