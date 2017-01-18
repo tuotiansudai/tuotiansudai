@@ -230,7 +230,7 @@ public class LoanServiceTest {
         verify(paySyncClient, times(1)).send(eq(ProjectTransferMapper.class), any(ProjectTransferRequestModel.class), eq(ProjectTransferResponseModel.class));
         verify(redisWrapperClient, times(1)).setnx(anyString(), anyString());
         verify(redisWrapperClient, times(2)).hset(anyString(), anyString(), anyString());
-        verify(redisWrapperClient, times(2)).hget(anyString(), anyString());
+        verify(redisWrapperClient, times(1)).hget(anyString(), anyString());
         assertTrue(baseDto1.getData().getStatus());
 
         loanModel.setStatus(LoanStatus.RECHECK);
@@ -249,6 +249,7 @@ public class LoanServiceTest {
         TriggeredJobBuilder triggeredJobBuilder = mock(TriggeredJobBuilder.class);
         BaseCallbackRequestModel baseCallbackRequestModel = new BaseCallbackRequestModel();
         baseCallbackRequestModel.setOrderId("123");
+        baseCallbackRequestModel.setRetCode("0000");
 
 
         when(triggeredJobBuilder.addJobData(anyObject(), anyLong())).thenReturn(triggeredJobBuilder);
