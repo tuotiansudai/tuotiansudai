@@ -64,7 +64,6 @@ public class RepaySuccessExtraMessageConsumer implements MessageConsumer {
         if (!result.isSuccess()) {
             logger.error("[还款MQ] RepaySuccess_Extra consume fail. loanRepayId: " + message);
             smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(MessageFormat.format("阶梯加息还款失败, loanRepayId:{0}", String.valueOf(repaySuccessMessage.getLoanRepayId()))));
-            throw new RuntimeException("invest callback consume fail. loanRepayId: " + message);
         }
 
         logger.info("[还款MQ] consume message success.");

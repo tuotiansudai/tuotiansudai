@@ -31,7 +31,7 @@ public class RepaySuccessModifyTransferMessageConsumer implements MessageConsume
 
     @Override
     public MessageQueue queue() {
-        return MessageQueue.RepaySuccess_ModifyTransfer;
+        return MessageQueue.RepaySuccess_ModifyTransferStatus;
     }
 
     @Transactional
@@ -40,7 +40,7 @@ public class RepaySuccessModifyTransferMessageConsumer implements MessageConsume
         logger.info("[还款MQ] receive message: {}: {}.", this.queue(), message);
 
         if (Strings.isNullOrEmpty(message)) {
-            logger.error("[还款MQ] RepaySuccess_ModifyTransfer receive message is empty");
+            logger.error("[还款MQ] RepaySuccess_ModifyTransferStatus receive message is empty");
             return;
         }
 
@@ -48,22 +48,21 @@ public class RepaySuccessModifyTransferMessageConsumer implements MessageConsume
         try {
             repaySuccessMessage = JsonConverter.readValue(message, RepaySuccessMessage.class);
             if (repaySuccessMessage.getLoanRepayId() == null) {
-                logger.error("[还款MQ] RepaySuccess_ModifyTransfer loanRepayId is empty, message:{}", message);
-                smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("放款修改债权转让状态失败,loanRepayId为空"));
+                logger.error("[还款MQ] RepaySuccess_ModifyTransferStatus loanRepayId is empty, message:{}", message);
+                smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("还款修改债权转让状态失败,loanRepayId为空"));
                 return;
             }
         } catch (IOException e) {
-            logger.error("[还款MQ] RepaySuccess_ModifyTransfer json convert RepaySuccessMessage fail, message:{}", message);
-            smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("放款修改债权转让状态失败,解析消息失败"));
+            logger.error("[还款MQ] RepaySuccess_ModifyTransferStatus json convert RepaySuccessMessage fail, message:{}", message);
+            smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("还款修改债权转让状态失败,解析消息失败"));
             return;
         }
 
         logger.info("[还款MQ] ready to consume message: .");
-        BaseDto<PayDataDto> result = payWrapperClient.advanceTransfer(repaySuccessMessage.getLoanRepayId());
+        BaseDto<PayDataDto> result = payWrapperClient.advanceModifyTransferStatus(repaySuccessMessage.getLoanRepayId());
         if (!result.isSuccess()) {
-            logger.error("[还款MQ] RepaySuccess_ModifyTransfer consume fail. loanRepayId: " + message);
-            smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(MessageFormat.format("放款修改债权转让状态失败, loanRepayId:{0}", String.valueOf(repaySuccessMessage.getLoanRepayId()))));
-            throw new RuntimeException("invest callback consume fail. loanRepayId: " + message);
+            logger.error("[还款MQ] RepaySuccess_ModifyTransferStatus consume fail. loanRepayId: " + message);
+            smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(MessageFormat.format("还款修改债权转让状态失败, loanRepayId:{0}", String.valueOf(repaySuccessMessage.getLoanRepayId()))));
         }
 
         logger.info("[还款MQ] consume message success.");

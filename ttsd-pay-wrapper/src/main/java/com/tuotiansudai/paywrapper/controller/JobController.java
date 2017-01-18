@@ -72,28 +72,6 @@ public class JobController {
         return this.investTransferPurchaseService.asyncPurchaseCallback(notifyRequestId);
     }
 
-    @RequestMapping(value = "/post_normal_repay", method = RequestMethod.POST)
-    @ResponseBody
-    public BaseDto<PayDataDto> postNormalRepay(@RequestBody long loanRepayId) {
-        boolean isSuccess = normalRepayService.paybackInvest(loanRepayId);
-        BaseDto<PayDataDto> dto = new BaseDto<>();
-        PayDataDto dataDto = new PayDataDto();
-        dataDto.setStatus(isSuccess);
-        dto.setData(dataDto);
-        return dto;
-    }
-
-    @RequestMapping(value = "/post_advance_repay", method = RequestMethod.POST)
-    @ResponseBody
-    public BaseDto<PayDataDto> postAdvanceRepay(@RequestBody long loanRepayId) {
-        boolean isSuccess = advanceRepayService.paybackInvest(loanRepayId);
-        BaseDto<PayDataDto> dto = new BaseDto<>();
-        PayDataDto dataDto = new PayDataDto();
-        dataDto.setStatus(isSuccess);
-        dto.setData(dataDto);
-        return dto;
-    }
-
     @ResponseBody
     @RequestMapping(value = "/loan-out-success-notify", method = RequestMethod.POST)
     public BaseDto<PayDataDto> loanOut(@RequestBody long loanId) {

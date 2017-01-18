@@ -38,7 +38,7 @@ public class AdvanceTransferServiceImpl implements AdvanceTransferService {
     SmsWrapperClient smsWrapperClient;
 
     @Override
-    public boolean modifyTransfer(long loanRepayId) {
+    public boolean modifyTransferStatus(long loanRepayId) {
         boolean result = true;
 
         logger.info(MessageFormat.format("[advanced repay {0}] return Value ({1}) aspect is starting...",
