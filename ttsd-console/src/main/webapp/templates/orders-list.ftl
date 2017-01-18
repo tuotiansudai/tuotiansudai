@@ -62,7 +62,7 @@
                 <#list orders as order>
                 <tr>
                     <td>${order.loginName}</td>
-                    <td>${order.actualPoints!}</td>
+                    <td>${(order.actualPoints * order.num)!}</td>
                     <td>${(order.createdTime?string('yyyy-MM-dd HH:mm:ss'))!}</td>
                     <td>${order.num?string('0')}</td>
                     <td>${order.contact}</td>

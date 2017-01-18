@@ -89,6 +89,7 @@
         SELECT po.id AS id,
         po.product_id AS product_id,
         po.points AS points,
+        po.actual_points AS actualPoints,
         po.num AS num,
         po.total_points AS total_points,
         po.created_time AS created_time,
