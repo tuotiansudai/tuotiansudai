@@ -11,14 +11,8 @@ import redis.clients.jedis.JedisPoolConfig;
         "com.tuotiansudai.util",
         "com.tuotiansudai.cache",
         "com.tuotiansudai.client",
-        "com.tuotiansudai.coupon",
-        "com.tuotiansudai.membership"
-})
-@PropertySource(
-        ignoreResourceNotFound = true, value = {
-        "classpath:ttsd-env.properties",
-        "classpath:ttsd-biz.properties"
-})
+        "com.tuotiansudai.coupon"})
+@PropertySource(ignoreResourceNotFound = true, value = {"classpath:ttsd-env.properties", "classpath:ttsd-biz.properties"})
 @EnableAspectJAutoProxy(exposeProxy = true)
 public class AppConfiguration {
 

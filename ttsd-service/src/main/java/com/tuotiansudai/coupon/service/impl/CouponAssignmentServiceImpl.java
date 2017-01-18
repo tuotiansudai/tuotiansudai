@@ -230,8 +230,6 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
                 // 发送MQ消息
                 .forEach(message -> mqWrapperClient.sendMessage(MessageQueue.CouponAssigning, message));
                 */
-
-        //((CouponAssignmentService) AopContext.currentProxy()).assign(loginName, couponModel.getId(), null);
     }
 
     private CouponModel sendCouponAssignMessage(CouponModel couponModel, String loginName){

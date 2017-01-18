@@ -1,4 +1,4 @@
-package com.tuotiansudai.mq.consumer.point;
+package com.tuotiansudai.mq.consumer.loan;
 
 import com.google.common.base.Strings;
 import com.tuotiansudai.exception.ReferrerRelationException;

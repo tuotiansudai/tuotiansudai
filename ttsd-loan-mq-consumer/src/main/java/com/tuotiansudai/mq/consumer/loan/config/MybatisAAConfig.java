@@ -45,7 +45,6 @@ public class MybatisAAConfig {
     public MapperScannerConfigurer aaMapperScannerConfigurer() {
         MapperScannerConfigurer configurer = new MapperScannerConfigurer();
         configurer.setBasePackage("com.tuotiansudai.repository.mapper," +
-                "com.tuotiansudai.repository.mapper," +
                 "com.tuotiansudai.membership.repository.mapper");
         configurer.setSqlSessionFactoryBeanName("aaSqlSessionFactory");
         return configurer;
