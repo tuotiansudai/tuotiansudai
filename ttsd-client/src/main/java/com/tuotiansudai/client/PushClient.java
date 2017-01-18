@@ -152,6 +152,8 @@ public class PushClient {
             }
         } while (++tryTimes < 4);
 
+        logger.error(MessageFormat.format("[Push] push failed, content {0}", payload.toJSON().getAsString()));
+
         return false;
     }
 }
