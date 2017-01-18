@@ -293,7 +293,10 @@ window.globalFun =new Proxy_GlobalFun();
 window.globalFun.init();
 
 window.jQuery = window.$ = window.jquery_library(1);
-
+window.layer = window.jquery_library(2);
+window.layer.config({
+    path: staticServer+'/public/'
+});
 // ********* cnzz统计 BEGIN ***********
 function cnzzPushConstructor() {
     this.trackClick=function(category, action, label) {
