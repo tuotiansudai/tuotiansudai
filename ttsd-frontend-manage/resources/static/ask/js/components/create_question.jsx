@@ -1,6 +1,5 @@
 /* create question */
 import {refreshCaptcha,useAjax} from "publicJs/common";
-import popWindow from "./popWindow";
 var $createQuestion=$('#createQuestion');
 var $questionDetailTag=$('#questionDetailTag');
 
@@ -241,11 +240,8 @@ if($questionDetailTag.length) {
             var response=responseData.data;
             $formAnswerSubmit.prop('disabled',false);
             if (response.status) {
-                popWindow('','回答成功!',{ width:'200px'},true);
-                setTimeout(function() {
-                    $('.popWindow,.popWindow-overlay').fadeOut();
-                    window.location.reload();
-                },3000);
+                layer.msg('回答成功');
+
             }
             else {
                 refreshCaptcha($formAnswer.find('.captchaImg')[0],'/captcha');

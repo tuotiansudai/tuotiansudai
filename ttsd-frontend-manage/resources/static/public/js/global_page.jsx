@@ -225,8 +225,9 @@ var web_globalFun = (function() {
         },
         //点击注销，退出登陆
         logOut:function() {
-            this.addEventHandler(this.$('#logout-link'),'click',function() {
-                this.$('#logout-form').submit();
+            var that=this;
+            that.addEventHandler(that.$('#logout-link'),'click',function() {
+                that.$('#logout-form').submit();
             });
         },
         decorateRadioCheck:function($input,$radioLabel) {
