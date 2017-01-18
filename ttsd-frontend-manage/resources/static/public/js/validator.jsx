@@ -109,6 +109,10 @@ function removeElement(element) {
             }
         },
         isMobile: function(errorMsg,showErrorAfter) {
+            //只验证手机号不验证是非为空
+            if(this.value=='') {
+                return '';
+            }
             if (!/(^1[0-9]{10}$)/.test(this.value)) {
                 globalFun.addClass(this,'error');
                 showErrorAfter && createElement(this,errorMsg);

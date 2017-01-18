@@ -68,6 +68,7 @@
 			</dl>
 		</div>
 		<div class="content-list">
+			<input type="hidden" name="type" >
 			<textarea class="text-area int-text" name="content" placeholder="欢迎反馈您遇到的问题，或者想要的功能（文字限制在14～200字）" maxlength="200" id="textArea"></textarea>
 		</div>
 		<div class="content-list">
@@ -77,10 +78,11 @@
 		<div class="content-list">
 			<label class="name-text">验证码：</label>
 			<input type="text" class="code-text int-text" name="captcha" value="" id="captchaText" maxlength="5">
-			<img src="" id="imageCaptcha">
-			<label class="error captcha-error" id="captchaError">验证码错误！</label>
+			<img src="" id="imageCaptchaFeed">
+			<#--<label class="error captcha-error" id="captchaError">验证码错误！</label>-->
 		</div>
 		<div class="content-list tc">
+			<div class="error-box tl"></div>
 			<input type="submit" class="btn submit-btn" value="提交意见">
 		</div>
 	</form>
