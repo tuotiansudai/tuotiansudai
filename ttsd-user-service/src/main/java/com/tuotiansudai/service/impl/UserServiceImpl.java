@@ -108,7 +108,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean registerUser(RegisterUserDto dto) {
         if (this.mobileIsExist(dto.getMobile())) {
-            logger.error(MessageFormat.format("[Register User {0}] mobile is existed", dto.getMobile()));
+            logger.warn(MessageFormat.format("[Register User {0}] mobile is existed", dto.getMobile()));
             return false;
         }
 
