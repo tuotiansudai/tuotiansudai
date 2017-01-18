@@ -3,6 +3,7 @@ package com.tuotiansudai.rest.support.client.factory;
 import com.tuotiansudai.rest.support.client.annotations.RestClient;
 import com.tuotiansudai.rest.support.client.codec.RestErrorDecoder;
 import com.tuotiansudai.rest.support.client.interceptors.RequestHeaderInterceptor;
+import feign.Client;
 import feign.Request;
 import feign.Retryer;
 import feign.jackson.JacksonDecoder;
@@ -20,6 +21,7 @@ import java.util.Set;
 
 public class RestClientScanner extends ClassPathBeanDefinitionScanner {
     private final Request.Options options;
+    private final Client client;
     private final Retryer retryer;
     private final JacksonDecoder jacksonDecoder;
     private final JacksonEncoder jacksonEncoder;
@@ -27,9 +29,10 @@ public class RestClientScanner extends ClassPathBeanDefinitionScanner {
     private final RequestHeaderInterceptor requestHeaderInterceptor;
     private final ApplicationContext applicationContext;
 
-    public RestClientScanner(BeanDefinitionRegistry registry, Request.Options options, Retryer retryer, ApplicationContext applicationContext, JacksonDecoder jacksonDecoder, JacksonEncoder jacksonEncoder, RestErrorDecoder restErrorDecoder, RequestHeaderInterceptor requestHeaderInterceptor) {
+    public RestClientScanner(BeanDefinitionRegistry registry, Request.Options options, Client client, Retryer retryer, ApplicationContext applicationContext, JacksonDecoder jacksonDecoder, JacksonEncoder jacksonEncoder, RestErrorDecoder restErrorDecoder, RequestHeaderInterceptor requestHeaderInterceptor) {
         super(registry);
         this.options = options;
+        this.client = client;
         this.retryer = retryer;
         this.applicationContext = applicationContext;
         this.jacksonDecoder = jacksonDecoder;
@@ -66,6 +69,7 @@ public class RestClientScanner extends ClassPathBeanDefinitionScanner {
             definition.getPropertyValues()
                     .add("applicationContext", this.applicationContext)
                     .add("options", this.options)
+                    .add("client", this.client)
                     .add("retryer", this.retryer)
                     .add("jacksonDecoder", this.jacksonDecoder)
                     .add("jacksonEncoder", this.jacksonEncoder)
