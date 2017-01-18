@@ -35,7 +35,7 @@
             </@security.authorize>
         <#else>
             <button type="button" class="btn btn-sm btn-primary btnShowAll" data-id="${product.couponId?string('0')}">
-                查看本优惠全部详情
+                查看本优惠券全部详情
             </button>
         </#if>
     </div>

@@ -13,9 +13,7 @@ import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
 import com.tuotiansudai.coupon.repository.mapper.CouponUserGroupMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.CouponUserGroupModel;
-import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
-import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.coupon.service.ExchangeCodeService;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
@@ -24,13 +22,10 @@ import com.tuotiansudai.dto.ImportExcelDto;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.exception.CreateCouponException;
 import com.tuotiansudai.point.repository.mapper.UserPointPrizeMapper;
-import com.tuotiansudai.point.repository.model.ProductModel;
-import com.tuotiansudai.point.service.ProductService;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.service.UserRoleService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.*;
 import org.apache.commons.collections4.CollectionUtils;
@@ -93,9 +88,6 @@ public class CouponController {
 
     @Autowired
     private ExchangeCodeService exchangeCodeService;
-
-    @Autowired
-    private ProductService productService;
 
     private static String redisKeyTemplate = "console:{0}:importcouponuser";
 
@@ -394,12 +386,6 @@ public class CouponController {
             investAmount += couponDetailsDto.getInvestAmount() != null ? couponDetailsDto.getInvestAmount() : 0l;
             interest += couponDetailsDto.getAnnualInterest() != null ? couponDetailsDto.getAnnualInterest() : 0l;
         }
-
-        ProductModel productModel = productService.findProductByCouponId(couponId);
-        if(productModel != null){
-
-        }
-
         CouponModel couponModel = consoleCouponService.findCouponById(couponId);
         modelAndView.addObject("investAmount", investAmount);
         modelAndView.addObject("interest", interest);

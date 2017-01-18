@@ -373,11 +373,11 @@ public class PointManageController {
 
     @RequestMapping(value = "/coupon/{couponId:^\\d+$}/{createdTime}/detail", method = RequestMethod.GET)
     public ModelAndView couponDetailByCouponIdCreatedTime(@PathVariable long couponId, @PathVariable(value = "createdTime") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date createdTime, @RequestParam(value = "isUsed", required = false) Boolean isUsed,
-                                     @RequestParam(value = "usedStartTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date usedStartTime,
-                                     @RequestParam(value = "usedEndTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date usedEndTime,
-                                     @RequestParam(value = "loginName", required = false) String loginName,
-                                     @RequestParam(value = "mobile", required = false) String mobile,
-                                     @RequestParam(value = "index", required = false, defaultValue = "1") int index) {
+                                                          @RequestParam(value = "usedStartTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date usedStartTime,
+                                                          @RequestParam(value = "usedEndTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date usedEndTime,
+                                                          @RequestParam(value = "loginName", required = false) String loginName,
+                                                          @RequestParam(value = "mobile", required = false) String mobile,
+                                                          @RequestParam(value = "index", required = false, defaultValue = "1") int index) {
         int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/coupon-detail");
         List<CouponDetailsDto> userCoupons = consoleCouponService.findCouponDetail(couponId, isUsed, loginName, mobile, createdTime != null ? createdTime : null, null, null, usedStartTime, usedEndTime, index, pageSize);
