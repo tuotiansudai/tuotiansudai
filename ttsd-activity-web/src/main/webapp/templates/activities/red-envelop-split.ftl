@@ -12,7 +12,7 @@
 
             <div class="flow-box invite-friend">
                 <span class="reward-msg">
-                    <em>送好友8.88元红包，好友注册，您即可领取最高20.88元的现金红包哦！</em>
+                    <em>邀好友注册，您将有机会领取20.88元现金红包，好友还能领取8.88元红包哦！</em>
                 </span>
                 <a href="javascript:void(0)" data-url="${referrerUrl}" class="normal-button to-invite-friend" >立即邀请赚红包</a>
             </div>
@@ -41,38 +41,31 @@
                             <tr>
                                 <th>邀请好友人数</th>
                                 <th>可获红包金额</th>
-                                <th>激活金额</th>
                             </tr>
                             <tr>
                                 <td>1名</td>
                                 <td>1.88元</td>
-                                <td>100元</td>
                             </tr>
 
                             <tr>
                                 <td>2名</td>
                                 <td>3.88元</td>
-                                <td>100元</td>
                             </tr>
                             <tr>
                                 <td>3-4名</td>
                                 <td>5.88元</td>
-                                <td>300元</td>
                             </tr>
                             <tr>
                                 <td>5-6名</td>
                                 <td>9.88元</td>
-                                <td>300元</td>
                             </tr>
                             <tr>
                                 <td>7-9名</td>
                                 <td>13.88元</td>
-                                <td>500元</td>
                             </tr>
                             <tr>
                                 <td>10名</td>
                                 <td>20.88元</td>
-                                <td>500元</td>
                             </tr>
                         </table>
                     </li>

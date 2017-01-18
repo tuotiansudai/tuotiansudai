@@ -5,7 +5,7 @@
         <div class="register-section-box">
             <div class="invite-box">
                 <#if registerStatus=='referrer'>
-                <em class="message-tip">您的好友${userName}送你</em>
+                <em class="message-tip">您的好友${userName}送您</em>
                 </#if>
                 <#if registerStatus=='before'>
                     <em class="message-tip">恭喜您！您已获得</em>
@@ -20,7 +20,7 @@
                     <input type="text" name="mobile" placeholder="请输入您的手机号">
                     <input type="hidden" name="loginName" value="">
                     <input type="hidden" name="channel" value="">
-                    <button type="submit" class="normal-button">立即领取8.88元红包</button>
+                    <button type="submit" class="normal-button">点击领取红包！</button>
                 </form>
             </div>
     </#if>
