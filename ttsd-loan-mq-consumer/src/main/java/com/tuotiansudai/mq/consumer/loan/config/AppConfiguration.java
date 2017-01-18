@@ -1,7 +1,6 @@
 package com.tuotiansudai.mq.consumer.loan.config;
 
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.util.quartz.JobStoreBuilder;
 import org.springframework.context.annotation.*;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import redis.clients.jedis.JedisPoolConfig;
@@ -39,10 +38,5 @@ public class AppConfiguration {
         jedisPoolConfig.setMaxTotal(10);
         jedisPoolConfig.setMaxWaitMillis(5000);
         return jedisPoolConfig;
-    }
-
-    @Bean
-    public JobStoreBuilder jobStoreBuilder() {
-        return new JobStoreBuilder();
     }
 }
