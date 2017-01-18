@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "a20fd03a014d369231ae"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "81c563e011d619c53731"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -849,7 +849,6 @@
 	        createScript: function createScript(url, callback) {
 	            var oScript = document.createElement('script');
 	            oScript.type = 'text/javascript';
-	            oScript.async = true;
 	            oScript.src = staticServer + url;
 	            // IE9及以上浏览器，Firefox，Chrome，Opera ,
 	            // IE8及以下浏览器 只支持onreadystatechange
@@ -857,10 +856,8 @@
 	                callback && callback();
 	            };
 	            //插入到body底部
-	            // var jquery=this.$('#scJquery');
-	            var bodyEle = document.getElementsByTagName('body')[0];
-	            // debugger
-	            // bodyEle.appendChild(oScript);
+	            var globalElem = this.$('#globalPage');
+	            globalElem.parentNode.insertBefore(oScript, globalElem);
 	        }
 	    };
 	    return globalFun;

@@ -4,7 +4,7 @@
 		<span>投资计算器</span>
 		<i class="close-count"></i>
 	</h3>
-	<form id="countForm" action="">
+	<form id="countForm" action="" class="clearfix">
 		<div class="form-text">
 			<input type="text" placeholder="投资金额" class="int-text" name="money" id="moneyNum">
 			<span class="unit-text">元</span>
@@ -18,11 +18,12 @@
 			<span class="unit-text">%</span>
 		</div>
 		<div class="form-text">
+			<div class="error-box"></div>
 			<input class="submit-btn" type="submit" value="计算">
 			<input class="reset-btn" type="reset" value="重置" id="resetBtn">
 		</div>
 	</form>
-	<div class="form-text">
+	<div class="form-text clearfix">
 		<p class="result-text">本息合计 <span id="resultNum">0</span> 元</p>
 		<p class="tip-text">计算结果仅供参考，以实际收益为准</p>
 	</div>

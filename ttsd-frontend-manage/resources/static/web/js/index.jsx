@@ -1,10 +1,13 @@
 import {runImg,startMarquee} from 'webModule/image_show_slider';
 import {useAjax,isUserLogin} from 'publicJs/common';
 import 'webModule/coupon_alert';
+import 'webModule/red-envelope-float';
 import {ValidatorForm} from 'publicJs/validator';
 import popLoginTip from 'publicJs/login_tip';
+
 import 'publicJs/plugins/autoNumeric';
 import 'webStyle/home_page_v2.scss';
+
 let $homePageContainer = $('#homePageContainer'),
     $imgScroll = $('.banner-img-list', $homePageContainer);
 let viewport = globalFun.browserRedirect();
