@@ -7,6 +7,7 @@ import feign.Request;
 import feign.Retryer;
 import feign.jackson.JacksonDecoder;
 import feign.jackson.JacksonEncoder;
+import feign.okhttp.OkHttpClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -52,8 +53,9 @@ public class FeignClientConfig {
             Request.Options feignRequestOptions, Retryer retryer,
             JacksonDecoder jacksonDecoder, JacksonEncoder jacksonEncoder, RestErrorDecoder restErrorDecoder,
             RequestHeaderInterceptor requestHeaderInterceptor) {
+        OkHttpClient okHttpClient = new OkHttpClient();
         RestClientScannerConfigurer configurer = new RestClientScannerConfigurer(
-                feignRequestOptions, retryer,
+                feignRequestOptions, okHttpClient, retryer,
                 jacksonDecoder, jacksonEncoder,
                 restErrorDecoder, requestHeaderInterceptor);
         configurer.setBasePackages("com.tuotiansudai.rest.client");
