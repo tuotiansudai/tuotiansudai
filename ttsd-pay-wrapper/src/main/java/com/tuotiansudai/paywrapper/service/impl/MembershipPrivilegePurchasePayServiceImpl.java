@@ -73,7 +73,7 @@ public class MembershipPrivilegePurchasePayServiceImpl implements MembershipPriv
         AccountModel accountModel = accountMapper.findByLoginName(dto.getLoginName());
 
         TransferAsynRequestModel requestModel = TransferAsynRequestModel.createMembershipPrivilegePurchaseRequestModel(String.valueOf(purchaseModel.getId()),
-                accountModel.getPayUserId(), String.valueOf(purchaseModel.getAmount()), dto.getSource());
+                accountModel.getPayUserId(),accountModel.getPayAccountId(), String.valueOf(purchaseModel.getAmount()), dto.getSource());
         try {
             BaseDto<PayFormDataDto> baseDto = payAsyncClient.generateFormData(TransferAsynMapper.class, requestModel);
             if (baseDto.isSuccess()) {

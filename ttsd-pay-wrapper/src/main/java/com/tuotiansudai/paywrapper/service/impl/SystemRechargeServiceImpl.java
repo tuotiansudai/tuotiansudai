@@ -59,7 +59,7 @@ public class SystemRechargeServiceImpl implements SystemRechargeService {
         AccountModel accountModel = accountMapper.findByLoginName(systemRechargeModel.getLoginName());
 
         TransferAsynRequestModel requestModel = TransferAsynRequestModel.createSystemRechargeRequestModel(String.valueOf(systemRechargeModel.getId()),
-                accountModel.getPayUserId(), String.valueOf(systemRechargeModel.getAmount()));
+                accountModel.getPayUserId(),accountModel.getPayAccountId(), String.valueOf(systemRechargeModel.getAmount()));
         String remark = MessageFormat.format("{0} 从 {1} 账户为平台账户充值 {2} 元", dto.getOperatorLoginName(),
                 dto.getMobile(), dto.getAmount());
         systemRechargeModel.setRemark(remark);

@@ -48,7 +48,7 @@ public enum MobileFrontCallbackService {
     /**
      * 购买会员
      */
-    MEMBERSHIP_PRIVILEGE_PURCHASE("membership-privilege-purchase", "会员购买成功", "tuotian://membership/{0}");
+    MEMBERSHIP_PRIVILEGE_PURCHASE("membership-privilege-purchase", "增值特权购买成功", "tuotian://membership/{0}");
 
     private final String serviceName;
 

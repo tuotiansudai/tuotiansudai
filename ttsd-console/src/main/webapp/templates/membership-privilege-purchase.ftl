@@ -62,7 +62,7 @@
             <tbody>
                 <#list data.data.records as item>
                 <tr>
-                    <td>${item.id?string('0')}</td>
+                    <td>${item.id?c}</td>
                     <td>${item.mobile}</td>
                     <td>${item.userName}</td>
                     <td>${item.privilegePriceType.duration}</td>

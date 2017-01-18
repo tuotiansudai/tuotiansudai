@@ -91,8 +91,8 @@ public class PayWrapperClient extends BaseClient {
         return asyncExecute(systemRechargeDto, systemRechargePath, "POST");
     }
 
-    public BaseDto<PayFormDataDto> membershipPrivilegePurchase(Object membershipPurchaseDto) {
-        return asyncExecute(membershipPurchaseDto, membershipPrivilegePurchasePath, "POST");
+    public BaseDto<PayFormDataDto> membershipPrivilegePurchase(Object membershipPrivilegePurchaseDto) {
+        return asyncExecute(membershipPrivilegePurchaseDto, membershipPrivilegePurchasePath, "POST");
     }
 
     public BaseDto<PayFormDataDto> withdraw(Object withdrawDto) {
