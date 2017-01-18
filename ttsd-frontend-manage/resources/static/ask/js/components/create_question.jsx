@@ -1,6 +1,5 @@
 /* create question */
 import {refreshCaptcha,useAjax} from "publicJs/common";
-import popWindow from "./popWindow";
 var $createQuestion=$('#createQuestion');
 var $questionDetailTag=$('#questionDetailTag');
 
@@ -241,11 +240,10 @@ if($questionDetailTag.length) {
             var response=responseData.data;
             $formAnswerSubmit.prop('disabled',false);
             if (response.status) {
-                popWindow('','回答成功!',{ width:'200px'},true);
-                setTimeout(function() {
-                    $('.popWindow,.popWindow-overlay').fadeOut();
-                    window.location.reload();
-                },3000);
+                layer.msg('回答成功',function(){
+                    location.reload();
+                });
+
             }
             else {
                 refreshCaptcha($formAnswer.find('.captchaImg')[0],'/captcha');
@@ -271,11 +269,9 @@ if($questionDetailTag.length) {
         },function(responseData) {
             var response=responseData.data;
             if(response.status) {
-                popWindow('','成功采纳此条信息!',{ width:'200px'},true);
-                setTimeout(function() {
-                    $('.popWindow,.popWindow-overlay').fadeOut();
-                    window.location.reload();
-                },3000);
+                layer.msg('成功采纳此条信息',function() {
+                    location.reload();
+                });
 
             }
         });
@@ -298,7 +294,12 @@ if($questionDetailTag.length) {
     });
 
     $('.agree-ok-no',$questionDetailTag).on('click',function() {
-        popWindow('','<span class="clearfix">需要登录才能点赞哦～ </span><a href="https://tuotiansudai.com/login" class="btn-normal to-login">去登录</a>',{ width:'400px'});
+        layer.open({
+            type:'1',
+            area:['400px','180px'],
+            shadeClose: false,
+            content:'<div class="pop-window"><span class="clearfix">需要登录才能点赞哦～ </span><a href="https://tuotiansudai.com/login" class="btn-normal to-login">去登录</a></div> '
+        });
     });
 }
 

@@ -48,7 +48,7 @@ import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.AmountTransfer;
-import com.tuotiansudai.util.JobManager;
+import com.tuotiansudai.job.JobManager;
 import com.tuotiansudai.util.SendCloudMailUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
