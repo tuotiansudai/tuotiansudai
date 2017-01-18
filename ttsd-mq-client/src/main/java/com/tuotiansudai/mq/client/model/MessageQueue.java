@@ -22,7 +22,8 @@ public enum MessageQueue {
     AdvanceRepayCallback("AdvanceRepayCallback"),
     AuditLog("AuditLog"),
     UserOperateLog("UserOperateLog"),
-    LoginLog("LoginLog");
+    LoginLog("LoginLog"),
+    QueryAnxinContract("QueryAnxinContract");
 
     private final String queueName;
 
