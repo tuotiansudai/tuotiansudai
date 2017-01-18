@@ -43,6 +43,10 @@ public class UserModel implements Serializable {
 
     private int signInCount;
 
+    private Date lastLoginTime;
+
+    private Source lastLoginSource;
+
     public long getId() {
         return id;
     }
@@ -195,11 +199,28 @@ public class UserModel implements Serializable {
         this.signInCount = signInCount;
     }
 
+    public Date getLastLoginTime() {
+        return lastLoginTime;
+    }
+
+    public void setLastLoginTime(Date lastLoginTime) {
+        this.lastLoginTime = lastLoginTime;
+    }
+
+    public Source getLastLoginSource() {
+        return lastLoginSource;
+    }
+
+    public void setLastLoginSource(Source lastLoginSource) {
+        this.lastLoginSource = lastLoginSource;
+    }
+
     @Override
     public UserModel clone() throws CloneNotSupportedException {
         UserModel clone = (UserModel) super.clone();
         clone.registerTime = this.registerTime != null ? (Date) this.registerTime.clone() : null;
         clone.lastModifiedTime = this.lastModifiedTime != null ? (Date) this.lastModifiedTime.clone() : null;
+        clone.lastLoginTime = this.lastLoginTime != null ? (Date) this.lastLoginTime.clone() : null;
         return clone;
     }
 }

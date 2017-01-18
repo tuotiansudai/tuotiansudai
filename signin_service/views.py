@@ -3,7 +3,6 @@ from flask.json import jsonify
 from forms import LoginForm, RefreshTokenForm, LoginAfterRegisterForm
 import service
 
-
 sign_in = Blueprint('sign_in', __name__)
 
 
@@ -60,8 +59,8 @@ def get_session(session_id):
 def refresh_session(session_id):
     form = RefreshTokenForm(request.form)
     if form.validate():
-        new_session_id = service.SessionManager().refresh(session_id)
-        return get_session(new_session_id)
+        ret = service.SessionManager(form.source).refresh(session_id)
+        return success(ret)
     return fail({'message': form.errors})
 
 
@@ -69,5 +68,3 @@ def refresh_session(session_id):
 def active_user(username):
     service.active(username)
     return success()
-
-
