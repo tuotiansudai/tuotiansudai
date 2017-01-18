@@ -1,15 +1,17 @@
+import {useAjax,IdentityCodeValid,checkedAge} from 'publicJs/common';
+
 function createElement(element,errorMsg) {
-    if(element.nextElementSibling) {
+    if(element && element.nextElementSibling) {
         element.nextElementSibling.innerHTML=errorMsg;
         return;
     }
     var span=document.createElement("span");
     span.className="error";
     span.innerHTML=errorMsg;
-    element.parentElement.appendChild(span);
+    element && element.parentElement.appendChild(span);
 }
 function removeElement(element) {
-    element.nextElementSibling && element.parentElement.removeChild(element.nextElementSibling);
+    (element && element.nextElementSibling) && element.parentElement.removeChild(element.nextElementSibling);
 }
 
     /*******策略对象********/
@@ -125,7 +127,7 @@ function removeElement(element) {
         },
         identityValid:function(errorMsg,showErrorAfter) {
             //验证身份证号
-            var cardValid=commonFun.IdentityCodeValid(this.value);
+            var cardValid=IdentityCodeValid(this.value);
             if(!cardValid) {
                 globalFun.addClass(this,'error');
                 showErrorAfter && createElement(this,errorMsg);
@@ -138,9 +140,9 @@ function removeElement(element) {
         },
         ageValid:function(errorMsg,showErrorAfter) {
             //验证年龄是否满18
-            var cardValid=commonFun.IdentityCodeValid(this.value);
+            var cardValid=IdentityCodeValid(this.value);
             if(cardValid) {
-                var ageValid=commonFun.checkedAge(this.value);
+                var ageValid=checkedAge(this.value);
                 if(!ageValid) {
                     globalFun.addClass(this,'error');
                     showErrorAfter && createElement(this,errorMsg);
@@ -158,7 +160,7 @@ function removeElement(element) {
             if(this.value.length!=18) {
                 return;
             }
-            commonFun.useAjax({
+            useAjax({
                 type:'GET',
                 async: false,
                 url:'/authentication/identityNumber/'+this.value+'/is-exist'
@@ -180,7 +182,7 @@ function removeElement(element) {
         isMobileExist:function(errorMsg,showErrorAfter) {
             var getResult='',
                 that=this;
-            commonFun.useAjax({
+            useAjax({
                 type:'GET',
                 async: false,
                 url:'/register/user/mobile/'+this.value+'/is-exist'
@@ -211,7 +213,7 @@ function removeElement(element) {
                  callback && callback(data);
              }
          }
-         this.add=function(dom, rules) {
+         this.add=function(dom, rules,errorAfter) {
              var self = this;
              self.checkOption[dom.name]=[];
              for (var i = 0, rule; rule = rules[i++];) {
@@ -230,9 +232,9 @@ function removeElement(element) {
                      var optionParams=[];
                      optionParams.push(errorMsg);
                      var secondParam=domOption[j].strategy.split(':')[1];
-                     if(secondParam) {
-                         optionParams.push(secondParam);
-                     }
+
+                     secondParam && optionParams.push(secondParam);
+                     errorAfter && optionParams.push(errorAfter);
                      getErrorMsg=strategies[strategy].apply(thisDom,optionParams);
 
                      if(getErrorMsg) {

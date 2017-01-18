@@ -20,33 +20,33 @@ $('#imageCaptcha').on('click',function() {
 let validator = new ValidatorForm();
 validator.add(registerForm.mobile, [{
     strategy: 'isNonEmpty',
-    errorMsg: '手机号不能为空'
+    errorMsg: '手机号不能为空',
 }, {
     strategy: 'isMobile',
     errorMsg: '手机号格式不正确'
 },{
     strategy: 'isMobileExist',
     errorMsg: '手机号已经存在'
-}]);
+}],true);
 validator.add(registerForm.password, [{
     strategy: 'isNonEmpty',
     errorMsg: '密码不能为空'
 }, {
     strategy: 'checkPassword',
     errorMsg: '密码为6位至20位，不能全是数字'
-}]);
+}],true);
 validator.add(registerForm.captcha, [{
     strategy: 'isNonEmpty',
     errorMsg: '验证码不能为空'
 },{
     strategy: 'isNumber:6',
     errorMsg: '验证码为6位数字'
-}]);
+}],true);
 let reInputs=$(registerForm).find('input:text,input:password,input:checkbox');
 
 reInputs=Array.from(reInputs);
 for (var el of reInputs) {
-    el.addEventListener("blur", function() {
+    el.addEventListener("keyup", function() {
         let errorMsg = validator.start(this);
         //按钮上有样式名count-downing，说明正在倒计时
         if($fetchCaptcha.hasClass('count-downing')) {
@@ -54,12 +54,6 @@ for (var el of reInputs) {
         }
         if(this.name!='captcha') {
             isDisabledCaptcha();
-        }
-        if(errorMsg) {
-            errorDom.text(errorMsg);
-        }
-        else {
-            errorDom.text('');
         }
     })
 }
@@ -78,9 +72,10 @@ function isDisabledCaptcha() {
         $fetchCaptcha.prop('disabled',false);
     }
 }
-
-//页面刷新的时候判断手机号和密码是否存在且有效，如果有效，点亮获取验证码按钮
-isDisabledCaptcha();
+window.onload=function() {
+    //页面刷新的时候判断手机号和密码是否存在且有效，如果有效，点亮获取验证码按钮
+    isDisabledCaptcha();
+}
 
 // require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate', 'jquery.validate.extension', 'jquery.form', 'jquery.ajax.extension','commonFun'], function (_, $, layer) {
 //     var registerUserForm = $(".register-user-form"),

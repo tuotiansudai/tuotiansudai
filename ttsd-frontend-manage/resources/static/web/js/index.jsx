@@ -1,7 +1,7 @@
 import {runImg,startMarquee} from 'webModule/image_show_slider';
 import {useAjax,isUserLogin} from 'publicJs/common';
 import 'webModule/coupon_alert';
-import 'webModule/red-envelope-float';
+import 'webModule/red_envelope_float';
 import {ValidatorForm} from 'publicJs/validator';
 import popLoginTip from 'publicJs/login_tip';
 

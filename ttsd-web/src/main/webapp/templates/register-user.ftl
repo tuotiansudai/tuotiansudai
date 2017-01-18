@@ -23,8 +23,8 @@
                 <li>
                     <i class="sprite-register-ic-captcha"></i>
                     <span class="captcha-tag">
+                         <button type="button" class="fetch-captcha" disabled="disabled" id="fetchCaptcha">获取验证码</button>
                         <input type="text" name="captcha" class="captcha" autocomplete="off" autocorrect="off" autocapitalize="off" placeholder="请输入验证码"  maxlength="6" value="${(originalFormData.captcha)!}"/>
-                        <button type="button" class="fetch-captcha" disabled="disabled" id="fetchCaptcha">获取验证码</button>
                     </span>
                 </li>
                 <li class="referrer-open"> <i class="sprite-register-arrow-right"></i>请输入推荐人（此项选填）</li>
