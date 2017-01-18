@@ -34,7 +34,9 @@
                 </#if>
             </@security.authorize>
         <#else>
-                <a href="/point-manage/coupon/${product.couponId?string('0')}/detail">查看本优惠全部详情</a>
+            <button type="button" class="btn btn-sm btn-primary btnShowAll" data-id="${product.couponId?string('0')}">
+                查看本优惠全部详情
+            </button>
         </#if>
     </div>
     <div class="table-responsive col-md-12">
