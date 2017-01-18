@@ -217,7 +217,7 @@ public class InvestServiceImpl implements InvestService {
 
         UserCouponDto maxBenefitUserCoupon = userCouponService.getMaxBenefitUserCoupon(loginName, loanId, investAmount);
         if (maxBenefitUserCoupon != null && CollectionUtils.isEmpty(investDto.getUserCouponIds())) {
-            logger.error(MessageFormat.format("user({0}) invest (loan = {1} amount = {2}) with no user coupon, but max benefit user coupon({3}) is existed",
+            logger.warn(MessageFormat.format("user({0}) invest (loan = {1} amount = {2}) with no user coupon, but max benefit user coupon({3}) is existed",
                     investDto.getLoginName(),
                     String.valueOf(loanId),
                     investDto.getAmount(),
@@ -246,7 +246,7 @@ public class InvestServiceImpl implements InvestService {
                         || userCouponModel.getEndTime().before(new Date())
                         || !couponModel.getProductTypes().contains(loanModel.getProductType())
                         || (couponModel.getInvestLowerLimit() > 0 && investAmount < couponModel.getInvestLowerLimit())) {
-                    logger.error(MessageFormat.format("user({0}) use user coupon ({1}) is unusable", loginName, String.valueOf(userCouponId)));
+                    logger.warn(MessageFormat.format("user({0}) use user coupon ({1}) is unusable", loginName, String.valueOf(userCouponId)));
                     throw new InvestException(InvestExceptionType.COUPON_IS_UNUSABLE);
                 }
                 if (!couponModel.isShared()) {

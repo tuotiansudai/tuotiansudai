@@ -10,7 +10,7 @@ import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
-import com.tuotiansudai.util.JobManager;
+import com.tuotiansudai.job.JobManager;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
