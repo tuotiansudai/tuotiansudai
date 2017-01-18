@@ -4,7 +4,6 @@ import com.tuotiansudai.anxin.service.AnxinSignService;
 import com.tuotiansudai.contract.service.ContractService;
 import com.tuotiansudai.contract.service.impl.ContractServiceImpl;
 import com.tuotiansudai.spring.LoginUserInfo;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -35,15 +34,13 @@ public class ContractController {
                                          HttpServletResponse response) throws ServletException, IOException {
         byte[] pdf = contractService.printContractPdf(ContractServiceImpl.LOAN_CONTRACT, LoginUserInfo.getLoginName(), loanId, investId);
 
-        try {
+        try (OutputStream ous = new BufferedOutputStream(response.getOutputStream())) {
             response.reset();
             response.addHeader("Content-Disposition", String.format("attachment;filename=%s.pdf", String.valueOf(investId)));
             response.addHeader("Content-Length", "" + pdf.length);
-            OutputStream ous = new BufferedOutputStream(response.getOutputStream());
             response.setContentType("application/octet-stream");
             ous.write(pdf);
             ous.flush();
-            ous.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -53,15 +50,13 @@ public class ContractController {
     public void generateTransferContract(@PathVariable long transferApplicationId, HttpServletRequest httpServletRequest, HttpServletResponse response) throws IOException, ServletException {
         byte[] pdf = contractService.printContractPdf(ContractServiceImpl.TRANSFER_CONTRACT, LoginUserInfo.getLoginName(), transferApplicationId, null);
 
-        try {
+        try (OutputStream ous = new BufferedOutputStream(response.getOutputStream())) {
             response.reset();
             response.addHeader("Content-Disposition", String.format("attachment;filename=%s.pdf", String.valueOf(transferApplicationId)));
             response.addHeader("Content-Length", "" + pdf.length);
-            OutputStream ous = new BufferedOutputStream(response.getOutputStream());
             response.setContentType("application/octet-stream");
             ous.write(pdf);
             ous.flush();
-            ous.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
