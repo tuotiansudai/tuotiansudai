@@ -1,8 +1,8 @@
-package com.tuotiansudai.rest.client.codec;
+package com.tuotiansudai.rest.support.client.codec;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tuotiansudai.rest.client.dto.ErrorResponse;
-import com.tuotiansudai.rest.client.exceptions.RestException;
+import com.tuotiansudai.rest.support.client.dto.ErrorResponse;
+import com.tuotiansudai.rest.support.client.exceptions.RestException;
 import feign.Response;
 import feign.codec.ErrorDecoder;
 import org.apache.log4j.Logger;
@@ -20,9 +20,7 @@ public class RestErrorDecoder implements ErrorDecoder {
         try {
             errorResponse = objectMapper.readValue(response.body().asInputStream(), ErrorResponse.class);
         } catch (IOException e) {
-            if (logger.isErrorEnabled()) {
-                logger.error("can not parse response body as ErrorResponse: " + response.body().toString());
-            }
+            logger.error("can not parse response body as ErrorResponse: " + response.body().toString());
         }
         return new RestException(response, errorResponse);
     }

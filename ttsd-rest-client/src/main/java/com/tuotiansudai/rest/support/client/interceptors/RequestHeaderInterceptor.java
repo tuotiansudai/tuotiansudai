@@ -1,4 +1,4 @@
-package com.tuotiansudai.rest.client.interceptors;
+package com.tuotiansudai.rest.support.client.interceptors;
 
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
@@ -11,5 +11,6 @@ public class RequestHeaderInterceptor implements RequestInterceptor {
     public void apply(RequestTemplate template) {
         template.header(REQUEST_ID, (String) MDC.get(REQUEST_ID));
         template.header(USER_ID, (String) MDC.get(USER_ID));
+        template.header("Content-Type","application/json;charset=UTF-8");
     }
 }

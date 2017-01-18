@@ -1,4 +1,4 @@
-package com.tuotiansudai.rest.client.dto;
+package com.tuotiansudai.rest.support.client.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
