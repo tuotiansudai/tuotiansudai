@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -107,7 +108,7 @@ public class FreeMarkerVariablesMap extends MapFactoryBean implements ResourceLo
         try {
             Response response = okHttpClient.newCall(request).execute();
             if (!HttpStatus.valueOf(response.code()).is2xxSuccessful()) {
-                throw new RuntimeException("static server response is not 2XX");
+                throw new RuntimeException(MessageFormat.format("static server response is {0}, request url ", response.code(), this.staticResourceDiscoveryUrl));
             }
             String responseBody = response.body().string();
             return JsonConverter.readValue(responseBody, StaticResourceDto.class);
