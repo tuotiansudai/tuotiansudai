@@ -34,7 +34,7 @@ public class DelayMessageDeliveryJobCreator {
     public static void create(JobManager jobManager, Date fireTime, MessageQueue messageQueue, String messageBody) {
         try {
             jobManager.newJob(JobType.Default, DelayMessageDeliveryJob.class)
-                    .addJobData(DelayMessageDeliveryJob.MESSAGE_QUEUE_KEY_NAME, messageQueue.name())
+                    .addJobData(DelayMessageDeliveryJob.MESSAGE_QUEUE_KEY_NAME, messageQueue)
                     .addJobData(DelayMessageDeliveryJob.MESSAGE_BODY_KEY_NAME, messageBody)
                     .withIdentity(JobType.Default.name(), messageQueue.name() + "-" + System.currentTimeMillis())
                     .runOnceAt(fireTime)
