@@ -104,7 +104,8 @@ else if(NODE_ENV=='dev') {
 	};
 }
 plugins.push(new CopyWebpackPlugin([
-	{ from: publicPathJS+'/plugins',to: 'public/plugins'}
+	{ from: publicPathJS+'/plugins',to: 'public/plugins'},
+	{ from: publicPath+'/styles/plugins/skin',to: 'public/skin'}
 ]));
 //生成json文件的列表索引插件
 plugins.push(new AssetsPlugin({

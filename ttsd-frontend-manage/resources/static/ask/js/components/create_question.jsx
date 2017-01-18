@@ -240,7 +240,9 @@ if($questionDetailTag.length) {
             var response=responseData.data;
             $formAnswerSubmit.prop('disabled',false);
             if (response.status) {
-                layer.msg('回答成功');
+                layer.msg('回答成功',function(){
+                    location.reload();
+                });
 
             }
             else {
@@ -267,7 +269,9 @@ if($questionDetailTag.length) {
         },function(responseData) {
             var response=responseData.data;
             if(response.status) {
-                layer.msg('成功采纳此条信息');
+                layer.msg('成功采纳此条信息',function() {
+                    location.reload();
+                });
 
             }
         });
@@ -292,10 +296,9 @@ if($questionDetailTag.length) {
     $('.agree-ok-no',$questionDetailTag).on('click',function() {
         layer.open({
             type:'1',
-            area:['400px','300px'],
+            area:['400px','180px'],
             shadeClose: false,
-            content:'<span class="clearfix">需要登录才能点赞哦～ </span><a href="https://tuotiansudai.com/login" class="btn-normal to-login">去登录</a>'
-
+            content:'<div class="pop-window"><span class="clearfix">需要登录才能点赞哦～ </span><a href="https://tuotiansudai.com/login" class="btn-normal to-login">去登录</a></div> '
         });
     });
 }

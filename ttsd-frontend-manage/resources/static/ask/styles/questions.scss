@@ -1,6 +1,10 @@
 @mixin border-color ($color) {
   border:1px solid $color;
 }
+.pop-window {
+  text-align: center;
+  padding:30px 10px;
+}
 .banner-box {
   background: red url("../images/ba01.jpg") no-repeat;
   height:140px;
