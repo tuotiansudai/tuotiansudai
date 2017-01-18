@@ -1,6 +1,6 @@
-package com.tuotiansudai.rest.client.exceptions;
+package com.tuotiansudai.rest.support.client.exceptions;
 
-import com.tuotiansudai.rest.client.dto.ErrorResponse;
+import com.tuotiansudai.rest.support.client.dto.ErrorResponse;
 import feign.Request;
 import feign.Response;
 
