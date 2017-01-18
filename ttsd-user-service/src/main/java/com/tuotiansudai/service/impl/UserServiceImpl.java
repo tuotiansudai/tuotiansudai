@@ -1,7 +1,6 @@
 package com.tuotiansudai.service.impl;
 
 import com.google.common.base.Strings;
-import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.RegisterUserDto;
 import com.tuotiansudai.enums.UserOpType;
@@ -16,20 +15,15 @@ import com.tuotiansudai.service.RegisterUserService;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.util.IdGenerator;
-import com.tuotiansudai.util.MobileLocationUtils;
 import com.tuotiansudai.util.MyShaPasswordEncoder;
 import com.tuotiansudai.util.RandomStringGenerator;
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
 import java.util.Date;
-import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -45,9 +39,6 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private SmsWrapperClient smsWrapperClient;
-
-    @Autowired
-    private MQWrapperClient mqWrapperClient;
 
     @Autowired
     private MyShaPasswordEncoder myShaPasswordEncoder;
@@ -108,7 +99,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean registerUser(RegisterUserDto dto) {
         if (this.mobileIsExist(dto.getMobile())) {
-            logger.error(MessageFormat.format("[Register User {0}] mobile is existed", dto.getMobile()));
+            logger.warn(MessageFormat.format("[Register User {0}] mobile is existed", dto.getMobile()));
             return false;
         }
 
@@ -195,41 +186,6 @@ public class UserServiceImpl implements UserService {
     public boolean verifyPasswordCorrect(String loginName, String password) {
         UserModel userModel = userMapper.findByLoginName(loginName);
         return userModel.getPassword().equals(myShaPasswordEncoder.encodePassword(password, userModel.getSalt()));
-    }
-
-    @Transactional
-    @Override
-    public void refreshAreaByMobile(List<UserModel> userModels) {
-        for (UserModel userModel : userModels) {
-            String phoneMobile = userModel.getMobile();
-            if (StringUtils.isNotEmpty(phoneMobile)) {
-                String[] provinceAndCity = MobileLocationUtils.locateMobileNumber(phoneMobile);
-                if (StringUtils.isEmpty(provinceAndCity[0])) {
-                    provinceAndCity[0] = "未知";
-                }
-                if (StringUtils.isEmpty(provinceAndCity[1])) {
-                    provinceAndCity[1] = "未知";
-                }
-                userModel.setProvince(provinceAndCity[0]);
-                userModel.setCity(provinceAndCity[1]);
-            } else {
-                userModel.setProvince("未知");
-                userModel.setCity("未知");
-            }
-            userModel.setLastModifiedTime(new Date());
-            userMapper.updateUser(userModel);
-        }
-    }
-
-    @Override
-    public void refreshAreaByMobileInJob() {
-        while (true) {
-            List<UserModel> userModels = userMapper.findUsersByProvince();
-            if (CollectionUtils.isEmpty(userModels)) {
-                break;
-            }
-            ((UserService) AopContext.currentProxy()).refreshAreaByMobile(userModels);
-        }
     }
 
     @Override

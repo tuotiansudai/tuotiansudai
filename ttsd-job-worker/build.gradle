@@ -4,6 +4,7 @@ apply plugin: 'java'
 dependencies {
     compile project(':ttsd-service'),
             project(':ttsd-quartz-extension'),
+            project(':ttsd-job'),
             project(':ttsd-point-service'),
             project(':ttsd-edxactivity-repository')
 }

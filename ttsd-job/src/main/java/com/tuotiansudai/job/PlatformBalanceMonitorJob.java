@@ -1,8 +1,8 @@
 package com.tuotiansudai.job;
 
+import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.sms.PlatformBalanceLowNotifyDto;
-import com.tuotiansudai.service.UMPayRealTimeStatusService;
 import org.apache.log4j.Logger;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
@@ -20,10 +20,10 @@ public class PlatformBalanceMonitorJob implements Job {
     static Logger logger = Logger.getLogger(PlatformBalanceMonitorJob.class);
 
     @Autowired
-    private UMPayRealTimeStatusService umPayRealTimeStatusService;
+    private SmsWrapperClient smsWrapperClient;
 
     @Autowired
-    private SmsWrapperClient smsWrapperClient;
+    private PayWrapperClient payWrapperClient;
 
     @Value("#{'${platform.balance.notify.mobileList}'.split('\\|')}")
     private List<String> mobileList;
@@ -37,7 +37,7 @@ public class PlatformBalanceMonitorJob implements Job {
         logger.info("[Platform Balance Monitor] Job is starting...");
 
         try {
-            Map<String, String> data = umPayRealTimeStatusService.getPlatformStatus();
+            Map<String, String> data = payWrapperClient.getPlatformStatus();
 
             String balance = data.get("账户余额");
 

@@ -106,14 +106,4 @@ public class CouponAlertServiceImpl implements CouponAlertService {
 
         return null;
     }
-
-    @Override
-    public void BirthdayNotify() {
-        List<String> userMobileList = userMapper.findUsersBirthdayMobile();
-        for (String mobile : userMobileList) {
-            SmsCouponNotifyDto notifyDto = new SmsCouponNotifyDto();
-            notifyDto.setMobile(mobile.trim());
-            smsWrapperClient.sendBirthdayNotify(notifyDto);
-        }
-    }
 }

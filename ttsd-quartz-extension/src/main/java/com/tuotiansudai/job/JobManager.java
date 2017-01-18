@@ -3,6 +3,7 @@ package com.tuotiansudai.job;
 import com.tuotiansudai.quartz.SchedulerBuilder;
 import com.tuotiansudai.quartz.ThreadPoolBuilder;
 import com.tuotiansudai.quartz.TriggeredJobBuilder;
+import org.apache.log4j.Logger;
 import org.quartz.*;
 import org.quartz.spi.ThreadPool;
 import org.springframework.beans.factory.InitializingBean;
@@ -33,6 +34,7 @@ import org.springframework.beans.factory.InitializingBean;
  * </pre>
  */
 public class JobManager implements InitializingBean {
+    static Logger logger = Logger.getLogger(JobManager.class);
 
     private ThreadPool threadPool;
 
@@ -60,7 +62,7 @@ public class JobManager implements InitializingBean {
         try {
             scheduler = schedulerBuilder.buildScheduler(schedulerName, threadPool);
         } catch (SchedulerException e) {
-            e.printStackTrace();
+            logger.error("create job failed, build scheduler error", e);
         }
         return TriggeredJobBuilder.newJob(jobClazz, scheduler);
     }
@@ -71,7 +73,7 @@ public class JobManager implements InitializingBean {
             Scheduler scheduler = schedulerBuilder.buildScheduler(schedulerName, threadPool);
             scheduler.deleteJob(JobKey.jobKey(jobName, jobGroup));
         } catch (SchedulerException e) {
-            e.printStackTrace();
+            logger.error("build scheduler error", e);
         }
     }
 
