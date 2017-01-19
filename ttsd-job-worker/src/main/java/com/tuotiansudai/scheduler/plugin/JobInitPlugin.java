@@ -26,9 +26,6 @@ public class JobInitPlugin implements SchedulerPlugin {
 
     private final String TIMEZONE_SHANGHAI = "Asia/Shanghai";
 
-    @Value("#{'${activity.weiXin.red.envelop.period}'.split('\\~')}")
-    private List<String> weiXinPeriod = Lists.newArrayList();
-
     public JobInitPlugin(JobManager jobManager) {
         this.jobManager = jobManager;
     }
@@ -70,8 +67,11 @@ public class JobInitPlugin implements SchedulerPlugin {
         if (JobType.EventMessage.name().equals(schedulerName)) {
             eventMessageJob();
         }
-        if (JobType.SendRedEnvelopSplit.name().equalsIgnoreCase(schedulerName)) {
-            createRedEnvelopSplitJob();
+        if (JobType.SendFirstRedEnvelopSplit.name().equalsIgnoreCase(schedulerName)) {
+            createFirstRedEnvelopSplitJob();
+        }
+        if (JobType.SendSecondRedEnvelopSplit.name().equalsIgnoreCase(schedulerName)) {
+            createSecondRedEnvelopSplitJob();
         }
     }
 
@@ -194,13 +194,24 @@ public class JobInitPlugin implements SchedulerPlugin {
         }
     }
 
-    private void createRedEnvelopSplitJob() {
+    private void createFirstRedEnvelopSplitJob() {
         try {
-            jobManager.newJob(JobType.SendRedEnvelopSplit, AssignRedEnvelopSplitJob.class)
-                    .withIdentity(JobType.SendRedEnvelopSplit.name(), JobType.SendRedEnvelopSplit.name())
-                    .replaceExistingJob(false)
-                    .runOnceAt(DateTime.parse(weiXinPeriod.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate()).submit();
-        } catch (SchedulerException e) {
+            jobManager.newJob(JobType.SendFirstRedEnvelopSplit, AssignFirstRedEnvelopSplitJob.class)
+                    .withIdentity(JobType.SendFirstRedEnvelopSplit.name(), JobType.SendFirstRedEnvelopSplit.name())
+                    .replaceExistingJob(true)
+                    .runOnceAt(DateTime.parse(AssignFirstRedEnvelopSplitJob.JOB_EXECUTE_TIME, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate()).submit();
+        } catch (Exception e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+    }
+
+    private void createSecondRedEnvelopSplitJob() {
+        try {
+            jobManager.newJob(JobType.SendSecondRedEnvelopSplit, AssignSecondRedEnvelopSplitJob.class)
+                    .withIdentity(JobType.SendSecondRedEnvelopSplit.name(), JobType.SendSecondRedEnvelopSplit.name())
+                    .replaceExistingJob(true)
+                    .runOnceAt(DateTime.parse(AssignSecondRedEnvelopSplitJob.JOB_EXECUTE_TIME, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate()).submit();
+        } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
         }
     }
