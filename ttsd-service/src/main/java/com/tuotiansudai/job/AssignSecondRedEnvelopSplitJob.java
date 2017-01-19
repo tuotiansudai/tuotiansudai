@@ -37,6 +37,8 @@ public class AssignSecondRedEnvelopSplitJob implements Job {
     @Value("#{'${activity.weiXin.red.envelop.second.period}'.split('\\~')}")
     private List<String> weiXinPeriod = Lists.newArrayList();
 
+    public static final String JOB_EXECUTE_TIME = "2017-02-05 23:59:59";
+
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         logger.info("[SecondRedEnvelopSplit] assign reward activity. start");
