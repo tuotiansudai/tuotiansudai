@@ -92,8 +92,12 @@ public class LotteryDrawActivityService {
 
     @Value(value = "${activity.lanternFestival.startTime}")
     private String lanternFestivalStartTime;
+
     @Value(value = "${activity.lanternFestival.endTime}")
     private String lanternFestivalEndTime;
+
+    @Value("#{'${activity.spring.festival.period}'.split('\\~')}")
+    private List<String> springFestivalTime = Lists.newArrayList();
 
     //往期活动任务
     private final List activityTasks = Lists.newArrayList(ActivityDrawLotteryTask.REGISTER, ActivityDrawLotteryTask.EACH_REFERRER,
@@ -104,9 +108,12 @@ public class LotteryDrawActivityService {
             ActivityDrawLotteryTask.EACH_INVEST_5000);
 
     //圣诞活动活动任务
-        private final List christmasTasks = Lists.newArrayList(ActivityDrawLotteryTask.REGISTER, ActivityDrawLotteryTask.EACH_REFERRER,
-                ActivityDrawLotteryTask.EACH_REFERRER_INVEST, ActivityDrawLotteryTask.CERTIFICATION, ActivityDrawLotteryTask.INVEST,
-                ActivityDrawLotteryTask.EACH_INVEST_2000);
+    private final List christmasTasks = Lists.newArrayList(ActivityDrawLotteryTask.REGISTER, ActivityDrawLotteryTask.EACH_REFERRER,
+            ActivityDrawLotteryTask.EACH_REFERRER_INVEST, ActivityDrawLotteryTask.CERTIFICATION, ActivityDrawLotteryTask.INVEST,
+            ActivityDrawLotteryTask.EACH_INVEST_2000);
+
+    //春节活动任务
+    private final List springFestivalTasks = Lists.newArrayList(ActivityDrawLotteryTask.TODAY_ACTIVITY_SIGN_IN);
 
     public static final String ACTIVITY_DESCRIPTION = "新年专享";
 
@@ -136,12 +143,12 @@ public class LotteryDrawActivityService {
             return new DrawLotteryResultDto(3);//不在活动时间范围内！
         }
 
+        userMapper.lockByLoginName(userModel.getLoginName());
+
         int drawTime = countDrawLotteryTime(mobile, activityCategory);
         if (drawTime <= 0) {
             return new DrawLotteryResultDto(1);//您暂无抽奖机会，赢取机会后再来抽奖吧！
         }
-
-        userMapper.lockByLoginName(userModel.getLoginName());
 
         LotteryPrize lotteryPrize = drawLotteryPrize(activityCategory);
         if (lotteryPrize.getPrizeType().equals(PrizeType.VIRTUAL)) {
@@ -248,6 +255,14 @@ public class LotteryDrawActivityService {
                 .put(LotteryPrize.LANTERN_FESTIVAL_RED_ENVELOPE_40, 367L)
                 .put(LotteryPrize.LANTERN_FESTIVAL_RED_ENVELOPE_30, 368L)
                 .put(LotteryPrize.LANTERN_FESTIVAL_INTEREST_COUPON_5, 369L)
+                .put(LotteryPrize.SPRING_FESTIVAL_RED_ENVELOP_68, 340L)
+                .put(LotteryPrize.SPRING_FESTIVAL_RED_ENVELOP_58, 341L)
+                .put(LotteryPrize.SPRING_FESTIVAL_RED_ENVELOP_38, 342L)
+                .put(LotteryPrize.SPRING_FESTIVAL_RED_ENVELOP_18, 343L)
+                .put(LotteryPrize.SPRING_FESTIVAL_RED_ENVELOP_88, 344L)
+                .put(LotteryPrize.SPRING_FESTIVAL_RED_ENVELOP_188, 345L)
+                .put(LotteryPrize.SPRING_FESTIVAL_INTEREST_COUPON_5, 346L)
+                .put(LotteryPrize.SPRING_FESTIVAL_INTEREST_COUPON_2, 347L)
                 .build()).get(lotteryPrize);
     }
 
@@ -306,6 +321,8 @@ public class LotteryDrawActivityService {
                 return countDrawLotteryTime(userModel, activityCategory, christmasTasks);
             case LANTERN_FESTIVAL_ACTIVITY:
                 return countDrawLotteryTime(userModel, activityCategory, Lists.newArrayList(ActivityDrawLotteryTask.EACH_INVEST_1000));
+            case SPRING_FESTIVAL_ACTIVITY:
+                return countDrawLotteryTime(userModel, activityCategory, springFestivalTasks);
         }
         return lotteryTime;
     }
@@ -364,6 +381,15 @@ public class LotteryDrawActivityService {
                 case EACH_ACTIVITY_SIGN_IN:
                     time += pointBillMapper.findCountPointBillPagination(userModel.getLoginName(), startTime, endTime, Lists.newArrayList(PointBusinessType.SIGN_IN));
                     break;
+                case TODAY_ACTIVITY_SIGN_IN:
+                    if(DateTime.now().toDate().before(endTime) && DateTime.now().toDate().after(startTime)){
+                        time += pointBillMapper.findCountPointBillPagination(userModel.getLoginName(), DateTime.now().withTimeAtStartOfDay().toDate(),
+                                DateTime.now().plusDays(1).withTimeAtStartOfDay().plusMillis(-1).toDate(), Lists.newArrayList(PointBusinessType.SIGN_IN));
+
+                        return time > 0 ? time - userLotteryPrizeMapper.findUserLotteryPrizeCountViews(userModel.getMobile(), null, activityCategory,
+                                DateTime.now().withTimeAtStartOfDay().toDate(), DateTime.now().plusDays(1).withTimeAtStartOfDay().plusMillis(-1).toDate()) : time;
+                    }
+                    break;
                 case REFERRER_USER:
                     List<UserModel> referrerUsers = userMapper.findUsersByRegisterTimeOrReferrer(startTime, endTime, userModel.getLoginName());
                     time += referrerUsers.size() * 5;
@@ -373,7 +399,7 @@ public class LotteryDrawActivityService {
                     long investAwardTime = sumInvestAmount / EACH_INVEST_AMOUNT_50000;
                     if (investAwardTime <= 10) {
                         time += investAwardTime;
-                    }else{
+                    } else {
                         time += 10;
                     }
                     break;
@@ -424,6 +450,7 @@ public class LotteryDrawActivityService {
                 .put(ActivityCategory.NATIONAL_PRIZE, Lists.newArrayList(nationalStartTime, nationalEndTime))
                 .put(ActivityCategory.AUTUMN_PRIZE, Lists.newArrayList(autumnStartTime, autumnEndTime))
                 .put(ActivityCategory.LANTERN_FESTIVAL_ACTIVITY, Lists.newArrayList(lanternFestivalStartTime, lanternFestivalEndTime))
+                .put(ActivityCategory.SPRING_FESTIVAL_ACTIVITY, springFestivalTime)
                 .build()).get(activityCategory);
     }
 
@@ -450,6 +477,11 @@ public class LotteryDrawActivityService {
     public String getActivityEndTime(ActivityCategory activityCategory) {
         List<String> activityTime = getActivityTime(activityCategory);
         return activityTime.get(1).replaceAll("-", "/");
+    }
+
+    public int toDayIsDrawByMobile(String mobile) {
+        return userLotteryPrizeMapper.findUserLotteryPrizeCountViews(mobile, null, ActivityCategory.SPRING_FESTIVAL_ACTIVITY,
+                DateTime.now().withTimeAtStartOfDay().toDate(), DateTime.now().plusDays(1).withTimeAtStartOfDay().plusMillis(-1).toDate());
     }
 
 }

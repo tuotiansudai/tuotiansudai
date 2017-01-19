@@ -602,6 +602,8 @@
     <select id="getInvestDetail" resultMap="investDataView">
         <![CDATA[
 
+
+
          select case
             when loan.periods ='1' then 30
             when loan.periods ='3' then 90
@@ -613,6 +615,8 @@
           and invest.trading_time between '2015-07-01 00:00:00' and date_add(curdate(), interval '00:00:00' hour_second)
           group by loan.periods
           ORDER BY productName
+
+
 
         ]]>
     </select>
@@ -965,17 +969,15 @@
         <if test="startTime != null &amp;&amp; endTime != null">
             and created_time between #{startTime} and #{endTime}
         </if>
-        AND loan_id IN (
-        SELECT
-        l.id
-        FROM
-        loan l
-        JOIN
-        loan_details d ON l.id = d.loan_id
-        WHERE
-        d.activity = 1
-        AND d.activity_desc = #{activityDesc}
-        )
+        <if test="activityDesc != null">
+            AND loan_id IN (
+            SELECT l.id
+            FROM loan l
+            JOIN loan_details d ON l.id = d.loan_id
+            WHERE
+            d.activity = 1 AND d.activity_desc = #{activityDesc}
+            )
+        </if>
     </select>
 
     <select id="sumDrawCountByLoginName" parameterType="map" resultType="int">
@@ -992,7 +994,6 @@
             and invest.trading_time between #{startTime} and #{endTime}
         </if>
         group by date_format(`trading_time`, '%Y-%m-%d')) drawCount;
-
     </select>
 
     <select id="findInvestAmountScaleTop3" parameterType="map" resultType="java.util.HashMap">
@@ -1018,6 +1019,8 @@
          <![CDATA[
         and DATE_FORMAT(invest.invest_time, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d')
 
+
+
         ]]>
     </select>
 
@@ -1034,12 +1037,14 @@
         </if>
         <if test="loanStatus.name() == 'REPAYING' ">
             and ((loan.product_type = 'EXPERIENCE' and TO_DAYS(NOW()) - TO_DAYS(invest_time) &lt; loan.duration)
-            or (loan.product_type != 'EXPERIENCE' and loan.status in ('REPAYING','OVERDUE') and invest.transfer_status != 'SUCCESS'))
+            or (loan.product_type != 'EXPERIENCE' and loan.status in ('REPAYING','OVERDUE') and invest.transfer_status
+            != 'SUCCESS'))
         </if>
         <if test="loanStatus.name() == 'RAISING' ">
             and loan.status in ('RAISING','RECHECK') and loan.product_type != 'EXPERIENCE'
         </if>
-        order by case when invest.trading_time is null then invest.created_time else invest.trading_time end desc, invest.id asc
+        order by case when invest.trading_time is null then invest.created_time else invest.trading_time end desc,
+        invest.id asc
         limit #{index}, #{pageSize}
     </select>
 
