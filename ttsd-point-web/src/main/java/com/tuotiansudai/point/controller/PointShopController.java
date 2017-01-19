@@ -5,12 +5,12 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.membership.repository.model.MembershipDiscount;
-import com.tuotiansudai.membership.repository.model.MembershipModel;
-import com.tuotiansudai.membership.service.UserMembershipEvaluator;
-import com.tuotiansudai.point.repository.dto.ProductShowItemDto;
 import com.tuotiansudai.point.repository.dto.PointBillPaginationItemDataDto;
-import com.tuotiansudai.point.repository.model.*;
+import com.tuotiansudai.point.repository.dto.ProductShowItemDto;
+import com.tuotiansudai.point.repository.model.GoodsType;
+import com.tuotiansudai.point.repository.model.PointBusinessType;
+import com.tuotiansudai.point.repository.model.ProductOrderViewDto;
+import com.tuotiansudai.point.repository.model.UserAddressModel;
 import com.tuotiansudai.point.service.*;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.UserService;
@@ -50,9 +50,6 @@ public class PointShopController {
     @Autowired
     private SignInService signInService;
 
-    @Autowired
-    private UserMembershipEvaluator userMembershipEvaluator;
-
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView pointSystemHome() {
         ModelAndView modelAndView = new ModelAndView("point-index");
@@ -67,11 +64,10 @@ public class PointShopController {
 
         boolean isLogin = userService.loginNameIsExist(loginName);
         if (isLogin) {
-            MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
             modelAndView.addObject("userPoint", accountService.getUserPointByLoginName(loginName));
             modelAndView.addObject("isSignIn", signInService.signInIsSuccess(loginName));
-            modelAndView.addObject("discountShow", MembershipDiscount.getMembershipDescriptionByLevel(membershipModel.getLevel()));
-            modelAndView.addObject("discount", MembershipDiscount.getMembershipDiscountByLevel(membershipModel.getLevel()));
+            modelAndView.addObject("discountShow", productService.discountShowInfo(loginName));
+            modelAndView.addObject("discount", productService.discountRate(loginName));
         }
         modelAndView.addObject("isLogin", isLogin);
         modelAndView.addObject("responsive", true);
@@ -100,10 +96,7 @@ public class PointShopController {
         String loginName = LoginUserInfo.getLoginName();
         ProductShowItemDto productShowItemDto = productService.findProductShowItemDto(id, goodsType);
         modelAndView.addObject("productShowItem", productShowItemDto);
-
-        MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
-        modelAndView.addObject("discount", MembershipDiscount.getMembershipDiscountByLevel(membershipModel.getLevel()));
-
+        modelAndView.addObject("discount", productService.discountRate(loginName));
         modelAndView.addObject("responsive", true);
         return modelAndView;
     }
@@ -138,8 +131,7 @@ public class PointShopController {
             modelAndView.addObject("addresses", userAddressModels);
         }
 
-        MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
-        modelAndView.addObject("discount", MembershipDiscount.getMembershipDiscountByLevel(membershipModel.getLevel()));
+        modelAndView.addObject("discount", productService.discountRate(loginName));
 
         modelAndView.addObject("responsive", true);
         return modelAndView;

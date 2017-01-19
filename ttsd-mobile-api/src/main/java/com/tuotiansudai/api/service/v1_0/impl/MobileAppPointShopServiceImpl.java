@@ -21,6 +21,7 @@ import com.tuotiansudai.point.repository.model.UserAddressModel;
 import com.tuotiansudai.point.service.ProductService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.spring.LoginUserInfo;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.Comparator;
@@ -128,7 +130,7 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
         List<ProductModel> couponProducts = productMapper.findAllProductsByGoodsType(Lists.newArrayList(GoodsType.COUPON));
         for (ProductModel productModel : couponProducts) {
             CouponModel couponModel = couponMapper.findById(productModel.getCouponId());
-            ExchangeCouponView exchangeCouponView = new ExchangeCouponView(productModel.getPoints(),productModel.getActualPoints(), productModel.getSeq(), productModel.getImageUrl(), productModel.getId(), couponModel);
+            ExchangeCouponView exchangeCouponView = new ExchangeCouponView(productModel.getPoints(), productModel.getActualPoints(), productModel.getSeq(), productModel.getImageUrl(), productModel.getId(), couponModel);
             exchangeCoupons.add(exchangeCouponView);
         }
 
@@ -197,6 +199,10 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
         } else {
             description.add(productModel.getDescription());
         }
+        double discount = productService.discountRate(LoginUserInfo.getLoginName());
+        String distinctPoints = String.valueOf(Math.round(new BigDecimal(productModel.getPoints()).multiply(new BigDecimal(discount)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue()));
+        productDetailResponseDto.setDiscountPoints(distinctPoints);
+        
         BaseResponseDto baseResponseDto = new BaseResponseDto();
         productDetailResponseDto.setProductDes(Lists.newArrayList(description));
         baseResponseDto.setData(productDetailResponseDto);
@@ -223,7 +229,7 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
         long leftCount = productDetailRequestDto.getNum() + productModel.getUsedCount();
         if (productModel.getType().equals(GoodsType.COUPON)) {
             CouponModel couponModel = couponService.findExchangeableCouponById(productModel.getCouponId());
-            ExchangeCouponView exchangeCouponView = new ExchangeCouponView(productModel.getPoints(), productModel.getActualPoints(),productModel.getSeq(), productModel.getImageUrl(), productModel.getId(), couponModel);
+            ExchangeCouponView exchangeCouponView = new ExchangeCouponView(productModel.getPoints(), productModel.getActualPoints(), productModel.getSeq(), productModel.getImageUrl(), productModel.getId(), couponModel);
             leftCount = productDetailRequestDto.getNum() + (exchangeCouponView.getCouponModel() != null ? exchangeCouponView.getCouponModel().getIssuedCount() : 0l);
         }
         if (leftCount > productModel.getTotalCount()) {

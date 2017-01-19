@@ -508,6 +508,16 @@ public class ProductServiceImpl implements ProductService {
         return productShowItemDto;
     }
 
+    public String discountShowInfo(String loginName){
+        MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
+        return MembershipDiscount.getMembershipDescriptionByLevel(membershipModel.getLevel());
+    }
+
+    public double discountRate(String loginName){
+        MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
+        return MembershipDiscount.getMembershipDiscountByLevel(membershipModel.getLevel());
+    }
+
 
     public static void main (String args[]){
 
