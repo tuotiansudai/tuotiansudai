@@ -1,7 +1,6 @@
 package com.tuotiansudai.service.impl;
 
 import com.google.common.base.Strings;
-import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.RegisterUserDto;
 import com.tuotiansudai.enums.UserOpType;
@@ -14,7 +13,6 @@ import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.RegisterUserService;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
-import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.MobileLocationUtils;
 import com.tuotiansudai.util.MyShaPasswordEncoder;
 import com.tuotiansudai.util.RandomStringGenerator;
@@ -46,9 +44,6 @@ public class UserServiceImpl implements UserService {
     private SmsWrapperClient smsWrapperClient;
 
     @Autowired
-    private MQWrapperClient mqWrapperClient;
-
-    @Autowired
     private MyShaPasswordEncoder myShaPasswordEncoder;
 
     @Autowired
@@ -59,11 +54,6 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserOpLogService userOpLogService;
-
-    @Autowired
-    private IdGenerator idGenerator;
-
-    public static String SHA = "SHA";
 
     private final static int LOGIN_NAME_LENGTH = 8;
 

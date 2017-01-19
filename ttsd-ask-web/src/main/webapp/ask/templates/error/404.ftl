@@ -1,5 +1,5 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${(css.main)!'main.css'}" pageJavascript="${(js.main)!'main.js'}" activeNav="" activeLeftNav="" title="页面出错了">
+<@global.main pageCss="${(css.main)!}" pageJavascript="${(js.main)!}" activeNav="" activeLeftNav="" title="页面出错了">
 <div class="bg-w tc" id="errorContainer">
 
     <div class="error-tip-container tl">
