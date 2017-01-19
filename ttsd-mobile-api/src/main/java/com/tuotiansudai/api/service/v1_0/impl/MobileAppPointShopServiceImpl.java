@@ -202,7 +202,7 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
         double discount = productService.discountRate(LoginUserInfo.getLoginName());
         String distinctPoints = String.valueOf(Math.round(new BigDecimal(productModel.getPoints()).multiply(new BigDecimal(discount)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue()));
         productDetailResponseDto.setDiscountPoints(distinctPoints);
-        
+
         BaseResponseDto baseResponseDto = new BaseResponseDto();
         productDetailResponseDto.setProductDes(Lists.newArrayList(description));
         baseResponseDto.setData(productDetailResponseDto);
