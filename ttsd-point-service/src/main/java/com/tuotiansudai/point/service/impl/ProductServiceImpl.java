@@ -7,7 +7,6 @@ import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.ExchangeCouponView;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
-import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.membership.repository.model.MembershipDiscount;
@@ -34,7 +33,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -516,13 +514,5 @@ public class ProductServiceImpl implements ProductService {
     public double discountRate(String loginName){
         MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
         return MembershipDiscount.getMembershipDiscountByLevel(membershipModel.getLevel());
-    }
-
-
-    public static void main (String args[]){
-
-        double as = 0.85;
-        new BigDecimal(as);
-        System.out.println(Math.round(new BigDecimal(200).multiply(new BigDecimal(0.85)).multiply(new BigDecimal(1)).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue()));
     }
 }

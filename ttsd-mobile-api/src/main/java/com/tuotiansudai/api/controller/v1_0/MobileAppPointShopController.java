@@ -59,4 +59,25 @@ public class MobileAppPointShopController extends MobileAppBaseController {
         return mobileAppPointShopService.productExchange(productDetailRequestDto);
     }
 
+    @RequestMapping(value = "/get/prize", method = RequestMethod.POST)
+    @ApiOperation("积分抽奖")
+    public BaseResponseDto lotteryDrawByPoint(@RequestBody BaseParamDto baseParamDto) {
+        baseParamDto.getBaseParam().setUserId(getLoginName());
+        return mobileAppPointShopService.lotteryDrawByPoint(baseParamDto);
+    }
+
+    @RequestMapping(value = "/get/user-prize-list", method = RequestMethod.POST)
+    @ApiOperation("我的中奖记录")
+    public BaseResponseDto myPrizeList(@RequestBody BaseParamDto baseParamDto) {
+        baseParamDto.getBaseParam().setUserId(getLoginName());
+        return mobileAppPointShopService.findPrizeListByLoginName(baseParamDto);
+    }
+
+    @RequestMapping(value = "/get/all-prize-list", method = RequestMethod.POST)
+    @ApiOperation("全部中奖记录")
+    public BaseResponseDto PrizeList(@RequestBody BaseParamDto baseParamDto) {
+        baseParamDto.getBaseParam().setUserId(getLoginName());
+        return mobileAppPointShopService.findPrizeList(baseParamDto);
+    }
+
 }
