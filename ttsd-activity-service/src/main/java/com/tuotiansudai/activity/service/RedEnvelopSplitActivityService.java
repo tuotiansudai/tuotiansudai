@@ -83,17 +83,17 @@ public class RedEnvelopSplitActivityService {
         long sumAmount = 0l;
 
         if (referrerCount == 1) {
-            sumAmount = 188l;
-        } else if (referrerCount == 2) {
-            sumAmount = 388l;
-        } else if (referrerCount >= 3 && referrerCount < 5) {
             sumAmount = 588l;
-        } else if (referrerCount >= 5 && referrerCount < 7) {
-            sumAmount = 988l;
-        } else if (referrerCount >= 7 && referrerCount < 10) {
+        } else if (referrerCount == 2) {
+            sumAmount = 788l;
+        } else if (referrerCount == 3) {
+            sumAmount = 888l;
+        } else if (referrerCount == 4) {
             sumAmount = 1388l;
+        } else if (referrerCount == 5) {
+            sumAmount = 1588l;
         }
-        if (referrerCount >= 10) {
+        if (referrerCount >= 6) {
             sumAmount = 2088l;
         }
         return AmountConverter.convertCentToString(sumAmount);
