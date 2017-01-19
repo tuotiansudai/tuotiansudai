@@ -87,7 +87,7 @@ public class RedEnvelopSplitActivityService {
         } else if (referrerCount == 2) {
             sumAmount = 788l;
         } else if (referrerCount == 3) {
-            sumAmount = 888l;
+            sumAmount = 988l;
         } else if (referrerCount == 4) {
             sumAmount = 1388l;
         } else if (referrerCount == 5) {
