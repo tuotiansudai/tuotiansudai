@@ -20,12 +20,29 @@
 			padding: 20px 0 30px;
 		    border-radius: 15px;
 		    margin-bottom:30px;
+		    position: relative;
+		    &.left-item{
+		    	width:590px;
+		    	margin-right:10px;
+		    }
+		    &.right-item{
+		    	width:400px;
+		    }
+		    .item-icon{
+		    	position: absolute;
+		    	top:-5px;
+		    	left:-2px;
+		    	width:71px;
+		    	height:77px;
+		    	background:url('/activity/images/point-update/before-icon.jpg') no-repeat center;
+		    }
 			h3{
 				padding-left:80px;
 				box-sizing:border-box;
 			    margin-bottom: 35px;
 			}
 			.get-point-item{
+				float:left;
 				margin:0 4px;
 				li{
 					float: left;
@@ -61,6 +78,7 @@
 							border:1px solid #fed57d;
 							font-size:18px;
 							color:#333333;
+							width:50%;
 						}
 						td{
 							background:#fefaef;
@@ -82,6 +100,7 @@
 				}
 			}
 			.task-point-item{
+				float:left;
 				margin:0 4px;
 				li{
 					float: left;
@@ -98,6 +117,7 @@
 							border:1px solid #fed57d;
 							font-size:24px;
 							color:#4e030e;
+							width:50%;
 						}
 						td{
 							background:#fefaef;
@@ -137,11 +157,84 @@
 					color:#feff4e;
 					background:#ff473c;
 					position: relative;
+					&.vip-btn{
+						width:230px;
+					}
 					&:hover{
 						top:2px;
 						box-shadow:0 2px 0 #cc3931;
 					}
 				}
+			}
+			.vip-info{
+				float:left;
+				width:100%;
+				margin-bottom:20px;
+				font-size:18px;
+				color:#4e030e;
+				text-align:center;
+			}
+			.vip-item{
+				float:left;
+				width:466px;
+				box-sizing:border-box;
+				padding:10px;
+			    background: #fed57d;
+    			border-radius: 10px;
+    			margin:0 50px;
+				table{
+					th{
+						background:#ffeab3;
+						border:1px solid #fed57d;
+						font-size:24px;
+						color:#4e030e;
+						width:50%;
+					}
+					td{
+						background:#fefaef;
+						border:1px solid #fed57d;
+						font-size:14px;
+						color:#333333;
+					}
+				}
+			}
+			.point-item{
+				float:left;
+				width:100%;
+				padding:0 25px;
+				box-sizing:border-box;
+				li{
+					float:left;
+					width:100%;
+					padding-left:50px;
+					box-sizing:border-box;
+					border-bottom:1px dashed #4e030e;
+					p{
+						font-size:14px;
+						color:#333333;
+						margin-bottom:0;
+						&.title-name{
+							font-size:22px;
+							color:#4e030e;
+						}
+					}
+				}
+			}
+		}
+		.rule-item{
+			float:left;
+			width:100%;
+			margin-bottom:45px;
+		    box-sizing: border-box;
+   			padding: 0 20px;
+			dt{
+				font-size:18px;
+				color:#fefbc8;
+				margin-bottom:20px;
+			}
+			dd{
+				font-size:14px;
+				color:#fefbc8;
 			}
 		}
 	}
