@@ -23,7 +23,12 @@ public enum MessageQueue {
     AuditLog("AuditLog"),
     UserOperateLog("UserOperateLog"),
     LoginLog("LoginLog"),
-    QueryAnxinContract("QueryAnxinContract");
+    QueryAnxinContract("QueryAnxinContract"),
+    LoanOut("LoanOut"),
+    LoanStartRaising("LoanStartRaising"),
+    LoanStopRaising("LoanStopRaising"),
+    CancelTransferApplication("cancelTransferApplication")
+    ;
 
     private final String queueName;
 

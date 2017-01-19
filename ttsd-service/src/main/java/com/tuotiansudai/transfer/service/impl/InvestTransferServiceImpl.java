@@ -10,8 +10,8 @@ import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.MessageEventType;
 import com.tuotiansudai.enums.PushSource;
 import com.tuotiansudai.enums.PushType;
-import com.tuotiansudai.job.JobType;
-import com.tuotiansudai.job.TransferApplicationAutoCancelJob;
+import com.tuotiansudai.job.DelayMessageDeliveryJobCreator;
+import com.tuotiansudai.job.JobManager;
 import com.tuotiansudai.message.EventMessage;
 import com.tuotiansudai.message.PushMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
@@ -28,14 +28,12 @@ import com.tuotiansudai.transfer.repository.model.TransferRuleModel;
 import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.transfer.util.TransferRuleUtil;
 import com.tuotiansudai.util.CalculateLeftDays;
-import com.tuotiansudai.job.JobManager;
 import com.tuotiansudai.util.PaginationUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
-import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -245,15 +243,7 @@ public class InvestTransferServiceImpl implements InvestTransferService {
             logger.info("investTransferApplyJob create failed, expect deadline is before now, id = " + transferApplicationModel.getId());
             return;
         }
-        try {
-            jobManager.newJob(JobType.TransferApplyAutoCancel, TransferApplicationAutoCancelJob.class)
-                    .withIdentity(JobType.TransferApplyAutoCancel.name(), "Transfer-apply-" + transferApplicationModel.getId())
-                    .replaceExistingJob(true)
-                    .addJobData("Transfer-apply-id", transferApplicationModel.getId())
-                    .runOnceAt(transferApplicationModel.getDeadline()).submit();
-        } catch (SchedulerException e) {
-            logger.error(e.getLocalizedMessage(), e);
-        }
+        DelayMessageDeliveryJobCreator.createCancelTransferApplicationDelayJob(jobManager, transferApplicationModel.getId(), transferApplicationModel.getDeadline());
     }
 
     protected String generateTransferApplyName() {
@@ -279,7 +269,7 @@ public class InvestTransferServiceImpl implements InvestTransferService {
             return false;
         }
 
-        if(!validTransferIsCanceled(investId)){
+        if (!validTransferIsCanceled(investId)) {
             logger.debug(MessageFormat.format("{0} is transferred", investModel.getLoanId()));
             return false;
         }
@@ -300,7 +290,7 @@ public class InvestTransferServiceImpl implements InvestTransferService {
 
         }
 
-        if(!validTransferIsDayLimit(investModel.getLoanId())){
+        if (!validTransferIsDayLimit(investModel.getLoanId())) {
             logger.debug(MessageFormat.format("{0} right away repay ", investId));
             return false;
         }
@@ -309,12 +299,12 @@ public class InvestTransferServiceImpl implements InvestTransferService {
     }
 
     @Override
-    public boolean validTransferIsDayLimit(long loanId){
+    public boolean validTransferIsDayLimit(long loanId) {
         TransferRuleModel transferRuleModel = transferRuleMapper.find();
         DateTime current = new DateTime().withTimeAtStartOfDay();
         LoanRepayModel currentLoanRepay = loanRepayMapper.findCurrentLoanRepayByLoanId(loanId);
 
-        if(currentLoanRepay == null){
+        if (currentLoanRepay == null) {
             return false;
         }
 
@@ -327,7 +317,7 @@ public class InvestTransferServiceImpl implements InvestTransferService {
     }
 
     @Override
-    public boolean validTransferIsCanceled(long investId){
+    public boolean validTransferIsCanceled(long investId) {
         DateTime current = new DateTime().withTimeAtStartOfDay();
         List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findByTransferInvestId(investId, Lists.newArrayList(TransferStatus.SUCCESS, TransferStatus.TRANSFERRING, TransferStatus.CANCEL));
         for (TransferApplicationModel transferApplicationModelTemp : transferApplicationModels) {

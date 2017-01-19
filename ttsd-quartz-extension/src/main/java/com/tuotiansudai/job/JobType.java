@@ -37,7 +37,8 @@ public enum JobType {
     EventMessage("每日事件触发消息"),
     CreateAnXinContract("创建安心签合同"),
     SendFirstRedEnvelopSplit("红包分裂第一期活动发红包"),
-    SendSecondRedEnvelopSplit("红包分裂第二期活动发红包");
+    SendSecondRedEnvelopSplit("红包分裂第二期活动发红包"),
+    DelayMessageDelivery("延迟消息投递");
 
     private final String description;
 
