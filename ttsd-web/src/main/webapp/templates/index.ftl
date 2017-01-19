@@ -331,9 +331,6 @@
     </div>
 </div>
 
-<div class="new-year-float">
-    <a href="/activity/annual" target="_blank"><img src="${staticServer}/images/homepage/new-year-float.png"></a>
-</div>
 
     <#include "component/coupon-alert.ftl" />
     <#include "component/login-tip.ftl" />

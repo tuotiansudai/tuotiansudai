@@ -41,7 +41,6 @@ class Deployment(object):
     def build_and_unzip_worker(self):
         print "Making worker build..."
         sh('cd ./ttsd-job-worker && {0} distZip'.format(self._gradle))
-        sh('cd ./ttsd-job-worker && {0} -Pwork=invest distZip'.format(self._gradle))
         sh('cd ./ttsd-job-worker && {0} -Pwork=jpush distZip'.format(self._gradle))
         sh('cd ./ttsd-job-worker && {0} -Pwork=repay distZip'.format(self._gradle))
         sh('cd ./ttsd-job-worker/build/distributions && unzip \*.zip')
@@ -85,8 +84,8 @@ class Deployment(object):
         sh('mv ./ttsd-mobile-api/src/main/webapp/static_api.zip  ./ttsd-web/build/')
         sh('cd ./ttsd-web/build && unzip static_api.zip -d static')
 
-        sh('cd ./ttsd-ask-web/src/main/webapp && zip -r static_ask.zip ask/')
-        sh('mv ./ttsd-ask-web/src/main/webapp/static_ask.zip  ./ttsd-web/build/')
+        sh('cd ./ttsd-frontend-manage/resources/prod && zip -r static_ask.zip *')
+        sh('mv ./ttsd-frontend-manage/resources/prod/static_ask.zip  ./ttsd-web/build/')
         sh('cd ./ttsd-web/build && unzip static_ask.zip -d static')
 
         sh('cd ./ttsd-activity-web/src/main/webapp && zip -r static_activity.zip activity/')

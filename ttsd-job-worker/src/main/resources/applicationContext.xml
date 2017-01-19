@@ -182,8 +182,16 @@
         <property name="basePackage" value="com.tuotiansudai.cfca.mapper"/>
     </bean>
 
-    <bean id="jobStoreBuilder" class="com.tuotiansudai.util.quartz.JobStoreBuilder">
-        <property name="dataSource" ref="jobHikariCPDataSource"/>
+    <bean id="jobStoreBuilder" class="com.tuotiansudai.quartz.JobStoreBuilder">
+        <constructor-arg ref="jobHikariCPDataSource"/>
+    </bean>
+
+    <bean id="schedulerBuilder" class="com.tuotiansudai.quartz.SchedulerBuilder">
+        <constructor-arg ref="jobStoreBuilder"/>
+    </bean>
+    
+    <bean id="jobManager" class="com.tuotiansudai.job.JobManager">
+        <constructor-arg ref="schedulerBuilder"/>
     </bean>
 
     <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
@@ -192,6 +200,8 @@
     </bean>
 
     <bean id="okHttpClient" class="com.squareup.okhttp.OkHttpClient"/>
+
+    <bean class="com.tuotiansudai.quartz.AutowiringSpringBeanJobFactory"/>
 
     <bean class="com.tuotiansudai.mq.config.MQProducerConfig"/>
 </beans>
