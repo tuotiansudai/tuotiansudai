@@ -3,18 +3,77 @@ import {ValidatorForm} from 'publicJs/validator';
 import 'publicStyle/module/register_png.scss';
 import 'webStyle/register.scss';
 
-import {useAjax,refreshCaptcha} from 'publicJs/common';
+import {useAjax} from 'publicJs/common';
+import {fetchCaptchaFun} from 'publicJs/fetch_captcha';
 
 let registerForm=globalFun.$('#registerUserForm'); //注册的form
 let imageCaptchaForm=globalFun.$('#imageCaptchaForm'); //获取验证码的form
 let $fetchCaptcha=$('#fetchCaptcha');
-let errorDom=$(registerForm).find('.error-box');
+let $registerSubmit=$('input[type="submit"]',$(registerForm));
+let agreementValid=true;
 
-//刷新验证码
-$('#imageCaptcha').on('click',function() {
-    refreshCaptcha(this,'/login/captcha?');
-    imageCaptchaForm.captcha.value='';
-}).trigger('click');
+$('input[type="text"],input[type="password"]',$(registerForm)).placeholder();
+
+//点击获取验证码按钮
+let fetchCaptchaRegister=new fetchCaptchaFun('registerUserForm','register');
+fetchCaptchaRegister.init();
+
+//推荐人显示隐藏
+(function() {
+    let  $referrerOpen=$('.referrer-open',$(registerForm));
+    $referrerOpen.on('click',function() {
+        let $this=$(this),
+            checkOption = false,
+            iconArrow=$this.find('i');
+        $this.next('li').toggleClass('hide');
+        checkOption=$this.next('li').hasClass('hide');
+        iconArrow[0].className=checkOption?'sprite-register-arrow-bottom':'sprite-register-arrow-right';
+    });
+})();
+
+//同意服务协议
+(function() {
+    let $checkbox=$('label.check-label',$(registerForm));
+    let $agreement = $('#agreementInput');
+    let $showAgreement = $('.show-agreement', $(registerForm))
+    $checkbox.on('click', function (event) {
+        if (event.target.tagName.toUpperCase() == 'A') {
+            return;
+        }
+        var $this=$(this),
+            $agreeLast=$this.parents('.agree-last'),
+            $cIcon=$agreeLast.find('i');
+        if($this.hasClass('checked')) {
+            $this.removeClass('checked');
+            $agreement.prop('checked',false);
+            $cIcon[0].className='sprite-register-no-checked';
+            agreementValid=false;
+        }
+        else {
+            $this.addClass('checked');
+            $agreement.prop('checked',true);
+            $cIcon[0].className='sprite-register-yes-checked';
+            agreementValid=true;
+        }
+        isDisabledButton();
+    });
+
+    $showAgreement.click(function () {
+        layer.open({
+            type: 1,
+            title: '拓天速贷服务协议',
+            area: ['950px', '600px'],
+            shadeClose: true,
+            move: false,
+            scrollbar: true,
+            skin:'register-skin',
+            content: $('#agreementBox'),
+            success: function (layero, index) {
+            }
+        });
+    });
+
+})();
 
 //用户注册表单校验
 let validator = new ValidatorForm();
@@ -42,40 +101,50 @@ validator.add(registerForm.captcha, [{
     strategy: 'isNumber:6',
     errorMsg: '验证码为6位数字'
 }],true);
-let reInputs=$(registerForm).find('input:text,input:password,input:checkbox');
+
+let reInputs=$(registerForm).find('input:text,input:password');
 
 reInputs=Array.from(reInputs);
 for (var el of reInputs) {
     el.addEventListener("keyup", function() {
-        let errorMsg = validator.start(this);
-        //按钮上有样式名count-downing，说明正在倒计时
-        if($fetchCaptcha.hasClass('count-downing')) {
-            return;
-        }
-        if(this.name!='captcha') {
-            isDisabledCaptcha();
-        }
+        validator.start(this);
+        isDisabledButton();
     })
 }
-//判断获取验证码的按钮是否可点击
-function isDisabledCaptcha() {
-    //手机号和密码不为空，并且都没有error
+
+//用来判断获取验证码和立即注册按钮 是否可点击
+function isDisabledButton() {
     let mobile=registerForm.mobile,
-        password=registerForm.password;
-    let isEmpty=!mobile.value || !password.value;
-    let isMobileEr=globalFun.hasClass(mobile,'error');
-    let isPwdEr=globalFun.hasClass(password,'error');
-    if(isEmpty || isMobileEr || isPwdEr) {
+        password=registerForm.password,
+        captcha=registerForm.captcha,
+        referrer=registerForm.referrer;
+
+    //获取验证码点亮
+    let isMobileValid=!globalFun.hasClass(mobile,'error') && mobile.value;
+    let isPwdValid = !globalFun.hasClass(password,'error') && password.value;
+
+    let isDisabledCaptcha = isMobileValid && isPwdValid;
+
+    //按钮上有样式名count-downing，说明正在倒计时
+    if ($fetchCaptcha.hasClass('count-downing')) {
         $fetchCaptcha.prop('disabled',true);
     }
     else {
-        $fetchCaptcha.prop('disabled',false);
+        $fetchCaptcha.prop('disabled',!isDisabledCaptcha);
     }
+    //给验证码弹框中的mobile隐藏域赋值
+    isDisabledCaptcha && (globalFun.$('#imageCaptchaForm').mobile.value = mobile.value);
+    //通过获取验证码按钮来判断
+    !isDisabledCaptcha && $registerSubmit.prop('disabled',true);
+
+    let captchaValid = !$(captcha).hasClass('error') && captcha.value;
+    let referrerValid = !$(referrer).hasClass('error');
+
+    let isDisabledSubmit= isMobileValid && isPwdValid && captchaValid && referrerValid && agreementValid;
+    $registerSubmit.prop('disabled',!isDisabledSubmit);
+
 }
-window.onload=function() {
-    //页面刷新的时候判断手机号和密码是否存在且有效，如果有效，点亮获取验证码按钮
-    isDisabledCaptcha();
-}
+
 
 // require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate', 'jquery.validate.extension', 'jquery.form', 'jquery.ajax.extension','commonFun'], function (_, $, layer) {
 //     var registerUserForm = $(".register-user-form"),

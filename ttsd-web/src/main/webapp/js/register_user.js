@@ -26,6 +26,7 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
         agreementValid=true;
 
     $('input[type="text"],input[type="password"]',registerUserForm).placeholder();
+
     $checkbox.on('click', function (event) {
         if (event.target.tagName.toUpperCase() == 'A') {
             return;
@@ -47,6 +48,7 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
         }
         checkInputValid();
     });
+
     $referrerOpen.on('click',function() {
         var $this=$(this),
             checkOption=false,
@@ -62,6 +64,7 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
         }
         checkInputValid();
     });
+
     showAgreement.click(function () {
         layer.open({
             type: 1,

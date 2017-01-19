@@ -231,14 +231,12 @@
       top: 22px;
     }
     .image-captcha-confirm {
-      position: absolute;
-      bottom: 17px;
-      left: 35%;
+      margin-top:25px;
     }
   }
 
   .image-captcha-confirm.loading {
-    background: url("/images/icons/loading.gif") no-repeat center center;
+    background: url("../images/icons/loading.gif") no-repeat center center;
     cursor: default;
     text-indent: -9999px;
     border:0px;

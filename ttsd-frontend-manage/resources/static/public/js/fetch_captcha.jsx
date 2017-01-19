@@ -1,0 +1,113 @@
+//用来获取手机验证码，主要是注册和找回密码的时候用
+import {countDownLoan,useAjax,refreshCaptcha} from 'publicJs/common';
+
+let imageCaptchaForm=globalFun.$('#imageCaptchaForm');
+let $imageCaptchaForm =$(imageCaptchaForm);
+//获取手机验证
+let $captchaSubmit=$('.image-captcha-confirm',$imageCaptchaForm),
+    $imageCaptchaText=$('.image-captcha-text',$imageCaptchaForm),
+    $imageCaptcha = $('.image-captcha',$imageCaptchaForm),
+    $errorBox=$('.error-box',$imageCaptchaForm);
+
+let $fetchCaptcha=$('#fetchCaptcha');
+
+//刷新验证码
+$imageCaptcha.on('click',function() {
+    refreshCaptcha(this,'/register/user/image-captcha');
+    $imageCaptchaForm[0].imageCaptcha.value='';
+}).trigger('click');
+
+export class fetchCaptchaFun{
+    constructor(DomForm,kind) {
+        this.DomContainer=document.getElementById(DomForm);
+        this.kind=kind;
+    }
+    init() {
+        this.CaptchaTextCheck();
+        this.FetchCaptcha();
+    }
+    CaptchaTextCheck() {
+        $imageCaptchaText.on('keyup',function(event) {
+            if(/\d{5}/.test(this.value)) {
+                $errorBox.text('');
+                $(this).removeClass('error');
+            }
+            else {
+                $errorBox.text('验证码只能为5位数字');
+                $(this).addClass('error');
+            }
+        });
+    }
+    FetchCaptcha() {
+        let that =this;
+        //点击获取验证码
+        $fetchCaptcha.on('click',function() {
+            let mobile=that.DomContainer.mobile.value;
+            $errorBox.text('');
+            $imageCaptchaForm.find('input:visible').val('');
+
+            layer.open({
+                type:1,
+                area:['380px','210px'],
+                shadeClose: true,
+                content:$imageCaptchaForm.parents('.image-captcha-dialog')
+            });
+            that.getCaptchaOrCancel();
+            $imageCaptchaForm.find('.mobile').val(mobile);
+        });
+    }
+    getCaptchaOrCancel() {
+        let that=this;
+        $captchaSubmit.on('click',function(event) {
+            event.preventDefault();
+            var imageText=$imageCaptchaText.val();
+            if(imageText=='') {
+                $errorBox.text('验证码不能为空');
+                return;
+            }
+            !$imageCaptchaText.hasClass('error') &&  that.getSMSCode();
+        });
+    }
+    getSMSCode() {
+        let captcha=$imageCaptchaText.val(),
+            that=this;
+            $captchaSubmit.prop('disabled',true);
+            let ajaxOption;
+            // 提交手机验证表单
+            if(that.kind=="register") {
+                 ajaxOption={
+                     url: '/register/user/send-register-captcha',
+                     type:'POST',
+                     data:$imageCaptchaForm.serialize()
+                 }
+            }
+            // else if(that.kind=='retrieve'){
+            //     ajaxOption={
+            //         type:'GET',
+            //         url: "/mobile-retrieve-password/mobile/"+that.DomContainer.mobile.value+"/imageCaptcha/"+captcha+"/send-mobile-captcha",
+            //     }
+            // }
+            useAjax(ajaxOption,function(responseData) {
+                $captchaSubmit.prop('disabled',false);
+                //刷新验证码
+                refreshCaptcha($imageCaptcha[0],'/register/user/image-captcha');
+
+                let data = responseData.data;
+                if (data.status && !data.isRestricted) {
+                    //获取手机验证码成功，关闭弹框，并开始倒计时
+                    layer.closeAll();
+                    countDownLoan({
+                        btnDom:$fetchCaptcha,
+                    });
+
+                } else if (!data.status && data.isRestricted) {
+                    $errorBox.text('短信发送频繁，请稍后再试');
+
+                } else if (!data.status && !data.isRestricted) {
+                    $errorBox.text('图形验证码不正确');
+                }
+            });
+
+    }
+
+}
