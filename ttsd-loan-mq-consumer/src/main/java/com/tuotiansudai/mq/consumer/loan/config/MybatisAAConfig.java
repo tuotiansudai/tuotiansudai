@@ -55,11 +55,13 @@ public class MybatisAAConfig {
         return configurer;
     }
 
+    @Primary
     @Bean
     public DataSourceTransactionManager aaTransactionManager(@Qualifier("hikariCPAADataSource") DataSource hikariCPAADataSource) {
         return new DataSourceTransactionManager(hikariCPAADataSource);
     }
 
+    @Primary
     @Bean
     public SqlSessionFactory aaSqlSessionFactory(@Qualifier("hikariCPAADataSource") DataSource hikariCPAADataSource) throws Exception {
         SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();

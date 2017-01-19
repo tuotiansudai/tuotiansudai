@@ -46,7 +46,7 @@ public class MybatisAnxinConfig {
     public MapperScannerConfigurer anxinMapperScannerConfigurer() {
         MapperScannerConfigurer configurer = new MapperScannerConfigurer();
         configurer.setBasePackage("com.tuotiansudai.cfca.mapper");
-        configurer.setSqlSessionFactoryBeanName("hikariCPAnxinDataSource");
+        configurer.setSqlSessionFactoryBeanName("anxinSqlSessionFactory");
         return configurer;
     }
 
