@@ -1,8 +1,7 @@
-package com.tuotiansudai.service;
+package com.tuotiansudai.mq.consumer.loan.service;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.enums.Role;
-import com.tuotiansudai.exception.ReferrerRelationException;
 import com.tuotiansudai.repository.mapper.ReferrerRelationMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.mapper.UserRoleMapper;
@@ -14,8 +13,8 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
@@ -25,8 +24,8 @@ import java.util.UUID;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
+@RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @Transactional
 public class ReferrerRelationServiceTest {
 
@@ -43,7 +42,7 @@ public class ReferrerRelationServiceTest {
     private ReferrerRelationMapper referrerRelationMapper;
 
     @Test
-    public void shouldGenerateReferrerRelations() throws ReferrerRelationException {
+    public void shouldGenerateReferrerRelations() {
         UserModel referrer = getFakeUser("referrer");
         UserModel user = getFakeUser("user");
         generateUserRole(referrer.getLoginName(), Lists.newArrayList(Role.USER));
@@ -59,7 +58,7 @@ public class ReferrerRelationServiceTest {
     }
 
     @Test
-    public void shouldNotGenerateReferrerRelationsWhenUserReferrerLevelGreatThanTwo() throws ReferrerRelationException {
+    public void shouldNotGenerateReferrerRelationsWhenUserReferrerLevelGreatThanTwo() {
         UserModel user1 = getFakeUser("user1");
         UserModel user2 = getFakeUser("user2");
         UserModel user3 = getFakeUser("user3");
@@ -79,7 +78,7 @@ public class ReferrerRelationServiceTest {
     }
 
     @Test
-    public void shouldNotGenerateReferrerRelationsWhenStaffReferrerLevelGreatThanFour() throws ReferrerRelationException {
+    public void shouldNotGenerateReferrerRelationsWhenStaffReferrerLevelGreatThanFour() {
         UserModel user1 = getFakeUser("user1");
         UserModel user2 = getFakeUser("user2");
         UserModel user3 = getFakeUser("user3");
@@ -107,7 +106,7 @@ public class ReferrerRelationServiceTest {
     }
 
     @Test
-    public void shouldGenerateReferrerRelationsWhenRemoveReferrer() throws ReferrerRelationException {
+    public void shouldGenerateReferrerRelationsWhenRemoveReferrer() {
         UserModel user1 = getFakeUser("user1");
         UserModel user2 = getFakeUser("user2");
         UserModel user3 = getFakeUser("user3");
@@ -142,7 +141,7 @@ public class ReferrerRelationServiceTest {
     }
 
     @Test
-    public void shouldGenerateReferrerRelationsWhenReplaceReferrer() throws ReferrerRelationException {
+    public void shouldGenerateReferrerRelationsWhenReplaceReferrer() {
         UserModel user1 = getFakeUser("user1");
         UserModel user2 = getFakeUser("user2");
         UserModel user3 = getFakeUser("user3");
@@ -177,7 +176,7 @@ public class ReferrerRelationServiceTest {
     }
 
     @Test
-    public void shouldGenerateReferrerRelationsWhenChangeStaffToUser() throws ReferrerRelationException {
+    public void shouldGenerateReferrerRelationsWhenChangeStaffToUser() {
         UserModel user1 = getFakeUser("user1");
         UserModel user2 = getFakeUser("user2");
         UserModel user3 = getFakeUser("user3");

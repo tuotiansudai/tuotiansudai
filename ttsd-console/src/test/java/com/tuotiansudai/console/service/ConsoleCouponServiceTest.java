@@ -1,19 +1,15 @@
 package com.tuotiansudai.console.service;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.dto.CouponDto;
 import com.tuotiansudai.dto.ExchangeCouponDto;
-import com.tuotiansudai.repository.mapper.CouponMapper;
-import com.tuotiansudai.repository.mapper.UserCouponMapper;
-import com.tuotiansudai.repository.model.CouponModel;
-import com.tuotiansudai.repository.model.UserCouponModel;
-import com.tuotiansudai.repository.model.UserGroup;
-import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.dto.RegisterUserDto;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.exception.CreateCouponException;
-import com.tuotiansudai.exception.ReferrerRelationException;
+import com.tuotiansudai.repository.mapper.CouponMapper;
 import com.tuotiansudai.repository.mapper.SmsCaptchaMapper;
+import com.tuotiansudai.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.UserService;
@@ -113,7 +109,7 @@ public class ConsoleCouponServiceTest {
     }
 
     @Test
-    public void shouldRegisterUserIsSuccess() throws ReferrerRelationException {
+    public void shouldRegisterUserIsSuccess() {
         UserModel userModel = fakeUserModel();
         userMapper.create(userModel);
 

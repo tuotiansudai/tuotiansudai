@@ -7,7 +7,6 @@ import com.tuotiansudai.enums.MessageEventType;
 import com.tuotiansudai.enums.PushSource;
 import com.tuotiansudai.enums.PushType;
 import com.tuotiansudai.enums.Role;
-import com.tuotiansudai.exception.ReferrerRelationException;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
@@ -46,7 +45,7 @@ public class RegisterUserServiceImpl implements RegisterUserService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean register(UserModel userModel) throws ReferrerRelationException {
+    public boolean register(UserModel userModel) {
         this.userMapper.create(userModel);
 
         this.userRoleMapper.create(Lists.newArrayList(new UserRoleModel(userModel.getLoginName(), Role.USER)));
@@ -72,7 +71,7 @@ public class RegisterUserServiceImpl implements RegisterUserService {
                 null));
 
         if (!Strings.isNullOrEmpty(userModel.getReferrer())) {
-            mqWrapperClient.sendMessage(MessageQueue.UserRegistered_GenerateReferrerRelation, userModel.getLoginName());
+            mqWrapperClient.sendMessage(MessageQueue.GenerateReferrerRelation, userModel.getLoginName());
 
             //Title:您推荐的好友 {0} 已成功注册
             //AppTitle:您推荐的好友 {0} 已成功注册

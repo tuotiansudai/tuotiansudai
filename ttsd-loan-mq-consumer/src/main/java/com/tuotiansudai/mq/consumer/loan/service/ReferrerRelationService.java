@@ -1,38 +1,27 @@
-package com.tuotiansudai.service.impl;
+package com.tuotiansudai.mq.consumer.loan.service;
 
-import com.google.common.base.Optional;
-import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.enums.Role;
-import com.tuotiansudai.exception.ReferrerRelationException;
 import com.tuotiansudai.repository.mapper.ReferrerRelationMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.ReferrerRelationModel;
-import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserRoleModel;
-import com.tuotiansudai.service.ReferrerRelationService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.MessageFormat;
 import java.util.List;
 import java.util.Map;
 
 @Service
-public class ReferrerRelationServiceImpl implements ReferrerRelationService {
+public class ReferrerRelationService {
 
-    static Logger logger = Logger.getLogger(ReferrerRelationServiceImpl.class);
-
-    @Autowired
-    private UserMapper userMapper;
+    static Logger logger = Logger.getLogger(ReferrerRelationService.class);
 
     @Autowired
     private UserRoleMapper userRoleMapper;
@@ -46,33 +35,10 @@ public class ReferrerRelationServiceImpl implements ReferrerRelationService {
     @Value("#{'${pay.staff.reward}'.split('\\|')}")
     private List<Double> referrerStaffRoleReward;
 
-    @Override
     @Transactional
-    public void generateRelation(String newReferrerLoginName, String loginName) throws ReferrerRelationException {
-        UserModel userModel = userMapper.findByLoginName(loginName);
-        if (userModel == null) {
-            logger.error(MessageFormat.format("update referrer failed, due to updated user ({0}) is not exist", loginName));
-            throw new ReferrerRelationException("用户不存在");
-        }
-
-        UserModel newReferrerModel = userMapper.findByLoginName(newReferrerLoginName);
-        if (!Strings.isNullOrEmpty(newReferrerLoginName) && newReferrerModel == null) {
-            logger.error(MessageFormat.format("update referrer failed, due to new referrer ({0}) is not exist", newReferrerLoginName));
-            throw new ReferrerRelationException("推荐人不存在");
-        }
-
-        if (loginName.equalsIgnoreCase(newReferrerLoginName)) {
-            logger.error(MessageFormat.format("update referrer failed, due to new referrer ({0}) is same as updated user ({1})", newReferrerLoginName, loginName));
-            throw new ReferrerRelationException("不能将推荐人设置为自己");
-        }
-
+    public void generateRelation(String newReferrerLoginName, String loginName) {
         // 查找所有 loginName 推荐的人
         Map<String, Integer> allLowerRelations = this.findAllLowerRelations(loginName);
-
-        if (allLowerRelations.containsKey(newReferrerLoginName)) {
-            logger.error(MessageFormat.format("update referrer failed, due to update user {0} is new referrer {1}'s referrer ", loginName));
-            throw new ReferrerRelationException("推荐人与该用户存在间接推荐关系");
-        }
 
         // 查找所有 loginName 的推荐人关系
         Map<String, Integer>  allUpperRelations = this.findAllUpperRelations(loginName);
@@ -88,13 +54,8 @@ public class ReferrerRelationServiceImpl implements ReferrerRelationService {
             String userLoginName = lowerUserRelation.getKey();
             if (!loginName.equalsIgnoreCase(userLoginName)) {
                 List<UserRoleModel> roleModels = userRoleMapper.findByLoginName(loginName);
-                Optional<UserRoleModel> isStaff = Iterators.tryFind(roleModels.iterator(), new Predicate<UserRoleModel>() {
-                    @Override
-                    public boolean apply(UserRoleModel input) {
-                        return input.getRole() == Role.STAFF;
-                    }
-                });
-                int maxLevel = isStaff.isPresent() ? this.referrerStaffRoleReward.size() : this.referrerUserRoleReward.size();
+                boolean isStaff = roleModels.stream().anyMatch(roleModel -> roleModel.getRole() == Role.STAFF);
+                int maxLevel = isStaff ? this.referrerStaffRoleReward.size() : this.referrerUserRoleReward.size();
                 if (lowerUserRelation.getValue() <= maxLevel) {
                     ReferrerRelationModel newRelation = new ReferrerRelationModel();
                     newRelation.setReferrerLoginName(loginName.toLowerCase());
@@ -117,13 +78,8 @@ public class ReferrerRelationServiceImpl implements ReferrerRelationService {
                 String userLoginName = lowerUserRelation.getKey();
                 if (!referrerLoginName.equalsIgnoreCase(userLoginName)) {
                     List<UserRoleModel> roleModels = userRoleMapper.findByLoginName(referrerLoginName);
-                    Optional<UserRoleModel> isStaff = Iterators.tryFind(roleModels.iterator(), new Predicate<UserRoleModel>() {
-                        @Override
-                        public boolean apply(UserRoleModel input) {
-                            return input.getRole() == Role.STAFF;
-                        }
-                    });
-                    int maxLevel = isStaff.isPresent() ? this.referrerStaffRoleReward.size() : this.referrerUserRoleReward.size();
+                    boolean isStaff = roleModels.stream().anyMatch(roleModel -> roleModel.getRole() == Role.STAFF);
+                    int maxLevel = isStaff ? this.referrerStaffRoleReward.size() : this.referrerUserRoleReward.size();
                     int level = newUpperRelation.getValue() + lowerUserRelation.getValue() + 1;
                     if (level <= maxLevel) {
                         ReferrerRelationModel newRelation = new ReferrerRelationModel();
@@ -135,8 +91,6 @@ public class ReferrerRelationServiceImpl implements ReferrerRelationService {
                 }
             }
         }
-
-
     }
 
     private Map<String, Integer> findAllUpperRelations(String loginName) {
