@@ -5,7 +5,7 @@
         <div class="register-section-box">
             <div class="invite-box">
                 <#if registerStatus=='referrer'>
-                <em class="message-tip">您的好友${userName}送你</em>
+                <em class="message-tip">您的好友${userName}送您</em>
                 </#if>
                 <#if registerStatus=='before'>
                     <em class="message-tip">恭喜您！您已获得</em>
