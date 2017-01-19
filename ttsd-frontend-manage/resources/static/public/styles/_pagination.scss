@@ -1,0 +1,21 @@
+.pagination {
+  margin: 10px 0;
+  text-align: center;
+  padding: 15px 20px;
+  font-size: 12px;
+  color: #999;
+  .next, .prev {
+    margin-left: 10px;
+    border-radius: 4px;
+    padding: 4px;
+    color: #ddd;
+    border: 1px solid #ddd;
+    &.active {
+      cursor: pointer;
+      color: #ffac2a;
+    }
+    &.active:hover {
+      border: 1px solid #ffac2a;
+    }
+  }
+}
