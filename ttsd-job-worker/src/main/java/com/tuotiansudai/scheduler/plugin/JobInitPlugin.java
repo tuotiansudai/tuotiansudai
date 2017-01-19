@@ -196,6 +196,7 @@ public class JobInitPlugin implements SchedulerPlugin {
 
     private void createRedEnvelopSplitJob() {
         try {
+            logger.info("SendRedEnvelopSplit is create .");
             jobManager.newJob(JobType.SendRedEnvelopSplit, AssignRedEnvelopSplitJob.class)
                     .withIdentity(JobType.SendRedEnvelopSplit.name(), JobType.SendRedEnvelopSplit.name())
                     .replaceExistingJob(false)
@@ -203,5 +204,7 @@ public class JobInitPlugin implements SchedulerPlugin {
         } catch (SchedulerException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
+
+        logger.info("SendRedEnvelopSplit is created .");
     }
 }
