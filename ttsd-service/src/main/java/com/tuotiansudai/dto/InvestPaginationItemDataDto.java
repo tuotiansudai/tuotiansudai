@@ -8,6 +8,7 @@ import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.util.AmountConverter;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.Date;
 
@@ -56,7 +57,7 @@ public class InvestPaginationItemDataDto implements Serializable {
         this.investTime = view.getInvestTime();
         this.autoInvest = view.isAutoInvest();
         this.investAmount = AmountConverter.convertCentToString(view.getInvestAmount());
-        this.extraDetail = MessageFormat.format("{0}%", Double.toString(view.getExtraRate() * 100));
+        this.extraDetail = MessageFormat.format("{0,number,#.##}%", view.getExtraRate() * 100);
         this.extraActualInterest = AmountConverter.convertCentToString(view.getExtraActualInterest());
         this.investStatus = view.getInvestStatus();
         this.province = view.getProvince();
@@ -72,7 +73,7 @@ public class InvestPaginationItemDataDto implements Serializable {
                 this.couponDetail = MessageFormat.format("{0}元{1}", AmountConverter.convertCentToString(couponModel.getAmount()), couponModel.getCouponType().getName());
                 break;
             case INTEREST_COUPON:
-                this.couponDetail = MessageFormat.format("{0}%{1}", Double.toString(couponModel.getRate() * 100), couponModel.getCouponType().getName());
+                this.couponDetail = MessageFormat.format("{0,number,#.##}%{1}", couponModel.getRate() * 100, couponModel.getCouponType().getName());
                 break;
             case BIRTHDAY_COUPON:
                 this.couponDetail = MessageFormat.format("{0}倍{1}", couponModel.getBirthdayBenefit() + 1, couponModel.getCouponType().getName());
@@ -294,4 +295,5 @@ public class InvestPaginationItemDataDto implements Serializable {
     public void setIdentityNumber(String identityNumber) {
         this.identityNumber = identityNumber;
     }
+
 }
