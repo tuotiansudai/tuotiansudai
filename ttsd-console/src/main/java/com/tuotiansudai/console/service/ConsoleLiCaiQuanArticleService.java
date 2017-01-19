@@ -1,6 +1,7 @@
 package com.tuotiansudai.console.service;
 
 import com.google.common.collect.Lists;
+import com.google.common.primitives.Longs;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.mapper.LicaiquanArticleCommentMapper;
@@ -57,10 +58,6 @@ public class ConsoleLiCaiQuanArticleService {
             liCaiQuanArticleDto.setArticleId(articleId);
             liCaiQuanArticleDto.setCreateTime(new Date());
         } else {
-            LicaiquanArticleModel licaiquanArticleModel = licaiquanArticleMapper.findArticleById(liCaiQuanArticleDto.getArticleId());
-            if (licaiquanArticleModel != null) {
-                liCaiQuanArticleDto.setCreateTime(new Date());
-            }
             liCaiQuanArticleDto.setUpdateTime(new Date());
         }
         liCaiQuanArticleDto.setArticleStatus(ArticleStatus.TO_APPROVE);
@@ -135,12 +132,12 @@ public class ConsoleLiCaiQuanArticleService {
             }
         }
 
-        Collections.sort(articleDtoList, new Comparator<LiCaiQuanArticleDto>() {
-            @Override
-            public int compare(LiCaiQuanArticleDto o1, LiCaiQuanArticleDto o2) {
-
-                return o2.getCreateTime().after(o1.getCreateTime()) ? 1 : -1;
+        articleDtoList.sort((o1, o2) -> {
+            int compare = Longs.compare(o1.getCreateTime().getTime(), o2.getCreateTime().getTime());
+            if (compare == 0) {
+                return Long.compare(o1.getArticleId(), o2.getArticleId());
             }
+            return compare;
         });
 
         int indexCount = (index - 1) * pageSize;

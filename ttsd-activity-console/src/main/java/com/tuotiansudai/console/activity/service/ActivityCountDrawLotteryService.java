@@ -9,7 +9,6 @@ import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.util.DateConvertUtil;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,11 +72,6 @@ public class ActivityCountDrawLotteryService {
     @Value(value = "${activity.lanternFestival.endTime}")
     private String lanternFestivalEndTime;
 
-    @Autowired
-    private UserLotteryPrizeMapper userLotteryPrizeMapper;
-
-    private static final String redisKey = "web:christmasTime:lottery:startTime";
-
     //往期活动任务
     private final List activityTasks = Lists.newArrayList(ActivityDrawLotteryTask.REGISTER, ActivityDrawLotteryTask.EACH_REFERRER,
             ActivityDrawLotteryTask.EACH_REFERRER_INVEST, ActivityDrawLotteryTask.CERTIFICATION, ActivityDrawLotteryTask.BANK_CARD,
@@ -91,6 +85,9 @@ public class ActivityCountDrawLotteryService {
     //元旦活动任务
     private final List newYearsActivityTask = Lists.newArrayList(ActivityDrawLotteryTask.EACH_ACTIVITY_SIGN_IN, ActivityDrawLotteryTask.REFERRER_USER,
             ActivityDrawLotteryTask.EACH_INVEST_5000);
+
+    //春节活动任务
+    private final List springFestivalActivityTasks = Lists.newArrayList(ActivityDrawLotteryTask.EACH_ACTIVITY_SIGN_IN);
 
     public static final String ACTIVITY_DESCRIPTION = "新年专享";
 
@@ -116,6 +113,8 @@ public class ActivityCountDrawLotteryService {
                 return countDrawLotteryTime(userModel, activityCategory, christmasTasks);
             case LANTERN_FESTIVAL_ACTIVITY:
                 return countDrawLotteryTime(userModel,activityCategory,Lists.newArrayList(ActivityDrawLotteryTask.EACH_INVEST_1000));
+            case SPRING_FESTIVAL_ACTIVITY:
+                return countDrawLotteryTime(userModel, activityCategory, springFestivalActivityTasks);
         }
         return lotteryTime;
     }
