@@ -18,6 +18,7 @@ LOGIN_FAILED_TIMES_FORMAT = 'LOGIN_FAILED_TIMES:{0}'
 
 class SessionManager(object):
     def __init__(self, source='WEB'):
+        self.source = source
         self.connection = redis.Redis(connection_pool=pool)
         self.expire_seconds = settings.WEB_TOKEN_EXPIRED_SECONDS if source.upper() == 'WEB' else settings.MOBILE_TOKEN_EXPIRED_SECONDS
 
@@ -59,7 +60,7 @@ class SessionManager(object):
             self.connection.setex(new_token, data, self.expire_seconds)
             self.connection.delete(old_token)
             user_info = json.loads(data)
-            update_last_login_time_source(user_info.username)
+            update_last_login_time_source(user_info['login_name'], self.source)
             return {'user_info': user_info, 'token': new_token_id}
 
 
@@ -133,7 +134,7 @@ class LoginManager(object):
 
     def _success_login(self, user_info, token):
         self._save_log(True)
-        update_last_login_time_source(user_info.username)
+        update_last_login_time_source(user_info['login_name'], self.form.source.data)
         return self._render(True, user_info=user_info, token=token)
 
     @staticmethod
@@ -171,9 +172,10 @@ class LoginManager(object):
         producer.send_message(json.dumps(login_log))
 
 
-def update_last_login_time_source(self, username):
-    db.session.query().filter(User.username == username).update(
-        {"last_login_time": func.now(), "last_login_source": self.form.source})
+def update_last_login_time_source(username, source):
+    user = User.query.filter((User.username == username)).first()
+    user.last_login_time = func.now()
+    user.last_login_source = source
     db.session.commit()
 
 
