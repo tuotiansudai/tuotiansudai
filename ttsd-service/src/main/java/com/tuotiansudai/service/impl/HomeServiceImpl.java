@@ -79,11 +79,6 @@ public class HomeServiceImpl implements HomeService {
             public HomeLoanDto apply(LoanModel loan) {
                 long investAmount = investMapper.sumSuccessInvestAmount(loan.getId());
 
-                //TODO:fake
-                if (loan.getId() == 41650602422768L && loan.getStatus() == LoanStatus.REPAYING) {
-                    investAmount = loan.getLoanAmount();
-                }
-
                 CouponModel newbieInterestCouponModel = null;
                 for (CouponModel activeCoupon : allActiveCoupons) {
                     if (activeCoupon.getCouponType() == CouponType.INTEREST_COUPON
