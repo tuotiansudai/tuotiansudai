@@ -11,7 +11,7 @@ public interface MobileAppPointShopService {
 
     BaseResponseDto<ProductListOrderResponseDto> findUserPointsOrders(BaseParamDto baseParamDto);
 
-    BaseResponseDto<ProductListResponseDto> findPointHome(BaseParamDto baseParamDto);
+    BaseResponseDto<ProductListResponseDto> findPointHome(ProductListRequestDto productListRequestDto);
 
     BaseResponseDto<ProductDetailResponseDto> findProductDetail(ProductDetailRequestDto productDetailRequestDto);
 

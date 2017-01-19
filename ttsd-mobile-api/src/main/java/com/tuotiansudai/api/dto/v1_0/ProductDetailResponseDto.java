@@ -23,6 +23,9 @@ public class ProductDetailResponseDto extends BaseResponseDataDto {
     @ApiModelProperty(value = "会员折扣后商品价格", example = "90")
     private String discountPoints;
 
+    @ApiModelProperty(value = "会员折扣描述", example = "V5会员8.5折")
+    private String discountDesc;
+
     @ApiModelProperty(value = "商品描述", example = "会员")
     private String name;
 
@@ -122,6 +125,14 @@ public class ProductDetailResponseDto extends BaseResponseDataDto {
 
     public void setDiscountPoints(String discountPoints) {
         this.discountPoints = discountPoints;
+    }
+
+    public String getDiscountDesc() {
+        return discountDesc;
+    }
+
+    public void setDiscountDesc(String discountDesc) {
+        this.discountDesc = discountDesc;
     }
 
     public String getName() {

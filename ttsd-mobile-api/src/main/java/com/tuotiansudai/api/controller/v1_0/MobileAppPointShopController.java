@@ -40,9 +40,9 @@ public class MobileAppPointShopController extends MobileAppBaseController {
 
     @RequestMapping(value = "/get/point-home", method = RequestMethod.POST)
     @ApiOperation("积分商城首页")
-    public BaseResponseDto<ProductListResponseDto> getPointHome(@RequestBody BaseParamDto baseParamDto) {
-        baseParamDto.getBaseParam().setUserId(getLoginName());
-        return mobileAppPointShopService.findPointHome(baseParamDto);
+    public BaseResponseDto<ProductListResponseDto> getPointHome(@RequestBody ProductListRequestDto productListRequestDto) {
+        productListRequestDto.getBaseParam().setUserId(getLoginName());
+        return mobileAppPointShopService.findPointHome(productListRequestDto);
     }
 
     @RequestMapping(value = "/get/product-detail", method = RequestMethod.POST)

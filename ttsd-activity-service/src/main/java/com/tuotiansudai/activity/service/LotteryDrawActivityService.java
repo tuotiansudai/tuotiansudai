@@ -365,11 +365,11 @@ public class LotteryDrawActivityService {
                     }
                     break;
                 case EACH_ACTIVITY_SIGN_IN:
-                    time += pointBillMapper.findCountPointBillPagination(userModel.getLoginName(), startTime, endTime, Lists.newArrayList(PointBusinessType.SIGN_IN));
+                    time += pointBillMapper.findCountPointBillPagination(userModel.getLoginName(), null, startTime, endTime, Lists.newArrayList(PointBusinessType.SIGN_IN));
                     break;
                 case TODAY_ACTIVITY_SIGN_IN:
                     if(DateTime.now().toDate().before(endTime) && DateTime.now().toDate().after(startTime)){
-                        time += pointBillMapper.findCountPointBillPagination(userModel.getLoginName(), DateTime.now().withTimeAtStartOfDay().toDate(),
+                        time += pointBillMapper.findCountPointBillPagination(userModel.getLoginName(), null, DateTime.now().withTimeAtStartOfDay().toDate(),
                                 DateTime.now().plusDays(1).withTimeAtStartOfDay().plusMillis(-1).toDate(), Lists.newArrayList(PointBusinessType.SIGN_IN));
 
                         return time > 0 ? time - userLotteryPrizeMapper.findUserLotteryPrizeCountViews(userModel.getMobile(), null, activityCategory,
