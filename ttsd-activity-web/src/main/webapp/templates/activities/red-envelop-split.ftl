@@ -44,27 +44,27 @@
                             </tr>
                             <tr>
                                 <td>1名</td>
-                                <td>1.88元</td>
+                                <td>5.88元</td>
                             </tr>
 
                             <tr>
                                 <td>2名</td>
-                                <td>3.88元</td>
+                                <td>7.88元</td>
                             </tr>
                             <tr>
-                                <td>3-4名</td>
-                                <td>5.88元</td>
-                            </tr>
-                            <tr>
-                                <td>5-6名</td>
+                                <td>3名</td>
                                 <td>9.88元</td>
                             </tr>
                             <tr>
-                                <td>7-9名</td>
+                                <td>4名</td>
                                 <td>13.88元</td>
                             </tr>
                             <tr>
-                                <td>10名</td>
+                                <td>5名</td>
+                                <td>15.88元</td>
+                            </tr>
+                            <tr>
+                                <td>6-10名</td>
                                 <td>20.88元</td>
                             </tr>
                         </table>
