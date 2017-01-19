@@ -200,7 +200,7 @@ public class JobInitPlugin implements SchedulerPlugin {
                     .withIdentity(JobType.SendFirstRedEnvelopSplit.name(), JobType.SendFirstRedEnvelopSplit.name())
                     .replaceExistingJob(true)
                     .runOnceAt(DateTime.parse(AssignFirstRedEnvelopSplitJob.JOB_EXECUTE_TIME, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate()).submit();
-        } catch (SchedulerException e) {
+        } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
         }
     }
@@ -211,7 +211,7 @@ public class JobInitPlugin implements SchedulerPlugin {
                     .withIdentity(JobType.SendSecondRedEnvelopSplit.name(), JobType.SendSecondRedEnvelopSplit.name())
                     .replaceExistingJob(true)
                     .runOnceAt(DateTime.parse(AssignSecondRedEnvelopSplitJob.JOB_EXECUTE_TIME, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate()).submit();
-        } catch (SchedulerException e) {
+        } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
         }
     }
