@@ -23,11 +23,11 @@
         <#break>
     </#if>
 </#list>
-<@global.main pageCss="${(css.main)!'main.css'}" pageJavascript="${(js.main)!'main.js'}" title="${title}" keywords="${keywords}" description="${description}">
+<@global.main pageCss="${(css.mainSite)!}" pageJavascript="${(js.mainSite)!}" title="${title}" keywords="${keywords}" description="${description}">
 
 <div class="article-content fl">
     <div class="category-title">分类为<span>${tag.description}</span> 下的问题</div>
-    <div class="borderBox clearfix">
+    <div class="border-ask-box clearfix">
         <div class="answers-box">
             <#list questions.data.records as question>
                 <dl class="answers-list">
