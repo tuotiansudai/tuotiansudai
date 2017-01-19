@@ -3,10 +3,7 @@ package com.tuotiansudai.rest.support.client.factory;
 import com.tuotiansudai.rest.support.client.annotations.RestClient;
 import com.tuotiansudai.rest.support.client.codec.RestErrorDecoder;
 import com.tuotiansudai.rest.support.client.interceptors.RequestHeaderInterceptor;
-import feign.Feign;
-import feign.Logger;
-import feign.Request;
-import feign.Retryer;
+import feign.*;
 import feign.jackson.JacksonDecoder;
 import feign.jackson.JacksonEncoder;
 import feign.slf4j.Slf4jLogger;
@@ -17,6 +14,7 @@ import org.springframework.core.env.Environment;
 public class RestClientFactoryBean<T> implements FactoryBean<T> {
     private ApplicationContext applicationContext;
     private Request.Options options;
+    private Client client;
     private Retryer retryer;
     private JacksonDecoder jacksonDecoder;
     private JacksonEncoder jacksonEncoder;
@@ -43,6 +41,7 @@ public class RestClientFactoryBean<T> implements FactoryBean<T> {
         String restClientUrl = environment.resolvePlaceholders(restClient.url());
         return Feign.builder()
                 .logger(new Slf4jLogger(restClientInterface))
+                .client(client)
                 .options(options)
                 .retryer(retryer)
                 .encoder(jacksonEncoder)
@@ -69,6 +68,10 @@ public class RestClientFactoryBean<T> implements FactoryBean<T> {
 
     public void setOptions(Request.Options options) {
         this.options = options;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
     }
 
     public void setRetryer(Retryer retryer) {
