@@ -219,22 +219,28 @@ var strategies = {
     isReferrerExist:function(errorMsg,showErrorAfter) {
         var getResult='',
             that=this;
+        //只验证推荐人是否存在，不验证是否为空
+        if(this.value=='') {
+            getResult='';
+            globalFun.removeClass(that,'error');
+            showErrorAfter && removeElement(that);
+            return '';
+        }
         useAjax({
             type:'GET',
             async: false,
-            url:'/register/user/mobile/'+this.value+'/is-exist'
+            url:'/register/user/referrer/'+this.value+'/is-exist'
         },function(response) {
             if(response.data.status) {
-                // 如果为true说明手机已存在或已注册
+                // 如果为true说明推荐人存在
+                getResult='';
+                globalFun.removeClass(that,'error');
+                showErrorAfter && removeElement(that);
+            }
+            else {
                 getResult=errorMsg;
                 globalFun.addClass(that,'error');
                 showErrorAfter && createElement(that,errorMsg);
-            }
-            else {
-                getResult='';
-                globalFun.removeClass(that,'error');
-                globalFun.addClass(that,'valid');
-                showErrorAfter && removeElement(that);
             }
         });
         return getResult;

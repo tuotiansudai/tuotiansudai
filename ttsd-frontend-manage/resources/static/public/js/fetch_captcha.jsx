@@ -44,7 +44,7 @@ export class fetchCaptchaFun{
         $fetchCaptcha.on('click',function() {
             let mobile=that.DomContainer.mobile.value;
             $errorBox.text('');
-            $imageCaptchaForm.find('input:visible').val('');
+            $imageCaptchaForm[0].imageCaptcha.value
 
             layer.open({
                 type:1,

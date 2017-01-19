@@ -31,7 +31,6 @@
                 <li class="hide">
                     <i class="sprite-register-ic-referrer"></i>
                     <input type="text" name="referrer" maxlength="25" class="referrer" value="${(referrer)!(originalFormData.referrer)!}"/>
-                    <label id="referrerError" class="error" style="display: none"></label>
                 </li>
                 <li class="agree-last">
                     <label class="check-label checked" >同意拓天速贷<a href="javascript:void(0);" class="show-agreement">《服务协议》</a></label>
