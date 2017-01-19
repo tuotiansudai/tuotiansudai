@@ -45,15 +45,15 @@ public class SignInServiceImpl implements SignInService {
     @Autowired
     private CouponAssignmentService couponAssignmentService;
 
-    private static final long SIGN_IN_FULL_COUPON_ID = 338L;
+    private static final long SIGN_IN_FULL_COUPON_ID = 381L;
     private static final int SIGN_IN_REWARD_PERIOD = 58;
 
     private enum SignInReward {
-        REWARD_OF_8_DAY(8, 333L),
-        REWARD_OF_18_DAY(18, 334L),
-        REWARD_OF_28_DAY(28, 335L),
-        REWARD_OF_38_DAY(38, 336L),
-        REWARD_OF_58_DAY(58, 337L),
+        REWARD_OF_8_DAY(8, 376L),
+        REWARD_OF_18_DAY(18, 377L),
+        REWARD_OF_28_DAY(28, 378L),
+        REWARD_OF_38_DAY(38, 379L),
+        REWARD_OF_58_DAY(58, 380L),
         NONE(0, null);
 
         final private int dayLimit;
