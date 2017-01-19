@@ -39,6 +39,7 @@ public class DelayMessageDeliveryJobCreator {
                     .withIdentity(JobType.Default.name(), messageQueue.name() + "-" + System.currentTimeMillis())
                     .runOnceAt(fireTime)
                     .submit();
+            logger.info(String.format("create DelayMessageDeliveryJob success, queue name: [%s], message: [%s]", messageQueue.name(), messageBody));
         } catch (SchedulerException e) {
             logger.error("create DelayMessageDeliveryJob failed", e);
         }

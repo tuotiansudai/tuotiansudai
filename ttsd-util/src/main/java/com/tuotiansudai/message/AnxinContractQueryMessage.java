@@ -8,6 +8,9 @@ public class AnxinContractQueryMessage implements Serializable{
     private List<String> batchNoList;
     private String anxinContractType;
 
+    public AnxinContractQueryMessage() {
+    }
+
     public AnxinContractQueryMessage(long businessId, List<String> batchNoList, String anxinContractType) {
         this.businessId = businessId;
         this.batchNoList = batchNoList;
