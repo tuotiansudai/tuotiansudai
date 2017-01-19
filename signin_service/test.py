@@ -65,7 +65,7 @@ class TestSessionManager(TestCase):
         manager = SessionManager(source='IOS')
         data = {'data': 'test data', 'login_name': 'sidneygao'}
         token_id = manager.set(data, 'fake_session_id')
-        new_token_id = manager.refresh(token_id)['token']
+        new_token_id = manager.refresh(token_id)
         self.assertEqual(data, manager.get(new_token_id))
         self.assertIsNone(manager.get(token_id))
 
@@ -93,14 +93,12 @@ class TestView(TestCase):
         self.app = web.app.test_client()
 
     def test_should_login_successful(self):
-        username = 'sidneygao'
-        source = 'WEB'
-        data = {'username': username, 'source': source, 'device_id': 'device_id1',
+        data = {'username': 'sidneygao', 'source': 'WEB', 'device_id': 'device_id1',
                 'token': 'fake_token', 'password': '123abc'}
         rv = self.app.post('/login/', data=data)
         response_data = json.loads(rv.data)
-        user = User.query.filter(User.username == username).first()
-        self.assertEqual(user.last_login_source, source)
+        user = User.query.filter(User.username == 'sidneygao').first()
+        self.assertEqual(user.last_login_source, 'WEB')
         self.assertIsNotNone(user.last_login_time)
         self.assertEqual(200, rv.status_code)
         self.assertTrue(response_data['result'])
@@ -156,14 +154,12 @@ class TestView(TestCase):
         self.assertEqual('sidneygao', response_data['user_info']['login_name'])
 
     def test_should_login_successful_without_password(self):
-        username = 'sidneygao'
-        source = 'WEB'
-        data = {'username': username, 'source': source, 'device_id': 'device_id1',
+        data = {'username': 'sidneygao', 'source': 'WEB', 'device_id': 'device_id1',
                 'token': 'fake_token'}
         rv = self.app.post('/login/nopassword/', data=data)
         response_data = json.loads(rv.data)
-        user = User.query.filter(User.username == username).first()
-        self.assertEqual(user.last_login_source, source)
+        user = User.query.filter(User.username == 'sidneygao').first()
+        self.assertEqual(user.last_login_source, 'WEB')
         self.assertIsNotNone(user.last_login_time)
         self.assertEqual(200, rv.status_code)
         self.assertTrue(response_data['result'])
@@ -185,6 +181,29 @@ class TestView(TestCase):
         response_data = json.loads(rv.data)
         self.assertEqual(200, rv.status_code)
         self.assertIsNotNone(response_data['token'])
+
+    def test_should_refresh_token_success(self):
+        data = {'username': 'sidneygao', 'source': 'WEB', 'device_id': 'device_id1',
+                'token': 'fake_token', 'password': '123abc'}
+        rv = self.app.post('/login/', data=data)
+        session_id = json.loads(rv.data)['token']
+        refresh_date = {'source': 'IOS'}
+        ret = self.app.post('/refresh/' + session_id, data=refresh_date)
+        return_data = json.loads(ret.data)
+        self.assertEqual(200, ret.status_code)
+        self.assertTrue(return_data['result'])
+        self.assertNotEqual(return_data['token'], session_id)
+        self.assertEqual(return_data['user_info']['login_name'], 'sidneygao')
+
+    def test_should_return_400_refresh_token_with_incorrect_session_id(self):
+        data = {'username': 'sidneygao', 'source': 'WEB', 'device_id': 'device_id1',
+                'token': 'fake_token', 'password': '123abc'}
+        self.app.post('/login/', data=data)
+        refresh_date = {'source': 'IOS'}
+        ret = self.app.post('/refresh/incorrect_session_id', data=refresh_date)
+        return_data = json.loads(ret.data)
+        self.assertEqual(400, ret.status_code)
+        self.assertFalse(return_data['result'])
 
 
 if __name__ == '__main__':

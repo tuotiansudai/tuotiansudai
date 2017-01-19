@@ -18,9 +18,9 @@ LOGIN_FAILED_TIMES_FORMAT = 'LOGIN_FAILED_TIMES:{0}'
 
 class SessionManager(object):
     def __init__(self, source='WEB'):
-        self.source = source
         self.connection = redis.Redis(connection_pool=pool)
         self.expire_seconds = settings.WEB_TOKEN_EXPIRED_SECONDS if source.upper() == 'WEB' else settings.MOBILE_TOKEN_EXPIRED_SECONDS
+        self.source = source
 
     def get(self, session_id):
         token_key = TOKEN_FORMAT.format(session_id)
@@ -61,7 +61,7 @@ class SessionManager(object):
             self.connection.delete(old_token)
             user_info = json.loads(data)
             update_last_login_time_source(user_info['login_name'], self.source)
-            return {'user_info': user_info, 'token': new_token_id}
+            return new_token_id
 
 
 class UsernamePasswordError(Exception):
