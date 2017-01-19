@@ -194,7 +194,7 @@
                 <div class="text-tip">
                     <p class="success-text">恭喜您！</p>
                     <p class="reward-text">抽中了<em class="prizeValue"></em>！</p>
-                    <p class="des-text">拓天客服将会在7个工作日内联系您发放奖品</p>
+                    <p class="des-text">拓天客服将在7个工作日内联系您发放奖品</p>
                 </div>
                 <div class="btn-list"><a href="javascript:void(0)" class="go-on go-close">继续抽奖</a></div>
             </div>
