@@ -14,22 +14,21 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import javax.annotation.PreDestroy;
 import javax.sql.DataSource;
 
 @Configuration
 @EnableTransactionManagement
-public class MybatisAAConfig {
+public class MybatisAnxinConfig {
     @Bean
-    public MybatisAAConnectionConfig mybatisAAConnectionConfig() {
-        return new MybatisAAConnectionConfig();
+    public MybatisAnxinConnectionConfig mybatisAnxinConnectionConfig() {
+        return new MybatisAnxinConnectionConfig();
     }
 
-    @Bean(name = "hikariCPAAConfig")
-    public HikariConfig hikariCPAAConfig(MybatisAAConnectionConfig connConfig) {
+    @Bean(name = "hikariCPAnxinConfig")
+    public HikariConfig hikariCPAnxinConfig(MybatisAnxinConnectionConfig connConfig) {
         HikariConfig config = new HikariConfig();
-        config.setJdbcUrl(String.format("jdbc:mysql://%s:%s/aa?useUnicode=true&characterEncoding=UTF-8",
-                connConfig.getDbHost(), connConfig.getDbPort()));
+        config.setJdbcUrl(String.format("jdbc:mysql://%s:%s/%s?useUnicode=true&characterEncoding=UTF-8",
+                connConfig.getDbHost(), connConfig.getDbPort(), connConfig.getDbName()));
         config.setUsername(connConfig.getDbUser());
         config.setPassword(connConfig.getDbPassword());
         config.setDriverClassName("com.mysql.jdbc.Driver");
@@ -38,50 +37,43 @@ public class MybatisAAConfig {
         return config;
     }
 
-    @Primary
     @Bean
-    public DataSource hikariCPAADataSource(@Autowired @Qualifier("hikariCPAAConfig") HikariConfig hikariConfig) {
+    public DataSource hikariCPAnxinDataSource(@Autowired @Qualifier("hikariCPAnxinConfig") HikariConfig hikariConfig) {
         return new HikariDataSource(hikariConfig);
     }
 
     @Bean
-    public MapperScannerConfigurer aaMapperScannerConfigurer() {
+    public MapperScannerConfigurer anxinMapperScannerConfigurer() {
         MapperScannerConfigurer configurer = new MapperScannerConfigurer();
-        configurer.setBasePackage("com.tuotiansudai.repository.mapper," +
-                "com.tuotiansudai.coupon.repository.mapper," +
-                "com.tuotiansudai.membership.repository.mapper," +
-                "com.tuotiansudai.transfer.repository.mapper");
-        configurer.setSqlSessionFactoryBeanName("aaSqlSessionFactory");
+        configurer.setBasePackage("com.tuotiansudai.cfca.mapper");
+        configurer.setSqlSessionFactoryBeanName("anxinSqlSessionFactory");
         return configurer;
     }
 
-    @Primary
     @Bean
-    public DataSourceTransactionManager aaTransactionManager(@Qualifier("hikariCPAADataSource") DataSource hikariCPAADataSource) {
-        return new DataSourceTransactionManager(hikariCPAADataSource);
+    public DataSourceTransactionManager anxinTransactionManager(@Qualifier("hikariCPAnxinDataSource") DataSource hikariCPAnxinDataSource) {
+        return new DataSourceTransactionManager(hikariCPAnxinDataSource);
     }
 
-    @Primary
     @Bean
-    public SqlSessionFactory aaSqlSessionFactory(@Qualifier("hikariCPAADataSource") DataSource hikariCPAADataSource) throws Exception {
+    public SqlSessionFactory anxinSqlSessionFactory(@Qualifier("hikariCPAnxinDataSource") DataSource hikariCPAnxinDataSource) throws Exception {
         SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
-        sessionFactory.setDataSource(hikariCPAADataSource);
-        sessionFactory.setTypeAliasesPackage("com.tuotiansudai.repository.model," +
-                "com.tuotiansudai.coupon.repository.model," +
-                "com.tuotiansudai.membership.repository.model," +
-                "com.tuotiansudai.transfer.repository.model");
+        sessionFactory.setDataSource(hikariCPAnxinDataSource);
+        sessionFactory.setTypeAliasesPackage("com.tuotiansudai.cfca.model");
         return sessionFactory.getObject();
     }
 
-    public static class MybatisAAConnectionConfig {
+    public static class MybatisAnxinConnectionConfig {
         @Value("${common.jdbc.host}")
         private String dbHost;
         @Value("${common.jdbc.port}")
         private String dbPort;
-        @Value("${common.jdbc.username}")
+        @Value("${anxin.jdbc.username}")
         private String dbUser;
-        @Value("${common.jdbc.password}")
+        @Value("${anxin.jdbc.password}")
         private String dbPassword;
+        @Value("${anxin.jdbc.schema}")
+        private String dbName;
 
         public String getDbHost() {
             return dbHost;
@@ -113,6 +105,14 @@ public class MybatisAAConfig {
 
         public void setDbPassword(String dbPassword) {
             this.dbPassword = dbPassword;
+        }
+
+        public String getDbName() {
+            return dbName;
+        }
+
+        public void setDbName(String dbName) {
+            this.dbName = dbName;
         }
     }
 
