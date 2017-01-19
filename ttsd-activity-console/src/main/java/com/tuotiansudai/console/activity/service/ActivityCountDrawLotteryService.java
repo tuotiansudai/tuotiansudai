@@ -192,7 +192,7 @@ public class ActivityCountDrawLotteryService {
                     time = time >= 10 ? 10 : time;
                     break;
                 case EACH_INVEST_1000:
-                    time = investMapper.sumDrawCountByLoginName(userModel.getLoginName(),startTime,endTime,100);
+                    time = investMapper.sumDrawCountByLoginName(userModel.getLoginName(),startTime,endTime,100000);
                     break;
 
             }
