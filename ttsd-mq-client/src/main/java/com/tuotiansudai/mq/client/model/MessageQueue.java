@@ -7,7 +7,7 @@ public enum MessageQueue {
     InvestCallback("InvestCallback"),
     TransferInvestCallback("TransferInvestCallback"),
     UserRegistered_CompletePointTask("UserRegistered-CompletePointTask"),
-    GenerateReferrerRelation("UserRegistered-GenerateReferrerRelation"),
+    GenerateReferrerRelation("GenerateReferrerRelation"),
     AccountRegistered_CompletePointTask("AccountRegistered-CompletePointTask"),
     InvestSuccess_CompletePointTask("InvestSuccess-CompletePointTask"),
     InvestSuccess_CouponUpdate("InvestSuccess-CouponUpdate"),
