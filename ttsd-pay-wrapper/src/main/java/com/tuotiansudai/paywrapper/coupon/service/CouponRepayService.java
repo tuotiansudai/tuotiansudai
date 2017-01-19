@@ -8,7 +8,7 @@ import java.util.Map;
 
 public interface CouponRepayService {
 
-    void repay(long loanRepayId, boolean isAdvanced);
+    boolean repay(long loanRepayId, boolean isAdvanced);
 
     void generateCouponRepay(long loanId);
 

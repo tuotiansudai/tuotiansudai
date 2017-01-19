@@ -115,7 +115,8 @@ public class CouponRepayServiceImpl implements CouponRepayService {
     private final static String REPAY_REDIS_KEY_TEMPLATE = "COUPON_REPAY:{0}";
 
     @Override
-    public void repay(long loanRepayId, boolean isAdvanced) {
+    public boolean repay(long loanRepayId, boolean isAdvanced) {
+        boolean result = false;
         logger.info(MessageFormat.format("[Coupon Repay {0}] coupon repay is starting...", String.valueOf(loanRepayId)));
         String redisKey = MessageFormat.format(REPAY_REDIS_KEY_TEMPLATE, String.valueOf(loanRepayId));
         LoanRepayModel currentLoanRepayModel = this.loanRepayMapper.findById(loanRepayId);
@@ -204,6 +205,7 @@ public class CouponRepayServiceImpl implements CouponRepayService {
                             String.valueOf(currentLoanRepayModel.getId()),
                             String.valueOf(userCouponModel.getId())));
                 } catch (PayException e) {
+                    result = false;
                     logger.error(MessageFormat.format("[Coupon Repay {0}] user coupon({1}) transfer is failed\n" +
                                     "[Coupon Repay loanRepayId {2}] couponRepayModel.id ({3}) payback throw exception",
                             String.valueOf(currentLoanRepayModel.getId()), String.valueOf(userCouponModel.getId()),
@@ -216,6 +218,7 @@ public class CouponRepayServiceImpl implements CouponRepayService {
         }
 
         logger.info(MessageFormat.format("[Coupon Repay {0}] coupon repay is async send success", String.valueOf(loanRepayId)));
+        return result;
     }
 
     @Override

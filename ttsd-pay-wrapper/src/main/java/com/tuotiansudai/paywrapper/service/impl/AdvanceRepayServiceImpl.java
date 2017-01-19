@@ -1,5 +1,6 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
@@ -18,13 +19,12 @@ import com.tuotiansudai.enums.PushSource;
 import com.tuotiansudai.enums.PushType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.exception.AmountTransferException;
-import com.tuotiansudai.job.AdvanceRepayJob;
 import com.tuotiansudai.job.JobManager;
-import com.tuotiansudai.job.JobType;
-import com.tuotiansudai.job.NormalRepayJob;
 import com.tuotiansudai.message.EventMessage;
 import com.tuotiansudai.message.PushMessage;
+import com.tuotiansudai.message.RepaySuccessMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
+import com.tuotiansudai.mq.client.model.MessageTopic;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
@@ -49,7 +49,6 @@ import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.InterestCalculator;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
-import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -69,8 +68,6 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
     protected final static String REPAY_ORDER_ID_SEPARATOR = "X";
 
     protected final static String REPAY_ORDER_ID_TEMPLATE = "{0}" + REPAY_ORDER_ID_SEPARATOR + "{1}";
-
-    protected final static String REPAY_JOB_NAME_TEMPLATE = "ADVANCE_REPAY_{0}_{1}";
 
     private final static String REPAY_REDIS_KEY_TEMPLATE = "ADVANCE_REPAY:{0}";
 
@@ -228,7 +225,7 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
         LoanRepayModel currentLoanRepay = loanRepayMapper.findById(loanRepayId);
 
         if (currentLoanRepay.getStatus() != RepayStatus.WAIT_PAY) {
-            logger.error(MessageFormat.format("[Advance Repay {0}] loan repay callback status is {1}", String.valueOf(loanRepayId),currentLoanRepay.getStatus()));
+            logger.error(MessageFormat.format("[Advance Repay {0}] loan repay callback status is {1}", String.valueOf(loanRepayId), currentLoanRepay.getStatus()));
             return callbackRequest.getResponseData();
         }
 
@@ -263,8 +260,8 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
         for (InvestModel investModel : successInvests) {
             //投资人当期还款计划
             InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(investModel.getId(), currentLoanRepay.getPeriod());
-            if(RepayStatus.COMPLETE == investRepayModel.getStatus()){
-                logger.info(String.format("[Normal Repay %s] investRepay %s  status is COMPLETE",String.valueOf(currentLoanRepay.getRepayAmount()),String.valueOf(investRepayModel.getId())));
+            if (RepayStatus.COMPLETE == investRepayModel.getStatus()) {
+                logger.info(String.format("[Normal Repay %s] investRepay %s  status is COMPLETE", String.valueOf(currentLoanRepay.getRepayAmount()), String.valueOf(investRepayModel.getId())));
                 continue;
             }
             //实际利息
@@ -292,8 +289,15 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
         redisWrapperClient.hset(redisKey, String.valueOf(loanRepayId), SyncRequestStatus.READY.name());
         logger.info(MessageFormat.format("[Advance Repay {0}] put loan repay id into redis READY", String.valueOf(loanRepayId)));
 
-        // create payback invest job
-        this.createRepayJob(loanRepayId, 2);
+
+        logger.info(MessageFormat.format("[Advance Repay {0} publish message RepaySuccess]", String.valueOf(loanRepayId)));
+        RepaySuccessMessage repaySuccessMessage = new RepaySuccessMessage(loanRepayId, true);
+        try {
+            mqWrapperClient.publishMessage(MessageTopic.RepaySuccess, repaySuccessMessage);
+        } catch (JsonProcessingException e) {
+            // 记录日志，发短信通知管理员
+            fatalLog(MessageFormat.format("还款发送MQ消息失败", String.valueOf(loanRepayId)), e);
+        }
 
         return callbackRequest.getResponseData();
     }
@@ -321,8 +325,8 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
             //投资人当期还款计划
             InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(investModel.getId(), currentLoanRepay.getPeriod());
 
-            if(RepayStatus.COMPLETE == investRepayModel.getStatus()){
-                logger.info(String.format("[Advance Repay %s] investRepay %s  status is COMPLETE",String.valueOf(currentLoanRepay.getRepayAmount()),String.valueOf(investRepayModel.getId())));
+            if (RepayStatus.COMPLETE == investRepayModel.getStatus()) {
+                logger.info(String.format("[Advance Repay %s] investRepay %s  status is COMPLETE", String.valueOf(currentLoanRepay.getRepayAmount()), String.valueOf(investRepayModel.getId())));
                 continue;
             }
             interestWithoutFee += investRepayModel.getActualInterest() - investRepayModel.getActualFee();
@@ -392,12 +396,6 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
             logger.info(MessageFormat.format("[Advance Repay {0}] update loan({1}) status to COMPLETE is {2}",
                     String.valueOf(loanRepayId), String.valueOf(loanId), String.valueOf(dto.getData().getStatus())));
             return dto.getData().getStatus();
-        }
-
-        try {
-            this.createRepayJob(loanRepayId, 60);
-        } catch (SchedulerException e) {
-            logger.error(MessageFormat.format("[Advance Repay {0}] create repay job failed", String.valueOf(loanRepayId)));
         }
 
         return false;
@@ -575,16 +573,6 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
         mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(MessageEventType.ADVANCED_REPAY,
                 Lists.newArrayList(investModel.getLoginName()), title, content, investRepayId));
         mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(Lists.newArrayList(investModel.getLoginName()), PushSource.ALL, PushType.ADVANCED_REPAY, title));
-    }
-
-    private void createRepayJob(long loanRepayId, int delayMinutes) throws SchedulerException {
-        Date fewMinutesLater = new DateTime().plusMinutes(delayMinutes).toDate();
-        jobManager.newJob(JobType.AdvanceRepay, AdvanceRepayJob.class)
-                .runOnceAt(fewMinutesLater)
-                .addJobData(NormalRepayJob.LOAN_REPAY_ID, loanRepayId)
-                .withIdentity(JobType.AdvanceRepay.name(), MessageFormat.format(REPAY_JOB_NAME_TEMPLATE, String.valueOf(loanRepayId), String.valueOf(fewMinutesLater.getTime())))
-                .submit();
-        logger.info(MessageFormat.format("[Advance Repay {0}] create invest payback job, start at {1}", String.valueOf(loanRepayId), fewMinutesLater.toString()));
     }
 
     private boolean isPaybackInvestSuccess(LoanRepayModel currentLoanRepayModel, List<InvestModel> successInvests) {

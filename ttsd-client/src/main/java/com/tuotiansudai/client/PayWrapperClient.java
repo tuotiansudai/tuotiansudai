@@ -246,14 +246,6 @@ public class PayWrapperClient extends BaseClient {
         return Lists.newArrayList();
     }
 
-    public BaseDto<PayDataDto> postNormalRepay(long loanRepayId) {
-        return syncExecute(loanRepayId, "/job/post_normal_repay", "POST");
-    }
-
-    public BaseDto<PayDataDto> postAdvanceRepay(long loanRepayId) {
-        return syncExecute(loanRepayId, "/job/post_advance_repay", "POST");
-    }
-
     private BaseDto<PayDataDto> parsePayResponseJson(String json) {
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto payDataDto = new PayDataDto();
@@ -352,5 +344,21 @@ public class PayWrapperClient extends BaseClient {
 
     public BaseDto<PayDataDto> sendRedEnvelopeAfterLoanOut(long loanId){
         return syncExecute(String.valueOf(loanId), "/job/send-red-envelope-after-loan-out", "POST");
+    }
+
+    public BaseDto<PayDataDto> couponRepay(Object repayDto) {
+        return syncExecute(repayDto, "/repay-success/coupon-repay", "POST");
+    }
+
+    public BaseDto<PayDataDto> extraRepay(Object repayDto) {
+        return syncExecute(repayDto, "/repay-success/extra-repay", "POST");
+    }
+
+    public BaseDto<PayDataDto> advanceModifyTransferStatus(Object repayDto) {
+        return syncExecute(repayDto, "/repay-success/advance-transfer", "POST");
+    }
+
+    public BaseDto<PayDataDto> backInvestBack(Object repayDto) {
+        return syncExecute(repayDto, "/repay-success/pay-back-invest", "POST");
     }
 }
