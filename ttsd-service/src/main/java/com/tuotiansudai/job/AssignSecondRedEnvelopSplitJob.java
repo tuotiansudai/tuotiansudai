@@ -25,8 +25,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Component
-public class AssignRedEnvelopSplitJob implements Job {
-    static Logger logger = Logger.getLogger(AssignRedEnvelopSplitJob.class);
+public class AssignSecondRedEnvelopSplitJob implements Job {
+    static Logger logger = Logger.getLogger(AssignSecondRedEnvelopSplitJob.class);
 
     @Autowired
     private UserMapper userMapper;
@@ -34,12 +34,12 @@ public class AssignRedEnvelopSplitJob implements Job {
     @Autowired
     private MQWrapperClient mqClient;
 
-    @Value("#{'${activity.weiXin.red.envelop.period}'.split('\\~')}")
+    @Value("#{'${activity.weiXin.red.envelop.second.period}'.split('\\~')}")
     private List<String> weiXinPeriod = Lists.newArrayList();
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
-        logger.info("[RedEnvelopSplit] assign reward activity. start");
+        logger.info("[SecondRedEnvelopSplit] assign reward activity. start");
         Date startTime = DateTime.parse(weiXinPeriod.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
         Date endTime = DateTime.parse(weiXinPeriod.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
         Map<String, Integer> referrerCountMap = Maps.newConcurrentMap();
@@ -51,16 +51,16 @@ public class AssignRedEnvelopSplitJob implements Job {
                 continue;
             }
 
-            logger.info(MessageFormat.format("[RedEnvelopSplit] loginName:{0}, referrerCount{1}.", userModel.getReferrer(), referrerCountMap.get(userModel.getReferrer()) + 1));
+            logger.info(MessageFormat.format("[SecondRedEnvelopSplit] loginName:{0}, referrerCount{1}.", userModel.getReferrer(), referrerCountMap.get(userModel.getReferrer()) + 1));
             referrerCountMap.put(userModel.getReferrer(), (referrerCountMap.get(userModel.getReferrer()) + 1));
         }
 
         referrerCountMap.forEach((k, v) -> {
-            logger.info(MessageFormat.format("[RedEnvelopSplit] assign redEnvelop loginName:{0}, couponId:{1}, level:{2}.", k, getCouponId(v), v));
+            logger.info(MessageFormat.format("[SecondRedEnvelopSplit] assign redEnvelop loginName:{0}, couponId:{1}, level:{2}.", k, getCouponId(v), v));
             mqClient.sendMessage(MessageQueue.CouponAssigning, k + ":" + getCouponId(v));
         });
 
-        logger.info("[RedEnvelopSplit] assign reward activity. end");
+        logger.info("[SecondRedEnvelopSplit] assign reward activity. end");
     }
 
     public long getCouponId(int referrerCount) {

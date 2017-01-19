@@ -58,7 +58,7 @@ public class RedEnvelopSplitActivityService {
 
     private static Integer DEFAULT_PAGE_SIZE = 10;
 
-    @Value("#{'${activity.weiXin.red.envelop.period}'.split('\\~')}")
+    @Value("#{'${activity.weiXin.red.envelop.second.period}'.split('\\~')}")
     private List<String> weiXinPeriod = Lists.newArrayList();
 
     public int getReferrerCount(String loginName) {
