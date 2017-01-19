@@ -10,8 +10,8 @@ class User(db.Model):
     mobile = db.Column(db.String(11), unique=True)
     password = db.Column(db.String(40))
     salt = db.Column(db.String(40))
-    last_login_time = db.Column(db.DateTime(timezone=True), name='last_login_time')
-    last_login_source = db.Column(db.String(16), name='last_login_source')
+    last_login_time = db.Column(db.DateTime(timezone=True))
+    last_login_source = db.Column(db.String(16))
 
     def __repr__(self):
         return '<User %r>' % self.username

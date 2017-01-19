@@ -2,7 +2,6 @@
 import json
 from unittest import TestCase, main
 from models import User
-import time
 
 import redis
 
@@ -80,12 +79,9 @@ class TestSessionManager(TestCase):
         user_name = 'sidneygao'
         data = {'data': 'test data', 'login_name': user_name}
         token_id = manager.set(data, 'fake_session_id')
-        user = User.query.filter(User.username == user_name).first()
-        pre_last_login_time = user.last_login_time
-        time.sleep(1)
         manager.refresh(token_id)
-        cur_last_login_time = user.last_login_time
-        self.assertTrue(pre_last_login_time < cur_last_login_time)
+        user = User.query.filter(User.username == user_name).first()
+        self.assertIsNotNone(user.last_login_time)
         self.assertEqual(user.last_login_source, "IOS")
 
 
@@ -99,16 +95,13 @@ class TestView(TestCase):
     def test_should_login_successful(self):
         username = 'sidneygao'
         source = 'WEB'
-        user = User.query.filter(User.username == username).first()
-        pre_last_login_time = user.last_login_time
-        time.sleep(1)
         data = {'username': username, 'source': source, 'device_id': 'device_id1',
                 'token': 'fake_token', 'password': '123abc'}
         rv = self.app.post('/login/', data=data)
         response_data = json.loads(rv.data)
-        last_login_time = user.last_login_time
+        user = User.query.filter(User.username == username).first()
         self.assertEqual(user.last_login_source, source)
-        self.assertTrue(pre_last_login_time < last_login_time)
+        self.assertIsNotNone(user.last_login_time)
         self.assertEqual(200, rv.status_code)
         self.assertTrue(response_data['result'])
         self.assertEqual('sidneygao', response_data['user_info']['login_name'])
@@ -165,16 +158,13 @@ class TestView(TestCase):
     def test_should_login_successful_without_password(self):
         username = 'sidneygao'
         source = 'WEB'
-        user = User.query.filter(User.username == username).first()
-        pre_last_login_time = user.last_login_time
-        time.sleep(1)
         data = {'username': username, 'source': source, 'device_id': 'device_id1',
                 'token': 'fake_token'}
         rv = self.app.post('/login/nopassword/', data=data)
         response_data = json.loads(rv.data)
-        last_login_time = user.last_login_time
+        user = User.query.filter(User.username == username).first()
         self.assertEqual(user.last_login_source, source)
-        self.assertTrue(pre_last_login_time < last_login_time)
+        self.assertIsNotNone(user.last_login_time)
         self.assertEqual(200, rv.status_code)
         self.assertTrue(response_data['result'])
         self.assertEqual('sidneygao', response_data['user_info']['login_name'])
