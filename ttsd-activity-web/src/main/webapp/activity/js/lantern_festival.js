@@ -46,7 +46,7 @@ require(['jquery','drawCircle','template','layerWrapper','commonFun','logintip',
         $heroPre.show();
         $heroNext.hide();
     }else{
-        $heroPre.hide();
+        $heroPre.show();
         $heroNext.hide();
     }
     //获取前一天或者后一天的日期

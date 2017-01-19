@@ -234,15 +234,13 @@
             height:auto;
             font-size:12px;
             padding:15px;
-            background: url('/activity/images/lantern-festival/info-bg-phone.png') no-repeat center;
-            background-size:100%;
+            background: none;
           }
           @media (min-width:414px) and (max-width:700px) {
             height:auto;
             font-size:12px;
             padding:20px;
-            background: url('/activity/images/lantern-festival/info-bg-phone.png') no-repeat center;
-            background-size:100%;
+            background: none;
           }
         }
         .gift-item{
@@ -436,15 +434,13 @@
             height:auto;
             font-size:12px;
             padding:15px;
-            background: url('/activity/images/lantern-festival/info-bg-phone.png') no-repeat center;
-            background-size:100%;
+            background: none;
           }
           @media (min-width:414px) and (max-width:700px) {
             height:auto;
             font-size:12px;
             padding:20px;
-            background: url('/activity/images/lantern-festival/info-bg-phone.png') no-repeat center;
-            background-size:100%;
+            background: none;
           }
         }
         .list-info{
@@ -554,7 +550,7 @@
           }
         }
         .table-group{
-          float:left;
+          display:inline-block;
           width:100%;
           @media (max-width:320px) {
             overflow: hidden;
