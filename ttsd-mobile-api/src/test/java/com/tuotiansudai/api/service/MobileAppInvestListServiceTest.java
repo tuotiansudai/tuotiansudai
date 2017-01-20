@@ -320,7 +320,8 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
         investListRequestDto.setPageSize(10);
         BaseResponseDto<InvestListResponseDataDto> baseResponseDto = mobileAppInvestListService.generateInvestList(investListRequestDto);
 
-        assertTrue(baseResponseDto.isSuccess());
+        assertTrue(baseResponseDto.getCode().equals(ReturnMessage.LOAN_NOT_FOUND.getCode()));
+        assertTrue(baseResponseDto.getMessage().equals(ReturnMessage.LOAN_NOT_FOUND.getMsg()));
     }
 
     private List getAchievement(){

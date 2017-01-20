@@ -73,6 +73,13 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
         final String loginName = investListRequestDto.getBaseParam().getUserId();
         long loanId = Long.parseLong(investListRequestDto.getLoanId());
 
+        LoanModel achievementLoanModel = loanMapper.findById(loanId);
+        if(achievementLoanModel == null){
+            dto.setCode(ReturnMessage.LOAN_NOT_FOUND.getCode());
+            dto.setMessage(ReturnMessage.LOAN_NOT_FOUND.getMsg());
+            return dto;
+        }
+
         long count = investMapper.findCountByStatus(loanId, InvestStatus.SUCCESS);
 
         if (index == null || index <= 0) {
@@ -88,14 +95,10 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
             });
         }
 
-        LoanModel achievementLoanModel = loanMapper.findById(loanId);
-        List<LoanAchievementsResponseDto> loanAchievementsResponseDtoList = null;
-        if(achievementLoanModel != null){
-            loanAchievementsResponseDtoList = Lists.newArrayList(
-                    getLoanAchievementsResponseDto(UserGroup.FIRST_INVEST_ACHIEVEMENT, achievementLoanModel.getFirstInvestAchievementId(), loginName),
-                    getLoanAchievementsResponseDto(UserGroup.MAX_AMOUNT_ACHIEVEMENT, achievementLoanModel.getMaxAmountAchievementId(), loginName),
-                    getLoanAchievementsResponseDto(UserGroup.LAST_INVEST_ACHIEVEMENT, achievementLoanModel.getLastInvestAchievementId(), loginName));
-        }
+        List<LoanAchievementsResponseDto> loanAchievementsResponseDtoList = Lists.newArrayList(
+                getLoanAchievementsResponseDto(UserGroup.FIRST_INVEST_ACHIEVEMENT, achievementLoanModel.getFirstInvestAchievementId(), loginName),
+                getLoanAchievementsResponseDto(UserGroup.MAX_AMOUNT_ACHIEVEMENT, achievementLoanModel.getMaxAmountAchievementId(), loginName),
+                getLoanAchievementsResponseDto(UserGroup.LAST_INVEST_ACHIEVEMENT, achievementLoanModel.getLastInvestAchievementId(), loginName));
 
         dto.setCode(ReturnMessage.SUCCESS.getCode());
         dto.setMessage(ReturnMessage.SUCCESS.getMsg());
@@ -104,7 +107,7 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
         investListResponseDataDto.setIndex(index);
         investListResponseDataDto.setPageSize(pageSize);
         investListResponseDataDto.setTotalCount((int) count);
-        investListResponseDataDto.setAchievements(loanAchievementsResponseDtoList == null ? Lists.newArrayList() : loanAchievementsResponseDtoList);
+        investListResponseDataDto.setAchievements(loanAchievementsResponseDtoList);
 
         //TODO:fake
         LoanModel loanModel = loanMapper.findById(41650602422768L);
@@ -222,10 +225,10 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
 
         fistInvestCoupon.stream().forEach(
                 input -> investAchievementResponseDto.getCoupon().add((input.getCouponType().equals(CouponType.RED_ENVELOPE) ?
-                        String.format(RED_ENVELOPE_DESCRIPTION, AmountConverter.convertCentToString(input.getAmount()).replaceAll("\\.00", "")):
+                        String.format(RED_ENVELOPE_DESCRIPTION, AmountConverter.convertCentToString(input.getAmount()).replaceAll("\\.00", "")) :
                         String.format(INVEST_COUPON_DESCRIPTION, (input.getRate() * 100) + "%").replaceAll("\\.0", ""))));
 
-        if(investId != null){
+        if (investId != null) {
             UserModel userModel = userMapper.findByLoginName(investMapper.findById(investId).getLoginName());
             investAchievementResponseDto.setMobile(randomUtils.encryptMobile(loginName, userModel.getLoginName(), investId, Source.MOBILE));
         }
