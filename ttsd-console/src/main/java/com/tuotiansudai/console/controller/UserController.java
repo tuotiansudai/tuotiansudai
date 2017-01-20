@@ -7,6 +7,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.console.bi.dto.RoleStage;
+import com.tuotiansudai.console.dto.RemainUserDto;
 import com.tuotiansudai.console.dto.UserItemDataDto;
 import com.tuotiansudai.console.repository.model.UserOperation;
 import com.tuotiansudai.console.service.ConsoleUserService;
@@ -28,6 +29,7 @@ import com.tuotiansudai.task.TaskConstant;
 import com.tuotiansudai.util.RequestIPParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.support.MethodOverride;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -273,6 +275,52 @@ public class UserController {
             level = MEMBERSHIP_V5;
         }
         return userMembershipService.findCountMembershipByLevel(level);
+    }
+
+    @RequestMapping(value = "/remain-users", method = RequestMethod.GET)
+    public ModelAndView remainUser(@RequestParam(value = "loginName", required = false) String loginName,
+                                   @RequestParam(value = "mobile", required = false) String mobile,
+                                   @RequestParam(value = "registerStartTime", required = false) Date registerStartTime,
+                                   @RequestParam(value = "registerEndTime", required = false) Date registerEndTime,
+                                   @RequestParam(value = "useExperienceCoupon", required = false) Boolean useExperienceCoupon,
+                                   @RequestParam(value = "experienceStartTime", required = false) Date experienceStartTime,
+                                   @RequestParam(value = "experienceEndTime", required = false) Date experienceEndTime,
+                                   @RequestParam(value = "investCountLowLimit", required = false) Integer investCountLowLimit,
+                                   @RequestParam(value = "investCountHighLimit", required = false) Integer investCountHighLimit,
+                                   @RequestParam(value = "investSumLowLimit", required = false) Long investSumLowLimit,
+                                   @RequestParam(value = "investSumHighLimit", required = false) Long investSumHighLimit,
+                                   @RequestParam(value = "firstInvestStartTime", required = false) Date firstInvestStartTime,
+                                   @RequestParam(value = "firstInvestEndTime", required = false) Date firstInvestEndTime,
+                                   @RequestParam(value = "secondInvestStartTime", required = false) Date secondInvestStartTime,
+                                   @RequestParam(value = "secondInvestEndTime", required = false) Date secondInvestEndTime,
+                                   @RequestParam(value = "index", defaultValue = "1") int index) {
+        final int pageSize = 10;
+
+        ModelAndView modelAndView = new ModelAndView("/user-remain-list");
+
+        BasePaginationDataDto<RemainUserDto> data = consoleUserService.findRemainUsers(loginName, mobile, registerStartTime,
+                registerEndTime, useExperienceCoupon, experienceStartTime, experienceEndTime, investCountLowLimit, investCountHighLimit,
+                investSumLowLimit, investSumHighLimit, firstInvestStartTime, firstInvestEndTime, secondInvestStartTime,
+                secondInvestEndTime, index, pageSize);
+
+        modelAndView.addObject("loginName", loginName);
+        modelAndView.addObject("mobile", mobile);
+        modelAndView.addObject("registerStartTime", registerStartTime);
+        modelAndView.addObject("registerEndTime", registerEndTime);
+        modelAndView.addObject("useExperienceCoupon", useExperienceCoupon);
+        modelAndView.addObject("experienceStartTime", experienceStartTime);
+        modelAndView.addObject("experienceEndTime", experienceEndTime);
+        modelAndView.addObject("investCountLowLimit", investCountLowLimit);
+        modelAndView.addObject("investCountHighLimit", investCountHighLimit);
+        modelAndView.addObject("investSumLowLimit", investSumLowLimit);
+        modelAndView.addObject("investSumHighLimit", investSumHighLimit);
+        modelAndView.addObject("firstInvestStartTime", firstInvestStartTime);
+        modelAndView.addObject("firstInvestEndTime", firstInvestEndTime);
+        modelAndView.addObject("secondInvestStartTime", secondInvestStartTime);
+        modelAndView.addObject("secondInvestEndTime", secondInvestEndTime);
+        modelAndView.addObject("data", data);
+
+        return modelAndView;
     }
 
 }
