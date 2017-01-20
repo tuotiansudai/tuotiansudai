@@ -89,10 +89,13 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
         }
 
         LoanModel achievementLoanModel = loanMapper.findById(loanId);
-        List<LoanAchievementsResponseDto> loanAchievementsResponseDtoList = Lists.newArrayList(
-                getLoanAchievementsResponseDto(UserGroup.FIRST_INVEST_ACHIEVEMENT, achievementLoanModel.getFirstInvestAchievementId(), loginName),
-                getLoanAchievementsResponseDto(UserGroup.MAX_AMOUNT_ACHIEVEMENT, achievementLoanModel.getMaxAmountAchievementId(), loginName),
-                getLoanAchievementsResponseDto(UserGroup.LAST_INVEST_ACHIEVEMENT, achievementLoanModel.getLastInvestAchievementId(), loginName));
+        List<LoanAchievementsResponseDto> loanAchievementsResponseDtoList = null;
+        if(achievementLoanModel != null){
+            loanAchievementsResponseDtoList = Lists.newArrayList(
+                    getLoanAchievementsResponseDto(UserGroup.FIRST_INVEST_ACHIEVEMENT, achievementLoanModel.getFirstInvestAchievementId(), loginName),
+                    getLoanAchievementsResponseDto(UserGroup.MAX_AMOUNT_ACHIEVEMENT, achievementLoanModel.getMaxAmountAchievementId(), loginName),
+                    getLoanAchievementsResponseDto(UserGroup.LAST_INVEST_ACHIEVEMENT, achievementLoanModel.getLastInvestAchievementId(), loginName));
+        }
 
         dto.setCode(ReturnMessage.SUCCESS.getCode());
         dto.setMessage(ReturnMessage.SUCCESS.getMsg());
@@ -101,7 +104,7 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
         investListResponseDataDto.setIndex(index);
         investListResponseDataDto.setPageSize(pageSize);
         investListResponseDataDto.setTotalCount((int) count);
-        investListResponseDataDto.setAchievements(loanAchievementsResponseDtoList);
+        investListResponseDataDto.setAchievements(loanAchievementsResponseDtoList == null ? Lists.newArrayList() : loanAchievementsResponseDtoList);
 
         //TODO:fake
         LoanModel loanModel = loanMapper.findById(41650602422768L);
