@@ -38,27 +38,27 @@
     "js": "chucks/imageSlide.min.js"
   },
   "imageSlider": {
-    "js": "chucks/imageSlider.min.js"
+    "js": "chucks/imageSlider.24e57f604e0268f23d08.js"
   },
   "bookInvest": {
-    "js": "chucks/bookInvest.min.js"
+    "js": "chucks/bookInvest.36f79eb53ba43420d674.js"
   },
   "redRnvelope": {
     "js": "chucks/redRnvelope.min.js"
   },
   "redEnvelope": {
-    "js": "chucks/redEnvelope.min.js"
+    "js": "chucks/redEnvelope.5d7511309c6325779cbe.js"
   },
   "placeholder": {
-    "js": "chucks/placeholder.min.js"
+    "js": "chucks/placeholder.151d7ff512475bd5fc25.js"
   },
   "fetchCaptcha": {
-    "js": "chucks/fetchCaptcha.min.js"
+    "js": "chucks/fetchCaptcha.d194842823a5cf39e2b1.js"
   },
   "questions": {
-    "js": "chucks/questions.min.js"
+    "js": "chucks/questions.6ff98da194e37a8607a9.js"
   },
   "create_question": {
-    "js": "chucks/create_question.min.js"
+    "js": "chucks/create_question.efb1406a608c3d90990a.js"
   }
 }
