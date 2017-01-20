@@ -29,7 +29,7 @@ define(['jquery', 'rotate', 'lottery_unit','commonFun'], function($,rotate,lotte
                 });
         }
         //中奖记录
-        this.GiftRecord=function() {
+        this.GiftRecord=function(length) {
             $.ajax({
                 url: this.allListURL,
                 data:this.paramData,
@@ -43,12 +43,12 @@ define(['jquery', 'rotate', 'lottery_unit','commonFun'], function($,rotate,lotte
                     }
 
                     this.giftCircleFrame.find('.user-record').empty().append(UlList.join(''));
-                    this.hoverScrollList(this.giftCircleFrame.find('.user-record'));
+                    this.hoverScrollList(this.giftCircleFrame.find('.user-record'),length);
                 }.bind(this));
         }
 
         //我的奖品
-        this.MyGift=function() {
+        this.MyGift=function(length) {
             $.ajax({
                 url: this.userListURL,
                 data:this.paramData,
@@ -61,7 +61,7 @@ define(['jquery', 'rotate', 'lottery_unit','commonFun'], function($,rotate,lotte
                         UlList.push('<li>'+data[i].prizeValue+'<time>'+data[i].lotteryTime+'</time></li>');
                     }
                     this.giftCircleFrame.find('.own-record').empty().append(UlList.join(''));
-                    this.hoverScrollList(this.giftCircleFrame.find('.own-record'));
+                    this.hoverScrollList(this.giftCircleFrame.find('.own-record'),length);
                 }.bind(this));
         }
     }
@@ -122,10 +122,10 @@ define(['jquery', 'rotate', 'lottery_unit','commonFun'], function($,rotate,lotte
     }
 
 
-    giftCircleDraw.prototype.scrollList=function(domName) {
+    giftCircleDraw.prototype.scrollList=function(domName,length) {
         var $self=domName;
         var lineHeight = $self.find("li:first").height();
-        if ($self.find('li').length > 10) {
+        if ($self.find('li').length > (length!=''?length:10)) {
             $self.animate({
                 "margin-top": -lineHeight + "px"
             }, 600, function() {
@@ -135,14 +135,14 @@ define(['jquery', 'rotate', 'lottery_unit','commonFun'], function($,rotate,lotte
             });
         }
     }
-    giftCircleDraw.prototype.hoverScrollList=function(domName) {
+    giftCircleDraw.prototype.hoverScrollList=function(domName,length) {
         var thisFun=this,
             scrollTimer;
         domName.hover(function() {
             clearInterval(scrollTimer);
         }, function() {
             scrollTimer = setInterval(function() {
-                thisFun.scrollList(domName);
+                thisFun.scrollList(domName,length);
             }, 2000);
         }).trigger("mouseout");
     }
