@@ -1,15 +1,18 @@
-import {useAjax,refreshCaptcha} from 'publicJs/common';
-import {ValidatorForm} from 'publicJs/validator';
-import 'webStyle/login.scss';
+// import {useAjax,refreshCaptcha} from 'publicJs/common';
+// import {ValidatorForm} from 'publicJs/validator';
+
+require('webStyle/login.scss');
+let ValidatorForm= require('publicJs/validator');
+let commonFun= require('publicJs/commonFun');
 
 let loginForm=globalFun.$('#formLogin');
 let loginSubmit=$(loginForm).find('.login-submit');
 let imageCaptcha=globalFun.$('#imageCaptcha');
 
-refreshCaptcha(imageCaptcha,'/login/captcha?');
+commonFun.refreshCaptcha(imageCaptcha,'/login/captcha?');
 //刷新验证码
 $('#imageCaptcha').on('click',function() {
-    refreshCaptcha(this,'/login/captcha?');
+    commonFun.refreshCaptcha(this,'/login/captcha?');
     loginForm.captcha.value='';
 });
 
@@ -58,7 +61,7 @@ loginForm.onsubmit = function(event) {
         }
     }
     if (!errorMsg) {
-        useAjax({
+        commonFun.useAjax({
             url:"/login",
             type:'POST',
             data:$(loginForm).serialize(),
@@ -73,7 +76,7 @@ loginForm.onsubmit = function(event) {
                 location.href = hasUserRole ? redirectUrl : "/register/account";
             } else {
                 let imageCaptcha=globalFun.$('#imageCaptcha');
-                refreshCaptcha(imageCaptcha,'/login/captcha?');
+                commonFun.refreshCaptcha(imageCaptcha,'/login/captcha?');
                 loginSubmit.removeClass('loading');
                 errorDom.text(data.message);
             }

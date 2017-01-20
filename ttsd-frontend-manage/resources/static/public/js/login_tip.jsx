@@ -1,18 +1,17 @@
-import {useAjax,refreshCaptcha,isUserLogin} from 'publicJs/common';
-import {ValidatorForm} from 'publicJs/validator';
-
+let commonFun= require('publicJs/commonFun');
+let ValidatorForm=require('publicJs/validator');
 var $loginTipBox=$('#loginTip');
 let loginInForm = document.getElementById('loginInForm');
 let errorDom=$(loginInForm).find('.error-box');
 //刷新验证码
 $('#imageCaptcha').on('click',function() {
-    refreshCaptcha(this,'/login/captcha');
+    commonFun.refreshCaptcha(this,'/login/captcha');
     loginInForm.captcha.value='';
 });
 
 function popLoginTip() {
     //判断是否登陆，如果没有登陆弹出登录框
-    $.when(isUserLogin())
+    $.when(commonFun.isUserLogin())
         .fail(function(){
             console.log('未登陆');
             layer.open({
@@ -77,7 +76,7 @@ loginInForm.onsubmit = function(event) {
         globalFun.addClass(thisButton,'loading');
         //弹框登陆为ajax的form表单提交
         var dataParam = $(loginInForm).serialize();
-        useAjax({
+        commonFun.useAjax({
             url:'/login',
             type:'POST',
             data:dataParam
@@ -85,7 +84,7 @@ loginInForm.onsubmit = function(event) {
             if (data.status) {
                 window.location.reload();
             } else {
-                refreshCaptcha(loginInForm.imageCaptcha,'/login/captcha');
+                commonFun.refreshCaptcha(loginInForm.imageCaptcha,'/login/captcha');
                 globalFun.removeClass(thisButton,'loading');
                 errorDom.text(data.message);
             }
@@ -94,4 +93,4 @@ loginInForm.onsubmit = function(event) {
     }
 };
 
-export default popLoginTip;
+module.exports=popLoginTip;

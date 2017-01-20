@@ -311,8 +311,12 @@ function cloneObj(oldObj) { //复制对象方法
             }
         }.bind(this)
     }
+module.exports = {
+    runImg:runImg,
+    startMarquee:startMarquee
+};
 
-    export { runImg,startMarquee };
+// moudle.exports.startMarquee=startMarquee;
 
 
 

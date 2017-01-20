@@ -1,7 +1,6 @@
-import 'webModule/drag';
-import {ValidatorForm} from 'publicJs/validator';
-import {useAjax,refreshCaptcha} from 'publicJs/common';
-
+require('webModule/drag');
+let commonFun= require('publicJs/commonFun');
+let ValidatorForm=require('publicJs/validator');
 let $redEnvelopFrame=$('#redEnvelopFloatFrame');
 
 // 回到顶部
@@ -132,14 +131,14 @@ let $redEnvelopFrame=$('#redEnvelopFloatFrame');
     //刷新验证码
     $(imageCaptchaFeed).on('click', function(event) {
         event.preventDefault();
-        refreshCaptcha(this,'/feedback/captcha?');
+        commonFun.refreshCaptcha(this,'/feedback/captcha?');
     });
 
     //弹出意见反馈层
     $('.fix-nav-list .show-feed',$redEnvelopFrame).on('click', function(event) {
         event.preventDefault();
         //刷新验证码
-        refreshCaptcha(imageCaptchaFeed,'/feedback/captcha?');
+        commonFun.refreshCaptcha(imageCaptchaFeed,'/feedback/captcha?');
         var $self=$(this);
         $self.addClass('active');
         $feedbackConatiner.show();
@@ -231,7 +230,7 @@ let $redEnvelopFrame=$('#redEnvelopFloatFrame');
             let type=$feedbackConatiner.find('.type-list dt').data('type');
             let feedSubmit=$(feedForm).find(':submit');
             feedForm.type.value = type;
-            useAjax({
+            commonFun.useAjax({
                 url:"/feedback/submit",
                 type:'POST',
                 data:$(feedForm).serialize(),

@@ -1,19 +1,14 @@
-import {runImg,startMarquee} from 'webModule/image_show_slider';
-import {useAjax,isUserLogin} from 'publicJs/common';
-import 'webModule/coupon_alert';
-import 'webModule/red_envelope_float';
-import {ValidatorForm} from 'publicJs/validator';
-import popLoginTip from 'publicJs/login_tip';
-
-import 'publicJs/plugins/autoNumeric';
-import 'webStyle/home_page_v2.scss';
+require('webModule/coupon_alert');
+require('webStyle/home_page_v2.scss');
 
 let $homePageContainer = $('#homePageContainer'),
     $imgScroll = $('.banner-img-list', $homePageContainer);
 let viewport = globalFun.browserRedirect();
 
-//首页大图轮播和最新公告滚动
-(function(){
+//首页大图轮播和最新公告滚动,单独打一个包方便cdn缓存
+require.ensure(['webModule/image_show_slider'], function(require){
+
+    let imageSlide = require('webModule/image_show_slider');
     let imgCount=$imgScroll.find('li').length;
     //如果是手机浏览器，更换手机图片
     if(imgCount>0 && viewport=='mobile') {
@@ -24,12 +19,12 @@ let viewport = globalFun.browserRedirect();
     }
     if(imgCount>0) {
         $imgScroll.find('li').eq(0).css({"z-index":2});
-        let runimg=new runImg('bannerBox','30',imgCount);
+        let runimg=new imageSlide.runImg('bannerBox','30',imgCount);
         runimg.info();
     }
-    let startMarquee2=new startMarquee();
+    let startMarquee2=new imageSlide.startMarquee();
     startMarquee2.init();
-})();
+},'imageSlider');
 
 //点击进入相应的标的详情
 $('[data-url]',$homePageContainer).on('click',function(event) {
@@ -72,9 +67,17 @@ $('[data-url]',$homePageContainer).on('click',function(event) {
     countDownLoan($preheat);
 
 })();
+// debugger
 
 //预约投资
-(function() {
+require.ensure(['publicJs/plugins/autoNumeric','publicJs/validator','publicJs/commonFun','publicJs/login_tip'], function(){
+    let popLoginTip=require('publicJs/login_tip');
+
+    require('publicJs/plugins/autoNumeric');
+
+    let commonFun= require('publicJs/commonFun');
+    let ValidatorForm= require('publicJs/validator');
+
     let $bookInvestForm = $('.book-invest-form',$homePageContainer);
     $('input.autoNumeric',$bookInvestForm).autoNumeric('init');
     //初始化radio
@@ -91,7 +94,7 @@ $('[data-url]',$homePageContainer).on('click',function(event) {
     //点击我要预约按钮
     $('.book-invest-box',$homePageContainer).on('click',function(event) {
         event.preventDefault();
-        $.when(isUserLogin())
+        $.when(commonFun.isUserLogin())
             .done(function() {
                 $bookInvestForm.find('.init-radio-style').removeClass('on');
                 $bookInvestForm.find('input[name="bookingAmount"]').val('');
@@ -135,12 +138,12 @@ $('[data-url]',$homePageContainer).on('click',function(event) {
         let amount = $(bookInvestForm).find('input[name="bookingAmount"]').val().replace(/,/gi, '');
         $(bookInvestForm).find('input[name="bookingAmount"]').val(amount);
         let data = $(bookInvestForm).serialize();
-        $.when(isUserLogin())
+        $.when(commonFun.isUserLogin())
             .fail(function() {
                 location.href='/login';
             })
             .done(function() {
-                useAjax({
+                commonFun.useAjax({
                     type: 'GET',
                     url: '/booking-loan/invest?' + data
                 },function(response) {
@@ -182,4 +185,9 @@ $('[data-url]',$homePageContainer).on('click',function(event) {
         toBookInvest();
     }
 
-})();
+},'bookInvest');
+
+//投资计算器和意见反馈
+require.ensure(['webModule/red_envelope_float'],function() {
+    require('webModule/red_envelope_float');
+},'redEnvelope');

@@ -1,4 +1,4 @@
-import "publicStyle/global.scss";
+require("publicStyle/global.scss");
 //ie8不支持bind方法，这里做兼容处理
 if (!Function.prototype.bind) {
     Function.prototype.bind = function (oThis) {
@@ -262,14 +262,14 @@ var web_globalFun = (function() {
             var oScript = document.createElement('script');
             oScript.type = 'text/javascript';
             oScript.src = staticServer+url;
+            oScript.async = false;
             // IE9及以上浏览器，Firefox，Chrome，Opera ,
-            // IE8及以下浏览器 只支持onreadystatechange
-            oScript.onload = function(){
-                callback && callback();
-            }
+
             //插入到body底部
-            var globalElem=this.$('#globalPage');
-            globalElem.parentNode.insertBefore(oScript,globalElem);
+            var currentScriptElem=this.$('#currentScript');
+            currentScriptElem.parentNode.insertBefore(oScript,currentScriptElem);
+
+            callback && callback();
         }
     }
     return globalFun;

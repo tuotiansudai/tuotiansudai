@@ -1,10 +1,6 @@
-import 'publicJs/placeholder';
-import {ValidatorForm} from 'publicJs/validator';
-import 'publicStyle/module/register_png.scss';
-import 'webStyle/register.scss';
-
-import {useAjax} from 'publicJs/common';
-import {fetchCaptchaFun} from 'publicJs/fetch_captcha';
+require('publicStyle/module/register_png.scss');
+require('webStyle/register.scss');
+let ValidatorForm= require('publicJs/validator');
 
 let registerForm=globalFun.$('#registerUserForm'); //注册的form
 let imageCaptchaForm=globalFun.$('#imageCaptchaForm'); //获取验证码的form
@@ -15,11 +11,17 @@ let $referrer=$('input.referrer', $(registerForm));
 let agreementValid=true,
     referrerValidBool=true;
 
-$('input[type="text"],input[type="password"]',$(registerForm)).placeholder();
+require.ensure(['publicJs/placeholder'], function(require){
+    require('publicJs/placeholder');
+    $('input[type="text"],input[type="password"]',$(registerForm)).placeholder();
+},'placeholder');
 
 //点击获取验证码按钮
-let fetchCaptchaRegister=new fetchCaptchaFun('registerUserForm','register');
-fetchCaptchaRegister.init();
+require.ensure(['publicJs/fetch_captcha'], function(require){
+    let fetchCaptchaFun=require('publicJs/fetch_captcha');
+    let fetchCaptchaRegister=new fetchCaptchaFun('registerUserForm','register');
+    fetchCaptchaRegister.init();
+},'fetchCaptcha');
 
 //推荐人显示隐藏
 (function() {

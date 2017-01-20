@@ -7,6 +7,8 @@ var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var CopyWebpackPlugin = require('copy-webpack-plugin'); //复制文件
 var CleanWebpackPlugin = require('clean-webpack-plugin');  //清空文件夹里的文件
 
+var staticServer = require('./getStaticServer.js');
+
 var basePath = path.join(__dirname, 'resources'),
 	staticPath = path.join(basePath, 'static'),
 	publicPath=path.join(staticPath, 'public'),
@@ -18,8 +20,10 @@ var basePath = path.join(__dirname, 'resources'),
 
 var publicPathJS=path.join(publicPath, 'js');
 
+//从ttsd-config的ttsd-env.properties配置文件中读取静态资源的地址
+
 var outputPath=path.join(basePath, 'develop'),//打包文件路径
-	devServerPath='/',
+	devServerPath=staticServer+'/',
 	commonOptions={},
 	webpackdevServer='',
 	plugins=[];
@@ -93,11 +97,12 @@ else if(NODE_ENV=='dev') {
 		host: '0.0.0.0',
 		port: 3008,
 		inline: true,
-		noInfo: false
+		noInfo: false,
 		// proxy: {
 		// 	'*': {
-		// 		target: 'http://localhost:8088',
-		// 		secure: false
+		// 		secure: false,
+		// 		changeOrigin: true,
+		// 		target: 'http://localhost:8080/'
 		// 	}
 		// }
 	};
@@ -138,7 +143,8 @@ module.exports = objectAssign(commonOptions, {
 	output: {
 		filename:outFilename,
 		path:outputPath,
-		publicPath:devServerPath
+		publicPath:devServerPath,
+		chunkFilename:'chucks/[name].[chunkhash].js'
 	},
 	module: {
 		loaders: [{

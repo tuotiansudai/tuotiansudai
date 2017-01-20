@@ -1,4 +1,4 @@
-import {useAjax,IdentityCodeValid,checkedAge} from 'publicJs/common';
+var commonFun=require('publicJs/commonFun');
 
 function createElement(element,errorMsg) {
     if(element && element.nextElementSibling) {
@@ -137,7 +137,7 @@ var strategies = {
     },
     identityValid:function(errorMsg,showErrorAfter) {
         //验证身份证号
-        var cardValid=IdentityCodeValid(this.value);
+        var cardValid=commonFun.IdentityCodeValid(this.value);
         if(!cardValid) {
             globalFun.addClass(this,'error');
             showErrorAfter && createElement(this,errorMsg);
@@ -151,9 +151,9 @@ var strategies = {
     },
     ageValid:function(errorMsg,showErrorAfter) {
         //验证年龄是否满18
-        var cardValid=IdentityCodeValid(this.value);
+        var cardValid=commonFun.IdentityCodeValid(this.value);
         if(cardValid) {
-            var ageValid=checkedAge(this.value);
+            var ageValid=commonFun.checkedAge(this.value);
             if(!ageValid) {
                 globalFun.addClass(this,'error');
                 showErrorAfter && createElement(this,errorMsg);
@@ -172,7 +172,7 @@ var strategies = {
         if(this.value.length!=18) {
             return;
         }
-        useAjax({
+        commonFun.useAjax({
             type:'GET',
             async: false,
             url:'/authentication/identityNumber/'+this.value+'/is-exist'
@@ -195,7 +195,7 @@ var strategies = {
     isMobileExist:function(errorMsg,showErrorAfter) {
         var getResult='',
             that=this;
-        useAjax({
+        commonFun.useAjax({
             type:'GET',
             async: false,
             url:'/register/user/mobile/'+this.value+'/is-exist'
@@ -226,7 +226,7 @@ var strategies = {
             showErrorAfter && removeElement(that);
             return '';
         }
-        useAjax({
+        commonFun.useAjax({
             type:'GET',
             async: false,
             url:'/register/user/referrer/'+this.value+'/is-exist'
@@ -297,6 +297,6 @@ function ValidatorForm(cache,checkOption) {
      }
 }
 
-export {ValidatorForm}
+module.exports=ValidatorForm;
 
 

@@ -33,6 +33,7 @@
 * OTHER DEALINGS IN THE SOFTWARE.
 */
 (function ($) {
+    console.log('ppp');
     "use strict";
     /*jslint browser: true*/
     /*global jQuery: false*/
@@ -1295,4 +1296,5 @@
         }
         $.error('Method "' + method + '" is not supported by autoNumeric()');
     };
+    console.log('oppp');
 }(jQuery));

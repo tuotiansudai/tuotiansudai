@@ -1295,4 +1295,5 @@
         }
         $.error('Method "' + method + '" is not supported by autoNumeric()');
     };
+    console.log('pooooo');
 }(jQuery));

@@ -131,12 +131,11 @@
     window.pluginsJSON={
         underscore:'${js.underscore}'
     }
-    <#--console.log(${js});-->
 
 </script>
 <script src="${staticServer}${js.jquery}" ></script>
-<script src="${staticServer}${js.global_page!}" id="globalPage"></script>
-<script src="${staticServer}${pageJavascript}" type="text/javascript"></script>
+<script src="${staticServer}${js.global_page!}" ></script>
+<script src="${staticServer}${pageJavascript}" type="text/javascript" id="currentScript"></script>
 </body>
 </html>
 </#macro>

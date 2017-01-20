@@ -21,5 +21,44 @@
   "/web/js/register_user": {
     "js": "/web/js/register_user.js",
     "css": "/web/js/register_user.css"
+  },
+  "tips": {
+    "js": "chucks/tips.min.js"
+  },
+  "lanyanTest": {
+    "js": "chucks/lanyanTest.min.js"
+  },
+  "commonFun": {
+    "js": "chucks/commonFun.min.js"
+  },
+  "test": {
+    "js": "chucks/test.min.js"
+  },
+  "imageSlide": {
+    "js": "chucks/imageSlide.min.js"
+  },
+  "imageSlider": {
+    "js": "chucks/imageSlider.min.js"
+  },
+  "bookInvest": {
+    "js": "chucks/bookInvest.min.js"
+  },
+  "redRnvelope": {
+    "js": "chucks/redRnvelope.min.js"
+  },
+  "redEnvelope": {
+    "js": "chucks/redEnvelope.min.js"
+  },
+  "placeholder": {
+    "js": "chucks/placeholder.min.js"
+  },
+  "fetchCaptcha": {
+    "js": "chucks/fetchCaptcha.min.js"
+  },
+  "questions": {
+    "js": "chucks/questions.min.js"
+  },
+  "create_question": {
+    "js": "chucks/create_question.min.js"
   }
 }

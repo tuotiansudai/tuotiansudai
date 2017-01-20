@@ -1,6 +1,5 @@
 //用来获取手机验证码，主要是注册和找回密码的时候用
-import {countDownLoan,useAjax,refreshCaptcha} from 'publicJs/common';
-
+let commonFun= require('publicJs/commonFun');
 let imageCaptchaForm=globalFun.$('#imageCaptchaForm');
 let $imageCaptchaForm =$(imageCaptchaForm);
 //获取手机验证
@@ -13,11 +12,11 @@ let $fetchCaptcha=$('#fetchCaptcha');
 
 //刷新验证码
 $imageCaptcha.on('click',function() {
-    refreshCaptcha(this,'/register/user/image-captcha');
+    commonFun.refreshCaptcha(this,'/register/user/image-captcha');
     $imageCaptchaForm[0].imageCaptcha.value='';
 }).trigger('click');
 
-export class fetchCaptchaFun{
+class fetchCaptchaFun{
     constructor(DomForm,kind) {
         this.DomContainer=document.getElementById(DomForm);
         this.kind=kind;
@@ -87,16 +86,16 @@ export class fetchCaptchaFun{
             //         url: "/mobile-retrieve-password/mobile/"+that.DomContainer.mobile.value+"/imageCaptcha/"+captcha+"/send-mobile-captcha",
             //     }
             // }
-            useAjax(ajaxOption,function(responseData) {
+        commonFun.useAjax(ajaxOption,function(responseData) {
                 $captchaSubmit.prop('disabled',false);
                 //刷新验证码
-                refreshCaptcha($imageCaptcha[0],'/register/user/image-captcha');
+                commonFun.refreshCaptcha($imageCaptcha[0],'/register/user/image-captcha');
 
                 let data = responseData.data;
                 if (data.status && !data.isRestricted) {
                     //获取手机验证码成功，关闭弹框，并开始倒计时
                     layer.closeAll();
-                    countDownLoan({
+                    commonFun.countDownLoan({
                         btnDom:$fetchCaptcha,
                     });
 
@@ -111,3 +110,5 @@ export class fetchCaptchaFun{
     }
 
 }
+
+module.exports =fetchCaptchaFun;
