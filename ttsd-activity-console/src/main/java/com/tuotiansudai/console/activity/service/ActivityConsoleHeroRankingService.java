@@ -35,6 +35,11 @@ public class ActivityConsoleHeroRankingService {
     @Value("#{'${activity.new.heroRanking.period}'.split('\\~')}")
     private List<String> newHeroRankingActivityPeriod = Lists.newArrayList();
 
+    @Value(value = "${activity.lanternFestival.startTime}")
+    private String lanternFestivalStartTime;
+    @Value(value = "${activity.lanternFestival.endTime}")
+    private String lanternFestivalEndTime;
+
     private int lifeSecond = 5184000;
 
     public List<HeroRankingView> obtainHeroRankingReferrer(ActivityCategory activityCategory,Date tradingTime) {
@@ -43,7 +48,16 @@ public class ActivityConsoleHeroRankingService {
     }
 
     private List getActivityPeriod(ActivityCategory activityCategory){
-        return activityCategory.equals(ActivityCategory.HERO_RANKING) ? heroRankingActivityPeriod : newHeroRankingActivityPeriod;
+
+        switch (activityCategory){
+            case HERO_RANKING:
+                return heroRankingActivityPeriod;
+            case NEW_HERO_RANKING:
+                return newHeroRankingActivityPeriod;
+            case LANTERN_FESTIVAL_ACTIVITY:
+                return Lists.newArrayList(lanternFestivalStartTime,lanternFestivalEndTime);
+        }
+        return null;
     }
 
     public List<HeroRankingView> obtainHeroRanking(ActivityCategory activityCategory,Date tradingTime) {

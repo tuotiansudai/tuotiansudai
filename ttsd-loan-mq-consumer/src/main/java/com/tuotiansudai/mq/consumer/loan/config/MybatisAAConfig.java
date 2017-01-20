@@ -10,9 +10,11 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import javax.annotation.PreDestroy;
 import javax.sql.DataSource;
 
 @Configuration
@@ -36,6 +38,7 @@ public class MybatisAAConfig {
         return config;
     }
 
+    @Primary
     @Bean
     public DataSource hikariCPAADataSource(@Autowired @Qualifier("hikariCPAAConfig") HikariConfig hikariConfig) {
         return new HikariDataSource(hikariConfig);
@@ -46,23 +49,27 @@ public class MybatisAAConfig {
         MapperScannerConfigurer configurer = new MapperScannerConfigurer();
         configurer.setBasePackage("com.tuotiansudai.repository.mapper," +
                 "com.tuotiansudai.coupon.repository.mapper," +
-                "com.tuotiansudai.membership.repository.mapper");
+                "com.tuotiansudai.membership.repository.mapper," +
+                "com.tuotiansudai.transfer.repository.mapper");
         configurer.setSqlSessionFactoryBeanName("aaSqlSessionFactory");
         return configurer;
     }
 
+    @Primary
     @Bean
     public DataSourceTransactionManager aaTransactionManager(@Qualifier("hikariCPAADataSource") DataSource hikariCPAADataSource) {
         return new DataSourceTransactionManager(hikariCPAADataSource);
     }
 
+    @Primary
     @Bean
     public SqlSessionFactory aaSqlSessionFactory(@Qualifier("hikariCPAADataSource") DataSource hikariCPAADataSource) throws Exception {
         SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
         sessionFactory.setDataSource(hikariCPAADataSource);
         sessionFactory.setTypeAliasesPackage("com.tuotiansudai.repository.model," +
                 "com.tuotiansudai.coupon.repository.model," +
-                "com.tuotiansudai.membership.repository.model");
+                "com.tuotiansudai.membership.repository.model," +
+                "com.tuotiansudai.transfer.repository.model");
         return sessionFactory.getObject();
     }
 
