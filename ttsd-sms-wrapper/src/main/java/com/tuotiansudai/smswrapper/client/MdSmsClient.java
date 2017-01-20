@@ -89,7 +89,7 @@ public class MdSmsClient implements ApplicationContextAware {
         SmsDataDto data = new SmsDataDto();
         dto.setData(data);
 
-        if(Lists.<String>newArrayList(Environment.SMOKE.name(),Environment.STAGING.name(),Environment.DEV.name()).contains(environment)){
+        if(Lists.newArrayList(Environment.SMOKE.name(),Environment.DEV.name()).contains(environment)){
             logger.info("[短信发送] 该环境不发送短信");
             return dto;
         }
