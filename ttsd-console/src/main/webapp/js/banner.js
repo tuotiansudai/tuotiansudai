@@ -141,10 +141,6 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapSel
                 $('.jump-link-text').val('' );
             }
 
-            if (!IsURL($("input[name='sharedUrl']").val())) {
-                showErrorMessage("分享后链接网址格式不正确,请以http://或 https://开始");
-                return false;
-            }
 
             if ($("input[name='name']").val().length >= 50) {
                 showErrorMessage("名称最多50个中文字符!");
@@ -156,10 +152,6 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapSel
                 return false;
             }
 
-            if ($("input[name='sharedUrl']").val().length >= 100) {
-                showErrorMessage("分享后链接最多100个中文字符!");
-                return false;
-            }
 
             if ($("input[name='title']").val().length >= 50) {
                 showErrorMessage("分享后标题最多50个中文字符!");

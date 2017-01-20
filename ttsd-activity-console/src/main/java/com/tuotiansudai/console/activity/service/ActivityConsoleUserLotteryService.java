@@ -68,7 +68,8 @@ public class ActivityConsoleUserLotteryService {
         Iterator<UserLotteryTimeView> transform = Iterators.transform(userModels.iterator(), input -> {
             UserLotteryTimeView model = new UserLotteryTimeView(input.getMobile(), input.getLoginName());
             model.setUseCount(userLotteryPrizeMapper.findUserLotteryPrizeCountViews(input.getMobile(), null, prizeType, null, null));
-            model.setUnUseCount((commonCountTimeService.countDrawLotteryTime(model.getMobile(), prizeType) - model.getUseCount()));
+            int unUserCount = commonCountTimeService.countDrawLotteryTime(model.getMobile(), prizeType) - model.getUseCount();
+            model.setUnUseCount(unUserCount < 0 ? 0 :unUserCount);
             return model;
         });
 

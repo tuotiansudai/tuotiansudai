@@ -54,11 +54,11 @@ public class RedEnvelopSplitActivityService {
 
     private static String REFERRER_TITLE = "您的好友%s送你8.88元现金红包";
 
-    private static String REFERRER_DESCRIPTION = "完成注册即可领取8.88元现金红包";
+    private static String REFERRER_DESCRIPTION = "点击领取红包!";
 
     private static Integer DEFAULT_PAGE_SIZE = 10;
 
-    @Value("#{'${activity.weiXin.red.envelop.period}'.split('\\~')}")
+    @Value("#{'${activity.weiXin.red.envelop.second.period}'.split('\\~')}")
     private List<String> weiXinPeriod = Lists.newArrayList();
 
     public int getReferrerCount(String loginName) {
@@ -83,17 +83,17 @@ public class RedEnvelopSplitActivityService {
         long sumAmount = 0l;
 
         if (referrerCount == 1) {
-            sumAmount = 188l;
-        } else if (referrerCount == 2) {
-            sumAmount = 388l;
-        } else if (referrerCount >= 3 && referrerCount < 5) {
             sumAmount = 588l;
-        } else if (referrerCount >= 5 && referrerCount < 7) {
+        } else if (referrerCount == 2) {
+            sumAmount = 788l;
+        } else if (referrerCount == 3) {
             sumAmount = 988l;
-        } else if (referrerCount >= 7 && referrerCount < 10) {
+        } else if (referrerCount == 4) {
             sumAmount = 1388l;
+        } else if (referrerCount == 5) {
+            sumAmount = 1588l;
         }
-        if (referrerCount >= 10) {
+        if (referrerCount >= 6) {
             sumAmount = 2088l;
         }
         return AmountConverter.convertCentToString(sumAmount);

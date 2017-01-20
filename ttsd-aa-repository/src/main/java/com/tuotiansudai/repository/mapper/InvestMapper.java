@@ -274,6 +274,11 @@ public interface InvestMapper {
                                         @Param(value = "activityDesc") String activityDesc,
                                         @Param(value = "startTime") Date startTime,
                                         @Param(value = "endTime") Date endTime);
+
+    int sumDrawCountByLoginName(@Param(value = "loginName") String loginName,
+                                 @Param(value = "startTime") Date startTime,
+                                 @Param(value = "endTime") Date endTime,
+                                 @Param(value = "baseAmount") long baseAmount);
     List<Map<String, String>> findInvestAmountScaleTop3(@Param(value = "endDate") Date endDate);
 
     long findInvestAmountScale(@Param(value = "endDate") Date endDate);
