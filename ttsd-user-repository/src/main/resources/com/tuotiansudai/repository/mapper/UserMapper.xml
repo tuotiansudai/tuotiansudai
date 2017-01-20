@@ -15,7 +15,6 @@
         <result column="user_name" property="userName"/>
         <result column="identity_number" property="identityNumber"/>
         <result column="register_time" property="registerTime"/>
-        <result column="last_login_time" property="lastLoginTime"/>
         <result column="last_modified_time" property="lastModifiedTime"/>
         <result column="last_modified_user" property="lastModifiedUser"/>
         <result column="avatar" property="avatar"/>
