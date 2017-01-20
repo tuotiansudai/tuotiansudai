@@ -125,6 +125,37 @@ public class ExtraRateServiceImpl implements ExtraRateService {
         return result;
     }
 
+    @Override
+    public boolean advanceRepay(long loanRepayId) {
+        boolean result = true;
+        LoanRepayModel currentLoanRepay = loanRepayMapper.findById(loanRepayId);
+        long loanId = currentLoanRepay.getLoanId();
+        LoanModel loanModel = loanMapper.findById(loanId);
+        List<InvestExtraRateModel> investExtraRateModels = investExtraRateMapper.findByLoanId(loanId);
+        for (InvestExtraRateModel investExtraRateModel : investExtraRateModels) {
+            if(RepayStatus.COMPLETE == investExtraRateModel.getStatus()){
+                logger.info(MessageFormat.format("[Advance Repay {0}] investExtraRateId:{1} status is COMPLETE",
+                        String.valueOf(loanRepayId),String.valueOf(investExtraRateModel.getId())));
+                continue;
+            }
+            InvestModel investModel = investMapper.findById(investExtraRateModel.getInvestId());
+            long actualInterest = InterestCalculator.calculateExtraLoanRateInterest(loanModel, investExtraRateModel.getExtraRate(), investModel, new Date());
+            long actualFee = new BigDecimal(actualInterest).multiply(new BigDecimal(investModel.getInvestFeeRate())).setScale(0, BigDecimal.ROUND_DOWN).longValue();
+
+            try {
+                this.sendExtraRateAmount(loanRepayId, investExtraRateModel, actualInterest, actualFee);
+            } catch (Exception e) {
+                result = false;
+                logger.error(MessageFormat.format("[Advance Repay {0}] extra rate is failed, investId={0} loginName={1} amount={3}",
+                        String.valueOf(loanRepayId),
+                        String.valueOf(investExtraRateModel.getInvestId()),
+                        investExtraRateModel.getLoginName(),
+                        String.valueOf(investExtraRateModel.getAmount())), e);
+            }
+        }
+        return result;
+    }
+
     private void sendExtraRateAmount(long loanRepayId, InvestExtraRateModel investExtraRateModel, long actualInterest, long actualFee) throws Exception {
         String redisKey = MessageFormat.format(REPAY_REDIS_KEY_TEMPLATE, String.valueOf(loanRepayId));
         InvestModel investModel = investMapper.findById(investExtraRateModel.getInvestId());
@@ -227,37 +258,6 @@ public class ExtraRateServiceImpl implements ExtraRateService {
         redisWrapperClient.hset(MessageFormat.format(REPAY_REDIS_KEY_TEMPLATE, String.valueOf(orderId)), String.valueOf(orderId), SyncRequestStatus.SUCCESS.name());
         if (callbackRequestModel.isSuccess())
             investRateService.updateExtraRateData(investExtraRateModel, investExtraRateModel.getActualInterest(), investExtraRateModel.getActualFee());
-    }
-
-    @Override
-    public boolean advanceRepay(long loanRepayId) {
-        boolean result = true;
-        LoanRepayModel currentLoanRepay = loanRepayMapper.findById(loanRepayId);
-        long loanId = currentLoanRepay.getLoanId();
-        LoanModel loanModel = loanMapper.findById(loanId);
-        List<InvestExtraRateModel> investExtraRateModels = investExtraRateMapper.findByLoanId(loanId);
-        for (InvestExtraRateModel investExtraRateModel : investExtraRateModels) {
-            if(RepayStatus.COMPLETE == investExtraRateModel.getStatus()){
-                logger.info(MessageFormat.format("[Advance Repay {0}] investExtraRateId:{1} status is COMPLETE",
-                        String.valueOf(loanRepayId),String.valueOf(investExtraRateModel.getId())));
-                continue;
-            }
-            InvestModel investModel = investMapper.findById(investExtraRateModel.getInvestId());
-            long actualInterest = InterestCalculator.calculateExtraLoanRateInterest(loanModel, investExtraRateModel.getExtraRate(), investModel, new Date());
-            long actualFee = new BigDecimal(actualInterest).multiply(new BigDecimal(investModel.getInvestFeeRate())).setScale(0, BigDecimal.ROUND_DOWN).longValue();
-
-            try {
-                this.sendExtraRateAmount(loanRepayId, investExtraRateModel, actualInterest, actualFee);
-            } catch (Exception e) {
-                result = false;
-                logger.error(MessageFormat.format("[Advance Repay {0}] extra rate is failed, investId={0} loginName={1} amount={3}",
-                        String.valueOf(loanRepayId),
-                        String.valueOf(investExtraRateModel.getInvestId()),
-                        investExtraRateModel.getLoginName(),
-                        String.valueOf(investExtraRateModel.getAmount())), e);
-            }
-        }
-        return result;
     }
 
     private void fatalLog(String errMsg, Throwable e) {

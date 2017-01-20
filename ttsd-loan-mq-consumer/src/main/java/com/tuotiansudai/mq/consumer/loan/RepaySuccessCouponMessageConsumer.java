@@ -6,6 +6,7 @@ import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.RepayDto;
+import com.tuotiansudai.dto.RepayMqNotifyDto;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.message.RepaySuccessMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
@@ -15,7 +16,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.text.MessageFormat;
@@ -32,16 +32,15 @@ public class RepaySuccessCouponMessageConsumer implements MessageConsumer {
 
     @Override
     public MessageQueue queue() {
-        return MessageQueue.RepaySuccess_Coupon;
+        return MessageQueue.RepaySuccess_CouponRepay;
     }
 
-    @Transactional
     @Override
     public void consume(String message) {
         logger.info("[还款MQ] receive message: {}: {}.", this.queue(), message);
 
         if (Strings.isNullOrEmpty(message)) {
-            logger.error("[还款MQ] RepaySuccess_Coupon receive message is empty");
+            logger.error("[还款MQ] RepaySuccess_CouponRepay receive message is empty");
             return;
         }
 
@@ -49,20 +48,20 @@ public class RepaySuccessCouponMessageConsumer implements MessageConsumer {
         try {
             repaySuccessMessage = JsonConverter.readValue(message, RepaySuccessMessage.class);
             if (repaySuccessMessage.getLoanRepayId() == null) {
-                logger.error("[还款MQ] RepaySuccess_Coupon loanRepayId is empty, message:{}", message);
+                logger.error("[还款MQ] RepaySuccess_CouponRepay loanRepayId is empty, message:{}", message);
                 smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("优惠券还款失败,loanRepayId为空"));
                 return;
             }
         } catch (IOException e) {
-            logger.error("[还款MQ] RepaySuccess_Coupon json convert RepaySuccessMessage fail, message:{}", message);
+            logger.error("[还款MQ] RepaySuccess_CouponRepay json convert RepaySuccessMessage fail, message:{}", message);
             smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("优惠券还款失败,解析消息失败"));
             return;
         }
 
         logger.info("[还款MQ] ready to consume message: .");
-        BaseDto<PayDataDto> result = payWrapperClient.couponRepay(new RepayDto(repaySuccessMessage.getLoanRepayId(), repaySuccessMessage.isAdvance()));
+        BaseDto<PayDataDto> result = payWrapperClient.couponRepay(new RepayMqNotifyDto(repaySuccessMessage.getLoanRepayId(), repaySuccessMessage.isAdvance()));
         if (!result.isSuccess()) {
-            logger.error("[还款MQ] RepaySuccess_Coupon consume fail. loanRepayId: " + message);
+            logger.error("[还款MQ] RepaySuccess_CouponRepay consume fail. loanRepayId: " + message);
             smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(MessageFormat.format("优惠券还款失败, loanRepayId:{0}", String.valueOf(repaySuccessMessage.getLoanRepayId()))));
             throw new RuntimeException("invest callback consume fail. loanRepayId: " + message);
         }

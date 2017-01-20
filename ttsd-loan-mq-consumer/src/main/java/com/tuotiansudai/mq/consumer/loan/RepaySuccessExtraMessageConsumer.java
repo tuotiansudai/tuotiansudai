@@ -6,6 +6,7 @@ import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.RepayDto;
+import com.tuotiansudai.dto.RepayMqNotifyDto;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.message.RepaySuccessMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
@@ -32,7 +33,7 @@ public class RepaySuccessExtraMessageConsumer implements MessageConsumer {
 
     @Override
     public MessageQueue queue() {
-        return MessageQueue.RepaySuccess_Extra;
+        return MessageQueue.RepaySuccess_ExtraRepay;
     }
 
     @Transactional
@@ -41,7 +42,7 @@ public class RepaySuccessExtraMessageConsumer implements MessageConsumer {
         logger.info("[还款MQ] receive message: {}: {}.", this.queue(), message);
 
         if (Strings.isNullOrEmpty(message)) {
-            logger.error("[还款MQ] RepaySuccess_Extra receive message is empty");
+            logger.error("[还款MQ] RepaySuccess_ExtraRepay receive message is empty");
             return;
         }
 
@@ -49,20 +50,20 @@ public class RepaySuccessExtraMessageConsumer implements MessageConsumer {
         try {
             repaySuccessMessage = JsonConverter.readValue(message, RepaySuccessMessage.class);
             if (repaySuccessMessage.getLoanRepayId() == null) {
-                logger.error("[还款MQ] RepaySuccess_Extra loanRepayId is empty, message:{}", message);
+                logger.error("[还款MQ] RepaySuccess_ExtraRepay loanRepayId is empty, message:{}", message);
                 smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("阶梯加息还款失败,loanRepayId为空"));
                 return;
             }
         } catch (IOException e) {
-            logger.error("[还款MQ] RepaySuccess_Extra json convert RepaySuccessMessage fail, message:{}", message);
+            logger.error("[还款MQ] RepaySuccess_ExtraRepay json convert RepaySuccessMessage fail, message:{}", message);
             smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("阶梯加息还款失败,解析消息失败"));
             return;
         }
 
         logger.info("[还款MQ] ready to consume message: .");
-        BaseDto<PayDataDto> result = payWrapperClient.extraRepay(new RepayDto(repaySuccessMessage.getLoanRepayId(), repaySuccessMessage.isAdvance()));
+        BaseDto<PayDataDto> result = payWrapperClient.extraRepay(new RepayMqNotifyDto(repaySuccessMessage.getLoanRepayId(), repaySuccessMessage.isAdvance()));
         if (!result.isSuccess()) {
-            logger.error("[还款MQ] RepaySuccess_Extra consume fail. loanRepayId: " + message);
+            logger.error("[还款MQ] RepaySuccess_ExtraRepay consume fail. loanRepayId: " + message);
             smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(MessageFormat.format("阶梯加息还款失败, loanRepayId:{0}", String.valueOf(repaySuccessMessage.getLoanRepayId()))));
         }
 

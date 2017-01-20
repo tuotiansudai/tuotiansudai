@@ -6,6 +6,7 @@ import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.RepayDto;
+import com.tuotiansudai.dto.RepayMqNotifyDto;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.message.RepaySuccessMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
@@ -60,7 +61,7 @@ public class RepaySuccessPayBackInvestMessageConsumer implements MessageConsumer
         }
 
         logger.info("[还款MQ] ready to consume message: .");
-        BaseDto<PayDataDto> result = payWrapperClient.backInvestBack(new RepayDto(repaySuccessMessage.getLoanRepayId(), repaySuccessMessage.isAdvance()));
+        BaseDto<PayDataDto> result = payWrapperClient.backInvestBack(new RepayMqNotifyDto(repaySuccessMessage.getLoanRepayId(), repaySuccessMessage.isAdvance()));
         if (!result.isSuccess()) {
             logger.error("[还款MQ] RepaySuccess_PayBackInvest consume fail. loanRepayId: " + message);
             smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(MessageFormat.format("返款投资人失败, loanRepayId:{0}", String.valueOf(repaySuccessMessage.getLoanRepayId()))));
