@@ -2,6 +2,7 @@ package com.tuotiansudai.rest.support.client.factory;
 
 import com.tuotiansudai.rest.support.client.codec.RestErrorDecoder;
 import com.tuotiansudai.rest.support.client.interceptors.RequestHeaderInterceptor;
+import feign.Client;
 import feign.Request;
 import feign.Retryer;
 import feign.jackson.JacksonDecoder;
@@ -15,6 +16,7 @@ import org.springframework.context.ApplicationContextAware;
 
 public class RestClientScannerConfigurer implements BeanDefinitionRegistryPostProcessor, ApplicationContextAware {
     private final Request.Options options;
+    private final Client client;
     private final Retryer retryer;
     private final JacksonDecoder jacksonDecoder;
     private final JacksonEncoder jacksonEncoder;
@@ -23,8 +25,9 @@ public class RestClientScannerConfigurer implements BeanDefinitionRegistryPostPr
     private ApplicationContext applicationContext;
     private String[] basePackages;
 
-    public RestClientScannerConfigurer(Request.Options options, Retryer retryer, JacksonDecoder jacksonDecoder, JacksonEncoder jacksonEncoder, RestErrorDecoder restErrorDecoder, RequestHeaderInterceptor requestHeaderInterceptor) {
+    public RestClientScannerConfigurer(Request.Options options, Client client, Retryer retryer, JacksonDecoder jacksonDecoder, JacksonEncoder jacksonEncoder, RestErrorDecoder restErrorDecoder, RequestHeaderInterceptor requestHeaderInterceptor) {
         this.options = options;
+        this.client = client;
         this.retryer = retryer;
         this.jacksonDecoder = jacksonDecoder;
         this.jacksonEncoder = jacksonEncoder;
@@ -34,7 +37,7 @@ public class RestClientScannerConfigurer implements BeanDefinitionRegistryPostPr
 
     @Override
     public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) throws BeansException {
-        RestClientScanner scanner = new RestClientScanner(registry, options, retryer, applicationContext, jacksonDecoder, jacksonEncoder, restErrorDecoder, requestHeaderInterceptor);
+        RestClientScanner scanner = new RestClientScanner(registry, options, client, retryer, applicationContext, jacksonDecoder, jacksonEncoder, restErrorDecoder, requestHeaderInterceptor);
         scanner.scan(basePackages);
     }
 

@@ -3,16 +3,28 @@
     "js": "/ask/js/mainSite.js",
     "css": "/ask/js/mainSite.css"
   },
+  "questions": {
+    "js": "chucks/questions.6ff98da194e37a8607a9.js"
+  },
+  "create_question": {
+    "js": "chucks/create_question.efb1406a608c3d90990a.js"
+  },
   "/public/global_page": {
     "js": "/public/global_page.js",
     "css": "/public/global_page.css"
   },
-  "metadata": {
-    "version": 123
-  },
   "/web/js/index": {
     "js": "/web/js/index.js",
     "css": "/web/js/index.css"
+  },
+  "imageSlider": {
+    "js": "chucks/imageSlider.24e57f604e0268f23d08.js"
+  },
+  "bookInvest": {
+    "js": "chucks/bookInvest.36f79eb53ba43420d674.js"
+  },
+  "redEnvelope": {
+    "js": "chucks/redEnvelope.5d7511309c6325779cbe.js"
   },
   "/web/js/login": {
     "js": "/web/js/login.js",
@@ -22,43 +34,13 @@
     "js": "/web/js/register_user.js",
     "css": "/web/js/register_user.css"
   },
-  "tips": {
-    "js": "chucks/tips.min.js"
-  },
-  "lanyanTest": {
-    "js": "chucks/lanyanTest.min.js"
-  },
-  "commonFun": {
-    "js": "chucks/commonFun.min.js"
-  },
-  "test": {
-    "js": "chucks/test.min.js"
-  },
-  "imageSlide": {
-    "js": "chucks/imageSlide.min.js"
-  },
-  "imageSlider": {
-    "js": "chucks/imageSlider.24e57f604e0268f23d08.js"
-  },
-  "bookInvest": {
-    "js": "chucks/bookInvest.36f79eb53ba43420d674.js"
-  },
-  "redRnvelope": {
-    "js": "chucks/redRnvelope.min.js"
-  },
-  "redEnvelope": {
-    "js": "chucks/redEnvelope.5d7511309c6325779cbe.js"
-  },
   "placeholder": {
     "js": "chucks/placeholder.151d7ff512475bd5fc25.js"
   },
   "fetchCaptcha": {
     "js": "chucks/fetchCaptcha.d194842823a5cf39e2b1.js"
   },
-  "questions": {
-    "js": "chucks/questions.6ff98da194e37a8607a9.js"
-  },
-  "create_question": {
-    "js": "chucks/create_question.efb1406a608c3d90990a.js"
+  "metadata": {
+    "version": 123
   }
 }
