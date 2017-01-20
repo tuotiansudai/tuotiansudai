@@ -264,10 +264,10 @@ public class LotteryDrawActivityService {
                 .put(LotteryPrize.SPRING_FESTIVAL_RED_ENVELOP_188, 345L)
                 .put(LotteryPrize.SPRING_FESTIVAL_INTEREST_COUPON_5, 346L)
                 .put(LotteryPrize.SPRING_FESTIVAL_INTEREST_COUPON_2, 347L)
-                .put(LotteryPrize.POINT_SHOP_RED_ENVELOPE_10, 355L)
-                .put(LotteryPrize.POINT_SHOP_RED_ENVELOPE_50, 356L)
-                .put(LotteryPrize.POINT_SHOP_INTEREST_COUPON_2, 357L)
-                .put(LotteryPrize.POINT_SHOP_INTEREST_COUPON_5, 358L)
+                .put(LotteryPrize.POINT_SHOP_RED_ENVELOPE_10, 360L)
+                .put(LotteryPrize.POINT_SHOP_RED_ENVELOPE_50, 361L)
+                .put(LotteryPrize.POINT_SHOP_INTEREST_COUPON_2, 362L)
+                .put(LotteryPrize.POINT_SHOP_INTEREST_COUPON_5, 363L)
                 .build()).get(lotteryPrize);
     }
 
