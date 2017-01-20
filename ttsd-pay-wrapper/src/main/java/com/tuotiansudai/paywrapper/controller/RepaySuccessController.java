@@ -3,7 +3,6 @@ package com.tuotiansudai.paywrapper.controller;
 
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
-import com.tuotiansudai.dto.RepayDto;
 import com.tuotiansudai.dto.RepayMqNotifyDto;
 import com.tuotiansudai.paywrapper.coupon.service.CouponRepayService;
 import com.tuotiansudai.paywrapper.extrarate.service.ExtraRateService;
