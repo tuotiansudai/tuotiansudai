@@ -1,13 +1,14 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.point_update}" pageJavascript="" activeNav="" activeLeftNav="" title="生日月特权_拓天活动_拓天速贷" keywords="拓天速贷,拓天活动.生日活动,生日月特权" description="拓天速贷专属生日月特权,生日月投资收益翻倍,拓天速贷专属活动超高收益等你拿.">
+<@global.main pageCss="${css.point_update}" pageJavascript="" activeNav="" activeLeftNav="" title="积分体系_积分商城_拓天速贷" keywords="会员积分,投资积分,签到积分,邀好友积分,拓天速贷" description="拓天速贷积分体系豪华升级,投资得积分,邀好友送积分,签到攒积分,做任务赢积分,会员积分兑好礼,五大秘籍玩转积分商城.">
 <div class="point-update-container">
 	<div class="top-item">
-		<img src="${staticServer}/activity/images/point-update/top-img.png" width="100%">
+		<img src="${staticServer}/activity/images/point-update/top-img.png" width="100%" class="media-pc">
+		<img src="${staticServer}/activity/images/point-update/top-img-phone.png" width="100%" class="media-phone">
 	</div>
 	<div class="wp clearfix">
 		<div class="content-item">
 			<div class="item-icon"></div>
-			<h3>
+			<h3 class="title-one">
 				<img src="${staticServer}/activity/images/point-update/title-one.png">
 			</h3>
 			<ul class="get-point-item">
@@ -46,7 +47,7 @@
 						投资指定项目，左手赚收益，右手赚积分。如投资10000元180天债权，可获得4931积分。
 					</div>
 					<div class="btn-item">
-						<a href="" class="btn-model">马上投资</a>
+						<a href="/loan-list" class="btn-model">马上投资</a>
 					</div>
 				</li>
 				<li>
@@ -80,7 +81,7 @@
 						每邀请一名好友都有积分入袋，邀请越多积分越多，同时又能拿推荐礼包。还等什么？还不速速去让人脉变现！
 					</div>
 					<div class="btn-item mt-center">
-						<a href="" class="btn-model">邀请好友</a>
+						<a href="/referrer/refer-list" class="btn-model">邀请好友</a>
 					</div>
 				</li>
 				<li>
@@ -122,14 +123,76 @@
 						连续签到还能领红包哦！
 					</div>
 					<div class="btn-item mt-right">
-						<a href="" class="btn-model">去签到</a>
+						<a href="/point-shop" class="btn-model">去签到</a>
 					</div>
 				</li>
 			</ul>
 		</div>
-		<div class="content-item">
+		<div class="content-item media-phone">
 			<div class="item-icon"></div>
-			<h3>
+			<h3 class="title-two">
+				<img src="${staticServer}/activity/images/point-update/title-two.png">
+			</h3>
+			<ul class="get-point-item">
+				<li>
+					<table>
+						<thead>
+							<tr>
+								<th class="phone-th">任务</th>
+								<th class="phone-th">获得积分</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>实名认证</td>
+								<td>100积分</td>
+							</tr>
+							<tr>
+								<td>绑定银行卡</td>
+								<td>100积分</td>
+							</tr>
+							<tr>
+								<td>首次充值</td>
+								<td>200积分</td>
+							</tr>
+							<tr>
+								<td>首次投资</td>
+								<td>200积分</td>
+							</tr>
+							<tr>
+								<td>首次开通免密支付</td>
+								<td>100积分</td>
+							</tr>
+							<tr>
+								<td>累计投资满5000元</td>
+								<td>100积分</td>
+							</tr>
+							<tr>
+								<td>单笔投资满10000元</td>
+								<td>200积分</td>
+							</tr>
+							<tr>
+								<td>首次投资180天标的</td>
+								<td>100积分</td>
+							</tr>
+							<tr>
+								<td>首次投资360天标的</td>
+								<td>200积分</td>
+							</tr>
+						</tbody>
+					</table>
+					<div class="tip-info">
+						新手积分初体验，每完成一项任务都有积分入账，如全部通关可得1300积分。送到手的积分，不拿=浪费哦！
+					</div>
+					<div class="btn-item">
+						<a href="/point-shop/task" class="btn-model">去完成</a>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<div class="content-item media-pc">
+			<div class="item-icon"></div>
+			<h3 class="title-two">
 				<img src="${staticServer}/activity/images/point-update/title-two.png">
 			</h3>
 			<ul class="task-point-item">
@@ -202,12 +265,12 @@
 				新手积分初体验，每完成一项任务都有积分入账，如全部通关可得1300积分。送到手的积分，不拿=浪费哦！
 			</div>
 			<div class="btn-item">
-				<a href="" class="btn-model">马上投资</a>
+				<a href="/point-shop/task" class="btn-model">去完成</a>
 			</div>
 		</div>
 		<div class="content-item left-item">
 			<div class="item-icon"></div>
-			<h3>
+			<h3 class="title-three">
 				<img src="${staticServer}/activity/images/point-update/title-three.png">
 			</h3>
 			<div class="vip-info">
@@ -217,8 +280,8 @@
 				<table>
 					<thead>
 						<tr>
-							<th>任务</th>
-							<th>获得积分</th>
+							<th>会员等级</th>
+							<th>积分商城折扣</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -242,30 +305,30 @@
 				</table>
 			</div>
 			<div class="btn-item">
-				<a href="" class="btn-model vip-btn">查看我的会员等级</a>
+				<a href="/membership" class="btn-model vip-btn">查看我的会员等级</a>
 			</div>
 		</div>
 		<div class="content-item right-item">
 			<div class="item-icon"></div>
-			<h3>
+			<h3 class="title-four">
 				<img src="${staticServer}/activity/images/point-update/title-four.png">
 			</h3>
 			<ul class="point-item">
-				<li>
+				<li class="one">
 					<p class="title-name">小积分抽大奖</p>
 					<p>每抽奖1次消耗1000积分，以小博大拼手气。</p>
 				</li>
-				<li>
+				<li class="two">
 					<p class="title-name">兑换红包加息券，收益翻不停</p>
 					<p>使用积分可兑换虚拟奖品，为收益加码。</p>
 				</li>
-				<li>
+				<li class="three">
 					<p class="title-name">丰厚实物奖，惊喜大派“兑”</p>
 					<p>积分换好礼，多种精选实物奖品随心兑。</p>
 				</li>
 			</ul>
 			<div class="btn-item">
-				<a href="" class="btn-model">去往积分商城</a>
+				<a href="/point-shop" class="btn-model">去往积分商城</a>
 			</div>
 		</div>
 		<dl class="rule-item">
