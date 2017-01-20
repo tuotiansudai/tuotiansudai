@@ -1,4 +1,4 @@
-package com.tuotiansudai.coupon.service.impl;
+package com.tuotiansudai.mq.consumer.loan;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
@@ -6,26 +6,26 @@ import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
-import com.tuotiansudai.coupon.service.CouponSmsNotifyService;
 import com.tuotiansudai.coupon.util.UserCollector;
 import com.tuotiansudai.dto.sms.SmsCouponNotifyDto;
+import com.tuotiansudai.mq.client.model.MessageQueue;
+import com.tuotiansudai.mq.consumer.MessageConsumer;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.List;
 
-@Service
-public class CouponSmsNotifyServiceImpl implements CouponSmsNotifyService {
+@Component
+public class CouponSmsNotifyMessageConsumer implements MessageConsumer {
 
-    static Logger logger = Logger.getLogger(CouponSmsNotifyServiceImpl.class);
+    static Logger logger = Logger.getLogger(CouponSmsNotifyMessageConsumer.class);
 
     @Resource(name = "allUserCollector")
     private UserCollector allUserCollector;
@@ -84,9 +84,14 @@ public class CouponSmsNotifyServiceImpl implements CouponSmsNotifyService {
     @Autowired
     private SmsWrapperClient smsWrapperClient;
 
-    @Transactional
     @Override
-    public void sendSms(long couponId) {
+    public MessageQueue queue() {
+        return MessageQueue.CouponSmsNotify;
+    }
+
+    @Override
+    public void consume(String message) {
+        long couponId = Long.parseLong(message);
         CouponModel couponModel = couponMapper.findById(couponId);
         List<String> loginNames = this.getCollector(couponModel.getUserGroup()).collect(couponModel.getId());
 

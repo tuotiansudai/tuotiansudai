@@ -1,18 +1,16 @@
 package com.tuotiansudai.console.service;
 
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.ExchangeCodeService;
 import com.tuotiansudai.enums.OperationType;
-import com.tuotiansudai.job.CouponNotifyJob;
-import com.tuotiansudai.job.JobManager;
-import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.log.service.AuditLogService;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
 import org.apache.log4j.Logger;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,13 +30,13 @@ public class CouponActivationService {
     private CouponMapper couponMapper;
 
     @Autowired
-    private JobManager jobManager;
-
-    @Autowired
     private AuditLogService auditLogService;
 
     @Autowired
     private ExchangeCodeService exchangeCodeService;
+
+    @Autowired
+    private MQWrapperClient mqWrapperClient;
 
     @Transactional
     public void inactive(String loginName, long couponId, String ip) {
@@ -93,23 +91,10 @@ public class CouponActivationService {
         }
 
         if (couponModel.isSmsAlert()) {
-            this.createSmsNotifyJob(couponId);
+            mqWrapperClient.sendMessage(MessageQueue.CouponSmsNotify, String.valueOf(couponId));
         }
 
         String description = MessageFormat.format("{0} 激活了 {1} 创建的 {2}", auditorRealName, operatorRealName, couponModel.getCouponType().getName());
         auditLogService.createAuditLog(loginName, couponModel.getCreatedBy(), OperationType.COUPON, String.valueOf(couponId), description, ip);
-    }
-
-    private void createSmsNotifyJob(long couponId) {
-        try {
-            Date oneMinuteLater = new DateTime().plusMinutes(1).toDate();
-            jobManager.newJob(JobType.CouponNotify, CouponNotifyJob.class)
-                    .runOnceAt(oneMinuteLater)
-                    .addJobData(CouponNotifyJob.COUPON_ID, couponId)
-                    .withIdentity(JobType.CouponNotify.name(), MessageFormat.format("Coupon-Notify-{0}", String.valueOf(couponId)))
-                    .submit();
-        } catch (Exception e) {
-            logger.error(MessageFormat.format("Create coupon notify job failed (couponId = {0})", String.valueOf(couponId)), e);
-        }
     }
 }

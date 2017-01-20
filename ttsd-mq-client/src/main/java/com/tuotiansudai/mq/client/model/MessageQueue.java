@@ -27,7 +27,8 @@ public enum MessageQueue {
     LoanOut("LoanOut"),
     LoanStartRaising("LoanStartRaising"),
     LoanStopRaising("LoanStopRaising"),
-    CancelTransferApplication("CancelTransferApplication")
+    CancelTransferApplication("CancelTransferApplication"),
+    CouponSmsNotify("CouponSmsNotify")
     ;
 
     private final String queueName;
