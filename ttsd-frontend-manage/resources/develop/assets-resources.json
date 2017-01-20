@@ -35,12 +35,20 @@
     "css": "/web/js/register_user.css"
   },
   "placeholder": {
-    "js": "chucks/placeholder.151d7ff512475bd5fc25.js"
+    "js": "chucks/placeholder.b8ff9cbb8cc957723863.js"
   },
   "fetchCaptcha": {
-    "js": "chucks/fetchCaptcha.d194842823a5cf39e2b1.js"
+    "js": "chucks/fetchCaptcha.02f280e0380032fe6c6e.js"
   },
   "metadata": {
     "version": 123
+  },
+  "/web/js/loan_list": {
+    "js": "/web/js/loan_list.js",
+    "css": "/web/js/loan_list.css"
+  },
+  "/web/js/transfer_list": {
+    "js": "/web/js/transfer_list.js",
+    "css": "/web/js/transfer_list.css"
   }
 }
