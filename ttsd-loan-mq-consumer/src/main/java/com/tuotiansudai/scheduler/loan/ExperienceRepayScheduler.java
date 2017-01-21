@@ -1,4 +1,4 @@
-package com.tuotiansudai.service.impl;
+package com.tuotiansudai.scheduler.loan;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -11,12 +11,13 @@ import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.service.ExperienceRepayService;
 import com.tuotiansudai.util.AmountConverter;
-import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
 import java.text.MessageFormat;
 import java.util.Date;
@@ -24,10 +25,10 @@ import java.util.List;
 import java.util.Map;
 
 
-@Service
-public class ExperienceRepayServiceImpl implements ExperienceRepayService {
+@Component
+public class ExperienceRepayScheduler {
 
-    static Logger logger = Logger.getLogger(ExperienceRepayServiceImpl.class);
+    static Logger logger = LoggerFactory.getLogger(ExperienceRepayScheduler.class);
 
     @Autowired
     private UserMapper userMapper;
@@ -47,11 +48,12 @@ public class ExperienceRepayServiceImpl implements ExperienceRepayService {
     @Autowired
     private SmsWrapperClient smsWrapperClient;
 
-    @Override
-    public void repay(Date repayDate) {
+    @Scheduled(cron = "0 0 16 * * ?", zone = "Asia/Shanghai")
+    public void repay() {
+        Date repayDate = new Date();
         logger.info(MessageFormat.format("[Experience Repay] starting at {0}", new Date().toString()));
 
-        List<LoanModel> loanModels = loanMapper.findByProductType(LoanStatus.RAISING,Lists.newArrayList(ProductType.EXPERIENCE),ActivityType.NEWBIE);
+        List<LoanModel> loanModels = loanMapper.findByProductType(LoanStatus.RAISING, Lists.newArrayList(ProductType.EXPERIENCE), ActivityType.NEWBIE);
 
         List<InvestRepayModel> repaySuccessInvestRepayModels = Lists.newArrayList();
 

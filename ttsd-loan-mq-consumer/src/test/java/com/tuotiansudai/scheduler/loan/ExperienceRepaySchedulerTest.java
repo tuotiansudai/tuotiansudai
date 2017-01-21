@@ -1,4 +1,4 @@
-package com.tuotiansudai.service;
+package com.tuotiansudai.scheduler.loan;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.LoanDto;
@@ -13,8 +13,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
@@ -22,12 +24,11 @@ import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
-@Transactional
-public class ExperienceRepayServiceTest {
+@RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
+public class ExperienceRepaySchedulerTest {
     @Autowired
-    ExperienceRepayService experienceRepayService;
+    ExperienceRepayScheduler scheduler;
 
     @Autowired
     UserMapper userMapper;
@@ -148,8 +149,7 @@ public class ExperienceRepayServiceTest {
     public void testNewbieExperienceService() {
         prepareData();
 
-        Date repayDate = new Date();
-        experienceRepayService.repay(repayDate);
+        scheduler.repay();
 
         InvestRepayModel investRepayModel = investRepayMapper.findById(investRepayId);
         assertEquals(RepayStatus.COMPLETE, investRepayModel.getStatus());
