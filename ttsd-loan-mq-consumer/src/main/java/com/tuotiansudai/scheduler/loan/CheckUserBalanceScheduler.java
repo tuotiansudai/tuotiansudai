@@ -35,7 +35,8 @@ public class CheckUserBalanceScheduler {
 
     private static final int BATCH_SIZE = 10000;
 
-    @Scheduled(cron = "0 30 1 ? * 7#1", zone = "Asia/Shanghai")
+    //@Scheduled(cron = "0 30 1 ? * 7#1", zone = "Asia/Shanghai")
+    @Scheduled(cron = "0 30 1 1 1/1 ?", zone = "Asia/Shanghai")
     public void checkUserBalance() {
         logger.info("start checkUserBalance.");
 
