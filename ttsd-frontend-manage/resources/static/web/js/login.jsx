@@ -1,6 +1,3 @@
-// import {useAjax,refreshCaptcha} from 'publicJs/common';
-// import {ValidatorForm} from 'publicJs/validator';
-
 require('webStyle/login.scss');
 let ValidatorForm= require('publicJs/validator');
 let commonFun= require('publicJs/commonFun');

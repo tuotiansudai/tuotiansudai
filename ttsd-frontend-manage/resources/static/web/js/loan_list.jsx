@@ -1,11 +1,11 @@
 require('webStyle/investment/project_loan_list.scss');
-require('webModule/coupon_alert');
-require('webModule/assign_coupon');
-require('webModule/count_down');
+require('webJsModule/coupon_alert');
+require('webJsModule/assign_coupon');
+require('webJsModule/count_down');
 
 //投资计算器和意见反馈
-require.ensure(['webModule/red_envelope_float'],function() {
-    require('webModule/red_envelope_float');
+require.ensure(['webJsModule/red_envelope_float'],function() {
+    require('webJsModule/red_envelope_float');
 },'redEnvelope');
 let $loanListBox=$('#loanListBox');
 var $loanLi = $('.loan-list-box li',$loanListBox);

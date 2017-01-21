@@ -1,14 +1,17 @@
-require('webModule/coupon_alert');
+require('webJsModule/coupon_alert');
 require('webStyle/home_page_v2.scss');
+
+//投资计算器和意见反馈
+require('webJsModule/red_envelope_float');
 
 let $homePageContainer = $('#homePageContainer'),
     $imgScroll = $('.banner-img-list', $homePageContainer);
 let viewport = globalFun.browserRedirect();
 
 //首页大图轮播和最新公告滚动,单独打一个包方便cdn缓存
-require.ensure(['webModule/image_show_slider'], function(require){
+require.ensure(['webJsModule/image_show_slider'], function(require){
 
-    let imageSlide = require('webModule/image_show_slider');
+    let imageSlide = require('webJsModule/image_show_slider');
     let imgCount=$imgScroll.find('li').length;
     //如果是手机浏览器，更换手机图片
     if(imgCount>0 && viewport=='mobile') {
@@ -187,7 +190,4 @@ require.ensure(['publicJs/plugins/autoNumeric','publicJs/validator','publicJs/co
 
 },'bookInvest');
 
-//投资计算器和意见反馈
-require.ensure(['webModule/red_envelope_float'],function() {
-    require('webModule/red_envelope_float');
-},'redEnvelope');
+

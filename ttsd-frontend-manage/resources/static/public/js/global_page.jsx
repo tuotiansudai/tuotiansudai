@@ -262,14 +262,18 @@ var web_globalFun = (function() {
             var oScript = document.createElement('script');
             oScript.type = 'text/javascript';
             oScript.src = staticServer+url;
-            oScript.async = false;
+            oScript.async = true;
             // IE9及以上浏览器，Firefox，Chrome，Opera ,
 
             //插入到body底部
             var currentScriptElem=this.$('#currentScript');
             currentScriptElem.parentNode.insertBefore(oScript,currentScriptElem);
 
-            callback && callback();
+            window.onload=function() {
+                callback && callback();
+            }
+
+
         }
     }
     return globalFun;
@@ -302,6 +306,7 @@ function cnzzPushConstructor() {
 }
 window.cnzzPush = new cnzzPushConstructor();
 // ********** cnzz统计 END **********
+
 
 
 

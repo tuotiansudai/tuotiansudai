@@ -316,7 +316,6 @@ module.exports = {
     startMarquee:startMarquee
 };
 
-// moudle.exports.startMarquee=startMarquee;
 
 
 

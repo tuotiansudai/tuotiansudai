@@ -3,7 +3,7 @@
 <div class="login-container page-width" id="loginContainer">
         <div class="login-app"></div>
         <div class="login-box">
-            <h3>欢迎登录拓天速贷</h3>
+            <h3 id="green">欢迎登录拓天速贷</h3>
 
             <form class="form-login" id="formLogin"  data-redirect-url="${redirect}">
                 <label>

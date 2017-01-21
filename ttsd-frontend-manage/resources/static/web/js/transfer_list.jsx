@@ -1,9 +1,10 @@
 require('webStyle/investment/transfer_list.scss');
-require('webModule/coupon_alert');
+require('webJsModule/coupon_alert');
+
 let commonFun= require('publicJs/commonFun');
 //投资计算器和意见反馈
-require.ensure(['webModule/red_envelope_float'],function() {
-	require('webModule/red_envelope_float');
+require.ensure(['webJsModule/red_envelope_float'],function() {
+	require('webJsModule/red_envelope_float');
 },'redEnvelope');
 
 let $transferListBox=$('#transferListBox');

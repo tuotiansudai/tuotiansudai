@@ -18,13 +18,13 @@
     "css": "/web/js/index.css"
   },
   "imageSlider": {
-    "js": "chucks/imageSlider.24e57f604e0268f23d08.js"
+    "js": "chucks/imageSlider.1414c155b499c32e1ebf.js"
   },
   "bookInvest": {
-    "js": "chucks/bookInvest.36f79eb53ba43420d674.js"
+    "js": "chucks/bookInvest.5c407886e9179200574d.js"
   },
   "redEnvelope": {
-    "js": "chucks/redEnvelope.5d7511309c6325779cbe.js"
+    "js": "chucks/redEnvelope.21d57bc2c3f94a5d9fce.js"
   },
   "/web/js/login": {
     "js": "/web/js/login.js",
@@ -35,10 +35,10 @@
     "css": "/web/js/register_user.css"
   },
   "placeholder": {
-    "js": "chucks/placeholder.b8ff9cbb8cc957723863.js"
+    "js": "chucks/placeholder.e78af58b851413072a92.js"
   },
   "fetchCaptcha": {
-    "js": "chucks/fetchCaptcha.02f280e0380032fe6c6e.js"
+    "js": "chucks/fetchCaptcha.fd1c75122a97a44297f3.js"
   },
   "metadata": {
     "version": 123

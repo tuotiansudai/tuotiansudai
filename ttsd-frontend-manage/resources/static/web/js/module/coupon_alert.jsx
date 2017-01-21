@@ -1,4 +1,5 @@
 define([], function () {
+    require('webStyle/module/coupon_alert.scss');
     var couponAlertFrame = globalFun.$('#couponAlertFrame');
     if(couponAlertFrame) {
         var  beginGetFree = globalFun.$('#beginGetFree'),
