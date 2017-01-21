@@ -9,7 +9,12 @@ import org.springframework.boot.autoconfigure.freemarker.FreeMarkerAutoConfigura
 import org.springframework.context.annotation.Import;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-@SpringBootApplication(exclude = {FreeMarkerAutoConfiguration.class})
+@SpringBootApplication(
+        scanBasePackages = {
+                "com.tuotiansudai.mq.consumer.loan",
+                "com.tuotiansudai.scheduler.loan"
+        },
+        exclude = {FreeMarkerAutoConfiguration.class})
 @EnableScheduling
 @Import({MQConsumerConfig.class, MQProducerConfig.class})
 public class Application {
