@@ -280,20 +280,20 @@ public class UserController {
     @RequestMapping(value = "/remain-users", method = RequestMethod.GET)
     public ModelAndView remainUser(@RequestParam(value = "loginName", required = false) String loginName,
                                    @RequestParam(value = "mobile", required = false) String mobile,
-                                   @RequestParam(value = "registerStartTime", required = false) Date registerStartTime,
-                                   @RequestParam(value = "registerEndTime", required = false) Date registerEndTime,
+                                   @RequestParam(value = "registerStartTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date registerStartTime,
+                                   @RequestParam(value = "registerEndTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date registerEndTime,
                                    @RequestParam(value = "useExperienceCoupon", required = false) Boolean useExperienceCoupon,
-                                   @RequestParam(value = "experienceStartTime", required = false) Date experienceStartTime,
-                                   @RequestParam(value = "experienceEndTime", required = false) Date experienceEndTime,
+                                   @RequestParam(value = "experienceStartTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date experienceStartTime,
+                                   @RequestParam(value = "experienceEndTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date experienceEndTime,
                                    @RequestParam(value = "investCountLowLimit", required = false) Integer investCountLowLimit,
                                    @RequestParam(value = "investCountHighLimit", required = false) Integer investCountHighLimit,
                                    @RequestParam(value = "investSumLowLimit", required = false) Long investSumLowLimit,
                                    @RequestParam(value = "investSumHighLimit", required = false) Long investSumHighLimit,
-                                   @RequestParam(value = "firstInvestStartTime", required = false) Date firstInvestStartTime,
-                                   @RequestParam(value = "firstInvestEndTime", required = false) Date firstInvestEndTime,
-                                   @RequestParam(value = "secondInvestStartTime", required = false) Date secondInvestStartTime,
-                                   @RequestParam(value = "secondInvestEndTime", required = false) Date secondInvestEndTime,
-                                   @RequestParam(value = "index", defaultValue = "1") int index) {
+                                   @RequestParam(value = "firstInvestStartTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date firstInvestStartTime,
+                                   @RequestParam(value = "firstInvestEndTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date firstInvestEndTime,
+                                   @RequestParam(value = "secondInvestStartTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date secondInvestStartTime,
+                                   @RequestParam(value = "secondInvestEndTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date secondInvestEndTime,
+                                   @RequestParam(value = "index", required = false, defaultValue = "1") int index) {
         final int pageSize = 10;
 
         ModelAndView modelAndView = new ModelAndView("/user-remain-list");

@@ -1,8 +1,9 @@
 package com.tuotiansudai.console.repository.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class RemainUserView {
+public class RemainUserView implements Serializable {
     private String loginName;
     private String mobile;
     private String userName;

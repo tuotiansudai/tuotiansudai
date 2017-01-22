@@ -1,6 +1,6 @@
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="user-point-list.js" headLab="point-manage" sideLab="userPointList" title="用户积分查询">
+<@global.main pageCss="" pageJavascript="user-remain-list.js" headLab="user-manage" sideLab="userRemain" title="留存用户查询">
 
 <!-- content area begin -->
 <div class="col-md-10">
@@ -15,15 +15,15 @@
         </div>
         <div class="form-group">
             <label for="control-label">注册时间：</label>
-            <div class='input-group date' id='datetimepicker1'>
-                <input type='text' class="form-control" name="registerBeginTime"
-                       value="${(reigisterBeginTime?string('yyyy-MM-dd'))!}"/>
+            <div class='input-group date' id='registerStartDatetimepicker'>
+                <input type='text' class="form-control" name="registerStartTime"
+                       value="${(registerStartTime?string('yyyy-MM-dd HH:mm'))!}"/>
                 <span class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar"></span>
                 </span>
             </div>
             -
-            <div class='input-group date' id='datetimepicker2'>
+            <div class='input-group date' id='registerEndDatetimepicker'>
                 <input type='text' class="form-control" name="registerEndTime"
                        value="${(registerEndTime?string('yyyy-MM-dd'))!}"/>
                 <span class="input-group-addon">
@@ -33,25 +33,25 @@
         </div>
         <div class="form-group">
             <label for="control-label">是否使用体验金：</label>
-            <select class="selectpicker" name="usedExperienceCoupon">
+            <select class="selectpicker" name="useExperienceCoupon">
                 <option value="">全部</option>
-                <option value="true">是</option>
-                <option value="false">否</option>
+                <option <#if useExperienceCoupon?? && useExperienceCoupon>selected="selected"</#if> value="true">是</option>
+                <option <#if useExperienceCoupon?? && !useExperienceCoupon>selected="selected"</#if> value="false">否</option>
             </select>
         </div>
         <div class="form-group">
             <label for="control-label">使用体验金时间：</label>
-            <div class='input-group date' id='datetimepicker3'>
-                <input type='text' class="form-control" name="experienceBeginTime"
-                       value="${(experienceBeginTime?string('yyyy-MM-dd'))!}"/>
+            <div class='input-group date' id='experienceStartDatetimepicker'>
+                <input type='text' class="form-control" name="experienceStartTime"
+                       value="${(experienceStartTime?string('yyyy-MM-dd HH:mm'))!}"/>
                 <span class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar"></span>
                 </span>
             </div>
             -
-            <div class='input-group date' id='datetimepicker4'>
+            <div class='input-group date' id='experienceEndDatetimepicker'>
                 <input type='text' class="form-control" name="experienceEndTime"
-                       value="${(experienceEndTime?string('yyyy-MM-dd'))!}"/>
+                       value="${(experienceEndTime?string('yyyy-MM-dd HH:mm'))!}"/>
                 <span class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar"></span>
                 </span>
@@ -59,23 +59,27 @@
         </div>
         <div class="form-group">
             <label for="control-label">投资总次数：</label>
-            <input type="text" class="form-control jq-userName" name="investCount" value="${investCount!}">
+            <input type="text" class="form-control jq-userName" name="investCountLowLimit" value="${investCountLowLimit!}">
+            -
+            <input type="text" class="form-control jq-userName" name="investCountHighLimit" value="${investCountHighLimit!}">
         </div>
         <div class="form-group">
             <label for="control-label">投资总金额：</label>
-            <input type="text" class="form-control jq-userName" name="investSum" value="${investSum!}">
+            <input type="text" class="form-control jq-userName" name="investSumLowLimit" value="${investSumLowLimit!}">
+            -
+            <input type="text" class="form-control jq-userName" name="investSumHighLimit" value="${investSumHighLimit!}">
         </div>
         <div class="form-group">
             <label for="control-label">首投时间：</label>
-            <div class='input-group date' id='datetimepicker5'>
-                <input type='text' class="form-control" name="firstInvestBeginTime"
-                       value="${(firstInvestBeginTime?string('yyyy-MM-dd'))!}"/>
+            <div class='input-group date' id='firstInvestStartDatetimepicker'>
+                <input type='text' class="form-control" name="firstInvestStartTime"
+                       value="${(firstInvestStartTime?string('yyyy-MM-dd'))!}"/>
                 <span class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar"></span>
                 </span>
             </div>
             -
-            <div class='input-group date' id='datetimepicker6'>
+            <div class='input-group date' id='firstInvestEndDatetimepicker'>
                 <input type='text' class="form-control" name="firstInvestEndTime"
                        value="${(firstInvestEndTime?string('yyyy-MM-dd'))!}"/>
                 <span class="input-group-addon">
@@ -85,15 +89,15 @@
         </div>
         <div class="form-group">
             <label for="control-label">二次投资时间：</label>
-            <div class='input-group date' id='datetimepicker5'>
-                <input type='text' class="form-control" name="secondInvestBeginTime"
-                       value="${(secondInvestBeginTime?string('yyyy-MM-dd'))!}"/>
+            <div class='input-group date' id='secondInvestStartDatetimepicker'>
+                <input type='text' class="form-control" name="secondInvestStartTime"
+                       value="${(secondInvestStartTime?string('yyyy-MM-dd'))!}"/>
                 <span class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar"></span>
                 </span>
             </div>
             -
-            <div class='input-group date' id='datetimepicker6'>
+            <div class='input-group date' id='secondInvestEndDatetimepicker'>
                 <input type='text' class="form-control" name="secondInvestEndTime"
                        value="${(secondInvestEndTime?string('yyyy-MM-dd'))!}"/>
                 <span class="input-group-addon">
@@ -152,7 +156,7 @@
             <ul class="pagination pull-left">
                 <li>
                     <#if data.hasPreviousPage >
-                    <a href="/point-manage/user-point-list?loginName=${loginName!}&userName=${userName!}&mobile=${mobbile!}&index=${index-1}&pageSize=${pageSize}">
+                    <a href="/user-manage/remain-users?loginName=${loginName!}&mobile=${mobile!}&registerStartTime=${(registerStartTime?string('yyyy-MM-dd HH:mm'))!}&registerEndTime=${(registerEndTime?string('yyyy-MM-dd HH:mm'))!}&useExperienceCoupon=${useExperienceCoupon?c!}&experienceStartTime=${(experienceStartTime?string('yyyy-MM-dd HH:mm'))!}&experienceEndTime=${(experienceEndTime?string('yyyy-MM-dd HH:mm'))!}&investCountLowLimit=${investCountLowLimit!}&investCountHighLimit=${investCountHighLimit}&investSumLowLimit=${investSumLowLimit}&investSumHighLimit=${investSumHighLimit}&firstInvestStartTime=${(firstInvestStartTime?string('yyyy-MM-dd'))!}&firstInvestEndTime=${(firstInvestEndTime?string('yyyy-MM-dd'))!}&secondInvestStartTime=${(secondInvestStartTime?string('yyyy-MM-dd'))!}&secondInvestEndTime=${(secondInvestEndTime?string('yyyy-MM-dd'))!}&index=${index-1}">
                     <#else>
                     <a href="#">
                     </#if>
@@ -161,7 +165,7 @@
                 <li><a>${data.index}</a></li>
                 <li>
                     <#if data.hasNextPage >
-                    <a href="/point-manage/user-point-list?loginName=${loginName!}&userName=${userName!}&mobile=${mobbile!}&index=${index+1}&pageSize=${pageSize}">
+                    <a href="/user-manage/remain-users?loginName=${loginName!}&mobile=${mobile!}&registerStartTime=${(registerStartTime?string('yyyy-MM-dd HH:mm'))!}&registerEndTime=${(registerEndTime?string('yyyy-MM-dd HH:mm'))!}&useExperienceCoupon=${useExperienceCoupon?c!}&experienceStartTime=${(experienceStartTime?string('yyyy-MM-dd HH:mm'))!}&experienceEndTime=${(experienceEndTime?string('yyyy-MM-dd HH:mm'))!}&investCountLowLimit=${investCountLowLimit!}&investCountHighLimit=${investCountHighLimit}&investSumLowLimit=${investSumLowLimit}&investSumHighLimit=${investSumHighLimit}&firstInvestStartTime=${(firstInvestStartTime?string('yyyy-MM-dd'))!}&firstInvestEndTime=${(firstInvestEndTime?string('yyyy-MM-dd'))!}&secondInvestStartTime=${(secondInvestStartTime?string('yyyy-MM-dd'))!}&secondInvestEndTime=${(secondInvestEndTime?string('yyyy-MM-dd'))!}&index=${index+1}">
                     <#else>
                     <a href="#">
                     </#if>
