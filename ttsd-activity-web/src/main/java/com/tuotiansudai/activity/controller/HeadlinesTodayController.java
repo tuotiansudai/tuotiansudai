@@ -19,7 +19,7 @@ public class HeadlinesTodayController {
     private HeadlinesTodayPrizeService headlinesTodayPrizeService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public ModelAndView headlinesToday(@RequestParam(value = "fromRedirect", required = false) String fromRedirect) {
+    public ModelAndView headlinesToday(@RequestParam(value = "fromRedirect", required = false, defaultValue = "") String fromRedirect) {
         ModelAndView modelAndView = new ModelAndView("/activities/today-headlines", "responsive", true);
         modelAndView.addObject("userStatus", headlinesTodayPrizeService.userStatus(LoginUserInfo.getMobile(), fromRedirect));
         modelAndView.addObject("loginMobile", LoginUserInfo.getMobile());

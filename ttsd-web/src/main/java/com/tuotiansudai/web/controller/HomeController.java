@@ -24,6 +24,7 @@ import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -85,7 +86,7 @@ public class HomeController {
         if (enterpriseLoans.size() > 0) {
             modelAndView.addObject("enterpriseLoans", homeService.getEnterpriseLoans());
         }
-        //modelAndView.addObject("siteMapList", homeService.getSiteMapData());
+        modelAndView.addObject("siteMapList", homeService.siteMapData());
 
         return modelAndView;
     }

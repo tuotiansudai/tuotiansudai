@@ -4,11 +4,11 @@ import json
 import uuid
 import redis
 import time
-from models import User
+from models import User, db
+from sqlalchemy import func
 import settings
 from logging_config import logger
 from producer import producer
-
 
 pool = redis.ConnectionPool(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB)
 CAPTCHA_FORMAT = "CAPTCHA:LOGIN:{0}"
@@ -20,6 +20,7 @@ class SessionManager(object):
     def __init__(self, source='WEB'):
         self.connection = redis.Redis(connection_pool=pool)
         self.expire_seconds = settings.WEB_TOKEN_EXPIRED_SECONDS if source.upper() == 'WEB' else settings.MOBILE_TOKEN_EXPIRED_SECONDS
+        self.source = source
 
     def get(self, session_id):
         token_key = TOKEN_FORMAT.format(session_id)
@@ -58,6 +59,8 @@ class SessionManager(object):
             new_token = TOKEN_FORMAT.format(new_token_id)
             self.connection.setex(new_token, data, self.expire_seconds)
             self.connection.delete(old_token)
+            user_info = json.loads(data)
+            update_last_login_time_source(user_info['login_name'], self.source)
             return new_token_id
 
 
@@ -131,6 +134,7 @@ class LoginManager(object):
 
     def _success_login(self, user_info, token):
         self._save_log(True)
+        update_last_login_time_source(user_info['login_name'], self.form.source.data)
         return self._render(True, user_info=user_info, token=token)
 
     @staticmethod
@@ -166,6 +170,13 @@ class LoginManager(object):
             success=is_success
         )
         producer.send_message(json.dumps(login_log))
+
+
+def update_last_login_time_source(username, source):
+    user = User.query.filter((User.username == username)).first()
+    user.last_login_time = func.now()
+    user.last_login_source = source
+    db.session.commit()
 
 
 def active(username):
