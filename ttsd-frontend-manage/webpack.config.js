@@ -8,7 +8,6 @@ var CopyWebpackPlugin = require('copy-webpack-plugin'); //复制文件
 var CleanWebpackPlugin = require('clean-webpack-plugin');  //清空文件夹里的文件
 
 var staticServer = require('./getStaticServer.js');
-
 var basePath = path.join(__dirname, 'resources'),
 	staticPath = path.join(basePath, 'static'),
 	publicPath=path.join(staticPath, 'public'),
@@ -21,7 +20,7 @@ var basePath = path.join(__dirname, 'resources'),
 var publicPathJS=path.join(publicPath, 'js');
 
 //从ttsd-config的ttsd-env.properties配置文件中读取静态资源的地址
-
+console.log(staticServer);
 var outputPath=path.join(basePath, 'develop'),//打包文件路径
 	devServerPath=staticServer+'/',
 	commonOptions={},
@@ -150,7 +149,7 @@ module.exports = objectAssign(commonOptions, {
 		loaders: [{
 			test: /\.(js|jsx)$/,
 			loaders: ['babel'],
-			exclude: /(node_modules)/
+			exclude: /node_modules/
 		},{
 			test: /\.css$/,
 			loader: ExtractTextPlugin.extract("style-loader", "css-loader")
