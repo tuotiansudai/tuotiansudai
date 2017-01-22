@@ -26,6 +26,7 @@ import com.tuotiansudai.spring.security.SignInClient;
 import com.tuotiansudai.task.OperationTask;
 import com.tuotiansudai.enums.OperationType;
 import com.tuotiansudai.task.TaskConstant;
+import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.RequestIPParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,6 +34,7 @@ import org.springframework.beans.factory.support.MethodOverride;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -287,8 +289,8 @@ public class UserController {
                                    @RequestParam(value = "experienceEndTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date experienceEndTime,
                                    @RequestParam(value = "investCountLowLimit", required = false) Integer investCountLowLimit,
                                    @RequestParam(value = "investCountHighLimit", required = false) Integer investCountHighLimit,
-                                   @RequestParam(value = "investSumLowLimit", required = false) Long investSumLowLimit,
-                                   @RequestParam(value = "investSumHighLimit", required = false) Long investSumHighLimit,
+                                   @RequestParam(value = "investSumLowLimit", required = false) String investSumLowLimit,
+                                   @RequestParam(value = "investSumHighLimit", required = false) String investSumHighLimit,
                                    @RequestParam(value = "firstInvestStartTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date firstInvestStartTime,
                                    @RequestParam(value = "firstInvestEndTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date firstInvestEndTime,
                                    @RequestParam(value = "secondInvestStartTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date secondInvestStartTime,
@@ -300,8 +302,9 @@ public class UserController {
 
         BasePaginationDataDto<RemainUserDto> data = consoleUserService.findRemainUsers(loginName, mobile, registerStartTime,
                 registerEndTime, useExperienceCoupon, experienceStartTime, experienceEndTime, investCountLowLimit, investCountHighLimit,
-                investSumLowLimit, investSumHighLimit, firstInvestStartTime, firstInvestEndTime, secondInvestStartTime,
-                secondInvestEndTime, index, pageSize);
+                StringUtils.isEmpty(investSumLowLimit) ? null : AmountConverter.convertStringToCent(investSumLowLimit),
+                StringUtils.isEmpty(investSumHighLimit) ? null : AmountConverter.convertStringToCent(investSumHighLimit),
+                firstInvestStartTime, firstInvestEndTime, secondInvestStartTime, secondInvestEndTime, index, pageSize);
 
         modelAndView.addObject("loginName", loginName);
         modelAndView.addObject("mobile", mobile);
