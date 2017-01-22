@@ -29,7 +29,7 @@
                 </#list>
             </li>
         </ul>
-    <div class="transfer-list-box">
+    <div class="transfer-list-box" id="transferListBox">
         <ul>
             <#if transferApplicationItemList??>
                 <#list transferApplicationItemList as transferApplicationItem>

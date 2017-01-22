@@ -17,14 +17,8 @@
     "js": "/web/js/index.js",
     "css": "/web/js/index.css"
   },
-  "imageSlider": {
-    "js": "chucks/imageSlider.24e57f604e0268f23d08.js"
-  },
   "bookInvest": {
-    "js": "chucks/bookInvest.36f79eb53ba43420d674.js"
-  },
-  "redEnvelope": {
-    "js": "chucks/redEnvelope.5d7511309c6325779cbe.js"
+    "js": "chucks/bookInvest.f86a85ac8b69690312c7.js"
   },
   "/web/js/login": {
     "js": "/web/js/login.js",
@@ -35,18 +29,26 @@
     "css": "/web/js/register_user.css"
   },
   "placeholder": {
-    "js": "chucks/placeholder.151d7ff512475bd5fc25.js"
+    "js": "chucks/placeholder.f0f83e1059b382a44c9e.js"
   },
   "fetchCaptcha": {
-    "js": "chucks/fetchCaptcha.d194842823a5cf39e2b1.js"
+    "js": "chucks/fetchCaptcha.8561f1c85f4c7b873b02.js"
   },
   "metadata": {
     "version": 123
   },
+  "redEnvelope": {
+    "js": "chucks/redEnvelope.0f870f3adb6bec96ab2d.js"
+  },
+  "imageSlider": {
+    "js": "chucks/imageSlider.d9b2dc73cbcf06294b0c.js"
+  },
   "/web/js/loan_list": {
-    "js": "/web/js/loan_list.js"
+    "js": "/web/js/loan_list.js",
+    "css": "/web/js/loan_list.css"
   },
   "/web/js/transfer_list": {
-    "js": "/web/js/transfer_list.js"
+    "js": "/web/js/transfer_list.js",
+    "css": "/web/js/transfer_list.css"
   }
 }

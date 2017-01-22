@@ -173,7 +173,7 @@ module.exports = objectAssign(commonOptions, {
 			askStyle:path.join(askPath, 'styles'),
 
 			webJs:path.join(webPath, 'js'),
-			webModule:path.join(webPath, 'js/module'),
+			webJsModule:path.join(webPath, 'js/module'),
 			webStyle:path.join(webPath, 'styles'),
 
 			activityJs:path.join(activityPath, 'js'),

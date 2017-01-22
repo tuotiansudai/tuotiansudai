@@ -1,0 +1,218 @@
+@import "top_sub_menu";
+@import "import_search_filter";
+/* I want to invest page*/
+.loan-list-content {
+  .loan-list-box ul {
+    li {
+      border-radius: 8px;
+      border: 1px solid #e5e5e5;
+      padding: 5px 2px;
+      margin-top: 10px;
+      position: relative;
+      cursor: pointer;
+      background: #fff;
+      &:hover {
+        // border: 1px solid #cc0000;
+        background: #fff;
+        box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1), -1px -1px 5px rgba(0, 0, 0, 0.1);
+      }
+      .hot {
+        width: 71px;
+        height: 71px;
+        background: url("../../images/icons/hot-n.png") no-repeat;
+        position: absolute;
+        left: -5px;
+        top: -6px;
+      }
+      .syl {
+        width: 71px;
+        height: 71px;
+        background: url("../../images/icons/img-syl.png") no-repeat;
+        position: absolute;
+        left: -5px;
+        top: -6px;
+      }
+      .wyx {
+        width: 71px;
+        height: 71px;
+        background: url("../../images/icons/img-wyx.png") no-repeat;
+        position: absolute;
+        left: -5px;
+        top: -6px;
+      }
+      .jyf {
+        width: 71px;
+        height: 71px;
+        background: url("../../images/icons/img-jyf.png") no-repeat;
+        position: absolute;
+        left: -5px;
+        top: -6px;
+      }
+      .new-user{
+        position: absolute;
+        top: -5px;
+        left: 0;
+        width: 56px;
+        height: 75px;
+        background: url("../../images/sign/index_sprites_20160601.png") 0px -170px no-repeat;
+      }
+      .new-free {
+        position: absolute;
+        top: -5px;
+        left: 0;
+        width: 56px;
+        height: 75px;
+        background: url("../../images/icons/new-free.png") no-repeat center;
+      }
+      .loan-info-frame {
+        width: 690px;
+        padding-bottom: 10px;
+        border-right: 1px solid #ccc;
+        text-align: center;
+
+        .loan-top {
+          padding: 3px 20px 0 60px;
+          height: auto;
+          overflow: auto;
+          line-height: 50px;
+
+          .l-title {
+            font-size: 20px;
+            color: #4e4e4e;
+            display: inline-block;
+            text-align: left;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            float: left;
+            .new-tip {
+              font-size: 12px;
+              color: #ff9c1b;
+              border: 1px solid #ff9c1b;
+              padding: 2px 5px;
+              border-radius: 20px;
+              margin-left: 10px;
+            }
+          }
+          .l-way {
+            font-size: 12px;
+            color: #b3b3b3;
+            border-radius: 12px;
+            border: 1px solid #e5e5e5;
+            display: inline;
+            line-height: 1;
+            padding: 6px 15px;
+            margin-top: 12px;
+          }
+        }
+        .loan-info-dl {
+          width: 90%;
+          margin: 0px auto;
+          line-height: 1.4;
+
+          dl {
+            width: 33%;
+            float: left;
+            color: #808080;
+            font-size: 17px;
+
+            dd {
+              color: #999;
+
+              em {
+                font-size: 26px;
+                color: #ff7200;
+              }
+              i {
+                font-size: 16px;
+                color: #ff7200;
+                &.fa-mobile{
+                  font-size:20px;
+                }
+              }
+              span{
+                font-size: 12px;
+                color: #ff9c1b;
+                border: 1px solid #ff9c1b;
+                padding: 2px 5px;
+                border-radius: 20px;
+              }
+            }
+          }
+        }
+      }
+
+      .loan-process {
+        float: left;
+        width: 240px;
+        margin: 10px 30px 0px 30px;
+        &.active-after{
+          .will,.time-item{
+            display:none;
+          }
+          .pro,.now{
+            display:block;
+          }
+        }
+        .will,.time-item{
+          display:block;
+        }
+        .pro,.now{
+          display:none;
+        }
+        .time-item{
+          display: inline-block;
+          border-radius: 20px;
+          border: 1px dashed red;
+          margin-top: 15px;
+          width: 240px;
+          font-size: 15px;
+          height: 42px;
+          line-height: 42px;
+          color: red;
+          text-align:center;
+        }
+        .rest-amount {
+          color: #ff752a;
+          font-size: 13px;
+          padding-top: 10px;
+          line-height: 1.3;
+
+          i {
+            font-size: 20px;
+          }
+          .btn-normal {
+            padding: 7px 0;
+            width: 100%;
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 8px;
+          }
+          &.wait-invest {
+            color: #999;
+
+
+            .btn-normal {
+              background: rgba(255, 156, 27, 1);
+              border-color: rgba(255, 156, 27, 1);
+
+              &:hover {
+                background: rgba(255, 156, 27, 0.8);
+                border-color: rgba(255, 156, 27, 0.8);
+              }
+            }
+          }
+          &.finish-invest {
+            color: #999;
+
+            button:disabled {
+              background: #ccc !important;
+              border-color: #ccc !important;
+            }
+          }
+        }
+      }
+
+    }
+  }
+}

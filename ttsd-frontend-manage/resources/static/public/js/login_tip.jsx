@@ -3,6 +3,7 @@ let ValidatorForm=require('publicJs/validator');
 var $loginTipBox=$('#loginTip');
 let loginInForm = document.getElementById('loginInForm');
 let errorDom=$(loginInForm).find('.error-box');
+require("publicStyle/module/login_tip.scss");
 //刷新验证码
 $('#imageCaptcha').on('click',function() {
     commonFun.refreshCaptcha(this,'/login/captcha');
