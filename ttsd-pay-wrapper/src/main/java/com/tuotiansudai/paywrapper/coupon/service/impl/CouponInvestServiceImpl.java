@@ -1,5 +1,7 @@
 package com.tuotiansudai.paywrapper.coupon.service.impl;
 
+import com.tuotiansudai.client.MQWrapperClient;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.CouponMapper;
 import com.tuotiansudai.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.repository.model.CouponModel;
@@ -25,10 +27,10 @@ public class CouponInvestServiceImpl implements CouponInvestService {
     private InvestMapper investMapper;
 
     @Autowired
-    private CouponMapper couponMapper;
+    private UserCouponMapper userCouponMapper;
 
     @Autowired
-    private UserCouponMapper userCouponMapper;
+    private MQWrapperClient mqWrapperClient;
 
     @Override
     @Transactional
@@ -48,24 +50,13 @@ public class CouponInvestServiceImpl implements CouponInvestService {
     }
 
     @Override
-    @Transactional
     public void cancelUserCoupon(long loanId) {
-        List<UserCouponModel> userCouponModels = userCouponMapper.findByLoanId(loanId, null);
-        for (UserCouponModel userCouponModel : userCouponModels) {
-            if (InvestStatus.SUCCESS.equals(userCouponModel.getStatus())) {
-                CouponModel couponModel = couponMapper.lockById(userCouponModel.getCouponId());
-                couponModel.setUsedCount(couponModel.getUsedCount() - 1);
-                couponMapper.updateCoupon(couponModel);
-
-                userCouponModel.setLoanId(null);
-                userCouponModel.setInvestId(null);
-                userCouponModel.setUsedTime(null);
-                userCouponModel.setStatus(null);
-                userCouponModel.setExpectedInterest(0L);
-                userCouponModel.setExpectedFee(0L);
-                userCouponMapper.update(userCouponModel);
-            }
+        try {
+            userCouponMapper.findByLoanId(loanId, null).stream()
+                    .filter(userCouponModel -> InvestStatus.SUCCESS.equals(userCouponModel.getStatus()))
+                    .forEach(userCouponModel -> mqWrapperClient.sendMessage(MessageQueue.UserCouponReset, String.valueOf(userCouponModel.getId())));
+        } catch (Exception e) {
+            logger.error(e.getLocalizedMessage(), e);
         }
     }
-
 }

@@ -26,6 +26,7 @@ import com.tuotiansudai.message.PushMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
+import com.tuotiansudai.paywrapper.coupon.service.CouponInvestService;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.MerBindProjectMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.MerUpdateProjectMapper;
@@ -42,10 +43,7 @@ import com.tuotiansudai.paywrapper.repository.model.sync.response.MerBindProject
 import com.tuotiansudai.paywrapper.repository.model.sync.response.MerUpdateProjectResponseModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
 import com.tuotiansudai.paywrapper.service.*;
-import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.AmountTransfer;
@@ -105,6 +103,9 @@ public class LoanServiceImpl implements LoanService {
 
     @Autowired
     private ReferrerRewardService referrerRewardService;
+
+    @Autowired
+    private CouponInvestService couponInvestService;
 
     @Autowired
     private UMPayRealTimeStatusService umPayRealTimeStatusService;
@@ -204,7 +205,13 @@ public class LoanServiceImpl implements LoanService {
                 logger.error(e.getLocalizedMessage(), e);
             }
         }
-        return this.updateLoanStatus(loanId, LoanStatus.CANCEL);
+        BaseDto<PayDataDto> baseDto = this.updateLoanStatus(loanId, LoanStatus.CANCEL);
+
+        if (baseDto.getData() != null && baseDto.getData().getStatus()) {
+            couponInvestService.cancelUserCoupon(loanId);
+        }
+
+        return baseDto;
     }
 
     @Transactional

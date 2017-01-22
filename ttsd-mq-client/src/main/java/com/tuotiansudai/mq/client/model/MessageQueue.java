@@ -4,6 +4,7 @@ import java.util.stream.Stream;
 
 public enum MessageQueue {
     CouponAssigning("CouponAssigning"),
+    UserCouponReset("UserCouponReset"),
     InvestCallback("InvestCallback"),
     TransferInvestCallback("TransferInvestCallback"),
     UserRegistered_CompletePointTask("UserRegistered-CompletePointTask"),
