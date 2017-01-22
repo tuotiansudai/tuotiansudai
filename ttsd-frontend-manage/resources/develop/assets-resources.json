@@ -42,5 +42,11 @@
   },
   "metadata": {
     "version": 123
+  },
+  "/web/js/loan_list": {
+    "js": "/web/js/loan_list.js"
+  },
+  "/web/js/transfer_list": {
+    "js": "/web/js/transfer_list.js"
   }
 }
