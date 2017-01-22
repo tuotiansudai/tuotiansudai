@@ -98,8 +98,6 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
         userCouponModel.setStatus(InvestStatus.SUCCESS);
         userCouponMapper.update(userCouponModel);
 
-        couponAssignmentService.asyncAssignUserCoupon(investDto.getLoginName(), Lists.newArrayList(UserGroup.EXPERIENCE_INVEST_SUCCESS));
-
         dataDto.setStatus(true);
 
         return dto;
