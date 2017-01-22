@@ -1,7 +1,7 @@
 <#import "../macro/global.ftl" as global>
 <@global.main pageCss="${css.landing_page}" pageJavascript="${js.landing_page}" activeNav="" activeLeftNav="" title="新手福利_拓天新手投资_拓天速贷" keywords="拓天速贷,新手投资,新手加息券,新手红包" description="拓天速贷是中国P2P互联网金融信息服务平台,为广大投资、贷款的用户提供多元化的投资选择和优质的综合理财服务,新手注册可领取588红包大奖和3%的新手加息券.">
 <div id="landingContainerBox">
-    <div class="landing-container">
+    <div class="landing-container" >
         <div class="landing-header">
             <a href="/">访问首页</a>
         </div>
@@ -11,8 +11,7 @@
                 <div class="landing-inner">
                     <div class="register-box">
                         <div class="refer-person-info">您的好友<span class="refer-name"></span>邀请您领取投资大礼包</div>
-                        <form class="register-user-form" action="/register/user" method="post" autocomplete="off"
-                              novalidate="novalidate">
+                        <form class="register-user-form" action="/register/user" method="post" autocomplete="off" novalidate="novalidate">
                             <ul class="reg-list tl register-step-one">
                                 <li>
                                     <label for="" class="reg-title">手机号:</label>
@@ -51,15 +50,13 @@
                                 </li>
                                 <li id="captchaErr" class="height"></li>
                                 <li class="agree-last">
-                                    <input type="checkbox" name="agreement" id="agreementInput" class="agreement-check"
-                                           checked>
-                                    <label for="agreementInput" class="check-label">同意拓天速贷<a href="javascript:void(0);"
-                                                                                             class="show-agreement">《服务协议》</a></label>
+                                    <input type="checkbox" name="agreement" id="agreementInput" class="agreement-check" checked>
+                                    <label for="agreementInput" class="check-label">同意拓天速贷<a href="javascript:void(0);" class="show-agreement">《服务协议》</a></label>
                                 </li>
                                 <li id="agreementInputErr" class="height"></li>
-                                <li class="tc">
+                                <li  class="tc">
                                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                                    <input type="hidden" name="referrer" value="">
+                                    <input type="hidden" name="referrer" value="" >
                                     <input type="submit" class="register-user" value="立即注册">
                                 </li>
                                 <li class="tc mobile-agreement">
@@ -90,14 +87,12 @@
                     <ul>
                         <li>
                             <a href="/loan-list">
-                                <img src="${staticServer}/activity/images/sign/actor/landingpage/pro-one.png"
-                                     width="80%">
+                                <img src="${staticServer}/activity/images/sign/actor/landingpage/pro-one.png" width="80%">
                             </a>
                         </li>
                         <li>
                             <a href="/loan-list">
-                                <img src="${staticServer}/activity/images/sign/actor/landingpage/pro-two.png"
-                                     width="80%">
+                                <img src="${staticServer}/activity/images/sign/actor/landingpage/pro-two.png" width="80%">
                             </a>
                         </li>
                     </ul>
@@ -149,8 +144,7 @@
                             随着拓天速贷终端产品的不断改进和完善，用户将得到更好的服务体验，
                             在未来持续性优化改进的基础上，拓天速贷将重点把风控体系打造的更加系统性、完善化，
                             使其超越百分之百的为用户做到本金及收益无风险化保障，最终使拓天速贷风控体系成为行业中的典范和标杆，
-                            引领行业持续健康的发展... ...<a href="http://toutiao.com/i6233268186905575938/"
-                                                 target="_blank">查看更多</a>
+                            引领行业持续健康的发展... ...<a href="http://toutiao.com/i6233268186905575938/" target="_blank">查看更多</a>
                         </p>
                     </div>
                 </div>
@@ -172,7 +166,112 @@
             </div>
         </div>
     </div>
+    <div class="landing-phone-container">
+        <div class="landing-phone-logo">
+            <a href="/"><img src="${staticServer}/activity/images/icons/logo.png" class="landing-phone-logo-image"></a>
+        </div>
+        <img src="${staticServer}/activity/images/app-banner/app-banner-landingpage.jpg" class="landing-phone-banner">
 
+        <div class="tuotian-newuser">
+            <div class="landing-phone-section-header">
+                <h3><span><i class="left-icon"></i>新人福利<i class="right-icon"></i></span></h3>
+            </div>
+            <div class="wp tc">
+                <p>新用户注册后，即可获得5888元体验金，可投资新手体验项目，成功投资新手体验项目后，可获得588现金红包及3%加息券！</p>
+                <div id="slideBox" class="slideBox">
+                    <div class="bd">
+                        <ul>
+                            <li><img src="${staticServer}/activity/images/sign/actor/landingpage/big-money.png" width="60%"/></li>
+                            <li><img src="${staticServer}/activity/images/sign/actor/landingpage/small-money.png" width="60%"/></li>
+                            <li><img src="${staticServer}/activity/images/sign/actor/landingpage/percent-coupon.png" width="60%"/></li>
+                        </ul>
+                    </div>
+                    <a class="prev" href="javascript:void(0)"></a>
+                    <a class="next" href="javascript:void(0)"></a>
+                </div>
+                <p>奖励请前往“我的账户--我的宝藏”查看</p>
+            </div>
+        </div>
+        <div class="tuotian-products">
+            <div class="landing-phone-section-header">
+                <h3><span><i class="left-icon"></i>新手项目<i class="right-icon"></i></span></h3>
+            </div>
+            <div class="product-box-list fl">
+                <ul>
+                    <li>
+                        <a href="/loan-list?productType=JYF">
+                            <img src="${staticServer}/activity/images/sign/actor/landingpage/pro-one.png" width="80%">
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/loan-list?productType=JYF">
+                            <img src="${staticServer}/activity/images/sign/actor/landingpage/pro-two.png" width="80%">
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="tuotian-advantage">
+            <div class="landing-phone-section-header">
+                <h3><span><i class="left-icon"></i>拓天速贷的优势<i class="right-icon"></i></span></h3>
+            </div>
+            <div class="tuotian-advantage-group clearfix">
+            <span class="landing-phone-span-left"><img
+                    src="${staticServer}/activity/images/sign/actor/landingpage/landing-phone-interest.png"
+                    class="img-icon"></span>
+                <span class="landing-phone-span-right">稳健收益<br/><span>预期年化收益13%</span></span>
+            </div>
+            <div class="tuotian-advantage-group clearfix">
+            <span class="landing-phone-span-left"><img
+                    src="${staticServer}/activity/images/sign/actor/landingpage/landing-phone-guaranty.png"
+                    class="img-icon"></span>
+                <span class="landing-phone-span-right">抵押模式<br/><span>公认的安全抵押债权</span></span>
+            </div>
+            <div class="tuotian-advantage-group clearfix">
+            <span class="landing-phone-span-left"><img
+                    src="${staticServer}/activity/images/sign/actor/landingpage/landing-phone-fund.png" class="img-icon"></span>
+                <span class="landing-phone-span-right">资金透明<br/><span>第三方资金托管</span></span>
+            </div>
+        </div>
+        <div class="tuotian-aboutus">
+            <div class="landing-phone-section-header">
+                <h3><span><i class="left-icon"></i>媒体眼中的我们<i class="right-icon"></i></span></h3>
+            </div>
+            <div class="aboutus-content-container">
+                <img class="landing-phone-aboutus-header"
+                     src="/activity/images/sign/actor/landingpage/landing-phone-about-new.png"></img>
+
+                <p>
+                    随着拓天速贷终端产品的不断改进和完善，用户将得到更好的服务体验，在未来持续性优化改进的基础上，拓天速贷将重点把风控体系打造的更加系统性、完善化，使其超越百分之百的为用户做到本金及收益无风险化保障，最终使拓天速贷风控体系成为行业中的典范和标杆，引领行业持续健康的发展...
+                </p>
+            </div>
+        </div>
+        <div class="tuotian-rewards">
+            <div class="landing-phone-section-header">
+                <h3><span><i class="left-icon"></i>活动说明<i class="right-icon"></i></span></h3>
+            </div>
+            <div class="rewards-header">
+                <ul>
+                    <li><i class="fa fa-circle"></i><span>奖励可在“我的账户-我的宝藏”查看;</span></li>
+                    <li><i class="fa fa-circle"></i><span>成功投资新手体验项目后可获得588元现金红包及3%加息券;</span></li>
+                    <li><i class="fa fa-circle"></i><span>新手体验项目所得红包奖励需投资后方可提现，不可与其他红包及加息券共用；</span></li>
+                    <li><i class="fa fa-circle"></i><span>每个用户仅限参加一次，刷奖、冒用他人身份证、银行卡者一经核实，取消活动资格，所得奖励不予承兑。</span></li>
+                </ul>
+            </div>
+        </div>
+        <div class="tuotian-register">
+            <div class="landing-phone-section-header">
+                <h3><span><i class="left-icon"></i>现在就注册吧<i class="right-icon"></i></span></h3>
+            </div>
+
+            <#if isAppSource>
+                <a href="/register/user"> <input type="button" id="btn-register-now" class="register-user-phoneC-now" value="立即注册"></a>
+            <#else>
+                <div class="mobile-page-register clearfix">
+                </div>
+            </#if>
+        </div>
+    </div>
 </div>
 <div class="image-captcha-dialog" style="display: none;">
     <form class="image-captcha-form" action="/register/user/send-register-captcha" method="post">
@@ -186,7 +285,7 @@
         </div>
     </form>
 </div>
-<div id="agreementBox" style="display: none;">
+<div id="agreementBox"  style="display: none;">
     <div class="pad-m">
         <p>
             本网站由拓天伟业（北京）金融信息服务有限公司负责运营（以下“本网站”均指网站及拓天伟业（北京）金融信息服务有限公司）。在注册成为本网站用户前请务必仔细阅读以下条款。一旦成功注册成为本网站用户，您将被视为已充分理解并同意本协议全部内容；注册同时签署本协议，本协议立即在您与本公司之间产生合同法律效力。您注册成功后在本网站使用的全部服务及全部活动将受到本协议的约束并承担相应的责任和义务。若您不接受以下条款，请不要注册使用本网站服务。</p>
