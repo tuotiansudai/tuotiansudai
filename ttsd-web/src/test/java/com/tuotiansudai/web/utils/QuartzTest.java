@@ -1,6 +1,6 @@
 package com.tuotiansudai.web.utils;
 
-import com.tuotiansudai.util.JobManager;
+import com.tuotiansudai.job.JobManager;
 import com.tuotiansudai.web.job.TestJob;
 import com.tuotiansudai.web.repository.job.mapper.JobMapper;
 import com.tuotiansudai.web.repository.job.mapper.TriggerMapper;

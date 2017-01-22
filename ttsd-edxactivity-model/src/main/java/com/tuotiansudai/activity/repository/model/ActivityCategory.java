@@ -16,7 +16,9 @@ public enum ActivityCategory {
     NO_WORK_ACTIVITY("不上班", ConsumeCategory.TASK_COUNT),
     ANNUAL_ACTIVITY("元旦活动",ConsumeCategory.TASK_COUNT),
     CHRISTMAS_ACTIVITY("圣诞节活动",ConsumeCategory.TASK_COUNT),
-    HEADLINES_TODAY_ACTIVITY("今日头条拉新抽奖活动",ConsumeCategory.TASK_COUNT);
+    HEADLINES_TODAY_ACTIVITY("今日头条拉新抽奖活动",ConsumeCategory.TASK_COUNT),
+    LANTERN_FESTIVAL_ACTIVITY("元宵节活动",ConsumeCategory.TASK_COUNT),
+    SPRING_FESTIVAL_ACTIVITY("春节活动",ConsumeCategory.TASK_COUNT);
 
     ActivityCategory(String description, ConsumeCategory consumeCategory) {
         this.description = description;

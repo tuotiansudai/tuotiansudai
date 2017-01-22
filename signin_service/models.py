@@ -1,7 +1,4 @@
-import datetime
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import func
-from sqlalchemy.ext.declarative import declared_attr
 
 db = SQLAlchemy()
 
@@ -13,6 +10,8 @@ class User(db.Model):
     mobile = db.Column(db.String(11), unique=True)
     password = db.Column(db.String(40))
     salt = db.Column(db.String(40))
+    last_login_time = db.Column(db.DateTime(timezone=True))
+    last_login_source = db.Column(db.String(16))
 
     def __repr__(self):
         return '<User %r>' % self.username
@@ -27,17 +26,3 @@ class UserRole(db.Model):
 
     def __repr__(self):
         return '<Role %s:%s>' % (self.role, self.username)
-
-
-class LoginLog(db.Model):
-    @declared_attr
-    def __tablename__(cls):
-        return "login_log_%s" % datetime.datetime.now().strftime('%Y%m')
-
-    id = db.Column(db.BIGINT, primary_key=True)
-    login_name = db.Column(db.String(25))
-    source = db.Column(db.String(10))
-    ip = db.Column(db.String(16))
-    device = db.Column(db.String(255))
-    login_time = db.Column(db.DateTime(timezone=True), default=func.now())
-    success = db.Column(db.Boolean)

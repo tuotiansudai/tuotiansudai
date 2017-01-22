@@ -22,7 +22,8 @@ env.roledefs = {
     'activity': ['sanya'],
     'signin': ['xian'],
     'ask': ['taiyuan'],
-    'point': ['kunming']
+    'point': ['kunming'],
+    'ask-rest': ['shijiazhuang']
 }
 
 
@@ -36,32 +37,34 @@ def migrate():
     local('/opt/gradle/latest/bin/gradle -Pdatabase=edxactivity ttsd-config:flywayMigrate')
     local('/opt/gradle/latest/bin/gradle -Pdatabase=edxpoint ttsd-config:flywayMigrate')
     local('/opt/gradle/latest/bin/gradle -Pdatabase=anxin_operations ttsd-config:flywayMigrate')
+    local('/opt/gradle/latest/bin/gradle -Pdatabase=edxmessage ttsd-config:flywayMigrate')
+    local('/opt/gradle/latest/bin/gradle -Pdatabase=edxlog ttsd-config:flywayMigrate')
+
 
 def mk_war():
     local('/usr/local/bin/paver jcversion')
-    local('/opt/gradle/latest/bin/gradle ttsd-web:war')
-    local('/opt/gradle/latest/bin/gradle ttsd-activity-web:war')
-    local('/opt/gradle/latest/bin/gradle ttsd-pay-wrapper:war')
-    local('/opt/gradle/latest/bin/gradle ttsd-console:war')
-    local('/opt/gradle/latest/bin/gradle ttsd-activity-console:war')
-    local('/opt/gradle/latest/bin/gradle ttsd-mobile-api:war')
-    local('/opt/gradle/latest/bin/gradle ttsd-sms-wrapper:war')
-    local('/opt/gradle/latest/bin/gradle ttsd-point-web:war')
-    local('/opt/gradle/latest/bin/gradle ttsd-ask-web:war')
-    local('/opt/gradle/latest/bin/gradle initMQ')
+    local('/opt/gradle/latest/bin/gradle war renameWar initMQ')
+
 
 def mk_worker_zip():
     local('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle distZip')
     local('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle -Pwork=jpush distZip')
     local('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle -Pwork=repay distZip')
+    local('cd ./ttsd-diagnosis && /opt/gradle/latest/bin/gradle distZip')
+    local('cd ./ttsd-worker-monitor && /opt/gradle/latest/bin/gradle bootRepackage')
+
+
+def mk_mq_consumer():
     local('cd ./ttsd-loan-mq-consumer && /opt/gradle/latest/bin/gradle distZip')
     local('cd ./ttsd-message-mq-consumer && /opt/gradle/latest/bin/gradle distZip')
     local('cd ./ttsd-point-mq-consumer && /opt/gradle/latest/bin/gradle distZip')
     local('cd ./ttsd-activity-mq-consumer && /opt/gradle/latest/bin/gradle distZip')
     local('cd ./ttsd-user-mq-consumer && /opt/gradle/latest/bin/gradle distZip')
     local('cd ./ttsd-auditLog-mq-consumer && /opt/gradle/latest/bin/gradle distZip')
-    local('cd ./ttsd-diagnosis && /opt/gradle/latest/bin/gradle distZip')
-    local('cd ./ttsd-worker-monitor && /opt/gradle/latest/bin/gradle bootRepackage')
+
+
+def mk_rest_service():
+    local('cd ./ttsd-ask-rest && /opt/gradle/latest/bin/gradle distZip')
 
 
 def mk_static_zip():
@@ -69,7 +72,7 @@ def mk_static_zip():
     local('cd ./ttsd-mobile-api/src/main/webapp && zip -r static_api.zip api/')
     local('cd ./ttsd-activity-web/src/main/webapp && zip -r static_activity.zip activity/')
     local('cd ./ttsd-point-web/src/main/webapp && zip -r static_point.zip point/')
-    local('cd ./ttsd-ask-web/src/main/webapp && zip -r static_ask.zip ask/')
+    local('cd ./ttsd-frontend-manage/resources/prod && zip -r static_ask.zip *')
 
 
 def mk_signin_zip():
@@ -81,6 +84,8 @@ def mk_signin_zip():
 def build():
     mk_war()
     mk_worker_zip()
+    mk_mq_consumer()
+    mk_rest_service()
     mk_static_zip()
     mk_signin_zip()
 
@@ -101,7 +106,7 @@ def deploy_static():
     upload_project(local_dir='./ttsd-mobile-api/src/main/webapp/static_api.zip', remote_dir='/workspace')
     upload_project(local_dir='./ttsd-activity-web/src/main/webapp/static_activity.zip', remote_dir='/workspace')
     upload_project(local_dir='./ttsd-point-web/src/main/webapp/static_point.zip', remote_dir='/workspace')
-    upload_project(local_dir='./ttsd-ask-web/src/main/webapp/static_ask.zip', remote_dir='/workspace')
+    upload_project(local_dir='./ttsd-frontend-manage/resources/prod/static_ask.zip', remote_dir='/workspace')
     with cd('/workspace'):
         sudo('rm -rf static/')
         sudo('unzip static.zip -d static')
@@ -237,6 +242,17 @@ def deploy_point():
     sudo('service nginx restart')
 
 
+@roles('ask-rest')
+def deploy_ask_rest():
+    upload_project(local_dir='./ttsd-ask-rest/build/distributions/ttsd-ask-rest.zip', remote_dir='/workspace/rest-service')
+    with cd('/workspace/rest-service'):
+        sudo('/usr/local/bin/docker-compose -f ask-rest.yml stop')
+        sudo('/usr/local/bin/docker-compose -f ask-rest.yml rm -f')
+        sudo('rm -rf ttsd-ask-rest')
+        sudo('unzip ttsd-ask-rest.zip')
+        sudo('/usr/local/bin/docker-compose -f ask-rest.yml up -d')
+
+
 def deploy_all():
     execute(deploy_static)
     execute(deploy_sign_in)
@@ -248,6 +264,7 @@ def deploy_all():
     execute(deploy_web)
     execute(deploy_activity)
     execute(deploy_point)
+    execute(deploy_ask_rest)
     execute(deploy_ask)
 
 
@@ -276,6 +293,7 @@ def activity():
 
 def ask():
     pre_deploy()
+    execute(deploy_ask_rest)
     execute(deploy_ask)
     execute(deploy_static)
 
@@ -324,8 +342,7 @@ def get_7days_before(date_format="%Y-%m-%d"):
 def remove_tomcat_logs():
     iso_date = get_7days_before()
     with cd('/var/log/tomcat'):
-        run('rm -f *{0}*.log'.format(iso_date))
-        run('rm -f *{0}*.txt'.format(iso_date))
+        run('rm -f *{0}*'.format(iso_date))
 
 
 def remove_nginx_logs():
@@ -334,47 +351,16 @@ def remove_nginx_logs():
         run('rm -f *{0}.gz'.format(normal_date))
 
 
-@roles('portal')
-@parallel
-def remove_web_logs():
-    remove_tomcat_logs()
-    remove_nginx_logs()
-
-
-@roles('activity')
-@parallel
-def remove_activity_logs():
-    remove_tomcat_logs()
-    remove_nginx_logs()
-
-
-@roles('ask')
-@parallel
-def remove_ask_logs():
-    remove_tomcat_logs()
-    remove_nginx_logs()
-
-
-@roles('pay')
-@parallel
-def remove_pay_logs():
-    remove_tomcat_logs()
-    remove_nginx_logs()
-
-
-@roles('api')
-@parallel
-def remove_api_logs():
-    remove_tomcat_logs()
-    remove_nginx_logs()
+def remove_logs_before_7days(log_folder):
+    iso_date = get_7days_before()
+    with cd(log_folder):
+        run('rm -f *{0}*'.format(iso_date))
 
 
 @roles('worker')
 @parallel
 def remove_worker_logs():
-    iso_date = get_7days_before()
-    with cd('/var/log/job-worker'):
-        run('rm -f *{0}.log'.format(iso_date))
+    remove_logs_before_7days('/var/log/job-worker')
 
 
 @roles('static')
@@ -386,41 +372,53 @@ def remove_static_logs():
 @roles('signin')
 @parallel
 def remove_sign_in_logs():
-    remove_tomcat_logs()
+    for item in ('1', '2'):
+        folder = '/var/log/signin_{}'.format(item)
+        remove_logs_before_7days(folder)
     remove_nginx_logs()
 
 
-@roles('point')
+@roles('ask-rest')
 @parallel
-def remove_point_logs():
-    remove_tomcat_logs()
+def remove_ask_rest_logs():
+    remove_logs_before_7days('/var/log/tuotian/ask-rest')
+    remove_nginx_logs()
+
+
+@roles('cms')
+@parallel
+def remove_cms_logs():
+    remove_logs_before_7days('/var/log/tuotian/cms')
     remove_nginx_logs()
 
 
 @roles('console')
 @parallel
-def remove_console_logs():
-    iso_date = get_7days_before()
-    with cd('/var/log/tuotian/console'):
-        run('rm -f *{0}.log'.format(iso_date))
-        run('rm -f *{0}.txt'.format(iso_date))
+def remove_admin_and_sms_logs():
+    for folder in ('activity-console', 'console', 'sms', 'cms'):
+        log_path = '/var/log/tuotian/{}'.format(folder)
+        remove_logs_before_7days(log_path)
+    remove_nginx_logs()
 
+
+@roles('portal', 'api', 'pay', 'ask', 'activity', 'point')
+@parallel
+def remove_nginx_and_tomcat_logs():
+    remove_tomcat_logs()
     remove_nginx_logs()
 
 
 def remove_old_logs():
     """
-    Remove logs which was generated 30 days ago
+    Remove logs which was generated 7 days ago
     """
-    execute(remove_web_logs)
-    execute(remove_activity_logs)
-    execute(remove_pay_logs)
-    execute(remove_api_logs)
+    execute(remove_nginx_and_tomcat_logs)
+    execute(remove_ask_rest_logs)
+    execute(remove_cms_logs)
     execute(remove_worker_logs)
     execute(remove_static_logs)
     execute(remove_sign_in_logs)
-    execute(remove_point_logs)
-    execute(remove_console_logs)
+    execute(remove_admin_and_sms_logs)
 
 
 def restart_logstash_process():
@@ -483,7 +481,7 @@ def restart_logstash_service_for_activity():
     restart_logstash_process()
 
 
-@roles('ask')
+@roles('ask', 'ask-rest')
 @parallel
 def restart_logstash_service_for_ask():
     """

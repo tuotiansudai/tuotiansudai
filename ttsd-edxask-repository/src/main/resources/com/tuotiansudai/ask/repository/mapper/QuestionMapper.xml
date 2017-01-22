@@ -21,12 +21,13 @@
         <result column="rejected_by" property="rejectedBy"/>
         <result column="rejected_time" property="rejectedTime"/>
         <result column="status" property="status"/>
+        <result column="embody" property="embody"/>
         <result column="created_time" property="createdTime"/>
     </resultMap>
 
     <insert id="create" parameterType="QuestionModel" useGeneratedKeys="true" keyProperty="id">
-        insert into question (login_name, mobile, fake_mobile, question, addition, tags, answers, last_answered_time, approved_by, approved_time, rejected_by, rejected_time, status, created_time)
-        value(#{loginName}, #{mobile}, #{fakeMobile}, #{question}, #{addition}, #{tags, typeHandler=com.tuotiansudai.ask.repository.mybatis.TagListTypeHandler}, #{answers}, #{lastAnsweredTime}, #{approvedBy}, #{approvedTime}, #{rejectedBy}, #{rejectedTime}, #{status}, now())
+        insert into question (login_name, mobile, fake_mobile, question, addition, tags, answers, last_answered_time, approved_by, approved_time, rejected_by, rejected_time, status, embody, created_time)
+        value(#{loginName}, #{mobile}, #{fakeMobile}, #{question}, #{addition}, #{tags, typeHandler=com.tuotiansudai.ask.repository.mybatis.TagListTypeHandler}, #{answers}, #{lastAnsweredTime}, #{approvedBy}, #{approvedTime}, #{rejectedBy}, #{rejectedTime}, #{status}, #{embody}, now())
     </insert>
 
     <update id="update" parameterType="QuestionModel">
@@ -43,7 +44,8 @@
         approved_time = #{approvedTime},
         rejected_by = #{rejectedBy},
         rejected_time = #{rejectedTime},
-        status = #{status}
+        status = #{status},
+        embody = #{embody}
         where id = #{id}
     </update>
 
@@ -169,4 +171,29 @@
     <select id="countQuestionsByKeywords" resultType="long">
         select COUNT(1) from question where status not in ('UNAPPROVED', 'REJECTED') and question like concat('%', #{keywords}, '%');
     </select>
+
+    <select id="findApprovedNotEmbodyQuestions" parameterType="map" resultMap="questionResultMap">
+        select *
+        from question
+        where status not in ('UNAPPROVED', 'REJECTED')
+        and embody is false
+        and (tags = #{tag} or tags like CONCAT(CONCAT('%,', #{tag}), '%') or tags like CONCAT(CONCAT('%', #{tag}), ',%'))
+        order by created_time desc
+    </select>
+
+    <select id="findEmbodyAllQuestions" parameterType="map" resultMap="questionResultMap">
+        select *
+        from question
+        where status not in ('UNAPPROVED', 'REJECTED')
+        and embody is TRUE
+        order by created_time desc
+        limit #{index}, #{pageSize}
+    </select>
+
+    <select id="countEmbodyAllQuestions" parameterType="string" resultType="long">
+        select ifnull(count(1), 0)  from question
+        where status not in ('UNAPPROVED', 'REJECTED')
+        and embody is TRUE
+    </select>
+
 </mapper>

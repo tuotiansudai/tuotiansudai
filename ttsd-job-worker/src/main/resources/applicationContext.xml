@@ -26,15 +26,16 @@
 
     <!-- enable component scanning (beware that this does not enable mapper scanning!) -->
     <context:component-scan
-            base-package="com.tuotiansudai.repository,com.tuotiansudai.transfer,com.tuotiansudai.service,com.tuotiansudai.client,com.tuotiansudai.scheduler,com.tuotiansudai.util,com.tuotiansudai.aspect,com.tuotiansudai.coupon,com.tuotiansudai.jpush,com.tuotiansudai.message,
-                            com.tuotiansudai.point,com.tuotiansudai.membership,com.tuotiansudai.cache,com.tuotiansudai.anxin.service,com.tuotiansudai.cfca,com.tuotiansudai.contract.service">
+            base-package="com.tuotiansudai.repository,com.tuotiansudai.transfer,com.tuotiansudai.service,com.tuotiansudai.client,com.tuotiansudai.scheduler,com.tuotiansudai.util,com.tuotiansudai.aspect,com.tuotiansudai.coupon,
+                            com.tuotiansudai.point,com.tuotiansudai.membership,com.tuotiansudai.cache,com.tuotiansudai.anxin.service,com.tuotiansudai.cfca,com.tuotiansudai.contract.service,com.tuotiansudai.log.service">
     </context:component-scan>
 
     <bean id="hikariCPDataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
         <constructor-arg>
             <bean class="com.zaxxer.hikari.HikariConfig">
                 <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-                <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/aa?useUnicode=true&amp;characterEncoding=UTF-8"/>
+                <property name="jdbcUrl"
+                          value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/aa?useUnicode=true&amp;characterEncoding=UTF-8"/>
                 <property name="username" value="${common.jdbc.username}"/>
                 <property name="password" value="${common.jdbc.password}"/>
                 <property name="minimumIdle" value="${job.aa.minimumIdle}"/>
@@ -55,7 +56,8 @@
         <constructor-arg>
             <bean class="com.zaxxer.hikari.HikariConfig">
                 <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-                <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/job_worker?useUnicode=true&amp;characterEncoding=UTF-8"/>
+                <property name="jdbcUrl"
+                          value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/job_worker?useUnicode=true&amp;characterEncoding=UTF-8"/>
                 <property name="username" value="${common.jdbc.username}"/>
                 <property name="password" value="${common.jdbc.password}"/>
                 <property name="minimumIdle" value="${job.job.minimumIdle}"/>
@@ -76,7 +78,8 @@
         <constructor-arg>
             <bean class="com.zaxxer.hikari.HikariConfig">
                 <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-                <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/${activity.jdbc.schema}?useUnicode=true&amp;characterEncoding=UTF-8"/>
+                <property name="jdbcUrl"
+                          value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/${activity.jdbc.schema}?useUnicode=true&amp;characterEncoding=UTF-8"/>
                 <property name="username" value="${activity.jdbc.username}"/>
                 <property name="password" value="${activity.jdbc.password}"/>
                 <property name="minimumIdle" value="${job.activity.minimumIdle}"/>
@@ -97,7 +100,8 @@
         <constructor-arg>
             <bean class="com.zaxxer.hikari.HikariConfig">
                 <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-                <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/${anxin.jdbc.schema}?useUnicode=true&amp;characterEncoding=UTF-8"/>
+                <property name="jdbcUrl"
+                          value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/${anxin.jdbc.schema}?useUnicode=true&amp;characterEncoding=UTF-8"/>
                 <property name="username" value="${anxin.jdbc.username}"/>
                 <property name="password" value="${anxin.jdbc.password}"/>
                 <property name="minimumIdle" value="${anxin.anxin.minimumIdle}"/>
@@ -132,7 +136,7 @@
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="hikariCPDataSource"/>
         <property name="typeAliasesPackage"
-                  value="com.tuotiansudai.repository.model,com.tuotiansudai.transfer.repository.model,com.tuotiansudai.coupon.repository.model,com.tuotiansudai.jpush.repository.model,com.tuotiansudai.point.repository.model,com.tuotiansudai.membership.repository.model, com.tuotiansudai.message.repository.model"/>
+                  value="com.tuotiansudai.repository.model,com.tuotiansudai.transfer.repository.model,com.tuotiansudai.coupon.repository.model,com.tuotiansudai.point.repository.model,com.tuotiansudai.membership.repository.model"/>
         <property name="configLocation" value="mybatis-configuration.xml"/>
     </bean>
 
@@ -158,7 +162,7 @@
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
         <property name="basePackage"
-                  value="com.tuotiansudai.repository.mapper,com.tuotiansudai.transfer.repository.mapper,com.tuotiansudai.coupon.repository.mapper,com.tuotiansudai.jpush.repository.mapper,com.tuotiansudai.point.repository.mapper,com.tuotiansudai.membership.repository.mapper, com.tuotiansudai.message.repository.mapper"/>
+                  value="com.tuotiansudai.repository.mapper,com.tuotiansudai.transfer.repository.mapper,com.tuotiansudai.coupon.repository.mapper,com.tuotiansudai.point.repository.mapper,com.tuotiansudai.membership.repository.mapper"/>
     </bean>
 
     <!-- scan for mappers and let them be autowired -->
@@ -178,8 +182,16 @@
         <property name="basePackage" value="com.tuotiansudai.cfca.mapper"/>
     </bean>
 
-    <bean id="jobStoreBuilder" class="com.tuotiansudai.util.quartz.JobStoreBuilder">
-        <property name="dataSource" ref="jobHikariCPDataSource"/>
+    <bean id="jobStoreBuilder" class="com.tuotiansudai.quartz.JobStoreBuilder">
+        <constructor-arg ref="jobHikariCPDataSource"/>
+    </bean>
+
+    <bean id="schedulerBuilder" class="com.tuotiansudai.quartz.SchedulerBuilder">
+        <constructor-arg ref="jobStoreBuilder"/>
+    </bean>
+    
+    <bean id="jobManager" class="com.tuotiansudai.job.JobManager">
+        <constructor-arg ref="schedulerBuilder"/>
     </bean>
 
     <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
@@ -187,7 +199,9 @@
         <property name="maxWaitMillis" value="${common.jedis.pool.maxWaitMillis}"/>
     </bean>
 
-    <bean id="okHttpClient" class="com.squareup.okhttp.OkHttpClient" />
+    <bean id="okHttpClient" class="com.squareup.okhttp.OkHttpClient"/>
+
+    <bean class="com.tuotiansudai.quartz.AutowiringSpringBeanJobFactory"/>
 
     <bean class="com.tuotiansudai.mq.config.MQProducerConfig"/>
 </beans>

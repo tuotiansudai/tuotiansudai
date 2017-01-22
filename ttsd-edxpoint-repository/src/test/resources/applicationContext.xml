@@ -68,6 +68,4 @@
     <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
         <property name="maxTotal" value="${activity.jedis.pool.maxTotal}"/>
     </bean>
-
-    <bean class="com.tuotiansudai.client.MybatisRedisCacheWrapperClient"/>
 </beans>

@@ -1,12 +1,9 @@
 package com.tuotiansudai.console.controller;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.console.service.ExtraLoanRateService;
 import com.tuotiansudai.console.service.ConsoleLoanCreateService;
+import com.tuotiansudai.console.service.ExtraLoanRateService;
 import com.tuotiansudai.dto.*;
-import com.tuotiansudai.message.repository.mapper.MessageMapper;
-import com.tuotiansudai.message.repository.model.MessageModel;
 import com.tuotiansudai.repository.mapper.ExtraLoanRateMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.LoanService;
@@ -40,14 +37,6 @@ public class LoanController {
 
     @Autowired
     private ExtraLoanRateMapper extraLoanRateMapper;
-
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
-
-    @Autowired
-    private MessageMapper messageMapper;
-
-    private final static String LOAN_MESSAGE_REDIS_KEY = "web:loan:loanMessageMap";
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView createLoan() {
@@ -91,13 +80,7 @@ public class LoanController {
         modelAndView.addObject("loanTypes", Lists.newArrayList(LoanType.values()));
         modelAndView.addObject("activityTypes", Lists.newArrayList(ActivityType.NORMAL, ActivityType.NEWBIE));
         modelAndView.addObject("extraSources", Lists.newArrayList(Source.WEB, Source.MOBILE));
-        LoanCreateRequestDto loanCreateRequestDto = consoleLoanCreateService.getEditLoanDetails(loanId);
-        if (redisWrapperClient.hexists(LOAN_MESSAGE_REDIS_KEY, String.valueOf(loanId))) {
-            long messageId = Long.valueOf(redisWrapperClient.hget(LOAN_MESSAGE_REDIS_KEY, String.valueOf(loanId)));
-            MessageModel messageModel = messageMapper.findById(messageId);
-            loanCreateRequestDto.setLoanMessage(new LoanMessageRequestDto(messageModel.getAppTitle(), messageModel.getTemplate()));
-        }
-        modelAndView.addObject("loan", loanCreateRequestDto);
+        modelAndView.addObject("loan", consoleLoanCreateService.getEditLoanDetails(loanId));
         modelAndView.addObject("extraLoanRates", extraLoanRateMapper.findByLoanId(loanId));
         return modelAndView;
     }

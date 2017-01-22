@@ -22,6 +22,7 @@
         <result column="repay_date" property="repayDate"></result>
         <result column="actual_repay_date" property="actualRepayDate"></result>
         <result column="created_time" property="createdTime"></result>
+        <result column="status" property="status"></result>
     </resultMap>
 
     <select id="findByLoanId" parameterType="long" resultMap="investExtraRateResultMap">
@@ -30,19 +31,20 @@
 
     <update id="update" parameterType="InvestExtraRateModel">
         update invest_extra_rate
-        set actual_interest = #{actualInterest}, actual_fee = #{actualFee}, repay_amount = #{repayAmount}, is_transfer=#{isTransfer}
+        set actual_interest = #{actualInterest}, actual_fee = #{actualFee}, repay_amount = #{repayAmount}, is_transfer=#{isTransfer},status=#{status}
         where id = #{id}
     </update>
 
-    <update id="updateActualRepayDate" parameterType="InvestExtraRateModel">
+    <update id="updateActualRepayDateStatus" parameterType="InvestExtraRateModel">
         update invest_extra_rate
-        set actual_repay_date = #{actualRepayDate}
+        set actual_repay_date = #{actualRepayDate},
+        status = #{status}
         where id = #{id}
     </update>
 
     <insert id="create" parameterType="InvestExtraRateModel" useGeneratedKeys="true" keyProperty="id">
-        insert into invest_extra_rate(loan_id,invest_id,is_transfer,amount,login_name,extra_rate,expected_interest,expected_fee,actual_interest,actual_fee,repay_amount,repay_date,actual_repay_date,created_time)
-        values(#{loanId},#{investId},false,#{amount},#{loginName},#{extraRate},#{expectedInterest},#{expectedFee},#{actualInterest},#{actualFee},#{repayAmount},#{repayDate},#{actualRepayDate},now())
+        insert into invest_extra_rate(loan_id,invest_id,is_transfer,amount,login_name,extra_rate,expected_interest,expected_fee,actual_interest,actual_fee,repay_amount,repay_date,actual_repay_date,created_time,status)
+        values(#{loanId},#{investId},false,#{amount},#{loginName},#{extraRate},#{expectedInterest},#{expectedFee},#{actualInterest},#{actualFee},#{repayAmount},#{repayDate},#{actualRepayDate},now(),#{status})
     </insert>
 
     <select id="findByInvestId" parameterType="map" resultMap="investExtraRateResultMap">

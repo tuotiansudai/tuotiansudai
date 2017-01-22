@@ -46,6 +46,10 @@ dependencies {
         exclude module: 'ttsd-dependency'
     };
 
+    compile(project(":ttsd-log-service")) {
+        exclude module: 'ttsd-dependency'
+    };
+
     compile(project(":ttsd-edxpoint-repository")) {
         exclude module: 'ttsd-dependency'
     };
@@ -70,6 +74,12 @@ dependencies {
 }
 
 war {
-    archiveName "ROOT.war"
+    archiveName "ttsd-activity-console.war"
     destinationDir = file("war")
+}
+
+task renameWar {
+    doLast {
+        file("${project.projectDir.getPath()}/war/ttsd-activity-console.war").renameTo(file("${project.projectDir.getPath()}/war/ROOT.war"))
+    }
 }

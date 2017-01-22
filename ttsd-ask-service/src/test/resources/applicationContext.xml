@@ -106,4 +106,8 @@
     <bean id="httpServletRequest" class="org.springframework.mock.web.MockHttpServletRequest"/>
 
     <bean class="com.tuotiansudai.mq.config.MQProducerConfig"/>
+
+    <bean class="com.tuotiansudai.rest.FeignClientConfig"/>
+
+    <bean id="httpClient" class="com.squareup.okhttp.OkHttpClient"/>
 </beans>

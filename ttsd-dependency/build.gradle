@@ -1,3 +1,8 @@
+configurations {
+    all*.exclude group: 'bouncycastle', module: "bcmail-jdk14"
+    all*.exclude group: 'bouncycastle', module: "bcprov-jdk14"
+}
+
 dependencies {
     def springVersion = '4.3.1.RELEASE'
     def springSecurityVersion = '4.1.1.RELEASE'
@@ -29,13 +34,9 @@ dependencies {
             'log4j:log4j:1.2.17',
             'joda-time:joda-time:2.9.4',
             'org.joda:joda-money:0.10.0',
-            'org.xhtmlrenderer:core-renderer:R8',
             'org.jsoup:jsoup:1.8.3',
             'dom4j:dom4j:1.6.1',
-            'org.quartz-scheduler:quartz:2.2.1',
-            'org.quartz-scheduler:quartz-jobs:2.2.1',
             'com.google.code.gson:gson:2.4',
             'org.springframework:spring-aspects:4.2.0.RELEASE',
-            'net.sf.ezmorph:ezmorph:1.0.6',
-            'cn.jpush.api:jpush-client:3.2.8'
+            'net.sf.ezmorph:ezmorph:1.0.6'
 }

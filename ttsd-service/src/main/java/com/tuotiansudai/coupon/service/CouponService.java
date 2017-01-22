@@ -1,6 +1,7 @@
 package com.tuotiansudai.coupon.service;
 
 import com.tuotiansudai.coupon.repository.model.CouponModel;
+import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.repository.model.InvestModel;
 
 import java.util.List;
@@ -12,5 +13,7 @@ public interface CouponService {
     long findExperienceInvestAmount(List<InvestModel> investModelList);
 
     CouponModel findExchangeableCouponById(long couponId);
+
+    List<CouponModel> findCouponByUserGroup(List<UserGroup> userGroups);
 
 }

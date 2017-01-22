@@ -6,16 +6,16 @@
         </div>
         <h2 class="column-title article">
             <em class="title">${announce.title}</em>
-            <time class="tr">发表时间：<i>${(announce.updateTime?string("yyyy-MM-dd"))!}</i></time>
+            <span class="tr">发表时间：<i>${(announce.updatedTime?string("yyyy-MM-dd"))!}</i></span>
         </h2>
         <div class="detail-content">
             ${announce.content}
         </div>
 
     <footer class="fr">
-        拓天速贷客服中心
+        拓天速贷运营中心
         <br/>
-        <span class="update-time"> ${(announce.updateTime?string("yyyy年MM月dd日"))!}</span></footer>
+        <span class="update-time"> ${(announce.updatedTime?string("yyyy年MM月dd日"))!}</span></footer>
     </div>
 
 </@global.main>

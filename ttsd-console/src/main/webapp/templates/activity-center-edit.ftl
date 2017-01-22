@@ -53,7 +53,7 @@
 
             </div>
             <div class="form-group">
-                <label class="col-sm-2 control-label">活动图(移动端): </label>
+                <label class="col-sm-2 control-label">活动横图(移动端): </label>
 
                 <div class="col-sm-4 ">
                     <input type="text" name="appPictureUrl" readonly class="form-control appPictureUrl"
@@ -69,13 +69,39 @@
                 </div>
                 <#if !(dto??) || dto??&&dto.status != 'TO_APPROVE'>
                     <div class="col-sm-4 appPicture">
-                        <input type="file" name="appPictureImage" imageWidth="750" imageHeight="340"/>
+                        <input type="file" name="appPictureImage" imageWidth="750" imageHeight="350"/>
                     </div>
                     <div class="col-sm-4 text-danger">
-                        (图片大小为:750px * 340px)
+                        (图片大小为:750px * 350px)
                     </div>
                 </#if>
             </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">活动竖图(移动端): </label>
+
+                <div class="col-sm-4 ">
+                    <input type="text" name="appVerticalPictureUrl" readonly class="form-control appVerticalPictureUrl"
+                           <#if dto??&&dto.status == 'TO_APPROVE'>readonly</#if>
+                           value="<#if dto??>${dto.appVerticalPictureUrl!}</#if>"
+                           placeholder="" datatype="*" errormsg="活动竖图(移动端)不能为空">
+
+                    <div class="appVerticalPictureImage">
+                        <#if dto??&&dto.appVerticalPictureUrl??>
+                            <img style="width:100%" src="${staticServer}${dto.appVerticalPictureUrl!}" alt="活动竖图(移动端)"/>
+                        </#if>
+                    </div>
+                </div>
+                <#if !(dto??) || dto??&&dto.status != 'TO_APPROVE'>
+                    <div class="col-sm-4 appVerticalPicture">
+                        <input type="file" name="appVerticalPictureImage" imageWidth="500" imageHeight="660"/>
+                    </div>
+                    <div class="col-sm-4 text-danger">
+                        (图片大小为:500px * 660px)
+                    </div>
+                </#if>
+            </div>
+
             <div class="form-group">
                 <label class="col-sm-2 control-label">活动图(PC端): </label>
 
@@ -149,8 +175,7 @@
                 <div class="col-sm-4">
                     <input type="text" name="shareTitle" class="form-control activity-description"
                            <#if dto??&&dto.status == 'TO_APPROVE'>readonly</#if>
-                           value="<#if dto??>${dto.shareTitle!}</#if>" placeholder="" datatype="*"
-                           errormsg="分享标题(移动端)不能为空">
+                           value="<#if dto??>${dto.shareTitle!}</#if>" placeholder="" >
                 </div>
                 <div class="col-sm-7">
 
@@ -164,8 +189,7 @@
                 <div class="col-sm-4">
                     <input type="text" name="shareContent" class="form-control activity-description"
                            <#if dto??&&dto.status == 'TO_APPROVE'>readonly</#if>
-                           value="<#if dto??>${dto.shareContent!}</#if>" placeholder="" datatype="*"
-                           errormsg="分享内容(移动端)不能为空">
+                           value="<#if dto??>${dto.shareContent!}</#if>" placeholder="">
                 </div>
                 <div class="col-sm-7">
 
@@ -179,8 +203,7 @@
                 <div class="col-sm-4">
                     <input type="text" name="shareUrl" class="form-control activity-description"
                            <#if dto??&&dto.status == 'TO_APPROVE'>readonly</#if>
-                           value="<#if dto??>${dto.shareUrl!}</#if>" placeholder="" datatype="*"
-                           errormsg="分享链接(移动端)不能为空">
+                           value="<#if dto??>${dto.shareUrl!}</#if>" placeholder="">
                 </div>
                 <div class="col-sm-7">
 

@@ -7,7 +7,7 @@ import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.task.OperationTask;
-import com.tuotiansudai.task.OperationType;
+import com.tuotiansudai.enums.OperationType;
 import com.tuotiansudai.task.TaskConstant;
 import com.tuotiansudai.task.TaskType;
 import org.apache.log4j.Logger;

@@ -4,6 +4,7 @@ import cfca.sadk.algorithm.common.PKIException;
 import cfca.trustsign.common.vo.cs.CreateContractVO;
 import cfca.trustsign.common.vo.cs.SignInfoVO;
 import cfca.trustsign.common.vo.response.tx3.*;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.anxin.service.AnxinSignService;
@@ -18,8 +19,11 @@ import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.ContractNoStatus;
 import com.tuotiansudai.dto.sms.GenerateContractErrorNotifyDto;
-import com.tuotiansudai.job.AnxinQueryContractJob;
-import com.tuotiansudai.job.JobType;
+import com.tuotiansudai.job.DelayMessageDeliveryJob;
+import com.tuotiansudai.job.DelayMessageDeliveryJobCreator;
+import com.tuotiansudai.job.JobManager;
+import com.tuotiansudai.message.AnxinContractQueryMessage;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.AnxinSignPropertyMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
@@ -30,13 +34,12 @@ import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
-import com.tuotiansudai.util.JobManager;
+import com.tuotiansudai.util.JsonConverter;
 import com.tuotiansudai.util.UUIDGenerator;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
-import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -128,6 +131,16 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         return anxinProp != null && anxinProp.getAnxinUserId() != null && anxinProp.getProjectCode() != null;
     }
 
+    @Override
+    public boolean isAuthenticationRequired(String loginName) {
+        boolean anxinSwitch = Strings.isNullOrEmpty(redisWrapperClient.hget("anxin-sign:switch", "switch")) ? true : Boolean.valueOf(redisWrapperClient.hget("anxin-sign:switch", "switch"));
+        String whitelist = Strings.isNullOrEmpty(redisWrapperClient.hget("anxin-sign:switch", "whitelist")) ? "" : redisWrapperClient.hget("anxin-sign:switch", "whitelist");
+        if (!anxinSwitch && !whitelist.contains(userMapper.findByLoginName(loginName).getMobile())) {
+            return false;
+        }
+        AnxinSignPropertyModel model = anxinSignPropertyMapper.findByLoginName(loginName);
+        return model == null || !model.isSkipAuth();
+    }
 
     /**
      * 获取用户的安心签相关属性
@@ -147,12 +160,18 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         userMapper.lockByLoginName(loginName);
 
         try {
+            UserModel userModel = userMapper.findByLoginName(loginName);
+
+            if (userModel == null) {
+                logger.error("create anxin user not exist, loginName:" + loginName);
+                return failBaseDto("请求参数错误：用户不存在");
+            }
+
             if (hasAnxinAccount(loginName)) {
                 logger.error(loginName + " already have anxin-sign account. can't create anymore.");
                 return new BaseDto();
             }
 
-            UserModel userModel = userMapper.findByLoginName(loginName);
 
             Tx3001ResVO tx3001ResVO = anxinSignConnectService.createAccount3001(userModel);
 
@@ -243,7 +262,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
             String projectCode = redisWrapperClient.get(TEMP_PROJECT_CODE_KEY + loginName);
 
             if (StringUtils.isEmpty(projectCode)) {
-                logger.error("project code is expired. loginName:" + loginName + ", anxinUserId:" + anxinUserId);
+                logger.warn("project code is expired. loginName:" + loginName + ", anxinUserId:" + anxinUserId);
                 return failBaseDto("验证码已过期，请重新获取");
             }
 
@@ -365,8 +384,9 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         }
 
         if (CollectionUtils.isNotEmpty((batchNoList))) {
-            logger.info("[安心签]: 创建job，十分钟后，查询并更新合同状态。loanId:" + String.valueOf(loanId));
-            updateContractResponseHandleJob(batchNoList, loanId, AnxinContractType.LOAN_CONTRACT);
+            logger.info("[安心签]: 创建job，稍后查询并更新合同状态。loanId:" + String.valueOf(loanId));
+            DelayMessageDeliveryJobCreator.createAnxinContractQueryDelayJob(jobManager,
+                    loanId, AnxinContractType.LOAN_CONTRACT.name(), batchNoList);
         }
 
         redisWrapperClient.setex(LOAN_BATCH_NO_LIST_KEY + loanId, BATCH_NO_LIFT_TIME, String.join(",", batchNoList));
@@ -389,23 +409,6 @@ public class AnxinSignServiceImpl implements AnxinSignService {
             return false;
         }
         return true;
-    }
-
-    private void updateContractResponseHandleJob(List<String> batchNoList, long businessId, AnxinContractType contractType) {
-        try {
-            Date triggerTime = new DateTime().plusMinutes(AnxinQueryContractJob.HANDLE_DELAY_MINUTES)
-                    .toDate();
-            jobManager.newJob(JobType.ContractResponse, AnxinQueryContractJob.class)
-                    .addJobData(AnxinQueryContractJob.BUSINESS_ID, businessId)
-                    .addJobData(AnxinQueryContractJob.BATCH_NO_LIST, batchNoList)
-                    .addJobData(AnxinQueryContractJob.ANXIN_CONTRACT_TYPE, contractType)
-                    .withIdentity(JobType.ContractResponse.name(), "businessId-" + businessId)
-                    .replaceExistingJob(true)
-                    .runOnceAt(triggerTime)
-                    .submit();
-        } catch (SchedulerException e) {
-            logger.error("create query contract job for loan/transfer[" + businessId + "] fail", e);
-        }
     }
 
     @Override
@@ -436,8 +439,9 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         redisWrapperClient.setex(TRANSFER_BATCH_NO_LIST_KEY + transferApplicationId, BATCH_NO_LIFT_TIME, batchNo);
 
         if (baseDto.isSuccess()) {
-            logger.info("[安心签]: 创建job，十分钟后，查询并更新合同状态。债权ID:" + transferApplicationId);
-            updateContractResponseHandleJob(Collections.singletonList(batchNo), transferApplicationId, AnxinContractType.TRANSFER_CONTRACT);
+            logger.info("[安心签]: 创建job，稍后查询并更新合同状态。债权ID:" + transferApplicationId);
+            DelayMessageDeliveryJobCreator.createAnxinContractQueryDelayJob(jobManager,
+                    transferApplicationId, AnxinContractType.TRANSFER_CONTRACT.name(), Collections.singletonList(batchNo));
         } else {
             logger.error("[安心签]: create transfer contract error, ready send sms. transferId:" + transferApplicationId);
             smsWrapperClient.sendGenerateContractErrorNotify(new GenerateContractErrorNotifyDto(mobileList, transferApplicationId));

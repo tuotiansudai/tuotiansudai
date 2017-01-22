@@ -1,6 +1,5 @@
 package com.tuotiansudai.service.impl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.base.*;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
@@ -9,16 +8,16 @@ import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.coupon.dto.UserCouponDto;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
-import com.tuotiansudai.coupon.repository.mapper.CouponRepayMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
-import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.CouponType;
+import com.tuotiansudai.enums.UserOpType;
 import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.exception.InvestExceptionType;
+import com.tuotiansudai.log.service.UserOpLogService;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
@@ -83,9 +82,6 @@ public class InvestServiceImpl implements InvestService {
     private CouponMapper couponMapper;
 
     @Autowired
-    private CouponRepayMapper couponRepayMapper;
-
-    @Autowired
     private InvestRepayMapper investRepayMapper;
 
     @Autowired
@@ -115,6 +111,9 @@ public class InvestServiceImpl implements InvestService {
     @Autowired
     private MQWrapperClient mqWrapperClient;
 
+    @Autowired
+    private UserOpLogService userOpLogService;
+
     @Override
     @Transactional
     public BaseDto<PayFormDataDto> invest(InvestDto investDto) throws InvestException {
@@ -135,12 +134,6 @@ public class InvestServiceImpl implements InvestService {
 
     private void checkInvestAvailable(InvestDto investDto) throws InvestException {
         AccountModel accountModel = accountMapper.findByLoginName(investDto.getLoginName());
-
-//        AnxinSignPropertyModel anxinProp = anxinSignPropertyMapper.findByLoginName(accountModel.getLoginName());
-//
-//        if (anxinProp == null || StringUtils.isEmpty(anxinProp.getProjectCode())) {
-//            throw new InvestException(InvestExceptionType.ANXIN_SIGN_IS_UNUSABLE);
-//        }
 
         long loanId = Long.parseLong(investDto.getLoanId());
         LoanModel loan = loanMapper.findById(loanId);
@@ -224,7 +217,7 @@ public class InvestServiceImpl implements InvestService {
 
         UserCouponDto maxBenefitUserCoupon = userCouponService.getMaxBenefitUserCoupon(loginName, loanId, investAmount);
         if (maxBenefitUserCoupon != null && CollectionUtils.isEmpty(investDto.getUserCouponIds())) {
-            logger.error(MessageFormat.format("user({0}) invest (loan = {1} amount = {2}) with no user coupon, but max benefit user coupon({3}) is existed",
+            logger.warn(MessageFormat.format("user({0}) invest (loan = {1} amount = {2}) with no user coupon, but max benefit user coupon({3}) is existed",
                     investDto.getLoginName(),
                     String.valueOf(loanId),
                     investDto.getAmount(),
@@ -253,7 +246,7 @@ public class InvestServiceImpl implements InvestService {
                         || userCouponModel.getEndTime().before(new Date())
                         || !couponModel.getProductTypes().contains(loanModel.getProductType())
                         || (couponModel.getInvestLowerLimit() > 0 && investAmount < couponModel.getInvestLowerLimit())) {
-                    logger.error(MessageFormat.format("user({0}) use user coupon ({1}) is unusable", loginName, String.valueOf(userCouponId)));
+                    logger.warn(MessageFormat.format("user({0}) use user coupon ({1}) is unusable", loginName, String.valueOf(userCouponId)));
                     throw new InvestException(InvestExceptionType.COUPON_IS_UNUSABLE);
                 }
                 if (!couponModel.isShared()) {
@@ -389,13 +382,7 @@ public class InvestServiceImpl implements InvestService {
         }
 
         // 发送用户行为日志 MQ消息
-        UserOpLogModel logModel = new UserOpLogModel(idGenerator.generate(), loginName, UserOpType.AUTO_INVEST, ip, "", Source.WEB, "Turn On.");
-        try {
-            mqWrapperClient.sendMessage(MessageQueue.UserOperateLog, JsonConverter.writeValueAsString(logModel));
-        } catch (JsonProcessingException e) {
-            logger.error("[MQ] turnOnAutoInvest, send UserOperateLog fail.", e);
-        }
-
+        userOpLogService.sendUserOpLogMQ(loginName, ip, Source.WEB.name(), "", UserOpType.AUTO_INVEST,"Turn On.");
         return true;
     }
 
@@ -408,13 +395,7 @@ public class InvestServiceImpl implements InvestService {
         autoInvestPlanMapper.disable(loginName);
 
         // 发送用户行为日志 MQ消息
-        UserOpLogModel logModel = new UserOpLogModel(idGenerator.generate(), loginName, UserOpType.AUTO_INVEST, ip, "", Source.WEB, "Turn Off.");
-        try {
-            mqWrapperClient.sendMessage(MessageQueue.UserOperateLog, JsonConverter.writeValueAsString(logModel));
-        } catch (JsonProcessingException e) {
-            logger.error("[MQ] turnOffAutoInvest, send UserOperateLog fail.", e);
-        }
-
+        userOpLogService.sendUserOpLogMQ(loginName, ip, Source.WEB.name(), "", UserOpType.AUTO_INVEST,"Turn Off.");
         return true;
     }
 
@@ -448,12 +429,9 @@ public class InvestServiceImpl implements InvestService {
             mqWrapperClient.sendMessage(MessageQueue.TurnOnNoPasswordInvest_CompletePointTask, loginName);
         }
 
-        UserOpLogModel logModel = new UserOpLogModel(idGenerator.generate(), loginName, UserOpType.INVEST_NO_PASSWORD, ip, "", Source.WEB, isTurnOn ? "Turn On" : "Turn Off");
-        try {
-            mqWrapperClient.sendMessage(MessageQueue.UserOperateLog, JsonConverter.writeValueAsString(logModel));
-        } catch (JsonProcessingException e) {
-            logger.error("[MQ] switchNoPasswordInvest, send UserOperateLog fail.", e);
-        }
+        // 发送用户行为日志MQ
+        userOpLogService.sendUserOpLogMQ(loginName, ip, Source.WEB.name(), "", UserOpType.INVEST_NO_PASSWORD,
+                isTurnOn ? "Turn On" : "Turn Off");
         return true;
     }
 

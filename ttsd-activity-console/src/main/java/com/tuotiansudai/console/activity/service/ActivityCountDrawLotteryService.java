@@ -2,6 +2,7 @@ package com.tuotiansudai.console.activity.service;
 
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.activity.repository.mapper.UserLotteryPrizeMapper;
 import com.tuotiansudai.activity.repository.model.ActivityCategory;
 import com.tuotiansudai.activity.repository.model.ActivityDrawLotteryTask;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
@@ -66,7 +67,10 @@ public class ActivityCountDrawLotteryService {
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.christmas.endTime}\")}")
     private Date activityChristmasEndTime;
 
-    private static final String redisKey = "web:christmasTime:lottery:startTime";
+    @Value(value = "${activity.lanternFestival.startTime}")
+    private String lanternFestivalStartTime;
+    @Value(value = "${activity.lanternFestival.endTime}")
+    private String lanternFestivalEndTime;
 
     //往期活动任务
     private final List activityTasks = Lists.newArrayList(ActivityDrawLotteryTask.REGISTER, ActivityDrawLotteryTask.EACH_REFERRER,
@@ -81,6 +85,9 @@ public class ActivityCountDrawLotteryService {
     //元旦活动任务
     private final List newYearsActivityTask = Lists.newArrayList(ActivityDrawLotteryTask.EACH_ACTIVITY_SIGN_IN, ActivityDrawLotteryTask.REFERRER_USER,
             ActivityDrawLotteryTask.EACH_INVEST_5000);
+
+    //春节活动任务
+    private final List springFestivalActivityTasks = Lists.newArrayList(ActivityDrawLotteryTask.EACH_ACTIVITY_SIGN_IN);
 
     public static final String ACTIVITY_DESCRIPTION = "新年专享";
 
@@ -104,6 +111,10 @@ public class ActivityCountDrawLotteryService {
                 return countDrawLotteryTime(userModel, activityCategory, newYearsActivityTask);
             case CHRISTMAS_ACTIVITY:
                 return countDrawLotteryTime(userModel, activityCategory, christmasTasks);
+            case LANTERN_FESTIVAL_ACTIVITY:
+                return countDrawLotteryTime(userModel,activityCategory,Lists.newArrayList(ActivityDrawLotteryTask.EACH_INVEST_1000));
+            case SPRING_FESTIVAL_ACTIVITY:
+                return countDrawLotteryTime(userModel, activityCategory, springFestivalActivityTasks);
         }
         return lotteryTime;
     }
@@ -180,6 +191,10 @@ public class ActivityCountDrawLotteryService {
                     time += (int) (sumAmount / EACH_INVEST_AMOUNT_20000);
                     time = time >= 10 ? 10 : time;
                     break;
+                case EACH_INVEST_1000:
+                    time = investMapper.sumDrawCountByLoginName(userModel.getLoginName(),startTime,endTime,100000);
+                    break;
+
             }
         }
         return time;
@@ -198,6 +213,9 @@ public class ActivityCountDrawLotteryService {
                 return Lists.newArrayList(DateTime.parse(annualTime.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate(), DateTime.parse(annualTime.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate());
             case CHRISTMAS_ACTIVITY:
                 return Lists.newArrayList(activityChristmasSecondStartTime, activityChristmasEndTime);
+            case LANTERN_FESTIVAL_ACTIVITY:
+                return Lists.newArrayList(DateTime.parse(lanternFestivalStartTime,DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate(),
+                        DateTime.parse(lanternFestivalEndTime,DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate());
         }
         return null;
     }

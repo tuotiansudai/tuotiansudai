@@ -6,9 +6,9 @@ dependencies {
     compile project(':ttsd-web-common-config'),
             project(':ttsd-service'),
             project(':ttsd-point-service'),
-            project(':ttsd-message'),
-            project(':ttsd-jpush'),
+            project(':ttsd-message-service'),
             project(':ttsd-activity-service'),
+            project(':ttsd-log-service'),
             project(':ttsd-util'),
             project(':ttsd-edxactivity-repository'),
             'commons-httpclient:commons-httpclient:3.1',
@@ -17,10 +17,17 @@ dependencies {
     compile 'io.springfox:springfox-swagger-ui:2.5.0'
 
     providedCompile 'javax.servlet:javax.servlet-api:3.1.0',
-            'javax.servlet.jsp:javax.servlet.jsp-api:2.3.1'
+            'javax.servlet.jsp:javax.servlet.jsp-api:2.3.1',
+            'org.apache.tomcat.embed:tomcat-embed-core:8.5.4'
 }
 
 war {
-    archiveName "ROOT.war"
+    archiveName "ttsd-mobile-api.war"
     destinationDir = file("war")
+}
+
+task renameWar {
+    doLast {
+        file("${project.projectDir.getPath()}/war/ttsd-mobile-api.war").renameTo(file("${project.projectDir.getPath()}/war/ROOT.war"))
+    }
 }

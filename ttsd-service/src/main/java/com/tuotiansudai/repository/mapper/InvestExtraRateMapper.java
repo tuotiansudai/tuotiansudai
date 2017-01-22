@@ -13,7 +13,7 @@ public interface InvestExtraRateMapper {
 
     void update(InvestExtraRateModel investExtraRateModel);
 
-    void updateActualRepayDate(InvestExtraRateModel investExtraRateModel);
+    void updateActualRepayDateStatus(InvestExtraRateModel investExtraRateModel);
 
     void create(InvestExtraRateModel investExtraRateModel);
 

@@ -48,10 +48,10 @@
                        value="<#if banner??>${banner.appImageUrl!}</#if>" datatype="*" errormsg="小图不能为空">
             </div>
             <div class="col-sm-4 appImageUrl">
-                <input type="file" imageWidth="750" imageHeight="340"/>
+                <input type="file" imageWidth="750" imageHeight="350"/>
             </div>
             <div class="col-sm-4 text-danger">
-                (图片必须是750px * 340px)
+                (图片必须是750px * 350px)
             </div>
             <div class="col-sm-4" style="margin-left: 10%;">
                 <div class="appImageUrlImage">
@@ -89,7 +89,7 @@
 
             <div class="col-sm-4">
                 <input type="text" class="form-control" name="title" placeholder=""
-                       value="<#if banner??>${banner.title!}</#if>" datatype="*" errormsg="分享后标题不能为空">
+                       value="<#if banner??>${banner.title!}</#if>">
             </div>
         </div>
 
@@ -98,7 +98,7 @@
 
             <div class="col-sm-4">
                 <input type="text" class="form-control" name="content" placeholder=""
-                       value="<#if banner??>${banner.content!}</#if>" datatype="*" errormsg="分享后描述不能为空">
+                       value="<#if banner??>${banner.content!}</#if>">
             </div>
         </div>
 
@@ -107,7 +107,7 @@
 
             <div class="col-sm-4">
                 <input type="text" class="form-control" name="sharedUrl" placeholder=""
-                       value="<#if banner??>${banner.sharedUrl!}</#if>" datatype="*" errormsg="分享后链接不能为空">
+                       value="<#if banner??>${banner.sharedUrl!}</#if>">
             </div>
         </div>
 
