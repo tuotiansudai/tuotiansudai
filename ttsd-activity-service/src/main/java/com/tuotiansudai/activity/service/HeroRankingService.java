@@ -24,9 +24,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import static com.tuotiansudai.activity.repository.model.ActivityCategory.HERO_RANKING;
+import static com.tuotiansudai.activity.repository.model.ActivityCategory.NEW_HERO_RANKING;
 
 @Service
 public class HeroRankingService {
@@ -53,6 +58,11 @@ public class HeroRankingService {
     @Value("#{'${activity.new.heroRanking.period}'.split('\\~')}")
     private List<String> newHeroRankingActivityPeriod = Lists.newArrayList();
 
+    @Value(value = "${activity.lanternFestival.startTime}")
+    private String lanternFestivalStartTime;
+    @Value(value = "${activity.lanternFestival.endTime}")
+    private String lanternFestivalEndTime;
+
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 
     public List<HeroRankingView> obtainHeroRanking(ActivityCategory activityCategory,Date tradingTime) {
@@ -74,34 +84,32 @@ public class HeroRankingService {
             return null;
         }
         List<String> activityPeriod = getActivityPeriod(activityCategory);
-        tradingTime = new DateTime(tradingTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
+        tradingTime  = new DateTime(tradingTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
         long count = transferApplicationMapper.findCountTransferApplicationByApplicationTime(loginName, tradingTime, activityPeriod.get(0));
         if (count > 0) {
-            return Maps.newHashMap(ImmutableMap.<String, String>builder().
-                    put("investRanking", "0").
-                    put("activityEndTime", newHeroRankingActivityPeriod.get(1)).
-                    put("investAmount", "0").build());
+            return Maps.newHashMap(ImmutableMap.<String, String>builder()
+                    .put("investRanking", "0")
+                    .put("activityStartTime", activityPeriod.get(0))
+                    .put("activityEndTime", activityPeriod.get(1))
+                    .put("investAmount", "0").build());
         }
 
         int investRanking = 0;
         String investAmount = "0";
         List<HeroRankingView> heroRankingViews = investMapper.findHeroRankingByTradingTime(tradingTime, activityPeriod.get(0), activityPeriod.get(1));
         if (heroRankingViews != null) {
-            investRanking = Iterators.indexOf(heroRankingViews.iterator(), new Predicate<HeroRankingView>() {
-                @Override
-                public boolean apply(HeroRankingView input) {
-                    return input.getLoginName().equalsIgnoreCase(loginName);
-                }
-            }) + 1;
+            investRanking = Iterators.indexOf(heroRankingViews.iterator(),
+                    input -> input.getLoginName().equalsIgnoreCase(loginName)) + 1;
 
             if (investRanking > 0) {
                 investAmount = AmountConverter.convertCentToString(heroRankingViews.get(investRanking - 1).getSumAmount());
             }
         }
-        return Maps.newHashMap(ImmutableMap.<String, String>builder().
-                put("investRanking", String.valueOf(investRanking)).
-                put("activityEndTime", newHeroRankingActivityPeriod.get(1)).
-                put("investAmount", investAmount).build());
+        return Maps.newHashMap(ImmutableMap.<String, String>builder()
+                .put("investRanking", String.valueOf(investRanking))
+                .put("activityStartTime", activityPeriod.get(0))
+                .put("activityEndTime", activityPeriod.get(1))
+                .put("investAmount", investAmount).build());
     }
 
     public BasePaginationDataDto<HeroRankingView> findHeroRankingByReferrer(Date tradingTime, final String loginName, int index, int pageSize) {
@@ -137,16 +145,19 @@ public class HeroRankingService {
         if (CollectionUtils.isEmpty(heroRankingViews)) {
             return null;
         }
-        return Iterators.indexOf(heroRankingViews.iterator(), new Predicate<HeroRankingView>() {
-            @Override
-            public boolean apply(HeroRankingView input) {
-                return input.getLoginName().equalsIgnoreCase(loginName);
-            }
-        }) + 1;
+        return Iterators.indexOf(heroRankingViews.iterator(), input -> input.getLoginName().equalsIgnoreCase(loginName)) + 1;
     }
 
-    private List getActivityPeriod(ActivityCategory activityCategory){
-        return activityCategory.equals(ActivityCategory.HERO_RANKING) ? heroRankingActivityPeriod : newHeroRankingActivityPeriod;
+    public List<String> getActivityPeriod(ActivityCategory activityCategory){
+        switch (activityCategory){
+            case HERO_RANKING:
+                return heroRankingActivityPeriod;
+            case NEW_HERO_RANKING:
+                return newHeroRankingActivityPeriod;
+            case LANTERN_FESTIVAL_ACTIVITY:
+                return Lists.newArrayList(lanternFestivalStartTime,lanternFestivalEndTime);
+        }
+        return null;
     }
 
     public List<String> getActivityTime(){
