@@ -1,6 +1,7 @@
 # coding=utf-8
 import json
 from unittest import TestCase, main
+from models import User
 
 import redis
 
@@ -62,7 +63,7 @@ class TestSessionManager(TestCase):
 
     def test_replace_should_generate_new_token(self):
         manager = SessionManager(source='IOS')
-        data = {'data': 'test data'}
+        data = {'data': 'test data', 'login_name': 'sidneygao'}
         token_id = manager.set(data, 'fake_session_id')
         new_token_id = manager.refresh(token_id)
         self.assertEqual(data, manager.get(new_token_id))
@@ -72,6 +73,16 @@ class TestSessionManager(TestCase):
         manager = SessionManager(source='android')
         new_token_id = manager.refresh("not_exist_session_id")
         self.assertIsNone(new_token_id)
+
+    def test_refresh_should_update_last_login_time_source(self):
+        manager = SessionManager(source='IOS')
+        user_name = 'sidneygao'
+        data = {'data': 'test data', 'login_name': user_name}
+        token_id = manager.set(data, 'fake_session_id')
+        manager.refresh(token_id)
+        user = User.query.filter(User.username == user_name).first()
+        self.assertIsNotNone(user.last_login_time)
+        self.assertEqual(user.last_login_source, "IOS")
 
 
 class TestView(TestCase):
@@ -86,6 +97,9 @@ class TestView(TestCase):
                 'token': 'fake_token', 'password': '123abc'}
         rv = self.app.post('/login/', data=data)
         response_data = json.loads(rv.data)
+        user = User.query.filter(User.username == 'sidneygao').first()
+        self.assertEqual(user.last_login_source, 'WEB')
+        self.assertIsNotNone(user.last_login_time)
         self.assertEqual(200, rv.status_code)
         self.assertTrue(response_data['result'])
         self.assertEqual('sidneygao', response_data['user_info']['login_name'])
@@ -144,6 +158,9 @@ class TestView(TestCase):
                 'token': 'fake_token'}
         rv = self.app.post('/login/nopassword/', data=data)
         response_data = json.loads(rv.data)
+        user = User.query.filter(User.username == 'sidneygao').first()
+        self.assertEqual(user.last_login_source, 'WEB')
+        self.assertIsNotNone(user.last_login_time)
         self.assertEqual(200, rv.status_code)
         self.assertTrue(response_data['result'])
         self.assertEqual('sidneygao', response_data['user_info']['login_name'])
@@ -165,6 +182,30 @@ class TestView(TestCase):
         self.assertEqual(200, rv.status_code)
         self.assertIsNotNone(response_data['token'])
 
+    def test_should_refresh_token_success(self):
+        data = {'username': 'sidneygao', 'source': 'WEB', 'device_id': 'device_id1',
+                'token': 'fake_token', 'password': '123abc'}
+        rv = self.app.post('/login/', data=data)
+        session_id = json.loads(rv.data)['token']
+        refresh_date = {'source': 'IOS'}
+        ret = self.app.post('/refresh/' + session_id, data=refresh_date)
+        return_data = json.loads(ret.data)
+        self.assertEqual(200, ret.status_code)
+        self.assertTrue(return_data['result'])
+        self.assertNotEqual(return_data['token'], session_id)
+        self.assertEqual(return_data['user_info']['login_name'], 'sidneygao')
+
+    def test_should_return_400_refresh_token_with_incorrect_session_id(self):
+        data = {'username': 'sidneygao', 'source': 'WEB', 'device_id': 'device_id1',
+                'token': 'fake_token', 'password': '123abc'}
+        self.app.post('/login/', data=data)
+        refresh_date = {'source': 'IOS'}
+        ret = self.app.post('/refresh/incorrect_session_id', data=refresh_date)
+        return_data = json.loads(ret.data)
+        self.assertEqual(400, ret.status_code)
+        self.assertFalse(return_data['result'])
+
 
 if __name__ == '__main__':
-    main()
+    with web.app.app_context():
+        main()
