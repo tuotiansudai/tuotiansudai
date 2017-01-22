@@ -8,7 +8,7 @@ require.ensure(['webJsModule/red_envelope_float'],function() {
     require('webJsModule/red_envelope_float');
 },'redEnvelope');
 let $loanListBox=$('#loanListBox');
-var $loanLi = $('.loan-list-box li',$loanListBox);
+var $loanLi = $loanListBox.find('li');
 
 //我要投资菜单过滤显示
 (function() {
