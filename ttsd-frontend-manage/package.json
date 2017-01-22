@@ -4,11 +4,12 @@
   "scripts": {
     "start": "export NODE_ENV=dev && npm run json && webpack-dev-server --inline",
     "start2": "export NODE_ENV=dev && npm run plugin && webpack  && node getJsonFiles.js",
-    "build": "export NODE_ENV=production && npm run plugin && webpack && node getJsonFiles.js",
+    "build": "export NODE_ENV=production && npm run plugin && webpack --$PLAT --display-error-details --display-cached && node getJsonFiles.js",
     "test": "export NODE_ENV=production && npm run watchprod && npm run json",
     "watchprod": "webpack --watch --config webpack.production.js&",
     "json": "nodemon -L getJsonFiles.js&",
-    "plugin": "webpack --config  webpack.dll.config.js"
+    "plugin": "webpack --config  webpack.dll.config.js",
+    "server":"node getStaticServer.js $PLAT"
   },
   "devDependencies": {
     "assets-webpack-plugin": "^3.5.0",

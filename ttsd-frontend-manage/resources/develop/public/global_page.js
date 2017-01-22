@@ -34,7 +34,7 @@
 /******/ 	__webpack_require__.c = installedModules;
 
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "/";
+/******/ 	__webpack_require__.p = "http://localhost:3008/";
 
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
@@ -47,7 +47,6 @@
 	"use strict";
 
 	__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"publicStyle/global.scss\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
-
 	//ie8不支持bind方法，这里做兼容处理
 	if (!Function.prototype.bind) {
 	    Function.prototype.bind = function (oThis) {
@@ -310,14 +309,16 @@
 	            var oScript = document.createElement('script');
 	            oScript.type = 'text/javascript';
 	            oScript.src = staticServer + url;
+	            oScript.async = true;
 	            // IE9及以上浏览器，Firefox，Chrome，Opera ,
-	            // IE8及以下浏览器 只支持onreadystatechange
-	            oScript.onload = function () {
+
+	            //插入到body底部
+	            var currentScriptElem = this.$('#currentScript');
+	            currentScriptElem.parentNode.insertBefore(oScript, currentScriptElem);
+
+	            window.onload = function () {
 	                callback && callback();
 	            };
-	            //插入到body底部
-	            var globalElem = this.$('#globalPage');
-	            globalElem.parentNode.insertBefore(oScript, globalElem);
 	        }
 	    };
 	    return globalFun;

@@ -18,13 +18,13 @@
     "css": "/web/js/index.css"
   },
   "imageSlider": {
-    "js": "chucks/imageSlider.1414c155b499c32e1ebf.js"
+    "js": "chucks/imageSlider.d9b2dc73cbcf06294b0c.js"
   },
   "bookInvest": {
-    "js": "chucks/bookInvest.5c407886e9179200574d.js"
+    "js": "chucks/bookInvest.f86a85ac8b69690312c7.js"
   },
   "redEnvelope": {
-    "js": "chucks/redEnvelope.21d57bc2c3f94a5d9fce.js"
+    "js": "chucks/redEnvelope.0f870f3adb6bec96ab2d.js"
   },
   "/web/js/login": {
     "js": "/web/js/login.js",
@@ -35,10 +35,10 @@
     "css": "/web/js/register_user.css"
   },
   "placeholder": {
-    "js": "chucks/placeholder.e78af58b851413072a92.js"
+    "js": "chucks/placeholder.f0f83e1059b382a44c9e.js"
   },
   "fetchCaptcha": {
-    "js": "chucks/fetchCaptcha.fd1c75122a97a44297f3.js"
+    "js": "chucks/fetchCaptcha.8561f1c85f4c7b873b02.js"
   },
   "metadata": {
     "version": 123
@@ -50,5 +50,8 @@
   "/web/js/transfer_list": {
     "js": "/web/js/transfer_list.js",
     "css": "/web/js/transfer_list.css"
+  },
+  "/web/js/loan_detail": {
+    "js": "/web/js/loan_detail.js"
   }
 }
