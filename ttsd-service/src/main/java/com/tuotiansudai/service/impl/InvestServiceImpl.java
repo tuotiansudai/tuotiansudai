@@ -459,7 +459,6 @@ public class InvestServiceImpl implements InvestService {
 
     public long calculateMembershipPreference(String loginName, long loanId, List<Long> couponIds, long investAmount, Source source) {
         long preference;
-        UserMembershipModel userMembershipModel = userMembershipEvaluator.evaluateUserMembership(loginName, new Date());
         double investFeeRate = membershipPrivilegePurchaseService.obtainServiceFee(loginName);
         LoanModel loanModel = loanMapper.findById(loanId);
 

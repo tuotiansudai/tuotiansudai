@@ -37,7 +37,7 @@
     </select>
 
     <select id="findValidPrivilegeModelByLoginName" resultMap="membershipPrivilegeResultMap" parameterType="map">
-        select * from membership_privilege where login_name = #{loginName} and #{currentDate} between start_time and end_time;
+        select * from membership_privilege where login_name = #{loginName} and privilege='SERVICE_FEE' and #{currentDate} between start_time and end_time;
     </select>
 
     <select id="findMembershipPrivilegeExpiredUsers" resultType="string">

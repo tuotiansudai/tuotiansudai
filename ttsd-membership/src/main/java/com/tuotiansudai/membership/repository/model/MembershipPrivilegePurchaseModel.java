@@ -38,6 +38,7 @@ public class MembershipPrivilegePurchaseModel implements Serializable{
     }
     public MembershipPrivilegePurchaseModel(long id, MembershipPrivilegePurchaseDto purchaseDto){
         this.id = id;
+        this.loginName = purchaseDto.getLoginName();
         this.mobile = purchaseDto.getMobile();
         this.userName = purchaseDto.getUserName();
         this.privilegePriceType = MembershipPrivilegePriceType.getPriceTypeByDuration(purchaseDto.getDuration());
