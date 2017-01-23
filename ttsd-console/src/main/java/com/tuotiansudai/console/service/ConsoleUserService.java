@@ -8,12 +8,12 @@ import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.console.bi.dto.RoleStage;
 import com.tuotiansudai.console.dto.UserItemDataDto;
 import com.tuotiansudai.console.repository.mapper.UserMapperConsole;
+import com.tuotiansudai.console.repository.model.UserMicroModelView;
 import com.tuotiansudai.console.repository.model.UserOperation;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.OperationType;
 import com.tuotiansudai.exception.EditUserException;
 import com.tuotiansudai.exception.ReferrerRelationException;
-import com.tuotiansudai.enums.OperationType;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.AutoInvestPlanMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
@@ -24,6 +24,7 @@ import com.tuotiansudai.service.ReferrerRelationService;
 import com.tuotiansudai.task.TaskConstant;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.collections4.CollectionUtils;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -234,5 +235,100 @@ public class ConsoleUserService {
         long min = AmountConverter.convertStringToCent(balanceMin);
         long max = AmountConverter.convertStringToCent(balanceMax);
         return Lists.newArrayList(min, max);
+    }
+
+    public BaseDto<BasePaginationDataDto<UserMicroModelView>> queryUserMicroView(String mobile,
+                                                                                 Date registerTimeStart,
+                                                                                 Date registerTimeEnd,
+                                                                                 Boolean hasCertify,
+                                                                                 Boolean invested,
+                                                                                 Long totalInvestAmountStart,
+                                                                                 Long totalInvestAmountEnd,
+                                                                                 Integer investCountStart,
+                                                                                 Integer investCountEnd,
+                                                                                 Integer loanCountStart,
+                                                                                 Integer loanCountEnd,
+                                                                                 Integer transformPeriodStart,
+                                                                                 Integer transformPeriodEnd,
+                                                                                 Integer invest1st2ndTimingStart,
+                                                                                 Integer invest1st2ndTimingEnd,
+                                                                                 Integer invest1st3ndTimingStart,
+                                                                                 Integer invest1st3ndTimingEnd,
+                                                                                 Date lastInvestTimeStart,
+                                                                                 Date lastInvestTimeEnd,
+                                                                                 Long repayingAmountStart,
+                                                                                 Long repayingAmountEnd,
+                                                                                 Date lastLoginTimeStart,
+                                                                                 Date lastLoginTimeEnd,
+                                                                                 Source lastLoginSource,
+                                                                                 int index,
+                                                                                 int pageSize) {
+
+
+        int count = userMapperConsole.findUserMicroModelCount(mobile,
+                registerTimeStart,
+                registerTimeEnd,
+                hasCertify,
+                invested,
+                totalInvestAmountStart,
+                totalInvestAmountEnd,
+                investCountStart,
+                investCountEnd,
+                loanCountStart,
+                loanCountEnd,
+                transformPeriodStart,
+                transformPeriodEnd,
+                invest1st2ndTimingStart,
+                invest1st2ndTimingEnd,
+                invest1st3ndTimingStart,
+                invest1st3ndTimingEnd,
+                lastInvestTimeStart,
+                lastInvestTimeEnd,
+                repayingAmountStart,
+                repayingAmountEnd,
+                lastLoginTimeStart,
+                lastLoginTimeEnd,
+                lastLoginSource);
+
+        List<UserMicroModelView> userMicroModelViewList = userMapperConsole.queryUserMicroModel(mobile,
+                registerTimeStart,
+                registerTimeEnd,
+                hasCertify,
+                invested,
+                totalInvestAmountStart,
+                totalInvestAmountEnd,
+                investCountStart,
+                investCountEnd,
+                loanCountStart,
+                loanCountEnd,
+                transformPeriodStart,
+                transformPeriodEnd,
+                invest1st2ndTimingStart,
+                invest1st2ndTimingEnd,
+                invest1st3ndTimingStart,
+                invest1st3ndTimingEnd,
+                lastInvestTimeStart,
+                lastInvestTimeEnd,
+                repayingAmountStart,
+                repayingAmountEnd,
+                lastLoginTimeStart,
+                lastLoginTimeEnd,
+                lastLoginSource,
+                index,
+                pageSize);
+
+        for (UserMicroModelView view : userMicroModelViewList) {
+            view.setAverageInvestAmount(((double) view.getTotalInvestAmount()) / view.getInvestCount());
+            view.setAverageLoanInvestAmount((double) view.getTotalInvestAmount() / view.getLoanCount());
+            view.setLastLoginToNow((int) (DateTime.now().withTimeAtStartOfDay().getMillis()
+                    - new DateTime(view.getRegisterTime()).withTimeAtStartOfDay().getMillis() / (1000 * 60 * 60 * 24)));
+        }
+
+        BaseDto<BasePaginationDataDto<UserMicroModelView>> baseDto = new BaseDto<>();
+        BasePaginationDataDto<UserMicroModelView> basePaginationDataDto = new BasePaginationDataDto<>(index, pageSize, count, userMicroModelViewList);
+        basePaginationDataDto.setStatus(true);
+        baseDto.setData(basePaginationDataDto);
+
+        return baseDto;
     }
 }
