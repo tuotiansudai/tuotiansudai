@@ -15,6 +15,7 @@ public enum MessageQueue {
     BindBankCard_CompletePointTask("BindBankCard-CompletePointTask"),
     TurnOnNoPasswordInvest_CompletePointTask("TurnOnNoPasswordInvest-CompletePointTask"),
     InvestSuccess_ActivityReward("InvestSuccess-ActivityReward"),
+    InvestSuccess_ExperienceInterest("InvestSuccess_ExperienceInterest"),
     EventMessage("EventMessage"),
     ManualMessage("ManualMessage"),
     PushMessage("PushMessage"),

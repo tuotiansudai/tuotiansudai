@@ -24,7 +24,8 @@ INSERT INTO coupon (`amount`,
                     `invest_lower_limit`,
                     `product_types`,
                     `coupon_type`,
-                    `user_group`)
+                    `user_group`,
+                    `coupon_source`)
   SELECT
     688800,
     0,
@@ -46,14 +47,15 @@ INSERT INTO coupon (`amount`,
     0,
     'EXPERIENCE',
     'NEWBIE_COUPON',
-    'NEW_REGISTERED_USER'
+    'NEW_REGISTERED_USER',
+    '拓天速贷平台赠送'
   FROM dual
   WHERE EXISTS(SELECT *
                FROM `user`
                WHERE login_name = 'sidneygao');
 
 update coupon set deleted = '1' where amount = 588800 and `product_types` ='EXPERIENCE' and `coupon_type` ='NEWBIE_COUPON';
-update coupon set deleted = '1' where  id in (315,316,317,318,319);
+update coupon set deleted = '1' where  id in (315,316,317,318,319,100033);
 INSERT INTO `coupon` (`id`,`amount`,`rate`,`birthday_benefit`,`multiple`,`start_time`,`end_time`,`deadline`,`used_count`,`total_count`,`issued_count`,`active`,`shared`,`created_by`,`created_time`,`activated_by`,`activated_time`,`updated_by`,`updated_time`,`invest_lower_limit`,`product_types`,`coupon_type`,`user_group`,`sms_alert`,`deleted`,`comment`,`coupon_source`) VALUES (376,22200,0,0,0,'2017-01-01 00:00:00','2017-12-31 23:59:59',30,0,9999999,0,1,0,'sidneygao','2017-01-01 19:13:08','sidneygao','2017-01-01 19:13:08',NULL,'2017-01-01 19:13:08',6000000,'_180,_360','RED_ENVELOPE','NOT_ACCOUNT_NOT_INVESTED_USER',0,0,'','拓天速贷平台赠送');
 INSERT INTO `coupon` (`id`,`amount`,`rate`,`birthday_benefit`,`multiple`,`start_time`,`end_time`,`deadline`,`used_count`,`total_count`,`issued_count`,`active`,`shared`,`created_by`,`created_time`,`activated_by`,`activated_time`,`updated_by`,`updated_time`,`invest_lower_limit`,`product_types`,`coupon_type`,`user_group`,`sms_alert`,`deleted`,`comment`,`coupon_source`) VALUES (377,17800,0,0,0,'2017-01-01 00:00:00','2017-12-31 23:59:59',30,0,9999999,0,1,0,'sidneygao','2017-01-01 19:13:08','sidneygao','2017-01-01 19:13:08',NULL,'2017-01-01 19:13:08',5000000,'_180,_360','RED_ENVELOPE','NOT_ACCOUNT_NOT_INVESTED_USER',0,0,'','拓天速贷平台赠送');
 INSERT INTO `coupon` (`id`,`amount`,`rate`,`birthday_benefit`,`multiple`,`start_time`,`end_time`,`deadline`,`used_count`,`total_count`,`issued_count`,`active`,`shared`,`created_by`,`created_time`,`activated_by`,`activated_time`,`updated_by`,`updated_time`,`invest_lower_limit`,`product_types`,`coupon_type`,`user_group`,`sms_alert`,`deleted`,`comment`,`coupon_source`) VALUES (378,9800,0,0,0,'2017-01-01 00:00:00','2017-12-31 23:59:59',30,0,9999999,0,1,0,'sidneygao','2017-01-01 19:13:08','sidneygao','2017-01-01 19:13:08',NULL,'2017-01-01 19:13:08',3000000,'_180,_360','RED_ENVELOPE','NOT_ACCOUNT_NOT_INVESTED_USER',0,0,'','拓天速贷平台赠送');
