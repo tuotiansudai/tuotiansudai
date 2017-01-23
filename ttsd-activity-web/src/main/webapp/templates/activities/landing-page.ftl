@@ -1,277 +1,168 @@
 <#import "../macro/global.ftl" as global>
 <@global.main pageCss="${css.landing_page}" pageJavascript="${js.landing_page}" activeNav="" activeLeftNav="" title="新手福利_拓天新手投资_拓天速贷" keywords="拓天速贷,新手投资,新手加息券,新手红包" description="拓天速贷是中国P2P互联网金融信息服务平台,为广大投资、贷款的用户提供多元化的投资选择和优质的综合理财服务,新手注册可领取588红包大奖和3%的新手加息券.">
+
 <div id="landingContainerBox">
-    <div class="landing-container" >
-        <div class="landing-header">
-            <a href="/">访问首页</a>
+    <div class="landing-container">
+    <div class="landing-header-nav">
+    <a href="/">访问首页</a>
+    </div>
+
+        <div class="landing-top-banner">
         </div>
 
-        <div class="web-page-register">
-            <div class="landing-top">
-                <div class="landing-inner">
-                    <div class="register-box">
-                        <div class="refer-person-info">您的好友<span class="refer-name"></span>邀请您领取投资大礼包</div>
-                        <form class="register-user-form" action="/register/user" method="post" autocomplete="off" novalidate="novalidate">
-                            <ul class="reg-list tl register-step-one">
-                                <li>
-                                    <label for="" class="reg-title">手机号:</label>
-                                    <i class="sprite-register-ic-mobile"></i>
-                                    <input type="text" id="mobile" name="mobile" class="mobile long" placeholder="手机号"
-                                           maxlength="11" value="">
-                                </li>
-                                <li id="mobileErr" class="height"></li>
-                                <li>
-                                    <label for="" class="reg-title">密码:</label>
-                                    <i class="sprite-register-ic-password"></i>
-                                    <input type="password" id="password" name="password" placeholder="密码" maxlength="20"
-                                           class="password long" value="">
-                                </li>
-                                <li id="passwordErr" class="height"></li>
+        <div class="newbie-step-one page-width">
+            <div class="image-title"></div>
+            <dl class="new-user-list clearfix">
+                <dt class="clearfix tc">新手体验项目</dt>
+                <dd><i>15</i>% <br/><em>预期年化收益</em></dd>
+                <dd><i>3</i>天 <br/><em>项目期限</em></dd>
+            </dl>
 
-                                <li class="code">
-                                    <label for="" class="reg-title">验证码:</label>
-                                    <i class="sprite-register-ic-img-code"></i>
-                                    <input type="text" id="appCaptcha" name="appCaptcha" placeholder="验证码" maxlength="5"
-                                           class="appCaptcha" value="">
-                                    <em class="image-captcha">
-                                        <img src="" alt=""/>
-                                    </em>
-                                    <span class="img-change">换一张</span>
-                                </li>
-                                <li id="appCaptchaErr" class="height appCaptchaErr"></li>
-                                <li>
-                                    <label for="captcha" class="reg-title">手机验证码:</label>
-                                    <i class="sprite-register-ic-captcha"></i>
-                                    <span class="captcha-tag" id="pcCaptcha">
+            <div class="tc"><a href="#" class="btn-normal" id="btn-experience">领取6888元体验金</a></div>
+
+        </div>
+
+        <div class="newbie-step-two">
+            <div class="image-decoration-bg"></div>
+            <div class="image-title"></div>
+            <div class="image-red-envelope"></div>
+
+            <div class="tc"><a href="#" class="btn-normal" id="btn-red-envelope">立即领取</a></div>
+
+        </div>
+
+        <div class="newbie-step-three page-width">
+            <div class="image-title"></div>
+            <div class="subtitle tc"><i>新人独享13%高息新手标，30天灵活期限，满足您对资金流动性的需求</i></div>
+
+            <dl class="new-user-list clearfix">
+                <dt class="clearfix tc">新手专享标</dt>
+                <dd><i>13</i>% <br/><em>预期年化收益</em></dd>
+                <dd><i>30</i>天 <br/><em>项目期限</em></dd>
+            </dl>
+
+            <div class="tc"><a href="#" class="btn-normal" id="btn-invest">立即投资</a></div>
+
+        </div>
+
+        <div class="newbie-step-four">
+            <div class="image-decoration-bg"></div>
+            <div class="image-title"></div>
+            <div class="subtitle tc"><i>注册后15天内完成首次投资，可获得3%加息券</i></div>
+
+            <div class="image-coupon"></div>
+
+            <div class="image-steps tc">
+                <img src="${staticServer}/activity/images/sign/actor/landingpage/newbie-step4-1.png">
+                <img class="arrow"
+                     src="${staticServer}/activity/images/sign/actor/landingpage/newbie-step4-arrow.png">
+                <img src="${staticServer}/activity/images/sign/actor/landingpage/newbie-step4-2.png">
+                <img class="arrow"
+                     src="${staticServer}/activity/images/sign/actor/landingpage/newbie-step4-arrow.png">
+                <img src="${staticServer}/activity/images/sign/actor/landingpage/newbie-step4-3.png">
+            </div>
+            <div class="tc"><a href="#" class="btn-normal" id="btn-get-coupon">立即注册领取</a></div>
+
+        </div>
+        <div class="newbie-step-five tc">
+            <dl class="newbie-step-five-dl clearfix">
+                <dt class="clearfix tc">拓天速贷为您的资金安全保驾护航</dt>
+                <dd><img src="${staticServer}/activity/images/sign/actor/landingpage/newbie-step5-cfca.png"><br><i>CFCA权威认证</i>
+                    <br/>
+                    <p>携手中国金融认证中心<br>投资合同受法律保护</p></dd>
+                <dd><img
+                        src="${staticServer}/activity/images/sign/actor/landingpage/newbie-step5-control.png"><br><i>风控严谨</i>
+                    <br/>
+                    <p>六重风控，22道手续<br>历史全额兑付，0预期0坏账</p></dd>
+                <dd><img src="${staticServer}/activity/images/sign/actor/landingpage/newbie-step5-security.png"><br><i>稳健安全</i>
+                    <br/>
+                    <p>预期年化收益10%～13%<br>房/车抵押债权安全系数高</p></dd>
+            </dl>
+
+        </div>
+
+        <div class="newbie-step-six">
+            <div class="newbie-step-six-box">
+                <p>温馨提示</p>
+                <p>1. 平台新注册用户可使用6888元体验金投资新手体验项目，投资周期为3天，到期可获收益7.64元，该笔收益可在 "我的账户"
+                    中查看，投资累计满1000元即可提现（投资债权转让项目除外）；</p>
+                <p>2. 30天 "新手专享" 债权每次限投50-10000元，每人仅限投1次；</p>
+                <p>3. 用户所获红包及加息券可在 "我的账户-我的宝藏" 查看；</p>
+                <p>4. 每笔投资仅限使用一张优惠券，用户可在投资时优先选择收益最高的优惠券使用，并在 "优惠券" 一栏中进行勾选；</p>
+                <p>5. 使用红包金额将于所投债权放款后返至您的账户；</p>
+                <p>6. 使用加息券所得收益，将体现在该笔投资项目收益中，用户可在 "我的账户" 中查询；</p>
+                <p>7. 每个身份证仅限参加一次，刷奖、冒用他人身份证、银行卡者一经核实，取消活动资格，所得奖励不予承兑；</p>
+                <p>8. 活动遵循拓天速贷法律声明，最终解释权归拓天速贷平台所有。</p>
+            </div>
+
+        </div>
+
+        <div class="newbie-step-register">
+            <div class="register-box">
+                <div class="refer-person-info">您的好友<span class="refer-name"></span>邀请您领取投资大礼包</div>
+                <form class="register-user-form" action="/register/user" method="post" autocomplete="off"
+                      novalidate="novalidate">
+                    <ul class="reg-list tl register-ul">
+                        <li>
+                            <#--手机号:-->
+                            <i class="newbie-register-ic-mobile"></i>
+                            <input type="text" id="mobile" name="mobile" class="mobile input-width" placeholder="手机号"
+                                   maxlength="11" value="">
+                        </li>
+                        <li id="mobileErr" class="err-height"></li>
+                        <li>
+                            <#--密码:-->
+                            <i class="newbie-register-ic-password"></i>
+                            <input type="password" id="password" name="password" placeholder="密码" maxlength="20"
+                                   class="password input-width" value="">
+                        </li>
+                        <li id="passwordErr" class="err-height"></li>
+
+                        <li class="code">
+                            <#--验证码:-->
+                            <i class="newbie-register-ic-img-captcha"></i>
+                            <input type="text" id="appCaptcha" name="appCaptcha" placeholder="验证码" maxlength="5"
+                                   class="appCaptcha" value="">
+                            <em class="image-captcha">
+                                <img src="" alt=""/>
+                            </em>
+                            <span class="img-change">换一张</span>
+                        </li>
+                        <li id="appCaptchaErr" class="err-height appCaptchaErr"></li>
+                        <li>
+                            <#--手机验证码:-->
+                            <i class="newbie-register-ic-captcha"></i>
+                            <span class="captcha-tag" id="pcCaptcha">
                                 <input type="text" class="captcha" autocomplete="off" name="captcha" id="captcha"
                                        autocorrect="off" autocapitalize="off" placeholder="手机验证码" maxlength="6">
                                 <button type="button" class="fetch-captcha btn" disabled="disabled">获取验证码</button>
                             </span>
-                                </li>
-                                <li id="captchaErr" class="height"></li>
-                                <li class="agree-last">
-                                    <input type="checkbox" name="agreement" id="agreementInput" class="agreement-check" checked>
-                                    <label for="agreementInput" class="check-label">同意拓天速贷<a href="javascript:void(0);" class="show-agreement">《服务协议》</a></label>
-                                </li>
-                                <li id="agreementInputErr" class="height"></li>
-                                <li  class="tc">
-                                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                                    <input type="hidden" name="referrer" value="" >
-                                    <input type="submit" class="register-user" value="立即注册">
-                                </li>
-                                <li class="tc mobile-agreement">
-                                    <label>点击立即注册即同意拓天速贷<a href="javascript:void(0);" class="show-agreement">《服务协议》</a></label>
-                                </li>
-                            </ul>
-                        </form>
-
-                    </div>
-                </div>
-            </div>
-            <div class="content-three">
-                <div class="three-title">
-                    <h3><span><i class="left-icon"></i>新人福利<i class="right-icon"></i></span></h3>
-                </div>
-                <div class="content-wp">
-                    <p>新用户注册后，即可获得5888元体验金，可投资新手体验项目，</p>
-
-                    <p>成功投资新手体验项目后，可获得588现金红包及3%加息券！</p>
-                    <img src="${staticServer}/activity/images/sign/actor/landingpage/gift-list.png" width="100%">
-                </div>
-            </div>
-            <div class="content-four">
-                <div class="four-title">
-                    <h3><span><i class="left-icon"></i>新手项目<i class="right-icon"></i></span></h3>
-                </div>
-                <div class="content-wp">
-                    <ul>
-                        <li>
-                            <a href="/loan-list">
-                                <img src="${staticServer}/activity/images/sign/actor/landingpage/pro-one.png" width="80%">
-                            </a>
                         </li>
-                        <li>
-                            <a href="/loan-list">
-                                <img src="${staticServer}/activity/images/sign/actor/landingpage/pro-two.png" width="80%">
-                            </a>
+                        <li id="captchaErr" class="err-height"></li>
+                        <li class="agree-register-protocol">
+                            <input type="checkbox" name="agreement" id="agreementInput" class="agreement-check"
+                                   checked>
+                            <label for="agreementInput" class="check-label">同意拓天速贷<a href="javascript:void(0);"
+                                                                                     class="show-agreement">《服务协议》</a></label>
+                        </li>
+                        <li id="agreementInputErr" class="err-height"></li>
+                        <li class="tc">
+                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                            <input type="hidden" name="referrer" value="">
+                            <input type="submit" class="register-user" value="立即注册">
+                        </li>
+                        <li class="tc mobile-agreement">
+                            <label>点击立即注册即同意拓天速贷<a href="javascript:void(0);"
+                                                   class="show-agreement">《服务协议》</a></label>
                         </li>
                     </ul>
-                </div>
-            </div>
-            <div class="content-one">
-                <div class="one-title">
-                    <h3><span><i class="left-icon"></i>拓天速贷的优势<i class="right-icon"></i></span></h3>
-                </div>
-                <div class="content-wp">
-                    <ul>
-                        <li>
-                            <div class="icon-one"></div>
-                            <span class="one-text">
-						 <b class="clearfix">稳健收益</b>
-						预期年化收益可达13%
-					</span>
-                        </li>
-                        <li>
-                            <div class="icon-two"></div>
-                            <span class="clearfix">
-						<b class="clearfix">抵押模式</b>
-						公认的安全抵押债权
-					</span>
-                        </li>
-                        <li>
-                            <div class="icon-three"></div>
-                            <span class="clearfix">
-                        <b class="clearfix">资金透明</b>
-                        第三方资金托管
-                    </span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="content-five">
-                <div class="five-title">
-                    <h3><span><i class="left-icon"></i>主流媒体眼中的我们<i class="right-icon"></i></span></h3>
-                </div>
-                <div class="content-wp">
-                    <div class="left">
-                        <a href="http://www.iqiyi.com/w_19rt7ygfmh.html" target="_blank">
+                </form>
 
-                        </a>
-                    </div>
-                    <div class="right">
-                        <div class="title">拓天速贷以卓越风控打造高效资产平台</div>
-                        <p>
-                            随着拓天速贷终端产品的不断改进和完善，用户将得到更好的服务体验，
-                            在未来持续性优化改进的基础上，拓天速贷将重点把风控体系打造的更加系统性、完善化，
-                            使其超越百分之百的为用户做到本金及收益无风险化保障，最终使拓天速贷风控体系成为行业中的典范和标杆，
-                            引领行业持续健康的发展... ...<a href="http://toutiao.com/i6233268186905575938/" target="_blank">查看更多</a>
-                        </p>
-                    </div>
-                </div>
-
-            </div>
-            <div class="content-two">
-                <div class="two-title">
-                    <h3><span><i class="left-icon"></i>活动说明<i class="right-icon"></i></span></h3>
-                </div>
-                <div class="product-wp clearfix">
-                    <ul>
-                        <li><i class="fa fa-circle"></i>奖励可在“我的账户-我的宝藏”查看;</li>
-                        <li><i class="fa fa-circle"></i>成功投资新手体验项目后可获得588元现金红包及3%加息券;</li>
-                        <li><i class="fa fa-circle"></i>新手体验项目所得红包奖励需投资后方可提现，不可与其他红包及加息券共用；</li>
-                        <li><i class="fa fa-circle"></i>每个身份证仅限参加一次，刷奖、冒用他人身份证、银行卡者一经核实，取消活动资格，所得奖励不予承兑。</li>
-                    </ul>
-                    <div class="registered"><span>注册领取5888体验金</span></div>
-                </div>
             </div>
         </div>
     </div>
-    <div class="landing-phone-container">
-        <div class="landing-phone-logo">
-            <a href="/"><img src="${staticServer}/activity/images/icons/logo.png" class="landing-phone-logo-image"></a>
-        </div>
-        <img src="${staticServer}/activity/images/app-banner/app-banner-landingpage.jpg" class="landing-phone-banner">
 
-        <div class="tuotian-newuser">
-            <div class="landing-phone-section-header">
-                <h3><span><i class="left-icon"></i>新人福利<i class="right-icon"></i></span></h3>
-            </div>
-            <div class="wp tc">
-                <p>新用户注册后，即可获得5888元体验金，可投资新手体验项目，成功投资新手体验项目后，可获得588现金红包及3%加息券！</p>
-                <div id="slideBox" class="slideBox">
-                    <div class="bd">
-                        <ul>
-                            <li><img src="${staticServer}/activity/images/sign/actor/landingpage/big-money.png" width="60%"/></li>
-                            <li><img src="${staticServer}/activity/images/sign/actor/landingpage/small-money.png" width="60%"/></li>
-                            <li><img src="${staticServer}/activity/images/sign/actor/landingpage/percent-coupon.png" width="60%"/></li>
-                        </ul>
-                    </div>
-                    <a class="prev" href="javascript:void(0)"></a>
-                    <a class="next" href="javascript:void(0)"></a>
-                </div>
-                <p>奖励请前往“我的账户--我的宝藏”查看</p>
-            </div>
-        </div>
-        <div class="tuotian-products">
-            <div class="landing-phone-section-header">
-                <h3><span><i class="left-icon"></i>新手项目<i class="right-icon"></i></span></h3>
-            </div>
-            <div class="product-box-list fl">
-                <ul>
-                    <li>
-                        <a href="/loan-list?productType=JYF">
-                            <img src="${staticServer}/activity/images/sign/actor/landingpage/pro-one.png" width="80%">
-                        </a>
-                    </li>
-                    <li>
-                        <a href="/loan-list?productType=JYF">
-                            <img src="${staticServer}/activity/images/sign/actor/landingpage/pro-two.png" width="80%">
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <div class="tuotian-advantage">
-            <div class="landing-phone-section-header">
-                <h3><span><i class="left-icon"></i>拓天速贷的优势<i class="right-icon"></i></span></h3>
-            </div>
-            <div class="tuotian-advantage-group clearfix">
-            <span class="landing-phone-span-left"><img
-                    src="${staticServer}/activity/images/sign/actor/landingpage/landing-phone-interest.png"
-                    class="img-icon"></span>
-                <span class="landing-phone-span-right">稳健收益<br/><span>预期年化收益13%</span></span>
-            </div>
-            <div class="tuotian-advantage-group clearfix">
-            <span class="landing-phone-span-left"><img
-                    src="${staticServer}/activity/images/sign/actor/landingpage/landing-phone-guaranty.png"
-                    class="img-icon"></span>
-                <span class="landing-phone-span-right">抵押模式<br/><span>公认的安全抵押债权</span></span>
-            </div>
-            <div class="tuotian-advantage-group clearfix">
-            <span class="landing-phone-span-left"><img
-                    src="${staticServer}/activity/images/sign/actor/landingpage/landing-phone-fund.png" class="img-icon"></span>
-                <span class="landing-phone-span-right">资金透明<br/><span>第三方资金托管</span></span>
-            </div>
-        </div>
-        <div class="tuotian-aboutus">
-            <div class="landing-phone-section-header">
-                <h3><span><i class="left-icon"></i>媒体眼中的我们<i class="right-icon"></i></span></h3>
-            </div>
-            <div class="aboutus-content-container">
-                <img class="landing-phone-aboutus-header"
-                     src="/activity/images/sign/actor/landingpage/landing-phone-about-new.png"></img>
 
-                <p>
-                    随着拓天速贷终端产品的不断改进和完善，用户将得到更好的服务体验，在未来持续性优化改进的基础上，拓天速贷将重点把风控体系打造的更加系统性、完善化，使其超越百分之百的为用户做到本金及收益无风险化保障，最终使拓天速贷风控体系成为行业中的典范和标杆，引领行业持续健康的发展...
-                </p>
-            </div>
-        </div>
-        <div class="tuotian-rewards">
-            <div class="landing-phone-section-header">
-                <h3><span><i class="left-icon"></i>活动说明<i class="right-icon"></i></span></h3>
-            </div>
-            <div class="rewards-header">
-                <ul>
-                    <li><i class="fa fa-circle"></i><span>奖励可在“我的账户-我的宝藏”查看;</span></li>
-                    <li><i class="fa fa-circle"></i><span>成功投资新手体验项目后可获得588元现金红包及3%加息券;</span></li>
-                    <li><i class="fa fa-circle"></i><span>新手体验项目所得红包奖励需投资后方可提现，不可与其他红包及加息券共用；</span></li>
-                    <li><i class="fa fa-circle"></i><span>每个用户仅限参加一次，刷奖、冒用他人身份证、银行卡者一经核实，取消活动资格，所得奖励不予承兑。</span></li>
-                </ul>
-            </div>
-        </div>
-        <div class="tuotian-register">
-            <div class="landing-phone-section-header">
-                <h3><span><i class="left-icon"></i>现在就注册吧<i class="right-icon"></i></span></h3>
-            </div>
-
-            <#if isAppSource>
-                <a href="/register/user"> <input type="button" id="btn-register-now" class="register-user-phoneC-now" value="立即注册"></a>
-            <#else>
-                <div class="mobile-page-register clearfix">
-                </div>
-            </#if>
-        </div>
-    </div>
 </div>
 <div class="image-captcha-dialog" style="display: none;">
     <form class="image-captcha-form" action="/register/user/send-register-captcha" method="post">
@@ -285,7 +176,7 @@
         </div>
     </form>
 </div>
-<div id="agreementBox"  style="display: none;">
+<div id="agreementBox" style="display: none;">
     <div class="pad-m">
         <p>
             本网站由拓天伟业（北京）金融信息服务有限公司负责运营（以下“本网站”均指网站及拓天伟业（北京）金融信息服务有限公司）。在注册成为本网站用户前请务必仔细阅读以下条款。一旦成功注册成为本网站用户，您将被视为已充分理解并同意本协议全部内容；注册同时签署本协议，本协议立即在您与本公司之间产生合同法律效力。您注册成功后在本网站使用的全部服务及全部活动将受到本协议的约束并承担相应的责任和义务。若您不接受以下条款，请不要注册使用本网站服务。</p>
