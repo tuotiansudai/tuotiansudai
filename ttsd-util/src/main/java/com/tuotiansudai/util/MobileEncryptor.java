@@ -7,7 +7,7 @@ public class MobileEncryptor {
     }
 
     public static String encryptAppMiddleMobile(String mobile) {
-        return mobile.substring(0, 3) + MobileEncryptor.showChar(2) + mobile.substring(9);
+        return mobile.substring(0, 3) + MobileEncryptor.showChar(4) + mobile.substring(7);
     }
 
     public static String showChar(int showLength) {
