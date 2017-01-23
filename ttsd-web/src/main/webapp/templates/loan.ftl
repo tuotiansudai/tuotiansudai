@@ -1,6 +1,6 @@
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="${css.loan_detail}" pageJavascript="${js.loan_detail}" activeNav="我要投资" activeLeftNav="" title="标的详情">
-<div class="loan-detail-content" data-loan-status="${loan.loanStatus}" data-loan-progress="${loan.progress?string.computer}" data-loan-countdown="${loan.countdown?string.computer}"
+<div class="loan-detail-content" id="loanDetailContent" data-loan-status="${loan.loanStatus}" data-loan-progress="${loan.progress?string.computer}" data-loan-countdown="${loan.countdown?string.computer}"
      data-authentication="<@global.role hasRole="'USER'">USER</@global.role>" data-user-role="<@global.role hasRole="'INVESTOR'">INVESTOR</@global.role>" >
     <div class="borderBox clearfix no-border">
         <div class="loan-model bg-w">
@@ -14,6 +14,12 @@
                             <i class="ic-right"></i>
                         </span>
                     </#if>
+
+                    <div class="fl orange extra-rate">
+                        <i class="fa fa-mobile"></i>
+                        APP专享
+                    </div>
+
                     <#if loan.extraSource?? && loan.extraSource == "MOBILE">
                         <div class="fl orange extra-rate">
                             <i class="fa fa-mobile"></i>
@@ -316,7 +322,7 @@
                 </#if>
             </div>
         </div>
-        <div class="bg-w clear-blank borderBox loan-detail">
+        <div class="bg-w clear-blank borderBox loan-detail" id="loanDetailSwitch">
             <div class="loan-nav">
                 <ul class="clearfix">
                     <li class="active">借款详情</li>
@@ -542,4 +548,36 @@
 </div>
     <#include "component/red-envelope-float.ftl" />
     <#include "component/login-tip.ftl" />
+
+<script type="text/template" id="LendTemplate">
+    <table class="invest-list table-striped">
+            <thead>
+            <tr>
+            <th>出借人</th>
+            <th class="tr">出借金额（元）</th>
+    <th class="responsive-hide">出借方式</th>
+            <th class="responsive-hide tr">预期收益（元）</th>
+    <th>出借时间</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% _.each(data, function (item) { %>
+    var item.autoInvest=item.autoInvest ? '自动' : '手动';
+    <tr>
+    <td class="loan-td">
+        <%=item.mobile%>
+    </td>
+    <td class="tr"><%=item.amount%> </td>
+    <td class="responsive-hide">
+            <%=item.autoInvest%>
+        <span class="invest-{{source}}"></span>
+            </td>
+            <td class="responsive-hide tr"><%=item.expectedInterest%></td>
+    <td><%=item.createdTime%></td>
+    </tr>
+    <% }) %>
+    </tbody>
+    </table>
+
+</script>
 </@global.main>

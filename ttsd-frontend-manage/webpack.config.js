@@ -50,11 +50,6 @@ files.forEach(function(file){
 		newEntries[substr] = file;
 	}
 });
-//无需打包，只需要复制文件
-// pluginFiles.forEach(function(file) {
-// 	var substr = file.match(/resources\/static(\S*)\.dll\.js/)[1];
-// 	newEntries[substr] = file;
-// });
 
 commonOptions.entry = newEntries;
 

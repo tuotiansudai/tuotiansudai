@@ -637,6 +637,8 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             }
         });
     }
+
+
     // 投资加息
     (function () {
         var $extraRate = $('#extra-rate');

@@ -21,7 +21,7 @@
     "js": "chucks/imageSlider.d9b2dc73cbcf06294b0c.js"
   },
   "bookInvest": {
-    "js": "chucks/bookInvest.f86a85ac8b69690312c7.js"
+    "js": "chucks/bookInvest.726ce5410d10837ba442.js"
   },
   "redEnvelope": {
     "js": "chucks/redEnvelope.0f870f3adb6bec96ab2d.js"
@@ -35,10 +35,10 @@
     "css": "/web/js/register_user.css"
   },
   "placeholder": {
-    "js": "chucks/placeholder.f0f83e1059b382a44c9e.js"
+    "js": "chucks/placeholder.9ce37eb8936a164df526.js"
   },
   "fetchCaptcha": {
-    "js": "chucks/fetchCaptcha.8561f1c85f4c7b873b02.js"
+    "js": "chucks/fetchCaptcha.9640e616a50ce4494b9e.js"
   },
   "metadata": {
     "version": 123
@@ -52,6 +52,7 @@
     "css": "/web/js/transfer_list.css"
   },
   "/web/js/loan_detail": {
-    "js": "/web/js/loan_detail.js"
+    "js": "/web/js/loan_detail.js",
+    "css": "/web/js/loan_detail.css"
   }
 }
