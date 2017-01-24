@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "61e0ff8a3bc4095c0ddf"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "7b6bfb3b262f5c2c6250"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -849,7 +849,7 @@
 	            var oScript = document.createElement('script');
 	            oScript.type = 'text/javascript';
 	            oScript.src = staticServer + url;
-	            oScript.async = true;
+	            oScript.async = false;
 	            // IE9及以上浏览器，Firefox，Chrome，Opera ,
 
 	            //插入到body底部
@@ -878,6 +878,7 @@
 	window.globalFun.init();
 
 	window.jQuery = window.$ = window.jquery_library(1);
+
 	window.layer = window.jquery_library(2);
 	window.layer.config({
 	    path: staticServer + '/public/'

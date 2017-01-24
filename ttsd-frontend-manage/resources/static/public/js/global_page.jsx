@@ -262,7 +262,7 @@ var web_globalFun = (function() {
             var oScript = document.createElement('script');
             oScript.type = 'text/javascript';
             oScript.src = staticServer+url;
-            oScript.async = true;
+            oScript.async = false;
             // IE9及以上浏览器，Firefox，Chrome，Opera ,
 
             //插入到body底部
@@ -272,8 +272,6 @@ var web_globalFun = (function() {
             window.onload=function() {
                 callback && callback();
             }
-
-
         }
     }
     return globalFun;
@@ -293,10 +291,13 @@ window.globalFun =new Proxy_GlobalFun();
 window.globalFun.init();
 
 window.jQuery = window.$ = window.jquery_library(1);
+
 window.layer = window.jquery_library(2);
 window.layer.config({
     path: staticServer+'/public/'
 });
+
+window._ = window.jquery_library(3);
 
 // ********* cnzz统计 BEGIN ***********
 function cnzzPushConstructor() {

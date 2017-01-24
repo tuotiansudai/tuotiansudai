@@ -1,6 +1,4 @@
-require('publicJs/underscore');
 let commonFun= require('publicJs/commonFun');
-
 $.fn.loadPagination = function (requestData, loadSuccess) {
     var self = $(this);
     var queryParams = '';

@@ -1,7 +1,8 @@
 require('webStyle/investment/loan_detail.scss');
+require('publicStyle/plugins/fancybox.scss');
 require('webJsModule/pagination');
-require('publicJs/underscore');
 require('publicJs/plugins/autoNumeric');
+require('publicJs/plugins/jquery.fancybox.min');
 
 require('webJsModule/coupon_alert');
 require('webJsModule/assign_coupon');
@@ -24,9 +25,11 @@ let $authorizeAgreementOptions = $('#authorizeAgreementOptions');
 
 let $investForm = $('#investForm');
 let $investSubmit=$('#investSubmit');
+let $isAuthenticationRequired=$('#isAuthenticationRequired');
 
 let isInvestor = 'INVESTOR' === $loanDetailContent.data('user-role');
 let isAuthentication = 'USER' === $loanDetailContent.data('authentication');
+let loanId = $('input[name="loanId"]',$loanDetailContent).val();
 
 var viewport = globalFun.browserRedirect();
 
@@ -95,11 +98,9 @@ function investSubmit(){
             area: ['300px', '160px'],
             content: '<p class="pad-m-tb tc">确认投资？</p>',
             btn1: function(){
-                cnzzPush.trackClick("67标的详情页","马上投资确认框","取消");
                 layer.closeAll();
             },
             btn2:function(){
-                cnzzPush.trackClick("68标的详情页","马上投资确认框","确认");
                 if($isAuthenticationRequired.val()==='false'){//判断是否开启安心签免验
                     sendSubmitRequest();
                 }else{
@@ -165,12 +166,10 @@ function markNoPasswordRemind(){
         area: ['500px', '160px'],
         content: '<p class="pad-m-tb tc">推荐您开通免密投资功能，简化投资过程，理财快人一步！</p>',
         btn1: function () {
-            cnzzPush.trackClick("标的详情页", "马上投资弹框", "继续投资B");
             investSubmit();
             layer.closeAll();
         },
         btn2: function () {
-            cnzzPush.trackClick("标的详情页", "马上投资弹框", autoInvestOn ? "开启免密投资" : "前往联动优势授权");
             if (autoInvestOn) {
                 $.ajax({
                     url: '/no-password-invest/enabled',
@@ -549,7 +548,7 @@ function getSkipPhoneTip(){
 //借款详情和出借记录
 (function() {
     let $loanDetailSwitch=$('#loanDetailSwitch')
-    let menuTab=$('.loan-nav',$loanDetailSwitch);
+    let menuTab=$('.loan-nav li',$loanDetailSwitch);
     let $loanList = $('.loan-list', $loanDetailSwitch);
     let paginationElement = $('.pagination', $loanDetailSwitch);
 
@@ -564,7 +563,10 @@ function getSkipPhoneTip(){
                         return "<i class='" + classMapping[render(text)] + "'></i>";
                     }
                 };
-                $('.loan-list-con table',$loanDetailSwitch).html( _.template($('#LendTemplate').html(), data));
+                let LendTpl=$('#LendTemplate').html();
+                let ListRender = _.template(LendTpl);
+
+                $('.loan-list-con table',$loanDetailSwitch).html(ListRender(data));
             }
         });
     };
@@ -598,11 +600,9 @@ function getSkipPhoneTip(){
             area: ['500px', '160px'],
             content: '<p class="pad-m-tb tc">您可直接开启免密投资，简化投资过程，理财快人一步，是否开启？</p>',
             btn1: function () {
-                cnzzPush.trackClick("标的详情页", "推荐免密弹框", "不开启");
                 layer.closeAll();
             },
             btn2: function () {
-                cnzzPush.trackClick("标的详情页", "推荐免密弹框", "开启");
                 if (autoInvestOn) {
                     // 如果开启过免密支付
                     commonFun.useAjax({
@@ -630,26 +630,6 @@ function getSkipPhoneTip(){
     }).on('click', '.again-btn', function(event) {
         event.preventDefault();
         $authorizeAgreement.submit();
-    });
-
-})();
-
-// cnzz统计
-(function() {
-    let $againBtn=$('.again-btn',$loanDetailContent),
-        $failGoOnBtnInvest=$('.fail_go_on_invest',$loanDetailContent),
-        $successGoOnBtnInvest=$('.success_go_on_invest',$loanDetailContent);
-
-    $againBtn.on('click',function(){
-        cnzzPush.trackClick("标的详情页","免密异步弹框","重新授权");
-    });
-
-    $failGoOnBtnInvest.on('click',function(){
-        cnzzPush.trackClick("标的详情页","免密异步弹框","继续投资C1");
-    });
-
-    $successGoOnBtnInvest.on('click',function(){
-        cnzzPush.trackClick("标的详情页","免密异步弹框","继续投资C2");
     });
 
 })();
@@ -848,31 +828,25 @@ $('[scroll-carousel]').carousel().find('.col').fancybox({
         });
         var couponIds = queryParams.length == 0 ? 0: queryParams[0].value;
 
-        $.ajax({
+        commonFun.useAjax({
             url: '/get-membership-preference',
             type: 'GET',
-            dataType: 'json',
             data:{"loanId":loanId,"investAmount":value,"couponIds":couponIds},
-            contentType: 'application/json; charset=UTF-8'
-        })
-            .done(function(response) {
-                var data=response.data;
-                if (data.status) {
-                    var info='V'+data.level+'会员，专享服务费'+data.rate+'折优惠，已多赚'+data.amount+'元';
+        },function (response) {
+            var data=response.data;
+            if (data.status) {
+                var info='V'+data.level+'会员，专享服务费'+data.rate+'折优惠，已多赚'+data.amount+'元';
 
-                    layer.tips(info, $expected, {
-                        tips: [1, '#ff7200'],
-                        time: 3000,
-                        skin: 'level-layer-tips',
-                        tipsMore: true,
-                        area: 'auto',
-                        maxWidth: '400'
-                    });
-                }
-            })
-            .fail(function() {
-
-            });
+                layer.tips(info, $expected, {
+                    tips: [1, '#ff7200'],
+                    time: 3000,
+                    skin: 'level-layer-tips',
+                    tipsMore: true,
+                    area: 'auto',
+                    maxWidth: '400'
+                });
+            }
+        });
 
     });
 
