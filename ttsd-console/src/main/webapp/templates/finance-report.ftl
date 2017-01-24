@@ -37,7 +37,7 @@
 
             <div class='input-group date' id='datetimepickerStartTime'>
                 <input type='text' class="form-control" name="investStartTime"
-                       value="${(investStartTime?string('yyyy-MM-dd HH:mm'))!}"/>
+                       value="${(investStartTime?string('yyyy-MM-dd HH:mm:ss'))!}"/>
 					                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
@@ -46,7 +46,7 @@
 
             <div class='input-group date' id='datetimepickerEndTime'>
                 <input type='text' class="form-control" name="investEndTime"
-                       value="${(investEndTime?string('yyyy-MM-dd HH:mm'))!}"/>
+                       value="${(investEndTime?string('yyyy-MM-dd HH:mm:ss'))!}"/>
 					                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
@@ -138,7 +138,7 @@
             <ul class="pagination pull-left">
                 <li>
                     <#if data.hasPreviousPage >
-                    <a href="/finance-manage/financeReport?index=${data.index - 1}&pageSize=${data.pageSize}&loanId=${(loanId?c)!}&period=${selectedPeriod!}&investLoginName=${investLoginName!}&investStartTime=${(investStartTime?string('yyyy-MM-dd HH:mm'))!}&investEndTime=${(investEndTime?string('yyyy-MM-dd HH:mm'))!}&<#if selectedPreferenceType??>usedPreferenceType=${selectedPreferenceType.name()}</#if>"
+                    <a href="/finance-manage/financeReport?index=${data.index - 1}&pageSize=${data.pageSize}&loanId=${(loanId?c)!}&period=${selectedPeriod!}&investLoginName=${investLoginName!}&investStartTime=${(investStartTime?string('yyyy-MM-dd HH:mm:ss'))!}&investEndTime=${(investEndTime?string('yyyy-MM-dd HH:mm:ss'))!}&<#if selectedPreferenceType??>usedPreferenceType=${selectedPreferenceType.name()}</#if>"
                        aria-label="Previous">
                     <#else>
                     <a href="#" aria-label="Previous">
@@ -149,7 +149,7 @@
                 <li><a>${data.index}</a></li>
                 <li>
                     <#if data.hasNextPage>
-                    <a href="/finance-manage/financeReport?index=${data.index + 1}&pageSize=${data.pageSize}&loanId=${(loanId?c)!}&period=${selectedPeriod!}&investLoginName=${investLoginName!}&investStartTime=${(investStartTime?string('yyyy-MM-dd HH:mm'))!}&investEndTime=${(investEndTime?string('yyyy-MM-dd HH:mm'))!}&<#if selectedPreferenceType??>usedPreferenceType=${selectedPreferenceType.name()}</#if>"
+                    <a href="/finance-manage/financeReport?index=${data.index + 1}&pageSize=${data.pageSize}&loanId=${(loanId?c)!}&period=${selectedPeriod!}&investLoginName=${investLoginName!}&investStartTime=${(investStartTime?string('yyyy-MM-dd HH:mm:ss'))!}&investEndTime=${(investEndTime?string('yyyy-MM-dd HH:mm:ss'))!}&<#if selectedPreferenceType??>usedPreferenceType=${selectedPreferenceType.name()}</#if>"
                        aria-label="Next">
                     <#else>
                     <a href="#" aria-label="Next">

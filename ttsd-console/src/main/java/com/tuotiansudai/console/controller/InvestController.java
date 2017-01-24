@@ -10,6 +10,7 @@ import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.service.RepayService;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -53,7 +54,9 @@ public class InvestController {
                                       @Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index) {
         int pageSize = 10;
         InvestPaginationDataDto dataDto = consoleInvestService.getInvestPagination(loanId, investorMobile, channel, source, role,
-                startTime, endTime, investStatus, preferenceType, index, pageSize);
+                startTime == null ? new DateTime(0).toDate() : new DateTime(startTime).withTimeAtStartOfDay().toDate(),
+                endTime == null ? new DateTime(9999, 12, 31, 0, 0, 0).toDate() : new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate(),
+                investStatus, preferenceType, index, pageSize);
         List<String> channelList = consoleInvestService.findAllChannel();
         ModelAndView mv = new ModelAndView("/invest-list");
         mv.addObject("data", dataDto);
