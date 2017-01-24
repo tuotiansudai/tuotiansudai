@@ -134,15 +134,21 @@ form label.error {
     position: relative;
     height: 350px;
     background: url("/activity/images/sign/actor/landingpage/newbie-banner.png") center top no-repeat;
+
+    .img-app-banner {
+      width: 100%;
+      height: 100%;
+      display: none;
+    }
   }
 
   .newbie-step-one {
     color: #ff473c;
+    margin-top: 30px;
     padding-bottom: 40px;
     .image-title {
       background: url("/activity/images/sign/actor/landingpage/newbie-step1-title.png") center top no-repeat;
       height: 40px;
-      margin-top: 30px;
       //background-size: ;
     }
   }
@@ -173,7 +179,7 @@ form label.error {
     }
 
     .btn-normal {
-      color: #803c04;
+      color: #803c04 !important;
       background: #ffe500;
       border: #ffe500 1px solid;
       box-shadow: 0px 5px 0px #ffad08;
@@ -191,13 +197,16 @@ form label.error {
 
     .subtitle {
       margin-top: 25px;
-      i {
-        font-size: 20px;
-        color: #803c04;
+      .subtitle-container {
+        display: inline-block;
         background-color: #ffe500;
-        padding: 10px 40px 10px 40px;
+        padding: 5px 40px 5px 40px;
         border-top-left-radius: 20px;
         border-bottom-right-radius: 20px;
+        i {
+          font-size: 20px;
+          color: #803c04;
+        }
       }
     }
   }
@@ -223,13 +232,16 @@ form label.error {
 
     .subtitle {
       margin-top: 25px;
-      i {
-        font-size: 20px;
-        color: #803c04;
+      .subtitle-container {
+        display: inline-block;
         background-color: #ffe500;
-        padding: 10px 40px 10px 40px;
+        padding: 5px 40px 5px 40px;
         border-top-left-radius: 20px;
         border-bottom-right-radius: 20px;
+        i {
+          font-size: 20px;
+          color: #803c04;
+        }
       }
     }
 
@@ -249,7 +261,7 @@ form label.error {
       }
     }
     .btn-normal {
-      color: #803c04;
+      color: #803c04 !important;
       background: #ffe500;
       border: #ffe500 1px solid;
       box-shadow: 0px 5px 0px #ffad08;
@@ -349,7 +361,7 @@ form label.error {
         .newbie-register-ic-mobile {
           width: 23px;
           height: 23px;
-          background: url("/activity/images/sign/actor/landingpage/newbie-icon-phone.png" ) center left no-repeat;
+          background: url("/activity/images/sign/actor/landingpage/newbie-icon-phone.png") center left no-repeat;
         }
 
         .newbie-register-ic-password {
@@ -488,13 +500,254 @@ form label.error {
 }
 
 //手机屏幕适配
-//@media screen and (max-width: 700px) {
-//}
-//
+@media screen and (max-width: 700px) {
+
+  .landing-container {
+
+    .btn-normal {
+      background: #ff635a;
+      font-size: 15px;
+      width: 150px;
+      height: 15px;
+      box-shadow: 0px 3px 0px #ff473c;
+      border-radius: 25px;
+      padding: 10px 30px 10px 30px;
+    }
+
+    .new-user-list {
+      color: #ff473c;
+      line-height: 15px;
+      margin-bottom: 20px;
+      dt {
+        font-size: 15px;
+        margin-top: 15px;
+        margin-bottom: 20px;
+      }
+      dd {
+        width: 50%;
+        float: left;
+        font-size: 15px;
+        text-align: center;
+        i {
+          font-size: 30px;
+        }
+        em {
+          line-height: 20px;
+          color: #a2a2a2;
+          font-size: 11px;
+        }
+      }
+    }
+
+    .landing-header-nav {
+      margin-left: 15px;
+      width: 100%;
+      height: 50px;
+      background: url("/activity/images/icons/logo.png") left center no-repeat;
+      background-size: 180px 25px;
+
+      a {
+        display: none;
+      }
+    }
+
+    .landing-top-banner {
+      height: auto;
+      .img-app-banner {
+        display: inline-block;
+      }
+    }
+
+    .newbie-step-one {
+      color: #ff473c;
+      padding-top: -10px;
+      padding-bottom: 30px;
+      .image-title {
+        background: url("/activity/images/sign/actor/landingpage/newbie-step1-title-app.png") center top no-repeat;
+        height: 50px;
+        background-size: auto 50px;
+      }
+    }
+
+    .newbie-step-two {
+      padding-top: 20px;
+      padding-bottom: 20px;
+      .image-title {
+        background: url("/activity/images/sign/actor/landingpage/newbie-step2-title-app.png") center top no-repeat;
+        height: 50px;
+        background-size: auto 50px;
+      }
+
+      .image-decoration-bg {
+        width: 100%;
+        height: 170px;
+        position: absolute;
+        background: url("/activity/images/sign/actor/landingpage/newbie-decoration-bg-app.png");
+        background-size: auto 170px;
+        top: -20px;
+      }
+
+      .image-red-envelope {
+        margin-top: 15px;
+        margin-bottom: 20px;
+        background: url("/activity/images/sign/actor/landingpage/newbie-step2-red-envelope.png") center top no-repeat;
+        height: 114px;
+        background-size: auto 114px;
+      }
+    }
+
+    .newbie-step-three {
+      padding-top: 20px;
+      padding-bottom: 20px;
+
+      .image-title {
+        background: url("/activity/images/sign/actor/landingpage/newbie-step3-title-app.png") center top no-repeat;
+        height: 50px;
+        background-size: auto 50px;
+      }
+
+      .subtitle {
+        height: 80px;
+        margin-top: 15px;
+
+        .subtitle-container {
+          margin-left: 25px;
+          margin-right: 25px;
+          padding: 5px 30px 5px 30px;
+          border-top-left-radius: 20px;
+          border-bottom-right-radius: 20px;
+          i {
+            line-height: 15px;
+            font-size: 15px;
+          }
+        }
+      }
+    }
+
+    .newbie-step-four {
+      padding-bottom: 20px;
+      padding-top: 15px;
+
+      .image-decoration-bg {
+        width: 100%;
+        height: 170px;
+        position: absolute;
+        background: url("/activity/images/sign/actor/landingpage/newbie-decoration-bg-app.png");
+        background-size: auto 170px;
+        top: -20px;
+      }
+
+      .image-title {
+        background: url("/activity/images/sign/actor/landingpage/newbie-step4-title-app.png") center top no-repeat;
+        height: 50px;
+        background-size: auto 50px;
+      }
+
+      .subtitle {
+        margin-top: 25px;
+        z-index: -1;
+        .subtitle-container {
+          margin-left: 25px;
+          margin-right: 25px;
+          padding: 5px 30px 5px 30px;
+          border-top-left-radius: 20px;
+          border-bottom-right-radius: 20px;
+          i {
+            line-height: 15px;
+            font-size: 15px;
+          }
+        }
+      }
+
+      .image-coupon {
+        margin-top: 20px;
+        background: url("/activity/images/sign/actor/landingpage/newbie-step4-coupon.png") center top no-repeat;
+        height: 132px;
+        background-size: auto 132px;
+      }
+
+      .image-steps {
+        margin-bottom: 30px;
+
+        img {
+          margin-top: 15px;
+          width: 70%;
+        }
+        .arrow {
+          display: none;
+        }
+      }
+    }
+
+    .newbie-step-five {
+      padding-top: 20px;
+      padding-bottom: 5px;
+
+      .newbie-step-five-dl {
+        line-height: 31px;
+
+        dt {
+          font-size: 17px;
+          margin-bottom: 20px;
+        }
+        dd {
+          width: 100%;
+          margin-bottom: 15px;
+
+          img {
+            margin-bottom: 15px;
+          }
+
+          p {
+            margin-top: 10px;
+            line-height: 22px;
+          }
+        }
+      }
+    }
+
+    .newbie-step-six {
+      padding-top: 15px;
+      padding-bottom: 15px;
+
+      .newbie-step-six-box {
+        width: 92%;
+        min-width: 20px;
+        padding-left: 15px;
+        padding-right: 15px;
+        display: inline-block;
+      }
+    }
+
+    .newbie-step-register {
+      //background: #362d50;
+      position: relative;
+      width: 100%;
+      left: 0;
+      top: 0;
+      padding-top: 0px;
+      min-width: 200px;
+      height: 350px;
+      text-align: center;
+
+      .register-box {
+        width: 100%;
+        border-radius: 0;
+        left: 0;
+        background: #362d50;
+      }
+    }
+  }
+
+  .footer-container {
+    display: none;
+  }
+}
+
 //@media screen and (max-width: 420px) {
 //
 //}
-//
+
 //@media screen and (max-width: 380px) {
 //
 //}
