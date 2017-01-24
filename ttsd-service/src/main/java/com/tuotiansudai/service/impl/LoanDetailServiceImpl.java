@@ -254,18 +254,18 @@ public class LoanDetailServiceImpl implements LoanDetailService {
             if (loanModel.getFirstInvestAchievementId() != null) {
                 InvestModel firstInvest = investMapper.findById(loanModel.getFirstInvestAchievementId());
                 achievementDto.setFirstInvestAchievementDate(firstInvest.getTradingTime());
-                achievementDto.setFirstInvestAchievementMobile(randomUtils.encryptMobile(loginName, firstInvest.getLoginName(), Source.WEB));
+                achievementDto.setFirstInvestAchievementMobile(randomUtils.encryptMobile(loginName, firstInvest.getLoginName()));
             }
             if (loanModel.getMaxAmountAchievementId() != null) {
                 InvestModel maxInvest = investMapper.findById(loanModel.getMaxAmountAchievementId());
                 long amount = investMapper.sumSuccessInvestAmountByLoginName(loanModel.getId(), maxInvest.getLoginName());
                 achievementDto.setMaxAmountAchievementAmount(AmountConverter.convertCentToString(amount));
-                achievementDto.setMaxAmountAchievementMobile(randomUtils.encryptMobile(loginName, maxInvest.getLoginName(), Source.WEB));
+                achievementDto.setMaxAmountAchievementMobile(randomUtils.encryptMobile(loginName, maxInvest.getLoginName()));
             }
             if (loanModel.getLastInvestAchievementId() != null) {
                 InvestModel lastInvest = investMapper.findById(loanModel.getLastInvestAchievementId());
                 achievementDto.setLastInvestAchievementDate(lastInvest.getTradingTime());
-                achievementDto.setLastInvestAchievementMobile(randomUtils.encryptMobile(loginName, lastInvest.getLoginName(), Source.WEB));
+                achievementDto.setLastInvestAchievementMobile(randomUtils.encryptMobile(loginName, lastInvest.getLoginName()));
             }
             loanDto.setAchievement(achievementDto);
         }
