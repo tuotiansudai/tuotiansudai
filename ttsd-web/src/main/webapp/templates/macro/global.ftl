@@ -88,7 +88,7 @@
         <link rel="stylesheet" type="text/css" href="${staticServer}${pageCss}" charset="utf-8"/>
     </#if>
 
-    <#include "../pageLayout/cnzz.ftl"/>
+    <#--<#include "../pageLayout/cnzz.ftl"/>-->
     <!-- growing io -->
     <#include "../pageLayout/growing-io.ftl"/>
 
@@ -125,12 +125,12 @@
     </#switch>
 </#if>
 
-<#include "../pageLayout/statistic.ftl" />
+<#--<#include "../pageLayout/statistic.ftl" />-->
 <script>
     window.staticServer='${staticServer}';
-    window.pluginsJSON={
-        underscore:'${js.underscore}'
-    }
+    <#--window.pluginsJSON={-->
+        <#--underscore:'${js.underscore}'-->
+    <#--}-->
 
 </script>
 <script src="${staticServer}${js.jquery}" ></script>

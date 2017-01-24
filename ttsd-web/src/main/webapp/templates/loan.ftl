@@ -336,7 +336,7 @@
                             <div class="subtitle">
                                 <h3>借款人基本信息</h3>
                             </div>
-                            <div class="container-fluid list-block">
+                            <div class="container-fluid list-block clearfix">
                                 <div class="row">
                                     <#list ['借款人', '性别', '年龄', '婚姻状况', '身份证号', '申请地区', '收入水平', '就业情况', '借款用途', '逾期率'] as key>
                                         <#if (loan.loanerDetail[key])?? && loan.loanerDetail[key] != '' && loan.loanerDetail[key] != '不明' >
@@ -351,7 +351,7 @@
                             <div class="subtitle">
                                 <h3>借款用途描述</h3>
                             </div>
-                            <div class="container-fluid list-block">
+                            <div class="container-fluid list-block clearfix">
                                 <p>${loan.basicInfo}</p>
                             </div>
                         </#if>
@@ -359,7 +359,7 @@
                         <div class="subtitle">
                             <h3>抵押档案</h3>
                         </div>
-                        <div class="container-fluid list-block">
+                        <div class="container-fluid list-block clearfix">
                             <div class="row">
                                 <#if loan.pledgeHouseDetail??>
                                     <#list ['抵押物所在地', '抵押物估值', '房屋面积', '房产证编号', '不动产登记证明', '公证书编号', '抵押物借款金额'] as key>
@@ -389,7 +389,7 @@
                         <div class="subtitle">
                             <h3>风控审核</h3>
                         </div>
-                        <div class="container-fluid danger-control">
+                        <div class="container-fluid danger-control clearfix">
                             <div class="row">
                                 <#if loan.pledgeType == 'ENTERPRISE'>
                                     <div class="col-md-6">
@@ -451,7 +451,7 @@
                         <div class="subtitle">
                             <h3>申请资料</h3>
                         </div>
-                        <div class="apply-data">
+                        <div class="apply-data clearfix">
                             <#list loan.loanTitleDto as loanTitle>
                                 <#list loan.loanTitles as loanTitleRelation >
                                     <#if loanTitle.id == loanTitleRelation.titleId>
@@ -561,7 +561,7 @@
     </tr>
     </thead>
     <tbody>
-    <% _.each(data, function (item) { %>
+    <% _.each(records, function (item) { %>
     var item.autoInvest=item.autoInvest ? '自动' : '手动';
     <tr>
     <td class="loan-td">
