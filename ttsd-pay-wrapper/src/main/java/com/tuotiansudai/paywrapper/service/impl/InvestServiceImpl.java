@@ -470,6 +470,7 @@ public class InvestServiceImpl implements InvestService {
 
     }
 
+
     @Override
     public void autoInvest(long loanId) {
         logger.info("auto invest start , loanId : " + loanId);
