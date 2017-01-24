@@ -2,9 +2,7 @@ package com.tuotiansudai.service.impl;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
+import com.tuotiansudai.client.SiteMapRedisWrapperClient;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
@@ -14,18 +12,15 @@ import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.HomeService;
-import net.sf.json.JSONArray;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.text.MessageFormat;
-import java.util.Collections;
-import java.util.Iterator;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -52,12 +47,9 @@ public class HomeServiceImpl implements HomeService {
     private LoanDetailsMapper loanDetailsMapper;
 
     @Autowired
-    private OkHttpClient httpClient;
+    private SiteMapRedisWrapperClient siteMapRedisWrapperClient;
 
-    @Value("${ask.server}")
-    private String askServer;
-
-    private static final String SITEMAP = "/question/getSiteMap";
+    private static final String CMS_CATEGORY = "cms:sitemap:category:{0}";
 
     public List<HomeLoanDto> getNormalLoans() {
         return getLoans().stream().filter(loan -> !loan.getProductType().equals(ProductType._30) && !loan.getActivityType().equals(ActivityType.NEWBIE)).collect(Collectors.toList());
@@ -107,7 +99,6 @@ public class HomeServiceImpl implements HomeService {
     @Override
     public List<HomeLoanDto> getEnterpriseLoans() {
         List<LoanModel> loanModels = loanMapper.findHomeEnterpriseLoan();
-
         return Lists.transform(loanModels, new Function<LoanModel, HomeLoanDto>() {
             @Override
             public HomeLoanDto apply(LoanModel loanModel) {
@@ -129,42 +120,22 @@ public class HomeServiceImpl implements HomeService {
     }
 
     @Override
-    public List<SiteMapDataDto> getSiteMapData(){
-        String askJsonString = loadJSON(askServer + SITEMAP);
-        return JsonToList(askJsonString);
-    }
-
-    public List<SiteMapDataDto> JsonToList(String json) {
-        List<SiteMapDataDto> siteMapDataDtoList = Lists.newArrayList();
-        if(json == null || "".equals(json)){
-            return siteMapDataDtoList;
+    public List<SiteMapDataDto> siteMapData() {
+        List<SiteMapDataDto> cmsSiteMapDataDtoList = Lists.newArrayList();
+        if (siteMapRedisWrapperClient.exists(MessageFormat.format(CMS_CATEGORY, LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE)))) {
+            //从redis中取值
+            Map<String, String> cmsSiteMap = siteMapRedisWrapperClient.hgetAll(MessageFormat.format(CMS_CATEGORY, LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE)));
+            for (String key : cmsSiteMap.keySet()) {
+                try {
+                    SiteMapDataDto cmsSiteMapDataDto = new SiteMapDataDto();
+                    cmsSiteMapDataDto.setName(key);
+                    cmsSiteMapDataDto.setLinkUrl(cmsSiteMap.get(key));
+                    cmsSiteMapDataDtoList.add(cmsSiteMapDataDto);
+                } catch (Exception e) {
+                    logger.error("read sitemap from cmsredis error " + e);
+                }
+            }
         }
-        JSONArray jsonarray = JSONArray.fromObject(json);
-        List list = (List)JSONArray.toCollection(jsonarray, SiteMapDataDto.class);
-        Iterator it = list.iterator();
-        while(it.hasNext()){
-            siteMapDataDtoList.add((SiteMapDataDto)it.next());
-        }
-
-        Collections.sort(siteMapDataDtoList, (o1, o2) -> Integer.compare(o1.getSeq(),o2.getSeq()));
-
-        return siteMapDataDtoList;
+        return cmsSiteMapDataDtoList;
     }
-
-    public String loadJSON (String url) {
-        try {
-            Request request = new Request.Builder().url(url).get().build();
-            logger.info("send ask request ");
-            httpClient.setConnectTimeout(3, TimeUnit.SECONDS);
-            httpClient.setRetryOnConnectionFailure(false);
-            Response response = httpClient.newCall(request).execute();
-            String responseBodyString = response.body().string();
-            logger.info("ask response, body: " + responseBodyString);
-            return responseBodyString;
-        } catch (IOException e) {
-            logger.error(e.getLocalizedMessage(), e);
-            return "";
-        }
-    }
-
 }

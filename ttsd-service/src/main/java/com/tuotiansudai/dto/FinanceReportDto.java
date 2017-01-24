@@ -60,7 +60,7 @@ public class FinanceReportDto {
         this.setActualInterest(AmountConverter.convertCentToString(financeReportItemView.getActualInterest()));
         this.setFee(AmountConverter.convertCentToString(financeReportItemView.getFee()));
         this.setActualRepayAmount(AmountConverter.convertCentToString(financeReportItemView.getActualRepayAmount()));
-        this.extraDetail = MessageFormat.format("{0}%", financeReportItemView.getExtraRate());
+        this.extraDetail = MessageFormat.format("{0,number,#.##}%", financeReportItemView.getExtraRate() * 100);
         this.extraActualInterest = AmountConverter.convertCentToString(financeReportItemView.getExtraAmount());
     }
 
@@ -72,7 +72,7 @@ public class FinanceReportDto {
                 this.couponDetail = MessageFormat.format("{0}元{1}", AmountConverter.convertCentToString(couponModel.getAmount()), couponModel.getCouponType().getName());
                 break;
             case INTEREST_COUPON:
-                this.couponDetail = MessageFormat.format("{0}%{1}", Long.toString((long) (couponModel.getRate() * 100)), couponModel.getCouponType().getName());
+                this.couponDetail = MessageFormat.format("{0,number,#.##}%{1}", couponModel.getRate() * 100, couponModel.getCouponType().getName());
                 break;
             case BIRTHDAY_COUPON:
                 this.couponDetail = MessageFormat.format("{0}倍{1}", couponModel.getBirthdayBenefit() + 1, couponModel.getCouponType().getName());

@@ -90,6 +90,12 @@ public class LotteryDrawActivityService {
     @Value("${activity.autumn.endTime}")
     private String autumnEndTime;
 
+    @Value(value = "${activity.lanternFestival.startTime}")
+    private String lanternFestivalStartTime;
+
+    @Value(value = "${activity.lanternFestival.endTime}")
+    private String lanternFestivalEndTime;
+
     @Value("#{'${activity.spring.festival.period}'.split('\\~')}")
     private List<String> springFestivalTime = Lists.newArrayList();
 
@@ -243,6 +249,12 @@ public class LotteryDrawActivityService {
                 .put(LotteryPrize.RED_ENVELOPE_18, 327L)
                 .put(LotteryPrize.RED_ENVELOPE_8, 328L)
                 .put(LotteryPrize.INTEREST_COUPON_2_NEW_YEARS, 329L)
+                .put(LotteryPrize.LANTERN_FESTIVAL_RED_ENVELOPE_5, 364L)
+                .put(LotteryPrize.LANTERN_FESTIVAL_RED_ENVELOPE_8, 365L)
+                .put(LotteryPrize.LANTERN_FESTIVAL_RED_ENVELOPE_10, 366L)
+                .put(LotteryPrize.LANTERN_FESTIVAL_RED_ENVELOPE_40, 367L)
+                .put(LotteryPrize.LANTERN_FESTIVAL_RED_ENVELOPE_30, 368L)
+                .put(LotteryPrize.LANTERN_FESTIVAL_INTEREST_COUPON_5, 369L)
                 .put(LotteryPrize.SPRING_FESTIVAL_RED_ENVELOP_68, 340L)
                 .put(LotteryPrize.SPRING_FESTIVAL_RED_ENVELOP_58, 341L)
                 .put(LotteryPrize.SPRING_FESTIVAL_RED_ENVELOP_38, 342L)
@@ -307,6 +319,8 @@ public class LotteryDrawActivityService {
                 return countDrawLotteryTime(userModel, activityCategory, newYearsActivityTask);
             case CHRISTMAS_ACTIVITY:
                 return countDrawLotteryTime(userModel, activityCategory, christmasTasks);
+            case LANTERN_FESTIVAL_ACTIVITY:
+                return countDrawLotteryTime(userModel, activityCategory, Lists.newArrayList(ActivityDrawLotteryTask.EACH_INVEST_1000));
             case SPRING_FESTIVAL_ACTIVITY:
                 return countDrawLotteryTime(userModel, activityCategory, springFestivalTasks);
         }
@@ -394,6 +408,9 @@ public class LotteryDrawActivityService {
                     time += (int) (sumAmount / EACH_INVEST_AMOUNT_20000);
                     time = time >= 10 ? 10 : time;
                     break;
+                case EACH_INVEST_1000:
+                    time = investMapper.sumDrawCountByLoginName(userModel.getLoginName(),startTime,endTime,100000);
+                    break;
             }
         }
 
@@ -432,6 +449,7 @@ public class LotteryDrawActivityService {
                 .put(ActivityCategory.ANNUAL_ACTIVITY, annualTime)
                 .put(ActivityCategory.NATIONAL_PRIZE, Lists.newArrayList(nationalStartTime, nationalEndTime))
                 .put(ActivityCategory.AUTUMN_PRIZE, Lists.newArrayList(autumnStartTime, autumnEndTime))
+                .put(ActivityCategory.LANTERN_FESTIVAL_ACTIVITY, Lists.newArrayList(lanternFestivalStartTime, lanternFestivalEndTime))
                 .put(ActivityCategory.SPRING_FESTIVAL_ACTIVITY, springFestivalTime)
                 .build()).get(activityCategory);
     }
