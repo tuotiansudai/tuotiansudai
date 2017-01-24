@@ -42,7 +42,7 @@ def migrate():
 
 
 def mk_war():
-    local('/usr/local/bin/paver jcversion')
+    local('/usr/local/bin/paver jcversion.env=PROD jcversion')
     local('/opt/gradle/latest/bin/gradle war renameWar initMQ')
 
 
