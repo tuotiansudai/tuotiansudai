@@ -280,20 +280,20 @@ def versioning_webpack_files(path):
     finally:
         os.chdir(owd)
 
-def versioning_static_resource_files():
+def versioning_static_resource_files(options):
     from paver.shell import sh
 
     owd = os.getcwd()
     try:
         os.chdir('./ttsd-frontend-manage')
         sh('/usr/bin/npm install')
-        sh('/usr/bin/npm run build')
+        sh('/usr/bin/PLAT={0} npm run build'.format(options.env))
     finally:
         os.chdir(owd)
 
 
 @task
-def jcversion():
+def jcversion(options):
     """
     Versioning all min js/css files based on git version
     """
@@ -311,7 +311,7 @@ def jcversion():
     replace_min_files_in_config_js_file('ttsd-point-web/src/main/webapp/point/js/dest/')
 
     versioning_webpack_files('ttsd-mobile-api/')
-    versioning_static_resource_files()
+    versioning_static_resource_files(options)
 
 def get_current_dir():
     return os.path.dirname(os.path.realpath(__file__))
