@@ -103,17 +103,6 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
         investListResponseDataDto.setTotalCount((int) count);
         investListResponseDataDto.setAchievements(loanAchievementsResponseDtoList);
 
-        //TODO:fake
-        LoanModel loanModel = loanMapper.findById(41650602422768L);
-        if (loanId == 41650602422768L && loanModel.getStatus() == LoanStatus.REPAYING) {
-            investListResponseDataDto.setTotalCount(1);
-            InvestRecordResponseDataDto fakeRecord = new InvestRecordResponseDataDto();
-            fakeRecord.setUserName("186**67");
-            fakeRecord.setInvestMoney(AmountConverter.convertCentToString(loanModel.getLoanAmount()));
-            fakeRecord.setInvestTime(new DateTime(2016, 7, 29, 15, 33, 45).toString("yyyy-MM-dd HH:mm:ss"));
-            investListResponseDataDto.setInvestRecord(Lists.newArrayList(fakeRecord));
-        }
-
         dto.setData(investListResponseDataDto);
         return dto;
     }
