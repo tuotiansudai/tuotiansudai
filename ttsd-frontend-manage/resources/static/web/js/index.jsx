@@ -82,7 +82,6 @@ require.ensure(['publicJs/plugins/autoNumeric','publicJs/validator','publicJs/co
     let ValidatorForm= require('publicJs/validator');
 
     let $bookInvestForm = $('.book-invest-form',$homePageContainer);
-    $('input.autoNumeric',$bookInvestForm).autoNumeric('init');
     //初始化radio
     $bookInvestForm.find('.init-radio-style').on('click', function () {
         let $this = $(this);

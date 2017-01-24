@@ -101,7 +101,7 @@ else if(NODE_ENV=='dev') {
 	};
 }
 plugins.push(new CopyWebpackPlugin([
-	// { from: publicPathJS+'/plugins',to: 'public/plugins'},
+	{ from: publicPathJS+'/dllplugins',to: 'public/dllplugins'},
 	{ from: staticPath+'/inlineImages',to: 'images'},
 	{ from: publicPath+'/styles/plugins/skin',to: 'public/skin'}
 ]));

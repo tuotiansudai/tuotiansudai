@@ -5,7 +5,7 @@
     display: none;
 }
 </style>
-<div class="transfer-detail-content" data-user-role="<@global.role hasRole="'INVESTOR'">INVESTOR</@global.role>">
+<div class="transfer-detail-content" id="transferDetailCon" data-user-role="<@global.role hasRole="'INVESTOR'">INVESTOR</@global.role>">
     <div class="detail-intro">
         <div class="transfer-top">
             <span class="product-name">${transferApplication.name!}</span>

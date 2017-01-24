@@ -299,6 +299,8 @@ window.layer.config({
 
 window._ = window.jquery_library(3);
 
+window.$.fn=window.$.prototype;
+
 // ********* cnzz统计 BEGIN ***********
 function cnzzPushConstructor() {
     this.trackClick=function(category, action, label) {

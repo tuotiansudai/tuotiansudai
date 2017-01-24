@@ -47,7 +47,7 @@ getJsonFileList.prototype.formatHandler = function(textFile) {
             this.jsonFormat['cssFile'][outFileName]=keyNameObj.css;
         }
     }
-    this.addJqueryPlugin(outputPath+'/public/plugins'); //读取jquery文件
+    this.addJqueryPlugin(outputPath+'/public/dllplugins'); //读取jquery文件
     // console.log(this.jsonFormat);
     var strJsonObj=JSON.stringify(this.jsonFormat);
     this.writeFile(strJsonObj);
@@ -69,7 +69,7 @@ getJsonFileList.prototype.addJqueryPlugin=function(path) {
             if(suffix[len-1]=='js') {
                 suffix.length=len-1;
                 var keyName=suffix.join('');
-                this.jsonFormat['jsFile'][keyName]='/public/plugins/'+file;
+                this.jsonFormat['jsFile'][keyName]='/public/dllplugins/'+file;
             }
         }
     }.bind(this))
