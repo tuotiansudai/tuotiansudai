@@ -16,6 +16,7 @@ public enum MessageQueue {
     TurnOnNoPasswordInvest_CompletePointTask("TurnOnNoPasswordInvest-CompletePointTask"),
     InvestSuccess_ActivityReward("InvestSuccess-ActivityReward"),
     InvestSuccess_NewBieExperience("InvestSuccess_NewBieExperience"),
+    ExperienceInterestCallback("ExperienceInterestCallback"),
     EventMessage("EventMessage"),
     ManualMessage("ManualMessage"),
     PushMessage("PushMessage"),

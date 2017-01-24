@@ -34,4 +34,6 @@ public interface InvestService {
 
     void sendExperienceInterestInvestSuccess(long investId);
 
+    String experienceInterestCallback(Map<String, String> paramsMap, String originalQueryString);
+
 }

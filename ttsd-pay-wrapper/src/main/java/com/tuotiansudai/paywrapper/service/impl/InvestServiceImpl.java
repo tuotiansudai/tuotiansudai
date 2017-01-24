@@ -29,6 +29,7 @@ import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.*;
 import com.tuotiansudai.paywrapper.repository.model.NotifyProcessStatus;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.async.callback.ExperienceInterestNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.InvestNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.ProjectTransferNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferRequestModel;
@@ -466,8 +467,22 @@ public class InvestServiceImpl implements InvestService {
                 fatalLog("experience interest sync send fail. orderId:" + investId, e);
             }
         }
+    }
 
+    @Override
+    @Transactional
+    public String experienceInterestCallback(Map<String, String> paramsMap, String originalQueryString) {
+        BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(
+                paramsMap,
+                originalQueryString,
+                ExperienceInterestNotifyRequestMapper.class,
+                ExperienceInterestNotifyRequestModel.class);
 
+        if (callbackRequest == null) {
+            return null;
+        }
+        mqWrapperClient.sendMessage(MessageQueue.ExperienceInterestCallback, String.valueOf(callbackRequest.getId()));
+        return callbackRequest.getResponseData();
     }
 
 
