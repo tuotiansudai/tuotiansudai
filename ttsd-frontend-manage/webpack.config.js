@@ -34,7 +34,6 @@ var NODE_ENV=process.env.NODE_ENV;
  */
 
 var files = glob.sync(path.join(staticPath, '*/js/*.jsx'));
-// var pluginFiles = glob.sync(path.join(staticPath, '*/plugins/*.js'));
 var newEntries = {};
 
 files.forEach(function(file){
