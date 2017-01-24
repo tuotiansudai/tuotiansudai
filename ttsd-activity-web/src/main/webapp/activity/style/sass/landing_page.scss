@@ -345,15 +345,19 @@ form label.error {
       overflow: auto;
 
       .refer-person-info {
+        width: 300px;
         text-align: center;
         margin-top: 0px;
+        margin-bottom: 3px;
         font-size: 14px;
+        line-height: 14px;
         span {
           color: red;
         }
       }
       .register-user-form {
-        width: 100%;
+        position: relative;
+        width: 300px;
       }
 
       ul.reg-list {
@@ -373,6 +377,7 @@ form label.error {
         .newbie-register-ic-img-captcha {
           width: 23px;
           height: 23px;
+          margin-top: 3px;
           background: url("/activity/images/sign/actor/landingpage/newbie-icon-img-captcha.png") center left no-repeat;
         }
 
@@ -400,10 +405,14 @@ form label.error {
 
           .image-captcha {
             margin-top: 3px;
+            margin-left: 3px;
+            margin-right: 3px;
           }
 
           .img-change {
             cursor: pointer;
+            font-size: 12px;
+            color: #808080;
           }
           i {
             display: inline-block;
@@ -423,7 +432,7 @@ form label.error {
             .fetch-captcha {
               width: 100px;
               height: 30px;
-              padding-left: 15px;
+              padding-left: 18px;
               letter-spacing: 0;
               position: absolute;
               left: 190px;
@@ -441,11 +450,11 @@ form label.error {
           }
           input[type="text"], input[type="password"] {
             color: #999;
-            border: #cecece 1px solid;
+            border: #e6e6e6 1px solid;
             padding: 5px 2px 5px 40px;
             background-color: #fff;
             &.appCaptcha {
-              width: 100px;
+              width: 110px;
             }
             &.captcha {
               width: 130px;
@@ -470,9 +479,16 @@ form label.error {
               position: absolute;
               top: 1px;
               left: 20px;
+              font-size: 14px;
+              color: #4c4c4c;
+            }
+            .show-agreement {
+              font-size: 14px;
+              color: #ff635a;
             }
             .agreement-check {
               margin-right: 280px;
+              margin-top: 7px;
             }
           }
           &.mobile-agreement {
@@ -481,11 +497,11 @@ form label.error {
 
           .register-user {
             width: 100%;
-            background: #ff0000;
+            background: #ff635a;
             border-radius: 3px;
             margin-top: 3px;
             text-align: center;
-            font-size: 20px;
+            font-size: 16px;
             color: #fff;
             border: 0;
             cursor: pointer;
@@ -518,6 +534,7 @@ form label.error {
       color: #ff473c;
       line-height: 15px;
       margin-bottom: 20px;
+
       dt {
         font-size: 15px;
         margin-top: 15px;
@@ -708,7 +725,7 @@ form label.error {
 
     .newbie-step-six {
       padding-top: 15px;
-      padding-bottom: 15px;
+      padding-bottom: 1px;
 
       .newbie-step-six-box {
         width: 92%;
@@ -720,21 +737,61 @@ form label.error {
     }
 
     .newbie-step-register {
-      //background: #362d50;
-      position: relative;
+      position: static;
       width: 100%;
       left: 0;
       top: 0;
-      padding-top: 0px;
-      min-width: 200px;
-      height: 350px;
+      padding-top: 0;
+      min-width: 320px;
+      height: auto;
       text-align: center;
+      background: #362d50;
 
       .register-box {
-        width: 100%;
-        border-radius: 0;
-        left: 0;
+        position: static;
+        padding: 25px 5% 25px 5%;
         background: #362d50;
+        width: 90%;
+        text-align: center;
+
+        .refer-person-info {
+          margin-bottom: 15px;
+          color: #ff635a;
+          span {
+            color: #ffe500;
+          }
+        }
+
+        ul.reg-list {
+          .reg-icon {
+            display: none;
+          }
+
+          li.reg-row-container {
+            background: white;
+            border: solid 2px #ffe500;
+            border-radius: 5px;
+
+            input {
+              border: rgba(0, 0, 0, 0) 1px solid;
+              padding: 7px 2px 7px 15px;
+              border-radius: 5px;
+
+              &.appCaptcha {
+                width: 130px;
+              }
+            }
+          }
+
+          .fetch-captcha {
+            margin-top: 2px;
+          }
+          .agree-register-protocol {
+            .check-label {
+              color: white !important;
+            }
+          }
+        }
       }
     }
   }
@@ -744,16 +801,5 @@ form label.error {
   }
 }
 
-//@media screen and (max-width: 420px) {
-//
-//}
-
-//@media screen and (max-width: 380px) {
-//
-//}
-//
-//@media screen and (max-width: 350px) {
-//
-//}
 
 
