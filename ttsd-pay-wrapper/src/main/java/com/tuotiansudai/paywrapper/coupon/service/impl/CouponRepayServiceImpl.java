@@ -182,6 +182,7 @@ public class CouponRepayServiceImpl implements CouponRepayService {
                 try {
                     TransferWithNotifyRequestModel requestModel = TransferWithNotifyRequestModel.newCouponRepayRequest(MessageFormat.format(COUPON_ORDER_ID_TEMPLATE, String.valueOf(couponRepayModel.getId()), String.valueOf(new Date().getTime())),
                             accountMapper.findByLoginName(userCouponModel.getLoginName()).getPayUserId(),
+                            accountMapper.findByLoginName(userCouponModel.getLoginName()).getPayAccountId(),
                             String.valueOf(transferAmount));
 
                     String statusString = redisWrapperClient.hget(redisKey, String.valueOf(couponRepayModel.getId()));

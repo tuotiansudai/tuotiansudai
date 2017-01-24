@@ -104,7 +104,6 @@ public class JobController {
         dataDto.setStatus(isSuccess);
         return dto;
     }
-
     @ResponseBody
     @RequestMapping(value = "/auto-loan-out-after-raising-complete", method = RequestMethod.POST)
     public BaseDto<PayDataDto> autoLoanOutAfterRaisingComplete(@RequestBody long loanId) {
@@ -115,6 +114,12 @@ public class JobController {
     @RequestMapping(value = "/send-red-envelope-after-loan-out", method = RequestMethod.POST)
     public void sendRedEnvelopeAfterLoanOut(@RequestBody long loanId) {
         couponLoanOutService.sendRedEnvelope(loanId);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/send-experience-interest-invest-success", method = RequestMethod.POST)
+    public void sendExperienceInterestInvestSuccess(@RequestBody long investId) {
+        investService.sendExperienceInterestInvestSuccess(investId);
     }
 
     @ResponseBody

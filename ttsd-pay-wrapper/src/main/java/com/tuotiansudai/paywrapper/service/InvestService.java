@@ -31,4 +31,7 @@ public interface InvestService {
     void investSuccess(InvestModel investModel);
 
     BaseDto<PayDataDto> noPasswordInvest(InvestDto dto);
+
+    void sendExperienceInterestInvestSuccess(long investId);
+
 }

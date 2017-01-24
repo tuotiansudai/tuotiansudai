@@ -2,8 +2,10 @@ package com.tuotiansudai.paywrapper.service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.base.Joiner;
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
+import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.dto.sms.LoanRaisingCompleteNotifyDto;
@@ -24,18 +26,18 @@ import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.coupon.service.CouponInvestService;
 import com.tuotiansudai.paywrapper.exception.PayException;
-import com.tuotiansudai.paywrapper.repository.mapper.InvestNotifyRequestMapper;
-import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferMapper;
-import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferNopwdMapper;
-import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferNotifyMapper;
+import com.tuotiansudai.paywrapper.repository.mapper.*;
 import com.tuotiansudai.paywrapper.repository.model.NotifyProcessStatus;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.InvestNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.ProjectTransferNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.async.request.TransferWithNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.ProjectTransferNopwdRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.sync.request.SyncRequestStatus;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferNopwdResponseModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
+import com.tuotiansudai.paywrapper.repository.model.sync.response.TransferResponseModel;
 import com.tuotiansudai.paywrapper.service.InvestAchievementService;
 import com.tuotiansudai.paywrapper.service.InvestService;
 import com.tuotiansudai.repository.mapper.*;
@@ -147,6 +149,12 @@ public class InvestServiceImpl implements InvestService {
 
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.autumn.endTime}\")}")
     private Date activityAutumnEndTime;
+
+    private final static String EXPERIENCE_INTEREST_REDIS_KEY_TEMPLATE = "SEND_EXPERIENCE_INTEREST";
+    @Autowired
+    private InvestRepayMapper investRepayMapper;
+    @Autowired
+    private RedisWrapperClient redisWrapperClient;
 
     @Override
     @Transactional
@@ -413,6 +421,53 @@ public class InvestServiceImpl implements InvestService {
     @Override
     public BaseDto<PayDataDto> noPasswordInvest(InvestDto dto) {
         return this.invokeNoPassword(Long.parseLong(dto.getLoanId()), AmountConverter.convertStringToCent(dto.getAmount()), dto.getLoginName(), dto.getSource(), dto.getChannel(), dto.getUserCouponIds());
+    }
+
+    @Override
+    @Transactional
+    public void sendExperienceInterestInvestSuccess(long investId) {
+
+        InvestModel investModel = investMapper.findById(investId);
+        if (investModel == null || investModel.getStatus() != InvestStatus.SUCCESS) {
+            logger.info("[experience interest:] send experience interest investId is null or status is not success");
+            return;
+        }
+        AccountModel accountModel = accountMapper.findByLoginName(investModel.getLoginName());
+        if (accountModel == null) {
+            logger.info(String.format("[experience interest:] send experience interest %s has no account", investModel.getLoginName()));
+            return;
+        }
+        InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(investId, 1);
+        if (investRepayModel == null) {
+            logger.info("[experience interest:] send experience interest investId no exist invest repay");
+            return;
+        }
+        if (investRepayModel.getRepayAmount() > 0) {
+            String redisKey = MessageFormat.format(EXPERIENCE_INTEREST_REDIS_KEY_TEMPLATE, investModel.getLoginName());
+            try {
+                TransferWithNotifyRequestModel requestModel = TransferWithNotifyRequestModel.experienceInterestRequest(
+                        String.valueOf(investId),
+                        accountModel.getPayUserId(),
+                        accountModel.getPayAccountId(),
+                        String.valueOf(investRepayModel.getRepayAmount()));
+                String statusString = redisWrapperClient.hget(redisKey, investModel.getLoginName());
+                if(Strings.isNullOrEmpty(statusString) || SyncRequestStatus.FAILURE.equals(SyncRequestStatus.valueOf(statusString.split("|")[0]))){
+
+                    redisWrapperClient.hset(redisKey, investModel.getLoginName(), String.format("%s|%s", SyncRequestStatus.SENT.name(), String.valueOf(investId)));
+                    TransferResponseModel responseModel = paySyncClient.send(TransferMapper.class, requestModel, TransferResponseModel.class);
+                    boolean isSuccess = responseModel.isSuccess();
+                    redisWrapperClient.hset(redisKey, investModel.getLoginName(), String.format("%s|%s", isSuccess ? SyncRequestStatus.SUCCESS.name() : SyncRequestStatus.FAILURE.name(), String.valueOf(investId)));
+                    logger.info(String.format("[experience interest:] send experience interest investId:%s response is s%", String.valueOf(investId), String.valueOf(isSuccess)));
+                }
+
+            } catch (PayException e) {
+                redisWrapperClient.hset(redisKey, investModel.getLoginName(), String.format("%s|%s", SyncRequestStatus.FAILURE.name(), String.valueOf(investId)));
+                logger.error(String.format("[experience interest:] send experience interest investId:s% payback throw exception", investId));
+                fatalLog("experience interest sync send fail. orderId:" + investId, e);
+            }
+        }
+
+
     }
 
     @Override
