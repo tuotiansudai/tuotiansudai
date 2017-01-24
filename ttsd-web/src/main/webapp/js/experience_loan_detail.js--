@@ -1,0 +1,3 @@
+require(['jquery', 'jquery.ajax.extension', 'coupon-alert', 'red-envelope-float', 'jquery.form'], function ($) {
+
+});

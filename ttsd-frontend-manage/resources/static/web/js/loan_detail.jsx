@@ -975,4 +975,44 @@ $('[scroll-carousel]').carousel().find('.col').fancybox({
 
 })();
 
+//新手体验项目
+let $experienceLoan=$('#experienceLoanDetailContent');
+if($experienceLoan.length) {
+    require.ensure([],function() {
+        commonFun.useAjax({
+            url: '/calculate-expected-coupon-interest/loan/1/amount/0',
+            data: {
+                'name': 'couponIds',
+                'value': $("input[name='userCouponIds']",$experienceLoan).data("coupon-id")
+            },
+            type: 'GET'
+        },function(amount) {
+            $(".principal-income",$experienceLoan).text(amount);
+        });
+
+        let investForm=globalFun.$('#investForm');
+
+        investForm.onsubmit=function(event) {
+            event.preventDefault();
+            commonFun.useAjax({
+                type:'POST',
+                url: '/experience-invest',
+                data:$(investForm).serialize()
+            },function() {
+                var data = response.data;
+                if (data.status) {
+                    $("#freeSuccess").show();
+                }
+                self.removeClass("loading");
+            });
+        }
+        $('.close-free',$experienceLoan).on('click', function (event) {
+            event.preventDefault();
+            $('#freeSuccess').hide();
+            location.reload();
+        });
+    },'experienceInvest');
+}
+
+
 

@@ -101,7 +101,7 @@ else if(NODE_ENV=='dev') {
 	};
 }
 plugins.push(new CopyWebpackPlugin([
-	{ from: publicPathJS+'/plugins',to: 'public/plugins'},
+	// { from: publicPathJS+'/plugins',to: 'public/plugins'},
 	{ from: staticPath+'/inlineImages',to: 'images'},
 	{ from: publicPath+'/styles/plugins/skin',to: 'public/skin'}
 ]));
@@ -118,7 +118,7 @@ plugins.push(new AssetsPlugin({
 
 plugins.push(new webpack.DllReferencePlugin({
 	context: __dirname,
-	manifest: require(publicPathJS+'/plugins/jquery-manifest.json')
+	manifest: require(publicPathJS+'/dllplugins/jquery-manifest.json')
 }));
 
 // plugins.push(new webpack.DllReferencePlugin({

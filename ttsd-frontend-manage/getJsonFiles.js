@@ -67,7 +67,8 @@ getJsonFileList.prototype.addJqueryPlugin=function(path) {
             var suffix=file.split('.'),
                 len=suffix.length;
             if(suffix[len-1]=='js') {
-                var keyName=suffix[0];
+                suffix.length=len-1;
+                var keyName=suffix.join('');
                 this.jsonFormat['jsFile'][keyName]='/public/plugins/'+file;
             }
         }
