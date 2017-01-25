@@ -8,6 +8,7 @@ import com.tuotiansudai.paywrapper.repository.model.async.callback.InvestNotifyR
 import com.tuotiansudai.repository.model.AutoInvestPlanModel;
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.util.AutoInvestMonthPeriod;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.Map;
@@ -32,8 +33,10 @@ public interface InvestService {
 
     BaseDto<PayDataDto> noPasswordInvest(InvestDto dto);
 
-    void sendExperienceInterestInvestSuccess(long investId);
+    boolean sendExperienceInterestInvestSuccess(long investId);
 
     String experienceInterestCallback(Map<String, String> paramsMap, String originalQueryString);
+
+    BaseDto<PayDataDto> asyncExperienceInterestNotify(long notifyRequestId);
 
 }

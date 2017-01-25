@@ -41,6 +41,7 @@ import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransfe
 import com.tuotiansudai.paywrapper.repository.model.sync.response.TransferResponseModel;
 import com.tuotiansudai.paywrapper.service.InvestAchievementService;
 import com.tuotiansudai.paywrapper.service.InvestService;
+import com.tuotiansudai.paywrapper.service.SystemBillService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountConverter;
@@ -156,6 +157,12 @@ public class InvestServiceImpl implements InvestService {
     private InvestRepayMapper investRepayMapper;
     @Autowired
     private RedisWrapperClient redisWrapperClient;
+    @Autowired
+    private UserBillMapper userBillMapper;
+    @Autowired
+    private ExperienceInterestNotifyRequestMapper experienceInterestNotifyRequestMapper;
+    @Autowired
+    private SystemBillService systemBillService;
 
     @Override
     @Transactional
@@ -311,6 +318,16 @@ public class InvestServiceImpl implements InvestService {
         return true;
     }
 
+    private boolean updateExperienceInterestNotifyRequestStatus(ExperienceInterestNotifyRequestModel model){
+        try {
+            experienceInterestNotifyRequestMapper.updateStatus(model.getId(), NotifyProcessStatus.DONE);
+        } catch (Exception e) {
+            fatalLog("update_experience_interest_notify_status_fail, orderId:" + model.getOrderId() + ",id:" + model.getId(), e);
+            return false;
+        }
+        return true;
+    }
+
     @Transactional
     @Override
     public void processOneCallback(InvestNotifyRequestModel callbackRequestModel) {
@@ -426,22 +443,26 @@ public class InvestServiceImpl implements InvestService {
 
     @Override
     @Transactional
-    public void sendExperienceInterestInvestSuccess(long investId) {
-
+    public boolean sendExperienceInterestInvestSuccess(long investId) {
         InvestModel investModel = investMapper.findById(investId);
         if (investModel == null || investModel.getStatus() != InvestStatus.SUCCESS) {
             logger.info("[experience interest:] send experience interest investId is null or status is not success");
-            return;
+            return false;
         }
         AccountModel accountModel = accountMapper.findByLoginName(investModel.getLoginName());
         if (accountModel == null) {
             logger.info(String.format("[experience interest:] send experience interest %s has no account", investModel.getLoginName()));
-            return;
+            return false;
         }
         InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(investId, 1);
         if (investRepayModel == null) {
             logger.info("[experience interest:] send experience interest investId no exist invest repay");
-            return;
+            return false;
+        }
+        int experienceInterest = userBillMapper.findUserFundsCount(UserBillBusinessType.EXPERIENCE_INTEREST,null,userMapper.findByLoginName(investModel.getLoginName()).getMobile(),null,null);
+        if(experienceInterest > 0){
+            logger.info(String.format("[experience interest:] send experience interest s% had sent experience interest",investModel.getLoginName()));
+            return false;
         }
         if (investRepayModel.getRepayAmount() > 0) {
             String redisKey = MessageFormat.format(EXPERIENCE_INTEREST_REDIS_KEY_TEMPLATE, investModel.getLoginName());
@@ -452,13 +473,15 @@ public class InvestServiceImpl implements InvestService {
                         accountModel.getPayAccountId(),
                         String.valueOf(investRepayModel.getRepayAmount()));
                 String statusString = redisWrapperClient.hget(redisKey, investModel.getLoginName());
-                if(Strings.isNullOrEmpty(statusString) || SyncRequestStatus.FAILURE.equals(SyncRequestStatus.valueOf(statusString.split("|")[0]))){
+                if(Strings.isNullOrEmpty(statusString)
+                        || SyncRequestStatus.FAILURE.equals(SyncRequestStatus.valueOf(statusString.split("|")[0]))){
 
                     redisWrapperClient.hset(redisKey, investModel.getLoginName(), String.format("%s|%s", SyncRequestStatus.SENT.name(), String.valueOf(investId)));
                     TransferResponseModel responseModel = paySyncClient.send(TransferMapper.class, requestModel, TransferResponseModel.class);
                     boolean isSuccess = responseModel.isSuccess();
                     redisWrapperClient.hset(redisKey, investModel.getLoginName(), String.format("%s|%s", isSuccess ? SyncRequestStatus.SUCCESS.name() : SyncRequestStatus.FAILURE.name(), String.valueOf(investId)));
                     logger.info(String.format("[experience interest:] send experience interest investId:%s response is s%", String.valueOf(investId), String.valueOf(isSuccess)));
+                    return true;
                 }
 
             } catch (PayException e) {
@@ -467,6 +490,7 @@ public class InvestServiceImpl implements InvestService {
                 fatalLog("experience interest sync send fail. orderId:" + investId, e);
             }
         }
+        return false;
     }
 
     @Override
@@ -483,6 +507,22 @@ public class InvestServiceImpl implements InvestService {
         }
         mqWrapperClient.sendMessage(MessageQueue.ExperienceInterestCallback, String.valueOf(callbackRequest.getId()));
         return callbackRequest.getResponseData();
+    }
+
+    @Override
+    @Transactional
+    public BaseDto<PayDataDto> asyncExperienceInterestNotify(long notifyRequestId) {
+        ExperienceInterestNotifyRequestModel model = experienceInterestNotifyRequestMapper.findById(notifyRequestId);
+        if(updateExperienceInterestNotifyRequestStatus(model)){
+            long investId = Long.parseLong(model.getOrderId());
+            
+            amountTransfer.transferInBalance(investExtraRateModel.getLoginName(), investExtraRateModel.getId(), amount, UserBillBusinessType.EXPERIENCE_INTEREST, null, null);
+            String detail = MessageFormat.format(SystemBillDetailTemplate.EXTRA_RATE_DETAIL_TEMPLATE.getTemplate(),
+                    investExtraRateModel.getLoginName(), String.valueOf(investExtraRateModel.getInvestId()));
+            systemBillService.transferOut(investExtraRateModel.getId(), amount, SystemBillBusinessType.EXTRA_RATE, detail);
+
+        }
+        return null;
     }
 
 
