@@ -468,7 +468,7 @@ public class InvestServiceImpl implements InvestService {
             String redisKey = MessageFormat.format(EXPERIENCE_INTEREST_REDIS_KEY_TEMPLATE, investModel.getLoginName());
             try {
                 TransferWithNotifyRequestModel requestModel = TransferWithNotifyRequestModel.experienceInterestRequest(
-                        String.valueOf(investId),
+                        String.valueOf(investRepayModel.getId()),
                         accountModel.getPayUserId(),
                         accountModel.getPayAccountId(),
                         String.valueOf(investRepayModel.getRepayAmount()));
@@ -476,18 +476,18 @@ public class InvestServiceImpl implements InvestService {
                 if(Strings.isNullOrEmpty(statusString)
                         || SyncRequestStatus.FAILURE.equals(SyncRequestStatus.valueOf(statusString.split("|")[0]))){
 
-                    redisWrapperClient.hset(redisKey, investModel.getLoginName(), String.format("%s|%s", SyncRequestStatus.SENT.name(), String.valueOf(investId)));
+                    redisWrapperClient.hset(redisKey, investModel.getLoginName(), String.format("%s|%s", SyncRequestStatus.SENT.name(), String.valueOf(investRepayModel.getId())));
                     TransferResponseModel responseModel = paySyncClient.send(TransferMapper.class, requestModel, TransferResponseModel.class);
                     boolean isSuccess = responseModel.isSuccess();
-                    redisWrapperClient.hset(redisKey, investModel.getLoginName(), String.format("%s|%s", isSuccess ? SyncRequestStatus.SUCCESS.name() : SyncRequestStatus.FAILURE.name(), String.valueOf(investId)));
-                    logger.info(String.format("[experience interest:] send experience interest investId:%s response is s%", String.valueOf(investId), String.valueOf(isSuccess)));
+                    redisWrapperClient.hset(redisKey, investModel.getLoginName(), String.format("%s|%s", isSuccess ? SyncRequestStatus.SUCCESS.name() : SyncRequestStatus.FAILURE.name(), String.valueOf(investRepayModel.getId())));
+                    logger.info(String.format("[experience interest:] send experience interest investId:%s response is s%", String.valueOf(investRepayModel.getId()), String.valueOf(isSuccess)));
                     return true;
                 }
 
             } catch (PayException e) {
-                redisWrapperClient.hset(redisKey, investModel.getLoginName(), String.format("%s|%s", SyncRequestStatus.FAILURE.name(), String.valueOf(investId)));
-                logger.error(String.format("[experience interest:] send experience interest investId:s% payback throw exception", investId));
-                fatalLog("experience interest sync send fail. orderId:" + investId, e);
+                redisWrapperClient.hset(redisKey, investModel.getLoginName(), String.format("%s|%s", SyncRequestStatus.FAILURE.name(), String.valueOf(investRepayModel.getId())));
+                logger.error(String.format("[experience interest:] send experience interest investId:s% payback throw exception", investRepayModel.getId()));
+                fatalLog("experience interest sync send fail. orderId:" + investRepayModel.getId()e, e);
             }
         }
         return false;
@@ -514,15 +514,27 @@ public class InvestServiceImpl implements InvestService {
     public BaseDto<PayDataDto> asyncExperienceInterestNotify(long notifyRequestId) {
         ExperienceInterestNotifyRequestModel model = experienceInterestNotifyRequestMapper.findById(notifyRequestId);
         if(updateExperienceInterestNotifyRequestStatus(model)){
-            long investId = Long.parseLong(model.getOrderId());
-            
-            amountTransfer.transferInBalance(investExtraRateModel.getLoginName(), investExtraRateModel.getId(), amount, UserBillBusinessType.EXPERIENCE_INTEREST, null, null);
-            String detail = MessageFormat.format(SystemBillDetailTemplate.EXTRA_RATE_DETAIL_TEMPLATE.getTemplate(),
-                    investExtraRateModel.getLoginName(), String.valueOf(investExtraRateModel.getInvestId()));
-            systemBillService.transferOut(investExtraRateModel.getId(), amount, SystemBillBusinessType.EXTRA_RATE, detail);
-
+            long investRepayId = Long.parseLong(model.getOrderId());
+            InvestRepayModel investRepayModel = investRepayMapper.findById(investRepayId);
+            InvestModel investModel = investMapper.findById(investRepayModel.getInvestId());
+            if(model.isSuccess()){
+                try {
+                    amountTransfer.transferInBalance(investModel.getLoginName(), investRepayModel.getId(), investRepayModel.getRepayAmount(), UserBillBusinessType.EXPERIENCE_INTEREST, null, null);
+                } catch (AmountTransferException e) {
+                    e.printStackTrace();
+                }
+                String detail = MessageFormat.format(SystemBillDetailTemplate.EXPERIENCE_INTEREST_DETAIL_TEMPLATE.getTemplate(),
+                        investModel.getLoginName(), String.valueOf(investModel.getId()));
+                systemBillService.transferOut(investRepayModel.getId(), investRepayModel.getRepayAmount(), SystemBillBusinessType.EXPERIENCE_INTEREST, detail);
+            }
         }
-        return null;
+
+        BaseDto<PayDataDto> asyncNotifyDto = new BaseDto<>();
+        PayDataDto baseDataDto = new PayDataDto();
+        baseDataDto.setStatus(true);
+        asyncNotifyDto.setData(baseDataDto);
+
+        return asyncNotifyDto;
     }
 
 
