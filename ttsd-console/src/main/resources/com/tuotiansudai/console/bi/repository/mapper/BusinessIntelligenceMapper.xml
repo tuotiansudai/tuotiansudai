@@ -1463,7 +1463,7 @@
         END AS `name`
         FROM invest
         WHERE invest.`status` = 'SUCCESS'
-        AND EXISTS (SELECT id FROM loan WHERE invest.loan_id = loan.id AND loan.id != 1)
+        AND EXISTS (SELECT id FROM loan WHERE invest.loan_id = loan.id AND loan.product_type != 'EXPERIENCE')
         GROUP BY `name`
     </select>
 

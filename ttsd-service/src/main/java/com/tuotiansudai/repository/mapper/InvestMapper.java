@@ -291,4 +291,7 @@ public interface InvestMapper {
     long countInvestorInvestAndTransferPagination(@Param(value = "loginName") String loginName,
                                                       @Param(value = "loanStatus") LoanStatus loanStatus);
 
+    List<InvestModel> findByLoginNameAndTradingTime(@Param(value = "loginName") String loginName,
+                                                    @Param(value = "tradingTime") Date tradingTime);
+
 }

@@ -62,6 +62,14 @@ public class UserFundResponseDataDto extends BaseResponseDataDto {
 
     @ApiModelProperty(value = "用户会员过期日yyyy-MM-dd(空表示不过期)", example = "有效期至:2016-11-25")
     private String membershipExpiredDate; //用户会员过期日yyyy-MM-dd(空表示不过期)
+    @ApiModelProperty(value = "待收体验金收益(分)", example = "764")
+    private int experienceExpectInterest;
+
+    @ApiModelProperty(value = "已收体验金收益(分)", example = "764")
+    private int experienceActualInterest;
+
+    @ApiModelProperty(value = "用户领取体验金收益", example = "true")
+    private boolean payExperienceInterest;
 
 
     public UserFundResponseDataDto(UserFundView userFundView, long balance, long point, int membershipLevel, long membershipPoint, int usableUserCouponCount, Date membershipExpiredDate) {
@@ -70,12 +78,16 @@ public class UserFundResponseDataDto extends BaseResponseDataDto {
         this.actualTotalExtraInterest = userFundView.getActualTotalExtraInterest();
         this.referRewardAmount = userFundView.getReferRewardAmount();
         this.redEnvelopeAmount = userFundView.getRedEnvelopeAmount();
-        this.totalIncome = this.actualTotalInterest + this.actualTotalExtraInterest + this.referRewardAmount + this.redEnvelopeAmount;
+
+        this.experienceExpectInterest = userFundView.getExperienceActualInterest() > 0 ? 0 : userFundView.getExperienceExpectInterest();
+        this.experienceActualInterest = userFundView.getExperienceActualInterest();
+        this.payExperienceInterest = userFundView.getExperienceActualInterest() > 0 ? true : false;
+        this.totalIncome = this.actualTotalInterest + this.actualTotalExtraInterest + this.referRewardAmount + this.redEnvelopeAmount + this.experienceActualInterest;
 
         this.expectedTotalCorpus = userFundView.getExpectedTotalCorpus();
         this.expectedTotalInterest = userFundView.getExpectedTotalInterest();
         this.expectedTotalExtraInterest = userFundView.getExpectedTotalExtraInterest();
-        this.expectedTotalCorpusInterest = this.expectedTotalCorpus + this.expectedTotalInterest + this.expectedTotalExtraInterest;
+        this.expectedTotalCorpusInterest = this.expectedTotalCorpus + this.expectedTotalInterest + this.expectedTotalExtraInterest + this.experienceExpectInterest;
 
         this.investFrozeAmount = userFundView.getInvestFrozeAmount();
         this.withdrawFrozeAmount = userFundView.getWithdrawFrozeAmount();
@@ -87,6 +99,7 @@ public class UserFundResponseDataDto extends BaseResponseDataDto {
         this.membershipPoint = membershipPoint;
         this.usableUserCouponCount = usableUserCouponCount;
         this.membershipExpiredDate = membershipExpiredDate != null ? "有效期至:" + new SimpleDateFormat("yyyy-MM-dd").format(membershipExpiredDate) : null;
+
     }
 
     public long getBalance() {
@@ -159,5 +172,17 @@ public class UserFundResponseDataDto extends BaseResponseDataDto {
 
     public String getMembershipExpiredDate() {
         return membershipExpiredDate;
+    }
+
+    public boolean isPayExperienceInterest() {
+        return payExperienceInterest;
+    }
+
+    public int getExperienceExpectInterest() {
+        return experienceExpectInterest;
+    }
+
+    public int getExperienceActualInterest() {
+        return experienceActualInterest;
     }
 }

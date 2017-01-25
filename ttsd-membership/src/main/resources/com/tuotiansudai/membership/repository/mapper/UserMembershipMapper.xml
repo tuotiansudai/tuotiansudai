@@ -241,7 +241,7 @@
             <if test="loginName != null">
                 and login_name = #{loginName}
             </if>
-            and loan_id != 1
+            and EXISTS (select 1 from loan l where l.id = invest.loan_id and l.product_type != 'EXPERIENCE')
         </where>
         and status = 'SUCCESS'
     </select>

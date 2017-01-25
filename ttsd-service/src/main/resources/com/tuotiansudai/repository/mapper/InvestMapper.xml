@@ -230,17 +230,17 @@
 
     <select id="sumSuccessInvestAmountByLoginName" parameterType="map" resultType="long">
         select IFNULL(sum(amount),0)
-        from invest
+        from invest JOIN loan ON invest.loan_id = loan.id
         <where>
             <if test="loanId != null">
-                and loan_id = #{loanId}
+                and invest.loan_id = #{loanId}
             </if>
             <if test="loginName != null">
-                and login_name = #{loginName}
+                and invest.login_name = #{loginName}
             </if>
-            and loan_id != 1
+            and loan.product_type != 'EXPERIENCE'
         </where>
-        and status = 'SUCCESS'
+        and invest.status = 'SUCCESS'
     </select>
 
     <select id="findInvestPagination" resultMap="investPaginationItemView">
@@ -959,6 +959,16 @@
         contract_no = '') order by invest_time asc
     </select>
 
+    <select id="findByLoginNameAndTradingTime" parameterType="map" resultMap="investResultMap">
+        select
+        <include refid="columns"></include>
+        from invest join loan on invest.loan_id = loan.id
+        where invest.transfer_invest_id is null and invest.status = 'SUCCESS'
+        AND loan.product_type != 'EXPERIENCE'
+        AND invest.login_name = #{loginName}
+        AND invest.trading_time &lt;= #{tradingTime};
+    </select>
+
     <select id="sumSuccessActivityInvestAmount" parameterType="map" resultType="long">
         SELECT
         IFNULL(SUM(amount), 0)
@@ -1001,7 +1011,7 @@
         from invest
         inner join user on invest.login_name = user.login_name
         where invest.status = 'SUCCESS'
-        and loan_id != '1'
+        and EXISTS (select 1 from loan l where l.id = invest.loan_id and l.product_type != 'EXPERIENCE')
         <![CDATA[
         and DATE_FORMAT(invest.invest_time, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d')
         ]]>
@@ -1015,7 +1025,7 @@
         from invest
         inner join user on invest.login_name = user.login_name
         where invest.status = 'SUCCESS'
-        and loan_id != '1'
+        and EXISTS (select 1 from loan l where l.id = invest.loan_id and l.product_type != 'EXPERIENCE')
          <![CDATA[
         and DATE_FORMAT(invest.invest_time, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d')
 
@@ -1066,5 +1076,6 @@
         </if>
         and invest.`status` = 'SUCCESS'
     </select>
+
 
 </mapper>

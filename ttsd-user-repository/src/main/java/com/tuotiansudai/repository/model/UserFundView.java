@@ -23,6 +23,10 @@ public class UserFundView implements Serializable {
 
     private long currentMonthInvestRepayCount; //本月回款笔数
 
+    private int experienceExpectInterest;//未收体验金收益
+
+    private int experienceActualInterest;//已收体验金收益
+
     public long getBalance() {
         return balance;
     }
@@ -125,5 +129,21 @@ public class UserFundView implements Serializable {
 
     public void setCurrentMonthInvestRepayCount(long currentMonthInvestRepayCount) {
         this.currentMonthInvestRepayCount = currentMonthInvestRepayCount;
+    }
+
+    public int getExperienceExpectInterest() {
+        return experienceExpectInterest;
+    }
+
+    public void setExperienceExpectInterest(int experienceExpectInterest) {
+        this.experienceExpectInterest = experienceExpectInterest;
+    }
+
+    public int getExperienceActualInterest() {
+        return experienceActualInterest;
+    }
+
+    public void setExperienceActualInterest(int experienceActualInterest) {
+        this.experienceActualInterest = experienceActualInterest;
     }
 }

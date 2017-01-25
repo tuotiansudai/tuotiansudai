@@ -487,7 +487,7 @@ public class InvestServiceImpl implements InvestService {
             } catch (PayException e) {
                 redisWrapperClient.hset(redisKey, investModel.getLoginName(), String.format("%s|%s", SyncRequestStatus.FAILURE.name(), String.valueOf(investRepayModel.getId())));
                 logger.error(String.format("[experience interest:] send experience interest investId:s% payback throw exception", investRepayModel.getId()));
-                fatalLog("experience interest sync send fail. orderId:" + investRepayModel.getId()e, e);
+                fatalLog("experience interest sync send fail. orderId:" + investRepayModel.getId(), e);
             }
         }
         return false;

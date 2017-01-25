@@ -27,19 +27,27 @@ public class DateConvertUtil {
         return Date.from(instant);
     }
 
-    public static Date plusMinutes(LocalDateTime localDateTime, int minute) {
-        return localDateTimeToDate(localDateTime.plusMinutes(minute));
+    public static Date plus(Date date, int day, int hour, int minute, int second) {
+
+        return localDateTimeToDate(dateToLocalDateTime(date)
+                .plusDays(day)
+                .plusHours(hour)
+                .plusMinutes(minute)
+                .plusSeconds(second));
     }
 
-    public static String format(Date date,String pattern){
+    public static String format(Date date, String pattern) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
         return DateConvertUtil.dateToLocalDateTime(date).format(formatter);
     }
 
-    public static LocalDateTime stringToLocalDateTime(String dateTimeString){
+    public static LocalDateTime stringToLocalDateTime(String dateTimeString) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         return LocalDateTime.parse(dateTimeString, formatter);
     }
 
+    public static void main(String args[]) {
+        System.out.println(plus(new Date(), 1, 0, -1, 0));
+    }
 
 }
