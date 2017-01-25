@@ -57,13 +57,12 @@ getJsonFileList.prototype.addJqueryPlugin=function(path) {
 
     var filesList=this.filesList;
     var files = fs.readdirSync(path);//需要用到同步读取
+    console.log(files);
     files.forEach(function(file) {
         var states = fs.statSync(path+'/'+file);
-        if(states.isDirectory())
+        //isDirectory,用于判断被查看的对象是否是一个目录，如果是返回true
+        if(!states.isDirectory())
         {
-            this.readPluginFloder(path+'/'+file,filesList);
-        }
-        else {
             var suffix=file.split('.'),
                 len=suffix.length;
             if(suffix[len-1]=='js') {
@@ -71,6 +70,7 @@ getJsonFileList.prototype.addJqueryPlugin=function(path) {
                 var keyName=suffix.join('');
                 this.jsonFormat['jsFile'][keyName]='/public/dllplugins/'+file;
             }
+            // this.readPluginFloder(path+'/'+file,filesList);
         }
     }.bind(this))
 

@@ -19,8 +19,6 @@ var basePath = path.join(__dirname, 'resources'),
 
 var publicPathJS=path.join(publicPath, 'js');
 
-//从ttsd-config的ttsd-env.properties配置文件中读取静态资源的地址
-console.log(staticServer);
 var outputPath=path.join(basePath, 'develop'),//打包文件路径
 	devServerPath=staticServer+'/',
 	commonOptions={},
@@ -34,6 +32,8 @@ var NODE_ENV=process.env.NODE_ENV;
  */
 
 var files = glob.sync(path.join(staticPath, '*/js/*.jsx'));
+var Accountfiles = glob.sync(path.join(staticPath, '*/js/account/*.jsx'));
+files=files.concat(Accountfiles);
 var newEntries = {};
 
 files.forEach(function(file){
@@ -49,7 +49,7 @@ files.forEach(function(file){
 		newEntries[substr] = file;
 	}
 });
-
+// console.log(newEntries);
 commonOptions.entry = newEntries;
 
 if(NODE_ENV=='production') {
@@ -154,7 +154,6 @@ module.exports = objectAssign(commonOptions, {
 		alias: {
 			publicJs:publicPathJS,
 			publicStyle:path.join(publicPath, 'styles'),
-			publicLib:path.join(publicPathJS, 'libs'),
 
 			askJs:path.join(askPath, 'js'),
 			askStyle:path.join(askPath, 'styles'),

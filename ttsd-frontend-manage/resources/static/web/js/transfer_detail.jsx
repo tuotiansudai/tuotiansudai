@@ -185,7 +185,7 @@ function getCode(type) {
         data: {
             isVoice: type
         }
-    },function () {
+    },function (data) {
         $('#getSkipCode').prop('disabled',false);
         $('#microPhone').css('visibility', 'visible');
         if(data.success) {

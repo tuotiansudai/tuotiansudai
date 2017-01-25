@@ -1,10 +1,10 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="${css.my_account}" pageJavascript="${js.bind_card}" activeNav="我的账户" activeLeftNav="个人资料" title="绑定银行卡">
+<@global.main pageCss="${css.bind_card}" pageJavascript="${js.bind_card}" activeNav="我的账户" activeLeftNav="个人资料" title="绑定银行卡">
 
-<div class="content-container">
+<div class="content-container" id="bindCardBox">
     <h4 class="column-title"><em class="tc">绑定银行卡</em></h4>
     <div class="recharge-bind-card pad-s">
-        <div class="recharge-wrapper bind-card-frame" id="bindCardBox">
+        <div class="recharge-wrapper bind-card-frame" >
             <form action="" method="post" <@global.role hasRole="'INVESTOR', 'LOANER'">target="_blank"</@global.role>>
                 <div class="bank-card-limit">
                     <#if userName??>

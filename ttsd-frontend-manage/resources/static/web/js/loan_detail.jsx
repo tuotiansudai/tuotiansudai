@@ -68,7 +68,7 @@ function validateInvestAmount() {
 };
 //投资表单请求以及校验
 function investSubmit(){
-    // let $minInvestAmount=
+    let $minInvestAmount = amountInputElement.data('min-invest-amount')
     if ($investForm.attr('action') === '/invest') {
         if (!isInvestor) {
             location.href = '/login?redirect=' + encodeURIComponent(location.href);
