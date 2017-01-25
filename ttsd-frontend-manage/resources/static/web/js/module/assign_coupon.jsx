@@ -1,11 +1,10 @@
 define([], function () {
+    let commonFun= require('publicJs/commonFun');
     if($('#logout-link').length > 0){
-        $.ajax({
+        commonFun.useAjax({
             url: '/assign-coupon',
-            type: 'POST',
-            dataType: 'json',
-            contentType: 'application/json; charset=UTF-8'
-        })
+            type: 'POST'
+        });
     }
 });
 

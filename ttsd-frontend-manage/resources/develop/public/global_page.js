@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "150ceb2b880577311ef4"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "2cadf2b702cb59b4edf8"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -885,6 +885,8 @@
 	});
 
 	window._ = window.jquery_library(3);
+
+	window.$.fn = window.$.prototype;
 
 	// ********* cnzz统计 BEGIN ***********
 	function cnzzPushConstructor() {

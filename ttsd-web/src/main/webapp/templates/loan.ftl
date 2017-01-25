@@ -63,7 +63,7 @@
                             </div>
                         </script>
                     </#if>
-                    <span class="fr boilerplate"><a href="${staticServer}/pdf/loanAgreementSample.pdf" target="_blank">借款协议样本</a></span>
+                    <span class="fr boilerplate"><a href="${staticServer}/images/pdf/loanAgreementSample.pdf" target="_blank">借款协议样本</a></span>
                 </h2>
                 <div class="container-block loan-info">
                     <div class="content">

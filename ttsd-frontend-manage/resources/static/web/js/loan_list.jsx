@@ -4,9 +4,8 @@ require('webJsModule/assign_coupon');
 require('webJsModule/count_down');
 
 //投资计算器和意见反馈
-require.ensure(['webJsModule/red_envelope_float'],function() {
-    require('webJsModule/red_envelope_float');
-},'redEnvelope');
+require('webJsModule/red_envelope_float');
+
 let $loanListBox=$('#loanListBox');
 var $loanLi = $loanListBox.find('li');
 

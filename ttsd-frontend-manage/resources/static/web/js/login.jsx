@@ -38,10 +38,10 @@ Array.prototype.forEach.call(loginInputs,function(el) {
         event.preventDefault();
         let errorMsg = validator.start(this);
         if(errorMsg) {
-            errorDom.text(errorMsg);
+            errorDom.text(errorMsg).css('visibility','visible');
         }
         else {
-            errorDom.text('');
+            errorDom.text('').css('visibility','hidden');
         }
     })
 });
@@ -53,19 +53,18 @@ loginForm.onsubmit = function(event) {
     for(let i=0,len=loginInputs.length;i<len;i++) {
         errorMsg = validator.start(loginInputs[i]);
         if(errorMsg) {
-            errorDom.text(errorMsg);
+            errorDom.text(errorMsg).css('visibility','visible');
             break;
         }
     }
     if (!errorMsg) {
+        loginSubmit.addClass('loading').prop('disabled',true);
         commonFun.useAjax({
             url:"/login",
             type:'POST',
-            data:$(loginForm).serialize(),
-            beforeSend:function() {
-                loginSubmit.prop('disabled',true);
-            }
+            data:$(loginForm).serialize()
         },function(data) {
+            loginSubmit.removeClass('loading').prop('disabled',false);
             let redirectUrl=$(loginForm).data('redirect-url');
             if (data.status) {
                  //用户角色里是否包含USER角色
@@ -74,10 +73,9 @@ loginForm.onsubmit = function(event) {
             } else {
                 let imageCaptcha=globalFun.$('#imageCaptcha');
                 commonFun.refreshCaptcha(imageCaptcha,'/login/captcha?');
-                loginSubmit.removeClass('loading');
-                errorDom.text(data.message);
+                errorDom.text(data.message).css('visibility','visible');
             }
-        }
+         }
         );
     }
 };

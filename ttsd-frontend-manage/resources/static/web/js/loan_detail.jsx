@@ -1,8 +1,6 @@
 require('webStyle/investment/loan_detail.scss');
-require('publicStyle/plugins/fancybox.scss');
 require('webJsModule/pagination');
-require('publicJs/plugins/autoNumeric');
-require('webJsModule/fancybox');
+require('webJs/plugins/autoNumeric');
 
 require('webJsModule/coupon_alert');
 require('webJsModule/assign_coupon');
@@ -10,7 +8,7 @@ require('webJsModule/assign_coupon');
 require('webJsModule/red_envelope_float');
 //安心签协议
 require('webJsModule/anxin_agreement');
-let popLoginTip=require('publicJs/login_tip');
+require('publicJs/login_tip');
 let commonFun= require('publicJs/commonFun');
 
 let $loanDetailContent=$('#loanDetailContent');
@@ -54,9 +52,23 @@ function showLayer() {
     });
 };
 
+function getInvestAmount() {
+    var amount = 0;
+    if (!isNaN(amountInputElement.autoNumeric("get"))) {
+        amount = parseInt((amountInputElement.autoNumeric("get") * 100).toFixed(0));
+    }
+
+    return amount;
+}
+
+function validateInvestAmount() {
+    var amount = getInvestAmount();
+    var amountNeedRaised = parseInt($('#investForm').find('input[name=amount]').data("amount-need-raised")) || 0;
+    return amount > 0 && amountNeedRaised >= amount;
+};
 //投资表单请求以及校验
 function investSubmit(){
-
+    // let $minInvestAmount=
     if ($investForm.attr('action') === '/invest') {
         if (!isInvestor) {
             location.href = '/login?redirect=' + encodeURIComponent(location.href);
@@ -290,15 +302,6 @@ function getSkipPhoneTip(){
         var $useExperienceTicket = $('#use-experience-ticket');
         var $couponExpectedInterest = $(".experience-income");
 
-        var getInvestAmount = function() {
-            var amount = 0;
-            if (!isNaN(amountInputElement.autoNumeric("get"))) {
-                amount = parseInt((amountInputElement.autoNumeric("get") * 100).toFixed(0));
-            }
-
-            return amount;
-        };
-
         var refreshCouponStatus = function() {
             var investAmount = getInvestAmount();
             $.each($ticketList.find("li"), function(index, ticket) {
@@ -416,11 +419,7 @@ function getSkipPhoneTip(){
             });
         };
 
-        var validateInvestAmount = function() {
-            var amount = getInvestAmount();
-            var amountNeedRaised = parseInt($('#investForm').find('input[name=amount]').data("amount-need-raised")) || 0;
-            return amount > 0 && amountNeedRaised >= amount;
-        };
+
 
         var calExpectedCouponInterest = function() {
             var queryParams = [];
@@ -507,7 +506,13 @@ function getSkipPhoneTip(){
                 })
                 .fail(function() {
                     //判断是否需要弹框登陆
-                    popLoginTip();
+                    layer.open({
+                        type: 1,
+                        title: false,
+                        closeBtn: 0,
+                        area: ['auto', 'auto'],
+                        content: $('#loginTip')
+                    });
                 });
         });
 
@@ -711,74 +716,79 @@ function getSkipPhoneTip(){
     })).trigger('change');
 })();
 
-$.fn.carousel = function () {
-    return this.each(function () {
-        var $ele = $(this);
-        var $leftBtn = $ele.find('.left-button');
-        var $rightBtn = $ele.find('.right-button');
-        var $scrollEle = $ele.find('.scroll-content > .row');
-        var $col = $scrollEle.find('.col');
-        var len = $col.length;
-        var record = 0;
-        var eachShowAmount = $(window).width() > 700 ? 4 : 1;
-        var imgNum = $scrollEle.find('img').length,
-            moveWid;
-        switch (viewport) {
-            case 'pc':
-                if (imgNum <= 4) {
-                    $rightBtn.addClass('disabled');
-                }
-                moveWid = 200;
-                break;
-            case 'mobile':
-                if (imgNum <= 1) {
-                    $rightBtn.addClass('disabled');
-                }
-                moveWid = $ele.find('.scroll-content').width();
-                $scrollEle.find('img').width(moveWid);
-                $col.width(moveWid);
-                break;
-        }
+//图片效果
+(function() {
+    $.fn.carousel = function () {
+        return this.each(function () {
+            var $ele = $(this);
+            var $leftBtn = $ele.find('.left-button');
+            var $rightBtn = $ele.find('.right-button');
+            var $scrollEle = $ele.find('.scroll-content > .row');
+            var $col = $scrollEle.find('.col');
+            var len = $col.length;
+            var record = 0;
+            var eachShowAmount = $(window).width() > 700 ? 4 : 1;
+            var imgNum = $scrollEle.find('img').length,
+                moveWid;
+            switch (viewport) {
+                case 'pc':
+                    if (imgNum <= 4) {
+                        $rightBtn.addClass('disabled');
+                    }
+                    moveWid = 200;
+                    break;
+                case 'mobile':
+                    if (imgNum <= 1) {
+                        $rightBtn.addClass('disabled');
+                    }
+                    moveWid = $ele.find('.scroll-content').width();
+                    $scrollEle.find('img').width(moveWid);
+                    $col.width(moveWid);
+                    break;
+            }
 
-        $rightBtn.on('click', function () {
-            if ($rightBtn.hasClass('disabled')) {
-                return false;
-            }
-            $rightBtn.add($leftBtn).removeClass('disabled');
-            record++;
-            if (record >= (len - eachShowAmount)) {
-                $rightBtn.addClass('disabled');
-            }
-            $scrollEle.stop().animate({
-                marginLeft: (-moveWid - 10) * record
+            $rightBtn.on('click', function () {
+                if ($rightBtn.hasClass('disabled')) {
+                    return false;
+                }
+                $rightBtn.add($leftBtn).removeClass('disabled');
+                record++;
+                if (record >= (len - eachShowAmount)) {
+                    $rightBtn.addClass('disabled');
+                }
+                $scrollEle.stop().animate({
+                    marginLeft: (-moveWid - 10) * record
+                });
+            });
+            $leftBtn.on('click', function () {
+                if ($leftBtn.hasClass('disabled')) {
+                    return false;
+                }
+                $leftBtn.add($rightBtn).removeClass('disabled');
+                record--;
+                if (record == 0) {
+                    $leftBtn.addClass('disabled');
+                }
+                $scrollEle.stop().animate({
+                    marginLeft: (-moveWid - 10) * record
+                });
             });
         });
-        $leftBtn.on('click', function () {
-            if ($leftBtn.hasClass('disabled')) {
-                return false;
+    };
+    let fancybox = require('webJsModule/fancybox');
+    fancybox(function() {
+        $('[scroll-carousel]').carousel().find('.col').fancybox({
+            'titlePosition': 'over',
+            'cyclic': false,
+            'showCloseButton': true,
+            'showNavArrows': true,
+            'titleFormat': function (title, currentArray, currentIndex, currentOpts) {
+                return '';
             }
-            $leftBtn.add($rightBtn).removeClass('disabled');
-            record--;
-            if (record == 0) {
-                $leftBtn.addClass('disabled');
-            }
-            $scrollEle.stop().animate({
-                marginLeft: (-moveWid - 10) * record
-            });
         });
     });
-};
-$('[scroll-carousel]').carousel().find('.col').fancybox({
-    'titlePosition': 'over',
-    'cyclic': false,
-    'showCloseButton': true,
-    'showNavArrows': true,
-    'titleFormat': function (title, currentArray, currentIndex, currentOpts) {
-        return '';
-    }
-});
 
-
+})();
 (function () {
     var maybe = function (value) {
         return value ? value : 0;
@@ -852,62 +862,33 @@ $('[scroll-carousel]').carousel().find('.col').fancybox({
 
 })();
 
-//安心签的业务
+//安心签的业务,需要重构
 (function() {
-//勾选马上投资下方 协议复选框
-    $('.skip-group .skip-icon').on('click', function(event) {
-        event.preventDefault();
-
-        $(this).hasClass('active')?$(this).removeClass('active') && $('#skipCheck').val('false') && $('#checkTip').show()&& $investSubmit.prop('disabled',true):$(this).addClass('active')&& $('#skipCheck').val('true') && $('#checkTip').hide() && $investSubmit.prop('disabled',false);
-    });
-
-    //勾选 安心签弹框中的复选框
-    $('.tip-item .skip-icon').on('click', function(event) {
-        event.preventDefault();
-        $(this).hasClass('active')?$(this).removeClass('active') && $('#tipCheck').val('false'):$(this).addClass('active')&& $('#tipCheck').val('true');
-    });
     var num = 60,Down;
-
-    //获取短信验证码
-    $('#getSkipCode').on('click', function(event) {
-        event.preventDefault();
-        getCode(false);
-    });
-
-    //获取语音验证码
-    $('#microPhone').on('click', function(event) {
-        event.preventDefault();
-        getCode(true);
-    });
     //安心签弹框中获取短信验证码请求
     function getCode(type){
-        $('#getSkipCode').prop('disabled',true);
-        $('#microPhone').css('visibility', 'hidden');
-        $.ajax({
+        let $getSkipCode=$('#getSkipCode'),
+            $microPhone=$('#microPhone');
+
+        $getSkipCode.prop('disabled',true);
+        $microPhone.css('visibility', 'hidden');
+        commonFun.useAjax({
             url: '/anxinSign/sendCaptcha',
             type: 'POST',
-            dataType: 'json',
             data:{
                 isVoice:type
             }
-        })
-            .done(function(data) {
-                $('#getSkipCode').prop('disabled',false);
-                $('#microPhone').css('visibility', 'visible');
-                if(data.success) {
-                    countDown();
-                    Down = setInterval(countDown, 1000);
-                }
-                else {
-                    layer.msg('请求失败，请重试或联系客服！');
-                }
-
-            })
-            .fail(function() {
-                $('#getSkipCode').prop('disabled',false);
-                $('#microPhone').css('visibility', 'visible');
+        },function(data) {
+            $getSkipCode.prop('disabled',false);
+            $microPhone.css('visibility', 'visible');
+            if(data.success) {
+                countDown();
+                Down = setInterval(countDown, 1000);
+            }
+            else {
                 layer.msg('请求失败，请重试或联系客服！');
-            });
+            }
+        });
     }
     //安心签弹框中获取短信验证码倒计时效果
     function countDown() {
@@ -922,44 +903,6 @@ $('[scroll-carousel]').carousel().find('.col').fancybox({
             num--;
         }
     }
-    //安心签授权弹框表单提交
-    $('#getSkipBtn').on('click',  function(event) {
-        event.preventDefault();
-        var $self=$(this);
-        if($('#skipPhoneCode').val()!=''){
-            $.ajax({
-                url: '/anxinSign/verifyCaptcha',
-                type: 'POST',
-                dataType: 'json',
-                data: {
-                    captcha: $('#skipPhoneCode').val(),
-                    skipAuth:$('#tipCheck').val()
-                }
-            })
-                .done(function(data) {
-                    $self.removeClass('active').val('立即授权').prop('disabled', false);
-                    if(data.success){
-                        $('#isAnxinUser').val('true') && $('.skip-group').hide();
-                        if(data.skipAuth=='true'){
-                            $isAuthenticationRequired.val('false');
-                        }
-                        skipSuccess();
-                    }else{
-                        $('#skipError').text('验证码不正确').show();
-                    }
-                })
-                .fail(function() {
-                    $self.removeClass('active').val('立即授权').prop('disabled', false);
-                    layer.msg('请求失败，请重试！');
-                })
-                .always(function() {
-                    $self.addClass('active').val('授权中...').prop('disabled', true);
-                });
-        }else{
-            $('#skipError').text('验证码不能为空').show();
-        }
-    });
-
     //安心签授权成功弹框
     function skipSuccess(){
         layer.closeAll();
@@ -972,6 +915,60 @@ $('[scroll-carousel]').carousel().find('.col').fancybox({
 
         },3000)
     }
+
+//勾选马上投资下方 协议复选框
+    $('.skip-group .skip-icon').on('click', function(event) {
+        event.preventDefault();
+
+        $(this).hasClass('active')?$(this).removeClass('active') && $('#skipCheck').val('false') && $('#checkTip').show()&& $investSubmit.prop('disabled',true):$(this).addClass('active')&& $('#skipCheck').val('true') && $('#checkTip').hide() && $investSubmit.prop('disabled',false);
+    });
+
+    //勾选 安心签弹框中的复选框
+    $('.tip-item .skip-icon').on('click', function(event) {
+        event.preventDefault();
+        $(this).hasClass('active')?$(this).removeClass('active') && $('#tipCheck').val('false'):$(this).addClass('active')&& $('#tipCheck').val('true');
+    });
+    //获取短信验证码
+    $('#getSkipCode').on('click', function(event) {
+        event.preventDefault();
+        getCode(false);
+    });
+
+    //获取语音验证码
+    $('#microPhone').on('click', function(event) {
+        event.preventDefault();
+        getCode(true);
+    });
+
+    //安心签授权弹框表单提交
+    $('#getSkipBtn').on('click',  function(event) {
+        event.preventDefault();
+        var $self=$(this);
+        if($('#skipPhoneCode').val()!=''){
+            $self.addClass('active').val('授权中...').prop('disabled', true);
+            commonFun.useAjax({
+                url: '/anxinSign/verifyCaptcha',
+                type: 'POST',
+                data: {
+                    captcha: $('#skipPhoneCode').val(),
+                    skipAuth:$('#tipCheck').val()
+                }
+            },function(data) {
+                $self.removeClass('active').val('立即授权').prop('disabled', false);
+                if(data.success){
+                    $('#isAnxinUser').val('true') && $('.skip-group').hide();
+                    if(data.skipAuth=='true'){
+                        $isAuthenticationRequired.val('false');
+                    }
+                    skipSuccess();
+                }else{
+                    $('#skipError').text('验证码不正确').show();
+                }
+            });
+        }else{
+            $('#skipError').text('验证码不能为空').show();
+        }
+    });
 
 })();
 

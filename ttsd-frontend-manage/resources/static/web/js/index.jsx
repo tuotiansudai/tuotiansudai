@@ -1,6 +1,6 @@
 require('webJsModule/coupon_alert');
 require('webStyle/home_page_v2.scss');
-
+require('publicJs/login_tip');
 //投资计算器和意见反馈
 require('webJsModule/red_envelope_float');
 
@@ -73,10 +73,10 @@ $('[data-url]',$homePageContainer).on('click',function(event) {
 // debugger
 
 //预约投资
-require.ensure(['publicJs/plugins/autoNumeric','publicJs/validator','publicJs/commonFun','publicJs/login_tip'], function(){
-    let popLoginTip=require('publicJs/login_tip');
 
-    require('publicJs/plugins/autoNumeric');
+require.ensure(['webJs/plugins/autoNumeric','publicJs/validator','publicJs/commonFun','publicJs/login_tip'], function(){
+
+    require('webJs/plugins/autoNumeric');
 
     let commonFun= require('publicJs/commonFun');
     let ValidatorForm= require('publicJs/validator');
@@ -110,7 +110,13 @@ require.ensure(['publicJs/plugins/autoNumeric','publicJs/validator','publicJs/co
             })
             .fail(function() {
                 //判断是否需要弹框登陆
-                popLoginTip();
+                layer.open({
+                    type: 1,
+                    title: false,
+                    closeBtn: 0,
+                    area: ['auto', 'auto'],
+                    content: $('#loginTip')
+                });
             });
     });
 

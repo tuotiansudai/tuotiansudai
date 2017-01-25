@@ -2453,8 +2453,8 @@ form input.error + label.error:before {
   margin-right: auto;
   box-sizing: border-box; }
 
-.loading {
-  background: #fff url(http://localhost:3008/images/loading.fc27bb97.gif) no-repeat center center !important;
+.btn-normal[disabled].loading {
+  background: transparent url(http://localhost:3008/images/loading.fc27bb97.gif) no-repeat center center !important;
   cursor: default !important;
   border: 0 !important;
   text-indent: -9999px; }
@@ -2489,13 +2489,13 @@ form input.error + label.error:before {
     background-image: none;
     outline: 0; }
   .btn:disabled, .btn-normal:disabled, .btn-success:disabled, .btn-primary:disabled, .btn-action:disabled, .btn-link:disabled, .btn:disabled:hover, .btn-normal:disabled:hover, .btn-success:disabled:hover, .btn-primary:disabled:hover, .btn-action:disabled:hover, .btn-link:disabled:hover {
-    background: #ccc !important;
-    border: 1px solid #ccc !important;
+    background: #ccc;
+    border: 1px solid #ccc;
     cursor: default;
     color: #fff; }
   .btn[disabled], [disabled].btn-normal, [disabled].btn-success, [disabled].btn-primary, [disabled].btn-action, [disabled].btn-link, .btn[disabled]:hover, [disabled].btn-normal:hover, [disabled].btn-success:hover, [disabled].btn-primary:hover, [disabled].btn-action:hover, [disabled].btn-link:hover {
-    background: #ccc !important;
-    border: 1px solid #ccc !important;
+    background: #ccc;
+    border: 1px solid #ccc;
     cursor: default;
     color: #fff; }
 
@@ -2507,13 +2507,13 @@ form input.error + label.error:before {
     background: rgba(255, 117, 42, 0.8);
     color: #fff; }
   .btn-normal:disabled, .btn-normal:disabled:hover {
-    background: #ccc !important;
-    border: 1px solid #ccc !important;
+    background: #ccc;
+    border: 1px solid #ccc;
     cursor: default;
     color: #fff; }
   .btn-normal[disabled], .btn-normal[disabled]:hover {
-    background: #ccc !important;
-    border: 1px solid #ccc !important;
+    background: #ccc;
+    border: 1px solid #ccc;
     cursor: default;
     color: #fff; }
 
@@ -2532,7 +2532,7 @@ form input.error + label.error:before {
 .btn-primary {
   background: #ffac2a;
   border: 1px solid #ffac2a;
-  color: #fff !important; }
+  color: #fff; }
   .btn-primary:hover {
     background: rgba(255, 172, 42, 0.8);
     border: 1px solid rgba(255, 172, 42, 0.8); }
