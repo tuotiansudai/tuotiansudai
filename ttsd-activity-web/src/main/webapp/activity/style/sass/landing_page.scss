@@ -1,18 +1,6 @@
 @import 'common/variables';
 @import 'module/register_png';
 
-$landingPhoneColorGray: #F2F2F2;
-$landingPhoneColorRed: #FC4333;
-$fontMonster: 26px;
-$fontGiant: 24px;
-$fontUltraHuge: 22px;
-$fontHuge: 20px;
-$fontBig: 18px;
-$fontNormal: 16px;
-$fontSmall: 14px;
-$fontUltraSmall: 12px;
-$fontUltraSmaller: 10px;
-
 form label.error:before {
   padding-right: 5px;
   content: "\f057";
@@ -28,27 +16,6 @@ form label.error:before {
   height: 30px;
   box-shadow: 0px 5px 0px #ff473c;
   border-radius: 25px;
-}
-
-.header-title {
-  padding: 0 80px 0 20px;
-  height: 42px;
-  line-height: 42px;
-  border-bottom: 1px solid #eee;
-  font-size: 14px;
-  color: #333;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  background-color: #F8F8F8;
-  border-radius: 2px 2px 0 0;
-  position: relative;
-  .close-tip {
-    position: absolute;
-    right: 10px;
-    top: 12px;
-    font-size: 18px;
-  }
 }
 
 .header-container {
@@ -738,6 +705,7 @@ form label.error {
 
     .newbie-step-register {
       position: static;
+      display: block;
       width: 100%;
       left: 0;
       top: 0;
@@ -749,10 +717,10 @@ form label.error {
 
       .register-box {
         position: static;
-        padding: 25px 5% 25px 5%;
+        display: inline-block;
+        padding: 25px 0px 25px 0px;
         background: #362d50;
-        width: 90%;
-        text-align: center;
+        width: 300px;
 
         .refer-person-info {
           margin-bottom: 15px;

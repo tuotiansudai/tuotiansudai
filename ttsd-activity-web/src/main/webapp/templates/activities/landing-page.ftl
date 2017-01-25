@@ -20,7 +20,7 @@
                 <dd><i>3</i>天 <br/><em>项目期限</em></dd>
             </dl>
 
-            <div class="tc"><a href="#" class="btn-normal" id="btn-experience">领取6888元体验金</a></div>
+            <div class="tc"><a href="/register/user" class="btn-normal" id="btn-experience">领取6888元体验金</a></div>
 
         </div>
 
@@ -29,7 +29,7 @@
             <div class="image-title"></div>
             <div class="image-red-envelope"></div>
 
-            <div class="tc"><a href="#" class="btn-normal" id="btn-red-envelope">立即领取</a></div>
+            <div class="tc"><a href="/loan-list?productType=JYF" class="btn-normal" id="btn-red-envelope">立即领取</a></div>
 
         </div>
 
@@ -47,7 +47,7 @@
                 <dd><i>30</i>天 <br/><em>项目期限</em></dd>
             </dl>
 
-            <div class="tc"><a href="#" class="btn-normal" id="btn-invest">立即投资</a></div>
+            <div class="tc"><a href="/loan-list?productType=JYF" class="btn-normal">立即投资</a></div>
 
         </div>
 

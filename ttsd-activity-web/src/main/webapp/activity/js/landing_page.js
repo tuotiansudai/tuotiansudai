@@ -11,9 +11,6 @@ require(['jquery', 'underscore', 'layerWrapper', 'commonFun', 'superslide', 'pla
 
         //
         var $landingContainer = $('.landing-container');
-        var $btnExperience = $('#btn-experience', $landingContainer);
-        var $btnRedEnvelope = $('#btn-red-envelope', $landingContainer);
-        var $btnInvest = $('#btn-invest', $landingContainer);
         var $btnCoupon = $('#btn-get-coupon', $landingContainer);
 
         //
@@ -32,32 +29,17 @@ require(['jquery', 'underscore', 'layerWrapper', 'commonFun', 'superslide', 'pla
         }
 
         function setupListeners() {
-            //todo
-            $btnExperience.on('click', function (event) {
-                if (isFromApp()) {
-                    layer.msg("from app");
-                } else {
-                    layer.msg("experience");
-                }
-            });
-
-            //todo
-            $btnRedEnvelope.on('click', function (event) {
-                layer.msg("redEnvelope");
-            });
-
-            //todo
-            $btnInvest.on('click', function (event) {
-                layer.msg("invest");
-            });
-
-            //todo
             $btnCoupon.on('click', function (event) {
                 event.preventDefault();
-                if (isFromMobile()) {
-                    $('body,html').animate({scrollTop: $('.landingContainerBox').height()}, 'fast');
+
+                if (isFromApp()) {
+                    window.location.href = "/register/user";
                 } else {
-                    $('body,html').animate({scrollTop: 0}, 'fast');
+                    if (isFromMobile()) {
+                        $('body,html').animate({scrollTop: $('.landingContainerBox').height()}, 'fast');
+                    } else {
+                        $('body,html').animate({scrollTop: 0}, 'fast');
+                    }
                 }
             });
 

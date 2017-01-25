@@ -161,7 +161,7 @@
                         <li><i class="fa fa-circle"></i>新手体验项目所得红包奖励需投资后方可提现，不可与其他红包及加息券共用；</li>
                         <li><i class="fa fa-circle"></i>每个身份证仅限参加一次，刷奖、冒用他人身份证、银行卡者一经核实，取消活动资格，所得奖励不予承兑。</li>
                     </ul>
-                    <div class="registered"><span>注册领取5888体验金</span></div>
+                    <div class="slideBox"><span>注册领取5888体验金</span></div>
                 </div>
             </div>
         </div>
