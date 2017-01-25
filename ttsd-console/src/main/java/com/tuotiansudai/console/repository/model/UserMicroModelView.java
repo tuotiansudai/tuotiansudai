@@ -7,6 +7,8 @@ import java.util.Date;
 
 public class UserMicroModelView implements Serializable {
 
+    private long id;
+
     private String userName;
 
     private String mobile;
@@ -29,11 +31,11 @@ public class UserMicroModelView implements Serializable {
 
     private Double averageLoanInvestAmount;
 
-    private int transformPeriod;
+    private Integer transformPeriod = null;
 
-    private int invest1st2ndTiming;
+    private Integer invest1st2ndTiming = null;
 
-    private int invest1st3rdTiming;
+    private Integer invest1st3rdTiming = null;
 
     private Date lastInvestTime;
 
@@ -41,9 +43,17 @@ public class UserMicroModelView implements Serializable {
 
     private Date lastLoginTime;
 
-    private int lastLoginToNow;
+    private Integer lastLoginToNow = null;
 
     private Source lastLoginSource;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getUserName() {
         return userName;
@@ -133,27 +143,27 @@ public class UserMicroModelView implements Serializable {
         this.averageLoanInvestAmount = averageLoanInvestAmount;
     }
 
-    public int getTransformPeriod() {
+    public Integer getTransformPeriod() {
         return transformPeriod;
     }
 
-    public void setTransformPeriod(int transformPeriod) {
+    public void setTransformPeriod(Integer transformPeriod) {
         this.transformPeriod = transformPeriod;
     }
 
-    public int getInvest1st2ndTiming() {
+    public Integer getInvest1st2ndTiming() {
         return invest1st2ndTiming;
     }
 
-    public void setInvest1st2ndTiming(int invest1st2ndTiming) {
+    public void setInvest1st2ndTiming(Integer invest1st2ndTiming) {
         this.invest1st2ndTiming = invest1st2ndTiming;
     }
 
-    public int getInvest1st3rdTiming() {
+    public Integer getInvest1st3rdTiming() {
         return invest1st3rdTiming;
     }
 
-    public void setInvest1st3rdTiming(int invest1st3rdTiming) {
+    public void setInvest1st3rdTiming(Integer invest1st3rdTiming) {
         this.invest1st3rdTiming = invest1st3rdTiming;
     }
 
@@ -181,11 +191,11 @@ public class UserMicroModelView implements Serializable {
         this.lastLoginTime = lastLoginTime;
     }
 
-    public int getLastLoginToNow() {
+    public Integer getLastLoginToNow() {
         return lastLoginToNow;
     }
 
-    public void setLastLoginToNow(int lastLoginToNow) {
+    public void setLastLoginToNow(Integer lastLoginToNow) {
         this.lastLoginToNow = lastLoginToNow;
     }
 

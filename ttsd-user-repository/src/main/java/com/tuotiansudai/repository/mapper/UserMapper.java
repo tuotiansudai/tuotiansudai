@@ -1,6 +1,5 @@
 package com.tuotiansudai.repository.mapper;
 
-import com.tuotiansudai.repository.model.UserChannel;
 import com.tuotiansudai.repository.model.UserModel;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;

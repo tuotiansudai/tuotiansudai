@@ -240,8 +240,8 @@ public class ConsoleUserService {
     public BaseDto<BasePaginationDataDto<UserMicroModelView>> queryUserMicroView(String mobile,
                                                                                  Date registerTimeStart,
                                                                                  Date registerTimeEnd,
-                                                                                 Boolean hasCertify,
-                                                                                 Boolean invested,
+                                                                                 String hasCertify,
+                                                                                 String invested,
                                                                                  Long totalInvestAmountStart,
                                                                                  Long totalInvestAmountEnd,
                                                                                  Integer investCountStart,
@@ -314,14 +314,16 @@ public class ConsoleUserService {
                 lastLoginTimeStart,
                 lastLoginTimeEnd,
                 lastLoginSource,
-                index,
+                (index - 1) * pageSize,
                 pageSize);
 
         for (UserMicroModelView view : userMicroModelViewList) {
-            view.setAverageInvestAmount(((double) view.getTotalInvestAmount()) / view.getInvestCount());
-            view.setAverageLoanInvestAmount((double) view.getTotalInvestAmount() / view.getLoanCount());
-            view.setLastLoginToNow((int) (DateTime.now().withTimeAtStartOfDay().getMillis()
-                    - new DateTime(view.getRegisterTime()).withTimeAtStartOfDay().getMillis() / (1000 * 60 * 60 * 24)));
+            view.setAverageInvestAmount(view.getInvestCount() == 0 ? 0 : ((double) view.getTotalInvestAmount()) / view.getInvestCount());
+            view.setAverageLoanInvestAmount(view.getLoanCount() == 0 ? 0 : (double) view.getTotalInvestAmount() / view.getLoanCount());
+            if (view.getLastLoginTime() != null) {
+                view.setLastLoginToNow((int) ((DateTime.now().withTimeAtStartOfDay().getMillis()
+                        - new DateTime(view.getLastLoginTime()).withTimeAtStartOfDay().getMillis()) / (1000 * 60 * 60 * 24)));
+            }
         }
 
         BaseDto<BasePaginationDataDto<UserMicroModelView>> baseDto = new BaseDto<>();

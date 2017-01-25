@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.console.service.ConsoleBookingLoanService;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.repository.model.Source;
-import com.tuotiansudai.service.BookingLoanService;
 import com.tuotiansudai.util.CsvHeaderType;
 import com.tuotiansudai.util.ExportCsvUtil;
 import org.apache.log4j.Logger;
