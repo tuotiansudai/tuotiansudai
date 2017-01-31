@@ -231,7 +231,13 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
     @Override
     public BaseDto<PayDataDto> asyncPurchaseCallback(long notifyRequestId) {
         InvestNotifyRequestModel model = investTransferNotifyRequestMapper.findById(notifyRequestId);
-        if ("NOT_DONE".equals(model.getStatus())) {
+
+        if (model == null) {
+            logger.error(MessageFormat.format("债权转让投资回调处理错误。{0},{1} not found", environment, String.valueOf(notifyRequestId)));
+            sendFatalNotify(MessageFormat.format("债权转让投资回调处理错误。{0},{1} not found", environment, String.valueOf(notifyRequestId)));
+        }
+
+        if (model != null && NotifyProcessStatus.NOT_DONE.name().equals(model.getStatus())) {
             logger.info(MessageFormat.format("[Invest Transfer Callback {0}] starting...", model.getOrderId()));
             if (updateInvestTransferNotifyRequestStatus(model)) {
                 try {
