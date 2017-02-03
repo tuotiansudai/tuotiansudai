@@ -1,6 +1,7 @@
 package com.tuotiansudai.scheduler.loan;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
@@ -14,6 +15,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -23,6 +25,8 @@ import java.util.Date;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
@@ -44,6 +48,9 @@ public class ExperienceRepaySchedulerTest {
 
     @Autowired
     private IdGenerator idGenerator;
+
+    @MockBean
+    private SmsWrapperClient smsWrapperClient;
 
     private long loanId;
 
@@ -146,7 +153,9 @@ public class ExperienceRepaySchedulerTest {
     }
 
     @Test
+    @Transactional
     public void testNewbieExperienceService() {
+        when(smsWrapperClient.sendExperienceRepayNotify(any())).thenReturn(null);
         prepareData();
 
         scheduler.repay();
