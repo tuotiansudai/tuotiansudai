@@ -66,7 +66,7 @@ public class QueryAnxinContractMessageConsumer implements MessageConsumer {
 
     @Override
     public void consume(String message) {
-        AnxinContractQueryMessage messageBody = null;
+        AnxinContractQueryMessage messageBody;
         try {
             messageBody = JsonConverter.readValue(message, AnxinContractQueryMessage.class);
         } catch (IOException e) {
@@ -79,9 +79,9 @@ public class QueryAnxinContractMessageConsumer implements MessageConsumer {
         logger.info(MessageFormat.format("trigger anxin contract handle job, prepare do job. businessId:{0}, Counter:{1}",
                 String.valueOf(businessId), redisWrapperClient.get(ANXIN_CONTRACT_QUERY_TRY_TIMES_KEY + businessId)));
 
-        if (redisWrapperClient.incrEx(ANXIN_CONTRACT_QUERY_TRY_TIMES_KEY + businessId, SEVEN_DAYS) > 5) {
+        if (redisWrapperClient.incrEx(ANXIN_CONTRACT_QUERY_TRY_TIMES_KEY + businessId, SEVEN_DAYS) > 2) {
 
-            // 尝试超过5次（第6次了），清空计数器，不再尝试了
+            // 尝试超过2次（第3次了），清空计数器，不再尝试了
             redisWrapperClient.del(ANXIN_CONTRACT_QUERY_TRY_TIMES_KEY + businessId);
 
             // 发短信报警
