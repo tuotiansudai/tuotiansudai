@@ -81,11 +81,12 @@ public class LoanListController {
         boolean hasNextPage = index < totalPages;
         modelAndView.addObject("hasPreviousPage", hasPreviousPage);
         modelAndView.addObject("hasNextPage", hasNextPage);
-        modelAndView.addObject("status", status);
+        modelAndView.addObject("selectedStatus", status);
         modelAndView.addObject("loanId", loanId);
         modelAndView.addObject("loanName", loanName);
         modelAndView.addObject("startTime", startTime);
         modelAndView.addObject("endTime", endTime);
+        modelAndView.addObject("loanStatusList", LoanStatus.values());
         return modelAndView;
     }
 
