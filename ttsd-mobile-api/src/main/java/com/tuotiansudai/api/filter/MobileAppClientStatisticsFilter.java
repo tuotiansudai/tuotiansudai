@@ -2,11 +2,11 @@ package com.tuotiansudai.api.filter;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import com.tuotiansudai.api.dto.v1_0.BaseParam;
 import com.tuotiansudai.api.dto.v1_0.BaseParamDto;
 import com.tuotiansudai.api.security.BufferedRequestWrapper;
 import com.tuotiansudai.api.service.v1_0.MobileAppClientStatistics;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -52,15 +52,25 @@ public class MobileAppClientStatisticsFilter implements Filter {
     }
 
     private BaseParam extractBaseParam(HttpServletRequest request) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        String requestJson = "";
+        String requestJson;
         try {
             requestJson = ((BufferedRequestWrapper) request).getInputStreamString();
-            BaseParamDto dto = objectMapper.readValue(requestJson, BaseParamDto.class);
-            return dto.getBaseParam();
         } catch (IOException e) {
-            log.error("app client json invalid:" + requestJson, e);
+            log.error("could not extra baseParam from request", e);
+            return null;
+        }
+
+        if (StringUtils.isNotBlank(requestJson)) {
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            try {
+                BaseParamDto dto = objectMapper.readValue(requestJson, BaseParamDto.class);
+                return dto.getBaseParam();
+            } catch (IOException e) {
+                log.error("parse baseParam json failed, json string is [" + requestJson + "]", e);
+            }
+        } else {
+            log.error("parse baseParam json failed, json string is empty");
         }
         return null;
     }
