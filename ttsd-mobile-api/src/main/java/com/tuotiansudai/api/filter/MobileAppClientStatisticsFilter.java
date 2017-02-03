@@ -56,7 +56,7 @@ public class MobileAppClientStatisticsFilter implements Filter {
         try {
             requestJson = ((BufferedRequestWrapper) request).getInputStreamString();
         } catch (IOException e) {
-            log.error("could not extra baseParam from request", e);
+            log.error("get request json string failed", e);
             return null;
         }
 
