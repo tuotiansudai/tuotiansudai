@@ -216,7 +216,7 @@ public class LotteryDrawActivityService {
     public List<UserLotteryPrizeView> findDrawLotteryPrizeRecord(String mobile, ActivityCategory activityCategory) {
         List<UserLotteryPrizeView> userLotteryPrizeViews = userLotteryPrizeMapper.findLotteryPrizeByMobileAndPrize(mobile, null, activityCategory);
         for (UserLotteryPrizeView view : userLotteryPrizeViews) {
-            view.setMobile(MobileEncryptor.encryptWebMiddleMobile(view.getMobile()));
+            view.setMobile(MobileEncryptor.encryptMiddleMobile(view.getMobile()));
             view.setPrizeValue(view.getPrize().getDescription());
         }
         return userLotteryPrizeViews;
