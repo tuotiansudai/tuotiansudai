@@ -155,21 +155,6 @@ public class LoanDetailServiceImpl implements LoanDetailService {
         BaseDto<BasePaginationDataDto> baseDto = new BaseDto<>();
         BasePaginationDataDto<LoanDetailInvestPaginationItemDto> dataDto = new BasePaginationDataDto<>(index, pageSize, count, records);
 
-        // TODO:fake
-        LoanModel loanModel = loanMapper.findById(loanId);
-        if (loanId == 41650602422768L && loanModel.getStatus() == LoanStatus.REPAYING) {
-            LoanDetailInvestPaginationItemDto fakeItem = new LoanDetailInvestPaginationItemDto();
-            fakeItem.setMobile("186****9367");
-            fakeItem.setAmount(AmountConverter.convertCentToString(loanModel.getLoanAmount()));
-            fakeItem.setCreatedTime(new DateTime(2016, 7, 29, 15, 33, 45).toDate());
-            fakeItem.setSource(Source.WEB);
-            fakeItem.setAchievements(Lists.newArrayList(InvestAchievement.FIRST_INVEST, InvestAchievement.MAX_AMOUNT, InvestAchievement.LAST_INVEST));
-
-            long fee = new BigDecimal(InterestCalculator.estimateExpectedInterest(loanModel, loanModel.getLoanAmount())).multiply(new BigDecimal(0.1)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
-            fakeItem.setExpectedInterest(AmountConverter.convertCentToString(InterestCalculator.estimateExpectedInterest(loanModel, loanModel.getLoanAmount()) - fee));
-            dataDto = new BasePaginationDataDto<>(index, pageSize, 1, Lists.newArrayList(fakeItem));
-        }
-
         baseDto.setData(dataDto);
         dataDto.setStatus(true);
         return baseDto;
@@ -181,13 +166,6 @@ public class LoanDetailServiceImpl implements LoanDetailService {
 
     private LoanDetailDto convertModelToDto(LoanModel loanModel, String loginName) {
         long investedAmount = investMapper.sumSuccessInvestAmount(loanModel.getId());
-
-        //TODO:fake
-        if (loanModel.getId() == 41650602422768L) {
-            if (loanModel.getStatus() == LoanStatus.REPAYING) {
-                investedAmount = loanModel.getLoanAmount();
-            }
-        }
 
         AnxinSignPropertyModel anxinProp = anxinSignPropertyMapper.findByLoginName(loginName);
         boolean isAuthenticationRequired = anxinSignService.isAuthenticationRequired(loginName);
@@ -276,30 +254,20 @@ public class LoanDetailServiceImpl implements LoanDetailService {
             if (loanModel.getFirstInvestAchievementId() != null) {
                 InvestModel firstInvest = investMapper.findById(loanModel.getFirstInvestAchievementId());
                 achievementDto.setFirstInvestAchievementDate(firstInvest.getTradingTime());
-                achievementDto.setFirstInvestAchievementMobile(randomUtils.encryptMobile(loginName, firstInvest.getLoginName(), Source.WEB));
+                achievementDto.setFirstInvestAchievementMobile(randomUtils.encryptMobile(loginName, firstInvest.getLoginName()));
             }
             if (loanModel.getMaxAmountAchievementId() != null) {
                 InvestModel maxInvest = investMapper.findById(loanModel.getMaxAmountAchievementId());
                 long amount = investMapper.sumSuccessInvestAmountByLoginName(loanModel.getId(), maxInvest.getLoginName());
                 achievementDto.setMaxAmountAchievementAmount(AmountConverter.convertCentToString(amount));
-                achievementDto.setMaxAmountAchievementMobile(randomUtils.encryptMobile(loginName, maxInvest.getLoginName(), Source.WEB));
+                achievementDto.setMaxAmountAchievementMobile(randomUtils.encryptMobile(loginName, maxInvest.getLoginName()));
             }
             if (loanModel.getLastInvestAchievementId() != null) {
                 InvestModel lastInvest = investMapper.findById(loanModel.getLastInvestAchievementId());
                 achievementDto.setLastInvestAchievementDate(lastInvest.getTradingTime());
-                achievementDto.setLastInvestAchievementMobile(randomUtils.encryptMobile(loginName, lastInvest.getLoginName(), Source.WEB));
+                achievementDto.setLastInvestAchievementMobile(randomUtils.encryptMobile(loginName, lastInvest.getLoginName()));
             }
             loanDto.setAchievement(achievementDto);
-
-            //TODO:fake
-            if (loanModel.getId() == 41650602422768L && loanModel.getStatus() == LoanStatus.REPAYING) {
-                achievementDto.setFirstInvestAchievementDate(new DateTime(2016, 7, 29, 15, 33, 45).toDate());
-                achievementDto.setFirstInvestAchievementMobile("186****9367");
-                achievementDto.setMaxAmountAchievementAmount(AmountConverter.convertCentToString(loanModel.getLoanAmount()));
-                achievementDto.setMaxAmountAchievementMobile("186****9367");
-                achievementDto.setLastInvestAchievementDate(new DateTime(2016, 7, 29, 15, 33, 45).toDate());
-                achievementDto.setLastInvestAchievementMobile("186****9367");
-            }
         }
 
         return loanDto;
