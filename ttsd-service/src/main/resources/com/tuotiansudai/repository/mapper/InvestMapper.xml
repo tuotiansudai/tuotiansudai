@@ -270,7 +270,7 @@
         invest.is_auto_invest AS auto_invest,
         invest.amount AS invest_amount,
         (SELECT coupon.id FROM coupon join user_coupon on coupon.coupon_type = #{preferenceType} and user_coupon.coupon_id = coupon.id
-        WHERE user_coupon.invest_id = invest.id) AS coupon_id,
+        WHERE user_coupon.invest_id = invest.id limit 0, 1) AS coupon_id,
         (SELECT extra_rate FROM invest_extra_rate WHERE invest_extra_rate.invest_id = invest.id) AS extra_rate,
         (SELECT actual_interest FROM invest_extra_rate WHERE invest_extra_rate.invest_id = invest.id) AS extra_actual_interest,
         invest.status AS invest_status
