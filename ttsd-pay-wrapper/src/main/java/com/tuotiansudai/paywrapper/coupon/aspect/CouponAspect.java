@@ -36,9 +36,6 @@ public class CouponAspect {
     private CouponRepayService couponRepayService;
 
     @Autowired
-    private CouponInvestService couponInvestService;
-
-    @Autowired
     private JobManager jobManager;
 
     @Autowired
