@@ -31,9 +31,6 @@ public class HeroRankingController {
     private HeroRankingService heroRankingService;
 
     @Autowired
-    private LoanMapper loanMapper;
-
-    @Autowired
     private UserMapper userMapper;
 
     @RequestMapping(method = {RequestMethod.GET, RequestMethod.POST})
@@ -106,15 +103,6 @@ public class HeroRankingController {
 
             }
 
-            //TODO:fake
-            LoanModel loanModel = loanMapper.findById(41650602422768L);
-            if (loanModel != null && loanModel.getStatus() == LoanStatus.REPAYING && new DateTime(tradingTime).withTimeAtStartOfDay().isEqual(new DateTime(2016, 7, 29, 15, 33, 45).withTimeAtStartOfDay())) {
-                HeroRankingView element = new HeroRankingView();
-                element.setLoginName("186**67");
-                element.setSumAmount(loanModel.getLoanAmount());
-                heroRankingViews.add(0, element);
-            }
-
             baseListDataDto.setRecords(heroRankingViews.size() > 10 ? heroRankingViews.subList(0, 10) : heroRankingViews);
         }
         baseListDataDto.setStatus(true);
@@ -126,7 +114,7 @@ public class HeroRankingController {
             return "您的位置";
         }
 
-        return MobileEncryptor.encryptWebMiddleMobile(userMapper.findByLoginName(encryptLoginName).getMobile());
+        return MobileEncryptor.encryptMiddleMobile(userMapper.findByLoginName(encryptLoginName).getMobile());
     }
 
 

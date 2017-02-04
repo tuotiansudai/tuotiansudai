@@ -62,6 +62,8 @@ public class PushClient {
         this.environment = environment;
         this.httpClient = new OkHttpClient();
         this.httpClient.setConnectTimeout(5, TimeUnit.SECONDS);
+        this.httpClient.setReadTimeout(5, TimeUnit.SECONDS);
+        this.httpClient.setWriteTimeout(5, TimeUnit.SECONDS);
     }
 
     public void storeJPushId(String loginName, String platform, String jPushId) {

@@ -67,7 +67,7 @@ public class MobileAppTransferServiceImpl implements MobileAppTransferService {
         if (transferApplicationModel.getStatus() == TransferStatus.SUCCESS && transferApplicationModel.getInvestId() != null) {
             investModel = investMapper.findById(transferApplicationModel.getInvestId());
         }
-        TransferTransfereeRecordResponseDataDto transferTransfereeRecordResponseDataDto = new TransferTransfereeRecordResponseDataDto(investModel != null ? randomUtils.encryptMobileForCurrentLoginName(transferTransfereeRequestDto.getBaseParam().getUserId(), investModel.getLoginName(), investModel.getId(), Source.MOBILE) : "",
+        TransferTransfereeRecordResponseDataDto transferTransfereeRecordResponseDataDto = new TransferTransfereeRecordResponseDataDto(investModel != null ? randomUtils.encryptMobile(transferTransfereeRequestDto.getBaseParam().getUserId(), investModel.getLoginName(), investModel.getId()) : "",
                 transferApplicationModel.getTransferAmount(), transferApplicationModel.getTransferTime());
         TransferTransfereeResponseDataDto transferTransfereeResponseDataDto = new TransferTransfereeResponseDataDto(transferTransfereeRequestDto.getIndex(), transferTransfereeRequestDto.getPageSize(),
                 Lists.newArrayList(transferTransfereeRecordResponseDataDto).size(), Lists.newArrayList(transferTransfereeRecordResponseDataDto));

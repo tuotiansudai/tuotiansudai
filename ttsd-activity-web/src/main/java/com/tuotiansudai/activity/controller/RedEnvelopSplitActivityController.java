@@ -68,7 +68,7 @@ public class RedEnvelopSplitActivityController {
         modelAndView.addObject("loginName", loginName);
         modelAndView.addObject("channels", channel);
         UserModel userModel = userMapper.findByLoginName(loginName);
-        modelAndView.addObject("userName", userModel != null && !Strings.isNullOrEmpty(userModel.getUserName()) ? userModel.getUserName() : (userModel != null && !Strings.isNullOrEmpty(userModel.getMobile()) ? MobileEncryptor.encryptWebMiddleMobile(userModel.getMobile()) : loginName));
+        modelAndView.addObject("userName", userModel != null && !Strings.isNullOrEmpty(userModel.getUserName()) ? userModel.getUserName() : (userModel != null && !Strings.isNullOrEmpty(userModel.getMobile()) ? MobileEncryptor.encryptMiddleMobile(userModel.getMobile()) : loginName));
         modelAndView.addObject("registerStatus", "referrer");
         return modelAndView;
     }

@@ -41,7 +41,7 @@ public class Iphone7LotteryService {
 
     public List<IPhone7LotteryDto> iphone7InvestLotteryWinnerViewList() {
         List<IPhone7LotteryConfigModel> iPhone7LotteryConfigModels = iPhone7LotteryConfigMapper.effectiveList();
-        return iPhone7LotteryConfigModels.stream().map(iPhone7LotteryConfigModel -> new IPhone7LotteryDto(iPhone7LotteryConfigModel, MobileEncryptor.encryptWebMiddleMobile(iPhone7LotteryConfigModel.getMobile()))).collect(Collectors.toList());
+        return iPhone7LotteryConfigModels.stream().map(iPhone7LotteryConfigModel -> new IPhone7LotteryDto(iPhone7LotteryConfigModel, MobileEncryptor.encryptMiddleMobile(iPhone7LotteryConfigModel.getMobile()))).collect(Collectors.toList());
     }
 
     public String nextLotteryInvestAmount() {

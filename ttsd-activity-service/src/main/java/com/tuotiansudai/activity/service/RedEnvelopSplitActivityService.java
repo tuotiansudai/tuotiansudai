@@ -158,7 +158,7 @@ public class RedEnvelopSplitActivityService {
         if (referrerUsers.size() > DEFAULT_PAGE_SIZE) {
             referrerUsers.subList(0, DEFAULT_PAGE_SIZE);
         }
-        return referrerUsers.stream().map(userModel -> new RedEnvelopSplitReferrerDto(MobileEncryptor.encryptWebMiddleMobile(userModel.getMobile()), userModel.getRegisterTime())).collect(Collectors.toList());
+        return referrerUsers.stream().map(userModel -> new RedEnvelopSplitReferrerDto(MobileEncryptor.encryptMiddleMobile(userModel.getMobile()), userModel.getRegisterTime())).collect(Collectors.toList());
     }
 
     public static boolean asUserChannel(String str) {

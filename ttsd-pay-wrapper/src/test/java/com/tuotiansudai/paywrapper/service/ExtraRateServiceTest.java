@@ -307,21 +307,6 @@ public class ExtraRateServiceTest{
         assertTrue(CollectionUtils.isEmpty(userBills));
     }
 
-    @Test
-    public void shouldTransferPurchaseOk() {
-        DateTime recheckTime = new DateTime().withDate(2016, 3, 1);
-        LoanModel fakeLoan = this.createFakeLoan(LoanType.LOAN_INTEREST_MONTHLY_REPAY, 1000000, 2, 0.12, recheckTime.toDate());
-        UserModel transferrer = this.createFakeUser("transferrer", 0, 0);
-        UserModel transferee = this.createFakeUser("transferee", 1000000, 0);
-        InvestModel fakeTransferInvest = this.createFakeInvest(fakeLoan.getId(), null, 1000000, transferrer.getLoginName(), recheckTime.minusDays(10).toDate(), InvestStatus.SUCCESS, TransferStatus.SUCCESS);
-        InvestModel fakeTransfeeInvest = this.createFakeInvest(fakeLoan.getId(), fakeTransferInvest.getId(), 1000000, transferee.getLoginName(), recheckTime.minusDays(10).toDate(), InvestStatus.SUCCESS, TransferStatus.TRANSFERRING);
-        this.createFakeInvestExtraRate(fakeLoan.getId(), fakeTransferInvest.getId(), fakeTransferInvest.getAmount(), fakeTransferInvest.getLoginName(),RepayStatus.REPAYING);
-        extraRateService.transferPurchase(fakeTransfeeInvest.getId());
-
-        InvestExtraRateModel investExtraRateModel = investExtraRateMapper.findByInvestId(fakeTransferInvest.getId());
-        assertTrue(investExtraRateModel.isTransfer());
-    }
-
     private LoanRepayModel getFakeLoanRepayModel(long loanRepayId, long loanId, int period, long corpus, long expectedInterest, Date expectedRepayDate, Date actualRepayDate, RepayStatus repayStatus) {
         LoanRepayModel fakeLoanRepay = new LoanRepayModel(loanRepayId, loanId, period, corpus, expectedInterest, expectedRepayDate, repayStatus);
         fakeLoanRepay.setActualRepayDate(actualRepayDate);

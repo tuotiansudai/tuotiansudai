@@ -1,6 +1,5 @@
 package com.tuotiansudai.activity.service;
 
-import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
@@ -24,14 +23,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
-import static com.tuotiansudai.activity.repository.model.ActivityCategory.HERO_RANKING;
-import static com.tuotiansudai.activity.repository.model.ActivityCategory.NEW_HERO_RANKING;
 
 @Service
 public class HeroRankingService {
@@ -130,7 +124,7 @@ public class HeroRankingService {
                         input.setLoginName("您的位置");
                         return input;
                     }
-                    input.setLoginName(MobileEncryptor.encryptAppMiddleMobile(userMapper.findByLoginName(input.getLoginName()).getMobile()));
+                    input.setLoginName(MobileEncryptor.encryptMiddleMobile(userMapper.findByLoginName(input.getLoginName()).getMobile()));
                     return input;
                 }));
             }

@@ -67,7 +67,7 @@ public class LanternFestivalController {
                     heroRankingView.setLoginName("您的位置");
                     continue;
                 }
-                heroRankingView.setLoginName(randomUtils.encryptMobileForCurrentLoginName(loginName, heroRankingView.getLoginName(), null, Source.WEB));
+                heroRankingView.setLoginName(randomUtils.encryptMobile(loginName, heroRankingView.getLoginName()));
 
             }
 
