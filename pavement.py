@@ -287,7 +287,7 @@ def versioning_static_resource_files(options):
     try:
         os.chdir('./ttsd-frontend-manage')
         sh('/usr/bin/npm install')
-        sh('/usr/bin/PLAT={0} npm run build'.format(options.env))
+        sh('PLAT={0} /usr/bin/npm run build'.format(options.env))
     finally:
         os.chdir(owd)
 
