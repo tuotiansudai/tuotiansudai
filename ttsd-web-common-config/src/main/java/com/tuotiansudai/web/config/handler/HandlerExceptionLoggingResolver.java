@@ -13,7 +13,7 @@ public class HandlerExceptionLoggingResolver implements HandlerExceptionResolver
 
     @Override
     public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
-        if (ex.getClass().getSimpleName().equals("ClientAbortException")) {
+        if (ex.getClass().getName().equals("org.apache.catalina.connector.ClientAbortException")) {
             log.warn(ex.getLocalizedMessage(), ex);
         } else {
             log.error(ex.getLocalizedMessage(), ex);
