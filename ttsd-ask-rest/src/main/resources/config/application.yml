@@ -1,2 +1,6 @@
 server:
   port: 8100
+spring:
+  mvc:
+    servlet:
+      load-on-startup: 1

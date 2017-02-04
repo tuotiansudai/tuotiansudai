@@ -31,7 +31,8 @@ public enum MessageQueue {
     UserOperateLog("UserOperateLog"),
     TransferReferrerRewardCallback("TransferReferrerRewardCallback"),
     TransferRedEnvelopCallback("TransferRedEnvelopCallback"),
-    LoginLog("LoginLog");
+    LoginLog("LoginLog"),
+    QueryAnxinContract("QueryAnxinContract");
 
     private final String queueName;
 

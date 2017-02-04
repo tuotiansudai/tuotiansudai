@@ -4,6 +4,7 @@ import cfca.sadk.algorithm.common.PKIException;
 import cfca.trustsign.common.vo.cs.CreateContractVO;
 import cfca.trustsign.common.vo.cs.SignInfoVO;
 import cfca.trustsign.common.vo.response.tx3.*;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.anxin.service.AnxinSignService;
@@ -18,8 +19,11 @@ import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.ContractNoStatus;
 import com.tuotiansudai.dto.sms.GenerateContractErrorNotifyDto;
-import com.tuotiansudai.job.AnxinQueryContractJob;
-import com.tuotiansudai.job.JobType;
+import com.tuotiansudai.job.DelayMessageDeliveryJob;
+import com.tuotiansudai.job.DelayMessageDeliveryJobCreator;
+import com.tuotiansudai.job.JobManager;
+import com.tuotiansudai.message.AnxinContractQueryMessage;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.AnxinSignPropertyMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
@@ -31,13 +35,12 @@ import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
-import com.tuotiansudai.job.JobManager;
+import com.tuotiansudai.util.JsonConverter;
 import com.tuotiansudai.util.UUIDGenerator;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
-import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -383,9 +386,10 @@ public class AnxinSignServiceImpl implements AnxinSignService {
             smsWrapperClient.sendGenerateContractErrorNotify(new GenerateContractErrorNotifyDto(mobileList, loanId));
         }
 
-        if (CollectionUtils.isNotEmpty((batchNoList)) && isCreateJob) {
-            logger.info("[安心签]: 创建job，十分钟后，查询并更新合同状态。loanId:" + String.valueOf(loanId));
-            updateContractResponseHandleJob(batchNoList, loanId, AnxinContractType.LOAN_CONTRACT);
+        if (CollectionUtils.isNotEmpty((batchNoList))) {
+            logger.info("[安心签]: 创建job，稍后查询并更新合同状态。loanId:" + String.valueOf(loanId));
+            DelayMessageDeliveryJobCreator.createAnxinContractQueryDelayJob(jobManager,
+                    loanId, AnxinContractType.LOAN_CONTRACT.name(), batchNoList);
         }
 
         redisWrapperClient.setex(LOAN_BATCH_NO_LIST_KEY + loanId, BATCH_NO_LIFT_TIME, String.join(",", batchNoList));
@@ -408,23 +412,6 @@ public class AnxinSignServiceImpl implements AnxinSignService {
             return false;
         }
         return true;
-    }
-
-    private void updateContractResponseHandleJob(List<String> batchNoList, long businessId, AnxinContractType contractType) {
-        try {
-            Date triggerTime = new DateTime().plusMinutes(AnxinQueryContractJob.HANDLE_DELAY_MINUTES)
-                    .toDate();
-            jobManager.newJob(JobType.ContractResponse, AnxinQueryContractJob.class)
-                    .addJobData(AnxinQueryContractJob.BUSINESS_ID, businessId)
-                    .addJobData(AnxinQueryContractJob.BATCH_NO_LIST, batchNoList)
-                    .addJobData(AnxinQueryContractJob.ANXIN_CONTRACT_TYPE, contractType)
-                    .withIdentity(JobType.ContractResponse.name(), "businessId-" + businessId)
-                    .replaceExistingJob(true)
-                    .runOnceAt(triggerTime)
-                    .submit();
-        } catch (SchedulerException e) {
-            logger.error("create query contract job for loan/transfer[" + businessId + "] fail", e);
-        }
     }
 
     @Override
@@ -455,8 +442,9 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         redisWrapperClient.setex(TRANSFER_BATCH_NO_LIST_KEY + transferApplicationId, BATCH_NO_LIFT_TIME, batchNo);
 
         if (baseDto.isSuccess()) {
-            logger.info("[安心签]: 创建job，十分钟后，查询并更新合同状态。债权ID:" + transferApplicationId);
-            updateContractResponseHandleJob(Collections.singletonList(batchNo), transferApplicationId, AnxinContractType.TRANSFER_CONTRACT);
+            logger.info("[安心签]: 创建job，稍后查询并更新合同状态。债权ID:" + transferApplicationId);
+            DelayMessageDeliveryJobCreator.createAnxinContractQueryDelayJob(jobManager,
+                    transferApplicationId, AnxinContractType.TRANSFER_CONTRACT.name(), Collections.singletonList(batchNo));
         } else {
             logger.error("[安心签]: create transfer contract error, ready send sms. transferId:" + transferApplicationId);
             smsWrapperClient.sendGenerateContractErrorNotify(new GenerateContractErrorNotifyDto(mobileList, transferApplicationId));

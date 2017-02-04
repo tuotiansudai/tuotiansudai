@@ -1,11 +1,11 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="${(css.main)!'main.css'}" pageJavascript="${(js.main)!'main.js'}" title="拓天问答_投资问答_拓天速贷" keywords="投资问答,网贷问答,投资知识,金融问答" description="拓天速贷投资问答系统,为您解答金融行业最新最快的投资知识,让您放心投资、安全投资,拓天速贷为投资人答疑解惑.">
+<@global.main pageCss="${(css.mainSite)!}" pageJavascript="${(js.mainSite)!}" title="拓天问答_投资问答_拓天速贷" keywords="投资问答,网贷问答,投资知识,金融问答" description="拓天速贷投资问答系统,为您解答金融行业最新最快的投资知识,让您放心投资、安全投资,拓天速贷为投资人答疑解惑.">
 <div class="article-content fl" id="myQAnswer">
     <ul class="switch-menu clearfix" id="my-questions-tab">
         <li><a href="/question/my-questions">我的提问</a></li>
         <li class="active"><a href="/answer/my-answers">我的回答</a></li>
     </ul>
-    <div class="borderBox clearfix">
+    <div class="border-ask-box clearfix">
         <div class="answers-box">
             <#list answers.data.records as answer>
                 <dl class="answers-list">
