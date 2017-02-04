@@ -462,10 +462,10 @@
                 AND EXISTS (SELECT 1 FROM user_role WHERE user_role.login_name = invest.login_name AND user_role.role = #{role})
             </if>
             <if test="startTime != null">
-                AND invest.invest_time &gt;= #{startTime}
+                AND invest.created_time &gt;= #{startTime}
             </if>
             <if test="endTime != null">
-                AND invest.invest_time &lt;= #{endTime}
+                AND invest.created_time &lt;= #{endTime}
             </if>
             <if test="preferenceType != null and preferenceType.name() != 'INVEST_BENEFIT'">
                 AND EXISTS (SELECT 1 FROM user_coupon join coupon on coupon.coupon_type = #{preferenceType} and user_coupon.coupon_id = coupon.id
