@@ -6,6 +6,7 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.LoanRepayDataItemDto;
 import com.tuotiansudai.repository.model.RepayStatus;
+import com.tuotiansudai.util.CalculateUtil;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -38,7 +39,7 @@ public class LoanRepayController {
         BaseDto<BasePaginationDataDto<LoanRepayDataItemDto>> baseDto = consoleLoanRepayService.findLoanRepayPagination(index, pageSize,
                 loanId, loginName,
                 startTime == null ? new DateTime(0).toDate() : new DateTime(startTime).withTimeAtStartOfDay().toDate(),
-                endTime == null ? new DateTime(9999, 12, 31, 0, 0, 0).toDate() : new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate(),
+                endTime == null ? CalculateUtil.calculateMaxDate() : new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate(),
                 repayStatus);
         List<RepayStatus> repayStatusList = Lists.newArrayList(RepayStatus.values());
         modelAndView.addObject("baseDto", baseDto);

@@ -2,6 +2,7 @@ package com.tuotiansudai.console.controller;
 
 import com.tuotiansudai.membership.service.MembershipPurchaseService;
 import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.util.CalculateUtil;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -29,7 +30,7 @@ public class MembershipPurchaseController {
         int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/membership-purchase", "data", membershipPurchaseService.getMembershipPurchaseList(mobile, duration, source,
                 startTime == null ? new DateTime(0).toDate() : new DateTime(startTime).withTimeAtStartOfDay().toDate(),
-                endTime == null ? new DateTime(9999, 12, 31, 0, 0, 0).toDate() : new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate(),
+                endTime == null ? CalculateUtil.calculateMaxDate() : new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate(),
                 index, pageSize));
 
         modelAndView.addObject("mobile", mobile);
