@@ -16,11 +16,9 @@
                 <select class="selectpicker" name="source">
                     <option value="" <#if !(source??)>selected</#if>>全部</option>
                     <#list sourceList as item>
-                        <#if item != "MOBILE" && item != "AUTO">
-                            <option value="${item}" <#if source?? && item==source>selected</#if>>
-                            ${item}
-                            </option>
-                        </#if>
+                        <option value="${item}" <#if source?? && item==source>selected</#if>>
+                        ${item}
+                        </option>
                     </#list>
                 </select>
             </div>
