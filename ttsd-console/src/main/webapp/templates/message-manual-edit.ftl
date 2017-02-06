@@ -1,5 +1,5 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="message-manual-edit.js" headLab="message-manage" sideLab="createManualMessage" title="创建手动站内信">
+<@global.main pageCss="" pageJavascript="message-manual-edit.js" headLab="content-manage" sideLab="createManualMessage" title="创建手动站内信">
 
 <!-- content area begin -->
 <div class="col-md-10" xmlns="http://www.w3.org/1999/html">

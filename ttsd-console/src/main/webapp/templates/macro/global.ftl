@@ -27,7 +27,7 @@
                     {"name":"ALL","text":"所有的借款","link":"/project-manage/loan-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
                     {"name":"start","text":"发起借款","link":"/project-manage/loan","role":"'ADMIN','OPERATOR'"},
                     {"name":"TRANSFER","text":"转让项目管理"},
-                    {"name":"WAITING_VERIFY","text":"所有的转让项目","link":"/project-manage/loan-list?status=WAITING_VERIFY","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
+                    {"name":"transfer-list","text":"所有的转让项目","link":"/transfer-manage/transfer-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE'"},
                     {"name":"transfer-rule","text":"转让规则","link":"/transfer-manage/transfer-rule","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"}
                 ]
             },
@@ -64,7 +64,7 @@
                 ]
             },
             {
-                "name":"message-manage",
+                "name":"content-manage",
                 "header":{"text":"内容管理"},
                 "sidebar":[
                     {"name":"messageManager","text":"消息管理"},
@@ -131,7 +131,7 @@
                     {"name":"feedbackMan","text":"意见反馈","link":"/announce-manage/feedback","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
                     {"name":"userFeedback","text":"用户服务"},
                     {"name":"bookingLoanMan","text":"预约投资管理","link":"/booking-loan-manage/list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"bookingLoanMan","text":"IOS邀请好友管理","link":"/aaaaaaa","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
+                    {"name":"iosInviteFriendsMan","text":"IOS邀请好友管理","link":"/","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
                     {"name":"platform-loan-list","text":"借款申请信息","link":"/loan-application/list","role":"'ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN'"}
                 ]
             },
@@ -140,8 +140,8 @@
                 "header":{"text":"平台数据","link":"/statistic"},
                 "sidebar":[
                     {"name":"userBaseDate","text":"用户基础数据"},
-                    {"name":"userAge","text":"用户年龄分布","link":"/statistic","role":"'ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN'"},
                     {"name":"userDate","text":"用户注册时间分布","link":"/statistic","role":"'ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN'"},
+                    {"name":"userAge","text":"用户年龄分布","link":"/statistic","role":"'ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN'"},
                     {"name":"userRechargeWithdrawDate","text":"用户充值提现数据"},
                     {"name":"userRecharge","text":"用户充值时间分布","link":"/statistic","role":"'ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN'"},
                     {"name":"userWithdraw","text":"用户提现时间分布","link":"/statistic","role":"'ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN'"},

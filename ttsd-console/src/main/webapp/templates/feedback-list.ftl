@@ -1,6 +1,6 @@
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="feedback-list.js" headLab="announce-manage" sideLab="feedbackMan" title="意见反馈">
+<@global.main pageCss="" pageJavascript="feedback-list.js" headLab="service-manage" sideLab="feedbackMan" title="意见反馈">
 <!-- content area begin -->
 
 <div class="col-md-10">

@@ -1,6 +1,6 @@
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="message-manual-list.js" headLab="message-manage" sideLab="manualMessageManage" title="手动发送站内信管理">
+<@global.main pageCss="" pageJavascript="message-manual-list.js" headLab="content-manage" sideLab="manualMessageManage" title="手动发送站内信管理">
 
 <!-- content area begin -->
 <div class="col-md-10">
