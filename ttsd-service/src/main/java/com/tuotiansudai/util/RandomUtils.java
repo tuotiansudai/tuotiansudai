@@ -51,19 +51,7 @@ public class RandomUtils {
             redisWrapperClient.set(redisKey, investUserMobile.substring(0, 3) + MobileEncryptor.showChar(4) + generateNumString(4));
         }
         String encryptMobile = redisWrapperClient.exists(redisKey) ? redisWrapperClient.get(redisKey) : investUserMobile;
-        if (source.equals(Source.WEB)) {
-            return MobileEncryptor.encryptWebMiddleMobile(encryptMobile);
-        } else {
-            return MobileEncryptor.encryptAppMiddleMobile(encryptMobile);
-        }
-    }
-
-    public String encryptMobileForApp(String loginName, String encryptLoginName) {
-        if (encryptLoginName.equalsIgnoreCase(loginName)) {
-            return "您的位置";
-        }
-
-        return MobileEncryptor.encryptAppMiddleMobile(userMapper.findByLoginName(encryptLoginName).getMobile());
+        return MobileEncryptor.encryptMiddleMobile(encryptMobile);
     }
 
     public String encryptMobileForWeb(String loginName, String encryptLoginName) {
@@ -71,18 +59,14 @@ public class RandomUtils {
             return "您的位置";
         }
 
-        return MobileEncryptor.encryptWebMiddleMobile(userMapper.findByLoginName(encryptLoginName).getMobile());
+        return MobileEncryptor.encryptMiddleMobile(userMapper.findByLoginName(encryptLoginName).getMobile());
     }
 
-    public String encryptMobile(String loginName, String encryptLoginName, Source source) {
+    public String encryptMobile(String loginName, String encryptLoginName) {
         if (encryptLoginName.equalsIgnoreCase(loginName)) {
             return userMapper.findByLoginName(loginName).getMobile();
         }
 
-        if (source.equals(Source.WEB)) {
-            return MobileEncryptor.encryptWebMiddleMobile(userMapper.findByLoginName(encryptLoginName).getMobile());
-        }
-
-        return MobileEncryptor.encryptAppMiddleMobile(userMapper.findByLoginName(encryptLoginName).getMobile());
+        return MobileEncryptor.encryptMiddleMobile(userMapper.findByLoginName(encryptLoginName).getMobile());
     }
 }

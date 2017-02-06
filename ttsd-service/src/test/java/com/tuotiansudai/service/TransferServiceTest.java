@@ -257,7 +257,7 @@ public class TransferServiceTest {
         assertThat(transferApplicationRecodesDto.getStatus(), is(true));
         assertThat(transferApplicationRecodesDto.getReceiveAmount(), is("900.00"));
 
-        assertThat(transferApplicationRecodesDto.getTransferApplicationReceiver(), is(randomUtils.encryptMobile("", "testuser",Source.WEB)));
+        assertThat(transferApplicationRecodesDto.getTransferApplicationReceiver(), is(randomUtils.encryptMobile("", "testuser")));
         assertThat(transferApplicationRecodesDto.getExpecedInterest(), is("103.60"));
         assertThat(transferApplicationRecodesDto.getSource(), is(Source.WEB));
         assertThat(transferApplicationRecodesDto.getInvestAmount(), is("1000.00"));

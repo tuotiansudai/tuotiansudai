@@ -49,8 +49,14 @@ public class FreeMarkerVariablesMap extends MapFactoryBean implements ResourceLo
 
         StaticResourceDto staticResourceDto = this.discoverStaticResource();
 
-        Map<String, String> javascriptResource = Strings.isNullOrEmpty(javascriptLocation) ? staticResourceDto.getJsFile() : buildStaticFiles(javascriptLocation, ".js");
-        Map<String, String> cssResource = Strings.isNullOrEmpty(cssLocation) ? staticResourceDto.getCssFile() : buildStaticFiles(cssLocation, ".css");
+        Map<String, String> javascriptResource = staticResourceDto.getJsFile();
+        if (!Strings.isNullOrEmpty(javascriptLocation)) {
+            javascriptResource.putAll(buildStaticFiles(javascriptLocation, ".js"));
+        }
+        Map<String, String> cssResource = staticResourceDto.getCssFile();
+        if (!Strings.isNullOrEmpty(cssLocation)) {
+            javascriptResource.putAll(buildStaticFiles(cssLocation, ".css"));
+        }
 
         map.put("js", javascriptResource);
         map.put("css", cssResource);

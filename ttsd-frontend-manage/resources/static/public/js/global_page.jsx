@@ -293,14 +293,13 @@ window.globalFun.init();
 window.jQuery = window.$ = window.jquery_library(1);
 
 window.layer = window.jquery_library(2);
+
 window.layer.config({
     path: staticServer+'/public/'
 });
-
 window._ = window.jquery_library(3);
 
 window.$.fn=window.$.prototype;
-
 // ********* cnzz统计 BEGIN ***********
 function cnzzPushConstructor() {
     this.trackClick=function(category, action, label) {
