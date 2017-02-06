@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "665d79a2f84d5c6b83b8"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "107d49e44aad5dfc9c57"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -744,6 +744,7 @@
 	            this.addEventHandler(this.$('#iphone-app-pop'), 'mouseleave', this.hideAppCode.bind(this));
 	            this.logOut();
 	        },
+
 	        showMainMenu: function showMainMenu(e) {
 	            e.preventDefault();
 	            var target = e.target;

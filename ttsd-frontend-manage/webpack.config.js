@@ -41,7 +41,7 @@ files.forEach(function(file){
 	var substr = file.match(/resources\/static(\S*)\.jsx/)[1];
 	var strObj=substr.split('/');
 	if(strObj[1]=='public') {
-		if(/global_page/.test(strObj)) {
+		if(/globalFun_page/.test(strObj)) {
 			var publicUrl=substr.replace(/\/js/g,'');
 			newEntries[publicUrl] = file;
 		}
@@ -131,12 +131,6 @@ plugins.push(new webpack.DllReferencePlugin({
 // 	context: __dirname,
 // 	manifest: require(publicPathJS+'/plugins/echarts-manifest.json')
 // }));
-
-plugins.push(new webpack.DllReferencePlugin({
-	context: __dirname,
-	manifest: require(publicPathJS+'/plugins/underscore-manifest.json')
-}));
-
 
 module.exports = objectAssign(commonOptions, {
 	output: {
