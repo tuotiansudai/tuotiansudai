@@ -65,11 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-<<<<<<< HEAD
-/******/ 	var hotCurrentHash = "1c73f620db778712729e"; // eslint-disable-line no-unused-vars
-=======
-/******/ 	var hotCurrentHash = "665d79a2f84d5c6b83b8"; // eslint-disable-line no-unused-vars
->>>>>>> feature/fly/frontEndManagement-web
+/******/ 	var hotCurrentHash = "1a6c1eaf923252f5cf29"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -888,15 +884,9 @@
 	window.layer.config({
 	    path: staticServer + '/public/'
 	});
-<<<<<<< HEAD
-
 	window._ = window.jquery_library(3);
 
 	window.$.fn = window.$.prototype;
-
-=======
-	window._ = window.jquery_library(3);
->>>>>>> feature/fly/frontEndManagement-web
 	// ********* cnzz统计 BEGIN ***********
 	function cnzzPushConstructor() {
 	    this.trackClick = function (category, action, label) {

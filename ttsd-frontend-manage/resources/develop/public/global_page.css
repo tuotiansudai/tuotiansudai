@@ -2453,13 +2453,8 @@ form input.error + label.error:before {
   margin-right: auto;
   box-sizing: border-box; }
 
-<<<<<<< HEAD
 .btn-normal[disabled].loading {
   background: transparent url(http://localhost:3008/images/loading.fc27bb97.gif) no-repeat center center !important;
-=======
-.loading {
-  background: #fff url(http://localhost:3008/images/loading.fc27bb97.gif) no-repeat center center !important;
->>>>>>> feature/fly/frontEndManagement-web
   cursor: default !important;
   border: 0 !important;
   text-indent: -9999px; }
