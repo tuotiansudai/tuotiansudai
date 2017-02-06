@@ -1,12 +1,18 @@
 // 目前web项目中只用到了柱状图Bar和饼状图Pie
-require('./dllplugins/echarts/echarts.min.js');
 
-// 为模块加载器配置echarts的路径，从当前页面链接到echarts.js，定义所需图表路径
-require.config({
-    paths: {
-        echarts: staticServer+'/public/dllplugins/'
-    }
-});
+// 引入 ECharts 主模块
+var echarts = require('echarts/lib/echarts');
+
+// 引入柱状图
+require('echarts/lib/chart/bar');
+
+// 引入饼状图
+require('echarts/lib/chart/pie');
+
+// 引入提示框和标题组件
+require('echarts/lib/component/tooltip');
+require('echarts/lib/component/title');
+
 
 var MyChartsObject={
     ChartConfig: function (container, option) {
@@ -19,19 +25,13 @@ var MyChartsObject={
     },
     // 动态加载echarts然后在回调函数中开始使用，注意保持按需加载结构定义图表路径
     RenderChart: function (option) {
-        require(
-            [   'echarts',
-                'echarts/chart/bar',
-                'echarts/chart/pie'
-            ],
-            function (ec) {
-                if (option.chart && option.chart.dispose) {
-                    option.chart.dispose();
-                }
-                option.chart = ec.init(document.getElementById(option.container));
-                option.chart.setOption(option.option, true);
-                window.onresize = option.option.resize;
-            });
+        if (option.chart && option.chart.dispose) {
+            option.chart.dispose();
+        }
+        option.chart = echarts.init(document.getElementById(option.container));
+        option.chart.setOption(option.option, true);
+        window.onresize = option.option.resize;
+
     },
     optionCategory:{
         //一般共有的选项
