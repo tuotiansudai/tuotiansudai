@@ -16,6 +16,23 @@ public class SignInPointDto extends BaseDataDto implements Serializable {
 
     private int nextSignInPoint;
 
+    private String currentRewardDesc;
+
+    private String nextRewardDesc;
+
+    private boolean full;
+
+    //发送请求时当天是否签到
+    private boolean signIn;
+
+    public SignInPointDto(int signInCount, Date signInDate, int signInPoint, int nextSignInPoint, boolean signIn) {
+        this.signInCount = signInCount;
+        this.signInDate = signInDate;
+        this.signInPoint = signInPoint;
+        this.nextSignInPoint = nextSignInPoint;
+        this.signIn = signIn;
+    }
+
     public int getSignInCount() {
         return signInCount;
     }
@@ -48,20 +65,35 @@ public class SignInPointDto extends BaseDataDto implements Serializable {
         this.nextSignInPoint = nextSignInPoint;
     }
 
-    public SignInPointDto(int signInCount, Date signInDate, int signInPoint,int nextSignInPoint) {
-        this.signInCount = signInCount;
-        this.signInDate = signInDate;
-        this.nextSignInPoint = nextSignInPoint;
-        this.signInPoint = signInPoint;
+    public String getCurrentRewardDesc() {
+        return currentRewardDesc;
     }
 
-    public SignInPointDto(PointBillModel pointBillModel,int signInCount){
-        this.signInCount = signInCount;
-        this.signInDate = pointBillModel.getCreatedTime();
-        this.nextSignInPoint = SignInPoint.getPointByTimes(signInCount + 1);
-        this.signInPoint = (int)pointBillModel.getPoint();
+    public void setCurrentRewardDesc(String currentRewardDesc) {
+        this.currentRewardDesc = currentRewardDesc;
     }
 
-    public SignInPointDto() {
+    public String getNextRewardDesc() {
+        return nextRewardDesc;
+    }
+
+    public void setNextRewardDesc(String nextRewardDesc) {
+        this.nextRewardDesc = nextRewardDesc;
+    }
+
+    public boolean isFull() {
+        return full;
+    }
+
+    public void setFull(boolean full) {
+        this.full = full;
+    }
+
+    public boolean isSignIn() {
+        return signIn;
+    }
+
+    public void setSignIn(boolean signIn) {
+        this.signIn = signIn;
     }
 }

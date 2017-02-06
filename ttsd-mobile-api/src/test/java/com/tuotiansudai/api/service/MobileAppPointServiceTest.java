@@ -91,10 +91,7 @@ public class MobileAppPointServiceTest extends ServiceTestBase {
     @Test
     public void shouldGetLastSignInTimeIsOk() {
         AccountModel accountModel = new AccountModel();
-        SignInPointDto signInPointDto = new SignInPointDto();
-        signInPointDto.setSignInDate(DateUtils.addDays(new DateTime().withTimeAtStartOfDay().toDate(), -1));
-        signInPointDto.setNextSignInPoint(10);
-        signInPointDto.setSignInCount(1);
+        SignInPointDto signInPointDto = new SignInPointDto(1, DateUtils.addDays(new DateTime().withTimeAtStartOfDay().toDate(), -1), 0, 10, false);
         when(accountMapper.findByLoginName(anyString())).thenReturn(accountModel);
         when(signInService.getLastSignIn(anyString())).thenReturn(signInPointDto);
         when(signInService.signInIsSuccess(anyString())).thenReturn(true);
