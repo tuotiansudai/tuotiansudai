@@ -13,9 +13,7 @@ import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
 import com.tuotiansudai.coupon.repository.mapper.CouponUserGroupMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.CouponUserGroupModel;
-import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
-import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.coupon.service.ExchangeCodeService;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
@@ -28,7 +26,6 @@ import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.service.UserRoleService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.*;
 import org.apache.commons.collections4.CollectionUtils;
@@ -296,9 +293,6 @@ public class CouponController {
         return baseDto;
     }
 
-
-
-
     @RequestMapping(value = "/coupon/user-group/{userGroup}/estimate", method = RequestMethod.GET)
     @ResponseBody
     public long findEstimatedCount(@PathVariable UserGroup userGroup) {
@@ -383,7 +377,7 @@ public class CouponController {
                                      @RequestParam(value = "index", required = false, defaultValue = "1") int index) {
         int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/coupon-detail");
-        List<CouponDetailsDto> userCoupons = consoleCouponService.findCouponDetail(couponId, isUsed, loginName, mobile, null, null, usedStartTime, usedEndTime, index, pageSize);
+        List<CouponDetailsDto> userCoupons = consoleCouponService.findCouponDetail(couponId, isUsed, loginName, mobile, null, null, null, usedStartTime, usedEndTime, index, pageSize);
         int userCouponsCount = consoleCouponService.findCouponDetailCount(couponId, isUsed, loginName, mobile, null, null, usedStartTime, usedEndTime);
 
         long investAmount = 0l;
@@ -392,7 +386,6 @@ public class CouponController {
             investAmount += couponDetailsDto.getInvestAmount() != null ? couponDetailsDto.getInvestAmount() : 0l;
             interest += couponDetailsDto.getAnnualInterest() != null ? couponDetailsDto.getAnnualInterest() : 0l;
         }
-
         CouponModel couponModel = consoleCouponService.findCouponById(couponId);
         modelAndView.addObject("investAmount", investAmount);
         modelAndView.addObject("interest", interest);

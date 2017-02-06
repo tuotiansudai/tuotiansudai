@@ -9,6 +9,7 @@ public class ProductOrderViewDto implements Serializable {
     private long productId;
     private String name;
     private long points;
+    private long actualPoints;
     private Integer num;
     private long totalPoints;
     private Date createdTime;
@@ -71,5 +72,13 @@ public class ProductOrderViewDto implements Serializable {
 
     public void setCreatedTime(Date createdTime) {
         this.createdTime = createdTime;
+    }
+
+    public long getActualPoints() {
+        return actualPoints;
+    }
+
+    public void setActualPoints(long actualPoints) {
+        this.actualPoints = actualPoints;
     }
 }
