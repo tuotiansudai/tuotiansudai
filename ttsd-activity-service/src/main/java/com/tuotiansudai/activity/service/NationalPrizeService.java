@@ -6,19 +6,10 @@ import com.google.common.collect.Maps;
 import com.tuotiansudai.activity.repository.dto.DrawLotteryResultDto;
 import com.tuotiansudai.activity.repository.mapper.UserLotteryPrizeMapper;
 import com.tuotiansudai.activity.repository.model.*;
-import com.tuotiansudai.coupon.service.CouponAssignmentService;
-import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
-import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
-import com.tuotiansudai.membership.repository.model.MembershipLevel;
-import com.tuotiansudai.membership.repository.model.UserMembershipModel;
-import com.tuotiansudai.membership.repository.model.UserMembershipType;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.MobileEncryptor;
-import com.tuotiansudai.util.RandomUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -68,7 +59,7 @@ public class NationalPrizeService {
     public List<UserLotteryPrizeView> findDrawLotteryPrizeRecord(String mobile){
         List<UserLotteryPrizeView> userLotteryPrizeViews = userLotteryPrizeMapper.findLotteryPrizeByMobileAndPrize(mobile, null, ActivityCategory.NATIONAL_PRIZE);
         for(UserLotteryPrizeView view : userLotteryPrizeViews){
-            view.setMobile(MobileEncryptor.encryptWebMiddleMobile(view.getMobile()));
+            view.setMobile(MobileEncryptor.encryptMiddleMobile(view.getMobile()));
         }
         return userLotteryPrizeViews;
     }
