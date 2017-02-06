@@ -3,7 +3,6 @@ package com.tuotiansudai.job;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
-import com.tuotiansudai.util.JobManager;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.quartz.Job;
@@ -50,7 +49,7 @@ public class AutoInvestJob implements Job {
         }
     }
 
-    private void createRedoJob(long loanId){
+    private void createRedoJob(long loanId) {
         try {
             String jobName = MessageFormat.format("Loan-{0}-Redo-{1}", loanId, System.currentTimeMillis());
             jobManager.newJob(JobType.AutoInvest, AutoInvestJob.class)

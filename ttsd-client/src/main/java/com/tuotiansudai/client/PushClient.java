@@ -62,6 +62,8 @@ public class PushClient {
         this.environment = environment;
         this.httpClient = new OkHttpClient();
         this.httpClient.setConnectTimeout(5, TimeUnit.SECONDS);
+        this.httpClient.setReadTimeout(5, TimeUnit.SECONDS);
+        this.httpClient.setWriteTimeout(5, TimeUnit.SECONDS);
     }
 
     public void storeJPushId(String loginName, String platform, String jPushId) {
@@ -148,9 +150,11 @@ public class PushClient {
                 logger.warn(MessageFormat.format("[Push] push is not 2xx (request={0}, code={1}, response={2}, tryTimes={3})",
                         payload.toJSON().toString(), response.code(), response.body().string(), String.valueOf(tryTimes)));
             } catch (Exception e) {
-                logger.warn(MessageFormat.format("[Push] push IOException (request={0}, tryTimes={3})", payload.toJSON().getAsString(), String.valueOf(tryTimes)), e);
+                logger.warn(MessageFormat.format("[Push] push IOException (request={0}, tryTimes={3})", payload.toJSON().toString(), String.valueOf(tryTimes)), e);
             }
         } while (++tryTimes < 4);
+
+        logger.error(MessageFormat.format("[Push] push failed, content {0}", payload.toJSON().toString()));
 
         return false;
     }

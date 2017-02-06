@@ -57,4 +57,8 @@ public interface ProductService {
     int findCouponExchangeCount();
 
     List<String> getProductDescription(long investLowerLimit,List<ProductType> productTypes,Integer deadline);
+
+    String discountShowInfo(String loginName);
+
+    double discountRate(String loginName);
 }

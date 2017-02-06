@@ -17,6 +17,7 @@
         <result column="total_count" property="totalCount"/>
         <result column="used_count" property="usedCount"/>
         <result column="points" property="points"/>
+        <result column="actual_points" property="actualPoints"/>
         <result column="start_time" property="startTime"/>
         <result column="end_time" property="endTime"/>
         <result column="active" property="active"/>

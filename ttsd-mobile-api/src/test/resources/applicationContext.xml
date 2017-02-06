@@ -30,7 +30,7 @@
             base-package="com.tuotiansudai.service,com.tuotiansudai.repository,com.tuotiansudai.client,com.tuotiansudai.cache,
             com.tuotiansudai.spring,com.tuotiansudai.util,com.tuotiansudai.api,com.tuotiansudai.coupon,com.tuotiansudai.aspect,
             com.tuotiansudai.point,com.tuotiansudai.transfer,com.tuotiansudai.api.util,
-            com.tuotiansudai.membership,com.tuotiansudai.message,com.tuotiansudai.anxin.service,com.tuotiansudai.cfca,
+            com.tuotiansudai.membership,com.tuotiansudai.message,com.tuotiansudai.anxin.service,com.tuotiansudai.cfca,com.tuotiansudai.activity.service,
             com.tuotiansudai.contract.service,com.tuotiansudai.log.service"/>
 
     <bean id="hikariCPDataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
@@ -203,8 +203,16 @@
         <property name="typeAliasesPackage" value="com.tuotiansudai.message.repository.model"/>
     </bean>
 
-    <bean id="jobStoreBuilder" class="com.tuotiansudai.util.quartz.JobStoreBuilder">
-        <property name="dataSource" ref="jobHikariCPDataSource"/>
+    <bean id="jobStoreBuilder" class="com.tuotiansudai.quartz.JobStoreBuilder">
+        <constructor-arg ref="jobHikariCPDataSource"/>
+    </bean>
+
+    <bean id="schedulerBuilder" class="com.tuotiansudai.quartz.SchedulerBuilder">
+        <constructor-arg ref="jobStoreBuilder"/>
+    </bean>
+
+    <bean id="jobManager" class="com.tuotiansudai.job.JobManager">
+        <constructor-arg ref="schedulerBuilder"/>
     </bean>
 
     <!-- scan for mappers and let them be autowired -->

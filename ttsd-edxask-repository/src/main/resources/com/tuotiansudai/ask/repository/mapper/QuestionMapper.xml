@@ -177,6 +177,7 @@
         from question
         where status not in ('UNAPPROVED', 'REJECTED')
         and embody is false
+        and (tags = #{tag} or tags like CONCAT(CONCAT('%,', #{tag}), '%') or tags like CONCAT(CONCAT('%', #{tag}), ',%'))
         order by created_time desc
     </select>
 
