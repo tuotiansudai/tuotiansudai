@@ -17,11 +17,11 @@ require(['jquery', 'underscore', 'jquery.ajax.extension', 'jquery.validate', 'jq
 
         //表单验证
         function checkLogin(DomElement) {
+            formCheckValid = true;
             DomElement.each(function (key, option) {
                 var name = option.name,
                     value = $.trim(option.value),
                     errorMsg;
-                formCheckValid = true;
                 switch (name) {
                     case 'username':
                         if (_.isEmpty(value)) {
