@@ -85,7 +85,7 @@ public class LotteryDrawActivityServiceTest {
         ReflectionTestUtils.setField(lotteryDrawActivityService, "annualTime", Lists.newArrayList(DateTime.now().plusDays(-1).toString(DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")), DateTime.now().plusDays(1).toString(DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss"))));
         when(userMapper.findByMobile(anyString())).thenReturn(userModel);
         when(userMapper.findUsersByRegisterTimeOrReferrer(any(Date.class), any(Date.class), anyString())).thenReturn(userModels);
-        when(pointBillMapper.findCountPointBillPagination(anyString(), any(Date.class), any(Date.class), anyList())).thenReturn(1l);
+        when(pointBillMapper.findCountPointBillPagination(anyString(), anyString(), any(Date.class), any(Date.class), anyList())).thenReturn(1l);
         when(accountMapper.findByLoginName(anyString())).thenReturn(accountModel);
         when(investMapper.countInvestorSuccessInvestByInvestTime(anyString(), any(Date.class), any(Date.class))).thenReturn(1l);
         when(investMapper.sumSuccessActivityInvestAmount(anyString(), anyString(), any(Date.class), any(Date.class))).thenReturn(1000000000l);

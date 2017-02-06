@@ -70,8 +70,8 @@ public class MobileAppPointServiceTest extends ServiceTestBase {
         List<PointBillModel> pointBillModelList = Lists.newArrayList();
         pointBillModelList.add(pointBillModel);
         when(accountMapper.findByLoginName(anyString())).thenReturn(new AccountModel());
-        when(pointBillMapper.findPointBillPagination(anyString(), anyInt(), anyInt(), any(Date.class), any(Date.class), any(ArrayList.class))).thenReturn(pointBillModelList);
-        when(pointBillMapper.findCountPointBillPagination(anyString(), any(Date.class), any(Date.class), any(ArrayList.class))).thenReturn(1L);
+        when(pointBillMapper.findPointBillPagination(anyString(), anyString(), anyInt(), anyInt(), any(Date.class), any(Date.class), any(ArrayList.class))).thenReturn(pointBillModelList);
+        when(pointBillMapper.findCountPointBillPagination(anyString(), anyString(), any(Date.class), any(Date.class), any(ArrayList.class))).thenReturn(1L);
         when(pageValidUtils.validPageSizeLimit(anyInt())).thenReturn(10);
 
         PointBillRequestDto pointBillRequestDto = new PointBillRequestDto();
