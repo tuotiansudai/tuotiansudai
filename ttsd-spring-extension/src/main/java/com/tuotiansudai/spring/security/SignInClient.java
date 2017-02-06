@@ -194,6 +194,12 @@ public class SignInClient {
             Request request = requestBuilder.build();
             Response response = okHttpClient.newCall(request).execute();
 
+            //用户名或密码错误
+            if (response.code() == 401) {
+                return response;
+            }
+
+            //用户名或密码参数格式错误
             if (HttpStatus.valueOf(response.code()).is4xxClientError()) {
                 throw new IllegalArgumentException();
             }
