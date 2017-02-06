@@ -125,6 +125,12 @@ form label.error {
     padding-bottom: 30px;
     padding-top: 30px;
 
+    .image-decoration-bg-app-l {
+      display: none;
+    }
+    .image-decoration-bg-app-r {
+      display: none;
+    }
     .image-decoration-bg {
       width: 100%;
       height: 184px;
@@ -184,12 +190,18 @@ form label.error {
     padding-bottom: 30px;
     padding-top: 30px;
 
+    .image-decoration-bg-app-l {
+      display: none;
+    }
+    .image-decoration-bg-app-r {
+      display: none;
+    }
     .image-decoration-bg {
       width: 100%;
       height: 184px;
       position: absolute;
       background: url("/activity/images/sign/actor/landingpage/newbie-decoration-bg.png") center top no-repeat;
-      top: -55px;
+      top: -60px;
     }
 
     .image-title {
@@ -563,11 +575,28 @@ form label.error {
       }
 
       .image-decoration-bg {
-        width: 100%;
-        height: 170px;
+        display: none;
+      }
+
+      .image-decoration-bg-app-l {
+        display: block;
+        width: 110px;
+        height: 116px;
         position: absolute;
-        background: url("/activity/images/sign/actor/landingpage/newbie-decoration-bg-app.png");
-        background-size: auto 170px;
+        left: 0;
+        background: url("/activity/images/sign/actor/landingpage/newbie-decoration-bg-app-l.png");
+        background-size: auto 116px;
+        top: -20px;
+
+      }
+      .image-decoration-bg-app-r {
+        display: block;
+        width: 106px;
+        height: 145px;
+        position: absolute;
+        right: 0;
+        background: url("/activity/images/sign/actor/landingpage/newbie-decoration-bg-app-r.png");
+        background-size: auto 145px;
         top: -20px;
       }
 
@@ -613,11 +642,28 @@ form label.error {
       padding-top: 15px;
 
       .image-decoration-bg {
-        width: 100%;
-        height: 170px;
+        display: none;
+      }
+
+      .image-decoration-bg-app-l {
+        display: block;
+        width: 110px;
+        height: 116px;
         position: absolute;
-        background: url("/activity/images/sign/actor/landingpage/newbie-decoration-bg-app.png");
-        background-size: auto 170px;
+        left: 0;
+        background: url("/activity/images/sign/actor/landingpage/newbie-decoration-bg-app-l.png");
+        background-size: auto 116px;
+        top: -20px;
+
+      }
+      .image-decoration-bg-app-r {
+        display: block;
+        width: 106px;
+        height: 145px;
+        position: absolute;
+        right: 0;
+        background: url("/activity/images/sign/actor/landingpage/newbie-decoration-bg-app-r.png");
+        background-size: auto 145px;
         top: -20px;
       }
 

@@ -26,6 +26,8 @@
 
         <div class="newbie-step-two">
             <div class="image-decoration-bg"></div>
+            <div class="image-decoration-bg-app-l"></div>
+            <div class="image-decoration-bg-app-r"></div>
             <div class="image-title"></div>
             <div class="image-red-envelope"></div>
 
@@ -53,6 +55,8 @@
 
         <div class="newbie-step-four">
             <div class="image-decoration-bg"></div>
+            <div class="image-decoration-bg-app-l"></div>
+            <div class="image-decoration-bg-app-r"></div>
             <div class="image-title"></div>
             <div class="subtitle tc">
                 <div class="subtitle-container">
