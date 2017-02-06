@@ -327,7 +327,7 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
             ExchangeCouponView exchangeCouponView = new ExchangeCouponView(productModel.getPoints(), productModel.getActualPoints(), productModel.getSeq(), productModel.getImageUrl(), productModel.getId(), couponModel);
             leftCount = productDetailRequestDto.getNum() + (exchangeCouponView.getCouponModel() != null ? exchangeCouponView.getCouponModel().getIssuedCount() : 0l);
         }
-        if (leftCount > productModel.getTotalCount()) {
+        if (leftCount > productModel.getTotalCount() || leftCount == 0) {
             logger.info(MessageFormat.format("Insufficient product (userId = {0},totalCount = {1},usedCount = {2})", productDetailRequestDto.getBaseParam().getUserId(), productModel.getTotalCount(), productModel.getUsedCount()));
             return new BaseResponseDto(ReturnMessage.INSUFFICIENT_PRODUCT_NUM.getCode(), ReturnMessage.INSUFFICIENT_PRODUCT_NUM.getMsg());
         }

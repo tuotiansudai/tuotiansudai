@@ -310,8 +310,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     private ProductOrderModel generateOrder(AccountModel accountModel, ProductShowItemDto productShowItemDto, int amount, UserAddressModel userAddressModel, double discount) {
-       long actualPoints =  Math.round(new BigDecimal(productShowItemDto.getPoints()).multiply(new BigDecimal(discount)).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue());
-       long totalPoints =  Math.round(new BigDecimal(productShowItemDto.getPoints()).multiply(new BigDecimal(discount)).multiply(new BigDecimal(amount)).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue());
+        long actualPoints = Math.round(new BigDecimal(productShowItemDto.getPoints()).multiply(new BigDecimal(discount)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+        long totalPoints = Math.round(new BigDecimal(productShowItemDto.getPoints()).multiply(new BigDecimal(discount)).multiply(new BigDecimal(amount)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
         if (productShowItemDto.getGoodsType().equals(GoodsType.PHYSICAL)) {
             return new ProductOrderModel(
                     productShowItemDto.getId(),
@@ -364,14 +364,14 @@ public class ProductServiceImpl implements ProductService {
         AccountModel accountModel = accountMapper.lockByLoginName(loginName);
 
         MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
-        double discount = MembershipDiscount.getMembershipDiscountByLevel(membershipModel.getLevel());
+        double discount = MembershipDiscount.getMembershipDiscountByLevel(membershipModel == null ? 0 : membershipModel.getLevel());
 
         if (null == accountModel) {
             return new BaseDto<>(new BaseDataDto(false, "该账户未实名认证，不能购买商品"));
         }
 
         ProductShowItemDto productShowItemDto = findProductShowItemDto(id, goodsType);
-        long totalPrice = Math.round(new BigDecimal(productShowItemDto.getPoints()).multiply(new BigDecimal(discount)).multiply(new BigDecimal(amount)).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue());
+        long totalPrice = Math.round(new BigDecimal(productShowItemDto.getPoints()).multiply(new BigDecimal(discount)).multiply(new BigDecimal(amount)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
         if (null == productShowItemDto) {
             return new BaseDto<>(new BaseDataDto(false, "该商品或该商品类型不存在"));
         }
@@ -395,7 +395,6 @@ public class ProductServiceImpl implements ProductService {
         }
 
         ProductOrderModel productOrderModel = generateOrder(accountModel, productShowItemDto, amount, userAddressModel, discount);
-
 
 
         pointBillService.createPointBill(loginName, productShowItemDto.getId(), PointBusinessType.EXCHANGE, (-totalPrice), productShowItemDto.getName());
@@ -506,13 +505,13 @@ public class ProductServiceImpl implements ProductService {
         return productShowItemDto;
     }
 
-    public String discountShowInfo(String loginName){
+    public String discountShowInfo(String loginName) {
         MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
-        return MembershipDiscount.getMembershipDescriptionByLevel(membershipModel.getLevel());
+        return MembershipDiscount.getMembershipDescriptionByLevel(membershipModel == null ? 0 : membershipModel.getLevel());
     }
 
-    public double discountRate(String loginName){
+    public double discountRate(String loginName) {
         MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
-        return MembershipDiscount.getMembershipDiscountByLevel(membershipModel.getLevel());
+        return MembershipDiscount.getMembershipDiscountByLevel(membershipModel == null ? 0 : membershipModel.getLevel());
     }
 }
