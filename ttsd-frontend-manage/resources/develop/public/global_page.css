@@ -29,7 +29,7 @@
 .count-form h3 .close-count,
 .sprite-global-close-tip,
 .img-close-tip {
-  background-image: url(/images/global_20160904.81a18667.png);
+  background-image: url(http://localhost:3008/images/global_20160904.81a18667.png);
   background-repeat: no-repeat; }
 
 .sprite-global-app-pc-top, .fix-nav-list li .fix-nav.app-img {
@@ -137,7 +137,7 @@
   .count-form h3 .close-count,
   .sprite-global-close-tip,
   .img-close-tip {
-    background-image: url(/images/global_20160904.81a18667.png);
+    background-image: url(http://localhost:3008/images/global_20160904.81a18667.png);
     -webkit-background-size: 408px 290px;
     -moz-background-size: 408px 290px;
     background-size: 408px 290px; } }
@@ -379,7 +379,7 @@ form input.error + label.error:before {
   box-sizing: border-box; }
 
 .loading {
-  background: #fff url(/images/loading.fc27bb97.gif) no-repeat center center !important;
+  background: #fff url(http://localhost:3008/images/loading.fc27bb97.gif) no-repeat center center !important;
   cursor: default !important;
   border: 0 !important;
   text-indent: -9999px; }
@@ -652,7 +652,7 @@ table {
 .count-form h3 .close-count,
 .sprite-global-close-tip,
 .img-close-tip {
-  background-image: url(/images/global_20160904.81a18667.png);
+  background-image: url(http://localhost:3008/images/global_20160904.81a18667.png);
   background-repeat: no-repeat; }
 
 .sprite-global-app-pc-top, .fix-nav-list li .fix-nav.app-img {
@@ -760,7 +760,7 @@ table {
   .count-form h3 .close-count,
   .sprite-global-close-tip,
   .img-close-tip {
-    background-image: url(/images/global_20160904.81a18667.png);
+    background-image: url(http://localhost:3008/images/global_20160904.81a18667.png);
     -webkit-background-size: 408px 290px;
     -moz-background-size: 408px 290px;
     background-size: 408px 290px; } }
@@ -955,7 +955,7 @@ table {
     .nav-container .img-top .logo {
       float: left; }
       .nav-container .img-top .logo .logo-bg {
-        background: url(/images/logo-index.0e0cb06d.png) left center no-repeat;
+        background: url(http://localhost:3008/images/logo-index.0e0cb06d.png) left center no-repeat;
         width: 420px;
         height: 50px;
         display: block;
@@ -970,7 +970,7 @@ table {
         display: inline-block;
         width: 52px;
         height: 52px;
-        background: url(/images/app-code.81ab6e0e.png) left top no-repeat;
+        background: url(http://localhost:3008/images/app-code.81ab6e0e.png) left top no-repeat;
         background-size: 100%;
         vertical-align: middle; }
       .nav-container .img-top .login-pop-app .text {
@@ -980,7 +980,7 @@ table {
         .nav-container .img-top .login-pop-app .text i {
           display: block; }
       .nav-container .img-top .login-pop-app .img-app-pc-top {
-        background: url(/images/app-code.81ab6e0e.png) left top no-repeat;
+        background: url(http://localhost:3008/images/app-code.81ab6e0e.png) left top no-repeat;
         width: 162px;
         height: 162px;
         position: absolute;
@@ -1074,7 +1074,7 @@ table {
     position: relative;
     margin: 0 auto; }
     .nav-container-point .nav .logo {
-      background: url(/images/logo-index.0e0cb06d.png) left center no-repeat;
+      background: url(http://localhost:3008/images/logo-index.0e0cb06d.png) left center no-repeat;
       width: 370px;
       height: 50px;
       display: block;
@@ -1180,7 +1180,7 @@ table {
         float: left;
         width: 100px;
         height: 100px;
-        background-image: url(/images/global_20160904.81a18667.png);
+        background-image: url(http://localhost:3008/images/global_20160904.81a18667.png);
         background-position: -308px -100px;
         -webkit-background-size: 408px 290px;
         -moz-background-size: 408px 290px;
@@ -1902,12 +1902,12 @@ table {
       z-index: 999;
       cursor: pointer; }
   .count-form .form-text {
-    float: left;
     width: 250px;
     margin: 10px 40px;
     position: relative; }
+    .count-form .form-text .error-box {
+      margin-bottom: 15px; }
     .count-form .form-text .int-text {
-      float: left;
       width: 178px;
       height: 28px;
       padding: 5px 35px;
@@ -2059,7 +2059,7 @@ table {
       height: 24px;
       margin: 13px 20px;
       cursor: pointer;
-      background-image: url("/images/compress/global_20160904.png");
+      background-image: url(http://localhost:3008/images/global_20160904.b320d257.png);
       -webkit-background-size: 408px 290px;
       -moz-background-size: 408px 290px;
       background-size: 408px 290px;
@@ -2164,7 +2164,7 @@ table {
       height: 24px;
       margin: 13px 20px;
       cursor: pointer;
-      background-image: url("/images/compress/global_20160904.png");
+      background-image: url(http://localhost:3008/images/global_20160904.b320d257.png);
       -webkit-background-size: 408px 290px;
       -moz-background-size: 408px 290px;
       background-size: 408px 290px;

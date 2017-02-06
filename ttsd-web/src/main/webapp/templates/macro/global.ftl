@@ -128,9 +128,9 @@
 <#include "../pageLayout/statistic.ftl" />
 <script>
     window.staticServer='${staticServer}';
-    window.pluginsJSON={
-        underscore:'${js.underscore}'
-    }
+    <#--window.pluginsJSON={-->
+        <#--underscore:'${js.underscore}'-->
+    <#--}-->
 
 </script>
 <script src="${staticServer}${js.jquery}" ></script>

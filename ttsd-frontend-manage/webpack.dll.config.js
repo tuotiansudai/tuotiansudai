@@ -8,8 +8,7 @@ var basePath = path.join(__dirname, 'resources'),
 
 module.exports = {
     entry: {
-        'jquery': ['jquery','layer'],
-        'underscore':['underscore']
+        'jquery': ['jquery','layer','underscore']
     },
     output: {
         path: path.join(publicPath, 'js/plugins'),
