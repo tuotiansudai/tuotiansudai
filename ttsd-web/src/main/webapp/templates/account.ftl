@@ -50,7 +50,7 @@
         <#if isUsableCouponExist>
             您还有优惠券没有使用，<a href="/my-treasure" title="快来使用吧">快来使用吧</a>
         <#else>
-            新手注册就送5888体验金，体验再得588红包+3%加息券，<a href="/activity/landing-page" title="详情请点击">详情请点击</a>
+            新用户注册就送6888元体验金+668元现金红包，<a href="/activity/landing-page" title="详情请点击">详情请点击</a>
         </#if>
     </div>
     <#if successSumRepay??>

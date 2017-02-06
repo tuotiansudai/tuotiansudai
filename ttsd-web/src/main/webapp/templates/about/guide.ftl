@@ -154,8 +154,6 @@
             <div class="ren"></div>
             <a href="/activity/landing-page" class="btn-normal">立即领取</a>
             <div class="to-close fr">
-                <i class="fa fa-angle-left"></i>
-                <span>收<br/>起</span>
             </div>
         </div>
     </div>
