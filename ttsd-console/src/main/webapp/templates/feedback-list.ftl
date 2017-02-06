@@ -1,13 +1,13 @@
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="feedback-list.js" headLab="announce-manage" sideLab="feedbackMan" title="意见反馈">
+<@global.main pageCss="" pageJavascript="feedback-list.js" headLab="customer-center" sideLab="feedbackMan" title="意见反馈">
 <!-- content area begin -->
 
 <div class="col-md-10">
     <form action="" class="form-inline query-build">
         <div class="row">
             <div class="form-group">
-                <label for="control-label">电话号码</label>
+                <label for="control-label">投资人手机号</label>
                 <input type="text" class="form-control jq-title jq-loginName" name="mobile" value="${mobile!}">
             </div>
 
@@ -16,9 +16,11 @@
                 <select class="selectpicker" name="source">
                     <option value="" <#if !(source??)>selected</#if>>全部</option>
                     <#list sourceList as item>
-                        <option value="${item}" <#if source?? && item==source>selected</#if>>
-                        ${item}
-                        </option>
+                        <#if item != "MOBILE" && item != "AUTO">
+                            <option value="${item}" <#if source?? && item==source>selected</#if>>
+                            ${item}
+                            </option>
+                        </#if>
                     </#list>
                 </select>
             </div>

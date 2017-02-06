@@ -49,10 +49,8 @@
                 "header":{"text":"用户管理"},
                 "sidebar":[
                     {"name":"userMan","text":"用户管理","link":"/user-manage/users","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"userSearchMan","text":"用户查询","link":"/user-manage/users-search","role":"'ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN'"},
                     {"name":"referMan","text":"推荐人管理","link":"/user-manage/referrer","role":"'ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"agentMan","text":"代理商管理","link":"/user-manage/agents","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"bindCard","text":"换卡管理","link":"/bank-card-manager/bind-card","role":"'ADMIN','OPERATOR_ADMIN','CUSTOMER_SERVICE'"}
+                    {"name":"agentMan","text":"代理商管理","link":"/user-manage/agents","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"}
                 ]
             },
             {
@@ -82,10 +80,8 @@
                 "sidebar":[
                     {"name":"announceMan","text":"公告管理","link":"/announce-manage/announce","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
                     {"name":"linkExchangeMan","text":"友链管理","link":"/link-exchange-manage/link-exchange","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"feedbackMan","text":"意见反馈","link":"/announce-manage/feedback","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
                     {"name":"articleMan","text":"拓天资讯","link":"/announce-manage/article/list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','EDITOR'"},
-                    {"name":"bannerMan","text":"banner管理","link":"/banner-manage/list","role":"'ADMIN','OPERATOR_ADMIN'"},
-                    {"name":"bookingLoanMan","text":"预约投资管理","link":"/booking-loan-manage/list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"}
+                    {"name":"bannerMan","text":"banner管理","link":"/banner-manage/list","role":"'ADMIN','OPERATOR_ADMIN'"}
                 ]
             },
             {
@@ -116,7 +112,6 @@
                     {"name":"pointPrize","text":"财豆奖品管理","link":"/activity-manage/point-prize","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE'"},
                     {"name":"investAchievement","text":"投资称号管理","link":"/activity-manage/invest-achievement","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE'"},
                     {"name":"heroRanking","text":"周年庆管理","link":"/activity-console/activity-manage/hero-ranking","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE'"},
-                    {"name":"prepareUsers","text":"APP分享管理","link":"/activity-manage/prepare-users","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE'"},
                     {"name":"activityCenter","text":"活动中心","link":"/activity-manage/activity-center-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE'"},
                     {"name":"travelLuxuryActivity","text":"旅游+奢侈品活动管理","link":"/activity-console/activity-manage/travel/user-travel-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
                     {"name":"lottery","text":"抽奖数据统计","link":"/activity-console/activity-manage/user-time-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
@@ -188,12 +183,17 @@
                     {"name":"embodyQuestionManage","text":"收录文章管理","link":"/ask-manage/embody-questions","role":"'ADMIN', 'ASK_ADMIN'"}
                 ]
             },
-        {
-        "name":"platform-loan",
-        "header":{"text":"平台借款"},
-        "sidebar":[
-        {"name":"platform-loan-list","text":"借款申请信息","link":"/loan-application/list","role":"'ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN'"}
-        ]
+            {
+                "name":"customer-center",
+                "header":{"text":"客服中心"},
+                "sidebar":[
+                    {"name":"userSearchMan","text":"用户查询","link":"/user-manage/users-search","role":"'ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN'"},
+                    {"name":"feedbackMan","text":"意见反馈","link":"/announce-manage/feedback","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
+                    {"name":"bookingLoanMan","text":"预约投资管理","link":"/booking-loan-manage/list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
+                    {"name":"prepareUsers","text":"IOS邀请好友管理","link":"/activity-manage/prepare-users","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE'"},
+                    {"name":"platform-loan-list","text":"借款申请信息","link":"/loan-application/list","role":"'ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN'"},
+                    {"name":"bindCard","text":"换卡管理","link":"/bank-card-manager/bind-card","role":"'ADMIN','OPERATOR_ADMIN','CUSTOMER_SERVICE'"}
+                ]
             }
         ]
 >
