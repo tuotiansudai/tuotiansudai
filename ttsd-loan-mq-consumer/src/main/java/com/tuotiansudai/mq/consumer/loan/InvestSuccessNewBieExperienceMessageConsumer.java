@@ -3,7 +3,6 @@ package com.tuotiansudai.mq.consumer.loan;
 import com.google.common.base.Strings;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.PayWrapperClient;
-import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.dto.BaseDto;
@@ -83,9 +82,9 @@ public class InvestSuccessNewBieExperienceMessageConsumer implements MessageCons
         if (isExperienceInterestConditionAvailable(loginName)) {
             logger.info(String.format("[新手体验项目MQ] experience interest condition is available，loginName:%s investId:%s", loginName, investId));
             try {
-                BaseDto<PayDataDto> baseDto = payWrapperClient.sendExperienceInterestInvestSuccess(investId);
+                BaseDto<PayDataDto> baseDto = payWrapperClient.experienceRepay(investId);
                 if (!baseDto.isSuccess()) {
-                    logger.error("[新手体验项目MQ] send experience interest consume fail (loginName:{}, message:{}, error:{}) ", loginName, message, baseDto.getData().getMessage());
+                    logger.error("[新手体验项目MQ] send experience interest consume fail (loginName:{}, message:{}) ", loginName, message);
                     throw new RuntimeException(String.format("InvestSuccess_NewBieExperience consume fail. message: %s", message));
                 }
                 logger.info(String.format("[新手体验项目MQ] send experience interest end，investId:%s", investId));

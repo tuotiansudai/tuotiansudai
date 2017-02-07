@@ -15,7 +15,6 @@ CREATE TABLE `ump_operations`.`experience_interest_notify_request` (
   `response_time`  DATETIME,
   `request_data`   TEXT            NOT NULL,
   `response_data`  TEXT,
-  `status`         VARCHAR(32)      NOT NULL     DEFAULT 'NOT_DONE',
   PRIMARY KEY (`id`),
   KEY `INDEX_EXPERIENCE_INTEREST_NOTIFY_REQUEST_ORDER_ID` (`order_id`)
 )
