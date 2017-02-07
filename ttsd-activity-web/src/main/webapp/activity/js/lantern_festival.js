@@ -70,21 +70,20 @@ require(['jquery','drawCircle','template','layerWrapper','commonFun','logintip',
             currDate=GetDateStr(dateSpilt,1); //后一天
         }
 
- 
-        
+
+
         if(currDate.replace(/-/gi,'')==parseInt($('#activityStartTime').val().substr(0,10).replace(/-/gi,''))) {
             $heroPre.hide();
             $heroNext.show();
-        }else if(currDate.replace(/-/gi,'')==parseInt($('#activityEndTime').val().substr(0,10).replace(/-/gi,'')) || currDate.replace(/-/gi,'')==parseInt($('#TodayAwards').val().replace(/-/gi,''))){
+        }else if(currDate.replace(/-/gi,'')==parseInt($('#TodayAwards').val().replace(/-/gi,'')) && currDate.replace(/-/gi,'')>parseInt($('#activityStartTime').val().substr(0,10).replace(/-/gi,''))){
+            $heroPre.show();
             $heroNext.hide();
-        }else if(currDate.replace(/-/gi,'')==parseInt($('#TodayAwards').val().replace(/-/gi,''))){
+        }else if(currDate.replace(/-/gi,'')==parseInt($('#activityEndTime').val().substr(0,10).replace(/-/gi,'')) && currDate.replace(/-/gi,'')==parseInt($('#TodayAwards').val().replace(/-/gi,''))){
             $heroPre.show();
             $heroNext.hide();
         }else if(currDate.replace(/-/gi,'')>parseInt($('#activityStartTime').val().substr(0,10).replace(/-/gi,'')) && currDate.replace(/-/gi,'')<parseInt($('#TodayAwards').val().replace(/-/gi,''))){
             $heroPre.show();
             $heroNext.show();
-        }else if(currDate.replace(/-/gi,'')<parseInt($('#TodayAwards').val().replace(/-/gi,'')) && currDate.replace(/-/gi,'')<parseInt($('#activityEndTime').val().substr(0,10).replace(/-/gi,''))){
-            $heroPre.show();
         }
         $HistoryAwards.text(currDate);
         heroRank(currDate);
