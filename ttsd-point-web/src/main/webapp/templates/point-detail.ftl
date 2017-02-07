@@ -36,6 +36,9 @@
 						<div class="info-content">
 							<div class="price-text">
                                 <span>${productShowItem.points?string('0')}</span>积分
+								<#if discount?floor != 1>
+									${(productShowItem.points * discount)?round}积分
+								</#if>
 							</div>
 						</div>
 					</div>
@@ -67,7 +70,7 @@
 						<#if productShowItem.goodsType.name() == 'PHYSICAL' || productShowItem.goodsType.name() == 'VIRTUAL'>
                             <p class="tip-text">兑换成功后，拓天客服将会在7个工作日联系您发放商品</p>
 						<#else>
-                            <p class="tip-text">兑换成功后，请前去“我的账户”－》“我的宝藏”中进行查看</p>
+                            <p class="tip-text">兑换成功后，请前去“我的账户-我的宝藏”中进行查看</p>
 						</#if>
 					</div>
 				</div>
