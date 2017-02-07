@@ -73,7 +73,8 @@ require(['jquery','drawCircle','template','layerWrapper','commonFun','logintip',
  
         
         if(currDate.replace(/-/gi,'')==parseInt($('#activityStartTime').val().substr(0,10).replace(/-/gi,''))) {
-            $heroPre.show();
+            $heroPre.hide();
+            $heroNext.show();
         }else if(currDate.replace(/-/gi,'')==parseInt($('#activityEndTime').val().substr(0,10).replace(/-/gi,'')) || currDate.replace(/-/gi,'')==parseInt($('#TodayAwards').val().replace(/-/gi,''))){
             $heroNext.hide();
         }else if(currDate.replace(/-/gi,'')==parseInt($('#TodayAwards').val().replace(/-/gi,''))){
