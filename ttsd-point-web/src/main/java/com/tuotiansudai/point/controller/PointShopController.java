@@ -67,8 +67,8 @@ public class PointShopController {
             modelAndView.addObject("userPoint", accountService.getUserPointByLoginName(loginName));
             modelAndView.addObject("isSignIn", signInService.signInIsSuccess(loginName));
             modelAndView.addObject("discountShow", productService.discountShowInfo(loginName));
-            modelAndView.addObject("discount", productService.discountRate(loginName));
         }
+        modelAndView.addObject("discount", isLogin ? productService.discountRate(loginName) : 1.0);
         modelAndView.addObject("isLogin", isLogin);
         modelAndView.addObject("responsive", true);
         return modelAndView;

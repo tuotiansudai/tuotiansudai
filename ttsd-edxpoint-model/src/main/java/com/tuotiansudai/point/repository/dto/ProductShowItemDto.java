@@ -56,7 +56,7 @@ public class ProductShowItemDto {
                 this.pictureDescription = String.valueOf(amount);
                 break;
             case INTEREST_COUPON:
-                this.name = String.format("%s %s加息券", rate * 100, "");
+                this.name = String.format("%s %%加息券", rate * 100, "");
                 this.pictureDescription = String.valueOf(rate * 100);
                 break;
         }

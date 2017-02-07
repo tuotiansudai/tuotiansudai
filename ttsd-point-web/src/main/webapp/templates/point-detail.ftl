@@ -35,9 +35,9 @@
 						</div>
 						<div class="info-content">
 							<div class="price-text">
-                                <span>${productShowItem.points?string('0')}</span>积分
-								<#if discount?floor != 1>
-									${(productShowItem.points * discount)?round}积分
+                                <span>${(productShowItem.points * discount)?round}</span>积分
+								<#if discount?? && discount?floor != 1>
+									<span class="old-price">${productShowItem.points?string('0')}积分</span>
 								</#if>
 							</div>
 						</div>

@@ -275,28 +275,26 @@
       text-align:center;
       span{
         display: inline-block;
-        border: 1px solid #0087e6;
-        font-size: 20px;
+        font-size: 30px;
         color: #0087e6;
         text-align: center;
         padding: 0 29px;
-        border-radius: 20px;
         margin: 30px 0;
-        line-height: 38px;
+        line-height: 30px;
         position: relative;
         i{
           position: absolute;
-          width:170px;
-          height:40px;
+          width:390px;
+          height:30px;
           top:0;
           &.title-left{
-            left:-170px;
-            background:url("/point/images/title-left.png") no-repeat center;
+            left:-390px;
+            background:url("/point/images/left-line.png") no-repeat center;
             background-size: 100%;
           }
           &.title-right{
-            right:-170px;
-            background:url("/point/images/title-right.png") no-repeat center;
+            right:-390px;
+            background:url("/point/images/right-line.png") no-repeat center;
             background-size: 100%;
           }
         }
@@ -307,6 +305,9 @@
       width:100%;
       background:#fff;
       padding:30px 0;
+      &.even{
+        background:#f9f9f9;
+      }
       .material-list{
         float:left;
         margin:0 -10px;
@@ -315,10 +316,12 @@
           width:300px;
           height:280px;
           margin:10px;
+          background:#fff;
           border:1px solid #bcbcbc;
           box-sizing:border-box;
           padding:15px 69px;
           cursor: pointer;
+          position: relative;
           &:hover{
             border:1px solid #0087e6;
             box-shadow:0px 0px 5px #0087e6;
@@ -331,6 +334,31 @@
               margin-left:35px;
             }
           }
+          .hot-icon {
+            position: absolute;
+            width: 88px;
+            height: 88px;
+            top: -4px;
+            left: -4px;
+            text-align: left;
+            font-size: 12px;
+            color: #fff;
+            background: url(/point/images/top-hot.png) no-repeat center;
+            span {
+              display: inline-block;
+              -webkit-transform: rotate(-45deg);
+              transform: rotate(-45deg);
+              width: 100px;
+              height: 50px;
+              line-height: 75px;
+              -ms-transform: rotate(-45deg);
+              -moz-transform: rotate(-45deg);
+              -webkit-transform: rotate(-45deg);
+              -o-transform: rotate(-45deg);
+              margin-left: -25px;
+              text-align: center;
+            }
+          }
           p{
             float:left;
             margin-bottom:0;
@@ -338,6 +366,7 @@
               width:100%;
               color:#fc4a52;
               font-size:14px;
+              text-align:center;
             }
             &.mater-img{
               &.coupon-bg{
@@ -413,6 +442,10 @@
                   color:#999999;
                   i{
                     color:#0087e6;
+                    &.old-price{
+                      color:#999;
+                      text-decoration:line-through;
+                    }
                   }
                 }
                 &.get-btn{
