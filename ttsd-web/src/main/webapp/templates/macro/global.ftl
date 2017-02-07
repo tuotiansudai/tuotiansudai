@@ -82,8 +82,8 @@
     <meta name="_csrf" content="${(_csrf.token)!}"/>
     <meta name="_csrf_header" content="${(_csrf.headerName)!}"/>
     <meta name="360-site-verification" content="8f78c77592779bad6fb5acc422271b6f" />
-    <link href="${staticServer}/images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-    <link rel="stylesheet" type="text/css" href="${staticServer}${css.global_page!}" charset="utf-8"/>
+    <link  id="icoFavicon" rel="shortcut icon" type="image/x-icon" />
+    <link rel="stylesheet" type="text/css" href="${staticServer}${css.globalFun_page!}" charset="utf-8"/>
     <#if pageCss?? && pageCss != "">
         <link rel="stylesheet" type="text/css" href="${staticServer}${pageCss}" charset="utf-8"/>
     </#if>
@@ -134,7 +134,9 @@
 
 </script>
 <script src="${staticServer}${js.jquerydll}" ></script>
-<script src="${staticServer}${js.global_page!}" ></script>
+<script src="${staticServer}${js.jquery}" ></script>
+<script src="${staticServer}${js.globalFun_page!}" ></script>
+
 <script src="${staticServer}${pageJavascript}" type="text/javascript" id="currentScript"></script>
 </body>
 </html>

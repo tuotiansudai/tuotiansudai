@@ -1,0 +1,81 @@
+{
+  "/ask/js/mainSite": {
+    "js": "/ask/js/mainSite.js",
+    "css": "/ask/js/mainSite.css"
+  },
+  "questions": {
+    "js": "chucks/questions.6ff98da194e37a8607a9.js"
+  },
+  "create_question": {
+    "js": "chucks/create_question.efb1406a608c3d90990a.js"
+  },
+  "/public/globalFun_page": {
+    "js": "/public/globalFun_page.js",
+    "css": "/public/globalFun_page.css"
+  },
+  "/web/js/index": {
+    "js": "/web/js/index.js",
+    "css": "/web/js/index.css"
+  },
+  "redEnvelope": {
+    "js": "chucks/redEnvelope.84a3eb1208a93ab0bfb0.js"
+  },
+  "imageSlider": {
+    "js": "chucks/imageSlider.b265a0c7d7ac3da9ed92.js"
+  },
+  "bookInvest": {
+    "js": "chucks/bookInvest.c2aee18062cc36faf48a.js"
+  },
+  "/web/js/loan_list": {
+    "js": "/web/js/loan_list.js",
+    "css": "/web/js/loan_list.css"
+  },
+  "/web/js/login": {
+    "js": "/web/js/login.js",
+    "css": "/web/js/login.css"
+  },
+  "/web/js/register_user": {
+    "js": "/web/js/register_user.js",
+    "css": "/web/js/register_user.css"
+  },
+  "placeholder": {
+    "js": "chucks/placeholder.3def811a5cf5d89c7d41.js"
+  },
+  "fetchCaptcha": {
+    "js": "chucks/fetchCaptcha.f911989d5f3ab5955b26.js"
+  },
+  "/web/js/transfer_list": {
+    "js": "/web/js/transfer_list.js",
+    "css": "/web/js/transfer_list.css"
+  },
+  "metadata": {
+    "version": 123
+  },
+  "/web/js/account/account_overview": {
+    "js": "/web/js/account/account_overview.js",
+    "css": "/web/js/account/account_overview.css"
+  },
+  "/web/js/account/bind_card": {
+    "js": "/web/js/account/bind_card.js",
+    "css": "/web/js/account/bind_card.css"
+  },
+  "/web/js/account/recharge": {
+    "js": "/web/js/account/recharge.js",
+    "css": "/web/js/account/recharge.css"
+  },
+  "/web/js/loan_detail": {
+    "js": "/web/js/loan_detail.js",
+    "css": "/web/js/loan_detail.css"
+  },
+  "jquery_fancybox": {
+    "js": "chucks/jquery_fancybox.57e7eaf9c5f844c614eb.js"
+  },
+  "/web/js/loan_detail_experience": {
+    "js": "/web/js/loan_detail_experience.js",
+    "css": "/web/js/loan_detail_experience.css"
+  },
+  "/web/js/transfer_detail": {
+    "js": "/web/js/transfer_detail.js",
+    "css": "/web/js/transfer_detail.css"
+  }
+}

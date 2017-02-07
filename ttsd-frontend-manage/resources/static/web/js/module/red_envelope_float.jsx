@@ -238,7 +238,8 @@ require.ensure([],function() {
                         feedSubmit.prop('disabled',true);
                     }
                 },function(data) {
-                    refreshCaptcha(imageCaptchaFeed,'/feedback/captcha?');
+                    commonFun.refreshCaptcha(imageCaptchaFeed,'/feedback/captcha?');
+                    feedSubmit.prop('disabled',false);
                     if(data.success) {
                         $feedbackConatiner.hide();
                         $(feedForm).find(':text,textarea,input[name="type"]').val('');

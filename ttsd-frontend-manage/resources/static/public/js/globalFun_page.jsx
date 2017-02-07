@@ -155,6 +155,7 @@ var web_globalFun = (function() {
             this.logOut();
 
         },
+
         showMainMenu:function(e) {
             e.preventDefault();
             var target=e.target;
