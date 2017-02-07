@@ -20,11 +20,13 @@ import com.tuotiansudai.job.AnxinCreateContractJob;
 import com.tuotiansudai.job.JobManager;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.job.LoanOutSuccessHandleJob;
+import com.tuotiansudai.message.EMailMessage;
 import com.tuotiansudai.message.EventMessage;
 import com.tuotiansudai.message.PushMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
+import com.tuotiansudai.paywrapper.coupon.service.CouponInvestService;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.MerBindProjectMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.MerUpdateProjectMapper;
@@ -51,7 +53,7 @@ import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.AmountTransfer;
-import com.tuotiansudai.util.SendCloudMailUtil;
+import com.tuotiansudai.util.SendCloudTemplate;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -109,10 +111,10 @@ public class LoanServiceImpl implements LoanService {
     private PaySyncClient paySyncClient;
 
     @Autowired
-    private SendCloudMailUtil sendCloudMailUtil;
+    private ReferrerRewardService referrerRewardService;
 
     @Autowired
-    private ReferrerRewardService referrerRewardService;
+    private CouponInvestService couponInvestService;
 
     @Autowired
     private UMPayRealTimeStatusService umPayRealTimeStatusService;
@@ -212,7 +214,13 @@ public class LoanServiceImpl implements LoanService {
                 logger.error(e.getLocalizedMessage(), e);
             }
         }
-        return this.updateLoanStatus(loanId, LoanStatus.CANCEL);
+        BaseDto<PayDataDto> baseDto = this.updateLoanStatus(loanId, LoanStatus.CANCEL);
+
+        if (baseDto.getData() != null && baseDto.getData().getStatus()) {
+            couponInvestService.cancelUserCoupon(loanId);
+        }
+
+        return baseDto;
     }
 
     @Transactional
@@ -408,7 +416,7 @@ public class LoanServiceImpl implements LoanService {
         if (Strings.isNullOrEmpty(statusString) || statusString.equals(SyncRequestStatus.FAILURE.name())) {
             try {
                 redisWrapperClient.hset(redisKey, SMS_AND_EMAIL, SyncRequestStatus.SENT.name());
-                processNotifyForLoanOut(loanId);
+                processNotifyForLoanOut(loan, successInvestList);
                 redisWrapperClient.hset(redisKey, SMS_AND_EMAIL, SyncRequestStatus.SUCCESS.name());
             } catch (Exception e) {
                 redisWrapperClient.hset(redisKey, SMS_AND_EMAIL, SyncRequestStatus.FAILURE.name());
@@ -477,43 +485,26 @@ public class LoanServiceImpl implements LoanService {
         }
     }
 
-    private void processNotifyForLoanOut(long loanId) {
-        List<InvestModel> investModels = investMapper.findSuccessInvestsByLoanId(loanId);
-
-        logger.info(MessageFormat.format("[标的放款]:标的: {0} 放款短信通知", loanId));
-        notifyInvestorsLoanOutSuccessfulBySMS(investModels);
-
-        logger.info(MessageFormat.format("[标的放款]:标的: {0} 放款邮件通知", loanId));
-        notifyInvestorsLoanOutSuccessfulByEmail(investModels);
-
-    }
-
-    private void notifyInvestorsLoanOutSuccessfulBySMS(List<InvestModel> investModels) {
-        for (InvestModel investModel : investModels) {
+    private void processNotifyForLoanOut(LoanModel loanModel, List<InvestModel> successInvests) {
+        logger.info(MessageFormat.format("[标的放款]:标的: {0} 放款短信邮件通知", String.valueOf(loanModel.getId())));
+        for (InvestModel investModel : successInvests) {
             UserModel userModel = userMapper.findByLoginName(investModel.getLoginName());
-            LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
-            InvestNotifyInfo notifyInfo = new InvestNotifyInfo(investModel, loanModel, userModel);
-            InvestSmsNotifyDto dto = new InvestSmsNotifyDto();
-            dto.setLoanName(notifyInfo.getLoanName());
-            dto.setMobile(notifyInfo.getMobile());
-            dto.setAmount(AmountConverter.convertCentToString(notifyInfo.getAmount()));
-            smsWrapperClient.sendInvestNotify(dto);
-        }
-    }
-
-    private void notifyInvestorsLoanOutSuccessfulByEmail(List<InvestModel> investModels) {
-        for (InvestModel investModel : investModels) {
-            UserModel userModel = userMapper.findByLoginName(investModel.getLoginName());
-            LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
-            InvestNotifyInfo notifyInfo = new InvestNotifyInfo(investModel, loanModel, userModel);
-
+            InvestSmsNotifyDto dto = new InvestSmsNotifyDto(userModel.getMobile(),
+                    loanModel.getName(),
+                    AmountConverter.convertCentToString(investModel.getAmount()));
             Map<String, String> emailParameters = Maps.newHashMap(new ImmutableMap.Builder<String, String>()
-                    .put("loanName", notifyInfo.getLoanName())
-                    .put("money", AmountConverter.convertCentToString(notifyInfo.getAmount()))
+                    .put("loanName", loanModel.getName())
+                    .put("amount", AmountConverter.convertCentToString(investModel.getAmount()))
                     .build());
-            String userEmail = notifyInfo.getEmail();
-            if (StringUtils.isNotEmpty(userEmail)) {
-                sendCloudMailUtil.sendMailByLoanOut(userEmail, emailParameters);
+            try {
+                smsWrapperClient.sendInvestNotify(dto);
+                if (StringUtils.isNotEmpty(userModel.getEmail())) {
+                    mqWrapperClient.sendMessage(MessageQueue.EMailMessage, new EMailMessage(Lists.newArrayList(userModel.getEmail()),
+                            SendCloudTemplate.LOAN_OUT_SUCCESSFUL_EMAIL.getTitle(),
+                            SendCloudTemplate.LOAN_OUT_SUCCESSFUL_EMAIL.generateContent(emailParameters)));
+                }
+            } catch (Exception e) {
+                logger.error(e.getLocalizedMessage(), e);
             }
         }
     }

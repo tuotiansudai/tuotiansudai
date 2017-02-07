@@ -4,13 +4,12 @@ package com.tuotiansudai.transfer.service;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
 import com.tuotiansudai.repository.model.LoanStatus;
-import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.repository.model.TransferInvestDetailView;
 import com.tuotiansudai.repository.model.TransferStatus;
-import com.tuotiansudai.transfer.dto.TransferApplicationDto;
-import com.tuotiansudai.transfer.dto.TransferApplicationFormDto;
-import com.tuotiansudai.transfer.repository.model.TransferInvestDetailDto;
+import com.tuotiansudai.dto.TransferApplicationDto;
+import com.tuotiansudai.dto.TransferApplicationFormDto;
+import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
 
 import java.util.Date;
 import java.util.List;
@@ -33,12 +32,12 @@ public interface InvestTransferService {
 
     BaseDto<BaseDataDto> isInvestTransferable(long transferApplicationId);
 
-    BasePaginationDataDto<TransferInvestDetailDto> getInvestTransferList(String investorLoginName,
-                                                                         int index,
-                                                                         int pageSize,
-                                                                         Date startTime,
-                                                                         Date endTime,
-                                                                         LoanStatus loanStatus);
+    BasePaginationDataDto<TransferInvestDetailView> getInvestTransferList(String investorLoginName,
+                                                                          int index,
+                                                                          int pageSize,
+                                                                          Date startTime,
+                                                                          Date endTime,
+                                                                          LoanStatus loanStatus);
 
     boolean validTransferIsCanceled(long investId);
 

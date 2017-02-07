@@ -23,13 +23,8 @@ import javax.sql.DataSource;
         "com.tuotiansudai.log",
         "com.tuotiansudai.anxin",
         "com.tuotiansudai.contract",
-        "com.tuotiansudai.cfca"
-})
-@PropertySource(
-        ignoreResourceNotFound = true, value = {
-        "classpath:ttsd-env.properties",
-        "classpath:ttsd-biz.properties"
-})
+        "com.tuotiansudai.cfca"})
+@PropertySource(ignoreResourceNotFound = true, value = {"classpath:ttsd-env.properties", "classpath:ttsd-biz.properties"})
 @EnableAspectJAutoProxy(exposeProxy = true)
 public class AppConfiguration {
 

@@ -9,7 +9,7 @@ import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.LoanModel;
-import com.tuotiansudai.repository.model.Role;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.service.UserService;
@@ -33,7 +33,7 @@ import java.util.Date;
 public class AuditTaskAspectLoan {
 
     @Autowired
-    RedisWrapperClient redisWrapperClient;
+    private RedisWrapperClient redisWrapperClient;
 
     @Autowired
     private UserService userService;
@@ -42,7 +42,7 @@ public class AuditTaskAspectLoan {
     private UserMapper userMapper;
 
     @Autowired
-    LoanService loanService;
+    private LoanService loanService;
 
     @Autowired
     private AuditLogService auditLogService;
