@@ -9,7 +9,7 @@
                     <h3>可用积分</h3>
                     <p>${userPoint}</p>
                     <#if isSignIn>
-                        <p><span class="already">已签到</span></p>
+                        <p><span class="already" data-url="/point-shop/signIn" id="signBtn">已签到</span></p>
                     <#else>
                         <p><span data-url="/point-shop/signIn" id="signBtn">签到</span></p>
                     </#if>
@@ -48,16 +48,12 @@
                 <div class="sign-layer-list">
                     <div class="sign-top">
                         <div class="close-btn" id="closeSign"></div>
-                        <div class="sign-text">
-                            签到成功
-                        </div>
+                        <div class="sign-text"></div>
                         <div class="sign-content">
-                            <p class="sign-point"><span>+10</span>积分</p>
-                            <p class="tomorrow-text">明日签到可获得10积分</p>
-                            <p class="intro-text">已连续签到20天，连续签到28天可获得现金红包哦~</p>
-                            <!-- <p class="intro-text">已连续签到8天，获得3.8元现金红包</p>
-                            <p class="intro-text">再签到10天可再获得10元现金红包哦~</p>
-                            <p class="intro-text">已连续签到365天，获得全勤奖！<br/>365元现金</p> -->
+                            <p class="sign-point"><span></span>积分</p>
+                            <p class="tomorrow-text"></p>
+                            <p class="intro-text"></p>
+                            <p class="next-text"></p>
                             <p class="sign-reward"><a href="/point-shop/bill">查看连续签到奖励</a></p>
                         </div>
                         

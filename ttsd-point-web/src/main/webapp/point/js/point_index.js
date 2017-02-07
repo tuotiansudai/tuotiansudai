@@ -17,6 +17,8 @@ require(['jquery','layerWrapper','template', 'jquery.ajax.extension'], function 
 				$signText = $(".sign-text"),
 				$tomorrowText = $(".tomorrow-text"),
 				$signPoint = $(".sign-point"),
+				$introText=$('.intro-text'),
+                $nextText=$('.next-text'),
 				$signBtn = $("#signBtn");
 
 			$.ajax({
@@ -26,8 +28,10 @@ require(['jquery','layerWrapper','template', 'jquery.ajax.extension'], function 
 				contentType: 'application/json; charset=UTF-8'
 			}).done(function(response) {
 				if (response.data.status) {
-					$signText.html("签到成功");
+					response.data.signIn==true?$signText.html("您今天已签到"):$signText.html("签到成功");
 					$tomorrowText.html("明日签到可获得"+ response.data.nextSignInPoint + "积分");
+                    $introText.html(response.data.currentRewardDesc);
+                    $nextText.html(response.data.nextRewardDesc);
 					$signBtn.addClass("no-click").html("已签到");
 					$signPoint.find('span').html(response.data.signInPoint);
 					$signTip.fadeIn('fast');
