@@ -9,7 +9,7 @@
 </script>
 <div class="content-container account-overview">
     <div class="bRadiusBox spad bg-w clearfix">
-        <img src="${staticServer}/images/sign/profile_20161011.jpg" class="fl accountImg">
+        <span class="fl accountImg"></span>
         <div class="profile-box">
             <span><em>您好：${mobile!}</em></span>
             <span class="vip vip${userMembershipLevel!}"></span>
@@ -231,7 +231,7 @@
                 <p class="tomorrow-text">明日可领10积分</p>
 
                 <p class="img-beans">
-                    <img src="${staticServer}/images/sign/sign-beans.png"/>
+                    <spsn class="beans-img"></spsn>
 					<span class="add-dou">
 						+5
 					</span>

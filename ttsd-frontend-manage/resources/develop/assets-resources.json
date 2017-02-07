@@ -4,27 +4,57 @@
     "css": "/ask/js/mainSite.css"
   },
   "questions": {
-    "js": "chucks/questions.6ff98da194e37a8607a9.js"
+    "js": "chucks/questions.073a07fa8e444dd8de8f.js"
   },
   "create_question": {
-    "js": "chucks/create_question.efb1406a608c3d90990a.js"
+    "js": "chucks/create_question.f25d27b07004f2edd22a.js"
   },
   "/public/globalFun_page": {
     "js": "/public/globalFun_page.js",
     "css": "/public/globalFun_page.css"
+  },
+  "/web/js/account/account_overview": {
+    "js": "/web/js/account/account_overview.js",
+    "css": "/web/js/account/account_overview.css"
+  },
+  "/web/js/account/bind_card": {
+    "js": "/web/js/account/bind_card.js",
+    "css": "/web/js/account/bind_card.css"
+  },
+  "/web/js/account/recharge": {
+    "js": "/web/js/account/recharge.js",
+    "css": "/web/js/account/recharge.css"
+  },
+  "/web/js/forget_password": {
+    "js": "/web/js/forget_password.js",
+    "css": "/web/js/forget_password.css"
+  },
+  "fetchCaptchaRetrieve": {
+    "js": "chucks/fetchCaptchaRetrieve.97c83d1dfdee09d9fe66.js"
   },
   "/web/js/index": {
     "js": "/web/js/index.js",
     "css": "/web/js/index.css"
   },
   "redEnvelope": {
-    "js": "chucks/redEnvelope.06a22ad63b92494406d5.js"
+    "js": "chucks/redEnvelope.149772b34e9c714f3b9f.js"
   },
   "imageSlider": {
-    "js": "chucks/imageSlider.dd073d1b567514485ea9.js"
+    "js": "chucks/imageSlider.9ef3a235ad14c791963f.js"
   },
   "bookInvest": {
-    "js": "chucks/bookInvest.14d1ac688dfcb94305d7.js"
+    "js": "chucks/bookInvest.5c5336f100487516d211.js"
+  },
+  "/web/js/loan_detail": {
+    "js": "/web/js/loan_detail.js",
+    "css": "/web/js/loan_detail.css"
+  },
+  "jquery_fancybox": {
+    "js": "chucks/jquery_fancybox.b04c0a5ac628e8c71b1b.js"
+  },
+  "/web/js/loan_detail_experience": {
+    "js": "/web/js/loan_detail_experience.js",
+    "css": "/web/js/loan_detail_experience.css"
   },
   "/web/js/loan_list": {
     "js": "/web/js/loan_list.js",
@@ -39,10 +69,11 @@
     "css": "/web/js/register_user.css"
   },
   "placeholder": {
-    "js": "chucks/placeholder.285904f65339cc11756a.js"
+    "js": "chucks/placeholder.4fa25f3aeb3076cfa89c.js"
   },
-  "fetchCaptcha": {
-    "js": "chucks/fetchCaptcha.32a2a824313ec8d35cd1.js"
+  "/web/js/transfer_detail": {
+    "js": "/web/js/transfer_detail.js",
+    "css": "/web/js/transfer_detail.css"
   },
   "/web/js/transfer_list": {
     "js": "/web/js/transfer_list.js",
@@ -51,38 +82,7 @@
   "metadata": {
     "version": 123
   },
-  "/web/js/account/account_overview": {
-    "js": "/web/js/account/account_overview.js",
-    "css": "/web/js/account/account_overview.css"
-  },
-  "/web/js/account/bind_card": {
-    "js": "/web/js/account/bind_card.js",
-    "css": "/web/js/account/bind_card.css"
-  },
-  "/web/js/account/recharge": {
-    "js": "/web/js/account/recharge.js",
-    "css": "/web/js/account/recharge.css"
-  },
-  "/web/js/loan_detail": {
-    "js": "/web/js/loan_detail.js",
-    "css": "/web/js/loan_detail.css"
-  },
-  "jquery_fancybox": {
-    "js": "chucks/jquery_fancybox.735c0b18f3dd9bb091a4.js"
-  },
-  "/web/js/loan_detail_experience": {
-    "js": "/web/js/loan_detail_experience.js",
-    "css": "/web/js/loan_detail_experience.css"
-  },
-  "/web/js/transfer_detail": {
-    "js": "/web/js/transfer_detail.js",
-    "css": "/web/js/transfer_detail.css"
-  },
-  "/web/js/forget_password": {
-    "js": "/web/js/forget_password.js",
-    "css": "/web/js/forget_password.css"
-  },
-  "fetchCaptchaRetrieve": {
-    "js": "chucks/fetchCaptchaRetrieve.8363e520c1ff34954be8.js"
+  "fetchCaptcha": {
+    "js": "chucks/fetchCaptcha.3ded179f39e7d43fd490.js"
   }
 }

@@ -239,6 +239,33 @@ var strategies = {
         return getResult;
     },
 
+    isCaptchaVerify:function(errorMsg,showErrorAfter) {
+        var getResult='',
+            that=this;
+        let retrieveForm=globalFun.$('#retrieveForm');
+        var _phone = retrieveForm.mobile.value,
+            _captcha=retrieveForm.captcha.value;
+        commonFun.useAjax({
+            type:'GET',
+            async: false,
+            url:`/mobile-retrieve-password/mobile/${_phone}/captcha/${_captcha}/verify?random=` + new Date().getTime()
+        },function(response) {
+            if(!response.data.status) {
+                // 如果为true说明验证码不正确
+                getResult='';
+                globalFun.removeClass(that,'error');
+                globalFun.addClass(that,'valid');
+                showErrorAfter && removeElement(that);
+            }
+            else {
+                getResult=errorMsg;
+                globalFun.addClass(that,'error');
+                showErrorAfter && createElement(that,errorMsg);
+            }
+        });
+        return getResult;
+    },
+
     //推荐人是非存在
     isReferrerExist:function(errorMsg,showErrorAfter) {
         var getResult='',

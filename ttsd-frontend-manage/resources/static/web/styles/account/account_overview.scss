@@ -51,7 +51,7 @@ $CK1:#ffac2a;
           right: 15px;
           width: 15px;
           height: 15px;
-          background: url("/images/sign/bean-bg.png") no-repeat;
+          background: url("../../images/sign/bean-bg.png") no-repeat;
           background-position: 0px -23px;
           cursor: pointer;
         }
@@ -70,7 +70,12 @@ $CK1:#ffac2a;
           }
           &.img-beans {
             position: relative;
-
+            .beans-img {
+              width:100px;
+              height:106px;
+              display: inline-block;
+              background: url("../../images/sign/sign-beans.png") left top no-repeat;
+            }
             .add-dou {
               position: absolute;
               left: 50%;
@@ -83,7 +88,7 @@ $CK1:#ffac2a;
               line-height: 25px;
               color: #fff;
               text-align: center;
-              background: url("/images/sign/add-bean.png") no-repeat right;
+              background: url("../../images/sign/add-bean.png") no-repeat right;
             }
           }
           &.intro-text {
@@ -147,7 +152,7 @@ $CK1:#ffac2a;
                   float: left;
                   width: 15px;
                   height: 15px;
-                  background: url("/images/sign/bean-bg.png") no-repeat;
+                  background: url("../../images/sign/bean-bg.png") no-repeat;
                   background-position: 0 0;
                   margin-top: 2px;
                 }
@@ -167,7 +172,7 @@ $CK1:#ffac2a;
     float: left;
     width: 20px;
     height: 20px;
-    background: url(/images/sign/birthday.png) no-repeat center;
+    background: url('../../images/sign/birthday.png') no-repeat center;
     background-size: 15px;
     left: 50px;
     position: relative;
@@ -177,6 +182,8 @@ $CK1:#ffac2a;
     margin-right: 10px;
     width: 71px;
     height: 71px;
+    display: inline-block;
+    background: url('../../images/sign/profile_20161011.jpg') left top no-repeat;
   }
   .proList {
     margin-top: 4px;
@@ -219,7 +226,7 @@ $CK1:#ffac2a;
               width: 60px;
               text-align: center;
               line-height: 20px;
-              background: url("/images/sign/icon-sign.png") no-repeat left;
+              background: url("../../images/sign/icon-sign.png") no-repeat left;
               background-position: 15px 2px;
               padding-left: 20px;
               font-size: 14px;
@@ -277,22 +284,22 @@ $CK1:#ffac2a;
     height: 14px;
     vertical-align: middle;
     &.vip0 {
-      background: url("/images/icons/vip/account-vip/v0.png") no-repeat;
+      background: url("../../images/icons/vip/account-vip/v0.png") no-repeat;
     }
     &.vip1 {
-      background: url("/images/icons/vip/account-vip/v1.png") no-repeat;
+      background: url("../../images/icons/vip/account-vip/v1.png") no-repeat;
     }
     &.vip2 {
-      background: url("/images/icons/vip/account-vip/v2.png") no-repeat;
+      background: url("../../images/icons/vip/account-vip/v2.png") no-repeat;
     }
     &.vip3 {
-      background: url("/images/icons/vip/account-vip/v3.png") no-repeat;
+      background: url("../../images/icons/vip/account-vip/v3.png") no-repeat;
     }
     &.vip4 {
-      background: url("/images/icons/vip/account-vip/v4.png") no-repeat;
+      background: url("../../images/icons/vip/account-vip/v4.png") no-repeat;
     }
     &.vip5 {
-      background: url("/images/icons/vip/account-vip/v5.png") no-repeat;
+      background: url("../../images/icons/vip/account-vip/v5.png") no-repeat;
     }
   }
   .user-info {
@@ -300,7 +307,7 @@ $CK1:#ffac2a;
     width: 20px;
     height: 14px;
     vertical-align: middle;
-    background: url("/images/icons/vip/account-vip/user-info.png") no-repeat;
+    background: url("../../images/icons/vip/account-vip/user-info.png") no-repeat;
   }
 
   .newProjects {
@@ -323,7 +330,7 @@ $CK1:#ffac2a;
       float: left;
       width: 20px;
       height: 20px;
-      background: url(/images/sign/birthday.png) no-repeat center;
+      background: url("../../images/sign/birthday.png") no-repeat center;
       background-size: 15px;
       left: 50px;
       position: relative;
