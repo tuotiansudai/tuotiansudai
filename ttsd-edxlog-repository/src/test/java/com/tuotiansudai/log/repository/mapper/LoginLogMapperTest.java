@@ -34,7 +34,7 @@ public class LoginLogMapperTest {
         long count = loginLogMapper.count(loginName, "1932", true, table);
         assertTrue (count > 0);
 
-        List<LoginLogModel> data = loginLogMapper.getPaginationData(loginName, "1871", true, 0, 10, table);
+        List<LoginLogModel> data = loginLogMapper.getPaginationData(loginName, "1871", true, null, 0, 10, table);
         assertTrue (data.size() > 0);
     }
 
