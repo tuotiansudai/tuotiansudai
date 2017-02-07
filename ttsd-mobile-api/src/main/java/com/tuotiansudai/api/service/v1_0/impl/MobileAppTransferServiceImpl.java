@@ -15,8 +15,8 @@ import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.TransferStatus;
-import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
-import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
+import com.tuotiansudai.repository.mapper.TransferApplicationMapper;
+import com.tuotiansudai.repository.model.TransferApplicationModel;
 import com.tuotiansudai.transfer.service.TransferService;
 import com.tuotiansudai.util.RandomUtils;
 import org.apache.log4j.Logger;
@@ -59,15 +59,15 @@ public class MobileAppTransferServiceImpl implements MobileAppTransferService {
         BaseResponseDto<TransferTransfereeResponseDataDto> dto = new BaseResponseDto<>();
         Integer index = transferTransfereeRequestDto.getIndex();
         Integer pageSize = pageValidUtils.validPageSizeLimit(transferTransfereeRequestDto.getPageSize());
-        if (index == null || pageSize == null || index <= 0 || pageSize <= 0) {
-            return new BaseResponseDto(ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode(), ReturnMessage.REQUEST_PARAM_IS_WRONG.getMsg());
+        if (index == null || index <= 0 || pageSize <= 0) {
+            return new BaseResponseDto<>(ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode(), ReturnMessage.REQUEST_PARAM_IS_WRONG.getMsg());
         }
         TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(transferTransfereeRequestDto.getTransferApplicationId());
         InvestModel investModel = null;
         if (transferApplicationModel.getStatus() == TransferStatus.SUCCESS && transferApplicationModel.getInvestId() != null) {
             investModel = investMapper.findById(transferApplicationModel.getInvestId());
         }
-        TransferTransfereeRecordResponseDataDto transferTransfereeRecordResponseDataDto = new TransferTransfereeRecordResponseDataDto(investModel != null ? randomUtils.encryptMobile(transferTransfereeRequestDto.getBaseParam().getUserId(), investModel.getLoginName(), investModel.getId(), Source.MOBILE) : "",
+        TransferTransfereeRecordResponseDataDto transferTransfereeRecordResponseDataDto = new TransferTransfereeRecordResponseDataDto(investModel != null ? randomUtils.encryptMobile(transferTransfereeRequestDto.getBaseParam().getUserId(), investModel.getLoginName(), investModel.getId()) : "",
                 transferApplicationModel.getTransferAmount(), transferApplicationModel.getTransferTime());
         TransferTransfereeResponseDataDto transferTransfereeResponseDataDto = new TransferTransfereeResponseDataDto(transferTransfereeRequestDto.getIndex(), transferTransfereeRequestDto.getPageSize(),
                 Lists.newArrayList(transferTransfereeRecordResponseDataDto).size(), Lists.newArrayList(transferTransfereeRecordResponseDataDto));

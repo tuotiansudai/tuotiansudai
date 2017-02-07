@@ -4,6 +4,7 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.*;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.job.DeadlineFundraisingJob;
 import com.tuotiansudai.job.FundraisingStartJob;
 import com.tuotiansudai.job.JobManager;

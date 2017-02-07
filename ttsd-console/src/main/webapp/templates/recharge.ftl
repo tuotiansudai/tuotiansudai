@@ -18,7 +18,7 @@
 
                 <div class='input-group date' id='datetimepicker1'>
                     <input type='text' class="form-control" name="startTime"
-                           value="${(startTime?string('yyyy-MM-dd HH:mm'))!}"/>
+                           value="${(startTime?string('yyyy-MM-dd HH:mm:ss'))!}"/>
 					                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
@@ -26,7 +26,7 @@
                 -
                 <div class='input-group date' id='datetimepicker2'>
                     <input type='text' class="form-control" name="endTime"
-                           value="${(endTime?string('yyyy-MM-dd HH:mm'))!}"/>
+                           value="${(endTime?string('yyyy-MM-dd HH:mm:ss'))!}"/>
 					                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>

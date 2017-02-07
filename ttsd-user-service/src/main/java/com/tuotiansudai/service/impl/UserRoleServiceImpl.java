@@ -1,8 +1,8 @@
 package com.tuotiansudai.service.impl;
 
 
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.repository.mapper.UserRoleMapper;
-import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.repository.model.UserRoleModel;
 import com.tuotiansudai.service.UserRoleService;
 import org.springframework.beans.factory.annotation.Autowired;

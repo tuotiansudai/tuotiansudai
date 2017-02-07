@@ -3,7 +3,7 @@ package com.tuotiansudai.console.controller;
 import com.tuotiansudai.console.service.ConsoleReferrerManageService;
 import com.tuotiansudai.repository.model.ReferrerManageView;
 import com.tuotiansudai.repository.model.ReferrerRewardStatus;
-import com.tuotiansudai.repository.model.Role;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.util.PaginationUtil;
 import org.joda.time.DateTime;

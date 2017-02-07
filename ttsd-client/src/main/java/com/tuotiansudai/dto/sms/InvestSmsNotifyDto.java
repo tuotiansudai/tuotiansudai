@@ -3,9 +3,18 @@ package com.tuotiansudai.dto.sms;
 import java.io.Serializable;
 
 public class InvestSmsNotifyDto implements Serializable {
-    private String loanName;
     private String mobile;
+    private String loanName;
     private String amount;
+
+    public InvestSmsNotifyDto() {
+    }
+
+    public InvestSmsNotifyDto(String mobile, String loanName, String amount) {
+        this.mobile = mobile;
+        this.loanName = loanName;
+        this.amount = amount;
+    }
 
     public String getLoanName() {
         return loanName;
