@@ -2,11 +2,11 @@ package com.tuotiansudai.console.service;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.TransferStatus;
-import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
-import com.tuotiansudai.transfer.repository.model.TransferApplicationRecordDto;
+import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
+import com.tuotiansudai.repository.mapper.TransferApplicationMapper;
+import com.tuotiansudai.repository.model.TransferApplicationRecordView;
 import com.tuotiansudai.util.CalculateUtil;
 import com.tuotiansudai.util.PaginationUtil;
 import org.apache.log4j.Logger;
@@ -40,7 +40,7 @@ public class ConsoleInvestTransferService {
         }
 
         int count = transferApplicationMapper.findCountTransferApplicationPagination(transferApplicationId, startTime, endTime, status, transferrerMobile, transfereeMobile, loanId, source);
-        List<TransferApplicationRecordDto> items = Lists.newArrayList();
+        List<TransferApplicationRecordView> items = Lists.newArrayList();
         if (count > 0) {
             int totalPages = PaginationUtil.calculateMaxPage(count, pageSize);
             index = index > totalPages ? totalPages : index;

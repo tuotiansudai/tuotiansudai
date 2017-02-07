@@ -16,8 +16,8 @@ import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.TransferStatus;
 import com.tuotiansudai.service.AccountService;
-import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
-import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
+import com.tuotiansudai.repository.mapper.TransferApplicationMapper;
+import com.tuotiansudai.repository.model.TransferApplicationModel;
 import com.tuotiansudai.transfer.service.TransferService;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.RandomUtils;
@@ -93,7 +93,7 @@ public class MobileAppTransferServiceTest extends ServiceTestBase {
         investModel.setLoginName("testTransferee");
         when(investMapper.findById(anyLong())).thenReturn(investModel);
 
-        when(randomUtils.encryptMobile(anyString(), anyString(), anyLong(), any(Source.class))).thenReturn("test***");
+        when(randomUtils.encryptMobile(anyString(), anyString(), anyLong())).thenReturn("test***");
         when(pageValidUtils.validPageSizeLimit(anyInt())).thenReturn(10);
 
         BaseResponseDto<TransferTransfereeResponseDataDto> baseResponseDto =  mobileAppTransferServiceImpl.getTransferee(transferTransfereeRequestDto);

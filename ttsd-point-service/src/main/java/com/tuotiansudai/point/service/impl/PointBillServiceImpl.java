@@ -1,8 +1,8 @@
 package com.tuotiansudai.point.service.impl;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
-import com.tuotiansudai.coupon.repository.model.CouponModel;
+import com.tuotiansudai.repository.mapper.CouponMapper;
+import com.tuotiansudai.repository.model.CouponModel;
 import com.tuotiansudai.dto.AccountItemDataDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.point.repository.dto.PointBillPaginationItemDataDto;
@@ -143,7 +143,7 @@ public class PointBillServiceImpl implements PointBillService {
         List<AccountItemDataDto> accountItemDataDtoList = Lists.newArrayList();
         for (AccountModel accountModel : accountModels) {
             UserModel userModel = userMapper.findByLoginName(accountModel.getLoginName());
-            AccountItemDataDto accountItemDataDto = new AccountItemDataDto(userModel, accountModel);
+            AccountItemDataDto accountItemDataDto = new AccountItemDataDto(userModel.getLoginName(), userModel.getUserName(), accountModel.getPoint());
             accountItemDataDto.setTotalPoint(pointBillMapper.findUserTotalPoint(accountModel.getLoginName()));
             accountItemDataDto.setMobile(userModel.getMobile());
             accountItemDataDtoList.add(accountItemDataDto);
