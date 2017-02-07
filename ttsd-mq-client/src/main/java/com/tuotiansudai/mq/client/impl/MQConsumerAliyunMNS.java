@@ -58,8 +58,6 @@ public class MQConsumerAliyunMNS extends MQConsumer {
             message = cloudQueue.popMessage(consumerSetting.getMessagePopPeriodSeconds());
             if (message == null) {
                 logger.info("[MQ] receive no message, try again");
-            } else {
-                logger.info("[MQ] receive a message, prepare to consume");
             }
         } catch (ServiceException serviceException) {
             // 对于 ServiceException 类型的异常，仅记录异常，但不报告错误
@@ -70,21 +68,33 @@ public class MQConsumerAliyunMNS extends MQConsumer {
             return false;
         }
         if (message != null) {
-            logger.info("[MQ] ready to consume message, queue: {}, messageId: {}", queueName, message.getMessageId());
+            logger.info("[MQ] receive a message, ready to consume, queue: {}, messageId: {}", queueName, message.getMessageId());
             try {
                 consumer.accept(message.getMessageBodyAsString());
                 logger.info("[MQ] consume message success, queue: {}, messageId: {}", queueName, message.getMessageId());
-                try {
-                    //删除已经取出消费的消息
-                    cloudQueue.deleteMessage(message.getReceiptHandle());
-                } catch (Exception e) {
-                    logger.error(String.format("[MQ] delete message fail, messageId: %s", message.getMessageId()), e);
-                }
+                //删除已经取出消费的消息
+                deleteMessage(cloudQueue, message);
             } catch (Exception e) {
                 logger.error(String.format("[MQ] consume message fail, messageId: %s", message.getMessageId()), e);
                 return false;
             }
         }
         return true;
+    }
+
+    private void deleteMessage(CloudQueue cloudQueue, Message message) {
+        int delete_try_count = 0;
+        while (delete_try_count < 3) {
+            try {
+                cloudQueue.deleteMessage(message.getReceiptHandle());
+                break;
+            } catch (Exception e) {
+                if (++delete_try_count < 3) {
+                    logger.warn(String.format("[MQ] delete message fail [#%d], messageId: %s", delete_try_count, message.getMessageId()), e);
+                } else {
+                    logger.error(String.format("[MQ] delete message fail [#%d], messageId: %s", delete_try_count, message.getMessageId()), e);
+                }
+            }
+        }
     }
 }

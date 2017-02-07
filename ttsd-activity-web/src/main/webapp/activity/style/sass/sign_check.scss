@@ -1,10 +1,11 @@
 .main-frame {
 	width: 100%;
 	margin: 0;
+	background: #ffe672;
 }
 
 .sign-check-container {
-	background: #ff473c;
+	background: url(/activity/images/sign-check/bg.png) repeat;
 	.media-pc{
 		display:block;
 		@media (max-width:700px) {
@@ -25,20 +26,20 @@
 		.content-item {
 			float: left;
 			width: 100%;
-			border: 2px solid #4e030e;
 			box-sizing: border-box;
-			background: #fefbc8;
 			padding: 20px 0 30px;
-		    border-radius: 15px;
 		    margin-bottom:30px;
 		    position: relative;
 		}
 		.rule-item{
 			float:left;
 			width:100%;
+			background:#fff3b9;
 			margin-bottom:45px;
 		    box-sizing: border-box;
-   			padding: 0 20px;
+   			padding:20px;
+   			border:1px solid #640e2b;
+   			border-radius: 15px;
    			@media (max-width:700px) {
    				display:block;
    				margin-bottom:20px;
@@ -46,8 +47,8 @@
    			}
 			dt{
 				font-size:18px;
-				color:#fefbc8;
-				margin-bottom:20px;
+				color:#640e2b;
+				margin-bottom:10px;
 				@media (max-width:700px) {
 					font-size:14px;
 					margin-bottom:0;
@@ -55,7 +56,7 @@
 			}
 			dd{
 				font-size:14px;
-				color:#fefbc8;
+				color:#640e2b;
 				@media (max-width:700px) {
 					font-size:12px;
 				}
