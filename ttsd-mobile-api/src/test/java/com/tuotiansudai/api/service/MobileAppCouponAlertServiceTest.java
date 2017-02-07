@@ -6,7 +6,7 @@ import com.tuotiansudai.api.dto.v1_0.BaseParamDto;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.CouponAlertResponseDataDto;
 import com.tuotiansudai.api.service.v1_0.impl.MobileAppCouponAlertServiceImpl;
-import com.tuotiansudai.coupon.dto.CouponAlertDto;
+import com.tuotiansudai.dto.CouponAlertDto;
 import com.tuotiansudai.coupon.service.impl.CouponAlertServiceImpl;
 import com.tuotiansudai.enums.CouponType;
 import org.joda.time.DateTime;

@@ -93,4 +93,6 @@
         <property name="requestContextAttribute" value="requestContext"/>
         <property name="exposeSessionAttributes" value="true"/>
     </bean>
+
+    <bean class="com.tuotiansudai.web.config.handler.HandlerExceptionLoggingResolver"/>
 </beans>

@@ -32,7 +32,6 @@ import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.util.SendCloudMailUtil;
 import com.umpay.api.exception.ReqDataException;
 import org.joda.time.DateTime;
 import org.junit.Before;
@@ -61,7 +60,6 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.anyBoolean;
 import static org.mockito.Mockito.anyList;
-import static org.mockito.Mockito.anyMap;
 import static org.mockito.Mockito.anyObject;
 import static org.mockito.Mockito.*;
 
@@ -102,9 +100,6 @@ public class LoanServiceTest {
 
     @Mock
     private UserMapper userMapper;
-
-    @Mock
-    private SendCloudMailUtil sendCloudMailUtil;
 
     @Mock
     private SmsWrapperClient smsWrapperClient;
@@ -249,7 +244,6 @@ public class LoanServiceTest {
         doNothing().when(referrerRewardService).rewardReferrer(any(LoanModel.class), anyList());
         when(userMapper.findByLoginName(anyString())).thenReturn(userModel);
         when(loanMapper.findById(anyLong())).thenReturn(loanModel);
-        when(sendCloudMailUtil.sendMailByLoanOut(anyString(), anyMap())).thenReturn(true);
         when(smsWrapperClient.sendInvestNotify(any(InvestSmsNotifyDto.class))).thenReturn(new BaseDto<>());
         when(redisWrapperClient.hget(anyString(), anyString())).thenReturn("");
         when(redisWrapperClient.hset(anyString(), anyString(), anyString())).thenReturn(1l);
@@ -258,13 +252,10 @@ public class LoanServiceTest {
 
         loanService.postLoanOut(loanModel.getId());
         verify(smsWrapperClient, times(1)).sendInvestNotify(any(InvestSmsNotifyDto.class));
-        verify(sendCloudMailUtil, times(1)).sendMailByLoanOut(anyString(), anyMap());
 
         when(redisWrapperClient.hget(anyString(), anyString())).thenReturn(SyncRequestStatus.SUCCESS.name());
         loanService.postLoanOut(loanModel.getId());
-        verify(smsWrapperClient, times(1)).sendInvestNotify(any(InvestSmsNotifyDto.class));
-        verify(sendCloudMailUtil, times(1)).sendMailByLoanOut(anyString(), anyMap());
-
+        verify(smsWrapperClient,times(1)).sendInvestNotify(any(InvestSmsNotifyDto.class));
     }
 
     public UserModel getUserModelTest() {
