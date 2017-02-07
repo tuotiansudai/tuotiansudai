@@ -121,7 +121,7 @@ public class MdSmsClient implements ApplicationContextAware {
             return dto;
         }
 
-        logger.info(String.format("ready to send sms to %s via netease. template: %s, params: %s, clientIp: %s",
+        logger.info(String.format("ready to send sms to %s via md. template: %s, params: %s, clientIp: %s",
                 mobile,
                 smsTemplate.generateContent(null),
                 String.join(",", paramList),
