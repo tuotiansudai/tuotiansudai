@@ -12,6 +12,7 @@ import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.CalculateUtil;
 import com.tuotiansudai.util.PaginationUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
@@ -69,7 +70,7 @@ public class LoanServiceImpl implements LoanService {
         }
 
         if (endTime == null) {
-            endTime = new DateTime().withDate(9999, 12, 31).withTimeAtStartOfDay().toDate();
+            endTime = CalculateUtil.calculateMaxDate();
         } else {
             endTime = new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusSeconds(1).toDate();
         }

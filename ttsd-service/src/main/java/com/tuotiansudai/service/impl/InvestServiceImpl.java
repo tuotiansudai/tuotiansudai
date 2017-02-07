@@ -299,7 +299,7 @@ public class InvestServiceImpl implements InvestService {
     public BasePaginationDataDto<InvestorInvestPaginationItemDataDto> getInvestPagination(String loginName, int index, int pageSize, Date startTime, Date endTime, LoanStatus loanStatus) {
         startTime = new DateTime(startTime == null ? 0L : startTime).withTimeAtStartOfDay().toDate();
         if (endTime == null) {
-            endTime = new DateTime().withDate(9999, 12, 31).withTimeAtStartOfDay().toDate();
+            endTime = CalculateUtil.calculateMaxDate();
         } else {
             endTime = new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
         }

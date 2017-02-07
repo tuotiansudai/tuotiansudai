@@ -57,8 +57,8 @@ public class InvestPaginationItemDataDto implements Serializable {
         this.investTime = view.getInvestTime();
         this.autoInvest = view.isAutoInvest();
         this.investAmount = AmountConverter.convertCentToString(view.getInvestAmount());
-        this.extraDetail = MessageFormat.format("{0,number,#.##}%", view.getExtraRate() * 100);
-        this.extraActualInterest = AmountConverter.convertCentToString(view.getExtraActualInterest());
+        this.extraDetail = view.getExtraRate() == 0 ? "-" : MessageFormat.format("{0,number,#.##}%", view.getExtraRate() * 100);
+        this.extraActualInterest = view.getExtraActualInterest() == 0 ? "-" : AmountConverter.convertCentToString(view.getExtraActualInterest());
         this.investStatus = view.getInvestStatus();
         this.province = view.getProvince();
         this.city = view.getCity();

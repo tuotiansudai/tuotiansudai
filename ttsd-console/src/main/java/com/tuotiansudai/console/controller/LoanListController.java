@@ -16,6 +16,7 @@ import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.repository.model.TransferApplicationModel;
+import com.tuotiansudai.util.CalculateUtil;
 import com.tuotiansudai.util.PaginationUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
@@ -66,10 +67,10 @@ public class LoanListController {
         int pageSize = 10;
         int loanListCount = consoleLoanService.findLoanListCount(status, loanId, loanName,
                 startTime == null ? new DateTime(0).toDate() : new DateTime(startTime).withTimeAtStartOfDay().toDate(),
-                endTime == null ? new DateTime(9999, 12, 31, 0, 0, 0).toDate() : new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate());
+                endTime == null ? CalculateUtil.calculateMaxDate() : new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate());
         List<LoanListDto> loanListDtos = consoleLoanService.findLoanList(status, loanId, loanName,
                 startTime == null ? new DateTime(0).toDate() : new DateTime(startTime).withTimeAtStartOfDay().toDate(),
-                endTime == null ? new DateTime(9999, 12, 31, 0, 0, 0).toDate() : new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate(),
+                endTime == null ? CalculateUtil.calculateMaxDate() : new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate(),
                 index, pageSize);
         ModelAndView modelAndView = new ModelAndView("/loan-list");
         modelAndView.addObject("loanListCount", loanListCount);

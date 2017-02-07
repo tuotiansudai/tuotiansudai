@@ -7,6 +7,7 @@ import com.tuotiansudai.repository.model.TransferStatus;
 import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
 import com.tuotiansudai.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.repository.model.TransferApplicationRecordView;
+import com.tuotiansudai.util.CalculateUtil;
 import com.tuotiansudai.util.PaginationUtil;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -33,7 +34,7 @@ public class ConsoleInvestTransferService {
         }
 
         if (endTime == null) {
-            endTime = new DateTime().withDate(9999, 12, 31).withTimeAtStartOfDay().toDate();
+            endTime = CalculateUtil.calculateMaxDate();
         } else {
             endTime = new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
         }
