@@ -29,6 +29,7 @@ import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.transfer.util.TransferRuleUtil;
 import com.tuotiansudai.util.CalculateLeftDays;
 import com.tuotiansudai.job.JobManager;
+import com.tuotiansudai.util.CalculateUtil;
 import com.tuotiansudai.util.PaginationUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -396,7 +397,7 @@ public class InvestTransferServiceImpl implements InvestTransferService {
         }
 
         if (endTime == null) {
-            endTime = new DateTime().withDate(9999, 12, 31).withTimeAtStartOfDay().toDate();
+            endTime = CalculateUtil.calculateMaxDate();
         } else {
             endTime = new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
         }
