@@ -141,10 +141,6 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
                 investedAmount = couponService.findExperienceInvestAmount(investModelList);
             } else {
                 investedAmount = investMapper.sumSuccessInvestAmount(loan.getId());
-                //TODO:fake
-                if (loan.getId() == 41650602422768L && loan.getStatus() == LoanStatus.REPAYING) {
-                    investedAmount = loan.getLoanAmount();
-                }
             }
             loanResponseDataDto.setInvestedMoney(AmountConverter.convertCentToString(investedAmount));
             loanResponseDataDto.setBaseRatePercent(decimalFormat.format(loan.getBaseRate() * 100));
