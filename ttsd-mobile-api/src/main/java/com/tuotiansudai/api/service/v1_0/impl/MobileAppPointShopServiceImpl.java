@@ -128,7 +128,7 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
         List<ProductModel> couponProducts = productMapper.findAllProductsByGoodsType(Lists.newArrayList(GoodsType.COUPON));
         for (ProductModel productModel : couponProducts) {
             CouponModel couponModel = couponMapper.findById(productModel.getCouponId());
-            ExchangeCouponView exchangeCouponView = new ExchangeCouponView(productModel.getPoints(), productModel.getSeq(), productModel.getImageUrl(), productModel.getId(), couponModel);
+            ExchangeCouponView exchangeCouponView = new ExchangeCouponView(productModel.getPoints(),productModel.getActualPoints(), productModel.getSeq(), productModel.getImageUrl(), productModel.getId(), couponModel);
             exchangeCoupons.add(exchangeCouponView);
         }
 
@@ -187,7 +187,7 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
         ProductDetailResponseDto productDetailResponseDto = new ProductDetailResponseDto(productModel.getId(), bannerServer + productModel.getImageUrl(), productModel.getName(), productModel.getPoints(), productModel.getType(), productModel.getTotalCount() - productModel.getUsedCount(), productModel.getSeq(), productModel.getUpdatedTime());
         if (productModel.getType().equals(GoodsType.COUPON)) {
             CouponModel couponModel = couponService.findExchangeableCouponById(productModel.getCouponId());
-            ExchangeCouponView exchangeCouponView = new ExchangeCouponView(productModel.getPoints(), productModel.getSeq(), productModel.getImageUrl(), productModel.getId(), couponModel);
+            ExchangeCouponView exchangeCouponView = new ExchangeCouponView(productModel.getPoints(), productModel.getActualPoints(), productModel.getSeq(), productModel.getImageUrl(), productModel.getId(), couponModel);
             productDetailResponseDto.setLeftCount(exchangeCouponView != null ? String.valueOf(exchangeCouponView.getCouponModel() != null ? (exchangeCouponView.getCouponModel().getTotalCount() - exchangeCouponView.getCouponModel().getIssuedCount()) : "0") : String.valueOf(productModel.getTotalCount()));
         }
         List<String> description = Lists.newArrayList();
@@ -223,7 +223,7 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
         long leftCount = productDetailRequestDto.getNum() + productModel.getUsedCount();
         if (productModel.getType().equals(GoodsType.COUPON)) {
             CouponModel couponModel = couponService.findExchangeableCouponById(productModel.getCouponId());
-            ExchangeCouponView exchangeCouponView = new ExchangeCouponView(productModel.getPoints(), productModel.getSeq(), productModel.getImageUrl(), productModel.getId(), couponModel);
+            ExchangeCouponView exchangeCouponView = new ExchangeCouponView(productModel.getPoints(), productModel.getActualPoints(),productModel.getSeq(), productModel.getImageUrl(), productModel.getId(), couponModel);
             leftCount = productDetailRequestDto.getNum() + (exchangeCouponView.getCouponModel() != null ? exchangeCouponView.getCouponModel().getIssuedCount() : 0l);
         }
         if (leftCount > productModel.getTotalCount()) {
