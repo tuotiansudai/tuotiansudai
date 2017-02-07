@@ -70,7 +70,6 @@ $('[data-url]',$homePageContainer).on('click',function(event) {
     countDownLoan($preheat);
 
 })();
-// debugger
 
 //预约投资
 require.ensure(['publicJs/plugins/autoNumeric','publicJs/validator','publicJs/commonFun','publicJs/login_tip'], function(){
