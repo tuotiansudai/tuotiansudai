@@ -4,125 +4,134 @@ import com.google.common.base.Strings;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
-import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
-import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
-import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.message.InvestSuccessMessage;
-import com.tuotiansudai.message.UserInfo;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
 import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.UserBillMapper;
+import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.InvestModel;
-import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.util.DateConvertUtil;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.JsonConverter;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
-import java.util.Date;
+import java.text.MessageFormat;
 import java.util.List;
 
 @Component
 public class InvestSuccessNewBieExperienceMessageConsumer implements MessageConsumer {
+
     private static Logger logger = LoggerFactory.getLogger(InvestSuccessNewBieExperienceMessageConsumer.class);
-    @Autowired
-    private UserCouponMapper userCouponMapper;
-    @Autowired
-    private InvestMapper investMapper;
-    @Autowired
-    private CouponMapper couponMapper;
-    @Autowired
-    private UserBillMapper userBillMapper;
-    @Autowired
-    private PayWrapperClient payWrapperClient;
-    @Autowired
-    private SmsWrapperClient smsWrapperClient;
-    @Autowired
-    private MQWrapperClient mqClient;
+
     @Autowired
     private UserMapper userMapper;
 
-    private final static long INVEST_LIMIT = 100000l;
-    private final static long INTEREST_COUPON_3_ID = 384l;
+    @Autowired
+    private UserCouponMapper userCouponMapper;
 
+    @Autowired
+    private InvestMapper investMapper;
+
+    @Autowired
+    private InvestRepayMapper investRepayMapper;
+
+    @Autowired
+    private PayWrapperClient payWrapperClient;
+
+    @Autowired
+    private MQWrapperClient mqClient;
+
+    private final static long INVEST_LIMIT = 100000L;
+
+    private static final long NEWBIE_COUPON_ID = 382L;
+
+    private final static long INTEREST_COUPON_3_ID = 391L;
 
     @Override
     public MessageQueue queue() {
         return MessageQueue.InvestSuccess_NewBieExperience;
     }
 
-    @Transactional
     @Override
     public void consume(String message) {
-        logger.info("[MQ] receive message: {}: {}.", this.queue(), message);
+        logger.info("[新手体验项目MQ] receive message: {}: {}.", this.queue(), message);
+
         if (Strings.isNullOrEmpty(message)) {
             logger.error("[新手体验项目MQ] InvestSuccess_NewBieExperience receive message is empty");
-            smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("新手体验项目发奖励失败, MQ消息为空"));
             return;
         }
+
         InvestSuccessMessage investSuccessMessage;
         try {
             investSuccessMessage = JsonConverter.readValue(message, InvestSuccessMessage.class);
         } catch (IOException e) {
             logger.error("[新手体验项目MQ] InvestSuccess_NewBieExperience json convert InvestSuccessMessage is fail, message:{}", message);
-            smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("新手体验项目发奖励失败, 解析消息失败"));
-            throw new RuntimeException(e);
+            return;
         }
-        long investId = investSuccessMessage.getInvestInfo().getInvestId();
+
         String loginName = investSuccessMessage.getInvestInfo().getLoginName();
-        logger.info(String.format("[新手体验项目MQ] send experience interest ready，investId:%s", investId));
-        if (isSendExperienceInterest(investSuccessMessage.getUserInfo())) {
+        long investId = investSuccessMessage.getInvestInfo().getInvestId();
+
+        if (isExperienceInterestConditionAvailable(loginName)) {
+            logger.info(String.format("[新手体验项目MQ] experience interest condition is available，loginName:%s investId:%s", loginName, investId));
             try {
-                logger.info(String.format("[新手体验项目MQ] send experience interest begin，investId:%s", investId));
                 BaseDto<PayDataDto> baseDto = payWrapperClient.sendExperienceInterestInvestSuccess(investId);
                 if (!baseDto.isSuccess()) {
-                    logger.error("[新手体验项目MQ] send experience interest  consume fail (message = {0}) ", message);
-                    throw new RuntimeException(String.format("InvestSuccess_NewBieExperience consume fail. message: %s",message));
+                    logger.error("[新手体验项目MQ] send experience interest consume fail (loginName:{}, message:{}, error:{}) ", loginName, message, baseDto.getData().getMessage());
+                    throw new RuntimeException(String.format("InvestSuccess_NewBieExperience consume fail. message: %s", message));
                 }
                 logger.info(String.format("[新手体验项目MQ] send experience interest end，investId:%s", investId));
             } catch (Exception e) {
-                logger.error("[新手体验项目MQ] send experience interest  is fail,investId({0}), error:{0}", String.valueOf(investId), e);
-                smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(String.format("新手体验项目发奖励失败, 业务处理异常,投资ID:{0}", String.valueOf(investId))));
+                logger.error(MessageFormat.format("[新手体验项目MQ] send experience interest fail (loginName:{0}, message:{1})", loginName, message) , e);
                 return;
             }
+        } else {
+            logger.info(String.format("[新手体验项目MQ] experience interest condition is not available，loginName:%s investId:%s", loginName, investId));
         }
 
-        logger.info(String.format("[新手体验项目MQ] send interest coupon ready，investId:%s", investId));
-        if(isSendInterestCoupon(loginName,investId)){
-            logger.info(String.format("[新手体验项目MQ] send interest coupon begin，investId:%s", investId));
-            mqClient.sendMessage(MessageQueue.CouponAssigning, investSuccessMessage.getInvestInfo().getLoginName() + ":" + INTEREST_COUPON_3_ID);
-            logger.info(String.format("[新手体验项目MQ] send interest coupon end，investId:%s", investId));
+
+        if (isInterestCouponConditionAvailable(loginName, investId)) {
+            logger.info(String.format("[新手体验项目MQ] send interest coupon condition is available，loginName:%s investId:%s", loginName, investId));
+            mqClient.sendMessage(MessageQueue.CouponAssigning,
+                    MessageFormat.format("{0}:{1}", investSuccessMessage.getInvestInfo().getLoginName(), String.valueOf(investId)));
+        } else {
+            logger.info(String.format("[新手体验项目MQ] send interest coupon condition is not available，loginName:%s investId:%s", loginName, investId));
         }
-        logger.info("[新手体验项目MQ] InvestSuccess_NewBieExperience receive message success");
 
-
-
+        logger.info("[新手体验项目MQ] receive message: {}: {} done.", this.queue(), message);
     }
-    private boolean isSendInterestCoupon(String loginName,long investId){
+
+    private boolean isInterestCouponConditionAvailable(String loginName, long investId) {
         UserModel userModel = userMapper.findByLoginName(loginName);
-        Date tradingTime = DateConvertUtil.plus(userModel.getRegisterTime(),15,0,0,0);
-        List<InvestModel> investModels = investMapper.findByLoginNameAndTradingTime(loginName,tradingTime);
-        return investModels != null && investModels.size() == 1 && investModels.get(0).getId() == investId;
-    }
-    private boolean isSendExperienceInterest(UserInfo userInfo) {
-        String loginName = userInfo.getLoginName();
-        String mobile = userInfo.getMobile();
-        List<UserCouponModel> userCouponModels = userCouponMapper.findUsedExperienceByLoginName(loginName);
-        long investAmount = investMapper.sumSuccessActivityInvestAmount(loginName, null, null, null);
-        boolean investedExperience = userCouponModels.stream().anyMatch(userCouponModel -> couponMapper.findById(userCouponModel.getCouponId()).isDeleted() == false);
-        int experienceInterest = userBillMapper.findUserFundsCount(UserBillBusinessType.EXPERIENCE_INTEREST, null, mobile, null, null);
-        return investedExperience && investAmount >= INVEST_LIMIT && experienceInterest <= 0;
+        return userCouponMapper.findByLoginNameAndCouponId(loginName, INTEREST_COUPON_3_ID) == null
+                && investMapper.findById(investId).getTransferInvestId() == null
+                && new DateTime(userModel.getRegisterTime()).plusDays(15).isAfterNow();
     }
 
+    private boolean isExperienceInterestConditionAvailable(String loginName) {
+        long investAmount = investMapper.sumSuccessInvestCountByLoginName(loginName, false);
+        if (investAmount < INVEST_LIMIT) {
+            return false;
+        }
 
+        List<UserCouponModel> newbieCouponList = userCouponMapper.findByLoginNameAndCouponId(loginName, NEWBIE_COUPON_ID);
+        UserCouponModel usedNewbieCoupon = newbieCouponList != null && newbieCouponList.size() > 0 && newbieCouponList.get(0).getStatus() == InvestStatus.SUCCESS ?
+                newbieCouponList.get(0) : null;
+
+        if (usedNewbieCoupon == null) {
+            return false;
+        }
+
+        InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(usedNewbieCoupon.getInvestId(), 1);
+
+        return investRepayModel != null && investRepayModel.getStatus() == RepayStatus.REPAYING;
+    }
 }

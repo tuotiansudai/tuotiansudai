@@ -11,7 +11,6 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -223,7 +222,7 @@ public class InvestMapperTest {
         investModel3.setInvestTime(DateUtils.addHours(new Date(), -3));
         investMapper.create(investModel3);
 
-        int newbieInvestCount = investMapper.sumSuccessInvestCountByLoginName(User_ID2);
+        int newbieInvestCount = investMapper.sumSuccessInvestCountByLoginName(User_ID2, true);
         assert newbieInvestCount == 3;
     }
 

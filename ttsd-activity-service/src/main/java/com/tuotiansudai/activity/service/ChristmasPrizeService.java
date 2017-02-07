@@ -87,7 +87,7 @@ public class ChristmasPrizeService {
                 lotteryTime++;
             }
 
-            investMapper.sumSuccessInvestCountByLoginName(userModel.getLoginName());
+            investMapper.sumSuccessInvestCountByLoginName(userModel.getLoginName(), true);
 
             if (this.isFinishInvest(userModel.getLoginName())) {
                 lotteryTime++;

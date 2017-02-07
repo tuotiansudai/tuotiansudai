@@ -2,6 +2,8 @@ package com.tuotiansudai.paywrapper.controller;
 
 import com.google.common.collect.Maps;
 import com.tuotiansudai.dto.AgreementBusinessType;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.paywrapper.coupon.service.CouponRepayService;
 import com.tuotiansudai.paywrapper.extrarate.service.ExtraRateService;
 import com.tuotiansudai.paywrapper.repository.model.UmPayService;
@@ -9,8 +11,10 @@ import com.tuotiansudai.paywrapper.service.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -63,6 +67,9 @@ public class PayCallbackController {
 
     @Autowired
     private ExtraRateService extraRateService;
+
+    @Autowired
+    private ExperienceRepayService experienceRepayService;
 
     @RequestMapping(value = "/recharge_notify", method = RequestMethod.GET)
     public ModelAndView rechargeNotify(HttpServletRequest request) {
@@ -266,6 +273,14 @@ public class PayCallbackController {
     public ModelAndView extraRateInvestNotify(HttpServletRequest request) {
         Map<String, String> paramsMap = this.parseRequestParameters(request);
         String responseData = this.extraRateService.extraRateInvestCallback(paramsMap, request.getQueryString());
+        return new ModelAndView("/callback_response", "content", responseData);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/experience_repay_notify", method = RequestMethod.POST)
+    public ModelAndView repayCallback(HttpServletRequest request) {
+        Map<String, String> paramsMap = this.parseRequestParameters(request);
+        String responseData = experienceRepayService.repayCallback(paramsMap, request.getQueryString());
         return new ModelAndView("/callback_response", "content", responseData);
     }
 

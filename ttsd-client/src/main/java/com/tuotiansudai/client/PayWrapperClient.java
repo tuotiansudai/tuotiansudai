@@ -355,7 +355,7 @@ public class PayWrapperClient extends BaseClient {
     }
 
     public BaseDto<PayDataDto> sendExperienceInterestInvestSuccess(long investId){
-        return syncExecute(String.valueOf(investId), "/job/send-experience-interest-invest-success", "POST");
+        return syncExecute(String.valueOf(investId), "/experience/repay-interest", "POST");
     }
 
     public BaseDto<PayDataDto> experienceInterestCallback(String notifyRequestId) {

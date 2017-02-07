@@ -117,23 +117,6 @@ public class JobController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/send-experience-interest-invest-success", method = RequestMethod.POST)
-    public BaseDto<PayDataDto> sendExperienceInterestInvestSuccess(@RequestBody long investId) {
-        boolean isSuccess = investService.sendExperienceInterestInvestSuccess(investId);
-        BaseDto<PayDataDto> dto = new BaseDto<>();
-        PayDataDto dataDto = new PayDataDto();
-        dto.setData(dataDto);
-        dataDto.setStatus(isSuccess);
-        return dto;
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/async_experience_interest_notify", method = RequestMethod.POST)
-    public BaseDto<PayDataDto> asyncExperienceInterestNotify(@RequestBody long notifyRequestId){
-        return this.investService.asyncExperienceInterestNotify(notifyRequestId);
-    }
-
-    @ResponseBody
     @RequestMapping(value = "/async_extra_rate_invest_notify", method = RequestMethod.POST)
     public BaseDto<PayDataDto> asyncExtraRateInvestNotify() {
         return this.extraRateService.asyncExtraRateInvestCallback();

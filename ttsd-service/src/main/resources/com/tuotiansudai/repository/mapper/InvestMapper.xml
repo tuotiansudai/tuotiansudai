@@ -269,16 +269,13 @@
         invest.invest_time AS invest_time,
         invest.is_auto_invest AS auto_invest,
         invest.amount AS invest_amount,
-        coupon.coupon_id AS coupon_id,
-        invest_extra_rate.extra_rate AS extra_rate,
-        invest_extra_rate.actual_interest AS extra_actual_interest,
+        (SELECT coupon.id FROM coupon join user_coupon on coupon.coupon_type = #{preferenceType} and user_coupon.coupon_id = coupon.id
+        WHERE user_coupon.invest_id = invest.id limit 0, 1) AS coupon_id,
+        (SELECT extra_rate FROM invest_extra_rate WHERE invest_extra_rate.invest_id = invest.id) AS extra_rate,
+        (SELECT actual_interest FROM invest_extra_rate WHERE invest_extra_rate.invest_id = invest.id) AS extra_actual_interest,
         invest.status AS invest_status
         FROM
-        (SELECT
-        id, loan_id, login_name, channel, source, invest_time, is_auto_invest, amount, status, created_time,
-        trading_time
-        FROM
-        `aa`.`invest`
+        invest join loan on invest.loan_id = loan.id
         <where>
             invest.transfer_invest_id IS NULL
             <if test="loanId != null">
@@ -297,8 +294,7 @@
                 AND invest.source = #{source}
             </if>
             <if test="role != null">
-                AND EXISTS (SELECT 1 FROM user_role WHERE user_role.login_name=invest.login_name AND user_role.role=
-                #{role})
+                AND EXISTS (SELECT 1 FROM user_role WHERE user_role.login_name = invest.login_name AND user_role.role = #{role})
             </if>
             <if test="startTime != null">
                 AND invest.invest_time &gt;= #{startTime}
@@ -306,24 +302,15 @@
             <if test="endTime != null">
                 AND invest.invest_time &lt;= #{endTime}
             </if>
-        </where>
-        )
-        invest
-        JOIN (SELECT id, name, periods FROM `aa`.`loan`) loan ON invest.loan_id = loan.id
-        LEFT JOIN (SELECT user_coupon.coupon_id, user_coupon.invest_id, coupon.coupon_type FROM `aa`.`user_coupon` JOIN
-        `aa`.`coupon` ON user_coupon.coupon_id = coupon.id) coupon ON coupon.invest_id = invest.id
-        LEFT JOIN (SELECT extra_rate, actual_interest, invest_id FROM `aa`.`invest_extra_rate`) invest_extra_rate ON
-        invest_extra_rate.invest_id = invest.id
-        <where>
-            <if test="preferenceType != null and preferenceType.name() == 'INVEST_BENEFIT'">
-                AND invest_extra_rate.extra_rate IS NOT NULL
-            </if>
             <if test="preferenceType != null and preferenceType.name() != 'INVEST_BENEFIT'">
-                AND coupon.coupon_type = #{preferenceType}
+                AND EXISTS (SELECT 1 FROM user_coupon join coupon on coupon.coupon_type = #{preferenceType} and user_coupon.coupon_id = coupon.id
+                WHERE user_coupon.invest_id = invest.id)
+            </if>
+            <if test="preferenceType != null and preferenceType.name() == 'INVEST_BENEFIT'">
+                AND EXISTS (SELECT 1 FROM invest_extra_rate WHERE invest_extra_rate.invest_id = invest.id)
             </if>
         </where>
-        ORDER BY CASE invest.trading_time WHEN NULL THEN invest.created_time ELSE invest.trading_time END DESC,
-        invest.id ASC
+        ORDER BY CASE invest.trading_time WHEN NULL THEN invest.created_time ELSE invest.trading_time END DESC, invest.id ASC
         limit #{index}, #{pageSize};
     </select>
 
@@ -383,13 +370,7 @@
     </select>
 
     <select id="findCountInvestPagination" parameterType="map" resultType="long">
-        SELECT
-        COUNT(1)
-        FROM
-        (SELECT
-        id, loan_id
-        FROM
-        `aa`.`invest`
+        SELECT COUNT(1) FROM invest
         <where>
             invest.transfer_invest_id IS NULL
             <if test="loanId != null">
@@ -408,8 +389,7 @@
                 AND invest.source = #{source}
             </if>
             <if test="role != null">
-                AND EXISTS (SELECT 1 FROM user_role WHERE user_role.login_name=invest.login_name AND user_role.role=
-                #{role})
+                AND EXISTS (SELECT 1 FROM user_role WHERE user_role.login_name = invest.login_name AND user_role.role = #{role})
             </if>
             <if test="startTime != null">
                 AND invest.invest_time &gt;= #{startTime}
@@ -417,20 +397,12 @@
             <if test="endTime != null">
                 AND invest.invest_time &lt;= #{endTime}
             </if>
-        </where>
-        )
-        invest
-        JOIN (SELECT id, name, periods FROM `aa`.`loan`) loan ON invest.loan_id = loan.id
-        LEFT JOIN (SELECT user_coupon.coupon_id, user_coupon.invest_id, coupon.coupon_type FROM `aa`.`user_coupon` JOIN
-        `aa`.`coupon` ON user_coupon.coupon_id = coupon.id) coupon ON coupon.invest_id = invest.id
-        LEFT JOIN (SELECT extra_rate, actual_interest, invest_id FROM `aa`.`invest_extra_rate`) invest_extra_rate ON
-        invest_extra_rate.invest_id = invest.id
-        <where>
-            <if test="preferenceType != null and preferenceType.name() == 'INVEST_BENEFIT'">
-                AND invest_extra_rate.extra_rate IS NOT NULL
-            </if>
             <if test="preferenceType != null and preferenceType.name() != 'INVEST_BENEFIT'">
-                AND coupon.coupon_type = #{preferenceType}
+                AND EXISTS (SELECT 1 FROM user_coupon join coupon on coupon.coupon_type = #{preferenceType} and user_coupon.coupon_id = coupon.id
+                WHERE user_coupon.invest_id = invest.id)
+            </if>
+            <if test="preferenceType != null and preferenceType.name() == 'INVEST_BENEFIT'">
+                AND EXISTS (SELECT 1 FROM invest_extra_rate WHERE invest_extra_rate.invest_id = invest.id)
             </if>
         </where>
     </select>
@@ -468,19 +440,13 @@
     </select>
 
     <select id="sumInvestAmountConsole" resultType="long">
-        SELECT
-        IFNULL(sum(amount), 0) as sum_amount
-        FROM
-        (SELECT
-        id, loan_id, amount
-        FROM
-        `aa`.`invest`
+        SELECT IFNULL(sum(amount), 0) FROM invest
         <where>
             invest.transfer_invest_id IS NULL
             <if test="loanId != null">
                 AND invest.loan_id = #{loanId}
             </if>
-            <if test="investorLoginName != null and investorLoginName">
+            <if test="investorLoginName != null and investorLoginName != ''">
                 AND invest.login_name = #{investorLoginName}
             </if>
             <if test="investStatus != null">
@@ -493,8 +459,7 @@
                 AND invest.source = #{source}
             </if>
             <if test="role != null">
-                AND EXISTS (SELECT 1 FROM user_role WHERE user_role.login_name=invest.login_name AND user_role.role=
-                #{role})
+                AND EXISTS (SELECT 1 FROM user_role WHERE user_role.login_name = invest.login_name AND user_role.role = #{role})
             </if>
             <if test="startTime != null">
                 AND invest.created_time &gt;= #{startTime}
@@ -502,20 +467,12 @@
             <if test="endTime != null">
                 AND invest.created_time &lt;= #{endTime}
             </if>
-        </where>
-        )
-        invest
-        JOIN (SELECT id, name, periods FROM `aa`.`loan`) loan ON invest.loan_id = loan.id
-        LEFT JOIN (SELECT user_coupon.coupon_id, user_coupon.invest_id, coupon.coupon_type FROM `aa`.`user_coupon` JOIN
-        `aa`.`coupon` ON user_coupon.coupon_id = coupon.id) coupon ON coupon.invest_id = invest.id
-        LEFT JOIN (SELECT extra_rate, actual_interest, invest_id FROM `aa`.`invest_extra_rate`) invest_extra_rate ON
-        invest_extra_rate.invest_id = invest.id
-        <where>
-            <if test="preferenceType != null and preferenceType.name() == 'INVEST_BENEFIT'">
-                AND invest_extra_rate.extra_rate IS NOT NULL
-            </if>
             <if test="preferenceType != null and preferenceType.name() != 'INVEST_BENEFIT'">
-                AND coupon.coupon_type = #{preferenceType}
+                AND EXISTS (SELECT 1 FROM user_coupon join coupon on coupon.coupon_type = #{preferenceType} and user_coupon.coupon_id = coupon.id
+                WHERE user_coupon.invest_id = invest.id)
+            </if>
+            <if test="preferenceType != null and preferenceType.name() == 'INVEST_BENEFIT'">
+                AND EXISTS (SELECT 1 FROM invest_extra_rate WHERE invest_extra_rate.invest_id = invest.id)
             </if>
         </where>
     </select>
@@ -548,11 +505,14 @@
         and trading_time between #{startTime} and #{endTime}
     </select>
 
-    <select id="sumSuccessInvestCountByLoginName" parameterType="String" resultType="int">
+    <select id="sumSuccessInvestCountByLoginName" parameterType="map" resultType="int">
         select count(*)
         from invest join loan on invest.loan_id = loan.id and loan.product_type != 'EXPERIENCE'
         where invest.login_name = #{loginName}
         and invest.status = 'SUCCESS'
+        <if test="includeTransferInvest == false">
+            and invest.transfer_invest_id IS NULL
+        </if>
     </select>
 
     <select id="countSuccessInvest" parameterType="long" resultType="long">

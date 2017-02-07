@@ -152,18 +152,6 @@ public class InvestServiceImpl implements InvestService {
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.autumn.endTime}\")}")
     private Date activityAutumnEndTime;
 
-    private final static String EXPERIENCE_INTEREST_REDIS_KEY_TEMPLATE = "SEND_EXPERIENCE_INTEREST";
-    @Autowired
-    private InvestRepayMapper investRepayMapper;
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
-    @Autowired
-    private UserBillMapper userBillMapper;
-    @Autowired
-    private ExperienceInterestNotifyRequestMapper experienceInterestNotifyRequestMapper;
-    @Autowired
-    private SystemBillService systemBillService;
-
     @Override
     @Transactional
     public BaseDto<PayFormDataDto> invest(InvestDto dto) {
@@ -318,16 +306,6 @@ public class InvestServiceImpl implements InvestService {
         return true;
     }
 
-    private boolean updateExperienceInterestNotifyRequestStatus(ExperienceInterestNotifyRequestModel model){
-        try {
-            experienceInterestNotifyRequestMapper.updateStatus(model.getId(), NotifyProcessStatus.DONE);
-        } catch (Exception e) {
-            fatalLog("update_experience_interest_notify_status_fail, orderId:" + model.getOrderId() + ",id:" + model.getId(), e);
-            return false;
-        }
-        return true;
-    }
-
     @Transactional
     @Override
     public void processOneCallback(InvestNotifyRequestModel callbackRequestModel) {
@@ -442,103 +420,6 @@ public class InvestServiceImpl implements InvestService {
     }
 
     @Override
-    @Transactional
-    public boolean sendExperienceInterestInvestSuccess(long investId) {
-        InvestModel investModel = investMapper.findById(investId);
-        if (investModel == null || investModel.getStatus() != InvestStatus.SUCCESS) {
-            logger.info("[experience interest:] send experience interest investId is null or status is not success");
-            return false;
-        }
-        AccountModel accountModel = accountMapper.findByLoginName(investModel.getLoginName());
-        if (accountModel == null) {
-            logger.info(String.format("[experience interest:] send experience interest %s has no account", investModel.getLoginName()));
-            return false;
-        }
-        InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(investId, 1);
-        if (investRepayModel == null) {
-            logger.info("[experience interest:] send experience interest investId no exist invest repay");
-            return false;
-        }
-        int experienceInterest = userBillMapper.findUserFundsCount(UserBillBusinessType.EXPERIENCE_INTEREST,null,userMapper.findByLoginName(investModel.getLoginName()).getMobile(),null,null);
-        if(experienceInterest > 0){
-            logger.info(String.format("[experience interest:] send experience interest s% had sent experience interest",investModel.getLoginName()));
-            return false;
-        }
-        if (investRepayModel.getRepayAmount() > 0) {
-            String redisKey = MessageFormat.format(EXPERIENCE_INTEREST_REDIS_KEY_TEMPLATE, investModel.getLoginName());
-            try {
-                TransferWithNotifyRequestModel requestModel = TransferWithNotifyRequestModel.experienceInterestRequest(
-                        String.valueOf(investRepayModel.getId()),
-                        accountModel.getPayUserId(),
-                        accountModel.getPayAccountId(),
-                        String.valueOf(investRepayModel.getRepayAmount()));
-                String statusString = redisWrapperClient.hget(redisKey, investModel.getLoginName());
-                if(Strings.isNullOrEmpty(statusString)
-                        || SyncRequestStatus.FAILURE.equals(SyncRequestStatus.valueOf(statusString.split("|")[0]))){
-
-                    redisWrapperClient.hset(redisKey, investModel.getLoginName(), String.format("%s|%s", SyncRequestStatus.SENT.name(), String.valueOf(investRepayModel.getId())));
-                    TransferResponseModel responseModel = paySyncClient.send(TransferMapper.class, requestModel, TransferResponseModel.class);
-                    boolean isSuccess = responseModel.isSuccess();
-                    redisWrapperClient.hset(redisKey, investModel.getLoginName(), String.format("%s|%s", isSuccess ? SyncRequestStatus.SUCCESS.name() : SyncRequestStatus.FAILURE.name(), String.valueOf(investRepayModel.getId())));
-                    logger.info(String.format("[experience interest:] send experience interest investId:%s response is s%", String.valueOf(investRepayModel.getId()), String.valueOf(isSuccess)));
-                    return true;
-                }
-
-            } catch (PayException e) {
-                redisWrapperClient.hset(redisKey, investModel.getLoginName(), String.format("%s|%s", SyncRequestStatus.FAILURE.name(), String.valueOf(investRepayModel.getId())));
-                logger.error(String.format("[experience interest:] send experience interest investId:s% payback throw exception", investRepayModel.getId()));
-                fatalLog("experience interest sync send fail. orderId:" + investRepayModel.getId(), e);
-            }
-        }
-        return false;
-    }
-
-    @Override
-    @Transactional
-    public String experienceInterestCallback(Map<String, String> paramsMap, String originalQueryString) {
-        BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(
-                paramsMap,
-                originalQueryString,
-                ExperienceInterestNotifyRequestMapper.class,
-                ExperienceInterestNotifyRequestModel.class);
-
-        if (callbackRequest == null) {
-            return null;
-        }
-        mqWrapperClient.sendMessage(MessageQueue.ExperienceInterestCallback, String.valueOf(callbackRequest.getId()));
-        return callbackRequest.getResponseData();
-    }
-
-    @Override
-    @Transactional
-    public BaseDto<PayDataDto> asyncExperienceInterestNotify(long notifyRequestId) {
-        ExperienceInterestNotifyRequestModel model = experienceInterestNotifyRequestMapper.findById(notifyRequestId);
-        if(updateExperienceInterestNotifyRequestStatus(model)){
-            long investRepayId = Long.parseLong(model.getOrderId());
-            InvestRepayModel investRepayModel = investRepayMapper.findById(investRepayId);
-            InvestModel investModel = investMapper.findById(investRepayModel.getInvestId());
-            if(model.isSuccess()){
-                try {
-                    amountTransfer.transferInBalance(investModel.getLoginName(), investRepayModel.getId(), investRepayModel.getRepayAmount(), UserBillBusinessType.EXPERIENCE_INTEREST, null, null);
-                } catch (AmountTransferException e) {
-                    e.printStackTrace();
-                }
-                String detail = MessageFormat.format(SystemBillDetailTemplate.EXPERIENCE_INTEREST_DETAIL_TEMPLATE.getTemplate(),
-                        investModel.getLoginName(), String.valueOf(investModel.getId()));
-                systemBillService.transferOut(investRepayModel.getId(), investRepayModel.getRepayAmount(), SystemBillBusinessType.EXPERIENCE_INTEREST, detail);
-            }
-        }
-
-        BaseDto<PayDataDto> asyncNotifyDto = new BaseDto<>();
-        PayDataDto baseDataDto = new PayDataDto();
-        baseDataDto.setStatus(true);
-        asyncNotifyDto.setData(baseDataDto);
-
-        return asyncNotifyDto;
-    }
-
-
-    @Override
     public void autoInvest(long loanId) {
         logger.info("auto invest start , loanId : " + loanId);
         LoanModel loanModel = loanMapper.findById(loanId);
@@ -599,7 +480,7 @@ public class InvestServiceImpl implements InvestService {
     }
 
     private boolean canInvestNewbieLoan(String loginName) {
-        int newbieInvestCount = investMapper.sumSuccessInvestCountByLoginName(loginName);
+        int newbieInvestCount = investMapper.sumSuccessInvestCountByLoginName(loginName, true);
         return newbieInvestLimit == 0 || newbieInvestCount < newbieInvestLimit;
     }
 

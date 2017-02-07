@@ -232,17 +232,23 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
     public BaseDto<PayDataDto> asyncPurchaseCallback(long notifyRequestId) {
         InvestNotifyRequestModel model = investTransferNotifyRequestMapper.findById(notifyRequestId);
 
-        logger.info(MessageFormat.format("[Invest Transfer Callback {0}] starting...", model.getOrderId()));
-        if (updateInvestTransferNotifyRequestStatus(model)) {
-            try {
-                processOneCallback(model);
-            } catch (Exception e) {
-                String errMsg = MessageFormat.format("invest callback, processOneCallback error. investId:{0}", model.getOrderId());
-                logger.error(errMsg, e);
-                sendFatalNotify(MessageFormat.format("债权转让投资回调处理错误。{0},{1}", environment, errMsg));
-            }
+        if (model == null) {
+            logger.error(MessageFormat.format("债权转让投资回调处理错误。{0},{1} not found", environment, String.valueOf(notifyRequestId)));
+            sendFatalNotify(MessageFormat.format("债权转让投资回调处理错误。{0},{1} not found", environment, String.valueOf(notifyRequestId)));
         }
 
+        if (model != null && NotifyProcessStatus.NOT_DONE.name().equals(model.getStatus())) {
+            logger.info(MessageFormat.format("[Invest Transfer Callback {0}] starting...", model.getOrderId()));
+            if (updateInvestTransferNotifyRequestStatus(model)) {
+                try {
+                    processOneCallback(model);
+                } catch (Exception e) {
+                    String errMsg = MessageFormat.format("invest callback, processOneCallback error. investId:{0}", model.getOrderId());
+                    logger.error(errMsg, e);
+                    sendFatalNotify(MessageFormat.format("债权转让投资回调处理错误。{0},{1}", environment, errMsg));
+                }
+            }
+        }
         BaseDto<PayDataDto> asyncInvestNotifyDto = new BaseDto<>();
         PayDataDto baseDataDto = new PayDataDto();
         baseDataDto.setStatus(true);

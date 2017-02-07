@@ -32,11 +32,4 @@ public interface InvestService {
     void investSuccess(InvestModel investModel);
 
     BaseDto<PayDataDto> noPasswordInvest(InvestDto dto);
-
-    boolean sendExperienceInterestInvestSuccess(long investId);
-
-    String experienceInterestCallback(Map<String, String> paramsMap, String originalQueryString);
-
-    BaseDto<PayDataDto> asyncExperienceInterestNotify(long notifyRequestId);
-
 }
