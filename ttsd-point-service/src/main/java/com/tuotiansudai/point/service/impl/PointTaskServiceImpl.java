@@ -32,7 +32,7 @@ public class PointTaskServiceImpl implements PointTaskService {
 
     private final static List<PointTask> ADVANCED_TASKS = Lists.newArrayList(PointTask.EACH_SUM_INVEST,
             PointTask.FIRST_SINGLE_INVEST,
-            PointTask.EACH_RECOMMEND,
+            PointTask.EACH_RECOMMEND_REGISTER,
             PointTask.FIRST_REFERRER_INVEST,
             PointTask.FIRST_INVEST_180,
             PointTask.FIRST_TURN_ON_NO_PASSWORD_INVEST,
@@ -124,7 +124,7 @@ public class PointTaskServiceImpl implements PointTaskService {
                     pointBillNote = MessageFormat.format("{0}奖励{1}积分", AmountConverter.convertCentToString(pointTaskModel.getPoint()), String.valueOf(FIRST_INVEST_10000_POINT));
                     pointBillService.createTaskPointBill(referrer, pointTaskModel.getId(), pointTaskModel.getPoint(), pointBillNote);
                     break;
-                case EACH_RECOMMEND:
+                case EACH_RECOMMEND_REGISTER:
                 case FIRST_REFERRER_INVEST:
                     referrer = userMapper.findByLoginName(loginName).getReferrer();
                     referrerMaxTaskLevel = userPointTaskMapper.findMaxTaskLevelByLoginName(referrer, pointTask);
@@ -206,7 +206,7 @@ public class PointTaskServiceImpl implements PointTaskService {
             case FIRST_INVEST_180:
             case FIRST_INVEST_360:
                 return "/loan-list";
-            case EACH_RECOMMEND:
+            case EACH_RECOMMEND_REGISTER:
             case EACH_REFERRER_INVEST:
             case FIRST_REFERRER_INVEST:
                 return "/referrer/refer-list";
@@ -234,7 +234,7 @@ public class PointTaskServiceImpl implements PointTaskService {
                     case FIRST_SINGLE_INVEST:
                         pointTaskDto.setTitle(MessageFormat.format(pointTask.getTitle(), AmountConverter.convertCentToString(FIRST_INVEST_10000_AMOUNT)));
                         break;
-                    case EACH_RECOMMEND:
+                    case EACH_RECOMMEND_REGISTER:
                         pointTaskDto.setTitle(pointTask.getTitle());
                         break;
                     default:
@@ -289,7 +289,7 @@ public class PointTaskServiceImpl implements PointTaskService {
             case FIRST_SINGLE_INVEST:
                 //只能完成一次
                 return CollectionUtils.isEmpty(userPointTaskMapper.findByLoginNameAndTask(loginName, pointTask));
-            case EACH_RECOMMEND:
+            case EACH_RECOMMEND_REGISTER:
                 return true;
             case EACH_RECOMMEND_INVEST:
                 if(investMapper.sumSuccessInvestCountByLoginName(loginName) == 1){
