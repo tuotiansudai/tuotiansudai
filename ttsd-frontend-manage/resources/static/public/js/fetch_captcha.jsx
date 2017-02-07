@@ -47,7 +47,7 @@ class fetchCaptchaFun{
 
             layer.open({
                 type:1,
-                area:['380px','210px'],
+                area:['320px','210px'],
                 shadeClose: true,
                 content:$imageCaptchaForm.parents('.image-captcha-dialog')
             });
@@ -71,7 +71,8 @@ class fetchCaptchaFun{
         let captcha=$imageCaptchaText.val(),
             that=this;
             $captchaSubmit.prop('disabled',true);
-            let ajaxOption;
+            let ajaxOption,
+                captchaSrc;
             // 提交手机验证表单
             if(that.kind=="register") {
                  ajaxOption={
@@ -79,17 +80,19 @@ class fetchCaptchaFun{
                      type:'POST',
                      data:$imageCaptchaForm.serialize()
                  }
+                captchaSrc='/register/user/image-captcha';
             }
-            // else if(that.kind=='retrieve'){
-            //     ajaxOption={
-            //         type:'GET',
-            //         url: "/mobile-retrieve-password/mobile/"+that.DomContainer.mobile.value+"/imageCaptcha/"+captcha+"/send-mobile-captcha",
-            //     }
-            // }
+            else if(that.kind=='retrieve'){
+                ajaxOption={
+                    type:'GET',
+                    url: "/mobile-retrieve-password/mobile/"+that.DomContainer.mobile.value+"/imageCaptcha/"+captcha+"/send-mobile-captcha",
+                }
+                captchaSrc='/mobile-retrieve-password/image-captcha';
+            }
         commonFun.useAjax(ajaxOption,function(responseData) {
                 $captchaSubmit.prop('disabled',false);
                 //刷新验证码
-                commonFun.refreshCaptcha($imageCaptcha[0],'/register/user/image-captcha');
+                commonFun.refreshCaptcha($imageCaptcha[0],captchaSrc);
 
                 let data = responseData.data;
                 if (data.status && !data.isRestricted) {

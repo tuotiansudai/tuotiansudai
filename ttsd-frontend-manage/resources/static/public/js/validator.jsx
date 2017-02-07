@@ -215,6 +215,30 @@ var strategies = {
         });
         return getResult;
     },
+    isMobileRetrieveExist:function(errorMsg,showErrorAfter) {
+        var getResult='',
+            that=this;
+        commonFun.useAjax({
+            type:'GET',
+            async: false,
+            url:'/mobile-retrieve-password/mobile/'+this.value+'/is-exist?random=' + new Date().getTime()
+        },function(response) {
+            if(response.data.status) {
+                // 如果为true说明手机已存在
+                getResult='';
+                globalFun.removeClass(that,'error');
+                globalFun.addClass(that,'valid');
+                showErrorAfter && removeElement(that);
+            }
+            else {
+                getResult=errorMsg;
+                globalFun.addClass(that,'error');
+                showErrorAfter && createElement(that,errorMsg);
+            }
+        });
+        return getResult;
+    },
+
     //推荐人是非存在
     isReferrerExist:function(errorMsg,showErrorAfter) {
         var getResult='',
@@ -267,6 +291,9 @@ function ValidatorForm(cache,checkOption) {
          self.cache.push(function(thisDom) {
              var domName=thisDom.name;
              var domOption=self.checkOption[domName];
+             if(!domOption) {
+                return;
+             }
              var len=domOption.length,
                  getErrorMsg;
 
