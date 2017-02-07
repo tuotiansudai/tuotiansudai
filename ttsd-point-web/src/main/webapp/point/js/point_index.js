@@ -68,7 +68,8 @@ require(['jquery','layerWrapper','template', 'jquery.ajax.extension'], function 
 				type: 1,
 				title: false,
 				closeBtn:0,
-				area: ['auto', 'auto'],
+				area: ['auto', '520px'],
+                scrollbar: true,
 				content: $('#ruleInfoTip')
 			});
 		});

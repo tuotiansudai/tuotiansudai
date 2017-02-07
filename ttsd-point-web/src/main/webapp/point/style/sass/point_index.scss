@@ -133,6 +133,9 @@
 .main-frame{
   width:100%;
   margin:0;
+  .layui-layer-page .layui-layer-content{
+    overflow: auto!important;
+  }
   .global-member-store {
     float:left;
     width:100%;
