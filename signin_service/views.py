@@ -12,10 +12,10 @@ def success(data={}):
     return jsonify(ret), 200
 
 
-def fail(data={}):
+def fail(data={}, code=401):
     ret = {'result': False}
     ret.update(data)
-    return jsonify(ret), 400
+    return jsonify(ret), code
 
 
 @sign_in.route("/login/", methods=['POST'])
@@ -25,7 +25,7 @@ def login():
         manager = service.LoginManager(form, request.headers.get('x-forwarded-for'))
         result = manager.login()
         return success(result) if result['result'] else fail(result)
-    return fail({'message': form.errors})
+    return fail({'message': form.errors}, code=400)
 
 
 @sign_in.route("/login/nopassword/", methods=['POST'])
@@ -35,7 +35,7 @@ def login_without_password():
         manager = service.LoginManager(form, request.headers.get('x-forwarded-for'))
         result = manager.no_password_login()
         return success(result) if result['result'] else fail(result)
-    return fail({'message': form.errors})
+    return fail({'message': form.errors}, code=400)
 
 
 @sign_in.route("/logout/<session_id>", methods=['POST'])
@@ -61,7 +61,7 @@ def refresh_session(session_id):
     if form.validate():
         new_session_id = service.SessionManager(source=form.source.data).refresh(session_id)
         return get_session(new_session_id)
-    return fail({'message': form.errors})
+    return fail({'message': form.errors}, code=400)
 
 
 @sign_in.route("/user/<username>/active/", methods=['POST'])
