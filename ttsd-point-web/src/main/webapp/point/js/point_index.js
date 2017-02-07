@@ -16,7 +16,7 @@ require(['jquery','layerWrapper','template', 'jquery.ajax.extension'], function 
 			var _this = $(this),
 				$signText = $(".sign-text"),
 				$tomorrowText = $(".tomorrow-text"),
-				$addDou = $(".add-dou"),
+				$signPoint = $(".sign-point"),
 				$signBtn = $("#signBtn");
 
 			$.ajax({
@@ -26,16 +26,11 @@ require(['jquery','layerWrapper','template', 'jquery.ajax.extension'], function 
 				contentType: 'application/json; charset=UTF-8'
 			}).done(function(response) {
 				if (response.data.status) {
-					$signText.html("签到成功，领取" + response.data.signInPoint + "积分！");
-					$tomorrowText.html("明日可领" + response.data.nextSignInPoint + "积分");
+					$signText.html("签到成功");
+					$tomorrowText.html("明日签到可获得"+ response.data.nextSignInPoint + "积分");
 					$signBtn.addClass("no-click").html("已签到");
-					$addDou.html("+" + response.data.signInPoint);
-					$signTip.fadeIn('fast', function() {
-						$(this).find('.add-dou').animate({
-							'bottom': '50px',
-							'opacity': '0'
-						}, 800);
-					});
+					$signPoint.find('span').html(response.data.signInPoint);
+					$signTip.fadeIn('fast');
 				}else{
 					$('#errorTip').html(tpl('errorTipTpl', response.data));
 					layer.open({

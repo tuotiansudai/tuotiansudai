@@ -48,62 +48,19 @@
                 <div class="sign-layer-list">
                     <div class="sign-top">
                         <div class="close-btn" id="closeSign"></div>
-                        <p class="sign-text">签到成功，领取5积分！</p>
-
-                        <p class="tomorrow-text">明日可领10积分</p>
-
-                        <p class="img-beans">
-                            <img src="${staticServer}/point/images/sign-beans.png"/>
-                            <span class="add-dou">
-                                +5
-                            </span>
-                        </p>
-
-                        <p class="intro-text">连续签到，积分翻倍送，最多每天可领<span>10</span>积分！</p>
-                    </div>
-                    <div class="sign-bottom">
-                        <ul>
-                            <li>
-                                <p class="day-name">1~3天</p>
-
-                                <p class="day-beans">
-                                    <span>10积分/天</span>
-                                    <i class="bean-img"></i>
-                                </p>
-                            </li>
-                            <li>
-                                <p class="day-name">4~6天</p>
-
-                                <p class="day-beans">
-                                    <span>15积分/天</span>
-                                    <i class="bean-img"></i>
-                                </p>
-                            </li>
-                            <li>
-                                <p class="day-name">7~10天</p>
-
-                                <p class="day-beans">
-                                    <span>20积分/天</span>
-                                    <i class="bean-img"></i>
-                                </p>
-                            </li>
-                            <li>
-                                <p class="day-name">11~15天</p>
-
-                                <p class="day-beans">
-                                    <span>25积分/天</span>
-                                    <i class="bean-img"></i>
-                                </p>
-                            </li>
-                            <li>
-                                <p class="day-name">15天以上</p>
-
-                                <p class="day-beans">
-                                    <span>30积分/天</span>
-                                    <i class="bean-img"></i>
-                                </p>
-                            </li>
-                        </ul>
+                        <div class="sign-text">
+                            签到成功
+                        </div>
+                        <div class="sign-content">
+                            <p class="sign-point"><span>+10</span>积分</p>
+                            <p class="tomorrow-text">明日签到可获得10积分</p>
+                            <p class="intro-text">已连续签到20天，连续签到28天可获得现金红包哦~</p>
+                            <!-- <p class="intro-text">已连续签到8天，获得3.8元现金红包</p>
+                            <p class="intro-text">再签到10天可再获得10元现金红包哦~</p>
+                            <p class="intro-text">已连续签到365天，获得全勤奖！<br/>365元现金</p> -->
+                            <p class="sign-reward"><a href="/point-shop/bill">查看连续签到奖励</a></p>
+                        </div>
+                        
                     </div>
                 </div>
             </div>
