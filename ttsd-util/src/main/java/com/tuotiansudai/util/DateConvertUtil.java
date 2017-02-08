@@ -35,6 +35,4 @@ public class DateConvertUtil {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
         return DateConvertUtil.dateToLocalDateTime(date).format(formatter);
     }
-
-
 }

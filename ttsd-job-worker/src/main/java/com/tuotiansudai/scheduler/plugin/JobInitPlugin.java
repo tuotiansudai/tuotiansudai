@@ -2,8 +2,6 @@ package com.tuotiansudai.scheduler.plugin;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.job.*;
-import com.tuotiansudai.repository.model.LoanModel;
-import com.tuotiansudai.util.JobManager;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -28,9 +26,6 @@ public class JobInitPlugin implements SchedulerPlugin {
 
     private final String TIMEZONE_SHANGHAI = "Asia/Shanghai";
 
-    @Value("#{'${activity.weiXin.red.envelop.period}'.split('\\~')}")
-    private List<String> weiXinPeriod = Lists.newArrayList();
-
     public JobInitPlugin(JobManager jobManager) {
         this.jobManager = jobManager;
     }
@@ -42,12 +37,6 @@ public class JobInitPlugin implements SchedulerPlugin {
 
     @Override
     public void start() {
-        if (JobType.NormalRepayCallBack.name().equalsIgnoreCase(schedulerName)) {
-            createNormalRepayCallBackJobIfNotExist();
-        }
-        if (JobType.AdvanceRepayCallBack.name().equalsIgnoreCase(schedulerName)) {
-            createAdvanceRepayCallBackJobIfNotExist();
-        }
         if (JobType.CalculateDefaultInterest.name().equalsIgnoreCase(schedulerName)) {
             createCalculateDefaultInterest();
         }
@@ -59,15 +48,6 @@ public class JobInitPlugin implements SchedulerPlugin {
         }
         if (JobType.BirthdayNotify.name().equalsIgnoreCase(schedulerName)) {
             createBirthdayNotifyJob();
-        }
-        if (JobType.AutoJPushAlertBirthMonth.name().equalsIgnoreCase(schedulerName)) {
-            deleteAutoJPushAlertBirthMonth();
-        }
-        if (JobType.AutoJPushAlertBirthDay.name().equalsIgnoreCase(schedulerName)) {
-            deleteAutoJPushAlertBirthDay();
-        }
-        if (JobType.AutoJPushNoInvestAlert.name().equalsIgnoreCase(schedulerName)) {
-            deleteAutoJPushNoInvestAlert();
         }
         if (JobType.ExperienceRepay.name().equals(schedulerName)) {
             createNewbieExperienceRepayJob();
@@ -84,63 +64,20 @@ public class JobInitPlugin implements SchedulerPlugin {
         if (JobType.PlatformBalanceLowNotify.name().equals(schedulerName)) {
             platformBalanceLowNotifyJob();
         }
-        if (JobType.BirthdayMessage.name().equals(schedulerName)) {
-            deleteBirthdayMessageSendJob();
-        }
-        if (JobType.CalculateTravelLuxuryPrize.name().equalsIgnoreCase(schedulerName)) {
-            deleteCalculateTravelLuxuryPrizeJob();
-        }
         if (JobType.EventMessage.name().equals(schedulerName)) {
             eventMessageJob();
         }
-        if (JobType.NormalRepayCallBack.name().equalsIgnoreCase(schedulerName)) {
-            deleteNormalRepayCallBackJob();
+        if (JobType.SendFirstRedEnvelopSplit.name().equalsIgnoreCase(schedulerName)) {
+            createFirstRedEnvelopSplitJob();
         }
-        if (JobType.AdvanceRepayCallBack.name().equalsIgnoreCase(schedulerName)) {
-            deleteAdvanceRepayCallBackJob();
-        }
-        if(JobType.SendRedEnvelopSplit.name().equalsIgnoreCase(schedulerName)){
-            createRedEnvelopSplitJob();
+        if (JobType.SendSecondRedEnvelopSplit.name().equalsIgnoreCase(schedulerName)) {
+            createSecondRedEnvelopSplitJob();
         }
     }
 
     @Override
     public void shutdown() {
 
-    }
-
-    private void createNormalRepayCallBackJobIfNotExist() {
-        final JobType jobType = JobType.NormalRepayCallBack;
-        final String jobGroup = NormalRepayCallbackJob.JOB_GROUP;
-        final String jobName = NormalRepayCallbackJob.JOB_NAME;
-        try {
-            jobManager.newJob(jobType, NormalRepayCallbackJob.class)
-                    .replaceExistingJob(true)
-                    .runWithSchedule(SimpleScheduleBuilder
-                            .repeatSecondlyForever(NormalRepayCallbackJob.RUN_INTERVAL_SECONDS)
-                            .withMisfireHandlingInstructionIgnoreMisfires())
-                    .withIdentity(jobGroup, jobName)
-                    .submit();
-        } catch (SchedulerException e) {
-            logger.info(e.getLocalizedMessage(), e);
-        }
-    }
-
-    private void createAdvanceRepayCallBackJobIfNotExist() {
-        final JobType jobType = JobType.AdvanceRepayCallBack;
-        final String jobGroup = AdvanceRepayCallbackJob.JOB_GROUP;
-        final String jobName = AdvanceRepayCallbackJob.JOB_NAME;
-        try {
-            jobManager.newJob(jobType, AdvanceRepayCallbackJob.class)
-                    .replaceExistingJob(true)
-                    .runWithSchedule(SimpleScheduleBuilder
-                            .repeatSecondlyForever(AdvanceRepayCallbackJob.RUN_INTERVAL_SECONDS)
-                            .withMisfireHandlingInstructionIgnoreMisfires())
-                    .withIdentity(jobGroup, jobName)
-                    .submit();
-        } catch (SchedulerException e) {
-            logger.info(e.getLocalizedMessage(), e);
-        }
     }
 
     private void createCalculateDefaultInterest() {
@@ -161,18 +98,6 @@ public class JobInitPlugin implements SchedulerPlugin {
         } catch (SchedulerException e) {
             logger.info(e.getLocalizedMessage(), e);
         }
-    }
-
-    private void deleteAutoJPushAlertBirthMonth() {
-        jobManager.deleteJob(JobType.AutoJPushAlertBirthMonth, JobType.AutoJPushAlertBirthMonth.name(), JobType.AutoJPushAlertBirthMonth.name());
-    }
-
-    private void deleteAutoJPushAlertBirthDay() {
-        jobManager.deleteJob(JobType.AutoJPushAlertBirthDay, JobType.AutoJPushAlertBirthDay.name(), JobType.AutoJPushAlertBirthDay.name());
-    }
-
-    private void deleteAutoJPushNoInvestAlert() {
-        jobManager.deleteJob(JobType.AutoJPushNoInvestAlert, JobType.AutoJPushNoInvestAlert.name(), JobType.AutoJPushNoInvestAlert.name());
     }
 
     private void createLoanRepayNotifyJob() {
@@ -259,22 +184,6 @@ public class JobInitPlugin implements SchedulerPlugin {
         }
     }
 
-    private void deleteCalculateTravelLuxuryPrizeJob() {
-        jobManager.deleteJob(JobType.CalculateTravelLuxuryPrize, JobType.CalculateTravelLuxuryPrize.name(), JobType.CalculateTravelLuxuryPrize.name());
-    }
-
-    private void deleteBirthdayMessageSendJob() {
-        jobManager.deleteJob(JobType.BirthdayMessage, JobType.BirthdayMessage.name(), JobType.BirthdayMessage.name());
-    }
-
-    private void deleteNormalRepayCallBackJob() {
-        jobManager.deleteJob(JobType.NormalRepayCallBack, JobType.NormalRepayCallBack.name(), JobType.NormalRepayCallBack.name());
-    }
-
-    private void deleteAdvanceRepayCallBackJob() {
-        jobManager.deleteJob(JobType.AdvanceRepayCallBack, JobType.AdvanceRepayCallBack.name(), JobType.AdvanceRepayCallBack.name());
-    }
-
     private void eventMessageJob() {
         try {
             jobManager.newJob(JobType.EventMessage, EventMessageJob.class).replaceExistingJob(true)
@@ -285,13 +194,24 @@ public class JobInitPlugin implements SchedulerPlugin {
         }
     }
 
-    private void createRedEnvelopSplitJob() {
+    private void createFirstRedEnvelopSplitJob() {
         try {
-            jobManager.newJob(JobType.SendRedEnvelopSplit, AssignRedEnvelopSplitJob.class)
-                    .withIdentity(JobType.SendRedEnvelopSplit.name(), JobType.SendRedEnvelopSplit.name())
-                    .replaceExistingJob(false)
-                    .runOnceAt(DateTime.parse(weiXinPeriod.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate()).submit();
-        } catch (SchedulerException e) {
+            jobManager.newJob(JobType.SendFirstRedEnvelopSplit, AssignFirstRedEnvelopSplitJob.class)
+                    .withIdentity(JobType.SendFirstRedEnvelopSplit.name(), JobType.SendFirstRedEnvelopSplit.name())
+                    .replaceExistingJob(true)
+                    .runOnceAt(DateTime.parse(AssignFirstRedEnvelopSplitJob.JOB_EXECUTE_TIME, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate()).submit();
+        } catch (Exception e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+    }
+
+    private void createSecondRedEnvelopSplitJob() {
+        try {
+            jobManager.newJob(JobType.SendSecondRedEnvelopSplit, AssignSecondRedEnvelopSplitJob.class)
+                    .withIdentity(JobType.SendSecondRedEnvelopSplit.name(), JobType.SendSecondRedEnvelopSplit.name())
+                    .replaceExistingJob(true)
+                    .runOnceAt(DateTime.parse(AssignSecondRedEnvelopSplitJob.JOB_EXECUTE_TIME, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate()).submit();
+        } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
         }
     }

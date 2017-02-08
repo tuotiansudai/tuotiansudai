@@ -7,8 +7,8 @@ import com.tuotiansudai.api.service.v1_0.MobileAppLoanListService;
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.api.util.PageValidUtils;
 import com.tuotiansudai.api.util.ProductTypeConverter;
-import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
-import com.tuotiansudai.coupon.repository.model.UserCouponModel;
+import com.tuotiansudai.repository.mapper.UserCouponMapper;
+import com.tuotiansudai.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
@@ -142,10 +142,6 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
                 investedAmount = couponService.findExperienceInvestAmount(investModelList);
             } else {
                 investedAmount = investMapper.sumSuccessInvestAmount(loan.getId());
-                //TODO:fake
-                if (loan.getId() == 41650602422768L && loan.getStatus() == LoanStatus.REPAYING) {
-                    investedAmount = loan.getLoanAmount();
-                }
             }
             loanResponseDataDto.setInvestedMoney(AmountConverter.convertCentToString(investedAmount));
             loanResponseDataDto.setBaseRatePercent(decimalFormat.format(loan.getBaseRate() * 100));

@@ -140,8 +140,16 @@
         <property name="dataSource" ref="hikariCPDataSource"/>
     </bean>
 
-    <bean id="jobStoreBuilder" class="com.tuotiansudai.util.quartz.JobStoreBuilder">
-        <property name="dataSource" ref="jobHikariCPDataSource"/>
+    <bean id="jobStoreBuilder" class="com.tuotiansudai.quartz.JobStoreBuilder">
+        <constructor-arg ref="jobHikariCPDataSource"/>
+    </bean>
+
+    <bean id="schedulerBuilder" class="com.tuotiansudai.quartz.SchedulerBuilder">
+        <constructor-arg ref="jobStoreBuilder"/>
+    </bean>
+
+    <bean id="jobManager" class="com.tuotiansudai.job.JobManager">
+        <constructor-arg ref="schedulerBuilder"/>
     </bean>
 
     <bean id="messageTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
@@ -152,7 +160,7 @@
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="hikariCPDataSource"/>
         <property name="typeAliasesPackage"
-                  value="com.tuotiansudai.repository.model,com.tuotiansudai.web.repository.model,com.tuotiansudai.coupon.repository.model,com.tuotiansudai.point.repository.model,com.tuotiansudai.transfer.repository.model,com.tuotiansudai.membership.repository.model"/>
+                  value="com.tuotiansudai.repository.model,com.tuotiansudai.web.repository.model,com.tuotiansudai.point.repository.model,com.tuotiansudai.membership.repository.model"/>
     </bean>
 
     <bean id="anxinSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
@@ -184,7 +192,7 @@
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
         <property name="basePackage"
-                  value="com.tuotiansudai.repository.mapper,com.tuotiansudai.coupon.repository.mapper,com.tuotiansudai.point.repository.mapper,com.tuotiansudai.transfer.repository.mapper,com.tuotiansudai.membership.repository.mapper"/>
+                  value="com.tuotiansudai.repository.mapper,com.tuotiansudai.point.repository.mapper,com.tuotiansudai.membership.repository.mapper"/>
     </bean>
 
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">

@@ -211,17 +211,7 @@ public class RankingActivityServiceImpl implements RankingActivityService {
 
         Set<Tuple> top15 = redisWrapperClient.zrevrangeWithScores(TIAN_DOU_USER_SCORE_RANK, 0, 14);
         for (Tuple tuple : top15) {
-            userScoreDtoTop15.add(new UserScoreDto(randomUtils.encryptMobile(loginName, tuple.getElement(),Source.WEB), (long) tuple.getScore()));
-        }
-
-        //TODO:fake
-        LoanModel loanModel = loanMapper.findById(41650602422768L);
-        if (loanModel.getStatus() == LoanStatus.REPAYING) {
-            userScoreDtoTop15 = Lists.newArrayList(new UserScoreDto("186****9367", new BigDecimal((double) loanModel.getLoanAmount() * loanModel.getPeriods() / 1200).setScale(0, BigDecimal.ROUND_HALF_UP).longValue()));
-            Set<Tuple> top14 = redisWrapperClient.zrevrangeWithScores(TIAN_DOU_USER_SCORE_RANK, 0, 13);
-            for (Tuple tuple : top14) {
-                userScoreDtoTop15.add(new UserScoreDto(randomUtils.encryptMobile(loginName, tuple.getElement(),Source.WEB), (long) tuple.getScore()));
-            }
+            userScoreDtoTop15.add(new UserScoreDto(randomUtils.encryptMobile(loginName, tuple.getElement()), (long) tuple.getScore()));
         }
 
         return userScoreDtoTop15;
@@ -241,7 +231,7 @@ public class RankingActivityServiceImpl implements RankingActivityService {
             @Override
             public UserTianDouRecordDto apply(String input) {
                 String loginName = input.split("\\+")[0];
-                return new UserTianDouRecordDto(randomUtils.encryptMobile(null, loginName,Source.WEB), "抽奖", TianDouPrize.MacBook);
+                return new UserTianDouRecordDto(randomUtils.encryptMobile(null, loginName), "抽奖", TianDouPrize.MacBook);
             }
         });
 
@@ -249,7 +239,7 @@ public class RankingActivityServiceImpl implements RankingActivityService {
             @Override
             public UserTianDouRecordDto apply(String input) {
                 String loginName = input.split("\\+")[0];
-                return new UserTianDouRecordDto(randomUtils.encryptMobile(null, loginName,Source.WEB), "抽奖", TianDouPrize.Iphone6s);
+                return new UserTianDouRecordDto(randomUtils.encryptMobile(null, loginName), "抽奖", TianDouPrize.Iphone6s);
             }
         });
 
@@ -271,7 +261,7 @@ public class RankingActivityServiceImpl implements RankingActivityService {
             public UserTianDouRecordDto apply(String input) {
                 String loginName = input.split("\\+")[0];
                 String prize = input.split("\\+")[1];
-                return new UserTianDouRecordDto(randomUtils.encryptMobile(null, loginName,Source.WEB), "抽奖", TianDouPrize.valueOf(prize));
+                return new UserTianDouRecordDto(randomUtils.encryptMobile(null, loginName), "抽奖", TianDouPrize.valueOf(prize));
             }
         });
 
@@ -388,14 +378,8 @@ public class RankingActivityServiceImpl implements RankingActivityService {
     public long getTotalInvestAmountInActivityPeriod() {
         Date startTime = new DateTime(2016, 4, 1, 0, 0, 0).toDate(); // from 2016-04-01 00:00:00
         Date endTime = new DateTime(2016, 8, 1, 0, 0, 0).toDate(); // to 2016-08-01 00:00:00
-        long totalAmount = investMapper.sumInvestAmountRanking(startTime, endTime);
 
-        //TODO:fake
-        LoanModel loanModel = loanMapper.findById(41650602422768L);
-        if (loanModel.getStatus() == LoanStatus.REPAYING) {
-            totalAmount += loanModel.getLoanAmount();
-        }
-        return totalAmount;
+        return investMapper.sumInvestAmountRanking(startTime, endTime);
     }
 
 }

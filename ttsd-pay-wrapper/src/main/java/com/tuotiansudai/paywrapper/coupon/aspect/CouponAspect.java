@@ -1,8 +1,8 @@
 package com.tuotiansudai.paywrapper.coupon.aspect;
 
-import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
-import com.tuotiansudai.coupon.repository.model.CouponModel;
-import com.tuotiansudai.coupon.repository.model.UserGroup;
+import com.tuotiansudai.repository.mapper.CouponMapper;
+import com.tuotiansudai.repository.model.CouponModel;
+import com.tuotiansudai.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
@@ -13,7 +13,7 @@ import com.tuotiansudai.paywrapper.coupon.service.CouponRepayService;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.LoanModel;
-import com.tuotiansudai.util.JobManager;
+import com.tuotiansudai.job.JobManager;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -34,9 +34,6 @@ public class CouponAspect {
 
     @Autowired
     private CouponRepayService couponRepayService;
-
-    @Autowired
-    private CouponInvestService couponInvestService;
 
     @Autowired
     private JobManager jobManager;
@@ -79,20 +76,6 @@ public class CouponAspect {
 
         logger.info(MessageFormat.format("[advance repay  Coupon Repay {0}] after returning payback invest({1}) aspect is done",
                 String.valueOf(loanRepayId), String.valueOf(returnValue)));
-    }
-
-    @SuppressWarnings(value = "unchecked")
-    @AfterReturning(value = "execution(* com.tuotiansudai.paywrapper.service.LoanService.cancelLoan(*))", returning = "returnValue")
-    public void afterReturningCancelLoan(JoinPoint joinPoint, Object returnValue) {
-        long loanId = (long) joinPoint.getArgs()[0];
-        BaseDto<PayDataDto> baseDto = (BaseDto<PayDataDto>) returnValue;
-        if (baseDto.getData() != null && baseDto.getData().getStatus()) {
-            try {
-                couponInvestService.cancelUserCoupon(loanId);
-            } catch (Exception e) {
-                logger.error(e.getLocalizedMessage(), e);
-            }
-        }
     }
 
     @SuppressWarnings(value = "unchecked")

@@ -5,11 +5,11 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
-import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
-import com.tuotiansudai.coupon.repository.model.CouponModel;
-import com.tuotiansudai.coupon.repository.model.UserCouponModel;
-import com.tuotiansudai.coupon.repository.model.UserGroup;
+import com.tuotiansudai.repository.mapper.CouponMapper;
+import com.tuotiansudai.repository.mapper.UserCouponMapper;
+import com.tuotiansudai.repository.model.CouponModel;
+import com.tuotiansudai.repository.model.UserCouponModel;
+import com.tuotiansudai.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.coupon.service.ExchangeCodeService;
 import com.tuotiansudai.coupon.util.InvestAchievementUserCollector;
@@ -230,8 +230,6 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
                 // 发送MQ消息
                 .forEach(message -> mqWrapperClient.sendMessage(MessageQueue.CouponAssigning, message));
                 */
-
-        //((CouponAssignmentService) AopContext.currentProxy()).assign(loginName, couponModel.getId(), null);
     }
 
     private CouponModel sendCouponAssignMessage(CouponModel couponModel, String loginName){
@@ -272,7 +270,7 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
 
         List<UserCouponModel> assignedUserCoupons = userCouponMapper.findByLoginNameAndCouponId(loginName, couponId);
         if (!couponModel.isMultiple() && CollectionUtils.isNotEmpty(assignedUserCoupons)) {
-            logger.error(MessageFormat.format("[Coupon Assignment] coupon({0}) has been assigned to user({1})", String.valueOf(couponId), loginName));
+            logger.warn(MessageFormat.format("[Coupon Assignment] coupon({0}) has been assigned to user({1})", String.valueOf(couponId), loginName));
             return null;
         }
 

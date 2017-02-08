@@ -6,9 +6,9 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.anxin.service.AnxinSignService;
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
-import com.tuotiansudai.coupon.repository.model.CouponModel;
-import com.tuotiansudai.coupon.repository.model.UserGroup;
+import com.tuotiansudai.repository.mapper.CouponMapper;
+import com.tuotiansudai.repository.model.CouponModel;
+import com.tuotiansudai.repository.model.UserGroup;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.repository.mapper.*;
@@ -132,7 +132,7 @@ public class LoanDetailServiceImpl implements LoanDetailService {
                     item.setAmount(AmountConverter.convertCentToString(input.getAmount()));
                     item.setSource(input.getSource());
                     item.setAutoInvest(input.isAutoInvest());
-                    item.setMobile(randomUtils.encryptMobile(loginName, input.getLoginName(), input.getId(), Source.WEB));
+                    item.setMobile(randomUtils.encryptMobile(loginName, input.getLoginName(), input.getId()));
 
 
                     long amount = 0;
@@ -155,21 +155,6 @@ public class LoanDetailServiceImpl implements LoanDetailService {
         BaseDto<BasePaginationDataDto> baseDto = new BaseDto<>();
         BasePaginationDataDto<LoanDetailInvestPaginationItemDto> dataDto = new BasePaginationDataDto<>(index, pageSize, count, records);
 
-        // TODO:fake
-        LoanModel loanModel = loanMapper.findById(loanId);
-        if (loanId == 41650602422768L && loanModel.getStatus() == LoanStatus.REPAYING) {
-            LoanDetailInvestPaginationItemDto fakeItem = new LoanDetailInvestPaginationItemDto();
-            fakeItem.setMobile("186****9367");
-            fakeItem.setAmount(AmountConverter.convertCentToString(loanModel.getLoanAmount()));
-            fakeItem.setCreatedTime(new DateTime(2016, 7, 29, 15, 33, 45).toDate());
-            fakeItem.setSource(Source.WEB);
-            fakeItem.setAchievements(Lists.newArrayList(InvestAchievement.FIRST_INVEST, InvestAchievement.MAX_AMOUNT, InvestAchievement.LAST_INVEST));
-
-            long fee = new BigDecimal(InterestCalculator.estimateExpectedInterest(loanModel, loanModel.getLoanAmount())).multiply(new BigDecimal(0.1)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
-            fakeItem.setExpectedInterest(AmountConverter.convertCentToString(InterestCalculator.estimateExpectedInterest(loanModel, loanModel.getLoanAmount()) - fee));
-            dataDto = new BasePaginationDataDto<>(index, pageSize, 1, Lists.newArrayList(fakeItem));
-        }
-
         baseDto.setData(dataDto);
         dataDto.setStatus(true);
         return baseDto;
@@ -182,19 +167,19 @@ public class LoanDetailServiceImpl implements LoanDetailService {
     private LoanDetailDto convertModelToDto(LoanModel loanModel, String loginName) {
         long investedAmount = investMapper.sumSuccessInvestAmount(loanModel.getId());
 
-        //TODO:fake
-        if (loanModel.getId() == 41650602422768L) {
-            if (loanModel.getStatus() == LoanStatus.REPAYING) {
-                investedAmount = loanModel.getLoanAmount();
-            }
-        }
-
         AnxinSignPropertyModel anxinProp = anxinSignPropertyMapper.findByLoginName(loginName);
         boolean isAuthenticationRequired = anxinSignService.isAuthenticationRequired(loginName);
         boolean isAnxinUser = anxinProp != null && StringUtils.isNotEmpty(anxinProp.getAnxinUserId());
 
-        InvestorDto investorDto = new InvestorDto(accountMapper.findByLoginName(loginName), this.isRemindNoPassword(loginName),
-                this.calculateMaxAvailableInvestAmount(loginName, loanModel, investedAmount), isAuthenticationRequired, isAnxinUser);
+        AccountModel accountModel = accountMapper.findByLoginName(loginName);
+
+        InvestorDto investorDto = accountModel == null ? new InvestorDto() : new InvestorDto(accountModel.getBalance(),
+                accountModel.isAutoInvest(),
+                accountModel.isNoPasswordInvest(),
+                this.isRemindNoPassword(loginName),
+                this.calculateMaxAvailableInvestAmount(loginName, loanModel, investedAmount),
+                isAuthenticationRequired,
+                isAnxinUser);
 
         LoanDetailDto loanDto = new LoanDetailDto(loanModel,
                 loanDetailsMapper.getByLoanId(loanModel.getId()),
@@ -214,7 +199,7 @@ public class LoanDetailServiceImpl implements LoanDetailService {
                     .put("申请地区", loanerDetail.getRegion())
                     .put("收入水平", loanerDetail.getIncome())
                     .put("就业情况", loanerDetail.getEmploymentStatus())
-                    .put("借款用途", Strings.isNullOrEmpty(loanerDetail.getPurpose()) ? "" :  loanerDetail.getPurpose())
+                    .put("借款用途", Strings.isNullOrEmpty(loanerDetail.getPurpose()) ? "" : loanerDetail.getPurpose())
                     .put("逾期率", MessageFormat.format("{0}%", new BigDecimal(loanRepayMapper.calculateOverdueRate(loanModel.getAgentLoginName()) * 100).setScale(0, BigDecimal.ROUND_DOWN).toString()))
                     .build());
         }
@@ -276,30 +261,20 @@ public class LoanDetailServiceImpl implements LoanDetailService {
             if (loanModel.getFirstInvestAchievementId() != null) {
                 InvestModel firstInvest = investMapper.findById(loanModel.getFirstInvestAchievementId());
                 achievementDto.setFirstInvestAchievementDate(firstInvest.getTradingTime());
-                achievementDto.setFirstInvestAchievementMobile(randomUtils.encryptMobile(loginName, firstInvest.getLoginName(), Source.WEB));
+                achievementDto.setFirstInvestAchievementMobile(randomUtils.encryptMobile(loginName, firstInvest.getLoginName()));
             }
             if (loanModel.getMaxAmountAchievementId() != null) {
                 InvestModel maxInvest = investMapper.findById(loanModel.getMaxAmountAchievementId());
                 long amount = investMapper.sumSuccessInvestAmountByLoginName(loanModel.getId(), maxInvest.getLoginName());
                 achievementDto.setMaxAmountAchievementAmount(AmountConverter.convertCentToString(amount));
-                achievementDto.setMaxAmountAchievementMobile(randomUtils.encryptMobile(loginName, maxInvest.getLoginName(), Source.WEB));
+                achievementDto.setMaxAmountAchievementMobile(randomUtils.encryptMobile(loginName, maxInvest.getLoginName()));
             }
             if (loanModel.getLastInvestAchievementId() != null) {
                 InvestModel lastInvest = investMapper.findById(loanModel.getLastInvestAchievementId());
                 achievementDto.setLastInvestAchievementDate(lastInvest.getTradingTime());
-                achievementDto.setLastInvestAchievementMobile(randomUtils.encryptMobile(loginName, lastInvest.getLoginName(), Source.WEB));
+                achievementDto.setLastInvestAchievementMobile(randomUtils.encryptMobile(loginName, lastInvest.getLoginName()));
             }
             loanDto.setAchievement(achievementDto);
-
-            //TODO:fake
-            if (loanModel.getId() == 41650602422768L && loanModel.getStatus() == LoanStatus.REPAYING) {
-                achievementDto.setFirstInvestAchievementDate(new DateTime(2016, 7, 29, 15, 33, 45).toDate());
-                achievementDto.setFirstInvestAchievementMobile("186****9367");
-                achievementDto.setMaxAmountAchievementAmount(AmountConverter.convertCentToString(loanModel.getLoanAmount()));
-                achievementDto.setMaxAmountAchievementMobile("186****9367");
-                achievementDto.setLastInvestAchievementDate(new DateTime(2016, 7, 29, 15, 33, 45).toDate());
-                achievementDto.setLastInvestAchievementMobile("186****9367");
-            }
         }
 
         return loanDto;

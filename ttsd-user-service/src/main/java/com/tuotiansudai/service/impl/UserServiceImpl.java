@@ -1,11 +1,9 @@
 package com.tuotiansudai.service.impl;
 
 import com.google.common.base.Strings;
-import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.RegisterUserDto;
 import com.tuotiansudai.enums.UserOpType;
-import com.tuotiansudai.exception.ReferrerRelationException;
 import com.tuotiansudai.log.service.UserOpLogService;
 import com.tuotiansudai.repository.mapper.PrepareUserMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
@@ -15,7 +13,6 @@ import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.RegisterUserService;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
-import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.MobileLocationUtils;
 import com.tuotiansudai.util.MyShaPasswordEncoder;
 import com.tuotiansudai.util.RandomStringGenerator;
@@ -47,9 +44,6 @@ public class UserServiceImpl implements UserService {
     private SmsWrapperClient smsWrapperClient;
 
     @Autowired
-    private MQWrapperClient mqWrapperClient;
-
-    @Autowired
     private MyShaPasswordEncoder myShaPasswordEncoder;
 
     @Autowired
@@ -60,11 +54,6 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserOpLogService userOpLogService;
-
-    @Autowired
-    private IdGenerator idGenerator;
-
-    public static String SHA = "SHA";
 
     private final static int LOGIN_NAME_LENGTH = 8;
 
@@ -108,7 +97,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean registerUser(RegisterUserDto dto) {
         if (this.mobileIsExist(dto.getMobile())) {
-            logger.error(MessageFormat.format("[Register User {0}] mobile is existed", dto.getMobile()));
+            logger.warn(MessageFormat.format("[Register User {0}] mobile is existed", dto.getMobile()));
             return false;
         }
 
@@ -148,24 +137,17 @@ public class UserServiceImpl implements UserService {
         }
 
 
-        try {
-            UserModel userModel = new UserModel();
-            userModel.setLoginName(loginName);
-            userModel.setMobile(dto.getMobile());
-            userModel.setSource(dto.getSource());
-            userModel.setReferrer(referrerUserModel != null ? referrerUserModel.getLoginName() : null);
-            userModel.setChannel(dto.getChannel());
-            String salt = myShaPasswordEncoder.generateSalt();
-            userModel.setSalt(salt);
-            userModel.setPassword(myShaPasswordEncoder.encodePassword(dto.getPassword(), salt));
-            userModel.setLastModifiedTime(new Date());
-            return registerUserService.register(userModel);
-        } catch (ReferrerRelationException e) {
-            logger.error(MessageFormat.format("[Register User {0}] create new user is failed", dto.getMobile()));
-
-        }
-
-        return false;
+        UserModel userModel = new UserModel();
+        userModel.setLoginName(loginName);
+        userModel.setMobile(dto.getMobile());
+        userModel.setSource(dto.getSource());
+        userModel.setReferrer(referrerUserModel != null ? referrerUserModel.getLoginName() : null);
+        userModel.setChannel(dto.getChannel());
+        String salt = myShaPasswordEncoder.generateSalt();
+        userModel.setSalt(salt);
+        userModel.setPassword(myShaPasswordEncoder.encodePassword(dto.getPassword(), salt));
+        userModel.setLastModifiedTime(new Date());
+        return registerUserService.register(userModel);
     }
 
     @Transactional

@@ -2,7 +2,7 @@ package com.tuotiansudai.api.dto.v1_0;
 
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.LoanModel;
-import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
+import com.tuotiansudai.repository.model.TransferApplicationModel;
 import com.tuotiansudai.util.AmountConverter;
 import io.swagger.annotations.ApiModelProperty;
 

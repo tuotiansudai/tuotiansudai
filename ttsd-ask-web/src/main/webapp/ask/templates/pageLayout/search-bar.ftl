@@ -1,9 +1,9 @@
-<div class="borderBox tc">
+<div class="border-ask-box tc">
     <div class="pc-search-box clearfix" id="searchBoxTool">
         <form method="get" action="/question/search" class="clearfix">
             <input type="text" class="input-search fl" name="keyword" >
             <button type="submit" class="btn btn-search fl" >搜索</button>
-            <a href="/question" class="btn want-question fl">我要提问</a>
+            <a href="/question" class="btn-normal want-question fl">我要提问</a>
         </form>
     <#if (keywordQuestions.data.count)??>
         <div class="search-result clearfix tl">为您搜索到“<em>${keywordQuestions.data.count}</em>”个相关问题</div></#if>

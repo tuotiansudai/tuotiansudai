@@ -6,8 +6,8 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.anxin.service.AnxinSignService;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
-import com.tuotiansudai.coupon.repository.mapper.CouponRepayMapper;
-import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
+import com.tuotiansudai.repository.mapper.*;
+import com.tuotiansudai.repository.model.CouponRepayModel;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.enums.MessageEventType;
@@ -38,12 +38,8 @@ import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransfe
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
 import com.tuotiansudai.paywrapper.service.InvestTransferPurchaseService;
 import com.tuotiansudai.paywrapper.service.SystemBillService;
-import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
-import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
+import com.tuotiansudai.repository.model.TransferApplicationModel;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.IdGenerator;
@@ -81,6 +77,9 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
 
     @Autowired
     private AccountMapper accountMapper;
+
+    @Autowired
+    private InvestExtraRateMapper investExtraRateMapper;
 
     @Autowired
     private PayAsyncClient payAsyncClient;
@@ -236,17 +235,23 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
     public BaseDto<PayDataDto> asyncPurchaseCallback(long notifyRequestId) {
         InvestNotifyRequestModel model = investTransferNotifyRequestMapper.findById(notifyRequestId);
 
-        logger.info(MessageFormat.format("[Invest Transfer Callback {0}] starting...", model.getOrderId()));
-        if (updateInvestTransferNotifyRequestStatus(model)) {
-            try {
-                processOneCallback(model);
-            } catch (Exception e) {
-                String errMsg = MessageFormat.format("invest callback, processOneCallback error. investId:{0}", model.getOrderId());
-                logger.error(errMsg, e);
-                sendFatalNotify(MessageFormat.format("债权转让投资回调处理错误。{0},{1}", environment, errMsg));
-            }
+        if (model == null) {
+            logger.error(MessageFormat.format("债权转让投资回调处理错误。{0},{1} not found", environment, String.valueOf(notifyRequestId)));
+            sendFatalNotify(MessageFormat.format("债权转让投资回调处理错误。{0},{1} not found", environment, String.valueOf(notifyRequestId)));
         }
 
+        if (model != null && NotifyProcessStatus.NOT_DONE.name().equals(model.getStatus())) {
+            logger.info(MessageFormat.format("[Invest Transfer Callback {0}] starting...", model.getOrderId()));
+            if (updateInvestTransferNotifyRequestStatus(model)) {
+                try {
+                    processOneCallback(model);
+                } catch (Exception e) {
+                    String errMsg = MessageFormat.format("invest callback, processOneCallback error. investId:{0}", model.getOrderId());
+                    logger.error(errMsg, e);
+                    sendFatalNotify(MessageFormat.format("债权转让投资回调处理错误。{0},{1}", environment, errMsg));
+                }
+            }
+        }
         BaseDto<PayDataDto> asyncInvestNotifyDto = new BaseDto<>();
         PayDataDto baseDataDto = new PayDataDto();
         baseDataDto.setStatus(true);
@@ -327,6 +332,13 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
         // update transferrer invest transfer status
         investMapper.updateTransferStatus(transferInvestModel.getId(), TransferStatus.SUCCESS);
         logger.info(MessageFormat.format("[Invest Transfer Callback {0}] update transferrer invest transfer status to SUCCESS", String.valueOf(investId)));
+
+        // update extra invest rate
+        InvestExtraRateModel investExtraRateModel = investExtraRateMapper.findByInvestId(investModel.getTransferInvestId());
+        if (investExtraRateModel != null) {
+            investExtraRateModel.setTransfer(true);
+            investExtraRateMapper.update(investExtraRateModel);
+        }
 
         // update transfer application
         transferApplicationModel.setInvestId(investModel.getId());

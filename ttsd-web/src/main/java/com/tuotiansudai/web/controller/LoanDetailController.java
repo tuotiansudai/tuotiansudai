@@ -1,7 +1,7 @@
 package com.tuotiansudai.web.controller;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.coupon.dto.UserCouponDto;
+import com.tuotiansudai.dto.UserCouponDto;
 import com.tuotiansudai.coupon.service.CouponAlertService;
 import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.dto.BaseDto;

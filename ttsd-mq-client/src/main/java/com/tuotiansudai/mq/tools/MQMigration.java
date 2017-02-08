@@ -20,6 +20,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class MQMigration {
+    private static long QUEUE_MESSAGE_VISIBILITY_TIMEOUT_SECONDS = 60 * 60;//1 hour
+
     public static void main(String[] args) throws IOException {
         if (args.length == 0) {
             return;
@@ -164,6 +166,7 @@ public class MQMigration {
     private static void createQueue(MNSClient mnsClient, String queueName) {
         QueueMeta queueMeta = new QueueMeta();
         queueMeta.setQueueName(queueName);
+        queueMeta.setVisibilityTimeout(QUEUE_MESSAGE_VISIBILITY_TIMEOUT_SECONDS);
         queueMeta.setLoggingEnabled(true);
         mnsClient.createQueue(queueMeta);
     }

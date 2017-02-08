@@ -136,7 +136,7 @@
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="hikariCPDataSource"/>
         <property name="typeAliasesPackage"
-                  value="com.tuotiansudai.repository.model,com.tuotiansudai.transfer.repository.model,com.tuotiansudai.coupon.repository.model,com.tuotiansudai.point.repository.model,com.tuotiansudai.membership.repository.model"/>
+                  value="com.tuotiansudai.repository.model,com.tuotiansudai.point.repository.model,com.tuotiansudai.membership.repository.model"/>
         <property name="configLocation" value="mybatis-configuration.xml"/>
     </bean>
 
@@ -162,7 +162,7 @@
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
         <property name="basePackage"
-                  value="com.tuotiansudai.repository.mapper,com.tuotiansudai.transfer.repository.mapper,com.tuotiansudai.coupon.repository.mapper,com.tuotiansudai.point.repository.mapper,com.tuotiansudai.membership.repository.mapper"/>
+                  value="com.tuotiansudai.repository.mapper,com.tuotiansudai.point.repository.mapper,com.tuotiansudai.membership.repository.mapper"/>
     </bean>
 
     <!-- scan for mappers and let them be autowired -->
@@ -182,8 +182,16 @@
         <property name="basePackage" value="com.tuotiansudai.cfca.mapper"/>
     </bean>
 
-    <bean id="jobStoreBuilder" class="com.tuotiansudai.util.quartz.JobStoreBuilder">
-        <property name="dataSource" ref="jobHikariCPDataSource"/>
+    <bean id="jobStoreBuilder" class="com.tuotiansudai.quartz.JobStoreBuilder">
+        <constructor-arg ref="jobHikariCPDataSource"/>
+    </bean>
+
+    <bean id="schedulerBuilder" class="com.tuotiansudai.quartz.SchedulerBuilder">
+        <constructor-arg ref="jobStoreBuilder"/>
+    </bean>
+    
+    <bean id="jobManager" class="com.tuotiansudai.job.JobManager">
+        <constructor-arg ref="schedulerBuilder"/>
     </bean>
 
     <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
@@ -192,6 +200,8 @@
     </bean>
 
     <bean id="okHttpClient" class="com.squareup.okhttp.OkHttpClient"/>
+
+    <bean class="com.tuotiansudai.quartz.AutowiringSpringBeanJobFactory"/>
 
     <bean class="com.tuotiansudai.mq.config.MQProducerConfig"/>
 </beans>

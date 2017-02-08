@@ -21,8 +21,8 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.UUID;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -52,7 +52,7 @@ public class RedEnvelopSplitActivityServiceTest {
 
         String json = new String(Base64.getDecoder().decode(base64), "utf-8");
         assertTrue(!Strings.isNullOrEmpty(url));
-        assertEquals(json, "{\"title\":\"您的好友王琦送你8.88元现金红包\",\"description\":\"完成注册即可领取8.88元现金红包\",\"shareUrl\":\"local/activity/red-envelop-split/referrer\"}");
+        assertEquals(json, "{\"title\":\"您的好友王琦送你8.88元现金红包\",\"description\":\"点击领取红包!\",\"shareUrl\":\"local/activity/red-envelop-split/referrer\"}");
     }
 
     private UserModel getUserModelTest() {
