@@ -1,7 +1,6 @@
 package com.tuotiansudai.api.service.v1_0.impl;
 
 
-import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppReferrerListService;
@@ -11,6 +10,7 @@ import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.ReferrerRelationView;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.ReferrerManageService;
+import com.tuotiansudai.util.PaginationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,21 +33,17 @@ public class MobileAppReferrerListServiceImpl implements MobileAppReferrerListSe
     public BaseResponseDto<ReferrerListResponseDataDto> generateReferrerList(ReferrerListRequestDto referrerListRequestDto) {
         BaseResponseDto dto = new BaseResponseDto();
         String referrerId = referrerListRequestDto.getReferrerId();
-        Integer index = referrerListRequestDto.getIndex();
         Integer pageSize = pageValidUtils.validPageSizeLimit(referrerListRequestDto.getPageSize());
-        if(index == null || index.intValue() <= 0){
-            index = 1;
-        }
         String level = referrerManageService.getUserRewardDisplayLevel(referrerId);
+        int count = referrerManageMapper.findReferRelationCount(referrerId, null, null, null, level);
+        int index =  PaginationUtil.validateIndex(referrerListRequestDto.getIndex(), pageSize, count);
+
         List<ReferrerRelationView> referrerRelationDtos = referrerManageMapper.findReferRelationList(referrerId,null,null,null,level,(index - 1) * pageSize,pageSize);
-        int count = referrerManageMapper.findReferRelationCount(referrerId, null, null, null,level);
-        List<ReferrerResponseDataDto> referrerResponseDataDtos = Lists.transform(referrerRelationDtos, new Function<ReferrerRelationView, ReferrerResponseDataDto>() {
-            @Override
-            public ReferrerResponseDataDto apply(ReferrerRelationView input) {
-                UserModel userModel = userMapper.findByLoginName(input.getLoginName());
-                input.setLoginName(userModel.getMobile());
-                return new ReferrerResponseDataDto(input);
-            }
+
+        List<ReferrerResponseDataDto> referrerResponseDataDtos = Lists.transform(referrerRelationDtos, input -> {
+            UserModel userModel = userMapper.findByLoginName(input.getLoginName());
+            input.setLoginName(userModel.getMobile());
+            return new ReferrerResponseDataDto(input);
         });
         ReferrerListResponseDataDto referrerListResponseDataDto = new ReferrerListResponseDataDto();
         referrerListResponseDataDto.setReferrerList(referrerResponseDataDtos);

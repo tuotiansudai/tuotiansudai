@@ -4,10 +4,11 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.console.service.ConsoleBookingLoanService;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.repository.model.Source;
-import com.tuotiansudai.service.BookingLoanService;
+import com.tuotiansudai.util.CalculateUtil;
 import com.tuotiansudai.util.CsvHeaderType;
 import com.tuotiansudai.util.ExportCsvUtil;
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -44,9 +45,11 @@ public class BookingLoanController {
                                         @RequestParam(value = "index", required = false, defaultValue = "1") int index) {
         int pageSize = 10;
         ModelAndView mv = new ModelAndView("/booking-loan-list");
-        mv.addObject("bookingLoan", consoleBookingLoanService.bookingLoanList(productType, bookingTimeStartTime, bookingTimeEndTime, mobile, noticeTimeStartTime, noticeTimeEndTime, source, status, index, pageSize));
+        mv.addObject("bookingLoan", consoleBookingLoanService.bookingLoanList(productType, bookingTimeStartTime, bookingTimeEndTime,
+                mobile, noticeTimeStartTime, noticeTimeEndTime, source, status, index, pageSize));
         mv.addObject("productType", productType);
-        mv.addObject("bookingLoanSumList", consoleBookingLoanService.findBookingLoanSumAmountByProductType(productType, bookingTimeStartTime, bookingTimeEndTime, mobile, noticeTimeStartTime, noticeTimeEndTime, source, status));
+        mv.addObject("bookingLoanSumList", consoleBookingLoanService.findBookingLoanSumAmountByProductType(productType,
+                bookingTimeStartTime, bookingTimeEndTime, mobile, noticeTimeStartTime, noticeTimeEndTime, source, status));
         mv.addObject("productTypeList", Lists.newArrayList(ProductType._180, ProductType._90, ProductType._360));
         mv.addObject("bookingTimeStartTime", bookingTimeStartTime);
         mv.addObject("bookingTimeEndTime", bookingTimeEndTime);

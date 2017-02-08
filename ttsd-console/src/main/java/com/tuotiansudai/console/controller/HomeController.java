@@ -4,7 +4,7 @@ import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.console.service.ConsoleHomeService;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.repository.model.Role;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.log.service.AuditLogService;
 import com.tuotiansudai.service.UserRoleService;
 import com.tuotiansudai.service.UserService;
@@ -15,6 +15,7 @@ import com.tuotiansudai.task.TaskConstant;
 import com.tuotiansudai.task.TaskType;
 import com.tuotiansudai.util.RequestIPParser;
 import com.tuotiansudai.util.SerializeUtil;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,6 +31,8 @@ import java.util.List;
 
 @Controller
 public class HomeController {
+
+    private final static Logger logger = Logger.getLogger(HomeController.class);
 
     @Autowired
     private ConsoleHomeService consoleHomeService;

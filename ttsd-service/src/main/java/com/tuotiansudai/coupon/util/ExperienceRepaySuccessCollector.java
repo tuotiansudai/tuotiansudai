@@ -2,7 +2,7 @@ package com.tuotiansudai.coupon.util;
 
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.coupon.repository.model.CouponModel;
+import com.tuotiansudai.repository.model.CouponModel;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;

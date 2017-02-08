@@ -132,7 +132,7 @@
 
     <bean id="aaSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="hikariCPDataSource"/>
-        <property name="typeAliasesPackage" value="com.tuotiansudai.repository.model,com.tuotiansudai.coupon.repository.model,com.tuotiansudai.transfer.repository.model,com.tuotiansudai.membership.repository.model,com.tuotiansudai.activity.repository.model"/>
+        <property name="typeAliasesPackage" value="com.tuotiansudai.repository.model,com.tuotiansudai.membership.repository.model,com.tuotiansudai.activity.repository.model"/>
         <property name="configLocation" value="WEB-INF/mybatis-configuration.xml"/>
     </bean>
 
@@ -151,7 +151,7 @@
     <!-- scan for mappers and let them be autowired -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="sqlSessionFactoryBeanName" value="aaSqlSessionFactory"/>
-        <property name="basePackage" value="com.tuotiansudai.repository.mapper,com.tuotiansudai.coupon.repository.mapper,com.tuotiansudai.transfer.repository.mapper,com.tuotiansudai.membership.repository.mapper"/>
+        <property name="basePackage" value="com.tuotiansudai.repository.mapper,com.tuotiansudai.membership.repository.mapper"/>
     </bean>
 
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
