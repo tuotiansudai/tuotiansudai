@@ -9,6 +9,7 @@ import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.dto.RechargeDto;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.repository.mapper.BankCardMapper;
 import com.tuotiansudai.repository.mapper.BankMapper;
 import com.tuotiansudai.repository.mapper.RechargeMapper;

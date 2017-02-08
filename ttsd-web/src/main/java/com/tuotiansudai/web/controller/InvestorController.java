@@ -7,7 +7,7 @@ import com.tuotiansudai.dto.InvestorInvestPaginationItemDataDto;
 import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.service.RepayService;
-import com.tuotiansudai.transfer.repository.model.TransferInvestDetailDto;
+import com.tuotiansudai.repository.model.TransferInvestDetailView;
 import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +63,7 @@ public class InvestorController {
                                                                  @RequestParam(name = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
                                                                  @RequestParam(name = "status", required = false) LoanStatus status) {
         String loginName = LoginUserInfo.getLoginName();
-        BasePaginationDataDto<TransferInvestDetailDto> dataDto = investTransferService.getInvestTransferList(loginName, index, 10, startTime, endTime, status);
+        BasePaginationDataDto<TransferInvestDetailView> dataDto = investTransferService.getInvestTransferList(loginName, index, 10, startTime, endTime, status);
         dataDto.setStatus(true);
         BaseDto<BasePaginationDataDto> dto = new BaseDto<>();
         dto.setData(dataDto);

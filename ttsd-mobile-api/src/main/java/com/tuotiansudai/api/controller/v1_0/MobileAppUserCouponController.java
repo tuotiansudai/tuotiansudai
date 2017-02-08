@@ -6,7 +6,7 @@ import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.dto.v1_0.UserCouponListResponseDataDto;
 import com.tuotiansudai.api.dto.v1_0.UserCouponRequestDto;
 import com.tuotiansudai.api.service.v1_0.MobileAppUserCouponService;
-import com.tuotiansudai.coupon.repository.model.UserGroup;
+import com.tuotiansudai.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.coupon.service.UserCouponService;
 import io.swagger.annotations.Api;

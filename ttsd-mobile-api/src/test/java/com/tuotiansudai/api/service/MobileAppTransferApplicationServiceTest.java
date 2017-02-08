@@ -6,20 +6,20 @@ import com.tuotiansudai.api.service.v1_0.impl.MobileAppTransferApplicationServic
 import com.tuotiansudai.api.util.PageValidUtils;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.LoanDto;
-import com.tuotiansudai.dto.TransferApplicationDetailDto;
-import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.service.InvestService;
-import com.tuotiansudai.transfer.dto.TransferApplicationDto;
-import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
-import com.tuotiansudai.transfer.repository.mapper.TransferRuleMapper;
-import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
-import com.tuotiansudai.transfer.repository.model.TransferApplicationRecordDto;
-import com.tuotiansudai.transfer.repository.model.TransferRuleModel;
+import com.tuotiansudai.dto.TransferApplicationDetailDto;
+import com.tuotiansudai.dto.TransferApplicationDto;
+import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
+import com.tuotiansudai.repository.mapper.TransferApplicationMapper;
+import com.tuotiansudai.repository.mapper.TransferRuleMapper;
+import com.tuotiansudai.repository.model.TransferApplicationModel;
+import com.tuotiansudai.repository.model.TransferApplicationRecordView;
+import com.tuotiansudai.repository.model.TransferRuleModel;
 import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.transfer.service.TransferService;
 import com.tuotiansudai.util.AmountConverter;
@@ -74,7 +74,7 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
 
     @Test
     public void shouldGenerateTransferApplicationIsSuccess() {
-        TransferApplicationRecordDto transferApplicationRecordDto = createTransferApplicationRecordDto();
+        TransferApplicationRecordView transferApplicationRecordDto = createTransferApplicationRecordView();
         TransferApplicationRequestDto transferApplicationRequestDto = new TransferApplicationRequestDto();
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId("test");
@@ -84,7 +84,7 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
         transferApplicationRequestDto.setTransferStatus(Lists.newArrayList(TransferStatus.TRANSFERRING));
         LoanModel loanModel = createLoanByUserId("test", idGenerator.generate());
         InvestRepayModel investRepayModel = createInvestRepayModel(transferApplicationRecordDto.getTransferInvestId(), loanModel.getPeriods());
-        List<TransferApplicationRecordDto> transferApplicationRecordDtos = Lists.newArrayList(transferApplicationRecordDto);
+        List<TransferApplicationRecordView> transferApplicationRecordDtos = Lists.newArrayList(transferApplicationRecordDto);
 
         when(transferApplicationMapper.findTransferApplicationPaginationByLoginName(anyString(), any(List.class), anyInt(), anyInt())).thenReturn(transferApplicationRecordDtos);
         when(transferApplicationMapper.findCountTransferApplicationPaginationByLoginName(anyString(), any(List.class))).thenReturn(1);
@@ -110,21 +110,21 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
     }
     @Test
     public void shouldGenerateTransfereeApplicationIsSuccess() {
-        TransferApplicationRecordDto transferApplicationRecordDto = createTransferApplicationRecordDto();
+        TransferApplicationRecordView transferApplicationRecordView = createTransferApplicationRecordView();
         PaginationRequestDto paginationRequestDto = new PaginationRequestDto();
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId("test");
         paginationRequestDto.setBaseParam(baseParam);
         paginationRequestDto.setPageSize(10);
         paginationRequestDto.setIndex(1);
-        List<TransferApplicationRecordDto> transferApplicationRecordDtos = Lists.newArrayList(transferApplicationRecordDto);
-        LoanModel loanModel = createLoanByUserId("test", transferApplicationRecordDto.getLoanId());
-        InvestRepayModel investRepayModel = createInvestRepay("test", transferApplicationRecordDto.getInvestId(), 100, loanModel.getPeriods());
+        List<TransferApplicationRecordView> transferApplicationRecordDtos = Lists.newArrayList(transferApplicationRecordView);
+        LoanModel loanModel = createLoanByUserId("test", transferApplicationRecordView.getLoanId());
+        InvestRepayModel investRepayModel = createInvestRepay("test", transferApplicationRecordView.getInvestId(), 100, loanModel.getPeriods());
 
         when(transferApplicationMapper.findTransfereeApplicationPaginationByLoginName(anyString(), anyInt(), anyInt())).thenReturn(transferApplicationRecordDtos);
         when(transferApplicationMapper.findCountTransfereeApplicationPaginationByLoginName(anyString())).thenReturn(1);
-        when(loanMapper.findById(transferApplicationRecordDto.getLoanId())).thenReturn(loanModel);
-        when(investRepayMapper.findByInvestIdAndPeriod(transferApplicationRecordDto.getInvestId(), loanModel.getPeriods())).thenReturn(investRepayModel);
+        when(loanMapper.findById(transferApplicationRecordView.getLoanId())).thenReturn(loanModel);
+        when(investRepayMapper.findByInvestIdAndPeriod(transferApplicationRecordView.getInvestId(), loanModel.getPeriods())).thenReturn(investRepayModel);
         when(pageValidUtils.validPageSizeLimit(anyInt())).thenReturn(10);
 
         BaseResponseDto<TransferApplicationResponseDataDto> baseResponseDto = mobileAppTransferApplicationService.generateTransfereeApplication(paginationRequestDto);
@@ -139,24 +139,24 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
         assertEquals("90", baseResponseDto.getData().getTransferApplication().get(0).getLeftDays());
 
         investRepayModel.setRepayDate(DateTime.now().plusDays(-90).toDate());
-        when(investRepayMapper.findByInvestIdAndPeriod(transferApplicationRecordDto.getInvestId(), loanModel.getPeriods())).thenReturn(investRepayModel);
+        when(investRepayMapper.findByInvestIdAndPeriod(transferApplicationRecordView.getInvestId(), loanModel.getPeriods())).thenReturn(investRepayModel);
         baseResponseDto = mobileAppTransferApplicationService.generateTransfereeApplication(paginationRequestDto);
         assertEquals("0", baseResponseDto.getData().getTransferApplication().get(0).getLeftDays());
     }
 
-    private TransferApplicationRecordDto createTransferApplicationRecordDto() {
-        TransferApplicationRecordDto transferApplicationRecordDto = new TransferApplicationRecordDto();
-        transferApplicationRecordDto.setLoanId(idGenerator.generate());
-        transferApplicationRecordDto.setTransferInvestId(idGenerator.generate());
-        transferApplicationRecordDto.setName("name");
-        transferApplicationRecordDto.setTransferAmount(1000);
-        transferApplicationRecordDto.setInvestAmount(1200);
-        transferApplicationRecordDto.setTransferTime(new DateTime("2016-02-09").toDate());
-        transferApplicationRecordDto.setBaseRate(0.16);
-        transferApplicationRecordDto.setActivityRate(0.17);
-        transferApplicationRecordDto.setTransferStatus(TransferStatus.TRANSFERRING);
-        transferApplicationRecordDto.setLeftPeriod(4);
-        return transferApplicationRecordDto;
+    private TransferApplicationRecordView createTransferApplicationRecordView() {
+        TransferApplicationRecordView transferApplicationRecordView = new TransferApplicationRecordView();
+        transferApplicationRecordView.setLoanId(idGenerator.generate());
+        transferApplicationRecordView.setTransferInvestId(idGenerator.generate());
+        transferApplicationRecordView.setName("name");
+        transferApplicationRecordView.setTransferAmount(1000);
+        transferApplicationRecordView.setInvestAmount(1200);
+        transferApplicationRecordView.setTransferTime(new DateTime("2016-02-09").toDate());
+        transferApplicationRecordView.setBaseRate(0.16);
+        transferApplicationRecordView.setActivityRate(0.17);
+        transferApplicationRecordView.setTransferStatus(TransferStatus.TRANSFERRING);
+        transferApplicationRecordView.setLeftPeriod(4);
+        return transferApplicationRecordView;
 
     }
 
@@ -349,8 +349,8 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
     @Test
     public void sholudTransferApplicationListIsSuccess(){
         TransferApplicationModel transferApplicationModel1 = createTransferAppLication("ZR0001", 100001, 1000001, 10000001, 2, "testuer1", TransferStatus.SUCCESS);
-        List<TransferApplicationPaginationItemDataDto> transferApplicationRecordDtos = new ArrayList<TransferApplicationPaginationItemDataDto>();
-        transferApplicationRecordDtos.add(createTransferApplicationRecordDto(transferApplicationModel1));
+        List<TransferApplicationPaginationItemDataDto> transferApplicationRecordDtos = new ArrayList<>();
+        transferApplicationRecordDtos.add(createTransferApplicationRecordView(transferApplicationModel1));
         List<InvestRepayModel> investRepayModels = new ArrayList<InvestRepayModel>();
         investRepayModels.add(createInvestRepayModel(10000001,1));
         investRepayModels.add(createInvestRepayModel(10000001,2));
@@ -412,7 +412,7 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
         return investRepayModel;
     }
 
-    private TransferApplicationPaginationItemDataDto createTransferApplicationRecordDto(TransferApplicationModel transferApplicationModel) {
+    private TransferApplicationPaginationItemDataDto createTransferApplicationRecordView(TransferApplicationModel transferApplicationModel) {
         TransferApplicationPaginationItemDataDto transferApplicationPaginationItemDataDto = new TransferApplicationPaginationItemDataDto();
         transferApplicationPaginationItemDataDto.setTransferApplicationId(String.valueOf(transferApplicationModel.getId()));
         transferApplicationPaginationItemDataDto.setName(transferApplicationModel.getName());

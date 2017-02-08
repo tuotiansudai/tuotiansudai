@@ -1,6 +1,7 @@
 package com.tuotiansudai.web.controller;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.LoanRepayMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
