@@ -4,9 +4,11 @@ import java.util.stream.Stream;
 
 public enum MessageQueue {
     CouponAssigning("CouponAssigning"),
+    UserCouponReset("UserCouponReset"),
     InvestCallback("InvestCallback"),
     TransferInvestCallback("TransferInvestCallback"),
     UserRegistered_CompletePointTask("UserRegistered-CompletePointTask"),
+    GenerateReferrerRelation("GenerateReferrerRelation"),
     AccountRegistered_CompletePointTask("AccountRegistered-CompletePointTask"),
     InvestSuccess_CompletePointTask("InvestSuccess-CompletePointTask"),
     InvestSuccess_CouponUpdate("InvestSuccess-CouponUpdate"),
@@ -18,6 +20,7 @@ public enum MessageQueue {
     EventMessage("EventMessage"),
     ManualMessage("ManualMessage"),
     PushMessage("PushMessage"),
+    EMailMessage("EMailMessage"),
     NormalRepayCallback("NormalRepayCallback"),
     AdvanceRepayCallback("AdvanceRepayCallback"),
     AuditLog("AuditLog"),

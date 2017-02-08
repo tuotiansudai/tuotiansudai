@@ -1,7 +1,7 @@
 package com.tuotiansudai.api.dto.v1_0;
 
 
-import com.tuotiansudai.coupon.repository.model.ExchangeCouponView;
+import com.tuotiansudai.repository.model.ExchangeCouponView;
 import com.tuotiansudai.point.repository.model.GoodsType;
 import com.tuotiansudai.util.AmountConverter;
 import io.swagger.annotations.ApiModelProperty;

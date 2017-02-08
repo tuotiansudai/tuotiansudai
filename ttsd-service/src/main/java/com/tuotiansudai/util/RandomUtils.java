@@ -2,7 +2,6 @@ package com.tuotiansudai.util;
 
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.Source;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,16 +27,16 @@ public class RandomUtils {
     @Autowired
     private UserMapper userMapper;
 
-    private String generateNumString(int length) {
+    private String generateNumString() {
         StringBuilder stringBuilder = new StringBuilder();
         Random random = new Random();
-        for (int i = 0; i < length; i++) {
+        for (int i = 0; i < 4; i++) {
             stringBuilder.append(numberChar.charAt(random.nextInt(numberChar.length())));
         }
         return stringBuilder.toString();
     }
 
-    public String encryptMobile(String loginName, String investorLoginName, long investId, Source source) {
+    public String encryptMobile(String loginName, String investorLoginName, long investId) {
         String userMobile;
         String investUserMobile = userMapper.findByLoginName(investorLoginName).getMobile();
         if (StringUtils.isNotEmpty(loginName)) {
@@ -48,18 +47,10 @@ public class RandomUtils {
         }
         String redisKey = MessageFormat.format(REDIS_KEY_TEMPLATE, String.valueOf(investId), investUserMobile);
         if (showRandomLoginNameList.contains(investorLoginName) && !redisWrapperClient.exists(redisKey)) {
-            redisWrapperClient.set(redisKey, investUserMobile.substring(0, 3) + MobileEncryptor.showChar(4) + generateNumString(4));
+            redisWrapperClient.set(redisKey, investUserMobile.substring(0, 3) + MobileEncryptor.showChar(4) + generateNumString());
         }
         String encryptMobile = redisWrapperClient.exists(redisKey) ? redisWrapperClient.get(redisKey) : investUserMobile;
         return MobileEncryptor.encryptMiddleMobile(encryptMobile);
-    }
-
-    public String encryptMobileForWeb(String loginName, String encryptLoginName) {
-        if (encryptLoginName.equalsIgnoreCase(loginName)) {
-            return "您的位置";
-        }
-
-        return MobileEncryptor.encryptMiddleMobile(userMapper.findByLoginName(encryptLoginName).getMobile());
     }
 
     public String encryptMobile(String loginName, String encryptLoginName) {
