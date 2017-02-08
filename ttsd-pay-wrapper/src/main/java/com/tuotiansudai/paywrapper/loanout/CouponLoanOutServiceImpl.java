@@ -117,7 +117,7 @@ public class CouponLoanOutServiceImpl implements CouponLoanOutService {
                 ProjectTransferNotifyMapper.class,
                 ProjectTransferNotifyRequestModel.class);
 
-        if (callbackRequest == null || Strings.isNullOrEmpty(callbackRequest.getOrderId()) || callbackRequest.getOrderId().indexOf("X") != -1) {
+        if (callbackRequest == null || Strings.isNullOrEmpty(callbackRequest.getOrderId()) || callbackRequest.getOrderId().indexOf("X") == -1) {
             logger.error(MessageFormat.format("[标的放款] transfer red envelop payback callback parse is failed (queryString = {0})", queryString));
             return null;
         }
