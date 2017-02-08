@@ -117,7 +117,7 @@ public class CouponLoanOutServiceImpl implements CouponLoanOutService {
                 ProjectTransferNotifyMapper.class,
                 ProjectTransferNotifyRequestModel.class);
 
-        if (callbackRequest == null || Strings.isNullOrEmpty(callbackRequest.getOrderId())) {
+        if (callbackRequest == null || Strings.isNullOrEmpty(callbackRequest.getOrderId()) || callbackRequest.getOrderId().indexOf("X") != -1) {
             logger.error(MessageFormat.format("[标的放款] transfer red envelop payback callback parse is failed (queryString = {0})", queryString));
             return null;
         }
@@ -126,7 +126,7 @@ public class CouponLoanOutServiceImpl implements CouponLoanOutService {
             return callbackRequest.getResponseData();
         }
 
-        long userCouponId = Long.parseLong(callbackRequest.getOrderId());
+        long userCouponId = Long.parseLong(callbackRequest.getOrderId().substring(0, callbackRequest.getOrderId().indexOf("X")));
         UserCouponModel userCouponModel = userCouponMapper.findById(userCouponId);
         if (userCouponModel == null) {
             logger.error(MessageFormat.format("[标的放款] TransferRedEnvelopCallback payback callback failed, order id({0}) is not exist", callbackRequest.getOrderId()));
