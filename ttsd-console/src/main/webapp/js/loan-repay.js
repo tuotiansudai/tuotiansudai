@@ -12,7 +12,7 @@ require(['jquery', 'jquery-ui',
         var autoValue = '';
         $("#loginName").autocomplete({
             source: function (query, process) {
-                $.get('/user/' + query.term + '/search', function (respData) {
+                $.get('/user-manage/user/' + query.term + '/search', function (respData) {
                     autoValue = respData;
                     return process(respData);
                 });
