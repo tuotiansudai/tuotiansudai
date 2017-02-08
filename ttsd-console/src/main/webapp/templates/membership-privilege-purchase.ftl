@@ -1,5 +1,5 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="membership-purchase.js" headLab="finance-manage" sideLab="membershipPurchase" title="会员购买">
+<@global.main pageCss="" pageJavascript="membership-purchase.js" headLab="membership-manage" sideLab="membershipPurchase" title="会员购买">
 
 <!-- content area begin -->
 <div class="col-md-10">

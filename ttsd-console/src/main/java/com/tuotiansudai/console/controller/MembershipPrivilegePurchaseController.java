@@ -16,7 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.Date;
 
 @Controller
-@RequestMapping(path = "/finance-manage")
+@RequestMapping(path = "/membership-manage")
 public class MembershipPrivilegePurchaseController {
 
     @Autowired
