@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.repository.model.TransferStatus;
 import com.tuotiansudai.service.InvestService;
-import com.tuotiansudai.transfer.repository.model.TransferableInvestPaginationItemDataDto;
+import com.tuotiansudai.repository.model.TransferableInvestPaginationItemDataView;
 import com.tuotiansudai.transfer.service.TransferService;
 import org.joda.time.DateTime;
 import org.junit.Before;
@@ -53,7 +53,7 @@ public class TransferControllerTest extends BaseControllerTest {
 
     @Test
     public void shouldTransferrerListDataIsSuccess() throws Exception {
-        TransferableInvestPaginationItemDataDto transferableInvestPaginationItemDataDto = new TransferableInvestPaginationItemDataDto();
+        TransferableInvestPaginationItemDataView transferableInvestPaginationItemDataDto = new TransferableInvestPaginationItemDataView();
         transferableInvestPaginationItemDataDto.setAmount("10000.00");
         transferableInvestPaginationItemDataDto.setNextRepayDate(new DateTime(2016, 8, 8, 0, 0, 0).toDate());
         transferableInvestPaginationItemDataDto.setNextRepayAmount("12000.00");
@@ -61,7 +61,7 @@ public class TransferControllerTest extends BaseControllerTest {
         transferableInvestPaginationItemDataDto.setActivityRate("1%");
         transferableInvestPaginationItemDataDto.setLastRepayDate(new DateTime("2017-01-01").toDate());
         transferableInvestPaginationItemDataDto.setLeftPeriod(3);
-        BasePaginationDataDto<TransferableInvestPaginationItemDataDto> basePaginationDataDto = new BasePaginationDataDto<>(1, 10, 5, Lists.newArrayList(transferableInvestPaginationItemDataDto));
+        BasePaginationDataDto<TransferableInvestPaginationItemDataView> basePaginationDataDto = new BasePaginationDataDto<>(1, 10, 5, Lists.newArrayList(transferableInvestPaginationItemDataDto));
 
         when(transferService.generateTransferableInvest(anyString(), anyInt(), anyInt())).thenReturn(basePaginationDataDto);
         mockLoginUser("investor");

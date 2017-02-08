@@ -11,12 +11,15 @@ import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
-import com.tuotiansudai.transfer.repository.mapper.TransferRuleMapper;
-import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
-import com.tuotiansudai.transfer.repository.model.TransferApplicationRecordDto;
-import com.tuotiansudai.transfer.repository.model.TransferRuleModel;
-import com.tuotiansudai.transfer.repository.model.TransferableInvestPaginationItemDataDto;
+import com.tuotiansudai.dto.TransferApplicationDetailDto;
+import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
+import com.tuotiansudai.dto.TransferApplicationRecodesDto;
+import com.tuotiansudai.repository.mapper.TransferApplicationMapper;
+import com.tuotiansudai.repository.mapper.TransferRuleMapper;
+import com.tuotiansudai.repository.model.TransferApplicationModel;
+import com.tuotiansudai.repository.model.TransferApplicationRecordView;
+import com.tuotiansudai.repository.model.TransferRuleModel;
+import com.tuotiansudai.repository.model.TransferableInvestPaginationItemDataView;
 import com.tuotiansudai.transfer.service.TransferService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.CalculateLeftDays;
@@ -90,12 +93,6 @@ public class TransferServiceImpl implements TransferService {
     private void checkTransferPurchase(InvestDto investDto) throws InvestException {
         AccountModel accountModel = accountMapper.findByLoginName(investDto.getLoginName());
 
-//        AnxinSignPropertyModel anxinProp = anxinSignPropertyMapper.findByLoginName(accountModel.getLoginName());
-//
-//        if (anxinProp == null || StringUtils.isEmpty(anxinProp.getProjectCode())) {
-//            throw new InvestException(InvestExceptionType.ANXIN_SIGN_IS_UNUSABLE);
-//        }
-
         long loanId = Long.parseLong(investDto.getLoanId());
         TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(Long.parseLong(investDto.getTransferInvestId()));
         if (transferApplicationModel.getLoginName().equals(investDto.getLoginName())) {
@@ -124,11 +121,11 @@ public class TransferServiceImpl implements TransferService {
     @Override
     public BasePaginationDataDto<TransferApplicationPaginationItemDataDto> findAllTransferApplicationPaginationList(List<TransferStatus> transferStatus, double rateStart, double rateEnd, Integer index, Integer pageSize) {
         int count = transferApplicationMapper.findCountAllTransferApplicationPagination(transferStatus, rateStart, rateEnd);
-        List<TransferApplicationRecordDto> items = transferApplicationMapper.findAllTransferApplicationPaginationList(transferStatus, rateStart, rateEnd, (index - 1) * pageSize, pageSize);
-        List<TransferApplicationPaginationItemDataDto> itemDataDtoList = Lists.transform(items, transferApplicationRecordDto -> {
-            TransferApplicationPaginationItemDataDto transferApplicationPaginationItemDataDto = new TransferApplicationPaginationItemDataDto(transferApplicationRecordDto);
-            LoanModel loanModel = loanMapper.findById(transferApplicationRecordDto.getLoanId());
-            InvestRepayModel currentInvestRepayModel = investRepayMapper.findByInvestIdAndPeriod(transferApplicationRecordDto.getTransferInvestId(), loanModel.getPeriods());
+        List<TransferApplicationRecordView> items = transferApplicationMapper.findAllTransferApplicationPaginationList(transferStatus, rateStart, rateEnd, (index - 1) * pageSize, pageSize);
+        List<TransferApplicationPaginationItemDataDto> itemDataDtoList = Lists.transform(items, transferApplicationRecordView -> {
+            TransferApplicationPaginationItemDataDto transferApplicationPaginationItemDataDto = new TransferApplicationPaginationItemDataDto(transferApplicationRecordView);
+            LoanModel loanModel = loanMapper.findById(transferApplicationRecordView.getLoanId());
+            InvestRepayModel currentInvestRepayModel = investRepayMapper.findByInvestIdAndPeriod(transferApplicationRecordView.getTransferInvestId(), loanModel.getPeriods());
             Date repayDate = currentInvestRepayModel == null ? new Date() : currentInvestRepayModel.getRepayDate() == null ? new Date() : currentInvestRepayModel.getRepayDate();
             transferApplicationPaginationItemDataDto.setLeftDays(CalculateLeftDays.calculateTransferApplicationLeftDays(repayDate));
             return transferApplicationPaginationItemDataDto;
@@ -162,7 +159,7 @@ public class TransferServiceImpl implements TransferService {
         List<InvestRepayModel> investRepayModels = transferApplicationModel.getStatus() == TransferStatus.SUCCESS ? investRepayMapper.findByInvestIdAndPeriodAsc(transferApplicationModel.getInvestId()) : investRepayMapper.findByInvestIdAndPeriodAsc(transferApplicationModel.getTransferInvestId());
         if (transferApplicationModel.getStatus() == TransferStatus.SUCCESS && transferApplicationModel.getInvestId() != null) {
             InvestModel investModel = investMapper.findById(transferApplicationModel.getInvestId());
-            transferApplicationRecodesDto.setTransferApplicationReceiver(randomUtils.encryptMobile(loginName, investModel.getLoginName(), investModel.getId(), Source.WEB));
+            transferApplicationRecodesDto.setTransferApplicationReceiver(randomUtils.encryptMobile(loginName, investModel.getLoginName(), investModel.getId()));
             transferApplicationRecodesDto.setReceiveAmount(AmountConverter.convertCentToString(transferApplicationModel.getTransferAmount()));
             transferApplicationRecodesDto.setSource(investModel.getSource());
             transferApplicationRecodesDto.setExpecedInterest(AmountConverter.convertCentToString(InterestCalculator.calculateTransferInterest(transferApplicationModel, investRepayModels)));
@@ -182,7 +179,7 @@ public class TransferServiceImpl implements TransferService {
     }
 
     @Override
-    public BasePaginationDataDto<TransferableInvestPaginationItemDataDto> generateTransferableInvest(String loginName, Integer index, Integer pageSize) {
+    public BasePaginationDataDto<TransferableInvestPaginationItemDataView> generateTransferableInvest(String loginName, Integer index, Integer pageSize) {
         long count = investMapper.findWebCountTransferableApplicationPaginationByLoginName(loginName);
         List<TransferableInvestView> items = Lists.newArrayList();
         items = investMapper.findWebTransferableApplicationPaginationByLoginName(loginName, (index - 1) * pageSize, pageSize);
@@ -191,26 +188,26 @@ public class TransferServiceImpl implements TransferService {
             index = index > totalPages ? totalPages : index;
             items = investMapper.findWebTransferableApplicationPaginationByLoginName(loginName, (index - 1) * pageSize, pageSize);
         }
-        List<TransferableInvestPaginationItemDataDto> records = Lists.transform(items, input -> {
-            TransferableInvestPaginationItemDataDto transferableInvestPaginationItemDataDto = new TransferableInvestPaginationItemDataDto(input);
-            transferableInvestPaginationItemDataDto.setTransferStatus(input.getTransferStatus().getDescription());
-            transferableInvestPaginationItemDataDto.setLastRepayDate(loanRepayMapper.findLastRepayDateByLoanId(input.getLoanId()));
+        List<TransferableInvestPaginationItemDataView> records = Lists.transform(items, input -> {
+            TransferableInvestPaginationItemDataView transferableInvestPaginationItemDataView = new TransferableInvestPaginationItemDataView(input);
+            transferableInvestPaginationItemDataView.setTransferStatus(input.getTransferStatus().getDescription());
+            transferableInvestPaginationItemDataView.setLastRepayDate(loanRepayMapper.findLastRepayDateByLoanId(input.getLoanId()));
             LoanRepayModel loanRepayModel = loanRepayMapper.findCurrentLoanRepayByLoanId(input.getLoanId());
             if (loanRepayModel != null) {
                 int leftPeriod = investRepayMapper.findLeftPeriodByTransferInvestIdAndPeriod(input.getInvestId(), loanRepayModel.getPeriod());
-                transferableInvestPaginationItemDataDto.setLeftPeriod(leftPeriod);
+                transferableInvestPaginationItemDataView.setLeftPeriod(leftPeriod);
                 LoanModel loanModel = loanMapper.findById(input.getLoanId());
                 InvestRepayModel currentInvestRepayModel = investRepayMapper.findByInvestIdAndPeriod(input.getInvestId(), loanModel.getPeriods());
                 Date repayDate = currentInvestRepayModel == null ? new Date() : currentInvestRepayModel.getRepayDate() == null ? new Date() : currentInvestRepayModel.getRepayDate();
-                transferableInvestPaginationItemDataDto.setLeftDays(CalculateLeftDays.calculateTransferApplicationLeftDays(repayDate));
+                transferableInvestPaginationItemDataView.setLeftDays(CalculateLeftDays.calculateTransferApplicationLeftDays(repayDate));
             }
-            return transferableInvestPaginationItemDataDto;
+            return transferableInvestPaginationItemDataView;
         });
-        UnmodifiableIterator<TransferableInvestPaginationItemDataDto> filter = Iterators.filter(records.iterator(), input -> {
+        UnmodifiableIterator<TransferableInvestPaginationItemDataView> filter = Iterators.filter(records.iterator(), input -> {
             TransferRuleModel transferRuleModel = transferRuleMapper.find();
             return transferRuleModel.isMultipleTransferEnabled() || (!transferRuleModel.isMultipleTransferEnabled() && transferApplicationMapper.findByInvestId(input.getInvestId()) == null) ;
         });
-        BasePaginationDataDto<TransferableInvestPaginationItemDataDto> baseDto = new BasePaginationDataDto(index, pageSize, count, Lists.newArrayList(filter));
+        BasePaginationDataDto<TransferableInvestPaginationItemDataView> baseDto = new BasePaginationDataDto(index, pageSize, count, Lists.newArrayList(filter));
         baseDto.setStatus(true);
 
         return baseDto;
@@ -262,18 +259,18 @@ public class TransferServiceImpl implements TransferService {
         transferApplicationDetailDto.setCountdown(countdown);
         transferApplicationDetailDto.setBeforeDeadLine(beforeDeadLine);
         transferApplicationDetailDto.setTransferStatus(transferApplicationModel.getStatus());
-        transferApplicationDetailDto.setTransferrer(randomUtils.encryptMobile(loginName, transferApplicationModel.getLoginName(), transferApplicationModel.getTransferInvestId(), Source.WEB));
+        transferApplicationDetailDto.setTransferrer(randomUtils.encryptMobile(loginName, transferApplicationModel.getLoginName(), transferApplicationModel.getTransferInvestId()));
         long investId = transferApplicationModel.getStatus() == TransferStatus.SUCCESS ? transferApplicationModel.getInvestId() : transferApplicationModel.getTransferInvestId();
         List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investId);
         transferApplicationDetailDto.setExpecedInterest(AmountConverter.convertCentToString(InterestCalculator.calculateTransferInterest(transferApplicationModel, investRepayModels, investFeeRate)));
         if (transferApplicationModel.getStatus() == TransferStatus.TRANSFERRING) {
             AccountModel accountModel = accountMapper.findByLoginName(loginName);
             InvestModel investModel = investMapper.findById(transferApplicationModel.getTransferInvestId());
-            transferApplicationDetailDto.setLoginName(randomUtils.encryptMobile(loginName, investModel.getLoginName(), investModel.getId(), Source.MOBILE));
+            transferApplicationDetailDto.setLoginName(randomUtils.encryptMobile(loginName, investModel.getLoginName(), investModel.getId()));
             transferApplicationDetailDto.setBalance(accountModel != null ? AmountConverter.convertCentToString(accountModel.getBalance()) : "0.00");
         } else if (transferApplicationModel.getStatus() == TransferStatus.SUCCESS) {
             InvestModel investModel = investMapper.findById(transferApplicationModel.getInvestId());
-            transferApplicationDetailDto.setLoginName(randomUtils.encryptMobile(loginName, investModel.getLoginName(), investModel.getId(), Source.MOBILE));
+            transferApplicationDetailDto.setLoginName(randomUtils.encryptMobile(loginName, investModel.getLoginName(), investModel.getId()));
             transferApplicationDetailDto.setInvestId(transferApplicationModel.getInvestId());
             transferApplicationDetailDto.setTransferTime(transferApplicationModel.getTransferTime());
         }

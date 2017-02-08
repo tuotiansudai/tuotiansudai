@@ -13,6 +13,7 @@ import com.tuotiansudai.repository.model.UserBillModel;
 import com.tuotiansudai.repository.model.UserBillOperationType;
 import com.tuotiansudai.repository.model.UserBillPaginationView;
 import com.tuotiansudai.service.UserBillService;
+import com.tuotiansudai.util.CalculateUtil;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +41,7 @@ public class ConsoleUserBillService {
         }
 
         if (endTime == null) {
-            formattedEndTime = new DateTime().withDate(9999, 12, 31).withTimeAtStartOfDay().toDate();
+            formattedEndTime = CalculateUtil.calculateMaxDate();
         } else {
             formattedEndTime = new DateTime(endTime).toDate();
         }
@@ -59,7 +60,7 @@ public class ConsoleUserBillService {
         }
 
         if (endTime == null) {
-            formattedEndTime = new DateTime().withDate(9999, 12, 31).withTimeAtStartOfDay().toDate();
+            formattedEndTime = CalculateUtil.calculateMaxDate();
         } else {
             formattedEndTime = new DateTime(endTime).toDate();
         }

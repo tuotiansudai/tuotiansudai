@@ -1,9 +1,9 @@
 package com.tuotiansudai.api.dto.v1_0;
 
 
-import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
+import com.tuotiansudai.repository.model.TransferApplicationRecordView;
 import com.tuotiansudai.repository.model.TransferStatus;
-import com.tuotiansudai.transfer.repository.model.TransferApplicationRecordDto;
+import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
 import com.tuotiansudai.util.AmountConverter;
 import io.swagger.annotations.ApiModelProperty;
 import org.joda.time.DateTime;
@@ -149,19 +149,19 @@ public class TransferApplicationRecordResponseDataDto extends BaseResponseDataDt
 
     }
 
-    public TransferApplicationRecordResponseDataDto(TransferApplicationRecordDto transferApplicationRecordDto) {
+    public TransferApplicationRecordResponseDataDto(TransferApplicationRecordView transferApplicationRecordView) {
         DecimalFormat decimalFormat = new DecimalFormat("######0.##");
-        this.transferApplicationId = String.valueOf(transferApplicationRecordDto.getTransferApplicationId());
-        this.name = transferApplicationRecordDto.getName();
-        this.transferAmount = AmountConverter.convertCentToString(transferApplicationRecordDto.getTransferAmount());
-        this.investId = transferApplicationRecordDto.getInvestId();
-        this.transferInvestId = transferApplicationRecordDto.getTransferInvestId();
-        this.investAmount = AmountConverter.convertCentToString(transferApplicationRecordDto.getInvestAmount());
-        this.transferTime = transferApplicationRecordDto.getTransferTime() == null ? "" : new DateTime(transferApplicationRecordDto.getTransferTime()).toString("yyyy-MM-dd HH:mm:ss");
-        this.baseRate = decimalFormat.format(transferApplicationRecordDto.getBaseRate() * 100);
-        this.activityRate = decimalFormat.format(transferApplicationRecordDto.getActivityRate() * 100);
-        this.transferStatus = transferApplicationRecordDto.getTransferStatus();
-        this.leftPeriod = String.valueOf(transferApplicationRecordDto.getLeftPeriod());
+        this.transferApplicationId = String.valueOf(transferApplicationRecordView.getTransferApplicationId());
+        this.name = transferApplicationRecordView.getName();
+        this.transferAmount = AmountConverter.convertCentToString(transferApplicationRecordView.getTransferAmount());
+        this.investId = transferApplicationRecordView.getInvestId();
+        this.transferInvestId = transferApplicationRecordView.getTransferInvestId();
+        this.investAmount = AmountConverter.convertCentToString(transferApplicationRecordView.getInvestAmount());
+        this.transferTime = transferApplicationRecordView.getTransferTime() == null ? "" : new DateTime(transferApplicationRecordView.getTransferTime()).toString("yyyy-MM-dd HH:mm:ss");
+        this.baseRate = decimalFormat.format(transferApplicationRecordView.getBaseRate() * 100);
+        this.activityRate = decimalFormat.format(transferApplicationRecordView.getActivityRate() * 100);
+        this.transferStatus = transferApplicationRecordView.getTransferStatus();
+        this.leftPeriod = String.valueOf(transferApplicationRecordView.getLeftPeriod());
     }
 
     public TransferApplicationRecordResponseDataDto(TransferApplicationPaginationItemDataDto transferApplicationPaginationItemDataDto) {
