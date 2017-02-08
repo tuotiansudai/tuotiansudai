@@ -3,7 +3,6 @@ package com.tuotiansudai.web.controller;
 
 import com.google.common.base.Strings;
 import com.tuotiansudai.dto.*;
-import com.tuotiansudai.exception.ReferrerRelationException;
 import com.tuotiansudai.repository.model.CaptchaType;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.PrepareUserService;
@@ -112,17 +111,14 @@ public class RegisterUserController {
     @RequestMapping(path = "/user", method = RequestMethod.POST)
     @ResponseBody
     public ModelAndView registerUser(@Valid @ModelAttribute RegisterUserDto registerUserDto, RedirectAttributes redirectAttributes, HttpServletRequest request) {
-        boolean isRegisterSuccess = false;
-        try {
-            if (request.getSession().getAttribute("channel") != null) {
-                registerUserDto.setChannel(String.valueOf(request.getSession().getAttribute("channel")));
-            }
-            logger.info(MessageFormat.format("[Register User {0}] controller starting...", registerUserDto.getMobile()));
-            isRegisterSuccess = this.userService.registerUser(registerUserDto);
-            logger.info(MessageFormat.format("[Register User {0}] controller invoked service ({0})", registerUserDto.getMobile(), String.valueOf(isRegisterSuccess)));
-        } catch (ReferrerRelationException e) {
-            logger.error(e.getLocalizedMessage(), e);
+        boolean isRegisterSuccess;
+        if (request.getSession().getAttribute("channel") != null) {
+            registerUserDto.setChannel(String.valueOf(request.getSession().getAttribute("channel")));
         }
+        logger.info(MessageFormat.format("[Register User {0}] controller starting...", registerUserDto.getMobile()));
+        isRegisterSuccess = this.userService.registerUser(registerUserDto);
+        logger.info(MessageFormat.format("[Register User {0}] controller invoked service ({0})", registerUserDto.getMobile(), String.valueOf(isRegisterSuccess)));
+
 
         if (!isRegisterSuccess) {
             redirectAttributes.addFlashAttribute("originalFormData", registerUserDto);

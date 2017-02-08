@@ -61,8 +61,8 @@ public class MembershipController {
     @RequestMapping(value = "/membership-list", method = RequestMethod.GET)
     public ModelAndView membershipList(@RequestParam(value = "index", required = true, defaultValue = "1") int index,
                                        @RequestParam(value = "loginName", required = false, defaultValue = "") String loginName,
-                                       @RequestParam(value = "startTime", required = false, defaultValue = "") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date registerStartTime,
-                                       @RequestParam(value = "endTime", required = false, defaultValue = "") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date registerEndTime,
+                                       @RequestParam(value = "startTime", required = false, defaultValue = "") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date registerStartTime,
+                                       @RequestParam(value = "endTime", required = false, defaultValue = "") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date registerEndTime,
                                        @RequestParam(value = "mobile", required = false, defaultValue = "") String mobile,
                                        @RequestParam(value = "type", required = false, defaultValue = "") UserMembershipType userMembershipType,
                                        @RequestParam(value = "levels", required = false, defaultValue = "") List<Integer> selectedLevels) {

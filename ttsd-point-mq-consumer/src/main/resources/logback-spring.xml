@@ -17,7 +17,6 @@
 
     <logger name="com.tuotiansudai.repository.mapper" level="DEBUG"/>
     <logger name="com.tuotiansudai.membership.repository.mapper" level="DEBUG"/>
-    <logger name="com.tuotiansudai.coupon.repository.mapper" level="DEBUG"/>
 
     <root level="INFO">
         <appender-ref ref="CONSOLE"/>
