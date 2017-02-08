@@ -1,5 +1,5 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="user-search.js" headLab="user-manage" sideLab="userSearchMan" title="用户查询">
+<@global.main pageCss="" pageJavascript="user-search.js" headLab="service-manage" sideLab="userSearchMan" title="用户查询">
 
 <div class="col-md-10">
     <form action="" class="form-inline query-build">
