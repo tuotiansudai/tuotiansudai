@@ -217,16 +217,6 @@ public class UserCouponServiceImpl implements UserCouponService {
     }
 
     @Override
-    public long findSumBirthdayAndInterestByLoginName(String loginName){
-        return userCouponMapper.findSumBirthdayAndInterestByLoginName(loginName);
-    }
-
-    @Override
-    public long findSumRedEnvelopeByLoginName(String loginName){
-        return userCouponMapper.findSumRedEnvelopeByLoginName(loginName);
-    }
-
-    @Override
     @Transactional
     public void updateCouponAndAssign(long investId) {
         InvestModel investModel = investMapper.findById(investId);

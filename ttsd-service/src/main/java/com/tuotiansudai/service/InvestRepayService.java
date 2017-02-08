@@ -19,11 +19,7 @@ public interface InvestRepayService {
 
     List<LatestInvestView> findLatestInvestByLoginName(String loginName, int startLimit, int endLimit);
 
-    long findSumRepaidInterestByLoginName(String loginName);
-
     long findSumRepayingInterestByLoginName(String loginName);
 
     long findSumRepayingCorpusByLoginName(String loginName);
-
-    long findSumRepaidCorpusByLoginName(String loginName);
 }

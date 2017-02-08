@@ -71,9 +71,4 @@ public class UserBillServiceImpl implements UserBillService {
 
         return dto;
     }
-
-    @Override
-    public long findSumRewardByLoginName(String loginName) {
-        return userBillMapper.findSumRewardByLoginName(loginName);
-    }
 }

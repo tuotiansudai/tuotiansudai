@@ -82,19 +82,8 @@ public class BindBankCardServiceImpl implements BindBankCardService {
     @Override
     public boolean isManual(String loginName) {
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
-        if (accountModel.getFreeze() > 0) {
-            return true;
-        }
+        return accountModel.getFreeze() > 0 || accountModel.getBalance() > 0 || investRepayService.findSumRepayingCorpusByLoginName(loginName) > 0 || investRepayService.findSumRepayingInterestByLoginName(loginName) > 0;
 
-        if (accountModel.getBalance() > 0) {
-            return true;
-        }
-
-        if (investRepayService.findSumRepayingCorpusByLoginName(loginName) > 0 || investRepayService.findSumRepayingInterestByLoginName(loginName) > 0) {
-            return true;
-        }
-
-        return false;
     }
 
     @Override

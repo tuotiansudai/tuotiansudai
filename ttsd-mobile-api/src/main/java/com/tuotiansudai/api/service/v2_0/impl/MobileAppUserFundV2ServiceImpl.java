@@ -34,19 +34,8 @@ public class MobileAppUserFundV2ServiceImpl implements MobileAppUserFundV2Servic
     @Autowired
     private UserCouponService userCouponService;
 
-    @Autowired
-    private UserBillMapper userBillMapper;
-
-    @Autowired
-    private UserMapper userMapper;
-
-    @Autowired
-    private InvestRepayMapper investRepayMapper;
-
     @Override
     public BaseResponseDto<UserFundResponseDataDto> getUserFund(String loginName) {
-        UserModel userModel = userMapper.findByLoginName(loginName);
-
         UserFundView userFundView = userFundMapper.findByLoginName(loginName);
 
         AccountModel accountModel = accountMapper.findByLoginName(loginName);

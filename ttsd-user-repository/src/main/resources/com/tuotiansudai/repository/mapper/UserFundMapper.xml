@@ -68,22 +68,22 @@
               from withdraw where login_name = #{loginName} and status = 'APPLY_SUCCESS') as withdraw_froze_amount,
 
               (select count(1)
-              from invest_repay join invest on invest_repay.invest_id= invest.id
+              from invest_repay join invest on invest_repay.invest_id = invest.id
               where invest.login_name = #{loginName}
               and EXISTS (select 1 from loan l where l.id = invest.loan_id and l.product_type != 'EXPERIENCE')
               and invest.transfer_status != 'SUCCESS'
               and((invest_repay.status = 'REPAYING' and date_format(invest_repay.repay_date, '%Y-%m-%d') between date_format(now(), '%Y-%m-01') and LAST_DAY(now()))
                   or(invest_repay.status = 'COMPLETE' and date_format(invest_repay.actual_repay_date, '%Y-%m-%d') between date_format(now(), '%Y-%m-01') and LAST_DAY(now())))) as current_month_invest_repay_count,
 
-             (select ifnull(sum(invest_repay.repay_amount),0) from invest_repay
-             join invest on invest_repay.invest_id = invest
+             (select ifnull(sum(invest_repay.expected_interest-invest_repay.expected_fee),0) from invest_repay
+             join invest on invest_repay.invest_id = invest.id
              join user_coupon on user_coupon.invest_id = invest.id
-             where invest_repay.status = 'REPAYING' invest.login_name = #{loginName} and user_coupon.coupon_id = 382) as expected_experience_interest,
+             where invest_repay.status = 'REPAYING' and invest.login_name = #{loginName} and user_coupon.coupon_id = 382) as expected_experience_interest,
 
              (select ifnull(sum(invest_repay.repay_amount),0) from invest_repay
-             join invest on invest_repay.invest_id = invest
+             join invest on invest_repay.invest_id = invest.id
              join user_coupon on user_coupon.invest_id = invest.id
-             where invest_repay.status = 'COMPLETE' invest.login_name = #{loginName} and user_coupon.coupon_id = 382) as actual_experience_interest,
+             where invest_repay.status = 'COMPLETE' and invest.login_name = #{loginName} and user_coupon.coupon_id = 382) as actual_experience_interest,
 
              (select ifnull(sum(amount), 0) from invest where invest.login_name = #{loginName} and invest.status = 'SUCCESS' and transfer_invest_id is null) as invest_amount
         from dual;
