@@ -13,11 +13,9 @@ import com.tuotiansudai.enums.PushSource;
 import com.tuotiansudai.enums.PushType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.exception.AmountTransferException;
-import com.tuotiansudai.job.AutoLoanOutJob;
+import com.tuotiansudai.job.DelayMessageDeliveryJobCreator;
 import com.tuotiansudai.job.JobManager;
-import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
-import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.message.*;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.client.model.MessageTopic;
@@ -48,8 +46,6 @@ import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.Logger;
-import org.joda.time.DateTime;
-import org.quartz.SchedulerException;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -109,9 +105,6 @@ public class InvestServiceImpl implements InvestService {
 
     @Autowired
     private InvestAchievementService investAchievementService;
-
-    @Autowired
-    private UserMembershipEvaluator userMembershipEvaluator;
 
     @Autowired
     private JobManager jobManager;
@@ -644,7 +637,7 @@ public class InvestServiceImpl implements InvestService {
             logger.error("send loan raising complete notify failed.", e);
         }
 
-        createAutoLoanOutJob(loanId);
+        DelayMessageDeliveryJobCreator.createAutoLoanOutDelayJob(jobManager, loanId);
     }
 
     private void sendLoanRaisingCompleteNotify(long loanId) {
@@ -678,21 +671,6 @@ public class InvestServiceImpl implements InvestService {
         logger.info("will send loan raising complete notify, loanId:" + loanId);
         smsWrapperClient.sendLoanRaisingCompleteNotify(dto);
     }
-
-    private void createAutoLoanOutJob(long loanId) {
-        try {
-            Date triggerTime = new DateTime().plusMinutes(AutoLoanOutJob.AUTO_LOAN_OUT_DELAY_MINUTES)
-                    .toDate();
-            jobManager.newJob(JobType.AutoLoanOut, AutoLoanOutJob.class)
-                    .addJobData(AutoLoanOutJob.LOAN_ID_KEY, loanId)
-                    .withIdentity(JobType.AutoLoanOut.name(), "Loan-" + loanId)
-                    .runOnceAt(triggerTime)
-                    .submit();
-        } catch (SchedulerException e) {
-            logger.error("create auto loan out job for loan[" + loanId + "] fail", e);
-        }
-    }
-
 
     private void infoLog(String msg, String orderId, long amount, String loginName, long loanId) {
         logger.info(msg + ",orderId:" + orderId + ",LoginName:" + loginName + ",amount:" + amount + ",loanId:" + loanId);

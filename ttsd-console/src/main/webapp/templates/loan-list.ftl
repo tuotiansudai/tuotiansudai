@@ -1,30 +1,33 @@
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
 
-<#if status??>
-    <#assign loanStatus="${status}">
-<#else>
-    <#assign loanStatus="ALL">
-</#if>
-
-<@global.main pageCss="" pageJavascript="loanList.js" headLab="project-manage" sideLab="${loanStatus}" title="项目管理">
+<@global.main pageCss="" pageJavascript="loanList.js" headLab="project-manage" sideLab="ALL" title="项目管理">
 
 <!-- content area begin -->
 <div class="col-md-10">
     <form action="" class="form-inline query-build" id="formLoanList">
-        <input type="hidden" class="status" name="status" value="<#if status??>${status}</#if>">
 
         <div class="form-group">
-            <label for="number">编号</label>
+            <label for="number">项目编号</label>
             <input type="text" class="form-control loanId" name="loanId" placeholder=""
                    value="${(loanId?string('0'))!}">
+        </div>
+        <div class="form-group">
+            <label for="project">项目状态</label>
+            <select class="selectpicker" name="status">
+                <option value="">全部</option>
+                <#list loanStatusList as status>
+                    <option value="${status.name()}"
+                            <#if (selectedStatus?? && selectedStatus.name() == status.name()) >selected</#if>>${status.description}</option>
+                </#list>
+            </select>
         </div>
         <div class="form-group">
             <label for="number">项目名称</label>
             <input type="text" class="form-control loanName" name="loanName" placeholder="" value="${loanName!}">
         </div>
         <div class="form-group">
-            <label for="number">日期</label>
+            <label for="number">发起日期</label>
 
             <div class='input-group date' id='datepickerBegin'>
                 <input type='text' class="form-control" name="startTime" value="${(startTime?string('yyyy-MM-dd'))!}"/>
@@ -47,7 +50,7 @@
         <table class="table table-bordered table-hover " id="tabFormData">
             <thead>
             <tr>
-                <th>编号</th>
+                <th>项目编号</th>
                 <th>项目名称</th>
                 <th>借款期限</th>
                 <th>借款人</th>
@@ -140,7 +143,7 @@
 
                 <li>
                     <#if hasPreviousPage >
-                    <a href="?status=${status!}&index=${index-1}&pageSize=${pageSize}&loanId=${loanId!}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&loanName=${loanName!}"
+                    <a href="?status=${selectedStatus!}&index=${index-1}&pageSize=${pageSize}&loanId=${loanId!}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&loanName=${loanName!}"
                        aria-label="Previous">
                     <#else>
                     <a href="#" aria-label="Previous">
@@ -151,7 +154,7 @@
                 <li><a>${index}</a></li>
                 <li>
                     <#if hasNextPage >
-                    <a href="?status=${status!}&index=${index+1}&pageSize=${pageSize}&loanId=${loanId!}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&loanName=${loanName!}"
+                    <a href="?status=${selectedStatus!}&index=${index+1}&pageSize=${pageSize}&loanId=${loanId!}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&loanName=${loanName!}"
                        aria-label="Next">
                     <#else>
                     <a href="#" aria-label="Next">

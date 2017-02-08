@@ -22,26 +22,15 @@
                 "header":{"text":"项目管理"},
                 "sidebar":
                 [
-                    {"name":"ALL","text":"所有的借款","link":"/project-manage/loan-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"start","text":"发起借款","link":"/project-manage/loan","role":"'ADMIN','OPERATOR'"},
-                    {"name":"WAITING_VERIFY","text":"初审的借款","link":"/project-manage/loan-list?status=WAITING_VERIFY","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"RAISING","text":"筹款中的借款","link":"/project-manage/loan-list?status=RAISING","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"RECHECK","text":"复审的借款","link":"/project-manage/loan-list?status=RECHECK","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"REPAYING","text":"还款中的借款","link":"/project-manage/loan-list?status=REPAYING","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"COMPLETE","text":"完成还款的借款","link":"/project-manage/loan-list?status=COMPLETE","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"CANCEL","text":"已经流标的借款","link":"/project-manage/loan-list?status=CANCEL","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"OVERDUE","text":"逾期的借款","link":"/project-manage/loan-list?status=OVERDUE","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"repaymentInfoList","text":"项目还款明细表","link":"/project-manage/loan-repay","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"contract","text":"CFCA创建合同","link":"/project-manage/contract","role":"'ADMIN'"}
-                ]
-            },
-            {
-                "name":"transfer-manage",
-                "header":{"text":"债权转让管理"},
-                "sidebar":
-                [
-                    {"name":"transfer-list","text":"所有的转让项目","link":"/transfer-manage/transfer-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE'"},
-                    {"name":"transfer-rule","text":"转让规则","link":"/transfer-manage/transfer-rule","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"}
+                    {"name":"sub-title","text":"直投项目管理","link":"","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
+                        {"name":"ALL","text":"所有的借款","link":"/project-manage/loan-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
+                        {"name":"start","text":"发起借款","link":"/project-manage/loan","role":"'ADMIN','OPERATOR'"},
+                        {"name":"repaymentInfoList","text":"项目还款明细表","link":"/project-manage/loan-repay","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
+                    {"name":"sub-title","text":"转让项目管理","link":"","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE'"},
+                        {"name":"transfer-list","text":"所有的转让项目","link":"/transfer-manage/transfer-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE'"},
+                        {"name":"transfer-rule","text":"转让规则","link":"/transfer-manage/transfer-rule","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
+                    {"name":"sub-title","text":"项目合同","link":"","role":"'ADMIN'"},
+                        {"name":"contract","text":"CFCA创建合同","link":"/project-manage/contract","role":"'ADMIN'"}
                 ]
             },
             {
@@ -250,7 +239,7 @@
             <ul class="nav navbar-nav">
                 <#list menus as menu>
                     <#list menu.sidebar as item>
-                        <#if item.role??>
+                        <#if item.role?? && item.name!='sub-title'>
                             <@role hasRole=item.role>
                                 <li <#if menu.name == headLab>class="active"</#if>>
                                     <a href="${item.link}">${menu.header.text}</a>
@@ -278,14 +267,18 @@
                             <#list menu.sidebar as item>
                                 <#if item.role??>
                                     <@role hasRole=item.role>
-                                        <li <#if item.name == sideLab>class="active"</#if>>
-                                            <a href="${item.link}">${item.text}</a>
-                                        </li>
+                                        <#if item.name == 'sub-title'>
+                                            <li class="sub-title">${item.text}</li>
+                                        <#else>
+                                            <li <#if item.name == sideLab>class="active"</#if>><a href="${item.link}">${item.text}</a></li>
+                                        </#if>
                                     </@role>
                                 <#else>
-                                    <li <#if item.name == sideLab>class="active"</#if>>
-                                        <a href="${item.link}">${item.text}</a>
-                                    </li>
+                                    <#if item.name == 'sub-title'>
+                                        <li class="sub-title">${item.text}</li>
+                                    <#else>
+                                        <li <#if item.name == sideLab>class="active"</#if>><a href="${item.link}">${item.text}</a></li>
+                                    </#if>
                                 </#if>
                             </#list>
                         </#if>
