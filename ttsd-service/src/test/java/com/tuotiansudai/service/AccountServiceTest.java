@@ -133,6 +133,7 @@ public class AccountServiceTest {
         fakeLoanModel.setDescriptionText("text");
         fakeLoanModel.setCreatedTime(new Date());
         fakeLoanModel.setPledgeType(PledgeType.HOUSE);
+        fakeLoanModel.setProductType(ProductType._90);
         loanMapper.create(fakeLoanModel);
         return fakeLoanModel;
     }

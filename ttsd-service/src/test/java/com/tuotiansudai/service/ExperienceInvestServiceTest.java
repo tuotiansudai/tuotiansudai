@@ -65,9 +65,6 @@ public class ExperienceInvestServiceTest {
     @Autowired
     private ExperienceInvestService experienceInvestService;
 
-    @Mock
-    private CouponAssignmentService couponAssignmentService;
-
     @Test
     public void shouldInvestExperienceLoan() throws Exception {
         UserModel investor = this.getFakeUser("newbieInvestor");
@@ -76,9 +73,6 @@ public class ExperienceInvestServiceTest {
         UserCouponModel fakeUserCoupon = this.getFakeUserCoupon(investor, fakeNewbieCoupon);
 
         MockitoAnnotations.initMocks(this);
-        ReflectionTestUtils.setField(experienceInvestService, "couponAssignmentService", couponAssignmentService);
-        when(couponAssignmentService.asyncAssignUserCoupon(anyString(), anyListOf(UserGroup.class))).thenReturn(Lists.newArrayList());
-
         experienceInvestService.invest(this.getFakeInvestDto(investor, fakeExperienceLoan, fakeUserCoupon));
 
         List<InvestModel> successInvestModels = investMapper.findByLoanIdAndLoginName(fakeExperienceLoan.getId(), investor.getLoginName());
@@ -86,8 +80,8 @@ public class ExperienceInvestServiceTest {
         assertThat(successInvestModels.get(0).getTransferStatus(), is(TransferStatus.NONTRANSFERABLE));
         List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(successInvestModels.get(0).getId());
         assertThat(investRepayModels.size(), is(1));
-        assertThat(investRepayModels.get(0).getExpectedInterest(), is(725L));
-        assertThat(investRepayModels.get(0).getExpectedFee(), is(72L));
+        assertThat(investRepayModels.get(0).getExpectedInterest(), is(849L));
+        assertThat(investRepayModels.get(0).getExpectedFee(), is(84L));
         assertThat(investRepayModels.get(0).getRepayDate().getTime(), is(new DateTime().withTimeAtStartOfDay().plusDays(3).minusSeconds(1).getMillis()));
         assertThat(couponMapper.findById(fakeNewbieCoupon.getId()).getUsedCount(), is(1L));
     }
@@ -133,7 +127,7 @@ public class ExperienceInvestServiceTest {
 
     private CouponModel getFakeNewbieCoupon(UserModel creator) {
         CouponModel couponModel = new CouponModel();
-        couponModel.setAmount(588800);
+        couponModel.setAmount(688800);
         couponModel.setActivatedBy(creator.getLoginName());
         couponModel.setActive(true);
         couponModel.setCreatedTime(new Date());
