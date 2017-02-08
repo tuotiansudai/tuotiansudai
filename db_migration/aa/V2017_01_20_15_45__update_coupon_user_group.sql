@@ -1,18 +1,8 @@
 BEGIN;
-UPDATE loan
-SET status = 'COMPLETE'
-WHERE id = 1;
 
-INSERT INTO `loan` (`id`, `name`, `agent_login_name`, `loaner_login_name`, `loaner_user_name`, `loaner_identity_number`, `type`, `periods`, `duration`, `description_text`, `description_html`, `pledge_type`, `loan_amount`, `min_invest_amount`, `max_invest_amount`, `invest_increasing_amount`, `activity_type`, `product_type`, `base_rate`, `activity_rate`, `contract_id`, `fundraising_start_time`, `fundraising_end_time`, `raising_complete_time`, `verify_time`, `verify_login_name`, `recheck_time`, `recheck_login_name`, `status`, `first_invest_achievement_id`, `last_invest_achievement_id`, `max_amount_achievement_id`, `show_on_home`, `created_time`, `created_login_name`, `update_time`)
-VALUES
-  (2, '新手体验项目', NULL, '', '', '', 'INVEST_INTEREST_LUMP_SUM_REPAY', '1', '3', '', '', 'NONE', '68880000', '0', '0', '0',
-                                                                                      'NEWBIE', 'EXPERIENCE', 0.15, '0',
-                                                                                      '0', '2017-01-01 00:00:00',
-                                                                                           '9999-12-31 00:00:00', NULL,
-                                                                                           '2017-01-01 17:38:54',
-                                                                                           'sidneygao', NULL, NULL,
-                                                                                           'RAISING', NULL, NULL, NULL,
-   '1', '2017-01-01 17:38:54', 'sidneygao', '2017-01-01 17:38:54');
+UPDATE loan
+SET loan_amount = 68880000
+WHERE id = 1;
 
 INSERT INTO coupon (`id`,
                     `amount`,
