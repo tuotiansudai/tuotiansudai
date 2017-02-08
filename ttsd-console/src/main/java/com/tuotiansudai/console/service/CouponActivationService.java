@@ -1,14 +1,14 @@
 package com.tuotiansudai.console.service;
 
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
-import com.tuotiansudai.coupon.repository.model.CouponModel;
-import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.ExchangeCodeService;
 import com.tuotiansudai.enums.OperationType;
 import com.tuotiansudai.log.service.AuditLogService;
 import com.tuotiansudai.mq.client.model.MessageQueue;
+import com.tuotiansudai.repository.mapper.CouponMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.model.CouponModel;
+import com.tuotiansudai.repository.model.UserGroup;
 import com.tuotiansudai.repository.model.UserModel;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

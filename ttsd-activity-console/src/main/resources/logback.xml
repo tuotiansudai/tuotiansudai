@@ -16,12 +16,6 @@
     <logger name="com.tuotiansudai.repository.mapper" level="DEBUG">
         <appender-ref ref="STDOUT"/>
     </logger>
-    <logger name="com.tuotiansudai.transfer.repository.mapper" level="DEBUG">
-        <appender-ref ref="STDOUT"/>
-    </logger>
-    <logger name="com.tuotiansudai.coupon.repository.mapper" level="DEBUG">
-        <appender-ref ref="STDOUT"/>
-    </logger>
     <logger name="com.tuotiansudai.membership.repository.mapper" level="DEBUG">
         <appender-ref ref="STDOUT"/>
     </logger>

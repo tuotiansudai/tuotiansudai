@@ -1,7 +1,6 @@
 package com.tuotiansudai.service;
 
 import com.tuotiansudai.dto.RegisterUserDto;
-import com.tuotiansudai.exception.ReferrerRelationException;
 import com.tuotiansudai.repository.model.UserModel;
 
 import java.util.List;
@@ -18,7 +17,7 @@ public interface UserService {
 
     String getRealName(String loginNameOrMobile);
 
-    boolean registerUser(RegisterUserDto dto) throws ReferrerRelationException;
+    boolean registerUser(RegisterUserDto dto);
 
     boolean loginNameIsExist(String loginName);
 

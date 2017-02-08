@@ -4,7 +4,6 @@ import com.google.common.base.Strings;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.RegisterUserDto;
 import com.tuotiansudai.enums.UserOpType;
-import com.tuotiansudai.exception.ReferrerRelationException;
 import com.tuotiansudai.log.service.UserOpLogService;
 import com.tuotiansudai.repository.mapper.PrepareUserMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
@@ -133,24 +132,17 @@ public class UserServiceImpl implements UserService {
         }
 
 
-        try {
-            UserModel userModel = new UserModel();
-            userModel.setLoginName(loginName);
-            userModel.setMobile(dto.getMobile());
-            userModel.setSource(dto.getSource());
-            userModel.setReferrer(referrerUserModel != null ? referrerUserModel.getLoginName() : null);
-            userModel.setChannel(dto.getChannel());
-            String salt = myShaPasswordEncoder.generateSalt();
-            userModel.setSalt(salt);
-            userModel.setPassword(myShaPasswordEncoder.encodePassword(dto.getPassword(), salt));
-            userModel.setLastModifiedTime(new Date());
-            return registerUserService.register(userModel);
-        } catch (ReferrerRelationException e) {
-            logger.error(MessageFormat.format("[Register User {0}] create new user is failed", dto.getMobile()));
-
-        }
-
-        return false;
+        UserModel userModel = new UserModel();
+        userModel.setLoginName(loginName);
+        userModel.setMobile(dto.getMobile());
+        userModel.setSource(dto.getSource());
+        userModel.setReferrer(referrerUserModel != null ? referrerUserModel.getLoginName() : null);
+        userModel.setChannel(dto.getChannel());
+        String salt = myShaPasswordEncoder.generateSalt();
+        userModel.setSalt(salt);
+        userModel.setPassword(myShaPasswordEncoder.encodePassword(dto.getPassword(), salt));
+        userModel.setLastModifiedTime(new Date());
+        return registerUserService.register(userModel);
     }
 
     @Transactional

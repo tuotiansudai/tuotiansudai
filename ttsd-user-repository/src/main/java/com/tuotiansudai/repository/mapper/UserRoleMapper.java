@@ -1,6 +1,6 @@
 package com.tuotiansudai.repository.mapper;
 
-import com.tuotiansudai.repository.model.Role;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.repository.model.UserRoleModel;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
