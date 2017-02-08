@@ -1,5 +1,6 @@
 package com.tuotiansudai.cache;
 
+import com.tuotiansudai.util.SerializeUtil;
 import org.apache.ibatis.cache.Cache;
 import org.apache.log4j.Logger;
 import redis.clients.jedis.Jedis;
@@ -40,14 +41,14 @@ public class MybatisRedisCache implements Cache {
     @Override
     public void putObject(Object key, Object value) {
         execute(jedis -> {
-            jedis.set(getKey(key).getBytes(StandardCharsets.UTF_8), serialize(value));
+            jedis.set(getKey(key).getBytes(StandardCharsets.UTF_8), SerializeUtil.serialize(value));
             jedis.expire(getKey(key).getBytes(StandardCharsets.UTF_8), redisProvider.getExpireSeconds());
         });
     }
 
     @Override
     public Object getObject(Object key) {
-        return executeGet(jedis -> deserialize(jedis.get(getKey(key).getBytes(StandardCharsets.UTF_8))));
+        return executeGet(jedis -> SerializeUtil.deserialize(jedis.get(getKey(key).getBytes(StandardCharsets.UTF_8))));
     }
 
     @Override
@@ -88,57 +89,6 @@ public class MybatisRedisCache implements Cache {
 
     private String getKey(Object key) {
         return MessageFormat.format(MYBATIS_CACHE_KEY, this.id, md5Hash(String.valueOf(key)));
-    }
-
-    private byte[] serialize(Object object) {
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        ObjectOutputStream oos = null;
-        try {
-            //序列化
-            oos = new ObjectOutputStream(bos);
-            oos.writeObject(object);
-            return bos.toByteArray();
-        } catch (Exception e) {
-            logger.error(e.getLocalizedMessage(), e);
-        } finally {
-            if (oos != null) {
-                try {
-                    oos.close();
-                } catch (IOException ex) {
-                    logger.error(ex.getLocalizedMessage(), ex);
-                }
-            }
-            try {
-                bos.close();
-            } catch (IOException ex) {
-                logger.error(ex.getLocalizedMessage(), ex);
-            }
-        }
-        return null;
-    }
-
-    private Object deserialize(byte[] bytes) {
-        if (bytes == null) {
-            return null;
-        }
-
-        ObjectInputStream ois = null;
-        try {
-            //反序列化
-            ois = new ObjectInputStream(new ByteArrayInputStream(bytes));
-            return ois.readObject();
-        } catch (Exception e) {
-            logger.error(e.getLocalizedMessage(), e);
-        } finally {
-            if (ois != null) {
-                try {
-                    ois.close();
-                } catch (IOException e) {
-                    logger.error(e.getLocalizedMessage(), e);
-                }
-            }
-        }
-        return null;
     }
 
     private String md5Hash(String sourceStr) {

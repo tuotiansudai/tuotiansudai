@@ -10,10 +10,11 @@ import com.tuotiansudai.console.bi.dto.RoleStage;
 import com.tuotiansudai.console.dto.UserItemDataDto;
 import com.tuotiansudai.console.repository.model.UserOperation;
 import com.tuotiansudai.console.service.ConsoleUserService;
-import com.tuotiansudai.coupon.repository.model.UserGroup;
+import com.tuotiansudai.repository.model.UserGroup;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.EditUserDto;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.exception.BaseException;
 import com.tuotiansudai.log.service.AuditLogService;
 import com.tuotiansudai.membership.service.UserMembershipService;
@@ -26,6 +27,7 @@ import com.tuotiansudai.task.OperationTask;
 import com.tuotiansudai.enums.OperationType;
 import com.tuotiansudai.task.TaskConstant;
 import com.tuotiansudai.util.RequestIPParser;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -189,8 +191,8 @@ public class UserController {
     public ModelAndView findAllUser(@RequestParam(value = "loginName", required = false) String loginName,
                                     @RequestParam(value = "email", required = false) String email,
                                     @RequestParam(value = "mobile", required = false) String mobile,
-                                    @RequestParam(value = "beginTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date beginTime,
-                                    @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date endTime,
+                                    @RequestParam(value = "beginTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date beginTime,
+                                    @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date endTime,
                                     @RequestParam(value = "roleStage", required = false) RoleStage roleStage,
                                     @RequestParam(value = "referrerMobile", required = false) String referrerMobile,
                                     @RequestParam(value = "channel", required = false) String channel,

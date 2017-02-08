@@ -36,7 +36,7 @@ public class LoanRepayNotifyScheduler {
     @Autowired
     private PayWrapperClient payWrapperClient;
 
-    @Scheduled(cron = "0 0 2 * * ?", zone = "Asia/Shanghai")
+    @Scheduled(cron = "0 0 14 * * ?", zone = "Asia/Shanghai")
     public void loanRepayNotify() {
         String today = DateFormatUtils.format(new Date(), "yyyy-MM-dd");
         List<LoanRepayNotifyModel> loanRepayNotifyModelList = loanRepayMapper.findLoanRepayNotifyToday(today);

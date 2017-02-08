@@ -1,7 +1,7 @@
 package com.tuotiansudai.api.dto.v1_0;
 
 
-import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
+import com.tuotiansudai.repository.model.CouponRepayModel;
 import com.tuotiansudai.repository.model.InvestRepayModel;
 import io.swagger.annotations.ApiModelProperty;
 

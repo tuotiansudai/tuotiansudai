@@ -1,7 +1,5 @@
 package com.tuotiansudai.scheduler.loan;
 
-import com.tuotiansudai.coupon.repository.mapper.CouponRepayMapper;
-import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.DateUtil;

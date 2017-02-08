@@ -1,7 +1,7 @@
 package com.tuotiansudai.api.dto.v1_0;
 
 
-import com.tuotiansudai.coupon.dto.CouponAlertDto;
+import com.tuotiansudai.dto.CouponAlertDto;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.util.AmountConverter;
 import io.swagger.annotations.ApiModelProperty;

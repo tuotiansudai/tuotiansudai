@@ -1,14 +1,15 @@
 package com.tuotiansudai.console.service;
 
-import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
-import com.tuotiansudai.coupon.repository.mapper.CouponRepayMapper;
-import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
-import com.tuotiansudai.coupon.repository.model.CouponModel;
-import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
-import com.tuotiansudai.coupon.repository.model.UserCouponModel;
+import com.tuotiansudai.repository.mapper.CouponMapper;
+import com.tuotiansudai.repository.mapper.CouponRepayMapper;
+import com.tuotiansudai.repository.mapper.UserCouponMapper;
+import com.tuotiansudai.repository.model.CouponModel;
+import com.tuotiansudai.repository.model.CouponRepayModel;
+import com.tuotiansudai.repository.model.UserCouponModel;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.FinanceReportDto;
 import com.tuotiansudai.enums.CouponType;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.repository.mapper.FinanceReportMapper;
 import com.tuotiansudai.repository.mapper.InvestReferrerRewardMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
@@ -31,22 +32,22 @@ public class FinanceReportService {
     static Logger logger = Logger.getLogger(FinanceReportService.class);
 
     @Autowired
-    FinanceReportMapper financeReportMapper;
+    private FinanceReportMapper financeReportMapper;
 
     @Autowired
-    InvestReferrerRewardMapper investReferrerRewardMapper;
+    private InvestReferrerRewardMapper investReferrerRewardMapper;
 
     @Autowired
-    InvestRepayMapper investRepayMapper;
+    private InvestRepayMapper investRepayMapper;
 
     @Autowired
-    CouponMapper couponMapper;
+    private CouponMapper couponMapper;
 
     @Autowired
-    UserCouponMapper userCouponMapper;
+    private UserCouponMapper userCouponMapper;
 
     @Autowired
-    CouponRepayMapper couponRepayMapper;
+    private CouponRepayMapper couponRepayMapper;
 
     public BasePaginationDataDto<FinanceReportDto> getFinanceReportDtos(Long loanId, Integer period, String investLoginName,
                                                                         Date investStartTime, Date investEndTime, PreferenceType preferenceType,

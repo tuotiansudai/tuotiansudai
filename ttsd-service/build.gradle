@@ -21,6 +21,7 @@ dependencies {
             project(":ttsd-membership"),
             project(":ttsd-util"),
             project(":ttsd-edxactivity-model"),
+            project(":ttsd-aa-repository"),
             project(":ttsd-anxin-sign"),
             project(":ttsd-quartz-extension"),
             project(":ttsd-job"),

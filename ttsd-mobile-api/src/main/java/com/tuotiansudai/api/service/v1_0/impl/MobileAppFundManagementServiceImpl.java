@@ -4,7 +4,7 @@ import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.FundManagementResponseDataDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.service.v1_0.MobileAppFundManagementService;
-import com.tuotiansudai.coupon.repository.model.UserCouponView;
+import com.tuotiansudai.repository.model.UserCouponView;
 import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;

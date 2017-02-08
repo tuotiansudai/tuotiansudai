@@ -2,7 +2,7 @@ package com.tuotiansudai.web.controller;
 
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.transfer.dto.TransferApplicationDto;
+import com.tuotiansudai.dto.TransferApplicationDto;
 import com.tuotiansudai.transfer.service.InvestTransferService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
