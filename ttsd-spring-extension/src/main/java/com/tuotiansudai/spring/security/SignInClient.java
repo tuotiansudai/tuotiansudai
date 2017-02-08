@@ -70,6 +70,12 @@ public class SignInClient {
         try {
             Response response = this.execute(request);
             return objectMapper.readValue(response.body().string(), SignInResult.class);
+        } catch (IllegalArgumentException e) {
+            logger.warn(MessageFormat.format("[sign in client] login failed, response is 4xx (user={0} token={1} source={2} deviceId={3})", username, token, source, deviceId));
+            SignInResult signInResult = new SignInResult();
+            signInResult.setResult(false);
+            signInResult.setMessage("用户名或密码错误");
+            return signInResult;
         } catch (Exception e) {
             logger.error(MessageFormat.format("[sign in client] login failed (user={0} token={1} source={2} deviceId={3})", username, token, source, deviceId), e);
         }
@@ -187,6 +193,17 @@ public class SignInClient {
         do {
             Request request = requestBuilder.build();
             Response response = okHttpClient.newCall(request).execute();
+
+            //用户名或密码错误
+            if (response.code() == 401) {
+                return response;
+            }
+
+            //用户名或密码参数格式错误
+            if (HttpStatus.valueOf(response.code()).is4xxClientError()) {
+                throw new IllegalArgumentException();
+            }
+
             if (!HttpStatus.valueOf(response.code()).is5xxServerError()) {
                 return response;
             }

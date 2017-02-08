@@ -17,20 +17,32 @@ require(['jquery', 'underscore', 'jquery.ajax.extension', 'jquery.validate', 'jq
 
         //表单验证
         function checkLogin(DomElement) {
+            formCheckValid = true;
             DomElement.each(function (key, option) {
                 var name = option.name,
                     value = $.trim(option.value),
                     errorMsg;
-                formCheckValid = true;
                 switch (name) {
                     case 'username':
                         if (_.isEmpty(value)) {
                             errorMsg = '用户名不能为空';
                             formCheckValid = false;
-                        }
-                        else if(value.length<5){
-                            errorMsg = '用户名输入太短';
-                            formCheckValid = false;
+                        } else {
+                            var charLen = 0;
+                            for(var i = 0; i < value.length; i++) {
+                                if ((value.charCodeAt(i) & 0xff00) != 0) {
+                                    charLen ++;
+                                }
+                                charLen ++;
+                            }
+                            if(charLen.length < 5) {
+                                errorMsg = '用户名输入太短';
+                                formCheckValid = false;
+                            }
+                            if(charLen.length > 25) {
+                                errorMsg = '用户名输入太长';
+                                formCheckValid = false;
+                            }
                         }
                         break;
                     case 'password':
@@ -98,6 +110,7 @@ require(['jquery', 'underscore', 'jquery.ajax.extension', 'jquery.validate', 'jq
             if (formCheckValid) {
                 submitLoginForm();
             }
+            return false;
         });
 
         $(document).keypress(function (event) {

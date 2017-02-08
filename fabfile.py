@@ -61,6 +61,7 @@ def mk_mq_consumer():
     local('cd ./ttsd-activity-mq-consumer && /opt/gradle/latest/bin/gradle distZip')
     local('cd ./ttsd-user-mq-consumer && /opt/gradle/latest/bin/gradle distZip')
     local('cd ./ttsd-auditLog-mq-consumer && /opt/gradle/latest/bin/gradle distZip')
+    local('cd ./ttsd-email-mq-consumer && /opt/gradle/latest/bin/gradle distZip')
 
 
 def mk_rest_service():
@@ -155,6 +156,7 @@ def deploy_worker():
     put(local_path='./ttsd-activity-mq-consumer/build/distributions/*.zip', remote_path='/workspace/')
     put(local_path='./ttsd-user-mq-consumer/build/distributions/*.zip', remote_path='/workspace/')
     put(local_path='./ttsd-auditLog-mq-consumer/build/distributions/*.zip', remote_path='/workspace/')
+    put(local_path='./ttsd-email-mq-consumer/build/distributions/*.zip', remote_path='/workspace/')
     put(local_path='./ttsd-diagnosis/build/distributions/*.zip', remote_path='/workspace/')
     put(local_path='./scripts/supervisor/job-worker.ini', remote_path='/etc/supervisord.d/')
     put(local_path='./scripts/logstash/worker.conf', remote_path='/etc/logstash/conf.d/prod.conf')
@@ -170,6 +172,7 @@ def deploy_worker():
         sudo('rm -rf ttsd-activity-mq-consumer/')
         sudo('rm -rf ttsd-user-mq-consumer/')
         sudo('rm -rf ttsd-auditLog-mq-consumer/')
+        sudo('rm -rf ttsd-email-mq-consumer/')
         sudo('rm -rf ttsd-diagnosis/')
         sudo('unzip \*.zip')
         sudo('supervisorctl reload')

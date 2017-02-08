@@ -1,6 +1,6 @@
 package com.tuotiansudai.coupon.util;
 
-import com.tuotiansudai.coupon.repository.model.UserGroup;
+import com.tuotiansudai.repository.model.UserGroup;
 
 public interface InvestAchievementUserCollector {
 
