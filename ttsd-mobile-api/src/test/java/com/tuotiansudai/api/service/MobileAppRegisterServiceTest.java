@@ -7,7 +7,6 @@ import com.tuotiansudai.api.service.v1_0.impl.MobileAppRegisterServiceImpl;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.RegisterUserDto;
 import com.tuotiansudai.dto.SmsDataDto;
-import com.tuotiansudai.exception.ReferrerRelationException;
 import com.tuotiansudai.repository.model.CaptchaType;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserModel;
@@ -64,7 +63,7 @@ public class MobileAppRegisterServiceTest extends ServiceTestBase{
 
     }
     @Test
-    public void shouldRegisterUserLoginNameIsExist() throws ReferrerRelationException {
+    public void shouldRegisterUserLoginNameIsExist() {
 
         RegisterRequestDto registerRequestDto = getFakeRegisterRequestDto();
         when(smsCaptchaService.verifyMobileCaptcha(anyString(), anyString(), any(CaptchaType.class))).thenReturn(false);
@@ -76,7 +75,7 @@ public class MobileAppRegisterServiceTest extends ServiceTestBase{
         assertEquals(ReturnMessage.USER_NAME_IS_EXIST.getCode(), baseResponseDto.getCode());
     }
     @Test
-    public void shouldRegisterUserMobileIsExist() throws ReferrerRelationException {
+    public void shouldRegisterUserMobileIsExist() {
 
         RegisterRequestDto registerRequestDto = getFakeRegisterRequestDto();
         when(smsCaptchaService.verifyMobileCaptcha(anyString(), anyString(), any(CaptchaType.class))).thenReturn(false);
@@ -88,7 +87,7 @@ public class MobileAppRegisterServiceTest extends ServiceTestBase{
         assertEquals(ReturnMessage.MOBILE_NUMBER_IS_EXIST.getCode(),baseResponseDto.getCode());
     }
     @Test
-    public void shouldRegisterUserCaptchaIsValid() throws ReferrerRelationException {
+    public void shouldRegisterUserCaptchaIsValid() {
 
         RegisterRequestDto registerRequestDto = getFakeRegisterRequestDto();
         when(smsCaptchaService.verifyMobileCaptcha(anyString(), anyString(), any(CaptchaType.class))).thenReturn(false);
@@ -100,7 +99,7 @@ public class MobileAppRegisterServiceTest extends ServiceTestBase{
         assertEquals(ReturnMessage.SMS_CAPTCHA_ERROR.getCode(),baseResponseDto.getCode());
     }
     @Test
-    public void shouldRegisterUserIsOk() throws ReferrerRelationException {
+    public void shouldRegisterUserIsOk() {
         RegisterRequestDto registerRequestDto = getFakeRegisterRequestDto();
         when(smsCaptchaService.verifyMobileCaptcha(anyString(), anyString(), any(CaptchaType.class))).thenReturn(true);
         when(userService.loginNameIsExist(anyString())).thenReturn(false);

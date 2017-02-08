@@ -5,7 +5,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.tuotiansudai.coupon.repository.model.CouponModel;
+import com.tuotiansudai.repository.model.CouponModel;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
 import org.apache.commons.collections4.CollectionUtils;

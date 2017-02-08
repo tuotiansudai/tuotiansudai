@@ -1,7 +1,7 @@
 package com.tuotiansudai.repository.mapper;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.repository.model.Role;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserRoleModel;
 import com.tuotiansudai.repository.model.UserStatus;

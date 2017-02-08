@@ -51,7 +51,7 @@ public class MdSmsClient implements ApplicationContextAware {
 
     private final static int lifeSecond = 172800;
 
-    public static final char[] DIGIT = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
+    private static final char[] DIGIT = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
 
     @Value("${zucp.url}")
     private String url;
@@ -80,17 +80,16 @@ public class MdSmsClient implements ApplicationContextAware {
     @Autowired
     private RedisWrapperClient redisWrapperClient;
 
-    public BaseDto<SmsDataDto> sendSMS(Class<? extends BaseMapper> baseMapperClass, String mobile, SmsTemplate template, String param, String restrictedIP) {
-        List<String> paramList = Lists.newArrayList(param);
-        return sendSMS(baseMapperClass, mobile, template, paramList, restrictedIP);
+    public BaseDto<SmsDataDto> sendSMS(Class<? extends BaseMapper> baseMapperClass, String mobile, SmsTemplate template, List<String> paramList) {
+        return sendSMS(baseMapperClass, mobile, template, paramList, "");
     }
 
-    public BaseDto<SmsDataDto> sendSMS(Class<? extends BaseMapper> baseMapperClass, String mobile, SmsTemplate smsTemplate,List<String> paramList, String restrictedIP) {
+    public BaseDto<SmsDataDto> sendSMS(Class<? extends BaseMapper> baseMapperClass, String mobile, SmsTemplate smsTemplate, List<String> paramList, String restrictedIP) {
         BaseDto<SmsDataDto> dto = new BaseDto<>();
         SmsDataDto data = new SmsDataDto();
         dto.setData(data);
 
-        if(Lists.<String>newArrayList(Environment.SMOKE.name(),Environment.STAGING.name(),Environment.DEV.name()).contains(environment)){
+        if(Lists.newArrayList(Environment.SMOKE.name(),Environment.DEV.name()).contains(environment)){
             logger.info("[短信发送] 该环境不发送短信");
             return dto;
         }

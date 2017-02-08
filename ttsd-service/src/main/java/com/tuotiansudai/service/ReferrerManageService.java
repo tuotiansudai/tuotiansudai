@@ -1,10 +1,10 @@
 package com.tuotiansudai.service;
 
 import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.model.ReferrerManageView;
+import com.tuotiansudai.repository.model.ReferrerRelationView;
 
 import java.util.Date;
-import java.util.List;
 
 public interface ReferrerManageService {
 

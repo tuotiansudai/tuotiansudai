@@ -6,11 +6,11 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.coupon.dto.UserCouponDto;
-import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
-import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
-import com.tuotiansudai.coupon.repository.model.CouponModel;
-import com.tuotiansudai.coupon.repository.model.UserCouponModel;
+import com.tuotiansudai.dto.UserCouponDto;
+import com.tuotiansudai.repository.mapper.CouponMapper;
+import com.tuotiansudai.repository.mapper.UserCouponMapper;
+import com.tuotiansudai.repository.model.CouponModel;
+import com.tuotiansudai.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.CouponType;
@@ -299,7 +299,7 @@ public class InvestServiceImpl implements InvestService {
     public BasePaginationDataDto<InvestorInvestPaginationItemDataDto> getInvestPagination(String loginName, int index, int pageSize, Date startTime, Date endTime, LoanStatus loanStatus) {
         startTime = new DateTime(startTime == null ? 0L : startTime).withTimeAtStartOfDay().toDate();
         if (endTime == null) {
-            endTime = new DateTime().withDate(9999, 12, 31).withTimeAtStartOfDay().toDate();
+            endTime = CalculateUtil.calculateMaxDate();
         } else {
             endTime = new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
         }

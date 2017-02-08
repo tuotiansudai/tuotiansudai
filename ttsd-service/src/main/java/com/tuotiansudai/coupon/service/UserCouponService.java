@@ -1,7 +1,7 @@
 package com.tuotiansudai.coupon.service;
 
-import com.tuotiansudai.coupon.dto.UserCouponDto;
-import com.tuotiansudai.coupon.repository.model.UserCouponView;
+import com.tuotiansudai.dto.UserCouponDto;
+import com.tuotiansudai.repository.model.UserCouponView;
 
 import java.util.List;
 

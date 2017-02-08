@@ -6,18 +6,15 @@ import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
 import com.google.common.primitives.Ints;
-import com.tuotiansudai.coupon.repository.model.CouponModel;
-import com.tuotiansudai.coupon.repository.model.UserCouponModel;
+import com.tuotiansudai.repository.model.CouponModel;
+import com.tuotiansudai.repository.model.UserCouponModel;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
+import com.tuotiansudai.repository.model.TransferApplicationModel;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 

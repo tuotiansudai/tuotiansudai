@@ -44,7 +44,7 @@ public class MybatisAAConfig {
     @Bean
     public MapperScannerConfigurer aaMapperScannerConfigurer() {
         MapperScannerConfigurer configurer = new MapperScannerConfigurer();
-        configurer.setBasePackage("com.tuotiansudai.repository.mapper,com.tuotiansudai.transfer.repository.mapper,com.tuotiansudai.coupon.repository.mapper,com.tuotiansudai.membership.repository.mapper");
+        configurer.setBasePackage("com.tuotiansudai.repository.mapper,com.tuotiansudai.repository.mapper,com.tuotiansudai.repository.mapper,com.tuotiansudai.membership.repository.mapper");
         configurer.setSqlSessionFactoryBeanName("aaSqlSessionFactory");
         return configurer;
     }
@@ -58,7 +58,7 @@ public class MybatisAAConfig {
     public SqlSessionFactory aaSqlSessionFactory(@Qualifier("hikariCPAADataSource") DataSource hikariCPAADataSource) throws Exception {
         SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
         sessionFactory.setDataSource(hikariCPAADataSource);
-        sessionFactory.setTypeAliasesPackage("com.tuotiansudai.repository.model,com.tuotiansudai.transfer.repository.model,com.tuotiansudai.coupon.repository.model,com.tuotiansudai.membership.repository.model");
+        sessionFactory.setTypeAliasesPackage("com.tuotiansudai.repository.model,com.tuotiansudai.membership.repository.model");
         return sessionFactory.getObject();
     }
 

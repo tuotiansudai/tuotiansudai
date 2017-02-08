@@ -1,18 +1,17 @@
 package com.tuotiansudai.client;
 
+import com.tuotiansudai.util.SerializeUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.Tuple;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import static com.tuotiansudai.util.SerializeUtil.serialize;
 
 @Component
 public class RedisWrapperClient extends AbstractRedisWrapperClient {
@@ -355,25 +354,6 @@ public class RedisWrapperClient extends AbstractRedisWrapperClient {
         });
     }
 
-
-    public String setSeri(final String key, final Object value) {
-        return execute(new JedisAction<String>() {
-            @Override
-            public String action(Jedis jedis) {
-                return jedis.set(key.getBytes(), serialize(value));
-            }
-        });
-    }
-
-    public Object getSeri(final String key) {
-        return execute(new JedisAction() {
-            @Override
-            public Object action(Jedis jedis) {
-                return deserialize(jedis.get(key.getBytes()));
-            }
-        });
-    }
-
     public Long hsetSeri(final String key, final String field, final Object value) {
         return execute(new JedisAction<Long>() {
             @Override
@@ -392,11 +372,12 @@ public class RedisWrapperClient extends AbstractRedisWrapperClient {
         });
     }
 
+    @SuppressWarnings(value = "unchecked")
     public Object hgetSeri(final String key, final String field) {
         return execute(new JedisAction() {
             @Override
             public Object action(Jedis jedis) {
-                return deserialize(jedis.hget(key.getBytes(), field.getBytes()));
+                return SerializeUtil.deserialize(jedis.hget(key.getBytes(), field.getBytes()));
             }
         });
     }
@@ -463,33 +444,5 @@ public class RedisWrapperClient extends AbstractRedisWrapperClient {
                 return jedis.hset(key.getBytes(), field.getBytes(), serialize(value));
             }
         });
-    }
-
-    private byte[] serialize(Object object) {
-        try {
-            //序列化
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ObjectOutputStream oos = new ObjectOutputStream(baos);
-            oos.writeObject(object);
-            return baos.toByteArray();
-        } catch (Exception e) {
-            logger.error(e.getLocalizedMessage(), e);
-        }
-        return null;
-    }
-
-    private Object deserialize(byte[] bytes) {
-        if (bytes == null) {
-            return null;
-        }
-        try {
-            //反序列化
-            ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
-            ObjectInputStream ois = new ObjectInputStream(bais);
-            return ois.readObject();
-        } catch (Exception e) {
-            logger.error(e.getLocalizedMessage(), e);
-        }
-        return null;
     }
 }

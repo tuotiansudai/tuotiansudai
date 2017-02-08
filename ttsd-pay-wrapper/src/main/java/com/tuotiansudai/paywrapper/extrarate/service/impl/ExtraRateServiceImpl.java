@@ -83,17 +83,6 @@ public class ExtraRateServiceImpl implements ExtraRateService {
     private final static String REPAY_REDIS_KEY_TEMPLATE = "EXTRA_RATE_REPAY:{0}";
 
     @Override
-    public void transferPurchase(long investId) {
-        InvestModel investModel = investMapper.findById(investId);
-        InvestModel transferInvestModel = investMapper.findById(investModel.getTransferInvestId());
-        InvestExtraRateModel investExtraRateModel = investExtraRateMapper.findByInvestId(transferInvestModel.getId());
-        if (investExtraRateModel != null) {
-            investExtraRateModel.setTransfer(true);
-            investExtraRateMapper.update(investExtraRateModel);
-        }
-    }
-
-    @Override
     public void normalRepay(long loanRepayId) {
         LoanRepayModel currentLoanRepay = loanRepayMapper.findById(loanRepayId);
         long loanId = currentLoanRepay.getLoanId();

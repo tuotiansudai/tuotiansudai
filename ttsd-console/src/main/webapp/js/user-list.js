@@ -1,8 +1,14 @@
 require(['jquery', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicker', 'bootstrapSelect', 'moment', 'csrf'], function ($) {
     $(function () {
         $('.selectpicker').selectpicker();
-        $('#datetimepicker1').datetimepicker({format: 'YYYY-MM-DD HH:mm'});
-        $('#datetimepicker2').datetimepicker({format: 'YYYY-MM-DD HH:mm'});
+        $('#datetimepicker1').datetimepicker({format: 'YYYY-MM-DD HH:mm:ss'});
+        $('#datetimepicker2').datetimepicker({
+            format: 'YYYY-MM-DD HH:mm:ss'
+        }).on('dp.change', function (ev) {
+            if ($(this).find('.form-control').val().split(' ')[1] == '00:00:00') {
+                $(this).find('.form-control').val($(this).find('.form-control').val().split(' ')[0] + ' 23:59:59')
+            }
+        });
 
         $('form button[type="reset"]').click(function () {
             location.href = "/user-manage/users";
