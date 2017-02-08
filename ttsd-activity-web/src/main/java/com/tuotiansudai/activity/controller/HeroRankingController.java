@@ -4,10 +4,12 @@ import com.tuotiansudai.activity.repository.model.ActivityCategory;
 import com.tuotiansudai.activity.service.HeroRankingService;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.HeroRankingView;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.spring.LoginUserInfo;
+import com.tuotiansudai.util.MobileEncryptor;
 import com.tuotiansudai.util.RandomUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.joda.time.DateTime;
@@ -29,10 +31,7 @@ public class HeroRankingController {
     private HeroRankingService heroRankingService;
 
     @Autowired
-    private RandomUtils randomUtils;
-
-    @Autowired
-    private LoanMapper loanMapper;
+    private UserMapper userMapper;
 
     @RequestMapping(method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView loadPageData() {
@@ -100,23 +99,22 @@ public class HeroRankingController {
                     heroRankingView.setLoginName("您的位置");
                     continue;
                 }
-                heroRankingView.setLoginName(randomUtils.encryptMobileForWeb(loginName, heroRankingView.getLoginName()));
+                heroRankingView.setLoginName(this.encryptMobileForWeb(loginName, heroRankingView.getLoginName()));
 
-            }
-
-            //TODO:fake
-            LoanModel loanModel = loanMapper.findById(41650602422768L);
-            if (loanModel != null && loanModel.getStatus() == LoanStatus.REPAYING && new DateTime(tradingTime).withTimeAtStartOfDay().isEqual(new DateTime(2016, 7, 29, 15, 33, 45).withTimeAtStartOfDay())) {
-                HeroRankingView element = new HeroRankingView();
-                element.setLoginName("186**67");
-                element.setSumAmount(loanModel.getLoanAmount());
-                heroRankingViews.add(0, element);
             }
 
             baseListDataDto.setRecords(heroRankingViews.size() > 10 ? heroRankingViews.subList(0, 10) : heroRankingViews);
         }
         baseListDataDto.setStatus(true);
         return baseListDataDto;
+    }
+
+    private String encryptMobileForWeb(String loginName, String encryptLoginName) {
+        if (encryptLoginName.equalsIgnoreCase(loginName)) {
+            return "您的位置";
+        }
+
+        return MobileEncryptor.encryptMiddleMobile(userMapper.findByLoginName(encryptLoginName).getMobile());
     }
 
 

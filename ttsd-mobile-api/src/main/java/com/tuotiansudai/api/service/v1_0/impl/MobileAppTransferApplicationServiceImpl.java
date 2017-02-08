@@ -8,11 +8,9 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppTransferApplicationService;
 import com.tuotiansudai.api.util.PageValidUtils;
-import com.tuotiansudai.coupon.repository.mapper.CouponRepayMapper;
-import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
+import com.tuotiansudai.repository.mapper.CouponRepayMapper;
+import com.tuotiansudai.repository.model.CouponRepayModel;
 import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.dto.TransferApplicationDetailDto;
-import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
@@ -20,12 +18,14 @@ import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.repository.model.LoanStatus;
-import com.tuotiansudai.transfer.dto.TransferApplicationDto;
-import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
-import com.tuotiansudai.transfer.repository.mapper.TransferRuleMapper;
-import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
-import com.tuotiansudai.transfer.repository.model.TransferApplicationRecordDto;
-import com.tuotiansudai.transfer.repository.model.TransferRuleModel;
+import com.tuotiansudai.dto.TransferApplicationDetailDto;
+import com.tuotiansudai.dto.TransferApplicationDto;
+import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
+import com.tuotiansudai.repository.mapper.TransferApplicationMapper;
+import com.tuotiansudai.repository.mapper.TransferRuleMapper;
+import com.tuotiansudai.repository.model.TransferApplicationModel;
+import com.tuotiansudai.repository.model.TransferApplicationRecordView;
+import com.tuotiansudai.repository.model.TransferRuleModel;
 import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.transfer.service.TransferService;
 import com.tuotiansudai.transfer.util.TransferRuleUtil;
@@ -40,9 +40,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
-import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -98,7 +96,7 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
             index = 1;
         }
 
-        List<TransferApplicationRecordDto> transferApplicationRecordDtos = transferApplicationMapper.findTransferApplicationPaginationByLoginName(loginName,
+        List<TransferApplicationRecordView> transferApplicationRecordDtos = transferApplicationMapper.findTransferApplicationPaginationByLoginName(loginName,
                 transferStatusList,
                 (index - 1) * pageSize,
                 pageSize);
@@ -107,16 +105,13 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
         transferApplicationResponseDataDto.setPageSize(pageSize);
         transferApplicationResponseDataDto.setTotalCount(transferApplicationMapper.findCountTransferApplicationPaginationByLoginName(loginName, transferStatusList));
         if (CollectionUtils.isNotEmpty(transferApplicationRecordDtos)) {
-            List<TransferApplicationRecordResponseDataDto> transferApplication = Lists.transform(transferApplicationRecordDtos, new Function<TransferApplicationRecordDto, TransferApplicationRecordResponseDataDto>() {
-                @Override
-                public TransferApplicationRecordResponseDataDto apply(TransferApplicationRecordDto transferApplicationRecordDto) {
-                    TransferApplicationRecordResponseDataDto transferApplicationRecordResponseDataDto = new TransferApplicationRecordResponseDataDto(transferApplicationRecordDto);
-                    LoanModel loanModel = loanMapper.findById(transferApplicationRecordDto.getLoanId());
-                    InvestRepayModel currentInvestRepayModel = investRepayMapper.findByInvestIdAndPeriod(transferApplicationRecordDto.getTransferInvestId(), loanModel.getPeriods());
-                    Date repayDate = currentInvestRepayModel == null ? new Date() : currentInvestRepayModel.getRepayDate() == null ? new Date() : currentInvestRepayModel.getRepayDate();
-                    transferApplicationRecordResponseDataDto.setLeftDays(CalculateLeftDays.calculateTransferApplicationLeftDays(repayDate));
-                    return transferApplicationRecordResponseDataDto;
-                }
+            List<TransferApplicationRecordResponseDataDto> transferApplication = Lists.transform(transferApplicationRecordDtos, transferApplicationRecordDto -> {
+                TransferApplicationRecordResponseDataDto transferApplicationRecordResponseDataDto = new TransferApplicationRecordResponseDataDto(transferApplicationRecordDto);
+                LoanModel loanModel = loanMapper.findById(transferApplicationRecordDto.getLoanId());
+                InvestRepayModel currentInvestRepayModel = investRepayMapper.findByInvestIdAndPeriod(transferApplicationRecordDto.getTransferInvestId(), loanModel.getPeriods());
+                Date repayDate = currentInvestRepayModel == null ? new Date() : currentInvestRepayModel.getRepayDate() == null ? new Date() : currentInvestRepayModel.getRepayDate();
+                transferApplicationRecordResponseDataDto.setLeftDays(CalculateLeftDays.calculateTransferApplicationLeftDays(repayDate));
+                return transferApplicationRecordResponseDataDto;
             });
             transferApplicationResponseDataDto.setTransferApplication(transferApplication);
 
@@ -170,7 +165,7 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
         String investId = requestDto.getInvestId();
 
         if (!investTransferService.isTransferable(Long.parseLong(investId))) {
-            return new BaseResponseDto(ReturnMessage.TRANSFER_IS_NOT_EXIST.getCode(), ReturnMessage.TRANSFER_IS_NOT_EXIST.getMsg());
+            return new BaseResponseDto<>(ReturnMessage.TRANSFER_IS_NOT_EXIST.getCode(), ReturnMessage.TRANSFER_IS_NOT_EXIST.getMsg());
         }
         InvestModel investModel = investMapper.findById(Long.parseLong(investId));
         LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
@@ -199,12 +194,12 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
         Integer index = requestDto.getIndex();
         Integer pageSize = pageValidUtils.validPageSizeLimit(requestDto.getPageSize());
         String loginName = requestDto.getBaseParam().getUserId();
-        BaseResponseDto<TransferApplicationResponseDataDto> dto = new BaseResponseDto();
+        BaseResponseDto<TransferApplicationResponseDataDto> dto = new BaseResponseDto<>();
         if (index == null || index <= 0) {
             index = 1;
         }
 
-        List<TransferApplicationRecordDto> transferApplicationRecordDtos = transferApplicationMapper.findTransfereeApplicationPaginationByLoginName(loginName,
+        List<TransferApplicationRecordView> transferApplicationRecordDtos = transferApplicationMapper.findTransfereeApplicationPaginationByLoginName(loginName,
                 (index - 1) * pageSize,
                 pageSize);
         TransferApplicationResponseDataDto transferApplicationResponseDataDto = new TransferApplicationResponseDataDto();
@@ -320,11 +315,11 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
         //return TransferLoan Details
         TransferApplicationModel transferApplicationModel = transferApplicationMapper.findByInvestId(transferInvestId);
         if (null == transferApplicationModel) {
-            return new BaseResponseDto(ReturnMessage.ERROR.getCode(), ReturnMessage.ERROR.getMsg());
+            return new BaseResponseDto<>(ReturnMessage.ERROR.getCode(), ReturnMessage.ERROR.getMsg());
         }
         LoanModel loanModel = loanMapper.findById(transferApplicationModel.getLoanId());
         if (null == loanModel) {
-            return new BaseResponseDto(ReturnMessage.ERROR.getCode(), ReturnMessage.ERROR.getMsg());
+            return new BaseResponseDto<>(ReturnMessage.ERROR.getCode(), ReturnMessage.ERROR.getMsg());
         }
 
         UserInvestRepayResponseDataDto userInvestRepayResponseDataDto = new UserInvestRepayResponseDataDto(loanModel, transferApplicationModel);

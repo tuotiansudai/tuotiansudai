@@ -164,7 +164,7 @@ public class RankingActivityServiceTest {
         UserTianDouRecordDto userTianDouRecordDto = otherList.get(0);
 //        assert (userTianDouRecordDto.getPrize() == TianDouPrize.InterestCoupon5);
 
-        assert (userTianDouRecordDto.getLoginName().equals(randomUtils.encryptMobile("", loginName, Source.WEB)));
+        assert (userTianDouRecordDto.getLoginName().equals(randomUtils.encryptMobile("", loginName)));
     }
 
     @Test
@@ -291,16 +291,17 @@ public class RankingActivityServiceTest {
         assert (otherList != null && otherList.size() == 4);
 
         UserTianDouRecordDto userTianDouRecordDto1_0 = otherList.get(0);
-        assert (userTianDouRecordDto1_0.getLoginName().equals(randomUtils.encryptMobile("", loginName1,Source.WEB)));
+
+        assert (userTianDouRecordDto1_0.getLoginName().equals(randomUtils.encryptMobile("", loginName1)));
 
         UserTianDouRecordDto userTianDouRecordDto1_1 = otherList.get(1);
-        assert (userTianDouRecordDto1_1.getLoginName().equals(randomUtils.encryptMobile("", loginName1,Source.WEB)));
+        assert (userTianDouRecordDto1_1.getLoginName().equals(randomUtils.encryptMobile("", loginName1)));
 
         UserTianDouRecordDto userTianDouRecordDto1_2 = otherList.get(2);
-        assert (userTianDouRecordDto1_2.getLoginName().equals(randomUtils.encryptMobile("", loginName1,Source.WEB)));
+        assert (userTianDouRecordDto1_2.getLoginName().equals(randomUtils.encryptMobile("", loginName1)));
 
         UserTianDouRecordDto userTianDouRecordDto1_3 = otherList.get(3);
-        assert (userTianDouRecordDto1_3.getLoginName().equals(randomUtils.encryptMobile("", loginName1,Source.WEB)));
+        assert (userTianDouRecordDto1_3.getLoginName().equals(randomUtils.encryptMobile("", loginName1)));
     }
 
 //    @Test

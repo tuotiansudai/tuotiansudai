@@ -2,7 +2,7 @@ package com.tuotiansudai.activity.controller;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.coupon.dto.CouponAlertDto;
+import com.tuotiansudai.dto.CouponAlertDto;
 import com.tuotiansudai.coupon.service.CouponAlertService;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.repository.model.AccountModel;

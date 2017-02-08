@@ -234,7 +234,7 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
             marqueeTitle.append("第一个投资者将获得“拓荒先锋”称号及0.2％加息券＋50元红包    ");
         } else {
             for (InvestModel investModel : investAchievements) {
-                String investorLoginName = randomUtils.encryptMobile(loginName, investModel.getLoginName(), investModel.getId(), Source.MOBILE);
+                String investorLoginName = randomUtils.encryptMobile(loginName, investModel.getLoginName(), investModel.getId());
                 if (investModel.getAchievements().contains(InvestAchievement.MAX_AMOUNT) && loanModel.getStatus() == com.tuotiansudai.repository.model.LoanStatus.RAISING) {
                     marqueeTitle.append(investorLoginName + " 以累计投资" + AmountConverter.convertCentToString(investMapper.sumSuccessInvestAmountByLoginName(loanModel.getId(), investModel.getLoginName())) + "元暂居标王，快来争夺吧    ");
                     marqueeTitle.append("目前项目剩余" + AmountConverter.convertCentToString(loanModel.getLoanAmount() - investedAmount) + "元，快来一锤定音获取奖励吧    ");
@@ -251,11 +251,7 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
             }
             dataDto.setMarqueeTitle(marqueeTitle.toString());
         }
-        //TODO:fake
-        if (loanModel.getId() == 41650602422768L && loanModel.getStatus() == com.tuotiansudai.repository.model.LoanStatus.REPAYING) {
-            dataDto.setMarqueeTitle(MessageFormat.format("恭喜186**67 以累计投资{0}元夺得标王，奖励0.5％加息券＋100元红包    恭喜186**67 {0}占领先锋，奖励0.2％加息券＋50元红包    恭喜186**67 2016-07-29 15:33:45一锤定音，奖励0.2％加息券＋50元红包    ",
-                    AmountConverter.convertCentToString(loanModel.getLoanAmount()), new DateTime(2016, 7, 28, 0, 0, 0).toString("yyyy-MM-dd HH:mm:ss")));
-        }
+
         dataDto.setTitle(title);
         dataDto.setContent(MessageFormat.format(content, dataDto.getLoanMoney().replaceAll("\\.00", ""), dataDto.getDuration(), dataDto.getRatePercent()));
         dataDto.setProductNewType(loanModel.getProductType() != null ? loanModel.getProductType().name() : "");

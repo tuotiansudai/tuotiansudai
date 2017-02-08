@@ -2,7 +2,7 @@ package com.tuotiansudai.transfer.util;
 
 
 import com.tuotiansudai.repository.model.LoanType;
-import com.tuotiansudai.transfer.repository.model.TransferRuleModel;
+import com.tuotiansudai.repository.model.TransferRuleModel;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 

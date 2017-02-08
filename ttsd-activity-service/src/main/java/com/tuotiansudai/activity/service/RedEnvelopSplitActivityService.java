@@ -5,8 +5,8 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.activity.repository.dto.RedEnvelopSplitActivityDto;
 import com.tuotiansudai.activity.repository.dto.RedEnvelopSplitReferrerDto;
-import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
-import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
+import com.tuotiansudai.repository.mapper.CouponMapper;
+import com.tuotiansudai.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.enums.AppUrl;
 import com.tuotiansudai.repository.mapper.PrepareUserMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
@@ -158,7 +158,7 @@ public class RedEnvelopSplitActivityService {
         if (referrerUsers.size() > DEFAULT_PAGE_SIZE) {
             referrerUsers.subList(0, DEFAULT_PAGE_SIZE);
         }
-        return referrerUsers.stream().map(userModel -> new RedEnvelopSplitReferrerDto(MobileEncryptor.encryptWebMiddleMobile(userModel.getMobile()), userModel.getRegisterTime())).collect(Collectors.toList());
+        return referrerUsers.stream().map(userModel -> new RedEnvelopSplitReferrerDto(MobileEncryptor.encryptMiddleMobile(userModel.getMobile()), userModel.getRegisterTime())).collect(Collectors.toList());
     }
 
     public static boolean asUserChannel(String str) {

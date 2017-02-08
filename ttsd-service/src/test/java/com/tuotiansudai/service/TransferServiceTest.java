@@ -4,9 +4,12 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
-import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
-import com.tuotiansudai.transfer.repository.model.TransferableInvestPaginationItemDataDto;
+import com.tuotiansudai.dto.TransferApplicationDetailDto;
+import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
+import com.tuotiansudai.dto.TransferApplicationRecodesDto;
+import com.tuotiansudai.repository.mapper.TransferApplicationMapper;
+import com.tuotiansudai.repository.model.TransferApplicationModel;
+import com.tuotiansudai.repository.model.TransferableInvestPaginationItemDataView;
 import com.tuotiansudai.transfer.service.TransferService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.IdGenerator;
@@ -72,8 +75,9 @@ public class TransferServiceTest {
     public static final long loanId = 10000000001L;
     public static final long investId = 10000000002L;
 
-    public static final long  transferSuccessloanId = 20000000001L;
+    public static final long transferSuccessloanId = 20000000001L;
     public static final long transferSuccessInvestId = 20000000002L;
+
     private LoanModel createLoanByUserId(String userId, long loanId) {
         LoanDto loanDto = new LoanDto();
         loanDto.setLoanerLoginName(userId);
@@ -107,7 +111,7 @@ public class TransferServiceTest {
         return loanModel;
     }
 
-    private TransferApplicationModel createTransferApplicationModel(long loanId,long investId, TransferStatus transferStatus) {
+    private TransferApplicationModel createTransferApplicationModel(long loanId, long investId, TransferStatus transferStatus) {
         TransferApplicationModel transferApplicationModel = new TransferApplicationModel();
         transferApplicationModel.setName("ZR00001");
         transferApplicationModel.setLoanId(loanId);
@@ -168,11 +172,11 @@ public class TransferServiceTest {
         investRepayMapper.create(investRepayModels);
     }
 
-    private  Date strToDate(String strDate){
+    private Date strToDate(String strDate) {
         try {
             return DateUtils.parseDate(strDate, new String[]{"yyyy-MM-dd HH:mm:ss"});
         } catch (ParseException e) {
-           e.printStackTrace();
+            e.printStackTrace();
         }
         return null;
     }
@@ -190,11 +194,11 @@ public class TransferServiceTest {
     }
 
     @Test
-    public void shouldFindAllTransferApplicationPaginationListIsTest(){
+    public void shouldFindAllTransferApplicationPaginationListIsTest() {
         createLoanByUserId("testuser", loanId);
         createInvests("testuser", loanId, investId);
         createInvestRepay(investId);
-        createTransferApplicationModel(loanId, investId,TransferStatus.TRANSFERRING);
+        createTransferApplicationModel(loanId, investId, TransferStatus.TRANSFERRING);
         List<TransferStatus> transferStatuses = new ArrayList<TransferStatus>();
         transferStatuses.add(TransferStatus.TRANSFERRING);
         BasePaginationDataDto<TransferApplicationPaginationItemDataDto> basePaginationDataDto = transferService.findAllTransferApplicationPaginationList(transferStatuses, 0.15, 0.18, 1, 10);
@@ -203,12 +207,12 @@ public class TransferServiceTest {
     }
 
     @Test
-    public void shouldGetTransferApplicationDetailDtoIsOk(){
+    public void shouldGetTransferApplicationDetailDtoIsOk() {
         createLoanByUserId("testuser", loanId);
         createInvests("testuser", loanId, investId);
         createInvestRepay(investId);
         TransferApplicationModel transferApplicationModel = createTransferApplicationModel(loanId, investId, TransferStatus.TRANSFERRING);
-        TransferApplicationDetailDto  transferApplicationDetailDto = transferService.getTransferApplicationDetailDto(transferApplicationModel.getId(), "testuser",6);
+        TransferApplicationDetailDto transferApplicationDetailDto = transferService.getTransferApplicationDetailDto(transferApplicationModel.getId(), "testuser", 6);
 
         assertThat(transferApplicationDetailDto.getNextRefundDate(), is(strToDate("2016-03-29 23:59:59")));
         assertThat(transferApplicationDetailDto.getTransferAmount(), is("900.00"));
@@ -220,25 +224,25 @@ public class TransferServiceTest {
     }
 
     @Test
-    public void shouldGetTransferApplicationLastPeriodIsOk(){
+    public void shouldGetTransferApplicationLastPeriodIsOk() {
         createLoanByUserId("testuser", loanId);
         createInvests("testuser", loanId, investId);
         createInvestRepay(investId);
         TransferApplicationModel transferApplicationModel = createTransferApplicationModel(loanId, investId, TransferStatus.TRANSFERRING);
         transferApplicationModel.setPeriod(5);
         transferApplicationMapper.update(transferApplicationModel);
-        TransferApplicationDetailDto  transferApplicationDetailDto = transferService.getTransferApplicationDetailDto(transferApplicationModel.getId(), "testuser",6);
+        TransferApplicationDetailDto transferApplicationDetailDto = transferService.getTransferApplicationDetailDto(transferApplicationModel.getId(), "testuser", 6);
 
         assertThat(transferApplicationDetailDto.getNextExpecedInterest(), is("0.90"));
         assertThat(transferApplicationDetailDto.getBalance(), is("10.00"));
     }
 
     @Test
-    public void shouldTransferApplicationRecodesDtoIsNoRecodes(){
+    public void shouldTransferApplicationRecodesDtoIsNoRecodes() {
         createLoanByUserId("testuser", loanId);
         createInvests("testuser", loanId, investId);
         createInvestRepay(investId);
-        TransferApplicationModel transferApplicationModel = createTransferApplicationModel(loanId, investId,TransferStatus.TRANSFERRING);
+        TransferApplicationModel transferApplicationModel = createTransferApplicationModel(loanId, investId, TransferStatus.TRANSFERRING);
 
         TransferApplicationRecodesDto transferApplicationRecodesDto = transferService.getTransferee(transferApplicationModel.getId(), "testuser");
 
@@ -246,9 +250,9 @@ public class TransferServiceTest {
     }
 
     @Test
-    public void shouldTransferApplicationRecodesDtoIsHasRecords(){
+    public void shouldTransferApplicationRecodesDtoIsHasRecords() {
         createLoanByUserId("testuser", transferSuccessloanId);
-        createInvestsTransferSuccess("testuser",transferSuccessloanId, transferSuccessInvestId);
+        createInvestsTransferSuccess("testuser", transferSuccessloanId, transferSuccessInvestId);
         createInvestRepay(transferSuccessInvestId);
         TransferApplicationModel transferApplicationModel = createTransferApplicationModel(transferSuccessloanId, transferSuccessInvestId, TransferStatus.SUCCESS);
 
@@ -257,14 +261,14 @@ public class TransferServiceTest {
         assertThat(transferApplicationRecodesDto.getStatus(), is(true));
         assertThat(transferApplicationRecodesDto.getReceiveAmount(), is("900.00"));
 
-        assertThat(transferApplicationRecodesDto.getTransferApplicationReceiver(), is(randomUtils.encryptMobile("", "testuser",Source.WEB)));
+        assertThat(transferApplicationRecodesDto.getTransferApplicationReceiver(), is(randomUtils.encryptMobile("", "testuser")));
         assertThat(transferApplicationRecodesDto.getExpecedInterest(), is("103.60"));
         assertThat(transferApplicationRecodesDto.getSource(), is(Source.WEB));
         assertThat(transferApplicationRecodesDto.getInvestAmount(), is("1000.00"));
     }
 
     @Test
-    public void shouldGenerateTransferableInvestIsSuccess(){
+    public void shouldGenerateTransferableInvestIsSuccess() {
         long loanId = idGenerator.generate();
         UserModel investorModel = createUserByUserId("investorModelRound2Test");
         UserModel loanerModel = createUserByUserId("loanerModelRound2Test");
@@ -277,17 +281,17 @@ public class TransferServiceTest {
         InvestRepayModel investRepayModel2 = getFakeInvestRepayModel(investModel, 2, RepayStatus.REPAYING, new DateTime().plusDays(30).toDate(), new DateTime().plusDays(30).toDate(), 0l, 2000l, 3000l, 4000l);
         InvestRepayModel investRepayModel3 = getFakeInvestRepayModel(investModel, 3, RepayStatus.REPAYING, new DateTime().plusDays(90).toDate(), new DateTime().plusDays(90).toDate(), 1000l, 2000l, 3000l, 4000l);
         investRepayMapper.create(Lists.newArrayList(investRepayModel, investRepayModel2, investRepayModel3));
-        BasePaginationDataDto<TransferableInvestPaginationItemDataDto> baseDto = transferService.generateTransferableInvest(investorModel.getLoginName(), 1, 10);
-        TransferableInvestPaginationItemDataDto dataDto = baseDto.getRecords().get(0);
-        assertEquals(1,baseDto.getRecords().size());
+        BasePaginationDataDto<TransferableInvestPaginationItemDataView> baseDto = transferService.generateTransferableInvest(investorModel.getLoginName(), 1, 10);
+        TransferableInvestPaginationItemDataView dataDto = baseDto.getRecords().get(0);
+        assertEquals(1, baseDto.getRecords().size());
         assertEquals(investModel.getId(), dataDto.getInvestId());
         assertEquals(investModel.getLoanId(), dataDto.getLoanId());
         assertEquals(loanModel.getName(), dataDto.getLoanName());
         assertEquals(AmountConverter.convertCentToString(investModel.getAmount()), dataDto.getAmount());
         assertEquals(AmountConverter.convertCentToString(investRepayModel.getExpectedInterest() + investRepayModel.getCorpus() - investRepayModel.getExpectedFee()), dataDto.getNextRepayAmount());
-        assertEquals(new DateTime(loanRepayModel.getRepayDate()).withTimeAtStartOfDay(),new DateTime(dataDto.getNextRepayDate()).withTimeAtStartOfDay());
-        assertEquals("28",dataDto.getSumRate());
-        assertEquals(TransferStatus.TRANSFERABLE.getDescription(),dataDto.getTransferStatus());
+        assertEquals(new DateTime(loanRepayModel.getRepayDate()).withTimeAtStartOfDay(), new DateTime(dataDto.getNextRepayDate()).withTimeAtStartOfDay());
+        assertEquals("28", dataDto.getSumRate());
+        assertEquals(TransferStatus.TRANSFERABLE.getDescription(), dataDto.getTransferStatus());
     }
 
     private LoanRepayModel getFakeLoanRepayModel(LoanModel fakeLoanModel,
@@ -313,6 +317,7 @@ public class TransferServiceTest {
         fakeLoanRepayModel.setDefaultInterest(defaultInterest);
         return fakeLoanRepayModel;
     }
+
     private InvestRepayModel getFakeInvestRepayModel(InvestModel fakeInvestModel,
                                                      int period,
                                                      RepayStatus repayStatus,
@@ -337,7 +342,7 @@ public class TransferServiceTest {
         return fakeInvestRepayModel;
     }
 
-    private LoanDetailsModel createLoanDetailsByLoanId(LoanModel loanModel){
+    private LoanDetailsModel createLoanDetailsByLoanId(LoanModel loanModel) {
         LoanDetailsModel loanDetailsModel = new LoanDetailsModel();
         loanDetailsModel.setNonTransferable(false);
         loanDetailsModel.setDeclaration("declaration");

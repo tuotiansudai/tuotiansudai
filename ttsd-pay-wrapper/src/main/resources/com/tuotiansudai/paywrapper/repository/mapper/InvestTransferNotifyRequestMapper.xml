@@ -35,7 +35,7 @@
     </select>
 
     <select id="findById" parameterType="map" resultMap="resultMap" resultType="com.tuotiansudai.paywrapper.repository.model.async.callback.InvestNotifyRequestModel">
-          select * from invest_zhaiquan_notify_request where id = #{id} and status='NOT_DONE';
+          select * from invest_zhaiquan_notify_request where id = #{id}
     </select>
 
     <update id="updateStatus" keyColumn="id" keyProperty="id" parameterType="map">

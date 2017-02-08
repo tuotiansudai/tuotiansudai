@@ -3,9 +3,6 @@ package com.tuotiansudai.service.impl;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.SiteMapRedisWrapperClient;
-import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
-import com.tuotiansudai.coupon.repository.model.CouponModel;
-import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.dto.HomeLoanDto;
 import com.tuotiansudai.dto.SiteMapDataDto;
 import com.tuotiansudai.enums.CouponType;
@@ -70,11 +67,6 @@ public class HomeServiceImpl implements HomeService {
             @Override
             public HomeLoanDto apply(LoanModel loan) {
                 long investAmount = investMapper.sumSuccessInvestAmount(loan.getId());
-
-                //TODO:fake
-                if (loan.getId() == 41650602422768L && loan.getStatus() == LoanStatus.REPAYING) {
-                    investAmount = loan.getLoanAmount();
-                }
 
                 CouponModel newbieInterestCouponModel = null;
                 for (CouponModel activeCoupon : allActiveCoupons) {
