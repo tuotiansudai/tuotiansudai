@@ -29,8 +29,6 @@ public interface SmsService {
 
     BaseDto<SmsDataDto> sendNoPasswordInvestCaptcha(String mobile, String captcha, String ip) ;
 
-    BaseDto<SmsDataDto> experienceRepayNotify(List<String> mobiles, String repayAmount);
-
     BaseDto<SmsDataDto> cancelTransferLoan(String mobile, String TransferLoanName);
 
     BaseDto<SmsDataDto> importUserGetGiveMembership(String mobile, int level);

@@ -122,7 +122,7 @@ public class InvestSuccessNewBieExperienceMessageConsumer implements MessageCons
         }
 
         List<UserCouponModel> newbieCouponList = userCouponMapper.findByLoginNameAndCouponId(loginName, NEWBIE_COUPON_ID);
-        UserCouponModel usedNewbieCoupon = newbieCouponList != null && newbieCouponList.size() > 0 && newbieCouponList.get(0).getStatus() == InvestStatus.SUCCESS ?
+        UserCouponModel usedNewbieCoupon = newbieCouponList != null && newbieCouponList.size() == 1 && newbieCouponList.get(0).getStatus() == InvestStatus.SUCCESS ?
                 newbieCouponList.get(0) : null;
 
         if (usedNewbieCoupon == null) {

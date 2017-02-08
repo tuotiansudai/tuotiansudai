@@ -919,16 +919,6 @@
         contract_no = '') order by invest_time asc
     </select>
 
-    <select id="findByLoginNameAndTradingTime" parameterType="map" resultMap="investResultMap">
-        select
-        <include refid="columns"></include>
-        from invest join loan on invest.loan_id = loan.id
-        where invest.transfer_invest_id is null and invest.status = 'SUCCESS'
-        AND loan.product_type != 'EXPERIENCE'
-        AND invest.login_name = #{loginName}
-        AND invest.trading_time &lt;= #{tradingTime};
-    </select>
-
     <select id="sumSuccessActivityInvestAmount" parameterType="map" resultType="long">
         SELECT
         IFNULL(SUM(amount), 0)

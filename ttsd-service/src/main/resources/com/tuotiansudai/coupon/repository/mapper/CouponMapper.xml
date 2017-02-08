@@ -10,6 +10,7 @@
         <result column="amount" property="amount"/>
         <result column="rate" property="rate"/>
         <result column="birthday_benefit" property="birthdayBenefit"/>
+        <result column="period" property="period"/>
         <result column="multiple" property="multiple"/>
         <result column="start_time" property="startTime"/>
         <result column="end_time" property="endTime"/>

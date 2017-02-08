@@ -1,6 +1,5 @@
 package com.tuotiansudai.scheduler.plugin;
 
-import com.google.common.collect.Lists;
 import com.tuotiansudai.job.*;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -11,9 +10,7 @@ import org.quartz.SchedulerException;
 import org.quartz.SimpleScheduleBuilder;
 import org.quartz.spi.ClassLoadHelper;
 import org.quartz.spi.SchedulerPlugin;
-import org.springframework.beans.factory.annotation.Value;
 
-import java.util.List;
 import java.util.TimeZone;
 
 public class JobInitPlugin implements SchedulerPlugin {
@@ -50,7 +47,7 @@ public class JobInitPlugin implements SchedulerPlugin {
             createBirthdayNotifyJob();
         }
         if (JobType.ExperienceRepay.name().equals(schedulerName)) {
-            createNewbieExperienceRepayJob();
+            removeNewbieExperienceRepayJob();
         }
         if (JobType.CheckUserBalanceMonthly.name().equals(schedulerName)) {
             createCheckUserBalanceJob();
@@ -120,14 +117,8 @@ public class JobInitPlugin implements SchedulerPlugin {
         }
     }
 
-    private void createNewbieExperienceRepayJob() {
-        try {
-            jobManager.newJob(JobType.ExperienceRepay, ExperienceRepayJob.class).replaceExistingJob(true)
-                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 16 * * ? *").inTimeZone(TimeZone.getTimeZone(TIMEZONE_SHANGHAI)))
-                    .withIdentity(JobType.ExperienceRepay.name(), JobType.ExperienceRepay.name()).submit();
-        } catch (SchedulerException e) {
-            logger.info(e.getLocalizedMessage(), e);
-        }
+    private void removeNewbieExperienceRepayJob() {
+        jobManager.deleteJob(JobType.ExperienceRepay, JobType.ExperienceRepay.name(), JobType.ExperienceRepay.name());
     }
 
     private void createCheckUserBalanceJob() {
