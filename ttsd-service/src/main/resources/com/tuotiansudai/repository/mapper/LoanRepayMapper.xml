@@ -291,7 +291,7 @@
 
     <select id="findLoanRepayNotifyToday" parameterType="map" resultMap="loanRepayNotifyResultMap" useCache="false">
         select
-            lr.repay_amount as repay_amount,
+            lr.corpus + lr.expected_interest + lr.default_interest as repay_amount,
             l.name as loan_name,
             u.mobile,
             l.id as loan_id,
