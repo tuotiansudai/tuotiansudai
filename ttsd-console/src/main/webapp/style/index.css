@@ -94,6 +94,16 @@ a:hover {
     color: #ff9c1b;
 }
 
+.sidenav li > a {
+    padding-left: 25px;
+}
+
+.sidenav li.sub-title {
+    padding-top: 10px;
+    padding-left: 10px;
+    font-weight: bold;
+}
+
 table td, table th {
     font-size: 12px;
 }

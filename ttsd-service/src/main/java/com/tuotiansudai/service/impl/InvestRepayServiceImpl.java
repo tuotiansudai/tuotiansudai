@@ -3,9 +3,9 @@ package com.tuotiansudai.service.impl;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
-import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
-import com.tuotiansudai.coupon.repository.model.UserCouponModel;
+import com.tuotiansudai.repository.mapper.CouponMapper;
+import com.tuotiansudai.repository.mapper.UserCouponMapper;
+import com.tuotiansudai.repository.model.UserCouponModel;
 import com.tuotiansudai.dto.InvestRepayDataItemDto;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.model.InvestRepayModel;
