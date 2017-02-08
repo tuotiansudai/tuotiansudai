@@ -7,6 +7,7 @@ import com.tuotiansudai.activity.service.HeroRankingService;
 import com.tuotiansudai.activity.service.LotteryDrawActivityService;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.repository.model.HeroRankingView;
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.DateConvertUtil;
 import com.tuotiansudai.util.RandomUtils;
@@ -66,7 +67,7 @@ public class LanternFestivalController {
                     heroRankingView.setLoginName("您的位置");
                     continue;
                 }
-                heroRankingView.setLoginName(randomUtils.encryptMobileForWeb(loginName, heroRankingView.getLoginName()));
+                heroRankingView.setLoginName(randomUtils.encryptMobile(loginName, heroRankingView.getLoginName()));
 
             }
 

@@ -4,7 +4,6 @@ package com.tuotiansudai.service.impl;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.PrepareRegisterRequestDto;
 import com.tuotiansudai.dto.RegisterUserDto;
-import com.tuotiansudai.exception.ReferrerRelationException;
 import com.tuotiansudai.repository.mapper.PrepareUserMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.PrepareUserService;
@@ -63,12 +62,7 @@ public class PrepareUserServiceImpl implements PrepareUserService {
     @Override
     @Transactional
     public BaseDataDto register(RegisterUserDto requestDto) {
-        try {
-            boolean isRegisterSuccess = userService.registerUser(requestDto);
-            return new BaseDataDto(isRegisterSuccess, null);
-        } catch (ReferrerRelationException e) {
-            logger.error(e.getLocalizedMessage());
-            return new BaseDataDto(false, e.getLocalizedMessage());
-        }
+        boolean isRegisterSuccess = userService.registerUser(requestDto);
+        return new BaseDataDto(isRegisterSuccess, null);
     }
 }

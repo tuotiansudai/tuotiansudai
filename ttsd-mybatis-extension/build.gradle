@@ -12,4 +12,6 @@ dependencies {
     compile "redis.clients:jedis:2.8.2"
     compile "org.mybatis:mybatis:$mybatisVersion"
     compile 'log4j:log4j:1.2.17'
+
+    compile project(":ttsd-util")
 }
