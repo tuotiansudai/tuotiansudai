@@ -2,7 +2,7 @@ package com.tuotiansudai.web.controller;
 
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.coupon.repository.model.UserGroup;
+import com.tuotiansudai.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.spring.LoginUserInfo;

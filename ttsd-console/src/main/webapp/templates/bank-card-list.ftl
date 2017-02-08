@@ -1,6 +1,6 @@
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="bank-card.js" headLab="user-manage" sideLab="bindCard" title="换卡管理">
+<@global.main pageCss="" pageJavascript="bank-card.js" headLab="customer-center" sideLab="bindCard" title="换卡管理">
 <!-- content area begin -->
 
 <div class="col-md-10">

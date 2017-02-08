@@ -291,6 +291,7 @@ public class RankingActivityServiceTest {
         assert (otherList != null && otherList.size() == 4);
 
         UserTianDouRecordDto userTianDouRecordDto1_0 = otherList.get(0);
+
         assert (userTianDouRecordDto1_0.getLoginName().equals(randomUtils.encryptMobile("", loginName1)));
 
         UserTianDouRecordDto userTianDouRecordDto1_1 = otherList.get(1);

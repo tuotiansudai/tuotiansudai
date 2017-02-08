@@ -3,7 +3,7 @@ package com.tuotiansudai.service.impl;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.client.SmsWrapperClient;
-import com.tuotiansudai.coupon.repository.model.UserGroup;
+import com.tuotiansudai.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.dto.sms.ExperienceRepayNotifyDto;
 import com.tuotiansudai.repository.mapper.InvestMapper;

@@ -28,8 +28,8 @@ public class WithdrawController {
     @RequestMapping(value = "/withdraw", method = RequestMethod.GET)
     public ModelAndView getWithdrawList(@RequestParam(value = "withdrawId", required = false) String withdrawId,
                                         @RequestParam(value = "mobile", required = false) String mobile,
-                                        @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date startTime,
-                                        @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date endTime,
+                                        @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date startTime,
+                                        @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date endTime,
                                         @RequestParam(value = "status", required = false) WithdrawStatus status,
                                         @RequestParam(value = "source", required = false) Source source,
                                         @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
