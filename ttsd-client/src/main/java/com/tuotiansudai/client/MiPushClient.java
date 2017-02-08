@@ -68,7 +68,7 @@ public class MiPushClient {
             logger.info("send push message to all " + source + " users.");
 
             // 给所有的 IOS/Android 用户发推送
-            Result result = sender.broadcastAll(message, 0);
+            Result result = sender.broadcastAll(message, 2);
             logger.info(MessageFormat.format("result: {0}, reason: {1}, messageId: {2}", result.getErrorCode().getDescription(), result.getReason(), result.getMessageId()));
         } else {
             logger.info("send push message to " + source + " users, user count:" + pushMessage.getLoginNames().size());
@@ -86,7 +86,7 @@ public class MiPushClient {
             logger.info("batch number: " + batch);
 
             Result result = sender.sendToAlias(message, aliasList.subList(batch * 1000,
-                    (batch + 1) * 1000 > count ? count : (batch + 1) * 1000), 0);
+                    (batch + 1) * 1000 > count ? count : (batch + 1) * 1000), 2);
 
             logger.info(MessageFormat.format("batch number: {0}, result: {1}, reason: {2}, messageId: {3}", batch,
                     result.getErrorCode().getDescription(), result.getReason(), result.getMessageId()));
