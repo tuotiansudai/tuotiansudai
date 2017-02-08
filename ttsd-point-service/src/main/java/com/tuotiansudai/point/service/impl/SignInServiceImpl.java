@@ -1,6 +1,6 @@
 package com.tuotiansudai.point.service.impl;
 
-import com.tuotiansudai.coupon.repository.model.CouponModel;
+import com.tuotiansudai.repository.model.CouponModel;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.point.repository.dto.SignInPointDto;

@@ -1,8 +1,8 @@
 package com.tuotiansudai.point.service.impl;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
-import com.tuotiansudai.coupon.repository.model.CouponModel;
+import com.tuotiansudai.repository.mapper.CouponMapper;
+import com.tuotiansudai.repository.model.CouponModel;
 import com.tuotiansudai.dto.AccountItemDataDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.point.repository.dto.PointBillPaginationItemDataDto;
@@ -18,6 +18,7 @@ import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.CalculateUtil;
 import com.tuotiansudai.util.PaginationUtil;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,7 +95,7 @@ public class PointBillServiceImpl implements PointBillService {
         }
 
         if (endTime == null) {
-            endTime = new DateTime().withDate(9999, 12, 31).withTimeAtStartOfDay().toDate();
+            endTime = CalculateUtil.calculateMaxDate();
         } else {
             endTime = new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
         }
@@ -142,7 +143,7 @@ public class PointBillServiceImpl implements PointBillService {
         List<AccountItemDataDto> accountItemDataDtoList = Lists.newArrayList();
         for (AccountModel accountModel : accountModels) {
             UserModel userModel = userMapper.findByLoginName(accountModel.getLoginName());
-            AccountItemDataDto accountItemDataDto = new AccountItemDataDto(userModel, accountModel);
+            AccountItemDataDto accountItemDataDto = new AccountItemDataDto(userModel.getLoginName(), userModel.getUserName(), accountModel.getPoint());
             accountItemDataDto.setTotalPoint(pointBillMapper.findUserTotalPoint(accountModel.getLoginName()));
             accountItemDataDto.setMobile(userModel.getMobile());
             accountItemDataDtoList.add(accountItemDataDto);

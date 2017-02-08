@@ -2,6 +2,7 @@ package com.tuotiansudai.service.impl;
 
 
 import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.repository.mapper.ReferrerManageMapper;
 import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.*;
@@ -86,6 +87,6 @@ public class ReferrerManageServiceImpl implements ReferrerManageService {
         String level = getUserRewardDisplayLevel(referrerLoginName);
         endTime = new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
         Long totalAmount = referrerManageMapper.findReferInvestTotalAmount(referrerLoginName, loginName, startTime, endTime, level);
-        return totalAmount == null ? "0" : AmountConverter.convertCentToString(totalAmount);
+        return AmountConverter.convertCentToString(totalAmount);
     }
 }

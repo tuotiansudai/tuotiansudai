@@ -1,9 +1,9 @@
 package com.tuotiansudai.coupon.util;
 
 import com.google.common.collect.Iterators;
-import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
-import com.tuotiansudai.coupon.repository.model.UserCouponModel;
-import com.tuotiansudai.coupon.repository.model.UserGroup;
+import com.tuotiansudai.repository.mapper.UserCouponMapper;
+import com.tuotiansudai.repository.model.UserCouponModel;
+import com.tuotiansudai.repository.model.UserGroup;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.LoanModel;

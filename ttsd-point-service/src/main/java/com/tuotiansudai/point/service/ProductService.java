@@ -1,7 +1,7 @@
 package com.tuotiansudai.point.service;
 
 
-import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
+import com.tuotiansudai.dto.ExchangeCouponDto;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.point.repository.dto.ProductDto;

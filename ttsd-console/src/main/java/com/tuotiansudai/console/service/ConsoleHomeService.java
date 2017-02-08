@@ -1,13 +1,13 @@
 package com.tuotiansudai.console.service;
 
 import com.tuotiansudai.console.repository.mapper.UserMapperConsole;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.enums.WithdrawStatus;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.RechargeMapper;
 import com.tuotiansudai.repository.mapper.WithdrawMapper;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.RechargeStatus;
-import com.tuotiansudai.repository.model.Role;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

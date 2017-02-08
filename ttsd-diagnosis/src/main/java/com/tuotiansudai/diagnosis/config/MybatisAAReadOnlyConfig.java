@@ -39,9 +39,9 @@ public class MybatisAAReadOnlyConfig {
     public MapperScannerConfigurer aaMapperScannerConfigurer() {
         MapperScannerConfigurer configurer = new MapperScannerConfigurer();
         configurer.setBasePackage("com.tuotiansudai.repository.mapper," +
-                "com.tuotiansudai.transfer.repository.mapper," +
+                "com.tuotiansudai.repository.mapper," +
                 "com.tuotiansudai.membership.repository.mapper," +
-                "com.tuotiansudai.coupon.repository.mapper," +
+                "com.tuotiansudai.repository.mapper," +
                 "com.tuotiansudai.activity.repository.autumn.mapper");
         configurer.setSqlSessionFactoryBeanName("aaSqlSessionFactory");
         return configurer;
@@ -56,9 +56,7 @@ public class MybatisAAReadOnlyConfig {
         sessionFactory.setConfiguration(configuration);
         sessionFactory.setDataSource(aaDataSource);
         sessionFactory.setTypeAliasesPackage("com.tuotiansudai.repository.model," +
-                "com.tuotiansudai.transfer.repository.model," +
                 "com.tuotiansudai.membership.repository.model," +
-                "com.tuotiansudai.coupon.repository.model," +
                 "com.tuotiansudai.activity.repository.autumn.model");
         return sessionFactory.getObject();
     }
