@@ -1,20 +1,14 @@
 package com.tuotiansudai.scheduler.plugin;
 
-import com.google.common.collect.Lists;
 import com.tuotiansudai.job.*;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
-import org.quartz.CronScheduleBuilder;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.SimpleScheduleBuilder;
 import org.quartz.spi.ClassLoadHelper;
 import org.quartz.spi.SchedulerPlugin;
-import org.springframework.beans.factory.annotation.Value;
-
-import java.util.List;
-import java.util.TimeZone;
 
 public class JobInitPlugin implements SchedulerPlugin {
 
@@ -38,22 +32,22 @@ public class JobInitPlugin implements SchedulerPlugin {
     @Override
     public void start() {
         if (JobType.CalculateDefaultInterest.name().equalsIgnoreCase(schedulerName)) {
-            createCalculateDefaultInterest();
+            deleteCalculateDefaultInterest();
         }
         if (JobType.AutoReFreshAreaByMobile.name().equalsIgnoreCase(schedulerName)) {
-            createRefreshAreaByMobile();
+            deleteRefreshAreaByMobile();
         }
         if (JobType.LoanRepayNotify.name().equalsIgnoreCase(schedulerName)) {
-            createLoanRepayNotifyJob();
+            deleteLoanRepayNotifyJob();
         }
         if (JobType.BirthdayNotify.name().equalsIgnoreCase(schedulerName)) {
-            createBirthdayNotifyJob();
+            deleteBirthdayNotifyJob();
         }
         if (JobType.ExperienceRepay.name().equals(schedulerName)) {
-            createNewbieExperienceRepayJob();
+            deleteNewbieExperienceRepayJob();
         }
         if (JobType.CheckUserBalanceMonthly.name().equals(schedulerName)) {
-            createCheckUserBalanceJob();
+            deleteCheckUserBalanceJob();
         }
         if (JobType.CouponRepayCallBack.name().equalsIgnoreCase(schedulerName)) {
             createCouponRepayCallBackJobIfNotExist();
@@ -62,10 +56,10 @@ public class JobInitPlugin implements SchedulerPlugin {
             createExtraRateRepayCallBackIfNotExist();
         }
         if (JobType.PlatformBalanceLowNotify.name().equals(schedulerName)) {
-            platformBalanceLowNotifyJob();
+            deletePlatformBalanceLowNotifyJob();
         }
         if (JobType.EventMessage.name().equals(schedulerName)) {
-            eventMessageJob();
+            deleteEventMessageJob();
         }
         if (JobType.SendFirstRedEnvelopSplit.name().equalsIgnoreCase(schedulerName)) {
             createFirstRedEnvelopSplitJob();
@@ -78,66 +72,6 @@ public class JobInitPlugin implements SchedulerPlugin {
     @Override
     public void shutdown() {
 
-    }
-
-    private void createCalculateDefaultInterest() {
-        try {
-            jobManager.newJob(JobType.CalculateDefaultInterest, CalculateDefaultInterestJob.class).replaceExistingJob(true)
-                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 1 * * ? *").inTimeZone(TimeZone.getTimeZone(TIMEZONE_SHANGHAI)))
-                    .withIdentity(JobType.CalculateDefaultInterest.name(), JobType.CalculateDefaultInterest.name()).submit();
-        } catch (SchedulerException e) {
-            logger.info(e.getLocalizedMessage(), e);
-        }
-    }
-
-    private void createRefreshAreaByMobile() {
-        try {
-            jobManager.newJob(JobType.AutoReFreshAreaByMobile, AutoReFreshAreaByMobileJob.class).replaceExistingJob(true)
-                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 2 * * ? *").inTimeZone(TimeZone.getTimeZone(TIMEZONE_SHANGHAI)))
-                    .withIdentity(JobType.AutoReFreshAreaByMobile.name(), JobType.AutoReFreshAreaByMobile.name()).submit();
-        } catch (SchedulerException e) {
-            logger.info(e.getLocalizedMessage(), e);
-        }
-    }
-
-    private void createLoanRepayNotifyJob() {
-        try {
-            jobManager.newJob(JobType.LoanRepayNotify, LoanRepayNotifyJob.class).replaceExistingJob(true)
-                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 14 * * ? *").inTimeZone(TimeZone.getTimeZone(TIMEZONE_SHANGHAI)))
-                    .withIdentity(JobType.LoanRepayNotify.name(), JobType.LoanRepayNotify.name()).submit();
-        } catch (SchedulerException e) {
-            logger.info(e.getLocalizedMessage(), e);
-        }
-    }
-
-    private void createBirthdayNotifyJob() {
-        try {
-            jobManager.newJob(JobType.BirthdayNotify, BirthdayNotifyJob.class).replaceExistingJob(true)
-                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 12 5 * ? *").inTimeZone(TimeZone.getTimeZone(TIMEZONE_SHANGHAI)))
-                    .withIdentity(JobType.BirthdayNotify.name(), JobType.BirthdayNotify.name()).submit();
-        } catch (SchedulerException e) {
-            logger.info(e.getLocalizedMessage(), e);
-        }
-    }
-
-    private void createNewbieExperienceRepayJob() {
-        try {
-            jobManager.newJob(JobType.ExperienceRepay, ExperienceRepayJob.class).replaceExistingJob(true)
-                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 16 * * ? *").inTimeZone(TimeZone.getTimeZone(TIMEZONE_SHANGHAI)))
-                    .withIdentity(JobType.ExperienceRepay.name(), JobType.ExperienceRepay.name()).submit();
-        } catch (SchedulerException e) {
-            logger.info(e.getLocalizedMessage(), e);
-        }
-    }
-
-    private void createCheckUserBalanceJob() {
-        try {
-            jobManager.newJob(JobType.CheckUserBalanceMonthly, CheckUserBalanceJob.class).replaceExistingJob(true)
-                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 30 1 ? * 7#1 *").inTimeZone(TimeZone.getTimeZone(TIMEZONE_SHANGHAI)))
-                    .withIdentity(JobType.CheckUserBalanceMonthly.name(), JobType.CheckUserBalanceMonthly.name()).submit();
-        } catch (SchedulerException e) {
-            logger.info(e.getLocalizedMessage(), e);
-        }
     }
 
     private void createCouponRepayCallBackJobIfNotExist() {
@@ -174,26 +108,6 @@ public class JobInitPlugin implements SchedulerPlugin {
         }
     }
 
-    private void platformBalanceLowNotifyJob() {
-        try {
-            jobManager.newJob(JobType.PlatformBalanceLowNotify, PlatformBalanceMonitorJob.class).replaceExistingJob(true)
-                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 9 * * ? *").inTimeZone(TimeZone.getTimeZone(TIMEZONE_SHANGHAI)))
-                    .withIdentity(JobType.PlatformBalanceLowNotify.name(), JobType.PlatformBalanceLowNotify.name()).submit();
-        } catch (SchedulerException e) {
-            logger.info(e.getLocalizedMessage(), e);
-        }
-    }
-
-    private void eventMessageJob() {
-        try {
-            jobManager.newJob(JobType.EventMessage, EventMessageJob.class).replaceExistingJob(true)
-                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 10 * * ? *").inTimeZone(TimeZone.getTimeZone(TIMEZONE_SHANGHAI)))
-                    .withIdentity(JobType.EventMessage.name(), JobType.EventMessage.name()).submit();
-        } catch (SchedulerException e) {
-            logger.info(e.getLocalizedMessage(), e);
-        }
-    }
-
     private void createFirstRedEnvelopSplitJob() {
         try {
             jobManager.newJob(JobType.SendFirstRedEnvelopSplit, AssignFirstRedEnvelopSplitJob.class)
@@ -214,5 +128,37 @@ public class JobInitPlugin implements SchedulerPlugin {
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
         }
+    }
+
+    private void deleteRefreshAreaByMobile() {
+        jobManager.deleteJob(JobType.AutoReFreshAreaByMobile, JobType.AutoReFreshAreaByMobile.name(), JobType.AutoReFreshAreaByMobile.name());
+    }
+
+    private void deleteBirthdayNotifyJob() {
+        jobManager.deleteJob(JobType.BirthdayNotify, JobType.BirthdayNotify.name(), JobType.BirthdayNotify.name());
+    }
+
+    private void deleteCalculateDefaultInterest() {
+        jobManager.deleteJob(JobType.CalculateDefaultInterest, JobType.CalculateDefaultInterest.name(), JobType.CalculateDefaultInterest.name());
+    }
+
+    private void deleteNewbieExperienceRepayJob() {
+        jobManager.deleteJob(JobType.ExperienceRepay, JobType.ExperienceRepay.name(), JobType.ExperienceRepay.name());
+    }
+
+    private void deleteCheckUserBalanceJob() {
+        jobManager.deleteJob(JobType.CheckUserBalanceMonthly, JobType.CheckUserBalanceMonthly.name(), JobType.CheckUserBalanceMonthly.name());
+    }
+
+    private void deleteLoanRepayNotifyJob() {
+        jobManager.deleteJob(JobType.LoanRepayNotify, JobType.LoanRepayNotify.name(), JobType.LoanRepayNotify.name());
+    }
+
+    private void deletePlatformBalanceLowNotifyJob() {
+        jobManager.deleteJob(JobType.PlatformBalanceLowNotify, JobType.PlatformBalanceLowNotify.name(), JobType.PlatformBalanceLowNotify.name());
+    }
+
+    private void deleteEventMessageJob() {
+        jobManager.deleteJob(JobType.EventMessage, JobType.EventMessage.name(), JobType.EventMessage.name());
     }
 }

@@ -1,4 +1,4 @@
-package com.tuotiansudai.service.impl;
+package com.tuotiansudai.scheduler.loan;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
@@ -10,23 +10,23 @@ import com.tuotiansudai.message.EMailMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.service.CheckUserBalanceService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.SendCloudTemplate;
-import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Service
-public class CheckUserBalanceServiceImpl implements CheckUserBalanceService {
-
-    private static Logger logger = Logger.getLogger(CheckUserBalanceServiceImpl.class);
+@Component
+public class CheckUserBalanceScheduler {
+    private static Logger logger = LoggerFactory.getLogger(CheckUserBalanceScheduler.class);
 
     @Autowired
     private PayWrapperClient payWrapperClient;
@@ -45,6 +45,8 @@ public class CheckUserBalanceServiceImpl implements CheckUserBalanceService {
 
     private static final int BATCH_SIZE = 10000;
 
+    //@Scheduled(cron = "0 30 1 ? * 7#1", zone = "Asia/Shanghai")
+    @Scheduled(cron = "0 30 1 1 1/1 ?", zone = "Asia/Shanghai")
     public void checkUserBalance() {
         logger.info("start checkUserBalance.");
 
@@ -69,7 +71,7 @@ public class CheckUserBalanceServiceImpl implements CheckUserBalanceService {
                     continue;
                 }
                 long balance = Long.parseLong(balanceMap.get("balance"));
-                if(balance != account.getBalance()) {
+                if (balance != account.getBalance()) {
                     mismatchUserList.add(account.getLoginName() + "-" + account.getBalance() + "-" + balance);
                 }
             }
@@ -123,3 +125,4 @@ public class CheckUserBalanceServiceImpl implements CheckUserBalanceService {
         mqWrapperClient.sendMessage(MessageQueue.EMailMessage, new EMailMessage(toAddressList, title, content));
     }
 }
+

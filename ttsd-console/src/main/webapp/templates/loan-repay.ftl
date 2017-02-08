@@ -12,12 +12,12 @@
             <input type="text" class="form-control" id="loanId" name="loanId" placeholder="" value="${(loanId?string("0"))!}">
         </div>
         <div class="form-group">
-            <label for="number">用户名:</label>
+            <label for="number">还款人用户名:</label>
             <input type="text" id="loginName" name="loginName" class="form-control ui-autocomplete-input" datatype="*"
                    autocomplete="off" value="${loginName!}"/>
         </div>
         <div class="form-group">
-            <label for="number">开始时间:</label>
+            <label for="number">预计还款时间:</label>
 
             <div class='input-group date' id='datetimepicker1'>
                 <input type='text' class="form-control" id="startTime" name="startTime" value="${(startTime?string('yyyy-MM-dd'))!}"/>
@@ -25,9 +25,7 @@
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
             </div>
-
-            <label for="number">结束时间:</label>
-
+            -
             <div class='input-group date' id='datetimepicker2'>
                 <input type='text' class="form-control" id="endTime" name="endTime" value="${(endTime?string('yyyy-MM-dd'))!}"/>
 					                <span class="input-group-addon">
@@ -37,7 +35,7 @@
 
         </div>
         <div class="form-group">
-            <label for="">标的类型: </label>
+            <label for="">还款状态: </label>
 
             <select class="selectpicker" name="repayStatus" id="repayStatus">
                 <option value="">全部</option>
