@@ -139,7 +139,7 @@ public class CouponLoanOutServiceImpl implements CouponLoanOutService {
                 userCouponId);
 
         logger.info(MessageFormat.format("[标的放款] send message TransferRedEnvelopCallback,loanId:{0}, investId:{1}, loginName:{2} queryString:{3}, orderId:{4}",
-                userCouponModel.getLoanId(), userCouponModel.getInvestId(), userCouponModel.getLoanName(), queryString, callbackRequest.getOrderId()));
+                String.valueOf(userCouponModel.getLoanId()), String.valueOf(userCouponModel.getInvestId()), userCouponModel.getLoanName(), queryString, callbackRequest.getOrderId()));
         mqWrapperClient.sendMessage(MessageQueue.TransferRedEnvelopCallback, transferRedEnvelopCallbackMessage);
 
         return callbackRequest.getResponseData();

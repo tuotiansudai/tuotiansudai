@@ -30,15 +30,15 @@ public class TransferReferrerRewardCallbackMessageConsumer implements MessageCon
 
     @Override
     public MessageQueue queue() {
-        return MessageQueue.TransferRedEnvelopCallback;
+        return MessageQueue.TransferReferrerRewardCallback;
     }
 
     @Transactional
     @Override
     public void consume(String message) {
-        logger.info("[标的放款MQ] TransferRedEnvelopCallback receive message: {}: {}.", this.queue(), message);
+        logger.info("[标的放款MQ] TransferReferrerRewardCallback receive message: {}: {}.", this.queue(), message);
         if (Strings.isNullOrEmpty(message)) {
-            logger.error("[标的放款MQ] TransferRedEnvelopCallback receive message is empty");
+            logger.error("[标的放款MQ] TransferReferrerRewardCallback receive message is empty");
             smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("发放现金红包回调错误, MQ消息为空"));
             return;
         }
@@ -57,12 +57,12 @@ public class TransferReferrerRewardCallbackMessageConsumer implements MessageCon
                 return;
             }
         } catch (IOException e) {
-            logger.error("[标的放款MQ] TransferRedEnvelopCallback json convert transferReferrerRewardCallbackMessage is fail, message:{}", message);
+            logger.error("[标的放款MQ] TransferReferrerRewardCallback json convert transferReferrerRewardCallbackMessage is fail, message:{}", message);
             smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("发放现金红包回调错误, 解析消息失败"));
             return;
         }
 
-        logger.info("[标的放款MQ] TransferRedEnvelopCallback ready to consume message: loanId:{}, investId:{}, referrer:{}, loginName:{}, referrerRewardId:{}",
+        logger.info("[标的放款MQ] TransferReferrerRewardCallback ready to consume message: loanId:{}, investId:{}, referrer:{}, loginName:{}, referrerRewardId:{}",
                 transferReferrerRewardCallbackMessage.getLoanId(), transferReferrerRewardCallbackMessage.getInvestId(),
                 transferReferrerRewardCallbackMessage.getReferrer(), transferReferrerRewardCallbackMessage.getLoginName(),
                 transferReferrerRewardCallbackMessage.getReferrerRewardId());
@@ -71,17 +71,17 @@ public class TransferReferrerRewardCallbackMessageConsumer implements MessageCon
         try {
             result = payWrapperClient.transferReferrerRewardCallBack(transferReferrerRewardCallbackMessage.getReferrerRewardId());
         } catch (Exception e) {
-            logger.error("[标的放款MQ] TransferRedEnvelopCallback callback consume fail. message: " + e);
+            logger.error("[标的放款MQ] TransferReferrerRewardCallback callback consume fail. message: " + e);
             smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("发放现金红包回调错误, 业务处理异常"));
             return;
         }
 
         if (!result.isSuccess()) {
-            logger.error("[标的放款MQ] TransferRedEnvelopCallback callback consume fail. notifyRequestId: " + message);
+            logger.error("[标的放款MQ] TransferReferrerRewardCallback callback consume fail. notifyRequestId: " + message);
             smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("发放现金红包回调错误"));
-            throw new RuntimeException("[标的放款MQ] TransferRedEnvelopCallback callback consume fail. notifyRequestId: " + message);
+            throw new RuntimeException("[标的放款MQ] TransferReferrerRewardCallback callback consume fail. notifyRequestId: " + message);
         }
 
-        logger.info("[标的放款MQ] TransferRedEnvelopCallback consume message success.");
+        logger.info("[标的放款MQ] TransferReferrerRewardCallback consume message success.");
     }
 }

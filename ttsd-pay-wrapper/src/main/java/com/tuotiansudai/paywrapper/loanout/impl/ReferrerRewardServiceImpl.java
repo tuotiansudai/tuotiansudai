@@ -200,7 +200,7 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
                 investReferrerRewardId);
 
         logger.info(MessageFormat.format("[标的放款] send mq TransferReferrerRewardCallback, loanId:{0}, investId:{1}, loginName:{2}, referrer:{3}, queryString:{4}",
-                transferReferrerRewardCallbackMessage.getLoanId(), transferReferrerRewardCallbackMessage.getInvestId(),
+                String.valueOf(transferReferrerRewardCallbackMessage.getLoanId()), String.valueOf(transferReferrerRewardCallbackMessage.getInvestId()),
                 transferReferrerRewardCallbackMessage.getLoginName(), transferReferrerRewardCallbackMessage.getReferrer(),
                 queryString));
         mqWrapperClient.sendMessage(MessageQueue.TransferReferrerRewardCallback, transferReferrerRewardCallbackMessage);
