@@ -1,16 +1,19 @@
-package com.tuotiansudai.service;
+package com.tuotiansudai.scheduler.loan;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.service.LoanRepayService;
 import com.tuotiansudai.util.IdGenerator;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
@@ -19,9 +22,9 @@ import java.util.UUID;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
-public class DefaultInterestTest {
+@RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
+public class CalculateDefaultInterestSchedulerTest {
 
     @Autowired
     private UserMapper userMapper;
@@ -42,7 +45,7 @@ public class DefaultInterestTest {
     private InvestRepayMapper investRepayMapper;
 
     @Autowired
-    private LoanRepayService loanRepayService;
+    private CalculateDefaultInterestScheduler scheduler;
 
     @Value("${pay.overdue.fee}")
     private double overdueFee;
@@ -142,7 +145,7 @@ public class DefaultInterestTest {
         InvestRepayModel fakeInvest2RepayModel3 = this.getFakeInvestRepayModel(fakeInvestModel2.getId(), 3, fakeInvestModel2.getAmount(), fakeLoanRepayModel3.getRepayDate(), null, RepayStatus.REPAYING);
         investRepayMapper.create(Lists.newArrayList(fakeInvest1RepayModel1, fakeInvest1RepayModel2, fakeInvest1RepayModel3, fakeInvest2RepayModel1, fakeInvest2RepayModel2, fakeInvest2RepayModel3));
 
-        loanRepayService.calculateDefaultInterest();
+        scheduler.calculateDefaultInterest();
 
         LoanModel loanModel = loanMapper.findById(fakeNormalLoan.getId());
         assertThat(loanModel.getStatus(), is(LoanStatus.OVERDUE));
@@ -217,7 +220,7 @@ public class DefaultInterestTest {
         InvestRepayModel fakeInvest2RepayModel3 = this.getFakeInvestRepayModel(fakeInvestModel2.getId(), 3, fakeInvestModel2.getAmount(), fakeLoanRepayModel3.getRepayDate(), null, RepayStatus.REPAYING);
         investRepayMapper.create(Lists.newArrayList(fakeInvest1RepayModel1, fakeInvest1RepayModel2, fakeInvest1RepayModel3, fakeInvest2RepayModel1, fakeInvest2RepayModel2, fakeInvest2RepayModel3));
 
-        loanRepayService.calculateDefaultInterest();
+        scheduler.calculateDefaultInterest();
 
         LoanModel loanModel = loanMapper.findById(fakeNormalLoan.getId());
         assertThat(loanModel.getStatus(), is(LoanStatus.OVERDUE));
@@ -292,7 +295,7 @@ public class DefaultInterestTest {
         InvestRepayModel fakeInvest2RepayModel3 = this.getFakeInvestRepayModel(fakeInvestModel2.getId(), 3, fakeInvestModel2.getAmount(), fakeLoanRepayModel3.getRepayDate(), null, RepayStatus.OVERDUE);
         investRepayMapper.create(Lists.newArrayList(fakeInvest1RepayModel1, fakeInvest1RepayModel2, fakeInvest1RepayModel3, fakeInvest2RepayModel1, fakeInvest2RepayModel2, fakeInvest2RepayModel3));
 
-        loanRepayService.calculateDefaultInterest();
+        scheduler.calculateDefaultInterest();
 
         LoanModel loanModel = loanMapper.findById(fakeNormalLoan.getId());
         assertThat(loanModel.getStatus(), is(LoanStatus.OVERDUE));
@@ -367,7 +370,7 @@ public class DefaultInterestTest {
         InvestRepayModel fakeInvest2RepayModel3 = this.getFakeInvestRepayModel(fakeInvestModel2.getId(), 3, fakeInvestModel2.getAmount(), fakeLoanRepayModel3.getRepayDate(), null, RepayStatus.REPAYING);
         investRepayMapper.create(Lists.newArrayList(fakeInvest1RepayModel1, fakeInvest1RepayModel2, fakeInvest1RepayModel3, fakeInvest2RepayModel1, fakeInvest2RepayModel2, fakeInvest2RepayModel3));
 
-        loanRepayService.calculateDefaultInterest();
+        scheduler.calculateDefaultInterest();
 
         LoanModel loanModel = loanMapper.findById(fakeNormalLoan.getId());
         assertThat(loanModel.getStatus(), is(LoanStatus.OVERDUE));
