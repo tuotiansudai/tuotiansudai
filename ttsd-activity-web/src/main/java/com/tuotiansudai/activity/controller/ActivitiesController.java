@@ -29,7 +29,11 @@ public class ActivitiesController {
     @Autowired
     private AccountService accountService;
 
+<<<<<<< HEAD
     @RequestMapping(path = "/{item:^recruit|material-point|integral-draw|birth-month|rank-list-app|share-reward|app-download|landing-page|invest-achievement|landing-anxin|loan-hike|heavily-courtship|point-update$}", method = RequestMethod.GET)
+=======
+    @RequestMapping(path = "/{item:^recruit|material-point|integral-draw|birth-month|rank-list-app|share-reward|app-download|landing-page|invest-achievement|landing-anxin|loan-hike|heavily-courtship|sign-check$}", method = RequestMethod.GET)
+>>>>>>> feature/xq/sign-activity
 
     public ModelAndView activities(@PathVariable String item) {
         ModelAndView modelAndView = new ModelAndView("/activities/" + item, "responsive", true);
