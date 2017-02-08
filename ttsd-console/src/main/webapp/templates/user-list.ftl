@@ -19,7 +19,7 @@
 
             <div class='input-group date' id='datetimepicker1'>
                 <input type='text' class="form-control" name="beginTime"
-                       value="${(beginTime?string('yyyy-MM-dd HH:mm'))!}"/>
+                       value="${(beginTime?string('yyyy-MM-dd HH:mm:ss'))!}"/>
                 <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
@@ -27,7 +27,7 @@
             -
             <div class='input-group date' id='datetimepicker2'>
                 <input type='text' class="form-control" name="endTime"
-                       value="${(endTime?string('yyyy-MM-dd HH:mm'))!}"/>
+                       value="${(endTime?string('yyyy-MM-dd HH:mm:ss'))!}"/>
                 <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
@@ -169,7 +169,7 @@
             <ul class="pagination pull-left">
                 <li>
                     <#if pagination.hasPreviousPage >
-                    <a href="?loginName=${loginName!}&email=${email!}&mobile=${mobile!}&beginTime=${(beginTime?string('yyyy-MM-dd HH:mm'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm'))!}&roleStage=${(roleStage.name())!}&source=${(source.name())!}&referrerMobile=${referrerMobile!}&channel=${channel!}&userOperation=${(selectedUserOperation.name())!}&pageSize=${pageSize}&index=${pageIndex-1}"
+                    <a href="?loginName=${loginName!}&email=${email!}&mobile=${mobile!}&beginTime=${(beginTime?string('yyyy-MM-dd HH:mm:ss'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm:ss'))!}&roleStage=${(roleStage.name())!}&source=${(source.name())!}&referrerMobile=${referrerMobile!}&channel=${channel!}&userOperation=${(selectedUserOperation.name())!}&pageSize=${pageSize}&index=${pageIndex-1}"
                        aria-label="Previous">
                     <#else>
                     <a href="#" aria-label="Previous">
@@ -180,7 +180,7 @@
                 <li><a>${pagination.index}</a></li>
                 <li>
                     <#if pagination.hasNextPage >
-                    <a href="?loginName=${loginName!}&email=${email!}&mobile=${mobile!}&beginTime=${(beginTime?string('yyyy-MM-dd HH:mm'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm'))!}&roleStage=${(roleStage.name())!}&source=${(source.name())!}&referrerMobile=${referrerMobile!}&channel=${channel!}&userOperation=${(selectedUserOperation.name())!}&pageSize=${pageSize}&index=${pageIndex+1}"
+                    <a href="?loginName=${loginName!}&email=${email!}&mobile=${mobile!}&beginTime=${(beginTime?string('yyyy-MM-dd HH:mm:ss'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm:ss'))!}&roleStage=${(roleStage.name())!}&source=${(source.name())!}&referrerMobile=${referrerMobile!}&channel=${channel!}&userOperation=${(selectedUserOperation.name())!}&pageSize=${pageSize}&index=${pageIndex+1}"
                        aria-label="Next">
                     <#else>
                     <a href="#" aria-label="Next">

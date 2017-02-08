@@ -1,14 +1,19 @@
 package com.tuotiansudai.service.impl;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.enums.UserOpType;
 import com.tuotiansudai.log.service.UserOpLogService;
+import com.tuotiansudai.message.EMailMessage;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.BindEmailService;
-import com.tuotiansudai.util.SendCloudMailUtil;
+import com.tuotiansudai.util.SendCloudTemplate;
 import com.tuotiansudai.util.UUIDGenerator;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -26,9 +31,6 @@ public class BindEmailServiceImpl implements BindEmailService {
     static Logger logger = Logger.getLogger(BindEmailServiceImpl.class);
 
     @Autowired
-    private SendCloudMailUtil sendCloudMailUtil;
-
-    @Autowired
     private RedisWrapperClient redisWrapperClient;
 
     @Autowired
@@ -37,6 +39,8 @@ public class BindEmailServiceImpl implements BindEmailService {
     @Autowired
     private UserOpLogService userOpLogService;
 
+    @Autowired
+    private MQWrapperClient mqWrapperClient;
 
     @Value("${web.server}")
     private String webServer;
@@ -45,24 +49,29 @@ public class BindEmailServiceImpl implements BindEmailService {
 
     @Override
     public boolean sendActiveEmail(String loginName, String email, String url) {
-        if (StringUtils.isNotEmpty(email)) {
-            String uuid = UUIDGenerator.generate();
-            String bindEmailKey = "web:{loginName}:{uuid}";
-            String bindEmailValue = "{loginName}:{email}";
-            String activeUrl = ACTIVE_URL_TEMPLATE.replace("{webServer}", webServer).replace("{uuid}", uuid);
-
-            redisWrapperClient.setex(bindEmailKey.replace("{loginName}", loginName).replace("{uuid}", uuid),
-                    86400,
-                    bindEmailValue.replace("{loginName}", loginName).replace("{email}", email));
-
-            Map<String, String> emailParameters = Maps.newHashMap(new ImmutableMap.Builder<String, String>()
-                    .put("loginName", loginName)
-                    .put("activeUrl", activeUrl)
-                    .build());
-            return sendCloudMailUtil.sendActiveEmail(email, emailParameters);
+        if (Strings.isNullOrEmpty(email)) {
+            return false;
         }
 
-        return false;
+        String uuid = UUIDGenerator.generate();
+        String bindEmailKey = "web:{loginName}:{uuid}";
+        String bindEmailValue = "{loginName}:{email}";
+        String activeUrl = ACTIVE_URL_TEMPLATE.replace("{webServer}", webServer).replace("{uuid}", uuid);
+
+        redisWrapperClient.setex(bindEmailKey.replace("{loginName}", loginName).replace("{uuid}", uuid),
+                86400,
+                bindEmailValue.replace("{loginName}", loginName).replace("{email}", email));
+
+        Map<String, String> emailParameters = Maps.newHashMap(new ImmutableMap.Builder<String, String>()
+                .put("loginName", loginName)
+                .put("activeUrl", activeUrl)
+                .build());
+
+        mqWrapperClient.sendMessage(MessageQueue.EMailMessage, new EMailMessage(Lists.newArrayList(email),
+                SendCloudTemplate.ACTIVE_EMAIL.getTitle(),
+                SendCloudTemplate.ACTIVE_EMAIL.generateContent(emailParameters)));
+
+        return true;
     }
 
     @Override

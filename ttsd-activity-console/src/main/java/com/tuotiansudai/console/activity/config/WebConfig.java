@@ -2,10 +2,10 @@ package com.tuotiansudai.console.activity.config;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.util.IdGenerator;
+import com.tuotiansudai.web.config.handler.HandlerExceptionLoggingResolver;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,7 +13,6 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.context.request.RequestContextListener;
-import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -35,7 +34,8 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     @Value("${web.static.server}")
     private String staticServer;
 
-    @Bean public RequestContextListener requestContextListener(){
+    @Bean
+    public RequestContextListener requestContextListener() {
         return new RequestContextListener();
     }
 
@@ -75,7 +75,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         configurer.setTemplateLoaderPath("classpath:/templates/");
         configurer.setFreemarkerVariables(Maps.newHashMap(new ImmutableMap.Builder<String, Object>()
                 .put("webServer", webServer)
-                .put("staticServer",staticServer)
+                .put("staticServer", staticServer)
                 .build()));
         Properties settings = new Properties();
         settings.setProperty("template_exception_handler", "RETHROW");
@@ -86,5 +86,10 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     @Bean
     public IdGenerator idGenerator(RedisWrapperClient redisWrapperClient) {
         return new IdGenerator(redisWrapperClient);
+    }
+
+    @Bean
+    public HandlerExceptionLoggingResolver handlerExceptionLoggingResolver() {
+        return new HandlerExceptionLoggingResolver();
     }
 }

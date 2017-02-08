@@ -2,14 +2,14 @@ package com.tuotiansudai.paywrapper.loanout.impl;
 
 
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
-import com.tuotiansudai.coupon.repository.model.CouponModel;
-import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.loanout.AchievementCouponService;
+import com.tuotiansudai.repository.mapper.CouponMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.model.CouponModel;
 import com.tuotiansudai.repository.model.LoanModel;
+import com.tuotiansudai.repository.model.UserGroup;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -7,7 +7,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
-import com.tuotiansudai.coupon.repository.mapper.CouponRepayMapper;
+import com.tuotiansudai.repository.mapper.CouponRepayMapper;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.Environment;
 import com.tuotiansudai.dto.PayDataDto;

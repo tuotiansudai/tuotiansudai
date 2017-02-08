@@ -2,6 +2,7 @@ package com.tuotiansudai.paywrapper.service;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.paywrapper.loanout.impl.ReferrerRewardServiceImpl;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;

@@ -4,7 +4,7 @@ package com.tuotiansudai.console.service;
 import com.tuotiansudai.repository.mapper.ReferrerManageMapper;
 import com.tuotiansudai.repository.model.ReferrerManageView;
 import com.tuotiansudai.repository.model.ReferrerRewardStatus;
-import com.tuotiansudai.repository.model.Role;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.repository.model.Source;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

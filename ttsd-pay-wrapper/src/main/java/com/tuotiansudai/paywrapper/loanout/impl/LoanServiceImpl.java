@@ -2,7 +2,9 @@ package com.tuotiansudai.paywrapper.loanout.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
@@ -18,6 +20,7 @@ import com.tuotiansudai.enums.PushType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.job.AutoLoanOutJob;
+import com.tuotiansudai.message.EMailMessage;
 import com.tuotiansudai.message.EventMessage;
 import com.tuotiansudai.message.LoanOutSuccessMessage;
 import com.tuotiansudai.message.PushMessage;
@@ -25,8 +28,10 @@ import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.client.model.MessageTopic;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
+import com.tuotiansudai.paywrapper.coupon.service.CouponInvestService;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.loanout.LoanService;
+import com.tuotiansudai.paywrapper.loanout.ReferrerRewardService;
 import com.tuotiansudai.paywrapper.repository.mapper.MerBindProjectMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.MerUpdateProjectMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferMapper;
@@ -49,11 +54,14 @@ import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.AmountTransfer;
+import com.tuotiansudai.util.SendCloudTemplate;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
@@ -96,6 +104,12 @@ public class LoanServiceImpl implements LoanService {
 
     @Autowired
     private PaySyncClient paySyncClient;
+
+    @Autowired
+    private ReferrerRewardService referrerRewardService;
+
+    @Autowired
+    private CouponInvestService couponInvestService;
 
     @Autowired
     private UMPayRealTimeStatusService umPayRealTimeStatusService;
@@ -192,7 +206,13 @@ public class LoanServiceImpl implements LoanService {
                 logger.error(e.getLocalizedMessage(), e);
             }
         }
-        return this.updateLoanStatus(loanId, LoanStatus.CANCEL);
+        BaseDto<PayDataDto> baseDto = this.updateLoanStatus(loanId, LoanStatus.CANCEL);
+
+        if (baseDto.getData() != null && baseDto.getData().getStatus()) {
+            couponInvestService.cancelUserCoupon(loanId);
+        }
+
+        return baseDto;
     }
 
     @Transactional
@@ -381,37 +401,31 @@ public class LoanServiceImpl implements LoanService {
 
     @Override
     public boolean processNotifyForLoanOut(long loanId) {
-        String redisKey = MessageFormat.format(LOAN_OUT_IDEMPOTENT_CHECK_TEMPLATE, String.valueOf(loanId));
-        String statusString = redisWrapperClient.hget(redisKey, SMS_AND_EMAIL);
-        if (Strings.isNullOrEmpty(statusString) || statusString.equals(SyncRequestStatus.FAILURE.name())) {
+        logger.info(MessageFormat.format("[标的放款]:标的: {0} 放款短信邮件通知", String.valueOf(loanId)));
+        List<InvestModel> successInvests = investMapper.findSuccessInvestsByLoanId(loanId);
+        LoanModel loanModel = loanMapper.findById(loanId);
+        for (InvestModel investModel : successInvests) {
+            UserModel userModel = userMapper.findByLoginName(investModel.getLoginName());
+            InvestSmsNotifyDto dto = new InvestSmsNotifyDto(userModel.getMobile(),
+                    loanModel.getName(),
+                    AmountConverter.convertCentToString(investModel.getAmount()));
+            Map<String, String> emailParameters = Maps.newHashMap(new ImmutableMap.Builder<String, String>()
+                    .put("loanName", loanModel.getName())
+                    .put("amount", AmountConverter.convertCentToString(investModel.getAmount()))
+                    .build());
             try {
-                redisWrapperClient.hset(redisKey, SMS_AND_EMAIL, SyncRequestStatus.SENT.name());
-                List<InvestModel> investModels = investMapper.findSuccessInvestsByLoanId(loanId);
-                logger.debug(MessageFormat.format("[标的放款]:标的: {0} 放款短信通知", loanId));
-                notifyInvestorsLoanOutSuccessfulBySMS(investModels);
-                redisWrapperClient.hset(redisKey, SMS_AND_EMAIL, SyncRequestStatus.SUCCESS.name());
+                smsWrapperClient.sendInvestNotify(dto);
+                if (StringUtils.isNotEmpty(userModel.getEmail())) {
+                    mqWrapperClient.sendMessage(MessageQueue.EMailMessage, new EMailMessage(Lists.newArrayList(userModel.getEmail()),
+                            SendCloudTemplate.LOAN_OUT_SUCCESSFUL_EMAIL.getTitle(),
+                            SendCloudTemplate.LOAN_OUT_SUCCESSFUL_EMAIL.generateContent(emailParameters)));
+                }
             } catch (Exception e) {
-                redisWrapperClient.hset(redisKey, SMS_AND_EMAIL, SyncRequestStatus.FAILURE.name());
-                logger.error(MessageFormat.format("[标的放款]:放款短信通知失败 (loanId = {0})", String.valueOf(loanId)), e);
+                logger.error(e.getLocalizedMessage(), e);
                 return false;
             }
-        } else {
-            logger.info(MessageFormat.format("[标的放款]:重复发送放款短信通知,标的ID : {0}", String.valueOf(loanId)));
         }
         return true;
-    }
-
-    private void notifyInvestorsLoanOutSuccessfulBySMS(List<InvestModel> investModels) {
-        for (InvestModel investModel : investModels) {
-            UserModel userModel = userMapper.findByLoginName(investModel.getLoginName());
-            LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
-            InvestNotifyInfo notifyInfo = new InvestNotifyInfo(investModel, loanModel, userModel);
-            InvestSmsNotifyDto dto = new InvestSmsNotifyDto();
-            dto.setLoanName(notifyInfo.getLoanName());
-            dto.setMobile(notifyInfo.getMobile());
-            dto.setAmount(AmountConverter.convertCentToString(notifyInfo.getAmount()));
-            smsWrapperClient.sendInvestNotify(dto);
-        }
     }
 
     private BaseDto<PayDataDto> cancelPayBack(InvestDto dto, long investId) {

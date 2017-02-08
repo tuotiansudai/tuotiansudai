@@ -1,11 +1,11 @@
 package com.tuotiansudai.web.controller;
 
 import com.tuotiansudai.coupon.service.UserCouponService;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.point.service.PointService;
 import com.tuotiansudai.point.service.SignInService;
-import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.service.*;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.apache.commons.lang3.time.DateUtils;
