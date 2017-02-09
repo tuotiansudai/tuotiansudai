@@ -47,8 +47,6 @@ public class SmsWrapperClient extends BaseClient {
 
     private final static String COUPON_NOTIFY_URI = "/sms/coupon-notify";
 
-    private final static String BIRTHDAY_NOTIFY_URI = "/sms/birthday-notify";
-
     private final static String LOAN_REPAY_NOTIFY_URL = "/sms/loan-repay-notify";
 
     private final static String EXPERIENCE_REPAY_NOTIFY_URL = "/sms/experience-repay-notify";
@@ -99,10 +97,6 @@ public class SmsWrapperClient extends BaseClient {
 
     public BaseDto<SmsDataDto> sendCouponNotify(SmsCouponNotifyDto dto) {
         return send(dto, COUPON_NOTIFY_URI);
-    }
-
-    public BaseDto<SmsDataDto> sendBirthdayNotify(SmsCouponNotifyDto dto) {
-        return send(dto, BIRTHDAY_NOTIFY_URI);
     }
 
     public BaseDto<SmsDataDto> sendCancelTransferLoanNotify(SmsCancelTransferLoanNotifyDto dto) {

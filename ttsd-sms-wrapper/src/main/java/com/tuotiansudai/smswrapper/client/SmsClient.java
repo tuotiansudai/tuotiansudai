@@ -153,7 +153,7 @@ public class SmsClient implements ApplicationContextAware {
                     smsProviderBackup.sendSMS(mobileList, template, paramList);
                     successChannel = SmsChannel.Backup;
                 } catch (SmsSendingException e1) {
-                    logger.error("send sms via primary and backup channel all failed.", e);
+                    logger.error("send sms via primary and backup channel all failed.", e1);
                     throw e1;
                 }
             } else {

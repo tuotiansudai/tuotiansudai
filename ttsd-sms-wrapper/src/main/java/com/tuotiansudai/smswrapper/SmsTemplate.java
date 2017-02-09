@@ -49,10 +49,6 @@ public enum SmsTemplate {
             "6487", "尊敬的拓天速贷客户，恭喜您获得%s，有效期%s，请及时投资体验。",
             "SMS_45505123", "尊敬的拓天速贷客户，您专属的${param0}已到账，有效期${param1}，请及时使用。"),
 
-    SMS_BIRTHDAY_NOTIFY_TEMPLATE(SmsChannel.Backup,
-            "6482", "亲爱的天宝生日快乐！生日月投资收益翻倍，最高26%，不要错过哟！",
-            "SMS_45630093", "亲爱的天宝生日快乐！本月您专享生日优惠，不要错过哟，详询客服。"),
-
     SMS_EXPERIENCE_REPAY_NOTIFY_TEMPLATE(SmsChannel.TryBoth,
             "8510", "亲爱的用户，您投资的新手体验项目所得%s元现金红包奖励已发放，快来激活奖励吧！",
             "SMS_45415002", "亲爱的用户，您投资的新手体验项目所得${param0}元现金红包奖励已发放，快来激活奖励吧！"),

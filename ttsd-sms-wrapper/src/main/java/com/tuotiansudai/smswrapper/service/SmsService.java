@@ -65,10 +65,6 @@ public class SmsService {
         return smsClient.sendSMS(FatalNotifyMapper.class, mobiles, SmsTemplate.SMS_FATAL_NOTIFY_TEMPLATE, paramList);
     }
 
-    public BaseDto<SmsDataDto> birthdayNotify(SmsCouponNotifyDto notifyDto) {
-        return smsClient.sendSMS(CouponNotifyMapper.class, notifyDto.getMobile(), SmsTemplate.SMS_BIRTHDAY_NOTIFY_TEMPLATE, "");
-    }
-
     public BaseDto<SmsDataDto> loanRepayNotify(String mobile, String repayAmount) {
         return smsClient.sendSMS(LoanRepayNotifyMapper.class, mobile, SmsTemplate.SMS_LOAN_REPAY_NOTIFY_TEMPLATE, repayAmount);
     }
