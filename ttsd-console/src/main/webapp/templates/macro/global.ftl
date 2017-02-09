@@ -40,7 +40,6 @@
                     {"name":"userMan","text":"用户管理","link":"/user-manage/users","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
                     {"name":"referMan","text":"推荐人管理","link":"/user-manage/referrer","role":"'ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN'"},
                     {"name":"agentMan","text":"代理商管理","link":"/user-manage/agents","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"bindCard","text":"换卡管理","link":"/bank-card-manager/bind-card","role":"'ADMIN','OPERATOR_ADMIN','CUSTOMER_SERVICE'"},
                     {"name":"userMicroModel","text":"用户微模型","link":"/user-manage/user-micro-model","role":"'ADMIN','OPERATOR_ADMIN','OPERATOR','DATA'"}
                 ]
             },
