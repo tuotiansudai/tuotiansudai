@@ -12,7 +12,6 @@ import com.tuotiansudai.dto.sms.SmsCouponNotifyDto;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.smswrapper.SmsTemplate;
-import com.tuotiansudai.smswrapper.client.MdSmsClient;
 import com.tuotiansudai.smswrapper.client.SmsClient;
 import com.tuotiansudai.smswrapper.repository.mapper.*;
 import com.tuotiansudai.smswrapper.service.SmsService;
@@ -33,9 +32,6 @@ public class SmsServiceImpl implements SmsService {
     @Autowired
     private SmsClient smsClient;
 
-    @Autowired
-    private MdSmsClient mdSmsClient;
-
     @Value("#{'${sms.fatal.dev.mobile}'.split('\\|')}")
     private List<String> fatalNotifyDevMobiles;
 
@@ -45,25 +41,9 @@ public class SmsServiceImpl implements SmsService {
     @Value("${common.environment}")
     private Environment environment;
 
-    @Value("${sms.second.platform}")
-    private String platform;
-
-    private final String SMS_PLATFORM = "zucp";
-
-
     @Override
     public BaseDto<SmsDataDto> sendRegisterCaptcha(String mobile, String captcha, String ip) {
-        BaseDto<SmsDataDto> smsDateDto = smsClient.sendSMS(RegisterCaptchaMapper.class, mobile, SmsTemplate.SMS_REGISTER_CAPTCHA_TEMPLATE, captcha, ip);
-        if (!smsDateDto.getData().getStatus() && platform.equals(SMS_PLATFORM)) {
-            smsDateDto = this.sendRegisterCaptchaByMd(mobile, captcha, ip);
-        }
-        return smsDateDto;
-    }
-
-    @Override
-    public BaseDto<SmsDataDto> sendInvestNotify(InvestSmsNotifyDto dto) {
-        List<String> paramList = ImmutableList.<String>builder().add(dto.getLoanName()).add(dto.getAmount()).build();
-        return smsClient.sendSMS(InvestNotifyMapper.class, dto.getMobile(), SmsTemplate.SMS_INVEST_NOTIFY_TEMPLATE, paramList, "");
+        return smsClient.sendSMS(RegisterCaptchaMapper.class, mobile, SmsTemplate.SMS_REGISTER_CAPTCHA_TEMPLATE, captcha, ip);
     }
 
     @Override
@@ -139,17 +119,7 @@ public class SmsServiceImpl implements SmsService {
                 + notifyDto.getCouponType().getName();
 
         List<String> paramList = ImmutableList.<String>builder().add(couponName).add(notifyDto.getExpiredDate()).build();
-        if (platform.equals(SMS_PLATFORM)) {
-            logger.info("coupon notify send by md platform");
-            return mdSmsClient.sendSMS(CouponNotifyMapper.class, notifyDto.getMobile(), SmsTemplate.SMS_COUPON_NOTIFY_TEMPLATE, paramList, "");
-        }
-
         return smsClient.sendSMS(CouponNotifyMapper.class, notifyDto.getMobile(), SmsTemplate.SMS_COUPON_NOTIFY_TEMPLATE, paramList, "");
-    }
-
-    @Override
-    public BaseDto<SmsDataDto> sendRegisterCaptchaByMd(String mobile, String captcha, String ip) {
-        return mdSmsClient.sendSMS(RegisterCaptchaMapper.class, mobile, SmsTemplate.SMS_REGISTER_CAPTCHA_TEMPLATE, captcha, ip);
     }
 
     @Override

@@ -474,25 +474,8 @@ public class LoanServiceImpl implements LoanService {
     private void processNotifyForLoanOut(long loanId) {
         List<InvestModel> investModels = investMapper.findSuccessInvestsByLoanId(loanId);
 
-        logger.info(MessageFormat.format("[标的放款]:标的: {0} 放款短信通知", loanId));
-        notifyInvestorsLoanOutSuccessfulBySMS(investModels);
-
         logger.info(MessageFormat.format("[标的放款]:标的: {0} 放款邮件通知", loanId));
         notifyInvestorsLoanOutSuccessfulByEmail(investModels);
-
-    }
-
-    private void notifyInvestorsLoanOutSuccessfulBySMS(List<InvestModel> investModels) {
-        for (InvestModel investModel : investModels) {
-            UserModel userModel = userMapper.findByLoginName(investModel.getLoginName());
-            LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
-            InvestNotifyInfo notifyInfo = new InvestNotifyInfo(investModel, loanModel, userModel);
-            InvestSmsNotifyDto dto = new InvestSmsNotifyDto();
-            dto.setLoanName(notifyInfo.getLoanName());
-            dto.setMobile(notifyInfo.getMobile());
-            dto.setAmount(AmountConverter.convertCentToString(notifyInfo.getAmount()));
-            smsWrapperClient.sendInvestNotify(dto);
-        }
     }
 
     private void notifyInvestorsLoanOutSuccessfulByEmail(List<InvestModel> investModels) {

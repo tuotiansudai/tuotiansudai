@@ -13,8 +13,6 @@ public interface SmsService {
 
     BaseDto<SmsDataDto> sendRegisterCaptcha(String mobile, String captcha, String ip);
 
-    BaseDto<SmsDataDto> sendInvestNotify(InvestSmsNotifyDto dto);
-
     BaseDto<SmsDataDto> sendRetrievePasswordCaptcha(String mobile, String captcha, String ip);
 
     BaseDto<SmsDataDto> sendPasswordChangedNotify(String mobile);
@@ -39,8 +37,6 @@ public interface SmsService {
 
     BaseDto<SmsDataDto> couponNotifyByMd(SmsCouponNotifyDto notifyDto);
 
-    BaseDto<SmsDataDto> sendRegisterCaptchaByMd(String mobile, String captcha, String ip);
-    
     BaseDto<SmsDataDto> platformBalanceLowNotify(List<String> mobiles, String warningValue);
 
     BaseDto<SmsDataDto> generateContractNotify(List<String> mobiles, long businessId);

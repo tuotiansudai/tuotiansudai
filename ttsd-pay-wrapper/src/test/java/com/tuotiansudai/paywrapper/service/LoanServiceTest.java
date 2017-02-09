@@ -250,19 +250,16 @@ public class LoanServiceTest {
         when(userMapper.findByLoginName(anyString())).thenReturn(userModel);
         when(loanMapper.findById(anyLong())).thenReturn(loanModel);
         when(sendCloudMailUtil.sendMailByLoanOut(anyString(), anyMap())).thenReturn(true);
-        when(smsWrapperClient.sendInvestNotify(any(InvestSmsNotifyDto.class))).thenReturn(new BaseDto<>());
         when(redisWrapperClient.hget(anyString(), anyString())).thenReturn("");
         when(redisWrapperClient.hset(anyString(), anyString(), anyString())).thenReturn(1l);
         when(anxinSignService.createLoanContracts(anyLong())).thenReturn(new BaseDto());
         when(jobManager.newJob(any(JobType.class), eq(AnxinCreateContractJob.class))).thenReturn(triggeredJobBuilder);
 
         loanService.postLoanOut(loanModel.getId());
-        verify(smsWrapperClient, times(1)).sendInvestNotify(any(InvestSmsNotifyDto.class));
         verify(sendCloudMailUtil, times(1)).sendMailByLoanOut(anyString(), anyMap());
 
         when(redisWrapperClient.hget(anyString(), anyString())).thenReturn(SyncRequestStatus.SUCCESS.name());
         loanService.postLoanOut(loanModel.getId());
-        verify(smsWrapperClient, times(1)).sendInvestNotify(any(InvestSmsNotifyDto.class));
         verify(sendCloudMailUtil, times(1)).sendMailByLoanOut(anyString(), anyMap());
 
     }
