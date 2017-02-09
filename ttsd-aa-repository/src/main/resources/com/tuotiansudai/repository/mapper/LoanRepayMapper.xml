@@ -85,7 +85,7 @@
               a.loan_id = #{loanId}
             </if>
             <if test="loginName != null and loginName != ''">
-                <![CDATA[and b.loaner_login_name like '${loginName}%']]>
+                <![CDATA[and b.agent_login_name like '${loginName}%']]>
             </if>
             <if test="startTime != null" >
                 and a.repay_date &gt;= #{startTime}
@@ -109,7 +109,7 @@
                 a.loan_id = #{loanId}
             </if>
             <if test="loginName !=null and loginName != '' ">
-                <![CDATA[and b.loaner_login_name like '${loginName}%']]>
+                <![CDATA[and b.agent_login_name like '${loginName}%']]>
             </if>
             <if test="startTime !=null" >
                 and a.repay_date >= #{startTime}
@@ -291,7 +291,7 @@
 
     <select id="findLoanRepayNotifyToday" parameterType="map" resultMap="loanRepayNotifyResultMap" useCache="false">
         select
-            lr.repay_amount as repay_amount,
+            lr.corpus + lr.expected_interest + lr.default_interest as repay_amount,
             l.name as loan_name,
             u.mobile,
             l.id as loan_id,

@@ -19,7 +19,6 @@ import com.tuotiansudai.enums.PushSource;
 import com.tuotiansudai.enums.PushType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.exception.AmountTransferException;
-import com.tuotiansudai.job.AutoLoanOutJob;
 import com.tuotiansudai.message.EMailMessage;
 import com.tuotiansudai.message.EventMessage;
 import com.tuotiansudai.message.LoanOutSuccessMessage;
@@ -31,7 +30,6 @@ import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.coupon.service.CouponInvestService;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.loanout.LoanService;
-import com.tuotiansudai.paywrapper.loanout.ReferrerRewardService;
 import com.tuotiansudai.paywrapper.repository.mapper.MerBindProjectMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.MerUpdateProjectMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferMapper;
@@ -89,6 +87,9 @@ public class LoanServiceImpl implements LoanService {
 
     @Value("${common.environment}")
     private Environment environment;
+    private final static String LOAN_OUT_IN_PROCESS_KEY = "job:loan-out-in-process:";
+
+    private final static String ALREADY_LOAN_OUT_RETURN_CODE = "0001";
 
     @Autowired
     private LoanMapper loanMapper;
@@ -104,9 +105,6 @@ public class LoanServiceImpl implements LoanService {
 
     @Autowired
     private PaySyncClient paySyncClient;
-
-    @Autowired
-    private ReferrerRewardService referrerRewardService;
 
     @Autowired
     private CouponInvestService couponInvestService;
@@ -259,7 +257,7 @@ public class LoanServiceImpl implements LoanService {
         PayDataDto payDataDto = new PayDataDto();
         BaseDto<PayDataDto> baseDto = new BaseDto<>(payDataDto);
 
-        if (redisWrapperClient.setnx(AutoLoanOutJob.LOAN_OUT_IN_PROCESS_KEY + loanId, "1")) {
+        if (redisWrapperClient.setnx(LOAN_OUT_IN_PROCESS_KEY + loanId, "1")) {
             try {
                 ProjectTransferResponseModel umPayReturn = this.doLoanOut(loanId);
                 payDataDto.setStatus(umPayReturn.isSuccess());
@@ -270,7 +268,7 @@ public class LoanServiceImpl implements LoanService {
                 payDataDto.setMessage(e.getLocalizedMessage());
                 logger.error(e.getLocalizedMessage(), e);
             } finally {
-                redisWrapperClient.del(AutoLoanOutJob.LOAN_OUT_IN_PROCESS_KEY + loanId);
+                redisWrapperClient.del(LOAN_OUT_IN_PROCESS_KEY + loanId);
             }
 
             this.sendMessage(loanId);
@@ -293,7 +291,7 @@ public class LoanServiceImpl implements LoanService {
         if (LoanStatus.REPAYING == loan.getStatus()) {
             logger.warn("loan has already been outed. [" + loanId + "]");
             ProjectTransferResponseModel umPayReturn = new ProjectTransferResponseModel();
-            umPayReturn.setRetCode(AutoLoanOutJob.ALREADY_OUT);
+            umPayReturn.setRetCode(ALREADY_LOAN_OUT_RETURN_CODE);
             umPayReturn.setRetMsg("放款失败：标的已经被自动放款。");
             return umPayReturn;
         }

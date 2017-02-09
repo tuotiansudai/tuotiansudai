@@ -35,7 +35,13 @@ public enum MessageQueue {
     TransferReferrerRewardCallback("TransferReferrerRewardCallback"),
     TransferRedEnvelopCallback("TransferRedEnvelopCallback"),
     LoginLog("LoginLog"),
-    QueryAnxinContract("QueryAnxinContract");
+    QueryAnxinContract("QueryAnxinContract"),
+    LoanOut("LoanOut"),
+    LoanStartRaising("LoanStartRaising"),
+    LoanStopRaising("LoanStopRaising"),
+    CancelTransferApplication("CancelTransferApplication"),
+    CouponSmsNotify("CouponSmsNotify")
+    ;
 
     private final String queueName;
 
