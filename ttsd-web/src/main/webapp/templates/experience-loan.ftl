@@ -88,14 +88,16 @@
                             </dd>
 
                             <dd class="mb-20">
-                                <@global.isAnonymous>
-                                    <a class="btn-pay btn-normal" href="/register/user">立即体验</a>
-                                </@global.isAnonymous>
-                                <@global.isNotAnonymous>
-                                    <button id="investSubmit" class="btn-pay btn-normal" type="button"
-                                            <#if coupon?? == false>disabled="disabled"</#if>>立即体验
-                                    </button>
-                                </@global.isNotAnonymous>
+                                体验标升级中，等待3天，马上回来
+                                <#--<@global.isAnonymous>-->
+                                    <#--<a class="btn-pay btn-normal" href="/register/user">立即体验</a>-->
+                                <#--</@global.isAnonymous>-->
+                                <#--<@global.isNotAnonymous>-->
+                                    <#--<button id="investSubmit" class="btn-pay btn-normal" type="button"-->
+                                            <#--<#if coupon?? == false>disabled="disabled"</#if>>立即体验-->
+                                    <#--</button>-->
+                                <#--</@global.isNotAnonymous>-->
+
                             </dd>
                         </dl>
                     </form>

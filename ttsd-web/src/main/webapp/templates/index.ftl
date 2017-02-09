@@ -99,7 +99,8 @@
                         <li><span class="percent-number"> <i>${experienceLoanDto.baseRate}</i>%</span>预期年化收益</li>
                         <li><em class="duration-day">${experienceLoanDto.duration}</em>天<br>项目期限</li>
                     </ul>
-                    <a href="/loan/1" class="btn-invest btn-normal">立即购买</a>
+                    <b class="newer-title"><span>体验标升级中，等待3天，马上回来</span></b>
+                    <#--<a href="/loan/1" class="btn-invest btn-normal">立即购买</a>-->
                 </div>
 
             </div>
