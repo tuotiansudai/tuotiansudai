@@ -38,11 +38,13 @@ public class MiPushClient {
     public void sendPushMessage(PushMessage pushMessage) {
 
         StringBuilder userListStr = new StringBuilder();
-        if(pushMessage.getLoginNames() != null)
+        if (pushMessage.getLoginNames() != null)
             pushMessage.getLoginNames().forEach(userListStr::append);
+        else
+            userListStr.append("ALL");
 
-        logger.info(MessageFormat.format("send push message start. user count:{0}, source:{1}, content:{2}, user-list:{3}",
-                pushMessage.getLoginNames() == null ? "ALL" : pushMessage.getLoginNames().size(), pushMessage.getPushSource(), pushMessage.getContent(), userListStr));
+        logger.info(MessageFormat.format("send push message start. user count:{0}, source:{1}, type:{2}, content:{3}, user-list:{4}",
+                pushMessage.getLoginNames() == null ? "ALL" : pushMessage.getLoginNames().size(), pushMessage.getPushSource(), pushMessage.getPushType(), pushMessage.getContent(), userListStr));
 
         if (pushMessage.getPushSource() == PushSource.ANDROID || pushMessage.getPushSource() == PushSource.ALL) {
             Message message = new Message.Builder()
