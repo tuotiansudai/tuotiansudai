@@ -4,10 +4,10 @@
     "css": "/ask/js/mainSite.css"
   },
   "questions": {
-    "js": "chucks/questions.6ff98da194e37a8607a9.js"
+    "js": "chucks/questions.24d5eb9b7f1937024db3.js"
   },
   "create_question": {
-    "js": "chucks/create_question.efb1406a608c3d90990a.js"
+    "js": "chucks/create_question.cd3590fe7ad4eccff886.js"
   },
   "/public/globalFun_page": {
     "js": "/public/globalFun_page.js",
@@ -18,13 +18,13 @@
     "css": "/web/js/index.css"
   },
   "redEnvelope": {
-    "js": "chucks/redEnvelope.06e5d7ad33dc008fd166.js"
+    "js": "chucks/redEnvelope.9ffd672f184b12c1d603.js"
   },
   "imageSlider": {
-    "js": "chucks/imageSlider.d9b2dc73cbcf06294b0c.js"
+    "js": "chucks/imageSlider.b15fda07ccfdf13313e9.js"
   },
   "bookInvest": {
-    "js": "chucks/bookInvest.8e7d6bfdb87500060fb6.js"
+    "js": "chucks/bookInvest.02685888bcf7faa999e7.js"
   },
   "/web/js/loan_list": {
     "js": "/web/js/loan_list.js",
@@ -39,10 +39,10 @@
     "css": "/web/js/register_user.css"
   },
   "placeholder": {
-    "js": "chucks/placeholder.f0f83e1059b382a44c9e.js"
+    "js": "chucks/placeholder.257223b3c1f32634e4ee.js"
   },
   "fetchCaptcha": {
-    "js": "chucks/fetchCaptcha.8561f1c85f4c7b873b02.js"
+    "js": "chucks/fetchCaptcha.e6b326fc88439db8734d.js"
   },
   "/web/js/transfer_list": {
     "js": "/web/js/transfer_list.js",
