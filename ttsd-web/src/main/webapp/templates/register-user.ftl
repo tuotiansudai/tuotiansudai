@@ -133,7 +133,6 @@
 <div class="image-captcha-dialog" style="display: none;">
     <form class="image-captcha-form" id="imageCaptchaForm" >
             <div class="image-captcha-inner">
-                <i class="sprite-register-ic-img-code"></i>
             <img src="" alt="" class="image-captcha"/>
             <input type="text" class="image-captcha-text" name="imageCaptcha" maxlength="5" placeholder="请输入图形验证码"/>
             <input type="hidden" name="mobile">
