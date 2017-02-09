@@ -137,7 +137,7 @@
                 <#list sourceList as sourceItem>
                     <#if sourceItem.name() != 'AUTO'>
                         <option value="${sourceItem}"
-                                <#if (source?has_content && source.name() == sourceItem.name()) >selected</#if>>${sourceItem.name()}
+                                <#if (lastLoginSource?has_content && lastLoginSource.name() == sourceItem.name()) >selected</#if>>${sourceItem.name()}
                         </option>
                     </#if>
                 </#list>
