@@ -35,10 +35,6 @@ public interface UserService {
 
     boolean verifyPasswordCorrect(String loginName, String password);
 
-    void refreshAreaByMobile(List<UserModel> userModels);
-
-    void refreshAreaByMobileInJob();
-
     boolean mobileIsRegister(String mobile);
 
     UserModel findByMobile(String mobile);

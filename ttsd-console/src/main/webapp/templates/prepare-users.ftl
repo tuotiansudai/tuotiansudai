@@ -1,6 +1,6 @@
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="prepare-users.js" headLab="activity-manage" sideLab="prepareUsers" title="APP分享管理">
+<@global.main pageCss="" pageJavascript="prepare-users.js" headLab="customer-center" sideLab="prepareUsers" title="APP分享管理">
 
 <!-- content area begin -->
 <div class="col-md-10">
