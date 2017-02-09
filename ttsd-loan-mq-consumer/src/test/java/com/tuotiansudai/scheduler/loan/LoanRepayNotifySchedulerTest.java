@@ -1,4 +1,4 @@
-package com.tuotiansudai.service;
+package com.tuotiansudai.scheduler.loan;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
@@ -16,8 +16,10 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,13 +29,13 @@ import java.util.List;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
+@RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @Transactional
-public class LoanRepayServiceTest {
+public class LoanRepayNotifySchedulerTest {
 
     @InjectMocks
-    private LoanRepayServiceImpl loanRepayService;
+    private LoanRepayNotifyScheduler loanRepayService;
 
     @Mock
     private LoanRepayMapper loanRepayMapper;

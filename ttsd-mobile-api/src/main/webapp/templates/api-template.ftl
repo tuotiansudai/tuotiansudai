@@ -13,7 +13,7 @@
 </head>
 <body>
 <div id="app"></div>
-<script src="${staticServer}${jsPath}${js.index}" type="text/javascript" charset="utf-8"></script>
+<script src="${js.index}" type="text/javascript" charset="utf-8"></script>
 
 </body>
 </html>

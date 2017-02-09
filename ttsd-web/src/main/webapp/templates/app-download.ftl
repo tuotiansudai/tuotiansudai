@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <title>下载拓天速贷</title>
     <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
-    <link type="text/css" rel="stylesheet" href="${staticServer}${cssPath}${css.app_download}">
+    <link type="text/css" rel="stylesheet" href="${css.app_download}">
 
 </head>
 <body>
@@ -73,7 +73,7 @@
 </div>
 
 <#include "pageLayout/statistic.ftl" />
-<script type="text/javascript" src="${staticServer}${jsPath}${js.global_page}"></script>
-<script type="text/javascript" src="${staticServer}${jsPath}${js.app_download}"></script>
+<script type="text/javascript" src="${js.global_page}"></script>
+<script type="text/javascript" src="${js.app_download}"></script>
 </body>
 </html>

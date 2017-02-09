@@ -7,7 +7,7 @@
     <form action="" class="form-inline query-form">
         <div class="row">
             <div class="form-group">
-                <label for="control-label">用户名</label>
+                <label for="control-label">投资人用户名</label>
                 <input type="text" class="form-control" name="loginName" value="${loginName!}"/>
             </div>
             <div class="form-group">
@@ -30,7 +30,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="control-label">手机号</label>
+                <label for="control-label">投资人手机号</label>
                 <input type="text" class="form-group" name="mobile" value="${mobile!}">
             </div>
             <div class="form-group">

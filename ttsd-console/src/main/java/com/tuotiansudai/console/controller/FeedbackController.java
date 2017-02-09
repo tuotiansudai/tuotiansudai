@@ -1,5 +1,6 @@
 package com.tuotiansudai.console.controller;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.console.service.ConsoleFeedbackService;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
@@ -45,7 +46,7 @@ public class FeedbackController {
         mv.addObject("startTime", startTime);
         mv.addObject("endTime", endTime);
 
-        mv.addObject("sourceList", Source.values());
+        mv.addObject("sourceList", Lists.newArrayList(Source.WEB, Source.ANDROID, Source.IOS));
         mv.addObject("typeList", FeedbackType.values());
         mv.addObject("statusList", ProcessStatus.values());
 

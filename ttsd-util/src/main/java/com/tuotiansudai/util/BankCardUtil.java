@@ -30,6 +30,7 @@ public class BankCardUtil {
             .put("SPAB", "平安银行")
             .put("BHB", "河北银行")
             .put("LZB", "兰州银行")
+            .put("NBB", "宁波银行")
             .build());
 
     private static final List<String> RECHARGE_BANKS = Lists.newArrayList("ICBC", "CMB", "ABC", "CCB", "CMBC",
@@ -39,7 +40,7 @@ public class BankCardUtil {
 
     private static final List<String> WITHDRAW_BANKS = Lists.newArrayList("BOC", "ABC", "CCB", "COMM", "PSBC", "CMBC",
             "CITIC", "CEB", "HXB", "GDB", "CIB", "SPDB",
-            "CZSB", "SPAB", "BHB", "LZB", "CMB", "ICBC");
+            "CZSB", "SPAB", "BHB", "LZB", "CMB", "ICBC", "NBB");
 
     private static final List<String> FAST_PAY_BANKS = Lists.newArrayList("ICBC", "ABC", "CCB", "BOC", "CEB",
             "CIB", "CMBC", "SPDB", "COMM", "GDB", "CITIC", "CMB", "SPAB");

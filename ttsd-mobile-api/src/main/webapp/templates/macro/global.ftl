@@ -11,18 +11,18 @@
     <title>${title}</title>
     <link href="${staticServer}/images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <#if pageCss?? && pageCss != "">
-        <link rel="stylesheet" type="text/css" href="${staticServer}${cssPath}${pageCss}" charset="utf-8" />
+        <link rel="stylesheet" type="text/css" href="${pageCss}" charset="utf-8" />
     </#if>
 </head>
 <body>
     <script>
         var staticServer = '${staticServer}';
     </script>
-    <script src="${staticServer}${jsPath}${js.config}" type="text/javascript" charset="utf-8"></script>
+    <script src="${js.config}" type="text/javascript" charset="utf-8"></script>
 
     <#if pageJavascript?? && pageJavascript?length gt 0>
     <script src="${staticServer}/api/js/libs/require-2.1.20.min.js" type="text/javascript" charset="utf-8" defer="defer" async="async"
-            data-main="${staticServer}${jsPath}${pageJavascript}">
+            data-main="${pageJavascript}">
 
     </script>
     </#if>
