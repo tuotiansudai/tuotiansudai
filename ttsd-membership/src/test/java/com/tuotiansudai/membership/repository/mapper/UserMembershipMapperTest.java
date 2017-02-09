@@ -226,8 +226,8 @@ public class UserMembershipMapperTest {
     @Test
     public void shouldFindExpiredUserMembership() throws Exception {
         UserModel fakeUser = this.createFakeUser("expiredMembership", RandomStringUtils.randomNumeric(11), new Date());
-        UserMembershipModel userMembershipModel1 = new UserMembershipModel(fakeUser.getLoginName(), membershipMapper.findByLevel(5).getId(), new DateTime().toDate(), UserMembershipType.PURCHASED);
-        UserMembershipModel userMembershipModel2 = new UserMembershipModel(fakeUser.getLoginName(), membershipMapper.findByLevel(5).getId(), new DateTime().minusDays(1).toDate(), UserMembershipType.PURCHASED);
+        UserMembershipModel userMembershipModel1 = new UserMembershipModel(fakeUser.getLoginName(), membershipMapper.findByLevel(5).getId(), new DateTime().toDate(), UserMembershipType.GIVEN);
+        UserMembershipModel userMembershipModel2 = new UserMembershipModel(fakeUser.getLoginName(), membershipMapper.findByLevel(5).getId(), new DateTime().minusDays(1).toDate(), UserMembershipType.GIVEN);
         userMembershipMapper.create(userMembershipModel1);
         userMembershipMapper.create(userMembershipModel2);
 
@@ -250,10 +250,10 @@ public class UserMembershipMapperTest {
         List<String> level3 = userMembershipMapper.findLoginNameMembershipByLevel(3);
         List<String> level4 = userMembershipMapper.findLoginNameMembershipByLevel(5);
         UserModel fakeUser = this.createFakeUser("expiredMembership", RandomStringUtils.randomNumeric(11), new Date());
-        UserMembershipModel userMembershipModel1 = new UserMembershipModel(fakeUser.getLoginName(), membershipMapper.findByLevel(5).getId(), new DateTime().toDate(), UserMembershipType.PURCHASED);
-        UserMembershipModel userMembershipModel2 = new UserMembershipModel(fakeUser.getLoginName(), membershipMapper.findByLevel(1).getId(), new DateTime().toDate(), UserMembershipType.PURCHASED);
-        UserMembershipModel userMembershipModel3 = new UserMembershipModel(fakeUser.getLoginName(), membershipMapper.findByLevel(2).getId(), new DateTime().toDate(), UserMembershipType.PURCHASED);
-        UserMembershipModel userMembershipModel5 = new UserMembershipModel(fakeUser.getLoginName(), membershipMapper.findByLevel(3).getId(), new DateTime().minusDays(1).toDate(), UserMembershipType.PURCHASED);
+        UserMembershipModel userMembershipModel1 = new UserMembershipModel(fakeUser.getLoginName(), membershipMapper.findByLevel(5).getId(), new DateTime().toDate(), UserMembershipType.GIVEN);
+        UserMembershipModel userMembershipModel2 = new UserMembershipModel(fakeUser.getLoginName(), membershipMapper.findByLevel(1).getId(), new DateTime().toDate(), UserMembershipType.GIVEN);
+        UserMembershipModel userMembershipModel3 = new UserMembershipModel(fakeUser.getLoginName(), membershipMapper.findByLevel(2).getId(), new DateTime().toDate(), UserMembershipType.GIVEN);
+        UserMembershipModel userMembershipModel5 = new UserMembershipModel(fakeUser.getLoginName(), membershipMapper.findByLevel(3).getId(), new DateTime().minusDays(1).toDate(), UserMembershipType.GIVEN);
         userMembershipMapper.create(userMembershipModel1);
         userMembershipMapper.create(userMembershipModel2);
         userMembershipMapper.create(userMembershipModel3);

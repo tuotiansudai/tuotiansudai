@@ -2,7 +2,7 @@ package com.tuotiansudai.api.dto.v1_0;
 
 import io.swagger.annotations.ApiModelProperty;
 
-public class MembershipPurchaseResponseDataDto extends BaseResponseDataDto {
+public class MembershipPrivilegePurchaseResponseDataDto extends BaseResponseDataDto {
 
     @ApiModelProperty(value = "请求参数", example = "requestData")
     private String requestData;

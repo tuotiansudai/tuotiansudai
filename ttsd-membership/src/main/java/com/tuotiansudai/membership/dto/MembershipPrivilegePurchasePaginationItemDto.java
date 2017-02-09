@@ -1,12 +1,14 @@
 package com.tuotiansudai.membership.dto;
 
-import com.tuotiansudai.membership.repository.model.MembershipPurchaseModel;
+import com.tuotiansudai.membership.repository.model.MembershipPrivilegePriceType;
+import com.tuotiansudai.membership.repository.model.MembershipPrivilegePurchaseModel;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.util.AmountConverter;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class MembershipPurchasePaginationItemDto {
+public class MembershipPrivilegePurchasePaginationItemDto implements Serializable{
 
     private long id;
 
@@ -14,9 +16,7 @@ public class MembershipPurchasePaginationItemDto {
 
     private String userName;
 
-    private int level;
-
-    private int duration;
+    private MembershipPrivilegePriceType privilegePriceType;
 
     private String amount;
 
@@ -24,12 +24,11 @@ public class MembershipPurchasePaginationItemDto {
 
     private Date createdTime;
 
-    public MembershipPurchasePaginationItemDto(MembershipPurchaseModel model) {
+    public MembershipPrivilegePurchasePaginationItemDto(MembershipPrivilegePurchaseModel model) {
         this.id = model.getId();
         this.mobile = model.getMobile();
         this.userName = model.getUserName();
-        this.level = model.getLevel();
-        this.duration = model.getDuration();
+        this.privilegePriceType = model.getPrivilegePriceType();
         this.amount = AmountConverter.convertCentToString(model.getAmount());
         this.source = model.getSource();
         this.createdTime = model.getCreatedTime();
@@ -47,16 +46,12 @@ public class MembershipPurchasePaginationItemDto {
         return userName;
     }
 
-    public int getLevel() {
-        return level;
-    }
-
-    public int getDuration() {
-        return duration;
-    }
-
     public String getAmount() {
         return amount;
+    }
+
+    public MembershipPrivilegePriceType getPrivilegePriceType() {
+        return privilegePriceType;
     }
 
     public Source getSource() {

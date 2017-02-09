@@ -1,6 +1,6 @@
 package com.tuotiansudai.enums;
 
-public enum MembershipPurchaseStatus {
+public enum MembershipPrivilegePurchaseStatus {
 
     WAIT_PAY("等待支付"),
 
@@ -10,7 +10,7 @@ public enum MembershipPurchaseStatus {
 
     private final String description;
 
-    MembershipPurchaseStatus(String description) {
+    MembershipPrivilegePurchaseStatus(String description) {
         this.description = description;
     }
 

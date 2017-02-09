@@ -3,7 +3,7 @@
 
 <!-- content area begin -->
 <div class="col-md-10">
-    <form action="/finance-manage/membership-purchase" class="form-inline query-build" method="get">
+    <form action="/finance-manage/membership-privilege-purchase" class="form-inline query-build" method="get">
         <div class="form-group">
             <label for="mobile">手机号</label>
             <input type="text" id="mobile" name="mobile" class="form-control ui-autocomplete-input" datatype="*" autocomplete="off" value="${mobile!}">
@@ -25,10 +25,10 @@
         <div class="form-group">
             <label for="project">购买期限</label>
             <select class="selectpicker" name="duration">
-                <option value="" <#if !(duration??)>selected</#if>>全部</option>
-                <option value="30" <#if duration?? && duration == 30>selected</#if>>30天</option>
-                <option value="180" <#if duration?? && duration == 180>selected</#if>>180天</option>
-                <option value="360" <#if duration?? && duration == 360>selected</#if>>360天</option>
+                <option value="" <#if !(priceType??)>selected</#if>>全部</option>
+                <#list priceTypeList as priceTypeItem>
+                    <option value="${priceTypeItem}" <#if priceType?? && priceTypeItem == priceType>selected</#if>>${priceTypeItem.duration}</option>
+                </#list>
             </select>
         </div>
 
@@ -53,7 +53,6 @@
                 <th>编号</th>
                 <th>手机号</th>
                 <th>姓名</th>
-                <th>购买等级</th>
                 <th>购买期限（天）</th>
                 <th>购买金额（元）</th>
                 <th>来源</th>
@@ -63,11 +62,10 @@
             <tbody>
                 <#list data.data.records as item>
                 <tr>
-                    <td>${item.id}</td>
+                    <td>${item.id?c}</td>
                     <td>${item.mobile}</td>
                     <td>${item.userName}</td>
-                    <td>${item.level}</td>
-                    <td>${item.duration}</td>
+                    <td>${item.privilegePriceType.duration}</td>
                     <td>${item.amount}</td>
                     <td>${item.source}</td>
                     <td>${item.createdTime?string("yyyy-MM-dd HH:mm:ss")}</td>

@@ -17,7 +17,7 @@ public enum PushType {
     MEMBERSHIP_UPGRADE("AUTO", "会员升级"),
     COUPON_5DAYS_EXPIRED_ALERT("AUTO", "优惠券到期提醒(5天后)"),
     BIRTHDAY("AUTO", "生日提醒"),
-    MEMBERSHIP_BUY_SUCCESS("AUTO", "会员购买成功"),
+    MEMBERSHIP_PRIVILEGE_BUY_SUCCESS("AUTO", "会员购买成功"),
     ASSIGN_COUPON_SUCCESS("AUTO", "优惠券发放成功"),
 
     PREHEAT("MANUAL", "预热标的"),

@@ -5,6 +5,7 @@ public class MembershipPreferenceDto extends BaseDataDto {
     private int rate;
     private String amount;
     private boolean valid;
+    private boolean membershipPrivilege;
 
     public MembershipPreferenceDto(boolean status) {
         super(status);
@@ -40,5 +41,13 @@ public class MembershipPreferenceDto extends BaseDataDto {
 
     public void setValid(boolean valid) {
         this.valid = valid;
+    }
+
+    public boolean isMembershipPrivilege() {
+        return membershipPrivilege;
+    }
+
+    public void setMembershipPrivilege(boolean membershipPrivilege) {
+        this.membershipPrivilege = membershipPrivilege;
     }
 }
