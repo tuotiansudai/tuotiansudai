@@ -5,8 +5,8 @@ import com.tuotiansudai.api.dto.BaseParamTest;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.impl.MobileAppInvestListServiceImpl;
 import com.tuotiansudai.api.util.PageValidUtils;
-import com.tuotiansudai.coupon.repository.model.CouponModel;
-import com.tuotiansudai.coupon.repository.model.UserGroup;
+import com.tuotiansudai.repository.model.CouponModel;
+import com.tuotiansudai.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.repository.mapper.*;
@@ -127,7 +127,7 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
 
         when(investMapper.findCountByStatus(anyLong(), any(InvestStatus.class))).thenReturn(3L);
 
-        when(randomUtils.encryptMobile(anyString(), anyString(), anyLong(), any(Source.class))).thenReturn("log***");
+        when(randomUtils.encryptMobile(anyString(), anyString(), anyLong())).thenReturn("log***");
         when(pageValidUtils.validPageSizeLimit(anyInt())).thenReturn(10);
         when(couponService.findCouponByUserGroup(anyList())).thenReturn(Lists.newArrayList());
         when(userMapper.findByLoginName(anyString())).thenReturn(new UserModel());
@@ -282,13 +282,13 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
 
         when(investMapper.findByStatus(anyLong(), anyInt(), anyInt(), any(InvestStatus.class))).thenReturn(investModels);
         when(investMapper.findCountByStatus(anyLong(), any(InvestStatus.class))).thenReturn(3L);
-        when(randomUtils.encryptMobile(anyString(), anyString(), anyLong(), any(Source.class))).thenReturn("log***");
+        when(randomUtils.encryptMobile(anyString(), anyString(), anyLong())).thenReturn("log***");
         when(pageValidUtils.validPageSizeLimit(anyInt())).thenReturn(10);
         when(couponService.findCouponByUserGroup(anyList())).thenReturn(couponModels);
         when(userMapper.findByLoginName(anyString())).thenReturn(userModel);
         when(loanMapper.findById(anyLong())).thenReturn(loanModel);
         when(investMapper.findById(anyLong())).thenReturn(investModel1);
-        when(randomUtils.encryptMobile(anyString(),anyString(),anyLong(),any(Source.class))).thenReturn("152**11");
+        when(randomUtils.encryptMobile(anyString(),anyString(),anyLong())).thenReturn("152**11");
 
         InvestListRequestDto investListRequestDto = new InvestListRequestDto();
         BaseParam baseParam = new BaseParam();
@@ -308,7 +308,7 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
         when(pageValidUtils.validPageSizeLimit(anyInt())).thenReturn(10);
         when(investMapper.findCountByStatus(anyLong(), any(InvestStatus.class))).thenReturn(3L);
         when(investMapper.findByStatus(anyLong(), anyInt(), anyInt(), any(InvestStatus.class))).thenReturn(getAchievement());
-        when(randomUtils.encryptMobile(anyString(), anyString(), anyLong(), any(Source.class))).thenReturn("log***");
+        when(randomUtils.encryptMobile(anyString(), anyString(), anyLong())).thenReturn("log***");
         when(loanMapper.findById(anyLong())).thenReturn(null);
 
         InvestListRequestDto investListRequestDto = new InvestListRequestDto();

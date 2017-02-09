@@ -2,12 +2,12 @@ package com.tuotiansudai.service;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
-import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
-import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
-import com.tuotiansudai.coupon.repository.model.CouponModel;
-import com.tuotiansudai.coupon.repository.model.UserCouponModel;
-import com.tuotiansudai.coupon.repository.model.UserGroup;
+import com.tuotiansudai.dto.ExchangeCouponDto;
+import com.tuotiansudai.repository.mapper.CouponMapper;
+import com.tuotiansudai.repository.mapper.UserCouponMapper;
+import com.tuotiansudai.repository.model.CouponModel;
+import com.tuotiansudai.repository.model.UserCouponModel;
+import com.tuotiansudai.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.ExchangeCodeService;
 import com.tuotiansudai.coupon.service.impl.ExchangeCodeServiceImpl;
 import com.tuotiansudai.dto.BaseDataDto;

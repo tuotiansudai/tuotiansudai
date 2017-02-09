@@ -2,7 +2,10 @@ package com.tuotiansudai.console.service;
 
 
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.console.bi.dto.RoleStage;
@@ -12,15 +15,12 @@ import com.tuotiansudai.console.repository.model.UserMicroModelView;
 import com.tuotiansudai.console.repository.model.UserOperation;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.OperationType;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.exception.EditUserException;
-import com.tuotiansudai.exception.ReferrerRelationException;
-import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.AutoInvestPlanMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.mapper.UserRoleMapper;
+import com.tuotiansudai.mq.client.model.MessageQueue;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.BindBankCardService;
-import com.tuotiansudai.service.ReferrerRelationService;
 import com.tuotiansudai.task.TaskConstant;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.collections4.CollectionUtils;
@@ -31,6 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ConsoleUserService {
@@ -45,9 +46,6 @@ public class ConsoleUserService {
     private AccountMapper accountMapper;
 
     @Autowired
-    private ReferrerRelationService referrerRelationService;
-
-    @Autowired
     private BindBankCardService bindBankCardService;
 
     @Autowired
@@ -60,10 +58,16 @@ public class ConsoleUserService {
     private UserRoleMapper userRoleMapper;
 
     @Autowired
+    private ReferrerRelationMapper referrerRelationMapper;
+
+    @Autowired
     private RedisWrapperClient redisWrapperClient;
 
+    @Autowired
+    private MQWrapperClient mqWrapperClient;
+
     @Transactional(rollbackFor = Exception.class)
-    public void editUser(String operatorLoginName, EditUserDto editUserDto, String ip) throws EditUserException, ReferrerRelationException {
+    public void editUser(String operatorLoginName, EditUserDto editUserDto, String ip) throws EditUserException {
         this.checkUpdateUserData(editUserDto);
 
         final String loginName = editUserDto.getLoginName();
@@ -78,9 +82,6 @@ public class ConsoleUserService {
             List<UserRoleModel> afterUpdateUserRoleModels = Lists.transform(editUserDto.getRoles(), role -> new UserRoleModel(loginName, role));
             userRoleMapper.create(afterUpdateUserRoleModels);
         }
-
-        // update referrer
-        this.referrerRelationService.generateRelation(editUserDto.getReferrer(), editUserDto.getLoginName());
 
         userModel.setStatus(editUserDto.getStatus());
         userModel.setMobile(mobile);
@@ -100,6 +101,9 @@ public class ConsoleUserService {
                 throw new EditUserException(baseDto.getData().getMessage());
             }
         }
+
+        // update referrer relationship
+        mqWrapperClient.sendMessage(MessageQueue.GenerateReferrerRelation, userModel.getLoginName());
     }
 
     public EditUserDto getEditUser(String loginName) {
@@ -111,7 +115,7 @@ public class ConsoleUserService {
         }
         AutoInvestPlanModel autoInvestPlanModel = autoInvestPlanMapper.findByLoginName(loginName);
 
-        EditUserDto editUserDto = new EditUserDto(userModel, roles, autoInvestPlanModel);
+        EditUserDto editUserDto = new EditUserDto(userModel, roles, autoInvestPlanModel != null && autoInvestPlanModel.isEnabled());
 
         BankCardModel bankCard = bindBankCardService.getPassedBankCard(loginName);
         if (bankCard != null) {
@@ -229,6 +233,21 @@ public class ConsoleUserService {
         if (editUserDto.getRoles().contains(Role.STAFF) && !Strings.isNullOrEmpty(editUserDto.getReferrer())) {
             throw new EditUserException("业务员不能设置推荐人");
         }
+
+        String newReferrerLoginName = editUserDto.getReferrer();
+        UserModel newReferrerModel = userMapper.findByLoginName(newReferrerLoginName);
+        if (!Strings.isNullOrEmpty(newReferrerLoginName) && newReferrerModel == null) {
+            throw new EditUserException("推荐人不存在");
+        }
+
+        if (loginName.equalsIgnoreCase(newReferrerLoginName)) {
+            throw new EditUserException("不能将推荐人设置为自己");
+        }
+
+        // 是否新推荐人是该用户推荐的
+        if (this.isNewReferrerReferree(loginName, newReferrerLoginName)) {
+            throw new EditUserException("推荐人与该用户存在间接推荐关系");
+        }
     }
 
     private List<Long> parseBalanceInt(String balanceMin, String balanceMax) {
@@ -332,5 +351,29 @@ public class ConsoleUserService {
         baseDto.setData(basePaginationDataDto);
 
         return baseDto;
+    }
+
+    private boolean isNewReferrerReferree(String loginName, String newReferrerLoginName) {
+        Map<Integer, List<String>> allLowerUsers = Maps.newHashMap(ImmutableMap.<Integer, List<String>>builder()
+                .put(0, Lists.newArrayList(loginName))
+                .put(1, Lists.<String>newArrayList())
+                .put(2, Lists.<String>newArrayList())
+                .put(3, Lists.<String>newArrayList())
+                .put(4, Lists.<String>newArrayList())
+                .build());
+
+        for (int level = 1; level <= 4; level++) {
+            List<String> lowerLoginNames = allLowerUsers.get(level - 1);
+            for (String lowerLoginName : lowerLoginNames) {
+                List<ReferrerRelationModel> referrerRelationModels = referrerRelationMapper.findByReferrerLoginNameAndLevel(lowerLoginName, 1);
+                for (ReferrerRelationModel referrerRelationModel : referrerRelationModels) {
+                    allLowerUsers.get(level).add(referrerRelationModel.getLoginName());
+                    if (referrerRelationModel.getLoginName().equalsIgnoreCase(newReferrerLoginName)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 }
