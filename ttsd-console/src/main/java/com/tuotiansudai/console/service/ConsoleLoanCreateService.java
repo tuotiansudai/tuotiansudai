@@ -4,10 +4,9 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.*;
-import com.tuotiansudai.job.DeadlineFundraisingJob;
-import com.tuotiansudai.job.FundraisingStartJob;
+import com.tuotiansudai.enums.Role;
+import com.tuotiansudai.job.DelayMessageDeliveryJobCreator;
 import com.tuotiansudai.job.JobManager;
-import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountConverter;
@@ -15,7 +14,6 @@ import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
-import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -184,9 +182,9 @@ public class ConsoleLoanCreateService {
         }
 
         if (fundraisingEndTimeChanged) {
-            createDeadLineFundraisingJob(loanModel);
+            DelayMessageDeliveryJobCreator.createOrReplaceStopRaisingDelayJob(jobManager, loanId, loanModel.getFundraisingEndTime());
         }
-        createFundraisingStartJob(loanModel);
+        DelayMessageDeliveryJobCreator.createOrReplaceStartRaisingDelayJob(jobManager, loanId, loanModel.getFundraisingStartTime());
 
         return new BaseDto<>(new BaseDataDto(true));
     }
@@ -250,8 +248,8 @@ public class ConsoleLoanCreateService {
             loanModel.setStatus(LoanStatus.PREHEAT);
             loanMapper.update(loanModel);
 
-            createFundraisingStartJob(loanModel);
-            createDeadLineFundraisingJob(loanModel);
+            DelayMessageDeliveryJobCreator.createOrReplaceStartRaisingDelayJob(jobManager, loanId, loanModel.getFundraisingStartTime());
+            DelayMessageDeliveryJobCreator.createOrReplaceStopRaisingDelayJob(jobManager, loanId, loanModel.getFundraisingEndTime());
         }
         return baseDto;
     }
@@ -273,7 +271,7 @@ public class ConsoleLoanCreateService {
         loanModel.setUpdateTime(new Date());
         loanMapper.update(loanModel);
 
-        createDeadLineFundraisingJob(loanModel);
+        DelayMessageDeliveryJobCreator.createOrReplaceStopRaisingDelayJob(jobManager, loanId, loanModel.getFundraisingEndTime());
         payDataDto.setStatus(true);
 
         return baseDto;
@@ -395,30 +393,5 @@ public class ConsoleLoanCreateService {
                         extraLoanRateRuleModel.getRate());
             }
         }));
-    }
-
-    private void createDeadLineFundraisingJob(LoanModel loanModel) {
-        try {
-            jobManager.newJob(JobType.LoanStatusToRecheck, DeadlineFundraisingJob.class)
-                    .withIdentity(JobType.LoanStatusToRecheck.name(), "Loan-" + loanModel.getId())
-                    .replaceExistingJob(true)
-                    .addJobData(DeadlineFundraisingJob.LOAN_ID_KEY, String.valueOf(loanModel.getId()))
-                    .runOnceAt(loanModel.getFundraisingEndTime()).submit();
-        } catch (SchedulerException e) {
-            logger.error(e.getLocalizedMessage(), e);
-        }
-    }
-
-    private void createFundraisingStartJob(LoanModel loanModel) {
-        try {
-            jobManager.newJob(JobType.LoanStatusToRaising, FundraisingStartJob.class)
-                    .withIdentity("FundraisingStartJob", "Loan-" + loanModel.getId())
-                    .replaceExistingJob(true)
-                    .runOnceAt(loanModel.getFundraisingStartTime())
-                    .addJobData(FundraisingStartJob.LOAN_ID_KEY, String.valueOf(loanModel.getId()))
-                    .submit();
-        } catch (SchedulerException e) {
-            logger.error("create fundraising start job for loan[" + loanModel.getId() + "] fail", e);
-        }
     }
 }

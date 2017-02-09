@@ -2,7 +2,7 @@ package com.tuotiansudai.api.dto.v1_0;
 
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.coupon.repository.model.UserGroup;
+import com.tuotiansudai.repository.model.UserGroup;
 import com.tuotiansudai.repository.model.InvestAchievement;
 
 import java.util.List;

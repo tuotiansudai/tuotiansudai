@@ -28,13 +28,13 @@ import java.util.*;
 
 @Repository
 public class OperationDataServiceImpl implements OperationDataService {
-    static Logger logger = Logger.getLogger(ReferrerRelationServiceImpl.class);
+    static Logger logger = Logger.getLogger(OperationDataServiceImpl.class);
 
     @Autowired
-    InvestMapper investMapper;
+    private InvestMapper investMapper;
 
     @Autowired
-    UserMapper userMapper;
+    private UserMapper userMapper;
 
     @Autowired
     private UserBillMapper userBillMapper;
@@ -43,7 +43,7 @@ public class OperationDataServiceImpl implements OperationDataService {
     private LoanRepayMapper loanRepayMapper;
 
     @Autowired
-    RedisWrapperClient redisWrapperClient;
+    private RedisWrapperClient redisWrapperClient;
 
 
     private static final String CHART_INFO_PUBLISH_KEY_TEMPLATE = "web:info:publish:chart:{0}";

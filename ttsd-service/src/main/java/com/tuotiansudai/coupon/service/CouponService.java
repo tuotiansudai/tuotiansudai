@@ -1,7 +1,7 @@
 package com.tuotiansudai.coupon.service;
 
-import com.tuotiansudai.coupon.repository.model.CouponModel;
-import com.tuotiansudai.coupon.repository.model.UserGroup;
+import com.tuotiansudai.repository.model.CouponModel;
+import com.tuotiansudai.repository.model.UserGroup;
 import com.tuotiansudai.repository.model.InvestModel;
 
 import java.util.List;
