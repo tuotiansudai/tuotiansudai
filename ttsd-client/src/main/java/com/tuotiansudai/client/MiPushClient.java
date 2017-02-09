@@ -37,8 +37,12 @@ public class MiPushClient {
 
     public void sendPushMessage(PushMessage pushMessage) {
 
-        logger.info(MessageFormat.format("send push message start. user count:{0}, source:{1}, content:{2}",
-                pushMessage.getLoginNames() == null ? "ALL" : pushMessage.getLoginNames().size(), pushMessage.getPushSource(), pushMessage.getContent()));
+        StringBuilder userListStr = new StringBuilder();
+        if(pushMessage.getLoginNames() != null)
+            pushMessage.getLoginNames().forEach(userListStr::append);
+
+        logger.info(MessageFormat.format("send push message start. user count:{0}, source:{1}, content:{2}, user-list:{3}",
+                pushMessage.getLoginNames() == null ? "ALL" : pushMessage.getLoginNames().size(), pushMessage.getPushSource(), pushMessage.getContent(), userListStr));
 
         if (pushMessage.getPushSource() == PushSource.ANDROID || pushMessage.getPushSource() == PushSource.ALL) {
             Message message = new Message.Builder()
@@ -66,8 +70,7 @@ public class MiPushClient {
             }
             sendPushMessage(pushMessage, message, PushSource.IOS);
         }
-        logger.info(MessageFormat.format("send push message end. user count:{0}, source:{1}, content:{2}",
-                pushMessage.getLoginNames() == null ? "ALL" : pushMessage.getLoginNames().size(), pushMessage.getPushSource(), pushMessage.getContent()));
+        logger.info("send push message end.");
     }
 
     private void sendPushMessage(PushMessage pushMessage, Message message, PushSource source) {
