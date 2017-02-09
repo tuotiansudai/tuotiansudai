@@ -43,7 +43,7 @@ public class MobileAppCallBackController {
         switch (MobileFrontCallbackService.getService(service)){
             case PTP_MER_BIND_AGREEMENT:
             case PTP_MER_REPLACE_CARD:
-            case MEMBERSHIP_PURCHASE:
+            case MEMBERSHIP_PRIVILEGE_PURCHASE:
             case PTP_MER_NO_PASSWORD_INVEST:
                 mv = new ModelAndView("/success");
                 break;

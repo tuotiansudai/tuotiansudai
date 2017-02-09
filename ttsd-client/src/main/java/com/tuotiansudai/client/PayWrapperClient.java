@@ -38,7 +38,7 @@ public class PayWrapperClient extends BaseClient {
 
     private final static String systemRechargePath = "/system-recharge";
 
-    private final static String membershipPurchasePath = "/membership-purchase";
+    private final static String membershipPrivilegePurchasePath = "/membership-privilege-purchase";
 
     private final static String rechargePath = "/recharge";
 
@@ -91,8 +91,8 @@ public class PayWrapperClient extends BaseClient {
         return asyncExecute(systemRechargeDto, systemRechargePath, "POST");
     }
 
-    public BaseDto<PayFormDataDto> membershipPurchase(Object membershipPurchaseDto) {
-        return asyncExecute(membershipPurchaseDto, membershipPurchasePath, "POST");
+    public BaseDto<PayFormDataDto> membershipPrivilegePurchase(Object membershipPrivilegePurchaseDto) {
+        return asyncExecute(membershipPrivilegePurchaseDto, membershipPrivilegePurchasePath, "POST");
     }
 
     public BaseDto<PayFormDataDto> withdraw(Object withdrawDto) {

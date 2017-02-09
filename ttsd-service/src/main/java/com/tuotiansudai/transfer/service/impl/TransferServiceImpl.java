@@ -8,6 +8,7 @@ import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.exception.InvestExceptionType;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
+import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
@@ -69,10 +70,7 @@ public class TransferServiceImpl implements TransferService {
     private TransferRuleMapper transferRuleMapper;
 
     @Autowired
-    private UserMembershipEvaluator userMembershipEvaluator;
-
-    @Autowired
-    private AnxinSignPropertyMapper anxinSignPropertyMapper;
+    private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
 
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
@@ -216,8 +214,8 @@ public class TransferServiceImpl implements TransferService {
     private TransferApplicationDetailDto convertModelToDto(TransferApplicationModel transferApplicationModel, String loginName) {
         TransferApplicationDetailDto transferApplicationDetailDto = new TransferApplicationDetailDto();
         LoanModel loanModel = loanMapper.findById(transferApplicationModel.getLoanId());
-        MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
-        double investFeeRate = membershipModel == null ? defaultFee : membershipModel.getFee();
+        double investFeeRate = membershipPrivilegePurchaseService.obtainServiceFee(loginName);
+
         InvestRepayModel investRepayModel = transferApplicationModel.getStatus() == TransferStatus.SUCCESS ? investRepayMapper.findByInvestIdAndPeriod(transferApplicationModel.getInvestId(), transferApplicationModel.getPeriod()) : investRepayMapper.findByInvestIdAndPeriod(transferApplicationModel.getTransferInvestId(), transferApplicationModel.getPeriod());
         transferApplicationDetailDto.setId(transferApplicationModel.getId());
         transferApplicationDetailDto.setTransferInvestId(transferApplicationModel.getTransferInvestId());

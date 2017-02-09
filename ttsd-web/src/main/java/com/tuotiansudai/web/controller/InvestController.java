@@ -5,6 +5,7 @@ import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
+import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.model.CaptchaType;
 import com.tuotiansudai.repository.model.InvestModel;
@@ -49,6 +50,9 @@ public class InvestController {
 
     @Autowired
     private UserMembershipEvaluator userMembershipEvaluator;
+
+    @Autowired
+    private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
 
     @RequestMapping(value = "/invest", method = RequestMethod.POST)
     public ModelAndView invest(@Valid @ModelAttribute InvestDto investDto, RedirectAttributes redirectAttributes) {
@@ -222,12 +226,14 @@ public class InvestController {
         String loginName = LoginUserInfo.getLoginName();
         MembershipPreferenceDto membershipPreferenceDto = new MembershipPreferenceDto(true);
         MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
-        if (StringUtils.isEmpty(loginName) || null == membershipModel) {
+        if (StringUtils.isEmpty(loginName)) {
             membershipPreferenceDto.setValid(false);
         } else {
+            double fee = membershipPrivilegePurchaseService.obtainServiceFee(loginName);
             membershipPreferenceDto.setValid(true);
             membershipPreferenceDto.setLevel(membershipModel.getLevel());
-            membershipPreferenceDto.setRate((int) (membershipModel.getFee() * 100));
+            membershipPreferenceDto.setRate((int) (fee * 100));
+            membershipPreferenceDto.setMembershipPrivilege(membershipPrivilegePurchaseService.obtainMembershipPrivilege(loginName) != null);
             membershipPreferenceDto.setAmount(AmountConverter.convertCentToString(investService.calculateMembershipPreference(loginName, loanId, couponIds, AmountConverter.convertStringToCent(investAmount), Source.WEB)));
         }
         BaseDto<MembershipPreferenceDto> baseDto = new BaseDto<>();

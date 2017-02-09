@@ -15,6 +15,7 @@ import javax.sql.DataSource;
 @Configuration
 @ComponentScan(basePackages = {
         "com.tuotiansudai.service",
+        "com.tuotiansudai.transfer",
         "com.tuotiansudai.util",
         "com.tuotiansudai.client",
         "com.tuotiansudai.coupon",

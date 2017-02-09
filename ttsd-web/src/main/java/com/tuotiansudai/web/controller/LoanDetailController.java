@@ -54,14 +54,11 @@ public class LoanDetailController {
                 this.userCouponService.getMaxBenefitUserCoupon(LoginUserInfo.getLoginName(), loanId, AmountConverter.convertStringToCent(loanDetail.getInvestor().getMaxAvailableInvestAmount())));
         modelAndView.addObject("couponAlert", this.couponAlertService.getCouponAlert(LoginUserInfo.getLoginName(), Lists.newArrayList(CouponType.NEWBIE_COUPON, CouponType.RED_ENVELOPE)));
         modelAndView.addObject("extraLoanRates", loanDetailService.getExtraLoanRate(loanId));
-        boolean membershipPreferenceValid = false;
         int membershipLevel = 0;
         if (null != membershipModel) {
             membershipLevel = membershipModel.getLevel();
-            membershipPreferenceValid = membershipModel.getFee() < defaultFee;
         }
         modelAndView.addObject("membershipLevel", membershipLevel);
-        modelAndView.addObject("membershipPreferenceValid", membershipPreferenceValid);
         return modelAndView;
     }
 

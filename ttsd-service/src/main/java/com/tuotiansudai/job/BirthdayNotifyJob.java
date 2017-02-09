@@ -7,6 +7,7 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
 
+@Deprecated
 public class BirthdayNotifyJob implements Job {
 
     static Logger logger = Logger.getLogger(BirthdayNotifyJob.class);
@@ -17,7 +18,7 @@ public class BirthdayNotifyJob implements Job {
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         logger.info("trigger BirthdayNotifyJob job");
-        couponAlertService.BirthdayNotify();
+//        couponAlertService.BirthdayNotify();
     }
 
 }

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.membership.repository.mapper.MembershipPrivilegePurchaseMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
+
+    <resultMap id="membershipPrivilegePurchaseResultMap" type="MembershipPrivilegePurchaseModel">
+        <id column="id" property="id"/>
+        <result column="login_name" property="loginName"/>
+        <result column="mobile" property="mobile"/>
+        <result column="user_name" property="userName"/>
+        <result column="privilege" property="privilege"/>
+        <result column="privilege_price_type" property="privilegePriceType"/>
+        <result column="amount" property="amount"/>
+        <result column="status" property="status"/>
+        <result column="source" property="source"/>
+        <result column="created_time" property="createdTime"/>
+    </resultMap>
+
+    <insert id="create" parameterType="MembershipPrivilegePurchaseModel" useGeneratedKeys="true" keyProperty="id">
+        insert into membership_privilege_purchase (id,login_name, mobile, user_name, privilege,privilege_price_type,amount,status,source,created_time)
+        value(#{id},#{loginName}, #{mobile},#{userName},#{privilege}, #{privilegePriceType},#{amount}, #{status},#{source}, #{createdTime})
+    </insert>
+
+    <update id="update" parameterType="MembershipPrivilegePurchaseModel">
+        UPDATE `membership_privilege_purchase`
+        SET
+        login_name = #{loginName},
+        mobile = #{mobile},
+        user_name = #{userName},
+        privilege = #{privilege},
+        privilege_price_type = #{privilegePriceType},
+        amount = #{amount},
+        status = #{status},
+        source = #{source},
+        created_time = #{createdTime}
+        WHERE
+        id = #{id}
+    </update>
+
+    <select id="findById" resultMap="membershipPrivilegePurchaseResultMap" parameterType="long">
+        select * from membership_privilege_purchase where id = #{id}
+    </select>
+
+    <select id="findMembershipPrivilegePagination" resultMap="membershipPrivilegePurchaseResultMap" parameterType="map">
+        select * from membership_privilege_purchase
+        where status = 'SUCCESS'
+        <if test="mobile != null and mobile !=''">
+            and mobile = #{mobile}
+        </if>
+        <if test="membershipPrivilegePriceType != null">
+            and privilege_price_type = #{membershipPrivilegePriceType}
+        </if>
+        <if test="source != null">
+            and source = #{source}
+        </if>
+        <if test="startTime != null">
+            and created_time >= #{startTime}
+        </if>
+        <if test="endTime != null">
+            and created_time &lt;= #{endTime}
+        </if>
+        order by created_time desc, id asc
+        limit #{index}, #{pageSize}
+
+    </select>
+
+    <select id="findCountMembershipPrivilegePagination" resultType="long" parameterType="map">
+        select count(1) from membership_privilege_purchase
+        where status = 'SUCCESS'
+        <if test="mobile != null and mobile !=''">
+            and mobile = #{mobile}
+        </if>
+        <if test="membershipPrivilegePriceType != null">
+            and privilege_price_type = #{membershipPrivilegePriceType}
+        </if>
+        <if test="source != null">
+            and source = #{source}
+        </if>
+        <if test="startTime != null">
+            and created_time >= #{startTime}
+        </if>
+        <if test="endTime != null">
+            and created_time &lt;= #{endTime}
+        </if>
+    </select>
+
+
+</mapper>
