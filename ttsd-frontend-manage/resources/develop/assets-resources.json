@@ -17,13 +17,35 @@
     "js": "/web/js/account/account_overview.js",
     "css": "/web/js/account/account_overview.css"
   },
+  "myAccountEcharts": {
+    "js": "chucks/myAccountEcharts.c8c83d536e506c161bc5.js"
+  },
   "/web/js/account/bind_card": {
     "js": "/web/js/account/bind_card.js",
     "css": "/web/js/account/bind_card.css"
   },
+  "/web/js/account/investor_invest_list": {
+    "js": "/web/js/account/investor_invest_list.js",
+    "css": "/web/js/account/investor_invest_list.css"
+  },
+  "jquery_daterangepicker": {
+    "js": "chucks/jquery_daterangepicker.22d502a49714698cd998.js"
+  },
+  "/web/js/account/loaner_loan_list": {
+    "js": "/web/js/account/loaner_loan_list.js",
+    "css": "/web/js/account/loaner_loan_list.css"
+  },
+  "/web/js/account/my_transfer_list": {
+    "js": "/web/js/account/my_transfer_list.js",
+    "css": "/web/js/account/my_transfer_list.css"
+  },
   "/web/js/account/recharge": {
     "js": "/web/js/account/recharge.js",
     "css": "/web/js/account/recharge.css"
+  },
+  "/web/js/account/transfer": {
+    "js": "/web/js/account/transfer.js",
+    "css": "/web/js/account/transfer.css"
   },
   "/web/js/forget_password": {
     "js": "/web/js/forget_password.js",
@@ -43,7 +65,6 @@
     "js": "chucks/imageSlider.3f61a57b359dfb38bdac.js"
   },
   "bookInvest": {
-<<<<<<< HEAD
     "js": "chucks/bookInvest.0eed170ae7ef1c6630b5.js"
   },
   "/web/js/loan_detail": {
@@ -51,14 +72,11 @@
     "css": "/web/js/loan_detail.css"
   },
   "jquery_fancybox": {
-    "js": "chucks/jquery_fancybox.3b230a3ab23951a77b1d.js"
+    "js": "chucks/jquery_fancybox.879f6ae01d7ab1cbc905.js"
   },
   "/web/js/loan_detail_experience": {
     "js": "/web/js/loan_detail_experience.js",
     "css": "/web/js/loan_detail_experience.css"
-=======
-    "js": "chucks/bookInvest.a918acea93e2c9d44ce9.js"
->>>>>>> feature/fly/frontEndManagement-web
   },
   "/web/js/loan_list": {
     "js": "/web/js/loan_list.js",
@@ -73,18 +91,11 @@
     "css": "/web/js/register_user.css"
   },
   "placeholder": {
-<<<<<<< HEAD
-    "js": "chucks/placeholder.b23ab36cc979775d6a02.js"
+    "js": "chucks/placeholder.21a7f6671649bb4ea00c.js"
   },
   "/web/js/transfer_detail": {
     "js": "/web/js/transfer_detail.js",
     "css": "/web/js/transfer_detail.css"
-=======
-    "js": "chucks/placeholder.84b78b7d5b74c898d756.js"
-  },
-  "fetchCaptcha": {
-    "js": "chucks/fetchCaptcha.92054ef90f280ed031ed.js"
->>>>>>> feature/fly/frontEndManagement-web
   },
   "/web/js/transfer_list": {
     "js": "/web/js/transfer_list.js",
@@ -92,36 +103,5 @@
   },
   "metadata": {
     "version": 123
-  },
-  "fetchCaptcha": {
-    "js": "chucks/fetchCaptcha.3ded179f39e7d43fd490.js"
-  },
-  "load_echarts": {
-    "js": "chucks/load_echarts.9e8fdcad8c269ccbc344.js"
-  },
-  "myAccountEcharts": {
-    "js": "chucks/myAccountEcharts.c8c83d536e506c161bc5.js"
-  },
-  "/web/js/account/investor_invest_list": {
-    "js": "/web/js/account/investor_invest_list.js",
-    "css": "/web/js/account/investor_invest_list.css"
-  },
-  "jquery_daterangepicker": {
-    "js": "chucks/jquery_daterangepicker.22d502a49714698cd998.js"
-  },
-  "jquery_moment": {
-    "js": "chucks/jquery_moment.f01ce712e56d14f47c05.js"
-  },
-  "/web/js/account/my_transfer_list": {
-    "js": "/web/js/account/my_transfer_list.js",
-    "css": "/web/js/account/my_transfer_list.css"
-  },
-  "/web/js/account/transfer": {
-    "js": "/web/js/account/transfer.js",
-    "css": "/web/js/account/transfer.css"
-  },
-  "/web/js/account/loaner_loan_list": {
-    "js": "/web/js/account/loaner_loan_list.js",
-    "css": "/web/js/account/loaner_loan_list.css"
   }
 }
