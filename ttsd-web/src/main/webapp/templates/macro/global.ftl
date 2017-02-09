@@ -137,10 +137,11 @@
 <script src="${js.globalFun_page!}" ></script>
 <script src="${pageJavascript}" type="text/javascript" id="currentScript"></script>
 
-    <#--<#if pageJavascript?? && pageJavascript?length gt 0>-->
-    <#--<script src="https://static.tuotiansudai.com/js/libs/require-2.1.20.min.js" type="text/javascript" charset="utf-8" defer="defer" async="async" data-main="${staticServer}${jsPath}${pageJavascript}">-->
-    <#--</script>-->
-    <#--</#if>-->
+
+    <script src="${js.config}" type="text/javascript" charset="utf-8"></script>
+    <script src="https://static.tuotiansudai.com/js/libs/require-2.1.20.min.js" type="text/javascript" charset="utf-8" defer="defer" async="async" data-main="${pageJavascript}">
+    </script>
+
 </body>
 </html>
 </#macro>
