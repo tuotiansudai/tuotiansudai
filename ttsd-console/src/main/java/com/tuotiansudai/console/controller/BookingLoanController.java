@@ -45,21 +45,11 @@ public class BookingLoanController {
                                         @RequestParam(value = "index", required = false, defaultValue = "1") int index) {
         int pageSize = 10;
         ModelAndView mv = new ModelAndView("/booking-loan-list");
-        mv.addObject("bookingLoan", consoleBookingLoanService.bookingLoanList(productType,
-                bookingTimeStartTime == null ? new DateTime(0).toDate() : new DateTime(bookingTimeStartTime).withTimeAtStartOfDay().toDate(),
-                bookingTimeEndTime == null ? CalculateUtil.calculateMaxDate() : new DateTime(bookingTimeEndTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate(),
-                mobile,
-                noticeTimeStartTime == null ? new DateTime(0).toDate() : new DateTime(noticeTimeStartTime).withTimeAtStartOfDay().toDate(),
-                noticeTimeEndTime == null ? CalculateUtil.calculateMaxDate() : new DateTime(noticeTimeEndTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate(),
-                source, status, index, pageSize));
+        mv.addObject("bookingLoan", consoleBookingLoanService.bookingLoanList(productType, bookingTimeStartTime, bookingTimeEndTime,
+                mobile, noticeTimeStartTime, noticeTimeEndTime, source, status, index, pageSize));
         mv.addObject("productType", productType);
         mv.addObject("bookingLoanSumList", consoleBookingLoanService.findBookingLoanSumAmountByProductType(productType,
-                bookingTimeStartTime == null ? new DateTime(0).toDate() : new DateTime(bookingTimeStartTime).withTimeAtStartOfDay().toDate(),
-                bookingTimeEndTime == null ? CalculateUtil.calculateMaxDate() : new DateTime(bookingTimeEndTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate(),
-                mobile,
-                noticeTimeStartTime == null ? new DateTime(0).toDate() : new DateTime(noticeTimeStartTime).withTimeAtStartOfDay().toDate(),
-                noticeTimeEndTime == null ? CalculateUtil.calculateMaxDate() : new DateTime(noticeTimeEndTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate(),
-                source, status));
+                bookingTimeStartTime, bookingTimeEndTime, mobile, noticeTimeStartTime, noticeTimeEndTime, source, status));
         mv.addObject("productTypeList", Lists.newArrayList(ProductType._180, ProductType._90, ProductType._360));
         mv.addObject("bookingTimeStartTime", bookingTimeStartTime);
         mv.addObject("bookingTimeEndTime", bookingTimeEndTime);

@@ -192,7 +192,7 @@
                 </if>
             </if>
         </where>
-        ORDER BY application_time
+        ORDER BY application_time DESC
         limit #{index}, #{pageSize}
     </select>
 
