@@ -397,7 +397,7 @@
 
     <select id="findUserMicroModelCount" parameterType="map" resultType="int">
         select
-            count(u.user_name)
+            count(1)
         from user u
         <where>
             <if test="mobile != null and mobile != '' ">
