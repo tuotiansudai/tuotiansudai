@@ -59,7 +59,7 @@
                 <![CDATA[ and p.lottery_time <= #{endTime} ]]>
             </if>
             <if test="activityCategory != null">
-                and activity_category = #{activityCategory}
+                and activity_category like '${activityCategory}%'
             </if>
         </where>
         order by p.lottery_time DESC
@@ -84,7 +84,7 @@
                 <![CDATA[ and p.lottery_time <= #{endTime} ]]>
             </if>
             <if test="activityCategory != null">
-                and activity_category = #{activityCategory}
+                and activity_category like '${activityCategory}%'
             </if>
         </where>
     </select>

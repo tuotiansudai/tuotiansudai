@@ -1,5 +1,6 @@
 package com.tuotiansudai.api.service.v1_0.impl;
 
+import com.tuotiansudai.activity.service.MoneyTreePrizeService;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.FundManagementResponseDataDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
@@ -48,6 +49,8 @@ public class MobileAppFundManagementServiceImpl implements MobileAppFundManageme
     private ReferrerManageMapper referrerManageMapper;
     @Autowired
     private UserMembershipEvaluator userMembershipEvaluator;
+    @Autowired
+    private MoneyTreePrizeService moneyTreePrizeService;
 
     public BaseResponseDto<FundManagementResponseDataDto> queryFundByUserId(String userId) {
         AccountModel accountModel = accountMapper.findByLoginName(userId);
@@ -65,6 +68,7 @@ public class MobileAppFundManagementServiceImpl implements MobileAppFundManageme
         long receivedCorpus = investRepayService.findSumRepaidCorpusByLoginName(userId);
         long receivedReward = userBillService.findSumRewardByLoginName(userId);
         long myPoint = pointService.getAvailablePoint(userId);
+        int showMoneyTree = moneyTreePrizeService.isActivity();
         List<UserCouponView> unusedUserCoupons = userCouponService.getUnusedUserCoupons(userId);
         long rewardAmount = referrerManageMapper.findReferInvestTotalAmount(userId, null, null, null, null);
         //资产总额＝账户余额 ＋ 冻结金额 ＋ 应收本金 ＋ 应收利息
@@ -100,7 +104,7 @@ public class MobileAppFundManagementServiceImpl implements MobileAppFundManageme
         fundManagementResponseDataDto.setRewardAmount(AmountConverter.convertCentToString(rewardAmount));
         fundManagementResponseDataDto.setMembershipLevel(String.valueOf(level));
         fundManagementResponseDataDto.setMembershipPoint(String.valueOf(accountModel == null ? 0 : accountModel.getMembershipPoint()));
-
+        fundManagementResponseDataDto.setShowMoneyTree(String.valueOf(showMoneyTree));
         UserMembershipModel userMembershipModel = userMembershipEvaluator.evaluateUserMembership(userId, new Date());
         if (userMembershipModel.getType() != UserMembershipType.UPGRADE) {
             fundManagementResponseDataDto.setMembershipExpiredDate(new DateTime(userMembershipModel.getExpiredTime()).toString("yyyy-MM-dd"));
