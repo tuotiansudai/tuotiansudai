@@ -1,5 +1,6 @@
 package com.tuotiansudai.client;
 
+import com.tuotiansudai.dto.Environment;
 import com.tuotiansudai.enums.PushSource;
 import com.tuotiansudai.message.PushMessage;
 import com.xiaomi.xmpush.server.Constants;
@@ -8,11 +9,9 @@ import com.xiaomi.xmpush.server.Result;
 import com.xiaomi.xmpush.server.Sender;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
-import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.List;
 
@@ -25,14 +24,17 @@ public class MiPushClient {
 
     private Sender iosSender;
 
+    private Environment environment;
+
     public MiPushClient(@Value("${common.mipush.appSecretKey.android}") String appSecretKeyAndroid,
-                        @Value("${common.mipush.appSecretKey.ios}") String appSecretKeyIOS) {
-        Constants.useOfficial();
+                        @Value("${common.mipush.appSecretKey.ios}") String appSecretKeyIOS,
+                        @Value("${common.environment}") Environment environment) {
+        this.environment = environment;
         this.androidSender = new Sender(appSecretKeyAndroid);
         this.iosSender = new Sender(appSecretKeyIOS);
     }
 
-    public void sendPushMessage(PushMessage pushMessage) throws Exception {
+    public void sendPushMessage(PushMessage pushMessage) {
 
         logger.info(MessageFormat.format("send push message start. user count:{0}, source:{1}",
                 pushMessage.getLoginNames() == null ? "ALL" : pushMessage.getLoginNames().size(), pushMessage.getPushSource()));
@@ -44,6 +46,8 @@ public class MiPushClient {
                     .payload(pushMessage.getContent())
                     .notifyType(-1)
                     .build();
+            // 安卓推送，测试环境和正式环境，都使用official（配置了不同的小米平台账户）
+            Constants.useOfficial();
             sendPushMessage(pushMessage, message, PushSource.ANDROID);
         }
 
@@ -53,13 +57,19 @@ public class MiPushClient {
                     .body(pushMessage.getContent())
                     .soundURL("default")
                     .build();
+            // 针对IOS推送，需要根据环境来设置是否使用sandbox，安卓则无需这样
+            if (environment != Environment.PRODUCTION) {
+                Constants.useSandbox();
+            } else {
+                Constants.useOfficial();
+            }
             sendPushMessage(pushMessage, message, PushSource.IOS);
         }
         logger.info(MessageFormat.format("send push message end. user count:{0}, source:{1}",
                 pushMessage.getLoginNames() == null ? "ALL" : pushMessage.getLoginNames().size(), pushMessage.getPushSource()));
     }
 
-    private void sendPushMessage(PushMessage pushMessage, Message message, PushSource source) throws IOException, ParseException {
+    private void sendPushMessage(PushMessage pushMessage, Message message, PushSource source) {
 
         Sender sender = source == PushSource.ANDROID ? androidSender : iosSender;
 
@@ -67,30 +77,38 @@ public class MiPushClient {
             // 如果alias list 为空，则给所有用户发推送
             logger.info("send push message to all " + source + " users.");
 
-            // 给所有的 IOS/Android 用户发推送
-            Result result = sender.broadcastAll(message, 2);
-            logger.info(MessageFormat.format("result: {0}, reason: {1}, messageId: {2}", result.getErrorCode().getDescription(), result.getReason(), result.getMessageId()));
+            try {
+                // 给所有的 IOS/Android 用户发推送
+                Result result = sender.broadcastAll(message, 2);
+                logger.info(MessageFormat.format("result: {0}, reason: {1}, messageId: {2}", result.getErrorCode().getDescription(), result.getReason(), result.getMessageId()));
+            } catch (Exception e) {
+                logger.error("send push message to all " + source + " users fail.", e);
+            }
         } else {
             logger.info("send push message to " + source + " users, user count:" + pushMessage.getLoginNames().size());
             sendToAliasInBatch(pushMessage, message, sender);
         }
     }
 
-    private void sendToAliasInBatch(PushMessage pushMessage, Message message, Sender sender) throws IOException, ParseException {
+    private void sendToAliasInBatch(PushMessage pushMessage, Message message, Sender sender) {
 
         List<String> aliasList = pushMessage.getLoginNames();
         int count = aliasList.size();
         int batchSize = count / 1000 + (count % 1000 > 0 ? 1 : 0);
 
-        for (int batch = 0; batch < batchSize; batch++) {
-            logger.info("batch number: " + batch);
+        try {
+            for (int batch = 0; batch < batchSize; batch++) {
+                logger.info("batch number: " + batch);
+                Result result = sender.sendToAlias(message, aliasList.subList(batch * 1000,
+                        (batch + 1) * 1000 > count ? count : (batch + 1) * 1000), 2);
 
-            Result result = sender.sendToAlias(message, aliasList.subList(batch * 1000,
-                    (batch + 1) * 1000 > count ? count : (batch + 1) * 1000), 2);
-
-            logger.info(MessageFormat.format("batch number: {0}, result: {1}, reason: {2}, messageId: {3}", batch,
-                    result.getErrorCode().getDescription(), result.getReason(), result.getMessageId()));
+                logger.info(MessageFormat.format("batch size:{0}, batch number: {1}, result: {2}, reason: {3}, messageId: {5}", count,
+                        batch, result.getErrorCode().getDescription(), result.getReason(), result.getMessageId()));
+            }
+        } catch (Exception e) {
+            logger.error(MessageFormat.format("send mi push in batch fail, batch size:{1}", count), e);
         }
+
     }
 
 }
