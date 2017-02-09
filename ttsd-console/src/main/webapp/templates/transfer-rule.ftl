@@ -1,6 +1,6 @@
 <#import "macro/global.ftl" as global>
 
-<@global.main pageCss="" pageJavascript="transfer-rule.js" headLab="transfer-manage" sideLab="transfer-rule" title="转让规则">
+<@global.main pageCss="" pageJavascript="transfer-rule.js" headLab="project-manage" sideLab="transfer-rule" title="转让规则">
 
 <!-- content area begin -->
 <div class="col-md-10">

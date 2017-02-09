@@ -1,21 +1,21 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="user-search.js" headLab="user-manage" sideLab="userSearchMan" title="用户查询">
+<@global.main pageCss="" pageJavascript="user-search.js" headLab="customer-center" sideLab="userSearchMan" title="用户查询">
 
 <div class="col-md-10">
     <form action="" class="form-inline query-build">
         <div class="form-group">
-            <label for="loginName">用户名</label>
+            <label for="loginName">投资人用户名</label>
             <input type="text" id="loginName" name="loginName" class="form-control ui-autocomplete-input" datatype="*" autocomplete="off" value="${loginName!}" />
         </div>
 
         <div class="form-group">
-            <label for="referrer">推荐人手机</label>
+            <label for="referrer">推荐人手机号</label>
             <input type="text" class="form-control ui-autocomplete-input" id="input-referrer" name="referrerMobile"
                    placeholder="" datatype="*" autocomplete="off" value="${referrerMoible!}">
         </div>
 
         <div class="form-group">
-            <label for="mobile">手机号</label>
+            <label for="mobile">投资人手机号</label>
             <input type="text" class="form-control" name="mobile" placeholder="" value="${mobile!}">
         </div>
 
@@ -31,10 +31,10 @@
         <table class="table table-bordered table-hover">
             <thead>
             <tr>
-                <th>用户名</th>
+                <th>投资人用户名</th>
                 <th>真实姓名</th>
-                <th>手机号</th>
-                <th>推荐人手机</th>
+                <th>投资人手机号</th>
+                <th>推荐人手机号</th>
                 <th>来源</th>
                 <th>渠道</th>
                 <th>注册时间</th>

@@ -16,7 +16,7 @@
     <link href="http://localhost:8088/images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <link rel="stylesheet" type="text/css" href="http://localhost:8088/style/global.css" charset="utf-8" />
     <#if pageCss?? && pageCss != "">
-    <link rel="stylesheet" type="text/css" href="${staticServer}${cssPath}${pageCss}" charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="${staticServer}${pageCss}" charset="utf-8" />
     </#if>
     <script>
         var _czc = _czc || [];

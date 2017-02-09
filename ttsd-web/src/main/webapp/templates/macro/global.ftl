@@ -19,7 +19,7 @@
     </@security.authorize>
 </#macro>
 
-<#macro main pageCss pageJavascript="" activeNav="" activeLeftNav="" staticServer="${staticServer}" title="拓天速贷" keywords="" description="" site='main'>
+<#macro main pageCss pageJavascript="" activeNav="" activeLeftNav="" title="拓天速贷" keywords="" description="" site='main'>
     <#local mainMenus=[
     {"title":"首页", "url":"/","category":"16顶部导航","navigation":"true"},
     {"title":"我要投资", "url":"/loan-list","category":"17顶部导航","navigation":"true","leftNavs":[
@@ -83,9 +83,9 @@
     <meta name="_csrf_header" content="${(_csrf.headerName)!}"/>
     <meta name="360-site-verification" content="8f78c77592779bad6fb5acc422271b6f" />
     <link  id="icoFavicon" rel="shortcut icon" type="image/x-icon" />
-    <link rel="stylesheet" type="text/css" href="${staticServer}${css.globalFun_page!}" charset="utf-8"/>
+    <link rel="stylesheet" type="text/css" href="${css.globalFun_page!}" charset="utf-8"/>
     <#if pageCss?? && pageCss != "">
-        <link rel="stylesheet" type="text/css" href="${staticServer}${pageCss}" charset="utf-8"/>
+        <link rel="stylesheet" type="text/css" href="${pageCss}" charset="utf-8"/>
     </#if>
 
     <#include "../pageLayout/cnzz.ftl"/>
@@ -127,20 +127,20 @@
 
 <#include "../pageLayout/statistic.ftl" />
 <script>
-    window.staticServer='${staticServer}';
+    window.staticServer='${commonStaticServer}';
     <#--window.pluginsJSON={-->
         <#--underscore:'${js.underscore}'-->
     <#--}-->
 
 </script>
-<script src="${staticServer}${js.jquery}" ></script>
-<script src="${staticServer}${js.globalFun_page!}" ></script>
-<script src="${staticServer}${pageJavascript}" type="text/javascript" id="currentScript"></script>
+<script src="${js.jquery}" ></script>
+<script src="${js.globalFun_page!}" ></script>
+<script src="${pageJavascript}" type="text/javascript" id="currentScript"></script>
 
-    <#if pageJavascript?? && pageJavascript?length gt 0>
-    <script src="https://static.tuotiansudai.com/js/libs/require-2.1.20.min.js" type="text/javascript" charset="utf-8" defer="defer" async="async" data-main="${staticServer}${jsPath}${pageJavascript}">
-    </script>
-    </#if>
+    <#--<#if pageJavascript?? && pageJavascript?length gt 0>-->
+    <#--<script src="https://static.tuotiansudai.com/js/libs/require-2.1.20.min.js" type="text/javascript" charset="utf-8" defer="defer" async="async" data-main="${staticServer}${jsPath}${pageJavascript}">-->
+    <#--</script>-->
+    <#--</#if>-->
 </body>
 </html>
 </#macro>

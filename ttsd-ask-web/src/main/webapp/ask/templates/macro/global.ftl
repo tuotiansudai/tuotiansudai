@@ -79,10 +79,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
     <meta name="_csrf" content="${(_csrf.token)!}"/>
     <meta name="_csrf_header" content="${(_csrf.headerName)!}"/>
-    <link href="${staticServer}/images/favicon.ico" rel="shortcut icon" type="image/x-icon"/>
-    <link rel="stylesheet" type="text/css" href="${staticServer}${css.global_page!}" charset="utf-8"/>
+    <link href="${commonStaticServer}/images/favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+    <link rel="stylesheet" type="text/css" href="${css.global_page!}" charset="utf-8"/>
     <#if pageCss?? && pageCss != "">
-        <link rel="stylesheet" type="text/css" href="${staticServer}${pageCss}" charset="utf-8"/>
+        <link rel="stylesheet" type="text/css" href="${pageCss}" charset="utf-8"/>
     </#if>
 
     <#include "../cnzz.ftl"/>
@@ -145,9 +145,9 @@
 <script>
     window.staticServer='${staticServer}';
 </script>
-<script src="${staticServer}${js.jquery}"></script>
-<script src="${staticServer}${js.global_page!}"></script>
-<script src="${staticServer}${pageJavascript}" type="text/javascript"></script>
+<script src="${js.jquery}"></script>
+<script src="${js.global_page!}"></script>
+<script src="${pageJavascript}" type="text/javascript"></script>
 </body>
 </html>
 </#macro>

@@ -24,7 +24,7 @@
     "js": "chucks/imageSlider.d9b2dc73cbcf06294b0c.js"
   },
   "bookInvest": {
-    "js": "chucks/bookInvest.8e7d6bfdb87500060fb6.js"
+    "js": "chucks/bookInvest.a918acea93e2c9d44ce9.js"
   },
   "/web/js/loan_list": {
     "js": "/web/js/loan_list.js",
@@ -39,10 +39,10 @@
     "css": "/web/js/register_user.css"
   },
   "placeholder": {
-    "js": "chucks/placeholder.f0f83e1059b382a44c9e.js"
+    "js": "chucks/placeholder.84b78b7d5b74c898d756.js"
   },
   "fetchCaptcha": {
-    "js": "chucks/fetchCaptcha.8561f1c85f4c7b873b02.js"
+    "js": "chucks/fetchCaptcha.92054ef90f280ed031ed.js"
   },
   "/web/js/transfer_list": {
     "js": "/web/js/transfer_list.js",
