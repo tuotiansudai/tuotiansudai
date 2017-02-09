@@ -62,7 +62,6 @@
         </property>
     </bean>
 
-
     <bean id="freeMarkerViewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
         <property name="cache" value="true"/>
         <property name="prefix" value=""/>
@@ -71,6 +70,8 @@
         <property name="requestContextAttribute" value="requestContext"/>
         <property name="exposeSessionAttributes" value="true"/>
     </bean>
+
+    <bean class="com.tuotiansudai.web.config.handler.HandlerExceptionLoggingResolver"/>
 
     <import resource="swagger-configuration.xml"/>
 </beans>

@@ -59,6 +59,8 @@ class Deployment(object):
         sh('cd ./ttsd-user-mq-consumer/build/distributions && unzip \*.zip')
         sh('cd ./ttsd-auditLog-mq-consumer && {0} distZip'.format(self._gradle))
         sh('cd ./ttsd-auditLog-mq-consumer/build/distributions && unzip \*.zip')
+        sh('cd ./ttsd-email-mq-consumer && {0} distZip'.format(self._gradle))
+        sh('cd ./ttsd-email-mq-consumer/build/distributions && unzip \*.zip')
 
     def build_rest_service(self):
         print "Making rest services build..."
@@ -84,8 +86,8 @@ class Deployment(object):
         sh('mv ./ttsd-mobile-api/src/main/webapp/static_api.zip  ./ttsd-web/build/')
         sh('cd ./ttsd-web/build && unzip static_api.zip -d static')
 
-        sh('cd ./ttsd-ask-web/src/main/webapp && zip -r static_ask.zip ask/')
-        sh('mv ./ttsd-ask-web/src/main/webapp/static_ask.zip  ./ttsd-web/build/')
+        sh('cd ./ttsd-frontend-manage/resources/prod && zip -r static_ask.zip *')
+        sh('mv ./ttsd-frontend-manage/resources/prod/static_ask.zip  ./ttsd-web/build/')
         sh('cd ./ttsd-web/build && unzip static_ask.zip -d static')
 
         sh('cd ./ttsd-activity-web/src/main/webapp && zip -r static_activity.zip activity/')

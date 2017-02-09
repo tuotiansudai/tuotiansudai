@@ -80,8 +80,9 @@
     <meta name="_csrf" content="${(_csrf.token)!}"/>
     <meta name="_csrf_header" content="${(_csrf.headerName)!}"/>
     <link href="${staticServer}/images/favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+    <link rel="stylesheet" type="text/css" href="${staticServer}${css.global_page!}" charset="utf-8"/>
     <#if pageCss?? && pageCss != "">
-        <link rel="stylesheet" type="text/css" href="${staticServer}${cssPath}${pageCss}" charset="utf-8"/>
+        <link rel="stylesheet" type="text/css" href="${staticServer}${pageCss}" charset="utf-8"/>
     </#if>
 
     <#include "../cnzz.ftl"/>
@@ -102,7 +103,7 @@
 </div>
 <#--ad image-->
     </#if>
-<div class="main-frame full-screen clearfix">
+<div class="main-frame full-screen clearfix main-frame-ask">
 
 <#--banner-->
     <#if !errorPage??>
@@ -141,8 +142,12 @@
 </div>
 
     <#include "../pageLayout/footer.ftl" />
-
-<script src="${staticServer}${jsPath}${pageJavascript}" type="text/javascript"></script>
+<script>
+    window.staticServer='${staticServer}';
+</script>
+<script src="${staticServer}${js.jquery}"></script>
+<script src="${staticServer}${js.global_page!}"></script>
+<script src="${staticServer}${pageJavascript}" type="text/javascript"></script>
 
 </body>
 </html>

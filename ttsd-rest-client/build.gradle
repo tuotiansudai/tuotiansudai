@@ -19,5 +19,6 @@ dependencies {
     compile "org.springframework:spring-context-support:$springVersion"
     compile "io.github.openfeign:feign-core:$openFeignVersion"
     compile "io.github.openfeign:feign-jackson:$openFeignVersion"
+    compile "io.github.openfeign:feign-okhttp:$openFeignVersion"
     compile "io.github.openfeign:feign-slf4j:$openFeignVersion"
 }

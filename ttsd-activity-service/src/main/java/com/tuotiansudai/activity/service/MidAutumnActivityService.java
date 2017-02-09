@@ -12,7 +12,6 @@ import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.MobileEncryptor;
-import com.tuotiansudai.util.RandomUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,7 +74,7 @@ public class MidAutumnActivityService {
         Iterator<String> family = Iterators.transform(myFamily.iterator(), new Function<String, String>() {
             @Override
             public String apply(String input) {
-                return MobileEncryptor.encryptWebMiddleMobile(userMapper.findByLoginName(input).getMobile());
+                return MobileEncryptor.encryptMiddleMobile(userMapper.findByLoginName(input).getMobile());
             }
         });
 

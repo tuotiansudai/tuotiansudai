@@ -1,14 +1,16 @@
 package com.tuotiansudai.contract.service.impl;
 
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.pdf.BaseFont;
+import com.google.common.collect.Lists;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.pdf.AcroFields;
+import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.PdfStamper;
 import com.tuotiansudai.contract.service.ContractService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
-import com.tuotiansudai.transfer.repository.mapper.TransferRuleMapper;
-import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
-import com.tuotiansudai.transfer.repository.model.TransferRuleModel;
+import com.tuotiansudai.repository.model.TransferApplicationModel;
+import com.tuotiansudai.repository.model.TransferRuleModel;
 import com.tuotiansudai.util.AmountConverter;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -17,9 +19,6 @@ import org.apache.log4j.Logger;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.xhtmlrenderer.pdf.ITextFontResolver;
-import org.xhtmlrenderer.pdf.ITextRenderer;
-
 import java.io.*;
 import java.text.DecimalFormat;
 import java.text.MessageFormat;
@@ -53,6 +52,14 @@ public class ContractServiceImpl implements ContractService {
     private TransferRuleMapper transferRuleMapper;
 
     private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+    public static final String LOAN_CONTRACT = "LOAN_CONTRACT";
+
+    public static final String TRANSFER_CONTRACT = "TRANSFER_CONTRACT";
+
+    public static final String LOAN_CONTRACT_TEMPLATE = "loan_contract.pdf";
+
+    public static final String TRANSFER_CONTRACT_TEMPLaTE = "transfer_contract.pdf";
 
     /**
      * 后缀为FTL
@@ -108,25 +115,6 @@ public class ContractServiceImpl implements ContractService {
             return "";
         }
         return getContract("contract", dataModel).replace("&nbsp;", "&#160;");
-    }
-
-    @Override
-    public void generateContractPdf(String pdfString, OutputStream outputStream) {
-
-        ITextRenderer renderer = new ITextRenderer();
-        ITextFontResolver fontResolver = renderer.getFontResolver();
-
-        try {
-            fontResolver.addFont(ContractServiceImpl.class.getClassLoader().getResource("SIMSUN.TTC").toString(), BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
-            renderer.setDocumentFromString(pdfString);
-            //renderer.setDocument(xhtmlContent,"");
-            renderer.layout();
-            renderer.createPDF(outputStream, true);
-        } catch (DocumentException e) {
-            logger.error(e.getLocalizedMessage(), e);
-        } catch (IOException e) {
-            logger.error(e.getLocalizedMessage(), e);
-        }
     }
 
     @Override
@@ -190,6 +178,7 @@ public class ContractServiceImpl implements ContractService {
         dataModel.put("investAmount", AmountConverter.convertCentToString(transferApplicationModel.getInvestAmount()) + "元");
         dataModel.put("transferTime", simpleDateFormat.format(transferApplicationModel.getTransferTime()));
         dataModel.put("leftPeriod", String.valueOf(transferApplicationModel.getLeftPeriod()));
+        dataModel.put("investId", String.valueOf(transferApplicationModel.getInvestId()));
 
         TransferRuleModel transferRuleModel = transferRuleMapper.find();
         String msg1;
@@ -202,13 +191,13 @@ public class ContractServiceImpl implements ContractService {
         }
 
         if (transferRuleModel.getLevelTwoFee() != 0) {
-            msg2 = MessageFormat.format("甲方持有债权30天以上，90天以内的，收取转让本金的{0}%作为服务费用。", transferRuleModel.getLevelTwoFee()  * 100);
+            msg2 = MessageFormat.format("甲方持有债权30天以上，90天以内的，收取转让本金的{0}%作为服务费用。", transferRuleModel.getLevelTwoFee() * 100);
         } else {
             msg2 = "甲方持有债权30天以上，90天以内的，暂不收取转服务费用。";
         }
 
         if (transferRuleModel.getLevelThreeFee() != 0) {
-            msg3 = MessageFormat.format("甲方持有债权90天以上的，收取转让本金的{0}%作为服务费用。", transferRuleModel.getLevelThreeFee()  * 100);
+            msg3 = MessageFormat.format("甲方持有债权90天以上的，收取转让本金的{0}%作为服务费用。", transferRuleModel.getLevelThreeFee() * 100);
         } else {
             msg3 = "甲方持有债权90天以上的，暂不收取转服务费用。";
         }
@@ -242,11 +231,88 @@ public class ContractServiceImpl implements ContractService {
         dataModel.put("totalRate", decimalFormat.format((loanModel.getBaseRate() + loanModel.getActivityRate()) * 100) + "%");
         dataModel.put("recheckTime", simpleDateFormat.format(loanModel.getRecheckTime()));
         dataModel.put("endTime", simpleDateFormat.format(investRepayModel.getRepayDate()));
+        dataModel.put("investId", String.valueOf(investId));
         if (loanModel.getPledgeType().equals(PledgeType.HOUSE)) {
             dataModel.put("pledge", "房屋");
         } else if (loanModel.getPledgeType().equals(PledgeType.VEHICLE)) {
             dataModel.put("pledge", "车辆");
         }
         return dataModel;
+    }
+
+    @Override
+    public byte[] printContractPdf(String contractType, String loginName, long OrderId, Long investId) {
+        String pdfTemplate;
+        Map<String, String> dataMap;
+        if (contractType.equals(LOAN_CONTRACT)) {
+            pdfTemplate = LOAN_CONTRACT_TEMPLATE;
+            dataMap = collectInvestorContractModel(loginName, OrderId, investId);
+        } else {
+            pdfTemplate = TRANSFER_CONTRACT_TEMPLaTE;
+            dataMap = collectTransferContractModel(OrderId);
+        }
+
+        try {
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            PdfStamper ps = new PdfStamper(new PdfReader(pdfTemplate), bos);
+
+            AcroFields fields = ps.getAcroFields();
+            fields.setSubstitutionFonts(Lists.newArrayList(BaseFont.createFont("STSong-Light", "UniGB-UCS2-H", false)));
+            fillPdfTemplate(contractType, fields, dataMap);
+            ps.setFormFlattening(true);
+            ps.close();
+            byte[] byteArray = bos.toByteArray();
+            bos.close();
+            return byteArray;
+        } catch (Exception e) {
+            logger.error("download old contract fail . message:{}", e);
+        }
+
+        return null;
+    }
+
+    private AcroFields fillPdfTemplate(String contractType,AcroFields fields, Map<String, String> dataMap) throws IOException, DocumentException {
+        if(contractType.equals(LOAN_CONTRACT)){
+            fields.setField("agentUserName", userMapper.findByLoginNameOrMobile(dataMap.get("agentMobile")).getUserName());
+            fields.setField("agentMobile", dataMap.get("agentMobile"));
+            fields.setField("agentIdentityNumber", dataMap.get("agentIdentityNumber"));
+            fields.setField("investorUserName", userMapper.findByLoginNameOrMobile(dataMap.get("investorMobile")).getUserName());
+            fields.setField("investorMobile", dataMap.get("investorMobile"));
+            fields.setField("investorIdentityNumber", dataMap.get("investorIdentityNumber"));
+            fields.setField("loanerUserName", dataMap.get("loanerUserName"));
+            fields.setField("loanerIdentityNumber", dataMap.get("loanerIdentityNumber"));
+            fields.setField("loanAmount1", dataMap.get("loanAmount"));
+            fields.setField("loanAmount2", dataMap.get("investAmount"));
+            fields.setField("periods1", dataMap.get("agentPeriods"));
+            fields.setField("periods2", dataMap.get("leftPeriods"));
+            fields.setField("totalRate", dataMap.get("totalRate"));
+            fields.setField("recheckTime1", dataMap.get("recheckTime"));
+            fields.setField("recheckTime2", dataMap.get("recheckTime"));
+            fields.setField("endTime1", dataMap.get("endTime"));
+            fields.setField("endTime2", dataMap.get("endTime"));
+            fields.setField("pledge", dataMap.get("pledge"));
+        }else{
+            fields.setField("transferUserName", userMapper.findByLoginNameOrMobile(dataMap.get("transferMobile")).getUserName());
+            fields.setField("transferMobile", dataMap.get("transferMobile"));
+            fields.setField("transferIdentity", dataMap.get("transferIdentityNumber"));
+            fields.setField("transfereeUserName", userMapper.findByLoginNameOrMobile(dataMap.get("transfereeMobile")).getUserName());
+            fields.setField("transfereeMobile", dataMap.get("transfereeMobile"));
+            fields.setField("transfereeIdentity", dataMap.get("transfereeIdentityNumber"));
+            fields.setField("userName", dataMap.get("loanerUserName"));
+            fields.setField("identity", dataMap.get("loanerIdentityNumber"));
+            fields.setField("amount", dataMap.get("loanAmount"));
+            fields.setField("totalRate", dataMap.get("totalRate"));
+            fields.setField("periods", dataMap.get("periods"));
+            fields.setField("transferStartTime", dataMap.get("transferStartTime"));
+            fields.setField("transferEndTime", dataMap.get("transferEndTime"));
+            fields.setField("investAmount", dataMap.get("investAmount"));
+            fields.setField("transferTime", dataMap.get("transferTime"));
+            fields.setField("leftPeriod", dataMap.get("leftPeriod"));
+            fields.setField("msg1", dataMap.get("msg1"));
+            fields.setField("msg2", dataMap.get("msg2"));
+            fields.setField("msg3", dataMap.get("msg3"));
+        }
+
+        return fields;
     }
 }

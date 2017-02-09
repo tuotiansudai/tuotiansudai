@@ -6,7 +6,7 @@ import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.enums.MessageEventType;
 import com.tuotiansudai.enums.PushSource;
 import com.tuotiansudai.enums.PushType;
-import com.tuotiansudai.exception.ReferrerRelationException;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
@@ -16,10 +16,8 @@ import com.tuotiansudai.message.PushMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.mapper.UserRoleMapper;
-import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserRoleModel;
-import com.tuotiansudai.service.ReferrerRelationService;
 import com.tuotiansudai.service.RegisterUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,21 +41,14 @@ public class RegisterUserServiceImpl implements RegisterUserService {
     private UserMembershipMapper userMembershipMapper;
 
     @Autowired
-    private ReferrerRelationService referrerRelationService;
-
-    @Autowired
     private MQWrapperClient mqWrapperClient;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean register(UserModel userModel) throws ReferrerRelationException {
+    public boolean register(UserModel userModel) {
         this.userMapper.create(userModel);
 
         this.userRoleMapper.create(Lists.newArrayList(new UserRoleModel(userModel.getLoginName(), Role.USER)));
-
-        if (!Strings.isNullOrEmpty(userModel.getReferrer())) {
-            this.referrerRelationService.generateRelation(userModel.getReferrer(), userModel.getLoginName());
-        }
 
         MembershipModel membershipModel = membershipMapper.findByLevel(0);
         UserMembershipModel userMembershipModel = UserMembershipModel.createUpgradeUserMembershipModel(userModel.getLoginName(), membershipModel.getId());
@@ -80,6 +71,8 @@ public class RegisterUserServiceImpl implements RegisterUserService {
                 null));
 
         if (!Strings.isNullOrEmpty(userModel.getReferrer())) {
+            mqWrapperClient.sendMessage(MessageQueue.GenerateReferrerRelation, userModel.getLoginName());
+
             //Title:您推荐的好友 {0} 已成功注册
             //AppTitle:您推荐的好友 {0} 已成功注册
             //Content:尊敬的用户，您推荐的好友 {0} 已成功注册，【邀请好友投资】您还能再拿1%现金奖励哦！

@@ -6,7 +6,6 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.activity.service.RedEnvelopSplitActivityService;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.dto.RegisterUserDto;
-import com.tuotiansudai.exception.ReferrerRelationException;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserChannel;
@@ -69,7 +68,7 @@ public class RedEnvelopSplitActivityController {
         modelAndView.addObject("loginName", loginName);
         modelAndView.addObject("channels", channel);
         UserModel userModel = userMapper.findByLoginName(loginName);
-        modelAndView.addObject("userName", userModel != null && !Strings.isNullOrEmpty(userModel.getUserName()) ? userModel.getUserName() : (userModel != null && !Strings.isNullOrEmpty(userModel.getMobile()) ? MobileEncryptor.encryptWebMiddleMobile(userModel.getMobile()) : loginName));
+        modelAndView.addObject("userName", userModel != null && !Strings.isNullOrEmpty(userModel.getUserName()) ? userModel.getUserName() : (userModel != null && !Strings.isNullOrEmpty(userModel.getMobile()) ? MobileEncryptor.encryptMiddleMobile(userModel.getMobile()) : loginName));
         modelAndView.addObject("registerStatus", "referrer");
         return modelAndView;
     }
@@ -96,20 +95,16 @@ public class RedEnvelopSplitActivityController {
                                 @RequestParam(value = "mobile", required = false) String mobile,
                                 @RequestParam(value = "channel", required = false) String channel) {
 
-        boolean isRegisterSuccess = false;
+        boolean isRegisterSuccess;
         RegisterUserDto registerUserDto = new RegisterUserDto();
         registerUserDto.setMobile(mobile);
         registerUserDto.setChannel(channel);
         registerUserDto.setReferrer(loginName);
         registerUserDto.setCaptcha(captcha);
         registerUserDto.setPassword(password);
-        try {
-            logger.info(MessageFormat.format("[Register User {0}] controller starting...", registerUserDto.getMobile()));
-            isRegisterSuccess = this.userService.registerUser(registerUserDto);
-            logger.info(MessageFormat.format("[Register User {0}] controller invoked service ({0})", registerUserDto.getMobile(), String.valueOf(isRegisterSuccess)));
-        } catch (ReferrerRelationException e) {
-            logger.error(e.getLocalizedMessage(), e);
-        }
+        logger.info(MessageFormat.format("[Register User {0}] controller starting...", registerUserDto.getMobile()));
+        isRegisterSuccess = this.userService.registerUser(registerUserDto);
+        logger.info(MessageFormat.format("[Register User {0}] controller invoked service ({0})", registerUserDto.getMobile(), String.valueOf(isRegisterSuccess)));
 
 
         if (isRegisterSuccess) {

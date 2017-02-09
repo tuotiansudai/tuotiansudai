@@ -47,7 +47,7 @@ public class MybatisAAConfig {
         configurer.setBasePackage("com.tuotiansudai.repository.mapper," +
                 "com.tuotiansudai.message.repository.mapper," +
                 "com.tuotiansudai.membership.repository.mapper," +
-                "com.tuotiansudai.coupon.repository.mapper");
+                "com.tuotiansudai.repository.mapper");
         configurer.setSqlSessionFactoryBeanName("aaSqlSessionFactory");
         return configurer;
     }
@@ -58,8 +58,7 @@ public class MybatisAAConfig {
         sessionFactory.setDataSource(hikariCPAADataSource);
         sessionFactory.setTypeAliasesPackage("com.tuotiansudai.repository.model," +
                 "com.tuotiansudai.message.repository.model," +
-                "com.tuotiansudai.membership.repository.model," +
-                "com.tuotiansudai.coupon.repository.model");
+                "com.tuotiansudai.membership.repository.model");
         return sessionFactory.getObject();
     }
 

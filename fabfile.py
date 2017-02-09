@@ -61,6 +61,7 @@ def mk_mq_consumer():
     local('cd ./ttsd-activity-mq-consumer && /opt/gradle/latest/bin/gradle distZip')
     local('cd ./ttsd-user-mq-consumer && /opt/gradle/latest/bin/gradle distZip')
     local('cd ./ttsd-auditLog-mq-consumer && /opt/gradle/latest/bin/gradle distZip')
+    local('cd ./ttsd-email-mq-consumer && /opt/gradle/latest/bin/gradle distZip')
 
 
 def mk_rest_service():
@@ -72,7 +73,7 @@ def mk_static_zip():
     local('cd ./ttsd-mobile-api/src/main/webapp && zip -r static_api.zip api/')
     local('cd ./ttsd-activity-web/src/main/webapp && zip -r static_activity.zip activity/')
     local('cd ./ttsd-point-web/src/main/webapp && zip -r static_point.zip point/')
-    local('cd ./ttsd-ask-web/src/main/webapp && zip -r static_ask.zip ask/')
+    local('cd ./ttsd-frontend-manage/resources/prod && zip -r static_ask.zip *')
 
 
 def mk_signin_zip():
@@ -106,7 +107,7 @@ def deploy_static():
     upload_project(local_dir='./ttsd-mobile-api/src/main/webapp/static_api.zip', remote_dir='/workspace')
     upload_project(local_dir='./ttsd-activity-web/src/main/webapp/static_activity.zip', remote_dir='/workspace')
     upload_project(local_dir='./ttsd-point-web/src/main/webapp/static_point.zip', remote_dir='/workspace')
-    upload_project(local_dir='./ttsd-ask-web/src/main/webapp/static_ask.zip', remote_dir='/workspace')
+    upload_project(local_dir='./ttsd-frontend-manage/resources/prod/static_ask.zip', remote_dir='/workspace')
     with cd('/workspace'):
         sudo('rm -rf static/')
         sudo('unzip static.zip -d static')
@@ -155,6 +156,7 @@ def deploy_worker():
     put(local_path='./ttsd-activity-mq-consumer/build/distributions/*.zip', remote_path='/workspace/')
     put(local_path='./ttsd-user-mq-consumer/build/distributions/*.zip', remote_path='/workspace/')
     put(local_path='./ttsd-auditLog-mq-consumer/build/distributions/*.zip', remote_path='/workspace/')
+    put(local_path='./ttsd-email-mq-consumer/build/distributions/*.zip', remote_path='/workspace/')
     put(local_path='./ttsd-diagnosis/build/distributions/*.zip', remote_path='/workspace/')
     put(local_path='./scripts/supervisor/job-worker.ini', remote_path='/etc/supervisord.d/')
     put(local_path='./scripts/logstash/worker.conf', remote_path='/etc/logstash/conf.d/prod.conf')
@@ -170,6 +172,7 @@ def deploy_worker():
         sudo('rm -rf ttsd-activity-mq-consumer/')
         sudo('rm -rf ttsd-user-mq-consumer/')
         sudo('rm -rf ttsd-auditLog-mq-consumer/')
+        sudo('rm -rf ttsd-email-mq-consumer/')
         sudo('rm -rf ttsd-diagnosis/')
         sudo('unzip \*.zip')
         sudo('supervisorctl reload')

@@ -1,6 +1,6 @@
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="transfer_list.js" headLab="transfer-manage" sideLab="transfer-list" title="所有的转让项目">
+<@global.main pageCss="" pageJavascript="transfer_list.js" headLab="project-manage" sideLab="transfer-list" title="所有的转让项目">
 
 <!-- content area begin -->
 <div class="col-md-10">
@@ -11,7 +11,7 @@
                    value="${(transferApplicationId?string.computer)!}">
         </div>
         <div class="form-group">
-            <label>日期</label>
+            <label>转让发起时间</label>
 
             <div class='input-group date' id='datetimepicker1'>
                 <input type='text' class="form-control" name="startTime"
@@ -43,17 +43,17 @@
             </select>
         </div>
         <div class="form-group">
-            <label>转让人</label>
+            <label>转让人手机号</label>
             <input type="text" name="transferrerMobile" class="form-control ui-autocomplete-input" datatype="*"
                    autocomplete="off" value="${transferrerMobile!}"/>
         </div>
         <div class="form-group">
-            <label>承接人</label>
+            <label>承接人手机号</label>
             <input type="text" name="transfereeMobile" class="form-control ui-autocomplete-input" datatype="*"
                    autocomplete="off" value="${transfereeMobile!}"/>
         </div>
         <div class="form-group">
-            <label>原始项目</label>
+            <label>原始项目编号</label>
             <input type="text" class="form-control" name="loanId" placeholder=""
                    value="${(loanId?string.computer)!}">
         </div>
