@@ -24,13 +24,18 @@ investForm.onsubmit=function(event) {
     },function() {
         var data = response.data;
         if (data.status) {
-            $("#freeSuccess").show();
+            layer.open({
+                type: 1,
+                title: '&nbsp',
+                area: ['400px', '205px'],
+                content: $('#freeSuccess')
+            });
         }
         self.removeClass("loading");
     });
 }
 $('.close-free',$experienceLoan).on('click', function (event) {
     event.preventDefault();
-    $('#freeSuccess').hide();
+    layer.closeAll();
     location.reload();
 });
