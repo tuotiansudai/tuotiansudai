@@ -8,7 +8,8 @@ public enum MessageTopic {
             MessageQueue.InvestSuccess_MembershipUpdate,
             MessageQueue.InvestSuccess_CouponUpdate,
             MessageQueue.InvestSuccess_ActivityReward,
-            MessageQueue.InvestSuccess_NewBieExperience);
+            MessageQueue.InvestSuccess_ExperienceRepay,
+            MessageQueue.InvestSuccess_ExperienceAssignInterestCoupon);
 
     final String topicName;
     final MessageQueue[] queues;

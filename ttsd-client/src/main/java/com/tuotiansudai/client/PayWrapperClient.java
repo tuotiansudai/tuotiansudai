@@ -354,8 +354,8 @@ public class PayWrapperClient extends BaseClient {
         return syncExecute(String.valueOf(loanId), "/job/send-red-envelope-after-loan-out", "POST");
     }
 
-    public BaseDto<PayDataDto> experienceRepay(long investId){
-        return syncExecute(String.valueOf(investId), "/experience/repay", "POST");
+    public BaseDto<PayDataDto> experienceRepay(String loginName){
+        return syncExecute(String.valueOf(loginName), "/experience/repay", "POST");
     }
 
     public BaseDto<PayDataDto> postExperienceRepay(String notifyRequestId) {

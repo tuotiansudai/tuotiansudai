@@ -25,6 +25,7 @@ import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountTransfer;
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -73,31 +75,33 @@ public class ExperienceRepayServiceImpl implements ExperienceRepayService {
     private RedisWrapperClient redisWrapperClient;
 
     @Override
-    public boolean repay(long investId) {
-        InvestModel investModel = investMapper.findById(investId);
+    public boolean repay(String loginName) {
+        List<InvestModel> investModels = investMapper.findByLoanIdAndLoginName(1, loginName);
+        if (investModels.size() != 1) {
+            logger.error("[Experience Repay] {} invest size is not 1", loginName);
+        }
 
-        if (investModel == null || investModel.getStatus() != InvestStatus.SUCCESS) {
-            logger.error("[Experience Repay {}] invest is not existed or status is not SUCCESS", investId);
+        InvestModel investModel = investModels.get(0);
+        if (investModel.getStatus() != InvestStatus.SUCCESS) {
+            logger.error("[Experience Repay {}] invest is not existed or status is not SUCCESS", investModel.getId());
             return true;
         }
 
         LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
         if (loanModel == null || loanModel.getProductType() != ProductType.EXPERIENCE) {
-            logger.error("[Experience Repay {}] loan is not existed or loan is not EXPERIENCE", investId);
+            logger.error("[Experience Repay {}] loan is not existed or loan is not EXPERIENCE", investModel.getId());
             return true;
         }
-
-        String loginName = investModel.getLoginName();
 
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
         if (accountModel == null) {
-            logger.error("[Experience Repay {}] user {} has no account", investId, loginName);
+            logger.error("[Experience Repay {}] user {} has no account", investModel.getId(), loginName);
             return true;
         }
 
-        InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(investId, 1);
+        InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(investModel.getId(), 1);
         if (investRepayModel == null || investRepayModel.getStatus() != RepayStatus.REPAYING) {
-            logger.info("[Experience Repay {}] invest repay is not existed or status is not REPAYING", investId);
+            logger.info("[Experience Repay {}] invest repay is not existed or status is not REPAYING", investModel.getId());
             return true;
         }
 
@@ -125,10 +129,10 @@ public class ExperienceRepayServiceImpl implements ExperienceRepayService {
                 TransferResponseModel responseModel = paySyncClient.send(TransferMapper.class, requestModel, TransferResponseModel.class);
                 boolean isSuccess = responseModel.isSuccess();
                 redisWrapperClient.hset(EXPERIENCE_INTEREST_REDIS_KEY, loginName, isSuccess ? SyncRequestStatus.SUCCESS.name() : SyncRequestStatus.FAILURE.name());
-                logger.error("[Experience Repay {}] invest repay is failed", investId);
+                logger.error("[Experience Repay {}] invest repay is failed", investModel.getId());
                 return isSuccess;
             } catch (Exception e) {
-                logger.error(MessageFormat.format("[Experience Repay {0}] invest repay is failed", investId), e);
+                logger.error(MessageFormat.format("[Experience Repay {0}] invest repay is failed", investModel.getId()), e);
             }
         }
 

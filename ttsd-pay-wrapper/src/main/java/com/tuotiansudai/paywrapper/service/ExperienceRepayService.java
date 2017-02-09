@@ -8,7 +8,7 @@ import java.util.Map;
 
 public interface ExperienceRepayService {
 
-    boolean repay(long investId);
+    boolean repay(String loginName);
 
     String repayCallback(Map<String, String> paramsMap, String originalQueryString);
 

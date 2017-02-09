@@ -50,7 +50,7 @@
 
               (select ifnull(sum(invest_repay.expected_interest), 0) - sum(invest_repay.expected_fee)
               from invest_repay join invest on invest_repay.invest_id = invest.id
-              where login_name = #{loginName} and invest_repay.status= 'REPAYING')
+              where invest.loan_id != 1 and login_name = #{loginName} and invest_repay.status= 'REPAYING')
               +
               (select ifnull(sum(coupon_repay.expected_interest), 0) - ifnull(sum(coupon_repay.expected_fee), 0)
               from coupon_repay
