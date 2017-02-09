@@ -136,6 +136,11 @@
 <script src="${staticServer}${js.jquery}" ></script>
 <script src="${staticServer}${js.globalFun_page!}" ></script>
 <script src="${staticServer}${pageJavascript}" type="text/javascript" id="currentScript"></script>
+
+    <#if pageJavascript?? && pageJavascript?length gt 0>
+    <script src="https://static.tuotiansudai.com/js/libs/require-2.1.20.min.js" type="text/javascript" charset="utf-8" defer="defer" async="async" data-main="${staticServer}${jsPath}${pageJavascript}">
+    </script>
+    </#if>
 </body>
 </html>
 </#macro>
