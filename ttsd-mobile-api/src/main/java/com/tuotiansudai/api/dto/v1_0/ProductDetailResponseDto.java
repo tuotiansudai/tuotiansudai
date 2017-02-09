@@ -20,6 +20,12 @@ public class ProductDetailResponseDto extends BaseResponseDataDto {
     @ApiModelProperty(value = "商品价格", example = "100")
     private String points;
 
+    @ApiModelProperty(value = "会员折扣后商品价格", example = "90")
+    private String discountPoints;
+
+    @ApiModelProperty(value = "会员折扣描述", example = "V5会员8.5折")
+    private String discountDesc;
+
     @ApiModelProperty(value = "商品描述", example = "会员")
     private String name;
 
@@ -37,6 +43,7 @@ public class ProductDetailResponseDto extends BaseResponseDataDto {
 
     @ApiModelProperty(value = "更新时间", example = "2016-11-25 14:07:01")
     private Date updatedTime;
+
 
     public ProductDetailResponseDto(long productId, String imageUrl, String name, long points, GoodsType goodsType, long leftCount, int seq, Date updatedTime) {
         this.productId = String.valueOf(productId);
@@ -110,6 +117,22 @@ public class ProductDetailResponseDto extends BaseResponseDataDto {
 
     public void setPoints(String points) {
         this.points = points;
+    }
+
+    public String getDiscountPoints() {
+        return discountPoints;
+    }
+
+    public void setDiscountPoints(String discountPoints) {
+        this.discountPoints = discountPoints;
+    }
+
+    public String getDiscountDesc() {
+        return discountDesc;
+    }
+
+    public void setDiscountDesc(String discountDesc) {
+        this.discountDesc = discountDesc;
     }
 
     public String getName() {

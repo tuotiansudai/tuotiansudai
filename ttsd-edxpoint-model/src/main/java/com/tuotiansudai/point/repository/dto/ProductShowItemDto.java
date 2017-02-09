@@ -17,6 +17,7 @@ public class ProductShowItemDto {
     private String imageUrl;
     private long leftCount;
     private long points;
+    private long actualPoints;
     private String pictureDescription;
     private Date updatedTime;
 
@@ -32,17 +33,19 @@ public class ProductShowItemDto {
         this.imageUrl = productModel.getImageUrl();
         this.leftCount = productModel.getTotalCount() - productModel.getUsedCount();
         this.points = productModel.getPoints();
+        this.actualPoints = productModel.getActualPoints();
         this.pictureDescription = pictureDescription;
         this.updatedTime = productModel.getUpdatedTime();
     }
 
-    public ProductShowItemDto(long totalCount, long usedCount, long points, Integer seq, String imageUrl, CouponType couponType, long amount , double rate, long productId){
+    public ProductShowItemDto(long totalCount, long usedCount, long points, long actualPoints, Integer seq, String imageUrl, CouponType couponType, long amount , double rate, long productId){
         this.id = productId;
         this.seq = seq;
         this.imageUrl = imageUrl;
         this.goodsType = GoodsType.COUPON;
         this.leftCount = totalCount - usedCount;
         this.points = points;
+        this.actualPoints = actualPoints;
         switch (couponType) {
             case RED_ENVELOPE:
                 this.name = String.format(" %s 元现金红包", AmountConverter.convertCentToString(amount));
@@ -53,7 +56,7 @@ public class ProductShowItemDto {
                 this.pictureDescription = String.valueOf(amount);
                 break;
             case INTEREST_COUPON:
-                this.name = String.format("%s %s加息券", rate * 100, "");
+                this.name = String.format("%s %%加息券", rate * 100, "");
                 this.pictureDescription = String.valueOf(rate * 100);
                 break;
         }
@@ -137,5 +140,13 @@ public class ProductShowItemDto {
 
     public void setUpdatedTime(Date updatedTime) {
         this.updatedTime = updatedTime;
+    }
+
+    public long getActualPoints() {
+        return actualPoints;
+    }
+
+    public void setActualPoints(long actualPoints) {
+        this.actualPoints = actualPoints;
     }
 }

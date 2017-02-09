@@ -840,7 +840,11 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                 .done(function(response) {
                     var data=response.data;
                     if (data.status) {
+
                         var info='V'+data.level+'会员，专享服务费'+data.rate+'折优惠，已多赚'+data.amount+'元';
+                        if(data.membershipPrivilege){
+                            info= '增值特权，专享服务费7折优惠，已多赚'+ data.amount +'元';
+                        }
 
                         layer.tips(info, $expected, {
                             tips: [1, '#ff7200'],

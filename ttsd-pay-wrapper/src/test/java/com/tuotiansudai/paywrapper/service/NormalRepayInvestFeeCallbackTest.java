@@ -97,7 +97,7 @@ public class NormalRepayInvestFeeCallbackTest extends RepayBaseTest {
         InvestRepayModel investRepay2 = new InvestRepayModel(idGenerator.generate(), invest.getId(), 2, invest.getAmount(), loanRepay2ExpectedInterest, 100, loanRepay2.getRepayDate(), RepayStatus.REPAYING);
         investRepayMapper.create(Lists.newArrayList(investRepay1, investRepay2));
 
-        normalRepayService.investFeeCallback(this.getFakeCallbackParamsMap(loanRepay1.getId()), "");
+        normalRepayService.investFeeCallback(this.getFakeCallbackParamsMap(loanRepay1.getId(),"project_transfer_notify"), "");
 
         SystemBillModel systemBill = systemBillMapper.findByOrderId(loanRepay1.getId(), SystemBillBusinessType.INVEST_FEE);
         assertThat(systemBill.getAmount(), is(loanRepay1.getActualInterest() - investRepay1.getActualInterest() + investRepay1.getActualFee()));

@@ -161,13 +161,17 @@ public enum ReturnMessage {
     POINTS_PRODUCT_IS_NOT_NULL("0110", "商品不能为空"),
     POINTS_PRODUCT_NUM_IS_NOT_NULL("0111", "商品数量不能为空"),
     INSUFFICIENT_POINTS_BALANCE("0112", "积分余额不足"),
-    INSUFFICIENT_PRODUCT_NUM("0112", "商品剩余数量不足"),
-    USER_ADDRESS_IS_NOT_NULL("0113", "收货地址不可以为空"),
+    INSUFFICIENT_PRODUCT_NUM("0113", "商品剩余数量不足"),
+    USER_ADDRESS_IS_NOT_NULL("0115", "收货地址不可以为空"),
 
-    /******会员购买******/
-    MEMBERSHIP_PURCHASE_FAILED("0200", "会员购买失败"),
-    MEMBERSHIP_IS_PURCHASED("0201", "会员已购买，请勿重复购买"),
-    MEMBERSHIP_PURCHASE_NO_ENOUGH_AMOUNT("0202", "账户金额不足，请充值"),
+    USER_IS_NOT_EXISTS("0120", "用户不存在"),
+    USER_ADDRESS_IS_EXPIRED("0121", "不在活动时间范围内"),
+    USER_ADDRESS_IS_NOT_ACCOUNT("0122", "未实名认证"),
+
+    /******增值特权购买******/
+    MEMBERSHIP_PRIVILEGE_PURCHASE_FAILED("0200", "增值特权购买失败"),
+    MEMBERSHIP_PRIVILEGE_IS_PURCHASED("0201", "增值特权已购买，请勿重复购买"),
+    MEMBERSHIP_PRIVILEGE_PURCHASE_NO_ENOUGH_AMOUNT("0202", "账户金额不足，请充值"),
 
     /******回款日历******/
     REPAY_CALENDAR_QUERY_FAILED("0114", "没有更多回款信息了哦");

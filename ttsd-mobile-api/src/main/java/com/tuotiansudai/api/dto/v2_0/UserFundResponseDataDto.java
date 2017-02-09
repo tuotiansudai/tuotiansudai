@@ -2,6 +2,7 @@ package com.tuotiansudai.api.dto.v2_0;
 
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDataDto;
 import com.tuotiansudai.repository.model.UserFundView;
+import com.tuotiansudai.util.DateConvertUtil;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.text.SimpleDateFormat;
@@ -72,8 +73,12 @@ public class UserFundResponseDataDto extends BaseResponseDataDto {
     @ApiModelProperty(value = "用户直投金额", example = "true")
     private long investAmount;
 
+    @ApiModelProperty(value = "增值特权过期日yyyy-MM-dd hh:mm:ss(空表示沒有购买增值特权)", example = "有效期至:2016-11-25")
+    private String membershipPrivilegeExpiredDate;
 
-    public UserFundResponseDataDto(UserFundView userFundView, long balance, long point, int membershipLevel, long membershipPoint, int usableUserCouponCount, Date membershipExpiredDate) {
+    public UserFundResponseDataDto(UserFundView userFundView, long balance, long point, int membershipLevel,
+                                   long membershipPoint, int usableUserCouponCount, Date membershipExpiredDate,
+                                   Date membershipPrivilegeExpiredDate) {
         this.balance = balance;
         this.actualTotalInterest = userFundView.getActualTotalInterest();
         this.actualTotalExtraInterest = userFundView.getActualTotalExtraInterest();
@@ -101,7 +106,7 @@ public class UserFundResponseDataDto extends BaseResponseDataDto {
         this.membershipPoint = membershipPoint;
         this.usableUserCouponCount = usableUserCouponCount;
         this.membershipExpiredDate = membershipExpiredDate != null ? "有效期至:" + new SimpleDateFormat("yyyy-MM-dd").format(membershipExpiredDate) : null;
-
+        this.membershipPrivilegeExpiredDate = membershipPrivilegeExpiredDate != null ? String.format("有效期至:%s",DateConvertUtil.format(membershipPrivilegeExpiredDate,"yyyy-MM-dd HH:mm:ss")):null;
     }
 
     public long getBalance() {
@@ -186,5 +191,9 @@ public class UserFundResponseDataDto extends BaseResponseDataDto {
 
     public long getInvestAmount() {
         return investAmount;
+    }
+
+    public String getMembershipPrivilegeExpiredDate() {
+        return membershipPrivilegeExpiredDate;
     }
 }

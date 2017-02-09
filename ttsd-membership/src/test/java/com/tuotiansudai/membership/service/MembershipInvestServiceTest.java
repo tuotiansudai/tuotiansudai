@@ -54,7 +54,7 @@ public class MembershipInvestServiceTest {
         MembershipModel membershipModelLevel1 = membershipMapper.findByLevel(1);
         createUserMembershipModel(user.getLoginName(), UserMembershipType.UPGRADE, membershipModelLevel1.getLevel());
         MembershipModel membershipModelLevel5 = membershipMapper.findByLevel(5);
-        createUserMembershipModel(user.getLoginName(), UserMembershipType.PURCHASED, membershipModelLevel5.getLevel());
+        createUserMembershipModel(user.getLoginName(), UserMembershipType.UPGRADE, membershipModelLevel5.getLevel());
 
         long investId = random.nextLong();
 
