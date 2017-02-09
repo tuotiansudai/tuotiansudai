@@ -68,12 +68,12 @@ public class MembershipPrivilegePurchasePayServiceImpl implements MembershipPriv
 
     @Override
     public BaseDto<PayFormDataDto> purchase(MembershipPrivilegePurchaseDto dto) {
-        MembershipPrivilegePurchaseModel purchaseModel = new MembershipPrivilegePurchaseModel(idGenerator.generate(),dto);
+        MembershipPrivilegePurchaseModel purchaseModel = new MembershipPrivilegePurchaseModel(idGenerator.generate(), dto);
 
         AccountModel accountModel = accountMapper.findByLoginName(dto.getLoginName());
 
         TransferAsynRequestModel requestModel = TransferAsynRequestModel.createMembershipPrivilegePurchaseRequestModel(String.valueOf(purchaseModel.getId()),
-                accountModel.getPayUserId(),accountModel.getPayAccountId(), String.valueOf(purchaseModel.getAmount()), dto.getSource());
+                accountModel.getPayUserId(), accountModel.getPayAccountId(), String.valueOf(purchaseModel.getAmount()), dto.getSource());
         try {
             BaseDto<PayFormDataDto> baseDto = payAsyncClient.generateFormData(TransferAsynMapper.class, requestModel);
             if (baseDto.isSuccess()) {
@@ -132,7 +132,7 @@ public class MembershipPrivilegePurchasePayServiceImpl implements MembershipPriv
             try {
                 amountTransfer.transferOutBalance(loginName, orderId, amount, UserBillBusinessType.MEMBERSHIP_PRIVILEGE_PURCHASE, null, null);
                 systemBillService.transferIn(orderId, amount, SystemBillBusinessType.MEMBERSHIP_PRIVILEGE_PURCHASE,
-                        MessageFormat.format("{0}购买增值特权{1}天", membershipPrivilegePurchaseModel.getMobile(),membershipPrivilegePurchaseModel.getPrivilegePriceType().getDuration()));
+                        MessageFormat.format("{0}购买增值特权{1}天", membershipPrivilegePurchaseModel.getMobile(), membershipPrivilegePurchaseModel.getPrivilegePriceType().getDuration()));
             } catch (AmountTransferException e) {
                 logger.error(MessageFormat.format("[membership privilege purchase] transfer out balance failed (orderId = {0})", String.valueOf(callbackRequestModel.getOrderId())));
             }
@@ -148,7 +148,7 @@ public class MembershipPrivilegePurchasePayServiceImpl implements MembershipPriv
 
         //Title:恭喜您已成功购买{0}天增值特权！
         //Content:尊敬的用户，恭喜您已成功购买增值特权，有效期至{0}日，【马上投资】享受增值特权吧！
-        String title = MessageFormat.format(MessageEventType.MEMBERSHIP_PRIVILEGE_BUY_SUCCESS.getTitleTemplate(), membershipPrivilegePurchaseModel.getPrivilegePriceType().getDuration() );
+        String title = MessageFormat.format(MessageEventType.MEMBERSHIP_PRIVILEGE_BUY_SUCCESS.getTitleTemplate(), membershipPrivilegePurchaseModel.getPrivilegePriceType().getDuration());
         String content = MessageFormat.format(MessageEventType.MEMBERSHIP_PRIVILEGE_BUY_SUCCESS.getContentTemplate(), new DateTime(endTime).toString("yyyy-MM-dd"));
         mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(MessageEventType.MEMBERSHIP_PRIVILEGE_BUY_SUCCESS,
                 Lists.newArrayList(membershipPrivilegePurchaseModel.getLoginName()), title, content, membershipPrivilegePurchaseModel.getId()));

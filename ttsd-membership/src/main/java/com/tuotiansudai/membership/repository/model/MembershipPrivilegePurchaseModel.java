@@ -37,16 +37,11 @@ public class MembershipPrivilegePurchaseModel implements Serializable{
 
     }
     public MembershipPrivilegePurchaseModel(long id, MembershipPrivilegePurchaseDto purchaseDto){
-        this.id = id;
-        this.loginName = purchaseDto.getLoginName();
-        this.mobile = purchaseDto.getMobile();
-        this.userName = purchaseDto.getUserName();
-        this.privilegePriceType = MembershipPrivilegePriceType.getPriceTypeByDuration(purchaseDto.getDuration());
-        this.privilege = MembershipPrivilege.SERVICE_FEE;
-        this.amount = purchaseDto.getAmount();
-        this.status = MembershipPrivilegePurchaseStatus.WAIT_PAY;
-        this.source = purchaseDto.getSource();
-        this.createdTime = new Date();
+        this(id, purchaseDto.getLoginName(),
+                purchaseDto.getMobile(),
+                purchaseDto.getUserName(),
+                MembershipPrivilegePriceType.getPriceTypeByDuration(purchaseDto.getDuration()),
+                MembershipPrivilege.SERVICE_FEE, purchaseDto.getSource());
     }
 
     public long getId() {
