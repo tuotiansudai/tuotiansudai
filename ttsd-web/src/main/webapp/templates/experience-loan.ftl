@@ -173,7 +173,7 @@
         </div>
     </div>
 
-    <div id="freeSuccess">
+    <div id="freeSuccess" style="display: none;">
         <div class="success-info-tip">
             <i class="icon-tip"></i>
             <div class="detail-word">
