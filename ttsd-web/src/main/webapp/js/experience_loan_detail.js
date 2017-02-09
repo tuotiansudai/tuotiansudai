@@ -34,7 +34,13 @@ require(['jquery', 'jquery.ajax.extension', 'coupon-alert', 'red-envelope-float'
             success: function (response, statusText, xhr, $form) {
                 var data = response.data;
                 if (data.status) {
-                    $("#freeSuccess").show();
+
+                    layer.open({
+                        type: 1,
+                        title: '&nbsp',
+                        area: ['400px', '205px'],
+                        content: $('#freeSuccess')
+                    });
                 }
                 self.removeClass("loading");
             }
@@ -44,7 +50,7 @@ require(['jquery', 'jquery.ajax.extension', 'coupon-alert', 'red-envelope-float'
 
     $('.close-free').on('click', function (event) {
         event.preventDefault();
-        $('#freeSuccess').hide();
+        layer.closeAll();
         window.location.reload();
     });
 });

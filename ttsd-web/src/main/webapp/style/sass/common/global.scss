@@ -11,6 +11,30 @@
   overflow: auto !important;
 }
 
+//弹框样式
+.success-info-tip {
+  padding: 20px 38px;
+  .icon-tip {
+    width: 32px;
+    height: 32px;
+    background: url("/images/icons/success-tip.png") 0px 0px no-repeat;
+    position: absolute;
+    top: 30px;
+    background-size: 100%;
+  }
+  .detail-word {
+    padding-left: 52px;
+    color: #808080;
+    font-size: 12px;
+    line-height: 18px;
+    margin-top: 10px;
+    h2 {
+      font-size: 18px;
+      color: #4c4c4c;
+      padding-bottom: 6px;
+    }
+  }
+}
 .page-col-title, .column-title {
   border-bottom: 1px solid #ccc;
   margin-bottom: 20px;
