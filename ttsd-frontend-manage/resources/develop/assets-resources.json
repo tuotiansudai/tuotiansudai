@@ -4,10 +4,10 @@
     "css": "/ask/js/mainSite.css"
   },
   "questions": {
-    "js": "chucks/questions.073a07fa8e444dd8de8f.js"
+    "js": "chucks/questions.6ff98da194e37a8607a9.js"
   },
   "create_question": {
-    "js": "chucks/create_question.f25d27b07004f2edd22a.js"
+    "js": "chucks/create_question.efb1406a608c3d90990a.js"
   },
   "/public/globalFun_page": {
     "js": "/public/globalFun_page.js",
@@ -30,27 +30,27 @@
     "css": "/web/js/forget_password.css"
   },
   "fetchCaptchaRetrieve": {
-    "js": "chucks/fetchCaptchaRetrieve.97c83d1dfdee09d9fe66.js"
+    "js": "chucks/fetchCaptchaRetrieve.8c70ed76cd575984fb39.js"
   },
   "/web/js/index": {
     "js": "/web/js/index.js",
     "css": "/web/js/index.css"
   },
   "redEnvelope": {
-    "js": "chucks/redEnvelope.149772b34e9c714f3b9f.js"
+    "js": "chucks/redEnvelope.b8fcc391875555d2c020.js"
   },
   "imageSlider": {
-    "js": "chucks/imageSlider.9ef3a235ad14c791963f.js"
+    "js": "chucks/imageSlider.3f61a57b359dfb38bdac.js"
   },
   "bookInvest": {
-    "js": "chucks/bookInvest.5c5336f100487516d211.js"
+    "js": "chucks/bookInvest.0eed170ae7ef1c6630b5.js"
   },
   "/web/js/loan_detail": {
     "js": "/web/js/loan_detail.js",
     "css": "/web/js/loan_detail.css"
   },
   "jquery_fancybox": {
-    "js": "chucks/jquery_fancybox.b04c0a5ac628e8c71b1b.js"
+    "js": "chucks/jquery_fancybox.3b230a3ab23951a77b1d.js"
   },
   "/web/js/loan_detail_experience": {
     "js": "/web/js/loan_detail_experience.js",
@@ -69,7 +69,7 @@
     "css": "/web/js/register_user.css"
   },
   "placeholder": {
-    "js": "chucks/placeholder.4fa25f3aeb3076cfa89c.js"
+    "js": "chucks/placeholder.b23ab36cc979775d6a02.js"
   },
   "/web/js/transfer_detail": {
     "js": "/web/js/transfer_detail.js",
@@ -84,5 +84,33 @@
   },
   "fetchCaptcha": {
     "js": "chucks/fetchCaptcha.3ded179f39e7d43fd490.js"
+  },
+  "load_echarts": {
+    "js": "chucks/load_echarts.9e8fdcad8c269ccbc344.js"
+  },
+  "myAccountEcharts": {
+    "js": "chucks/myAccountEcharts.c8c83d536e506c161bc5.js"
+  },
+  "/web/js/account/investor_invest_list": {
+    "js": "/web/js/account/investor_invest_list.js",
+    "css": "/web/js/account/investor_invest_list.css"
+  },
+  "jquery_daterangepicker": {
+    "js": "chucks/jquery_daterangepicker.22d502a49714698cd998.js"
+  },
+  "jquery_moment": {
+    "js": "chucks/jquery_moment.f01ce712e56d14f47c05.js"
+  },
+  "/web/js/account/my_transfer_list": {
+    "js": "/web/js/account/my_transfer_list.js",
+    "css": "/web/js/account/my_transfer_list.css"
+  },
+  "/web/js/account/transfer": {
+    "js": "/web/js/account/transfer.js",
+    "css": "/web/js/account/transfer.css"
+  },
+  "/web/js/account/loaner_loan_list": {
+    "js": "/web/js/account/loaner_loan_list.js",
+    "css": "/web/js/account/loaner_loan_list.css"
   }
 }

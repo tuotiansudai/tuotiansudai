@@ -1,4 +1,4 @@
-var commonFun=require('publicJs/commonFun');
+let commonFun=require('publicJs/commonFun');
 
 function createElement(element,errorMsg) {
     if(element && element.nextElementSibling) {

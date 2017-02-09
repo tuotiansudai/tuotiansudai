@@ -11,7 +11,7 @@
                 </h2>
                 <div class="container-block loan-info">
                     <div class="content">
-                        <div class="row loan-number-detail">
+                        <div class="row loan-number-detail clearfix">
                             <div class="col-md-4">
                                 <div class="title">预期年化收益</div>
                                 <div class="number red">

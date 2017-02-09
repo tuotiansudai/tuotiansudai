@@ -17,6 +17,7 @@ let $accountInfo = $('.account-info', $loanDetailContent),
 let amountInputElement = $(".text-input-amount", $loanDetailContent);
 let noPasswordRemind = amountInputElement.data('no-password-remind');
 let noPasswordInvest = amountInputElement.data('no-password-invest');
+let $ticketList = $('.ticket-list');
 
 let $authorizeAgreement=$('#goAuthorize');
 let $authorizeAgreementOptions = $('#authorizeAgreementOptions');
@@ -298,7 +299,6 @@ function getSkipPhoneTip(){
             layer.closeAll('tips');
         });
 
-        var $ticketList = $('.ticket-list');
         var $useExperienceTicket = $('#use-experience-ticket');
         var $couponExpectedInterest = $(".experience-income");
 

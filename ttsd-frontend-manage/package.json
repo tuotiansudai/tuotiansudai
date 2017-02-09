@@ -47,6 +47,7 @@
     "jquery": "~2.1.4",
     "layer": "git+https://github.com/sentsin/layer.git",
     "md5": "^2.2.1",
+    "moment": "^2.17.1",
     "swiper": "^3.4.1",
     "underscore": "^1.8.3"
   },

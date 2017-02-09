@@ -671,7 +671,7 @@ $red: #eb4a3e;
       top: 5px;
       width: 20px;
       height: 20px;
-      background: url(/images/sign/icon_result.png) no-repeat center;
+      background: url('../../images/sign/icon_result.png') no-repeat center;
       background-position: 2px -98px;
     }
     .max-icon {
@@ -681,7 +681,7 @@ $red: #eb4a3e;
       top: 5px;
       width: 20px;
       height: 20px;
-      background: url(/images/sign/icon_result.png) no-repeat center;
+      background: url('../../images/sign/icon_result.png') no-repeat center;
       background-position: 0px -126px;
     }
     .last-icon {
@@ -691,7 +691,7 @@ $red: #eb4a3e;
       top: 5px;
       width: 20px;
       height: 20px;
-      background: url(/images/sign/icon_result.png) no-repeat center;
+      background: url('../../images/sign/icon_result.png') no-repeat center;
       background-position: 0px -151px;
     }
     span{
@@ -857,23 +857,23 @@ $red: #eb4a3e;
         .left-button {
           width: 20px;
           height: 100%;
-          background: #fafafa url("/images/icons/left-arrow.png") no-repeat 50% 50%;
+          background: #fafafa url("../../images/icons/left-arrow.png") no-repeat 50% 50%;
           position: absolute;
           top: 0;
           left: 0;
           &.disabled {
-            background: #fafafa url("/images/icons/left-arrow-disabled.png") no-repeat 50% 50%;
+            background: #fafafa url("../../images/icons/left-arrow-disabled.png") no-repeat 50% 50%;
           }
         }
         .right-button {
           width: 20px;
           height: 100%;
-          background: #fafafa url("/images/icons/right-arrow.png") no-repeat 50% 50%;
+          background: #fafafa url("../../images/icons/right-arrow.png") no-repeat 50% 50%;
           position: absolute;
           top: 0;
           right: 0;
           &.disabled {
-            background: #fafafa url("/images/icons/right-arrow-disabled.png") no-repeat 50% 50%;
+            background: #fafafa url("../../images/icons/right-arrow-disabled.png") no-repeat 50% 50%;
           }
         }
         .scroll-content {
@@ -910,21 +910,21 @@ $red: #eb4a3e;
       vertical-align: middle;
       width: 18px;
       height: 18px;
-      background: url("/images/icons/ico_loan.png") 0 0 no-repeat;
+      background: url("../../images/icons/ico_loan.png") 0 0 no-repeat;
     }
     .invest-ANDROID {
       display: inline-block;
       vertical-align: middle;
       width: 18px;
       height: 22px;
-      background: url("/images/icons/ico_loan.png") 0px -32px no-repeat;
+      background: url("../../images/icons/ico_loan.png") 0px -32px no-repeat;
     }
     .invest-IOS {
       display: inline-block;
       vertical-align: middle;
       width: 18px;
       height: 20px;
-      background: url("/images/icons/ico_loan.png") 0px -65px no-repeat;
+      background: url("../../images/icons/ico_loan.png") 0px -65px no-repeat;
     }
   }
   .project-model {
@@ -976,13 +976,13 @@ $red: #eb4a3e;
               height: 180px;
               border-right: 1px solid #e6e6e6;
               &.icon-one {
-                background: url("/images/sign/actor/icon-one.png") no-repeat center;
+                background: url("../../images/sign/actor/icon-one.png") no-repeat center;
               }
               &.icon-two {
-                background: url("/images/sign/actor/icon-two.png") no-repeat center;
+                background: url("../../images/sign/actor/icon-two.png") no-repeat center;
               }
               &.icon-three {
-                background: url("/images/sign/actor/icon-three.png") no-repeat center;
+                background: url("../../images/sign/actor/icon-three.png") no-repeat center;
               }
             }
             &.intro-text {
@@ -1036,7 +1036,7 @@ $red: #eb4a3e;
           right: -50px;
           width: 40px;
           height: 40px;
-          background: url("/images/sign/actor/close-free.png") no-repeat center;
+          background: url("../../images/sign/actor/close-free.png") no-repeat center;
           background-size: 100%;
           cursor: pointer;
         }
@@ -1116,7 +1116,7 @@ $red: #eb4a3e;
     background: #fff;
     width: 12px;
     height: 7px;
-    background: url("/images/sign/chevron-up.png") no-repeat;
+    background: url("../../images/sign/chevron-up.png") no-repeat;
   }
 }
 

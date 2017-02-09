@@ -13,7 +13,6 @@ require('echarts/lib/chart/pie');
 require('echarts/lib/component/tooltip');
 require('echarts/lib/component/title');
 
-
 var MyChartsObject={
     ChartConfig: function (container, option) {
         this.option = {
@@ -70,7 +69,7 @@ var MyChartsObject={
                     {
                         name: name || "",
                         type: 'pie',
-                        radius : ['50%', '95%'],
+                        radius : ['50%', '80%'],
                         center: ['70%', '48%'],
                         itemStyle : {
                             normal : {

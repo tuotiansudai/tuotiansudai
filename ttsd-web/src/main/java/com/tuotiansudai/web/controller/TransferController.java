@@ -40,7 +40,7 @@ public class TransferController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/transfer-application-list-data", method = RequestMethod.GET, consumes = "application/json; charset=UTF-8", produces = "application/json; charset=UTF-8")
+    @RequestMapping(value = "/transfer-application-list-data", method = RequestMethod.GET)
     @ResponseBody
     public BaseDto<BasePaginationDataDto> transferrerListData(@Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index,
                                                               @RequestParam(name = "status", required = false) List<TransferStatus> statusList) {

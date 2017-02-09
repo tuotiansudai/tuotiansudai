@@ -1,6 +1,4 @@
-@import '../plugins/daterangepicker';
-@import "../module/coupon_alert";
-
+@import "account_common";
 $CK1:#ffac2a #ff7a2a;
 
 .layui-layer-btn {
@@ -127,7 +125,7 @@ body{
         top: 15px;
         right: 15px;
         cursor: pointer;
-        background: url("/images/sign/close-btn.png") no-repeat center;
+        background: url("../../images/sign/close-btn.png") no-repeat center;
       }
       .close-text {
         text-align: center;
