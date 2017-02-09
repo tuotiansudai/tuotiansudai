@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.text.MessageFormat;
+import java.util.Arrays;
 import java.util.List;
 
 @Component
@@ -36,8 +37,8 @@ public class MiPushClient {
 
     public void sendPushMessage(PushMessage pushMessage) {
 
-        logger.info(MessageFormat.format("send push message start. user count:{0}, source:{1}",
-                pushMessage.getLoginNames() == null ? "ALL" : pushMessage.getLoginNames().size(), pushMessage.getPushSource()));
+        logger.info(MessageFormat.format("send push message start. user count:{0}, source:{1}, content:{2}",
+                pushMessage.getLoginNames() == null ? "ALL" : pushMessage.getLoginNames().size(), pushMessage.getPushSource(), pushMessage.getContent()));
 
         if (pushMessage.getPushSource() == PushSource.ANDROID || pushMessage.getPushSource() == PushSource.ALL) {
             Message message = new Message.Builder()
@@ -65,8 +66,8 @@ public class MiPushClient {
             }
             sendPushMessage(pushMessage, message, PushSource.IOS);
         }
-        logger.info(MessageFormat.format("send push message end. user count:{0}, source:{1}",
-                pushMessage.getLoginNames() == null ? "ALL" : pushMessage.getLoginNames().size(), pushMessage.getPushSource()));
+        logger.info(MessageFormat.format("send push message end. user count:{0}, source:{1}, content:{2}",
+                pushMessage.getLoginNames() == null ? "ALL" : pushMessage.getLoginNames().size(), pushMessage.getPushSource(), pushMessage.getContent()));
     }
 
     private void sendPushMessage(PushMessage pushMessage, Message message, PushSource source) {
@@ -102,13 +103,21 @@ public class MiPushClient {
                 Result result = sender.sendToAlias(message, aliasList.subList(batch * 1000,
                         (batch + 1) * 1000 > count ? count : (batch + 1) * 1000), 2);
 
-                logger.info(MessageFormat.format("batch size:{0}, batch number: {1}, result: {2}, reason: {3}, messageId: {5}", count,
+                logger.info(MessageFormat.format("batch size:{0}, batch number: {1}, result: {2}, reason: {3}, messageId: {4}", count,
                         batch, result.getErrorCode().getDescription(), result.getReason(), result.getMessageId()));
             }
         } catch (Exception e) {
             logger.error(MessageFormat.format("send mi push in batch fail, batch size:{1}", count), e);
         }
+    }
 
+    public static void main(String[] args) {
+        MiPushClient client = new MiPushClient("sMo/sH95jlpeY16I5OaqXg==", "ytB0yhJ9ZpTcYF8e8Dkvqg==", Environment.QA);
+        PushMessage pushMessage = new PushMessage();
+        pushMessage.setLoginNames(Arrays.asList("WOJy9ZdM"));
+        pushMessage.setContent("aaaaa");
+        pushMessage.setPushSource(PushSource.ALL);
+        client.sendPushMessage(pushMessage);
     }
 
 }
