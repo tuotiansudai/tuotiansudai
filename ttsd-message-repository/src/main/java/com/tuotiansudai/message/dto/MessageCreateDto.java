@@ -5,6 +5,7 @@ import com.tuotiansudai.message.repository.model.*;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class MessageCreateDto implements Serializable {
@@ -36,10 +37,15 @@ public class MessageCreateDto implements Serializable {
 
     private Long importUsersFlag;
 
+    private String validStartTime;
+
+    private String validEndTime;
+
     public MessageCreateDto() {
     }
 
     public MessageCreateDto(MessageModel messageModel, PushModel pushModel) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         this.id = messageModel.getId();
         this.title = messageModel.getTitle();
         this.template = messageModel.getTemplateTxt();
@@ -48,6 +54,8 @@ public class MessageCreateDto implements Serializable {
         this.messageCategory = messageModel.getMessageCategory();
         this.webUrl = messageModel.getWebUrl();
         this.appUrl = messageModel.getAppUrl();
+        this.validStartTime = simpleDateFormat.format(messageModel.getValidStartTime());
+        this.validEndTime = simpleDateFormat.format(messageModel.getValidEndTime());
         this.push = pushModel != null ? new PushCreateDto(pushModel) : null;
     }
 
@@ -137,5 +145,21 @@ public class MessageCreateDto implements Serializable {
 
     public void setPush(PushCreateDto push) {
         this.push = push;
+    }
+
+    public String getValidStartTime() {
+        return validStartTime;
+    }
+
+    public void setValidStartTime(String validStartTime) {
+        this.validStartTime = validStartTime;
+    }
+
+    public String getValidEndTime() {
+        return validEndTime;
+    }
+
+    public void setValidEndTime(String validEndTime) {
+        this.validEndTime = validEndTime;
     }
 }

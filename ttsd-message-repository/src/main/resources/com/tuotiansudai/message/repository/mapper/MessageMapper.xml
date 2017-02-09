@@ -24,7 +24,8 @@
         <result column="push_id" property="pushId"/>
         <result column="activated_by" property="activatedBy"/>
         <result column="activated_time" property="activatedTime"/>
-        <result column="expired_time" property="expiredTime"/>
+        <result column="valid_start_time" property="validStartTime"/>
+        <result column="valid_end_time" property="validEndTime"/>
         <result column="updated_by" property="updatedBy"/>
         <result column="updated_time" property="updatedTime"/>
         <result column="created_by" property="createdBy"/>
@@ -34,12 +35,12 @@
     <insert id="create" parameterType="MessageModel" useGeneratedKeys="true" keyProperty="id">
         insert into message (`title`, `template`, `template_txt`, `type`, `event_type`, `user_group`, `channels`,
         `message_category`, `web_url`, `app_url`, `status`, `read_count`, `push_id`, `activated_by`, `activated_time`,
-        `expired_time`, `updated_by`, `updated_time`, `created_by`, `created_time`)
+        `valid_start_time`, `valid_end_time`, `updated_by`, `updated_time`, `created_by`, `created_time`)
         value(#{title}, #{template}, #{templateTxt}, #{type}, #{eventType},
         #{userGroup},
         #{channels, typeHandler=com.tuotiansudai.message.repository.mybatis.MessageChannelListTypeHandler},
         #{messageCategory}, #{webUrl}, #{appUrl}, #{status}, #{readCount}, #{pushId}, #{activatedBy}, #{activatedTime},
-        #{expiredTime}, #{updatedBy}, #{updatedTime}, #{createdBy}, #{createdTime})
+        #{validStartTime}, #{validEndTime}, #{updatedBy}, #{updatedTime}, #{createdBy}, #{createdTime})
     </insert>
 
     <update id="update" parameterType="MessageModel">
@@ -59,7 +60,8 @@
             `push_id` = #{pushId},
             `activated_by` = #{activatedBy} ,
             `activated_time` = #{activatedTime},
-            `expired_time` = #{expiredTime},
+            `valid_start_time` = #{validStartTime},
+            `valid_end_time` = #{validEndTime},
             `updated_by` = #{updatedBy},
             `updated_time` = #{updatedTime},
             `created_by` = #{createdBy},
@@ -76,7 +78,8 @@
     </select>
 
     <select id="findActiveByEventType" parameterType="map" resultMap="messageResultMap">
-        select * from message where event_type = #{eventType} and status = 'APPROVED' and expired_time > now() and deleted = 0;
+        select * from message where event_type = #{eventType} and status = 'APPROVED' and message.valid_end_time > NOW()
+        and message.valid_start_time &lt; NOW() and deleted = 0;
     </select>
 
     <select id="lockById" parameterType="long" resultMap="messageResultMap" useCache="false">
@@ -90,14 +93,17 @@
             <if test="title != null and title !=''">
                 <![CDATA[and title like '%${title}%']]>
             </if>
-            <if test="createdBy != null and createdBy !=''">
-                <![CDATA[and created_by like '%${createdBy}%']]>
+            <if test="updatedBy != null and updatedBy !=''">
+                <![CDATA[and updated_by like '%${updatedBy}%']]>
             </if>
             <if test="messageStatus != null">
                 and status = #{messageStatus}
             </if>
             <if test="messageType != null">
                 and type = #{messageType}
+            </if>
+            <if test="messageCategory != null">
+                and message_category = #{messageCategory}
             </if>
         </where>
     </select>
@@ -109,14 +115,17 @@
             <if test="title != null and title !=''">
                 <![CDATA[and title like '%${title}%']]>
             </if>
-            <if test="createdBy != null and createdBy !=''">
-                <![CDATA[and created_by like '%${createdBy}%']]>
+            <if test="updatedBy != null and updatedBy !=''">
+                <![CDATA[and updated_by like '%${updatedBy}%']]>
             </if>
             <if test="messageStatus != null">
                 and status = #{messageStatus}
             </if>
             <if test="messageType != null">
                 and type = #{messageType}
+            </if>
+            <if test="messageCategory != null">
+                and message_category = #{messageCategory}
             </if>
         </where>
         order by created_time desc
@@ -128,7 +137,8 @@
         where deleted = 0
         and message.type = 'MANUAL'
         and message.status = 'APPROVED'
-        and message.expired_time > NOW()
+        and message.valid_end_time > NOW()
+        and message.valid_start_time &lt; NOW()
         and not exists (select 1 from user_message where message.id = user_message.message_id and user_message.login_name = #{loginName})
     </select>
 

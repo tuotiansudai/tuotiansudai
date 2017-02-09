@@ -15,6 +15,10 @@ public class MessagePaginationItemDto {
 
     private String templateTxt;
 
+    private Date validStartTime;
+
+    private Date validEndTime;
+
     private MessageEventType messageEventType;
 
     private MessageUserGroup userGroup;
@@ -47,6 +51,8 @@ public class MessagePaginationItemDto {
         this.id = messageModel.getId();
         this.title = messageModel.getTitle();
         this.templateTxt = messageModel.getTemplateTxt();
+        this.validStartTime = messageModel.getValidStartTime();
+        this.validEndTime = messageModel.getValidEndTime();
         this.messageEventType = messageModel.getEventType();
         this.userGroup = messageModel.getUserGroup();
         this.channels = messageModel.getChannels();
@@ -73,6 +79,14 @@ public class MessagePaginationItemDto {
 
     public String getTemplateTxt() {
         return templateTxt;
+    }
+
+    public Date getValidStartTime() {
+        return validStartTime;
+    }
+
+    public Date getValidEndTime() {
+        return validEndTime;
     }
 
     public MessageEventType getMessageEventType() {
