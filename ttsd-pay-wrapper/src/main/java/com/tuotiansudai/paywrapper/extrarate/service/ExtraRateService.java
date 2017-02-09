@@ -14,8 +14,6 @@ public interface ExtraRateService {
 
     void advanceRepay(long loanRepayId);
 
-    void transferPurchase(long investId);
-
     String extraRateInvestCallback(Map<String, String> paramsMap, String originalQueryString);
 
     BaseDto<PayDataDto> asyncExtraRateInvestCallback();

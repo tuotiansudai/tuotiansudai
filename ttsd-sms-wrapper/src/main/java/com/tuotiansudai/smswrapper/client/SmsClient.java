@@ -34,9 +34,9 @@ public class SmsClient implements ApplicationContextAware {
 
     private static Logger logger = Logger.getLogger(SmsClient.class);
 
-    private static String SMS_IP_RESTRICTED_REDIS_KEY_TEMPLATE = "sms_ip_restricted:{0}";
+    private final static String SMS_IP_RESTRICTED_REDIS_KEY_TEMPLATE = "sms_ip_restricted:{0}";
 
-    private static String WYY_SMS_SEND_COUNT_BY_TODAY_TEMPLATE = "wyy_sms_send_count_by_today:{0}";
+    private final static String WYY_SMS_SEND_COUNT_BY_TODAY_TEMPLATE = "wyy_sms_send_count_by_today:{0}";
 
     private final static int sendSize = 100;
 
@@ -59,10 +59,19 @@ public class SmsClient implements ApplicationContextAware {
     @Qualifier("smsProviderAlidayu")
     private SmsProvider smsProviderBackup;
 
+    public BaseDto<SmsDataDto> sendSMS(Class<? extends BaseMapper> baseMapperClass, String mobile, SmsTemplate template, String param) {
+        return sendSMS(baseMapperClass, mobile, template, param, "");
+
+    }
+
     public BaseDto<SmsDataDto> sendSMS(Class<? extends BaseMapper> baseMapperClass, String mobile, SmsTemplate template, String param, String restrictedIP) {
         List<String> mobileList = Collections.singletonList(mobile);
         List<String> paramList = Collections.singletonList(param);
         return sendSMS(baseMapperClass, mobileList, template, paramList, restrictedIP);
+    }
+
+    public BaseDto<SmsDataDto> sendSMS(Class<? extends BaseMapper> baseMapperClass, String mobile, SmsTemplate template, List<String> paramList) {
+        return sendSMS(baseMapperClass, mobile, template, paramList, "");
     }
 
     public BaseDto<SmsDataDto> sendSMS(Class<? extends BaseMapper> baseMapperClass, String mobile, SmsTemplate template, List<String> paramList, String restrictedIP) {
@@ -70,9 +79,17 @@ public class SmsClient implements ApplicationContextAware {
         return sendSMS(baseMapperClass, mobileList, template, paramList, restrictedIP);
     }
 
+    public BaseDto<SmsDataDto> sendSMS(Class<? extends BaseMapper> baseMapperClass, List<String> mobileList, SmsTemplate template, String param) {
+        return sendSMS(baseMapperClass, mobileList, template, param, "");
+    }
+
     public BaseDto<SmsDataDto> sendSMS(Class<? extends BaseMapper> baseMapperClass, List<String> mobileList, SmsTemplate template, String param, String restrictedIP) {
         List<String> paramList = Collections.singletonList(param);
         return sendSMS(baseMapperClass, mobileList, template, paramList, restrictedIP);
+    }
+
+    public BaseDto<SmsDataDto> sendSMS(Class<? extends BaseMapper> baseMapperClass, List<String> mobileList, SmsTemplate template, List<String> paramList) {
+        return sendSMS(baseMapperClass, mobileList, template, paramList, "");
     }
 
     public BaseDto<SmsDataDto> sendSMS(Class<? extends BaseMapper> baseMapperClass, List<String> mobileList, SmsTemplate template, List<String> paramList, String restrictedIP) {
@@ -80,7 +97,7 @@ public class SmsClient implements ApplicationContextAware {
         SmsDataDto data = new SmsDataDto();
         dto.setData(data);
 
-        if (Arrays.asList(Environment.SMOKE.name(), Environment.STAGING.name(), Environment.DEV.name()).contains(environment)) {
+        if (Arrays.asList(Environment.SMOKE.name(), Environment.DEV.name()).contains(environment)) {
             logger.info("sms sending ignored in current environment");
             data.setStatus(true);
             return dto;

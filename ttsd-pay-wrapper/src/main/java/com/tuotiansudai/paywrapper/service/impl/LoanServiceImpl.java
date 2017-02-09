@@ -17,14 +17,16 @@ import com.tuotiansudai.enums.PushType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.job.AnxinCreateContractJob;
-import com.tuotiansudai.job.AutoLoanOutJob;
+import com.tuotiansudai.job.JobManager;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.job.LoanOutSuccessHandleJob;
+import com.tuotiansudai.message.EMailMessage;
 import com.tuotiansudai.message.EventMessage;
 import com.tuotiansudai.message.PushMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
+import com.tuotiansudai.paywrapper.coupon.service.CouponInvestService;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.MerBindProjectMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.MerUpdateProjectMapper;
@@ -40,7 +42,10 @@ import com.tuotiansudai.paywrapper.repository.model.sync.response.BaseSyncRespon
 import com.tuotiansudai.paywrapper.repository.model.sync.response.MerBindProjectResponseModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.MerUpdateProjectResponseModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
-import com.tuotiansudai.paywrapper.service.*;
+import com.tuotiansudai.paywrapper.service.LoanService;
+import com.tuotiansudai.paywrapper.service.ReferrerRewardService;
+import com.tuotiansudai.paywrapper.service.RepayGeneratorService;
+import com.tuotiansudai.paywrapper.service.UMPayRealTimeStatusService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
@@ -48,8 +53,7 @@ import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.AmountTransfer;
-import com.tuotiansudai.job.JobManager;
-import com.tuotiansudai.util.SendCloudMailUtil;
+import com.tuotiansudai.util.SendCloudTemplate;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -84,6 +88,10 @@ public class LoanServiceImpl implements LoanService {
 
     private final static String TRANSFER_IN_BALANCE = "TRANSFER_IN_BALANCE";
 
+    private final static String LOAN_OUT_IN_PROCESS_KEY = "job:loan-out-in-process:";
+
+    private final static String ALREADY_LOAN_OUT_RETURN_CODE = "0001";
+
     @Autowired
     private LoanMapper loanMapper;
 
@@ -103,10 +111,10 @@ public class LoanServiceImpl implements LoanService {
     private PaySyncClient paySyncClient;
 
     @Autowired
-    private SendCloudMailUtil sendCloudMailUtil;
+    private ReferrerRewardService referrerRewardService;
 
     @Autowired
-    private ReferrerRewardService referrerRewardService;
+    private CouponInvestService couponInvestService;
 
     @Autowired
     private UMPayRealTimeStatusService umPayRealTimeStatusService;
@@ -206,7 +214,13 @@ public class LoanServiceImpl implements LoanService {
                 logger.error(e.getLocalizedMessage(), e);
             }
         }
-        return this.updateLoanStatus(loanId, LoanStatus.CANCEL);
+        BaseDto<PayDataDto> baseDto = this.updateLoanStatus(loanId, LoanStatus.CANCEL);
+
+        if (baseDto.getData() != null && baseDto.getData().getStatus()) {
+            couponInvestService.cancelUserCoupon(loanId);
+        }
+
+        return baseDto;
     }
 
     @Transactional
@@ -253,7 +267,7 @@ public class LoanServiceImpl implements LoanService {
         PayDataDto payDataDto = new PayDataDto();
         BaseDto<PayDataDto> baseDto = new BaseDto<>(payDataDto);
 
-        if (redisWrapperClient.setnx(AutoLoanOutJob.LOAN_OUT_IN_PROCESS_KEY + loanId, "1")) {
+        if (redisWrapperClient.setnx(LOAN_OUT_IN_PROCESS_KEY + loanId, "1")) {
             try {
                 ProjectTransferResponseModel umPayReturn = this.doLoanOut(loanId);
                 payDataDto.setStatus(umPayReturn.isSuccess());
@@ -264,7 +278,7 @@ public class LoanServiceImpl implements LoanService {
                 payDataDto.setMessage(e.getLocalizedMessage());
                 logger.error(e.getLocalizedMessage(), e);
             } finally {
-                redisWrapperClient.del(AutoLoanOutJob.LOAN_OUT_IN_PROCESS_KEY + loanId);
+                redisWrapperClient.del(LOAN_OUT_IN_PROCESS_KEY + loanId);
             }
 
             this.sendMessage(loanId);
@@ -287,7 +301,7 @@ public class LoanServiceImpl implements LoanService {
         if (LoanStatus.REPAYING == loan.getStatus()) {
             logger.warn("loan has already been outed. [" + loanId + "]");
             ProjectTransferResponseModel umPayReturn = new ProjectTransferResponseModel();
-            umPayReturn.setRetCode(AutoLoanOutJob.ALREADY_OUT);
+            umPayReturn.setRetCode(ALREADY_LOAN_OUT_RETURN_CODE);
             umPayReturn.setRetMsg("放款失败：标的已经被自动放款。");
             return umPayReturn;
         }
@@ -322,7 +336,7 @@ public class LoanServiceImpl implements LoanService {
         String redisKey = MessageFormat.format(LOAN_OUT_IDEMPOTENT_CHECK_TEMPLATE, String.valueOf(loanId));
         String beforeSendStatus = redisWrapperClient.hget(redisKey, DO_PAY_REQUEST);
         ProjectTransferResponseModel resp = new ProjectTransferResponseModel();
-        if (Strings.isNullOrEmpty(beforeSendStatus) || beforeSendStatus.equals(SyncRequestStatus.FAILURE.name())){
+        if (Strings.isNullOrEmpty(beforeSendStatus) || beforeSendStatus.equals(SyncRequestStatus.FAILURE.name())) {
             try {
                 redisWrapperClient.hset(redisKey, DO_PAY_REQUEST, SyncRequestStatus.SENT.name());
                 ProjectTransferRequestModel requestModel = ProjectTransferRequestModel.newLoanOutRequest(
@@ -348,7 +362,7 @@ public class LoanServiceImpl implements LoanService {
             this.updateLoanStatus(loanId, LoanStatus.REPAYING);
 
             logger.info("[标的放款]：处理该标的的所有投资的账务信息，标的ID:" + loanId);
-            this.processInvestForLoanOut(successInvestList,loanId);
+            this.processInvestForLoanOut(successInvestList, loanId);
 
             logger.info("[标的放款]：把借款转给代理人账户，标的ID:" + loanId);
             this.processLoanAccountForLoanOut(loanId, loan.getAgentLoginName(), investAmountTotal);
@@ -402,7 +416,7 @@ public class LoanServiceImpl implements LoanService {
         if (Strings.isNullOrEmpty(statusString) || statusString.equals(SyncRequestStatus.FAILURE.name())) {
             try {
                 redisWrapperClient.hset(redisKey, SMS_AND_EMAIL, SyncRequestStatus.SENT.name());
-                processNotifyForLoanOut(loanId);
+                processNotifyForLoanOut(loan, successInvestList);
                 redisWrapperClient.hset(redisKey, SMS_AND_EMAIL, SyncRequestStatus.SUCCESS.name());
             } catch (Exception e) {
                 redisWrapperClient.hset(redisKey, SMS_AND_EMAIL, SyncRequestStatus.FAILURE.name());
@@ -430,14 +444,14 @@ public class LoanServiceImpl implements LoanService {
         return amount;
     }
 
-    private void processInvestForLoanOut(List<InvestModel> investList,long loanId) {
+    private void processInvestForLoanOut(List<InvestModel> investList, long loanId) {
         if (CollectionUtils.isEmpty(investList)) {
             return;
         }
 
         String redisKey = MessageFormat.format(LOAN_OUT_IDEMPOTENT_CHECK_TEMPLATE, String.valueOf(loanId));
         investList.forEach(invest -> {
-            String transferKey = MessageFormat.format(TRANSFER_OUT_FREEZE,invest.getId());
+            String transferKey = MessageFormat.format(TRANSFER_OUT_FREEZE, invest.getId());
             try {
                 String statusString = redisWrapperClient.hget(redisKey, transferKey);
                 if (Strings.isNullOrEmpty(statusString) || statusString.equals(SyncRequestStatus.FAILURE.name())) {
@@ -471,26 +485,25 @@ public class LoanServiceImpl implements LoanService {
         }
     }
 
-    private void processNotifyForLoanOut(long loanId) {
-        List<InvestModel> investModels = investMapper.findSuccessInvestsByLoanId(loanId);
-
-        logger.info(MessageFormat.format("[标的放款]:标的: {0} 放款邮件通知", loanId));
-        notifyInvestorsLoanOutSuccessfulByEmail(investModels);
-    }
-
-    private void notifyInvestorsLoanOutSuccessfulByEmail(List<InvestModel> investModels) {
-        for (InvestModel investModel : investModels) {
+    private void processNotifyForLoanOut(LoanModel loanModel, List<InvestModel> successInvests) {
+        logger.info(MessageFormat.format("[标的放款]:标的: {0} 放款短信邮件通知", String.valueOf(loanModel.getId())));
+        for (InvestModel investModel : successInvests) {
             UserModel userModel = userMapper.findByLoginName(investModel.getLoginName());
-            LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
-            InvestNotifyInfo notifyInfo = new InvestNotifyInfo(investModel, loanModel, userModel);
-
+            InvestSmsNotifyDto dto = new InvestSmsNotifyDto(userModel.getMobile(),
+                    loanModel.getName(),
+                    AmountConverter.convertCentToString(investModel.getAmount()));
             Map<String, String> emailParameters = Maps.newHashMap(new ImmutableMap.Builder<String, String>()
-                    .put("loanName", notifyInfo.getLoanName())
-                    .put("money", AmountConverter.convertCentToString(notifyInfo.getAmount()))
+                    .put("loanName", loanModel.getName())
+                    .put("amount", AmountConverter.convertCentToString(investModel.getAmount()))
                     .build());
-            String userEmail = notifyInfo.getEmail();
-            if (StringUtils.isNotEmpty(userEmail)) {
-                sendCloudMailUtil.sendMailByLoanOut(userEmail, emailParameters);
+            try {
+                if (StringUtils.isNotEmpty(userModel.getEmail())) {
+                    mqWrapperClient.sendMessage(MessageQueue.EMailMessage, new EMailMessage(Lists.newArrayList(userModel.getEmail()),
+                            SendCloudTemplate.LOAN_OUT_SUCCESSFUL_EMAIL.getTitle(),
+                            SendCloudTemplate.LOAN_OUT_SUCCESSFUL_EMAIL.generateContent(emailParameters)));
+                }
+            } catch (Exception e) {
+                logger.error(e.getLocalizedMessage(), e);
             }
         }
     }
@@ -568,7 +581,7 @@ public class LoanServiceImpl implements LoanService {
         //Title:您投资的{0}已经满额放款，预期年化收益{1}%
         //Content:尊敬的用户，您投资的{0}项目已经满额放款，预期年化收益{1}%，快来查看收益吧。
         LoanModel loanModel = loanMapper.findById(loanId);
-        List<String> loginNames =  investMapper.findSuccessInvestsByLoanId(loanId).stream().map(InvestModel::getLoginName).collect(Collectors.toList());
+        List<String> loginNames = investMapper.findSuccessInvestsByLoanId(loanId).stream().map(InvestModel::getLoginName).collect(Collectors.toList());
         String title = MessageFormat.format(MessageEventType.LOAN_OUT_SUCCESS.getTitleTemplate(), loanModel.getName(), (loanModel.getBaseRate() + loanModel.getActivityRate()) * 100);
         String content = MessageFormat.format(MessageEventType.LOAN_OUT_SUCCESS.getContentTemplate(), loanModel.getName(), (loanModel.getBaseRate() + loanModel.getActivityRate()) * 100);
 

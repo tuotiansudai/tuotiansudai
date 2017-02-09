@@ -2,7 +2,9 @@ package com.tuotiansudai.client;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.Environment;
 import com.tuotiansudai.dto.SmsDataDto;
 import com.tuotiansudai.dto.sms.*;
 import org.apache.log4j.Logger;
@@ -10,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.text.MessageFormat;
 
 @Component
 public class SmsWrapperClient extends BaseClient {
@@ -24,6 +27,9 @@ public class SmsWrapperClient extends BaseClient {
 
     @Value("${sms.application.context}")
     protected String applicationContext;
+
+    @Value("${common.environment}")
+    private Environment environment;
 
     private final static String REGISTER_CAPTCHA_SMS_URI = "/sms/register-captcha";
 
@@ -116,6 +122,16 @@ public class SmsWrapperClient extends BaseClient {
     }
 
     private BaseDto<SmsDataDto> send(Object requestData, String requestPath) {
+        BaseDto<SmsDataDto> resultDto = new BaseDto<>();
+        SmsDataDto dataDto = new SmsDataDto();
+        resultDto.setData(dataDto);
+
+        if (Lists.newArrayList(Environment.DEV, Environment.SMOKE).contains(environment)) {
+            logger.info(MessageFormat.format("Environment is {}, ignore sms", environment.name()));
+            dataDto.setStatus(true);
+            return resultDto;
+        }
+
         try {
             String requestJson = requestData == null ? "" : objectMapper.writeValueAsString(requestData);
             String responseString = this.execute(requestPath, requestJson, "POST");
@@ -126,9 +142,6 @@ public class SmsWrapperClient extends BaseClient {
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
-        BaseDto<SmsDataDto> resultDto = new BaseDto<>();
-        SmsDataDto dataDto = new SmsDataDto();
-        resultDto.setData(dataDto);
         return resultDto;
     }
 

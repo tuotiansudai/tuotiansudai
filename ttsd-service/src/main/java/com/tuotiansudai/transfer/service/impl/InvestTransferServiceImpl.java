@@ -10,32 +10,23 @@ import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.MessageEventType;
 import com.tuotiansudai.enums.PushSource;
 import com.tuotiansudai.enums.PushType;
-import com.tuotiansudai.job.JobType;
-import com.tuotiansudai.job.TransferApplicationAutoCancelJob;
+import com.tuotiansudai.job.DelayMessageDeliveryJobCreator;
+import com.tuotiansudai.job.JobManager;
 import com.tuotiansudai.message.EventMessage;
 import com.tuotiansudai.message.PushMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.transfer.dto.TransferApplicationDto;
-import com.tuotiansudai.transfer.dto.TransferApplicationFormDto;
-import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
-import com.tuotiansudai.transfer.repository.mapper.TransferRuleMapper;
-import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
-import com.tuotiansudai.transfer.repository.model.TransferApplicationRecordDto;
-import com.tuotiansudai.transfer.repository.model.TransferInvestDetailDto;
-import com.tuotiansudai.transfer.repository.model.TransferRuleModel;
 import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.transfer.util.TransferRuleUtil;
 import com.tuotiansudai.util.CalculateLeftDays;
-import com.tuotiansudai.job.JobManager;
+import com.tuotiansudai.util.CalculateUtil;
 import com.tuotiansudai.util.PaginationUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
-import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -245,15 +236,7 @@ public class InvestTransferServiceImpl implements InvestTransferService {
             logger.info("investTransferApplyJob create failed, expect deadline is before now, id = " + transferApplicationModel.getId());
             return;
         }
-        try {
-            jobManager.newJob(JobType.TransferApplyAutoCancel, TransferApplicationAutoCancelJob.class)
-                    .withIdentity(JobType.TransferApplyAutoCancel.name(), "Transfer-apply-" + transferApplicationModel.getId())
-                    .replaceExistingJob(true)
-                    .addJobData("Transfer-apply-id", transferApplicationModel.getId())
-                    .runOnceAt(transferApplicationModel.getDeadline()).submit();
-        } catch (SchedulerException e) {
-            logger.error(e.getLocalizedMessage(), e);
-        }
+        DelayMessageDeliveryJobCreator.createCancelTransferApplicationDelayJob(jobManager, transferApplicationModel.getId(), transferApplicationModel.getDeadline());
     }
 
     protected String generateTransferApplyName() {
@@ -279,7 +262,7 @@ public class InvestTransferServiceImpl implements InvestTransferService {
             return false;
         }
 
-        if(!validTransferIsCanceled(investId)){
+        if (!validTransferIsCanceled(investId)) {
             logger.debug(MessageFormat.format("{0} is transferred", investModel.getLoanId()));
             return false;
         }
@@ -300,7 +283,7 @@ public class InvestTransferServiceImpl implements InvestTransferService {
 
         }
 
-        if(!validTransferIsDayLimit(investModel.getLoanId())){
+        if (!validTransferIsDayLimit(investModel.getLoanId())) {
             logger.debug(MessageFormat.format("{0} right away repay ", investId));
             return false;
         }
@@ -309,12 +292,12 @@ public class InvestTransferServiceImpl implements InvestTransferService {
     }
 
     @Override
-    public boolean validTransferIsDayLimit(long loanId){
+    public boolean validTransferIsDayLimit(long loanId) {
         TransferRuleModel transferRuleModel = transferRuleMapper.find();
         DateTime current = new DateTime().withTimeAtStartOfDay();
         LoanRepayModel currentLoanRepay = loanRepayMapper.findCurrentLoanRepayByLoanId(loanId);
 
-        if(currentLoanRepay == null){
+        if (currentLoanRepay == null) {
             return false;
         }
 
@@ -327,7 +310,7 @@ public class InvestTransferServiceImpl implements InvestTransferService {
     }
 
     @Override
-    public boolean validTransferIsCanceled(long investId){
+    public boolean validTransferIsCanceled(long investId) {
         DateTime current = new DateTime().withTimeAtStartOfDay();
         List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findByTransferInvestId(investId, Lists.newArrayList(TransferStatus.SUCCESS, TransferStatus.TRANSFERRING, TransferStatus.CANCEL));
         for (TransferApplicationModel transferApplicationModelTemp : transferApplicationModels) {
@@ -346,7 +329,7 @@ public class InvestTransferServiceImpl implements InvestTransferService {
     public BasePaginationDataDto<TransferApplicationPaginationItemDataDto> findWebTransferApplicationPaginationList(String transferrerLoginName, List<TransferStatus> statusList, Integer index, Integer pageSize) {
 
         int count = transferApplicationMapper.findCountTransferApplicationPaginationByLoginName(transferrerLoginName, statusList);
-        List<TransferApplicationRecordDto> items = Lists.newArrayList();
+        List<TransferApplicationRecordView> items = Lists.newArrayList();
         if (count > 0) {
             int totalPages = PaginationUtil.calculateMaxPage(count, pageSize);
             index = index > totalPages ? totalPages : index;
@@ -383,12 +366,12 @@ public class InvestTransferServiceImpl implements InvestTransferService {
         return dto;
     }
 
-    public BasePaginationDataDto<TransferInvestDetailDto> getInvestTransferList(String investorLoginName,
-                                                                                int index,
-                                                                                int pageSize,
-                                                                                Date startTime,
-                                                                                Date endTime,
-                                                                                LoanStatus loanStatus) {
+    public BasePaginationDataDto<TransferInvestDetailView> getInvestTransferList(String investorLoginName,
+                                                                                 int index,
+                                                                                 int pageSize,
+                                                                                 Date startTime,
+                                                                                 Date endTime,
+                                                                                 LoanStatus loanStatus) {
         if (startTime == null) {
             startTime = new DateTime(0).withTimeAtStartOfDay().toDate();
         } else {
@@ -396,12 +379,12 @@ public class InvestTransferServiceImpl implements InvestTransferService {
         }
 
         if (endTime == null) {
-            endTime = new DateTime().withDate(9999, 12, 31).withTimeAtStartOfDay().toDate();
+            endTime = CalculateUtil.calculateMaxDate();
         } else {
             endTime = new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
         }
 
-        List<TransferInvestDetailDto> items = Lists.newArrayList();
+        List<TransferInvestDetailView> items = Lists.newArrayList();
         long count = transferApplicationMapper.findCountInvestTransferPagination(investorLoginName, startTime, endTime, loanStatus);
 
         if (count > 0) {
@@ -410,11 +393,11 @@ public class InvestTransferServiceImpl implements InvestTransferService {
             items = transferApplicationMapper.findTransferInvestList(investorLoginName, (index - 1) * pageSize, pageSize, startTime, endTime, loanStatus);
         }
 
-        items.forEach(transferInvestDetailDto -> {
-            if (ContractNoStatus.OLD.name().equals(transferInvestDetailDto.getContractNo())) {
-                transferInvestDetailDto.setContractOld("1");
-            } else if (StringUtils.isNotEmpty(transferInvestDetailDto.getContractNo())) {
-                transferInvestDetailDto.setContractOK("1");
+        items.forEach(transferInvestDetailView -> {
+            if (ContractNoStatus.OLD.name().equals(transferInvestDetailView.getContractNo())) {
+                transferInvestDetailView.setContractOld("1");
+            } else if (StringUtils.isNotEmpty(transferInvestDetailView.getContractNo())) {
+                transferInvestDetailView.setContractOK("1");
             }
         });
 

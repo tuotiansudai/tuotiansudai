@@ -1,6 +1,6 @@
 package com.tuotiansudai.coupon.util;
 
-import com.tuotiansudai.coupon.repository.model.CouponModel;
+import com.tuotiansudai.repository.model.CouponModel;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
