@@ -33,16 +33,18 @@ require(['jquery', 'jquery.ajax.extension', 'coupon-alert', 'red-envelope-float'
             },
             success: function (response, statusText, xhr, $form) {
                 var data = response.data;
+                self.removeClass("loading");
                 if (data.status) {
-
                     layer.open({
                         type: 1,
+                        cancel: function () {
+                            window.location.reload();
+                        },
                         title: '&nbsp',
                         area: ['400px', '205px'],
                         content: $('#freeSuccess')
                     });
                 }
-                self.removeClass("loading");
             }
         });
         return false;
