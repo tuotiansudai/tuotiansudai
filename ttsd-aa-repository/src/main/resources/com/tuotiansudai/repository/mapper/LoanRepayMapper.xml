@@ -277,7 +277,7 @@
     </select>
 
     <select id="findNotCompleteLoanRepay" resultMap="loanRepayResultMap">
-        select * from loan_repay where status != 'COMPLETE'
+        select * from loan_repay where status != 'COMPLETE' and loan_id != 1
     </select>
 
     <resultMap id="loanRepayNotifyResultMap" type="LoanRepayNotifyModel">
