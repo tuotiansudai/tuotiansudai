@@ -111,10 +111,20 @@ public class MdSmsClient implements ApplicationContextAware {
         String redisKey = MessageFormat.format(SMS_IP_RESTRICTED_REDIS_KEY_TEMPLATE, restrictedIP);
 
         if (redisWrapperClient.exists(redisKey)) {
+            String message = "this ip " + restrictedIP + " has sent in " + second + " seconds";
+            logger.error(message);
+
             data.setStatus(false);
             data.setIsRestricted(true);
+            data.setMessage(message);
             return dto;
         }
+
+        logger.info(String.format("ready to send sms to %s via md. template: %s, params: %s, clientIp: %s",
+                mobile,
+                smsTemplate.generateContent(null),
+                String.join(",", paramList),
+                restrictedIP));
 
         String content = smsTemplate.generateContent(paramList);
         String requestBody = this.generateRequestBody(mobile, content);

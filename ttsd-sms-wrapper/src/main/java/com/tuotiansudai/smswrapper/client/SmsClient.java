@@ -90,19 +90,19 @@ public class SmsClient implements ApplicationContextAware {
         SmsDataDto data = new SmsDataDto();
         dto.setData(data);
 
-        if(Lists.newArrayList(Environment.SMOKE.name(),Environment.DEV.name()).contains(environment)){
+        if (Lists.newArrayList(Environment.SMOKE.name(), Environment.DEV.name()).contains(environment)) {
             logger.info("[短信发送] 该环境不发送短信");
             return dto;
         }
 
-        if(Environment.QA.name().equals(environment)){
+        if (Environment.QA.name().equals(environment)) {
             String redisKey = MessageFormat.format(WYY_SMS_SEND_COUNT_BY_TODAY_TEMPLATE, "SMS");
             String hKey = DateTime.now().withTimeAtStartOfDay().toString("yyyyMMdd");
             String redisValue = redisWrapperClient.hget(redisKey, hKey);
 
             int smsSendSize = Strings.isNullOrEmpty(redisValue) ? 0 : Integer.parseInt(redisValue);
-            if(smsSendSize >= sendSize){
-                logger.error(MessageFormat.format("[短信发送] OA环境今日已经发送过10条短信 {0}",redisKey));
+            if (smsSendSize >= sendSize) {
+                logger.error(MessageFormat.format("[短信发送] OA环境今日已经发送过10条短信 {0}", redisKey));
                 return dto;
             }
             smsSendSize++;
@@ -112,11 +112,20 @@ public class SmsClient implements ApplicationContextAware {
         String redisKey = MessageFormat.format(SMS_IP_RESTRICTED_REDIS_KEY_TEMPLATE, restrictedIP);
 
         if (redisWrapperClient.exists(redisKey)) {
+            String message = "this ip " + restrictedIP + " has sent in " + second + " seconds";
+            logger.error(message);
+
             data.setStatus(false);
             data.setIsRestricted(true);
-            data.setMessage("this ip " + restrictedIP + " has sent in one second");
+            data.setMessage(message);
             return dto;
         }
+
+        logger.info(String.format("ready to send sms to %s via netease. template: %s, params: %s, clientIp: %s",
+                String.join(",", mobileList),
+                template.generateContent(null),
+                String.join(",", paramList),
+                restrictedIP));
 
         String nonce = String.valueOf((int) (Math.random() * 10000000));
         String curTime = String.valueOf((new Date()).getTime() / 1000L);
@@ -153,7 +162,7 @@ public class SmsClient implements ApplicationContextAware {
 
             // 执行结果  {"code":200,"msg":"sendid","obj":1}
             String resultCode = getRetCode(EntityUtils.toString(response.getEntity(), "utf-8"));
-            if(!"200".equals(resultCode)) {
+            if (!"200".equals(resultCode)) {
                 logger.error(MessageFormat.format("[SmsClient][sendSMS]Send sms result fail.request:{0}, response:{1}",
                         EntityUtils.toString(httpPost.getEntity()), EntityUtils.toString(response.getEntity())));
             }
@@ -191,7 +200,7 @@ public class SmsClient implements ApplicationContextAware {
         }
         return null;
     }
-    
+
     private BaseMapper getMapperByClass(Class clazz) {
         String fullName = clazz.getName();
         String[] strings = fullName.split("\\.");
