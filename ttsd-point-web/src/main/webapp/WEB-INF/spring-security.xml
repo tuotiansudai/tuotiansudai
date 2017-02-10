@@ -39,7 +39,6 @@
         <custom-filter ref="myPreAuthenticatedProcessingFilter" position="PRE_AUTH_FILTER"/>
 
         <!--DO NOT MODIFY THE BELLOW CONFIG ANYTIME!-->
-        <intercept-url pattern="/point//images//prize//**" access="permitAll()"/>
         <intercept-url pattern="/point//style/**" access="permitAll()"/>
         <intercept-url pattern="/point/images/**" access="permitAll()"/>
         <intercept-url pattern="/point//js/**" access="permitAll()"/>
