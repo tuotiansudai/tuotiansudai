@@ -26,7 +26,10 @@
                     </p>
                 </div>
             </#if>
-
+            <div class="sign-rule">
+                <span>已连续签到100天</span>
+                <a href="">签到规则></a>
+            </div>
             <ul class="other-list">
                 <li class="right-line">
                     <p><span>做任务赚积分</span></p>
@@ -60,6 +63,18 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+    <div class="store-title">
+        <span>
+            <i class="title-left"></i>
+            积分抽奖
+            <i class="title-right"></i>
+        </span>
+    </div>
+    <div class="store-material even">
+        <div class="wp clearfix">
+            <#include 'module/nine-lottery.ftl'/>
         </div>
     </div>
     <div class="store-title">
@@ -103,6 +118,7 @@
                 </#list>
             </ul>
             <#else>
+                <p class="no-material"><img src="${staticServer}/point/images/no-material.png"></p>
                 <p class="no-product">商品即将上线，敬请期待！</p>
             </#if>
         </div>
@@ -150,6 +166,7 @@
                 </#list>
             </ul>
             <#else>
+                <p class="no-material"><img src="${staticServer}/point/images/no-material.png"></p>
                 <p class="no-product">商品即将上线，敬请期待！</p>
             </#if>
         </div>
