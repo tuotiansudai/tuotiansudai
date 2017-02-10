@@ -52,27 +52,27 @@
     "css": "/web/js/forget_password.css"
   },
   "fetchCaptchaRetrieve": {
-    "js": "chucks/fetchCaptchaRetrieve.5bce0b691ea35b6e79f8.js"
+    "js": "chucks/fetchCaptchaRetrieve.57b774acdee16d49cf09.js"
   },
   "/web/js/index": {
     "js": "/web/js/index.js",
     "css": "/web/js/index.css"
   },
   "redEnvelope": {
-    "js": "chucks/redEnvelope.a54b471346474d184520.js"
+    "js": "chucks/redEnvelope.b5193b974a37042fc58b.js"
   },
   "imageSlider": {
-    "js": "chucks/imageSlider.fe041bd99e6db19d52ef.js"
+    "js": "chucks/imageSlider.469078ae17e971648247.js"
   },
   "bookInvest": {
-    "js": "chucks/bookInvest.d6d2a35179834047ced9.js"
+    "js": "chucks/bookInvest.ccfc9c15cbae2e8c4529.js"
   },
   "/web/js/loan_detail": {
     "js": "/web/js/loan_detail.js",
     "css": "/web/js/loan_detail.css"
   },
   "jquery_fancybox": {
-    "js": "chucks/jquery_fancybox.1668c1fd4e5db0045d71.js"
+    "js": "chucks/jquery_fancybox.8d50b2f5e99e4c0ee19b.js"
   },
   "/web/js/loan_detail_experience": {
     "js": "/web/js/loan_detail_experience.js",
@@ -91,7 +91,7 @@
     "css": "/web/js/register_user.css"
   },
   "placeholder": {
-    "js": "chucks/placeholder.f441d9baa3202164ba90.js"
+    "js": "chucks/placeholder.6501a07f5fb719a56227.js"
   },
   "/web/js/transfer_detail": {
     "js": "/web/js/transfer_detail.js",
@@ -116,6 +116,14 @@
     "css": "/web/js/account/message_list.css"
   },
   "messageList": {
-    "js": "chucks/messageList.23b89c7eb8769e777db4.js"
+    "js": "chucks/messageList.5022fcee709c9c2ccd3c.js"
+  },
+  "/web/js/account/personal_info": {
+    "js": "/web/js/account/personal_info.js",
+    "css": "/web/js/account/personal_info.css"
+  },
+  "/web/js/register_account": {
+    "js": "/web/js/register_account.js",
+    "css": "/web/js/register_account.css"
   }
 }

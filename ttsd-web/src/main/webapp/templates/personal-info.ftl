@@ -1,8 +1,8 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="${css.my_account}" pageJavascript="${js.personal_info}" activeNav="我的账户" activeLeftNav="个人资料" title="个人资料">
-<div class="content-container auto-height personal-info">
+<@global.main pageCss="${css.personal_info}" pageJavascript="${js.personal_info}" activeNav="我的账户" activeLeftNav="个人资料" title="个人资料">
+<div class="content-container auto-height personal-info" id="personInfoBox">
     <h4 class="column-title"><em class="tc">个人资料</em></h4>
-    <ul class="info-list" id="personInfoBox">
+    <ul class="info-list" >
         <li><span class="info-title"> 实名认证</span>
             <#if userName??>
                 <em class="info">${userName}</em>
@@ -59,38 +59,37 @@
             </li>
         </#if>
         <li><span class="info-title"> 免密投资</span>
-            <#if noPasswordInvest>
+            <#--<#if noPasswordInvest>-->
                 <em class="info">您已开启免密投资，投资快人一步</em>
                 <span class="binding-set">
                     <i class="fa fa-check-circle ok"></i>已开启<a class="setlink setTurnOffNoPasswordInvest" href="javascript:void(0);">关闭</a>
                 </span>
-            <#elseif autoInvest>
-                <em class="info">您已授权自动投标，可直接开启免密投资，及时选择心仪标的，投资快人一步</em>
-                <span class="binding-set">
-                    <i class="fa fa-times-circle no"></i>未开启<a class="setlink setNoPasswordInvest" data-url="/no-password-invest/enabled" href="javascript:void(0);">开启</a>
-                </span>
-            <#else>
-                <em class="info">开启免密投资后，您可及时选择心仪标的，投资快人一步</em>
-                <span class="binding-set">
-                    <i class="fa fa-times-circle no"></i>未开启<a class="setlink setTurnOnNoPasswordInvest" href="javascript:void(0);">开启</a>
-                </span>
-            </#if>
+            <#--<#elseif autoInvest>-->
+                <#--<em class="info">您已授权自动投标，可直接开启免密投资，及时选择心仪标的，投资快人一步</em>-->
+                <#--<span class="binding-set">-->
+                    <#--<i class="fa fa-times-circle no"></i>未开启<a class="setlink setNoPasswordInvest" data-url="/no-password-invest/enabled" href="javascript:void(0);">开启</a>-->
+                <#--</span>-->
+            <#--<#else>-->
+                <#--<em class="info">开启免密投资后，您可及时选择心仪标的，投资快人一步</em>-->
+                <#--<span class="binding-set">-->
+                    <#--<i class="fa fa-times-circle no"></i>未开启<a class="setlink setTurnOnNoPasswordInvest" href="javascript:void(0);">开启</a>-->
+                <#--</span>-->
+            <#--</#if>-->
         </li>
     </ul>
 </div>
 
 <div id="resetUmpayPassDOM" class="pad-m popLayer" style="display: none;">
-    <form name="resetUmpayPasswordForm" action="${requestContext.getContextPath()}/personal-info/reset-umpay-password" method="post">
+    <form name="resetUmpayPasswordForm" id="resetUmpayPasswordForm">
         <dl class="identityCodeTitle" align="center">
             通过身份证号重置支付密码
         </dl>
         <dl>
             <dt class="requireOpt">请输入您的身份证号</dt>
-            <dd><input type="text" id="identityNumber" name="identityNumber" class="input-control"></dd>
+            <dd><input type="text" id="identityNumber" name="identityNumber" class="input-control">
+            </dd>
         </dl>
-        <dl class="identityCodeError">
-            <dt>您输入的身份证号与当前账号不符，请重新输入。</dt>
-        </dl>
+        <div class="error-box tc"></div>
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <button type="submit" class="btn btn-normal">确认重置</button>
     </form>
@@ -104,7 +103,7 @@
 </div>
 
 <div id="changePassDOM" class="pad-m popLayer" style="display: none;">
-    <form name="changePasswordForm" action="${requestContext.getContextPath()}/personal-info/change-password" method="post">
+    <form name="changePasswordForm" id="changePasswordForm">
         <dl>
             <dt class="requireOpt">请输入原密码</dt>
             <dd><input type="password" id="originalPassword" name="originalPassword" class="input-control" placeholder="请输入密码"></dd>
@@ -123,12 +122,15 @@
 </div>
 
 <div id="changeEmailDOM" class="pad-m popLayer" style="display: none;">
-    <form name="changeEmailForm" action="${requestContext.getContextPath()}/bind-email" method="post">
+    <form name="changeEmailForm" id="changeEmailForm" >
         <dl>
             <dt class="requireOpt">请输入邮箱</dt>
-            <dd><input type="email" name="email" class="input-control" placeholder="请输入邮箱"></dd>
+            <dd><input type="email" name="email" class="input-control" placeholder="请输入邮箱">
+                <div class="error-box tl"></div>
+            </dd>
         </dl>
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+
         <button type="submit" class="btn btn-normal">绑定</button>
     </form>
 </div>
@@ -155,13 +157,13 @@
             <dd class="mt-20">
                 <span>图形验证码：</span>
                 <input type="text" class="input-control image-captcha-text" name="imageCaptcha" maxlength="5" placeholder="请输入图形验证码"/>
-                <img src="/no-password-invest/image-captcha" alt="" class="image-captcha"/>
+                <img src="/no-password-invest/image-captcha" alt="" class="image-captcha" id="imageCaptcha"/>
                 <input type="hidden" name="mobile" value="${mobile}"/>
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             </dd>
         </dl>
     </form>
-    <form id="turnOffNoPasswordInvestForm" name="turnOffNoPasswordInvestForm" action="${requestContext.getContextPath()}/no-password-invest/disabled" method="post">
+    <form id="turnOffNoPasswordInvestForm" name="turnOffNoPasswordInvestForm" >
         <dl>
             <dd class="code-number code-number-hidden">验证码发送到${mobile?replace("^(\\d{3}).*(\\d{4})$","$1****$2","r")}</dd>
             <dd>

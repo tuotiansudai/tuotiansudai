@@ -91,7 +91,19 @@ var strategies = {
             showErrorAfter && createElement(this,errorMsg);
             return errorMsg;
         }
-
+    },
+    equalTo:function (errorMsg,dom,showErrorAfter) {
+        let oldVal=$(dom).val();
+        if(oldVal!=this.value) {
+            globalFun.addClass(this,'error');
+            showErrorAfter && createElement(this,errorMsg);
+            return errorMsg;
+        }
+        else {
+            globalFun.removeClass(this,'error');
+            globalFun.addClass(this,'valid');
+            showErrorAfter && removeElement(this);
+        }
     },
     equalLength:function(errorMsg,length,showErrorAfter) {
         if (this.value.length!=Number(length)) {
@@ -135,6 +147,21 @@ var strategies = {
             showErrorAfter && removeElement(this);
         }
     },
+    isEmail:function(errorMsg,showErrorAfter) {
+        //只验证邮箱不验证是非为空
+        if(this.value=='') {
+            return '';
+        }
+        if(/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/.test(this.value)) {
+            globalFun.removeClass(this,'error');
+            globalFun.addClass(this,'valid');
+            showErrorAfter && removeElement(this);
+        } else {
+            globalFun.addClass(this,'error');
+            showErrorAfter && createElement(this,errorMsg);
+            return errorMsg;
+        }
+    },
     identityValid:function(errorMsg,showErrorAfter) {
         //验证身份证号
         var cardValid=commonFun.IdentityCodeValid(this.value);
@@ -166,6 +193,7 @@ var strategies = {
             }
         }
     },
+    //身份证号是否存在
     isCardExist:function(errorMsg,showErrorAfter) {
         var getResult='',
             that=this;
@@ -175,19 +203,20 @@ var strategies = {
         commonFun.useAjax({
             type:'GET',
             async: false,
-            url:'/authentication/identityNumber/'+this.value+'/is-exist'
+            url: '/register/account/identity-number/'+this.value+'/is-exist'
         },function(response) {
             if(response.data.status) {
-                // 身份证已存在
+                //身份证号已存在
                 getResult=errorMsg;
                 globalFun.addClass(that,'error');
-                showErrorAfter && createElement(this,errorMsg);
+                showErrorAfter && createElement(that,errorMsg);
             }
             else {
                 getResult='';
                 globalFun.removeClass(that,'error');
                 globalFun.addClass(that,'valid');
-                showErrorAfter && removeElement(this);
+                showErrorAfter && removeElement(that);
+
             }
         });
         return getResult;
@@ -215,6 +244,53 @@ var strategies = {
         });
         return getResult;
     },
+    isEmailExist:function(errorMsg,showErrorAfter) {
+        var getResult='',
+            that=this;
+        commonFun.useAjax({
+            type:'GET',
+            async: false,
+            url:'/personal-info/email/'+this.value+'/is-exist'
+        },function(response) {
+            if(response.data.status) {
+                // 邮箱已存在
+                getResult=errorMsg;
+                globalFun.addClass(that,'error');
+                showErrorAfter && createElement(that,errorMsg);
+            }
+            else {
+                getResult='';
+                globalFun.removeClass(that,'error');
+                globalFun.addClass(that,'valid');
+                showErrorAfter && removeElement(that);
+            }
+        });
+        return getResult;
+    },
+    //修改密码的时候验证原密码是否存在
+    isNotExistPassword:function(errorMsg,showErrorAfter) {
+        var getResult='',
+            that=this;
+        commonFun.useAjax({
+            type:'GET',
+            async: false,
+            url:'/personal-info/password/'+this.value+'/is-exist'
+        },function(response) {
+            if(response.data.status) {
+                // 如果为true说明密码存在有效
+                getResult='';
+                globalFun.removeClass(that,'error');
+                globalFun.addClass(that,'valid');
+                showErrorAfter && removeElement(that);
+            }
+            else {
+                getResult=errorMsg;
+                globalFun.addClass(that,'error');
+                showErrorAfter && createElement(that,errorMsg);
+            }
+            return getResult;
+        });
+    },
     isMobileRetrieveExist:function(errorMsg,showErrorAfter) {
         var getResult='',
             that=this;
@@ -238,7 +314,6 @@ var strategies = {
         });
         return getResult;
     },
-
     isCaptchaVerify:function(errorMsg,showErrorAfter) {
         var getResult='',
             that=this;
@@ -249,6 +324,33 @@ var strategies = {
             type:'GET',
             async: false,
             url:`/mobile-retrieve-password/mobile/${_phone}/captcha/${_captcha}/verify?random=` + new Date().getTime()
+        },function(response) {
+            if(!response.data.status) {
+                // 如果为true说明验证码不正确
+                getResult='';
+                globalFun.removeClass(that,'error');
+                globalFun.addClass(that,'valid');
+                showErrorAfter && removeElement(that);
+            }
+            else {
+                getResult=errorMsg;
+                globalFun.addClass(that,'error');
+                showErrorAfter && createElement(that,errorMsg);
+            }
+        });
+        return getResult;
+    },
+    //免密投资验证图形码
+    isNoPasswordCaptchaVerify:function(errorMsg,showErrorAfter) {
+        var getResult='',
+            that=this;
+        let turnOffForm=globalFun.$('#turnOffNoPasswordInvestForm');
+        var _phone = turnOffForm.mobile.value,
+            _captcha=turnOffForm.captcha.value;
+        commonFun.useAjax({
+            type:'GET',
+            async: false,
+            url:`/no-password-invest/mobile/${_phone}/captcha/${_captcha}/verify`
         },function(response) {
             if(!response.data.status) {
                 // 如果为true说明验证码不正确
