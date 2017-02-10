@@ -130,7 +130,7 @@ public class CouponAssignmentServiceTest {
 
         verify(mqWrapperClient, times(1)).sendMessage(messageQueueCaptor.capture(), stringCaptor.capture());
         assertEquals(MessageQueue.CouponAssigning, messageQueueCaptor.getValue());
-        String queueMessage = fakeUser.getLoginName().toLowerCase() + ":" + fakeCoupon.getId();
+        String queueMessage = fakeUser.getLoginName() + ":" + fakeCoupon.getId();
         assertEquals(queueMessage, stringCaptor.getValue());
     }
 
