@@ -1,42 +1,42 @@
 [
   {
     "seq": 1,
-    "imageUrl": "{static}/api/images/app-prize/1.png",
+    "imageUrl": "{static}/api/images/app-prize/gift-one.png",
     "imageDesc": "10元红包"
   },
   {
   "seq": 2,
-  "imageUrl": "{static}/api/images/app-prize/2.png",
+  "imageUrl": "{static}/api/images/app-prize/gift-two.png",
   "imageDesc": "500积分"
   },
   {
     "seq": 3,
-    "imageUrl": "{static}/api/images/app-prize/3.png",
+    "imageUrl": "{static}/api/images/app-prize/gift-three.png",
     "imageDesc": "100元京东E卡"
   },
   {
     "seq": 4,
-    "imageUrl": "{static}/api/images/app-prize/4.png",
+    "imageUrl": "{static}/api/images/app-prize/gift-four.png",
     "imageDesc": "0.2%加息劵"
   },
   {
     "seq": 5,
-    "imageUrl": "{static}/api/images/app-prize/5.png",
+    "imageUrl": "{static}/api/images/app-prize/gift-five.png",
     "imageDesc": "50元红包"
   },
   {
     "seq": 6,
-    "imageUrl": "{static}/api/images/app-prize/6.png",
+    "imageUrl": "{static}/api/images/app-prize/gift-six.png",
     "imageDesc": "3000积分"
   },
   {
     "seq": 7,
-    "imageUrl": "{static}/api/images/app-prize/7.png",
+    "imageUrl": "{static}/api/images/app-prize/gift-seven.png",
     "imageDesc": "10元话费"
   },
   {
     "seq": 8,
-    "imageUrl": "{static}/api/images/app-prize/8.png",
+    "imageUrl": "{static}/api/images/app-prize/gift-eight.png",
     "imageDesc": "0.5%加息劵"
   }
 ]
