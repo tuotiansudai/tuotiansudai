@@ -1,7 +1,7 @@
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="${css.point_index}" pageJavascript="${js.point_index}" activeNav="积分商城" activeLeftNav="" title="积分商城">
 
-<div class="global-member-store">
+<div class="global-member-store" id="pointContainer">
     <div class="store-top">
         <div class="store-login">
             <#if isLogin>
@@ -26,7 +26,10 @@
                     </p>
                 </div>
             </#if>
-
+            <div class="sign-rule">
+                <span>已连续签到100天</span>
+                <a href="">签到规则></a>
+            </div>
             <ul class="other-list">
                 <li class="right-line">
                     <p><span>做任务赚积分</span></p>
@@ -60,6 +63,18 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+    <div class="store-title">
+        <span>
+            <i class="title-left"></i>
+            积分抽奖
+            <i class="title-right"></i>
+        </span>
+    </div>
+    <div class="store-material even">
+        <div class="wp clearfix">
+            <#include 'module/nine-lottery.ftl'/>
         </div>
     </div>
     <div class="store-title">
@@ -103,6 +118,7 @@
                 </#list>
             </ul>
             <#else>
+                <p class="no-material"><img src="${staticServer}/point/images/no-material.png"></p>
                 <p class="no-product">商品即将上线，敬请期待！</p>
             </#if>
         </div>
@@ -150,9 +166,63 @@
                 </#list>
             </ul>
             <#else>
+                <p class="no-material"><img src="${staticServer}/point/images/no-material.png"></p>
                 <p class="no-product">商品即将上线，敬请期待！</p>
             </#if>
         </div>
+    </div>
+    <div class="tip-list-frame">
+    <#--真实奖品的提示-->
+        <div class="tip-list" data-return="concrete">
+            <div class="close-btn go-close"></div>
+            <div class="text-tip">
+                <p class="success-text">恭喜您！</p>
+                <p class="reward-text">抽中了<em class="prizeValue"></em>！</p>
+                <p class="des-text">拓天客服将会在7个工作日内联系您发放奖品</p>
+            </div>
+            <div class="btn-list"><a href="javascript:void(0)" class="go-on go-close">继续抽奖</a></div>
+        </div>
+
+    <#--虚拟奖品的提示-->
+        <div class="tip-list" data-return="virtual">
+            <div class="close-btn go-close"></div>
+            <div class="text-tip">
+                <p class="success-text">恭喜您！</p>
+                <p class="reward-text">抽中了<em class="prizeValue"></em>！</p>
+                <p class="des-text">奖品已发放至“我的宝藏”当中。</p>
+            </div>
+            <div class="btn-list"><a href="javascript:void(0)" class="go-on go-close">继续抽奖</a></div>
+        </div>
+
+    <#--没有抽奖机会-->
+        <div class="tip-list" data-return="nochance">
+            <div class="close-btn go-close"></div>
+            <div class="text-tip">
+                <p class="login-text">您暂无抽奖机会啦～</p>
+                <p class="des-text">赢取机会后再来抽奖吧！</p>
+            </div>
+            <div class="btn-list"><a href="javascript:void(0)" class="go-close">知道了</a></div>
+        </div>
+
+    <#--不在活动时间范围内-->
+        <div class="tip-list" data-return="expired">
+            <div class="close-btn go-close"></div>
+            <div class="text-tip">
+                <p class="login-text">不在活动时间内~</p>
+            </div>
+            <div class="btn-list"><a href="javascript:void(0)" class="go-close">知道了</a></div>
+        </div>
+
+    <#--实名认证-->
+        <div class="tip-list" data-return="authentication">
+            <div class="close-btn go-close"></div>
+            <div class="text-tip">
+                <p class="login-text">您还未实名认证~</p>
+                <p class="des-text">请实名认证后再来抽奖吧！</p>
+            </div>
+            <div class="btn-list"><a href="javascript:void(0)" class="go-close">知道了</a></div>
+        </div>
+
     </div>
 </div>
 <div class="error-tip" id="errorTip"></div>
