@@ -171,6 +171,7 @@
             </#if>
         </div>
     </div>
+    <a href="javascript:void(0)" class="show-login no-login-text"></a>
     <div class="tip-list-frame">
     <#--真实奖品的提示-->
         <div class="tip-list" data-return="concrete">
