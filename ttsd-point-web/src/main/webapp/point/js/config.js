@@ -35,6 +35,7 @@ var require = {
         'placeholder': staticServer + '/point/js/libs/jquery.enplaceholder',
         'superslide': staticServer + '/point/js/libs/jquery.SuperSlide.2.1.1',
         'drawCircle': staticServer+'/point/js/dest/gift_circle_draw.min',
+        'logintip': staticServer+'/point/js/dest/login_tip.min',
         'lottery_unit':staticServer+'/point/js/dest/lottery_unit.min'
     },
     'waitSeconds':0,
