@@ -110,7 +110,6 @@ require(['jquery', 'layerWrapper', 'template', 'drawCircle', 'jquery.ajax.extens
 
 			//**********************开始抽奖**********************//
 			$pointerImg.on('click', function() {
-				drawCircle.tipWindowPop(tipGroupObj['concrete']);
 				drawCircle.beginLuckDraw(function(data) {
 					var prizeKind;
 
