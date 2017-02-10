@@ -97,7 +97,6 @@ require(['jquery', 'layerWrapper', 'template', 'drawCircle', 'jquery.ajax.extens
 			});
 
 			var paramData = {
-				"mobile": myMobileNumber,
 				"activityCategory": "POINT_SHOP_DRAW_1000"
 			};
 			var drawCircle = new drawCircle(pointAllList, pointUserList, drawURL, paramData, $rewardGiftBox);
