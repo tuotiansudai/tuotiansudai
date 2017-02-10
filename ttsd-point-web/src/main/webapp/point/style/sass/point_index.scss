@@ -1,4 +1,5 @@
 @import "module/nine_lottery";
+@import 'module/gift_circle_tip';
 .sign-layer {
   position: fixed;
   top: 0;
@@ -97,12 +98,22 @@
     }
   }
 }
-
+.tip-list {
+  background: #fff url("/point/images/bg-pop-point.png") no-repeat left top;
+  background-size:100%;
+  .close-btn {
+    background:url("/point/images/tip-close.png") no-repeat left top;
+    background-size:100%;
+  }
+}
 .main-frame{
   width:100%;
   margin:0;
   .layui-layer-page .layui-layer-content{
     overflow: auto!important;
+  }
+  .tip-list-frame{
+    display:none;
   }
   .global-member-store {
     float:left;

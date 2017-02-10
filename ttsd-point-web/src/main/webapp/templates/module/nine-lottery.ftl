@@ -35,8 +35,9 @@
 			<span class="active">中奖纪录</span>
 			<span>我的奖品</span>
 		</h3>
-		<div class="record-group">
-			<ul class="record-item active" id="recordList"></ul>
-		</div>
+		<div class="record-group record-list">
+            <ul class="record-item user-record" id="recordList"></ul>
+            <ul class="record-item own-record" id="myRecord" style="display: none"></ul>
+        </div>
 	</div>
 </div>
