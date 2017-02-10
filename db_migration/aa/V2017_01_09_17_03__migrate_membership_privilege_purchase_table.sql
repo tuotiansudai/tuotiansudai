@@ -1,14 +1,21 @@
-begin;
-insert into membership_privilege_purchase(login_name,mobile,user_name,privilege,privilege_price_type,amount,source,status,created_time)
-  select login_name,
-       mobile,
-       user_name,
-       'SERVICE_FEE',
-       case duration when 30 then '_30' when 180 then '_180' when 360 then '_360' end as 'privilege_price_type',
-       amount,
-       source,
-       status,
-       created_time
-  from membership_purchase
- where status= 'SUCCESS' ;
-COMMIT ;
+BEGIN;
+INSERT INTO membership_privilege_purchase (login_name, mobile, user_name, privilege, privilege_price_type, amount, source, status, created_time)
+  SELECT
+    login_name,
+    mobile,
+    user_name,
+    'SERVICE_FEE',
+    CASE duration
+    WHEN 30
+      THEN '_30'
+    WHEN 180
+      THEN '_180'
+    WHEN 360
+      THEN '_360' END AS 'privilege_price_type',
+    amount,
+    source,
+    status,
+    created_time
+  FROM membership_purchase
+  WHERE status = 'SUCCESS';
+COMMIT;

@@ -86,7 +86,7 @@
                         <p class="convert-btn">
                             <span class="name-text">${virtualProduct.name}</span>
                             <span class="price-text">
-                                尊享价：<i>${((virtualProduct.points * discount * 100)/100)?round}积分</i>
+                                尊享价：<i>${(((virtualProduct.points * discount * 100)/100)?round)?string('0')}积分</i>
                                 <#if discount?? && discount?floor != 1>
                                     <i class="old-price">${virtualProduct.points?string('0')}积分</i>
                                 </#if>
@@ -134,7 +134,7 @@
 
                         <p class="convert-btn">
                             <span class="name-text">${physicalProduct.name}</span>
-                            <span class="price-text">尊享价：<i>${((physicalProduct.points * discount * 100)/100)?round}积分</i>
+                            <span class="price-text">尊享价：<i>${(((physicalProduct.points * discount * 100)/100)?round)?string('0')}积分</i>
                                 <#if discount?? && discount?floor != 1>
                                     <i class="old-price">${physicalProduct.points?string('0')}积分</i>
                                 </#if>
