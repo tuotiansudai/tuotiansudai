@@ -4,15 +4,13 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.activity.repository.dto.DrawLotteryResultDto;
 import com.tuotiansudai.activity.repository.mapper.UserLotteryPrizeMapper;
-import com.tuotiansudai.activity.repository.model.ActivityCategory;
-import com.tuotiansudai.activity.repository.model.LotteryPrize;
-import com.tuotiansudai.activity.repository.model.PrizeType;
-import com.tuotiansudai.activity.repository.model.UserLotteryPrizeModel;
+import com.tuotiansudai.activity.repository.model.*;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.util.MobileEncryptor;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -42,14 +40,12 @@ public class MoneyTreePrizeService {
     private InvestMapper investMapper;
 
     @Autowired
-    private CouponAssignmentService couponAssignmentService;
-
-    @Autowired
     private LotteryDrawActivityService lotteryDrawActivityService;
 
     @Value("#{'${activity.money.tree.period}'.split('\\~')}")
     private List<String> moneyTreeTime = Lists.newArrayList();
 
+    /*
     private static final long RED_ENVELOPE_50_DRAW_REF_MONEY_TREE_COUPON_ID = 324L;
     private static final long RED_ENVELOPE_100_DRAW_REF_MONEY_TREE_COUPON_ID = 324L;
     private static final long RED_ENVELOPE_200_DRAW_REF_MONEY_TREE_COUPON_ID = 324L;
@@ -59,6 +55,25 @@ public class MoneyTreePrizeService {
     private static final long RED_ENVELOPE_800_DRAW_REF_MONEY_TREE_COUPON_ID = 324L;
     private static final long RED_ENVELOPE_1000_DRAW_REF_MONEY_TREE_COUPON_ID = 324L;
     private static final long RED_ENVELOPE_2000_DRAW_REF_MONEY_TREE_COUPON_ID = 324L;
+    */
+
+    public List<UserLotteryPrizeView> findDrawLotteryPrizeRecordByMobile(String mobile) {
+        List<UserLotteryPrizeView> userLotteryPrizeViews = userLotteryPrizeMapper.findMoneyTreeLotteryPrizeByMobile(mobile, ActivityCategory.MONEY_TREE);
+        for (UserLotteryPrizeView view : userLotteryPrizeViews) {
+            view.setMobile(MobileEncryptor.encryptMiddleMobile(view.getMobile()));
+            view.setPrizeValue(view.getPrize().getDescription());
+        }
+        return userLotteryPrizeViews;
+    }
+
+    public List<UserLotteryPrizeView> findDrawLotteryPrizeRecordTop10() {
+        List<UserLotteryPrizeView> userLotteryPrizeViews = userLotteryPrizeMapper.findMoneyTreeLotteryPrizeTop10(ActivityCategory.MONEY_TREE);
+        for (UserLotteryPrizeView view : userLotteryPrizeViews) {
+            view.setMobile(MobileEncryptor.encryptMiddleMobile(view.getMobile()));
+            view.setPrizeValue(view.getPrize().getDescription());
+        }
+        return userLotteryPrizeViews;
+    }
 
     public int getLeftDrawPrizeTime(String mobile) {
         int lotteryTime = 0;
@@ -177,88 +192,95 @@ public class MoneyTreePrizeService {
     }
 
     private void drawResultAssignUserCoupon(LotteryPrize moneyTreePrize, String mobile) {
-        PrizeType prizeType = PrizeType.VIRTUAL;
         switch (moneyTreePrize) {
-            case MONEY_TREE_1000_NEWBIE_COUPON_50:
-            case MONEY_TREE_10000_NEWBIE_COUPON_50:
-            case MONEY_TREE_20000_NEWBIE_COUPON_50:
-            case MONEY_TREE_30000_NEWBIE_COUPON_50:
-            case MONEY_TREE_40000_NEWBIE_COUPON_50:
-            case MONEY_TREE_50000_NEWBIE_COUPON_50:
-            case MONEY_TREE_60000_NEWBIE_COUPON_50:
-            case MONEY_TREE_70000_NEWBIE_COUPON_50:
-            case MONEY_TREE_80000_NEWBIE_COUPON_50:
-            case MONEY_TREE_90000_NEWBIE_COUPON_50:
-            case MONEY_TREE_100000_NEWBIE_COUPON_50:
-            case MONEY_TREE_ABOVE_100000_NEWBIE_COUPON_50:
+            case MONEY_TREE_1000_EXPERIENCE_GOLD_50:
+            case MONEY_TREE_10000_EXPERIENCE_GOLD_50:
+            case MONEY_TREE_20000_EXPERIENCE_GOLD_50:
+            case MONEY_TREE_30000_EXPERIENCE_GOLD_50:
+            case MONEY_TREE_40000_EXPERIENCE_GOLD_50:
+            case MONEY_TREE_50000_EXPERIENCE_GOLD_50:
+            case MONEY_TREE_60000_EXPERIENCE_GOLD_50:
+            case MONEY_TREE_70000_EXPERIENCE_GOLD_50:
+            case MONEY_TREE_80000_EXPERIENCE_GOLD_50:
+            case MONEY_TREE_90000_EXPERIENCE_GOLD_50:
+            case MONEY_TREE_100000_EXPERIENCE_GOLD_50:
+            case MONEY_TREE_ABOVE_100000_EXPERIENCE_GOLD_50:
                 //存入体验金
                 // couponAssignmentService.assignUserCoupon(mobile, RED_ENVELOPE_50_DRAW_REF_MONEY_TREE_COUPON_ID);
                 break;
-            case MONEY_TREE_20000_NEWBIE_COUPON_100:
-            case MONEY_TREE_30000_NEWBIE_COUPON_100:
-            case MONEY_TREE_40000_NEWBIE_COUPON_100:
-            case MONEY_TREE_50000_NEWBIE_COUPON_100:
-            case MONEY_TREE_60000_NEWBIE_COUPON_100:
-            case MONEY_TREE_70000_NEWBIE_COUPON_100:
-            case MONEY_TREE_80000_NEWBIE_COUPON_100:
-            case MONEY_TREE_90000_NEWBIE_COUPON_100:
-            case MONEY_TREE_100000_NEWBIE_COUPON_100:
-            case MONEY_TREE_ABOVE_100000_NEWBIE_COUPON_100:
-                couponAssignmentService.assignUserCoupon(mobile, RED_ENVELOPE_100_DRAW_REF_MONEY_TREE_COUPON_ID);
+            case MONEY_TREE_20000_EXPERIENCE_GOLD_100:
+            case MONEY_TREE_30000_EXPERIENCE_GOLD_100:
+            case MONEY_TREE_40000_EXPERIENCE_GOLD_100:
+            case MONEY_TREE_50000_EXPERIENCE_GOLD_100:
+            case MONEY_TREE_60000_EXPERIENCE_GOLD_100:
+            case MONEY_TREE_70000_EXPERIENCE_GOLD_100:
+            case MONEY_TREE_80000_EXPERIENCE_GOLD_100:
+            case MONEY_TREE_90000_EXPERIENCE_GOLD_100:
+            case MONEY_TREE_100000_EXPERIENCE_GOLD_100:
+            case MONEY_TREE_ABOVE_100000_EXPERIENCE_GOLD_100:
+                //存入体验金
+                //couponAssignmentService.assignUserCoupon(mobile, RED_ENVELOPE_100_DRAW_REF_MONEY_TREE_COUPON_ID);
                 break;
-            case MONEY_TREE_20000_NEWBIE_COUPON_200:
-            case MONEY_TREE_30000_NEWBIE_COUPON_200:
-            case MONEY_TREE_40000_NEWBIE_COUPON_200:
-            case MONEY_TREE_50000_NEWBIE_COUPON_200:
-            case MONEY_TREE_60000_NEWBIE_COUPON_200:
-            case MONEY_TREE_70000_NEWBIE_COUPON_200:
-            case MONEY_TREE_80000_NEWBIE_COUPON_200:
-            case MONEY_TREE_90000_NEWBIE_COUPON_200:
-            case MONEY_TREE_100000_NEWBIE_COUPON_200:
-            case MONEY_TREE_ABOVE_100000_NEWBIE_COUPON_200:
-                couponAssignmentService.assignUserCoupon(mobile, RED_ENVELOPE_200_DRAW_REF_MONEY_TREE_COUPON_ID);
+            case MONEY_TREE_20000_EXPERIENCE_GOLD_200:
+            case MONEY_TREE_30000_EXPERIENCE_GOLD_200:
+            case MONEY_TREE_40000_EXPERIENCE_GOLD_200:
+            case MONEY_TREE_50000_EXPERIENCE_GOLD_200:
+            case MONEY_TREE_60000_EXPERIENCE_GOLD_200:
+            case MONEY_TREE_70000_EXPERIENCE_GOLD_200:
+            case MONEY_TREE_80000_EXPERIENCE_GOLD_200:
+            case MONEY_TREE_90000_EXPERIENCE_GOLD_200:
+            case MONEY_TREE_100000_EXPERIENCE_GOLD_200:
+            case MONEY_TREE_ABOVE_100000_EXPERIENCE_GOLD_200:
+                //存入体验金
+                //couponAssignmentService.assignUserCoupon(mobile, RED_ENVELOPE_200_DRAW_REF_MONEY_TREE_COUPON_ID);
                 break;
-            case MONEY_TREE_30000_NEWBIE_COUPON_300:
-            case MONEY_TREE_40000_NEWBIE_COUPON_300:
-            case MONEY_TREE_50000_NEWBIE_COUPON_300:
-            case MONEY_TREE_60000_NEWBIE_COUPON_300:
-            case MONEY_TREE_70000_NEWBIE_COUPON_300:
-            case MONEY_TREE_80000_NEWBIE_COUPON_300:
-            case MONEY_TREE_90000_NEWBIE_COUPON_300:
-            case MONEY_TREE_100000_NEWBIE_COUPON_300:
-            case MONEY_TREE_ABOVE_100000_NEWBIE_COUPON_300:
-                couponAssignmentService.assignUserCoupon(mobile, RED_ENVELOPE_300_DRAW_REF_MONEY_TREE_COUPON_ID);
+            case MONEY_TREE_30000_EXPERIENCE_GOLD_300:
+            case MONEY_TREE_40000_EXPERIENCE_GOLD_300:
+            case MONEY_TREE_50000_EXPERIENCE_GOLD_300:
+            case MONEY_TREE_60000_EXPERIENCE_GOLD_300:
+            case MONEY_TREE_70000_EXPERIENCE_GOLD_300:
+            case MONEY_TREE_80000_EXPERIENCE_GOLD_300:
+            case MONEY_TREE_90000_EXPERIENCE_GOLD_300:
+            case MONEY_TREE_100000_EXPERIENCE_GOLD_300:
+            case MONEY_TREE_ABOVE_100000_EXPERIENCE_GOLD_300:
+                //存入体验金
+                //couponAssignmentService.assignUserCoupon(mobile, RED_ENVELOPE_300_DRAW_REF_MONEY_TREE_COUPON_ID);
                 break;
-            case MONEY_TREE_50000_NEWBIE_COUPON_500:
-            case MONEY_TREE_60000_NEWBIE_COUPON_500:
-            case MONEY_TREE_70000_NEWBIE_COUPON_500:
-            case MONEY_TREE_80000_NEWBIE_COUPON_500:
-            case MONEY_TREE_90000_NEWBIE_COUPON_500:
-            case MONEY_TREE_100000_NEWBIE_COUPON_500:
-            case MONEY_TREE_ABOVE_100000_NEWBIE_COUPON_500:
-                couponAssignmentService.assignUserCoupon(mobile, RED_ENVELOPE_500_DRAW_REF_MONEY_TREE_COUPON_ID);
+            case MONEY_TREE_50000_EXPERIENCE_GOLD_500:
+            case MONEY_TREE_60000_EXPERIENCE_GOLD_500:
+            case MONEY_TREE_70000_EXPERIENCE_GOLD_500:
+            case MONEY_TREE_80000_EXPERIENCE_GOLD_500:
+            case MONEY_TREE_90000_EXPERIENCE_GOLD_500:
+            case MONEY_TREE_100000_EXPERIENCE_GOLD_500:
+            case MONEY_TREE_ABOVE_100000_EXPERIENCE_GOLD_500:
+                //存入体验金
+                //couponAssignmentService.assignUserCoupon(mobile, RED_ENVELOPE_500_DRAW_REF_MONEY_TREE_COUPON_ID);
                 break;
-            case MONEY_TREE_60000_NEWBIE_COUPON_600:
-            case MONEY_TREE_70000_NEWBIE_COUPON_600:
-            case MONEY_TREE_80000_NEWBIE_COUPON_600:
-            case MONEY_TREE_90000_NEWBIE_COUPON_600:
-            case MONEY_TREE_100000_NEWBIE_COUPON_600:
-            case MONEY_TREE_ABOVE_100000_NEWBIE_COUPON_600:
-                couponAssignmentService.assignUserCoupon(mobile, RED_ENVELOPE_600_DRAW_REF_MONEY_TREE_COUPON_ID);
+            case MONEY_TREE_60000_EXPERIENCE_GOLD_600:
+            case MONEY_TREE_70000_EXPERIENCE_GOLD_600:
+            case MONEY_TREE_80000_EXPERIENCE_GOLD_600:
+            case MONEY_TREE_90000_EXPERIENCE_GOLD_600:
+            case MONEY_TREE_100000_EXPERIENCE_GOLD_600:
+            case MONEY_TREE_ABOVE_100000_EXPERIENCE_GOLD_600:
+                //存入体验金
+                //couponAssignmentService.assignUserCoupon(mobile, RED_ENVELOPE_600_DRAW_REF_MONEY_TREE_COUPON_ID);
                 break;
-            case MONEY_TREE_80000_NEWBIE_COUPON_800:
-            case MONEY_TREE_90000_NEWBIE_COUPON_800:
-            case MONEY_TREE_100000_NEWBIE_COUPON_800:
-            case MONEY_TREE_ABOVE_100000_NEWBIE_COUPON_800:
-                couponAssignmentService.assignUserCoupon(mobile, RED_ENVELOPE_800_DRAW_REF_MONEY_TREE_COUPON_ID);
+            case MONEY_TREE_80000_EXPERIENCE_GOLD_800:
+            case MONEY_TREE_90000_EXPERIENCE_GOLD_800:
+            case MONEY_TREE_100000_EXPERIENCE_GOLD_800:
+            case MONEY_TREE_ABOVE_100000_EXPERIENCE_GOLD_800:
+                //存入体验金
+                //couponAssignmentService.assignUserCoupon(mobile, RED_ENVELOPE_800_DRAW_REF_MONEY_TREE_COUPON_ID);
                 break;
-            case MONEY_TREE_90000_NEWBIE_COUPON_1000:
-            case MONEY_TREE_100000_NEWBIE_COUPON_1000:
-            case MONEY_TREE_ABOVE_100000_NEWBIE_COUPON_1000:
-                couponAssignmentService.assignUserCoupon(mobile, RED_ENVELOPE_1000_DRAW_REF_MONEY_TREE_COUPON_ID);
+            case MONEY_TREE_90000_EXPERIENCE_GOLD_1000:
+            case MONEY_TREE_100000_EXPERIENCE_GOLD_1000:
+            case MONEY_TREE_ABOVE_100000_EXPERIENCE_GOLD_1000:
+                //存入体验金
+                //couponAssignmentService.assignUserCoupon(mobile, RED_ENVELOPE_1000_DRAW_REF_MONEY_TREE_COUPON_ID);
                 break;
-            case MONEY_TREE_ABOVE_100000_NEWBIE_COUPON_2000:
-                couponAssignmentService.assignUserCoupon(mobile, RED_ENVELOPE_2000_DRAW_REF_MONEY_TREE_COUPON_ID);
+            case MONEY_TREE_ABOVE_100000_EXPERIENCE_GOLD_2000:
+                //存入体验金
+                //couponAssignmentService.assignUserCoupon(mobile, RED_ENVELOPE_2000_DRAW_REF_MONEY_TREE_COUPON_ID);
                 break;
         }
     }

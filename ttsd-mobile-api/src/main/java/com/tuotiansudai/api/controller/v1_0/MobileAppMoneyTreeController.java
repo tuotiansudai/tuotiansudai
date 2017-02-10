@@ -3,6 +3,7 @@ package com.tuotiansudai.api.controller.v1_0;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.MoneyTreeLeftCountResponseDataDto;
 import com.tuotiansudai.api.dto.v1_0.MoneyTreePrizeResponseDataDto;
+import com.tuotiansudai.api.dto.v1_0.MoneyTreeResultListResponseDataDto;
 import com.tuotiansudai.api.service.v1_0.MobileAppMoneyTreeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -26,14 +27,14 @@ public class MobileAppMoneyTreeController extends MobileAppBaseController {
 
     @RequestMapping(value = "/get/money-tree-all-prize-list", method = RequestMethod.POST)
     @ApiOperation("运气榜")
-    public BaseResponseDto<MoneyTreeLeftCountResponseDataDto> getMoneyTreeAllPrizeList() {
-        return mobileAppMoneyTreeService.generateLeftCount(getLoginName());
+    public BaseResponseDto<MoneyTreeResultListResponseDataDto> getMoneyTreeAllPrizeList() {
+        return mobileAppMoneyTreeService.generatePrizeListTop10(getLoginName());
     }
 
     @RequestMapping(value = "/get/money-tree-my-prize-list", method = RequestMethod.POST)
     @ApiOperation("我的中奖记录")
-    public BaseResponseDto<MoneyTreeLeftCountResponseDataDto> getMoneyTreeMyPrizeList() {
-        return mobileAppMoneyTreeService.generateLeftCount(getLoginName());
+    public BaseResponseDto<MoneyTreeResultListResponseDataDto> getMoneyTreeMyPrizeList() {
+        return mobileAppMoneyTreeService.generateMyPrizeList(getLoginName());
     }
 
     @RequestMapping(value = "/get/money-tree-prize", method = RequestMethod.POST)

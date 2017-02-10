@@ -1,11 +1,12 @@
 package com.tuotiansudai.api.service.v1_0.impl;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.activity.repository.dto.DrawLotteryResultDto;
+import com.tuotiansudai.activity.repository.model.ActivityCategory;
+import com.tuotiansudai.activity.repository.model.UserLotteryPrizeView;
+import com.tuotiansudai.activity.service.LotteryActivityService;
 import com.tuotiansudai.activity.service.MoneyTreePrizeService;
-import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
-import com.tuotiansudai.api.dto.v1_0.MoneyTreeLeftCountResponseDataDto;
-import com.tuotiansudai.api.dto.v1_0.MoneyTreePrizeResponseDataDto;
-import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
+import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppMoneyTreeService;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
@@ -20,9 +21,12 @@ public class MobileAppMoneyTreeServiceImpl implements MobileAppMoneyTreeService 
 
     @Autowired
     private MoneyTreePrizeService moneyTreePrizeService;
+
     @Autowired
     private UserMapper userMapper;
+
     @Autowired
+    private LotteryActivityService lotteryActivityService;
 
     private static final int INVITE_FRIENDS_MAX_COUNT_DAY = 3;
 
@@ -52,5 +56,32 @@ public class MobileAppMoneyTreeServiceImpl implements MobileAppMoneyTreeService 
         baseDto.setCode(ReturnMessage.SUCCESS.getCode());
         baseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
         return baseDto;
+    }
+
+    @Override
+    public BaseResponseDto<MoneyTreeResultListResponseDataDto> generatePrizeListTop10(String loginName){
+        BaseResponseDto dto = new BaseResponseDto();
+        List<UserLotteryPrizeView> userLotteryPrizeViewList = moneyTreePrizeService.findDrawLotteryPrizeRecordTop10();
+        MoneyTreeResultListResponseDataDto moneyTreeResultListResponseDataDto = new MoneyTreeResultListResponseDataDto();
+        List<MoneyTreeResultResponseDataDto> moneyTreeResultResponseDataList = Lists.transform(userLotteryPrizeViewList, input -> new MoneyTreeResultResponseDataDto(input));
+        moneyTreeResultListResponseDataDto.setPrizeList(moneyTreeResultResponseDataList);
+        dto.setData(moneyTreeResultListResponseDataDto);
+        dto.setCode(ReturnMessage.SUCCESS.getCode());
+        dto.setMessage(ReturnMessage.SUCCESS.getMsg());
+        return dto;
+    }
+
+    @Override
+    public BaseResponseDto<MoneyTreeResultListResponseDataDto> generateMyPrizeList(String loginName){
+        BaseResponseDto dto = new BaseResponseDto();
+        UserModel userModel = userMapper.findByLoginName(loginName);
+        List<UserLotteryPrizeView> userLotteryPrizeViewList = moneyTreePrizeService.findDrawLotteryPrizeRecordByMobile(userModel.getMobile());
+        MoneyTreeResultListResponseDataDto moneyTreeResultListResponseDataDto = new MoneyTreeResultListResponseDataDto();
+        List<MoneyTreeResultResponseDataDto> moneyTreeResultResponseDataList = Lists.transform(userLotteryPrizeViewList, input -> new MoneyTreeResultResponseDataDto(input));
+        moneyTreeResultListResponseDataDto.setPrizeList(moneyTreeResultResponseDataList);
+        dto.setData(moneyTreeResultListResponseDataDto);
+        dto.setCode(ReturnMessage.SUCCESS.getCode());
+        dto.setMessage(ReturnMessage.SUCCESS.getMsg());
+        return dto;
     }
 }
