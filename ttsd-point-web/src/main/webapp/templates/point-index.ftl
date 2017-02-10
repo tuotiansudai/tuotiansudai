@@ -171,7 +171,6 @@
             </#if>
         </div>
     </div>
-    <a href="javascript:void(0)" class="show-login no-login-text"></a>
     <div class="tip-list-frame">
     <#--真实奖品的提示-->
         <div class="tip-list" data-return="concrete">
@@ -276,5 +275,4 @@
     <p>7.在获取和使用积分过程中，如果出现违规行为（如作弊领取等），拓天速贷将取消您获得积分的资格，并有权撤销违规交易，收回活动中所得的积分（含已使用的积分及未使用的积分），必要时将追究法律责任；</p>
     <p class="mb-15">8.拓天速贷在法律范围内保留对活动的最终解释权。</p>
 </div>
-<#include "login-tip.ftl" />
 </@global.main>

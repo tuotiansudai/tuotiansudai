@@ -156,7 +156,7 @@ require(['jquery', 'layerWrapper', 'template', 'drawCircle', 'jquery.ajax.extens
 						drawCircle.tipWindowPop(tipGroupObj['nochance']);
 					} else if (data.returnCode == 2) {
 						//未登录
-						$('.no-login-text', $christmasDayFrame).trigger('click'); //弹框登录
+						location.href='/login';
 
 					} else if (data.returnCode == 3) {
 						//不在活动时间范围内！
