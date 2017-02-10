@@ -244,18 +244,14 @@ public class LoanServiceTest {
         doNothing().when(referrerRewardService).rewardReferrer(any(LoanModel.class), anyList());
         when(userMapper.findByLoginName(anyString())).thenReturn(userModel);
         when(loanMapper.findById(anyLong())).thenReturn(loanModel);
-        when(smsWrapperClient.sendInvestNotify(any(InvestSmsNotifyDto.class))).thenReturn(new BaseDto<>());
         when(redisWrapperClient.hget(anyString(), anyString())).thenReturn("");
         when(redisWrapperClient.hset(anyString(), anyString(), anyString())).thenReturn(1l);
         when(anxinSignService.createLoanContracts(anyLong())).thenReturn(new BaseDto());
         when(jobManager.newJob(any(JobType.class), eq(AnxinCreateContractJob.class))).thenReturn(triggeredJobBuilder);
 
         loanService.postLoanOut(loanModel.getId());
-        verify(smsWrapperClient, times(1)).sendInvestNotify(any(InvestSmsNotifyDto.class));
-
         when(redisWrapperClient.hget(anyString(), anyString())).thenReturn(SyncRequestStatus.SUCCESS.name());
         loanService.postLoanOut(loanModel.getId());
-        verify(smsWrapperClient,times(1)).sendInvestNotify(any(InvestSmsNotifyDto.class));
     }
 
     public UserModel getUserModelTest() {
