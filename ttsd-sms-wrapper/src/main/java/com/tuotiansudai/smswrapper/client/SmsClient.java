@@ -162,10 +162,11 @@ public class SmsClient implements ApplicationContextAware {
             }
         }
 
-        logger.info(String.format("send sms success, mobileList: %s, template: %s, params: %s",
+        logger.info(String.format("send sms success, mobileList: %s, template: %s, params: %s, channel: %s",
                 String.join(",", mobileList),
                 template.name(),
-                String.join(",", paramList)));
+                String.join(",", paramList),
+                successChannel));
 
         return successChannel;
     }
