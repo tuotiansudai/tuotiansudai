@@ -31,7 +31,14 @@ public abstract class BaseClient {
 
     protected ObjectMapper objectMapper = new ObjectMapper();
 
-    private OkHttpClient okHttpClient = new OkHttpClient();
+    private OkHttpClient okHttpClient = buildOkHttpClient();
+
+    private OkHttpClient buildOkHttpClient() {
+        OkHttpClient okHttpClient = new OkHttpClient();
+        OkHttpLoggingInterceptor loggingInterceptor = new OkHttpLoggingInterceptor(message -> logger.info(message));
+        okHttpClient.interceptors().add(loggingInterceptor);
+        return okHttpClient;
+    }
 
     protected String execute(String path, String requestJson, String method) {
         String url = URL_TEMPLATE.replace("{host}", this.getHost()).replace("{port}", this.getPort()).replace("{applicationContext}", getApplicationContext()).replace("{uri}", path);

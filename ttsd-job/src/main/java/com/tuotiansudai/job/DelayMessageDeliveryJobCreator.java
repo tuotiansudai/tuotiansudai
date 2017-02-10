@@ -14,7 +14,7 @@ import java.util.List;
 public class DelayMessageDeliveryJobCreator {
     private static Logger logger = Logger.getLogger(DelayMessageDeliveryJobCreator.class);
 
-    private final static int ANXIN_CONTRACT_QUERY_DELAY_SECONDS = 3 * 60;
+    private final static int ANXIN_CONTRACT_QUERY_DELAY_SECONDS = 10 * 60;
     private final static int AUTO_LOAN_OUT_DELAY_SECONDS = 30 * 60;
 
     public static void createAnxinContractQueryDelayJob(JobManager jobManager, long businessId, String anxinContractType, List<String> batchNo) {
