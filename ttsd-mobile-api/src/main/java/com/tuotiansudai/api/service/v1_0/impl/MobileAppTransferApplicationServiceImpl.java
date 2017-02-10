@@ -14,6 +14,7 @@ import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
+import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
@@ -69,6 +70,8 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
     private CouponRepayMapper couponRepayMapper;
     @Autowired
     private UserMembershipEvaluator userMembershipEvaluator;
+    @Autowired
+    private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
 
@@ -80,10 +83,6 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
 
     @Autowired
     private PageValidUtils pageValidUtils;
-
-    @Autowired
-    private LoanRepayMapper loanRepayMapper;
-
 
     @Override
     public BaseResponseDto<TransferApplicationResponseDataDto> generateTransferApplication(TransferApplicationRequestDto requestDto) {
@@ -242,8 +241,7 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
         transferPurchaseResponseDataDto.setBalance(AmountConverter.convertCentToString((accountMapper.findByLoginName(requestDto.getBaseParam().getUserId()).getBalance())));
         transferPurchaseResponseDataDto.setTransferAmount(AmountConverter.convertCentToString((transferApplicationModel.getTransferAmount())));
         List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(transferApplicationModel.getStatus() == TransferStatus.SUCCESS ? transferApplicationModel.getInvestId() : transferApplicationModel.getTransferInvestId());
-        MembershipModel membershipModel = userMembershipEvaluator.evaluate(requestDto.getBaseParam().getUserId());
-        double investFeeRate = membershipModel == null ? defaultFee : membershipModel.getFee();
+        double investFeeRate = membershipPrivilegePurchaseService.obtainServiceFee(requestDto.getBaseParam().getUserId());
         transferPurchaseResponseDataDto.setExpectedInterestAmount(AmountConverter.convertCentToString(InterestCalculator.calculateTransferInterest(transferApplicationModel, investRepayModels, investFeeRate)));
 
         dto.setCode(ReturnMessage.SUCCESS.getCode());
@@ -347,6 +345,8 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
 
         MembershipModel membershipModel = userMembershipEvaluator.evaluateSpecifiedDate(userInvestRepayRequestDto.getBaseParam().getUserId(), transferApplicationModel.getTransferTime());
         userInvestRepayResponseDataDto.setMembershipLevel(String.valueOf(membershipModel.getLevel()));
+        double investFeeRate = membershipPrivilegePurchaseService.obtainServiceFee(userInvestRepayRequestDto.getBaseParam().getUserId());
+        userInvestRepayResponseDataDto.setServiceFeeDesc(ServiceFeeReduce.getDescriptionByRate(investFeeRate));
         BaseResponseDto baseResponseDto = new BaseResponseDto(ReturnMessage.SUCCESS.getCode(), ReturnMessage.SUCCESS.getMsg());
         baseResponseDto.setData(userInvestRepayResponseDataDto);
 

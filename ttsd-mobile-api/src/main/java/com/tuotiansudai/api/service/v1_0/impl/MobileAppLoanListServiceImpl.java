@@ -11,6 +11,7 @@ import com.tuotiansudai.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
+import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.ExtraLoanRateMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
@@ -47,9 +48,6 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
     private ExtraLoanRateMapper extraLoanRateMapper;
 
     @Autowired
-    private UserMembershipEvaluator userMembershipEvaluator;
-
-    @Autowired
     private LoanDetailsMapper loanDetailsMapper;
 
     @Autowired
@@ -60,6 +58,9 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
 
     @Autowired
     private PageValidUtils pageValidUtils;
+
+    @Autowired
+    private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
 
     @Override
     public BaseResponseDto<LoanListResponseDataDto> generateLoanList(LoanListRequestDto loanListRequestDto) {
@@ -165,8 +166,7 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
                 loanResponseDataDto.setExtraSource(loanDetailsModel.getExtraSource() != null ? (loanDetailsModel.getExtraSource().size() == 1 && loanDetailsModel.getExtraSource().contains(Source.WEB)) ? Source.WEB.name() : null : null);
             }
 
-            MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
-            double investFeeRate = membershipModel == null ? defaultFee : membershipModel.getFee();
+            double investFeeRate = membershipPrivilegePurchaseService.obtainServiceFee(loginName);
             if (ProductType.EXPERIENCE == loan.getProductType()) {
                 investFeeRate = this.defaultFee;
             }

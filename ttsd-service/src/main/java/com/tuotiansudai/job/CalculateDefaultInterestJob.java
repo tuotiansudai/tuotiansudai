@@ -8,6 +8,7 @@ import org.quartz.JobExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+@Deprecated
 @Component
 public class CalculateDefaultInterestJob implements Job{
 
@@ -19,7 +20,7 @@ public class CalculateDefaultInterestJob implements Job{
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         logger.info("trigger CalculateDefaultInterestJob job");
-        loanRepayService.calculateDefaultInterest();
+//        loanRepayService.calculateDefaultInterest();
     }
 
 }

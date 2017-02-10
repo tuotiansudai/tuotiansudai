@@ -6,6 +6,7 @@ import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.dto.v1_0.UserInvestRepayRequestDto;
 import com.tuotiansudai.api.dto.v1_0.UserInvestRepayResponseDataDto;
 import com.tuotiansudai.api.service.v1_0.impl.MobileAppUserInvestRepayServiceImpl;
+import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
 import com.tuotiansudai.repository.mapper.CouponMapper;
 import com.tuotiansudai.repository.mapper.CouponRepayMapper;
 import com.tuotiansudai.repository.mapper.UserCouponMapper;
@@ -45,17 +46,9 @@ public class MobileAppUserInvestRepayServiceTest extends ServiceTestBase{
     @InjectMocks
     private MobileAppUserInvestRepayServiceImpl mobileAppUserInvestRepayService;
     @Mock
-    private UserMapper userMapper;
-    @Mock
     private IdGenerator idGenerator;
     @Mock
     private InvestRepayMapper investRepayMapper;
-    @Mock
-    private LoanTitleRelationMapper loanTitleRelationMapper;
-    @Mock
-    private InvestMapper investMapper;
-    @Mock
-    private LoanTitleMapper loanTitleMapper;
 
     @Mock
     private InvestService investService;
@@ -84,6 +77,9 @@ public class MobileAppUserInvestRepayServiceTest extends ServiceTestBase{
     @Mock
     private LoanMapper loanMapper;
 
+    @Mock
+    private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
+
     @Test
     public void shouldUserInvestRepayOnePeriodCompleteIsOk(){
         LoanModel loanModel = createLoanModel();
@@ -102,6 +98,7 @@ public class MobileAppUserInvestRepayServiceTest extends ServiceTestBase{
         when(investExtraRateMapper.findByInvestId(anyLong())).thenReturn(new InvestExtraRateModel());
         when(loanMapper.findById(anyLong())).thenReturn(loanModel);
         when(userMembershipEvaluator.evaluateSpecifiedDate(anyString(), any(Date.class))).thenReturn(new MembershipModel(0, 1, 0, 0.1));
+        when(membershipPrivilegePurchaseService.obtainServiceFee(anyString())).thenReturn(0.1);
         UserInvestRepayRequestDto userInvestRepayRequestDto =  new UserInvestRepayRequestDto();
         userInvestRepayRequestDto.setInvestId(String.valueOf(investModel.getId()));
 
@@ -134,6 +131,7 @@ public class MobileAppUserInvestRepayServiceTest extends ServiceTestBase{
         when(loanService.findLoanById(anyLong())).thenReturn(loanModel);
         when(investRepayMapper.findByInvestIdAndPeriodAsc(anyLong())).thenReturn(investRepayModels);
         when(userMembershipEvaluator.evaluateSpecifiedDate(anyString(), any(Date.class))).thenReturn(new MembershipModel(0, 1, 0, 0.1));
+        when(membershipPrivilegePurchaseService.obtainServiceFee(anyString())).thenReturn(0.1);
         when(investExtraRateMapper.findByInvestId(anyLong())).thenReturn(new InvestExtraRateModel());
         when(loanMapper.findById(anyLong())).thenReturn(loanModel);
 
@@ -152,7 +150,6 @@ public class MobileAppUserInvestRepayServiceTest extends ServiceTestBase{
         assertEquals("0.20", responseDto.getData().getActualInterest());
         assertEquals(3, responseDto.getData().getInvestRepays().size());
     }
-
 
     @Test
     public void shouldUserInvestRepayThreePeriodCompleteIsOk(){
@@ -186,6 +183,7 @@ public class MobileAppUserInvestRepayServiceTest extends ServiceTestBase{
         when(investExtraRateMapper.findByInvestId(anyLong())).thenReturn(new InvestExtraRateModel());
         when(loanMapper.findById(anyLong())).thenReturn(loanModel);
         when(userMembershipEvaluator.evaluateSpecifiedDate(anyString(), any(Date.class))).thenReturn(new MembershipModel(0, 1, 0, 0.1));
+        when(membershipPrivilegePurchaseService.obtainServiceFee(anyString())).thenReturn(0.1);
         UserInvestRepayRequestDto userInvestRepayRequestDto =  new UserInvestRepayRequestDto();
         userInvestRepayRequestDto.setInvestId(String.valueOf(investModel.getId()));
 

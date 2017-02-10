@@ -35,11 +35,4 @@ public class DateConvertUtil {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
         return DateConvertUtil.dateToLocalDateTime(date).format(formatter);
     }
-
-    public static LocalDateTime stringToLocalDateTime(String dateTimeString){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        return LocalDateTime.parse(dateTimeString, formatter);
-    }
-
-
 }

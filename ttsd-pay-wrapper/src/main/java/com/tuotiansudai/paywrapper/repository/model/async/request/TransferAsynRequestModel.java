@@ -30,27 +30,28 @@ public class TransferAsynRequestModel extends BaseAsyncRequestModel {
 
     }
 
-    public static TransferAsynRequestModel createMembershipPurchaseRequestModel(String orderId, String payUserId, String amount, Source source) {
-        String retUrl = MessageFormat.format("{0}/callback/{1}", getCallbackMobileHost(), MobileFrontCallbackService.MEMBERSHIP_PURCHASE.getServiceName());
-        String notifyUrl = MessageFormat.format("{0}/{1}", getCallbackBackHost(), "membership-purchase-notify");
-        TransferAsynRequestModel asynRequestModel = new TransferAsynRequestModel(orderId, payUserId, amount, retUrl, notifyUrl);
+    public static TransferAsynRequestModel createMembershipPrivilegePurchaseRequestModel(String orderId, String payUserId, String payAccountId, String amount, Source source) {
+        String retUrl = MessageFormat.format("{0}/callback/{1}", getCallbackMobileHost(), MobileFrontCallbackService.MEMBERSHIP_PRIVILEGE_PURCHASE.getServiceName());
+        String notifyUrl = MessageFormat.format("{0}/{1}", getCallbackBackHost(), "membership-privilege-purchase-notify");
+        TransferAsynRequestModel asynRequestModel = new TransferAsynRequestModel(orderId, payUserId,payAccountId,amount, retUrl, notifyUrl);
         if (Lists.newArrayList(Source.ANDROID, Source.IOS).contains(source)) {
             asynRequestModel.setSourceV("HTML5");
         }
         return asynRequestModel;
     }
 
-    public static TransferAsynRequestModel createSystemRechargeRequestModel(String orderId, String payUserId, String amount) {
+    public static TransferAsynRequestModel createSystemRechargeRequestModel(String orderId, String payUserId, String payAccountId,String amount) {
         String retUrl = MessageFormat.format("{0}/finance-manage/system-bill", getCallbackConsoleHost());
         String notifyUrl = MessageFormat.format("{0}/{1}", getCallbackBackHost(), "system_recharge_notify");
-        return new TransferAsynRequestModel(orderId, payUserId, amount, retUrl, notifyUrl);
+        return new TransferAsynRequestModel(orderId, payUserId,payAccountId, amount, retUrl, notifyUrl);
     }
 
-    private TransferAsynRequestModel(String orderId, String payUserId, String amount, String retUrl, String notifyUrl) {
+    private TransferAsynRequestModel(String orderId, String payUserId,String payAccountId, String amount, String retUrl, String notifyUrl) {
         this.service = "transfer_asyn";
         this.orderId = orderId;
         this.merDate = new SimpleDateFormat("yyyyMMdd").format(new Date());
         this.particUserId = payUserId;
+        this.particAccountId = payAccountId;
         this.amount = amount;
         this.retUrl = retUrl;
         this.notifyUrl = notifyUrl;

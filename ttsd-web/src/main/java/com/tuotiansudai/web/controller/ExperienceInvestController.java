@@ -21,7 +21,7 @@ public class ExperienceInvestController {
     @Autowired
     private ExperienceInvestService experienceInvestService;
 
-    @RequestMapping(path = "/experience-invest", method = RequestMethod.POST)
+//    @RequestMapping(path = "/experience-invest", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<BaseDataDto> invest(@Valid @ModelAttribute InvestDto investDto) {
         investDto.setSource(Source.WEB);

@@ -81,7 +81,7 @@ public class MembershipController {
             MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
             UserMembershipModel userMembershipModel = userMembershipEvaluator.evaluateUserMembership(loginName, new Date());
 
-            if(userMembershipModel != null && (userMembershipModel.getType() == UserMembershipType.GIVEN || userMembershipModel.getType() == UserMembershipType.PURCHASED))
+            if(userMembershipModel != null && (userMembershipModel.getType() == UserMembershipType.GIVEN))
             {
                 modelAndView.addObject("membershipLevel", MembershipLevel.V5.getLevel());
             }
