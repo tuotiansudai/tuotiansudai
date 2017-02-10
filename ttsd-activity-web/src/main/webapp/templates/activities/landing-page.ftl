@@ -20,8 +20,9 @@
                 <dd><i>3</i>天 <br/><em>项目期限</em></dd>
             </dl>
 
-            <div class="tc"><a href="/register/user" class="btn-normal" id="btn-experience">领取6888元体验金</a></div>
-
+            <@global.isAnonymous>
+                <div class="tc"><a href="/register/user" class="btn-normal" id="btn-experience">领取6888元体验金</a></div>
+            </@global.isAnonymous>
         </div>
 
         <div class="newbie-step-two">
@@ -167,10 +168,11 @@
                                 <input type="hidden" name="referrer" value="">
                                 <input type="submit" class="register-user" value="立即注册">
                             </li>
-                            <li class="tc mobile-agreement">
-                                <label>点击立即注册即同意拓天速贷<a href="javascript:void(0);"
-                                                       class="show-agreement">《服务协议》</a></label>
-                            </li>
+                            <@global.isAnonymous>
+                                <li class="tc mobile-agreement">
+                                    <label>点击立即注册即同意拓天速贷<a href="/register/user" class="show-agreement">《服务协议》</a></label>
+                                </li>
+                            </@global.isAnonymous>
                         </ul>
                     </form>
 
@@ -178,9 +180,8 @@
             </div>
         </#if>
     </div>
-
-
 </div>
+
 <div class="image-captcha-dialog" style="display: none;">
     <form class="image-captcha-form" action="/register/user/send-register-captcha" method="post">
         <div class="image-captcha-inner">
