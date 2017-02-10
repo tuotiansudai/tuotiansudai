@@ -9,5 +9,9 @@ require(['jquery', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicker', 'bootstr
         $('#firstInvestEndDatetimepicker').datetimepicker({format: 'YYYY-MM-DD HH:mm'});
         $('#secondInvestStartDatetimepicker').datetimepicker({format: 'YYYY-MM-DD HH:mm'});
         $('#secondInvestEndDatetimepicker').datetimepicker({format: 'YYYY-MM-DD HH:mm'});
+
+        $('form button[type="reset"]').click(function () {
+            location.href = "/user-manage/remain-users";
+        });
     });
 });
