@@ -416,10 +416,10 @@
                 AND u.identity_number is null
             </if>
             <if test="invested != null and invested == 'true' ">
-                AND EXISTS (select 1 from invest i where i.login_name=u.login_name and i.status='SUCCESS' order by i.created_time asc limit 1)
+                AND EXISTS (select 1 from invest i where i.login_name=u.login_name and i.status='SUCCESS' and loan_id != 1 order by i.created_time asc limit 1)
             </if>
             <if test="invested != null and invested == 'false' ">
-                AND NOT EXISTS (select 1 from invest i where i.login_name=u.login_name and i.status='SUCCESS' order by i.created_time asc limit 1)
+                AND NOT EXISTS (select 1 from invest i where i.login_name=u.login_name and i.status='SUCCESS' and loan_id != 1 order by i.created_time asc limit 1)
             </if>
             <if test="totalInvestAmountStart != null and totalInvestAmountStart != '' ">
                 AND (select sum(amount) from invest i where i.login_name=u.login_name and i.status='SUCCESS') >= #{totalInvestAmountStart}
@@ -500,7 +500,7 @@
             u.register_time,
             DATEDIFF(IFNULL((select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS' order by i.created_time asc limit 1),now()),
                 u.register_time) as no_invest_period,
-            EXISTS (select 1 from invest i where i.login_name=u.login_name and i.status='SUCCESS' order by i.created_time asc limit 1) as invested,
+            EXISTS (select 1 from invest i where i.login_name=u.login_name and i.status='SUCCESS' and loan_id != 1 order by i.created_time asc limit 1) as invested,
             (select sum(amount) from invest i where i.login_name=u.login_name and i.status='SUCCESS') as total_invest_amount,
             (select count(1) from invest i where i.login_name=u.login_name and i.status='SUCCESS') as invest_count,
             (select count(distinct l.id) from loan l, invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id = l.id and l.id != 1) as loan_count,
@@ -534,10 +534,10 @@
                 AND u.identity_number is null
             </if>
             <if test="invested != null and invested == 'true' ">
-                AND EXISTS (select 1 from invest i where i.login_name=u.login_name and i.status='SUCCESS' order by i.created_time asc limit 1)
+                AND EXISTS (select 1 from invest i where i.login_name=u.login_name and i.status='SUCCESS' and loan_id != 1 order by i.created_time asc limit 1)
             </if>
             <if test="invested != null and invested == 'false' ">
-                AND NOT EXISTS (select 1 from invest i where i.login_name=u.login_name and i.status='SUCCESS' order by i.created_time asc limit 1)
+                AND NOT EXISTS (select 1 from invest i where i.login_name=u.login_name and i.status='SUCCESS' and loan_id != 1 order by i.created_time asc limit 1)
             </if>
             <if test="totalInvestAmountStart != null and totalInvestAmountStart != '' ">
                 AND (select sum(amount) from invest i where i.login_name=u.login_name and i.status='SUCCESS') >= #{totalInvestAmountStart}
