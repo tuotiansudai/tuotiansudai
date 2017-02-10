@@ -85,9 +85,9 @@ require(['jquery', 'layerWrapper', 'template', 'drawCircle', 'jquery.ajax.extens
 			var $rewardGiftBox = $('.nine-lottery-group', $christmasDayFrame);
 
 			var $MobileNumber = $('#MobileNumber'),
-				pointAllList = '/point/point-draw/all-list', //中奖记录接口地址
-				pointUserList = '/point/point-draw/user-list', //我的奖品接口地址
-				drawURL = '/point/point-draw/draw', //抽奖的接口链接
+				pointAllList = '/activity/point-draw/all-list', //中奖记录接口地址
+				pointUserList = '/activity/point-draw/user-list', //我的奖品接口地址
+				drawURL = '/activity/point-draw/draw', //抽奖的接口链接
 				$pointerImg = $('.lottery-btn', $rewardGiftBox),
 				myMobileNumber = $MobileNumber.length ? $MobileNumber.data('mobile') : ''; //当前登录用户的手机号
 
@@ -98,7 +98,7 @@ require(['jquery', 'layerWrapper', 'template', 'drawCircle', 'jquery.ajax.extens
 
 			var paramData = {
 				"mobile": myMobileNumber,
-				"activityCategory": "CARNIVAL_ACTIVITY"
+				"activityCategory": "POINT_SHOP_DRAW_1000"
 			};
 			var drawCircle = new drawCircle(pointAllList, pointUserList, drawURL, paramData, $rewardGiftBox);
 

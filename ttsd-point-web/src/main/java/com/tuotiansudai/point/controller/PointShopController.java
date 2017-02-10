@@ -14,7 +14,6 @@ import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.point.repository.model.ProductOrderViewDto;
 import com.tuotiansudai.point.repository.model.UserAddressModel;
 import com.tuotiansudai.point.service.*;
-import com.tuotiansudai.point.util.PrizeImageUtils;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.spring.LoginUserInfo;
@@ -54,9 +53,6 @@ public class PointShopController {
     private SignInService signInService;
 
     @Autowired
-    private PrizeImageUtils prizeImageUtils;
-
-    @Autowired
     private UserMembershipEvaluator userMembershipEvaluator;
 
     private static final String PRIZE_CONFIG_FILE = "pointLotteryImages.json";
@@ -74,8 +70,6 @@ public class PointShopController {
 
         List<ProductShowItemDto> physicalProducts = productService.findAllProductsByGoodsTypes(Lists.newArrayList(GoodsType.PHYSICAL));
         modelAndView.addObject("physicalProducts", physicalProducts);
-
-        modelAndView.addObject("prizes", prizeImageUtils.getPrizeImageInfo(PRIZE_CONFIG_FILE));
 
         boolean isLogin = userService.loginNameIsExist(loginName);
         boolean isShowDiscount = membershipModel == null ? false : membershipModel.getLevel() > 1 ? true : false;
