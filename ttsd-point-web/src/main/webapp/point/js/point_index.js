@@ -110,34 +110,35 @@ require(['jquery', 'layerWrapper', 'template', 'drawCircle', 'jquery.ajax.extens
 
 			//**********************开始抽奖**********************//
 			$pointerImg.on('click', function() {
+				drawCircle.tipWindowPop(tipGroupObj['concrete']);
 				drawCircle.beginLuckDraw(function(data) {
 					var prizeKind;
 
 					if (data.returnCode == 0) {
 
 						switch (data.prize) {
-							case 'M1_PHONE': //锤子M1手机
+							case 'POINT_SHOP_INTEREST_COUPON_2': //0.2加息券
 								prizeKind = 7;
 								break;
-							case 'HUMIDIFIER': //小熊加湿器
+							case 'POINT_SHOP_RED_ENVELOPE_10': //10元投资红包
 								prizeKind = 0;
 								break;
-							case 'HAIR_DRIER': //飞科电吹风机
+							case 'POINT_SHOP_POINT_500': //500积分
 								prizeKind = 1;
 								break;
-							case 'IQIYI_MEMBERSHIP_REF_CARNIVAL': //爱奇艺会员
+							case 'POINT_SHOP_PHONE_CHARGE_10': //10元话费
 								prizeKind = 5;
 								break;
-							case 'TELEPHONE_FARE_10_REF_CARNIVAL': //10元话费
+							case 'OINT_SHOP_JD_100': //100元京东卡
 								prizeKind = 2;
 								break;
-							case 'BAMBOO_CHARCOAL_PACKAGE': //卡通汽车竹炭包
+							case 'POINT_SHOP_POINT_3000': //3000积分
 								prizeKind = 6;
 								break;
-							case 'INTEREST_COUPON_5_POINT_DRAW_REF_CARNIVAL': //0.5加息券
+							case 'POINT_SHOP_INTEREST_COUPON_5': //0.5加息券
 								prizeKind = 3;
 								break;
-							case 'RED_ENVELOPE_50_POINT_DRAW_REF_CARNIVAL': //50元红包
+							case 'RED_ENVELOPE_50_POINT_DRAW_REF_CARNIVAL': //50元投资红包
 								prizeKind = 4;
 								break;
 						}
