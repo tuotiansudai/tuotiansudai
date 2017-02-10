@@ -37,64 +37,6 @@
 		</h3>
 		<div class="record-group">
 			<ul class="record-item active" id="recordList"></ul>
-			<script type="text/html" id="recordListTpl">
-			{{each list}}
-				<li>
-					<span class="text-item">恭喜{{$value.mobile}}抽中了{{$value.prizeValue}}</span>
-				</li>
-			{{/each}}
-			</script>
-			
-			<ul class="record-item my-gift" id="myRecord"></ul>
-			<script type="text/html" id="myRecordTpl">
-			{{each list}}
-				<li>
-					<span class="text-item">{{$value.prizeValue}}</span>
-					<span class="time-item">{{$value.lotteryTime}}</span>
-				</li>
-			{{/each}}
-			</script>
-			
 		</div>
 	</div>
-	<div class="lottery-tip" id="lotteryTip"></div>
-		<script type="text/html" id="lotteryTipTpl">
-		<i class="close-btn close-item"></i>
-			<div class="text-list">
-			{{if returnCode == 0}}
-				{{if prizeType=='CONCRETE'}}
-                	<p class="title-text"><img src="${staticServer}/point/images/nine-lottery/title-bg.png" width="25%"></p>
-					<p class="intro-text">抽中了{{prizeValue}}</p>
-					<p class="info-text">拓天客服将会在7个工作日内联系您发放奖品！</p>
-				{{else if prizeType=='VIRTUAL'}}
-					<p class="title-text"><img src="${staticServer}/point/images/nine-lottery/title-bg.png" width="25%"></p>
-					<p class="intro-text">抽中了{{prizeValue}}</p>
-					<p class="info-text">奖品已发放至“我的宝藏”当中。</p>
-				{{else}}
-                {{/if}}
-			{{else if returnCode == 1}}
-				<p class="no-time">您暂无抽奖机会啦～</p>
-				<p class="info-text">赢取机会后再来抽奖吧！</p>
-			{{else if returnCode == 3}}
-                <p class="no-time">活动已过期～</p>
-                <p class="info-text">更多活动即将登场！</p>
-			{{/if}}
-
-			</div>
-			<div class="btn-list">
-			{{if returnCode == 0}}
-				{{if prizeType=='CONCRETE'}}
-					<a href="javascript:void(0)" class="tip-btn close-item">继续抽奖</a>
-				{{else if prizeType=='VIRTUAL'}}
-					<a href="/loan-list" class="tip-btn">去使用</a><a href="javascript:void(0)" class="tip-btn close-item">继续抽奖</a>
-				{{else}}
-				{{/if}}
-			{{else if returnCode == 1}}
-				<a href="javascript:void(0)" class="tip-btn close-item">知道了</a>
-			{{else if returnCode == 3}}
-                <a href="javascript:void(0)" class="tip-btn close-item">知道了</a>
-			{{/if}}
-			</div>
-		</script>
-
 </div>
