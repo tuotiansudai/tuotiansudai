@@ -75,7 +75,7 @@
             <ul class="material-list">
                 <#list virtualProducts as virtualProduct>
                     <li data-href="/point-shop/${virtualProduct.id?c}/${virtualProduct.goodsType.name()}/detail">
-                        <#if isLogin>
+                        <#if isLogin && isShowDiscount>
                             <i class="hot-icon">
                                 <span>${discountShow!}</span>
                             </i>
@@ -120,7 +120,7 @@
             <ul class="material-list">
                 <#list physicalProducts as physicalProduct>
                     <li data-href="/point-shop/${physicalProduct.id?c}/${physicalProduct.goodsType.name()}/detail">
-                        <#if isLogin>
+                        <#if isLogin && isShowDiscount>
                             <i class="hot-icon">
                                 <span>${discountShow!}</span>
                             </i>

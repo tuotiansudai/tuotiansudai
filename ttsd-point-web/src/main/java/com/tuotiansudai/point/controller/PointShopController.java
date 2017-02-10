@@ -5,6 +5,8 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.membership.repository.model.MembershipModel;
+import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.point.repository.dto.PointBillPaginationItemDataDto;
 import com.tuotiansudai.point.repository.dto.ProductShowItemDto;
 import com.tuotiansudai.point.repository.model.GoodsType;
@@ -54,12 +56,17 @@ public class PointShopController {
     @Autowired
     private PrizeImageUtils prizeImageUtils;
 
+    @Autowired
+    private UserMembershipEvaluator userMembershipEvaluator;
+
     private static final String PRIZE_CONFIG_FILE = "pointLotteryImages.json";
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView pointSystemHome() {
         ModelAndView modelAndView = new ModelAndView("point-index");
         String loginName = LoginUserInfo.getLoginName();
+
+        MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
 
         List<ProductShowItemDto> virtualProducts = productService.findAllProductsByGoodsTypes(Lists.newArrayList(GoodsType.COUPON,
                 GoodsType.VIRTUAL));
@@ -71,6 +78,7 @@ public class PointShopController {
         modelAndView.addObject("prizes", prizeImageUtils.getPrizeImageInfo(PRIZE_CONFIG_FILE));
 
         boolean isLogin = userService.loginNameIsExist(loginName);
+        boolean isShowDiscount = membershipModel == null ? false : membershipModel.getLevel() > 1 ? true : false;
         if (isLogin) {
             modelAndView.addObject("userPoint", accountService.getUserPointByLoginName(loginName));
             modelAndView.addObject("isSignIn", signInService.signInIsSuccess(loginName));
@@ -78,6 +86,7 @@ public class PointShopController {
         }
         modelAndView.addObject("discount", isLogin ? productService.discountRate(loginName) : 1.0);
         modelAndView.addObject("isLogin", isLogin);
+        modelAndView.addObject("isShowDiscount", isShowDiscount);
         modelAndView.addObject("responsive", true);
         return modelAndView;
     }
