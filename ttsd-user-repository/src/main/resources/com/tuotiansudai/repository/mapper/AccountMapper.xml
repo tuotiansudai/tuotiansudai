@@ -98,7 +98,7 @@
         select id,login_name, balance,register_time from account
         <where>
             <if test="startTime != null and startTime != ''">
-                register_time > #{startTime}
+                register_time >= #{startTime}
             </if>
         </where>
         order by register_time asc
