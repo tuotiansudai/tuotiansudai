@@ -33,6 +33,6 @@ public interface AccountMapper {
 
     long count();
 
-    List<AccountModel> findAccountWithBalance(@Param(value = "startLimit") int startLimit,
-                                              @Param(value = "endLimit") int endLimit);
+    List<AccountModel> findAccountWithBalance(@Param(value = "startTime") String startTime,
+                                              @Param(value = "offset") int offset);
 }
