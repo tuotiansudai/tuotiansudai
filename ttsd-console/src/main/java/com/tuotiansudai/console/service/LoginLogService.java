@@ -35,7 +35,7 @@ public class LoginLogService {
         String loginName = userModel != null ? userModel.getLoginName() : loginNameMobile;
         String mobile = userModel != null ? userModel.getMobile() : loginNameMobile;
 
-        long count = loginLogMapper.count(loginName, mobile, success, loginLogTableName);
+        long count = loginLogMapper.count(loginName, mobile, success, loginLogTableName, source);
 
         List<LoginLogModel> data = loginLogMapper.getPaginationData(loginName, mobile, success, source, PaginationUtil.calculateOffset(index, pageSize, count), pageSize, loginLogTableName);
 

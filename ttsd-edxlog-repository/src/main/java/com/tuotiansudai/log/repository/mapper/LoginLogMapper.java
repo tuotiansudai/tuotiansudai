@@ -16,7 +16,8 @@ public interface LoginLogMapper {
     long count(@Param("loginName") String loginName,
                @Param("mobile") String mobile,
                @Param("success") Boolean success,
-               @Param("table") String table);
+               @Param("table") String table,
+               @Param("source") Source source);
 
     List<LoginLogModel> getPaginationData(@Param("loginName") String loginName,
                                           @Param("mobile") String mobile,
