@@ -1,6 +1,6 @@
 <div class="nine-lottery-group">
 	<div class="lottery-left-group">
-		<ul class="lottery-item" id="lottery">
+		<ul class="lottery-item" id="lotteryBox">
 			<li class="lottery-unit lottery-unit-0" data-unit="0">
 				<img src="${staticServer}/point/images/nine-lottery/gift-one.png">
 			</li>
