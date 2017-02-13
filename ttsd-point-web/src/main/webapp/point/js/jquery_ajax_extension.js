@@ -8,8 +8,7 @@ define(['jquery'], function ($) {
     $(document).ajaxError(function (event, jqXHR, ajaxSettings, thrownError) {
         if (jqXHR.status == 403) {
             if (jqXHR.responseText) {
-                var responseJson = JSON.parse(jqXHR.responseText);
-                var data = responseJson.data;
+                var data = JSON.parse(jqXHR.responseText);
                 window.location.href = data.directUrl + (data.refererUrl ? "?redirect=" + data.refererUrl : '');
             }
         }

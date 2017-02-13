@@ -36,15 +36,15 @@ define(['jquery', 'rotate', 'lottery_unit','commonFun'], function($,rotate,lotte
                 type: 'GET',
                 dataType: 'json'
             })
-                .done(function(data) {
-                    var UlList=[];
-                    for(var i=0,len=data.length;i<len;i++) {
-                        UlList.push('<li>恭喜'+data[i].mobile+'抽中了'+data[i].prizeValue+'</li>');
-                    }
+            .done(function(data) {
+                var UlList=[];
+                for(var i=0,len=data.length;i<len;i++) {
+                    UlList.push('<li>恭喜'+data[i].mobile+'抽中了'+data[i].prizeValue+'</li>');
+                }
 
-                    this.giftCircleFrame.find('.user-record').empty().append(UlList.join(''));
-                    this.hoverScrollList(this.giftCircleFrame.find('.user-record'),length);
-                }.bind(this));
+                this.giftCircleFrame.find('.user-record').empty().append(UlList.join(''));
+                this.hoverScrollList(this.giftCircleFrame.find('.user-record'),length);
+            }.bind(this));
         }
 
         //我的奖品
@@ -106,11 +106,12 @@ define(['jquery', 'rotate', 'lottery_unit','commonFun'], function($,rotate,lotte
         var thisFun = this;
         lotteryUnit.init(opt);
         if (!lotteryUnit.initOpt.clicked) {
-            lotteryUnit.rollResult(function () {
+            lotteryUnit.rollResult();
+            setTimeout(function(){
                 thisFun.GiftRecord();
                 thisFun.MyGift();
                 thisFun.tipWindowPop(tipMessage);
-            });
+            },1500);
         }
     }
 
@@ -122,10 +123,10 @@ define(['jquery', 'rotate', 'lottery_unit','commonFun'], function($,rotate,lotte
     }
 
 
-    giftCircleDraw.prototype.scrollList=function(domName,length) {
+    giftCircleDraw.prototype.scrollList=function(domName) {
         var $self=domName;
         var lineHeight = $self.find("li:first").height();
-        if ($self.find('li').length > (length!=''?length:10)) {
+        if ($self.find('li').length > 10) {
             $self.animate({
                 "margin-top": -lineHeight + "px"
             }, 600, function() {
@@ -135,14 +136,14 @@ define(['jquery', 'rotate', 'lottery_unit','commonFun'], function($,rotate,lotte
             });
         }
     }
-    giftCircleDraw.prototype.hoverScrollList=function(domName,length) {
+    giftCircleDraw.prototype.hoverScrollList=function(domName) {
         var thisFun=this,
             scrollTimer;
         domName.hover(function() {
             clearInterval(scrollTimer);
         }, function() {
             scrollTimer = setInterval(function() {
-                thisFun.scrollList(domName,length);
+                thisFun.scrollList(domName);
             }, 2000);
         }).trigger("mouseout");
     }
@@ -160,8 +161,8 @@ define(['jquery', 'rotate', 'lottery_unit','commonFun'], function($,rotate,lotte
         menuCls.on('click',function(index) {
             var $this=$(this),
                 index=$this.index();
-        $this.addClass('active').siblings().removeClass('active');
-        contentCls.eq(index).show().siblings().hide();
+            $this.addClass('active').siblings().removeClass('active');
+            contentCls.eq(index).show().siblings().hide();
         });
     }
 

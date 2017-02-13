@@ -176,7 +176,7 @@
         <div class="tip-list" data-return="point">
             <div class="close-btn go-close"></div>
             <div class="text-tip">
-                <p class="success-text">恭喜您！</p>
+                <p class="success-text">恭喜您</p>
                 <p class="reward-text">抽中了<em class="prizeValue"></em>！</p>
             </div>
             <div class="btn-list"><a href="javascript:void(0)" class="go-on go-close">继续抽奖</a></div>
@@ -186,7 +186,7 @@
         <div class="tip-list" data-return="concrete">
             <div class="close-btn go-close"></div>
             <div class="text-tip">
-                <p class="success-text">恭喜您！</p>
+                <p class="success-text">恭喜您</p>
                 <p class="reward-text">抽中了<em class="prizeValue"></em>！</p>
                 <p class="des-text">拓天客服将会在7个工作日内联系您发放奖品</p>
             </div>
@@ -197,7 +197,7 @@
         <div class="tip-list" data-return="virtual">
             <div class="close-btn go-close"></div>
             <div class="text-tip">
-                <p class="success-text">恭喜您！</p>
+                <p class="success-text">恭喜您</p>
                 <p class="reward-text">抽中了<em class="prizeValue"></em>！</p>
                 <p class="des-text">奖品已发放至“我的宝藏”当中。</p>
             </div>

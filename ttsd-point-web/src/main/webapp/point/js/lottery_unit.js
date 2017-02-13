@@ -33,8 +33,7 @@ define(['jquery'], function($) {
             $filterOption.addClass("active");
             return false;
         },
-        rollResult:function(option,callback) {
-
+        rollResult:function(callback) {
             this.rollStart();
             var initOption=this.initOpt;
             initOption.times +=1;
