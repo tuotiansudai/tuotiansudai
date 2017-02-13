@@ -88,8 +88,7 @@ require(['jquery', 'layerWrapper', 'template', 'drawCircle', 'jquery.ajax.extens
 				pointAllList = '/activity/point-draw/all-list', //中奖记录接口地址
 				pointUserList = '/activity/point-draw/user-list', //我的奖品接口地址
 				drawURL = '/activity/point-draw/draw', //抽奖的接口链接
-				$pointerImg = $('.lottery-btn', $rewardGiftBox),
-				myMobileNumber = $MobileNumber.length ? $MobileNumber.data('mobile') : ''; //当前登录用户的手机号
+				$pointerImg = $('.lottery-btn', $rewardGiftBox);
 
 			$christmasDayFrame.find('.tip-list-frame .tip-list').each(function(key, option) {
 				var kind = $(option).data('return');

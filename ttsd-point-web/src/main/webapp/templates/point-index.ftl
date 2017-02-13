@@ -172,6 +172,16 @@
         </div>
     </div>
     <div class="tip-list-frame">
+    <#--积分的提示-->
+        <div class="tip-list" data-return="point">
+            <div class="close-btn go-close"></div>
+            <div class="text-tip">
+                <p class="success-text">恭喜您！</p>
+                <p class="reward-text">抽中了<em class="prizeValue"></em>！</p>
+            </div>
+            <div class="btn-list"><a href="javascript:void(0)" class="go-on go-close">继续抽奖</a></div>
+        </div>
+
     <#--真实奖品的提示-->
         <div class="tip-list" data-return="concrete">
             <div class="close-btn go-close"></div>
