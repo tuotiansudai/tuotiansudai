@@ -2,9 +2,7 @@ package com.tuotiansudai.api.service.v1_0.impl;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.activity.repository.dto.DrawLotteryResultDto;
-import com.tuotiansudai.activity.repository.model.ActivityCategory;
 import com.tuotiansudai.activity.repository.model.UserLotteryPrizeView;
-import com.tuotiansudai.activity.service.LotteryActivityService;
 import com.tuotiansudai.activity.service.MoneyTreePrizeService;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppMoneyTreeService;
@@ -24,9 +22,6 @@ public class MobileAppMoneyTreeServiceImpl implements MobileAppMoneyTreeService 
 
     @Autowired
     private UserMapper userMapper;
-
-    @Autowired
-    private LotteryActivityService lotteryActivityService;
 
     private static final int INVITE_FRIENDS_MAX_COUNT_DAY = 3;
 

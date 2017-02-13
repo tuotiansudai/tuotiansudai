@@ -45,18 +45,6 @@ public class MoneyTreePrizeService {
     @Value("#{'${activity.money.tree.period}'.split('\\~')}")
     private List<String> moneyTreeTime = Lists.newArrayList();
 
-    /*
-    private static final long RED_ENVELOPE_50_DRAW_REF_MONEY_TREE_COUPON_ID = 324L;
-    private static final long RED_ENVELOPE_100_DRAW_REF_MONEY_TREE_COUPON_ID = 324L;
-    private static final long RED_ENVELOPE_200_DRAW_REF_MONEY_TREE_COUPON_ID = 324L;
-    private static final long RED_ENVELOPE_300_DRAW_REF_MONEY_TREE_COUPON_ID = 324L;
-    private static final long RED_ENVELOPE_500_DRAW_REF_MONEY_TREE_COUPON_ID = 324L;
-    private static final long RED_ENVELOPE_600_DRAW_REF_MONEY_TREE_COUPON_ID = 324L;
-    private static final long RED_ENVELOPE_800_DRAW_REF_MONEY_TREE_COUPON_ID = 324L;
-    private static final long RED_ENVELOPE_1000_DRAW_REF_MONEY_TREE_COUPON_ID = 324L;
-    private static final long RED_ENVELOPE_2000_DRAW_REF_MONEY_TREE_COUPON_ID = 324L;
-    */
-
     public List<UserLotteryPrizeView> findDrawLotteryPrizeRecordByMobile(String mobile) {
         List<UserLotteryPrizeView> userLotteryPrizeViews = userLotteryPrizeMapper.findMoneyTreeLotteryPrizeByMobile(mobile, ActivityCategory.MONEY_TREE);
         for (UserLotteryPrizeView view : userLotteryPrizeViews) {
