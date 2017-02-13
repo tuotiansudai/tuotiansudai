@@ -409,7 +409,7 @@
         and exists (select 1 from account where account.login_name = user.login_name)
     </select>
 
-    <select id="findUserMicroModelCount" parameterType="map" resultType="int">
+    <select id="findUserMicroModelCount" parameterType="map" resultType="int" useCache="false">
         select
             count(1)
         from user u
@@ -505,7 +505,7 @@
         </where>
     </select>
 
-    <select id="queryUserMicroModel" parameterType="map" resultMap="userMicroModelView">
+    <select id="queryUserMicroModel" parameterType="map" resultMap="userMicroModelView" useCache="false">
         select
             u.id,
             u.user_name,
