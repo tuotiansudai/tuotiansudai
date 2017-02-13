@@ -257,7 +257,7 @@ require.ensure([],function() {
         $(imageCaptchaForm).submit();
         $getCaptchaElement.prop('disabled',true);
         commonFun.useAjax({
-            url:"/no-password-invest/disabled",
+            url:"/no-password-invest/send-captcha",
             type:'POST',
             data:$(turnOffNoPasswordInvestForm).serialize()
         },function(response) {
@@ -322,141 +322,19 @@ require.ensure([],function() {
         let errorMsg = turnOffPassValidator.start(thisForm.captcha);
         if (!errorMsg) {
             commonFun.useAjax({
-                url: "/login",
+                url: "/no-password-invest/disabled",
                 type: 'POST',
                 data: $(thisForm).serialize()
-            }, function (data) {
+            }, function (response) {
                 $(thisForm).find(':submit').prop('disabled', true);
-
+                var data = response.data;
+                if (data.status) {
+                    location.href = "/personal-info";
+                }
 
             });
         }
     }
-
-
-    // $imageCaptchaForm.validate({
-    //     focusInvalid: false,
-    //     onFocusOut: function (element) {
-    //         if (!this.checkable(element) && !this.optional(element)) {
-    //             this.element(element);
-    //         }
-    //     },
-    //     success:function(label){
-    //         label.remove();
-    //         $('#turnOffNoPasswordInvestDOM').find('.get-captcha').prop('disabled',false);
-    //     },
-    //     errorPlacement: function(error, element) {
-    //         var errorContent = $('.error-content');
-    //         errorContent.html('');
-    //         error.appendTo(errorContent);
-    //         $('#turnOffNoPasswordInvestDOM').find('.get-captcha').prop('disabled',true);
-    //     },
-    //     submitHandler: function (form) {
-    //         var self = this;
-    //         $(form).ajaxSubmit({
-    //             data: {mobile: $('.mobile').val()},
-    //             dataType: 'json',
-    //             beforeSubmit: function (arr, $form, options) {
-    //                 $getCaptchaElement.prop('disabled',true);
-    //             },
-    //             success: function (response) {
-    //                 var data = response.data;
-    //                 if (data.status && !data.isRestricted) {
-    //                     $codeNumber.removeClass('code-number-hidden');
-    //                     var seconds = 60;
-    //                     countTimer = setInterval(function () {
-    //                         $getCaptchaElement.html(seconds + '秒后重新发送').prop('disabled',true);
-    //                         if (seconds == 0) {
-    //                             clearInterval(countTimer);
-    //                             $getCaptchaElement.html('重新发送').prop('disabled',false);
-    //                             commonFun.refreshCaptcha(globalFun.$('#imageCaptcha'),'/no-password-invest/image-captcha');
-    //                         }
-    //                         seconds--;
-    //                     }, 1000);
-    //                     return;
-    //                 }
-    //
-    //                 if (!data.status && data.isRestricted) {
-    //                     $codeNumber.addClass('code-number-hidden');
-    //                     self.showErrors({imageCaptcha: '短信发送频繁，请稍后再试'});
-    //                 }
-    //
-    //                 if (!data.status && !data.isRestricted) {
-    //                     $codeNumber.addClass('code-number-hidden');
-    //                     self.showErrors({imageCaptcha: '图形验证码不正确'});
-    //                 }
-    //                 self.invalid['imageCaptcha'] = true;
-    //                 commonFun.refreshCaptcha(globalFun.$('#imageCaptcha'),'/no-password-invest/image-captcha');
-    //             },
-    //             error: function () {
-    //                 self.invalid['imageCaptcha'] = true;
-    //                 self.showErrors({imageCaptcha: '图形验证码不正确'});
-    //                 commonFun.refreshCaptcha(globalFun.$('#imageCaptcha'),'/no-password-invest/image-captcha');
-    //             }
-    //         });
-    //     },
-    //     rules: {
-    //         imageCaptcha: {
-    //             required: true,
-    //             regex: /^[a-zA-Z0-9]{5}$/
-    //         }
-    //     },
-    //     messages: {
-    //         imageCaptcha: {
-    //             required: "请输入图形验证码",
-    //             regex: "图形验证码位数不对"
-    //         }
-    //     }
-    // });
-
-
-
-
-    // $turnOffNoPasswordInvestForm.validate({
-    //     focusInvalid: false,
-    //     ignore:".image-captcha-text",
-    //     rules: {
-    //         captcha: {
-    //             required: true,
-    //             digits: true,
-    //             maxlength: 6,
-    //             minlength: 6,
-    //             captchaVerify: {
-    //                 param: function () {
-    //                     var mobile = $('input[name="mobile"]').val();
-    //                     return "/no-password-invest/mobile/" + mobile + "/captcha/{0}/verify"
-    //                 }
-    //             }
-    //         }
-    //     },
-    //     messages: {
-    //         captcha: {
-    //             required: '请输入验证码',
-    //             digits: '验证码格式不正确',
-    //             maxlength: '验证码格式不正确',
-    //             minlength: '验证码格式不正确',
-    //             captchaVerify: '验证码不正确'
-    //         }
-    //     },
-    //
-    //     errorPlacement: function(error, element) {
-    //         var errorContent = $('.error-content');
-    //         errorContent.html('');
-    //         error.appendTo(errorContent);
-    //         $('#turnOffNoPasswordInvestDOM').find('.get-captcha').prop('disabled',true);
-    //     },
-    //     submitHandler: function (form) {
-    //         $(form).ajaxSubmit({
-    //             success: function (response) {
-    //                 var data = response.data;
-    //                 if (data.status) {
-    //                     location.href = "/personal-info";
-    //                 }
-    //             }
-    //         });
-    //     }
-    // });
-
 
 },'noPasswordInvest');
 
@@ -495,7 +373,7 @@ require.ensure([],function() {
 
     passValidator.add(changePasswordForm.newPassword, [{
         strategy: 'isNonEmpty',
-        errorMsg: '请输入原密码'
+        errorMsg: '请输入新密码'
     }, {
         strategy: 'checkPassword',
         errorMsg: '密码为6位至20位，不能全是数字'

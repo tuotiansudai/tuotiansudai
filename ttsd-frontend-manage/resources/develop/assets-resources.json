@@ -29,7 +29,7 @@
     "css": "/web/js/account/investor_invest_list.css"
   },
   "jquery_daterangepicker": {
-    "js": "chucks/jquery_daterangepicker.8d1b05844e8ebacb803c.js"
+    "js": "chucks/jquery_daterangepicker.8dcbd48ad3912bdf2b97.js"
   },
   "/web/js/account/loaner_loan_list": {
     "js": "/web/js/account/loaner_loan_list.js",
@@ -52,27 +52,27 @@
     "css": "/web/js/forget_password.css"
   },
   "fetchCaptchaRetrieve": {
-    "js": "chucks/fetchCaptchaRetrieve.57b774acdee16d49cf09.js"
+    "js": "chucks/fetchCaptchaRetrieve.b9d6a8b90406df119be4.js"
   },
   "/web/js/index": {
     "js": "/web/js/index.js",
     "css": "/web/js/index.css"
   },
   "redEnvelope": {
-    "js": "chucks/redEnvelope.b5193b974a37042fc58b.js"
+    "js": "chucks/redEnvelope.105b4c157f9014ef7283.js"
   },
   "imageSlider": {
-    "js": "chucks/imageSlider.469078ae17e971648247.js"
+    "js": "chucks/imageSlider.77d353e9d1bf2f60b19e.js"
   },
   "bookInvest": {
-    "js": "chucks/bookInvest.ccfc9c15cbae2e8c4529.js"
+    "js": "chucks/bookInvest.ee39b38376e40d497cac.js"
   },
   "/web/js/loan_detail": {
     "js": "/web/js/loan_detail.js",
     "css": "/web/js/loan_detail.css"
   },
   "jquery_fancybox": {
-    "js": "chucks/jquery_fancybox.8d50b2f5e99e4c0ee19b.js"
+    "js": "chucks/jquery_fancybox.1c5d67fb5f5df2e1a845.js"
   },
   "/web/js/loan_detail_experience": {
     "js": "/web/js/loan_detail_experience.js",
@@ -91,7 +91,7 @@
     "css": "/web/js/register_user.css"
   },
   "placeholder": {
-    "js": "chucks/placeholder.6501a07f5fb719a56227.js"
+    "js": "chucks/placeholder.a79f643d43ed89087969.js"
   },
   "/web/js/transfer_detail": {
     "js": "/web/js/transfer_detail.js",
@@ -116,7 +116,7 @@
     "css": "/web/js/account/message_list.css"
   },
   "messageList": {
-    "js": "chucks/messageList.5022fcee709c9c2ccd3c.js"
+    "js": "chucks/messageList.b8f856e7b09c72766870.js"
   },
   "/web/js/account/personal_info": {
     "js": "/web/js/account/personal_info.js",
@@ -125,5 +125,13 @@
   "/web/js/register_account": {
     "js": "/web/js/register_account.js",
     "css": "/web/js/register_account.css"
+  },
+  "/web/js/account/anxin_sign": {
+    "js": "/web/js/account/anxin_sign.js",
+    "css": "/web/js/account/anxin_sign.css"
+  },
+  "/web/js/account/refer_list": {
+    "js": "/web/js/account/refer_list.js",
+    "css": "/web/js/account/refer_list.css"
   }
 }

@@ -1,7 +1,6 @@
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="${css.refer_list}" pageJavascript="${js.refer_list}" activeNav="我的账户" activeLeftNav="推荐送现金" title="推荐管理">
 <div class="content-container invest-list-content" id="investListContent">
-
     <h4 class="column-title"><em class="tc">推荐送现金</em></h4>
 
        <div class="bar-top-img">
