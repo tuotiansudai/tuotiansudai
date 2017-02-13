@@ -54,7 +54,7 @@ public class MobileAppMoneyTreeServiceImpl implements MobileAppMoneyTreeService 
     }
 
     @Override
-    public BaseResponseDto<MoneyTreeResultListResponseDataDto> generatePrizeListTop10(String loginName){
+    public BaseResponseDto<MoneyTreeResultListResponseDataDto> generatePrizeListTop10(){
         BaseResponseDto dto = new BaseResponseDto();
         List<UserLotteryPrizeView> userLotteryPrizeViewList = moneyTreePrizeService.findDrawLotteryPrizeRecordTop10();
         MoneyTreeResultListResponseDataDto moneyTreeResultListResponseDataDto = new MoneyTreeResultListResponseDataDto();

@@ -11,7 +11,7 @@ public interface MobileAppMoneyTreeService {
 
     BaseResponseDto<MoneyTreePrizeResponseDataDto> generatePrize(String loginName);
 
-    BaseResponseDto<MoneyTreeResultListResponseDataDto> generatePrizeListTop10(String loginName);
+    BaseResponseDto<MoneyTreeResultListResponseDataDto> generatePrizeListTop10();
 
     BaseResponseDto<MoneyTreeResultListResponseDataDto> generateMyPrizeList(String loginName);
 
