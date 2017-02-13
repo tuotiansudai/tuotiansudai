@@ -412,7 +412,6 @@ public class LoanServiceImpl implements LoanService {
                     .put("amount", AmountConverter.convertCentToString(investModel.getAmount()))
                     .build());
             try {
-                smsWrapperClient.sendInvestNotify(dto);
                 if (StringUtils.isNotEmpty(userModel.getEmail())) {
                     mqWrapperClient.sendMessage(MessageQueue.EMailMessage, new EMailMessage(Lists.newArrayList(userModel.getEmail()),
                             SendCloudTemplate.LOAN_OUT_SUCCESSFUL_EMAIL.getTitle(),

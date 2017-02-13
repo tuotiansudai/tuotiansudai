@@ -258,7 +258,6 @@ public class LoanServiceTest {
         when(referrerRewardService.rewardReferrer(anyLong())).thenReturn(true);
         when(userMapper.findByLoginName(anyString())).thenReturn(userModel);
         when(loanMapper.findById(anyLong())).thenReturn(loanModel);
-        when(smsWrapperClient.sendInvestNotify(any(InvestSmsNotifyDto.class))).thenReturn(new BaseDto<>());
         when(redisWrapperClient.hget(anyString(), anyString())).thenReturn("");
         when(redisWrapperClient.hset(anyString(), anyString(), anyString())).thenReturn(1l);
         when(anxinSignService.createLoanContracts(anyLong(), anyBoolean())).thenReturn(new BaseDto());
