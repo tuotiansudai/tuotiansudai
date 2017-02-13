@@ -10,7 +10,6 @@ import com.tuotiansudai.dto.sms.InvestSmsNotifyDto;
 import com.tuotiansudai.dto.sms.LoanRaisingCompleteNotifyDto;
 import com.tuotiansudai.dto.sms.SmsCouponNotifyDto;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
-import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.smswrapper.SmsTemplate;
 import com.tuotiansudai.smswrapper.client.MdSmsClient;
 import com.tuotiansudai.smswrapper.client.SmsClient;
@@ -20,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.List;
 
@@ -108,18 +106,31 @@ public class SmsService {
         return smsClient.sendSMS(MembershipGiveNotifyMapper.class, Lists.newArrayList(mobile), SmsTemplate.SMS_NEW_USER_RECEIVE_MEMBERSHIP, Lists.newArrayList(String.valueOf(level)));
     }
 
-    public BaseDto<SmsDataDto> couponNotifyByMd(SmsCouponNotifyDto notifyDto) {
-        logger.info(MessageFormat.format("coupon notify send. couponId:{0}", notifyDto.getCouponType()));
-        String couponName = (notifyDto.getCouponType() == CouponType.INTEREST_COUPON ? MessageFormat.format("+{0}%", notifyDto.getRate()) : MessageFormat.format("{0}元", notifyDto.getAmount()))
-                + notifyDto.getCouponType().getName();
-
-        List<String> paramList = ImmutableList.<String>builder().add(couponName).add(notifyDto.getExpiredDate()).build();
-        if (platform.equals(SMS_PLATFORM)) {
-            logger.info("coupon notify send by md platform");
-            return mdSmsClient.sendSMS(CouponNotifyMapper.class, notifyDto.getMobile(), SmsTemplate.SMS_COUPON_NOTIFY_TEMPLATE, paramList);
+    private String getCouponName(SmsCouponNotifyDto notifyDto) {
+        switch (notifyDto.getCouponType()) {
+            case RED_ENVELOPE:
+                return notifyDto.getAmount() + "元" + notifyDto.getCouponType().getName();
+            case INTEREST_COUPON:
+                return notifyDto.getRate() + "%" + notifyDto.getCouponType().getName();
+            default:
+                return null;
         }
+    }
 
-        return smsClient.sendSMS(CouponNotifyMapper.class, Lists.newArrayList(notifyDto.getMobile()), SmsTemplate.SMS_COUPON_NOTIFY_TEMPLATE, paramList);
+    public BaseDto<SmsDataDto> assignCouponSuccessNotify(SmsCouponNotifyDto notifyDto) {
+        String couponName = getCouponName(notifyDto);
+        if(null == couponName) {
+            return new BaseDto<>(false);
+        }
+        return smsClient.sendSMS(CouponNotifyMapper.class, Lists.newArrayList(notifyDto.getMobile()), SmsTemplate.SMS_COUPON_ASSIGN_SUCCESS_TEMPLATE, Lists.newArrayList(couponName));
+    }
+
+    public BaseDto<SmsDataDto> couponExpiredNotify(SmsCouponNotifyDto notifyDto) {
+        String couponName = getCouponName(notifyDto);
+        if(null == couponName) {
+            return new BaseDto<>(false);
+        }
+        return smsClient.sendSMS(CouponNotifyMapper.class, Lists.newArrayList(notifyDto.getMobile()), SmsTemplate.SMS_COUPON_EXPIRED_NOTIFY_TEMPLATE, Lists.newArrayList(couponName, notifyDto.getExpiredDate()));
     }
 
     public BaseDto<SmsDataDto> platformBalanceLowNotify(List<String> mobiles, String warningLine) {

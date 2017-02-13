@@ -176,6 +176,7 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapSel
 
             if (boolFlag) {
                 if (confirm("确认提交审核?")) {
+                    $('.sharedUrl').val($('.sharedUrl').val() + "?source=app");
                     $self.attr('disabled', 'disabled');
                     var operate;
                     if ($('.jq-id').val() != null && $('.jq-id').val() != '') {

@@ -138,17 +138,6 @@
             </div>
         </div>
 
-        <div class="form-group invest-coupon" >
-            <label  class="col-sm-2 control-label">短信提醒: </label>
-            <div class="col-sm-3">
-
-                <label><input type="checkbox" name="smsAlert" class="smsAlert"
-                              <#if coupon??&&coupon.smsAlert>checked</#if> />
-                </label>
-
-            </div>
-        </div>
-
         <div class="form-group">
             <label class="col-sm-2 control-label">备注</label>
 

@@ -33,7 +33,11 @@ public enum SmsTemplate {
 
     SMS_GENERATE_CONTRACT_ERROR_NOTIFY_TEMPLATE(3034360, "安心签合同生成失败，标的/债权 id : %s"),
 
-    SMS_LOAN_RAISING_COMPLETE_NOTIFY_TEMPLATE(3038299, "%s上线的%s天总额为%sw的项目于今日%s已满，%s;%s，30分钟内将完成复核。");
+    SMS_LOAN_RAISING_COMPLETE_NOTIFY_TEMPLATE(3038299, "%s上线的%s天总额为%sw的项目于今日%s已满，%s;%s，30分钟内将完成复核。"),
+
+    SMS_COUPON_ASSIGN_SUCCESS_TEMPLATE(3057070, "尊敬的用户，恭喜您获得了一张%s，请尽快使用拿奖励哦！"),
+
+    SMS_COUPON_EXPIRED_NOTIFY_TEMPLATE(3050088, "尊敬的用户，您的%s即将过期（有效期至：%s），请尽快使用。");
 
     private long templateId;
 

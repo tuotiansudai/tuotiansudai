@@ -9,19 +9,15 @@ import com.tuotiansudai.console.dto.ImportExcelDto;
 import com.tuotiansudai.console.service.ConsoleCouponService;
 import com.tuotiansudai.console.service.ConsoleUserService;
 import com.tuotiansudai.console.service.CouponActivationService;
-import com.tuotiansudai.dto.*;
-import com.tuotiansudai.repository.mapper.CouponUserGroupMapper;
-import com.tuotiansudai.repository.model.CouponModel;
-import com.tuotiansudai.repository.model.CouponUserGroupModel;
-import com.tuotiansudai.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.ExchangeCodeService;
+import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.CouponType;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.exception.CreateCouponException;
 import com.tuotiansudai.point.repository.mapper.UserPointPrizeMapper;
+import com.tuotiansudai.repository.mapper.CouponUserGroupMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.ProductType;
-import com.tuotiansudai.enums.Role;
-import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.*;
 import org.apache.commons.collections4.CollectionUtils;
@@ -141,7 +137,10 @@ public class CouponController {
     public ModelAndView redEnvelope() {
         ModelAndView modelAndView = new ModelAndView("/red-envelope");
         modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));
-        modelAndView.addObject("userGroups", Lists.newArrayList(UserGroup.values()));
+        modelAndView.addObject("userGroups", Lists.newArrayList(UserGroup.ALL_USER, UserGroup.IMPORT_USER, UserGroup.CHANNEL,
+                UserGroup.EXCHANGER_CODE, UserGroup.MEMBERSHIP_V0, UserGroup.MEMBERSHIP_V1, UserGroup.MEMBERSHIP_V2,
+                UserGroup.MEMBERSHIP_V3, UserGroup.MEMBERSHIP_V4, UserGroup.MEMBERSHIP_V5, UserGroup.FIRST_INVEST_ACHIEVEMENT,
+                UserGroup.MAX_AMOUNT_ACHIEVEMENT, UserGroup.LAST_INVEST_ACHIEVEMENT));
         long initNum = consoleCouponService.findEstimatedCount(UserGroup.ALL_USER);
         modelAndView.addObject("initNum", initNum);
         return modelAndView;
@@ -210,7 +209,10 @@ public class CouponController {
     public ModelAndView interestCoupon() {
         ModelAndView modelAndView = new ModelAndView("/interest-coupon");
         modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));
-        modelAndView.addObject("userGroups", Lists.newArrayList(UserGroup.values()));
+        modelAndView.addObject("userGroups", Lists.newArrayList(UserGroup.ALL_USER, UserGroup.IMPORT_USER, UserGroup.CHANNEL,
+                UserGroup.EXCHANGER_CODE, UserGroup.MEMBERSHIP_V0, UserGroup.MEMBERSHIP_V1, UserGroup.MEMBERSHIP_V2,
+                UserGroup.MEMBERSHIP_V3, UserGroup.MEMBERSHIP_V4, UserGroup.MEMBERSHIP_V5, UserGroup.FIRST_INVEST_ACHIEVEMENT,
+                UserGroup.MAX_AMOUNT_ACHIEVEMENT, UserGroup.LAST_INVEST_ACHIEVEMENT));
         long initNum = consoleCouponService.findEstimatedCount(UserGroup.ALL_USER);
         modelAndView.addObject("initNum", initNum);
         return modelAndView;

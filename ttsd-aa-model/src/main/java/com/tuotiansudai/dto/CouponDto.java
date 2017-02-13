@@ -1,10 +1,10 @@
 package com.tuotiansudai.dto;
 
 
-import com.tuotiansudai.repository.model.CouponModel;
-import com.tuotiansudai.repository.model.UserGroup;
 import com.tuotiansudai.enums.CouponType;
+import com.tuotiansudai.repository.model.CouponModel;
 import com.tuotiansudai.repository.model.ProductType;
+import com.tuotiansudai.repository.model.UserGroup;
 import com.tuotiansudai.util.AmountConverter;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -43,8 +43,6 @@ public class CouponDto implements Serializable {
 
     @NotNull
     private CouponType couponType;
-
-    private boolean smsAlert;
 
     private UserGroup userGroup;
 
@@ -138,14 +136,6 @@ public class CouponDto implements Serializable {
 
     public void setCouponType(CouponType couponType) {
         this.couponType = couponType;
-    }
-
-    public boolean isSmsAlert() {
-        return smsAlert;
-    }
-
-    public void setSmsAlert(boolean smsAlert) {
-        this.smsAlert = smsAlert;
     }
 
     public UserGroup getUserGroup() {
@@ -324,7 +314,6 @@ public class CouponDto implements Serializable {
         this.productTypes = couponModel.getProductTypes();
         this.couponType = couponModel.getCouponType();
         this.userGroup = couponModel.getUserGroup();
-        this.smsAlert = couponModel.isSmsAlert();
         this.active = couponModel.isActive();
         this.totalInvestAmount = couponModel.getTotalInvestAmount();
         this.issuedCount = couponModel.getIssuedCount();

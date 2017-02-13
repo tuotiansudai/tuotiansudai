@@ -47,8 +47,6 @@ public class SmsWrapperClient extends BaseClient {
 
     private final static String PASSWORD_CHANGED_NOTIFY_URI = "/sms/mobile/{mobile}/password-changed-notify";
 
-    private final static String COUPON_NOTIFY_URI = "/sms/coupon-notify";
-
     private final static String BIRTHDAY_NOTIFY_URI = "/sms/birthday-notify";
 
     private final static String LOAN_REPAY_NOTIFY_URL = "/sms/loan-repay-notify";
@@ -62,6 +60,10 @@ public class SmsWrapperClient extends BaseClient {
     private final static String NEW_USER_RECEIVE_MEMBERSHIP_URI = "/sms/new-user-receive-membership";
 
     private final static String LOAN_RAISING_COMPLETE_NOTIFY_URI = "/sms/loan-raising-complete-notify";
+
+    private final static String COUPON_ASSIGN_SUCCESS = "/sms/coupon-assign-success";
+
+    private final static String COUPON_EXPIRED_NOTIFY = "/sms/coupon-expired-notify";
 
     public BaseDto<SmsDataDto> sendRegisterCaptchaSms(SmsCaptchaDto dto) {
         return send(dto, REGISTER_CAPTCHA_SMS_URI);
@@ -103,10 +105,6 @@ public class SmsWrapperClient extends BaseClient {
         return send(dto, EXPERIENCE_REPAY_NOTIFY_URL);
     }
 
-    public BaseDto<SmsDataDto> sendCouponNotify(SmsCouponNotifyDto dto) {
-        return send(dto, COUPON_NOTIFY_URI);
-    }
-
     public BaseDto<SmsDataDto> sendBirthdayNotify(SmsCouponNotifyDto dto) {
         return send(dto, BIRTHDAY_NOTIFY_URI);
     }
@@ -125,6 +123,14 @@ public class SmsWrapperClient extends BaseClient {
 
     public BaseDto<SmsDataDto> sendLoanRaisingCompleteNotify(LoanRaisingCompleteNotifyDto dto) {
         return send(dto, LOAN_RAISING_COMPLETE_NOTIFY_URI);
+    }
+
+    public BaseDto<SmsDataDto> sendCouponAssignSuccessNotify(SmsCouponNotifyDto dto) {
+        return send(dto, COUPON_ASSIGN_SUCCESS);
+    }
+
+    public BaseDto<SmsDataDto> sendCouponExpiredNotify(SmsCouponNotifyDto dto) {
+        return send(dto, COUPON_EXPIRED_NOTIFY);
     }
 
     private BaseDto<SmsDataDto> send(Object requestData, String requestPath) {

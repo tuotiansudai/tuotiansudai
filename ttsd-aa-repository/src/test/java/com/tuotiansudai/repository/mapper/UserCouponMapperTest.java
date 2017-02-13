@@ -1,15 +1,8 @@
 package com.tuotiansudai.repository.mapper;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.repository.mapper.CouponMapper;
-import com.tuotiansudai.repository.mapper.UserCouponMapper;
-import com.tuotiansudai.repository.model.CouponModel;
-import com.tuotiansudai.repository.model.UserCouponModel;
-import com.tuotiansudai.repository.model.UserGroup;
 import com.tuotiansudai.enums.CouponType;
-import com.tuotiansudai.repository.model.ProductType;
-import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.repository.model.UserStatus;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
 import org.joda.time.DateTime;
 import org.junit.Test;
@@ -103,7 +96,6 @@ public class UserCouponMapperTest {
         assertEquals(userCouponModelList.get(0).getCoupon().getInvestLowerLimit(), couponModel.getInvestLowerLimit());
         assertEquals(userCouponModelList.get(0).getCoupon().getCouponType(), couponModel.getCouponType());
         assertEquals(userCouponModelList.get(0).getCoupon().getProductTypes(), couponModel.getProductTypes());
-        assertEquals(userCouponModelList.get(0).getCoupon().isSmsAlert(), couponModel.isSmsAlert());
         assertEquals(userCouponModelList.get(0).getCoupon().getUserGroup(), couponModel.getUserGroup());
         assertEquals(userCouponModelList.get(0).getCoupon().isDeleted(), couponModel.isDeleted());
         assertEquals(userCouponModelList.get(0).getCoupon().getCouponSource(), couponModel.getCouponSource());
@@ -139,7 +131,6 @@ public class UserCouponMapperTest {
         couponModel.setInvestLowerLimit(100);
         couponModel.setProductTypes(Lists.newArrayList(ProductType._30, ProductType._90));
         couponModel.setCouponType(CouponType.INVEST_COUPON);
-        couponModel.setSmsAlert(true);
         couponModel.setUserGroup(UserGroup.FIRST_INVEST_ACHIEVEMENT);
         couponModel.setTotalInvestAmount(150);
         couponModel.setDeleted(false);

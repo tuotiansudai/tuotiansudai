@@ -106,7 +106,7 @@
             <label class="col-sm-1 control-label" style="width: 10%">分享后链接:</label>
 
             <div class="col-sm-4">
-                <input type="text" class="form-control" name="sharedUrl" placeholder=""
+                <input type="text" class="form-control sharedUrl" name="sharedUrl" placeholder=""
                        value="<#if banner??>${banner.sharedUrl!}</#if>">
             </div>
         </div>

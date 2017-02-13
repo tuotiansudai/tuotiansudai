@@ -203,7 +203,6 @@ public class ConsoleCouponServiceTest {
         couponModel.setInvestLowerLimit(100);
         couponModel.setProductTypes(Lists.newArrayList(ProductType._30, ProductType._90));
         couponModel.setCouponType(CouponType.INVEST_COUPON);
-        couponModel.setSmsAlert(true);
         couponModel.setUserGroup(UserGroup.FIRST_INVEST_ACHIEVEMENT);
         couponModel.setTotalInvestAmount(150);
         couponModel.setDeleted(false);

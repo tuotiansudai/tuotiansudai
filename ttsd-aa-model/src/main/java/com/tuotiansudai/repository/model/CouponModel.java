@@ -36,7 +36,6 @@ public class CouponModel implements Serializable {
     private long investLowerLimit;
     private List<ProductType> productTypes;
     private CouponType couponType;
-    private boolean smsAlert;
     private UserGroup userGroup;
     private long totalInvestAmount;
     private boolean deleted;
@@ -238,14 +237,6 @@ public class CouponModel implements Serializable {
         this.couponType = couponType;
     }
 
-    public boolean isSmsAlert() {
-        return smsAlert;
-    }
-
-    public void setSmsAlert(boolean smsAlert) {
-        this.smsAlert = smsAlert;
-    }
-
     public String getUpdatedBy() {
         return updatedBy;
     }
@@ -324,7 +315,6 @@ public class CouponModel implements Serializable {
         this.productTypes = couponDto.getProductTypes();
         this.couponType = couponDto.getCouponType();
         this.investLowerLimit = AmountConverter.convertStringToCent(couponDto.getInvestLowerLimit());
-        this.smsAlert = couponDto.isSmsAlert();
         this.userGroup = couponDto.getUserGroup();
         this.rate = couponDto.getRate() == null ? 0 : new BigDecimal(couponDto.getRate()).divide(new BigDecimal(100), 3, BigDecimal.ROUND_HALF_UP).doubleValue();
         this.birthdayBenefit = couponDto.getBirthdayBenefit() == null ? 0 : new BigDecimal(couponDto.getBirthdayBenefit()).subtract(new BigDecimal(1)).doubleValue();
@@ -362,7 +352,6 @@ public class CouponModel implements Serializable {
         this.investLowerLimit = couponModel.getInvestLowerLimit();
         this.productTypes = couponModel.getProductTypes();
         this.couponType = couponModel.getCouponType();
-        this.smsAlert = couponModel.isSmsAlert();
         this.userGroup = couponModel.getUserGroup();
         this.totalInvestAmount = couponModel.getTotalInvestAmount();
         this.deleted = couponModel.isDeleted();
