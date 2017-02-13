@@ -1,10 +1,13 @@
 package com.tuotiansudai.console.repository.mapper;
 
 import com.tuotiansudai.console.bi.dto.RoleStage;
+import com.tuotiansudai.console.repository.model.RemainUserView;
 import com.tuotiansudai.console.repository.model.UserOperation;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserView;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.logging.Log;
+import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
@@ -68,4 +71,36 @@ public interface UserMapperConsole {
     List<String> findAllLoanerLikeLoginName(String loginName);
 
     List<String> findAccountLikeLoginName(String loginName);
+
+    List<RemainUserView> findRemainUsers(@Param(value = "loginName") String loginName,
+                                         @Param(value = "mobile") String mobile,
+                                         @Param(value = "registerStartTime") Date registerStartTime,
+                                         @Param(value = "registerEndTime") Date registerEndTime,
+                                         @Param(value = "useExperienceCoupon") Boolean useExperienceCoupon,
+                                         @Param(value = "experienceStartTime") Date experienceStartTime,
+                                         @Param(value = "experienceEndTime") Date experienceEndTime,
+                                         @Param(value = "investCountLowLimit") Integer investCountLowLimit,
+                                         @Param(value = "investCountHighLimit") Integer investCountHighLimit,
+                                         @Param(value = "investSumLowLimit") Long investSumLowLimit,
+                                         @Param(value = "investSumHighLimit") Long investSumHighLimit,
+                                         @Param(value = "firstInvestStartTime") Date firstInvestStartTime,
+                                         @Param(value = "firstInvestEndTime") Date firstInvestEndTime,
+                                         @Param(value = "secondInvestStartTime") Date secondInvestStartTime,
+                                         @Param(value = "secondInvestEndTime") Date secondInvestEndTime,
+                                         @Param(value = "index") int index, @Param(value = "pageSize") int pageSize);
+
+    long findRemainUsersCount(@Param(value = "loginName") String loginName, @Param(value = "mobile") String mobile,
+                              @Param(value = "registerStartTime") Date registerStartTime,
+                              @Param(value = "registerEndTime") Date registerEndTime,
+                              @Param(value = "useExperienceCoupon") Boolean useExperienceCoupon,
+                              @Param(value = "experienceStartTime") Date experienceStartTime,
+                              @Param(value = "experienceEndTime") Date experienceEndTime,
+                              @Param(value = "investCountLowLimit") Integer investCountLowLimit,
+                              @Param(value = "investCountHighLimit") Integer investCountHighLimit,
+                              @Param(value = "investSumLowLimit") Long investSumLowLimit,
+                              @Param(value = "investSumHighLimit") Long investSumHighLimit,
+                              @Param(value = "firstInvestStartTime") Date firstInvestStartTime,
+                              @Param(value = "firstInvestEndTime") Date firstInvestEndTime,
+                              @Param(value = "secondInvestStartTime") Date secondInvestStartTime,
+                              @Param(value = "secondInvestEndTime") Date secondInvestEndTime);
 }

@@ -40,22 +40,10 @@ public class SmsController {
         return smsService.sendPasswordChangedNotify(mobile);
     }
 
-    @RequestMapping(value = "/loan-out-investor-notify", method = RequestMethod.POST)
-    @ResponseBody
-    public BaseDto<SmsDataDto> sendInvestNotify(@RequestBody InvestSmsNotifyDto investSmsNotifyDto) {
-        return smsService.sendInvestNotify(investSmsNotifyDto);
-    }
-
     @RequestMapping(value = "/fatal-notify", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<SmsDataDto> fatalNotify(@Valid @RequestBody SmsFatalNotifyDto notify) {
         return smsService.sendFatalNotify(notify);
-    }
-
-    @RequestMapping(value = "/birthday-notify", method = RequestMethod.POST)
-    @ResponseBody
-    public BaseDto<SmsDataDto> birthdayNotify(@RequestBody SmsCouponNotifyDto notifyDto) {
-        return smsService.birthdayNotify(notifyDto);
     }
 
     @RequestMapping(value = "/loan-repay-notify", method = RequestMethod.POST)
