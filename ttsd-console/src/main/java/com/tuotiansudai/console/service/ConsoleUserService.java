@@ -1,6 +1,5 @@
 package com.tuotiansudai.console.service;
 
-
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
@@ -9,9 +8,11 @@ import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.console.bi.dto.RoleStage;
+import com.tuotiansudai.console.dto.RemainUserDto;
 import com.tuotiansudai.console.dto.UserItemDataDto;
 import com.tuotiansudai.console.repository.mapper.UserMapperConsole;
 import com.tuotiansudai.console.repository.model.UserMicroModelView;
+import com.tuotiansudai.console.repository.model.RemainUserView;
 import com.tuotiansudai.console.repository.model.UserOperation;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.OperationType;
@@ -23,6 +24,7 @@ import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.BindBankCardService;
 import com.tuotiansudai.task.TaskConstant;
 import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.PaginationUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.Map;
 
 @Service
@@ -351,6 +354,28 @@ public class ConsoleUserService {
         baseDto.setData(basePaginationDataDto);
 
         return baseDto;
+    }
+
+    public BasePaginationDataDto<RemainUserDto> findRemainUsers(String loginName, String mobile, Date registerStartTime, Date registerEndTime,
+                                               Boolean useExperienceCoupon, Date experienceStartTime, Date experienceEndTime,
+                                               Integer investCountLowLimit, Integer investCountHighLimit, Long investSumLowLimit,
+                                               Long investSumHighLimit, Date firstInvestStartTime, Date firstInvestEndTime,
+                                               Date secondInvestStartTime, Date secondInvestEndTime, int index, int pageSize) {
+        long count = userMapperConsole.findRemainUsersCount(loginName, mobile, registerStartTime,
+                registerEndTime, useExperienceCoupon, experienceStartTime, experienceEndTime, investCountLowLimit,
+                investCountHighLimit, investSumLowLimit, investSumHighLimit, firstInvestStartTime, firstInvestEndTime,
+                secondInvestStartTime, secondInvestEndTime);
+
+        List<RemainUserView> remainUserViews = userMapperConsole.findRemainUsers(loginName, mobile, registerStartTime,
+                registerEndTime, useExperienceCoupon, experienceStartTime, experienceEndTime, investCountLowLimit,
+                investCountHighLimit, investSumLowLimit, investSumHighLimit, firstInvestStartTime, firstInvestEndTime,
+                secondInvestStartTime, secondInvestEndTime, PaginationUtil.calculateOffset(index, pageSize, count), pageSize);
+
+        List<RemainUserDto> remainUserDtos = remainUserViews.stream().map(RemainUserDto::new).collect(Collectors.toList());
+
+        BasePaginationDataDto<RemainUserDto> basePaginationDataDto = new BasePaginationDataDto<>(index, pageSize, count, remainUserDtos);
+
+        return basePaginationDataDto;
     }
 
     private boolean isNewReferrerReferree(String loginName, String newReferrerLoginName) {

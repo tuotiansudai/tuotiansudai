@@ -7,6 +7,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.console.bi.dto.RoleStage;
+import com.tuotiansudai.console.dto.RemainUserDto;
 import com.tuotiansudai.console.dto.UserItemDataDto;
 import com.tuotiansudai.console.repository.model.UserMicroModelView;
 import com.tuotiansudai.console.repository.model.UserOperation;
@@ -29,12 +30,14 @@ import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.spring.security.SignInClient;
 import com.tuotiansudai.task.OperationTask;
 import com.tuotiansudai.task.TaskConstant;
+import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.RequestIPParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -366,6 +369,53 @@ public class UserController {
 
         mv.addObject("sourceList", Source.values());
         return mv;
+    }
+
+    @RequestMapping(value = "/remain-users", method = RequestMethod.GET)
+    public ModelAndView remainUser(@RequestParam(value = "loginName", required = false) String loginName,
+                                   @RequestParam(value = "mobile", required = false) String mobile,
+                                   @RequestParam(value = "registerStartTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date registerStartTime,
+                                   @RequestParam(value = "registerEndTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date registerEndTime,
+                                   @RequestParam(value = "useExperienceCoupon", required = false) Boolean useExperienceCoupon,
+                                   @RequestParam(value = "experienceStartTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date experienceStartTime,
+                                   @RequestParam(value = "experienceEndTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date experienceEndTime,
+                                   @RequestParam(value = "investCountLowLimit", required = false) Integer investCountLowLimit,
+                                   @RequestParam(value = "investCountHighLimit", required = false) Integer investCountHighLimit,
+                                   @RequestParam(value = "investSumLowLimit", required = false) String investSumLowLimit,
+                                   @RequestParam(value = "investSumHighLimit", required = false) String investSumHighLimit,
+                                   @RequestParam(value = "firstInvestStartTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date firstInvestStartTime,
+                                   @RequestParam(value = "firstInvestEndTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date firstInvestEndTime,
+                                   @RequestParam(value = "secondInvestStartTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date secondInvestStartTime,
+                                   @RequestParam(value = "secondInvestEndTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date secondInvestEndTime,
+                                   @RequestParam(value = "index", required = false, defaultValue = "1") int index) {
+        final int pageSize = 10;
+
+        ModelAndView modelAndView = new ModelAndView("/user-remain-list");
+
+        BasePaginationDataDto<RemainUserDto> data = consoleUserService.findRemainUsers(loginName, mobile, registerStartTime,
+                registerEndTime, useExperienceCoupon, experienceStartTime, experienceEndTime, investCountLowLimit, investCountHighLimit,
+                StringUtils.isEmpty(investSumLowLimit) ? null : AmountConverter.convertStringToCent(investSumLowLimit),
+                StringUtils.isEmpty(investSumHighLimit) ? null : AmountConverter.convertStringToCent(investSumHighLimit),
+                firstInvestStartTime, firstInvestEndTime, secondInvestStartTime, secondInvestEndTime, index, pageSize);
+
+        modelAndView.addObject("loginName", loginName);
+        modelAndView.addObject("mobile", mobile);
+        modelAndView.addObject("registerStartTime", registerStartTime);
+        modelAndView.addObject("registerEndTime", registerEndTime);
+        modelAndView.addObject("useExperienceCoupon", useExperienceCoupon);
+        modelAndView.addObject("experienceStartTime", experienceStartTime);
+        modelAndView.addObject("experienceEndTime", experienceEndTime);
+        modelAndView.addObject("investCountLowLimit", investCountLowLimit);
+        modelAndView.addObject("investCountHighLimit", investCountHighLimit);
+        modelAndView.addObject("investSumLowLimit", investSumLowLimit);
+        modelAndView.addObject("investSumHighLimit", investSumHighLimit);
+        modelAndView.addObject("firstInvestStartTime", firstInvestStartTime);
+        modelAndView.addObject("firstInvestEndTime", firstInvestEndTime);
+        modelAndView.addObject("secondInvestStartTime", secondInvestStartTime);
+        modelAndView.addObject("secondInvestEndTime", secondInvestEndTime);
+        modelAndView.addObject("data", data);
+
+        return modelAndView;
     }
 
 }
