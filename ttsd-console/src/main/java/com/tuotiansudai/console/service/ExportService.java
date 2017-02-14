@@ -302,15 +302,10 @@ public class ExportService {
             row.add(record.isReferrerStaff() ? "是" : "否");
             row.add(record.getSource() != null ? record.getSource().name() : "");
             row.add(record.getChannel());
-            row.add(new DateTime(record.getRegisterTime()).toString("yyyy-MM-dd HH:mm"));
+            row.add(new DateTime(record.getRegisterTime()).toString("yyyy-MM-dd HH:mm:ss"));
             row.add("1".equals(record.getAutoInvestStatus()) ? "是" : "否");
             List<UserRoleModel> userRoleModels = record.getUserRoles();
-            List<String> userRole = Lists.transform(userRoleModels, new Function<UserRoleModel, String>() {
-                @Override
-                public String apply(UserRoleModel model) {
-                    return model.getRole().getDescription();
-                }
-            });
+            List<String> userRole = Lists.transform(userRoleModels, model -> model.getRole().getDescription());
             row.add(StringUtils.join(userRole, ";"));
             row.add(UserStatus.ACTIVE.equals(record.getStatus()) ? "正常" : "禁用");
             row.add(record.getBirthday());
@@ -360,7 +355,7 @@ public class ExportService {
         for (RechargePaginationItemDataDto record : records) {
             List<String> row = Lists.newArrayList();
             row.add(new BigDecimal(record.getRechargeId()).toString());
-            row.add(new DateTime(record.getCreatedTime()).toString("yyyy-MM-dd HH:mm"));
+            row.add(new DateTime(record.getCreatedTime()).toString("yyyy-MM-dd HH:mm:ss"));
             row.add(record.getLoginName());
             row.add(record.isStaff() ? "是" : "否");
             row.add(record.getUserName());
@@ -381,9 +376,9 @@ public class ExportService {
         for (WithdrawPaginationItemDataDto record : records) {
             List<String> row = Lists.newArrayList();
             row.add(new BigDecimal(record.getWithdrawId()).toString());
-            row.add(new DateTime(record.getCreatedTime()).toString("yyyy-MM-dd HH:mm"));
-            row.add(new DateTime(record.getApplyNotifyTime()).toString("yyyy-MM-dd HH:mm"));
-            row.add(new DateTime(record.getNotifyTime()).toString("yyyy-MM-dd HH:mm"));
+            row.add(new DateTime(record.getCreatedTime()).toString("yyyy-MM-dd HH:mm:ss"));
+            row.add(new DateTime(record.getApplyNotifyTime()).toString("yyyy-MM-dd HH:mm:ss"));
+            row.add(new DateTime(record.getNotifyTime()).toString("yyyy-MM-dd HH:mm:ss"));
             row.add(record.getLoginName());
             row.add(record.isStaff() ? "是" : "否");
             row.add(record.getUserName());
