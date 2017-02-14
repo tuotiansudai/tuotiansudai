@@ -2,6 +2,7 @@ package com.tuotiansudai.console.controller;
 
 import com.tuotiansudai.console.bi.dto.RoleStage;
 import com.tuotiansudai.console.dto.UserItemDataDto;
+import com.tuotiansudai.console.repository.model.UserMicroModelView;
 import com.tuotiansudai.console.repository.model.UserOperation;
 import com.tuotiansudai.console.service.*;
 import com.tuotiansudai.dto.*;
@@ -224,8 +225,8 @@ public class ExportController {
 
     @RequestMapping(value = "/users", method = RequestMethod.GET)
     public void exportUsers(String loginName, String email, String mobile,
-                            @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date beginTime,
-                            @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date endTime,
+                            @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date beginTime,
+                            @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date endTime,
                             RoleStage roleStage, String referrerMobile, String channel,
                             UserOperation userOperation,
                             @RequestParam(value = "source", required = false) Source source, HttpServletResponse response) throws IOException {
@@ -261,8 +262,8 @@ public class ExportController {
     @RequestMapping(value = "/recharge", method = RequestMethod.GET)
     public void exportRecharge(@RequestParam(value = "rechargeId", required = false) String rechargeId,
                                @RequestParam(value = "mobile", required = false) String mobile,
-                               @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date startTime,
-                               @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date endTime,
+                               @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date startTime,
+                               @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date endTime,
                                @RequestParam(value = "status", required = false) RechargeStatus status,
                                @RequestParam(value = "source", required = false) RechargeSource source,
                                @RequestParam(value = "channel", required = false) String channel, HttpServletResponse response) throws IOException {
@@ -272,14 +273,13 @@ public class ExportController {
         BaseDto<BasePaginationDataDto<RechargePaginationItemDataDto>> baseDto = consoleRechargeService.findRechargePagination(rechargeId, mobile, source, status, channel, index, pageSize, startTime, endTime);
         List<List<String>> rechargeData = exportService.buildRecharge(baseDto.getData().getRecords());
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleRecharge, rechargeData, response.getOutputStream());
-
     }
 
     @RequestMapping(value = "/withdraw", method = RequestMethod.GET)
     public void exportWithdraw(@RequestParam(value = "withdrawId", required = false) String withdrawId,
                                @RequestParam(value = "mobile", required = false) String mobile,
-                               @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date startTime,
-                               @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date endTime,
+                               @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date startTime,
+                               @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date endTime,
                                @RequestParam(value = "status", required = false) WithdrawStatus status,
                                @RequestParam(value = "source", required = false) Source source, HttpServletResponse response) throws IOException {
         fillExportResponse(response, CsvHeaderType.ConsoleWithdraw.getDescription());
@@ -398,16 +398,79 @@ public class ExportController {
 
     @RequestMapping(value = "/coupons-details", method = RequestMethod.GET)
     public void exportCouponDetails(@RequestParam(value = "couponId", required = false) long couponId, @RequestParam(value = "isUsed", required = false) Boolean isUsed,
-                                     @RequestParam(value = "usedStartTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date usedStartTime,
-                                     @RequestParam(value = "usedEndTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date usedEndTime,
-                                     @RequestParam(value = "loginName", required = false) String loginName,
-                                     @RequestParam(value = "mobile", required = false) String mobile,
-                                     HttpServletResponse response) throws IOException {
+                                    @RequestParam(value = "usedStartTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date usedStartTime,
+                                    @RequestParam(value = "usedEndTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date usedEndTime,
+                                    @RequestParam(value = "loginName", required = false) String loginName,
+                                    @RequestParam(value = "mobile", required = false) String mobile,
+                                    HttpServletResponse response) throws IOException {
         fillExportResponse(response, CsvHeaderType.BirthdayCouponsHeader.getDescription());
         int index = 1;
         int pageSize = Integer.MAX_VALUE;
         List<CouponDetailsDto> userCoupons = consoleCouponService.findCouponDetail(couponId, isUsed, loginName, mobile, null, null, usedStartTime, usedEndTime, index, pageSize);
         List<List<String>> userCouponData = exportService.buildCouponDetailsDtoList(userCoupons);
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.CouponDetailsHeader, userCouponData, response.getOutputStream());
+    }
+
+
+    @RequestMapping(value = "/user-micro-model", method = RequestMethod.GET)
+    public void exportUserMicroModel(
+            @RequestParam(value = "mobile", required = false) String mobile,
+            @RequestParam(value = "registerTimeStart", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date registerTimeStart,
+            @RequestParam(value = "registerTimeEnd", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date registerTimeEnd,
+            @RequestParam(value = "hasCertify", required = false) String hasCertify,
+            @RequestParam(value = "invested", required = false) String invested,
+            @RequestParam(value = "totalInvestAmountStart", required = false) Long totalInvestAmountStart,
+            @RequestParam(value = "totalInvestAmountEnd", required = false) Long totalInvestAmountEnd,
+            @RequestParam(value = "investCountStart", required = false) Integer investCountStart,
+            @RequestParam(value = "investCountEnd", required = false) Integer investCountEnd,
+            @RequestParam(value = "loanCountStart", required = false) Integer loanCountStart,
+            @RequestParam(value = "loanCountEnd", required = false) Integer loanCountEnd,
+            @RequestParam(value = "transformPeriodStart", required = false) Integer transformPeriodStart,
+            @RequestParam(value = "transformPeriodEnd", required = false) Integer transformPeriodEnd,
+            @RequestParam(value = "invest1st2ndTimingStart", required = false) Integer invest1st2ndTimingStart,
+            @RequestParam(value = "invest1st2ndTimingEnd", required = false) Integer invest1st2ndTimingEnd,
+            @RequestParam(value = "invest1st3ndTimingStart", required = false) Integer invest1st3ndTimingStart,
+            @RequestParam(value = "invest1st3ndTimingEnd", required = false) Integer invest1st3ndTimingEnd,
+            @RequestParam(value = "lastInvestTimeStart", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date lastInvestTimeStart,
+            @RequestParam(value = "lastInvestTimeEnd", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date lastInvestTimeEnd,
+            @RequestParam(value = "repayingAmountStart", required = false) Long repayingAmountStart,
+            @RequestParam(value = "repayingAmountEnd", required = false) Long repayingAmountEnd,
+            @RequestParam(value = "lastLoginTimeStart", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date lastLoginTimeStart,
+            @RequestParam(value = "lastLoginTimeEnd", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date lastLoginTimeEnd,
+            @RequestParam(value = "lastLoginSource", required = false) Source lastLoginSource,
+            HttpServletResponse response) throws IOException {
+        fillExportResponse(response, CsvHeaderType.UserMicroModelHeader.getDescription());
+        int index = 1;
+        int pageSize = Integer.MAX_VALUE;
+
+        BaseDto<BasePaginationDataDto<UserMicroModelView>> baseDto = consoleUserService.queryUserMicroView(mobile,
+                registerTimeStart,
+                registerTimeEnd,
+                hasCertify,
+                invested,
+                totalInvestAmountStart == null ? null : totalInvestAmountStart * 100,
+                totalInvestAmountEnd == null ? null : totalInvestAmountEnd * 100,
+                investCountStart,
+                investCountEnd,
+                loanCountStart,
+                loanCountEnd,
+                transformPeriodStart,
+                transformPeriodEnd,
+                invest1st2ndTimingStart,
+                invest1st2ndTimingEnd,
+                invest1st3ndTimingStart,
+                invest1st3ndTimingEnd,
+                lastInvestTimeStart,
+                lastInvestTimeEnd,
+                repayingAmountStart == null ? null : repayingAmountStart * 100,
+                repayingAmountEnd == null ? null : repayingAmountEnd * 100,
+                lastLoginTimeStart,
+                lastLoginTimeEnd,
+                lastLoginSource,
+                index,
+                pageSize);
+        List<UserMicroModelView> userMicroModelViewList = baseDto.getData().getRecords();
+        List<List<String>> userMicroModelDtoList = exportService.buildUserMicroModelDtoList(userMicroModelViewList);
+        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.UserMicroModelHeader, userMicroModelDtoList, response.getOutputStream());
     }
 }

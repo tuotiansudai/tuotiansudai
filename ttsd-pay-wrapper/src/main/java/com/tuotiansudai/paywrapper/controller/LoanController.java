@@ -1,10 +1,8 @@
 package com.tuotiansudai.paywrapper.controller;
 
 import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.LoanDto;
-import com.tuotiansudai.dto.LoanOutDto;
 import com.tuotiansudai.dto.PayDataDto;
-import com.tuotiansudai.paywrapper.service.LoanService;
+import com.tuotiansudai.paywrapper.loanout.LoanService;
 import com.tuotiansudai.repository.model.LoanStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

@@ -11,7 +11,7 @@ import com.tuotiansudai.repository.model.UserCouponModel;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
-import com.tuotiansudai.paywrapper.coupon.service.impl.CouponRepayServiceImpl;
+import com.tuotiansudai.paywrapper.loanout.impl.CouponRepayServiceImpl;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.TransferMapper;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.SyncRequestStatus;

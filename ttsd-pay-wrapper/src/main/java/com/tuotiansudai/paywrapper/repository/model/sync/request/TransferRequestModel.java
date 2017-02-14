@@ -1,5 +1,7 @@
 package com.tuotiansudai.paywrapper.repository.model.sync.request;
 
+import cn.jpush.api.utils.StringUtils;
+import com.google.common.base.Strings;
 import com.tuotiansudai.paywrapper.repository.model.UmPayParticAccType;
 import com.tuotiansudai.paywrapper.repository.model.UmPayService;
 import com.tuotiansudai.paywrapper.repository.model.UmPayTransAction;
@@ -10,7 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 
-public class TransferRequestModel extends BaseSyncRequestModel {
+public class TransferRequestModel extends BaseAsyncRequestModel {
 
     private String orderId;
 
@@ -43,6 +45,18 @@ public class TransferRequestModel extends BaseSyncRequestModel {
         return model;
     }
 
+    public static TransferRequestModel newTransferReferrerRewardRequest(String orderId, String payUserId, String amount) {
+        TransferRequestModel model = newRequest(orderId, payUserId, amount);
+        model.notifyUrl = MessageFormat.format("{0}/{1}", CALLBACK_HOST_PROPS.get("pay.callback.back.host"), "transfer_referrer_reward_notify");
+        return model;
+    }
+
+    public static TransferRequestModel newTransferCouponRequest(String orderId, String payUserId, String amount) {
+        TransferRequestModel model = newRequest(orderId, payUserId, amount);
+        model.notifyUrl = MessageFormat.format("{0}/{1}", CALLBACK_HOST_PROPS.get("pay.callback.back.host"), "transfer_coupon_notify");
+        return model;
+    }
+
     @Override
     public Map<String, String> generatePayRequestData() {
         Map<String, String> payRequestData = super.generatePayRequestData();
@@ -52,7 +66,9 @@ public class TransferRequestModel extends BaseSyncRequestModel {
         payRequestData.put("partic_user_id", this.particUserId);
         payRequestData.put("amount", this.amount);
         payRequestData.put("mer_date", this.merDate);
-
+        if(StringUtils.isNotEmpty(this.notifyUrl)){
+            payRequestData.put("notify_url", this.notifyUrl);
+        }
         return payRequestData;
     }
 

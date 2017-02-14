@@ -11,9 +11,9 @@
         <input type="text" id="date-picker" class="input-control" size="35"/>
         <span class="select-item" data-day="1">今天</span>
         <span class="select-item" data-day="7">最近一周</span>
-        <span class="select-item current" data-day="30">一个月</span>
+        <span class="select-item" data-day="30">一个月</span>
         <span class="select-item" data-day="180">六个月</span>
-        <span class="select-item" data-day="">全部</span>
+        <span class="select-item current" data-day="">全部</span>
     </div>
     <div class="item-block status-filter">
         <span class="sub-hd">交易状态:</span>

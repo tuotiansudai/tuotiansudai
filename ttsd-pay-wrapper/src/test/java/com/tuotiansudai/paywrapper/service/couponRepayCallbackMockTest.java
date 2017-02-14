@@ -3,7 +3,7 @@ package com.tuotiansudai.paywrapper.service;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.job.CouponRepayNotifyCallbackJob;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
-import com.tuotiansudai.paywrapper.coupon.service.impl.CouponRepayServiceImpl;
+import com.tuotiansudai.paywrapper.loanout.impl.CouponRepayServiceImpl;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
 import org.junit.Before;
 import org.junit.Test;
