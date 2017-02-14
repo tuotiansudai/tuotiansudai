@@ -1,5 +1,6 @@
 package com.tuotiansudai.api.service;
 
+import com.tuotiansudai.activity.service.MoneyTreePrizeService;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.FundManagementResponseDataDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
@@ -56,9 +57,10 @@ public class MobileAppFundManagementServiceTest extends ServiceTestBase {
     private UserCouponService userCouponService;
     @Mock
     private ReferrerManageMapper referrerManageMapper;
-
     @Mock
     private UserMembershipEvaluator userMembershipEvaluator;
+    @Mock
+    private MoneyTreePrizeService moneyTreePrizeService;
 
     @Test
     public void shouldQueryFundByUserIdIsOk() {
@@ -75,6 +77,7 @@ public class MobileAppFundManagementServiceTest extends ServiceTestBase {
         when(referrerManageMapper.findReferInvestTotalAmount("", null, null, null, null)).thenReturn(1700l);
         when(userMembershipEvaluator.evaluate(anyString())).thenReturn(new MembershipModel());
         when(userMembershipEvaluator.evaluateUserMembership(anyString(), any(Date.class))).thenReturn(new UserMembershipModel());
+        when(moneyTreePrizeService.isActivity()).thenReturn(1);
         List<UserCouponView> userCouponViews = new ArrayList<>();
         userCouponViews.add(new UserCouponView());
         when(userCouponService.getUnusedUserCoupons(anyString())).thenReturn(userCouponViews);
@@ -98,6 +101,7 @@ public class MobileAppFundManagementServiceTest extends ServiceTestBase {
         assertEquals(baseResponseDto.getData().getReceivableCorpusInterest(), "27.00");
         assertEquals(baseResponseDto.getData().getPoint(), "1700");
         assertEquals(baseResponseDto.getData().getUsableUserCouponCount(), "1");
+        assertEquals(baseResponseDto.getData().getShowMoneyTree(),"1");
     }
 
     private AccountModel fakeUserModel() {
