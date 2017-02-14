@@ -97,7 +97,7 @@ public class CouponSmsNotifyMessageConsumer implements MessageConsumer {
 
         SmsCouponNotifyDto notifyDto = new SmsCouponNotifyDto();
         notifyDto.setAmount(AmountConverter.convertCentToString(couponModel.getAmount()));
-        notifyDto.setRate(new BigDecimal(couponModel.getRate() * 100).setScale(0, BigDecimal.ROUND_UP).toString());
+        notifyDto.setRate(String.format("%.1f", couponModel.getRate() * 100));
         notifyDto.setCouponType(couponModel.getCouponType());
         notifyDto.setExpiredDate(DateTime.now().plusDays(couponModel.getDeadline()).withTimeAtStartOfDay().toString("yyyy-MM-dd"));
 
