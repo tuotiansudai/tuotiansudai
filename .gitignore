@@ -45,12 +45,5 @@ ttsd-activity-web/src/main/webapp/activity/style/cssprefixer
 
 ttsd-ask-web/src/main/webapp/ask/dist
 
-ttsd-frontend-manage/resources/develop/ask
-ttsd-frontend-manage/resources/develop/web
-ttsd-frontend-manage/resources/develop/images
-ttsd-frontend-manage/resources/develop/chucks
-ttsd-frontend-manage/resources/develop/assets-resources.json
-ttsd-frontend-manage/resources/develop/json-ask.json
-ttsd-frontend-manage/resources/develop/json-web.json
-
-ttsd-frontend-manage/resources/prod
+ttsd-frontend-manage/resources/develop/**
+ttsd-frontend-manage/resources/prod/**
