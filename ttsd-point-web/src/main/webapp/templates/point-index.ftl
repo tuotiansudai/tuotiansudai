@@ -57,7 +57,7 @@
                             <p class="tomorrow-text"></p>
                             <p class="intro-text"></p>
                             <p class="next-text"></p>
-                            <p class="sign-reward"><a href="/point-shop/bill">查看连续签到奖励</a></p>
+                            <p class="sign-reward"><a href="/activity/sign-check">查看连续签到奖励</a></p>
                         </div>
                         
                     </div>

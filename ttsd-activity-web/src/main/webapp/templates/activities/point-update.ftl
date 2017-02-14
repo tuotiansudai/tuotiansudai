@@ -72,7 +72,7 @@
 								<td>100积分/人</td>
 							</tr>
 							<tr>
-								<td>好友绑定银行卡</td>
+								<td>好友首次投资</td>
 								<td class="point-text">200积分/人</td>
 							</tr>
 						</tbody>
