@@ -1,6 +1,7 @@
 package com.tuotiansudai.point.controller;
 
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
@@ -82,6 +83,7 @@ public class PointShopController {
         modelAndView.addObject("isLogin", isLogin);
         modelAndView.addObject("isShowDiscount", isShowDiscount);
         modelAndView.addObject("responsive", true);
+        modelAndView.addObject("signCount", Strings.isNullOrEmpty(loginName) ? "0" : signInService.getSignInCount(loginName));
         return modelAndView;
     }
 

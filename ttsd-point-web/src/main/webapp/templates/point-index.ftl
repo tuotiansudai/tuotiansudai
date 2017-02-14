@@ -26,10 +26,12 @@
                     </p>
                 </div>
             </#if>
-            <div class="sign-rule">
-                <span>已连续签到100天</span>
-                <a href="">签到规则></a>
-            </div>
+            <#if isLogin>
+                <div class="sign-rule">
+                    <span>已连续签到${signCount}天</span>
+                    <a href="">签到规则></a>
+                </div>
+            </#if>
             <ul class="other-list">
                 <li class="right-line">
                     <p><span>做任务赚积分</span></p>
