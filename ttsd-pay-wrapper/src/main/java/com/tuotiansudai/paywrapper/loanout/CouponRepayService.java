@@ -1,4 +1,4 @@
-package com.tuotiansudai.paywrapper.coupon.service;
+package com.tuotiansudai.paywrapper.loanout;
 
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
@@ -10,7 +10,7 @@ public interface CouponRepayService {
 
     void repay(long loanRepayId, boolean isAdvanced);
 
-    void generateCouponRepay(long loanId);
+    boolean generateCouponRepay(long loanId);
 
     String couponRepayCallback(Map<String, String> paramsMap, String queryString);
 

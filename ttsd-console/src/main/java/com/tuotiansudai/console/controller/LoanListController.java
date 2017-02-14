@@ -130,7 +130,7 @@ public class LoanListController {
                 return baseDto;
             }
 
-            return anxinSignService.createLoanContracts(businessId);
+            return anxinSignService.createLoanContracts(businessId, true);
         } else {
 
             TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(businessId);
