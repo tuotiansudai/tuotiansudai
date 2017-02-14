@@ -124,17 +124,6 @@ public class LoanOutSuccessController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/process-notify-after-loan-out", method = RequestMethod.POST)
-    public BaseDto<PayDataDto> processNotifyForLoanOut(@RequestBody long loanId) {
-        boolean isSuccess = loanService.processNotifyForLoanOut(loanId);
-        BaseDto<PayDataDto> dto = new BaseDto<>();
-        PayDataDto dataDto = new PayDataDto();
-        dto.setData(dataDto);
-        dataDto.setStatus(isSuccess);
-        return dto;
-    }
-
-    @ResponseBody
     @RequestMapping(value = "/referrer-reward-after-loan-out", method = RequestMethod.POST)
     public BaseDto<PayDataDto> sendRewardReferrer(@RequestBody long loanId) {
         boolean isSuccess = referrerRewardService.rewardReferrer(loanId);

@@ -20,7 +20,6 @@ public enum MessageQueue {
     MembershipUpgrade_SendJpushMessage("MembershipUpgrade-SendJpushMessage"),
     LoanOutSuccess_GenerateRepay("LoanOutSuccess-GenerateRepay"),
     LoanOutSuccess_RewardReferrer("LoanOutSuccess-RewardReferrer"),
-    LoanOutSuccess_SmsMessage("LoanOutSuccess-SmsMessage"),
     LoanOutSuccess_AssignCoupon("LoanOutSuccess-AssignCoupon"),
     LoanOutSuccess_AssignAchievement("LoanOutSuccess-AssignAchievement"),
     LoanOutSuccess_GenerateAnXinContract("LoanOutSuccess-GenerateAnXinContract"),

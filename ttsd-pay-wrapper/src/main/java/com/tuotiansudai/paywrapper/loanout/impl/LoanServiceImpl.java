@@ -397,34 +397,6 @@ public class LoanServiceImpl implements LoanService {
         return true;
     }
 
-    @Override
-    public boolean processNotifyForLoanOut(long loanId) {
-        logger.info(MessageFormat.format("[标的放款]:标的: {0} 放款短信邮件通知", String.valueOf(loanId)));
-        List<InvestModel> successInvests = investMapper.findSuccessInvestsByLoanId(loanId);
-        LoanModel loanModel = loanMapper.findById(loanId);
-        for (InvestModel investModel : successInvests) {
-            UserModel userModel = userMapper.findByLoginName(investModel.getLoginName());
-            InvestSmsNotifyDto dto = new InvestSmsNotifyDto(userModel.getMobile(),
-                    loanModel.getName(),
-                    AmountConverter.convertCentToString(investModel.getAmount()));
-            Map<String, String> emailParameters = Maps.newHashMap(new ImmutableMap.Builder<String, String>()
-                    .put("loanName", loanModel.getName())
-                    .put("amount", AmountConverter.convertCentToString(investModel.getAmount()))
-                    .build());
-            try {
-                if (StringUtils.isNotEmpty(userModel.getEmail())) {
-                    mqWrapperClient.sendMessage(MessageQueue.EMailMessage, new EMailMessage(Lists.newArrayList(userModel.getEmail()),
-                            SendCloudTemplate.LOAN_OUT_SUCCESSFUL_EMAIL.getTitle(),
-                            SendCloudTemplate.LOAN_OUT_SUCCESSFUL_EMAIL.generateContent(emailParameters)));
-                }
-            } catch (Exception e) {
-                logger.error(e.getLocalizedMessage(), e);
-                return false;
-            }
-        }
-        return true;
-    }
-
     private BaseDto<PayDataDto> cancelPayBack(InvestDto dto, long investId) {
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto payDataDto = new PayDataDto();
