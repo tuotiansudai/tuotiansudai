@@ -2,6 +2,7 @@ package com.tuotiansudai.api.service.v1_0.impl;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.activity.repository.dto.DrawLotteryResultDto;
+import com.tuotiansudai.activity.repository.model.LotteryPrize;
 import com.tuotiansudai.activity.repository.model.UserLotteryPrizeView;
 import com.tuotiansudai.activity.service.MoneyTreePrizeService;
 import com.tuotiansudai.api.dto.v1_0.*;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class MobileAppMoneyTreeServiceImpl implements MobileAppMoneyTreeService {
@@ -54,11 +56,15 @@ public class MobileAppMoneyTreeServiceImpl implements MobileAppMoneyTreeService 
     }
 
     @Override
-    public BaseResponseDto<MoneyTreeResultListResponseDataDto> generatePrizeListTop10(){
+    public BaseResponseDto<MoneyTreeResultListResponseDataDto> generatePrizeListTop10() {
         BaseResponseDto dto = new BaseResponseDto();
         List<UserLotteryPrizeView> userLotteryPrizeViewList = moneyTreePrizeService.findDrawLotteryPrizeRecordTop10();
         MoneyTreeResultListResponseDataDto moneyTreeResultListResponseDataDto = new MoneyTreeResultListResponseDataDto();
-        List<MoneyTreeResultResponseDataDto> moneyTreeResultResponseDataList = Lists.transform(userLotteryPrizeViewList, input -> new MoneyTreeResultResponseDataDto(input));
+        List<MoneyTreeResultResponseDataDto> moneyTreeResultResponseDataList =
+                userLotteryPrizeViewList.stream()
+                        .filter(n -> n.getPrizeValue() != LotteryPrize.MONEY_TREE_1000_EXPERIENCE_GOLD_0.getDescription())
+                        .map(n -> new MoneyTreeResultResponseDataDto(n))
+                        .collect(Collectors.toList());
         moneyTreeResultListResponseDataDto.setPrizeList(moneyTreeResultResponseDataList);
         dto.setData(moneyTreeResultListResponseDataDto);
         dto.setCode(ReturnMessage.SUCCESS.getCode());
@@ -67,12 +73,16 @@ public class MobileAppMoneyTreeServiceImpl implements MobileAppMoneyTreeService 
     }
 
     @Override
-    public BaseResponseDto<MoneyTreeResultListResponseDataDto> generateMyPrizeList(String loginName){
+    public BaseResponseDto<MoneyTreeResultListResponseDataDto> generateMyPrizeList(String loginName) {
         BaseResponseDto dto = new BaseResponseDto();
         UserModel userModel = userMapper.findByLoginName(loginName);
         List<UserLotteryPrizeView> userLotteryPrizeViewList = moneyTreePrizeService.findDrawLotteryPrizeRecordByMobile(userModel.getMobile());
         MoneyTreeResultListResponseDataDto moneyTreeResultListResponseDataDto = new MoneyTreeResultListResponseDataDto();
-        List<MoneyTreeResultResponseDataDto> moneyTreeResultResponseDataList = Lists.transform(userLotteryPrizeViewList, input -> new MoneyTreeResultResponseDataDto(input));
+        List<MoneyTreeResultResponseDataDto> moneyTreeResultResponseDataList =
+                userLotteryPrizeViewList.stream()
+                        .filter(n -> n.getPrizeValue() != LotteryPrize.MONEY_TREE_1000_EXPERIENCE_GOLD_0.getDescription())
+                        .map(n -> new MoneyTreeResultResponseDataDto(n))
+                        .collect(Collectors.toList());
         moneyTreeResultListResponseDataDto.setPrizeList(moneyTreeResultResponseDataList);
         dto.setData(moneyTreeResultListResponseDataDto);
         dto.setCode(ReturnMessage.SUCCESS.getCode());

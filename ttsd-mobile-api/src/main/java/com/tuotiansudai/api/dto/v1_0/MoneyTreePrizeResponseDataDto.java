@@ -3,9 +3,9 @@ package com.tuotiansudai.api.dto.v1_0;
 import com.tuotiansudai.activity.repository.dto.DrawLotteryResultDto;
 import io.swagger.annotations.ApiModelProperty;
 
-public class MoneyTreePrizeResponseDataDto extends BaseResponseDataDto{
+public class MoneyTreePrizeResponseDataDto extends BaseResponseDataDto {
 
-    @ApiModelProperty(value = "体验金额", example = "10元（单位为元）")
+    @ApiModelProperty(value = "体验金额", example = "10（单位为元）")
     private String experienceAmount;
 
     @ApiModelProperty(value = "剩余摇奖次数", example = "4")
@@ -14,8 +14,8 @@ public class MoneyTreePrizeResponseDataDto extends BaseResponseDataDto{
     @ApiModelProperty(value = "剩余邀请好友次数", example = "2")
     private int leftInviteFriendsCount;
 
-    public MoneyTreePrizeResponseDataDto(DrawLotteryResultDto drawLotteryResultDto){
-        this.experienceAmount = drawLotteryResultDto.getPrizeValue();
+    public MoneyTreePrizeResponseDataDto(DrawLotteryResultDto drawLotteryResultDto) {
+        this.experienceAmount = drawLotteryResultDto.getPrizeValue() != null ? drawLotteryResultDto.getPrizeValue().replace("元", "") : drawLotteryResultDto.getPrizeValue();
     }
 
     public String getExperienceAmount() {
