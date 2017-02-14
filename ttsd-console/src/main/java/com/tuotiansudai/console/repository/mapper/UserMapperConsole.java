@@ -2,12 +2,11 @@ package com.tuotiansudai.console.repository.mapper;
 
 import com.tuotiansudai.console.bi.dto.RoleStage;
 import com.tuotiansudai.console.repository.model.RemainUserView;
+import com.tuotiansudai.console.repository.model.UserMicroModelView;
 import com.tuotiansudai.console.repository.model.UserOperation;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserView;
 import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.logging.Log;
-import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
@@ -71,6 +70,58 @@ public interface UserMapperConsole {
     List<String> findAllLoanerLikeLoginName(String loginName);
 
     List<String> findAccountLikeLoginName(String loginName);
+
+    int findUserMicroModelCount(@Param(value = "mobile") String mobile,
+                                @Param(value = "registerTimeStart") Date registerTimeStart,
+                                @Param(value = "registerTimeEnd") Date registerTimeEnd,
+                                @Param(value = "hasCertify") String hasCertify,
+                                @Param(value = "invested") String invested,
+                                @Param(value = "totalInvestAmountStart") Long totalInvestAmountStart,
+                                @Param(value = "totalInvestAmountEnd") Long totalInvestAmountEnd,
+                                @Param(value = "investCountStart") Integer investCountStart,
+                                @Param(value = "investCountEnd") Integer investCountEnd,
+                                @Param(value = "loanCountStart") Integer loanCountStart,
+                                @Param(value = "loanCountEnd") Integer loanCountEnd,
+                                @Param(value = "transformPeriodStart") Integer transformPeriodStart,
+                                @Param(value = "transformPeriodEnd") Integer transformPeriodEnd,
+                                @Param(value = "invest1st2ndTimingStart") Integer invest1st2ndTimingStart,
+                                @Param(value = "invest1st2ndTimingEnd") Integer invest1st2ndTimingEnd,
+                                @Param(value = "invest1st3ndTimingStart") Integer invest1st3ndTimingStart,
+                                @Param(value = "invest1st3ndTimingEnd") Integer invest1st3ndTimingEnd,
+                                @Param(value = "lastInvestTimeStart") Date lastInvestTimeStart,
+                                @Param(value = "lastInvestTimeEnd") Date lastInvestTimeEnd,
+                                @Param(value = "repayingAmountStart") Long repayingAmountStart,
+                                @Param(value = "repayingAmountEnd") Long repayingAmountEnd,
+                                @Param(value = "lastLoginTimeStart") Date lastLoginTimeStart,
+                                @Param(value = "lastLoginTimeEnd") Date lastLoginTimeEnd,
+                                @Param(value = "lastLoginSource") Source lastLoginSource);
+
+    List<UserMicroModelView> queryUserMicroModel(@Param(value = "mobile") String mobile,
+                                                 @Param(value = "registerTimeStart") Date registerTimeStart,
+                                                 @Param(value = "registerTimeEnd") Date registerTimeEnd,
+                                                 @Param(value = "hasCertify") String hasCertify,
+                                                 @Param(value = "invested") String invested,
+                                                 @Param(value = "totalInvestAmountStart") Long totalInvestAmountStart,
+                                                 @Param(value = "totalInvestAmountEnd") Long totalInvestAmountEnd,
+                                                 @Param(value = "investCountStart") Integer investCountStart,
+                                                 @Param(value = "investCountEnd") Integer investCountEnd,
+                                                 @Param(value = "loanCountStart") Integer loanCountStart,
+                                                 @Param(value = "loanCountEnd") Integer loanCountEnd,
+                                                 @Param(value = "transformPeriodStart") Integer transformPeriodStart,
+                                                 @Param(value = "transformPeriodEnd") Integer transformPeriodEnd,
+                                                 @Param(value = "invest1st2ndTimingStart") Integer invest1st2ndTimingStart,
+                                                 @Param(value = "invest1st2ndTimingEnd") Integer invest1st2ndTimingEnd,
+                                                 @Param(value = "invest1st3ndTimingStart") Integer invest1st3ndTimingStart,
+                                                 @Param(value = "invest1st3ndTimingEnd") Integer invest1st3ndTimingEnd,
+                                                 @Param(value = "lastInvestTimeStart") Date lastInvestTimeStart,
+                                                 @Param(value = "lastInvestTimeEnd") Date lastInvestTimeEnd,
+                                                 @Param(value = "repayingAmountStart") Long repayingAmountStart,
+                                                 @Param(value = "repayingAmountEnd") Long repayingAmountEnd,
+                                                 @Param(value = "lastLoginTimeStart") Date lastLoginTimeStart,
+                                                 @Param(value = "lastLoginTimeEnd") Date lastLoginTimeEnd,
+                                                 @Param(value = "lastLoginSource") Source lastLoginSource,
+                                                 @Param(value = "index") int index,
+                                                 @Param(value = "pageSize") int pageSize);
 
     List<RemainUserView> findRemainUsers(@Param(value = "loginName") String loginName,
                                          @Param(value = "mobile") String mobile,
