@@ -23,6 +23,11 @@
         <p>换卡申请最快两小时处理完成</p>
     </#if>
 
+    <#if "membership_privilege_purchase" == service>
+        <p>您已成功购买增值特权</p>
+        <p>投资时将享受服务费7折优惠</p>
+    </#if>
+
     <p>
         <a href="${href}" class="btn-success">确定</a>
     </p>
