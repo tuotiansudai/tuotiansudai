@@ -225,8 +225,8 @@ public class ExportController {
 
     @RequestMapping(value = "/users", method = RequestMethod.GET)
     public void exportUsers(String loginName, String email, String mobile,
-                            @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date beginTime,
-                            @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date endTime,
+                            @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date beginTime,
+                            @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date endTime,
                             RoleStage roleStage, String referrerMobile, String channel,
                             UserOperation userOperation,
                             @RequestParam(value = "source", required = false) Source source, HttpServletResponse response) throws IOException {
@@ -262,8 +262,8 @@ public class ExportController {
     @RequestMapping(value = "/recharge", method = RequestMethod.GET)
     public void exportRecharge(@RequestParam(value = "rechargeId", required = false) String rechargeId,
                                @RequestParam(value = "mobile", required = false) String mobile,
-                               @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date startTime,
-                               @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date endTime,
+                               @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date startTime,
+                               @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date endTime,
                                @RequestParam(value = "status", required = false) RechargeStatus status,
                                @RequestParam(value = "source", required = false) RechargeSource source,
                                @RequestParam(value = "channel", required = false) String channel, HttpServletResponse response) throws IOException {
@@ -273,14 +273,13 @@ public class ExportController {
         BaseDto<BasePaginationDataDto<RechargePaginationItemDataDto>> baseDto = consoleRechargeService.findRechargePagination(rechargeId, mobile, source, status, channel, index, pageSize, startTime, endTime);
         List<List<String>> rechargeData = exportService.buildRecharge(baseDto.getData().getRecords());
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleRecharge, rechargeData, response.getOutputStream());
-
     }
 
     @RequestMapping(value = "/withdraw", method = RequestMethod.GET)
     public void exportWithdraw(@RequestParam(value = "withdrawId", required = false) String withdrawId,
                                @RequestParam(value = "mobile", required = false) String mobile,
-                               @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date startTime,
-                               @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date endTime,
+                               @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date startTime,
+                               @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date endTime,
                                @RequestParam(value = "status", required = false) WithdrawStatus status,
                                @RequestParam(value = "source", required = false) Source source, HttpServletResponse response) throws IOException {
         fillExportResponse(response, CsvHeaderType.ConsoleWithdraw.getDescription());
@@ -416,8 +415,8 @@ public class ExportController {
     @RequestMapping(value = "/user-micro-model", method = RequestMethod.GET)
     public void exportUserMicroModel(
             @RequestParam(value = "mobile", required = false) String mobile,
-            @RequestParam(value = "registerTimeStart", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date registerTimeStart,
-            @RequestParam(value = "registerTimeEnd", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date registerTimeEnd,
+            @RequestParam(value = "registerTimeStart", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date registerTimeStart,
+            @RequestParam(value = "registerTimeEnd", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date registerTimeEnd,
             @RequestParam(value = "hasCertify", required = false) String hasCertify,
             @RequestParam(value = "invested", required = false) String invested,
             @RequestParam(value = "totalInvestAmountStart", required = false) Long totalInvestAmountStart,
@@ -432,12 +431,12 @@ public class ExportController {
             @RequestParam(value = "invest1st2ndTimingEnd", required = false) Integer invest1st2ndTimingEnd,
             @RequestParam(value = "invest1st3ndTimingStart", required = false) Integer invest1st3ndTimingStart,
             @RequestParam(value = "invest1st3ndTimingEnd", required = false) Integer invest1st3ndTimingEnd,
-            @RequestParam(value = "lastInvestTimeStart", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date lastInvestTimeStart,
-            @RequestParam(value = "lastInvestTimeEnd", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date lastInvestTimeEnd,
+            @RequestParam(value = "lastInvestTimeStart", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date lastInvestTimeStart,
+            @RequestParam(value = "lastInvestTimeEnd", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date lastInvestTimeEnd,
             @RequestParam(value = "repayingAmountStart", required = false) Long repayingAmountStart,
             @RequestParam(value = "repayingAmountEnd", required = false) Long repayingAmountEnd,
-            @RequestParam(value = "lastLoginTimeStart", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date lastLoginTimeStart,
-            @RequestParam(value = "lastLoginTimeEnd", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date lastLoginTimeEnd,
+            @RequestParam(value = "lastLoginTimeStart", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date lastLoginTimeStart,
+            @RequestParam(value = "lastLoginTimeEnd", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date lastLoginTimeEnd,
             @RequestParam(value = "lastLoginSource", required = false) Source lastLoginSource,
             HttpServletResponse response) throws IOException {
         fillExportResponse(response, CsvHeaderType.UserMicroModelHeader.getDescription());
