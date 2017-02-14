@@ -55,7 +55,7 @@ public class CheckUserBalanceScheduler {
     private static final int LEFT_SECOND = 60 * 60 * 24 * 90;
 
 //    @Scheduled(cron = "0 30 1 * * SUN,SAT", zone = "Asia/Shanghai")
-    @Scheduled(cron = "0 0 12,18,19,20,21,22,23 * * TUE,WED", zone = "Asia/Shanghai")
+    @Scheduled(cron = "0 0 2,5,8,11,14,17,20,23 * * TUE,WED", zone = "Asia/Shanghai")
     public void checkUserBalance() {
         logger.info("[checkUserBalance:] start .");
 
