@@ -17,19 +17,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @Controller
+@RequestMapping(value = "/anxin-sign")
 public class AnxinSignController {
 
     @Autowired
     private AnxinSignService anxinSignService;
 
 
-    @RequestMapping(value = "/create-loan-contract", method = RequestMethod.POST)
+    @RequestMapping(value = "/{loanId}/create-loan-contract", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<PayFormDataDto> createLoanContracts(@Valid @RequestBody Long loanId, HttpServletRequest request) {
         return anxinSignService.createLoanContracts(loanId);
     }
 
-    @RequestMapping(value = "/create-transfer-contract", method = RequestMethod.POST)
+    @RequestMapping(value = "/{transferId}/create-transfer-contract", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<PayFormDataDto> createTransferContracts(@Valid @RequestBody Long transferId, HttpServletRequest request) {
         return anxinSignService.createTransferContracts(transferId);

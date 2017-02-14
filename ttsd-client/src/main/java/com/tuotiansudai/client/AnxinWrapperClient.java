@@ -70,7 +70,11 @@ public class AnxinWrapperClient extends BaseClient {
 
     private final static String transferCashPath = "/transfer-cash";
 
-    private final static String createLoanContract = "/create-loan-contract";
+    private final static String createLoanContract = "/anxin-sign/{0}/create-loan-contract";
+
+    private final static String createTransferContract = "/anxin-sign/{0}/create-transfer-contract";
+
+    public BaseDto
 
     public BaseDto<PayDataDto> transferCash(Object transferCashDto) {
         return syncExecute(transferCashDto, transferCashPath, "POST");
