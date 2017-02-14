@@ -86,7 +86,9 @@ public class MobileAppMembershipPrivilegePurchaseServiceTest extends ServiceTest
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId("tester");
         baseParam.setPlatform("ios");
-        requestDto.setDuration(30);
+        //测试的时候用
+        requestDto.setDuration(1);
+        //requestDto.setDuration(30);
         requestDto.setBaseParam(baseParam);
         when(membershipPrivilegePurchaseService.purchase(anyString(),any(MembershipPrivilegePriceType.class),any(Source.class))).thenReturn(baseDto);
 
