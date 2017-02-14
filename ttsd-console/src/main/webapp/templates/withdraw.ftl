@@ -97,9 +97,9 @@
                     <#list withdrawList as withdrawItem>
                     <tr>
                         <td>${withdrawItem.withdrawId?string('0')}</td>
-                        <td>${(withdrawItem.createdTime?string('yyyy-MM-dd HH:mm'))!}</td>
-                        <td>${(withdrawItem.applyNotifyTime?string('yyyy-MM-dd HH:mm'))!}</td>
-                        <td>${(withdrawItem.notifyTime?string('yyyy-MM-dd HH:mm'))!}</td>
+                        <td>${(withdrawItem.createdTime?string('yyyy-MM-dd HH:mm:ss'))!}</td>
+                        <td>${(withdrawItem.applyNotifyTime?string('yyyy-MM-dd HH:mm:ss'))!}</td>
+                        <td>${(withdrawItem.notifyTime?string('yyyy-MM-dd HH:mm:ss'))!}</td>
                         <td>${withdrawItem.loginName}
                             <#if withdrawItem.isStaff()>
                                 <span class="glyphicon glyphicon glyphicon-user" aria-hidden="true"></span>
@@ -132,7 +132,7 @@
             <ul class="pagination pull-left">
                 <li>
                     <#if pagination.hasPreviousPage >
-                    <a href="?withdrawId=${withdrawId!}&mobile=${mobile!}&startTime=${(startTime?string('yyyy-MM-dd HH:mm'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm'))!}&source=${source!}&status=${status!}&pageSize=${pageSize}&index=${index-1}"
+                    <a href="?withdrawId=${withdrawId!}&mobile=${mobile!}&startTime=${(startTime?string('yyyy-MM-dd HH:mm:ss'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm:ss'))!}&source=${source!}&status=${status!}&pageSize=${pageSize}&index=${index-1}"
                        aria-label="Previous">
                     <#else>
                     <a href="#" aria-label="Previous">
@@ -143,7 +143,7 @@
                 <li><a>${pagination.index}</a></li>
                 <li>
                     <#if pagination.hasNextPage >
-                    <a href="?withdrawId=${withdrawId!}&mobile=${mobile!}&startTime=${(startTime?string('yyyy-MM-dd HH:mm'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm'))!}&source=${source!}&status=${status!}&pageSize=${pageSize}&index=${index+1}"
+                    <a href="?withdrawId=${withdrawId!}&mobile=${mobile!}&startTime=${(startTime?string('yyyy-MM-dd HH:mm:ss'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm:ss'))!}&source=${source!}&status=${status!}&pageSize=${pageSize}&index=${index+1}"
                        aria-label="Next">
                     <#else>
                     <a href="#" aria-label="Next">

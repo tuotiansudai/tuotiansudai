@@ -28,7 +28,7 @@ public class AnxinCreateContractJob implements Job {
             long businessId = (long) context.getJobDetail().getJobDataMap().get(BUSINESS_ID);
 
             logger.info(MessageFormat.format("trigger anxin create contract job, prepare do job. businessId:{0}", String.valueOf(businessId)));
-            anxinSignService.createLoanContracts(businessId);
+            anxinSignService.createLoanContracts(businessId, true);
             logger.info(MessageFormat.format("trigger anxin create contract job, execute job end. businessId:{0}", String.valueOf(businessId)));
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);

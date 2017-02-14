@@ -10,7 +10,7 @@ import java.security.MessageDigest;
 public class CheckSumBuilder {
 
     //计算并获取checkSum
-    static String getCheckSum(String appSecret, String nonce, String curTime) {
+    public static String getCheckSum(String appSecret, String nonce, String curTime) {
         return encode(appSecret + nonce + curTime);
     }
 

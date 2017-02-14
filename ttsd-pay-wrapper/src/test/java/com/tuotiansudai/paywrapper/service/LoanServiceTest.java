@@ -1,5 +1,6 @@
 package com.tuotiansudai.paywrapper.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.anxin.service.AnxinSignService;
 import com.tuotiansudai.client.MQWrapperClient;
@@ -8,16 +9,23 @@ import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.sms.InvestSmsNotifyDto;
+import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.job.AnxinCreateContractJob;
 import com.tuotiansudai.job.JobManager;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.job.LoanOutSuccessHandleJob;
 import com.tuotiansudai.mq.client.model.MessageQueue;
+import com.tuotiansudai.mq.client.model.MessageTopic;
+import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
+import com.tuotiansudai.paywrapper.loanout.ReferrerRewardService;
+import com.tuotiansudai.paywrapper.loanout.RepayGeneratorService;
+import com.tuotiansudai.paywrapper.loanout.impl.LoanServiceImpl;
 import com.tuotiansudai.paywrapper.repository.mapper.MerBindProjectMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.MerUpdateProjectMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferMapper;
+import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.MerBindProjectRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.MerUpdateProjectRequestModel;
@@ -25,7 +33,6 @@ import com.tuotiansudai.paywrapper.repository.model.sync.request.SyncRequestStat
 import com.tuotiansudai.paywrapper.repository.model.sync.response.MerBindProjectResponseModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.MerUpdateProjectResponseModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
-import com.tuotiansudai.paywrapper.service.impl.LoanServiceImpl;
 import com.tuotiansudai.quartz.TriggeredJobBuilder;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
@@ -49,6 +56,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import static org.hamcrest.core.Is.is;
@@ -106,6 +114,9 @@ public class LoanServiceTest {
 
     @Mock
     private AnxinSignService anxinSignService;
+
+    @Mock
+    private PayAsyncClient payAsyncClient;
 
     @Mock
     private MQWrapperClient mqWrapperClient;
@@ -214,7 +225,7 @@ public class LoanServiceTest {
         verify(paySyncClient, times(1)).send(eq(ProjectTransferMapper.class), any(ProjectTransferRequestModel.class), eq(ProjectTransferResponseModel.class));
         verify(redisWrapperClient, times(1)).setnx(anyString(), anyString());
         verify(redisWrapperClient, times(2)).hset(anyString(), anyString(), anyString());
-        verify(redisWrapperClient, times(2)).hget(anyString(), anyString());
+        verify(redisWrapperClient, times(1)).hget(anyString(), anyString());
         assertTrue(baseDto1.getData().getStatus());
 
         loanModel.setStatus(LoanStatus.RECHECK);
@@ -226,11 +237,14 @@ public class LoanServiceTest {
     }
 
     @Test
-    public void shouldPostLoanOutIsOk() throws PayException, SchedulerException {
+    public void shouldPostLoanOutIsOk() throws PayException, SchedulerException, AmountTransferException, JsonProcessingException {
         UserModel userModel = getUserModelTest();
         LoanModel loanModel = getFakeLoan(userModel.getLoginName(), userModel.getLoginName(), LoanStatus.RAISING, ActivityType.NORMAL);
         InvestModel investModel = new InvestModel();
         TriggeredJobBuilder triggeredJobBuilder = mock(TriggeredJobBuilder.class);
+        BaseCallbackRequestModel baseCallbackRequestModel = new BaseCallbackRequestModel();
+        baseCallbackRequestModel.setOrderId("123");
+        baseCallbackRequestModel.setRetCode("0000");
 
 
         when(triggeredJobBuilder.addJobData(anyObject(), anyLong())).thenReturn(triggeredJobBuilder);
@@ -241,21 +255,22 @@ public class LoanServiceTest {
         when(loanMapper.findById(anyLong())).thenReturn(loanModel);
         when(investMapper.findSuccessInvestsByLoanId(anyLong())).thenReturn(Lists.newArrayList(investModel));
         doNothing().when(repayGeneratorService).generateRepay(anyLong());
-        doNothing().when(referrerRewardService).rewardReferrer(any(LoanModel.class), anyList());
+        when(referrerRewardService.rewardReferrer(anyLong())).thenReturn(true);
         when(userMapper.findByLoginName(anyString())).thenReturn(userModel);
         when(loanMapper.findById(anyLong())).thenReturn(loanModel);
-        when(smsWrapperClient.sendInvestNotify(any(InvestSmsNotifyDto.class))).thenReturn(new BaseDto<>());
         when(redisWrapperClient.hget(anyString(), anyString())).thenReturn("");
         when(redisWrapperClient.hset(anyString(), anyString(), anyString())).thenReturn(1l);
-        when(anxinSignService.createLoanContracts(anyLong())).thenReturn(new BaseDto());
+        when(anxinSignService.createLoanContracts(anyLong(), anyBoolean())).thenReturn(new BaseDto());
         when(jobManager.newJob(any(JobType.class), eq(AnxinCreateContractJob.class))).thenReturn(triggeredJobBuilder);
+        when(payAsyncClient.parseCallbackRequest(any(Map.class), anyString(), any(Class.class), any(Class.class))).thenReturn(baseCallbackRequestModel);
+        doNothing().when(mqWrapperClient).publishMessage(any(MessageTopic.class), anyString());
+        MerUpdateProjectResponseModel merUpdateProjectResponseModel = new MerUpdateProjectResponseModel();
+        merUpdateProjectResponseModel.setRetCode("0000");
+        when(paySyncClient.send(eq(MerUpdateProjectMapper.class), any(MerUpdateProjectRequestModel.class), eq(MerUpdateProjectResponseModel.class))).thenReturn(merUpdateProjectResponseModel);
 
-        loanService.postLoanOut(loanModel.getId());
-        verify(smsWrapperClient, times(1)).sendInvestNotify(any(InvestSmsNotifyDto.class));
-
-        when(redisWrapperClient.hget(anyString(), anyString())).thenReturn(SyncRequestStatus.SUCCESS.name());
-        loanService.postLoanOut(loanModel.getId());
-        verify(smsWrapperClient,times(1)).sendInvestNotify(any(InvestSmsNotifyDto.class));
+        loanService.loanOutCallback(null, null);
+        verify(mqWrapperClient, times(1)).publishMessage(any(MessageTopic.class), anyString());
+        verify(paySyncClient, times(1)).send(eq(MerUpdateProjectMapper.class), any(MerUpdateProjectRequestModel.class), eq(MerUpdateProjectResponseModel.class));
     }
 
     public UserModel getUserModelTest() {

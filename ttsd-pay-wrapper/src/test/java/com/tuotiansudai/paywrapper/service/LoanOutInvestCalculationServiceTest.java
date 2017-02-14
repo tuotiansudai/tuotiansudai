@@ -7,7 +7,7 @@ import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipType;
-import com.tuotiansudai.paywrapper.extrarate.service.LoanOutInvestCalculationService;
+import com.tuotiansudai.paywrapper.loanout.LoanOutInvestCalculationService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;

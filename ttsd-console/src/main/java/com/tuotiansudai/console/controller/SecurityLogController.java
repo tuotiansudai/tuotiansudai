@@ -10,6 +10,7 @@ import com.tuotiansudai.enums.OperationType;
 import com.tuotiansudai.enums.UserOpType;
 import com.tuotiansudai.log.repository.model.AuditLogModel;
 import com.tuotiansudai.log.repository.model.UserOpLogModel;
+import com.tuotiansudai.repository.model.Source;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -40,7 +41,8 @@ public class SecurityLogController {
                                  @RequestParam(name = "selectedYear", required = false) Integer selectedYear,
                                  @RequestParam(name = "selectedMonth", required = false) Integer selectedMonth,
                                  @Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index,
-                                 @RequestParam(name = "success", required = false) Boolean success) {
+                                 @RequestParam(name = "success", required = false) Boolean success,
+                                 @RequestParam(name = "source", required = false) Source source) {
         int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/login-log");
 
@@ -54,7 +56,7 @@ public class SecurityLogController {
 
         if (new DateTime().withDate(selectedYear, selectedMonth, 1).isBeforeNow() &&
                 new DateTime().withDate(selectedYear, selectedMonth, new DateTime().withDate(selectedYear, selectedMonth, 1).dayOfMonth().getMaximumValue()).isAfter(new DateTime(2015, 11, 1, 0, 0, 0))) {
-            BasePaginationDataDto<LoginLogPaginationItemDataDto> data = loginLogService.getLoginLogPaginationData(mobile, success, index, pageSize, selectedYear, selectedMonth);
+            BasePaginationDataDto<LoginLogPaginationItemDataDto> data = loginLogService.getLoginLogPaginationData(mobile, success, source, index, pageSize, selectedYear, selectedMonth);
             modelAndView.addObject("data", data);
         } else {
             modelAndView.addObject("data", new BasePaginationDataDto<>(1, pageSize, 0, Lists.<LoginLogPaginationItemDataDto>newArrayList()));
@@ -65,6 +67,8 @@ public class SecurityLogController {
         modelAndView.addObject("selectedYear", String.valueOf(selectedYear));
         modelAndView.addObject("selectedMonth", String.valueOf(selectedMonth));
         modelAndView.addObject("success", success);
+        modelAndView.addObject("sourceList", Lists.newArrayList(Source.WEB, Source.ANDROID, Source.IOS, Source.MOBILE));
+        modelAndView.addObject("source", source);
 
         return modelAndView;
     }
