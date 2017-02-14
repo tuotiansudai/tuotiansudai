@@ -102,6 +102,7 @@ else if(NODE_ENV=='dev') {
 }
 plugins.push(new CopyWebpackPlugin([
 	{ from: publicPathJS+'/dllplugins',to: 'public/dllplugins'},
+	{ from: publicPathJS+'/plugins',to: 'public/plugins'},
 	{ from: staticPath+'/inlineImages',to: 'images'},
 	{ from: publicPath+'/styles/plugins/skin',to: 'public/skin'}
 ]));
@@ -126,7 +127,7 @@ plugins.push(new webpack.DllReferencePlugin({
 // 	manifest: require(publicPathJS+'/plugins/echarts-manifest.json')
 // }));
 
-module.exports = objectAssign(commonOptions, {
+var myObject = objectAssign(commonOptions, {
 	output: {
 		filename:outFilename,
 		path:outputPath,
@@ -161,6 +162,7 @@ module.exports = objectAssign(commonOptions, {
 			webJs:path.join(webPath, 'js'),
 			webJsModule:path.join(webPath, 'js/module'),
 			webStyle:path.join(webPath, 'styles'),
+			webImages:path.join(webPath, 'images'),
 
 			activityJs:path.join(activityPath, 'js'),
 			activityStyle:path.join(activityPath, 'styles'),
@@ -185,4 +187,6 @@ module.exports = objectAssign(commonOptions, {
 	plugins: plugins,
 	devServer:webpackdevServer
 });
+
+module.exports = myObject;
 

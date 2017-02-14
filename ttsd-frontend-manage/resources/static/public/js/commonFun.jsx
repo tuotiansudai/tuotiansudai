@@ -159,6 +159,14 @@ function useAjax(opt,callbackDone,callbackAlways) {
             callbackAlways && callbackAlways();
         });
 }
+function loadJsFile(url,callback) {
+    $.ajax({
+        url:staticServer+url,
+        type:'GET',
+        async: false
+    });
+    callback && callback();
+}
 //倒计时
 function countDownLoan(option,callback) {
     let defaultOpt={
@@ -236,6 +244,7 @@ exports.checkedAge = checkedAge;
 exports.popWindow = popWindow;
 exports.isUserLogin = isUserLogin;
 exports.useAjax = useAjax;
+exports.loadJsFile=loadJsFile;
 exports.countDownLoan = countDownLoan;
 exports.MathDecimal = MathDecimal;
 exports.decrypt = decrypt;

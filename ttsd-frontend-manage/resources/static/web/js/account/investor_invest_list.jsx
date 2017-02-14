@@ -1,9 +1,11 @@
 //投资记录--直投项目
 require('webStyle/account/loan_list.scss');
+require('publicJs/plugins/daterangepicker.scss');
 
 let moment = require('moment');
 let tpl = require('art-template/dist/template');
 require('webJsModule/pagination');
+require('publicJs/plugins/jquery.daterangepicker-0.0.7.js');
 
 var today = moment().format('YYYY-MM-DD'), // 今天
     week = moment().subtract(1, 'week').format('YYYY-MM-DD'),
@@ -15,10 +17,7 @@ var today = moment().format('YYYY-MM-DD'), // 今天
 var dataPickerElement = $('#date-picker'),
     paginationElement = $('.pagination');
 
-require.ensure(['webJsModule/daterangepicker'],function() {
-    require('webJsModule/daterangepicker');
-    dataPickerElement.dateRangePicker({separator: ' ~ '});
-},'jquery_daterangepicker');
+dataPickerElement.dateRangePicker({separator: ' ~ '});
 
 var changeDatePicker = function () {
     var duration = $(".date-filter .select-item.current").data('day');

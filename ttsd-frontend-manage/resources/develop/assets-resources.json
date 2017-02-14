@@ -18,7 +18,7 @@
     "css": "/web/js/account/account_overview.css"
   },
   "myAccountEcharts": {
-    "js": "chucks/myAccountEcharts.c8c83d536e506c161bc5.js"
+    "js": "chucks/myAccountEcharts.a90fd6421e6f40860c2b.js"
   },
   "/web/js/account/bind_card": {
     "js": "/web/js/account/bind_card.js",
@@ -29,7 +29,7 @@
     "css": "/web/js/account/investor_invest_list.css"
   },
   "jquery_daterangepicker": {
-    "js": "chucks/jquery_daterangepicker.8dcbd48ad3912bdf2b97.js"
+    "js": "chucks/jquery_daterangepicker.c58706756c3a997a452d.js"
   },
   "/web/js/account/loaner_loan_list": {
     "js": "/web/js/account/loaner_loan_list.js",
@@ -52,27 +52,27 @@
     "css": "/web/js/forget_password.css"
   },
   "fetchCaptchaRetrieve": {
-    "js": "chucks/fetchCaptchaRetrieve.b9d6a8b90406df119be4.js"
+    "js": "chucks/fetchCaptchaRetrieve.872e766f6a149f964eb2.js"
   },
   "/web/js/index": {
     "js": "/web/js/index.js",
     "css": "/web/js/index.css"
   },
   "redEnvelope": {
-    "js": "chucks/redEnvelope.105b4c157f9014ef7283.js"
+    "js": "chucks/redEnvelope.e129f5b9fa20fa2dd0f0.js"
   },
   "imageSlider": {
-    "js": "chucks/imageSlider.77d353e9d1bf2f60b19e.js"
+    "js": "chucks/imageSlider.e4de9fa830843d40c9b9.js"
   },
   "bookInvest": {
-    "js": "chucks/bookInvest.ee39b38376e40d497cac.js"
+    "js": "chucks/bookInvest.c2aa030016fdaa77b011.js"
   },
   "/web/js/loan_detail": {
     "js": "/web/js/loan_detail.js",
     "css": "/web/js/loan_detail.css"
   },
   "jquery_fancybox": {
-    "js": "chucks/jquery_fancybox.1c5d67fb5f5df2e1a845.js"
+    "js": "chucks/jquery_fancybox.491d7a4d839cad7e1d30.js"
   },
   "/web/js/loan_detail_experience": {
     "js": "/web/js/loan_detail_experience.js",
@@ -91,7 +91,7 @@
     "css": "/web/js/register_user.css"
   },
   "placeholder": {
-    "js": "chucks/placeholder.a79f643d43ed89087969.js"
+    "js": "chucks/placeholder.852b6eae32e0b9a7807d.js"
   },
   "/web/js/transfer_detail": {
     "js": "/web/js/transfer_detail.js",
@@ -105,7 +105,7 @@
     "version": 123
   },
   "jquery_daterangepicker1": {
-    "js": "chucks/jquery_daterangepicker1.4203ba65379264a7003c.js"
+    "js": "chucks/jquery_daterangepicker1.8fa22927b798b6c3c96c.js"
   },
   "/web/js/account/user_bill": {
     "js": "/web/js/account/user_bill.js",
@@ -116,7 +116,7 @@
     "css": "/web/js/account/message_list.css"
   },
   "messageList": {
-    "js": "chucks/messageList.b8f856e7b09c72766870.js"
+    "js": "chucks/messageList.12db0ca553e6407c20d0.js"
   },
   "/web/js/account/personal_info": {
     "js": "/web/js/account/personal_info.js",
@@ -133,5 +133,25 @@
   "/web/js/account/refer_list": {
     "js": "/web/js/account/refer_list.js",
     "css": "/web/js/account/refer_list.css"
+  },
+  "test": {
+    "js": "chucks/test.9357f892ba1851d5b50a.js"
+  },
+  "/web/js/account/my_treasure": {
+    "js": "/web/js/account/my_treasure.js",
+    "css": "/web/js/account/my_treasure.css"
+  },
+  "/web/js/about_us": {
+    "js": "/web/js/about_us.js",
+    "css": "/web/js/about_us.css"
+  },
+  "teamInfo": {
+    "js": "chucks/teamInfo.f05454a220c3229a79a4.js"
+  },
+  "aboutus_notice": {
+    "js": "chucks/aboutus_notice.d8cf8a633221ec1be93d.js"
+  },
+  "operationEcharts": {
+    "js": "chucks/operationEcharts.296e84728ae1d3bfdf4f.js"
   }
 }

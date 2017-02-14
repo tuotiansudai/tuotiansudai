@@ -31,7 +31,7 @@
                         <#list bankList as bank>
                             <li <#if (bank_index + 1) % 4 == 0>class="new-line"</#if>>
                                 <input id="bank-${bank.bankCode}" data-name="${bank.bankCode}" class="bank-checked" value="${bank.bankCode}" type="radio" onclick="selectBank(this.value)" name="select_bank" <#if bank_index == 0>checked="checked"</#if>>
-                                <label for="bank-${bank.bankCode}"><img src="${staticServer}/images/bank/${bank.bankCode}.jpg" alt=""></label>
+                                <label for="bank-${bank.bankCode}"><img src="${commonStaticServer}/images/bank/${bank.bankCode}.jpg" alt=""></label>
                             </li>
                         </#list>
                     </ol>

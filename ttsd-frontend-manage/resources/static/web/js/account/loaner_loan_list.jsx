@@ -1,8 +1,10 @@
 //投资记录--我的借款
 require('webStyle/account/loan_list.scss');
+require('publicJs/plugins/daterangepicker.scss');
 let moment = require('moment');
 let commonFun= require('publicJs/commonFun');
 require('webJsModule/pagination');
+require('publicJs/plugins/jquery.daterangepicker-0.0.7.js');
 
 //初始化页面
 var today = moment().format('YYYY-MM-DD'); // 今天
@@ -14,10 +16,7 @@ var sixMonths = moment().subtract(6, 'month').format('YYYY-MM-DD');
 var dataPickerElement = $('#date-picker'),
     paginationElement = $('.pagination');
 
-require.ensure(['webJsModule/daterangepicker'],function() {
-    require('webJsModule/daterangepicker');
-    dataPickerElement.dateRangePicker({separator: ' ~ '}).val(today + '~' + today);
-},'jquery_daterangepicker1');
+dataPickerElement.dateRangePicker({separator: ' ~ '}).val(today + '~' + today);
 
 
 var changeDatePicker = function () {

@@ -86,7 +86,7 @@
                                 <#list banks as bank>
                                     <li>
                                         <input data-name="${bank}" type="radio" id="bank-${bank}" name="bankCode" <#if bank_index == 0>checked="checked"</#if> value="${bank}">
-                                        <label for="bank-${bank}"><img src="${staticServer}/images/bank/${bank}.jpg" alt=""></label>
+                                        <label for="bank-${bank}"><img src="${commonStaticServer}/images/bank/${bank}.jpg" alt=""></label>
                                     </li>
                                 </#list>
                             </ol>

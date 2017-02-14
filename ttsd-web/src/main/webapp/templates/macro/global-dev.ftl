@@ -16,7 +16,7 @@
     <link href="http://localhost:8088/images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <link rel="stylesheet" type="text/css" href="http://localhost:8088/style/global.css" charset="utf-8" />
     <#if pageCss?? && pageCss != "">
-    <link rel="stylesheet" type="text/css" href="${staticServer}${pageCss}" charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="${commonStaticServer}${pageCss}" charset="utf-8" />
     </#if>
     <script>
         var _czc = _czc || [];
@@ -271,7 +271,7 @@
 
 
     <#if pageJavascript?? && pageJavascript?length gt 0>
-        <script src="http://localhost:8088/js/libs/require-2.1.20.min.js" type="text/javascript" charset="utf-8" defer="defer" async="async" data-main="${staticServer}${jsPath}${pageJavascript}">
+        <script src="http://localhost:8088/js/libs/require-2.1.20.min.js" type="text/javascript" charset="utf-8" defer="defer" async="async" data-main="${commonStaticServer}${jsPath}${pageJavascript}">
         </script>
     </#if>
 

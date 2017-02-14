@@ -1,16 +1,13 @@
 require('webStyle/account/refer_list.scss');
+require('publicJs/plugins/daterangepicker.scss');
 let commonFun= require('publicJs/commonFun');
+
 let moment = require('moment');
 require('webJsModule/pagination');
-require('webJsModule/daterangepicker');
-
-$.ajax({
-    url:'../plugins/jquery.daterangepicker-0.0.7',
-    async: false
-}).done(function() {
-    console.log('pppp');
-});
-window['Clipboard']=clipboard;
+require('publicJs/plugins/jquery.daterangepicker-0.0.7.js');
+commonFun.loadJsFile('/public/plugins/jQuery.md5.js');
+commonFun.loadJsFile('/public/plugins/clipboard.js');
+commonFun.loadJsFile('/public/plugins/jquery.qrcode.min.js');
 
 var $investListContent=$('#investListContent'),
     $clipboardText=$('#clipboard_text');
@@ -32,7 +29,7 @@ if (window["context"] == undefined) {
     }
 }
 
-var md5String=commonFun.compile(md5Mobile,mobile),
+var md5String=commonFun.decrypt.compile(md5Mobile,mobile),
     origin=location.origin;
 
 $clipboardText.val(origin+'/activity/landing-page?referrer='+md5String);
@@ -55,11 +52,15 @@ $('.img-code',$investListContent).qrcode(origin+'/activity/app-share?referrerMob
 
 
 var paginationElement = paginationElementRelation;
-var template = referRelationTemplate;
+var template = $('#referRelationTemplate'),
+    tableTpl=template.html();
+var investTemplate=$('#referInvestTemplate'),
+    investTpl=investTemplate.html();
+var render = _.template(tableTpl);
 
 var today = moment().format('YYYY-MM-DD');
-dataPickerElement.dateRangePicker({separator: ' ~ '});
 
+dataPickerElement.dateRangePicker({separator: ' ~ '});
 $(".search-type .select-item").click(function () {
     $(this).addClass("current").siblings(".select-item").removeClass("current");
 
@@ -67,12 +68,14 @@ $(".search-type .select-item").click(function () {
         paginationElementRelation.show();
         paginationElementInvest.hide();
         paginationElement = paginationElementRelation;
-        template = referRelationTemplate;
+        // template = referRelationTemplate;
+        render = _.template(tableTpl);
     } else if ($(this).data('type') == 'referInvest') {
         paginationElementRelation.hide();
         paginationElementInvest.show();
         paginationElement = paginationElementInvest;
-        template = referInvestTemplate;
+        // template = referInvestTemplate;
+        render = _.template(investTpl);
     }
     loadReferData();
 });
@@ -96,7 +99,8 @@ var loadReferData = function (currentPage) {
             contentType: 'application/json; charset=UTF-8'
         }).success(function (response) {
             data.totalReward = response;
-            var html = Mustache.render(template, data);
+            var html = render(data);
+            // var html = Mustache.render(template, data);
             $searchContent.empty().append(html);
 
         });
@@ -125,9 +129,3 @@ $btnReset.click(function () {
     dataPickerElement.val('');
     loginName.val('');
 });
-
-
-require(['jquery', 'mustache', 'text!/tpl/refer-table.mustache', 'text!/tpl/refer-invest-table.mustache', 'moment', 'pagination', 'layerWrapper', 'clipboard','commonFun','daterangepicker', 'jquery.ajax.extension','md5','qrcode'],
-    function ($, Mustache, referRelationTemplate, referInvestTemplate, moment, pagination, layer,clipboard,commonFun) {
-
-    });

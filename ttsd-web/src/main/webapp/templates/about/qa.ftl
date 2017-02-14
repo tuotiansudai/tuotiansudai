@@ -2,7 +2,7 @@
     <@global.main pageCss="${css.about_us}" pageJavascript="${js.about_us}" activeNav="信息披露" activeLeftNav="常见问题" title="拓天速贷解答_专业的P2P理财_网络贷款咨询解答平台" keywords="拓天速贷,P2P平台,网络投资,网贷解答平台" description="拓天速贷解答为广大P2P理财/网络贷款用户,提供大量P2P理财/网络贷款知识,满足有相同或类似投资问题的用户需求.">
 <div class="about-us-container" id="WhetherApp">
 	<h2 class="column-title"><em>常见问题</em></h2>
-	<div class="common-problem clearfix">
+	<div class="common-problem clearfix" id="problemListFrame">
 		<dl class="problem-list">
             <dt class="text-overflow"><i class="fa fa-toggle-down"></i><span>1.如何成为拓天速贷的注册用户？</span></dt>
             <dd class="active"><strong>答：</strong>（1）进入拓天速贷官网首页，点击右上角“注册”；<br/>（2）根据提示信息，填写您的手机号、密码、验证码等信息，点击“立即注册”。

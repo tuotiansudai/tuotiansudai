@@ -9,7 +9,7 @@
     </ul>
     <div class="main-banner">
         <div class="page-width">
-            <img src="${staticServer}/images/sign/assure/assure-bar.jpg" alt="拓天速贷，安全保障">
+            <img src="${commonStaticServer}/images/sign/assure/assure-bar.jpg" alt="拓天速贷，安全保障">
         </div>
     </div>
     <div class="fund-safety-box bg-white clearfix pad-box">

@@ -63,7 +63,7 @@
                             </div>
                         </script>
                     </#if>
-                    <span class="fr boilerplate"><a href="${staticServer}/images/pdf/loanAgreementSample.pdf" target="_blank">借款协议样本</a></span>
+                    <span class="fr boilerplate"><a href="${commonStaticServer}/images/pdf/loanAgreementSample.pdf" target="_blank">借款协议样本</a></span>
                 </h2>
                 <div class="container-block loan-info">
                     <div class="content">
@@ -312,7 +312,7 @@
                     <form action="/loan-list" method="get">
                         <dl class="account-list">
                             <dd class="img-status">
-                                <img src="${staticServer}/images/sign/loan/${loan.loanStatus?lower_case}.png" alt=""/>
+                                <img src="${commonStaticServer}/images/sign/loan/${loan.loanStatus?lower_case}.png" alt=""/>
                             </dd>
                             <dd>
                                 <button class="btn-pay btn-normal" type="submit">查看其他项目</button>
@@ -461,7 +461,7 @@
                                                 <div class="row">
                                                     <#list loanTitleRelation.applicationMaterialUrls?split(",") as title>
                                                         <a class="col" href="${title}" rel="example_group">
-                                                            <img class="img" layer-src="${staticServer}${title}" src="${staticServer}${title}" alt="${loanTitle.title}"/>
+                                                            <img class="img" layer-src="${commonStaticServer}${title}" src="${commonStaticServer}${title}" alt="${loanTitle.title}"/>
                                                         </a>
                                                     </#list>
                                                 </div>

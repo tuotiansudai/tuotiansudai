@@ -9,7 +9,7 @@
     </ul>
     <div class="main-banner">
         <div class="page-width">
-            <img src="${staticServer}/images/sign/assure/risk-bar.jpg" alt="风控流程">
+            <img src="${commonStaticServer}/images/sign/assure/risk-bar.jpg" alt="风控流程">
         </div>
     </div>
     <div class="project-examination-box bg-white clearfix">
@@ -114,15 +114,15 @@
             <div class="column-title-ac"><i></i>项目终审<i></i> </div>
             <div class="project-examine-last">
                 <dl>
-                    <dt><em><img src="${staticServer}/images/sign/assure/end01.png" alt="风控流程"></em>材料复核</dt>
+                    <dt><em><img src="${commonStaticServer}/images/sign/assure/end01.png" alt="风控流程"></em>材料复核</dt>
                     <dd>总经理助理核实借款材料与风控报告的一致性</dd>
                 </dl>
                 <dl class="two">
-                    <dt><em><img src="${staticServer}/images/sign/assure/end02.png" alt="风控流程"></em>量化评级</dt>
+                    <dt><em><img src="${commonStaticServer}/images/sign/assure/end02.png" alt="风控流程"></em>量化评级</dt>
                     <dd>对应拓天速贷系统，量化借款人的安全等级与借款额度</dd>
                 </dl>
                 <dl>
-                    <dt><em><img src="${staticServer}/images/sign/assure/end03.png" alt="风控流程"></em>终审上会</dt>
+                    <dt><em><img src="${commonStaticServer}/images/sign/assure/end03.png" alt="风控流程"></em>终审上会</dt>
                     <dd>总经理办公会审核材料，综合评判，确定项目是否通过，一票否决制</dd>
                 </dl>
             </div>

@@ -775,7 +775,7 @@ function getSkipPhoneTip(){
             });
         });
     };
-    let fancybox = require('webJsModule/fancybox');
+    let fancybox = require('publicJs/fancybox');
     fancybox(function() {
         $('[scroll-carousel]').carousel().find('.col').fancybox({
             'titlePosition': 'over',

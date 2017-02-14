@@ -40,13 +40,10 @@
   },
   "dependencies": {
     "art-template": "^3.1.3",
-    "clipboard": "^1.5.16",
     "echarts": "^3.4.0",
-    "fancybox": "^3.0.0",
     "freemarker.js": "^1.2.2",
     "jquery": "~2.1.4",
     "layer": "git+https://github.com/sentsin/layer.git",
-    "md5": "^2.2.1",
     "moment": "^2.17.1",
     "swiper": "^3.4.1",
     "underscore": "^1.8.3"
