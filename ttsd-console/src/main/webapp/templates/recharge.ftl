@@ -104,7 +104,7 @@
                     <#list rechargeList as rechargeItem>
                     <tr>
                         <td>${rechargeItem.rechargeId?string('0')}</td>
-                        <td>${(rechargeItem.createdTime?string('yyyy-MM-dd HH:mm'))!}</td>
+                        <td>${(rechargeItem.createdTime?string('yyyy-MM-dd HH:mm:ss'))!}</td>
                         <td>${rechargeItem.loginName}
                             <#if rechargeItem.isStaff()>
                                 <span class="glyphicon glyphicon glyphicon-user" aria-hidden="true"></span>
@@ -138,7 +138,7 @@
             <ul class="pagination pull-left">
                 <li>
                     <#if pagination.hasPreviousPage >
-                    <a href="?rechargeId=${rechargeId!}&mobile=${mobile!}&startTime=${(startTime?string('yyyy-MM-dd HH:mm'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm'))!}&channel=${channel!}&source=${source!}&status=${status!}&pageSize=${pageSize}&index=${index-1}"
+                    <a href="?rechargeId=${rechargeId!}&mobile=${mobile!}&startTime=${(startTime?string('yyyy-MM-dd HH:mm:ss'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm:ss'))!}&channel=${channel!}&source=${source!}&status=${status!}&pageSize=${pageSize}&index=${index-1}"
                        aria-label="Previous">
                     <#else>
                     <a href="#" aria-label="Previous">
@@ -149,7 +149,7 @@
                 <li><a>${pagination.index}</a></li>
                 <li>
                     <#if pagination.hasNextPage >
-                    <a href="?rechargeId=${rechargeId!}&mobile=${mobile!}&startTime=${(startTime?string('yyyy-MM-dd HH:mm'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm'))!}&channel=${channel!}&source=${source!}&status=${status!}&pageSize=${pageSize}&index=${index+1}"
+                    <a href="?rechargeId=${rechargeId!}&mobile=${mobile!}&startTime=${(startTime?string('yyyy-MM-dd HH:mm:ss'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm:ss'))!}&channel=${channel!}&source=${source!}&status=${status!}&pageSize=${pageSize}&index=${index+1}"
                        aria-label="Next">
                     <#else>
                     <a href="#" aria-label="Next">

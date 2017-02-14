@@ -11,7 +11,7 @@ import com.tuotiansudai.repository.model.UserCouponModel;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.job.CouponRepayNotifyCallbackJob;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
-import com.tuotiansudai.paywrapper.coupon.service.impl.CouponRepayServiceImpl;
+import com.tuotiansudai.paywrapper.loanout.impl.CouponRepayServiceImpl;
 import com.tuotiansudai.paywrapper.repository.mapper.CouponRepayNotifyRequestMapper;
 import com.tuotiansudai.paywrapper.repository.model.NotifyProcessStatus;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.CouponRepayNotifyRequestModel;

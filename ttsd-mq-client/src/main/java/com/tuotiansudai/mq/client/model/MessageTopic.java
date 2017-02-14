@@ -7,7 +7,13 @@ public enum MessageTopic {
             MessageQueue.InvestSuccess_CompletePointTask,
             MessageQueue.InvestSuccess_MembershipUpdate,
             MessageQueue.InvestSuccess_CouponUpdate,
-            MessageQueue.InvestSuccess_ActivityReward);
+            MessageQueue.InvestSuccess_ActivityReward),
+    LoanOutSuccess("LoanOutSuccess",
+            MessageQueue.LoanOutSuccess_GenerateRepay,
+            MessageQueue.LoanOutSuccess_RewardReferrer,
+            MessageQueue.LoanOutSuccess_AssignCoupon,
+            MessageQueue.LoanOutSuccess_AssignAchievement,
+            MessageQueue.LoanOutSuccess_GenerateAnXinContract);
 
     final String topicName;
     final MessageQueue[] queues;

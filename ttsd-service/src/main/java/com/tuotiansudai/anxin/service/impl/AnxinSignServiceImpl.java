@@ -4,7 +4,6 @@ import cfca.sadk.algorithm.common.PKIException;
 import cfca.trustsign.common.vo.cs.CreateContractVO;
 import cfca.trustsign.common.vo.cs.SignInfoVO;
 import cfca.trustsign.common.vo.response.tx3.*;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.anxin.service.AnxinSignService;
@@ -19,22 +18,10 @@ import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.ContractNoStatus;
 import com.tuotiansudai.dto.sms.GenerateContractErrorNotifyDto;
-import com.tuotiansudai.job.DelayMessageDeliveryJob;
 import com.tuotiansudai.job.DelayMessageDeliveryJobCreator;
 import com.tuotiansudai.job.JobManager;
-import com.tuotiansudai.message.AnxinContractQueryMessage;
-import com.tuotiansudai.mq.client.model.MessageQueue;
-import com.tuotiansudai.repository.mapper.AnxinSignPropertyMapper;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.AnxinSignPropertyModel;
-import com.tuotiansudai.repository.model.InvestModel;
-import com.tuotiansudai.repository.model.LoanModel;
-import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.repository.mapper.TransferApplicationMapper;
-import com.tuotiansudai.repository.model.TransferApplicationModel;
-import com.tuotiansudai.job.JobManager;
+import com.tuotiansudai.repository.mapper.*;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.UUIDGenerator;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -109,6 +96,8 @@ public class AnxinSignServiceImpl implements AnxinSignService {
     private static final int CREATE_CONTRACT_MAX_IN_DOING_TIME = 60 * 90; // 给创建合同预留90分钟，如果job出现问题，没能删除InCreating key, 90分钟后，可以再次手动创建合同
 
     private static final String CONTRACT_TIME_FORMAT = "yyyyMMddHHmmss";
+
+    public final static String ANXIN_CONTRACT_QUERY_TRY_TIMES_KEY = "anxinContractQueryTryTimes:";
 
     @Value(value = "${anxin.contract.batch.num}")
     private int batchSize;
@@ -338,7 +327,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
 
     @Override
-    public BaseDto createLoanContracts(long loanId) {
+    public BaseDto createLoanContracts(long loanId, boolean isCreateJob) {
         redisWrapperClient.setex(LOAN_CONTRACT_IN_CREATING_KEY + loanId, CREATE_CONTRACT_MAX_IN_DOING_TIME, "1");
 
         LoanModel loanModel = loanMapper.findById(loanId);
@@ -599,6 +588,38 @@ public class AnxinSignServiceImpl implements AnxinSignService {
                 .forEach(resView -> investMapper.updateContractNoById(resView.getInvestId(), resView.getContractNo()));
 
         return waitingBatchNoList;
+    }
+
+    @Override
+    public boolean queryContract(long businessId) {
+        try {
+            String batchStr = redisWrapperClient.get(AnxinSignServiceImpl.LOAN_BATCH_NO_LIST_KEY + businessId);
+            List<String> waitingBatchNo = queryContract(businessId, Lists.newArrayList(batchStr.split(",")), AnxinContractType.LOAN_CONTRACT);
+            if (waitingBatchNo != null && waitingBatchNo.size() > 0) {
+                logger.info(MessageFormat.format("some batch is still in waiting. businessId:{0}, anxin ContractType:{1}, batchNo list(in waiting):{2}",
+                        String.valueOf(businessId), AnxinContractType.LOAN_CONTRACT.name(), String.join(",", waitingBatchNo)));
+                queryContract(businessId, Lists.newArrayList(batchStr.split(",")), AnxinContractType.LOAN_CONTRACT);
+            } else {
+                // 查询结束，清空计数器
+                redisWrapperClient.del(ANXIN_CONTRACT_QUERY_TRY_TIMES_KEY + businessId);
+
+                logger.info(MessageFormat.format("execute query contract over. businessId:{0}", String.valueOf(businessId)));
+
+                // 没有待处理的 batchNo 了，检查该 businessId 下的投资是否已经全部成功
+                List<InvestModel> contractFailList = investMapper.findNoContractNoInvest(businessId);
+                if (org.apache.commons.collections4.CollectionUtils.isNotEmpty(contractFailList)) {
+                    logger.error(MessageFormat.format("some batch is fail. send sms. businessId:{0}", String.valueOf(businessId)));
+                    // 有失败的，发短信
+                    smsWrapperClient.sendGenerateContractErrorNotify(new GenerateContractErrorNotifyDto(mobileList, businessId));
+                }
+                // 清redis中的inCreating标记
+                redisWrapperClient.del(AnxinSignServiceImpl.LOAN_CONTRACT_IN_CREATING_KEY + businessId);
+            }
+        } catch (Exception ex) {
+            logger.info("query anXin contract fail," + ex);
+            return false;
+        }
+        return true;
     }
 
 

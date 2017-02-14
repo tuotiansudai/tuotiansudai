@@ -31,10 +31,10 @@ public class LoginLogMapperTest {
         String table = "login_log_" + simpleDateFormat.format(new Date());
         loginLogMapper.create(table, loginLogModel);
 
-        long count = loginLogMapper.count(loginName, "1932", true, table);
+        long count = loginLogMapper.count(loginName, "1932", true, table, null);
         assertTrue (count > 0);
 
-        List<LoginLogModel> data = loginLogMapper.getPaginationData(loginName, "1871", true, 0, 10, table);
+        List<LoginLogModel> data = loginLogMapper.getPaginationData(loginName, "1871", true, null, 0, 10, table);
         assertTrue (data.size() > 0);
     }
 

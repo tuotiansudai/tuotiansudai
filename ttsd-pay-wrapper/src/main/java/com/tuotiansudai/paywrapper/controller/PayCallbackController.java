@@ -2,8 +2,11 @@ package com.tuotiansudai.paywrapper.controller;
 
 import com.google.common.collect.Maps;
 import com.tuotiansudai.dto.AgreementBusinessType;
-import com.tuotiansudai.paywrapper.coupon.service.CouponRepayService;
+import com.tuotiansudai.paywrapper.loanout.CouponLoanOutService;
+import com.tuotiansudai.paywrapper.loanout.CouponRepayService;
 import com.tuotiansudai.paywrapper.extrarate.service.ExtraRateService;
+import com.tuotiansudai.paywrapper.loanout.LoanService;
+import com.tuotiansudai.paywrapper.loanout.ReferrerRewardService;
 import com.tuotiansudai.paywrapper.repository.model.UmPayService;
 import com.tuotiansudai.paywrapper.service.*;
 import org.apache.log4j.Logger;
@@ -63,6 +66,12 @@ public class PayCallbackController {
 
     @Autowired
     private ExtraRateService extraRateService;
+
+    @Autowired
+    private ReferrerRewardService referrerRewardService;
+
+    @Autowired
+    private CouponLoanOutService couponLoanOutService;
 
     @RequestMapping(value = "/recharge_notify", method = RequestMethod.GET)
     public ModelAndView rechargeNotify(HttpServletRequest request) {
@@ -266,6 +275,31 @@ public class PayCallbackController {
     public ModelAndView extraRateInvestNotify(HttpServletRequest request) {
         Map<String, String> paramsMap = this.parseRequestParameters(request);
         String responseData = this.extraRateService.extraRateInvestCallback(paramsMap, request.getQueryString());
+        return new ModelAndView("/callback_response", "content", responseData);
+    }
+
+    @RequestMapping(value = "/loan_out_notify", method = RequestMethod.GET)
+    public ModelAndView loanOutNotify(HttpServletRequest request) {
+        Map<String, String> paramsMap = this.parseRequestParameters(request);
+        String responseData = this.loanService.loanOutCallback(paramsMap, request.getQueryString());
+        return new ModelAndView("/callback_response", "content", responseData);
+    }
+
+    @RequestMapping(value = "/transfer_referrer_reward_notify", method = RequestMethod.GET)
+    public ModelAndView transferReferrerReward(HttpServletRequest request) {
+        logger.info("[标的放款] transfer_referrer_reward_notify start");
+        Map<String, String> paramsMap = this.parseRequestParameters(request);
+        String responseData =  this.referrerRewardService.transferReferrerRewardNotify(paramsMap, request.getQueryString());
+        logger.info(MessageFormat.format("[标的放款] transfer_referrer_reward_notify end , responseData:{0}", responseData));
+        return new ModelAndView("/callback_response", "content", responseData);
+    }
+
+    @RequestMapping(value = "/transfer_coupon_notify", method = RequestMethod.GET)
+    public ModelAndView transferRedEnvelopCallBack(HttpServletRequest request) {
+        logger.info("[标的放款] transfer_coupon_notify start");
+        Map<String, String> paramsMap = this.parseRequestParameters(request);
+        String responseData =  this.couponLoanOutService.transferRedEnvelopNotify(paramsMap, request.getQueryString());
+        logger.info(MessageFormat.format("[标的放款] transfer_referrer_reward_notify end , responseData:{0}", responseData));
         return new ModelAndView("/callback_response", "content", responseData);
     }
 

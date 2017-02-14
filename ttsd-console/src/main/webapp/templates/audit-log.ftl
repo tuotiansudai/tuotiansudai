@@ -102,7 +102,7 @@
             </li>
             <li class="disabled"><a class="current-page" data-index="${data.index}">${data.index}</a></li>
             <li <#if !data.hasNextPage>class="disabled"</#if>>
-                <a href="?operationType=${operationType!}&targetId=${targetId!}&operatorMobile=${operatorMoible!}&auditorMoible=${auditorMobile!}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&pageSize=${pageSize}&index=${index+1}"
+                <a href="?operationType=${operationType!}&targetId=${targetId!}&operatorMobile=${operatorMobile!}&auditorMobile=${auditorMobile!}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&pageSize=${pageSize}&index=${index+1}"
                    class="next <#if !data.hasNextPage>disabled</#if>">
                     <span aria-hidden="true">&raquo;</span>
                 </a>
