@@ -1,17 +1,23 @@
-package com.tuotiansudai.paywrapper.service.impl;
+package com.tuotiansudai.paywrapper.loanout.impl;
 
-import com.google.common.collect.Iterators;
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.enums.*;
+import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.message.EventMessage;
 import com.tuotiansudai.message.PushMessage;
+import com.tuotiansudai.message.TransferReferrerRewardCallbackMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
+import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
+import com.tuotiansudai.paywrapper.loanout.ReferrerRewardService;
+import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferNotifyMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.TransferMapper;
+import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.async.callback.ProjectTransferNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.TransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.TransferResponseModel;
-import com.tuotiansudai.paywrapper.service.ReferrerRewardService;
 import com.tuotiansudai.paywrapper.service.SystemBillService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
@@ -24,10 +30,12 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ReferrerRewardServiceImpl implements ReferrerRewardService {
@@ -68,7 +76,13 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
     private IdGenerator idGenerator;
 
     @Autowired
+    private LoanMapper loanMapper;
+
+    @Autowired
     private MQWrapperClient mqWrapperClient;
+
+    @Autowired
+    private PayAsyncClient payAsyncClient;
 
     @Value("#{'${pay.user.reward}'.split('\\|')}")
     private List<Double> referrerUserRoleReward;
@@ -77,7 +91,11 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
     private List<Double> referrerStaffRoleReward;
 
     @Override
-    public void rewardReferrer(LoanModel loanModel, List<InvestModel> successInvestList) {
+    public boolean rewardReferrer(long loanId) {
+        boolean result = true;
+        LoanModel loanModel = loanMapper.findById(loanId);
+        List<InvestModel> successInvestList = investMapper.findSuccessInvestsByLoanId(loanId);
+
         int loanDuration = this.calculateLoanDuration(loanModel);
 
         for (InvestModel invest : successInvestList) {
@@ -100,10 +118,12 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
                         logger.error(MessageFormat.format("Referrer reward is failed (investId={0} referrerLoginName={1})",
                                 String.valueOf(invest.getId()),
                                 referrerLoginName));
+                        result = false;
                     }
                 }
             }
         }
+        return result;
     }
 
     private boolean transferReferrerReward(InvestReferrerRewardModel model) {
@@ -125,40 +145,101 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
 
         if (amount == 0) {
             model.setStatus(ReferrerRewardStatus.SUCCESS);
+            try {
+                recordTransferReferrerReward(model);
+            } catch (Exception ignored) {
+                logger.error(ignored.getLocalizedMessage(), ignored);
+            }
         }
 
         if (amount > 0) {
             try {
-                TransferRequestModel requestModel = TransferRequestModel.newRequest(String.valueOf(orderId), accountModel.getPayUserId(), String.valueOf(amount));
+                TransferRequestModel requestModel = TransferRequestModel.newTransferReferrerRewardRequest(String.valueOf(orderId), accountModel.getPayUserId(), String.valueOf(amount));
                 TransferResponseModel responseModel = paySyncClient.send(TransferMapper.class, requestModel, TransferResponseModel.class);
-                model.setStatus(responseModel.isSuccess() ? ReferrerRewardStatus.SUCCESS : ReferrerRewardStatus.FAILURE);
+                logger.info(MessageFormat.format("[标的放款] pay sync transfer referrer reward, result:{0}, investReferrerRewardId:{1}, loginName:{2}", responseModel.isSuccess(),
+                        String.valueOf(orderId), accountModel.getLoginName()));
             } catch (Exception e) {
-                logger.error(MessageFormat.format("referrer reward is failed, investId={0} referrerLoginName={1} referrerRole={2} amount={3}",
+                logger.error(MessageFormat.format("[标的放款] referrer reward is failed, investId={0} referrerLoginName={1} referrerRole={2} amount={3}",
                         String.valueOf(model.getInvestId()),
                         model.getReferrerLoginName(),
                         model.getReferrerRole().name(),
                         String.valueOf(model.getAmount())), e);
-                model.setStatus(ReferrerRewardStatus.FAILURE);
-            }
-        }
-
-        try {
-            investReferrerRewardMapper.update(model);
-            if (model.getStatus() != ReferrerRewardStatus.SUCCESS) {
                 return false;
             }
-
-            logger.info(MessageFormat.format("[标的放款]:发送推荐人奖励,推荐人:{0},投资ID:{1},推荐人奖励:{2}", referrerLoginName, orderId, amount));
-            amountTransfer.transferInBalance(referrerLoginName, orderId, amount, UserBillBusinessType.REFERRER_REWARD, null, null);
-            InvestModel investModel = investMapper.findById(model.getInvestId());
-            String detail = MessageFormat.format(SystemBillDetailTemplate.REFERRER_REWARD_DETAIL_TEMPLATE.getTemplate(), referrerLoginName, investModel.getLoginName(), String.valueOf(model.getInvestId()));
-            logger.info(MessageFormat.format("[标的放款]:记录系统奖励,投资ID:{0},推荐人奖励:{1},奖励类型:{2}", orderId, amount, SystemBillBusinessType.REFERRER_REWARD));
-            systemBillService.transferOut(orderId, amount, SystemBillBusinessType.REFERRER_REWARD, detail);
-            return true;
-        } catch (Exception e) {
-            logger.error(MessageFormat.format("referrer reward transfer in balance failed (investId = {0})", String.valueOf(model.getInvestId())));
         }
-        return false;
+        return true;
+    }
+
+    @Override
+    public String transferReferrerRewardNotify(Map<String, String> paramsMap, String queryString) {
+        logger.info("[标的放款] transfer referrer reward  call back begin.");
+        BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(
+                paramsMap,
+                queryString,
+                ProjectTransferNotifyMapper.class,
+                ProjectTransferNotifyRequestModel.class);
+        if (callbackRequest == null || Strings.isNullOrEmpty(callbackRequest.getOrderId())) {
+            logger.error(MessageFormat.format("[标的放款] TransferReferrerRewardCallback payback callback parse is failed (queryString = {0})", queryString));
+            return null;
+        }
+
+        if (!callbackRequest.isSuccess()) {
+            return callbackRequest.getResponseData();
+        }
+
+        long investReferrerRewardId = Long.parseLong(callbackRequest.getOrderId());
+        InvestReferrerRewardModel investReferrerRewardModel = investReferrerRewardMapper.findById(investReferrerRewardId);
+        if (investReferrerRewardModel == null) {
+            logger.error(MessageFormat.format("[标的放款] TransferReferrerRewardCallback payback callback failed, order id({0}) is not exist", callbackRequest.getOrderId()));
+            return callbackRequest.getResponseData();
+        }
+
+        InvestModel investModel = investMapper.findById(investReferrerRewardModel.getInvestId());
+        TransferReferrerRewardCallbackMessage transferReferrerRewardCallbackMessage = new TransferReferrerRewardCallbackMessage(investModel.getLoanId(),
+                investReferrerRewardModel.getInvestId(), investModel.getLoginName(), investReferrerRewardModel.getReferrerLoginName(),
+                investReferrerRewardId);
+
+        logger.info(MessageFormat.format("[标的放款] send mq TransferReferrerRewardCallback, loanId:{0}, investId:{1}, loginName:{2}, referrer:{3}, queryString:{4}",
+                String.valueOf(transferReferrerRewardCallbackMessage.getLoanId()), String.valueOf(transferReferrerRewardCallbackMessage.getInvestId()),
+                transferReferrerRewardCallbackMessage.getLoginName(), transferReferrerRewardCallbackMessage.getReferrer(),
+                queryString));
+        mqWrapperClient.sendMessage(MessageQueue.TransferReferrerRewardCallback, transferReferrerRewardCallbackMessage);
+
+        return callbackRequest.getResponseData();
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean transferReferrerCallBack(long investReferrerRewardId) throws AmountTransferException {
+        logger.info("[标的放款] transfer referrer callBack start.");
+        InvestReferrerRewardModel investReferrerRewardModel = investReferrerRewardMapper.findById(investReferrerRewardId);
+        if (investReferrerRewardModel.getStatus().equals(ReferrerRewardStatus.SUCCESS)) {
+            return true;
+        }
+
+        investReferrerRewardModel.setStatus(ReferrerRewardStatus.SUCCESS);
+        return recordTransferReferrerReward(investReferrerRewardModel);
+    }
+
+    private boolean recordTransferReferrerReward(InvestReferrerRewardModel investReferrerRewardModel) throws AmountTransferException {
+        String referrerLoginName = investReferrerRewardModel.getReferrerLoginName();
+        long amount = investReferrerRewardModel.getAmount();
+        long orderId = investReferrerRewardModel.getId();
+        try {
+            if (investReferrerRewardModel.getStatus() == ReferrerRewardStatus.SUCCESS) {
+                investReferrerRewardMapper.update(investReferrerRewardModel);
+                logger.info(MessageFormat.format("[标的放款]:发送推荐人奖励,推荐人:{0},投资ID:{1},推荐人奖励:{2}", referrerLoginName, orderId, amount));
+                amountTransfer.transferInBalance(referrerLoginName, orderId, amount, UserBillBusinessType.REFERRER_REWARD, null, null);
+                InvestModel investModel = investMapper.findById(investReferrerRewardModel.getInvestId());
+                String detail = MessageFormat.format(SystemBillDetailTemplate.REFERRER_REWARD_DETAIL_TEMPLATE.getTemplate(), referrerLoginName, investModel.getLoginName(), String.valueOf(investReferrerRewardModel.getInvestId()));
+                logger.info(MessageFormat.format("[标的放款]:记录系统奖励,投资ID:{0},推荐人奖励:{1},奖励类型:{2}", orderId, amount, SystemBillBusinessType.REFERRER_REWARD));
+                systemBillService.transferOut(orderId, amount, SystemBillBusinessType.REFERRER_REWARD, detail);
+            }
+        } catch (Exception e) {
+            logger.error(MessageFormat.format("referrer reward transfer in balance failed (investId = {0})", String.valueOf(investReferrerRewardModel.getInvestId())));
+            throw e;
+        }
+        return true;
     }
 
     private long calculateReferrerReward(long amount, int loanDuration, int level, Role role, String referrerLoginName) {
@@ -189,15 +270,15 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
             return null;
         }
 
-        if (Iterators.tryFind(userRoleModels.iterator(), input -> input.getRole() == Role.STAFF).isPresent()) {
+        if (userRoleModels.stream().anyMatch(userRoleModel -> userRoleModel.getRole() == Role.STAFF)) {
             return Role.STAFF;
         }
 
-        if (Iterators.tryFind(userRoleModels.iterator(), input -> input.getRole() == Role.INVESTOR).isPresent()) {
+        if (userRoleModels.stream().anyMatch(userRoleModel -> userRoleModel.getRole() == Role.INVESTOR)) {
             return Role.INVESTOR;
         }
 
-        if (Iterators.tryFind(userRoleModels.iterator(), input -> input.getRole() == Role.USER).isPresent()) {
+        if (userRoleModels.stream().anyMatch(userRoleModel -> userRoleModel.getRole() == Role.USER)) {
             return Role.USER;
         }
 
