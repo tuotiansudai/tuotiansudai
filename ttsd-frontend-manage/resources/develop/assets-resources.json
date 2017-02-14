@@ -18,7 +18,7 @@
     "css": "/web/js/account/account_overview.css"
   },
   "myAccountEcharts": {
-    "js": "chucks/myAccountEcharts.a90fd6421e6f40860c2b.js"
+    "js": "chucks/myAccountEcharts.40635df94f27cfbed762.js"
   },
   "/web/js/account/bind_card": {
     "js": "/web/js/account/bind_card.js",
@@ -52,27 +52,27 @@
     "css": "/web/js/forget_password.css"
   },
   "fetchCaptchaRetrieve": {
-    "js": "chucks/fetchCaptchaRetrieve.872e766f6a149f964eb2.js"
+    "js": "chucks/fetchCaptchaRetrieve.db4211d82fd74f8ef986.js"
   },
   "/web/js/index": {
     "js": "/web/js/index.js",
     "css": "/web/js/index.css"
   },
   "redEnvelope": {
-    "js": "chucks/redEnvelope.e129f5b9fa20fa2dd0f0.js"
+    "js": "chucks/redEnvelope.4087cb6dded50af2f8ef.js"
   },
   "imageSlider": {
-    "js": "chucks/imageSlider.e4de9fa830843d40c9b9.js"
+    "js": "chucks/imageSlider.36079a2c0ea25c349719.js"
   },
   "bookInvest": {
-    "js": "chucks/bookInvest.c2aa030016fdaa77b011.js"
+    "js": "chucks/bookInvest.aea31c0468f872c51670.js"
   },
   "/web/js/loan_detail": {
     "js": "/web/js/loan_detail.js",
     "css": "/web/js/loan_detail.css"
   },
   "jquery_fancybox": {
-    "js": "chucks/jquery_fancybox.491d7a4d839cad7e1d30.js"
+    "js": "chucks/jquery_fancybox.c9a75857c4aa3aaa2a09.js"
   },
   "/web/js/loan_detail_experience": {
     "js": "/web/js/loan_detail_experience.js",
@@ -91,7 +91,7 @@
     "css": "/web/js/register_user.css"
   },
   "placeholder": {
-    "js": "chucks/placeholder.852b6eae32e0b9a7807d.js"
+    "js": "chucks/placeholder.fcfeb3c4191b2708848e.js"
   },
   "/web/js/transfer_detail": {
     "js": "/web/js/transfer_detail.js",
@@ -149,9 +149,21 @@
     "js": "chucks/teamInfo.f05454a220c3229a79a4.js"
   },
   "aboutus_notice": {
-    "js": "chucks/aboutus_notice.d8cf8a633221ec1be93d.js"
+    "js": "chucks/aboutus_notice.f608eec581d7ff9fbdbd.js"
   },
   "operationEcharts": {
-    "js": "chucks/operationEcharts.296e84728ae1d3bfdf4f.js"
+    "js": "chucks/operationEcharts.53baf8b007f4a45da75a.js"
+  },
+  "/web/js/about_assurance": {
+    "js": "/web/js/about_assurance.js",
+    "css": "/web/js/about_assurance.css"
+  },
+  "/web/js/auto_repay": {
+    "js": "/web/js/auto_repay.js",
+    "css": "/web/js/auto_repay.css"
+  },
+  "/web/js/app_download": {
+    "js": "/web/js/app_download.js",
+    "css": "/web/js/app_download.css"
   }
 }

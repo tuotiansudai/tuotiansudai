@@ -71,9 +71,11 @@
         </div>
     </div>
 </div>
-
-<#include "pageLayout/statistic.ftl" />
-<script type="text/javascript" src="${js.global_page}"></script>
+<script>
+    window.staticServer='${commonStaticServer}';
+</script>
+<script src="${js.jquerydll}" ></script>
+<script src="${js.globalFun_page!}" ></script>
 <script type="text/javascript" src="${js.app_download}"></script>
 </body>
 </html>
