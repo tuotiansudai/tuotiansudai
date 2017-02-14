@@ -1,5 +1,6 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
@@ -18,7 +19,9 @@ import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.job.NormalRepayJob;
 import com.tuotiansudai.message.EventMessage;
 import com.tuotiansudai.message.PushMessage;
+import com.tuotiansudai.message.RepaySuccessMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
+import com.tuotiansudai.mq.client.model.MessageTopic;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
@@ -617,6 +620,14 @@ public class NormalRepayServiceImpl implements NormalRepayService {
 
         String redisKey = MessageFormat.format(REPAY_REDIS_KEY_TEMPLATE, String.valueOf(loanRepayId));
         redisWrapperClient.hset(redisKey, String.valueOf(investRepayId), SyncRequestStatus.SUCCESS.name());
+
+        try {
+            mqWrapperClient.publishMessage(MessageTopic.NormalRepaySuccess,new RepaySuccessMessage(loanRepayId));
+            logger.info(MessageFormat.format("[[Normal Repay {0}]: 还款成功,发送MQ消息", String.valueOf(loanRepayId)));
+        } catch (JsonProcessingException e) {
+            // 记录日志，发短信通知管理员
+            fatalLog(String.format("还款发送MQ消息失败:还款loanRepayId:%s",String.valueOf(loanRepayId)), e);
+        }
 
         //Title:您投资的{0}已回款{1}元，请前往账户查收！
         //Content:尊敬的用户，您投资的{0}项目已回款，期待已久的收益已奔向您的账户，快来查看吧。

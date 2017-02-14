@@ -24,19 +24,19 @@ public class CouponAspect {
     @Autowired
     private CouponInvestService couponInvestService;
 
-    @AfterReturning(value = "execution(* *..NormalRepayService.paybackInvest(*))", returning = "returnValue")
-    public void afterReturningNormalRepayPaybackInvest(JoinPoint joinPoint, boolean returnValue) {
-        long loanRepayId = (Long) joinPoint.getArgs()[0];
-        logger.info(MessageFormat.format("[normal repay Coupon Repay {0}] after returning payback invest({1}) aspect is starting...",
-                String.valueOf(loanRepayId), String.valueOf(returnValue)));
-
-        if (returnValue) {
-            couponRepayService.repay(loanRepayId, false);
-        }
-
-        logger.info(MessageFormat.format("[normal repay Coupon Repay {0}] after returning payback invest({1}) aspect is done",
-                String.valueOf(loanRepayId), String.valueOf(returnValue)));
-    }
+//    @AfterReturning(value = "execution(* *..NormalRepayService.paybackInvest(*))", returning = "returnValue")
+//    public void afterReturningNormalRepayPaybackInvest(JoinPoint joinPoint, boolean returnValue) {
+//        long loanRepayId = (Long) joinPoint.getArgs()[0];
+//        logger.info(MessageFormat.format("[normal repay Coupon Repay {0}] after returning payback invest({1}) aspect is starting...",
+//                String.valueOf(loanRepayId), String.valueOf(returnValue)));
+//
+//        if (returnValue) {
+//            couponRepayService.repay(loanRepayId, false);
+//        }
+//
+//        logger.info(MessageFormat.format("[normal repay Coupon Repay {0}] after returning payback invest({1}) aspect is done",
+//                String.valueOf(loanRepayId), String.valueOf(returnValue)));
+//    }
 
     @AfterReturning(value = "execution(* *..AdvanceRepayService.paybackInvest(*))", returning = "returnValue")
     public void afterReturningAdvanceRepayPaybackInvest(JoinPoint joinPoint, boolean returnValue) {

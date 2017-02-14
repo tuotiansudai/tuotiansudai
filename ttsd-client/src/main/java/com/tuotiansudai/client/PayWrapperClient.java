@@ -389,4 +389,8 @@ public class PayWrapperClient extends BaseClient {
     public BaseDto<PayDataDto> transferRedEnvelopForCallBack(long userCouponId){
         return syncExecute(String.valueOf(userCouponId), "/loan-out/transfer-red-envelop-callback", "POST");
     }
+
+    public BaseDto<PayDataDto> couponRepayAfterNormalRepay(long loanRepayId){
+        return syncExecute(String.valueOf(loanRepayId), "/normal-repay/coupon-repay", "POST");
+    }
 }
