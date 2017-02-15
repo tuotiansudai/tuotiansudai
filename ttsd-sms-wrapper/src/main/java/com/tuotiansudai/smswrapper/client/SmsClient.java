@@ -106,12 +106,14 @@ public class SmsClient implements ApplicationContextAware {
         if (isInCooldown(restrictedIP)) {
             data.setStatus(false);
             data.setIsRestricted(true);
+            data.setMessage("ip restricted");
             return dto;
         }
 
         if (Environment.QA.name().equals(environment) && hasExceedLimit()) {
             logger.info(String.format("sms count exceed limit [%d] in QA environment", sendSize));
             data.setStatus(false);
+            data.setMessage("sms count exceed");
             return dto;
         }
 

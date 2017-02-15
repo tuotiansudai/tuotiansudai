@@ -62,7 +62,7 @@ public class MobileAppSendSmsV2ServiceImpl implements MobileAppSendSmsV2Service 
             dto.setCode(ReturnMessage.SUCCESS.getCode());
             dto.setMessage(ReturnMessage.SUCCESS.getMsg());
         } else {
-            logger.error(MessageFormat.format("{0}send sms fail , error message{1} ", sendSmsCompositeRequestDto.getType().name(), smsDto.getData().getMessage()));
+            logger.error(MessageFormat.format("{0} send sms fail, error message {1} ", sendSmsCompositeRequestDto.getType().name(), smsDto.getData().getMessage()));
             dto.setCode(ReturnMessage.SEND_SMS_IS_FAIL.getCode());
             dto.setMessage(ReturnMessage.SEND_SMS_IS_FAIL.getMsg());
         }
