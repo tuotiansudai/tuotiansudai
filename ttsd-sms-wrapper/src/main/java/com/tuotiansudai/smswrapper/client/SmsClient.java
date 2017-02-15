@@ -106,6 +106,7 @@ public class SmsClient implements ApplicationContextAware {
         if (isInCooldown(restrictedIP)) {
             data.setStatus(false);
             data.setIsRestricted(true);
+            data.setMessage(MessageFormat.format("IP: {0} 受限", restrictedIP));
             return dto;
         }
 
