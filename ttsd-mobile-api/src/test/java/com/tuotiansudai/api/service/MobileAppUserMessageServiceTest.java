@@ -104,7 +104,7 @@ public class MobileAppUserMessageServiceTest extends ServiceTestBase {
                 null,
                 null,
                 creator.getLoginName(),
-                null,
+                DateTime.parse("0001-01-01").toDate(),
                 DateTime.parse("9999-12-31").toDate());
         messageModel.setActivatedTime(new Date());
         messageMapper.create(messageModel);

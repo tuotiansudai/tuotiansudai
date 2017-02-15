@@ -30,7 +30,7 @@ public class UserMessageMapperTest extends BaseMapperTest {
                 AppUrl.HOME,
                 null,
                 "created",
-                null,
+                DateTime.parse("0001-01-01").toDate(),
                 DateTime.parse("9999-12-31").toDate());
         messageMapper.create(messageModel);
 

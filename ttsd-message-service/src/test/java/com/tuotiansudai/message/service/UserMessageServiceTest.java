@@ -43,7 +43,7 @@ public class UserMessageServiceTest {
                 null,
                 null,
                 "messageCreator",
-                null,
+                DateTime.parse("0001-01-01").toDate(),
                 DateTime.parse("9999-12-31").toDate());
 
         webSiteMessageModel.setReadCount(10);
@@ -75,7 +75,7 @@ public class UserMessageServiceTest {
                 null,
                 null,
                 "messageCreator",
-                null,
+                DateTime.parse("0001-01-01").toDate(),
                 DateTime.parse("9999-12-31").toDate());
 
         messageMapper.create(webSiteMessageModel);
@@ -89,7 +89,7 @@ public class UserMessageServiceTest {
                 null,
                 null,
                 "messageCreator",
-                null,
+                DateTime.parse("0001-01-01").toDate(),
                 DateTime.parse("9999-12-31").toDate());
 
         messageMapper.create(appMessageModel);
