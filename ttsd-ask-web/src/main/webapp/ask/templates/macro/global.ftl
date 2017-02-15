@@ -19,7 +19,7 @@
     </@security.authorize>
 </#macro>
 
-<#macro main pageCss pageJavascript="" activeNav="拓天问答" staticServer="${staticServer}" title="拓天速贷" keywords="" activeLeftNav=""  description="">
+<#macro main pageCss pageJavascript="" activeNav="拓天问答" staticServer="${commonStaticServer}" title="拓天速贷" keywords="" activeLeftNav=""  description="">
     <#local mainMenus=[
     {"title":"首页", "url":"${webServer}","category":"16顶部导航","navigation":"true"},
     {"title":"我要投资", "url":"${webServer}/loan-list","category":"17顶部导航","navigation":"true","leftNavs":[
@@ -80,7 +80,7 @@
     <meta name="_csrf" content="${(_csrf.token)!}"/>
     <meta name="_csrf_header" content="${(_csrf.headerName)!}"/>
     <link href="${commonStaticServer}/images/favicon.ico" rel="shortcut icon" type="image/x-icon"/>
-    <link rel="stylesheet" type="text/css" href="${css.global_page!}" charset="utf-8"/>
+    <link rel="stylesheet" type="text/css" href="${css.globalFun_page!}" charset="utf-8"/>
     <#if pageCss?? && pageCss != "">
         <link rel="stylesheet" type="text/css" href="${pageCss}" charset="utf-8"/>
     </#if>
@@ -143,10 +143,10 @@
 
     <#include "../pageLayout/footer.ftl" />
 <script>
-    window.staticServer='${staticServer}';
+    window.staticServer='${commonStaticServer}';
 </script>
-<script src="${js.jquery}"></script>
-<script src="${js.global_page!}"></script>
+<script src="${js.jquerydll}" ></script>
+<script src="${js.globalFun_page!}" ></script>
 <script src="${pageJavascript}" type="text/javascript"></script>
 </body>
 </html>
