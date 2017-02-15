@@ -27,6 +27,30 @@ var strategies = {
             showErrorAfter && removeElement(this);
         }
     },
+    minValue: function(errorMsg,value,showErrorAfter) {
+        if (Number(this.value) < Number(value)) {
+            globalFun.addClass(this,'error');
+            showErrorAfter && createElement(this,errorMsg);
+            return errorMsg;
+        }
+        else {
+            globalFun.removeClass(this,'error');
+            globalFun.addClass(this,'valid');
+            showErrorAfter && removeElement(this);
+        }
+    },
+    maxValue: function(errorMsg,value,showErrorAfter) {
+        if (Number(this.value) > Number(value)) {
+            globalFun.addClass(this,'error');
+            showErrorAfter && createElement(this,errorMsg);
+            return errorMsg;
+        }
+        else {
+            globalFun.removeClass(this,'error');
+            globalFun.addClass(this,'valid');
+            showErrorAfter && removeElement(this);
+        }
+    },
     minLength: function(errorMsg,length,showErrorAfter) {
         if (this.value.length < Number(length)) {
             globalFun.addClass(this,'error');

@@ -52,20 +52,20 @@
     "css": "/web/js/forget_password.css"
   },
   "fetchCaptchaRetrieve": {
-    "js": "chucks/fetchCaptchaRetrieve.db4211d82fd74f8ef986.js"
+    "js": "chucks/fetchCaptchaRetrieve.abcef6510d5d540c92df.js"
   },
   "/web/js/index": {
     "js": "/web/js/index.js",
     "css": "/web/js/index.css"
   },
   "redEnvelope": {
-    "js": "chucks/redEnvelope.4087cb6dded50af2f8ef.js"
+    "js": "chucks/redEnvelope.7787f015b74a980da669.js"
   },
   "imageSlider": {
-    "js": "chucks/imageSlider.36079a2c0ea25c349719.js"
+    "js": "chucks/imageSlider.6a095554b7bed406dc38.js"
   },
   "bookInvest": {
-    "js": "chucks/bookInvest.aea31c0468f872c51670.js"
+    "js": "chucks/bookInvest.46aab3d8aa523d80ebb5.js"
   },
   "/web/js/loan_detail": {
     "js": "/web/js/loan_detail.js",
@@ -91,7 +91,7 @@
     "css": "/web/js/register_user.css"
   },
   "placeholder": {
-    "js": "chucks/placeholder.fcfeb3c4191b2708848e.js"
+    "js": "chucks/placeholder.d6e371612c385a0d8160.js"
   },
   "/web/js/transfer_detail": {
     "js": "/web/js/transfer_detail.js",
@@ -165,5 +165,17 @@
   "/web/js/app_download": {
     "js": "/web/js/app_download.js",
     "css": "/web/js/app_download.css"
+  },
+  "/web/js/invest_success": {
+    "js": "/web/js/invest_success.js",
+    "css": "/web/js/invest_success.css"
+  },
+  "/web/js/loan_application": {
+    "js": "/web/js/loan_application.js",
+    "css": "/web/js/loan_application.css"
+  },
+  "/web/js/membership": {
+    "js": "/web/js/membership.js",
+    "css": "/web/js/membership.css"
   }
 }

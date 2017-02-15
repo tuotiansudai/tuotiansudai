@@ -34,8 +34,7 @@ validator.add(loginForm.captcha, [{
 
 let loginInputs=$(loginForm).find('input:visible');
 Array.prototype.forEach.call(loginInputs,function(el) {
-    el.addEventListener("blur", function(event) {
-        event.preventDefault();
+    globalFun.addEventHandler(el,'blur',function() {
         let errorMsg = validator.start(this);
         if(errorMsg) {
             errorDom.text(errorMsg).css('visibility','visible');
