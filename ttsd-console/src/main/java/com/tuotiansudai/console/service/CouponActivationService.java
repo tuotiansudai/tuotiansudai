@@ -91,6 +91,7 @@ public class CouponActivationService {
         }
 
         if (couponModel.isSmsAlert()) {
+            logger.info(MessageFormat.format("coupon active sms alert, couponId:{0}", String.valueOf(couponId)));
             mqWrapperClient.sendMessage(MessageQueue.CouponSmsNotify, String.valueOf(couponId));
         }
 
