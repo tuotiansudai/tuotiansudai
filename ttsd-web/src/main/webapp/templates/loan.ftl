@@ -523,8 +523,9 @@
                             </div>
                         </div>
                         </#if>
-                        <table class="table-striped invest-list">
-                        </table>
+                        <div class="table-box">
+
+                        </div>
                         <div class="pagination" data-url="/loan/${loan.id?string.computer}/invests" data-page-size="10">
                         </div>
                     </div>
@@ -561,21 +562,31 @@
     </tr>
     </thead>
     <tbody>
-    <% _.each(records, function (item) { %>
-    var item.autoInvest=item.autoInvest ? '自动' : '手动';
+    <% for(var i = 0; i < records.length; i++) {
+
+    var item = records[i];
+    console.log(item);
+    item.autoInvest=item.autoInvest ? '自动' : '手动';
+    %>
     <tr>
     <td class="loan-td">
         <%=item.mobile%>
     </td>
-    <td class="tr"><%=item.amount%> </td>
+    <td class="tr">
+        <%=item.amount%>
+    </td>
     <td class="responsive-hide">
             <%=item.autoInvest%>
-        <span class="invest-{{source}}"></span>
+        <span class="invest-<%=item.source%>"></span>
             </td>
-            <td class="responsive-hide tr"><%=item.expectedInterest%></td>
-    <td><%=item.createdTime%></td>
+            <td class="responsive-hide tr">
+                <%=item.expectedInterest%>
+            </td>
+    <td>
+        <%=item.createdTime%>
+    </td>
     </tr>
-    <% }) %>
+    <% } %>
     </tbody>
     </table>
 

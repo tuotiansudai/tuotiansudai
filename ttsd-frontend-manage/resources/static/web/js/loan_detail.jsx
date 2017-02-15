@@ -571,7 +571,7 @@ function getSkipPhoneTip(){
                 let LendTpl=$('#LendTemplate').html();
                 let ListRender = _.template(LendTpl);
 
-                $('.loan-list-con table',$loanDetailSwitch).html(ListRender(data));
+                $('.loan-list-con .table-box',$loanDetailSwitch).html(ListRender(data));
             }
         });
     };

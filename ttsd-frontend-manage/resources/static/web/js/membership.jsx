@@ -25,6 +25,7 @@ var template = $('#tpl').html();
 var $tbody = $('#tbody');
 var renderTable = function (sendData, fn) {
     commonFun.useAjax({
+        type:'GET',
         url: '/membership/structure-list-data',
         data: sendData || ''
     },function(response) {

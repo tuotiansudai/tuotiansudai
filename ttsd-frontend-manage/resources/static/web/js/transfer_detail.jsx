@@ -3,7 +3,7 @@ require('webJsModule/pagination');
 require('webJsModule/coupon_alert');
 //投资计算器和意见反馈
 require('webJsModule/red_envelope_float');
-let popLoginTip=require('publicJs/login_tip');
+require('publicJs/login_tip');
 let commonFun= require('publicJs/commonFun');
 //安心签协议
 require('webJsModule/anxin_agreement');
@@ -35,7 +35,13 @@ $('#transferSubmit').on('click', function(event) {
     $.when(commonFun.isUserLogin())
         .fail(function() {
             //判断是否需要弹框登陆
-            popLoginTip();
+            layer.open({
+                type: 1,
+                title: false,
+                closeBtn: 0,
+                area: ['auto', 'auto'],
+                content: $('#loginTip')
+            });
         })
         .done(function() {
             submitData();

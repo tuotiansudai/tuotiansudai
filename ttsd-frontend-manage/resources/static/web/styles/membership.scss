@@ -27,6 +27,12 @@
 
 .global-member-ship {
   $borderColor: #e6e6e6;
+  .icon-avatar {
+    width:127px;
+    height:127px;
+    display: inline-block;
+    background: url("../images/sign/head_20161011.png") left top no-repeat;
+  }
   .vip-no-bg {
     display: inline-block;
     width: 30px;
@@ -275,6 +281,7 @@
       height: $size;
       margin-right: 30px;
       position: relative;
+
       img {
         width: $size;
         height: $size;

@@ -7,7 +7,7 @@
             <div class="title">会员等级</div>
             <div class="info clearfix">
                 <div class="avatar fl">
-                    <img src="${commonStaticServer}/images/sign/head_20161011.png"/>
+                    <span class="icon-avatar"></span>
                     <i class="vip-no-bg vip-${membershipLevel!}"></i>
                 </div>
                 <div class="text">
@@ -36,7 +36,7 @@
         <div class="user-info-block page-width no-login">
             <div class="info clearfix">
                 <div class="avatar fl">
-                    <img src="${commonStaticServer}/images/sign/head_20161011.png"/>
+                    <span class="icon-avatar"></span>
                 </div>
                 <div class="text">
                     亲，成为会员可享受多种特权哦~ <br/>

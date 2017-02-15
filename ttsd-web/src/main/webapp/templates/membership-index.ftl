@@ -10,7 +10,7 @@
             </#if>
             <div class="info clearfix">
                 <div class="avatar fl">
-                    <img src="${commonStaticServer}/images/sign/head_20161011.png"/>
+                    <span class="icon-avatar"></span>
                     <#if membershipType == 'GIVEN' || membershipType == "PURCHASED" >
                         <i class="vip-no-bg vip-5"></i>
                     <#else>
@@ -357,7 +357,7 @@
         <div class="user-info-block page-width no-login">
             <div class="info clearfix">
                 <div class="avatar fl">
-                    <img src="${commonStaticServer}/images/sign/head_20161011.png"/>
+                    <span class="icon-avatar"></span>
                 </div>
                 <div class="text">
                     亲，成为会员可享受多种特权哦~ <br/>
