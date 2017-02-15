@@ -1005,22 +1005,26 @@
     </select>
 
     <select id="countInvestorInvestAndTransferPagination" parameterType="map" resultType="long">
-        select count(1)
+        select invest.*
         from invest
         join loan on invest.loan_id = loan.id
         where invest.login_name = #{loginName}
+        and invest.status = 'SUCCESS'
         <if test="loanStatus.name() == 'COMPLETE' ">
-            and loan.status = #{loanStatus}
-            and invest.`transfer_status` = 'SUCCESS'
+            and ((loan.product_type = 'EXPERIENCE' and TO_DAYS(NOW()) - TO_DAYS(invest_time) >= loan.duration)
+            or (loan.product_type != 'EXPERIENCE' and loan.status = 'COMPLETE' and invest.transfer_status != 'SUCCESS')
+            or (loan.product_type != 'EXPERIENCE' and invest.transfer_status = 'SUCCESS'))
         </if>
         <if test="loanStatus.name() == 'REPAYING' ">
-            and loan.status in ('REPAYING','OVERDUE')
-            and invest.`transfer_status` != 'SUCCESS'
+            and ((loan.product_type = 'EXPERIENCE' and TO_DAYS(NOW()) - TO_DAYS(invest_time) &lt; loan.duration)
+            or (loan.product_type != 'EXPERIENCE' and loan.status in ('REPAYING','OVERDUE') and invest.transfer_status
+            != 'SUCCESS'))
         </if>
         <if test="loanStatus.name() == 'RAISING' ">
-            and loan.status in ('RAISING','RECHECK')
+            and loan.status in ('RAISING','RECHECK') and loan.product_type != 'EXPERIENCE'
         </if>
-        and invest.`status` = 'SUCCESS'
+        order by case when invest.trading_time is null then invest.created_time else invest.trading_time end desc,
+        invest.id asc
     </select>
 
 </mapper>
