@@ -5,7 +5,6 @@ import com.tuotiansudai.enums.MessageEventType;
 import com.tuotiansudai.enums.PushSource;
 import com.tuotiansudai.enums.PushType;
 import com.tuotiansudai.membership.repository.mapper.MembershipPrivilegeMapper;
-import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.message.EventMessage;
 import com.tuotiansudai.message.PushMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
@@ -41,6 +40,6 @@ public class MembershipExpiredNotifyScheduler {
         String title = MessageEventType.MEMBERSHIP_PRIVILEGE_EXPIRED.getTitleTemplate();
         String content = MessageEventType.MEMBERSHIP_PRIVILEGE_EXPIRED.getContentTemplate();
         mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(MessageEventType.MEMBERSHIP_PRIVILEGE_EXPIRED, membershipPrivilegeExpiredUsers, title, content, null));
-        mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(membershipPrivilegeExpiredUsers, PushSource.ALL, PushType.MEMBERSHIP_EXPIRED, title));
+        mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(membershipPrivilegeExpiredUsers, PushSource.ALL, PushType.MEMBERSHIP_PRIVILEGE_EXPIRED, title));
     }
 }
