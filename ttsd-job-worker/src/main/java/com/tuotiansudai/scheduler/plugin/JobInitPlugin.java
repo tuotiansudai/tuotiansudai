@@ -50,7 +50,7 @@ public class JobInitPlugin implements SchedulerPlugin {
             deleteCheckUserBalanceJob();
         }
         if (JobType.CouponRepayCallBack.name().equalsIgnoreCase(schedulerName)) {
-            createCouponRepayCallBackJobIfNotExist();
+            deleteCouponRepayCallBackJobIfNotExist();
         }
         if (JobType.ExtraRateRepayCallBack.name().equalsIgnoreCase(schedulerName)) {
             createExtraRateRepayCallBackIfNotExist();
@@ -74,21 +74,8 @@ public class JobInitPlugin implements SchedulerPlugin {
 
     }
 
-    private void createCouponRepayCallBackJobIfNotExist() {
-        final JobType jobType = JobType.CouponRepayCallBack;
-        final String jobGroup = CouponRepayNotifyCallbackJob.JOB_GROUP;
-        final String jobName = CouponRepayNotifyCallbackJob.JOB_NAME;
-        try {
-            jobManager.newJob(jobType, CouponRepayNotifyCallbackJob.class)
-                    .replaceExistingJob(true)
-                    .runWithSchedule(SimpleScheduleBuilder
-                            .repeatSecondlyForever(CouponRepayNotifyCallbackJob.RUN_INTERVAL_SECONDS)
-                            .withMisfireHandlingInstructionIgnoreMisfires())
-                    .withIdentity(jobGroup, jobName)
-                    .submit();
-        } catch (SchedulerException e) {
-            logger.info(e.getLocalizedMessage(), e);
-        }
+    private void deleteCouponRepayCallBackJobIfNotExist(){
+        jobManager.deleteJob(JobType.CouponRepayCallBack, JobType.CouponRepayCallBack.name(), JobType.CouponRepayCallBack.name());
     }
 
     private void createExtraRateRepayCallBackIfNotExist() {
