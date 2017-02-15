@@ -1,4 +1,4 @@
-package com.tuotiansudai.paywrapper.loanout;
+package com.tuotiansudai.paywrapper.loanout.impl;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
@@ -11,7 +11,7 @@ import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
-import com.tuotiansudai.paywrapper.loanout.impl.LoanServiceImpl;
+import com.tuotiansudai.paywrapper.loanout.CouponLoanOutService;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferNotifyMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.TransferMapper;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
