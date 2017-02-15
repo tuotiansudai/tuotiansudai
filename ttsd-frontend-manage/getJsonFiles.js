@@ -57,7 +57,7 @@ getJsonFileList.prototype.addJqueryPlugin=function(path) {
 
     var filesList=this.filesList;
     var files = fs.readdirSync(path);//需要用到同步读取
-    console.log(files);
+    // console.log(files);
     files.forEach(function(file) {
         var states = fs.statSync(path+'/'+file);
         //isDirectory,用于判断被查看的对象是否是一个目录，如果是返回true
