@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CouponRepayNotifyRequestMapper extends BaseCallbackMapper {
 
-    CouponRepayNotifyRequestModel findById(@Param(value = "id") long id);
+    CouponRepayNotifyRequestModel findById(@Param(value = "id") Long id);
 
     void updateStatus(@Param(value = "id") Long id, @Param(value = "status") NotifyProcessStatus status);
 }
