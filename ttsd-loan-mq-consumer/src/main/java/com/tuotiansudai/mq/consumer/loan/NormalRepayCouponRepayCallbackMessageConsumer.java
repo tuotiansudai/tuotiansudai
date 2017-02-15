@@ -34,16 +34,16 @@ public class NormalRepayCouponRepayCallbackMessageConsumer implements MessageCon
     public void consume(String message) {
         logger.info("[还款优惠券收益回调MQ] receive message: {}: {}.", this.queue(), message);
         if (Strings.isNullOrEmpty(message)) {
-            logger.error("[还款优惠券收益回调MQ] ready to consume message: normal repay coupon repay message is null.");
+            logger.error("[还款优惠券收益回调MQ] ready to consume message: coupon repay message is null.");
             smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("还款优惠券收益回调MQ消息为空!"));
             return;
         }
-        logger.info("[还款优惠券收益回调MQ] ready to consume message: normal repay coupon repay callback.");
-        BaseDto<PayDataDto> result = payWrapperClient.normalRepayInvestPayback(Long.parseLong(message));
+        logger.info("[还款优惠券收益回调MQ] ready to consume message: coupon repay callback.");
+        BaseDto<PayDataDto> result = payWrapperClient.couponRepayCallbackAfterNormalRepay(Long.parseLong(message));
         if (!result.isSuccess()) {
-            logger.error("normal repay callback consume fail. notifyRequestId: " + message);
-            throw new RuntimeException("normal repay callback consume fail. notifyRequestId: " + message);
+            logger.error("[还款优惠券收益回调MQ] coupon repay callback consume fail. notifyRequestId: " + message);
+            throw new RuntimeException("coupon repay callback consume fail. notifyRequestId: " + message);
         }
-        logger.info("[MQ] consume message success.");
+        logger.info("[还款优惠券收益回调MQ] consume message success.");
     }
 }
