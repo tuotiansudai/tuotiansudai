@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.anxin.service.AnxinSignService;
 import com.tuotiansudai.anxin.service.impl.AnxinSignServiceImpl;
 import com.tuotiansudai.cfca.dto.AnxinContractType;
+import com.tuotiansudai.client.AnxinWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.console.service.ConsoleLoanService;
 import com.tuotiansudai.dto.BaseDataDto;
@@ -56,6 +57,9 @@ public class LoanListController {
 
     @Autowired
     private TransferApplicationMapper transferApplicationMapper;
+
+    @Autowired
+    private AnxinWrapperClient anxinWrapperClient;
 
     @RequestMapping(value = "/loan-list", method = RequestMethod.GET)
     public ModelAndView ConsoleLoanList(@RequestParam(value = "status", required = false) LoanStatus status,
@@ -130,7 +134,7 @@ public class LoanListController {
                 return baseDto;
             }
 
-            return anxinSignService.createLoanContracts(businessId, true);
+            return anxinWrapperClient.createLoanContract(businessId);
         } else {
 
             TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(businessId);
@@ -151,7 +155,7 @@ public class LoanListController {
                 return baseDto;
             }
 
-            return anxinSignService.createTransferContracts(businessId);
+            return anxinWrapperClient.createTransferContract(businessId);
         }
     }
 

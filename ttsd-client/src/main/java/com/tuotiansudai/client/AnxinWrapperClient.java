@@ -3,11 +3,10 @@ package com.tuotiansudai.client;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.base.Strings;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.tuotiansudai.dto.AnxinDataDto;
+import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.PayDataDto;
-import com.tuotiansudai.dto.PayFormDataDto;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,9 +14,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.text.MessageFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 @Component
@@ -34,185 +31,23 @@ public class AnxinWrapperClient extends BaseClient {
     @Value("${anxin.application.context}")
     protected String applicationContext;
 
-    private final static String registerPath = "/register";
-
-    private final static String systemRechargePath = "/system-recharge";
-
-    private final static String membershipPurchasePath = "/membership-purchase";
-
-    private final static String rechargePath = "/recharge";
-
-    private final static String bindCardPath = "/bind-card";
-
-    private final static String replaceCardPath = "/bind-card/replace";
-
-    private final static String withdrawPath = "/withdraw";
-
-    private final static String investPath = "/invest";
-
-    private final static String autoInvestPath = "/auto-invest";
-
-    private final static String autoRepayPath = "/auto-repay";
-
-    private final static String agreementPath = "/agreement";
-
-    private final static String repayPath = "/repay";
-
-    private final static String cancelLoanPath = "/loan/{0}/cancel";
-
-    private final static String resetUmpayPassword = "/reset-umpay-password";
-
-    private final static String purchase="/invest-transfer/purchase";
-
-    private final static String noPasswordPurchase = "/invest-transfer/no-password-purchase";
-
-    private final static String noPasswordInvestPath = "/no-password-invest";
-
-    private final static String transferCashPath = "/transfer-cash";
-
     private final static String createLoanContract = "/anxin-sign/{0}/create-loan-contract";
 
     private final static String createTransferContract = "/anxin-sign/{0}/create-transfer-contract";
 
-    public BaseDto
-
-    public BaseDto<PayDataDto> transferCash(Object transferCashDto) {
-        return syncExecute(transferCashDto, transferCashPath, "POST");
+    public BaseDto<BaseDataDto> createLoanContract(long loanId) {
+        return syncExecute(null, MessageFormat.format(createLoanContract, String.valueOf(loanId)), "POST");
     }
 
-    public boolean resetUmpayPassword(Object resetUmpayPasswordDto) {
-        BaseDto<PayDataDto> baseDto = syncExecute(resetUmpayPasswordDto, resetUmpayPassword, "POST");
-        return baseDto.isSuccess();
-    }
-
-    public BaseDto<PayDataDto> register(Object registerAccountDto) {
-        return syncExecute(registerAccountDto, registerPath, "POST");
-    }
-
-    public BaseDto<PayFormDataDto> recharge(Object rechargeDto) {
-        return asyncExecute(rechargeDto, rechargePath, "POST");
-    }
-
-    public BaseDto<PayFormDataDto> systemRecharge(Object systemRechargeDto) {
-        return asyncExecute(systemRechargeDto, systemRechargePath, "POST");
-    }
-
-    public BaseDto<PayFormDataDto> membershipPurchase(Object membershipPurchaseDto) {
-        return asyncExecute(membershipPurchaseDto, membershipPurchasePath, "POST");
-    }
-
-    public BaseDto<PayFormDataDto> withdraw(Object withdrawDto) {
-        return asyncExecute(withdrawDto, withdrawPath, "POST");
-    }
-
-    public BaseDto<PayFormDataDto> bindBankCard(Object bindBankCardDto) {
-        return asyncExecute(bindBankCardDto, bindCardPath, "POST");
-    }
-
-    public BaseDto<PayFormDataDto> replaceBankCard(Object bindBankCardDto) {
-        return asyncExecute(bindBankCardDto, replaceCardPath, "POST");
-    }
-
-    public BaseDto<PayFormDataDto> invest(Object investDto) {
-        return asyncExecute(investDto, investPath, "POST");
-    }
-
-    public BaseDto<PayDataDto> cancelLoan(long loanId) {
-        return syncExecute(null, MessageFormat.format(cancelLoanPath, String.valueOf(loanId)), "POST");
-    }
-
-    public BaseDto<PayFormDataDto> agreement(Object agreementDto) {
-        return asyncExecute(agreementDto, agreementPath, "POST");
-    }
-
-    public BaseDto<PayFormDataDto> repay(Object repayDto) {
-        return asyncExecute(repayDto, repayPath, "POST");
-    }
-
-    public BaseDto<PayDataDto> autoInvest(long loanId) {
-        return syncExecute(String.valueOf(loanId), autoInvestPath, "POST");
-    }
-
-    public BaseDto<PayFormDataDto> purchase(Object investDto) {
-        return asyncExecute(investDto, purchase, "POST");
-    }
-
-    public BaseDto<PayDataDto> noPasswordPurchase(Object investDto) {
-        return syncExecute(investDto, noPasswordPurchase, "POST");
-    }
-
-    public BaseDto<PayDataDto> autoRepay(long loanRepayId) {
-        return syncExecute(String.valueOf(loanRepayId), autoRepayPath, "POST");
-    }
-
-    public BaseDto<PayDataDto> createLoan(long loanId) {
-        return syncExecute(null, MessageFormat.format("/loan/{0}", String.valueOf(loanId)), "POST");
-    }
-
-    public BaseDto<PayDataDto> investCallback(String notifyRequestId) {
-        return syncExecute(notifyRequestId, "/job/async_invest_notify", "POST");
-    }
-
-    public BaseDto<PayDataDto> normalRepayInvestPayback(long notifyRequestId) {
-        return syncExecute(notifyRequestId, "/job/async_normal_repay_notify", "POST");
-    }
-
-    public BaseDto<PayDataDto> advanceRepayInvestPayback(long notifyRequestId) {
-        return syncExecute(notifyRequestId, "/job/async_advance_repay_notify", "POST");
-    }
-
-    public BaseDto<PayDataDto> couponRepayCallback() {
-        return syncExecute(null, "/job/async_coupon_repay_notify", "POST");
-    }
-
-    public BaseDto<PayDataDto> extraRateInvestCallback() {
-        return syncExecute(null, "/job/async_extra_rate_invest_notify", "POST");
-    }
-
-    public BaseDto<PayDataDto> investTransferCallback(String notifyRequestId) {
-        return syncExecute(notifyRequestId, "/job/async_invest_transfer_notify", "POST");
-    }
-
-    public BaseDto<PayDataDto> loanOut(long loanId) {
-        return syncExecute(null, MessageFormat.format("/loan/{0}/loan-out", String.valueOf(loanId)), "POST");
-    }
-
-    public BaseDto<PayDataDto> noPasswordInvest(Object investDto) {
-        return syncExecute(investDto, noPasswordInvestPath, "POST");
-    }
-
-    public BaseDto<PayDataDto> loanOutSuccessNotify(long loanId){
-        return syncExecute(String.valueOf(loanId), "/job/loan-out-success-notify", "POST");
-    }
-
-    public Map<String, String> getUserStatus(String loginName) {
-        String json = this.execute(MessageFormat.format("/real-time/user/{0}", loginName), null, "GET");
-        try {
-            return objectMapper.readValue(json, new TypeReference<Map<String, String>>() {});
-        } catch (IOException e) {
-            logger.error(e.getLocalizedMessage(), e);
-        }
-        return Maps.newHashMap();
-    }
-
-    public Map<String, String> getUserBalance(String loginName) {
-        String json = this.execute(MessageFormat.format("/real-time/user-balance/{0}", loginName), null, "GET");
-        try {
-            if (json == null)
-                return null;
-            else
-                return objectMapper.readValue(json, new TypeReference<Map<String, String>>() {
-                });
-        } catch (IOException e) {
-            logger.error(e.getLocalizedMessage(), e);
-        }
-        return null;
+    public BaseDto<BaseDataDto> createTransferContract(long transferId) {
+        return syncExecute(null, MessageFormat.format(createTransferContract, String.valueOf(transferId)), "POST");
     }
 
     public Map<String, String> getLoanStatus(long loanId) {
         String json = this.execute(MessageFormat.format("/real-time/loan/{0}", String.valueOf(loanId)), null, "GET");
         try {
-            return objectMapper.readValue(json, new TypeReference<Map<String, String>>() {});
+            return objectMapper.readValue(json, new TypeReference<Map<String, String>>() {
+            });
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
@@ -222,55 +57,25 @@ public class AnxinWrapperClient extends BaseClient {
     public Map<String, String> getTransferStatus(String orderId, Date merDate, String businessType) {
         String json = this.execute(MessageFormat.format("/real-time/transfer/order-id/{0}/mer-date/{1}/business-type/{2}", orderId, new DateTime(merDate).toString("yyyyMMdd"), businessType), null, "GET");
         try {
-            return objectMapper.readValue(json, new TypeReference<Map<String, String>>() {});
+            return objectMapper.readValue(json, new TypeReference<Map<String, String>>() {
+            });
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
         return null;
     }
 
-    public Map<String, String> getPlatformStatus() {
-        String json = this.execute("/real-time/platform", null, "GET");
-        try {
-            return objectMapper.readValue(json, new TypeReference<Map<String, String>>() {});
-        } catch (IOException e) {
-            logger.error(e.getLocalizedMessage(), e);
-        }
-        return Maps.newHashMap();
-    }
-
-    public List<List<String>> getTransferBill(String loginName, Date startDate, Date endDate) {
-        String json = this.execute(MessageFormat.format("/transfer-bill/user/{0}/start-date/{1}/end-date/{2}",
-                loginName,
-                new SimpleDateFormat("yyyyMMdd").format(startDate),
-                new SimpleDateFormat("yyyyMMdd").format(endDate)), null, "GET");
-        try {
-            return objectMapper.readValue(json, new TypeReference<List<List<String>>>() {});
-        } catch (IOException e) {
-            logger.error(e.getLocalizedMessage(), e);
-        }
-        return Lists.newArrayList();
-    }
-
-    public BaseDto<PayDataDto> postNormalRepay(long loanRepayId) {
-        return syncExecute(loanRepayId, "/job/post_normal_repay", "POST");
-    }
-
-    public BaseDto<PayDataDto> postAdvanceRepay(long loanRepayId) {
-        return syncExecute(loanRepayId, "/job/post_advance_repay", "POST");
-    }
-
-    private BaseDto<PayDataDto> parsePayResponseJson(String json) {
-        BaseDto<PayDataDto> baseDto = new BaseDto<>();
-        PayDataDto payDataDto = new PayDataDto();
-        baseDto.setData(payDataDto);
+    private BaseDto<BaseDataDto> parsePayResponseJson(String json) {
+        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
+        BaseDataDto baseDataDto = new BaseDataDto();
+        baseDto.setData(baseDataDto);
         if (Strings.isNullOrEmpty(json)) {
             baseDto.setSuccess(false);
             return baseDto;
         }
 
         try {
-            baseDto = objectMapper.readValue(json, new TypeReference<BaseDto<PayDataDto>>() {
+            baseDto = objectMapper.readValue(json, new TypeReference<BaseDto<BaseDataDto>>() {
             });
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage(), e);
@@ -279,24 +84,7 @@ public class AnxinWrapperClient extends BaseClient {
         return baseDto;
     }
 
-    private BaseDto<PayFormDataDto> parsePayFormJson(String json) {
-        BaseDto<PayFormDataDto> baseDto = new BaseDto<>();
-        if (Strings.isNullOrEmpty(json)) {
-            baseDto.setSuccess(false);
-            return baseDto;
-        }
-
-        try {
-            baseDto = objectMapper.readValue(json, new TypeReference<BaseDto<PayFormDataDto>>() {
-            });
-        } catch (IOException e) {
-            logger.error(e.getLocalizedMessage(), e);
-            baseDto.setSuccess(false);
-        }
-        return baseDto;
-    }
-
-    private BaseDto<PayDataDto> syncExecute(Object requestData, String requestPath, String method) {
+    private BaseDto<BaseDataDto> syncExecute(Object requestData, String requestPath, String method) {
         try {
             String responseJson = this.execute(requestPath, requestData != null ? objectMapper.writeValueAsString(requestData) : null, method);
             return this.parsePayResponseJson(responseJson);
@@ -304,24 +92,9 @@ public class AnxinWrapperClient extends BaseClient {
             logger.error(e.getLocalizedMessage(), e);
         }
 
-        BaseDto<PayDataDto> baseDto = new BaseDto<>();
-        PayDataDto payDataDto = new PayDataDto();
-        baseDto.setData(payDataDto);
-
-        return baseDto;
-    }
-
-    private BaseDto<PayFormDataDto> asyncExecute(Object requestData, String requestPath, String method) {
-        try {
-            String responseJson = this.execute(requestPath, requestData != null ? objectMapper.writeValueAsString(requestData) : null, method);
-            return this.parsePayFormJson(responseJson);
-        } catch (JsonProcessingException e) {
-            logger.error(e.getLocalizedMessage(), e);
-        }
-
-        BaseDto<PayFormDataDto> baseDto = new BaseDto<>();
-        PayFormDataDto payFormDataDto = new PayFormDataDto();
-        baseDto.setData(payFormDataDto);
+        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
+        BaseDataDto baseDataDto = new BaseDataDto();
+        baseDto.setData(baseDataDto);
 
         return baseDto;
     }
@@ -352,11 +125,4 @@ public class AnxinWrapperClient extends BaseClient {
         this.applicationContext = applicationContext;
     }
 
-    public BaseDto<PayDataDto> autoLoanOutAfterRaisingComplete(long loanId){
-        return syncExecute(String.valueOf(loanId), "/job/auto-loan-out-after-raising-complete", "POST");
-    }
-
-    public BaseDto<PayDataDto> sendRedEnvelopeAfterLoanOut(long loanId){
-        return syncExecute(String.valueOf(loanId), "/job/send-red-envelope-after-loan-out", "POST");
-    }
 }
