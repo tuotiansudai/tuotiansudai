@@ -148,14 +148,11 @@ public class SignInServiceImpl implements SignInService {
     public int getSignInCount(String loginName){
         SignInPointDto lastSignInPointDto = getLastSignIn(loginName);
         DateTime today = new DateTime().withTimeAtStartOfDay();
-        int signInCount = 0;
         if (lastSignInPointDto != null && (Days.daysBetween(new DateTime(lastSignInPointDto.getSignInDate()), today) == Days.ONE
                 || Days.daysBetween(new DateTime(lastSignInPointDto.getSignInDate()), today) == Days.ZERO)) {
-            signInCount = lastSignInPointDto.getSignInCount();
+            return lastSignInPointDto.getSignInCount();
         }
-
-         int d =  Days.daysBetween(new DateTime(lastSignInPointDto.getSignInDate()), today).getDays();
-        return signInCount;
+        return 0;
     }
 
     private int getCurrentSignInPoint(int signInCount) {
