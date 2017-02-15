@@ -66,7 +66,7 @@ public class CheckUserBalanceScheduler {
         String lastCheckUserBalanceTime = redisWrapperClient.exists(LAST_CHECK_USER_BALANCE_TIME) ? redisWrapperClient.get(LAST_CHECK_USER_BALANCE_TIME) : null;
         List<AccountModel> accountModelList = accountMapper.findAccountWithBalance(lastCheckUserBalanceTime, BATCH_SIZE);
         int accountModelCount = accountModelList.size();
-        logger.info(String.format("[checkUserBalance:] lastCheckUserBalanceTime-{},size-{}", lastCheckUserBalanceTime, accountModelList.size()));
+        logger.info("[checkUserBalance:] lastCheckUserBalanceTime-{},size-{}", lastCheckUserBalanceTime, accountModelList.size());
         for (int i = 0; i < accountModelCount; i++) {
             AccountModel account = accountModelList.get(i);
             logger.info("[checkUserBalance:]run to id:{} ", String.valueOf(account.getId()));
@@ -81,8 +81,10 @@ public class CheckUserBalanceScheduler {
             if (balance != account.getBalance()) {
                 mismatchUserList.add(account.getLoginName() + "-" + account.getBalance() + "-" + balance);
             }
-            logger.info("[checkUserBalance:] last record register time-{},id-{}", DateConvertUtil.format(account.getRegisterTime(),"yyyy-MM-dd HH:mm:ss"),String.valueOf(account.getId()));
-            redisWrapperClient.setex(LAST_CHECK_USER_BALANCE_TIME, LEFT_SECOND,DateConvertUtil.format(account.getRegisterTime(),"yyyy-MM-dd HH:mm:ss"));
+            if(i == BATCH_SIZE - 1){
+                logger.info("[checkUserBalance:] last record register time-{},id-{}", DateConvertUtil.format(account.getRegisterTime(),"yyyy-MM-dd HH:mm:ss"),String.valueOf(account.getId()));
+                redisWrapperClient.setex(LAST_CHECK_USER_BALANCE_TIME, LEFT_SECOND,DateConvertUtil.format(account.getRegisterTime(),"yyyy-MM-dd HH:mm:ss"));
+            }
         }
 
         if(accountModelCount > 0 && accountModelCount < BATCH_SIZE){
