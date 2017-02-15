@@ -69,7 +69,7 @@ public class CheckUserBalanceScheduler {
         logger.info(String.format("[checkUserBalance:] lastCheckUserBalanceTime-{},size-{}", lastCheckUserBalanceTime, accountModelList.size()));
         for (int i = 0; i < accountModelCount; i++) {
             AccountModel account = accountModelList.get(i);
-            logger.info(String.format("[checkUserBalance:]run to id:{} ", String.valueOf(account.getId())));
+            logger.info("[checkUserBalance:]run to id:{} ", String.valueOf(account.getId()));
             Map<String, String> balanceMap = payWrapperClient.getUserBalance(account.getLoginName());
             if (balanceMap == null) {
                 logger.info("[checkUserBalance:]check user balance for user {} fail. skip it.", account.getLoginName());
