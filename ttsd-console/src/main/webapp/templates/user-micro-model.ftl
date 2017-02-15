@@ -19,7 +19,7 @@
 
             <div class='input-group date' id='registerTimeStart'>
                 <input type='text' class="form-control" name="registerTimeStart"
-                       value="${(registerTimeStart?string('yyyy-MM-dd HH:mm'))!}"/>
+                       value="${(registerTimeStart?string('yyyy-MM-dd HH:mm:ss'))!}"/>
                 <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
@@ -27,7 +27,7 @@
             -
             <div class='input-group date' id='registerTimeEnd'>
                 <input type='text' class="form-control" name="registerTimeEnd"
-                       value="${(registerTimeEnd?string('yyyy-MM-dd HH:mm'))!}"/>
+                       value="${(registerTimeEnd?string('yyyy-MM-dd HH:mm:ss'))!}"/>
                 <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
@@ -90,7 +90,7 @@
             <label for="number">最后一次投资时间：</label>
             <div class='input-group date' id='lastInvestTimeStart'>
                 <input type='text' class="form-control" name="lastInvestTimeStart"
-                       value="${(lastInvestTimeStart?string('yyyy-MM-dd HH:mm'))!}"/>
+                       value="${(lastInvestTimeStart?string('yyyy-MM-dd HH:mm:ss'))!}"/>
                 <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
@@ -98,7 +98,7 @@
             -
             <div class='input-group date' id='lastInvestTimeEnd'>
                 <input type='text' class="form-control" name="lastInvestTimeEnd"
-                       value="${(lastInvestTimeEnd?string('yyyy-MM-dd HH:mm'))!}"/>
+                       value="${(lastInvestTimeEnd?string('yyyy-MM-dd HH:mm:ss'))!}"/>
                 <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
@@ -115,7 +115,7 @@
             <label for="number">最后一次登录/访问时间：</label>
             <div class='input-group date' id='lastLoginTimeStart'>
                 <input type='text' class="form-control" name="lastLoginTimeStart"
-                       value="${(lastLoginTimeStart?string('yyyy-MM-dd HH:mm'))!}"/>
+                       value="${(lastLoginTimeStart?string('yyyy-MM-dd HH:mm:ss'))!}"/>
                 <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
@@ -123,7 +123,7 @@
             -
             <div class='input-group date' id='lastLoginTimeEnd'>
                 <input type='text' class="form-control" name="lastLoginTimeEnd"
-                       value="${(lastLoginTimeEnd?string('yyyy-MM-dd HH:mm'))!}"/>
+                       value="${(lastLoginTimeEnd?string('yyyy-MM-dd HH:mm:ss'))!}"/>
                 <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
@@ -180,7 +180,7 @@
                     <td>${userItem.userName!}</td>
                     <td>${userItem.mobile!}</td>
                     <td>${userItem.channel!}</td>
-                    <td>${(userItem.registerTime?string('yyyy-MM-dd HH:mm'))!}</td>
+                    <td>${(userItem.registerTime?string('yyyy-MM-dd HH:mm:ss'))!}</td>
                     <td>${userItem.noInvestPeriod!}</td>
                     <td><#if userItem.invested == true>是<#else>否</#if></td>
                     <td>${((userItem.totalInvestAmount/100)?string["0.##"])!}</td>
@@ -191,9 +191,9 @@
                     <td>${userItem.transformPeriod!}</td>
                     <td>${userItem.invest1st2ndTiming!}</td>
                     <td>${userItem.invest1st3rdTiming!}</td>
-                    <td>${(userItem.lastInvestTime?string('yyyy-MM-dd HH:mm'))!}</td>
+                    <td>${(userItem.lastInvestTime?string('yyyy-MM-dd HH:mm:ss'))!}</td>
                     <td>${((userItem.totalRepayingAmount/100)?string["0.##"])!}</td>
-                    <td>${(userItem.lastLoginTime?string('yyyy-MM-dd HH:mm'))!}</td>
+                    <td>${(userItem.lastLoginTime?string('yyyy-MM-dd HH:mm:ss'))!}</td>
                     <td>${userItem.lastLoginToNow!}</td>
                     <td>${userItem.lastLoginSource!}</td>
                 </tr>
@@ -215,14 +215,14 @@
             <ul class="pagination pull-left">
                 <li>
                     <#if pagination.hasPreviousPage >
-                    <a href="?mobile=${mobile!}&registerTimeStart=${(registerTimeStart?string('yyyy-MM-dd HH:mm'))!}&registerTimeEnd=${(registerTimeEnd?string('yyyy-MM-dd HH:mm'))!}
-                    &hasCertify=${hasCertify!}&invested=${invested!}&totalInvestAmountStart=${(totalInvestAmountStart?c)!}&totalInvestAmountEnd=${(totalInvestAmountEnd?c)!}
-                    &investCountStart=${(investCountStart?c)!}&investCountEnd=${(investCountEnd?c)!}&loanCountStart=${(loanCountStart?c)!}&loanCountEnd=${(loanCountEnd?c)!}&transformPeriodStart=${(transformPeriodStart?c)!}
-                    &transformPeriodEnd=${(transformPeriodEnd?c)!}&invest1st2ndTimingStart=${(invest1st2ndTimingStart?c)!}&invest1st2ndTimingEnd=${(invest1st2ndTimingEnd?c)!}
-                    &invest1st3ndTimingStart=${(invest1st3ndTimingStart?c)!}&invest1st3ndTimingEnd=${(invest1st3ndTimingEnd?c)!}&lastInvestTimeStart=${(lastInvestTimeStart?string('yyyy-MM-dd HH:mm'))!}
-                    &lastInvestTimeEnd=${(lastInvestTimeEnd?string('yyyy-MM-dd HH:mm'))!}&repayingAmountStart=${(repayingAmountStart?c)!}&repayingAmountEnd=${(repayingAmountEnd?c)!}
-                    &lastLoginTimeStart=${(lastLoginTimeStart?string('yyyy-MM-dd HH:mm'))!}&lastLoginTimeEnd=${(lastLoginTimeEnd?string('yyyy-MM-dd HH:mm'))!}
-                    &lastLoginSource=${lastLoginSource!}&pageSize=${pageSize}&index=${index-1}"
+                    <a href="?mobile=${mobile!}&registerTimeStart=${(registerTimeStart?string('yyyy-MM-dd HH:mm:ss'))!}&registerTimeEnd=${(registerTimeEnd?string('yyyy-MM-dd HH:mm:ss'))!}
+&hasCertify=${hasCertify!}&invested=${invested!}&totalInvestAmountStart=${(totalInvestAmountStart?c)!}&totalInvestAmountEnd=${(totalInvestAmountEnd?c)!}
+&investCountStart=${(investCountStart?c)!}&investCountEnd=${(investCountEnd?c)!}&loanCountStart=${(loanCountStart?c)!}&loanCountEnd=${(loanCountEnd?c)!}&transformPeriodStart=${(transformPeriodStart?c)!}
+&transformPeriodEnd=${(transformPeriodEnd?c)!}&invest1st2ndTimingStart=${(invest1st2ndTimingStart?c)!}&invest1st2ndTimingEnd=${(invest1st2ndTimingEnd?c)!}
+&invest1st3ndTimingStart=${(invest1st3ndTimingStart?c)!}&invest1st3ndTimingEnd=${(invest1st3ndTimingEnd?c)!}&lastInvestTimeStart=${(lastInvestTimeStart?string('yyyy-MM-dd HH:mm:ss'))!}
+&lastInvestTimeEnd=${(lastInvestTimeEnd?string('yyyy-MM-dd HH:mm:ss'))!}&repayingAmountStart=${(repayingAmountStart?c)!}&repayingAmountEnd=${(repayingAmountEnd?c)!}
+&lastLoginTimeStart=${(lastLoginTimeStart?string('yyyy-MM-dd HH:mm:ss'))!}&lastLoginTimeEnd=${(lastLoginTimeEnd?string('yyyy-MM-dd HH:mm:ss'))!}
+&lastLoginSource=${lastLoginSource!}&pageSize=${pageSize}&index=${index-1}"
                        aria-label="Previous">
                     <#else>
                     <a href="#" aria-label="Previous">
@@ -233,14 +233,14 @@
                 <li><a>${pagination.index}</a></li>
                 <li>
                     <#if pagination.hasNextPage >
-                    <a href="?mobile=${mobile!}&registerTimeStart=${(registerTimeStart?string('yyyy-MM-dd HH:mm'))!}&registerTimeEnd=${(registerTimeEnd?string('yyyy-MM-dd HH:mm'))!}
-                    &hasCertify=${hasCertify!}&invested=${invested!}&totalInvestAmountStart=${(totalInvestAmountStart?c)!}&totalInvestAmountEnd=${(totalInvestAmountEnd?c)!}
-                    &investCountStart=${(investCountStart?c)!}&investCountEnd=${(investCountEnd?c)!}&loanCountStart=${(loanCountStart?c)!}&loanCountEnd=${(loanCountEnd?c)!}&transformPeriodStart=${(transformPeriodStart?c)!}
-                    &transformPeriodEnd=${(transformPeriodEnd?c)!}&invest1st2ndTimingStart=${(invest1st2ndTimingStart?c)!}&invest1st2ndTimingEnd=${(invest1st2ndTimingEnd?c)!}
-                    &invest1st3ndTimingStart=${(invest1st3ndTimingStart?c)!}&invest1st3ndTimingEnd=${(invest1st3ndTimingEnd?c)!}&lastInvestTimeStart=${(lastInvestTimeStart?string('yyyy-MM-dd HH:mm'))!}
-                    &lastInvestTimeEnd=${(lastInvestTimeEnd?string('yyyy-MM-dd HH:mm'))!}&repayingAmountStart=${(repayingAmountStart?c)!}&repayingAmountEnd=${(repayingAmountEnd?c)!}
-                    &lastLoginTimeStart=${(lastLoginTimeStart?string('yyyy-MM-dd HH:mm'))!}&lastLoginTimeEnd=${(lastLoginTimeEnd?string('yyyy-MM-dd HH:mm'))!}
-                    &lastLoginSource=${lastLoginSource!}&pageSize=${pageSize}&index=${index+1}"
+                    <a href="?mobile=${mobile!}&registerTimeStart=${(registerTimeStart?string('yyyy-MM-dd HH:mm:ss'))!}&registerTimeEnd=${(registerTimeEnd?string('yyyy-MM-dd HH:mm:ss'))!}
+&hasCertify=${hasCertify!}&invested=${invested!}&totalInvestAmountStart=${(totalInvestAmountStart?c)!}&totalInvestAmountEnd=${(totalInvestAmountEnd?c)!}
+&investCountStart=${(investCountStart?c)!}&investCountEnd=${(investCountEnd?c)!}&loanCountStart=${(loanCountStart?c)!}&loanCountEnd=${(loanCountEnd?c)!}&transformPeriodStart=${(transformPeriodStart?c)!}
+&transformPeriodEnd=${(transformPeriodEnd?c)!}&invest1st2ndTimingStart=${(invest1st2ndTimingStart?c)!}&invest1st2ndTimingEnd=${(invest1st2ndTimingEnd?c)!}
+&invest1st3ndTimingStart=${(invest1st3ndTimingStart?c)!}&invest1st3ndTimingEnd=${(invest1st3ndTimingEnd?c)!}&lastInvestTimeStart=${(lastInvestTimeStart?string('yyyy-MM-dd HH:mm:ss'))!}
+&lastInvestTimeEnd=${(lastInvestTimeEnd?string('yyyy-MM-dd HH:mm:ss'))!}&repayingAmountStart=${(repayingAmountStart?c)!}&repayingAmountEnd=${(repayingAmountEnd?c)!}
+&lastLoginTimeStart=${(lastLoginTimeStart?string('yyyy-MM-dd HH:mm:ss'))!}&lastLoginTimeEnd=${(lastLoginTimeEnd?string('yyyy-MM-dd HH:mm:ss'))!}
+&lastLoginSource=${lastLoginSource!}&pageSize=${pageSize}&index=${index+1}"
                        aria-label="Next">
                     <#else>
                     <a href="#" aria-label="Next">

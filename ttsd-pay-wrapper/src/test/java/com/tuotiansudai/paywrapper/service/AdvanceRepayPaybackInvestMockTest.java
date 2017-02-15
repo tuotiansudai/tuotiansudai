@@ -6,6 +6,7 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
+import com.tuotiansudai.paywrapper.loanout.LoanService;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferMapper;
 import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.BaseSyncResponseModel;

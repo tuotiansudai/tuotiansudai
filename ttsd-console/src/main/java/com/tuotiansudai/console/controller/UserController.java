@@ -285,8 +285,8 @@ public class UserController {
     @RequestMapping(value = "/user-micro-model", method = RequestMethod.GET)
     public ModelAndView userMicroModel(
             @RequestParam(value = "mobile", required = false) String mobile,
-            @RequestParam(value = "registerTimeStart", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date registerTimeStart,
-            @RequestParam(value = "registerTimeEnd", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date registerTimeEnd,
+            @RequestParam(value = "registerTimeStart", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date registerTimeStart,
+            @RequestParam(value = "registerTimeEnd", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date registerTimeEnd,
             @RequestParam(value = "hasCertify", required = false) String hasCertify,
             @RequestParam(value = "invested", required = false) String invested,
             @RequestParam(value = "totalInvestAmountStart", required = false) Long totalInvestAmountStart,
@@ -301,12 +301,12 @@ public class UserController {
             @RequestParam(value = "invest1st2ndTimingEnd", required = false) Integer invest1st2ndTimingEnd,
             @RequestParam(value = "invest1st3ndTimingStart", required = false) Integer invest1st3ndTimingStart,
             @RequestParam(value = "invest1st3ndTimingEnd", required = false) Integer invest1st3ndTimingEnd,
-            @RequestParam(value = "lastInvestTimeStart", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date lastInvestTimeStart,
-            @RequestParam(value = "lastInvestTimeEnd", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date lastInvestTimeEnd,
+            @RequestParam(value = "lastInvestTimeStart", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date lastInvestTimeStart,
+            @RequestParam(value = "lastInvestTimeEnd", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date lastInvestTimeEnd,
             @RequestParam(value = "repayingAmountStart", required = false) Long repayingAmountStart,
             @RequestParam(value = "repayingAmountEnd", required = false) Long repayingAmountEnd,
-            @RequestParam(value = "lastLoginTimeStart", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date lastLoginTimeStart,
-            @RequestParam(value = "lastLoginTimeEnd", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date lastLoginTimeEnd,
+            @RequestParam(value = "lastLoginTimeStart", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date lastLoginTimeStart,
+            @RequestParam(value = "lastLoginTimeEnd", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date lastLoginTimeEnd,
             @RequestParam(value = "lastLoginSource", required = false) Source lastLoginSource,
             @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
 

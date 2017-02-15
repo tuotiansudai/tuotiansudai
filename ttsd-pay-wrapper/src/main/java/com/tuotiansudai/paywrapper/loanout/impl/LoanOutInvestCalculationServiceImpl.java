@@ -1,8 +1,7 @@
-package com.tuotiansudai.paywrapper.extrarate.service.impl;
+package com.tuotiansudai.paywrapper.loanout.impl;
 
 
-import com.mysql.jdbc.StringUtils;
-import com.tuotiansudai.paywrapper.extrarate.service.LoanOutInvestCalculationService;
+import com.tuotiansudai.paywrapper.loanout.LoanOutInvestCalculationService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.InterestCalculator;
@@ -40,10 +39,10 @@ public class LoanOutInvestCalculationServiceImpl implements LoanOutInvestCalcula
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void rateIncreases(long loanId) {
+    public boolean rateIncreases(long loanId) {
         List<ExtraLoanRateModel> extraLoanRateModels = extraLoanRateMapper.findByLoanId(loanId);
         if (CollectionUtils.isEmpty(extraLoanRateModels)) {
-            return;
+            return false;
         }
         LoanDetailsModel loanDetailsModel =  loanDetailsMapper.getByLoanId(loanId);
 
@@ -94,6 +93,7 @@ public class LoanOutInvestCalculationServiceImpl implements LoanOutInvestCalcula
                 }
             }
         }
+        return true;
     }
 
 }

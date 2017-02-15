@@ -40,7 +40,7 @@ import com.tuotiansudai.paywrapper.repository.model.sync.request.SyncRequestStat
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
 import com.tuotiansudai.paywrapper.service.AdvanceRepayService;
 import com.tuotiansudai.paywrapper.service.InvestService;
-import com.tuotiansudai.paywrapper.service.LoanService;
+import com.tuotiansudai.paywrapper.loanout.LoanService;
 import com.tuotiansudai.paywrapper.service.SystemBillService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
