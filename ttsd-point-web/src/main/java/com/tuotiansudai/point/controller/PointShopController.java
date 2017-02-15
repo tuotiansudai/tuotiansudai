@@ -1,6 +1,7 @@
 package com.tuotiansudai.point.controller;
 
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
@@ -82,6 +83,7 @@ public class PointShopController {
         modelAndView.addObject("isLogin", isLogin);
         modelAndView.addObject("isShowDiscount", isShowDiscount);
         modelAndView.addObject("responsive", true);
+        modelAndView.addObject("signCount", Strings.isNullOrEmpty(loginName) ? "0" : signInService.getSignInCount(loginName));
         return modelAndView;
     }
 
@@ -215,11 +217,12 @@ public class PointShopController {
     @RequestMapping(value = "/bill-list", method = RequestMethod.GET, consumes = "application/json; charset=UTF-8", produces = "application/json; charset=UTF-8")
     @ResponseBody
     public BaseDto<BasePaginationDataDto> pointBillListData(@Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index,
+                                                            @RequestParam(name = "pointType", required = false) String pointType,
                                                             @RequestParam(name = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
                                                             @RequestParam(name = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
                                                             @RequestParam(name = "businessType", required = false) List<PointBusinessType> businessType) {
 
-        BasePaginationDataDto<PointBillPaginationItemDataDto> dataDto = pointBillService.getPointBillPagination(LoginUserInfo.getLoginName(), index, 10, startTime, endTime, businessType);
+        BasePaginationDataDto<PointBillPaginationItemDataDto> dataDto = pointBillService.getPointBillPagination(LoginUserInfo.getLoginName(), pointType, index, 10, startTime, endTime, businessType);
         BaseDto<BasePaginationDataDto> dto = new BaseDto<>();
         dto.setData(dataDto);
         return dto;

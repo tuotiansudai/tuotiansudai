@@ -13,4 +13,6 @@ public interface SignInService {
 
     int getNextSignInPoint(String loginName);
 
+    int getSignInCount(String loginName);
+
 }

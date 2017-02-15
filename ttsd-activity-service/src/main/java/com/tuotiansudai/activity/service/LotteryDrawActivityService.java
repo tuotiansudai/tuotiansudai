@@ -238,7 +238,7 @@ public class LotteryDrawActivityService {
         PointBillModel pointBillModel = new PointBillModel(loginName,
                 null,
                 point,
-                PointBusinessType.LOTTERY,
+                PointBusinessType.POINT_LOTTERY,
                 MessageFormat.format("抽中{0}", lotteryPrize.getDescription()));
         pointBillMapper.create(pointBillModel);
     }
