@@ -71,7 +71,7 @@ public class AskController {
 
     @RequestMapping(path = "/embody-questions", method = RequestMethod.GET)
     public ModelAndView getEmbodyQuestions(@RequestParam(value = "index", defaultValue = "1", required = false) int index) {
-        BaseDto<BasePaginationDataDto> embodyQuestions = questionService.findEmbodyAllQuestions(index, 10);
+        BaseDto<BasePaginationDataDto> embodyQuestions = questionService.findEmbodyAllQuestions(index);
         ModelAndView modelAndView = new ModelAndView("/embody-question-list", "embodyQuestions", embodyQuestions);
         return modelAndView;
     }
@@ -86,7 +86,7 @@ public class AskController {
     @RequestMapping(path = "/question/approve", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<BaseDataDto> approveQuestion(@RequestParam List<Long> ids) {
-        questionService.approve(LoginUserInfo.getLoginName(), ids);
+        questionService.approve(ids);
 
         return new BaseDto<>(new BaseDataDto(true));
     }
@@ -94,7 +94,7 @@ public class AskController {
     @RequestMapping(path = "/question/reject", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<BaseDataDto> rejectQuestion(@RequestParam List<Long> ids) {
-        questionService.reject(LoginUserInfo.getLoginName(), ids);
+        questionService.reject(ids);
 
         return new BaseDto<>(new BaseDataDto(true));
     }
