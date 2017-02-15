@@ -55,7 +55,7 @@ public class CheckUserBalanceScheduler {
     private static final int LEFT_SECOND = 60 * 60 * 24 * 90;
 
 //    @Scheduled(cron = "0 30 1 * * SUN,SAT", zone = "Asia/Shanghai")
-    @Scheduled(cron = "0 0 0,3,6,9,12,15,18,21 * * TUE,WED,THU", zone = "Asia/Shanghai")
+    @Scheduled(cron = "0 10 0,3,6,9,12,15,18,21 * * TUE,WED,THU", zone = "Asia/Shanghai")
     public void checkUserBalance() {
         logger.info("[checkUserBalance:] start .");
 
@@ -66,7 +66,7 @@ public class CheckUserBalanceScheduler {
         String lastCheckUserBalanceTime = redisWrapperClient.exists(LAST_CHECK_USER_BALANCE_TIME) ? redisWrapperClient.get(LAST_CHECK_USER_BALANCE_TIME) : null;
         List<AccountModel> accountModelList = accountMapper.findAccountWithBalance(lastCheckUserBalanceTime, BATCH_SIZE);
         int accountModelCount = accountModelList.size();
-        logger.info("[checkUserBalance:] lastCheckUserBalanceTime-{},size-{}", lastCheckUserBalanceTime, accountModelList.size());
+        logger.info("[checkUserBalance:] cycle start lastCheckUserBalanceTime-{},size-{}", lastCheckUserBalanceTime, accountModelList.size());
         for (int i = 0; i < accountModelCount; i++) {
             AccountModel account = accountModelList.get(i);
             logger.info("[checkUserBalance:]run to id:{} ", String.valueOf(account.getId()));
@@ -86,6 +86,7 @@ public class CheckUserBalanceScheduler {
                 redisWrapperClient.setex(LAST_CHECK_USER_BALANCE_TIME, LEFT_SECOND,DateConvertUtil.format(account.getRegisterTime(),"yyyy-MM-dd HH:mm:ss"));
             }
         }
+        logger.info("[checkUserBalance:] cycle end lastCheckUserBalanceTime-{},size-{}", lastCheckUserBalanceTime, accountModelList.size());
 
         if(accountModelCount > 0 && accountModelCount < BATCH_SIZE){
             logger.info("[checkUserBalance:] del key last record register time-{},id-{}",
