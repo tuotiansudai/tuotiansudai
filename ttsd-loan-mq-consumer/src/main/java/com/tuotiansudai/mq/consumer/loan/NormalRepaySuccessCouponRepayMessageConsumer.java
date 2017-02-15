@@ -37,9 +37,9 @@ public class NormalRepaySuccessCouponRepayMessageConsumer implements MessageCons
     @Transactional
     @Override
     public void consume(String message) {
-        logger.info("[标的还款MQ] NormalRepaySuccess_CouponRepay receive message: {}: {}.", this.queue(), message);
+        logger.info("[正常还款发放优惠券收益MQ] NormalRepaySuccess_CouponRepay receive message: {}: {}.", this.queue(), message);
         if(Strings.isNullOrEmpty(message)){
-            logger.error("[标的正常还款MQ] NormalRepaySuccess_CouponRepay receive message is empty");
+            logger.error("[正常还款发放优惠券收益MQ] NormalRepaySuccess_CouponRepay receive message is empty");
             smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("正常还款发放优惠券收益失败, MQ消息为空"));
             return;
         }
@@ -47,7 +47,7 @@ public class NormalRepaySuccessCouponRepayMessageConsumer implements MessageCons
         try {
             repaySuccessMessage = JsonConverter.readValue(message,RepaySuccessMessage.class);
         } catch (IOException e) {
-            logger.error("[标的正常还款MQ] NormalRepaySuccess_CouponRepay json convert RepaySuccessMessage is fail, message:{}", message);
+            logger.error("[正常还款发放优惠券收益MQ] NormalRepaySuccess_CouponRepay json convert RepaySuccessMessage is fail, message:{}", message);
             smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("正常还款发放优惠券收益失败, MQ消息解析失败!"));
             return;
         }
@@ -56,16 +56,16 @@ public class NormalRepaySuccessCouponRepayMessageConsumer implements MessageCons
         try {
             baseDto = payWrapperClient.couponRepayAfterNormalRepay(loanRepayId);
         }catch (Exception e){
-            logger.error("[标的正常还款MQ] NormalRepaySuccess_CouponRepay  is fail, message:{}", message);
+            logger.error("[正常还款发放优惠券收益MQ] NormalRepaySuccess_CouponRepay  is fail, message:{}", message);
             smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("正常还款发放优惠券收益失败, 业务处理异常"));
             return;
         }
         if (!baseDto.isSuccess()) {
             smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(MessageFormat.format("正常还款发放优惠券收益失败,还款ID:{0}", String.valueOf(loanRepayId))));
-            logger.error("[标的正常还款MQ] NormalRepaySuccess_CouponRepay is fail. loanId:{}", String.valueOf(loanRepayId));
+            logger.error("[正常还款发放优惠券收益MQ] NormalRepaySuccess_CouponRepay is fail. loanId:{}", String.valueOf(loanRepayId));
             throw new RuntimeException("[标的正常还款MQ] NormalRepaySuccess_CouponRepay is fail. loanOutInfo: " + message);
         }
 
-        logger.info("[标的正常还款MQ] NormalRepaySuccess_CouponRepay consume success.");
+        logger.info("[正常还款发放优惠券收益MQ] NormalRepaySuccess_CouponRepay consume success.");
     }
 }
