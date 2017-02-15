@@ -4,10 +4,12 @@ require(['jquery', 'csrf', 'jquery-ui', 'bootstrapSelect', 'bootstrap'], functio
     var $selectedYear = $('#selected-year');
     var $selectedMonth = $('#selected-month');
     var $status = $('#status');
+    var $source = $('#source');
 
     $status.selectpicker();
     $selectedYear.selectpicker();
     $selectedMonth.selectpicker();
+    $source.selectpicker();
 
     $mobile.autocomplete({
         minLength: 3,
@@ -28,6 +30,9 @@ require(['jquery', 'csrf', 'jquery-ui', 'bootstrapSelect', 'bootstrap'], functio
         params.push("selectedMonth=" + $selectedMonth.val());
         if ($status.val()) {
             params.push("success=" + $status.val());
+        }
+        if ($source.val()) {
+            params.push("source=" + $source.val());
         }
         window.location.href = "?" + params.join("&");
         return false;
@@ -50,6 +55,9 @@ require(['jquery', 'csrf', 'jquery-ui', 'bootstrapSelect', 'bootstrap'], functio
         if ($status.val()) {
             params.push("success=" + $status.val());
         }
+        if ($source.val()) {
+            params.push("source=" + $source.val());
+        }
         window.location.href = "?" + params.join("&");
         return false;
     });
@@ -68,6 +76,9 @@ require(['jquery', 'csrf', 'jquery-ui', 'bootstrapSelect', 'bootstrap'], functio
         params.push("selectedMonth=" + $selectedMonth.val());
         if ($status.val()) {
             params.push("success=" + $status.val());
+        }
+        if ($source.val()) {
+            params.push("source=" + $source.val());
         }
         window.location.href = "?" + params.join("&");
         return false;

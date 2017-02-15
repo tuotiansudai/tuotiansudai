@@ -12,7 +12,7 @@ import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.paywrapper.client.MockPayGateWrapper;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
-import com.tuotiansudai.paywrapper.coupon.service.CouponLoanOutService;
+import com.tuotiansudai.paywrapper.loanout.CouponLoanOutService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
@@ -33,6 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml", "classpath:dispatcher-servlet.xml"})
@@ -120,9 +121,17 @@ public class CouponLoanOutServiceAspectTest {
         mockAccounts(mockInvestUserNames, mockInitAmount);
         mockLoan(mockLoanId, couponCreater);
         long mockCouponId = mockCoupon(couponCreater, mockCouponAmount);
-        mockUserCouponAndInvest(mockInvestUserNames, mockCouponId, mockLoanId, investAmount);
+        List<Long> userCouponIds = mockUserCouponAndInvest(mockInvestUserNames, mockCouponId, mockLoanId, investAmount);
 
         couponLoanOutService.sendRedEnvelope(mockLoanId);
+
+        userCouponIds.stream().forEach(userCouponId -> {
+            try {
+                couponLoanOutService.sendRedEnvelopTransferInBalanceCallBack(userCouponId);
+            } catch (AmountTransferException e) {
+                e.printStackTrace();
+            }
+        });
 
         // 测试幂等性，多次调用，结果一致
         couponLoanOutService.sendRedEnvelope(mockLoanId);
@@ -155,14 +164,17 @@ public class CouponLoanOutServiceAspectTest {
         return couponModel.getId();
     }
 
-    private void mockUserCouponAndInvest(String[] loginNames, long couponId, long loanId, long investAmount) throws AmountTransferException {
+    private List<Long> mockUserCouponAndInvest(String[] loginNames, long couponId, long loanId, long investAmount) throws AmountTransferException {
+        List<Long> userCouponIds = Lists.newArrayList();
         for (String loginName : loginNames) {
             long investId = mockInvest(loanId, loginName, investAmount);
-            mockUserCoupon(loginName, couponId, loanId, investId);
+            userCouponIds.add(mockUserCoupon(loginName, couponId, loanId, investId));
         }
+
+        return userCouponIds;
     }
 
-    private void mockUserCoupon(String loginName, long couponId, long loanId, long investId) {
+    private long mockUserCoupon(String loginName, long couponId, long loanId, long investId) {
         UserCouponModel userCouponModel = new UserCouponModel(loginName, couponId, new Date(), new Date());
         userCouponMapper.create(userCouponModel);
         userCouponModel.setLoanId(loanId);
@@ -170,6 +182,7 @@ public class CouponLoanOutServiceAspectTest {
         userCouponModel.setInvestId(investId);
         userCouponModel.setStatus(InvestStatus.SUCCESS);
         userCouponMapper.update(userCouponModel);
+        return userCouponModel.getId();
     }
 
 

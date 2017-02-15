@@ -37,6 +37,17 @@
             </select>
         </div>
 
+        <div class="form-group">
+            <label for="project">来源</label>
+            <select class="selectpicker" id="source">
+                <option value="">全部</option>
+                <#list sourceList as sourceItem>
+                    <option value="${sourceItem}"
+                            <#if (source?has_content && source.name() == sourceItem.name()) >selected</#if>>${sourceItem.name()}
+                </#list>
+            </select>
+        </div>
+
         <button class="btn btn-sm btn-primary query">查询</button>
         <a href="/security-log/login-log" class="btn btn-sm btn-default">重置</a>
     </form>

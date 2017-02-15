@@ -13,6 +13,16 @@
         <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
     </listener>
 
+    <filter>
+        <filter-name>logGenerateFilter</filter-name>
+        <filter-class>com.tuotiansudai.smswrapper.filter.LogGenerateFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>logGenerateFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
     <servlet>
         <servlet-name>dispatcher</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>

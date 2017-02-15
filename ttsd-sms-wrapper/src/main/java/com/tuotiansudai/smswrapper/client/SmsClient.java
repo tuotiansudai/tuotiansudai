@@ -1,40 +1,30 @@
 package com.tuotiansudai.smswrapper.client;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
-import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.Environment;
 import com.tuotiansudai.dto.SmsDataDto;
+import com.tuotiansudai.smswrapper.SmsChannel;
 import com.tuotiansudai.smswrapper.SmsTemplate;
+import com.tuotiansudai.smswrapper.exception.SmsSendingException;
+import com.tuotiansudai.smswrapper.provider.SmsProvider;
 import com.tuotiansudai.smswrapper.repository.mapper.BaseMapper;
 import com.tuotiansudai.smswrapper.repository.model.SmsModel;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.beans.Introspector;
-import java.io.IOException;
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Date;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -52,15 +42,6 @@ public class SmsClient implements ApplicationContextAware {
 
     private final static int lifeSecond = 172800;
 
-    @Value("${sms.netease.url}")
-    private String url;
-
-    @Value("${sms.netease.appKey}")
-    private String appKey;
-
-    @Value("${sms.netease.appSecret}")
-    private String appSecret;
-
     @Value("${sms.interval.seconds}")
     private int second;
 
@@ -70,15 +51,41 @@ public class SmsClient implements ApplicationContextAware {
     @Autowired
     private RedisWrapperClient redisWrapperClient;
 
-    private static ObjectMapper objectMapper = new ObjectMapper();
+    @Autowired
+    @Qualifier("smsProviderNetease")
+    private SmsProvider smsProviderPrimary;
 
-    private static HttpClient httpClient;
+    @Autowired
+    @Qualifier("smsProviderAlidayu")
+    private SmsProvider smsProviderBackup;
 
-    private HttpClient getHttpClient() {
-        if (httpClient == null) {
-            httpClient = HttpClientBuilder.create().build();
-        }
-        return httpClient;
+    public BaseDto<SmsDataDto> sendSMS(Class<? extends BaseMapper> baseMapperClass, String mobile, SmsTemplate template, String param) {
+        return sendSMS(baseMapperClass, mobile, template, param, "");
+
+    }
+
+    public BaseDto<SmsDataDto> sendSMS(Class<? extends BaseMapper> baseMapperClass, String mobile, SmsTemplate template, String param, String restrictedIP) {
+        List<String> mobileList = Collections.singletonList(mobile);
+        List<String> paramList = Collections.singletonList(param);
+        return sendSMS(baseMapperClass, mobileList, template, paramList, restrictedIP);
+    }
+
+    public BaseDto<SmsDataDto> sendSMS(Class<? extends BaseMapper> baseMapperClass, String mobile, SmsTemplate template, List<String> paramList) {
+        return sendSMS(baseMapperClass, mobile, template, paramList, "");
+    }
+
+    public BaseDto<SmsDataDto> sendSMS(Class<? extends BaseMapper> baseMapperClass, String mobile, SmsTemplate template, List<String> paramList, String restrictedIP) {
+        List<String> mobileList = Collections.singletonList(mobile);
+        return sendSMS(baseMapperClass, mobileList, template, paramList, restrictedIP);
+    }
+
+    public BaseDto<SmsDataDto> sendSMS(Class<? extends BaseMapper> baseMapperClass, List<String> mobileList, SmsTemplate template, String param) {
+        return sendSMS(baseMapperClass, mobileList, template, param, "");
+    }
+
+    public BaseDto<SmsDataDto> sendSMS(Class<? extends BaseMapper> baseMapperClass, List<String> mobileList, SmsTemplate template, String param, String restrictedIP) {
+        List<String> paramList = Collections.singletonList(param);
+        return sendSMS(baseMapperClass, mobileList, template, paramList, restrictedIP);
     }
 
     public BaseDto<SmsDataDto> sendSMS(Class<? extends BaseMapper> baseMapperClass, List<String> mobileList, SmsTemplate template, List<String> paramList) {
@@ -90,108 +97,116 @@ public class SmsClient implements ApplicationContextAware {
         SmsDataDto data = new SmsDataDto();
         dto.setData(data);
 
-        if(Lists.newArrayList(Environment.SMOKE.name(),Environment.DEV.name()).contains(environment)){
-            logger.info("[短信发送] 该环境不发送短信");
+        if (Arrays.asList(Environment.SMOKE.name(), Environment.DEV.name()).contains(environment)) {
+            logger.info("sms sending ignored in current environment");
+            data.setStatus(true);
             return dto;
         }
 
-        if(Environment.QA.name().equals(environment)){
-            String redisKey = MessageFormat.format(WYY_SMS_SEND_COUNT_BY_TODAY_TEMPLATE, "SMS");
-            String hKey = DateTime.now().withTimeAtStartOfDay().toString("yyyyMMdd");
-            String redisValue = redisWrapperClient.hget(redisKey, hKey);
-
-            int smsSendSize = Strings.isNullOrEmpty(redisValue) ? 0 : Integer.parseInt(redisValue);
-            if(smsSendSize >= sendSize){
-                logger.error(MessageFormat.format("[短信发送] OA环境今日已经发送过10条短信 {0}",redisKey));
-                return dto;
-            }
-            smsSendSize++;
-            redisWrapperClient.hset(redisKey, hKey, String.valueOf(smsSendSize), lifeSecond);
-        }
-
-        String redisKey = MessageFormat.format(SMS_IP_RESTRICTED_REDIS_KEY_TEMPLATE, restrictedIP);
-
-        if (redisWrapperClient.exists(redisKey)) {
+        if (isInCooldown(restrictedIP)) {
             data.setStatus(false);
             data.setIsRestricted(true);
-            data.setMessage("this ip " + restrictedIP + " has sent in one second");
             return dto;
         }
 
-        String nonce = String.valueOf((int) (Math.random() * 10000000));
-        String curTime = String.valueOf((new Date()).getTime() / 1000L);
-        String checkSum = CheckSumBuilder.getCheckSum(appSecret, nonce, curTime);
+        if (Environment.QA.name().equals(environment) && hasExceedLimit()) {
+            logger.info(String.format("sms count exceed limit [%d] in QA environment", sendSize));
+            data.setStatus(false);
+            return dto;
+        }
 
-        HttpPost httpPost = new HttpPost(url);
-        // 设置请求的header
-        httpPost.addHeader("AppKey", appKey);
-        httpPost.addHeader("Nonce", nonce);
-        httpPost.addHeader("CurTime", curTime);
-        httpPost.addHeader("CheckSum", checkSum);
-        httpPost.addHeader("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
-
-        String requestEntityString = "";
         try {
-            String mobileJson = objectMapper.writeValueAsString(mobileList);
-            String paramJson = objectMapper.writeValueAsString(paramList);
+            SmsChannel successChannel = sendSMS(mobileList, template, paramList);
 
-            //设置请求的的参数
-            List<NameValuePair> nvps = new ArrayList<>();
-            nvps.add(new BasicNameValuePair("templateid", String.valueOf(template.getTemplateId())));
-            nvps.add(new BasicNameValuePair("mobiles", mobileJson));
-            nvps.add(new BasicNameValuePair("params", paramJson));
+            setIntoCooldown(restrictedIP);
+            logSmsRecord(baseMapperClass, mobileList, template, paramList, successChannel);
 
-            httpPost.setEntity(new UrlEncodedFormEntity(nvps, "utf-8"));
-            try {
-                requestEntityString = EntityUtils.toString(httpPost.getEntity());
-            } catch (Exception e) {
-                logger.error("[SmsClient][sendSMS]parse request entity error.", e);
-            }
-
-            // 执行请求
-            HttpResponse response = getHttpClient().execute(httpPost);
-
-            // 执行结果  {"code":200,"msg":"sendid","obj":1}
-            String resultCode = getRetCode(EntityUtils.toString(response.getEntity(), "utf-8"));
-            if(!"200".equals(resultCode)) {
-                logger.error(MessageFormat.format("[SmsClient][sendSMS]Send sms result fail.request:{0}, response:{1}",
-                        EntityUtils.toString(httpPost.getEntity()), EntityUtils.toString(response.getEntity())));
-            }
-            dto.setSuccess(String.valueOf(HttpStatus.OK.value()).equals(resultCode));
-
-            String content = template.generateContent(paramList);
-
-            for (String mobile : mobileList) {
-                this.createSmsModel(baseMapperClass, mobile, content, resultCode);
-            }
-        } catch (IOException e) {
-            logger.error(MessageFormat.format("[SmsClient][sendSMS]Send sms result fail.request:{0}", requestEntityString), e);
+            data.setStatus(true);
+        } catch (SmsSendingException e) {
+            data.setStatus(false);
+            data.setMessage(e.getLocalizedMessage());
         }
-
-        if (!Strings.isNullOrEmpty(restrictedIP)) {
-            redisWrapperClient.setex(redisKey, second, "1");
-        }
-        data.setStatus(true);
         return dto;
     }
 
-    @Transactional
-    private void createSmsModel(Class<? extends BaseMapper> baseMapperClass, String mobile, String content, String resultCode) {
-        SmsModel model = new SmsModel(mobile, content, resultCode);
-        BaseMapper mapper = this.getMapperByClass(baseMapperClass);
-        mapper.create(model);
+    private SmsChannel sendSMS(List<String> mobileList, SmsTemplate template, List<String> paramList) throws SmsSendingException {
+        logger.info(String.format("ready to send sms, mobileList: %s, template: %s, params: %s",
+                String.join(",", mobileList),
+                template.name(),
+                String.join(",", paramList)));
+
+        SmsChannel successChannel = null;
+        SmsChannel channel = template.getChannel();
+        try {
+            if (channel == SmsChannel.Primary || channel == SmsChannel.TryBoth) {
+                smsProviderPrimary.sendSMS(mobileList, template, paramList);
+                successChannel = SmsChannel.Primary;
+            }
+            if (channel == SmsChannel.Backup) {
+                smsProviderBackup.sendSMS(mobileList, template, paramList);
+                successChannel = SmsChannel.Backup;
+            }
+        } catch (SmsSendingException e) {
+            if (channel == SmsChannel.TryBoth) {
+                logger.warn("send sms via primary channel failed, try backup channel.", e);
+                try {
+                    smsProviderBackup.sendSMS(mobileList, template, paramList);
+                    successChannel = SmsChannel.Backup;
+                } catch (SmsSendingException e1) {
+                    logger.error("send sms via primary and backup channel all failed.", e1);
+                    throw e1;
+                }
+            } else {
+                logger.error(String.format("send sms via %s channel failed.", channel), e);
+                throw e;
+            }
+        }
+
+        logger.info(String.format("send sms success, mobileList: %s, template: %s, params: %s, channel: %s",
+                String.join(",", mobileList),
+                template.name(),
+                String.join(",", paramList),
+                successChannel));
+
+        return successChannel;
     }
 
-    private static String getRetCode(String responseBody) {
-        try {
-            JsonNode jsonNode = objectMapper.readTree(responseBody);
-            return jsonNode.get("code").asText();
-        } catch (IOException e) {
-            logger.error(e.getLocalizedMessage(), e);
+    private void logSmsRecord(Class<? extends BaseMapper> baseMapperClass, List<String> mobileList, SmsTemplate template, List<String> paramList, SmsChannel successChannel) {
+        BaseMapper mapper = this.getMapperByClass(baseMapperClass);
+        String content = template.generateContent(paramList, successChannel);
+
+        for (String mobile : mobileList) {
+            SmsModel model = new SmsModel(mobile, content, "200-" + successChannel);
+            mapper.create(model);
         }
-        return null;
     }
-    
+
+    private boolean hasExceedLimit() {
+        String redisKey = MessageFormat.format(WYY_SMS_SEND_COUNT_BY_TODAY_TEMPLATE, "SMS");
+        String hKey = DateTime.now().withTimeAtStartOfDay().toString("yyyyMMdd");
+        String redisValue = redisWrapperClient.hget(redisKey, hKey);
+
+        int smsSendSize = Strings.isNullOrEmpty(redisValue) ? 0 : Integer.parseInt(redisValue);
+        boolean exceed = smsSendSize >= sendSize;
+        if (!exceed) {
+            smsSendSize++;
+            redisWrapperClient.hset(redisKey, hKey, String.valueOf(smsSendSize), lifeSecond);
+        }
+        return exceed;
+    }
+
+    private boolean isInCooldown(String ip) {
+        String redisKey = MessageFormat.format(SMS_IP_RESTRICTED_REDIS_KEY_TEMPLATE, ip);
+        return redisWrapperClient.exists(redisKey);
+    }
+
+    private void setIntoCooldown(String ip) {
+        if (!Strings.isNullOrEmpty(ip)) {
+            String redisKey = MessageFormat.format(SMS_IP_RESTRICTED_REDIS_KEY_TEMPLATE, ip);
+            redisWrapperClient.setex(redisKey, second, "1");
+        }
+    }
+
     private BaseMapper getMapperByClass(Class clazz) {
         String fullName = clazz.getName();
         String[] strings = fullName.split("\\.");
@@ -199,10 +214,6 @@ public class SmsClient implements ApplicationContextAware {
         String beanName = Introspector.decapitalize(strings[strings.length - 1]);
 
         return (BaseMapper) applicationContext.getBean(beanName);
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
     }
 
     @Override

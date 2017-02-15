@@ -43,13 +43,9 @@ public class SmsWrapperClient extends BaseClient {
 
     private final static String GENERATE_CONTRACT_ERROR_NOTIFY = "/sms/generate-contract-error-notify";
 
-    private final static String LOAN_OUT_INVESTOR_NOTIFY_URI = "/sms/loan-out-investor-notify";
-
     private final static String PASSWORD_CHANGED_NOTIFY_URI = "/sms/mobile/{mobile}/password-changed-notify";
 
     private final static String COUPON_NOTIFY_URI = "/sms/coupon-notify";
-
-    private final static String BIRTHDAY_NOTIFY_URI = "/sms/birthday-notify";
 
     private final static String LOAN_REPAY_NOTIFY_URL = "/sms/loan-repay-notify";
 
@@ -67,10 +63,6 @@ public class SmsWrapperClient extends BaseClient {
 
     public BaseDto<SmsDataDto> sendNoPasswordInvestCaptchaSms(SmsCaptchaDto dto) {
         return send(dto, NO_PASSWORD_INVEST_CAPTCHA_SMS_URI);
-    }
-
-    public BaseDto<SmsDataDto> sendInvestNotify(InvestSmsNotifyDto dto) {
-        return send(dto, LOAN_OUT_INVESTOR_NOTIFY_URI);
     }
 
     public BaseDto<SmsDataDto> sendRetrievePasswordCaptchaSms(SmsCaptchaDto dto) {
@@ -99,10 +91,6 @@ public class SmsWrapperClient extends BaseClient {
 
     public BaseDto<SmsDataDto> sendCouponNotify(SmsCouponNotifyDto dto) {
         return send(dto, COUPON_NOTIFY_URI);
-    }
-
-    public BaseDto<SmsDataDto> sendBirthdayNotify(SmsCouponNotifyDto dto) {
-        return send(dto, BIRTHDAY_NOTIFY_URI);
     }
 
     public BaseDto<SmsDataDto> sendCancelTransferLoanNotify(SmsCancelTransferLoanNotifyDto dto) {

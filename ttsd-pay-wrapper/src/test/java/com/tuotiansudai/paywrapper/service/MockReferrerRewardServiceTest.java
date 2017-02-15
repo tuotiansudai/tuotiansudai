@@ -1,8 +1,8 @@
 package com.tuotiansudai.paywrapper.service;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.paywrapper.loanout.impl.ReferrerRewardServiceImpl;
 import com.tuotiansudai.enums.Role;
-import com.tuotiansudai.paywrapper.service.impl.ReferrerRewardServiceImpl;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
@@ -52,6 +52,12 @@ public class MockReferrerRewardServiceTest {
     @Mock
     private AgentLevelRateMapper agentLevelRateMapper;
 
+    @Mock
+    private LoanMapper loanMapper;
+
+    @Mock
+    private InvestMapper investMapper;
+
     @Before
     public void init(){
         MockitoAnnotations.initMocks(this);
@@ -93,9 +99,11 @@ public class MockReferrerRewardServiceTest {
         agentLevelRateModel.setLoginName(loginNameModel.getLoginName());
         agentLevelRateModel.setId(90000002L);
 
+        when(loanMapper.findById(anyLong())).thenReturn(loanModel);
+        when(investMapper.findSuccessInvestsByLoanId(anyLong())).thenReturn(successInvestList);
         when(agentLevelRateMapper.findAgentLevelRateByLoginNameAndLevel(anyString(),anyInt())).thenReturn(agentLevelRateModel);
 
-        referrerRewardService.rewardReferrer(loanModel, successInvestList);
+        referrerRewardService.rewardReferrer(loanModel.getId());
 
         ArgumentCaptor<InvestReferrerRewardModel> investReferrerRewardModelArgumentCaptor = ArgumentCaptor.forClass(InvestReferrerRewardModel.class);
         verify(investReferrerRewardMapper,times(1)).create(investReferrerRewardModelArgumentCaptor.capture());
@@ -135,13 +143,16 @@ public class MockReferrerRewardServiceTest {
         userRoleModel.setRole(Role.STAFF);
         List<UserRoleModel> userRoleModels = Lists.newArrayList();
         userRoleModels.add(userRoleModel);
+
+        when(loanMapper.findById(anyLong())).thenReturn(loanModel);
+        when(investMapper.findSuccessInvestsByLoanId(anyLong())).thenReturn(successInvestList);
         when(userRoleMapper.findByLoginName(anyString())).thenReturn(userRoleModels);
 
         when(accountMapper.findByLoginName(anyString())).thenReturn(null);
 
         when(agentLevelRateMapper.findAgentLevelRateByLoginNameAndLevel(anyString(),anyInt())).thenReturn(null);
 
-        referrerRewardService.rewardReferrer(loanModel, successInvestList);
+        referrerRewardService.rewardReferrer(loanModel.getId());
 
         ArgumentCaptor<InvestReferrerRewardModel> investReferrerRewardModelArgumentCaptor = ArgumentCaptor.forClass(InvestReferrerRewardModel.class);
         verify(investReferrerRewardMapper,times(1)).create(investReferrerRewardModelArgumentCaptor.capture());

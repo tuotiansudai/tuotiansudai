@@ -9,6 +9,4 @@ public interface CouponAlertService {
 
     CouponAlertDto getCouponAlert(String loginName, List<CouponType> couponTypes);
 
-    void BirthdayNotify();
-
 }
