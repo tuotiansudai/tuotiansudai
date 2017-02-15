@@ -274,7 +274,7 @@ require(['jquery', 'layerWrapper', 'underscore', 'jquery.validate', 'jquery.vali
 		//get code event
 		$androidBtn.on('click', function(event) {
 			event.preventDefault();
-			if($('#mobile').val()!='' && /0?(13|14|15|18)[0-9]{9}/.test($('#mobile').val())){
+			if($('#mobile').val()!='' && /0?(13|14|15|18|17)[0-9]{9}/.test($('#mobile').val())){
 				cnzzPush.trackClick('204APP分享', '注册或者预注册页面', '获取验证码');
 				$.ajax({
 					url: '/register/user/mobile/' + $('#mobile').val() + '/is-register', //获取手机验证码接口
@@ -293,7 +293,7 @@ require(['jquery', 'layerWrapper', 'underscore', 'jquery.validate', 'jquery.vali
 		//get code event
 		$iosBtn.on('click', function(event) {
 			event.preventDefault();
-			if($('#mobile').val()!='' && /0?(13|14|15|18)[0-9]{9}/.test($('#mobile').val())){
+			if($('#mobile').val()!='' && /0?(13|14|15|18|17)[0-9]{9}/.test($('#mobile').val())){
 				cnzzPush.trackClick('204APP分享', '注册或者预注册页面', '获取验证码');
 				$.ajax({
 					url: '/register/user/mobile/' + $('#mobile').val() + '/is-register', //判断手机号是否存在

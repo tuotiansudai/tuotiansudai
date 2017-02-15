@@ -71,7 +71,11 @@
 				连续签到还能领红包哦！
 			</div>
 			<div class="btn-item">
-				<a href="/point-shop">去签到</a>
+				<#if !isAppSource>
+					<a href="/point-shop">去签到</a>
+				<#else>
+                    <a href="app/tuotian/point-home">去签到</a>
+				</#if>
 			</div>
 		</div>
 		<div class="content-item">

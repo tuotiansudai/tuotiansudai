@@ -13,6 +13,8 @@ sourceSets {
 }
 
 dependencies {
+    compile fileTree(dir: 'lib', include: '*.jar')
+
     compile project(':ttsd-dependency'),
             project(':ttsd-config'),
             project(':ttsd-util'),

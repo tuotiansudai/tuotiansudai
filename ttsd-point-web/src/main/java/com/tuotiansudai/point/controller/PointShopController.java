@@ -1,10 +1,13 @@
 package com.tuotiansudai.point.controller;
 
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.membership.repository.model.MembershipModel;
+import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.point.repository.dto.PointBillPaginationItemDataDto;
 import com.tuotiansudai.point.repository.dto.ProductShowItemDto;
 import com.tuotiansudai.point.repository.model.GoodsType;
@@ -12,7 +15,6 @@ import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.point.repository.model.ProductOrderViewDto;
 import com.tuotiansudai.point.repository.model.UserAddressModel;
 import com.tuotiansudai.point.service.*;
-import com.tuotiansudai.point.util.PrizeImageUtils;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.spring.LoginUserInfo;
@@ -52,7 +54,7 @@ public class PointShopController {
     private SignInService signInService;
 
     @Autowired
-    private PrizeImageUtils prizeImageUtils;
+    private UserMembershipEvaluator userMembershipEvaluator;
 
     private static final String PRIZE_CONFIG_FILE = "pointLotteryImages.json";
 
@@ -61,6 +63,8 @@ public class PointShopController {
         ModelAndView modelAndView = new ModelAndView("point-index");
         String loginName = LoginUserInfo.getLoginName();
 
+        MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
+
         List<ProductShowItemDto> virtualProducts = productService.findAllProductsByGoodsTypes(Lists.newArrayList(GoodsType.COUPON,
                 GoodsType.VIRTUAL));
         modelAndView.addObject("virtualProducts", virtualProducts);
@@ -68,9 +72,8 @@ public class PointShopController {
         List<ProductShowItemDto> physicalProducts = productService.findAllProductsByGoodsTypes(Lists.newArrayList(GoodsType.PHYSICAL));
         modelAndView.addObject("physicalProducts", physicalProducts);
 
-        modelAndView.addObject("prizes", prizeImageUtils.getPrizeImageInfo(PRIZE_CONFIG_FILE));
-
         boolean isLogin = userService.loginNameIsExist(loginName);
+        boolean isShowDiscount = membershipModel == null ? false : membershipModel.getLevel() > 1 ? true : false;
         if (isLogin) {
             modelAndView.addObject("userPoint", accountService.getUserPointByLoginName(loginName));
             modelAndView.addObject("isSignIn", signInService.signInIsSuccess(loginName));
@@ -78,7 +81,9 @@ public class PointShopController {
         }
         modelAndView.addObject("discount", isLogin ? productService.discountRate(loginName) : 1.0);
         modelAndView.addObject("isLogin", isLogin);
+        modelAndView.addObject("isShowDiscount", isShowDiscount);
         modelAndView.addObject("responsive", true);
+        modelAndView.addObject("signCount", Strings.isNullOrEmpty(loginName) ? "0" : signInService.getSignInCount(loginName));
         return modelAndView;
     }
 
@@ -212,11 +217,12 @@ public class PointShopController {
     @RequestMapping(value = "/bill-list", method = RequestMethod.GET, consumes = "application/json; charset=UTF-8", produces = "application/json; charset=UTF-8")
     @ResponseBody
     public BaseDto<BasePaginationDataDto> pointBillListData(@Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index,
+                                                            @RequestParam(name = "pointType", required = false) String pointType,
                                                             @RequestParam(name = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
                                                             @RequestParam(name = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
                                                             @RequestParam(name = "businessType", required = false) List<PointBusinessType> businessType) {
 
-        BasePaginationDataDto<PointBillPaginationItemDataDto> dataDto = pointBillService.getPointBillPagination(LoginUserInfo.getLoginName(), index, 10, startTime, endTime, businessType);
+        BasePaginationDataDto<PointBillPaginationItemDataDto> dataDto = pointBillService.getPointBillPagination(LoginUserInfo.getLoginName(), pointType, index, 10, startTime, endTime, businessType);
         BaseDto<BasePaginationDataDto> dto = new BaseDto<>();
         dto.setData(dataDto);
         return dto;

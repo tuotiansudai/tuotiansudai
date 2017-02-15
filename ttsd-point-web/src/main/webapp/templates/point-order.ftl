@@ -80,7 +80,7 @@
 					<div class="order-price">
 						<p class="title-text">商品价格</p>
 
-                        <p><i>${(productShowItem.points * discount)?round}</i>积分</p>
+                        <p><i>${((productShowItem.points * discount)?round)?string('0')}</i>积分</p>
 					</div>
 					<div class="order-number">
 						<p class="title-text">商品数量</p>
@@ -99,7 +99,7 @@
 						<p class="title-text">小计</p>
 
                         <p><i class="count-num"
-                              data-num="${(productShowItem.points * discount)?round}">${(productShowItem.points * discount)?round} * ${number}</i>积分
+                              data-num="${((productShowItem.points * discount)?round)?string('0')}">${((productShowItem.points * discount)?round)?string('0')} * ${number}</i>积分
                         </p>
 					</div>
 				</div>
@@ -107,7 +107,7 @@
 			<div class="order-total">
 				<p>
                     <span>共需支付：<i class="count-num"
-                                  data-num="${(productShowItem.points * discount)?round}">${(productShowItem.points * discount)?round} * ${number}</i>积分</span>
+                                  data-num="${((productShowItem.points * discount)?round)?string('0')}">${((productShowItem.points * discount)?round)?string('0')} * ${number}</i>积分</span>
 				</p>
 				<p>
 

@@ -196,10 +196,9 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
         } else {
             description.add(productModel.getDescription());
         }
-        if(!Strings.isNullOrEmpty(discountDesc)){
+        if (!Strings.isNullOrEmpty(discountDesc)) {
             productDetailResponseDto.setDiscountPoints(String.valueOf(distinctPoints));
-        }
-        else{
+        } else {
             productDetailResponseDto.setDiscountPoints("");
         }
 
@@ -227,34 +226,32 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
         double discount = productService.discountRate(LoginUserInfo.getLoginName());
 
         Iterator<ProductDetailResponseDto> couponList = Iterators.transform(exchangeCoupons.iterator(), exchangeCouponView ->
-            {
-                ProductDetailResponseDto productDetailResponseDto = new ProductDetailResponseDto(exchangeCouponView, bannerServer);
-                productDetailResponseDto.setDiscountDesc(discountDesc);
-                if(!Strings.isNullOrEmpty(discountDesc)){
-                    long discountPoints =  Math.round(new BigDecimal(exchangeCouponView.getExchangePoint()).multiply(new BigDecimal(discount)).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue());
-                    productDetailResponseDto.setDiscountPoints(String.valueOf(discountPoints));
+                {
+                    ProductDetailResponseDto productDetailResponseDto = new ProductDetailResponseDto(exchangeCouponView, bannerServer);
+                    productDetailResponseDto.setDiscountDesc(discountDesc);
+                    if (!Strings.isNullOrEmpty(discountDesc)) {
+                        long discountPoints = Math.round(new BigDecimal(exchangeCouponView.getExchangePoint()).multiply(new BigDecimal(discount)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+                        productDetailResponseDto.setDiscountPoints(String.valueOf(discountPoints));
+                    } else {
+                        productDetailResponseDto.setDiscountPoints("");
+                    }
+                    return productDetailResponseDto;
                 }
-                else{
-                    productDetailResponseDto.setDiscountPoints("");
-                }
-                return productDetailResponseDto;
-            }
         );
 
         Iterator<ProductDetailResponseDto> virtualList = Iterators.transform(virtualProducts.iterator(), input ->
-            {
-                ProductDetailResponseDto productDetailResponseDto = new ProductDetailResponseDto(input.getId(), bannerServer + input.getImageUrl(), input.getName(), input.getPoints(), input.getType(), input.getTotalCount() - input.getUsedCount(), input.getSeq(), input.getUpdatedTime());
-                productDetailResponseDto.setDiscountDesc(discountDesc);
+                {
+                    ProductDetailResponseDto productDetailResponseDto = new ProductDetailResponseDto(input.getId(), bannerServer + input.getImageUrl(), input.getName(), input.getPoints(), input.getType(), input.getTotalCount() - input.getUsedCount(), input.getSeq(), input.getUpdatedTime());
+                    productDetailResponseDto.setDiscountDesc(discountDesc);
 
-                if(!Strings.isNullOrEmpty(discountDesc)){
-                    long discountPoints =  Math.round(new BigDecimal(input.getPoints()).multiply(new BigDecimal(discount)).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue());
-                    productDetailResponseDto.setDiscountPoints(String.valueOf(discountPoints));
+                    if (!Strings.isNullOrEmpty(discountDesc)) {
+                        long discountPoints = Math.round(new BigDecimal(input.getPoints()).multiply(new BigDecimal(discount)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+                        productDetailResponseDto.setDiscountPoints(String.valueOf(discountPoints));
+                    } else {
+                        productDetailResponseDto.setDiscountPoints("");
+                    }
+                    return productDetailResponseDto;
                 }
-                else{
-                    productDetailResponseDto.setDiscountPoints("");
-                }
-                return productDetailResponseDto;
-            }
         );
 
         List virtualShopList = Lists.newArrayList(virtualList);
@@ -290,17 +287,17 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
         double discount = productService.discountRate(LoginUserInfo.getLoginName());
 
         Iterator<ProductDetailResponseDto> physicals = Iterators.transform(physicalsProducts.iterator(), input ->
-            {
-                ProductDetailResponseDto productDetailResponseDto = new ProductDetailResponseDto(input.getId(), bannerServer + input.getImageUrl(), input.getName(), input.getPoints(), input.getType(), input.getTotalCount() - input.getUsedCount(), input.getSeq(), input.getUpdatedTime());
-                productDetailResponseDto.setDiscountDesc(discountDesc);
-                if(!Strings.isNullOrEmpty(discountDesc)){
-                    long discountPoints = Math.round(new BigDecimal(input.getPoints()).multiply(new BigDecimal(discount)).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue());
-                    productDetailResponseDto.setDiscountPoints(String.valueOf(discountPoints));
-                }else{
-                    productDetailResponseDto.setDiscountPoints("");
+                {
+                    ProductDetailResponseDto productDetailResponseDto = new ProductDetailResponseDto(input.getId(), bannerServer + input.getImageUrl(), input.getName(), input.getPoints(), input.getType(), input.getTotalCount() - input.getUsedCount(), input.getSeq(), input.getUpdatedTime());
+                    productDetailResponseDto.setDiscountDesc(discountDesc);
+                    if (!Strings.isNullOrEmpty(discountDesc)) {
+                        long discountPoints = Math.round(new BigDecimal(input.getPoints()).multiply(new BigDecimal(discount)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+                        productDetailResponseDto.setDiscountPoints(String.valueOf(discountPoints));
+                    } else {
+                        productDetailResponseDto.setDiscountPoints("");
+                    }
+                    return productDetailResponseDto;
                 }
-                return productDetailResponseDto;
-            }
         );
         return Lists.newArrayList(physicals);
     }
@@ -355,7 +352,7 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
         int returnCode = drawLotteryResultDto.getReturnCode();
         BaseResponseDto baseResponseDto = new BaseResponseDto();
         if (drawLotteryResultDto.isDrawLotterySuccess()) {
-            pointBillService.createPointBill(LoginUserInfo.getLoginName(), null, PointBusinessType.LOTTERY, -1000, PointBusinessType.LOTTERY.getDescription());
+            pointBillService.createPointBill(LoginUserInfo.getLoginName(), null, PointBusinessType.POINT_LOTTERY, -1000, PointBusinessType.POINT_LOTTERY.getDescription());
             baseResponseDto.setData(pointDrawResultResponseDto);
             baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
             baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
@@ -405,7 +402,7 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
     @Override
     public BaseResponseDto<PrizeListResponseDto> findPrizeList(BaseParamDto baseParamDto) {
         List<UserLotteryPrizeView> userLotteryPrizeViewList = lotteryDrawActivityService.findDrawLotteryPrizeRecord(null, ActivityCategory.POINT_SHOP_DRAW_1000);
-        userLotteryPrizeViewList = userLotteryPrizeViewList.subList(0, 20);
+        userLotteryPrizeViewList = userLotteryPrizeViewList.size() > 20 ? userLotteryPrizeViewList.subList(0, 20) : userLotteryPrizeViewList;
         PrizeListResponseDto prizeListResponseDto = new PrizeListResponseDto();
         if (CollectionUtils.isNotEmpty(userLotteryPrizeViewList)) {
             Iterator<PrizeResponseDto> transform = Iterators.transform(userLotteryPrizeViewList.iterator(), input -> new PrizeResponseDto(input));
@@ -419,7 +416,6 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
         return baseResponseDto;
     }
 
-
     private UserAddressModel convertUserAddressModel(UserAddressRequestDto userAddressRequestDto) {
         return new UserAddressModel(userAddressRequestDto.getBaseParam().getUserId(),
                 userAddressRequestDto.getContact(),
@@ -427,4 +423,5 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
                 userAddressRequestDto.getAddress(),
                 userAddressRequestDto.getBaseParam().getUserId());
     }
+
 }

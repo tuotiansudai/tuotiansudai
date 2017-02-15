@@ -238,7 +238,7 @@ public class LotteryDrawActivityService {
         PointBillModel pointBillModel = new PointBillModel(loginName,
                 null,
                 point,
-                PointBusinessType.LOTTERY,
+                PointBusinessType.POINT_LOTTERY,
                 MessageFormat.format("抽中{0}", lotteryPrize.getDescription()));
         pointBillMapper.create(pointBillModel);
     }
@@ -321,10 +321,16 @@ public class LotteryDrawActivityService {
         else if (lotteryPrize.equals(LotteryPrize.POINT_SHOP_POINT_500)) {
             prizeType = PrizeType.POINT;
             createPointBillModel(loginName, 500, lotteryPrize);
+            AccountModel accountModel = accountMapper.findByLoginName(loginName);
+            accountModel.setPoint(accountModel.getPoint() + 500);
+            accountMapper.update(accountModel);
         }
         else if (lotteryPrize.equals(LotteryPrize.POINT_SHOP_POINT_3000)) {
             prizeType = PrizeType.POINT;
             createPointBillModel(loginName, 3000, lotteryPrize);
+            AccountModel accountModel = accountMapper.findByLoginName(loginName);
+            accountModel.setPoint(accountModel.getPoint() + 3000);
+            accountMapper.update(accountModel);
         }
         return prizeType;
     }

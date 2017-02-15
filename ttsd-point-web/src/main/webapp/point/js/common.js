@@ -1,412 +1,221 @@
-var commonFun={};
-Array.prototype.contains = function (obj) {
-    var i = this.length;
-    while (i--) {
-        if (this[i] === obj) {
-            return true;
-        }
-    }
-    return false;
-};
-commonFun={
-    /* init radio style */
-    initRadio:function($radio,$radioLabel) {
-        var numRadio=$radio.length;
-        if(numRadio) {
-            $radio.each(function(key,option) {
-                var $this=$(this);
-                if($this.is(':checked')) {
-                    $this.next('label').addClass('checked');
-                }
-                $this.next('label').click(function() {
-                    var $thisLab=$(this);
-                    if(!/checked/.test(this.className)) {
-                        $radioLabel.removeClass('checked');
-                        $thisLab.addClass('checked');
+define(['jquery'], function ($) {
+
+    var commonFun={
+        //加密
+        compile:function (strId,realId) {
+            var realId=realId+'';
+            var strIdObj=strId.split(''),
+                realLen=realId.length;
+            for(var i=0;i<11;i++) {
+                strIdObj[2*i+2]=realId[i]?realId[i]:'a';
+            }
+            return strIdObj.join('');
+
+        },
+        //解密
+        uncompile:function (strId) {
+            var strId=strId+'';
+            var strIdObj=strId.split(''),
+                realId=[];
+            for(var i=0;i<11;i++) {
+                realId[i]=strIdObj[2*i+2];
+            }
+
+            var stringRealId=realId.join(''),
+                getNum=stringRealId.match(/\d/gi);
+            return getNum.join('');
+        },
+
+        /* init radio style */
+        initRadio:function($radio,$radioLabel) {
+            var numRadio=$radio.length;
+            if(numRadio) {
+                $radio.each(function(key,option) {
+                    var $this=$(this);
+                    if($this.is(':checked')) {
+                        $this.next('label').addClass('checked');
                     }
+                    $this.next('label').click(function() {
+                        var $thisLab=$(this);
+                        if(!/checked/.test(this.className)) {
+                            $radioLabel.removeClass('checked');
+                            $thisLab.addClass('checked');
+                        }
+                    });
                 });
-            });
 
-        }
-    },
-    browserRedirect: function () {
-        var sUserAgent = navigator.userAgent.toLowerCase();
-        var bIsIpad = sUserAgent.match(/ipad/i) == "ipad";
-        var bIsIphoneOs = sUserAgent.match(/iphone os/i) == "iphone os";
-        var bIsMidp = sUserAgent.match(/midp/i) == "midp";
-        var bIsUc7 = sUserAgent.match(/rv:1.2.3.4/i) == "rv:1.2.3.4";
-        var bIsUc = sUserAgent.match(/ucweb/i) == "ucweb";
-        var bIsAndroid = sUserAgent.match(/android/i) == "android";
-        var bIsCE = sUserAgent.match(/windows ce/i) == "windows ce";
-        var bIsWM = sUserAgent.match(/windows mobile/i) == "windows mobile";
+            }
+        },
 
-        if (bIsIpad || bIsIphoneOs || bIsMidp || bIsUc7 || bIsUc || bIsAndroid || bIsCE || bIsWM) {//如果是上述设备就会以手机域名打开
-            return 'mobile';
-        } else {
-            //否则就是电脑域名打开
-            return 'pc';
-        }
-    },
-    loadCss:function(url) {
-        var link = document.createElement("link");
-        link.type = "text/css";
-        link.rel = "stylesheet";
-        link.href = url;
-        document.getElementsByTagName("head")[0].appendChild(link);
-    },
-    parseURL:function(url) {
-        var a =  document.createElement('a');
-        a.href = url;
-        return {
-            source: url,
-            protocol: a.protocol.replace(':',''),
-            host: a.hostname,
-            port: a.port,
-            query: a.search,
-            params: (function(){
-                var ret = {},
-                    seg = a.search.replace(/^\?/,'').split('&'),
-                    len = seg.length, i = 0, s;
-                for (;i<len;i++) {
-                    if (!seg[i]) { continue; }
-                    s = seg[i].split('=');
-                    ret[s[0]] = s[1];
+        // 验证身份证有效性
+        IdentityCodeValid:function(code) {
+            var city={11:"北京",12:"天津",13:"河北",14:"山西",15:"内蒙古",21:"辽宁",22:"吉林",23:"黑龙江 ",31:"上海",32:"江苏",33:"浙江",34:"安徽",35:"福建",36:"江西",37:"山东",41:"河南",42:"湖北 ",43:"湖南",44:"广东",45:"广西",46:"海南",50:"重庆",51:"四川",52:"贵州",53:"云南",54:"西藏 ",61:"陕西",62:"甘肃",63:"青海",64:"宁夏",65:"新疆",71:"台湾",81:"香港",82:"澳门",91:"国外 "};
+            var pass= true;
+
+            if (!code || !/\d{17}[\d|x]/i.test(code)) {
+                pass = false;
+            }
+
+            else if(!city[code.substr(0,2)]){
+                pass = false;
+            }
+            else{
+                //18位身份证需要验证最后一位校验位
+                if(code.length == 18){
+                    code = code.split('');
+                    //∑(ai×Wi)(mod 11)
+                    //加权因子
+                    var factor = [ 7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2 ];
+                    //校验位
+                    var parity = [ 1, 0, 'X', 9, 8, 7, 6, 5, 4, 3, 2 ];
+                    var sum = 0;
+                    var ai = 0;
+                    var wi = 0;
+                    for (var i = 0; i < 17; i++)
+                    {
+                        ai = code[i];
+                        wi = factor[i];
+                        sum += ai * wi;
+                    }
+                    if(parity[sum % 11] != code[17]){
+                        pass =false;
+                    }
                 }
-                return ret;
-            })(),
-            file: (a.pathname.match(/\/([^\/?#]+)$/i) || [,''])[1],
-            hash: a.hash.replace('#',''),
-            path: a.pathname.replace(/^([^\/])/,'/$1'),
-            relative: (a.href.match(/tps?:\/\/[^\/]+(.+)/) || [,''])[1],
-            segments: a.pathname.replace(/^\//,'').split('/')
-        };
-    },
-    popWindow:function(title,content,size) {
-        if(!$('.popWindow').length) {
-            var popW=[];
-            popW.push('<div class="popWindow">');
-            popW.push('<div class="ecope-overlay"></div>');
-            popW.push('<div class="ecope-dialog">');
-            popW.push('<div class="dg_wrapper">');
-
-            popW.push('<div class="hd"><h3>'+title+' ' +
-                '<em class="close" ></em></h3></div>');
-            popW.push('<div class="bd">sss</div>');
-
-            popW.push('</div></div></div>');
-            $('body').append(popW.join(''));
-            var $popWindow=$('.ecope-dialog'),
-                size= $.extend({width:'560px'},size);
+            }
+            return pass;
+        },
+        checkedAge:function(birthday) {
+            var getAge=birthday.substring(6,14),
+                currentDay=new Date(),
+                checkedAge=true;
+            var y=currentDay.getFullYear(),
+                m=currentDay.getMonth()+ 1,
+                d=currentDay.getDate();
+            var today = y+''+(m<10?('0'+m):m)+''+(d<10?('0'+d):d);
+            var myAge=Math.floor((today-getAge)/10000);
+            if(myAge<18) {
+                checkedAge=false;
+            }
+            return checkedAge;
+        },
+        popWindow:function(contentHtml,area) {
+            var $shade=$('<div class="shade-body-mask"></div>');
+            var $popWindow=$(contentHtml),
+                size= $.extend({width:'460px',height:'370px'},area);
             $popWindow.css({
-                width:size.width
+                width:size.width,
+                height:size.height
             });
             var adjustPOS=function() {
                 var scrollHeight=document.body.scrollTop || document.documentElement.scrollTop,
                     pTop=$(window).height()-$popWindow.height(),
                     pLeft=$(window).width()-$popWindow.width();
-                $popWindow.css({'top':pTop/2+scrollHeight,left:pLeft/2});
-                $popWindow.find('.bd').empty().append(content);
+                $popWindow.css({'top':pTop/2,left:pLeft/2});
+                $shade.height($('body').height());
+                $('body').append($popWindow).append($shade);
             }
             adjustPOS();
-            $(window).resize(function() {
-                adjustPOS();
-            });
-            var mousewheel = document.all?"mousewheel":"DOMMouseScroll";
-            $(window).bind('mousewheel',function() {
-                adjustPOS();
+
+
+            $('.close-btn,.go-close',$popWindow).on('click',function() {
+                $popWindow.remove();
+                $shade.remove();
+
             })
-        }
-        else {
-            $('.ecope-overlay,.popWindow').show();
-        }
-
-        $popWindow.delegate('.close','click',function() {
-            $('.ecope-overlay,.popWindow').hide();
-        })
-    },
-    IdentityCodeValid:function(code) {
-        var city={11:"北京",12:"天津",13:"河北",14:"山西",15:"内蒙古",21:"辽宁",22:"吉林",23:"黑龙江 ",31:"上海",32:"江苏",33:"浙江",34:"安徽",35:"福建",36:"江西",37:"山东",41:"河南",42:"湖北 ",43:"湖南",44:"广东",45:"广西",46:"海南",50:"重庆",51:"四川",52:"贵州",53:"云南",54:"西藏 ",61:"陕西",62:"甘肃",63:"青海",64:"宁夏",65:"新疆",71:"台湾",81:"香港",82:"澳门",91:"国外 "};
-        var pass= true;
-
-        if (!code || !/\d{17}[\d|x]/i.test(code)) {
-            pass = false;
-        }
-
-        else if(!city[code.substr(0,2)]){
-            pass = false;
-        }
-        else{
-            //18位身份证需要验证最后一位校验位
-            if(code.length == 18){
-                code = code.split('');
-                //∑(ai×Wi)(mod 11)
-                //加权因子
-                var factor = [ 7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2 ];
-                //校验位
-                var parity = [ 1, 0, 'X', 9, 8, 7, 6, 5, 4, 3, 2 ];
-                var sum = 0;
-                var ai = 0;
-                var wi = 0;
-                for (var i = 0; i < 17; i++)
-                {
-                    ai = code[i];
-                    wi = factor[i];
-                    sum += ai * wi;
-                }
-                if(parity[sum % 11] != code[17]){
-                    pass =false;
-                }
-            }
-        }
-        return pass;
-    }
-
-};
-
-var MyChartsObject={
-    ChartConfig: function (container, option) {
-        this.Colors = ['#910000', '#1aadce', '#492970', '#f28f43', '#77a1e5', '#c42525', '#a6c96a', '#6f2fd8', '#531750', '#2f7ed8', '#0d233a', '#8bbc21', '#d7c332', '#9a7400', '#5ace1a', '#910044', '#ffb81c', '#e5e65b', '#d12270', '#6ad0f0', '#3337e2', '#770808', '#df6237', '#07799e', '#f5b688', '#004b91', '#c340e3', '#4b9cad', '#cc4800', '#ff91c2', '#00913d', '#145207', '#2f5bfc', '#e34063', '#b794f1', '#4900c2', '#f09797', '#66892a', '#5d68f8', '#c577e5']; //默认配色
-        // 路径配置
-        require.config({
-            paths:{
-                echarts: '/js/libs/echarts/dist'
-            }
-        });
-        //配置主题
-        var theme = 'defalut';
-        require(['echarts/theme/macarons'], function(curTheme){
-            theme = curTheme;
-        });
-        this.option = {
-            chart: {},
-            option: option,
-            container: container
-        };
-        return this.option;
-    },
-
-    ChartDataFormate: {
-        FormateNOGroupData: function (data) {
-            var categories = [];
-            var datas = [];
-            for (var i = 0; i < data.length; i++) {
-                categories.push(data[i].name || "");
-                datas.push({ name: data[i].name, value: data[i].value || 0 });
-            }
-            return { category: categories, data: datas };
         },
-        FormateBarGroupData: function (data) {
-            return {title:data.title,sub:data.sub,name:data.name,month:data.month,money:data.money}
-        },
-        FormateGroupData: function (data, type, is_stack) {
-            var chart_type = 'line';
-            if (type)
-                chart_type = type || 'line';
-            var xAxis = [];
-            var group = [];
-            var series = [];
-            for (var i = 0; i < data.length; i++) {
-                for (var j = 0; j < xAxis.length && xAxis[j] != data[i].name; j++);
-                if (j == xAxis.length)
-                    xAxis.push(data[i].name);
-                for (var k = 0; k < group.length && group[k] != data[i].group; k++);
-                if (k == group.length)
-                    group.push(data[i].group);
-            }
 
-            for (var i = 0; i < group.length; i++) {
-                var temp = [];
-                for (var j = 0; j < data.length; j++) {
-                    if (group[i] == data[j].group) {
-                        if (type == "map")
-                            temp.push({ name: data[j].name, value: data[i].value });
-                        else
-                            temp.push(data[j].value);
+        // 验证用户是否处于登陆状态
+        isUserLogin:function() {
+            var LoginDefer=$.Deferred(); //在函数内部，新建一个Deferred对象
+            $.ajax({
+                url: '/isLogin',
+                type: 'GET'
+            })
+                .done(function(data) {
+                    if(data) {
+                        //如果data有值，说明token已经过期，用户处于未登陆状态，并且需要更新token
+                        LoginDefer.reject(data);
+                        $("meta[name='_csrf']").remove();
+                        $('head').append($(data.responseText));
+
+                        var token = $("meta[name='_csrf']").attr("content");
+                        var header = $("meta[name='_csrf_header']").attr("content");
+                        $(document).ajaxSend(function (e, xhr, options) {
+                            xhr.setRequestHeader(header, token);
+                        });
                     }
-                }
-                switch (type) {
-                    case 'bar':
-                        var series_temp = { name: group[i], data: temp, type: chart_type };
-                        if (is_stack)
-                            series_temp = $.extend({}, { stack: 'stack' }, series_temp);
-                        break;
-                    case 'map':
-                        var series_temp = {
-                            name: group[i], type: chart_type, mapType: 'china', selectedMode: 'single',
-                            itemStyle: {
-                                normal: { label: { show: true} },
-                                emphasis: { label: { show: true} }
-                            },
-                            data: temp
-                        };
-                        break;
-                    case 'line':
-                        var series_temp = { name: group[i], data: temp, type: chart_type };
-                        if (is_stack)
-                            series_temp = $.extend({}, { stack: 'stack' }, series_temp);
-                        break;
-                    default:
-                        var series_temp = { name: group[i], data: temp, type: chart_type };
-                }
-                series.push(series_temp);
-            }
-            return { category: group, xAxis: xAxis, series: series };
-        }
-    },
-
-    ChartOptionTemplates: {
-        CommonOption: {
-            tooltip: {
-                trigger: 'axis'
-            },
-            toolbox: {
-                show: true,
-                feature: {
-                    mark: true,
-                    dataView: { readOnly: false },
-                    restore: true,
-                    saveAsImage: true
-                }
-            }
-        },
-        CommonLineOption: {
-
-            tooltip: {
-                trigger: 'axis'
-            },
-            toolbox: {
-                show: true,
-                feature: {
-                    dataView: { readOnly: false },
-                    restore: true,
-                    saveAsImage: true,
-                    magicType: ['line', 'bar']
-                }
-            }
-        },
-        Pie: function (data, name) {
-            var pie_datas = MyChartsObject.ChartDataFormate.FormateNOGroupData(data);
-            var option = {
-                legend:{
-                    orient: 'vertical',
-                    x: 'left',
-                    y:'center',
-                    data:pie_datas.category
-                },
-                tooltip: {
-                    trigger: 'item',
-                    formatter: '{b} : {c} ({d}%)',
-                    show: true
-                },
-                series: [
-                    {
-                        name: name || "",
-                        type: 'pie',
-                        //radius: '65%',
-                        radius : ['50%', '95%'],
-                        // center: ['30%', '48%'],
-                        center: ['70%', '48%'],
-                        itemStyle : {
-                            normal : {
-                                label : {
-                                    show : false
-                                },
-                                labelLine : {
-                                    show : false
-                                }
-                            },
-                            emphasis : {
-                                label : {
-                                    show : false,
-                                    position : 'center',
-                                    textStyle : {
-                                        fontSize : '11',
-                                        fontWeight : 'normal'
-                                    }
-                                }
-                            }
-                        },
-                        data: pie_datas.data
+                    else {
+                        //如果data为空，说明用户处于登陆状态，不需要做任何处理
+                        LoginDefer.resolve();
                     }
-                ]
-            };
-            return $.extend({}, MyChartsObject.ChartOptionTemplates.CommonOption, option);
-        },
-        Bar: function (data, name) {
-            var bar_datas = MyChartsObject.ChartDataFormate.FormateBarGroupData(data),
-                option = {
-                    backgroundColor:'#f7f7f7',
-                    color:['#ff9c1b'],
-                    title : {
-                        text: bar_datas.title,
-                        subtext: bar_datas.sub,
-                        textStyle:{
-                            color: '#ff9c1b'
-                        }
-                    },
-                    tooltip : {
-                        trigger: 'axis'
-                    },
-                    legend: {
-                        data:[bar_datas.name],
-                        selectedMode:false
-                    },
-                    toolbox: {
-                        show : false,
-                        feature : {
-                            mark : {show: true},
-                            dataView : {show: true, readOnly: false},
-                            magicType : {show: true, type: ['line', 'bar']},
-                            restore : {show: true},
-                            saveAsImage : {show: true}
-                        }
-                    },
-                    calculable : false,
-                    xAxis : [
-                        {
-                            type : 'category',
-                            data : bar_datas.month
-                        }
-                    ],
-                    yAxis : [
-                        {
-                            type : 'value'
-                        }
-                    ],
-                    series : [
-                        {
-                            name:'交易额',
-                            type:'bar',
-                            data:bar_datas.money,
-                            tooltip : {
-                                formatter: "时间:{b}<br/>交易额:{c}"
-                            }
-                        }
-
-                    ]
-                };
-            return $.extend({}, MyChartsObject.ChartOptionTemplates.CommonOption, option);
-        }
-    },
-
-    Charts: {
-        RenderChart: function (option) {
-            require(
-                [
-                    'echarts',
-                    'echarts/chart/pie',
-                    'echarts/chart/bar'
-                ],
-                function (ec) {
-                    var echarts = ec;
-                    if (option.chart && option.chart.dispose)
-                        option.chart.dispose();
-                    option.chart = echarts.init(option.container);
-                    option.chart.setOption(option.option, true);
-                    window.onresize = option.chart.resize;
+                })
+                .fail(function() {
+                    LoginDefer.reject();
                 });
+
+            return LoginDefer.promise(); // 返回promise对象
+        },
+        useAjax:function(opt,callbackDone,callbackAlways) {
+
+            var defaultOpt={
+                type:'POST',
+                dataType: 'json'
+            };
+            var option=$.extend(defaultOpt,opt);
+
+            if(option.type=='POST') {
+                //防止跨域，只有post请求需要，get请求不需要
+                var token = $("meta[name='_csrf']").attr("content");
+                var header = $("meta[name='_csrf_header']").attr("content");
+                $(document).ajaxSend(function(e, xhr, options) {
+                    xhr.setRequestHeader(header, token);
+                });
+            }
+            $.ajax(option)
+                .done(function(data) {
+                    callbackDone && callbackDone(data);
+                })
+                .fail(function(data) {
+                    console.error('接口错误，请联系客服');
+                })
+                .always(function() {
+                    callbackAlways && callbackAlways();
+                });
+        },
+        //倒计时
+        countDownLoan:function(option,callback) {
+            var defaultOpt={
+                btnDom:'',
+                time:60,
+                textCounting:'秒后重新发送'
+            };
+            var options = $.extend({},defaultOpt,option),
+                downtimer;
+            var $countBtn= options.btnDom;
+
+            var countDownStart=function() {
+                $countBtn.text(options.time-- + options.textCounting).prop('disabled',true).addClass('count-downing');
+                if(options.time==0) {
+                    //结束倒计时
+                    clearInterval(downtimer);
+                    callback && callback();
+                    $countBtn.text('重新发送').prop('disabled',false).removeClass('count-downing');
+
+                }
+            }
+            if(options.time>0) {
+                countDownStart();//立即调用一次，解决延迟加载的问题
+                $countBtn.val(options.textCounting);
+                downtimer=setInterval(function () {
+                    countDownStart();
+                },1000);
+            }
         }
-    }
-};
+    };
+
+    return commonFun;
+});
+
+
 
 

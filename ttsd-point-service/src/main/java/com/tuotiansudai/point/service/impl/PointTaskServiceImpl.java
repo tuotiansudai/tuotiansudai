@@ -1,6 +1,7 @@
 package com.tuotiansudai.point.service.impl;
 
 import com.google.common.base.Predicate;
+import com.google.common.base.Strings;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.point.repository.dto.PointTaskDto;
@@ -33,6 +34,8 @@ public class PointTaskServiceImpl implements PointTaskService {
     private final static List<PointTask> ADVANCED_TASKS = Lists.newArrayList(PointTask.EACH_SUM_INVEST,
             PointTask.FIRST_SINGLE_INVEST,
             PointTask.EACH_RECOMMEND_REGISTER,
+            PointTask.EACH_RECOMMEND_BANK_CARD,
+            PointTask.EACH_RECOMMEND_INVEST,
             PointTask.FIRST_REFERRER_INVEST,
             PointTask.FIRST_INVEST_180,
             PointTask.FIRST_TURN_ON_NO_PASSWORD_INVEST,
@@ -125,6 +128,9 @@ public class PointTaskServiceImpl implements PointTaskService {
                     pointBillService.createTaskPointBill(referrer, pointTaskModel.getId(), pointTaskModel.getPoint(), pointBillNote);
                     break;
                 case EACH_RECOMMEND_REGISTER:
+                    if(Strings.isNullOrEmpty(userMapper.findByLoginName(loginName).getReferrer())){
+                        break;
+                    }
                 case FIRST_REFERRER_INVEST:
                     referrer = userMapper.findByLoginName(loginName).getReferrer();
                     referrerMaxTaskLevel = userPointTaskMapper.findMaxTaskLevelByLoginName(referrer, pointTask);
@@ -209,6 +215,8 @@ public class PointTaskServiceImpl implements PointTaskService {
             case EACH_RECOMMEND_REGISTER:
             case EACH_REFERRER_INVEST:
             case FIRST_REFERRER_INVEST:
+            case EACH_RECOMMEND_BANK_CARD:
+            case EACH_RECOMMEND_INVEST:
                 return "/referrer/refer-list";
             case FIRST_TURN_ON_NO_PASSWORD_INVEST:
                 return "/personal-info";

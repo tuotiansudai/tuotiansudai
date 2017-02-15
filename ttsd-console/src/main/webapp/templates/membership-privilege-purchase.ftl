@@ -3,7 +3,7 @@
 
 <!-- content area begin -->
 <div class="col-md-10">
-    <form action="/finance-manage/membership-privilege-purchase" class="form-inline query-build" method="get">
+    <form action="/membership-manage/membership-privilege-purchase" class="form-inline query-build" method="get">
         <div class="form-group">
             <label for="mobile">手机号</label>
             <input type="text" id="mobile" name="mobile" class="form-control ui-autocomplete-input" datatype="*" autocomplete="off" value="${mobile!}">

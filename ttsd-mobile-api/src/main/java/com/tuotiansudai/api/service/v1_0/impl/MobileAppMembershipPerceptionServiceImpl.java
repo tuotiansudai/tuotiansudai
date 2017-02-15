@@ -23,6 +23,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.DecimalFormat;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
@@ -69,11 +70,11 @@ public class MobileAppMembershipPerceptionServiceImpl implements MobileAppMember
 
         MembershipPrivilegeModel membershipPrivilegeModel = membershipPrivilegeMapper.findValidPrivilegeModelByLoginName(loginName, new Date());
         MembershipPerceptionResponseDataDto membershipPerceptionResponseDataDto = new MembershipPerceptionResponseDataDto();
-
+        DecimalFormat decimalFormat = new DecimalFormat("######0.##");
         membershipPerceptionResponseDataDto.setTip(membershipPrivilegeModel != null ?
                 String.format("增值特权，专享服务费7折优惠，已多赚%s元", getMoney)
                 : String.format("V%s会员,专享服务费%s折优惠,已经多赚%s元",
-                membershipModel.getLevel(),
+                decimalFormat.format(membershipModel.getLevel()),
                 membershipModel.getFee() * 100
                 , getMoney));
 
