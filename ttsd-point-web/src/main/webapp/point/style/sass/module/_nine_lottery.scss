@@ -117,8 +117,8 @@
 				width: 100%;
 				box-sizing: border-box;
 				padding: 0 30px;
-				&.my-gift {
-					height: 345px;
+				&.own-record {
+					height: 338px;
 					overflow-y: scroll;
 				}
 				&.active {
@@ -130,7 +130,16 @@
 					overflow: hidden;
 					text-overflow: ellipsis;
 					white-space: nowrap;
-
+					&.record-img{
+						padding-top: 60px;
+						text-align: center;
+						p{
+							font-size:14px;
+							color:#4c4c4c;
+							margin-top:10px;
+							margin-bottom:0;
+						}
+					}
 					span {
 						font-size: 14px;
 						color: #fffee0;

@@ -123,7 +123,11 @@
 						连续签到还能领红包哦！
 					</div>
 					<div class="btn-item mt-right">
-						<a href="/point-shop" class="btn-model">去签到</a>
+						<#if !isAppSource>
+                            <a href="/point-shop" class="btn-model">去签到</a>
+						<#else>
+                            <a href="app/tuotian/point-home" class="btn-model">去签到</a>
+						</#if>
 					</div>
 				</li>
 			</ul>
@@ -185,7 +189,11 @@
 						新手积分初体验，每完成一项任务都有积分入账，如全部通关可得1300积分。送到手的积分，不拿=浪费哦！
 					</div>
 					<div class="btn-item">
+						<#if !isAppSource>
 						<a href="/point-shop/task" class="btn-model">去完成</a>
+						<#else>
+                        <a href="app/tuotian/point-task" class="btn-model">去完成</a>
+						</#if>
 					</div>
 				</li>
 			</ul>
@@ -265,7 +273,11 @@
 				新手积分初体验，每完成一项任务都有积分入账，如全部通关可得1300积分。送到手的积分，不拿=浪费哦！
 			</div>
 			<div class="btn-item">
-				<a href="/point-shop/task" class="btn-model">去完成</a>
+				<#if !isAppSource>
+                    <a href="/point-shop/task" class="btn-model">去完成</a>
+				<#else>
+                    <a href="app/tuotian/point-task" class="btn-model">去完成</a>
+				</#if>
 			</div>
 		</div>
 		<div class="content-item left-item">
@@ -305,7 +317,12 @@
 				</table>
 			</div>
 			<div class="btn-item">
-				<a href="/membership" class="btn-model vip-btn">查看我的会员等级</a>
+				<#if !isAppSource>
+                    <a href="/membership" class="btn-model vip-btn">查看我的会员等级</a>
+				<#else>
+                    <a href="app/tuotian/vip-center" class="btn-model vip-btn">查看我的会员等级</a>
+				</#if>
+
 			</div>
 		</div>
 		<div class="content-item right-item">
@@ -328,7 +345,12 @@
 				</li>
 			</ul>
 			<div class="btn-item">
-				<a href="/point-shop" class="btn-model">去往积分商城</a>
+				<#if !isAppSource>
+                    <a href="/point-shop" class="btn-model">去往积分商城</a>
+				<#else>
+                    <a href="app/tuotian/point-home" class="btn-model">去往积分商城</a>
+				</#if>
+
 			</div>
 		</div>
 		<dl class="rule-item">
