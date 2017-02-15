@@ -83,6 +83,7 @@ public class MobileAppUserMessageServiceTest extends ServiceTestBase {
         messageModel.setUserGroup(MessageUserGroup.ALL_USER);
         messageModel.setChannels(Lists.newArrayList(MessageChannel.APP_MESSAGE));
         messageModel.setStatus(MessageStatus.APPROVED);
+        messageModel.setValidStartTime(DateTime.parse("0001-01-01").toDate());
         messageModel.setValidEndTime(new DateTime(new Date()).plusDays(1).toDate());
         messageModel.setCreatedBy(loginName);
         messageModel.setCreatedTime(new Date());
