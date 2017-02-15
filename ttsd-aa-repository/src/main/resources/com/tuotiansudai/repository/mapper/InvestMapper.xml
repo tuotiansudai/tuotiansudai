@@ -1005,7 +1005,7 @@
     </select>
 
     <select id="countInvestorInvestAndTransferPagination" parameterType="map" resultType="long">
-        select invest.*
+        select count(1)
         from invest
         join loan on invest.loan_id = loan.id
         where invest.login_name = #{loginName}
@@ -1023,8 +1023,6 @@
         <if test="loanStatus.name() == 'RAISING' ">
             and loan.status in ('RAISING','RECHECK') and loan.product_type != 'EXPERIENCE'
         </if>
-        order by case when invest.trading_time is null then invest.created_time else invest.trading_time end desc,
-        invest.id asc
     </select>
 
 </mapper>
