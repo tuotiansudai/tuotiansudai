@@ -94,17 +94,19 @@ public class CouponAssignSmsNotifyMessageConsumer implements MessageConsumer {
 
     @Override
     public void consume(String message) {
+        logger.info(MessageFormat.format("CouponSmsNotify is consume, message:{0}", message));
         long couponId = Long.parseLong(message);
         CouponModel couponModel = couponMapper.findById(couponId);
         List<String> loginNames = this.getCollector(couponModel.getUserGroup()).collect(couponModel.getId());
 
         SmsCouponNotifyDto notifyDto = new SmsCouponNotifyDto();
         notifyDto.setAmount(AmountConverter.convertCentToString(couponModel.getAmount()));
-        notifyDto.setRate(new BigDecimal(couponModel.getRate() * 100).setScale(0, BigDecimal.ROUND_UP).toString());
+        notifyDto.setRate(String.format("%.1f", couponModel.getRate() * 100));
         notifyDto.setCouponType(couponModel.getCouponType());
         notifyDto.setExpiredDate(DateTime.now().plusDays(couponModel.getDeadline()).withTimeAtStartOfDay().toString("yyyy年MM月dd日"));
 
         for (String loginName : loginNames) {
+            logger.info(MessageFormat.format("Send coupon notify, loginName:{0}, couponId:{1}", loginName, String.valueOf(couponId)));
             String mobile = userMapper.findByLoginName(loginName).getMobile();
             notifyDto.setMobile(mobile);
             try {
