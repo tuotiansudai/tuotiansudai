@@ -5,9 +5,11 @@ import com.tuotiansudai.dto.sms.SmsCouponNotifyDto;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
 import com.tuotiansudai.util.JsonConverter;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
+import java.text.MessageFormat;
 
 public class CouponExpiredSmsNotifyMessageConsumer implements MessageConsumer {
 
@@ -19,14 +21,21 @@ public class CouponExpiredSmsNotifyMessageConsumer implements MessageConsumer {
         return MessageQueue.CouponSmsExpiredNotify;
     }
 
+    private static Logger logger = Logger.getLogger(CouponAssignSmsNotifyMessageConsumer.class);
+
     @Override
     public void consume(String message) {
         SmsCouponNotifyDto smsCouponNotifyDto;
         try {
             smsCouponNotifyDto = JsonConverter.readValue(message, SmsCouponNotifyDto.class);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            logger.error(MessageFormat.format("[CouponExpiredSmsNotifyMessageConsumer][consume]sms dto parse failed. message:{0}", message), e);
+            return;
         }
-        smsWrapperClient.sendCouponExpiredNotify(smsCouponNotifyDto);
+        try {
+            smsWrapperClient.sendCouponExpiredNotify(smsCouponNotifyDto);
+        } catch (Exception e) {
+            logger.error(MessageFormat.format("[CouponExpiredSmsNotifyMessageConsumer][consume]sms send failed. message:{0}", message), e);
+        }
     }
 }

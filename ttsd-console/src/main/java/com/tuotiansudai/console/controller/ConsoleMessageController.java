@@ -86,7 +86,10 @@ public class ConsoleMessageController {
     @RequestMapping(value = "/manual-message", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<BaseDataDto> createManualMessage(@RequestBody MessageCreateDto messageCreateDto) {
-        consoleMessageService.createOrUpdateManualMessage(LoginUserInfo.getLoginName(), messageCreateDto);
+        Long messageId = consoleMessageService.createOrUpdateManualMessage(LoginUserInfo.getLoginName(), messageCreateDto);
+        if (null == messageId) {
+            return new BaseDto<>(new BaseDataDto(false));
+        }
         return new BaseDto<>(new BaseDataDto(true));
     }
 

@@ -62,13 +62,13 @@ public class ConsoleMessageService {
     }
 
     @Transactional
-    public long createOrUpdateManualMessage(String loginName, MessageCreateDto messageCreateDto) {
+    public Long createOrUpdateManualMessage(String loginName, MessageCreateDto messageCreateDto) {
         Long messageId = messageCreateDto.getId();
         if (messageId == null) {
             Long pushId = this.createOrUpdatePush(loginName, messageCreateDto.getPush());
-            return this.createManualMessage(loginName, pushId, messageCreateDto);
+            return createManualMessage(loginName, pushId, messageCreateDto);
         }
-        this.updateManualMessage(loginName, messageCreateDto);
+        updateManualMessage(loginName, messageCreateDto);
 
         return messageId;
     }
@@ -139,7 +139,7 @@ public class ConsoleMessageService {
     }
 
     @SuppressWarnings(value = "unchecked")
-    private long createManualMessage(String createdBy, Long pushId, MessageCreateDto messageCreateDto) {
+    private Long createManualMessage(String createdBy, Long pushId, MessageCreateDto messageCreateDto) {
         Date validStartTime = null;
         Date validEndTime = null;
         try {
@@ -151,6 +151,9 @@ public class ConsoleMessageService {
             validEndTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(messageCreateDto.getValidEndTime());
         } catch (ParseException e) {
             logger.error(MessageFormat.format("[ConsoleMessageService][createManualMessage] create message {0} validEndTime fail, parse string:{1}", messageCreateDto.getId(), messageCreateDto.getValidEndTime()));
+        }
+        if (null == validStartTime || null == validEndTime) {
+            return null;
         }
         MessageModel messageModel = new MessageModel(messageCreateDto.getTitle(),
                 messageCreateDto.getTemplateTxt(),

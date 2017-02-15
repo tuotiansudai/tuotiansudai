@@ -142,6 +142,8 @@ require(['jquery', 'underscore', 'bootstrap', 'Validform', 'Validform_Datatype',
             }).done(function (res) {
                 if (res.data.status) {
                     location.href = "/message-manage/manual-message-list";
+                } else {
+                    alert("站内信创建失败!");
                 }
             });
         });
