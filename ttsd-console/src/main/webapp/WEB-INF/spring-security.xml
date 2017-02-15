@@ -51,6 +51,7 @@
         <intercept-url pattern="/user-manage/users-search" access="hasAnyAuthority('ADMIN', 'CUSTOMER_SERVICE', 'OPERATOR', 'OPERATOR_ADMIN')"/>
         <intercept-url pattern="/user-manage/user/*" access="hasAnyAuthority('ADMIN', 'CUSTOMER_SERVICE', 'OPERATOR', 'OPERATOR_ADMIN')"/>
         <intercept-url pattern="/user-manage/referrer/**" access="hasAnyAuthority('ADMIN', 'CUSTOMER_SERVICE', 'OPERATOR', 'OPERATOR_ADMIN')"/>
+        <intercept-url pattern="/user-manage/user-micro-model" access="hasAnyAuthority('ADMIN', 'OPERATOR', 'OPERATOR_ADMIN', 'DATA')"/>
         <intercept-url pattern="/finance-manage/invests/**" access="hasAnyAuthority('ADMIN', 'CUSTOMER_SERVICE', 'OPERATOR', 'OPERATOR_ADMIN')"/>
         <intercept-url pattern="/finance-manage/invest-repay/**" access="hasAnyAuthority('ADMIN','CUSTOMER_SERVICE', 'OPERATOR', 'OPERATOR_ADMIN')"/>
         <intercept-url pattern="/finance-manage/recharge/**" access="hasAnyAuthority('ADMIN', 'CUSTOMER_SERVICE', 'OPERATOR', 'OPERATOR_ADMIN')"/>

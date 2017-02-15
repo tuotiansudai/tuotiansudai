@@ -1,8 +1,8 @@
-package com.tuotiansudai.paywrapper.service.impl;
+package com.tuotiansudai.paywrapper.loanout.impl;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.paywrapper.exception.PayException;
-import com.tuotiansudai.paywrapper.service.RepayGeneratorService;
+import com.tuotiansudai.paywrapper.loanout.RepayGeneratorService;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;

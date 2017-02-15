@@ -1,7 +1,7 @@
 package com.tuotiansudai.paywrapper.extrarate.aspect;
 
 import com.tuotiansudai.paywrapper.extrarate.service.ExtraRateService;
-import com.tuotiansudai.paywrapper.extrarate.service.LoanOutInvestCalculationService;
+import com.tuotiansudai.paywrapper.loanout.LoanOutInvestCalculationService;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
@@ -53,15 +53,5 @@ public class ExtraRateAspect {
                 String.valueOf(loanRepayId), String.valueOf(returnValue)));
     }
 
-    @AfterReturning(value = "execution(* *..LoanService.postLoanOut(*))", returning = "returnValue")
-    public void afterReturningLoanOutInvestCalculation(JoinPoint joinPoint, boolean returnValue) {
-        if (returnValue) {
-            final long loanId = (long) joinPoint.getArgs()[0];
-            logger.info(MessageFormat.format("[extra rate loan:{0}] aspect is starting",loanId));
-            investExtraRateService.rateIncreases(loanId);
-            logger.info(MessageFormat.format("[extra rate loan:{0}] aspect is end", loanId));
-        }
-
-    }
 }
 
