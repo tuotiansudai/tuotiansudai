@@ -155,10 +155,6 @@ public class PayWrapperClient extends BaseClient {
         return syncExecute(notifyRequestId, "/job/async_advance_repay_notify", "POST");
     }
 
-    public BaseDto<PayDataDto> couponRepayCallback() {
-        return syncExecute(null, "/job/async_coupon_repay_notify", "POST");
-    }
-
     public BaseDto<PayDataDto> extraRateInvestCallback() {
         return syncExecute(null, "/job/async_extra_rate_invest_notify", "POST");
     }
@@ -392,5 +388,9 @@ public class PayWrapperClient extends BaseClient {
 
     public BaseDto<PayDataDto> couponRepayAfterNormalRepay(long loanRepayId){
         return syncExecute(String.valueOf(loanRepayId), "/normal-repay/coupon-repay", "POST");
+    }
+
+    public BaseDto<PayDataDto> couponRepayCallbackAfterNormalRepay(long notifyRequestId){
+        return syncExecute(String.valueOf(notifyRequestId), "/normal-repay/async_coupon_repay_notify", "POST");
     }
 }

@@ -21,7 +21,7 @@ public class NormalRepaySuccessController {
 
     @ResponseBody
     @RequestMapping(value = "/coupon-repay", method = RequestMethod.POST)
-    public BaseDto<PayDataDto> sendRewardReferrer(@RequestBody long loanRepayId) {
+    public BaseDto<PayDataDto> couponRepay(@RequestBody long loanRepayId) {
         boolean isSuccess = true;
         try {
             couponRepayService.repay(loanRepayId,false);
@@ -34,6 +34,12 @@ public class NormalRepaySuccessController {
         dto.setData(dataDto);
         dataDto.setStatus(isSuccess);
         return dto;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/async_coupon_repay_notify", method = RequestMethod.POST)
+    public BaseDto<PayDataDto> asyncCouponRepayNotify(@RequestBody long notifyRequestId) {
+        return this.couponRepayService.asyncCouponRepayCallback(notifyRequestId);
     }
 
 }

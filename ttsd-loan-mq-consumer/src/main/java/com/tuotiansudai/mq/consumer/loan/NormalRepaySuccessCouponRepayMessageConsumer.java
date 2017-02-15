@@ -62,7 +62,7 @@ public class NormalRepaySuccessCouponRepayMessageConsumer implements MessageCons
         }
         if (!baseDto.isSuccess()) {
             smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(MessageFormat.format("正常还款发放优惠券收益失败,还款ID:{0}", String.valueOf(loanRepayId))));
-            logger.error(MessageFormat.format("[标的正常还款MQ] NormalRepaySuccess_CouponRepay is fail. loanId:{0}", String.valueOf(loanRepayId)));
+            logger.error("[标的正常还款MQ] NormalRepaySuccess_CouponRepay is fail. loanId:{}", String.valueOf(loanRepayId));
             throw new RuntimeException("[标的正常还款MQ] NormalRepaySuccess_CouponRepay is fail. loanOutInfo: " + message);
         }
 
