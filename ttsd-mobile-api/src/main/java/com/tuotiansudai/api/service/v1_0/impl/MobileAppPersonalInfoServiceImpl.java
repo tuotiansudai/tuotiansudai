@@ -118,7 +118,7 @@ public class MobileAppPersonalInfoServiceImpl implements MobileAppPersonalInfoSe
         } else {
             personalInfoDataDto.setIsExperienceEnable(false);
         }
-        if (investMapper.sumSuccessInvestCountByLoginName(user.getLoginName(), true) > 0) {
+        if (investMapper.sumSuccessInvestCountByLoginName(user.getLoginName()) > 0) {
             personalInfoDataDto.setIsNewbieEnable(false);
         } else {
             personalInfoDataDto.setIsNewbieEnable(true);

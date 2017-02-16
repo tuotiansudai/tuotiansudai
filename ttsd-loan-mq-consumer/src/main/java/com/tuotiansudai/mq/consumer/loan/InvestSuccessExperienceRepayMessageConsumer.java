@@ -82,7 +82,7 @@ public class InvestSuccessExperienceRepayMessageConsumer implements MessageConsu
     }
 
     private boolean isExperienceInterestConditionAvailable(String loginName) {
-        long investAmount = investMapper.sumSuccessInvestCountByLoginName(loginName, false);
+        long investAmount = investMapper.sumSuccessInvestAmountByLoginName(null,loginName,false);
         if (investAmount < INVEST_LIMIT) {
             return false;
         }

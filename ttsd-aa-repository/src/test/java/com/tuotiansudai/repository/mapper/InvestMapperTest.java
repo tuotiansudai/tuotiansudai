@@ -222,7 +222,7 @@ public class InvestMapperTest {
         investModel3.setInvestTime(DateUtils.addHours(new Date(), -3));
         investMapper.create(investModel3);
 
-        int newbieInvestCount = investMapper.sumSuccessInvestCountByLoginName(User_ID2, true);
+        int newbieInvestCount = investMapper.sumSuccessInvestCountByLoginName(User_ID2);
         assert newbieInvestCount == 3;
     }
 
@@ -240,13 +240,13 @@ public class InvestMapperTest {
         InvestModel fakeInvestModel = getFakeInvestModel();
         fakeInvestModel.setStatus(InvestStatus.SUCCESS);
         investMapper.create(fakeInvestModel);
-        long amount = investMapper.sumSuccessInvestAmountByLoginName(null, User_ID);
+        long amount = investMapper.sumSuccessInvestAmountByLoginName(null, User_ID,true);
         assertTrue(amount > 0);
     }
 
     @Test
     public void shouldHasNoSuccessInvest() throws Exception {
-        long amount = investMapper.sumSuccessInvestAmountByLoginName(null, User_ID);
+        long amount = investMapper.sumSuccessInvestAmountByLoginName(null, User_ID,true);
         assertTrue(amount == 0);
     }
 

@@ -193,7 +193,7 @@ public class InvestServiceImpl implements InvestService {
             throw new InvestException(InvestExceptionType.EXCEED_MONEY_NEED_RAISED);
         }
 
-        long userInvestAmount = investMapper.sumSuccessInvestAmountByLoginName(loanId, investDto.getLoginName());
+        long userInvestAmount = investMapper.sumSuccessInvestAmountByLoginName(loanId, investDto.getLoginName(),true);
 
         // 不满足单用户投资限额
         if (investAmount > userInvestMaxAmount - userInvestAmount) {
@@ -269,7 +269,7 @@ public class InvestServiceImpl implements InvestService {
     }
 
     private boolean canInvestNewbieLoan(String loginName) {
-        int newbieInvestCount = investMapper.sumSuccessInvestCountByLoginName(loginName, true);
+        int newbieInvestCount = investMapper.sumSuccessInvestCountByLoginName(loginName);
         return Lists.newArrayList("zr0612", "liangjinhua").contains(loginName.toLowerCase()) || newbieInvestLimit == 0 || newbieInvestCount < newbieInvestLimit;
     }
 

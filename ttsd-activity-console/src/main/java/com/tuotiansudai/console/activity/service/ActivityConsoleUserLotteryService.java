@@ -88,7 +88,7 @@ public class ActivityConsoleUserLotteryService {
         return lotteryPrizeViewList.stream()
                 .filter((UserLotteryPrizeView userLotteryPrizeView) -> isSpecialAuthType(authenticationType, userLotteryPrizeView))
                 .map(userLotteryPrizeView -> {
-                    userLotteryPrizeView.setInvestFlag(investMapper.sumSuccessInvestCountByLoginName(userLotteryPrizeView.getLoginName(), true) > 0 ? "是" : "否");
+                    userLotteryPrizeView.setInvestFlag(investMapper.sumSuccessInvestCountByLoginName(userLotteryPrizeView.getLoginName()) > 0 ? "是" : "否");
                     return userLotteryPrizeView;
                 }).collect(Collectors.toList());
     }

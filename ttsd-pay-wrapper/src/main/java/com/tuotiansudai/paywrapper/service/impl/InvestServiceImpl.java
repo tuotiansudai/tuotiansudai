@@ -447,7 +447,7 @@ public class InvestServiceImpl implements InvestService {
                     logger.info("auto invest was skip, because user [" + autoInvestPlanModel.getLoginName() + "] has auto-invest-ed on this loan : " + loanId);
                     continue;
                 }
-                long availableSelfLoanAmount = loanModel.getMaxInvestAmount() - investMapper.sumSuccessInvestAmountByLoginName(loanId, autoInvestPlanModel.getLoginName());
+                long availableSelfLoanAmount = loanModel.getMaxInvestAmount() - investMapper.sumSuccessInvestAmountByLoginName(loanId, autoInvestPlanModel.getLoginName(),true);
                 if (availableSelfLoanAmount <= 0) {
                     logger.info("auto invest was skip, because amount that user [" + autoInvestPlanModel.getLoginName() + "] has invested was reach max-invest-amount , loanId : " + loanId);
                     continue;
@@ -477,7 +477,7 @@ public class InvestServiceImpl implements InvestService {
     }
 
     private boolean canInvestNewbieLoan(String loginName) {
-        int newbieInvestCount = investMapper.sumSuccessInvestCountByLoginName(loginName, true);
+        int newbieInvestCount = investMapper.sumSuccessInvestCountByLoginName(loginName);
         return newbieInvestLimit == 0 || newbieInvestCount < newbieInvestLimit;
     }
 

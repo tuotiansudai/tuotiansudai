@@ -178,7 +178,7 @@ public class ActivityConsoleExportService {
                         userLotteryPrizeView.getMobile(),
                         new DateTime(userLotteryPrizeView.getLotteryTime()).toString("yyyy-MM-dd HH:mm:ss"),
                         userLotteryPrizeView.getUserName(),
-                        investMapper.sumSuccessInvestCountByLoginName(userLotteryPrizeView.getLoginName(), true) > 0 ? "是" : "否")));
+                        investMapper.sumSuccessInvestCountByLoginName(userLotteryPrizeView.getLoginName()) > 0 ? "是" : "否")));
         return rows;
     }
 

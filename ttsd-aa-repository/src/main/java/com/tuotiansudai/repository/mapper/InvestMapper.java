@@ -169,10 +169,11 @@ public interface InvestMapper {
                                                          @Param(value = "endTime") Date endTime,
                                                          @Param(value = "productTypeList") List<ProductType> productTypeList);
 
-    long sumSuccessInvestAmountByLoginName(@Param(value = "loanId") Long loanId, @Param(value = "loginName") String loginName);
+    long sumSuccessInvestAmountByLoginName(@Param(value = "loanId") Long loanId,
+                                           @Param(value = "loginName") String loginName,
+                                           @Param(value = "includeTransferInvest") boolean includeTransferInvest);
 
-    int sumSuccessInvestCountByLoginName(@Param(value = "loginName") String loginName,
-                                         @Param(value = "includeTransferInvest") boolean includeTransferInvest);
+    int sumSuccessInvestCountByLoginName(@Param(value = "loginName") String loginName);
 
     long countSuccessInvest(@Param(value = "loanId") Long loanId);
 

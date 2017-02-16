@@ -178,7 +178,7 @@ public class PointTaskServiceImpl implements PointTaskService {
                 pointTaskDto.setUrl(this.getTaskUrl(pointTask));
                 switch (pointTask) {
                     case EACH_SUM_INVEST:
-                        long sumSuccessInvestAmount = investMapper.sumSuccessInvestAmountByLoginName(null, loginName);
+                        long sumSuccessInvestAmount = investMapper.sumSuccessInvestAmountByLoginName(null, loginName,true);
                         pointTaskDto.setTitle(MessageFormat.format(pointTask.getTitle(), AmountConverter.convertCentToString(SUM_INVEST_5000_AMOUNT)));
                         pointTaskDto.setPoint(SUM_INVEST_5000_POINT);
                         pointTaskDto.setDescription(MessageFormat.format("还差<span class='color-key'>{0}元</span>即可获得奖励", AmountConverter.convertCentToString(SUM_INVEST_5000_AMOUNT - sumSuccessInvestAmount)));
@@ -277,7 +277,7 @@ public class PointTaskServiceImpl implements PointTaskService {
             case FIRST_RECHARGE:
                 return rechargeMapper.findSumSuccessRechargeByLoginName(loginName) > 0;
             case FIRST_INVEST:
-                return investMapper.sumSuccessInvestAmountByLoginName(null, loginName) > 0;
+                return investMapper.sumSuccessInvestAmountByLoginName(null, loginName,true) > 0;
         }
 
         return false;
@@ -292,7 +292,7 @@ public class PointTaskServiceImpl implements PointTaskService {
         switch (pointTask) {
             case EACH_SUM_INVEST:
                 //只能完成一次
-                long sumInvestAmount = investMapper.sumSuccessInvestAmountByLoginName(null, loginName);
+                long sumInvestAmount = investMapper.sumSuccessInvestAmountByLoginName(null, loginName,true);
                 return CollectionUtils.isEmpty(userPointTaskMapper.findByLoginNameAndTask(loginName, pointTask)) && (sumInvestAmount >= SUM_INVEST_5000_AMOUNT);
             case FIRST_SINGLE_INVEST:
                 //只能完成一次
@@ -300,7 +300,7 @@ public class PointTaskServiceImpl implements PointTaskService {
             case EACH_RECOMMEND_REGISTER:
                 return true;
             case EACH_RECOMMEND_INVEST:
-                if(investMapper.sumSuccessInvestCountByLoginName(loginName, false) == 1){
+                if(investMapper.sumSuccessInvestCountByLoginName(loginName) == 1){
                     return true;
                 }
                 break;
