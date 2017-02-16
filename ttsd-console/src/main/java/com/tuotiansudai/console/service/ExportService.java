@@ -4,15 +4,13 @@ import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.console.dto.UserItemDataDto;
-import com.tuotiansudai.dto.CouponDto;
-import com.tuotiansudai.dto.ExchangeCouponDto;
+import com.tuotiansudai.console.repository.model.UserMicroModelView;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.point.repository.dto.ProductOrderDto;
 import com.tuotiansudai.point.repository.model.PointPrizeWinnerViewDto;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.ExportCsvUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -304,15 +302,10 @@ public class ExportService {
             row.add(record.isReferrerStaff() ? "是" : "否");
             row.add(record.getSource() != null ? record.getSource().name() : "");
             row.add(record.getChannel());
-            row.add(new DateTime(record.getRegisterTime()).toString("yyyy-MM-dd HH:mm"));
+            row.add(new DateTime(record.getRegisterTime()).toString("yyyy-MM-dd HH:mm:ss"));
             row.add("1".equals(record.getAutoInvestStatus()) ? "是" : "否");
             List<UserRoleModel> userRoleModels = record.getUserRoles();
-            List<String> userRole = Lists.transform(userRoleModels, new Function<UserRoleModel, String>() {
-                @Override
-                public String apply(UserRoleModel model) {
-                    return model.getRole().getDescription();
-                }
-            });
+            List<String> userRole = Lists.transform(userRoleModels, model -> model.getRole().getDescription());
             row.add(StringUtils.join(userRole, ";"));
             row.add(UserStatus.ACTIVE.equals(record.getStatus()) ? "正常" : "禁用");
             row.add(record.getBirthday());
@@ -362,7 +355,7 @@ public class ExportService {
         for (RechargePaginationItemDataDto record : records) {
             List<String> row = Lists.newArrayList();
             row.add(new BigDecimal(record.getRechargeId()).toString());
-            row.add(new DateTime(record.getCreatedTime()).toString("yyyy-MM-dd HH:mm"));
+            row.add(new DateTime(record.getCreatedTime()).toString("yyyy-MM-dd HH:mm:ss"));
             row.add(record.getLoginName());
             row.add(record.isStaff() ? "是" : "否");
             row.add(record.getUserName());
@@ -383,9 +376,9 @@ public class ExportService {
         for (WithdrawPaginationItemDataDto record : records) {
             List<String> row = Lists.newArrayList();
             row.add(new BigDecimal(record.getWithdrawId()).toString());
-            row.add(new DateTime(record.getCreatedTime()).toString("yyyy-MM-dd HH:mm"));
-            row.add(new DateTime(record.getApplyNotifyTime()).toString("yyyy-MM-dd HH:mm"));
-            row.add(new DateTime(record.getNotifyTime()).toString("yyyy-MM-dd HH:mm"));
+            row.add(new DateTime(record.getCreatedTime()).toString("yyyy-MM-dd HH:mm:ss"));
+            row.add(new DateTime(record.getApplyNotifyTime()).toString("yyyy-MM-dd HH:mm:ss"));
+            row.add(new DateTime(record.getNotifyTime()).toString("yyyy-MM-dd HH:mm:ss"));
             row.add(record.getLoginName());
             row.add(record.isStaff() ? "是" : "否");
             row.add(record.getUserName());
@@ -526,18 +519,18 @@ public class ExportService {
         return rows;
     }
 
-    public List<List<String>> buildCouponDetailsDtoList(List<CouponDetailsDto> couponDetailsDtoList){
+    public List<List<String>> buildCouponDetailsDtoList(List<CouponDetailsDto> couponDetailsDtoList) {
         List<List<String>> rows = Lists.newArrayList();
         int index = 1;
 
         long investAmount = 0l;
         long interest = 0l;
-        for(CouponDetailsDto couponDetailsDto : couponDetailsDtoList){
+        for (CouponDetailsDto couponDetailsDto : couponDetailsDtoList) {
             investAmount += couponDetailsDto.getInvestAmount() != null ? couponDetailsDto.getInvestAmount() : 0l;
             interest += couponDetailsDto.getAnnualInterest() != null ? couponDetailsDto.getAnnualInterest() : 0l;
         }
 
-        for(CouponDetailsDto couponDetailsDto : couponDetailsDtoList){
+        for (CouponDetailsDto couponDetailsDto : couponDetailsDtoList) {
             List<String> row = Lists.newArrayList();
             row.add(couponDetailsDto.getLoginName());
             row.add(new DateTime(couponDetailsDto.getUsedTime()).toString("yyyy-MM-dd HH:mm:ss"));
@@ -546,14 +539,44 @@ public class ExportService {
             row.add(couponDetailsDto.getProductType() != null ? couponDetailsDto.getProductType().getDuration() + "天" : "未使用");
             row.add(couponDetailsDto.getLoanId() != null ? String.valueOf(couponDetailsDto.getLoanId()) : "未使用");
             row.add(couponDetailsDto.getLoanName() != null ? String.valueOf(couponDetailsDto.getLoanName()) : "未使用");
-            if(index == 1){
+            if (index == 1) {
                 row.add(String.valueOf(investAmount));
                 row.add(String.valueOf(interest));
-            }else{
+            } else {
                 row.add("0");
                 row.add("0");
             }
             index++;
+            rows.add(row);
+        }
+        return rows;
+    }
+
+    public List<List<String>> buildUserMicroModelDtoList(List<UserMicroModelView> userMicroModelViews) {
+        List<List<String>> rows = Lists.newArrayList();
+
+        for (UserMicroModelView userMicroModelView : userMicroModelViews) {
+            List<String> row = Lists.newArrayList();
+            row.add(userMicroModelView.getUserName());
+            row.add(userMicroModelView.getMobile());
+            row.add(userMicroModelView.getChannel());
+            row.add(new DateTime(userMicroModelView.getRegisterTime()).toString("yyyy-MM-dd HH:mm:ss"));
+            row.add(String.valueOf(userMicroModelView.getNoInvestPeriod()));
+            row.add(userMicroModelView.isInvested() ? "是" : "否");
+            row.add(String.valueOf(((double) userMicroModelView.getTotalInvestAmount()) / 100));
+            row.add(String.valueOf(userMicroModelView.getInvestCount()));
+            row.add(userMicroModelView.getAverageInvestAmount() != null ? String.valueOf(userMicroModelView.getAverageInvestAmount()) : "-");
+            row.add(String.valueOf(userMicroModelView.getLoanCount()));
+            row.add(userMicroModelView.getAverageLoanInvestAmount() != null ? String.valueOf(userMicroModelView.getAverageLoanInvestAmount()) : "-");
+            row.add(userMicroModelView.getTransformPeriod() != null ? String.valueOf(userMicroModelView.getTransformPeriod()) : "-");
+            row.add(userMicroModelView.getInvest1st2ndTiming() != null ? String.valueOf(userMicroModelView.getInvest1st2ndTiming()) : "-");
+            row.add(userMicroModelView.getInvest1st3rdTiming() != null ? String.valueOf(userMicroModelView.getInvest1st3rdTiming()) : "-");
+            row.add(new DateTime(userMicroModelView.getLastInvestTime()).toString("yyyy-MM-dd HH:mm:ss"));
+            row.add(String.valueOf(((double) userMicroModelView.getTotalRepayingAmount()) / 100));
+            row.add(new DateTime(userMicroModelView.getLastLoginTime()).toString("yyyy-MM-dd HH:mm:ss"));
+            row.add(userMicroModelView.getLastLoginToNow() != null ? String.valueOf(userMicroModelView.getLastLoginToNow()) : "-");
+            row.add(userMicroModelView.getLastLoginSource() != null ? userMicroModelView.getLastLoginSource().name() : "-");
+
             rows.add(row);
         }
         return rows;

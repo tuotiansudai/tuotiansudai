@@ -18,7 +18,7 @@ public class SmsCouponNotifyDto implements Serializable {
     private String amount;
 
     @NotEmpty
-    @Pattern(regexp = "^\\d+$")
+    @Pattern(regexp = "^\\d+(\\.\\d{1,2})?$")
     private String rate;
 
     @NotNull

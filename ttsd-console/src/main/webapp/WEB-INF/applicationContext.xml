@@ -244,8 +244,7 @@
     <!-- define the SqlSessionFactory -->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="hikariCPDataSource"/>
-        <property name="typeAliasesPackage" value="com.tuotiansudai.repository.model,com.tuotiansudai.console.bi.repository.model,
-                                                   com.tuotiansudai.membership.repository.model"/>
+        <property name="typeAliasesPackage" value="com.tuotiansudai.repository.model, com.tuotiansudai.console.bi.repository.model, com.tuotiansudai.membership.repository.model, com.tuotiansudai.console.repository.model"/>
         <property name="configLocation" value="WEB-INF/mybatis-configuration.xml"/>
     </bean>
 

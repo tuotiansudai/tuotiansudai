@@ -9,30 +9,31 @@ import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.console.bi.dto.RoleStage;
 import com.tuotiansudai.console.dto.RemainUserDto;
 import com.tuotiansudai.console.dto.UserItemDataDto;
+import com.tuotiansudai.console.repository.model.UserMicroModelView;
 import com.tuotiansudai.console.repository.model.UserOperation;
 import com.tuotiansudai.console.service.ConsoleUserService;
-import com.tuotiansudai.repository.model.UserGroup;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.EditUserDto;
+import com.tuotiansudai.enums.OperationType;
 import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.exception.BaseException;
 import com.tuotiansudai.log.service.AuditLogService;
 import com.tuotiansudai.membership.service.UserMembershipService;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.service.*;
+import com.tuotiansudai.service.BindBankCardService;
+import com.tuotiansudai.service.ImpersonateService;
+import com.tuotiansudai.service.InvestService;
+import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.spring.security.SignInClient;
 import com.tuotiansudai.task.OperationTask;
-import com.tuotiansudai.enums.OperationType;
 import com.tuotiansudai.task.TaskConstant;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.RequestIPParser;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.beans.factory.support.MethodOverride;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -267,18 +268,107 @@ public class UserController {
     @ResponseBody
     public long queryUserMembershipByLevelCount(@RequestParam(value = "userGroup") UserGroup userGroup) {
         long level = MEMBERSHIP_V0;
-        if(userGroup.equals(UserGroup.MEMBERSHIP_V1)){
+        if (userGroup.equals(UserGroup.MEMBERSHIP_V1)) {
             level = MEMBERSHIP_V1;
-        }else if (userGroup.equals(UserGroup.MEMBERSHIP_V2)){
+        } else if (userGroup.equals(UserGroup.MEMBERSHIP_V2)) {
             level = MEMBERSHIP_V2;
-        }else if (userGroup.equals(UserGroup.MEMBERSHIP_V3)){
+        } else if (userGroup.equals(UserGroup.MEMBERSHIP_V3)) {
             level = MEMBERSHIP_V3;
-        }else if (userGroup.equals(UserGroup.MEMBERSHIP_V4)){
+        } else if (userGroup.equals(UserGroup.MEMBERSHIP_V4)) {
             level = MEMBERSHIP_V4;
-        }else if (userGroup.equals(UserGroup.MEMBERSHIP_V5)){
+        } else if (userGroup.equals(UserGroup.MEMBERSHIP_V5)) {
             level = MEMBERSHIP_V5;
         }
         return userMembershipService.findCountMembershipByLevel(level);
+    }
+
+    @RequestMapping(value = "/user-micro-model", method = RequestMethod.GET)
+    public ModelAndView userMicroModel(
+            @RequestParam(value = "mobile", required = false) String mobile,
+            @RequestParam(value = "registerTimeStart", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date registerTimeStart,
+            @RequestParam(value = "registerTimeEnd", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date registerTimeEnd,
+            @RequestParam(value = "hasCertify", required = false) String hasCertify,
+            @RequestParam(value = "invested", required = false) String invested,
+            @RequestParam(value = "totalInvestAmountStart", required = false) Long totalInvestAmountStart,
+            @RequestParam(value = "totalInvestAmountEnd", required = false) Long totalInvestAmountEnd,
+            @RequestParam(value = "investCountStart", required = false) Integer investCountStart,
+            @RequestParam(value = "investCountEnd", required = false) Integer investCountEnd,
+            @RequestParam(value = "loanCountStart", required = false) Integer loanCountStart,
+            @RequestParam(value = "loanCountEnd", required = false) Integer loanCountEnd,
+            @RequestParam(value = "transformPeriodStart", required = false) Integer transformPeriodStart,
+            @RequestParam(value = "transformPeriodEnd", required = false) Integer transformPeriodEnd,
+            @RequestParam(value = "invest1st2ndTimingStart", required = false) Integer invest1st2ndTimingStart,
+            @RequestParam(value = "invest1st2ndTimingEnd", required = false) Integer invest1st2ndTimingEnd,
+            @RequestParam(value = "invest1st3ndTimingStart", required = false) Integer invest1st3ndTimingStart,
+            @RequestParam(value = "invest1st3ndTimingEnd", required = false) Integer invest1st3ndTimingEnd,
+            @RequestParam(value = "lastInvestTimeStart", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date lastInvestTimeStart,
+            @RequestParam(value = "lastInvestTimeEnd", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date lastInvestTimeEnd,
+            @RequestParam(value = "repayingAmountStart", required = false) Long repayingAmountStart,
+            @RequestParam(value = "repayingAmountEnd", required = false) Long repayingAmountEnd,
+            @RequestParam(value = "lastLoginTimeStart", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date lastLoginTimeStart,
+            @RequestParam(value = "lastLoginTimeEnd", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date lastLoginTimeEnd,
+            @RequestParam(value = "lastLoginSource", required = false) Source lastLoginSource,
+            @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
+
+        int pageSize = 10;
+        BaseDto<BasePaginationDataDto<UserMicroModelView>> baseDto = consoleUserService.queryUserMicroView(mobile,
+                registerTimeStart,
+                registerTimeEnd,
+                hasCertify,
+                invested,
+                totalInvestAmountStart == null ? null : totalInvestAmountStart * 100,
+                totalInvestAmountEnd == null ? null : totalInvestAmountEnd * 100,
+                investCountStart,
+                investCountEnd,
+                loanCountStart,
+                loanCountEnd,
+                transformPeriodStart,
+                transformPeriodEnd,
+                invest1st2ndTimingStart,
+                invest1st2ndTimingEnd,
+                invest1st3ndTimingStart,
+                invest1st3ndTimingEnd,
+                lastInvestTimeStart,
+                lastInvestTimeEnd,
+                repayingAmountStart == null ? null : repayingAmountStart * 100,
+                repayingAmountEnd == null ? null : repayingAmountEnd * 100,
+                lastLoginTimeStart,
+                lastLoginTimeEnd,
+                lastLoginSource,
+                index,
+                pageSize);
+
+        ModelAndView mv = new ModelAndView("/user-micro-model");
+        mv.addObject("baseDto", baseDto);
+        mv.addObject("mobile", mobile);
+        mv.addObject("registerTimeStart", registerTimeStart);
+        mv.addObject("registerTimeEnd", registerTimeEnd);
+        mv.addObject("hasCertify", hasCertify);
+        mv.addObject("invested", invested);
+        mv.addObject("totalInvestAmountStart", totalInvestAmountStart);
+        mv.addObject("totalInvestAmountEnd", totalInvestAmountEnd);
+        mv.addObject("investCountStart", investCountStart);
+        mv.addObject("investCountEnd", investCountEnd);
+        mv.addObject("loanCountStart", loanCountStart);
+        mv.addObject("loanCountEnd", loanCountEnd);
+        mv.addObject("transformPeriodStart", transformPeriodStart);
+        mv.addObject("transformPeriodEnd", transformPeriodEnd);
+        mv.addObject("invest1st2ndTimingStart", invest1st2ndTimingStart);
+        mv.addObject("invest1st2ndTimingEnd", invest1st2ndTimingEnd);
+        mv.addObject("invest1st3ndTimingStart", invest1st3ndTimingStart);
+        mv.addObject("invest1st3ndTimingEnd", invest1st3ndTimingEnd);
+        mv.addObject("lastInvestTimeStart", lastInvestTimeStart);
+        mv.addObject("lastInvestTimeEnd", lastInvestTimeEnd);
+        mv.addObject("repayingAmountStart", repayingAmountStart);
+        mv.addObject("repayingAmountEnd", repayingAmountEnd);
+        mv.addObject("lastLoginTimeStart", lastLoginTimeStart);
+        mv.addObject("lastLoginTimeEnd", lastLoginTimeEnd);
+        mv.addObject("lastLoginSource", lastLoginSource);
+        mv.addObject("index", index);
+        mv.addObject("pageSize", pageSize);
+
+        mv.addObject("sourceList", Source.values());
+        return mv;
     }
 
     @RequestMapping(value = "/remain-users", method = RequestMethod.GET)
