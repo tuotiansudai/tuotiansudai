@@ -27,7 +27,6 @@ public class CallBackController {
         FrontCallbackService frontCallbackService = FrontCallbackService.getService(service);
         Map<String, String> paramsMap = this.parseRequestParameters(request);
         String retCode = paramsMap.get("ret_code");
-        String orderId = paramsMap.get("order_id");
         Map<String, String> retMaps = Maps.newHashMap();
         if ("0000".equals(retCode)) {
             retMaps = this.frontMessageByService(frontCallbackService, true, "");
@@ -37,7 +36,6 @@ public class CallBackController {
         }
         mv.addObject("message", retMaps.get("message"));
         mv.addObject("service", service);
-        mv.addObject("orderId", orderId);
         return mv;
     }
 
@@ -54,7 +52,6 @@ public class CallBackController {
 
     private Map<String, String> frontMessageByService(FrontCallbackService service, boolean isCallbackSuccess, String retMsg) {
         Map<String, String> retMaps = Maps.newHashMap();
-
         retMaps.put("message", isCallbackSuccess ? service.getMessage() : retMsg);
         return retMaps;
     }

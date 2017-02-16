@@ -7,19 +7,34 @@
             <i class="success-icon"></i>
         </p>
 
-        <p> 提交成功！</p>
+        <p> ${message}</p>
+
         <#if "ptp_mer_bind_card" == service>
-            <p>3秒后将自动返回个人资料，如果没有跳转，您可以 <a href="/personal-info">点击这里</a></p>
+            <p><span id="time">3</span>秒后将自动返回"个人资料"，如果没有跳转，您可以 <a href="/personal-info">点击这里</a></p>
             <p>您还可以 <a href="/recharge">去充值</a></p>
         </#if>
 
         <#if "ptp_mer_replace_card" == service>
             <p>您的换卡申请已提交，换卡申请最快两小时处理完成。</p>
-            <p>3秒后将自动返回个人资料，如果没有跳转，您可以 <a href="/personal-info">点击这里</a></p>
+            <p><span id="time">3</span>秒后将自动返回个人资料，如果没有跳转，您可以 <a href="/personal-info">点击这里</a></p>
         </#if>
 
         <p class="fix-nav">如有其它疑问请致电客服 400-169-1188（服务时间：9:00-20:00）</p>
     </div>
 
 </div>
+<script type="text/javascript">
+    delayURL();
+    function delayURL() {
+        var delay = document.getElementById("time").innerHTML;
+        var t = setTimeout("delayURL()", 1000);
+        if (delay > 0) {
+            delay--;
+            document.getElementById("time").innerHTML = delay;
+        } else {
+            clearTimeout(t);
+            window.location.href = "/personal-info";
+        }
+    }
+</script>
 </@global.main>
