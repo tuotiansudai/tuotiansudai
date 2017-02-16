@@ -92,6 +92,7 @@ require(['jquery', 'load_echarts','layerWrapper','jquery.ajax.extension'], funct
                     $signBtn.parent().addClass("no-click").find('span').removeClass('will-sign').addClass('finish-sign').html("已签到");
                     $signPoint.find('span').html('+'+response.data.signInPoint);
                     $signTip.fadeIn('fast');
+                    $("#MyAvailablePoint").text(Math.round($("#MyAvailablePoint").text()) + Math.round(response.data.signInPoint));
                 } else {
                     $('#errorTip').html(tpl('errorTipTpl', response.data));
                     layer.open({
