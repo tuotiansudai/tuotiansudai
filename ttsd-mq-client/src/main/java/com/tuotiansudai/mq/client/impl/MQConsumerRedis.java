@@ -36,7 +36,7 @@ public class MQConsumerRedis extends MQConsumer {
             // 异常则计数，正常则清零
             errorCount = result ? 0 : errorCount + 1;
             // 失败超过阈值则暂停订阅
-            pauseSubscribeIfExceeds(queue, errorCount);
+//            pauseSubscribeIfExceeds(queue, errorCount);
         }
         jedis.close();
     }
