@@ -66,6 +66,8 @@ public class PaySyncClient implements ApplicationContextAware {
             Response response = httpClient.newCall(request).execute();
             updateRequestStatus(baseMapperClass, requestModel.getId(), SyncRequestStatus.SUCCESS);
             responseBodyString = response.body().string();
+            
+            logger.info(responseBodyString);
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage(), e);
             updateRequestStatus(baseMapperClass, requestModel.getId(), SyncRequestStatus.FAILURE);
