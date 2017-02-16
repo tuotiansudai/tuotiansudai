@@ -5,6 +5,7 @@ import com.tuotiansudai.console.bi.dto.RoleStage;
 import com.tuotiansudai.console.bi.dto.UserStage;
 import com.tuotiansudai.console.bi.repository.model.InvestViscosityDetailView;
 import com.tuotiansudai.console.bi.repository.model.KeyValueModel;
+import com.tuotiansudai.enums.Role;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -16,7 +17,7 @@ public interface BusinessIntelligenceMapper {
     List<KeyValueModel> queryUserRegisterTrend(@Param("startTime") Date startTime, @Param("endTime") Date endTime, @Param("granularity") Granularity granularity,
                                                @Param("province") String province, @Param("userStage") UserStage userStage, @Param("roleStage") RoleStage roleStage, @Param("channel") String channel);
 
-    List<KeyValueModel> queryUserRechargeTrend(@Param("startTime") Date startTime, @Param("endTime") Date endTime, @Param("granularity") Granularity granularity, @Param("province") String province);
+    List<KeyValueModel> queryUserRechargeTrend(@Param("startTime") Date startTime, @Param("endTime") Date endTime, @Param("granularity") Granularity granularity, @Param("province") String province, @Param("role") Role role);
 
     List<KeyValueModel> queryUserWithdrawTrend(@Param("startTime") Date startTime, @Param("endTime") Date endTime, @Param("granularity") Granularity granularity, @Param("province") String province);
 

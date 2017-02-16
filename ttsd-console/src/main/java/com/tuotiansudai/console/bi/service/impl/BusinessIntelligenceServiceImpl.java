@@ -13,6 +13,7 @@ import com.tuotiansudai.console.bi.repository.model.KeyValueModel;
 import com.tuotiansudai.console.bi.service.BusinessIntelligenceService;
 import com.tuotiansudai.console.service.ConsoleInvestService;
 import com.tuotiansudai.console.service.ConsoleUserService;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.util.SerializeUtil;
 import org.apache.commons.collections4.ListUtils;
 import org.apache.commons.collections4.Predicate;
@@ -93,13 +94,13 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
     }
 
     @Override
-    public List<KeyValueModel> queryUserRechargeTrend(Granularity granularity, Date startTime, Date endTime, String province) {
+    public List<KeyValueModel> queryUserRechargeTrend(Granularity granularity, Date startTime, Date endTime, String province, Role role) {
         if (granularity == Granularity.Hourly) {
             endTime = startTime;
         }
         Date queryStartTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
         Date queryEndTime = new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().toDate();
-        List<KeyValueModel> keyValueModels = businessIntelligenceMapper.queryUserRechargeTrend(queryStartTime, queryEndTime, granularity, province);
+        List<KeyValueModel> keyValueModels = businessIntelligenceMapper.queryUserRechargeTrend(queryStartTime, queryEndTime, granularity, province, role);
         if (granularity == Granularity.Hourly) {
             return getHourKeyValueModels(keyValueModels);
         }

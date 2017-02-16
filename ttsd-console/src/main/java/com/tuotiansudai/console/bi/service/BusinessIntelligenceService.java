@@ -5,6 +5,7 @@ import com.tuotiansudai.console.bi.dto.RoleStage;
 import com.tuotiansudai.console.bi.dto.UserStage;
 import com.tuotiansudai.console.bi.repository.model.InvestViscosityDetailTableView;
 import com.tuotiansudai.console.bi.repository.model.KeyValueModel;
+import com.tuotiansudai.enums.Role;
 
 import java.util.Date;
 import java.util.List;
@@ -15,7 +16,7 @@ public interface BusinessIntelligenceService {
 
     List<KeyValueModel> queryUserRegisterTrend(Granularity granularity, Date startTime, Date endTime, String province,UserStage userStage,RoleStage roleStage, String channel);
 
-    List<KeyValueModel> queryUserRechargeTrend(Granularity granularity, Date startTime, Date endTime, String province);
+    List<KeyValueModel> queryUserRechargeTrend(Granularity granularity, Date startTime, Date endTime, String province, Role role);
 
     List<KeyValueModel> queryUserWithdrawTrend(Granularity granularity, Date startTime, Date endTime, String province);
 

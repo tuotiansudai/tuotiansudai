@@ -8,6 +8,7 @@ import com.tuotiansudai.console.bi.repository.model.InvestViscosityDetailTableVi
 import com.tuotiansudai.console.bi.repository.model.InvestViscosityDetailView;
 import com.tuotiansudai.console.bi.repository.model.KeyValueModel;
 import com.tuotiansudai.console.bi.service.BusinessIntelligenceService;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.CsvHeaderType;
 import com.tuotiansudai.util.ExportCsvUtil;
@@ -67,8 +68,9 @@ public class BusinessIntelligenceController {
             @RequestParam(name = "granularity") Granularity granularity,
             @RequestParam(name = "startTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
             @RequestParam(name = "endTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
-            @RequestParam(name = "province", required = false) String province) {
-        return businessIntelligenceService.queryUserRechargeTrend(granularity, startTime, endTime, province);
+            @RequestParam(name = "province", required = false) String province,
+            @RequestParam(name = "role", required = false) Role role) {
+        return businessIntelligenceService.queryUserRechargeTrend(granularity, startTime, endTime, province, role);
     }
 
     @ResponseBody
