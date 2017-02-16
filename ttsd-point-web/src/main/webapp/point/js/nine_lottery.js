@@ -61,23 +61,23 @@ define(['jquery', 'layerWrapper', 'template', 'jquery.ajax.extension'], function
                     lottery.prize=-1;
                     lottery.times=0;
                     lottery.click=false;
+                    layer.open({
+                        type: 1,
+                        closeBtn:0,
+                        move:false,
+                        area:['460px','370px'],
+                        title:false,
+                        content: $(lottery.prizeType)
+                    });
+                    console.log($(lottery.prizeType));
+                    lottery.giftRecord();
+                    lottery.myGift();
                 }else{
                     if (lottery.times<lottery.cycle) {
                         lottery.speed -= 10;
                     }else if(lottery.times==lottery.cycle) {
                         console.log(lottery.prizeKind);
                         lottery.prize = lottery.prizeKind;
-                        layer.open({
-                            type: 1,
-                            closeBtn:0,
-                            move:false,
-                            area:['460px','370px'],
-                            title:false,
-                            content: $(lottery.prizeType)
-                        });
-                        console.log(lottery.prizeType);
-                        lottery.giftRecord();
-                        lottery.myGift();
                     }else{
                         if (lottery.times > lottery.cycle+10 && ((lottery.prize==0 && lottery.index==7) || lottery.prize==lottery.index+1)) {
                             lottery.speed += 110;
@@ -130,13 +130,13 @@ define(['jquery', 'layerWrapper', 'template', 'jquery.ajax.extension'], function
                                 lottery.prizeKind = 4;
                                 break;
                         }
-                        
+
                         var prizeType = data.prizeType.toLowerCase();
                         $(tipGroupObj[prizeType]).find('.prizeValue').text(data.prizeValue);
                         lottery.speed=100;
-                        lottery.stop();    
+                        lottery.stop();
                         lottery.click=true;
-                        lottery.prizeType='#'+tipGroupObj[prizeType];
+                        lottery.prizeType=$(tipGroupObj[prizeType]);
 
                     } else if (data.returnCode == 1) {
                         //没有抽奖机会
