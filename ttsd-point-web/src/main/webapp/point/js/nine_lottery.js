@@ -124,10 +124,10 @@ define(['jquery', 'layerWrapper', 'template', 'jquery.ajax.extension'], function
                                 lottery.prizeKind = 6;
                                 break;
                             case 'POINT_SHOP_INTEREST_COUPON_5': //0.5加息券
-                                lottery.prizeKind = 3;
+                                lottery.prizeKind = 4;
                                 break;
                             case 'RED_ENVELOPE_50_POINT_DRAW_REF_CARNIVAL': //50元投资红包
-                                lottery.prizeKind = 4;
+                                lottery.prizeKind = 3;
                                 break;
                         }
 
