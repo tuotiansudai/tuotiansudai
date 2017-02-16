@@ -19,6 +19,7 @@ import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -47,12 +48,14 @@ public class MobileAppPointServiceImpl implements MobileAppPointService {
     @Autowired
     private UserPointTaskMapper userPointTaskMapper;
 
+    @Transactional
     public BaseResponseDto<SignInResponseDataDto> signIn(BaseParamDto baseParamDto) {
         String loginName = baseParamDto.getBaseParam().getUserId();
-        AccountModel accountModel = accountMapper.findByLoginName(loginName);
+        AccountModel accountModel = accountMapper.lockByLoginName(loginName);
         if (accountModel == null) {
             return new BaseResponseDto<>(ReturnMessage.USER_IS_NOT_CERTIFICATED.getCode(), ReturnMessage.USER_IS_NOT_CERTIFICATED.getMsg());
         }
+
         SignInPointDto signInPointDto = signInService.signIn(loginName);
 
         SignInResponseDataDto dataDto = new SignInResponseDataDto(signInPointDto);
