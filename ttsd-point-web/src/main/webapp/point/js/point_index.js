@@ -30,8 +30,14 @@ require(['jquery', 'layerWrapper', 'template', 'jquery.ajax.extension','nineLott
 				if (response.data.status) {
 					response.data.signIn == true ? $signText.html("您今天已签到") : $signText.html("签到成功");
 					$tomorrowText.html("明日签到可获得" + response.data.nextSignInPoint + "积分");
-					$introText.html(response.data.currentRewardDesc);
-					$nextText.html(response.data.nextRewardDesc);
+                    if(response.data.full == true){
+                        $introText.html('已连续签到365天，获得全勤奖！');
+                        $nextText.html('365元现金红包');
+					}
+					else{
+                        $introText.html(response.data.currentRewardDesc);
+                        $nextText.html(response.data.nextRewardDesc);
+					}
 					$signBtn.addClass("no-click").html("已签到");
 					$signPoint.find('span').html('+'+response.data.signInPoint);
 					$signTip.fadeIn('fast');
