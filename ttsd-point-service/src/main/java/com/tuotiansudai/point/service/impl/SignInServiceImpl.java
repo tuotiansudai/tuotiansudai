@@ -82,6 +82,8 @@ public class SignInServiceImpl implements SignInService {
 
         accountMapper.lockByLoginName(loginName);
 
+        logger.error("signIn start");
+
         SignInPointDto signInPointDto;
         SignInPointDto lastSignInPointDto = obtainCurrentSignInPointDto(loginName);
         if (lastSignInPointDto == null ||
@@ -108,6 +110,8 @@ public class SignInServiceImpl implements SignInService {
             sendSignInCoupon(loginName, signInPointDto.getSignInCount());
             logger.info(MessageFormat.format("{0} sign in success {1} 次", loginName, signInPointDto.getSignInCount()));
         }
+
+        logger.error("signIn End");
 
         return signInPointDto;
     }
