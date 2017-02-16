@@ -3,9 +3,9 @@ package com.tuotiansudai.membership.repository.model;
 import java.util.Arrays;
 
 public enum MembershipPrivilegePriceType {
-    _30("30天",1,10),
-    _180("180天",2,20),
-    _360("360天",3,30);
+    _30("30天",30,2500),
+    _180("180天",180,12000),
+    _360("360天",360,18000);
 
     private final String name;
     private final int duration;
