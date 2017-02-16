@@ -1,6 +1,5 @@
 package com.tuotiansudai.point.service.impl;
 
-import com.tuotiansudai.repository.model.CouponModel;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.point.repository.dto.SignInPointDto;
@@ -11,6 +10,7 @@ import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.point.service.SignInService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.model.CouponModel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.log4j.Logger;
@@ -79,6 +79,8 @@ public class SignInServiceImpl implements SignInService {
         if (null == accountMapper.findByLoginName(loginName)) {
             return null;
         }
+
+        accountMapper.lockByLoginName(loginName);
 
         SignInPointDto signInPointDto;
         SignInPointDto lastSignInPointDto = obtainCurrentSignInPointDto(loginName);
