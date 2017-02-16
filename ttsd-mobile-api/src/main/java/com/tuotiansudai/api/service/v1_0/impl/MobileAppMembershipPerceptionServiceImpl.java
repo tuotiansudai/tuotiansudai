@@ -75,7 +75,7 @@ public class MobileAppMembershipPerceptionServiceImpl implements MobileAppMember
                 String.format("增值特权，专享服务费7折优惠，已多赚%s元", getMoney)
                 : String.format("V%s会员,专享服务费%s折优惠,已经多赚%s元",
                 decimalFormat.format(membershipModel.getLevel()),
-                membershipModel.getFee() * 100
+                decimalFormat.format(membershipModel.getFee() * 100)
                 , getMoney));
 
         BaseResponseDto<MembershipPerceptionResponseDataDto> responseDto = new BaseResponseDto<>();
