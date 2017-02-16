@@ -69,14 +69,13 @@ define(['jquery', 'layerWrapper', 'template', 'jquery.ajax.extension'], function
                         title:false,
                         content: $(lottery.prizeType)
                     });
-                    console.log($(lottery.prizeType));
                     lottery.giftRecord();
                     lottery.myGift();
                 }else{
                     if (lottery.times<lottery.cycle) {
                         lottery.speed -= 10;
                     }else if(lottery.times==lottery.cycle) {
-                        console.log(lottery.prizeKind);
+                        console.log(lottery.prizeKind+','+lottery.prize);
                         lottery.prize = lottery.prizeKind;
                     }else{
                         if (lottery.times > lottery.cycle+10 && ((lottery.prize==0 && lottery.index==7) || lottery.prize==lottery.index+1)) {
@@ -126,7 +125,7 @@ define(['jquery', 'layerWrapper', 'template', 'jquery.ajax.extension'], function
                             case 'POINT_SHOP_INTEREST_COUPON_5': //0.5加息券
                                 lottery.prizeKind = 4;
                                 break;
-                            case 'RED_ENVELOPE_50_POINT_DRAW_REF_CARNIVAL': //50元投资红包
+                            case 'POINT_SHOP_RED_ENVELOPE_50': //50元投资红包
                                 lottery.prizeKind = 3;
                                 break;
                         }
