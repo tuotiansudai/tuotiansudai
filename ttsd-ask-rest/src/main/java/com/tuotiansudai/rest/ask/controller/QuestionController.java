@@ -53,7 +53,6 @@ public class QuestionController {
     }
 
     @RequestMapping(value = "/{questionId:^\\d+$}", method = RequestMethod.GET)
-    @UserInfoRequired
     public ResponseEntity<QuestionModel> getQuestion(@PathVariable long questionId) {
         QuestionModel questionModel = questionService.getQuestion(questionId);
         if (questionModel == null) {
@@ -64,21 +63,18 @@ public class QuestionController {
     }
 
     @RequestMapping(value = "/all", method = RequestMethod.GET)
-    @UserInfoRequired
     public ResponseEntity<BaseDto<BasePaginationDataDto>> findAllQuestions(@Param(value = "index") int index) {
         BaseDto<BasePaginationDataDto> questionModels = questionService.findAllQuestions(RestUserInfo.getCurrentLoginName(), index);
         return ResponseEntity.ok(questionModels);
     }
 
     @RequestMapping(value = "/unresolved", method = RequestMethod.GET)
-    @UserInfoRequired
     public ResponseEntity<BaseDto<BasePaginationDataDto>> findAllUnresolvedQuestions(@Param(value = "index") int index) {
         BaseDto<BasePaginationDataDto> questionModels = questionService.findAllUnresolvedQuestions(RestUserInfo.getCurrentLoginName(), index);
         return ResponseEntity.ok(questionModels);
     }
 
     @RequestMapping(value = "/hot", method = RequestMethod.GET)
-    @UserInfoRequired
     public ResponseEntity<BaseDto<BasePaginationDataDto>> findAllHotQuestions(@Param(value = "index") int index) {
         BaseDto<BasePaginationDataDto> questionModels = questionService.findAllHotQuestions(RestUserInfo.getCurrentLoginName(), index);
         return ResponseEntity.ok(questionModels);
@@ -92,7 +88,6 @@ public class QuestionController {
     }
 
     @RequestMapping(value = "/tag/{tag:^[A-Z0-9_]+$}", method = RequestMethod.GET)
-    @UserInfoRequired
     public ResponseEntity<BaseDto<BasePaginationDataDto>> findByTag(@PathVariable Tag tag, @Param(value = "index") int index) {
         BaseDto<BasePaginationDataDto> questionModels = questionService.findByTag(RestUserInfo.getCurrentLoginName(), tag, index);
         return ResponseEntity.ok(questionModels);
@@ -117,25 +112,21 @@ public class QuestionController {
     }
 
     @RequestMapping(value = "/byKeywords", method = RequestMethod.GET)
-    @UserInfoRequired
     public ResponseEntity<BaseDto<BasePaginationDataDto>> getQuestionsByKeywords(@Param(value = "keywords") String keywords, @Param(value = "index") int index) {
         BaseDto<BasePaginationDataDto> questionsByKeywords = questionService.getQuestionsByKeywords(keywords, RestUserInfo.getCurrentLoginName(), index);
         return ResponseEntity.ok(questionsByKeywords);
     }
 
     @RequestMapping(value = "/embodyAll", method = RequestMethod.GET)
-    @UserInfoRequired
     public ResponseEntity<BaseDto<BasePaginationDataDto>> findEmbodyAllQuestions(@Param(value = "index") int index) {
         BaseDto<BasePaginationDataDto> questionsByKeywords = questionService.findEmbodyAllQuestions(index);
         return ResponseEntity.ok(questionsByKeywords);
     }
 
-    @RequestMapping(value = "/updateEmbody/{questionId:^\\d+$}", method = RequestMethod.PATCH)
-    @UserInfoRequired
+    @RequestMapping(value = "/updateEmbody/{questionId:^\\d+$}", method = RequestMethod.PUT)
     public ResponseEntity findEmbodyAllQuestions(@PathVariable long questionId) {
         questionService.updateEmbodyById(questionId);
         return ResponseEntity.accepted().build();
     }
-
 
 }

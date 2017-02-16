@@ -29,7 +29,7 @@ public class DateUtils {
     }
 
     public static LocalDate deserializeLocalDate(String dateTimeString) throws IOException {
-        return deserializeLocalDateTime(dateTimeString).toLocalDate();
+        return DATE_FORMATTER.parse(dateTimeString, LocalDate::from);
     }
 
     public static Date deserializeDate(String dateTimeString) throws IOException {
