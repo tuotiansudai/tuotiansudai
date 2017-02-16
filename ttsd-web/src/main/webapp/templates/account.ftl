@@ -16,9 +16,9 @@
             <a href="/personal-info" class="user-info"></a>
             <ul class="proList">
                 <#if signedIn?? && signedIn>
-                    <li class="fl sign-top no-click"><span class="btn-sign finish-sign" data-url="${pointServer}/point-shop/sign-in" id="signBtn">已签到</span></li>
+                    <li class="fl sign-top no-click"><span class="btn-sign finish-sign" data-url="/point-shop/sign-in" id="signBtn">已签到</span></li>
                 <#else >
-                    <li class="fl sign-top"><span class="btn-sign will-sign" data-url="${pointServer}/point-shop/sign-in" id="signBtn">签到</span></li>
+                    <li class="fl sign-top"><span class="btn-sign will-sign" data-url="/point-shop/sign-in" id="signBtn">签到</span></li>
                 </#if>
                 <li class="fl beans-number">可用积分:<span id="MyAvailablePoint">${myPoint?string.computer}</span></li>
                 <li class="fr"><a class="btn-normal" href="/recharge">充值</a></li>
