@@ -1,4 +1,4 @@
-require(['jquery', 'load_echarts','layerWrapper','jquery.ajax.extension'], function ($,loadEcharts,layer) {
+require(['jquery', 'load_echarts','layerWrapper','template','jquery.ajax.extension'], function ($,loadEcharts,layer,tpl) {
     $(function () {
     var $tMonthBox=$('#tMonthBox'),
         $signBtn = $('#signBtn'),
