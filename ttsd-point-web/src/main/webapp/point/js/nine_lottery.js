@@ -210,6 +210,30 @@ define(['jquery', 'layerWrapper', 'template', 'jquery.ajax.extension'], function
                 .fail(function() {
                     layer.msg('请求失败，请重试！');
                 });
+            },
+            scrollList:function(domName,length) {
+                var $self=domName;
+                var lineHeight = $self.find("li:first").height();
+                if ($self.find('li').length > (length!=''?length:10)) {
+                    $self.animate({
+                        "margin-top": -lineHeight + "px"
+                    }, 600, function() {
+                        $self.css({
+                            "margin-top": "0px"
+                        }).find("li:first").appendTo($self);
+                    });
+                }
+            },
+            hoverScrollList:function(domName,length) {
+                var _this=this,
+                    scrollTimer;
+                domName.hover(function() {
+                    clearInterval(scrollTimer);
+                }, function() {
+                    scrollTimer = setInterval(function() {
+                        _this.scrollList(domName,length);
+                    }, 2000);
+                }).trigger("mouseout");
             }
         };
 
@@ -231,6 +255,7 @@ define(['jquery', 'layerWrapper', 'template', 'jquery.ajax.extension'], function
         
         lottery.giftRecord();
         lottery.myGift();
+        lottery.hoverScrollList($('#lotteryList').find('.user-record'),10);
         
 	})($);
 })

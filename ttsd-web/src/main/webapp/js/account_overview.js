@@ -83,7 +83,7 @@ require(['jquery', 'load_echarts','layerWrapper','jquery.ajax.extension'], funct
                     $tomorrowText.html("明日签到可获得" + response.data.nextSignInPoint + "积分");
                     $introText.html(response.data.currentRewardDesc);
                     $nextText.html(response.data.nextRewardDesc);
-                    $signBtn.addClass("no-click").html("已签到");
+                    $signBtn.parent().addClass("no-click").html("已签到");
                     $signPoint.find('span').html('+'+response.data.signInPoint);
                     $signTip.fadeIn('fast');
                 } else {
