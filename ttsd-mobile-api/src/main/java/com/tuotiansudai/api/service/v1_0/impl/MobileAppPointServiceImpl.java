@@ -55,12 +55,9 @@ public class MobileAppPointServiceImpl implements MobileAppPointService {
         }
         SignInPointDto signInPointDto = signInService.signIn(loginName);
 
-        SignInResponseDataDto dataDto = new SignInResponseDataDto();
-        dataDto.setPoint(signInPointDto.getSignInPoint());
-        dataDto.setSignInTimes(signInPointDto.getSignInCount());
-        dataDto.setNextSignInPoint(signInPointDto == null ? 0 : signInPointDto.getNextSignInPoint());
+        SignInResponseDataDto dataDto = new SignInResponseDataDto(signInPointDto);
 
-        BaseResponseDto dto = new BaseResponseDto();
+        BaseResponseDto<SignInResponseDataDto> dto = new BaseResponseDto<>();
         if (signInPointDto.getStatus()) {
             dto.setCode(ReturnMessage.SUCCESS.getCode());
             dto.setMessage(ReturnMessage.SUCCESS.getMsg());
@@ -109,6 +106,8 @@ public class MobileAppPointServiceImpl implements MobileAppPointService {
         BaseResponseDto dto = new BaseResponseDto();
         Integer index = pointBillRequestDto.getIndex();
         Integer pageSize = pointBillRequestDto.getPageSize();
+        String pointType = pointBillRequestDto.getPointType();
+
         if (index == null || index <= 0) {
             index = 1;
         }
@@ -119,8 +118,8 @@ public class MobileAppPointServiceImpl implements MobileAppPointService {
         PointBillResponseDataDto pointBillResponseDataDto = new PointBillResponseDataDto();
         pointBillResponseDataDto.setIndex(index);
         pointBillResponseDataDto.setPageSize(pageSize);
-        pointBillResponseDataDto.setPointBills(convertPointBillRecordDto(pointBillMapper.findPointBillPagination(loginName, (index - 1) * pageSize, pageSize, null, null, null)));
-        pointBillResponseDataDto.setTotalCount(pointBillMapper.findCountPointBillPagination(loginName, null, null, null));
+        pointBillResponseDataDto.setPointBills(convertPointBillRecordDto(pointBillMapper.findPointBillPagination(loginName, pointType, (index - 1) * pageSize, pageSize, null, null, null)));
+        pointBillResponseDataDto.setTotalCount(pointBillMapper.findCountPointBillPagination(loginName, pointType, null, null, null));
         dto.setData(pointBillResponseDataDto);
         return dto;
     }

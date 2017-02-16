@@ -59,7 +59,7 @@ public class PayCallbackController {
     private SystemRechargeService systemRechargeService;
 
     @Autowired
-    private MembershipPurchasePayService membershipPurchasePayService;
+    private MembershipPrivilegePurchasePayService membershipPrivilegePurchasePayService;
 
     @Autowired
     private CouponRepayService couponRepayService;
@@ -252,10 +252,10 @@ public class PayCallbackController {
         return new ModelAndView("/callback_response", "content", responseData);
     }
 
-    @RequestMapping(value = "/membership-purchase-notify", method = RequestMethod.GET)
+    @RequestMapping(value = "/membership-privilege-purchase-notify", method = RequestMethod.GET)
     public ModelAndView membershipPurchaseNotify(HttpServletRequest request) {
         Map<String, String> paramsMap = this.parseRequestParameters(request);
-        String responseData = membershipPurchasePayService.purchaseCallback(paramsMap, request.getQueryString());
+        String responseData = membershipPrivilegePurchasePayService.purchaseCallback(paramsMap, request.getQueryString());
         return new ModelAndView("/callback_response", "content", responseData);
     }
 
