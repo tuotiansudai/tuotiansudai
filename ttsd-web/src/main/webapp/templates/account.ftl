@@ -238,11 +238,5 @@
             </div>
         </div>
     </div>
-    <div class="error-tip" id="errorTip"></div>
-    <script type="text/html" id="errorTipTpl">
-        <h3>温馨提示</h3>
-        <p>{{message}}</p>
-        <a href="${webServer}/register/account?redirect=/account" class="go-to">去认证</a>
-    </script>
 </div>
 </@global.main>
