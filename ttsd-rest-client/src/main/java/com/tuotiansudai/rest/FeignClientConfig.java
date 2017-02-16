@@ -1,5 +1,8 @@
 package com.tuotiansudai.rest;
 
+import com.fasterxml.jackson.databind.Module;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.tuotiansudai.rest.databind.date.deserializer.DateDeserializer;
 import com.tuotiansudai.rest.support.client.codec.RestErrorDecoder;
 import com.tuotiansudai.rest.support.client.factory.RestClientScannerConfigurer;
 import com.tuotiansudai.rest.support.client.interceptors.RequestHeaderInterceptor;
@@ -12,6 +15,10 @@ import feign.okhttp.OkHttpClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 
@@ -36,7 +43,11 @@ public class FeignClientConfig {
 
     @Bean
     public JacksonDecoder jacksonDecoder() {
-        return new JacksonDecoder();
+        List<Module> moduleList = new ArrayList();
+        SimpleModule sm = new SimpleModule();
+        sm.addDeserializer(Date.class, new DateDeserializer());
+        moduleList.add(sm);
+        return new JacksonDecoder(moduleList);
     }
 
     @Bean
