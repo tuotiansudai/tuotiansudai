@@ -1,6 +1,11 @@
 package com.tuotiansudai.util;
 
 public enum FrontCallbackService {
+
+    /**
+     * 实名认证
+     */
+    REGISTER_ACCOUNT("register_account", "实名认证成功"),
     /**
      * 绑定银行卡
      */
