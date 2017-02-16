@@ -89,7 +89,7 @@ require(['jquery', 'load_echarts','layerWrapper','jquery.ajax.extension'], funct
                         $introText.html(response.data.currentRewardDesc);
                         $nextText.html(response.data.nextRewardDesc);
                     }
-                    $signBtn.parent().addClass("no-click").find('span').addClass('finish-sign').html("已签到");
+                    $signBtn.parent().addClass("no-click").find('span').removeClass('will-sign').addClass('finish-sign').html("已签到");
                     $signPoint.find('span').html('+'+response.data.signInPoint);
                     $signTip.fadeIn('fast');
                 } else {
