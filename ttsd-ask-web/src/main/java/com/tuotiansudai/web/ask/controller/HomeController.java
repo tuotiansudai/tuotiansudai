@@ -1,5 +1,6 @@
 package com.tuotiansudai.web.ask.controller;
 
+import com.tuotiansudai.ask.repository.model.QuestionModel;
 import com.tuotiansudai.ask.service.QuestionService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
@@ -21,7 +22,7 @@ public class HomeController {
     public ModelAndView index(@RequestParam(value = "group", defaultValue = "ALL", required = false) QuestionGroup group,
                               @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
         ModelAndView modelAndView = new ModelAndView("/home");
-        BaseDto<BasePaginationDataDto> data = questionService.findAllQuestions(index);
+        BaseDto<BasePaginationDataDto<QuestionModel>> data = questionService.findAllQuestions(index);
         if (group == QuestionGroup.UNRESOLVED) {
             data = questionService.findAllUnresolvedQuestions(index);
         }

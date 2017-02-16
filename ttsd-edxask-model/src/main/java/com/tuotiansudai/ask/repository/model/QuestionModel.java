@@ -1,5 +1,7 @@
 package com.tuotiansudai.ask.repository.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -22,20 +24,24 @@ public class QuestionModel implements Serializable {
 
     private int answers;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date lastAnsweredTime;
 
     private String approvedBy;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date approvedTime;
 
     private String rejectedBy;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date rejectedTime;
 
     private QuestionStatus status;
 
     private boolean embody;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createdTime;
 
     public QuestionModel() {

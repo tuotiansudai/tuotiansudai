@@ -3,6 +3,7 @@ package com.tuotiansudai.web.ask.controller;
 import com.tuotiansudai.ask.dto.QuestionDto;
 import com.tuotiansudai.ask.dto.QuestionResultDataDto;
 import com.tuotiansudai.ask.dto.QuestionWithCaptchaRequestDto;
+import com.tuotiansudai.ask.repository.model.QuestionModel;
 import com.tuotiansudai.ask.repository.model.Tag;
 import com.tuotiansudai.ask.service.AnswerService;
 import com.tuotiansudai.ask.service.QuestionService;
@@ -78,7 +79,7 @@ public class QuestionController {
             return new ModelAndView("redirect:/?group=HOT&index=1");
         }
         ModelAndView modelAndView = new ModelAndView("search-data");
-        BaseDto<BasePaginationDataDto> data = questionService.getQuestionsByKeywords(keyword, index);
+        BaseDto<BasePaginationDataDto<QuestionModel>> data = questionService.getQuestionsByKeywords(keyword, index);
         modelAndView.addObject("keywordQuestions", data);
         modelAndView.addObject("keyword", keyword);
 

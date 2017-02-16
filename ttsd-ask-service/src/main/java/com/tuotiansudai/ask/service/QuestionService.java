@@ -74,9 +74,9 @@ public class QuestionService {
         }
     }
 
-    public BaseDto<BasePaginationDataDto> findAllQuestions(int index) {
+    public BaseDto<BasePaginationDataDto<QuestionModel>> findAllQuestions(int index) {
         try {
-            BaseDto<BasePaginationDataDto> questionModels = askRestClient.findAllQuestions(index);
+            BaseDto<BasePaginationDataDto<QuestionModel>> questionModels = askRestClient.findAllQuestions(index);
             return questionModels;
         } catch (RestException e) {
             logger.error("get all questions fail, ", e);
@@ -84,9 +84,9 @@ public class QuestionService {
         }
     }
 
-    public BaseDto<BasePaginationDataDto> findAllUnresolvedQuestions(int index) {
+    public BaseDto<BasePaginationDataDto<QuestionModel>> findAllUnresolvedQuestions(int index) {
         try {
-            BaseDto<BasePaginationDataDto> questionModels = askRestClient.findAllUnresolvedQuestions(index);
+            BaseDto<BasePaginationDataDto<QuestionModel>> questionModels = askRestClient.findAllUnresolvedQuestions(index);
             return questionModels;
         } catch (RestException e) {
             logger.error("get all unresolved questions fail, ", e);
@@ -94,9 +94,9 @@ public class QuestionService {
         }
     }
 
-    public BaseDto<BasePaginationDataDto> findAllHotQuestions(int index) {
+    public BaseDto<BasePaginationDataDto<QuestionModel>> findAllHotQuestions(int index) {
         try {
-            BaseDto<BasePaginationDataDto> questionModels = askRestClient.findAllHotQuestions(index);
+            BaseDto<BasePaginationDataDto<QuestionModel>> questionModels = askRestClient.findAllHotQuestions(index);
             return questionModels;
         } catch (RestException e) {
             logger.error("get all hot questions fail, ", e);
@@ -104,9 +104,9 @@ public class QuestionService {
         }
     }
 
-    public BaseDto<BasePaginationDataDto> findMyQuestions(int index) {
+    public BaseDto<BasePaginationDataDto<QuestionModel>> findMyQuestions(int index) {
         try {
-            BaseDto<BasePaginationDataDto> questionModels = askRestClient.findMyQuestions(index);
+            BaseDto<BasePaginationDataDto<QuestionModel>> questionModels = askRestClient.findMyQuestions(index);
             return questionModels;
         } catch (RestException e) {
             logger.error("get my questions fail, ", e);
@@ -114,9 +114,9 @@ public class QuestionService {
         }
     }
 
-    public BaseDto<BasePaginationDataDto> findByTag(Tag tag, int index) {
+    public BaseDto<BasePaginationDataDto<QuestionModel>> findByTag(Tag tag, int index) {
         try {
-            BaseDto<BasePaginationDataDto> questionModels = askRestClient.findByTag(tag, index);
+            BaseDto<BasePaginationDataDto<QuestionModel>> questionModels = askRestClient.findByTag(tag, index);
             return questionModels;
         } catch (RestException e) {
             logger.error("get questions by tag fail, ", e);
@@ -124,9 +124,9 @@ public class QuestionService {
         }
     }
 
-    public BaseDto<BasePaginationDataDto> findQuestionsForConsole(String question, String mobile, QuestionStatus status, int index) {
+    public BaseDto<BasePaginationDataDto<QuestionModel>> findQuestionsForConsole(String question, String mobile, QuestionStatus status, int index) {
         try {
-            BaseDto<BasePaginationDataDto> questionModels = askRestClient.findQuestionsForConsole(question, mobile, status, index, 10);
+            BaseDto<BasePaginationDataDto<QuestionModel>> questionModels = askRestClient.findQuestionsForConsole(question, mobile, status, index, 10);
             return questionModels;
         } catch (RestException e) {
             logger.error("find questions for console fail, ", e);
@@ -144,9 +144,9 @@ public class QuestionService {
         }
     }
 
-    public BaseDto<BasePaginationDataDto> getQuestionsByKeywords(String keywords, int index) {
+    public BaseDto<BasePaginationDataDto<QuestionModel>> getQuestionsByKeywords(String keywords, int index) {
         try {
-            BaseDto<BasePaginationDataDto> questionsByKeywords = askRestClient.getQuestionsByKeywords(keywords, index);
+            BaseDto<BasePaginationDataDto<QuestionModel>> questionsByKeywords = askRestClient.getQuestionsByKeywords(keywords, index);
             return questionsByKeywords;
         } catch (RestException e) {
             logger.error("get questions by keywords fail, ", e);
@@ -164,9 +164,9 @@ public class QuestionService {
         }
     }
 
-    public BaseDto<BasePaginationDataDto> findEmbodyAllQuestions(int index) {
+    public BaseDto<BasePaginationDataDto<QuestionModel>> findEmbodyAllQuestions(int index) {
         try {
-            BaseDto<BasePaginationDataDto> embodyAllQuestions = askRestClient.findEmbodyAllQuestions(index);
+            BaseDto<BasePaginationDataDto<QuestionModel>> embodyAllQuestions = askRestClient.findEmbodyAllQuestions(index);
             return embodyAllQuestions;
         } catch (RestException e) {
             logger.error("get embody all questions fail, ", e);
