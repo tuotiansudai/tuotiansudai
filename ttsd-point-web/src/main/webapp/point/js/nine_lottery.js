@@ -21,6 +21,7 @@ define(['jquery', 'layerWrapper', 'template', 'jquery.ajax.extension'], function
             tipGroupObj[kind] = option;
         });
         var lottery={
+            prizeType:'',
             prizeKind:0,
             click:false,
             index:-1,    //当前转动到哪个位置，起点位置
@@ -72,9 +73,9 @@ define(['jquery', 'layerWrapper', 'template', 'jquery.ajax.extension'], function
                             move:false,
                             area:['460px','370px'],
                             title:false,
-                            content: $('#'+tipGroupObj[prizeType])
+                            content: $(lottery.prizeType)
                         });
-                        console.log($('#'+tipGroupObj[prizeType]));
+                        console.log(lottery.prizeType);
                         lottery.giftRecord();
                         lottery.myGift();
                     }else{
@@ -134,8 +135,8 @@ define(['jquery', 'layerWrapper', 'template', 'jquery.ajax.extension'], function
                         $(tipGroupObj[prizeType]).find('.prizeValue').text(data.prizeValue);
                         lottery.speed=100;
                         lottery.stop();    
-                        lottery.click=true; 
-
+                        lottery.click=true;
+                        lottery.prizeType='#'+tipGroupObj[prizeType];
 
                     } else if (data.returnCode == 1) {
                         //没有抽奖机会
