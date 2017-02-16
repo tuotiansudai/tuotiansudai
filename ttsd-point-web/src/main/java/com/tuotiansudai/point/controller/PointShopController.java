@@ -87,7 +87,7 @@ public class PointShopController {
         return modelAndView;
     }
 
-    @RequestMapping(path = "/signIn", method = RequestMethod.POST)
+    @RequestMapping(path = "/sign-in", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<BaseDataDto> signIn() {
         String loginName = LoginUserInfo.getLoginName();

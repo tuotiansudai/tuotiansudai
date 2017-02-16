@@ -9,9 +9,9 @@
                     <h3>可用积分</h3>
                     <p>${userPoint}</p>
                     <#if isSignIn>
-                        <p><span class="already" data-url="/point-shop/signIn" id="signBtn">已签到</span></p>
+                        <p><span class="already" data-url="/point-shop/sign-in" id="signBtn">已签到</span></p>
                     <#else>
-                        <p><span data-url="/point-shop/signIn" id="signBtn">签到</span></p>
+                        <p><span data-url="/point-shop/sign-in" id="signBtn">签到</span></p>
                     </#if>
                 </div>
             <#else>
