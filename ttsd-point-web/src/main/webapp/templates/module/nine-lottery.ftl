@@ -40,7 +40,7 @@
             <script type="text/html" id="recordListTpl">
             {{if recordlist.length>0}}
             {{each recordlist}}
-            	<li>恭喜{{$value.mobile}}抽中了{{$value.prizeValue}}</li>
+            	<li><span>恭喜{{$value.mobile}}抽中了{{$value.prizeValue}}</span></li>
             {{/each}}
             {{else}}
             	<li class="record-img">

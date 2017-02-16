@@ -17,7 +17,7 @@ define(['jquery', 'layerWrapper', 'template', 'jquery.ajax.extension'], function
         });
         //遍历弹框dom节点
         $pointContainerFrame.find('.tip-list-frame .tip-list').each(function(key, option) {
-            var kind = $(option).data('return');
+            var kind = $(option).attr('id');
             tipGroupObj[kind] = option;
         });
         var lottery={
@@ -66,6 +66,17 @@ define(['jquery', 'layerWrapper', 'template', 'jquery.ajax.extension'], function
                     }else if(lottery.times==lottery.cycle) {
                         console.log(lottery.prizeKind);
                         lottery.prize = lottery.prizeKind;
+                        layer.open({
+                            type: 1,
+                            closeBtn:0,
+                            move:false,
+                            area:['460px','370px'],
+                            title:false,
+                            content: $('#'+tipGroupObj[prizeType])
+                        });
+                        console.log($('#'+tipGroupObj[prizeType]));
+                        lottery.giftRecord();
+                        lottery.myGift();
                     }else{
                         if (lottery.times > lottery.cycle+10 && ((lottery.prize==0 && lottery.index==7) || lottery.prize==lottery.index+1)) {
                             lottery.speed += 110;
@@ -125,16 +136,7 @@ define(['jquery', 'layerWrapper', 'template', 'jquery.ajax.extension'], function
                         lottery.stop();    
                         lottery.click=true; 
 
-                        layer.open({
-                          type: 1,
-                          closeBtn:0,
-                          move:false,
-                          area:['460px','370px'],
-                          title:false,
-                          content: $('#'+tipGroupObj[prizeType])
-                        });
-                        lottery.giftRecord();
-                        lottery.myGift();
+
                     } else if (data.returnCode == 1) {
                         //没有抽奖机会
                         layer.open({
@@ -202,7 +204,7 @@ define(['jquery', 'layerWrapper', 'template', 'jquery.ajax.extension'], function
                     }
                 })
                 .done(function(data) {
-                    $('#myRecord').html(tpl('myRecordTpl',{'myrecord':data}));console.log("success");
+                    $('#myRecord').html(tpl('myRecordTpl',{'myrecord':data}));
                 })
                 .fail(function() {
                     layer.msg('请求失败，请重试！');

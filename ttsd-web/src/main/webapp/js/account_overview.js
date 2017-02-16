@@ -62,40 +62,6 @@ require(['jquery', 'load_echarts','layerWrapper','jquery.ajax.extension'], funct
                 }
             });
         }
-        $signBtn.on('click', function (event) {
-            event.preventDefault();
-            var _this = $(this),
-                signText = $(".sign-text");
-                tomorrowText = $(".tomorrow-text");
-                $addDou = $(".add-dou");
-            if(_this.hasClass('active')){
-                return false;
-            }else{
-                $.ajax({
-                    url: _this.data('url'),
-                    type: 'POST',
-                    dataType: 'json',
-                    contentType: 'application/json; charset=UTF-8'
-                })
-                    .done(function (response) {
-                        if (response.data.status) {
-                            signText.html("签到成功，领取" + response.data.signInPoint + "积分！");
-                            tomorrowText.html("明日可领" + response.data.nextSignInPoint + "积分");
-                            $addDou.html("+" + response.data.signInPoint);
-                            $signTip.fadeIn('fast', function () {
-                                $(this).find('.add-dou').animate({
-                                    'bottom': '50px',
-                                    'opacity': '0'
-                                }, 800);
-                            });
-                            _this.removeClass("will-sign").addClass("finish-sign").html("已签到");
-                            _this.addClass('active');
-                            _this.parent('.sign-top').addClass('no-click');
-                            $("#MyAvailablePoint").text(Math.round($("#MyAvailablePoint").text()) + Math.round(response.data.signInPoint));
-                        }
-                    })
-            }
-        });
         $signBtn.on('click', function(event) {
             event.preventDefault();
             var _this = $(this),
@@ -118,7 +84,7 @@ require(['jquery', 'load_echarts','layerWrapper','jquery.ajax.extension'], funct
                     $introText.html(response.data.currentRewardDesc);
                     $nextText.html(response.data.nextRewardDesc);
                     $signBtn.addClass("no-click").html("已签到");
-                    $signPoint.find('span').html(response.data.signInPoint);
+                    $signPoint.find('span').html('+'+response.data.signInPoint);
                     $signTip.fadeIn('fast');
                 } else {
                     $('#errorTip').html(tpl('errorTipTpl', response.data));

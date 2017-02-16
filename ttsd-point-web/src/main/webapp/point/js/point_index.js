@@ -33,7 +33,7 @@ require(['jquery', 'layerWrapper', 'template', 'jquery.ajax.extension','nineLott
 					$introText.html(response.data.currentRewardDesc);
 					$nextText.html(response.data.nextRewardDesc);
 					$signBtn.addClass("no-click").html("已签到");
-					$signPoint.find('span').html(response.data.signInPoint);
+					$signPoint.find('span').html('+'+response.data.signInPoint);
 					$signTip.fadeIn('fast');
 				} else {
 					$('#errorTip').html(tpl('errorTipTpl', response.data));
