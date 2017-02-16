@@ -34,8 +34,7 @@ var require = {
         'count_down': staticServer+'/point/js/dest/count_down.min',
         'placeholder': staticServer + '/point/js/libs/jquery.enplaceholder',
         'superslide': staticServer + '/point/js/libs/jquery.SuperSlide.2.1.1',
-        'drawCircle': staticServer+'/point/js/dest/gift_circle_draw.min',
-        'lottery_unit':staticServer+'/point/js/dest/lottery_unit.min'
+        'nineLottery':staticServer+ '/point/js/dest/nine_lottery.min'
     },
     'waitSeconds':0,
     'shim': {
