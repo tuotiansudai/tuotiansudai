@@ -111,7 +111,7 @@ VALUES (387, 4800, 0, 0, 0, '2017-01-01 00:00:00', '2017-12-31 23:59:59', 30, 0,
                                                                                              '2017-01-01 00:00:00',
                                                                                              NULL,
                                                                                              '2017-01-01 00:00:00',
-                                                                                             300000, '_90,_180,_360',
+                                                                                             3000000, '_90,_180,_360',
         'RED_ENVELOPE', 'NEW_REGISTERED_USER', 0, 0, '', '注册奖励');
 
 INSERT INTO `coupon` (`id`, `amount`, `rate`, `birthday_benefit`, `multiple`, `start_time`, `end_time`, `deadline`, `used_count`, `total_count`, `issued_count`, `active`, `shared`, `created_by`, `created_time`, `activated_by`, `activated_time`, `updated_by`, `updated_time`, `invest_lower_limit`, `product_types`, `coupon_type`, `user_group`, `sms_alert`, `deleted`, `comment`, `coupon_source`)
@@ -121,7 +121,7 @@ VALUES (388, 3800, 0, 0, 0, '2017-01-01 00:00:00', '2017-12-31 23:59:59', 30, 0,
                                                                                              '2017-01-01 00:00:00',
                                                                                              NULL,
                                                                                              '2017-01-01 00:00:00',
-                                                                                             200000, '_90,_180,_360',
+                                                                                             2000000, '_90,_180,_360',
         'RED_ENVELOPE', 'NEW_REGISTERED_USER', 0, 0, '', '注册奖励');
 
 INSERT INTO `coupon` (`id`, `amount`, `rate`, `birthday_benefit`, `multiple`, `start_time`, `end_time`, `deadline`, `used_count`, `total_count`, `issued_count`, `active`, `shared`, `created_by`, `created_time`, `activated_by`, `activated_time`, `updated_by`, `updated_time`, `invest_lower_limit`, `product_types`, `coupon_type`, `user_group`, `sms_alert`, `deleted`, `comment`, `coupon_source`)
