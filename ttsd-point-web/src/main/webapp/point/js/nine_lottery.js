@@ -251,6 +251,7 @@ define(['jquery', 'layerWrapper', 'template', 'jquery.ajax.extension'], function
         $('.tip-list').on('click', '.go-close', function(event) {
             event.preventDefault();
             layer.closeAll();
+            location.reload();
         });
         
         lottery.giftRecord();
