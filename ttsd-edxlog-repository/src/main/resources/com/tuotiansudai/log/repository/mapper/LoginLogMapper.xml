@@ -29,6 +29,14 @@
             <if test="success != null">
                 and success = #{success}
             </if>
+            <if test="source != null">
+                <if test="source.name() == 'MOBILE'">
+                    and source = 'IOS' or source = 'ANDROID'
+                </if>
+                <if test="source.name() != 'MOBILE'">
+                    and source = #{source}
+                </if>
+            </if>
         </where>
         order by login_time desc, id asc
         limit #{index}, #{pageSize}
@@ -42,6 +50,14 @@
             </if>
             <if test="success != null">
                 and success = #{success}
+            </if>
+            <if test="source != null">
+                <if test="source.name() == 'MOBILE'">
+                    and source = 'IOS' or source = 'ANDROID'
+                </if>
+                <if test="source.name() != 'MOBILE'">
+                    and source = #{source}
+                </if>
             </if>
         </where>
     </select>
