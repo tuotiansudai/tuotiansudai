@@ -94,13 +94,7 @@ require(['jquery', 'load_echarts','layerWrapper','template','jquery.ajax.extensi
                     $signTip.fadeIn('fast');
                     $("#MyAvailablePoint").text(Math.round($("#MyAvailablePoint").text()) + Math.round(response.data.signInPoint));
                 } else {
-                    $('#errorTip').html(tpl('errorTipTpl', response.data));
-                    layer.open({
-                        type: 1,
-                        title: false,
-                        area: ['300px', '180px'],
-                        content: $('#errorTip')
-                    });
+                    location.href='/register/account?redirect=/account';
                 }
             })
         });
