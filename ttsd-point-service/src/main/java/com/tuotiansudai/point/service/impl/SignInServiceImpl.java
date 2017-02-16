@@ -10,6 +10,7 @@ import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.point.service.SignInService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.CouponModel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.AmountConverter;
@@ -74,15 +75,12 @@ public class SignInServiceImpl implements SignInService {
     }
 
     @Override
-    @Transactional
+    @Transactional(transactionManager = "aaTransactionManager")
     public SignInPointDto signIn(String loginName) {
-        if (null == accountMapper.findByLoginName(loginName)) {
+        AccountModel accountModel = accountMapper.lockByLoginName(loginName);
+        if (null == accountModel) {
             return null;
         }
-
-        accountMapper.lockByLoginName(loginName);
-
-        logger.error("signIn start");
 
         SignInPointDto signInPointDto;
         SignInPointDto lastSignInPointDto = obtainCurrentSignInPointDto(loginName);
@@ -110,8 +108,6 @@ public class SignInServiceImpl implements SignInService {
             sendSignInCoupon(loginName, signInPointDto.getSignInCount());
             logger.info(MessageFormat.format("{0} sign in success {1} 次", loginName, signInPointDto.getSignInCount()));
         }
-
-        logger.error("signIn End");
 
         return signInPointDto;
     }
