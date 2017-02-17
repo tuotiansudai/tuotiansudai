@@ -6,7 +6,7 @@ var objectAssign = require('object-assign');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var CopyWebpackPlugin = require('copy-webpack-plugin'); //复制文件
 var CleanWebpackPlugin = require('clean-webpack-plugin');  //清空文件夹里的文件
-
+var HappyPack = require('happypack'); //通过多进程模型，来加速代码构建
 var staticServer = require('./getStaticServer.js');
 var basePath = path.join(__dirname, 'resources'),
 	staticPath = path.join(basePath, 'static'),
@@ -54,6 +54,7 @@ commonOptions.entry = newEntries;
 
 if(NODE_ENV=='production') {
 	//生产环境
+	var ParallelUglifyPlugin = require('webpack-parallel-uglify-plugin'); //压缩js，提高压缩速度
 	outFilename="[name].[chunkhash].js";
 	outputPath=path.join(basePath, 'prod'); //打包文件路径
 	//生成带hash的css
@@ -65,21 +66,42 @@ if(NODE_ENV=='production') {
 		verbose: true,
 		dry: false,
 		watch:true,
-		exclude: ['plugins']
+		exclude: ['plugins','.cache']
 	}));
 
 	//压缩
-	plugins.push(new webpack.optimize.UglifyJsPlugin({
-		compress: {
-			warnings: false,
-			drop_debugger: true,
-			drop_console: true
+	// plugins.push(new webpack.optimize.UglifyJsPlugin({
+	// 	compress: {
+	// 		warnings: false,
+	// 		drop_debugger: true,
+	// 		drop_console: true
+	// 	}
+	// }));
+	plugins.push(new ParallelUglifyPlugin({
+		cacheDir: outputPath+'/.cache/',
+		uglifyJS:{
+			output: {
+				comments: false
+			},
+			compress: {
+				warnings: false
+			}
 		}
 	}));
 
 }
 else if(NODE_ENV=='dev') {
 	plugins.push(new ExtractTextPlugin("[name].css"));
+
+	//打包之前先删除打包文件里的文件方便重新打包
+	plugins.push(new CleanWebpackPlugin(['develop'], {
+		root: basePath,
+		verbose: true,
+		dry: false,
+		watch:true,
+		exclude: ['public','json-ask.json','json-web.json']
+	}));
+
 	//开发环境
 	plugins.push(new webpack.HotModuleReplacementPlugin());
 	webpackdevServer={
@@ -91,6 +113,10 @@ else if(NODE_ENV=='dev') {
 		port: 3008,
 		inline: true,
 		noInfo: false,
+		stats: {
+			chunks: false,
+			colors: true
+		}
 		// proxy: {
 		// 	'*': {
 		// 		secure: false,

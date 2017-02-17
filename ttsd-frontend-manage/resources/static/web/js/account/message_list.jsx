@@ -52,7 +52,7 @@ if($userMessageList.length) {
 
         });
 
-    },'messageList');
+    },'pagination');
 }
 
 if($userMessageDetail.length) {

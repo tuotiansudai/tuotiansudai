@@ -3,7 +3,7 @@ require('webStyle/account/loan_list.scss');
 require('publicJs/plugins/daterangepicker.scss');
 let moment = require('moment');
 let commonFun= require('publicJs/commonFun');
-require('webJsModule/pagination');
+
 require('publicJs/plugins/jquery.daterangepicker-0.0.7.js');
 
 //初始化页面
@@ -58,93 +58,94 @@ function loadLoanData(currentPage) {
     var status = $('.status-filter .select-item.current').data('status');
 
     var requestData = {startTime: startTime, endTime: endTime, status: status, index: currentPage || 1};
+    require.ensure(['webJsModule/pagination'],function() {
+        paginationElement.loadPagination(requestData, function (data) {
+            switch (status) {
+                case 'REPAYING':
+                    data.isRepaying = true;
+                    break;
+                case 'COMPLETE':
+                    data.isComplete = true;
+                    break;
+                case 'CANCEL':
+                    data.isCancel = true;
+                    break;
+            }
+            var html = Mustache.render(loanListTemplate, data);
+            $('.loan-list-content .loan-list').html(html);
 
-    paginationElement.loadPagination(requestData, function (data) {
-        switch (status) {
-            case 'REPAYING':
-                data.isRepaying = true;
-                break;
-            case 'COMPLETE':
-                data.isComplete = true;
-                break;
-            case 'CANCEL':
-                data.isCancel = true;
-                break;
-        }
-        var html = Mustache.render(loanListTemplate, data);
-        $('.loan-list-content .loan-list').html(html);
+            $('.loan-list .show-loan-repay').click(function () {
+                commonFun.useAjax({
+                    url: $(this).data('url'),
+                    type: 'GET'
+                },function(response) {
+                    var data = response.data;
+                    data.csrfToken = $("meta[name='_csrf']").attr("content");
+                    if (data.status) {
+                        data.isLoanCompleted = _.every(data.records, function(item) {
+                            return item.loanRepayStatus === 'COMPLETE';
+                        });
+                        _.each(data.records, function (item) {
+                            switch (item.loanRepayStatus) {
+                                case 'REPAYING':
+                                    item.status = item.isEnabled ? '还款' : '待还';
+                                    break;
+                                case 'COMPLETE':
+                                    item.status = '完成';
+                                    break;
+                                case 'CANCEL':
+                                    item.status = '流标';
+                                    break;
+                                case 'WAIT_PAY':
+                                    item.status = '等待支付';
+                                    break;
+                                case 'OVERDUE':
+                                    item.status = item.isEnabled ? '逾期还款' : '逾期';
+                                    break;
+                            }
+                        });
+                        var html = Mustache.render(loanRepayTemplate, data);
 
-        $('.loan-list .show-loan-repay').click(function () {
-            commonFun.useAjax({
-                url: $(this).data('url'),
-                type: 'GET'
-            },function(response) {
-                var data = response.data;
-                data.csrfToken = $("meta[name='_csrf']").attr("content");
-                if (data.status) {
-                    data.isLoanCompleted = _.every(data.records, function(item) {
-                        return item.loanRepayStatus === 'COMPLETE';
-                    });
-                    _.each(data.records, function (item) {
-                        switch (item.loanRepayStatus) {
-                            case 'REPAYING':
-                                item.status = item.isEnabled ? '还款' : '待还';
-                                break;
-                            case 'COMPLETE':
-                                item.status = '完成';
-                                break;
-                            case 'CANCEL':
-                                item.status = '流标';
-                                break;
-                            case 'WAIT_PAY':
-                                item.status = '等待支付';
-                                break;
-                            case 'OVERDUE':
-                                item.status = item.isEnabled ? '逾期还款' : '逾期';
-                                break;
+                        layer.open({
+                            type: 1,
+                            title: false,
+                            offset: 'auto',
+                            area: ['850px'],
+                            shadeClose: true,
+                            content: html
+                        });
+
+                        if (data.isNormalRepayEnabled) {
+                            $('a.normal-repay').click(function () {
+                                if (parseFloat(data.loanerBalance) < parseFloat(data.normalRepayAmount)) {
+                                    showBalanceNotEnoughAlert(data.loanerBalance, data.normalRepayAmount);
+                                    return false;
+                                }
+
+                                $("#normal-repay-form").submit();
+                                layer.closeAll();
+                                return false;
+                            });
                         }
-                    });
-                    var html = Mustache.render(loanRepayTemplate, data);
 
-                    layer.open({
-                        type: 1,
-                        title: false,
-                        offset: 'auto',
-                        area: ['850px'],
-                        shadeClose: true,
-                        content: html
-                    });
-
-                    if (data.isNormalRepayEnabled) {
-                        $('a.normal-repay').click(function () {
-                            if (parseFloat(data.loanerBalance) < parseFloat(data.normalRepayAmount)) {
-                                showBalanceNotEnoughAlert(data.loanerBalance, data.normalRepayAmount);
+                        if (data.isAdvanceRepayEnabled) {
+                            $('a.advanced-repay').click(function () {
+                                if (parseFloat(data.loanerBalance) < parseFloat(data.advanceRepayAmount)) {
+                                    showBalanceNotEnoughAlert(data.loanerBalance, data.advanceRepayAmount);
+                                    return false;
+                                }
+                                $("#advanced-repay-form").submit();
+                                layer.closeAll();
                                 return false;
-                            }
+                            });
+                        }
 
-                            $("#normal-repay-form").submit();
-                            layer.closeAll();
-                            return false;
-                        });
+
                     }
-
-                    if (data.isAdvanceRepayEnabled) {
-                        $('a.advanced-repay').click(function () {
-                            if (parseFloat(data.loanerBalance) < parseFloat(data.advanceRepayAmount)) {
-                                showBalanceNotEnoughAlert(data.loanerBalance, data.advanceRepayAmount);
-                                return false;
-                            }
-                            $("#advanced-repay-form").submit();
-                            layer.closeAll();
-                            return false;
-                        });
-                    }
-
-
-                }
+                });
             });
         });
-    });
+    },'pagination');
 }
 
 loadLoanData();

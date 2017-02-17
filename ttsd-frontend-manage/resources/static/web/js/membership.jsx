@@ -1,4 +1,5 @@
 require('webStyle/membership.scss');
+
 let moment = require('moment');
 let commonFun= require('publicJs/commonFun');
 require('publicJs/plugins/daterangepicker.scss');

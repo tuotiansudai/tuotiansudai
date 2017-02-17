@@ -1,6 +1,5 @@
 //债券转让
 require('webStyle/account/transfer.scss');
-require('webJsModule/pagination');
 require('webJsModule/coupon_alert');
 let commonFun= require('publicJs/commonFun');
 var activeIndex=$('.filters-list li.active').index(),
@@ -11,40 +10,43 @@ var activeIndex=$('.filters-list li.active').index(),
 function loadLoanData(currentPage) {
 	var status = $('.filters-list li.active').attr('data-status').split(',');
 	var requestData = {status: status, index: currentPage || 1};
-	$paginationElement.loadPagination(requestData, function (data) {
-		let html;
-		if(activeIndex==0){
-			//获取模版内容
-			let $transferableListTemplate=$('#transferableListTemplate'),
-				transferableListTpl=$transferableListTemplate.html();
+	require.ensure(['webJsModule/pagination'],function() {
+		$paginationElement.loadPagination(requestData, function (data) {
+			let html;
+			if(activeIndex==0){
+				//获取模版内容
+				let $transferableListTemplate=$('#transferableListTemplate'),
+					transferableListTpl=$transferableListTemplate.html();
 
-			// 解析模板, 返回解析后的内容
-			let render = _.template(transferableListTpl);
-			html = render(data);
+				// 解析模板, 返回解析后的内容
+				let render = _.template(transferableListTpl);
+				html = render(data);
 
-		}else if(activeIndex==1){
+			}else if(activeIndex==1){
 
-			//获取模版内容
-			let $transferrerListTemplate=$('#transferrerListTemplate'),
-				transferrerListTpl=$transferrerListTemplate.html();
+				//获取模版内容
+				let $transferrerListTemplate=$('#transferrerListTemplate'),
+					transferrerListTpl=$transferrerListTemplate.html();
 
-			// 解析模板, 返回解析后的内容
-			let render = _.template(transferrerListTpl);
-			html = render(data);
+				// 解析模板, 返回解析后的内容
+				let render = _.template(transferrerListTpl);
+				html = render(data);
 
-		}else{
+			}else{
 
-			//获取模版内容
-			let $RecordTemplate=$('#transferrerRecordTemplate'),
-				recordTpl=$RecordTemplate.html();
+				//获取模版内容
+				let $RecordTemplate=$('#transferrerRecordTemplate'),
+					recordTpl=$RecordTemplate.html();
 
-			// 解析模板, 返回解析后的内容
-			let render = _.template(recordTpl);
-			html = render(data);
-		}
+				// 解析模板, 返回解析后的内容
+				let render = _.template(recordTpl);
+				html = render(data);
+			}
 
-		$('.list-container .record-list.active').html(html);
-	});
+			$('.list-container .record-list.active').html(html);
+		});
+	},'pagination');
+
 	$('.list-container').on('mouseenter','.project-name',function() {
 		// show tip by mouseenter
 		layer.closeAll('tips');

@@ -23,7 +23,6 @@ require.ensure(['webJsModule/pagination'],function() {
         let requestData={"index":1,"pageSize":10};
         paginationElement.loadPagination(requestData, function (data) {
             ListRender(data);
-
             $noticeList.find('span').each(function(key,option) {
                 var getTime=$(option).text();
                 $(option).text(getTime.substr(0,10));
@@ -36,7 +35,7 @@ require.ensure(['webJsModule/pagination'],function() {
             }
         });
     }
-},'aboutus_notice');
+},'pagination');
 
 //团队介绍
 let fancybox = require('publicJs/fancybox');

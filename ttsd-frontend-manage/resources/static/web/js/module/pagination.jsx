@@ -43,3 +43,4 @@ $.fn.loadPagination = function (requestData, loadSuccess) {
         }
     });
 }
+

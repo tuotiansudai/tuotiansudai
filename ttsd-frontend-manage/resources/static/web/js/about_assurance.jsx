@@ -1,6 +1,9 @@
 require('webStyle/about_assurance.scss');
 let assureImgUrl = require('webImages/sign/assure/assure-bar.jpg');
-globalFun.$('#assureBar').setAttribute('src',assureImgUrl);
+let guideImgUrl = require('webImages/sign/assure/newer-bar.jpg');
+
+globalFun.$('#assureBar') && globalFun.$('#assureBar').setAttribute('src',assureImgUrl);
+globalFun.$('#guideBar') && globalFun.$('#guideBar').setAttribute('src',guideImgUrl);
 
 let $riskFlow=$('#riskFlow');
 if($riskFlow.length) {

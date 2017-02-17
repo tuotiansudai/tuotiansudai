@@ -2,7 +2,6 @@
 require('webStyle/account/loan_list.scss');
 require('publicJs/plugins/daterangepicker.scss');
 let moment = require('moment');
-require('webJsModule/pagination');
 require('publicJs/plugins/jquery.daterangepicker-0.0.7.js');
 
 //初始化页面
@@ -42,17 +41,18 @@ var loadLoanData = function (currentPage) {
     var status = $('.status-filter .select-item.current').data('status').split(',');
 
     var requestData = {startTime: startTime, endTime: endTime, status: status, index: currentPage || 1};
+    require.ensure(['webJsModule/pagination'],function() {
+        paginationElement.loadPagination(requestData, function (data) {
+            //获取模版内容
+            let $userTemplate=$('#userBillTableTemplate'),
+                userTpl=$userTemplate.html();
+            // 解析模板, 返回解析后的内容
+            let render = _.template(userTpl);
+            let html = render(data);
 
-    paginationElement.loadPagination(requestData, function (data) {
-        //获取模版内容
-        let $userTemplate=$('#userBillTableTemplate'),
-            userTpl=$userTemplate.html();
-        // 解析模板, 返回解析后的内容
-        let render = _.template(userTpl);
-        let html = render(data);
-
-        $('.user-bill-list').html(html);
-    });
+            $('.user-bill-list').html(html);
+        });
+    },'pagination');
 };
 
 $(".date-filter .select-item").click(function () {

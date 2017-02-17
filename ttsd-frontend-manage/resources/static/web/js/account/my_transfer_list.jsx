@@ -3,7 +3,7 @@ require('webStyle/account/loan_list.scss');
 require('publicJs/plugins/daterangepicker.scss');
 let moment = require('moment');
 let commonFun= require('publicJs/commonFun');
-require('webJsModule/pagination');
+
 require('publicJs/plugins/jquery.daterangepicker-0.0.7.js');
 
 var today = moment().format('YYYY-MM-DD'), // 今天
@@ -47,68 +47,70 @@ var loadLoanData = function (currentPage) {
     var status = $('.status-filter .select-item.current').data('status');
 
     var requestData = {startTime: startTime, endTime: endTime, status: status, index: currentPage || 1};
+    require.ensure(['webJsModule/pagination'],function() {
+        paginationElement.loadPagination(requestData, function (data) {
+            //获取模版内容
+            let $investListTemplate=$('#investListTemplate'),
+                investListTpl=$investListTemplate.html();
+            // 解析模板, 返回解析后的内容
+            let render = _.template(investListTpl);
+            let html = render(data);
 
-    paginationElement.loadPagination(requestData, function (data) {
-        //获取模版内容
-        let $investListTemplate=$('#investListTemplate'),
-            investListTpl=$investListTemplate.html();
-        // 解析模板, 返回解析后的内容
-        let render = _.template(investListTpl);
-        let html = render(data);
+            // 将解析后的内容填充到渲染元素
+            $('.invest-list').html(html);
 
-        // 将解析后的内容填充到渲染元素
-        $('.invest-list').html(html);
+            $('.invest-list .show-invest-repay').click(function () {
+                commonFun.useAjax({
+                    url: $(this).data('url'),
+                    type: 'GET'
+                },function(response) {
+                    var data = response.data;
+                    data.isLoanCompleted = status == 'COMPLETE';
+                    data.csrfToken = $("meta[name='_csrf']").attr("content");
+                    if (data.status) {
+                        _.each(data.records, function (item) {
+                            data.loanId = item.loanId;
+                            switch (item.loanRepayStatus) {
+                                case 'REPAYING':
+                                    item.status = '待还';
+                                    break;
+                                case 'COMPLETE':
+                                    item.status = '完成';
+                                    break;
+                                case 'CANCEL':
+                                    item.status = '流标';
+                                    break;
+                            }
+                        });
 
-        $('.invest-list .show-invest-repay').click(function () {
-            commonFun.useAjax({
-                url: $(this).data('url'),
-                type: 'GET'
-            },function(response) {
-                var data = response.data;
-                data.isLoanCompleted = status == 'COMPLETE';
-                data.csrfToken = $("meta[name='_csrf']").attr("content");
-                if (data.status) {
-                    _.each(data.records, function (item) {
-                        data.loanId = item.loanId;
-                        switch (item.loanRepayStatus) {
-                            case 'REPAYING':
-                                item.status = '待还';
-                                break;
-                            case 'COMPLETE':
-                                item.status = '完成';
-                                break;
-                            case 'CANCEL':
-                                item.status = '流标';
-                                break;
-                        }
-                    });
+                        //获取模版内容
+                        let $investRepayTemplate=$('#investRepayTemplate'),
+                            investTpl=$investRepayTemplate.html();
 
-                    //获取模版内容
-                    let $investRepayTemplate=$('#investRepayTemplate'),
-                        investTpl=$investRepayTemplate.html();
+                        let elementInvestRepay = $('#elementInvestRepay');
 
-                    let elementInvestRepay = $('#elementInvestRepay');
+                        // 解析模板, 返回解析后的内容
+                        var render = _.template(investTpl);
+                        var html = render(data);
+                        // 将解析后的内容填充到渲染元素
+                        elementInvestRepay.html(html);
 
-                    // 解析模板, 返回解析后的内容
-                    var render = _.template(investTpl);
-                    var html = render(data);
-                    // 将解析后的内容填充到渲染元素
-                    elementInvestRepay.html(html);
+                        layer.open({
+                            type: 1,
+                            title: '回款详情',
+                            skin:'repay-layer-pop',
+                            //offset: '80px',
+                            area: ['1000px'],
+                            shadeClose: true,
+                            content: elementInvestRepay
+                        });
 
-                    layer.open({
-                        type: 1,
-                        title: '回款详情',
-                        skin:'repay-layer-pop',
-                        //offset: '80px',
-                        area: ['1000px'],
-                        shadeClose: true,
-                        content: elementInvestRepay
-                    });
-
-                }
+                    }
+                });
             });
         });
-    });
+    },'pagination');
+
     $('.invest-list').on('mouseenter','.project-name',function() {
         layer.closeAll('tips');
         if($.trim($(this).text()).length>15){

@@ -4,7 +4,6 @@ require('publicJs/plugins/daterangepicker.scss');
 
 let moment = require('moment');
 let tpl = require('art-template/dist/template');
-require('webJsModule/pagination');
 require('publicJs/plugins/jquery.daterangepicker-0.0.7.js');
 
 var today = moment().format('YYYY-MM-DD'), // 今天
@@ -46,10 +45,12 @@ var loadLoanData = function (currentPage) {
     var status = $('.status-filter .select-item.current').data('status');
 
     var requestData = {startTime: startTime, endTime: endTime, status: status, index: currentPage || 1};
+    require.ensure(['webJsModule/pagination'],function() {
+        paginationElement.loadPagination(requestData, function (data) {
+            $('#investList').html(tpl('investListTpl', data));
+        });
+    },'pagination');
 
-    paginationElement.loadPagination(requestData, function (data) {
-        $('#investList').html(tpl('investListTpl', data));
-    });
 };
 $('body').on('click','.show-invest-repay',function (event) {
     event.preventDefault();

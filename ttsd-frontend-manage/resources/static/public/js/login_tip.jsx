@@ -79,5 +79,5 @@ require.ensure([],function() {
         }
     };
 
-})
+},'login_tip');
 

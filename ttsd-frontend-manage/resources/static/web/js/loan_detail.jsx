@@ -1,5 +1,4 @@
 require('webStyle/investment/loan_detail.scss');
-require('webJsModule/pagination');
 require('webJs/plugins/autoNumeric');
 
 require('webJsModule/coupon_alert');
@@ -551,7 +550,9 @@ function getSkipPhoneTip(){
 })();
 
 //借款详情和出借记录
-(function() {
+
+require.ensure(['webJsModule/pagination'],function() {
+    require('webJsModule/pagination');
     let $loanDetailSwitch=$('#loanDetailSwitch')
     let menuTab=$('.loan-nav li',$loanDetailSwitch);
     let $loanList = $('.loan-list', $loanDetailSwitch);
@@ -588,7 +589,7 @@ function getSkipPhoneTip(){
         $loanList.find('.loan-list-con').eq(index).show().siblings('.loan-list-con').hide();
     });
 
-})();
+},'pagination');
 
 //免密投资
 (function() {
