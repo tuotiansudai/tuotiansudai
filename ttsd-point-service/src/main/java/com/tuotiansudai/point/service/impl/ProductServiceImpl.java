@@ -9,6 +9,9 @@ import com.tuotiansudai.repository.model.ExchangeCouponView;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.membership.repository.model.MembershipDiscount;
+import com.tuotiansudai.membership.repository.model.MembershipModel;
+import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.point.repository.dto.ProductDto;
 import com.tuotiansudai.point.repository.dto.ProductOrderDto;
 import com.tuotiansudai.point.repository.dto.ProductShowItemDto;
@@ -29,6 +32,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -63,6 +67,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private PointBillService pointBillService;
+
+    @Autowired
+    private UserMembershipEvaluator userMembershipEvaluator;
 
     @Override
     @Transactional
@@ -242,7 +249,7 @@ public class ProductServiceImpl implements ProductService {
                         .stream()
                         .map(m -> {
                             CouponModel couponModel = couponMapper.findExchangeableCouponById(m.getCouponId());
-                            return new ExchangeCouponView(m.getPoints(), m.getSeq(), m.getImageUrl(), m.getId(), couponModel);
+                            return new ExchangeCouponView(m.getPoints(), m.getActualPoints(), m.getSeq(), m.getImageUrl(), m.getId(), couponModel);
                         })
                         .map(this::convertProductShowItemDto)
                         .collect(Collectors.toList());
@@ -287,6 +294,7 @@ public class ProductServiceImpl implements ProductService {
                     if (null != couponModel) {
                         ExchangeCouponView exchangeCouponView = new ExchangeCouponView(
                                 productModelCoupon.getPoints(),
+                                productModelCoupon.getActualPoints(),
                                 productModelCoupon.getSeq(),
                                 productModelCoupon.getImageUrl(),
                                 id,
@@ -301,13 +309,16 @@ public class ProductServiceImpl implements ProductService {
         return productShowItemDto;
     }
 
-    private ProductOrderModel generateOrder(AccountModel accountModel, ProductShowItemDto productShowItemDto, int amount, UserAddressModel userAddressModel) {
+    private ProductOrderModel generateOrder(AccountModel accountModel, ProductShowItemDto productShowItemDto, int amount, UserAddressModel userAddressModel, double discount) {
+        long actualPoints = Math.round(new BigDecimal(productShowItemDto.getPoints()).multiply(new BigDecimal(discount)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+        long totalPoints = Math.round(new BigDecimal(productShowItemDto.getPoints()).multiply(new BigDecimal(discount)).multiply(new BigDecimal(amount)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
         if (productShowItemDto.getGoodsType().equals(GoodsType.PHYSICAL)) {
             return new ProductOrderModel(
                     productShowItemDto.getId(),
                     productShowItemDto.getPoints(),
+                    actualPoints,
                     amount,
-                    productShowItemDto.getPoints() * amount,
+                    totalPoints,
                     userAddressModel.getContact(),
                     userAddressModel.getMobile(),
                     userAddressModel.getAddress(),
@@ -319,8 +330,9 @@ public class ProductServiceImpl implements ProductService {
             return new ProductOrderModel(
                     productShowItemDto.getId(),
                     productShowItemDto.getPoints(),
+                    actualPoints,
                     amount,
-                    productShowItemDto.getPoints() * amount,
+                    totalPoints,
                     userModel.getUserName(),
                     userModel.getMobile(),
                     "",
@@ -333,8 +345,9 @@ public class ProductServiceImpl implements ProductService {
             return new ProductOrderModel(
                     productModel.getId(),
                     productShowItemDto.getPoints(),
+                    actualPoints,
                     amount,
-                    productShowItemDto.getPoints() * amount,
+                    totalPoints,
                     userModel.getUserName(),
                     userModel.getMobile(),
                     "",
@@ -349,18 +362,24 @@ public class ProductServiceImpl implements ProductService {
     public BaseDto<BaseDataDto> buyProduct(String loginName, long id, GoodsType goodsType, int amount, Long addressId) {
         ProductModel productModel = productMapper.lockById(id);
         AccountModel accountModel = accountMapper.lockByLoginName(loginName);
+
+        MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
+        double discount = MembershipDiscount.getMembershipDiscountByLevel(membershipModel == null ? 0 : membershipModel.getLevel());
+
         if (null == accountModel) {
             return new BaseDto<>(new BaseDataDto(false, "该账户未实名认证，不能购买商品"));
         }
 
         ProductShowItemDto productShowItemDto = findProductShowItemDto(id, goodsType);
+        long totalPrice = Math.round(new BigDecimal(productShowItemDto.getPoints()).multiply(new BigDecimal(discount)).multiply(new BigDecimal(amount)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
         if (null == productShowItemDto) {
             return new BaseDto<>(new BaseDataDto(false, "该商品或该商品类型不存在"));
         }
         if (amount > productShowItemDto.getLeftCount()) {
             return new BaseDto<>(new BaseDataDto(false, "商品数量不足"));
         }
-        if (accountModel.getPoint() < productShowItemDto.getPoints() * amount) {
+
+        if (accountModel.getPoint() < totalPrice) {
             return new BaseDto<>(new BaseDataDto(false, "积分不足"));
         }
 
@@ -375,9 +394,8 @@ public class ProductServiceImpl implements ProductService {
             }
         }
 
-        ProductOrderModel productOrderModel = generateOrder(accountModel, productShowItemDto, amount, userAddressModel);
+        ProductOrderModel productOrderModel = generateOrder(accountModel, productShowItemDto, amount, userAddressModel, discount);
 
-        long totalPrice = productShowItemDto.getPoints() * amount;
 
         pointBillService.createPointBill(loginName, productShowItemDto.getId(), PointBusinessType.EXCHANGE, (-totalPrice), productShowItemDto.getName());
         logger.info(MessageFormat.format("[ProductServiceImpl][buyProduct] User:{0} buy product {1} product type {2}, amount:{3}, use point {4}",
@@ -469,6 +487,7 @@ public class ProductServiceImpl implements ProductService {
                 exchangeCouponView.getCouponModel().getTotalCount(),
                 exchangeCouponView.getCouponModel().getIssuedCount(),
                 exchangeCouponView.getExchangePoint(),
+                exchangeCouponView.getActualPoints(),
                 exchangeCouponView.getSeq(),
                 exchangeCouponView.getImageUrl(),
                 exchangeCouponView.getCouponModel().getCouponType(),
@@ -484,5 +503,15 @@ public class ProductServiceImpl implements ProductService {
         }
         productShowItemDto.setDescription(descriptionString.length() > 2 ? descriptionString.substring(0, descriptionString.length() - 1) : descriptionString);
         return productShowItemDto;
+    }
+
+    public String discountShowInfo(String loginName) {
+        MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
+        return MembershipDiscount.getMembershipDescriptionByLevel(membershipModel == null ? 0 : membershipModel.getLevel());
+    }
+
+    public double discountRate(String loginName) {
+        MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
+        return MembershipDiscount.getMembershipDiscountByLevel(membershipModel == null ? 0 : membershipModel.getLevel());
     }
 }

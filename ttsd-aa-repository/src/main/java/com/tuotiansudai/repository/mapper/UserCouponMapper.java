@@ -49,6 +49,7 @@ public interface UserCouponMapper {
 
     List<UserCouponModel> findByCouponIdAndStatus(@Param("couponId") long couponId, @Param("isUsed") Boolean isUsed,
                                                   @Param("loginName") String loginName, @Param("mobile") String mobile,
+                                                  @Param("createdTime") Date createdTime,
                                                   @Param("registerStartTime") Date registerStartTime, @Param("registerEndTime") Date registerEndTime,
                                                   @Param("investStartTime") Date investStartTime, @Param("investEndTime") Date investEndTime,
                                                   @Param("index") int index, @Param("pageSize") int pageSize);

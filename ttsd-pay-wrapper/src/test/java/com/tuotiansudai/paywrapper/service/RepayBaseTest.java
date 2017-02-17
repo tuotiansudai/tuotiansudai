@@ -101,9 +101,9 @@ public class RepayBaseTest {
         return fakeLoanRepay;
     }
 
-    protected Map<String, String> getFakeCallbackParamsMap(long orderId) {
+    protected Map<String, String> getFakeCallbackParamsMap(long orderId,String service) {
         return Maps.newHashMap(ImmutableMap.<String, String>builder()
-                .put("service", "project_transfer_notify")
+                .put("service", service)
                 .put("sign_type", "RSA")
                 .put("sign", "sign")
                 .put("mer_id", "mer_id")

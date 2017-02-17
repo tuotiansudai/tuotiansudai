@@ -16,6 +16,7 @@ import com.tuotiansudai.enums.PushType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
+import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.message.EventMessage;
 import com.tuotiansudai.message.PushMessage;
@@ -116,6 +117,9 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
     @Autowired
     private AnxinSignService anxinSignService;
 
+    @Autowired
+    private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
+
     @Override
     public BaseDto<PayDataDto> noPasswordPurchase(InvestDto investDto) {
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
@@ -130,7 +134,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
             return baseDto;
         }
         InvestModel transferrerModel = investMapper.findById(transferApplicationModel.getTransferInvestId());
-        double rate = userMembershipEvaluator.evaluate(loginName).getFee();
+        double rate = membershipPrivilegePurchaseService.obtainServiceFee(loginName);
         InvestModel investModel = generateInvestModel(investDto, loginName, transferApplicationModel, transferrerModel, rate);
 
         investMapper.create(investModel);
@@ -183,7 +187,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
             return dto;
         }
         InvestModel transferrerModel = investMapper.findById(transferApplicationModel.getTransferInvestId());
-        double rate = userMembershipEvaluator.evaluate(transferee).getFee();
+        double rate = membershipPrivilegePurchaseService.obtainServiceFee(transferee);
         InvestModel investModel = generateInvestModel(investDto, transferee, transferApplicationModel, transferrerModel, rate);
 
         investMapper.create(investModel);
@@ -570,8 +574,8 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
                 investDto.getSource(),
                 investDto.getChannel(),
                 rate);
-        MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
-        investModel.setInvestFeeRate(membershipModel.getFee());
+
+        investModel.setInvestFeeRate(membershipPrivilegePurchaseService.obtainServiceFee(loginName));
         investModel.setNoPasswordInvest(investDto.isNoPassword());
         return investModel;
     }

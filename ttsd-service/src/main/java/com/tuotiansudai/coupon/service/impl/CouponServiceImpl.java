@@ -5,6 +5,7 @@ import com.tuotiansudai.repository.model.UserCouponModel;
 import com.tuotiansudai.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
+import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.CouponMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
@@ -43,13 +44,15 @@ public class CouponServiceImpl implements CouponService {
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
 
+    @Autowired
+    private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
+
     @Override
     public long estimateCouponExpectedInterest(String loginName, long loanId, List<Long> couponIds, long amount) {
         long totalInterest = 0;
 
         //根据loginNameName查询出当前会员的相关信息,需要判断是否为空,如果为空则安装在费率0.1计算
-        MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
-        double investFeeRate = membershipModel != null ? membershipModel.getFee() : this.defaultFee;
+        double investFeeRate = membershipPrivilegePurchaseService.obtainServiceFee(loginName);
         LoanModel loanModel = loanMapper.findById(loanId);
         if(loanModel != null && ProductType.EXPERIENCE == loanModel.getProductType()){
             investFeeRate = this.defaultFee;
