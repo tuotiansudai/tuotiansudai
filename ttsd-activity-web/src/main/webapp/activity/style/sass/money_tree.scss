@@ -7,21 +7,21 @@
 }
 
 .image-banner-slide  {
-  height: 233px;
+  height: 350px;
   background: #32275f url("/activity/images/money-tree/money-tree-banner.png") center top no-repeat;
-  background-size: 100%;
+  //background-size: 100%;
 }
 
 .invite-des-container {
   display: inline-block;
   width: 100%;
-  height: 190px;
+  height: 290px;
   background: #32275f;
 
   .invite-des-box-bg{
-    width: 485px;
-    height: 128px;
-    margin: 25px auto;
+    width: 690px;
+    height: 200px;
+    margin: 40px auto;
     box-shadow: inset 0px 0px 35px rgba(190,145,87,1), 0px 0px 26px rgba(190,145,87,0.8);
     border: 3px solid rgb(249,229,204);
     border-radius: 10px;
@@ -33,14 +33,14 @@
       padding-bottom: 10px;
 
       p{
-        font-size: 13px;
+        font-size: 20px;
         text-align: center;
         color:#ffc85b;
         margin-bottom: 0px;
       }
 
       p b{
-        font-size: 16px;
+        font-size: 30px;
         color:#FF635A;
       }
     }
@@ -48,71 +48,71 @@
 }
 
 .money-tree-container{
-  height: 829px;
+  height: 1295px;
   background: #ffd75e url("/activity/images/money-tree/money-tree-bg.png") center top no-repeat;
   margin:0px auto 0px auto;
   text-align: center;
-  background-size: 100%;
+  //background-size: 100%;
 
   .tree-qrcode{
     display: inline-block;
-    width: 160px;
-    height: 160px;
+    width: 246px;
+    height: 246px;
     margin: 0 auto;
-    margin-top: 150px;
+    margin-top: 260px;
   }
 
   .btn-shake-bg{
     width: 165px;
     height: 30px;
     display: none;
-    .btn-ShakeTree{
+    .btn-taketree{
       visibility: visible;
     }
   }
 
   .example-des-box{
-    width: 730px;
+    width: 945px;
     background: #ffc23d;
     border-radius: 10px;
     margin: 0 auto;
-    margin-top: 325px;
+    margin-top: 440px;
     text-align: center;
 
     p {
       text-align: center;
-      font-size: 13px;
+      font-size: 16px;
       color: #654d57;
     }
 
     p font {
-      font-size: 15px;
+      font-size: 20px;
       color: #654d57;
     }
 
     p b {
-      font-size: 16px;
+      font-size: 28px;
       color: #FF635A;
     }
   }
 
   .tip-des-box{
-    width: 730px;
+    width: 945px;
     background: #ffc23d;
     border-radius: 10px;
     margin: 0 auto;
     margin-top: 10px;
     text-align: left;
     p {
-      font-size: 13px;
+      font-size: 18px;
       color: #654d57;
-      margin-left: 10px;
+      margin-left: 20px;
       margin-bottom: 0px;
     }
 
     .tip-text{
       padding-top: 5px;
-      font-size: 15px;
+      font-size: 20px;
       color: #654d57;
     }
   }
@@ -171,7 +171,7 @@
       visibility: visible;
       box-shadow: 0 5px 0 #333366;
 
-      .btn-ShakeTree{
+      .btn-taketree{
         color: #fff;
         line-height: 30px;
       }
