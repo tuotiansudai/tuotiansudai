@@ -96,7 +96,7 @@
         <table class="table table-bordered table-hover">
             <thead>
             <tr>
-                <th colspan="17">合计投资金额：${data.sumAmount/100} 元</th>
+                <th colspan="18">合计投资金额：${data.sumAmount/100} 元</th>
             </tr>
             <tr>
                 <th>项目编号</th>
@@ -151,7 +151,7 @@
                 </tr>
                 <#else>
                 <tr>
-                    <td colspan="16">Empty</td>
+                    <td colspan="18">Empty</td>
                 </tr>
                 </#list>
             </tbody>
