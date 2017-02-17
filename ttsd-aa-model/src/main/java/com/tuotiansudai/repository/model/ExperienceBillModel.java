@@ -1,16 +1,18 @@
 package com.tuotiansudai.repository.model;
 
-import com.tuotiansudai.enums.ExperienceType;
+import com.tuotiansudai.enums.ExperienceBillOperationType;
+import com.tuotiansudai.enums.ExperienceBusinessType;
 
 import java.io.Serializable;
 import java.util.Date;
 
-public class ExperienceGoldBillModel implements Serializable {
+public class ExperienceBillModel implements Serializable {
 
     private long id;
     private String loginName;
+    private ExperienceBillOperationType operationType;
     private long amount;
-    private ExperienceType experienceType;
+    private ExperienceBusinessType businessType;
     private String note;
     private Date createdTime;
 
@@ -30,6 +32,14 @@ public class ExperienceGoldBillModel implements Serializable {
         this.loginName = loginName;
     }
 
+    public ExperienceBillOperationType getOperationType() {
+        return operationType;
+    }
+
+    public void setOperationType(ExperienceBillOperationType operationType) {
+        this.operationType = operationType;
+    }
+
     public long getAmount() {
         return amount;
     }
@@ -38,12 +48,12 @@ public class ExperienceGoldBillModel implements Serializable {
         this.amount = amount;
     }
 
-    public ExperienceType getExperienceType() {
-        return experienceType;
+    public ExperienceBusinessType getBusinessType() {
+        return businessType;
     }
 
-    public void setExperienceType(ExperienceType experienceType) {
-        this.experienceType = experienceType;
+    public void setBusinessType(ExperienceBusinessType businessType) {
+        this.businessType = businessType;
     }
 
     public String getNote() {

@@ -1,8 +1,9 @@
-CREATE TABLE `experience_gold_bill` (
+CREATE TABLE `experience_bill` (
   `id` int(32) NOT NULL AUTO_INCREMENT,
   `login_name` varchar(25) NOT NULL,
+  `operation_type` varchar(32) NOT NULL,
   `amount` bigint(20) NOT NULL,
-  `experience_type` varchar(32) NOT NULL,
+  `business_type` varchar(32) NOT NULL,
   `note` text,
   `created_time` datetime NOT NULL,
   PRIMARY KEY (`id`),
