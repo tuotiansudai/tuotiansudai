@@ -1,7 +1,7 @@
 package com.tuotiansudai.web.controller;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.anxin.service.AnxinSignService;
+import com.tuotiansudai.cfca.service.AnxinSignService;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.repository.mapper.AccountMapper;

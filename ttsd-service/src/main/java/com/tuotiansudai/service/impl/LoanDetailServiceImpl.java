@@ -4,11 +4,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.anxin.service.AnxinSignService;
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.repository.mapper.CouponMapper;
-import com.tuotiansudai.repository.model.CouponModel;
-import com.tuotiansudai.repository.model.UserGroup;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.repository.mapper.*;
@@ -16,12 +12,10 @@ import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.service.LoanDetailService;
 import com.tuotiansudai.util.AmountConverter;
-import com.tuotiansudai.util.InterestCalculator;
 import com.tuotiansudai.util.RandomUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -96,9 +90,6 @@ public class LoanDetailServiceImpl implements LoanDetailService {
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${invest.achievement.start.time}\")}")
     private Date achievementStartTime;
 
-    @Autowired
-    private AnxinSignService anxinSignService;
-
     @Override
     public LoanDetailDto getLoanDetail(String loginName, long loanId) {
         LoanModel loanModel = loanMapper.findById(loanId);
@@ -168,7 +159,9 @@ public class LoanDetailServiceImpl implements LoanDetailService {
         long investedAmount = investMapper.sumSuccessInvestAmount(loanModel.getId());
 
         AnxinSignPropertyModel anxinProp = anxinSignPropertyMapper.findByLoginName(loginName);
-        boolean isAuthenticationRequired = anxinSignService.isAuthenticationRequired(loginName);
+//        boolean isAuthenticationRequired = anxinSignService.isAuthenticationRequired(loginName);
+        boolean isAuthenticationRequired = true;
+        ////TODO anxinsign
         boolean isAnxinUser = anxinProp != null && StringUtils.isNotEmpty(anxinProp.getAnxinUserId());
 
         AccountModel accountModel = accountMapper.findByLoginName(loginName);

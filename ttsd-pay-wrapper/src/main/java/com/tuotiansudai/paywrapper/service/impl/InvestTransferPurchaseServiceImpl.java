@@ -3,11 +3,8 @@ package com.tuotiansudai.paywrapper.service.impl;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.anxin.service.AnxinSignService;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
-import com.tuotiansudai.repository.mapper.*;
-import com.tuotiansudai.repository.model.CouponRepayModel;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.enums.MessageEventType;
@@ -37,8 +34,8 @@ import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransfe
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
 import com.tuotiansudai.paywrapper.service.InvestTransferPurchaseService;
 import com.tuotiansudai.paywrapper.service.SystemBillService;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.repository.model.TransferApplicationModel;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.IdGenerator;
@@ -112,9 +109,6 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
 
     @Autowired
     private CouponRepayMapper couponRepayMapper;
-
-    @Autowired
-    private AnxinSignService anxinSignService;
 
     @Override
     public BaseDto<PayDataDto> noPasswordPurchase(InvestDto investDto) {
@@ -505,7 +499,8 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
                 ((InvestTransferPurchaseService) AopContext.currentProxy()).postPurchase(investId);
 
                 logger.info("债权转让：生成合同，转让ID:" + transferApplicationModel.getId());
-                anxinSignService.createTransferContracts(transferApplicationModel.getId());
+//                anxinSignService.createTransferContracts(transferApplicationModel.getId());
+                //TODO anxinsign
             }
         } else {
             // 失败的话：更新 invest 状态为投资失败

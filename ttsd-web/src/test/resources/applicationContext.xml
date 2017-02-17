@@ -28,7 +28,7 @@
             base-package="com.tuotiansudai.service,com.tuotiansudai.repository,com.tuotiansudai.client,com.tuotiansudai.spring,
             com.tuotiansudai.util,com.tuotiansudai.cache,com.tuotiansudai.coupon,com.tuotiansudai.aspect,com.tuotiansudai.point,
             com.tuotiansudai.transfer,com.tuotiansudai.membership,com.tuotiansudai.message,
-            com.tuotiansudai.anxin.service,com.tuotiansudai.cfca,com.tuotiansudai.contract.service,com.tuotiansudai.log.service"/>
+            com.tuotiansudai.cfca,com.tuotiansudai.log.service"/>
 
     <!-- data source-->
     <bean id="hikariCPDataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">

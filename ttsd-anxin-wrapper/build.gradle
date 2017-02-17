@@ -3,14 +3,13 @@ apply from: 'db_migration.gradle'
 
 dependencies {
     compile fileTree(dir: 'lib', include: '**/*.jar'),
-            project(':ttsd-dependency'),
-            project(':ttsd-util'),
             project(':ttsd-config'),
-            project(':ttsd-client'),
             project(':ttsd-user-service'),
             project(":ttsd-aa-repository"),
             project(":ttsd-job"),
-            project(':ttsd-service')
+            'com.itextpdf:itextpdf:5.5.10',
+            'com.itextpdf:itext-asian:5.2.0'
+
 
     providedCompile "javax.servlet:javax.servlet-api:3.1.0"
 }

@@ -5,7 +5,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.dto.AnxinDataDto;
-import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -31,16 +30,46 @@ public class AnxinWrapperClient extends BaseClient {
     @Value("${anxin.application.context}")
     protected String applicationContext;
 
-    private final static String createLoanContract = "/anxin-sign/{0}/create-loan-contract";
+    private final static String createLoanContract = "/anxin-sign/create-loan-contract";
 
-    private final static String createTransferContract = "/anxin-sign/{0}/create-transfer-contract";
+    private final static String createTransferContract = "/anxin-sign/create-transfer-contract";
 
-    public BaseDto<BaseDataDto> createLoanContract(long loanId) {
-        return syncExecute(null, MessageFormat.format(createLoanContract, String.valueOf(loanId)), "POST");
+    private final static String queryContract = "/anxin-sign/query-contract";
+
+    private final static String createAccount = "/anxin-sign/create-account";
+
+    private final static String sendCaptcha = "/anxin-sign/send-captcha";
+
+    private final static String verifyCaptcha = "/anxin-sign/verify-captcha";
+
+    private final static String switchSkipAuth = "/anxin-sign/switch-skip-auth";
+
+    public BaseDto<AnxinDataDto> createLoanContract(long loanId) {
+        return syncExecute(String.valueOf(loanId), createLoanContract, "POST");
     }
 
-    public BaseDto<BaseDataDto> createTransferContract(long transferId) {
-        return syncExecute(null, MessageFormat.format(createTransferContract, String.valueOf(transferId)), "POST");
+    public BaseDto<AnxinDataDto> createTransferContract(long transferId) {
+        return syncExecute(String.valueOf(transferId), createTransferContract, "POST");
+    }
+
+    public BaseDto<AnxinDataDto> queryContract(Object anxinQueryContractDto) {
+        return syncExecute(anxinQueryContractDto, queryContract, "POST");
+    }
+
+    public BaseDto<AnxinDataDto> createAccount(String loginName) {
+        return syncExecute(loginName, createAccount, "POST");
+    }
+
+    public BaseDto<AnxinDataDto> sendCaptcha(Object anxinSendCaptchaDto) {
+        return syncExecute(anxinSendCaptchaDto, sendCaptcha, "POST");
+    }
+
+    public BaseDto<AnxinDataDto> verifyCaptcha(Object anxinVerifyCaptchaDto) {
+        return syncExecute(anxinVerifyCaptchaDto, verifyCaptcha, "POST");
+    }
+
+    public BaseDto<AnxinDataDto> switchSkipAuth(Object anxinSwitchSkipAuthDto) {
+        return syncExecute(anxinSwitchSkipAuthDto, switchSkipAuth, "POST");
     }
 
     public Map<String, String> getLoanStatus(long loanId) {
@@ -65,17 +94,17 @@ public class AnxinWrapperClient extends BaseClient {
         return null;
     }
 
-    private BaseDto<BaseDataDto> parsePayResponseJson(String json) {
-        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
-        BaseDataDto baseDataDto = new BaseDataDto();
-        baseDto.setData(baseDataDto);
+    private BaseDto<AnxinDataDto> parsePayResponseJson(String json) {
+        BaseDto<AnxinDataDto> baseDto = new BaseDto<>();
+        AnxinDataDto anxinDataDto = new AnxinDataDto();
+        baseDto.setData(anxinDataDto);
         if (Strings.isNullOrEmpty(json)) {
             baseDto.setSuccess(false);
             return baseDto;
         }
 
         try {
-            baseDto = objectMapper.readValue(json, new TypeReference<BaseDto<BaseDataDto>>() {
+            baseDto = objectMapper.readValue(json, new TypeReference<BaseDto<AnxinDataDto>>() {
             });
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage(), e);
@@ -84,7 +113,7 @@ public class AnxinWrapperClient extends BaseClient {
         return baseDto;
     }
 
-    private BaseDto<BaseDataDto> syncExecute(Object requestData, String requestPath, String method) {
+    private BaseDto<AnxinDataDto> syncExecute(Object requestData, String requestPath, String method) {
         try {
             String responseJson = this.execute(requestPath, requestData != null ? objectMapper.writeValueAsString(requestData) : null, method);
             return this.parsePayResponseJson(responseJson);
@@ -92,9 +121,9 @@ public class AnxinWrapperClient extends BaseClient {
             logger.error(e.getLocalizedMessage(), e);
         }
 
-        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
-        BaseDataDto baseDataDto = new BaseDataDto();
-        baseDto.setData(baseDataDto);
+        BaseDto<AnxinDataDto> baseDto = new BaseDto<>();
+        AnxinDataDto anxinDataDto = new AnxinDataDto();
+        baseDto.setData(anxinDataDto);
 
         return baseDto;
     }

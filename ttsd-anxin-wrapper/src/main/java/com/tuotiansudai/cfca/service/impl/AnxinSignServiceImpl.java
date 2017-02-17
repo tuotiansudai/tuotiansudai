@@ -7,24 +7,19 @@ import cfca.trustsign.common.vo.response.tx3.*;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.cfca.constant.AnxinRetCode;
-import com.tuotiansudai.cfca.dto.AnxinContractType;
-import com.tuotiansudai.cfca.dto.AnxinSignCreateDto;
 import com.tuotiansudai.cfca.dto.ContractResponseView;
 import com.tuotiansudai.cfca.service.AnxinSignConnectService;
 import com.tuotiansudai.cfca.service.AnxinSignService;
+import com.tuotiansudai.cfca.service.ContractService;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
-import com.tuotiansudai.contract.service.ContractService;
-import com.tuotiansudai.dto.BaseDataDto;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.ContractNoStatus;
+import com.tuotiansudai.dto.*;
 import com.tuotiansudai.dto.sms.GenerateContractErrorNotifyDto;
 import com.tuotiansudai.job.DelayMessageDeliveryJobCreator;
 import com.tuotiansudai.job.JobManager;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.UUIDGenerator;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -109,6 +104,12 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
     @Value("#{'${anxin.contract.notify.mobileList}'.split('\\|')}")
     private List<String> mobileList;
+
+    private static final String BATCH_NO_IS_INVALID = "该标的已经超过7天，无法再次［查询合同结果并更新合同编号］";
+
+    private static final String AGENT_IS_NOT_SIGN = "代理人/借款人 未授权安心签";
+
+    private static final String CREATE_CONTRACT_TEMPLATE_FAIL = "创建合同错误";
 
     /**
      * 以前是否授权过
@@ -325,8 +326,6 @@ public class AnxinSignServiceImpl implements AnxinSignService {
     }
 
 
-
-
     @Override
     public BaseDto createLoanContracts(long loanId) {
         redisWrapperClient.setex(LOAN_CONTRACT_IN_CREATING_KEY + loanId, CREATE_CONTRACT_MAX_IN_DOING_TIME, "1");
@@ -338,7 +337,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
             investMapper.updateAllContractNoByLoanId(loanId, ContractNoStatus.OLD.name());
             logger.error(MessageFormat.format("[安心签] create contract error, agent has not signed, loanid:{0}, userId:{1}",
                     String.valueOf(loanId), loanModel.getAgentLoginName()));
-            return new BaseDto(false);
+            return new BaseDto<>(new AnxinDataDto(false, AGENT_IS_NOT_SIGN));
         }
 
         List<String> batchNoList = new ArrayList<>();
@@ -373,12 +372,6 @@ public class AnxinSignServiceImpl implements AnxinSignService {
             smsWrapperClient.sendGenerateContractErrorNotify(new GenerateContractErrorNotifyDto(mobileList, loanId));
         }
 
-        if (CollectionUtils.isNotEmpty((batchNoList))) {
-            logger.info("[安心签]: 创建job，稍后查询并更新合同状态。loanId:" + String.valueOf(loanId));
-            DelayMessageDeliveryJobCreator.createAnxinContractQueryDelayJob(jobManager,
-                    loanId, AnxinContractType.LOAN_CONTRACT.name(), batchNoList);
-        }
-
         redisWrapperClient.setex(LOAN_BATCH_NO_LIST_KEY + loanId, BATCH_NO_LIFT_TIME, String.join(",", batchNoList));
         return new BaseDto(true);
     }
@@ -407,7 +400,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
         CreateContractVO createContractVO = createTransferContractVo(transferApplicationId);
         if (createContractVO == null) {
-            return new BaseDto(false);
+            return new BaseDto<>(new AnxinDataDto(false, CREATE_CONTRACT_TEMPLATE_FAIL));
         }
         List<CreateContractVO> createContractVOs = Lists.newArrayList(createContractVO);
         BaseDto baseDto = new BaseDto();
@@ -420,7 +413,6 @@ public class AnxinSignServiceImpl implements AnxinSignService {
             baseDto.setSuccess(isSuccess(tx3202ResVO));
         } catch (PKIException e) {
             smsWrapperClient.sendGenerateContractErrorNotify(new GenerateContractErrorNotifyDto(mobileList, transferApplicationId));
-
             baseDto.setSuccess(false);
             logger.error(MessageFormat.format("[安心签] create transfer contract error, transferId:{0}", transferApplicationId), e);
         }
@@ -589,6 +581,27 @@ public class AnxinSignServiceImpl implements AnxinSignService {
                 .forEach(resView -> investMapper.updateContractNoById(resView.getInvestId(), resView.getContractNo()));
 
         return waitingBatchNoList;
+    }
+
+    @Override
+    public BaseDto<AnxinDataDto> queryContract(AnxinQueryContractDto anxinQueryContractDto) {
+        if (anxinQueryContractDto == null) {
+            return new BaseDto<>(true, new AnxinDataDto(true, ""));
+        }
+
+        String batchNo;
+        if (anxinQueryContractDto.getAnxinContractType().equals(AnxinContractType.LOAN_CONTRACT)) {
+            batchNo = redisWrapperClient.get(LOAN_BATCH_NO_LIST_KEY + anxinQueryContractDto.getBusinessId());
+        } else {
+            batchNo = redisWrapperClient.get(TRANSFER_BATCH_NO_LIST_KEY + anxinQueryContractDto.getBusinessId());
+        }
+
+        if (Strings.isNullOrEmpty(batchNo)) {
+            return new BaseDto<>(new AnxinDataDto(false, BATCH_NO_IS_INVALID));
+        }
+
+        this.queryContract(anxinQueryContractDto.getBusinessId(), Lists.newArrayList(batchNo.split(",")), anxinQueryContractDto.getAnxinContractType());
+        return new BaseDto<>(true, new AnxinDataDto(true, ""));
     }
 
 }

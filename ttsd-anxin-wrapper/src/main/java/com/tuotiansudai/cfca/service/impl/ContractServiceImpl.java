@@ -1,4 +1,4 @@
-package com.tuotiansudai.contract.service.impl;
+package com.tuotiansudai.cfca.service.impl;
 
 import com.google.common.collect.Lists;
 import com.itextpdf.text.DocumentException;
@@ -6,11 +6,9 @@ import com.itextpdf.text.pdf.AcroFields;
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfStamper;
-import com.tuotiansudai.contract.service.ContractService;
+import com.tuotiansudai.cfca.service.ContractService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.repository.model.TransferApplicationModel;
-import com.tuotiansudai.repository.model.TransferRuleModel;
 import com.tuotiansudai.util.AmountConverter;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -19,6 +17,7 @@ import org.apache.log4j.Logger;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.io.*;
 import java.text.DecimalFormat;
 import java.text.MessageFormat;

@@ -3,13 +3,16 @@ package com.tuotiansudai.mq.consumer.loan;
 import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.client.AnxinWrapperClient;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
+import com.tuotiansudai.dto.AnxinQueryContractDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.message.LoanOutSuccessMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
+import com.tuotiansudai.repository.model.AnxinContractType;
 import com.tuotiansudai.util.JsonConverter;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
@@ -30,6 +33,9 @@ public class LoanOutSuccessCreateAnXinContractMessageConsumer implements Message
 
     @Autowired
     private PayWrapperClient payWrapperClient;
+
+    @Autowired
+    private AnxinWrapperClient anxinWrapperClient;
 
     private long DEFAULT_MINUTE = 1000 * 60 * 15;
 
@@ -65,7 +71,7 @@ public class LoanOutSuccessCreateAnXinContractMessageConsumer implements Message
         List<String> fatalSmsList = Lists.newArrayList();
 
         logger.info("[标的放款MQ] LoanOutSuccess_GenerateAnXinContract ready to consume message. createLoanContracts is executing, loanId:{0}", loanId);
-        BaseDto baseDto = payWrapperClient.createAnXinContract(loanId);
+        BaseDto baseDto = anxinWrapperClient.createLoanContract(loanId);
         if (!baseDto.isSuccess()) {
             fatalSmsList.add("生成安心签失败");
             logger.error(MessageFormat.format("[标的放款MQ] LoanOutSuccess_GenerateAnXinContract is fail. loanId:{0}", String.valueOf(loanId)));
@@ -79,7 +85,7 @@ public class LoanOutSuccessCreateAnXinContractMessageConsumer implements Message
         }
 
         logger.info("[标的放款MQ] LoanOutSuccess_GenerateAnXinContract queryLoanContracts start .");
-        baseDto = payWrapperClient.queryAnXinContract(loanId);
+        baseDto = anxinWrapperClient.queryContract(new AnxinQueryContractDto(loanId, AnxinContractType.LOAN_CONTRACT));
         if (baseDto == null || !baseDto.isSuccess()) {
             fatalSmsList.add("查询安心签失败");
             logger.error(MessageFormat.format("[标的放款MQ] LoanOutSuccess_GenerateAnXinContract queryLoanContracts is fail. loanId:{0}", String.valueOf(loanId)));

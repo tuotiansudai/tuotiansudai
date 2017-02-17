@@ -1,4 +1,4 @@
-package com.tuotiansudai.cfca.dto;
+package com.tuotiansudai.repository.model;
 
 
 public enum AnxinContractType {

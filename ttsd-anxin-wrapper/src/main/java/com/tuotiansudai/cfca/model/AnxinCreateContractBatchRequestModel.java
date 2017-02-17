@@ -1,10 +1,8 @@
 package com.tuotiansudai.cfca.model;
 
 import cfca.trustsign.common.vo.cs.CreateContractVO;
-import cfca.trustsign.common.vo.request.tx3.Tx3102ReqVO;
 import cfca.trustsign.common.vo.request.tx3.Tx3202ReqVO;
 import com.tuotiansudai.cfca.converter.JsonObjectMapper;
-import com.tuotiansudai.cfca.dto.AnxinContractType;
 
 import java.io.Serializable;
 import java.util.Date;

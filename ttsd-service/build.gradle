@@ -22,7 +22,7 @@ dependencies {
             project(":ttsd-util"),
             project(":ttsd-edxactivity-model"),
             project(":ttsd-aa-repository"),
-            project(":ttsd-anxin-sign"),
+            project(":ttsd-anxin-wrapper"),
             project(":ttsd-quartz-extension"),
             project(":ttsd-job"),
             'com.itextpdf:itextpdf:5.5.10',

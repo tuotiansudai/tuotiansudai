@@ -1,12 +1,21 @@
-package com.tuotiansudai.cfca.dto;
-
+package com.tuotiansudai.dto;
 
 import com.tuotiansudai.repository.model.AnxinContractType;
 
-public class AnxinSignCreateDto {
+import java.io.Serializable;
+
+public class AnxinQueryContractDto implements Serializable{
 
     private Long businessId;
     private AnxinContractType anxinContractType;
+
+    public AnxinQueryContractDto() {
+    }
+
+    public AnxinQueryContractDto(Long businessId, AnxinContractType anxinContractType) {
+        this.businessId = businessId;
+        this.anxinContractType = anxinContractType;
+    }
 
     public Long getBusinessId() {
         return businessId;

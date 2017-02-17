@@ -17,23 +17,4 @@
 
     <context:component-scan base-package="com.tuotiansudai.cfca.controller"/>
 
-    <!-- freemarker config -->
-    <bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
-        <property name="templateLoaderPath" value="/templates"/>
-        <property name="defaultEncoding" value="utf-8"/>
-    </bean>
-
-    <!--
-    View resolvers can also be configured with ResourceBundles or XML files. If you need
-    different view resolving based on Locale, you have to use the resource bundle resolver.
-    -->
-    <bean id="freeMarkerViewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
-        <property name="cache" value="true"/>
-        <property name="prefix" value=""/>
-        <property name="suffix" value=".ftl"/>
-        <property name="contentType" value="text/html;charset=UTF-8"/>
-        <property name="requestContextAttribute" value="requestContext"/>
-        <property name="exposeSessionAttributes" value="true"/>
-    </bean>
-
 </beans>

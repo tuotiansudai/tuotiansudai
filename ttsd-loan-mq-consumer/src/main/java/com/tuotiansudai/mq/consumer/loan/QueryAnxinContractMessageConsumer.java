@@ -1,8 +1,7 @@
 package com.tuotiansudai.mq.consumer.loan;
 
-import com.tuotiansudai.anxin.service.AnxinSignService;
-import com.tuotiansudai.anxin.service.impl.AnxinSignServiceImpl;
-import com.tuotiansudai.cfca.dto.AnxinContractType;
+import com.tuotiansudai.cfca.service.AnxinSignService;
+import com.tuotiansudai.cfca.service.impl.AnxinSignServiceImpl;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.sms.GenerateContractErrorNotifyDto;
@@ -11,6 +10,7 @@ import com.tuotiansudai.job.JobManager;
 import com.tuotiansudai.message.AnxinContractQueryMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
+import com.tuotiansudai.repository.model.AnxinContractType;
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.repository.mapper.TransferApplicationMapper;

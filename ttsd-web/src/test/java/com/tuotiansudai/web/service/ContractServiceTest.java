@@ -1,7 +1,7 @@
 package com.tuotiansudai.web.service;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.contract.service.ContractService;
+import com.tuotiansudai.cfca.service.ContractService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.repository.mapper.TransferApplicationMapper;

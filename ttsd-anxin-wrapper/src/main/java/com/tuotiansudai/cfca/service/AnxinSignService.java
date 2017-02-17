@@ -1,9 +1,10 @@
 package com.tuotiansudai.cfca.service;
 
 
-import com.tuotiansudai.cfca.dto.AnxinContractType;
-import com.tuotiansudai.cfca.dto.AnxinSignCreateDto;
+import com.tuotiansudai.dto.AnxinDataDto;
+import com.tuotiansudai.dto.AnxinQueryContractDto;
 import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.repository.model.AnxinContractType;
 import com.tuotiansudai.repository.model.AnxinSignPropertyModel;
 
 import java.util.List;
@@ -31,5 +32,7 @@ public interface AnxinSignService {
     BaseDto createTransferContracts(long transferApplicationId);
 
     List<String> queryContract(long businessId, List<String> batchNoList, AnxinContractType anxinContractType);
+
+    BaseDto<AnxinDataDto> queryContract(AnxinQueryContractDto anxinQueryContractDto);
 
 }

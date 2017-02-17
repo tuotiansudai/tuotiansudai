@@ -23,7 +23,7 @@
     <context:component-scan base-package="com.tuotiansudai.paywrapper,com.tuotiansudai.util,com.tuotiansudai.client,com.tuotiansudai.cache,
     com.tuotiansudai.aspect,com.tuotiansudai.coupon.service,com.tuotiansudai.coupon.util,com.tuotiansudai.point,
     com.tuotiansudai.transfer,com.tuotiansudai.membership,com.tuotiansudai.cfca,
-    com.tuotiansudai.anxin.service,com.tuotiansudai.contract.service,com.tuotiansudai.log.service"/>
+    com.tuotiansudai.log.service"/>
 
     <aop:aspectj-autoproxy expose-proxy="true"/>
 
