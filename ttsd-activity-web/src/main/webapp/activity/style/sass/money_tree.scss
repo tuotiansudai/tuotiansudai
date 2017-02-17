@@ -1,0 +1,173 @@
+.main-frame {
+  width: 100%;
+  margin: 0 auto;
+  font-size: 14px;
+}
+
+.tour-slide {
+  height: 350px;
+  background: url("/activity/images/money-tree/money-tree-banner.png") center top no-repeat;
+}
+
+.money-tree-desc {
+  width: 100%;
+  height: 340px;
+  background: #32275f;
+  display: inline-block;
+}
+
+.money-tree-box {
+  word-break: break-all;
+  width: 723px;
+  height: 232px;
+  margin: 40px auto;
+  //background: #32275f url("/activity/images/money-tree/money-tree-box.png") center top no-repeat;
+  box-shadow: inset 0px 0px 35px rgba(190, 145, 87, 1), 0px 0px 26px rgba(190, 145, 87, 0.8);
+  border: 3px solid rgb(249, 229, 204);
+  border-radius: 10px;
+  .desc-p {
+    margin-top: 20px;
+  }
+  p {
+    width: 90%;
+    margin: 0 auto;
+    text-align: center;
+    color: #ffc85b;
+    font-size: 20px;
+    span {
+      font-size: 30px;
+      color: #ed6e60;
+    }
+  }
+}
+
+.money-tree {
+  height: 1244px;
+  text-align: center;
+  background: #32275f url("/activity/images/money-tree/money-tree-bg.png") center top no-repeat;
+}
+
+.ewm {
+  margin: 0 auto;
+  width: 246px;
+  height: 246px;
+  padding-top: 220px;
+}
+
+.tc {
+  text-align: center;
+}
+
+.shake-btn {
+  display: inline-block;
+  width: 334px;
+  height: 40px;
+  margin-top: 360px;
+  text-align: center;
+  font-size: 30px;
+  color: #fff;
+  background: #9b3cd0;
+  border-radius: 25px;
+  border: 0px;
+  visibility: hidden;
+  box-shadow: 0 5px 0 #333366;
+}
+
+.foot {
+  width: auto;
+  height: auto;
+  text-align: center;
+  margin-top: 40px;
+  border-radius: 10px;
+  background-color: #f1af20;
+  p {
+    vertical-align: middle;
+    font-size: 16px;
+    color: #32275f;
+    display: inline-block;
+    display: inline;
+    zoom: 1;
+    margin: auto 0;
+    span {
+      font-size: 20px;
+    }
+    .span_money {
+      font-size: 30px;
+      color: #ed6e60;
+    }
+  }
+}
+
+.foot-desc {
+  margin: 0 auto;
+  padding-top: 10px;
+  border-radius: 10px;
+  margin-top: 20px;
+  text-align: left;
+  background-color: #f1af20;
+  p {
+    margin: 0px 10px 0px 15px;
+    font-size: 14px;
+    color: #32275f;
+    display: inline-block;
+    display: inline;
+    zoom: 1;
+  }
+  .foot-desc-title {
+    margin-top: 15px;
+    font-size: 16px;
+  }
+}
+
+@media screen and(max-width: 700px) {
+  .tour-slide {
+    height: 190px;
+    background: url("/activity/images/money-tree/mobile-money-tree-banner.png") center top no-repeat;
+    background-size: 100%;
+  }
+  .money-tree-desc {
+    height: auto;
+    width: auto;
+    padding: 10px;
+  }
+  .money-tree-box {
+    word-break: break-all;
+    width: auto;
+    height: auto;
+    margin: 40px auto;
+    box-sizing: border-box;
+    padding: 15px;
+    p {
+      width: 90%;
+      text-align: center;
+      font-size: 13px;
+      display: inline-block;
+      display: inline;
+      zoom: 1;
+      span {
+        font-size: 16px;
+      }
+    }
+    .desc-p {
+      margin-top: 30px;
+    }
+  }
+  .money-tree {
+    height: 1151px;
+    text-align: center;
+    background: #32275f url("/activity/images/money-tree/mobile-money-tree-bg.png") center top no-repeat;
+    background-size: 100%;
+  }
+  .ewm {
+    visibility: hidden;
+    padding: 0px;
+  }
+  .shake-btn {
+    width: 145px;
+    height: 30px;
+    visibility: visible;
+    text-align: center;
+    font-size: 14px;
+    margin-top: 80px;
+  }
+}
