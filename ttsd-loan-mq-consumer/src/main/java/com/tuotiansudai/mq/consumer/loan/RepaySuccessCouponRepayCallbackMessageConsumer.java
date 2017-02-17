@@ -20,6 +20,7 @@ public class RepaySuccessCouponRepayCallbackMessageConsumer implements MessageCo
 
     @Autowired
     private PayWrapperClient payWrapperClient;
+
     @Autowired
     private SmsWrapperClient smsWrapperClient;
 
