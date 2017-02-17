@@ -59,6 +59,9 @@ function loadLoanData(currentPage) {
 
     var requestData = {startTime: startTime, endTime: endTime, status: status, index: currentPage || 1};
         paginationElement.loadPagination(requestData, function (data) {
+            data.isRepaying = false;
+            data.isComplete = false;
+            data.isCancel = false;
             switch (status) {
                 case 'REPAYING':
                     data.isRepaying = true;
@@ -70,7 +73,8 @@ function loadLoanData(currentPage) {
                     data.isCancel = true;
                     break;
             }
-            var html = Mustache.render(loanListTemplate, data);
+            let render = _.template($('#loanListTemplate').html());
+            let html = render(data);
             $('.loan-list-content .loan-list').html(html);
 
             $('.loan-list .show-loan-repay').click(function () {
@@ -103,7 +107,9 @@ function loadLoanData(currentPage) {
                                     break;
                             }
                         });
-                        var html = Mustache.render(loanRepayTemplate, data);
+
+                        let renderRepay = _.template($('#loanRepayTemplate').html());
+                        let html = renderRepay(data);
 
                         layer.open({
                             type: 1,
@@ -164,8 +170,7 @@ var showBalanceNotEnoughAlert = function (balance, repayAmount) {
         title: '账户余额不足',
         btn: ['关闭', '去充值'],
         area: ['400px', '160px'],
-        content: Mustache.render('<p class="pad-m-tb tc">应还金额 {{repayAmount}} 元，您的账户余额仅有 {{balance}} 元</p>',
-            { 'repayAmount': repayAmount, 'balance': balance}),
+        content:`<p class="pad-m-tb tc">应还金额 ${repayAmount}元，您的账户余额仅有${balance}元</p>`,
         btn1: function () {
             layer.closeAll();
         },

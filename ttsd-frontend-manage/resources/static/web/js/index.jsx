@@ -5,7 +5,6 @@ require('webJsModule/red_envelope_float');
 let $homePageContainer = $('#homePageContainer'),
     $imgScroll = $('.banner-img-list', $homePageContainer);
 let viewport = globalFun.browserRedirect();
-
 //首页大图轮播和最新公告滚动,单独打一个包方便cdn缓存
 require.ensure(['webJsModule/image_show_slider'], function(require){
     let imageSlide = require('webJsModule/image_show_slider');

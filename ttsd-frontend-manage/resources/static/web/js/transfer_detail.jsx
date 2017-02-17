@@ -90,7 +90,6 @@ function submitData() {
             layer.open({
                 type: 1,
                 closeBtn: 0,
-                skin: 'demo-class',
                 title: '投资提示',
                 shadeClose: false,
                 btn: ['取消', '确认'],
