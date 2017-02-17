@@ -29,7 +29,7 @@ public class ActivitiesController {
     @Autowired
     private AccountService accountService;
 
-    @RequestMapping(path = "/{item:^recruit|material-point|integral-draw|birth-month|rank-list-app|share-reward|app-download|landing-page|invest-achievement|landing-anxin|loan-hike|heavily-courtship$}", method = RequestMethod.GET)
+    @RequestMapping(path = "/{item:^recruit|money_tree|material-point|integral-draw|birth-month|rank-list-app|share-reward|app-download|landing-page|invest-achievement|landing-anxin|loan-hike|heavily-courtship$}", method = RequestMethod.GET)
 
     public ModelAndView activities(@PathVariable String item) {
         ModelAndView modelAndView = new ModelAndView("/activities/" + item, "responsive", true);
@@ -40,8 +40,8 @@ public class ActivitiesController {
         }
 
         modelAndView.addObject("isLogin", null != loginName);
-        AccountModel accountModel = accountService.findByLoginName(loginName);
-        modelAndView.addObject("noAccount", null == accountModel);
+        //AccountModel accountModel = accountService.findByLoginName(loginName);
+        //modelAndView.addObject("noAccount", null == accountModel);
         return modelAndView;
     }
 

@@ -1,0 +1,239 @@
+
+
+.main-frame {
+  width: 100%;
+  margin: 0 auto;
+  font-size:14px;
+}
+
+.image-banner-slide  {
+  height: 233px;
+  background: url("/activity/images/money-tree/money-tree-banner.png") center top no-repeat;
+  background-size: 100%;
+}
+
+.invite-des-container {
+  display: inline-block;
+  width: 100%;
+  height: 190px;
+  background: #32275f;
+
+  .invite-des-box-bg{
+    width: 485px;
+    height: 128px;
+    margin: 25px auto;
+    box-shadow: inset 0px 0px 35px rgba(190,145,87,1), 0px 0px 26px rgba(190,145,87,0.8);
+    border: 3px solid rgb(249,229,204);
+    border-radius: 10px;
+
+    .invite-des-box{
+      margin: 0 auto;
+      height: 90%;
+      padding-top: 10px;
+      padding-bottom: 10px;
+
+      p{
+        font-size: 13px;
+        text-align: center;
+        color:#ffc85b;
+        margin-bottom: 0px;
+      }
+
+      p b{
+        font-size: 16px;
+        color:#FF635A;
+      }
+    }
+  }
+}
+
+.money-tree-container{
+  height: 829px;
+  background: #32275f url("/activity/images/money-tree/money-tree-bg.png") center top no-repeat;
+  margin:0px auto 0px auto;
+  text-align: center;
+  background-size: 100%;
+
+  .tree-qrcode{
+    display: inline-block;
+    width: 160px;
+    height: 160px;
+    margin: 0 auto;
+    margin-top: 150px;
+  }
+
+  .example-des-box{
+    width: 730px;
+    background: #ffc23d;
+    border-radius: 10px;
+    margin: 0 auto;
+    margin-top: 298px;
+    text-align: center;
+
+    p {
+      text-align: center;
+      font-size: 13px;
+      color: #654d57;
+    }
+
+    p font {
+      font-size: 15px;
+      color: #654d57;
+    }
+
+    p b {
+      font-size: 16px;
+      color: #FF635A;
+    }
+  }
+
+  .tip-des-box{
+    width: 730px;
+    background: #ffc23d;
+    border-radius: 10px;
+    margin: 0 auto;
+    margin-top: 10px;
+    text-align: left;
+    p {
+      font-size: 13px;
+      color: #654d57;
+      margin-left: 10px;
+      margin-bottom: 0px;
+    }
+
+    .tip-text{
+      padding-top: 5px;
+      font-size: 15px;
+      color: #654d57;
+    }
+  }
+}
+
+@media (max-width: 700px) {
+  .image-banner-slide {
+    height: 185px;
+    background:#32275f url("/activity/images/money-tree/money-tree-banner-app.png") center top no-repeat;
+    background-size: 100%;
+  }
+
+  .invite-des-container{
+    display: inline-block;
+    height: 195px;
+    .invite-des-box-bg{
+
+      margin: 0px auto;
+      margin-top: 20px;
+      width: 92%;
+      height: 140px;
+
+      .invite-des-box{
+        width: 92%;
+        p{
+          font-size: 13px;
+          display: inline;
+        }
+
+        p b{
+          font-size: 16px;
+          color:#FF635A;
+        }
+
+      }
+
+    }
+  }
+
+  .money-tree-container{
+    height: 668px;
+    background: url("/activity/images/money-tree/money-tree-bg-app.png") center top no-repeat;
+    background-size: 100%;
+
+    .tree-qrcode{
+      display: none;
+    }
+
+    .tip-des-box{
+      width: 92%;
+      border-radius: 10px;
+      margin: 0 auto;
+      margin-top: 10px;
+      text-align: left;
+      p {
+        padding: 0px 5px 0px 8px;
+        font-size: 13px;
+      }
+
+      .tip-text{
+        font-size: 15px;
+      }
+    }
+  }
+
+}
+
+@media (max-width: 400px) {
+  .image-banner-slide {
+    width: 100%;
+    height: 175px;
+  }
+
+  .invite-des-container{
+    display: inline-block;
+    height: 195px;
+    margin: 0px auto;
+    .invite-des-box-bg{
+      width:92%;
+      height: 140px;
+      display: flex;
+      .invite-des-box{
+        width: 92%;
+        p{
+          font-size: 13px;
+          display: inline;
+        }
+
+        p b{
+          font-size: 16px;
+          color:#FF635A;
+        }
+
+      }
+
+    }
+  }
+
+}
+
+@media (max-width: 350px) {
+  .image-banner-slide {
+    width: 100%;
+    height: 150px;
+  }
+
+  .invite-des-container{
+    display: inline-block;
+    height: 195px;
+    margin: 0px auto;
+    .invite-des-box-bg{
+      width: 92%;
+      display: flex;
+      height: 120px;
+      .invite-des-box{
+        width: 92%;
+        p{
+          font-size: 13px;
+          display: inline;
+        }
+
+        p b{
+          font-size: 16px;
+          color:#FF635A;
+        }
+
+
+      }
+    }
+  }
+
+}
+
