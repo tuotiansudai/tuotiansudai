@@ -15,7 +15,7 @@
 <div class="money-tree-container">
     <img src="${staticServer}/activity/images/money-tree/app-ewm-img.png" alt="二维码" class="tree-qrcode">
     <div class="btn-shake-bg">
-        <a href="/register/user" class="btn-ShakeTree" id="btnShakeTree">去摇钱</a>
+        <a href="/register/user" class="btn-taketree" id="btn-shake">去摇钱</a>
     </div>
 
     <div class="example-des-box">
