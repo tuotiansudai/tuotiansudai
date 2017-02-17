@@ -75,7 +75,6 @@ define(['jquery', 'layerWrapper', 'template', 'jquery.ajax.extension'], function
                     if (lottery.times<lottery.cycle) {
                         lottery.speed -= 10;
                     }else if(lottery.times==lottery.cycle) {
-                        console.log(lottery.prizeKind+','+lottery.prize);
                         lottery.prize = lottery.prizeKind;
                     }else{
                         if (lottery.times > lottery.cycle+10 && ((lottery.prize==0 && lottery.index==7) || lottery.prize==lottery.index+1)) {
