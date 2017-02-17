@@ -4,6 +4,13 @@
 
 <!-- content area begin -->
 <div class="col-md-10">
+
+    <div class="col-md-12" style="padding-bottom: 40px">
+        <a href="/point-manage/coupon-exchange-manage" class="btn btn-default btn-warning" style="margin-right: 60px">优惠券商品管理</a>
+        <a href="/point-manage/product-list?type=VIRTUAL" class="btn btn-default" style="margin-right: 60px">虚拟商品管理</a>
+        <a href="/point-manage/product-list?type=PHYSICAL" class="btn btn-default">实物商品管理</a>
+    </div>
+
     <div class="tip-container">
         <div class="alert alert-danger alert-dismissible" data-dismiss="alert" aria-label="Close" role="alert">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -12,7 +19,7 @@
             <span class="txt"></span>
         </div>
     </div>
-    <div class="table-responsive">
+    <div class="table-responsive" style="width: 100%">
         <table class="table table-bordered table-hover ">
             <thead>
             <tr>
