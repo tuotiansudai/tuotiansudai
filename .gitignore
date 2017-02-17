@@ -18,19 +18,11 @@ spike.py
 **/gradle/
 **/classes/
 **/node_modules/
-ttsd-web/src/main/webapp/style/css/*.css
-ttsd-web/src/main/webapp/style/css/*.css.map
-ttsd-web/src/main/webapp/style/*.css
-ttsd-web/src/main/webapp/style/*.css.map
-ttsd-web/src/main/webapp/style/base64/*.css
-ttsd-web/src/main/webapp/style/cssprefixer
 
 SignVerProp.properties
 anxinsign.jks
 cs/.env
 ttsd-mobile-api/src/main/webapp/api/js/
-ttsd-activity/src/main/webapp/activity/style/*.css
-ttsd-activity/src/main/webapp/activity/style/*.css.map
 ttsd-point-web/src/main/webapp/point/style/*.css
 ttsd-point-web/src/main/webapp/point/style/*.css.map
 
