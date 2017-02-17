@@ -14,6 +14,10 @@
 
 <div class="money-tree-container">
     <img src="${staticServer}/activity/images/money-tree/app-ewm-img.png" alt="二维码" class="tree-qrcode">
+    <div class="btn-shake-bg">
+        <a href="/register/user" class="btn-ShakeTree" id="btnShakeTree">去摇钱</a>
+    </div>
+
     <div class="example-des-box">
         <p><font>举个栗子：</font>拓小天自活动开始之日起，累计投资<b>10</b>万元，则拓小天每日摇一摇都有机会摇到<b>50-1000元</b>体验金哦！</p>
     </div>
