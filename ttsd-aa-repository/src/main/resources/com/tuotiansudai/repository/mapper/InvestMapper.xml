@@ -269,10 +269,10 @@
         invest.is_auto_invest AS auto_invest,
         invest.amount AS invest_amount,
         (SELECT coupon.id FROM coupon join user_coupon on
+        user_coupon.coupon_id = coupon.id
         <if test="preferenceType != null and preferenceType.name() != 'INVEST_BENEFIT'">
-            coupon.coupon_type = #{preferenceType}
+            and coupon.coupon_type = #{preferenceType}
         </if>
-        and user_coupon.coupon_id = coupon.id
         WHERE user_coupon.invest_id = invest.id limit 0, 1) AS coupon_id,
         (SELECT extra_rate FROM invest_extra_rate WHERE invest_extra_rate.invest_id = invest.id) AS extra_rate,
         (SELECT actual_interest FROM invest_extra_rate WHERE invest_extra_rate.invest_id = invest.id) AS extra_actual_interest,
