@@ -304,14 +304,28 @@ body {
           margin-top: 10px;
         }
       }
+      .my-value {
+        color: #570909;
+        font-size: 20px;
+      }
+      .privilege-time {
+        color: #570909;
+        font-size: 16px;
+        i {
+          background: #feedce;
+          border-radius: 16px;
+          color: #570909;
+          display: inline-block;
+          padding: 2px 14px;
+          margin-right: 10px;
+          border:1px solid #570909;
+        }
+
+      }
       .orange {
         color: #ff7400;
         font-size: 20px;
         margin-right: 40px;
-      }
-      strong {
-        font-size: 22px;
-        padding-right: 5px;
       }
     }
     .progress {

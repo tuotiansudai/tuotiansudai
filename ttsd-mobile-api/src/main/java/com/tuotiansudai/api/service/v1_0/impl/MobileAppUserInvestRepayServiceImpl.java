@@ -12,8 +12,8 @@ import com.tuotiansudai.repository.model.CouponModel;
 import com.tuotiansudai.repository.model.CouponRepayModel;
 import com.tuotiansudai.repository.model.UserCouponModel;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
+import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
-import com.tuotiansudai.membership.service.UserMembershipService;
 import com.tuotiansudai.repository.mapper.InvestExtraRateMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
@@ -24,6 +24,7 @@ import com.tuotiansudai.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.repository.model.TransferApplicationModel;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +36,7 @@ import java.util.List;
 
 @Service
 public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestRepayService {
-
+    static Logger logger = Logger.getLogger(MobileAppUserInvestRepayServiceImpl.class);
     @Autowired
     private InvestService investService;
 
@@ -62,6 +63,9 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
 
     @Autowired
     private InvestExtraRateMapper investExtraRateMapper;
+
+    @Autowired
+    private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
 
     @Autowired
     private LoanMapper loanMapper;
@@ -151,6 +155,8 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
             userInvestRepayResponseDataDto.setInvestRepays(investRepayList);
             MembershipModel membershipModel = userMembershipEvaluator.evaluateSpecifiedDate(investModel.getLoginName(), investModel.getInvestTime());
             userInvestRepayResponseDataDto.setMembershipLevel(String.valueOf(membershipModel.getLevel()));
+            double investFeeRate = membershipPrivilegePurchaseService.obtainServiceFee(investModel.getLoginName());
+            userInvestRepayResponseDataDto.setServiceFeeDesc(ServiceFeeReduce.getDescriptionByRate(investFeeRate));
             List<UserCouponModel> userCouponModels = userCouponMapper.findByInvestId(investModel.getId());
 
             List<String> usedCoupons = Lists.transform(userCouponModels, new Function<UserCouponModel, String>() {
@@ -168,7 +174,7 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
         } catch (Exception e) {
             responseDto.setCode(ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode());
             responseDto.setMessage(ReturnMessage.REQUEST_PARAM_IS_WRONG.getMsg());
-            e.printStackTrace();
+            logger.error(e.getLocalizedMessage(),e);
         }
         return responseDto;
     }

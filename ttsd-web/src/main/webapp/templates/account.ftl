@@ -16,9 +16,9 @@
             <a href="/personal-info" class="user-info"></a>
             <ul class="proList">
                 <#if signedIn?? && signedIn>
-                    <li class="fl sign-top no-click"><span class="btn-sign finish-sign">已签到</span></li>
+                    <li class="fl sign-top no-click"><span class="btn-sign finish-sign" data-url="/point-shop/sign-in" id="signBtn">已签到</span></li>
                 <#else >
-                    <li class="fl sign-top"><span class="btn-sign will-sign" data-url="/point/sign-in" id="signBtn">签到</span></li>
+                    <li class="fl sign-top"><span class="btn-sign will-sign" data-url="/point-shop/sign-in" id="signBtn">签到</span></li>
                 </#if>
                 <li class="fl beans-number">可用积分:<span id="MyAvailablePoint">${myPoint?string.computer}</span></li>
                 <li class="fr"><a class="btn-normal" href="/recharge">充值</a></li>
@@ -226,8 +226,14 @@
         <div class="sign-layer-list">
             <div class="sign-top">
                 <div class="close-btn" id="closeSign"></div>
-                <p class="sign-text">签到成功，领取5积分！</p>
-
+                <div class="sign-text"></div>
+                <div class="sign-content">
+                    <p class="sign-point"><span></span>积分</p>
+                    <p class="tomorrow-text"></p>
+                    <p class="intro-text"></p>
+                    <p class="next-text"></p>
+                    <p class="sign-reward"><a href="/activity/sign-check">查看连续签到奖励</a></p>
+                </div>
                 <p class="tomorrow-text">明日可领10积分</p>
 
                 <p class="img-beans">
@@ -305,6 +311,7 @@
                         </p>
                     </li>
                 </ul>
+
             </div>
         </div>
     </div>

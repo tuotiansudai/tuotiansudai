@@ -1,5 +1,6 @@
 package com.tuotiansudai.job;
 
+
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -10,8 +11,8 @@ import org.quartz.JobExecutionException;
 //import java.text.SimpleDateFormat;
 //import java.util.List;
 
+@Deprecated
 public class EventMessageJob implements Job {
-
 //    @Autowired
 //    private UserMapper userMapper;
 //

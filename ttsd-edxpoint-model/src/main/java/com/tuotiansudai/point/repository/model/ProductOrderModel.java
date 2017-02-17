@@ -8,6 +8,7 @@ public class ProductOrderModel implements Serializable{
     private long id;
     private long productId;
     private long points;
+    private long actualPoints;
     private Integer num;
     private long totalPoints;
     private String contact;
@@ -22,9 +23,10 @@ public class ProductOrderModel implements Serializable{
 
     }
 
-    public ProductOrderModel(long productId, long points, Integer num, long totalPoints, String contact, String mobile, String address, boolean consignment, Date consignmentTime, String createdBy) {
+    public ProductOrderModel(long productId, long points, long actualPoints, Integer num, long totalPoints, String contact, String mobile, String address, boolean consignment, Date consignmentTime, String createdBy) {
         this.productId = productId;
         this.points = points;
+        this.actualPoints = actualPoints;
         this.num = num;
         this.totalPoints = totalPoints;
         this.contact = contact;
@@ -70,6 +72,14 @@ public class ProductOrderModel implements Serializable{
 
     public long getTotalPoints() {
         return totalPoints;
+    }
+
+    public long getActualPoints() {
+        return actualPoints;
+    }
+
+    public void setActualPoints(long actualPoints) {
+        this.actualPoints = actualPoints;
     }
 
     public void setTotalPoints(long totalPoints) {

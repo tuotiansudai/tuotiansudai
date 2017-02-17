@@ -9,14 +9,14 @@
 
     <div class="row">
         <div>用户名:${loginName}</div>
-        <div>可用财豆:${point}</div>
-        <div>累计财豆:${totalPoint}</div>
+        <div>可用积分:${point}</div>
+        <div>累计积分:${totalPoint}</div>
         <table class="table table-bordered table-hover">
             <thead>
             <tr>
                 <th>时间</th>
                 <th>行为</th>
-                <th>财豆数(个)</th>
+                <th>积分</th>
                 <th>备注</th>
             </tr>
             </thead>
@@ -25,7 +25,7 @@
                 <tr>
                     <td>${userPointDetailItem.createdTime?string("yyyy-MM-dd HH:mm:ss")}  </td>
                     <td>
-                        ${userPointDetailItem.businessType.name()}
+                        ${userPointDetailItem.businessType.getDescription()}
                     </td>
                     <td>${userPointDetailItem.point!''}</td>
                     <td>${userPointDetailItem.note!''}</td>

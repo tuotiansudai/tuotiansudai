@@ -29,8 +29,8 @@
 		    <div class="item-block status-filter">
                 <span class="sub-hd">往来类型:</span>
                 <span class="select-item current" data-status="">全部</span>
-                <span class="select-item" data-status="SIGN_IN,TASK,INVEST">已获取</span>
-                <span class="select-item" data-status="EXCHANGE,LOTTERY,ACTIVITY">已使用</span>
+                <span class="select-item" data-status="INCOME">已获取</span>
+                <span class="select-item" data-status="EXPENSE">已使用</span>
 		    </div>
 			<div class="data-list" id="dataList"></div>
 			<script type="text/html" id="dataListTpl">

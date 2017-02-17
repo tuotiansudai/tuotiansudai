@@ -8,7 +8,7 @@ require(['jquery', 'underscore', 'jquery-ui', 'bootstrap', 'bootstrapSelect', 'b
         $('form select.selectpicker').selectpicker();
 
         $('form button[type="reset"]').click(function () {
-            location.href = "/finance-manage/membership-purchase";
+            location.href = "/membership-manage/membership-privilege-purchase";
         });
 
         //自动完成提示

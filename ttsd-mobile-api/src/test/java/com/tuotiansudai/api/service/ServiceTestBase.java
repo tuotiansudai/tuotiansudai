@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.repository.model.CouponModel;
 import com.tuotiansudai.repository.model.UserGroup;
 import com.tuotiansudai.enums.CouponType;
+import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
@@ -42,6 +43,13 @@ public abstract class ServiceTestBase {
         fakeUser.setStatus(UserStatus.ACTIVE);
         fakeUser.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
         return fakeUser;
+    }
+
+    protected AccountModel getFakeAccount(UserModel userModel) {
+        AccountModel fakeAccount = new AccountModel(userModel.getLoginName(), "payUserId", "payAccountId", new Date());
+        fakeAccount.setBalance(1000000);
+        fakeAccount.setMembershipPoint(50001);
+        return fakeAccount;
     }
 
     public CouponModel fakeCouponModel(UserModel userModel, CouponType couponType) {
