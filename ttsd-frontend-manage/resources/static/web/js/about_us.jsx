@@ -1,5 +1,5 @@
 require('webStyle/about_us.scss');
-
+require('webJsModule/pagination');
 var paginationElement = $('.pagination');
 
 if($('#errorContainer').length) {
@@ -13,29 +13,26 @@ if($('#errorContainer').length) {
 }
 
 //拓天公告
-require.ensure(['webJsModule/pagination'],function() {
-    require('webJsModule/pagination');
-    var $noticeList=$('#noticeList'),
-        $noticeDetail=$('#noticeDetail');
-    if($noticeList.length) {
-        let noticeTpl=$('#noticeListTemplate').html();
-        let ListRender = _.template(noticeTpl);
-        let requestData={"index":1,"pageSize":10};
-        paginationElement.loadPagination(requestData, function (data) {
-            ListRender(data);
-            $noticeList.find('span').each(function(key,option) {
-                var getTime=$(option).text();
-                $(option).text(getTime.substr(0,10));
-            });
-            if(/app/gi.test(location.search)) {
-                $noticeList.find('li a').each(function(key,option) {
-                    var thisURL= $(option).attr('href')+'?source=app';
-                    $(option).attr('href',thisURL);
-                });
-            }
+var $noticeList=$('#noticeList'),
+    $noticeDetail=$('#noticeDetail');
+if($noticeList.length) {
+    let noticeTpl=$('#noticeListTemplate').html();
+    let ListRender = _.template(noticeTpl);
+    let requestData={"index":1,"pageSize":10};
+    paginationElement.loadPagination(requestData, function (data) {
+        ListRender(data);
+        $noticeList.find('span').each(function(key,option) {
+            var getTime=$(option).text();
+            $(option).text(getTime.substr(0,10));
         });
-    }
-},'pagination');
+        if(/app/gi.test(location.search)) {
+            $noticeList.find('li a').each(function(key,option) {
+                var thisURL= $(option).attr('href')+'?source=app';
+                $(option).attr('href',thisURL);
+            });
+        }
+    });
+}
 
 //团队介绍
 let fancybox = require('publicJs/fancybox');

@@ -3,7 +3,7 @@ require('webStyle/account/loan_list.scss');
 require('publicJs/plugins/daterangepicker.scss');
 let moment = require('moment');
 let commonFun= require('publicJs/commonFun');
-
+require('webJsModule/pagination');
 require('publicJs/plugins/jquery.daterangepicker-0.0.7.js');
 
 var today = moment().format('YYYY-MM-DD'), // 今天
@@ -47,7 +47,6 @@ var loadLoanData = function (currentPage) {
     var status = $('.status-filter .select-item.current').data('status');
 
     var requestData = {startTime: startTime, endTime: endTime, status: status, index: currentPage || 1};
-    require.ensure(['webJsModule/pagination'],function() {
         paginationElement.loadPagination(requestData, function (data) {
             //获取模版内容
             let $investListTemplate=$('#investListTemplate'),
@@ -109,7 +108,6 @@ var loadLoanData = function (currentPage) {
                 });
             });
         });
-    },'pagination');
 
     $('.invest-list').on('mouseenter','.project-name',function() {
         layer.closeAll('tips');

@@ -3,7 +3,7 @@ require('webStyle/account/loan_list.scss');
 require('publicJs/plugins/daterangepicker.scss');
 let moment = require('moment');
 let commonFun= require('publicJs/commonFun');
-
+require('webJsModule/pagination');
 require('publicJs/plugins/jquery.daterangepicker-0.0.7.js');
 
 //初始化页面
@@ -58,7 +58,6 @@ function loadLoanData(currentPage) {
     var status = $('.status-filter .select-item.current').data('status');
 
     var requestData = {startTime: startTime, endTime: endTime, status: status, index: currentPage || 1};
-    require.ensure(['webJsModule/pagination'],function() {
         paginationElement.loadPagination(requestData, function (data) {
             switch (status) {
                 case 'REPAYING':
@@ -145,7 +144,6 @@ function loadLoanData(currentPage) {
                 });
             });
         });
-    },'pagination');
 }
 
 loadLoanData();

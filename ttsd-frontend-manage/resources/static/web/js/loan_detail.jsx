@@ -1,6 +1,6 @@
 require('webStyle/investment/loan_detail.scss');
 require('webJs/plugins/autoNumeric');
-
+require('webJsModule/pagination');
 require('webJsModule/coupon_alert');
 require('webJsModule/assign_coupon');
 //投资计算器和意见反馈
@@ -551,8 +551,7 @@ function getSkipPhoneTip(){
 
 //借款详情和出借记录
 
-require.ensure(['webJsModule/pagination'],function() {
-    require('webJsModule/pagination');
+(function() {
     let $loanDetailSwitch=$('#loanDetailSwitch')
     let menuTab=$('.loan-nav li',$loanDetailSwitch);
     let $loanList = $('.loan-list', $loanDetailSwitch);
@@ -588,8 +587,7 @@ require.ensure(['webJsModule/pagination'],function() {
         }
         $loanList.find('.loan-list-con').eq(index).show().siblings('.loan-list-con').hide();
     });
-
-},'pagination');
+})();
 
 //免密投资
 (function() {

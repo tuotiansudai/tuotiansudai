@@ -6,7 +6,12 @@ var objectAssign = require('object-assign');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var CopyWebpackPlugin = require('copy-webpack-plugin'); //复制文件
 var CleanWebpackPlugin = require('clean-webpack-plugin');  //清空文件夹里的文件
-var HappyPack = require('happypack'); //通过多进程模型，来加速代码构建
+
+var node_modules = path.resolve(__dirname, 'node_modules');
+ //通过多进程模型，来加速代码构建
+var HappyPack = require('happypack');
+var happyThreadPool = HappyPack.ThreadPool({ size: 5 });
+
 var staticServer = require('./getStaticServer.js');
 var basePath = path.join(__dirname, 'resources'),
 	staticPath = path.join(basePath, 'static'),
@@ -143,15 +148,29 @@ plugins.push(new AssetsPlugin({
 	metadata: {version: 123}
 }));
 
+//happypack利用缓存使rebuild更快
+plugins.push(createHappyPlugin('jsx', ['babel']));
+plugins.push(createHappyPlugin('sass', ['css!sass']));
+
 plugins.push(new webpack.DllReferencePlugin({
 	context: __dirname,
 	manifest: require(publicPathJS+'/dllplugins/jquery-manifest.json')
 }));
 
-// plugins.push(new webpack.DllReferencePlugin({
-// 	context: __dirname,
-// 	manifest: require(publicPathJS+'/plugins/echarts-manifest.json')
-// }));
+
+function createHappyPlugin(id, loaders) {
+	return new HappyPack({
+		id: id,
+		loaders: loaders,
+		threadPool: happyThreadPool,
+
+		// disable happy caching with HAPPY_CACHE=0
+		cache: process.env.HAPPY_CACHE !== '0',
+
+		// make happy more verbose with HAPPY_VERBOSE=1
+		verbose: process.env.HAPPY_VERBOSE === '1',
+	});
+}
 
 var myObject = objectAssign(commonOptions, {
 	output: {
@@ -163,14 +182,14 @@ var myObject = objectAssign(commonOptions, {
 	module: {
 		loaders: [{
 			test: /\.(js|jsx)$/,
-			loaders: ['babel'],
+			loaders: ['happypack/loader?id=jsx'],
 			exclude: /node_modules/
 		},{
 			test: /\.css$/,
 			loader: ExtractTextPlugin.extract("style-loader", "css-loader")
 		},{
 			test: /\.scss$/,
-			loader: ExtractTextPlugin.extract("style-loader", "css-loader!sass-loader")
+			loader: ExtractTextPlugin.extract("style", "happypack/loader?id=sass")
 		},{
 			test: /\.(png|jpg|gif|woff|woff2)$/,
 			loader: 'url-loader?limit=5120&name=images/[name].[hash:8].[ext]'
@@ -213,6 +232,8 @@ var myObject = objectAssign(commonOptions, {
 	plugins: plugins,
 	devServer:webpackdevServer
 });
+
+
 
 module.exports = myObject;
 

@@ -1,7 +1,7 @@
 //投资记录--直投项目
 require('webStyle/account/loan_list.scss');
 require('publicJs/plugins/daterangepicker.scss');
-
+require('webJsModule/pagination');
 let moment = require('moment');
 let tpl = require('art-template/dist/template');
 require('publicJs/plugins/jquery.daterangepicker-0.0.7.js');
@@ -45,11 +45,9 @@ var loadLoanData = function (currentPage) {
     var status = $('.status-filter .select-item.current').data('status');
 
     var requestData = {startTime: startTime, endTime: endTime, status: status, index: currentPage || 1};
-    require.ensure(['webJsModule/pagination'],function() {
         paginationElement.loadPagination(requestData, function (data) {
             $('#investList').html(tpl('investListTpl', data));
         });
-    },'pagination');
 
 };
 $('body').on('click','.show-invest-repay',function (event) {

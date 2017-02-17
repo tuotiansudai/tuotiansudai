@@ -47,3 +47,5 @@ ttsd-ask-web/src/main/webapp/ask/dist
 
 ttsd-frontend-manage/resources/develop/**/*
 ttsd-frontend-manage/resources/prod/**/*
+
+ttsd-frontend-manage/resources/.happypack

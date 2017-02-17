@@ -2,6 +2,7 @@ require('webStyle/account/refer_list.scss');
 require('publicJs/plugins/daterangepicker.scss');
 let commonFun= require('publicJs/commonFun');
 let moment = require('moment');
+require('webJsModule/pagination');
 require('publicJs/plugins/jquery.daterangepicker-0.0.7.js');
 commonFun.loadJsFile('/public/plugins/jQuery.md5.js');
 commonFun.loadJsFile('/public/plugins/clipboard.js');
@@ -89,7 +90,6 @@ var loadReferData = function (currentPage) {
     _.each(requestData, function (value, key) {
         queryParams += key + "=" + value + '&';
     });
-    require.ensure(['webJsModule/pagination'],function() {
         paginationElement.loadPagination(requestData, function (data) {
             $.ajax({
                 url: 'total-reward?' + queryParams,
@@ -104,7 +104,6 @@ var loadReferData = function (currentPage) {
 
             });
         });
-    },'pagination');
 
     $('.search-content-tab').on('mouseenter','span.loan-name-col',function() {
         layer.closeAll('tips');

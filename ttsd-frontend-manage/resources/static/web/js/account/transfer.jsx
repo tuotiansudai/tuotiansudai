@@ -1,6 +1,7 @@
 //债券转让
 require('webStyle/account/transfer.scss');
 require('webJsModule/coupon_alert');
+require('webJsModule/pagination');
 let commonFun= require('publicJs/commonFun');
 var activeIndex=$('.filters-list li.active').index(),
 	$ruleList = $('#ruleList'),
@@ -10,7 +11,6 @@ var activeIndex=$('.filters-list li.active').index(),
 function loadLoanData(currentPage) {
 	var status = $('.filters-list li.active').attr('data-status').split(',');
 	var requestData = {status: status, index: currentPage || 1};
-	require.ensure(['webJsModule/pagination'],function() {
 		$paginationElement.loadPagination(requestData, function (data) {
 			let html;
 			if(activeIndex==0){
@@ -45,7 +45,6 @@ function loadLoanData(currentPage) {
 
 			$('.list-container .record-list.active').html(html);
 		});
-	},'pagination');
 
 	$('.list-container').on('mouseenter','.project-name',function() {
 		// show tip by mouseenter
