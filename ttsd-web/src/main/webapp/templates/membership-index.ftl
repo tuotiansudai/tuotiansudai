@@ -14,8 +14,9 @@
                 </div>
                 <div class="text">
                     <p class="my-value">我的成长值：<b>${membershipPoint!}</b></p>
-
-                    <span class="privilege-time"><i>增值特权</i>有效期至&nbsp;:&nbsp;2017-01-26</span>
+                    <#if membershipPrivilegeModel??>
+                        <span class="privilege-time"><i>增值特权</i>有效期至&nbsp;:&nbsp;2017-01-26</span>
+                    </#if>
                 </div>
             </div>
             <div class="progress">
