@@ -20,7 +20,7 @@
         values(#{id}, #{loginName}, #{amount}, #{experienceType}, #{note}, #{createdTime})
     </insert>
 
-    <select id="findById" parameterType="map" resultMap="ExperienceGoldBillResultMap">
+    <select id="findById" parameterType="java.lang.Long" resultMap="ExperienceGoldBillResultMap">
         select * from experience_gold_bill where id = #{id}
     </select>
 
