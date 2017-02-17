@@ -268,7 +268,11 @@
         invest.invest_time AS invest_time,
         invest.is_auto_invest AS auto_invest,
         invest.amount AS invest_amount,
-        (SELECT coupon.id FROM coupon join user_coupon on coupon.coupon_type = #{preferenceType} and user_coupon.coupon_id = coupon.id
+        (SELECT coupon.id FROM coupon join user_coupon on
+        user_coupon.coupon_id = coupon.id
+        <if test="preferenceType != null and preferenceType.name() != 'INVEST_BENEFIT'">
+            and coupon.coupon_type = #{preferenceType}
+        </if>
         WHERE user_coupon.invest_id = invest.id limit 0, 1) AS coupon_id,
         (SELECT extra_rate FROM invest_extra_rate WHERE invest_extra_rate.invest_id = invest.id) AS extra_rate,
         (SELECT actual_interest FROM invest_extra_rate WHERE invest_extra_rate.invest_id = invest.id) AS extra_actual_interest,
@@ -1009,18 +1013,20 @@
         from invest
         join loan on invest.loan_id = loan.id
         where invest.login_name = #{loginName}
+        and invest.status = 'SUCCESS'
         <if test="loanStatus.name() == 'COMPLETE' ">
-            and loan.status = #{loanStatus}
-            and invest.`transfer_status` = 'SUCCESS'
+            and ((loan.product_type = 'EXPERIENCE' and TO_DAYS(NOW()) - TO_DAYS(invest_time) >= loan.duration)
+            or (loan.product_type != 'EXPERIENCE' and loan.status = 'COMPLETE' and invest.transfer_status != 'SUCCESS')
+            or (loan.product_type != 'EXPERIENCE' and invest.transfer_status = 'SUCCESS'))
         </if>
         <if test="loanStatus.name() == 'REPAYING' ">
-            and loan.status in ('REPAYING','OVERDUE')
-            and invest.`transfer_status` != 'SUCCESS'
+            and ((loan.product_type = 'EXPERIENCE' and TO_DAYS(NOW()) - TO_DAYS(invest_time) &lt; loan.duration)
+            or (loan.product_type != 'EXPERIENCE' and loan.status in ('REPAYING','OVERDUE') and invest.transfer_status
+            != 'SUCCESS'))
         </if>
         <if test="loanStatus.name() == 'RAISING' ">
-            and loan.status in ('RAISING','RECHECK')
+            and loan.status in ('RAISING','RECHECK') and loan.product_type != 'EXPERIENCE'
         </if>
-        and invest.`status` = 'SUCCESS'
     </select>
 
 </mapper>

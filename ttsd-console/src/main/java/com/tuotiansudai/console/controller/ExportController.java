@@ -406,7 +406,7 @@ public class ExportController {
         fillExportResponse(response, CsvHeaderType.BirthdayCouponsHeader.getDescription());
         int index = 1;
         int pageSize = Integer.MAX_VALUE;
-        List<CouponDetailsDto> userCoupons = consoleCouponService.findCouponDetail(couponId, isUsed, loginName, mobile, null, null, usedStartTime, usedEndTime, index, pageSize);
+        List<CouponDetailsDto> userCoupons = consoleCouponService.findCouponDetail(couponId, isUsed, loginName, mobile, null, null, null, usedStartTime, usedEndTime, index, pageSize);
         List<List<String>> userCouponData = exportService.buildCouponDetailsDtoList(userCoupons);
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.CouponDetailsHeader, userCouponData, response.getOutputStream());
     }

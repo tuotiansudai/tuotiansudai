@@ -10,6 +10,9 @@ public class ProductListResponseDto extends BaseResponseDataDto {
     @ApiModelProperty(value = "我的积分", example = "1000")
     private String myPoints;
 
+    @ApiModelProperty(value = "未完成任务数量", example = "5")
+    private long unFinishedTaskCount; //未完成任务数量
+
     @ApiModelProperty(value = "虚拟商品集合", example = "list")
     private List<ProductDetailResponseDto> virtuals;
 
@@ -22,6 +25,14 @@ public class ProductListResponseDto extends BaseResponseDataDto {
 
     public void setMyPoints(String myPoints) {
         this.myPoints = myPoints;
+    }
+
+    public long getUnFinishedTaskCount() {
+        return unFinishedTaskCount;
+    }
+
+    public void setUnFinishedTaskCount(long unFinishedTaskCount) {
+        this.unFinishedTaskCount = unFinishedTaskCount;
     }
 
     public List<ProductDetailResponseDto> getVirtuals() {
@@ -39,4 +50,5 @@ public class ProductListResponseDto extends BaseResponseDataDto {
     public void setPhysicals(List<ProductDetailResponseDto> physicals) {
         this.physicals = physicals;
     }
+
 }

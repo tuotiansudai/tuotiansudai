@@ -118,6 +118,10 @@
         <property name="dataSource" ref="pointHikariCPDataSource"/>
     </bean>
 
+    <bean id="aaTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="hikariCPDataSource"/>
+    </bean>
+
     <bean id="jobStoreBuilder" class="com.tuotiansudai.quartz.JobStoreBuilder">
         <constructor-arg ref="jobHikariCPDataSource"/>
     </bean>
