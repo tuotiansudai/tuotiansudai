@@ -144,19 +144,42 @@
   }
 
   .money-tree-container{
-    height: 668px;
-    background: url("/activity/images/money-tree/money-tree-bg-app.png") center top no-repeat;
+    height: 632px;
+    background: #32275f url("/activity/images/money-tree/money-tree-bg-app.png") center top no-repeat;
     background-size: 100%;
+    display: inline-block;
 
     .tree-qrcode{
       display: none;
     }
 
+    .example-des-box{
+      width: 93%;
+      background: #ffc23d;
+      border-radius: 5px;
+      margin: 347px auto 0 auto;
+
+      p {
+        padding: 0px 5px 0px 5px;
+        text-align: left;
+        font-size: 13px;
+        color: #654d57;
+      }
+
+      p font {
+        display: none;
+      }
+
+      p b {
+        font-size: 16px;
+        color: #FF635A;
+      }
+    }
+
     .tip-des-box{
-      width: 92%;
-      border-radius: 10px;
-      margin: 0 auto;
-      margin-top: 10px;
+      width: 93%;
+      border-radius: 5px;
+      margin: 5px auto 0px auto;
       text-align: left;
       p {
         padding: 0px 5px 0px 8px;
@@ -173,18 +196,21 @@
 
 @media (max-width: 400px) {
   .image-banner-slide {
-    width: 100%;
-    height: 175px;
+    height: 185px;
+    background:#32275f url("/activity/images/money-tree/money-tree-banner-app.png") center top no-repeat;
+    background-size: 100%;
   }
 
   .invite-des-container{
     display: inline-block;
     height: 195px;
-    margin: 0px auto;
     .invite-des-box-bg{
-      width:92%;
+
+      margin: 0px auto;
+      margin-top: 20px;
+      width: 92%;
       height: 140px;
-      display: flex;
+
       .invite-des-box{
         width: 92%;
         p{
@@ -202,22 +228,77 @@
     }
   }
 
+  .money-tree-container{
+    height: 575px;
+    background: #32275f url("/activity/images/money-tree/money-tree-bg-app.png") center top no-repeat;
+    background-size: 100%;
+    display: inline-block;
+
+    .tree-qrcode{
+      display: none;
+    }
+
+    .example-des-box{
+      width: 93%;
+      background: #ffc23d;
+      border-radius: 5px;
+      margin: 310px auto 0 auto;
+      display: inline-block;
+
+      p {
+        padding: 0px 5px 0px 5px;
+        text-align: left;
+        font-size: 13px;
+        color: #654d57;
+        margin-bottom: 0px;
+      }
+
+      p font {
+        display: none;
+      }
+
+      p b {
+        font-size: 16px;
+        color: #FF635A;
+      }
+    }
+
+    .tip-des-box{
+      width: 93%;
+      border-radius: 5px;
+      margin: 10px auto 0px auto;
+      text-align: left;
+      p {
+        line-height: 1.9;
+        padding: 0px 2px 0px 3px;
+        font-size: 13px;
+      }
+
+      .tip-text{
+        font-size: 15px;
+      }
+    }
+  }
+
 }
 
 @media (max-width: 350px) {
   .image-banner-slide {
-    width: 100%;
-    height: 150px;
+    height: 148px;
+    background:#32275f url("/activity/images/money-tree/money-tree-banner-app.png") center top no-repeat;
+    background-size: 100%;
   }
 
   .invite-des-container{
     display: inline-block;
     height: 195px;
-    margin: 0px auto;
     .invite-des-box-bg{
+
+      margin: 0px auto;
+      margin-top: 20px;
       width: 92%;
-      display: flex;
-      height: 120px;
+      height: 140px;
+
       .invite-des-box{
         width: 92%;
         p{
@@ -230,7 +311,58 @@
           color:#FF635A;
         }
 
+      }
 
+    }
+  }
+
+  .money-tree-container{
+    height: 490px;
+    background: #32275f url("/activity/images/money-tree/money-tree-bg-app.png") center top no-repeat;
+    background-size: 100%;
+    display: inline-block;
+
+    .tree-qrcode{
+      display: none;
+    }
+
+    .example-des-box{
+      width: 98%;
+      background: #ffc23d;
+      border-radius: 5px;
+      margin: 269px auto 0 auto;
+      display: inline-block;
+
+      p {
+        padding: 0px 5px 0px 5px;
+        text-align: left;
+        font-size: 12px;
+        color: #654d57;
+      }
+
+      p font {
+        display: none;
+      }
+
+      p b {
+        font-size: 15px;
+      }
+    }
+
+    .tip-des-box{
+      width: 98%;
+      border-radius: 5px;
+      margin: 4px auto 0px auto;
+      text-align: left;
+      p {
+        line-height: 1.8;
+        margin-left: 0px;
+        padding: 0px 2px 0px 4px;
+        font-size: 10px;
+      }
+
+      .tip-text{
+        font-size: 13px;
       }
     }
   }
