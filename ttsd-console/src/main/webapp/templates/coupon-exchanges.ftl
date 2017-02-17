@@ -1,6 +1,6 @@
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="coupon-exchanges.js" headLab="point-manage" sideLab="couponExchangeManage" title="优惠券兑换管理">
+<@global.main pageCss="" pageJavascript="coupon-exchanges.js" headLab="point-manage" sideLab="productManage" title="优惠券兑换管理">
 
 <!-- content area begin -->
 <div class="col-md-10">

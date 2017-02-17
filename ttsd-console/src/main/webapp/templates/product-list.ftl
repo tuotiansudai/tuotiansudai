@@ -1,7 +1,7 @@
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
 
-<@global.main pageCss="" pageJavascript="product-list.js" headLab="point-manage" sideLab="product${type.name()!}Manage" title="添加商品">
+<@global.main pageCss="" pageJavascript="product-list.js" headLab="point-manage" sideLab="productManage" title="商品管理">
 <div class="col-md-10">
 
     <div class="col-md-12" style="margin-bottom: 40px">

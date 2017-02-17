@@ -1,6 +1,6 @@
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="create-coupon-exchange.js" headLab="point-manage" sideLab="createCouponExchange" title="优惠券兑换创建">
+<@global.main pageCss="" pageJavascript="create-coupon-exchange.js" headLab="point-manage" sideLab="productCreate" title="添加优惠券">
 
 <div class="col-md-10">
     <div class="col-md-12" style="margin-bottom: 40px">
