@@ -15,6 +15,7 @@ import com.tuotiansudai.enums.PushSource;
 import com.tuotiansudai.enums.PushType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.exception.AmountTransferException;
+import com.tuotiansudai.job.JobManager;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.job.NormalRepayJob;
 import com.tuotiansudai.message.EventMessage;
@@ -25,6 +26,7 @@ import com.tuotiansudai.mq.client.model.MessageTopic;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
+import com.tuotiansudai.paywrapper.loanout.LoanService;
 import com.tuotiansudai.paywrapper.repository.mapper.NormalRepayNotifyMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferNopwdMapper;
@@ -38,14 +40,12 @@ import com.tuotiansudai.paywrapper.repository.model.sync.request.ProjectTransfer
 import com.tuotiansudai.paywrapper.repository.model.sync.request.SyncRequestStatus;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferNopwdResponseModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
-import com.tuotiansudai.paywrapper.loanout.LoanService;
 import com.tuotiansudai.paywrapper.service.NormalRepayService;
 import com.tuotiansudai.paywrapper.service.SystemBillService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.AmountTransfer;
-import com.tuotiansudai.job.JobManager;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.quartz.SchedulerException;
@@ -322,9 +322,16 @@ public class NormalRepayServiceImpl implements NormalRepayService {
         // create payback invest job
         this.createRepayJob(loanRepayId, 2);
 
+        try {
+            mqWrapperClient.publishMessage(MessageTopic.RepaySuccess,new RepaySuccessMessage(loanRepayId,false));
+            logger.info(MessageFormat.format("[[Normal Repay {0}]: 正常还款成功,发送MQ消息", String.valueOf(loanRepayId)));
+        } catch (JsonProcessingException e) {
+            // 记录日志，发短信通知管理员
+            fatalLog(String.format("正常还款发送MQ消息失败:还款loanRepayId:%s",String.valueOf(loanRepayId)), e);
+        }
+
         return callbackRequest.getResponseData();
     }
-
     /**
      * 借款人还款后Job回调，返款投资人
      *
@@ -620,14 +627,6 @@ public class NormalRepayServiceImpl implements NormalRepayService {
 
         String redisKey = MessageFormat.format(REPAY_REDIS_KEY_TEMPLATE, String.valueOf(loanRepayId));
         redisWrapperClient.hset(redisKey, String.valueOf(investRepayId), SyncRequestStatus.SUCCESS.name());
-
-        try {
-            mqWrapperClient.publishMessage(MessageTopic.NormalRepaySuccess,new RepaySuccessMessage(loanRepayId));
-            logger.info(MessageFormat.format("[[Normal Repay {0}]: 还款成功,发送MQ消息", String.valueOf(loanRepayId)));
-        } catch (JsonProcessingException e) {
-            // 记录日志，发短信通知管理员
-            fatalLog(String.format("还款发送MQ消息失败:还款loanRepayId:%s",String.valueOf(loanRepayId)), e);
-        }
 
         //Title:您投资的{0}已回款{1}元，请前往账户查收！
         //Content:尊敬的用户，您投资的{0}项目已回款，期待已久的收益已奔向您的账户，快来查看吧。

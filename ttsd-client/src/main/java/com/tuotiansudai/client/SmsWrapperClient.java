@@ -121,7 +121,7 @@ public class SmsWrapperClient extends BaseClient {
         resultDto.setData(dataDto);
 
         if (Lists.newArrayList(Environment.DEV, Environment.SMOKE).contains(environment)) {
-            logger.info(MessageFormat.format("Environment is {}, ignore sms", environment.name()));
+            logger.info(MessageFormat.format("Environment is {0}, ignore sms", environment.name()));
             dataDto.setStatus(true);
             return resultDto;
         }

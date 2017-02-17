@@ -1,5 +1,6 @@
 package com.tuotiansudai.client;
 
+import com.aliyun.mns.model.Message;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.base.Strings;
@@ -8,6 +9,7 @@ import com.google.common.collect.Maps;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
+import com.tuotiansudai.message.RepaySuccessMessage;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Value;
@@ -386,11 +388,10 @@ public class PayWrapperClient extends BaseClient {
         return syncExecute(String.valueOf(userCouponId), "/loan-out/transfer-red-envelop-callback", "POST");
     }
 
-    public BaseDto<PayDataDto> couponRepayAfterNormalRepay(long loanRepayId){
-        return syncExecute(String.valueOf(loanRepayId), "/normal-repay/coupon-repay", "POST");
+    public BaseDto<PayDataDto> couponRepayAfterRepaySuccess(RepaySuccessMessage repaySuccessMessage){
+        return syncExecute(repaySuccessMessage, "/repay-success/coupon-repay", "POST");
     }
-
-    public BaseDto<PayDataDto> couponRepayCallbackAfterNormalRepay(long notifyRequestId){
-        return syncExecute(String.valueOf(notifyRequestId), "/normal-repay/async_coupon_repay_notify", "POST");
+    public BaseDto<PayDataDto> couponRepayCallbackAfterRepaySuccess(long notifyRequestId){
+        return syncExecute(String.valueOf(notifyRequestId), "/repay-success/async_coupon_repay_notify", "POST");
     }
 }

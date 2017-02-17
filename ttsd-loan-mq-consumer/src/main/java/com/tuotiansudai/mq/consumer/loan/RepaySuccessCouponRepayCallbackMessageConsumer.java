@@ -13,11 +13,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 @Component
-public class NormalRepayCouponRepayCallbackMessageConsumer implements MessageConsumer {
-    private static Logger logger = LoggerFactory.getLogger(NormalRepayCouponRepayCallbackMessageConsumer.class);
+public class RepaySuccessCouponRepayCallbackMessageConsumer implements MessageConsumer {
+    private static Logger logger = LoggerFactory.getLogger(RepaySuccessCouponRepayCallbackMessageConsumer.class);
 
     @Autowired
     private PayWrapperClient payWrapperClient;
@@ -26,7 +25,7 @@ public class NormalRepayCouponRepayCallbackMessageConsumer implements MessageCon
 
     @Override
     public MessageQueue queue() {
-        return MessageQueue.NormalRepayCouponRepayCallback;
+        return MessageQueue.RepaySuccessCouponRepayCallback;
     }
 
     @Transactional
@@ -39,7 +38,7 @@ public class NormalRepayCouponRepayCallbackMessageConsumer implements MessageCon
             return;
         }
         logger.info("[还款优惠券收益回调MQ] ready to consume message: coupon repay callback.");
-        BaseDto<PayDataDto> result = payWrapperClient.couponRepayCallbackAfterNormalRepay(Long.parseLong(message));
+        BaseDto<PayDataDto> result = payWrapperClient.couponRepayCallbackAfterRepaySuccess(Long.parseLong(message));
         if (!result.isSuccess()) {
             logger.error("[还款优惠券收益回调MQ] coupon repay callback consume fail. notifyRequestId: " + message);
             throw new RuntimeException("coupon repay callback consume fail. notifyRequestId: " + message);

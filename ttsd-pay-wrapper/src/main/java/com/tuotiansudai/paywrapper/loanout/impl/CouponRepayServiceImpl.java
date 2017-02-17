@@ -338,7 +338,7 @@ public class CouponRepayServiceImpl implements CouponRepayService {
         if (callbackRequest == null) {
             return null;
         }
-        mqWrapperClient.sendMessage(MessageQueue.NormalRepayCouponRepayCallback, String.valueOf(callbackRequest.getId()));
+        mqWrapperClient.sendMessage(MessageQueue.RepaySuccessCouponRepayCallback, String.valueOf(callbackRequest.getId()));
         return callbackRequest.getResponseData();
     }
 
