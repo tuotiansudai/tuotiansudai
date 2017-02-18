@@ -322,13 +322,8 @@ public class NormalRepayServiceImpl implements NormalRepayService {
         // create payback invest job
         this.createRepayJob(loanRepayId, 2);
 
-        try {
-            mqWrapperClient.publishMessage(MessageTopic.RepaySuccess,new RepaySuccessMessage(loanRepayId,false));
-            logger.info(MessageFormat.format("[[Normal Repay {0}]: 正常还款成功,发送MQ消息", String.valueOf(loanRepayId)));
-        } catch (JsonProcessingException e) {
-            // 记录日志，发短信通知管理员
-            fatalLog(String.format("正常还款发送MQ消息失败:还款loanRepayId:%s",String.valueOf(loanRepayId)), e);
-        }
+        mqWrapperClient.sendMessage(MessageQueue.RepaySuccess_CouponRepay,new RepaySuccessMessage(loanRepayId,false));
+        logger.info(MessageFormat.format("[[Normal Repay {0}]: 正常还款成功,发送MQ消息", String.valueOf(loanRepayId)));
 
         return callbackRequest.getResponseData();
     }
