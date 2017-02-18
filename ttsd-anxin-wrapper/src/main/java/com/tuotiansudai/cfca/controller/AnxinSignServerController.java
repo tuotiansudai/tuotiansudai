@@ -1,6 +1,7 @@
 package com.tuotiansudai.cfca.controller;
 
 import com.tuotiansudai.cfca.service.AnxinSignService;
+import com.tuotiansudai.cfca.service.ContractService;
 import com.tuotiansudai.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,6 +19,9 @@ public class AnxinSignServerController {
 
     @Autowired
     private AnxinSignService anxinSignService;
+
+    @Autowired
+    private ContractService contractService;
 
     @ResponseBody
     @RequestMapping(value = "/create-loan-contract", method = RequestMethod.POST)
@@ -60,6 +64,19 @@ public class AnxinSignServerController {
     @RequestMapping(value = "/switch-skip-auth")
     public BaseDto<AnxinDataDto> switchSkipAuth(@Valid @RequestBody AnxinSwitchSkipAuthDto anxinSwitchSkipAuthDto) {
         return anxinSignService.switchSkipAuth(anxinSwitchSkipAuthDto.getLoginName(), anxinSwitchSkipAuthDto.isOpen());
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/print-contract")
+    public byte[] printContract(@Valid @RequestBody AnxinLookContractDto anxinLookContractDto){
+        return contractService.printContractPdf(anxinLookContractDto.getAnxinContractType(), anxinLookContractDto.getLoginName(),
+                anxinLookContractDto.getLoanId(), anxinLookContractDto.getInvestId());
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/print-anxin-contract")
+    public byte[] printAnxinContract(@Valid @RequestBody String contractNo){
+        return anxinSignService.downContractByContractNo(contractNo);
     }
 
 }

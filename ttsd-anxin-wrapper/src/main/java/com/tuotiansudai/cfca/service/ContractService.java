@@ -1,5 +1,7 @@
 package com.tuotiansudai.cfca.service;
 
+import com.tuotiansudai.repository.model.AnxinContractType;
+
 import java.util.Map;
 
 public interface ContractService {
@@ -13,5 +15,5 @@ public interface ContractService {
 
     Map<String, String> collectInvestorContractModel(String investorLoginName, long loanId, long investId);
 
-    byte[] printContractPdf(String contractType, String loginName, long OrderId, Long investId);
+    byte[] printContractPdf(AnxinContractType anxinContractType, String loginName, long OrderId, Long investId);
 }

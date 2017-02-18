@@ -1,8 +1,8 @@
 package com.tuotiansudai.web.controller;
 
-import com.tuotiansudai.cfca.service.AnxinSignService;
-import com.tuotiansudai.cfca.service.ContractService;
-import com.tuotiansudai.cfca.service.impl.ContractServiceImpl;
+import com.tuotiansudai.client.AnxinWrapperClient;
+import com.tuotiansudai.dto.AnxinLookContractDto;
+import com.tuotiansudai.repository.model.AnxinContractType;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,14 +24,12 @@ public class ContractController {
     static Logger logger = Logger.getLogger(ContractController.class);
 
     @Autowired
-    private ContractService contractService;
-    @Autowired
-    private AnxinSignService anxinSignService;
+    private AnxinWrapperClient anxinWrapperClient;
 
     @RequestMapping(value = "/investor/loanId/{loanId}/investId/{investId}", method = RequestMethod.GET)
     public void generateInvestorContract(@PathVariable long loanId, @PathVariable long investId, HttpServletRequest httpServletRequest,
                                          HttpServletResponse response) throws ServletException, IOException {
-        byte[] pdf = contractService.printContractPdf(ContractServiceImpl.LOAN_CONTRACT, LoginUserInfo.getLoginName(), loanId, investId);
+        byte[] pdf = anxinWrapperClient.printContract(new AnxinLookContractDto(LoginUserInfo.getLoginName(), loanId, investId, AnxinContractType.LOAN_CONTRACT));
 
         try (OutputStream ous = new BufferedOutputStream(response.getOutputStream())) {
             response.reset();
@@ -48,7 +45,7 @@ public class ContractController {
 
     @RequestMapping(value = "/transfer/transferApplicationId/{transferApplicationId}", method = RequestMethod.GET)
     public void generateTransferContract(@PathVariable long transferApplicationId, HttpServletRequest httpServletRequest, HttpServletResponse response) throws IOException, ServletException {
-        byte[] pdf = contractService.printContractPdf(ContractServiceImpl.TRANSFER_CONTRACT, LoginUserInfo.getLoginName(), transferApplicationId, null);
+        byte[] pdf = anxinWrapperClient.printContract(new AnxinLookContractDto(LoginUserInfo.getLoginName(), transferApplicationId, null, AnxinContractType.TRANSFER_CONTRACT));
 
         try (OutputStream ous = new BufferedOutputStream(response.getOutputStream())) {
             response.reset();
@@ -64,7 +61,7 @@ public class ContractController {
 
     @RequestMapping(value = "/invest/contractNo/{contractNo}", method = RequestMethod.GET)
     public void findContract(@PathVariable String contractNo, HttpServletRequest httpServletRequest, HttpServletResponse response) {
-        byte[] pdf = anxinSignService.downContractByContractNo(contractNo);
+        byte[] pdf = anxinWrapperClient.printAnxinContract(contractNo);
         try {
             response.reset();
             response.addHeader("Content-Disposition", String.format("attachment;filename=%s.pdf", contractNo));

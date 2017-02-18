@@ -52,10 +52,6 @@ public class ContractServiceImpl implements ContractService {
 
     private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-    public static final String LOAN_CONTRACT = "LOAN_CONTRACT";
-
-    public static final String TRANSFER_CONTRACT = "TRANSFER_CONTRACT";
-
     public static final String LOAN_CONTRACT_TEMPLATE = "loan_contract.pdf";
 
     public static final String TRANSFER_CONTRACT_TEMPLaTE = "transfer_contract.pdf";
@@ -240,10 +236,10 @@ public class ContractServiceImpl implements ContractService {
     }
 
     @Override
-    public byte[] printContractPdf(String contractType, String loginName, long OrderId, Long investId) {
+    public byte[] printContractPdf(AnxinContractType anxinContractType, String loginName, long OrderId, Long investId) {
         String pdfTemplate;
         Map<String, String> dataMap;
-        if (contractType.equals(LOAN_CONTRACT)) {
+        if (anxinContractType.equals(AnxinContractType.LOAN_CONTRACT)) {
             pdfTemplate = LOAN_CONTRACT_TEMPLATE;
             dataMap = collectInvestorContractModel(loginName, OrderId, investId);
         } else {
@@ -257,7 +253,7 @@ public class ContractServiceImpl implements ContractService {
 
             AcroFields fields = ps.getAcroFields();
             fields.setSubstitutionFonts(Lists.newArrayList(BaseFont.createFont("STSong-Light", "UniGB-UCS2-H", false)));
-            fillPdfTemplate(contractType, fields, dataMap);
+            fillPdfTemplate(anxinContractType, fields, dataMap);
             ps.setFormFlattening(true);
             ps.close();
             byte[] byteArray = bos.toByteArray();
@@ -270,8 +266,8 @@ public class ContractServiceImpl implements ContractService {
         return null;
     }
 
-    private AcroFields fillPdfTemplate(String contractType,AcroFields fields, Map<String, String> dataMap) throws IOException, DocumentException {
-        if(contractType.equals(LOAN_CONTRACT)){
+    private AcroFields fillPdfTemplate(AnxinContractType contractType,AcroFields fields, Map<String, String> dataMap) throws IOException, DocumentException {
+        if(contractType.equals(AnxinContractType.LOAN_CONTRACT)){
             fields.setField("agentUserName", userMapper.findByLoginNameOrMobile(dataMap.get("agentMobile")).getUserName());
             fields.setField("agentMobile", dataMap.get("agentMobile"));
             fields.setField("agentIdentityNumber", dataMap.get("agentIdentityNumber"));

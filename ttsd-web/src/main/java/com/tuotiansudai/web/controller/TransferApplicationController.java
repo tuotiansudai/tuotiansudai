@@ -1,20 +1,15 @@
 package com.tuotiansudai.web.controller;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.cfca.service.AnxinSignService;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.AnxinSignPropertyModel;
-import com.tuotiansudai.repository.model.LoanModel;
-import com.tuotiansudai.repository.model.TransferStatus;
-import com.tuotiansudai.service.LoanService;
-import com.tuotiansudai.dto.TransferApplicationDetailDto;
+import com.tuotiansudai.repository.mapper.AnxinSignPropertyMapper;
 import com.tuotiansudai.repository.mapper.TransferApplicationMapper;
-import com.tuotiansudai.repository.model.TransferApplicationModel;
-import com.tuotiansudai.transfer.service.TransferService;
+import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.spring.LoginUserInfo;
+import com.tuotiansudai.transfer.service.TransferService;
 import com.tuotiansudai.util.AmountConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -44,7 +39,8 @@ public class TransferApplicationController {
     private LoanService loanService;
 
     @Autowired
-    private AnxinSignService anxinSignService;
+    private AnxinSignPropertyMapper anxinSignPropertyMapper;
+
 
     @RequestMapping(value = "/{transferApplicationId:^\\d+$}", method = RequestMethod.GET)
     @ResponseBody
@@ -62,12 +58,13 @@ public class TransferApplicationController {
         loanDto.setPeriods(loanModel.getPeriods());
 
         String loginName = LoginUserInfo.getLoginName();
-        AnxinSignPropertyModel anxinProp = anxinSignService.getAnxinSignProp(loginName);
+        AnxinSignPropertyModel anxinProp = anxinSignPropertyMapper.findByLoginName(loginName);
 
         ModelAndView modelAndView = new ModelAndView("/transfer-detail");
         modelAndView.addObject("transferApplication", dto);
         modelAndView.addObject("loanDto", loanDto);
-        modelAndView.addObject("anxinAuthenticationRequired", anxinSignService.isAuthenticationRequired(loginName));
+//        modelAndView.addObject("anxinAuthenticationRequired", anxinSignService.isAuthenticationRequired(loginName));
+        //TODO anxinsign
         modelAndView.addObject("anxinUser", anxinProp != null && anxinProp.isAnxinUser());
         modelAndView.addObject("transferApplicationReceiver", transferService.getTransferee(transferApplicationId, LoginUserInfo.getLoginName()));
         return modelAndView;

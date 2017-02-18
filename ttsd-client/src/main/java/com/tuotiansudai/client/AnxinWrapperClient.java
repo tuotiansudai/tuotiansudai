@@ -3,7 +3,6 @@ package com.tuotiansudai.client;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.base.Strings;
-import com.google.common.collect.Maps;
 import com.tuotiansudai.dto.AnxinDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import org.apache.log4j.Logger;
@@ -44,6 +43,10 @@ public class AnxinWrapperClient extends BaseClient {
 
     private final static String switchSkipAuth = "/anxin-sign/switch-skip-auth";
 
+    private final static String printContract = "/anxin-sign/print-contract";
+
+    private final static String printAnxinContract = "/anxin-sign/print-anxin-contract";
+
     public BaseDto<AnxinDataDto> createLoanContract(long loanId) {
         return syncExecute(String.valueOf(loanId), createLoanContract, "POST");
     }
@@ -72,26 +75,17 @@ public class AnxinWrapperClient extends BaseClient {
         return syncExecute(anxinSwitchSkipAuthDto, switchSkipAuth, "POST");
     }
 
-    public Map<String, String> getLoanStatus(long loanId) {
-        String json = this.execute(MessageFormat.format("/real-time/loan/{0}", String.valueOf(loanId)), null, "GET");
+    public byte[] printContract(Object requestData) {
         try {
-            return objectMapper.readValue(json, new TypeReference<Map<String, String>>() {
-            });
-        } catch (IOException e) {
-            logger.error(e.getLocalizedMessage(), e);
-        }
-        return Maps.newHashMap();
-    }
-
-    public Map<String, String> getTransferStatus(String orderId, Date merDate, String businessType) {
-        String json = this.execute(MessageFormat.format("/real-time/transfer/order-id/{0}/mer-date/{1}/business-type/{2}", orderId, new DateTime(merDate).toString("yyyyMMdd"), businessType), null, "GET");
-        try {
-            return objectMapper.readValue(json, new TypeReference<Map<String, String>>() {
-            });
+            return this.downPdf(printContract, requestData != null ? objectMapper.writeValueAsString(requestData) : null, "POST");
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
         return null;
+    }
+
+    public byte[] printAnxinContract(Object requestData) {
+        return this.downPdf(printAnxinContract, requestData != null ? requestData.toString() : null, "POST");
     }
 
     private BaseDto<AnxinDataDto> parsePayResponseJson(String json) {
@@ -115,7 +109,7 @@ public class AnxinWrapperClient extends BaseClient {
 
     private BaseDto<AnxinDataDto> syncExecute(Object requestData, String requestPath, String method) {
         try {
-            String responseJson = this.execute(requestPath, requestData != null ? objectMapper.writeValueAsString(requestData) : null, method);
+            String responseJson = this.execute(requestPath, requestData != null ? (requestData instanceof String ? requestData.toString() : objectMapper.writeValueAsString(requestData)) : null, method);
             return this.parsePayResponseJson(responseJson);
         } catch (JsonProcessingException e) {
             logger.error(e.getLocalizedMessage(), e);

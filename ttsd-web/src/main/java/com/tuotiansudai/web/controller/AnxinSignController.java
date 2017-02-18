@@ -1,6 +1,5 @@
 package com.tuotiansudai.web.controller;
 
-import cfca.sadk.algorithm.common.PKIException;
 import com.tuotiansudai.client.AnxinWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.mapper.AnxinSignPropertyMapper;
@@ -43,21 +42,21 @@ public class AnxinSignController {
 
     @ResponseBody
     @RequestMapping(value = "/createAccount", method = RequestMethod.POST)
-    public BaseDto createAccount() throws PKIException {
+    public BaseDto createAccount() throws Exception {
         String loginName = LoginUserInfo.getLoginName();
         return anxinWrapperClient.createAccount(loginName);
     }
 
     @ResponseBody
     @RequestMapping(value = "/sendCaptcha", method = RequestMethod.POST)
-    public BaseDto sendCaptcha(boolean isVoice) throws PKIException {
+    public BaseDto sendCaptcha(boolean isVoice) throws Exception {
         String loginName = LoginUserInfo.getLoginName();
         return anxinWrapperClient.sendCaptcha(new AnxinSendCaptchaDto(loginName, isVoice));
     }
 
     @ResponseBody
     @RequestMapping(value = "/verifyCaptcha", method = RequestMethod.POST)
-    public BaseDto<AnxinDataDto> verifyCaptcha(String captcha, boolean skipAuth, HttpServletRequest request) throws PKIException {
+    public BaseDto<AnxinDataDto> verifyCaptcha(String captcha, boolean skipAuth, HttpServletRequest request) throws Exception {
         String ip = RequestIPParser.parse(request);
         String loginName = LoginUserInfo.getLoginName();
         return anxinWrapperClient.verifyCaptcha(new AnxinVerifyCaptchaDto(loginName, ip, captcha, skipAuth));
