@@ -7,13 +7,13 @@ public class RepaySuccessMessage implements Serializable {
 
     private Long loanRepayId;
 
-    private boolean isAdvanced;
+    private boolean advanced;
 
     public RepaySuccessMessage(){}
 
-    public RepaySuccessMessage(Long loanRepayId,boolean isAdvanced) {
+    public RepaySuccessMessage(Long loanRepayId,boolean advanced) {
         this.loanRepayId = loanRepayId;
-        this.isAdvanced = isAdvanced;
+        this.advanced = advanced;
     }
 
     public Long getLoanRepayId() {
@@ -25,10 +25,10 @@ public class RepaySuccessMessage implements Serializable {
     }
 
     public boolean isAdvanced() {
-        return isAdvanced;
+        return advanced;
     }
 
     public void setAdvanced(boolean advanced) {
-        isAdvanced = advanced;
+        this.advanced = advanced;
     }
 }
