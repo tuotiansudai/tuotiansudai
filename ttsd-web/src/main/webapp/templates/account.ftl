@@ -17,9 +17,9 @@
             <a href="/personal-info" class="user-info"></a>
             <ul class="proList">
                 <#if signedIn?? && signedIn>
-                    <li class="fl sign-top no-click"><span class="btn-sign finish-sign">已签到</span></li>
+                    <li class="fl sign-top no-click"><span class="btn-sign finish-sign" data-url="/point-shop/sign-in" id="signBtn">已签到</span></li>
                 <#else >
-                    <li class="fl sign-top"><span class="btn-sign will-sign" data-url="/point/sign-in" id="signBtn">签到</span></li>
+                    <li class="fl sign-top"><span class="btn-sign will-sign" data-url="/point-shop/sign-in" id="signBtn">签到</span></li>
                 </#if>
                 <li class="fl beans-number">可用积分:<span id="MyAvailablePoint">${myPoint?string.computer}</span></li>
                 <li class="fr"><a class="btn-normal" href="/recharge">充值</a></li>
@@ -224,85 +224,15 @@
         <div class="sign-layer-list">
             <div class="sign-top">
                 <div class="close-btn" id="closeSign"></div>
-                <p class="sign-text">签到成功，领取5积分！</p>
+                <div class="sign-text"></div>
+                <div class="sign-content">
+                    <p class="sign-point"><span></span>积分</p>
+                    <p class="tomorrow-text"></p>
+                    <p class="intro-text"></p>
+                    <p class="next-text"></p>
+                    <p class="sign-reward"><a href="/activity/sign-check">查看连续签到奖励</a></p>
+                </div>
 
-                <p class="tomorrow-text">明日可领10积分</p>
-
-                <p class="img-beans">
-                    <img src="${staticServer}/images/sign/sign-beans.png"/>
-					<span class="add-dou">
-						+5
-					</span>
-                </p>
-
-                <p class="intro-text">连续签到，积分翻倍送，最多每天可领<span>10</span>积分！</p>
-            </div>
-            <div class="sign-bottom">
-                <ul>
-                    <li>
-                        <p class="day-name">第1天</p>
-
-                        <p class="day-beans">
-                            <span>2</span>
-                            <i class="bean-img"></i>
-                        </p>
-                    </li>
-                    <li>
-                        <p class="day-name">第2天</p>
-
-                        <p class="day-beans">
-                            <span>3</span>
-                            <i class="bean-img"></i>
-                        </p>
-                    </li>
-                    <li>
-                        <p class="day-name">第3天</p>
-
-                        <p class="day-beans">
-                            <span>4</span>
-                            <i class="bean-img"></i>
-                        </p>
-                    </li>
-                    <li>
-                        <p class="day-name">第4天</p>
-
-                        <p class="day-beans">
-                            <span>5</span>
-                            <i class="bean-img"></i>
-                        </p>
-                    </li>
-                    <li>
-                        <p class="day-name">第5天</p>
-
-                        <p class="day-beans">
-                            <span>10</span>
-                            <i class="bean-img"></i>
-                        </p>
-                    </li>
-                    <li>
-                        <p class="day-name">第6天</p>
-
-                        <p class="day-beans">
-                            <span>10</span>
-                            <i class="bean-img"></i>
-                        </p>
-                    </li>
-                    <li>
-                        <p class="day-name">第7天</p>
-
-                        <p class="day-beans">
-                            <span>10</span>
-                            <i class="bean-img"></i>
-                        </p>
-                    </li>
-                    <li class="last-day">
-                        <p class="day-name">第N天</p>
-
-                        <p class="day-beans">
-                            <span>...</span>
-                        </p>
-                    </li>
-                </ul>
             </div>
         </div>
     </div>

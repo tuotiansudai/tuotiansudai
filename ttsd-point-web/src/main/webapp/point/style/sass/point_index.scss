@@ -23,7 +23,7 @@
     .sign-top {
       float: left;
       width: 100%;
-      height: 250px;
+      min-height: 250px;
       padding-top: 75px;
       text-align:center;
       position: relative;
@@ -109,11 +109,12 @@
 .main-frame{
   width:100%;
   margin:0;
+  .layui-layer{
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
+  }
   .layui-layer-page .layui-layer-content{
     overflow: auto!important;
-  }
-  .tip-list-frame{
-    display:none;
   }
   .global-member-store {
     float:left;

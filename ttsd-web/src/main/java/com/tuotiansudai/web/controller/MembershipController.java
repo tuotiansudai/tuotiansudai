@@ -4,6 +4,7 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.GivenMembershipDto;
+import com.tuotiansudai.membership.repository.mapper.MembershipPrivilegeMapper;
 import com.tuotiansudai.membership.repository.model.*;
 import com.tuotiansudai.membership.service.MembershipExperienceBillService;
 import com.tuotiansudai.membership.service.MembershipGiveService;
@@ -46,6 +47,9 @@ public class MembershipController {
     @Autowired
     private MembershipGiveService membershipGiveService;
 
+    @Autowired
+    private MembershipPrivilegeMapper membershipPrivilegeMapper;
+
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView index() {
         ModelAndView modelAndView = new ModelAndView("/membership-index");
@@ -57,6 +61,7 @@ public class MembershipController {
             AccountModel accountModel = accountService.findByLoginName(loginName);
             long membershipPoint = accountModel == null ? 0 : accountModel.getMembershipPoint();
             UserMembershipModel userMembershipModel = userMembershipEvaluator.evaluateUserMembership(loginName, new Date());
+            MembershipPrivilegeModel membershipPrivilegeModel = membershipPrivilegeMapper.findValidPrivilegeModelByLoginName(loginName, new Date());
             modelAndView.addObject("mobile", LoginUserInfo.getMobile());
             modelAndView.addObject("membershipLevel", membershipModel.getLevel());
             modelAndView.addObject("membershipNextLevel", nextLevelMembershipModel.getLevel());
@@ -66,6 +71,7 @@ public class MembershipController {
             modelAndView.addObject("membershipType",userMembershipModel != null ? userMembershipModel.getType().name() : "");
             modelAndView.addObject("leftDays", userMembershipService.getMembershipExpireDay(loginName));
             modelAndView.addObject("expiredDate", userMembershipModel.getExpiredTime());
+            modelAndView.addObject("membershipPrivilegeModel", membershipPrivilegeModel);
         }
         return modelAndView;
 

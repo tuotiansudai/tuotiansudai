@@ -5,7 +5,8 @@ require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'csrf'], function ($)
             e.preventDefault();
             var $self = $(this),
                 $parentTd = $self.parents('td'),
-                thisId = $self.attr('data-id');//data id
+                thisId = $self.attr('data-id'),//orderId
+                thisProductId = $self.attr('data-product-id');//productId
             if (!confirm("是否确认执行此操作?")) {
                 return;
             } else {
@@ -17,7 +18,7 @@ require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'csrf'], function ($)
                     .done(function (res) {
                         if (res.data.status) {
                             $parentTd.html('<label><i class="check-btn add-check"></i><button class="loan_repay already-btn btn-link inactive-btn" data-id="' + thisId + '">已发货</button></label>');
-                            location.href="/point-manage/"+thisId+"/detail";
+                            location.href="/point-manage/"+thisProductId+"/detail";
                         } else {
                             $tipCom.show().find('.txt').text('操作失败！');
                         }

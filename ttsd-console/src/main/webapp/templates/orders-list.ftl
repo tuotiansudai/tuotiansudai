@@ -82,7 +82,7 @@
                                     <label>
                                         <i class="check-btn"></i>
                                         <a class="loan_repay confirm-btn" href="javascript:void(0)"
-                                           data-id="${order.id?string('0')}">确认发货</a>
+                                           data-id="${order.id?string('0')}" data-product-id="${product.id?string('0')}">确认发货</a>
                                     </label>
                                 </#if>
                             </@security.authorize>
