@@ -79,8 +79,9 @@ public class BusinessIntelligenceController {
             @RequestParam(name = "granularity") Granularity granularity,
             @RequestParam(name = "startTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
             @RequestParam(name = "endTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
-            @RequestParam(name = "province", required = false) String province) {
-        return businessIntelligenceService.queryUserWithdrawTrend(granularity, startTime, endTime, province);
+            @RequestParam(name = "province", required = false) String province,
+            @RequestParam(name = "role", required = false) Role role) {
+        return businessIntelligenceService.queryUserWithdrawTrend(granularity, startTime, endTime, province, role);
     }
 
     @ResponseBody
@@ -148,8 +149,9 @@ public class BusinessIntelligenceController {
             @RequestParam(name = "endTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
             @RequestParam(name = "province", required = false) String province,
             @RequestParam(name = "roleStage", required = false) RoleStage roleStage,
-            @RequestParam(name = "channel", required = false) String channel) {
-        return businessIntelligenceService.queryUserInvestAmountTrend(granularity, startTime, endTime, province, roleStage, channel);
+            @RequestParam(name = "channel", required = false) String channel,
+            @RequestParam(name = "isTransfer", required = false) Boolean isTransfer) {
+        return businessIntelligenceService.queryUserInvestAmountTrend(granularity, startTime, endTime, province, roleStage, channel, isTransfer);
     }
 
     @ResponseBody
@@ -157,8 +159,9 @@ public class BusinessIntelligenceController {
     public List<KeyValueModel> queryUserInvestCountTrend(
             @RequestParam(name = "startTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
             @RequestParam(name = "endTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
-            @RequestParam(name = "province", required = false) String province) {
-        return businessIntelligenceService.queryUserInvestCountTrend(startTime, endTime, province);
+            @RequestParam(name = "province", required = false) String province,
+            @RequestParam(name = "isTransfer", required = false) Boolean isTransfer) {
+        return businessIntelligenceService.queryUserInvestCountTrend(startTime, endTime, province, isTransfer);
     }
 
     @ResponseBody
@@ -200,8 +203,9 @@ public class BusinessIntelligenceController {
     public List<KeyValueModel> queryWithdrawUserCountTrend(
             @RequestParam(name = "granularity") Granularity granularity,
             @RequestParam(name = "startTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
-            @RequestParam(name = "endTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime) {
-        return businessIntelligenceService.queryWithdrawUserCountTrend(startTime, endTime, granularity);
+            @RequestParam(name = "endTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
+            @RequestParam(name = "role", required = false) Role role) {
+        return businessIntelligenceService.queryWithdrawUserCountTrend(startTime, endTime, granularity, role);
     }
 
     @ResponseBody

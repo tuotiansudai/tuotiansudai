@@ -18,15 +18,15 @@ public interface BusinessIntelligenceService {
 
     List<KeyValueModel> queryUserRechargeTrend(Granularity granularity, Date startTime, Date endTime, String province, Role role);
 
-    List<KeyValueModel> queryUserWithdrawTrend(Granularity granularity, Date startTime, Date endTime, String province);
+    List<KeyValueModel> queryUserWithdrawTrend(Granularity granularity, Date startTime, Date endTime, String province, Role role);
 
     List<KeyValueModel> queryInvestViscosity(Date startTime, Date endTime, String province);
 
     InvestViscosityDetailTableView queryInvestViscosityDetail(Date startTime, Date endTime, final String province, int loanCount, int pageNo, int pageSize);
 
-    List<KeyValueModel> queryUserInvestCountTrend(Date startTime, Date endTime, String province);
+    List<KeyValueModel> queryUserInvestCountTrend(Date startTime, Date endTime, String province, Boolean isTransfer);
 
-    List<KeyValueModel> queryUserInvestAmountTrend(Granularity granularity, Date startTime, Date endTime, String province, RoleStage roleStage, String channel);
+    List<KeyValueModel> queryUserInvestAmountTrend(Granularity granularity, Date startTime, Date endTime, String province, RoleStage roleStage, String channel, Boolean isTransfer);
 
     List<KeyValueModel> queryUserAgeTrend(Date startTime, Date endTime, String province, String isInvestor);
 
@@ -34,7 +34,7 @@ public interface BusinessIntelligenceService {
 
     List<KeyValueModel> queryLoanRaisingTimeCostingTrend(Date startTime, Date endTime);
 
-    List<KeyValueModel> queryWithdrawUserCountTrend(Date startTime, Date endTime,Granularity granularity);
+    List<KeyValueModel> queryWithdrawUserCountTrend(Date startTime, Date endTime,Granularity granularity, Role role);
 
     List<KeyValueModel> queryPlatformSumRepay(Date startTime, Date endTime,Granularity granularity);
 

@@ -358,211 +358,32 @@
         us.province AS `group`
         FROM
         `user` us
-        JOIN `account` ac
-        ON us.login_name = ac.login_name
-        JOIN `recharge` re
-        ON us.login_name = re.login_name
-        AND re.status = 'SUCCESS'
-        AND re.created_time BETWEEN #{startTime} AND #{endTime}
-        JOIN
-        (SELECT
-        ure.`login_name`
-        FROM
-        `user` ure
-        JOIN account acc
-        ON ure.`login_name` = acc.`login_name`
-        WHERE NOT EXISTS
-        (SELECT
-        1
-        FROM
-        `user_role` ur
-        WHERE ur.role = 'LOANER'
-        AND ure.`login_name` = ur.`login_name`)) temp1
-        ON us.login_name = temp1.login_name
-        <choose>
-        <when test="province != null and province!= ''">
-        WHERE us.`province` = #{province}
-        </when>
-        <otherwise>
-        JOIN
-        (SELECT
-        u.province
-        FROM
-        `user` u
-        JOIN `account` a
-        ON u.login_name = a.login_name
-        JOIN `recharge` r
-        ON u.login_name = r.login_name
-        AND r.status = 'SUCCESS'
-        AND r.created_time BETWEEN #{startTime} AND #{endTime}
-        JOIN
-        (SELECT
-        ure.`login_name`
-        FROM
-        `user` ure
-        JOIN account acc
-        ON ure.`login_name` = acc.`login_name`
-        WHERE NOT EXISTS
-        (SELECT
-        1
-        FROM
-        `user_role` ur
-        WHERE ur.role = 'LOANER'
-        AND ure.`login_name` = ur.`login_name`)) temp
-        ON u.login_name = temp.login_name
-        GROUP BY u.province
-        ORDER BY ROUND(SUM(r.amount), 2) DESC
-        LIMIT 5) pr
-        ON us.province = pr.province
-        </otherwise>
-        </choose>
-        GROUP BY us.province,
-        <if test="granularity.name() == 'Hourly'">
-            HOUR (re.created_time)
-        </if>
-        <if test="granularity.name() == 'Daily'">
-            DATE(re.`created_time`)
-        </if>
-        <if test="granularity.name() == 'Weekly'">
-            DATE_FORMAT(re.`created_time`, '%Y-W%u')
-        </if>
-        <if test="granularity.name() == 'Monthly'">
-            DATE_FORMAT(re.`created_time`, '%Y-%m')
-        </if>
-        <if test="province == null or province ==''">
-        UNION
-        ALL
-        SELECT
-        <if test="granularity.name() == 'Hourly'">
-            HOUR (re.created_time) AS `name`,
-        </if>
-        <if test="granularity.name() == 'Daily'">
-            DATE(re.`created_time`) AS `name`,
-        </if>
-        <if test="granularity.name() == 'Weekly'">
-            DATE_FORMAT(re.`created_time`, '%Y-W%u') AS `name`,
-        </if>
-        <if test="granularity.name() == 'Monthly'">
-            DATE_FORMAT(re.`created_time`, '%Y-%m') AS `name`,
-        </if>
-        ROUND(SUM(re.amount / 100), 2) AS `value`,
-        '其他' AS `group`
-        FROM
-        `user` us
-        JOIN `account` ac
-        ON us.login_name = ac.login_name
-        JOIN `recharge` re
-        ON us.login_name = re.login_name
-        AND re.status = 'SUCCESS'
-        AND re.created_time BETWEEN #{startTime} AND #{endTime}
-        JOIN
-        (SELECT
-        ure.`login_name`
-        FROM
-        `user` ure
-        JOIN account acc
-        ON ure.`login_name` = acc.`login_name`
-        WHERE NOT EXISTS
-        (SELECT
-        1
-        FROM
-        `user_role` ur
-        WHERE ur.role = 'LOANER'
-        AND ure.`login_name` = ur.`login_name`)) temp1
-        ON us.login_name = temp1.login_name
-        WHERE NOT EXISTS
-        (SELECT
-        1
-        FROM
-        (SELECT
-        u.province
-        FROM
-        `user` u
-        JOIN `account` a
-        ON u.login_name = a.login_name
-        JOIN `recharge` r
-        ON u.login_name = r.login_name
-        AND r.status = 'SUCCESS'
-        AND r.created_time BETWEEN #{startTime} AND #{endTime}
-        JOIN
-        (SELECT
-        ure.`login_name`
-        FROM
-        `user` ure
-        JOIN account acc
-        ON ure.`login_name` = acc.`login_name`
-        WHERE NOT EXISTS
-        (SELECT
-        1
-        FROM
-        `user_role` ur
-        WHERE ur.role = 'LOANER'
-        AND ure.`login_name` = ur.`login_name`)) temp
-        ON u.login_name = temp.login_name
-        GROUP BY u.province
-        ORDER BY ROUND(SUM(r.amount), 2) DESC
-        LIMIT 5) temp_p
-        WHERE us.`province` = temp_p.province)
-        GROUP BY
-        <if test="granularity.name() == 'Hourly'">
-            HOUR (re.created_time)
-        </if>
-        <if test="granularity.name() == 'Daily'">
-            DATE(re.`created_time`)
-        </if>
-        <if test="granularity.name() == 'Weekly'">
-            DATE_FORMAT(re.`created_time`, '%Y-W%u')
-        </if>
-        <if test="granularity.name() == 'Monthly'">
-            DATE_FORMAT(re.`created_time`, '%Y-%m')
-        </if>
-        </if>
-    </select>
-
-    <select id="queryUserWithdrawTrend" parameterType="map" resultMap="keyValueMap">
-        SELECT
-        <if test="granularity.name() == 'Hourly'">
-            HOUR (re.created_time) AS `name`,
-        </if>
-        <if test="granularity.name() == 'Daily'">
-            DATE(re.`created_time`) AS `name`,
-        </if>
-        <if test="granularity.name() == 'Weekly'">
-            DATE_FORMAT(re.`created_time`, '%Y-W%u') AS `name`,
-        </if>
-        <if test="granularity.name() == 'Monthly'">
-            DATE_FORMAT(re.`created_time`, '%Y-%m') AS `name`,
-        </if>
-        ROUND(SUM(re.amount / 100), 2) AS `value`,
-        us.province AS `group`
-        FROM
-        `user` us
         JOIN `recharge` re ON us.login_name = re.login_name AND re.status = 'SUCCESS' AND re.created_time BETWEEN #{startTime} AND #{endTime}
         <if test="role != null">
             JOIN (SELECT login_name FROM user_role WHERE role = #{role}) AS temp_role ON temp_role.login_name = us.login_name
         </if>
         WHERE
-            us.user_name IS NOT NULL
-            <if test="province == null or province ==''">
-                AND province = #{province}
+        us.user_name IS NOT NULL
+        <if test="province == null or province ==''">
+            AND province = #{province}
+        </if>
+        <if test="province != null and province != ''">
+            --              选择出充值金额最高的五个省份
+            AND province IN (SELECT `province` FROM
+            (SELECT temp_user_1.province,
+            ROUND(SUM(temp_re_1.amount / 100), 2) AS `temp_amount_1`
+            FROM `user` AS temp_user_1
+            JOIN `recharge` temp_re_1 ON temp_user_1.login_name = temp_re_1.login_name AND temp_re_1.status = 'SUCCESS' AND temp_re_1.created_time BETWEEN #{startTime} AND #{endTime}
+            <if test="role != null">
+                JOIN (SELECT login_name FROM user_role WHERE role = #{role}) AS temp_role_1 ON temp_role_1.login_name = temp_user_1.login_name
             </if>
-            <if test="province != null and province != ''">
---              选择出充值金额最高的五个省份
-                AND province IN (SELECT `province` FROM
-                                                   (SELECT temp_user_1.province,
-                                                           ROUND(SUM(temp_re_1.amount / 100), 2) AS `temp_amount_1`
-                                                    FROM `user` AS temp_user_1
-                                                    JOIN `recharge` temp_re_1 ON temp_user_1.login_name = temp_re_1.login_name AND temp_re_1.status = 'SUCCESS' AND temp_re_1.created_time BETWEEN #{startTime} AND #{endTime}
-                                                    <if test="role != null">
-                                                        JOIN (SELECT login_name FROM user_role WHERE role = #{role}) AS temp_role_1 ON temp_role_1.login_name = temp_user_1.login_name
-                                                    </if>
-                                                    WHERE temp_user_1.user_name IS NOT NULL
-                                                    GROUP BY temp_user_1.province
-                                                    ORDER BY `temp_amount_1` DESC LIMIT 5) AS temp_1
-            </if>
+            WHERE temp_user_1.user_name IS NOT NULL
+            GROUP BY temp_user_1.province
+            ORDER BY `temp_amount_1` DESC LIMIT 5) AS temp_1
+        </if>
         GROUP BY `group`, `name`
         <if test="province != null and province != ''">
---          将充值金额最高的五个省份之外的省份统一合并成"其他"
+            --          将充值金额最高的五个省份之外的省份统一合并成"其他"
             UNION ALL
             SELECT
             <if test="granularity.name() == 'Hourly'">
@@ -588,16 +409,99 @@
             WHERE
             us.user_name IS NOT NULL
             AND province NOT IN (SELECT `province` FROM
-                                                   (SELECT temp_user_2.province,
-                                                           ROUND(SUM(temp_re_2.amount / 100), 2) AS `temp_amount_2`
-                                                    FROM `user` AS temp_user_2
-                                                    JOIN `recharge` temp_re_2 ON temp_user_2.login_name = temp_re_2.login_name AND temp_re_2.status = 'SUCCESS' AND temp_re_2.created_time BETWEEN #{startTime} AND #{endTime}
-                                                    <if test="role != null">
-                                                        JOIN (SELECT login_name FROM user_role WHERE role = #{role}) AS temp_role_2 ON temp_role_2.login_name = temp_user_2.login_name
-                                                    </if>
-                                                    WHERE temp_user_2.user_name IS NOT NULL
-                                                    GROUP BY temp_user_2.province
-                                                    ORDER BY `temp_amount_1` DESC LIMIT 5) AS temp_2
+            (SELECT temp_user_2.province,
+            ROUND(SUM(temp_re_2.amount / 100), 2) AS `temp_amount_2`
+            FROM `user` AS temp_user_2
+            JOIN `recharge` temp_re_2 ON temp_user_2.login_name = temp_re_2.login_name AND temp_re_2.status = 'SUCCESS' AND temp_re_2.created_time BETWEEN #{startTime} AND #{endTime}
+            <if test="role != null">
+                JOIN (SELECT login_name FROM user_role WHERE role = #{role}) AS temp_role_2 ON temp_role_2.login_name = temp_user_2.login_name
+            </if>
+            WHERE temp_user_2.user_name IS NOT NULL
+            GROUP BY temp_user_2.province
+            ORDER BY `temp_amount_1` DESC LIMIT 5) AS temp_2
+            GROUP BY `group`, `name`
+        </if>
+    </select>
+
+    <select id="queryUserWithdrawTrend" parameterType="map" resultMap="keyValueMap">
+        SELECT
+        <if test="granularity.name() == 'Hourly'">
+            HOUR (w.created_time) AS `name`,
+        </if>
+        <if test="granularity.name() == 'Daily'">
+            DATE(w.`created_time`) AS `name`,
+        </if>
+        <if test="granularity.name() == 'Weekly'">
+            DATE_FORMAT(w.`created_time`, '%Y-W%u') AS `name`,
+        </if>
+        <if test="granularity.name() == 'Monthly'">
+            DATE_FORMAT(w.`created_time`, '%Y-%m') AS `name`,
+        </if>
+        ROUND(SUM(w.amount / 100), 2) AS `value`,
+        us.province AS `group`
+        FROM
+        `user` us
+        JOIN `withdraw` w ON us.login_name = w.login_name AND w.status = 'SUCCESS' AND w.created_time BETWEEN #{startTime} AND #{endTime}
+        <if test="role != null">
+            JOIN (SELECT login_name FROM user_role WHERE role = #{role}) AS temp_role ON temp_role.login_name = us.login_name
+        </if>
+        WHERE
+        us.user_name IS NOT NULL
+        <if test="province == null or province ==''">
+            AND province = #{province}
+        </if>
+        <if test="province != null and province != ''">
+            --              选择出充值金额最高的五个省份
+            AND province IN (SELECT `province` FROM
+            (SELECT temp_user_1.province,
+            ROUND(SUM(temp_w_1.amount / 100), 2) AS `temp_amount_1`
+            FROM `user` AS temp_user_1
+            JOIN `recharge` temp_w_1 ON temp_user_1.login_name = temp_w_1.login_name AND temp_w_1.status = 'SUCCESS' AND temp_w_1.created_time BETWEEN #{startTime} AND #{endTime}
+            <if test="role != null">
+                JOIN (SELECT login_name FROM user_role WHERE role = #{role}) AS temp_role_1 ON temp_role_1.login_name = temp_user_1.login_name
+            </if>
+            WHERE temp_user_1.user_name IS NOT NULL
+            GROUP BY temp_user_1.province
+            ORDER BY `temp_amount_1` DESC LIMIT 5) AS temp_1
+        </if>
+        GROUP BY `group`, `name`
+        <if test="province != null and province != ''">
+            --          将充值金额最高的五个省份之外的省份统一合并成"其他"
+            UNION ALL
+            SELECT
+            <if test="granularity.name() == 'Hourly'">
+                HOUR (w.created_time) AS `name`,
+            </if>
+            <if test="granularity.name() == 'Daily'">
+                DATE(w.`created_time`) AS `name`,
+            </if>
+            <if test="granularity.name() == 'Weekly'">
+                DATE_FORMAT(w.`created_time`, '%Y-W%u') AS `name`,
+            </if>
+            <if test="granularity.name() == 'Monthly'">
+                DATE_FORMAT(re.`created_time`, '%Y-%m') AS `name`,
+            </if>
+            ROUND(SUM(w.amount / 100), 2) AS `value`,
+            '其他' AS `group`
+            FROM
+            `user` us
+            JOIN `withdraw` w ON us.login_name = w.login_name AND w.status = 'SUCCESS' AND w.created_time BETWEEN #{startTime} AND #{endTime}
+            <if test="role != null">
+                JOIN (SELECT login_name FROM user_role WHERE role = #{role}) AS temp_role ON temp_role.login_name = us.login_name
+            </if>
+            WHERE
+            us.user_name IS NOT NULL
+            AND province NOT IN (SELECT `province` FROM
+            (SELECT temp_user_2.province,
+            ROUND(SUM(temp_w_2.amount / 100), 2) AS `temp_amount_2`
+            FROM `user` AS temp_user_2
+            JOIN `withdraw` temp_w_2 ON temp_user_2.login_name = temp_w_2.login_name AND temp_w_2.status = 'SUCCESS' AND temp_w_2.created_time BETWEEN #{startTime} AND #{endTime}
+            <if test="role != null">
+                JOIN (SELECT login_name FROM user_role WHERE role = #{role}) AS temp_role_2 ON temp_role_2.login_name = temp_user_2.login_name
+            </if>
+            WHERE temp_user_2.user_name IS NOT NULL
+            GROUP BY temp_user_2.province
+            ORDER BY `temp_amount_1` DESC LIMIT 5) AS temp_2
             GROUP BY `group`, `name`
         </if>
     </select>
@@ -773,6 +677,14 @@
         </choose>
         and i.status='SUCCESS'
         and i.created_time between #{startTime} and #{endTime}
+        <if test="isTransfer != null">
+            <if test="isTransfer == true">
+                and transfer_status = "SUCCESS"
+            </if>
+            <if test="isTransfer != true">
+                and transfer_status is NULL
+            </if>
+        </if>
         group by u.province, `name`
         <if test="province == null or province ==''">
             union all
@@ -997,6 +909,14 @@
         <if test="channel == '其他'" >
             and u.channel IS NULL
         </if>
+        <if test="isTransfer != null">
+            <if test="isTransfer == true">
+                and transfer_status = "SUCCESS"
+            </if>
+            <if test="isTransfer != true">
+                and transfer_status is NULL
+            </if>
+        </if>
         group by u.province, `name`
         <if test="province == null or province ==''">
             union all
@@ -1215,7 +1135,7 @@
                     <if test="isInvestor=='true'">
                     and exists
                         (
-                            select 1 from invest i where i.login_name=u.login_name
+                            select 1 from invest i where i.login_name=u.login_name and status = "SUCCESS" and loan_id != 1 and transfer_status is NULL
                         )
                     </if>
             ) temp
@@ -1274,7 +1194,13 @@
         count(distinct(login_name)) AS `value`,
         '提现人数' AS `group`
 
-        from withdraw where status = 'SUCCESS'
+        from withdraw
+
+        <if test="role != null">
+            join (select login_name from `user_role` where role = #{role}) temp_role on temp_role.login_name = `withdraw`.login_name
+        </if>
+
+        where status = 'SUCCESS'
 
         and created_time between #{startTime} and #{endTime}
 

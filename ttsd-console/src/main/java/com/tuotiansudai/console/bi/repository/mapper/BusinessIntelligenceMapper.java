@@ -19,7 +19,7 @@ public interface BusinessIntelligenceMapper {
 
     List<KeyValueModel> queryUserRechargeTrend(@Param("startTime") Date startTime, @Param("endTime") Date endTime, @Param("granularity") Granularity granularity, @Param("province") String province, @Param("role") Role role);
 
-    List<KeyValueModel> queryUserWithdrawTrend(@Param("startTime") Date startTime, @Param("endTime") Date endTime, @Param("granularity") Granularity granularity, @Param("province") String province);
+    List<KeyValueModel> queryUserWithdrawTrend(@Param("startTime") Date startTime, @Param("endTime") Date endTime, @Param("granularity") Granularity granularity, @Param("province") String province, @Param("role") Role role);
 
     List<KeyValueModel> queryInvestViscosity(@Param("startTime") Date startTime, @Param("endTime") Date endTime, @Param("province") String province);
 
@@ -29,10 +29,10 @@ public interface BusinessIntelligenceMapper {
 
     long queryInvestViscositySumAmount(@Param("startTime") Date startTime, @Param("endTime") Date endTime, @Param("province") String province, @Param("loanCount") int loanCount);
 
-    List<KeyValueModel> queryUserInvestCountTrend(@Param("startTime") Date startTime, @Param("endTime") Date endTime, @Param("province") String province);
+    List<KeyValueModel> queryUserInvestCountTrend(@Param("startTime") Date startTime, @Param("endTime") Date endTime, @Param("province") String province, @Param("isTransfer") Boolean isTransfer);
 
     List<KeyValueModel> queryUserInvestAmountTrend(@Param("startTime") Date startTime, @Param("endTime") Date endTime, @Param("granularity") Granularity granularity,
-                                                   @Param("province") String province, @Param("roleStage") RoleStage roleStage, @Param("channel") String channel);
+                                                   @Param("province") String province, @Param("roleStage") RoleStage roleStage, @Param("channel") String channel, @Param("isTransfer") Boolean isTransfer);
 
     List<KeyValueModel> queryUserAgeTrend(@Param("startTime") Date startTime, @Param("endTime") Date endTime, @Param("province") String province, @Param("isInvestor") String isInvestor);
 
@@ -40,7 +40,7 @@ public interface BusinessIntelligenceMapper {
 
     List<KeyValueModel> queryLoanRaisingTimeCostingTrend(@Param("startTime") Date startTime, @Param("endTime") Date endTime);
 
-    List<KeyValueModel> queryWithdrawUserCountTrend(@Param("startTime") Date startTime, @Param("endTime") Date endTime,@Param("granularity") Granularity granularity);
+    List<KeyValueModel> queryWithdrawUserCountTrend(@Param("startTime") Date startTime, @Param("endTime") Date endTime,@Param("granularity") Granularity granularity, @Param("role") Role role);
 
     KeyValueModel queryRepayByRecheckTimeAndActualRepayDate(@Param("repayDate") Date repayDate);
 
