@@ -122,7 +122,7 @@ var MyChartsObject={
 
                 legend: {
                     data:[data.name],
-                    // selectedMode:false,
+                    selectedMode:false,
                     orient: 'vertical',
                     left: 'left'
                 },
