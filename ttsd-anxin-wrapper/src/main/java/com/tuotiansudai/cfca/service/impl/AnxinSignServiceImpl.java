@@ -50,9 +50,6 @@ public class AnxinSignServiceImpl implements AnxinSignService {
     private SmsWrapperClient smsWrapperClient;
 
     @Autowired
-    private JobManager jobManager;
-
-    @Autowired
     private LoanMapper loanMapper;
 
     @Autowired

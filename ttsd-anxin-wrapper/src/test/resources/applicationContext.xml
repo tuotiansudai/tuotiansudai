@@ -24,7 +24,7 @@
     <aop:aspectj-autoproxy expose-proxy="true" />
 
     <!-- enable component scanning (beware that this does not enable mapper scanning!) -->
-    <context:component-scan base-package="com.tuotiansudai.cfca"/>
+    <context:component-scan base-package="com.tuotiansudai.cfca,com.tuotiansudai.client,com.tuotiansudai.mq.client"/>
 
     <bean id="hikariCPDataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
         <constructor-arg>
@@ -47,14 +47,45 @@
         </constructor-arg>
     </bean>
 
+    <bean id="aaHikariCPDataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+        <constructor-arg>
+            <bean class="com.zaxxer.hikari.HikariConfig">
+                <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+                <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/aa?useUnicode=true&amp;characterEncoding=UTF-8"/>
+                <property name="username" value="${common.jdbc.username}"/>
+                <property name="password" value="${common.jdbc.password}"/>
+                <property name="minimumIdle" value="${pay.aa.minimumIdle}"/>
+                <property name="maximumPoolSize" value="${pay.aa.maximumPoolSize}"/>
+                <property name="idleTimeout" value="${common.jdbc.idleTimeout}"/>
+                <property name="dataSourceProperties">
+                    <props>
+                        <prop key="cachePrepStmts">${common.jdbc.cachePrepStmts}</prop>
+                        <prop key="prepStmtCacheSize">${common.jdbc.prepStmtCacheSize}</prop>
+                        <prop key="prepStmtCacheSqlLimit">${common.jdbc.prepStmtCacheSqlLimit}</prop>
+                    </props>
+                </property>
+            </bean>
+        </constructor-arg>
+    </bean>
+
     <!-- transaction manager, use JtaTransactionManager for global tx -->
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="hikariCPDataSource"/>
     </bean>
 
+    <bean id="aaTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="aaHikariCPDataSource"/>
+    </bean>
+
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="hikariCPDataSource"/>
         <property name="typeAliasesPackage" value="com.tuotiansudai.cfca.model"/>
+    </bean>
+
+    <bean id="aaSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="hikariCPDataSource"/>
+        <property name="typeAliasesPackage"
+                  value="com.tuotiansudai.repository.model"/>
     </bean>
 
     <!-- scan for mappers and let them be autowired -->
@@ -63,10 +94,18 @@
         <property name="basePackage" value="com.tuotiansudai.cfca.mapper"/>
     </bean>
 
+    <!-- scan for mappers and let them be autowired -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="sqlSessionFactoryBeanName" value="aaSqlSessionFactory"/>
+        <property name="basePackage" value="com.tuotiansudai.repository.mapper"/>
+    </bean>
+
     <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
         <property name="maxTotal" value="${activity.jedis.pool.maxTotal}"/>
     </bean>
 
     <bean id="httpClient" class="com.squareup.okhttp.OkHttpClient"/>
+
+    <bean class="com.tuotiansudai.mq.config.MQProducerConfig"/>
 
 </beans>
