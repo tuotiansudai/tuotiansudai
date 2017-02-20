@@ -146,7 +146,7 @@ public class AgreementServiceTest {
 
     @Test
     public void shouldAgreementFastPay() {
-        String userId = "testAutoInvest";
+        String userId = "testAutoInvestFastPay";
         createUserByUserId(userId);
         createAccountByUserId(userId);
         long id = idGenerator.generate();
@@ -173,7 +173,7 @@ public class AgreementServiceTest {
 
     @Test
     public void shouldAgreementAutoInvest() {
-        String userId = "testAutoInvest";
+        String userId = "testAgreementAutoInvest";
         createUserByUserId(userId);
         createAccountByUserId(userId);
         AgreementDto agreementDto = new AgreementDto();
@@ -195,7 +195,7 @@ public class AgreementServiceTest {
 
     @Test
     public void shouldAgreementNoPasswordInvest() {
-        String userId = "testAutoInvest";
+        String userId = "testNoPasswordInvest";
         createUserByUserId(userId);
         createAccountByUserId(userId);
         AgreementDto agreementDto = new AgreementDto();
@@ -218,7 +218,7 @@ public class AgreementServiceTest {
 
     @Test
     public void shouldAgreementAutoRepay() {
-        String userId = "testAutoInvest";
+        String userId = "testAutoInvestRepay";
         createUserByUserId(userId);
         createAccountByUserId(userId);
         AgreementDto agreementDto = new AgreementDto();

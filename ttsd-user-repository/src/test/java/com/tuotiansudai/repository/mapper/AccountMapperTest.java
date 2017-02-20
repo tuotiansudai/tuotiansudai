@@ -65,7 +65,8 @@ public class AccountMapperTest {
     @Test
     public void shouldFindByIdentityNumber() throws Exception {
         UserModel fakeUser = createFakeUser();
-
+        fakeUser.setIdentityNumber("12345");
+        userMapper.updateUser(fakeUser);
         assertNotNull(userMapper.findByIdentityNumber(fakeUser.getIdentityNumber()));
     }
 
