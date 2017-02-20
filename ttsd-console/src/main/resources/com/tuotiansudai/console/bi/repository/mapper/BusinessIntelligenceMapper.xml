@@ -364,11 +364,11 @@
         </if>
         WHERE
         us.user_name IS NOT NULL
-        <if test="province == null or province ==''">
+        <if test="province != null and province !=''">
             AND province = #{province}
         </if>
-        <if test="province != null and province != ''">
-            --              选择出充值金额最高的五个省份
+        <if test="province == null or province == ''">
+            --          选择出充值金额最高的五个省份
             AND province IN (SELECT `province` FROM
             (SELECT temp_user_1.province,
             ROUND(SUM(temp_re_1.amount / 100), 2) AS `temp_amount_1`
@@ -379,10 +379,10 @@
             </if>
             WHERE temp_user_1.user_name IS NOT NULL
             GROUP BY temp_user_1.province
-            ORDER BY `temp_amount_1` DESC LIMIT 5) AS temp_1
+            ORDER BY `temp_amount_1` DESC LIMIT 5) AS temp_1)
         </if>
         GROUP BY `group`, `name`
-        <if test="province != null and province != ''">
+        <if test="province == null or province == ''">
             --          将充值金额最高的五个省份之外的省份统一合并成"其他"
             UNION ALL
             SELECT
@@ -418,7 +418,7 @@
             </if>
             WHERE temp_user_2.user_name IS NOT NULL
             GROUP BY temp_user_2.province
-            ORDER BY `temp_amount_1` DESC LIMIT 5) AS temp_2
+            ORDER BY `temp_amount_2` DESC LIMIT 5) AS temp_2)
             GROUP BY `group`, `name`
         </if>
     </select>
@@ -447,11 +447,11 @@
         </if>
         WHERE
         us.user_name IS NOT NULL
-        <if test="province == null or province ==''">
+        <if test="province != null and province !=''">
             AND province = #{province}
         </if>
-        <if test="province != null and province != ''">
-            --              选择出充值金额最高的五个省份
+        <if test="province == null or province == ''">
+            --          选择出提现金额最高的五个省份
             AND province IN (SELECT `province` FROM
             (SELECT temp_user_1.province,
             ROUND(SUM(temp_w_1.amount / 100), 2) AS `temp_amount_1`
@@ -462,11 +462,11 @@
             </if>
             WHERE temp_user_1.user_name IS NOT NULL
             GROUP BY temp_user_1.province
-            ORDER BY `temp_amount_1` DESC LIMIT 5) AS temp_1
+            ORDER BY `temp_amount_1` DESC LIMIT 5) AS temp_1)
         </if>
         GROUP BY `group`, `name`
-        <if test="province != null and province != ''">
-            --          将充值金额最高的五个省份之外的省份统一合并成"其他"
+        <if test="province == null or province == ''">
+            --          将提现金额最高的五个省份之外的省份统一合并成"其他"
             UNION ALL
             SELECT
             <if test="granularity.name() == 'Hourly'">
@@ -479,7 +479,7 @@
                 DATE_FORMAT(w.`created_time`, '%Y-W%u') AS `name`,
             </if>
             <if test="granularity.name() == 'Monthly'">
-                DATE_FORMAT(re.`created_time`, '%Y-%m') AS `name`,
+                DATE_FORMAT(w.`created_time`, '%Y-%m') AS `name`,
             </if>
             ROUND(SUM(w.amount / 100), 2) AS `value`,
             '其他' AS `group`
@@ -501,7 +501,7 @@
             </if>
             WHERE temp_user_2.user_name IS NOT NULL
             GROUP BY temp_user_2.province
-            ORDER BY `temp_amount_1` DESC LIMIT 5) AS temp_2
+            ORDER BY `temp_amount_2` DESC LIMIT 5) AS temp_2)
             GROUP BY `group`, `name`
         </if>
     </select>
@@ -667,6 +667,14 @@
                     where
                       ii.status='SUCCESS'
                       and ii.created_time between #{startTime} and #{endTime}
+                      <if test="isTransfer != null">
+                          <if test="isTransfer == true">
+                              and transfer_invest_id is not NULL
+                          </if>
+                          <if test="isTransfer != true">
+                              and transfer_invest_id is NULL
+                          </if>
+                      </if>
                     group by uu.province
                     order by count(ii.id)
                     desc limit 5
@@ -679,10 +687,10 @@
         and i.created_time between #{startTime} and #{endTime}
         <if test="isTransfer != null">
             <if test="isTransfer == true">
-                and transfer_status = "SUCCESS"
+                and transfer_invest_id is not NULL
             </if>
             <if test="isTransfer != true">
-                and transfer_status is NULL
+                and transfer_invest_id is NULL
             </if>
         </if>
         group by u.province, `name`
@@ -711,6 +719,14 @@
             )
             and i.status='SUCCESS'
             and i.created_time between #{startTime} and #{endTime}
+            <if test="isTransfer != null">
+                <if test="isTransfer == true">
+                    and transfer_invest_id is not NULL
+                </if>
+                <if test="isTransfer != true">
+                    and transfer_invest_id is NULL
+                </if>
+            </if>
             group by `name`
         </if>
     </select>
@@ -911,10 +927,10 @@
         </if>
         <if test="isTransfer != null">
             <if test="isTransfer == true">
-                and transfer_status = "SUCCESS"
+                and transfer_invest_id is not NULL
             </if>
             <if test="isTransfer != true">
-                and transfer_status is NULL
+                and transfer_invest_id is NULL
             </if>
         </if>
         group by u.province, `name`
@@ -1095,6 +1111,14 @@
                     where
                         ii.status='SUCCESS'
                         and ii.created_time between #{startTime} and #{endTime}
+                        <if test="isTransfer != null">
+                            <if test="isTransfer == true">
+                                and transfer_invest_id is not NULL
+                            </if>
+                            <if test="isTransfer != true">
+                                and transfer_invest_id is NULL
+                            </if>
+                        </if>
                     group by province
                     order by amount desc
                     limit 5
@@ -1108,6 +1132,14 @@
             </if>
             <if test="channel == '其他'" >
                 and u.channel IS NULL
+            </if>
+            <if test="isTransfer != null">
+                <if test="isTransfer == true">
+                    and transfer_invest_id is not NULL
+                </if>
+                <if test="isTransfer != true">
+                    and transfer_invest_id is NULL
+                </if>
             </if>
             group by `name`
         </if>
@@ -1135,7 +1167,7 @@
                     <if test="isInvestor=='true'">
                     and exists
                         (
-                            select 1 from invest i where i.login_name=u.login_name and status = "SUCCESS" and loan_id != 1 and transfer_status is NULL
+                            select 1 from invest i where i.login_name=u.login_name and status = "SUCCESS" and loan_id != 1 and transfer_invest_id is NULL
                         )
                     </if>
             ) temp
