@@ -85,6 +85,9 @@ public class PointTaskServiceImpl implements PointTaskService {
             if (pointTask.equals(PointTask.BIND_BANK_CARD)) {
                 PointTaskModel bankCardTaskModel = pointTaskMapper.findByName(PointTask.EACH_RECOMMEND_BANK_CARD);
                 String referrer = userMapper.findByLoginName(loginName).getReferrer();
+                if(Strings.isNullOrEmpty(referrer)){
+                    return;
+                }
                 long referrerMaxTaskLevel = userPointTaskMapper.findMaxTaskLevelByLoginName(referrer, PointTask.EACH_RECOMMEND_BANK_CARD);
                 userPointTaskMapper.create(new UserPointTaskModel(referrer, bankCardTaskModel.getId(), bankCardTaskModel.getPoint(), referrerMaxTaskLevel + 1));
                 String pointBillNote = MessageFormat.format("{0}奖励{1}积分", PointTask.EACH_RECOMMEND_BANK_CARD.getTitle(), String.valueOf(bankCardTaskModel.getPoint()));
@@ -258,12 +261,7 @@ public class PointTaskServiceImpl implements PointTaskService {
 
     private boolean isCompletedNewbieTaskConditions(final PointTask pointTask, String loginName) {
         List<UserPointTaskModel> completedTask = userPointTaskMapper.findByLoginName(loginName);
-        boolean isCompleted = Iterators.tryFind(completedTask.iterator(), new Predicate<UserPointTaskModel>() {
-            @Override
-            public boolean apply(UserPointTaskModel input) {
-                return input.getPointTask().getName() == pointTask;
-            }
-        }).isPresent();
+        boolean isCompleted = Iterators.tryFind(completedTask.iterator(), input -> input.getPointTask().getName() == pointTask).isPresent();
 
         if (isCompleted) {
             return false;

@@ -275,6 +275,27 @@ public class PointTaskServiceTest {
         assertEquals(completeTask.get().getPoint(), 100l);
     }
 
+    @Test
+    public void shouldEachRecommendBankCardReferrerIsNullIsOk(){
+        UserModel referrerUserModel = createFakeUser("referrerBankCardLoginName", null);
+        UserModel testName = createFakeUser("testBankCardLoginName", null);
+
+        BankCardModel bankCardModel = new BankCardModel();
+        bankCardModel.setBankCode("ICBC");
+        bankCardModel.setStatus(BankCardStatus.PASSED);
+        bankCardModel.setCreatedTime(new Date());
+        bankCardModel.setLoginName(testName.getLoginName());
+        bankCardModel.setIsFastPayOn(true);
+        bankCardModel.setCardNumber("1234567890");
+        bankCardMapper.create(bankCardModel);
+
+        pointTaskService.completeNewbieTask(PointTask.BIND_BANK_CARD, testName.getLoginName());
+        List<UserPointTaskModel> userPointTaskModels = userPointTaskMapper.findByLoginName(referrerUserModel.getLoginName());
+        Optional<UserPointTaskModel> completeTask = userPointTaskModels.stream().findFirst().filter(userPointTaskModel -> pointTaskMapper.findById(userPointTaskModel.getPointTaskId()).getName().equals(PointTask.EACH_RECOMMEND_BANK_CARD));
+        assertTrue(completeTask.isPresent());
+        assertEquals(completeTask.get().getPoint(), 100l);
+    }
+
 
     private InvestModel createFakeInvest(String loginName, long loanId, long amount) {
         InvestModel investModel = new InvestModel();
