@@ -1,4 +1,4 @@
-require(['jquery', 'load_echarts','layerWrapper','jquery.ajax.extension'], function ($,loadEcharts,layer) {
+require(['jquery', 'load_echarts','layerWrapper','template','jquery.ajax.extension'], function ($,loadEcharts,layer,tpl) {
     $(function () {
     var $tMonthBox=$('#tMonthBox'),
         $signBtn = $('#signBtn'),
@@ -62,50 +62,45 @@ require(['jquery', 'load_echarts','layerWrapper','jquery.ajax.extension'], funct
                 }
             });
         }
-        $signBtn.on('click', function (event) {
+        $signBtn.on('click', function(event) {
             event.preventDefault();
             var _this = $(this),
-                signText = $(".sign-text");
-                tomorrowText = $(".tomorrow-text");
-                $addDou = $(".add-dou");
-            if(_this.hasClass('active')){
-                return false;
-            }else{
-                $.ajax({
-                    url: _this.data('url'),
-                    type: 'POST',
-                    dataType: 'json',
-                    contentType: 'application/json; charset=UTF-8'
-                })
-                    .done(function (response) {
-                        if (response.data.status) {
-                            signText.html("签到成功，领取" + response.data.signInPoint + "积分！");
-                            tomorrowText.html("明日可领" + response.data.nextSignInPoint + "积分");
-                            $addDou.html("+" + response.data.signInPoint);
-                            $signTip.fadeIn('fast', function () {
-                                $(this).find('.add-dou').animate({
-                                    'bottom': '50px',
-                                    'opacity': '0'
-                                }, 800);
-                            });
-                            _this.removeClass("will-sign").addClass("finish-sign").html("已签到");
-                            _this.addClass('active');
-                            _this.parent('.sign-top').addClass('no-click');
-                            $("#MyAvailablePoint").text(Math.round($("#MyAvailablePoint").text()) + Math.round(response.data.signInPoint));
-                        }
-                    })
-            }
+                $signText = $(".sign-text"),
+                $tomorrowText = $(".tomorrow-text"),
+                $signPoint = $(".sign-point"),
+                $introText = $('.intro-text'),
+                $nextText = $('.next-text'),
+                $signBtn = $("#signBtn");
 
+            $.ajax({
+                url: _this.attr('data-url'),
+                type: 'POST',
+                dataType: 'json',
+                contentType: 'application/json; charset=UTF-8'
+            }).done(function(response) {
+                if (response.data.status) {
+                    response.data.signIn == true ? $signText.html("您今天已签到") : $signText.html("签到成功");
+                    $tomorrowText.html("明日签到可获得" + response.data.nextSignInPoint + "积分");
+                    if(response.data.full == true){
+                        $introText.html('已连续签到365天，获得全勤奖！');
+                        $nextText.html('365元现金红包');
+                    }
+                    else{
+                        $introText.html(response.data.currentRewardDesc);
+                        $nextText.html(response.data.nextRewardDesc);
+                    }
+                    $signBtn.parent().addClass("no-click").find('span').removeClass('will-sign').addClass('finish-sign').html("已签到");
+                    $signPoint.find('span').html('+'+response.data.signInPoint);
+                    $signTip.fadeIn('fast');
+                } else {
+                    location.href='/register/account?redirect=/account';
+                }
+            })
         });
         //hide sign tip
         $closeSign.on('click', function (event) {
             event.preventDefault();
-            $signTip.fadeOut('fast', function() {
-                $(this).find('.add-dou').css({
-                    'bottom': '0',
-                    'opacity': '1'
-                });
-            });
+            location.href = "/account";
         });
     });
 });

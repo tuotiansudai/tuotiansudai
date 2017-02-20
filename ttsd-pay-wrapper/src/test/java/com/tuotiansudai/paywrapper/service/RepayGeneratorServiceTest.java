@@ -1,5 +1,6 @@
 package com.tuotiansudai.paywrapper.service;
 
+import com.tuotiansudai.paywrapper.loanout.RepayGeneratorService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;

@@ -38,7 +38,7 @@ public class PayWrapperClient extends BaseClient {
 
     private final static String systemRechargePath = "/system-recharge";
 
-    private final static String membershipPurchasePath = "/membership-purchase";
+    private final static String membershipPrivilegePurchasePath = "/membership-privilege-purchase";
 
     private final static String rechargePath = "/recharge";
 
@@ -91,8 +91,8 @@ public class PayWrapperClient extends BaseClient {
         return asyncExecute(systemRechargeDto, systemRechargePath, "POST");
     }
 
-    public BaseDto<PayFormDataDto> membershipPurchase(Object membershipPurchaseDto) {
-        return asyncExecute(membershipPurchaseDto, membershipPurchasePath, "POST");
+    public BaseDto<PayFormDataDto> membershipPrivilegePurchase(Object membershipPrivilegePurchaseDto) {
+        return asyncExecute(membershipPrivilegePurchaseDto, membershipPrivilegePurchasePath, "POST");
     }
 
     public BaseDto<PayFormDataDto> withdraw(Object withdrawDto) {
@@ -351,6 +351,42 @@ public class PayWrapperClient extends BaseClient {
     }
 
     public BaseDto<PayDataDto> sendRedEnvelopeAfterLoanOut(long loanId){
-        return syncExecute(String.valueOf(loanId), "/job/send-red-envelope-after-loan-out", "POST");
+        return syncExecute(String.valueOf(loanId), "/loan-out/send-red-envelope-after-loan-out", "POST");
+    }
+
+    public BaseDto<PayDataDto> sendRewardReferrer(long loanId){
+        return syncExecute(String.valueOf(loanId), "/loan-out/referrer-reward-after-loan-out", "POST");
+    }
+
+    public BaseDto<PayDataDto> createAnXinContract(long loanId){
+        return syncExecute(String.valueOf(loanId), "/loan-out/create-anxin-contract-after-loan-out", "POST");
+    }
+
+    public BaseDto<PayDataDto> queryAnXinContract(long loanId){
+        return syncExecute(String.valueOf(loanId), "/loan-out/query-anxin-contract-after-loan-out", "POST");
+    }
+
+    public BaseDto<PayDataDto> generateRepay(long loanId){
+        return syncExecute(String.valueOf(loanId), "/loan-out/generate-repay-after-loan-out", "POST");
+    }
+
+    public BaseDto<PayDataDto> generateCouponRepay(long loanId){
+        return syncExecute(String.valueOf(loanId), "/loan-out/generate-coupon-repay-after-loan-out", "POST");
+    }
+
+    public BaseDto<PayDataDto> generateExtraRate(long loanId){
+        return syncExecute(String.valueOf(loanId), "/loan-out/generate-extra-rate-after-loan-out", "POST");
+    }
+
+    public BaseDto<PayDataDto> assignInvestAchievementUserCoupon(long loanId){
+        return syncExecute(String.valueOf(loanId), "/loan-out/assign-achievement-coupon-after-loan-out", "POST");
+    }
+
+    public BaseDto<PayDataDto> transferReferrerRewardCallBack(long investReferrerRewardId){
+        return syncExecute(String.valueOf(investReferrerRewardId), "/loan-out/transfer-referrer-reward-callback", "POST");
+    }
+
+    public BaseDto<PayDataDto> transferRedEnvelopForCallBack(long userCouponId){
+        return syncExecute(String.valueOf(userCouponId), "/loan-out/transfer-red-envelop-callback", "POST");
     }
 }

@@ -11,6 +11,7 @@ import com.tuotiansudai.api.service.v3_0.impl.MobileAppLoanListV3ServiceImpl;
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
+import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
@@ -82,6 +83,9 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
 
     @Autowired
     private InvestService investService;
+
+    @Autowired
+    private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
 
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
@@ -220,8 +224,7 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
             }
         }
 
-        MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
-        double investFeeRate = membershipModel == null ? defaultFee : membershipModel.getFee();
+        double investFeeRate = membershipPrivilegePurchaseService.obtainServiceFee(loginName);
         if (loanModel != null && ProductType.EXPERIENCE == loanModel.getProductType()) {
             investFeeRate = this.defaultFee;
         }

@@ -101,7 +101,7 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
         investRepay2.setCorpus(invest.getAmount());
         investRepayMapper.create(Lists.newArrayList(investRepay1, investRepay2));
 
-        normalRepayService.repayCallback(this.getFakeCallbackParamsMap(loanRepay1.getId()), "");
+        normalRepayService.repayCallback(this.getFakeCallbackParamsMap(loanRepay1.getId(),"project_transfer_notify"), "");
 
         List<UserBillModel> userBills = userBillMapper.findByLoginName(loaner.getLoginName());
         assertThat(userBills.size(), is(1));
@@ -178,7 +178,7 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
         investRepayTransferee2.setCorpus(investTransferee.getAmount());
         investRepayMapper.create(Lists.newArrayList(investRepayTransferee1, investRepayTransferee2));
 
-        normalRepayService.repayCallback(this.getFakeCallbackParamsMap(loanRepay1.getId()), "");
+        normalRepayService.repayCallback(this.getFakeCallbackParamsMap(loanRepay1.getId(),"project_transfer_notify"), "");
 
         List<UserBillModel> userBills = userBillMapper.findByLoginName(loaner.getLoginName());
         assertThat(userBills.size(), is(1));
@@ -241,7 +241,7 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
         investRepay2.setCorpus(invest.getAmount());
         investRepayMapper.create(Lists.newArrayList(investRepay1, investRepay2));
 
-        normalRepayService.repayCallback(this.getFakeCallbackParamsMap(loanRepay2.getId()), "");
+        normalRepayService.repayCallback(this.getFakeCallbackParamsMap(loanRepay2.getId(),"project_transfer_notify"), "");
 
         List<UserBillModel> userBills = userBillMapper.findByLoginName(loaner.getLoginName());
         assertThat(userBills.size(), is(1));
@@ -321,7 +321,7 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
         transferApplicationModel.setInvestId(investTransferee.getId());
         transferApplicationMapper.create(transferApplicationModel);
 
-        normalRepayService.repayCallback(this.getFakeCallbackParamsMap(loanRepay2.getId()), "");
+        normalRepayService.repayCallback(this.getFakeCallbackParamsMap(loanRepay2.getId(),"project_transfer_notify"), "");
 
         List<UserBillModel> userBills = userBillMapper.findByLoginName(loaner.getLoginName());
         assertThat(userBills.size(), is(1));
@@ -383,7 +383,7 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
         InvestRepayModel investRepay2 = new InvestRepayModel(idGenerator.generate(), invest.getId(), 2, invest.getAmount(), loanRepay2ExpectedInterest, 200, loanRepay2.getRepayDate(), RepayStatus.REPAYING);
         investRepayMapper.create(Lists.newArrayList(investRepay1, investRepay2));
 
-        normalRepayService.repayCallback(this.getFakeCallbackParamsMap(loanRepay1.getId()), "");
+        normalRepayService.repayCallback(this.getFakeCallbackParamsMap(loanRepay1.getId(),"project_transfer_notify"), "");
 
         List<UserBillModel> userBills = userBillMapper.findByLoginName(loaner.getLoginName());
         assertThat(userBills.size(), is(1));
@@ -454,7 +454,7 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
         InvestRepayModel investRepayTransferee2 = new InvestRepayModel(idGenerator.generate(), investTransferee.getId(), 2, investTransferee.getAmount(), loanRepay2ExpectedInterest, 200, loanRepay2.getRepayDate(), RepayStatus.REPAYING);
         investRepayMapper.create(Lists.newArrayList(investRepayTransferee1, investRepayTransferee2));
 
-        normalRepayService.repayCallback(this.getFakeCallbackParamsMap(loanRepay1.getId()), "");
+        normalRepayService.repayCallback(this.getFakeCallbackParamsMap(loanRepay1.getId(),"project_transfer_notify"), "");
 
         List<UserBillModel> userBills = userBillMapper.findByLoginName(loaner.getLoginName());
         assertThat(userBills.size(), is(1));
@@ -516,7 +516,7 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
         investRepay2.setCorpus(invest.getAmount());
         investRepayMapper.create(Lists.newArrayList(investRepay1, investRepay2));
 
-        normalRepayService.repayCallback(this.getFakeCallbackParamsMap(loanRepay2.getId()), "");
+        normalRepayService.repayCallback(this.getFakeCallbackParamsMap(loanRepay2.getId(),"project_transfer_notify"), "");
 
         List<UserBillModel> userBills = userBillMapper.findByLoginName(loaner.getLoginName());
         assertThat(userBills.size(), is(1));
@@ -592,7 +592,7 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
         investRepay2.setCorpus(invest.getAmount());
         investRepayMapper.create(Lists.newArrayList(investRepayTransferee1, investRepayTransferee2));
 
-        normalRepayService.repayCallback(this.getFakeCallbackParamsMap(loanRepay2.getId()), "");
+        normalRepayService.repayCallback(this.getFakeCallbackParamsMap(loanRepay2.getId(),"project_transfer_notify"), "");
 
         List<UserBillModel> userBills = userBillMapper.findByLoginName(loaner.getLoginName());
         assertThat(userBills.size(), is(1));

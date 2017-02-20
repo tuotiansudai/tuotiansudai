@@ -206,7 +206,7 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
     @Override
     public List<CouponModel> asyncAssignUserCoupon(String loginNameOrMobile, final List<UserGroup> userGroups) {
         UserModel userModel = userMapper.findByLoginNameOrMobile(loginNameOrMobile);
-        final String loginName = userModel.getLoginName().toLowerCase();
+        final String loginName = userModel.getLoginName();
 
         // 当前可领取的优惠券
         List<CouponModel> coupons = couponMapper.findAllActiveCoupons();
@@ -318,37 +318,38 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
     }
 
     @Override
-    public void assignInvestAchievementUserCoupon(long loanId, String loginNameOrMobile, long couponId) {
+    public boolean assignInvestAchievementUserCoupon(String loginNameOrMobile, long loanId, long couponId) {
         final String loginName = userMapper.findByLoginNameOrMobile(loginNameOrMobile).getLoginName();
 
         CouponModel couponModel = couponMapper.findById(couponId);
 
         if (couponModel == null) {
             logger.error(MessageFormat.format("[Coupon Assignment] coupon({0}) is not exist", String.valueOf(couponId)));
-            return;
+            return false;
         }
 
         if (!couponModel.isActive() || couponModel.getEndTime().before(new Date())) {
             logger.error(MessageFormat.format("[Coupon Assignment] coupon({0}) is inactive", String.valueOf(couponId)));
-            return;
+            return false;
         }
 
         boolean contains = investAchievementCollector.contains(couponModel.getId(), loanId, loginName, couponModel.getUserGroup());
 
         if (!contains) {
             logger.error(MessageFormat.format("[Coupon Assignment] user({0}) is not coupon({1}) user group({2})", loginName, String.valueOf(couponId), couponModel.getUserGroup()));
-            return;
+            return false;
         }
 
         if (couponModel.isMultiple()) {
             UserCouponModel userCouponModel = ((CouponAssignmentService) AopContext.currentProxy()).assign(loginName, couponModel.getId(), null);
             if (userCouponModel == null) {
-                return;
+                return false;
             }
             userCouponModel.setAchievementLoanId(loanId);
             userCouponMapper.update(userCouponModel);
             logger.info(MessageFormat.format("[Coupon Assignment] assign user({0}) coupon({1})", loginName, String.valueOf(couponId)));
         }
+        return true;
     }
 
     private UserCollector getCollector(UserGroup userGroup) {

@@ -1,18 +1,6 @@
 @import 'common/variables';
 @import 'module/register_png';
 
-$landingPhoneColorGray: #F2F2F2;
-$landingPhoneColorRed: #FC4333;
-$fontMonster: 26px;
-$fontGiant: 24px;
-$fontUltraHuge: 22px;
-$fontHuge: 20px;
-$fontBig: 18px;
-$fontNormal: 16px;
-$fontSmall: 14px;
-$fontUltraSmall: 12px;
-$fontUltraSmaller: 10px;
-
 form label.error:before {
   padding-right: 5px;
   content: "\f057";
@@ -20,26 +8,16 @@ form label.error:before {
   display: none;
   font-size: 16px;
 }
-.header-title {
-  padding: 0 80px 0 20px;
-  height: 42px;
-  line-height: 42px;
-  border-bottom: 1px solid #eee;
-  font-size: 14px;
-  color: #333;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  background-color: #F8F8F8;
-  border-radius: 2px 2px 0 0;
-  position: relative;
-  .close-tip {
-    position: absolute;
-    right: 10px;
-    top: 12px;
-    font-size: 18px;
-  }
+
+.btn-normal {
+  background: #ff635a;
+  font-size: 25px;
+  width: 300px;
+  height: 30px;
+  box-shadow: 0px 5px 0px #ff473c;
+  border-radius: 25px;
 }
+
 .header-container {
   display: none;
 }
@@ -71,182 +49,17 @@ form label.error {
   vertical-align: middle;
 }
 
-.landing-top {
-  position: relative;
-  height: 500px;
-  background: url("/activity/images/sign/actor/landingpage/landing-top.jpg") center top no-repeat;
-
-  .landing-inner {
-    width: 1200px;
-    height: 30px;
-    margin: 0 auto;
-    position: relative;
-  }
-  .register-box {
-    position: absolute;
-    right: 0;
-    background: rgba(255, 255, 255, 0.8);
-    border-radius: 5px;
-    top: 18px;
-    height: auto;
-    overflow: auto;
-    margin-top: 13px;
-  .refer-person-info {
-    text-align: center;
-    margin-top: 25px;
-    font-size:14px;
-    span {
-      color: red;
-    }
-  }
-    .register-user-form {
-      width: 320px;
-      height: 369px;
-      padding: 15px 0 0 32px;
-    }
-    .register-step-one {
-      margin-top: 14px;
-    }
-    .register-step-two {
-      margin-top: 40px;
-    }
-    ul.reg-list {
-      font-size: 12px;
-      .height {
-        height: 20px;
-      }
-      .appCaptchaErr {
-        font-size: 10px;
-        color: #f71010;
-        padding: 0;
-        vertical-align: middle;
-      }
-      li {
-        clear: both;
-        position: relative;
-        .img-change {
-          cursor: pointer;
-        }
-        i {
-          display: inline-block;
-          position: absolute;
-          left: 10px;
-          top: 4px;
-          z-index: 20;
-          filter: alpha(opacity=80);
-          -moz-opacity: 0.8;
-        }
-        .reg-title {
-          width: 60px;
-          padding-right: 3px;
-          font-size: 14px;
-          color: #333;
-          text-align: right;
-          display: none;
-        }
-        .captcha-tag {
-          position: relative;
-          display: inline-block;
-          width: 90%;
-
-          .fetch-captcha {
-            width: 100px;
-            height: 32px;
-            padding-left: 18px;
-            letter-spacing: 0;
-            position: absolute;
-            right: 0;
-            top: 2px;
-            font-size: 12px;
-            border-radius: 15px;
-            background: #ff0000;
-            &:hover {
-              color: #fff;
-            }
-          }
-        }
-        .long {
-          width: 230px;
-        }
-        input[type="text"], input[type="password"] {
-          color: #999;
-          border: #cecece 1px solid;
-          padding: 10px 2px 10px 47px;
-          background-color: #fff;
-          &.captcha, &.appCaptcha {
-            width: 100px;
-          }
-
-        }
-        .agreement {
-          display: inline-block;
-          width: 361px;
-        }
-        input.valid + .agreement + label.error {
-          &:before {
-            content: "\f058";
-            color: #6bc21e;
-          }
-        }
-        &.agree-last {
-          position: relative;
-          margin-left: 0;
-
-          .check-label {
-            position: absolute;
-            top: 1px;
-            left: 20px;
-          }
-          .agreement-check {
-            margin-right: 300px;
-          }
-        }
-        &.mobile-agreement {
-          display: none;
-        }
-        &.error-box {
-          height: 20px;
-          overflow: hidden;
-        }
-        .register-user, .register-account {
-          width: 150px;
-          background: #ff0000;
-          border-radius: 3px;
-          text-align: center;
-          margin: 10px 0px 0px -20px;
-          font-size: 20px;
-          color: #fff;
-          border: 0;
-          cursor: pointer;
-        }
-      }
-      .register-account {
-        display: block;
-
-        &.loading {
-          background: url("/activity/images/icons/loading.gif") no-repeat center center;
-          cursor: default;
-          text-indent: -9999px;
-        }
-      }
-
-    }
-    label.error {
-      display: block;
-    }
-  }
-}
-
 .landing-container {
+  position: relative;
   min-height: 500px;
 
-  .landing-header {
+  .landing-header-nav {
     width: 1200px;
     height: 90px;
     text-align: center;
     margin: 0 auto;
     background: url("/activity/images/global/logo-index.png") left center no-repeat;
-   a {
+    a {
       display: inline-block;
       float: right;
       font-size: 16px;
@@ -260,979 +73,745 @@ form label.error {
     }
   }
 
-  h3 {
-    text-align: center;
-    font-size: 20px;
-    color: #221815;
-    span {
-      position: relative;
-      i {
-        width: 100px;
-        height: 25px;
-        position: absolute;
-        top: 0;
-        &.left-icon {
-          left: -105px;
-          background: url("/activity/images/sign/actor/landingpage/left-circle.png") no-repeat center;
-          background-size: 100%;
-        }
-        &.right-icon {
-          right: -105px;
-          background: url("/activity/images/sign/actor/landingpage/right-circle.png") no-repeat center;
-          background-size: 100%;
-        }
-      }
-    }
-  }
-  .content-one {
-    width: 100%;
-    background: #e5f3ff;
-    .one-title {
-      width: 950px;
-      height: 120px;
-      line-height: 120px;
+  .new-user-list {
+    color: #ff473c;
+    line-height: 31px;
+    margin-bottom: 35px;
+    dt {
       font-size: 26px;
-      margin: 0 auto;
-      text-align: center;
+      margin-top: 30px;
+      margin-bottom: 40px;
     }
-    .content-wp {
-      width: 1200px;
-      height: 320px;
-      margin: 0 auto;
-
-      ul {
-        text-align: center;
-        height: 320px;
-
-        li {
-          float: left;
-          width: 33.333333%;
-          font-size: 14px;
-          color: #0e050a;
-
-          .icon-one {
-            height: 180px;
-            width: 128px;
-            margin: 0 auto;
-            background: url("/activity/images/sign/actor/landingpage/icon-one.png") no-repeat center;
-          }
-          .icon-two {
-            height: 180px;
-            width: 128px;
-            margin: 0 auto;
-            background: url("/activity/images/sign/actor/landingpage/icon-two.png") no-repeat center;
-          }
-          .icon-three {
-            height: 180px;
-            width: 128px;
-            margin: 0 auto;
-            background: url("/activity/images/sign/actor/landingpage/icon-three.png") no-repeat center;
-          }
-          span {
-            font-size: 18px;
-
-            b {
-              font-size: 26px;
-            }
-          }
-        }
-      }
-    }
-  }
-  .content-two {
-    width: 100%;
-    background: #e5f3ff;
-
-    .two-title {
-      width: 950px;
-      height: 120px;
-      line-height: 120px;
-      font-size: 26px;
-      margin: 0 auto;
-      text-align: center;
-    }
-    .product-wp {
-      width: 800px;
-      margin: 0 auto;
-      padding-bottom: 60px;
-      ul {
-        float: left;
-        width: 100%;
-        li {
-          float:left;
-          width: 100%;
-          font-size: 16px;
-          color: #4c4c4c;
-          i {
-            color: #ff7f00;
-            font-size: 12px;
-            margin-right: 10px;
-          }
-        }
-      }
-      .registered {
-        float: left;
-        width: 100%;
-        margin-top: 50px;
-        span {
-          display: block;
-          margin: 0 auto;
-          width: 200px;
-          height: 46px;
-          color: #fff;
-          text-align: center;
-          line-height: 46px;
-          background-color: #ff0000;
-          font-size: 16px;
-          border-radius: 5px;
-          cursor: pointer;
-        }
-      }
-    }
-  }
-  .content-three {
-    width: 100%;
-    background: #e5f3ff;
-    .three-title {
-      width: 950px;
-      height: 120px;
-      line-height: 120px;
-      font-size: 26px;
-      margin: 0 auto;
-      text-align: center;
-    }
-    .content-wp {
-      width: 1080px;
-      padding-bottom: 40px;
-      margin: 0 auto;
-      img {
-        margin-top: 30px;
-      }
-      p {
-        float: left;
-        width: 100%;
-        text-align: center;
-        font-size: 20px;
-        color: #4c4c4c;
-        margin-bottom: 0;
-      }
-    }
-  }
-  .content-four {
-    width: 100%;
-    background-color: #d9edff;
-
-    .four-title {
-      width: 950px;
-      height: 120px;
-      line-height: 120px;
-      font-size: 26px;
-      margin: 0 auto;
-      text-align: center;
-    }
-    .content-wp {
-      width: 1080px;
-      height: 360px;
-      margin: 0 auto;
-      ul {
-        float: left;
-        width: 100%;
-        li {
-          float: left;
-          width: 50%;
-          text-align: center;
-          a {
-            display: inline-block;
-          }
-        }
-      }
-    }
-  }
-  .content-five {
-    width: 100%;
-    background: #d9edff;
-    padding-bottom: 80px;
-    .five-title {
-      width: 950px;
-      height: 120px;
-      color: #fff;
-      line-height: 120px;
-      font-size: 26px;
-      margin: 0 auto;
-      text-align: center;
-    }
-    .content-wp {
-      width: 1080px;
-      height: 300px;
-      margin: 0 auto;
-      padding: 50px 60px;
-      background-color: #fff;
-      .left {
-        width: 526px;
-        height: 302px;
-        float: left;
-        a {
-          display: block;
-          width: 526px;
-          height: 302px;
-          background: url("/activity/images/sign/actor/landingpage/five-media-new.png") no-repeat center;
-        }
-      }
-      .right {
-        float: right;
-        width: 520px;
-        height: 302px;
-
-        ul {
-          height: 100px;
-          clear: both;
-
-          li {
-            width: 33.3333%;
-            float: left;
-          }
-        }
-        .title {
-          height: 42px;
-          font-size: 20px;
-
-          span {
-            display: inline-block;
-            width: 90px;
-            text-align: center;
-            background-color: red;
-            margin-right: 10px;
-            color: #fff;
-          }
-        }
-        p {
-          font-size: 16px;
-          position: relative;
-
-          a {
-            position: absolute;
-            text-decoration: underline;
-            color: red;
-            right: 0;
-            bottom: 0;
-          }
-        }
-      }
-    }
-  }
-}
-
-.landing-phone-container {
-  text-align: center;
-  background: #fff;
-  display: none;
-  h3 {
-    text-align: center;
-    font-size: 16px;
-    color: #221815;
-    span {
-      position: relative;
-      i {
-        width: 60px;
-        height: 25px;
-        position: absolute;
-        top: 0;
-        &.left-icon {
-          left: -70px;
-          background: url("/activity/images/sign/actor/landingpage/left-circle.png") no-repeat center;
-          background-size: 100%;
-        }
-        &.right-icon {
-          right: -70px;
-          background: url("/activity/images/sign/actor/landingpage/right-circle.png") no-repeat center;
-          background-size: 100%;
-        }
-      }
-    }
-  }
-  .landing-phone-section-header {
-    float: left;
-    margin-top: 12px;
-    margin-bottom: 20px;
-    width: 100%;
-    font-size: $fontNormal;
-  }
-  .landing-phone-logo {
-    width: 100%;
-    height: 50px;
-
-    .landing-phone-logo-image {
-      float: left;
-      height: 25px;
-      margin-left: 15px;
-      margin-top: 13px;
-    }
-  }
-  .landing-phone-banner {
-    width: 100%;
-    height: auto;
-  }
-  .tuotian-newuser {
-    float: left;
-    width: 100%;
-    background: #e5f3ff;
-
-    .wp {
-      float: left;
-      width: 100%;
-      p {
-        float: left;
-        width: 100%;
-        font-size: 12px;
-        color: #4c4c4c;
-      }
-      .slideBox {
-        float: left;
-        width: 100%;
-        margin-bottom: 25px;
-        position: relative;
-        .bd {
-          float: left;
-          width: 100%;
-          height: 210px;
-          overflow: hidden;
-          ul {
-            float: left;
-            width: 100%;
-            li {
-              float: left;
-              width: 100%;
-              text-align: center;
-            }
-          }
-        }
-        .prev {
-          width: 24px;
-          height: 84px;
-          position: absolute;
-          top: 50%;
-          left: 20px;
-          margin-top: -42px;
-          background: url("/activity/images/sign/actor/landingpage/left-icon.png") no-repeat center;
-          background-size: 100%;
-        }
-        .next {
-          width: 24px;
-          height: 84px;
-          position: absolute;
-          top: 50%;
-          right: 20px;
-          margin-top: -42px;
-          background: url("/activity/images/sign/actor/landingpage/right-icon.png") no-repeat center;
-          background-size: 100%;
-        }
-      }
-    }
-  }
-  .tuotian-advantage {
-    float: left;
-    width: 100%;
-    background: #e5f3ff;
-
-    .tuotian-advantage-group {
-      margin-bottom: 25px;
-
-      .img-icon {
-        margin-right: 15px;
-        width: 63px;
-        height: 69px;
-      }
-      .landing-phone-span-left {
-        float: left;
-        width: 50%;
-        text-align: right;
-      }
-      .landing-phone-span-right {
-        float: left;
-        width: 50%;
-        text-align: left;
-        line-height: 25px;
-        margin-top: 10px;
-        font-size: $fontNormal;
-
-        span {
-          font-size: $fontUltraSmall;
-        }
-      }
-    }
-  }
-
-  .tuotian-products {
-    float: left;
-    width: 100%;
-    background: #d9edff;
-
-    .product-box-list {
-      width:96%;
-      padding: 0 2%;
-      padding-bottom: 25px;
-      ul {
-        float: left;
-        width:100%;
-        li {
-          float: left;
-          width: 100%;
-          text-align: center;
-          a{
-            display: inline-block;
-          }
-        }
-      }
-    }
-  }
-
-  .tuotian-rewards {
-    float: left;
-    width: 100%;
-    background: #e5f3ff;
-
-    .rewards-header {
-      float: left;
-      text-align: left;
-      margin-top: 0px;
-      margin-bottom: 25px;
-      margin-left: 20px;
-      margin-right: 20px;
-      font-size: $fontUltraSmall;
-      ul {
-        float: left;
-        width: 100%;
-        li {
-          float: left;
-          width: 100%;
-          font-size: 12px;
-          color: #4c4c4c;
-          i {
-            float: left;
-            color: #ff7f00;
-            font-size: 12px;
-            width: 8%;
-            padding-top: 5px;
-          }
-          span {
-            float: left;
-            width: 92%;
-          }
-        }
-      }
-    }
-  }
-
-  .tuotian-aboutus {
-    float: left;
-    width: 100%;
-    background: #d9edff;
-
-    .aboutus-content-container {
-      float: left;
-      background: white;
-      margin-top: 0px;
-      margin-left: 5%;
-      margin-right: 5%;
-      margin-bottom: 20px;
-
-      span {
-        float: left;
-        margin-left: 5%;
-        margin-bottom: 10px;
-        background: red;
-        color: white;
-        font-size: $fontUltraSmall;
-        padding-left: 5px;
-        padding-right: 5px;
-        height: 25px;
-      }
-      p {
-        float: left;
-        margin-left: 5%;
-        margin-right: 5%;
-        text-align: left;
-        font-size: $fontUltraSmall;
-      }
-    }
-    .landing-phone-aboutus-header {
-      margin-top: 25px;
-      margin-left: 5%;
-      margin-right: 5%;
-      margin-bottom: 10px;
-      width: 80%;
-      height: auto;
-    }
-  }
-  .tuotian-register {
-    float: left;
-    width: 100%;
-    background: #d9edff;
-
-    input[id=btn-register-now] {
+    dd {
       width: 50%;
-      margin-bottom: 20px;
-      font-size: $fontUltraSmall;
-      color: white;
-      background: red;
-      border-color: white;
+      float: left;
+      font-size: 30px;
+      text-align: center;
+      i {
+        font-size: 60px;
+      }
+      em {
+        color: #a2a2a2;
+        font-size: 16px;
+      }
+    }
+  }
+
+  .landing-top-banner {
+    position: relative;
+    height: 350px;
+    background: url("/activity/images/sign/actor/landingpage/newbie-banner.png") center top no-repeat;
+
+    .img-app-banner {
+      width: 100%;
+      height: 100%;
+      display: none;
+    }
+  }
+
+  .newbie-step-one {
+    color: #ff473c;
+    margin-top: 30px;
+    padding-bottom: 40px;
+    .image-title {
+      background: url("/activity/images/sign/actor/landingpage/newbie-step1-title.png") center top no-repeat;
+      height: 40px;
+    }
+  }
+  .newbie-step-two {
+    position: relative;
+    background-color: #362d50;
+    padding-bottom: 30px;
+    padding-top: 30px;
+
+    .image-decoration-bg-app-l {
+      display: none;
+    }
+    .image-decoration-bg-app-r {
+      display: none;
+    }
+    .image-decoration-bg {
+      width: 100%;
+      height: 184px;
+      position: absolute;
+      background: url("/activity/images/sign/actor/landingpage/newbie-decoration-bg.png") center top no-repeat;
+      top: -60px;
     }
 
-    .tuotian-register-container {
-      float: left;
-      text-align: left;
-      background: white;
-      margin-left: 5%;
-      margin-right: 5%;
-      margin-bottom: 25px;
-      margin-top: 0px;
-      padding: 5%;
-      width: 80%;
-      font-size: $fontUltraSmall;
-      .reg-list {
-        float: left;
-        width: 100%;
-        .height{
-          clear:both;
-          color: #f71010;
+    .image-title {
+      background: url("/activity/images/sign/actor/landingpage/newbie-step2-title.png") center top no-repeat;
+      height: 40px;
+    }
+
+    .image-red-envelope {
+      background: url("/activity/images/sign/actor/landingpage/newbie-step2-red-envelope.png") center top no-repeat;
+      height: 173px;
+      margin-top: 20px;
+      margin-bottom: 30px;
+    }
+
+    .btn-normal {
+      color: #803c04 !important;
+      background: #ffe500;
+      border: #ffe500 1px solid;
+      box-shadow: 0px 5px 0px #ffad08;
+    }
+  }
+  .newbie-step-three {
+    background-color: #ffffff;
+    padding-bottom: 40px;
+    padding-top: 30px;
+
+    .image-title {
+      background: url("/activity/images/sign/actor/landingpage/newbie-step3-title.png") center top no-repeat;
+      height: 40px;
+    }
+
+    .subtitle {
+      margin-top: 25px;
+      .subtitle-container {
+        display: inline-block;
+        background-color: #ffe500;
+        padding: 5px 40px 5px 40px;
+        border-top-left-radius: 20px;
+        border-bottom-right-radius: 20px;
+        i {
+          font-size: 20px;
+          color: #803c04;
         }
-        .int-model {
-          float: left;
-          width: 100%;
-          margin-bottom: 20px;
-          .captcha{
-            width: 40%;
-          }
-          .appCaptcha {
-            width: 40%;
-          }
+      }
+    }
+  }
+
+  .newbie-step-four {
+    position: relative;
+    background-color: #362d50;
+    padding-bottom: 30px;
+    padding-top: 30px;
+
+    .image-decoration-bg-app-l {
+      display: none;
+    }
+    .image-decoration-bg-app-r {
+      display: none;
+    }
+    .image-decoration-bg {
+      width: 100%;
+      height: 184px;
+      position: absolute;
+      background: url("/activity/images/sign/actor/landingpage/newbie-decoration-bg.png") center top no-repeat;
+      top: -60px;
+    }
+
+    .image-title {
+      background: url("/activity/images/sign/actor/landingpage/newbie-step4-title.png") center top no-repeat;
+      height: 40px;
+    }
+
+    .subtitle {
+      margin-top: 25px;
+      .subtitle-container {
+        display: inline-block;
+        background-color: #ffe500;
+        padding: 5px 40px 5px 40px;
+        border-top-left-radius: 20px;
+        border-bottom-right-radius: 20px;
+        i {
+          font-size: 20px;
+          color: #803c04;
         }
       }
-      input {
-        width: 95%;
-        border-color: $landingPhoneColorGray;
-      }
+    }
 
-      input[id=appCaptcha] {
-        float: left;
-        width: 40%;
-        margin-bottom: 0px;
-      }
-      .image-captchaC {
-        width: 25%;
-        height: 30px;
-        margin-left: 5px;
-        margin-right: 5px;
-      }
-      span[id=img-changeC] {
-        float: left;
-        width: 25%;
-        font-size: $fontUltraSmall;
-        border-color: white;
-      }
-      .captcha {
-        float: left;
-        width: 60%;
-        margin-bottom: 0px;
-        margin-right: 5px;
-      }
-      .fetch-captchaC {
-        float: left;
-        width: 40%;
-        height: 32px;
-        padding: 8px;
-        font-size: $fontUltraSmall;
-        color: white;
-        background: red;
-        border-color: white;
-        border-radius: 15px;
-        -webkit-border-radius: 15px;
-      }
+    .image-coupon {
+      margin-top: 20px;
+      background: url("/activity/images/sign/actor/landingpage/newbie-step4-coupon.png") center top no-repeat;
+      height: 153px;
+    }
 
-      input[id=btn-register] {
-        width: 60%;
-        margin-left: 20%;
-        font-size: $fontUltraSmall;
-        margin-top: 10px;
-        margin-bottom: 3px;
-        color: white;
-        background: red;
-        border-color: white;
-      }
+    .image-steps {
+      margin-top: 30px;
+      margin-bottom: 30px;
 
-      label[id*=error] {
+      .arrow {
+        margin-left: 15px;
+        margin-right: 15px;
+      }
+    }
+    .btn-normal {
+      color: #803c04 !important;
+      background: #ffe500;
+      border: #ffe500 1px solid;
+      box-shadow: 0px 5px 0px #ffad08;
+    }
+  }
+
+  .newbie-step-five {
+    padding-top: 30px;
+    padding-bottom: 20px;
+    text-align: center;
+
+    .newbie-step-five-dl {
+      color: #525252;
+      line-height: 31px;
+
+      dt {
+        font-size: 24px;
+        margin-bottom: 40px;
+      }
+      dd {
+        width: 33%;
         float: left;
-        width: 100%;
-        margin-top: -20px;
-      }
-
-      .check-labelC {
-        width: 100%;
+        font-size: 18px;
+        color: #525252;
         text-align: center;
-        font-size: $fontUltraSmaller;
 
+        img {
+          margin-bottom: 20px;
+        }
+
+        p {
+          margin-top: 10px;
+          color: #808080;
+          font-size: 14px;
+          line-height: 22px;
+        }
+      }
+    }
+  }
+
+  .newbie-step-six {
+    width: 100%;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    background: #362d50;
+    text-align: center;
+
+    .newbie-step-six-box {
+      width: 50%;
+      min-width: 800px;
+      display: inline-block;
+
+      p {
+        text-align: left;
+        color: #ffe500;
+        font-size: 14px;
+        line-height: 20px;
+        margin: 10px 0;
+        font-weight: lighter;
+      }
+    }
+  }
+
+  .newbie-step-register {
+    position: absolute;
+    left: 0;
+    top: 90px;
+    padding-top: 12px;
+    width: 100%;
+    min-width: 1200px;
+    height: 350px;
+    text-align: right;
+
+    .register-box {
+      position: absolute;
+      padding: 25px 25px 25px 25px;
+      left: 900px;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 5px;
+      height: auto;
+      overflow: auto;
+
+      .refer-person-info {
+        width: 300px;
+        text-align: center;
+        margin-top: 0px;
+        margin-bottom: 3px;
+        font-size: 14px;
+        line-height: 14px;
         span {
           color: red;
         }
       }
-      .agree-last {
-        text-align: center;
-      }
-    }
-  }
-}
-
-.landing-container-app {
-  background: #fdd901 url("/activity/images/landing-app/bg-app.png") no-repeat left top;
-  background-size: 100%;
-  height:auto;
-  overflow: auto;
-  padding-top:745px;
-  .register-box {
-    margin: 50px 150px;
-    ul {
-      position: relative;
-      li {
-        min-height:16px;
-        &.bg-col {
-          input {
-            background: #fff;
-            height:40px;
-            border:1px solid #ccc;
-            width: 93%;
-            border-radius: 24px;
-            padding:0 0 0 7%;
-            &.appCaptcha {
-              width: 58%;
-            }
-          }
-        }
-        &.bg-col-captcha {
-          background: #fff;
-          height:40px;
-          border:1px solid #ccc;
-          border-radius: 24px;
-          position: relative;
-          input {
-            width: 50%;
-            height: 40px;
-            padding: 0 0 0 7%;
-            border: 0;
-            border-radius: 20px;
-          }
-          button {
-            padding: 0;
-            background: transparent;
-            border: 0;
-            float: right;
-            width: 36%;
-            height: 36px;
-            font-size: 15px;
-            color: #ff6400;
-            border-left: 1px solid #a09385;
-            margin-top: 2px;
-            &[disabled="disabled"] {
-              color: #ccc;
-            }
-          }
-          .decorate-icon {
-            position: absolute;
-            display: inline-block;
-            width:40px;
-            height:35px;
-            right: -16px;
-            bottom: -15px;
-            background: url(/activity/images/landing-app/hb.png) left top no-repeat;
-            background-size: 100%;
-          }
-        }
-        &.agree-last {
-          display: none;
-        }
-        &.mobile-agreement {
-          color: #de3936;
-        }
-      .register-user {
-        width:100%;
-        height:90px;
-        background: url(/activity/images/landing-app/button.png) center top no-repeat;
-        border:0;
-        text-align: center;
-      }
-      }
-
-    }
-  }
-  &.landing-container-bus {
-    background: #fdd901 url("/activity/images/landing-app/bg-bus.png") no-repeat left top;
-    background-size: 100%;
-    .register-box {
-      ul li {
-        .register-user {
-          background: url(/activity/images/landing-app/button2.png) center top no-repeat;
-          background-size: 100%;
-        }
-      }
-    }
-  }
-  &.landing-container-game {
-    background: #fdd901 url("/activity/images/landing-app/bg-game.png") no-repeat left top;
-    background-size: 100%;
-    .register-box {
-      ul li {
-        .register-user {
-          background: url(/activity/images/landing-app/button2.png) center top no-repeat;
-          background-size: 100%;
-        }
-      }
-    }
-  }
-  &.landing-container-tour {
-    background: #fdd901 url("/activity/images/landing-app/bg-tour-20160817.png") no-repeat left top;
-    background-size: 100%;
-    .register-box {
-      ul li {
-        .register-user {
-          background: url(/activity/images/landing-app/button2.png) center top no-repeat;
-          background-size: 100%;
-        }
-      }
-    }
-
-  }
-  .notice-weixin {
-    text-align: center;
-    img {
-      display: block;
-      width: 40%;
-      margin: 10px auto;
-    }
-    span {
-      color: #de3936;
-    }
-  }
-  .my-advantage {
-    margin-top:50px;
-    text-align: center;
-    .adv-title img {
-      width:100%;
-    }
-    img.advantage {
-      width:94%;
-      margin:20px auto;
-    }
-    .info-text {
-      background: #fff4b5;
-      padding: 15px 10px;
-      color: #726767;
-      font-size: 13px;
-      margin: 15px;
-      border-radius: 8px;
-      text-align: left;
-    }
-    .contact-tel {
-      background: #de3936;
-      color: #fff;
-      font-size:17px;
-      text-align: center;
-      padding:5px;
-      a {
-        color: #fff;
-      }
-    }
-  }
-
-}
-
-.pop-win-app {
-  position: relative;
-  img {
-    width:100%;
-  }
-  .app-close {
-    position: absolute;
-    right: 10px;
-    top: -2px;
-    width:30px;
-    height:30px;
-    cursor: pointer;
-  }
-  .app-button {
-    position: absolute;
-    width: 190px;
-    height: 40px;
-    bottom: 33px;
-    left: 50px;
-    cursor: pointer;
-
-  }
-}
-.layui-layer-nobg {
-  box-shadow:none!important;
-}
-
-@media screen and (max-width: 700px) {
-  body {
-    background: #d9edff;
-  }
-  .landing-container {
-    display: none;
-  }
-  .mobile-page-register {
-    height: 560px;
-  }
-  .landing-top {
-    background: none;
-    height: auto;
-    .landing-inner {
-      width: 100%;
-      height: auto;
-    }
-    .register-box {
-      width: 90%;
-      right: auto;
-      left: 5%;
-      top: 0;
-      border-radius: 0;
-      padding-bottom: 30px;
-      margin-top:0;
-      height: 376px;
-      overflow: hidden;
       .register-user-form {
-        box-sizing: border-box;
-        width: 100%;
-        padding: 20px;
-      }
-      .register-step-one {
-        margin-top: 0;
-      }
-      ul.reg-list li {
-        input[type="text"], input[type="password"] {
-          padding: 15px;
-          box-sizing: border-box;
-        }
-        .captcha-tag {
-          width: 100%;
-        }
-        input.captcha,
-        input.appCaptcha {
-          width: 40% !important;
-        }
-        .long {
-          width: 100%;
-        }
-        i {
-          display: none;
-        }
-        .fetch-captcha {
-          height: 40px !important;
-          padding: 10px 26px !important;
-          border-radius: 25px !important;
-          font-size: 13px !important;
-          width: auto !important;
-          position: relative !important;
-        }
-        .register-user {
-          padding: 10px;
-          margin: -10px auto 10px auto;
-        }
-        &.mobile-agreement {
-          display: block;
-        }
-        &.agree-last {
-          display: none;
-        }
-      }
-    }
-  }
-  .landing-phone-container {
-    display: block;
-
-  }
-  .footer-container {
-    display: none;
-  }
-  .landing-container-app {
-    padding-top: 425px;
-    .register-box {
-      margin: 0 45px;
-      ul {
         position: relative;
+        width: 300px;
+      }
+
+      ul.reg-list {
+
+        .newbie-register-ic-mobile {
+          width: 23px;
+          height: 23px;
+          background: url("/activity/images/sign/actor/landingpage/newbie-icon-phone.png") center left no-repeat;
+        }
+
+        .newbie-register-ic-password {
+          width: 23px;
+          height: 23px;
+          background: url("/activity/images/sign/actor/landingpage/newbie-icon-pwd.png") center left no-repeat;
+        }
+
+        .newbie-register-ic-img-captcha {
+          width: 23px;
+          height: 23px;
+          margin-top: 3px;
+          background: url("/activity/images/sign/actor/landingpage/newbie-icon-img-captcha.png") center left no-repeat;
+        }
+
+        .newbie-register-ic-captcha {
+          width: 23px;
+          height: 18px;
+          margin-top: 3px;
+          background: url("/activity/images/sign/actor/landingpage/newbie-icon-captcha.png") center left no-repeat;
+        }
+
+        font-size: 10px;
+        .err-height {
+          height: 15px;
+          top: -2px;
+        }
+        .appCaptchaErr {
+          font-size: 10px;
+          color: #f71010;
+          padding: 0;
+          vertical-align: middle;
+        }
         li {
-          min-height: 16px;
-          &.bg-col {
-            input {
-              background: #fff;
-              height: 40px;
-              border: 1px solid #ccc;
-              width: 93%;
-              border-radius: 24px;
-              padding: 0 0 0 7%;
-              &.appCaptcha {
-                width: 58%;
+          clear: both;
+          position: relative;
+
+          .image-captcha {
+            margin-top: 3px;
+            margin-left: 3px;
+            margin-right: 3px;
+          }
+
+          .img-change {
+            cursor: pointer;
+            font-size: 12px;
+            color: #808080;
+          }
+          i {
+            display: inline-block;
+            position: absolute;
+            left: 10px;
+            top: 4px;
+            z-index: 20;
+            filter: alpha(opacity=80);
+            -moz-opacity: 0.8;
+          }
+
+          .captcha-tag {
+            position: relative;
+            display: inline-block;
+            width: 90%;
+
+            .fetch-captcha {
+              width: 100px;
+              height: 30px;
+              padding-left: 18px;
+              letter-spacing: 0;
+              position: absolute;
+              left: 190px;
+              top: 0px;
+              font-size: 12px;
+              border-radius: 15px;
+              background: #ff0000;
+              &:hover {
+                color: #fff;
               }
             }
           }
+          .input-width {
+            width: 247px;
+          }
+          input[type="text"], input[type="password"] {
+            color: #999;
+            border: #e6e6e6 1px solid;
+            padding: 5px 2px 5px 40px;
+            background-color: #fff;
+            &.appCaptcha {
+              width: 110px;
+            }
+            &.captcha {
+              width: 130px;
+            }
+
+          }
+          .agreement {
+            display: inline-block;
+            width: 300px;
+          }
+          input.valid + .agreement + label.error {
+            &:before {
+              content: "\f058";
+              color: #6bc21e;
+            }
+          }
+          &.agree-register-protocol {
+            position: relative;
+            margin-left: 0;
+
+            .check-label {
+              position: absolute;
+              top: 1px;
+              left: 20px;
+              font-size: 14px;
+              color: #4c4c4c;
+            }
+            .show-agreement {
+              font-size: 14px;
+              color: #ff635a;
+            }
+            .agreement-check {
+              margin-right: 280px;
+              margin-top: 7px;
+            }
+          }
+          &.mobile-agreement {
+            display: none;
+          }
+
           .register-user {
-            width:100%;
-            height:44px;
-            //background: url(/activity/images/landing-app/button.png) left top no-repeat;
-            background-size: 100%;
-            border:0;
+            width: 100%;
+            background: #ff635a;
+            border-radius: 3px;
+            margin-top: 3px;
+            text-align: center;
+            font-size: 16px;
+            color: #fff;
+            border: 0;
+            cursor: pointer;
+          }
+        }
+      }
+      label.error {
+        display: block;
+      }
+    }
+  }
+}
+
+//手机屏幕适配
+@media screen and (max-width: 700px) {
+
+  .landing-container {
+
+    .btn-normal {
+      background: #ff635a;
+      font-size: 15px;
+      width: 150px;
+      height: 15px;
+      box-shadow: 0px 3px 0px #ff473c;
+      border-radius: 25px;
+      padding: 10px 30px 10px 30px;
+    }
+
+    .new-user-list {
+      color: #ff473c;
+      line-height: 15px;
+      margin-bottom: 20px;
+
+      dt {
+        font-size: 15px;
+        margin-top: 15px;
+        margin-bottom: 20px;
+      }
+      dd {
+        width: 50%;
+        float: left;
+        font-size: 15px;
+        text-align: center;
+        i {
+          font-size: 30px;
+        }
+        em {
+          line-height: 20px;
+          color: #a2a2a2;
+          font-size: 11px;
+        }
+      }
+    }
+
+    .landing-header-nav {
+      width: 100%;
+      height: 50px;
+      background: url("/activity/images/icons/logo.png") left center no-repeat;
+      background-size: 180px 25px;
+      background-position-x: 15px;
+      a {
+        display: none;
+      }
+    }
+
+    .landing-top-banner {
+      height: auto;
+      .img-app-banner {
+        display: inline-block;
+      }
+    }
+
+    .newbie-step-one {
+      color: #ff473c;
+      padding-top: -10px;
+      padding-bottom: 30px;
+      .image-title {
+        background: url("/activity/images/sign/actor/landingpage/newbie-step1-title-app.png") center top no-repeat;
+        height: 50px;
+        background-size: auto 50px;
+      }
+    }
+
+    .newbie-step-two {
+      padding-top: 20px;
+      padding-bottom: 20px;
+      .image-title {
+        background: url("/activity/images/sign/actor/landingpage/newbie-step2-title-app.png") center top no-repeat;
+        height: 50px;
+        background-size: auto 50px;
+      }
+
+      .image-decoration-bg {
+        display: none;
+      }
+
+      .image-decoration-bg-app-l {
+        display: block;
+        width: 110px;
+        height: 116px;
+        position: absolute;
+        left: 0;
+        background: url("/activity/images/sign/actor/landingpage/newbie-decoration-bg-app-l.png");
+        background-size: auto 116px;
+        top: -20px;
+
+      }
+      .image-decoration-bg-app-r {
+        display: block;
+        width: 106px;
+        height: 145px;
+        position: absolute;
+        right: 0;
+        background: url("/activity/images/sign/actor/landingpage/newbie-decoration-bg-app-r.png");
+        background-size: auto 145px;
+        top: -20px;
+      }
+
+      .image-red-envelope {
+        margin-top: 15px;
+        margin-bottom: 20px;
+        background: url("/activity/images/sign/actor/landingpage/newbie-step2-red-envelope.png") center top no-repeat;
+        height: 114px;
+        background-size: auto 114px;
+      }
+    }
+
+    .newbie-step-three {
+      padding-top: 20px;
+      padding-bottom: 20px;
+
+      .image-title {
+        background: url("/activity/images/sign/actor/landingpage/newbie-step3-title-app.png") center top no-repeat;
+        height: 50px;
+        background-size: auto 50px;
+      }
+
+      .subtitle {
+        height: 80px;
+        margin-top: 15px;
+
+        .subtitle-container {
+          margin-left: 25px;
+          margin-right: 25px;
+          padding: 5px 30px 5px 30px;
+          border-top-left-radius: 20px;
+          border-bottom-right-radius: 20px;
+          i {
+            line-height: 15px;
+            font-size: 15px;
+          }
+        }
+      }
+    }
+
+    .newbie-step-four {
+      padding-bottom: 20px;
+      padding-top: 15px;
+
+      .image-decoration-bg {
+        display: none;
+      }
+
+      .image-decoration-bg-app-l {
+        display: block;
+        width: 110px;
+        height: 116px;
+        position: absolute;
+        left: 0;
+        background: url("/activity/images/sign/actor/landingpage/newbie-decoration-bg-app-l.png");
+        background-size: auto 116px;
+        top: -20px;
+
+      }
+      .image-decoration-bg-app-r {
+        display: block;
+        width: 106px;
+        height: 145px;
+        position: absolute;
+        right: 0;
+        background: url("/activity/images/sign/actor/landingpage/newbie-decoration-bg-app-r.png");
+        background-size: auto 145px;
+        top: -20px;
+      }
+
+      .image-title {
+        background: url("/activity/images/sign/actor/landingpage/newbie-step4-title-app.png") center top no-repeat;
+        height: 50px;
+        background-size: auto 50px;
+      }
+
+      .subtitle {
+        margin-top: 25px;
+        z-index: -1;
+        .subtitle-container {
+          margin-left: 25px;
+          margin-right: 25px;
+          padding: 5px 30px 5px 30px;
+          border-top-left-radius: 20px;
+          border-bottom-right-radius: 20px;
+          i {
+            line-height: 15px;
+            font-size: 15px;
           }
         }
       }
 
+      .image-coupon {
+        margin-top: 20px;
+        background: url("/activity/images/sign/actor/landingpage/newbie-step4-coupon.png") center top no-repeat;
+        height: 132px;
+        background-size: auto 132px;
+      }
+
+      .image-steps {
+        margin-bottom: 30px;
+
+        img {
+          margin-top: 15px;
+          width: 70%;
+        }
+        .arrow {
+          display: none;
+        }
+      }
     }
-  }
-  .landing-container-bus, .landing-container-game, .landing-container-tour {
-    padding-top: 460px;
-    .my-advantage {
-      margin-top: 15px;
-      img.advantage {
-        width: 100%;
-        margin: 10px auto;
+
+    .newbie-step-five {
+      padding-top: 20px;
+      padding-bottom: 5px;
+
+      .newbie-step-five-dl {
+        line-height: 31px;
+
+        dt {
+          font-size: 17px;
+          margin-bottom: 20px;
+        }
+        dd {
+          width: 100%;
+          margin-bottom: 15px;
+
+          img {
+            margin-bottom: 15px;
+          }
+
+          p {
+            margin-top: 10px;
+            line-height: 22px;
+          }
+        }
+      }
+    }
+
+    .newbie-step-six {
+      padding-top: 15px;
+      padding-bottom: 1px;
+
+      .newbie-step-six-box {
+        width: 92%;
+        min-width: 20px;
+        padding-left: 15px;
+        padding-right: 15px;
+        display: inline-block;
+      }
+    }
+
+    .newbie-step-register {
+      position: static;
+      display: block;
+      width: 100%;
+      left: 0;
+      top: 0;
+      padding-top: 0;
+      min-width: 320px;
+      height: auto;
+      text-align: center;
+      background: #362d50;
+
+      .register-box {
+        position: static;
+        display: inline-block;
+        padding: 25px 0px 25px 0px;
+        background: #362d50;
+        width: 300px;
+
+        .refer-person-info {
+          margin-bottom: 15px;
+          color: #ff635a;
+          span {
+            color: #ffe500;
+          }
+        }
+
+        ul.reg-list {
+          .reg-icon {
+            display: none;
+          }
+
+          li.reg-row-container {
+            background: white;
+            border: solid 2px #ffe500;
+            border-radius: 5px;
+
+            input {
+              border: rgba(0, 0, 0, 0) 1px solid;
+              padding: 7px 2px 7px 15px;
+              border-radius: 5px;
+
+              &.appCaptcha {
+                width: 130px;
+              }
+            }
+          }
+
+          .fetch-captcha {
+            margin-top: 2px;
+          }
+          .agree-register-protocol {
+            .check-label {
+              color: white !important;
+            }
+          }
+        }
       }
     }
   }
-}
 
-@media screen and (max-width: 420px) {
-  .landing-container-app {
-    padding-top: 245px;
-  }
-
-  .landing-container-app, .landing-container-bus, .landing-container-game, .landing-container-tour {
-    padding-top: 285px;
+  .footer-container {
+    display: none;
   }
 }
 
-@media screen and (max-width: 380px) {
-  .landing-container-app {
-    padding-top: 245px;
-  }
 
-  .landing-container-app, .landing-container-bus, .landing-container-game, .landing-container-tour {
-    padding-top: 265px;
-  }
-}
 
-@media screen and (max-width: 350px) {
-  .landing-container-app {
-    padding-top:200px;
-    .register-box {
-      margin: 0 35px;
-      ul li.bg-col-captcha {
-        input {  width:125px;  }
-        button {  width:100px;  }
-      }
-    }
-    .my-advantage {
-      margin-top: 10px;
-    }
-  }
-  .landing-container-bus, .landing-container-game, .landing-container-tour {
-    padding-top: 217px;
-  }
-
-}
