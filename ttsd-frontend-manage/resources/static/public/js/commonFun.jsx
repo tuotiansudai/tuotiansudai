@@ -16,6 +16,18 @@ function removeElement(element) {
     (element && element.nextElementSibling) && element.parentElement.removeChild(element.nextElementSibling);
 }
 
+var isHaveError ={
+    yes(errorMsg,showErrorAfter) {
+        globalFun.addClass(this,'error');
+        showErrorAfter && createElement(this,errorMsg);
+    },
+    no(showErrorAfter) {
+        globalFun.removeClass(this,'error');
+        globalFun.addClass(this,'valid');
+        showErrorAfter && removeElement(this);
+    }
+};
+
 /* init radio style */
 function initRadio($radio,$radioLabel) {
     let numRadio=$radio.length;
@@ -252,6 +264,7 @@ let decrypt={
 
 exports.createElement = createElement;
 exports.removeElement = removeElement;
+exports.isHaveError = isHaveError;
 exports.refreshCaptcha = refreshCaptcha;
 exports.initRadio = initRadio;
 exports.IdentityCodeValid = IdentityCodeValid;

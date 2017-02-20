@@ -302,8 +302,34 @@ require.ensure([],function() {
         layer.closeAll();
     });
 
-
     let turnOffPassValidator = new ValidatorForm();
+    //免密投资验证图形码
+    turnOffPassValidator.newStrategy(turnOffNoPasswordInvestForm.captcha,'isNoPasswordCaptchaVerify',function(errorMsg,showErrorAfter) {
+        var getResult='',
+            that=this,
+            _arguments=arguments;
+        let turnOffForm=globalFun.$('#turnOffNoPasswordInvestForm');
+        var _phone = turnOffForm.mobile.value,
+            _captcha=turnOffForm.captcha.value;
+        commonFun.useAjax({
+            type:'GET',
+            async: false,
+            url:`/no-password-invest/mobile/${_phone}/captcha/${_captcha}/verify`
+        },function(response) {
+            if(response.data.status) {
+                // 如果为true说明手机已存在
+                getResult='';
+                commonFun.isHaveError.no.apply(that,_arguments);
+
+            }
+            else {
+                getResult=errorMsg;
+                commonFun.isHaveError.yes.apply(that,_arguments);
+            }
+        });
+        return getResult;
+    });
+
     turnOffPassValidator.add(turnOffNoPasswordInvestForm.captcha, [{
         strategy: 'isNonEmpty',
         errorMsg: '请输入验证码'
@@ -360,6 +386,29 @@ require.ensure([],function() {
 
     //修改密码表单验证
     let passValidator = new ValidatorForm();
+    //验证原密码是否存在
+    passValidator.newStrategy(changePasswordForm.originalPassword,'isNotExistPassword',function(errorMsg,showErrorAfter) {
+        var getResult='',
+            that=this,
+            _arguments=arguments;
+        commonFun.useAjax({
+            type:'GET',
+            async: false,
+            url:'/personal-info/password/'+this.value+'/is-exist'
+        },function(response) {
+            if(response.data.status) {
+                // 如果为true说明密码存在有效
+                getResult='';
+                commonFun.isHaveError.no.apply(that,_arguments);
+
+            }
+            else {
+                getResult=errorMsg;
+                commonFun.isHaveError.yes.apply(that,_arguments);
+            }
+        });
+        return getResult;
+    });
     passValidator.add(changePasswordForm.originalPassword, [{
         strategy: 'isNonEmpty',
         errorMsg: '请输入原密码'

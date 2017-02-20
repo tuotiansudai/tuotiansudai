@@ -22,7 +22,8 @@ function forgetPassword() {
     let validator = new ValidatorForm();
     validator.newStrategy(retrieveForm.mobile,'isMobileRetrieveExist',function(errorMsg,showErrorAfter) {
         var getResult='',
-            that=this;
+            that=this,
+            _arguments=arguments;
        commonFun.useAjax({
             type:'GET',
             async: false,
@@ -31,18 +32,15 @@ function forgetPassword() {
             if(response.data.status) {
                 // 如果为true说明手机已存在
                 getResult='';
-                globalFun.removeClass(that,'error');
-                globalFun.addClass(that,'valid');
-                showErrorAfter && globalFun.removeElement(that);
+                commonFun.isHaveError.no.apply(that,_arguments);
+
             }
             else {
                 getResult=errorMsg;
-                globalFun.addClass(that,'error');
-                showErrorAfter && globalFun.createElement(that,errorMsg);
+                commonFun.isHaveError.yes.apply(that,_arguments);
             }
         });
         return getResult;
-
     });
 
     validator.add(retrieveForm.mobile, [{
