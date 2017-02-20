@@ -21,7 +21,7 @@ require.ensure(['publicJs/load_echarts'],function() {
     var data = [{ name: '可用金额', value: pydata.balance },
         { name: '待收投资本金', value: pydata.collectingPrincipal },
         { name: '待收预期收益', value: pydata.collectingInterest}];
-    var option = loadEcharts.optionCategory.PieOption(data),
+    var option = loadEcharts.ChartOptionTemplates.PieOption(data),
         opt = loadEcharts.ChartConfig('ReportShow', option);
     loadEcharts.RenderChart(opt);
 },'myAccountEcharts');

@@ -35,14 +35,17 @@ var MyChartsObject={
         window.onresize = option.option.resize;
 
     },
-    optionCategory:{
-        //一般共有的选项
+    // 各种图表类型的配置初始化
+    ChartOptionTemplates:{
+
+        ////通用的图表基本配置
         CommonOption: {
             tooltip: {
                 trigger: 'axis'
+                //tooltip触发方式:axis以X轴线触发,item以每一个数据项触发
             },
             toolbox: {
-                show : false,
+                show : false, //是否显示工具栏
                 feature : {
                     mark : {show: true},
                     dataView : {show: true, readOnly: false},
@@ -101,6 +104,7 @@ var MyChartsObject={
             var PieOpt=$.extend({}, this.CommonOption, thisOption);
             return PieOpt;
         },
+        // 柱状图选项
         BarOption:function(data) {
             var thisOption = {
                 backgroundColor:'#f7f7f7',
