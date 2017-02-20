@@ -101,18 +101,3 @@ require.ensure(['publicJs/load_echarts','publicJs/commonFun'],function() {
     });
 
 },'operationEcharts');
-
-
-
-
-// // require(['jquery','template','load-swiper','layerWrapper','load_echarts','pagination','fancybox'],
-// //     function ($,tpl,loadSwiper,layer,loadEcharts) {
-// //     $(function () {
-// //
-// //
-// //
-// //
-// //
-// //
-// //     });
-// // });

@@ -13,7 +13,9 @@ module.exports = {
     output: {
         path: path.join(publicPath, 'js/dllplugins'),
         filename: '[name].dll.js',
-        library: '[name]_library'
+        library: '[name]_library',
+        libraryTarget: 'umd',
+        umdNamedDefine: true
     },
     plugins: [
         new webpack.ProvidePlugin({

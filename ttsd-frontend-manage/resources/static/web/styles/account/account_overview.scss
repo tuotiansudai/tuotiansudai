@@ -37,7 +37,7 @@ $CK1:#ffac2a;
       height: 416px;
       border-radius: 5px;
       overflow: hidden;
-      background: url("/images/myaccount/sign-bg.png") no-repeat;
+      background: url("../../images/myaccount/sign-bg.png") no-repeat;
       .sign-top {
         float: left;
         width: 100%;
@@ -49,11 +49,10 @@ $CK1:#ffac2a;
           position: absolute;
           top: 15px;
           right: 15px;
-          width: 15px;
-          height: 15px;
-          background: url("../../images/sign/bean-bg.png") no-repeat;
-          background-position: 0px -23px;
-
+          width: 24px;
+          height: 24px;
+          background: url("../../images/myaccount/bean-bg.png") no-repeat;
+          background-size: 100%;
           cursor: pointer;
         }
         .sign-text{
@@ -77,32 +76,12 @@ $CK1:#ffac2a;
             color: #9a3528;
             text-align: center;
             margin-bottom: 0;
-          }
-          &.tomorrow-text {
-            font-size: 14px;
-            color: #4c4c4c;
-          }
-          &.img-beans {
-            position: relative;
-            .beans-img {
-              width:100px;
-              height:106px;
-              display: inline-block;
-              background: url("../../images/sign/sign-beans.png") left top no-repeat;
-            }
-            .add-dou {
-              position: absolute;
-              left: 50%;
-              margin-left: -30px;
-              bottom: 0;
-              width: 40px;
-              height: 30px;
-              padding-right: 20px;
+            &.sign-point {
+              margin-top: 10px;
               font-size: 20px;
-              line-height: 25px;
-              color: #fff;
-              text-align: center;
-              background: url("../../images/sign/add-bean.png") no-repeat right;
+              span{
+                font-size:36px;
+              }
             }
             &.tomorrow-text {
               margin-bottom:20px;
@@ -112,66 +91,29 @@ $CK1:#ffac2a;
             &.intro-text {
               font-size: 14px;
             }
-            p {
-              margin-bottom: 0;
-              line-height: 25px;
-
-              &.day-name {
-                font-size: 12px;
-                color: #7f7f7f;
-              }
-              &.day-beans {
-                font-size: 14px;
-                color: #4d4d4d;
-
-                span {
-                  float: left;
-                  width: 20px;
-                  text-align: right;
-                  line-height: 15px;
-                  margin-left: 10px;
-                }
-                .bean-img {
-                  float: left;
-                  width: 15px;
-                  height: 15px;
-                  background: url("../../images/sign/bean-bg.png") no-repeat;
-                  background-position: 0 0;
-                  margin-top: 2px;
+            &.sign-reward{
+              margin-top:10px;
+              a{
+                display: inline-block;
+                width: 180px;
+                height: 40px;
+                line-height: 40px;
+                text-align: center;
+                font-size: 16px;
+                color: #9a3528;
+                background: #fceb5e;
+                border-radius: 40px;
+                box-shadow: 0 4px 0 #eeb33d;
+                position: relative;
+                &:hover {
+                  top: 2px;
+                  box-shadow: 0 2px 0 #eeb33d;
                 }
               }
             }
           }
         }
       }
-    }
-  }
-  .error-tip{
-    float:left;
-    width:300px;
-    padding:20px 0;
-    text-align:center;
-    display:none;
-    h3{
-      font-size:20px;
-      text-align:center;
-      color:#ff9c1b;
-      background: url("../../images/myaccount/error-tip.png") no-repeat 30% 50%;
-    }
-    p{
-      font-size: 14px;
-      color: #4c4c4c;
-      padding: 0 20px;
-    }
-    .go-to{
-      display:inline-block;
-      width:160px;
-      height:40px;
-      color:#fff;
-      font-size:16px;
-      background:#178fe6;
-      line-height: 40px;
-      text-decoration: none;
     }
   }
   &.content-container {

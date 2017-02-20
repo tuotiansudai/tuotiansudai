@@ -112,9 +112,12 @@ var MyChartsObject={
                 tooltip : {
                     trigger: 'axis'
                 },
+
                 legend: {
                     data:[data.name],
-                    selectedMode:false
+                    selectedMode:false,
+                    orient: 'vertical',
+                    left: 'left'
                 },
                 calculable : false,
                 xAxis : [
@@ -140,6 +143,7 @@ var MyChartsObject={
 
                 ]
             };
+
             var BarOpt=$.extend({}, this.CommonOption, thisOption);
             return BarOpt;
         }
