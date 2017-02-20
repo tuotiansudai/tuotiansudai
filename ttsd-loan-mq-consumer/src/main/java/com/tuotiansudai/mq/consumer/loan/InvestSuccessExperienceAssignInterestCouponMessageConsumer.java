@@ -67,7 +67,7 @@ public class InvestSuccessExperienceAssignInterestCouponMessageConsumer implemen
         if (isInterestCouponConditionAvailable(loginName, investId)) {
             logger.info(String.format("[新手体验项目方法加息券MQ] send interest coupon condition is available，loginName:%s investId:%s", loginName, investId));
             mqClient.sendMessage(MessageQueue.CouponAssigning,
-                    MessageFormat.format("{0}:{1}", investSuccessMessage.getInvestInfo().getLoginName(), String.valueOf(investId)));
+                    MessageFormat.format("{0}:{1}", investSuccessMessage.getInvestInfo().getLoginName(), String.valueOf(INTEREST_COUPON_3_ID)));
         } else {
             logger.info(String.format("[新手体验项目方法加息券MQ] send interest coupon condition is not available，loginName:%s investId:%s", loginName, investId));
         }
@@ -76,15 +76,10 @@ public class InvestSuccessExperienceAssignInterestCouponMessageConsumer implemen
     }
 
     private boolean isInterestCouponConditionAvailable(String loginName, long investId) {
-        //test
         UserModel userModel = userMapper.findByLoginName(loginName);
-        logger.info("[新手体验项目方法加息券MQ:{}]",String.valueOf(userCouponMapper.findByLoginNameAndCouponId(loginName, INTEREST_COUPON_3_ID) == null
-                || userCouponMapper.findByLoginNameAndCouponId(loginName, INTEREST_COUPON_3_ID).size() == 0));
-        logger.info("[新手体验项目方法加息券MQ:{}]",String.valueOf(investMapper.findById(investId).getTransferInvestId() == null));
-        logger.info("[新手体验项目方法加息券MQ:{}]",String.valueOf(new DateTime(userModel.getRegisterTime()).plusMinutes(60).isAfterNow()));
-        return (userCouponMapper.findByLoginNameAndCouponId(loginName, INTEREST_COUPON_3_ID) == null
-                || userCouponMapper.findByLoginNameAndCouponId(loginName, INTEREST_COUPON_3_ID).size() == 0)
+        return userCouponMapper.findByLoginNameAndCouponId(loginName, INTEREST_COUPON_3_ID).size() == 0
                 && investMapper.findById(investId).getTransferInvestId() == null
+                //test
 //                && new DateTime(userModel.getRegisterTime()).plusDays(15).isAfterNow();
                 && new DateTime(userModel.getRegisterTime()).plusMinutes(60).isAfterNow();
     }
