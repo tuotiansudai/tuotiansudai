@@ -19,7 +19,7 @@ war {
     archiveName "ttsd-anxin-wrapper.war"
     destinationDir = file("war")
 
-    from("${configPath}/ttsd-anxin-wrapper/anxinsign.jks") {
+    from("${configPath}/ttsd-anxin-sign/anxinsign.jks") {
         into 'WEB-INF/classes/'
     }
 }
