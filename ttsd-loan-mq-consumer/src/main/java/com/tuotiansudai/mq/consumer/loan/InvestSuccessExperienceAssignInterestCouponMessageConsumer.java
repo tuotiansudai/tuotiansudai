@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.text.MessageFormat;
+import java.util.Calendar;
 
 @Component
 public class InvestSuccessExperienceAssignInterestCouponMessageConsumer implements MessageConsumer {
@@ -77,12 +78,13 @@ public class InvestSuccessExperienceAssignInterestCouponMessageConsumer implemen
     private boolean isInterestCouponConditionAvailable(String loginName, long investId) {
         //test
         UserModel userModel = userMapper.findByLoginName(loginName);
-        logger.info("[新手体验项目方法加息券MQ]",String.valueOf(userCouponMapper.findByLoginNameAndCouponId(loginName, INTEREST_COUPON_3_ID) == null));
-        logger.info("[新手体验项目方法加息券MQ]",String.valueOf(investMapper.findById(investId).getTransferInvestId() == null));
-        logger.info("[新手体验项目方法加息券MQ]",String.valueOf(new DateTime(userModel.getRegisterTime()).plusMinutes(60).isAfterNow()));
+        logger.info("[新手体验项目方法加息券MQ:{}]",String.valueOf(userCouponMapper.findByLoginNameAndCouponId(loginName, INTEREST_COUPON_3_ID) == null));
+        logger.info("[新手体验项目方法加息券MQ:{}]",String.valueOf(investMapper.findById(investId).getTransferInvestId() == null));
+        logger.info("[新手体验项目方法加息券MQ:{}]",String.valueOf(new DateTime(userModel.getRegisterTime()).plusMinutes(60).isAfterNow()));
         return userCouponMapper.findByLoginNameAndCouponId(loginName, INTEREST_COUPON_3_ID) == null
                 && investMapper.findById(investId).getTransferInvestId() == null
 //                && new DateTime(userModel.getRegisterTime()).plusDays(15).isAfterNow();
                 && new DateTime(userModel.getRegisterTime()).plusMinutes(60).isAfterNow();
     }
+
 }
