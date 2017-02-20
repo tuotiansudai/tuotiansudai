@@ -1,6 +1,7 @@
 package com.tuotiansudai.scheduler.loan;
 
 import com.tuotiansudai.client.MQWrapperClient;
+import com.tuotiansudai.message.InvestInfo;
 import com.tuotiansudai.message.InvestSuccessMessage;
 import com.tuotiansudai.message.UserInfo;
 import com.tuotiansudai.mq.client.model.MessageQueue;
@@ -42,9 +43,9 @@ public class ExperienceRepayScheduler {
                 .collect(Collectors.toList())
                 .forEach(investRepayModel -> {
                     String loginName = investMapper.findById(investRepayModel.getInvestId()).getLoginName();
-                    UserInfo userInfo = new UserInfo();
-                    userInfo.setLoginName(loginName);
-                    mqWrapperClient.sendMessage(MessageQueue.InvestSuccess_ExperienceRepay, new InvestSuccessMessage(null, null, userInfo));
+                    InvestInfo investInfo = new InvestInfo();
+                    investInfo.setLoginName(loginName);
+                    mqWrapperClient.sendMessage(MessageQueue.InvestSuccess_ExperienceRepay, new InvestSuccessMessage(investInfo, null, null));
                     logger.info("[ExperienceRepayScheduler] {} experience invest repay", loginName);
                 });
 

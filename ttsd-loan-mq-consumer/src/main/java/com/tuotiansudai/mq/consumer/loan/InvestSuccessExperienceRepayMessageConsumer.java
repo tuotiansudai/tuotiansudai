@@ -58,8 +58,6 @@ public class InvestSuccessExperienceRepayMessageConsumer implements MessageConsu
         try {
             InvestSuccessMessage investSuccessMessage = JsonConverter.readValue(message, InvestSuccessMessage.class);
             String loginName = investSuccessMessage.getInvestInfo().getLoginName();
-            this.isExperienceInterestConditionAvailable(loginName);
-
             if (!isExperienceInterestConditionAvailable(loginName)) {
                 logger.info("[新手体验项目收益发放MQ] 条件不符合，{}", loginName);
                 return;
