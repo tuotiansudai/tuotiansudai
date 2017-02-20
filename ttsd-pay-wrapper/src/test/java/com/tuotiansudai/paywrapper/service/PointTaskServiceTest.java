@@ -256,9 +256,8 @@ public class PointTaskServiceTest {
 
     @Test
     public void shouldEachRecommendReferrerBankCardIsOk(){
-
-        UserModel referrerUserModel = createFakeUser("testBankCardLoginName", null);
-        UserModel testName = createFakeUser("referrerBankCardLoginName", referrerUserModel.getLoginName());
+        UserModel referrerUserModel = createFakeUser("referrerBankCardLoginName", null);
+        UserModel testName = createFakeUser("testBankCardLoginName", referrerUserModel.getLoginName());
 
         BankCardModel bankCardModel = new BankCardModel();
         bankCardModel.setBankCode("ICBC");
