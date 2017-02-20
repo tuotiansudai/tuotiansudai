@@ -123,7 +123,7 @@ let reInputs=$(registerForm).find('input:text,input:password');
 
 reInputs=Array.from(reInputs);
 for (var el of reInputs) {
-    el.addEventListener("keyup", function() {
+    globalFun.addEventHandler(el,"keyup", function() {
         let errorMsg=validator.start(this);
         if(this.name=='referrer' && errorMsg) {
             referrerValidBool=false;

@@ -16,10 +16,34 @@ function forgetPassword() {
         let fetchCaptchaFun=require('publicJs/fetch_captcha');
         let fetchCaptchaRegister=new fetchCaptchaFun('retrieveForm','retrieve');
         fetchCaptchaRegister.init();
-    },'fetchCaptchaRetrieve');
+    },'fetchCaptcha');
 
     //忘记密码表单校验
     let validator = new ValidatorForm();
+    validator.newStrategy(retrieveForm.mobile,'isMobileRetrieveExist',function(errorMsg,showErrorAfter) {
+        var getResult='',
+            that=this;
+       commonFun.useAjax({
+            type:'GET',
+            async: false,
+            url:'/mobile-retrieve-password/mobile/'+this.value+'/is-exist?random=' + new Date().getTime()
+        },function(response) {
+            if(response.data.status) {
+                // 如果为true说明手机已存在
+                getResult='';
+                globalFun.removeClass(that,'error');
+                globalFun.addClass(that,'valid');
+                showErrorAfter && globalFun.removeElement(that);
+            }
+            else {
+                getResult=errorMsg;
+                globalFun.addClass(that,'error');
+                showErrorAfter && globalFun.createElement(that,errorMsg);
+            }
+        });
+        return getResult;
+
+    });
 
     validator.add(retrieveForm.mobile, [{
         strategy: 'isNonEmpty',
@@ -47,7 +71,7 @@ function forgetPassword() {
 
     reInputs=Array.from(reInputs);
     for (let el of reInputs) {
-        el.addEventListener("blur", function() {
+        globalFun.addEventHandler(el,"blur", function() {
             let errorMsg = validator.start(this);
             if(errorMsg) {
                 errorDom.text(errorMsg).css('visibility','visible');

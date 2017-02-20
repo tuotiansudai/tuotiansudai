@@ -2,6 +2,20 @@ function refreshCaptcha(dom,url) {
     let captcha= url +'?'+ new Date().getTime().toString();
     dom.setAttribute('src',captcha);
 }
+function createElement(element,errorMsg) {
+    if(element && element.nextElementSibling) {
+        element.nextElementSibling.innerHTML=errorMsg;
+        return;
+    }
+    var span=document.createElement("span");
+    span.className="error";
+    span.innerHTML=errorMsg;
+    element && element.parentElement.appendChild(span);
+}
+function removeElement(element) {
+    (element && element.nextElementSibling) && element.parentElement.removeChild(element.nextElementSibling);
+}
+
 /* init radio style */
 function initRadio($radio,$radioLabel) {
     let numRadio=$radio.length;
@@ -236,7 +250,8 @@ let decrypt={
     },
 };
 
-
+exports.createElement = createElement;
+exports.removeElement = removeElement;
 exports.refreshCaptcha = refreshCaptcha;
 exports.initRadio = initRadio;
 exports.IdentityCodeValid = IdentityCodeValid;
@@ -249,10 +264,3 @@ exports.countDownLoan = countDownLoan;
 exports.MathDecimal = MathDecimal;
 exports.decrypt = decrypt;
 
-// export {
-//     refreshCaptcha,initRadio,IdentityCodeValid,checkedAge,popWindow,isUserLogin,
-//     useAjax,countDownLoan,MathDecimal,decrypt};
-
-
-
-// module.exports.refreshCaptcha=refreshCaptcha;
