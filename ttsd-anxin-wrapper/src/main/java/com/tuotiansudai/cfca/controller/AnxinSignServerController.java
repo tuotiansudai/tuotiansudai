@@ -79,4 +79,10 @@ public class AnxinSignServerController {
         return anxinSignService.downContractByContractNo(contractNo);
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/is-authentication-required")
+    public BaseDto<AnxinDataDto> isAuthenticationRequired(@Valid @RequestBody String loginName){
+        return new BaseDto(anxinSignService.isAuthenticationRequired(loginName));
+    }
+
 }

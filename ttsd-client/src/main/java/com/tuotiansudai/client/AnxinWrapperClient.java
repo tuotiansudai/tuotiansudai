@@ -47,6 +47,8 @@ public class AnxinWrapperClient extends BaseClient {
 
     private final static String printAnxinContract = "/anxin-sign/print-anxin-contract";
 
+    private final static String isAuthenticationRequired= "/is-authentication-required";
+
     public BaseDto<AnxinDataDto> createLoanContract(long loanId) {
         return syncExecute(String.valueOf(loanId), createLoanContract, "POST");
     }
@@ -73,6 +75,10 @@ public class AnxinWrapperClient extends BaseClient {
 
     public BaseDto<AnxinDataDto> switchSkipAuth(Object anxinSwitchSkipAuthDto) {
         return syncExecute(anxinSwitchSkipAuthDto, switchSkipAuth, "POST");
+    }
+
+    public BaseDto<AnxinDataDto> isAuthenticationRequired(String loginName){
+        return syncExecute(loginName, isAuthenticationRequired, "POST");
     }
 
     public byte[] printContract(Object requestData) {
