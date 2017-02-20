@@ -189,9 +189,9 @@
                 "name":"experience-manage",
                 "header":{"text":"体验金管理"},
                 "sidebar":[
-                    {"name":"experienceBalance","text":"用户体验金余额","link":"/user-manage/users-search","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"experienceRepay","text":"","体验金还款明细":"/announce-manage/feedback","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"experienceBill","text":"体验金流水明细","link":"/booking-loan-manage/list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"}
+                    {"name":"experienceBalance","text":"用户体验金余额","link":"/experience-manage/users-search","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE','DATA'"},
+                    {"name":"experienceRepay","text":"","体验金还款明细":"/announce-manage/feedback","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE','DATA'"},
+                    {"name":"experienceBill","text":"体验金流水明细","link":"/booking-loan-manage/list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE','DATA'"}
                 ]
             }
         ]
