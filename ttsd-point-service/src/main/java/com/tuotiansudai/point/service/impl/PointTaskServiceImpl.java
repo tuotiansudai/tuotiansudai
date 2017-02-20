@@ -20,6 +20,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.text.MessageFormat;
 import java.util.List;
@@ -83,12 +84,14 @@ public class PointTaskServiceImpl implements PointTaskService {
             pointBillService.createTaskPointBill(loginName, pointTaskModel.getId(), pointTaskModel.getPoint(), pointTask.getDescription());
 
             if (pointTask.equals(PointTask.BIND_BANK_CARD)) {
-                PointTaskModel bankCardTaskModel = pointTaskMapper.findByName(PointTask.EACH_RECOMMEND_BANK_CARD);
                 String referrer = userMapper.findByLoginName(loginName).getReferrer();
-                long referrerMaxTaskLevel = userPointTaskMapper.findMaxTaskLevelByLoginName(referrer, PointTask.EACH_RECOMMEND_BANK_CARD);
-                userPointTaskMapper.create(new UserPointTaskModel(referrer, bankCardTaskModel.getId(), bankCardTaskModel.getPoint(), referrerMaxTaskLevel + 1));
-                String pointBillNote = MessageFormat.format("{0}奖励{1}积分", PointTask.EACH_RECOMMEND_BANK_CARD.getTitle(), String.valueOf(bankCardTaskModel.getPoint()));
-                pointBillService.createTaskPointBill(referrer, bankCardTaskModel.getId(), bankCardTaskModel.getPoint(), pointBillNote);
+                if(!StringUtils.isEmpty(referrer)) {
+                    PointTaskModel bankCardTaskModel = pointTaskMapper.findByName(PointTask.EACH_RECOMMEND_BANK_CARD);
+                    long referrerMaxTaskLevel = userPointTaskMapper.findMaxTaskLevelByLoginName(referrer, PointTask.EACH_RECOMMEND_BANK_CARD);
+                    userPointTaskMapper.create(new UserPointTaskModel(referrer, bankCardTaskModel.getId(), bankCardTaskModel.getPoint(), referrerMaxTaskLevel + 1));
+                    String pointBillNote = MessageFormat.format("{0}奖励{1}积分", PointTask.EACH_RECOMMEND_BANK_CARD.getTitle(), String.valueOf(bankCardTaskModel.getPoint()));
+                    pointBillService.createTaskPointBill(referrer, bankCardTaskModel.getId(), bankCardTaskModel.getPoint(), pointBillNote);
+                }
             }
         }
 
