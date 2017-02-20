@@ -25,8 +25,7 @@
 
     <!-- enable component scanning (beware that this does not enable mapper scanning!) -->
     <context:component-scan base-package="com.tuotiansudai.activity,com.tuotiansudai.client,com.tuotiansudai.cache,
-    com.tuotiansudai.coupon,com.tuotiansudai.membership,com.tuotiansudai.util,
-    com.tuotiansudai.cfca,com.tuotiansudai.contract.service"/>
+    com.tuotiansudai.coupon,com.tuotiansudai.membership,com.tuotiansudai.util"/>
 
     <bean id="hikariCPDataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
         <constructor-arg>
