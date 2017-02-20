@@ -1191,7 +1191,7 @@
         <if test="granularity.name() == 'Monthly'">
             DATE_FORMAT(created_time, '%Y-%m') AS `name`,
         </if>
-        count(distinct(login_name)) AS `value`,
+        count(distinct(`withdraw`.login_name)) AS `value`,
         '提现人数' AS `group`
 
         from withdraw
