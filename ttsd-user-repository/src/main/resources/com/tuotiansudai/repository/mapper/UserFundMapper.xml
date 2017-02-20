@@ -17,6 +17,8 @@
         <result column="invest_froze_amount" property="investFrozeAmount"/>
         <result column="withdraw_froze_amount" property="withdrawFrozeAmount"/>
         <result column="current_month_invest_repay_count" property="currentMonthInvestRepayCount"/>
+        <result column="actual_total_experience_interest" property="actualTotalExperienceInterest"/>
+        <result column="expected_total_experience_interest" property="expectedTotalExperienceInterest"/>
     </resultMap>
 
 
@@ -71,7 +73,15 @@
               and invest.loan_id != 1
               and invest.transfer_status != 'SUCCESS'
               and((invest_repay.status = 'REPAYING' and date_format(invest_repay.repay_date, '%Y-%m-%d') between date_format(now(), '%Y-%m-01') and LAST_DAY(now()))
-                  or(invest_repay.status = 'COMPLETE' and date_format(invest_repay.actual_repay_date, '%Y-%m-%d') between date_format(now(), '%Y-%m-01') and LAST_DAY(now())))) as current_month_invest_repay_count
+                  or(invest_repay.status = 'COMPLETE' and date_format(invest_repay.actual_repay_date, '%Y-%m-%d') between date_format(now(), '%Y-%m-01') and LAST_DAY(now())))) as current_month_invest_repay_count,
+
+              (select ifnull(sum(invest_repay.actual_interest), 0)
+              from invest_repay join invest on invest_repay.invest_id= invest.id
+              where invest.loan_id = 1 and invest_repay.is_transferred is false and invest.login_name = #{loginName} and invest_repay.status = 'COMPLETE') as actual_total_experience_interest,
+
+              (select ifnull(sum(invest_repay.expected_interest), 0)
+              from invest_repay join invest on invest_repay.invest_id= invest.id
+              where invest.loan_id = 1 and invest_repay.is_transferred is false and invest.login_name = #{loginName} and invest_repay.status = 'REPAYING') as expected_total_experience_interest
 
         from dual;
     </select>

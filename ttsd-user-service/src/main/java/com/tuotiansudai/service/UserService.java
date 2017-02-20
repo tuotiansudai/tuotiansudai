@@ -38,4 +38,6 @@ public interface UserService {
     boolean mobileIsRegister(String mobile);
 
     UserModel findByMobile(String mobile);
+
+    long getExperienceBalanceByLoginName(String loginName);
 }
