@@ -79,30 +79,31 @@ public class ExperienceRepayServiceImpl implements ExperienceRepayService {
         List<InvestModel> investModels = investMapper.findByLoanIdAndLoginName(1, loginName);
         if (investModels.size() != 1) {
             logger.error("[Experience Repay] {} invest size is not 1", loginName);
+            return false;
         }
 
         InvestModel investModel = investModels.get(0);
         if (investModel.getStatus() != InvestStatus.SUCCESS) {
             logger.error("[Experience Repay {}] invest is not existed or status is not SUCCESS", investModel.getId());
-            return true;
+            return false;
         }
 
         LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
         if (loanModel == null || loanModel.getProductType() != ProductType.EXPERIENCE) {
             logger.error("[Experience Repay {}] loan is not existed or loan is not EXPERIENCE", investModel.getId());
-            return true;
+            return false;
         }
 
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
         if (accountModel == null) {
             logger.error("[Experience Repay {}] user {} has no account", investModel.getId(), loginName);
-            return true;
+            return false;
         }
 
         InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(investModel.getId(), 1);
         if (investRepayModel == null || investRepayModel.getStatus() != RepayStatus.REPAYING) {
             logger.info("[Experience Repay {}] invest repay is not existed or status is not REPAYING", investModel.getId());
-            return true;
+            return false;
         }
 
         long repayAmount = investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee();
