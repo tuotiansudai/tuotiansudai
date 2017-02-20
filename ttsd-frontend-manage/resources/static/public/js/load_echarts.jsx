@@ -12,6 +12,9 @@ require('echarts/lib/chart/pie');
 // 引入提示框和标题组件
 require('echarts/lib/component/tooltip');
 require('echarts/lib/component/title');
+require('echarts/lib/component/legend');
+require('echarts/lib/component/axis');
+require('echarts/lib/component/toolbox');
 
 var MyChartsObject={
     ChartConfig: function (container, option) {
@@ -115,7 +118,7 @@ var MyChartsObject={
 
                 legend: {
                     data:[data.name],
-                    selectedMode:false,
+                    // selectedMode:false,
                     orient: 'vertical',
                     left: 'left'
                 },

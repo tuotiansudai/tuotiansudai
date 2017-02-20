@@ -95,8 +95,8 @@ require.ensure(['publicJs/load_echarts','publicJs/commonFun'],function() {
                 month:data.month,
                 money:data.money
             },
-            option = loadEcharts.optionCategory.BarOption(dataJson),
-            opt = loadEcharts.ChartConfig('dataRecord', option);
+            option = loadEcharts.optionCategory.BarOption(dataJson);
+          var  opt = loadEcharts.ChartConfig('dataRecord', option);
         loadEcharts.RenderChart(opt);
     });
 
