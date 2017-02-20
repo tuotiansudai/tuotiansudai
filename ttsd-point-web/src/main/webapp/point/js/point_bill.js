@@ -46,7 +46,7 @@ require(['jquery', 'template', 'moment','pagination', 'daterangepicker', 'jquery
 				requestData = {
 					startTime: startTime,
 					endTime: endTime,
-					businessType: status,
+					pointType: status,
 					index: currentPage || 1
 				};
 
@@ -75,6 +75,9 @@ require(['jquery', 'template', 'moment','pagination', 'daterangepicker', 'jquery
 							case 'POINT_CLEAR':
 								item.businessType = '积分到期清零';
 								break;
+                            case 'POINT_LOTTERY':
+                                item.businessType = '积分抽奖';
+                                break;
 						}
 					});
 				}

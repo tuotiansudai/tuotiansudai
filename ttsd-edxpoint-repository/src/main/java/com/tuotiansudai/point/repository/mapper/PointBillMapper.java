@@ -16,11 +16,13 @@ public interface PointBillMapper {
     List<PointBillModel> findByLoginName(String loginName);
 
     long findCountPointBillPagination(@Param(value = "loginName") String loginName,
+                                      @Param(value = "pointType") String pointType,
                                       @Param(value = "startTime") Date startTime,
                                       @Param(value = "endTime") Date endTime,
                                       @Param(value = "businessTypes") List<PointBusinessType> businessTypes);
 
     List<PointBillModel> findPointBillPagination(@Param(value = "loginName") String loginName,
+                                                 @Param(value = "pointType") String pointType,
                                                  @Param(value = "index") int index,
                                                  @Param(value = "pageSize") int pageSize,
                                                  @Param(value = "startTime") Date startTime,

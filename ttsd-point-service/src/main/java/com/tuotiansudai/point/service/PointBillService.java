@@ -17,6 +17,7 @@ public interface PointBillService {
     void createTaskPointBill(String loginName, long pointTaskId, long point, String note);
 
     BasePaginationDataDto<PointBillPaginationItemDataDto> getPointBillPagination(String loginName,
+                                                                                 String pointType,
                                                                                  int index,
                                                                                  int pageSize,
                                                                                  Date startTime,

@@ -505,6 +505,7 @@ public class ExportService {
         for (ProductOrderDto record : records) {
             List<String> row = Lists.newArrayList();
             row.add(record.getLoginName());
+            row.add(String.valueOf(record.getActualPoints()));
             row.add(new DateTime(record.getCreatedTime()).toString("yyyy-MM-dd HH:mm:ss"));
             row.add(String.valueOf(record.getNum()));
             row.add(record.getContact());

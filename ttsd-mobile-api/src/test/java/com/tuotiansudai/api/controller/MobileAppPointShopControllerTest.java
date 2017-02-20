@@ -1,10 +1,7 @@
 package com.tuotiansudai.api.controller;
 
 import com.tuotiansudai.api.controller.v1_0.MobileAppPointShopController;
-import com.tuotiansudai.api.dto.v1_0.BankCardRequestDto;
-import com.tuotiansudai.api.dto.v1_0.BaseParamDto;
-import com.tuotiansudai.api.dto.v1_0.ProductDetailRequestDto;
-import com.tuotiansudai.api.dto.v1_0.UserAddressRequestDto;
+import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppPointShopService;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -40,7 +37,7 @@ public class MobileAppPointShopControllerTest extends ControllerTestBase {
 
     @Test
     public void shouldFindPointHomeIsOk() throws Exception {
-        when(service.findPointHome(any(BaseParamDto.class))).thenReturn(successResponseDto);
+        when(service.findPointHome(any(ProductListRequestDto.class))).thenReturn(successResponseDto);
         doRequestWithServiceMockedTest("/get/point-home",
                 new BankCardRequestDto());
     }

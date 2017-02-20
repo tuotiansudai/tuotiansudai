@@ -11,9 +11,16 @@ public interface MobileAppPointShopService {
 
     BaseResponseDto<ProductListOrderResponseDto> findUserPointsOrders(BaseParamDto baseParamDto);
 
-    BaseResponseDto<ProductListResponseDto> findPointHome(BaseParamDto baseParamDto);
+    BaseResponseDto<ProductListResponseDto> findPointHome(ProductListRequestDto productListRequestDto);
 
     BaseResponseDto<ProductDetailResponseDto> findProductDetail(ProductDetailRequestDto productDetailRequestDto);
 
     BaseResponseDto productExchange(ProductDetailRequestDto productDetailRequestDto);
+
+    BaseResponseDto<PointDrawResultResponseDto> lotteryDrawByPoint(BaseParamDto baseParamDto);
+
+    BaseResponseDto<MyPrizeListResponseDto> findPrizeListByLoginName(BaseParamDto baseParamDto);
+
+    BaseResponseDto<PrizeListResponseDto> findPrizeList(BaseParamDto baseParamDto);
+
 }

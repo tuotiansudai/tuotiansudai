@@ -40,6 +40,13 @@ public abstract class ServiceTestBase {
         return fakeUser;
     }
 
+    protected AccountModel getFakeAccount(UserModel userModel) {
+        AccountModel fakeAccount = new AccountModel(userModel.getLoginName(), "payUserId", "payAccountId", new Date());
+        fakeAccount.setBalance(1000000);
+        fakeAccount.setMembershipPoint(50001);
+        return fakeAccount;
+    }
+
     public CouponModel fakeCouponModel(UserModel userModel, CouponType couponType) {
         CouponModel couponModel = new CouponModel();
         couponModel.setId(idGenerator.generate());
