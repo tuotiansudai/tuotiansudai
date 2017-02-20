@@ -334,10 +334,7 @@
             </if>
             <if test="loanStatus != null">
                 AND (loan.status = #{loanStatus}
-                OR ((#{loanStatus} = 'REPAYING' AND loan.product_type = 'EXPERIENCE' AND TO_DAYS(NOW()) -
-                TO_DAYS(invest_time) &lt; loan.duration)
-                OR (#{loanStatus} = 'COMPLETE' AND loan.product_type = 'EXPERIENCE' AND TO_DAYS(NOW()) -
-                TO_DAYS(invest_time) &gt;= loan.duration)))
+                OR (loan.product_type = 'EXPERIENCE' and exists(select * from invest_repay ir where ir.status=#{loanStatus} and ir.invest_id = invest.id and ir.period = 1)))
             </if>
 
             <if test="loanStatus != null &amp;&amp; loanStatus.name() == 'RAISING'">
@@ -363,10 +360,7 @@
             </if>
             <if test="loanStatus != null">
                 AND (loan.status = #{loanStatus}
-                OR ((#{loanStatus} = 'REPAYING' AND loan.product_type = 'EXPERIENCE' AND TO_DAYS(NOW()) -
-                TO_DAYS(invest_time) &lt; loan.duration)
-                OR (#{loanStatus} = 'COMPLETE' AND loan.product_type = 'EXPERIENCE' AND TO_DAYS(NOW()) -
-                TO_DAYS(invest_time) &gt;= loan.duration)))
+                OR (loan.product_type = 'EXPERIENCE' and exists(select * from invest_repay ir where ir.status=#{loanStatus} and ir.invest_id = invest.id and ir.period = 1)))
             </if>
 
             <if test="loanStatus != null &amp;&amp; loanStatus.name() == 'RAISING'">
@@ -995,12 +989,12 @@
         where invest.login_name = #{loginName}
         and invest.status = 'SUCCESS'
         <if test="loanStatus.name() == 'COMPLETE' ">
-            and ((loan.product_type = 'EXPERIENCE' and TO_DAYS(NOW()) - TO_DAYS(invest_time) >= loan.duration)
+            and (loan.product_type = 'EXPERIENCE' and exists(select * from invest_repay ir where ir.status='COMPLETE' and ir.invest_id = invest.id and ir.period = 1)
             or (loan.product_type != 'EXPERIENCE' and loan.status = 'COMPLETE' and invest.transfer_status != 'SUCCESS')
             or (loan.product_type != 'EXPERIENCE' and invest.transfer_status = 'SUCCESS'))
         </if>
         <if test="loanStatus.name() == 'REPAYING' ">
-            and ((loan.product_type = 'EXPERIENCE' and TO_DAYS(NOW()) - TO_DAYS(invest_time) &lt; loan.duration)
+            and ((loan.product_type = 'EXPERIENCE' and  exists(select * from invest_repay ir where ir.status='REPAYING' and ir.invest_id = invest.id and ir.period = 1)
             or (loan.product_type != 'EXPERIENCE' and loan.status in ('REPAYING','OVERDUE') and invest.transfer_status
             != 'SUCCESS'))
         </if>
