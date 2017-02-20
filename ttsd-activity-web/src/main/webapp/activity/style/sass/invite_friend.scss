@@ -1,0 +1,308 @@
+@import "module/login_tip";
+
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.pop-personal-win {
+  border-radius: 14px !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  @media (max-width:700px) {
+    width: 90% !important;
+  }
+  .pop-layer-out {
+    width: 100%;
+    height: 300px;
+    background-size: 100%;
+    background-position: left 60px;
+    padding: 90px 40px 10px 40px;
+
+    .btn-to-close {
+      width: 25px;
+      height: 60px;
+    }
+    p {
+      font-size: 16px;
+    }
+    a.btn-to-identification {
+      display: inline-block;
+      width: 143px;
+      height: 42px;
+      bottom: 45px;
+      left: 30%;
+    }
+  }
+}
+.for-mobile {
+  display: none;
+  text-align: center;
+  font-size: 12px;
+  color: #005e80;
+  margin: 0 auto;
+  margin-bottom: 0;
+  width: 93%;
+  line-height: 20px;
+  @media (max-width:700px) {
+    display: block;
+  }
+}
+.main-frame {
+  width: 100%;
+  margin: 0 auto;
+  background: #f64b49 url("/activity/images/invite-friend/bag-bg.png") center top no-repeat;
+  background-size: 130%;
+}
+.pop-layer-out {
+  background: url("/activity/images/invite-friend/bg-pop-window.png") left bottom no-repeat;
+  width: 550px;
+  height: 410px;
+  border-radius: 10px;
+  position: relative;
+  padding: 160px 60px 10px 60px;
+  text-align: center;
+
+  .btn-to-close {
+    background: url("../../images/invite-friend/btn-close.png") left top no-repeat;
+    width: 48px;
+    height: 109px;
+    background-size: 100%;
+    position: absolute;
+    right: 0;
+    top: 0;
+    cursor: pointer;
+  }
+  p {
+    color: #fff85f;
+    font-size: 28px;
+  }
+  a.btn-to-identification {
+    display: inline-block;
+    width: 193px;
+    height: 44px;
+    position: absolute;
+    bottom: 20px;
+    left: 180px;
+  }
+}
+.tour-slide {
+  height: 350px;
+  background: url("/activity/images/invite-friend/top-img.jpg") center top no-repeat;
+  @media (max-width:700px) {
+    height: 175px;
+    background: url("/activity/images/invite-friend/top-img-phone.jpg") center top no-repeat;
+    background-size: contain;
+  }
+}
+.share-reward-container {
+  margin: 0px auto;
+  padding-top:20px;
+  @media (max-width:700px) {
+    padding: 0px 10px;
+  }
+  .bg-column-normal {
+    background: #fff1c7;
+    border: 3px solid #6d221e;
+    position: relative;
+    padding: 30px 80px;
+    margin-bottom: 10px;
+    border-radius: 30px;
+    @media (max-width:700px) {
+      border-radius: 0;
+    }
+    &.invite-line {
+      border: none;
+      background: none;
+      padding:0;
+    }
+  }
+  .invite-box-friend {
+    font-size: 22px;
+    text-align: left;
+    @media (max-width:700px) {
+      font-size: 14px;
+      clear: left;
+    }
+    dl {
+      dt, dd {
+        display: inline-block;
+      }
+    }
+    .input-invite {
+      width: 100%;
+      height: 40px;
+      background: #e5f8ff;
+      color: #4d4d4d;
+      @media (max-width:700px) {
+        width: 100%;
+      }
+    }
+    .btn-copy-link {
+      display: inline-block;
+      width: 185px;
+      height: 40px;
+      line-height:40px;
+      text-align: center;
+      background: #fff1c7;
+      color: #f7494c;
+      font-size: 16px;
+      vertical-align: middle;
+      @media (max-width:700px) {
+        margin-top: 10px;
+      }
+    }
+    &.anonymous{
+      text-align:center;
+      padding: 50px 0;
+      dl{
+        dt{
+          line-height: 40px;
+          color:#6d221e;
+        }
+        dd{
+          .input-invite{
+            width:300px;
+          }
+        }
+      }
+    }
+    &.non-anonymous {
+      @media (max-width:700px) {
+        width: 100%;
+        clear: both;
+      }
+      dl {
+        width: 640px;
+        float: left;
+        @media (max-width:700px) {
+          width: 100%;
+          clear: both;
+        }
+        dt {
+          line-height: 40px;
+          margin-top:10px;
+        }
+        dd {
+          width: 100%;
+          margin-top:10px;
+          font-size: 16px;
+          color:#6d221e;
+          line-height: 20px;
+        }
+      }
+      .and-text{
+        float:left;
+        width:80px;
+        text-align:center;
+        line-height:110px;
+        span{
+          display:inline-block;
+          width:50px;
+          height:50px;
+          line-height:50px;
+          border-radius:50%;
+          background:#6d221e;
+          color:#fff;
+          font-size:30px;
+          text-align:center;
+        }
+      }
+      .weixin-code {
+        float: left;
+        width: 260px;
+        margin-right: 20px;
+        text-align:center;
+        @media (max-width:700px) {
+          display: none;
+        }
+        .img-code {
+          display: inline-block;
+          width: 120px;
+          height: 120px;
+
+          canvas {
+            width: 100%;
+          }
+        }
+        span {
+          display: block;
+          font-size: 16px;
+          color:#6d221e;
+          text-align: center;
+          line-height: 20px;
+        }
+      }
+    }
+    .invite-list{
+      float:left;
+      width:100%;
+      margin-bottom:20px;
+      border-top:3px solid #6d221e;
+      border-bottom:3px solid #6d221e;
+      position: relative;
+      .icon-line{
+        position: absolute;
+        width:50px;
+        height:3px;
+        box-sizing:border-box;
+        padding:0 20px;
+        background:#f64b49;
+        &.top{
+          top:-3px;
+          left:280px;
+        }
+        &.bottom{
+          bottom:-3px;
+          right:280px;
+        }
+        span{
+          float:left;
+          width:100%;
+          height:3px;
+          background: #6d221e;
+        }
+      }
+      h3{
+        font-size:22px;
+        color:#fff;
+        text-align:center;
+        span{
+          color:#fede69;
+        }
+      }
+      p{
+        font-size:16px;
+        color:#fff;
+        text-align:center;
+        span{
+          color:#fede69;
+        }
+        a{
+          color:#fede69;
+          text-decoration:underline;
+        }
+      }
+    }
+  }
+  .activity-rules {
+    color: #fede69;
+    margin:30px 0 20px;
+    @media (max-width:700px) {
+      padding: 20px;
+      margin-top: 10px;
+    }
+    dt {
+      font-size: 18px;
+      @media (max-width:700px) {
+        font-size:16px;
+      }
+    }
+    dd {
+      font-size:14px;
+      @media (max-width:700px) {
+        font-size:12px;
+      }
+    }
+  }
+}
