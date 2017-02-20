@@ -78,10 +78,12 @@ public class InvestSuccessExperienceAssignInterestCouponMessageConsumer implemen
     private boolean isInterestCouponConditionAvailable(String loginName, long investId) {
         //test
         UserModel userModel = userMapper.findByLoginName(loginName);
-        logger.info("[新手体验项目方法加息券MQ:{}]",String.valueOf(userCouponMapper.findByLoginNameAndCouponId(loginName, INTEREST_COUPON_3_ID) == null));
+        logger.info("[新手体验项目方法加息券MQ:{}]",String.valueOf(userCouponMapper.findByLoginNameAndCouponId(loginName, INTEREST_COUPON_3_ID) == null
+                || userCouponMapper.findByLoginNameAndCouponId(loginName, INTEREST_COUPON_3_ID).size() == 0));
         logger.info("[新手体验项目方法加息券MQ:{}]",String.valueOf(investMapper.findById(investId).getTransferInvestId() == null));
         logger.info("[新手体验项目方法加息券MQ:{}]",String.valueOf(new DateTime(userModel.getRegisterTime()).plusMinutes(60).isAfterNow()));
-        return userCouponMapper.findByLoginNameAndCouponId(loginName, INTEREST_COUPON_3_ID) == null
+        return (userCouponMapper.findByLoginNameAndCouponId(loginName, INTEREST_COUPON_3_ID) == null
+                || userCouponMapper.findByLoginNameAndCouponId(loginName, INTEREST_COUPON_3_ID).size() == 0)
                 && investMapper.findById(investId).getTransferInvestId() == null
 //                && new DateTime(userModel.getRegisterTime()).plusDays(15).isAfterNow();
                 && new DateTime(userModel.getRegisterTime()).plusMinutes(60).isAfterNow();
