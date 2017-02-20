@@ -76,7 +76,7 @@ public class ExperienceRepayServiceImpl implements ExperienceRepayService {
 
     @Override
     public boolean repay(String loginName) {
-        List<InvestModel> investModels = investMapper.findByLoanIdAndLoginName(1, loginName);
+        List<InvestModel> investModels = investMapper.findByLoanIdAndLoginName(1l, loginName);
         if (investModels.size() != 1) {
             logger.error("[Experience Repay] {} invest size is not 1", loginName);
             return false;
