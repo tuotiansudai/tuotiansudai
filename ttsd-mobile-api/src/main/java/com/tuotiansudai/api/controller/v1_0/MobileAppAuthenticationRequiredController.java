@@ -16,13 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(description = "是否需要认证校验")
 public class MobileAppAuthenticationRequiredController extends MobileAppBaseController {
 
-    private final AnxinSignService anxinSignService;
-
-    @Autowired
-    public MobileAppAuthenticationRequiredController(AnxinSignService anxinSignService) {
-        this.anxinSignService = anxinSignService;
-    }
-
     @RequestMapping(value = "/get/is-authentication-required", method = RequestMethod.POST)
     @ApiOperation("获取认证")
     public BaseResponseDto<AuthenticationRequiredResponseDto> isAuthenticationRequired() {

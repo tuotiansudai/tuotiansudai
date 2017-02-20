@@ -1,8 +1,6 @@
 package com.tuotiansudai.console.controller;
 
 import com.google.common.base.Strings;
-import com.tuotiansudai.cfca.service.AnxinSignService;
-import com.tuotiansudai.cfca.service.impl.AnxinSignServiceImpl;
 import com.tuotiansudai.client.AnxinWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.console.service.ConsoleLoanService;
@@ -47,9 +45,6 @@ public class LoanListController {
     private RedisWrapperClient redisWrapperClient;
 
     @Autowired
-    private AnxinSignService anxinSignService;
-
-    @Autowired
     private InvestService investService;
 
     @Autowired
@@ -57,6 +52,10 @@ public class LoanListController {
 
     @Autowired
     private AnxinWrapperClient anxinWrapperClient;
+
+    public static final String LOAN_CONTRACT_IN_CREATING_KEY = "loanContractInCreating:";
+
+    public static final String TRANSFER_CONTRACT_IN_CREATING_KEY = "transferContractInCreating:";
 
     @RequestMapping(value = "/loan-list", method = RequestMethod.GET)
     public ModelAndView ConsoleLoanList(@RequestParam(value = "status", required = false) LoanStatus status,
@@ -116,7 +115,7 @@ public class LoanListController {
                 return baseDto;
             }
 
-            if (redisWrapperClient.exists(AnxinSignServiceImpl.LOAN_CONTRACT_IN_CREATING_KEY + businessId)) {
+            if (redisWrapperClient.exists(LOAN_CONTRACT_IN_CREATING_KEY + businessId)) {
                 baseDataDto.setMessage("该标的合同正在生成中,请稍后再试!");
                 return baseDto;
             }
@@ -133,7 +132,7 @@ public class LoanListController {
                 return baseDto;
             }
 
-            if (redisWrapperClient.exists(AnxinSignServiceImpl.TRANSFER_CONTRACT_IN_CREATING_KEY + businessId)) {
+            if (redisWrapperClient.exists(TRANSFER_CONTRACT_IN_CREATING_KEY + businessId)) {
                 baseDataDto.setMessage("该债权转让合同正在生成中,请稍后再试!");
                 return baseDto;
             }

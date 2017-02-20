@@ -1,13 +1,8 @@
-package com.tuotiansudai.web.service;
+package com.tuotiansudai.cfca.service;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.cfca.service.ContractService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.repository.mapper.TransferApplicationMapper;
-import com.tuotiansudai.repository.mapper.TransferRuleMapper;
-import com.tuotiansudai.repository.model.TransferApplicationModel;
-import com.tuotiansudai.repository.model.TransferRuleModel;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.IdGenerator;
 import org.joda.time.DateTime;
@@ -31,7 +26,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml", "classpath:spring-session.xml"})
+@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
 @Transactional
 public class ContractServiceTest {
 
