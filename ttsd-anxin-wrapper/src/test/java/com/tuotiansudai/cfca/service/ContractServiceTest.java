@@ -59,7 +59,7 @@ public class ContractServiceTest {
 
     @Test
     public void shouldGenerateTransferContractIsOk() throws ParseException {
-        UserModel userModel = getUserModel("testUserModel", "1823123123");
+        UserModel userModel = getUserModel("testUserModel1", "1823123123");
         userMapper.create(userModel);
         LoanModel loanModel = getLoanModel();
         loanMapper.create(loanModel);
@@ -84,7 +84,7 @@ public class ContractServiceTest {
 
     @Test
     public void shouldLoanTransferByFirstPeriodGenerateContractIsOk() throws ParseException {
-        UserModel userModel = getUserModel("testUserModel", "1823123123");
+        UserModel userModel = getUserModel("testUserModel2", "1823123123");
         userMapper.create(userModel);
 
         UserModel transferUserModel = getUserModel("testTransferUserModel", "1823123124");
@@ -141,7 +141,7 @@ public class ContractServiceTest {
 
     @Test
     public void shouldLoanTransferByMiddlePeriodGenerateContractIsOk() throws ParseException {
-        UserModel userModel = getUserModel("testUserModel", "1823123123");
+        UserModel userModel = getUserModel("testUserModel3", "1823123123");
         userMapper.create(userModel);
 
         UserModel transferUserModel = getUserModel("testTransferUserModel", "1823123124");

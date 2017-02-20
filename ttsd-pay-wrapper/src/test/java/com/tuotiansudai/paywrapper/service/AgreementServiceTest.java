@@ -90,7 +90,7 @@ public class AgreementServiceTest {
     }
 
     private AccountModel createAccountByUserId(String userId) {
-        AccountModel accountModel = new AccountModel(userId,"payUserId","payAccountId",new Date());
+        AccountModel accountModel = new AccountModel(userId,userId,"payAccountId",new Date());
         accountModel.setBalance(10000);
         accountModel.setFreeze(10000);
         accountMapper.create(accountModel);
@@ -113,7 +113,7 @@ public class AgreementServiceTest {
         }
     }
 
-    private Map<String, String> getFakeCallbackParamsMap(AgreementType agreementType) {
+    private Map<String, String> getFakeCallbackParamsMap(AgreementType agreementType, String userId) {
         return Maps.newHashMap(ImmutableMap.<String, String>builder()
                 .put("service", "ptp_mer_bind_agreement")
                 .put("sign_type", "RSA")
@@ -124,7 +124,7 @@ public class AgreementServiceTest {
                 .put("mer_date", new SimpleDateFormat("yyyyMMdd").format(new Date()))
                 .put("ret_code", "0000")
                 .put("ret_msg", "")
-                .put("user_id", "payUserId")
+                .put("user_id", userId)
                 .put("user_bind_agreement_list", agreementType.name())
                 .build());
     }
@@ -160,7 +160,7 @@ public class AgreementServiceTest {
         assertThat(baseDto.getData().getFields().get("user_bind_agreement_list"), is(AgreementType.ZKJP0700.name()));
 
         this.generateMockResponse(10);
-        agreementService.agreementCallback(getFakeCallbackParamsMap(AgreementType.ZKJP0700), "", AgreementBusinessType.FAST_PAY);
+        agreementService.agreementCallback(getFakeCallbackParamsMap(AgreementType.ZKJP0700, userId), "", AgreementBusinessType.FAST_PAY);
 
         AccountModel accountModel = accountMapper.findByLoginName(userId);
         assertFalse(accountModel.isAutoInvest());
@@ -185,7 +185,7 @@ public class AgreementServiceTest {
         assertThat(baseDto.getData().getFields().get("user_bind_agreement_list"), is(AgreementType.ZTBB0G00.name()));
 
         this.generateMockResponse(10);
-        agreementService.agreementCallback(getFakeCallbackParamsMap(AgreementType.ZTBB0G00), "", AgreementBusinessType.AUTO_INVEST);
+        agreementService.agreementCallback(getFakeCallbackParamsMap(AgreementType.ZTBB0G00, userId), "", AgreementBusinessType.AUTO_INVEST);
 
         AccountModel accountModel = accountMapper.findByLoginName(userId);
         assertTrue(accountModel.isAutoInvest());
@@ -208,7 +208,7 @@ public class AgreementServiceTest {
         assertThat(baseDto.getData().getFields().get("user_bind_agreement_list"), is(AgreementType.ZTBB0G00.name()));
 
         this.generateMockResponse(10);
-        agreementService.agreementCallback(getFakeCallbackParamsMap(AgreementType.ZTBB0G00), "", AgreementBusinessType.NO_PASSWORD_INVEST);
+        agreementService.agreementCallback(getFakeCallbackParamsMap(AgreementType.ZTBB0G00, userId), "", AgreementBusinessType.NO_PASSWORD_INVEST);
 
         AccountModel accountModel = accountMapper.findByLoginName(userId);
         assertTrue(accountModel.isAutoInvest());
@@ -229,7 +229,7 @@ public class AgreementServiceTest {
         assertThat(baseDto.getData().getFields().get("user_bind_agreement_list"), is(AgreementType.ZHKB0H01.name()));
 
         this.generateMockResponse(10);
-        agreementService.agreementCallback(getFakeCallbackParamsMap(AgreementType.ZHKB0H01), "", AgreementBusinessType.AUTO_REPAY);
+        agreementService.agreementCallback(getFakeCallbackParamsMap(AgreementType.ZHKB0H01, userId), "", AgreementBusinessType.AUTO_REPAY);
 
         AccountModel accountModel = accountMapper.findByLoginName(userId);
         assertFalse(accountModel.isAutoInvest());

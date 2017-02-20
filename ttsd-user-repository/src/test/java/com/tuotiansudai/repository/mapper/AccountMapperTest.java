@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 import static org.hamcrest.core.Is.is;
@@ -31,7 +32,7 @@ public class AccountMapperTest {
 
     @Test
     public void shouldCreateAccount() throws Exception {
-        UserModel fakeUser = createFakeUser();
+        UserModel fakeUser = createFakeUser("testCreateAccount");
 
         AccountModel model = new AccountModel(fakeUser.getLoginName(), "payUserId", "payAccountId", new Date());
 
@@ -44,7 +45,7 @@ public class AccountMapperTest {
 
     @Test
     public void shouldUpdateAccount() throws Exception {
-        UserModel fakeUser = createFakeUser();
+        UserModel fakeUser = createFakeUser("testUpdateAccount");
 
         AccountModel model = new AccountModel(fakeUser.getLoginName(), "payUserId", "payAccountId", new Date());
 
@@ -64,18 +65,18 @@ public class AccountMapperTest {
 
     @Test
     public void shouldFindByIdentityNumber() throws Exception {
-        UserModel fakeUser = createFakeUser();
-        fakeUser.setIdentityNumber("12345");
+        UserModel fakeUser = createFakeUser("testFindByIdentityNumber");
+        fakeUser.setIdentityNumber(String.valueOf(new Random().nextInt(100)));
         userMapper.updateUser(fakeUser);
         assertNotNull(userMapper.findByIdentityNumber(fakeUser.getIdentityNumber()));
     }
 
-    private UserModel createFakeUser() {
+    private UserModel createFakeUser(String loginName) {
         UserModel model = new UserModel();
-        model.setLoginName("loginName");
+        model.setLoginName(loginName);
         model.setPassword("password");
         model.setEmail("loginName@abc.com");
-        model.setMobile("13900000000");
+        model.setMobile(String.valueOf(new Random().nextInt(10000)));
         model.setUserName("userName");
         model.setIdentityNumber("identityNumber");
         model.setRegisterTime(new Date());
