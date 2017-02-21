@@ -1,11 +1,9 @@
 package com.tuotiansudai.web.controller;
 
 import com.google.common.collect.Maps;
-import com.tuotiansudai.service.BindBankCardService;
 import com.tuotiansudai.service.impl.ExperienceInvestServiceImpl;
 import com.tuotiansudai.util.FrontCallbackService;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,10 +19,6 @@ import java.util.Map;
 public class CallBackController {
 
     static Logger logger = Logger.getLogger(ExperienceInvestServiceImpl.class);
-
-    static
-    @Autowired
-    private BindBankCardService bindBankCardService;
 
     @RequestMapping(value = "/{service}", method = RequestMethod.GET)
     public ModelAndView callBack(@PathVariable String service, HttpServletRequest request) {
