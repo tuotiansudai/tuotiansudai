@@ -68,7 +68,7 @@ public class ContractServiceTest {
         TransferApplicationModel transferApplicationModel = getTransferApplicationModel(userModel.getLoginName(), loanModel.getId(), investModel.getId(), investModel.getId());
         transferApplicationModel.setLoginName(userModel.getLoginName());
         transferApplicationMapper.create(transferApplicationModel);
-        AccountModel accountModel = getAccountModel();
+        AccountModel accountModel = getAccountModel(userModel.getLoginName());
         accountMapper.create(accountModel);
         InvestRepayModel startInvestRepayModel = new InvestRepayModel(idGenerator.generate(), investModel.getId(), 1, 233L, 2000L, 2L,
                 DateTime.parse("2011-1-1").toDate(), RepayStatus.REPAYING);
@@ -82,10 +82,10 @@ public class ContractServiceTest {
 
     @Test
     public void shouldLoanTransferByFirstPeriodGenerateContractIsOk() throws ParseException {
-        UserModel userModel = getUserModel("testLoanTransfer3", String.valueOf(new Random().nextInt(999999)));
+        UserModel userModel = getUserModel("testTransfer3", String.valueOf(new Random().nextInt(999999)));
         userMapper.create(userModel);
 
-        UserModel transferUserModel = getUserModel("testLoanTransferByFirst3", String.valueOf(new Random().nextInt(999999)));
+        UserModel transferUserModel = getUserModel("testLonByFirst3", String.valueOf(new Random().nextInt(999999)));
         userMapper.create(transferUserModel);
 
         LoanModel loanModel = getLoanModel(userModel.getLoginName());
@@ -103,7 +103,7 @@ public class ContractServiceTest {
         TransferApplicationModel transferApplicationModel = getTransferApplicationModel(transferUserModel.getLoginName(), loanModel.getId(), transferInvestModel.getId(), investModel.getId());
         transferApplicationMapper.create(transferApplicationModel);
 
-        AccountModel accountModel = getAccountModel();
+        AccountModel accountModel = getAccountModel(userModel.getLoginName());
         accountMapper.create(accountModel);
 
         InvestRepayModel startInvestRepayModel = new InvestRepayModel(idGenerator.generate(), transferInvestModel.getId(), 1, 233L, 2000L, 2L,
@@ -139,10 +139,10 @@ public class ContractServiceTest {
 
     @Test
     public void shouldLoanTransferByMiddlePeriodGenerateContractIsOk() throws ParseException {
-        UserModel userModel = getUserModel("testLoanPeriod", String.valueOf(new Random().nextInt(999999)));
+        UserModel userModel = getUserModel("testPeriod", String.valueOf(new Random().nextInt(999999)));
         userMapper.create(userModel);
 
-        UserModel transferUserModel = getUserModel("testLoanPeriodUserModel", String.valueOf(new Random().nextInt(999999)));
+        UserModel transferUserModel = getUserModel("testLoanModel", String.valueOf(new Random().nextInt(999999)));
         userMapper.create(transferUserModel);
 
         LoanModel loanModel = getLoanModel(userModel.getLoginName());
@@ -161,7 +161,7 @@ public class ContractServiceTest {
         transferApplicationModel.setPeriod(1);
         transferApplicationMapper.create(transferApplicationModel);
 
-        AccountModel accountModel = getAccountModel();
+        AccountModel accountModel = getAccountModel(userModel.getLoginName());
         accountMapper.create(accountModel);
 
         InvestRepayModel startInvestRepayModel = new InvestRepayModel(idGenerator.generate(), transferInvestModel.getId(), 1, 233L, 2000L, 2L,
@@ -282,8 +282,8 @@ public class ContractServiceTest {
         return al;
     }
 
-    public AccountModel getAccountModel() {
-        AccountModel accountModel = new AccountModel("testUserModel", "payUserId", "payAccountId", new Date());
+    public AccountModel getAccountModel(String loginName) {
+        AccountModel accountModel = new AccountModel(loginName, "payUserId", "payAccountId", new Date());
         return accountModel;
     }
 
