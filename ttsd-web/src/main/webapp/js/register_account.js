@@ -29,7 +29,6 @@ require(['underscore', 'jquery', 'jquery.validate', 'jquery.validate.extension',
                         $buttonLayer.find('.status').removeClass('error').html('认证成功');
                         //var redirect = document.referrer;
                         //setTimeout(location.href = redirect, 3000
-                        alert("实名认证成功！！！！！！！");
                         location.href = '/callback/register_account?ret_code=0000'
                     }
                     else {
