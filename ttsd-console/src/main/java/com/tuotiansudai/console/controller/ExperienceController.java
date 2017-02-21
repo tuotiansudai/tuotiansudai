@@ -1,5 +1,7 @@
 package com.tuotiansudai.console.controller;
 
+import com.tuotiansudai.console.service.ConsoleExperienceService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +13,8 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequestMapping(value = "/experience-manage")
 public class ExperienceController {
+    @Autowired
+    private ConsoleExperienceService consoleExperienceService;
 
     @RequestMapping(value = "/balance", method = RequestMethod.GET)
     public ModelAndView balance(@RequestParam(value = "mobile", required = false) String mobile,
