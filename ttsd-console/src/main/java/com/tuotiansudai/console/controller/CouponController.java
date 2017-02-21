@@ -151,7 +151,10 @@ public class CouponController {
         ModelAndView modelAndView = new ModelAndView("/coupon");
         modelAndView.addObject("couponTypes", Lists.newArrayList(CouponType.values()));
         modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));
-        modelAndView.addObject("userGroups", Lists.newArrayList(UserGroup.values()));
+        modelAndView.addObject("userGroups", Lists.newArrayList(UserGroup.ALL_USER, UserGroup.IMPORT_USER, UserGroup.CHANNEL,
+                UserGroup.EXCHANGER_CODE, UserGroup.MEMBERSHIP_V0, UserGroup.MEMBERSHIP_V1, UserGroup.MEMBERSHIP_V2,
+                UserGroup.MEMBERSHIP_V3, UserGroup.MEMBERSHIP_V4, UserGroup.MEMBERSHIP_V5, UserGroup.FIRST_INVEST_ACHIEVEMENT,
+                UserGroup.MAX_AMOUNT_ACHIEVEMENT, UserGroup.LAST_INVEST_ACHIEVEMENT));
         long initNum = consoleCouponService.findEstimatedCount(UserGroup.ALL_USER);
         modelAndView.addObject("initNum", initNum);
         return modelAndView;
