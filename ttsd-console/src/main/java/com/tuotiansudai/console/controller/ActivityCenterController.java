@@ -67,10 +67,7 @@ public class ActivityCenterController {
                                            @RequestParam(value = "activityStatus", required = false) ActivityStatus activityStatus,
                                            @RequestParam(value = "source", required = false) Source source) {
 
-        List<ActivityDto> activityDtoList = activityService.findAllActivities(
-                startTime == null ? new DateTime(0).toDate() : new DateTime(startTime).withTimeAtStartOfDay().toDate(),
-                endTime == null ? CalculateUtil.calculateMaxDate() : new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate(),
-                activityStatus, source);
+        List<ActivityDto> activityDtoList = activityService.findAllActivities(startTime, endTime, activityStatus, source);
 
         ModelAndView modelAndView = new ModelAndView("/activity-center-list");
         modelAndView.addObject("activityStatusList", Lists.newArrayList(ActivityStatus.values()));
