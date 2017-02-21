@@ -57,7 +57,7 @@ public class ContractServiceTest {
 
     @Test
     public void shouldGenerateTransferContractIsOk() throws ParseException {
-        UserModel userModel = getUserModel("testGenerateTransfer2", String.valueOf(new Random().nextInt(999999)));
+        UserModel userModel = getUserModel("testTransfer2", String.valueOf(new Random().nextInt(999999)));
         userMapper.create(userModel);
         LoanModel loanModel = getLoanModel(userModel.getLoginName());
         loanMapper.create(loanModel);
