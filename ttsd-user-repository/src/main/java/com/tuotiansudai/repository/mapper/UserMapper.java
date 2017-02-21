@@ -77,4 +77,8 @@ public interface UserMapper {
                                    @Param(value = "balanceMin") String balanceMin,
                                    @Param(value = "balanceMax") String balanceMax);
 
+    long sumExperienceBalance(@Param(value = "mobile") String mobile,
+                              @Param(value = "balanceMin") String balanceMin,
+                              @Param(value = "balanceMax") String balanceMax);
+
 }

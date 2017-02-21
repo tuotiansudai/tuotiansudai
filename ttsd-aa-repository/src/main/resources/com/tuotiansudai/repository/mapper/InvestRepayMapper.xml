@@ -85,15 +85,22 @@
         </association>
     </resultMap>
 
+    <resultMap id="investRepayExperienceResultMap" type="InvestRepayExperienceView">
+
+    </resultMap>
+
     <sql id="columns">
         id, invest_id, corpus, default_interest, expected_interest, actual_interest, expected_fee, actual_fee, repay_amount, period, repay_date, actual_repay_date, status, is_transferred, created_time, updated_time
     </sql>
 
-    <insert id="create" parameterType = "java.util.List">
+    <insert id="create" parameterType="java.util.List">
         insert into invest_repay ( <include refid="columns"></include> )
         values
         <foreach collection="list" item="item" index="index" separator=",">
-            (#{item.id}, #{item.investId}, #{item.corpus}, #{item.defaultInterest}, #{item.expectedInterest}, #{item.actualInterest}, #{item.expectedFee}, #{item.actualFee}, #{item.repayAmount}, #{item.period}, #{item.repayDate}, #{item.actualRepayDate}, #{item.status}, #{item.isTransferred}, #{item.createdTime}, now())
+            (#{item.id}, #{item.investId}, #{item.corpus}, #{item.defaultInterest}, #{item.expectedInterest},
+            #{item.actualInterest}, #{item.expectedFee}, #{item.actualFee}, #{item.repayAmount}, #{item.period},
+            #{item.repayDate}, #{item.actualRepayDate}, #{item.status}, #{item.isTransferred}, #{item.createdTime},
+            now())
         </foreach>
     </insert>
 
@@ -194,7 +201,8 @@
           AND #{endTime}
     </select>
 
-    <select id="findByLoginNameAndTimeSuccessInvestRepayList" parameterType="map" resultMap="investRepayResultMapWithLoanResultMap">
+    <select id="findByLoginNameAndTimeSuccessInvestRepayList" parameterType="map"
+            resultMap="investRepayResultMapWithLoanResultMap">
         SELECT
           ir.*,
           t.loanName AS `name`,
@@ -234,7 +242,8 @@
         LIMIT #{startLimit}, #{endLimit}
     </select>
 
-    <select id="findByLoginNameAndTimeNotSuccessInvestRepayList" parameterType="map" resultMap="investRepayResultMapWithLoanResultMap">
+    <select id="findByLoginNameAndTimeNotSuccessInvestRepayList" parameterType="map"
+            resultMap="investRepayResultMapWithLoanResultMap">
         SELECT
           ir.*,
           t.loanName AS `name`,
@@ -383,7 +392,9 @@
     </select>
 
     <select id="findByLoginNameAndStatus" parameterType="map" resultMap="investRepayResultMap">
-        select ir.id, ir.invest_id, ir.corpus, ir.default_interest, ir.expected_interest, ir.actual_interest, ir.expected_fee, ir.actual_fee, ir.repay_amount, ir.period, ir.repay_date, ir.actual_repay_date, ir.status, ir.created_time
+        select ir.id, ir.invest_id, ir.corpus, ir.default_interest, ir.expected_interest, ir.actual_interest,
+        ir.expected_fee, ir.actual_fee, ir.repay_amount, ir.period, ir.repay_date, ir.actual_repay_date, ir.status,
+        ir.created_time
         from invest_repay ir
         inner join invest on invest.id = ir.invest_id
         where invest.login_name = #{loginName}
@@ -451,6 +462,33 @@
             null and DATE_FORMAT(actual_repay_date, '%Y-%m-%d') = #{day}))
         </if>
         ORDER BY r.repay_date
+    </select>
+
+    <select id="findInvestRepayExperience" parameterType="map" resultMap="investRepayExperienceResultMap">
+        SELECT
+          *
+        FROM
+          invest_repay ir
+        JOIN
+          invest i ON ir.invest_id = i.id AND i.loan_id = 1
+        JOIN
+          user u ON i.login_name = u.login_name
+        <where>
+            <if test="mobile != null and mobile !=''">
+              and u.mobile = #{mobile}
+            </if>
+            <if test="repayDateMin != null">
+              and ir.repay_date >= #{repayDateMin}
+            </if>
+            <if test="repayDateMax != null">
+              and ir.repay_date &lt;= #{repayDateMin}
+            </if>
+            <if test="repayStatus != null">
+              and ir.status = #{repayStatus}
+            </if>
+        </where>
+        ORDER BY ir.repay_date
+        limit #{index},#{pageSize}
     </select>
 
 </mapper>
