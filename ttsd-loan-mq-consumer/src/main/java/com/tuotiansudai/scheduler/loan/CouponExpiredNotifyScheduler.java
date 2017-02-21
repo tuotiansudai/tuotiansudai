@@ -30,7 +30,7 @@ public class CouponExpiredNotifyScheduler {
     @Autowired
     private MQWrapperClient mqWrapperClient;
 
-    @Scheduled(cron = "0 0 10 * * ?", zone = "Asia/Shanghai")
+    @Scheduled(cron = "0 0/5 * * * ?", zone = "Asia/Shanghai")
     private void couponExpiredAfterFiveDays() {
         final List<UserGroup> notifyUserGroups = Lists.newArrayList(UserGroup.IMPORT_USER, UserGroup.CHANNEL,
                 UserGroup.FIRST_INVEST_ACHIEVEMENT, UserGroup.MAX_AMOUNT_ACHIEVEMENT, UserGroup.LAST_INVEST_ACHIEVEMENT);
