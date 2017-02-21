@@ -75,6 +75,7 @@ public class LoanOutSuccessCreateAnXinContractMessageConsumer implements Message
 
         long loanId = loanOutInfo.getLoanId();
         List<String> fatalSmsList = Lists.newArrayList();
+        logger.info("[标的放款MQ] LoanOutSuccess_GenerateAnXinContract ready to consume message. createLoanContracts is executing, loanId:{}", loanId);
 
         String redisKey = MessageFormat.format(LOAN_OUT_LOAN_ID_KEY, String.valueOf(loanId));
         int executeCount = 1;
@@ -85,7 +86,7 @@ public class LoanOutSuccessCreateAnXinContractMessageConsumer implements Message
 
         redisWrapperClient.setex(redisKey, LOAN_ID_LIFT_TIME, String.valueOf(executeCount));
         if (executeCount == 1) {
-            logger.info("[标的放款MQ] LoanOutSuccess_GenerateAnXinContract ready to consume message. createLoanContracts is executing, loanId:{0}", loanId);
+            logger.info("[标的放款MQ] LoanOutSuccess_GenerateAnXinContract createLoanContracts is executing, loanId:{}", loanId);
             BaseDto baseDto = payWrapperClient.createAnXinContract(loanId);
             if (!baseDto.isSuccess()) {
                 fatalSmsList.add("生成安心签失败");
