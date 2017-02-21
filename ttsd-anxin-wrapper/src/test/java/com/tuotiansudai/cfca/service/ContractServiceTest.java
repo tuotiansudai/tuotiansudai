@@ -11,7 +11,6 @@ import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -56,14 +55,11 @@ public class ContractServiceTest {
         MockitoAnnotations.initMocks(this);
     }
 
-    @Mock
-    private TransferRuleMapper transferRuleMapper;
-
     @Test
     public void shouldGenerateTransferContractIsOk() throws ParseException {
         UserModel userModel = getUserModel("testGenerateTransfer2", String.valueOf(new Random().nextInt(999999)));
         userMapper.create(userModel);
-        LoanModel loanModel = getLoanModel();
+        LoanModel loanModel = getLoanModel(userModel.getLoginName());
         loanMapper.create(loanModel);
         LoanerDetailsModel loanerDetailsModel = getLoanerDetailsModel(loanModel);
         loanerDetailsMapper.create(loanerDetailsModel);
@@ -92,7 +88,7 @@ public class ContractServiceTest {
         UserModel transferUserModel = getUserModel("testLoanTransferByFirst3", String.valueOf(new Random().nextInt(999999)));
         userMapper.create(transferUserModel);
 
-        LoanModel loanModel = getLoanModel();
+        LoanModel loanModel = getLoanModel(userModel.getLoginName());
         loanMapper.create(loanModel);
 
         LoanerDetailsModel loanerDetailsModel = getLoanerDetailsModel(loanModel);
@@ -149,7 +145,7 @@ public class ContractServiceTest {
         UserModel transferUserModel = getUserModel("testLoanPeriodUserModel", String.valueOf(new Random().nextInt(999999)));
         userMapper.create(transferUserModel);
 
-        LoanModel loanModel = getLoanModel();
+        LoanModel loanModel = getLoanModel(userModel.getLoginName());
         loanMapper.create(loanModel);
 
         LoanerDetailsModel loanerDetailsModel = getLoanerDetailsModel(loanModel);
@@ -199,14 +195,14 @@ public class ContractServiceTest {
         assertEquals(transferMap.get("msg3"), "甲方持有债权90天以上的，暂不收取转服务费用。");
     }
 
-    private LoanModel getLoanModel() throws ParseException {
+    private LoanModel getLoanModel(String loginName) throws ParseException {
         LoanModel lm = new LoanModel();
         lm.setId(idGenerator.generate());
         lm.setName("12标的");
-        lm.setLoanerUserName("testUserModel");
-        lm.setAgentLoginName("testUserModel");
-        lm.setLoanerLoginName("testUserModel");
-        lm.setLoanerLoginName("testUserModel");
+        lm.setLoanerUserName(loginName);
+        lm.setAgentLoginName(loginName);
+        lm.setLoanerLoginName(loginName);
+        lm.setLoanerLoginName(loginName);
         lm.setLoanerIdentityNumber("22012219881003356X");
         lm.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
         lm.setPeriods(3);
@@ -224,11 +220,11 @@ public class ContractServiceTest {
         lm.setFundraisingStartTime(new Date());
         lm.setFundraisingEndTime(new Date());
         lm.setVerifyTime(new Date());
-        lm.setVerifyLoginName("testUserModel");
+        lm.setVerifyLoginName(loginName);
         lm.setStatus(LoanStatus.RECHECK);
         lm.setShowOnHome(false);
         lm.setCreatedTime(new Date());
-        lm.setCreatedLoginName("testUserModel");
+        lm.setCreatedLoginName(loginName);
         lm.setPledgeType(PledgeType.HOUSE);
         lm.setUpdateTime(new Date());
         return lm;
