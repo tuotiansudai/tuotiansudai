@@ -7,6 +7,7 @@ import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.repository.model.ExperienceLoanDto;
 import com.tuotiansudai.service.ExperienceLoanDetailService;
+import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,18 +24,14 @@ public class ExperienceLoanDetailController {
     private ExperienceLoanDetailService ExperienceLoanDetailService;
 
     @Autowired
-    private UserCouponService userCouponService;
-
-    @Autowired
-    private CouponAlertService couponAlertService;
+    private UserService userService;
 
     @RequestMapping(value = "/1", method = RequestMethod.GET)
     public ModelAndView getLoanDetail() {
         ExperienceLoanDto experienceLoanDto = ExperienceLoanDetailService.findExperienceLoanDtoDetail(1, LoginUserInfo.getLoginName());
         ModelAndView modelAndView = new ModelAndView("/experience-loan", "responsive", true);
         modelAndView.addObject("loan", experienceLoanDto);
-        modelAndView.addObject("coupon", userCouponService.getExperienceInvestUserCoupon(LoginUserInfo.getLoginName()));
-        modelAndView.addObject("couponAlert", couponAlertService.getCouponAlert(LoginUserInfo.getLoginName(), Lists.newArrayList(CouponType.NEWBIE_COUPON)));
+        modelAndView.addObject("experienceBalance", userService.getExperienceBalanceByLoginName(LoginUserInfo.getLoginName()));
         return modelAndView;
     }
 
