@@ -330,20 +330,6 @@
         LIMIT #{startLimit}, #{endLimit}
     </select>
 
-    <select id="findSumRepaidInterestByLoginName" parameterType="map" resultType="long">
-        SELECT
-          IFNULL(SUM(
-            ir.`actual_interest` + ir.`default_interest` - ir.`actual_fee`
-          ),0)
-        FROM
-          invest_repay ir
-          JOIN invest i
-            ON ir.`invest_id` = i.`id`
-            AND i.`status` = 'SUCCESS'
-            AND i.`login_name` = #{loginName}
-        WHERE ir.`status` = 'COMPLETE' and loan_id != 1
-    </select>
-
     <select id="findSumRepayingInterestByLoginName" parameterType="map" resultType="long">
         SELECT
           IFNULL(SUM(
@@ -355,7 +341,7 @@
             ON ir.`invest_id` = i.`id`
             AND i.`status` = 'SUCCESS'
             AND i.`login_name` = #{loginName}
-        WHERE ir.`status` IN ('REPAYING', 'OVERDUE') and i.loan_id != 1
+        WHERE ir.`status` IN ('REPAYING', 'OVERDUE') and EXISTS (select 1 from loan l where l.id = i.loan_id and l.product_type != 'EXPERIENCE')
     </select>
 
     <select id="findSumRepayingCorpusByLoginName" parameterType="map" resultType="long">
@@ -367,19 +353,7 @@
             ON ir.`invest_id` = i.`id`
             AND i.`status` = 'SUCCESS'
             AND i.`login_name` = #{loginName}
-        WHERE ir.`status` IN ('REPAYING', 'OVERDUE') and i.loan_id != 1
-    </select>
-
-    <select id="findSumRepaidCorpusByLoginName" parameterType="map" resultType="long">
-        SELECT
-        IFNULL(SUM(ir.`corpus`),0)
-        FROM
-        invest_repay ir
-        JOIN invest i
-        ON ir.`invest_id` = i.`id`
-        AND i.`status` = 'SUCCESS'
-        AND i.`login_name` = #{loginName}
-        WHERE ir.`status` = 'COMPLETE'
+        WHERE ir.`status` IN ('REPAYING', 'OVERDUE') and EXISTS (select 1 from loan l where l.id = i.loan_id and l.product_type != 'EXPERIENCE')
     </select>
 
     <select id="findByLoginNameAndStatus" parameterType="map" resultMap="investRepayResultMap">

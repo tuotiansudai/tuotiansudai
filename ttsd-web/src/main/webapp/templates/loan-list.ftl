@@ -94,7 +94,14 @@
                                     <i class="ic-right"></i>
                                 </span>
                             </#if>
-                            <span class="l-way fr">${loanItem.type.getName()}</span>
+                            <span class="l-way fr">
+                                <#if loanItem.productType == 'EXPERIENCE'>
+                                    按天计息，即投即生息
+                                <#else>
+                                    ${loanItem.type.getName()}
+                                </#if>
+
+                            </span>
                         </div>
                         <div class="loan-info-dl">
                             <dl>
