@@ -994,7 +994,7 @@
             or (loan.product_type != 'EXPERIENCE' and invest.transfer_status = 'SUCCESS'))
         </if>
         <if test="loanStatus.name() == 'REPAYING' ">
-            and ((loan.product_type = 'EXPERIENCE' and  exists(select * from invest_repay ir where ir.status='REPAYING' and ir.invest_id = invest.id and ir.period = 1)
+            and (loan.product_type = 'EXPERIENCE' and  exists(select * from invest_repay ir where ir.status='REPAYING' and ir.invest_id = invest.id and ir.period = 1)
             or (loan.product_type != 'EXPERIENCE' and loan.status in ('REPAYING','OVERDUE') and invest.transfer_status
             != 'SUCCESS'))
         </if>
