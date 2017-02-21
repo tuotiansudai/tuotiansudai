@@ -30,6 +30,11 @@ public class ExperienceLoanDto implements Serializable {
     private String investAmount;
 
     /***
+     * 起投金额
+     ***/
+    private long minInvestAmount;
+
+    /***
      * 基本利率
      ***/
     private double baseRate;
@@ -49,6 +54,7 @@ public class ExperienceLoanDto implements Serializable {
         this.progress = experienceProgress;
         this.investAmount = AmountConverter.convertCentToString(loanModel.getLoanAmount() - investAmount);
         this.loanAmount = AmountConverter.convertCentToString(loanModel.getLoanAmount());
+        this.minInvestAmount = loanModel.getMinInvestAmount();
     }
 
     public long getId() {
@@ -113,5 +119,13 @@ public class ExperienceLoanDto implements Serializable {
 
     public void setLoanAmount(String loanAmount) {
         this.loanAmount = loanAmount;
+    }
+
+    public long getMinInvestAmount() {
+        return minInvestAmount;
+    }
+
+    public void setMinInvestAmount(long minInvestAmount) {
+        this.minInvestAmount = minInvestAmount;
     }
 }
