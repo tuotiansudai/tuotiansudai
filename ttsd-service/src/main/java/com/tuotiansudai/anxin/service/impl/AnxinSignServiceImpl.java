@@ -372,7 +372,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
             smsWrapperClient.sendGenerateContractErrorNotify(new GenerateContractErrorNotifyDto(mobileList, loanId));
         }
 
-        if (CollectionUtils.isNotEmpty((batchNoList))) {
+        if (CollectionUtils.isNotEmpty((batchNoList)) && isCreateJob) {
             logger.info("[安心签]: 创建job，稍后查询并更新合同状态。loanId:" + String.valueOf(loanId));
             DelayMessageDeliveryJobCreator.createAnxinContractQueryDelayJob(jobManager,
                     loanId, AnxinContractType.LOAN_CONTRACT.name(), batchNoList);
