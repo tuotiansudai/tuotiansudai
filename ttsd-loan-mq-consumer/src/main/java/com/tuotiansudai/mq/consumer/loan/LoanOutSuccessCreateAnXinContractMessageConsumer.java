@@ -75,7 +75,7 @@ public class LoanOutSuccessCreateAnXinContractMessageConsumer implements Message
 
         long loanId = loanOutInfo.getLoanId();
         List<String> fatalSmsList = Lists.newArrayList();
-        logger.info("[标的放款MQ] LoanOutSuccess_GenerateAnXinContract ready to consume message. createLoanContracts is executing, loanId:{}", loanId);
+        logger.info("[标的放款MQ] LoanOutSuccess_GenerateAnXinContract ready to consume message , loanId:{}", loanId);
 
         String redisKey = MessageFormat.format(LOAN_OUT_LOAN_ID_KEY, String.valueOf(loanId));
         int executeCount = 1;

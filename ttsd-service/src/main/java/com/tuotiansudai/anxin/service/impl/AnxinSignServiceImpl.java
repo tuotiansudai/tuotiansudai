@@ -343,18 +343,21 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
         List<String> batchNoList = new ArrayList<>();
         boolean processResult = true;
-        logger.info(MessageFormat.format("createAnxinLoanContract investMapper ,  loanId:{0}", String.valueOf(loanId)));
         List<InvestModel> investModels = investMapper.findNoContractNoInvest(loanId);
         List<CreateContractVO> createContractVOs = new ArrayList<>();
 
+        logger.info(MessageFormat.format("createAnxinLoanContract investModels ,  investModels:{0}", String.valueOf(investModels.size())));
         for (int i = 0; i < investModels.size(); i++) {
             InvestModel investModel = investModels.get(i);
+            logger.info(MessageFormat.format("createAnxinLoanContract investModels ,  investModels:{0}", String.valueOf(investModel.getId())));
             CreateContractVO createContractVO = createInvestorContractVo(loanId, investModel);
+            logger.info(MessageFormat.format("createAnxinLoanContract createInvestorContractVo 2,  loan:{0}", createContractVO));
             if (createContractVO == null) {
                 continue;
             }
             createContractVOs.add(createContractVO);
             if (createContractVOs.size() == batchSize) {
+                logger.info(MessageFormat.format("createAnxinLoanContract batchSize 2,  loan:{0}", String.valueOf(loanId)));
                 if (!createContractBatch(loanId, createContractVOs, batchNoList)) {
                     processResult = false;
                 }
@@ -370,6 +373,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
             }
         }
 
+        logger.info(MessageFormat.format("createAnxinLoanContract processResult ,  processResult:{0}", processResult));
         if (!processResult) {
             logger.error("[安心签]: create contract error. loanId:" + String.valueOf(loanId));
             smsWrapperClient.sendGenerateContractErrorNotify(new GenerateContractErrorNotifyDto(mobileList, loanId));
@@ -514,6 +518,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         CreateContractVO createContractVO = new CreateContractVO();
         Map<String, String> dataModel = new HashMap<>();
 
+        logger.info(MessageFormat.format("createAnxinLoanContract createInvestorContractVo ,  loan:{0}", String.valueOf(loanId)));
         // 标的
         LoanModel loanModel = loanMapper.findById(loanId);
 
