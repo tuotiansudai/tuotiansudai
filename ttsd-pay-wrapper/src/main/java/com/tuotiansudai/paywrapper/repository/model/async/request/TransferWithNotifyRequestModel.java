@@ -45,7 +45,7 @@ public class TransferWithNotifyRequestModel extends BaseAsyncRequestModel {
     }
 
     public static TransferWithNotifyRequestModel experienceInterestRequest(String orderId, String payUserId, String particAccountId, String amount) {
-        TransferWithNotifyRequestModel model = new TransferWithNotifyRequestModel(orderId, payUserId, amount, particAccountId);
+        TransferWithNotifyRequestModel model = new TransferWithNotifyRequestModel(orderId, payUserId, particAccountId,amount);
         model.notifyUrl = MessageFormat.format("{0}/{1}", CALLBACK_HOST_PROPS.get("pay.callback.back.host"), "experience_repay_notify");
         model.servType = UmPayServType.TRANSFER_OUT_REPAY_PAYBACK.getCode();
         model.transAction = UmPayTransAction.OUT.getCode();
