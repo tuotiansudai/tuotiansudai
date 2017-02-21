@@ -142,6 +142,62 @@ public class BusinessIntelligenceController {
     }
 
     @ResponseBody
+    @RequestMapping(value = "/user-invest-count-viscosity", method = RequestMethod.GET)
+    public List<KeyValueModel> queryInvestCountViscosity(
+            @RequestParam(name = "startTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
+            @RequestParam(name = "endTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
+            @RequestParam(name = "province", required = false) String province) {
+        return businessIntelligenceService.queryInvestCountViscosity(startTime, endTime, province);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/user-invest-count-viscosity-detail", method = RequestMethod.GET)
+    public InvestViscosityDetailTableView queryInvestCountViscosityDetail(
+            @RequestParam(name = "startTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
+            @RequestParam(name = "endTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
+            @RequestParam(name = "province", required = false) String province,
+            @RequestParam(name = "loanCount", required = true) int loanCount,
+            @RequestParam(name = "pageNo", required = true) int pageNo) {
+        return businessIntelligenceService.queryInvestCountViscosityDetail(startTime, endTime, province, loanCount, pageNo, 10);
+    }
+
+    @RequestMapping(value = "/user-invest-count-viscosity-detail-csv", method = RequestMethod.GET)
+    public void getInvestCountList(
+            @RequestParam(name = "startTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
+            @RequestParam(name = "endTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
+            @RequestParam(name = "province", required = false) String province,
+            @RequestParam(name = "loanCount", required = true) int loanCount,
+            HttpServletResponse response) throws IOException {
+
+        InvestViscosityDetailTableView view = businessIntelligenceService.queryInvestCountViscosityDetail(startTime, endTime, province, loanCount, 1, Integer.MAX_VALUE);
+        List<InvestViscosityDetailView> items = view.getItems();
+
+        response.setCharacterEncoding("UTF-8");
+        try {
+            response.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode("用户续投详情.csv", "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        response.setContentType("application/csv");
+        List<List<String>> data = Lists.newArrayList();
+        for (int i = 0; i < items.size(); i++) {
+            List<String> dataModel = Lists.newArrayList();
+            dataModel.add(items.get(i).getLoginName());
+            dataModel.add(items.get(i).getUserName());
+            dataModel.add(items.get(i).getMobile());
+            dataModel.add("1".equals(items.get(i).getIsStaff()) ? "是" : "否");
+            dataModel.add(items.get(i).getReferrer());
+            dataModel.add(items.get(i).getReferrerUserName());
+            dataModel.add("1".equals(items.get(i).getIsReferrerStaff()) ? "是" : "否");
+            dataModel.add(AmountConverter.convertCentToString(items.get(i).getTotalAmount()));
+            dataModel.add(String.valueOf(items.get(i).getLoanCount()));
+            dataModel.add(new DateTime(items.get(i).getLastInvestTime()).toString("yyyy-MM-dd HH:mm:ss"));
+            data.add(dataModel);
+        }
+        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.BIInvestCountViscosity, data, response.getOutputStream());
+    }
+
+    @ResponseBody
     @RequestMapping(value = "/user-invest-amount-trend", method = RequestMethod.GET)
     public List<KeyValueModel> queryUserInvestAmountTrend(
             @RequestParam(name = "granularity") Granularity granularity,

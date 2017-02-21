@@ -150,7 +150,7 @@
         <div class="col-lg-12 col-sm-12">
             <div class="panel panel-success">
                 <div class="panel-heading">
-                    <h3 class="panel-title">用户续投情况</h3>
+                    <h3 class="panel-title">用户续投情况-投资标的数</h3>
                 </div>
                 <div class="panel-body" id="">
                     <form class="form-inline" id="formUserInvestViscosityReport">
@@ -178,6 +178,58 @@
                                 <th>推荐人姓名</th>
                                 <th>投资总金额(元)</th>
                                 <th>投资标的数</th>
+                                <th>上次投资时间</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <td class="pageNumber" colspan="10">
+                                    <span class="pageBtn"></span>总共<span class="TotalRecords"></span>条
+                                </td>
+                            </tr>
+                            </tfoot>
+                        </table>
+
+                        <button class="btn btn-default pull-left down-load viscosity-export" type="button">导出Excel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 col-sm-12">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h3 class="panel-title">用户续投情况-投资次数</h3>
+                </div>
+                <div class="panel-body" id="">
+                    <form class="form-inline" id="formUserInvestCountViscosityReport">
+                        开始时间： <input type="text" class="form-control start-date" name="startTime">
+                        结束时间：<input type="text" class="form-control end-date" name="endTime">
+                        <select class="form-control" name="province">
+                            <option value="">请选择</option>
+                        </select>
+                        <button class="btn btn-primary" type="button">查询</button>
+                    </form>
+                    <div id="userInvestCountViscosity" style="width:100%; height:400px;">
+                    </div>
+
+                    <div class="row" id="boxUserInvestCount" style="display: none">
+                        <div class="title-list">
+                            <span>合计投资金额： <em class="sumAmount"></em> 元</span>
+                        </div>
+                        <table class="table table-bordered" >
+                            <thead>
+                            <tr>
+                                <th>用户名</th>
+                                <th>真实姓名</th>
+                                <th>电话</th>
+                                <th>推荐人id</th>
+                                <th>推荐人姓名</th>
+                                <th>投资总金额(元)</th>
+                                <th>投资次数</th>
                                 <th>上次投资时间</th>
                             </tr>
                             </thead>

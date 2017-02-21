@@ -22,7 +22,11 @@ public interface BusinessIntelligenceService {
 
     List<KeyValueModel> queryInvestViscosity(Date startTime, Date endTime, String province);
 
+    List<KeyValueModel> queryInvestCountViscosity(Date startTime, Date endTime, String province);
+
     InvestViscosityDetailTableView queryInvestViscosityDetail(Date startTime, Date endTime, final String province, int loanCount, int pageNo, int pageSize);
+
+    InvestViscosityDetailTableView queryInvestCountViscosityDetail(Date startTime, Date endTime, final String province, int loanCount, int pageNo, int pageSize);
 
     List<KeyValueModel> queryUserInvestCountTrend(Date startTime, Date endTime, String province, Boolean isTransfer);
 

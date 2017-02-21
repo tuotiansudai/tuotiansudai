@@ -23,11 +23,19 @@ public interface BusinessIntelligenceMapper {
 
     List<KeyValueModel> queryInvestViscosity(@Param("startTime") Date startTime, @Param("endTime") Date endTime, @Param("province") String province);
 
+    List<KeyValueModel> queryInvestCountViscosity(@Param("startTime") Date startTime, @Param("endTime") Date endTime, @Param("province") String province);
+
     List<InvestViscosityDetailView> queryInvestViscosityDetail(@Param("startTime") Date startTime, @Param("endTime") Date endTime, @Param("province") String province, @Param("loanCount") int loanCount, @Param("startIndex") int startIndex, @Param("pageSize") int pageSize);
+
+    List<InvestViscosityDetailView> queryInvestCountViscosityDetail(@Param("startTime") Date startTime, @Param("endTime") Date endTime, @Param("province") String province, @Param("investCount") int investCount, @Param("startIndex") int startIndex, @Param("pageSize") int pageSize);
 
     int queryInvestViscosityDetailCount(@Param("startTime") Date startTime, @Param("endTime") Date endTime, @Param("province") String province, @Param("loanCount") int loanCount);
 
+    int queryInvestCountViscosityDetailCount(@Param("startTime") Date startTime, @Param("endTime") Date endTime, @Param("province") String province, @Param("investCount") int investCount);
+
     long queryInvestViscositySumAmount(@Param("startTime") Date startTime, @Param("endTime") Date endTime, @Param("province") String province, @Param("loanCount") int loanCount);
+
+    long queryInvestCountViscositySumAmount(@Param("startTime") Date startTime, @Param("endTime") Date endTime, @Param("province") String province, @Param("investCount") int investCount);
 
     List<KeyValueModel> queryUserInvestCountTrend(@Param("startTime") Date startTime, @Param("endTime") Date endTime, @Param("province") String province, @Param("isTransfer") Boolean isTransfer);
 

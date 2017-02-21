@@ -153,6 +153,34 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
     }
 
     @Override
+    public List<KeyValueModel> queryInvestCountViscosity(Date startTime, Date endTime, final String province) {
+        Date queryStartTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
+        Date queryEndTime = new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().toDate();
+        List<KeyValueModel> keyValueModelList = businessIntelligenceMapper.queryInvestCountViscosity(queryStartTime, queryEndTime, province);
+        final KeyValueModel keyValueModel = new KeyValueModel();
+        List<KeyValueModel> top4List = ListUtils.select(keyValueModelList, object -> {
+            int investCount = Integer.valueOf(object.getName());
+            if (investCount <= 4) {
+                return true;
+            } else {
+                keyValueModel.setGroup(object.getGroup());
+                if (keyValueModel.getValue() == null) {
+                    keyValueModel.setValue(object.getValue());
+                } else {
+                    int otherCount = Integer.valueOf(keyValueModel.getValue()) + Integer.valueOf(object.getValue());
+                    keyValueModel.setValue(String.valueOf(otherCount));
+                }
+                return false;
+            }
+        });
+        if (keyValueModel.getGroup() != null) {
+            keyValueModel.setName("5+");
+            top4List.add(keyValueModel);
+        }
+        return top4List;
+    }
+
+    @Override
     public InvestViscosityDetailTableView queryInvestViscosityDetail(Date startTime, Date endTime, final String province, int loanCount, int pageNo, int pageSize) {
         Date queryStartTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
         Date queryEndTime = new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().toDate();
@@ -163,6 +191,18 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
 
         InvestViscosityDetailTableView tableView = new InvestViscosityDetailTableView(sumAmount, totalCount, items);
         return tableView;
+    }
+
+    @Override
+    public InvestViscosityDetailTableView queryInvestCountViscosityDetail(Date startTime, Date endTime, final String province, int loanCount, int pageNo, int pageSize) {
+        Date queryStartTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
+        Date queryEndTime = new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().toDate();
+
+        long sumAmount = businessIntelligenceMapper.queryInvestCountViscositySumAmount(startTime, endTime, province, loanCount);
+        List<InvestViscosityDetailView> items = businessIntelligenceMapper.queryInvestCountViscosityDetail(startTime, endTime, province, loanCount, (pageNo - 1) * pageSize, pageSize);
+        int totalCount = businessIntelligenceMapper.queryInvestCountViscosityDetailCount(startTime, endTime, province, loanCount);
+
+        return new InvestViscosityDetailTableView(sumAmount, totalCount, items);
     }
 
     @Override
