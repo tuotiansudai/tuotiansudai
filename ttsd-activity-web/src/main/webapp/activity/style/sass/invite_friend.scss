@@ -5,6 +5,18 @@
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
+.media-item{
+  display:block;
+  @media (max-width:700px) {
+    display:none;
+  }
+}
+.media-item-phone{
+  display:none;
+  @media (max-width:700px) {
+    display:block;
+  }
+}
 .pop-personal-win {
   border-radius: 14px !important;
   background-color: transparent !important;
@@ -111,12 +123,38 @@
     margin-bottom: 10px;
     border-radius: 10px;
     @media (max-width:700px) {
-      border-radius: 0;
+      border:2px solid #6d221e;
+      border-radius: 5px;
+      padding:15px 10px;
     }
     &.invite-line {
       border: none;
       background: none;
       padding:0;
+    }
+  }
+  .invite-table{
+    display:none;
+    width:100%;
+    @media (max-width:700px) {
+      display: inline-table;
+    }
+    th{
+      background: #ffe18e;
+      font-size:14px;
+      color:#732022;
+      border-bottom:none;
+    }
+    tr{
+      background: #fff8e4;
+      &:nth-child(even)>td{
+        background: #fff;
+      }
+      td{
+        font-size:14px;
+        color:#732022;
+        border-bottom:none;
+      }
     }
   }
   .invite-box-friend {
@@ -157,6 +195,10 @@
     &.anonymous{
       text-align:center;
       padding: 50px 0;
+      @media (max-width:700px) {
+        text-align:left;
+        padding:10px 0;
+      }
       dl{
         dt{
           line-height: 40px;
@@ -178,8 +220,7 @@
         width: 640px;
         float: left;
         @media (max-width:700px) {
-          width: 100%;
-          clear: both;
+          display: none;
         }
         dt {
           line-height: 40px;
@@ -198,6 +239,9 @@
         width:80px;
         text-align:center;
         line-height:110px;
+        @media (max-width:700px) {
+          display: none;
+        }
         span{
           display:inline-block;
           width:50px;
@@ -243,20 +287,36 @@
       border-top:3px solid #6d221e;
       border-bottom:3px solid #6d221e;
       position: relative;
+      @media (max-width:700px) {
+        padding-top:15px;
+        border-top:2px solid #6d221e;
+        border-bottom:2px solid #6d221e;
+      }
       .icon-line{
         position: absolute;
         width:50px;
-        height:3px;
+        height:4px;
         box-sizing:border-box;
         padding:0 20px;
         background:#f64b49;
+        @media (max-width:700px) {
+          width:30px;
+          padding:0 10px;
+          height:3px;
+        }
         &.top{
           top:-3px;
           left:280px;
+          @media (max-width:700px) {
+            left:20%;
+          }
         }
         &.bottom{
           bottom:-3px;
           right:280px;
+          @media (max-width:700px) {
+            right:20%;
+          }
         }
         span{
           float:left;
@@ -269,6 +329,9 @@
         font-size:22px;
         color:#fff;
         text-align:center;
+        @media (max-width:700px) {
+          display: none;
+        }
         span{
           color:#fede69;
         }
@@ -283,6 +346,17 @@
         a{
           color:#fede69;
           text-decoration:underline;
+          &.invite-btn{
+            display: inline-block;
+            width: 180px;
+            height: 40px;
+            line-height: 40px;
+            font-size: 16px;
+            color: #f7494c;
+            background: #fff1c7;
+            border-radius: 10px;
+            text-decoration:none;
+          }
         }
       }
     }
@@ -292,10 +366,12 @@
     width:100%;
     margin-bottom:15px;
     text-align:center;
+    @media (max-width:700px) {
+      margin-bottom:0;
+    }
     .title-text{
       display:inline-block;
       padding:0 30px;
-      height:44px;
       background:#ffae1f;
       border:3px solid #ffd02c;
       border-radius:10px;
@@ -323,6 +399,10 @@
         line-height:38px;
         font-size:22px;
         color:#fff;
+        @media (max-width:700px) {
+          font-size:12px;
+          line-height:30px;
+        }
       }
     }
   }
@@ -332,6 +412,10 @@
     text-align:center;
     font-size:16px;
     color:#925c1f;
+    @media (max-width:700px) {
+      color:#732022;
+      font-size:12px;
+    }
   }
   .info-item{
     float:left;
@@ -346,9 +430,16 @@
       background:#fee589;
       border-radius: 10px;
       padding:10px 0;
+      @media (max-width:700px) {
+        background:none;
+        border-radius:0;
+      }
       li{
         &.free-type{
           margin:0 20px 0 80px;
+          @media (max-width:700px) {
+            margin:0;
+          }
         }
       }
     }
@@ -359,6 +450,9 @@
         float:left;
         width:100%;
         height:120px;
+        @media (max-width:700px) {
+          height:80px;
+        }
         span{
           float:left;
           width:100%;
@@ -371,22 +465,45 @@
         font-size:16px;
         color:#925c1f;
         text-align:center;
+        @media (max-width:700px) {
+          font-size:12px;
+          margin-top:0;
+        }
       }
       &.money-type{
         width:180px;
+        @media (max-width:700px) {
+          float: left;
+          width: 33.333333%;
+          margin: 0;
+        }
         .info-intro{
           background:url('/activity/images/invite-friend/money-bg.png') center no-repeat;
           background-size:80%;
           &.free-icon{
             background:none;
+            @media (max-width:700px) {
+              padding-top:10px;
+            }
           }
           span{
             font-size:16px;
             color:#fff;
+            @media (max-width:700px) {
+              font-size:12px;
+            }
             &.number-text{
               margin-bottom:10px;
+              @media (max-width:700px) {
+                margin-bottom: 5px;
+                font-size: 12px;
+                margin-top: 12px;
+              }
               strong{
                 font-size:34px;
+                @media (max-width:700px) {
+                  font-size:14px;
+                }
               }
             }
           }
@@ -394,16 +511,31 @@
       }
       &.coupon-type{
         width:240px;
+        @media (max-width:700px) {
+          width:33.333333%;
+          margin:0;
+        }
         .info-intro{
           background:url('/activity/images/invite-friend/coupon-bg.png') center no-repeat;
           background-size:80%;
+          @media (max-width:700px) {
+            background-size:100%;
+          }
           span{
             font-size:28px;
             color:#ff635a;
             line-height: 110px;
             padding-right: 65px;
+            @media (max-width:700px) {
+              line-height:80px;
+              font-size:14px;
+              padding-right:30px;
+            }
             strong{
               font-size:56px;
+              @media (max-width:700px) {
+                font-size:28px;
+              }
             }
           }
         }
@@ -442,6 +574,10 @@
       width:400px;
       background:#fff;
       padding:0 100px;
+      @media (max-width:700px) {
+        width:100%;
+        padding:0 50px;
+      }
       dl{
         float:left;
         width:100%;
@@ -475,6 +611,7 @@
               line-height:44px;
               strong{
                 font-size:32px;
+                font-weight:normal;
               }
             }
           }
@@ -487,13 +624,25 @@
     width:100%;
     margin:10px 0;
     text-align:center;
+    @media (max-width:700px) {
+      margin:0;
+    }
     span{
       display:inline-block;
       width:50px;
       height:50px;
       background:url('/activity/images/invite-friend/and-icon.png') no-repeat center;
       background-size:100%;
+      @media (max-width:700px) {
+        width:30px;
+        height:30px;
+      }
     }
+  }
+  .reward-item{
+    float:left;
+    width:100%;
+    margin-top: 10px;
   }
   .activity-rules {
     color: #fede69;
@@ -501,6 +650,7 @@
     @media (max-width:700px) {
       padding: 20px;
       margin-top: 10px;
+      color:#732022;
     }
     dt {
       font-size: 18px;

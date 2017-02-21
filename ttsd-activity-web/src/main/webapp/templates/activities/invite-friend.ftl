@@ -47,6 +47,9 @@
                     <i class="icon-line bottom"><span></span></i>
                     <h3>邀好友拿<span>3</span>重礼包</h3>
                     <p>您已成功邀请<span>1</span>位好友， 赚取红包<span>100</span>元，赚取现金奖励<span>110</span>元 <a href="">查看邀请详情</a></p>
+                    <p>
+                        <a href="" class="invite-btn">马上邀请好友</a>
+                    </p>
                 </div>
                 <div class="weixin-code">
                     <em class="img-code">
@@ -78,8 +81,11 @@
                 <span>一重礼：好友注册就送礼，人脉即钱脉</span>
                 <i class="right-icon"></i>
             </div>
+            <div class="tip-item">
+                邀请好友在平台完成相应操作即可获得奖励
+            </div>
         </div>
-        <ul class="info-item">
+        <ul class="info-item media-item">
             <li class="money-type">
                 <div class="info-intro">
                     <span class="number-text"><strong>5</strong>元</span>
@@ -101,6 +107,28 @@
                 <div class="info-name">好友首次投资抵押类债权再得</div>
             </li>
         </ul>
+        <table class="table invite-table">
+            <thead>
+                <tr>
+                    <th>邀好友完成</th>
+                    <th>您获得奖励</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>注册</td>
+                    <td>5元现金红包</td>
+                </tr>
+                <tr>
+                    <td>绑定银行卡</td>
+                    <td>10元现金红包</td>
+                </tr>
+                <tr>
+                    <td>首次投资抵押债权</td>
+                    <td>+0.5%加息券</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
     <div class="bg-column-normal">
         <div class="titel-item">
@@ -113,7 +141,7 @@
         <div class="tip-item">
             邀请好友注册投资，每月有效邀请人数越多，红包越多。
         </div>
-        <ul class="info-item info-list">
+        <ul class="info-item info-list media-item">
             <li class="money-type">
                 <div class="info-intro">
                     <span class="number-text"><strong>18</strong>元</span>
@@ -143,11 +171,37 @@
                 <div class="info-name">有效邀请10人以上可得</div>
             </li>
         </ul>
+        <table class="table invite-table">
+            <thead>
+                <tr>
+                    <th>有效邀请人数</th>
+                    <th>您获得奖励</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>2-4人</td>
+                    <td>18元现金红包</td>
+                </tr>
+                <tr>
+                    <td>5-8人</td>
+                    <td>48元现金红包</td>
+                </tr>
+                <tr>
+                    <td>9-10人</td>
+                    <td>98元现金红包</td>
+                </tr>
+                <tr>
+                    <td>10人以上</td>
+                    <td>288元现金红包</td>
+                </tr>
+            </tbody>
+        </table>
         <div class="btn-item">
             <p>
                 <span>小贴士：</span>好友在注册后15天内投资额达到2000及以上（新手体验项目及债权转让除外），视为一个有效邀请。
             </p>
-            <p>
+            <p class="media-item">
                 <a href="" class="invite-btn">立即邀请好友拿奖励</a>
             </p>
         </div>
@@ -161,9 +215,10 @@
             </div>
         </div>
         <div class="reward-item">
-            <img src="${staticServer}/activity/images/invite-friend/reward-img.png" width="100%">
+            <img src="${staticServer}/activity/images/invite-friend/reward-img.png" width="100%" class="media-item">
+            <img src="${staticServer}/activity/images/invite-friend/reward-img-phone.png" width="100%" class="media-item-phone">
         </div>
-        <div class="btn-item">
+        <div class="btn-item media-item">
             <p>
                 <a href="" class="invite-btn">立即邀请好友拿奖励</a>
             </p>
@@ -200,7 +255,7 @@
             <ul class="info-item free-list">
                 <li class="money-type">
                     <div class="info-intro free-icon">
-                        <img src="${staticServer}/activity/images/invite-friend/free-img.png">
+                        <img src="${staticServer}/activity/images/invite-friend/free-img.png" width="100%">
                     </div>
                     <div class="info-name">体验金6888元</div>
                 </li>
