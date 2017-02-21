@@ -79,9 +79,7 @@ public class InvestSuccessExperienceAssignInterestCouponMessageConsumer implemen
         UserModel userModel = userMapper.findByLoginName(loginName);
         return userCouponMapper.findByLoginNameAndCouponId(loginName, INTEREST_COUPON_3_ID).size() == 0
                 && investMapper.findById(investId).getTransferInvestId() == null
-                //test
-//                && new DateTime(userModel.getRegisterTime()).plusDays(15).isAfterNow();
-                && new DateTime(userModel.getRegisterTime()).plusMinutes(60).isAfterNow();
+                && new DateTime(userModel.getRegisterTime()).plusDays(15).isAfterNow();
     }
 
 }

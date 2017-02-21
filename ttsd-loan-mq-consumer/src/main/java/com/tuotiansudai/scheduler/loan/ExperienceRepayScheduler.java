@@ -32,8 +32,7 @@ public class ExperienceRepayScheduler {
     @Autowired
     private MQWrapperClient mqWrapperClient;
 
-//    @Scheduled(cron = "0 0 16 * * ?", zone = "Asia/Shanghai")
-    @Scheduled(cron = "0 0/5 * * * ?", zone = "Asia/Shanghai")
+    @Scheduled(cron = "0 0 16 * * ?", zone = "Asia/Shanghai")
     public void evaluateExperienceRepay() {
         logger.info("[ExperienceRepayScheduler] start...");
 
