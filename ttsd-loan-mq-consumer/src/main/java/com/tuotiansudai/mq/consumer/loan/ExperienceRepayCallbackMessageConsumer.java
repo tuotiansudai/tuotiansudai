@@ -39,7 +39,7 @@ public class ExperienceRepayCallbackMessageConsumer implements MessageConsumer {
 
         logger.info("[MQ] experience interest callback ready to consume message");
 
-        BaseDto<PayDataDto> result = payWrapperClient.postExperienceRepay(message);
+        BaseDto<PayDataDto> result = payWrapperClient.postExperienceRepay(Long.parseLong(message));
         if (!result.isSuccess()) {
             logger.error("experience interest callback consume fail. notifyRequestId: " + message);
             throw new RuntimeException("experience interest callback consume fail. notifyRequestId: " + message);
