@@ -158,8 +158,6 @@
                         结束时间：<input type="text" class="form-control end-date" name="endTime">
                         <select class="form-control" name="province">
                             <option value="">请选择</option>
-                            <option>北京</option>
-                            <option>天津</option>
                         </select>
                         <button class="btn btn-primary" type="button">查询</button>
                     </form>

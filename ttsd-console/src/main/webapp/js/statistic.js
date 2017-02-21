@@ -178,7 +178,7 @@ require(['jquery','loadEcharts','bootstrapDatetimepicker'],function($,loadEchart
     showReport('#formWithdrawUserCountReport','/bi/withdraw-user-count-trend','withdrawUserCountDistribution','提现人数(人)','Lines');
 
     /*用户续投情况*/
-    showReport('#formUserInvestViscosityReport','/bi/user-invest-viscosity','userInvestViscosity','投资人数(人)','bar','投资次数');
+    showReport('#formUserInvestViscosityReport','/bi/user-invest-viscosity','userInvestViscosity','投资人数(人)','bar','投资标的数');
 
     /*用户投资金额时间分布*/
     showReport('#formUserInvestAmountReport','/bi/user-invest-amount-trend','userInvestAmountDistribution','用户投资金额(元)','Lines');
