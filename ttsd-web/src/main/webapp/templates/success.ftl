@@ -1,5 +1,5 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="${css.login}" pageJavascript="${js.invest_success}" activeLeftNav="" title="成功">
+<@global.main pageCss="${css.login}" pageJavascript="${js.account_success}" activeLeftNav="" title="成功">
 <div class="invest-success-container">
     <div class="invest-text-model">
         <i class="success-tip"></i>

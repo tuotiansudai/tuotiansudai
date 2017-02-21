@@ -7,9 +7,12 @@ import com.tuotiansudai.dto.RegisterAccountDto;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.UserService;
+import com.tuotiansudai.service.impl.AccountServiceImpl;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.spring.security.MyAuthenticationUtil;
 import com.tuotiansudai.util.IdentityNumberValidator;
+import com.tuotiansudai.util.JsonConverter;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +23,8 @@ import javax.validation.Valid;
 @Controller
 @RequestMapping(path = "/register/account")
 public class RegisterAccountController {
+
+    static Logger logger = Logger.getLogger(RegisterAccountController.class);
 
     @Autowired
     private UserService userService;
@@ -45,7 +50,6 @@ public class RegisterAccountController {
         BaseDataDto dataDto = new BaseDataDto();
         baseDto.setData(dataDto);
         dataDto.setStatus(isExist);
-
         return baseDto;
     }
 
@@ -57,6 +61,9 @@ public class RegisterAccountController {
             registerAccountDto.setMobile(LoginUserInfo.getMobile());
             BaseDto<PayDataDto> baseDto = accountService.registerAccount(registerAccountDto);
             myAuthenticationUtil.createAuthentication(LoginUserInfo.getLoginName(), Source.WEB);
+            logger.info("account after status= " + baseDto.getData().getStatus());
+            logger.info("account after code= " + baseDto.getData().getCode());
+            logger.info("account after message= " + baseDto.getData().getMessage());
             return baseDto;
         }
 
