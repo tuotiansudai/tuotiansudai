@@ -1,4 +1,4 @@
-package com.tuotiansudai.cfca.service.impl;
+package com.tuotiansudai.cfca.contract.impl;
 
 import com.google.common.collect.Lists;
 import com.itextpdf.text.DocumentException;
@@ -6,7 +6,7 @@ import com.itextpdf.text.pdf.AcroFields;
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfStamper;
-import com.tuotiansudai.cfca.service.ContractService;
+import com.tuotiansudai.cfca.contract.ContractService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountConverter;
@@ -101,15 +101,6 @@ public class ContractServiceImpl implements ContractService {
             logger.error(e.getLocalizedMessage(), e);
         }
         return content.toString();
-    }
-
-    @Override
-    public String generateInvestorContract(String loginName, long loanId, long investId) {
-        Map<String, String> dataModel = collectInvestorContractModel(loginName, loanId, investId);
-        if (dataModel.isEmpty()) {
-            return "";
-        }
-        return getContract("contract", dataModel).replace("&nbsp;", "&#160;");
     }
 
     @Override

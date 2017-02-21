@@ -1,7 +1,7 @@
 package com.tuotiansudai.cfca.controller;
 
 import com.tuotiansudai.cfca.service.AnxinSignService;
-import com.tuotiansudai.cfca.service.ContractService;
+import com.tuotiansudai.cfca.contract.ContractService;
 import com.tuotiansudai.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

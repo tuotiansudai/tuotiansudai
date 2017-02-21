@@ -1,4 +1,4 @@
-package com.tuotiansudai.cfca.service;
+package com.tuotiansudai.cfca.contract;
 
 import com.tuotiansudai.repository.model.AnxinContractType;
 
@@ -6,8 +6,6 @@ import java.util.Map;
 
 public interface ContractService {
     String getContract(String code, Map<String, String> dataModel);
-
-    String generateInvestorContract(String loginName, long loanId, long investId);
 
     String generateTransferContract(long transferApplicationId);
 
