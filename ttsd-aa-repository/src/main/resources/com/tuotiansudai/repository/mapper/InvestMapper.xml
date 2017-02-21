@@ -591,7 +591,7 @@
         select min(trading_time) from invest where status = 'SUCCESS' and loan_id = #{loanId}
     </select>
 
-    <select id="findByLoanIdAndLoginName" parameterType="map" resultMap="investResultMap">
+    <select id="findByLoanIdAndLoginName" parameterType="map" resultMap="investResultMap" useCache="false">
         select * from invest where loan_id = #{loanId} and login_name = #{loginName} and status = 'SUCCESS'
     </select>
 
