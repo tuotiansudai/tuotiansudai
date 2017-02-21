@@ -92,7 +92,6 @@ require(['jquery', 'load_echarts','layerWrapper','template','jquery.ajax.extensi
                     $signBtn.parent().addClass("no-click").find('span').removeClass('will-sign').addClass('finish-sign').html("已签到");
                     $signPoint.find('span').html('+'+response.data.signInPoint);
                     $signTip.fadeIn('fast');
-                    $("#MyAvailablePoint").text(Math.round($("#MyAvailablePoint").text()) + Math.round(response.data.signInPoint));
                 } else {
                     location.href='/register/account?redirect=/account';
                 }
@@ -101,12 +100,7 @@ require(['jquery', 'load_echarts','layerWrapper','template','jquery.ajax.extensi
         //hide sign tip
         $closeSign.on('click', function (event) {
             event.preventDefault();
-            $signTip.fadeOut('fast', function() {
-                $(this).find('.add-dou').css({
-                    'bottom': '0',
-                    'opacity': '1'
-                });
-            });
+            location.href = "/account";
         });
     });
 });
