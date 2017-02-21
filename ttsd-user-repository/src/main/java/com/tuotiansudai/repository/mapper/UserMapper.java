@@ -67,18 +67,5 @@ public interface UserMapper {
 
     long findCountInvestCityScale(@Param(value = "endDate") Date endDate);
 
-    List<UserModel> findExperienceBalance(@Param(value = "mobile") String mobile,
-                                          @Param(value = "balanceMin") String balanceMin,
-                                          @Param(value = "balanceMax") String balanceMax,
-                                          @Param(value = "index") Integer index,
-                                          @Param(value = "pageSize") Integer pageSize);
-
-    int findCountExperienceBalance(@Param(value = "mobile") String mobile,
-                                   @Param(value = "balanceMin") String balanceMin,
-                                   @Param(value = "balanceMax") String balanceMax);
-
-    long sumExperienceBalance(@Param(value = "mobile") String mobile,
-                              @Param(value = "balanceMin") String balanceMin,
-                              @Param(value = "balanceMax") String balanceMax);
 
 }

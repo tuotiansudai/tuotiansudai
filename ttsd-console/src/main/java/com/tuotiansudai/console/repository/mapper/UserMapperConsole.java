@@ -5,6 +5,7 @@ import com.tuotiansudai.console.repository.model.RemainUserView;
 import com.tuotiansudai.console.repository.model.UserMicroModelView;
 import com.tuotiansudai.console.repository.model.UserOperation;
 import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserView;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -154,4 +155,18 @@ public interface UserMapperConsole {
                               @Param(value = "firstInvestEndTime") Date firstInvestEndTime,
                               @Param(value = "secondInvestStartTime") Date secondInvestStartTime,
                               @Param(value = "secondInvestEndTime") Date secondInvestEndTime);
+
+    List<UserModel> findExperienceBalance(@Param(value = "mobile") String mobile,
+                                          @Param(value = "balanceMin") String balanceMin,
+                                          @Param(value = "balanceMax") String balanceMax,
+                                          @Param(value = "index") Integer index,
+                                          @Param(value = "pageSize") Integer pageSize);
+
+    int findCountExperienceBalance(@Param(value = "mobile") String mobile,
+                                   @Param(value = "balanceMin") String balanceMin,
+                                   @Param(value = "balanceMax") String balanceMax);
+
+    long sumExperienceBalance(@Param(value = "mobile") String mobile,
+                              @Param(value = "balanceMin") String balanceMin,
+                              @Param(value = "balanceMax") String balanceMax);
 }

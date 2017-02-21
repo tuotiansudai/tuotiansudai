@@ -1,4 +1,4 @@
-package com.tuotiansudai.dto;
+package com.tuotiansudai.console.dto;
 
 
 import com.tuotiansudai.repository.model.UserModel;
@@ -17,7 +17,7 @@ public class ExperienceBalancePaginationItemDto implements Serializable{
     public ExperienceBalancePaginationItemDto(){
 
     }
-    public ExperienceBalancePaginationItemDto(UserModel userModel,Date lastExchangeTime){
+    public ExperienceBalancePaginationItemDto(UserModel userModel, Date lastExchangeTime){
         this.loginName = userModel.getLoginName();
         this.userName = userModel.getUserName();
         this.mobile = userModel.getMobile();

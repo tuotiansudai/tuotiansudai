@@ -85,10 +85,6 @@
         </association>
     </resultMap>
 
-    <resultMap id="investRepayExperienceResultMap" type="InvestRepayExperienceView">
-
-    </resultMap>
-
     <sql id="columns">
         id, invest_id, corpus, default_interest, expected_interest, actual_interest, expected_fee, actual_fee, repay_amount, period, repay_date, actual_repay_date, status, is_transferred, created_time, updated_time
     </sql>
@@ -462,33 +458,6 @@
             null and DATE_FORMAT(actual_repay_date, '%Y-%m-%d') = #{day}))
         </if>
         ORDER BY r.repay_date
-    </select>
-
-    <select id="findInvestRepayExperience" parameterType="map" resultMap="investRepayExperienceResultMap">
-        SELECT
-          *
-        FROM
-          invest_repay ir
-        JOIN
-          invest i ON ir.invest_id = i.id AND i.loan_id = 1
-        JOIN
-          user u ON i.login_name = u.login_name
-        <where>
-            <if test="mobile != null and mobile !=''">
-              and u.mobile = #{mobile}
-            </if>
-            <if test="repayDateMin != null">
-              and ir.repay_date >= #{repayDateMin}
-            </if>
-            <if test="repayDateMax != null">
-              and ir.repay_date &lt;= #{repayDateMin}
-            </if>
-            <if test="repayStatus != null">
-              and ir.status = #{repayStatus}
-            </if>
-        </where>
-        ORDER BY ir.repay_date
-        limit #{index},#{pageSize}
     </select>
 
 </mapper>

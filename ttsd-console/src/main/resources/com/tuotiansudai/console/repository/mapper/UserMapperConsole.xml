@@ -747,4 +747,53 @@
             </if>
         </where>
     </select>
+
+    <select id="findExperienceBalance" resultMap="userViewResultMap" parameterType="map">
+        select * from user
+        <where>
+            <if test = "mobile != null and mobile != ''">
+                and mobile = #{mobile}
+            </if>
+            <if test = "balanceMin != null and balanceMin !=''">
+                and experience_balance >= #{balanceMin}
+            </if>
+            <if test = "balanceMax != null and balanceMax !=''">
+                and experience_balance &lt;= #{balanceMax}
+            </if>
+
+        </where>
+        order by mobile
+        limit #{index}, #{pageSize}
+    </select>
+    <select id="findCountExperienceBalance" resultType="int" parameterType="map">
+        select count(*) from user
+        <where>
+            <if test = "mobile != null and mobile != ''">
+                and mobile = #{mobile}
+            </if>
+            <if test = "balanceMin != null and balanceMin !=''">
+                and experience_balance >= #{balanceMin}
+            </if>
+            <if test = "balanceMax != null and balanceMax !=''">
+                and experience_balance &lt;= #{balanceMax}
+            </if>
+
+        </where>
+    </select>
+
+    <select id="sumExperienceBalance" parameterType="map" resultType="long">
+        select count(experience_balance) from user
+        <where>
+            <if test = "mobile != null and mobile != ''">
+                and mobile = #{mobile}
+            </if>
+            <if test = "balanceMin != null and balanceMin !=''">
+                and experience_balance >= #{balanceMin}
+            </if>
+            <if test = "balanceMax != null and balanceMax !=''">
+                and experience_balance &lt;= #{balanceMax}
+            </if>
+
+        </where>
+    </select>
 </mapper>
