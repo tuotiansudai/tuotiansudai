@@ -4,7 +4,14 @@
 
 <!-- content area begin -->
 <div class="col-md-10">
-	<form action="/activity-manage/coupon" method="post" class="form-horizontal form-list">
+    <select class="jq-b-type" id="businessType">
+        <option value="0" selected>创建体验券</option>
+        <option value="1">创建加息券</option>
+        <option value="2">创建现金红包</option>
+        <option value="3">创建生日月活动</option>
+    </select>
+
+    <form action="/activity-manage/coupon" method="post" class="form-horizontal form-list">
 		<div class="form-group">
 			<label class="col-sm-2 control-label">体验券名称:</label>
 			<div class="col-sm-4">
@@ -37,11 +44,11 @@
 			</div>
 		</div>
         <div class="form-group">
-            <label class="col-sm-2 control-label">发放对象:</label>
+            <label class="col-sm-2 control-label">发放对象1:</label>
             <div class="col-sm-2 coupon-hide invest-coupon">
 
                 <select class="selectpicker jq-b-type userGroup" name="userGroup">
-                    <#assign notUserGroups = ['NEW_REGISTERED_USER','EXCHANGER','WINNER','EXPERIENCE_INVEST_SUCCESS','EXPERIENCE_REPAY_SUCCESS','NOT_ACCOUNT_NOT_INVESTED_USER'] />
+                    <#assign notUserGroups = ['INVESTED_USER','REGISTERED_NOT_INVESTED_USER','STAFF','STAFF_RECOMMEND_LEVEL_ONE','AGENT','NEW_REGISTERED_USER','NEW_REGISTERED_USER','EXCHANGER','WINNER','EXPERIENCE_INVEST_SUCCESS','EXPERIENCE_REPAY_SUCCESS','NOT_ACCOUNT_NOT_INVESTED_USER'] />
 					<#list userGroups as userGroup>
                         <#if !(notUserGroups?seq_contains(userGroup.name()))>
                             <option value="${userGroup.name()}">${userGroup.getDescription()}</option>

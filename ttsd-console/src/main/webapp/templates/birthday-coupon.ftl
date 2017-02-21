@@ -1,9 +1,15 @@
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="create-birthday-coupon.js" headLab="activity-manage" sideLab="createBirthdayCoupon" title="创建生日红包">
+<@global.main pageCss="" pageJavascript="create-birthday-coupon.js" headLab="activity-manage" sideLab="createCoupon" title="创建生日红包">
 
 <!-- content area begin -->
 <div class="col-md-10">
+    <select class="jq-b-type" id="businessType">
+        <option value="0">创建体验券</option>
+        <option value="1">创建加息券</option>
+        <option value="2">创建现金红包</option>
+        <option value="3" selected>创建生日月活动</option>
+    </select>
     <form action="/activity-manage/coupon" method="post" class="form-horizontal form-list">
         <div class="form-group">
             <label class="col-sm-2 control-label">名称:</label>

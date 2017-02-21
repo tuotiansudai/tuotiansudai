@@ -1,9 +1,17 @@
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="create-interest-coupon.js" headLab="activity-manage" sideLab="createInterestCoupon" title="创建加息券">
+<@global.main pageCss="" pageJavascript="create-interest-coupon.js" headLab="activity-manage" sideLab="createCoupon" title="创建加息券">
 
 <!-- content area begin -->
 <div class="col-md-10">
+
+    <select class="jq-b-type" id="businessType">
+        <option value="0">创建体验券</option>
+        <option value="1" selected>创建加息券</option>
+        <option value="2">创建现金红包</option>
+        <option value="3">创建生日月活动</option>
+    </select>
+
     <form action="/activity-manage/coupon" method="post" class="form-horizontal form-list">
         <div class="form-group">
             <label class="col-sm-2 control-label">加息券名称:</label>
@@ -61,7 +69,7 @@
             <div class="col-sm-2 invest-coupon">
 
                 <select class="selectpicker jq-b-type userGroup" name="userGroup">
-                    <#assign notUserGroups = ['EXCHANGER','WINNER','EXPERIENCE_INVEST_SUCCESS','EXPERIENCE_REPAY_SUCCESS','NOT_ACCOUNT_NOT_INVESTED_USER'] />
+                    <#assign notUserGroups = ['INVESTED_USER','REGISTERED_NOT_INVESTED_USER','STAFF','STAFF_RECOMMEND_LEVEL_ONE','AGENT','NEW_REGISTERED_USER','EXCHANGER','WINNER','EXPERIENCE_INVEST_SUCCESS','EXPERIENCE_REPAY_SUCCESS','NOT_ACCOUNT_NOT_INVESTED_USER'] />
                     <#list userGroups as userGroup>
                         <#if !(notUserGroups?seq_contains(userGroup.name()))>
                             <option value="${userGroup.name()}">${userGroup.getDescription()}</option>
