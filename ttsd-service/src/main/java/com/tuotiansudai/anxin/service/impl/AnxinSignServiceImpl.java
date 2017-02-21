@@ -343,7 +343,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
         List<String> batchNoList = new ArrayList<>();
         boolean processResult = true;
-
+        logger.info(MessageFormat.format("createAnxinLoanContract investMapper ,  loanId:{0}", String.valueOf(loanId)));
         List<InvestModel> investModels = investMapper.findNoContractNoInvest(loanId);
         List<CreateContractVO> createContractVOs = new ArrayList<>();
 
@@ -361,6 +361,8 @@ public class AnxinSignServiceImpl implements AnxinSignService {
                 createContractVOs.clear();
             }
         }
+
+        logger.info(MessageFormat.format("createAnxinLoanContract createContractVOs ,  loanId:{0}", createContractVOs.size()));
         // 循环结束，如果列表里还有未处理的，则给它们创建合同
         if (!createContractVOs.isEmpty()) {
             if (!createContractBatch(loanId, createContractVOs, batchNoList)) {
