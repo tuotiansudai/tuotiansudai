@@ -102,7 +102,7 @@ public class LoanOutSuccessCreateAnXinContractMessageConsumer implements Message
         }
 
 
-        if (executeCount < 8) {
+        if (executeCount < 6) {
             logger.info("[标的放款MQ] LoanOutSuccess_GenerateAnXinContract executeCount:{}", executeCount);
             mqWrapperClient.sendMessage(MessageQueue.LoanOutSuccess_GenerateAnXinContract, new LoanOutSuccessMessage(loanId));
             return;
