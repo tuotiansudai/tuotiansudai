@@ -84,14 +84,17 @@ public class LoanOutSuccessCreateAnXinContractMessageConsumer implements Message
             executeCount++;
         }
 
-        redisWrapperClient.setex(redisKey, LOAN_ID_LIFT_TIME, String.valueOf(executeCount));
         if (executeCount == 1) {
             logger.info("[标的放款MQ] LoanOutSuccess_GenerateAnXinContract createLoanContracts is executing, loanId:{}", loanId);
             BaseDto baseDto = payWrapperClient.createAnXinContract(loanId);
             if (!baseDto.isSuccess()) {
-                fatalSmsList.add("生成安心签失败");
                 logger.error(MessageFormat.format("[标的放款MQ] LoanOutSuccess_GenerateAnXinContract is fail. loanId:{0}", String.valueOf(loanId)));
+                smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("生成安心签失败"));
+                return;
             }
+            redisWrapperClient.setex(redisKey, LOAN_ID_LIFT_TIME, String.valueOf(executeCount));
+            mqWrapperClient.sendMessage(MessageQueue.LoanOutSuccess_GenerateAnXinContract, new LoanOutSuccessMessage(loanId));
+            return;
         }
 
         try {
@@ -104,6 +107,7 @@ public class LoanOutSuccessCreateAnXinContractMessageConsumer implements Message
 
         if (executeCount < 6) {
             logger.info("[标的放款MQ] LoanOutSuccess_GenerateAnXinContract executeCount:{}", executeCount);
+            redisWrapperClient.setex(redisKey, LOAN_ID_LIFT_TIME, String.valueOf(executeCount));
             mqWrapperClient.sendMessage(MessageQueue.LoanOutSuccess_GenerateAnXinContract, new LoanOutSuccessMessage(loanId));
             return;
         }
