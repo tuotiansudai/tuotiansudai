@@ -132,8 +132,12 @@
                             <dl>
                                 <dt>招募金额</dt>
                                 <dd>
-                                    <em><@amount>${loanItem.loanAmount?string.computer}</@amount></em>元<#if loanItem.productType == 'EXPERIENCE'>
-                                    (体验金)</#if></dd>
+                                    <#if loanItem.productType == 'EXPERIENCE'>
+                                        <em><@amount>${loanItem.loanAmount?string.computer}</@amount></em>元(体验金)
+                                    <#else>
+                                        <em><@amount>${loanItem.loanAmount?string.computer}</@amount></em>元(体验金)
+                                    </#if>
+                                </dd>
                             </dl>
                         </div>
                     </div>
