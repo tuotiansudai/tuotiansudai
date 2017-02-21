@@ -283,7 +283,7 @@ public class PayCallbackController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/experience_repay_notify", method = RequestMethod.POST)
+    @RequestMapping(value = "/experience_repay_notify", method = RequestMethod.GET)
     public ModelAndView repayCallback(HttpServletRequest request) {
         Map<String, String> paramsMap = this.parseRequestParameters(request);
         String responseData = experienceRepayService.repayCallback(paramsMap, request.getQueryString());

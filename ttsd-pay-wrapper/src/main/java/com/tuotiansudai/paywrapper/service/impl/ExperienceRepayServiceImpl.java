@@ -134,7 +134,7 @@ public class ExperienceRepayServiceImpl implements ExperienceRepayService {
                 TransferResponseModel responseModel = paySyncClient.send(TransferMapper.class, requestModel, TransferResponseModel.class);
                 boolean isSuccess = responseModel.isSuccess();
                 redisWrapperClient.hset(EXPERIENCE_INTEREST_REDIS_KEY, loginName, isSuccess ? SyncRequestStatus.SUCCESS.name() : SyncRequestStatus.FAILURE.name());
-                logger.error("[Experience Repay {}] invest repay is failed", investModel.getId());
+                logger.info("[Experience Repay {}] invest repay is success", investModel.getId());
                 return isSuccess;
             } catch (Exception e) {
                 logger.error(MessageFormat.format("[Experience Repay {0}] invest repay is failed", investModel.getId()), e);
