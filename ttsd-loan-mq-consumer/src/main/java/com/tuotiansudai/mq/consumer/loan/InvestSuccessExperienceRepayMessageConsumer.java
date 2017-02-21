@@ -57,7 +57,13 @@ public class InvestSuccessExperienceRepayMessageConsumer implements MessageConsu
 
         try {
             InvestSuccessMessage investSuccessMessage = JsonConverter.readValue(message, InvestSuccessMessage.class);
-            String loginName = investSuccessMessage.getInvestInfo().getLoginName();
+            long investId = investSuccessMessage.getInvestInfo().getInvestId();
+            InvestModel investModel = investMapper.findById(investId);
+            if (investModel == null){
+                logger.info("新手体验项目收益发放MQ] 投资ID{}不存在",investId);
+                return;
+            }
+            String loginName = investModel.getLoginName();
             if (!isExperienceInterestConditionAvailable(loginName)) {
                 logger.info("[新手体验项目收益发放MQ] 条件不符合，{}", loginName);
                 return;
@@ -65,7 +71,7 @@ public class InvestSuccessExperienceRepayMessageConsumer implements MessageConsu
 
             logger.info("[新手体验项目收益发放MQ] 条件符合，{}", loginName);
 
-            BaseDto<PayDataDto> baseDto = payWrapperClient.experienceRepay(loginName);
+            BaseDto<PayDataDto> baseDto = payWrapperClient.experienceRepay(investId);
 
             if (!baseDto.isSuccess()) {
                 logger.error("[新手体验项目收益发放MQ] 发放体验金收益失败 {}", loginName);

@@ -26,8 +26,8 @@ public class ExperienceRepayController {
 
     @ResponseBody
     @RequestMapping(value = "/repay", method = RequestMethod.POST)
-    public BaseDto<PayDataDto> repay(@RequestBody String loginName) {
-        boolean isSuccess = experienceRepayService.repay(loginName);
+    public BaseDto<PayDataDto> repay(@RequestBody long investId) {
+        boolean isSuccess = experienceRepayService.repay(investId);
         BaseDto<PayDataDto> dto = new BaseDto<>();
         PayDataDto dataDto = new PayDataDto();
         dto.setData(dataDto);

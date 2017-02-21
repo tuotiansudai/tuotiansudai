@@ -75,14 +75,18 @@ public class ExperienceRepayServiceImpl implements ExperienceRepayService {
     private RedisWrapperClient redisWrapperClient;
 
     @Override
-    public boolean repay(String loginName) {
-        List<InvestModel> investModels = investMapper.findByLoanIdAndLoginName(1l, loginName);
-        if (investModels.size() != 1) {
-            logger.error("[Experience Repay] {} invest size is not 1", loginName);
+    public boolean repay(long investId) {
+
+        InvestModel investModel = investMapper.findById(investId);
+        if (investModel == null) {
+            logger.error("[Experience Repay] {} investId  is not exist ", investId);
             return false;
         }
-
-        InvestModel investModel = investModels.get(0);
+        if(investModel.getLoanId() != 1){
+            logger.error("[Experience Repay] {} investId  is not NEWBIE ", investId);
+            return false;
+        }
+        String loginName = investModel.getLoginName();
         if (investModel.getStatus() != InvestStatus.SUCCESS) {
             logger.error("[Experience Repay {}] invest is not existed or status is not SUCCESS", investModel.getId());
             return false;

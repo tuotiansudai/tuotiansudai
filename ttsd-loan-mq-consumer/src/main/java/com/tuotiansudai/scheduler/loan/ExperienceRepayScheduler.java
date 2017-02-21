@@ -42,11 +42,10 @@ public class ExperienceRepayScheduler {
                 .filter(investRepayModel -> new DateTime(investRepayModel.getRepayDate()).isBefore(new DateTime().plusDays(1).withTimeAtStartOfDay()))
                 .collect(Collectors.toList())
                 .forEach(investRepayModel -> {
-                    String loginName = investMapper.findById(investRepayModel.getInvestId()).getLoginName();
                     InvestInfo investInfo = new InvestInfo();
-                    investInfo.setLoginName(loginName);
+                    investInfo.setInvestId(investRepayModel.getInvestId());
                     mqWrapperClient.sendMessage(MessageQueue.InvestSuccess_ExperienceRepay, new InvestSuccessMessage(investInfo, null, null));
-                    logger.info("[ExperienceRepayScheduler] {} experience invest repay", loginName);
+                    logger.info("[ExperienceRepayScheduler] {} experience invest repay", investRepayModel.getInvestId());
                 });
 
         logger.info("[ExperienceRepayScheduler] done");
