@@ -328,7 +328,6 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
     @Override
     public BaseDto createLoanContracts(long loanId, boolean isCreateJob) {
-        logger.info(MessageFormat.format("createAnxinLoanContract loanId:{0}", String.valueOf(loanId)));
         redisWrapperClient.setex(LOAN_CONTRACT_IN_CREATING_KEY + loanId, CREATE_CONTRACT_MAX_IN_DOING_TIME, "1");
 
         LoanModel loanModel = loanMapper.findById(loanId);
@@ -343,29 +342,24 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
         List<String> batchNoList = new ArrayList<>();
         boolean processResult = true;
+
         List<InvestModel> investModels = investMapper.findNoContractNoInvest(loanId);
         List<CreateContractVO> createContractVOs = new ArrayList<>();
 
-        logger.info(MessageFormat.format("createAnxinLoanContract investModels ,  investModels:{0}", String.valueOf(investModels.size())));
         for (int i = 0; i < investModels.size(); i++) {
             InvestModel investModel = investModels.get(i);
-            logger.info(MessageFormat.format("createAnxinLoanContract investModels ,  investModels:{0}", String.valueOf(investModel.getId())));
             CreateContractVO createContractVO = createInvestorContractVo(loanId, investModel);
-            logger.info(MessageFormat.format("createAnxinLoanContract createInvestorContractVo 2,  loan:{0}", createContractVO));
             if (createContractVO == null) {
                 continue;
             }
             createContractVOs.add(createContractVO);
             if (createContractVOs.size() == batchSize) {
-                logger.info(MessageFormat.format("createAnxinLoanContract batchSize 2,  loan:{0}", String.valueOf(loanId)));
                 if (!createContractBatch(loanId, createContractVOs, batchNoList)) {
                     processResult = false;
                 }
                 createContractVOs.clear();
             }
         }
-
-        logger.info(MessageFormat.format("createAnxinLoanContract createContractVOs ,  loanId:{0}", createContractVOs.size()));
         // 循环结束，如果列表里还有未处理的，则给它们创建合同
         if (!createContractVOs.isEmpty()) {
             if (!createContractBatch(loanId, createContractVOs, batchNoList)) {
@@ -373,7 +367,6 @@ public class AnxinSignServiceImpl implements AnxinSignService {
             }
         }
 
-        logger.info(MessageFormat.format("createAnxinLoanContract processResult ,  processResult:{0}", processResult));
         if (!processResult) {
             logger.error("[安心签]: create contract error. loanId:" + String.valueOf(loanId));
             smsWrapperClient.sendGenerateContractErrorNotify(new GenerateContractErrorNotifyDto(mobileList, loanId));
@@ -385,7 +378,6 @@ public class AnxinSignServiceImpl implements AnxinSignService {
                     loanId, AnxinContractType.LOAN_CONTRACT.name(), batchNoList);
         }
 
-        logger.info(MessageFormat.format("createAnxinLoanContract loanId:{0}, batchNoList:{1}", String.valueOf(loanId), batchNoList));
         redisWrapperClient.setex(LOAN_BATCH_NO_LIST_KEY + loanId, BATCH_NO_LIFT_TIME, String.join(",", batchNoList));
         return new BaseDto(true);
     }
@@ -518,7 +510,6 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         CreateContractVO createContractVO = new CreateContractVO();
         Map<String, String> dataModel = new HashMap<>();
 
-        logger.info(MessageFormat.format("createAnxinLoanContract createInvestorContractVo ,  loan:{0}", String.valueOf(loanId)));
         // 标的
         LoanModel loanModel = loanMapper.findById(loanId);
 
@@ -601,11 +592,15 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
     @Override
     public boolean queryContract(long businessId) {
-        try {
-            logger.info(MessageFormat.format("queryAnxinContract loanId:{0}", String.valueOf(businessId)));
+        logger.info(MessageFormat.format("[安心签] queryContract executing , businessId:{0}", String.valueOf(businessId)));
 
+        try {
             String batchStr = redisWrapperClient.get(AnxinSignServiceImpl.LOAN_BATCH_NO_LIST_KEY + businessId);
+            logger.info(MessageFormat.format("[安心签] queryContract executing , batchStr:{0}", batchStr));
+
             List<String> waitingBatchNo = queryContract(businessId, Lists.newArrayList(batchStr.split(",")), AnxinContractType.LOAN_CONTRACT);
+            logger.info(MessageFormat.format("[安心签] queryContract executing , waitingBatchNo:{0}", waitingBatchNo));
+
             if (waitingBatchNo != null && waitingBatchNo.size() > 0) {
                 logger.info(MessageFormat.format("some batch is still in waiting. businessId:{0}, anxin ContractType:{1}, batchNo list(in waiting):{2}",
                         String.valueOf(businessId), AnxinContractType.LOAN_CONTRACT.name(), String.join(",", waitingBatchNo)));
@@ -627,11 +622,11 @@ public class AnxinSignServiceImpl implements AnxinSignService {
                 redisWrapperClient.del(AnxinSignServiceImpl.LOAN_CONTRACT_IN_CREATING_KEY + businessId);
             }
         } catch (Exception ex) {
+            ex.printStackTrace();
             logger.info("query anXin contract fail," + ex);
             return false;
         }
         return true;
     }
-
 
 }
