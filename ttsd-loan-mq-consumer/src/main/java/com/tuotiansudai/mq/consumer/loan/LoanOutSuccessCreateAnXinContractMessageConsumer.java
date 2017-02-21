@@ -41,7 +41,7 @@ public class LoanOutSuccessCreateAnXinContractMessageConsumer implements Message
 
     private long DEFAULT_MINUTE = 1000 * 60 * 2;
 
-    private static final int LOAN_ID_LIFT_TIME = 60 * 60 * 24 * 1; // bath_NO 在redis里保存7天
+    private static final int LOAN_ID_LIFT_TIME = 60 * 60 * 24; // bath_NO 在redis里保存1天
 
     private static final String LOAN_OUT_LOAN_ID_KEY = "loanOutLoanId:{0}";
 
