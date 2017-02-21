@@ -52,7 +52,7 @@
   width: 100%;
   margin: 0 auto;
   background: #f64b49 url("/activity/images/invite-friend/bag-bg.png") center top no-repeat;
-  background-size: 130%;
+  background-size: 135%;
 }
 .pop-layer-out {
   background: url("/activity/images/invite-friend/bg-pop-window.png") left bottom no-repeat;
@@ -102,12 +102,14 @@
     padding: 0px 10px;
   }
   .bg-column-normal {
+    float:left;
+    width:100%;
     background: #fff1c7;
     border: 3px solid #6d221e;
     position: relative;
-    padding: 30px 80px;
+    padding: 15px 80px;
     margin-bottom: 10px;
-    border-radius: 30px;
+    border-radius: 10px;
     @media (max-width:700px) {
       border-radius: 0;
     }
@@ -283,6 +285,214 @@
           text-decoration:underline;
         }
       }
+    }
+  }
+  .titel-item{
+    float:left;
+    width:100%;
+    margin-bottom:15px;
+    text-align:center;
+    .title-text{
+      display:inline-block;
+      padding:0 30px;
+      height:44px;
+      background:#ffae1f;
+      border:3px solid #ffd02c;
+      border-radius:10px;
+      position: relative;
+      i{
+        width:6px;
+        height:6px;
+        border-radius:50%;
+        position: absolute;
+        top:50%;
+        margin-top:-3px;
+        background:#fff;
+        border:2px solid #b97e16;
+        box-sizing:border-box;
+        &.left-icon{
+          left:10px;
+        }
+        &.right-icon{
+          right:10px;
+        }
+      }
+      span{
+        display:inline-block;
+        width:100%;
+        line-height:38px;
+        font-size:22px;
+        color:#fff;
+      }
+    }
+  }
+  .tip-item{
+    float:left;
+    width:100%;
+    text-align:center;
+    font-size:16px;
+    color:#925c1f;
+  }
+  .info-item{
+    float:left;
+    width:100%;
+    text-align:center;
+    &.info-list{
+      li{
+        margin:0 10px;
+      }
+    }
+    &.free-list{
+      background:#fee589;
+      border-radius: 10px;
+      padding:10px 0;
+      li{
+        &.free-type{
+          margin:0 20px 0 80px;
+        }
+      }
+    }
+    li{
+      display:inline-block;
+      margin:0 30px;
+      .info-intro{
+        float:left;
+        width:100%;
+        height:120px;
+        span{
+          float:left;
+          width:100%;
+        }
+      }
+      .info-name{
+        float:left;
+        width:100%;
+        margin-top:20px;
+        font-size:16px;
+        color:#925c1f;
+        text-align:center;
+      }
+      &.money-type{
+        width:180px;
+        .info-intro{
+          background:url('/activity/images/invite-friend/money-bg.png') center no-repeat;
+          background-size:80%;
+          &.free-icon{
+            background:none;
+          }
+          span{
+            font-size:16px;
+            color:#fff;
+            &.number-text{
+              margin-bottom:10px;
+              strong{
+                font-size:34px;
+              }
+            }
+          }
+        }
+      }
+      &.coupon-type{
+        width:240px;
+        .info-intro{
+          background:url('/activity/images/invite-friend/coupon-bg.png') center no-repeat;
+          background-size:80%;
+          span{
+            font-size:28px;
+            color:#ff635a;
+            line-height: 110px;
+            padding-right: 65px;
+            strong{
+              font-size:56px;
+            }
+          }
+        }
+      }
+    }
+  }
+  .btn-item{
+    float:left;
+    width:100%;
+    p{
+      font-size:12px;
+      color:#925c1f;
+      margin:20px 0 0;
+      text-align:center;
+      span{
+        color:#f64b49;
+      }
+      .invite-btn{
+        display:inline-block;
+        width:180px;
+        height:40px;
+        line-height:40px;
+        font-size:16px;
+        color:#fff1c7;
+        background:#f7494c;
+        border-radius:10px;
+      }
+    }
+  }
+  .loan-item{
+    float:left;
+    width:100%;
+    text-align:center;
+    .loan-content{
+      display:inline-block;
+      width:400px;
+      background:#fff;
+      padding:0 100px;
+      dl{
+        float:left;
+        width:100%;
+        padding:5px 0;
+        dt{
+          float:left;
+          width:100%;
+          font-size:16px;
+          color:#525252;
+          span{
+            font-size:14px;
+            color:#ff473c;
+            border:1px solid #ff473c;
+            padding:0 5px;
+            border-radius:5px;
+            margin-left:10px;
+          }
+        }
+        dd{
+          float:left;
+          width:50%;
+          span{
+            float:left;
+            width:100%;
+            font-size:14px;
+            text-align:center;
+            color:#a2a2a2;
+            &.bite-text{
+              font-size:16px;
+              color:#ff473c;
+              line-height:44px;
+              strong{
+                font-size:32px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  .icon-item{
+    float:left;
+    width:100%;
+    margin:10px 0;
+    text-align:center;
+    span{
+      display:inline-block;
+      width:50px;
+      height:50px;
+      background:url('/activity/images/invite-friend/and-icon.png') no-repeat center;
+      background-size:100%;
     }
   }
   .activity-rules {

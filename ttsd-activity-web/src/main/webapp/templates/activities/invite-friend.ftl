@@ -72,11 +72,154 @@
     </@global.isNotAnonymous>
     </div>
     <div class="bg-column-normal">
-        
+        <div class="titel-item">
+            <div class="title-text">
+                <i class="left-icon"></i>
+                <span>一重礼：好友注册就送礼，人脉即钱脉</span>
+                <i class="right-icon"></i>
+            </div>
+        </div>
+        <ul class="info-item">
+            <li class="money-type">
+                <div class="info-intro">
+                    <span class="number-text"><strong>5</strong>元</span>
+                    <span>现金红包</span>
+                </div>
+                <div class="info-name">邀请好友注册即可得</div>
+            </li>
+            <li class="money-type">
+                <div class="info-intro">
+                    <span class="number-text"><strong>10</strong>元</span>
+                    <span>现金红包</span>
+                </div>
+                <div class="info-name">好友绑定银行卡可得</div>
+            </li>
+            <li class="coupon-type">
+                <div class="info-intro">
+                    <span><strong>+0.5</strong>%</span>
+                </div>
+                <div class="info-name">好友首次投资抵押类债权再得</div>
+            </li>
+        </ul>
     </div>
-    <div class="bg-column-normal"></div>
-    <div class="bg-column-normal"></div>
-    <div class="bg-column-normal"></div>
+    <div class="bg-column-normal">
+        <div class="titel-item">
+            <div class="title-text">
+                <i class="left-icon"></i>
+                <span>二重礼：一大波红包加码，有情更有益</span>
+                <i class="right-icon"></i>
+            </div>
+        </div>
+        <div class="tip-item">
+            邀请好友注册投资，每月有效邀请人数越多，红包越多。
+        </div>
+        <ul class="info-item info-list">
+            <li class="money-type">
+                <div class="info-intro">
+                    <span class="number-text"><strong>18</strong>元</span>
+                    <span>现金红包</span>
+                </div>
+                <div class="info-name">有效邀请2～4人可得</div>
+            </li>
+            <li class="money-type">
+                <div class="info-intro">
+                    <span class="number-text"><strong>48</strong>元</span>
+                    <span>现金红包</span>
+                </div>
+                <div class="info-name">有效邀请5～8人可得</div>
+            </li>
+            <li class="money-type">
+                <div class="info-intro">
+                    <span class="number-text"><strong>98</strong>元</span>
+                    <span>现金红包</span>
+                </div>
+                <div class="info-name">有效邀请9～10人可得</div>
+            </li>
+            <li class="money-type">
+                <div class="info-intro">
+                    <span class="number-text"><strong>288</strong>元</span>
+                    <span>现金红包</span>
+                </div>
+                <div class="info-name">有效邀请10人以上可得</div>
+            </li>
+        </ul>
+        <div class="btn-item">
+            <p>
+                <span>小贴士：</span>好友在注册后15天内投资额达到2000及以上（新手体验项目及债权转让除外），视为一个有效邀请。
+            </p>
+            <p>
+                <a href="" class="invite-btn">立即邀请好友拿奖励</a>
+            </p>
+        </div>
+    </div>
+    <div class="bg-column-normal">
+        <div class="titel-item">
+            <div class="title-text">
+                <i class="left-icon"></i>
+                <span>三重礼：好友投资拿现金，双赢双收益</span>
+                <i class="right-icon"></i>
+            </div>
+        </div>
+        <div class="reward-item">
+            <img src="${staticServer}/activity/images/invite-friend/reward-img.png" width="100%">
+        </div>
+        <div class="btn-item">
+            <p>
+                <a href="" class="invite-btn">立即邀请好友拿奖励</a>
+            </p>
+        </div>
+    </div>
+    <div class="bg-column-normal">
+        <div class="titel-item">
+            <div class="title-text">
+                <i class="left-icon"></i>
+                <span>好友可享</span>
+                <i class="right-icon"></i>
+            </div>
+        </div>
+        <div class="tip-item">
+            新手专享高息短期标的：
+        </div>
+        <div class="loan-item">
+            <div class="loan-content">
+                <dl>
+                    <dt>房产抵押借款<span>新手专享</span></dt>
+                    <dd>
+                        <span class="bite-text"><strong>13</strong>%</span>
+                        <span>预期年化收益</span>
+                    </dd>
+                    <dd>
+                        <span class="bite-text"><strong>30</strong>天</span>
+                        <span>项目期限</span>
+                    </dd>
+                </dl>
+            </div>
+            <div class="icon-item">
+                <span></span>
+            </div>
+            <ul class="info-item free-list">
+                <li class="money-type">
+                    <div class="info-intro free-icon">
+                        <img src="${staticServer}/activity/images/invite-friend/free-img.png">
+                    </div>
+                    <div class="info-name">体验金6888元</div>
+                </li>
+                <li class="money-type free-type">
+                    <div class="info-intro">
+                        <span class="number-text"><strong>688</strong>元</span>
+                        <span>现金红包</span>
+                    </div>
+                    <div class="info-name">现金红包688元</div>
+                </li>
+                <li class="coupon-type">
+                    <div class="info-intro">
+                        <span><strong>+3</strong>%</span>
+                    </div>
+                    <div class="info-name">加息券+3%</div>
+                </li>
+            </ul>
+        </div>
+    </div>
     <dl class="activity-rules">
         <dt>温馨提示：</dt>
         <dd>1.您要进行实名认证后才能享受推荐奖励；</dd>
@@ -92,8 +235,7 @@
 
 <div class="pop-layer-out" style="display: none">
     <div class="btn-to-close"></div>
-    <p>您的好友可能猜不到你是谁
-        先来进行实名认证吧！</p>
+    <p>您的好友可能猜不到你是谁<br />先来进行实名认证吧！</p>
 
     <a href="/register/account?redirect=/activity/share-reward"  class="btn-to-identification"></a>
 </div>
