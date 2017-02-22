@@ -12,7 +12,6 @@ include "ttsd-service",
         'ttsd-dependency',
         'ttsd-spring-extension',
         'ttsd-activity-console',
-        'ttsd-anxin-sign',
         'ttsd-util'
 include 'ttsd-message-repository', "ttsd-message-service"
 include 'ttsd-user-repository', 'ttsd-user-service'
