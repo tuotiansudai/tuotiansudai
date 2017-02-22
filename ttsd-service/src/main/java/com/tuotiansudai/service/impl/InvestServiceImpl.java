@@ -193,7 +193,7 @@ public class InvestServiceImpl implements InvestService {
             throw new InvestException(InvestExceptionType.EXCEED_MONEY_NEED_RAISED);
         }
 
-        long userInvestAmount = investMapper.sumSuccessInvestAmountByLoginName(loanId, investDto.getLoginName());
+        long userInvestAmount = investMapper.sumSuccessInvestAmountByLoginName(loanId, investDto.getLoginName(),true);
 
         // 不满足单用户投资限额
         if (investAmount > userInvestMaxAmount - userInvestAmount) {

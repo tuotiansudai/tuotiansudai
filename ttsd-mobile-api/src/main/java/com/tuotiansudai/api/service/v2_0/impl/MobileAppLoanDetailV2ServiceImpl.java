@@ -239,11 +239,11 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
             for (InvestModel investModel : investAchievements) {
                 String investorLoginName = randomUtils.encryptMobile(loginName, investModel.getLoginName(), investModel.getId());
                 if (investModel.getAchievements().contains(InvestAchievement.MAX_AMOUNT) && loanModel.getStatus() == com.tuotiansudai.repository.model.LoanStatus.RAISING) {
-                    marqueeTitle.append(investorLoginName + " 以累计投资" + AmountConverter.convertCentToString(investMapper.sumSuccessInvestAmountByLoginName(loanModel.getId(), investModel.getLoginName())) + "元暂居标王，快来争夺吧    ");
+                    marqueeTitle.append(investorLoginName + " 以累计投资" + AmountConverter.convertCentToString(investMapper.sumSuccessInvestAmountByLoginName(loanModel.getId(), investModel.getLoginName(),true)) + "元暂居标王，快来争夺吧    ");
                     marqueeTitle.append("目前项目剩余" + AmountConverter.convertCentToString(loanModel.getLoanAmount() - investedAmount) + "元，快来一锤定音获取奖励吧    ");
                 }
                 if (investModel.getAchievements().contains(InvestAchievement.MAX_AMOUNT) && loanModel.getStatus() != com.tuotiansudai.repository.model.LoanStatus.RAISING) {
-                    marqueeTitle.append("恭喜" + investorLoginName + " 以累计投资" + AmountConverter.convertCentToString(investMapper.sumSuccessInvestAmountByLoginName(loanModel.getId(), investModel.getLoginName())) + "元夺得标王，奖励0.5％加息券＋100元红包    ");
+                    marqueeTitle.append("恭喜" + investorLoginName + " 以累计投资" + AmountConverter.convertCentToString(investMapper.sumSuccessInvestAmountByLoginName(loanModel.getId(), investModel.getLoginName(),true)) + "元夺得标王，奖励0.5％加息券＋100元红包    ");
                 }
                 if (investModel.getAchievements().contains(InvestAchievement.FIRST_INVEST)) {
                     marqueeTitle.append("恭喜" + investorLoginName + " " + new DateTime(investModel.getTradingTime()).toString("yyyy-MM-dd HH:mm:ss") + "占领先锋，奖励0.2％加息券＋50元红包    ");

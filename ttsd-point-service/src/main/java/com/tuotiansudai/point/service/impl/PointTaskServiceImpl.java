@@ -20,6 +20,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.text.MessageFormat;
 import java.util.List;
@@ -83,12 +84,14 @@ public class PointTaskServiceImpl implements PointTaskService {
             pointBillService.createTaskPointBill(loginName, pointTaskModel.getId(), pointTaskModel.getPoint(), pointTask.getDescription());
 
             if (pointTask.equals(PointTask.BIND_BANK_CARD)) {
-                PointTaskModel bankCardTaskModel = pointTaskMapper.findByName(PointTask.EACH_RECOMMEND_BANK_CARD);
                 String referrer = userMapper.findByLoginName(loginName).getReferrer();
-                long referrerMaxTaskLevel = userPointTaskMapper.findMaxTaskLevelByLoginName(referrer, PointTask.EACH_RECOMMEND_BANK_CARD);
-                userPointTaskMapper.create(new UserPointTaskModel(referrer, bankCardTaskModel.getId(), bankCardTaskModel.getPoint(), referrerMaxTaskLevel + 1));
-                String pointBillNote = MessageFormat.format("{0}奖励{1}积分", PointTask.EACH_RECOMMEND_BANK_CARD.getTitle(), String.valueOf(bankCardTaskModel.getPoint()));
-                pointBillService.createTaskPointBill(referrer, bankCardTaskModel.getId(), bankCardTaskModel.getPoint(), pointBillNote);
+                if(!StringUtils.isEmpty(referrer)) {
+                    PointTaskModel bankCardTaskModel = pointTaskMapper.findByName(PointTask.EACH_RECOMMEND_BANK_CARD);
+                    long referrerMaxTaskLevel = userPointTaskMapper.findMaxTaskLevelByLoginName(referrer, PointTask.EACH_RECOMMEND_BANK_CARD);
+                    userPointTaskMapper.create(new UserPointTaskModel(referrer, bankCardTaskModel.getId(), bankCardTaskModel.getPoint(), referrerMaxTaskLevel + 1));
+                    String pointBillNote = MessageFormat.format("{0}奖励{1}积分", PointTask.EACH_RECOMMEND_BANK_CARD.getTitle(), String.valueOf(bankCardTaskModel.getPoint()));
+                    pointBillService.createTaskPointBill(referrer, bankCardTaskModel.getId(), bankCardTaskModel.getPoint(), pointBillNote);
+                }
             }
         }
 
@@ -178,7 +181,7 @@ public class PointTaskServiceImpl implements PointTaskService {
                 pointTaskDto.setUrl(this.getTaskUrl(pointTask));
                 switch (pointTask) {
                     case EACH_SUM_INVEST:
-                        long sumSuccessInvestAmount = investMapper.sumSuccessInvestAmountByLoginName(null, loginName);
+                        long sumSuccessInvestAmount = investMapper.sumSuccessInvestAmountByLoginName(null, loginName,true);
                         pointTaskDto.setTitle(MessageFormat.format(pointTask.getTitle(), AmountConverter.convertCentToString(SUM_INVEST_5000_AMOUNT)));
                         pointTaskDto.setPoint(SUM_INVEST_5000_POINT);
                         pointTaskDto.setDescription(MessageFormat.format("还差<span class='color-key'>{0}元</span>即可获得奖励", AmountConverter.convertCentToString(SUM_INVEST_5000_AMOUNT - sumSuccessInvestAmount)));
@@ -277,7 +280,7 @@ public class PointTaskServiceImpl implements PointTaskService {
             case FIRST_RECHARGE:
                 return rechargeMapper.findSumSuccessRechargeByLoginName(loginName) > 0;
             case FIRST_INVEST:
-                return investMapper.sumSuccessInvestAmountByLoginName(null, loginName) > 0;
+                return investMapper.sumSuccessInvestAmountByLoginName(null, loginName,true) > 0;
         }
 
         return false;
@@ -292,7 +295,7 @@ public class PointTaskServiceImpl implements PointTaskService {
         switch (pointTask) {
             case EACH_SUM_INVEST:
                 //只能完成一次
-                long sumInvestAmount = investMapper.sumSuccessInvestAmountByLoginName(null, loginName);
+                long sumInvestAmount = investMapper.sumSuccessInvestAmountByLoginName(null, loginName,true);
                 return CollectionUtils.isEmpty(userPointTaskMapper.findByLoginNameAndTask(loginName, pointTask)) && (sumInvestAmount >= SUM_INVEST_5000_AMOUNT);
             case FIRST_SINGLE_INVEST:
                 //只能完成一次

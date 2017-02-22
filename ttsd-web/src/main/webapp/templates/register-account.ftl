@@ -12,7 +12,7 @@
 
     </div>
     <div class="register-box ">
-        <form class="register-account-form" id="registerAccountForm" action="/register/account?redirect=${redirect}" method="post">
+        <form class="register-account-form" id="registerAccountForm"  method="post">
             <ul class="reg-list tl register-step-two">
                 <li>
                     <label class="title">真实姓名</label>

@@ -57,7 +57,7 @@ registerAccountForm.onsubmit = function(event) {
     $btnSubmit.prop('disabled', true);
     var redirect = document.referrer;
     commonFun.useAjax({
-        url:"/register/account?redirect="+redirect,
+        url:"/register/account",
         type:'POST',
         data:$(registerAccountForm).serialize()
     },function(response) {

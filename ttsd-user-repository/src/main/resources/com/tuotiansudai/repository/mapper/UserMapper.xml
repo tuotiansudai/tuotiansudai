@@ -245,7 +245,7 @@
         <![CDATA[
         and DATE_FORMAT(user.register_time, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d')
         ]]>
-        and exists(select 1 from invest where invest.login_name = user.login_name and invest.status = 'SUCCESS' and invest.loan_id != '1')
+        and exists(select 1 from invest JOIN loan on invest.loan_id = loan.id where invest.login_name = user.login_name and invest.status = 'SUCCESS' and loan.product_type != 'EXPERIENCE')
         group by
         case if(length(identity_number)=18, cast(substring(identity_number,17,1) as UNSIGNED)%2, if(length(identity_number)=15,cast(substring(identity_number,15,1) as UNSIGNED)%2,3))
 		when 1 then '男'
@@ -260,7 +260,7 @@
         <![CDATA[
         and DATE_FORMAT(user.register_time, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d')
         ]]>
-        and exists(select 1 from invest where invest.login_name = user.login_name and invest.status = 'SUCCESS' and invest.loan_id != '1')
+        and exists(select 1 from invest join loan on invest.loan_id = loan.id where invest.login_name = user.login_name and invest.status = 'SUCCESS' and loan.product_type != 'EXPERIENCE')
         group by age
         order by totalCount asc
     </select>
@@ -272,7 +272,7 @@
         <![CDATA[
         and DATE_FORMAT(user.register_time, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d')
         ]]>
-        and exists(select 1 from invest where invest.login_name = user.login_name and invest.status = 'SUCCESS' and invest.loan_id != '1')
+        and exists(select 1 from invest join loan on invest.loan_id = loan.id where invest.login_name = user.login_name and invest.status = 'SUCCESS' and loan.product_type != 'EXPERIENCE')
         group by city
         order by totalCount desc
         limit 0,3
@@ -285,7 +285,7 @@
         <![CDATA[
         and DATE_FORMAT(user.register_time, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d')
         ]]>
-        and exists(select 1 from invest where invest.login_name = user.login_name and invest.status = 'SUCCESS' and invest.loan_id != '1')
+        and exists(select 1 from invest join loan on invest.loan_id = loan.id where invest.login_name = user.login_name and invest.status = 'SUCCESS' and loan.product_type != 'EXPERIENCE')
     </select>
 
 </mapper>
