@@ -4,6 +4,7 @@ import com.tuotiansudai.console.dto.ExperienceBalancePaginationItemDto;
 import com.tuotiansudai.console.dto.InvestRepayExperiencePaginationItemDto;
 import com.tuotiansudai.console.repository.mapper.InvestRepayMapperConsole;
 import com.tuotiansudai.console.repository.mapper.UserMapperConsole;
+import com.tuotiansudai.console.repository.model.InvestRepayExperienceView;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.repository.mapper.ExperienceBillMapper;
 import com.tuotiansudai.repository.model.RepayStatus;
@@ -45,7 +46,18 @@ public class ConsoleExperienceService {
                                                                                                RepayStatus repayStatus,
                                                                                                int index,
                                                                                                int pageSize){
+        int count = investRepayMapperConsole.findCountInvestRepayExperience(mobile,repayDateMin,repayDateMax,repayStatus);
+        int offset = PaginationUtil.calculateOffset(index,pageSize,count);
+        List<InvestRepayExperienceView> views = investRepayMapperConsole.findInvestRepayExperience(mobile,repayDateMin,repayDateMax,repayStatus,offset,pageSize);
+        return new BasePaginationDataDto<>(index,pageSize,count,views.stream().map(investRepayExperienceView -> new InvestRepayExperiencePaginationItemDto(investRepayExperienceView))
+                .collect(Collectors.toList()));
+    }
 
+    public long findSumExpectedInterestExperience(String mobile,Date repayDateMin,Date repayDateMax,RepayStatus repayStatus){
+        return investRepayMapperConsole.findSumExpectedInterestExperience(mobile,repayDateMin,repayDateMax,repayStatus);
+    }
+    public long findSumActualInterestExperience(String mobile,Date repayDateMin,Date repayDateMax,RepayStatus repayStatus){
+        return investRepayMapperConsole.findSumActualInterestExperience(mobile,repayDateMin,repayDateMax,repayStatus);
     }
 
 

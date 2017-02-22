@@ -1,6 +1,7 @@
 package com.tuotiansudai.console.dto;
 
 
+import com.tuotiansudai.console.repository.model.InvestRepayExperienceView;
 import com.tuotiansudai.repository.model.RepayStatus;
 
 import java.io.Serializable;
@@ -15,6 +16,18 @@ public class InvestRepayExperiencePaginationItemDto implements Serializable{
     private long expectedInterest;
     private long actualInterest;
     private RepayStatus status;
+
+    public InvestRepayExperiencePaginationItemDto(){}
+
+    public InvestRepayExperiencePaginationItemDto(InvestRepayExperienceView investRepayExperienceView){
+        this.mobile = investRepayExperienceView.getMobile();
+        this.experienceBalance = investRepayExperienceView.getExperienceBalance();
+        this.repayDate = investRepayExperienceView.getRepayDate();
+        this.actualRepayDate = investRepayExperienceView.getActualRepayDate();
+        this.expectedInterest = investRepayExperienceView.getExpectedInterest();
+        this.actualInterest = investRepayExperienceView.getActualInterest();
+        this.status = investRepayExperienceView.getStatus();
+    }
 
     public String getMobile() {
         return mobile;

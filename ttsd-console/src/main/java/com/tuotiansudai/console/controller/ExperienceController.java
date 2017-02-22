@@ -1,8 +1,11 @@
 package com.tuotiansudai.console.controller;
 
 import com.tuotiansudai.console.dto.ExperienceBalancePaginationItemDto;
+import com.tuotiansudai.console.dto.InvestRepayExperiencePaginationItemDto;
 import com.tuotiansudai.console.service.ConsoleExperienceService;
 import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.enums.ExperienceBillOperationType;
+import com.tuotiansudai.enums.ExperienceBusinessType;
 import com.tuotiansudai.repository.model.RepayStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -49,9 +52,35 @@ public class ExperienceController {
                                 @RequestParam(value = "repayStatus", required = false) RepayStatus repayStatus,
                                 @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
         ModelAndView modelAndView = new ModelAndView("/experience-repay-detail");
-
         int pageSize = 10;
+        BasePaginationDataDto<InvestRepayExperiencePaginationItemDto> basePaginationDataDto
+                                                = consoleExperienceService.investRepayExperience(mobile,repayDateMin,repayDateMax,repayStatus,index,pageSize);
+        long sumActualInterestExperience = consoleExperienceService.findSumActualInterestExperience(mobile,repayDateMin,repayDateMax,repayStatus);
+        long sumExpectedInterestExperience = consoleExperienceService.findSumExpectedInterestExperience(mobile,repayDateMin,repayDateMax,repayStatus);
+        modelAndView.addObject("baseDto",basePaginationDataDto);
+        modelAndView.addObject("sumActualInterestExperience",sumActualInterestExperience);
+        modelAndView.addObject("sumExpectedInterestExperience",sumExpectedInterestExperience);
+        modelAndView.addObject("mobile",mobile);
+        modelAndView.addObject("repayDateMin",repayDateMin);
+        modelAndView.addObject("repayDateMax",repayDateMax);
+        modelAndView.addObject("index", index);
+        modelAndView.addObject("pageSize", pageSize);
+        modelAndView.addObject("hasNextPage", basePaginationDataDto.isHasNextPage());
+        modelAndView.addObject("hasPreviousPage", basePaginationDataDto.isHasPreviousPage());
+        return modelAndView;
     }
+
+    @RequestMapping(value = "/repay-detail", method = RequestMethod.GET)
+    public ModelAndView repayDetail(@RequestParam(value = "mobile", required = false) String mobile,
+                                    @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
+                                    @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
+                                    @RequestParam(value = "experienceBillOperationType", required = false) ExperienceBillOperationType experienceBillOperationType,
+                                    @RequestParam(value = "experienceBusinessType", required = false) ExperienceBusinessType experienceBusinessType,
+                                    @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
+
+    }
+
+
 
 
 }
