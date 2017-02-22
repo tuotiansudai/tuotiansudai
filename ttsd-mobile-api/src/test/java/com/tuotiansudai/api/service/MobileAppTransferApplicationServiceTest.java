@@ -7,6 +7,7 @@ import com.tuotiansudai.api.util.PageValidUtils;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
+import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
@@ -66,11 +67,10 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
     @Mock
     private InvestRepayMapper investRepayMapper;
     @Mock
-    private InvestService investService;
-    @Mock
-    private UserMembershipEvaluator userMembershipEvaluator;
-    @Mock
     private PageValidUtils pageValidUtils;
+
+    @Mock
+    private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
 
     @Test
     public void shouldGenerateTransferApplicationIsSuccess() {
@@ -275,13 +275,11 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
         investRepayModels.add(investRepayModel1);
         investRepayModels.add(investRepayModel2);
         investRepayModels.add(investRepayModel3);
-        MembershipModel membershipModel = new MembershipModel();
-        membershipModel.setFee(0.4);
 
         when(transferApplicationMapper.findById(anyLong())).thenReturn(transferApplicationModel);
         when(accountMapper.findByLoginName(anyString())).thenReturn(accountModel);
         when(investRepayMapper.findByInvestIdAndPeriodAsc(anyLong())).thenReturn(investRepayModels);
-        when(userMembershipEvaluator.evaluate(anyString())).thenReturn(membershipModel);
+        when(membershipPrivilegePurchaseService.obtainServiceFee(anyString())).thenReturn(0.4);
 
         BaseResponseDto<TransferPurchaseResponseDataDto> baseResponseDto = mobileAppTransferApplicationService.transferPurchase(transferPurchaseRequestDto);
 

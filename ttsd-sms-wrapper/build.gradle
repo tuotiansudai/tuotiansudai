@@ -2,6 +2,7 @@ apply plugin: 'war'
 apply from: 'db_migration.gradle'
 
 dependencies {
+
     compile project(':ttsd-config'),
             project(':ttsd-dependency'),
             project(':ttsd-util'),

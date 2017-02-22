@@ -20,6 +20,8 @@ public enum SystemBillDetailTemplate {
 
     LOTTERY_CASH_DETAIL_TEMPLATE("用户{0}抽奖,抽到现金{1}分"),
 
+    EXPERIENCE_INTEREST_DETAIL_TEMPLATE("发放用户({0})新手体检金收益{1}分"),
+
     EXTRA_RATE_DETAIL_TEMPLATE("用户({0})投资(investId={1})加息奖励");
 
     private final String template;

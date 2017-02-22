@@ -60,4 +60,10 @@
         where login_name = #{loginName}
         and point_task.name = #{pointTask}
     </select>
+
+    <select id="findFinishTaskByLoginName" resultType="long" parameterType="map">
+        select IFNULL(count(distinct(point_task_id)), 0)
+        from user_point_task
+        where login_name = #{loginName}
+    </select>
 </mapper>

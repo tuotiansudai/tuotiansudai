@@ -18,8 +18,6 @@ public class JobInitPlugin implements SchedulerPlugin {
 
     private String schedulerName;
 
-    private final String TIMEZONE_SHANGHAI = "Asia/Shanghai";
-
     public JobInitPlugin(JobManager jobManager) {
         this.jobManager = jobManager;
     }

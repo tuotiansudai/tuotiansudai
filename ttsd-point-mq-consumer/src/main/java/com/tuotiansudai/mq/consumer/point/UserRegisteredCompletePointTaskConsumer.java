@@ -29,7 +29,7 @@ public class UserRegisteredCompletePointTaskConsumer implements MessageConsumer 
         logger.info("[MQ] receive message: {}: '{}'.", this.queue(), message);
         if (!StringUtils.isEmpty(message)) {
             logger.info("[MQ] ready to consume message: complete user-registered task.");
-            pointTaskService.completeAdvancedTask(PointTask.EACH_RECOMMEND, message);
+            pointTaskService.completeAdvancedTask(PointTask.EACH_RECOMMEND_REGISTER, message);
             logger.info("[MQ] consume message success.");
         }
     }

@@ -229,17 +229,20 @@
 
     <select id="sumSuccessInvestAmountByLoginName" parameterType="map" resultType="long">
         select IFNULL(sum(amount),0)
-        from invest
+        from invest JOIN loan ON invest.loan_id = loan.id
         <where>
             <if test="loanId != null">
-                and loan_id = #{loanId}
+                and invest.loan_id = #{loanId}
             </if>
             <if test="loginName != null">
-                and login_name = #{loginName}
+                and invest.login_name = #{loginName}
             </if>
-            and loan_id != 1
+            <if test="includeTransferInvest == false">
+                and invest.transfer_invest_id IS NULL
+            </if>
+            and loan.product_type != 'EXPERIENCE'
         </where>
-        and status = 'SUCCESS'
+        and invest.status = 'SUCCESS'
     </select>
 
     <select id="findInvestPagination" resultMap="investPaginationItemView">
@@ -268,7 +271,11 @@
         invest.invest_time AS invest_time,
         invest.is_auto_invest AS auto_invest,
         invest.amount AS invest_amount,
-        (SELECT coupon.id FROM coupon join user_coupon on coupon.coupon_type = #{preferenceType} and user_coupon.coupon_id = coupon.id
+        (SELECT coupon.id FROM coupon join user_coupon on
+        user_coupon.coupon_id = coupon.id
+        <if test="preferenceType != null and preferenceType.name() != 'INVEST_BENEFIT'">
+            and coupon.coupon_type = #{preferenceType}
+        </if>
         WHERE user_coupon.invest_id = invest.id limit 0, 1) AS coupon_id,
         (SELECT extra_rate FROM invest_extra_rate WHERE invest_extra_rate.invest_id = invest.id) AS extra_rate,
         (SELECT actual_interest FROM invest_extra_rate WHERE invest_extra_rate.invest_id = invest.id) AS extra_actual_interest,
@@ -327,10 +334,7 @@
             </if>
             <if test="loanStatus != null">
                 AND (loan.status = #{loanStatus}
-                OR ((#{loanStatus} = 'REPAYING' AND loan.product_type = 'EXPERIENCE' AND TO_DAYS(NOW()) -
-                TO_DAYS(invest_time) &lt; loan.duration)
-                OR (#{loanStatus} = 'COMPLETE' AND loan.product_type = 'EXPERIENCE' AND TO_DAYS(NOW()) -
-                TO_DAYS(invest_time) &gt;= loan.duration)))
+                OR (loan.product_type = 'EXPERIENCE' and exists(select * from invest_repay ir where ir.status=#{loanStatus} and ir.invest_id = invest.id and ir.period = 1)))
             </if>
 
             <if test="loanStatus != null &amp;&amp; loanStatus.name() == 'RAISING'">
@@ -356,10 +360,7 @@
             </if>
             <if test="loanStatus != null">
                 AND (loan.status = #{loanStatus}
-                OR ((#{loanStatus} = 'REPAYING' AND loan.product_type = 'EXPERIENCE' AND TO_DAYS(NOW()) -
-                TO_DAYS(invest_time) &lt; loan.duration)
-                OR (#{loanStatus} = 'COMPLETE' AND loan.product_type = 'EXPERIENCE' AND TO_DAYS(NOW()) -
-                TO_DAYS(invest_time) &gt;= loan.duration)))
+                OR (loan.product_type = 'EXPERIENCE' and exists(select * from invest_repay ir where ir.status=#{loanStatus} and ir.invest_id = invest.id and ir.period = 1)))
             </if>
 
             <if test="loanStatus != null &amp;&amp; loanStatus.name() == 'RAISING'">
@@ -504,11 +505,12 @@
         and trading_time between #{startTime} and #{endTime}
     </select>
 
-    <select id="sumSuccessInvestCountByLoginName" parameterType="String" resultType="int">
+    <select id="sumSuccessInvestCountByLoginName" parameterType="map" resultType="int">
         select count(*)
         from invest join loan on invest.loan_id = loan.id and loan.product_type != 'EXPERIENCE'
         where invest.login_name = #{loginName}
         and invest.status = 'SUCCESS'
+
     </select>
 
     <select id="countSuccessInvest" parameterType="long" resultType="long">
@@ -589,7 +591,7 @@
         select min(trading_time) from invest where status = 'SUCCESS' and loan_id = #{loanId}
     </select>
 
-    <select id="findByLoanIdAndLoginName" parameterType="map" resultMap="investResultMap">
+    <select id="findByLoanIdAndLoginName" parameterType="map" resultMap="investResultMap" useCache="false">
         select * from invest where loan_id = #{loanId} and login_name = #{loginName} and status = 'SUCCESS'
     </select>
 
@@ -957,7 +959,7 @@
         from invest
         inner join user on invest.login_name = user.login_name
         where invest.status = 'SUCCESS'
-        and loan_id != '1'
+        and EXISTS (select 1 from loan l where l.id = invest.loan_id and l.product_type != 'EXPERIENCE')
         <![CDATA[
         and DATE_FORMAT(invest.invest_time, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d')
         ]]>
@@ -971,7 +973,7 @@
         from invest
         inner join user on invest.login_name = user.login_name
         where invest.status = 'SUCCESS'
-        and loan_id != '1'
+        and EXISTS (select 1 from loan l where l.id = invest.loan_id and l.product_type != 'EXPERIENCE')
          <![CDATA[
         and DATE_FORMAT(invest.invest_time, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d')
 
@@ -982,6 +984,30 @@
 
     <select id="findInvestorInvestAndTransferPagination" parameterType="map" resultMap="investResultMap">
         select invest.*
+        from invest
+        join loan on invest.loan_id = loan.id
+        where invest.login_name = #{loginName}
+        and invest.status = 'SUCCESS'
+        <if test="loanStatus.name() == 'COMPLETE' ">
+            and (loan.product_type = 'EXPERIENCE' and exists(select * from invest_repay ir where ir.status='COMPLETE' and ir.invest_id = invest.id and ir.period = 1)
+            or (loan.product_type != 'EXPERIENCE' and loan.status = 'COMPLETE' and invest.transfer_status != 'SUCCESS')
+            or (loan.product_type != 'EXPERIENCE' and invest.transfer_status = 'SUCCESS'))
+        </if>
+        <if test="loanStatus.name() == 'REPAYING' ">
+            and (loan.product_type = 'EXPERIENCE' and  exists(select * from invest_repay ir where ir.status='REPAYING' and ir.invest_id = invest.id and ir.period = 1)
+            or (loan.product_type != 'EXPERIENCE' and loan.status in ('REPAYING','OVERDUE') and invest.transfer_status
+            != 'SUCCESS'))
+        </if>
+        <if test="loanStatus.name() == 'RAISING' ">
+            and loan.status in ('RAISING','RECHECK') and loan.product_type != 'EXPERIENCE'
+        </if>
+        order by case when invest.trading_time is null then invest.created_time else invest.trading_time end desc,
+        invest.id asc
+        limit #{index}, #{pageSize}
+    </select>
+
+    <select id="countInvestorInvestAndTransferPagination" parameterType="map" resultType="long">
+        select count(1)
         from invest
         join loan on invest.loan_id = loan.id
         where invest.login_name = #{loginName}
@@ -999,28 +1025,7 @@
         <if test="loanStatus.name() == 'RAISING' ">
             and loan.status in ('RAISING','RECHECK') and loan.product_type != 'EXPERIENCE'
         </if>
-        order by case when invest.trading_time is null then invest.created_time else invest.trading_time end desc,
-        invest.id asc
-        limit #{index}, #{pageSize}
     </select>
 
-    <select id="countInvestorInvestAndTransferPagination" parameterType="map" resultType="long">
-        select count(1)
-        from invest
-        join loan on invest.loan_id = loan.id
-        where invest.login_name = #{loginName}
-        <if test="loanStatus.name() == 'COMPLETE' ">
-            and loan.status = #{loanStatus}
-            and invest.`transfer_status` = 'SUCCESS'
-        </if>
-        <if test="loanStatus.name() == 'REPAYING' ">
-            and loan.status in ('REPAYING','OVERDUE')
-            and invest.`transfer_status` != 'SUCCESS'
-        </if>
-        <if test="loanStatus.name() == 'RAISING' ">
-            and loan.status in ('RAISING','RECHECK')
-        </if>
-        and invest.`status` = 'SUCCESS'
-    </select>
 
 </mapper>

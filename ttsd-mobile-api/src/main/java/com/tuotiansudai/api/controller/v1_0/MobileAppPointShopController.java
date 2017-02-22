@@ -40,9 +40,9 @@ public class MobileAppPointShopController extends MobileAppBaseController {
 
     @RequestMapping(value = "/get/point-home", method = RequestMethod.POST)
     @ApiOperation("积分商城首页")
-    public BaseResponseDto<ProductListResponseDto> getPointHome(@RequestBody BaseParamDto baseParamDto) {
-        baseParamDto.getBaseParam().setUserId(getLoginName());
-        return mobileAppPointShopService.findPointHome(baseParamDto);
+    public BaseResponseDto<ProductListResponseDto> getPointHome(@RequestBody ProductListRequestDto productListRequestDto) {
+        productListRequestDto.getBaseParam().setUserId(getLoginName());
+        return mobileAppPointShopService.findPointHome(productListRequestDto);
     }
 
     @RequestMapping(value = "/get/product-detail", method = RequestMethod.POST)
@@ -57,6 +57,27 @@ public class MobileAppPointShopController extends MobileAppBaseController {
     public BaseResponseDto productExchange(@RequestBody ProductDetailRequestDto productDetailRequestDto) {
         productDetailRequestDto.getBaseParam().setUserId(getLoginName());
         return mobileAppPointShopService.productExchange(productDetailRequestDto);
+    }
+
+    @RequestMapping(value = "/get/prize", method = RequestMethod.POST)
+    @ApiOperation("积分抽奖")
+    public BaseResponseDto lotteryDrawByPoint(@RequestBody BaseParamDto baseParamDto) {
+        baseParamDto.getBaseParam().setUserId(getLoginName());
+        return mobileAppPointShopService.lotteryDrawByPoint(baseParamDto);
+    }
+
+    @RequestMapping(value = "/get/user-prize-list", method = RequestMethod.POST)
+    @ApiOperation("我的中奖记录")
+    public BaseResponseDto myPrizeList(@RequestBody BaseParamDto baseParamDto) {
+        baseParamDto.getBaseParam().setUserId(getLoginName());
+        return mobileAppPointShopService.findPrizeListByLoginName(baseParamDto);
+    }
+
+    @RequestMapping(value = "/get/all-prize-list", method = RequestMethod.POST)
+    @ApiOperation("全部中奖记录")
+    public BaseResponseDto PrizeList(@RequestBody BaseParamDto baseParamDto) {
+        baseParamDto.getBaseParam().setUserId(getLoginName());
+        return mobileAppPointShopService.findPrizeList(baseParamDto);
     }
 
 }

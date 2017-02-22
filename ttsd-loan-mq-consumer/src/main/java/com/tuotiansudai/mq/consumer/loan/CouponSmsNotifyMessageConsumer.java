@@ -66,12 +66,6 @@ public class CouponSmsNotifyMessageConsumer implements MessageConsumer {
     @Resource(name = "exchangeCodeCollector")
     private UserCollector exchangeCodeCollector;
 
-    @Resource(name = "experienceInvestSuccessCollector")
-    private UserCollector experienceInvestSuccessCollector;
-
-    @Resource(name = "experienceRepaySuccessCollector")
-    private UserCollector experienceRepaySuccessCollector;
-
     @Resource(name = "membershipUserCollector")
     private UserCollector membershipUserCollector;
 
@@ -91,17 +85,19 @@ public class CouponSmsNotifyMessageConsumer implements MessageConsumer {
 
     @Override
     public void consume(String message) {
+        logger.info(MessageFormat.format("CouponSmsNotify is consume, message:{0}", message));
         long couponId = Long.parseLong(message);
         CouponModel couponModel = couponMapper.findById(couponId);
         List<String> loginNames = this.getCollector(couponModel.getUserGroup()).collect(couponModel.getId());
 
         SmsCouponNotifyDto notifyDto = new SmsCouponNotifyDto();
         notifyDto.setAmount(AmountConverter.convertCentToString(couponModel.getAmount()));
-        notifyDto.setRate(new BigDecimal(couponModel.getRate() * 100).setScale(0, BigDecimal.ROUND_UP).toString());
+        notifyDto.setRate(String.format("%.1f", couponModel.getRate() * 100));
         notifyDto.setCouponType(couponModel.getCouponType());
         notifyDto.setExpiredDate(DateTime.now().plusDays(couponModel.getDeadline()).withTimeAtStartOfDay().toString("yyyy-MM-dd"));
 
         for (String loginName : loginNames) {
+            logger.info(MessageFormat.format("Send coupon notify, loginName:{0}, couponId:{1}", loginName, String.valueOf(couponId)));
             String mobile = userMapper.findByLoginName(loginName).getMobile();
             notifyDto.setMobile(mobile);
             try {
@@ -127,8 +123,6 @@ public class CouponSmsNotifyMessageConsumer implements MessageConsumer {
                 .put(UserGroup.EXCHANGER, this.exchangerCollector)
                 .put(UserGroup.WINNER, this.winnerCollector)
                 .put(UserGroup.EXCHANGER_CODE, this.exchangeCodeCollector)
-                .put(UserGroup.EXPERIENCE_INVEST_SUCCESS, this.experienceInvestSuccessCollector)
-                .put(UserGroup.EXPERIENCE_REPAY_SUCCESS, this.experienceRepaySuccessCollector)
                 .put(UserGroup.MEMBERSHIP_V0, this.membershipUserCollector)
                 .put(UserGroup.MEMBERSHIP_V1, this.membershipUserCollector)
                 .put(UserGroup.MEMBERSHIP_V2, this.membershipUserCollector)

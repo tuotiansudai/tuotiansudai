@@ -10,6 +10,7 @@
         <id column="id" property="id"/>
         <result column="product_id" property="productId"/>
         <result column="points" property="points"/>
+        <result column="actual_points" property="actualPoints"/>
         <result column="num" property="num"/>
         <result column="total_points" property="totalPoints"/>
         <result column="contact" property="contact"/>
@@ -25,6 +26,7 @@
         <id column="id" property="id"/>
         <result column="product_id" property="productId"/>
         <result column="points" property="points"/>
+        <result column="actual_points" property="actualPoints"/>
         <result column="num" property="num"/>
         <result column="total_points" property="totalPoints"/>
         <result column="name" property="name"/>
@@ -32,9 +34,9 @@
     </resultMap>
 
     <insert id="create" parameterType="ProductOrderModel" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO product_order (`product_id`, `points`, `num`, `total_points`, `contact`,
+        INSERT INTO product_order (`product_id`, `points`, `actual_points`, `num`, `total_points`, `contact`,
         `mobile`, `address`, `consignment`, `consignment_time`, `created_by`, `created_time`)
-        VALUE(#{productId}, #{points}, #{num}, #{totalPoints}, #{contact}, #{mobile}, #{address},
+        VALUE(#{productId}, #{points} ,#{actualPoints}, #{num}, #{totalPoints}, #{contact}, #{mobile}, #{address},
         #{consignment}, #{consignmentTime}, #{createdBy}, #{createdTime})
     </insert>
 
@@ -87,6 +89,7 @@
         SELECT po.id AS id,
         po.product_id AS product_id,
         po.points AS points,
+        po.actual_points AS actualPoints,
         po.num AS num,
         po.total_points AS total_points,
         po.created_time AS created_time,

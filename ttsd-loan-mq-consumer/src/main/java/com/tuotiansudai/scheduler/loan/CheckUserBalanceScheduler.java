@@ -5,12 +5,14 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.PayWrapperClient;
+import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.Environment;
 import com.tuotiansudai.message.EMailMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.DateConvertUtil;
 import com.tuotiansudai.util.SendCloudTemplate;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -43,39 +45,53 @@ public class CheckUserBalanceScheduler {
     @Value("#{'${check.user.balance.notify.email}'.split('\\|')}")
     private List<String> notifyEmailAddressList;
 
-    private static final int BATCH_SIZE = 10000;
+    @Autowired
+    private RedisWrapperClient redisWrapperClient;
 
-    //@Scheduled(cron = "0 30 1 ? * 7#1", zone = "Asia/Shanghai")
-    @Scheduled(cron = "0 30 1 1 1/1 ?", zone = "Asia/Shanghai")
+    private static final int BATCH_SIZE = 50000;
+
+    private static final String LAST_CHECK_USER_BALANCE_TIME = "last_check_user_balance_time";
+
+    private static final int LEFT_SECOND = 60 * 60 * 24 * 90;
+
+    @Scheduled(cron = "0 30 1 * * SUN,SAT", zone = "Asia/Shanghai")
     public void checkUserBalance() {
-        logger.info("start checkUserBalance.");
-
-        long totalCount = accountMapper.count();
-        int startIndex = 0;
-
+        logger.info("[checkUserBalance:] start .");
 
         List<String> mismatchUserList = Lists.newArrayList();
         List<String> failUserList = Lists.newArrayList();
 
         String startTime = new DateTime().toString("yyyy-MM-dd HH:mm:ss");
-
-        while (startIndex < totalCount) {
-            logger.info("checkUserBalance, run to index: " + startIndex);
-            List<AccountModel> accountModelList = accountMapper.findAccountWithBalance(startIndex, BATCH_SIZE);
-
-            for (AccountModel account : accountModelList) {
-                Map<String, String> balanceMap = payWrapperClient.getUserBalance(account.getLoginName());
-                if (balanceMap == null) {
-                    logger.info("check user balance for user " + account.getLoginName() + " fail. skip it.");
-                    failUserList.add(account.getLoginName());
-                    continue;
-                }
-                long balance = Long.parseLong(balanceMap.get("balance"));
-                if (balance != account.getBalance()) {
-                    mismatchUserList.add(account.getLoginName() + "-" + account.getBalance() + "-" + balance);
-                }
+        String lastCheckUserBalanceTime = redisWrapperClient.exists(LAST_CHECK_USER_BALANCE_TIME) ? redisWrapperClient.get(LAST_CHECK_USER_BALANCE_TIME) : null;
+        List<AccountModel> accountModelList = accountMapper.findAccountWithBalance(lastCheckUserBalanceTime, BATCH_SIZE);
+        int accountModelCount = accountModelList.size();
+        logger.info("[checkUserBalance:] cycle start lastCheckUserBalanceTime-{},size-{}", lastCheckUserBalanceTime, accountModelList.size());
+        for (int i = 0; i < accountModelCount; i++) {
+            AccountModel account = accountModelList.get(i);
+            logger.info("[checkUserBalance:]run to id:{} ", String.valueOf(account.getId()));
+            Map<String, String> balanceMap = payWrapperClient.getUserBalance(account.getLoginName());
+            if (balanceMap == null) {
+                logger.info("[checkUserBalance:]check user balance for user {} fail. skip it.", account.getLoginName());
+                redisWrapperClient.setex(LAST_CHECK_USER_BALANCE_TIME, LEFT_SECOND,DateConvertUtil.format(account.getRegisterTime(),"yyyy-MM-dd HH:mm:ss"));
+                failUserList.add(account.getLoginName());
+                continue;
             }
-            startIndex += BATCH_SIZE;
+            long balance = Long.parseLong(balanceMap.get("balance"));
+            if (balance != account.getBalance()) {
+                mismatchUserList.add(account.getLoginName() + "-" + account.getBalance() + "-" + balance);
+            }
+            if(i == BATCH_SIZE - 1){
+                logger.info("[checkUserBalance:] last record register time-{},id-{}", DateConvertUtil.format(account.getRegisterTime(),"yyyy-MM-dd HH:mm:ss"),String.valueOf(account.getId()));
+                redisWrapperClient.setex(LAST_CHECK_USER_BALANCE_TIME, LEFT_SECOND,DateConvertUtil.format(account.getRegisterTime(),"yyyy-MM-dd HH:mm:ss"));
+            }
+        }
+        logger.info("[checkUserBalance:] cycle end lastCheckUserBalanceTime-{},size-{}", lastCheckUserBalanceTime, accountModelList.size());
+
+        if(accountModelCount > 0 && accountModelCount < BATCH_SIZE){
+            logger.info("[checkUserBalance:] del key last record register time-{},id-{}",
+                    DateConvertUtil.format(accountModelList.get(accountModelCount - 1).getRegisterTime(),"yyyy-MM-dd HH:mm:ss"),
+                    String.valueOf(accountModelList.get(accountModelCount - 1).getId()));
+            redisWrapperClient.del(LAST_CHECK_USER_BALANCE_TIME);
         }
 
         Map<String, Object> resultMap = Maps.newHashMap(ImmutableMap.<String, Object>builder()
@@ -87,7 +103,7 @@ public class CheckUserBalanceScheduler {
 
         this.sendUserBalanceCheckingResult(notifyEmailAddressList, resultMap);
 
-        logger.info("end checkUserBalance.");
+        logger.info("[checkUserBalance:] end .");
     }
 
     @SuppressWarnings(value = "unchecked")

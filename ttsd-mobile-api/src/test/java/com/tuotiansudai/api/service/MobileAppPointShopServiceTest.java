@@ -132,7 +132,7 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase {
         AccountModel accountModel = new AccountModel(loginName, "payUserId", "payAccountId", new Date());
         accountModel.setPoint(1000l);
         accountMapper.create(accountModel);
-        BaseParamDto baseParamDto = new BaseParamDto();
+        ProductListRequestDto baseParamDto = new ProductListRequestDto();
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId(userModel.getLoginName());
         baseParam.setPhoneNum("13900000000");

@@ -8,12 +8,6 @@ import java.util.Date;
 
 public class DateConvertUtil {
 
-    public static Date localDateTimeToDate(LocalDateTime localDateTime) {
-        ZoneId zone = ZoneId.systemDefault();
-        Instant instant = localDateTime.atZone(zone).toInstant();
-        return Date.from(instant);
-    }
-
     public static LocalDateTime dateToLocalDateTime(Date date) {
         Instant instant = date.toInstant();
         ZoneId zone = ZoneId.systemDefault();
@@ -27,19 +21,8 @@ public class DateConvertUtil {
         return Date.from(instant);
     }
 
-    public static Date plusMinutes(LocalDateTime localDateTime, int minute) {
-        return localDateTimeToDate(localDateTime.plusMinutes(minute));
-    }
-
-    public static String format(Date date,String pattern){
+    public static String format(Date date, String pattern) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
         return DateConvertUtil.dateToLocalDateTime(date).format(formatter);
     }
-
-    public static LocalDateTime stringToLocalDateTime(String dateTimeString){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        return LocalDateTime.parse(dateTimeString, formatter);
-    }
-
-
 }

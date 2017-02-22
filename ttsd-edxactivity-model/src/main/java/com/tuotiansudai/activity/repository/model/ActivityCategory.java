@@ -18,6 +18,7 @@ public enum ActivityCategory {
     CHRISTMAS_ACTIVITY("圣诞节活动",ConsumeCategory.TASK_COUNT),
     HEADLINES_TODAY_ACTIVITY("今日头条拉新抽奖活动",ConsumeCategory.TASK_COUNT),
     LANTERN_FESTIVAL_ACTIVITY("元宵节活动",ConsumeCategory.TASK_COUNT),
+    POINT_SHOP_DRAW_1000("积分商城抽奖",ConsumeCategory.ACCOUNT_POINT_BY_1000),
     SPRING_FESTIVAL_ACTIVITY("春节活动",ConsumeCategory.TASK_COUNT);
 
     ActivityCategory(String description, ConsumeCategory consumeCategory) {
