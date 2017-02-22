@@ -7,10 +7,12 @@ import com.tuotiansudai.mq.consumer.MessageConsumer;
 import com.tuotiansudai.util.JsonConverter;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.text.MessageFormat;
 
+@Component
 public class CouponExpiredSmsNotifyMessageConsumer implements MessageConsumer {
 
     @Autowired
