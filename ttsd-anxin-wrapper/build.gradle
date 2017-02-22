@@ -2,7 +2,7 @@ apply plugin: 'war'
 apply from: 'db_migration.gradle'
 
 dependencies {
-    compile fileTree(dir: 'lib', include: '**/*.jar'),
+    compile fileTree(dir: 'libs', include: '*.jar'),
             project(':ttsd-config'),
             project(":ttsd-aa-repository"),
             project(":ttsd-user-repository"),
