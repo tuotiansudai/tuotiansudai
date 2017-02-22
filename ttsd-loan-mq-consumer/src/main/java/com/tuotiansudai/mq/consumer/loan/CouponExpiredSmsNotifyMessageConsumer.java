@@ -21,7 +21,7 @@ public class CouponExpiredSmsNotifyMessageConsumer implements MessageConsumer {
         return MessageQueue.CouponSmsExpiredNotify;
     }
 
-    private static Logger logger = Logger.getLogger(CouponAssignSmsNotifyMessageConsumer.class);
+    private static Logger logger = Logger.getLogger(CouponExpiredSmsNotifyMessageConsumer.class);
 
     @Override
     public void consume(String message) {
