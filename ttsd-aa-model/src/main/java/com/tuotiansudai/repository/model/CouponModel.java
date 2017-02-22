@@ -16,6 +16,7 @@ public class CouponModel implements Serializable {
     private long amount;
     private double rate;
     private double birthdayBenefit;
+    private Integer period;
     private boolean multiple;
     private Date startTime;
     private Date endTime;
@@ -76,6 +77,14 @@ public class CouponModel implements Serializable {
 
     public void setBirthdayBenefit(double birthdayBenefit) {
         this.birthdayBenefit = birthdayBenefit;
+    }
+
+    public Integer getPeriod() {
+        return period;
+    }
+
+    public void setPeriod(Integer period) {
+        this.period = period;
     }
 
     public boolean isMultiple() {

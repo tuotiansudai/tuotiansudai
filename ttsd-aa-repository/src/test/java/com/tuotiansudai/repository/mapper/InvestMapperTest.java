@@ -11,7 +11,6 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -241,13 +240,13 @@ public class InvestMapperTest {
         InvestModel fakeInvestModel = getFakeInvestModel();
         fakeInvestModel.setStatus(InvestStatus.SUCCESS);
         investMapper.create(fakeInvestModel);
-        long amount = investMapper.sumSuccessInvestAmountByLoginName(null, User_ID);
+        long amount = investMapper.sumSuccessInvestAmountByLoginName(null, User_ID,true);
         assertTrue(amount > 0);
     }
 
     @Test
     public void shouldHasNoSuccessInvest() throws Exception {
-        long amount = investMapper.sumSuccessInvestAmountByLoginName(null, User_ID);
+        long amount = investMapper.sumSuccessInvestAmountByLoginName(null, User_ID,true);
         assertTrue(amount == 0);
     }
 

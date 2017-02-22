@@ -34,6 +34,8 @@ public enum SystemBillBusinessType {
 
     EXTRA_RATE("投资奖励"),
 
+    EXPERIENCE_INTEREST("体验金收益"),
+
     MEMBERSHIP_PRIVILEGE_PURCHASE("购买增值特权");
 
     private final String description;
