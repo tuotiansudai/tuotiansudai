@@ -82,7 +82,7 @@ public class AnxinSignServerController {
     @ResponseBody
     @RequestMapping(value = "/is-authentication-required")
     public BaseDto<AnxinDataDto> isAuthenticationRequired(@Valid @RequestBody String loginName){
-        return new BaseDto(anxinSignService.isAuthenticationRequired(loginName));
+        return new BaseDto(true, new AnxinDataDto(anxinSignService.isAuthenticationRequired(loginName), ""));
     }
 
 }

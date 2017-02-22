@@ -23,7 +23,7 @@ public class MobileAppAuthenticationRequiredController extends MobileAppBaseCont
     @ApiOperation("获取认证")
     public BaseResponseDto<AuthenticationRequiredResponseDto> isAuthenticationRequired() {
         BaseResponseDto<AuthenticationRequiredResponseDto> baseResponseDto = new BaseResponseDto<>();
-        baseResponseDto.setData(new AuthenticationRequiredResponseDto(anxinWrapperClient.isAuthenticationRequired(LoginUserInfo.getLoginName()).isSuccess()));
+        baseResponseDto.setData(new AuthenticationRequiredResponseDto(anxinWrapperClient.isAuthenticationRequired(LoginUserInfo.getLoginName()).getData().getStatus()));
         baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
         baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
         return baseResponseDto;

@@ -3,6 +3,7 @@ package com.tuotiansudai.paywrapper.service.impl;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.client.AnxinWrapperClient;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.*;
@@ -13,7 +14,6 @@ import com.tuotiansudai.enums.PushType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
-import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.message.EventMessage;
 import com.tuotiansudai.message.PushMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
@@ -101,9 +101,6 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
     @Autowired
     private InvestTransferNotifyRequestMapper investTransferNotifyRequestMapper;
 
-    @Autowired
-    private UserMembershipEvaluator userMembershipEvaluator;
-
     @Value("${common.environment}")
     private Environment environment;
 
@@ -112,6 +109,9 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
 
     @Autowired
     private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
+
+    @Autowired
+    private AnxinWrapperClient anxinWrapperClient;
 
     @Override
     public BaseDto<PayDataDto> noPasswordPurchase(InvestDto investDto) {
@@ -502,8 +502,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
                 ((InvestTransferPurchaseService) AopContext.currentProxy()).postPurchase(investId);
 
                 logger.info("债权转让：生成合同，转让ID:" + transferApplicationModel.getId());
-//                anxinSignService.createTransferContracts(transferApplicationModel.getId());
-                //TODO anxinsign
+                anxinWrapperClient.createTransferContract(transferApplicationModel.getId());
             }
         } else {
             // 失败的话：更新 invest 状态为投资失败

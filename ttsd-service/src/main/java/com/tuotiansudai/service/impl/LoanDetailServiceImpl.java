@@ -4,6 +4,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.client.AnxinWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.CouponType;
@@ -87,6 +88,9 @@ public class LoanDetailServiceImpl implements LoanDetailService {
     @Autowired
     private RandomUtils randomUtils;
 
+    @Autowired
+    private AnxinWrapperClient anxinWrapperClient;
+
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${invest.achievement.start.time}\")}")
     private Date achievementStartTime;
 
@@ -159,9 +163,7 @@ public class LoanDetailServiceImpl implements LoanDetailService {
         long investedAmount = investMapper.sumSuccessInvestAmount(loanModel.getId());
 
         AnxinSignPropertyModel anxinProp = anxinSignPropertyMapper.findByLoginName(loginName);
-//        boolean isAuthenticationRequired = anxinSignService.isAuthenticationRequired(loginName);
-        boolean isAuthenticationRequired = true;
-        ////TODO anxinsign
+        boolean isAuthenticationRequired = anxinWrapperClient.isAuthenticationRequired(loginName).getData().getStatus();
         boolean isAnxinUser = anxinProp != null && StringUtils.isNotEmpty(anxinProp.getAnxinUserId());
 
         AccountModel accountModel = accountMapper.findByLoginName(loginName);

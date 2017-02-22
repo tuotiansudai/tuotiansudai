@@ -8,7 +8,6 @@ import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.exception.AmountTransferException;
-import com.tuotiansudai.job.AnxinCreateContractJob;
 import com.tuotiansudai.job.JobManager;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.job.LoanOutSuccessHandleJob;
@@ -254,9 +253,6 @@ public class LoanServiceTest {
         when(loanMapper.findById(anyLong())).thenReturn(loanModel);
         when(redisWrapperClient.hget(anyString(), anyString())).thenReturn("");
         when(redisWrapperClient.hset(anyString(), anyString(), anyString())).thenReturn(1l);
-//        when(anxinSignService.createLoanContracts(anyLong(), anyBoolean())).thenReturn(new BaseDto());
-        //TODO anxinsign
-        when(jobManager.newJob(any(JobType.class), eq(AnxinCreateContractJob.class))).thenReturn(triggeredJobBuilder);
         when(payAsyncClient.parseCallbackRequest(any(Map.class), anyString(), any(Class.class), any(Class.class))).thenReturn(baseCallbackRequestModel);
         doNothing().when(mqWrapperClient).publishMessage(any(MessageTopic.class), anyString());
         MerUpdateProjectResponseModel merUpdateProjectResponseModel = new MerUpdateProjectResponseModel();

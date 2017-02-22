@@ -1,6 +1,7 @@
 package com.tuotiansudai.web.controller;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.client.AnxinWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.repository.mapper.AccountMapper;
@@ -41,6 +42,9 @@ public class TransferApplicationController {
     @Autowired
     private AnxinSignPropertyMapper anxinSignPropertyMapper;
 
+    @Autowired
+    private AnxinWrapperClient anxinWrapperClient;
+
 
     @RequestMapping(value = "/{transferApplicationId:^\\d+$}", method = RequestMethod.GET)
     @ResponseBody
@@ -63,8 +67,7 @@ public class TransferApplicationController {
         ModelAndView modelAndView = new ModelAndView("/transfer-detail");
         modelAndView.addObject("transferApplication", dto);
         modelAndView.addObject("loanDto", loanDto);
-//        modelAndView.addObject("anxinAuthenticationRequired", anxinSignService.isAuthenticationRequired(loginName));
-        //TODO anxinsign
+        modelAndView.addObject("anxinAuthenticationRequired", anxinWrapperClient.isAuthenticationRequired(loginName).getData().getStatus());
         modelAndView.addObject("anxinUser", anxinProp != null && anxinProp.isAnxinUser());
         modelAndView.addObject("transferApplicationReceiver", transferService.getTransferee(transferApplicationId, LoginUserInfo.getLoginName()));
         return modelAndView;

@@ -3,6 +3,7 @@ package com.tuotiansudai.transfer.service.impl;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.client.AnxinWrapperClient;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.*;
@@ -73,6 +74,9 @@ public class InvestTransferServiceImpl implements InvestTransferService {
     @Autowired
     private AnxinSignPropertyMapper anxinSignPropertyMapper;
 
+    @Autowired
+    private AnxinWrapperClient anxinWrapperClient;
+
 
     protected final static String TRANSFER_APPLY_NAME = "ZR{0}-{1}";
 
@@ -124,11 +128,9 @@ public class InvestTransferServiceImpl implements InvestTransferService {
 
         AnxinSignPropertyModel anxinProp = anxinSignPropertyMapper.findByLoginName(investModel.getLoginName());
 
-//        return new TransferApplicationFormDto(investId, investModel.getAmount(), transferAmountLower, transferFeeRate, transferFee, expiredDate, holdDays,
-//                anxinProp != null && anxinProp.isAnxinUser(),
-//                anxinSignService.isAuthenticationRequired(investModel.getLoginName()));
-        //TODO anxinsign
-        return null;
+        return new TransferApplicationFormDto(investId, investModel.getAmount(), transferAmountLower, transferFeeRate, transferFee, expiredDate, holdDays,
+                anxinProp != null && anxinProp.isAnxinUser(),
+                anxinWrapperClient.isAuthenticationRequired(investModel.getLoginName()).getData().getStatus());
     }
 
     @Override
