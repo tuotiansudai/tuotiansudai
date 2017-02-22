@@ -85,10 +85,9 @@
                 <dd><img src="${staticServer}/activity/images/sign/actor/landingpage/newbie-step5-cfca.png"><br><i>CFCA权威认证</i>
                     <br/>
                     <p>携手中国金融认证中心<br>投资合同受法律保护</p></dd>
-                <dd><img
-                        src="${staticServer}/activity/images/sign/actor/landingpage/newbie-step5-control.png"><br><i>风控严谨</i>
+                <dd><img src="${staticServer}/activity/images/sign/actor/landingpage/newbie-step5-control.png"><br><i>风控严谨</i>
                     <br/>
-                    <p>六重风控，22道手续<br>历史全额兑付，0预期0坏账</p></dd>
+                    <p>六重风控，22道手续<br>历史全额兑付，0逾期0坏账</p></dd>
                 <dd><img src="${staticServer}/activity/images/sign/actor/landingpage/newbie-step5-security.png"><br><i>稳健安全</i>
                     <br/>
                     <p>预期年化收益10%～13%<br>房/车抵押债权安全系数高</p></dd>
