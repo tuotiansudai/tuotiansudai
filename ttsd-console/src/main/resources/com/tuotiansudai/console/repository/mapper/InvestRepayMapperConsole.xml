@@ -4,21 +4,21 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tuotiansudai.console.repository.mapper.InvestRepayMapperConsole">
 
-    <cache-ref namespace="com.tuotiansudai.repository.mapper.InvestRepayMapper"/>
+    <cache-ref namespace="com.tuotiansudai.repository.mapper.InvestMapper"/>
 
     <resultMap id="investRepayExperienceResultMap" type="InvestRepayExperienceView">
         <result column="mobile" property="mobile"/>
-        <result column="experience_balance" property="experienceBalance"/>
+        <result column="amount" property="amount"/>
         <result column="repay_date" property="repayDate"/>
         <result column="actual_repay_date" property="actualRepayDate"/>
         <result column="expected_interest" property="expectedInterest"/>
-        <result column="actual_interest" property="actualInterest"/>
-        <result column="status" property="repayStatus"/>
+        <result column="repay_amount" property="repayAmount"/>
+        <result column="status" property="status"/>
     </resultMap>
 
     <select id="findInvestRepayExperience" parameterType="map" resultMap="investRepayExperienceResultMap">
         SELECT
-        u.mobile,u.experience_balance,ir.repay_date,ir.actual_repay_date,ir.expected_interest,ir.actual_interest,ir.status
+        u.mobile,i.amount,ir.repay_date,ir.actual_repay_date,ir.expected_interest,ir.repay_amount,ir.status
         FROM
         invest_repay ir
         JOIN
@@ -29,11 +29,11 @@
             <if test="mobile != null and mobile !=''">
                 and u.mobile = #{mobile}
             </if>
-            <if test="repayDateMin != null">
-                and ir.repay_date >= #{repayDateMin}
+            <if test="startTime != null">
+                and ir.repay_date >= #{startTime}
             </if>
-            <if test="repayDateMax != null">
-                and ir.repay_date &lt;= #{repayDateMin}
+            <if test="endTime != null">
+                and ir.repay_date &lt;= #{endTime}
             </if>
             <if test="repayStatus != null">
                 and ir.status = #{repayStatus}
@@ -56,11 +56,11 @@
             <if test="mobile != null and mobile !=''">
                 and u.mobile = #{mobile}
             </if>
-            <if test="repayDateMin != null">
-                and ir.repay_date >= #{repayDateMin}
+            <if test="startTime != null">
+                and ir.repay_date >= #{startTime}
             </if>
-            <if test="repayDateMax != null">
-                and ir.repay_date &lt;= #{repayDateMin}
+            <if test="endTime != null">
+                and ir.repay_date &lt;= #{endTime}
             </if>
             <if test="repayStatus != null">
                 and ir.status = #{repayStatus}
@@ -81,11 +81,11 @@
             <if test="mobile != null and mobile !=''">
                 and u.mobile = #{mobile}
             </if>
-            <if test="repayDateMin != null">
-                and ir.repay_date >= #{repayDateMin}
+            <if test="startTime != null">
+                and ir.repay_date >= #{startTime}
             </if>
-            <if test="repayDateMax != null">
-                and ir.repay_date &lt;= #{repayDateMin}
+            <if test="endTime != null">
+                and ir.repay_date &lt;= #{endTime}
             </if>
             <if test="repayStatus != null">
                 and ir.status = #{repayStatus}
@@ -106,11 +106,11 @@
             <if test="mobile != null and mobile !=''">
                 and u.mobile = #{mobile}
             </if>
-            <if test="repayDateMin != null">
-                and ir.repay_date >= #{repayDateMin}
+            <if test="startTime != null">
+                and ir.repay_date >= #{startTime}
             </if>
-            <if test="repayDateMax != null">
-                and ir.repay_date &lt;= #{repayDateMin}
+            <if test="endTime != null">
+                and ir.repay_date &lt;= #{endTime}
             </if>
             <if test="repayStatus != null">
                 and ir.status = #{repayStatus}

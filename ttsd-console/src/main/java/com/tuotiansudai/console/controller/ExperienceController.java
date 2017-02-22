@@ -1,5 +1,6 @@
 package com.tuotiansudai.console.controller;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.console.dto.ExperienceBalancePaginationItemDto;
 import com.tuotiansudai.console.dto.ExperienceBillPaginationItemDto;
 import com.tuotiansudai.console.dto.InvestRepayExperiencePaginationItemDto;
@@ -34,45 +35,39 @@ public class ExperienceController {
         int pageSize = 10;
         BasePaginationDataDto<ExperienceBalancePaginationItemDto> baseDto = consoleExperienceService.balance(mobile, balanceMin, balanceMax, index, pageSize);
         long sumExperienceBalance = consoleExperienceService.sumExperienceBalance(mobile, balanceMin, balanceMax);
-        modelAndView.addObject("baseDto", baseDto);
+        modelAndView.addObject("data", baseDto);
         modelAndView.addObject("sumExperienceBalance", sumExperienceBalance);
         modelAndView.addObject("mobile", mobile);
         modelAndView.addObject("balanceMin", balanceMin);
-        modelAndView.addObject("balanceMin", balanceMax);
-        modelAndView.addObject("index", index);
-        modelAndView.addObject("pageSize", pageSize);
-        modelAndView.addObject("hasNextPage", baseDto.isHasNextPage());
-        modelAndView.addObject("hasPreviousPage", baseDto.isHasPreviousPage());
+        modelAndView.addObject("balanceMax", balanceMax);
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/repay-detail", method = RequestMethod.GET)
+    public ModelAndView repayDetail(@RequestParam(value = "mobile", required = false) String mobile,
+                                    @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
+                                    @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
+                                    @RequestParam(value = "repayStatus", required = false) RepayStatus repayStatus,
+                                    @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
+        ModelAndView modelAndView = new ModelAndView("/experience-repay-detail");
+        int pageSize = 10;
+        BasePaginationDataDto<InvestRepayExperiencePaginationItemDto> basePaginationDataDto
+                = consoleExperienceService.investRepayExperience(mobile, startTime, endTime, repayStatus, index, pageSize);
+        long sumActualInterestExperience = consoleExperienceService.findSumActualInterestExperience(mobile, startTime, endTime, repayStatus);
+        long sumExpectedInterestExperience = consoleExperienceService.findSumExpectedInterestExperience(mobile, startTime, endTime, repayStatus);
+        modelAndView.addObject("data", basePaginationDataDto);
+        modelAndView.addObject("sumActualInterestExperience", sumActualInterestExperience);
+        modelAndView.addObject("sumExpectedInterestExperience", sumExpectedInterestExperience);
+        modelAndView.addObject("mobile", mobile);
+        modelAndView.addObject("startTime", startTime);
+        modelAndView.addObject("endTime", endTime);
+        modelAndView.addObject("repayStatus",repayStatus);
+        modelAndView.addObject("repayStatusList",Lists.newArrayList(RepayStatus.COMPLETE,RepayStatus.REPAYING));
         return modelAndView;
     }
 //
-//    @RequestMapping(value = "/repay-detail", method = RequestMethod.GET)
-//    public ModelAndView repayDetail(@RequestParam(value = "mobile", required = false) String mobile,
-//                                    @RequestParam(value = "repayDateMin", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date repayDateMin,
-//                                    @RequestParam(value = "repayDateMax", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date repayDateMax,
-//                                    @RequestParam(value = "repayStatus", required = false) RepayStatus repayStatus,
-//                                    @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
-//        ModelAndView modelAndView = new ModelAndView("/experience-repay-detail");
-//        int pageSize = 10;
-//        BasePaginationDataDto<InvestRepayExperiencePaginationItemDto> basePaginationDataDto
-//                = consoleExperienceService.investRepayExperience(mobile, repayDateMin, repayDateMax, repayStatus, index, pageSize);
-//        long sumActualInterestExperience = consoleExperienceService.findSumActualInterestExperience(mobile, repayDateMin, repayDateMax, repayStatus);
-//        long sumExpectedInterestExperience = consoleExperienceService.findSumExpectedInterestExperience(mobile, repayDateMin, repayDateMax, repayStatus);
-//        modelAndView.addObject("baseDto", basePaginationDataDto);
-//        modelAndView.addObject("sumActualInterestExperience", sumActualInterestExperience);
-//        modelAndView.addObject("sumExpectedInterestExperience", sumExpectedInterestExperience);
-//        modelAndView.addObject("mobile", mobile);
-//        modelAndView.addObject("repayDateMin", repayDateMin);
-//        modelAndView.addObject("repayDateMax", repayDateMax);
-//        modelAndView.addObject("index", index);
-//        modelAndView.addObject("pageSize", pageSize);
-//        modelAndView.addObject("hasNextPage", basePaginationDataDto.isHasNextPage());
-//        modelAndView.addObject("hasPreviousPage", basePaginationDataDto.isHasPreviousPage());
-//        return modelAndView;
-//    }
-//
-//    @RequestMapping(value = "/repay-detail", method = RequestMethod.GET)
-//    public ModelAndView repayDetail(@RequestParam(value = "mobile", required = false) String mobile,
+//    @RequestMapping(value = "/experience-bill", method = RequestMethod.GET)
+//    public ModelAndView experienceBill(@RequestParam(value = "mobile", required = false) String mobile,
 //                                    @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
 //                                    @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
 //                                    @RequestParam(value = "experienceBillOperationType", required = false) ExperienceBillOperationType operationType,

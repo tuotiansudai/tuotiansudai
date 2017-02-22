@@ -2,6 +2,7 @@ package com.tuotiansudai.console.dto;
 
 
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.repository.model.UserView;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -17,13 +18,13 @@ public class ExperienceBalancePaginationItemDto implements Serializable{
     public ExperienceBalancePaginationItemDto(){
 
     }
-    public ExperienceBalancePaginationItemDto(UserModel userModel, Date lastExchangeTime){
-        this.loginName = userModel.getLoginName();
-        this.userName = userModel.getUserName();
-        this.mobile = userModel.getMobile();
-        this.province = userModel.getProvince();
+    public ExperienceBalancePaginationItemDto(UserView userView, Date lastExchangeTime){
+        this.loginName = userView.getLoginName();
+        this.userName = userView.getUserName();
+        this.mobile = userView.getMobile();
+        this.province = userView.getProvince();
         this.lastExchangeTime = lastExchangeTime;
-        this.experienceBalance = userModel.getExperienceBalance();
+        this.experienceBalance = userView.getExperienceBalance();
     }
 
     public String getLoginName() {

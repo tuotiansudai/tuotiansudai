@@ -26,6 +26,7 @@
         <result column="is_referrer_staff" property="isReferrerStaff"/>
         <result column="last_bill_time" property="lastBillTime"/>
         <result column="fast_pay" property="fastPay"/>
+        <result column="experience_balance" property="experienceBalance"/>
     </resultMap>
 
     <resultMap id="userMicroModelView" type="com.tuotiansudai.console.repository.model.UserMicroModelView">
@@ -782,7 +783,7 @@
     </select>
 
     <select id="sumExperienceBalance" parameterType="map" resultType="long">
-        select count(experience_balance) from user
+        select sum(experience_balance) from user
         <where>
             <if test = "mobile != null and mobile != ''">
                 and mobile = #{mobile}

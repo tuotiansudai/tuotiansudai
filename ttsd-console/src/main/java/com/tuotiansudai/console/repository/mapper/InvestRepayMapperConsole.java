@@ -12,24 +12,24 @@ import java.util.List;
 public interface InvestRepayMapperConsole {
 
     List<InvestRepayExperienceView> findInvestRepayExperience(@Param(value = "mobile") String mobile,
-                                                              @Param(value = "repayDateMin") Date repayDateMin,
-                                                              @Param(value = "repayDateMax") Date repayDateMax,
+                                                              @Param(value = "startTime") Date startTime,
+                                                              @Param(value = "endTime") Date endTime,
                                                               @Param(value = "repayStatus") RepayStatus repayStatus,
                                                               @Param(value = "index") int index,
                                                               @Param(value = "pageSize") int pageSize);
 
     int findCountInvestRepayExperience(@Param(value = "mobile") String mobile,
-                                       @Param(value = "repayDateMin") Date repayDateMin,
-                                       @Param(value = "repayDateMax") Date repayDateMax,
+                                       @Param(value = "startTime") Date startTime,
+                                       @Param(value = "endTime") Date endTime,
                                        @Param(value = "repayStatus") RepayStatus repayStatus);
 
     long findSumExpectedInterestExperience(@Param(value = "mobile") String mobile,
-                                           @Param(value = "repayDateMin") Date repayDateMin,
-                                           @Param(value = "repayDateMax") Date repayDateMax,
+                                           @Param(value = "startTime") Date startTime,
+                                           @Param(value = "endTime") Date endTime,
                                            @Param(value = "repayStatus") RepayStatus repayStatus);
 
     long findSumActualInterestExperience(@Param(value = "mobile") String mobile,
-                                         @Param(value = "repayDateMin") Date repayDateMin,
-                                         @Param(value = "repayDateMax") Date repayDateMax,
+                                         @Param(value = "startTime") Date startTime,
+                                         @Param(value = "endTime") Date endTime,
                                          @Param(value = "repayStatus") RepayStatus repayStatus);
 }

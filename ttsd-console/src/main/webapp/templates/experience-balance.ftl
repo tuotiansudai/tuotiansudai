@@ -1,6 +1,6 @@
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="" headLab="experience-manage" sideLab="experienceBalance" title="用户体验金余额">
+<@global.main pageCss="" pageJavascript="experience-balance" headLab="experience-manage" sideLab="experienceBalance" title="用户体验金余额">
 
 <!-- content area begin -->
 <div class="col-md-10">
@@ -11,7 +11,7 @@
         </div>
         <div class="form-group">
             <label for="control-label">余额：</label>
-            <input type="text" class="form-control jq-balance-min" name="balanceMin" value="${balanceMin!50}"
+            <input type="text" class="form-control jq-balance-min" name="balanceMin" value="${balanceMin!}"
                    onblur="this.value=this.value.replace(/\D/g,'')" onkeyup="this.value=this.value.replace(/\D/g,'')"
                    onafterpaste="this.value=this.value.replace(/\D/g,'')">~
             <input type="text" class="form-control jq-balance-max" name="balanceMax" value="${balanceMax!}"
@@ -27,6 +27,9 @@
         <table class="table table-bordered table-hover">
             <thead>
             <tr>
+                <th colspan="6">账户体验金余额共计:&nbsp;${sumExperienceBalance/100} 元 &nbsp;&nbsp;&nbsp;折算成本:&nbsp;${sumExperienceBalance/100} 元 </th>
+            </tr>
+            <tr>
                 <th>用户名</th>
                 <th>姓名</th>
                 <th>手机号</th>
@@ -36,7 +39,7 @@
             </tr>
             </thead>
             <tbody>
-                <#list baseDto.records as item>
+                <#list data.records as item>
                 <tr>
                     <td>${item.loginName!''}</td>
                     <td>${item.userName!''}</td>
@@ -53,20 +56,20 @@
     <div class="row">
         <!-- pagination  -->
         <nav class="pagination-control">
-            <div><span class="bordern">总共${count}条,每页显示${pageSize}条</span></div>
+            <div><span class="bordern">总共${data.count}条,每页显示${data.pageSize}条</span></div>
             <ul class="pagination pull-left">
                 <li>
-                    <#if hasPreviousPage >
-                    <a href="/experience-manage/balance?mobile=${mobile!}&balanceMin=${balanceMin!}&balanceMax=${balanceMax!}&index=${index-1}&pageSize=${pageSize}">
+                    <#if data.hasPreviousPage >
+                    <a href="/experience-manage/balance?mobile=${mobile!}&balanceMin=${balanceMin!}&balanceMax=${balanceMax!}&index=${data.index-1}&pageSize=${data.pageSize}">
                     <#else>
                     <a href="#">
                     </#if>
                     <span>« Prev</span></a>
                 </li>
-                <li><a>${index}</a></li>
+                <li><a>${data.index}</a></li>
                 <li>
-                    <#if hasNextPage >
-                    <a href="/experience-manage/balance?mobile=${mobile!}&balanceMin=${balanceMin!}&balanceMax=${balanceMax!}&index=${index+1}&pageSize=${pageSize}">
+                    <#if data.hasNextPage >
+                    <a href="/experience-manage/balance?mobile=${mobile!}&balanceMin=${balanceMin!}&balanceMax=${balanceMax!}&index=${data.index+1}&pageSize=${data.pageSize}">
                     <#else>
                     <a href="#">
                     </#if>

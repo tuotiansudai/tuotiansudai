@@ -10,22 +10,22 @@ import java.util.Date;
 public class InvestRepayExperiencePaginationItemDto implements Serializable{
 
     private String mobile;
-    private long experienceBalance;
+    private long amount;
     private Date repayDate;
     private Date actualRepayDate;
     private long expectedInterest;
-    private long actualInterest;
+    private long repayAmount;
     private RepayStatus status;
 
     public InvestRepayExperiencePaginationItemDto(){}
 
     public InvestRepayExperiencePaginationItemDto(InvestRepayExperienceView investRepayExperienceView){
         this.mobile = investRepayExperienceView.getMobile();
-        this.experienceBalance = investRepayExperienceView.getExperienceBalance();
+        this.amount = investRepayExperienceView.getAmount();
         this.repayDate = investRepayExperienceView.getRepayDate();
         this.actualRepayDate = investRepayExperienceView.getActualRepayDate();
         this.expectedInterest = investRepayExperienceView.getExpectedInterest();
-        this.actualInterest = investRepayExperienceView.getActualInterest();
+        this.repayAmount = investRepayExperienceView.getRepayAmount();
         this.status = investRepayExperienceView.getStatus();
     }
 
@@ -35,14 +35,6 @@ public class InvestRepayExperiencePaginationItemDto implements Serializable{
 
     public void setMobile(String mobile) {
         this.mobile = mobile;
-    }
-
-    public long getExperienceBalance() {
-        return experienceBalance;
-    }
-
-    public void setExperienceBalance(long experienceBalance) {
-        this.experienceBalance = experienceBalance;
     }
 
     public Date getRepayDate() {
@@ -69,19 +61,27 @@ public class InvestRepayExperiencePaginationItemDto implements Serializable{
         this.expectedInterest = expectedInterest;
     }
 
-    public long getActualInterest() {
-        return actualInterest;
-    }
-
-    public void setActualInterest(long actualInterest) {
-        this.actualInterest = actualInterest;
-    }
-
     public RepayStatus getStatus() {
         return status;
     }
 
     public void setStatus(RepayStatus status) {
         this.status = status;
+    }
+
+    public long getAmount() {
+        return amount;
+    }
+
+    public void setAmount(long amount) {
+        this.amount = amount;
+    }
+
+    public long getRepayAmount() {
+        return repayAmount;
+    }
+
+    public void setRepayAmount(long repayAmount) {
+        this.repayAmount = repayAmount;
     }
 }

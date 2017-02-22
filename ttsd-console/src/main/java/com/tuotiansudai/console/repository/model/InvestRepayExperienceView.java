@@ -8,11 +8,11 @@ import java.util.Date;
 public class InvestRepayExperienceView implements Serializable{
 
     private String mobile;
-    private long experienceBalance;
+    private long amount;
     private Date repayDate;
     private Date actualRepayDate;
     private long expectedInterest;
-    private long actualInterest;
+    private long repayAmount;
     private RepayStatus status;
 
     public String getMobile() {
@@ -21,14 +21,6 @@ public class InvestRepayExperienceView implements Serializable{
 
     public void setMobile(String mobile) {
         this.mobile = mobile;
-    }
-
-    public long getExperienceBalance() {
-        return experienceBalance;
-    }
-
-    public void setExperienceBalance(long experienceBalance) {
-        this.experienceBalance = experienceBalance;
     }
 
     public Date getRepayDate() {
@@ -55,19 +47,27 @@ public class InvestRepayExperienceView implements Serializable{
         this.expectedInterest = expectedInterest;
     }
 
-    public long getActualInterest() {
-        return actualInterest;
-    }
-
-    public void setActualInterest(long actualInterest) {
-        this.actualInterest = actualInterest;
-    }
-
     public RepayStatus getStatus() {
         return status;
     }
 
     public void setStatus(RepayStatus status) {
         this.status = status;
+    }
+
+    public long getAmount() {
+        return amount;
+    }
+
+    public void setAmount(long amount) {
+        this.amount = amount;
+    }
+
+    public long getRepayAmount() {
+        return repayAmount;
+    }
+
+    public void setRepayAmount(long repayAmount) {
+        this.repayAmount = repayAmount;
     }
 }
