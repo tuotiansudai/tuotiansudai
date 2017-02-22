@@ -47,7 +47,7 @@ public class AnxinWrapperClient extends BaseClient {
 
     private final static String printAnxinContract = "/anxin-sign/print-anxin-contract";
 
-    private final static String isAuthenticationRequired= "/is-authentication-required";
+    private final static String isAuthenticationRequired= "/anxin-sign/is-authentication-required";
 
     public BaseDto<AnxinDataDto> createLoanContract(long loanId) {
         return syncExecute(String.valueOf(loanId), createLoanContract, "POST");
