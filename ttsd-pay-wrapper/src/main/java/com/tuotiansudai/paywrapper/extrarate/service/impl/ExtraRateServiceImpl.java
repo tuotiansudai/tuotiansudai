@@ -131,6 +131,7 @@ public class ExtraRateServiceImpl implements ExtraRateService {
                 TransferWithNotifyRequestModel requestModel = TransferWithNotifyRequestModel.newExtraRateRequest(
                         String.valueOf(orderId),
                         accountModel.getPayUserId(),
+                        accountModel.getPayAccountId(),
                         String.valueOf(amount));
 
                 String statusString = redisWrapperClient.hget(redisKey, String.valueOf(investExtraRateModel.getId()));

@@ -69,12 +69,6 @@ public class CouponAssignSmsNotifyMessageConsumer implements MessageConsumer {
     @Resource(name = "exchangeCodeCollector")
     private UserCollector exchangeCodeCollector;
 
-    @Resource(name = "experienceInvestSuccessCollector")
-    private UserCollector experienceInvestSuccessCollector;
-
-    @Resource(name = "experienceRepaySuccessCollector")
-    private UserCollector experienceRepaySuccessCollector;
-
     @Resource(name = "membershipUserCollector")
     private UserCollector membershipUserCollector;
 
@@ -133,8 +127,6 @@ public class CouponAssignSmsNotifyMessageConsumer implements MessageConsumer {
                 .put(UserGroup.WINNER, this.winnerCollector)
                 .put(UserGroup.WINNER_NOTIFY, this.winnerNotifyCollector)
                 .put(UserGroup.EXCHANGER_CODE, this.exchangeCodeCollector)
-                .put(UserGroup.EXPERIENCE_INVEST_SUCCESS, this.experienceInvestSuccessCollector)
-                .put(UserGroup.EXPERIENCE_REPAY_SUCCESS, this.experienceRepaySuccessCollector)
                 .put(UserGroup.MEMBERSHIP_V0, this.membershipUserCollector)
                 .put(UserGroup.MEMBERSHIP_V1, this.membershipUserCollector)
                 .put(UserGroup.MEMBERSHIP_V2, this.membershipUserCollector)

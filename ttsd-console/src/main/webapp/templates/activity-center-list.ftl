@@ -55,7 +55,7 @@
         <button type="submit" class="btn btn-sm btn-primary btnSearch">查询</button>
         <button type="reset" class="btn btn-sm btn-default btnSearch">重置</button>
 
-        <@security.authorize access="hasAnyAuthority('OPERATOR')">
+        <@security.authorize access="hasAnyAuthority('OPERATOR', 'ADMIN')">
             <button type="button" class="btn btn-sm btn-default btnSearch btnAddActivity">添加活动</button>
         </@security.authorize>
     </form>
@@ -119,7 +119,7 @@
                                     <a href="/activity-manage/activity-center/${activity.activityId?c!}">审核</a>
                                 </@security.authorize>
                             <#elseif activity.status == 'REJECTION' || (activity.status == 'APPROVED' )>
-                                <@security.authorize access="hasAnyAuthority('OPERATOR')">
+                                <@security.authorize access="hasAnyAuthority('OPERATOR', 'ADMIN')">
                                     <a href="/activity-manage/activity-center/${activity.activityId?c!}">修改</a>
                                 </@security.authorize>
                             </#if>

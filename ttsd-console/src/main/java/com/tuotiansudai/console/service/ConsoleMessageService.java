@@ -111,7 +111,9 @@ public class ConsoleMessageService {
 
     public BaseDto<BaseDataDto> rejectMessage(long messageId, String approvedBy) {
         MessageModel messageModel = messageMapper.findActiveById(messageId);
-        if (messageModel == null || messageModel.getStatus() != MessageStatus.TO_APPROVE) {
+        if (messageModel == null
+                || (messageModel.getType() == MessageType.EVENT && messageModel.getStatus() != MessageStatus.APPROVED)
+                || (messageModel.getType() == MessageType.MANUAL && messageModel.getStatus() != MessageStatus.TO_APPROVE)) {
             return new BaseDto<>(new BaseDataDto(false, "消息审核失败"));
         }
         messageModel.setUpdatedTime(new Date());

@@ -49,8 +49,6 @@ public class SmsWrapperClient extends BaseClient {
 
     private final static String LOAN_REPAY_NOTIFY_URL = "/sms/loan-repay-notify";
 
-    private final static String EXPERIENCE_REPAY_NOTIFY_URL = "/sms/experience-repay-notify";
-
     private final static String CANCEL_TRANSFER_LOAN_URI = "/sms/cancel-transfer-loan";
 
     private final static String IMPORT_USER_RECEIVE_MEMBERSHIP_URI = "/sms/import-user-receive-membership";
@@ -93,10 +91,6 @@ public class SmsWrapperClient extends BaseClient {
 
     public BaseDto<SmsDataDto> sendLoanRepayNotify(RepayNotifyDto dto) {
         return send(dto, LOAN_REPAY_NOTIFY_URL);
-    }
-
-    public BaseDto<SmsDataDto> sendExperienceRepayNotify(ExperienceRepayNotifyDto dto) {
-        return send(dto, EXPERIENCE_REPAY_NOTIFY_URL);
     }
 
     public BaseDto<SmsDataDto> sendCancelTransferLoanNotify(SmsCancelTransferLoanNotifyDto dto) {

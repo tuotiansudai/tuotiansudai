@@ -53,10 +53,10 @@ public class MobileAppUserFundV2ServiceImpl implements MobileAppUserFundV2Servic
         long membershipPoint = accountModel != null ? accountModel.getMembershipPoint() : 0;
         int usableUserCouponCount = userCouponService.getUnusedUserCoupons(loginName).size();
         Date membershipExpiredDate = userMembershipModel != null && (userMembershipModel.getType().name().equals("GIVEN") || userMembershipModel.getType().name().equals("PURCHASED")) ? userMembershipModel.getExpiredTime() : null;
-        MembershipPrivilegeModel membershipPrivilegeModel = membershipPrivilegeMapper.findValidPrivilegeModelByLoginName(loginName,new Date());
-        Date membershipPrivilegeExpiredDate = membershipPrivilegeModel !=null?membershipPrivilegeModel.getEndTime():null;
+        MembershipPrivilegeModel membershipPrivilegeModel = membershipPrivilegeMapper.findValidPrivilegeModelByLoginName(loginName, new Date());
+        Date membershipPrivilegeExpiredDate = membershipPrivilegeModel != null ? membershipPrivilegeModel.getEndTime() : null;
         BaseResponseDto<UserFundResponseDataDto> dto = new BaseResponseDto<>(ReturnMessage.SUCCESS);
-        dto.setData(new UserFundResponseDataDto(userFundView, balance, point, membershipLevel, membershipPoint, usableUserCouponCount, membershipExpiredDate,membershipPrivilegeExpiredDate));
+        dto.setData(new UserFundResponseDataDto(userFundView, balance, point, membershipLevel, membershipPoint, usableUserCouponCount, membershipExpiredDate, membershipPrivilegeExpiredDate));
 
         return dto;
     }

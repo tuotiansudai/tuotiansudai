@@ -86,14 +86,8 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
     @Resource(name = "winnerNotifyCollector")
     private UserCollector winnerNotifyCollector;
 
-    @Resource(name = "experienceInvestSuccessCollector")
-    private UserCollector experienceInvestSuccessCollector;
-
     @Resource(name = "membershipUserCollector")
     private UserCollector membershipUserCollector;
-
-    @Resource(name = "experienceRepaySuccessCollector")
-    private UserCollector experienceRepaySuccessCollector;
 
     @Resource(name = "exchangeCodeCollector")
     private UserCollector exchangeCodeCollector;
@@ -125,7 +119,6 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
             logger.error(MessageFormat.format("[Exchange Coupon] code({0}) coupon({1}) user group({2}) is not EXCHANGER_CODE", exchangeCode, String.valueOf(couponId), couponModel.getUserGroup()));
             return false;
         }
-
 
         UserCouponModel userCouponModel = ((CouponAssignmentService) AopContext.currentProxy()).assign(loginName, couponModel.getId(), exchangeCode);
 
@@ -336,8 +329,6 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
                 .put(UserGroup.WINNER, this.winnerCollector)
                 .put(UserGroup.WINNER_NOTIFY, this.winnerNotifyCollector)
                 .put(UserGroup.EXCHANGER_CODE, this.exchangeCodeCollector)
-                .put(UserGroup.EXPERIENCE_INVEST_SUCCESS, this.experienceInvestSuccessCollector)
-                .put(UserGroup.EXPERIENCE_REPAY_SUCCESS, this.experienceRepaySuccessCollector)
                 .put(UserGroup.MEMBERSHIP_V0, this.membershipUserCollector)
                 .put(UserGroup.MEMBERSHIP_V1, this.membershipUserCollector)
                 .put(UserGroup.MEMBERSHIP_V2, this.membershipUserCollector)
