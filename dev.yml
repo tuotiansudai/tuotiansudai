@@ -367,3 +367,19 @@ ask:
     - "static-server"
     - "sign-in"
     - "ask-rest-service"
+
+anxin-wrapper:
+  image: "andreptb/tomcat:8-jdk8"
+  environment:
+    - "TZ=Asia/Shanghai"
+    - "JAVA_OPTS=-Xmx1024m"
+  ports:
+    - "20021:8080"
+  volumes:
+    - /workspace/deploy-config/ttsd-anxin-wrapper/:/workspace/deploy-config/ttsd-anxin-wrapper
+    - ./ttsd-anxin-wrapper/war:/usr/local/tomcat/webapps
+    - /var/log/tuotian/anxin-wrapper:/usr/local/tomcat/logs
+    - /var/log/tuotian/anxin-wrapper:/var/log/tomcat
+  links:
+    - "sms-wrapper"
+    - "redis-server"
