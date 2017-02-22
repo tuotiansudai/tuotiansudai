@@ -53,11 +53,11 @@ public abstract class BaseAsyncRequestModel extends BaseSyncRequestModel {
 
     }
 
-    public BaseAsyncRequestModel(Source source, String mobileAppPayFrontServiceName) {
-        this.retUrl = MessageFormat.format("{0}/account", getCallbackPortalHost());
+    public BaseAsyncRequestModel(Source source, String payFrontServiceName) {
+        this.retUrl = MessageFormat.format("{0}/callback", getCallbackPortalHost(), payFrontServiceName);
         if (source != Source.WEB) {
             this.setSourceV("HTML5");
-            this.retUrl = MessageFormat.format("{0}/callback/{1}", getCallbackMobileHost(), mobileAppPayFrontServiceName);
+            this.retUrl = MessageFormat.format("{0}/callback/{1}", getCallbackMobileHost(), payFrontServiceName);
         }
     }
 
