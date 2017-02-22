@@ -45,8 +45,6 @@ public class SmsWrapperClient extends BaseClient {
 
     private final static String PASSWORD_CHANGED_NOTIFY_URI = "/sms/mobile/{mobile}/password-changed-notify";
 
-    private final static String BIRTHDAY_NOTIFY_URI = "/sms/birthday-notify";
-
     private final static String LOAN_REPAY_NOTIFY_URL = "/sms/loan-repay-notify";
 
     private final static String CANCEL_TRANSFER_LOAN_URI = "/sms/cancel-transfer-loan";

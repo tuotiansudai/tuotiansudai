@@ -26,6 +26,7 @@ public class CouponExpiredSmsNotifyMessageConsumer implements MessageConsumer {
     @Override
     public void consume(String message) {
         SmsCouponNotifyDto smsCouponNotifyDto;
+        logger.error(MessageFormat.format("[CouponExpiredSmsNotifyMessageConsumer][consume]sms start to consume. message:{0}", message));
         try {
             smsCouponNotifyDto = JsonConverter.readValue(message, SmsCouponNotifyDto.class);
         } catch (IOException e) {
