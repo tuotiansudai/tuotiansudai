@@ -26,6 +26,7 @@ web:
     - "redis-server"
     - "static-server"
     - "sign-in"
+    - "anxin-wrapper"
 
 console:
   image: "andreptb/tomcat:8-jdk8"
@@ -45,6 +46,7 @@ console:
     - "static-server"
     - "sign-in"
     - "ask-rest-service"
+    - "anxin-wrapper"
 
 activity-console:
   image: "andreptb/tomcat:8-jdk8"
@@ -108,6 +110,7 @@ mobile-api:
     - "sms-wrapper"
     - "redis-server"
     - "sign-in"
+    - "anxin-wrapper"
 
 activity:
   image: "andreptb/tomcat:8-jdk8"
@@ -218,6 +221,7 @@ loan-mq-consumer:
     - "pay-wrapper"
     - "sms-wrapper"
     - "redis-server"
+    - "anxin-wrapper"
 
 message-mq-consumer:
   image: "anapsix/alpine-java:8_jdk"
