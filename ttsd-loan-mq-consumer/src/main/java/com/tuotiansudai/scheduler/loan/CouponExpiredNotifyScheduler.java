@@ -6,9 +6,11 @@ import com.tuotiansudai.dto.sms.SmsCouponNotifyDto;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.CouponMapper;
 import com.tuotiansudai.repository.mapper.UserCouponMapper;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.CouponModel;
 import com.tuotiansudai.repository.model.UserCouponModel;
 import com.tuotiansudai.repository.model.UserGroup;
+import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.AmountConverter;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,12 +27,15 @@ public class CouponExpiredNotifyScheduler {
     private CouponMapper couponMapper;
 
     @Autowired
+    private UserMapper userMapper;
+
+    @Autowired
     private UserCouponMapper userCouponMapper;
 
     @Autowired
     private MQWrapperClient mqWrapperClient;
 
-    @Scheduled(cron = "0 0/5 * * * ?", zone = "Asia/Shanghai")
+    @Scheduled(cron = "0 0/1 * * * ?", zone = "Asia/Shanghai")
     private void couponExpiredAfterFiveDays() {
         final List<UserGroup> notifyUserGroups = Lists.newArrayList(UserGroup.IMPORT_USER, UserGroup.CHANNEL,
                 UserGroup.FIRST_INVEST_ACHIEVEMENT, UserGroup.MAX_AMOUNT_ACHIEVEMENT, UserGroup.LAST_INVEST_ACHIEVEMENT);
@@ -42,7 +47,10 @@ public class CouponExpiredNotifyScheduler {
                 continue;
             }
 
+            UserModel userModel = userMapper.findByLoginName(userCouponModel.getLoginName());
+
             SmsCouponNotifyDto notifyDto = new SmsCouponNotifyDto();
+            notifyDto.setMobile(userModel.getMobile());
             notifyDto.setAmount(AmountConverter.convertCentToString(couponModel.getAmount()));
             notifyDto.setRate(new BigDecimal(couponModel.getRate() * 100).setScale(0, BigDecimal.ROUND_UP).toString());
             notifyDto.setCouponType(couponModel.getCouponType());
