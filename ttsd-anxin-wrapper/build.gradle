@@ -4,8 +4,8 @@ apply from: 'db_migration.gradle'
 dependencies {
     compile fileTree(dir: 'lib', include: '**/*.jar'),
             project(':ttsd-config'),
-            project(':ttsd-user-service'),
             project(":ttsd-aa-repository"),
+            project(":ttsd-user-repository"),
             project(":ttsd-job"),
             project(':ttsd-client'),
             'com.itextpdf:itextpdf:5.5.10',
