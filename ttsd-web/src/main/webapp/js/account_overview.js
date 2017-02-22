@@ -17,8 +17,8 @@ require(['jquery', 'load_echarts','layerWrapper','template','jquery.ajax.extensi
         // 资产总额饼状图报表
         (function(loadEcharts) {
             var data = [{ name: '可用金额', value: pydata.balance },
-                { name: '待收投资本金', value: pydata.collectingPrincipal },
-                { name: '待收预期收益', value: pydata.collectingInterest}];
+                { name: '待收投资本金', value: pydata.expectedTotalCorpus },
+                { name: '待收预期收益', value: pydata.expectedTotalInterest}];
 
             var option = loadEcharts.optionCategory.PieOption(data),
                 opt = loadEcharts.ChartConfig('ReportShow', option);
@@ -92,7 +92,6 @@ require(['jquery', 'load_echarts','layerWrapper','template','jquery.ajax.extensi
                     $signBtn.parent().addClass("no-click").find('span').removeClass('will-sign').addClass('finish-sign').html("已签到");
                     $signPoint.find('span').html('+'+response.data.signInPoint);
                     $signTip.fadeIn('fast');
-                    $("#MyAvailablePoint").text(Math.round($("#MyAvailablePoint").text()) + Math.round(response.data.signInPoint));
                 } else {
                     location.href='/register/account?redirect=/account';
                 }
@@ -101,12 +100,7 @@ require(['jquery', 'load_echarts','layerWrapper','template','jquery.ajax.extensi
         //hide sign tip
         $closeSign.on('click', function (event) {
             event.preventDefault();
-            $signTip.fadeOut('fast', function() {
-                $(this).find('.add-dou').css({
-                    'bottom': '0',
-                    'opacity': '1'
-                });
-            });
+            location.href = "/account";
         });
     });
 });

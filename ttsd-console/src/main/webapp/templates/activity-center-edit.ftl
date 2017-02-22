@@ -276,7 +276,7 @@
 
                 <div class="col-sm-4">
                 </div>
-                <@security.authorize access="hasAuthority('OPERATOR')">
+                <@security.authorize access="hasAnyAuthority('OPERATOR', 'ADMIN')">
                     <#if !(dto??) || dto?? && ["APPROVED", "REJECTION"]?seq_contains(dto.status)>
                         <div class="col-sm-7">
                             <button type="button" class="btn jq-btn-form btn-primary activity-to_approve">提交审核</button>

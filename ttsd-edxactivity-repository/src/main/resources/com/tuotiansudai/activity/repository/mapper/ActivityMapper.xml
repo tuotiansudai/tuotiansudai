@@ -81,10 +81,10 @@
         SELECT * FROM `edxactivity`.`activity`
         <where>
             <if test="startTime != null">
-                AND activated_time &gt;= #{startTime}
+                AND (activated_time &gt;= #{startTime} OR activated_time is null)
             </if>
             <if test="endTime != null">
-                AND activated_time &lt;= #{endTime}
+                AND (activated_time &lt;= #{endTime}  OR activated_time is null)
             </if>
             <if test="activityStatus != null and activityStatus.name() == 'OPERATING'">
                 AND status = 'APPROVED' AND expired_time &gt; now()
