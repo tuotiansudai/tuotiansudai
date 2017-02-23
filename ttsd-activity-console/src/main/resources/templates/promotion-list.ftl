@@ -1,6 +1,6 @@
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="promotion-list.js" headLab="content-manage" sideLab="promotion" title="APP弹窗推送管理">
+<@global.main pageCss="" pageJavascript="promotion-list.js" headLab="activity-manage" sideLab="promotion" title="APP弹窗推送管理">
 
 <!-- content area begin -->
 <div class="col-md-10">
