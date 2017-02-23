@@ -1,5 +1,5 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="linkexchange-edit.js" headLab="announce-manage" sideLab="linkExchangeMan" title="添加友链">
+<@global.main pageCss="" pageJavascript="linkexchange-edit.js" headLab="content-manage" sideLab="linkExchangeMan" title="添加友链">
 
 <!-- content area begin -->
 <div class="col-md-10">

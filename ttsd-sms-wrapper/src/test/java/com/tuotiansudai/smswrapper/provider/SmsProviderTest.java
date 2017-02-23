@@ -31,7 +31,7 @@ public class SmsProviderTest {
         smsProviderAlidayu.setAppSecret("secret");
         smsProviderAlidayu.setSignName("拓天速贷");
         List<String> mobileList = Arrays.asList("13800******","18600******");
-        List<String> paramList = Arrays.asList("a","b");
-        smsProviderAlidayu.sendSMS(mobileList, SmsTemplate.SMS_COUPON_NOTIFY_TEMPLATE, paramList);
+        List<String> paramList = Arrays.asList("a");
+        smsProviderAlidayu.sendSMS(mobileList, SmsTemplate.SMS_COUPON_ASSIGN_SUCCESS_TEMPLATE, paramList);
     }
 }

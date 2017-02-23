@@ -13,6 +13,7 @@ public enum UserGroup {
     IMPORT_USER("导入用户名单"),
     EXCHANGER("积分兑换用户"),
     WINNER("中奖用户"),
+    WINNER_NOTIFY("中奖用户-发送提醒"),
     EXCHANGER_CODE("兑换码"),
     MEMBERSHIP_V0("会员V0"),
     MEMBERSHIP_V1("会员V1"),
