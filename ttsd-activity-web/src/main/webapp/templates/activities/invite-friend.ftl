@@ -1,5 +1,5 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.invite_friend}" pageJavascript="${js.invite_friend}" activeNav="" activeLeftNav="" title="推荐奖励_拓天速贷" keywords="拓天速贷,推荐奖励,P2P理财,短期理财,短期投资,拓天速贷2级推荐机制" description="拓天速贷针对老用户推出2级推荐机制的推荐奖励,可以让您的财富快速升值.">
+<@global.main pageCss="${css.invite_friend}" pageJavascript="${js.invite_friend}" activeNav="" activeLeftNav="" title="推荐奖励_拓天速贷" keywords="拓天速贷,推荐奖励,红包奖励,现金奖励,加息劵奖励,推荐机制" description="拓天速贷邀好友拿3重好礼,邀请好友得红包,好友投资送加息劵,还可拿1%现金奖励,拓天速贷可以让您的财富快速升值.">
 
 <div class="tour-slide"></div>
 
@@ -48,7 +48,7 @@
                     <h3>邀好友拿<span>3</span>重礼包</h3>
                     <p>您已成功邀请<span>1</span>位好友， 赚取红包<span>100</span>元，赚取现金奖励<span>110</span>元 <a href="">查看邀请详情</a></p>
                     <p class="media-item-phone">
-                        <a href="" class="invite-btn">马上邀请好友</a>
+                        <a href="/referrer/refer-list" class="invite-btn">马上邀请好友</a>
                     </p>
                 </div>
                 <div class="weixin-code">
@@ -202,7 +202,7 @@
                 <span>小贴士：</span>好友在注册后15天内投资额达到2000及以上（新手体验项目及债权转让除外），视为一个有效邀请。
             </p>
             <p class="media-item">
-                <a href="" class="invite-btn">立即邀请好友拿奖励</a>
+                <a href="/referrer/refer-list" class="invite-btn">立即邀请好友拿奖励</a>
             </p>
         </div>
     </div>
@@ -220,7 +220,7 @@
         </div>
         <div class="btn-item media-item">
             <p>
-                <a href="" class="invite-btn">立即邀请好友拿奖励</a>
+                <a href="/referrer/refer-list" class="invite-btn">立即邀请好友拿奖励</a>
             </p>
         </div>
     </div>
