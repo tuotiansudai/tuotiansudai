@@ -87,8 +87,6 @@
     <#if pageCss?? && pageCss != "">
         <link rel="stylesheet" type="text/css" href="${pageCss}" charset="utf-8"/>
     </#if>
-
-    <#--<#include "../pageLayout/cnzz.ftl"/>-->
     <!-- growing io -->
     <#include "../pageLayout/growing-io.ftl"/>
 

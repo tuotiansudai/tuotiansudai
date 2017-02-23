@@ -7,7 +7,7 @@
             <ul class="banner-img-list">
                 <#list bannerList as banner>
                     <li>
-                        <a href="${banner.url}" onclick="cnzzPush.trackClick('首页','Banner模块','${banner.name!}')" target="_blank"
+                        <a href="${banner.url}" target="_blank"
                            <#if banner.url == 'http://www.iqiyi.com/w_19rt7ygfmh.html#vfrm=8-8-0-1'>rel="nofollow"</#if>>
                             <img src="${commonStaticServer}${banner.webImageUrl}" data-app-img="${commonStaticServer}${banner.appImageUrl}" alt="${banner.title}">
                         </a>
@@ -24,9 +24,8 @@
                     </p>
 
                     <p class="welcome-text">welcome</p>
-                    <a class="btn-normal" href="/register/user" onclick="cnzzPush.trackClick('21首页','Banner模块','免费注册')">免费注册 </a>
-                    <i class="clearfix tr">已有账户？<a href="/login"
-                                                   onclick="cnzzPush.trackClick('22首页','Banner模块','立即登录')"> 立即登录</a></i>
+                    <a class="btn-normal" href="/register/user" >免费注册 </a>
+                    <i class="clearfix tr">已有账户？<a href="/login"> 立即登录</a></i>
                 </div>
             </@global.isAnonymous>
         </div>
@@ -49,15 +48,14 @@
                             <#assign label = "更多">
                         </#if>
                         <li class="clearfix">
-                            <a href="/announce/${announce.id?string.computer}"
-                               onclick="cnzzPush.trackClick('${category}','公告模块','${label}')">
+                            <a href="/announce/${announce.id?string.computer}">
                                 <span class="text-title fl">${announce.title}</span>
                                 <span class="text-date fr">${announce.createdTime?string("yyyy-MM-dd")}</span>
                             </a>
                         </li>
                     </#list>
                 </ul>
-                <a href="/about/notice" onclick="cnzzPush.trackClick('71首页','公告模块','更多')" class="text-href">更多></a>
+                <a href="/about/notice" class="text-href">更多></a>
             </div>
         </div>
     </div>
@@ -65,19 +63,19 @@
         <div class="page-width">
             <dl>
                 <dd class="guide">
-                    <a href="/about/guide" onclick="cnzzPush.trackClick('28首页','安全保障模块','1')" target="_blank">
+                    <a href="/about/guide" target="_blank">
                         <b class="clearfix">稳健收益 较低门槛</b>
                         <span>预期年化收益10%~13%，<br>投资门槛50元起投</span>
                     </a>
                 </dd>
                 <dd class="risk">
-                    <a href="/about/risk-flow" onclick="cnzzPush.trackClick('29首页','安全保障模块','2')" target="_blank">
+                    <a href="/about/risk-flow" target="_blank">
                         <b class="clearfix">六重风控 审核严谨</b>
                         <span>22道审核手续，<br>项目安全透明无死角</span>
                     </a>
                 </dd>
                 <dd class="assurance">
-                    <a href="/about/assurance" onclick="cnzzPush.trackClick('30首页','安全保障模块','3')" target="_blank">
+                    <a href="/about/assurance" target="_blank">
                         <b class="clearfix">四大保障 投资无忧</b>
                         <span>12道保障措施并举，<br>资金、个人信息均安全</span>
                     </a>
@@ -151,7 +149,7 @@
     <#--优选债权-->
         <div class="main-column-title">
             <i class="icon-title"></i>优选债权
-            <a href="/loan-list" onclick="cnzzPush.trackClick('35首页','热门产品模块','更多')" class="hot-more">更多></a>
+            <a href="/loan-list"  class="hot-more">更多></a>
         </div>
 
         <div class="normal-loan">
@@ -165,7 +163,7 @@
         <#if enterpriseLoans??>
             <div class="main-column-title">
                 <i class="icon-title"></i>税易经营性借款
-                <a href="/loan-list" onclick="cnzzPush.trackClick('35首页','热门产品模块','更多')" class="hot-more">更多></a>
+                <a href="/loan-list" class="hot-more">更多></a>
             </div>
 
             <#include "component/loan-title.ftl">
@@ -176,7 +174,7 @@
 
         <div class="main-column-title">
             <i class="icon-title"></i>转让项目
-            <a href="/transfer-list" onclick="cnzzPush.trackClick('47首页','转让项目模块','更多')" class="hot-more">更多></a>
+            <a href="/transfer-list" class="hot-more">更多></a>
         </div>
 
         <div class="target-category-box clearfix bg-screen">
@@ -197,31 +195,25 @@
         <div class="media-coverage-box">
             <h3 class="label-title">
                 媒体报道
-                <a href="/about/media" onclick="cnzzPush.trackClick('39首页','媒体报道模块','更多')" class="hot-more">更多></a>
+                <a href="/about/media" class="hot-more">更多></a>
             </h3>
             <ul class="media-list">
-                <li><i>●</i><a rel="nofollow" href="http://www.greatchinese.com.cn/news/hyxw/20160907/15431.html"
-                               onclick="cnzzPush.trackClick('41首页','媒体报道模块','唯一运营商')" target="_blank">拓天伟业成建设银行“税易-助保贷”唯一运营商</a>
+                <li><i>●</i><a rel="nofollow" href="http://www.greatchinese.com.cn/news/hyxw/20160907/15431.html" target="_blank">拓天伟业成建设银行“税易-助保贷”唯一运营商</a>
                     <time>2016-09-07</time>
                 </li>
                 <li><i>●</i><a rel="nofollow" href="http://economy.gmw.cn/2016-03/31/content_19527114.htm"
-                               onclick="cnzzPush.trackClick('73首页','媒体报道模块','霸道总裁')"
                                target="_blank">拓天速贷第二期全国排行活动正式启动</a>
                     <time>2016-03-31</time>
                 </li>
-                <li><i>●</i><a rel="nofollow" href="http://fj.qq.com/a/20160314/060811.htm"
-                               onclick="cnzzPush.trackClick('40首页','媒体报道模块','财富盛宴大平台')" target="_blank">拓天速贷：财富盛宴大平台
+                <li><i>●</i><a rel="nofollow" href="http://fj.qq.com/a/20160314/060811.htm" target="_blank">拓天速贷：财富盛宴大平台
                     感恩豪礼滚滚来</a>
                     <time>2016-03-14</time>
                 </li>
                 <li><i>●</i><a rel="nofollow"
-                               href="http://money.china.com/fin/lc/201601/20/2443757.html?qq-pf-to=pcqq.c2c"
-                               onclick="cnzzPush.trackClick('42首页','媒体报道模块','宝马名花有主')" target="_blank">拓天速贷：宝马名花有主，猴年豪礼来袭</a>
+                               href="http://money.china.com/fin/lc/201601/20/2443757.html?qq-pf-to=pcqq.c2c" target="_blank">拓天速贷：宝马名花有主，猴年豪礼来袭</a>
                     <time>2016-01-20</time>
                 </li>
-                <li><i>●</i><a rel="nofollow" href="http://w.huanqiu.com/r/MV8wXzgyNzQ4NDZfMTM5NF8xNDUxMzAzNzYy"
-                               onclick="cnzzPush.trackClick('43首页','媒体报道模块','高效资产平台')"
-                               target="_blank">拓天速贷以卓越风控打造高效资产平台</a>
+                <li><i>●</i><a rel="nofollow" href="http://w.huanqiu.com/r/MV8wXzgyNzQ4NDZfMTM5NF8xNDUxMzAzNzYy" target="_blank">拓天速贷以卓越风控打造高效资产平台</a>
                     <time>2015-12-28</time>
                 </li>
             </ul>
@@ -233,18 +225,15 @@
                 合作伙伴
             </h3>
             <ul class="partner-list">
-                <li><a rel="nofollow" class="logo-lian" href="http://www.umpay.com/"
-                       onclick="cnzzPush.trackClick('46首页','合作伙伴模块','联动优势')"  target="_blank">
+                <li><a rel="nofollow" class="logo-lian" href="http://www.umpay.com/" target="_blank">
                 </a>
                 </li>
 
-                <li><a rel="nofollow" class="logo-jing" href="http://www.king-capital.com/"
-                       onclick="cnzzPush.trackClick('45首页','合作伙伴模块','京都律师所')" target="_blank">
+                <li><a rel="nofollow" class="logo-jing" href="http://www.king-capital.com/" target="_blank">
                 </a>
                 </li>
 
-                <li><a rel="nofollow" class="logo-cfca" href="https://www.anxinsign.com/"
-                       onclick="cnzzPush.trackClick('47首页','合作伙伴模块','安心签')" target="_blank">
+                <li><a rel="nofollow" class="logo-cfca" href="https://www.anxinsign.com/" target="_blank">
                 </a>
                 </li>
             </ul>

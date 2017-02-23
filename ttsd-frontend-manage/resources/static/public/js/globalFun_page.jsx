@@ -301,14 +301,7 @@ window.layer.config({
 window._ = window.jquery_library(3);
 
 window.$.fn=window.$.prototype;
-// ********* cnzz统计 BEGIN ***********
-function cnzzPushConstructor() {
-    this.trackClick=function(category, action, label) {
-        _czc.push(['_trackEvent', category, action, label]);
-    }
-}
-window.cnzzPush = new cnzzPushConstructor();
-// ********** cnzz统计 END **********
+
 
 
 

@@ -70,7 +70,7 @@ require.ensure([],function() {
                 if (data.status) {
                     window.location.reload();
                 } else {
-                    commonFun.refreshCaptcha(loginInForm.imageCaptcha,'/login/captcha');
+                    commonFun.refreshCaptcha(globalFun.$('#imageCaptcha'),'/login/captcha');
                     globalFun.removeClass(thisButton,'loading');
                     errorDom.text(data.message);
                 }

@@ -85,7 +85,6 @@
         <link rel="stylesheet" type="text/css" href="${pageCss}" charset="utf-8"/>
     </#if>
 
-    <#include "../cnzz.ftl"/>
     <!-- growing io -->
     <#include "../growing-io.ftl"/>
 </head>
