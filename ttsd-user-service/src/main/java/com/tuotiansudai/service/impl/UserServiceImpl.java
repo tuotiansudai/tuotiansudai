@@ -186,6 +186,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public long getExperienceBalanceByLoginName(String loginName) {
-        return userMapper.findExperienceBalanceByLoginName(loginName);
+        UserModel userModel = userMapper.findByLoginName(loginName);
+        return userModel != null ? userModel.getExperienceBalance() : 0;
     }
 }

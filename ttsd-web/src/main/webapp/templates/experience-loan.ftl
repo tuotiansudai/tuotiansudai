@@ -46,7 +46,6 @@
                     <form action="/experience-invest" method="post" id="investForm">
                         <dl class="account-list new-text account-list-new">
                             <input type="hidden" name="loanId" value="1"/>
-                            <input type="hidden" name="amount" value="0"/>
 
                             <dd class="clearfix">
                                 <span class="fl">体验金余额：</span>
@@ -55,7 +54,7 @@
                             <dd class="invest-amount tl" <#if loan.loanStatus == "PREHEAT">style="display: none"</#if>>
                                 <span class="fl">投资金额(体验金)：</span>
                                 <input type="text" name="amount" data-l-zero="deny" data-v-min="0.00" data-min-invest-amount="${loan.minInvestAmount}"
-                                       placeholder="0.00" value="${loan.investor.maxAvailableInvestAmount}"
+                                       placeholder="0.00" value="${(experienceBalance / 100)?string("0.00")}"
                                        class="text-input-amount fr position-width"/>
                             </dd>
 
@@ -69,8 +68,7 @@
                                     <a class="btn-pay btn-normal" href="/register/user">马上投资</a>
                                 </@global.isAnonymous>
                                 <@global.isNotAnonymous>
-                                    <button id="investSubmit" class="btn-pay btn-normal" type="button"
-                                            <#if coupon?? == false>disabled="disabled"</#if>>马上投资
+                                    <button id="investSubmit" class="btn-pay btn-normal" type="button">马上投资
                                     </button>
                                 </@global.isNotAnonymous>
 

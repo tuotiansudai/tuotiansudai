@@ -290,9 +290,4 @@
         and exists(select 1 from invest where invest.login_name = user.login_name and invest.status = 'SUCCESS' and invest.loan_id != '1')
     </select>
 
-    <select id="findExperienceBalanceByLoginName" parameterType="string" resultType="long">
-        select IFNULL(experience_balance, 0) from user where login_name = #{loginName}
-    </select>
-
-
 </mapper>

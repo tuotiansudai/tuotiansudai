@@ -21,7 +21,6 @@
         <result column="expected_total_experience_interest" property="expectedTotalExperienceInterest"/>
     </resultMap>
 
-
     <select id="findByLoginName" parameterType="string" resultMap="userFundResultMap">
         select
               (select balance from account where login_name = #{loginName}) as balance,

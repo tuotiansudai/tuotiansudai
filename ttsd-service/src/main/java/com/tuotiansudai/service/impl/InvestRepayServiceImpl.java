@@ -115,5 +115,34 @@ public class InvestRepayServiceImpl implements InvestRepayService{
         return investRepayMapper.findSumRepaidCorpusByLoginName(loginName);
     }
 
+    @Override
+    public long findSumRepaidExtraRateByLoginName(String loginName){
+        return investRepayMapper.findSumRepaidExtraRateByLoginName(loginName);
+    }
+
+    @Override
+    public long findSumRepayingExtraRateByLoginName(String loginName){
+        return investRepayMapper.findSumRepayingExtraRateByLoginName(loginName);
+    }
+
+    @Override
+    public long findSumRepaidExperienceByLoginName(String loginName) {
+        return investRepayMapper.findSumRepaidExperienceByLoginName(loginName);
+    }
+
+    @Override
+    public long findSumRepayingExperienceByLoginName(String loginName) {
+        return investRepayMapper.findSumRepayingExperienceByLoginName(loginName);
+    }
+
+    @Override
+    public long findSumInvestFrozeAmountByLoginName(String loginName){
+        return investRepayMapper.findSumInvestFrozeAmountByLoginName(loginName);
+    }
+
+    @Override
+    public long findSumWithdrawFrozeAmountByLoginName(String loginName){
+        return investRepayMapper.findSumWithdrawFrozeAmountByLoginName(loginName);
+    }
 
 }

@@ -26,4 +26,16 @@ public interface InvestRepayService {
     long findSumRepayingCorpusByLoginName(String loginName);
 
     long findSumRepaidCorpusByLoginName(String loginName);
+
+    long findSumRepaidExtraRateByLoginName(String loginName);
+
+    long findSumRepayingExtraRateByLoginName(String loginName);
+
+    long findSumRepaidExperienceByLoginName(String loginName);
+
+    long findSumRepayingExperienceByLoginName(String loginName);
+
+    long findSumInvestFrozeAmountByLoginName(String loginName);
+
+    long findSumWithdrawFrozeAmountByLoginName(String loginName);
 }

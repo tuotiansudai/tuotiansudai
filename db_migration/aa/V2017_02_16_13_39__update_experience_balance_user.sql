@@ -1,5 +1,5 @@
 begin;
-update loan set name='拓天体验金项目', loan_amount = 1230, min_invest_amount = 5000 where id=1;
+update loan set name='拓天体验金项目', loan_amount = 1230, min_invest_amount = 5000,base_rate = 0.13 where id=1;
 --更新未使用体验金
 update user set experience_balance = 688800 where login_name in (
   select login_name from aa.user_coupon

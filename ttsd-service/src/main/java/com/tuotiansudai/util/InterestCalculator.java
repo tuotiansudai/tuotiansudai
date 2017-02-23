@@ -248,4 +248,14 @@ public class InterestCalculator {
                 divide(new BigDecimal(DAYS_OF_YEAR), 0, BigDecimal.ROUND_DOWN).longValue();
     }
 
+    public static long estimateExperienceExpectedInterest(long investAmount, LoanModel loanModel) {
+        if (loanModel == null) {
+            return 0;
+        }
+        int duration = loanModel.getDuration();
+        return new BigDecimal(investAmount * duration)
+                .multiply(new BigDecimal(loanModel.getBaseRate()).add(new BigDecimal(loanModel.getActivityRate())))
+                .divide(new BigDecimal(InterestCalculator.DAYS_OF_YEAR), 0, BigDecimal.ROUND_DOWN).longValue();
+    }
+
 }

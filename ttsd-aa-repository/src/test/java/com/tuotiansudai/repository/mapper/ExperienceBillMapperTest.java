@@ -1,7 +1,7 @@
 package com.tuotiansudai.repository.mapper;
 
 import com.tuotiansudai.enums.ExperienceBillOperationType;
-import com.tuotiansudai.enums.ExperienceBusinessType;
+import com.tuotiansudai.enums.ExperienceBillBusinessType;
 import com.tuotiansudai.repository.model.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,7 +35,7 @@ public class ExperienceBillMapperTest {
         experienceBillModel.setLoginName(fakeUser.getLoginName());
         experienceBillModel.setOperationType(ExperienceBillOperationType.OUT);
         experienceBillModel.setAmount(100);
-        experienceBillModel.setBusinessType(ExperienceBusinessType.REGISTER);
+        experienceBillModel.setBusinessType(ExperienceBillBusinessType.REGISTER);
         experienceBillModel.setNote("test新手注册");
         experienceBillModel.setCreatedTime(new Date());
         experienceBillMapper.create(experienceBillModel);
@@ -51,19 +51,19 @@ public class ExperienceBillMapperTest {
         experienceBillModel.setLoginName(fakeUser.getLoginName());
         experienceBillModel.setOperationType(ExperienceBillOperationType.OUT);
         experienceBillModel.setAmount(100);
-        experienceBillModel.setBusinessType(ExperienceBusinessType.REGISTER);
+        experienceBillModel.setBusinessType(ExperienceBillBusinessType.REGISTER);
         experienceBillModel.setNote("test新手注册");
         experienceBillModel.setCreatedTime(new Date());
         experienceBillMapper.create(experienceBillModel);
 
         experienceBillModel.setAmount(500);
-        experienceBillModel.setBusinessType(ExperienceBusinessType.MONEY_TREE);
+        experienceBillModel.setBusinessType(ExperienceBillBusinessType.MONEY_TREE);
         experienceBillModel.setNote("摇钱树获得体验金");
         experienceBillMapper.update(experienceBillModel);
 
         assertEquals("摇钱树获得体验金", experienceBillModel.getNote());
         assertEquals(500, experienceBillModel.getAmount());
-        assertEquals(ExperienceBusinessType.MONEY_TREE.toString(), experienceBillModel.getBusinessType().toString());
+        assertEquals(ExperienceBillBusinessType.MONEY_TREE.toString(), experienceBillModel.getBusinessType().toString());
     }
 
     private UserModel createFakeUser() {

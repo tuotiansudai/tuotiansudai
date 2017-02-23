@@ -28,20 +28,27 @@
     </div>
     <div class="assets-box clear-blank">
         <div class="assets-report bRadiusBox fl bg-w">
-            <h3>资产总额：<span>${(((balance+freeze+collectingPrincipal+collectingInterest)/100)?string('0.00'))!}元</span></h3>
-
-            <div id="ReportShow" style="width:100%; height:115px; "></div>
+            <h3>账户总额：<span>${(((balance+freeze+collectingPrincipal+collectingInterest)/100)?string('0.00'))!}元</span></h3>
+            <ul>
+            <li><b>已收投资收益：</b><span>${((collectedInterest+collectedBirthdayAndInterest)/100)?string('0.00')!}</span>元</li>
+            <li><b>已收投资奖励：</b><span>${((collectedExtraRateInterest)/100)?string('0.00')!}</span>元</li>
+            <li><b>待收投资本金：</b><span>${((collectingPrincipal/100)?string('0.00'))!}</span>元</li>
+            <li><b>已收推荐奖励：</b><span>${((collectedReward/100)?string('0.00'))!}</span>元</li>
+            <li><b>待收预期收益：</b><span>${((collectingInterest/100)?string('0.00'))!}</span>元</li>
+            <li><b>待收投资奖励：</b><span>${((collectingExtraRateInterest/100)?string('0.00'))!}</span>元</li>
+            </ul>
+        <#--<div id="ReportShow" style="width:100%; height:115px; "></div>-->
         </div>
         <div class="assets-detail bRadiusBox fr bg-w">
             <ul class="detail-list">
-                <li><b>我的余额：</b><span id="balance">${((balance/100)?string('0.00'))!}</span>元</li>
-                <li><b>累计收益：</b><span>${(((collectedReward+collectedInterest+collectedBirthdayAndInterest+collectedRedEnvelopeInterest)/100)?string('0.00'))!}</span>元</li>
+                <li><b>可用余额：</b><span id="balance">${((balance/100)?string('0.00'))!}</span>元</li>
+                <li><b>累计收益：</b><span>${(((collectedReward+collectedInterest+collectedBirthdayAndInterest+collectedRedEnvelopeInterest+collectingExtraRateInterest+collectedExperienceInterest)/100)?string('0.00'))!}</span>元</li>
                 <li><b>冻结金额：</b><span>${((freeze/100)?string('0.00'))!}</span>元</li>
-                <li><b>已收投资收益：</b><span>${((collectedInterest+collectedBirthdayAndInterest)/100)?string('0.00')!}</span>元</li>
-                <li><b>待收投资本金：</b><span>${((collectingPrincipal/100)?string('0.00'))!}</span>元</li>
-                <li><b>已收推荐奖励：</b><span>${((collectedReward/100)?string('0.00'))!}</span>元</li>
-                <li><b>待收预期收益：</b><span>${((collectingInterest/100)?string('0.00'))!}</span>元</li>
+                <li><b>提现冻结中：</b><span>${((withdrawFrozeAmount/100)?string('0.00'))!}</span>元</li>
+                <li><b>投资冻结中：</b><span>${((investFrozeAmount/100)?string('0.00'))!}</span>元</li>
+                 <li><b>待收体验金收益：</b><span>${((collectingExperienceInterest/100)?string('0.00'))!}</span>元</li>
                 <li><b>已收红包奖励：</b><span>${((collectedRedEnvelopeInterest/100)?string('0.00'))!}</span>元</li>
+                <li><b>已收体验金奖励：</b><span>${((collectedExperienceInterest/100)?string('0.00'))!}</span>元</li>
             </ul>
         </div>
     </div>
@@ -121,11 +128,7 @@
                         <td>${(((successSumInvestRepay.loan.activityRate+successSumInvestRepay.loan.baseRate)*100)?string('0.00'))!}%</td>
                         <td>${(successSumInvestRepay.loan.duration?string('0'))!}天</td>
                         <td>第${(successSumInvestRepay.period?string('0'))!}期/${(successSumInvestRepay.loan.periods?string('0'))!}期</td>
-                        <td>${successSumInvestRepay.actualAmount!}
-                            <#if successSumInvestRepay.loan.productType == 'EXPERIENCE'>
-                                (现金红包)
-                            </#if>
-                        </td>
+                        <td>${successSumInvestRepay.actualAmount!}</td>
                         <td>${(successSumInvestRepay.actualRepayDate?string('MM月dd日'))!}</td>
                     </tr>
                     </#list>
@@ -161,11 +164,7 @@
                         <td>${(((notSuccessSumInvestRepay.loan.activityRate+notSuccessSumInvestRepay.loan.baseRate)*100)?string('0.00'))!}%</td>
                         <td>${(notSuccessSumInvestRepay.loan.duration?string('0'))!}天</td>
                         <td>第${(notSuccessSumInvestRepay.period?string('0'))!}期/${(notSuccessSumInvestRepay.loan.periods?string('0'))!}期</td>
-                        <td>${notSuccessSumInvestRepay.amount!}
-                            <#if notSuccessSumInvestRepay.loan.productType == 'EXPERIENCE'>
-                                (现金红包)
-                            </#if>
-                        </td>
+                        <td>${notSuccessSumInvestRepay.amount!}</td>
                         <td>${(notSuccessSumInvestRepay.repayDate?string('MM月dd日'))!}</td>
                     </tr>
                     </#list>

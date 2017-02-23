@@ -5,7 +5,7 @@ import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.impl.MobileAppExperienceBillServiceImpl;
 import com.tuotiansudai.api.util.PageValidUtils;
 import com.tuotiansudai.enums.ExperienceBillOperationType;
-import com.tuotiansudai.enums.ExperienceBusinessType;
+import com.tuotiansudai.enums.ExperienceBillBusinessType;
 import com.tuotiansudai.repository.mapper.ExperienceBillMapper;
 import com.tuotiansudai.repository.model.ExperienceBillModel;
 import com.tuotiansudai.util.IdGenerator;
@@ -41,7 +41,7 @@ public class MobileAppExperienceServiceTest extends ServiceTestBase {
         experienceBillModel.setId(idGenerator.generate());
         experienceBillModel.setLoginName("admin");
         experienceBillModel.setOperationType(ExperienceBillOperationType.IN);
-        experienceBillModel.setBusinessType(ExperienceBusinessType.REGISTER);
+        experienceBillModel.setBusinessType(ExperienceBillBusinessType.REGISTER);
         experienceBillModel.setAmount(2000);
         experienceBillModel.setNote("新用户注册");
 
@@ -61,7 +61,7 @@ public class MobileAppExperienceServiceTest extends ServiceTestBase {
         BaseResponseDto<ExperienceBillResponseDataDto> baseResponseDto = mobileAppExperienceBillService.queryExperienceBillList(experienceBillRequestDto);
         assertEquals(ReturnMessage.SUCCESS.getCode(), baseResponseDto.getCode());
         assertEquals(ExperienceBillOperationType.IN.getDescription(), baseResponseDto.getData().getExperienceBills().get(0).getOperationType());
-        assertEquals(ExperienceBusinessType.REGISTER.getDescription(), baseResponseDto.getData().getExperienceBills().get(0).getBusinessType());
+        assertEquals(ExperienceBillBusinessType.REGISTER.getDescription(), baseResponseDto.getData().getExperienceBills().get(0).getBusinessType());
         assertEquals(2000, Long.parseLong(baseResponseDto.getData().getExperienceBills().get(0).getAmount()));
     }
 }

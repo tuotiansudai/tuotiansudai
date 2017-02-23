@@ -1,7 +1,7 @@
 package com.tuotiansudai.repository.model;
 
 import com.tuotiansudai.enums.ExperienceBillOperationType;
-import com.tuotiansudai.enums.ExperienceBusinessType;
+import com.tuotiansudai.enums.ExperienceBillBusinessType;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -12,9 +12,23 @@ public class ExperienceBillModel implements Serializable {
     private String loginName;
     private ExperienceBillOperationType operationType;
     private long amount;
-    private ExperienceBusinessType businessType;
+    private ExperienceBillBusinessType businessType;
     private String note;
     private Date createdTime;
+
+
+    public ExperienceBillModel(){
+
+    }
+
+    public ExperienceBillModel(String loginName, ExperienceBillOperationType experienceBillOperationType, long amount, ExperienceBillBusinessType experienceBusinessType, String note){
+        this.loginName = loginName;
+        this.operationType = experienceBillOperationType;
+        this.amount = amount;
+        this.businessType = experienceBusinessType;
+        this.note = note;
+        this.createdTime = new Date();
+    }
 
     public long getId() {
         return id;
@@ -48,11 +62,11 @@ public class ExperienceBillModel implements Serializable {
         this.amount = amount;
     }
 
-    public ExperienceBusinessType getBusinessType() {
+    public ExperienceBillBusinessType getBusinessType() {
         return businessType;
     }
 
-    public void setBusinessType(ExperienceBusinessType businessType) {
+    public void setBusinessType(ExperienceBillBusinessType businessType) {
         this.businessType = businessType;
     }
 

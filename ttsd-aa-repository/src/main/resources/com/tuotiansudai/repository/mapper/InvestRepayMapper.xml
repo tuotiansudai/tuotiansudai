@@ -382,6 +382,65 @@
         WHERE ir.`status` = 'COMPLETE'
     </select>
 
+    <select id="findSumRepaidExtraRateByLoginName" parameterType="map" resultType="long">
+        SELECT IFNULL(SUM(invest_extra_rate.actual_interest), 0) - IFNULL(SUM(invest_extra_rate.actual_fee), 0)
+        FROM invest_extra_rate
+        WHERE login_name = #{loginName}
+        AND is_transfer IS FALSE
+    </select>
+
+    <select id="findSumRepayingExtraRateByLoginName" parameterType="map" resultType="long">
+        SELECT IFNULL(SUM(invest_extra_rate.expected_interest), 0) - IFNULL(SUM(invest_extra_rate.expected_fee), 0)
+        FROM invest_extra_rate
+        WHERE login_name = #{loginName}
+        AND is_transfer IS FALSE
+    </select>
+
+    <select id="findSumRepaidExperienceByLoginName" parameterType="map" resultType="long">
+        SELECT
+          IFNULL(SUM(
+            ir.`actual_interest` + ir.`default_interest` - ir.`actual_fee`
+          ),0)
+        FROM
+          invest_repay ir
+          JOIN invest i
+            ON ir.`invest_id` = i.`id`
+            AND i.`status` = 'SUCCESS'
+            AND i.`login_name` = #{loginName}
+        WHERE ir.`status` = 'COMPLETE'
+        AND loan_id = 1
+    </select>
+
+    <select id="findSumRepayingExperienceByLoginName" parameterType="map" resultType="long">
+        SELECT
+        IFNULL(SUM(
+        ir.`expected_interest` + ir.`default_interest` - ir.`expected_fee`
+        ),0)
+        FROM
+        invest_repay ir
+        JOIN invest i
+        ON ir.`invest_id` = i.`id`
+        AND i.`status` = 'SUCCESS'
+        AND i.`login_name` = #{loginName}
+        WHERE ir.`status` ='REPAYING'
+        AND loan_id = 1
+    </select>
+
+    <select id="findSumWithdrawFrozeAmountByLoginName" parameterType="map" resultType="long">
+        SELECT IFNULL(SUM(amount), 0)
+        FROM withdraw
+        WHERE login_name = #{loginName}
+        AND status = 'APPLY_SUCCESS'
+    </select>
+
+    <select id="findSumInvestFrozeAmountByLoginName" parameterType="map" resultType="long">
+      SELECT IFNULL(SUM(invest.amount), 0)
+      FROM invest JOIN loan ON invest.loan_id = loan.id
+      WHERE invest.login_name = #{loginName}
+      AND invest.status = 'SUCCESS'
+      AND loan.status IN ('RAISING', 'RECHECK')
+    </select>
+
     <select id="findByLoginNameAndStatus" parameterType="map" resultMap="investRepayResultMap">
         select ir.id, ir.invest_id, ir.corpus, ir.default_interest, ir.expected_interest, ir.actual_interest, ir.expected_fee, ir.actual_fee, ir.repay_amount, ir.period, ir.repay_date, ir.actual_repay_date, ir.status, ir.created_time
         from invest_repay ir
