@@ -4,6 +4,7 @@ package com.tuotiansudai.paywrapper.controller;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.message.RepaySuccessMessage;
+import com.tuotiansudai.paywrapper.extrarate.service.ExtraRateService;
 import com.tuotiansudai.paywrapper.loanout.CouponRepayService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,8 @@ public class RepaySuccessController {
 
     @Autowired
     private CouponRepayService couponRepayService;
+    @Autowired
+    private ExtraRateService extraRateService;
 
     @ResponseBody
     @RequestMapping(value = "/coupon-repay", method = RequestMethod.POST)
@@ -31,6 +34,23 @@ public class RepaySuccessController {
         } catch (Exception e) {
             isSuccess = false;
             logger.error("还款发放优惠券收益失败", e);
+        }
+        BaseDto<PayDataDto> dto = new BaseDto<>();
+        PayDataDto dataDto = new PayDataDto();
+        dto.setData(dataDto);
+        dataDto.setStatus(isSuccess);
+        return dto;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/extra-rate-normal-repay", method = RequestMethod.POST)
+    public BaseDto<PayDataDto> extraRateNormalRepay(@RequestBody RepaySuccessMessage repaySuccessMessage) {
+        boolean isSuccess = true;
+        try {
+            extraRateService.normalRepay(repaySuccessMessage.getLoanRepayId());
+        } catch (Exception e) {
+            isSuccess = false;
+            logger.error("还款发放阶梯加息收益失败", e);
         }
         BaseDto<PayDataDto> dto = new BaseDto<>();
         PayDataDto dataDto = new PayDataDto();

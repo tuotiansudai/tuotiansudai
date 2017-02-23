@@ -27,6 +27,8 @@ public enum MessageQueue {
     LoanOutSuccess_AssignAchievement("LoanOutSuccess-AssignAchievement"),
     LoanOutSuccess_GenerateAnXinContract("LoanOutSuccess-GenerateAnXinContract"),
     RepaySuccess_CouponRepay("RepaySuccess-CouponRepay"),
+    RepaySuccess_ExtraRateAdvanceRepay("RepaySuccess-ExtraRateAdvanceRepay"),
+    RepaySuccess_ExtraRateNormalRepay("RepaySuccess-ExtraRateNormalRepay"),
     EventMessage("EventMessage"),
     ManualMessage("ManualMessage"),
     PushMessage("PushMessage"),

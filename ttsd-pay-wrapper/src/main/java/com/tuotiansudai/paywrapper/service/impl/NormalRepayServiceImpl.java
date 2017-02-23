@@ -325,6 +325,8 @@ public class NormalRepayServiceImpl implements NormalRepayService {
         mqWrapperClient.sendMessage(MessageQueue.RepaySuccess_CouponRepay, new RepaySuccessMessage(loanRepayId, false));
         logger.info(MessageFormat.format("[[Normal Repay {0}]: 正常还款成功,发送MQ消息", String.valueOf(loanRepayId)));
 
+        mqWrapperClient.sendMessage(MessageQueue.RepaySuccess_ExtraRateNormalRepay, new RepaySuccessMessage(loanRepayId, false));
+        logger.info(MessageFormat.format("[[Normal Repay {0}]: 正常还款成功,阶梯加息发送MQ消息", String.valueOf(loanRepayId)));
         return callbackRequest.getResponseData();
     }
 
