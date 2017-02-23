@@ -165,7 +165,6 @@ public class ExportService {
             row.add(String.valueOf(record.getDeadline()));
             row.add(record.getUserGroup().getDescription());
             row.add(String.valueOf(record.getTotalCount()));
-            row.add(record.isSmsAlert() ? "是" : "否");
             row.add(String.valueOf(record.getIssuedCount()));
             row.add(String.valueOf(record.getUsedCount()));
             List<ProductType> types = record.getProductTypes();
