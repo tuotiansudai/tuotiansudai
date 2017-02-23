@@ -162,7 +162,7 @@ public class LotteryDrawActivityService {
 
         LotteryPrize lotteryPrize = drawLotteryPrize(activityCategory);
         if (lotteryPrize.getPrizeType().equals(PrizeType.VIRTUAL)) {
-            couponAssignmentService.assignUserCoupon(mobile, getCouponId(lotteryPrize));
+            getCouponId(lotteryPrize).stream().forEach(couponId -> couponAssignmentService.assignUserCoupon(mobile, couponId));
         } else if (lotteryPrize.equals(LotteryPrize.MEMBERSHIP_V5)) {
             createUserMembershipModel(userModel.getLoginName(), MembershipLevel.V5.getLevel());
         }
@@ -252,43 +252,51 @@ public class LotteryDrawActivityService {
         pointBillMapper.create(pointBillModel);
     }
 
-    private long getCouponId(LotteryPrize lotteryPrize) {
-        return Maps.newHashMap(ImmutableMap.<LotteryPrize, Long>builder()
-                .put(LotteryPrize.RED_ENVELOPE_100, 305L)
-                .put(LotteryPrize.RED_ENVELOPE_50, 305L)
-                .put(LotteryPrize.INTEREST_COUPON_5, 307L)
-                .put(LotteryPrize.INTEREST_COUPON_2, 308L)
-                .put(LotteryPrize.RED_INVEST_15, 309L)
-                .put(LotteryPrize.RED_INVEST_50, 310L)
-                .put(LotteryPrize.RED_ENVELOPE_10, 311L)
-                .put(LotteryPrize.RED_ENVELOPE_50_POINT_DRAW, 312L)
-                .put(LotteryPrize.INTEREST_COUPON_5_POINT_DRAW, 313L)
-                .put(LotteryPrize.INTEREST_COUPON_2_POINT_DRAW, 314L)
-                .put(LotteryPrize.INTEREST_COUPON_5_POINT_DRAW_REF_CARNIVAL, 321L)
-                .put(LotteryPrize.RED_ENVELOPE_50_POINT_DRAW_REF_CARNIVAL, 320L)
-                .put(LotteryPrize.RED_ENVELOPE_5, 325L)
-                .put(LotteryPrize.RED_ENVELOPE_3, 326L)
-                .put(LotteryPrize.RED_ENVELOPE_18, 327L)
-                .put(LotteryPrize.RED_ENVELOPE_8, 328L)
-                .put(LotteryPrize.INTEREST_COUPON_2_NEW_YEARS, 329L)
-                .put(LotteryPrize.LANTERN_FESTIVAL_RED_ENVELOPE_5, 364L)
-                .put(LotteryPrize.LANTERN_FESTIVAL_RED_ENVELOPE_8, 365L)
-                .put(LotteryPrize.LANTERN_FESTIVAL_RED_ENVELOPE_10, 366L)
-                .put(LotteryPrize.LANTERN_FESTIVAL_RED_ENVELOPE_40, 367L)
-                .put(LotteryPrize.LANTERN_FESTIVAL_RED_ENVELOPE_30, 368L)
-                .put(LotteryPrize.LANTERN_FESTIVAL_INTEREST_COUPON_5, 369L)
-                .put(LotteryPrize.SPRING_FESTIVAL_RED_ENVELOP_68, 340L)
-                .put(LotteryPrize.SPRING_FESTIVAL_RED_ENVELOP_58, 341L)
-                .put(LotteryPrize.SPRING_FESTIVAL_RED_ENVELOP_38, 342L)
-                .put(LotteryPrize.SPRING_FESTIVAL_RED_ENVELOP_18, 343L)
-                .put(LotteryPrize.SPRING_FESTIVAL_RED_ENVELOP_88, 344L)
-                .put(LotteryPrize.SPRING_FESTIVAL_RED_ENVELOP_188, 345L)
-                .put(LotteryPrize.SPRING_FESTIVAL_INTEREST_COUPON_5, 346L)
-                .put(LotteryPrize.SPRING_FESTIVAL_INTEREST_COUPON_2, 347L)
-                .put(LotteryPrize.POINT_SHOP_RED_ENVELOPE_10, 360L)
-                .put(LotteryPrize.POINT_SHOP_RED_ENVELOPE_50, 361L)
-                .put(LotteryPrize.POINT_SHOP_INTEREST_COUPON_2, 362L)
-                .put(LotteryPrize.POINT_SHOP_INTEREST_COUPON_5, 363L)
+    private List<Long> getCouponId(LotteryPrize lotteryPrize) {
+        return Maps.newHashMap(ImmutableMap.<LotteryPrize, List<Long>>builder()
+                .put(LotteryPrize.RED_ENVELOPE_100, Lists.newArrayList(305L))
+                .put(LotteryPrize.RED_ENVELOPE_50, Lists.newArrayList(305L))
+                .put(LotteryPrize.INTEREST_COUPON_5, Lists.newArrayList(307L))
+                .put(LotteryPrize.INTEREST_COUPON_2, Lists.newArrayList(308L))
+                .put(LotteryPrize.RED_INVEST_15, Lists.newArrayList(309L))
+                .put(LotteryPrize.RED_INVEST_50, Lists.newArrayList(310L))
+                .put(LotteryPrize.RED_ENVELOPE_10, Lists.newArrayList(311L))
+                .put(LotteryPrize.RED_ENVELOPE_50_POINT_DRAW, Lists.newArrayList(312L))
+                .put(LotteryPrize.INTEREST_COUPON_5_POINT_DRAW, Lists.newArrayList(313L))
+                .put(LotteryPrize.INTEREST_COUPON_2_POINT_DRAW, Lists.newArrayList(314L))
+                .put(LotteryPrize.INTEREST_COUPON_5_POINT_DRAW_REF_CARNIVAL, Lists.newArrayList(321L))
+                .put(LotteryPrize.RED_ENVELOPE_50_POINT_DRAW_REF_CARNIVAL, Lists.newArrayList(320L))
+                .put(LotteryPrize.RED_ENVELOPE_5, Lists.newArrayList(325L))
+                .put(LotteryPrize.RED_ENVELOPE_3, Lists.newArrayList(326L))
+                .put(LotteryPrize.RED_ENVELOPE_18, Lists.newArrayList(327L))
+                .put(LotteryPrize.RED_ENVELOPE_8, Lists.newArrayList(328L))
+                .put(LotteryPrize.INTEREST_COUPON_2_NEW_YEARS, Lists.newArrayList(329L))
+                .put(LotteryPrize.LANTERN_FESTIVAL_RED_ENVELOPE_5, Lists.newArrayList(364L))
+                .put(LotteryPrize.LANTERN_FESTIVAL_RED_ENVELOPE_8, Lists.newArrayList(365L))
+                .put(LotteryPrize.LANTERN_FESTIVAL_RED_ENVELOPE_10, Lists.newArrayList(366L))
+                .put(LotteryPrize.LANTERN_FESTIVAL_RED_ENVELOPE_40, Lists.newArrayList(367L))
+                .put(LotteryPrize.LANTERN_FESTIVAL_RED_ENVELOPE_30, Lists.newArrayList(368L))
+                .put(LotteryPrize.LANTERN_FESTIVAL_INTEREST_COUPON_5, Lists.newArrayList(369L))
+                .put(LotteryPrize.SPRING_FESTIVAL_RED_ENVELOP_68, Lists.newArrayList(340L))
+                .put(LotteryPrize.SPRING_FESTIVAL_RED_ENVELOP_58, Lists.newArrayList(341L))
+                .put(LotteryPrize.SPRING_FESTIVAL_RED_ENVELOP_38, Lists.newArrayList(342L))
+                .put(LotteryPrize.SPRING_FESTIVAL_RED_ENVELOP_18, Lists.newArrayList(343L))
+                .put(LotteryPrize.SPRING_FESTIVAL_RED_ENVELOP_88, Lists.newArrayList(344L))
+                .put(LotteryPrize.SPRING_FESTIVAL_RED_ENVELOP_188, Lists.newArrayList(345L))
+                .put(LotteryPrize.SPRING_FESTIVAL_INTEREST_COUPON_5, Lists.newArrayList(346L))
+                .put(LotteryPrize.SPRING_FESTIVAL_INTEREST_COUPON_2, Lists.newArrayList(347L))
+                .put(LotteryPrize.POINT_SHOP_RED_ENVELOPE_10, Lists.newArrayList(360L))
+                .put(LotteryPrize.POINT_SHOP_RED_ENVELOPE_50, Lists.newArrayList(361L))
+                .put(LotteryPrize.POINT_SHOP_INTEREST_COUPON_2, Lists.newArrayList(362L))
+                .put(LotteryPrize.POINT_SHOP_INTEREST_COUPON_5, Lists.newArrayList(363L))
+                .put(LotteryPrize.WOMAN_DAY_ACTIVITY_ENVELOP_521, Lists.newArrayList(376L))
+                .put(LotteryPrize.WOMAN_DAY_ACTIVITY_ENVELOP_580, Lists.newArrayList(377L))
+                .put(LotteryPrize.WOMAN_DAY_ACTIVITY_ENVELOP_880, Lists.newArrayList(378L))
+                .put(LotteryPrize.WOMAN_DAY_ACTIVITY_ENVELOP_1000, Lists.newArrayList(379L))
+                .put(LotteryPrize.WOMAN_DAY_ACTIVITY_INTEREST_COUPON_2, Lists.newArrayList(380L))
+                .put(LotteryPrize.WOMAN_DAY_ACTIVITY_ENVELOP_38, Lists.newArrayList(381L))
+                .put(LotteryPrize.WOMAN_DAY_ACTIVITY_ENVELOP_38_100, Lists.newArrayList(382L, 381L))
+                .put(LotteryPrize.WOMAN_DAY_ACTIVITY_INTEREST_COUPON_5, Lists.newArrayList(383L))
                 .build()).get(lotteryPrize);
     }
 
@@ -319,9 +327,9 @@ public class LotteryDrawActivityService {
     private PrizeType grantPrize(String mobile, String loginName, LotteryPrize lotteryPrize) {
         PrizeType prizeType = PrizeType.VIRTUAL;
         if (lotteryPrize.getPrizeType().equals(PrizeType.VIRTUAL)) {
-            couponAssignmentService.assignUserCoupon(mobile, getCouponId(lotteryPrize));
+            getCouponId(lotteryPrize).stream().forEach(couponId -> couponAssignmentService.assignUserCoupon(mobile, couponId));
         } else if (lotteryPrize.equals(LotteryPrize.RED_INVEST_15) || lotteryPrize.equals(LotteryPrize.RED_INVEST_50)) {
-            couponAssignmentService.assignUserCoupon(mobile, getCouponId(lotteryPrize));
+            getCouponId(lotteryPrize).stream().forEach(couponId -> couponAssignmentService.assignUserCoupon(mobile, couponId));
             prizeType = PrizeType.VIRTUAL;
         } else if (lotteryPrize.equals(LotteryPrize.MEMBERSHIP_V5)) {
             prizeType = PrizeType.MEMBERSHIP;
