@@ -1,8 +1,3 @@
-/**
- * [name]:lantern festival activity
- * [author]:xuqiang
- * [date]:2017-01-12
- */
 require('activityStyle/lantern_festival.scss');
 require('publicJs/login_tip');
 let drawCircle = require('activityJsModule/gift_circle_draw');
@@ -149,8 +144,7 @@ heroRank($TodayAwards.val());
     drawCircle.showDrawTime();
 
     //**********************开始抽奖**********************//
-    $pointerImg.find('img').on('click', function () {
-
+    $pointerImg.on('click', function () {
         //未登录
         if (sourceKind.params.source == 'app') {
             $.when(commonFun.isUserLogin())

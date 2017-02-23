@@ -75,7 +75,7 @@
     <#if !isAppSource>
         <meta name = "format-detection" content = "telephone=no">
     </#if>
-    <link href="${staticServer}/images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <link href="${commonStaticServer}/images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <link rel="stylesheet" type="text/css" href="${css.globalFun_page}" charset="utf-8" />
     <#if pageCss?? && pageCss != "">
     <link rel="stylesheet" type="text/css" href="${pageCss}" charset="utf-8" />
@@ -103,7 +103,7 @@
 </#if>
 
 <script type="text/javascript" charset="utf-8">
-    var staticServer = '${staticServer}';
+    var staticServer = '${commonStaticServer}';
     <@security.authorize access="isAuthenticated()">
     document.getElementById("logout-link").onclick=function (event) {
         event.preventDefault();
