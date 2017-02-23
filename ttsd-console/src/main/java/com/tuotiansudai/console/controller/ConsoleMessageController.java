@@ -4,15 +4,18 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.console.service.ConsoleMessageService;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.enums.AppUrl;
 import com.tuotiansudai.enums.MessageType;
 import com.tuotiansudai.enums.PushSource;
 import com.tuotiansudai.enums.PushType;
 import com.tuotiansudai.message.dto.MessageCreateDto;
 import com.tuotiansudai.message.dto.MessagePaginationItemDto;
-import com.tuotiansudai.message.repository.model.*;
+import com.tuotiansudai.message.repository.model.MessageCategory;
+import com.tuotiansudai.message.repository.model.MessageChannel;
+import com.tuotiansudai.message.repository.model.MessageStatus;
+import com.tuotiansudai.message.repository.model.MessageUserGroup;
 import com.tuotiansudai.spring.LoginUserInfo;
-import com.tuotiansudai.util.PaginationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +26,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 
 
 @Controller
@@ -36,52 +38,33 @@ public class ConsoleMessageController {
     @RequestMapping(value = "/manual-message-list", method = RequestMethod.GET)
     @ResponseBody
     public ModelAndView manualMessageList(@RequestParam(value = "index", required = false, defaultValue = "1") int index,
+                                          @RequestParam(value = "messageCategory", required = false) MessageCategory messageCategory,
                                           @RequestParam(value = "title", required = false) String title,
-                                          @RequestParam(value = "createdBy", required = false) String createdBy,
+                                          @RequestParam(value = "updatedBy", required = false) String updatedBy,
                                           @RequestParam(value = "messageStatus", required = false) MessageStatus messageStatus) {
-
-        long messageCount = consoleMessageService.findMessageCount(title, messageStatus, createdBy, MessageType.MANUAL);
-        List<MessagePaginationItemDto> list = consoleMessageService.findMessagePagination(title, messageStatus, createdBy, MessageType.MANUAL, index, 10);
-
+        final int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/message-manual-list");
-        modelAndView.addObject("index", index);
-        modelAndView.addObject("pageSize", 10);
-        modelAndView.addObject("hasPreviousPage", index > 1);
-        modelAndView.addObject("hasNextPage", index < PaginationUtil.calculateMaxPage(messageCount, 10));
+
+        BasePaginationDataDto<MessagePaginationItemDto> dto = consoleMessageService.findMessagePagination(title, messageStatus, updatedBy, MessageType.MANUAL, messageCategory, index, pageSize);
+        modelAndView.addObject("dto", dto);
 
         modelAndView.addObject("title", title);
-        modelAndView.addObject("createdBy", createdBy);
+        modelAndView.addObject("updatedBy", updatedBy);
         modelAndView.addObject("selectedMessageStatus", messageStatus);
-        modelAndView.addObject("messageStatuses", Lists.newArrayList(MessageStatus.values()));
-        modelAndView.addObject("messageCount", messageCount);
-        modelAndView.addObject("messageList", list);
+        modelAndView.addObject("messageStatuses", MessageStatus.values());
+        modelAndView.addObject("selectedMessageCategory", messageCategory);
+        modelAndView.addObject("messageCategories", MessageCategory.values());
 
         return modelAndView;
     }
 
     @RequestMapping(value = "/auto-message-list", method = RequestMethod.GET)
     @ResponseBody
-    public ModelAndView autoMessageList(@RequestParam(value = "index", required = false, defaultValue = "1") int index,
-                                        @RequestParam(value = "title", required = false) String title,
-                                        @RequestParam(value = "createdBy", required = false) String createdBy,
-                                        @RequestParam(value = "messageStatus", required = false) MessageStatus messageStatus) {
-
-        long messageCount = consoleMessageService.findMessageCount(title, messageStatus, createdBy, MessageType.EVENT);
-        List<MessagePaginationItemDto> list = consoleMessageService.findMessagePagination(title, messageStatus, createdBy, MessageType.EVENT, index, 10);
-
+    public ModelAndView autoMessageList(@RequestParam(value = "index", required = false, defaultValue = "1") int index) {
+        final int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/message-auto-list");
-
-        modelAndView.addObject("index", index);
-        modelAndView.addObject("pageSize", 10);
-        modelAndView.addObject("title", title);
-        modelAndView.addObject("createdBy", createdBy);
-        modelAndView.addObject("selectedMessageStatus", messageStatus);
-        modelAndView.addObject("messageStatuses", Lists.newArrayList(MessageStatus.values()));
-        modelAndView.addObject("hasPreviousPage", index > 1);
-        modelAndView.addObject("hasNextPage", index < PaginationUtil.calculateMaxPage(messageCount, 10));
-
-        modelAndView.addObject("messageCount", messageCount);
-        modelAndView.addObject("messageList", list);
+        BasePaginationDataDto<MessagePaginationItemDto> dto = consoleMessageService.findMessagePagination(null, null, null, MessageType.EVENT, null, index, pageSize);
+        modelAndView.addObject("dto", dto);
 
         return modelAndView;
     }
@@ -103,7 +86,10 @@ public class ConsoleMessageController {
     @RequestMapping(value = "/manual-message", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<BaseDataDto> createManualMessage(@RequestBody MessageCreateDto messageCreateDto) {
-        consoleMessageService.createOrUpdateManualMessage(LoginUserInfo.getLoginName(), messageCreateDto);
+        Long messageId = consoleMessageService.createOrUpdateManualMessage(LoginUserInfo.getLoginName(), messageCreateDto);
+        if (null == messageId) {
+            return new BaseDto<>(new BaseDataDto(false));
+        }
         return new BaseDto<>(new BaseDataDto(true));
     }
 
