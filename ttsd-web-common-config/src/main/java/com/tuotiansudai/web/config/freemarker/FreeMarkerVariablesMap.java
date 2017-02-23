@@ -61,6 +61,8 @@ public class FreeMarkerVariablesMap extends MapFactoryBean implements ResourceLo
 
         map.put("js", javascriptResource);
         map.put("css", cssResource);
+        logger.info(MessageFormat.format("js mapping: {0}", javascriptResource.toString()));
+        logger.info(MessageFormat.format("css mapping: {0}", cssResource.toString()));
 
         return map;
     }
@@ -90,11 +92,11 @@ public class FreeMarkerVariablesMap extends MapFactoryBean implements ResourceLo
             String filePrefix = split[0];
 
             if (!versionMap.containsKey(filePrefix)) {
-                versionMap.put(filePrefix, MessageFormat.format("{0}{1}{2}", staticServer, filePath,fileName));
+                versionMap.put(filePrefix, MessageFormat.format("{0}{1}{2}", staticServer, filePath, fileName));
             }
 
             if (split.length == PROD_VERSION_LENGTH) {
-                versionMap.put(filePrefix, fileName);
+                versionMap.put(filePrefix, MessageFormat.format("{0}{1}{2}", staticServer, filePath, fileName));
             }
 
         }

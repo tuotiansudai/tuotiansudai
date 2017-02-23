@@ -893,39 +893,48 @@
 
 //底部
 .bottom-close,.bottom-open {
-  height:138px;
-  position: fixed;
-  bottom:0px;
-  background: rgba(0,0,0,0.65) ;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#25000000, endColorstr=#25000000);
-  left:0;
-  width:100%;
-  z-index: 100;
+	height:138px;
+	position: fixed;
+	bottom:0px;
+	background: rgba(0,0,0,0.65) ;
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#25000000, endColorstr=#25000000);
+	left:0;
+	width:100%;
+	z-index: 100;
 }
 .bottom-close {
 	background: transparent;
-  width:200px;
-  background: url("../images/sign/assure/bottom-close.png") no-repeat;
-  cursor: pointer;
+	width:200px;
+	background: url("../images/sign/assure/bottom-close.png") no-repeat;
+	cursor: pointer;
 }
 .bottom-open {
-  .page-width {
-	position: relative;
-	top: 20px;
-	.ren {
-	  background: url("../images/sign/assure/bottom-ren.png") left 0px no-repeat;
-	  width: 649px;
-	  height: 207px;
-	  display: inline-block;
-	  vertical-align: middle;
-	  background-size: 100%;
+	.page-width {
+		position: relative;
+		top: 20px;
+		.ren {
+			background: url("../images/sign/assure/bottom-ren.png") left 0px no-repeat;
+			width: 727px;
+			height: 112px;
+			display: inline-block;
+			vertical-align: middle;
+			background-size: 100%;
+		}
+		.btn-normal {
+			margin-top: 0px;
+			margin-left: 30px;
+			display: inline-block;
+		}
+		.to-close {
+			height: 25px;
+			width: 25px;
+			background: url('../images/icons/icon-close.png') left top no-repeat;
+			margin-top: 46px;
+			margin-right: 40px;
+			cursor: pointer;
+
+		}
 	}
-	.btn-normal {
-	  margin-top: 0px;
-	  margin-left: 30px;
-	  display: inline-block;
-	}
-  }
 }
 
 @media screen and (max-width: 700px) {
