@@ -8,7 +8,75 @@
 }
 .women-day-container {
 	background: #ff94bc;
-
+	.layui-layer{
+		border-radius:10px;
+		overflow:hidden;
+	}
+	.loading-item{
+		float:left;
+		width:100%;
+		line-height:40px;
+		text-align:center;
+		font-size:16px;
+		color:#f85382;
+		display:none;
+	}
+	.layer-tip-item{
+		float:left;
+		width:100%;
+		height:100%;
+		text-align:center;
+		background:#fff url('/activity/images/women-day/tip-bg.jpg') center bottom no-repeat;
+		background-size:100%;
+		box-sizing:border-box;
+		display:none;
+		p{
+			font-size:16px;
+			color:#f85382;
+			@media (max-width:700px) {
+				font-size:14px;
+			}
+			&.gift-text{
+				margin-top:20px;
+			}
+			&.gift-info{
+				font-size:24px;
+				margin:30px 0;
+				@media (max-width:700px) {
+					font-size:16px;
+					margin:15px 0;
+				}
+				&.tip-text{
+					margin-top:60px;
+					@media (max-width:700px) {
+						margin-top:30px;
+					}
+				}
+				span{
+					color:#672124;
+				}
+			}
+			&.gift-btn{
+				text-align:center;
+				.close-btn{
+					display:inline-block;
+					width:180px;
+					height:40px;
+					line-height:40px;
+					font-size:24px;
+					color:#fff;
+					background:#f85382;
+					border-radius:40px;
+					@media (max-width:700px) {
+						width:130px;
+						height:35px;
+						line-height:35px;
+						font-size: 18px;
+					}
+				}
+			}
+		}
+	}
 	.media-pc {
 		display: block;
 
@@ -114,6 +182,9 @@
 					box-sizing: border-box;
 
 					@media (max-width:700px) {
+						width:300px;
+						height:500px;
+						padding-top:240px;
 						background: url('/activity/images/women-day/machine-bg-phone.png') center no-repeat;
 						background-size: 100%;
 					}
@@ -131,6 +202,10 @@
 							background-size: 100%;
 							position: relative;
 
+							@media (max-width:700px) {
+								width:75px;
+								height:60px;
+							}
 							&.sign-active {
 								top: 10px;
 								background: url('/activity/images/women-day/sign-active.png') center no-repeat;
@@ -150,6 +225,10 @@
 						background: #6513bf;
 						border-radius: 10px;
 
+						@media (max-width:700px) {
+							width:90%;
+							margin:0 5%;
+						}
 						.menu-switch {
 							float: left;
 							width: 100%;
@@ -174,6 +253,9 @@
 							height: 170px;
 							overflow: hidden;
 
+							@media (max-width:700px) {
+								height:155px;
+							}
 							.record-item {
 								float: left;
 								width: 100%;
@@ -182,6 +264,9 @@
 									height: 170px;
 									overflow: hidden;
 									overflow-y: scroll;
+									@media (max-width:700px) {
+										padding:0;
+									}
 								}
 								li {
 									float: left;
@@ -189,10 +274,16 @@
 									padding: 0 50px;
 									box-sizing: border-box;
 
+									@media (max-width:700px) {
+										padding:0;
+									}
 									&.record-img {
 										padding-top: 60px;
 										text-align: center;
 
+										@media (max-width:700px) {
+											padding:30px 25px 0;
+										}
 										p {
 											font-size: 14px;
 											color: #fff;
@@ -348,6 +439,17 @@
 			.table-item{
 				float:left;
 				width:100%;
+				display:none;
+				&.flower-table{
+					margin-top:10px;
+					li>span{
+						width:100%;
+						text-align:center;
+					}
+				}
+				@media (max-width:700px) {
+					display:block;
+				}
 				li{
 					float:left;
 					width:100%;
@@ -359,7 +461,7 @@
 						background: #ffe6f0;
 					}
 					span{
-						font-size:14px;
+						font-size:12px;
 						color:#672124;
 						&.text-item{
 							float:left;
@@ -384,6 +486,7 @@
 				display: block;
 				margin-bottom: 20px;
 				padding: 5px 15px;
+				background:#fa6e81;
 			}
 			dt {
 				font-size: 18px;

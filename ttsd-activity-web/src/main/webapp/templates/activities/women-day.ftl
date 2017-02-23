@@ -1,5 +1,5 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.women_day}" pageJavascript="${js.women_day}" activeNav="" activeLeftNav="" title="会员签到_积分商城_拓天速贷" keywords="签到赢积分,签到领红包,红包大奖,拓天速贷" description="拓天速贷会员每日签到赢积分,连续签到积分阶梯递增,累计签到领红包,连续签到365天,可额外获得365元现金红包大奖.">
+<@global.main pageCss="${css.women_day}" pageJavascript="${js.women_day}" activeNav="" activeLeftNav="" title="女神节活动_活动中心_拓天速贷" keywords="拓天速贷,妇女节活动,女神节,少女节" description="拓天速贷3月8日推出女神节活动,少女总动员,开启全民抓娃娃,参与幸运女神时光机,集花瓣赢礼盒等投资活动获得相应蜜汁礼盒.">
 <div class="women-day-container" id="womenDayContainer">
 	<div class="top-item">
 		<img src="${staticServer}/activity/images/women-day/top-img.png" width="100%" class="media-pc">
@@ -138,12 +138,21 @@
 			</dl>
 			<div class="flower-info">
 				<p class="title-text tc">我的花瓣</p>
+				<@global.isAnonymous>
+				<p class="tc">当前累计获得花瓣<span>0</span>个</p>
+				<p class="tc">请登录查看所获得花瓣</p>
+				<p class="tc">
+					<a href="javascript:void(0)" class="show-login">登陆查看</a>
+				</p>
+				</@global.isAnonymous>
+				<@global.isNotAnonymous>
 				<p class="tc">当前累计获得花瓣<span>${totalLeaves}</span>个</p>
 				<p class="tc">可获得<span>${prize}</span></p>
 				<p class="tc">
 					<a href="/referrer/refer-list">邀请好友</a>
 					<a href="/loan-list">立即投资</a>
 				</p>
+				</@global.isNotAnonymous>
 			</div>
 			<ul class="flower-gift">
 				<li>
@@ -203,6 +212,40 @@
 					</p>
 				</li>
 			</ul>
+			<ul class="table-item flower-table">
+				<li>
+					<span class="text-item">礼盒一 9≤累计花瓣数量＜38</span>
+					<span class="info-item">0.5%加息券+30元红包</span>
+				</li>
+				<li>
+					<span class="text-item">礼盒二 38≤累计花瓣数量＜78</span>
+					<span class="info-item">20元话费+0.5%加息券+60元红包</span>
+				</li>
+				<li>
+					<span class="text-item">礼盒三 78≤累计花瓣数量＜138</span>
+					<span class="info-item">100元京东E卡+0.5%加息券+160元红包</span>
+				</li>
+				<li>
+					<span class="text-item">礼盒四 138≤累计花瓣数量＜238</span>
+					<span class="info-item">SNP动物面膜+100元京东E卡+0.5%加息券+300元红包</span>
+				</li>
+				<li>
+					<span class="text-item">礼盒五 238≤累计花瓣数量＜338</span>
+					<span class="info-item">阿玛尼小胖丁染唇液+100元京东E卡+0.5%加息券+500元红包</span>
+				</li>
+				<li>
+					<span class="text-item">礼盒六 338≤累计花瓣数量＜438</span>
+					<span class="info-item">SK-II神仙水+100元京东E卡+0.5%加息券+600元红包</span>
+				</li>
+				<li>
+					<span class="text-item">礼盒七 438≤累计花瓣数量＜638</span>
+					<span class="info-item">迪奥真我香水+0.8%加息券+600元红包</span>
+				</li>
+				<li>
+					<span class="text-item">礼盒八 累计花瓣数量≥638</span>
+					<span class="info-item">雅诗兰黛套装礼盒+0.8%加息券+600元红包</span>
+				</li>
+			</ul>
 		</div>
 		<dl class="rule-item">
 			<dt>温馨提示：</dt>
@@ -214,6 +257,43 @@
 		</dl>
 	</div>
     <a href="javascript:void(0)" class="show-login no-login-text"></a>
+    <div class="layer-tip-item" id="tipItem"></div>
+    <script type="text/html" id="tipItemTpl">
+    	{{if returnCode==0}}
+    		<p class="gift-text">恭喜您抓取到
+    		{{if prizeValue=='5.21元红包'}}
+				小鲜肉
+    		{{else if prizeValue=='5.80元红包'}}
+    			男闺蜜
+    		{{else if prizeValue=='8.80元红包'}}
+    			老腊肉
+    		{{else if prizeValue=='10元红包'}}
+    			萌大叔
+    		{{else if prizeValue=='0.2%加息券'}}
+    			怪蜀黍
+    		{{else if prizeValue=='38元红包'}}
+    			肌肉猛男
+    		{{else if prizeValue=='138元红包'}}
+    			霸道总裁
+    		{{else if prizeValue=='0.5%加息券'}}
+    			长腿偶吧
+    		{{/if}}
+    		娃娃</p>
+    		<p class="gift-info">送您<span>{{prizeValue}}</span>已发放至您的账户</p>
+    	{{else if returnCode==1}}
+    	<p class="gift-info tip-text">您暂无抽奖机会啦～</p>
+    	{{else if returnCode==3}}
+    	<p class="gift-info tip-text">不在活动时间范围内！</p>
+    	{{else if returnCode==4}}
+    	<p class="gift-info tip-text">请实名认证后再来抽奖吧！</p>
+    	{{/if}}
+    	<p class="gift-btn">
+    		<a href="javascript:void(0)" class="close-btn">确定</a>
+    	</p>
+    </script>
+    <div class="loading-item" id="loadingItem">
+    	娃娃抓取中，请稍后... ...
+    </div>
 </div>
 <#include "login-tip.ftl" />
 </@global.main>
