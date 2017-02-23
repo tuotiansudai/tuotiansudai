@@ -1,0 +1,41 @@
+<div class="layer-content">
+
+<div class="summary-top clearfix">
+    <span>已收体验金收益 : <em>{{sumActualInterest}}</em>元</span>
+    <span>待收体验金收益 : <em>{{sumExpectedInterest}}</em>元</span>
+</div>
+    <table class="table table-repay">
+            <thead>
+            <tr>
+                <th class="tr">到期回款日</th>
+                <th class="tr">应收体验金收益</th>
+                <th class="tr">投资金额(体验金)</th>
+                <th class="tr spec-bg">已收体验金收益</th>
+                <th class="tr spec-bg">回款时间</th>
+                <th class="spec-bg">状态</th>
+            </tr>
+            <tbody>
+                    {{#records}}
+                        <tr>
+                            <td>{{repayDate}}</td>
+                            <td class="tr">{{expectedInterest}}</td>
+                            <td class="tr">{{investExperienceAmount}}</td>
+                            <td class="tr spec-bg">
+                                {{#actualInterest}}{{.}}{{/actualInterest}}
+                                {{^actualInterest}}--{{/actualInterest}}
+                            </td>
+                            <td class="tr spec-bg">
+                                {{#actualRepayDate}}{{.}}{{/actualRepayDate}}
+                                {{^actualRepayDate}}--{{/actualRepayDate}}
+                            </td>
+                            <td class="spec-bg">
+                                {{status}}
+                            </td>
+                        </tr>
+                    {{/records}}
+                    </tbody>
+            </thead>
+        </table>
+<p class="bottom-note">温馨提示：投资体验项目的收益，用户需投资直投项目累计满1000元即可提现（投资债权转让项目除外）；</p>
+
+</div>

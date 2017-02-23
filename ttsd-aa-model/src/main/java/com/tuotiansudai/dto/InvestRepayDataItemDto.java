@@ -51,6 +51,8 @@ public class InvestRepayDataItemDto {
 
     private LoanModel loan;
 
+    private String investExperienceAmount;
+
     public InvestRepayDataItemDto() {
     }
 
@@ -241,5 +243,13 @@ public class InvestRepayDataItemDto {
 
     public void setOverdueDay(String overdueDay) {
         this.overdueDay = overdueDay;
+    }
+
+    public String getInvestExperienceAmount() {
+        return investExperienceAmount;
+    }
+
+    public void setInvestExperienceAmount(String investExperienceAmount) {
+        this.investExperienceAmount = investExperienceAmount;
     }
 }
