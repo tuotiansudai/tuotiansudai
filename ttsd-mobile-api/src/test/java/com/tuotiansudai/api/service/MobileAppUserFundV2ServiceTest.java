@@ -76,6 +76,7 @@ public class MobileAppUserFundV2ServiceTest extends ServiceTestBase {
         UserModel myUserFund = getFakeUser("myUserFund");
         userMapper.create(myUserFund);
         createFakeAccount(myUserFund);
+
         LoanModel fakeLoanModel1 = createFakeLoanModel(myUserFund.getLoginName(), LoanStatus.REPAYING);
         InvestModel fakeInvest1 = createFakeInvest(fakeLoanModel1.getId(), 1, myUserFund.getLoginName(), InvestStatus.SUCCESS, TransferStatus.TRANSFERABLE);
         InvestRepayModel fakeInvestRepay1 = createFakeInvestRepay(fakeInvest1.getId(), 1, 0, 10, 1, new Date(), null, RepayStatus.COMPLETE);
@@ -160,6 +161,18 @@ public class MobileAppUserFundV2ServiceTest extends ServiceTestBase {
         withdrawModel.setCreatedTime(new Date());
         withdrawMapper.create(withdrawModel);
 
+        LoanModel fakeExperienceLoanModel1 = createFakeExperienceLoanModel(myUserFund.getLoginName(), LoanStatus.REPAYING);
+        InvestModel fakeExperienceInvest1 = createFakeInvest(fakeExperienceLoanModel1.getId(), 0, myUserFund.getLoginName(), InvestStatus.SUCCESS, TransferStatus.TRANSFERABLE);
+        InvestRepayModel fakeExperienceInvestRepay1 = createFakeInvestRepay(fakeExperienceInvest1.getId(), 1, 0, 10, 0, new Date(), null, RepayStatus.COMPLETE);
+        fakeExperienceInvestRepay1.setActualInterest(10);
+        fakeExperienceInvestRepay1.setActualFee(0);
+        investRepayMapper.update(fakeExperienceInvestRepay1);
+
+        InvestModel fakeExperienceInvest2 = createFakeInvest(fakeExperienceLoanModel1.getId(), 0, myUserFund.getLoginName(), InvestStatus.SUCCESS, TransferStatus.TRANSFERABLE);
+        InvestRepayModel fakeExperienceInvestRepay2 = createFakeInvestRepay(fakeExperienceInvest2.getId(), 1, 0, 20, 0, new Date(), null, RepayStatus.REPAYING);
+        investRepayMapper.update(fakeExperienceInvestRepay2);
+
+
         BaseResponseDto<UserFundResponseDataDto> userFund = mobileAppUserFundV2Service.getUserFund(myUserFund.getLoginName());
 
         UserFundResponseDataDto data = userFund.getData();
@@ -169,10 +182,13 @@ public class MobileAppUserFundV2ServiceTest extends ServiceTestBase {
         assertThat(data.getReferRewardAmount(), is(10L));
         assertThat(data.getRedEnvelopeAmount(), is(10L));
         assertThat(data.getExpectedTotalCorpus(), is(1L));
-        assertThat(data.getExpectedTotalInterest(), is(36L));
+        assertThat(data.getExpectedTotalInterest(), is(56L));
         assertThat(data.getExpectedTotalExtraInterest(), is(18L));
         assertThat(data.getInvestFrozeAmount(), is(2L));
         assertThat(data.getWithdrawFrozeAmount(), is(100L));
+        assertThat(data.getActualTotalExperienceInterest(), is(10L));
+        assertThat(data.getExpectedTotalExperienceInterest(), is(20L));
+
     }
 
     private LoanModel createFakeLoanModel(String loginName, LoanStatus loanStatus) {
@@ -203,6 +219,12 @@ public class MobileAppUserFundV2ServiceTest extends ServiceTestBase {
         loanModel.setRecheckTime(new DateTime().minusDays(10).withTimeAtStartOfDay().toDate());
         loanModel.setPledgeType(PledgeType.HOUSE);
         loanMapper.create(loanModel);
+        return loanModel;
+    }
+
+
+    private LoanModel createFakeExperienceLoanModel(String loginName, LoanStatus loanStatus) {
+        LoanModel loanModel = loanMapper.findById(1);
         return loanModel;
     }
 

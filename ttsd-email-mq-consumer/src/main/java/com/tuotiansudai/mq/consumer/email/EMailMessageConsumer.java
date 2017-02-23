@@ -31,6 +31,8 @@ public class EMailMessageConsumer implements MessageConsumer {
 
     @Override
     public void consume(String message) {
+        logger.info("[EMailMessageConsumer] message {}", message);
+
         if (Strings.isNullOrEmpty(message)) {
             logger.error("[EMailMessageConsumer] message is empty");
             return;

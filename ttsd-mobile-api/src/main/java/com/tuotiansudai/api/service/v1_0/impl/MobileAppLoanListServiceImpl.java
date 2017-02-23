@@ -71,13 +71,8 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
             return new BaseResponseDto<>(ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode(), ReturnMessage.REQUEST_PARAM_IS_WRONG.getMsg());
         }
         index = (loanListRequestDto.getIndex() - 1) * pageSize;
-        ProductType noContainProductType = null;
-        List<UserCouponModel> userCouponModels = userCouponMapper.findUsedExperienceByLoginName(loanListRequestDto.getBaseParam().getUserId());
-        if((!Strings.isNullOrEmpty(loanListRequestDto.getBaseParam().getUserId()) && CollectionUtils.isEmpty(userCouponModels)) || (CollectionUtils.isNotEmpty(userCouponModels) && userCouponModels.get(0).getEndTime().before(DateTime.now().toDate()))){
-            noContainProductType = ProductType.EXPERIENCE;
-        }
 
-        List<LoanModel> loanModels = loanMapper.findLoanListMobileApp(ProductTypeConverter.stringConvertTo(loanListRequestDto.getProductType()), noContainProductType, loanListRequestDto.getLoanStatus(), loanListRequestDto.getRateLower(), loanListRequestDto.getRateUpper(), index, pageSize);
+        List<LoanModel> loanModels = loanMapper.findLoanListMobileApp(ProductTypeConverter.stringConvertTo(loanListRequestDto.getProductType()), null, loanListRequestDto.getLoanStatus(), loanListRequestDto.getRateLower(), loanListRequestDto.getRateUpper(), index, pageSize);
 
         List<LoanResponseDataDto> loanDtoList = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(loanModels)) {
@@ -167,8 +162,9 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
             }
 
             double investFeeRate = membershipPrivilegePurchaseService.obtainServiceFee(loginName);
+            //拓天体验项目不收手续费
             if (ProductType.EXPERIENCE == loan.getProductType()) {
-                investFeeRate = this.defaultFee;
+                investFeeRate = 0;
             }
             loanResponseDataDto.setInvestFeeRate(String.valueOf(investFeeRate));
             loanDtoList.add(loanResponseDataDto);

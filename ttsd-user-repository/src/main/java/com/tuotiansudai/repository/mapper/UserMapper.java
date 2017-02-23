@@ -67,5 +67,6 @@ public interface UserMapper {
 
     long findCountInvestCityScale(@Param(value = "endDate") Date endDate);
 
+    long findExperienceBalanceByLoginName(String loginName);
 
 }

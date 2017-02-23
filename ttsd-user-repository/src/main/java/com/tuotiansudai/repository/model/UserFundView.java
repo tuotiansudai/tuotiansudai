@@ -12,11 +12,13 @@ public class UserFundView implements Serializable {
     private long actualTotalExtraInterest; //已收投资奖励(阶梯加息)(分)
     private long referRewardAmount; //已收推荐奖励(分)
     private long redEnvelopeAmount; //已收红包奖励(分)
+    private long actualTotalExperienceInterest; //已收体验金收益(分)
 
     private long expectedTotalCorpusInterest; //待收回款=待收投资本金+待收投资收益+待收投资奖励(阶梯加息)------已放款后的标的包含加息券，投资奖励，活动加息所产生的利息
     private long expectedTotalCorpus; //待收投资本金(分)
     private long expectedTotalInterest; //待收投资收益(分)
     private long expectedTotalExtraInterest; //待收投资奖励(阶梯加息)(分)
+    private long expectedTotalExperienceInterest; //待收体验金收益(分)
 
     private long investFrozeAmount; //投资冻结资金(分)
     private long withdrawFrozeAmount; //提现冻结资金(分)
@@ -125,5 +127,21 @@ public class UserFundView implements Serializable {
 
     public void setCurrentMonthInvestRepayCount(long currentMonthInvestRepayCount) {
         this.currentMonthInvestRepayCount = currentMonthInvestRepayCount;
+    }
+
+    public long getActualTotalExperienceInterest() {
+        return actualTotalExperienceInterest;
+    }
+
+    public void setActualTotalExperienceInterest(long actualTotalExperienceInterest) {
+        this.actualTotalExperienceInterest = actualTotalExperienceInterest;
+    }
+
+    public long getExpectedTotalExperienceInterest() {
+        return expectedTotalExperienceInterest;
+    }
+
+    public void setExpectedTotalExperienceInterest(long expectedTotalExperienceInterest) {
+        this.expectedTotalExperienceInterest = expectedTotalExperienceInterest;
     }
 }

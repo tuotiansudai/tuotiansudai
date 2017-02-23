@@ -40,4 +40,31 @@
        select max(created_time) from experience_bill where login_name = #{loginName}
     </select>
 
+    <select id="findExperienceBillPagination" parameterType="map" resultMap="experienceBillResultMap">
+        select * from experience_bill
+        <where>
+            <if test="loginName != null and loginName != ''">
+                and login_name = #{loginName}
+            </if>
+            <if test="operationType != null and operationType != ''">
+                and operation_type = #{operationType}
+            </if>
+        </where>
+        order by created_time desc
+        limit #{index}, #{pageSize}
+    </select>
+
+    <select id="findCountExperienceBillPagination" parameterType="map" resultType="long">
+        select count(1)
+        from experience_bill
+        <where>
+            <if test="loginName != null and loginName != ''">
+                and login_name = #{loginName}
+            </if>
+            <if test="operationType != null and operationType != ''">
+                and operation_type = #{operationType}
+            </if>
+        </where>
+    </select>
+
 </mapper>

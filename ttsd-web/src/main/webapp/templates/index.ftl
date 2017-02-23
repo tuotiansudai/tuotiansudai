@@ -94,13 +94,13 @@
             <div class="newer-experience clearfix" data-url="/loan/1">
                 <i class="tag-icon"></i>
                 <div class="con-inner">
-                    <b class="newer-title">新手体验标 <span>仅限使用体验金投资</span></b>
+                    <b class="newer-title">${experienceLoanDto.name} <span>限体验金投资</span></b>
                     <ul class="loan-info clearfix">
                         <li><span class="percent-number"> <i>${experienceLoanDto.baseRate}</i>%</span>预期年化收益</li>
                         <li><em class="duration-day">${experienceLoanDto.duration}</em>天<br>项目期限</li>
                     </ul>
-                    <b class="newer-title"><span>体验标升级中，等待3天，马上回来</span></b>
-                    <#--<a href="/loan/1" class="btn-invest btn-normal">立即购买</a>-->
+                    <#--<b class="newer-title"><span>体验标升级中，等待3天，马上回来</span></b>-->
+                    <a href="/loan/1" class="btn-invest btn-normal">立即购买</a>
                 </div>
 
             </div>
