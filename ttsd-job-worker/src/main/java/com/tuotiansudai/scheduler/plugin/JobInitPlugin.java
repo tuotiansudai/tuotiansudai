@@ -72,10 +72,6 @@ public class JobInitPlugin implements SchedulerPlugin {
 
     }
 
-    private void deleteCouponRepayCallBackJobIfNotExist(){
-        jobManager.deleteJob(JobType.CouponRepayCallBack, JobType.CouponRepayCallBack.name(), JobType.CouponRepayCallBack.name());
-    }
-
     private void createExtraRateRepayCallBackIfNotExist() {
         final JobType jobType = JobType.ExtraRateRepayCallBack;
         final String jobGroup = ExtraRateInvestCallbackJob.JOB_GROUP;
@@ -113,6 +109,10 @@ public class JobInitPlugin implements SchedulerPlugin {
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
         }
+    }
+
+    private void deleteCouponRepayCallBackJobIfNotExist(){
+        jobManager.deleteJob(JobType.CouponRepayCallBack,"umpay","coupon_repay_call_back");
     }
 
     private void deleteRefreshAreaByMobile() {
