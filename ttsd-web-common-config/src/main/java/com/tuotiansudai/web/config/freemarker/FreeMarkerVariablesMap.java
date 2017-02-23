@@ -61,6 +61,8 @@ public class FreeMarkerVariablesMap extends MapFactoryBean implements ResourceLo
 
         map.put("js", javascriptResource);
         map.put("css", cssResource);
+        logger.info(MessageFormat.format("js mapping: {0}", javascriptResource.toString()));
+        logger.info(MessageFormat.format("css mapping: {0}", cssResource.toString()));
 
         return map;
     }
