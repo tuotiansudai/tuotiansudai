@@ -1,9 +1,14 @@
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="message-auto-list.js" headLab="message-manage" sideLab="autoMessageManage" title="自动发送站内信管理">
+<@global.main pageCss="" pageJavascript="message-auto-list.js" headLab="content-manage" sideLab="messageManage" title="自动发送站内信管理">
 
 <!-- content area begin -->
 <div class="col-md-10">
+    <div class="col-md-12">
+        <a href="/message-manage/manual-message-list" class="btn btn-default">手动创建消息管理</a>
+        <a href="/message-manage/auto-message-list" class="btn btn-default btn-warning">自动发送消息管理</a>
+    </div>
+    <div class="col-md-12">
     <div class="table-responsive">
         <table class="table table-bordered table-hover ">
             <thead>
@@ -20,7 +25,7 @@
             </tr>
             </thead>
             <tbody>
-                <#list messageList as message>
+                <#list dto.records as message>
                 <tr>
                     <td>${message.id?c}</td>
                     <td>全部用户</td>
@@ -54,13 +59,13 @@
     <!-- pagination  -->
     <nav>
         <div>
-            <span class="bordern">总共${messageCount}条,每页显示${pageSize}条</span>
+            <span class="bordern">总共${dto.count}条,每页显示${dto.pageSize}条</span>
         </div>
-        <#if messageList?has_content>
+        <#if dto.records?has_content>
             <ul class="pagination">
                 <li>
-                    <#if hasPreviousPage>
-                    <a href="?index=${index-1}&pageSize=${pageSize}<#if selectedMessageStatus??>&messageStatus=${selectedMessageStatus}</#if><#if title??>&title=${title!}</#if><#if createdBy??>&createdBy=${createdBy!}</#if>"
+                    <#if dto.hasPreviousPage>
+                    <a href="?index=${dto.index - 1}"
                        aria-label="Previous">
                     <#else>
                     <a href="#" aria-label="Previous">
@@ -68,10 +73,10 @@
                     <span aria-hidden="true">&laquo; Prev</span>
                 </a>
                 </li>
-                <li><a>${index}</a></li>
+                <li><a>${dto.index}</a></li>
                 <li>
-                    <#if hasNextPage>
-                    <a href="?index=${index+1}&pageSize=${pageSize}<#if selectedMessageStatus??>&messageStatus=${selectedMessageStatus}</#if><#if title??>&title=${title!}</#if><#if createdBy??>&createdBy=${createdBy!}</#if>"
+                    <#if dto.hasNextPage>
+                    <a href="?index=${dto.index + 1}"
                        aria-label="Next">
                     <#else>
                     <a href="#" aria-label="Next">
@@ -83,6 +88,7 @@
         </#if>
     </nav>
     <!-- pagination -->
+    </div>
 </div>
 <!-- content area end -->
 </@global.main>

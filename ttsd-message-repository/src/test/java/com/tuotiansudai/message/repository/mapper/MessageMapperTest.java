@@ -6,6 +6,7 @@ import com.tuotiansudai.message.repository.model.MessageCategory;
 import com.tuotiansudai.message.repository.model.MessageChannel;
 import com.tuotiansudai.message.repository.model.MessageModel;
 import com.tuotiansudai.message.repository.model.MessageUserGroup;
+import org.joda.time.DateTime;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -26,7 +27,9 @@ public class MessageMapperTest extends BaseMapperTest {
                 "webUrl",
                 AppUrl.HOME,
                 null,
-                "created");
+                "created",
+                DateTime.parse("0001-01-01").toDate(),
+                DateTime.parse("9999-12-31").toDate());
 
         messageMapper.create(messageModel);
 

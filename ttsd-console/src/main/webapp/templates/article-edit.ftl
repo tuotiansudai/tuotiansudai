@@ -1,5 +1,5 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="article-edit.js" headLab="announce-manage" sideLab="articleMan" title="添加信息">
+<@global.main pageCss="" pageJavascript="article-edit.js" headLab="content-manage" sideLab="articleMan" title="添加信息">
 
 <!-- content area begin -->
 <div class="col-md-10">
