@@ -306,17 +306,18 @@ form label.error {
   .newbie-step-register {
     position: absolute;
     left: 0;
+    right:0;
+    margin:0 auto;
     top: 90px;
     padding-top: 12px;
-    width: 100%;
-    min-width: 1200px;
+    width:1000px;
     height: 350px;
     text-align: right;
 
     .register-box {
       position: absolute;
       padding: 25px 25px 25px 25px;
-      left: 900px;
+      right: 0px;
       background: rgba(255, 255, 255, 0.8);
       border-radius: 5px;
       height: auto;

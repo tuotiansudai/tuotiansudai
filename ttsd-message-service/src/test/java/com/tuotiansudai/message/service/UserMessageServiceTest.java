@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.message.repository.mapper.MessageMapper;
 import com.tuotiansudai.message.repository.mapper.UserMessageMapper;
 import com.tuotiansudai.message.repository.model.*;
+import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +42,9 @@ public class UserMessageServiceTest {
                 null,
                 null,
                 null,
-                "messageCreator");
+                "messageCreator",
+                DateTime.parse("0001-01-01").toDate(),
+                DateTime.parse("9999-12-31").toDate());
 
         webSiteMessageModel.setReadCount(10);
         webSiteMessageModel.setActivatedTime(new Date());
@@ -71,7 +74,9 @@ public class UserMessageServiceTest {
                 null,
                 null,
                 null,
-                "messageCreator");
+                "messageCreator",
+                DateTime.parse("0001-01-01").toDate(),
+                DateTime.parse("9999-12-31").toDate());
 
         messageMapper.create(webSiteMessageModel);
 
@@ -83,7 +88,9 @@ public class UserMessageServiceTest {
                 null,
                 null,
                 null,
-                "messageCreator");
+                "messageCreator",
+                DateTime.parse("0001-01-01").toDate(),
+                DateTime.parse("9999-12-31").toDate());
 
         messageMapper.create(appMessageModel);
     }

@@ -23,9 +23,9 @@ import java.text.MessageFormat;
 import java.util.List;
 
 @Component
-public class CouponSmsNotifyMessageConsumer implements MessageConsumer {
+public class CouponAssignSmsNotifyMessageConsumer implements MessageConsumer {
 
-    static Logger logger = Logger.getLogger(CouponSmsNotifyMessageConsumer.class);
+    static Logger logger = Logger.getLogger(CouponAssignSmsNotifyMessageConsumer.class);
 
     @Resource(name = "allUserCollector")
     private UserCollector allUserCollector;
@@ -63,14 +63,11 @@ public class CouponSmsNotifyMessageConsumer implements MessageConsumer {
     @Resource(name = "winnerCollector")
     private UserCollector winnerCollector;
 
+    @Resource(name = "winnerNotifyCollector")
+    private UserCollector winnerNotifyCollector;
+
     @Resource(name = "exchangeCodeCollector")
     private UserCollector exchangeCodeCollector;
-
-    @Resource(name = "experienceInvestSuccessCollector")
-    private UserCollector experienceInvestSuccessCollector;
-
-    @Resource(name = "experienceRepaySuccessCollector")
-    private UserCollector experienceRepaySuccessCollector;
 
     @Resource(name = "membershipUserCollector")
     private UserCollector membershipUserCollector;
@@ -86,7 +83,7 @@ public class CouponSmsNotifyMessageConsumer implements MessageConsumer {
 
     @Override
     public MessageQueue queue() {
-        return MessageQueue.CouponSmsNotify;
+        return MessageQueue.CouponSmsAssignNotify;
     }
 
     @Override
@@ -100,14 +97,14 @@ public class CouponSmsNotifyMessageConsumer implements MessageConsumer {
         notifyDto.setAmount(AmountConverter.convertCentToString(couponModel.getAmount()));
         notifyDto.setRate(String.format("%.1f", couponModel.getRate() * 100));
         notifyDto.setCouponType(couponModel.getCouponType());
-        notifyDto.setExpiredDate(DateTime.now().plusDays(couponModel.getDeadline()).withTimeAtStartOfDay().toString("yyyy-MM-dd"));
+        notifyDto.setExpiredDate(DateTime.now().plusDays(couponModel.getDeadline()).withTimeAtStartOfDay().toString("yyyy年MM月dd日"));
 
         for (String loginName : loginNames) {
             logger.info(MessageFormat.format("Send coupon notify, loginName:{0}, couponId:{1}", loginName, String.valueOf(couponId)));
             String mobile = userMapper.findByLoginName(loginName).getMobile();
             notifyDto.setMobile(mobile);
             try {
-                smsWrapperClient.sendCouponNotify(notifyDto);
+                smsWrapperClient.sendCouponAssignSuccessNotify(notifyDto);
             } catch (Exception e) {
                 logger.error(MessageFormat.format("Send coupon notify is failed (couponId = {0}, mobile = {1})", String.valueOf(couponId), mobile));
             }
@@ -128,9 +125,8 @@ public class CouponSmsNotifyMessageConsumer implements MessageConsumer {
                 .put(UserGroup.STAFF_RECOMMEND_LEVEL_ONE, this.staffRecommendLevelOneCollector)
                 .put(UserGroup.EXCHANGER, this.exchangerCollector)
                 .put(UserGroup.WINNER, this.winnerCollector)
+                .put(UserGroup.WINNER_NOTIFY, this.winnerNotifyCollector)
                 .put(UserGroup.EXCHANGER_CODE, this.exchangeCodeCollector)
-                .put(UserGroup.EXPERIENCE_INVEST_SUCCESS, this.experienceInvestSuccessCollector)
-                .put(UserGroup.EXPERIENCE_REPAY_SUCCESS, this.experienceRepaySuccessCollector)
                 .put(UserGroup.MEMBERSHIP_V0, this.membershipUserCollector)
                 .put(UserGroup.MEMBERSHIP_V1, this.membershipUserCollector)
                 .put(UserGroup.MEMBERSHIP_V2, this.membershipUserCollector)
