@@ -9,7 +9,6 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.Environment;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
-import com.tuotiansudai.job.ExtraRateInvestCallbackJob;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
@@ -172,7 +171,7 @@ public class ExtraRateServiceImpl implements ExtraRateService {
         if (callbackRequest == null) {
             return null;
         }
-        mqWrapperClient.sendMessage(MessageQueue.RepaySuccessExtraRateNormalRepayCallback, String.valueOf(callbackRequest.getId()));
+        mqWrapperClient.sendMessage(MessageQueue.RepaySuccessExtraRateRepayCallback, String.valueOf(callbackRequest.getId()));
         logger.info(MessageFormat.format("extra_rate_invest_callback message send success  id:{0}", String.valueOf(callbackRequest.getId())));
         return callbackRequest.getResponseData();
     }

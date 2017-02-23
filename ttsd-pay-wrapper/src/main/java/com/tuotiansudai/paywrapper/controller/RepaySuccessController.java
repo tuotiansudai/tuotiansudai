@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.text.MessageFormat;
+
 @Controller
 @RequestMapping(value = "/repay-success")
 public class RepaySuccessController {
@@ -43,11 +45,17 @@ public class RepaySuccessController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/extra-rate-normal-repay", method = RequestMethod.POST)
+    @RequestMapping(value = "/extra-rate-repay", method = RequestMethod.POST)
     public BaseDto<PayDataDto> extraRateNormalRepay(@RequestBody RepaySuccessMessage repaySuccessMessage) {
         boolean isSuccess = true;
         try {
-            extraRateService.normalRepay(repaySuccessMessage.getLoanRepayId());
+            if(repaySuccessMessage.isAdvanced()){
+                logger.info(MessageFormat.format("extra_rate_advance_repay begin {0} ..",String.valueOf(repaySuccessMessage.getLoanRepayId())));
+                extraRateService.advanceRepay(repaySuccessMessage.getLoanRepayId());
+            }else{
+                logger.info(MessageFormat.format("extra_rate_normal_repay begin {0} ..",String.valueOf(repaySuccessMessage.getLoanRepayId())));
+                extraRateService.normalRepay(repaySuccessMessage.getLoanRepayId());
+            }
         } catch (Exception e) {
             isSuccess = false;
             logger.error("还款发放阶梯加息收益失败", e);

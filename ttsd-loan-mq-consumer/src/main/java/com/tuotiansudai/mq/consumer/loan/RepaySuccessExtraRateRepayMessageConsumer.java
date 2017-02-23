@@ -19,9 +19,9 @@ import java.io.IOException;
 import java.text.MessageFormat;
 
 @Component
-public class RepaySuccessExtraRateNormalRepayMessageConsumer implements MessageConsumer {
+public class RepaySuccessExtraRateRepayMessageConsumer implements MessageConsumer {
 
-    private static Logger logger = LoggerFactory.getLogger(RepaySuccessExtraRateNormalRepayMessageConsumer.class);
+    private static Logger logger = LoggerFactory.getLogger(RepaySuccessExtraRateRepayMessageConsumer.class);
 
     @Autowired
     private SmsWrapperClient smsWrapperClient;
@@ -31,16 +31,16 @@ public class RepaySuccessExtraRateNormalRepayMessageConsumer implements MessageC
 
     @Override
     public MessageQueue queue() {
-        return MessageQueue.RepaySuccess_ExtraRateNormalRepay;
+        return MessageQueue.RepaySuccess_ExtraRateRepay;
     }
 
     @Override
     public void consume(String message) {
 
-        logger.info("[还款发放阶梯加息收益MQ] RepaySuccess_ExtraRateNormalRepay receive message: {}: {}.", this.queue(), message);
+        logger.info("[还款发放阶梯加息收益MQ] RepaySuccess_ExtraRateRepay receive message: {}: {}.", this.queue(), message);
 
         if (Strings.isNullOrEmpty(message)) {
-            logger.error("[还款发放阶梯加息收益MQ] RepaySuccess_ExtraRateNormalRepay receive message is empty");
+            logger.error("[还款发放阶梯加息收益MQ] RepaySuccess_ExtraRateRepay receive message is empty");
             smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("还款发放阶梯加息收益失败, MQ消息为空"));
             return;
         }
@@ -50,14 +50,14 @@ public class RepaySuccessExtraRateNormalRepayMessageConsumer implements MessageC
         try {
             repaySuccessMessage = JsonConverter.readValue(message, RepaySuccessMessage.class);
         } catch (IOException e) {
-            logger.error("[还款发放阶梯加息收益MQ] RepaySuccess_ExtraRateNormalRepay json convert RepaySuccessMessage is fail, message:{}", message);
+            logger.error("[还款发放阶梯加息收益MQ] RepaySuccess_ExtraRateRepay json convert RepaySuccessMessage is fail, message:{}", message);
             smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("还款发放阶梯加息收益失败, MQ消息解析失败!"));
             return;
         }
 
         Long loanRepayId = repaySuccessMessage.getLoanRepayId();
         if (loanRepayId == null) {
-            logger.error("[还款发放阶梯加息收益MQ] RepaySuccess_ExtraRateNormalRepay loanRepayId is null, message:{}", message);
+            logger.error("[还款发放阶梯加息收益MQ] RepaySuccess_ExtraRateRepay loanRepayId is null, message:{}", message);
             smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("还款发放阶梯加息收益失败, 还款ID为空!"));
             return;
         }
@@ -67,15 +67,15 @@ public class RepaySuccessExtraRateNormalRepayMessageConsumer implements MessageC
 
             if (!baseDto.isSuccess()) {
                 smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(MessageFormat.format("还款发放优惠券收益失败,还款ID:{0}", String.valueOf(loanRepayId))));
-                logger.error("[还款发放阶梯加息收益MQ] RepaySuccess_ExtraRateNormalRepay is fail. loanId:{}", String.valueOf(loanRepayId));
-                throw new RuntimeException("[还款发放阶梯加息收益MQ] RepaySuccess_CouponRepay is fail. loanOutInfo: " + message);
+                logger.error("[还款发放阶梯加息收益MQ] RepaySuccess_ExtraRateRepay is fail. loanId:{}", String.valueOf(loanRepayId));
+                throw new RuntimeException("[还款发放阶梯加息收益MQ] RepaySuccess_ExtraRateRepay is fail. loanOutInfo: " + message);
             }
         } catch (Exception e) {
-            logger.error("[还款发放阶梯加息收益MQ] RepaySuccess_ExtraRateNormalRepay  is fail, message:{}", message);
+            logger.error("[还款发放阶梯加息收益MQ] RepaySuccess_ExtraRateRepay  is fail, message:{}", message);
             smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("还款发放阶梯加息收益失败, 业务处理异常"));
             return;
         }
 
-        logger.info("[还款发放阶梯加息收益MQ] RepaySuccess_ExtraRateNormalRepay consume success.");
+        logger.info("[还款发放阶梯加息收益MQ] RepaySuccess_ExtraRateRepay consume success.");
     }
 }
