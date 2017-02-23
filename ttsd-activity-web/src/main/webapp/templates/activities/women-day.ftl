@@ -1,5 +1,5 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.women_day}" pageJavascript="${js.women_day}" activeNav="" activeLeftNav="" title="会员签到_积分商城_拓天速贷" keywords="签到赢积分,签到领红包,红包大奖,拓天速贷" description="拓天速贷会员每日签到赢积分,连续签到积分阶梯递增,累计签到领红包,连续签到365天,可额外获得365元现金红包大奖.">
+<@global.main pageCss="${css.women_day}" pageJavascript="${js.women_day}" activeNav="" activeLeftNav="" title="女神节活动_活动中心_拓天速贷" keywords="拓天速贷,妇女节活动,女神节,少女节" description="拓天速贷3月8日推出女神节活动,少女总动员,开启全民抓娃娃,参与幸运女神时光机,集花瓣赢礼盒等投资活动获得相应蜜汁礼盒.">
 <div class="women-day-container" id="womenDayContainer">
 	<div class="top-item">
 		<img src="${staticServer}/activity/images/women-day/top-img.png" width="100%" class="media-pc">
