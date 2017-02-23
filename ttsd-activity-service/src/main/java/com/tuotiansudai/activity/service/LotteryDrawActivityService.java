@@ -100,6 +100,12 @@ public class LotteryDrawActivityService {
     @Value("#{'${activity.spring.festival.period}'.split('\\~')}")
     private List<String> springFestivalTime = Lists.newArrayList();
 
+    @Value(value = "${activity.woman.day.startTime}")
+    private String activityWomanDayStartTime;
+
+    @Value(value = "${activity.woman.day.endTime}")
+    private String activityWomanDayEndTime;
+
     //往期活动任务
     private final List activityTasks = Lists.newArrayList(ActivityDrawLotteryTask.REGISTER, ActivityDrawLotteryTask.EACH_REFERRER,
             ActivityDrawLotteryTask.EACH_REFERRER_INVEST, ActivityDrawLotteryTask.CERTIFICATION, ActivityDrawLotteryTask.BANK_CARD,
@@ -115,6 +121,9 @@ public class LotteryDrawActivityService {
 
     //春节活动任务
     private final List springFestivalTasks = Lists.newArrayList(ActivityDrawLotteryTask.TODAY_ACTIVITY_SIGN_IN);
+
+    //妇女节活动任务
+    private final List womanDayTasks = Lists.newArrayList(ActivityDrawLotteryTask.TODAY_ACTIVITY_SIGN_IN);
 
     public static final String ACTIVITY_DESCRIPTION = "新年专享";
 
@@ -354,6 +363,8 @@ public class LotteryDrawActivityService {
                 return countDrawLotteryTime(userModel, activityCategory, Lists.newArrayList(ActivityDrawLotteryTask.EACH_INVEST_1000));
             case SPRING_FESTIVAL_ACTIVITY:
                 return countDrawLotteryTime(userModel, activityCategory, springFestivalTasks);
+            case WOMAN_DAY_ACTIVITY:
+                return countDrawLotteryTime(userModel, activityCategory, womanDayTasks);
         }
         return lotteryTime;
     }
@@ -482,6 +493,7 @@ public class LotteryDrawActivityService {
                 .put(ActivityCategory.AUTUMN_PRIZE, Lists.newArrayList(autumnStartTime, autumnEndTime))
                 .put(ActivityCategory.LANTERN_FESTIVAL_ACTIVITY, Lists.newArrayList(lanternFestivalStartTime, lanternFestivalEndTime))
                 .put(ActivityCategory.SPRING_FESTIVAL_ACTIVITY, springFestivalTime)
+                .put(ActivityCategory.WOMAN_DAY_ACTIVITY, Lists.newArrayList(activityWomanDayStartTime, activityWomanDayEndTime))
                 .build()).get(activityCategory);
     }
 
