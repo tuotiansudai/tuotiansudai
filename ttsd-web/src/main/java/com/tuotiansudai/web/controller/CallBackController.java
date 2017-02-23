@@ -18,19 +18,26 @@ public class CallBackController {
 
     @RequestMapping(value = "/{service}", method = RequestMethod.GET)
     public ModelAndView callBack(@PathVariable String service, HttpServletRequest request) {
-        ModelAndView mv = new ModelAndView("/success");
+        ModelAndView mv = null;
         FrontCallbackService frontCallbackService = FrontCallbackService.getService(service);
-        Map<String, String> paramsMap = this.parseRequestParameters(request);
-        String retCode = paramsMap.get("ret_code");
-        Map<String, String> retMaps = Maps.newHashMap();
-        if ("0000".equals(retCode)) {
-            retMaps = this.frontMessageByService(frontCallbackService, true, "");
-        } else {
-            String retMsg = paramsMap.get("ret_msg");
-            retMaps = this.frontMessageByService(frontCallbackService, false, retMsg);
+        //临时解决方案
+        if(frontCallbackService != null){
+            mv = new ModelAndView("/success");
+            Map<String, String> paramsMap = this.parseRequestParameters(request);
+            String retCode = paramsMap.get("ret_code");
+            Map<String, String> retMaps = Maps.newHashMap();
+            if ("0000".equals(retCode)) {
+                retMaps = this.frontMessageByService(frontCallbackService, true, "");
+            } else {
+                String retMsg = paramsMap.get("ret_msg");
+                retMaps = this.frontMessageByService(frontCallbackService, false, retMsg);
+            }
+            mv.addObject("message", retMaps.get("message"));
+            mv.addObject("service", service);
         }
-        mv.addObject("message", retMaps.get("message"));
-        mv.addObject("service", service);
+        else{
+           mv = new ModelAndView("redirect:/account");
+        }
         return mv;
     }
 
