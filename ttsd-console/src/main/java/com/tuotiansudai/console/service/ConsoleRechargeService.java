@@ -30,6 +30,9 @@ public class ConsoleRechargeService {
         if (index < 1) {
             index = 1;
         }
+        if (pageSize < 1) {
+            pageSize = 10;
+        }
 
         BaseDto<BasePaginationDataDto<RechargePaginationItemDataDto>> baseDto = new BaseDto<>();
         List<RechargePaginationItemDataDto> rechargePaginationItemDataDtos = Lists.newArrayList();
