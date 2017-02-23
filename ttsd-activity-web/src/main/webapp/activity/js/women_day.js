@@ -38,7 +38,21 @@ require(['jquery', 'layerWrapper','template', 'jquery.ajax.extension', 'register
                     if (data.returnCode == 2) {
                         //未登录
                         $('.no-login-text', $womenDayContainer).trigger('click'); //弹框登录
-                    } else {
+                    } else if(data.returnCode==0){
+                        layer.open({
+                          type: 1,
+                          closeBtn:0,
+                          move:false,
+                          area:$(window).width()>700?['420px','40px']:['300px','40px'],
+                          title:false,
+                          content: $('#loadingItem')
+                        });
+                        setTimeout(function(){
+                            layer.closeAll();
+                            $('#tipItem').html(tpl('tipItemTpl',data));
+                            lottery.layerShow();
+                        },1500);
+                    }else {
                         $('#tipItem').html(tpl('tipItemTpl',data));
                         lottery.layerShow();
                     }
@@ -110,20 +124,10 @@ require(['jquery', 'layerWrapper','template', 'jquery.ajax.extension', 'register
             event.preventDefault();
             if ($pointerImg.hasClass('sign-already')) {
                 return; //不能重复抽奖
-            }
-            $pointerImg.addClass('sign-active');
-            layer.open({
-              type: 1,
-              closeBtn:0,
-              move:false,
-              area:$(window).width()>700?['420px','40px']:['300px','40px'],
-              title:false,
-              content: $('#loadingItem')
-            });
-            setTimeout(function(){
-                layer.closeAll();
+            }else{
+                $pointerImg.addClass('sign-active');
                 lottery.getLottery();
-            },1500);
+            }
         });
 
         //点击切换按钮
