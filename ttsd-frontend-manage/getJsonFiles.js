@@ -6,7 +6,6 @@ var basePath = path.join(__dirname, 'resources'),
     outputPath=path.join(basePath, 'develop'); //默认打包路径
 //遍历文件夹，获取所有文件夹里面的文件信息
 var NODE_ENV=process.env.NODE_ENV;
-
 if(NODE_ENV=='production') {
     outputPath=path.join(basePath, 'prod');
     // 生成生产环境的json文件

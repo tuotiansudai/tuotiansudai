@@ -1,4 +1,4 @@
-<#import "macro/global.ftl" as global>
+<#import "../macro/global.ftl" as global>
 <@global.main pageCss="${css.message_list}" pageJavascript="${js.message_list}" activeNav="我的账户" activeLeftNav="消息中心" title="消息中心">
 
 <div class="content-container create-transfer-content" id="userMessageList">
