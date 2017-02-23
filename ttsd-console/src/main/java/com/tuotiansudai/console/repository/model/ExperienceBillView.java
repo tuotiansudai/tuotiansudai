@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class ExperienceBillView implements Serializable{
+    private long id;
     private Date createdTime;
     private String loginName;
     private String userName;
@@ -69,5 +70,13 @@ public class ExperienceBillView implements Serializable{
 
     public void setAmount(long amount) {
         this.amount = amount;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }

@@ -7,6 +7,7 @@
     <cache-ref namespace="com.tuotiansudai.repository.mapper.ExperienceBillMapper"/>
 
     <resultMap id="experienceBillViewResultMap" type="experienceBillView">
+        <id column="id" property="id"></id>
         <result column="created_time" property="createdTime"/>
         <result column="login_name" property="loginName"/>
         <result column="user_name" property="userName"/>
@@ -17,7 +18,7 @@
     </resultMap>
 
     <select id="findExperienceBill" resultMap="experienceBillViewResultMap" parameterType="map">
-        select eb.created_time,eb.login_name,u.user_name,u.mobile,eb.business_type,eb.operation_type,eb.amount from experience_bill eb join user u on eb.login_name = u.login_name
+        select eb.id,eb.created_time,eb.login_name,u.user_name,u.mobile,eb.business_type,eb.operation_type,eb.amount from experience_bill eb join user u on eb.login_name = u.login_name
         <where>
             <if test = "mobile != null and mobile != ''">
                 and u.mobile = #{mobile}
@@ -61,7 +62,7 @@
     </select>
 
     <select id="findSumExperienceBillAmount" parameterType="map" resultType="long">
-        select sum(eb.amount) from experience_bill eb join user u on eb.login_name = u.login_name
+        select ifnull(sum(eb.amount),0) from experience_bill eb join user u on eb.login_name = u.login_name
         <where>
             <if test = "mobile != null and mobile != ''">
                 and u.mobile = #{mobile}

@@ -11,6 +11,7 @@ import java.util.Date;
 public class ExperienceBillPaginationItemDto implements Serializable {
 
     private Date createdTime;
+    private long id;
     private String loginName;
     private String userName;
     private String mobile;
@@ -23,6 +24,7 @@ public class ExperienceBillPaginationItemDto implements Serializable {
 
     public ExperienceBillPaginationItemDto(ExperienceBillView experienceBillView) {
         this.createdTime = experienceBillView.getCreatedTime();
+        this.id = experienceBillView.getId();
         this.loginName = experienceBillView.getLoginName();
         this.userName = experienceBillView.getUserName();
         this.mobile = experienceBillView.getMobile();
@@ -85,5 +87,13 @@ public class ExperienceBillPaginationItemDto implements Serializable {
 
     public void setAmount(long amount) {
         this.amount = amount;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }

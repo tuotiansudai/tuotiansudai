@@ -65,37 +65,35 @@ public class ExperienceController {
         modelAndView.addObject("repayStatusList",Lists.newArrayList(RepayStatus.COMPLETE,RepayStatus.REPAYING));
         return modelAndView;
     }
-//
-//    @RequestMapping(value = "/experience-bill", method = RequestMethod.GET)
-//    public ModelAndView experienceBill(@RequestParam(value = "mobile", required = false) String mobile,
-//                                    @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
-//                                    @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
-//                                    @RequestParam(value = "experienceBillOperationType", required = false) ExperienceBillOperationType operationType,
-//                                    @RequestParam(value = "experienceBusinessType", required = false) ExperienceBusinessType businessType,
-//                                    @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
-//        ModelAndView modelAndView = new ModelAndView("/experience-bill");
-//        int pageSize = 10;
-//        BasePaginationDataDto<ExperienceBillPaginationItemDto> basePaginationDataDto = consoleExperienceService.experienceBill(mobile,
-//                startTime,
-//                endTime,
-//                operationType,
-//                businessType,
-//                index,
-//                pageSize);
-//        long sumExperienceBillAmount = consoleExperienceService.findSumExperienceBillAmount(mobile,startTime,endTime,operationType,businessType);
-//        modelAndView.addObject("baseDto", basePaginationDataDto);
-//        modelAndView.addObject("sumExperienceBillAmount", sumExperienceBillAmount);
-//        modelAndView.addObject("mobile", mobile);
-//        modelAndView.addObject("startTime", startTime);
-//        modelAndView.addObject("endTime", endTime);
-//        modelAndView.addObject("operationType", operationType);
-//        modelAndView.addObject("businessType", businessType);
-//        modelAndView.addObject("index", index);
-//        modelAndView.addObject("pageSize", pageSize);
-//        modelAndView.addObject("hasNextPage", basePaginationDataDto.isHasNextPage());
-//        modelAndView.addObject("hasPreviousPage", basePaginationDataDto.isHasPreviousPage());
-//        return modelAndView;
-//    }
+
+    @RequestMapping(value = "/experience-bill", method = RequestMethod.GET)
+    public ModelAndView experienceBill(@RequestParam(value = "mobile", required = false) String mobile,
+                                    @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
+                                    @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
+                                    @RequestParam(value = "experienceBillOperationType", required = false) ExperienceBillOperationType operationType,
+                                    @RequestParam(value = "experienceBusinessType", required = false) ExperienceBusinessType businessType,
+                                    @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
+        ModelAndView modelAndView = new ModelAndView("/experience-bill");
+        int pageSize = 10;
+        BasePaginationDataDto<ExperienceBillPaginationItemDto> basePaginationDataDto = consoleExperienceService.experienceBill(mobile,
+                startTime,
+                endTime,
+                operationType,
+                businessType,
+                index,
+                pageSize);
+        long sumExperienceBillAmount = consoleExperienceService.findSumExperienceBillAmount(mobile,startTime,endTime,operationType,businessType);
+        modelAndView.addObject("data", basePaginationDataDto);
+        modelAndView.addObject("sumExperienceBillAmount", sumExperienceBillAmount);
+        modelAndView.addObject("mobile", mobile);
+        modelAndView.addObject("startTime", startTime);
+        modelAndView.addObject("endTime", endTime);
+        modelAndView.addObject("operationType", operationType);
+        modelAndView.addObject("businessType", businessType);
+        modelAndView.addObject("operationTypeList",Lists.newArrayList(ExperienceBillOperationType.values()));
+        modelAndView.addObject("businessTypeList",Lists.newArrayList(ExperienceBusinessType.values()));
+        return modelAndView;
+    }
 
 
 }
