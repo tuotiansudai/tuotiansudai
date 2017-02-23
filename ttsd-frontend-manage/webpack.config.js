@@ -210,6 +210,7 @@ var myObject = objectAssign(commonOptions, {
 			webImages:path.join(webPath, 'images'),
 
 			activityJs:path.join(activityPath, 'js'),
+			activityJsModule:path.join(activityPath, 'js/module'),
 			activityStyle:path.join(activityPath, 'styles'),
 
 			pointJs:path.join(pointPath, 'js'),

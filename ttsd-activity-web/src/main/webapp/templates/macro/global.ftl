@@ -76,7 +76,7 @@
         <meta name = "format-detection" content = "telephone=no">
     </#if>
     <link href="${staticServer}/images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-    <link rel="stylesheet" type="text/css" href="${css.global}" charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="${css.globalFun_page}" charset="utf-8" />
     <#if pageCss?? && pageCss != "">
     <link rel="stylesheet" type="text/css" href="${pageCss}" charset="utf-8" />
     </#if>
@@ -112,15 +112,10 @@
     </@security.authorize>
 
 </script>
-<script src="${js.global_page}" type="text/javascript"  charset="utf-8"></script>
-<script src="${js.config}" type="text/javascript" charset="utf-8"></script>
 
-<#if pageJavascript?? && pageJavascript?length gt 0>
-<script src="${staticServer}/activity/js/libs/require-2.1.20.min.js" type="text/javascript" charset="utf-8" defer="defer" async="async"
-        data-main="${pageJavascript}">
-
-</script>
-</#if>
+<script src="${js.jquerydll}" ></script>
+<script src="${js.globalFun_page!}" ></script>
+<script src="${pageJavascript}" type="text/javascript" id="currentScript"></script>
 
 <#include "../pageLayout/statistic.ftl" />
 </body>

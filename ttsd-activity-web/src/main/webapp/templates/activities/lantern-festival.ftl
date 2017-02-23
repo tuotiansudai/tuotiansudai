@@ -5,30 +5,24 @@
     <div style="display: none" class="login-name" data-login-name='<@global.security.authentication property="principal.username" />'></div>
     <div style="display: none" class="mobile" id="MobileNumber" data-mobile='<@global.security.authentication property="principal.mobile" />'></div>
     </@global.isNotAnonymous>
-	<div class="top-intro-img">
-		<img src="${staticServer}/activity/images/lantern-festival/top-img.jpg" width="100%" class="img-item">
-		<img src="${staticServer}/activity/images/lantern-festival/top-img-phone.jpg" width="100%" class="img-item-phone">
-	</div>
+	<div class="top-intro-img img-item"></div>
+    <div class="top-intro-img img-item-phone"></div>
 	<div class="actor-content-group bg-one">
 		<div class="wp clearfix">
 		<div class="reg-tag-current" style="display: none">
 	        <#include '../module/register.ftl' />
 	    </div>
 			<div class="tree-model">
-				<h3>
-					<img src="${staticServer}/activity/images/lantern-festival/title-one.png" class="img-item">
-					<img src="${staticServer}/activity/images/lantern-festival/title-one-phone.png" width="100%" class="img-item-phone">
-				</h3>
-				<div class="info-item">
+				<h3 class="img-item"></h3>
+                <h3 class="img-item-phone"></h3>
+                <div class="info-item">
 					活动期间投资额每满1000元即可获得一次摇一摇机会，如单笔投资10000元，可直接获得10次摇一摇机会，用户每日最多可获得20次摇一摇机会，当日超出部分的投资额不予累计。
 				</div>
 				<div class="gift-item text-c reward-gift-box">
 					<div class="time-item">
 						我的抽奖机会:<span class="draw-time">0</span>次
 					</div>
-					<div class="rotate-btn pointer-img">
-						<img src="${staticServer}/activity/images/lantern-festival/tree-icon.png">
-					</div>
+					<div class="rotate-btn pointer-img"></div>
 					<div class="record-list-box">
                         <div class="menu-switch">
                             <span class="active">中奖记录</span>
@@ -45,11 +39,9 @@
 				</div>
 			</div>
 			<div class="list-model">
-				<h3>
-					<img src="${staticServer}/activity/images/lantern-festival/title-two.png" class="img-item">
-					<img src="${staticServer}/activity/images/lantern-festival/title-two-phone.png" width="100%" class="img-item-phone">
-				</h3>
-				<div class="info-item">
+				<h3 class="title-tow img-item"></h3>
+                <h3 class="title-tow img-item-phone"></h3>
+                <div class="info-item">
 					活动期间，根据用户当日的累计投资总额进行排名，当日前十名用户可以获得相应奖励，其中第一名的用户将夺得当日至尊大奖。
 				</div>
 				<ul class="list-info">
@@ -93,10 +85,14 @@
 						<p class="tip-text">（当日第一名可得）</p>
 					</div>
 				</div>
-				<h3 class="mt-50">
-					<img src="${staticServer}/activity/images/lantern-festival/title-list.png" class="img-item">
-					<img src="${staticServer}/activity/images/lantern-festival/title-list-phone.png" width="100%" class="img-item-phone">
+				<h3 class="mt-50 img-item">
+					<#--<img src="${staticServer}/activity/images/lantern-festival/title-list.png" class="img-item">-->
+					<#--<img src="${staticServer}/activity/images/lantern-festival/title-list-phone.png" width="100%" class="img-item-phone">-->
 				</h3>
+                <h3 class="mt-50 img-item-phone">
+                    <#--<img src="${staticServer}/activity/images/lantern-festival/title-list.png" class="img-item">-->
+                    <#--<img src="${staticServer}/activity/images/lantern-festival/title-list-phone.png" width="100%" class="img-item-phone">-->
+                </h3>
 				<div class="table-group">
                     <input type="hidden" id="activityStartTime" value="${activityStartTime!}">
                     <input type="hidden" id="activityEndTime" value="${activityEndTime!}">
