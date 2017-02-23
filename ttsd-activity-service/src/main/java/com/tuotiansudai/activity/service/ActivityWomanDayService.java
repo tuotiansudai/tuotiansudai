@@ -122,35 +122,35 @@ public class ActivityWomanDayService {
 
     private String getPrize(int totalLeaves) {
         if (9 <= totalLeaves && totalLeaves < 38) {
-            return "礼盒一";
+            return "蜜汁礼盒一";
         }
 
         if (38 <= totalLeaves && totalLeaves < 78) {
-            return "礼盒二";
+            return "蜜汁礼盒二";
         }
 
         if (78 <= totalLeaves && totalLeaves < 138) {
-            return "礼盒三";
+            return "蜜汁礼盒三";
         }
 
         if (138 <= totalLeaves && totalLeaves < 238) {
-            return "礼盒四";
+            return "蜜汁礼盒四";
         }
 
         if (238 <= totalLeaves && totalLeaves < 338) {
-            return "礼盒五";
+            return "蜜汁礼盒五";
         }
 
         if (338 <= totalLeaves && totalLeaves < 438) {
-            return "礼盒六";
+            return "蜜汁礼盒六";
         }
 
         if (438 <= totalLeaves && totalLeaves < 638) {
-            return "礼盒七";
+            return "蜜汁礼盒七";
         }
 
         if (638 <= totalLeaves) {
-            return "礼盒八";
+            return "蜜汁礼盒八";
         }
         return "";
     }

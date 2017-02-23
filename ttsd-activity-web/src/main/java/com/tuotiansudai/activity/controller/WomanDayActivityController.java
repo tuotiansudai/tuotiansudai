@@ -9,7 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-
 import java.util.List;
 
 @Controller
@@ -22,7 +21,7 @@ public class WomanDayActivityController {
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView loadPageData() {
         String loginName = LoginUserInfo.getLoginName();
-        ModelAndView modelAndView = new ModelAndView("/activities/red-envelop-split", "responsive", true);
+        ModelAndView modelAndView = new ModelAndView("/activities/women-day", "responsive", true);
         List<WomanDayRecordView> records = activityWomanDayService.getWomanDayPrizeRecord(0, Integer.MAX_VALUE, loginName).getRecords();
         int totalLeaves = 0;
         String prize = "";

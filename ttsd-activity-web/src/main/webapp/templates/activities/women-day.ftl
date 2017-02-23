@@ -138,8 +138,8 @@
 			</dl>
 			<div class="flower-info">
 				<p class="title-text tc">我的花瓣</p>
-				<p class="tc">当前累计获得花瓣<span>234</span>个</p>
-				<p class="tc">可获得<span>蜜汁礼盒五</span></p>
+				<p class="tc">当前累计获得花瓣<span>${totalLeaves}</span>个</p>
+				<p class="tc">可获得<span>${prize}</span></p>
 				<p class="tc">
 					<a href="/referrer/refer-list">邀请好友</a>
 					<a href="/loan-list">立即投资</a>
