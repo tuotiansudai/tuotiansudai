@@ -1,13 +1,14 @@
 package com.tuotiansudai.console.service;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.client.PayWrapperClient;
-import com.tuotiansudai.dto.*;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.dto.RechargePaginationItemDataDto;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.repository.mapper.RechargeMapper;
 import com.tuotiansudai.repository.model.RechargeModel;
 import com.tuotiansudai.repository.model.RechargeSource;
 import com.tuotiansudai.repository.model.RechargeStatus;
-import com.tuotiansudai.service.RechargeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,20 +26,17 @@ public class ConsoleRechargeService {
     }
 
     public BaseDto<BasePaginationDataDto<RechargePaginationItemDataDto>> findRechargePagination(String rechargeId, String mobile, RechargeSource source,
-                                                                                                RechargeStatus status, String channel, int index, int pageSize, Date startTime, Date endTime) {
+                                                                                                RechargeStatus status, String channel, int index, int pageSize, Date startTime, Date endTime, Role role) {
         if (index < 1) {
             index = 1;
-        }
-        if (pageSize < 1) {
-            pageSize = 10;
         }
 
         BaseDto<BasePaginationDataDto<RechargePaginationItemDataDto>> baseDto = new BaseDto<>();
         List<RechargePaginationItemDataDto> rechargePaginationItemDataDtos = Lists.newArrayList();
 
-        int count = rechargeMapper.findRechargeCount(rechargeId, mobile, source, status, channel, startTime, endTime);
+        int count = rechargeMapper.findRechargeCount(rechargeId, mobile, source, status, channel, startTime, endTime, role);
 
-        List<RechargeModel> rechargeModelList = rechargeMapper.findRechargePagination(rechargeId, mobile, source, status, channel, (index - 1) * pageSize, pageSize, startTime, endTime);
+        List<RechargeModel> rechargeModelList = rechargeMapper.findRechargePagination(rechargeId, mobile, source, status, channel, (index - 1) * pageSize, pageSize, startTime, endTime, role);
 
         for (RechargeModel model : rechargeModelList) {
             RechargePaginationItemDataDto rechargeDto = new RechargePaginationItemDataDto(model);
@@ -57,7 +55,8 @@ public class ConsoleRechargeService {
                                       RechargeStatus status,
                                       String channel,
                                       Date startTime,
-                                      Date endTime) {
-        return rechargeMapper.findSumRechargeAmount(rechargeId, mobile, source, status, channel, null, startTime, endTime);
+                                      Date endTime,
+                                      Role role) {
+        return rechargeMapper.findSumRechargeAmount(rechargeId, mobile, source, status, channel, role, startTime, endTime);
     }
 }

@@ -266,11 +266,13 @@ public class ExportController {
                                @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date endTime,
                                @RequestParam(value = "status", required = false) RechargeStatus status,
                                @RequestParam(value = "source", required = false) RechargeSource source,
-                               @RequestParam(value = "channel", required = false) String channel, HttpServletResponse response) throws IOException {
+                               @RequestParam(value = "channel", required = false) String channel,
+                               @RequestParam(value = "role", required = false) Role role,
+                               HttpServletResponse response) throws IOException {
         fillExportResponse(response, CsvHeaderType.ConsoleRecharge.getDescription());
         int index = 1;
         int pageSize = Integer.MAX_VALUE;
-        BaseDto<BasePaginationDataDto<RechargePaginationItemDataDto>> baseDto = consoleRechargeService.findRechargePagination(rechargeId, mobile, source, status, channel, index, pageSize, startTime, endTime);
+        BaseDto<BasePaginationDataDto<RechargePaginationItemDataDto>> baseDto = consoleRechargeService.findRechargePagination(rechargeId, mobile, source, status, channel, index, pageSize, startTime, endTime, role);
         List<List<String>> rechargeData = exportService.buildRecharge(baseDto.getData().getRecords());
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleRecharge, rechargeData, response.getOutputStream());
     }
