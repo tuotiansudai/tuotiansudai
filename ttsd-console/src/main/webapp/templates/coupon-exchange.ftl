@@ -1,9 +1,13 @@
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="create-coupon-exchange.js" headLab="point-manage" sideLab="createCouponExchange" title="优惠券兑换创建">
+<@global.main pageCss="" pageJavascript="create-coupon-exchange.js" headLab="point-manage" sideLab="productCreate" title="添加优惠券">
 
 <div class="col-md-10">
-
+    <div class="col-md-12" style="margin-bottom: 40px">
+        <a href="/point-manage/coupon-exchange" class="btn btn-default btn-warning" style="margin-right: 60px">添加优惠券</a>
+        <a href="/point-manage/create?type=VIRTUAL" class="btn btn-default" style="margin-right: 60px">添加虚拟商品</a>
+        <a href="/point-manage/create?type=PHYSICAL" class="btn btn-default">添加实物商品</a>
+    </div>
     <form action="/point-manage/coupon-exchange" method="post" class="form-horizontal form-list">
 
         <div class="form-group">

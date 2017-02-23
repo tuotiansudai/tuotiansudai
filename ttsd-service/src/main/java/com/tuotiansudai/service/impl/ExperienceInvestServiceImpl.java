@@ -37,9 +37,6 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
     static Logger logger = Logger.getLogger(ExperienceInvestServiceImpl.class);
 
     @Autowired
-    private UserMapper userMapper;
-
-    @Autowired
     private LoanMapper loanMapper;
 
     @Autowired
@@ -57,14 +54,11 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
     @Autowired
     private IdGenerator idGenerator;
 
-    @Autowired
-    private CouponAssignmentService couponAssignmentService;
-
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public BaseDto<BaseDataDto> invest(InvestDto investDto) {
         BaseDataDto dataDto = new BaseDataDto();
         BaseDto<BaseDataDto> dto = new BaseDto<>();
@@ -75,7 +69,9 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
         }
 
         long userCouponId = investDto.getUserCouponIds().get(0);
+
         UserCouponModel userCouponModel = userCouponMapper.lockById(userCouponId);
+
         if (userCouponModel == null) {
             logger.error(MessageFormat.format("[Experience Invest] user({0}) is using a nonexistent user coupon({1}) ",
                     investDto.getLoginName(), String.valueOf(userCouponId)));
@@ -97,8 +93,6 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
         userCouponModel.setUsedTime(new Date());
         userCouponModel.setStatus(InvestStatus.SUCCESS);
         userCouponMapper.update(userCouponModel);
-
-        couponAssignmentService.asyncAssignUserCoupon(investDto.getLoginName(), Lists.newArrayList(UserGroup.EXPERIENCE_INVEST_SUCCESS));
 
         dataDto.setStatus(true);
 
@@ -130,8 +124,6 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
 
         LoanModel loanModel = loanMapper.findById(Long.parseLong(investDto.getLoanId()));
 
-        long investAmount = Long.parseLong(investDto.getAmount());
-
         if (loanModel == null) {
             logger.error(MessageFormat.format("[Experience Invest] the loan({0}) is investing is not exist", String.valueOf(investDto.getLoanId())));
             return false;
@@ -145,6 +137,7 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
             return false;
         }
 
+        long investAmount = Long.parseLong(investDto.getAmount());
         if (investAmount != 0) {
             logger.error(MessageFormat.format("[Experience Invest] user({0}) invest amount({1}) is not 0",
                     investDto.getLoginName(), investDto.getAmount()));
@@ -165,7 +158,6 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
     }
 
     private boolean isUserCouponAvailable(InvestDto investDto, UserCouponModel userCouponModel) {
-
         long investAmount = Long.parseLong(investDto.getAmount());
         LoanModel loanModel = loanMapper.findById(Long.parseLong(investDto.getLoanId()));
 
