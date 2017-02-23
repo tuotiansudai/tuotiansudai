@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface ExtraRateNotifyRequestMapper extends BaseCallbackMapper {
 
-    List<ExtraRateNotifyRequestModel> getTodoList(@Param(value = "limitCount") int limitCount);
+    ExtraRateNotifyRequestModel findById(@Param(value = "id") Long id);
 
     void updateStatus(@Param(value = "id") Long id, @Param(value = "status") NotifyProcessStatus status);
 }

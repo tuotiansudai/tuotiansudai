@@ -65,4 +65,10 @@ public class RepaySuccessController {
         return this.couponRepayService.asyncCouponRepayCallback(notifyRequestId);
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/async_extra_rate_normal_repay_notify", method = RequestMethod.POST)
+    public BaseDto<PayDataDto> asyncextraRateNormalRepayNotify(@RequestBody long notifyRequestId) {
+        return this.extraRateService.asyncExtraRateInvestCallback(notifyRequestId);
+    }
+
 }

@@ -36,6 +36,7 @@ public enum MessageQueue {
     NormalRepayCallback("NormalRepayCallback"),
     AdvanceRepayCallback("AdvanceRepayCallback"),
     RepaySuccessCouponRepayCallback("RepaySuccessCouponRepayCallback"),
+    RepaySuccessExtraRateNormalRepayCallback("RepaySuccessExtraRateNormalRepayCallback"),
     AuditLog("AuditLog"),
     UserOperateLog("UserOperateLog"),
     TransferReferrerRewardCallback("TransferReferrerRewardCallback"),
