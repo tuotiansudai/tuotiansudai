@@ -24,7 +24,7 @@ public class WomenDayActivityController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView loadPageData() {
-        String loginName = "gaoyinglong";
+        String loginName = LoginUserInfo.getLoginName();
         ModelAndView modelAndView = new ModelAndView("/activities/women-day", "responsive", true);
         List<WomanDayRecordView> records = activityWomanDayService.getWomanDayPrizeRecord(0, Integer.MAX_VALUE, loginName).getRecords();
         int totalLeaves = 0;
