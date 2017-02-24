@@ -4,8 +4,8 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestDto;
-import com.tuotiansudai.enums.ExperienceBillOperationType;
 import com.tuotiansudai.enums.ExperienceBillBusinessType;
+import com.tuotiansudai.enums.ExperienceBillOperationType;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.ExperienceInvestService;
@@ -28,9 +28,6 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
     static Logger logger = Logger.getLogger(ExperienceInvestServiceImpl.class);
 
     @Autowired
-    private UserMapper userMapper;
-
-    @Autowired
     private LoanMapper loanMapper;
 
     @Autowired
@@ -45,13 +42,15 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
     @Autowired
     private IdGenerator idGenerator;
 
+    @Autowired
+    private UserMapper userMapper;
+
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public BaseDto<BaseDataDto> invest(InvestDto investDto) {
         BaseDataDto dataDto = new BaseDataDto();
         BaseDto<BaseDataDto> dto = new BaseDto<>();
         dto.setData(dataDto);
-
         if (!isUserExperienceRequired(investDto)) {
             return dto;
         }
@@ -136,5 +135,4 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
 
         return true;
     }
-
 }

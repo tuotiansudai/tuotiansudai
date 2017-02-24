@@ -39,25 +39,9 @@ public interface InvestRepayMapper {
 
     List<LatestInvestView> findLatestInvestByLoginName(@Param(value = "loginName") String loginName, @Param(value = "startLimit") int startLimit, @Param(value = "endLimit") int endLimit);
 
-    long findSumRepaidInterestByLoginName(@Param(value = "loginName") String loginName);
-
     long findSumRepayingInterestByLoginName(@Param(value = "loginName") String loginName);
 
     long findSumRepayingCorpusByLoginName(@Param(value = "loginName") String loginName);
-
-    long findSumRepaidCorpusByLoginName(@Param(value = "loginName") String loginName);
-
-    long findSumRepaidExtraRateByLoginName(@Param(value = "loginName") String loginName);
-
-    long findSumRepayingExtraRateByLoginName(@Param(value = "loginName") String loginName);
-
-    long findSumRepaidExperienceByLoginName(@Param(value = "loginName") String loginName);
-
-    long findSumRepayingExperienceByLoginName(@Param(value = "loginName") String loginName);
-
-    long findSumInvestFrozeAmountByLoginName(@Param(value = "loginName") String loginName);
-
-    long findSumWithdrawFrozeAmountByLoginName(@Param(value = "loginName") String loginName);
 
     List<InvestRepayModel> findByLoginNameAndStatus(@Param(value = "loginName") String loginName,
                                                     @Param(value = "paidStatus") String paidStatus,

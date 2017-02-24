@@ -96,12 +96,11 @@
                             </#if>
 
                             <span class="l-way fr">
-                                <#if loanItem.productType != 'EXPERIENCE'>
-                                    ${loanItem.type.getName()}
-                                <#else>
+                                <#if loanItem.productType == 'EXPERIENCE'>
                                     按天计息，即投即生息
+                                <#else>
+                                    ${loanItem.type.getName()}
                                 </#if>
-
                             </span>
                         </div>
                         <div class="loan-info-dl">

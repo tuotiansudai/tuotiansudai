@@ -71,7 +71,6 @@
                                     <button id="investSubmit" class="btn-pay btn-normal" type="button">马上投资
                                     </button>
                                 </@global.isNotAnonymous>
-
                             </dd>
                         </dl>
                     </form>
@@ -148,26 +147,20 @@
             </div>
         </div>
     </div>
-    <div class="free-success" id="freeSuccess">
-        <div class="free-content">
-            <div class="free-top">恭喜您体验成功!<span class="close-free"></span></div>
-            <div class="free-detail">
-                <p class="text-info">并获得以下奖励：</p>
 
-                <p>
-                    <img src="${staticServer}/images/sign/actor/gift-free.png" width="100%" alt=""/>
-                </p>
+    <div id="freeSuccess" style="display: none;">
+        <div class="success-info-tip">
+            <i class="icon-tip"></i>
+            <div class="detail-word">
+                <h2>恭喜您体验成功！</h2> 体验收益发放后需实名认证并进行过投资后方可提现 <a href="/register/account" class="key">立即认证>></a>
+                <div class="pad-m-tb" style="padding-left:50px;">
+                    <button type="button" class="btn-normal close-free">确认</button>
+                </div>
 
-                <p class="free-use">
-                    <a href="/loan-list" class="btn">立即使用</a>
-                </p>
-
-                <p class="free-tip <@global.role hasRole="'INVESTOR'">hide</@global.role>">
-                    温馨提示：体验收益发放后需实名认证并进行过投资后方可提现<a href="/register/account">立即认证>></a>
-                </p>
             </div>
         </div>
     </div>
+    <#include "component/coupon-alert.ftl" />
 </div>
     <#include "component/red-envelope-float.ftl" />
 </@global.main>

@@ -52,10 +52,18 @@ require(['jquery', 'jquery.ajax.extension', 'coupon-alert', 'autoNumeric', 'red-
             },
             success: function (response, statusText, xhr, $form) {
                 var data = response.data;
-                if (data.status) {
-                    $("#freeSuccess").show();
-                }
                 self.removeClass("loading");
+                if (data.status) {
+                    layer.open({
+                        type: 1,
+                        cancel: function () {
+                            window.location.reload();
+                        },
+                        title: '&nbsp',
+                        area: ['400px', '205px'],
+                        content: $('#freeSuccess')
+                    });
+                }
             }
         });
         return false;
@@ -63,7 +71,7 @@ require(['jquery', 'jquery.ajax.extension', 'coupon-alert', 'autoNumeric', 'red-
 
     $('.close-free').on('click', function (event) {
         event.preventDefault();
-        $('#freeSuccess').hide();
+        layer.closeAll();
         window.location.reload();
     });
 });

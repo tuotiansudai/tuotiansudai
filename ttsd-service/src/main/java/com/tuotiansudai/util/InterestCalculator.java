@@ -77,6 +77,7 @@ public class InterestCalculator {
 
     public static long getCouponExpectedInterest(LoanModel loanModel, CouponModel couponModel, long investAmount, int periodDuration) {
         long expectedInterest = 0;
+        periodDuration = couponModel.getPeriod() == null ? periodDuration : couponModel.getPeriod() * DAYS_OF_MONTH;
         switch (couponModel.getCouponType()) {
             case NEWBIE_COUPON:
             case INVEST_COUPON:
@@ -85,12 +86,12 @@ public class InterestCalculator {
                         .divide(new BigDecimal(DAYS_OF_YEAR), 0, BigDecimal.ROUND_DOWN).longValue();
                 break;
             case INTEREST_COUPON:
-                expectedInterest = new BigDecimal(periodDuration * investAmount)
+                expectedInterest = new BigDecimal( periodDuration * investAmount)
                         .multiply(new BigDecimal(couponModel.getRate()))
                         .divide(new BigDecimal(DAYS_OF_YEAR), 0, BigDecimal.ROUND_DOWN).longValue();
                 break;
             case BIRTHDAY_COUPON:
-                expectedInterest = new BigDecimal(30 * investAmount)
+                expectedInterest = new BigDecimal(periodDuration * investAmount)
                         .multiply(new BigDecimal(loanModel.getBaseRate()).add(new BigDecimal(loanModel.getActivityRate())))
                         .multiply(new BigDecimal(couponModel.getBirthdayBenefit()))
                         .divide(new BigDecimal(DAYS_OF_YEAR), 0, BigDecimal.ROUND_DOWN).longValue();

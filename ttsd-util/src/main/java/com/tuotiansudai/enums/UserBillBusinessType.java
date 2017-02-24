@@ -27,6 +27,7 @@ public enum UserBillBusinessType {
     SYSTEM_RECHARGE("平台充值"),
     LOTTERY_CASH("抽奖现金"),
     EXTRA_RATE("投资奖励"),
+    EXPERIENCE_INTEREST("体验金收益"),
     MEMBERSHIP_PRIVILEGE_PURCHASE("增值特权购买");
 
     private final String description;

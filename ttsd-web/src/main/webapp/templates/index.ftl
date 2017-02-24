@@ -99,7 +99,6 @@
                         <li><span class="percent-number"> <i>${experienceLoanDto.baseRate}</i>%</span>预期年化收益</li>
                         <li><em class="duration-day">${experienceLoanDto.duration}</em>天<br>项目期限</li>
                     </ul>
-                    <#--<b class="newer-title"><span>体验标升级中，等待3天，马上回来</span></b>-->
                     <a href="/loan/1" class="btn-invest btn-normal">立即购买</a>
                 </div>
 
@@ -146,8 +145,8 @@
                     </div>
                 </div>
             </#list>
-            <a href="/activity/landing-page" target="_blank"><img src="${staticServer}/images/homepage/hot-bag-a.png"
-                                                                  alt="注册送588元红包" class="fr"></a>
+            <a href="/activity/landing-page" target="_blank"><img src="${staticServer}/images/homepage/hot-bag-b.png"
+                                                                  alt="注册送668元红包" class="fr"></a>
         </div>
 
     <#--优选债权-->
@@ -155,14 +154,6 @@
             <i class="icon-title"></i>优选债权
             <a href="/loan-list" onclick="cnzzPush.trackClick('35首页','热门产品模块','更多')" class="hot-more">更多></a>
         </div>
-        <#--<div class="book-invest-box clearfix bg-screen">-->
-            <#--<span class="book-info">预约后当有相应项目我们会及时通知您。</span>-->
-            <#--&lt;#&ndash;<@global.isAnonymous>not-anonymous</@global.isAnonymous> <@global.role hasRole="'INVESTOR'">is-user</@global.role>&ndash;&gt;-->
-            <#--<a class="btn-invest fr btn-normal ">-->
-                <#--我要预约-->
-            <#--</a>-->
-
-        <#--</div>-->
 
         <div class="normal-loan">
             <#include "component/loan-title.ftl">

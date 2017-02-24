@@ -307,6 +307,7 @@ public class InvestServiceTest {
         loanDto.setMaxInvestAmount("100000000000");
         loanDto.setMinInvestAmount("0");
         loanDto.setCreatedTime(new Date());
+        loanDto.setProductType(ProductType._90);
         loanDto.setProductType(ProductType._30);
         loanDto.setPledgeType(PledgeType.HOUSE);
         LoanModel loanModel = new LoanModel(loanDto);

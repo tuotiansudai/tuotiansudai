@@ -8,8 +8,10 @@ import com.tuotiansudai.enums.UserOpType;
 import com.tuotiansudai.log.service.UserOpLogService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.BankCardMapper;
+import com.tuotiansudai.repository.mapper.UserFundMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.BankCardModel;
+import com.tuotiansudai.repository.model.UserFundView;
 import com.tuotiansudai.service.BindBankCardService;
 import com.tuotiansudai.service.InvestRepayService;
 import org.apache.commons.collections4.CollectionUtils;
@@ -36,6 +38,10 @@ public class BindBankCardServiceImpl implements BindBankCardService {
 
     @Autowired
     private UserOpLogService userOpLogService;
+
+    @Autowired
+    private UserFundMapper userFundMapper;
+
 
     @Override
     public BaseDto<PayFormDataDto> bindBankCard(BindBankCardDto dto) {
@@ -82,19 +88,9 @@ public class BindBankCardServiceImpl implements BindBankCardService {
     @Override
     public boolean isManual(String loginName) {
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
-        if (accountModel.getFreeze() > 0) {
-            return true;
-        }
+        UserFundView userFundView = userFundMapper.findByLoginName(loginName);
+        return accountModel.getFreeze() > 0 || accountModel.getBalance() > 0 || userFundView.getExpectedTotalCorpus() > 0 || userFundView.getExpectedTotalInterest() > 0;
 
-        if (accountModel.getBalance() > 0) {
-            return true;
-        }
-
-        if (investRepayService.findSumRepayingCorpusByLoginName(loginName) > 0 || investRepayService.findSumRepayingInterestByLoginName(loginName) > 0) {
-            return true;
-        }
-
-        return false;
     }
 
     @Override

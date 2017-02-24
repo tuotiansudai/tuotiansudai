@@ -62,7 +62,6 @@ public class MobileAppUserFundV2ServiceImpl implements MobileAppUserFundV2Servic
         Date membershipPrivilegeExpiredDate = membershipPrivilegeModel != null ? membershipPrivilegeModel.getEndTime() : null;
         BaseResponseDto<UserFundResponseDataDto> dto = new BaseResponseDto<>(ReturnMessage.SUCCESS);
         dto.setData(new UserFundResponseDataDto(userFundView, balance, point, membershipLevel, membershipPoint, usableUserCouponCount, membershipExpiredDate, membershipPrivilegeExpiredDate, experienceBalance));
-
         return dto;
     }
 }

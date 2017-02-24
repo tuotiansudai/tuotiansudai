@@ -208,6 +208,7 @@ public class MobileAppUserFundV2ServiceTest extends ServiceTestBase {
         loanModel.setInvestIncreasingAmount(1);
         loanModel.setLoanAmount(1);
         loanModel.setType(LoanType.LOAN_INTEREST_MONTHLY_REPAY);
+        loanModel.setProductType(ProductType._90);
         loanModel.setMinInvestAmount(1);
         loanModel.setMaxInvestAmount(1);
         loanModel.setCreatedTime(new Date());
