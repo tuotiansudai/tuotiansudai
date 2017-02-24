@@ -1,5 +1,6 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
@@ -45,6 +46,7 @@ import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.AmountTransfer;
+import com.tuotiansudai.util.JsonConverter;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.quartz.SchedulerException;
@@ -324,6 +326,13 @@ public class NormalRepayServiceImpl implements NormalRepayService {
         logger.info(MessageFormat.format("[[Normal Repay {0}]: 正常还款成功,发送MQ消息", String.valueOf(loanRepayId)));
 
         return callbackRequest.getResponseData();
+    }
+    public static void main(String args[]){
+        try {
+            System.out.println(JsonConverter.writeValueAsString(new RepaySuccessMessage(123l, false)));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

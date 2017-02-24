@@ -51,7 +51,7 @@ public class JobInitPlugin implements SchedulerPlugin {
             deleteCouponRepayCallBackJobIfNotExist();
         }
         if (JobType.ExtraRateRepayCallBack.name().equalsIgnoreCase(schedulerName)) {
-            createExtraRateRepayCallBackIfNotExist();
+            deleteExtraRateRepayCallBackIfNotExist();
         }
         if (JobType.PlatformBalanceLowNotify.name().equals(schedulerName)) {
             deletePlatformBalanceLowNotifyJob();
@@ -70,23 +70,6 @@ public class JobInitPlugin implements SchedulerPlugin {
     @Override
     public void shutdown() {
 
-    }
-
-    private void createExtraRateRepayCallBackIfNotExist() {
-        final JobType jobType = JobType.ExtraRateRepayCallBack;
-        final String jobGroup = ExtraRateInvestCallbackJob.JOB_GROUP;
-        final String jobName = ExtraRateInvestCallbackJob.JOB_NAME;
-        try {
-            jobManager.newJob(jobType, ExtraRateInvestCallbackJob.class)
-                    .replaceExistingJob(true)
-                    .runWithSchedule(SimpleScheduleBuilder
-                            .repeatSecondlyForever(ExtraRateInvestCallbackJob.RUN_INTERVAL_SECONDS)
-                            .withMisfireHandlingInstructionIgnoreMisfires())
-                    .withIdentity(jobGroup, jobName)
-                    .submit();
-        } catch (SchedulerException e) {
-            logger.info(e.getLocalizedMessage(), e);
-        }
     }
 
     private void createFirstRedEnvelopSplitJob() {
@@ -113,6 +96,10 @@ public class JobInitPlugin implements SchedulerPlugin {
 
     private void deleteCouponRepayCallBackJobIfNotExist(){
         jobManager.deleteJob(JobType.CouponRepayCallBack,"umpay","coupon_repay_call_back");
+    }
+
+    private void deleteExtraRateRepayCallBackIfNotExist(){
+        jobManager.deleteJob(JobType.ExtraRateRepayCallBack,"umpay","repay_extra_rate_invest_call_back");
     }
 
     private void deleteRefreshAreaByMobile() {

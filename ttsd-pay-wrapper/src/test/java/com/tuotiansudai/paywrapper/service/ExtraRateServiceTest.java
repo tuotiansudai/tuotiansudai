@@ -143,7 +143,7 @@ public class ExtraRateServiceTest{
 
         extraRateService.normalRepay(loanRepay2.getId());
 
-        extraRateService.asyncExtraRateInvestCallback();
+        extraRateService.asyncExtraRateInvestCallback(extraRateNotifyRequestModel.getId());
         InvestExtraRateModel investExtraRateModel = investExtraRateMapper.findByInvestId(investModel.getId());
         assertThat(investExtraRateModel.getStatus(),is(RepayStatus.COMPLETE));
 
@@ -166,7 +166,7 @@ public class ExtraRateServiceTest{
 
         extraRateService.normalRepay(loanRepay2.getId());
 
-        extraRateService.asyncExtraRateInvestCallback();
+        extraRateService.asyncExtraRateInvestCallback(extraRateNotifyRequestModel.getId());
 
         InvestExtraRateModel investExtraRateModel = investExtraRateMapper.findByInvestId(investModel.getId());
 

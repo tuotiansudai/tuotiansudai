@@ -156,10 +156,6 @@ public class PayWrapperClient extends BaseClient {
         return syncExecute(notifyRequestId, "/job/async_advance_repay_notify", "POST");
     }
 
-    public BaseDto<PayDataDto> extraRateInvestCallback() {
-        return syncExecute(null, "/job/async_extra_rate_invest_notify", "POST");
-    }
-
     public BaseDto<PayDataDto> investTransferCallback(String notifyRequestId) {
         return syncExecute(notifyRequestId, "/job/async_invest_transfer_notify", "POST");
     }

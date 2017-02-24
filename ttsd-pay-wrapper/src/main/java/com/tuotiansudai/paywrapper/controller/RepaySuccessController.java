@@ -74,8 +74,8 @@ public class RepaySuccessController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/async_extra_rate_normal_repay_notify", method = RequestMethod.POST)
-    public BaseDto<PayDataDto> asyncextraRateNormalRepayNotify(@RequestBody long notifyRequestId) {
+    @RequestMapping(value = "/async_extra_rate_repay_notify", method = RequestMethod.POST)
+    public BaseDto<PayDataDto> asyncExtraRateNormalRepayNotify(@RequestBody long notifyRequestId) {
         return this.extraRateService.asyncExtraRateInvestCallback(notifyRequestId);
     }
 
