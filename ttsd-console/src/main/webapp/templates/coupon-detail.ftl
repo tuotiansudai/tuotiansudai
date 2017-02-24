@@ -66,6 +66,7 @@
                         <th>项目期限</th>
                         <th>项目编号</th>
                         <th>项目名称</th>
+                        <th>到期时间</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -113,6 +114,13 @@
                         <td>
                             <#if userCoupon.loanName?? && userCoupon.usedTime??>
                                 ${userCoupon.loanName!}
+                            <#else>
+                                未使用
+                            </#if>
+                        </td>
+                        <td>
+                            <#if userCoupon.endTime??>
+                            ${userCoupon.endTime?string('yyyy-MM-dd HH:mm')}
                             <#else>
                                 未使用
                             </#if>

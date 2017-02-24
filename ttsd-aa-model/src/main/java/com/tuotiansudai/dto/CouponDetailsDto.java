@@ -11,6 +11,8 @@ public class CouponDetailsDto {
 
     private Date usedTime;
 
+    private Date endTime;
+
     private Long investAmount;
 
     private Long loanId;
@@ -21,7 +23,7 @@ public class CouponDetailsDto {
 
     private Long annualInterest;
 
-    public CouponDetailsDto(String loginName, Date usedTime, Long investAmount, Long loanId, String loanName, ProductType productType, Long annualInterest) {
+    public CouponDetailsDto(String loginName, Date usedTime, Long investAmount, Long loanId, String loanName, ProductType productType, Long annualInterest, Date endTime) {
         this.loginName = loginName;
         this.usedTime = usedTime;
         this.investAmount = investAmount;
@@ -29,6 +31,7 @@ public class CouponDetailsDto {
         this.loanName = loanName;
         this.productType = productType;
         this.annualInterest = annualInterest;
+        this.endTime = endTime;
     }
 
     public String getLoginName() {
@@ -45,6 +48,14 @@ public class CouponDetailsDto {
 
     public void setUsedTime(Date usedTime) {
         this.usedTime = usedTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
     }
 
     public Long getInvestAmount() {
