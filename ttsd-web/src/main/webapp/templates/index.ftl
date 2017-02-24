@@ -207,7 +207,7 @@
                 </li>
                 <li><i>●</i><a rel="nofollow" href="http://www.hao123.com/mid?key=pZwYTjCEQLwEIgwGmyt8mvqVQvbvn1Tvnj63n10dnHT4PHR3Pj0kQs&from=tuijian&pn=1&qq-pf-to=pcqq.c2c"
                                onclick="cnzzPush.trackClick('73首页','媒体报道模块','霸道总裁')"
-                               target="_blank">【hao123新闻】新春到，送好礼，拓天速贷年货大礼包疯狂派送中</a>
+                               target="_blank">新春到，送好礼，拓天速贷年货大礼包疯狂派送中</a>
                     <time>2016-03-31</time>
                 </li>
                 <li><i>●</i><a rel="nofollow" href="http://fj.qq.com/a/20160314/060811.htm"
@@ -217,7 +217,7 @@
                 </li>
                 <li><i>●</i><a rel="nofollow"
                                href="http://finance.jrj.com.cn/biz/2016/02/02170120525459.shtml"
-                               onclick="cnzzPush.trackClick('42首页','媒体报道模块','宝马名花有主')" target="_blank">【金融界资讯】拓天速贷：新年贺岁嗨翻天 全民领取888元现金红包</a>
+                               onclick="cnzzPush.trackClick('42首页','媒体报道模块','宝马名花有主')" target="_blank">拓天速贷：新年贺岁嗨翻天 全民领取888元现金红包</a>
                     <time>2016-01-20</time>
                 </li>
                 <li><i>●</i><a rel="nofollow" href="http://w.huanqiu.com/r/MV8wXzgyNzQ4NDZfMTM5NF8xNDUxMzAzNzYy"

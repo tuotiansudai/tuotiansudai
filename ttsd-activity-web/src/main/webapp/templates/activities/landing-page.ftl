@@ -40,7 +40,7 @@
             <div class="image-title"></div>
             <div class="subtitle tc">
                 <div class="subtitle-container">
-                    <i>新人独享13%高息新手标，30天灵活期限，满足您对资金流动性的需求</i>
+                    <i>新人独享11%高息新手标，30天灵活期限，满足您对资金流动性的需求</i>
                 </div>
             </div>
 
