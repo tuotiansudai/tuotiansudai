@@ -48,6 +48,9 @@ public class AccountController {
     @Autowired
     private UserFundMapper userFundMapper;
 
+    @Autowired
+    private UserService userService;
+
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView account() {
         ModelAndView modelAndView = new ModelAndView("/account");
@@ -71,7 +74,6 @@ public class AccountController {
         modelAndView.addObject("actualTotalExtraInterest", userFundView.getActualTotalExtraInterest()); //已收投资奖励
         modelAndView.addObject("expectedTotalExtraInterest", userFundView.getExpectedTotalExtraInterest()); //待收收投资奖励
 
-
         modelAndView.addObject("expectedExperienceInterest", userFundView.getExpectedExperienceInterest()); //待收体验金收益
         modelAndView.addObject("actualExperienceInterest", userFundView.getActualExperienceInterest()); //已收体验金收益
 
@@ -81,6 +83,8 @@ public class AccountController {
 
         //累计收益= 已收投资收益+已收投资奖励+已收红包奖励+已收推荐奖励+已收体验金收益
         modelAndView.addObject("totalIncome", userFundView.getActualTotalInterest()+userFundView.getActualTotalExtraInterest()+userFundView.getRedEnvelopeAmount()+userFundView.getReferRewardAmount()+userFundView.getActualExperienceInterest());
+
+        modelAndView.addObject("experienceBalance", userService.getExperienceBalanceByLoginName(loginName));
 
         Date firstDateOfMonth = new DateTime().dayOfMonth().withMinimumValue().toDate();
         Date lastDateOfMonth = DateUtils.addMonths(firstDateOfMonth, 1);

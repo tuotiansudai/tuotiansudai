@@ -38,7 +38,6 @@
                 <li><b>冻结金额：</b><span>${((freeze/100)?string('0.00'))!}</span>元</li>
                 <li><b>提现冻结中：</b><span>${((withdrawFrozeAmount/100)?string('0.00'))!}</span>元</li>
                 <li><b>投资冻结中：</b><span>${((investFrozeAmount/100)?string('0.00'))!}</span>元</li>
-
                 <li><b>累计收益：</b><span>${(((totalIncome)/100)?string('0.00'))!}</span>元</li>
                 <li><b>已收投资收益：</b><span>${((actualTotalInterest)/100)?string('0.00')!}</span>元</li>
                 <li><b>已收投资奖励：</b><span>${((actualTotalExtraInterest)/100)?string('0.00')!}</span>元</li>
@@ -50,7 +49,7 @@
                 <li><b>待收预期收益：</b><span>${((expectedTotalInterest/100)?string('0.00'))!}</span>元</li>
                 <li><b>待收投资奖励：</b><span>${((expectedTotalExtraInterest/100)?string('0.00'))!}</span>元</li>
                 <li><b>待收体验金收益：</b><span>${((expectedExperienceInterest/100)?string('0.00'))!}</span>元</li>
-                <li><b>可用体验金余额：</b><span></span>元</li>
+                <li><b>可用体验金余额：</b><span>${((experienceBalance/100)?string('0.00'))!}</span>元</li>
             </ul>
         </div>
     </div>
