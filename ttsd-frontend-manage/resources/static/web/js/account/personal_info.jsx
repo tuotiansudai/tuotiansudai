@@ -143,8 +143,6 @@ require.ensure([],function() {
     let $imageCaptchaElement = $('#imageCaptcha'),
         $getCaptchaElement = $('.get-captcha',$turnOffNoPasswordInvestDOM);
 
-    let errorBox = $('.error-box',$(turnOffNoPasswordInvestForm));
-
     let $imageCaptchaTextElement = $('.image-captcha-text', $turnOffNoPasswordInvestDOM),
         $btnCancelElement = $('.btn-cancel',$turnOffNoPasswordInvestDOM),
         $btnCloseTurnOnElement = $('.btn-close-turn-on',$turnOnNoPasswordInvestDOM),
@@ -153,6 +151,7 @@ require.ensure([],function() {
         // $turnOffNoPasswordInvestForm = $('#turnOffNoPasswordInvestForm', $turnOffNoPasswordInvestDOM),
         $codeNumber = $('.code-number',$(turnOffNoPasswordInvestForm)),
         imageCaptchaForm = globalFun.$('#imageCaptchaForm');
+    let errorBox = $('.error-box',$(turnOffNoPasswordInvestForm));
 
     $btnCancelElement.on('click',function(){
         layer.closeAll();
@@ -357,7 +356,7 @@ require.ensure([],function() {
                 type: 'POST',
                 data: $(thisForm).serialize()
             }, function (response) {
-                $(thisForm).find(':submit').prop('disabled', true);
+                $(thisForm).find(':submit').prop('disabled', false);
                 var data = response.data;
                 if (data.status) {
                     location.href = "/personal-info";
