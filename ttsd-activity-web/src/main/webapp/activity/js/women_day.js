@@ -25,41 +25,54 @@ require(['jquery', 'layerWrapper','template', 'jquery.ajax.extension', 'register
             },
             getLottery:function(){
                 $.ajax({
-                    url: '/activity/point-draw/task-draw',
-                    type: 'POST',
-                    dataType: 'json',
-                    data: {
-                        'activityCategory': 'WOMAN_DAY_ACTIVITY'
-                    }
+                    url:'/point/sign-in',
+                    type:'POST',
+                    dataType: 'json'
                 })
                 .done(function(data) {
-                    $pointerImg.removeClass('sign-active');
-                    
-                    if (data.returnCode == 2) {
-                        //未登录
-                        $('.no-login-text', $womenDayContainer).trigger('click'); //弹框登录
-                    } else if(data.returnCode==0){
-                        layer.open({
-                          type: 1,
-                          closeBtn:0,
-                          move:false,
-                          area:$(window).width()>700?['420px','40px']:['300px','40px'],
-                          title:false,
-                          content: $('#loadingItem')
-                        });
-                        setTimeout(function(){
-                            layer.closeAll();
+                    $.ajax({
+                        url: '/activity/point-draw/task-draw',
+                        type: 'POST',
+                        dataType: 'json',
+                        data: {
+                            'activityCategory': 'WOMAN_DAY_ACTIVITY'
+                        }
+                    })
+                    .done(function(data) {
+                        $pointerImg.removeClass('sign-active').addClass('sign-already');
+
+                        if (data.returnCode == 2) {
+                            //未登录
+                            $('.no-login-text', $womenDayContainer).trigger('click'); //弹框登录
+                        } else if(data.returnCode==0){
+                            layer.open({
+                                type: 1,
+                                closeBtn:0,
+                                move:false,
+                                area:$(window).width()>700?['420px','40px']:['300px','40px'],
+                                title:false,
+                                content: $('#loadingItem')
+                            });
+                            setTimeout(function(){
+                                layer.closeAll();
+                                $('#tipItem').html(tpl('tipItemTpl',data));
+                                lottery.layerShow();
+                                lottery.giftRecord();
+                                lottery.myGift();
+                            },1500);
+                        }else {
                             $('#tipItem').html(tpl('tipItemTpl',data));
                             lottery.layerShow();
-                        },1500);
-                    }else {
-                        $('#tipItem').html(tpl('tipItemTpl',data));
-                        lottery.layerShow();
-                    }
+                        }
+                    })
+                    .fail(function() {
+                        layer.msg('请求失败，请重试！');
+                    });
                 })
                 .fail(function() {
-                    layer.msg('请求失败，请重试！');
+                    layer.msg('请求失败,请重试!');
                 });
+
             },
             giftRecord:function(){
                 $.ajax({

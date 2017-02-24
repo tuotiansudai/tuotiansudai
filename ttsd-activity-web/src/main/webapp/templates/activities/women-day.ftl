@@ -21,7 +21,11 @@
 			<div class="machine-item tc">
 				<div class="machine-lottery">
 					<div class="sign-btn">
-						<span></span>
+						<#if signedIn?? && signedIn>
+                            <span class="sign-already"></span>
+						<#else>
+                            <span></span>
+						</#if>
 					</div>
 					<div class="lottery-group" id="lotteryList">
 	                    <h3 class="menu-switch">
@@ -278,7 +282,7 @@
     		{{else if prizeValue=='0.5%加息券'}}
     			长腿偶吧
     		{{/if}}
-    		娃娃</p>
+    		</p>
     		<p class="gift-info">送您<span>{{prizeValue}}</span>已发放至您的账户</p>
     	{{else if returnCode==1}}
     	<p class="gift-info tip-text">您暂无抽奖机会啦～</p>

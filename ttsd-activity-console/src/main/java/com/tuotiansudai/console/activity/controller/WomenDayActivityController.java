@@ -10,7 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping(value = "/activity-console/activity-manage")
-public class WomanDayAcitivtyController {
+public class WomenDayActivityController {
     @Autowired
     ActivityWomanDayService activityWomandayService;
 

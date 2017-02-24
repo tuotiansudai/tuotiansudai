@@ -1,7 +1,8 @@
 package com.tuotiansudai.activity.controller;
 
 import com.tuotiansudai.activity.repository.model.WomanDayRecordView;
-import com.tuotiansudai.activity.service.ActivityWomanDayService;
+import com.tuotiansudai.activity.service.ActivityWomenDayService;
+import com.tuotiansudai.point.service.SignInService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,15 +13,18 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = "/activity/woman-day")
-public class WomanDayActivityController {
+@RequestMapping(value = "/activity/women-day")
+public class WomenDayActivityController {
 
     @Autowired
-    private ActivityWomanDayService activityWomanDayService;
+    private ActivityWomenDayService activityWomanDayService;
+
+    @Autowired
+    private SignInService signInService;
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView loadPageData() {
-        String loginName = LoginUserInfo.getLoginName();
+        String loginName = "gaoyinglong";
         ModelAndView modelAndView = new ModelAndView("/activities/women-day", "responsive", true);
         List<WomanDayRecordView> records = activityWomanDayService.getWomanDayPrizeRecord(0, Integer.MAX_VALUE, loginName).getRecords();
         int totalLeaves = 0;
@@ -30,6 +34,7 @@ public class WomanDayActivityController {
             prize = records.get(0).getPrize();
         }
         modelAndView.addObject("totalLeaves", totalLeaves);
+        modelAndView.addObject("signedIn", signInService.signInIsSuccess(loginName));
         modelAndView.addObject("prize", prize);
         return modelAndView;
     }
