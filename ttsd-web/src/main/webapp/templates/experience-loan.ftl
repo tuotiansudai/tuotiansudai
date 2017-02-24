@@ -88,16 +88,14 @@
                             </dd>
 
                             <dd class="mb-20">
-                                体验标升级中，等待3天，马上回来
-                                <#--<@global.isAnonymous>-->
-                                    <#--<a class="btn-pay btn-normal" href="/register/user">立即体验</a>-->
-                                <#--</@global.isAnonymous>-->
-                                <#--<@global.isNotAnonymous>-->
-                                    <#--<button id="investSubmit" class="btn-pay btn-normal" type="button"-->
-                                            <#--<#if coupon?? == false>disabled="disabled"</#if>>立即体验-->
-                                    <#--</button>-->
-                                <#--</@global.isNotAnonymous>-->
-
+                                <@global.isAnonymous>
+                                    <a class="btn-pay btn-normal" href="/register/user">立即体验</a>
+                                </@global.isAnonymous>
+                                <@global.isNotAnonymous>
+                                    <button id="investSubmit" class="btn-pay btn-normal" type="button"
+                                            <#if coupon?? == false>disabled="disabled"</#if>>立即体验
+                                    </button>
+                                </@global.isNotAnonymous>
                             </dd>
                         </dl>
                     </form>
@@ -131,11 +129,11 @@
             </div>
             <div class="model-content">
                 <ul class="info-list">
-                    <li>1、新手体验项目是由拓天速贷专门提供给平台各类型新手客户体验平台流程的活动项目。</li>
-                    <li>2、投资体验项目无需充值。</li>
-                    <li>3、新手体验券(体验金)是由拓天速贷用平台活动方式，为新注册用户提供平台项目投资体验的活动金额，新手体验券只能投资体验项目，不可提现，使用后可产生红包奖励。</li>
-                    <li>4、新注册用户通过获得体验券(体验金)后，在体验项目专区点击使用。</li>
-                    <li>5、新手体验项目不可转让。</li>
+                    <li>1、新手体验项目是由拓天速贷专门提供给平台各类型新手客户体验平台流程的活动项目；</li>
+                    <li>2、投资体验项目无需充值；</li>
+                    <li>3、新手体验券（体验金）是一种投资体验项目的虚拟资金，由平台以活动方式，为新用户提供体验平台项目投资的活动金额，只能投资体验项目，不可提现，使用后可产生的收益，用户投资任意标的累计1000元即可提现（债权转让项目除外）；</li>
+                    <li>4、新注册用户通过获得体验券（体验金）后，在体验项目专区点击使用；</li>
+                    <li>5、新手体验项目不可转让；</li>
                     <li>6、为防止不法分子恶意刷取平台奖励，红包奖励需投资真实项目后方可提现。</li>
                     <li>本活动规则解释权归拓天速贷所有，如有疑问请联系在线客服或拨打400-169-1188</li>
                 </ul>
@@ -174,26 +172,20 @@
             </div>
         </div>
     </div>
-    <div class="free-success" id="freeSuccess">
-        <div class="free-content">
-            <div class="free-top">恭喜您体验成功!<span class="close-free"></span></div>
-            <div class="free-detail">
-                <p class="text-info">并获得以下奖励：</p>
 
-                <p>
-                    <img src="${staticServer}/images/sign/actor/gift-free.png" width="100%" alt=""/>
-                </p>
+    <div id="freeSuccess" style="display: none;">
+        <div class="success-info-tip">
+            <i class="icon-tip"></i>
+            <div class="detail-word">
+                <h2>恭喜您体验成功！</h2> 体验收益发放后需实名认证并进行过投资后方可提现 <a href="/register/account" class="key">立即认证>></a>
+                <div class="pad-m-tb" style="padding-left:50px;">
+                    <button type="button" class="btn-normal close-free">确认</button>
+                </div>
 
-                <p class="free-use">
-                    <a href="/loan-list" class="btn">立即使用</a>
-                </p>
-
-                <p class="free-tip <@global.role hasRole="'INVESTOR'">hide</@global.role>">
-                    温馨提示：体验收益发放后需实名认证并进行过投资后方可提现<a href="/register/account">立即认证>></a>
-                </p>
             </div>
         </div>
     </div>
+
     <#include "component/coupon-alert.ftl" />
 </div>
     <#include "component/red-envelope-float.ftl" />

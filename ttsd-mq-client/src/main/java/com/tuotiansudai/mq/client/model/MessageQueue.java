@@ -3,6 +3,13 @@ package com.tuotiansudai.mq.client.model;
 import java.util.stream.Stream;
 
 public enum MessageQueue {
+    /*
+    此枚举的参数为队列的实际名称
+    队列名称的命名要求如下：
+    1. 队列名称不能重名;
+    2. 必须以英文字母或者数字开头，剩余名称可以是英文，数字，横划线；（注意，不能使用下划线）
+    3. 长度不超过256个字符。
+    */
     CouponAssigning("CouponAssigning"),
     UserCouponReset("UserCouponReset"),
     InvestCallback("InvestCallback"),
@@ -13,10 +20,13 @@ public enum MessageQueue {
     InvestSuccess_CompletePointTask("InvestSuccess-CompletePointTask"),
     InvestSuccess_CouponUpdate("InvestSuccess-CouponUpdate"),
     InvestSuccess_MembershipUpdate("InvestSuccess-MembershipUpdate"),
+    InvestSuccess_ActivityReward("InvestSuccess-ActivityReward"),
+    InvestSuccess_ExperienceRepay("InvestSuccess-ExperienceRepay"),
+    InvestSuccess_ExperienceAssignInterestCoupon("InvestSuccess-ExperienceAssignInterestCoupon"),
     RechargeSuccess_CompletePointTask("RechargeSuccess-CompletePointTask"),
     BindBankCard_CompletePointTask("BindBankCard-CompletePointTask"),
     TurnOnNoPasswordInvest_CompletePointTask("TurnOnNoPasswordInvest-CompletePointTask"),
-    InvestSuccess_ActivityReward("InvestSuccess-ActivityReward"),
+    ExperienceRepayCallback("ExperienceRepayCallback"),
     MembershipUpgrade_SendJpushMessage("MembershipUpgrade-SendJpushMessage"),
     LoanOutSuccess_GenerateRepay("LoanOutSuccess-GenerateRepay"),
     LoanOutSuccess_RewardReferrer("LoanOutSuccess-RewardReferrer"),
@@ -38,8 +48,8 @@ public enum MessageQueue {
     LoanStartRaising("LoanStartRaising"),
     LoanStopRaising("LoanStopRaising"),
     CancelTransferApplication("CancelTransferApplication"),
-    CouponSmsNotify("CouponSmsNotify")
-    ;
+    CouponSmsAssignNotify("CouponSmsAssignNotify"),
+    CouponSmsExpiredNotify("CouponSmsExpiredNotify");
 
     private final String queueName;
 

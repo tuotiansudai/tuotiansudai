@@ -358,14 +358,6 @@ public class PayWrapperClient extends BaseClient {
         return syncExecute(String.valueOf(loanId), "/loan-out/referrer-reward-after-loan-out", "POST");
     }
 
-    public BaseDto<PayDataDto> createAnXinContract(long loanId){
-        return syncExecute(String.valueOf(loanId), "/loan-out/create-anxin-contract-after-loan-out", "POST");
-    }
-
-    public BaseDto<PayDataDto> queryAnXinContract(long loanId){
-        return syncExecute(String.valueOf(loanId), "/loan-out/query-anxin-contract-after-loan-out", "POST");
-    }
-
     public BaseDto<PayDataDto> generateRepay(long loanId){
         return syncExecute(String.valueOf(loanId), "/loan-out/generate-repay-after-loan-out", "POST");
     }
@@ -388,5 +380,13 @@ public class PayWrapperClient extends BaseClient {
 
     public BaseDto<PayDataDto> transferRedEnvelopForCallBack(long userCouponId){
         return syncExecute(String.valueOf(userCouponId), "/loan-out/transfer-red-envelop-callback", "POST");
+    }
+
+    public BaseDto<PayDataDto> experienceRepay(long investId){
+        return syncExecute(String.valueOf(investId), "/experience/repay", "POST");
+    }
+
+    public BaseDto<PayDataDto> postExperienceRepay(long notifyRequestId) {
+        return syncExecute(String.valueOf(notifyRequestId), "/experience/post-repay", "POST");
     }
 }

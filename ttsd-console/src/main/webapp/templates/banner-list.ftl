@@ -1,6 +1,6 @@
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="banner-list.js" headLab="announce-manage" sideLab="bannerMan" title="banner管理">
+<@global.main pageCss="" pageJavascript="banner-list.js" headLab="content-manage" sideLab="bannerMan" title="banner管理">
 
 <!-- content area begin -->
 <div class="col-md-10">

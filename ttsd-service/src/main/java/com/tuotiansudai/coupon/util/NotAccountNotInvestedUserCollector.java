@@ -29,7 +29,7 @@ public class NotAccountNotInvestedUserCollector implements UserCollector {
 
     @Override
     public boolean contains(CouponModel couponModel, UserModel userModel) {
-        return userModel != null && investMapper.sumSuccessInvestAmountByLoginName(null, userModel.getLoginName()) == 0;
+        return userModel != null && investMapper.sumSuccessInvestAmountByLoginName(null, userModel.getLoginName(),true) == 0;
     }
 
 }

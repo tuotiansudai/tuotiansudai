@@ -7,10 +7,10 @@ import cfca.trustsign.common.vo.response.tx3.*;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.cfca.constant.AnxinRetCode;
+import com.tuotiansudai.cfca.contract.ContractService;
 import com.tuotiansudai.cfca.dto.ContractResponseView;
 import com.tuotiansudai.cfca.service.AnxinSignConnectService;
 import com.tuotiansudai.cfca.service.AnxinSignService;
-import com.tuotiansudai.cfca.contract.ContractService;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.*;
@@ -18,6 +18,7 @@ import com.tuotiansudai.dto.sms.GenerateContractErrorNotifyDto;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.UUIDGenerator;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -328,6 +329,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
     @Override
     public BaseDto createLoanContracts(long loanId) {
+        logger.info(MessageFormat.format("[安心签]: createLoanContracts loanId:{0}", String.valueOf(loanId)));
         redisWrapperClient.setex(LOAN_CONTRACT_IN_CREATING_KEY + loanId, CREATE_CONTRACT_MAX_IN_DOING_TIME, "1");
 
         LoanModel loanModel = loanMapper.findById(loanId);
@@ -563,11 +565,13 @@ public class AnxinSignServiceImpl implements AnxinSignService {
     @Override
     public List<String> queryContract(long businessId, List<String> batchNoList, AnxinContractType anxinContractType) {
 
+        logger.info(MessageFormat.format("[安心签] queryContract executing , businessId:{0}", String.valueOf(businessId)));
         //查询合同创建结果，以及处理中的batchNo
         List[] lists = anxinSignConnectService.queryContract(businessId, batchNoList, anxinContractType);
 
         // 合同还没有生成完毕的batchNo
         List<String> waitingBatchNoList = lists[0];
+        logger.info(MessageFormat.format("[安心签] queryContract executing , waitingBatchNo:{0}", waitingBatchNoList));
 
         // 处理结果
         List<ContractResponseView> contractResponseViews = lists[1];
@@ -584,20 +588,34 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         if (anxinQueryContractDto == null) {
             return new BaseDto(true, new AnxinDataDto(true, ""));
         }
-
         String batchNo;
         if (anxinQueryContractDto.getAnxinContractType().equals(AnxinContractType.LOAN_CONTRACT)) {
             batchNo = redisWrapperClient.get(LOAN_BATCH_NO_LIST_KEY + anxinQueryContractDto.getBusinessId());
         } else {
             batchNo = redisWrapperClient.get(TRANSFER_BATCH_NO_LIST_KEY + anxinQueryContractDto.getBusinessId());
         }
+        logger.info(MessageFormat.format("[安心签] queryContract executing , batchStr:{0}", batchNo));
 
         if (Strings.isNullOrEmpty(batchNo)) {
             return failBaseDto(BATCH_NO_IS_INVALID);
         }
 
-        this.queryContract(anxinQueryContractDto.getBusinessId(), Lists.newArrayList(batchNo.split(",")), anxinQueryContractDto.getAnxinContractType());
+        try{
+            List<String> waitingBatchNo = this.queryContract(anxinQueryContractDto.getBusinessId(), Lists.newArrayList(batchNo.split(",")), anxinQueryContractDto.getAnxinContractType());
+            if(CollectionUtils.isNotEmpty(waitingBatchNo)){
+                // 没有待处理的 batchNo 了，检查该 businessId 下的投资是否已经全部成功
+                List<InvestModel> contractFailList = investMapper.findNoContractNoInvest(anxinQueryContractDto.getBusinessId());
+                if (CollectionUtils.isNotEmpty(contractFailList)) {
+                    logger.error(MessageFormat.format("some batch is fail. send sms. businessId:{0}", String.valueOf(anxinQueryContractDto.getBusinessId())));
+                    // 有失败的，发短信
+                    smsWrapperClient.sendGenerateContractErrorNotify(new GenerateContractErrorNotifyDto(mobileList, anxinQueryContractDto.getBusinessId()));
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            logger.info("query anXin contract fail," + ex);
+            return new BaseDto(false);
+        }
         return new BaseDto(true);
     }
-
 }
