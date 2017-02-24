@@ -387,7 +387,7 @@ public class PayWrapperClient extends BaseClient {
         return syncExecute(repaySuccessMessage, "/repay-success/extra-rate-repay", "POST");
     }
     public BaseDto<PayDataDto> extraRateRepayCallbackAfterRepaySuccess(long notifyRequestId) {
-        return syncExecute(String.valueOf(notifyRequestId), "/repay-success/async_extra_rate_normal_repay_notify", "POST");
+        return syncExecute(String.valueOf(notifyRequestId), "/repay-success/async_extra_rate_repay_notify", "POST");
     }
     public BaseDto<PayDataDto> couponRepayAfterRepaySuccess(RepaySuccessMessage repaySuccessMessage){
         return syncExecute(repaySuccessMessage, "/repay-success/coupon-repay", "POST");
