@@ -39,13 +39,13 @@ public class ActivityWomenDayService {
     private PointBillMapper pointBillMapper;
 
     //每投资1000奖励花瓣
-    private final long EACH_INVEST_AMOUNT_10000 = 100000L;
+    private final long EACH_INVEST_AMOUNT_10000 = 300L;
 
     public BasePaginationDataDto<WomanDayRecordView> getWomanDayPrizeRecord(int index, int pageSize, String loginName) {
         Map<String, WomanDayRecordView> womanDayAllRecordMap = setReferrerRecord(setInvestRecord(getSignRecord(loginName), loginName), loginName);
         List<WomanDayRecordView> womanDayRecordViews = Lists.newArrayList(womanDayAllRecordMap.values());
         for (WomanDayRecordView womanDayRecordView : womanDayRecordViews) {
-            womanDayRecordView.setReferrerLeaves(womanDayRecordView.getReferrerLeaves() > 50 ? 50 : womanDayRecordView.getReferrerLeaves());
+            womanDayRecordView.setReferrerLeaves(womanDayRecordView.getReferrerLeaves() > 10 ? 10 : womanDayRecordView.getReferrerLeaves());
             womanDayRecordView.setTotalLeaves(womanDayRecordView.getInvestLeaves() + womanDayRecordView.getReferrerLeaves() + womanDayRecordView.getSignLeaves());
             womanDayRecordView.setPrize(getPrize(womanDayRecordView.getTotalLeaves()));
             UserModel userModel = userMapper.findByLoginNameOrMobile(womanDayRecordView.getMobile());
@@ -91,7 +91,7 @@ public class ActivityWomenDayService {
 
     private Map<String, WomanDayRecordView> setReferrerRecord(Map<String, WomanDayRecordView> womanDayAllRecordMap, String loginName) {
         List<UserModel> referrerUsers = userMapper.findUsersByRegisterTimeOrReferrer(activityWomanDayStartTime, activityWomanDayEndTime, loginName);
-        referrerUsers.stream().filter(userModel -> investMapper.sumSuccessActivityInvestAmount(userModel.getLoginName(),null, activityWomanDayStartTime, activityWomanDayEndTime) >= 5000)
+        referrerUsers.stream().filter(userModel -> investMapper.sumSuccessActivityInvestAmount(userModel.getLoginName(),null, activityWomanDayStartTime, activityWomanDayEndTime) >= 100)
                 .forEach(userModel -> this.putParam(womanDayAllRecordMap, userModel.getReferrer(), RewardType.REFERRER_REWARD, 1));
         return womanDayAllRecordMap;
     }

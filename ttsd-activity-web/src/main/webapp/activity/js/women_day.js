@@ -1,4 +1,4 @@
-require(['jquery', 'layerWrapper','template', 'jquery.ajax.extension', 'register_common', 'logintip'], function($, layer,tpl) {
+require(['jquery', 'layerWrapper','template','commonFun','jquery.ajax.extension', 'register_common', 'logintip'], function($, layer,tpl) {
     $(function() {
         var browser = globalFun.browserRedirect(),
             $womenDayContainer = $('#womenDayContainer'),
@@ -138,8 +138,16 @@ require(['jquery', 'layerWrapper','template', 'jquery.ajax.extension', 'register
             if ($pointerImg.hasClass('sign-already')) {
                 return; //不能重复抽奖
             }else{
-                $pointerImg.addClass('sign-active');
-                lottery.getLottery();
+                //判断是否登录
+                $.when(commonFun.isUserLogin())
+                .done(function(){
+                    $pointerImg.addClass('sign-active');
+                    lottery.getLottery();
+                })
+                .fail(function(){
+                    $('.no-login-text', $womenDayContainer).trigger('click'); //弹框登录
+                });
+
             }
         });
 
