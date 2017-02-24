@@ -18,55 +18,45 @@ function giftCircleDraw(allListURL, userListURL, drawURL, paramData, giftCircleF
     //开始抽奖
     this.beginLotteryDraw = function (callback) {
         if (this.bRotate) return;
-        $.ajax({
+        commonFun.useAjax({
             url: this.drawURL,
             data: this.paramData,
-            type: 'POST',
-            dataType: 'json'
-        })
-            .done(function (data) {
-                callback(data);
-            })
-            .fail(function () {
-                commonFun.popWindow('错误', '请求失败', {width: '260px'});
-            });
+            type: 'POST'
+        }, callback);
     };
 
     //中奖记录
     this.GiftRecord = function (length) {
-        $.ajax({
+        let self = this;
+        commonFun.useAjax({
             url: this.allListURL,
             data: this.paramData,
-            type: 'GET',
-            dataType: 'json'
-        })
-            .done(function (data) {
-                var UlList = [];
-                for (var i = 0, len = data.length; i < len; i++) {
-                    UlList.push('<li>恭喜' + data[i].mobile + '抽中了' + data[i].prizeValue + '</li>');
-                }
-
-                this.giftCircleFrame.find('.user-record').empty().append(UlList.join(''));
-                this.hoverScrollList(this.giftCircleFrame.find('.user-record'), length);
-            }.bind(this));
+            type: 'GET'
+        }, function (data) {
+            let UlList = [];
+            for (let i = 0, len = data.length; i < len; i++) {
+                UlList.push('<li>恭喜' + data[i].mobile + '抽中了' + data[i].prizeValue + '</li>');
+            }
+            self.giftCircleFrame.find('.user-record').empty().append(UlList.join(''));
+            self.hoverScrollList(self.giftCircleFrame.find('.user-record'), length);
+        });
     };
 
     //我的奖品
     this.MyGift = function (length) {
-        $.ajax({
+        let self = this;
+        commonFun.useAjax({
             url: this.userListURL,
             data: this.paramData,
             type: 'GET',
-            dataType: 'json'
-        })
-            .done(function (data) {
-                var UlList = [];
-                for (var i = 0, len = data.length; i < len; i++) {
-                    UlList.push('<li>' + data[i].prizeValue + '<time>' + data[i].lotteryTime + '</time></li>');
-                }
-                this.giftCircleFrame.find('.own-record').empty().append(UlList.join(''));
-                this.hoverScrollList(this.giftCircleFrame.find('.own-record'), length);
-            }.bind(this));
+        }, function (data) {
+            let UlList = [];
+            for (let i = 0, len = data.length; i < len; i++) {
+                UlList.push('<li>' + data[i].prizeValue + '<time>' + data[i].lotteryTime + '</time></li>');
+            }
+            self.giftCircleFrame.find('.own-record').empty().append(UlList.join(''));
+            self.hoverScrollList(self.giftCircleFrame.find('.own-record'), length);
+        });
     }
 }
 

@@ -1,6 +1,6 @@
-require('activityStyle/lantern_festival.scss');
 require('publicJs/login_tip');
 let drawCircle = require('activityJsModule/gift_circle_draw');
+require('activityStyle/lantern_festival.scss');
 let tpl = require('art-template/dist/template');
 let commonFun = require('publicJs/commonFun');
 
@@ -89,20 +89,15 @@ $investRankingButton.find('span').on('click', function (event) {
 });
 //投资排行
 function heroRank(date) {
-    $.ajax({
+    commonFun.useAjax({
         url: '/activity/lantern-festival/invest/' + date,
-        type: 'GET',
-        dataType: 'json'
-    })
-        .done(function (data) {
-            if (data.status) {
-                var $contentRanking = $('#investRanking-tbody').parents('table');
-                $('#investRanking-tbody').html(tpl('tplTable', data));
-            }
-        })
-        .fail(function () {
-            layer.msg('请求失败，请重试！');
-        });
+        type: 'GET'
+    }, function (data) {
+        if (data.status) {
+            let $contentRanking = $('#investRanking-tbody').parents('table');
+            $('#investRanking-tbody').html(tpl('tplTable', data));
+        }
+    });
 }
 heroRank($TodayAwards.val());
 
@@ -124,14 +119,14 @@ heroRank($TodayAwards.val());
     };
 
     drawCircle.prototype.showDrawTime = function () {
-        $.ajax({
+        commonFun.useAjax({
             url: drawTime,
-            type: 'GET',
-            dataType: 'json'
-        }).done(function (data) {
+            type: 'GET'
+        }, function (data) {
             $('.draw-time', $rewardGiftBox).text(data);
-        })
+        });
     };
+
     var drawCircle = new drawCircle(pointAllList, pointUserList, drawURL, paramData, $rewardGiftBox, 3);
 
     //渲染中奖记录
@@ -182,7 +177,14 @@ heroRank($TodayAwards.val());
                     drawCircle.tipWindowPop(tipGroupObj['nochance']);
                 }
                 else if (data.returnCode == 2) {
-                    $('.no-login-text', $lanternFrame).trigger('click');  //弹框登录
+                    //判断是否需要弹框登陆
+                    layer.open({
+                        type: 1,
+                        title: false,
+                        closeBtn: 0,
+                        area: ['auto', 'auto'],
+                        content: $('#loginTip')
+                    });  //弹框登录
                 } else if (data.returnCode == 3) {
                     //不在活动时间范围内！
                     drawCircle.tipWindowPop(tipGroupObj['expired']);

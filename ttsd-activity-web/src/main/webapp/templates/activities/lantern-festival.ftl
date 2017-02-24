@@ -113,11 +113,11 @@
                         <tr>
                             <td>
                                 {{if $index==0}}
-                                <img src="${staticServer}/activity/images/lantern-festival/list-one.png">
+                                <i class="icon-cat one">
                                 {{else if $index==1}}
-                                <img src="${staticServer}/activity/images/lantern-festival/list-two.png">
+                                <i class="icon-cat two">
                                 {{else if $index==2}}
-                                <img src="${staticServer}/activity/images/lantern-festival/list-three.png">
+                                <i class="icon-cat three">
                                 {{else}}
                                 {{$index+1}}
                                 {{/if}}
@@ -177,7 +177,6 @@
         </div>
     </div>
     <#include "login-tip.ftl" />
-    <a href="javascript:void(0)" class="show-login no-login-text"></a>
     <div class="tip-list-frame">
     <#--真实奖品的提示-->
         <div class="tip-list" data-return="concrete">
