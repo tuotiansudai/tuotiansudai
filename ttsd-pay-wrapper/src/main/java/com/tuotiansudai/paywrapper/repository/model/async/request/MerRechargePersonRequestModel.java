@@ -45,7 +45,6 @@ public class MerRechargePersonRequestModel extends BaseAsyncRequestModel {
         model.setComAmtType("2"); //1 前向手续费：交易方承担 2 前向手续费：平台商户（手续费账户）承担
         model.setPayType(NORMAL_PAY);
         model.setMerDate(new SimpleDateFormat("yyyyMMdd").format(new Date()));
-        model.setRetUrl(MessageFormat.format("{0}/callback/{1}", CALLBACK_HOST_PROPS.get("pay.callback.web.host"), "mer_recharge_person"));
         model.setNotifyUrl(MessageFormat.format("{0}/{1}", CALLBACK_HOST_PROPS.get("pay.callback.back.host"), "recharge_notify"));
         return model;
     }
@@ -59,7 +58,6 @@ public class MerRechargePersonRequestModel extends BaseAsyncRequestModel {
         model.setAmount(amount);
         model.setPayType(FAST_PAY);
         model.setMerDate(new SimpleDateFormat("yyyyMMdd").format(new Date()));
-        model.setRetUrl(MessageFormat.format("{0}/callback/{1}", CALLBACK_HOST_PROPS.get("pay.callback.web.host"), "mer_recharge_person"));
         model.setNotifyUrl(MessageFormat.format("{0}/{1}", CALLBACK_HOST_PROPS.get("pay.callback.back.host"), "recharge_notify"));
         return model;
     }
