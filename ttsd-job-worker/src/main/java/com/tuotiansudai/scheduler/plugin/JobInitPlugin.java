@@ -98,10 +98,9 @@ public class JobInitPlugin implements SchedulerPlugin {
         jobManager.deleteJob(JobType.CouponRepayCallBack,"umpay","coupon_repay_call_back");
     }
 
-    private void deleteExtraRateRepayCallBackIfNotExist(){
-        jobManager.deleteJob(JobType.ExtraRateRepayCallBack,"umpay","repay_extra_rate_invest_call_back");
+    private void deleteExtraRateRepayCallBackIfNotExist() {
+        jobManager.deleteJob(JobType.ExtraRateRepayCallBack, "umpay", "repay_extra_rate_invest_call_back");
     }
-
     private void deleteRefreshAreaByMobile() {
         jobManager.deleteJob(JobType.AutoReFreshAreaByMobile, JobType.AutoReFreshAreaByMobile.name(), JobType.AutoReFreshAreaByMobile.name());
     }

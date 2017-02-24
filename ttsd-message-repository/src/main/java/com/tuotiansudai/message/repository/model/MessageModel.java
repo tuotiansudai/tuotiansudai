@@ -3,7 +3,6 @@ package com.tuotiansudai.message.repository.model;
 import com.tuotiansudai.enums.AppUrl;
 import com.tuotiansudai.enums.MessageEventType;
 import com.tuotiansudai.enums.MessageType;
-import org.joda.time.DateTime;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -26,7 +25,8 @@ public class MessageModel implements Serializable {
     private Long pushId;
     private String activatedBy;
     private Date activatedTime;
-    private Date expiredTime;
+    private Date validStartTime;
+    private Date validEndTime;
     private String updatedBy;
     private Date updatedTime;
     private String createdBy;
@@ -35,7 +35,7 @@ public class MessageModel implements Serializable {
     public MessageModel() {
     }
 
-    public MessageModel(String title, String template, MessageUserGroup userGroup, MessageCategory messageCategory, List<MessageChannel> channels, String webUrl, AppUrl appUrl, Long pushId, String createdBy) {
+    public MessageModel(String title, String template, MessageUserGroup userGroup, MessageCategory messageCategory, List<MessageChannel> channels, String webUrl, AppUrl appUrl, Long pushId, String createdBy, Date validStartTime, Date validEndTime) {
         this.title = title;
         this.template = template;
         this.templateTxt = template;
@@ -51,7 +51,8 @@ public class MessageModel implements Serializable {
         this.createdTime = new Date();
         this.updatedBy = this.createdBy;
         this.updatedTime = this.createdTime;
-        this.expiredTime = new DateTime(createdTime).plusDays(30).withTimeAtStartOfDay().toDate();
+        this.validStartTime = validStartTime;
+        this.validEndTime = validEndTime;
     }
 
     public long getId() {
@@ -182,12 +183,20 @@ public class MessageModel implements Serializable {
         this.activatedTime = activatedTime;
     }
 
-    public Date getExpiredTime() {
-        return expiredTime;
+    public Date getValidStartTime() {
+        return validStartTime;
     }
 
-    public void setExpiredTime(Date expiredTime) {
-        this.expiredTime = expiredTime;
+    public void setValidStartTime(Date validStartTime) {
+        this.validStartTime = validStartTime;
+    }
+
+    public Date getValidEndTime() {
+        return validEndTime;
+    }
+
+    public void setValidEndTime(Date validEndTime) {
+        this.validEndTime = validEndTime;
     }
 
     public String getUpdatedBy() {
