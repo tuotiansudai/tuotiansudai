@@ -26,7 +26,7 @@
             <dd>可选择不同期限产品，预期年化收益最高可达<em>8%~11%</em></dd>
             <dd class="img-load">
                 <div class="arrow-rise"></div>
-                <img src="${staticServer}/images/sign/assure/load.jpg">
+                <img src="${staticServer}/images/sign/assure/load.png">
             </dd>
         </dl>
 
