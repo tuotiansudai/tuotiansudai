@@ -52,7 +52,7 @@ function forgetPassword() {
     },{
         strategy: 'isMobileRetrieveExist',
         errorMsg: '手机号不存在'
-    }]);
+    }],true);
 
     validator.add(retrieveForm.captcha, [{
         strategy: 'isNonEmpty',
@@ -63,20 +63,14 @@ function forgetPassword() {
     },{
         strategy: 'isCaptchaVerify',
         errorMsg: '验证码不正确'
-    }]);
+    }],true);
 
     let reInputs=$(retrieveForm).find('input:text,input:password');
 
     reInputs=Array.from(reInputs);
     for (let el of reInputs) {
         globalFun.addEventHandler(el,"blur", function() {
-            let errorMsg = validator.start(this);
-            if(errorMsg) {
-                errorDom.text(errorMsg).css('visibility','visible');
-            }
-            else {
-                errorDom.text('').css('visibility','hidden');
-            }
+            validator.start(this);
             isDisabledButton();
         })
     }
@@ -100,7 +94,6 @@ function forgetPassword() {
         for(let i=0,len=reInputs.length;i<len;i++) {
             errorMsg = validator.start(reInputs[i]);
             if(errorMsg) {
-                errorDom.text(errorMsg).css('visibility','visible');
                 return;
             }
         }

@@ -8,7 +8,7 @@ var $InfoBox = $('#personInfoBox'),
 
 //修改绑定的银行卡
 $updateBankCard.on('click', function(){
-    var url = $(this).attr('data-url');
+    var url = $(this).data('url');
     commonFun.useAjax({
         url: '/bind-card/is-replacing',
         type: 'GET'

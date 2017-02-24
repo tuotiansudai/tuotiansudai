@@ -12,7 +12,6 @@
     </ul>
     <div class="list-container">
         <div class="record-list active">
-            
         </div>
         <div class="pagination" data-url="/transferrer/transfer-application-list-data" data-page-size="10"></div>
     </div>
@@ -64,10 +63,10 @@
             <td><%=item.leftDays%></td>
             <td><%=item.lastRepayDate%></td>
             <td>
-                <%=item.nextRepayDate?(item.nextRepayDate/item.nextRepayAmount):'--'%>
+                <%=item.nextRepayAmount?item.nextRepayAmount:'--'%>
             </td>
             <td>
-                <%=item.transferStatus?'<a href="javascript:void(0)" class="apply-transfer" data-invest-id="{{investId}}">'+item.transferStatus+'</a>':'--'%>
+                <%=item.transferStatus?'<a href="javascript:void(0)" class="apply-transfer" data-invest-id="'+item.investId+'">'+item.transferStatus+'</a>':'--'%>
             </td>
         </tr>
         <% } %>

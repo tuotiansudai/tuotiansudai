@@ -126,9 +126,10 @@
         <dl>
             <dt class="requireOpt">请输入邮箱</dt>
             <dd><input type="email" name="email" class="input-control" placeholder="请输入邮箱">
-                <div class="error-box tl"></div>
+
             </dd>
         </dl>
+        <div class="error-box tl"></div>
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
         <button type="submit" class="btn btn-normal">绑定</button>

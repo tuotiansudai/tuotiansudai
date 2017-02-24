@@ -1,7 +1,5 @@
 require('webStyle/investment/transfer_apply_detail.scss');
 require('webJsModule/coupon_alert');
-//投资计算器和意见反馈
-require('webJsModule/red_envelope_float');
 
 require('webJsModule/anxin_agreement');
 let ValidatorForm= require('publicJs/validator');
