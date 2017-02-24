@@ -186,6 +186,7 @@ function useAjax(opt,callbackDone,callbackAlways) {
         });
 }
 function loadJsFile(url,callback) {
+    debugger
     $.ajax({
         url:staticServer+url,
         type:'GET',

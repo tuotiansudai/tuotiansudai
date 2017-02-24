@@ -57,7 +57,7 @@
         %>
         <tr>
             <td><%=item.createdTime%></td>
-            <td><%=item.businessType%>{{businessType}}</td>
+            <td><%=item.businessType%></td>
             <td class="tr">+<%=item.income%></td>
             <td class="tr">-<%=item.cost%></td>
             <td class="tr"><%=item.freeze%></td>

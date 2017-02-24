@@ -24,7 +24,9 @@ if($noticeList.length) {
     let ListRender = _.template(noticeTpl);
     let requestData={"index":1,"pageSize":10};
     paginationElement.loadPagination(requestData, function (data) {
-        ListRender(data);
+
+        let html = ListRender(data);
+        $noticeList.html(html);
         $noticeList.find('span').each(function(key,option) {
             var getTime=$(option).text();
             $(option).text(getTime.substr(0,10));
