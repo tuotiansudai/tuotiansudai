@@ -156,6 +156,18 @@
                     </select>
                 </div>
             </div>
+
+            <div class="form-group">
+                <label class="col-sm-1 control-label">推送跳转页面: </label>
+                <div class="col-sm-4">
+                    <select class="selectpicker message-jumpTo" name="jumpTo">
+                        <#list appUrls as jumpToUrl>
+                            <option value="${jumpToUrl.name()}"
+                                        <#if ((dto.push.jumpTo)?? && dto.push.jumpTo.name() == jumpToUrl.name()) || jumpToUrl_index == 0>selected="selected"</#if>>${jumpToUrl.getDescription()}</option>
+                        </#list>
+                    </select>
+                </div>
+            </div>
         </div>
         <div class="form-group">
             <label class="col-sm-1 control-label">操作: </label>

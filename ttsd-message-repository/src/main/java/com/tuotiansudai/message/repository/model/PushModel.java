@@ -1,9 +1,9 @@
 package com.tuotiansudai.message.repository.model;
 
 
+import com.tuotiansudai.enums.AppUrl;
 import com.tuotiansudai.enums.PushSource;
 import com.tuotiansudai.enums.PushType;
-import com.tuotiansudai.message.dto.PushCreateDto;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -13,6 +13,7 @@ public class PushModel implements Serializable {
     private PushType pushType;
     private PushSource pushSource;
     private String content;
+    private AppUrl jumpTo;
     private Date createdTime;
     private String createdBy;
     private Date updatedTime;
@@ -21,10 +22,11 @@ public class PushModel implements Serializable {
     public PushModel() {
     }
 
-    public PushModel(String createdBy, PushType pushType, PushSource pushSource, String content) {
+    public PushModel(String createdBy, PushType pushType, PushSource pushSource, String content, AppUrl jumpTo) {
         this.pushType = pushType;
         this.pushSource = pushSource;
         this.content = content;
+        this.jumpTo = jumpTo;
         this.createdBy = createdBy;
         this.createdTime = new Date();
         this.updatedBy = createdBy;
@@ -93,5 +95,13 @@ public class PushModel implements Serializable {
 
     public void setUpdatedBy(String updatedBy) {
         this.updatedBy = updatedBy;
+    }
+
+    public AppUrl getJumpTo() {
+        return jumpTo;
+    }
+
+    public void setJumpTo(AppUrl jumpTo) {
+        this.jumpTo = jumpTo;
     }
 }

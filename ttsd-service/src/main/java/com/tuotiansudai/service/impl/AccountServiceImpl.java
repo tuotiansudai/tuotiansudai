@@ -7,6 +7,7 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.RegisterAccountDto;
 import com.tuotiansudai.dto.ResetUmpayPasswordDto;
+import com.tuotiansudai.enums.AppUrl;
 import com.tuotiansudai.enums.MessageEventType;
 import com.tuotiansudai.enums.PushSource;
 import com.tuotiansudai.enums.PushType;
@@ -57,7 +58,8 @@ public class AccountServiceImpl implements AccountService {
             mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(Lists.newArrayList(dto.getLoginName()),
                     PushSource.ALL,
                     PushType.REGISTER_ACCOUNT_SUCCESS,
-                    MessageEventType.REGISTER_ACCOUNT_SUCCESS.getTitleTemplate()));
+                    MessageEventType.REGISTER_ACCOUNT_SUCCESS.getTitleTemplate(),
+                    AppUrl.MESSAGE_CENTER_LIST));
         }
 
         return baseDto;
