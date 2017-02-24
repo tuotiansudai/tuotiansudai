@@ -20,7 +20,7 @@ public class MobileAppExperienceBillController extends MobileAppBaseController {
     private MobileAppExperienceBillService mobileAppExperienceBillService;
 
     @RequestMapping(value = "/get/experience-bill", method = RequestMethod.POST)
-    @ApiOperation("积分明细")
+    @ApiOperation("体验金明细")
     public BaseResponseDto<ExperienceBillResponseDataDto> getExperienceBillData(@RequestBody ExperienceBillRequestDto experienceBillRequestDto) {
         experienceBillRequestDto.getBaseParam().setUserId(getLoginName());
         return mobileAppExperienceBillService.queryExperienceBillList(experienceBillRequestDto);

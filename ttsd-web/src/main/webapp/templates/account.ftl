@@ -29,27 +29,28 @@
     </div>
     <div class="assets-box clear-blank">
         <div class="assets-report bRadiusBox fl bg-w">
-            <h3>账户总额：<span>${(((balance+freeze+expectedTotalCorpus+actualTotalInterest)/100)?string('0.00'))!}元</span></h3>
-            <ul>
-            <li><b>已收投资收益：</b><span>${((actualTotalInterest)/100)?string('0.00')!}</span>元</li>
-            <li><b>已收投资奖励：</b><span>${((actualTotalExtraInterest)/100)?string('0.00')!}</span>元</li>
-            <li><b>待收投资本金：</b><span>${((expectedTotalCorpus/100)?string('0.00'))!}</span>元</li>
-            <li><b>已收推荐奖励：</b><span>${((referRewardAmount/100)?string('0.00'))!}</span>元</li>
-            <li><b>待收预期收益：</b><span>${((expectedTotalInterest/100)?string('0.00'))!}</span>元</li>
-            <li><b>待收投资奖励：</b><span>${((expectedTotalExtraInterest/100)?string('0.00'))!}</span>元</li>
-            </ul>
-        <#--<div id="ReportShow" style="width:100%; height:115px; "></div>-->
+            <h3>账户总额：<span>${(((balance+freeze+expectedTotalCorpus+expectedTotalInterest)/100)?string('0.00'))!}元</span></h3>
+            <div id="ReportShow" style="width:100%; height:115px; "></div>
         </div>
         <div class="assets-detail bRadiusBox fr bg-w">
             <ul class="detail-list">
                 <li><b>可用余额：</b><span id="balance">${((balance/100)?string('0.00'))!}</span>元</li>
-                <li><b>累计收益：</b><span>${(((totalIncome)/100)?string('0.00'))!}</span>元</li>
                 <li><b>冻结金额：</b><span>${((freeze/100)?string('0.00'))!}</span>元</li>
                 <li><b>提现冻结中：</b><span>${((withdrawFrozeAmount/100)?string('0.00'))!}</span>元</li>
                 <li><b>投资冻结中：</b><span>${((investFrozeAmount/100)?string('0.00'))!}</span>元</li>
-                 <li><b>待收体验金收益：</b><span>${((expectedExperienceInterest/100)?string('0.00'))!}</span>元</li>
+
+                <li><b>累计收益：</b><span>${(((totalIncome)/100)?string('0.00'))!}</span>元</li>
+                <li><b>已收投资收益：</b><span>${((actualTotalInterest)/100)?string('0.00')!}</span>元</li>
+                <li><b>已收投资奖励：</b><span>${((actualTotalExtraInterest)/100)?string('0.00')!}</span>元</li>
+                <li><b>已收推荐奖励：</b><span>${((referRewardAmount/100)?string('0.00'))!}</span>元</li>
                 <li><b>已收红包奖励：</b><span>${((redEnvelopeAmount/100)?string('0.00'))!}</span>元</li>
                 <li><b>已收体验金奖励：</b><span>${((actualExperienceInterest/100)?string('0.00'))!}</span>元</li>
+                <li><b>待收回款：</b><span>${(((expectedTotalCorpus+expectedTotalInterest+expectedTotalExtraInterest+expectedExperienceInterest)/100)?string('0.00'))!}</span>元</li>
+                <li><b>待收投资本金：</b><span>${((expectedTotalCorpus/100)?string('0.00'))!}</span>元</li>
+                <li><b>待收预期收益：</b><span>${((expectedTotalInterest/100)?string('0.00'))!}</span>元</li>
+                <li><b>待收投资奖励：</b><span>${((expectedTotalExtraInterest/100)?string('0.00'))!}</span>元</li>
+                <li><b>待收体验金收益：</b><span>${((expectedExperienceInterest/100)?string('0.00'))!}</span>元</li>
+                <li><b>可用体验金余额：</b><span></span>元</li>
             </ul>
         </div>
     </div>
@@ -127,8 +128,8 @@
                             <a href="/loan/${actualInvestRepayItem.loan.id?c}" class="month-title">${actualInvestRepayItem.loan.name!}</a>
                         </td>
                         <td>${(((actualInvestRepayItem.loan.activityRate+actualInvestRepayItem.loan.baseRate)*100)?string('0.00'))!}%</td>
-                        <td>${(actualInvestRepayItem.loan.duration?string('0'))!}天</td>
-                        <td>第${(actualInvestRepayItem.period?string('0'))!}期/${(actualInvestRepayItem.loan.periods?string('0'))!}期</td>
+                        <td>${(actualInvestRepayItem.loan.duration?c)!}天</td>
+                        <td>第${(actualInvestRepayItem.period?c)!}期/${(actualInvestRepayItem.loan.periods?c)!}期</td>
                         <td>${actualInvestRepayItem.actualAmount!}</td>
                         <td>${(actualInvestRepayItem.actualRepayDate?string('MM月dd日'))!}</td>
                     </tr>
@@ -162,8 +163,8 @@
                             <a href="/loan/${expectedInvestRepayItem.loan.id?c}" class="month-title">${expectedInvestRepayItem.loan.name!}</a>
                         </td>
                         <td>${(((expectedInvestRepayItem.loan.activityRate+expectedInvestRepayItem.loan.baseRate)*100)?string('0.00'))!}%</td>
-                        <td>${(expectedInvestRepayItem.loan.duration?string('0'))!}天</td>
-                        <td>第${(expectedInvestRepayItem.period?string('0'))!}期/${(expectedInvestRepayItem.loan.periods?string('0'))!}期</td>
+                        <td>${(expectedInvestRepayItem.loan.duration?c)!}天</td>
+                        <td>第${(expectedInvestRepayItem.period?c)!}期/${(expectedInvestRepayItem.loan.periods?c)!}期</td>
                         <td>${expectedInvestRepayItem.amount!}</td>
                         <td>${(expectedInvestRepayItem.repayDate?string('MM月dd日'))!}</td>
                     </tr>

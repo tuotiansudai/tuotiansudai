@@ -79,7 +79,8 @@ public class AccountController {
         modelAndView.addObject("withdrawFrozeAmount", userFundView.getWithdrawFrozeAmount());
         modelAndView.addObject("freeze", userFundView.getInvestFrozeAmount() + userFundView.getWithdrawFrozeAmount()); //冻结金额
 
-        modelAndView.addObject("totalIncome", userFundView.getTotalIncome()); //已收投资收益
+        //累计收益= 已收投资收益+已收投资奖励+已收红包奖励+已收推荐奖励+已收体验金收益
+        modelAndView.addObject("totalIncome", userFundView.getActualTotalInterest()+userFundView.getActualTotalExtraInterest()+userFundView.getRedEnvelopeAmount()+userFundView.getReferRewardAmount()+userFundView.getActualExperienceInterest());
 
         Date firstDateOfMonth = new DateTime().dayOfMonth().withMinimumValue().toDate();
         Date lastDateOfMonth = DateUtils.addMonths(firstDateOfMonth, 1);

@@ -66,4 +66,5 @@ public interface UserMapper {
     List<Map<String, String>> findCountInvestCityScaleTop3(@Param(value = "endDate") Date endDate);
 
     long findCountInvestCityScale(@Param(value = "endDate") Date endDate);
+
 }
