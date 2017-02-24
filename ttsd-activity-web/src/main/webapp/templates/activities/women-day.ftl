@@ -143,10 +143,9 @@
 			<div class="flower-info">
 				<p class="title-text tc">我的花瓣</p>
 				<@global.isAnonymous>
-				<p class="tc">当前累计获得花瓣<span>0</span>个</p>
 				<p class="tc">请登录查看所获得花瓣</p>
 				<p class="tc">
-					<a href="javascript:void(0)" class="show-login">登陆查看</a>
+					<a href="javascript:void(0)" class="show-login">登录查看</a>
 				</p>
 				</@global.isAnonymous>
 				<@global.isNotAnonymous>

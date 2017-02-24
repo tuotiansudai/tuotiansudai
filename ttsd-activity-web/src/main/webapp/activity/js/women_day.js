@@ -1,8 +1,7 @@
-require(['jquery', 'layerWrapper','template','commonFun','jquery.ajax.extension', 'register_common', 'logintip'], function($, layer,tpl) {
+require(['jquery', 'layerWrapper','template','commonFun','jquery.ajax.extension', 'register_common', 'logintip'], function($, layer,tpl,commonFun) {
     $(function() {
         var browser = globalFun.browserRedirect(),
             $womenDayContainer = $('#womenDayContainer'),
-            timeCount = 0,
             $machineLottery=$('.machine-lottery',$womenDayContainer),
             $pointerImg=$('.sign-btn span',$machineLottery);
         if (browser == 'mobile') {
