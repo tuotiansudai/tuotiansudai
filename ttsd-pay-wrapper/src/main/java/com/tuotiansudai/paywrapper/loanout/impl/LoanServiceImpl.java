@@ -297,7 +297,7 @@ public class LoanServiceImpl implements LoanService {
         }
 
         if (LoanStatus.RECHECK != loan.getStatus()) {
-            throw new PayException(MessageFormat.format("loan{0} status{1) is not RECHECK, loan out is failed", String.valueOf(loanId), loan.getStatus().name()));
+            throw new PayException(MessageFormat.format("loan{0} status{1} is not RECHECK, loan out is failed", String.valueOf(loanId), loan.getStatus().name()));
         }
 
         // 将已失效的投资记录状态置为失败
