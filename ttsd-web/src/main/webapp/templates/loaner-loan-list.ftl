@@ -50,7 +50,7 @@
         %>
         <tr>
             <td><%=item.loanName%></td>
-            <td><%=item.recheckTime%>{{recheckTime}}</td>
+            <td><%=item.recheckTime%></td>
             <td class="tr"><%=item.loanAmount%> 元</td>
             <td class="tr"><%=item.unpaidAmount%> 元</td>
             <td>

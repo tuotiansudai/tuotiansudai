@@ -13,7 +13,7 @@ function createElement(element,errorMsg) {
     element && element.parentElement.appendChild(span);
 }
 function removeElement(element) {
-    (element && element.nextElementSibling) && element.parentElement.removeChild(element.nextElementSibling);
+    (element && element.nextElementSibling && globalFun.hasClass(element.nextElementSibling,'error')) && element.parentElement.removeChild(element.nextElementSibling);
 }
 
 var isHaveError ={

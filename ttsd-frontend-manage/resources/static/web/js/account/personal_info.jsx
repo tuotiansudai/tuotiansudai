@@ -143,6 +143,8 @@ require.ensure([],function() {
     let $imageCaptchaElement = $('#imageCaptcha'),
         $getCaptchaElement = $('.get-captcha',$turnOffNoPasswordInvestDOM);
 
+    let errorBox = $('.error-box',$(turnOffNoPasswordInvestForm));
+
     let $imageCaptchaTextElement = $('.image-captcha-text', $turnOffNoPasswordInvestDOM),
         $btnCancelElement = $('.btn-cancel',$turnOffNoPasswordInvestDOM),
         $btnCloseTurnOnElement = $('.btn-close-turn-on',$turnOnNoPasswordInvestDOM),
@@ -164,7 +166,7 @@ require.ensure([],function() {
         $getCaptchaElement.html('获取验证码').prop('disabled',true);
         commonFun.refreshCaptcha(globalFun.$('#imageCaptcha'),'/no-password-invest/image-captcha');
         $('.captcha').val('');
-        $('.error-content').html('');
+        errorBox.html('');
         $codeNumber.addClass('code-number-hidden');
     };
 
@@ -253,13 +255,14 @@ require.ensure([],function() {
         }
     });
 
-    $getCaptchaElement.on('click',function(){
-        $(imageCaptchaForm).submit();
+    $getCaptchaElement.on('click',function(event){
+        // $(imageCaptchaForm).submit();
+        event.preventDefault();
         $getCaptchaElement.prop('disabled',true);
         commonFun.useAjax({
             url:"/no-password-invest/send-captcha",
             type:'POST',
-            data:$(turnOffNoPasswordInvestForm).serialize()
+            data:$(imageCaptchaForm).serialize()
         },function(response) {
             $getCaptchaElement.prop('disabled',false);
             var data =response.data;
@@ -275,22 +278,23 @@ require.ensure([],function() {
                     }
                     seconds--;
                 }, 1000);
-                return;
+
             }
 
             if (!data.status && data.isRestricted) {
                 $codeNumber.addClass('code-number-hidden');
-                self.showErrors({imageCaptcha: '短信发送频繁，请稍后再试'});
+                errorBox.html('短信发送频繁，请稍后再试');
             }
 
             if (!data.status && !data.isRestricted) {
                 $codeNumber.addClass('code-number-hidden');
-                self.showErrors({imageCaptcha: '图形验证码不正确'});
+                errorBox.html('图形验证码不正确');
             }
-            self.invalid['imageCaptcha'] = true;
+            errorBox.html('');
             commonFun.refreshCaptcha(globalFun.$('#imageCaptcha'),'/no-password-invest/image-captcha');
 
         });
+        return;
     });
 
     $imageCaptchaElement.click(function () {
@@ -346,6 +350,7 @@ require.ensure([],function() {
         let thisForm = this;
         $(thisForm).find(':submit').prop('disabled', true);
         let errorMsg = turnOffPassValidator.start(thisForm.captcha);
+        errorBox.html(errorMsg);
         if (!errorMsg) {
             commonFun.useAjax({
                 url: "/no-password-invest/disabled",
@@ -452,7 +457,6 @@ require.ensure([],function() {
             }
         }
         if (!errorMsg) {
-            changePasswordForm.reset();
             layer.closeAll();
             commonFun.useAjax({
                 url:"/personal-info/change-password",
@@ -466,6 +470,7 @@ require.ensure([],function() {
                     });
                 } else {
                     layer.msg('密码修改失败，请重试！', {type: 1, time: 2000});
+                    changePasswordForm.reset();
                 }
             });
         }
