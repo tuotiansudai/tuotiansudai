@@ -63,7 +63,7 @@ public class RepaySuccessExtraRateRepayMessageConsumer implements MessageConsume
         }
 
         try {
-            BaseDto<PayDataDto> baseDto = payWrapperClient.extraRateNormalRepayAfterRepaySuccess(repaySuccessMessage);
+            BaseDto<PayDataDto> baseDto = payWrapperClient.extraRateRepayAfterRepaySuccess(repaySuccessMessage);
 
             if (!baseDto.isSuccess()) {
                 smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(MessageFormat.format("还款发放优惠券收益失败,还款ID:{0}", String.valueOf(loanRepayId))));

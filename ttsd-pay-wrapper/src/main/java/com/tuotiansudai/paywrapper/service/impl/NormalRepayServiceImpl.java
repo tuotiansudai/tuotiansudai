@@ -327,13 +327,6 @@ public class NormalRepayServiceImpl implements NormalRepayService {
 
         return callbackRequest.getResponseData();
     }
-    public static void main(String args[]){
-        try {
-            System.out.println(JsonConverter.writeValueAsString(new RepaySuccessMessage(123l, false)));
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-    }
 
     /**
      * 借款人还款后Job回调，返款投资人

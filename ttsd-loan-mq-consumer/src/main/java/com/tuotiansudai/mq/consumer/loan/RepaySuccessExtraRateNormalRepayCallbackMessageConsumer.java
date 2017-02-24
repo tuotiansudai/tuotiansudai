@@ -26,7 +26,7 @@ public class RepaySuccessExtraRateNormalRepayCallbackMessageConsumer implements 
 
     @Override
     public MessageQueue queue() {
-        return MessageQueue.RepaySuccessCouponRepayCallback;
+        return MessageQueue.RepaySuccessExtraRateRepayCallback;
     }
 
     @Transactional
@@ -39,7 +39,7 @@ public class RepaySuccessExtraRateNormalRepayCallbackMessageConsumer implements 
             return;
         }
         logger.info("[还款发放阶梯加息收益回调MQ] ready to consume message: extra rate callback.");
-        BaseDto<PayDataDto> result = payWrapperClient.extraRateNormalRepayCallbackAfterRepaySuccess(Long.parseLong(message));
+        BaseDto<PayDataDto> result = payWrapperClient.extraRateRepayCallbackAfterRepaySuccess(Long.parseLong(message));
         if (!result.isSuccess()) {
             logger.error("[还款发放阶梯加息收益回调MQ] extra rate callback consume fail. notifyRequestId: " + message);
             throw new RuntimeException("extra rate callback consume fail. notifyRequestId: " + message);
