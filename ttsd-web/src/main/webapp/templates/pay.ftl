@@ -4,11 +4,10 @@
     <#assign payData = pay.data>
 <head>
     <#if payData.status>
-        <script type="text/javascript" src="${commonStaticServer}/js/libs/jquery-1.11.3.min.js"></script>
         <script type="text/javascript">
-            $(function () {
-                $("#payForm").submit();
-            });
+            window.onload=function()  {
+                document.getElementById('payForm').submit()
+            }
         </script>
     </#if>
 </head>
