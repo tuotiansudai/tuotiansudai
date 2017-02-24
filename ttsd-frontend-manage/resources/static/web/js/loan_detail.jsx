@@ -113,7 +113,8 @@ function investSubmit(){
                 layer.closeAll();
             },
             btn2:function(){
-                if($isAuthenticationRequired.val()==='false'){//判断是否开启安心签免验
+                //判断是否开启安心签免验
+                if($isAuthenticationRequired.val()==='false'){
                     sendSubmitRequest();
                 }else{
                     getSkipPhoneTip();
@@ -134,24 +135,24 @@ function investSubmit(){
 
 //发送投资提交请求
 function sendSubmitRequest(){
-    $investForm.ajaxSubmit({
-        dataType: 'json',
+
+    commonFun.useAjax({
         url: '/no-password-invest',
+        data: $investForm.serialize(),
+        type: 'POST',
         beforeSubmit: function () {
-            console.log("invest start");
             $investSubmit.addClass("loading");
         },
-        success: function (response) {
-            layer.closeAll();
-            $investSubmit.removeClass("loading");
-            var data = response.data;
-            if (data.status) {
-                location.href = "/invest-success";
-            } else if (data.message == '新手标投资已超上限') {
-                showLayer();
-            } else {
-                showInputErrorTips(data.message);
-            }
+    },function(response) {
+        layer.closeAll();
+        $investSubmit.removeClass("loading");
+        var data = response.data;
+        if (data.status) {
+            location.href = "/invest-success";
+        } else if (data.message == '新手标投资已超上限') {
+            showLayer();
+        } else {
+            showInputErrorTips(data.message);
         }
     });
 }
@@ -159,14 +160,12 @@ function sendSubmitRequest(){
 //is tip B1 or tip B2?
 function markNoPasswordRemind(){
     if (!noPasswordRemind) {
-        $.ajax({
+        commonFun.useAjax({
             url: '/no-password-invest/mark-remind',
-            type: 'POST',
-            dataType: 'json'
-        })
-            .done(function () {
-                noPasswordRemind = true;
-            });
+            type: 'POST'
+        },function() {
+            noPasswordRemind = true;
+        });
     }
     layer.open({
         type: 1,
@@ -183,22 +182,17 @@ function markNoPasswordRemind(){
         },
         btn2: function () {
             if (autoInvestOn) {
-                $.ajax({
+
+                commonFun.useAjax({
                     url: '/no-password-invest/enabled',
-                    type: 'POST',
-                    dataType: 'json'
-                })
-                    .done(function () {
-                        noPasswordInvest = true;
-                        layer.closeAll();
-                        layer.msg('开启成功！', function () {
-                            investSubmit();
-                        });
-                    })
-                    .fail(function () {
-                        layer.closeAll();
-                        layer.msg('开启失败，请重试！');
-                    })
+                    type: 'POST'
+                },function() {
+                    noPasswordInvest = true;
+                    layer.closeAll();
+                    layer.msg('开启成功！', function () {
+                        investSubmit();
+                    });
+                });
             } else {
                 showAuthorizeAgreementOptions();
                 $authorizeAgreement.submit();

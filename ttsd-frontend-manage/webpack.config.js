@@ -133,7 +133,7 @@ else if(NODE_ENV=='dev') {
 }
 plugins.push(new CopyWebpackPlugin([
 	{ from: publicPathJS+'/dllplugins',to: 'public/dllplugins'},
-	{ from: publicPathJS+'/plugins',to: 'public/plugins'},
+	// { from: publicPathJS+'/plugins',to: 'public/plugins'},
 	{ from: staticPath+'/inlineImages',to: 'images'},
 	{ from: publicPath+'/styles/plugins/skin',to: 'public/skin'}
 ]));

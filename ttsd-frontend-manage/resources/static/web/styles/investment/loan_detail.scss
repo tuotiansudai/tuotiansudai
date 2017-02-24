@@ -122,7 +122,7 @@ $red: #eb4a3e;
         display:inline-block;
         width:14px;
         height:14px;
-        background:url('/images/icons/skip-checkbox.png') no-repeat center;;
+        background:url('../../images/icons/skip-checkbox.png') no-repeat center;;
         background-position: 0px 0px;
         cursor:pointer;
         vertical-align: middle;
@@ -389,7 +389,7 @@ $red: #eb4a3e;
                   width: 18px;
                   height: 14px;
                   margin-top: 5px;
-                  background: url(/images/sign/icon-red-sm.png) no-repeat center;
+                  background: url('../../images/sign/icon-red-sm.png') no-repeat center;
                 }
                 span {
                   float: left;
@@ -497,16 +497,16 @@ $red: #eb4a3e;
               cursor: pointer;
               vertical-align: middle;
               &.level2 {
-                background: url(/images/icons/level-v2.png) no-repeat;
+                background: url('../../images/icons/level-v2.png') no-repeat;
               }
               &.level3 {
-                background: url(/images/icons/level-v3.png) no-repeat;
+                background: url('../../images/icons/level-v3.png') no-repeat;
               }
               &.level4 {
-                background: url(/images/icons/level-v4.png) no-repeat;
+                background: url('../../images/icons/level-v4.png') no-repeat;
               }
               &.level5 {
-                background: url(/images/icons/level-v5.png) no-repeat;
+                background: url('../../images/icons/level-v5.png') no-repeat;
               }
             }
           }
@@ -534,7 +534,7 @@ $red: #eb4a3e;
             }
 
             .time-clock {
-              background: url(/images/icons/time-clock.png) center -1px no-repeat;
+              background: url('../../images/icons/time-clock.png') center -1px no-repeat;
               display: inline-block;
               width: 29px;
               height: 27px;
@@ -571,7 +571,7 @@ $red: #eb4a3e;
                 display:inline-block;
                 width:14px;
                 height:14px;
-                background:url('/images/icons/skip-checkbox.png') no-repeat center;;
+                background:url('../../images/icons/skip-checkbox.png') no-repeat center;;
                 background-position: 0px 0px;
                 cursor:pointer;
                 margin-top:5px;
@@ -828,17 +828,17 @@ $red: #eb4a3e;
                 }
                 &.hammer {
                   span {
-                    background: url("/images/icons/hammer.png") no-repeat left 50%;
+                    background: url("../../images/icons/hammer.png") no-repeat left 50%;
                   }
                 }
                 &.king {
                   span {
-                    background: url("/images/icons/king.png") no-repeat left 50%;
+                    background: url("../../images/icons/king.png") no-repeat left 50%;
                   }
                 }
                 &.first {
                   span {
-                    background: url("/images/icons/first.png") no-repeat left 50%;
+                    background: url("../../images/icons/first.png") no-repeat left 50%;
                   }
                 }
               }
