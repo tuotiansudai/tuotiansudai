@@ -12,7 +12,6 @@ import com.tuotiansudai.activity.repository.model.ActivityCategory;
 import com.tuotiansudai.activity.repository.model.IPhone7InvestLotteryStatView;
 import com.tuotiansudai.activity.repository.model.LotteryPrize;
 import com.tuotiansudai.activity.repository.model.UserLotteryPrizeView;
-import com.tuotiansudai.activity.service.ActivityWomanDayService;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.InvestModel;

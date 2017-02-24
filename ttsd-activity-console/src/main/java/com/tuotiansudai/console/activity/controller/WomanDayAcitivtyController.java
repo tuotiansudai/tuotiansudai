@@ -1,6 +1,6 @@
 package com.tuotiansudai.console.activity.controller;
 
-import com.tuotiansudai.activity.service.ActivityWomanDayService;
+import com.tuotiansudai.console.activity.service.ActivityWomanDayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +15,7 @@ public class WomanDayAcitivtyController {
     ActivityWomanDayService activityWomandayService;
 
     @RequestMapping(value = "/women-day-list", method = RequestMethod.GET)
-    public ModelAndView getNotWorkList(@RequestParam(value = "index",defaultValue = "1") int index) {
+    public ModelAndView getNotWorkList(@RequestParam(value = "index", defaultValue = "1") int index) {
         ModelAndView modelAndView = new ModelAndView("/women-day-list");
         final int pageSize = 10;
         modelAndView.addObject("data", activityWomandayService.getWomanDayPrizeRecord(index, pageSize, null));

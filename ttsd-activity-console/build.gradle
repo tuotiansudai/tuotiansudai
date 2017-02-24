@@ -54,10 +54,6 @@ dependencies {
         exclude module: 'ttsd-dependency'
     };
 
-    compile(project(":ttsd-activity-service")) {
-        exclude module: 'ttsd-dependency'
-    };
-
     compile project(':ttsd-util'),
             'org.springframework.boot:spring-boot-starter-mail',
             "org.springframework.boot:spring-boot-starter-web",
