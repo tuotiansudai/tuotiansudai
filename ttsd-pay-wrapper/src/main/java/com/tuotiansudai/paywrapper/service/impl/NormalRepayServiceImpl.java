@@ -1,5 +1,6 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
@@ -14,14 +15,18 @@ import com.tuotiansudai.enums.PushSource;
 import com.tuotiansudai.enums.PushType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.exception.AmountTransferException;
+import com.tuotiansudai.job.JobManager;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.job.NormalRepayJob;
 import com.tuotiansudai.message.EventMessage;
 import com.tuotiansudai.message.PushMessage;
+import com.tuotiansudai.message.RepaySuccessMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
+import com.tuotiansudai.mq.client.model.MessageTopic;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
+import com.tuotiansudai.paywrapper.loanout.LoanService;
 import com.tuotiansudai.paywrapper.repository.mapper.NormalRepayNotifyMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferNopwdMapper;
@@ -35,14 +40,12 @@ import com.tuotiansudai.paywrapper.repository.model.sync.request.ProjectTransfer
 import com.tuotiansudai.paywrapper.repository.model.sync.request.SyncRequestStatus;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferNopwdResponseModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
-import com.tuotiansudai.paywrapper.loanout.LoanService;
 import com.tuotiansudai.paywrapper.service.NormalRepayService;
 import com.tuotiansudai.paywrapper.service.SystemBillService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.AmountTransfer;
-import com.tuotiansudai.job.JobManager;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.quartz.SchedulerException;
@@ -249,7 +252,7 @@ public class NormalRepayServiceImpl implements NormalRepayService {
         LoanRepayModel currentLoanRepay = loanRepayMapper.findById(loanRepayId);
 
         if (currentLoanRepay.getStatus() != RepayStatus.WAIT_PAY) {
-            logger.error(MessageFormat.format("[Normal Repay {0}] loan repay callback status is {1}", String.valueOf(loanRepayId),currentLoanRepay.getStatus()));
+            logger.error(MessageFormat.format("[Normal Repay {0}] loan repay callback status is {1}", String.valueOf(loanRepayId), currentLoanRepay.getStatus()));
             return callbackRequest.getResponseData();
         }
 
@@ -287,8 +290,8 @@ public class NormalRepayServiceImpl implements NormalRepayService {
         for (InvestModel investModel : successInvests) {
             //投资人当期还款计划
             InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(investModel.getId(), currentLoanRepay.getPeriod());
-            if(RepayStatus.COMPLETE == investRepayModel.getStatus()){
-                logger.info(String.format("[Normal Repay %s] investRepay %s  status is COMPLETE",String.valueOf(currentLoanRepay.getRepayAmount()),String.valueOf(investRepayModel.getId())));
+            if (RepayStatus.COMPLETE == investRepayModel.getStatus()) {
+                logger.info(String.format("[Normal Repay %s] investRepay %s  status is COMPLETE", String.valueOf(currentLoanRepay.getRepayAmount()), String.valueOf(investRepayModel.getId())));
                 continue;
             }
             //实际利息
@@ -319,6 +322,9 @@ public class NormalRepayServiceImpl implements NormalRepayService {
         // create payback invest job
         this.createRepayJob(loanRepayId, 2);
 
+        mqWrapperClient.sendMessage(MessageQueue.RepaySuccess_CouponRepay, new RepaySuccessMessage(loanRepayId, false));
+        logger.info(MessageFormat.format("[[Normal Repay {0}]: 正常还款成功,发送MQ消息", String.valueOf(loanRepayId)));
+
         return callbackRequest.getResponseData();
     }
 
@@ -343,8 +349,8 @@ public class NormalRepayServiceImpl implements NormalRepayService {
             //投资人当期还款计划
             InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(investModel.getId(), currentLoanRepay.getPeriod());
 
-            if(RepayStatus.COMPLETE == investRepayModel.getStatus()){
-                logger.info(String.format("[Normal Repay %s] investRepay %s  status is COMPLETE",String.valueOf(currentLoanRepay.getRepayAmount()),String.valueOf(investRepayModel.getId())));
+            if (RepayStatus.COMPLETE == investRepayModel.getStatus()) {
+                logger.info(String.format("[Normal Repay %s] investRepay %s  status is COMPLETE", String.valueOf(currentLoanRepay.getRepayAmount()), String.valueOf(investRepayModel.getId())));
                 continue;
             }
             interestWithoutFee += investRepayModel.getActualInterest() - investRepayModel.getActualFee();
@@ -459,11 +465,11 @@ public class NormalRepayServiceImpl implements NormalRepayService {
     }
 
     @Override
-    public BaseDto<PayDataDto> asyncNormalRepayPaybackCallback(long notifyRequestId){
+    public BaseDto<PayDataDto> asyncNormalRepayPaybackCallback(long notifyRequestId) {
         NormalRepayNotifyRequestModel model = normalRepayNotifyMapper.findById(notifyRequestId);
         if (updateNormalRepayNotifyRequestStatus(model)) {
             try {
-                if(!this.processOneNormalRepayPaybackCallback(model)){
+                if (!this.processOneNormalRepayPaybackCallback(model)) {
                     fatalLog("normal repay callback, processOneNormalRepayPaybackCallback fail. investRepayId:" + model.getOrderId(), null);
                 }
             } catch (Exception e) {
@@ -489,7 +495,7 @@ public class NormalRepayServiceImpl implements NormalRepayService {
         return true;
     }
 
-    private boolean processOneNormalRepayPaybackCallback(NormalRepayNotifyRequestModel callbackRequestModel){
+    private boolean processOneNormalRepayPaybackCallback(NormalRepayNotifyRequestModel callbackRequestModel) {
         long investRepayId = Long.parseLong(callbackRequestModel.getOrderId().split(REPAY_ORDER_ID_SEPARATOR)[0]);
         InvestRepayModel currentInvestRepay = investRepayMapper.findById(investRepayId);
 
@@ -709,7 +715,6 @@ public class NormalRepayServiceImpl implements NormalRepayService {
         SmsFatalNotifyDto dto = new SmsFatalNotifyDto(MessageFormat.format("正常还款业务错误。详细信息：{0}", errMsg));
         smsWrapperClient.sendFatalNotify(dto);
     }
-
 
 
 }
