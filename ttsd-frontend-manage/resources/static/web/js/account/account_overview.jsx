@@ -19,8 +19,8 @@ $switchMenu.find('li').click(function(index) {
 require.ensure(['publicJs/load_echarts'],function() {
     let loadEcharts = require('publicJs/load_echarts');
     var data = [{ name: '可用金额', value: pydata.balance },
-        { name: '待收投资本金', value: pydata.collectingPrincipal },
-        { name: '待收预期收益', value: pydata.collectingInterest}];
+        { name: '待收投资本金', value: pydata.expectedTotalCorpus },
+        { name: '待收预期收益', value: pydata.expectedTotalInterest}];
     var option = loadEcharts.ChartOptionTemplates.PieOption(data),
         opt = loadEcharts.ChartConfig('ReportShow', option);
     loadEcharts.RenderChart(opt);

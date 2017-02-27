@@ -148,7 +148,6 @@ require.ensure([],function() {
         $btnCloseTurnOnElement = $('.btn-close-turn-on',$turnOnNoPasswordInvestDOM),
         $btnCloseTurnOffElement = $('.btn-close-turn-off', $turnOffNoPasswordInvestDOM),
         turnOffNoPasswordInvestForm= globalFun.$('#turnOffNoPasswordInvestForm'),
-        // $turnOffNoPasswordInvestForm = $('#turnOffNoPasswordInvestForm', $turnOffNoPasswordInvestDOM),
         $codeNumber = $('.code-number',$(turnOffNoPasswordInvestForm)),
         imageCaptchaForm = globalFun.$('#imageCaptchaForm');
     let errorBox = $('.error-box',$(turnOffNoPasswordInvestForm));
