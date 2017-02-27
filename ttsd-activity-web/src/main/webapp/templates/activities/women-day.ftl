@@ -21,11 +21,21 @@
 			<div class="machine-item tc">
 				<div class="machine-lottery">
 					<div class="sign-btn">
-						<#if isDraw?? && isDraw>
-                            <span class="sign-already"></span>
+
+
+						<#if isActivity?? && !isActivity>
+                            <span class="no-time"></span>
 						<#else>
-                            <span></span>
+							<#if isDraw?? && isDraw>
+                                <span class="sign-already"></span>
+							<#else>
+                                <span></span>
+							</#if>
 						</#if>
+
+
+
+
 					</div>
 					<div class="lottery-group" id="lotteryList">
 	                    <h3 class="menu-switch">

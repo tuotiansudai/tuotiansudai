@@ -10,6 +10,7 @@ import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.UserModel;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -40,6 +41,10 @@ public class ActivityWomenDayService {
 
     //每投资1000奖励花瓣
     private final long EACH_INVEST_AMOUNT_10000 = 100000L;
+
+    public boolean isActivityTime() {
+        return DateTime.now().toDate().before(activityWomanDayEndTime) && DateTime.now().toDate().after(activityWomanDayStartTime);
+    }
 
     public BasePaginationDataDto<WomanDayRecordView> getWomanDayPrizeRecord(int index, int pageSize, String loginName) {
         Map<String, WomanDayRecordView> womanDayAllRecordMap = setReferrerRecord(setInvestRecord(getSignRecord(loginName), loginName), loginName);
