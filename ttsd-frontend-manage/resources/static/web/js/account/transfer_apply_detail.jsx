@@ -1,31 +1,47 @@
-require('webStyle/investment/transfer_apply_detail.scss');
+require('webStyle/account/transfer_apply_detail.scss');
 require('webJsModule/coupon_alert');
-//投资计算器和意见反馈
-require('webJsModule/red_envelope_float');
-//安心签协议
+
 require('webJsModule/anxin_agreement');
-var $createForm = $('#createForm'),
-    $agreement = $createForm.find('.agreement'),
+let ValidatorForm= require('publicJs/validator');
+let commonFun= require('publicJs/commonFun');
+
+var createForm =globalFun.$('#createForm'),
+    $agreement = $(createForm).find('.agreement'),
     $isAnxinAuthenticationRequired=$('#isAnxinAuthenticationRequired');
-$createForm.validate({
-    debug: true,
-    rules: {
-        price: {
-            required: true,
-            max: parseFloat($('#tipText').attr('data-max')),
-            min: parseFloat($('#tipText').attr('data-min'))
-        }
-    },
-    onkeyup: function () {
-        $('#tipText').removeClass('active');
-    },
-    errorPlacement: function (error, element) {
-        $('#tipText').addClass('active');
-    },
-    submitHandler: function (form) {
-        applyTip();
+
+let validator = new ValidatorForm();
+let $tipText=$('#tipText'),
+    minTip = parseFloat($tipText.attr('data-min')),
+    maxTip = parseFloat($tipText.attr('data-max'));
+
+validator.add(createForm.price, [{
+    strategy: 'isNonEmpty',
+    errorMsg: '转让价格'
+},{
+    strategy: 'minValue:'+minTip,
+    errorMsg: '转让价格最小为'+minTip
+},{
+    strategy: 'maxValue:'+maxTip,
+    errorMsg: '转让价格最大为'+maxTip
+}]);
+
+$(createForm.price).on('keyup',function(event) {
+
+    let errorMsg = validator.start(this);
+    if(errorMsg) {
+
     }
 });
+
+createForm.onsubmit = function(event) {
+    event.preventDefault();
+    let errorMsg;
+    errorMsg = validator.start(createForm.price);
+    if(errorMsg) {
+        return;
+    }
+    applyTip();
+}
 
 function applyTip(){
     layer.open({
@@ -37,10 +53,10 @@ function applyTip(){
         content: '<p class="pad-m tc">是否确认转让？</p>',
         btn1: function () {
             var transferInvestId = $('#transferInvestId').val();
-            $.ajax({
+            commonFun.useAjax({
                 url: '/transfer/invest/' + transferInvestId + '/is-transferable',
                 type: 'GET'
-            }).done(function (data) {
+            },function(data) {
                 if (true == data.data.status) {
                     if($isAnxinAuthenticationRequired.val()=='false'){
                         sendData();
@@ -57,7 +73,7 @@ function applyTip(){
                 } else {
                     layer.msg(data.message);
                 }
-            })
+            });
         },
         btn2: function () {
             layer.closeAll();
@@ -66,7 +82,7 @@ function applyTip(){
 }
 
 function sendData() {
-    $.ajax({
+    commonFun.useAjax({
         url: '/transfer/apply',
         type: 'POST',
         dataType: 'json',
@@ -76,9 +92,10 @@ function sendData() {
             'transferInvestId': $('#transferInvestId').val()
         }),
         beforeSend: function (data) {
-            $createForm.find('button[type="submit"]').prop('disabled', true);
+            $(createForm).find('button[type="submit"]').prop('disabled', true);
         }
-    }).done(function (data) {
+    },function(data) {
+        $(createForm).find('button[type="submit"]').prop('disabled', false);
         if (data == true) {
             layer.open({
                 title: '温馨提示',
@@ -100,13 +117,7 @@ function sendData() {
         } else {
             layer.msg('申请失败，请重试！');
         }
-    })
-        .fail(function () {
-            layer.msg('请求失败，请重试！');
-        })
-        .always(function () {
-            $createForm.find('button[type="submit"]').prop('disabled', false);
-        });
+    });
 }
 
 $agreement.find('.fa').on('click', function () {
@@ -117,12 +128,12 @@ $agreement.find('.fa').on('click', function () {
         className = 'fa fa-check-square';
         $this.next('span.error').hide();
         $('#skipCheck').length>0?$('#skipCheck').val('true'):false;
-        $createForm.find('button[type="submit"]').prop('disabled', false);
+        $(createForm).find('button[type="submit"]').prop('disabled', false);
     }
     else {
         className = 'fa fa-square-o';
         $('#skipCheck').length>0?$('#skipCheck').val('false'):false;
-        $createForm.find('button[type="submit"]').prop('disabled', true);
+        $(createForm).find('button[type="submit"]').prop('disabled', true);
     }
     $this.find('i')[0].className = className;
 });
@@ -130,8 +141,6 @@ $('#cancleBtn').on('click', function (event) {
     event.preventDefault();
     history.go(-1);
 });
-
-
 
 //skip tip click chechbox
 $('.tip-item .skip-icon').on('click', function(event) {
@@ -168,30 +177,23 @@ $('#microPhone').on('click', function(event) {
 function getCode(type){
     $('#getSkipCode').prop('disabled',true);
     $('#microPhone').css('visibility', 'hidden');
-    $.ajax({
+    commonFun.useAjax({
         url: '/anxinSign/sendCaptcha',
         type: 'POST',
-        dataType: 'json',
         data:{
             isVoice:type
         }
-    })
-        .done(function(data) {
-            $('#getSkipCode').prop('disabled',false);
-            $('#microPhone').css('visibility', 'visible');
-            if(data.success) {
-                countDown();
-                Down = setInterval(countDown, 1000);
-            }
-            else {
-                layer.msg('请求失败，请重试或联系客服！');
-            }
-        })
-        .fail(function() {
-            $('#getSkipCode').prop('disabled',false);
-            $('#microPhone').css('visibility', 'visible');
+    },function(data) {
+        $('#getSkipCode').prop('disabled',false);
+        $('#microPhone').css('visibility', 'visible');
+        if(data.success) {
+            countDown();
+            Down = setInterval(countDown, 1000);
+        }
+        else {
             layer.msg('请求失败，请重试或联系客服！');
-        });
+        }
+    });
 }
 //countdown skip
 function countDown() {
@@ -212,34 +214,25 @@ $('#getSkipBtn').on('click',  function(event) {
     event.preventDefault();
     var $self=$(this);
     if($('#skipPhoneCode').val()!=''){
-        $.ajax({
+        commonFun.useAjax({
             url: '/anxinSign/verifyCaptcha',
             type: 'POST',
-            dataType: 'json',
             data: {
                 captcha: $('#skipPhoneCode').val(),
                 skipAuth:$('#tipCheck').val()
             }
-        })
-            .done(function(data) {
-                $self.removeClass('active').val('立即授权').prop('disabled', false);
-                if(data.success){
-                    $('#isAnxinUser').val('true') && $('.skip-group').hide();
-                    if(data.skipAuth=='true'){
-                        $isAnxinAuthenticationRequired.val('false');
-                    }
-                    skipSuccess();
-                }else{
-                    $('#skipError').text('验证码不正确').show();
+        },function(data) {
+            $self.removeClass('active').val('立即授权').prop('disabled', false);
+            if(data.success){
+                $('#isAnxinUser').val('true') && $('.skip-group').hide();
+                if(data.skipAuth=='true'){
+                    $isAnxinAuthenticationRequired.val('false');
                 }
-            })
-            .fail(function() {
-                $self.removeClass('active').val('立即授权').prop('disabled', false);
-                layer.msg('请求失败，请重试！');
-            })
-            .always(function() {
-                $self.addClass('active').val('授权中...').prop('disabled', true);
-            });
+                skipSuccess();
+            }else{
+                $('#skipError').text('验证码不正确').show();
+            }
+        });
     }else{
         $('#skipError').text('验证码不能为空').show();
     }
