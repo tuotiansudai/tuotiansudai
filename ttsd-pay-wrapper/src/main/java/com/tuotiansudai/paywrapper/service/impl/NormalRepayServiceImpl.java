@@ -16,7 +16,6 @@ import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.job.JobManager;
 import com.tuotiansudai.job.JobType;
-import com.tuotiansudai.job.NormalRepayJob;
 import com.tuotiansudai.message.EventMessage;
 import com.tuotiansudai.message.PushMessage;
 import com.tuotiansudai.message.RepaySuccessAsyncCallBackMessage;
@@ -67,8 +66,6 @@ public class NormalRepayServiceImpl implements NormalRepayService {
     private final static String REPAY_ORDER_ID_SEPARATOR = "X";
 
     private final static String REPAY_ORDER_ID_TEMPLATE = "{0}" + REPAY_ORDER_ID_SEPARATOR + "{1}";
-
-    private final static String REPAY_JOB_NAME_TEMPLATE = "NORMAL_REPAY_{0}_{1}";
 
     private final static String REPAY_REDIS_KEY_TEMPLATE = "NORMAL_REPAY:{0}";
 
@@ -661,16 +658,6 @@ public class NormalRepayServiceImpl implements NormalRepayService {
             actualInterest += loanRepayModel.getStatus() == RepayStatus.OVERDUE ? loanRepayModel.getExpectedInterest() + loanRepayModel.getDefaultInterest() : 0;
         }
         return actualInterest;
-    }
-
-    private void createRepayJob(long loanRepayId, int delayMinutes) throws SchedulerException {
-        Date fewMinutesLater = new DateTime().plusMinutes(delayMinutes).toDate();
-        jobManager.newJob(JobType.NormalRepay, NormalRepayJob.class)
-                .runOnceAt(fewMinutesLater)
-                .addJobData(NormalRepayJob.LOAN_REPAY_ID, loanRepayId)
-                .withIdentity(JobType.NormalRepay.name(), MessageFormat.format(REPAY_JOB_NAME_TEMPLATE, String.valueOf(loanRepayId), String.valueOf(fewMinutesLater.getTime())))
-                .submit();
-        logger.info(MessageFormat.format("[Normal Repay {0}] create invest payback job, start at {1}", String.valueOf(loanRepayId), fewMinutesLater.toString()));
     }
 
     private boolean isPaybackInvestSuccess(LoanRepayModel currentLoanRepayModel, List<InvestModel> successInvests) {
