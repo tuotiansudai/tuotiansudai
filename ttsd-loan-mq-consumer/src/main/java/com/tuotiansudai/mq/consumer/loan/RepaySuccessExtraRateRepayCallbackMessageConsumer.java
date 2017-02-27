@@ -15,8 +15,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 @Component
-public class RepaySuccessExtraRateNormalRepayCallbackMessageConsumer implements MessageConsumer {
-    private static Logger logger = LoggerFactory.getLogger(RepaySuccessExtraRateNormalRepayCallbackMessageConsumer.class);
+public class RepaySuccessExtraRateRepayCallbackMessageConsumer implements MessageConsumer {
+    private static Logger logger = LoggerFactory.getLogger(RepaySuccessExtraRateRepayCallbackMessageConsumer.class);
 
     @Autowired
     private PayWrapperClient payWrapperClient;
