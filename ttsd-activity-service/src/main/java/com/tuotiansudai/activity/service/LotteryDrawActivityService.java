@@ -530,8 +530,8 @@ public class LotteryDrawActivityService {
         return activityTime.get(1).replaceAll("-", "/");
     }
 
-    public int toDayIsDrawByMobile(String mobile) {
-        return userLotteryPrizeMapper.findUserLotteryPrizeCountViews(mobile, null, ActivityCategory.SPRING_FESTIVAL_ACTIVITY,
+    public int toDayIsDrawByMobile(String mobile, ActivityCategory activityCategory) {
+        return userLotteryPrizeMapper.findUserLotteryPrizeCountViews(mobile, null, activityCategory,
                 DateTime.now().withTimeAtStartOfDay().toDate(), DateTime.now().plusDays(1).withTimeAtStartOfDay().plusMillis(-1).toDate());
     }
 

@@ -24,7 +24,7 @@ require(['jquery', 'layerWrapper','template','commonFun','jquery.ajax.extension'
             },
             getLottery:function(){
                 $.ajax({
-                    url:'/point/sign-in',
+                    url:'/point-shop/sign-in',
                     type:'POST',
                     dataType: 'json'
                 })

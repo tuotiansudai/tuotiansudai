@@ -92,7 +92,7 @@ public class ActivityWomenDayService {
     private Map<String, WomanDayRecordView> setReferrerRecord(Map<String, WomanDayRecordView> womanDayAllRecordMap, String loginName) {
         List<UserModel> referrerUsers = userMapper.findUsersByRegisterTimeOrReferrer(activityWomanDayStartTime, activityWomanDayEndTime, loginName);
         referrerUsers.stream().filter(userModel -> investMapper.sumSuccessActivityInvestAmount(userModel.getLoginName(),null, activityWomanDayStartTime, activityWomanDayEndTime) >= 100)
-                .forEach(userModel -> this.putParam(womanDayAllRecordMap, userModel.getReferrer(), RewardType.REFERRER_REWARD, 1));
+                .forEach(userModel -> this.putParam(womanDayAllRecordMap, userModel.getReferrer(), RewardType.REFERRER_REWARD, 5));
         return womanDayAllRecordMap;
     }
 
