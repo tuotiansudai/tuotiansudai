@@ -25,6 +25,13 @@ validator.add(createForm.price, [{
     errorMsg: '转让价格最大为'+maxTip
 }]);
 
+$(createForm.price).on('keyup',function(event) {
+
+    let errorMsg = validator.start(this);
+    if(errorMsg) {
+
+    }
+});
 
 createForm.onsubmit = function(event) {
     event.preventDefault();

@@ -1,24 +1,5 @@
 $CK1:#ffac2a #ff7a2a;
 
-.layui-layer-btn {
-  text-align: center !important;
-  .layui-layer-btn0 {
-    padding: 3px 35px;
-    background: nth($CK1, 2) !important;
-    border-radius: 4px;
-    border: 1px solid nth($CK1, 2) !important;
-    border-color: nth($CK1, 2) !important;
-    letter-spacing: 3px;
-    color: #fff;
-  }
-  .layui-layer-btn1{
-    padding:3px 35px;
-    color:#808080!important;
-    border: 1px solid #dedede!important;
-    background: #f1f1f1!important;
-    border-radius: 4px;
-  }
-}
 .layui-layer-content{
   i.fa-check-circle{
     float:left;
@@ -113,6 +94,9 @@ $CK1:#ffac2a #ff7a2a;
         .tip-text{
           color:#7f7f7f;
           margin-left:20px;
+          &.error {
+            color: red;
+          }
           &.active{
             color:#f71010;
           }
