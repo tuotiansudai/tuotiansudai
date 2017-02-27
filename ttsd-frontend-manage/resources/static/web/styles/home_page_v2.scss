@@ -700,9 +700,7 @@ $pointColor:#ff5400;
 }
 
 @media screen and (max-width: 700px) {
-  .hot-bag {
-    display: none;
-  }
+
   .book-invest-box {
     padding: 10px;
     .book-invest-form {
@@ -743,6 +741,9 @@ $pointColor:#ff5400;
     padding-right:6px;
   }
   .home-page-container {
+    .newer-exclusive-box .hot-bag {
+      display: none;
+    }
     .book-box-layer {
       width: 98%!important;
       left: 1%!important;
