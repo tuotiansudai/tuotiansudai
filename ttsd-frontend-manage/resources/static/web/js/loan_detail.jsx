@@ -174,7 +174,7 @@ function markNoPasswordRemind(){
         title: '免密投资',
         shadeClose: false,
         btn: autoInvestOn ? ['继续投资', '开启免密投资'] : ['继续投资', '前往联动优势授权'],
-        area: ['500px', '160px'],
+        area: ['500px'],
         content: '<p class="pad-m-tb tc">推荐您开通免密投资功能，简化投资过程，理财快人一步！</p>',
         btn1: function () {
             investSubmit();
