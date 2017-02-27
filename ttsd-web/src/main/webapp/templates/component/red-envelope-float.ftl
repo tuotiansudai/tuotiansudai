@@ -4,7 +4,7 @@
 		<span>投资计算器</span>
 		<i class="close-count"></i>
 	</h3>
-	<form id="countForm" action="">
+	<form id="countForm" action="" class="clearfix">
 		<div class="form-text">
 			<input type="text" placeholder="投资金额" class="int-text" name="money" id="moneyNum">
 			<span class="unit-text">元</span>
@@ -18,11 +18,12 @@
 			<span class="unit-text">%</span>
 		</div>
 		<div class="form-text">
+			<div class="error-box"></div>
 			<input class="submit-btn" type="submit" value="计算">
 			<input class="reset-btn" type="reset" value="重置" id="resetBtn">
 		</div>
 	</form>
-	<div class="form-text">
+	<div class="form-text clearfix">
 		<p class="result-text">本息合计 <span id="resultNum">0</span> 元</p>
 		<p class="tip-text">计算结果仅供参考，以实际收益为准</p>
 	</div>
@@ -30,11 +31,11 @@
 <ul class="fix-nav-list">
 	<li class="cal-btn">
 		<i class="icon-calculator"></i>
-		<span class="nav-text" onclick="cnzzPush.trackClick('62首页','悬浮窗模块','计算器')">投资<br/>计算器</span>
+		<span class="nav-text" >投资<br/>计算器</span>
 	</li>
 	<li>
 		<i class="icon-phone"></i>
-		<span class="nav-text" onclick="cnzzPush.trackClick('63首页','悬浮窗模块','手机APP')">APP<br/>下载</span>
+		<span class="nav-text">APP<br/>下载</span>
 		<div class="fix-nav app-img"></div>
 	</li>
 	<li class="show-feed">
@@ -45,7 +46,7 @@
 <ul class="back-top">
 	<li>
 		<i class="icon-top"></i>
-		<span class="nav-text" onclick="cnzzPush.trackClick('65首页','悬浮窗模块','回到顶部')">返回<br/>顶部</span>
+		<span class="nav-text">返回<br/>顶部</span>
 	</li>
 </ul>
 <div class="feedback-container feedback-model" id="feedbackConatiner">
@@ -67,6 +68,7 @@
 			</dl>
 		</div>
 		<div class="content-list">
+			<input type="hidden" name="type" >
 			<textarea class="text-area int-text" name="content" placeholder="欢迎反馈您遇到的问题，或者想要的功能（文字限制在14～200字）" maxlength="200" id="textArea"></textarea>
 		</div>
 		<div class="content-list">
@@ -75,11 +77,12 @@
 		</div>
 		<div class="content-list">
 			<label class="name-text">验证码：</label>
+            <img src="" id="imageCaptchaFeed">
 			<input type="text" class="code-text int-text" name="captcha" value="" id="captchaText" maxlength="5">
-			<img src="" id="captcha">
-			<label class="error captcha-error" id="captchaError">验证码错误！</label>
+
 		</div>
 		<div class="content-list tc">
+			<#--<div class="error-box tl"></div>-->
 			<input type="submit" class="btn submit-btn" value="提交意见">
 		</div>
 	</form>

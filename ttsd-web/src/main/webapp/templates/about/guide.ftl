@@ -1,5 +1,5 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.about_assurance}" pageJavascript="${js.assurance}" activeNav="新手指引" activeLeftNav="" title="新手指引_拓天新手理财_拓天速贷" keywords="拓天速贷,新手投资,新手投资福利,新手指引" description="拓天速贷为广大投资用户提供多元化的投资选择和优质的金融信息服务,拓天速贷投资用户可通过新手专区领取现金588元红包大奖进行投资,获得稳定收益.">
+<@global.main pageCss="${css.about_assurance}" pageJavascript="${js.about_assurance}" activeNav="新手指引" activeLeftNav="" title="新手指引_拓天新手理财_拓天速贷" keywords="拓天速贷,新手投资,新手投资福利,新手指引" description="拓天速贷为广大投资用户提供多元化的投资选择和优质的金融信息服务,拓天速贷投资用户可通过新手专区领取现金588元红包大奖进行投资,获得稳定收益.">
 
 <div class="new-guide-container" id="pageGuide">
     <ul class="quick-top-link page-width">
@@ -9,7 +9,7 @@
     </ul>
     <div class="main-banner">
         <div class="page-width">
-            <img src="${staticServer}/images/sign/assure/newer-bar2.jpg" alt="风控流程">
+            <img id="guideBar" alt="风控流程">
         </div>
     </div>
     <div class="section-box-one bg-white clearfix pad-box">
@@ -26,8 +26,8 @@
             <dd>可选择不同期限产品，预期年化收益最高可达<em>8%~11%</em></dd>
             <dd class="img-load">
                 <div class="arrow-rise"></div>
-                <img src="${staticServer}/images/sign/assure/load.png">
-            </dd>
+                <img src="${commonStaticServer}/images/sign/assure/load.png">
+            </dd> d
         </dl>
 
         <div class="line"></div>
@@ -68,7 +68,7 @@
             <dt><span>03</span>高效便捷＋门槛低</dt>
             <dd>手机APP随时随地便捷投资，只需50元。</dd>
             <dd class="benefit-img">
-                <img src="${staticServer}/images/sign/assure/benefit01.png">
+                <img src="${commonStaticServer}/images/sign/assure/benefit01.png">
             </dd>
          </dl>
         <div class="line hack"></div>
@@ -77,7 +77,7 @@
             <dd>抵押债权，相对安全的债权模式； <br/>
                 债权转让，急用即转，方便快捷。</dd>
             <dd class="benefit-img">
-                <img src="${staticServer}/images/sign/assure/benefit02.png">
+                <img src="${commonStaticServer}/images/sign/assure/benefit02.png">
             </dd>
         </dl>
 
@@ -110,7 +110,7 @@
             </div>
 
             <div class="creditor-right-info">
-                <img src="${staticServer}/images/sign/assure/creditor-right.png" class="fl">
+                <img src="${commonStaticServer}/images/sign/assure/creditor-right.png" class="fl">
                 <p>抵押贷债权持有者因资金流动性需求，将持有的债权项目挂出并转让，并承担一定比例的折让金。一对一转让，不可拆分。周期为5天，5天未有购买的将流标。5 天内如有回款则债权无法申请转让，当前为逾期状态债权也不能申请转让。
 
                 </p>
@@ -123,7 +123,7 @@
 
     <div class="section-box-four clearfix pad-box page-width">
         <div class="column-title-ac"><i></i>如何投资<i></i> </div>
-        <img src="${staticServer}/images/sign/assure/steps.jpg" alt="风控流程">
+        <img src="${commonStaticServer}/images/sign/assure/steps.jpg" alt="风控流程">
         <div class="tc">
             <a href="/register/user" class="btn-guide">注册投资</a>
         </div>
@@ -134,11 +134,11 @@
             <div class="column-title-ac"><i></i>关注拓天<i></i> </div>
             <div class="code-ma tc">
                 <span>
-                    <img src="${staticServer}/images/sign/assure/weixin-code.png"> <br/>
+                    <img src="${commonStaticServer}/images/scanCode/weixin-code.png"> <br/>
                     拓天速贷微信订阅号
                 </span>
                 <span>
-                    <img src="${staticServer}/images/sign/assure/app-img.png"> <br/>
+                    <img src="${commonStaticServer}/images/scanCode/app-img.png"> <br/>
                     下载拓天速贷APP
                 </span>
 

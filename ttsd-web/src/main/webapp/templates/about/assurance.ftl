@@ -1,5 +1,5 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.about_assurance}" pageJavascript="${js.assurance}" activeNav="" activeLeftNav="" title="安全保障_安全投资_拓天速贷" keywords="拓天速贷,安全保障,安全投资,资金安全" description="拓天速贷安全保障投资用户的资金安全、隐私安全、信息安全等,让投资用户放心投资、安全投资.">
+<@global.main pageCss="${css.about_assurance}" pageJavascript="${js.about_assurance}" activeNav="" activeLeftNav="" title="安全保障_安全投资_拓天速贷" keywords="拓天速贷,安全保障,安全投资,资金安全" description="拓天速贷安全保障投资用户的资金安全、隐私安全、信息安全等,让投资用户放心投资、安全投资.">
 
 <div class="assurance-container" id="assuranceEffect">
     <ul class="quick-top-link page-width">
@@ -9,7 +9,7 @@
     </ul>
     <div class="main-banner">
         <div class="page-width">
-            <img src="${staticServer}/images/sign/assure/assure-bar.jpg" alt="拓天速贷，安全保障">
+            <img id="assureBar" alt="拓天速贷，安全保障">
         </div>
     </div>
     <div class="fund-safety-box bg-white clearfix pad-box">
