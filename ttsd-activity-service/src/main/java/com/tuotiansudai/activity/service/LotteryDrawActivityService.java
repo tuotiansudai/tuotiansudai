@@ -289,14 +289,14 @@ public class LotteryDrawActivityService {
                 .put(LotteryPrize.POINT_SHOP_RED_ENVELOPE_50, Lists.newArrayList(361L))
                 .put(LotteryPrize.POINT_SHOP_INTEREST_COUPON_2, Lists.newArrayList(362L))
                 .put(LotteryPrize.POINT_SHOP_INTEREST_COUPON_5, Lists.newArrayList(363L))
-                .put(LotteryPrize.WOMAN_DAY_ACTIVITY_ENVELOP_521, Lists.newArrayList(376L))
-                .put(LotteryPrize.WOMAN_DAY_ACTIVITY_ENVELOP_580, Lists.newArrayList(377L))
-                .put(LotteryPrize.WOMAN_DAY_ACTIVITY_ENVELOP_880, Lists.newArrayList(378L))
-                .put(LotteryPrize.WOMAN_DAY_ACTIVITY_ENVELOP_1000, Lists.newArrayList(379L))
-                .put(LotteryPrize.WOMAN_DAY_ACTIVITY_INTEREST_COUPON_2, Lists.newArrayList(380L))
-                .put(LotteryPrize.WOMAN_DAY_ACTIVITY_ENVELOP_38, Lists.newArrayList(381L))
-                .put(LotteryPrize.WOMAN_DAY_ACTIVITY_ENVELOP_38_100, Lists.newArrayList(382L, 381L))
-                .put(LotteryPrize.WOMAN_DAY_ACTIVITY_INTEREST_COUPON_5, Lists.newArrayList(383L))
+                .put(LotteryPrize.WOMAN_DAY_ACTIVITY_ENVELOP_521, Lists.newArrayList(392L))
+                .put(LotteryPrize.WOMAN_DAY_ACTIVITY_ENVELOP_580, Lists.newArrayList(393L))
+                .put(LotteryPrize.WOMAN_DAY_ACTIVITY_ENVELOP_880, Lists.newArrayList(394L))
+                .put(LotteryPrize.WOMAN_DAY_ACTIVITY_ENVELOP_1000, Lists.newArrayList(395L))
+                .put(LotteryPrize.WOMAN_DAY_ACTIVITY_INTEREST_COUPON_2, Lists.newArrayList(396L))
+                .put(LotteryPrize.WOMAN_DAY_ACTIVITY_ENVELOP_38, Lists.newArrayList(397L))
+                .put(LotteryPrize.WOMAN_DAY_ACTIVITY_ENVELOP_38_100, Lists.newArrayList(398L, 397L))
+                .put(LotteryPrize.WOMAN_DAY_ACTIVITY_INTEREST_COUPON_5, Lists.newArrayList(399L))
                 .build()).get(lotteryPrize);
     }
 
