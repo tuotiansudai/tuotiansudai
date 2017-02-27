@@ -109,6 +109,11 @@ public class ExtraRateServiceImpl implements ExtraRateService {
                             String.valueOf(investExtraRateModel.getInvestId()),
                             investExtraRateModel.getLoginName(),
                             String.valueOf(investExtraRateModel.getAmount())), e);
+                    fatalLog(MessageFormat.format("[Normal Repay {0}] extra rate is failed, investId={0} loginName={1} amount={3}",
+                            String.valueOf(loanRepayId),
+                            String.valueOf(investExtraRateModel.getInvestId()),
+                            investExtraRateModel.getLoginName(),
+                            String.valueOf(investExtraRateModel.getAmount())), e);
                 }
             }
         }
@@ -237,6 +242,11 @@ public class ExtraRateServiceImpl implements ExtraRateService {
                 this.sendExtraRateAmount(loanRepayId, investExtraRateModel, actualInterest, actualFee);
             } catch (Exception e) {
                 logger.error(MessageFormat.format("[Advance Repay {0}] extra rate is failed, investId={0} loginName={1} amount={3}",
+                        String.valueOf(loanRepayId),
+                        String.valueOf(investExtraRateModel.getInvestId()),
+                        investExtraRateModel.getLoginName(),
+                        String.valueOf(investExtraRateModel.getAmount())), e);
+                fatalLog(MessageFormat.format("[Advance Repay {0}] extra rate is failed, investId={0} loginName={1} amount={3}",
                         String.valueOf(loanRepayId),
                         String.valueOf(investExtraRateModel.getInvestId()),
                         investExtraRateModel.getLoginName(),
