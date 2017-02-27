@@ -63,12 +63,12 @@ public class RepaySuccessInvestRepayMessageConsumer implements MessageConsumer {
         }
 
         try {
-            BaseDto<PayDataDto> baseDto = payWrapperClient.postRepay(repaySuccessMessage);
+            BaseDto<PayDataDto> baseDto = payWrapperClient.postInvestRepay(repaySuccessMessage);
 
-            if (!baseDto.isSuccess()) {
-                smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(MessageFormat.format("还款发放优惠券收益失败,还款ID:{0}", String.valueOf(loanRepayId))));
+            if (!baseDto.getData().getStatus()) {
                 logger.error("[还款发放投资人收益MQ] RepaySuccess_InvestRepay is fail. loanId:{}", String.valueOf(loanRepayId));
-                throw new RuntimeException("[还款发放投资人收益MQ] RepaySuccess_InvestRepay is fail. loanOutInfo: " + message);
+                smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(MessageFormat.format("还款发放投资人收益失败,还款ID:{0}", String.valueOf(loanRepayId))));
+                return;
             }
         } catch (Exception e) {
             logger.error("[还款发放投资人收益MQ] RepaySuccess_InvestRepay  is fail, message:{}", message);

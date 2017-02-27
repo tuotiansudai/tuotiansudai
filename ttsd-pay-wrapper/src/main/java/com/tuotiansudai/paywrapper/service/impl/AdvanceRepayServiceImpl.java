@@ -296,9 +296,6 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
         redisWrapperClient.hset(redisKey, String.valueOf(loanRepayId), SyncRequestStatus.READY.name());
         logger.info(MessageFormat.format("[Advance Repay {0}] put loan repay id into redis READY", String.valueOf(loanRepayId)));
 
-        // create payback invest job
-        this.createRepayJob(loanRepayId, 2);
-
         mqWrapperClient.publishMessage(MessageTopic.RepaySuccess,new RepaySuccessMessage(loanRepayId, true));
         logger.info(MessageFormat.format("[[Advance Repay {0}]: 提前还款成功,发送MQ消息", String.valueOf(loanRepayId)));
 
@@ -399,12 +396,6 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
             logger.info(MessageFormat.format("[Advance Repay {0}] update loan({1}) status to COMPLETE is {2}",
                     String.valueOf(loanRepayId), String.valueOf(loanId), String.valueOf(dto.getData().getStatus())));
             return dto.getData().getStatus();
-        }
-
-        try {
-            this.createRepayJob(loanRepayId, 60);
-        } catch (SchedulerException e) {
-            logger.error(MessageFormat.format("[Advance Repay {0}] create repay job failed", String.valueOf(loanRepayId)));
         }
 
         return false;
