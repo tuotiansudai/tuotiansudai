@@ -1,7 +1,9 @@
 package com.tuotiansudai.activity.controller;
 
+import com.tuotiansudai.activity.repository.model.ActivityCategory;
 import com.tuotiansudai.activity.repository.model.WomanDayRecordView;
 import com.tuotiansudai.activity.service.ActivityWomenDayService;
+import com.tuotiansudai.activity.service.LotteryDrawActivityService;
 import com.tuotiansudai.point.service.SignInService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.apache.commons.collections4.CollectionUtils;
@@ -22,6 +24,9 @@ public class WomenDayActivityController {
     @Autowired
     private SignInService signInService;
 
+    @Autowired
+    private LotteryDrawActivityService lotteryDrawActivityService;
+
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView loadPageData() {
         String loginName = LoginUserInfo.getLoginName();
@@ -35,6 +40,7 @@ public class WomenDayActivityController {
         }
         modelAndView.addObject("totalLeaves", totalLeaves);
         modelAndView.addObject("signedIn", signInService.signInIsSuccess(loginName));
+        modelAndView.addObject("isDraw", lotteryDrawActivityService.toDayIsDrawByMobile(LoginUserInfo.getMobile(), ActivityCategory.WOMAN_DAY_ACTIVITY) > 0 ? true : false);
         modelAndView.addObject("prize", prize);
         return modelAndView;
     }

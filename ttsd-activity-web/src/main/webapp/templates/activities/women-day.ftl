@@ -21,7 +21,7 @@
 			<div class="machine-item tc">
 				<div class="machine-lottery">
 					<div class="sign-btn">
-						<#if signedIn?? && signedIn>
+						<#if isDraw?? && isDraw>
                             <span class="sign-already"></span>
 						<#else>
                             <span></span>
