@@ -100,6 +100,8 @@ $red: #eb4a3e;
       }
       .loan-info {
         color: #808080;
+        height: auto;
+        overflow: auto;
         .title-block {
           padding: 0 20px;
           line-height: 50px;
@@ -946,4 +948,8 @@ $red: #eb4a3e;
     }
 
   }
+}
+@media screen and (max-width: 700px) {
+  .invest-list-content .col-md-4 { width: 100%;}
+
 }
