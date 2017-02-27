@@ -162,8 +162,10 @@
                 <div class="col-sm-4">
                     <select class="selectpicker message-jumpTo" name="jumpTo">
                         <#list appUrls as jumpToUrl>
-                            <option value="${jumpToUrl.name()}"
+                            <#if jumpToUrl != "OTHER" && jumpToUrl != "NONE">
+                                <option value="${jumpToUrl.name()}"
                                         <#if ((dto.push.jumpTo)?? && dto.push.jumpTo.name() == jumpToUrl.name()) || jumpToUrl_index == 0>selected="selected"</#if>>${jumpToUrl.getDescription()}</option>
+                            </#if>
                         </#list>
                     </select>
                 </div>
