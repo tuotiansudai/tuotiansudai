@@ -12,7 +12,6 @@ import com.tuotiansudai.service.HomeService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import redis.clients.jedis.exceptions.JedisConnectionException;
 
 import java.text.MessageFormat;
 import java.time.LocalDate;
@@ -47,7 +46,7 @@ public class HomeServiceImpl implements HomeService {
     @Autowired
     private SiteMapRedisWrapperClient siteMapRedisWrapperClient;
 
-    private static final String CMS_CATEGORY = "cms:sitemap:categoryfdfdfdfdfdf:{0}";
+    private static final String CMS_CATEGORY = "cms:sitemap:category:{0}";
 
     public List<HomeLoanDto> getNormalLoans() {
         return getLoans().stream().filter(loan -> !loan.getProductType().equals(ProductType._30) && !loan.getActivityType().equals(ActivityType.NEWBIE)).collect(Collectors.toList());
@@ -118,22 +117,22 @@ public class HomeServiceImpl implements HomeService {
     }
 
     @Override
-    public List<SiteMapDataDto> siteMapData(){
+    public List<SiteMapDataDto> siteMapData() {
         List<SiteMapDataDto> cmsSiteMapDataDtoList = Lists.newArrayList();
-           if (siteMapRedisWrapperClient.exists(MessageFormat.format(CMS_CATEGORY, LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE)))) {
-               //从redis中取值
-               Map<String, String> cmsSiteMap = siteMapRedisWrapperClient.hgetAll(MessageFormat.format(CMS_CATEGORY, LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE)));
-               for (String key : cmsSiteMap.keySet()) {
-                   try {
-                       SiteMapDataDto cmsSiteMapDataDto = new SiteMapDataDto();
-                       cmsSiteMapDataDto.setName(key);
-                       cmsSiteMapDataDto.setLinkUrl(cmsSiteMap.get(key));
-                       cmsSiteMapDataDtoList.add(cmsSiteMapDataDto);
-                   } catch (Exception e) {
-                       logger.error("read sitemap from cmsredis error " + e);
-                   }
-               }
-           }
+        if (siteMapRedisWrapperClient.exists(MessageFormat.format(CMS_CATEGORY, LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE)))) {
+            //从redis中取值
+            Map<String, String> cmsSiteMap = siteMapRedisWrapperClient.hgetAll(MessageFormat.format(CMS_CATEGORY, LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE)));
+            for (String key : cmsSiteMap.keySet()) {
+                try {
+                    SiteMapDataDto cmsSiteMapDataDto = new SiteMapDataDto();
+                    cmsSiteMapDataDto.setName(key);
+                    cmsSiteMapDataDto.setLinkUrl(cmsSiteMap.get(key));
+                    cmsSiteMapDataDtoList.add(cmsSiteMapDataDto);
+                } catch (Exception e) {
+                    logger.error("read sitemap from cmsredis error " + e);
+                }
+            }
+        }
         return cmsSiteMapDataDtoList;
     }
 }
