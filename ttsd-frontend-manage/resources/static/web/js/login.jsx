@@ -67,7 +67,7 @@ loginForm.onsubmit = function(event) {
             let redirectUrl=$(loginForm).data('redirect-url');
             if (data.status) {
                  //用户角色里是否包含USER角色
-                let hasUserRole=data.roles.includes('USER');
+                let hasUserRole = _.contains(data.roles, 'USER');
                 location.href = hasUserRole ? redirectUrl : "/register/account";
             } else {
                 let imageCaptcha=globalFun.$('#imageCaptcha');

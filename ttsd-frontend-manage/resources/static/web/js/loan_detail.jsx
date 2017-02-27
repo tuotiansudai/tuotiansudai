@@ -107,13 +107,12 @@ function investSubmit(){
             title: '免密投资',
             shadeClose:false,
             btn:['取消', '确认'],
-            area: ['300px', '160px'],
+            area: ['300px'],
             content: '<p class="pad-m-tb tc">确认投资？</p>',
             btn1: function(){
                 layer.closeAll();
             },
             btn2:function(){
-                //判断是否开启安心签免验
                 if($isAuthenticationRequired.val()==='false'){
                     sendSubmitRequest();
                 }else{

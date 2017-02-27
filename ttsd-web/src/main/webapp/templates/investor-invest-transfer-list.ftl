@@ -122,7 +122,7 @@
             </td>
         </tr>
         <% } %>
-        <%=records?'':'<td colspan="7" class="no-data">暂时没有债权转让投资记录</td>'%>
+        <%=records.length?'':'<td colspan="7" class="no-data">暂时没有债权转让投资记录</td>'%>
         </tbody>
     </table>
 </script>

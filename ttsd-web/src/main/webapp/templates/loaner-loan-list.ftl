@@ -61,7 +61,7 @@
             </td>
         </tr>
         <% } %>
-        <%=records?'':'<tr><td colspan="6" class="no-data">暂时没有记录</td></tr>'%>
+        <%=records.length?'':'<tr><td colspan="6" class="no-data">暂时没有记录</td></tr>'%>
         </tbody>
         <% } %>
             <#--isComplete 状态-->
@@ -93,7 +93,7 @@
         </tr>
         <% } %>
 
-        <%=records?'':'<tr><td colspan="6" class="no-data">暂时没有记录</td></tr>'%>
+        <%=records.length?'':'<tr><td colspan="6" class="no-data">暂时没有记录</td></tr>'%>
         </tbody>
         <% } %>
 
@@ -117,7 +117,7 @@
             <td><%=item.recheckTime%></td>
         </tr>
         <% } %>
-        <%=records?'':'<tr><td colspan="3" class="no-data">暂时没有记录</td></tr>'%>
+        <%=records.length?'':'<tr><td colspan="3" class="no-data">暂时没有记录</td></tr>'%>
         </tbody>
          <% } %>
     </table>

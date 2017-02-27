@@ -14,12 +14,6 @@
                             <i class="ic-right"></i>
                         </span>
                     </#if>
-
-                    <div class="fl orange extra-rate">
-                        <i class="fa fa-mobile"></i>
-                        APP专享
-                    </div>
-
                     <#if loan.extraSource?? && loan.extraSource == "MOBILE">
                         <div class="fl orange extra-rate">
                             <i class="fa fa-mobile"></i>

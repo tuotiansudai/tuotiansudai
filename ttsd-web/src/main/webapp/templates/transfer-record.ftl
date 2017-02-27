@@ -70,7 +70,7 @@
             </td>
         </tr>
         <% } %>
-        <%=records?'':'<td colspan="7" class="no-data">暂时没有可转让债权记录</td>'%>
+        <%=records.length?'':'<td colspan="7" class="no-data">暂时没有可转让债权记录</td>'%>
         </tbody>
     </table>
 
@@ -109,7 +109,7 @@
             </td>
         </tr>
         <% } %>
-        <%=records?'':'<td colspan="7" class="no-data">暂时没有可转让债权记录</td>'%>
+        <%=records.length?'':'<td colspan="7" class="no-data">暂时没有可转让债权记录</td>'%>
         </tbody>
     </table>
 </script>
@@ -151,7 +151,7 @@
             </td>
         </tr>
         <% } %>
-        <%=records?'':'<td colspan="7" class="no-data">暂时没有可转让债权记录</td>'%>
+        <%=records.length?'':'<td colspan="7" class="no-data">暂时没有可转让债权记录</td>'%>
 
         </tbody>
     </table>

@@ -77,12 +77,12 @@
 		</div>
 		<div class="content-list">
 			<label class="name-text">验证码：</label>
+            <img src="" id="imageCaptchaFeed">
 			<input type="text" class="code-text int-text" name="captcha" value="" id="captchaText" maxlength="5">
-			<img src="" id="imageCaptchaFeed">
-			<#--<label class="error captcha-error" id="captchaError">验证码错误！</label>-->
+
 		</div>
 		<div class="content-list tc">
-			<div class="error-box tl"></div>
+			<#--<div class="error-box tl"></div>-->
 			<input type="submit" class="btn submit-btn" value="提交意见">
 		</div>
 	</form>

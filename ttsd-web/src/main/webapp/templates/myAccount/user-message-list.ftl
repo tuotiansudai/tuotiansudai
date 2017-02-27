@@ -51,7 +51,7 @@
         </tr>
         <% } %>
 
-        <%=records?'':'<tr><td colspan="3" class="no-data">暂时没有记录</td></tr>'%>
+        <%=records.length?'':'<tr><td colspan="3" class="no-data">暂时没有记录</td></tr>'%>
         </tbody>
     </table>
     <p class="page-count-bottom"><button class="read-all-messages">全部标记为已读</button></p>

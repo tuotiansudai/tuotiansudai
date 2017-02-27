@@ -83,7 +83,7 @@
             <td><%=item.registerTime%></td>
         </tr>
         <% } %>
-        <%=records?'':'<tr><td colspan="3" class="no-data">暂时没有推荐记录</td></tr>'%>
+        <%=records.length?'':'<tr><td colspan="3" class="no-data">暂时没有推荐记录</td></tr>'%>
         </tbody>
     </table>
 
@@ -119,7 +119,7 @@
         </tr>
         <% } %>
 
-        <%=records?'':'<tr><td colspan="8" class="no-data">暂时没有推荐人投资记录</td></tr>'%>
+        <%=records.length?'':'<tr><td colspan="8" class="no-data">暂时没有推荐人投资记录</td></tr>'%>
         <tr>
             <td colspan="8" align="center">
                 推荐奖励总收益：<%=totalReward%>元

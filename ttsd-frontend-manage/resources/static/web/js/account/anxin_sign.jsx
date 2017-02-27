@@ -171,7 +171,7 @@ $('body').on('click','a',function(event) {
         if(getId=='getSkipCode' || getId=='microPhone') {
             $('#getSkipCode').prop('disabled',true);
             $('#microPhone').prop('disabled',true);
-            console.log(getId);
+
             ajaxOuterFun({
                 thisDom:$this,
                 url:'anxinSign/sendCaptcha',
@@ -188,7 +188,6 @@ $('body').on('click','a',function(event) {
                 else {
                     layer.msg('请求失败，请重试或联系客服！');
                 }
-
             })
         }
 

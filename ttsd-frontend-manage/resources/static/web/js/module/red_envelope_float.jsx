@@ -183,12 +183,12 @@ require.ensure([],function() {
         },{
             strategy: 'maxLength:200',
             errorMsg: '文字限制最大为200！'
-        }]);
+        }],true);
 
         feedbackValidator.add(feedForm.contact, [{
             strategy: 'isMobile',
             errorMsg: '请输入正确的手机号！'
-        }]);
+        }],true);
 
 
         feedbackValidator.add(feedForm.captcha, [{
@@ -197,7 +197,7 @@ require.ensure([],function() {
         }, {
             strategy: 'isNumber:5',
             errorMsg: '请输入5位验证码！'
-        }]);
+        }],true);
 
         let feedInputs=$(feedForm).find('input:text,textarea');
         feedInputs=Array.from(feedInputs);
