@@ -183,4 +183,10 @@ public class UserServiceImpl implements UserService {
     public UserModel findByMobile(String mobile) {
         return userMapper.findByMobile(mobile);
     }
+
+    @Override
+    public long getExperienceBalanceByLoginName(String loginName) {
+        UserModel userModel = userMapper.findByLoginName(loginName);
+        return userModel != null ? userModel.getExperienceBalance() : 0;
+    }
 }

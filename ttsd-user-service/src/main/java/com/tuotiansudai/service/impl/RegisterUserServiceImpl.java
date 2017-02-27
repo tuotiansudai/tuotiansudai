@@ -65,6 +65,9 @@ public class RegisterUserServiceImpl implements RegisterUserService {
     private void sendMessage(UserModel userModel) {
         mqWrapperClient.sendMessage(MessageQueue.UserRegistered_CompletePointTask, userModel.getLoginName());
 
+        //体验金单独存入体验金账户
+        mqWrapperClient.sendMessage(MessageQueue.UserRegistered_CompleteExperienceUpdate, userModel.getLoginName());
+
         //Title:5888元体验金已存入您的账户，请查收！
         //Content:哇，您终于来啦！初次见面，岂能无礼？5888元体验金双手奉上，【立即体验】再拿588元红包和3%加息券！
         mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(MessageEventType.REGISTER_USER_SUCCESS,

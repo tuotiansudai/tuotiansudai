@@ -153,6 +153,7 @@ public class LoanServiceImpl implements LoanService {
                 loanItemDto.setLoanAmount(loanModel.getLoanAmount());
                 loanItemDto.setActivityType(loanModel.getActivityType());
                 loanItemDto.setInterestCouponRate(new BigDecimal(String.valueOf(newbieInterestCouponRate)).multiply(new BigDecimal("100")).setScale(2, BigDecimal.ROUND_DOWN).doubleValue());
+                loanItemDto.setMinInvestAmount(loanModel.getMinInvestAmount());
                 BigDecimal loanAmountBigDecimal = new BigDecimal(loanModel.getLoanAmount());
                 BigDecimal sumInvestAmountBigDecimal = new BigDecimal(investMapper.sumSuccessInvestAmount(loanModel.getId()));
                 if (LoanStatus.PREHEAT == loanModel.getStatus()) {

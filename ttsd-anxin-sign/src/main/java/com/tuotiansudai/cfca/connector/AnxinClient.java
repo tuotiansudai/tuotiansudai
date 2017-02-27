@@ -54,7 +54,7 @@ public class AnxinClient {
 
     @PostConstruct
     public void initSSL() throws GeneralSecurityException, IOException {
-        anxinSignKey = SecurityUtil.loadAnxinSignKey(JKS_CLASS_PATH, JKS_PWD);
+        anxinSignKey = null;//SecurityUtil.loadAnxinSignKey(JKS_CLASS_PATH, JKS_PWD);
         logger.info("into AnxinClient initSSl method. Thread id: " + Thread.currentThread().getId());
         KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(DEFAULT_KEY_ALGORITHM);
         keyManagerFactory.init(anxinSignKey, JKS_PWD.toCharArray());

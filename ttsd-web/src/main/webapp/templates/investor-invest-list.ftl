@@ -89,7 +89,7 @@
                     <td>{{$value.status}}</td>
                     <td>
                         {{if $value.productType=='EXPERIENCE'}}
-                        {{$value.nextRepayAmount}}(现金红包)
+                        {{$value.nextRepayAmount}}
                         {{else}}
                         {{if $value.nextRepayDate}}
                         {{$value.nextRepayDate}} / {{$value.nextRepayAmount}}
