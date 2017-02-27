@@ -20,7 +20,7 @@
                 <div class="register-ad-box fr tc">
                     <b class="h-title">预期年化收益率</b>
                     <p class="num-text clearfix">
-                        <span class="percent">10%~13%</span>
+                        <span class="percent">8%~11%</span>
                     </p>
 
                     <p class="welcome-text">welcome</p>
@@ -65,7 +65,7 @@
                 <dd class="guide">
                     <a href="/about/guide" target="_blank">
                         <b class="clearfix">稳健收益 较低门槛</b>
-                        <span>预期年化收益10%~13%，<br>投资门槛50元起投</span>
+                        <span>预期年化收益8%~11%，<br>投资门槛50元起投</span>
                     </a>
                 </dd>
                 <dd class="risk">
@@ -201,16 +201,15 @@
                 <li><i>●</i><a rel="nofollow" href="http://www.greatchinese.com.cn/news/hyxw/20160907/15431.html" target="_blank">拓天伟业成建设银行“税易-助保贷”唯一运营商</a>
                     <time>2016-09-07</time>
                 </li>
-                <li><i>●</i><a rel="nofollow" href="http://economy.gmw.cn/2016-03/31/content_19527114.htm"
-                               target="_blank">拓天速贷第二期全国排行活动正式启动</a>
+                <li><i>●</i><a rel="nofollow" href="http://www.hao123.com/mid?key=pZwYTjCEQLwEIgwGmyt8mvqVQvbvn1Tvnj63n10dnHT4PHR3Pj0kQs&from=tuijian&pn=1&qq-pf-to=pcqq.c2c"
+                               target="_blank">新春到，送好礼，拓天速贷年货大礼包疯狂派送中</a>
                     <time>2016-03-31</time>
                 </li>
                 <li><i>●</i><a rel="nofollow" href="http://fj.qq.com/a/20160314/060811.htm" target="_blank">拓天速贷：财富盛宴大平台
                     感恩豪礼滚滚来</a>
                     <time>2016-03-14</time>
                 </li>
-                <li><i>●</i><a rel="nofollow"
-                               href="http://money.china.com/fin/lc/201601/20/2443757.html?qq-pf-to=pcqq.c2c" target="_blank">拓天速贷：宝马名花有主，猴年豪礼来袭</a>
+                <li><i>●</i><a rel="nofollow" href="http://finance.jrj.com.cn/biz/2016/02/02170120525459.shtml" target="_blank">拓天速贷：新年贺岁嗨翻天 全民领取888元现金红包</a>
                     <time>2016-01-20</time>
                 </li>
                 <li><i>●</i><a rel="nofollow" href="http://w.huanqiu.com/r/MV8wXzgyNzQ4NDZfMTM5NF8xNDUxMzAzNzYy" target="_blank">拓天速贷以卓越风控打造高效资产平台</a>
