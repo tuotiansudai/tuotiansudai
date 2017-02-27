@@ -4,6 +4,8 @@ import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.client.MQWrapperClient;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.point.repository.dto.PointTaskDto;
 import com.tuotiansudai.point.repository.mapper.PointTaskMapper;
 import com.tuotiansudai.point.repository.mapper.UserPointTaskMapper;
@@ -20,7 +22,6 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import java.text.MessageFormat;
 import java.util.List;
@@ -74,6 +75,9 @@ public class PointTaskServiceImpl implements PointTaskService {
     @Autowired
     private InvestMapper investMapper;
 
+    @Autowired
+    private MQWrapperClient mqWrapperClient;
+
     @Override
     @Transactional
     public void completeNewbieTask(PointTask pointTask, String loginName) {
@@ -82,17 +86,7 @@ public class PointTaskServiceImpl implements PointTaskService {
             long maxTaskLevel = userPointTaskMapper.findMaxTaskLevelByLoginName(loginName, pointTask);
             userPointTaskMapper.create(new UserPointTaskModel(loginName, pointTaskModel.getId(), pointTaskModel.getPoint(), maxTaskLevel + 1));
             pointBillService.createTaskPointBill(loginName, pointTaskModel.getId(), pointTaskModel.getPoint(), pointTask.getDescription());
-
-            if (pointTask.equals(PointTask.BIND_BANK_CARD)) {
-                String referrer = userMapper.findByLoginName(loginName).getReferrer();
-                if(!StringUtils.isEmpty(referrer)) {
-                    PointTaskModel bankCardTaskModel = pointTaskMapper.findByName(PointTask.EACH_RECOMMEND_BANK_CARD);
-                    long referrerMaxTaskLevel = userPointTaskMapper.findMaxTaskLevelByLoginName(referrer, PointTask.EACH_RECOMMEND_BANK_CARD);
-                    userPointTaskMapper.create(new UserPointTaskModel(referrer, bankCardTaskModel.getId(), bankCardTaskModel.getPoint(), referrerMaxTaskLevel + 1));
-                    String pointBillNote = MessageFormat.format("{0}奖励{1}积分", PointTask.EACH_RECOMMEND_BANK_CARD.getTitle(), String.valueOf(bankCardTaskModel.getPoint()));
-                    pointBillService.createTaskPointBill(referrer, bankCardTaskModel.getId(), bankCardTaskModel.getPoint(), pointBillNote);
-                }
-            }
+            this.generateReferrerReward(loginName, pointTask);
         }
 
         logger.info(MessageFormat.format("[Point Task] {0} has completed newbie task {1}", loginName, pointTask.name()));
@@ -320,5 +314,35 @@ public class PointTaskServiceImpl implements PointTaskService {
         }
 
         return false;
+    }
+
+    private void generateReferrerReward(String loginName, PointTask pointTask){
+        String referrer = userMapper.findByLoginName(loginName).getReferrer();
+        if(Strings.isNullOrEmpty(referrer)){
+            return;
+        }
+
+        Long couponId = null;
+        switch (pointTask){
+            case BIND_BANK_CARD:
+                PointTaskModel bankCardTaskModel = pointTaskMapper.findByName(PointTask.EACH_RECOMMEND_BANK_CARD);
+                long referrerMaxTaskLevel = userPointTaskMapper.findMaxTaskLevelByLoginName(referrer, PointTask.EACH_RECOMMEND_BANK_CARD);
+                userPointTaskMapper.create(new UserPointTaskModel(referrer, bankCardTaskModel.getId(), bankCardTaskModel.getPoint(), referrerMaxTaskLevel + 1));
+                String pointBillNote = MessageFormat.format("{0}奖励{1}积分", PointTask.EACH_RECOMMEND_BANK_CARD.getTitle(), String.valueOf(bankCardTaskModel.getPoint()));
+                pointBillService.createTaskPointBill(referrer, bankCardTaskModel.getId(), bankCardTaskModel.getPoint(), pointBillNote);
+                couponId = 385l;
+                break;
+            case REGISTER:
+                couponId =  384l;
+                break;
+            case FIRST_INVEST:
+                couponId =  386l;
+                break;
+        }
+
+        if(couponId != null){
+            logger.info(MessageFormat.format("[推荐奖励] first_invest login_name:{0}, referrer:{1}, couponId:{2}", loginName, referrer, String.valueOf(couponId)));
+            mqWrapperClient.sendMessage(MessageQueue.CouponAssigning, referrer + ":" + couponId);
+        }
     }
 }
