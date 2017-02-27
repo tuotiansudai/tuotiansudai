@@ -452,7 +452,7 @@
                                             <div class="scroll-content">
                                                 <div class="row">
                                                     <#list loanTitleRelation.applicationMaterialUrls?split(",") as title>
-                                                        <a class="col" href="${title}" rel="example_group">
+                                                        <a class="col" href="${commonStaticServer}${title}" rel="example_group">
                                                             <img class="img" layer-src="${commonStaticServer}${title}" src="${commonStaticServer}${title}" alt="${loanTitle.title}"/>
                                                         </a>
                                                     </#list>

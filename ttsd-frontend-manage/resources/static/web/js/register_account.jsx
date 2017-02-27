@@ -55,7 +55,6 @@ registerAccountForm.onsubmit = function(event) {
     event.preventDefault();
     $buttonLayer.find('.status').removeClass('error').html('认证中...');
     $btnSubmit.prop('disabled', true);
-    var redirect = document.referrer;
     commonFun.useAjax({
         url:"/register/account",
         type:'POST',
@@ -63,7 +62,7 @@ registerAccountForm.onsubmit = function(event) {
     },function(response) {
         if(response.data.status) {
             $buttonLayer.find('.status').removeClass('error').html('认证成功');
-            setTimeout(location.href = redirect, 3000);
+            location.href = '/callback/register_account?ret_code=0000';
         }
         else {
             $buttonLayer.find('.status').addClass('error').html('认证失败，请检查');
