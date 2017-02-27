@@ -40,18 +40,6 @@ public class JobController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/async_normal_repay_notify", method = RequestMethod.POST)
-    public BaseDto<PayDataDto> asyncNormalRepayNotify(@RequestBody long notifyRequestId) {
-        return this.normalRepayService.asyncNormalRepayPaybackCallback(notifyRequestId);
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/async_advance_repay_notify", method = RequestMethod.POST)
-    public BaseDto<PayDataDto> asyncAdvanceRepayNotify(@RequestBody long notifyRequestId) {
-        return this.advanceRepayService.asyncAdvanceRepayPaybackCallback(notifyRequestId);
-    }
-
-    @ResponseBody
     @RequestMapping(value = "/async_invest_transfer_notify", method = RequestMethod.POST)
     public BaseDto<PayDataDto> asyncInvestTransferNotify(@RequestBody long notifyRequestId) {
         return this.investTransferPurchaseService.asyncPurchaseCallback(notifyRequestId);

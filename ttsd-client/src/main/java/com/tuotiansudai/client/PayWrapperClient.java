@@ -148,14 +148,6 @@ public class PayWrapperClient extends BaseClient {
         return syncExecute(notifyRequestId, "/job/async_invest_notify", "POST");
     }
 
-    public BaseDto<PayDataDto> normalRepayInvestPayback(long notifyRequestId) {
-        return syncExecute(notifyRequestId, "/job/async_normal_repay_notify", "POST");
-    }
-
-    public BaseDto<PayDataDto> advanceRepayInvestPayback(long notifyRequestId) {
-        return syncExecute(notifyRequestId, "/job/async_advance_repay_notify", "POST");
-    }
-
     public BaseDto<PayDataDto> investTransferCallback(String notifyRequestId) {
         return syncExecute(notifyRequestId, "/job/async_invest_transfer_notify", "POST");
     }
@@ -398,5 +390,13 @@ public class PayWrapperClient extends BaseClient {
 
     public BaseDto<PayDataDto> postExperienceRepay(long notifyRequestId) {
         return syncExecute(String.valueOf(notifyRequestId), "/experience/post-repay", "POST");
+    }
+
+    public BaseDto<PayDataDto> normalRepayInvestPayback(long notifyRequestId) {
+        return syncExecute(notifyRequestId, "/job/async_normal_repay_notify", "POST");
+    }
+
+    public BaseDto<PayDataDto> advanceRepayInvestPayback(long notifyRequestId) {
+        return syncExecute(notifyRequestId, "/job/async_advance_repay_notify", "POST");
     }
 }

@@ -13,29 +13,30 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 @Component
-public class AdvanceRepayCallbackMessageConsumer implements MessageConsumer {
-    private static Logger logger = LoggerFactory.getLogger(AdvanceRepayCallbackMessageConsumer.class);
+public class RepaySuccessInvestRepayCallbackMessageConsumer implements MessageConsumer {
+    private static Logger logger = LoggerFactory.getLogger(RepaySuccessInvestRepayCallbackMessageConsumer.class);
 
     @Autowired
     private PayWrapperClient payWrapperClient;
 
     @Override
     public MessageQueue queue() {
-        return MessageQueue.AdvanceRepayCallback;
+        return MessageQueue.RepaySuccessInvestRepayCallback;
     }
 
     @Transactional
     @Override
     public void consume(String message) {
-        logger.info("[MQ] receive message: {}: {}.", this.queue(), message);
+        logger.info("[还款发放投资人收益回调MQ] receive message: {}: {}.", this.queue(), message);
+
         if (!StringUtils.isEmpty(message)) {
-            logger.info("[MQ] ready to consume message: advance repay callback.");
+            logger.info("[还款发放投资人收益回调MQ] ready to consume message: repay callback.");
             BaseDto<PayDataDto> result = payWrapperClient.advanceRepayInvestPayback(Long.parseLong(message));
             if (!result.isSuccess()) {
-                logger.error("advance repay callback consume fail. notifyRequestId: " + message);
-                throw new RuntimeException("advance repay callback consume fail. notifyRequestId: " + message);
+                logger.error("invest repay callback consume fail. notifyRequestId: " + message);
+                throw new RuntimeException("invest repay callback consume fail. notifyRequestId: " + message);
             }
-            logger.info("[MQ] consume message success.");
+            logger.info("[还款发放投资人收益回调MQ] consume message success.");
         }
     }
 }

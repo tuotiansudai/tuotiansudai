@@ -3,6 +3,7 @@ package com.tuotiansudai.paywrapper.controller;
 
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
+import com.tuotiansudai.message.RepaySuccessAsyncCallBackMessage;
 import com.tuotiansudai.message.RepaySuccessMessage;
 import com.tuotiansudai.paywrapper.extrarate.service.ExtraRateService;
 import com.tuotiansudai.paywrapper.loanout.CouponRepayService;
@@ -84,35 +85,28 @@ public class RepaySuccessController {
     @RequestMapping(value = "/post_invest_repay", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<PayDataDto> postNormalRepay(@RequestBody RepaySuccessMessage repaySuccessMessage) {
-        boolean isSuccess ;
         try {
             if (repaySuccessMessage.isAdvanced()) {
-                isSuccess = advanceRepayService.paybackInvest(repaySuccessMessage.getLoanRepayId());
+                advanceRepayService.paybackInvest(repaySuccessMessage.getLoanRepayId());
             } else {
-                isSuccess = normalRepayService.paybackInvest(repaySuccessMessage.getLoanRepayId());
+                normalRepayService.paybackInvest(repaySuccessMessage.getLoanRepayId());
 
             }
-        }catch (Exception e){
-            isSuccess = false;
+        } catch (Exception e) {
             logger.error("还款发放投资人收益失败", e);
         }
         BaseDto<PayDataDto> dto = new BaseDto<>();
         PayDataDto dataDto = new PayDataDto();
-        dataDto.setStatus(isSuccess);
+        dataDto.setStatus(true);
         dto.setData(dataDto);
         return dto;
     }
 
     @ResponseBody
-    @RequestMapping(value = "/async_normal_repay_notify", method = RequestMethod.POST)
-    public BaseDto<PayDataDto> asyncNormalRepayNotify(@RequestBody long notifyRequestId) {
-        return this.normalRepayService.asyncNormalRepayPaybackCallback(notifyRequestId);
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/async_advance_repay_notify", method = RequestMethod.POST)
-    public BaseDto<PayDataDto> asyncAdvanceRepayNotify(@RequestBody long notifyRequestId) {
-        return this.advanceRepayService.asyncAdvanceRepayPaybackCallback(notifyRequestId);
+    @RequestMapping(value = "/async_invest_repay_notify", method = RequestMethod.POST)
+    public BaseDto<PayDataDto> asyncNormalRepayNotify(@RequestBody RepaySuccessAsyncCallBackMessage repaySuccessAsyncCallBackMessage) {
+        return repaySuccessAsyncCallBackMessage.isAdvanced() ? this.advanceRepayService.asyncAdvanceRepayPaybackCallback(repaySuccessAsyncCallBackMessage.getNotifyRequestId())
+                : this.normalRepayService.asyncNormalRepayPaybackCallback(repaySuccessAsyncCallBackMessage.getNotifyRequestId());
     }
 
 
