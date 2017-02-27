@@ -4,7 +4,6 @@ require('webJsModule/coupon_alert');
 require('webJsModule/red_envelope_float');
 //安心签协议
 require('webJsModule/anxin_agreement');
-
 var $createForm = $('#createForm'),
     $agreement = $createForm.find('.agreement'),
     $isAnxinAuthenticationRequired=$('#isAnxinAuthenticationRequired');
