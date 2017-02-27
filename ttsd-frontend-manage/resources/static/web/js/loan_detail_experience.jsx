@@ -31,7 +31,6 @@ investForm.onsubmit=function(event) {
                 content: $('#freeSuccess')
             });
         }
-        self.removeClass("loading");
     });
 }
 $('.close-free',$experienceLoan).on('click', function (event) {

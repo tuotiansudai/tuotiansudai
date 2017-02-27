@@ -61,6 +61,31 @@
   border-radius: 3px;
 }
 
+//成功提示弹框
+.success-info-tip {
+  padding: 20px 38px;
+  .icon-tip {
+    width: 32px;
+    height: 32px;
+    background: url("../images/success-tip.png") 0px 0px no-repeat;
+    position: absolute;
+    top: 30px;
+    background-size: 100%;
+  }
+  .detail-word {
+    padding-left: 52px;
+    color: #808080;
+    font-size: 12px;
+    line-height: 18px;
+    margin-top: 10px;
+    h2 {
+      font-size: 18px;
+      color: #4c4c4c;
+      padding-bottom: 6px;
+    }
+  }
+}
+
 /***************** web **********************/
 .text-notice {
   color: #ff7a2a;
@@ -539,6 +564,7 @@
     }
   }
 }
+
 /********************** Responsive Page ****************************/
 
 @media screen and (max-width: 700px) {
