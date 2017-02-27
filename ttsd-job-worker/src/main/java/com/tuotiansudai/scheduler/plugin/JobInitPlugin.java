@@ -29,35 +29,11 @@ public class JobInitPlugin implements SchedulerPlugin {
 
     @Override
     public void start() {
-        if (JobType.CalculateDefaultInterest.name().equalsIgnoreCase(schedulerName)) {
-            deleteCalculateDefaultInterest();
-        }
-        if (JobType.AutoReFreshAreaByMobile.name().equalsIgnoreCase(schedulerName)) {
-            deleteRefreshAreaByMobile();
-        }
-        if (JobType.LoanRepayNotify.name().equalsIgnoreCase(schedulerName)) {
-            deleteLoanRepayNotifyJob();
-        }
-        if (JobType.BirthdayNotify.name().equalsIgnoreCase(schedulerName)) {
-            deleteBirthdayNotifyJob();
-        }
-        if (JobType.ExperienceRepay.name().equals(schedulerName)) {
-            deleteNewbieExperienceRepayJob();
-        }
-        if (JobType.CheckUserBalanceMonthly.name().equals(schedulerName)) {
-            deleteCheckUserBalanceJob();
-        }
         if (JobType.CouponRepayCallBack.name().equalsIgnoreCase(schedulerName)) {
             deleteCouponRepayCallBackJobIfNotExist();
         }
         if (JobType.ExtraRateRepayCallBack.name().equalsIgnoreCase(schedulerName)) {
             deleteExtraRateRepayCallBackIfNotExist();
-        }
-        if (JobType.PlatformBalanceLowNotify.name().equals(schedulerName)) {
-            deletePlatformBalanceLowNotifyJob();
-        }
-        if (JobType.EventMessage.name().equals(schedulerName)) {
-            deleteEventMessageJob();
         }
         if (JobType.SendFirstRedEnvelopSplit.name().equalsIgnoreCase(schedulerName)) {
             createFirstRedEnvelopSplitJob();
