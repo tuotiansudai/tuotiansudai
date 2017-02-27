@@ -30,7 +30,7 @@ let reInputs=$(registerAccountForm).find('input:text');
 
 reInputs=Array.from(reInputs);
 for (var el of reInputs) {
-    el.addEventListener("blur", function() {
+    globalFun.addEventHandler(el,"keyup", function() {
        validator.start(this);
         isDisabledButton();
     })
