@@ -27,7 +27,7 @@ investForm.onsubmit=function(event) {
             layer.open({
                 type: 1,
                 title: '&nbsp',
-                area: ['400px', '205px'],
+                area: ['400px'],
                 content: $('#freeSuccess')
             });
         }
