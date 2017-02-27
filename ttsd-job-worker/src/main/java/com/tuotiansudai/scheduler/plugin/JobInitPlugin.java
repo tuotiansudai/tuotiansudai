@@ -101,35 +101,5 @@ public class JobInitPlugin implements SchedulerPlugin {
     private void deleteExtraRateRepayCallBackIfNotExist() {
         jobManager.deleteJob(JobType.ExtraRateRepayCallBack, "umpay", "repay_extra_rate_invest_call_back");
     }
-    private void deleteRefreshAreaByMobile() {
-        jobManager.deleteJob(JobType.AutoReFreshAreaByMobile, JobType.AutoReFreshAreaByMobile.name(), JobType.AutoReFreshAreaByMobile.name());
-    }
-
-    private void deleteBirthdayNotifyJob() {
-        jobManager.deleteJob(JobType.BirthdayNotify, JobType.BirthdayNotify.name(), JobType.BirthdayNotify.name());
-    }
-
-    private void deleteCalculateDefaultInterest() {
-        jobManager.deleteJob(JobType.CalculateDefaultInterest, JobType.CalculateDefaultInterest.name(), JobType.CalculateDefaultInterest.name());
-    }
-
-    private void deleteNewbieExperienceRepayJob() {
-        jobManager.deleteJob(JobType.ExperienceRepay, JobType.ExperienceRepay.name(), JobType.ExperienceRepay.name());
-    }
-
-    private void deleteCheckUserBalanceJob() {
-        jobManager.deleteJob(JobType.CheckUserBalanceMonthly, JobType.CheckUserBalanceMonthly.name(), JobType.CheckUserBalanceMonthly.name());
-    }
-
-    private void deleteLoanRepayNotifyJob() {
-        jobManager.deleteJob(JobType.LoanRepayNotify, JobType.LoanRepayNotify.name(), JobType.LoanRepayNotify.name());
-    }
-
-    private void deletePlatformBalanceLowNotifyJob() {
-        jobManager.deleteJob(JobType.PlatformBalanceLowNotify, JobType.PlatformBalanceLowNotify.name(), JobType.PlatformBalanceLowNotify.name());
-    }
-
-    private void deleteEventMessageJob() {
-        jobManager.deleteJob(JobType.EventMessage, JobType.EventMessage.name(), JobType.EventMessage.name());
-    }
+   
 }
