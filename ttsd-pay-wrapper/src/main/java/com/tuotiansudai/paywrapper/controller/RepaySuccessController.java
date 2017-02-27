@@ -37,21 +37,24 @@ public class RepaySuccessController {
     @ResponseBody
     @RequestMapping(value = "/coupon-repay", method = RequestMethod.POST)
     public BaseDto<PayDataDto> couponRepay(@RequestBody RepaySuccessMessage repaySuccessMessage) {
+        boolean isSuccess = true;
         try {
             couponRepayService.repay(repaySuccessMessage.getLoanRepayId(), repaySuccessMessage.isAdvanced());
         } catch (Exception e) {
             logger.error("还款发放优惠券收益失败", e);
+            isSuccess = false;
         }
         BaseDto<PayDataDto> dto = new BaseDto<>();
         PayDataDto dataDto = new PayDataDto();
         dto.setData(dataDto);
-        dataDto.setStatus(true);
+        dataDto.setStatus(isSuccess);
         return dto;
     }
 
     @ResponseBody
     @RequestMapping(value = "/extra-rate-repay", method = RequestMethod.POST)
     public BaseDto<PayDataDto> extraRateNormalRepay(@RequestBody RepaySuccessMessage repaySuccessMessage) {
+        boolean isSuccess = true;
         try {
             if (repaySuccessMessage.isAdvanced()) {
                 logger.info(MessageFormat.format("extra_rate_advance_repay begin {0} ..", String.valueOf(repaySuccessMessage.getLoanRepayId())));
@@ -62,11 +65,12 @@ public class RepaySuccessController {
             }
         } catch (Exception e) {
             logger.error("还款发放阶梯加息收益失败", e);
+            isSuccess = false;
         }
         BaseDto<PayDataDto> dto = new BaseDto<>();
         PayDataDto dataDto = new PayDataDto();
         dto.setData(dataDto);
-        dataDto.setStatus(true);
+        dataDto.setStatus(isSuccess);
         return dto;
     }
 
