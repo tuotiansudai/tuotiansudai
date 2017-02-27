@@ -178,7 +178,6 @@ public class ExtraRateServiceImpl implements ExtraRateService {
 
     @Override
     public BaseDto<PayDataDto> asyncExtraRateInvestCallback(long notifyRequestId) {
-        boolean isSuccess = true;
         ExtraRateNotifyRequestModel model = extraRateNotifyRequestMapper.findById(notifyRequestId);
         if (updateExtraRateNotifyRequestStatus(model)) {
             try {
@@ -187,13 +186,12 @@ public class ExtraRateServiceImpl implements ExtraRateService {
                 fatalLog("extra rate invest callback, processOneCallback error. orderId:" + model.getOrderId(), e);
                 logger.error(MessageFormat.format("[Extra Rate investExtraRateModel.id payback({1}) payback throw exception",
                         String.valueOf(model.getOrderId().split("X")[0])), e);
-                isSuccess = false;
             }
         }
 
         BaseDto<PayDataDto> asyncExtraRateNotifyDto = new BaseDto<>();
         PayDataDto baseDataDto = new PayDataDto();
-        baseDataDto.setStatus(isSuccess);
+        baseDataDto.setStatus(true);
         asyncExtraRateNotifyDto.setData(baseDataDto);
 
         return asyncExtraRateNotifyDto;
