@@ -13,22 +13,21 @@
     margin-top: 30px;
     margin-right: 55px;
   }
+  .error-icon-404 {
+    width:130px;
+    height:105px;
+    display: inline-block;
+    background: url('../images/error-tip-404.png');
+  }
+  .error-icon-500 {
+    width:112px;
+    height:114px;
+    display: inline-block;
+    background: url('../images/error-tip-500.png');
+  }
   .error-info {
     overflow: hidden;
     padding-left: 50px;
-
-    .error-icon-404 {
-      width:130px;
-      height:105px;
-      display: inline-block;
-      background: url('../images/error-tip-404.png');
-    }
-    .error-icon-404 {
-      width:112px;
-      height:114px;
-      display: inline-block;
-      background: url('../images/error-tip-500.png');
-    }
     p {
       overflow: hidden;
       span {
