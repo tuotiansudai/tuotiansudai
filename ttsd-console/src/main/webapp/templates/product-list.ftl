@@ -1,8 +1,15 @@
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
 
-<@global.main pageCss="" pageJavascript="product-list.js" headLab="point-manage" sideLab="product${type.name()!}Manage" title="添加商品">
+<@global.main pageCss="" pageJavascript="product-list.js" headLab="point-manage" sideLab="productManage" title="商品管理">
 <div class="col-md-10">
+
+    <div class="col-md-12" style="margin-bottom: 40px">
+        <a href="/point-manage/coupon-exchange-manage" class="btn btn-default" style="margin-right: 60px">优惠券商品管理</a>
+        <a href="/point-manage/product-list?type=VIRTUAL" class="btn btn-default <#if type == 'VIRTUAL'>btn-warning</#if>" style="margin-right: 60px">虚拟商品管理</a>
+        <a href="/point-manage/product-list?type=PHYSICAL" class="btn btn-default <#if type == 'PHYSICAL'>btn-warning</#if>">实物商品管理</a>
+    </div>
+
     <div class="tip-container">
         <div class="alert alert-danger alert-dismissible" data-dismiss="alert" aria-label="Close" role="alert">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -11,7 +18,7 @@
             <span class="txt"></span>
         </div>
     </div>
-    <div class="table-responsive" id="productListContainer">
+    <div class="table-responsive" style="width: 100%" id="productListContainer">
         <table class="table table-bordered table-hover ">
             <thead>
             <tr>

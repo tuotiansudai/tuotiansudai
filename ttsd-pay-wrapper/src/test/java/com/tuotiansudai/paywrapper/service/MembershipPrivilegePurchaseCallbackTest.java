@@ -18,6 +18,7 @@ import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.ibatis.javassist.compiler.ast.Member;
+import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,8 +55,9 @@ public class MembershipPrivilegePurchaseCallbackTest extends RepayBaseTest {
     private SystemBillMapper systemBillMapper;
     @Autowired
     private MembershipPrivilegeMapper membershipPrivilegeMapper;
+
     @Test
-    public void shouldPurchaseCallbackIsSuccess(){
+    public void shouldPurchaseCallbackIsSuccess() {
         UserModel userModel = getFakeUser("loginNameTester");
         userModel.setUserName("UserName");
         userModel.setIdentityNumber("11XXX11XXX11XXX123");
@@ -65,40 +67,40 @@ public class MembershipPrivilegePurchaseCallbackTest extends RepayBaseTest {
         AccountModel accountModel = this.getFakeAccount(userModel);
         accountMapper.create(accountModel);
         MembershipPrivilegePurchaseModel membershipPrivilegePurchaseModel
-                = new MembershipPrivilegePurchaseModel(idGenerator.generate(),userModel.getLoginName(),
-                                                       userModel.getMobile(),
-                                                       userModel.getUserName(),
-                                                       MembershipPrivilegePriceType._30,
-                                                       MembershipPrivilege.SERVICE_FEE,
-                                                       Source.IOS);
+                = new MembershipPrivilegePurchaseModel(idGenerator.generate(), userModel.getLoginName(),
+                userModel.getMobile(),
+                userModel.getUserName(),
+                MembershipPrivilegePriceType._30,
+                MembershipPrivilege.SERVICE_FEE,
+                Source.IOS);
 
         membershipPrivilegePurchaseMapper.create(membershipPrivilegePurchaseModel);
 
 
-        membershipPrivilegePurchasePayService.purchaseCallback(this.getFakeCallbackParamsMap(membershipPrivilegePurchaseModel.getId(),"transfer_notify"),"");
+        membershipPrivilegePurchasePayService.purchaseCallback(this.getFakeCallbackParamsMap(membershipPrivilegePurchaseModel.getId(), "transfer_notify"), "");
 
         List<UserBillModel> userBillModels = userBillMapper.findByLoginName(userModel.getLoginName());
-        SystemBillModel systemBillModels = systemBillMapper.findByOrderId(membershipPrivilegePurchaseModel.getId(),SystemBillBusinessType.MEMBERSHIP_PRIVILEGE_PURCHASE);
+        SystemBillModel systemBillModels = systemBillMapper.findByOrderId(membershipPrivilegePurchaseModel.getId(), SystemBillBusinessType.MEMBERSHIP_PRIVILEGE_PURCHASE);
 
-        assertThat(userBillModels.size(),is(1));
-        assertThat(userBillModels.get(0).getLoginName(),is(userModel.getLoginName()));
-        assertThat(userBillModels.get(0).getAmount(),is(membershipPrivilegePurchaseModel.getAmount()));
-        assertThat(userBillModels.get(0).getBalance(),is(accountModel.getBalance()-membershipPrivilegePurchaseModel.getAmount()));
-        assertThat(userBillModels.get(0).getBusinessType(),is(UserBillBusinessType.MEMBERSHIP_PRIVILEGE_PURCHASE));
+        assertThat(userBillModels.size(), is(1));
+        assertThat(userBillModels.get(0).getLoginName(), is(userModel.getLoginName()));
+        assertThat(userBillModels.get(0).getAmount(), is(membershipPrivilegePurchaseModel.getAmount()));
+        assertThat(userBillModels.get(0).getBalance(), is(accountModel.getBalance() - membershipPrivilegePurchaseModel.getAmount()));
+        assertThat(userBillModels.get(0).getBusinessType(), is(UserBillBusinessType.MEMBERSHIP_PRIVILEGE_PURCHASE));
 
         assertNotNull(systemBillModels);
-        assertThat(systemBillModels.getAmount(),is(membershipPrivilegePurchaseModel.getAmount()));
-        assertThat(systemBillModels.getBusinessType(),is(SystemBillBusinessType.MEMBERSHIP_PRIVILEGE_PURCHASE));
+        assertThat(systemBillModels.getAmount(), is(membershipPrivilegePurchaseModel.getAmount()));
+        assertThat(systemBillModels.getBusinessType(), is(SystemBillBusinessType.MEMBERSHIP_PRIVILEGE_PURCHASE));
 
         MembershipPrivilegePurchaseModel membershipPrivilegePurchaseModelReturn = membershipPrivilegePurchaseMapper.findById(membershipPrivilegePurchaseModel.getId());
         assertNotNull(membershipPrivilegePurchaseModelReturn);
         assertThat(membershipPrivilegePurchaseModelReturn.getStatus(), is(MembershipPrivilegePurchaseStatus.SUCCESS));
-        Date currentDate = DateConvertUtil.plusMinutes(LocalDateTime.now(),5);
-        MembershipPrivilegeModel membershipPrivilegeModel = membershipPrivilegeMapper.findValidPrivilegeModelByLoginName(userModel.getLoginName(),currentDate);
+        Date currentDate = new DateTime().plusMinutes(5).toDate();
+        MembershipPrivilegeModel membershipPrivilegeModel = membershipPrivilegeMapper.findValidPrivilegeModelByLoginName(userModel.getLoginName(), currentDate);
 
         assertNotNull(membershipPrivilegeModel);
-        assertThat(membershipPrivilegeModel.getLoginName(),is(userModel.getLoginName()));
-        assertThat(membershipPrivilegeModel.getPrivilege(),is(membershipPrivilegePurchaseModel.getPrivilege()));
+        assertThat(membershipPrivilegeModel.getLoginName(), is(userModel.getLoginName()));
+        assertThat(membershipPrivilegeModel.getPrivilege(), is(membershipPrivilegePurchaseModel.getPrivilege()));
 
     }
 

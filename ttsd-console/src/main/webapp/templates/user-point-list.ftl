@@ -6,16 +6,16 @@
 <div class="col-md-10">
     <form action="" class="form-inline query-build">
         <div class="form-group">
-            <label for="control-label">用户名：</label>
+            <label for="control-label">投资人用户名：</label>
             <input type="text" class="form-control jq-loginName" name="loginName" value="${loginName!}">
+        </div>
+        <div class="form-group">
+            <label for="control-label">投资人手机号：</label>
+            <input type="text" class="form-control jq-mobile" name="mobile" value="${mobile!}">
         </div>
         <div class="form-group">
             <label for="control-label">真实姓名：</label>
             <input type="text" class="form-control jq-userName" name="userName" value="${userName!}">
-        </div>
-        <div class="form-group">
-            <label for="control-label">手机号：</label>
-            <input type="text" class="form-control jq-mobile" name="mobile" value="${mobile!}">
         </div>
 
         <button class="btn btn-primary" type="submit">查询</button>

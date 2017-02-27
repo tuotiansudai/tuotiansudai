@@ -43,7 +43,6 @@
                     typeHandler="com.tuotiansudai.repository.mybatis.ProductTypeListTypeHandler"/>
             <result column="deleted" property="deleted"/>
             <result column="user_group" property="userGroup"/>
-            <result column="sms_alert" property="smsAlert"/>
             <result column="deadline" property="deadline"/>
             <result column="coupon_source" property="couponSource"/>
             <result column="comment" property="comment"/>
@@ -127,7 +126,6 @@
         c.product_types as product_types,
         c.deleted as deleted,
         c.user_group as user_group,
-        c.sms_alert as sms_alert,
         c.deadline as deadline,
         c.coupon_source as coupon_source,
         c.comment as comment
@@ -350,49 +348,14 @@
     </select>
 
     <select id="findUsedExperienceByLoginName" parameterType="map" resultMap="userCouponResultMap">
-        SELECT
-        *
-        FROM
-        user_coupon u
-        WHERE
-        login_name = #{loginName} and (u.status &lt;&gt; 'SUCCESS' or u.status is null )
-        AND EXISTS( SELECT
-        1
-        FROM
-        coupon c
-        WHERE
-        u.coupon_id = c.id
-        and u.end_time > now()
-        AND c.product_types = 'EXPERIENCE')
+        SELECT * FROM user_coupon u
+        WHERE login_name = #{loginName} and (u.status != 'SUCCESS' or u.status is null)
+        AND EXISTS (SELECT 1 FROM coupon c WHERE u.coupon_id = c.id and u.end_time > now() AND c.product_types = 'EXPERIENCE')
     </select>
 
 
     <select id="findBirthdaySuccessByLoginNameAndInvestId" parameterType="map" resultMap="userCouponResultMap">
         select t.* from user_coupon t join coupon m on t.coupon_id = m.id and m.coupon_type = 'BIRTHDAY_COUPON' where t.login_name = #{loginName} and t.invest_id = #{investId} and t.status = 'SUCCESS'
-    </select>
-
-    <select id="findSumBirthdayAndInterestByLoginName" parameterType="map" resultType="long">
-        SELECT
-        IFNULL(SUM(t.`actual_interest`- t.`actual_fee`), 0)
-        FROM
-        user_coupon t
-        JOIN coupon c
-        ON t.`coupon_id` = c.`id`
-        WHERE t.`login_name` = #{loginName}
-        AND t.`status` = 'SUCCESS'
-        and  c.`coupon_type` in ('INTEREST_COUPON','BIRTHDAY_COUPON','NEWBIE_COUPON','INVEST_COUPON');
-    </select>
-
-    <select id="findSumRedEnvelopeByLoginName" parameterType="map" resultType="long">
-        SELECT
-        IFNULL(SUM(t.`actual_interest`- t.`actual_fee`), 0)
-        FROM
-        user_coupon t
-        JOIN coupon c
-        ON t.`coupon_id` = c.`id`
-        WHERE t.`login_name` = #{loginName}
-        AND t.`status` = 'SUCCESS'
-        and  c.`coupon_type` = 'RED_ENVELOPE';
     </select>
 
     <select id="findByExchangeCode" parameterType="string" resultType="int">

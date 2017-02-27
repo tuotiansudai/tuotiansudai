@@ -48,9 +48,6 @@
             使用条件
         </th>
         <th>
-            短信提醒
-        </th>
-        <th>
             已发放(张)
         </th>
         <th>
@@ -115,9 +112,6 @@
 </td>
     <td>
         投资满${coupon.investLowerLimit}元
-    </td>
-    <td>
-    <#if coupon.smsAlert>是<#else>否</#if>
     </td>
     <td>
     ${coupon.issuedCount?string('0')}
