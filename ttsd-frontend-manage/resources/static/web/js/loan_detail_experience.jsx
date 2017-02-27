@@ -21,7 +21,7 @@ investForm.onsubmit=function(event) {
         type:'POST',
         url: '/experience-invest',
         data:$(investForm).serialize()
-    },function() {
+    },function(response) {
         var data = response.data;
         if (data.status) {
             layer.open({

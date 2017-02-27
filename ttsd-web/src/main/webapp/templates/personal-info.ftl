@@ -177,7 +177,7 @@
         </dl>
         <div class="error-box" ></div>
         <div class="tc person-info-btn">
-            <button class="btn btn-success btn-cancel">取消</button>
+            <button class="btn btn-success btn-cancel" type="button">取消</button>
             <button class="btn btn-close btn-close-turn-off" type="submit">我要关闭</button>
         </div>
 

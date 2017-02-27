@@ -7,7 +7,6 @@ var activeIndex=$('.filters-list li.active').index(),
 	$ruleList = $('#ruleList'),
 	$paginationElement = $('.pagination');
 
-debugger
 //template data to page and generate pagenumber
 function loadLoanData(currentPage) {
 	var status = $('.filters-list li.active').attr('data-status').split(',');

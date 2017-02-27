@@ -161,6 +161,9 @@ body{
   text-align: center;
   overflow: auto;
   height: auto;
+  .error-box  {
+    margin-bottom:8px;
+  }
   dl {
     margin-bottom: 12px;
     height: auto;

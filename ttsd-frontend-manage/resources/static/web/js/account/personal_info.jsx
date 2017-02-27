@@ -344,13 +344,19 @@ require.ensure([],function() {
         errorMsg: '验证码不正确'
     }]);
 
+    $(turnOffNoPasswordInvestForm.captcha).on('blur',function(event) {
+        let errorMsg = turnOffPassValidator.start(this);
+        errorBox.html(errorMsg);
+
+    });
+
     turnOffNoPasswordInvestForm.onsubmit=function(event) {
         event.preventDefault();
         let thisForm = this;
-        $(thisForm).find(':submit').prop('disabled', true);
         let errorMsg = turnOffPassValidator.start(thisForm.captcha);
         errorBox.html(errorMsg);
         if (!errorMsg) {
+            $(thisForm).find(':submit').prop('disabled', true);
             commonFun.useAjax({
                 url: "/no-password-invest/disabled",
                 type: 'POST',

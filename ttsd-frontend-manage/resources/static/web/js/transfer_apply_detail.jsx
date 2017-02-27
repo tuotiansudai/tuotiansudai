@@ -41,7 +41,7 @@ function applyTip(){
         type: 1,
         title: '温馨提示',
         btn: ['确定', '取消'],
-        area: ['330px', '185px'],
+        area: ['330px'],
         shadeClose: true,
         content: '<p class="pad-m tc">是否确认转让？</p>',
         btn1: function () {
