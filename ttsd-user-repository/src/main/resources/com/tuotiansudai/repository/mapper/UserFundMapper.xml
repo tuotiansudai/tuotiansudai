@@ -82,7 +82,7 @@
               from invest_repay join invest on invest_repay.invest_id= invest.id
               where invest.loan_id = 1 and invest_repay.is_transferred is false and invest.login_name = #{loginName} and invest_repay.status = 'REPAYING') as expected_experience_interest,
 
-             (select ifnull(sum(amount), 0) from invest where invest.login_name = #{loginName} and invest.status = 'SUCCESS' and transfer_invest_id is null) as invest_amount
+             (select ifnull(sum(amount), 0) from invest where invest.login_name = #{loginName} and invest.status = 'SUCCESS' and loan_id !=1 and transfer_invest_id is null) as invest_amount
         from dual;
     </select>
 

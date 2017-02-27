@@ -20,6 +20,7 @@ import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.InterestCalculator;
 import org.apache.commons.collections4.CollectionUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -165,8 +166,10 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
             //拓天体验项目不收手续费
             if (ProductType.EXPERIENCE == loan.getProductType()) {
                 investFeeRate = 0;
+                loanResponseDataDto.setInterestPerTenThousands(String.valueOf(InterestCalculator.estimateExperienceExpectedInterest(1000000, loan)));
             }
             loanResponseDataDto.setInvestFeeRate(String.valueOf(investFeeRate));
+
             loanDtoList.add(loanResponseDataDto);
         }
         return loanDtoList;

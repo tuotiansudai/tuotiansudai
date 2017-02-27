@@ -8,7 +8,7 @@ public class ExperienceBillRecordResponseDataDto extends BaseResponseDataDto {
     @ApiModelProperty(value = "体验金ID", example = "1")
     private String experienceBillId;
 
-    @ApiModelProperty(value = "操作类型", example = "IN（收入）")
+    @ApiModelProperty(value = "操作类型", example = "IN")
     private String operationType;
 
     @ApiModelProperty(value = "体验金类型", example = "新用户注册")

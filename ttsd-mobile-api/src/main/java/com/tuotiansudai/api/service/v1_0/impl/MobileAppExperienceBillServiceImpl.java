@@ -50,7 +50,7 @@ public class MobileAppExperienceBillServiceImpl implements MobileAppExperienceBi
         return Lists.transform(experienceBillList, input -> {
             ExperienceBillRecordResponseDataDto experienceBillRecordResponseDataDto = new ExperienceBillRecordResponseDataDto();
             experienceBillRecordResponseDataDto.setExperienceBillId(String.valueOf(input.getId()));
-            experienceBillRecordResponseDataDto.setOperationType(input.getOperationType().getDescription());
+            experienceBillRecordResponseDataDto.setOperationType(input.getOperationType().name());
             experienceBillRecordResponseDataDto.setBusinessType(input.getBusinessType().getDescription());
             experienceBillRecordResponseDataDto.setAmount(String.valueOf(input.getAmount()));
             experienceBillRecordResponseDataDto.setCreatedDate(new DateTime(input.getCreatedTime()).toString("yyyy-MM-dd HH:mm:ss"));
