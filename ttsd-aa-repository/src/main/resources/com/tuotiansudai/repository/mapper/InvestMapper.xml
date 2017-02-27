@@ -896,7 +896,11 @@
     <select id="findSuccessInvestByInvestTime" parameterType="map" resultMap="investResultMap">
         select *
         from invest
-        where status = 'SUCCESS' and login_name = #{loginName} and created_time BETWEEN #{startTime} and #{endTime}
+        where status = 'SUCCESS'
+        <if test="loginName != null">
+          and login_name = #{loginName}
+        </if>
+        and created_time BETWEEN #{startTime} and #{endTime}
     </select>
 
     <update id="updateContractNoById" parameterType="map">
