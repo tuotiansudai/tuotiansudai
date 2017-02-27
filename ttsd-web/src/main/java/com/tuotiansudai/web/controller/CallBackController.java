@@ -2,6 +2,7 @@ package com.tuotiansudai.web.controller;
 
 import com.google.common.collect.Maps;
 import com.tuotiansudai.util.FrontCallbackService;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,13 +16,17 @@ import java.util.Map;
 @Controller
 @RequestMapping(value = "/callback")
 public class CallBackController {
+    Logger log = Logger.getLogger(CallBackController.class);
 
     @RequestMapping(value = "/{service}", method = RequestMethod.GET)
     public ModelAndView callBack(@PathVariable String service, HttpServletRequest request) {
         ModelAndView mv = null;
+        log.debug("service == " + service);
+
         FrontCallbackService frontCallbackService = FrontCallbackService.getService(service);
         //临时解决方案
         if(frontCallbackService != null){
+            log.debug("frontCallbackService == " + frontCallbackService.getServiceName());
             mv = new ModelAndView("/success");
             Map<String, String> paramsMap = this.parseRequestParameters(request);
             String retCode = paramsMap.get("ret_code");
@@ -36,8 +41,10 @@ public class CallBackController {
             mv.addObject("service", service);
         }
         else{
+            log.debug("account ........");
            mv = new ModelAndView("redirect:/account");
         }
+        
         return mv;
     }
 
