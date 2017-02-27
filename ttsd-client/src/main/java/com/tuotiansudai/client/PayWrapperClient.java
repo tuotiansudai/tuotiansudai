@@ -8,6 +8,7 @@ import com.google.common.collect.Maps;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
+import com.tuotiansudai.message.RepaySuccessAsyncCallBackMessage;
 import com.tuotiansudai.message.RepaySuccessMessage;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -63,7 +64,7 @@ public class PayWrapperClient extends BaseClient {
 
     private final static String resetUmpayPassword = "/reset-umpay-password";
 
-    private final static String purchase="/invest-transfer/purchase";
+    private final static String purchase = "/invest-transfer/purchase";
 
     private final static String noPasswordPurchase = "/invest-transfer/no-password-purchase";
 
@@ -160,14 +161,15 @@ public class PayWrapperClient extends BaseClient {
         return syncExecute(investDto, noPasswordInvestPath, "POST");
     }
 
-    public BaseDto<PayDataDto> loanOutSuccessNotify(long loanId){
+    public BaseDto<PayDataDto> loanOutSuccessNotify(long loanId) {
         return syncExecute(String.valueOf(loanId), "/job/loan-out-success-notify", "POST");
     }
 
     public Map<String, String> getUserStatus(String loginName) {
         String json = this.execute(MessageFormat.format("/real-time/user/{0}", loginName), null, "GET");
         try {
-            return objectMapper.readValue(json, new TypeReference<Map<String, String>>() {});
+            return objectMapper.readValue(json, new TypeReference<Map<String, String>>() {
+            });
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
@@ -191,7 +193,8 @@ public class PayWrapperClient extends BaseClient {
     public Map<String, String> getLoanStatus(long loanId) {
         String json = this.execute(MessageFormat.format("/real-time/loan/{0}", String.valueOf(loanId)), null, "GET");
         try {
-            return objectMapper.readValue(json, new TypeReference<Map<String, String>>() {});
+            return objectMapper.readValue(json, new TypeReference<Map<String, String>>() {
+            });
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
@@ -201,7 +204,8 @@ public class PayWrapperClient extends BaseClient {
     public Map<String, String> getTransferStatus(String orderId, Date merDate, String businessType) {
         String json = this.execute(MessageFormat.format("/real-time/transfer/order-id/{0}/mer-date/{1}/business-type/{2}", orderId, new DateTime(merDate).toString("yyyyMMdd"), businessType), null, "GET");
         try {
-            return objectMapper.readValue(json, new TypeReference<Map<String, String>>() {});
+            return objectMapper.readValue(json, new TypeReference<Map<String, String>>() {
+            });
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
@@ -211,7 +215,8 @@ public class PayWrapperClient extends BaseClient {
     public Map<String, String> getPlatformStatus() {
         String json = this.execute("/real-time/platform", null, "GET");
         try {
-            return objectMapper.readValue(json, new TypeReference<Map<String, String>>() {});
+            return objectMapper.readValue(json, new TypeReference<Map<String, String>>() {
+            });
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
@@ -224,7 +229,8 @@ public class PayWrapperClient extends BaseClient {
                 new SimpleDateFormat("yyyyMMdd").format(startDate),
                 new SimpleDateFormat("yyyyMMdd").format(endDate)), null, "GET");
         try {
-            return objectMapper.readValue(json, new TypeReference<List<List<String>>>() {});
+            return objectMapper.readValue(json, new TypeReference<List<List<String>>>() {
+            });
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
@@ -324,47 +330,47 @@ public class PayWrapperClient extends BaseClient {
         this.applicationContext = applicationContext;
     }
 
-    public BaseDto<PayDataDto> autoLoanOutAfterRaisingComplete(long loanId){
+    public BaseDto<PayDataDto> autoLoanOutAfterRaisingComplete(long loanId) {
         return syncExecute(String.valueOf(loanId), "/job/auto-loan-out-after-raising-complete", "POST");
     }
 
-    public BaseDto<PayDataDto> sendRedEnvelopeAfterLoanOut(long loanId){
+    public BaseDto<PayDataDto> sendRedEnvelopeAfterLoanOut(long loanId) {
         return syncExecute(String.valueOf(loanId), "/loan-out/send-red-envelope-after-loan-out", "POST");
     }
 
-    public BaseDto<PayDataDto> sendRewardReferrer(long loanId){
+    public BaseDto<PayDataDto> sendRewardReferrer(long loanId) {
         return syncExecute(String.valueOf(loanId), "/loan-out/referrer-reward-after-loan-out", "POST");
     }
 
-    public BaseDto<PayDataDto> createAnXinContract(long loanId){
+    public BaseDto<PayDataDto> createAnXinContract(long loanId) {
         return syncExecute(String.valueOf(loanId), "/loan-out/create-anxin-contract-after-loan-out", "POST");
     }
 
-    public BaseDto<PayDataDto> queryAnXinContract(long loanId){
+    public BaseDto<PayDataDto> queryAnXinContract(long loanId) {
         return syncExecute(String.valueOf(loanId), "/loan-out/query-anxin-contract-after-loan-out", "POST");
     }
 
-    public BaseDto<PayDataDto> generateRepay(long loanId){
+    public BaseDto<PayDataDto> generateRepay(long loanId) {
         return syncExecute(String.valueOf(loanId), "/loan-out/generate-repay-after-loan-out", "POST");
     }
 
-    public BaseDto<PayDataDto> generateCouponRepay(long loanId){
+    public BaseDto<PayDataDto> generateCouponRepay(long loanId) {
         return syncExecute(String.valueOf(loanId), "/loan-out/generate-coupon-repay-after-loan-out", "POST");
     }
 
-    public BaseDto<PayDataDto> generateExtraRate(long loanId){
+    public BaseDto<PayDataDto> generateExtraRate(long loanId) {
         return syncExecute(String.valueOf(loanId), "/loan-out/generate-extra-rate-after-loan-out", "POST");
     }
 
-    public BaseDto<PayDataDto> assignInvestAchievementUserCoupon(long loanId){
+    public BaseDto<PayDataDto> assignInvestAchievementUserCoupon(long loanId) {
         return syncExecute(String.valueOf(loanId), "/loan-out/assign-achievement-coupon-after-loan-out", "POST");
     }
 
-    public BaseDto<PayDataDto> transferReferrerRewardCallBack(long investReferrerRewardId){
+    public BaseDto<PayDataDto> transferReferrerRewardCallBack(long investReferrerRewardId) {
         return syncExecute(String.valueOf(investReferrerRewardId), "/loan-out/transfer-referrer-reward-callback", "POST");
     }
 
-    public BaseDto<PayDataDto> transferRedEnvelopForCallBack(long userCouponId){
+    public BaseDto<PayDataDto> transferRedEnvelopForCallBack(long userCouponId) {
         return syncExecute(String.valueOf(userCouponId), "/loan-out/transfer-red-envelop-callback", "POST");
     }
 
@@ -372,31 +378,31 @@ public class PayWrapperClient extends BaseClient {
         return syncExecute(repaySuccessMessage, "/repay-success/post_invest_repay", "POST");
     }
 
-    public BaseDto<PayDataDto> extraRateRepayAfterRepaySuccess(RepaySuccessMessage repaySuccessMessage){
+    public BaseDto<PayDataDto> extraRateRepayAfterRepaySuccess(RepaySuccessMessage repaySuccessMessage) {
         return syncExecute(repaySuccessMessage, "/repay-success/extra-rate-repay", "POST");
     }
+
     public BaseDto<PayDataDto> extraRateRepayCallbackAfterRepaySuccess(long notifyRequestId) {
         return syncExecute(String.valueOf(notifyRequestId), "/repay-success/async_extra_rate_repay_notify", "POST");
     }
-    public BaseDto<PayDataDto> couponRepayAfterRepaySuccess(RepaySuccessMessage repaySuccessMessage){
+
+    public BaseDto<PayDataDto> couponRepayAfterRepaySuccess(RepaySuccessMessage repaySuccessMessage) {
         return syncExecute(repaySuccessMessage, "/repay-success/coupon-repay", "POST");
     }
+
     public BaseDto<PayDataDto> couponRepayCallbackAfterRepaySuccess(long notifyRequestId) {
         return syncExecute(String.valueOf(notifyRequestId), "/repay-success/async_coupon_repay_notify", "POST");
     }
-    public BaseDto<PayDataDto> experienceRepay(long investId){
+
+    public BaseDto<PayDataDto> repayInvestPayback(RepaySuccessAsyncCallBackMessage repaySuccessAsyncCallBackMessage) {
+        return syncExecute(repaySuccessAsyncCallBackMessage, "/repay-success/async_invest_repay_notify", "POST");
+    }
+
+    public BaseDto<PayDataDto> experienceRepay(long investId) {
         return syncExecute(String.valueOf(investId), "/experience/repay", "POST");
     }
 
     public BaseDto<PayDataDto> postExperienceRepay(long notifyRequestId) {
         return syncExecute(String.valueOf(notifyRequestId), "/experience/post-repay", "POST");
-    }
-
-    public BaseDto<PayDataDto> normalRepayInvestPayback(long notifyRequestId) {
-        return syncExecute(notifyRequestId, "/job/async_normal_repay_notify", "POST");
-    }
-
-    public BaseDto<PayDataDto> advanceRepayInvestPayback(long notifyRequestId) {
-        return syncExecute(notifyRequestId, "/job/async_advance_repay_notify", "POST");
     }
 }

@@ -85,6 +85,7 @@ public class RepaySuccessController {
     @RequestMapping(value = "/post_invest_repay", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<PayDataDto> postNormalRepay(@RequestBody RepaySuccessMessage repaySuccessMessage) {
+        logger.info(MessageFormat.format("[invest repay controller] loanRepayId:{0}",String.valueOf(repaySuccessMessage.getLoanRepayId())));
         try {
             if (repaySuccessMessage.isAdvanced()) {
                 advanceRepayService.paybackInvest(repaySuccessMessage.getLoanRepayId());
@@ -104,7 +105,7 @@ public class RepaySuccessController {
 
     @ResponseBody
     @RequestMapping(value = "/async_invest_repay_notify", method = RequestMethod.POST)
-    public BaseDto<PayDataDto> asyncNormalRepayNotify(@RequestBody RepaySuccessAsyncCallBackMessage repaySuccessAsyncCallBackMessage) {
+    public BaseDto<PayDataDto> asyncInvestRepayNotify(@RequestBody RepaySuccessAsyncCallBackMessage repaySuccessAsyncCallBackMessage) {
         return repaySuccessAsyncCallBackMessage.isAdvanced() ? this.advanceRepayService.asyncAdvanceRepayPaybackCallback(repaySuccessAsyncCallBackMessage.getNotifyRequestId())
                 : this.normalRepayService.asyncNormalRepayPaybackCallback(repaySuccessAsyncCallBackMessage.getNotifyRequestId());
     }

@@ -8,6 +8,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
+import com.tuotiansudai.message.RepaySuccessAsyncCallBackMessage;
 import com.tuotiansudai.message.RepaySuccessMessage;
 import com.tuotiansudai.mq.client.model.MessageTopic;
 import com.tuotiansudai.repository.mapper.CouponRepayMapper;
@@ -422,7 +423,8 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
             return null;
         }
 
-        mqWrapperClient.sendMessage(MessageQueue.AdvanceRepayCallback, String.valueOf(callbackRequest.getId()));
+        mqWrapperClient.sendMessage(MessageQueue.RepaySuccessInvestRepayCallback, new RepaySuccessAsyncCallBackMessage(callbackRequest.getId(),true));
+        logger.info(MessageFormat.format("[Advance Repay] 提前还款发放投资人收益回调消息发送成功,notifyRequestId:{0}",String.valueOf(callbackRequest.getId())));
         return callbackRequest.getResponseData();
     }
 

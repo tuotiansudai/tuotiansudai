@@ -19,6 +19,7 @@ import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.job.NormalRepayJob;
 import com.tuotiansudai.message.EventMessage;
 import com.tuotiansudai.message.PushMessage;
+import com.tuotiansudai.message.RepaySuccessAsyncCallBackMessage;
 import com.tuotiansudai.message.RepaySuccessMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.client.model.MessageTopic;
@@ -318,8 +319,6 @@ public class NormalRepayServiceImpl implements NormalRepayService {
         redisWrapperClient.hset(redisKey, String.valueOf(loanRepayId), SyncRequestStatus.READY.name());
         logger.info(MessageFormat.format("[Normal Repay {0}] put loan repay id into redis READY", String.valueOf(loanRepayId)));
 
-        // create payback invest job
-        this.createRepayJob(loanRepayId, 2);
         mqWrapperClient.publishMessage(MessageTopic.RepaySuccess,new RepaySuccessMessage(loanRepayId, false));
         logger.info(MessageFormat.format("[[Normal Repay {0}]: 正常还款成功,发送MQ消息", String.valueOf(loanRepayId)));
 
@@ -457,8 +456,8 @@ public class NormalRepayServiceImpl implements NormalRepayService {
             return null;
         }
 
-        mqWrapperClient.sendMessage(MessageQueue.NormalRepayCallback, String.valueOf(callbackRequest.getId()));
-
+        mqWrapperClient.sendMessage(MessageQueue.RepaySuccessInvestRepayCallback, new RepaySuccessAsyncCallBackMessage(callbackRequest.getId(),false));
+        logger.info(MessageFormat.format("[Normal Repay] 正常还款发放投资人收益回调消息发送成功,notifyRequestId:{0}",String.valueOf(callbackRequest.getId())));
         return callbackRequest.getResponseData();
     }
 
