@@ -434,12 +434,6 @@ public class NormalRepayServiceImpl implements NormalRepayService {
             return dto.getData().getStatus();
         }
 
-        try {
-            this.createRepayJob(loanRepayId, 60);
-        } catch (SchedulerException e) {
-            logger.error(MessageFormat.format("[Normal Repay {0}] create repay job failed", String.valueOf(loanRepayId)));
-        }
-
         return false;
     }
 

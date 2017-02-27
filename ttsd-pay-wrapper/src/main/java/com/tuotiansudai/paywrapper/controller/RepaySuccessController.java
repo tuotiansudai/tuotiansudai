@@ -90,12 +90,13 @@ public class RepaySuccessController {
     @ResponseBody
     public BaseDto<PayDataDto> postNormalRepay(@RequestBody RepaySuccessMessage repaySuccessMessage) {
         logger.info(MessageFormat.format("[invest repay controller] loanRepayId:{0}",String.valueOf(repaySuccessMessage.getLoanRepayId())));
-        boolean isSuccess = true;
+        boolean isSuccess ;
         try {
             isSuccess = repaySuccessMessage.isAdvanced()?advanceRepayService.paybackInvest(repaySuccessMessage.getLoanRepayId())
                     :normalRepayService.paybackInvest(repaySuccessMessage.getLoanRepayId());
         } catch (Exception e) {
             logger.error("还款发放投资人收益失败", e);
+            isSuccess = false;
         }
         BaseDto<PayDataDto> dto = new BaseDto<>();
         PayDataDto dataDto = new PayDataDto();
