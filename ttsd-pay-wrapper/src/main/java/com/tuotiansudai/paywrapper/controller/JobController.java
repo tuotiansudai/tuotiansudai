@@ -27,12 +27,6 @@ public class JobController {
     @Autowired
     InvestTransferPurchaseService investTransferPurchaseService;
 
-    @Autowired
-    private NormalRepayService normalRepayService;
-
-    @Autowired
-    private AdvanceRepayService advanceRepayService;
-
     @ResponseBody
     @RequestMapping(value = "/async_invest_notify", method = RequestMethod.POST)
     public BaseDto<PayDataDto> asyncInvestNotify(@RequestBody long notifyRequestId) {
