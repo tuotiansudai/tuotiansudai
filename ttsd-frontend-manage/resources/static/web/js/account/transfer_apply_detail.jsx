@@ -97,21 +97,20 @@ function sendData() {
     },function(data) {
         $(createForm).find('button[type="submit"]').prop('disabled', false);
         if (data == true) {
+            let $successTip = $('#successTip');
             layer.open({
                 title: '温馨提示',
                 btn: 0,
-                area: ['400px', '150px'],
-                content: $('#successTip').html(),
+                area: ['400px'],
+                content: $successTip.html(),
                 success: function (layero, index) {
-                    setInterval(function () {
-                        if ($('.layui-layer-content .count-time').text() < 2) {
-                            window.location.href = '/transferrer/transfer-application-list/TRANSFERRING';
-                        } else {
-                            $('.layui-layer-content .count-time').text(function (index, num) {
-                                return parseInt(num) - 1
-                            });
-                        }
-                    }, 1000);
+                    let $countTime = $successTip.find('.count-time');
+                    commonFun.countDownLoan({
+                        btnDom:$countTime,
+                        time:3
+                    },function() {
+                        window.location.href = '/transferrer/transfer-application-list/TRANSFERRING';
+                    });
                 }
             });
         } else {
