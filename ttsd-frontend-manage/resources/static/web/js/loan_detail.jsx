@@ -594,7 +594,7 @@ function getSkipPhoneTip(){
             shadeClose: false,
             title: '免密投资',
             btn: ['不开启', '开启'],
-            area: ['500px', '160px'],
+            area: ['500px'],
             content: '<p class="pad-m-tb tc">您可直接开启免密投资，简化投资过程，理财快人一步，是否开启？</p>',
             btn1: function () {
                 layer.closeAll();
