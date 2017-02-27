@@ -85,9 +85,12 @@ public class UserFundResponseDataDto extends BaseResponseDataDto {
     @ApiModelProperty(value = "用户可用体验金", example = "1000")
     private long experienceBalance; //用户可用体验金
 
+    @ApiModelProperty(value = "是否显示摇钱树", example = "1")
+    private int showMoneyTree; //是否显示摇钱树
+
     public UserFundResponseDataDto(UserFundView userFundView, long balance, long point, int membershipLevel,
                                    long membershipPoint, int usableUserCouponCount, Date membershipExpiredDate,
-                                   Date membershipPrivilegeExpiredDate, long experienceBalance) {
+                                   Date membershipPrivilegeExpiredDate, long experienceBalance, int showMoneyTree) {
         this.balance = balance;
         this.actualTotalInterest = userFundView.getActualTotalInterest();
         this.actualTotalExtraInterest = userFundView.getActualTotalExtraInterest();
@@ -118,6 +121,7 @@ public class UserFundResponseDataDto extends BaseResponseDataDto {
         this.membershipExpiredDate = membershipExpiredDate != null ? "有效期至:" + new SimpleDateFormat("yyyy-MM-dd").format(membershipExpiredDate) : null;
         this.membershipPrivilegeExpiredDate = membershipPrivilegeExpiredDate != null ? String.format("有效期至:%s", DateConvertUtil.format(membershipPrivilegeExpiredDate, "yyyy-MM-dd HH:mm:ss")) : null;
         this.experienceBalance = experienceBalance;
+        this.showMoneyTree = showMoneyTree;
     }
 
     public long getBalance() {
@@ -218,5 +222,9 @@ public class UserFundResponseDataDto extends BaseResponseDataDto {
 
     public long getExperienceBalance() {
         return experienceBalance;
+    }
+
+    public int getShowMoneyTree() {
+        return showMoneyTree;
     }
 }
