@@ -33,12 +33,6 @@ public class JobController {
     @Autowired
     private AdvanceRepayService advanceRepayService;
 
-    @Autowired
-    private CouponRepayService couponRepayService;
-
-    @Autowired
-    private ExtraRateService extraRateService;
-
     @ResponseBody
     @RequestMapping(value = "/async_invest_notify", method = RequestMethod.POST)
     public BaseDto<PayDataDto> asyncInvestNotify(@RequestBody long notifyRequestId) {
@@ -61,28 +55,6 @@ public class JobController {
     @RequestMapping(value = "/async_invest_transfer_notify", method = RequestMethod.POST)
     public BaseDto<PayDataDto> asyncInvestTransferNotify(@RequestBody long notifyRequestId) {
         return this.investTransferPurchaseService.asyncPurchaseCallback(notifyRequestId);
-    }
-
-    @RequestMapping(value = "/post_normal_repay", method = RequestMethod.POST)
-    @ResponseBody
-    public BaseDto<PayDataDto> postNormalRepay(@RequestBody long loanRepayId) {
-        boolean isSuccess = normalRepayService.paybackInvest(loanRepayId);
-        BaseDto<PayDataDto> dto = new BaseDto<>();
-        PayDataDto dataDto = new PayDataDto();
-        dataDto.setStatus(isSuccess);
-        dto.setData(dataDto);
-        return dto;
-    }
-
-    @RequestMapping(value = "/post_advance_repay", method = RequestMethod.POST)
-    @ResponseBody
-    public BaseDto<PayDataDto> postAdvanceRepay(@RequestBody long loanRepayId) {
-        boolean isSuccess = advanceRepayService.paybackInvest(loanRepayId);
-        BaseDto<PayDataDto> dto = new BaseDto<>();
-        PayDataDto dataDto = new PayDataDto();
-        dataDto.setStatus(isSuccess);
-        dto.setData(dataDto);
-        return dto;
     }
 
     @ResponseBody
