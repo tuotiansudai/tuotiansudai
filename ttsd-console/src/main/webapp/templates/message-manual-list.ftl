@@ -1,6 +1,6 @@
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="message-manual-list.js" headLab="message-manage" sideLab="manualMessageManage" title="手动发送站内信管理">
+<@global.main pageCss="" pageJavascript="message-manual-list.js" headLab="content-manage" sideLab="messageManage" title="手动发送站内信管理">
 
 <!-- content area begin -->
 <div class="col-md-10">
@@ -12,6 +12,11 @@
             <span class="txt"></span>
         </div>
     </div>
+    <div class="col-md-12">
+        <a href="/message-manage/manual-message-list"  class="btn btn-default btn-warning">手动创建消息管理</a>
+        <a href="/message-manage/auto-message-list"  class="btn btn-default">自动发送消息管理</a>
+    </div>
+
     <form action="/message-manage/manual-message-list" class="form-inline query-build">
         <div class="form-group">
             <label>标题</label>
@@ -28,10 +33,23 @@
                 </#list>
             </select>
         </div>
+
         <div class="form-group">
-            <label>创建人</label>
-            <input type='text' class="form-control" id="createdBy" name="createdBy" value="${createdBy!}"/>
+            <label>最后更新人</label>
+            <input type='text' class="form-control" id="updatedBy" name="updatedBy" value="${updatedBy!}"/>
         </div>
+
+        <div class="form-group">
+            <label>消息类型</label>
+            <select class="selectpicker" name="messageCategory">
+                <option value="" <#if !(selectedMessageCategory??)>selected</#if>>全部</option>
+                <#list messageCategories as messageCategory>
+                    <option value="${messageCategory.name()}"
+                            <#if ((selectedMessageCategory)?? && selectedMessageCategory == messageCategory)>selected="selected"</#if>>${messageCategory.getDescription()}</option>
+                </#list>
+            </select>
+        </div>
+
         <button class="btn btn-sm btn-primary query">查询</button>
         <a href="/message-manage/manual-message-list" class="btn btn-sm btn-default">重置</a>
     </form>
@@ -44,14 +62,13 @@
                 <th>收件人</th>
                 <th>标题</th>
                 <th>内容</th>
+                <th>消息发送时间</th>
                 <th>消息类型</th>
                 <th>送达方式</th>
                 <th>跳转页面</th>
                 <th>是否推送</th>
                 <th>推送渠道</th>
                 <th>状态</th>
-                <th>创建人</th>
-                <th>创建时间</th>
                 <th>最后更新人</th>
                 <th>最后更新时间</th>
                 <th>审核人</th>
@@ -60,12 +77,13 @@
             </tr>
             </thead>
             <tbody>
-                <#list messageList as message>
+                <#list dto.records as message>
                 <tr>
                     <td class="message-id">${message.id?c}</td>
                     <td>${message.userGroup}</td>
                     <td>${message.title!}</td>
                     <td>${message.templateTxt!}</td>
+                    <td>${message.validStartTime?datetime!'/'}至${message.validEndTime?datetime!'/'}</td>
                     <td>${message.messageCategory.getDescription()!}</td>
                     <td>
                         <#if message.channels?has_content>
@@ -79,8 +97,6 @@
                     <td><#if message.push??>是<#else>否</#if></td>
                     <td>${(message.push.pushSource)!}</td>
                     <td>${message.messageStatus.getDescription()!}</td>
-                    <td>${message.createdBy!}</td>
-                    <td>${message.createdTime?string('yyyy-MM-dd HH:mm:ss')}</td>
                     <td>${message.updatedBy!}</td>
                     <td><#if message.updatedTime??>${message.updatedTime?string('yyyy-MM-dd HH:mm:ss')!}</#if></td>
                     <td>${message.activatedBy!}</td>
@@ -107,23 +123,22 @@
     <!-- pagination  -->
     <nav>
         <div>
-            <span class="bordern">总共${messageCount}条,每页显示${pageSize}条</span>
+            <span class="bordern">总共${dto.count}条,每页显示${dto.pageSize}条</span>
         </div>
-        <#if messageList?has_content>
+        <#if dto.records?has_content>
             <ul class="pagination">
-                <#if hasPreviousPage>
+                <#if dto.hasPreviousPage>
                 <li>
-
-                    <a href="?index=${index-1}&pageSize=${pageSize}<#if selectedMessageStatus??>&messageStatus=${selectedMessageStatus}</#if><#if title??>&title=${title!}</#if><#if createdBy??>&createdBy=${createdBy!}</#if>"
+                    <a href="?index=${dto.index-1}&pageSize=${dto.pageSize}<#if selectedMessageStatus??>&messageStatus=${selectedMessageStatus}</#if><#if title??>&title=${title!}</#if><#if updatedBy??>&updatedBy=${updatedBy!}</#if><#if selectedMessageCategory??>&messageCategory=${selectedMessageCategory!}</#if>"
                        aria-label="Previous">
                         <span aria-hidden="true">&laquo; Prev</span>
                     </a>
                 </li>
                 </#if>
-                <li><a>${index}</a></li>
-                <#if hasNextPage>
+                <li><a>${dto.index}</a></li>
+                <#if dto.hasNextPage>
                 <li>
-                    <a href="?index=${index+1}&pageSize=${pageSize}<#if selectedMessageStatus??>&messageStatus=${selectedMessageStatus}</#if><#if title??>&title=${title!}</#if><#if createdBy??>&createdBy=${createdBy!}</#if>"
+                    <a href="?index=${dto.index+1}&pageSize=${dto.pageSize}<#if selectedMessageStatus??>&messageStatus=${selectedMessageStatus}</#if><#if title??>&title=${title!}</#if><#if updatedBy??>&updatedBy=${updatedBy!}</#if><#if selectedMessageCategory??>&messageCategory=${selectedMessageCategory!}</#if>"
                        aria-label="Next">
                         <span aria-hidden="true">Next &raquo;</span>
                     </a>
@@ -133,7 +148,6 @@
         </#if>
     </nav>
     <!-- pagination -->
-
     <!-- Modal -->
     <div class="modal fade" id="confirm-modal" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-sm" role="document">

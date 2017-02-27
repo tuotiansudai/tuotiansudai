@@ -16,7 +16,7 @@
             <div class="image-title"></div>
             <dl class="new-user-list clearfix">
                 <dt class="clearfix tc">新手体验项目</dt>
-                <dd><i>15</i>% <br/><em>预期年化收益</em></dd>
+                <dd><i>13</i>% <br/><em>预期年化收益</em></dd>
                 <dd><i>3</i>天 <br/><em>项目期限</em></dd>
             </dl>
 
@@ -40,13 +40,13 @@
             <div class="image-title"></div>
             <div class="subtitle tc">
                 <div class="subtitle-container">
-                    <i>新人独享13%高息新手标，30天灵活期限，满足您对资金流动性的需求</i>
+                    <i>新人独享11%高息新手标，30天灵活期限，满足您对资金流动性的需求</i>
                 </div>
             </div>
 
             <dl class="new-user-list clearfix">
                 <dt class="clearfix tc">新手专享标</dt>
-                <dd><i>13</i>% <br/><em>预期年化收益</em></dd>
+                <dd><i>11</i>% <br/><em>预期年化收益</em></dd>
                 <dd><i>30</i>天 <br/><em>项目期限</em></dd>
             </dl>
 
@@ -74,7 +74,7 @@
                 <img src="${staticServer}/activity/images/sign/actor/landingpage/newbie-step4-2.png">
                 <img class="arrow"
                      src="${staticServer}/activity/images/sign/actor/landingpage/newbie-step4-arrow.png">
-                <img src="${staticServer}/activity/images/sign/actor/landingpage/newbie-step4-3.png">
+                <img src="${staticServer}/activity/images/sign/actor/landingpage/newbie-step4-3-new.png">
             </div>
             <div class="tc"><a href="#" class="btn-normal" id="btn-get-coupon">立即注册领取</a></div>
 
@@ -85,13 +85,12 @@
                 <dd><img src="${staticServer}/activity/images/sign/actor/landingpage/newbie-step5-cfca.png"><br><i>CFCA权威认证</i>
                     <br/>
                     <p>携手中国金融认证中心<br>投资合同受法律保护</p></dd>
-                <dd><img
-                        src="${staticServer}/activity/images/sign/actor/landingpage/newbie-step5-control.png"><br><i>风控严谨</i>
+                <dd><img src="${staticServer}/activity/images/sign/actor/landingpage/newbie-step5-control.png"><br><i>风控严谨</i>
                     <br/>
-                    <p>六重风控，22道手续<br>历史全额兑付，0预期0坏账</p></dd>
+                    <p>六重风控，22道手续<br>历史全额兑付，0逾期0坏账</p></dd>
                 <dd><img src="${staticServer}/activity/images/sign/actor/landingpage/newbie-step5-security.png"><br><i>稳健安全</i>
                     <br/>
-                    <p>预期年化收益10%～13%<br>房/车抵押债权安全系数高</p></dd>
+                    <p>预期年化收益8%～11%<br>房/车抵押债权安全系数高</p></dd>
             </dl>
 
         </div>

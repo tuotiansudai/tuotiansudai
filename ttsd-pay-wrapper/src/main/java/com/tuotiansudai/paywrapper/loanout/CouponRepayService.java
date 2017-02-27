@@ -14,8 +14,10 @@ public interface CouponRepayService {
 
     String couponRepayCallback(Map<String, String> paramsMap, String queryString);
 
-    BaseDto<PayDataDto> asyncCouponRepayCallback();
+    BaseDto<PayDataDto> asyncCouponRepayCallback(long notifyRequestId);
 
     void processOneCallback(CouponRepayNotifyRequestModel callbackRequestModel);
+
+
 
 }

@@ -16,13 +16,10 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.text.MessageFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 
 public class MobileAppUserMessageServiceTest extends ServiceTestBase {
 
@@ -86,7 +83,8 @@ public class MobileAppUserMessageServiceTest extends ServiceTestBase {
         messageModel.setUserGroup(MessageUserGroup.ALL_USER);
         messageModel.setChannels(Lists.newArrayList(MessageChannel.APP_MESSAGE));
         messageModel.setStatus(MessageStatus.APPROVED);
-        messageModel.setExpiredTime(new DateTime(new Date()).plusDays(1).toDate());
+        messageModel.setValidStartTime(DateTime.parse("0001-01-01").toDate());
+        messageModel.setValidEndTime(new DateTime(new Date()).plusDays(1).toDate());
         messageModel.setCreatedBy(loginName);
         messageModel.setCreatedTime(new Date());
         messageModel.setUpdatedBy(loginName);
@@ -106,7 +104,9 @@ public class MobileAppUserMessageServiceTest extends ServiceTestBase {
                 null,
                 null,
                 null,
-                creator.getLoginName());
+                creator.getLoginName(),
+                DateTime.parse("0001-01-01").toDate(),
+                DateTime.parse("9999-12-31").toDate());
         messageModel.setActivatedTime(new Date());
         messageMapper.create(messageModel);
 
