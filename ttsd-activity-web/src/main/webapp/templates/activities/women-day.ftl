@@ -150,7 +150,12 @@
 				</@global.isAnonymous>
 				<@global.isNotAnonymous>
 				<p class="tc">当前累计获得花瓣<span>${totalLeaves}</span>个</p>
-				<p class="tc">可获得<span>${prize}</span></p>
+				<p class="tc">
+					<#if totalLeaves?? && totalLeaves < 9>
+                        暂未获得礼盒
+					<#else>
+                        可获得<span>${prize}</span></p>
+					</#if>
 				<p class="tc">
 					<a href="/referrer/refer-list">邀请好友</a>
 					<a href="/loan-list">立即投资</a>

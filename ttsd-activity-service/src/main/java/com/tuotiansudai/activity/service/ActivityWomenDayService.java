@@ -71,7 +71,7 @@ public class ActivityWomenDayService {
         List<InvestModel> investModels = investMapper.findSuccessInvestByInvestTime(loginName, activityWomanDayStartTime, activityWomanDayEndTime);
         Map<String, Long> investAmountMaps = Maps.newConcurrentMap();
         for(InvestModel investModel : investModels){
-            if(investModel.getLoanId() == 1)
+            if(investModel.getLoanId() == 1 || investModel.getTransferInvestId() != null)
                 continue;
 
             if(investAmountMaps.get(investModel.getLoginName()) == null){

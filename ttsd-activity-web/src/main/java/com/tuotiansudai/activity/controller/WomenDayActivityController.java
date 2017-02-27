@@ -1,5 +1,6 @@
 package com.tuotiansudai.activity.controller;
 
+import com.google.common.base.Strings;
 import com.tuotiansudai.activity.repository.model.ActivityCategory;
 import com.tuotiansudai.activity.repository.model.WomanDayRecordView;
 import com.tuotiansudai.activity.service.ActivityWomenDayService;
@@ -40,7 +41,7 @@ public class WomenDayActivityController {
         }
         modelAndView.addObject("totalLeaves", totalLeaves);
         modelAndView.addObject("signedIn", signInService.signInIsSuccess(loginName));
-        modelAndView.addObject("isDraw", lotteryDrawActivityService.toDayIsDrawByMobile(LoginUserInfo.getMobile(), ActivityCategory.WOMAN_DAY_ACTIVITY) > 0 ? true : false);
+        modelAndView.addObject("isDraw", Strings.isNullOrEmpty(LoginUserInfo.getMobile()) ? true : lotteryDrawActivityService.toDayIsDrawByMobile(LoginUserInfo.getMobile(), ActivityCategory.WOMAN_DAY_ACTIVITY) > 0);
         modelAndView.addObject("prize", prize);
         return modelAndView;
     }

@@ -71,7 +71,7 @@ public class ActivityWomanDayService {
         List<InvestModel> investModels = investMapper.findSuccessInvestByInvestTime(loginName, activityWomanDayStartTime, activityWomanDayEndTime);
         Map<String, Long> investAmountMaps = Maps.newConcurrentMap();
         for(InvestModel investModel : investModels){
-            if(investModel.getLoanId() == 1)
+            if(investModel.getLoanId() == 1 || investModel.getTransferInvestId() != null)
                 continue;
 
             if(investAmountMaps.get(investModel.getLoginName()) == null){
@@ -92,7 +92,7 @@ public class ActivityWomanDayService {
     private Map<String, WomanDayRecordView> setReferrerRecord(Map<String, WomanDayRecordView> womanDayAllRecordMap, String loginName) {
         List<UserModel> referrerUsers = userMapper.findUsersByRegisterTimeOrReferrer(activityWomanDayStartTime, activityWomanDayEndTime, loginName);
         referrerUsers.stream().filter(userModel -> investMapper.sumSuccessActivityInvestAmount(userModel.getLoginName(),null, activityWomanDayStartTime, activityWomanDayEndTime) >= 100)
-                .forEach(userModel -> this.putParam(womanDayAllRecordMap, userModel.getReferrer(), RewardType.REFERRER_REWARD, 1));
+                .forEach(userModel -> this.putParam(womanDayAllRecordMap, userModel.getReferrer(), RewardType.REFERRER_REWARD, 5));
         return womanDayAllRecordMap;
     }
 
