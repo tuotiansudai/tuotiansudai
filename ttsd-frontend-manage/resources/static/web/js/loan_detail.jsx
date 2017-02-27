@@ -16,6 +16,7 @@ let $accountInfo = $('.account-info', $loanDetailContent),
 let amountInputElement = $(".text-input-amount", $loanDetailContent);
 let noPasswordRemind = amountInputElement.data('no-password-remind');
 let noPasswordInvest = amountInputElement.data('no-password-invest');
+let autoInvestOn = amountInputElement.data('auto-invest-on');
 let $ticketList = $('.ticket-list');
 
 let $authorizeAgreement=$('#goAuthorize');
@@ -585,7 +586,6 @@ function getSkipPhoneTip(){
 //免密投资
 (function() {
     let $noPasswordTips=$('#noPasswordTips');
-    let autoInvestOn = amountInputElement.data('auto-invest-on');
     $noPasswordTips.on('click', function() {
         layer.open({
             type: 1,
