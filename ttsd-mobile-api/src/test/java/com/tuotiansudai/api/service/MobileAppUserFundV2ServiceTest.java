@@ -187,8 +187,8 @@ public class MobileAppUserFundV2ServiceTest extends ServiceTestBase {
         assertThat(data.getExpectedTotalExtraInterest(), is(18L));
         assertThat(data.getInvestFrozeAmount(), is(2L));
         assertThat(data.getWithdrawFrozeAmount(), is(100L));
-        assertThat(data.getActualTotalExperienceInterest(), is(10L));
-        assertThat(data.getExpectedTotalExperienceInterest(), is(20L));
+        assertThat(data.getActualExperienceInterest(), is(10L));
+        assertThat(data.getExpectedExperienceInterest(), is(20L));
 
     }
 

@@ -28,9 +28,6 @@ public class UserFundResponseDataDto extends BaseResponseDataDto {
     @ApiModelProperty(value = "已收红包奖励(分)", example = "10")
     private long redEnvelopeAmount; //已收红包奖励(分)
 
-    @ApiModelProperty(value = "已收体验金收益(分)", example = "100")
-    private long actualTotalExperienceInterest; //已收体验金收益(分)
-
     @ApiModelProperty(value = "待收回款=待收投资本金+待收投资收益+待收投资奖励(阶梯加息)", example = "1")
     private long expectedTotalCorpusInterest; //待收回款=待收投资本金+待收投资收益+待收投资奖励(阶梯加息)
 
@@ -42,9 +39,6 @@ public class UserFundResponseDataDto extends BaseResponseDataDto {
 
     @ApiModelProperty(value = "待收投资奖励(阶梯加息)(分)", example = "0")
     private long expectedTotalExtraInterest; //待收投资奖励(阶梯加息)(分)
-
-    @ApiModelProperty(value = "待收体验金收益(分)", example = "100")
-    private long expectedTotalExperienceInterest; //待收体验金收益(分)
 
     @ApiModelProperty(value = "投资冻结资金(分)", example = "0")
     private long investFrozeAmount; //投资冻结资金(分)
@@ -96,7 +90,7 @@ public class UserFundResponseDataDto extends BaseResponseDataDto {
         this.actualTotalExtraInterest = userFundView.getActualTotalExtraInterest();
         this.referRewardAmount = userFundView.getReferRewardAmount();
         this.redEnvelopeAmount = userFundView.getRedEnvelopeAmount();
-        this.totalIncome = this.actualTotalInterest + this.actualTotalExtraInterest + this.referRewardAmount + this.redEnvelopeAmount + this.actualTotalExperienceInterest;
+        this.totalIncome = this.actualTotalInterest + this.actualTotalExtraInterest + this.referRewardAmount + this.redEnvelopeAmount + this.getActualExperienceInterest();
 
         this.expectedExperienceInterest = userFundView.getExpectedExperienceInterest();
         this.actualExperienceInterest = userFundView.getActualExperienceInterest();
@@ -210,14 +204,6 @@ public class UserFundResponseDataDto extends BaseResponseDataDto {
 
     public String getMembershipPrivilegeExpiredDate() {
         return membershipPrivilegeExpiredDate;
-    }
-
-    public long getActualTotalExperienceInterest() {
-        return actualTotalExperienceInterest;
-    }
-
-    public long getExpectedTotalExperienceInterest() {
-        return expectedTotalExperienceInterest;
     }
 
     public long getExperienceBalance() {
