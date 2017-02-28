@@ -121,6 +121,146 @@ $CK1:#ffac2a;
     border-radius: 0;
     background: none;
   }
+
+  .column-box {
+    &.profile-box {
+      padding:15px;
+      .account-profile {
+        margin-right: 10px;
+        width: 78px;
+        height: 78px;
+        display: inline-block;
+        border:1px solid #e5e5e5;
+        background: #f5fefd url('../../images/myaccount/icon-profile.png') center 19px no-repeat;
+      }
+
+      .welcome-text {
+        font-size: 14px;
+        height: auto;
+        overflow: auto;
+        margin-bottom: 13px;
+        .tip-hello {
+          font-size: 16px;
+        }
+      }
+      .proList {
+        li {
+          a {
+            display: block;
+          }
+          &.fl {
+            font-size: 20px;
+            line-height: 0;
+            margin-top: 14px;
+            margin-right: 3px;
+
+            a {
+              display: block;
+            }
+            &.sign-top {
+              margin-top: 5px !important;
+              padding: 5px 0;
+              background: #ff7200;
+              color: #fff;
+              border-radius: 0px;
+              width: 80px;
+              height: 20px;
+              line-height: 20px;
+              text-align: center;
+
+              &.no-click {
+                background: #ccc;
+              }
+              span {
+                float: left;
+                text-align: center;
+                line-height: 20px;
+                font-size: 14px;
+
+                &.will-sign {
+                  float: left;
+                  width: 60px;
+                  text-align: center;
+                  line-height: 20px;
+                  background: url("../../images/sign/icon-sign.png") no-repeat left;
+                  background-position: 15px 2px;
+                  padding-left: 20px;
+                  font-size: 14px;
+                  cursor: pointer;
+                }
+                &.finish-sign {
+                  width: 100%;
+                  cursor: no-drop;
+                }
+              }
+            }
+            &.fl {
+              font-size: 20px;
+              line-height: 0;
+              margin-top: 14px;
+              margin-right: 3px;
+
+              a {
+                color: $CK1;
+                cursor: pointer;
+
+                &.fa-mobile {
+                  font-size: 24px;
+                  margin-top: -3px;
+                }
+                &.fa-envelope-o {
+                  color: #666;
+                }
+              }
+              &.fa-mobile {
+                font-size: 24px;
+                margin-top: -3px;
+              }
+              &.fa-envelope-o {
+                color: #666;
+              }
+            }
+          }
+          .btn-primary, .btn-normal {
+            margin-left: 10px;
+            padding: 8px 20px;
+          }
+        }
+      }
+      .vip {
+        display: inline-block;
+        width: 38px;
+        height: 14px;
+        vertical-align: middle;
+        &.vip0 {
+          background: url("../../images/icons/vip/account-vip/v0.png") no-repeat;
+        }
+        &.vip1 {
+          background: url("../../images/icons/vip/account-vip/v1.png") no-repeat;
+        }
+        &.vip2 {
+          background: url("../../images/icons/vip/account-vip/v2.png") no-repeat;
+        }
+        &.vip3 {
+          background: url("../../images/icons/vip/account-vip/v3.png") no-repeat;
+        }
+        &.vip4 {
+          background: url("../../images/icons/vip/account-vip/v4.png") no-repeat;
+        }
+        &.vip5 {
+          background: url("../../images/icons/vip/account-vip/v5.png") no-repeat;
+        }
+      }
+      .user-info {
+        display: inline-block;
+        width: 20px;
+        height: 14px;
+        vertical-align: middle;
+        background: url("../../images/icons/vip/account-vip/user-info.png") no-repeat;
+      }
+    }
+  }
+
   .birth-icon {
     float: left;
     width: 20px;
@@ -129,138 +269,6 @@ $CK1:#ffac2a;
     background-size: 15px;
     left: 50px;
     position: relative;
-  }
-
-  .accountImg {
-    margin-right: 10px;
-    width: 71px;
-    height: 71px;
-    display: inline-block;
-    background: url('../../images/sign/profile_20161011.jpg') left top no-repeat;
-  }
-  .proList {
-    margin-top: 4px;
-
-    li {
-      a {
-        display: block;
-      }
-      &.fl {
-        font-size: 20px;
-        line-height: 0;
-        margin-top: 14px;
-        margin-right: 3px;
-
-        a {
-          display: block;
-        }
-        &.sign-top {
-          margin-top: 5px !important;
-          padding: 5px 0;
-          background: #ff7200;
-          color: #fff;
-          border-radius: 0px;
-          width: 80px;
-          height: 20px;
-          line-height: 20px;
-          text-align: center;
-
-          &.no-click {
-            background: #ccc;
-          }
-          span {
-            float: left;
-            text-align: center;
-            line-height: 20px;
-            font-size: 14px;
-
-            &.will-sign {
-              float: left;
-              width: 60px;
-              text-align: center;
-              line-height: 20px;
-              background: url("../../images/sign/icon-sign.png") no-repeat left;
-              background-position: 15px 2px;
-              padding-left: 20px;
-              font-size: 14px;
-              cursor: pointer;
-            }
-            &.finish-sign {
-              width: 100%;
-              cursor: no-drop;
-            }
-          }
-        }
-        &.beans-number {
-          margin-top: 18px !important;
-          margin-left: 25px !important;
-          font-size: 14px !important;
-          color: #4c4c4c;
-          line-height: 14px !important;
-        }
-        &.fl {
-          font-size: 20px;
-          line-height: 0;
-          margin-top: 14px;
-          margin-right: 3px;
-
-          a {
-            color: $CK1;
-            cursor: pointer;
-
-            &.fa-mobile {
-              font-size: 24px;
-              margin-top: -3px;
-            }
-            &.fa-envelope-o {
-              color: #666;
-            }
-          }
-          &.fa-mobile {
-            font-size: 24px;
-            margin-top: -3px;
-          }
-          &.fa-envelope-o {
-            color: #666;
-          }
-        }
-      }
-      .btn-primary, .btn-normal {
-        margin-left: 10px;
-        padding: 8px 20px;
-      }
-    }
-  }
-  .vip {
-    display: inline-block;
-    width: 38px;
-    height: 14px;
-    vertical-align: middle;
-    &.vip0 {
-      background: url("../../images/icons/vip/account-vip/v0.png") no-repeat;
-    }
-    &.vip1 {
-      background: url("../../images/icons/vip/account-vip/v1.png") no-repeat;
-    }
-    &.vip2 {
-      background: url("../../images/icons/vip/account-vip/v2.png") no-repeat;
-    }
-    &.vip3 {
-      background: url("../../images/icons/vip/account-vip/v3.png") no-repeat;
-    }
-    &.vip4 {
-      background: url("../../images/icons/vip/account-vip/v4.png") no-repeat;
-    }
-    &.vip5 {
-      background: url("../../images/icons/vip/account-vip/v5.png") no-repeat;
-    }
-  }
-  .user-info {
-    display: inline-block;
-    width: 20px;
-    height: 14px;
-    vertical-align: middle;
-    background: url("../../images/icons/vip/account-vip/user-info.png") no-repeat;
   }
 
   .newProjects {
