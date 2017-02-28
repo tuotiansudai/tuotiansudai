@@ -15,6 +15,20 @@
   text-align: left;
 }
 
+//微信扫码，app下载
+.img-we-chat {
+  background: url("../images/scanCode/code-wechat.png") center center no-repeat;
+  width:248px;
+  height:248px;
+  display: inline-block;
+}
+.img-app-download {
+  background: url("../images/scanCode/code-app.png") center center no-repeat;
+  width:248px;
+  height:248px;
+  display: inline-block;
+}
+
 //顶部标题
 .page-col-title, .column-title {
   border-bottom: 1px solid #ccc;
