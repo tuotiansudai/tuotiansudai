@@ -1,11 +1,7 @@
 package com.tuotiansudai.service;
 
 import com.tuotiansudai.dto.RegisterUserDto;
-import com.tuotiansudai.enums.ExperienceBillBusinessType;
-import com.tuotiansudai.enums.ExperienceBillOperationType;
 import com.tuotiansudai.repository.model.UserModel;
-
-import java.util.List;
 
 public interface UserService {
 
@@ -43,5 +39,5 @@ public interface UserService {
 
     long getExperienceBalanceByLoginName(String loginName);
 
-    void updateUserExperienceBalanceByLoginName(long experienceAmount, String loginName, ExperienceBillOperationType experienceBillOperationType, ExperienceBillBusinessType experienceBusinessType);
+
 }

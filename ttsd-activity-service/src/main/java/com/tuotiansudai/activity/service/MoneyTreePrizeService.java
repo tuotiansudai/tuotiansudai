@@ -7,12 +7,11 @@ import com.tuotiansudai.activity.repository.mapper.UserLotteryPrizeMapper;
 import com.tuotiansudai.activity.repository.model.*;
 import com.tuotiansudai.enums.ExperienceBillBusinessType;
 import com.tuotiansudai.enums.ExperienceBillOperationType;
-import com.tuotiansudai.repository.mapper.ExperienceBillMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.service.UserService;
+import com.tuotiansudai.service.ExperienceBillService;
 import com.tuotiansudai.util.MobileEncryptor;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -43,13 +42,10 @@ public class MoneyTreePrizeService {
     private InvestMapper investMapper;
 
     @Autowired
-    private ExperienceBillMapper experienceBillMapper;
-
-    @Autowired
     private LotteryDrawActivityService lotteryDrawActivityService;
 
     @Autowired
-    private UserService userService;
+    private ExperienceBillService experienceBillService;
 
     @Value("#{'${activity.money.tree.period}'.split('\\~')}")
     private List<String> moneyTreeTime = Lists.newArrayList();
@@ -215,7 +211,7 @@ public class MoneyTreePrizeService {
             case MONEY_TREE_90000_EXPERIENCE_GOLD_50:
             case MONEY_TREE_100000_EXPERIENCE_GOLD_50:
             case MONEY_TREE_ABOVE_100000_EXPERIENCE_GOLD_50:
-                userService.updateUserExperienceBalanceByLoginName(MONEY_TREE_EXPERIENCE_BILL_AMOUNT_50, loginName, experienceBillOperationType, experienceBillBusinessType);
+                experienceBillService.updateUserExperienceBalanceByLoginName(MONEY_TREE_EXPERIENCE_BILL_AMOUNT_50, loginName, experienceBillOperationType, experienceBillBusinessType);
                 break;
             case MONEY_TREE_20000_EXPERIENCE_GOLD_100:
             case MONEY_TREE_30000_EXPERIENCE_GOLD_100:
@@ -227,7 +223,7 @@ public class MoneyTreePrizeService {
             case MONEY_TREE_90000_EXPERIENCE_GOLD_100:
             case MONEY_TREE_100000_EXPERIENCE_GOLD_100:
             case MONEY_TREE_ABOVE_100000_EXPERIENCE_GOLD_100:
-                userService.updateUserExperienceBalanceByLoginName(MONEY_TREE_EXPERIENCE_BILL_AMOUNT_100, loginName, experienceBillOperationType, experienceBillBusinessType);
+                experienceBillService.updateUserExperienceBalanceByLoginName(MONEY_TREE_EXPERIENCE_BILL_AMOUNT_100, loginName, experienceBillOperationType, experienceBillBusinessType);
                 break;
             case MONEY_TREE_20000_EXPERIENCE_GOLD_200:
             case MONEY_TREE_30000_EXPERIENCE_GOLD_200:
@@ -239,7 +235,7 @@ public class MoneyTreePrizeService {
             case MONEY_TREE_90000_EXPERIENCE_GOLD_200:
             case MONEY_TREE_100000_EXPERIENCE_GOLD_200:
             case MONEY_TREE_ABOVE_100000_EXPERIENCE_GOLD_200:
-                userService.updateUserExperienceBalanceByLoginName(MONEY_TREE_EXPERIENCE_BILL_AMOUNT_200, loginName, experienceBillOperationType, experienceBillBusinessType);
+                experienceBillService.updateUserExperienceBalanceByLoginName(MONEY_TREE_EXPERIENCE_BILL_AMOUNT_200, loginName, experienceBillOperationType, experienceBillBusinessType);
                 break;
             case MONEY_TREE_30000_EXPERIENCE_GOLD_300:
             case MONEY_TREE_40000_EXPERIENCE_GOLD_300:
@@ -250,7 +246,7 @@ public class MoneyTreePrizeService {
             case MONEY_TREE_90000_EXPERIENCE_GOLD_300:
             case MONEY_TREE_100000_EXPERIENCE_GOLD_300:
             case MONEY_TREE_ABOVE_100000_EXPERIENCE_GOLD_300:
-                userService.updateUserExperienceBalanceByLoginName(MONEY_TREE_EXPERIENCE_BILL_AMOUNT_300, loginName, experienceBillOperationType, experienceBillBusinessType);
+                experienceBillService.updateUserExperienceBalanceByLoginName(MONEY_TREE_EXPERIENCE_BILL_AMOUNT_300, loginName, experienceBillOperationType, experienceBillBusinessType);
                 break;
             case MONEY_TREE_50000_EXPERIENCE_GOLD_500:
             case MONEY_TREE_60000_EXPERIENCE_GOLD_500:
@@ -259,7 +255,7 @@ public class MoneyTreePrizeService {
             case MONEY_TREE_90000_EXPERIENCE_GOLD_500:
             case MONEY_TREE_100000_EXPERIENCE_GOLD_500:
             case MONEY_TREE_ABOVE_100000_EXPERIENCE_GOLD_500:
-                userService.updateUserExperienceBalanceByLoginName(MONEY_TREE_EXPERIENCE_BILL_AMOUNT_500, loginName, experienceBillOperationType, experienceBillBusinessType);
+                experienceBillService.updateUserExperienceBalanceByLoginName(MONEY_TREE_EXPERIENCE_BILL_AMOUNT_500, loginName, experienceBillOperationType, experienceBillBusinessType);
                 break;
             case MONEY_TREE_60000_EXPERIENCE_GOLD_600:
             case MONEY_TREE_70000_EXPERIENCE_GOLD_600:
@@ -267,21 +263,21 @@ public class MoneyTreePrizeService {
             case MONEY_TREE_90000_EXPERIENCE_GOLD_600:
             case MONEY_TREE_100000_EXPERIENCE_GOLD_600:
             case MONEY_TREE_ABOVE_100000_EXPERIENCE_GOLD_600:
-                userService.updateUserExperienceBalanceByLoginName(MONEY_TREE_EXPERIENCE_BILL_AMOUNT_600, loginName, experienceBillOperationType, experienceBillBusinessType);
+                experienceBillService.updateUserExperienceBalanceByLoginName(MONEY_TREE_EXPERIENCE_BILL_AMOUNT_600, loginName, experienceBillOperationType, experienceBillBusinessType);
                 break;
             case MONEY_TREE_80000_EXPERIENCE_GOLD_800:
             case MONEY_TREE_90000_EXPERIENCE_GOLD_800:
             case MONEY_TREE_100000_EXPERIENCE_GOLD_800:
             case MONEY_TREE_ABOVE_100000_EXPERIENCE_GOLD_800:
-                userService.updateUserExperienceBalanceByLoginName(MONEY_TREE_EXPERIENCE_BILL_AMOUNT_800, loginName, experienceBillOperationType, experienceBillBusinessType);
+                experienceBillService.updateUserExperienceBalanceByLoginName(MONEY_TREE_EXPERIENCE_BILL_AMOUNT_800, loginName, experienceBillOperationType, experienceBillBusinessType);
                 break;
             case MONEY_TREE_90000_EXPERIENCE_GOLD_1000:
             case MONEY_TREE_100000_EXPERIENCE_GOLD_1000:
             case MONEY_TREE_ABOVE_100000_EXPERIENCE_GOLD_1000:
-                userService.updateUserExperienceBalanceByLoginName(MONEY_TREE_EXPERIENCE_BILL_AMOUNT_1000, loginName, experienceBillOperationType, experienceBillBusinessType);
+                experienceBillService.updateUserExperienceBalanceByLoginName(MONEY_TREE_EXPERIENCE_BILL_AMOUNT_1000, loginName, experienceBillOperationType, experienceBillBusinessType);
                 break;
             case MONEY_TREE_ABOVE_100000_EXPERIENCE_GOLD_2000:
-                userService.updateUserExperienceBalanceByLoginName(MONEY_TREE_EXPERIENCE_BILL_AMOUNT_2000, loginName, experienceBillOperationType, experienceBillBusinessType);
+                experienceBillService.updateUserExperienceBalanceByLoginName(MONEY_TREE_EXPERIENCE_BILL_AMOUNT_2000, loginName, experienceBillOperationType, experienceBillBusinessType);
                 break;
         }
 

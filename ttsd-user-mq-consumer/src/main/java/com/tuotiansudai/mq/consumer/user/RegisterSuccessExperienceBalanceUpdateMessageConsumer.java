@@ -4,7 +4,7 @@ import com.tuotiansudai.enums.ExperienceBillBusinessType;
 import com.tuotiansudai.enums.ExperienceBillOperationType;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
-import com.tuotiansudai.service.UserService;
+import com.tuotiansudai.service.ExperienceBillService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ public class RegisterSuccessExperienceBalanceUpdateMessageConsumer implements Me
     private static final long EXPERIENCE_AMOUNT = 688800;
 
     @Autowired
-    private UserService userService;
+    private ExperienceBillService experienceBillService;
 
     @Override
     public MessageQueue queue() {
@@ -32,7 +32,7 @@ public class RegisterSuccessExperienceBalanceUpdateMessageConsumer implements Me
 
         logger.info("[MQ] userExperienceBalance receive message: {}: {}.", this.queue(), message);
         if (!StringUtils.isEmpty(message)) {
-            userService.updateUserExperienceBalanceByLoginName(EXPERIENCE_AMOUNT, message, ExperienceBillOperationType.IN, ExperienceBillBusinessType.REGISTER);
+            experienceBillService.updateUserExperienceBalanceByLoginName(EXPERIENCE_AMOUNT, message, ExperienceBillOperationType.IN, ExperienceBillBusinessType.REGISTER);
         }
         logger.info("[MQ] userExperienceBalance consume message success.");
     }

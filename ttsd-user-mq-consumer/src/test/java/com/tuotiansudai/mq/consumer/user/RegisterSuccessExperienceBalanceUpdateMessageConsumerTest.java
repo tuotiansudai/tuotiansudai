@@ -3,8 +3,7 @@ package com.tuotiansudai.mq.consumer.user;
 import com.tuotiansudai.enums.ExperienceBillBusinessType;
 import com.tuotiansudai.enums.ExperienceBillOperationType;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
-import com.tuotiansudai.service.ExperienceInvestService;
-import com.tuotiansudai.service.UserService;
+import com.tuotiansudai.service.ExperienceBillService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -23,7 +22,7 @@ import static org.mockito.Mockito.doNothing;
 public class RegisterSuccessExperienceBalanceUpdateMessageConsumerTest {
 
     @MockBean
-    private UserService userService;
+    private ExperienceBillService experienceBillService;
 
     @Autowired
     @Qualifier("registerSuccessExperienceBalanceUpdateMessageConsumer")
@@ -39,7 +38,7 @@ public class RegisterSuccessExperienceBalanceUpdateMessageConsumerTest {
         final ArgumentCaptor<ExperienceBillBusinessType> experienceBillBusinessTypeCaptor = ArgumentCaptor.forClass(ExperienceBillBusinessType.class);
 
         final String message = "loginName";
-        doNothing().when(userService).updateUserExperienceBalanceByLoginName(experienceAmountCaptor.capture(), loginNameCaptor.capture(), experienceBillOperationTypeCaptor.capture(), experienceBillBusinessTypeCaptor.capture());
+        doNothing().when(experienceBillService).updateUserExperienceBalanceByLoginName(experienceAmountCaptor.capture(), loginNameCaptor.capture(), experienceBillOperationTypeCaptor.capture(), experienceBillBusinessTypeCaptor.capture());
 
         consumer.consume(message);
 

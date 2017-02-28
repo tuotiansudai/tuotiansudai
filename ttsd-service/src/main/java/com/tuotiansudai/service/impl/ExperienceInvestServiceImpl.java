@@ -8,7 +8,9 @@ import com.tuotiansudai.enums.ExperienceBillBusinessType;
 import com.tuotiansudai.enums.ExperienceBillOperationType;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.service.ExperienceBillService;
 import com.tuotiansudai.service.ExperienceInvestService;
+import com.tuotiansudai.service.RegisterUserService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.IdGenerator;
@@ -41,7 +43,7 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
     private IdGenerator idGenerator;
 
     @Autowired
-    private UserService userService;
+    private ExperienceBillService registerUserService;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -71,7 +73,7 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
         InvestRepayModel investRepayModel = new InvestRepayModel(idGenerator.generate(), investModel.getId(), 1, 0, expectedInterest, 0, repayDate, RepayStatus.REPAYING);
         investRepayMapper.create(Lists.newArrayList(investRepayModel));
 
-        userService.updateUserExperienceBalanceByLoginName(Long.parseLong(investDto.getAmount()), investDto.getLoginName(), ExperienceBillOperationType.OUT, ExperienceBillBusinessType.INVEST_LOAN);
+        registerUserService.updateUserExperienceBalanceByLoginName(Long.parseLong(investDto.getAmount()), investDto.getLoginName(), ExperienceBillOperationType.OUT, ExperienceBillBusinessType.INVEST_LOAN);
         return investModel;
     }
 
