@@ -18,7 +18,6 @@
             <li class="f-title">帮助中心</li>
             <li><a href="/about/guide" onclick="cnzzPush.trackClick('54底部导航','新手指引')">新手指引</a></li>
             <li><a href="/about/service-fee" onclick="cnzzPush.trackClick('55底部导航','服务费用')">服务费用</a></li>
-            <li><a href="/about/qa" onclick="cnzzPush.trackClick('56底部导航','常见问题')">常见问题</a></li>
         </ul>
         <ul>
             <li class="f-title">联系我们</li>
