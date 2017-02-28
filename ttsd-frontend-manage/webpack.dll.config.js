@@ -8,12 +8,14 @@ var basePath = path.join(__dirname, 'resources'),
 
 module.exports = {
     entry: {
-        'jquery': ['jquery','layer']
+        'jquery': ['jquery','layer','underscore']
     },
     output: {
-        path: path.join(publicPath, 'js/plugins'),
+        path: path.join(publicPath, 'js/dllplugins'),
         filename: '[name].dll.js',
-        library: '[name]_library'
+        library: '[name]_library',
+        libraryTarget: 'umd',
+        umdNamedDefine: true
     },
     plugins: [
         new webpack.ProvidePlugin({
@@ -22,7 +24,7 @@ module.exports = {
             "window.jQuery": "jquery"
         }),
         new webpack.DllPlugin({
-            path: path.join(publicPath, 'js/plugins', '[name]-manifest.json'),
+            path: path.join(publicPath, 'js/dllplugins', '[name]-manifest.json'),
             name: '[name]_library',
             context: __dirname
         }),

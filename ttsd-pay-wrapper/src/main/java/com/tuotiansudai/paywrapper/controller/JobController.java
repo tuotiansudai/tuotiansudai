@@ -58,12 +58,6 @@ public class JobController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/async_coupon_repay_notify", method = RequestMethod.POST)
-    public BaseDto<PayDataDto> asyncCouponRepayNotify() {
-        return this.couponRepayService.asyncCouponRepayCallback();
-    }
-
-    @ResponseBody
     @RequestMapping(value = "/async_invest_transfer_notify", method = RequestMethod.POST)
     public BaseDto<PayDataDto> asyncInvestTransferNotify(@RequestBody long notifyRequestId) {
         return this.investTransferPurchaseService.asyncPurchaseCallback(notifyRequestId);

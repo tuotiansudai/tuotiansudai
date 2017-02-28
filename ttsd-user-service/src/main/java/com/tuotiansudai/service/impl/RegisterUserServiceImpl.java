@@ -46,7 +46,10 @@ public class RegisterUserServiceImpl implements RegisterUserService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean register(UserModel userModel) {
-        this.userMapper.create(userModel);
+        int result = this.userMapper.create(userModel);
+        if (result <= 0) {
+            return true;
+        }
 
         this.userRoleMapper.create(Lists.newArrayList(new UserRoleModel(userModel.getLoginName(), Role.USER)));
 

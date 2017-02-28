@@ -1,4 +1,3 @@
-var $=window.jquery_library(1);
 ;(function ($) {
     $.fn.extend({
         "placeholder":function (options) {
