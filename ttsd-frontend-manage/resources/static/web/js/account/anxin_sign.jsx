@@ -93,15 +93,23 @@ $('body').on('click','a',function(event) {
             thisDom:$this,
             url:' /anxinSign/createAccount'
         },function(response) {
-            layer.msg('<span class="layer-msg-tip"><i></i>开启成功!</span>',{
-                skin:'msg-tip-box',
-                time: 1500,
-                area:['290px','90px']
-            },function() {
-                //done
-                $closed.hide();
-                $opened.show();
-            });
+            if(!response.success){
+                layer.msg('<span class="layer-msg-tip"><i></i>'+response.data.message+'</span>',{
+                    skin:'msg-tip-box',
+                    time: 1500,
+                    area:['290px','90px']
+                });
+            } else {
+                layer.msg('<span class="layer-msg-tip"><i></i>开启成功!</span>', {
+                    skin: 'msg-tip-box',
+                    time: 1500,
+                    area: ['290px', '90px']
+                }, function () {
+                    //done
+                    $closed.hide();
+                    $opened.show();
+                });
+            }
         },function() {
             //always
             $this.prop('disabled',true);
