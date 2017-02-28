@@ -8,6 +8,7 @@ import com.tuotiansudai.mq.consumer.MessageConsumer;
 import com.tuotiansudai.repository.mapper.CouponMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.CouponModel;
+import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.JsonConverter;
 import org.apache.log4j.Logger;
@@ -50,6 +51,15 @@ public class CouponAssignSmsNotifyMessageConsumer implements MessageConsumer {
         }
 
         CouponModel couponModel = couponMapper.findById(couponAssignSmsNotifyMessage.getCouponId());
+        if(null == couponModel) {
+            logger.error(MessageFormat.format("[CouponAssignSmsNotifyMessageConsumer][consume] coupon is null!, message:{0}", message));
+            return;
+        }
+        UserModel userModel = userMapper.findByLoginName(couponAssignSmsNotifyMessage.getLoginName());
+        if(null == userModel) {
+            logger.error(MessageFormat.format("[CouponAssignSmsNotifyMessageConsumer][consume] user is null!, message:{0}", message));
+            return;
+        }
 
         SmsCouponNotifyDto notifyDto = new SmsCouponNotifyDto();
         notifyDto.setAmount(AmountConverter.convertCentToString(couponModel.getAmount()));
@@ -58,12 +68,12 @@ public class CouponAssignSmsNotifyMessageConsumer implements MessageConsumer {
         notifyDto.setExpiredDate(DateTime.now().plusDays(couponModel.getDeadline()).withTimeAtStartOfDay().toString("yyyy年MM月dd日"));
 
         logger.info(MessageFormat.format("Send coupon notify, loginName:{0}, couponId:{1}", couponAssignSmsNotifyMessage.getLoginName(), String.valueOf(couponAssignSmsNotifyMessage.getCouponId())));
-        String mobile = userMapper.findByLoginName(couponAssignSmsNotifyMessage.getLoginName()).getMobile();
-        notifyDto.setMobile(mobile);
+
+        notifyDto.setMobile(userModel.getMobile());
         try {
             smsWrapperClient.sendCouponAssignSuccessNotify(notifyDto);
         } catch (Exception e) {
-            logger.error(MessageFormat.format("Send coupon notify is failed (couponId = {0}, mobile = {1})", String.valueOf(couponAssignSmsNotifyMessage.getCouponId()), mobile));
+            logger.error(MessageFormat.format("Send coupon notify is failed (couponId = {0}, mobile = {1})", String.valueOf(couponAssignSmsNotifyMessage.getCouponId()), userModel.getMobile()));
         }
     }
 }
