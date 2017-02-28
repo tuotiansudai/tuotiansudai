@@ -170,8 +170,9 @@ public class MobileAppUserFundV2ServiceTest extends ServiceTestBase {
 
         InvestModel fakeExperienceInvest2 = createFakeInvest(fakeExperienceLoanModel1.getId(), 0, myUserFund.getLoginName(), InvestStatus.SUCCESS, TransferStatus.TRANSFERABLE);
         InvestRepayModel fakeExperienceInvestRepay2 = createFakeInvestRepay(fakeExperienceInvest2.getId(), 1, 0, 20, 0, new Date(), null, RepayStatus.REPAYING);
+        fakeExperienceInvestRepay2.setExpectedInterest(20);
+        fakeExperienceInvestRepay2.setExpectedFee(0);
         investRepayMapper.update(fakeExperienceInvestRepay2);
-
 
         BaseResponseDto<UserFundResponseDataDto> userFund = mobileAppUserFundV2Service.getUserFund(myUserFund.getLoginName());
 
@@ -182,7 +183,7 @@ public class MobileAppUserFundV2ServiceTest extends ServiceTestBase {
         assertThat(data.getReferRewardAmount(), is(10L));
         assertThat(data.getRedEnvelopeAmount(), is(10L));
         assertThat(data.getExpectedTotalCorpus(), is(1L));
-        assertThat(data.getExpectedTotalInterest(), is(56L));
+        assertThat(data.getExpectedTotalInterest(), is(36L));
         assertThat(data.getExpectedTotalExtraInterest(), is(18L));
         assertThat(data.getInvestFrozeAmount(), is(2L));
         assertThat(data.getWithdrawFrozeAmount(), is(100L));

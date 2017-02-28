@@ -13,7 +13,7 @@ import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.UserService;
-import com.tuotiansudai.util.MobileEncryptor;   
+import com.tuotiansudai.util.MobileEncryptor;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;

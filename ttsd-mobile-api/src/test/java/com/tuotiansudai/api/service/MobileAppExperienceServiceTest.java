@@ -60,7 +60,7 @@ public class MobileAppExperienceServiceTest extends ServiceTestBase {
 
         BaseResponseDto<ExperienceBillResponseDataDto> baseResponseDto = mobileAppExperienceBillService.queryExperienceBillList(experienceBillRequestDto);
         assertEquals(ReturnMessage.SUCCESS.getCode(), baseResponseDto.getCode());
-        assertEquals(ExperienceBillOperationType.IN.getDescription(), baseResponseDto.getData().getExperienceBills().get(0).getOperationType());
+        assertEquals(ExperienceBillOperationType.IN.toString(), baseResponseDto.getData().getExperienceBills().get(0).getOperationType());
         assertEquals(ExperienceBillBusinessType.REGISTER.getDescription(), baseResponseDto.getData().getExperienceBills().get(0).getBusinessType());
         assertEquals(2000, Long.parseLong(baseResponseDto.getData().getExperienceBills().get(0).getAmount()));
     }
