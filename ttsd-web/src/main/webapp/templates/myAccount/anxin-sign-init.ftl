@@ -2,7 +2,6 @@
 <@global.main pageCss="${css.anxin_sign}" pageJavascript="${js.anxin_sign}" activeNav="我的账户" activeLeftNav="安心签" title="安心签">
 <div class="safety-signed-frame" id="safetySignedFrame">
     <h2 class="column-title"><em>安心签</em></h2>
-
     <div class="sign-img"></div>
     <input type="hidden" class="bind-data" data-is-anxin-user="${anxinProp.anxinUser?c}">
 
@@ -19,7 +18,6 @@
                  和
                  <a href="javascript:void(0);" class="anxin_layer link-agree-number-authorize" >《CFCA数字证书授权协议》</a>
              </label>
-
     </div>
 
       <div class="safety-status-box opened tc">

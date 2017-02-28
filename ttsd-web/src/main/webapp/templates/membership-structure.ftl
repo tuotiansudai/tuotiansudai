@@ -1,13 +1,13 @@
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="${css.membership}" pageJavascript="${js.membership}" activeNav="成长体系" activeLeftNav="" title="会员体系_会员中心_拓天速贷" keywords="拓天会员,拓天会员等级,拓天会员体系,拓天速贷" description="拓天速贷会员成长体系,给处于不同成长阶段的投资用户提供差异化的专享特权,会员等级越高,享有的特权越多." site="membership">
 
-<div class="global-member-ship">
+<div class="global-member-ship" id="memberStructure">
     <#if loginName??>
         <div class="user-info-block page-width structure">
             <div class="title">会员等级</div>
             <div class="info clearfix">
                 <div class="avatar fl">
-                    <img src="${staticServer}/images/sign/head_20161011.png"/>
+                    <span class="icon-avatar"></span>
                     <i class="vip-no-bg vip-${membershipLevel!}"></i>
                 </div>
                 <div class="text">
@@ -36,7 +36,7 @@
         <div class="user-info-block page-width no-login">
             <div class="info clearfix">
                 <div class="avatar fl">
-                    <img src="${staticServer}/images/sign/head_20161011.png"/>
+                    <span class="icon-avatar"></span>
                 </div>
                 <div class="text">
                     亲，成为会员可享受多种特权哦~ <br/>

@@ -40,7 +40,7 @@ public class LoanerController {
         return modelAndView;
     }
 
-    @RequestMapping(path = "/loan-list-data", method = RequestMethod.GET, consumes = "application/json; charset=UTF-8", produces = "application/json; charset=UTF-8")
+    @RequestMapping(path = "/loan-list-data", method = RequestMethod.GET)
     @ResponseBody
     public BaseDto<BasePaginationDataDto> loanData(@Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index,
                                                    @RequestParam(name = "status", required = false) LoanStatus status,
