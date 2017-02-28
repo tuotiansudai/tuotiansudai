@@ -9,6 +9,4 @@ import com.tuotiansudai.enums.ExperienceBillOperationType;
 public interface ExperienceInvestService {
 
     BaseDto<BaseDataDto> invest(InvestDto investDto);
-
-    void updateUserExperienceBalanceByLoginName(long experienceAmount, String loginName, ExperienceBillOperationType experienceBillOperationType, ExperienceBillBusinessType experienceBillBusinessType);
 }

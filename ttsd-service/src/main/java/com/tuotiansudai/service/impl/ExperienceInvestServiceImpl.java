@@ -9,6 +9,7 @@ import com.tuotiansudai.enums.ExperienceBillOperationType;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.ExperienceInvestService;
+import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.InterestCalculator;
@@ -37,13 +38,10 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
     private InvestRepayMapper investRepayMapper;
 
     @Autowired
-    private ExperienceBillMapper experienceBillMapper;
-
-    @Autowired
     private IdGenerator idGenerator;
 
     @Autowired
-    private UserMapper userMapper;
+    private UserService userService;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -73,37 +71,8 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
         InvestRepayModel investRepayModel = new InvestRepayModel(idGenerator.generate(), investModel.getId(), 1, 0, expectedInterest, 0, repayDate, RepayStatus.REPAYING);
         investRepayMapper.create(Lists.newArrayList(investRepayModel));
 
-        this.updateUserExperienceBalanceByLoginName(Long.parseLong(investDto.getAmount()), investDto.getLoginName(), ExperienceBillOperationType.OUT, ExperienceBillBusinessType.INVEST_LOAN);
+        userService.updateUserExperienceBalanceByLoginName(Long.parseLong(investDto.getAmount()), investDto.getLoginName(), ExperienceBillOperationType.OUT, ExperienceBillBusinessType.INVEST_LOAN);
         return investModel;
-    }
-
-    public void updateUserExperienceBalanceByLoginName(long experienceAmount, String loginName, ExperienceBillOperationType experienceBillOperationType, ExperienceBillBusinessType experienceBusinessType){
-        UserModel userModel = userMapper.findByLoginName(loginName);
-        userModel.setExperienceBalance(userModel.getExperienceBalance() - experienceAmount);
-        userMapper.updateUser(userModel);
-
-        ExperienceBillModel experienceBillModel = new ExperienceBillModel(loginName,
-                experienceBillOperationType,
-                experienceAmount,
-                experienceBusinessType,
-                MessageFormat.format(this.experienceBillNote(experienceBusinessType),
-                        AmountConverter.convertCentToString(experienceAmount),
-                        new Date()));
-
-        experienceBillMapper.create(experienceBillModel);
-    }
-
-    private String experienceBillNote(ExperienceBillBusinessType experienceBusinessType){
-        switch (experienceBusinessType){
-            case INVEST_LOAN:
-                return "您投资了拓天体验金项目，投资体验金金额：{0}元, 投资时间：{1}";
-            case REGISTER:
-                return "新手注册成功，获得体验金：{0}元, 注册时间：{1}";
-            case MONEY_TREE:
-                return "恭喜您在摇钱树活动中摇中了：{0}元体验金，摇奖时间：{1}";
-        }
-        return "";
-
     }
 
     private boolean isUserExperienceRequired(InvestDto investDto) {
