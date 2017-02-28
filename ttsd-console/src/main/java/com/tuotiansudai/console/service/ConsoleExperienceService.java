@@ -10,7 +10,7 @@ import com.tuotiansudai.console.repository.model.ExperienceBillView;
 import com.tuotiansudai.console.repository.model.InvestRepayExperienceView;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.enums.ExperienceBillOperationType;
-import com.tuotiansudai.enums.ExperienceBusinessType;
+import com.tuotiansudai.enums.ExperienceBillBusinessType;
 import com.tuotiansudai.repository.mapper.ExperienceBillMapper;
 import com.tuotiansudai.repository.model.RepayStatus;
 import com.tuotiansudai.repository.model.UserModel;
@@ -72,7 +72,7 @@ public class ConsoleExperienceService {
                                                                                  Date startTime,
                                                                                  Date endTime,
                                                                                  ExperienceBillOperationType operationType,
-                                                                                 ExperienceBusinessType businessType,
+                                                                                 ExperienceBillBusinessType businessType,
                                                                                  int index,
                                                                                  int pageSize){
         int count = experienceBillMapperConsole.findCountExperienceBill(mobile,startTime,endTime,operationType,businessType);
@@ -86,8 +86,7 @@ public class ConsoleExperienceService {
     public long findSumExperienceBillAmount(String mobile,
                   Date startTime,
                   Date endTime,
-                  ExperienceBillOperationType operationType,
-                  ExperienceBusinessType businessType){
+                  ExperienceBillOperationType operationType, ExperienceBillBusinessType businessType){
         return experienceBillMapperConsole.findSumExperienceBillAmount(mobile,startTime,endTime,operationType,businessType);
     }
 

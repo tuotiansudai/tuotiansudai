@@ -1,7 +1,7 @@
 package com.tuotiansudai.console.repository.model;
 
 import com.tuotiansudai.enums.ExperienceBillOperationType;
-import com.tuotiansudai.enums.ExperienceBusinessType;
+import com.tuotiansudai.enums.ExperienceBillBusinessType;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -13,7 +13,7 @@ public class ExperienceBillView implements Serializable{
     private String userName;
     private String mobile;
     private ExperienceBillOperationType operationType;
-    private ExperienceBusinessType businessType;
+    private ExperienceBillBusinessType businessType;
     private long amount;
 
     public Date getCreatedTime() {
@@ -56,11 +56,11 @@ public class ExperienceBillView implements Serializable{
         this.operationType = operationType;
     }
 
-    public ExperienceBusinessType getBusinessType() {
+    public ExperienceBillBusinessType getBusinessType() {
         return businessType;
     }
 
-    public void setBusinessType(ExperienceBusinessType businessType) {
+    public void setBusinessType(ExperienceBillBusinessType businessType) {
         this.businessType = businessType;
     }
 

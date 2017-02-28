@@ -2,7 +2,7 @@ package com.tuotiansudai.console.repository.mapper;
 
 import com.tuotiansudai.console.repository.model.ExperienceBillView;
 import com.tuotiansudai.enums.ExperienceBillOperationType;
-import com.tuotiansudai.enums.ExperienceBusinessType;
+import com.tuotiansudai.enums.ExperienceBillBusinessType;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -16,7 +16,7 @@ public interface ExperienceBillMapperConsole {
                                                 @Param(value = "startTime") Date startTime,
                                                 @Param(value = "endTime") Date endTime,
                                                 @Param(value = "operationType") ExperienceBillOperationType operationType,
-                                                @Param(value = "businessType") ExperienceBusinessType businessType,
+                                                @Param(value = "businessType") ExperienceBillBusinessType businessType,
                                                 @Param(value = "index") int index,
                                                 @Param(value = "pageSize") int pageSize);
 
@@ -24,13 +24,13 @@ public interface ExperienceBillMapperConsole {
                                 @Param(value = "startTime") Date startTime,
                                 @Param(value = "endTime") Date endTime,
                                 @Param(value = "operationType") ExperienceBillOperationType operationType,
-                                @Param(value = "businessType") ExperienceBusinessType businessType);
+                                @Param(value = "businessType") ExperienceBillBusinessType businessType);
 
     long findSumExperienceBillAmount(@Param(value = "mobile") String mobile,
                                      @Param(value = "startTime") Date startTime,
                                      @Param(value = "endTime") Date endTime,
                                      @Param(value = "operationType") ExperienceBillOperationType operationType,
-                                     @Param(value = "businessType") ExperienceBusinessType businessType);
+                                     @Param(value = "businessType") ExperienceBillBusinessType businessType);
 
 
 }

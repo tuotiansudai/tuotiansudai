@@ -7,7 +7,7 @@ import com.tuotiansudai.console.dto.InvestRepayExperiencePaginationItemDto;
 import com.tuotiansudai.console.service.ConsoleExperienceService;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.enums.ExperienceBillOperationType;
-import com.tuotiansudai.enums.ExperienceBusinessType;
+import com.tuotiansudai.enums.ExperienceBillBusinessType;
 import com.tuotiansudai.repository.model.RepayStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -71,7 +71,7 @@ public class ExperienceController {
                                     @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
                                     @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
                                     @RequestParam(value = "experienceBillOperationType", required = false) ExperienceBillOperationType operationType,
-                                    @RequestParam(value = "experienceBusinessType", required = false) ExperienceBusinessType businessType,
+                                    @RequestParam(value = "experienceBusinessType", required = false) ExperienceBillBusinessType businessType,
                                     @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
         ModelAndView modelAndView = new ModelAndView("/experience-bill");
         int pageSize = 10;
@@ -91,7 +91,7 @@ public class ExperienceController {
         modelAndView.addObject("operationType", operationType);
         modelAndView.addObject("businessType", businessType);
         modelAndView.addObject("operationTypeList",Lists.newArrayList(ExperienceBillOperationType.values()));
-        modelAndView.addObject("businessTypeList",Lists.newArrayList(ExperienceBusinessType.values()));
+        modelAndView.addObject("businessTypeList",Lists.newArrayList(ExperienceBillBusinessType.values()));
         return modelAndView;
     }
 
