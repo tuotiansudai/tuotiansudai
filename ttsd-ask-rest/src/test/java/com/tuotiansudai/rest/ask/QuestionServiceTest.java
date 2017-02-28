@@ -1,5 +1,4 @@
-package com.tuotiansudai.ask.service;
-
+package com.tuotiansudai.rest.ask;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.ask.dto.QuestionDto;
@@ -9,21 +8,22 @@ import com.tuotiansudai.ask.repository.model.QuestionStatus;
 import com.tuotiansudai.ask.repository.model.Tag;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.rest.ask.service.QuestionService;
 import org.apache.commons.collections.CollectionUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 import static org.junit.Assert.assertTrue;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
-@Transactional
+@RunWith(SpringRunner.class)
+@SpringBootTest
+@Transactional("askTransactionManager")
 public class QuestionServiceTest {
 
     @Autowired
