@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.console.repository.mapper.ExperienceBillMapperConsole">
+
+    <cache-ref namespace="com.tuotiansudai.repository.mapper.ExperienceBillMapper"/>
+
+    <resultMap id="experienceBillViewResultMap" type="experienceBillView">
+        <id column="id" property="id"></id>
+        <result column="created_time" property="createdTime"/>
+        <result column="login_name" property="loginName"/>
+        <result column="user_name" property="userName"/>
+        <result column="mobile" property="mobile"/>
+        <result column="business_type" property="businessType"/>
+        <result column="operation_type" property="operationType"/>
+        <result column="amount" property="amount"/>
+    </resultMap>
+
+    <select id="findExperienceBill" resultMap="experienceBillViewResultMap" parameterType="map">
+        select eb.id,eb.created_time,eb.login_name,u.user_name,u.mobile,eb.business_type,eb.operation_type,eb.amount from experience_bill eb join user u on eb.login_name = u.login_name
+        <where>
+            <if test = "mobile != null and mobile != ''">
+                and u.mobile = #{mobile}
+            </if>
+            <if test = "startTime != null">
+                and eb.created_time >= #{startTime}
+            </if>
+            <if test = "endTime != null">
+                and eb.created_time &lt;= #{endTime}
+            </if>
+            <if test = "operationType != null">
+                and eb.operation_type = #{operationType}
+            </if>
+            <if test = "businessType != null">
+                and eb.business_type = #{businessType}
+            </if>
+        </where>
+        order by created_time
+        limit #{index}, #{pageSize}
+    </select>
+
+    <select id="findCountExperienceBill" resultType="int" parameterType="map">
+        select count(*) from experience_bill eb join user u on eb.login_name = u.login_name
+        <where>
+            <if test = "mobile != null and mobile != ''">
+                and u.mobile = #{mobile}
+            </if>
+            <if test = "startTime != null">
+                and eb.created_time >= #{startTime}
+            </if>
+            <if test = "endTime != null">
+                and eb.created_time &lt;= #{endTime}
+            </if>
+            <if test = "operationType != null">
+                and eb.operation_type = #{operationType}
+            </if>
+            <if test = "businessType != null">
+                and eb.business_type = #{businessType}
+            </if>
+        </where>
+    </select>
+
+    <select id="findSumExperienceBillAmount" parameterType="map" resultType="long">
+        select ifnull(sum(eb.amount),0) from experience_bill eb join user u on eb.login_name = u.login_name
+        <where>
+            <if test = "mobile != null and mobile != ''">
+                and u.mobile = #{mobile}
+            </if>
+            <if test = "startTime != null">
+                and eb.created_time >= #{startTime}
+            </if>
+            <if test = "endTime != null">
+                and eb.created_time &lt;= #{endTime}
+            </if>
+            <if test = "operationType != null">
+                and eb.operation_type = #{operationType}
+            </if>
+            <if test = "businessType != null">
+                and eb.business_type = #{businessType}
+            </if>
+        </where>
+    </select>
+
+</mapper>

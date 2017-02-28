@@ -175,6 +175,15 @@
                     {"name":"platform-loan-list","text":"借款申请信息","link":"/loan-application/list","role":"'ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN'"},
                     {"name":"bindCard","text":"换卡管理","link":"/bank-card-manager/bind-card","role":"'ADMIN','OPERATOR_ADMIN','CUSTOMER_SERVICE'"}
                 ]
+            },
+            {
+                "name":"experience-manage",
+                "header":{"text":"体验金管理"},
+                "sidebar":[
+                    {"name":"experienceBalance","text":"用户体验金余额","link":"/experience-manage/balance","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE','DATA'"},
+                    {"name":"experienceRepay","text":"体验金还款明细","link":"/experience-manage/repay-detail","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE','DATA'"},
+                    {"name":"experienceBill","text":"体验金流水明细","link":"/experience-manage/experience-bill","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE','DATA'"}
+                ]
             }
         ]
 >
