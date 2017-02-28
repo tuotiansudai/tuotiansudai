@@ -741,6 +741,9 @@ $pointColor:#ff5400;
     padding-right:6px;
   }
   .home-page-container {
+    .newer-exclusive-box .hot-bag {
+      display: none;
+    }
     .book-box-layer {
       width: 98%!important;
       left: 1%!important;

@@ -1,6 +1,6 @@
 require('webStyle/account/personal_info.scss');
 let commonFun= require('publicJs/commonFun');
-let ValidatorForm= require('publicJs/validator');
+let ValidatorObj= require('publicJs/validator');
 var $InfoBox = $('#personInfoBox'),
     $changeEmailLayer = $('.setEmail', $InfoBox),
     $updateBankCard = $('#update-bank-card'),
@@ -53,7 +53,7 @@ $updateBankCard.on('click', function(){
 
 //绑定邮箱
 require.ensure([],function() {
-    let validatorEmail = new ValidatorForm();
+    let validatorEmail = new ValidatorObj.ValidatorForm();
     let $changeEmailDOM = $('#changeEmailDOM'),
         changeEmailForm=globalFun.$('#changeEmailForm');
     let errorDom=$('.error-box',$changeEmailDOM);
@@ -234,7 +234,7 @@ require.ensure([],function() {
     });
 
     //关闭免密投资功能
-    let noPassValidator = new ValidatorForm();
+    let noPassValidator = new ValidatorObj.ValidatorForm();
     noPassValidator.add(imageCaptchaForm.imageCaptcha, [{
         strategy: 'isNonEmpty',
         errorMsg: '用户名不能为空'
@@ -304,7 +304,7 @@ require.ensure([],function() {
         layer.closeAll();
     });
 
-    let turnOffPassValidator = new ValidatorForm();
+    let turnOffPassValidator = new ValidatorObj.ValidatorForm();
     //免密投资验证图形码
     turnOffPassValidator.newStrategy(turnOffNoPasswordInvestForm.captcha,'isNoPasswordCaptchaVerify',function(errorMsg,showErrorAfter) {
         var getResult='',
@@ -321,12 +321,12 @@ require.ensure([],function() {
             if(response.data.status) {
                 // 如果为true说明手机已存在
                 getResult='';
-                commonFun.isHaveError.no.apply(that,_arguments);
+                ValidatorObj.isHaveError.no.apply(that,_arguments);
 
             }
             else {
                 getResult=errorMsg;
-                commonFun.isHaveError.yes.apply(that,_arguments);
+                ValidatorObj.isHaveError.yes.apply(that,_arguments);
             }
         });
         return getResult;
@@ -394,7 +394,7 @@ require.ensure([],function() {
     });
 
     //修改密码表单验证
-    let passValidator = new ValidatorForm();
+    let passValidator = new ValidatorObj.ValidatorForm();
     //验证原密码是否存在
     passValidator.newStrategy(changePasswordForm.originalPassword,'isNotExistPassword',function(errorMsg,showErrorAfter) {
         var getResult='',
@@ -408,12 +408,12 @@ require.ensure([],function() {
             if(response.data.status) {
                 // 如果为true说明密码存在有效
                 getResult='';
-                commonFun.isHaveError.no.apply(that,_arguments);
+                ValidatorObj.isHaveError.no.apply(that,_arguments);
 
             }
             else {
                 getResult=errorMsg;
-                commonFun.isHaveError.yes.apply(that,_arguments);
+                ValidatorObj.isHaveError.yes.apply(that,_arguments);
             }
         });
         return getResult;
@@ -506,7 +506,7 @@ require.ensure([],function() {
     });
 
     //修改支付密码表单验证
-    let umpayValidator = new ValidatorForm();
+    let umpayValidator = new ValidatorObj.ValidatorForm();
     umpayValidator.add(resetUmpayPasswordForm.identityNumber, [{
         strategy: 'isNonEmpty',
         errorMsg: '请输入身份证'

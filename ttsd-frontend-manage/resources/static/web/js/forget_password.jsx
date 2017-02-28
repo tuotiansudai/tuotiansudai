@@ -1,6 +1,6 @@
 require('webStyle/forget_password.scss');
 let commonFun=require('publicJs/commonFun');
-let ValidatorForm= require('publicJs/validator');
+let ValidatorObj= require('publicJs/validator');
 let retrieveForm=globalFun.$('#retrieveForm'); //找回密码的form
 let inputPasswordForm=globalFun.$('#inputPasswordForm'); //找回密码的form
 
@@ -19,7 +19,7 @@ function forgetPassword() {
     },'fetchCaptcha');
 
     //忘记密码表单校验
-    let validator = new ValidatorForm();
+    let validator = new ValidatorObj.ValidatorForm();
     validator.newStrategy(retrieveForm.mobile,'isMobileRetrieveExist',function(errorMsg,showErrorAfter) {
         var getResult='',
             that=this,
@@ -32,12 +32,12 @@ function forgetPassword() {
             if(response.data.status) {
                 // 如果为true说明手机已存在
                 getResult='';
-                commonFun.isHaveError.no.apply(that,_arguments);
+                ValidatorObj.isHaveError.no.apply(that,_arguments);
 
             }
             else {
                 getResult=errorMsg;
-                commonFun.isHaveError.yes.apply(that,_arguments);
+                ValidatorObj.isHaveError.yes.apply(that,_arguments);
             }
         });
         return getResult;
@@ -121,7 +121,7 @@ function inputPassword() {
     });
 
     //忘记密码表单校验
-    let validatorPass = new ValidatorForm();
+    let validatorPass = new ValidatorObj.ValidatorForm();
     validatorPass.add(inputPasswordForm.password, [{
         strategy: 'isNonEmpty',
         errorMsg: '密码不能为空'
