@@ -36,15 +36,19 @@ require.ensure([],function() {
     let reInputs=$(loginInForm).find('input:text,input:password');
 
     Array.prototype.forEach.call(reInputs,function(el) {
-        globalFun.addEventHandler(el,'blur',function() {
-            let errorMsg = validator.start(this);
-            if(errorMsg) {
-                errorDom.text(errorMsg);
-            }
-            else {
-                errorDom.text('');
-            }
+        'blur keyup'.split(' ').forEach(function(evn) {
+            globalFun.addEventHandler(el,evn,function() {
+                let errorMsg = validator.start(this);
+                if(errorMsg) {
+                    errorDom.text(errorMsg);
+                }
+                else {
+                    errorDom.text('');
+                }
+            });
         });
+
+
     });
 
     loginInForm.onsubmit = function(event) {

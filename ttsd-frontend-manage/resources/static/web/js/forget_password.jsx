@@ -69,10 +69,14 @@ function forgetPassword() {
 
     reInputs=Array.from(reInputs);
     for (let el of reInputs) {
-        globalFun.addEventHandler(el,"blur", function() {
-            validator.start(this);
-            isDisabledButton();
-        })
+        'blur keyup'.split(' ').forEach(function(evn) {
+            globalFun.addEventHandler(el,evn, function() {
+                validator.start(this);
+                isDisabledButton();
+            })
+        });
+
+
     }
 
 //用来判断获取验证码是否可点击

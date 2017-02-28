@@ -30,10 +30,12 @@ let reInputs=$(registerAccountForm).find('input:text');
 
 reInputs=Array.from(reInputs);
 for (var el of reInputs) {
-    globalFun.addEventHandler(el,"keyup", function() {
-       validator.start(this);
-        isDisabledButton();
-    })
+    'blur keyup'.split(' ').forEach(function(evn) {
+        globalFun.addEventHandler(el,evn, function() {
+            validator.start(this);
+            isDisabledButton();
+        })
+    });
 }
 
 //用来判断获取验证码和立即注册按钮 是否可点击
