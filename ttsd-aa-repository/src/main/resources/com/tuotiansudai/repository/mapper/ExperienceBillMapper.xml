@@ -36,6 +36,10 @@
         where id = #{id}
     </update>
 
+    <select id="findLastExchangeTimeByLoginName" resultType="java.util.Date" parameterType="String">
+       select max(created_time) from experience_bill where login_name = #{loginName}
+    </select>
+
     <select id="findExperienceBillPagination" parameterType="map" resultMap="experienceBillResultMap">
         select * from experience_bill
         <where>
