@@ -7,6 +7,7 @@ import com.tuotiansudai.anxin.service.AnxinSignService;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.*;
+import com.tuotiansudai.enums.AppUrl;
 import com.tuotiansudai.enums.MessageEventType;
 import com.tuotiansudai.enums.PushSource;
 import com.tuotiansudai.enums.PushType;
@@ -226,7 +227,8 @@ public class InvestTransferServiceImpl implements InvestTransferService {
         mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(Lists.newArrayList(transferApplicationModel.getLoginName()),
                 PushSource.ALL,
                 PushType.TRANSFER_FAIL,
-                MessageEventType.TRANSFER_FAIL.getTitleTemplate()));
+                MessageEventType.TRANSFER_FAIL.getTitleTemplate(),
+                AppUrl.MESSAGE_CENTER_LIST));
 
         return true;
     }

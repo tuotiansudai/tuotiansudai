@@ -9,6 +9,7 @@
         <result column="push_type" property="pushType"/>
         <result column="push_source" property="pushSource"/>
         <result column="content" property="content"/>
+        <result column="jump_to" property="jumpTo"/>
         <result column="created_time" property="createdTime"/>
         <result column="created_by" property="createdBy"/>
         <result column="updated_time" property="updatedTime"/>
@@ -16,8 +17,8 @@
     </resultMap>
 
     <insert id="create" parameterType="pushModel" useGeneratedKeys="true" keyProperty="id">
-        insert into push (push_type, push_source, content, created_time, created_by, updated_time, updated_by)
-        value(#{pushType}, #{pushSource}, #{content}, #{createdTime}, #{createdBy}, #{updatedTime}, #{updatedBy})
+        insert into push (push_type, push_source, content, jump_to, created_time, created_by, updated_time, updated_by)
+        value(#{pushType}, #{pushSource}, #{content}, #{jumpTo}, #{createdTime}, #{createdBy}, #{updatedTime}, #{updatedBy})
     </insert>
 
     <update id="update" parameterType="pushModel">
@@ -26,6 +27,7 @@
         push_type = #{pushType},
         push_source = #{pushSource},
         content = #{content},
+        jump_to = #{jumpTo},
         updated_time = now(),
         updated_by = #{updatedBy}
         where id = #{id}

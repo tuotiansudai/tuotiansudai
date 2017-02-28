@@ -1,6 +1,7 @@
 package com.tuotiansudai.client;
 
 import com.tuotiansudai.dto.Environment;
+import com.tuotiansudai.enums.AppUrl;
 import com.tuotiansudai.enums.PushSource;
 import com.tuotiansudai.message.PushMessage;
 import com.xiaomi.xmpush.server.Constants;
@@ -27,6 +28,8 @@ public class MiPushClient {
 
     private Environment environment;
 
+    final static private String PUSH_KEY_JUMP_TO = "jump_to";
+
     public MiPushClient(@Value("${common.mipush.appSecretKey.android}") String appSecretKeyAndroid,
                         @Value("${common.mipush.appSecretKey.ios}") String appSecretKeyIOS,
                         @Value("${common.environment}") Environment environment) {
@@ -52,6 +55,7 @@ public class MiPushClient {
                     .description(pushMessage.getContent())
                     .payload(pushMessage.getContent())
                     .notifyType(-1)
+                    .extra(PUSH_KEY_JUMP_TO, pushMessage.getJumpTo().getPath())
                     .build();
             // 安卓推送，测试环境和正式环境，都使用official（配置了不同的小米平台账户）
             Constants.useOfficial();
@@ -63,6 +67,7 @@ public class MiPushClient {
                     .title("拓天速贷")
                     .body(pushMessage.getContent())
                     .soundURL("default")
+                    .extra(PUSH_KEY_JUMP_TO, pushMessage.getJumpTo().getPath())
                     .build();
             // 针对IOS推送，需要根据环境来设置是否使用sandbox，安卓则无需这样
             if (environment != Environment.PRODUCTION) {
@@ -117,11 +122,12 @@ public class MiPushClient {
     }
 
     public static void main(String[] args) {
-        MiPushClient client = new MiPushClient("sMo/sH95jlpeY16I5OaqXg==", "ytB0yhJ9ZpTcYF8e8Dkvqg==", Environment.QA);
+        MiPushClient client = new MiPushClient("U4h5OF72+DCYbxM3qsmHJA==", "LX98vLqcQn7v6aS+i+UgeA==", Environment.QA);
         PushMessage pushMessage = new PushMessage();
-        pushMessage.setLoginNames(Arrays.asList("WOJy9ZdM"));
+        pushMessage.setLoginNames(Arrays.asList("lixuchen"));
         pushMessage.setContent("aaaaa");
         pushMessage.setPushSource(PushSource.ALL);
+        pushMessage.setJumpTo(AppUrl.MY_ASSESS);
         client.sendPushMessage(pushMessage);
     }
 
