@@ -89,6 +89,7 @@ require.ensure(['publicJs/fetch_captcha'], function(require){
 
 //用户注册表单校验
 let validator = new ValidatorObj.ValidatorForm();
+
 //推荐人是非存在
 validator.newStrategy(registerForm.referrer,'isReferrerExist',function(errorMsg,showErrorAfter) {
     var getResult='',
@@ -107,6 +108,37 @@ validator.newStrategy(registerForm.referrer,'isReferrerExist',function(errorMsg,
     },function(response) {
         if(response.data.status) {
             // 如果为true说明推荐人存在
+            getResult='';
+            ValidatorObj.isHaveError.no.apply(that,_arguments);
+        }
+        else {
+            getResult=errorMsg;
+            ValidatorObj.isHaveError.yes.apply(that,_arguments);
+        }
+    });
+    return getResult;
+});
+
+//验证码是否正确
+validator.newStrategy(registerForm.captcha,'isCaptchaValid',function(errorMsg,showErrorAfter) {
+    var getResult='',
+        that=this,
+        _arguments=arguments;
+
+    var _phone = registerForm.mobile.value,
+        _captcha=registerForm.captcha.value;
+
+    //先判断手机号格式是否正确
+    if(!/(^1[0-9]{10}$)/.test(_phone)) {
+        return;
+    }
+    commonFun.useAjax({
+        type:'GET',
+        async: false,
+        url:`/register/user/mobile/${_phone}/captcha/${_captcha}/verify`
+    },function(response) {
+        if(response.data.status) {
+            // 如果为true说明验证码正确
             getResult='';
             ValidatorObj.isHaveError.no.apply(that,_arguments);
         }
@@ -141,6 +173,9 @@ validator.add(registerForm.captcha, [{
 },{
     strategy: 'isNumber:6',
     errorMsg: '验证码为6位数字'
+},{
+    strategy: 'isCaptchaValid',
+    errorMsg: '验证码不正确'
 }],true);
 
 validator.add(registerForm.referrer, [{
