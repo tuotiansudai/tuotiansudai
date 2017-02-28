@@ -1,7 +1,7 @@
 require('publicStyle/module/register_png.scss');
 require('webStyle/register.scss');
 let commonFun=require('publicJs/commonFun');
-let ValidatorForm= require('publicJs/validator');
+let ValidatorObj= require('publicJs/validator');
 
 let registerForm=globalFun.$('#registerUserForm'); //注册的form
 let imageCaptchaForm=globalFun.$('#imageCaptchaForm'); //获取验证码的form
@@ -88,7 +88,7 @@ require.ensure(['publicJs/fetch_captcha'], function(require){
 })();
 
 //用户注册表单校验
-let validator = new ValidatorForm();
+let validator = new ValidatorObj.ValidatorForm();
 //推荐人是非存在
 validator.newStrategy(registerForm.referrer,'isReferrerExist',function(errorMsg,showErrorAfter) {
     var getResult='',
@@ -97,7 +97,7 @@ validator.newStrategy(registerForm.referrer,'isReferrerExist',function(errorMsg,
     //只验证推荐人是否存在，不验证是否为空
     if(this.value=='') {
         getResult='';
-        commonFun.isHaveError.no.apply(that,_arguments);
+        ValidatorObj.isHaveError.no.apply(that,_arguments);
         return '';
     }
     commonFun.useAjax({
@@ -108,11 +108,11 @@ validator.newStrategy(registerForm.referrer,'isReferrerExist',function(errorMsg,
         if(response.data.status) {
             // 如果为true说明推荐人存在
             getResult='';
-            commonFun.isHaveError.no.apply(that,_arguments);
+            ValidatorObj.isHaveError.no.apply(that,_arguments);
         }
         else {
             getResult=errorMsg;
-            commonFun.isHaveError.yes.apply(that,_arguments);
+            ValidatorObj.isHaveError.yes.apply(that,_arguments);
         }
     });
     return getResult;

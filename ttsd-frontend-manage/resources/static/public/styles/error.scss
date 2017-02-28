@@ -1,4 +1,5 @@
 //error page , 404,500
+
 .error-tip-container {
   width: 600px;
   color: #52a7ef;
@@ -17,13 +18,13 @@
     width:130px;
     height:105px;
     display: inline-block;
-    background: url('../images/error-tip-404.png');
+    background: url('../images/error-tip-404.png') left center no-repeat;
   }
   .error-icon-500 {
     width:112px;
     height:114px;
     display: inline-block;
-    background: url('../images/error-tip-500.png');
+    background: url('../images/error-tip-500.png') left center no-repeat;
   }
   .error-info {
     overflow: hidden;

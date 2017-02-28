@@ -100,8 +100,6 @@ $red: #eb4a3e;
       }
       .loan-info {
         color: #808080;
-        height: auto;
-        overflow: auto;
         .title-block {
           padding: 0 20px;
           line-height: 50px;
@@ -919,6 +917,7 @@ $red: #eb4a3e;
 }
 
 @media screen and (max-width:700px) {
+  .invest-list-content .col-md-4 { width: 100%;}
   .loan-detail-content {
     .loan-model {
       display: block;
@@ -931,6 +930,9 @@ $red: #eb4a3e;
       .news-share {
         border-left-width: 0;
         border-bottom-width: 0;
+        height:auto;
+        overflow: auto;
+        padding-bottom: 20px;
       }
       .account-info {
         width: 100%;
@@ -949,7 +951,4 @@ $red: #eb4a3e;
 
   }
 }
-@media screen and (max-width: 700px) {
-  .invest-list-content .col-md-4 { width: 100%;}
 
-}

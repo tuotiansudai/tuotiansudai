@@ -1,11 +1,11 @@
 require('webStyle/register.scss');
-let ValidatorForm= require('publicJs/validator');
+let ValidatorObj= require('publicJs/validator');
 let commonFun= require('publicJs/commonFun');
 var registerAccountForm = globalFun.$('#registerAccountForm'),
     $buttonLayer = $(registerAccountForm).find('.button-layer'),
     $btnSubmit = $(registerAccountForm).find('input[type="submit"]');
 
-let validator = new ValidatorForm();
+let validator = new ValidatorObj.ValidatorForm();
 
 validator.add(registerAccountForm.userName, [{
     strategy: 'isNonEmpty',

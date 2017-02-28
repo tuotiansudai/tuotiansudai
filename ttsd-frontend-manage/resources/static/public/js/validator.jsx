@@ -1,71 +1,96 @@
 let commonFun=require('publicJs/commonFun');
 
+function createElement(element,errorMsg) {
+    if(element && element.nextElementSibling) {
+        element.nextElementSibling.innerHTML=errorMsg;
+        return;
+    }
+    var span=document.createElement("span");
+    span.className="error";
+    span.innerHTML=errorMsg;
+    element && element.parentElement.appendChild(span);
+}
+function removeElement(element) {
+    (element && element.nextElementSibling && globalFun.hasClass(element.nextElementSibling,'error')) && element.parentElement.removeChild(element.nextElementSibling);
+}
 /*******策略对象********/
+
+var isHaveError ={
+    yes(errorMsg,showErrorAfter) {
+        globalFun.addClass(this,'error');
+        showErrorAfter && createElement(this,errorMsg);
+    },
+    no(showErrorAfter) {
+        globalFun.removeClass(this,'error');
+        globalFun.addClass(this,'valid');
+        showErrorAfter && removeElement(this);
+    }
+};
 
 var strategies = {
     isNonEmpty: function(errorMsg,showErrorAfter) {
         if (this.value === '') {
-            commonFun.isHaveError.yes.apply(this,arguments);
+            isHaveError.yes.apply(this,arguments);
             return errorMsg;
         }
         else {
-            commonFun.isHaveError.no.apply(this,arguments);
+            isHaveError.no.apply(this,arguments);
         }
     },
     minValue: function(errorMsg,value,showErrorAfter) {
         if (Number(this.value) < Number(value)) {
-            commonFun.isHaveError.yes.apply(this,arguments);
+            isHaveError.yes.apply(this,arguments);
             return errorMsg;
         }
         else {
-            commonFun.isHaveError.no.apply(this,arguments);
+            isHaveError.no.apply(this,arguments);
         }
     },
     maxValue: function(errorMsg,value,showErrorAfter) {
         if (Number(this.value) > Number(value)) {
-            commonFun.isHaveError.yes.apply(this,arguments);
+            isHaveError.yes.apply(this,arguments);
             return errorMsg;
         }
         else {
-            commonFun.isHaveError.no.apply(this,arguments);
+            isHaveError.no.apply(this,arguments);
         }
     },
     minLength: function(errorMsg,length,showErrorAfter) {
         if (this.value.length < Number(length)) {
-            commonFun.isHaveError.yes.apply(this,arguments);
+            isHaveError.yes.apply(this,arguments);
             return errorMsg;
         }
         else {
-            commonFun.isHaveError.no.apply(this,arguments);
+            isHaveError.no.apply(this,arguments);
         }
     },
     maxLength: function(errorMsg,length,showErrorAfter) {
         if (this.value.length > Number(length)) {
-            commonFun.isHaveError.yes.apply(this,arguments);
+            isHaveError.yes.apply(this,arguments);
             return errorMsg;
         }
         else {
-            commonFun.isHaveError.no.apply(this,arguments);
+            isHaveError.no.apply(this,arguments);
         }
     },
     isNumber:function(errorMsg,length,showErrorAfter) {
         if(length) {
             var reg=new RegExp('^\\d{'+length+'}$','g');
             if(reg.test(this.value)) {
-                commonFun.isHaveError.no.apply(this,arguments);
+                isHaveError.no.apply(this,arguments);
             }
             else {
-                commonFun.isHaveError.yes.apply(this,arguments);
+                isHaveError.yes.apply(this,arguments);
                 return errorMsg;
             }
         }
         else {
             //判断是非为数字，无需固定判断长度
            if(/^\d+[.]{0,1}\d*$/.test(this.value)) {
-               commonFun.isHaveError.no.apply(this,arguments);
+               isHaveError.no.apply(this,arguments);
            }
            else {
-               commonFun.isHaveError.yes.apply(this,arguments);
+               isHaveError.yes.apply(this,arguments);
                return errorMsg;
            }
 
@@ -73,40 +98,40 @@ var strategies = {
     },
     isChinese:function (errorMsg,showErrorAfter) {
         if(/^[\u4E00-\u9FA5]+$/.test(this.value)) {
-            commonFun.isHaveError.no.apply(this,arguments);
+            isHaveError.no.apply(this,arguments);
         }
         else {
-            commonFun.isHaveError.yes.apply(this,arguments);
+            isHaveError.yes.apply(this,arguments);
             return errorMsg;
         }
     },
     equalTo:function (errorMsg,dom,showErrorAfter) {
         let oldVal=$(dom).val();
         if(oldVal!=this.value) {
-            commonFun.isHaveError.yes.apply(this,arguments);
+            isHaveError.yes.apply(this,arguments);
             return errorMsg;
         }
         else {
-            commonFun.isHaveError.no.apply(this,arguments);
+            isHaveError.no.apply(this,arguments);
         }
     },
     equalLength:function(errorMsg,length,showErrorAfter) {
         if (this.value.length!=Number(length)) {
-            commonFun.isHaveError.yes.apply(this,arguments);
+            isHaveError.yes.apply(this,arguments);
             return errorMsg;
         }
         else {
-            commonFun.isHaveError.no.apply(this,arguments);
+            isHaveError.no.apply(this,arguments);
         }
     },
     checkPassword:function(errorMsg,showErrorAfter) {
         var regBool=/^(?=.*[^\d])(.{6,20})$/.test(this.value);
         if (!regBool) {
-            commonFun.isHaveError.yes.apply(this,arguments);
+            isHaveError.yes.apply(this,arguments);
             return errorMsg;
         }
         else {
-            commonFun.isHaveError.no.apply(this,arguments);
+            isHaveError.no.apply(this,arguments);
         }
     },
     isMobile: function(errorMsg,showErrorAfter) {
@@ -115,11 +140,11 @@ var strategies = {
             return '';
         }
         if (!/(^1[0-9]{10}$)/.test(this.value)) {
-            commonFun.isHaveError.yes.apply(this,arguments);
+            isHaveError.yes.apply(this,arguments);
             return errorMsg;
         }
         else {
-            commonFun.isHaveError.no.apply(this,arguments);
+            isHaveError.no.apply(this,arguments);
         }
     },
     isEmail:function(errorMsg,showErrorAfter) {
@@ -128,9 +153,9 @@ var strategies = {
             return '';
         }
         if(/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/.test(this.value)) {
-            commonFun.isHaveError.no.apply(this,arguments);
+            isHaveError.no.apply(this,arguments);
         } else {
-            commonFun.isHaveError.yes.apply(this,arguments);
+            isHaveError.yes.apply(this,arguments);
             return errorMsg;
         }
     },
@@ -138,11 +163,11 @@ var strategies = {
         //验证身份证号
         var cardValid=commonFun.IdentityCodeValid(this.value);
         if(!cardValid) {
-            commonFun.isHaveError.yes.apply(this,arguments);
+            isHaveError.yes.apply(this,arguments);
             return errorMsg;
         }
         else {
-            commonFun.isHaveError.no.apply(this,arguments);
+            isHaveError.no.apply(this,arguments);
         }
     },
     ageValid:function(errorMsg,showErrorAfter) {
@@ -151,11 +176,11 @@ var strategies = {
         if(cardValid) {
             var ageValid=commonFun.checkedAge(this.value);
             if(!ageValid) {
-                commonFun.isHaveError.yes.apply(this,arguments);
+                isHaveError.yes.apply(this,arguments);
                 return errorMsg;
             }
             else {
-                commonFun.isHaveError.no.apply(this,arguments);
+                isHaveError.no.apply(this,arguments);
             }
         }
     },
@@ -175,11 +200,11 @@ var strategies = {
             if(response.data.status) {
                 //身份证号已存在
                 getResult=errorMsg;
-                commonFun.isHaveError.yes.apply(that,_arguments);
+                isHaveError.yes.apply(that,_arguments);
             }
             else {
                 getResult='';
-                commonFun.isHaveError.no.apply(that,_arguments);
+                isHaveError.no.apply(that,_arguments);
             }
         });
         return getResult;
@@ -196,11 +221,11 @@ var strategies = {
             if(response.data.status) {
                 // 如果为true说明手机已存在或已注册
                 getResult=errorMsg;
-                commonFun.isHaveError.yes.apply(that,_arguments);
+                isHaveError.yes.apply(that,_arguments);
             }
             else {
                 getResult='';
-                commonFun.isHaveError.no.apply(that,_arguments);
+                isHaveError.no.apply(that,_arguments);
             }
         });
         return getResult;
@@ -217,11 +242,11 @@ var strategies = {
             if(response.data.status) {
                 // 邮箱已存在
                 getResult=errorMsg;
-                commonFun.isHaveError.yes.apply(that,_arguments);
+                isHaveError.yes.apply(that,_arguments);
             }
             else {
                 getResult='';
-                commonFun.isHaveError.no.apply(that,_arguments);
+                isHaveError.no.apply(that,_arguments);
             }
         });
         return getResult;
@@ -245,11 +270,11 @@ var strategies = {
             if(response.data.status) {
                 // 如果为true说明验证码正确
                 getResult='';
-                commonFun.isHaveError.no.apply(that,_arguments);
+                isHaveError.no.apply(that,_arguments);
             }
             else {
                 getResult=errorMsg;
-                commonFun.isHaveError.yes.apply(that,_arguments);
+                isHaveError.yes.apply(that,_arguments);
             }
         });
         return getResult;
@@ -311,6 +336,7 @@ function ValidatorForm(cache,checkOption) {
      }
 }
 
-module.exports=ValidatorForm;
+exports.ValidatorForm = ValidatorForm;
+exports.isHaveError = isHaveError;
 
 
