@@ -1,5 +1,5 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="${css.my_account}" pageJavascript="${js.account_overview}" activeNav="我的账户" activeLeftNav="账户总览" title="账户总览">
+<@global.main pageCss="${css.account_overview}" pageJavascript="${js.account_overview}" activeNav="我的账户" activeLeftNav="账户总览" title="账户总览">
 <script type="text/javascript">
     var pydata = {
         balance: '${((balance/100)?string('0.00'))!}',
@@ -10,7 +10,7 @@
 
 <div class="content-container account-overview">
     <div class="bRadiusBox spad bg-w clearfix">
-        <img src="${staticServer}/images/sign/profile_20161011.jpg" class="fl accountImg">
+        <span class="fl accountImg"></span>
         <div class="profile-box">
             <span><em>您好：${mobile!}</em></span>
             <span class="vip vip${userMembershipLevel!}"></span>
@@ -233,7 +233,6 @@
                     <p class="next-text"></p>
                     <p class="sign-reward"><a href="/activity/sign-check">查看连续签到奖励</a></p>
                 </div>
-
             </div>
         </div>
     </div>

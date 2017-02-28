@@ -1,0 +1,1272 @@
+/* common css*/
+.full-screen {
+	width:100%;
+}
+.bg-white {
+  background: #fff;
+}
+.pad-box {
+  padding:20px 0 50px 0;
+}
+.column-title-ac {
+  font-size:30px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom:10px;
+  i {
+	width: 8px;
+	height: 8px;
+	border-radius: 4px;
+	background: #808080;
+	display: inline-block;
+	margin-left: 20px;
+	margin-right: 20px;
+	vertical-align: middle;
+  }
+}
+.quick-top-link {
+  height: 118px;
+  padding-top: 14px;
+  overflow: hidden;
+  li {
+	width:33%;
+	height:115px;
+	float: left;
+	display: block;
+	text-align: center;
+	font-size:16px;
+	a {
+	  color: #cccccc;
+	  padding-top: 65px;
+	  display: inline-block;
+	}
+	&.guide {
+	  background: url('../images/sign/assure/icon-newer.png') center top no-repeat;
+	  &.active {
+		background-image:url('../images/sign/assure/icon-newer-active.png');
+		a {
+		  color: #ff8b00;
+		}
+	  }
+	}
+	&.risk {
+	  background: url('../images/sign/assure/icon-risk.png') center top no-repeat;
+	  &.active {
+		background-image:url('../images/sign/assure/icon-risk-active.png');
+		a {
+		  color: #ff8b00;
+		}
+	  }
+	}
+	&.assure {
+	  background: url('../images/sign/assure/icon-assure.png') center top no-repeat;
+	  &.active {
+		background-image:url('../images/sign/assure/icon-assure-active.png');
+		a {
+		  color: #ff8b00;
+		}
+	  }
+	}
+
+  }
+}
+
+.square-box-info {
+  border: 1px dashed #6dbb7c;
+  background: #fff;
+  border-radius: 15px;
+  position: absolute;
+  padding: 10px;
+  width: 35%;
+  font-size:16px;
+  dt {
+	font-size:20px;
+	font-weight: bold;
+  }
+  .triangle {
+	width:20px;
+	height: 20px;
+	background: url("../images/sign/assure/arrow-right.png") no-repeat center top;
+	position: absolute;
+	right: -15px;
+	top: 35px;
+  }
+  &:nth-child(1) {
+	left: 60px;
+	top:24px;
+  }
+  &:nth-child(2) {
+	right: 60px;
+	top: 138px;
+	.triangle {
+	  left: -16px;
+	  background: url("../images/sign/assure/arrow-left.png") no-repeat center top;
+	}
+  }
+  &:nth-child(3) {
+	left: 60px;
+	top:265px;
+  }
+  &:nth-child(4) {
+	right: 60px;
+	top:380px;
+	.triangle {
+	  left: -16px;
+	  background: url("../images/sign/assure/arrow-left.png") no-repeat center top;
+	}
+  }
+}
+.rectangle-box {
+  border:1px solid #3776cb;
+  padding:10px;
+  width:355px;
+  color: #4c4c4c;
+  font-size:16px;
+  border-radius:20px;
+  background: #fff;
+  margin-left:20px;
+  margin-right:20px;
+  dt {
+	font-size:24px;
+	font-weight: bold;
+  }
+  &:hover {
+	background: #3776cb;
+	color: #fff;
+  }
+}
+
+.btn-guide {
+  background: #db6558;
+  padding: 3px 60px;
+  color: #fff;
+  font-weight: bold;
+  font-size: 24px;
+  border-bottom: 4px solid #cc4b3d;
+  display: inline-block;
+  &:hover {
+	background: #e6402e;
+	color: #fff;
+  }
+}
+
+//安全保障
+.assurance-container {
+  .main-banner {
+	background:#4ebe76;
+	img {
+	  width:100%;
+	}
+  }
+	.fund-safety-box {
+		.safe-title {
+			text-align: center;
+			font-size:18px;
+		  	padding-bottom:20px;
+		}
+		.safe-info-list {
+			font-size:14px;
+			color: #4c4c4c;
+			dl {
+				width:265px;
+				float: left;
+				&:nth-child(2) {
+					margin-left:100px;
+					margin-right:100px;
+				}
+				dt {
+				  height: 123px;
+				  text-align: center;
+				  width: 25%;
+				  margin: 0 auto;
+				  display: table-cell;
+				  vertical-align: middle;
+				  font-size:18px;
+				&.list01 {
+					background:url('../images/sign/assure/safe-01.png') no-repeat center top;
+				  color: #db6558;
+				}
+				&.list02 {
+						background:url('../images/sign/assure/safe-02.png') no-repeat center top;
+				  color: #3776cb;
+				}
+				&.list03 {
+						background:url('../images/sign/assure/safe-03.png') no-repeat center top;
+				  color: #6dbb7c;
+				}
+			}
+			  dd {
+				padding-top:20px;
+			  }
+
+			}
+		}
+	}
+
+  .trade-risk-box {
+	text-align: center;
+	dd {
+	  padding:10px 20px;
+	  background: #fff;
+	  border:1px dotted #6dbb7c;
+	  border-radius: 10px;
+	  width:80%;
+	  height:auto;
+	  overflow: auto;
+	  margin: 30px auto;
+	  color: #6dbb7c;
+	  b {
+		font-size: 20px;
+	  }
+	  p {
+		text-align: left;
+		color: currentColor;
+		font-size: 16px;
+	  }
+	  &:hover {
+		background:#6dbb7c ;
+		color: #fff;
+	  }
+	}
+  }
+  .private-safety-box {
+	//padding:40px 20px;
+	dd {
+	  background: url("../images/sign/assure/icon-dot.png") no-repeat left 10px;
+	  padding-left: 35px;
+	  font-size: 18px;
+	  color: #4c4c4c;
+	  margin-bottom: 20px;
+	}
+  }
+  .data-info-safety {
+	height: 500px;
+	padding-top: 30px;
+	position: relative;
+	.axis-center {
+	  background: url("../images/sign/assure/order.png") no-repeat center top;
+	  width:102px;
+	  height: 458px;
+	  position: absolute;
+	  left: 45%;
+	  top: 15px;
+	}
+	.square-box-info {
+	  border: 1px dashed #6dbb7c;
+	  background: #fff;
+	  border-radius: 15px;
+	  position: absolute;
+	  padding: 10px;
+	  width: 35%;
+	  font-size:16px;
+	  dt {
+		font-size:20px;
+		font-weight: bold;
+	  }
+	  .triangle {
+		width:20px;
+		height: 20px;
+		background: url("../images/sign/assure/arrow-right.png") no-repeat center top;
+		position: absolute;
+		right: -15px;
+		top: 35px;
+	  }
+	  &:nth-child(1) {
+		left: 60px;
+		top:24px;
+	  }
+	  &:nth-child(2) {
+		right: 60px;
+		top: 138px;
+		.triangle {
+		  left: -16px;
+		  background: url("../images/sign/assure/arrow-left.png") no-repeat center top;
+		}
+	  }
+	  &:nth-child(3) {
+		left: 60px;
+		top:265px;
+	  }
+	  &:nth-child(4) {
+		right: 60px;
+		top:380px;
+		.triangle {
+		  left: -16px;
+		  background: url("../images/sign/assure/arrow-left.png") no-repeat center top;
+		}
+	  }
+	}
+  }
+}
+
+//风控流程
+.risk-flow-container {
+  .main-banner {
+	background:#1877d3;
+	img {
+	  width:100%;
+	}
+  }
+  .project-examination-box {
+	padding-bottom:60px;
+	padding-top: 30px;
+	height: 500px;
+	&.hack {
+	  height:auto;
+	}
+	.page-width {
+	  position: relative;
+	  height: 100%;
+	  .ellipse-shape {
+		position: absolute;
+		width: 99%;
+		height: 209px;
+		border-radius: 100px;
+		border: 2px solid #3776cb;
+		top: 110px;
+		z-index: 10;
+	  }
+	}
+	.project-info-list {
+	  margin-left:60px;
+	  height: auto;
+	  overflow: auto;
+	  position: absolute;
+	  z-index: 30;
+	  margin-top: -15px;
+		dl {
+		  color: #4d4d4d;
+		  font-size:14px;
+		  float: left;
+		  width:235px;
+		  margin-left:50px;
+		  margin-top:40px;
+		  dt {
+			font-size:18px;
+			color: #3776cb;
+			text-align: center;
+			em {
+			  width: 28px;
+			  height: 28px;
+			  border-radius: 14px;
+			  line-height: 28px;
+			  color: #fff;
+			  background: #3776cb;
+			  display: block;
+			  margin: 5px auto;
+			}
+		  }
+		  dd {
+			border:1px solid #3776cb;
+			border-radius: 8px;
+			padding:6px 12px;
+		  }
+		  &.active {
+			  dt {
+				color: #ff8b00;
+				em {
+				  background:#ff8b00 ;
+				}
+			  }
+			dd {
+			  border:1px solid #ff8b00;
+			}
+
+		  }
+
+		}
+	}
+	.project-examine-last {
+		dl {
+		  width:258px;
+		  float: left;
+		  dt {
+			font-size: 22px;
+			color: #3776cb;
+			font-weight: bold;
+			text-align: center;
+			em {
+			  display: block;
+			  width:206px;
+			  height: 206px;
+			  line-height: 206px;
+			  border-radius: 103px;
+			  background: #3776cb;
+			  margin: 20px auto;
+			  &:hover {
+				-moz-transform:scale(1.2);
+				-webkit-transform:scale(1.2);
+				-o-transform:scale(1.2);
+			  }
+			}
+		  }
+		  dd {
+			font-size:16px;
+			color: #4c4c4c;
+		  }
+		  &.two {
+			margin-left: 112px;
+			margin-right:112px;
+		  }
+
+		}
+	}
+  }
+
+  .project-examine-two {
+	position: relative;
+	height: 660px;
+	.ellipse-shape-center {
+	  position: absolute;
+	  left:50%;
+	  top:70px;
+	  .vertical-line {
+		height:520px;
+		width:1px;
+		border-left:1px dashed #3776cb;
+		position: absolute;
+		z-index: 0;
+	  }
+	  .squareNum {
+		position: absolute;
+		width:20px;
+		height:20px;
+		background: #3776cb;
+		color: #fff;
+		line-height: 20px;
+		text-align: center;
+		border-radius: 10px;
+		left: -10px;
+		z-index: 5;
+		&.one {
+			top:0;
+		}
+		&.two {
+		  top:100px;
+		}
+		&.three {
+		  top:200px;
+		}
+		&.four {
+		  top:300px;
+		}
+		&.five {
+		  top:400px;
+		}
+		&.six {
+		  top:500px;
+		}
+	  }
+	}
+	.square-box-info {
+	  border:1px solid #3776cb;
+	  color: #666;
+	  font-size:14px;
+	  width: 30%;
+	  dt {
+		font-size:16px;
+	  }
+	  .triangle {
+		width:0px;
+		height: 0px;
+		background: none;
+		border:9px solid transparent;
+		border-left:9px solid #3776cb;
+		right: -18px;
+		top:44px;
+		em {
+		  display: block;
+		  width: 0;
+		  height: 0;
+		  border: 9px solid transparent;
+		  border-left: 9px solid #fff;
+		  position: absolute;
+		  top: -9px;
+		  left: -10px;
+		}
+	  }
+	  &.one {
+		left: 113px;
+		top: 21px;
+	  }
+	  &.two {
+		right: 118px;
+		top: 126px;
+		.triangle {
+		  right:auto;
+		  left: -18px;
+		  border:9px solid transparent;
+		  border-right:9px solid #3776cb;
+		  em {
+			border: 9px solid transparent;
+			border-right: 9px solid #fff;
+			left: -8px;
+		  }
+		}
+	  }
+	  &.three {
+		left: 113px;
+		top: 225px;
+	  }
+	  &.four {
+		right: 118px;
+		top: 329px;
+		.triangle {
+		  right:auto;
+		  left: -18px;
+		  border:9px solid transparent;
+		  border-right:9px solid #3776cb;
+		  em {
+			border: 9px solid transparent;
+			border-right: 9px solid #fff;
+			left: -8px;
+		  }
+		}
+	  }
+	  &.five {
+		left: 113px;
+		top: 431px;
+		.triangle {
+		  top:30px;
+		}
+	  }
+	  &.six {
+		right: 118px;
+		top: 525px;
+		.triangle {
+		  right:auto;
+		  left: -18px;
+		  border:9px solid transparent;
+		  border-right:9px solid #3776cb;
+		  em {
+			border: 9px solid transparent;
+			border-right: 9px solid #fff;
+			left: -8px;
+		  }
+		}
+	  }
+	}
+  }
+
+  .post-lending-box {
+	position: relative;
+	height:245px;
+	.line-top-bar {
+	  height: 30px;
+	  background: url("../images/sign/assure/line-top.png") center top no-repeat;
+
+	}
+	.lending-steps {
+	  width: 87%;
+	  margin: 10px auto;
+	  dl {
+		float: left;
+		width: 208px;
+		margin-left: 36px;
+		margin-right: 20px;
+		border: 1px dashed #3776cb;
+		padding: 10px;
+		color: #3776cb;
+		position: relative;
+		border-radius: 10px;
+		dt {
+		  font-size:18px;
+		  em {
+			width:25px;
+			height: 15px;
+			background: url("../images/sign/assure/arrow-top.png") no-repeat;
+			position: absolute;
+			left:45%;
+			top:-10px;
+		  }
+		}
+	  }
+	}
+  }
+}
+
+//新手指引
+.new-guide-container {
+  .line {
+	width:100%;
+	height:1px;
+	background:#db6558;
+	background:-webkit-linear-gradient(to right, rgba(219,101,88,0), rgba(219,101,88,1),rgba(219,101,88,0));
+	background:-moz-linear-gradient(to right, rgba(219,101,88,0), rgba(219,101,88,1),rgba(219,101,88,0));
+	background:linear-gradient(to right, rgba(219,101,88,0), rgba(219,101,88,1),rgba(219,101,88,0));
+	background:-o-linear-gradient(to right, rgba(219,101,88,0), rgba(219,101,88,1),rgba(219,101,88,0));
+	margin-top:30px;
+	margin-bottom: 30px;
+	&.hack {
+	  display: none;
+	}
+  }
+
+  .main-banner {
+	background:#e95b56;
+	img {
+	  width:100%;
+	}
+  }
+  .section-box-one {
+	p {
+	  margin-top:10px;
+	  font-size: 16px;
+	}
+  }
+  .section-box-two {
+	overflow: hidden;
+	dl {
+	  margin-left: 80px;
+	  dt {
+		position: relative;
+		color: #333333;
+		font-size: 20px;
+		padding-left: 85px;
+		span {
+		  position: absolute;
+		  font-size: 80px;
+		  font-weight: bold;
+		  color: #b2b2b2;
+		  display: inline-block;
+		  left: -10px;
+		  top: -40px;
+		  font-family: arial;
+		  letter-spacing: -3px;
+		}
+	  }
+	  dd {
+		padding-left:85px;
+		color: #808080;
+		&.img-load {
+		  padding-left:70px;
+		  padding-top:10px;
+		  position: relative;
+		  .arrow-rise {
+			position: absolute;
+			top: 33px;
+			left: 200px;
+			width:294px;
+			height:294px;
+			background: url("../images/sign/assure/arrow-rise.png") no-repeat;
+			-webkit-animation: rise 3s infinite linear;
+			animation: rise 3s infinite linear;
+			-webkit-transform-origin:40px 200px;
+			-moz-transform-origin:40px 200px;
+		  }
+		  @-webkit-keyframes rise {
+			0% {
+			  -webkit-transform:scale(0.1,0.1);
+			  -moz-transform:scale(0.1,0.1);
+			}
+			50% {
+			  -webkit-transform:scale(0.5,0.5);
+			  -moz-transform:scale(0.5,0.5);
+			}
+			100% {
+			  -webkit-transform:scale(1,1);
+			  -moz-transform:scale(1,1);
+			}
+		  }
+		  @keyframes rise {
+			0% {
+			  -webkit-transform:scale(0.1,0.1);
+			  -moz-transform:scale(0.1,0.1);
+			}
+			50% {
+			  -webkit-transform:scale(0.5,0.5);
+			  -moz-transform:scale(0.5,0.5);
+			}
+			100% {
+			  -webkit-transform:scale(1,1);
+			  -moz-transform:scale(1,1);
+			}
+		  }
+		}
+		&.high-profit {
+		  height:345px;
+		  background: url("../images/sign/assure/bg-wen.png") center center no-repeat;
+		  position: relative;
+			.high-box {
+			  border:1px solid #db6558;
+			  border-radius:10px;
+			  width:265px;
+			  padding:10px;
+			  box-sizing: border-box;
+			  font-size:15px;
+			  text-align: center;
+			  background: #fff;
+			  position: relative;
+			  color: #666666;
+			  &:nth-child(1) {
+				position: absolute;
+				top: 30px;
+				left: 0px;
+			  }
+			  &:nth-child(2) {
+				position: absolute;
+				top: 30px;
+				right: 0px;
+			  }
+			  &:nth-child(3) {
+				position: absolute;
+				top: 230px;
+				left: 0px;
+			  }
+			  &:nth-child(4) {
+				position: absolute;
+				top: 230px;
+				right: 0px;
+			  }
+			  span {
+				display: block;
+				&.line-align {
+				  background:#db6558;
+				  background:-webkit-linear-gradient(to right, rgba(219,101,88,0), rgba(219,101,88,1),rgba(219,101,88,0));
+				  background:-moz-linear-gradient(to right, rgba(219,101,88,0), rgba(219,101,88,1),rgba(219,101,88,0));
+				  background:linear-gradient(to right, rgba(219,101,88,0), rgba(219,101,88,1),rgba(219,101,88,0));
+				  background:-o-linear-gradient(to right, rgba(219,101,88,0), rgba(219,101,88,1),rgba(219,101,88,0));
+				  height:1px;
+				}
+				&.line-valign {
+				  background:#db6558;
+				  background:-webkit-linear-gradient(to bottom, rgba(219,101,88,0), rgba(219,101,88,1),rgba(219,101,88,0));
+				  background:-moz-linear-gradient(to bottom, rgba(219,101,88,0), rgba(219,101,88,1),rgba(219,101,88,0));
+				  background:linear-gradient(to bottom, rgba(219,101,88,0), rgba(219,101,88,1),rgba(219,101,88,0));
+				  background:-o-linear-gradient(to bottom, rgba(219,101,88,0), rgba(219,101,88,1),rgba(219,101,88,0));
+				  width:1px;
+				}
+			  }
+				&.square-normal {
+				  span {
+					&.line-align {
+					  position: absolute;
+					  top:50%;
+					  width:100%;
+					}
+					&.line-valign {
+					  position: absolute;
+					  left:50%;
+					  height:100%;
+					  top:0;
+					}
+				 }
+				}
+			  &:hover {
+				background: #db6558;
+				color: #fff;
+				span {
+				  &.line-align {
+					background:#db6558;
+					background:-webkit-linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,1),rgba(255,255,255,0));
+					background:-moz-linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,1),rgba(255,255,255,0));
+					background:linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,1),rgba(255,255,255,0));
+					background:-o-linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,1),rgba(255,255,255,0));
+					height:1px;
+				  }
+				  &.line-valign {
+					background:#db6558;
+					background:-webkit-linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,1),rgba(255,255,255,0));
+					background:-moz-linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,1),rgba(255,255,255,0));
+					background:linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,1),rgba(255,255,255,0));
+					background:-o-linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,1),rgba(255,255,255,0));
+					width:1px;
+				  }
+				}
+			  }
+			}
+
+		}
+
+	  }
+	  &.box-03 {
+		 dd {
+		   &.benefit-img {
+			 padding-top:53px;
+		   }
+		 }
+	   }
+	  &.box-04 {
+		dd {
+		  &.benefit-img {
+			padding-top:30px;
+		  }
+		}
+	  }
+	}
+  }
+
+  .section-box-three {
+	.sub-title-one,.sub-title-two {
+	  position: relative;
+	  width:100%;
+	  height: 30px;
+	  margin-top: 20px;
+	  .line-align {
+		width: 100%;
+		height:1px;
+		background: #db6558;
+		position: absolute;
+		top:10px;
+	  }
+	  .title-word {
+		position: absolute;
+		height:40px;
+		background: #ffffff;
+		width:140px;
+		position: absolute;
+		left:150px;
+		top:-16px;
+		font-size:28px;
+		color: #db6558;
+		text-align: center;
+		i {
+		  width:4px;
+		  height:4px;
+		  border-radius: 2px;
+		  background: #db6558;
+		  display: inline-block;
+		  vertical-align: middle;
+		  margin-top: 25px;
+
+		}
+	  }
+	}
+	.sub-title-two {
+	  margin-top:40px;
+	  .title-word {
+		left:700px;
+		width:160px;
+	  }
+	}
+	.mortgage-list {
+	  margin-bottom:50px;
+	  li {
+		display: inline-block;
+		width:148px;
+		height: 148px;
+		border-radius: 74px;
+		background: #db6558;
+		color: #fff;
+		text-align: center;
+		font-size:16px;
+		margin-left: 45px;
+		margin-right: 45px;
+		span {
+		  display: inline-block;
+		  padding-top:40px;
+		}
+	  }
+	}
+	.creditor-right-info {
+	  img {
+		margin-right:60px;
+	  }
+	  .btn-guide {
+		margin-top:30px;
+	  }
+	}
+  }
+
+  .section-box-four {
+	img {
+	  margin-bottom:30px;
+	}
+  }
+  .section-box-five {
+	.code-ma {
+	  color: #4c4c4c;
+	  font-size: 20px;
+	  span {
+		display: inline-block;
+		margin:20px 60px;
+		font-weight: bold;
+		img {
+		  border: 1px solid #e6e6e6;
+		  margin-bottom:20px;
+		}
+
+	  }
+	}
+  }
+}
+
+//底部
+.bottom-close,.bottom-open {
+	height:138px;
+	position: fixed;
+	bottom:0px;
+	background: rgba(0,0,0,0.65) ;
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#25000000, endColorstr=#25000000);
+	left:0;
+	width:100%;
+	z-index: 100;
+}
+.bottom-close {
+	background: transparent;
+	width:200px;
+	background: url("../images/sign/assure/bottom-close.png") no-repeat;
+	cursor: pointer;
+}
+.bottom-open {
+	.page-width {
+		position: relative;
+		top: 20px;
+		.ren {
+			background: url("../images/sign/assure/bottom-ren.png") left 0px no-repeat;
+			width: 727px;
+			height: 112px;
+			display: inline-block;
+			vertical-align: middle;
+			background-size: 100%;
+		}
+		.btn-normal {
+			margin-top: 0px;
+			margin-left: 30px;
+			display: inline-block;
+		}
+		.to-close {
+			height: 25px;
+			width: 25px;
+			background: url('../images/icons/icon-close.png') left top no-repeat;
+			margin-top: 46px;
+			margin-right: 40px;
+			cursor: pointer;
+
+		}
+	}
+}
+
+@media screen and (max-width: 700px) {
+  //* {
+	//box-sizing: border-box;
+  //}
+  .btn-guide {
+	padding: 3px 25px;
+	font-size: 12px;
+	margin-top: 10px!important;
+  }
+  .pad-box {
+	padding: 10px 0 10px 0;
+  }
+  .page-width {
+	padding:10px;
+  }
+  .header.page-width {
+	padding:0;
+  }
+ .quick-top-link {
+   display: none;
+ }
+  .column-title-ac {
+	font-size:15px;
+  }
+  .column-title-ac i {
+	width: 4px;
+	height: 4px;
+	margin-right:10px;
+	margin-left:10px;
+  }
+  //新手指引
+  .new-guide-container {
+	.line {
+	  margin-top:15px;
+	  margin-bottom: 15px;
+	  &.hack {
+		display: block;
+		margin-bottom: 25px;
+	  }
+	}
+	.section-box-one p {
+	  font-size:12px;
+	  margin-bottom:0;
+	}
+	.section-box-two dl {
+
+	  margin-left:10px;
+	  dt {
+		font-size:12px;
+		padding-left:40px;
+		span {
+		  top: -23px;
+		  font-size:40px;
+		  font-weight: normal;
+		}
+	  }
+	  dd {
+		padding-left:40px;
+		font-size:10px;
+		&.img-load {
+		  padding-left:0;
+		  img {
+			width:100%;
+		  }
+		  .arrow-rise {
+			position: absolute;
+			top: 15px;
+			left: 56px;
+			width: 50%;
+			height: 90px;
+			background-size: contain;
+			-webkit-transform-origin:20px 90px;
+			-moz-transform-origin:20px 90px;
+		  }
+		}
+	  }
+	}
+
+	.section-box-two dl dd.high-profit {
+	  background: none;
+	  padding-left:0;
+	  margin-top:20px;
+	  .high-box {
+		position: relative!important;
+		left: auto!important;
+		right: auto!important;
+		top:auto!important;
+		width:80%;
+		font-size:12px;
+		margin: 10px auto;
+		background: #db6558;
+		color: #fff;
+		span {
+		  &.line-align {
+			background:#db6558;
+			background:-webkit-linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,1),rgba(255,255,255,0));
+			background:-moz-linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,1),rgba(255,255,255,0));
+			background:linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,1),rgba(255,255,255,0));
+			background:-o-linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,1),rgba(255,255,255,0));
+			height:1px;
+		  }
+		  &.line-valign {
+			background:#db6558;
+			background:-webkit-linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,1),rgba(255,255,255,0));
+			background:-moz-linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,1),rgba(255,255,255,0));
+			background:linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,1),rgba(255,255,255,0));
+			background:-o-linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,1),rgba(255,255,255,0));
+			width:1px;
+		  }
+		}
+	  }
+	}
+	.section-box-two dl {
+	  &.box-03 {
+		&.fl {
+		  float: none;
+		}
+
+	  }
+	  &.box-04 {
+		&.fr {
+		  float: none;
+		}
+	  }
+	  dd.benefit-img {
+		padding-top: 20px!important;
+		padding-left: 0;
+		text-align: center;
+		padding-bottom: 20px;
+		img {
+		  width:60%;
+		}
+	  }
+	}
+
+	.section-box-three {
+	  .sub-title-one {
+		.title-word {
+		  width: 90px;
+		  left: 50px;
+		  top: -16px;
+		  font-size: 14px;
+		  text-align: center;
+		  vertical-align: middle;
+		  line-height: 50px;
+		}
+	  }
+	  .sub-title-two {
+		margin-top:20px;
+		.title-word {
+		  top: -16px;
+		  font-size: 14px;
+		  text-align: center;
+		  vertical-align: middle;
+		  line-height: 50px;
+		  left: auto;
+		  width: 100px;
+		  right: 30px;
+		}
+	  }
+	  .mortgage-list {
+		text-align: center;
+		margin-bottom:20px;
+		li {
+		  display: inline-block;
+		  width: 110px;
+		  height: 110px;
+		  text-align: center;
+		  font-size: 11px;
+		  margin: 10px;
+		  span {
+			padding-top:25px;
+		  }
+		}
+	  }
+	  .creditor-right-info img {
+		width: 70%;
+		display: block;
+		float: none;
+		margin-right: 0;
+		margin: 0 auto 20px auto;
+		.btn-guide {
+		  margin-top:10px;
+		}
+	  }
+	}
+	.section-box-four img {
+	  width:100%;
+	}
+	.section-box-five .code-ma {
+	  font-size: 12px;
+	  span {
+		margin:0;
+		width: 45%;
+		img {
+		  width:90%;
+		}
+	  }
+
+	}
+  }
+
+  //安全保障
+  .assurance-container {
+	.fund-safety-box {
+		.safe-title {
+		  font-size: 11px;
+		}
+	  .safe-info-list {
+		font-size:12px;
+		dl {
+		  clear:both;
+		  height:auto;
+		  overflow: auto;
+		  width:100%;
+		  float: none;
+		  margin-left: 0!important;
+		  margin-right:0!important;
+		  dt {
+			width: 29%;
+			font-size: 13px;
+			float: left;
+			background-size: 100%;
+			em {
+			  margin-top: 20px;
+			  display: inline-block;
+			}
+			&.list01,
+			&.list02,
+			&.list03{
+			  background-size: 100%;
+			}
+			&.list02 em,
+			&.list03 em{
+			  margin-top: 30px;
+			}
+		  }
+		  dd {
+			padding-top: 0px;
+			float: right;
+			width: 65%;
+		  }
+		}
+	  }
+	}
+	.trade-risk-box dd {
+	  margin: 10px auto;
+	  width:100%;
+	  box-sizing: border-box;
+	  b {
+		font-size:15px;
+	  }
+	  p {
+		font-size: 12px;
+	  }
+	}
+	.private-safety-box {
+	  dd {
+		font-size: 12px;
+		margin-bottom: 10px;
+	  }
+	}
+	.data-info-safety {
+	  height:300px;
+	  .axis-center {
+		width: 50px;
+		height: 278px;
+		left: 43%;
+		top: 15px;
+		background-size: contain;
+	  }
+	  .square-box-info {
+		font-size:11px;
+		width: 37%;
+		z-index: 20;
+		padding: 5px!important;
+		border-radius: 5px;
+		.triangle {
+		  top: 15px;
+		}
+		dt {
+		  font-size:12px;
+		}
+		&:nth-child(1) {
+		  left: 0px;
+		  top: 10px;
+		}
+		&:nth-child(2) {
+		  right: 0px;
+		  top: 68px;
+		  left:auto;
+		}
+		&:nth-child(3) {
+		  left: 0px;
+		  top: 135px;
+		}
+		&:nth-child(4) {
+		  right: 0px;
+		  top: 200px;
+		  left:auto;
+		}
+
+	  }
+	}
+
+  }
+
+  .bottom-open {
+	display: none;
+  }
+}
+
+@media screen and (max-width: 350px) {
+  .assurance-container .data-info-safety {
+	height: 255px;
+	overflow: hidden;
+	.axis-center {
+	  height: 278px;
+	  width: 40px;
+	}
+	.square-box-info {
+	  &:nth-child(2) {
+		top: 58px;
+	  }
+	  &:nth-child(3) {
+		top: 111px;
+	  }
+	  &:nth-child(4) {
+		top: 162px;
+	  }
+	}
+  }
+}

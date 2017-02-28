@@ -32,7 +32,8 @@ public enum ActivityCategory {
     MONEY_TREE_UNDER_80000_ACTIVITY("摇钱树活动_80000", ConsumeCategory.TASK_COUNT),
     MONEY_TREE_UNDER_90000_ACTIVITY("摇钱树活动_90000", ConsumeCategory.TASK_COUNT),
     MONEY_TREE_UNDER_100000_ACTIVITY("摇钱树活动_100000", ConsumeCategory.TASK_COUNT),
-    MONEY_TREE_ABOVE_100000_ACTIVITY("摇钱树活动_100000以上", ConsumeCategory.TASK_COUNT);
+    MONEY_TREE_ABOVE_100000_ACTIVITY("摇钱树活动_100000以上", ConsumeCategory.TASK_COUNT),
+    WOMAN_DAY_ACTIVITY("妇女节活动",ConsumeCategory.TASK_COUNT);
 
     ActivityCategory(String description, ConsumeCategory consumeCategory) {
         this.description = description;

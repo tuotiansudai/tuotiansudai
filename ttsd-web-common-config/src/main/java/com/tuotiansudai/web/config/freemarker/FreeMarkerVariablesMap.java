@@ -47,26 +47,35 @@ public class FreeMarkerVariablesMap extends MapFactoryBean implements ResourceLo
         map.put("jsPath", javascriptLocation);
         map.put("cssPath", cssLocation);
 
-        StaticResourceDto staticResourceDto = this.discoverStaticResource();
+        StaticResourceDto staticResourceDto = this.discoverStaticResource(map.get("commonStaticServer"));
 
-        Map<String, String> javascriptResource = Strings.isNullOrEmpty(javascriptLocation) ? staticResourceDto.getJsFile() : buildStaticFiles(javascriptLocation, ".js");
-        Map<String, String> cssResource = Strings.isNullOrEmpty(cssLocation) ? staticResourceDto.getCssFile() : buildStaticFiles(cssLocation, ".css");
+        Map<String, String> javascriptResource = staticResourceDto.getJsFile();
+        if (!Strings.isNullOrEmpty(javascriptLocation)) {
+            javascriptResource.putAll(buildStaticFiles(map.get("staticServer").toString(), javascriptLocation, ".js"));
+        }
+
+        Map<String, String> cssResource = staticResourceDto.getCssFile();
+        if (!Strings.isNullOrEmpty(cssLocation)) {
+            cssResource.putAll(buildStaticFiles(map.get("staticServer").toString(), cssLocation, ".css"));
+        }
 
         map.put("js", javascriptResource);
         map.put("css", cssResource);
+        logger.info(MessageFormat.format("js mapping: {0}", javascriptResource.toString()));
+        logger.info(MessageFormat.format("css mapping: {0}", cssResource.toString()));
 
         return map;
     }
 
-    private Map<String, String> buildStaticFiles(String filePath, final String extension) {
+    private Map<String, String> buildStaticFiles(String staticServer, String filePath, final String extension) {
         FilenameFilter filenameFilter = (dir, name) -> name.toLowerCase().endsWith(extension);
 
         try {
-            Resource javascriptResource = resourceLoader.getResource(filePath);
-            File jsFolder = javascriptResource.getFile();
-            if (jsFolder.isDirectory()) {
-                File[] jsFiles = jsFolder.listFiles(filenameFilter);
-                return this.generateVersionMap(jsFiles);
+            Resource staticResource = resourceLoader.getResource(filePath);
+            File staticFolder = staticResource.getFile();
+            if (staticFolder.isDirectory()) {
+                File[] staticFiles = staticFolder.listFiles(filenameFilter);
+                return this.generateVersionMap(staticServer, filePath, staticFiles);
             }
         } catch (IOException e) {
             logger.error("Generate Static Resource Version Map Failed: ", e);
@@ -74,28 +83,28 @@ public class FreeMarkerVariablesMap extends MapFactoryBean implements ResourceLo
         return Collections.emptyMap();
     }
 
-    private Map<String, String> generateVersionMap(File[] jsFiles) {
+    private Map<String, String> generateVersionMap(String staticServer, String filePath, File[] staticFiles) {
         Map<String, String> versionMap = Maps.newHashMap();
 
-        for (File file : jsFiles) {
+        for (File file : staticFiles) {
             String fileName = file.getName();
             String[] split = fileName.split("\\.");
             String filePrefix = split[0];
 
             if (!versionMap.containsKey(filePrefix)) {
-                versionMap.put(filePrefix, fileName);
+                versionMap.put(filePrefix, MessageFormat.format("{0}{1}{2}", staticServer, filePath, fileName));
             }
 
             if (split.length == PROD_VERSION_LENGTH) {
-                versionMap.put(filePrefix, fileName);
+                versionMap.put(filePrefix, MessageFormat.format("{0}{1}{2}", staticServer, filePath, fileName));
             }
 
         }
         return versionMap;
     }
 
-    private StaticResourceDto discoverStaticResource() {
-        if (Strings.isNullOrEmpty(this.staticResourceDiscoveryUrl)) {
+    private StaticResourceDto discoverStaticResource(Object commonStaticServer) {
+        if (commonStaticServer == null || Strings.isNullOrEmpty(this.staticResourceDiscoveryUrl)) {
             logger.info("static resource discovery url is empty, skip discovery");
             return new StaticResourceDto();
         }
@@ -116,7 +125,14 @@ public class FreeMarkerVariablesMap extends MapFactoryBean implements ResourceLo
                     response.code(),
                     this.staticResourceDiscoveryUrl,
                     responseBody));
-            return JsonConverter.readValue(responseBody, StaticResourceDto.class);
+            StaticResourceDto staticResourceDto = JsonConverter.readValue(responseBody, StaticResourceDto.class);
+            for (String key : staticResourceDto.getJsFile().keySet()) {
+                staticResourceDto.getJsFile().put(key, MessageFormat.format("{0}{1}", commonStaticServer.toString(), staticResourceDto.getJsFile().get(key)));
+            }
+            for (String key : staticResourceDto.getCssFile().keySet()) {
+                staticResourceDto.getCssFile().put(key, MessageFormat.format("{0}{1}", commonStaticServer.toString(), staticResourceDto.getCssFile().get(key)));
+            }
+            return staticResourceDto;
         } catch (IOException e) {
             throw new RuntimeException(e.getLocalizedMessage(), e);
         }

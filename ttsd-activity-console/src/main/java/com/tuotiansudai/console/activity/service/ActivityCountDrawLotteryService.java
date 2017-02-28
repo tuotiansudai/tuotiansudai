@@ -75,6 +75,12 @@ public class ActivityCountDrawLotteryService {
     @Value("#{'${activity.money.tree.period}'.split('\\~')}")
     private List<String> moneyTreeTime = Lists.newArrayList();
 
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.woman.day.startTime}\")}")
+    private Date activityWomanDayStartTime;
+
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.woman.day.endTime}\")}")
+    private Date activityWomanDayEndTime;
+
     //往期活动任务
     private final List activityTasks = Lists.newArrayList(ActivityDrawLotteryTask.REGISTER, ActivityDrawLotteryTask.EACH_REFERRER,
             ActivityDrawLotteryTask.EACH_REFERRER_INVEST, ActivityDrawLotteryTask.CERTIFICATION, ActivityDrawLotteryTask.BANK_CARD,
@@ -134,6 +140,8 @@ public class ActivityCountDrawLotteryService {
             case MONEY_TREE_UNDER_100000_ACTIVITY:
             case MONEY_TREE_ABOVE_100000_ACTIVITY:
                 return countDrawLotteryTime(userModel, activityCategory, moneyTreeActivityTasks);
+            case WOMAN_DAY_ACTIVITY:
+                return countDrawLotteryTime(userModel, activityCategory, Lists.newArrayList(ActivityDrawLotteryTask.TODAY_ACTIVITY_SIGN_IN));
         }
         return lotteryTime;
     }
@@ -256,6 +264,8 @@ public class ActivityCountDrawLotteryService {
             case MONEY_TREE_UNDER_100000_ACTIVITY:
             case MONEY_TREE_ABOVE_100000_ACTIVITY:
                 return Lists.newArrayList(DateTime.parse(moneyTreeTime.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate(), DateTime.parse(moneyTreeTime.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate());
+            case WOMAN_DAY_ACTIVITY:
+                return Lists.newArrayList(activityWomanDayStartTime, activityWomanDayEndTime);
         }
         return null;
     }
