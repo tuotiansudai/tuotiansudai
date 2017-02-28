@@ -21,9 +21,6 @@ public class ExtraRateAspect {
     @Autowired
     private ExtraRateService extraRateService;
 
-    @Autowired
-    private LoanOutInvestCalculationService investExtraRateService;
-
     @AfterReturning(value = "execution(* *..NormalRepayService.paybackInvest(*))", returning = "returnValue")
     public void afterReturningNormalRepayPaybackInvest(JoinPoint joinPoint, boolean returnValue) {
         long loanRepayId = (Long) joinPoint.getArgs()[0];

@@ -148,6 +148,11 @@
                   span{
                     font-size:26px;
                     color:#fc4a52;
+                    &.old-price{
+                      font-size:16px;
+                      color:#999;
+                      text-decoration:line-through;
+                    }
                   }
                 }
                 .count-list{

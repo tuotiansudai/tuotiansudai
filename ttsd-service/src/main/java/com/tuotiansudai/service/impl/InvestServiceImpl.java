@@ -21,6 +21,7 @@ import com.tuotiansudai.log.service.UserOpLogService;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
+import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.*;
@@ -85,9 +86,6 @@ public class InvestServiceImpl implements InvestService {
     private InvestRepayMapper investRepayMapper;
 
     @Autowired
-    private MembershipMapper membershipMapper;
-
-    @Autowired
     private UserMembershipEvaluator userMembershipEvaluator;
 
     @Autowired
@@ -110,6 +108,9 @@ public class InvestServiceImpl implements InvestService {
 
     @Autowired
     private MQWrapperClient mqWrapperClient;
+
+    @Autowired
+    private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
 
     @Autowired
     private UserOpLogService userOpLogService;
@@ -192,7 +193,7 @@ public class InvestServiceImpl implements InvestService {
             throw new InvestException(InvestExceptionType.EXCEED_MONEY_NEED_RAISED);
         }
 
-        long userInvestAmount = investMapper.sumSuccessInvestAmountByLoginName(loanId, investDto.getLoginName());
+        long userInvestAmount = investMapper.sumSuccessInvestAmountByLoginName(loanId, investDto.getLoginName(),true);
 
         // 不满足单用户投资限额
         if (investAmount > userInvestMaxAmount - userInvestAmount) {
@@ -279,8 +280,7 @@ public class InvestServiceImpl implements InvestService {
         //根据loginName查询出会员的相关信息
         long expectedInterest = InterestCalculator.estimateExpectedInterest(loanModel, amount);
 
-        MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
-        double investFeeRate = membershipModel != null ? membershipModel.getFee() : defaultFee;
+        double investFeeRate = membershipPrivilegePurchaseService.obtainServiceFee(loginName);
         long expectedFee = new BigDecimal(expectedInterest).multiply(new BigDecimal(investFeeRate)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
 
         LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loanId);
@@ -459,9 +459,7 @@ public class InvestServiceImpl implements InvestService {
 
     public long calculateMembershipPreference(String loginName, long loanId, List<Long> couponIds, long investAmount, Source source) {
         long preference;
-        UserMembershipModel userMembershipModel = userMembershipEvaluator.evaluateUserMembership(loginName, new Date());
-        MembershipModel membershipModel = membershipMapper.findById(userMembershipModel.getMembershipId());
-        double investFeeRate = membershipModel != null ? membershipModel.getFee() : this.defaultFee;
+        double investFeeRate = membershipPrivilegePurchaseService.obtainServiceFee(loginName);
         LoanModel loanModel = loanMapper.findById(loanId);
 
         List<ExtraLoanRateModel> extraLoanRateModels = extraLoanRateMapper.findByLoanId(loanId);
@@ -488,11 +486,11 @@ public class InvestServiceImpl implements InvestService {
         }
         long interest = InterestCalculator.estimateExpectedInterest(loanModel, investAmount);
         long originFee = new BigDecimal(interest).multiply(new BigDecimal(defaultFee)).longValue();
-        long membershipFee = new BigDecimal(interest).multiply(new BigDecimal(defaultFee)).multiply(new BigDecimal(membershipModel.getFee() * 10)).longValue();
+        long membershipFee = new BigDecimal(interest).multiply(new BigDecimal(investFeeRate)).longValue();
         long originCouponFee = new BigDecimal(expectedInterest).multiply(new BigDecimal(defaultFee)).longValue();
-        long membershipCouponFee = new BigDecimal(expectedInterest).multiply(new BigDecimal(defaultFee)).multiply(new BigDecimal((membershipModel.getFee() * 10))).longValue();
+        long membershipCouponFee = new BigDecimal(expectedInterest).multiply(new BigDecimal(investFeeRate)).longValue();
         long originExtraLoanRateExpectedInterest = new BigDecimal(extraLoanRateExpectedInterest).multiply(new BigDecimal(defaultFee)).longValue();
-        long membershipExtraLoanRateExpectedInterest = new BigDecimal(extraLoanRateExpectedInterest).multiply(new BigDecimal(defaultFee)).multiply(new BigDecimal(membershipModel.getFee() * 10)).longValue();
+        long membershipExtraLoanRateExpectedInterest = new BigDecimal(extraLoanRateExpectedInterest).multiply(new BigDecimal(investFeeRate)).longValue();
         preference = originFee - membershipFee + originCouponFee - membershipCouponFee + originExtraLoanRateExpectedInterest - membershipExtraLoanRateExpectedInterest;
         return preference;
     }

@@ -165,7 +165,6 @@ public class ExportService {
             row.add(String.valueOf(record.getDeadline()));
             row.add(record.getUserGroup().getDescription());
             row.add(String.valueOf(record.getTotalCount()));
-            row.add(record.isSmsAlert() ? "是" : "否");
             row.add(String.valueOf(record.getIssuedCount()));
             row.add(String.valueOf(record.getUsedCount()));
             List<ProductType> types = record.getProductTypes();
@@ -506,6 +505,7 @@ public class ExportService {
         for (ProductOrderDto record : records) {
             List<String> row = Lists.newArrayList();
             row.add(record.getLoginName());
+            row.add(String.valueOf(record.getActualPoints()));
             row.add(new DateTime(record.getCreatedTime()).toString("yyyy-MM-dd HH:mm:ss"));
             row.add(String.valueOf(record.getNum()));
             row.add(record.getContact());

@@ -29,6 +29,6 @@ public class RegisteredNotInvestedUserCollector implements UserCollector {
 
     @Override
     public boolean contains(CouponModel couponModel, UserModel userModel) {
-        return userModel != null && !Strings.isNullOrEmpty(userModel.getUserName()) && investMapper.sumSuccessInvestAmountByLoginName(null, userModel.getLoginName()) == 0;
+        return userModel != null && !Strings.isNullOrEmpty(userModel.getUserName()) && investMapper.sumSuccessInvestAmountByLoginName(null, userModel.getLoginName(),true) == 0;
     }
 }

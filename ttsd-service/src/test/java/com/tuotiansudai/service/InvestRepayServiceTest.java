@@ -125,18 +125,6 @@ public class InvestRepayServiceTest {
     }
 
     @Test
-    public void shouldAccountAmount() {
-        long repaidInterest = investRepayService.findSumRepaidInterestByLoginName("testuser123");
-        assertThat(repaidInterest, is(100L));
-
-        long repayingCorpus = investRepayService.findSumRepayingCorpusByLoginName("testuser123");
-        assertThat(repayingCorpus, is(200L));
-
-        long repayingInterest = investRepayService.findSumRepayingInterestByLoginName("testuser123");
-        assertThat(repayingInterest, is(200L));
-    }
-
-    @Test
     public void investRepayAmount() {
         Date startTime = new DateTime().withTimeAtStartOfDay().dayOfMonth().withMinimumValue().toDate();
         Date endTime = DateUtils.addMonths(startTime, 1);

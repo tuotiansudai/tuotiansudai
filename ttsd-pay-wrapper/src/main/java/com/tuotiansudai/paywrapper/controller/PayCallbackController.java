@@ -2,9 +2,9 @@ package com.tuotiansudai.paywrapper.controller;
 
 import com.google.common.collect.Maps;
 import com.tuotiansudai.dto.AgreementBusinessType;
+import com.tuotiansudai.paywrapper.extrarate.service.ExtraRateService;
 import com.tuotiansudai.paywrapper.loanout.CouponLoanOutService;
 import com.tuotiansudai.paywrapper.loanout.CouponRepayService;
-import com.tuotiansudai.paywrapper.extrarate.service.ExtraRateService;
 import com.tuotiansudai.paywrapper.loanout.LoanService;
 import com.tuotiansudai.paywrapper.loanout.ReferrerRewardService;
 import com.tuotiansudai.paywrapper.repository.model.UmPayService;
@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -59,13 +60,16 @@ public class PayCallbackController {
     private SystemRechargeService systemRechargeService;
 
     @Autowired
-    private MembershipPurchasePayService membershipPurchasePayService;
+    private MembershipPrivilegePurchasePayService membershipPrivilegePurchasePayService;
 
     @Autowired
     private CouponRepayService couponRepayService;
 
     @Autowired
     private ExtraRateService extraRateService;
+
+    @Autowired
+    private ExperienceRepayService experienceRepayService;
 
     @Autowired
     private ReferrerRewardService referrerRewardService;
@@ -252,10 +256,10 @@ public class PayCallbackController {
         return new ModelAndView("/callback_response", "content", responseData);
     }
 
-    @RequestMapping(value = "/membership-purchase-notify", method = RequestMethod.GET)
+    @RequestMapping(value = "/membership-privilege-purchase-notify", method = RequestMethod.GET)
     public ModelAndView membershipPurchaseNotify(HttpServletRequest request) {
         Map<String, String> paramsMap = this.parseRequestParameters(request);
-        String responseData = membershipPurchasePayService.purchaseCallback(paramsMap, request.getQueryString());
+        String responseData = membershipPrivilegePurchasePayService.purchaseCallback(paramsMap, request.getQueryString());
         return new ModelAndView("/callback_response", "content", responseData);
     }
 
@@ -275,6 +279,14 @@ public class PayCallbackController {
     public ModelAndView extraRateInvestNotify(HttpServletRequest request) {
         Map<String, String> paramsMap = this.parseRequestParameters(request);
         String responseData = this.extraRateService.extraRateInvestCallback(paramsMap, request.getQueryString());
+        return new ModelAndView("/callback_response", "content", responseData);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/experience_repay_notify", method = RequestMethod.GET)
+    public ModelAndView repayCallback(HttpServletRequest request) {
+        Map<String, String> paramsMap = this.parseRequestParameters(request);
+        String responseData = experienceRepayService.repayCallback(paramsMap, request.getQueryString());
         return new ModelAndView("/callback_response", "content", responseData);
     }
 

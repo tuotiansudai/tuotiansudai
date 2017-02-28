@@ -166,6 +166,10 @@
         <property name="dataSource" ref="hikariCPDataSource"/>
     </bean>
 
+    <bean id="aaTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="hikariCPDataSource"/>
+    </bean>
+
     <bean id="activityTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="activityHikariCPDataSource"/>
     </bean>

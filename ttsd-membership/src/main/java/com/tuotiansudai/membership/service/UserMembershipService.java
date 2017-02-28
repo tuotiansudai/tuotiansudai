@@ -46,7 +46,7 @@ public class UserMembershipService {
     public int getProgressBarPercent(String loginName) {
         //判断当前会员的类型,如果是赠送或者购买则进度条为100%
         UserMembershipModel userMembershipModel = userMembershipEvaluator.evaluateUserMembership(loginName, new Date());
-        if(userMembershipModel != null && (userMembershipModel.getType() == UserMembershipType.GIVEN || userMembershipModel.getType() == UserMembershipType.PURCHASED)){
+        if(userMembershipModel != null && (userMembershipModel.getType() == UserMembershipType.GIVEN)){
             return 100;
         }
         long membershipPoint = accountMapper.findByLoginName(loginName) != null ? accountMapper.findByLoginName(loginName).getMembershipPoint() : 0;

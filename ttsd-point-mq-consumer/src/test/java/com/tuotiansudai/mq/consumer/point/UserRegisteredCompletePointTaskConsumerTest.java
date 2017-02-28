@@ -25,6 +25,6 @@ public class UserRegisteredCompletePointTaskConsumerTest extends PointTaskConsum
     @Test
     @Transactional
     public void shouldConsume() {
-        shouldCompleteAdvancedTask(consumer, pointTaskService, PointTask.EACH_RECOMMEND);
+        shouldCompleteAdvancedTask(consumer, pointTaskService, PointTask.EACH_RECOMMEND_REGISTER);
     }
 }

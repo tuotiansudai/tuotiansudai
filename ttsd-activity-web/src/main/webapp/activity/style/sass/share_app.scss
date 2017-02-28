@@ -79,20 +79,11 @@ textarea {
 	.share-container{
 		float:left;
 		width:100%;
-		background: -moz-linear-gradient(top, #ae1917 0%, #ff3a00 100%);
-		background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ae1917), color-stop(100%,#ff3a00));
-		background: -webkit-linear-gradient(top, #ae1917 0%,#ff3a00 100%);
-		background: -o-linear-gradient(top, #ae1917 0%,#ff3a00 100%);
-		background: -ms-linear-gradient(top, #ae1917 0%,#ff3a00 100%);
-		background: linear-gradient(to bottom, #ae1917 0%,#ff3a00 100%);
-		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ae1917', endColorstr='#ff3a00',GradientType=0 );
-		background: -webkit-gradient(linear, 0 0, 0 100%, from(#ae1917), to(#ff3a00));
+		background: #362c51;
 		.share-item{
 			float:left;
 			width:90%;
 			margin:0 5%;
-			background:url("/activity/images/sign/actor/shareapp/item-bg.png") no-repeat top center;
-			background-size:100%;
 			.item-tel{
 				float:left;
 				width:100%;
@@ -103,11 +94,8 @@ textarea {
 					padding:0 30px;
 					text-align:center;
 					font-size:25px;
-					color:#fff;
+					color:#ffe500;
 					line-height:40px;
-					background:#c24a45;
-					border:1px solid #ffff00;
-					border-radius:20px;
 				}
 			}
 			.item-intro{
@@ -115,8 +103,11 @@ textarea {
 				width:100%;
 				margin-top:20px;
 				font-size:18px;
-				color:#fff;
+				color:#ff635a;
 				text-align:center;
+				span{
+					color:#ffe500;
+				}
 			}
 			.item-form{
 				float:left;
@@ -141,35 +132,36 @@ textarea {
 					.item-text{
 						float:left;
 						width:100%;
-						border:1px solid #ccc;
+						border:3px solid #ffe500;
+						border-radius:10px;
 						background:#fff;
 						color:#4c4c4c;
 						font-size:16px;
-						line-height:28px;
+						line-height:36px;
 						box-sizing: border-box;
 					}
 					.item-submit{
 						float:left;
 						width:100%;
 						border:none;
-						color:#664400;
-						font-size:16px;
-						line-height:30px;
-						background:#fff700 url("/activity/images/sign/actor/shareapp/submit-bg.png") no-repeat 85% 50%;
-						background-size:10%;
+						color:#fff;
+						font-size:20px;
+						line-height:50px;
+						background:#ff635a;
 						box-sizing: border-box;
 					}
 					.get-code{
 						position: absolute;
-						top:5px;
-						right:0;
-						width:80px;
-						color:#ff6400;
-						border:none;
-						border-left:1px solid #ccc;
-						background:transparent;
+						top: 13px;
+						right: 13px;
+						height: 30px;
+						color: #fff;
+						border: none;
+						background: #ff635a;
+						border-radius: 26px;
+						padding: 0 10px;
 						&[disabled] {
-							color: #666;
+							background: #666;
 						}
 					}
 					label{
@@ -177,12 +169,12 @@ textarea {
 							color:#fff;
 							font-size:14px;
 							span{
-								color:#fff700;
+								color:#ff635a;
 							}
 						}
 					}
 					p{
-						font-size:12px;
+						font-size:14px;
 						color:#fff;
 						margin-bottom:0;
 						span{
@@ -193,59 +185,244 @@ textarea {
 			}
 		}
 	}
-	.share-bg{
-		float:left;
-		width:100%;
-	}
-	.title-container{
-		float:left;
-		width:100%;
-		height:1px;
-		margin:40px 0;
-		background:#ff5500;
-		position: relative;
-		span{
-			position: absolute;
-			top:50%;
-			left:50%;
-			width:200px;
-			height:36px;
-			margin-top:-18px;
-			margin-left:-100px;
-			font-size:18px;
-			color:#ff5500;
-			background:#fffbe5;
-			text-align:center;
-		}
-	}
-	.list-container{
+	.newbie-step-one {
 		float:left;
 		width:100%;
 		background:#fff;
-		li{
-			float:left;
-			width:90%;
-			padding:30px 5%;
-			.img-item{
-				float:left;
-				width:60px;
-				height:60px;
-			}
-			.info-item{
-				float:left;
-				margin-left:10px;
-				p{
-					line-height:30px;
-					margin-bottom:0;
-					&.title-text{
-						font-size:18px;
-						color:#ff5400;
-					}
-					&.intro-text{
-						font-size:13px;
-						color:#808080;
-					}
+		color: #ff473c;
+		padding-top: 40px;
+		padding-bottom: 40px;
+		.image-title {
+			background: url("/activity/images/sign/actor/landingpage/newbie-step1-title-app.png") center top no-repeat;
+			height: 50px;
+			background-size: auto 50px;
+		}
+	}
+	.newbie-step-two {
+		float:left;
+		width:100%;
+		position: relative;
+		background-color: #362d50;
+		padding-top: 20px;
+		padding-bottom: 20px;
+
+		.image-decoration-bg-app-l {
+			width: 110px;
+			height: 116px;
+			position: absolute;
+			left: 0;
+			background: url("/activity/images/sign/actor/landingpage/newbie-decoration-bg-app-l.png");
+			background-size: auto 116px;
+			top: -20px;
+		}
+		.image-decoration-bg-app-r {
+			width: 106px;
+			height: 145px;
+			position: absolute;
+			right: 0;
+			background: url("/activity/images/sign/actor/landingpage/newbie-decoration-bg-app-r.png");
+			background-size: auto 145px;
+			top: -20px;
+		}
+		.image-title {
+			background: url("/activity/images/sign/actor/landingpage/newbie-step2-title-app.png") center top no-repeat;
+			height: 50px;
+			background-size: auto 50px;
+		}
+
+		.image-red-envelope {
+			margin-top: 15px;
+			margin-bottom: 20px;
+			background: url("/activity/images/sign/actor/landingpage/newbie-step2-red-envelope.png") center top no-repeat;
+			height: 114px;
+			background-size: auto 114px;
+		}
+	}
+	.newbie-step-three {
+		float:left;
+		width:100%;
+		background-color: #ffffff;
+		padding-top: 20px;
+		padding-bottom: 20px;
+
+		.image-title {
+			background: url("/activity/images/sign/actor/landingpage/newbie-step3-title-app-new.png") center top no-repeat;
+			height: 50px;
+			background-size: auto 50px;
+		}
+
+		.subtitle {
+			height: 80px;
+			margin-top: 15px;
+			.subtitle-container {
+				display: inline-block;
+				margin-left: 25px;
+				margin-right: 25px;
+				background-color: #ffe500;
+				padding: 5px 30px 5px 30px;
+				border-top-left-radius: 20px;
+				border-bottom-right-radius: 20px;
+				i {
+					color: #803c04;
+					line-height: 15px;
+					font-size: 15px;
 				}
+			}
+		}
+	}
+
+	.newbie-step-four {
+		float:left;
+		width:100%;
+		position: relative;
+		background-color: #362d50;
+		padding-bottom: 20px;
+		padding-top: 15px;
+
+		.image-decoration-bg-app-l {
+			width: 110px;
+			height: 116px;
+			position: absolute;
+			left: 0;
+			background: url("/activity/images/sign/actor/landingpage/newbie-decoration-bg-app-l.png");
+			background-size: auto 116px;
+			top: -20px;
+
+		}
+		.image-decoration-bg-app-r {
+			width: 106px;
+			height: 145px;
+			position: absolute;
+			right: 0;
+			background: url("/activity/images/sign/actor/landingpage/newbie-decoration-bg-app-r.png");
+			background-size: auto 145px;
+			top: -20px;
+		}
+
+		.image-title {
+			background: url("/activity/images/sign/actor/landingpage/newbie-step4-title-app.png") center top no-repeat;
+			height: 50px;
+			background-size: auto 50px;
+		}
+
+		.subtitle {
+			margin-top: 25px;
+			z-index: -1;
+			.subtitle-container {
+				display: inline-block;
+				background-color: #ffe500;
+				margin-left: 25px;
+				margin-right: 25px;
+				padding: 5px 30px 5px 30px;
+				border-top-left-radius: 20px;
+				border-bottom-right-radius: 20px;
+				i {
+					line-height: 15px;
+					font-size: 15px;
+					color: #803c04;
+				}
+			}
+		}
+
+		.image-coupon {
+			margin-top: 20px;
+			background: url("/activity/images/sign/actor/landingpage/newbie-step4-coupon.png") center top no-repeat;
+			height: 132px;
+			background-size: auto 132px;
+		}
+		.image-steps {
+			margin-bottom: 30px;
+			margin-bottom: 30px;
+			img {
+				margin-top: 15px;
+				margin-right: 15px;
+				width: 70%;
+			}
+		}
+	}
+
+	.newbie-step-five {
+		float:left;
+		width:100%;
+		padding-top: 20px;
+		padding-bottom: 5px;
+		text-align: center;
+		background:#fff;
+		.newbie-step-five-dl {
+			color: #525252;
+			line-height: 31px;
+
+			dt {
+				font-size: 17px;
+				margin-bottom: 20px;
+			}
+			dd {
+				float: left;
+				width: 100%;
+				margin-bottom: 15px;
+				font-size: 18px;
+				color: #525252;
+				text-align: center;
+
+				img {
+					margin-bottom: 15px;
+				}
+
+				p {
+					margin-top: 10px;
+					color: #808080;
+					font-size: 14px;
+					line-height: 22px;
+				}
+			}
+		}
+	}
+
+	.newbie-step-six {
+		float:left;
+		width: 100%;
+		padding-top: 15px;
+		background: #362d50;
+		text-align: center;
+
+		.newbie-step-six-box {
+			width: 92%;
+			min-width: 20px;
+			display: inline-block;
+			padding-left: 15px;
+			padding-right: 15px;
+			p {
+				text-align: left;
+				color: #ffe500;
+				font-size: 14px;
+				line-height: 20px;
+				margin: 10px 0;
+				font-weight: lighter;
+			}
+		}
+	}
+	.new-user-list {
+		color: #ff473c;
+		line-height: 15px;
+		margin-bottom: 20px;
+
+		dt {
+			font-size: 15px;
+			margin-top: 15px;
+			margin-bottom: 20px;
+		}
+		dd {
+			width: 50%;
+			float: left;
+			font-size: 15px;
+			text-align: center;
+			i {
+				font-size: 30px;
+			}
+			em {
+				line-height: 20px;
+				color: #a2a2a2;
+				font-size: 11px;
 			}
 		}
 	}

@@ -33,7 +33,8 @@ var require = {
         'fancybox':staticServer+'/point/js/libs/jquery.fancybox.min',
         'count_down': staticServer+'/point/js/dest/count_down.min',
         'placeholder': staticServer + '/point/js/libs/jquery.enplaceholder',
-        'superslide': staticServer + '/point/js/libs/jquery.SuperSlide.2.1.1'
+        'superslide': staticServer + '/point/js/libs/jquery.SuperSlide.2.1.1',
+        'nineLottery':staticServer+ '/point/js/dest/nine_lottery.min'
     },
     'waitSeconds':0,
     'shim': {

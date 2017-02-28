@@ -13,11 +13,11 @@ public enum PushType {
     ADVANCED_REPAY("AUTO", "提前还款"),
     TRANSFER_SUCCESS("AUTO", "债权转让成功"),
     TRANSFER_FAIL("AUTO", "债权转让失败(到期取消)"),
-    MEMBERSHIP_EXPIRED("AUTO", "会员到期提醒"),
+    MEMBERSHIP_PRIVILEGE_EXPIRED("AUTO", "增值特权到期提醒"),
     MEMBERSHIP_UPGRADE("AUTO", "会员升级"),
     COUPON_5DAYS_EXPIRED_ALERT("AUTO", "优惠券到期提醒(5天后)"),
     BIRTHDAY("AUTO", "生日提醒"),
-    MEMBERSHIP_BUY_SUCCESS("AUTO", "会员购买成功"),
+    MEMBERSHIP_PRIVILEGE_BUY_SUCCESS("AUTO", "增值特权购买成功"),
     ASSIGN_COUPON_SUCCESS("AUTO", "优惠券发放成功"),
 
     PREHEAT("MANUAL", "预热标的"),

@@ -19,6 +19,7 @@ import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
+import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
@@ -60,7 +61,7 @@ public class UserCouponServiceImpl implements UserCouponService {
     private CouponAssignmentService couponAssignmentService;
 
     @Autowired
-    private UserMembershipEvaluator userMembershipEvaluator;
+    private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
 
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
@@ -166,8 +167,7 @@ public class UserCouponServiceImpl implements UserCouponService {
             }
         }));
 
-        MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
-        double investFeeRate = membershipModel != null ? membershipModel.getFee() : this.defaultFee;
+        double investFeeRate = membershipPrivilegePurchaseService.obtainServiceFee(loginName);
 
         List<UserCouponModel> maxBenefitUserCoupons = Lists.newArrayList();
         long maxBenefit = 0;
@@ -214,16 +214,6 @@ public class UserCouponServiceImpl implements UserCouponService {
                 return InvestStatus.SUCCESS != input.getStatus() && input.getEndTime().after(new Date());
             }
         }).isPresent();
-    }
-
-    @Override
-    public long findSumBirthdayAndInterestByLoginName(String loginName){
-        return userCouponMapper.findSumBirthdayAndInterestByLoginName(loginName);
-    }
-
-    @Override
-    public long findSumRedEnvelopeByLoginName(String loginName){
-        return userCouponMapper.findSumRedEnvelopeByLoginName(loginName);
     }
 
     @Override

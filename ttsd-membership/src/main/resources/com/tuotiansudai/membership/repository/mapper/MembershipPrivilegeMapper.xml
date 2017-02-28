@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.membership.repository.mapper.MembershipPrivilegeMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
+
+    <resultMap id="membershipPrivilegeResultMap" type="MembershipPrivilegeModel">
+        <id column="id" property="id"/>
+        <result column="login_name" property="loginName"/>
+        <result column="privilege" property="privilege"/>
+        <result column="start_time" property="startTime"/>
+        <result column="end_time" property="endTime"/>
+        <result column="created_time" property="createdTime"/>
+    </resultMap>
+
+    <insert id="create" parameterType="MembershipPrivilegeModel" useGeneratedKeys="true" keyProperty="id">
+        insert into membership_privilege (login_name, privilege, start_time, end_time,created_time)
+        value(#{loginName}, #{privilege}, #{startTime}, #{endTime}, #{createdTime})
+    </insert>
+
+    <update id="update" parameterType="MembershipPrivilegeModel">
+        UPDATE `membership_privilege`
+        SET
+        login_name = #{loginName},
+        privilege = #{privilege},
+        start_time = #{startTime},
+        end_time = #{endTime},
+        created_time = #{createdTime}
+        WHERE
+        id = #{id}
+    </update>
+
+    <select id="findById" resultMap="membershipPrivilegeResultMap" parameterType="long">
+        select * from membership_privilege where id = #{id}
+    </select>
+
+    <select id="findValidPrivilegeModelByLoginName" resultMap="membershipPrivilegeResultMap" parameterType="map">
+        select * from membership_privilege where login_name = #{loginName} and privilege='SERVICE_FEE' and #{currentDate} between start_time and end_time;
+    </select>
+
+    <select id="findMembershipPrivilegeExpiredUsers" resultType="string">
+        select login_name from membership_privilege where datediff(now(), end_time) = 1 and privilege='SERVICE_FEE';
+    </select>
+
+</mapper>

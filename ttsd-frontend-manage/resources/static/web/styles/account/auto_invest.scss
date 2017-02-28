@@ -1,0 +1,104 @@
+@charset "utf-8";
+//自动投资和自动还款
+.auto-repay {
+  .CertifiedImg {
+    background: url('../../images/sign/re-s01.png') center top no-repeat;
+    margin: 40px;
+    height: 170px;
+  }
+  .CertifiedImg-repay {
+    background: url('../../images/sign/re-s02.png') center top no-repeat;
+    margin: 40px;
+    height: 170px;
+  }
+  .panel {
+    color: #ff6b2a;
+    padding-left: 40px;
+  }
+  p.notice {
+    b {
+      font-size: 16px;
+    }
+  }
+  .btnBox {
+    margin-top: 30px;
+    margin-bottom: 20px;
+  }
+  .planSwitch {
+    color: #353535;
+
+    form {
+      margin-left: 28px;
+      margin-top: 15px;
+    }
+    dl {
+      margin-bottom: 15px;
+      clear: both;
+
+      dt {
+        color: #979797;
+        display: inline-block;
+        float: left;
+        width: 80px;
+        text-align: right;
+      }
+      dd.projectLimit {
+        float: left;
+        width: 50%;
+
+        label {
+          margin-right: 5px;
+        }
+        span {
+          display: inline-block;
+          color: #979797;
+          width: 60px;
+          text-align: center;
+          margin-right: 10px;
+          margin-bottom: 10px;
+          border: 1px solid #e1e1e1;
+          position: relative;
+          cursor: pointer;
+
+          & .badge {
+            background: url("../../images/global/icon-ok.png") left center no-repeat;
+            width: 13px;
+            height: 13px;
+            position: absolute;
+            top: 0;
+            right: 0;
+            display: none;
+          }
+          &.active {
+            border: 1px solid #ff7a2a;
+            color: #ff7a2a;
+
+            & .badge {
+              display: inline-block;
+            }
+          }
+        }
+      }
+    }
+    & .agreeStatus {
+      margin-bottom: 20px;
+      color: #979797;
+
+      label {
+        vertical-align: middle;
+      }
+    }
+  }
+  .borderBox:nth-child(2) {
+    margin-top: 10px;
+  }
+  .planSet {
+    i {
+      color: #ff7a2a;
+    }
+  }
+}
+
+.auto-invest {
+
+}

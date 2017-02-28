@@ -8,21 +8,14 @@ import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.CouponDetailsDto;
 import com.tuotiansudai.dto.CouponDto;
 import com.tuotiansudai.dto.ExchangeCouponDto;
-import com.tuotiansudai.repository.mapper.CouponMapper;
-import com.tuotiansudai.repository.mapper.CouponUserGroupMapper;
-import com.tuotiansudai.repository.mapper.UserCouponMapper;
-import com.tuotiansudai.repository.model.CouponModel;
-import com.tuotiansudai.repository.model.CouponUserGroupModel;
-import com.tuotiansudai.repository.model.UserCouponModel;
-import com.tuotiansudai.repository.model.UserGroup;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.exception.CreateCouponException;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.LoanModel;
+import com.tuotiansudai.point.repository.mapper.ProductMapper;
+import com.tuotiansudai.point.repository.mapper.ProductOrderMapper;
+import com.tuotiansudai.repository.mapper.*;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.InvestService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -70,6 +63,12 @@ public class ConsoleCouponService {
 
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
+
+    @Autowired
+    private ProductOrderMapper productOrderMapper;
+
+    @Autowired
+    private ProductMapper productMapper;
 
     private static String redisKeyTemplate = "console:{0}:importcouponuser";
 
@@ -287,8 +286,8 @@ public class ConsoleCouponService {
         }
     }
 
-    public List<CouponDetailsDto> findCouponDetail(long couponId, Boolean isUsed, String loginName, String mobile, Date registerStartTime, Date registerEndTime, Date usedStartTime, Date usedEndTime, int index, int pageSize) {
-        List<UserCouponModel> userCouponModels = userCouponMapper.findByCouponIdAndStatus(couponId, isUsed, loginName, mobile, registerStartTime, registerEndTime, usedStartTime, usedEndTime, (index - 1) * pageSize, pageSize);
+    public List<CouponDetailsDto> findCouponDetail(long couponId, Boolean isUsed, String loginName, String mobile, Date createdTime, Date registerStartTime, Date registerEndTime, Date usedStartTime, Date usedEndTime, int index, int pageSize) {
+        List<UserCouponModel> userCouponModels = userCouponMapper.findByCouponIdAndStatus(couponId, isUsed, loginName, mobile, createdTime, registerStartTime, registerEndTime, usedStartTime, usedEndTime, (index - 1) * pageSize, pageSize);
         List<CouponDetailsDto> couponDetailsDtoList = Lists.newArrayList();
         for (UserCouponModel userCouponModel : userCouponModels) {
             LoanModel loanModel = userCouponModel.getLoanId() != null ? loanMapper.findById(userCouponModel.getLoanId()) : null;
@@ -297,9 +296,8 @@ public class ConsoleCouponService {
             if(userCouponModel.getUsedTime() != null && loanModel != null){
                 interest = investService.estimateInvestIncome(loanModel.getId(), loginName, userCouponModel.getInvestAmount());
             }
-
             couponDetailsDtoList.add(new CouponDetailsDto(userCouponModel.getLoginName(), userCouponModel.getUsedTime(), userCouponModel.getInvestAmount(),
-                    userCouponModel.getLoanId(), loanModel != null ? loanModel.getName() : "", loanModel != null ? loanModel.getProductType() : null, interest));
+                    userCouponModel.getLoanId(), loanModel != null ? loanModel.getName() : "", loanModel != null ? loanModel.getProductType() : null, interest, userCouponModel.getEndTime()));
         }
         return couponDetailsDtoList;
     }

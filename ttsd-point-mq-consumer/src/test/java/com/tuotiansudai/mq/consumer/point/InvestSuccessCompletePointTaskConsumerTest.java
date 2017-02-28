@@ -72,8 +72,9 @@ public class InvestSuccessCompletePointTaskConsumerTest extends PointTaskConsume
         assertEquals(PointTask.EACH_SUM_INVEST, pointTaskCaptor.getAllValues().get(1));
         assertEquals(PointTask.FIRST_SINGLE_INVEST, pointTaskCaptor.getAllValues().get(2));
         assertEquals(PointTask.FIRST_REFERRER_INVEST, pointTaskCaptor.getAllValues().get(3));
-        assertEquals(PointTask.FIRST_INVEST_180, pointTaskCaptor.getAllValues().get(4));
-        assertEquals(PointTask.FIRST_INVEST_360, pointTaskCaptor.getAllValues().get(5));
+        assertEquals(PointTask.EACH_RECOMMEND_INVEST, pointTaskCaptor.getAllValues().get(4));
+        assertEquals(PointTask.FIRST_INVEST_180, pointTaskCaptor.getAllValues().get(5));
+        assertEquals(PointTask.FIRST_INVEST_360, pointTaskCaptor.getAllValues().get(6));
 
         assertEquals(mockedInvestModel.getId(), investModelCaptor.getValue().getId());
     }

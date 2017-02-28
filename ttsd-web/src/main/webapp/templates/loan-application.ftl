@@ -1,9 +1,9 @@
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="${css.loan_application}" pageJavascript="${js.loan_application}" activeNav="我要借款" activeLeftNav="" title="我要借款_抵押借款_拓天速贷" keywords="抵押房产借款,抵押车辆借款,拓天借款,拓天速贷" description="拓天速贷为借款用户提供抵押房产借款和抵押车辆借款服务,拓天借款额度高,门槛低,速度快,利息低,24H放款,借款轻松还.">
-<div class="want-loan-group">
-    <div class="loan-top-group">
-        <img src="${staticServer}/images/wantloan/top-images.png" width="100%" class="top-images">
-        <img src="${staticServer}/images/wantloan/top-images-phone.jpg" width="100%" class="top-images-phone">
+<div class="want-loan-group" id="loanApplicationFrame">
+    <div class="loan-top-group" id="topBanner">
+        <img  width="100%" class="top-images">
+        <img  width="100%" class="top-images-phone">
     </div>
     <div class="content-group white-bg">
         <div class="wp">
@@ -172,6 +172,7 @@
                 <textarea class="int-item input-box" placeholder="请填写房产信息（200字以内）" id="infoText"
                           name="infoText"></textarea>
             </div>
+            <div class="error-box"></div>
             <div class="form-input-item text-c">
                 <input type="submit" class="submit-btn" value="提交申请" />
             </div>

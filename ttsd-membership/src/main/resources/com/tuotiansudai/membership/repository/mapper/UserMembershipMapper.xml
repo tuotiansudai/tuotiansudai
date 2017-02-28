@@ -241,7 +241,7 @@
             <if test="loginName != null">
                 and login_name = #{loginName}
             </if>
-            and loan_id != 1
+            and EXISTS (select 1 from loan l where l.id = invest.loan_id and l.product_type != 'EXPERIENCE')
         </where>
         and status = 'SUCCESS'
     </select>
@@ -292,12 +292,5 @@
                         AND t1.`id` != `user_membership`.id)
     </select>
 
-    <select id="findLevelFiveMembershipExpiredUsers" resultType="string">
-        select user_membership.login_name
-        from user_membership join membership on user_membership.membership_id = membership.id
-        and user_membership.type = 'PURCHASED'
-        and membership.level = 5
-        and datediff(now(), user_membership.expired_time) = 1
-    </select>
 
 </mapper>
