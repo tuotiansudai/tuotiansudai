@@ -1,4 +1,4 @@
-package com.tuotiansudai.rest.databind.date.utils;
+package com.tuotiansudai.rest.utils;
 
 import java.io.IOException;
 import java.time.LocalDate;
