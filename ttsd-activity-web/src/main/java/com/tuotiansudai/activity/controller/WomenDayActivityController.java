@@ -42,7 +42,7 @@ public class WomenDayActivityController {
         modelAndView.addObject("totalLeaves", totalLeaves);
         modelAndView.addObject("isActivity", activityWomanDayService.isActivityTime());
         modelAndView.addObject("signedIn", signInService.signInIsSuccess(loginName));
-        modelAndView.addObject("isDraw", Strings.isNullOrEmpty(LoginUserInfo.getMobile()) ? true : lotteryDrawActivityService.toDayIsDrawByMobile(LoginUserInfo.getMobile(), ActivityCategory.WOMAN_DAY_ACTIVITY) > 0);
+        modelAndView.addObject("isDraw", Strings.isNullOrEmpty(LoginUserInfo.getMobile()) ? false : lotteryDrawActivityService.toDayIsDrawByMobile(LoginUserInfo.getMobile(), ActivityCategory.WOMAN_DAY_ACTIVITY) > 0);
         modelAndView.addObject("prize", prize);
         return modelAndView;
     }
