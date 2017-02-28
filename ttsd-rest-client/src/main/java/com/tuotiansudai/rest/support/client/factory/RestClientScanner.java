@@ -8,6 +8,7 @@ import feign.Request;
 import feign.Retryer;
 import feign.jackson.JacksonDecoder;
 import feign.jackson.JacksonEncoder;
+import feign.jaxrs.JAXRSContract;
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
@@ -27,9 +28,10 @@ public class RestClientScanner extends ClassPathBeanDefinitionScanner {
     private final JacksonEncoder jacksonEncoder;
     private final RestErrorDecoder restErrorDecoder;
     private final RequestHeaderInterceptor requestHeaderInterceptor;
+    private final JAXRSContract jaxrsContract;
     private final ApplicationContext applicationContext;
 
-    public RestClientScanner(BeanDefinitionRegistry registry, Request.Options options, Client client, Retryer retryer, ApplicationContext applicationContext, JacksonDecoder jacksonDecoder, JacksonEncoder jacksonEncoder, RestErrorDecoder restErrorDecoder, RequestHeaderInterceptor requestHeaderInterceptor) {
+    public RestClientScanner(BeanDefinitionRegistry registry, Request.Options options, Client client, Retryer retryer, ApplicationContext applicationContext, JacksonDecoder jacksonDecoder, JacksonEncoder jacksonEncoder, RestErrorDecoder restErrorDecoder, RequestHeaderInterceptor requestHeaderInterceptor, JAXRSContract jaxrsContract) {
         super(registry);
         this.options = options;
         this.client = client;
@@ -39,6 +41,7 @@ public class RestClientScanner extends ClassPathBeanDefinitionScanner {
         this.jacksonEncoder = jacksonEncoder;
         this.restErrorDecoder = restErrorDecoder;
         this.requestHeaderInterceptor = requestHeaderInterceptor;
+        this.jaxrsContract = jaxrsContract;
     }
 
     @Override
@@ -74,7 +77,8 @@ public class RestClientScanner extends ClassPathBeanDefinitionScanner {
                     .add("jacksonDecoder", this.jacksonDecoder)
                     .add("jacksonEncoder", this.jacksonEncoder)
                     .add("restErrorDecoder", this.restErrorDecoder)
-                    .add("requestHeaderInterceptor", this.requestHeaderInterceptor);
+                    .add("requestHeaderInterceptor", this.requestHeaderInterceptor)
+                    .add("jaxrsContract", this.jaxrsContract);
         }
     }
 }
