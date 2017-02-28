@@ -114,7 +114,9 @@ var web_globalFun = (function() {
                 return;
             }
             if(target.addEventListener){
+
                 target.addEventListener(type,fn);
+
             }else{
                 target.attachEvent("on"+type,fn);
             }

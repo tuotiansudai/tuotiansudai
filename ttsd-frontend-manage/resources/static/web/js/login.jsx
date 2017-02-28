@@ -34,17 +34,15 @@ validator.add(loginForm.captcha, [{
 
 let loginInputs=$(loginForm).find('input:visible');
 Array.prototype.forEach.call(loginInputs,function(el) {
-    'blur keyup'.split(' ').forEach(function(evn) {
-        globalFun.addEventHandler(el,evn,function() {
-            let errorMsg = validator.start(this);
-            if(errorMsg) {
-                errorDom.text(errorMsg).css('visibility','visible');
-            }
-            else {
-                errorDom.text('').css('visibility','hidden');
-            }
-        })
-    });
+    globalFun.addEventHandler(el,'blur',function() {
+        let errorMsg = validator.start(this);
+        if(errorMsg) {
+            errorDom.text(errorMsg).css('visibility','visible');
+        }
+        else {
+            errorDom.text('').css('visibility','hidden');
+        }
+    })
 });
 
 loginForm.onsubmit = function(event) {

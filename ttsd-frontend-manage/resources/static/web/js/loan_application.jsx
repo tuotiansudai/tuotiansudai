@@ -86,19 +86,16 @@ validator.add(loanForm.infoText, [{
 let reloanInputs=$(loanForm).find('input:text');
 
 Array.prototype.forEach.call(reloanInputs,function(el) {
-	'blur keyup'.split(' ').forEach(function(evn) {
-		globalFun.addEventHandler(el,evn,function() {
-			let errorMsg = validator.start(this);
-			event.preventDefault();
-			if(errorMsg) {
-				errorDom.text(errorMsg).css('visibility','visible');
-			}
-			else {
-				errorDom.text('').css('visibility','hidden');
-			}
-		});
+	globalFun.addEventHandler(el,'blur',function() {
+		let errorMsg = validator.start(this);
+		event.preventDefault();
+		if(errorMsg) {
+			errorDom.text(errorMsg).css('visibility','visible');
+		}
+		else {
+			errorDom.text('').css('visibility','hidden');
+		}
 	});
-
 });
 
 loanForm.onsubmit = function(event) {

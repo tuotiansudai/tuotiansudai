@@ -188,19 +188,16 @@ let reInputs=$(registerForm).find('input:text,input:password');
 
 reInputs=Array.from(reInputs);
 for (var el of reInputs) {
-    //为了让鼠标同时支持blur keyup事件
-    'blur keyup'.split(' ').forEach(function(evn) {
-        globalFun.addEventHandler(el,evn, function() {
-            let errorMsg=validator.start(this);
-            if(this.name=='referrer' && errorMsg) {
-                referrerValidBool=false;
-            }
-            else {
-                referrerValidBool=true;
-            }
-            isDisabledButton();
-        })
-    });
+    globalFun.addEventHandler(el,"keypress", function() {
+        let errorMsg=validator.start(this);
+        if(this.name=='referrer' && errorMsg) {
+            referrerValidBool=false;
+        }
+        else {
+            referrerValidBool=true;
+        }
+        isDisabledButton();
+    })
 }
 
 //用来判断获取验证码和立即注册按钮 是否可点击
