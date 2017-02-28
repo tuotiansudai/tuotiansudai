@@ -181,21 +181,16 @@ validator.add(registerForm.captcha, [{
 validator.add(registerForm.referrer, [{
     strategy: 'isReferrerExist',
     errorMsg: '推荐人不存在'
-}],true)
+}],true);
 
 
 let reInputs=$(registerForm).find('input:text,input:password');
 
 reInputs=Array.from(reInputs);
 for (var el of reInputs) {
-    globalFun.addEventHandler(el,"keyup", function() {
+    globalFun.addEventHandler(el,"keyup", "blur", function() {
         let errorMsg=validator.start(this);
-        if(this.name=='referrer' && errorMsg) {
-            referrerValidBool=false;
-        }
-        else {
-            referrerValidBool=true;
-        }
+        referrerValidBool = !(this.name == 'referrer' && errorMsg);
         isDisabledButton();
     })
 }
