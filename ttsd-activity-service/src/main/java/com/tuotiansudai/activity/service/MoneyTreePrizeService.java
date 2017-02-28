@@ -55,15 +55,15 @@ public class MoneyTreePrizeService {
     private List<String> moneyTreeTime = Lists.newArrayList();
 
 
-    private static final long MONEY_TREE_EXPERIENCE_BILL_AMOUNT_50 = 50;
-    private static final long MONEY_TREE_EXPERIENCE_BILL_AMOUNT_100 = 100;
-    private static final long MONEY_TREE_EXPERIENCE_BILL_AMOUNT_200 = 200;
-    private static final long MONEY_TREE_EXPERIENCE_BILL_AMOUNT_300 = 300;
-    private static final long MONEY_TREE_EXPERIENCE_BILL_AMOUNT_500 = 500;
-    private static final long MONEY_TREE_EXPERIENCE_BILL_AMOUNT_600 = 600;
-    private static final long MONEY_TREE_EXPERIENCE_BILL_AMOUNT_800 = 800;
-    private static final long MONEY_TREE_EXPERIENCE_BILL_AMOUNT_1000 = 1000;
-    private static final long MONEY_TREE_EXPERIENCE_BILL_AMOUNT_2000 = 2000;
+    private static final long MONEY_TREE_EXPERIENCE_BILL_AMOUNT_50 = 5000;
+    private static final long MONEY_TREE_EXPERIENCE_BILL_AMOUNT_100 = 10000;
+    private static final long MONEY_TREE_EXPERIENCE_BILL_AMOUNT_200 = 20000;
+    private static final long MONEY_TREE_EXPERIENCE_BILL_AMOUNT_300 = 30000;
+    private static final long MONEY_TREE_EXPERIENCE_BILL_AMOUNT_500 = 50000;
+    private static final long MONEY_TREE_EXPERIENCE_BILL_AMOUNT_600 = 60000;
+    private static final long MONEY_TREE_EXPERIENCE_BILL_AMOUNT_800 = 80000;
+    private static final long MONEY_TREE_EXPERIENCE_BILL_AMOUNT_1000 = 100000;
+    private static final long MONEY_TREE_EXPERIENCE_BILL_AMOUNT_2000 = 200000;
 
     public List<UserLotteryPrizeView> findDrawLotteryPrizeRecordByMobile(String mobile) {
         List<UserLotteryPrizeView> userLotteryPrizeViews = userLotteryPrizeMapper.findMoneyTreeLotteryPrizeByMobile(mobile, ActivityCategory.MONEY_TREE);
