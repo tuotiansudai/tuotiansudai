@@ -107,7 +107,7 @@ public class TransferAnXinContractMessageConsumer implements MessageConsumer {
                 return;
             }
             redisWrapperClient.setex(redisKey, LOAN_ID_LIFT_TIME, String.valueOf(executeCount));
-            mqWrapperClient.sendMessage(MessageQueue.LoanOutSuccess_GenerateAnXinContract, new LoanOutSuccessMessage(loanId));
+            mqWrapperClient.sendMessage(MessageQueue.TransferAnxinContract, new LoanOutSuccessMessage(loanId));
             return;
         }
 
