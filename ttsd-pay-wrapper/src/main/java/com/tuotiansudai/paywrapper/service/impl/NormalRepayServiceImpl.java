@@ -1,6 +1,5 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
@@ -321,8 +320,7 @@ public class NormalRepayServiceImpl implements NormalRepayService {
 
         // create payback invest job
         this.createRepayJob(loanRepayId, 2);
-
-        mqWrapperClient.sendMessage(MessageQueue.RepaySuccess_CouponRepay, new RepaySuccessMessage(loanRepayId, false));
+        mqWrapperClient.publishMessage(MessageTopic.RepaySuccess,new RepaySuccessMessage(loanRepayId, false));
         logger.info(MessageFormat.format("[[Normal Repay {0}]: 正常还款成功,发送MQ消息", String.valueOf(loanRepayId)));
 
         return callbackRequest.getResponseData();
