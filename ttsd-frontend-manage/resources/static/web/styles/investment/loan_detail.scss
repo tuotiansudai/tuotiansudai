@@ -192,10 +192,10 @@ $red: #eb4a3e;
         text-align: right;
       }
       .account-list {
-        &.account-list-new {
-          margin-top:40px;
-        }
         padding: 18px;
+        &.account-list-new {
+          padding-bottom:7px;
+        }
         &.new-text {
           font-size: 14px;
         }
@@ -211,6 +211,10 @@ $red: #eb4a3e;
           }
           .position-width {
             width: 230px;
+            text-align: right;
+          }
+          .position-width-new {
+            width: 180px;
             text-align: right;
           }
           &.invest-amount {
