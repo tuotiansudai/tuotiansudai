@@ -2,6 +2,7 @@ package com.tuotiansudai.web.controller;
 
 import com.google.common.collect.Maps;
 import com.tuotiansudai.util.FrontCallbackService;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,6 +39,7 @@ public class CallBackController {
         else{
            mv = new ModelAndView("redirect:/account");
         }
+
         return mv;
     }
 
@@ -57,4 +59,5 @@ public class CallBackController {
         retMaps.put("message", isCallbackSuccess ? service.getMessage() : retMsg);
         return retMaps;
     }
+
 }

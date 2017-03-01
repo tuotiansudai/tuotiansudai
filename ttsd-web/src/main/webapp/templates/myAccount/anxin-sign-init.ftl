@@ -2,13 +2,15 @@
 <@global.main pageCss="${css.anxin_sign}" pageJavascript="${js.anxin_sign}" activeNav="我的账户" activeLeftNav="安心签" title="安心签">
 <div class="safety-signed-frame" id="safetySignedFrame">
     <h2 class="column-title"><em>安心签</em></h2>
-
     <div class="sign-img"></div>
     <input type="hidden" class="bind-data" data-is-anxin-user="${anxinProp.anxinUser?c}">
 
      <div class="safety-status-box closed tc">
         <span class="status-text">安心签电子签章服务</span>
-        <button class="btn-normal btn-open" id="openSafetySigned">立即开启</button>
+        <@global.role hasRole="'INVESTOR'">
+            <button class="btn-normal btn-open" id="openSafetySigned">立即开启</button>
+        </@global.role>
+         <a href="/register/account" class="btn-normal btn-open" style="width: 70px; <@global.role hasRole="'INVESTOR'">display: none</@global.role>">立即开启</a>
          <span class="init-checkbox-style on">
              <input type="checkbox" id="agreeOpen1" class="default-checkbox" checked>
          </span>
@@ -19,7 +21,6 @@
                  和
                  <a href="javascript:void(0);" class="anxin_layer link-agree-number-authorize" >《CFCA数字证书授权协议》</a>
              </label>
-
     </div>
 
       <div class="safety-status-box opened tc">

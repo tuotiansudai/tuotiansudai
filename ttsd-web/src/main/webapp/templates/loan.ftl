@@ -1,6 +1,6 @@
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="${css.loan_detail}" pageJavascript="${js.loan_detail}" activeNav="我要投资" activeLeftNav="" title="标的详情">
-<div class="loan-detail-content" data-loan-status="${loan.loanStatus}" data-loan-progress="${loan.progress?string.computer}" data-loan-countdown="${loan.countdown?string.computer}"
+<div class="loan-detail-content" id="loanDetailContent" data-loan-status="${loan.loanStatus}" data-loan-progress="${loan.progress?string.computer}" data-loan-countdown="${loan.countdown?string.computer}"
      data-authentication="<@global.role hasRole="'USER'">USER</@global.role>" data-user-role="<@global.role hasRole="'INVESTOR'">INVESTOR</@global.role>" >
     <div class="borderBox clearfix no-border">
         <div class="loan-model bg-w">
@@ -57,11 +57,11 @@
                             </div>
                         </script>
                     </#if>
-                    <span class="fr boilerplate"><a href="${staticServer}/pdf/loanAgreementSample.pdf" target="_blank">借款协议样本</a></span>
+                    <span class="fr boilerplate"><a href="${commonStaticServer}/images/pdf/loanAgreementSample.pdf" target="_blank">借款协议样本</a></span>
                 </h2>
                 <div class="container-block loan-info">
                     <div class="content">
-                        <div class="row loan-number-detail">
+                        <div class="row loan-number-detail clearfix">
                             <div class="col-md-4">
                                 <div class="title">预期年化收益</div>
                                 <div class="number red"><@percentInteger>${loan.baseRate}</@percentInteger><@percentFraction>${loan.baseRate}</@percentFraction>
@@ -304,7 +304,7 @@
                     <form action="/loan-list" method="get">
                         <dl class="account-list">
                             <dd class="img-status">
-                                <img src="${staticServer}/images/sign/loan/${loan.loanStatus?lower_case}.png" alt=""/>
+                                <img src="${commonStaticServer}/images/sign/loan/${loan.loanStatus?lower_case}.png" alt=""/>
                             </dd>
                             <dd>
                                 <button class="btn-pay btn-normal" type="submit">查看其他项目</button>
@@ -314,7 +314,7 @@
                 </#if>
             </div>
         </div>
-        <div class="bg-w clear-blank borderBox loan-detail">
+        <div class="bg-w clear-blank borderBox loan-detail" id="loanDetailSwitch">
             <div class="loan-nav">
                 <ul class="clearfix">
                     <li class="active">借款详情</li>
@@ -328,7 +328,7 @@
                             <div class="subtitle">
                                 <h3>借款人基本信息</h3>
                             </div>
-                            <div class="container-fluid list-block">
+                            <div class="container-fluid list-block clearfix">
                                 <div class="row">
                                     <#list ['借款人', '性别', '年龄', '婚姻状况', '身份证号', '申请地区', '收入水平', '就业情况', '借款用途', '逾期率'] as key>
                                         <#if (loan.loanerDetail[key])?? && loan.loanerDetail[key] != '' && loan.loanerDetail[key] != '不明' >
@@ -343,7 +343,7 @@
                             <div class="subtitle">
                                 <h3>借款用途描述</h3>
                             </div>
-                            <div class="container-fluid list-block">
+                            <div class="container-fluid list-block clearfix">
                                 <p>${loan.basicInfo}</p>
                             </div>
                         </#if>
@@ -351,7 +351,7 @@
                         <div class="subtitle">
                             <h3>抵押档案</h3>
                         </div>
-                        <div class="container-fluid list-block">
+                        <div class="container-fluid list-block clearfix">
                             <div class="row">
                                 <#if loan.pledgeHouseDetail??>
                                     <#list ['抵押物所在地', '抵押物估值', '房屋面积', '房产证编号', '不动产登记证明', '公证书编号', '抵押物借款金额'] as key>
@@ -381,7 +381,7 @@
                         <div class="subtitle">
                             <h3>风控审核</h3>
                         </div>
-                        <div class="container-fluid danger-control">
+                        <div class="container-fluid danger-control clearfix">
                             <div class="row">
                                 <#if loan.pledgeType == 'ENTERPRISE'>
                                     <div class="col-md-6">
@@ -443,7 +443,7 @@
                         <div class="subtitle">
                             <h3>申请资料</h3>
                         </div>
-                        <div class="apply-data">
+                        <div class="apply-data clearfix">
                             <#list loan.loanTitleDto as loanTitle>
                                 <#list loan.loanTitles as loanTitleRelation >
                                     <#if loanTitle.id == loanTitleRelation.titleId>
@@ -452,8 +452,8 @@
                                             <div class="scroll-content">
                                                 <div class="row">
                                                     <#list loanTitleRelation.applicationMaterialUrls?split(",") as title>
-                                                        <a class="col" href="${title}" rel="example_group">
-                                                            <img class="img" layer-src="${staticServer}${title}" src="${staticServer}${title}" alt="${loanTitle.title}"/>
+                                                        <a class="col" href="${commonStaticServer}${title}" rel="example_group">
+                                                            <img class="img" layer-src="${commonStaticServer}${title}" src="${commonStaticServer}${title}" alt="${loanTitle.title}"/>
                                                         </a>
                                                     </#list>
                                                 </div>
@@ -515,8 +515,9 @@
                             </div>
                         </div>
                         </#if>
-                        <table class="table-striped invest-list">
-                        </table>
+                        <div class="table-box">
+
+                        </div>
                         <div class="pagination" data-url="/loan/${loan.id?string.computer}/invests" data-page-size="10">
                         </div>
                     </div>
@@ -540,4 +541,46 @@
 </div>
     <#include "component/red-envelope-float.ftl" />
     <#include "component/login-tip.ftl" />
+
+<script type="text/template" id="LendTemplate">
+    <table class="invest-list table-striped">
+            <thead>
+            <tr>
+            <th>出借人</th>
+            <th class="tr">出借金额（元）</th>
+    <th class="responsive-hide">出借方式</th>
+            <th class="responsive-hide tr">预期收益（元）</th>
+    <th>出借时间</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% for(var i = 0; i < records.length; i++) {
+
+    var item = records[i];
+    console.log(item);
+    item.autoInvest=item.autoInvest ? '自动' : '手动';
+    %>
+    <tr>
+    <td class="loan-td">
+        <%=item.mobile%>
+    </td>
+    <td class="tr">
+        <%=item.amount%>
+    </td>
+    <td class="responsive-hide">
+            <%=item.autoInvest%>
+        <span class="invest-<%=item.source%>"></span>
+            </td>
+            <td class="responsive-hide tr">
+                <%=item.expectedInterest%>
+            </td>
+    <td>
+        <%=item.createdTime%>
+    </td>
+    </tr>
+    <% } %>
+    </tbody>
+    </table>
+
+</script>
 </@global.main>
