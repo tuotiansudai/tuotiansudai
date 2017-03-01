@@ -27,16 +27,11 @@ public class InvestSuccessExperienceRepayMessageConsumer implements MessageConsu
 
     private final static long INVEST_LIMIT = 100000L;
 
-    private static final long NEWBIE_COUPON_ID = 382L;
-
     @Autowired
     private InvestMapper investMapper;
 
     @Autowired
     private InvestRepayMapper investRepayMapper;
-
-    @Autowired
-    private UserCouponMapper userCouponMapper;
 
     @Autowired
     private PayWrapperClient payWrapperClient;
@@ -58,26 +53,20 @@ public class InvestSuccessExperienceRepayMessageConsumer implements MessageConsu
         try {
             InvestSuccessMessage investSuccessMessage = JsonConverter.readValue(message, InvestSuccessMessage.class);
             long investId = investSuccessMessage.getInvestInfo().getInvestId();
-            InvestModel investModel = investMapper.findById(investId);
-            if (investModel == null){
-                logger.info("新手体验项目收益发放MQ] 投资ID{}不存在",investId);
-                return;
-            }
-            String loginName = investModel.getLoginName();
-            if (!isExperienceInterestConditionAvailable(loginName)) {
-                logger.info("[新手体验项目收益发放MQ] 条件不符合，{}", loginName);
+            if (!isExperienceInterestConditionAvailable(investId)) {
+                logger.info("[新手体验项目收益发放MQ] 条件不符合，{}", investId);
                 return;
             }
 
-            logger.info("[新手体验项目收益发放MQ] 条件符合，{}", loginName);
+            logger.info("[新手体验项目收益发放MQ] 条件符合，{}", investId);
 
             BaseDto<PayDataDto> baseDto = payWrapperClient.experienceRepay(investId);
 
             if (!baseDto.isSuccess()) {
-                logger.error("[新手体验项目收益发放MQ] 发放体验金收益失败 {}", loginName);
+                logger.error("[新手体验项目收益发放MQ] 发放体验金收益失败 {}", investId);
                 return;
             }
-            logger.info("[新手体验项目收益发放MQ] 发放体验金收益成功，{}", loginName);
+            logger.info("[新手体验项目收益发放MQ] 发放体验金收益成功，{}", investId);
         } catch (Exception e) {
             logger.error("[新手体验项目收益发放MQ] experience repay is fail, message:{}", message);
         }
@@ -85,21 +74,18 @@ public class InvestSuccessExperienceRepayMessageConsumer implements MessageConsu
         logger.info("[新手体验项目收益发放MQ] receive message: {}: {} done.", this.queue(), message);
     }
 
-    private boolean isExperienceInterestConditionAvailable(String loginName) {
-        long investAmount = investMapper.sumSuccessInvestAmountByLoginName(null,loginName,false);
+    private boolean isExperienceInterestConditionAvailable(long investId) {
+        InvestModel investModel = investMapper.findById(investId);
+        if (investModel == null) {
+            logger.info("[新手体验项目收益发放MQ] 投资ID{}不存在", investId);
+            return false;
+        }
+        long investAmount = investMapper.sumSuccessInvestAmountByLoginName(null, investModel.getLoginName(), false);
         if (investAmount < INVEST_LIMIT) {
             return false;
         }
 
-        List<UserCouponModel> newbieCouponList = userCouponMapper.findByLoginNameAndCouponId(loginName, NEWBIE_COUPON_ID);
-        UserCouponModel usedNewbieCoupon = newbieCouponList != null && newbieCouponList.size() == 1 && newbieCouponList.get(0).getStatus() == InvestStatus.SUCCESS ?
-                newbieCouponList.get(0) : null;
-
-        if (usedNewbieCoupon == null) {
-            return false;
-        }
-
-        InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(usedNewbieCoupon.getInvestId(), 1);
+        InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(investId, 1);
 
         return investRepayModel != null
                 && investRepayModel.getStatus() == RepayStatus.REPAYING
