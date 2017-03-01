@@ -9,19 +9,34 @@
 </script>
 
 <div class="content-container account-overview">
-    <div class="bRadiusBox spad bg-w clearfix">
-        <span class="fl accountImg"></span>
-        <div class="profile-box">
-            <span><em>您好：${mobile!}</em></span>
+
+    <div class="column-box profile-box bg-w clearfix">
+        <span class="fl account-profile"></span>
+        <div class="welcome-text">
+                <em class="fl tip-hello">您好：${mobile!}</em>
+                <em class="fr">可用积分:<span id="MyAvailablePoint">${myPoint?string.computer}</span></em>
+         </div>
+        <div class="sign-list fl">
             <span class="vip vip${userMembershipLevel!}"></span>
             <a href="/personal-info" class="user-info"></a>
+        </div>
+        <ul class="proList fr">
+            <#if signedIn?? && signedIn>
+                <li class="fl sign-top no-click"><span class="btn-sign finish-sign" data-url="/point-shop/sign-in" id="signBtn">已签到</span></li>
+            <#else >
+                <li class="fl sign-top"><span class="btn-sign will-sign" data-url="/point-shop/sign-in" id="signBtn">签到</span></li>
+            </#if>
+         </ul>
+    </div>
+    <div class="column-box">
+
+        </div>
+    <div class="bRadiusBox spad bg-w clearfix">
+
+        <div class="profile-box">
             <ul class="proList">
-                <#if signedIn?? && signedIn>
-                    <li class="fl sign-top no-click"><span class="btn-sign finish-sign" data-url="/point-shop/sign-in" id="signBtn">已签到</span></li>
-                <#else >
-                    <li class="fl sign-top"><span class="btn-sign will-sign" data-url="/point-shop/sign-in" id="signBtn">签到</span></li>
-                </#if>
-                <li class="fl beans-number">可用积分:<span id="MyAvailablePoint">${myPoint?string.computer}</span></li>
+
+                <#--<li class="fl beans-number">可用积分:<span id="MyAvailablePoint">${myPoint?string.computer}</span></li>-->
                 <li class="fr"><a class="btn-normal" href="/recharge">充值</a></li>
                 <li class="fr"><a class="btn-primary" href="/withdraw">提现</a></li>
             </ul>
