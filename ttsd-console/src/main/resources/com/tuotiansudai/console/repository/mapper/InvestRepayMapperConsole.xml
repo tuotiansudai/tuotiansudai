@@ -6,7 +6,7 @@
 
     <cache-ref namespace="com.tuotiansudai.repository.mapper.InvestMapper"/>
 
-    <resultMap id="investRepayExperienceResultMap" type="com.tuotiansudai.console.repository.model.InvestRepayExperienceView">
+    <resultMap id="investRepayExperienceResultMap" type="InvestRepayExperienceView">
         <result column="mobile" property="mobile"/>
         <result column="amount" property="amount"/>
         <result column="repay_date" property="repayDate"/>
