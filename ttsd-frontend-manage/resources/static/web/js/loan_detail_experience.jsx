@@ -44,27 +44,27 @@ amountInputElement.on('blur',function() {
 investForm.onsubmit=function(event) {
     event.preventDefault();
 let amount = investForm.amount.value.replace(/,/g,'');
-    debugger
     commonFun.useAjax({
         type:'POST',
         url: '/experience-invest',
         data:"loanId=1&amount="+amount
     },function(response) {
-        let $freeSuccess=$('#freeSuccess');
-        let data = response.data,
-            htmlCon = $freeSuccess.find('.detail-word').eq(0); //默认获取没有实名认证的内容
+        let $freeSuccess=$('#freeSuccess'),
+            $detailWord=$('.detail-word',$freeSuccess);
+        let data = response.data;
+        $detailWord.eq(0).show().siblings('.detail-word').hide(); //默认获取没有实名认证的内容
+        $('.finish-amount',$freeSuccess).html(amount);
         //是否实名认证
         let account=$freeSuccess.data('account');
         if(account) {
-            htmlCon = $freeSuccess.find('.detail-word').eq(1);
+            $detailWord.eq(1).show().siblings('.detail-word').hide();
         }
-        htmlCon.show();
         if (data.status) {
             layer.open({
                 type: 1,
                 title: '&nbsp',
                 area: ['400px'],
-                content: htmlCon
+                content: $freeSuccess
             });
         }
     });
