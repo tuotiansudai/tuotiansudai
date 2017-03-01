@@ -87,7 +87,15 @@ public class LoanOutSuccessCreateAnXinContractMessageConsumer implements Message
             executeCount++;
         }
 
-        if (executeCount == 1) {
+        try {
+            Thread.sleep(DEFAULT_MINUTE);
+            logger.info("[标的放款MQ] LoanOutSuccess_GenerateAnXinContract createLoanContracts sleep 2 minute.");
+        } catch (InterruptedException e) {
+            logger.info("[标的放款MQ] LoanOutSuccess_GenerateAnXinContract createLoanContracts sleep 2 minute fail.");
+        }
+
+        //避免invest_repay等数据未生成
+        if (executeCount == 2) {
             logger.info("[标的放款MQ] LoanOutSuccess_GenerateAnXinContract createLoanContracts is executing, loanId:{}", loanId);
             BaseDto baseDto = anxinWrapperClient.createLoanContract(loanId);
             if (!baseDto.isSuccess()) {
@@ -100,15 +108,9 @@ public class LoanOutSuccessCreateAnXinContractMessageConsumer implements Message
             return;
         }
 
-        try {
-            Thread.sleep(DEFAULT_MINUTE);
-            logger.info("[标的放款MQ] LoanOutSuccess_GenerateAnXinContract createLoanContracts sleep 2 minute.");
-        } catch (InterruptedException e) {
-            logger.info("[标的放款MQ] LoanOutSuccess_GenerateAnXinContract createLoanContracts sleep 2 minute fail.");
-        }
 
-
-        if (executeCount < 6) {
+        //等待安心签生成合同
+        if (executeCount < 7) {
             logger.info("[标的放款MQ] LoanOutSuccess_GenerateAnXinContract executeCount:{}", executeCount);
             redisWrapperClient.setex(redisKey, LOAN_ID_LIFT_TIME, String.valueOf(executeCount));
             mqWrapperClient.sendMessage(MessageQueue.LoanOutSuccess_GenerateAnXinContract, new LoanOutSuccessMessage(loanId));
