@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.security.KeyStore;
 import java.security.SecureRandom;
-import java.util.concurrent.TimeUnit;
 
 @Component
 public class AnxinClient {
@@ -55,7 +54,6 @@ public class AnxinClient {
     @PostConstruct
     public void initSSL() throws GeneralSecurityException, IOException {
         anxinSignKey = SecurityUtil.loadAnxinSignKey(JKS_CLASS_PATH, JKS_PWD);
-//        anxinSignKey=null;
         logger.info("into AnxinClient initSSl method. Thread id: " + Thread.currentThread().getId());
         KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(DEFAULT_KEY_ALGORITHM);
         keyManagerFactory.init(anxinSignKey, JKS_PWD.toCharArray());
