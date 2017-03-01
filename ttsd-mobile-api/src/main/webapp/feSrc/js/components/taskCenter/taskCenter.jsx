@@ -92,7 +92,7 @@ class AdvanceTaskGroup extends React.Component {
             AdvanceData.forEach(function(option,key) {
                 let keyNum=key+1;
             rows.push(<div className="TaskItemNewbie" key={key}>
-                <div className="SerialNum" >0{keyNum}</div>
+
                     <div className="TaskAdvanceContent">
                         <div className="TaskAdvanceRewardGroup">
                             <div className="TaskAdvanceItemTitle">{option.title}</div>
