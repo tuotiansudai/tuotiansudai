@@ -63,9 +63,7 @@ $('body').on('click','.show-invest-repay',function (event) {
         data.csrfToken = $("meta[name='_csrf']").attr("content");
         if (data.status) {
             _.each(data.records, function (item) {
-                // data.loanId = item.loanId;
-                let loan = item.loan || '';
-                data.loanId = loan.id;
+                data.loanId = item.loan ? item.loan.id : '';
 
                 switch (item.loanRepayStatus) {
                     case 'REPAYING':
@@ -83,9 +81,7 @@ $('body').on('click','.show-invest-repay',function (event) {
             let $investRepayTemplate=$('#investRepayTemplate'),
                 investTpl=$investRepayTemplate.html();
 
-
             let experienceTpl=$('#investExperienceRepayTemplate').html();
-
             let tplHtml = (data.loanId == 1) ? experienceTpl : investTpl;
 
             // 解析模板, 返回解析后的内容
