@@ -1,6 +1,7 @@
 package com.tuotiansudai.console.controller;
 
 import com.tuotiansudai.ask.repository.model.AnswerStatus;
+import com.tuotiansudai.ask.repository.model.QuestionModel;
 import com.tuotiansudai.ask.repository.model.QuestionStatus;
 import com.tuotiansudai.ask.service.AnswerService;
 import com.tuotiansudai.ask.service.EmbodyQuestionService;
@@ -12,7 +13,10 @@ import com.tuotiansudai.spring.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -43,7 +47,7 @@ public class AskController {
                                      @RequestParam(value = "status", required = false) QuestionStatus status,
                                      @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
 
-        BaseDto<BasePaginationDataDto> questions = questionService.findQuestionsForConsole(question, mobile, status, index);
+        BaseDto<BasePaginationDataDto<QuestionModel>> questions = questionService.findQuestionsForConsole(question, mobile, status, index);
 
         ModelAndView modelAndView = new ModelAndView("/question-list", "questions", questions);
         modelAndView.addObject("question", question);
@@ -71,7 +75,7 @@ public class AskController {
 
     @RequestMapping(path = "/embody-questions", method = RequestMethod.GET)
     public ModelAndView getEmbodyQuestions(@RequestParam(value = "index", defaultValue = "1", required = false) int index) {
-        BaseDto<BasePaginationDataDto> embodyQuestions = questionService.findEmbodyAllQuestions(index, 10);
+        BaseDto<BasePaginationDataDto<QuestionModel>> embodyQuestions = questionService.findEmbodyAllQuestions(index);
         ModelAndView modelAndView = new ModelAndView("/embody-question-list", "embodyQuestions", embodyQuestions);
         return modelAndView;
     }
@@ -86,7 +90,7 @@ public class AskController {
     @RequestMapping(path = "/question/approve", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<BaseDataDto> approveQuestion(@RequestParam List<Long> ids) {
-        questionService.approve(LoginUserInfo.getLoginName(), ids);
+        questionService.approve(ids);
 
         return new BaseDto<>(new BaseDataDto(true));
     }
@@ -94,7 +98,7 @@ public class AskController {
     @RequestMapping(path = "/question/reject", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<BaseDataDto> rejectQuestion(@RequestParam List<Long> ids) {
-        questionService.reject(LoginUserInfo.getLoginName(), ids);
+        questionService.reject(ids);
 
         return new BaseDto<>(new BaseDataDto(true));
     }

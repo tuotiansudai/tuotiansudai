@@ -10,6 +10,7 @@ import com.tuotiansudai.coupon.service.ExchangeCodeService;
 import com.tuotiansudai.coupon.util.InvestAchievementUserCollector;
 import com.tuotiansudai.coupon.util.UserCollector;
 import com.tuotiansudai.enums.CouponType;
+import com.tuotiansudai.message.CouponAssignSmsNotifyMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.CouponMapper;
 import com.tuotiansudai.repository.mapper.UserCouponMapper;
@@ -272,7 +273,7 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
         userCouponMapper.create(userCouponModel);
 
         if(Lists.newArrayList(UserGroup.IMPORT_USER, UserGroup.WINNER_NOTIFY).contains(couponModel.getUserGroup())) {
-            mqWrapperClient.sendMessage(MessageQueue.CouponSmsAssignNotify, couponId);
+            mqWrapperClient.sendMessage(MessageQueue.CouponSmsAssignNotify, new CouponAssignSmsNotifyMessage(couponId, loginName));
         }
 
         return userCouponModel;

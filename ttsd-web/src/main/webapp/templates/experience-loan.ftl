@@ -30,11 +30,10 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row loan-active-detail">
-                            <div class="col-md-6">
+                        <div class="loan-active-detail">
+                            <br/>
                                 <span class="title">还款方式：</span>
                                 到期付息,体验金收回。
-                            </div>
                         </div>
                     </div> <#-- .content end tag -->
                 </div> <#-- .container-block end tag -->
@@ -55,29 +54,26 @@
                                 <span class="fl">投资金额(体验金)：</span>
                                 <input type="text" name="amount" data-l-zero="deny" data-v-min="0.00" data-min-invest-amount="${loan.minInvestAmount}"
                                        placeholder="0.00" value="${(experienceBalance / 100)?string("0.00")}"
-                                       class="text-input-amount fr position-width"/>
+                                       class="text-input-amount fr position-width-new"/>
                             </dd>
 
-                            <dd class="expected-interest-dd tc mb-20">
+                            <dd class="expected-interest-dd tc ">
                                 <span>预计总收益：</span>
                                 <span class="principal-income">0.00</span> 元
                             </dd>
 
-                            <dd class="mb-20">
+                            <dd>
                                 <@global.isAnonymous>
                                     <a class="btn-pay btn-normal" href="/register/user">马上投资</a>
                                 </@global.isAnonymous>
                                 <@global.isNotAnonymous>
-<<<<<<< HEAD
-                                    <button id="investSubmit" class="btn-pay btn-normal" type="button">马上投资
-=======
-                                    <button id="investSubmit" class="btn-pay btn-normal" type="submit"
-                                            <#if coupon?? == false>disabled="disabled"</#if>>立即体验
->>>>>>> master
-                                    </button>
+                                    <button id="investSubmit" class="btn-pay btn-normal" type="submit">马上投资</button>
                                 </@global.isNotAnonymous>
+
+                                <div class="error-box">体验金金额不足</div>
                             </dd>
                         </dl>
+
                     </form>
                 </#if>
                 <#if ["REPAYING", "COMPLETE"]?seq_contains(loan.loanStatus)>
@@ -152,15 +148,24 @@
             </div>
         </div>
     </div>
-    <div id="freeSuccess" style="display: none">
+    <div id="freeSuccess" data-account="${isAccount}" style="display: none">
         <div class="success-info-tip">
             <i class="icon-tip"></i>
+            <#--没有实名认证-->
             <div class="detail-word">
-                <h2>恭喜您体验成功！</h2> 体验收益发放后需实名认证并进行过投资后方可提现 <a href="/register/account" class="key">立即认证>></a>
+                <h2>投资成功！</h2> 您已成功投资体验金<span class="finish-amount"></span>元 <br/>
+                收益到账后后，需要实名认证并投资方可提现 <a href="/register/account" class="key">立即立即认证>></a>
                 <div class="pad-m-tb" style="padding-left:50px;">
                     <button type="button" class="btn-normal close-free">确认</button>
                 </div>
+            </div>
 
+            <#--已经实名认证-->
+            <div class="detail-word" style="display: none;">
+                <h2>投资成功！</h2> 您已成功投资体验金<span class="finish-amount"></span>元
+                <div class="pad-m-tb" style="padding-left:50px;">
+                    <button type="button" class="btn-normal close-free">确认</button>
+                </div>
             </div>
         </div>
     </div>

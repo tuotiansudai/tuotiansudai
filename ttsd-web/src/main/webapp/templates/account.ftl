@@ -8,61 +8,72 @@
     };
 </script>
 
-<div class="content-container account-overview">
-    <div class="bRadiusBox spad bg-w clearfix">
-        <span class="fl accountImg"></span>
-        <div class="profile-box">
-            <span><em>您好：${mobile!}</em></span>
+<div class="content-container account-overview" id="accountOverview">
+
+    <div class="column-box profile-box bg-w clearfix">
+        <span class="fl account-profile"></span>
+        <div class="welcome-text">
+                <em class="fl tip-hello">您好：${mobile!}</em>
+                <em class="fr">可用积分:<span id="MyAvailablePoint">${myPoint?string.computer}</span></em>
+         </div>
+        <div class="sign-list fl">
             <span class="vip vip${userMembershipLevel!}"></span>
             <a href="/personal-info" class="user-info"></a>
-            <ul class="proList">
-                <#if signedIn?? && signedIn>
-                    <li class="fl sign-top no-click"><span class="btn-sign finish-sign" data-url="/point-shop/sign-in" id="signBtn">已签到</span></li>
-                <#else >
-                    <li class="fl sign-top"><span class="btn-sign will-sign" data-url="/point-shop/sign-in" id="signBtn">签到</span></li>
-                </#if>
-                <li class="fl beans-number">可用积分:<span id="MyAvailablePoint">${myPoint?string.computer}</span></li>
+        </div>
+        <ul class="proList fr">
+            <#if signedIn?? && signedIn>
+                <li class="fl sign-top no-click"><span class="btn-sign finish-sign" data-url="/point-shop/sign-in" id="signBtn">已签到</span></li>
+            <#else >
+                <li class="fl sign-top"><span class="btn-sign will-sign" data-url="/point-shop/sign-in" id="signBtn">签到</span></li>
+            </#if>
+         </ul>
+    </div>
+
+    <div class="column-box bg-w clearfix amount-sum">
+        <h3><b>账户总额：</b><span>${(((balance+freeze+expectedTotalCorpus+expectedTotalInterest)/100)?string('0.00'))!}元</span>
+            <ul class="proList fr">
                 <li class="fr"><a class="btn-normal" href="/recharge">充值</a></li>
                 <li class="fr"><a class="btn-primary" href="/withdraw">提现</a></li>
             </ul>
-        </div>
+        </h3>
     </div>
-    <div class="assets-box clear-blank">
-        <div class="assets-report bRadiusBox fl bg-w">
-            <h3>账户总额：<span>${(((balance+freeze+expectedTotalCorpus+expectedTotalInterest)/100)?string('0.00'))!}元</span></h3>
-            <div id="ReportShow" style="width:100%; height:115px; "></div>
-        </div>
-        <div class="assets-detail bRadiusBox fr bg-w">
-            <ul class="detail-list">
-                <li><b>可用余额：</b><span id="balance">${((balance/100)?string('0.00'))!}</span>元</li>
-                <li><b>冻结金额：</b><span>${((freeze/100)?string('0.00'))!}</span>元</li>
-                <li><b>提现冻结中：</b><span>${((withdrawFrozeAmount/100)?string('0.00'))!}</span>元</li>
-                <li><b>投资冻结中：</b><span>${((investFrozeAmount/100)?string('0.00'))!}</span>元</li>
-                <li><b>累计收益：</b><span>${(((totalIncome)/100)?string('0.00'))!}</span>元</li>
-                <li><b>已收投资收益：</b><span>${((actualTotalInterest)/100)?string('0.00')!}</span>元</li>
-                <li><b>已收投资奖励：</b><span>${((actualTotalExtraInterest)/100)?string('0.00')!}</span>元</li>
-                <li><b>已收推荐奖励：</b><span>${((referRewardAmount/100)?string('0.00'))!}</span>元</li>
-                <li><b>已收红包奖励：</b><span>${((redEnvelopeAmount/100)?string('0.00'))!}</span>元</li>
-                <li><b>已收体验金奖励：</b><span>${((actualExperienceInterest/100)?string('0.00'))!}</span>元</li>
-                <li><b>待收回款：</b><span>${(((expectedTotalCorpus+expectedTotalInterest+expectedTotalExtraInterest+expectedExperienceInterest)/100)?string('0.00'))!}</span>元</li>
-                <li><b>待收投资本金：</b><span>${((expectedTotalCorpus/100)?string('0.00'))!}</span>元</li>
-                <li><b>待收预期收益：</b><span>${((expectedTotalInterest/100)?string('0.00'))!}</span>元</li>
-                <li><b>待收投资奖励：</b><span>${((expectedTotalExtraInterest/100)?string('0.00'))!}</span>元</li>
-                <li><b>待收体验金收益：</b><span>${((expectedExperienceInterest/100)?string('0.00'))!}</span>元</li>
-                <li><b>可用体验金余额：</b><span>${((experienceBalance/100)?string('0.00'))!}</span>元</li>
+
+    <div class="column-box bg-w clearfix amount-sum ">
+        <h3><b>可用余额：</b><span>${((balance/100)?string('0.00'))!}元</span> <i class="icon-has-con"></i> </h3>
+
+        <ul class="detail-list">
+            <li>提现冻结中：<span>${((withdrawFrozeAmount/100)?string('0.00'))!}</span>元</li>
+            <li>投资冻结中：<span>${((investFrozeAmount/100)?string('0.00'))!}</span>元</li>
+        </ul>
+    </div>
+
+    <div class="column-box bg-w clearfix amount-sum ">
+        <h3><b>累计收益：</b><span>${(((totalIncome)/100)?string('0.00'))!}</span>元  <i class="icon-has-con"></i></h3>
+        <ul class="detail-list">
+            <li>已收投资收益：<span>${((actualTotalInterest)/100)?string('0.00')!}</span>元</li>
+            <li>已收投资奖励：<span>${((actualTotalExtraInterest)/100)?string('0.00')!}</span>元</li>
+            <li>已收推荐奖励：<span>${((referRewardAmount/100)?string('0.00'))!}</span>元</li>
+            <li>已收红包奖励：<span>${((redEnvelopeAmount/100)?string('0.00'))!}</span>元</li>
+            <li>已收体验金奖励：<span>${((actualExperienceInterest/100)?string('0.00'))!}</span>元</li>
+        </ul>
+    </div>
+
+    <div class="column-box bg-w clearfix amount-sum ">
+        <h3> <b>待收回款：</b><span>${(((expectedTotalCorpus+expectedTotalInterest+expectedTotalExtraInterest+expectedExperienceInterest)/100)?string('0.00'))!}</span>元 <i class="icon-has-con"></i></h3>
+        <ul class="detail-list">
+            <li>待收投资本金：<span>${((expectedTotalCorpus/100)?string('0.00'))!}</span>元</li>
+            <li>待收预期收益：<span>${((expectedTotalInterest/100)?string('0.00'))!}</span>元</li>
+            <li>待收投资奖励：<span>${((expectedTotalExtraInterest/100)?string('0.00'))!}</span>元</li>
+            <li>待收体验金收益：<span>${((expectedExperienceInterest/100)?string('0.00'))!}</span>元</li>
             </ul>
-        </div>
     </div>
-    <div class="new-user-award">
-        <span>HOT</span>
-        <#if isUsableCouponExist>
-            您还有优惠券没有使用，<a href="/my-treasure" title="快来使用吧">快来使用吧</a>
-        <#else>
-            新用户注册就送6888元体验金+668元现金红包，<a href="/activity/landing-page" title="详情请点击">详情请点击</a>
-        </#if>
+
+    <div class="column-box bg-w clearfix amount-sum">
+        <h3><b>可用体验金余额：</b><span>${((experienceBalance/100)?string('0.00'))!}</span>元</span>
+        </h3>
     </div>
     <#if expectedRepayAmountOfMonth??>
-        <div class="LastMonth bRadiusBox clear-blank bg-w">
+        <div class="LastMonth  clear-blank bg-w">
             <ul class="PaymentSwitch">
                 <li class="current"><a href="javascript:void(0);">本月未还款</a></li>
             </ul>
@@ -101,13 +112,16 @@
             </table>
         </div>
     </#if>
-    <div class="tMonthPayment bRadiusBox clear-blank bg-w" id="tMonthBox">
-        <ul class="PaymentSwitch">
-            <li><a href="javascript:void(0);"> 本月已收回款</a></li>
-            <li class="current"><a href="javascript:void(0);">本月待收回款</a></li>
-        </ul>
-        <table class="table table-striped">
-            <caption>本月已收回款总额：￥${((actualInvestRepay/100)?string('0.00'))!}元 <a href="/investor/invest-list" class="fr">更多...</a></caption>
+    <div class="clear-blank bg-w" id="tMonthBox">
+        <div class="payment-switch">
+            <em>本月已收回款</em>
+            <em class="current">本月待收回款</em>
+
+            <span class="total fr">本月已收回款总额：￥${((actualInvestRepay/100)?string('0.00'))!}元</span>
+            <span class="total current fr">本月待收回款总额：￥${((expectedInvestRepay/100)?string('0.00'))!}元</span>
+        </div>
+
+        <table class="table"  style="display: none">
             <thead>
             <tr>
                 <th>项目名称</th>
@@ -139,10 +153,13 @@
             <tr>
                 <td colspan="6" class="tc">本月应收本息${(((actualInvestRepay+expectedInvestRepay)/100)?string('0.00'))!}元</td>
             </tr>
+            <tr>
+                <td colspan="6" class="tr last"><a href="/investor/invest-list" class="fr more">查看更多>></a></td>
+            </tr>
             </tfoot>
         </table>
-        <table class="table table-striped">
-            <caption>本月待收回款总额：￥${((expectedInvestRepay/100)?string('0.00'))!}元<a href="/investor/invest-list" class="fr">更多...</a></caption>
+
+        <table class="table ">
             <thead>
             <tr>
                 <th>项目名称</th>
@@ -174,12 +191,18 @@
             <tr>
                 <td colspan="6" class="tc">本月应收本息${(((actualInvestRepay+expectedInvestRepay)/100)?string('0.00'))!}元</td>
             </tr>
+            <tr>
+                <td colspan="6" class="tr last"> <a href="/investor/invest-list" class="fr more">查看更多>></a> </td>
+            </tr>
             </tfoot>
         </table>
     </div>
-    <div class="newProjects bRadiusBox clear-blank bg-w">
+    <div class="new-projects bg-w">
+        <div class="payment-switch">
+            <em class="current">最新投资项目</em>
+         </div>
         <table class="table">
-            <caption>最新投资项目 <a href="/investor/invest-list" class="fr">更多...</a></caption>
+
             <thead>
             <tr>
                 <th>交易时间</th>
@@ -219,6 +242,12 @@
                 </tr>
                 </#if>
             </tbody>
+            <tfoot>
+            <tr>
+                <td colspan="6" class="tr last"><a href="/investor/invest-list" class="fr more">查看更多>></a></td>
+            </tr>
+
+            </tfoot>
         </table>
     </div>
     <div class="sign-layer" id="signLayer">
