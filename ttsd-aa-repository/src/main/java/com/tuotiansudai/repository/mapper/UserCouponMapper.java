@@ -34,10 +34,6 @@ public interface UserCouponMapper {
 
     List<UserCouponModel> findByInvestId(@Param("investId") long investId);
 
-    long findSumBirthdayAndInterestByLoginName(@Param("loginName") String loginName);
-
-    long findSumRedEnvelopeByLoginName(@Param("loginName") String loginName);
-
     List<UserCouponModel> findUserCouponSuccessByInvestId(@Param("investId") long investId);
 
     List<UserCouponModel> findUserCouponSuccessAndCouponTypeByInvestId(
@@ -49,6 +45,7 @@ public interface UserCouponMapper {
 
     List<UserCouponModel> findByCouponIdAndStatus(@Param("couponId") long couponId, @Param("isUsed") Boolean isUsed,
                                                   @Param("loginName") String loginName, @Param("mobile") String mobile,
+                                                  @Param("createdTime") Date createdTime,
                                                   @Param("registerStartTime") Date registerStartTime, @Param("registerEndTime") Date registerEndTime,
                                                   @Param("investStartTime") Date investStartTime, @Param("investEndTime") Date investEndTime,
                                                   @Param("index") int index, @Param("pageSize") int pageSize);

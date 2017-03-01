@@ -17,6 +17,7 @@ import com.tuotiansudai.membership.repository.model.MembershipLevel;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipType;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
+import com.tuotiansudai.point.repository.model.PointBillModel;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
@@ -99,6 +100,12 @@ public class LotteryDrawActivityService {
     @Value("#{'${activity.spring.festival.period}'.split('\\~')}")
     private List<String> springFestivalTime = Lists.newArrayList();
 
+    @Value(value = "${activity.woman.day.startTime}")
+    private String activityWomanDayStartTime;
+
+    @Value(value = "${activity.woman.day.endTime}")
+    private String activityWomanDayEndTime;
+
     //往期活动任务
     private final List activityTasks = Lists.newArrayList(ActivityDrawLotteryTask.REGISTER, ActivityDrawLotteryTask.EACH_REFERRER,
             ActivityDrawLotteryTask.EACH_REFERRER_INVEST, ActivityDrawLotteryTask.CERTIFICATION, ActivityDrawLotteryTask.BANK_CARD,
@@ -114,6 +121,9 @@ public class LotteryDrawActivityService {
 
     //春节活动任务
     private final List springFestivalTasks = Lists.newArrayList(ActivityDrawLotteryTask.TODAY_ACTIVITY_SIGN_IN);
+
+    //妇女节活动任务
+    private final List womanDayTasks = Lists.newArrayList(ActivityDrawLotteryTask.TODAY_ACTIVITY_SIGN_IN);
 
     public static final String ACTIVITY_DESCRIPTION = "新年专享";
 
@@ -152,7 +162,7 @@ public class LotteryDrawActivityService {
 
         LotteryPrize lotteryPrize = drawLotteryPrize(activityCategory);
         if (lotteryPrize.getPrizeType().equals(PrizeType.VIRTUAL)) {
-            couponAssignmentService.assignUserCoupon(mobile, getCouponId(lotteryPrize));
+            getCouponId(lotteryPrize).stream().forEach(couponId -> couponAssignmentService.assignUserCoupon(mobile, couponId));
         } else if (lotteryPrize.equals(LotteryPrize.MEMBERSHIP_V5)) {
             createUserMembershipModel(userModel.getLoginName(), MembershipLevel.V5.getLevel());
         }
@@ -168,18 +178,21 @@ public class LotteryDrawActivityService {
     }
 
     @Transactional
-    public synchronized DrawLotteryResultDto drawPrizeByPoint(String mobile, ActivityCategory activityCategory) {
+    public synchronized DrawLotteryResultDto drawPrizeByPoint(String mobile, ActivityCategory activityCategory, boolean longTermActivity) {
         UserModel userModel = userMapper.findByMobile(mobile);
         if (userModel == null) {
             return new DrawLotteryResultDto(2);//"该用户不存在！"
         }
 
-        Date nowDate = DateTime.now().toDate();
-        List<String> activityTime = getActivityTime(activityCategory);
-        Date activityStartTime = DateTime.parse(activityTime.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
-        Date activityEndTime = DateTime.parse(activityTime.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
-        if (!nowDate.before(activityEndTime) || !nowDate.after(activityStartTime)) {
-            return new DrawLotteryResultDto(3);//不在活动时间范围内！
+        //长期活动不执行
+        if(!longTermActivity){
+            Date nowDate = DateTime.now().toDate();
+            List<String> activityTime = getActivityTime(activityCategory);
+            Date activityStartTime = DateTime.parse(activityTime.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+            Date activityEndTime = DateTime.parse(activityTime.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+            if (!nowDate.before(activityEndTime) || !nowDate.after(activityStartTime)) {
+                return new DrawLotteryResultDto(3);//不在活动时间范围内！
+            }
         }
 
         if (Strings.isNullOrEmpty(mobile)) {
@@ -230,39 +243,60 @@ public class LotteryDrawActivityService {
         userMembershipMapper.create(userMembershipModel);
     }
 
-    private long getCouponId(LotteryPrize lotteryPrize) {
-        return Maps.newHashMap(ImmutableMap.<LotteryPrize, Long>builder()
-                .put(LotteryPrize.RED_ENVELOPE_100, 305L)
-                .put(LotteryPrize.RED_ENVELOPE_50, 305L)
-                .put(LotteryPrize.INTEREST_COUPON_5, 307L)
-                .put(LotteryPrize.INTEREST_COUPON_2, 308L)
-                .put(LotteryPrize.RED_INVEST_15, 309L)
-                .put(LotteryPrize.RED_INVEST_50, 310L)
-                .put(LotteryPrize.RED_ENVELOPE_10, 311L)
-                .put(LotteryPrize.RED_ENVELOPE_50_POINT_DRAW, 312L)
-                .put(LotteryPrize.INTEREST_COUPON_5_POINT_DRAW, 313L)
-                .put(LotteryPrize.INTEREST_COUPON_2_POINT_DRAW, 314L)
-                .put(LotteryPrize.INTEREST_COUPON_5_POINT_DRAW_REF_CARNIVAL, 321L)
-                .put(LotteryPrize.RED_ENVELOPE_50_POINT_DRAW_REF_CARNIVAL, 320L)
-                .put(LotteryPrize.RED_ENVELOPE_5, 325L)
-                .put(LotteryPrize.RED_ENVELOPE_3, 326L)
-                .put(LotteryPrize.RED_ENVELOPE_18, 327L)
-                .put(LotteryPrize.RED_ENVELOPE_8, 328L)
-                .put(LotteryPrize.INTEREST_COUPON_2_NEW_YEARS, 329L)
-                .put(LotteryPrize.LANTERN_FESTIVAL_RED_ENVELOPE_5, 364L)
-                .put(LotteryPrize.LANTERN_FESTIVAL_RED_ENVELOPE_8, 365L)
-                .put(LotteryPrize.LANTERN_FESTIVAL_RED_ENVELOPE_10, 366L)
-                .put(LotteryPrize.LANTERN_FESTIVAL_RED_ENVELOPE_40, 367L)
-                .put(LotteryPrize.LANTERN_FESTIVAL_RED_ENVELOPE_30, 368L)
-                .put(LotteryPrize.LANTERN_FESTIVAL_INTEREST_COUPON_5, 369L)
-                .put(LotteryPrize.SPRING_FESTIVAL_RED_ENVELOP_68, 340L)
-                .put(LotteryPrize.SPRING_FESTIVAL_RED_ENVELOP_58, 341L)
-                .put(LotteryPrize.SPRING_FESTIVAL_RED_ENVELOP_38, 342L)
-                .put(LotteryPrize.SPRING_FESTIVAL_RED_ENVELOP_18, 343L)
-                .put(LotteryPrize.SPRING_FESTIVAL_RED_ENVELOP_88, 344L)
-                .put(LotteryPrize.SPRING_FESTIVAL_RED_ENVELOP_188, 345L)
-                .put(LotteryPrize.SPRING_FESTIVAL_INTEREST_COUPON_5, 346L)
-                .put(LotteryPrize.SPRING_FESTIVAL_INTEREST_COUPON_2, 347L)
+    private void createPointBillModel(String loginName, int point, LotteryPrize lotteryPrize) {
+        PointBillModel pointBillModel = new PointBillModel(loginName,
+                null,
+                point,
+                PointBusinessType.POINT_LOTTERY,
+                MessageFormat.format("抽中{0}", lotteryPrize.getDescription()));
+        pointBillMapper.create(pointBillModel);
+    }
+
+    private List<Long> getCouponId(LotteryPrize lotteryPrize) {
+        return Maps.newHashMap(ImmutableMap.<LotteryPrize, List<Long>>builder()
+                .put(LotteryPrize.RED_ENVELOPE_100, Lists.newArrayList(305L))
+                .put(LotteryPrize.RED_ENVELOPE_50, Lists.newArrayList(305L))
+                .put(LotteryPrize.INTEREST_COUPON_5, Lists.newArrayList(307L))
+                .put(LotteryPrize.INTEREST_COUPON_2, Lists.newArrayList(308L))
+                .put(LotteryPrize.RED_INVEST_15, Lists.newArrayList(309L))
+                .put(LotteryPrize.RED_INVEST_50, Lists.newArrayList(310L))
+                .put(LotteryPrize.RED_ENVELOPE_10, Lists.newArrayList(311L))
+                .put(LotteryPrize.RED_ENVELOPE_50_POINT_DRAW, Lists.newArrayList(312L))
+                .put(LotteryPrize.INTEREST_COUPON_5_POINT_DRAW, Lists.newArrayList(313L))
+                .put(LotteryPrize.INTEREST_COUPON_2_POINT_DRAW, Lists.newArrayList(314L))
+                .put(LotteryPrize.INTEREST_COUPON_5_POINT_DRAW_REF_CARNIVAL, Lists.newArrayList(321L))
+                .put(LotteryPrize.RED_ENVELOPE_50_POINT_DRAW_REF_CARNIVAL, Lists.newArrayList(320L))
+                .put(LotteryPrize.RED_ENVELOPE_5, Lists.newArrayList(325L))
+                .put(LotteryPrize.RED_ENVELOPE_3, Lists.newArrayList(326L))
+                .put(LotteryPrize.RED_ENVELOPE_18, Lists.newArrayList(327L))
+                .put(LotteryPrize.RED_ENVELOPE_8, Lists.newArrayList(328L))
+                .put(LotteryPrize.INTEREST_COUPON_2_NEW_YEARS, Lists.newArrayList(329L))
+                .put(LotteryPrize.LANTERN_FESTIVAL_RED_ENVELOPE_5, Lists.newArrayList(364L))
+                .put(LotteryPrize.LANTERN_FESTIVAL_RED_ENVELOPE_8, Lists.newArrayList(365L))
+                .put(LotteryPrize.LANTERN_FESTIVAL_RED_ENVELOPE_10, Lists.newArrayList(366L))
+                .put(LotteryPrize.LANTERN_FESTIVAL_RED_ENVELOPE_40, Lists.newArrayList(367L))
+                .put(LotteryPrize.LANTERN_FESTIVAL_RED_ENVELOPE_30, Lists.newArrayList(368L))
+                .put(LotteryPrize.LANTERN_FESTIVAL_INTEREST_COUPON_5, Lists.newArrayList(369L))
+                .put(LotteryPrize.SPRING_FESTIVAL_RED_ENVELOP_68, Lists.newArrayList(340L))
+                .put(LotteryPrize.SPRING_FESTIVAL_RED_ENVELOP_58, Lists.newArrayList(341L))
+                .put(LotteryPrize.SPRING_FESTIVAL_RED_ENVELOP_38, Lists.newArrayList(342L))
+                .put(LotteryPrize.SPRING_FESTIVAL_RED_ENVELOP_18, Lists.newArrayList(343L))
+                .put(LotteryPrize.SPRING_FESTIVAL_RED_ENVELOP_88, Lists.newArrayList(344L))
+                .put(LotteryPrize.SPRING_FESTIVAL_RED_ENVELOP_188, Lists.newArrayList(345L))
+                .put(LotteryPrize.SPRING_FESTIVAL_INTEREST_COUPON_5, Lists.newArrayList(346L))
+                .put(LotteryPrize.SPRING_FESTIVAL_INTEREST_COUPON_2, Lists.newArrayList(347L))
+                .put(LotteryPrize.POINT_SHOP_RED_ENVELOPE_10, Lists.newArrayList(360L))
+                .put(LotteryPrize.POINT_SHOP_RED_ENVELOPE_50, Lists.newArrayList(361L))
+                .put(LotteryPrize.POINT_SHOP_INTEREST_COUPON_2, Lists.newArrayList(362L))
+                .put(LotteryPrize.POINT_SHOP_INTEREST_COUPON_5, Lists.newArrayList(363L))
+                .put(LotteryPrize.WOMAN_DAY_ACTIVITY_ENVELOP_521, Lists.newArrayList(392L))
+                .put(LotteryPrize.WOMAN_DAY_ACTIVITY_ENVELOP_580, Lists.newArrayList(393L))
+                .put(LotteryPrize.WOMAN_DAY_ACTIVITY_ENVELOP_880, Lists.newArrayList(394L))
+                .put(LotteryPrize.WOMAN_DAY_ACTIVITY_ENVELOP_1000, Lists.newArrayList(395L))
+                .put(LotteryPrize.WOMAN_DAY_ACTIVITY_INTEREST_COUPON_2, Lists.newArrayList(396L))
+                .put(LotteryPrize.WOMAN_DAY_ACTIVITY_ENVELOP_38, Lists.newArrayList(397L))
+                .put(LotteryPrize.WOMAN_DAY_ACTIVITY_ENVELOP_38_100, Lists.newArrayList(398L, 397L))
+                .put(LotteryPrize.WOMAN_DAY_ACTIVITY_INTEREST_COUPON_5, Lists.newArrayList(399L))
                 .build()).get(lotteryPrize);
     }
 
@@ -293,13 +327,27 @@ public class LotteryDrawActivityService {
     private PrizeType grantPrize(String mobile, String loginName, LotteryPrize lotteryPrize) {
         PrizeType prizeType = PrizeType.VIRTUAL;
         if (lotteryPrize.getPrizeType().equals(PrizeType.VIRTUAL)) {
-            couponAssignmentService.assignUserCoupon(mobile, getCouponId(lotteryPrize));
+            getCouponId(lotteryPrize).stream().forEach(couponId -> couponAssignmentService.assignUserCoupon(mobile, couponId));
         } else if (lotteryPrize.equals(LotteryPrize.RED_INVEST_15) || lotteryPrize.equals(LotteryPrize.RED_INVEST_50)) {
-            couponAssignmentService.assignUserCoupon(mobile, getCouponId(lotteryPrize));
+            getCouponId(lotteryPrize).stream().forEach(couponId -> couponAssignmentService.assignUserCoupon(mobile, couponId));
             prizeType = PrizeType.VIRTUAL;
         } else if (lotteryPrize.equals(LotteryPrize.MEMBERSHIP_V5)) {
             prizeType = PrizeType.MEMBERSHIP;
             createUserMembershipModel(loginName, MembershipLevel.V5.getLevel());
+        }
+        else if (lotteryPrize.equals(LotteryPrize.POINT_SHOP_POINT_500)) {
+            prizeType = PrizeType.POINT;
+            createPointBillModel(loginName, 500, lotteryPrize);
+            AccountModel accountModel = accountMapper.findByLoginName(loginName);
+            accountModel.setPoint(accountModel.getPoint() + 500);
+            accountMapper.update(accountModel);
+        }
+        else if (lotteryPrize.equals(LotteryPrize.POINT_SHOP_POINT_3000)) {
+            prizeType = PrizeType.POINT;
+            createPointBillModel(loginName, 3000, lotteryPrize);
+            AccountModel accountModel = accountMapper.findByLoginName(loginName);
+            accountModel.setPoint(accountModel.getPoint() + 3000);
+            accountMapper.update(accountModel);
         }
         return prizeType;
     }
@@ -323,6 +371,8 @@ public class LotteryDrawActivityService {
                 return countDrawLotteryTime(userModel, activityCategory, Lists.newArrayList(ActivityDrawLotteryTask.EACH_INVEST_1000));
             case SPRING_FESTIVAL_ACTIVITY:
                 return countDrawLotteryTime(userModel, activityCategory, springFestivalTasks);
+            case WOMAN_DAY_ACTIVITY:
+                return countDrawLotteryTime(userModel, activityCategory, womanDayTasks);
         }
         return lotteryTime;
     }
@@ -379,11 +429,11 @@ public class LotteryDrawActivityService {
                     }
                     break;
                 case EACH_ACTIVITY_SIGN_IN:
-                    time += pointBillMapper.findCountPointBillPagination(userModel.getLoginName(), startTime, endTime, Lists.newArrayList(PointBusinessType.SIGN_IN));
+                    time += pointBillMapper.findCountPointBillPagination(userModel.getLoginName(), null, startTime, endTime, Lists.newArrayList(PointBusinessType.SIGN_IN));
                     break;
                 case TODAY_ACTIVITY_SIGN_IN:
                     if(DateTime.now().toDate().before(endTime) && DateTime.now().toDate().after(startTime)){
-                        time += pointBillMapper.findCountPointBillPagination(userModel.getLoginName(), DateTime.now().withTimeAtStartOfDay().toDate(),
+                        time += pointBillMapper.findCountPointBillPagination(userModel.getLoginName(), null, DateTime.now().withTimeAtStartOfDay().toDate(),
                                 DateTime.now().plusDays(1).withTimeAtStartOfDay().plusMillis(-1).toDate(), Lists.newArrayList(PointBusinessType.SIGN_IN));
 
                         return time > 0 ? time - userLotteryPrizeMapper.findUserLotteryPrizeCountViews(userModel.getMobile(), null, activityCategory,
@@ -451,6 +501,7 @@ public class LotteryDrawActivityService {
                 .put(ActivityCategory.AUTUMN_PRIZE, Lists.newArrayList(autumnStartTime, autumnEndTime))
                 .put(ActivityCategory.LANTERN_FESTIVAL_ACTIVITY, Lists.newArrayList(lanternFestivalStartTime, lanternFestivalEndTime))
                 .put(ActivityCategory.SPRING_FESTIVAL_ACTIVITY, springFestivalTime)
+                .put(ActivityCategory.WOMAN_DAY_ACTIVITY, Lists.newArrayList(activityWomanDayStartTime, activityWomanDayEndTime))
                 .build()).get(activityCategory);
     }
 
@@ -479,8 +530,8 @@ public class LotteryDrawActivityService {
         return activityTime.get(1).replaceAll("-", "/");
     }
 
-    public int toDayIsDrawByMobile(String mobile) {
-        return userLotteryPrizeMapper.findUserLotteryPrizeCountViews(mobile, null, ActivityCategory.SPRING_FESTIVAL_ACTIVITY,
+    public int toDayIsDrawByMobile(String mobile, ActivityCategory activityCategory) {
+        return userLotteryPrizeMapper.findUserLotteryPrizeCountViews(mobile, null, activityCategory,
                 DateTime.now().withTimeAtStartOfDay().toDate(), DateTime.now().plusDays(1).withTimeAtStartOfDay().plusMillis(-1).toDate());
     }
 

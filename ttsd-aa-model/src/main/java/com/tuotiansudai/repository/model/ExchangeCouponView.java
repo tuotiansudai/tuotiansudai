@@ -4,6 +4,8 @@ public class ExchangeCouponView {
 
     private Long exchangePoint;
 
+    private long actualPoints;
+
     private Integer seq;
 
     private String imageUrl;
@@ -56,8 +58,17 @@ public class ExchangeCouponView {
         this.couponModel = couponModel;
     }
 
-    public ExchangeCouponView(Long exchangePoint, Integer seq, String imageUrl, long productId, CouponModel couponModel){
+    public long getActualPoints() {
+        return actualPoints;
+    }
+
+    public void setActualPoints(long actualPoints) {
+        this.actualPoints = actualPoints;
+    }
+
+    public ExchangeCouponView(Long exchangePoint, long actualPoints, Integer seq, String imageUrl, long productId, CouponModel couponModel){
         this.exchangePoint = exchangePoint;
+        this.actualPoints = actualPoints;
         this.seq = seq;
         this.imageUrl = imageUrl;
         this.productId = productId;

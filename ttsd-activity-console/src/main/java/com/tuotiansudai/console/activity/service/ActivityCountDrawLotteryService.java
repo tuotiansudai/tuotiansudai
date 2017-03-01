@@ -72,6 +72,12 @@ public class ActivityCountDrawLotteryService {
     @Value(value = "${activity.lanternFestival.endTime}")
     private String lanternFestivalEndTime;
 
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.woman.day.startTime}\")}")
+    private Date activityWomanDayStartTime;
+
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.woman.day.endTime}\")}")
+    private Date activityWomanDayEndTime;
+
     //往期活动任务
     private final List activityTasks = Lists.newArrayList(ActivityDrawLotteryTask.REGISTER, ActivityDrawLotteryTask.EACH_REFERRER,
             ActivityDrawLotteryTask.EACH_REFERRER_INVEST, ActivityDrawLotteryTask.CERTIFICATION, ActivityDrawLotteryTask.BANK_CARD,
@@ -115,6 +121,8 @@ public class ActivityCountDrawLotteryService {
                 return countDrawLotteryTime(userModel,activityCategory,Lists.newArrayList(ActivityDrawLotteryTask.EACH_INVEST_1000));
             case SPRING_FESTIVAL_ACTIVITY:
                 return countDrawLotteryTime(userModel, activityCategory, springFestivalActivityTasks);
+            case WOMAN_DAY_ACTIVITY:
+                return countDrawLotteryTime(userModel, activityCategory, Lists.newArrayList(ActivityDrawLotteryTask.TODAY_ACTIVITY_SIGN_IN));
         }
         return lotteryTime;
     }
@@ -171,7 +179,7 @@ public class ActivityCountDrawLotteryService {
                     }
                     break;
                 case EACH_ACTIVITY_SIGN_IN:
-                    time += pointBillMapper.findCountPointBillPagination(userModel.getLoginName(), startTime, endTime, Lists.newArrayList(PointBusinessType.SIGN_IN));
+                    time += pointBillMapper.findCountPointBillPagination(userModel.getLoginName(), null, startTime, endTime, Lists.newArrayList(PointBusinessType.SIGN_IN));
                     break;
                 case REFERRER_USER:
                     List<UserModel> referrerUsers = userMapper.findUsersByRegisterTimeOrReferrer(startTime, endTime, userModel.getLoginName());
@@ -216,6 +224,8 @@ public class ActivityCountDrawLotteryService {
             case LANTERN_FESTIVAL_ACTIVITY:
                 return Lists.newArrayList(DateTime.parse(lanternFestivalStartTime,DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate(),
                         DateTime.parse(lanternFestivalEndTime,DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate());
+            case WOMAN_DAY_ACTIVITY:
+                return Lists.newArrayList(activityWomanDayStartTime, activityWomanDayEndTime);
         }
         return null;
     }

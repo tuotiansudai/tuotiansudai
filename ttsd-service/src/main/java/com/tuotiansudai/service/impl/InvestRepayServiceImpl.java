@@ -21,7 +21,7 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class InvestRepayServiceImpl implements InvestRepayService{
+public class InvestRepayServiceImpl implements InvestRepayService {
 
     @Autowired
     private InvestRepayMapper investRepayMapper;
@@ -96,11 +96,6 @@ public class InvestRepayServiceImpl implements InvestRepayService{
     }
 
     @Override
-    public long findSumRepaidInterestByLoginName(String loginName) {
-        return investRepayMapper.findSumRepaidInterestByLoginName(loginName);
-    }
-
-    @Override
     public long findSumRepayingInterestByLoginName(String loginName) {
         return investRepayMapper.findSumRepayingInterestByLoginName(loginName);
     }
@@ -109,11 +104,4 @@ public class InvestRepayServiceImpl implements InvestRepayService{
     public long findSumRepayingCorpusByLoginName(String loginName) {
         return investRepayMapper.findSumRepayingCorpusByLoginName(loginName);
     }
-
-    @Override
-    public long findSumRepaidCorpusByLoginName(String loginName) {
-        return investRepayMapper.findSumRepaidCorpusByLoginName(loginName);
-    }
-
-
 }

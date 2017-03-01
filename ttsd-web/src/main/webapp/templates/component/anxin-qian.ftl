@@ -5,9 +5,7 @@
             </span>
             <span>
                 <input type="button" class="get-skip-code" value="获取短信验证码" id="getSkipCode">
-                <i class="microphone" id="microPhone">
-                    <img src="${staticServer}/images/icons/microphone.png">
-                </i>
+                <i class="microphone" id="microPhone"></i>
             </span>
         </div>
         <div class="tip-item">
@@ -28,5 +26,5 @@
         </div>
 </div>
 <div class="skip-success-tip" id="skipSuccess">
-    <span><i class="skip-icon"><img src="${staticServer}/images/icons/skip-success.png"></i>授权成功！</span>
+    <span><i class="skip-icon"></i>授权成功！</span>
 </div>

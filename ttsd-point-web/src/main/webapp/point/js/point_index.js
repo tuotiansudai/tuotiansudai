@@ -1,22 +1,24 @@
 /**
  * [point store index js]
  * @xuqiang  
- * @2016-07-11
+ * @2017-02-13
  */
-require(['jquery','layerWrapper','template', 'jquery.ajax.extension'], function ($,layer,tpl) {
+require(['jquery', 'layerWrapper', 'template', 'jquery.ajax.extension','nineLottery'], function($,layer, tpl) {
 	$(function() {
 		var $signBtn = $('#signBtn'),
 			$signTip = $('#signLayer'),
 			$closeSign = $('#closeSign'),
-			$materialList=$('.material-list li'),
-			$pointRuleTip=$('.point-rule-tip');
+			$materialList = $('.material-list li'),
+			$pointRuleTip = $('.point-rule-tip');
 		//show sign tip
 		$signBtn.on('click', function(event) {
 			event.preventDefault();
 			var _this = $(this),
 				$signText = $(".sign-text"),
 				$tomorrowText = $(".tomorrow-text"),
-				$addDou = $(".add-dou"),
+				$signPoint = $(".sign-point"),
+				$introText = $('.intro-text'),
+				$nextText = $('.next-text'),
 				$signBtn = $("#signBtn");
 
 			$.ajax({
@@ -26,17 +28,20 @@ require(['jquery','layerWrapper','template', 'jquery.ajax.extension'], function 
 				contentType: 'application/json; charset=UTF-8'
 			}).done(function(response) {
 				if (response.data.status) {
-					$signText.html("签到成功，领取" + response.data.signInPoint + "积分！");
-					$tomorrowText.html("明日可领" + response.data.nextSignInPoint + "积分");
+					response.data.signIn == true ? $signText.html("您今天已签到") : $signText.html("签到成功");
+					$tomorrowText.html("明日签到可获得" + response.data.nextSignInPoint + "积分");
+                    if(response.data.full == true){
+                        $introText.html('已连续签到365天，获得全勤奖！');
+                        $nextText.html('365元现金红包');
+					}
+					else{
+                        $introText.html(response.data.currentRewardDesc);
+                        $nextText.html(response.data.nextRewardDesc);
+					}
 					$signBtn.addClass("no-click").html("已签到");
-					$addDou.html("+" + response.data.signInPoint);
-					$signTip.fadeIn('fast', function() {
-						$(this).find('.add-dou').animate({
-							'bottom': '50px',
-							'opacity': '0'
-						}, 800);
-					});
-				}else{
+					$signPoint.find('span').html('+'+response.data.signInPoint);
+					$signTip.fadeIn('fast');
+				} else {
 					$('#errorTip').html(tpl('errorTipTpl', response.data));
 					layer.open({
 						type: 1,
@@ -53,12 +58,12 @@ require(['jquery','layerWrapper','template', 'jquery.ajax.extension'], function 
 			location.href = "/point-shop";
 		});
 		//go to detail
-		$materialList.on('click', function(event) {//click all model
+		$materialList.on('click', function(event) { //click all model
 			event.preventDefault();
 			location.href = $(this).attr('data-href');
-		}).on('click','.get-btn', function(event) {//click btn
+		}).on('click', '.get-btn', function(event) { //click btn
 			event.preventDefault();
-			$(this).hasClass('active')?location.href = $(this).parent('a').attr('href'):false;
+			$(this).hasClass('active') ? location.href = $(this).parent('a').attr('href') : false;
 			event.stopPropagation();
 		});
 		//show rule tip
@@ -67,8 +72,9 @@ require(['jquery','layerWrapper','template', 'jquery.ajax.extension'], function 
 			layer.open({
 				type: 1,
 				title: false,
-				closeBtn:0,
-				area: ['auto', 'auto'],
+				closeBtn: 0,
+				area: ['auto', '520px'],
+				scrollbar: true,
 				content: $('#ruleInfoTip')
 			});
 		});
@@ -78,4 +84,5 @@ require(['jquery','layerWrapper','template', 'jquery.ajax.extension'], function 
 			layer.closeAll();
 		});
 	});
+
 })

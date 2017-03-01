@@ -1,5 +1,5 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="${css.home_page_v2}" pageJavascript="${js.index}" activeNav="首页" activeLeftNav="" title="拓天速贷-互联网金融信息服务平台" keywords="拓天速贷,互联网金融平台,P2P理财,拓天借贷,网络理财" description="拓天速贷是基于互联网的金融信息服务平台,由拓天伟业(北京)资产管理有限公司旗下的拓天伟业(北京)金融信息服务有限公司运营.">
+<@global.main pageCss="${css.index}" pageJavascript="${js.index}" activeNav="首页" activeLeftNav="" title="拓天速贷-互联网金融信息服务平台" keywords="拓天速贷,互联网金融平台,P2P理财,拓天借贷,网络理财" description="拓天速贷是基于互联网的金融信息服务平台,由拓天伟业(北京)资产管理有限公司旗下的拓天伟业(北京)金融信息服务有限公司运营.">
 
 <div class="home-page-container" id="homePageContainer">
     <div class="banner-box">
@@ -7,9 +7,9 @@
             <ul class="banner-img-list">
                 <#list bannerList as banner>
                     <li>
-                        <a href="${banner.url}" onclick="cnzzPush.trackClick('首页','Banner模块','${banner.name!}')" target="_blank"
+                        <a href="${banner.url}" target="_blank"
                            <#if banner.url == 'http://www.iqiyi.com/w_19rt7ygfmh.html#vfrm=8-8-0-1'>rel="nofollow"</#if>>
-                            <img src="${staticServer}${banner.webImageUrl}" data-app-img="${staticServer}${banner.appImageUrl}" alt="${banner.title}">
+                            <img src="${commonStaticServer}${banner.webImageUrl}" data-app-img="${commonStaticServer}${banner.appImageUrl}" alt="${banner.title}">
                         </a>
                     </li>
                 </#list>
@@ -20,13 +20,12 @@
                 <div class="register-ad-box fr tc">
                     <b class="h-title">预期年化收益率</b>
                     <p class="num-text clearfix">
-                        <span class="percent">10%~13%</span>
+                        <span class="percent">8%~11%</span>
                     </p>
 
                     <p class="welcome-text">welcome</p>
-                    <a class="btn-normal" href="/register/user" onclick="cnzzPush.trackClick('21首页','Banner模块','免费注册')">免费注册 </a>
-                    <i class="clearfix tr">已有账户？<a href="/login"
-                                                   onclick="cnzzPush.trackClick('22首页','Banner模块','立即登录')"> 立即登录</a></i>
+                    <a class="btn-normal" href="/register/user" >免费注册 </a>
+                    <i class="clearfix tr">已有账户？<a href="/login"> 立即登录</a></i>
                 </div>
             </@global.isAnonymous>
         </div>
@@ -49,15 +48,14 @@
                             <#assign label = "更多">
                         </#if>
                         <li class="clearfix">
-                            <a href="/announce/${announce.id?string.computer}"
-                               onclick="cnzzPush.trackClick('${category}','公告模块','${label}')">
+                            <a href="/announce/${announce.id?string.computer}">
                                 <span class="text-title fl">${announce.title}</span>
                                 <span class="text-date fr">${announce.createdTime?string("yyyy-MM-dd")}</span>
                             </a>
                         </li>
                     </#list>
                 </ul>
-                <a href="/about/notice" onclick="cnzzPush.trackClick('71首页','公告模块','更多')" class="text-href">更多></a>
+                <a href="/about/notice" class="text-href">更多></a>
             </div>
         </div>
     </div>
@@ -65,19 +63,19 @@
         <div class="page-width">
             <dl>
                 <dd class="guide">
-                    <a href="/about/guide" onclick="cnzzPush.trackClick('28首页','安全保障模块','1')" target="_blank">
+                    <a href="/about/guide" target="_blank">
                         <b class="clearfix">稳健收益 较低门槛</b>
-                        <span>预期年化收益10%~13%，<br>投资门槛50元起投</span>
+                        <span>预期年化收益8%~11%，<br>投资门槛50元起投</span>
                     </a>
                 </dd>
                 <dd class="risk">
-                    <a href="/about/risk-flow" onclick="cnzzPush.trackClick('29首页','安全保障模块','2')" target="_blank">
+                    <a href="/about/risk-flow" target="_blank">
                         <b class="clearfix">六重风控 审核严谨</b>
                         <span>22道审核手续，<br>项目安全透明无死角</span>
                     </a>
                 </dd>
                 <dd class="assurance">
-                    <a href="/about/assurance" onclick="cnzzPush.trackClick('30首页','安全保障模块','3')" target="_blank">
+                    <a href="/about/assurance" target="_blank">
                         <b class="clearfix">四大保障 投资无忧</b>
                         <span>12道保障措施并举，<br>资金、个人信息均安全</span>
                     </a>
@@ -145,23 +143,14 @@
                     </div>
                 </div>
             </#list>
-            <a href="/activity/landing-page" target="_blank"><img src="${staticServer}/images/homepage/hot-bag-a.png"
-                                                                  alt="注册送588元红包" class="fr"></a>
+            <a href="/activity/landing-page" target="_blank" class="hot-bag"></a>
         </div>
 
     <#--优选债权-->
         <div class="main-column-title">
             <i class="icon-title"></i>优选债权
-            <a href="/loan-list" onclick="cnzzPush.trackClick('35首页','热门产品模块','更多')" class="hot-more">更多></a>
+            <a href="/loan-list"  class="hot-more">更多></a>
         </div>
-        <#--<div class="book-invest-box clearfix bg-screen">-->
-            <#--<span class="book-info">预约后当有相应项目我们会及时通知您。</span>-->
-            <#--&lt;#&ndash;<@global.isAnonymous>not-anonymous</@global.isAnonymous> <@global.role hasRole="'INVESTOR'">is-user</@global.role>&ndash;&gt;-->
-            <#--<a class="btn-invest fr btn-normal ">-->
-                <#--我要预约-->
-            <#--</a>-->
-
-        <#--</div>-->
 
         <div class="normal-loan">
             <#include "component/loan-title.ftl">
@@ -174,7 +163,7 @@
         <#if enterpriseLoans??>
             <div class="main-column-title">
                 <i class="icon-title"></i>税易经营性借款
-                <a href="/loan-list" onclick="cnzzPush.trackClick('35首页','热门产品模块','更多')" class="hot-more">更多></a>
+                <a href="/loan-list" class="hot-more">更多></a>
             </div>
 
             <#include "component/loan-title.ftl">
@@ -185,7 +174,7 @@
 
         <div class="main-column-title">
             <i class="icon-title"></i>转让项目
-            <a href="/transfer-list" onclick="cnzzPush.trackClick('47首页','转让项目模块','更多')" class="hot-more">更多></a>
+            <a href="/transfer-list" class="hot-more">更多></a>
         </div>
 
         <div class="target-category-box clearfix bg-screen">
@@ -206,31 +195,24 @@
         <div class="media-coverage-box">
             <h3 class="label-title">
                 媒体报道
-                <a href="/about/media" onclick="cnzzPush.trackClick('39首页','媒体报道模块','更多')" class="hot-more">更多></a>
+                <a href="/about/media" class="hot-more">更多></a>
             </h3>
             <ul class="media-list">
-                <li><i>●</i><a rel="nofollow" href="http://www.greatchinese.com.cn/news/hyxw/20160907/15431.html"
-                               onclick="cnzzPush.trackClick('41首页','媒体报道模块','唯一运营商')" target="_blank">拓天伟业成建设银行“税易-助保贷”唯一运营商</a>
+                <li><i>●</i><a rel="nofollow" href="http://www.greatchinese.com.cn/news/hyxw/20160907/15431.html" target="_blank">拓天伟业成建设银行“税易-助保贷”唯一运营商</a>
                     <time>2016-09-07</time>
                 </li>
-                <li><i>●</i><a rel="nofollow" href="http://economy.gmw.cn/2016-03/31/content_19527114.htm"
-                               onclick="cnzzPush.trackClick('73首页','媒体报道模块','霸道总裁')"
-                               target="_blank">拓天速贷第二期全国排行活动正式启动</a>
+                <li><i>●</i><a rel="nofollow" href="http://www.hao123.com/mid?key=pZwYTjCEQLwEIgwGmyt8mvqVQvbvn1Tvnj63n10dnHT4PHR3Pj0kQs&from=tuijian&pn=1&qq-pf-to=pcqq.c2c"
+                               target="_blank">新春到，送好礼，拓天速贷年货大礼包疯狂派送中</a>
                     <time>2016-03-31</time>
                 </li>
-                <li><i>●</i><a rel="nofollow" href="http://fj.qq.com/a/20160314/060811.htm"
-                               onclick="cnzzPush.trackClick('40首页','媒体报道模块','财富盛宴大平台')" target="_blank">拓天速贷：财富盛宴大平台
+                <li><i>●</i><a rel="nofollow" href="http://fj.qq.com/a/20160314/060811.htm" target="_blank">拓天速贷：财富盛宴大平台
                     感恩豪礼滚滚来</a>
                     <time>2016-03-14</time>
                 </li>
-                <li><i>●</i><a rel="nofollow"
-                               href="http://money.china.com/fin/lc/201601/20/2443757.html?qq-pf-to=pcqq.c2c"
-                               onclick="cnzzPush.trackClick('42首页','媒体报道模块','宝马名花有主')" target="_blank">拓天速贷：宝马名花有主，猴年豪礼来袭</a>
+                <li><i>●</i><a rel="nofollow" href="http://finance.jrj.com.cn/biz/2016/02/02170120525459.shtml" target="_blank">拓天速贷：新年贺岁嗨翻天 全民领取888元现金红包</a>
                     <time>2016-01-20</time>
                 </li>
-                <li><i>●</i><a rel="nofollow" href="http://w.huanqiu.com/r/MV8wXzgyNzQ4NDZfMTM5NF8xNDUxMzAzNzYy"
-                               onclick="cnzzPush.trackClick('43首页','媒体报道模块','高效资产平台')"
-                               target="_blank">拓天速贷以卓越风控打造高效资产平台</a>
+                <li><i>●</i><a rel="nofollow" href="http://w.huanqiu.com/r/MV8wXzgyNzQ4NDZfMTM5NF8xNDUxMzAzNzYy" target="_blank">拓天速贷以卓越风控打造高效资产平台</a>
                     <time>2015-12-28</time>
                 </li>
             </ul>
@@ -242,21 +224,15 @@
                 合作伙伴
             </h3>
             <ul class="partner-list">
-                <li><a rel="nofollow" class="logo-capital" href="http://www.umpay.com/"
-                       onclick="cnzzPush.trackClick('46首页','合作伙伴模块','联动优势')"  target="_blank">
-                    <img src="${staticServer}/images/homepage/logo-lian.png" alt="安心签">
+                <li><a rel="nofollow" class="logo-lian" href="http://www.umpay.com/" target="_blank">
                 </a>
                 </li>
 
-                <li><a rel="nofollow" class="logo-umpay" href="http://www.king-capital.com/"
-                       onclick="cnzzPush.trackClick('45首页','合作伙伴模块','京都律师所')" target="_blank">
-                    <img src="${staticServer}/images/homepage/logo-jing.png" alt="安心签">
+                <li><a rel="nofollow" class="logo-jing" href="http://www.king-capital.com/" target="_blank">
                 </a>
                 </li>
 
-                <li><a rel="nofollow" class="logo-umpay" href="https://www.anxinsign.com/"
-                       onclick="cnzzPush.trackClick('47首页','合作伙伴模块','安心签')" target="_blank">
-                    <img src="${staticServer}/images/homepage/logo-cfca.png" alt="安心签">
+                <li><a rel="nofollow" class="logo-cfca" href="https://www.anxinsign.com/" target="_blank">
                 </a>
                 </li>
             </ul>
@@ -264,7 +240,7 @@
 
     </div>
     <div class="book-invest-frame" style="display: none">
-        <form name="bookInvest" class="book-invest-form">
+        <form name="bookInvest" class="book-invest-form" id="bookInvestForm">
             <div class="clearfix book-table-column">
                 <div class="fl">选择项目</div>
                 <div class="fr">
@@ -333,7 +309,6 @@
 
 
     <#include "component/coupon-alert.ftl" />
-    <#include "component/login-tip.ftl" />
     <#include "component/red-envelope-float.ftl" />
     <#include "component/site-map.ftl" />
 </@global.main>

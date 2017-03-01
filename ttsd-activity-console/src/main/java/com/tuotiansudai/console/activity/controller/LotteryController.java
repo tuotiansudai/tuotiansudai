@@ -6,6 +6,7 @@ import com.tuotiansudai.activity.repository.model.ActivityCategory;
 import com.tuotiansudai.activity.repository.model.LotteryPrize;
 import com.tuotiansudai.activity.repository.model.LotteryPrizeView;
 import com.tuotiansudai.console.activity.service.ActivityConsoleUserLotteryService;
+import com.tuotiansudai.util.CalculateUtil;
 import com.tuotiansudai.util.PaginationUtil;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -64,9 +65,15 @@ public class LotteryController {
                                       @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
         int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/activity-prize-list");
-        int lotteryCount = activityConsoleUserLotteryService.findUserLotteryPrizeCountViews(mobile, lotteryPrize, activityCategory, startTime, endTime);
+        int lotteryCount = activityConsoleUserLotteryService.findUserLotteryPrizeCountViews(mobile, lotteryPrize, activityCategory,
+                startTime == null ? new DateTime(0).toDate() : new DateTime(startTime).withTimeAtStartOfDay().toDate(),
+                endTime == null ? CalculateUtil.calculateMaxDate() : new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate()
+                );
         modelAndView.addObject("lotteryCount", lotteryCount);
-        modelAndView.addObject("prizeList", activityConsoleUserLotteryService.findUserLotteryPrizeViews(mobile, lotteryPrize, activityCategory, startTime, endTime, (index - 1) * pageSize, pageSize));
+        modelAndView.addObject("prizeList", activityConsoleUserLotteryService.findUserLotteryPrizeViews(mobile, lotteryPrize, activityCategory,
+                startTime == null ? new DateTime(0).toDate() : new DateTime(startTime).withTimeAtStartOfDay().toDate(),
+                endTime == null ? CalculateUtil.calculateMaxDate() : new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate(),
+                (index - 1) * pageSize, pageSize));
         modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);
         long totalPages = PaginationUtil.calculateMaxPage(lotteryCount, pageSize);

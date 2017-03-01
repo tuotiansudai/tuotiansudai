@@ -1,8 +1,13 @@
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="create-product.js" headLab="point-manage" sideLab="create${type.name()!}Product" title="添加商品">
+<@global.main pageCss="" pageJavascript="create-product.js" headLab="point-manage" sideLab="productCreate" title="添加商品">
 
 <div class="col-md-10">
+    <div class="col-md-12" style="margin-bottom: 40px">
+        <a href="/point-manage/coupon-exchange" class="btn btn-default" style="margin-right: 60px">添加优惠券</a>
+        <a href="/point-manage/create?type=VIRTUAL" class="btn btn-default <#if type == 'VIRTUAL'>btn-warning</#if>" style="margin-right: 60px">添加虚拟商品</a>
+        <a href="/point-manage/create?type=PHYSICAL" class="btn btn-default <#if type == 'PHYSICAL'>btn-warning</#if>">添加实物商品</a>
+    </div>
     <form action="/point-manage/create" method="post" class="form-horizontal form-list">
         <div class="form-group">
             <label class="col-sm-2 control-label">商品类别:</label>

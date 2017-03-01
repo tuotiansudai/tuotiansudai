@@ -14,6 +14,8 @@ public enum SmsTemplate {
     请在阿里平台上配置的时候一定要注意，请严格按照变量在文本中出现的顺序进行编号，编号从0开始。
     请在阿里平台上配置的时候一定要注意，请严格按照变量在文本中出现的顺序进行编号，编号从0开始。
     !!! ATTENTION !!!
+
+    SmsChannel:Primary = 单独使用网易，Backup = 单独使用阿里，TryBoth = 先使用网易，失败的话再使用阿里。
      */
 
     // 发送通道, 网易模板ID，网易模板，阿里模板ID，阿里模板
@@ -45,10 +47,6 @@ public enum SmsTemplate {
             "3032242", "系统账户余额不足 %s 元，请立刻充值！",
             "SMS_45340002", "系统账户余额不足 ${param0} 元，请立刻充值！"),
 
-    SMS_COUPON_NOTIFY_TEMPLATE(SmsChannel.Backup,
-            "6487", "尊敬的拓天速贷客户，恭喜您获得%s，有效期%s，请及时投资体验。",
-            "SMS_45505123", "尊敬的拓天速贷客户，您专属的${param0}已到账，有效期${param1}，请及时使用。"),
-
     SMS_EXPERIENCE_REPAY_NOTIFY_TEMPLATE(SmsChannel.TryBoth,
             "8510", "亲爱的用户，您投资的新手体验项目所得%s元现金红包奖励已发放，快来激活奖励吧！",
             "SMS_45415002", "亲爱的用户，您投资的新手体验项目所得${param0}元现金红包奖励已发放，快来激活奖励吧！"),
@@ -71,7 +69,15 @@ public enum SmsTemplate {
 
     SMS_LOAN_RAISING_COMPLETE_NOTIFY_TEMPLATE(SmsChannel.TryBoth,
             "3038299", "%s上线的%s天总额为%sw的项目于今日%s已满，%s;%s，30分钟内将完成复核。",
-            "SMS_45610002", "${param0}上线的${param1}天总额为${param2}w的项目于今日${param3}已满，客户:${param4};代理人:${param5}，30分钟内将完成复核。");
+            "SMS_45610002", "${param0}上线的${param1}天总额为${param2}w的项目于今日${param3}已满，客户:${param4};代理人:${param5}，30分钟内将完成复核。"),
+
+    SMS_COUPON_ASSIGN_SUCCESS_TEMPLATE(SmsChannel.Backup,
+            "3057070", "尊敬的用户，恭喜您获得了一张%s，请尽快使用拿奖励哦！",
+            "SMS_46830018", "尊敬的用户，恭喜您获得了一张${param0}，请尽快使用拿奖励哦！"),
+
+    SMS_COUPON_EXPIRED_NOTIFY_TEMPLATE(SmsChannel.Backup,
+            "3050088", "尊敬的用户，您的%s即将过期（有效期至：%s），请尽快使用。",
+            "SMS_46865002", "尊敬的用户，您的${param0}即将过期（有效期至：${param1}），请尽快使用。");
 
     /*
     !!! ATTENTION !!!

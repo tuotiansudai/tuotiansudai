@@ -1,5 +1,6 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
@@ -7,6 +8,8 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
+import com.tuotiansudai.message.RepaySuccessMessage;
+import com.tuotiansudai.mq.client.model.MessageTopic;
 import com.tuotiansudai.repository.mapper.CouponRepayMapper;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.Environment;
@@ -294,6 +297,9 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
 
         // create payback invest job
         this.createRepayJob(loanRepayId, 2);
+
+        mqWrapperClient.sendMessage(MessageQueue.RepaySuccess_CouponRepay,new RepaySuccessMessage(loanRepayId,true));
+        logger.info(MessageFormat.format("[[Advance Repay {0}]: 提前还款成功,发送MQ消息", String.valueOf(loanRepayId)));
 
         return callbackRequest.getResponseData();
     }

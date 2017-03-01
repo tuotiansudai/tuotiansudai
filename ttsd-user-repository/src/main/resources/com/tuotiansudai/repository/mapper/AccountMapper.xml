@@ -95,6 +95,13 @@
     </select>
 
     <select id="findAccountWithBalance" parameterType="map" resultMap="accountResultMap">
-        select login_name, balance from account order by id ASC limit #{startLimit}, #{endLimit}
+        select id,login_name, balance,register_time from account
+        <where>
+            <if test="startTime != null and startTime != ''">
+                register_time >= #{startTime}
+            </if>
+        </where>
+        order by register_time asc
+        limit #{offset}
     </select>
 </mapper>

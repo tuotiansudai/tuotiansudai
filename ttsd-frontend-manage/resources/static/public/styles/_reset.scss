@@ -255,8 +255,8 @@ form {
   box-sizing: border-box;
 }
 
-.loading {
-  background: #fff url("../images/loading.gif") no-repeat center center!important;
+.btn-normal[disabled].loading {
+  background: transparent url("../images/loading.gif") no-repeat center center!important;
   cursor: default!important;
   border: 0!important;
   text-indent: -9999px;

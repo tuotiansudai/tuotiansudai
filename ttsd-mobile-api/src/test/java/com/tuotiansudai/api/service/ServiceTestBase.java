@@ -1,12 +1,8 @@
 package com.tuotiansudai.api.service;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.repository.model.CouponModel;
-import com.tuotiansudai.repository.model.UserGroup;
 import com.tuotiansudai.enums.CouponType;
-import com.tuotiansudai.repository.model.ProductType;
-import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.repository.model.UserStatus;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
@@ -44,6 +40,13 @@ public abstract class ServiceTestBase {
         return fakeUser;
     }
 
+    protected AccountModel getFakeAccount(UserModel userModel) {
+        AccountModel fakeAccount = new AccountModel(userModel.getLoginName(), "payUserId", "payAccountId", new Date());
+        fakeAccount.setBalance(1000000);
+        fakeAccount.setMembershipPoint(50001);
+        return fakeAccount;
+    }
+
     public CouponModel fakeCouponModel(UserModel userModel, CouponType couponType) {
         CouponModel couponModel = new CouponModel();
         couponModel.setId(idGenerator.generate());
@@ -69,7 +72,6 @@ public abstract class ServiceTestBase {
         couponModel.setInvestLowerLimit(100);
         couponModel.setProductTypes(Lists.newArrayList(ProductType._30, ProductType._90));
         couponModel.setCouponType(couponType);
-        couponModel.setSmsAlert(true);
         couponModel.setUserGroup(UserGroup.ALL_USER);
         couponModel.setTotalInvestAmount(150);
         couponModel.setDeleted(false);

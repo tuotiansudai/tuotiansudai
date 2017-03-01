@@ -16,6 +16,8 @@ public interface UserPointTaskMapper {
 
     List<UserPointTaskModel> findByLoginNameAndTask(@Param(value = "loginName") String loginName,
                                                     @Param(value = "pointTask") PointTask pointTask);
-
     long findMaxTaskLevelByLoginName(@Param(value = "loginName") String loginName, @Param(value = "pointTask") PointTask pointTask);
+
+    long findFinishTaskByLoginName(@Param(value = "loginName") String loginName);
+
 }

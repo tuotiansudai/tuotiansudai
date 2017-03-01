@@ -3,6 +3,7 @@ package com.tuotiansudai.web.ask.controller;
 import com.tuotiansudai.ask.dto.QuestionDto;
 import com.tuotiansudai.ask.dto.QuestionResultDataDto;
 import com.tuotiansudai.ask.dto.QuestionWithCaptchaRequestDto;
+import com.tuotiansudai.ask.repository.model.QuestionModel;
 import com.tuotiansudai.ask.repository.model.Tag;
 import com.tuotiansudai.ask.service.AnswerService;
 import com.tuotiansudai.ask.service.QuestionService;
@@ -35,7 +36,7 @@ public class QuestionController {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<QuestionResultDataDto> question(@Valid @ModelAttribute QuestionWithCaptchaRequestDto questionRequestDto) {
-        return new BaseDto<>(questionService.createQuestion(LoginUserInfo.getLoginName(), questionRequestDto));
+        return new BaseDto<>(questionService.createQuestion(questionRequestDto));
     }
 
     @RequestMapping(path = "/{questionId:^\\d+$}", method = RequestMethod.GET)
@@ -59,14 +60,14 @@ public class QuestionController {
 
     @RequestMapping(path = "/my-questions", method = RequestMethod.GET)
     public ModelAndView getMyQuestions(@RequestParam(value = "index", defaultValue = "1", required = false) int index) {
-        return new ModelAndView("/my-questions", "questions", questionService.findMyQuestions(LoginUserInfo.getLoginName(), index));
+        return new ModelAndView("/my-questions", "questions", questionService.findMyQuestions(index));
     }
 
     @RequestMapping(path = "/category/{tag:(?:SECURITIES|BANK|FUTURES|P2P|TRUST|LOAN|FUND|CROWD_FUNDING|INVEST|CREDIT_CARD|FOREX|STOCK|OTHER)}", method = RequestMethod.GET)
     public ModelAndView getQuestionsByCategory(@PathVariable Tag tag,
                                                @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
         ModelAndView modelAndView = new ModelAndView("/question-category");
-        modelAndView.addObject("questions", questionService.findByTag(LoginUserInfo.getLoginName(), tag, index));
+        modelAndView.addObject("questions", questionService.findByTag(tag, index));
         modelAndView.addObject("tag", tag);
         return modelAndView;
     }
@@ -78,8 +79,7 @@ public class QuestionController {
             return new ModelAndView("redirect:/?group=HOT&index=1");
         }
         ModelAndView modelAndView = new ModelAndView("search-data");
-        String loginName = LoginUserInfo.getLoginName();
-        BaseDto<BasePaginationDataDto> data = questionService.getQuestionsByKeywords(keyword, loginName, index);
+        BaseDto<BasePaginationDataDto<QuestionModel>> data = questionService.getQuestionsByKeywords(keyword, index);
         modelAndView.addObject("keywordQuestions", data);
         modelAndView.addObject("keyword", keyword);
 

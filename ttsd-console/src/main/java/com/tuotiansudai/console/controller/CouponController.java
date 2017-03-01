@@ -137,7 +137,10 @@ public class CouponController {
     public ModelAndView redEnvelope() {
         ModelAndView modelAndView = new ModelAndView("/red-envelope");
         modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));
-        modelAndView.addObject("userGroups", Lists.newArrayList(UserGroup.values()));
+        modelAndView.addObject("userGroups", Lists.newArrayList(UserGroup.ALL_USER, UserGroup.IMPORT_USER, UserGroup.CHANNEL,
+                UserGroup.EXCHANGER_CODE, UserGroup.MEMBERSHIP_V0, UserGroup.MEMBERSHIP_V1, UserGroup.MEMBERSHIP_V2,
+                UserGroup.MEMBERSHIP_V3, UserGroup.MEMBERSHIP_V4, UserGroup.MEMBERSHIP_V5, UserGroup.FIRST_INVEST_ACHIEVEMENT,
+                UserGroup.MAX_AMOUNT_ACHIEVEMENT, UserGroup.LAST_INVEST_ACHIEVEMENT));
         long initNum = consoleCouponService.findEstimatedCount(UserGroup.ALL_USER);
         modelAndView.addObject("initNum", initNum);
         return modelAndView;
@@ -148,7 +151,10 @@ public class CouponController {
         ModelAndView modelAndView = new ModelAndView("/coupon");
         modelAndView.addObject("couponTypes", Lists.newArrayList(CouponType.values()));
         modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));
-        modelAndView.addObject("userGroups", Lists.newArrayList(UserGroup.values()));
+        modelAndView.addObject("userGroups", Lists.newArrayList(UserGroup.ALL_USER, UserGroup.IMPORT_USER, UserGroup.CHANNEL,
+                UserGroup.EXCHANGER_CODE, UserGroup.MEMBERSHIP_V0, UserGroup.MEMBERSHIP_V1, UserGroup.MEMBERSHIP_V2,
+                UserGroup.MEMBERSHIP_V3, UserGroup.MEMBERSHIP_V4, UserGroup.MEMBERSHIP_V5, UserGroup.FIRST_INVEST_ACHIEVEMENT,
+                UserGroup.MAX_AMOUNT_ACHIEVEMENT, UserGroup.LAST_INVEST_ACHIEVEMENT));
         long initNum = consoleCouponService.findEstimatedCount(UserGroup.ALL_USER);
         modelAndView.addObject("initNum", initNum);
         return modelAndView;
@@ -206,7 +212,10 @@ public class CouponController {
     public ModelAndView interestCoupon() {
         ModelAndView modelAndView = new ModelAndView("/interest-coupon");
         modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));
-        modelAndView.addObject("userGroups", Lists.newArrayList(UserGroup.values()));
+        modelAndView.addObject("userGroups", Lists.newArrayList(UserGroup.ALL_USER, UserGroup.IMPORT_USER, UserGroup.CHANNEL,
+                UserGroup.EXCHANGER_CODE, UserGroup.MEMBERSHIP_V0, UserGroup.MEMBERSHIP_V1, UserGroup.MEMBERSHIP_V2,
+                UserGroup.MEMBERSHIP_V3, UserGroup.MEMBERSHIP_V4, UserGroup.MEMBERSHIP_V5, UserGroup.FIRST_INVEST_ACHIEVEMENT,
+                UserGroup.MAX_AMOUNT_ACHIEVEMENT, UserGroup.LAST_INVEST_ACHIEVEMENT));
         long initNum = consoleCouponService.findEstimatedCount(UserGroup.ALL_USER);
         modelAndView.addObject("initNum", initNum);
         return modelAndView;
@@ -284,9 +293,6 @@ public class CouponController {
 
         return baseDto;
     }
-
-
-
 
     @RequestMapping(value = "/coupon/user-group/{userGroup}/estimate", method = RequestMethod.GET)
     @ResponseBody
@@ -372,7 +378,7 @@ public class CouponController {
                                      @RequestParam(value = "index", required = false, defaultValue = "1") int index) {
         int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/coupon-detail");
-        List<CouponDetailsDto> userCoupons = consoleCouponService.findCouponDetail(couponId, isUsed, loginName, mobile, null, null, usedStartTime, usedEndTime, index, pageSize);
+        List<CouponDetailsDto> userCoupons = consoleCouponService.findCouponDetail(couponId, isUsed, loginName, mobile, null, null, null, usedStartTime, usedEndTime, index, pageSize);
         int userCouponsCount = consoleCouponService.findCouponDetailCount(couponId, isUsed, loginName, mobile, null, null, usedStartTime, usedEndTime);
 
         long investAmount = 0l;
@@ -381,7 +387,6 @@ public class CouponController {
             investAmount += couponDetailsDto.getInvestAmount() != null ? couponDetailsDto.getInvestAmount() : 0l;
             interest += couponDetailsDto.getAnnualInterest() != null ? couponDetailsDto.getAnnualInterest() : 0l;
         }
-
         CouponModel couponModel = consoleCouponService.findCouponById(couponId);
         modelAndView.addObject("investAmount", investAmount);
         modelAndView.addObject("interest", interest);

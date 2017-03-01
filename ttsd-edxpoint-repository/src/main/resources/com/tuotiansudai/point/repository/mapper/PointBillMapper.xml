@@ -32,6 +32,12 @@
             <if test="loginName != null and loginName != ''">
                 and login_name = #{loginName}
             </if>
+            <if test="pointType == 'INCOME'">
+                and point >= 0
+            </if>
+            <if test="pointType == 'EXPENSE'">
+                <![CDATA[ and point < 0 ]]>
+            </if>
             <if test="businessTypes != null and businessTypes.size() > 0 ">
                 and business_type IN
                 <foreach collection="businessTypes" item="businessType" open="(" separator="," close=")">
@@ -52,6 +58,12 @@
         <where>
             <if test="loginName != null and loginName != ''">
                 and login_name = #{loginName}
+            </if>
+            <if test="pointType == 'INCOME'">
+                and point >= 0
+            </if>
+            <if test="pointType == 'EXPENSE'">
+                <![CDATA[ and point < 0 ]]>
             </if>
             <if test="businessTypes != null and businessTypes.size() > 0">
                 and business_type IN

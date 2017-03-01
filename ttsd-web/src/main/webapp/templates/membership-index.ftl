@@ -1,31 +1,20 @@
 <#import "macro/global.ftl" as global>
 
-<@global.main pageCss="${css.membership}" pageJavascript="${js.membership}" activeNav="我的会员" activeLeftNav="" title="我的会员_会员福利_拓天速贷" keywords="拓天会员,拓天会员积分,拓天保障,拓天速贷" description="拓天速贷会员中心为您提供会员专享投资顾问,会员专属特权,为广大投资用户提供丰富的投资福利." site="membership">
+<@global.main pageCss="${css.membership}" pageJavascript="" activeNav="我的会员" activeLeftNav="" title="我的会员_会员福利_拓天速贷" keywords="拓天会员,拓天会员积分,拓天保障,拓天速贷" description="拓天速贷会员中心为您提供会员专享投资顾问,会员专属特权,为广大投资用户提供丰富的投资福利." site="membership">
 
 <div class="global-member-ship">
     <#if mobile??>
         <div class="user-info-block page-width">
-            <#if membershipType == 'GIVEN' || membershipType == "PURCHASED" >
-                <span class="date-time-item">有效期至：${expiredDate?string("yyyy-MM-dd")!}</span>
-            </#if>
             <div class="info clearfix">
                 <div class="avatar fl">
-                    <img src="${staticServer}/images/sign/head_20161011.png"/>
-                    <#if membershipType == 'GIVEN' || membershipType == "PURCHASED" >
-                        <i class="vip-no-bg vip-5"></i>
-                    <#else>
-                        <i class="vip-no-bg vip-${membershipLevel!}"></i>
-                    </#if>
-
+                    <span class="icon-avatar"></span>
+                    <i class="vip-no-bg vip-${membershipLevel!}"></i>
                 </div>
                 <div class="text">
-                    <p><span class="orange font20">您好！${mobile!}</span>
-                        <#if membershipType == 'GIVEN' || membershipType == 'PURCHASED'>
-                            <span class="font14">会员有效期还有：<strong
-                                    class="font22">${(leftDays-1)?string('0')}</strong>天</span>
-                        </#if>
-                    </p>
-                    <p class="font14">我的成长值：<strong class="font22">${membershipPoint!}</strong></p>
+                    <p class="my-value">我的成长值：<b>${membershipPoint!}</b></p>
+                    <#if membershipPrivilegeModel??>
+                        <span class="privilege-time"><i>增值特权</i>有效期至&nbsp;:&nbsp;${membershipPrivilegeModel.endTime?string('yyyy-MM-dd HH:mm:ss')}</span>
+                    </#if>
                 </div>
             </div>
             <div class="progress">
@@ -41,11 +30,9 @@
                         <#if membershipNextLevel <= 5 && membershipLevel != 5>
                             <div class="popup popup-${membershipNextLevel!}">
                                 还需<strong>${membershipNextLevelValue!}</strong>成长值就能尊享<i
-                                    class="vip-no-bg vip-${membershipNextLevel!}"></i>特权了哦！<i class="triangle"></i></div>
+                                    class="vip-no-bg vip-${membershipNextLevel!}"></i>特权了哦！<i class="triangle"></i>
+                            </div>
                         </#if>
-                    </#if>
-                    <#if membershipType == 'GIVEN' || membershipType == "PURCHASED" >
-                        <div class="popup popup-5">您已成为<i class="vip-no-bg vip-5"></i>会员,尊享100%会员特权！<i class="triangle"></i></div>
                     </#if>
                 </div>
             </div>
@@ -317,47 +304,15 @@
                     </#if>
 
 
-
                 </ul>
             </div>
         </div>
 
-        <div class="buy-vip">
-            <div class="main-title">
-                <div class="inner">
-                    <h2>会员购买</h2>
-                </div>
-            </div>
-            <div class="buy-vip-list">
-                <table>
-                    <thead>
-                    <tr>
-                        <th>会员购买</th>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>有效期</td>
-                        <td>1个月</td>
-                        <td>1年</td>
-                    </tr>
-                    <tr>
-                        <td>价格</td>
-                        <td>25元</td>
-                        <td>180元</td>
-                    </tr>
-                    </tbody>
-                </table>
-                <p class="text-info">购买渠道即将开放，敬请期待！</p>
-            </div>
-        </div>
     <#else>
         <div class="user-info-block page-width no-login">
             <div class="info clearfix">
                 <div class="avatar fl">
-                    <img src="${staticServer}/images/sign/head_20161011.png"/>
+                    <span class="icon-avatar"></span>
                 </div>
                 <div class="text">
                     亲，成为会员可享受多种特权哦~ <br/>
