@@ -85,7 +85,8 @@ class LoginManager(object):
         logger.debug("x-forwarded-for:{}".format(ip_address))
 
     def _is_password_valid(self, user):
-        return user and user.password == hashlib.sha1('%s{%s}' % (hashlib.sha1(self.form.password.data).hexdigest(), user.salt)).hexdigest()
+        pwd = u"%s{%s}" % (hashlib.sha1(self.form.password.data.encode('utf-8')).hexdigest(), user.salt)
+        return user and user.password == hashlib.sha1(pwd).hexdigest()
 
     def _load_user(self):
         user = User.query.filter(
