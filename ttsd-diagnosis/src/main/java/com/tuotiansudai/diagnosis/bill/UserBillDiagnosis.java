@@ -1,5 +1,6 @@
 package com.tuotiansudai.diagnosis.bill;
 
+import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.diagnosis.bill.diagnoses.InvestCouponFeeDiagnosis;
 import com.tuotiansudai.diagnosis.config.DiagnosisConfig;
 import com.tuotiansudai.diagnosis.repository.UserBillExtMapper;
@@ -7,7 +8,9 @@ import com.tuotiansudai.diagnosis.support.Diagnosis;
 import com.tuotiansudai.diagnosis.support.DiagnosisContext;
 import com.tuotiansudai.diagnosis.support.DiagnosisResult;
 import com.tuotiansudai.enums.UserBillBusinessType;
+import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserBillMapper;
+import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.UserBillModel;
 import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
@@ -15,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -30,12 +34,16 @@ class UserBillDiagnosis implements Diagnosis {
     private final UserBillExtMapper userBillExtMapper;
     private final long[] sortedKnownBadBills;
     private final Map<UserBillBusinessType, UserBillBusinessDiagnosis> diagnosisMap;
+    private final AccountMapper accountMapper;
+
+    @Autowired
+    private PayWrapperClient payWrapperClient;
 
     @Autowired
     public UserBillDiagnosis(UserBillMapper userBillMapper,
                              Set<UserBillBusinessDiagnosis> diagnoses,
                              UserBillExtMapper userBillExtMapper,
-                             DiagnosisConfig diagnosisConfig) {
+                             DiagnosisConfig diagnosisConfig, AccountMapper accountMapper) {
         this.userBillMapper = userBillMapper;
         this.userBillExtMapper = userBillExtMapper;
         this.sortedKnownBadBills = buildSortedKnownBadBills(diagnosisConfig);
@@ -44,6 +52,7 @@ class UserBillDiagnosis implements Diagnosis {
                 .collect(Collectors.toMap(
                         UserBillBusinessDiagnosis::getSupportedBusinessType,
                         d -> d));
+        this.accountMapper = accountMapper;
     }
 
     private long[] buildSortedKnownBadBills(DiagnosisConfig diagnosisConfig) {
@@ -86,21 +95,36 @@ class UserBillDiagnosis implements Diagnosis {
 
     private DiagnosisResult diagnosisUser(int idx, int userCount, String loginName) {
         logger.info("[{}/{}] diagnosis user bill for {}", idx, userCount, loginName);
-        List<UserBillModel> userBillModelList = userBillMapper.findByLoginName(loginName);
         DiagnosisContext diagnosisContext = new DiagnosisContext(loginName);
-        userBillModelList.stream()
-                .filter(bill -> Arrays.binarySearch(sortedKnownBadBills, bill.getId()) < 0)
-                .filter(bill -> diagnosisMap.containsKey(bill.getBusinessType()) && bill.getOrderId() != null)
-                .forEach(bill -> {
-                    UserBillBusinessDiagnosis diagnosis = diagnosisMap.get(bill.getBusinessType());
-                    try {
-                        diagnosis.diagnosis(bill, diagnosisContext);
-                    } catch (Exception e) {
-                        diagnosisContext.addProblem("diagnosis failed: " + e.getMessage());
-                        logger.error("diagnosis failed", e);
-                    }
-                });
+        if (checkUserBalance(loginName)) {
+            List<UserBillModel> userBillModelList = userBillMapper.findByLoginName(loginName);
+            userBillModelList.stream()
+                    .filter(bill -> Arrays.binarySearch(sortedKnownBadBills, bill.getId()) < 0)
+                    .filter(bill -> diagnosisMap.containsKey(bill.getBusinessType()) && bill.getOrderId() != null)
+                    .forEach(bill -> {
+                        UserBillBusinessDiagnosis diagnosis = diagnosisMap.get(bill.getBusinessType());
+                        try {
+                            diagnosis.diagnosis(bill, diagnosisContext);
+                        } catch (Exception e) {
+                            diagnosisContext.addProblem("diagnosis failed: " + e.getMessage());
+                            logger.error("diagnosis failed", e);
+                        }
+                    });
+        } else {
+            diagnosisContext.addProblem(String.format("%s 用户对账失败!",loginName));
+        }
         return diagnosisContext.getResult();
+    }
+
+    private boolean checkUserBalance(String loginName) {
+        AccountModel account = accountMapper.findByLoginName(loginName);
+        Map<String, String> balanceMap = payWrapperClient.getUserBalance(loginName);
+        if (balanceMap == null) {
+            logger.error("{} 用户对账服务连接不上。", loginName);
+            return false;
+        }
+        return account.getBalance() == Long.parseLong(balanceMap.get("balance"));
+
     }
 
     private List<String> extraDiagnosisUsers(String[] args) {
