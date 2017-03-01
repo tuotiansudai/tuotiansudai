@@ -4,7 +4,8 @@ require('webJs/plugins/autoNumeric');
 //新手体验项目
 let $experienceLoan=$('#experienceLoanDetailContent');
 let amountInputElement = $(".text-input-amount", $experienceLoan);
-let investForm=globalFun.$('#investForm');
+let investForm=globalFun.$('#investForm'),
+    $investSubmit = $('#investSubmit');
 
 amountInputElement.autoNumeric("init");
 
@@ -20,12 +21,14 @@ function getAmount() {
 amountInputElement.on('blur',function() {
     //计算体验金余额是否不足
     let experienceAmount = $(investForm).find('.account-amount').data("user-balance") || 0,   //体验金余额
-        getInvestAmount = getAmount();  //输入的投资金额
-    if(parseFloat(getInvestAmount) > experienceAmount) {
+        getInvestAmount = parseFloat(getAmount());  //输入的投资金额
+    if(getInvestAmount > experienceAmount || !getInvestAmount) {
         $('.error-box',$experienceLoan).show();
+        $investSubmit.prop('disabled',true);
     }
     else {
         $('.error-box',$experienceLoan).hide();
+        $investSubmit.prop('disabled',false);
     }
 
     commonFun.useAjax({
@@ -40,10 +43,12 @@ amountInputElement.on('blur',function() {
 
 investForm.onsubmit=function(event) {
     event.preventDefault();
+let amount = investForm.amount.value.replace(/,/g,'');
+    debugger
     commonFun.useAjax({
         type:'POST',
         url: '/experience-invest',
-        data:$(investForm).serialize()
+        data:"loanId=1&amount="+amount
     },function(response) {
         let $freeSuccess=$('#freeSuccess');
         let data = response.data,
@@ -53,6 +58,7 @@ investForm.onsubmit=function(event) {
         if(account) {
             htmlCon = $freeSuccess.find('.detail-word').eq(1);
         }
+        htmlCon.show();
         if (data.status) {
             layer.open({
                 type: 1,
