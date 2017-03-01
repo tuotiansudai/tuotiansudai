@@ -46,7 +46,7 @@
                     <td>${item.mobile}</td>
                     <td>${item.province!''}</td>
                     <td>${(item.lastExchangeTime?string('yyyy-MM-dd HH:mm:ss'))!}</td>
-                    <td>${item.experienceBalance}</td>
+                    <td>${item.lastExchangeTime/100}</td>
                 </tr>
                 </#list>
             </tbody>

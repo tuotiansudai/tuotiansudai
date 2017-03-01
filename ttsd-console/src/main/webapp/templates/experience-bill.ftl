@@ -65,7 +65,6 @@
                 <th>费用类型</th>
                 <th>操作类型</th>
                 <th>金额(元)</th>
-                <th>余额(元)</th>
             </tr>
             </thead>
             <tbody>
@@ -79,7 +78,6 @@
                     <td>${item.operationType.getDescription()}</td>
                     <td>${item.businessType.getDescription()}</td>
                     <td>${item.amount/100}</td>
-                    <td></td>
                 </tr>
                 </#list>
             </tbody>
@@ -93,7 +91,7 @@
             <ul class="pagination pull-left">
                 <li>
                     <#if data.hasPreviousPage >
-                    <a href="/finance-manage/experience-bill?mobile=${mobile!}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&experienceBillOperationType=${experienceBillOperationType!}&experienceBusinessType=${experienceBusinessType!}&index=${data.index-1}&pageSize=${data.pageSize}">
+                    <a href="/experience-manage/experience-bill?mobile=${mobile!}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&experienceBillOperationType=${experienceBillOperationType!}&experienceBusinessType=${experienceBusinessType!}&index=${data.index-1}&pageSize=${data.pageSize}">
                     <#else>
                     <a href="#">
                     </#if>
@@ -102,7 +100,7 @@
                 <li><a>${data.index}</a></li>
                 <li>
                     <#if data.hasNextPage >
-                    <a href="/finance-manage/experience-bill?mobile=${mobile!}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&experienceBillOperationType=${experienceBillOperationType!}&experienceBusinessType=${experienceBusinessType!}&index=${data.index+1}&pageSize=${data.pageSize}">
+                    <a href="/experience-manage/experience-bill?mobile=${mobile!}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&experienceBillOperationType=${experienceBillOperationType!}&experienceBusinessType=${experienceBusinessType!}&index=${data.index+1}&pageSize=${data.pageSize}">
                     <#else>
                     <a href="#">
                     </#if>
