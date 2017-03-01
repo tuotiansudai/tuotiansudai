@@ -2,6 +2,7 @@ package com.tuotiansudai.message.repository.mapper;
 
 import com.tuotiansudai.enums.MessageEventType;
 import com.tuotiansudai.enums.MessageType;
+import com.tuotiansudai.message.repository.model.MessageCategory;
 import com.tuotiansudai.message.repository.model.MessageModel;
 import com.tuotiansudai.message.repository.model.MessageStatus;
 import org.apache.ibatis.annotations.Param;
@@ -29,13 +30,15 @@ public interface MessageMapper {
 
     long findMessageCount(@Param(value = "title") String title,
                           @Param(value = "messageStatus") MessageStatus messageStatus,
-                          @Param(value = "createdBy") String createdBy,
-                          @Param(value = "messageType") MessageType messageType);
+                          @Param(value = "updatedBy") String updatedBy,
+                          @Param(value = "messageType") MessageType messageType,
+                          @Param(value = "messageCategory") MessageCategory messageCategory);
 
     List<MessageModel> findMessagePagination(@Param(value = "title") String title,
                                              @Param(value = "messageStatus") MessageStatus messageStatus,
-                                             @Param(value = "createdBy") String createdBy,
+                                             @Param(value = "updatedBy") String updatedBy,
                                              @Param(value = "messageType") MessageType messageType,
+                                             @Param(value = "messageCategory") MessageCategory messageCategory,
                                              @Param(value = "index") int index,
                                              @Param(value = "pageSize") int pageSize);
 

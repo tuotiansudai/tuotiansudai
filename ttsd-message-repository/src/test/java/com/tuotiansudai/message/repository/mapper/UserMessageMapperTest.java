@@ -3,6 +3,7 @@ package com.tuotiansudai.message.repository.mapper;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.enums.AppUrl;
 import com.tuotiansudai.message.repository.model.*;
+import org.joda.time.DateTime;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -28,7 +29,9 @@ public class UserMessageMapperTest extends BaseMapperTest {
                 "webUrl",
                 AppUrl.HOME,
                 null,
-                "created");
+                "created",
+                DateTime.parse("0001-01-01").toDate(),
+                DateTime.parse("9999-12-31").toDate());
         messageMapper.create(messageModel);
 
         UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(),

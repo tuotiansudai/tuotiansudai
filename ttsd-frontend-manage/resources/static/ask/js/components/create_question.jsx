@@ -1,5 +1,5 @@
 /* create question */
-import {refreshCaptcha,useAjax} from "publicJs/common";
+let commonFun= require('publicJs/commonFun');
 var $createQuestion=$('#createQuestion');
 var $questionDetailTag=$('#questionDetailTag');
 
@@ -230,7 +230,7 @@ if($questionDetailTag.length) {
             .replace(/\s/g,'　');
         $formAnswer.find('textarea').val(temp);
 
-        useAjax({
+        commonFun.useAjax({
             url: "/answer",
             data: $formAnswer.serialize(),
             beforeSend:function() {
@@ -246,7 +246,7 @@ if($questionDetailTag.length) {
 
             }
             else {
-                refreshCaptcha($formAnswer.find('.captchaImg')[0],'/captcha');
+                commonFun.refreshCaptcha($formAnswer.find('.captchaImg')[0],'/captcha');
                 if(response.isCaptchaValid) {
                     if(!response.isAnswerSensitiveValid) {
                         $formAnswer.find('.answer').next().show().text('您输入的内容不能包含敏感词');
@@ -264,7 +264,7 @@ if($questionDetailTag.length) {
     $('.mark-this-answer',$questionDetailTag).on('click',function() {
         var $this=$(this);
         var answerId=$this.next('.answerId').data('id');
-        useAjax({
+        commonFun.useAjax({
             url:'/answer/'+answerId+'/best'
         },function(responseData) {
             var response=responseData.data;
@@ -283,7 +283,7 @@ if($questionDetailTag.length) {
             value=$.trim($this.text());
         var answerId=$this.parent().find('.answerId').data('id');
 
-        useAjax({
+        commonFun.useAjax({
             url:'/answer/'+answerId+'/favor'
         },function(data) {
             if(data.data.status) {
@@ -340,7 +340,7 @@ if($createQuestion.length) {
                       .replace(/\s/g,'　');
 
         $formQuestion.find('textarea').val(question);
-        useAjax({
+        commonFun.useAjax({
             url: "/question",
             data: $formQuestion.serialize(),
             beforeSend:function(xhr) {
@@ -353,7 +353,7 @@ if($createQuestion.length) {
                 location.href='question/my-questions';
             }
             else {
-                refreshCaptcha($formQuestion.find('.captchaImg')[0],'/captcha');
+                commonFun.refreshCaptcha($formQuestion.find('.captchaImg')[0],'/captcha');
                 if(response.isCaptchaValid) {
                     if(!response.isQuestionSensitiveValid) {
                         $question.next().show().text('您输入的内容不能包含敏感词');
