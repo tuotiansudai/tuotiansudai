@@ -11,10 +11,13 @@ import com.tuotiansudai.cfca.contract.ContractService;
 import com.tuotiansudai.cfca.dto.ContractResponseView;
 import com.tuotiansudai.cfca.service.AnxinSignConnectService;
 import com.tuotiansudai.cfca.service.AnxinSignService;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.dto.sms.GenerateContractErrorNotifyDto;
+import com.tuotiansudai.message.AnxinContractQueryMessage;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.UUIDGenerator;
@@ -62,6 +65,9 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
     @Autowired
     private ContractService contractService;
+
+    @Autowired
+    private MQWrapperClient mqWrapperClient;
 
     private static final String LOAN_CONTRACT_AGENT_SIGN = "agentUserName";
 
@@ -422,11 +428,13 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
         redisWrapperClient.setex(TRANSFER_BATCH_NO_LIST_KEY + transferApplicationId, BATCH_NO_LIFT_TIME, batchNo);
 
-        if (!baseDto.isSuccess()) {
+        if (baseDto.isSuccess()) {
+            logger.info("[安心签]: 发送MQ，稍后查询并更新合同状态。债权ID:" + transferApplicationId);
+            mqWrapperClient.sendMessage(MessageQueue.QueryAnxinContract, new AnxinContractQueryMessage(transferApplicationId, Collections.singletonList(batchNo), AnxinContractType.TRANSFER_CONTRACT.name()));
+        } else {
             logger.error("[安心签]: create transfer contract error, ready send sms. transferId:" + transferApplicationId);
             smsWrapperClient.sendGenerateContractErrorNotify(new GenerateContractErrorNotifyDto(mobileList, transferApplicationId));
         }
-
         return baseDto;
     }
 
@@ -600,9 +608,9 @@ public class AnxinSignServiceImpl implements AnxinSignService {
             return failBaseDto(BATCH_NO_IS_INVALID);
         }
 
-        try{
+        try {
             List<String> waitingBatchNo = this.queryContract(anxinQueryContractDto.getBusinessId(), Lists.newArrayList(batchNo.split(",")), anxinQueryContractDto.getAnxinContractType());
-            if(CollectionUtils.isNotEmpty(waitingBatchNo)){
+            if (CollectionUtils.isNotEmpty(waitingBatchNo)) {
                 // 没有待处理的 batchNo 了，检查该 businessId 下的投资是否已经全部成功
                 List<InvestModel> contractFailList = investMapper.findNoContractNoInvest(anxinQueryContractDto.getBusinessId());
                 if (CollectionUtils.isNotEmpty(contractFailList)) {

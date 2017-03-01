@@ -96,7 +96,7 @@ public class LoanOutSuccessCreateAnXinContractMessageConsumer implements Message
 
         //避免invest_repay等数据未生成
         if (executeCount == 2) {
-            logger.info("[标的放款MQ] LoanOutSuccess_GenerateAnXinContract createLoanContracts is executing, loanId:{}", loanId);
+            logger.info("[标的放款MQ] LoanOutSuccess_GenerateAnXinContract createLoanContracts is executing, loanId:{}", String.valueOf(loanId));
             BaseDto baseDto = anxinWrapperClient.createLoanContract(loanId);
             if (!baseDto.isSuccess()) {
                 logger.error(MessageFormat.format("[标的放款MQ] LoanOutSuccess_GenerateAnXinContract is fail. loanId:{0}", String.valueOf(loanId)));
