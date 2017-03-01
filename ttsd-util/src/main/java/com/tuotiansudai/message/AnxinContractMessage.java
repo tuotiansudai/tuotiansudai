@@ -3,17 +3,15 @@ package com.tuotiansudai.message;
 import java.io.Serializable;
 import java.util.List;
 
-public class AnxinContractQueryMessage implements Serializable{
+public class AnxinContractMessage implements Serializable{
     private long businessId;
-    private List<String> batchNoList;
     private String anxinContractType;
 
-    public AnxinContractQueryMessage() {
+    public AnxinContractMessage() {
     }
 
-    public AnxinContractQueryMessage(long businessId, List<String> batchNoList, String anxinContractType) {
+    public AnxinContractMessage(long businessId, String anxinContractType) {
         this.businessId = businessId;
-        this.batchNoList = batchNoList;
         this.anxinContractType = anxinContractType;
     }
 
@@ -23,14 +21,6 @@ public class AnxinContractQueryMessage implements Serializable{
 
     public void setBusinessId(long businessId) {
         this.businessId = businessId;
-    }
-
-    public List<String> getBatchNoList() {
-        return batchNoList;
-    }
-
-    public void setBatchNoList(List<String> batchNoList) {
-        this.batchNoList = batchNoList;
     }
 
     public String getAnxinContractType() {

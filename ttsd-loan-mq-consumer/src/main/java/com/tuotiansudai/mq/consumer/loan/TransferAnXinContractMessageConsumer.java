@@ -10,7 +10,8 @@ import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.AnxinQueryContractDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
-import com.tuotiansudai.message.AnxinContractQueryMessage;
+import com.tuotiansudai.message.AnxinContractMessage;
+import com.tuotiansudai.message.LoanOutSuccessMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
 import com.tuotiansudai.repository.model.AnxinContractType;
@@ -26,9 +27,9 @@ import java.text.MessageFormat;
 import java.util.List;
 
 @Component
-public class QueryAnxinContractMessageConsumer implements MessageConsumer {
+public class TransferAnXinContractMessageConsumer implements MessageConsumer {
 
-    private static Logger logger = LoggerFactory.getLogger(QueryAnxinContractMessageConsumer.class);
+    private static Logger logger = LoggerFactory.getLogger(TransferAnXinContractMessageConsumer.class);
 
     @Autowired
     private SmsWrapperClient smsWrapperClient;
@@ -53,34 +54,34 @@ public class QueryAnxinContractMessageConsumer implements MessageConsumer {
 
     @Override
     public MessageQueue queue() {
-        return MessageQueue.QueryAnxinContract;
+        return MessageQueue.TransferAnxinContract;
     }
 
     @Override
     public void consume(String message) {
-        logger.info("[标的放款MQ] QueryAnxinContract receive message: {}: {}.", this.queue(), message);
+        logger.info("[债权转让] TransferAnxinContract receive message: {}: {}.", this.queue(), message);
         if (Strings.isNullOrEmpty(message)) {
-            logger.error("[标的放款MQ] QueryAnxinContract receive message is empty");
+            logger.error("[债权转让] TransferAnxinContract receive message is empty");
             smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("生成安心签合同失败, MQ消息为空"));
             return;
         }
 
-        AnxinContractQueryMessage messageBody;
+        AnxinContractMessage messageBody;
         try {
-            messageBody = JsonConverter.readValue(message, AnxinContractQueryMessage.class);
+            messageBody = JsonConverter.readValue(message, AnxinContractMessage.class);
             if (messageBody.getBusinessId() == 0) {
-                logger.error("[标的放款MQ] QueryAnxinContract loanId is empty");
+                logger.error("[债权转让] TransferAnxinContract loanId is empty");
                 smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("生成安心签合同失败, 消息中loanId为空"));
                 return;
             }
         } catch (IOException e) {
-            logger.error("[标的放款MQ] QueryAnxinContract json convert transfer is fail, message:{}", message);
+            logger.error("[债权转让] TransferAnxinContract json convert transfer is fail, message:{}", message);
             smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("生成安心签失败, 解析消息失败"));
             return;
         }
 
         long loanId = messageBody.getBusinessId();
-        logger.info("[标的放款MQ] QueryAnxinContract ready to consume message , loanId:{}", loanId);
+        logger.info("[债权转让] TransferAnxinContract ready to consume message , loanId:{}", loanId);
 
         String redisKey = MessageFormat.format(LOAN_OUT_LOAN_ID_KEY, String.valueOf(loanId));
         int executeCount = 1;
@@ -91,34 +92,48 @@ public class QueryAnxinContractMessageConsumer implements MessageConsumer {
 
         try {
             Thread.sleep(DEFAULT_MINUTE);
-            logger.info("[标的放款MQ] QueryAnxinContract createTransferLoanContracts sleep 2 minute.");
+            logger.info("[债权转让] TransferAnxinContract createTransferLoanContracts sleep 2 minute.");
         } catch (InterruptedException e) {
-            logger.info("[标的放款MQ] QueryAnxinContract createTransferLoanContracts sleep 2 minute fail.");
+            logger.info("[债权转让] TransferAnxinContract createTransferLoanContracts sleep 2 minute fail.");
+        }
+
+        //避免invest_repay等数据未生成
+        if (executeCount == 1) {
+            logger.info("[债权转让] TransferAnxinContract createLoanContracts is executing, loanId:{}", String.valueOf(loanId));
+            BaseDto baseDto = anxinWrapperClient.createTransferContract(loanId);
+            if (!baseDto.isSuccess()) {
+                logger.error(MessageFormat.format("[债权转让] LoanOutSuccess_GenerateAnXinContract is fail. loanId:{0}", String.valueOf(loanId)));
+                smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("生成安心签失败"));
+                return;
+            }
+            redisWrapperClient.setex(redisKey, LOAN_ID_LIFT_TIME, String.valueOf(executeCount));
+            mqWrapperClient.sendMessage(MessageQueue.LoanOutSuccess_GenerateAnXinContract, new LoanOutSuccessMessage(loanId));
+            return;
         }
 
         //等待安心签生成合同
         if (executeCount < 5) {
-            logger.info("[标的放款MQ] QueryAnxinContract executeCount:{}", executeCount);
+            logger.info("[债权转让] TransferAnxinContract executeCount:{}", executeCount);
             redisWrapperClient.setex(redisKey, LOAN_ID_LIFT_TIME, String.valueOf(executeCount));
-            mqWrapperClient.sendMessage(MessageQueue.QueryAnxinContract, messageBody);
+            mqWrapperClient.sendMessage(MessageQueue.TransferAnxinContract, messageBody);
             return;
         }
 
         List<String> fatalSmsList = Lists.newArrayList();
-        logger.info("[标的放款MQ] QueryAnxinContract queryLoanContracts start .");
+        logger.info("[债权转让] TransferAnxinContract queryLoanContracts start .");
         BaseDto baseDto = anxinWrapperClient.queryContract(new AnxinQueryContractDto(loanId, AnxinContractType.TRANSFER_CONTRACT));
         if (baseDto == null || !baseDto.isSuccess()) {
             fatalSmsList.add("查询安心签失败");
-            logger.error(MessageFormat.format("[标的放款MQ] QueryAnxinContract queryLoanContracts is fail. loanId:{0}", String.valueOf(loanId)));
+            logger.error(MessageFormat.format("[债权转让] TransferAnxinContract queryLoanContracts is fail. loanId:{0}", String.valueOf(loanId)));
         }
 
         if (org.apache.commons.collections.CollectionUtils.isNotEmpty(fatalSmsList)) {
             fatalSmsList.add(MessageFormat.format("标的ID:{0}", loanId));
             smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(Joiner.on(",").join(fatalSmsList)));
-            logger.error(MessageFormat.format("[标的放款MQ] QueryAnxinContract is fail, sms sending. loanId:{0}, queue:{1}", String.valueOf(loanId), MessageQueue.QueryAnxinContract));
-            throw new RuntimeException("[标的放款MQ] QueryAnxinContract is fail. loanOutInfo: " + message);
+            logger.error(MessageFormat.format("[债权转让] TransferAnxinContract is fail, sms sending. loanId:{0}, queue:{1}", String.valueOf(loanId), MessageQueue.TransferAnxinContract));
+            throw new RuntimeException("[债权转让] TransferAnxinContract is fail. loanOutInfo: " + message);
         }
 
-        logger.info("[标的放款MQ] QueryAnxinContract consume QueryAnxinContract success.");
+        logger.info("[债权转让] TransferAnxinContract consume TransferAnxinContract success.");
     }
 }

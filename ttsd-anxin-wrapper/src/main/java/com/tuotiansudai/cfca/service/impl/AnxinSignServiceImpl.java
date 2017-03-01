@@ -16,8 +16,6 @@ import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.dto.sms.GenerateContractErrorNotifyDto;
-import com.tuotiansudai.message.AnxinContractQueryMessage;
-import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.UUIDGenerator;
@@ -428,10 +426,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
         redisWrapperClient.setex(TRANSFER_BATCH_NO_LIST_KEY + transferApplicationId, BATCH_NO_LIFT_TIME, batchNo);
 
-        if (baseDto.isSuccess()) {
-            logger.info("[安心签]: 发送MQ，稍后查询并更新合同状态。债权ID:" + transferApplicationId);
-            mqWrapperClient.sendMessage(MessageQueue.QueryAnxinContract, new AnxinContractQueryMessage(transferApplicationId, Collections.singletonList(batchNo), AnxinContractType.TRANSFER_CONTRACT.name()));
-        } else {
+        if (!baseDto.isSuccess()) {
             logger.error("[安心签]: create transfer contract error, ready send sms. transferId:" + transferApplicationId);
             smsWrapperClient.sendGenerateContractErrorNotify(new GenerateContractErrorNotifyDto(mobileList, transferApplicationId));
         }

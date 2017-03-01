@@ -2,9 +2,13 @@ package com.tuotiansudai.console.controller;
 
 import com.google.common.base.Strings;
 import com.tuotiansudai.client.AnxinWrapperClient;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.console.service.ConsoleLoanService;
 import com.tuotiansudai.dto.*;
+import com.tuotiansudai.message.AnxinContractMessage;
+import com.tuotiansudai.message.LoanOutSuccessMessage;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.repository.model.AnxinContractType;
 import com.tuotiansudai.repository.model.InvestModel;
@@ -49,6 +53,9 @@ public class LoanListController {
 
     @Autowired
     private TransferApplicationMapper transferApplicationMapper;
+
+    @Autowired
+    private MQWrapperClient mqWrapperClient;
 
     @Autowired
     private AnxinWrapperClient anxinWrapperClient;
@@ -124,7 +131,8 @@ public class LoanListController {
                 baseDataDto.setMessage("该标的无可生成的合同!");
                 return baseDto;
             }
-            return anxinWrapperClient.createLoanContract(businessId);
+            mqWrapperClient.sendMessage(MessageQueue.LoanOutSuccess_GenerateAnXinContract, new LoanOutSuccessMessage(businessId));
+            return new BaseDto<>(true);
         } else {
             TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(businessId);
             if (transferApplicationModel == null) {
@@ -142,7 +150,8 @@ public class LoanListController {
                 baseDataDto.setMessage("该债权转让无可生成的合同!");
                 return baseDto;
             }
-            return anxinWrapperClient.createTransferContract(businessId);
+            mqWrapperClient.sendMessage(MessageQueue.TransferAnxinContract, new AnxinContractMessage(transferApplicationModel.getId(), AnxinContractType.TRANSFER_CONTRACT.name()));
+            return new BaseDto<>(true);
         }
     }
 

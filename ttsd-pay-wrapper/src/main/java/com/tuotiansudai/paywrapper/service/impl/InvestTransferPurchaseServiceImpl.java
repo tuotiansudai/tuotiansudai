@@ -14,6 +14,7 @@ import com.tuotiansudai.enums.PushType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
+import com.tuotiansudai.message.AnxinContractMessage;
 import com.tuotiansudai.message.EventMessage;
 import com.tuotiansudai.message.PushMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
@@ -502,7 +503,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
                 ((InvestTransferPurchaseService) AopContext.currentProxy()).postPurchase(investId);
 
                 logger.info("债权转让：生成合同，转让ID:" + transferApplicationModel.getId());
-                anxinWrapperClient.createTransferContract(transferApplicationModel.getId());
+                mqWrapperClient.sendMessage(MessageQueue.TransferAnxinContract, new AnxinContractMessage(transferApplicationModel.getId(), AnxinContractType.TRANSFER_CONTRACT.name()));
             }
         } else {
             // 失败的话：更新 invest 状态为投资失败
