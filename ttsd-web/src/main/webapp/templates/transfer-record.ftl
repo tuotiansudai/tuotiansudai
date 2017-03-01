@@ -12,7 +12,6 @@
     </ul>
     <div class="list-container">
         <div class="record-list active">
-            
         </div>
         <div class="pagination" data-url="/transferrer/transfer-application-list-data" data-page-size="10"></div>
     </div>
@@ -37,4 +36,125 @@
     </div>
 
 </div>
+
+<script type="text/template" id="transferableListTemplate">
+    <table class="table-striped transfer-list">
+        <thead>
+        <tr>
+            <th>项目名称</th>
+            <th class="tr">项目本金(元)</th>
+            <th>预期年化收益</th>
+            <th>剩余天数</th>
+            <th>到期时间</th>
+            <th>下次回款(元)</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% for(var i = 0; i < records.length; i++) {
+        var item = records[i];
+        %>
+        <tr>
+            <td>
+                <a href="/loan/{{loanId}}" class="project-name"><%=item.loanName%></a>
+            </td>
+            <td><%=item.amount%></td>
+            <td><%=item.sumRate%>%</td>
+            <td><%=item.leftDays%></td>
+            <td><%=item.lastRepayDate%></td>
+            <td>
+                <%=item.nextRepayAmount?item.nextRepayAmount:'--'%>
+            </td>
+            <td>
+                <%=item.transferStatus?'<a href="javascript:void(0)" class="apply-transfer" data-invest-id="'+item.investId+'">'+item.transferStatus+'</a>':'--'%>
+            </td>
+        </tr>
+        <% } %>
+        <%=records.length?'':'<td colspan="7" class="no-data">暂时没有可转让债权记录</td>'%>
+        </tbody>
+    </table>
+
+
+</script>
+
+<script type="text/template" id="transferrerListTemplate">
+    <table class="table-striped transfer-list">
+        <thead>
+        <tr>
+            <th>转让项目名称</th>
+            <th>转让价格(元)</th>
+            <th>项目本金(元)</th>
+            <th>预期年化收益</th>
+            <th>剩余天数</th>
+            <th>截止时间</th>
+            <th>转让状态</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% for(var i = 0; i < records.length; i++) {
+        var item = records[i];
+        %>
+        <tr>
+            <td>
+                <a href="/transfer/<%=item.transferApplicationId%>" class="project-name"><%=item.name%></a>
+            </td>
+            <td><%=item.transferAmount%></td>
+            <td><%=item.investAmount%></td>
+            <td><%=item.sumRate%>%</td>
+            <td><%=item.leftDays%></td>
+            <td><%=item.deadLine%>
+            </td>
+            <td>
+                <a href="javascript:void(0)" class="cancel-btn" data-transfer-application-id="<%=item.transferApplicationId%>">取消转让</a>
+            </td>
+        </tr>
+        <% } %>
+        <%=records.length?'':'<td colspan="7" class="no-data">暂时没有可转让债权记录</td>'%>
+        </tbody>
+    </table>
+</script>
+
+<script type="text/template" id="transferrerRecordTemplate">
+    <table class="table-striped transfer-list">
+        <thead>
+        <tr>
+            <th>转让项目名称</th>
+            <th>转让价格(元)</th>
+            <th>项目本金(元)</th>
+            <th>预期年化收益</th>
+            <th>剩余天数</th>
+            <th>完成时间</th>
+            <th>转让状态</th>
+            <th style="width:8%;">操作 </th>
+        </tr>
+        </thead>
+        <tbody>
+        <% for(var i = 0; i < records.length; i++) {
+        var item = records[i];
+        %>
+        <tr>
+            <td>
+                <a href="/transfer/<%=item.transferApplicationId%>" class="project-name"><%=item.name%></a>
+            </td>
+            <td><%=item.transferAmount%></td>
+            <td><%=item.investAmount%></td>
+            <td><%=item.sumRate%>%</td>
+            <td><%=item.leftDays%></td>
+            <td><%=item.transferTime?item.transferTime:'--'%>
+            </td>
+            <td><%=item.transferStatus%>
+            </td>
+            <td>
+                <%=item.transferNewSuccess?'<a class="red" href="/contract/invest/contractNo/'+item.contractNo+'"  target="_blank"> 合同 </a>':''%>
+                <%=item.transferOldSuccess?'<a class="red" href="/contract/transfer/transferApplicationId/'+item.transferApplicationId+'" target="_blank"> 合同 </a>':''%>
+                <%=item.cancelTransfer?'--':''%>
+            </td>
+        </tr>
+        <% } %>
+        <%=records.length?'':'<td colspan="7" class="no-data">暂时没有可转让债权记录</td>'%>
+
+        </tbody>
+    </table>
+
+</script>
 </@global.main>

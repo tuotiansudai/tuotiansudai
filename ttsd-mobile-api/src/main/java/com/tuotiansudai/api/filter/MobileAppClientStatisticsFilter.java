@@ -56,7 +56,7 @@ public class MobileAppClientStatisticsFilter implements Filter {
         try {
             requestJson = ((BufferedRequestWrapper) request).getInputStreamString();
         } catch (IOException e) {
-            log.error("get request json string failed", e);
+            log.warn("get request json string failed", e);
             return null;
         }
 
@@ -67,10 +67,10 @@ public class MobileAppClientStatisticsFilter implements Filter {
                 BaseParamDto dto = objectMapper.readValue(requestJson, BaseParamDto.class);
                 return dto.getBaseParam();
             } catch (IOException e) {
-                log.error("parse baseParam json failed, json string is [" + requestJson + "]", e);
+                log.warn("parse baseParam json failed, json string is [" + requestJson + "]", e);
             }
         } else {
-            log.error("parse baseParam json failed, json string is empty");
+            log.warn("parse baseParam json failed, json string is empty");
         }
         return null;
     }

@@ -112,9 +112,8 @@ public class ActivityService {
 
 
     public List<ActivityDto> findAllActivities(Date startTime, Date endTime, ActivityStatus activityStatus, Source source) {
-        if (endTime != null) {
-            endTime = new DateTime(endTime).plusDays(1).minusSeconds(1).toDate();
-        }
+        endTime = endTime != null ? new DateTime(endTime).plusDays(1).minusSeconds(1).toDate() : null;
+
         List<ActivityModel> activityModels = activityMapper.findAllActivities(startTime, endTime, activityStatus, source);
         List<ActivityDto> activityDtos = Lists.newArrayList();
         for (ActivityModel activityModel : activityModels) {

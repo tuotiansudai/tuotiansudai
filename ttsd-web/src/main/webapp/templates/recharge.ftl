@@ -1,5 +1,5 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="${css.my_account}" pageJavascript="${js.recharge}" activeNav="我的账户" activeLeftNav="资金管理" title="充值">
+<@global.main pageCss="${css.recharge}" pageJavascript="${js.recharge}" activeNav="我的账户" activeLeftNav="资金管理" title="充值">
 <div class="content-container">
     <h4 class="column-title"><em class="tc">我要充值</em></h4>
     <div class="recharge-bind-card pad-s">
@@ -86,7 +86,7 @@
                                 <#list banks as bank>
                                     <li>
                                         <input data-name="${bank}" type="radio" id="bank-${bank}" name="bankCode" <#if bank_index == 0>checked="checked"</#if> value="${bank}">
-                                        <label for="bank-${bank}"><img src="${staticServer}/images/bank/${bank}.jpg" alt=""></label>
+                                        <label for="bank-${bank}"><img src="${commonStaticServer}/images/bank/${bank}.jpg" alt=""></label>
                                     </li>
                                 </#list>
                             </ol>

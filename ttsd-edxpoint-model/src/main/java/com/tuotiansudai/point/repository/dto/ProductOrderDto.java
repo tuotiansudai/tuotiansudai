@@ -16,6 +16,8 @@ public class ProductOrderDto {
     private String address;
     private Date consignmentTime;
     private boolean consignment;
+    private long actualPoints;
+
 
     public ProductOrderDto(ProductOrderModel productOrderModel) {
         this.id = productOrderModel.getId();
@@ -28,6 +30,7 @@ public class ProductOrderDto {
         this.consignmentTime = productOrderModel.getConsignmentTime();
         this.address = productOrderModel.getAddress();
         this.consignment = productOrderModel.isConsignment();
+        this.actualPoints = productOrderModel.getActualPoints();
     }
 
     public long getId() {
@@ -109,5 +112,13 @@ public class ProductOrderDto {
 
     public void setConsignment(boolean consignment) {
         this.consignment = consignment;
+    }
+
+    public long getActualPoints() {
+        return actualPoints;
+    }
+
+    public void setActualPoints(long actualPoints) {
+        this.actualPoints = actualPoints;
     }
 }

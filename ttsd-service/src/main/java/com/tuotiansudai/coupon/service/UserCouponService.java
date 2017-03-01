@@ -21,9 +21,5 @@ public interface UserCouponService {
 
     boolean isUsableUserCouponExist(String loginName);
 
-    long findSumBirthdayAndInterestByLoginName(String loginName);
-
-    long findSumRedEnvelopeByLoginName(String loginName);
-
     void updateCouponAndAssign(long investId);
 }

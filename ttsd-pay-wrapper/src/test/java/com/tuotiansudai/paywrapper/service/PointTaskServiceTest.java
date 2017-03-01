@@ -3,15 +3,14 @@ package com.tuotiansudai.paywrapper.service;
 import com.google.common.base.Strings;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
+import com.tuotiansudai.point.repository.mapper.PointTaskMapper;
 import com.tuotiansudai.point.repository.mapper.UserPointTaskMapper;
 import com.tuotiansudai.point.repository.model.PointBillModel;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.point.repository.model.PointTask;
+import com.tuotiansudai.point.repository.model.UserPointTaskModel;
 import com.tuotiansudai.point.service.PointTaskService;
-import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.lang.RandomStringUtils;
@@ -24,10 +23,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml", "classpath:dispatcher-servlet.xml"})
@@ -50,6 +50,9 @@ public class PointTaskServiceTest {
     private UserPointTaskMapper userPointTaskMapper;
 
     @Autowired
+    private PointTaskMapper pointTaskMapper;
+
+    @Autowired
     private PointBillMapper pointBillMapper;
 
     @Autowired
@@ -58,6 +61,8 @@ public class PointTaskServiceTest {
     @Autowired
     private InvestMapper investMapper;
 
+    @Autowired
+    private BankCardMapper bankCardMapper;
 
     @Test
     public void shouldCompletedEachSumInvestTask() {
@@ -119,17 +124,18 @@ public class PointTaskServiceTest {
         UserModel referrer = this.createFakeUser("eachRecommendReferrer", null);
         UserModel newbie1 = this.createFakeUser("newbie1", referrer.getLoginName());
 
-        pointTaskService.completeAdvancedTask(PointTask.EACH_RECOMMEND, newbie1.getLoginName());
 
-        assertThat(userPointTaskMapper.findMaxTaskLevelByLoginName(referrer.getLoginName(), PointTask.EACH_RECOMMEND), is(1L));
-        assertThat(accountMapper.findByLoginName(referrer.getLoginName()).getPoint(), is(50L));
+        pointTaskService.completeAdvancedTask(PointTask.EACH_RECOMMEND_REGISTER, newbie1.getLoginName());
+
+        assertThat(userPointTaskMapper.findMaxTaskLevelByLoginName(referrer.getLoginName(), PointTask.EACH_RECOMMEND_REGISTER), is(1L));
+        assertThat(accountMapper.findByLoginName(referrer.getLoginName()).getPoint(), is(100L));
 
         UserModel newbie2 = this.createFakeUser("newbie2", referrer.getLoginName());
 
-        pointTaskService.completeAdvancedTask(PointTask.EACH_RECOMMEND, newbie2.getLoginName());
+        pointTaskService.completeAdvancedTask(PointTask.EACH_RECOMMEND_REGISTER, newbie2.getLoginName());
 
-        assertThat(userPointTaskMapper.findMaxTaskLevelByLoginName(referrer.getLoginName(), PointTask.EACH_RECOMMEND), is(1L));
-        assertThat(accountMapper.findByLoginName(referrer.getLoginName()).getPoint(), is(50L));
+        assertThat(userPointTaskMapper.findMaxTaskLevelByLoginName(referrer.getLoginName(), PointTask.EACH_RECOMMEND_REGISTER), is(2L));
+        assertThat(accountMapper.findByLoginName(referrer.getLoginName()).getPoint(), is(200L));
     }
 
     @Test
@@ -197,6 +203,96 @@ public class PointTaskServiceTest {
         assertThat(pointBillModels.size(), is(1));
         assertThat(pointBillModels.get(0).getBusinessType(), is(PointBusinessType.TASK));
         assertThat(pointBillModels.get(0).getPoint(), is(200L));
+    }
+
+    @Test
+    public void shouldEachRecommendRegisterIsOk() {
+        UserModel referrerUserModel = createFakeUser("referrerLoginName", null);
+        UserModel testName = createFakeUser("testName", referrerUserModel.getLoginName());
+
+        pointTaskService.completeAdvancedTask(PointTask.EACH_RECOMMEND_REGISTER, testName.getLoginName());
+
+        List<UserPointTaskModel> userPointTaskModels = userPointTaskMapper.findByLoginName(referrerUserModel.getLoginName());
+        Optional<UserPointTaskModel> completeTask = userPointTaskModels.stream().findFirst().filter(userPointTaskModel -> pointTaskMapper.findById(userPointTaskModel.getPointTaskId()).getName().equals(PointTask.EACH_RECOMMEND_REGISTER));
+        assertTrue(completeTask.isPresent());
+        assertEquals(completeTask.get().getPoint(), 100l);
+
+        pointTaskService.completeAdvancedTask(PointTask.EACH_RECOMMEND_REGISTER, testName.getLoginName());
+        userPointTaskModels = userPointTaskMapper.findByLoginName(referrerUserModel.getLoginName());
+        completeTask = userPointTaskModels.stream().findFirst().filter(userPointTaskModel -> pointTaskMapper.findById(userPointTaskModel.getPointTaskId()).getName().equals(PointTask.EACH_RECOMMEND_REGISTER));
+        assertTrue(completeTask.isPresent());
+        assertEquals(completeTask.get().getPoint(), 100l);
+    }
+
+    @Test
+    public void shouldFirstInvestReferrerCompleteEachRecommendInvestRewardIsOk(){
+        UserModel referrerUserModel = createFakeUser("referrerLoginName", null);
+        UserModel testName = createFakeUser("testName", referrerUserModel.getLoginName());
+        LoanModel loanModel = createFakeLoan(ProductType._180);
+        createFakeInvest(testName.getLoginName(), loanModel.getId(), 10l);
+
+        pointTaskService.completeAdvancedTask(PointTask.EACH_RECOMMEND_INVEST, testName.getLoginName());
+
+        List<UserPointTaskModel> userPointTaskModels = userPointTaskMapper.findByLoginName(referrerUserModel.getLoginName());
+        Optional<UserPointTaskModel> completeTask = userPointTaskModels.stream().findFirst().filter(userPointTaskModel -> pointTaskMapper.findById(userPointTaskModel.getPointTaskId()).getName().equals(PointTask.EACH_RECOMMEND_INVEST));
+        assertTrue(completeTask.isPresent());
+        assertEquals(completeTask.get().getPoint(), 200l);
+    }
+
+    @Test
+    public void shouldSecondInvestReferrerCompleteEachRecommendInvestRewardIsOk(){
+        UserModel referrerUserModel = createFakeUser("referrerLoginName", null);
+        UserModel testName = createFakeUser("testName", referrerUserModel.getLoginName());
+        LoanModel loanModel = createFakeLoan(ProductType._180);
+        createFakeInvest(testName.getLoginName(), loanModel.getId(), 10l);
+        createFakeInvest(testName.getLoginName(), loanModel.getId(), 110l);
+
+        pointTaskService.completeAdvancedTask(PointTask.EACH_RECOMMEND_INVEST, testName.getLoginName());
+
+        List<UserPointTaskModel> userPointTaskModels = userPointTaskMapper.findByLoginName(referrerUserModel.getLoginName());
+        Optional<UserPointTaskModel> completeTask = userPointTaskModels.stream().findFirst().filter(userPointTaskModel -> pointTaskMapper.findById(userPointTaskModel.getPointTaskId()).getName().equals(PointTask.EACH_RECOMMEND_INVEST));
+        assertTrue(!completeTask.isPresent());
+    }
+
+    @Test
+    public void shouldEachRecommendReferrerBankCardIsOk(){
+        UserModel referrerUserModel = createFakeUser("referrerCardLoginName", null);
+        UserModel testName = createFakeUser("testCardLoginName", referrerUserModel.getLoginName());
+
+        BankCardModel bankCardModel = new BankCardModel();
+        bankCardModel.setBankCode("ICBC");
+        bankCardModel.setStatus(BankCardStatus.PASSED);
+        bankCardModel.setCreatedTime(new Date());
+        bankCardModel.setLoginName(testName.getLoginName());
+        bankCardModel.setIsFastPayOn(true);
+        bankCardModel.setCardNumber("1234567890");
+        bankCardMapper.create(bankCardModel);
+
+        pointTaskService.completeNewbieTask(PointTask.BIND_BANK_CARD, testName.getLoginName());
+        List<UserPointTaskModel> userPointTaskModels = userPointTaskMapper.findByLoginName(referrerUserModel.getLoginName());
+        Optional<UserPointTaskModel> completeTask = userPointTaskModels.stream().findFirst().filter(userPointTaskModel -> pointTaskMapper.findById(userPointTaskModel.getPointTaskId()).getName().equals(PointTask.EACH_RECOMMEND_BANK_CARD));
+        assertTrue(completeTask.isPresent());
+        assertEquals(completeTask.get().getPoint(), 100l);
+    }
+
+    @Test
+    public void shouldEachRecommendReferrerBankCardReferrerIsNullIsOk(){
+        UserModel referrerUserModel = createFakeUser("referrerBankCardLoginName", null);
+        UserModel testName = createFakeUser("testBankCardLoginName", null);
+
+        BankCardModel bankCardModel = new BankCardModel();
+        bankCardModel.setBankCode("ICBC");
+        bankCardModel.setStatus(BankCardStatus.PASSED);
+        bankCardModel.setCreatedTime(new Date());
+        bankCardModel.setLoginName(testName.getLoginName());
+        bankCardModel.setIsFastPayOn(true);
+        bankCardModel.setCardNumber("1234567890");
+        bankCardMapper.create(bankCardModel);
+
+        pointTaskService.completeNewbieTask(PointTask.BIND_BANK_CARD, testName.getLoginName());
+        List<UserPointTaskModel> userPointTaskModels = userPointTaskMapper.findByLoginName(referrerUserModel.getLoginName());
+        Optional<UserPointTaskModel> completeTask = userPointTaskModels.stream().findFirst().filter(userPointTaskModel -> pointTaskMapper.findById(userPointTaskModel.getPointTaskId()).getName().equals(PointTask.EACH_RECOMMEND_BANK_CARD));
+        assertTrue(!completeTask.isPresent());
     }
 
 

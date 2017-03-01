@@ -33,6 +33,19 @@
     border: 0;
     color: #fff;
     background: #ff7200;
+
+  }
+  .btn {
+    padding: 8px 22px;
+    font-size: 18px;
+    background: #ff9d1a;
+    border:0;
+    color: #fff;
+    letter-spacing: 1px;
+    &[disabled], &[disabled]:hover {
+      background: #ccc;
+      border:0;
+    }
   }
   input,textarea,select {
     @include border-color(#e5e5e5);
@@ -71,15 +84,6 @@
     padding: 20px;
     height: auto;
     background: #fff;
-  }
-
-  .btn {
-    padding: 8px 22px;
-    font-size: 18px;
-    background: #ff9d1a;
-    border:0;
-    color: #fff;
-    letter-spacing: 1px;
   }
 
   .red-color {

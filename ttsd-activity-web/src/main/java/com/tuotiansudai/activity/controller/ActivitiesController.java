@@ -29,7 +29,8 @@ public class ActivitiesController {
     @Autowired
     private AccountService accountService;
 
-    @RequestMapping(path = "/{item:^recruit|material-point|integral-draw|birth-month|rank-list-app|share-reward|app-download|landing-page|invest-achievement|landing-anxin|loan-hike|heavily-courtship$}", method = RequestMethod.GET)
+    @RequestMapping(path = "/{item:^recruit|material-point|integral-draw|birth-month|rank-list-app|share-reward|app-download|landing-page|invest-achievement|landing-anxin|loan-hike|heavily-courtship|point-update|sign-check$}", method = RequestMethod.GET)
+
 
     public ModelAndView activities(@PathVariable String item) {
         ModelAndView modelAndView = new ModelAndView("/activities/" + item, "responsive", true);

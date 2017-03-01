@@ -39,16 +39,14 @@ public enum MobileFrontCallbackService {
      * 无密投资
      */
     PROJECT_TRANSFER_NOPASSWORD_INVEST("project_transfer_no_password_invest", "投资成功", "tuotian://invest/{0}"),
-
     /**
      * 无密债权转让
      */
     PROJECT_TRANSFER_NOPASSWORD_TRANSFER("project_transfer_no_password_transfer", "转让成功", "tuotian://invest-transfer/{0}"),
-
     /**
-     * 购买会员
+     * 购买特权会员
      */
-    MEMBERSHIP_PURCHASE("membership-purchase", "会员购买成功", "tuotian://membership/{0}");
+    MEMBERSHIP_PRIVILEGE_PURCHASE("membership_privilege_purchase", "购买成功", "tuotian://membership/{0}");
 
     private final String serviceName;
 
