@@ -119,13 +119,13 @@ class UserBillDiagnosis implements Diagnosis {
         AccountModel account = accountMapper.findByLoginName(loginName);
         Map<String, String> balanceMap = payWrapperClient.getUserBalance(loginName);
         if (balanceMap == null) {
-            diagnosisContext.addProblem(String.format("{} 用户对账服务连接不上。", loginName));
+            diagnosisContext.addProblem(String.format("%s 用户对账服务连接不上。", loginName));
             logger.error("{} 用户对账服务连接不上。", loginName);
             return false;
         }
         long umpBalance = Long.parseLong(balanceMap.get("balance"));
         if (account.getBalance() != umpBalance) {
-            diagnosisContext.addProblem(String.format("{}: 用户对账失败,余额-account:{},ump:{}", loginName,
+            diagnosisContext.addProblem(String.format("%s: 用户对账失败,余额-account:%s,ump:%s", loginName,
                     String.valueOf(account.getBalance()),
                     String.valueOf(umpBalance)));
             return false;
