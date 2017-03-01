@@ -1,6 +1,7 @@
 package com.tuotiansudai.mq.consumer.user.config;
 
 import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.service.impl.ExperienceServiceImpl;
 import org.springframework.context.annotation.*;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import redis.clients.jedis.JedisPoolConfig;
@@ -24,6 +25,11 @@ public class AppConfiguration {
     @Bean
     public PropertySourcesPlaceholderConfigurer propertyConfigurer() {
         return new PropertySourcesPlaceholderConfigurer();
+    }
+
+    @Bean(name="experienceBillService")
+    public ExperienceServiceImpl experienceService() {
+        return new ExperienceServiceImpl();
     }
 
     @Bean

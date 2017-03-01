@@ -2,6 +2,7 @@ package com.tuotiansudai.repository.mapper;
 
 import com.tuotiansudai.repository.model.InvestRepayModel;
 import com.tuotiansudai.repository.model.LatestInvestView;
+import com.tuotiansudai.repository.model.RepayStatus;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -39,13 +40,9 @@ public interface InvestRepayMapper {
 
     List<LatestInvestView> findLatestInvestByLoginName(@Param(value = "loginName") String loginName, @Param(value = "startLimit") int startLimit, @Param(value = "endLimit") int endLimit);
 
-    long findSumRepaidInterestByLoginName(@Param(value = "loginName") String loginName);
-
     long findSumRepayingInterestByLoginName(@Param(value = "loginName") String loginName);
 
     long findSumRepayingCorpusByLoginName(@Param(value = "loginName") String loginName);
-
-    long findSumRepaidCorpusByLoginName(@Param(value = "loginName") String loginName);
 
     List<InvestRepayModel> findByLoginNameAndStatus(@Param(value = "loginName") String loginName,
                                                     @Param(value = "paidStatus") String paidStatus,
@@ -65,4 +62,6 @@ public interface InvestRepayMapper {
                                                                   @Param(value = "year") String year,
                                                                   @Param(value = "month") String month,
                                                                   @Param(value = "day") String day);
+
+
 }

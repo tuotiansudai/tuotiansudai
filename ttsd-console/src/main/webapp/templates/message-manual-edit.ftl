@@ -1,5 +1,5 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="message-manual-edit.js" headLab="message-manage" sideLab="createManualMessage" title="创建手动站内信">
+<@global.main pageCss="" pageJavascript="message-manual-edit.js" headLab="content-manage" sideLab="createManualMessage" title="创建手动站内信">
 
 <!-- content area begin -->
 <div class="col-md-10" xmlns="http://www.w3.org/1999/html">
@@ -40,6 +40,31 @@
                 <script id="editor" type="text/plain">${(dto.template)!}</script>
                 <input type="hidden" name="template" class="message-template"/>
             </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-1 control-label">消息发送时间</label>
+
+            <div class="col-sm-2">
+                <div class='input-group date' id='datepickerBegin'>
+                    <input type='text' class="form-control" name="validStartTime" value="${(dto.validStartTime)!}"/>
+                    <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                </div>
+            </div>
+            <div class="line-size">
+                -
+            </div>
+            <div class="col-sm-2">
+                <div class='input-group date' id='datepickerEnd'>
+                    <input type='text' class="form-control" name="validEndTime" value="${(dto.validEndTime)!}"/>
+                    <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                </div>
+            </div>
+
         </div>
 
         <div class="form-group">
@@ -127,6 +152,20 @@
                                     <#if ((dto.push.id)?? && dto.push.pushSource.name() == pushSource.name()) || pushSource_index == 0>selected="selected"</#if>>
                                 ${pushSource.name()}
                             </option>
+                        </#list>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-1 control-label">推送跳转页面: </label>
+                <div class="col-sm-4">
+                    <select class="selectpicker message-jumpTo" name="jumpTo">
+                        <#list appUrls as jumpToUrl>
+                            <#if jumpToUrl != "OTHER" && jumpToUrl != "NONE">
+                                <option value="${jumpToUrl.name()}"
+                                        <#if ((dto.push.jumpTo)?? && dto.push.jumpTo.name() == jumpToUrl.name()) || jumpToUrl_index == 0>selected="selected"</#if>>${jumpToUrl.getDescription()}</option>
+                            </#if>
                         </#list>
                     </select>
                 </div>

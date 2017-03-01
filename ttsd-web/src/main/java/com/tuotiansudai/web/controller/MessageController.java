@@ -25,7 +25,7 @@ public class MessageController {
 
     @RequestMapping(value = "/user-messages", method = RequestMethod.GET)
     public ModelAndView getMessages() {
-        return new ModelAndView("/user-message-list");
+        return new ModelAndView("/myAccount/user-message-list");
     }
 
     @RequestMapping(value = "/user-message-list-data", method = RequestMethod.GET)
@@ -45,7 +45,7 @@ public class MessageController {
         if (userMessageModel == null || Strings.isNullOrEmpty(userMessageModel.getContent())) {
             return new ModelAndView("/error/404");
         }
-        ModelAndView modelAndView = new ModelAndView("/user-message-detail");
+        ModelAndView modelAndView = new ModelAndView("/myAccount/user-message-detail");
         modelAndView.addObject("title", userMessageModel.getTitle());
         modelAndView.addObject("content", userMessageModel.getContent());
         modelAndView.addObject("createdTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(userMessageModel.getCreatedTime()));

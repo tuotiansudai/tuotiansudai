@@ -30,7 +30,8 @@ configurations{
 
 dependencies {
     compile project(':ttsd-config')
-    compile project(':ttsd-service')
+    compile project(':ttsd-user-service')
+    compile project(':ttsd-membership')
     compile project(':ttsd-mq-client')
 
     compile "org.springframework.boot:spring-boot-starter"

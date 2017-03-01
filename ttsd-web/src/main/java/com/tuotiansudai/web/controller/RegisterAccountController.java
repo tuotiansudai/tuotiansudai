@@ -45,7 +45,6 @@ public class RegisterAccountController {
         BaseDataDto dataDto = new BaseDataDto();
         baseDto.setData(dataDto);
         dataDto.setStatus(isExist);
-
         return baseDto;
     }
 

@@ -91,19 +91,6 @@ public class InvestRepayMapperTest {
     }
 
     @Test
-    public void shouldFindSumRepaidCorpusByLoginNameIsOk() {
-        InvestModel investModel = this.getFakeInvestModel();
-        investMapper.create(investModel);
-        InvestRepayModel investRepayModel = new InvestRepayModel(idGenerator.generate(), investModel.getId(), 1, 1000L, 0, 0, new Date(), RepayStatus.COMPLETE);
-        List<InvestRepayModel> investRepayModels = Lists.newArrayList(investRepayModel);
-        investRepayMapper.create(investRepayModels);
-
-        long corpus = investRepayMapper.findSumRepaidCorpusByLoginName("loginName");
-
-        assertEquals(1000L, corpus);
-    }
-
-    @Test
     public void shouldFindCompletedInvestRepayByIdAndPeriod() throws Exception {
         InvestModel investModel = this.getFakeInvestModel();
         investMapper.create(investModel);

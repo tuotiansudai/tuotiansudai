@@ -6,6 +6,8 @@ import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.point.service.PointService;
 import com.tuotiansudai.point.service.SignInService;
+import com.tuotiansudai.repository.mapper.UserFundMapper;
+import com.tuotiansudai.repository.model.UserFundView;
 import com.tuotiansudai.service.*;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.apache.commons.lang3.time.DateUtils;
@@ -23,9 +25,6 @@ import java.util.Date;
 public class AccountController {
 
     @Autowired
-    private AccountService accountService;
-
-    @Autowired
     private UserRoleService userRoleService;
 
     @Autowired
@@ -33,9 +32,6 @@ public class AccountController {
 
     @Autowired
     private InvestRepayService investRepayService;
-
-    @Autowired
-    private UserBillService userBillService;
 
     @Autowired
     private SignInService signInService;
@@ -49,36 +45,66 @@ public class AccountController {
     @Autowired
     private UserMembershipEvaluator userMembershipEvaluator;
 
+    @Autowired
+    private UserFundMapper userFundMapper;
+
+    @Autowired
+    private UserService userService;
+
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView account() {
         ModelAndView modelAndView = new ModelAndView("/account");
-        Date startTime = new DateTime().dayOfMonth().withMinimumValue().toDate();
 
-        Date endTime = DateUtils.addMonths(startTime, 1);
         String loginName = LoginUserInfo.getLoginName();
+
+        UserFundView userFundView = userFundMapper.findByLoginName(loginName);
+
         MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
         modelAndView.addObject("mobile", LoginUserInfo.getMobile());
         modelAndView.addObject("userMembershipLevel", membershipModel != null ? membershipModel.getLevel() : 0);
-        modelAndView.addObject("balance", accountService.getBalance(loginName));
-        modelAndView.addObject("collectedReward", userBillService.findSumRewardByLoginName(loginName));
-        modelAndView.addObject("collectingPrincipal", investRepayService.findSumRepayingCorpusByLoginName(loginName));
-        modelAndView.addObject("collectingInterest", investRepayService.findSumRepayingInterestByLoginName(loginName));
-        modelAndView.addObject("collectedInterest", investRepayService.findSumRepaidInterestByLoginName(loginName));
-        modelAndView.addObject("collectedBirthdayAndInterest", userCouponService.findSumBirthdayAndInterestByLoginName(loginName));
-        modelAndView.addObject("collectedRedEnvelopeInterest", userCouponService.findSumRedEnvelopeByLoginName(loginName));
 
-        modelAndView.addObject("freeze", accountService.getFreeze(loginName));
+        modelAndView.addObject("balance", userFundView.getBalance()); //余额
+        modelAndView.addObject("expectedTotalCorpus", userFundView.getExpectedTotalCorpus()); //待收投资本金
+        modelAndView.addObject("expectedTotalInterest", userFundView.getExpectedTotalCorpusInterest() + userFundView.getExpectedTotalExtraInterest()); //待收预期收益
+
+        modelAndView.addObject("referRewardAmount", userFundView.getReferRewardAmount()); //已收推荐奖励
+        modelAndView.addObject("redEnvelopeAmount", userFundView.getRedEnvelopeAmount()); //已收红包奖励
+        modelAndView.addObject("actualTotalInterest", userFundView.getActualTotalInterest()); //已收投资收益
+
+        modelAndView.addObject("actualTotalExtraInterest", userFundView.getActualTotalExtraInterest()); //已收投资奖励
+        modelAndView.addObject("expectedTotalExtraInterest", userFundView.getExpectedTotalExtraInterest()); //待收收投资奖励
+
+        modelAndView.addObject("expectedExperienceInterest", userFundView.getExpectedExperienceInterest()); //待收体验金收益
+        modelAndView.addObject("actualExperienceInterest", userFundView.getActualExperienceInterest()); //已收体验金收益
+
+        modelAndView.addObject("investFrozeAmount", userFundView.getInvestFrozeAmount());
+        modelAndView.addObject("withdrawFrozeAmount", userFundView.getWithdrawFrozeAmount());
+        modelAndView.addObject("freeze", userFundView.getInvestFrozeAmount() + userFundView.getWithdrawFrozeAmount()); //冻结金额
+
+        //累计收益= 已收投资收益+已收投资奖励+已收红包奖励+已收推荐奖励+已收体验金收益
+        modelAndView.addObject("totalIncome", userFundView.getActualTotalInterest()+userFundView.getActualTotalExtraInterest()+userFundView.getRedEnvelopeAmount()+userFundView.getReferRewardAmount()+userFundView.getActualExperienceInterest());
+
+        modelAndView.addObject("experienceBalance", userService.getExperienceBalanceByLoginName(loginName));
+
+        Date firstDateOfMonth = new DateTime().dayOfMonth().withMinimumValue().toDate();
+        Date lastDateOfMonth = DateUtils.addMonths(firstDateOfMonth, 1);
         if (userRoleService.judgeUserRoleExist(loginName, Role.LOANER)) {
-            modelAndView.addObject("successSumRepay", loanRepayService.findByLoginNameAndTimeSuccessRepay(loginName, startTime, endTime));
-            modelAndView.addObject("repayList", loanRepayService.findLoanRepayInAccount(loginName, startTime, endTime, 0, 6));
+            modelAndView.addObject("expectedRepayAmountOfMonth", loanRepayService.findByLoginNameAndTimeSuccessRepay(loginName, firstDateOfMonth, lastDateOfMonth)); //本月未还款总额
+            modelAndView.addObject("repayList", loanRepayService.findLoanRepayInAccount(loginName, firstDateOfMonth, lastDateOfMonth, 0, 6));
         }
-        modelAndView.addObject("successSumInvestRepay", investRepayService.findByLoginNameAndTimeAndSuccessInvestRepay(loginName, startTime, endTime));
-        modelAndView.addObject("successSumInvestRepayList", investRepayService.findByLoginNameAndTimeSuccessInvestRepayList(loginName, startTime, endTime, 0, 6));
-        modelAndView.addObject("notSuccessSumInvestRepay", investRepayService.findByLoginNameAndTimeAndNotSuccessInvestRepay(loginName, startTime, endTime));
-        modelAndView.addObject("notSuccessSumInvestRepayList", investRepayService.findByLoginNameAndTimeNotSuccessInvestRepayList(loginName, startTime, endTime, 0, 6));
-        modelAndView.addObject("latestInvestList", investRepayService.findLatestInvestByLoginName(loginName, 0, 6));
-        modelAndView.addObject("signedIn", signInService.signInIsSuccess(loginName));
-        modelAndView.addObject("myPoint", pointService.getAvailablePoint(loginName));
+
+        modelAndView.addObject("actualInvestRepay", investRepayService.findByLoginNameAndTimeAndSuccessInvestRepay(loginName, firstDateOfMonth, lastDateOfMonth)); //本月已收回款总额
+        modelAndView.addObject("actualInvestRepayList", investRepayService.findByLoginNameAndTimeSuccessInvestRepayList(loginName, firstDateOfMonth, lastDateOfMonth, 0, 6));
+
+        modelAndView.addObject("expectedInvestRepay", investRepayService.findByLoginNameAndTimeAndNotSuccessInvestRepay(loginName, firstDateOfMonth, lastDateOfMonth)); //本月待收回款总额
+        modelAndView.addObject("expectedInvestRepayList", investRepayService.findByLoginNameAndTimeNotSuccessInvestRepayList(loginName, firstDateOfMonth, lastDateOfMonth, 0, 6));
+
+        modelAndView.addObject("latestInvestList", investRepayService.findLatestInvestByLoginName(loginName, 0, 6)); //最新投资项目
+
+        modelAndView.addObject("signedIn", signInService.signInIsSuccess(loginName)); //是否签到
+
+        modelAndView.addObject("myPoint", pointService.getAvailablePoint(loginName)); //积分
+
         modelAndView.addObject("isUsableCouponExist", userCouponService.isUsableUserCouponExist(loginName));
         return modelAndView;
     }

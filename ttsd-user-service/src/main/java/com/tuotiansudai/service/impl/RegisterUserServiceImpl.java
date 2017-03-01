@@ -3,10 +3,7 @@ package com.tuotiansudai.service.impl;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.enums.MessageEventType;
-import com.tuotiansudai.enums.PushSource;
-import com.tuotiansudai.enums.PushType;
-import com.tuotiansudai.enums.Role;
+import com.tuotiansudai.enums.*;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
@@ -46,7 +43,10 @@ public class RegisterUserServiceImpl implements RegisterUserService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean register(UserModel userModel) {
-        this.userMapper.create(userModel);
+        int result = this.userMapper.create(userModel);
+        if (result <= 0) {
+            return true;
+        }
 
         this.userRoleMapper.create(Lists.newArrayList(new UserRoleModel(userModel.getLoginName(), Role.USER)));
 
@@ -61,6 +61,9 @@ public class RegisterUserServiceImpl implements RegisterUserService {
 
     private void sendMessage(UserModel userModel) {
         mqWrapperClient.sendMessage(MessageQueue.UserRegistered_CompletePointTask, userModel.getLoginName());
+
+        //体验金单独存入体验金账户
+        mqWrapperClient.sendMessage(MessageQueue.UserRegistered_CompleteExperienceUpdate, userModel.getLoginName());
 
         //Title:5888元体验金已存入您的账户，请查收！
         //Content:哇，您终于来啦！初次见面，岂能无礼？5888元体验金双手奉上，【立即体验】再拿588元红包和3%加息券！
@@ -85,7 +88,8 @@ public class RegisterUserServiceImpl implements RegisterUserService {
             mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(Lists.newArrayList(userModel.getReferrer()),
                     PushSource.ALL,
                     PushType.RECOMMEND_SUCCESS,
-                    MessageFormat.format(MessageEventType.RECOMMEND_SUCCESS.getTitleTemplate(), userModel.getMobile())));
+                    MessageFormat.format(MessageEventType.RECOMMEND_SUCCESS.getTitleTemplate(), userModel.getMobile()),
+                    AppUrl.MESSAGE_CENTER_LIST));
         }
     }
 }

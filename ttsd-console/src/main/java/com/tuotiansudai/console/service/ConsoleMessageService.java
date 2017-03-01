@@ -6,6 +6,7 @@ import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.enums.MessageType;
 import com.tuotiansudai.message.PushMessage;
 import com.tuotiansudai.message.dto.MessageCreateDto;
@@ -13,13 +14,11 @@ import com.tuotiansudai.message.dto.MessagePaginationItemDto;
 import com.tuotiansudai.message.dto.PushCreateDto;
 import com.tuotiansudai.message.repository.mapper.MessageMapper;
 import com.tuotiansudai.message.repository.mapper.PushMapper;
-import com.tuotiansudai.message.repository.model.MessageModel;
-import com.tuotiansudai.message.repository.model.MessageStatus;
-import com.tuotiansudai.message.repository.model.MessageUserGroup;
-import com.tuotiansudai.message.repository.model.PushModel;
+import com.tuotiansudai.message.repository.model.*;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.util.PaginationUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +28,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.MessageFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -39,6 +40,8 @@ public class ConsoleMessageService {
     private final static String MESSAGE_IMPORT_USER_TEMP_KEY = "message:manual-message:receivers:temp:{0}";
 
     private final static String MESSAGE_IMPORT_USER_KEY = "message:manual-message:receivers";
+
+    private static Logger logger = Logger.getLogger(ConsoleMessageService.class);
 
     @Autowired
     private MessageMapper messageMapper;
@@ -52,24 +55,20 @@ public class ConsoleMessageService {
     @Autowired
     private MQWrapperClient mqWrapperClient;
 
-    public long findMessageCount(String title, MessageStatus messageStatus, String createdBy, MessageType messageType) {
-        return messageMapper.findMessageCount(title, messageStatus, createdBy, messageType);
-    }
-
-    public List<MessagePaginationItemDto> findMessagePagination(String title, MessageStatus messageStatus, String createdBy, MessageType messageType, int index, int pageSize) {
-        int offset = PaginationUtil.calculateOffset(index, pageSize, messageMapper.findMessageCount(title, messageStatus, createdBy, messageType));
-        List<MessageModel> messageModels = messageMapper.findMessagePagination(title, messageStatus, createdBy, messageType, offset, pageSize);
-        return messageModels.stream().map(messageModel -> new MessagePaginationItemDto(messageModel, pushMapper.findById(messageModel.getPushId()))).collect(Collectors.toList());
+    public BasePaginationDataDto<MessagePaginationItemDto> findMessagePagination(String title, MessageStatus messageStatus, String updatedBy, MessageType messageType, MessageCategory messageCategory, int index, int pageSize) {
+        long count = messageMapper.findMessageCount(title, messageStatus, updatedBy, messageType, messageCategory);
+        List<MessageModel> messageModels = messageMapper.findMessagePagination(title, messageStatus, updatedBy, messageType, messageCategory, PaginationUtil.calculateOffset(index, pageSize, count), pageSize);
+        return new BasePaginationDataDto<>(index, pageSize, count, messageModels.stream().map(messageModel -> new MessagePaginationItemDto(messageModel, pushMapper.findById(messageModel.getPushId()))).collect(Collectors.toList()));
     }
 
     @Transactional
-    public long createOrUpdateManualMessage(String loginName, MessageCreateDto messageCreateDto) {
+    public Long createOrUpdateManualMessage(String loginName, MessageCreateDto messageCreateDto) {
         Long messageId = messageCreateDto.getId();
         if (messageId == null) {
             Long pushId = this.createOrUpdatePush(loginName, messageCreateDto.getPush());
-            return this.createManualMessage(loginName, pushId, messageCreateDto);
+            return createManualMessage(loginName, pushId, messageCreateDto);
         }
-        this.updateManualMessage(loginName, messageCreateDto);
+        updateManualMessage(loginName, messageCreateDto);
 
         return messageId;
     }
@@ -105,14 +104,17 @@ public class ConsoleMessageService {
                     messageModel.getUserGroup() == MessageUserGroup.IMPORT_USER ? (List<String>) redisWrapperClient.hgetSeri(MESSAGE_IMPORT_USER_KEY, String.valueOf(messageModel.getId())) : null,
                     pushModel.getPushSource(),
                     pushModel.getPushType(),
-                    pushModel.getContent()));
+                    pushModel.getContent(),
+                    pushModel.getJumpTo()));
         }
         return new BaseDto<>(new BaseDataDto(true));
     }
 
     public BaseDto<BaseDataDto> rejectMessage(long messageId, String approvedBy) {
         MessageModel messageModel = messageMapper.findActiveById(messageId);
-        if (messageModel == null || messageModel.getStatus() != MessageStatus.TO_APPROVE) {
+        if (messageModel == null
+                || (messageModel.getType() == MessageType.EVENT && messageModel.getStatus() != MessageStatus.APPROVED)
+                || (messageModel.getType() == MessageType.MANUAL && messageModel.getStatus() != MessageStatus.TO_APPROVE)) {
             return new BaseDto<>(new BaseDataDto(false, "消息审核失败"));
         }
         messageModel.setUpdatedTime(new Date());
@@ -140,7 +142,22 @@ public class ConsoleMessageService {
     }
 
     @SuppressWarnings(value = "unchecked")
-    private long createManualMessage(String createdBy, Long pushId, MessageCreateDto messageCreateDto) {
+    private Long createManualMessage(String createdBy, Long pushId, MessageCreateDto messageCreateDto) {
+        Date validStartTime = null;
+        Date validEndTime = null;
+        try {
+            validStartTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(messageCreateDto.getValidStartTime());
+        } catch (ParseException e) {
+            logger.error(MessageFormat.format("[ConsoleMessageService][createManualMessage] create message {0} validStartTime fail, parse string:{1}", messageCreateDto.getId(), messageCreateDto.getValidStartTime()));
+        }
+        try {
+            validEndTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(messageCreateDto.getValidEndTime());
+        } catch (ParseException e) {
+            logger.error(MessageFormat.format("[ConsoleMessageService][createManualMessage] create message {0} validEndTime fail, parse string:{1}", messageCreateDto.getId(), messageCreateDto.getValidEndTime()));
+        }
+        if (null == validStartTime || null == validEndTime) {
+            return null;
+        }
         MessageModel messageModel = new MessageModel(messageCreateDto.getTitle(),
                 messageCreateDto.getTemplateTxt(),
                 messageCreateDto.getUserGroup(),
@@ -149,7 +166,9 @@ public class ConsoleMessageService {
                 messageCreateDto.getWebUrl(),
                 messageCreateDto.getAppUrl(),
                 pushId,
-                createdBy);
+                createdBy,
+                validStartTime,
+                validEndTime);
         messageMapper.create(messageModel);
         if (messageCreateDto.getUserGroup() == MessageUserGroup.IMPORT_USER) {
             String messageId = String.valueOf(messageModel.getId());
@@ -180,6 +199,16 @@ public class ConsoleMessageService {
         messageModel.setAppUrl(messageCreateDto.getAppUrl());
         messageModel.setUpdatedBy(updatedBy);
         messageModel.setUpdatedTime(new Date());
+        try {
+            messageModel.setValidStartTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(messageCreateDto.getValidStartTime()));
+        } catch (ParseException e) {
+            logger.error(MessageFormat.format("[ConsoleMessageService][updateManualMessage] update message {0} validStartTime fail, parse string:{1}", messageCreateDto.getId(), messageCreateDto.getValidStartTime()));
+        }
+        try {
+            messageModel.setValidEndTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(messageCreateDto.getValidEndTime()));
+        } catch (ParseException e) {
+            logger.error(MessageFormat.format("[ConsoleMessageService][updateManualMessage] update message {0} validEndTime fail, parse string:{1}", messageCreateDto.getId(), messageCreateDto.getValidEndTime()));
+        }
         messageMapper.update(messageModel);
 
         if (messageCreateDto.getUserGroup() == MessageUserGroup.IMPORT_USER && messageCreateDto.getImportUsersFlag() != null && messageCreateDto.getImportUsersFlag() != messageModel.getId()) {
@@ -195,7 +224,7 @@ public class ConsoleMessageService {
         }
 
         if (pushCreateDto.getId() == null) {
-            PushModel pushModel = new PushModel(createdOrUpdatedBy, pushCreateDto.getPushType(), pushCreateDto.getPushSource(), pushCreateDto.getContent());
+            PushModel pushModel = new PushModel(createdOrUpdatedBy, pushCreateDto.getPushType(), pushCreateDto.getPushSource(), pushCreateDto.getContent(), pushCreateDto.getJumpTo());
             pushMapper.create(pushModel);
             return pushModel.getId();
         }
@@ -205,6 +234,7 @@ public class ConsoleMessageService {
         pushModel.setUpdatedTime(new Date());
         pushModel.setPushSource(pushCreateDto.getPushSource());
         pushModel.setPushType(pushCreateDto.getPushType());
+        pushModel.setJumpTo(pushCreateDto.getJumpTo());
         pushMapper.update(pushModel);
         return pushModel.getId();
     }

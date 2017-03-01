@@ -176,6 +176,8 @@ public class RepayServiceImpl implements RepayService {
         dataDto.setStatus(true);
         dataDto.setRecords(Lists.<InvestRepayDataItemDto>newArrayList());
         baseDto.setData(dataDto);
+        final InvestModel investModel = investMapper.findById(investId);
+        LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
         final List<InvestRepayModel> investRepayModels = investRepayMapper.findByLoginNameAndInvestId(loginName, investId);
         int lastPeriod = investRepayModels.size();
         List<InvestRepayDataItemDto> records = Lists.newArrayList();
@@ -225,6 +227,10 @@ public class RepayServiceImpl implements RepayService {
                 if (!investRepayModel.getStatus().equals(RepayStatus.COMPLETE)) {
                     sumExpectedInterest += expectedAmount;
                 }
+                if(loanModel.getProductType() == ProductType.EXPERIENCE){
+                    investRepayDataItemDto.setLoan(loanModel);
+                    investRepayDataItemDto.setInvestExperienceAmount(AmountConverter.convertCentToString(investModel.getAmount()));
+                }
                 records.add(investRepayDataItemDto);
             }
             dataDto.setSumActualInterest(AmountConverter.convertCentToString(sumActualInterest));
@@ -251,7 +257,7 @@ public class RepayServiceImpl implements RepayService {
             }
         }
 
-        final InvestModel investModel = investMapper.findById(investId);
+
         List<MembershipModel> membershipModels =  membershipMapper.findAllMembership();
         Optional<MembershipModel> membershipModelOptional = Iterators.tryFind(membershipModels.iterator(), new Predicate<MembershipModel>() {
             @Override

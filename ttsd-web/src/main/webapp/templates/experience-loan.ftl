@@ -1,6 +1,6 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="${css.loan_detail}" pageJavascript="${js.experience_loan_detail}" activeNav="我要投资" activeLeftNav="" title="新手体验项目">
-<div class="loan-detail-content loan-detail-new" data-loan-progress="${loan.progress?string.computer}">
+<@global.main pageCss="${css.loan_detail_experience}" pageJavascript="${js.loan_detail_experience}" activeNav="我要投资" activeLeftNav="" title="新手体验项目">
+<div class="loan-detail-content loan-detail-new" id="experienceLoanDetailContent" data-loan-progress="${loan.progress?string.computer}">
 
     <div class="borderBox clearfix no-border">
         <div class="loan-model">
@@ -11,7 +11,7 @@
                 </h2>
                 <div class="container-block loan-info">
                     <div class="content">
-                        <div class="row loan-number-detail">
+                        <div class="row loan-number-detail clearfix">
                             <div class="col-md-4">
                                 <div class="title">预期年化收益</div>
                                 <div class="number red">
@@ -21,33 +21,19 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="title">项目期限</div>
-                                <div class="number red">${loan.duration}<span>天</span></div>
+                                <div class="number">${loan.duration}<span>天</span></div>
                             </div>
                             <div class="col-md-5">
-                                <div class="title">项目金额</div>
-                                <div class="number red">${loan.loanAmount}<span>元(体验金)</span></div>
+                                <div class="title">起投金额</div>
+                                <div class="number">
+                                    <em><@amount>${loan.minInvestAmount?string.computer}</@amount></em><span>元(体验金)</span>
+                                </div>
                             </div>
                         </div>
                         <div class="row loan-active-detail">
                             <div class="col-md-6">
-                                <span class="title">投资进度：</span>
-                                <div class="progress-bar">
-                                    <div class="progress-inner" style="width: ${loan.progress?string("0.00")}%"></div>
-                                </div>
-                                <#-- 这里的百分比要和上面 .progress-inner的style里的百分比一样 -->
-                                <span class="orange2">${loan.progress?string("0.00")}%</span>
-                            </div>
-                            <div class="col-md-6">
-                                <span class="title" data-amount-need-raised="${loan.investAmount}">可投金额：</span>
-                                ${loan.investAmount}元(体验金)
-                            </div>
-                            <div class="col-md-6">
                                 <span class="title">还款方式：</span>
                                 到期付息,体验金收回。
-                            </div>
-                            <div class="col-md-6 short-detail">
-                                <span class="title">项目简介：</span>
-                                此项目为拓天速贷体验项目，是由拓天速贷设立的专门提供给新注册客户，进行投资体验的虚拟项目。
                             </div>
                         </div>
                     </div> <#-- .content end tag -->
@@ -60,26 +46,16 @@
                     <form action="/experience-invest" method="post" id="investForm">
                         <dl class="account-list new-text account-list-new">
                             <input type="hidden" name="loanId" value="1"/>
-                            <input type="hidden" name="userCouponIds"
-                                   value="<#if coupon??>${coupon.id?string.computer}</#if>"
-                                   data-coupon-id="<#if coupon??>${coupon.couponId?string.computer}</#if>"/>
-                            <input type="hidden" name="amount" value="0"/>
 
-                            <dd class="experience-ticket clearfix">
-                                <span class="fl">优惠券：</span>
-
-                                <div class="fr experience-ticket-box">
-                                    <em class="experience-ticket-input <#if coupon??==false>disabled</#if>"
-                                        id="use-experience-ticket">
-                                        <span>
-                                            <#if coupon??>
-                                            ${coupon.name}<@amount>${coupon.amount?string.computer}</@amount>元
-                                            <#else>
-                                                无可用体验金
-                                            </#if>
-                                        </span>
-                                    </em>
-                                </div>
+                            <dd class="clearfix">
+                                <span class="fl">体验金余额：</span>
+                                <em class="fr account-amount" data-user-balance="${experienceBalance?string.computer}">${(experienceBalance / 100)?string("0.00")} 元</em>
+                            </dd>
+                            <dd class="invest-amount tl" <#if loan.loanStatus == "PREHEAT">style="display: none"</#if>>
+                                <span class="fl">投资金额(体验金)：</span>
+                                <input type="text" name="amount" data-l-zero="deny" data-v-min="0.00" data-min-invest-amount="${loan.minInvestAmount}"
+                                       placeholder="0.00" value="${(experienceBalance / 100)?string("0.00")}"
+                                       class="text-input-amount fr position-width"/>
                             </dd>
 
                             <dd class="expected-interest-dd tc mb-20">
@@ -88,16 +64,18 @@
                             </dd>
 
                             <dd class="mb-20">
-                                体验标升级中，等待3天，马上回来
-                                <#--<@global.isAnonymous>-->
-                                    <#--<a class="btn-pay btn-normal" href="/register/user">立即体验</a>-->
-                                <#--</@global.isAnonymous>-->
-                                <#--<@global.isNotAnonymous>-->
-                                    <#--<button id="investSubmit" class="btn-pay btn-normal" type="button"-->
-                                            <#--<#if coupon?? == false>disabled="disabled"</#if>>立即体验-->
-                                    <#--</button>-->
-                                <#--</@global.isNotAnonymous>-->
-
+                                <@global.isAnonymous>
+                                    <a class="btn-pay btn-normal" href="/register/user">马上投资</a>
+                                </@global.isAnonymous>
+                                <@global.isNotAnonymous>
+<<<<<<< HEAD
+                                    <button id="investSubmit" class="btn-pay btn-normal" type="button">马上投资
+=======
+                                    <button id="investSubmit" class="btn-pay btn-normal" type="submit"
+                                            <#if coupon?? == false>disabled="disabled"</#if>>立即体验
+>>>>>>> master
+                                    </button>
+                                </@global.isNotAnonymous>
                             </dd>
                         </dl>
                     </form>
@@ -106,7 +84,7 @@
                     <form action="/loan-list" method="get">
                         <dl class="account-list">
                             <dd class="img-status">
-                                <img src="${staticServer}/images/sign/loan/${loan.loanStatus?lower_case}.png" alt=""/>
+                                <img src="${commonStaticServer}/images/sign/loan/${loan.loanStatus?lower_case}.png" alt=""/>
                             </dd>
                             <dd>
                                 <button class="btn-pay btn-normal" type="submit">查看其他项目</button>
@@ -118,7 +96,7 @@
         </div>
 
         <div class="chart-info-responsive bg-w">
-            项目金额：${loan.loanAmount}元(体验金)<br/>
+            起投金额：${loan.minInvestAmount}元(体验金)<br/>
             项目期限：${loan.duration}天<br/>
             起息时间：即投即生息<br/>
             还款方式：到期付息,体验金收回。<br/>
@@ -131,12 +109,12 @@
             </div>
             <div class="model-content">
                 <ul class="info-list">
-                    <li>1、新手体验项目是由拓天速贷专门提供给平台各类型新手客户体验平台流程的活动项目。</li>
-                    <li>2、投资体验项目无需充值。</li>
-                    <li>3、新手体验券(体验金)是由拓天速贷用平台活动方式，为新注册用户提供平台项目投资体验的活动金额，新手体验券只能投资体验项目，不可提现，使用后可产生红包奖励。</li>
-                    <li>4、新注册用户通过获得体验券(体验金)后，在体验项目专区点击使用。</li>
-                    <li>5、新手体验项目不可转让。</li>
-                    <li>6、为防止不法分子恶意刷取平台奖励，红包奖励需投资真实项目后方可提现。</li>
+                    <li>1、体验金是由拓天速贷提供给平台客户用来投资拓天体验金项目的本金，有效期为3天，50元起投。</li>
+                    <li>2、拓天体验金项目仅限用户使用体验金投资，项目到期后，平台回收体验金，收益归用户所有。</li>
+                    <li>3、体验金不能转出，但体验金投资产生的收益可以提现。</li>
+                    <li>4、用户首次提现体验金投资所产生的收益时，需要投资其他定期项目（债权转让项目除外）累计满1000元才可以提现。</li>
+                    <li>5、新注册用户可以获得6888元体验金。</li>
+                    <li>6、关注并参与平台活动可获取更多体验金。</li>
                     <li>本活动规则解释权归拓天速贷所有，如有疑问请联系在线客服或拨打400-169-1188</li>
                 </ul>
             </div>
@@ -174,23 +152,15 @@
             </div>
         </div>
     </div>
-    <div class="free-success" id="freeSuccess">
-        <div class="free-content">
-            <div class="free-top">恭喜您体验成功!<span class="close-free"></span></div>
-            <div class="free-detail">
-                <p class="text-info">并获得以下奖励：</p>
+    <div id="freeSuccess" style="display: none">
+        <div class="success-info-tip">
+            <i class="icon-tip"></i>
+            <div class="detail-word">
+                <h2>恭喜您体验成功！</h2> 体验收益发放后需实名认证并进行过投资后方可提现 <a href="/register/account" class="key">立即认证>></a>
+                <div class="pad-m-tb" style="padding-left:50px;">
+                    <button type="button" class="btn-normal close-free">确认</button>
+                </div>
 
-                <p>
-                    <img src="${staticServer}/images/sign/actor/gift-free.png" width="100%" alt=""/>
-                </p>
-
-                <p class="free-use">
-                    <a href="/loan-list" class="btn">立即使用</a>
-                </p>
-
-                <p class="free-tip <@global.role hasRole="'INVESTOR'">hide</@global.role>">
-                    温馨提示：体验收益发放后需实名认证并进行过投资后方可提现<a href="/register/account">立即认证>></a>
-                </p>
             </div>
         </div>
     </div>

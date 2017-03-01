@@ -1,5 +1,5 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="${css.my_account}" pageJavascript="${js.investor_invest_list}" activeNav="我的账户" activeLeftNav="我的投资" title="投资记录">
+<@global.main pageCss="${css.investor_invest_list}" pageJavascript="${js.investor_invest_list}" activeNav="我的账户" activeLeftNav="我的投资" title="投资记录">
 <div class="content-container invest-list-content">
     <h4 class="column-title">
         <a href="/investor/invest-list"><em class="tc">直投项目</em></a>
@@ -27,6 +27,7 @@
     <div class="clear-blank"></div>
     <div class="invest-list" id="investList"></div>
     <script type="text/html" id="investListTpl">
+        <#--art template-->
         <table class="invest-list table-striped">
             <thead>
                 <tr>
@@ -89,7 +90,7 @@
                     <td>{{$value.status}}</td>
                     <td>
                         {{if $value.productType=='EXPERIENCE'}}
-                        {{$value.nextRepayAmount}}(现金红包)
+                        {{$value.nextRepayAmount}}
                         {{else}}
                         {{if $value.nextRepayDate}}
                         {{$value.nextRepayDate}} / {{$value.nextRepayAmount}}
@@ -121,8 +122,69 @@
         </table>
     </script>
 
-
     <div class="pagination" data-url="/investor/invest-list-data">
     </div>
 </div>
+
+<script type="text/template" id="investRepayTemplate">
+    <#--underscore template-->
+    <div class="layer-content">
+        <div class="summary-top clearfix">
+            <span>已收回款总额 : <em><%=sumActualInterest%></em>元</span>
+            <span>待收回款总额 : <em><%=sumExpectedInterest%></em>元</span>
+            <span>现金红包奖励 : <em><%=redInterest%></em>元</span>
+        </div>
+        <table class="table table-repay">
+            <thead>
+            <tr>
+                <th class="tr">到期回款日</th>
+                <th class="tr">应收回款(元)</th>
+                <th class="tr">应收本金(元)</th>
+                <th class="tr">应收收益(元)</th>
+                <th class="tr">应收奖励(元)
+                    <%=couponMessage?'<i class="fa fa-question-circle text-b coupon" style="color:#ff7a2a;" data-benefit="'+couponMessage+'"></i>':''%>
+                </th>
+                <th class="tr">应缴服务费(元)
+                    <%=levelMessage?'<i class="fa fa-question-circle text-b fee" data-benefit="'+levelMessage+'"></i>':''%>
+
+                </th>
+                <th class="tr spec-bg">已收回款(元)</th>
+                <th class="tr spec-bg">回款时间(元)</th>
+                <th class="spec-bg">状态</th>
+            </tr>
+            <tbody>
+            <% for(var i = 0; i < records.length; i++) {
+                var item = records[i];
+            %>
+            <tr>
+                <td><%=item.repayDate%></td>
+                <td class="tr"><%=item.amount%></td>
+                <td class="tr"><%=item.corpus%></td>
+                <td class="tr"><%=item.expectedInterest%></td>
+                <td class="tr">
+                <%=item.couponExpectedInterest?item.couponExpectedInterest:'--'%>
+                </td>
+                <td class="tr">
+                    <%=item.expectedFee?'-'+item.expectedFee:'--'%>
+                </td>
+                <td class="tr spec-bg">
+                <%=item.actualAmount ? item.actualAmount : '--'%>
+                <%=(item.actualAmount && item.defaultInterest)?'<i class="fa fa-question-circle text-b repay" data-benefit="逾期'+overdueDay+'天，已收违约金'+defaultInterest+'元"></i>':'' %>
+                </td>
+                <td class="tr spec-bg">
+                    <%=item.actualRepayDate?item.actualRepayDate:'--'%>
+                </td>
+                <td class="spec-bg">
+                    <%=item.status%>
+                </td>
+            </tr>
+        <% } %>
+        </tbody>
+            </thead>
+        </table>
+        <p class="bottom-note">应收回款=应收本金+应收收益+应收奖励-应缴服务费</p>
+    </div>
+</script>
+
+<div id="elementInvestRepay" style="display: none"></div>
 </@global.main>

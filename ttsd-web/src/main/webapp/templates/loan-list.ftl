@@ -16,7 +16,7 @@
         <#assign description="拓天速贷为您提供准确及时的P2P投资项目,投资用户通过拓天速贷平台进行准确投标的方式进行投资,让您获得较高的收益.">
 </#switch>
 
-<@global.main pageCss="${css.project_loan_list}" pageJavascript="${js.loan_list}" activeNav="我要投资" activeLeftNav="直投项目" title="${title!}" keywords="${keywords!}" description="${description!}">
+<@global.main pageCss="${css.loan_list}" pageJavascript="${js.loan_list}" activeNav="我要投资" activeLeftNav="直投项目" title="${title!}" keywords="${keywords!}" description="${description!}">
 <div class="loan-list-content">
     <ul class="wrapper-list" id="wrapperList">
             <li class="project-kind">
@@ -72,7 +72,7 @@
                 </#list>
             </li>
         </ul>
-    <div class="loan-list-box">
+    <div class="loan-list-box" id="loanListBox">
         <ul>
             <#list loanItemList as loanItem>
                 <li data-url="/loan/${(loanItem.id?string.computer)!}" class="clearfix">
@@ -94,7 +94,14 @@
                                     <i class="ic-right"></i>
                                 </span>
                             </#if>
-                            <span class="l-way fr">${loanItem.type.getName()}</span>
+
+                            <span class="l-way fr">
+                                <#if loanItem.productType == 'EXPERIENCE'>
+                                    按天计息，即投即生息
+                                <#else>
+                                    ${loanItem.type.getName()}
+                                </#if>
+                            </span>
                         </div>
                         <div class="loan-info-dl">
                             <dl>
@@ -130,10 +137,18 @@
                                 <dd><em>${loanItem.duration}</em>天</dd>
                             </dl>
                             <dl>
-                                <dt>招募金额</dt>
-                                <dd>
-                                    <em><@amount>${loanItem.loanAmount?string.computer}</@amount></em>元<#if loanItem.productType == 'EXPERIENCE'>
-                                    (体验金)</#if></dd>
+                                <#if loanItem.productType == 'EXPERIENCE'>
+                                    <dt>起投金额</dt>
+                                    <dd>
+                                        <em><@amount>${loanItem.minInvestAmount?string.computer}</@amount></em>元(体验金)
+                                    </dd>
+                                <#else>
+                                    <dt>招募金额</dt>
+                                    <dd>
+                                        <em><@amount>${loanItem.loanAmount?string.computer}</@amount></em>元
+                                    </dd>
+                                </#if>
+
                             </dl>
                         </div>
                     </div>
@@ -152,6 +167,27 @@
                             </div>
 
                             <div class="pro">
+                                <#if loanItem.productType != 'EXPERIENCE'>
+                                    <div class="p-title">
+                                        <span class="fl">项目进度</span>
+                                        <span class="point fr">${loanItem.progress?string("0.00")} %</span>
+                                    </div>
+                                    <div class="process-percent">
+                                        <div class="percent" style="width:${loanItem.progress}%"></div>
+                                    </div>
+                                    <div class="rest-amount">
+                                        <span>可投额度：<i>${loanItem.alert}</i></span>
+                                        <i class="btn-invest btn-normal">马上投资</i>
+                                    </div>
+                                <#else>
+                                    <div class="rest-amount">
+                                        <i class="btn-invest btn-normal">马上投资</i>
+                                    </div>
+                                </#if>
+                            </div>
+                        </#if>
+                        <#if loanItem.status== 'RAISING'>
+                            <#if loanItem.productType != 'EXPERIENCE'>
                                 <div class="p-title">
                                     <span class="fl">项目进度</span>
                                     <span class="point fr">${loanItem.progress?string("0.00")} %</span>
@@ -163,20 +199,12 @@
                                     <span>可投额度：<i>${loanItem.alert}</i></span>
                                     <i class="btn-invest btn-normal">马上投资</i>
                                 </div>
-                            </div>
-                        </#if>
-                        <#if loanItem.status== 'RAISING'>
-                            <div class="p-title">
-                                <span class="fl">项目进度</span>
-                                <span class="point fr">${loanItem.progress?string("0.00")} %</span>
-                            </div>
-                            <div class="process-percent">
-                                <div class="percent" style="width:${loanItem.progress}%"></div>
-                            </div>
-                            <div class="rest-amount">
-                                <span>可投额度：<i>${loanItem.alert}</i><#if loanItem.productType == 'EXPERIENCE'>(体验金)</#if></span>
-                                <i class="btn-invest btn-normal">马上投资</i>
-                            </div>
+                            <#else>
+                                <div class="rest-amount">
+                                    <br/>
+                                    <i class="btn-invest btn-normal">马上投资</i>
+                                </div>
+                            </#if>
                         </#if>
                         <#if ['RECHECK', 'REPAYING', 'OVERDUE', 'COMPLETE']?seq_contains(loanItem.status)>
                             <div class="p-title">

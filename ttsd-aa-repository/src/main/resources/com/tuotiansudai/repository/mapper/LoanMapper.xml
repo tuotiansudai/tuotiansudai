@@ -232,7 +232,7 @@
     </select>
 
     <select id="findByStatus" resultMap="loanResultMap">
-        select * from loan where status = #{status}
+        select * from loan where status = #{status} and product_type != 'EXPERIENCE'
     </select>
 
     <select useCache="false" id="findRepayingPaginationByAgentLoginName" parameterType="map" resultMap="loanResultMap">

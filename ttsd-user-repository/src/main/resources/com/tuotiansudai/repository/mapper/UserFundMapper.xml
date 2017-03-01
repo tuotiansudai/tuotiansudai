@@ -4,7 +4,6 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tuotiansudai.repository.mapper.UserFundMapper">
 
-
     <resultMap id="userFundResultMap" type="UserFundView">
         <result column="balance" property="balance"/>
         <result column="actual_total_interest" property="actualTotalInterest"/>
@@ -17,8 +16,10 @@
         <result column="invest_froze_amount" property="investFrozeAmount"/>
         <result column="withdraw_froze_amount" property="withdrawFrozeAmount"/>
         <result column="current_month_invest_repay_count" property="currentMonthInvestRepayCount"/>
+        <result column="expected_experience_interest" property="expectedExperienceInterest"/>
+        <result column="actual_experience_interest" property="actualExperienceInterest"/>
+        <result column="invest_amount" property="investAmount"/>
     </resultMap>
-
 
     <select id="findByLoginName" parameterType="string" resultMap="userFundResultMap">
         select
@@ -48,7 +49,7 @@
 
               (select ifnull(sum(invest_repay.expected_interest), 0) - sum(invest_repay.expected_fee)
               from invest_repay join invest on invest_repay.invest_id = invest.id
-              where login_name = #{loginName} and invest_repay.status= 'REPAYING')
+              where invest.loan_id != 1 and login_name = #{loginName} and invest_repay.status= 'REPAYING')
               +
               (select ifnull(sum(coupon_repay.expected_interest), 0) - ifnull(sum(coupon_repay.expected_fee), 0)
               from coupon_repay
@@ -66,13 +67,22 @@
               from withdraw where login_name = #{loginName} and status = 'APPLY_SUCCESS') as withdraw_froze_amount,
 
               (select count(1)
-              from invest_repay join invest on invest_repay.invest_id= invest.id
+              from invest_repay join invest on invest_repay.invest_id = invest.id
               where invest.login_name = #{loginName}
-              and invest.loan_id != 1
+              and EXISTS (select 1 from loan l where l.id = invest.loan_id and l.product_type != 'EXPERIENCE')
               and invest.transfer_status != 'SUCCESS'
               and((invest_repay.status = 'REPAYING' and date_format(invest_repay.repay_date, '%Y-%m-%d') between date_format(now(), '%Y-%m-01') and LAST_DAY(now()))
-                  or(invest_repay.status = 'COMPLETE' and date_format(invest_repay.actual_repay_date, '%Y-%m-%d') between date_format(now(), '%Y-%m-01') and LAST_DAY(now())))) as current_month_invest_repay_count
+                  or(invest_repay.status = 'COMPLETE' and date_format(invest_repay.actual_repay_date, '%Y-%m-%d') between date_format(now(), '%Y-%m-01') and LAST_DAY(now())))) as current_month_invest_repay_count,
 
+              (select ifnull(sum(invest_repay.actual_interest), 0)
+              from invest_repay join invest on invest_repay.invest_id= invest.id
+              where invest.loan_id = 1 and invest_repay.is_transferred is false and invest.login_name = #{loginName} and invest_repay.status = 'COMPLETE') as actual_experience_interest,
+
+              (select ifnull(sum(invest_repay.expected_interest), 0)
+              from invest_repay join invest on invest_repay.invest_id= invest.id
+              where invest.loan_id = 1 and invest_repay.is_transferred is false and invest.login_name = #{loginName} and invest_repay.status = 'REPAYING') as expected_experience_interest,
+
+             (select ifnull(sum(amount), 0) from invest where invest.login_name = #{loginName} and invest.status = 'SUCCESS' and loan_id !=1 and transfer_invest_id is null) as invest_amount
         from dual;
     </select>
 

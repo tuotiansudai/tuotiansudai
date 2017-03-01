@@ -18,8 +18,6 @@ public class JobInitPlugin implements SchedulerPlugin {
 
     private String schedulerName;
 
-    private final String TIMEZONE_SHANGHAI = "Asia/Shanghai";
-
     public JobInitPlugin(JobManager jobManager) {
         this.jobManager = jobManager;
     }
@@ -50,7 +48,7 @@ public class JobInitPlugin implements SchedulerPlugin {
             deleteCheckUserBalanceJob();
         }
         if (JobType.CouponRepayCallBack.name().equalsIgnoreCase(schedulerName)) {
-            createCouponRepayCallBackJobIfNotExist();
+            deleteCouponRepayCallBackJobIfNotExist();
         }
         if (JobType.ExtraRateRepayCallBack.name().equalsIgnoreCase(schedulerName)) {
             createExtraRateRepayCallBackIfNotExist();
@@ -72,23 +70,6 @@ public class JobInitPlugin implements SchedulerPlugin {
     @Override
     public void shutdown() {
 
-    }
-
-    private void createCouponRepayCallBackJobIfNotExist() {
-        final JobType jobType = JobType.CouponRepayCallBack;
-        final String jobGroup = CouponRepayNotifyCallbackJob.JOB_GROUP;
-        final String jobName = CouponRepayNotifyCallbackJob.JOB_NAME;
-        try {
-            jobManager.newJob(jobType, CouponRepayNotifyCallbackJob.class)
-                    .replaceExistingJob(true)
-                    .runWithSchedule(SimpleScheduleBuilder
-                            .repeatSecondlyForever(CouponRepayNotifyCallbackJob.RUN_INTERVAL_SECONDS)
-                            .withMisfireHandlingInstructionIgnoreMisfires())
-                    .withIdentity(jobGroup, jobName)
-                    .submit();
-        } catch (SchedulerException e) {
-            logger.info(e.getLocalizedMessage(), e);
-        }
     }
 
     private void createExtraRateRepayCallBackIfNotExist() {
@@ -128,6 +109,10 @@ public class JobInitPlugin implements SchedulerPlugin {
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
         }
+    }
+
+    private void deleteCouponRepayCallBackJobIfNotExist() {
+        jobManager.deleteJob(JobType.CouponRepayCallBack, "umpay", "coupon_repay_call_back");
     }
 
     private void deleteRefreshAreaByMobile() {

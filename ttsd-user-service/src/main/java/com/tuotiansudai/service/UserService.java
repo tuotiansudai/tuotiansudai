@@ -3,8 +3,6 @@ package com.tuotiansudai.service;
 import com.tuotiansudai.dto.RegisterUserDto;
 import com.tuotiansudai.repository.model.UserModel;
 
-import java.util.List;
-
 public interface UserService {
 
     String getMobile(String loginName);
@@ -38,4 +36,8 @@ public interface UserService {
     boolean mobileIsRegister(String mobile);
 
     UserModel findByMobile(String mobile);
+
+    long getExperienceBalanceByLoginName(String loginName);
+
+
 }

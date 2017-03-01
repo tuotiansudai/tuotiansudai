@@ -18,12 +18,4 @@ public interface InvestRepayService {
     List<InvestRepayDataItemDto> findByLoginNameAndTimeNotSuccessInvestRepayList(String loginName, Date startTime, Date endTime, int startLimit, int endLimit);
 
     List<LatestInvestView> findLatestInvestByLoginName(String loginName, int startLimit, int endLimit);
-
-    long findSumRepaidInterestByLoginName(String loginName);
-
-    long findSumRepayingInterestByLoginName(String loginName);
-
-    long findSumRepayingCorpusByLoginName(String loginName);
-
-    long findSumRepaidCorpusByLoginName(String loginName);
 }

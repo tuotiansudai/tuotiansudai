@@ -49,9 +49,9 @@ public class ActivityMapperTest {
         return userModel;
     }
 
-    private ActivityModel createActivityModel(UserModel userModel, Date activatedTime, Date expiredTime, List<Source> source, ActivityStatus activityStatus) {
+    private ActivityModel createActivityModel(UserModel userModel, String activityTitle, Date activatedTime, Date expiredTime, List<Source> source, ActivityStatus activityStatus, boolean longTerm) {
         ActivityModel activityModel = new ActivityModel();
-        activityModel.setTitle("testTitle");
+        activityModel.setTitle(activityTitle);
         activityModel.setSeq(10l);
         activityModel.setWebActivityUrl("testWebActivityUrl");
         activityModel.setAppActivityUrl("testAppActivityUrl");
@@ -71,6 +71,7 @@ public class ActivityMapperTest {
         activityModel.setShareTitle("title");
         activityModel.setShareUrl("shareUrl");
         activityModel.setShareContent("content");
+        activityModel.setLongTerm(longTerm);
 
         activityMapper.create(activityModel);
 
@@ -81,17 +82,17 @@ public class ActivityMapperTest {
         UserModel userModel = createUserModel("testUser1");
         createUserModel("updatedUser");
         List<ActivityModel> activityModels = new ArrayList<>();
-        ActivityModel activityModel = createActivityModel(userModel, DateTime.parse("2016-06-01T01:20").toDate(), DateTime.parse("2040-06-01T01:20").toDate(), Lists.newArrayList(Source.WEB), ActivityStatus.TO_APPROVE);
+        ActivityModel activityModel = createActivityModel(userModel, "testTitle", DateTime.parse("2016-06-01T01:20").toDate(), DateTime.parse("2040-06-01T01:20").toDate(), Lists.newArrayList(Source.WEB), ActivityStatus.TO_APPROVE, false);
         activityModels.add(activityModel);
-        activityModel = createActivityModel(userModel, DateTime.parse("2016-06-02T01:20").toDate(), DateTime.parse("2040-06-01T01:20").toDate(), Lists.newArrayList(Source.WEB), ActivityStatus.TO_APPROVE);
+        activityModel = createActivityModel(userModel, "testTitle", DateTime.parse("2016-06-02T01:20").toDate(), DateTime.parse("2040-06-01T01:20").toDate(), Lists.newArrayList(Source.WEB), ActivityStatus.TO_APPROVE, false);
         activityModels.add(activityModel);
-        activityModel = createActivityModel(userModel, DateTime.parse("2016-06-03T01:20").toDate(), DateTime.parse("2040-06-01T01:20").toDate(), Lists.newArrayList(Source.ANDROID), ActivityStatus.OPERATING);
+        activityModel = createActivityModel(userModel, "testTitle", DateTime.parse("2016-06-03T01:20").toDate(), DateTime.parse("2040-06-01T01:20").toDate(), Lists.newArrayList(Source.ANDROID), ActivityStatus.OPERATING, false);
         activityModels.add(activityModel);
-        activityModel = createActivityModel(userModel, DateTime.parse("2016-07-01T01:20").toDate(), DateTime.parse("2040-06-01T01:20").toDate(), Lists.newArrayList(Source.ANDROID, Source.WEB), ActivityStatus.APPROVED);
+        activityModel = createActivityModel(userModel, "testTitle", DateTime.parse("2016-07-01T01:20").toDate(), DateTime.parse("2040-06-01T01:20").toDate(), Lists.newArrayList(Source.ANDROID, Source.WEB), ActivityStatus.APPROVED, false);
         activityModels.add(activityModel);
-        activityModel = createActivityModel(userModel, DateTime.parse("2016-07-01T01:20").toDate(), DateTime.parse("2000-06-01T01:20").toDate(), Lists.newArrayList(Source.ANDROID, Source.WEB), ActivityStatus.APPROVED);
+        activityModel = createActivityModel(userModel, "testTitle", DateTime.parse("2016-07-01T01:20").toDate(), DateTime.parse("2000-06-01T01:20").toDate(), Lists.newArrayList(Source.ANDROID, Source.WEB), ActivityStatus.APPROVED, false);
         activityModels.add(activityModel);
-        activityModel = createActivityModel(userModel, DateTime.parse("2016-07-01T01:20").toDate(), DateTime.parse("2040-06-01T01:20").toDate(), Lists.newArrayList(Source.WEB), ActivityStatus.APPROVED);
+        activityModel = createActivityModel(userModel, "testTitle", DateTime.parse("2016-07-01T01:20").toDate(), DateTime.parse("2040-06-01T01:20").toDate(), Lists.newArrayList(Source.WEB), ActivityStatus.APPROVED, false);
         activityModels.add(activityModel);
 
         return activityModels;
@@ -187,5 +188,16 @@ public class ActivityMapperTest {
         assertEquals(1, activityModels.size());
         activityModels = activityMapper.findActiveActivities(Source.WEB, DateTime.parse("2999-1-1").toDate(), 0, 1);
         assertEquals(1, activityModels.size());
+    }
+
+    @Test
+    public void shouldFindLongTermActivities() throws Exception {
+        UserModel activityUser = createUserModel("activityUser");
+        ActivityModel longTermActivity = createActivityModel(activityUser, "longTermActivity", null, null, Lists.newArrayList(Source.WEB), ActivityStatus.APPROVED, true);
+
+        List<ActivityModel> allActivities = activityMapper.findAllActivities(new Date(), new Date(), null, null);
+
+        assertTrue(allActivities.stream().anyMatch(activityModel -> activityModel.isLongTerm() && activityModel.getTitle().equals(longTermActivity.getTitle())));
+
     }
 }

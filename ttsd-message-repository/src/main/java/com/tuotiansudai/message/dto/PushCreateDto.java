@@ -1,5 +1,6 @@
 package com.tuotiansudai.message.dto;
 
+import com.tuotiansudai.enums.AppUrl;
 import com.tuotiansudai.enums.PushSource;
 import com.tuotiansudai.enums.PushType;
 import com.tuotiansudai.message.repository.model.PushModel;
@@ -19,6 +20,9 @@ public class PushCreateDto {
     @NotNull
     private String content;
 
+    @NotNull
+    private AppUrl jumpTo;
+
     public PushCreateDto() {
     }
 
@@ -27,6 +31,7 @@ public class PushCreateDto {
         this.pushType = pushModel.getPushType();
         this.pushSource = pushModel.getPushSource();
         this.content = pushModel.getContent();
+        this.jumpTo = pushModel.getJumpTo();
     }
 
     public Long getId() {
@@ -59,5 +64,13 @@ public class PushCreateDto {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public AppUrl getJumpTo() {
+        return jumpTo;
+    }
+
+    public void setJumpTo(AppUrl jumpTo) {
+        this.jumpTo = jumpTo;
     }
 }

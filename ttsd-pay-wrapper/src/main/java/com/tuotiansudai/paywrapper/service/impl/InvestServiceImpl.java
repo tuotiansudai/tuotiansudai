@@ -8,10 +8,7 @@ import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.dto.sms.LoanRaisingCompleteNotifyDto;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
-import com.tuotiansudai.enums.MessageEventType;
-import com.tuotiansudai.enums.PushSource;
-import com.tuotiansudai.enums.PushType;
-import com.tuotiansudai.enums.UserBillBusinessType;
+import com.tuotiansudai.enums.*;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.job.DelayMessageDeliveryJobCreator;
 import com.tuotiansudai.job.JobManager;
@@ -443,7 +440,7 @@ public class InvestServiceImpl implements InvestService {
                     logger.info("auto invest was skip, because user [" + autoInvestPlanModel.getLoginName() + "] has auto-invest-ed on this loan : " + loanId);
                     continue;
                 }
-                long availableSelfLoanAmount = loanModel.getMaxInvestAmount() - investMapper.sumSuccessInvestAmountByLoginName(loanId, autoInvestPlanModel.getLoginName());
+                long availableSelfLoanAmount = loanModel.getMaxInvestAmount() - investMapper.sumSuccessInvestAmountByLoginName(loanId, autoInvestPlanModel.getLoginName(),true);
                 if (availableSelfLoanAmount <= 0) {
                     logger.info("auto invest was skip, because amount that user [" + autoInvestPlanModel.getLoginName() + "] has invested was reach max-invest-amount , loanId : " + loanId);
                     continue;
@@ -591,7 +588,8 @@ public class InvestServiceImpl implements InvestService {
         mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(Lists.newArrayList(investModel.getLoginName()),
                 PushSource.ALL,
                 PushType.INVEST_SUCCESS,
-                title));
+                title,
+                AppUrl.MESSAGE_CENTER_LIST));
 
 
         InvestInfo investInfo = new InvestInfo();

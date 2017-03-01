@@ -28,7 +28,6 @@ import org.springframework.stereotype.Service;
 import java.text.DecimalFormat;
 import java.text.MessageFormat;
 import java.util.*;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Service
@@ -54,6 +53,9 @@ public class ActivityConsoleExportService {
 
     @Autowired
     private ActivityConsoleAnnualService activityConsoleAnnualService;
+
+    @Autowired
+    private ActivityWomanDayService activityWomanDayService;
 
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.mid.autumn.startTime}\")}")
     private Date activityAutumnStartTime;
@@ -248,5 +250,9 @@ public class ActivityConsoleExportService {
         List<AnnualPrizeDto> annualPrizeDtos = activityConsoleAnnualService.findAnnualList(index, pageSize, null).getRecords();
 
         return annualPrizeDtos.stream().map(ExportCsvUtil::dtoToStringList).collect(Collectors.toList());
+    }
+
+    public List<List<String>> buildWomanDayCsvList() {
+        return activityWomanDayService.getWomanDayPrizeRecord(0, Integer.MAX_VALUE, null).getRecords().stream().map(ExportCsvUtil::dtoToStringList).collect(Collectors.toList());
     }
 }

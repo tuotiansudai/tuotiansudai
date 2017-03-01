@@ -297,7 +297,7 @@ public class ConsoleCouponService {
                 interest = investService.estimateInvestIncome(loanModel.getId(), loginName, userCouponModel.getInvestAmount());
             }
             couponDetailsDtoList.add(new CouponDetailsDto(userCouponModel.getLoginName(), userCouponModel.getUsedTime(), userCouponModel.getInvestAmount(),
-                    userCouponModel.getLoanId(), loanModel != null ? loanModel.getName() : "", loanModel != null ? loanModel.getProductType() : null, interest));
+                    userCouponModel.getLoanId(), loanModel != null ? loanModel.getName() : "", loanModel != null ? loanModel.getProductType() : null, interest, userCouponModel.getEndTime()));
         }
         return couponDetailsDtoList;
     }

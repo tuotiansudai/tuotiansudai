@@ -1,6 +1,5 @@
 package com.tuotiansudai.api.dto.v1_0;
 
-
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.List;
