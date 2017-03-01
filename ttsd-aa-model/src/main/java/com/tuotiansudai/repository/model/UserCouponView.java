@@ -43,6 +43,9 @@ public class UserCouponView implements Serializable, Comparable<UserCouponView> 
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date startTime;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date createdTime;
+
     private boolean shared;
 
     private ProductType loanProductType;
@@ -182,6 +185,15 @@ public class UserCouponView implements Serializable, Comparable<UserCouponView> 
     public void setStartTime(Date startTime) {
         this.startTime = startTime;
     }
+
+    public Date getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(Date createdTime) {
+        this.createdTime = createdTime;
+    }
+
     public InvestStatus getStatus() {
         return status;
     }
