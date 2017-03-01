@@ -15,13 +15,21 @@ dependencies {
     providedCompile "javax.servlet:javax.servlet-api:3.1.0"
 }
 
+processResources {
+    def innerConfigPath = "${project.projectDir.getPath()}/src/main/resources"
+    def outerConfigPath = "${configPath}/ttsd-anxin-sign"
+    if (new File(outerConfigPath).isDirectory()) {
+        innerConfigPath = outerConfigPath
+    }
+
+    from("${innerConfigPath}/anxinsign.jks") {
+        into '/'
+    }
+}
+
 war {
     archiveName "ttsd-anxin-wrapper.war"
     destinationDir = file("war")
-
-    from("${configPath}/ttsd-anxin-sign/anxinsign.jks") {
-        into 'WEB-INF/classes/'
-    }
 }
 
 task renameWar {
