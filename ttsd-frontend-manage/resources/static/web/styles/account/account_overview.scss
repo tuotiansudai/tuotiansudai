@@ -3,20 +3,9 @@ $CK1:#ffac2a;
 //Account Overview
 .account-overview {
   padding: 0 !important;
-  .new-user-award {
-    background: #fff1e5;
-    margin-top: 10px;
-    height: 38px;
-    line-height: 38px;
-    border: 1px solid #ff7200;
-    border-radius: 2px;
-    span {
-      background: #ff0000;
-      color: #fff;
-      padding: 3px 8px;
-      border-radius: 10px;
-      margin: 0 10px;
-    }
+  font-size: 14px;
+  .more {
+    padding-right:15px;
   }
   .sign-layer {
     position: fixed;
@@ -122,15 +111,40 @@ $CK1:#ffac2a;
     background: none;
   }
 
+  .icon-has-con {
+    display: inline-block;
+    width:18px;
+    height: 11px;
+    margin-left: 7px;
+    background: url('../../images/icons/icon-arrow-up.png') right center no-repeat;
+    margin-top: 10px;
+    float: right;
+  }
+  .detail-list {
+    padding:10px 10px 15px 15px;
+    height: auto;
+    overflow: auto;
+    li {
+      float: left;
+      width:30%;
+      line-height: 38px;
+    }
+  }
+
+  .btn-primary, .btn-normal {
+    margin-left: 10px;
+    padding: 8px 20px;
+  }
   .column-box {
+    border-bottom: 1px solid #f9f9f9;
     &.profile-box {
-      padding:15px;
+      padding: 15px;
       .account-profile {
         margin-right: 10px;
         width: 78px;
         height: 78px;
         display: inline-block;
-        border:1px solid #e5e5e5;
+        border: 1px solid #e5e5e5;
         background: #f5fefd url('../../images/myaccount/icon-profile.png') center 19px no-repeat;
       }
 
@@ -221,10 +235,7 @@ $CK1:#ffac2a;
               }
             }
           }
-          .btn-primary, .btn-normal {
-            margin-left: 10px;
-            padding: 8px 20px;
-          }
+
         }
       }
       .vip {
@@ -259,6 +270,32 @@ $CK1:#ffac2a;
         background: url("../../images/icons/vip/account-vip/user-info.png") no-repeat;
       }
     }
+
+    h3 {
+      font-size: 16px;
+      color: #4c4c4c;
+      padding: 10px 15px;
+      cursor: pointer;
+    }
+    &.amount-sum {
+      border: 1px solid #fff;
+      .detail-list {
+        display: none;
+      }
+
+      &.open {
+        border: 1px solid #fbd0ae;
+        .detail-list {
+          display: block;
+        }
+        .icon-has-con {
+          transform: rotate(180deg);
+        }
+        h3 {
+          background: #e7eaee;
+        }
+      }
+    }
   }
 
   .birth-icon {
@@ -271,115 +308,44 @@ $CK1:#ffac2a;
     position: relative;
   }
 
-  .newProjects {
-    &.bRadiusBox {
-      padding: 0;
-      border-bottom-width: 0px;
-
-      caption {
-        border-width: 0px;
-        font-size: 16px;
-        padding-left: 15px;
-
-        .fr {
-          font-size: 13px;
-          padding-top: 5px;
-        }
-      }
-    }
-    .birth-icon {
+  .payment-switch {
+    font-size: 16px;
+    color: #808080;
+    em {
       float: left;
-      width: 20px;
-      height: 20px;
-      background: url("../../images/sign/birthday.png") no-repeat center;
-      background-size: 15px;
-      left: 50px;
-      position: relative;
+      padding: 10px 0px;
+      margin:0 20px;
+      font-weight: bold;
+      border-top:3px solid #fff;
+      cursor: pointer;
+      &.current {
+        border-top:3px solid #ff7200;
+        color: #ff7200;
+      }
     }
-    .trade-detail {
-      width: 170px;
-      display: inline-block;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+    span.total {
+      font-size: 14px;
+      color: #4c4c4c;
+      padding: 10px;
+      display: none;
+      &.current {
+        display: block;
+      }
     }
   }
-  .LastMonth, .tMonthPayment {
-    table {
-      border: 1px solid $CK1;
 
-      caption {
-        border-color: $CK1;
-        color: $CK1;
-      }
-      tr:nth-last-child(1) > td {
-        border-bottom-width: 0;
-      }
-    }
-  }
-  .tMonthPayment {
-    table {
-      tr:nth-last-child(1) > td {
-        border-bottom-width: 0;
-      }
-      tfoot tr td {
-        border-top: 1px solid $CK1;
-        border-bottom: 1px solid $CK1;
-      }
-    }
-  }
-  .assets-box {
+.table tfoot td.last {
+  border-bottom-width:0;
+}
+
+.new-projects {
+  margin-top:15px;
+  .trade-detail {
+    width: 170px;
+    display: inline-block;
     overflow: hidden;
-    box-sizing: border-box;
-
-    .assets-report {
-      width: 39%;
-      height: 142px;
-
-      h3 {
-        line-height: 15px;
-        padding-bottom: 10px;
-      }
-    }
-    .assets-detail {
-      height: 142px;
-      width: 53%;
-
-      .detail-list {
-        margin-top: 5px;
-
-        li {
-          float: left;
-          width: 50%;
-          box-sizing: border-box;
-          padding-left: 20px;
-
-          b {
-            font-weight: normal;
-          }
-          span {
-            display: inline-block;
-            padding-left: 20px;
-            color: $CK1;
-            padding-right: 3px;
-          }
-        }
-      }
-    }
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
-  .PaymentSwitch {
-    li {
-      float: left;
-      font-size: 16px;
-      margin-right: 18px;
-      margin-bottom: 10px;
-
-      a {
-        color: #000;
-      }
-      &.current a {
-        color: $CK1;
-      }
-    }
-  }
+}
 }
