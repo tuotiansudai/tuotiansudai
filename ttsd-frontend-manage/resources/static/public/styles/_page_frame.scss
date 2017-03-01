@@ -258,8 +258,8 @@
         display: inline-block;
         width:52px;
         height:52px;
-        background: url("../images/app-code.png") left top no-repeat;
-        background-size: 100%;
+        border: 1px solid #e5e5e5;
+        background-size: 96%;
         vertical-align: middle;
       }
       .text {
@@ -271,9 +271,11 @@
          }
       }
       .img-app-pc-top {
-        background: url("../images/app-code.png") left top no-repeat;
+        background: url("../images/scanCode/code-app.png") center center no-repeat;
         width:162px;
         height:162px;
+        background-size: 96%;
+        border: 1px solid #e5e5e5;
         position: absolute;
         top: 0;
         left: 56px;

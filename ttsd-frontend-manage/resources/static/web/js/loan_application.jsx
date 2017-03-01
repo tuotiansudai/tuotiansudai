@@ -1,6 +1,6 @@
 require('webStyle/investment/loan_application.scss');
 require('publicJs/login_tip');
-let ValidatorForm= require('publicJs/validator');
+let ValidatorObj= require('publicJs/validator');
 let commonFun= require('publicJs/commonFun');
 let pcBanner = require('webImages/wantloan/top-images.png'),
 	mobileBanner = require('webImages/wantloan/top-images-phone.jpg');
@@ -47,7 +47,7 @@ $loanTip.on('click', function(event) {
 //我要借款表单验证
 let loanForm=globalFun.$('#loanForm'),
 	errorDom=$('.error-box',$(loanForm));
-let validator = new ValidatorForm();
+let validator = new ValidatorObj.ValidatorForm();
 validator.add(loanForm.moneyText, [{
 	strategy: 'isNonEmpty',
 	errorMsg: '请填写借款金额'
