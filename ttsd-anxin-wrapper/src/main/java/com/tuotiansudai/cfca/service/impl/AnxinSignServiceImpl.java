@@ -594,8 +594,10 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         String batchNo;
         if (anxinQueryContractDto.getAnxinContractType().equals(AnxinContractType.LOAN_CONTRACT)) {
             batchNo = redisWrapperClient.get(LOAN_BATCH_NO_LIST_KEY + anxinQueryContractDto.getBusinessId());
+            redisWrapperClient.del(AnxinSignServiceImpl.LOAN_CONTRACT_IN_CREATING_KEY + anxinQueryContractDto.getBusinessId());
         } else {
             batchNo = redisWrapperClient.get(TRANSFER_BATCH_NO_LIST_KEY + anxinQueryContractDto.getBusinessId());
+            redisWrapperClient.del(AnxinSignServiceImpl.TRANSFER_CONTRACT_IN_CREATING_KEY + anxinQueryContractDto.getBusinessId());
         }
         logger.info(MessageFormat.format("[安心签] queryContract executing , batchStr:{0}", batchNo));
 
