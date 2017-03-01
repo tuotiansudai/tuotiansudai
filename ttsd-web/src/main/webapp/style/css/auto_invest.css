@@ -1,0 +1,69 @@
+.auto-invest .CertifiedImg, .auto-repay .CertifiedImg {
+  background: url("/images/sign/re-s01.png") center top no-repeat;
+  margin: 40px;
+  height: 170px; }
+.auto-invest .CertifiedImg-repay, .auto-repay .CertifiedImg-repay {
+  background: url("/images/sign/re-s02.png") center top no-repeat;
+  margin: 40px;
+  height: 170px; }
+.auto-invest .panel, .auto-repay .panel {
+  color: #ff6b2a;
+  padding-left: 40px; }
+.auto-invest p.notice b, .auto-repay p.notice b {
+  font-size: 16px; }
+.auto-invest .btnBox, .auto-repay .btnBox {
+  margin-top: 30px;
+  margin-bottom: 20px; }
+.auto-invest .planSwitch, .auto-repay .planSwitch {
+  color: #353535; }
+  .auto-invest .planSwitch form, .auto-repay .planSwitch form {
+    margin-left: 28px;
+    margin-top: 15px; }
+  .auto-invest .planSwitch dl, .auto-repay .planSwitch dl {
+    margin-bottom: 15px;
+    clear: both; }
+    .auto-invest .planSwitch dl dt, .auto-repay .planSwitch dl dt {
+      color: #979797;
+      display: inline-block;
+      float: left;
+      width: 80px;
+      text-align: right; }
+    .auto-invest .planSwitch dl dd.projectLimit, .auto-repay .planSwitch dl dd.projectLimit {
+      float: left;
+      width: 50%; }
+      .auto-invest .planSwitch dl dd.projectLimit label, .auto-repay .planSwitch dl dd.projectLimit label {
+        margin-right: 5px; }
+      .auto-invest .planSwitch dl dd.projectLimit span, .auto-repay .planSwitch dl dd.projectLimit span {
+        display: inline-block;
+        color: #979797;
+        width: 60px;
+        text-align: center;
+        margin-right: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #e1e1e1;
+        position: relative;
+        cursor: pointer; }
+        .auto-invest .planSwitch dl dd.projectLimit span .badge, .auto-repay .planSwitch dl dd.projectLimit span .badge {
+          background: url("/images/global/icon-ok.png") left center no-repeat;
+          width: 13px;
+          height: 13px;
+          position: absolute;
+          top: 0;
+          right: 0;
+          display: none; }
+        .auto-invest .planSwitch dl dd.projectLimit span.active, .auto-repay .planSwitch dl dd.projectLimit span.active {
+          border: 1px solid #ff7a2a;
+          color: #ff7a2a; }
+          .auto-invest .planSwitch dl dd.projectLimit span.active .badge, .auto-repay .planSwitch dl dd.projectLimit span.active .badge {
+            display: inline-block; }
+  .auto-invest .planSwitch .agreeStatus, .auto-repay .planSwitch .agreeStatus {
+    margin-bottom: 20px;
+    color: #979797; }
+    .auto-invest .planSwitch .agreeStatus label, .auto-repay .planSwitch .agreeStatus label {
+      vertical-align: middle; }
+.auto-invest .borderBox:nth-child(2), .auto-repay .borderBox:nth-child(2) {
+  margin-top: 10px; }
+.auto-invest .planSet i, .auto-repay .planSet i {
+  color: #ff7a2a; }
+
+/*# sourceMappingURL=auto_invest.css.map */

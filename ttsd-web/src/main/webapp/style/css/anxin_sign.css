@@ -1,0 +1,153 @@
+.layui-layer.msg-tip-box {
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.5);
+  border-width: 0; }
+  .layui-layer.msg-tip-box .layer-msg-tip {
+    color: #fff;
+    font-size: 18px;
+    font-weight: bold;
+    display: block;
+    text-align: center; }
+    .layui-layer.msg-tip-box .layer-msg-tip i {
+      display: inline-block;
+      width: 45px;
+      height: 45px;
+      background: url("/images/myaccount/an-ic-ok.png") left 5px no-repeat;
+      vertical-align: middle; }
+
+.info-list {
+  color: #797979;
+  line-height: 38px; }
+  .info-list em.info {
+    display: inline-block; }
+  .info-list .fa {
+    font-size: 16px;
+    padding-right: 5px; }
+  .info-list .info-title {
+    font-weight: bold;
+    display: inline-block;
+    width: 70px;
+    text-align: right;
+    margin-right: 20px;
+    color: #000; }
+  .info-list .binding-set {
+    display: inline-block;
+    width: 140px;
+    float: right; }
+    .info-list .binding-set .ok {
+      color: #2ac30c; }
+    .info-list .binding-set .no {
+      color: #ff1010; }
+    .info-list .binding-set a.setlink {
+      color: #ffac2a;
+      padding-left: 10px; }
+
+.safety-signed-frame {
+  background: #fff;
+  padding: 10px 30px 30px 40px;
+  overflow: hidden;
+  color: #525252; }
+  .safety-signed-frame .layui-layer-page .layui-layer-content {
+    overflow: auto !important; }
+  .safety-signed-frame .agreeOpen {
+    vertical-align: middle;
+    color: #999; }
+    .safety-signed-frame .agreeOpen a {
+      color: #999; }
+    .safety-signed-frame .agreeOpen em {
+      color: #4d4d4d; }
+  .safety-signed-frame .sign-img {
+    height: 190px;
+    background: url("/images/myaccount/an-mark.png") center center no-repeat; }
+  .safety-signed-frame .safety-status-box {
+    color: #4c4c4c;
+    display: none; }
+    .safety-signed-frame .safety-status-box .status-text {
+      display: block; }
+      .safety-signed-frame .safety-status-box .status-text i {
+        background: url("../../images/myaccount/an-ic-ok.png") center center no-repeat;
+        height: 35px;
+        width: 35px;
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: 8px; }
+    .safety-signed-frame .safety-status-box .to-open-check {
+      margin-top: 30px;
+      display: block; }
+    .safety-signed-frame .safety-status-box .btn-normal {
+      display: block;
+      margin: 10px auto; }
+  .safety-signed-frame .safety-advantage-box {
+    border-top: 1px solid #e7eaee;
+    padding-top: 10px;
+    margin-top: 20px; }
+    .safety-signed-frame .safety-advantage-box p {
+      color: #525252; }
+    .safety-signed-frame .safety-advantage-box .advantage-list li {
+      width: 33%;
+      float: left;
+      padding-top: 70px;
+      text-align: center;
+      color: #ff7200;
+      font-size: 16px;
+      margin-bottom: 20px; }
+      .safety-signed-frame .safety-advantage-box .advantage-list li:nth-child(1) {
+        background: url("../../images/myaccount/an-ic-adv01.png") center top no-repeat; }
+      .safety-signed-frame .safety-advantage-box .advantage-list li:nth-child(2) {
+        background: url("../../images/myaccount/an-ic-adv02.png") center top no-repeat; }
+      .safety-signed-frame .safety-advantage-box .advantage-list li:nth-child(3) {
+        background: url("../../images/myaccount/an-ic-adv03.png") center top no-repeat; }
+  .safety-signed-frame .safety-signed-list .info-list .info-title {
+    width: auto; }
+  .safety-signed-frame .open-safety-box {
+    margin: 25px; }
+    .safety-signed-frame .open-safety-box span.info {
+      display: block;
+      color: #4c4c4c;
+      padding-bottom: 5px; }
+    .safety-signed-frame .open-safety-box .button-bar {
+      margin-top: 10px; }
+      .safety-signed-frame .open-safety-box .button-bar a {
+        width: 90px; }
+        .safety-signed-frame .open-safety-box .button-bar a.one {
+          width: 200px; }
+      .safety-signed-frame .open-safety-box .button-bar button {
+        width: 150px; }
+        .safety-signed-frame .open-safety-box .button-bar button.one {
+          width: 270px; }
+    .safety-signed-frame .open-safety-box .tip-item {
+      position: relative; }
+      .safety-signed-frame .open-safety-box .tip-item span input {
+        height: 30px;
+        border: 1px solid #e6e6e6;
+        padding: 0px 6px;
+        cursor: pointer; }
+        .safety-signed-frame .open-safety-box .tip-item span input.skip-phone-code {
+          width: 170px; }
+        .safety-signed-frame .open-safety-box .tip-item span input.get-skip-code {
+          width: 107px;
+          color: #797979;
+          font-size: 12px;
+          height: 32px;
+          padding: 0;
+          text-align: center;
+          background: #fafafa; }
+      .safety-signed-frame .open-safety-box .tip-item span .microphone {
+        display: inline-block;
+        width: 32px;
+        height: 32px;
+        border: 1px solid #e6e6e6;
+        background: url(../../images/icons/microphone.png) center center no-repeat;
+        vertical-align: middle;
+        margin-left: -3px;
+        border-left-width: 0; }
+      .safety-signed-frame .open-safety-box .tip-item .error {
+        text-align: left;
+        margin-left: 10px;
+        margin-top: 6px; }
+      .safety-signed-frame .open-safety-box .tip-item .button-bar {
+        position: absolute;
+        top: 79px;
+        left: 36px; }
+
+/*# sourceMappingURL=anxin_sign.css.map */
