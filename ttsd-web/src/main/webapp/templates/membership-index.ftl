@@ -1,16 +1,14 @@
 <#import "macro/global.ftl" as global>
 
-<@global.main pageCss="${css.membership}" pageJavascript="${js.membership}" activeNav="我的会员" activeLeftNav="" title="我的会员_会员福利_拓天速贷" keywords="拓天会员,拓天会员积分,拓天保障,拓天速贷" description="拓天速贷会员中心为您提供会员专享投资顾问,会员专属特权,为广大投资用户提供丰富的投资福利." site="membership">
+<@global.main pageCss="${css.membership}" pageJavascript="" activeNav="我的会员" activeLeftNav="" title="我的会员_会员福利_拓天速贷" keywords="拓天会员,拓天会员积分,拓天保障,拓天速贷" description="拓天速贷会员中心为您提供会员专享投资顾问,会员专属特权,为广大投资用户提供丰富的投资福利." site="membership">
 
 <div class="global-member-ship">
     <#if mobile??>
         <div class="user-info-block page-width">
             <div class="info clearfix">
                 <div class="avatar fl">
-                    <img src="${staticServer}/images/sign/head_20161011.png"/>
-
+                    <span class="icon-avatar"></span>
                     <i class="vip-no-bg vip-${membershipLevel!}"></i>
-
                 </div>
                 <div class="text">
                     <p class="my-value">我的成长值：<b>${membershipPoint!}</b></p>
@@ -314,7 +312,7 @@
         <div class="user-info-block page-width no-login">
             <div class="info clearfix">
                 <div class="avatar fl">
-                    <img src="${staticServer}/images/sign/head_20161011.png"/>
+                    <span class="icon-avatar"></span>
                 </div>
                 <div class="text">
                     亲，成为会员可享受多种特权哦~ <br/>
