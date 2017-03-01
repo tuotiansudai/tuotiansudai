@@ -134,11 +134,11 @@
             <div class="column-title-ac"><i></i>关注拓天<i></i> </div>
             <div class="code-ma tc">
                 <span>
-                    <img src="${commonStaticServer}/images/scanCode/weixin-code.png"> <br/>
+                    <i class="img-we-chat"></i>
                     拓天速贷微信订阅号
                 </span>
                 <span>
-                    <img src="${commonStaticServer}/images/scanCode/app-img.png"> <br/>
+                     <i class="img-app-download"></i>
                     下载拓天速贷APP
                 </span>
 
