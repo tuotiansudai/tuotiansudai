@@ -68,13 +68,7 @@
                                     <a class="btn-pay btn-normal" href="/register/user">马上投资</a>
                                 </@global.isAnonymous>
                                 <@global.isNotAnonymous>
-<<<<<<< HEAD
-                                    <button id="investSubmit" class="btn-pay btn-normal" type="button">马上投资
-=======
-                                    <button id="investSubmit" class="btn-pay btn-normal" type="submit"
-                                            <#if coupon?? == false>disabled="disabled"</#if>>立即体验
->>>>>>> master
-                                    </button>
+                                    <button id="investSubmit" class="btn-pay btn-normal" type="submit">马上投资</button>
                                 </@global.isNotAnonymous>
                             </dd>
                         </dl>
