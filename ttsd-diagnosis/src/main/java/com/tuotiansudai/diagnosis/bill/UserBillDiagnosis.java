@@ -1,5 +1,6 @@
 package com.tuotiansudai.diagnosis.bill;
 
+import com.google.common.base.Strings;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.diagnosis.bill.diagnoses.InvestCouponFeeDiagnosis;
 import com.tuotiansudai.diagnosis.config.DiagnosisConfig;
@@ -96,7 +97,7 @@ class UserBillDiagnosis implements Diagnosis {
     private DiagnosisResult diagnosisUser(int idx, int userCount, String loginName) {
         logger.info("[{}/{}] diagnosis user bill for {}", idx, userCount, loginName);
         DiagnosisContext diagnosisContext = new DiagnosisContext(loginName);
-        if (checkUserBalance(loginName)) {
+        if (checkUserBalance(loginName, diagnosisContext)) {
             List<UserBillModel> userBillModelList = userBillMapper.findByLoginName(loginName);
             userBillModelList.stream()
                     .filter(bill -> Arrays.binarySearch(sortedKnownBadBills, bill.getId()) < 0)
@@ -110,20 +111,26 @@ class UserBillDiagnosis implements Diagnosis {
                             logger.error("diagnosis failed", e);
                         }
                     });
-        } else {
-            diagnosisContext.addProblem(String.format("%s 用户对账失败!",loginName));
         }
         return diagnosisContext.getResult();
     }
 
-    private boolean checkUserBalance(String loginName) {
+    private boolean checkUserBalance(String loginName, DiagnosisContext diagnosisContext) {
         AccountModel account = accountMapper.findByLoginName(loginName);
         Map<String, String> balanceMap = payWrapperClient.getUserBalance(loginName);
         if (balanceMap == null) {
+            diagnosisContext.addProblem(String.format("{} 用户对账服务连接不上。", loginName));
             logger.error("{} 用户对账服务连接不上。", loginName);
             return false;
         }
-        return account.getBalance() == Long.parseLong(balanceMap.get("balance"));
+        long umpBalance = Long.parseLong(balanceMap.get("balance"));
+        if (account.getBalance() != umpBalance) {
+            diagnosisContext.addProblem(String.format("{}: 用户对账失败,余额-account:{},ump:{}", loginName,
+                    String.valueOf(account.getBalance()),
+                    String.valueOf(umpBalance)));
+            return false;
+        }
+        return true;
 
     }
 
