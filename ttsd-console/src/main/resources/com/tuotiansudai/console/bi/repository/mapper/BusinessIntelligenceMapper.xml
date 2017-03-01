@@ -1309,10 +1309,7 @@
                         and u.province=#{province}
                     </if>
                     <if test="isInvestor=='true'">
-                    and exists
-                        (
-                            select 1 from invest i where i.login_name=u.login_name
-                        )
+                        and exists (select 1 from invest i where i.status='SUCCESS' and i.login_name=u.login_name and i.loan_id!=1 and i.transfer_invest_id is null)
                     </if>
             ) temp
         group by `name`;
