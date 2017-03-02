@@ -1,0 +1,230 @@
+.main-frame .left-nav {
+  width: auto;
+  height: auto;
+  float: none;
+  background: none;
+  margin-bottom: 15px; }
+  .main-frame .left-nav li {
+    border-width: 0px;
+    margin: 0 15px;
+    display: inline-block; }
+    .main-frame .left-nav li a {
+      font-size: 18px;
+      color: #0e050a; }
+      .main-frame .left-nav li a:hover {
+        background: none; }
+      .main-frame .left-nav li a.active {
+        border-bottom: 4px solid #ff9c1b;
+        background: transparent;
+        color: #ff9c1b; }
+
+.wrapper-list {
+  background: #fff;
+  padding: 10px 5px;
+  margin-bottom: 20px; }
+  .wrapper-list li {
+    padding: 3px 12px;
+    margin-top: 15px;
+    display: none; }
+    .wrapper-list li:nth-child(1) {
+      position: relative;
+      display: block;
+      margin-top: 1px; }
+      .wrapper-list li:nth-child(1) em {
+        position: absolute;
+        right: 5px;
+        top: 0px;
+        padding: 2px 8px;
+        border: 1px solid #ccc;
+        color: #4d4d4d;
+        font-size: 12px;
+        display: inline-block;
+        text-align: center;
+        cursor: pointer; }
+        .wrapper-list li:nth-child(1) em.show-less {
+          display: none; }
+        .wrapper-list li:nth-child(1) em s {
+          text-decoration: none; }
+        .wrapper-list li:nth-child(1) em i {
+          color: #ccc;
+          font-size: 19px;
+          vertical-align: middle;
+          margin-top: -2px; }
+    .wrapper-list li span {
+      padding-right: 10px;
+      display: inline-block;
+      width: 85px; }
+    .wrapper-list li a {
+      color: #000;
+      font-size: 12px;
+      padding: 7px 13px; }
+      .wrapper-list li a:hover, .wrapper-list li a.active {
+        color: #fff;
+        background: #ffac2a;
+        border-radius: 3px; }
+
+/* I want to invest page*/
+.loan-list-content .loan-list-box ul li {
+  border-radius: 8px;
+  border: 1px solid #e5e5e5;
+  padding: 5px 2px;
+  margin-top: 10px;
+  position: relative;
+  cursor: pointer;
+  background: #fff; }
+  .loan-list-content .loan-list-box ul li:hover {
+    background: #fff;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1), -1px -1px 5px rgba(0, 0, 0, 0.1); }
+  .loan-list-content .loan-list-box ul li .hot {
+    width: 71px;
+    height: 71px;
+    background: url("/images/icons/hot-n.png") no-repeat;
+    position: absolute;
+    left: -5px;
+    top: -6px; }
+  .loan-list-content .loan-list-box ul li .syl {
+    width: 71px;
+    height: 71px;
+    background: url("/images/icons/img-syl.png") no-repeat;
+    position: absolute;
+    left: -5px;
+    top: -6px; }
+  .loan-list-content .loan-list-box ul li .wyx {
+    width: 71px;
+    height: 71px;
+    background: url("/images/icons/img-wyx.png") no-repeat;
+    position: absolute;
+    left: -5px;
+    top: -6px; }
+  .loan-list-content .loan-list-box ul li .jyf {
+    width: 71px;
+    height: 71px;
+    background: url("/images/icons/img-jyf.png") no-repeat;
+    position: absolute;
+    left: -5px;
+    top: -6px; }
+  .loan-list-content .loan-list-box ul li .new-user {
+    position: absolute;
+    top: -5px;
+    left: 0;
+    width: 56px;
+    height: 75px;
+    background: url("/images/sign/index_sprites_20160601.png") 0px -170px no-repeat; }
+  .loan-list-content .loan-list-box ul li .new-free {
+    position: absolute;
+    top: -5px;
+    left: 0;
+    width: 56px;
+    height: 75px;
+    background: url("/images/icons/new-free.png") no-repeat center; }
+  .loan-list-content .loan-list-box ul li .loan-info-frame {
+    width: 690px;
+    padding-bottom: 10px;
+    border-right: 1px solid #ccc;
+    text-align: center; }
+    .loan-list-content .loan-list-box ul li .loan-info-frame .loan-top {
+      padding: 3px 20px 0 60px;
+      height: auto;
+      overflow: auto;
+      line-height: 50px; }
+      .loan-list-content .loan-list-box ul li .loan-info-frame .loan-top .l-title {
+        font-size: 20px;
+        color: #4e4e4e;
+        display: inline-block;
+        text-align: left;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        float: left; }
+        .loan-list-content .loan-list-box ul li .loan-info-frame .loan-top .l-title .new-tip {
+          font-size: 12px;
+          color: #ff9c1b;
+          border: 1px solid #ff9c1b;
+          padding: 2px 5px;
+          border-radius: 20px;
+          margin-left: 10px; }
+      .loan-list-content .loan-list-box ul li .loan-info-frame .loan-top .l-way {
+        font-size: 12px;
+        color: #b3b3b3;
+        border-radius: 12px;
+        border: 1px solid #e5e5e5;
+        display: inline;
+        line-height: 1;
+        padding: 6px 15px;
+        margin-top: 12px; }
+    .loan-list-content .loan-list-box ul li .loan-info-frame .loan-info-dl {
+      width: 90%;
+      margin: 0px auto;
+      line-height: 1.4; }
+      .loan-list-content .loan-list-box ul li .loan-info-frame .loan-info-dl dl {
+        width: 33%;
+        float: left;
+        color: #808080;
+        font-size: 17px; }
+        .loan-list-content .loan-list-box ul li .loan-info-frame .loan-info-dl dl dd {
+          color: #999; }
+          .loan-list-content .loan-list-box ul li .loan-info-frame .loan-info-dl dl dd em {
+            font-size: 26px;
+            color: #ff7200; }
+          .loan-list-content .loan-list-box ul li .loan-info-frame .loan-info-dl dl dd i {
+            font-size: 16px;
+            color: #ff7200; }
+            .loan-list-content .loan-list-box ul li .loan-info-frame .loan-info-dl dl dd i.fa-mobile {
+              font-size: 20px; }
+          .loan-list-content .loan-list-box ul li .loan-info-frame .loan-info-dl dl dd span {
+            font-size: 12px;
+            color: #ff9c1b;
+            border: 1px solid #ff9c1b;
+            padding: 2px 5px;
+            border-radius: 20px; }
+  .loan-list-content .loan-list-box ul li .loan-process {
+    float: left;
+    width: 240px;
+    margin: 10px 30px 0px 30px; }
+    .loan-list-content .loan-list-box ul li .loan-process.active-after .will, .loan-list-content .loan-list-box ul li .loan-process.active-after .time-item {
+      display: none; }
+    .loan-list-content .loan-list-box ul li .loan-process.active-after .pro, .loan-list-content .loan-list-box ul li .loan-process.active-after .now {
+      display: block; }
+    .loan-list-content .loan-list-box ul li .loan-process .will, .loan-list-content .loan-list-box ul li .loan-process .time-item {
+      display: block; }
+    .loan-list-content .loan-list-box ul li .loan-process .pro, .loan-list-content .loan-list-box ul li .loan-process .now {
+      display: none; }
+    .loan-list-content .loan-list-box ul li .loan-process .time-item {
+      display: inline-block;
+      border-radius: 20px;
+      border: 1px dashed red;
+      margin-top: 15px;
+      width: 240px;
+      font-size: 15px;
+      height: 42px;
+      line-height: 42px;
+      color: red;
+      text-align: center; }
+    .loan-list-content .loan-list-box ul li .loan-process .rest-amount {
+      color: #ff752a;
+      font-size: 13px;
+      padding-top: 10px;
+      line-height: 1.3; }
+      .loan-list-content .loan-list-box ul li .loan-process .rest-amount i {
+        font-size: 20px; }
+      .loan-list-content .loan-list-box ul li .loan-process .rest-amount .btn-normal {
+        padding: 7px 0;
+        width: 100%;
+        font-size: 16px;
+        font-weight: bold;
+        margin-top: 8px; }
+      .loan-list-content .loan-list-box ul li .loan-process .rest-amount.wait-invest {
+        color: #999; }
+        .loan-list-content .loan-list-box ul li .loan-process .rest-amount.wait-invest .btn-normal {
+          background: #ff9c1b;
+          border-color: #ff9c1b; }
+          .loan-list-content .loan-list-box ul li .loan-process .rest-amount.wait-invest .btn-normal:hover {
+            background: rgba(255, 156, 27, 0.8);
+            border-color: rgba(255, 156, 27, 0.8); }
+      .loan-list-content .loan-list-box ul li .loan-process .rest-amount.finish-invest {
+        color: #999; }
+        .loan-list-content .loan-list-box ul li .loan-process .rest-amount.finish-invest button:disabled {
+          background: #ccc !important;
+          border-color: #ccc !important; }
+
+/*# sourceMappingURL=project_loan_list.css.map */
