@@ -5,7 +5,7 @@
 <div class="invite-des-container">
     <div class="invite-des-box-bg">
         <div class="invite-des-box">
-            <p>每日摇一摇摇钱树，即有机会领取掉落的体验金，体验金最低面额<b>50</b>元;</p>
+            <p>每日摇一摇摇钱树，即有机会领取掉落的体验金，体验金最低面额<b>50</b>元；</p>
             <p>活动期间每邀请<b>1</b>个好友注册，即可增加一次摇奖机会；</p>
             <p>用户每日最多可额外获得<b>3</b>次摇奖机会，超出部分的邀请不予累计。</p>
         </div>
