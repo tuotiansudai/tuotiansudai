@@ -255,7 +255,7 @@ public class PointTaskServiceTest {
     }
 
     @Test
-    public void shouldReferrerIsNullInvestIsOk(){
+    public void shouldReferrerIsNullCompleteTaskIsOk(){
         UserModel referrerUserModel = createFakeUser("referrerLoginName", null);
         UserModel testName = createFakeUser("testName", null);
         LoanModel loanModel = createFakeLoan(ProductType._180);
