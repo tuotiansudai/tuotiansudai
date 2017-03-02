@@ -46,7 +46,6 @@
         {"title":"团队介绍", "url":"${webServer}/about/team"},
         {"title":"拓天公告", "url":"${webServer}/about/notice"},
         {"title":"媒体报道", "url":"${webServer}/about/media"},
-        {"title":"推荐奖励", "url":"${webServer}/about/refer-reward"},
         {"title":"服务费用", "url":"${webServer}/about/service-fee"},
         {"title":"联系我们", "url":"${webServer}/about/contact"},
         {"title":"运营数据", "url":"${webServer}/about/operational"}

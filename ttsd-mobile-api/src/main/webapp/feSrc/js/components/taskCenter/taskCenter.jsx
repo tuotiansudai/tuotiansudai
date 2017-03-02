@@ -59,11 +59,9 @@ class NewbieTaskGroup extends React.Component {
                         <div className="SerialNum" >0{keyNum}</div>
                             <div className="TaskContent">
                             <div className="TaskItemTitle">{option.title}</div>
+                            <div className="TaskAdvanceReward"> 奖励 {option.point} 积分</div>
                             <div className="TaskItemDes" dangerouslySetInnerHTML={{__html: option.description}} ></div>
                             <div className="TaskItemLine"></div>
-                            <div className="TaskRewardGroup">
-                                <div className="TaskReward">奖励{option.point}</div>
-                            </div>
                         </div>
                         <ButtonStatus stocked={option.completed} description={option.description} value={option.number} location={option.url} />
                    </div>);
@@ -92,12 +90,13 @@ class AdvanceTaskGroup extends React.Component {
         let rows=[];
         if(AdvanceData) {
             AdvanceData.forEach(function(option,key) {
-
+                let keyNum=key+1;
             rows.push(<div className="TaskItemNewbie" key={key}>
+
                     <div className="TaskAdvanceContent">
                         <div className="TaskAdvanceRewardGroup">
                             <div className="TaskAdvanceItemTitle">{option.title}</div>
-                            <div className="TaskAdvanceReward">奖励{option.point}</div>
+                            <div className="TaskAdvanceReward"> 奖励 {option.point} 积分</div>
                         </div>
                         <div className="TaskAdvanceItemDes" dangerouslySetInnerHTML={{__html: option.description}} data-hyb="xxx" aria-ybs="true"></div>
                     </div>
@@ -165,7 +164,7 @@ class taskCenter extends React.Component {
             tabHeaderDom.setAttribute('style', 'position:absolute;top:' + menuScrollTop + 'px;width:100%;left:0;height:1rem; line-height:1rem');
         }
         else if (scrollY && scrollY >= conOffsetTop) {
-            let yTop = scrollY + tabHeaderDom.offsetHeight * 0.35;
+            let yTop = scrollY + tabHeaderDom.offsetHeight * 0.30;
             tabHeaderDom.setAttribute('style', 'position:absolute;top:' + yTop + 'px;width:100%;left:0;height:1rem; line-height:1rem');
         }
         else if (scrollY && scrollY < conOffsetTop) {

@@ -2,13 +2,14 @@ package com.tuotiansudai.paywrapper.extrarate.service.impl;
 
 
 import com.google.common.base.Strings;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.Environment;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
-import com.tuotiansudai.job.ExtraRateInvestCallbackJob;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
@@ -82,6 +83,9 @@ public class ExtraRateServiceImpl implements ExtraRateService {
 
     private final static String REPAY_REDIS_KEY_TEMPLATE = "EXTRA_RATE_REPAY:{0}";
 
+    @Autowired
+    private MQWrapperClient mqWrapperClient;
+
     @Override
     public void normalRepay(long loanRepayId) {
         LoanRepayModel currentLoanRepay = loanRepayMapper.findById(loanRepayId);
@@ -90,9 +94,9 @@ public class ExtraRateServiceImpl implements ExtraRateService {
         if (isLastPeriod) {
             List<InvestExtraRateModel> investExtraRateModels = investExtraRateMapper.findByLoanId(loanId);
             for (InvestExtraRateModel investExtraRateModel : investExtraRateModels) {
-                if(RepayStatus.COMPLETE == investExtraRateModel.getStatus()){
+                if (RepayStatus.COMPLETE == investExtraRateModel.getStatus()) {
                     logger.info(MessageFormat.format("[Normal Repay {0}] investExtraRateId:{1} status is COMPLETE",
-                            String.valueOf(loanRepayId),String.valueOf(investExtraRateModel.getId())));
+                            String.valueOf(loanRepayId), String.valueOf(investExtraRateModel.getId())));
                     continue;
                 }
                 long actualInterest = investExtraRateModel.getExpectedInterest();
@@ -101,6 +105,11 @@ public class ExtraRateServiceImpl implements ExtraRateService {
                     this.sendExtraRateAmount(loanRepayId, investExtraRateModel, actualInterest, actualFee);
                 } catch (Exception e) {
                     logger.error(MessageFormat.format("[Normal Repay {0}] extra rate is failed, investId={0} loginName={1} amount={3}",
+                            String.valueOf(loanRepayId),
+                            String.valueOf(investExtraRateModel.getInvestId()),
+                            investExtraRateModel.getLoginName(),
+                            String.valueOf(investExtraRateModel.getAmount())), e);
+                    fatalLog(MessageFormat.format("[Normal Repay {0}] extra rate is failed, investId={0} loginName={1} amount={3}",
                             String.valueOf(loanRepayId),
                             String.valueOf(investExtraRateModel.getInvestId()),
                             investExtraRateModel.getLoginName(),
@@ -124,7 +133,7 @@ public class ExtraRateServiceImpl implements ExtraRateService {
         long amount = actualInterest - actualFee;
         if (amount > 0) {
 
-           investRateService.updateInvestExtraRate(investExtraRateModel, actualInterest, actualFee, amount);
+            investRateService.updateInvestExtraRate(investExtraRateModel, actualInterest, actualFee, amount);
 
             String orderId = investExtraRateModel.getInvestId() + "X" + System.currentTimeMillis();
             try {
@@ -149,7 +158,7 @@ public class ExtraRateServiceImpl implements ExtraRateService {
                 redisWrapperClient.hset(redisKey, String.valueOf(investExtraRateModel.getId()), SyncRequestStatus.FAILURE.name());
                 logger.error(MessageFormat.format("[Extra Rate Repay loanRepay.id {0}] investExtraRateModel.id payback({1}) payback throw exception",
                         String.valueOf(loanRepayId), String.valueOf(investExtraRateModel.getId())), e);
-                fatalLog("extra rate sync send fail. orderId:" +orderId, e);
+                fatalLog("extra rate sync send fail. orderId:" + orderId, e);
             }
 
         }
@@ -167,22 +176,21 @@ public class ExtraRateServiceImpl implements ExtraRateService {
         if (callbackRequest == null) {
             return null;
         }
-        redisWrapperClient.incr(ExtraRateInvestCallbackJob.REPAY_EXTRA_RATE_JOB_TRIGGER_KEY);
+        mqWrapperClient.sendMessage(MessageQueue.RepaySuccessExtraRateRepayCallback, String.valueOf(callbackRequest.getId()));
+        logger.info(MessageFormat.format("extra_rate_invest_callback message send success  id:{0}", String.valueOf(callbackRequest.getId())));
         return callbackRequest.getResponseData();
     }
 
     @Override
-    public BaseDto<PayDataDto> asyncExtraRateInvestCallback() {
-        List<ExtraRateNotifyRequestModel> todoList = extraRateNotifyRequestMapper.getTodoList(extraRateProcessListSize);
-        for (ExtraRateNotifyRequestModel model : todoList) {
-            if (updateExtraRateNotifyRequestStatus(model)) {
-                try {
-                   this.processOneCallback(model);
-                } catch (Exception e) {
-                    fatalLog("extra rate invest callback, processOneCallback error. orderId:" + model.getOrderId(), e);
-                    logger.error(MessageFormat.format("[Extra Rate investExtraRateModel.id payback({1}) payback throw exception",
-                             String.valueOf(model.getOrderId().split("X")[0])), e);
-                }
+    public BaseDto<PayDataDto> asyncExtraRateInvestCallback(long notifyRequestId) {
+        ExtraRateNotifyRequestModel model = extraRateNotifyRequestMapper.findById(notifyRequestId);
+        if (updateExtraRateNotifyRequestStatus(model)) {
+            try {
+                this.processOneCallback(model);
+            } catch (Exception e) {
+                fatalLog("extra rate invest callback, processOneCallback error. orderId:" + model.getOrderId(), e);
+                logger.error(MessageFormat.format("[Extra Rate investExtraRateModel.id payback({1}) payback throw exception",
+                        String.valueOf(model.getOrderId().split("X")[0])), e);
             }
         }
 
@@ -196,7 +204,6 @@ public class ExtraRateServiceImpl implements ExtraRateService {
 
     private boolean updateExtraRateNotifyRequestStatus(ExtraRateNotifyRequestModel model) {
         try {
-            redisWrapperClient.decr(ExtraRateInvestCallbackJob.REPAY_EXTRA_RATE_JOB_TRIGGER_KEY);
             extraRateNotifyRequestMapper.updateStatus(model.getId(), NotifyProcessStatus.DONE);
         } catch (Exception e) {
             fatalLog("update_repay_extra_rate_invest_notify_status_fail, orderId:" + model.getOrderId() + ",id:" + model.getId(), e);
@@ -206,7 +213,7 @@ public class ExtraRateServiceImpl implements ExtraRateService {
     }
 
     @Override
-    public void processOneCallback(ExtraRateNotifyRequestModel callbackRequestModel) throws Exception  {
+    public void processOneCallback(ExtraRateNotifyRequestModel callbackRequestModel) throws Exception {
         String orderIdStr = callbackRequestModel.getOrderId().split("X")[0];
         long orderId = Long.parseLong(orderIdStr);
         InvestExtraRateModel investExtraRateModel = investExtraRateMapper.findByInvestId(orderId);
@@ -222,9 +229,9 @@ public class ExtraRateServiceImpl implements ExtraRateService {
         LoanModel loanModel = loanMapper.findById(loanId);
         List<InvestExtraRateModel> investExtraRateModels = investExtraRateMapper.findByLoanId(loanId);
         for (InvestExtraRateModel investExtraRateModel : investExtraRateModels) {
-            if(RepayStatus.COMPLETE == investExtraRateModel.getStatus()){
+            if (RepayStatus.COMPLETE == investExtraRateModel.getStatus()) {
                 logger.info(MessageFormat.format("[Advance Repay {0}] investExtraRateId:{1} status is COMPLETE",
-                        String.valueOf(loanRepayId),String.valueOf(investExtraRateModel.getId())));
+                        String.valueOf(loanRepayId), String.valueOf(investExtraRateModel.getId())));
                 continue;
             }
             InvestModel investModel = investMapper.findById(investExtraRateModel.getInvestId());
@@ -235,6 +242,11 @@ public class ExtraRateServiceImpl implements ExtraRateService {
                 this.sendExtraRateAmount(loanRepayId, investExtraRateModel, actualInterest, actualFee);
             } catch (Exception e) {
                 logger.error(MessageFormat.format("[Advance Repay {0}] extra rate is failed, investId={0} loginName={1} amount={3}",
+                        String.valueOf(loanRepayId),
+                        String.valueOf(investExtraRateModel.getInvestId()),
+                        investExtraRateModel.getLoginName(),
+                        String.valueOf(investExtraRateModel.getAmount())), e);
+                fatalLog(MessageFormat.format("[Advance Repay {0}] extra rate is failed, investId={0} loginName={1} amount={3}",
                         String.valueOf(loanRepayId),
                         String.valueOf(investExtraRateModel.getInvestId()),
                         investExtraRateModel.getLoginName(),

@@ -1,5 +1,5 @@
 require('webStyle/login.scss');
-let ValidatorForm= require('publicJs/validator');
+let ValidatorObj= require('publicJs/validator');
 let commonFun= require('publicJs/commonFun');
 
 let loginForm=globalFun.$('#formLogin');
@@ -15,7 +15,7 @@ $('#imageCaptcha').on('click',function() {
 
 //表单校验
 let errorDom=$(loginForm).find('.error-box');
-let validator = new ValidatorForm();
+let validator = new ValidatorObj.ValidatorForm();
 validator.add(loginForm.username, [{
     strategy: 'isNonEmpty',
     errorMsg: '用户名不能为空'

@@ -352,20 +352,18 @@ public class CouponRepayServiceImpl implements CouponRepayService {
 
     @Override
     public BaseDto<PayDataDto> asyncCouponRepayCallback(long notifyRequestId) {
-        boolean isSuccess = true;
         CouponRepayNotifyRequestModel model = couponRepayNotifyRequestMapper.findById(notifyRequestId);
         if (updateCouponRepayNotifyRequestStatus(model)) {
             try {
                 this.processOneCallback(model);
             } catch (Exception e) {
-                isSuccess = false;
                 logger.error(String.format("coupon repay call back is fail orderId:%s,id:%s", String.valueOf(model.getOrderId()), String.valueOf(model.getId())));
                 fatalLog("coupon repay call back is fail, orderId:" + model.getOrderId() + ",id:" + model.getId(), e);
             }
         }
         BaseDto<PayDataDto> asyncCouponRepayNotifyDto = new BaseDto<>();
         PayDataDto baseDataDto = new PayDataDto();
-        baseDataDto.setStatus(isSuccess);
+        baseDataDto.setStatus(true);
         asyncCouponRepayNotifyDto.setData(baseDataDto);
 
         return asyncCouponRepayNotifyDto;

@@ -109,22 +109,25 @@ var web_globalFun = (function() {
             };
         }
         //绑定监听事件
-        this.addEventHandler=function(target,type,fn) {
+        this.addEventHandler=function(target) {
             if(!target) {
                 return;
             }
-            if(target.addEventListener){
-                target.addEventListener(type,fn);
-            }else{
-                target.attachEvent("on"+type,fn);
+            for(var i = 1; i < arguments.length - 1; i++) {
+                if(target.addEventListener){
+                    target.addEventListener(arguments[i], arguments[arguments.length - 1]);
+                }else{
+                    target.attachEvent("on"+arguments[i], arguments[arguments.length - 1]);
+                }
             }
-        }
+
+        };
         this.hasClass=function(obj, cls) {
             return obj.className.match(new RegExp('(\\s|^)' + cls + '(\\s|$)'));
-        }
+        };
         this.addClass=function(obj, cls) {
             if (!this.hasClass(obj, cls)) obj.className += " " + cls;
-        }
+        };
         this.removeClass=function(obj, cls) {
             if (this.hasClass(obj, cls)) {
                 var reg = new RegExp('(\\s|^)' + cls + '(\\s|$)');
