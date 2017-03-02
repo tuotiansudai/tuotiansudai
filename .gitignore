@@ -49,3 +49,5 @@ ttsd-frontend-manage/resources/develop/ask
 ttsd-frontend-manage/resources/develop/web
 ttsd-frontend-manage/resources/develop/images
 ttsd-frontend-manage/resources/prod
+
+ttsd-frontend-manage/.happypack/
