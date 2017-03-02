@@ -119,6 +119,7 @@ public class MobileAppUserInvestRepayServiceTest extends ServiceTestBase{
     public void shouldUserInvestRepayTwoPeriodCompleteIsOk(){
         LoanModel loanModel = createLoanModel();
         InvestModel investModel = getFakeInvestModel(loanModel.getId(), "loginuserInvestName");
+        investModel.setInvestFeeRate(0.1);
         List<InvestRepayModel> investRepayModels = Lists.newArrayList();
         InvestRepayModel investRepayModel1 = getFakeInvestReapyModel(investModel.getId(), 1, new DateTime().minusDays(30).toDate(), new DateTime().minusDays(30).toDate(), 12, 0, 2, 10, 0, RepayStatus.COMPLETE);
         InvestRepayModel investRepayModel2 = getFakeInvestReapyModel(investModel.getId(), 2, new DateTime().minusDays(-30).toDate(), null, 12, 0, 2, 10, 0, RepayStatus.COMPLETE);
