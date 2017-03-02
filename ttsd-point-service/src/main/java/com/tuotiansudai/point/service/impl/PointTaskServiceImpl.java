@@ -125,10 +125,14 @@ public class PointTaskServiceImpl implements PointTaskService {
                     }
                     break;
                 case EACH_RECOMMEND_INVEST:
-                    referrer = userMapper.findByLoginName(loginName).getReferrer();
-                    userPointTaskMapper.create(new UserPointTaskModel(referrer, pointTaskModel.getId(), pointTaskModel.getPoint(), FIRST_TASK_LEVEL));
-                    pointBillNote = MessageFormat.format("{0}奖励{1}积分", AmountConverter.convertCentToString(pointTaskModel.getPoint()), String.valueOf(FIRST_INVEST_10000_POINT));
-                    pointBillService.createTaskPointBill(referrer, pointTaskModel.getId(), pointTaskModel.getPoint(), pointBillNote);
+                    int successInvestCount = investMapper.sumSuccessInvestCountByLoginName(loginName);
+                    if (successInvestCount == 1) {
+                        referrer = userMapper.findByLoginName(loginName).getReferrer();
+                        referrerMaxTaskLevel = userPointTaskMapper.findMaxTaskLevelByLoginName(referrer, pointTask);
+                        userPointTaskMapper.create(new UserPointTaskModel(referrer, pointTaskModel.getId(), pointTaskModel.getPoint(), referrerMaxTaskLevel + 1));
+                        pointBillNote = MessageFormat.format("{0}奖励{1}积分", AmountConverter.convertCentToString(pointTaskModel.getPoint()), String.valueOf(FIRST_INVEST_10000_POINT));
+                        pointBillService.createTaskPointBill(referrer, pointTaskModel.getId(), pointTaskModel.getPoint(), pointBillNote);
+                    }
                     break;
                 case EACH_RECOMMEND_REGISTER:
                     if(Strings.isNullOrEmpty(userMapper.findByLoginName(loginName).getReferrer())){
