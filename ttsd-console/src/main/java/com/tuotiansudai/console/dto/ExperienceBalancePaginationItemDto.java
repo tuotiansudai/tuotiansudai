@@ -1,13 +1,12 @@
 package com.tuotiansudai.console.dto;
 
 
-import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserView;
 
 import java.io.Serializable;
 import java.util.Date;
 
-public class ExperienceBalancePaginationItemDto implements Serializable{
+public class ExperienceBalancePaginationItemDto implements Serializable {
     private String loginName;
     private String userName;
     private String mobile;
@@ -15,10 +14,11 @@ public class ExperienceBalancePaginationItemDto implements Serializable{
     private Date lastExchangeTime;
     private long experienceBalance;
 
-    public ExperienceBalancePaginationItemDto(){
+    public ExperienceBalancePaginationItemDto() {
 
     }
-    public ExperienceBalancePaginationItemDto(UserView userView, Date lastExchangeTime){
+
+    public ExperienceBalancePaginationItemDto(UserView userView, Date lastExchangeTime) {
         this.loginName = userView.getLoginName();
         this.userName = userView.getUserName();
         this.mobile = userView.getMobile();
@@ -73,5 +73,11 @@ public class ExperienceBalancePaginationItemDto implements Serializable{
 
     public void setExperienceBalance(long experienceBalance) {
         this.experienceBalance = experienceBalance;
+    }
+
+    public int compareTo(ExperienceBalancePaginationItemDto itemDto) {
+        return (this.getLastExchangeTime() == null && itemDto != null)
+                || (this.getLastExchangeTime() != null && itemDto.getLastExchangeTime() != null && this.getLastExchangeTime().before(itemDto.getLastExchangeTime()))
+                ? -1 : 1;
     }
 }

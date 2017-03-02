@@ -94,12 +94,12 @@ public class MoneyTreePrizeService {
         List<UserModel> userModels = userMapper.findUsersByRegisterTimeOrReferrer(DateTime.parse(moneyTreeTime.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate(), DateTime.parse(moneyTreeTime.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate(), userModel.getLoginName());
 
         //根据注册时间分组
-        Map<String, Long> groupByTeachers = userModels
+        Map<String, Long> groupByEveryDayCounts = userModels
                 .stream()
                 .collect(Collectors.groupingBy(p -> String.format("%tF", p.getRegisterTime()), Collectors.counting()));
 
         //单日邀请人数超过3人者，最多给3次摇奖机会
-        for (Map.Entry<String, Long> entry : groupByTeachers.entrySet()) {
+        for (Map.Entry<String, Long> entry : groupByEveryDayCounts.entrySet()) {
             if (entry.getValue() >= 3) {
                 lotteryTime += 3;
             } else {
@@ -107,11 +107,13 @@ public class MoneyTreePrizeService {
             }
         }
 
-        long userTime = userLotteryPrizeMapper.findUserLotteryPrizeCountViews(userModel.getMobile(), null, ActivityCategory.MONEY_TREE, null, null);
+        long usedCounts = userLotteryPrizeMapper.findUserLotteryPrizeCountViews(userModel.getMobile(), null, ActivityCategory.MONEY_TREE, null, null);
+        //判断当日是摇过奖，如果没有，默认给1次机会，第二天重新给一次
+        long usedLoginCounts = userLotteryPrizeMapper.findUserLotteryPrizeCountViews(userModel.getMobile(), null, ActivityCategory.MONEY_TREE, new DateTime(new Date()).withTimeAtStartOfDay().toDate(), new DateTime(new Date()).withTimeAtStartOfDay().plusHours(23).plusMinutes(59).plusSeconds(59).toDate());
         if (lotteryTime > 0) {
-            lotteryTime -= userTime;
+            lotteryTime -= (usedCounts + usedLoginCounts);
         }
-        return lotteryTime;
+        return usedLoginCounts == 1 ? lotteryTime : 1;
     }
 
     @Transactional

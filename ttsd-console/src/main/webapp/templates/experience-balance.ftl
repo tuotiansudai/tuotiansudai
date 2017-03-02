@@ -10,7 +10,7 @@
             <input type="text" class="form-control jq-loginName" name="mobile" value="${mobile!}">
         </div>
         <div class="form-group">
-            <label for="control-label">余额：</label>
+            <label for="control-label">余额(分)：</label>
             <input type="text" class="form-control jq-balance-min" name="balanceMin" value="${balanceMin!}"
                    onblur="this.value=this.value.replace(/\D/g,'')" onkeyup="this.value=this.value.replace(/\D/g,'')"
                    onafterpaste="this.value=this.value.replace(/\D/g,'')">~
