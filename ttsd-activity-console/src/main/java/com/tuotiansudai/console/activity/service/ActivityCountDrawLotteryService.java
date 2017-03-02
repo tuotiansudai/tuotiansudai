@@ -2,7 +2,6 @@ package com.tuotiansudai.console.activity.service;
 
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.activity.repository.mapper.UserLotteryPrizeMapper;
 import com.tuotiansudai.activity.repository.model.ActivityCategory;
 import com.tuotiansudai.activity.repository.model.ActivityDrawLotteryTask;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
@@ -196,7 +195,7 @@ public class ActivityCountDrawLotteryService {
                     }
                     break;
                 case RECHARGE:
-                    if (rechargeMapper.findRechargeCount(null, userModel.getMobile(), null, RechargeStatus.SUCCESS, null, startTime, endTime) > 0) {
+                    if (rechargeMapper.findRechargeCount(null, userModel.getMobile(), null, RechargeStatus.SUCCESS, null, startTime, endTime, null) > 0) {
                         time++;
                     }
                     break;
