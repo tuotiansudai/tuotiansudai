@@ -65,11 +65,14 @@ public class RepaySuccessCouponRepayMessageConsumer implements MessageConsumer {
 
         try {
             BaseDto<PayDataDto> baseDto = payWrapperClient.couponRepayAfterRepaySuccess(repaySuccessMessage);
-
             if (!baseDto.isSuccess()) {
+                logger.error("RepaySuccess_CouponRepay consume fail. message: " + message);
+                throw new RuntimeException("RepaySuccess_CouponRepay consume fail. message: " + message);
+            }
+
+            if (!baseDto.getData().getStatus()) {
                 smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(MessageFormat.format("还款发放优惠券收益失败,还款ID:{0}", String.valueOf(loanRepayId))));
                 logger.error("[还款发放优惠券收益MQ] RepaySuccess_CouponRepay is fail. loanId:{}", String.valueOf(loanRepayId));
-                throw new RuntimeException("[还款发放优惠券收益MQ] RepaySuccess_CouponRepay is fail. loanOutInfo: " + message);
             }
         } catch (Exception e) {
             logger.error("[还款发放优惠券收益MQ] RepaySuccess_CouponRepay  is fail, message:{}", message);

@@ -255,6 +255,31 @@ public class PointTaskServiceTest {
     }
 
     @Test
+    public void shouldReferrerIsNullCompleteTaskIsOk(){
+        UserModel referrerUserModel = createFakeUser("referrerLoginName", null);
+        UserModel testName = createFakeUser("testName", null);
+        LoanModel loanModel = createFakeLoan(ProductType._180);
+        createFakeInvest(testName.getLoginName(), loanModel.getId(), 10l);
+
+        pointTaskService.completeAdvancedTask(PointTask.EACH_RECOMMEND_INVEST, testName.getLoginName());
+        pointTaskService.completeAdvancedTask(PointTask.EACH_RECOMMEND, testName.getLoginName());
+        pointTaskService.completeAdvancedTask(PointTask.EACH_RECOMMEND_REGISTER, testName.getLoginName());
+        pointTaskService.completeAdvancedTask(PointTask.EACH_RECOMMEND_BANK_CARD, testName.getLoginName());
+        pointTaskService.completeAdvancedTask(PointTask.FIRST_REFERRER_INVEST, testName.getLoginName());
+
+        List<UserPointTaskModel> userPointTaskModels = userPointTaskMapper.findByLoginName(referrerUserModel.getLoginName());
+        Optional<UserPointTaskModel> completeTask = userPointTaskModels.stream().findFirst().filter(userPointTaskModel -> pointTaskMapper.findById(userPointTaskModel.getPointTaskId()).getName().equals(PointTask.EACH_RECOMMEND_INVEST));
+        assertTrue(!completeTask.isPresent());
+        completeTask = userPointTaskModels.stream().findFirst().filter(userPointTaskModel -> pointTaskMapper.findById(userPointTaskModel.getPointTaskId()).getName().equals(PointTask.EACH_RECOMMEND));
+        assertTrue(!completeTask.isPresent());
+        completeTask = userPointTaskModels.stream().findFirst().filter(userPointTaskModel -> pointTaskMapper.findById(userPointTaskModel.getPointTaskId()).getName().equals(PointTask.EACH_RECOMMEND_BANK_CARD));
+        assertTrue(!completeTask.isPresent());
+        completeTask = userPointTaskModels.stream().findFirst().filter(userPointTaskModel -> pointTaskMapper.findById(userPointTaskModel.getPointTaskId()).getName().equals(PointTask.FIRST_REFERRER_INVEST));
+        assertTrue(!completeTask.isPresent());
+
+    }
+
+    @Test
     public void shouldEachRecommendReferrerBankCardIsOk(){
         UserModel referrerUserModel = createFakeUser("referrerCardLoginName", null);
         UserModel testName = createFakeUser("testCardLoginName", referrerUserModel.getLoginName());
