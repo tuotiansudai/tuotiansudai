@@ -89,8 +89,8 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
         try {
             InvestModel investModel = investService.findById(Long.parseLong(userInvestRepayRequestDto.getInvestId().trim()));
             LoanModel loanModel = loanService.findLoanById(investModel.getLoanId());
-            //未放款时按照预计利息计算
-            if (loanModel.getRecheckTime() == null) {
+            //未放款时按照预计利息计算(拓天体验项目没有本金，所以不需要计算)
+            if (loanModel.getRecheckTime() == null && loanModel.getProductType() != ProductType.EXPERIENCE) {
                 totalExpectedInterest = investService.estimateInvestIncome(loanModel.getId(), investModel.getLoginName(), investModel.getAmount());
             }
             UserInvestRepayResponseDataDto userInvestRepayResponseDataDto = new UserInvestRepayResponseDataDto(loanModel, investModel);
