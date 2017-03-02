@@ -306,7 +306,7 @@
     	<p class="gift-info tip-text">请实名认证后再来抽奖吧！</p>
     	{{/if}}
     	<p class="gift-btn">
-    		<a href="javascript:void(0)" class="close-btn">确定</a>
+    		<a href="javascript:void(0)" class="close-tip">确定</a>
     	</p>
     </script>
     <div class="loading-item" id="loadingItem">

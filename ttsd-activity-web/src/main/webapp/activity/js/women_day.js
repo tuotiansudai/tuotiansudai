@@ -149,7 +149,10 @@ require(['jquery', 'layerWrapper','template','commonFun','jquery.ajax.extension'
 
             }
         });
-
+        $('.layer-tip-item .close-tip').on('click', function(event) {
+            event.preventDefault();
+            location.reload();
+        });
         //点击切换按钮
         var $menuCls = $machineLottery.find('.menu-switch').find('span');
         $menuCls.on('click', function() {
