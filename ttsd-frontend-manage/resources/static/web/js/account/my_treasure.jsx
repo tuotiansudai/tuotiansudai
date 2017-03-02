@@ -1,10 +1,10 @@
 require('webStyle/account/my_treasure.scss');
 require('webJsModule/coupon_alert');
 require('webJsModule/assign_coupon');
-
 var $body = $('body'),
 	$ruleList = $('#ruleList'),
 	$content = $('.model-list');
+
 //Effects tab
 $body.on('click', '.filters-list li', function(event) {
 	event.preventDefault();
@@ -13,6 +13,7 @@ $body.on('click', '.filters-list li', function(event) {
 	$self.addClass('active').siblings().removeClass('active');
 	$content.find('.coupon-com:eq(' + index + ')').show().siblings().hide();
 })
+	
 //close tip dom
 	.on('click', '.close-btn', function(event) {
 		event.preventDefault();
