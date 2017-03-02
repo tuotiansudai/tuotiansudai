@@ -30,7 +30,7 @@
             <div class="form-group">
                 <label for="control-label">费用类型</label>
                 <select class="selectpicker operationType" data-style="btn-default" name="experienceBillOperationType">
-                    <option value="">请选择费用类型</option>
+                    <option value="">全部</option>
                     <#list operationTypeList as operationTypeItem>
                         <option value="${operationTypeItem}"
                                 <#if operationType?has_content && operationTypeItem == operationType>selected</#if>>${operationTypeItem.description}</option>
@@ -56,6 +56,9 @@
     <div class="row">
         <table class="table table-bordered table-hover">
             <thead>
+            <tr>
+                <th colspan="8">入账总额:&nbsp;${sumInExperienceBillAmount/100} 元 &nbsp;&nbsp;&nbsp;出账总额:&nbsp;${sumOutExperienceBillAmount/100} 元 </th>
+            </tr>
             <tr>
                 <th>时间</th>
                 <th>序号</th>

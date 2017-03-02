@@ -39,7 +39,7 @@
                 and ir.status = #{repayStatus}
             </if>
         </where>
-        ORDER BY ir.repay_date
+        ORDER BY ir.repay_date DESC
         limit #{index},#{pageSize}
     </select>
 

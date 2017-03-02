@@ -89,9 +89,11 @@ public class ExperienceController {
                 businessType,
                 index,
                 pageSize);
-        long sumExperienceBillAmount = consoleExperienceService.findSumExperienceBillAmount(mobile,startTime,endTime,operationType,businessType);
+        long sumInExperienceBillAmount = consoleExperienceService.findSumExperienceBillAmount(mobile,startTime,endTime,operationType == null?ExperienceBillOperationType.IN:operationType,businessType);
+        long sumOutExperienceBillAmount = consoleExperienceService.findSumExperienceBillAmount(mobile,startTime,endTime,operationType == null?ExperienceBillOperationType.OUT:operationType,businessType);
         modelAndView.addObject("data", basePaginationDataDto);
-        modelAndView.addObject("sumExperienceBillAmount", sumExperienceBillAmount);
+        modelAndView.addObject("sumInExperienceBillAmount", sumInExperienceBillAmount);
+        modelAndView.addObject("sumOutExperienceBillAmount", sumOutExperienceBillAmount);
         modelAndView.addObject("mobile", mobile);
         modelAndView.addObject("startTime", startTime);
         modelAndView.addObject("endTime", endTime);

@@ -36,7 +36,7 @@
                 and eb.business_type = #{businessType}
             </if>
         </where>
-        order by created_time
+        order by created_time DESC
         limit #{index}, #{pageSize}
     </select>
 

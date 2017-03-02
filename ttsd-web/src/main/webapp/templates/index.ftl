@@ -90,7 +90,7 @@
             </div>
 
             <div class="newer-experience clearfix" data-url="/loan/1">
-                <i class="tag-icon"></i>
+                <#--<i class="tag-icon"></i>-->
                 <div class="con-inner">
                     <b class="newer-title">${experienceLoanDto.name} <span>限体验金投资</span></b>
                     <ul class="loan-info clearfix">
