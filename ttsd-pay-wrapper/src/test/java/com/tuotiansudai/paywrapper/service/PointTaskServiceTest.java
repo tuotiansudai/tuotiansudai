@@ -265,6 +265,7 @@ public class PointTaskServiceTest {
         pointTaskService.completeAdvancedTask(PointTask.EACH_RECOMMEND, testName.getLoginName());
         pointTaskService.completeAdvancedTask(PointTask.EACH_RECOMMEND_REGISTER, testName.getLoginName());
         pointTaskService.completeAdvancedTask(PointTask.EACH_RECOMMEND_BANK_CARD, testName.getLoginName());
+        pointTaskService.completeAdvancedTask(PointTask.FIRST_REFERRER_INVEST, testName.getLoginName());
 
         List<UserPointTaskModel> userPointTaskModels = userPointTaskMapper.findByLoginName(referrerUserModel.getLoginName());
         Optional<UserPointTaskModel> completeTask = userPointTaskModels.stream().findFirst().filter(userPointTaskModel -> pointTaskMapper.findById(userPointTaskModel.getPointTaskId()).getName().equals(PointTask.EACH_RECOMMEND_INVEST));
@@ -274,6 +275,8 @@ public class PointTaskServiceTest {
         completeTask = userPointTaskModels.stream().findFirst().filter(userPointTaskModel -> pointTaskMapper.findById(userPointTaskModel.getPointTaskId()).getName().equals(PointTask.EACH_RECOMMEND_REGISTER));
         assertTrue(!completeTask.isPresent());
         completeTask = userPointTaskModels.stream().findFirst().filter(userPointTaskModel -> pointTaskMapper.findById(userPointTaskModel.getPointTaskId()).getName().equals(PointTask.EACH_RECOMMEND_BANK_CARD));
+        assertTrue(!completeTask.isPresent());
+        completeTask = userPointTaskModels.stream().findFirst().filter(userPointTaskModel -> pointTaskMapper.findById(userPointTaskModel.getPointTaskId()).getName().equals(PointTask.FIRST_REFERRER_INVEST));
         assertTrue(!completeTask.isPresent());
 
     }
