@@ -4,8 +4,7 @@
 
     <div class="error-tip-container tl">
         <div class="error-info">
-            <img src="${commonStaticServer}/images/icons/error-tip-404.png" class="fl"/>
-
+            <span class="fl error-icon-404"></span>
             <p>
                 <span class="sorry">很抱歉，您访问的页面不存在！</span>
                 <span class="jump-tip"><i>10</i>秒后将跳转到首页</span>
