@@ -42,6 +42,10 @@ public class PointTaskServiceImpl implements PointTaskService {
             PointTask.FIRST_TURN_ON_NO_PASSWORD_INVEST,
             PointTask.FIRST_INVEST_360);
 
+    private final static List<PointTask> EACH_TASKS = Lists.newArrayList(PointTask.EACH_RECOMMEND_REGISTER,
+            PointTask.EACH_RECOMMEND_BANK_CARD,
+            PointTask.EACH_RECOMMEND_INVEST);
+
     final static long SUM_INVEST_5000_AMOUNT = 500000L;
     final static long SUM_INVEST_5000_POINT = 100;
     final static long FIRST_INVEST_10000_AMOUNT = 1000000L;
@@ -85,7 +89,7 @@ public class PointTaskServiceImpl implements PointTaskService {
 
             if (pointTask.equals(PointTask.BIND_BANK_CARD)) {
                 String referrer = userMapper.findByLoginName(loginName).getReferrer();
-                if(!StringUtils.isEmpty(referrer)) {
+                if (!StringUtils.isEmpty(referrer)) {
                     PointTaskModel bankCardTaskModel = pointTaskMapper.findByName(PointTask.EACH_RECOMMEND_BANK_CARD);
                     long referrerMaxTaskLevel = userPointTaskMapper.findMaxTaskLevelByLoginName(referrer, PointTask.EACH_RECOMMEND_BANK_CARD);
                     userPointTaskMapper.create(new UserPointTaskModel(referrer, bankCardTaskModel.getId(), bankCardTaskModel.getPoint(), referrerMaxTaskLevel + 1));
@@ -131,7 +135,7 @@ public class PointTaskServiceImpl implements PointTaskService {
                     pointBillService.createTaskPointBill(referrer, pointTaskModel.getId(), pointTaskModel.getPoint(), pointBillNote);
                     break;
                 case EACH_RECOMMEND_REGISTER:
-                    if(Strings.isNullOrEmpty(userMapper.findByLoginName(loginName).getReferrer())){
+                    if (Strings.isNullOrEmpty(userMapper.findByLoginName(loginName).getReferrer())) {
                         break;
                     }
                 case FIRST_REFERRER_INVEST:
@@ -181,7 +185,7 @@ public class PointTaskServiceImpl implements PointTaskService {
                 pointTaskDto.setUrl(this.getTaskUrl(pointTask));
                 switch (pointTask) {
                     case EACH_SUM_INVEST:
-                        long sumSuccessInvestAmount = investMapper.sumSuccessInvestAmountByLoginName(null, loginName,true);
+                        long sumSuccessInvestAmount = investMapper.sumSuccessInvestAmountByLoginName(null, loginName, true);
                         pointTaskDto.setTitle(MessageFormat.format(pointTask.getTitle(), AmountConverter.convertCentToString(SUM_INVEST_5000_AMOUNT)));
                         pointTaskDto.setPoint(SUM_INVEST_5000_POINT);
                         pointTaskDto.setDescription(MessageFormat.format("还差<span class='color-key'>{0}元</span>即可获得奖励", AmountConverter.convertCentToString(SUM_INVEST_5000_AMOUNT - sumSuccessInvestAmount)));
@@ -233,6 +237,10 @@ public class PointTaskServiceImpl implements PointTaskService {
         List<PointTaskDto> data = Lists.newArrayList();
         List<UserPointTaskModel> userPointTaskModels = userPointTaskMapper.findByLoginName(loginName);
         for (UserPointTaskModel userPointTaskModel : userPointTaskModels) {
+            if(EACH_TASKS.contains(userPointTaskModel.getPointTask().getName())){
+                continue;
+            }
+
             if (ADVANCED_TASKS.contains(userPointTaskModel.getPointTask().getName())) {
                 PointTaskDto pointTaskDto = new PointTaskDto();
                 pointTaskDto.setPoint(userPointTaskModel.getPoint());
@@ -280,7 +288,7 @@ public class PointTaskServiceImpl implements PointTaskService {
             case FIRST_RECHARGE:
                 return rechargeMapper.findSumSuccessRechargeByLoginName(loginName) > 0;
             case FIRST_INVEST:
-                return investMapper.sumSuccessInvestAmountByLoginName(null, loginName,true) > 0;
+                return investMapper.sumSuccessInvestAmountByLoginName(null, loginName, true) > 0;
         }
 
         return false;
@@ -295,7 +303,7 @@ public class PointTaskServiceImpl implements PointTaskService {
         switch (pointTask) {
             case EACH_SUM_INVEST:
                 //只能完成一次
-                long sumInvestAmount = investMapper.sumSuccessInvestAmountByLoginName(null, loginName,true);
+                long sumInvestAmount = investMapper.sumSuccessInvestAmountByLoginName(null, loginName, true);
                 return CollectionUtils.isEmpty(userPointTaskMapper.findByLoginNameAndTask(loginName, pointTask)) && (sumInvestAmount >= SUM_INVEST_5000_AMOUNT);
             case FIRST_SINGLE_INVEST:
                 //只能完成一次
@@ -303,7 +311,7 @@ public class PointTaskServiceImpl implements PointTaskService {
             case EACH_RECOMMEND_REGISTER:
                 return true;
             case EACH_RECOMMEND_INVEST:
-                if(investMapper.sumSuccessInvestCountByLoginName(loginName) == 1){
+                if (investMapper.sumSuccessInvestCountByLoginName(loginName) == 1) {
                     return true;
                 }
                 break;
