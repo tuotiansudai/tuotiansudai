@@ -64,7 +64,7 @@
 
                             <dd>
                                 <@global.isAnonymous>
-                                    <a class="btn-pay btn-normal" href="/register/user">马上投资</a>
+                                    <a class="btn-pay btn-normal" href="/login">马上投资</a>
                                 </@global.isAnonymous>
                                 <@global.isNotAnonymous>
                                     <button id="investSubmit" class="btn-pay btn-normal" type="submit">马上投资</button>

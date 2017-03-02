@@ -111,7 +111,7 @@
                 </tbody>
                 <tfoot>
                 <tr>
-                    <td colspan="5" class="last tr"> <a href="/loaner/loan-list" class="fr"> 查看更多>> </a> </td>
+                    <td colspan="6" class="more tr"> <a href="/loaner/loan-list" class="fr"> 查看更多>> </a> </td>
                 </tr>
                 </tfoot>
             </table>

@@ -55,7 +55,7 @@ amountInputElement.on('blur',function() {
         $(".principal-income",$experienceLoan).text(amount);
 
     });
-});
+}).trigger('blur');
 
 
 
