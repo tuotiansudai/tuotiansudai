@@ -24,6 +24,14 @@
         <result column="login_name" property="loginName"></result>
     </resultMap>
 
+    <resultMap id="userLotteryTop10PrizeView" type="com.tuotiansudai.activity.repository.model.UserLotteryTop10PrizeView">
+        <result column="mobile" property="mobile"></result>
+        <result column="user_name" property="userName"></result>
+        <result column="prize" property="prize"></result>
+        <result column="lottery_time" property="lotteryTime"></result>
+        <result column="login_name" property="loginName"></result>
+    </resultMap>
+
     <insert id="create" parameterType="userLotteryPrizeModel" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO `edxactivity`.`user_lottery_prize`(`id`,`mobile`,`login_name`,`user_name`,`prize`,`lottery_time`,`activity_category`)
         VALUES(#{id},#{mobile},#{loginName},#{userName},#{prize},#{lotteryTime},#{activityCategory});
@@ -122,10 +130,12 @@
         order by lottery_time DESC
     </select>
 
-    <select id="findMoneyTreeLotteryPrizeTop10" parameterType="map" resultMap="userLotteryPrizeView">
-        select lottery_time,mobile,prize from `edxactivity`.`user_lottery_prize`
+    <select id="findMoneyTreeLotteryPrizeTop10" parameterType="map" resultMap="userLotteryTop10PrizeView">
+        select lottery_time, mobile, sum(SUBSTRING(prize,INSTR(prize,'GOLD_') + 5)) as prize from `edxactivity`.`user_lottery_prize`
         where activity_category like '${activityCategory}%'
-        order by SUBSTRING(prize,INSTR(prize,'GOLD_') + 5) DESC, lottery_time DESC
+        group by mobile
+		having prize > 0
+        order by prize DESC, lottery_time
         LIMIT 10
     </select>
 

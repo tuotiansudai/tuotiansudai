@@ -1,10 +1,7 @@
 package com.tuotiansudai.activity.repository.mapper;
 
 
-import com.tuotiansudai.activity.repository.model.ActivityCategory;
-import com.tuotiansudai.activity.repository.model.LotteryPrize;
-import com.tuotiansudai.activity.repository.model.UserLotteryPrizeModel;
-import com.tuotiansudai.activity.repository.model.UserLotteryPrizeView;
+import com.tuotiansudai.activity.repository.model.*;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -35,7 +32,7 @@ public interface UserLotteryPrizeMapper {
                                                         @Param("lotteryPrizes") List<LotteryPrize> lotteryPrizes,
                                                         @Param("activityCategory") ActivityCategory activityCategory);
 
-    List<UserLotteryPrizeView> findMoneyTreeLotteryPrizeTop10(@Param(value = "activityCategory") ActivityCategory activityCategory);
+    List<UserLotteryTop10PrizeView> findMoneyTreeLotteryPrizeTop10(@Param(value = "activityCategory") ActivityCategory activityCategory);
 
     List<UserLotteryPrizeView> findMoneyTreeLotteryPrizeByMobile(@Param(value = "mobile") String mobile,
                                                                  @Param(value = "activityCategory") ActivityCategory activityCategory);

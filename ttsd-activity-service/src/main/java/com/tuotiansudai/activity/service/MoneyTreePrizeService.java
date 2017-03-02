@@ -70,13 +70,13 @@ public class MoneyTreePrizeService {
         return userLotteryPrizeViews;
     }
 
-    public List<UserLotteryPrizeView> findDrawLotteryPrizeRecordTop10() {
-        List<UserLotteryPrizeView> userLotteryPrizeViews = userLotteryPrizeMapper.findMoneyTreeLotteryPrizeTop10(ActivityCategory.MONEY_TREE);
-        for (UserLotteryPrizeView view : userLotteryPrizeViews) {
+    public List<UserLotteryTop10PrizeView> findDrawLotteryPrizeRecordTop10() {
+        List<UserLotteryTop10PrizeView> userLotteryPrize10Views = userLotteryPrizeMapper.findMoneyTreeLotteryPrizeTop10(ActivityCategory.MONEY_TREE);
+        for (UserLotteryTop10PrizeView view : userLotteryPrize10Views) {
             view.setMobile(MobileEncryptor.encryptMiddleMobile(view.getMobile()));
-            view.setPrizeValue(view.getPrize().getDescription());
+            view.setPrize(view.getPrize() + "元");
         }
-        return userLotteryPrizeViews;
+        return userLotteryPrize10Views;
     }
 
     public int getLeftDrawPrizeTime(String mobile) {

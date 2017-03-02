@@ -1,6 +1,7 @@
 package com.tuotiansudai.api.dto.v1_0;
 
 import com.tuotiansudai.activity.repository.model.UserLotteryPrizeView;
+import com.tuotiansudai.activity.repository.model.UserLotteryTop10PrizeView;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.Date;
@@ -20,6 +21,12 @@ public class MoneyTreeResultResponseDataDto extends BaseResponseDataDto{
         this.prizeName = userLotteryPrizeView.getPrizeValue();
         this.prizeMobile = userLotteryPrizeView.getMobile();
         this.prizeTime = userLotteryPrizeView.getLotteryTime();
+    }
+
+    public MoneyTreeResultResponseDataDto(UserLotteryTop10PrizeView userLotteryTop10PrizeView){
+        this.prizeName = userLotteryTop10PrizeView.getPrize();
+        this.prizeMobile = userLotteryTop10PrizeView.getMobile();
+        this.prizeTime = userLotteryTop10PrizeView.getLotteryTime();
     }
 
     public String getPrizeName() {
