@@ -149,7 +149,7 @@ require(['jquery', 'layerWrapper','template','commonFun','jquery.ajax.extension'
 
             }
         });
-        $('.layer-tip-item .close-tip').on('click', function(event) {
+        $('.gift-btn').on('click', '.close-tip', function(event) {
             event.preventDefault();
             location.reload();
         });
