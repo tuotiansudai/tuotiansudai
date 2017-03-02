@@ -151,7 +151,7 @@ public class LoanListController {
                 return baseDto;
             }
             mqWrapperClient.sendMessage(MessageQueue.TransferAnxinContract, new AnxinContractMessage(transferApplicationModel.getId(), AnxinContractType.TRANSFER_CONTRACT.name()));
-            return new BaseDto<>(true);
+            return new BaseDto<>(true, new AnxinDataDto(true, "生成成功！"));
         }
     }
 

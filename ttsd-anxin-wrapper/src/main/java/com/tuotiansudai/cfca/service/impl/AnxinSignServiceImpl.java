@@ -619,8 +619,8 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         } catch (Exception ex) {
             ex.printStackTrace();
             logger.info("query anXin contract fail," + ex);
-            return new BaseDto(false);
+            return new BaseDto(false, new AnxinDataDto(true, ex.getMessage()));
         }
-        return new BaseDto(true);
+        return new BaseDto(true, new AnxinDataDto(true, "success"));
     }
 }
