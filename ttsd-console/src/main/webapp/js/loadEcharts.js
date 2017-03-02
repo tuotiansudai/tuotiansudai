@@ -526,6 +526,80 @@ define(['jquery','underscore','echarts','pageNumber'], function ($,_) {
             }
 
         },
+        eConsoleCount: function (param) {
+            var $formUserReport=$('#formUserInvestCountViscosityReport'),
+                $boxUserInvest=$('#boxUserInvestCount');
+            $.pageflip.defaultVal = {
+                pageIndex: 1,
+                pageSize: 10,
+                PageCallback: loadReportData,
+                PagePosition: "#boxUserInvestCount table .pageNumber span.pageBtn",
+                pageLocalized: {
+                    first: "<<",
+                    prev: "<",
+                    next: ">",
+                    last: ">>"
+                }
+            }
+            function loadReportData() {
+                if (typeof param.seriesIndex == 'undefined') {
+                    return;
+                }
+                var loanCount= /[0-9]/.exec(param.name)[0];
+                var formData=$formUserReport.serialize()+'&loanCount='+loanCount+'&pageNo='+$.pageflip.defaultVal.pageIndex+'&pageSize='+$.pageflip.defaultVal.pageSize;
+                $.ajax({
+                    url: '/bi/user-invest-count-viscosity-detail',
+                    type: 'GET',
+                    dataType: 'json',
+                    data:formData,
+                    contentType: 'application/json; charset=UTF-8'
+                }).done(function (data) {
+                    var dataObj=[], TotalRecord=data.totalCount;
+
+                    $boxUserInvest.find('.sumAmount').text(parseFloat(data.sumAmount/100).toFixed(2));
+                    $.each(data.items,function(key,option) {
+                        var staffIcon = '<span class="glyphicon glyphicon glyphicon-user" aria-hidden="true"></span>';
+                        var isReferrerStaffIcon=(option.isReferrerStaff==1)?staffIcon:'';
+                        var isStaffIcon=((option.isStaff==1)?staffIcon:'');
+
+                        var getDate=new Date(option.lastInvestTime),
+                            Hours=getDate.getHours(),
+                            minutes=getDate.getMinutes(),
+                            seconds=getDate.getSeconds();
+
+                        Hours=(Hours >= 10)?(Hours + ":"):("0" + Hours + ":");
+                        minutes=(minutes >= 10)?(minutes + ":"):("0" + minutes + ":");
+                        seconds=(seconds >= 10)?seconds:("0" + seconds);
+                        showDate=MyChartsObject.datetimeFun.getNowFormatDate(getDate)+' '+Hours+minutes+seconds;
+
+                        dataObj.push('<tr> ' +
+                            '<td>'+option.loginName + isStaffIcon + '</td> ' +
+                            '<td>'+option.userName+'</td> ' +
+                            '<td>'+option.mobile+'</td> ' +
+                            '<td>'+((_.isNull(option.referrer))?'':option.referrer+isReferrerStaffIcon)+'</td> ' +
+                            '<td>'+((_.isNull(option.referrerUserName))?'':option.referrerUserName)+'</td> ' +
+                            '<td>'+parseFloat(option.totalAmount/100).toFixed(2)+'</td> ' +
+                            '<td>'+option.loanCount+'</td> ' +
+                            '<td>'+showDate+'</td> ' +
+                            '</tr>');
+                    })
+                    $boxUserInvest.show().find('tbody').empty().append(dataObj.join(''));
+
+                    $.pageflip.paging(TotalRecord,{ PageCallback: loadReportData,
+                        PagePosition: "#boxUserInvestCount table .pageNumber span.pageBtn"
+                    });
+                    $boxUserInvest.find('.TotalRecords').text(TotalRecord);
+                });
+
+                $('.viscosity-export').click(function () {
+                    location.href = "/bi/user-invest-count-viscosity-detail-csv?"+$formUserReport.serialize()+"&loanCount="+loanCount;
+                });
+            }
+            if (param.type == 'click') {
+                loadReportData();
+            }
+
+        },
         Charts: {
             RenderChart: function (option) {
                 require(
@@ -547,6 +621,8 @@ define(['jquery','underscore','echarts','pageNumber'], function ($,_) {
                         option.chart.setOption(option.option, true);
                         if(/userInvestViscosity/.test(option.chart.dom.id)) {
                             option.chart.on(ecConfig.EVENT.CLICK, MyChartsObject.eConsole); //添加点击事件
+                        }else if(/userInvestCountViscosity/.test(option.chart.dom.id)){
+                            option.chart.on(ecConfig.EVENT.CLICK, MyChartsObject.eConsoleCount); //添加点击事件
                         }
                         window.onresize = option.option.resize;
                     });
