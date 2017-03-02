@@ -123,11 +123,11 @@ public class ExperienceRepayServiceImpl implements ExperienceRepayService {
                 accountModel.getPayAccountId(),
                 String.valueOf(repayAmount));
 
-        if (Strings.isNullOrEmpty(redisWrapperClient.hget(EXPERIENCE_INTEREST_REDIS_KEY, loginName))) {
+        if (Strings.isNullOrEmpty(redisWrapperClient.hget(EXPERIENCE_INTEREST_REDIS_KEY, String.valueOf(investId)))) {
             redisWrapperClient.hset(EXPERIENCE_INTEREST_REDIS_KEY, String.valueOf(investId), SyncRequestStatus.READY.name());
         }
 
-        String requestStatus = redisWrapperClient.hget(EXPERIENCE_INTEREST_REDIS_KEY, loginName);
+        String requestStatus = redisWrapperClient.hget(EXPERIENCE_INTEREST_REDIS_KEY, String.valueOf(investId));
         if (SyncRequestStatus.READY.name().equalsIgnoreCase(requestStatus) || SyncRequestStatus.FAILURE.name().equalsIgnoreCase(requestStatus)) {
             try {
                 redisWrapperClient.hset(EXPERIENCE_INTEREST_REDIS_KEY, String.valueOf(investId), SyncRequestStatus.SENT.name());
