@@ -73,12 +73,12 @@
         </h3>
     </div>
     <#if expectedRepayAmountOfMonth??>
-        <div class="LastMonth  clear-blank bg-w">
-            <ul class="PaymentSwitch">
-                <li class="current"><a href="javascript:void(0);">本月未还款</a></li>
-            </ul>
-            <table class="table table-striped">
-                <caption>本月未还款总额：￥${((expectedRepayAmountOfMonth/100)?string('0.00'))!}元 <a href="/loaner/loan-list" class="fr">更多...</a></caption>
+        <div class="last-month  bg-w">
+            <div class="payment-switch">
+                <em class="current">本月未还款</em>
+                <span class="total current fr">本月未还款总额：￥${((expectedRepayAmountOfMonth/100)?string('0.00'))!}元</span>
+            </div>
+            <table class="table">
                 <thead>
                 <tr>
                     <th>项目名称</th>
@@ -109,6 +109,11 @@
                     </tr>
                     </#if>
                 </tbody>
+                <tfoot>
+                <tr>
+                    <td colspan="5" class="last tr"> <a href="/loaner/loan-list" class="fr"> 查看更多>> </a> </td>
+                </tr>
+                </tfoot>
             </table>
         </div>
     </#if>

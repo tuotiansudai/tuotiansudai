@@ -70,7 +70,7 @@
                                     <button id="investSubmit" class="btn-pay btn-normal" type="submit">马上投资</button>
                                 </@global.isNotAnonymous>
 
-                                <div class="error-box">体验金金额不足</div>
+                                <div class="error-box" style="display: none"></div>
                             </dd>
                         </dl>
 
