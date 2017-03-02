@@ -327,6 +327,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
     @Override
     public BaseDto createLoanContracts(long loanId, boolean isCreateJob) {
+        logger.info(MessageFormat.format("[安心签]: createLoanContracts loanId:{0}", String.valueOf(loanId)));
         redisWrapperClient.setex(LOAN_CONTRACT_IN_CREATING_KEY + loanId, CREATE_CONTRACT_MAX_IN_DOING_TIME, "1");
 
         LoanModel loanModel = loanMapper.findById(loanId);
@@ -371,13 +372,14 @@ public class AnxinSignServiceImpl implements AnxinSignService {
             smsWrapperClient.sendGenerateContractErrorNotify(new GenerateContractErrorNotifyDto(mobileList, loanId));
         }
 
-        if (CollectionUtils.isNotEmpty((batchNoList))) {
+        if (CollectionUtils.isNotEmpty((batchNoList)) && isCreateJob) {
             logger.info("[安心签]: 创建job，稍后查询并更新合同状态。loanId:" + String.valueOf(loanId));
             DelayMessageDeliveryJobCreator.createAnxinContractQueryDelayJob(jobManager,
                     loanId, AnxinContractType.LOAN_CONTRACT.name(), batchNoList);
         }
 
-        redisWrapperClient.setex(LOAN_BATCH_NO_LIST_KEY + loanId, BATCH_NO_LIFT_TIME, String.join(",", batchNoList));
+        logger.info(MessageFormat.format("[安心签]: createLoanContracts batchNoList:{0}", String.join(",", batchNoList)));
+        redisWrapperClient.setex(LOAN_BATCH_NO_LIST_KEY + String.valueOf(loanId), BATCH_NO_LIFT_TIME, String.join(",", batchNoList));
         return new BaseDto(true);
     }
 
@@ -591,9 +593,14 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
     @Override
     public boolean queryContract(long businessId) {
+        logger.info(MessageFormat.format("[安心签] queryContract executing , businessId:{0}", String.valueOf(businessId)));
         try {
-            String batchStr = redisWrapperClient.get(AnxinSignServiceImpl.LOAN_BATCH_NO_LIST_KEY + businessId);
+            String batchStr = redisWrapperClient.get(AnxinSignServiceImpl.LOAN_BATCH_NO_LIST_KEY + String.valueOf(businessId));
+            logger.info(MessageFormat.format("[安心签] queryContract executing , batchStr:{0}", batchStr));
+
             List<String> waitingBatchNo = queryContract(businessId, Lists.newArrayList(batchStr.split(",")), AnxinContractType.LOAN_CONTRACT);
+            logger.info(MessageFormat.format("[安心签] queryContract executing , waitingBatchNo:{0}", waitingBatchNo));
+
             if (waitingBatchNo != null && waitingBatchNo.size() > 0) {
                 logger.info(MessageFormat.format("some batch is still in waiting. businessId:{0}, anxin ContractType:{1}, batchNo list(in waiting):{2}",
                         String.valueOf(businessId), AnxinContractType.LOAN_CONTRACT.name(), String.join(",", waitingBatchNo)));
@@ -615,11 +622,11 @@ public class AnxinSignServiceImpl implements AnxinSignService {
                 redisWrapperClient.del(AnxinSignServiceImpl.LOAN_CONTRACT_IN_CREATING_KEY + businessId);
             }
         } catch (Exception ex) {
+            ex.printStackTrace();
             logger.info("query anXin contract fail," + ex);
             return false;
         }
         return true;
     }
-
 
 }

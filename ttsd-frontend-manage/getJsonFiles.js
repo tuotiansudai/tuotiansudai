@@ -1,10 +1,11 @@
 var fs = require('fs');
 var path = require('path');
 var basePath = path.join(__dirname, 'resources'),
+    staticPath = path.join(basePath, 'static'),
+    dllplugins=path.join(staticPath, 'public/js/dllplugins'),
     outputPath=path.join(basePath, 'develop'); //默认打包路径
 //遍历文件夹，获取所有文件夹里面的文件信息
 var NODE_ENV=process.env.NODE_ENV;
-
 if(NODE_ENV=='production') {
     outputPath=path.join(basePath, 'prod');
     // 生成生产环境的json文件
@@ -12,7 +13,7 @@ if(NODE_ENV=='production') {
 function getJsonFileList(projectCategory,formatName){
     this.formatName=outputPath+'/'+formatName;
     this.projectCategory=projectCategory;
-    this.filesList = [];
+    // this.filesList = [];
     this.jsonFormat={
         "jsFile":{},
         "cssFile":{}
@@ -47,33 +48,29 @@ getJsonFileList.prototype.formatHandler = function(textFile) {
             this.jsonFormat['cssFile'][outFileName]=keyNameObj.css;
         }
     }
-    this.addJqueryPlugin(outputPath+'/public/plugins'); //读取jquery文件
+    this.addJqueryPlugin(dllplugins); //读取jquery文件
     // console.log(this.jsonFormat);
-
     var strJsonObj=JSON.stringify(this.jsonFormat);
     this.writeFile(strJsonObj);
 }
 
 getJsonFileList.prototype.addJqueryPlugin=function(path) {
 
-    var filesList=this.filesList;
-    var files = fs.readdirSync(path);//需要用到同步读取
-    files.forEach(function(file) {
-        var states = fs.statSync(path+'/'+file);
-        if(states.isDirectory())
-        {
-            this.readPluginFloder(path+'/'+file,filesList);
-        }
-        else {
-            var suffix=file.split('.'),
-                len=suffix.length;
-            if(suffix[len-1]=='js') {
-                var keyName=suffix[0];
-                this.jsonFormat['jsFile'][keyName]='/public/plugins/'+file;
+        var files = fs.readdirSync(path);//需要用到同步读取
+        files.forEach(function(file) {
+            var states = fs.statSync(path+'/'+file);
+            //isDirectory,用于判断被查看的对象是否是一个目录，如果是返回true
+            if(!states.isDirectory())
+            {
+                var suffix=file.split('.'),
+                    len=suffix.length;
+                if(suffix[len-1]=='js') {
+                    suffix.length=len-1;
+                    var keyName=suffix.join('');
+                    this.jsonFormat['jsFile'][keyName]='/public/dllplugins/'+file;
+                }
             }
-        }
-    }.bind(this))
-
+        }.bind(this));
 }
 
 getJsonFileList.prototype.init=function() {

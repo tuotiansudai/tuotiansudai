@@ -190,19 +190,11 @@ require(['jquery', 'layerWrapper', 'template', 'csrf','bootstrap', 'bootstrapDat
             if(couponType == "INVEST_COUPON"){
                 if (userGroup != 'EXCHANGER_CODE') {
                     if(userGroup != "IMPORT_USER" && userGroup != 'AGENT' && userGroup != 'CHANNEL'){
-                        $.get('/activity-manage/coupon/user-group/'+userGroup+'/estimate',function(data){
-                            $('.give-number').val(data);
-                        })
-                    } else if (userGroup == 'AGENT') {
-                        $.get('/user-manage/user/agents', function(data) {
-                            if (data.length > 0 ) {
-                                $('.coupon-deposit').show();
-                            }
-                            for (var i=0; i < data.length; i++) {
-                                $('.coupon-agent-channel').append('<label><input type="checkbox" class="agent" name="agents" value="'+data[i]+'">'+data[i]+'</label>');
-                            }
-                        })
-                        $('.give-number').val('0');
+                        if (userGroup != null) {
+                            $.get('/activity-manage/coupon/user-group/'+userGroup+'/estimate',function(data){
+                                $('.give-number').val(data);
+                            })
+                        }
                     } else if (userGroup == 'CHANNEL') {
                         $.get('/user-manage/user/channels', function(data) {
                             if (data.length > 0) {

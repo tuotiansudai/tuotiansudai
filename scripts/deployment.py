@@ -12,7 +12,7 @@ class Deployment(object):
     def deploy(self, env):
         self.clean()
         self.config_file(env)
-        self.jcversion()
+        self.jcversion(env)
         self.compile()
         self.build_and_unzip_worker()
         self.build_mq_consumer()
@@ -113,6 +113,6 @@ class Deployment(object):
     def _start_new_container(self, sudoer):
         sh('{0} {1} -f dev.yml up -d'.format(sudoer, self._dockerCompose))
 
-    def jcversion(self):
+    def jcversion(self, env):
         print "Starting jcmin..."
-        sh('{0} jcversion'.format(self._paver))
+        sh('{0} jcversion.env={1} jcversion'.format(self._paver, env))

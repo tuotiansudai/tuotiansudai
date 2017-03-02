@@ -1,6 +1,6 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="${css.loan_detail}" pageJavascript="${js.experience_loan_detail}" activeNav="我要投资" activeLeftNav="" title="新手体验项目">
-<div class="loan-detail-content loan-detail-new" data-loan-progress="${loan.progress?string.computer}">
+<@global.main pageCss="${css.loan_detail_experience}" pageJavascript="${js.loan_detail_experience}" activeNav="我要投资" activeLeftNav="" title="新手体验项目">
+<div class="loan-detail-content loan-detail-new" id="experienceLoanDetailContent" data-loan-progress="${loan.progress?string.computer}">
 
     <div class="borderBox clearfix no-border">
         <div class="loan-model">
@@ -11,7 +11,7 @@
                 </h2>
                 <div class="container-block loan-info">
                     <div class="content">
-                        <div class="row loan-number-detail">
+                        <div class="row loan-number-detail clearfix">
                             <div class="col-md-4">
                                 <div class="title">预期年化收益</div>
                                 <div class="number red">
@@ -92,7 +92,7 @@
                                     <a class="btn-pay btn-normal" href="/register/user">立即体验</a>
                                 </@global.isAnonymous>
                                 <@global.isNotAnonymous>
-                                    <button id="investSubmit" class="btn-pay btn-normal" type="button"
+                                    <button id="investSubmit" class="btn-pay btn-normal" type="submit"
                                             <#if coupon?? == false>disabled="disabled"</#if>>立即体验
                                     </button>
                                 </@global.isNotAnonymous>
@@ -104,7 +104,7 @@
                     <form action="/loan-list" method="get">
                         <dl class="account-list">
                             <dd class="img-status">
-                                <img src="${staticServer}/images/sign/loan/${loan.loanStatus?lower_case}.png" alt=""/>
+                                <img src="${commonStaticServer}/images/sign/loan/${loan.loanStatus?lower_case}.png" alt=""/>
                             </dd>
                             <dd>
                                 <button class="btn-pay btn-normal" type="submit">查看其他项目</button>
@@ -172,8 +172,7 @@
             </div>
         </div>
     </div>
-
-    <div id="freeSuccess" style="display: none;">
+    <div id="freeSuccess" style="display: none">
         <div class="success-info-tip">
             <i class="icon-tip"></i>
             <div class="detail-word">
