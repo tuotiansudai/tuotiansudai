@@ -11,7 +11,7 @@
                    autocomplete="off" value="${mobile!}"/>
         </div>
         <div class="form-group">
-            <label for="number">投资时间:</label>
+            <label for="number">预计还款时间:</label>
 
             <div class='input-group date' id='datetimepicker1'>
                 <input type='text' class="form-control" id="startTime" name="startTime"
@@ -52,7 +52,7 @@
             <tr>
                 <th>投资人手机号</th>
                 <th>投资体验金金额（元）</th>
-                <th>投资时间</th>
+                <th>预计还款时间</th>
                 <th>实际还款日期</th>
                 <th>应还收益(元)</th>
                 <th>实际收益(元)</th>
