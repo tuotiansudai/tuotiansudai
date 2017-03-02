@@ -11,7 +11,6 @@
             <li><a href="${webServer}/about/company" >公司介绍</a></li>
             <li><a href="${webServer}/about/assurance" >安全保障</a></li>
             <li><a href="${webServer}/about/team" >团队介绍</a></li>
-            <li><a href="${webServer}/about/refer-reward" >推荐奖励</a></li>
             <li><a href="${webServer}/about/operational">运营数据</a></li>
         </ul>
         <ul>
