@@ -1,5 +1,6 @@
 @charset "utf-8";
 $CK1:#ffac2a #ff7a2a;
+
 .layui-layer-btn {
   text-align: center !important;
   .layui-layer-btn0 {
@@ -257,13 +258,13 @@ body{
     font-size: 15px;
   }
   .layui-layer-content {
-    padding:15px 15px 5px 15px;
+    margin:10px 15px 5px 15px;
     .bottom-note {
       font-size: 14px;
       color: #666;
     }
     .summary-top {
-      padding-bottom:10px;
+      margin-bottom:10px;
       color: #333;
 
       span {
