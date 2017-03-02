@@ -73,7 +73,7 @@
                     <td>${(item.createdTime?string('yyyy-MM-dd HH:mm:ss'))!}</td>
                     <td>${item.id?string('0')}</td>
                     <td>${item.loginName!''}</td>
-                    <td>${item.userName}</td>
+                    <td>${item.userName!''}</td>
                     <td>${item.mobile}</td>
                     <td>${item.operationType.getDescription()}</td>
                     <td>${item.businessType.getDescription()}</td>

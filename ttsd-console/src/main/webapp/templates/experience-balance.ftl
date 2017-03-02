@@ -27,7 +27,7 @@
         <table class="table table-bordered table-hover">
             <thead>
             <tr>
-                <th colspan="6">账户体验金余额共计:&nbsp;${sumExperienceBalance/100} 元 &nbsp;&nbsp;&nbsp;折算成本:&nbsp;${sumExperienceBalance/100} 元 </th>
+                <th colspan="6">账户体验金余额共计:&nbsp;${sumExperienceBalance/100} 元 &nbsp;&nbsp;&nbsp;折算成本:&nbsp;${discountCost/100} 元 </th>
             </tr>
             <tr>
                 <th>用户名</th>
@@ -46,7 +46,7 @@
                     <td>${item.mobile}</td>
                     <td>${item.province!''}</td>
                     <td>${(item.lastExchangeTime?string('yyyy-MM-dd HH:mm:ss'))!}</td>
-                    <td>${item.lastExchangeTime/100}</td>
+                    <td>${item.experienceBalance/100}</td>
                 </tr>
                 </#list>
             </tbody>

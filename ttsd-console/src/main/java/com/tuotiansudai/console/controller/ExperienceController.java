@@ -9,6 +9,8 @@ import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.enums.ExperienceBillOperationType;
 import com.tuotiansudai.enums.ExperienceBillBusinessType;
 import com.tuotiansudai.repository.model.RepayStatus;
+import com.tuotiansudai.service.LoanService;
+import com.tuotiansudai.util.InterestCalculator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -26,6 +28,9 @@ public class ExperienceController {
     @Autowired
     private ConsoleExperienceService consoleExperienceService;
 
+    @Autowired
+    private LoanService loanService;
+
     @RequestMapping(value = "/balance", method = RequestMethod.GET)
     public ModelAndView balance(@RequestParam(value = "mobile", required = false) String mobile,
                                 @RequestParam(value = "balanceMin", required = false) String balanceMin,
@@ -37,6 +42,8 @@ public class ExperienceController {
         long sumExperienceBalance = consoleExperienceService.sumExperienceBalance(mobile, balanceMin, balanceMax);
         modelAndView.addObject("data", baseDto);
         modelAndView.addObject("sumExperienceBalance", sumExperienceBalance);
+        modelAndView.addObject("discountCost", InterestCalculator.estimateExperienceExpectedInterest(sumExperienceBalance, loanService.findLoanById(1)));
+
         modelAndView.addObject("mobile", mobile);
         modelAndView.addObject("balanceMin", balanceMin);
         modelAndView.addObject("balanceMax", balanceMax);
