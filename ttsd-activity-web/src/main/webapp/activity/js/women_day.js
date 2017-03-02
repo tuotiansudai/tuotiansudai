@@ -149,7 +149,7 @@ require(['jquery', 'layerWrapper','template','commonFun','jquery.ajax.extension'
 
             }
         });
-
+        
         //点击切换按钮
         var $menuCls = $machineLottery.find('.menu-switch').find('span');
         $menuCls.on('click', function() {
@@ -163,5 +163,11 @@ require(['jquery', 'layerWrapper','template','commonFun','jquery.ajax.extension'
         lottery.giftRecord();
         lottery.myGift();
         lottery.hoverScrollList($('#lotteryList').find('.user-record'),7);
+
+        $('body').on('click', '.gift-btn .close-tip', function (event) {
+            event.preventDefault();
+            layer.closeAll();
+            location.reload();
+        });
     });
 });
