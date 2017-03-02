@@ -1,5 +1,5 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.about_assurance}" pageJavascript="${js.assurance}" activeNav="" activeLeftNav="" title="风控流程_风控保障_拓天速贷" keywords="拓天速贷,风控流程,风控系统,资金保障" description="拓天速贷六重风控系统、22道风控手续、严谨的风控审核机制,全方位保障用户的资金安全,为投资者提供规范、安全、专业的互联网金融信息服务.">
+<@global.main pageCss="${css.about_assurance}" pageJavascript="${js.about_assurance}" activeNav="" activeLeftNav="" title="风控流程_风控保障_拓天速贷" keywords="拓天速贷,风控流程,风控系统,资金保障" description="拓天速贷六重风控系统、22道风控手续、严谨的风控审核机制,全方位保障用户的资金安全,为投资者提供规范、安全、专业的互联网金融信息服务.">
 
 <div class="risk-flow-container" id="riskFlow">
     <ul class="quick-top-link page-width">
@@ -9,7 +9,7 @@
     </ul>
     <div class="main-banner">
         <div class="page-width">
-            <img src="${staticServer}/images/sign/assure/risk-bar.jpg" alt="风控流程">
+            <img src="${commonStaticServer}/images/sign/assure/risk-bar.jpg" alt="风控流程">
         </div>
     </div>
     <div class="project-examination-box bg-white clearfix">
@@ -114,15 +114,15 @@
             <div class="column-title-ac"><i></i>项目终审<i></i> </div>
             <div class="project-examine-last">
                 <dl>
-                    <dt><em><img src="${staticServer}/images/sign/assure/end01.png" alt="风控流程"></em>材料复核</dt>
+                    <dt><em><img src="${commonStaticServer}/images/sign/assure/end01.png" alt="风控流程"></em>材料复核</dt>
                     <dd>总经理助理核实借款材料与风控报告的一致性</dd>
                 </dl>
                 <dl class="two">
-                    <dt><em><img src="${staticServer}/images/sign/assure/end02.png" alt="风控流程"></em>量化评级</dt>
+                    <dt><em><img src="${commonStaticServer}/images/sign/assure/end02.png" alt="风控流程"></em>量化评级</dt>
                     <dd>对应拓天速贷系统，量化借款人的安全等级与借款额度</dd>
                 </dl>
                 <dl>
-                    <dt><em><img src="${staticServer}/images/sign/assure/end03.png" alt="风控流程"></em>终审上会</dt>
+                    <dt><em><img src="${commonStaticServer}/images/sign/assure/end03.png" alt="风控流程"></em>终审上会</dt>
                     <dd>总经理办公会审核材料，综合评判，确定项目是否通过，一票否决制</dd>
                 </dl>
             </div>

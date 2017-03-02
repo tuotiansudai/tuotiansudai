@@ -5,26 +5,17 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.repository.mapper.CouponMapper;
-import com.tuotiansudai.repository.mapper.UserCouponMapper;
-import com.tuotiansudai.repository.model.CouponModel;
-import com.tuotiansudai.repository.model.UserCouponModel;
-import com.tuotiansudai.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.coupon.service.ExchangeCodeService;
 import com.tuotiansudai.coupon.util.InvestAchievementUserCollector;
 import com.tuotiansudai.coupon.util.UserCollector;
 import com.tuotiansudai.enums.CouponType;
-import com.tuotiansudai.enums.MessageEventType;
-import com.tuotiansudai.enums.PushSource;
-import com.tuotiansudai.enums.PushType;
-import com.tuotiansudai.message.EventMessage;
-import com.tuotiansudai.message.PushMessage;
+import com.tuotiansudai.message.CouponAssignSmsNotifyMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
+import com.tuotiansudai.repository.mapper.CouponMapper;
+import com.tuotiansudai.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.InvestStatus;
-import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.UserBirthdayUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
@@ -35,14 +26,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static com.tuotiansudai.enums.CouponType.*;
 
 @Service
 public class CouponAssignmentServiceImpl implements CouponAssignmentService {
@@ -96,6 +83,9 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
 
     @Resource(name = "winnerCollector")
     private UserCollector winnerCollector;
+
+    @Resource(name = "winnerNotifyCollector")
+    private UserCollector winnerNotifyCollector;
 
     @Resource(name = "membershipUserCollector")
     private UserCollector membershipUserCollector;
@@ -176,7 +166,7 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
         boolean isAssignableCoupon = CollectionUtils.isEmpty(existingUserCoupons);
 
         if (CollectionUtils.isNotEmpty(existingUserCoupons) && couponModel.isMultiple()) {
-            isAssignableCoupon = Lists.newArrayList(UserGroup.EXCHANGER, UserGroup.EXCHANGER_CODE, UserGroup.WINNER).contains(couponModel.getUserGroup())
+            isAssignableCoupon = Lists.newArrayList(UserGroup.EXCHANGER, UserGroup.EXCHANGER_CODE, UserGroup.WINNER, UserGroup.WINNER_NOTIFY).contains(couponModel.getUserGroup())
                     || existingUserCoupons.stream().allMatch(input -> input.getStatus() == InvestStatus.SUCCESS);
         }
 
@@ -282,31 +272,10 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
         userCouponModel.setExchangeCode(exchangeCode);
         userCouponMapper.create(userCouponModel);
 
-        HashMap<CouponType, String> titleTemplate = Maps.newHashMap(ImmutableMap.<CouponType, String>builder()
-                .put(RED_ENVELOPE, "{0}元现金红包")
-                .put(NEWBIE_COUPON, "{0}元新手体验金")
-                .put(INVEST_COUPON, "{0}元投资体验券")
-                .put(INTEREST_COUPON, "{0}%加息券")
-                .put(BIRTHDAY_COUPON, "生日福利券")
-                .build());
-
-
-        //Title:恭喜您获得了一张{0}！
-        //Content:尊敬的用户，恭喜您获得了一张{0}，有效期至{1}！
-        String couponName = titleTemplate.get(couponModel.getCouponType());
-        if (Lists.newArrayList(RED_ENVELOPE, NEWBIE_COUPON, INVEST_COUPON).contains(couponModel.getCouponType())) {
-            couponName = MessageFormat.format(couponName, AmountConverter.convertCentToString(couponModel.getAmount()));
-        }
-        if (INTEREST_COUPON == couponModel.getCouponType()) {
-            couponName = MessageFormat.format(couponName, new BigDecimal(couponModel.getRate()).multiply(new BigDecimal(100)).setScale(1, BigDecimal.ROUND_HALF_UP).toString());
+        if(Lists.newArrayList(UserGroup.IMPORT_USER, UserGroup.WINNER_NOTIFY).contains(couponModel.getUserGroup())) {
+            mqWrapperClient.sendMessage(MessageQueue.CouponSmsAssignNotify, new CouponAssignSmsNotifyMessage(couponId, loginName));
         }
 
-        String title = MessageFormat.format(MessageEventType.ASSIGN_COUPON_SUCCESS.getTitleTemplate(), couponName);
-        String content = MessageFormat.format(MessageEventType.ASSIGN_COUPON_SUCCESS.getContentTemplate(), couponName, new DateTime(userCouponModel.getEndTime()).toString("yyyy年MM月dd日"));
-        EventMessage message = new EventMessage(MessageEventType.ASSIGN_COUPON_SUCCESS,
-                Lists.newArrayList(loginName), title, content, userCouponModel.getId());
-        mqWrapperClient.sendMessage(MessageQueue.EventMessage, message);
-        mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(Lists.newArrayList(loginName), PushSource.ALL, PushType.ASSIGN_COUPON_SUCCESS, title));
         return userCouponModel;
     }
 
@@ -359,6 +328,7 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
                 .put(UserGroup.STAFF_RECOMMEND_LEVEL_ONE, this.staffRecommendLevelOneCollector)
                 .put(UserGroup.EXCHANGER, this.exchangerCollector)
                 .put(UserGroup.WINNER, this.winnerCollector)
+                .put(UserGroup.WINNER_NOTIFY, this.winnerNotifyCollector)
                 .put(UserGroup.EXCHANGER_CODE, this.exchangeCodeCollector)
                 .put(UserGroup.MEMBERSHIP_V0, this.membershipUserCollector)
                 .put(UserGroup.MEMBERSHIP_V1, this.membershipUserCollector)

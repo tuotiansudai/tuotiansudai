@@ -27,7 +27,7 @@ public class UserCouponController {
 
     @RequestMapping(value = "/assign-coupon", method = RequestMethod.POST)
     @ResponseBody
-    public void assignUserCoupon() {
+    public boolean assignUserCoupon() {
         String loginName = LoginUserInfo.getLoginName();
         logger.info(MessageFormat.format("pc assign coupon user:{0},begin time:{1}", loginName, DateTime.now().toString()));
         couponAssignmentService.asyncAssignUserCoupon(loginName, Lists.newArrayList(
@@ -48,5 +48,6 @@ public class UserCouponController {
                 UserGroup.MEMBERSHIP_V4,
                 UserGroup.MEMBERSHIP_V5));
         logger.info(MessageFormat.format("pc assign coupon user:{0},end time:{1}", loginName, DateTime.now().toString()));
+        return true;
     }
 }

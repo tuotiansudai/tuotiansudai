@@ -62,6 +62,11 @@ public class MQConsumerAliyunMNS extends MQConsumer {
         } catch (ServiceException serviceException) {
             // 对于 ServiceException 类型的异常，仅记录异常，但不报告错误
             logger.error("[MQ] pop message fail", serviceException);
+            // 稍微停一会儿
+            try {
+                Thread.sleep(consumerSetting.getMessagePopPeriodSeconds() * 1000);
+            } catch (InterruptedException ignored) {
+            }
         } catch (Exception e) {
             // 其它情况的异常需要报告错误
             logger.error("[MQ] pop message fail", e);

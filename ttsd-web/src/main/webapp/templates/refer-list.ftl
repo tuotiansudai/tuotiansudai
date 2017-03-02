@@ -1,14 +1,12 @@
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="${css.refer_list}" pageJavascript="${js.refer_list}" activeNav="我的账户" activeLeftNav="推荐送现金" title="推荐管理">
 <div class="content-container invest-list-content" id="investListContent">
-
     <h4 class="column-title"><em class="tc">推荐送现金</em></h4>
 
-       <div class="bar-top-img">
-           <a href="/activity/share-reward">
-               <img src="${staticServer}/images/sign/refer-list/bar-refer-sign.jpg" alt="推荐送现金">
-            </a>
-       </div>
+   <div class="bar-top-img">
+       <a href="/activity/share-reward">
+        </a>
+   </div>
 
     <div class="invite-friend-box clearfix">
         <div class="invite-friend-inner fl">
@@ -64,4 +62,70 @@
     <div class="pagination" id="referInvestPagination" style="display: none;" data-url="/referrer/refer-invest" data-page-size="10">
     </div>
 </div>
+
+<script type="text/template" id="referRelationTemplate">
+    <table class="refer-relation table-striped table-center ">
+        <thead>
+        <tr>
+            <th>被推荐人</th>
+            <th>被推荐人层级</th>
+            <th>时间</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% for(var i = 0; i < records.length; i++) {
+        var item = records[i];
+        %>
+        <tr>
+            <td><%=item.mobile%></td>
+            <td><%=item.level%></td>
+            <td><%=item.registerTime%></td>
+        </tr>
+        <% } %>
+        <%=records.length?'':'<tr><td colspan="3" class="no-data">暂时没有推荐记录</td></tr>'%>
+        </tbody>
+    </table>
+
+</script>
+
+<script type="text/template" id="referInvestTemplate">
+    <table class="invest-list table-striped">
+        <thead>
+        <tr>
+            <th>被推荐人</th>
+            <th>层级</th>
+            <th>投资标的</th>
+            <th class="tr">投资金额(元)</th>
+            <th>期数</th>
+            <th>投资时间</th>
+            <th class="tr">奖励金额(元)</th>
+            <th>奖励时间</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% for(var i = 0; i < records.length; i++) {
+        var item = records[i];
+        %>
+        <tr>
+            <td><%=item.investMobile%></td>
+            <td><%=item.level%></td>
+            <td><span class="loan-name-col"><%=item.loanName%></span></td>
+            <td class="tr"><%=item.investAmountStr%></td>
+            <td><%=item.periods%></td>
+            <td><%=item.investTime%></td>
+            <td class="tr"><%=item.rewardAmountStr%></td>
+            <td><%=item.rewardTime%></td>
+        </tr>
+        <% } %>
+
+        <%=records.length?'':'<tr><td colspan="8" class="no-data">暂时没有推荐人投资记录</td></tr>'%>
+        <tr>
+            <td colspan="8" align="center">
+                推荐奖励总收益：<%=totalReward%>元
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</script>
 </@global.main>

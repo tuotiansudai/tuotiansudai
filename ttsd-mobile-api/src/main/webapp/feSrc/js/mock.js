@@ -308,7 +308,7 @@ app.listen(8889, function() {
 	console.log('mock server listening on port 8889!');
 });
 
-app.get('/message-center/:articleId', function (req, res) {
+app.get('message-center/userMessage/:articleId', function (req, res) {
     res.send({
         "code": "0000",
         "message": "",

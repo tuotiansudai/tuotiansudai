@@ -1,5 +1,5 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="${css.my_account}" pageJavascript="${js.withdraw}" activeNav="我的账户" activeLeftNav="资金管理" title="提现">
+<@global.main pageCss="${css.withdraw}" pageJavascript="${js.withdraw}" activeNav="我的账户" activeLeftNav="资金管理" title="提现">
 <div class="content-container auto-height">
     <h4 class="column-title"><em class="tc">我要提现</em></h4>
 

@@ -1,10 +1,10 @@
 package com.tuotiansudai.rest.databind.date.utils;
 
 import java.io.IOException;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
@@ -29,14 +29,14 @@ public class DateUtils {
     }
 
     public static LocalDate deserializeLocalDate(String dateTimeString) throws IOException {
-        return deserializeLocalDateTime(dateTimeString).toLocalDate();
+        return DATE_FORMATTER.parse(dateTimeString, LocalDate::from);
     }
 
     public static Date deserializeDate(String dateTimeString) throws IOException {
-        return Date.from(DATE_TIME_FORMATTER.parse(dateTimeString, Instant::from));
+        return Date.from(deserializeLocalDateTime(dateTimeString).toInstant(ZoneOffset.ofHours(8)));
     }
 
     public static LocalDateTime deserializeLocalDateTime(String dateTimeString) throws IOException {
-        return LocalDateTime.ofInstant(DATE_TIME_FORMATTER.parse(dateTimeString, Instant::from), ZONE_ID);
+        return DATE_TIME_FORMATTER.parse(dateTimeString, LocalDateTime::from);
     }
 }

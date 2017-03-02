@@ -32,5 +32,6 @@ public class MerRechargePersonMapperTest {
         merRechargePersonMapper.create(model);
 
         assertNotNull(model.getId());
+        assertNotNull(model.getRetUrl());
     }
 }
