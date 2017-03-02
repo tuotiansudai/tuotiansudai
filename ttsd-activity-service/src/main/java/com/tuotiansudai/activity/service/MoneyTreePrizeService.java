@@ -111,9 +111,9 @@ public class MoneyTreePrizeService {
         //判断当日是摇过奖，如果没有，默认给1次机会，第二天重新给一次
         long usedLoginCounts = userLotteryPrizeMapper.findUserLotteryPrizeCountViews(userModel.getMobile(), null, ActivityCategory.MONEY_TREE, new DateTime(new Date()).withTimeAtStartOfDay().toDate(), new DateTime(new Date()).withTimeAtStartOfDay().plusHours(23).plusMinutes(59).plusSeconds(59).toDate());
         if (lotteryTime > 0) {
-            lotteryTime -= (usedCounts + usedLoginCounts);
+            lotteryTime -= usedCounts;
         }
-        return usedLoginCounts == 1 ? lotteryTime : 1;
+        return usedLoginCounts == 1 ? (lotteryTime < 0 ? 0 : lotteryTime) : 1;
     }
 
     @Transactional

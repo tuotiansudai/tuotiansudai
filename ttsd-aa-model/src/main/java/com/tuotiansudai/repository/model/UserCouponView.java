@@ -43,7 +43,7 @@ public class UserCouponView implements Serializable, Comparable<UserCouponView> 
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date startTime;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Shanghai")
     private Date createdTime;
 
     private boolean shared;
