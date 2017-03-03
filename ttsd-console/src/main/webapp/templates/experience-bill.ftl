@@ -30,7 +30,7 @@
             <div class="form-group">
                 <label for="control-label">费用类型</label>
                 <select class="selectpicker operationType" data-style="btn-default" name="experienceBillOperationType">
-                    <option value="">请选择费用类型</option>
+                    <option value="">全部</option>
                     <#list operationTypeList as operationTypeItem>
                         <option value="${operationTypeItem}"
                                 <#if operationType?has_content && operationTypeItem == operationType>selected</#if>>${operationTypeItem.description}</option>
@@ -57,6 +57,9 @@
         <table class="table table-bordered table-hover">
             <thead>
             <tr>
+                <th colspan="8">入账总额:&nbsp;${sumInExperienceBillAmount/100} 元 &nbsp;&nbsp;&nbsp;出账总额:&nbsp;${sumOutExperienceBillAmount/100} 元 </th>
+            </tr>
+            <tr>
                 <th>时间</th>
                 <th>序号</th>
                 <th>用户名</th>
@@ -65,7 +68,6 @@
                 <th>费用类型</th>
                 <th>操作类型</th>
                 <th>金额(元)</th>
-                <th>余额(元)</th>
             </tr>
             </thead>
             <tbody>
@@ -74,12 +76,11 @@
                     <td>${(item.createdTime?string('yyyy-MM-dd HH:mm:ss'))!}</td>
                     <td>${item.id?string('0')}</td>
                     <td>${item.loginName!''}</td>
-                    <td>${item.userName}</td>
+                    <td>${item.userName!''}</td>
                     <td>${item.mobile}</td>
                     <td>${item.operationType.getDescription()}</td>
                     <td>${item.businessType.getDescription()}</td>
                     <td>${item.amount/100}</td>
-                    <td></td>
                 </tr>
                 </#list>
             </tbody>
@@ -93,7 +94,7 @@
             <ul class="pagination pull-left">
                 <li>
                     <#if data.hasPreviousPage >
-                    <a href="/finance-manage/experience-bill?mobile=${mobile!}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&experienceBillOperationType=${experienceBillOperationType!}&experienceBusinessType=${experienceBusinessType!}&index=${data.index-1}&pageSize=${data.pageSize}">
+                    <a href="/experience-manage/experience-bill?mobile=${mobile!}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&experienceBillOperationType=${experienceBillOperationType!}&experienceBusinessType=${experienceBusinessType!}&index=${data.index-1}&pageSize=${data.pageSize}">
                     <#else>
                     <a href="#">
                     </#if>
@@ -102,7 +103,7 @@
                 <li><a>${data.index}</a></li>
                 <li>
                     <#if data.hasNextPage >
-                    <a href="/finance-manage/experience-bill?mobile=${mobile!}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&experienceBillOperationType=${experienceBillOperationType!}&experienceBusinessType=${experienceBusinessType!}&index=${data.index+1}&pageSize=${data.pageSize}">
+                    <a href="/experience-manage/experience-bill?mobile=${mobile!}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&experienceBillOperationType=${experienceBillOperationType!}&experienceBusinessType=${experienceBusinessType!}&index=${data.index+1}&pageSize=${data.pageSize}">
                     <#else>
                     <a href="#">
                     </#if>

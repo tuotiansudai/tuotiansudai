@@ -12,6 +12,7 @@ import com.tuotiansudai.activity.repository.model.UserLotteryTimeView;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -66,8 +67,15 @@ public class ActivityConsoleUserLotteryService {
         Iterator<UserLotteryTimeView> transform = Iterators.transform(userModels.iterator(), input -> {
             UserLotteryTimeView model = new UserLotteryTimeView(input.getMobile(), input.getLoginName());
             model.setUseCount(userLotteryPrizeMapper.findUserLotteryPrizeCountViews(input.getMobile(), null, prizeType, null, null));
-            int unUserCount = commonCountTimeService.countDrawLotteryTime(model.getMobile(), prizeType) - model.getUseCount();
-            model.setUnUseCount(unUserCount < 0 ? 0 :unUserCount);
+            int unUserCount = 0;
+            if (prizeType.name().startsWith("MONEY_TREE")) {
+                long usedLoginCounts = userLotteryPrizeMapper.findUserLotteryPrizeCountViews(input.getMobile(), null, ActivityCategory.MONEY_TREE, new DateTime(new Date()).withTimeAtStartOfDay().toDate(), new DateTime(new Date()).withTimeAtStartOfDay().plusHours(23).plusMinutes(59).plusSeconds(59).toDate());
+                int unReferrerCounts = commonCountTimeService.countDrawLotteryTime(model.getMobile(), prizeType) - model.getUseCount();
+                unUserCount = usedLoginCounts == 0 ? (1 + unReferrerCounts) : unReferrerCounts;
+            } else {
+                unUserCount = commonCountTimeService.countDrawLotteryTime(model.getMobile(), prizeType) - model.getUseCount();
+            }
+            model.setUnUseCount(unUserCount < 0 ? 0 : unUserCount);
             return model;
         });
 
@@ -75,7 +83,7 @@ public class ActivityConsoleUserLotteryService {
     }
 
     public int findUserLotteryTimeCountViews(String mobile) {
-        return userMapper.findUserModelByMobile(mobile, null, null).size();
+        return userMapper.findCountByMobile(mobile);
     }
 
     public List<UserLotteryPrizeView> findUserLotteryPrizeViews(String mobile, LotteryPrize selectPrize, ActivityCategory prizeType, Date startTime, Date endTime, Integer index, Integer pageSize) {
@@ -93,7 +101,7 @@ public class ActivityConsoleUserLotteryService {
                 }).collect(Collectors.toList());
     }
 
-    public boolean isSpecialAuthType(String authenticationType, UserLotteryPrizeView userLotteryPrizeView){
+    public boolean isSpecialAuthType(String authenticationType, UserLotteryPrizeView userLotteryPrizeView) {
         switch (authenticationType) {
             case "0":
                 return Strings.isNullOrEmpty(userLotteryPrizeView.getUserName());

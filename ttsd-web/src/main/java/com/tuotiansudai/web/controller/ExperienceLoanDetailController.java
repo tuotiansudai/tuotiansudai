@@ -2,6 +2,7 @@ package com.tuotiansudai.web.controller;
 
 
 import com.tuotiansudai.repository.model.ExperienceLoanDto;
+import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.ExperienceLoanDetailService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.spring.LoginUserInfo;
@@ -21,6 +22,8 @@ public class ExperienceLoanDetailController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private AccountService accountService;
 
     @RequestMapping(value = "/1", method = RequestMethod.GET)
     public ModelAndView getLoanDetail() {
@@ -28,6 +31,7 @@ public class ExperienceLoanDetailController {
         ModelAndView modelAndView = new ModelAndView("/experience-loan", "responsive", true);
         modelAndView.addObject("loan", experienceLoanDto);
         modelAndView.addObject("experienceBalance", userService.getExperienceBalanceByLoginName(LoginUserInfo.getLoginName()));
+        modelAndView.addObject("isAccount", accountService.findByLoginName(LoginUserInfo.getLoginName()) == null ? "false" : "true");
         return modelAndView;
     }
 

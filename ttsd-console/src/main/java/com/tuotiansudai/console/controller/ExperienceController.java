@@ -9,6 +9,8 @@ import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.enums.ExperienceBillOperationType;
 import com.tuotiansudai.enums.ExperienceBillBusinessType;
 import com.tuotiansudai.repository.model.RepayStatus;
+import com.tuotiansudai.service.LoanService;
+import com.tuotiansudai.util.InterestCalculator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -26,6 +28,9 @@ public class ExperienceController {
     @Autowired
     private ConsoleExperienceService consoleExperienceService;
 
+    @Autowired
+    private LoanService loanService;
+
     @RequestMapping(value = "/balance", method = RequestMethod.GET)
     public ModelAndView balance(@RequestParam(value = "mobile", required = false) String mobile,
                                 @RequestParam(value = "balanceMin", required = false) String balanceMin,
@@ -37,6 +42,8 @@ public class ExperienceController {
         long sumExperienceBalance = consoleExperienceService.sumExperienceBalance(mobile, balanceMin, balanceMax);
         modelAndView.addObject("data", baseDto);
         modelAndView.addObject("sumExperienceBalance", sumExperienceBalance);
+        modelAndView.addObject("discountCost", InterestCalculator.estimateExperienceExpectedInterest(sumExperienceBalance, loanService.findLoanById(1)));
+
         modelAndView.addObject("mobile", mobile);
         modelAndView.addObject("balanceMin", balanceMin);
         modelAndView.addObject("balanceMax", balanceMax);
@@ -61,18 +68,18 @@ public class ExperienceController {
         modelAndView.addObject("mobile", mobile);
         modelAndView.addObject("startTime", startTime);
         modelAndView.addObject("endTime", endTime);
-        modelAndView.addObject("repayStatus",repayStatus);
-        modelAndView.addObject("repayStatusList",Lists.newArrayList(RepayStatus.COMPLETE,RepayStatus.REPAYING));
+        modelAndView.addObject("repayStatus", repayStatus);
+        modelAndView.addObject("repayStatusList", Lists.newArrayList(RepayStatus.COMPLETE, RepayStatus.REPAYING));
         return modelAndView;
     }
 
     @RequestMapping(value = "/experience-bill", method = RequestMethod.GET)
     public ModelAndView experienceBill(@RequestParam(value = "mobile", required = false) String mobile,
-                                    @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
-                                    @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
-                                    @RequestParam(value = "experienceBillOperationType", required = false) ExperienceBillOperationType operationType,
-                                    @RequestParam(value = "experienceBusinessType", required = false) ExperienceBillBusinessType businessType,
-                                    @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
+                                       @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
+                                       @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
+                                       @RequestParam(value = "experienceBillOperationType", required = false) ExperienceBillOperationType operationType,
+                                       @RequestParam(value = "experienceBusinessType", required = false) ExperienceBillBusinessType businessType,
+                                       @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
         ModelAndView modelAndView = new ModelAndView("/experience-bill");
         int pageSize = 10;
         BasePaginationDataDto<ExperienceBillPaginationItemDto> basePaginationDataDto = consoleExperienceService.experienceBill(mobile,
@@ -82,16 +89,18 @@ public class ExperienceController {
                 businessType,
                 index,
                 pageSize);
-        long sumExperienceBillAmount = consoleExperienceService.findSumExperienceBillAmount(mobile,startTime,endTime,operationType,businessType);
+        long sumInExperienceBillAmount = operationType == ExperienceBillOperationType.OUT ? 0l : consoleExperienceService.findSumExperienceBillAmount(mobile, startTime, endTime, ExperienceBillOperationType.IN, businessType);
+        long sumOutExperienceBillAmount = operationType == ExperienceBillOperationType.IN ? 0l : consoleExperienceService.findSumExperienceBillAmount(mobile, startTime, endTime, operationType == null ? ExperienceBillOperationType.OUT : operationType, businessType);
         modelAndView.addObject("data", basePaginationDataDto);
-        modelAndView.addObject("sumExperienceBillAmount", sumExperienceBillAmount);
+        modelAndView.addObject("sumInExperienceBillAmount", sumInExperienceBillAmount);
+        modelAndView.addObject("sumOutExperienceBillAmount", sumOutExperienceBillAmount);
         modelAndView.addObject("mobile", mobile);
         modelAndView.addObject("startTime", startTime);
         modelAndView.addObject("endTime", endTime);
         modelAndView.addObject("operationType", operationType);
         modelAndView.addObject("businessType", businessType);
-        modelAndView.addObject("operationTypeList",Lists.newArrayList(ExperienceBillOperationType.values()));
-        modelAndView.addObject("businessTypeList",Lists.newArrayList(ExperienceBillBusinessType.values()));
+        modelAndView.addObject("operationTypeList", Lists.newArrayList(ExperienceBillOperationType.values()));
+        modelAndView.addObject("businessTypeList", Lists.newArrayList(ExperienceBillBusinessType.values()));
         return modelAndView;
     }
 

@@ -39,7 +39,7 @@
                 and ir.status = #{repayStatus}
             </if>
         </where>
-        ORDER BY ir.repay_date
+        ORDER BY ir.repay_date DESC
         limit #{index},#{pageSize}
     </select>
 
@@ -70,7 +70,7 @@
 
     <select id="findSumExpectedInterestExperience" parameterType="map" resultType="long">
         SELECT
-        ifnull(sum(ir.expected_interest))
+        ifnull(sum(ir.expected_interest), 0)
         FROM
         invest_repay ir
         JOIN
@@ -95,7 +95,7 @@
 
     <select id="findSumActualInterestExperience" parameterType="map" resultType="long">
         SELECT
-        ifnull(sum(ir.repay_amount))
+        ifnull(sum(ir.repay_amount), 0)
         FROM
         invest_repay ir
         JOIN

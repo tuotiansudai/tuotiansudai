@@ -6,7 +6,6 @@ import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.ExperienceInvestService;
 import com.tuotiansudai.spring.LoginUserInfo;
-import com.tuotiansudai.util.AmountConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -27,8 +26,6 @@ public class ExperienceInvestController {
     public BaseDto<BaseDataDto> invest(@Valid @ModelAttribute InvestDto investDto) {
         investDto.setSource(Source.WEB);
         investDto.setLoginName(LoginUserInfo.getLoginName());
-        //应该在js中转成分
-        investDto.setAmount(String.valueOf(AmountConverter.convertStringToCent(investDto.getAmount())));
         return experienceInvestService.invest(investDto);
     }
 }

@@ -27,12 +27,10 @@ public class ExperienceRepayScheduler {
     private InvestRepayMapper investRepayMapper;
 
     @Autowired
-    private InvestMapper investMapper;
-
-    @Autowired
     private MQWrapperClient mqWrapperClient;
 
-    @Scheduled(cron = "0 0 16 * * ?", zone = "Asia/Shanghai")
+//    @Scheduled(cron = "0 0 16 * * ?", zone = "Asia/Shanghai")
+    @Scheduled(cron = "0 0 0/1 * * ?", zone = "Asia/Shanghai")
     public void evaluateExperienceRepay() {
         logger.info("[ExperienceRepayScheduler] start...");
 

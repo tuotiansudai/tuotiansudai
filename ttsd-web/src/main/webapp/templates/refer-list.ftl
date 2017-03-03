@@ -3,11 +3,10 @@
 <div class="content-container invest-list-content" id="investListContent">
     <h4 class="column-title"><em class="tc">推荐送现金</em></h4>
 
-       <div class="bar-top-img">
-           <a href="/activity/share-reward">
-               <img src="${commonStaticServer}/images/sign/aboutus/bar-refer-sign.jpg" alt="推荐送现金">
-            </a>
-       </div>
+   <div class="bar-top-img">
+       <a href="/activity/share-reward">
+        </a>
+   </div>
 
     <div class="invite-friend-box clearfix">
         <div class="invite-friend-inner fl">

@@ -117,7 +117,7 @@ $('[data-url]',$homePageContainer).on('click',function(event) {
 //
 //     //预约校验
 //     let bookInvestForm=globalFun.$('#bookInvestForm');
-//     let validatorBook = new ValidatorForm();
+//     let validatorBook = new ValidatorObj.ValidatorForm();
 //     validatorBook.add(bookInvestForm.bookingAmount, [{
 //         strategy: 'isNonEmpty',
 //         errorMsg: '请输入预计投资金额'

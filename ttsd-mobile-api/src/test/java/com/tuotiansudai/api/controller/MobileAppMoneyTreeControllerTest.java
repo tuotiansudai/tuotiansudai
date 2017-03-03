@@ -50,7 +50,7 @@ public class MobileAppMoneyTreeControllerTest extends ControllerTestBase {
     @Test
     public void shouldMoneyTreePrize() throws Exception {
         when(service.generatePrize(anyString())).thenReturn(successResponseDto);
-        doRequestWithServiceMockedTest("/get/money-tree-prize", new BaseParamDto());
+        doRequestWithServiceMockedTest("/money-tree-prize", new BaseParamDto());
         assertEquals(ReturnMessage.SUCCESS.getCode(), successResponseDto.getCode());
     }
 

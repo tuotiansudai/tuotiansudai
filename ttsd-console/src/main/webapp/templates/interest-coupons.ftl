@@ -1,9 +1,17 @@
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="interest-coupons.js" headLab="activity-manage" sideLab="statisticsInterestCoupon" title="加息券管理">
+<@global.main pageCss="" pageJavascript="interest-coupons.js" headLab="activity-manage" sideLab="statisticsCoupon" title="加息券管理">
 
 <!-- content area begin -->
 <div class="col-md-10">
+
+    <div class="col-md-12" style="margin-bottom: 40px">
+        <a href="/activity-manage/coupons" class="btn btn-default" style="margin-right: 60px">体验券</a>
+        <a href="/activity-manage/interest-coupons" class="btn btn-default btn-warning" style="margin-right: 60px">加息券</a>
+        <a href="/activity-manage/red-envelopes" class="btn btn-default" style="margin-right: 60px">现金红包</a>
+        <a href="/activity-manage/birthday-coupons" class="btn btn-default">生日月</a>
+    </div>
+
     <div class="see-detail">
         <table border="1"></table>
         <span class="close-span"><a href="#" class="close-btn">关闭</a></span>
@@ -16,7 +24,7 @@
             <span class="txt"></span>
         </div>
     </div>
-<div class="table-responsive">
+<div class="table-responsive" style="width: 100%">
 <table class="table table-bordered table-hover ">
     <thead>
     <tr>

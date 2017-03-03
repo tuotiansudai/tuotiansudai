@@ -30,7 +30,7 @@ configurations{
 
 dependencies {
     compile project(':ttsd-config')
-    compile project(':ttsd-user-service')
+    compile project(':ttsd-service')
     compile project(':ttsd-membership')
     compile project(':ttsd-mq-client')
 

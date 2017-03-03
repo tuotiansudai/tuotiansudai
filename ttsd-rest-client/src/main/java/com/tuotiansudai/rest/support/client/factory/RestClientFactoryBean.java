@@ -6,6 +6,7 @@ import com.tuotiansudai.rest.support.client.interceptors.RequestHeaderIntercepto
 import feign.*;
 import feign.jackson.JacksonDecoder;
 import feign.jackson.JacksonEncoder;
+import feign.jaxrs.JAXRSContract;
 import feign.slf4j.Slf4jLogger;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.context.ApplicationContext;
@@ -20,6 +21,7 @@ public class RestClientFactoryBean<T> implements FactoryBean<T> {
     private JacksonEncoder jacksonEncoder;
     private RestErrorDecoder restErrorDecoder;
     private RequestHeaderInterceptor requestHeaderInterceptor;
+    private JAXRSContract jaxrsContract;
     private Class<T> restClientInterface;
 
     public RestClientFactoryBean() {
@@ -49,6 +51,7 @@ public class RestClientFactoryBean<T> implements FactoryBean<T> {
                 .errorDecoder(restErrorDecoder)
                 .requestInterceptor(requestHeaderInterceptor)
                 .logLevel(Logger.Level.FULL)
+                .contract(jaxrsContract)
                 .target(restClientInterface, restClientUrl);
     }
 
@@ -92,5 +95,9 @@ public class RestClientFactoryBean<T> implements FactoryBean<T> {
 
     public void setRequestHeaderInterceptor(RequestHeaderInterceptor requestHeaderInterceptor) {
         this.requestHeaderInterceptor = requestHeaderInterceptor;
+    }
+
+    public void setJaxrsContract(JAXRSContract jaxrsContract) {
+        this.jaxrsContract = jaxrsContract;
     }
 }

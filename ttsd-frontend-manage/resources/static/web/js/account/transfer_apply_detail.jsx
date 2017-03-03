@@ -2,14 +2,14 @@ require('webStyle/account/transfer_apply_detail.scss');
 require('webJsModule/coupon_alert');
 
 require('webJsModule/anxin_agreement');
-let ValidatorForm= require('publicJs/validator');
+let ValidatorObj= require('publicJs/validator');
 let commonFun= require('publicJs/commonFun');
 
 var createForm =globalFun.$('#createForm'),
     $agreement = $(createForm).find('.agreement'),
     $isAnxinAuthenticationRequired=$('#isAnxinAuthenticationRequired');
 
-let validator = new ValidatorForm();
+let validator = new ValidatorObj.ValidatorForm();
 let $tipText=$('#tipText'),
     minTip = parseFloat($tipText.attr('data-min')),
     maxTip = parseFloat($tipText.attr('data-max'));

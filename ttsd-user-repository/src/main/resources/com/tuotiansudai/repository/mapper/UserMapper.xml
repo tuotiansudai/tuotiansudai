@@ -97,6 +97,15 @@
         select count(1) FROM user
     </select>
 
+    <select id="findCountByMobile" resultType="int">
+        select count(1) FROM user
+        <where>
+            <if test="mobile != null and mobile != ''">
+                mobile like CONCAT(#{mobile}, '%')
+            </if>
+        </where>
+    </select>
+
     <select id="findAllLoginNames" resultType="string">
         select login_name from user
     </select>
@@ -207,7 +216,7 @@
         select * from user
         <where>
             <if test="mobile != null and mobile != ''">
-                mobile like CONCAT('%', #{mobile}, '%')
+                mobile like CONCAT(#{mobile}, '%')
             </if>
         </where>
         order by register_time desc

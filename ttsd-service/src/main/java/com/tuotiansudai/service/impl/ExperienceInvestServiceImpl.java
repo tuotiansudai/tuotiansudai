@@ -19,6 +19,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,6 +46,9 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
     @Autowired
     private ExperienceBillService registerUserService;
 
+    @Value(value = "${pay.interest.fee}")
+    private double defaultFee;
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public BaseDto<BaseDataDto> invest(InvestDto investDto) {
@@ -63,7 +67,7 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
         LoanModel loanModel = loanMapper.findById(Long.parseLong(investDto.getLoanId()));
         long amount = Long.parseLong(investDto.getAmount());
 
-        InvestModel investModel = new InvestModel(idGenerator.generate(), Long.parseLong(investDto.getLoanId()), null, amount, investDto.getLoginName(), new Date(), investDto.getSource(), investDto.getChannel(), 0);
+        InvestModel investModel = new InvestModel(idGenerator.generate(), Long.parseLong(investDto.getLoanId()), null, amount, investDto.getLoginName(), new Date(), investDto.getSource(), investDto.getChannel(), defaultFee);
         investModel.setStatus(InvestStatus.SUCCESS);
         investModel.setTransferStatus(TransferStatus.NONTRANSFERABLE);
         investMapper.create(investModel);

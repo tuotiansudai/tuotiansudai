@@ -22,6 +22,7 @@ import com.tuotiansudai.message.EventMessage;
 import com.tuotiansudai.message.PushMessage;
 import com.tuotiansudai.message.RepaySuccessMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
+import com.tuotiansudai.mq.client.model.MessageTopic;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
@@ -292,7 +293,7 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
         // create payback invest job
         this.createRepayJob(loanRepayId, 2);
 
-        mqWrapperClient.sendMessage(MessageQueue.RepaySuccess_CouponRepay,new RepaySuccessMessage(loanRepayId,true));
+        mqWrapperClient.publishMessage(MessageTopic.RepaySuccess,new RepaySuccessMessage(loanRepayId, true));
         logger.info(MessageFormat.format("[[Advance Repay {0}]: 提前还款成功,发送MQ消息", String.valueOf(loanRepayId)));
 
         return callbackRequest.getResponseData();

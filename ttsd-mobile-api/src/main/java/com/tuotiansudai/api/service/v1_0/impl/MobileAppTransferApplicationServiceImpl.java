@@ -312,6 +312,10 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
         final long transferInvestId = Long.parseLong(userInvestRepayRequestDto.getInvestId().trim());
         //return TransferLoan Details
         TransferApplicationModel transferApplicationModel = transferApplicationMapper.findByInvestId(transferInvestId);
+        InvestModel investModel = investMapper.findById(transferInvestId);
+        if (null == investModel) {
+            return new BaseResponseDto<>(ReturnMessage.ERROR.getCode(), ReturnMessage.ERROR.getMsg());
+        }
         if (null == transferApplicationModel) {
             return new BaseResponseDto<>(ReturnMessage.ERROR.getCode(), ReturnMessage.ERROR.getMsg());
         }
@@ -345,8 +349,7 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
 
         MembershipModel membershipModel = userMembershipEvaluator.evaluateSpecifiedDate(userInvestRepayRequestDto.getBaseParam().getUserId(), transferApplicationModel.getTransferTime());
         userInvestRepayResponseDataDto.setMembershipLevel(String.valueOf(membershipModel.getLevel()));
-        double investFeeRate = membershipPrivilegePurchaseService.obtainServiceFee(userInvestRepayRequestDto.getBaseParam().getUserId());
-        userInvestRepayResponseDataDto.setServiceFeeDesc(ServiceFeeReduce.getDescriptionByRate(investFeeRate));
+        userInvestRepayResponseDataDto.setServiceFeeDesc(ServiceFeeReduce.getDescriptionByRate(investModel.getInvestFeeRate()));
         BaseResponseDto baseResponseDto = new BaseResponseDto(ReturnMessage.SUCCESS.getCode(), ReturnMessage.SUCCESS.getMsg());
         baseResponseDto.setData(userInvestRepayResponseDataDto);
 

@@ -37,7 +37,7 @@ public class MobileAppMoneyTreeController extends MobileAppBaseController {
         return mobileAppMoneyTreeService.generateMyPrizeList(getLoginName());
     }
 
-    @RequestMapping(value = "/get/money-tree-prize", method = RequestMethod.POST)
+    @RequestMapping(value = "/money-tree-prize", method = RequestMethod.POST)
     @ApiOperation("摇奖结果")
     public BaseResponseDto<MoneyTreePrizeResponseDataDto> getMoneyTreePrize() {
         return mobileAppMoneyTreeService.generatePrize(getLoginName());

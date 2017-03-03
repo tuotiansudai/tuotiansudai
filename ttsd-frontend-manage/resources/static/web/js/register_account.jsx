@@ -1,11 +1,11 @@
 require('webStyle/register.scss');
-let ValidatorForm= require('publicJs/validator');
+let ValidatorObj= require('publicJs/validator');
 let commonFun= require('publicJs/commonFun');
 var registerAccountForm = globalFun.$('#registerAccountForm'),
     $buttonLayer = $(registerAccountForm).find('.button-layer'),
     $btnSubmit = $(registerAccountForm).find('input[type="submit"]');
 
-let validator = new ValidatorForm();
+let validator = new ValidatorObj.ValidatorForm();
 
 validator.add(registerAccountForm.userName, [{
     strategy: 'isNonEmpty',
@@ -30,7 +30,7 @@ let reInputs=$(registerAccountForm).find('input:text');
 
 reInputs=Array.from(reInputs);
 for (var el of reInputs) {
-    globalFun.addEventHandler(el,"keyup", function() {
+    globalFun.addEventHandler(el,"keyup", "blur", function() {
        validator.start(this);
         isDisabledButton();
     })

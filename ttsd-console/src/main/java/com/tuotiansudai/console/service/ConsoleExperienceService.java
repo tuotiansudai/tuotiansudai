@@ -19,6 +19,7 @@ import com.tuotiansudai.util.PaginationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -35,17 +36,17 @@ public class ConsoleExperienceService {
     @Autowired
     private ExperienceBillMapperConsole experienceBillMapperConsole;
 
-    public BasePaginationDataDto<ExperienceBalancePaginationItemDto> balance(String mobile, String balanceMin, String balanceMax, int index, int pageSize){
-        int count = userMapperConsole.findCountExperienceBalance(mobile,balanceMin,balanceMax);
-        int offset = PaginationUtil.calculateOffset(index,pageSize,count);
-        List<UserView> userViews = userMapperConsole.findExperienceBalance(mobile,balanceMin,balanceMax,offset,pageSize);
+    public BasePaginationDataDto<ExperienceBalancePaginationItemDto> balance(String mobile, String balanceMin, String balanceMax, int index, int pageSize) {
+        int count = userMapperConsole.findCountExperienceBalance(mobile, balanceMin, balanceMax);
+        int offset = PaginationUtil.calculateOffset(index, pageSize, count);
+        List<UserView> userViews = userMapperConsole.findExperienceBalance(mobile, balanceMin, balanceMax, offset, pageSize);
         return new BasePaginationDataDto<>(index, pageSize, count,
                 userViews.stream().map(userView -> new ExperienceBalancePaginationItemDto(userView, experienceBillMapper.findLastExchangeTimeByLoginName(userView.getLoginName())))
-                        .collect(Collectors.toList()));
+                        .sorted((e1, e2) -> e1.compareTo(e2)).collect(Collectors.toList()));
     }
 
-    public long sumExperienceBalance(String mobile, String balanceMin, String balanceMax){
-        return userMapperConsole.sumExperienceBalance(mobile,balanceMin,balanceMax);
+    public long sumExperienceBalance(String mobile, String balanceMin, String balanceMax) {
+        return userMapperConsole.sumExperienceBalance(mobile, balanceMin, balanceMax);
     }
 
     public BasePaginationDataDto<InvestRepayExperiencePaginationItemDto> investRepayExperience(String mobile,
@@ -53,19 +54,20 @@ public class ConsoleExperienceService {
                                                                                                Date endTime,
                                                                                                RepayStatus repayStatus,
                                                                                                int index,
-                                                                                               int pageSize){
-        int count = investRepayMapperConsole.findCountInvestRepayExperience(mobile,startTime,endTime,repayStatus);
-        int offset = PaginationUtil.calculateOffset(index,pageSize,count);
-        List<InvestRepayExperienceView> views = investRepayMapperConsole.findInvestRepayExperience(mobile,startTime,endTime,repayStatus,offset,pageSize);
-        return new BasePaginationDataDto<>(index,pageSize,count,views.stream().map(investRepayExperienceView -> new InvestRepayExperiencePaginationItemDto(investRepayExperienceView))
+                                                                                               int pageSize) {
+        int count = investRepayMapperConsole.findCountInvestRepayExperience(mobile, startTime, endTime, repayStatus);
+        int offset = PaginationUtil.calculateOffset(index, pageSize, count);
+        List<InvestRepayExperienceView> views = investRepayMapperConsole.findInvestRepayExperience(mobile, startTime, endTime, repayStatus, offset, pageSize);
+        return new BasePaginationDataDto<>(index, pageSize, count, views.stream().map(investRepayExperienceView -> new InvestRepayExperiencePaginationItemDto(investRepayExperienceView))
                 .collect(Collectors.toList()));
     }
 
-    public long findSumExpectedInterestExperience(String mobile,Date startTime,Date endTime,RepayStatus repayStatus){
-        return investRepayMapperConsole.findSumExpectedInterestExperience(mobile,startTime,endTime,repayStatus);
+    public long findSumExpectedInterestExperience(String mobile, Date startTime, Date endTime, RepayStatus repayStatus) {
+        return investRepayMapperConsole.findSumExpectedInterestExperience(mobile, startTime, endTime, repayStatus);
     }
-    public long findSumActualInterestExperience(String mobile,Date startTime,Date endTime,RepayStatus repayStatus){
-        return investRepayMapperConsole.findSumActualInterestExperience(mobile,startTime,endTime,repayStatus);
+
+    public long findSumActualInterestExperience(String mobile, Date startTime, Date endTime, RepayStatus repayStatus) {
+        return investRepayMapperConsole.findSumActualInterestExperience(mobile, startTime, endTime, repayStatus);
     }
 
     public BasePaginationDataDto<ExperienceBillPaginationItemDto> experienceBill(String mobile,
@@ -74,22 +76,21 @@ public class ConsoleExperienceService {
                                                                                  ExperienceBillOperationType operationType,
                                                                                  ExperienceBillBusinessType businessType,
                                                                                  int index,
-                                                                                 int pageSize){
-        int count = experienceBillMapperConsole.findCountExperienceBill(mobile,startTime,endTime,operationType,businessType);
-        int offset = PaginationUtil.calculateOffset(index,pageSize,count);
-        List<ExperienceBillView> views = experienceBillMapperConsole.findExperienceBill(mobile,startTime,endTime,operationType,businessType,offset,pageSize);
-        return new BasePaginationDataDto<>(index,pageSize,count,views.stream().map(experienceBillView -> new ExperienceBillPaginationItemDto(experienceBillView))
+                                                                                 int pageSize) {
+        int count = experienceBillMapperConsole.findCountExperienceBill(mobile, startTime, endTime, operationType, businessType);
+        int offset = PaginationUtil.calculateOffset(index, pageSize, count);
+        List<ExperienceBillView> views = experienceBillMapperConsole.findExperienceBill(mobile, startTime, endTime, operationType, businessType, offset, pageSize);
+        return new BasePaginationDataDto<>(index, pageSize, count, views.stream().map(experienceBillView -> new ExperienceBillPaginationItemDto(experienceBillView))
                 .collect(Collectors.toList()));
 
     }
 
     public long findSumExperienceBillAmount(String mobile,
-                  Date startTime,
-                  Date endTime,
-                  ExperienceBillOperationType operationType, ExperienceBillBusinessType businessType){
-        return experienceBillMapperConsole.findSumExperienceBillAmount(mobile,startTime,endTime,operationType,businessType);
+                                            Date startTime,
+                                            Date endTime,
+                                            ExperienceBillOperationType operationType, ExperienceBillBusinessType businessType) {
+        return experienceBillMapperConsole.findSumExperienceBillAmount(mobile, startTime, endTime, operationType, businessType);
     }
-
 
 
 }
