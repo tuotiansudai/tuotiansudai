@@ -27,11 +27,6 @@ public class AppConfiguration {
         return new PropertySourcesPlaceholderConfigurer();
     }
 
-    @Bean(name="experienceBillService")
-    public ExperienceServiceImpl experienceService() {
-        return new ExperienceServiceImpl();
-    }
-
     @Bean
     public RedisWrapperClient redisWrapperClient(PropertySourcesPlaceholderConfigurer configurer) {
         return new RedisWrapperClient();

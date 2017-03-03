@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.WithdrawPaginationItemDataDto;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.enums.WithdrawStatus;
 import com.tuotiansudai.repository.mapper.WithdrawMapper;
 import com.tuotiansudai.repository.model.Source;
@@ -22,7 +23,7 @@ public class ConsoleWithdrawService {
 
     public BaseDto<BasePaginationDataDto<WithdrawPaginationItemDataDto>> findWithdrawPagination(String withdrawId, String mobile,
                                                                                                 WithdrawStatus status, Source source,
-                                                                                                int index, int pageSize, Date startTime, Date endTime) {
+                                                                                                int index, int pageSize, Date startTime, Date endTime, Role role) {
         if (index < 1) {
             index = 1;
         }
@@ -33,9 +34,9 @@ public class ConsoleWithdrawService {
         BaseDto<BasePaginationDataDto<WithdrawPaginationItemDataDto>> baseDto = new BaseDto<>();
         List<WithdrawPaginationItemDataDto> withdrawPaginationItemDataDtos = Lists.newArrayList();
 
-        long count = withdrawMapper.findWithdrawCount(withdrawId, mobile, status, source, startTime, endTime);
+        long count = withdrawMapper.findWithdrawCount(withdrawId, mobile, status, source, startTime, endTime, role);
 
-        List<WithdrawModel> withdrawModelList = withdrawMapper.findWithdrawPagination(withdrawId, mobile, status, source, (index - 1) * pageSize, pageSize, startTime, endTime);
+        List<WithdrawModel> withdrawModelList = withdrawMapper.findWithdrawPagination(withdrawId, mobile, status, source, (index - 1) * pageSize, pageSize, startTime, endTime, role);
 
         for (WithdrawModel model : withdrawModelList) {
             WithdrawPaginationItemDataDto withdrawDto = new WithdrawPaginationItemDataDto(model);
@@ -53,9 +54,10 @@ public class ConsoleWithdrawService {
                                       WithdrawStatus status,
                                       Source source,
                                       Date startTime,
-                                      Date endTime) {
+                                      Date endTime,
+                                      Role role) {
 
-        return withdrawMapper.findSumWithdrawAmount(withdrawId, mobile, status, source, null, startTime, endTime);
+        return withdrawMapper.findSumWithdrawAmount(withdrawId, mobile, status, source, role, startTime, endTime);
     }
 
     public long findSumWithdrawFee(String withdrawId,
@@ -63,8 +65,9 @@ public class ConsoleWithdrawService {
                                    WithdrawStatus status,
                                    Source source,
                                    Date startTime,
-                                   Date endTime) {
+                                   Date endTime,
+                                   Role role) {
 
-        return withdrawMapper.findSumWithdrawFee(withdrawId, mobile, status, source, startTime, endTime);
+        return withdrawMapper.findSumWithdrawFee(withdrawId, mobile, status, source, startTime, endTime, role);
     }
 }

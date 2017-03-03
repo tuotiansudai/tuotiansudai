@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.activity.repository.dto.DrawLotteryResultDto;
 import com.tuotiansudai.activity.repository.model.LotteryPrize;
 import com.tuotiansudai.activity.repository.model.UserLotteryPrizeView;
+import com.tuotiansudai.activity.repository.model.UserLotteryTop10PrizeView;
 import com.tuotiansudai.activity.service.MoneyTreePrizeService;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppMoneyTreeService;
@@ -58,11 +59,10 @@ public class MobileAppMoneyTreeServiceImpl implements MobileAppMoneyTreeService 
     @Override
     public BaseResponseDto<MoneyTreeResultListResponseDataDto> generatePrizeListTop10() {
         BaseResponseDto dto = new BaseResponseDto();
-        List<UserLotteryPrizeView> userLotteryPrizeViewList = moneyTreePrizeService.findDrawLotteryPrizeRecordTop10();
+        List<UserLotteryTop10PrizeView> userLotteryPrizeTop10ViewList = moneyTreePrizeService.findDrawLotteryPrizeRecordTop10();
         MoneyTreeResultListResponseDataDto moneyTreeResultListResponseDataDto = new MoneyTreeResultListResponseDataDto();
         List<MoneyTreeResultResponseDataDto> moneyTreeResultResponseDataList =
-                userLotteryPrizeViewList.stream()
-                        .filter(n -> n.getPrizeValue() != LotteryPrize.MONEY_TREE_1000_EXPERIENCE_GOLD_0.getDescription())
+                userLotteryPrizeTop10ViewList.stream()
                         .map(n -> new MoneyTreeResultResponseDataDto(n))
                         .collect(Collectors.toList());
         moneyTreeResultListResponseDataDto.setPrizeList(moneyTreeResultResponseDataList);

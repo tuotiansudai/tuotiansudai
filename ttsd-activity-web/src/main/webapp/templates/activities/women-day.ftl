@@ -2,8 +2,8 @@
 <@global.main pageCss="${css.women_day}" pageJavascript="${js.women_day}" activeNav="" activeLeftNav="" title="女神节活动_活动中心_拓天速贷" keywords="拓天速贷,妇女节活动,女神节,少女节" description="拓天速贷3月8日推出女神节活动,少女总动员,开启全民抓娃娃,参与幸运女神时光机,集花瓣赢礼盒等投资活动获得相应蜜汁礼盒.">
 <div class="women-day-container" id="womenDayContainer">
 	<div class="top-item">
-		<img src="${staticServer}/activity/images/women-day/top-img.png" width="100%" class="media-pc">
-		<img src="${staticServer}/activity/images/women-day/top-img-phone.png" width="100%" class="media-phone">
+		<img src="${staticServer}/activity/images/women-day/top-img0301.png" width="100%" class="media-pc">
+		<img src="${staticServer}/activity/images/women-day/top-img-phone0301.png" width="100%" class="media-phone">
 	</div>
 	<div class="wp clearfix">
         <div class="reg-tag-current" style="display: none">
@@ -306,7 +306,7 @@
     	<p class="gift-info tip-text">请实名认证后再来抽奖吧！</p>
     	{{/if}}
     	<p class="gift-btn">
-    		<a href="javascript:void(0)" class="close-btn">确定</a>
+    		<span class="close-tip">确定</span>
     	</p>
     </script>
     <div class="loading-item" id="loadingItem">

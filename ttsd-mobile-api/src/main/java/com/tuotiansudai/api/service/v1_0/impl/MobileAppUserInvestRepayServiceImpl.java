@@ -1,27 +1,15 @@
 package com.tuotiansudai.api.service.v1_0.impl;
 
 
-import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppUserInvestRepayService;
-import com.tuotiansudai.repository.mapper.CouponMapper;
-import com.tuotiansudai.repository.mapper.CouponRepayMapper;
-import com.tuotiansudai.repository.mapper.UserCouponMapper;
-import com.tuotiansudai.repository.model.CouponModel;
-import com.tuotiansudai.repository.model.CouponRepayModel;
-import com.tuotiansudai.repository.model.UserCouponModel;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
-import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
-import com.tuotiansudai.repository.mapper.InvestExtraRateMapper;
-import com.tuotiansudai.repository.mapper.InvestRepayMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.service.LoanService;
-import com.tuotiansudai.repository.mapper.TransferApplicationMapper;
-import com.tuotiansudai.repository.model.TransferApplicationModel;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
@@ -63,9 +51,6 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
 
     @Autowired
     private InvestExtraRateMapper investExtraRateMapper;
-
-    @Autowired
-    private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
 
     @Autowired
     private LoanMapper loanMapper;
@@ -155,17 +140,10 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
             userInvestRepayResponseDataDto.setInvestRepays(investRepayList);
             MembershipModel membershipModel = userMembershipEvaluator.evaluateSpecifiedDate(investModel.getLoginName(), investModel.getInvestTime());
             userInvestRepayResponseDataDto.setMembershipLevel(String.valueOf(membershipModel.getLevel()));
-            double investFeeRate = membershipPrivilegePurchaseService.obtainServiceFee(investModel.getLoginName());
-            userInvestRepayResponseDataDto.setServiceFeeDesc(ServiceFeeReduce.getDescriptionByRate(investFeeRate));
+            userInvestRepayResponseDataDto.setServiceFeeDesc(ServiceFeeReduce.getDescriptionByRate(investModel.getInvestFeeRate()));
             List<UserCouponModel> userCouponModels = userCouponMapper.findByInvestId(investModel.getId());
 
-            List<String> usedCoupons = Lists.transform(userCouponModels, new Function<UserCouponModel, String>() {
-                @Override
-                public String apply(UserCouponModel input) {
-
-                    return generateUsedCouponName(couponMapper.findById(input.getCouponId()));
-                }
-            });
+            List<String> usedCoupons = Lists.transform(userCouponModels, input -> generateUsedCouponName(couponMapper.findById(input.getCouponId())));
             userInvestRepayResponseDataDto.setUsedCoupons(usedCoupons);
 
             responseDto.setCode(ReturnMessage.SUCCESS.getCode());

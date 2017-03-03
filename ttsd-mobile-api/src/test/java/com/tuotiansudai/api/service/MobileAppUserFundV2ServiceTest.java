@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v2_0.UserFundResponseDataDto;
 import com.tuotiansudai.api.service.v2_0.MobileAppUserFundV2Service;
+import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.repository.mapper.CouponMapper;
 import com.tuotiansudai.repository.mapper.CouponRepayMapper;
 import com.tuotiansudai.repository.mapper.UserCouponMapper;
@@ -70,6 +71,9 @@ public class MobileAppUserFundV2ServiceTest extends ServiceTestBase {
 
     @Autowired
     private BankCardMapper bankCardMapper;
+
+    @Autowired
+    private UserBillMapper userBillMapper;
 
     @Test
     public void shouldGetUserFund() throws Exception {
@@ -174,6 +178,8 @@ public class MobileAppUserFundV2ServiceTest extends ServiceTestBase {
         fakeExperienceInvestRepay2.setExpectedFee(0);
         investRepayMapper.update(fakeExperienceInvestRepay2);
 
+        this.createFakeUserBillModel(myUserFund.getLoginName(), 10L);
+
         BaseResponseDto<UserFundResponseDataDto> userFund = mobileAppUserFundV2Service.getUserFund(myUserFund.getLoginName());
 
         UserFundResponseDataDto data = userFund.getData();
@@ -269,6 +275,21 @@ public class MobileAppUserFundV2ServiceTest extends ServiceTestBase {
         couponModel.setProductTypes(Lists.newArrayList(ProductType._30, ProductType._90, ProductType._180));
         couponMapper.create(couponModel);
         return couponModel;
+    }
+
+    private UserBillModel createFakeUserBillModel(String loginName, long amount){
+        UserBillModel userBillModel = new UserBillModel();
+        userBillModel.setId(idGenerator.generate());
+        userBillModel.setOperationType(UserBillOperationType.TO_BALANCE);
+        userBillModel.setOrderId(32323223L);
+        userBillModel.setLoginName(loginName);
+        userBillModel.setAmount(amount);
+        userBillModel.setBalance(100);
+        userBillModel.setFreeze(100);
+        userBillModel.setBusinessType(UserBillBusinessType.EXPERIENCE_INTEREST);
+        userBillModel.setCreatedTime(new Date());
+        userBillMapper.create(userBillModel);
+        return userBillModel;
     }
 
 }

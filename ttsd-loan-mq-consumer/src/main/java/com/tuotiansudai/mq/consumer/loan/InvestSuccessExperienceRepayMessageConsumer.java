@@ -2,8 +2,10 @@ package com.tuotiansudai.mq.consumer.loan;
 
 import com.google.common.base.Strings;
 import com.tuotiansudai.client.PayWrapperClient;
+import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
+import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.message.InvestSuccessMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
@@ -18,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.text.MessageFormat;
 import java.util.List;
 
 @Component
@@ -35,6 +38,9 @@ public class InvestSuccessExperienceRepayMessageConsumer implements MessageConsu
 
     @Autowired
     private PayWrapperClient payWrapperClient;
+
+    @Autowired
+    private SmsWrapperClient smsWrapperClient;
 
     @Override
     public MessageQueue queue() {
@@ -63,10 +69,14 @@ public class InvestSuccessExperienceRepayMessageConsumer implements MessageConsu
             BaseDto<PayDataDto> baseDto = payWrapperClient.experienceRepay(investId);
 
             if (!baseDto.isSuccess()) {
-                logger.error("[新手体验项目收益发放MQ] 发放体验金收益失败 {}", investId);
+                logger.error("[新手体验项目收益发放MQ] consume fail. message: " + message);
+                throw new RuntimeException("[新手体验项目收益发放MQ] consume fail. message: " + message);
+            }
+            if (!baseDto.getData().getStatus()) {
+                logger.error("[新手体验项目收益发放MQ] 新手体验项目收益发放失败. 投资ID:{}", String.valueOf(investId));
+                smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(MessageFormat.format("[新手体验项目收益发放MQ]新手体验项目收益发放失败,投资ID:{0}", String.valueOf(investId))));
                 return;
             }
-            logger.info("[新手体验项目收益发放MQ] 发放体验金收益成功，{}", investId);
         } catch (Exception e) {
             logger.error("[新手体验项目收益发放MQ] experience repay is fail, message:{}", message);
         }

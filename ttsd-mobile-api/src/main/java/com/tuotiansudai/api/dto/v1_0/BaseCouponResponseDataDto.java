@@ -28,7 +28,7 @@ public class BaseCouponResponseDataDto {
     @ApiModelProperty(value = "优惠券金额", example = "5000")
     protected String amount;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Shanghai")
     @ApiModelProperty(value = "优惠券开始时间", example = "2016-01-01 00:00:00")
     protected Date startDate;
 

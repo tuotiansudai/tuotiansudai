@@ -20,11 +20,6 @@ public class RepayController {
     @Autowired
     private RepayService repayService;
 
-    @RequestMapping(method = RequestMethod.GET)
-    public ModelAndView repay() {
-        return new ModelAndView("/repay");
-    }
-
     @RequestMapping(method = RequestMethod.POST)
     public ModelAndView repay(@Valid @ModelAttribute RepayDto repayDto) {
         BaseDto<PayFormDataDto> baseDto = repayService.repay(repayDto);

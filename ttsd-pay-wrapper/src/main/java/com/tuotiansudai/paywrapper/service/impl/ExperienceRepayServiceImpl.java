@@ -129,15 +129,17 @@ public class ExperienceRepayServiceImpl implements ExperienceRepayService {
 
         String requestStatus = redisWrapperClient.hget(EXPERIENCE_INTEREST_REDIS_KEY, String.valueOf(investId));
         if (SyncRequestStatus.READY.name().equalsIgnoreCase(requestStatus) || SyncRequestStatus.FAILURE.name().equalsIgnoreCase(requestStatus)) {
-            try {
-                redisWrapperClient.hset(EXPERIENCE_INTEREST_REDIS_KEY, String.valueOf(investId), SyncRequestStatus.SENT.name());
-                TransferResponseModel responseModel = paySyncClient.send(TransferMapper.class, requestModel, TransferResponseModel.class);
-                boolean isSuccess = responseModel.isSuccess();
-                redisWrapperClient.hset(EXPERIENCE_INTEREST_REDIS_KEY, String.valueOf(investId), isSuccess ? SyncRequestStatus.SUCCESS.name() : SyncRequestStatus.FAILURE.name());
-                logger.info("[Experience Repay {}] invest repay is success", investModel.getId());
-                return isSuccess;
-            } catch (Exception e) {
-                logger.error(MessageFormat.format("[Experience Repay {0}] invest repay is failed", investModel.getId()), e);
+            if(repayAmount > 0){
+                try {
+                    redisWrapperClient.hset(EXPERIENCE_INTEREST_REDIS_KEY, String.valueOf(investId), SyncRequestStatus.SENT.name());
+                    TransferResponseModel responseModel = paySyncClient.send(TransferMapper.class, requestModel, TransferResponseModel.class);
+                    boolean isSuccess = responseModel.isSuccess();
+                    redisWrapperClient.hset(EXPERIENCE_INTEREST_REDIS_KEY, String.valueOf(investId), isSuccess ? SyncRequestStatus.SUCCESS.name() : SyncRequestStatus.FAILURE.name());
+                    logger.info("[Experience Repay {}] invest repay is success", investModel.getId());
+                    return isSuccess;
+                } catch (Exception e) {
+                    logger.error(MessageFormat.format("[Experience Repay {0}] invest repay is failed", investModel.getId()), e);
+                }
             }
         }
 

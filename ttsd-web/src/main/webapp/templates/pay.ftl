@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<#if pay.data??>
+<#if (pay.data)??>
     <#assign payData = pay.data>
 <head>
     <#if payData.status>
@@ -20,7 +20,7 @@
         </#list>
     </form>
     <#else>
-    <p>${payData.message}</p>
+    <p>${payData.message!}</p>
     </#if>
 </body>
 </#if>

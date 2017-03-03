@@ -9,6 +9,7 @@ import com.tuotiansudai.repository.mapper.RechargeMapper;
 import com.tuotiansudai.repository.model.RechargeModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
@@ -26,8 +27,8 @@ public class MobileAppRechargeListServiceImpl implements MobileAppRechargeListSe
         Integer pageSize = pageValidUtils.validPageSizeLimit(requestDto.getPageSize());
         Integer offset = (index-1)*pageSize;
 
-        List<RechargeModel> rechargeModels = rechargeMapper.findRechargePagination(null, requestDto.getBaseParam().getPhoneNum(), null, null, null, offset, pageSize, null, null);
-        int count = rechargeMapper.findRechargeCount(null, requestDto.getBaseParam().getPhoneNum(), null, null, null, null, null);
+        List<RechargeModel> rechargeModels = rechargeMapper.findRechargePagination(null, requestDto.getBaseParam().getPhoneNum(), null, null, null, offset, pageSize, null, null, null);
+        int count = rechargeMapper.findRechargeCount(null, requestDto.getBaseParam().getPhoneNum(), null, null, null, null, null, null);
 
         List<RechargeDetailResponseDataDto> rechargeResponseList = Lists.newArrayList();
         if(rechargeModels != null) {

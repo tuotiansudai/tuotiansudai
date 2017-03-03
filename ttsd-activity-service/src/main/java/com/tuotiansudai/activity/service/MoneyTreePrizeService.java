@@ -70,13 +70,13 @@ public class MoneyTreePrizeService {
         return userLotteryPrizeViews;
     }
 
-    public List<UserLotteryPrizeView> findDrawLotteryPrizeRecordTop10() {
-        List<UserLotteryPrizeView> userLotteryPrizeViews = userLotteryPrizeMapper.findMoneyTreeLotteryPrizeTop10(ActivityCategory.MONEY_TREE);
-        for (UserLotteryPrizeView view : userLotteryPrizeViews) {
+    public List<UserLotteryTop10PrizeView> findDrawLotteryPrizeRecordTop10() {
+        List<UserLotteryTop10PrizeView> userLotteryPrize10Views = userLotteryPrizeMapper.findMoneyTreeLotteryPrizeTop10(ActivityCategory.MONEY_TREE);
+        for (UserLotteryTop10PrizeView view : userLotteryPrize10Views) {
             view.setMobile(MobileEncryptor.encryptMiddleMobile(view.getMobile()));
-            view.setPrizeValue(view.getPrize().getDescription());
+            view.setPrize(view.getPrize() + "元");
         }
-        return userLotteryPrizeViews;
+        return userLotteryPrize10Views;
     }
 
     public int getLeftDrawPrizeTime(String mobile) {
@@ -111,9 +111,11 @@ public class MoneyTreePrizeService {
         //判断当日是摇过奖，如果没有，默认给1次机会，第二天重新给一次
         long usedLoginCounts = userLotteryPrizeMapper.findUserLotteryPrizeCountViews(userModel.getMobile(), null, ActivityCategory.MONEY_TREE, new DateTime(new Date()).withTimeAtStartOfDay().toDate(), new DateTime(new Date()).withTimeAtStartOfDay().plusHours(23).plusMinutes(59).plusSeconds(59).toDate());
         if (lotteryTime > 0) {
-            lotteryTime -= (usedCounts + usedLoginCounts);
+            lotteryTime -= usedCounts;
         }
-        return usedLoginCounts == 1 ? lotteryTime : 1;
+        lotteryTime = lotteryTime < 0 ? 0 : lotteryTime;
+
+        return usedLoginCounts == 1 ? lotteryTime : 1 + lotteryTime;
     }
 
     @Transactional

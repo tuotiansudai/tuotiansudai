@@ -15,6 +15,7 @@ import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserRoleModel;
+import com.tuotiansudai.service.ExperienceBillService;
 import com.tuotiansudai.service.RegisterUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,6 +41,9 @@ public class RegisterUserServiceImpl implements RegisterUserService {
     @Autowired
     private MQWrapperClient mqWrapperClient;
 
+    @Autowired
+    private ExperienceBillService experienceBillService;
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean register(UserModel userModel) {
@@ -47,6 +51,9 @@ public class RegisterUserServiceImpl implements RegisterUserService {
         if (result <= 0) {
             return true;
         }
+
+        //更新体验金
+        experienceBillService.updateUserExperienceBalanceByLoginName(688800, userModel.getLoginName(), ExperienceBillOperationType.IN, ExperienceBillBusinessType.REGISTER);
 
         this.userRoleMapper.create(Lists.newArrayList(new UserRoleModel(userModel.getLoginName(), Role.USER)));
 
@@ -61,9 +68,6 @@ public class RegisterUserServiceImpl implements RegisterUserService {
 
     private void sendMessage(UserModel userModel) {
         mqWrapperClient.sendMessage(MessageQueue.UserRegistered_CompletePointTask, userModel.getLoginName());
-
-        //体验金单独存入体验金账户
-        mqWrapperClient.sendMessage(MessageQueue.UserRegistered_CompleteExperienceUpdate, userModel.getLoginName());
 
         //Title:5888元体验金已存入您的账户，请查收！
         //Content:哇，您终于来啦！初次见面，岂能无礼？5888元体验金双手奉上，【立即体验】再拿588元红包和3%加息券！
