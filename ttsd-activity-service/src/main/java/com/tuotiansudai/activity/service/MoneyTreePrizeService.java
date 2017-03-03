@@ -113,7 +113,9 @@ public class MoneyTreePrizeService {
         if (lotteryTime > 0) {
             lotteryTime -= usedCounts;
         }
-        return usedLoginCounts == 1 ? (lotteryTime < 0 ? 0 : lotteryTime) : 1;
+        lotteryTime = lotteryTime < 0 ? 0 : lotteryTime;
+
+        return usedLoginCounts == 1 ? lotteryTime : 1 + lotteryTime;
     }
 
     @Transactional

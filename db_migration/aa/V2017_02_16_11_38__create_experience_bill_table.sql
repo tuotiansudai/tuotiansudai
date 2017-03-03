@@ -7,5 +7,5 @@ CREATE TABLE `experience_bill` (
   `note` text,
   `created_time` datetime NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `FK_EXPERIENCE_BILL_LOGIN_NAME_REF_USER_LOGIN_NAME` (`login_name`)
+  CONSTRAINT FK_EXPERIENCE_BILL_LOGIN_NAME_REF_USER_LOGIN_NAME FOREIGN KEY (`login_name`) REFERENCES `user` (`login_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

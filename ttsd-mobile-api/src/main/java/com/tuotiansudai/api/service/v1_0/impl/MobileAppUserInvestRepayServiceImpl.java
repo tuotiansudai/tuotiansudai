@@ -1,27 +1,15 @@
 package com.tuotiansudai.api.service.v1_0.impl;
 
 
-import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppUserInvestRepayService;
-import com.tuotiansudai.repository.mapper.CouponMapper;
-import com.tuotiansudai.repository.mapper.CouponRepayMapper;
-import com.tuotiansudai.repository.mapper.UserCouponMapper;
-import com.tuotiansudai.repository.model.CouponModel;
-import com.tuotiansudai.repository.model.CouponRepayModel;
-import com.tuotiansudai.repository.model.UserCouponModel;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
-import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
-import com.tuotiansudai.repository.mapper.InvestExtraRateMapper;
-import com.tuotiansudai.repository.mapper.InvestRepayMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.service.LoanService;
-import com.tuotiansudai.repository.mapper.TransferApplicationMapper;
-import com.tuotiansudai.repository.model.TransferApplicationModel;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
@@ -63,9 +51,6 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
 
     @Autowired
     private InvestExtraRateMapper investExtraRateMapper;
-
-    @Autowired
-    private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
 
     @Autowired
     private LoanMapper loanMapper;
