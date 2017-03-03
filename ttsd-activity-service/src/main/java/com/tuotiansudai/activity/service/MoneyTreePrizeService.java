@@ -93,6 +93,8 @@ public class MoneyTreePrizeService {
 
         List<UserModel> userModels = userMapper.findUsersByRegisterTimeOrReferrer(DateTime.parse(moneyTreeTime.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate(), DateTime.parse(moneyTreeTime.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate(), userModel.getLoginName());
 
+
+        long referrerCounts = 0;
         //根据注册时间分组
         Map<String, Long> groupByEveryDayCounts = userModels
                 .stream()
@@ -101,21 +103,21 @@ public class MoneyTreePrizeService {
         //单日邀请人数超过3人者，最多给3次摇奖机会
         for (Map.Entry<String, Long> entry : groupByEveryDayCounts.entrySet()) {
             if (entry.getValue() >= 3) {
-                lotteryTime += 3;
+                referrerCounts += 3;
             } else {
-                lotteryTime += entry.getValue();
+                referrerCounts += entry.getValue();
             }
         }
 
-        long usedCounts = userLotteryPrizeMapper.findUserLotteryPrizeCountViews(userModel.getMobile(), null, ActivityCategory.MONEY_TREE, null, null);
-        //判断当日是摇过奖，如果没有，默认给1次机会，第二天重新给一次
-        long usedLoginCounts = userLotteryPrizeMapper.findUserLotteryPrizeCountViews(userModel.getMobile(), null, ActivityCategory.MONEY_TREE, new DateTime(new Date()).withTimeAtStartOfDay().toDate(), new DateTime(new Date()).withTimeAtStartOfDay().plusHours(23).plusMinutes(59).plusSeconds(59).toDate());
-        if (lotteryTime > 0) {
-            lotteryTime -= usedCounts;
-        }
-        lotteryTime = lotteryTime < 0 ? 0 : lotteryTime;
+        int usedCounts = userLotteryPrizeMapper.findUserLotteryPrizeCountViews(userModel.getMobile(), null, ActivityCategory.MONEY_TREE, null, null);
 
-        return usedLoginCounts == 1 ? lotteryTime : 1 + lotteryTime;
+        referrerCounts = referrerCounts - usedCounts;
+
+        //判断当日是摇过奖，如果没有，默认给1次机会，第二天重新给一次
+        int usedLoginCounts = userLotteryPrizeMapper.findUserLotteryPrizeCountViews(userModel.getMobile(), null, ActivityCategory.MONEY_TREE, new DateTime(new Date()).withTimeAtStartOfDay().toDate(), new DateTime(new Date()).withTimeAtStartOfDay().plusHours(23).plusMinutes(59).plusSeconds(59).toDate());
+
+        return (int)(usedLoginCounts == 0 ? (1 + referrerCounts) : referrerCounts);
+
     }
 
     @Transactional
@@ -152,7 +154,7 @@ public class MoneyTreePrizeService {
 
         LotteryPrize moneyTreePrize = lotteryDrawActivityService.drawLotteryPrize(activityCategory);
 
-        this.drawResultAssignUserCoupon(moneyTreePrize, userModel.getLoginName());
+        this.drawResultAssignExperience(moneyTreePrize, userModel.getLoginName());
 
         userLotteryPrizeMapper.create(new UserLotteryPrizeModel(mobile,
                 userModel.getLoginName(),
@@ -199,7 +201,7 @@ public class MoneyTreePrizeService {
         return null;
     }
 
-    private void drawResultAssignUserCoupon(LotteryPrize moneyTreePrize, String loginName) {
+    private void drawResultAssignExperience(LotteryPrize moneyTreePrize, String loginName) {
         ExperienceBillOperationType experienceBillOperationType = ExperienceBillOperationType.IN;
         ExperienceBillBusinessType experienceBillBusinessType = ExperienceBillBusinessType.MONEY_TREE;
         switch (moneyTreePrize) {
