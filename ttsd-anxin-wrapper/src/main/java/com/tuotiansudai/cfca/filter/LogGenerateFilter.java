@@ -16,7 +16,7 @@ public class LogGenerateFilter implements Filter {
 
     private static final String USER_ID = "userId";
 
-    private static final String ANONYMOUS = "umPayAnonymous";
+    private static final String ANONYMOUS = "anxinAnonymous";
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
