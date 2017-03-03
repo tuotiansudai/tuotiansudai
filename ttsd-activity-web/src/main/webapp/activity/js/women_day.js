@@ -166,8 +166,7 @@ require(['jquery', 'layerWrapper','template','commonFun','jquery.ajax.extension'
 
         $('body').on('click', '.gift-btn .close-tip', function (event) {
             event.preventDefault();
-            layer.closeAll();
-            location.reload();
+            location.href='/activity/women-day';
         });
     });
 });
