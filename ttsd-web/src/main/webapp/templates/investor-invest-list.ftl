@@ -88,14 +88,14 @@
                     <td>{{$value.createdTime}}</td>
                     <td>{{$value.status}}</td>
                     <td>
-                        {{if $value.productType=='EXPERIENCE'}}
-                        {{$value.nextRepayAmount}}
-                        {{else}}
                         {{if $value.nextRepayDate}}
-                        {{$value.nextRepayDate}} / {{$value.nextRepayAmount}}
+                            {{if $value.productType=='EXPERIENCE'}}
+                                {{$value.nextRepayAmount}}
+                            {{else}}
+                                {{$value.nextRepayDate}} / {{$value.nextRepayAmount}}
+                            {{/if}}
                         {{else}}
-                        --
-                        {{/if}}
+                            --
                         {{/if}}
                     </td>
                     <td>
