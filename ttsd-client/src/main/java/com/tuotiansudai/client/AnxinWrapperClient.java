@@ -143,4 +143,9 @@ public class AnxinWrapperClient extends BaseClient {
         this.port = port;
     }
 
+    @Override
+    public String getApplicationContext() {
+        return "";
+    }
+
 }
