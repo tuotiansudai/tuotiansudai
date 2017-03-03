@@ -205,5 +205,7 @@
 
     <bean id="httpClient" class="com.squareup.okhttp.OkHttpClient"/>
 
+    <bean id="experienceBillService" class="com.tuotiansudai.service.impl.ExperienceServiceImpl"/>
+
     <bean class="com.tuotiansudai.mq.config.MQProducerConfig"/>
 </beans>

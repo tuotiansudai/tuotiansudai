@@ -8,10 +8,7 @@ import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
-import com.tuotiansudai.enums.MessageEventType;
-import com.tuotiansudai.enums.PushSource;
-import com.tuotiansudai.enums.PushType;
-import com.tuotiansudai.enums.UserBillBusinessType;
+import com.tuotiansudai.enums.*;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
 import com.tuotiansudai.message.AnxinContractMessage;
@@ -589,6 +586,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
         mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(Lists.newArrayList(transferApplicationModel.getLoginName()),
                 PushSource.ALL,
                 PushType.TRANSFER_SUCCESS,
-                title));
+                title,
+                AppUrl.MESSAGE_CENTER_LIST));
     }
 }
