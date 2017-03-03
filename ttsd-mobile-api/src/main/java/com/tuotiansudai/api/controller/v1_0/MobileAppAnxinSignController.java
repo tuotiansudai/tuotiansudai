@@ -1,9 +1,8 @@
 package com.tuotiansudai.api.controller.v1_0;
 
-import com.tuotiansudai.anxin.service.AnxinSignService;
 import com.tuotiansudai.api.dto.v1_0.*;
-import com.tuotiansudai.dto.BaseDataDto;
-import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.client.AnxinWrapperClient;
+import com.tuotiansudai.dto.*;
 import com.tuotiansudai.util.RequestIPParser;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -22,18 +21,18 @@ import javax.servlet.http.HttpServletRequest;
 public class MobileAppAnxinSignController {
 
     @Autowired
-    AnxinSignService anxinSignService;
+    private AnxinWrapperClient anxinWrapperClient;
 
     @ResponseBody
     @RequestMapping(value = "/sendCaptcha", method = RequestMethod.POST)
     @ApiOperation("发送短信验证码")
-    public BaseResponseDto sendCaptcha(@RequestBody AnxinSignSendCaptchaRequestDto requestDto){
+    public BaseResponseDto sendCaptcha(@RequestBody AnxinSignSendCaptchaRequestDto requestDto) {
         String loginName = requestDto.getBaseParam().getUserId();
         boolean isVoice = requestDto.isVoice();
 
-        BaseDto<BaseDataDto> retDto =  anxinSignService.sendCaptcha3101(loginName, isVoice);
+        BaseDto<AnxinDataDto> retDto = anxinWrapperClient.sendCaptcha(new AnxinSendCaptchaDto(loginName, isVoice));
 
-        if(retDto.isSuccess()) {
+        if (retDto.isSuccess()) {
             return new BaseResponseDto(ReturnMessage.SUCCESS);
         }
         return new BaseResponseDto(ReturnMessage.FAIL.getCode(), retDto.getData().getMessage());
@@ -42,7 +41,7 @@ public class MobileAppAnxinSignController {
     @ResponseBody
     @RequestMapping(value = "/verifyCaptcha", method = RequestMethod.POST)
     @ApiOperation("验证短信验证码")
-    public BaseResponseDto verifyCaptcha(@RequestBody AnxinSignVerifyCaptchaRequestDto requestDto, HttpServletRequest request){
+    public BaseResponseDto verifyCaptcha(@RequestBody AnxinSignVerifyCaptchaRequestDto requestDto, HttpServletRequest request) {
 
         String ip = RequestIPParser.parse(request);
 
@@ -50,9 +49,9 @@ public class MobileAppAnxinSignController {
         String captcha = requestDto.getCaptcha();
         boolean skipAuth = requestDto.isSkipAuth();
 
-        BaseDto<BaseDataDto> retDto =  anxinSignService.verifyCaptcha3102(loginName, captcha, skipAuth, ip);
+        BaseDto<AnxinDataDto> retDto = anxinWrapperClient.verifyCaptcha(new AnxinVerifyCaptchaDto(loginName, ip, captcha, skipAuth));
 
-        if(retDto.isSuccess()) {
+        if (retDto.isSuccess()) {
             return new BaseResponseDto(ReturnMessage.SUCCESS);
         }
         return new BaseResponseDto(ReturnMessage.FAIL.getCode(), retDto.getData().getMessage());
@@ -61,14 +60,14 @@ public class MobileAppAnxinSignController {
     @ResponseBody
     @RequestMapping(value = "/switchSkipAuth", method = RequestMethod.POST)
     @ApiOperation("开通免密")
-    public BaseResponseDto switchSkipAuth(@RequestBody AnxinSignSwitchSkipAuthRequestDto requestDto){
+    public BaseResponseDto switchSkipAuth(@RequestBody AnxinSignSwitchSkipAuthRequestDto requestDto) {
 
         String loginName = requestDto.getBaseParam().getUserId();
         boolean open = requestDto.isOpen();
 
-        BaseDto<BaseDataDto> retDto =  anxinSignService.switchSkipAuth(loginName, open);
+        BaseDto<AnxinDataDto> retDto = anxinWrapperClient.switchSkipAuth(new AnxinSwitchSkipAuthDto(loginName, open));
 
-        if(retDto.isSuccess()) {
+        if (retDto.isSuccess()) {
             return new BaseResponseDto(ReturnMessage.SUCCESS);
         }
         return new BaseResponseDto(ReturnMessage.FAIL.getCode(), retDto.getData().getMessage());
@@ -78,13 +77,13 @@ public class MobileAppAnxinSignController {
     @ResponseBody
     @RequestMapping(value = "/createAccount", method = RequestMethod.POST)
     @ApiOperation("开通安心签用户")
-    public BaseResponseDto createAccount(@RequestBody BaseParamDto requestDto){
+    public BaseResponseDto createAccount(@RequestBody BaseParamDto requestDto) {
 
         String loginName = requestDto.getBaseParam().getUserId();
 
-        BaseDto<BaseDataDto> retDto =  anxinSignService.createAccount3001(loginName);
+        BaseDto<AnxinDataDto> retDto = anxinWrapperClient.createAccount(loginName);
 
-        if(retDto.isSuccess()) {
+        if (retDto.isSuccess()) {
             return new BaseResponseDto(ReturnMessage.SUCCESS);
         }
         return new BaseResponseDto(ReturnMessage.FAIL.getCode(), retDto.getData().getMessage());

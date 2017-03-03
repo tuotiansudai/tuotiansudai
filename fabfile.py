@@ -23,7 +23,8 @@ env.roledefs = {
     'signin': ['xian'],
     'ask': ['taiyuan'],
     'point': ['kunming'],
-    'ask-rest': ['shijiazhuang']
+    'ask-rest': ['shijiazhuang'],
+    'anxin': ['shijiazhuang']
 }
 
 
@@ -253,6 +254,16 @@ def deploy_ask_rest():
         sudo('/usr/local/bin/docker-compose -f ask-rest.yml up -d')
 
 
+@roles('anxin')
+def deploy_anxin():
+    upload_project(local_dir='./ttsd-anxin-wrapper/war/ROOT.war', remote_dir='/workspace/anxin/war')
+    with cd('/workspace/anxin'):
+        sudo('/usr/local/bin/docker-compose -f anxin.yml stop')
+        sudo('/usr/local/bin/docker-compose -f anxin.yml rm -f')
+        sudo('rm -rf ROOT')
+        sudo('/usr/local/bin/docker-compose -f anxin.yml up -d')
+
+
 def deploy_all():
     execute(deploy_static)
     execute(deploy_sign_in)
@@ -266,6 +277,7 @@ def deploy_all():
     execute(deploy_point)
     execute(deploy_ask_rest)
     execute(deploy_ask)
+    execute(deploy_anxin)
 
 
 def pre_deploy():
@@ -384,6 +396,12 @@ def remove_ask_rest_logs():
     remove_logs_before_7days('/var/log/tuotian/ask-rest')
     remove_nginx_logs()
 
+@roles('anxin')
+@parallel
+def remove_anxin_logs():
+    remove_logs_before_7days('/var/log/tuotian/anxin')
+    remove_nginx_logs()
+
 
 @roles('cms')
 @parallel
@@ -414,6 +432,7 @@ def remove_old_logs():
     """
     execute(remove_nginx_and_tomcat_logs)
     execute(remove_ask_rest_logs)
+    execute(remove_anxin_logs)
     execute(remove_cms_logs)
     execute(remove_worker_logs)
     execute(remove_static_logs)
