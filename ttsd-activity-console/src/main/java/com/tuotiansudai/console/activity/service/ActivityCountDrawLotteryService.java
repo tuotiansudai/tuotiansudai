@@ -159,7 +159,7 @@ public class ActivityCountDrawLotteryService {
 
                         //单日邀请人数超过3人者，最多给3次摇奖机会
                         for (Map.Entry<String, Long> entry : groupByEveryDayCounts.entrySet()) {
-                            if (entry.getValue() >= 3) {
+                            if (entry.getValue() > 3) {
                                 time += 3;
                             } else {
                                 time += entry.getValue();

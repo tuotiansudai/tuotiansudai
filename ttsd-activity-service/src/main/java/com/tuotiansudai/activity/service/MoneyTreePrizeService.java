@@ -102,22 +102,24 @@ public class MoneyTreePrizeService {
 
         //单日邀请人数超过3人者，最多给3次摇奖机会
         for (Map.Entry<String, Long> entry : groupByEveryDayCounts.entrySet()) {
-            if (entry.getValue() >= 3) {
+            if (entry.getValue() > 3) {
                 referrerCounts += 3;
             } else {
                 referrerCounts += entry.getValue();
             }
         }
+        logger.debug("referrerCounts1111 = " + referrerCounts);
 
         int usedCounts = userLotteryPrizeMapper.findUserLotteryPrizeCountViews(userModel.getMobile(), null, ActivityCategory.MONEY_TREE, null, null);
-
+        logger.debug("usedCounts = " + usedCounts);
         referrerCounts = referrerCounts - usedCounts < 0 ? 0 : referrerCounts - usedCounts;
-
+        logger.debug("referrerCounts22222 = " + referrerCounts);
         //判断当日是摇过奖，如果没有，默认给1次机会，第二天重新给一次
         int usedLoginCounts = userLotteryPrizeMapper.findUserLotteryPrizeCountViews(userModel.getMobile(), null, ActivityCategory.MONEY_TREE, new DateTime(new Date()).withTimeAtStartOfDay().toDate(), new DateTime(new Date()).withTimeAtStartOfDay().plusHours(23).plusMinutes(59).plusSeconds(59).toDate());
+        logger.debug("usedLoginCounts = " + usedLoginCounts);
+        logger.debug("latest usedLoginCounts = " + (int) (usedLoginCounts == 0 ? (1 + referrerCounts) : referrerCounts));
 
         return (int) (usedLoginCounts == 0 ? (1 + referrerCounts) : referrerCounts);
-
     }
 
     @Transactional
