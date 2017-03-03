@@ -87,9 +87,9 @@ public class MoneyTreePrizeService {
         }
 
         //每天增加一次
-        if (userModel != null) {
-            lotteryTime++;
-        }
+//        if (userModel != null) {
+//            lotteryTime++;
+//        }
 
         List<UserModel> userModels = userMapper.findUsersByRegisterTimeOrReferrer(DateTime.parse(moneyTreeTime.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate(), DateTime.parse(moneyTreeTime.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate(), userModel.getLoginName());
 
@@ -111,12 +111,12 @@ public class MoneyTreePrizeService {
 
         int usedCounts = userLotteryPrizeMapper.findUserLotteryPrizeCountViews(userModel.getMobile(), null, ActivityCategory.MONEY_TREE, null, null);
 
-        referrerCounts = referrerCounts - usedCounts;
+        referrerCounts = referrerCounts - usedCounts < 0 ? 0 : referrerCounts - usedCounts;
 
         //判断当日是摇过奖，如果没有，默认给1次机会，第二天重新给一次
         int usedLoginCounts = userLotteryPrizeMapper.findUserLotteryPrizeCountViews(userModel.getMobile(), null, ActivityCategory.MONEY_TREE, new DateTime(new Date()).withTimeAtStartOfDay().toDate(), new DateTime(new Date()).withTimeAtStartOfDay().plusHours(23).plusMinutes(59).plusSeconds(59).toDate());
 
-        return (int)(usedLoginCounts == 0 ? (1 + referrerCounts) : referrerCounts);
+        return (int) (usedLoginCounts == 0 ? (1 + referrerCounts) : referrerCounts);
 
     }
 
