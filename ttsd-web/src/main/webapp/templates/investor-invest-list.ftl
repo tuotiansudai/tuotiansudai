@@ -89,13 +89,13 @@
                     <td>{{$value.status}}</td>
                     <td>
                         {{if $value.productType=='EXPERIENCE'}}
-                        {{$value.nextRepayAmount}}
+                            {{$value.nextRepayAmount}}
                         {{else}}
-                        {{if $value.nextRepayDate}}
-                        {{$value.nextRepayDate}} / {{$value.nextRepayAmount}}
-                        {{else}}
-                        --
-                        {{/if}}
+                            {{if $value.nextRepayDate}}
+                                {{$value.nextRepayDate}} / {{$value.nextRepayAmount}}
+                            {{else}}
+                            --
+                            {{/if}}
                         {{/if}}
                     </td>
                     <td>
