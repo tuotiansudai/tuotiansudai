@@ -36,32 +36,32 @@ public class AnxinSignServerController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/query-contract")
+    @RequestMapping(value = "/query-contract", method = RequestMethod.POST)
     public BaseDto<AnxinDataDto> queryContract(@Valid @RequestBody AnxinQueryContractDto anxinQueryContractDto) {
         return anxinSignService.queryContract(anxinQueryContractDto);
     }
 
     @ResponseBody
-    @RequestMapping(value = "/create-account")
+    @RequestMapping(value = "/create-account", method = RequestMethod.POST)
     public BaseDto<AnxinDataDto> createAccount(@Valid @RequestBody String loginName) {
         return anxinSignService.createAccount3001(loginName);
     }
 
     @ResponseBody
-    @RequestMapping(value = "/send-captcha")
+    @RequestMapping(value = "/send-captcha", method = RequestMethod.POST)
     public BaseDto<AnxinDataDto> sendCaptcha(@Valid @RequestBody AnxinSendCaptchaDto anxinSendCaptchaDto) {
         return anxinSignService.sendCaptcha3101(anxinSendCaptchaDto.getLoginName(), anxinSendCaptchaDto.isVoice());
     }
 
     @ResponseBody
-    @RequestMapping(value = "/verify-captcha")
+    @RequestMapping(value = "/verify-captcha", method = RequestMethod.POST)
     public BaseDto<AnxinDataDto> verifyCaptcha(@Valid @RequestBody AnxinVerifyCaptchaDto anxinVerifyCaptchaDto) {
         return anxinSignService.verifyCaptcha3102(anxinVerifyCaptchaDto.getLoginName(), anxinVerifyCaptchaDto.getCaptcha(),
                 anxinVerifyCaptchaDto.isSkipAuth(), anxinVerifyCaptchaDto.getIp());
     }
 
     @ResponseBody
-    @RequestMapping(value = "/switch-skip-auth")
+    @RequestMapping(value = "/switch-skip-auth", method = RequestMethod.POST)
     public BaseDto<AnxinDataDto> switchSkipAuth(@Valid @RequestBody AnxinSwitchSkipAuthDto anxinSwitchSkipAuthDto) {
         return anxinSignService.switchSkipAuth(anxinSwitchSkipAuthDto.getLoginName(), anxinSwitchSkipAuthDto.isOpen());
     }

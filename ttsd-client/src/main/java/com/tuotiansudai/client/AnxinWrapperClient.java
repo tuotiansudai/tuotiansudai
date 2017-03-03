@@ -26,9 +26,6 @@ public class AnxinWrapperClient extends BaseClient {
     @Value("${anxin.port}")
     protected String port;
 
-    @Value("${anxin.application.context}")
-    protected String applicationContext;
-
     private final static String createLoanContract = "/anxin-sign/create-loan-contract";
 
     private final static String createTransferContract = "/anxin-sign/create-transfer-contract";
@@ -144,14 +141,6 @@ public class AnxinWrapperClient extends BaseClient {
 
     public void setPort(String port) {
         this.port = port;
-    }
-
-    public String getApplicationContext() {
-        return applicationContext;
-    }
-
-    public void setApplicationContext(String applicationContext) {
-        this.applicationContext = applicationContext;
     }
 
 }
