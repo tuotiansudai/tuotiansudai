@@ -39,7 +39,7 @@
 					</div>
 					<div class="lottery-group" id="lotteryList">
 	                    <h3 class="menu-switch">
-	                        <span class="active">中奖纪录</span>
+	                        <span class="active">中奖记录</span>
 	                        <span>我的奖品</span>
 	                    </h3>
 	                    <div class="record-group record-list">
@@ -306,7 +306,7 @@
     	<p class="gift-info tip-text">请实名认证后再来抽奖吧！</p>
     	{{/if}}
     	<p class="gift-btn">
-    		<a href="javascript:void(0)" class="close-btn">确定</a>
+    		<span class="close-tip">确定</span>
     	</p>
     </script>
     <div class="loading-item" id="loadingItem">

@@ -155,17 +155,10 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
             userInvestRepayResponseDataDto.setInvestRepays(investRepayList);
             MembershipModel membershipModel = userMembershipEvaluator.evaluateSpecifiedDate(investModel.getLoginName(), investModel.getInvestTime());
             userInvestRepayResponseDataDto.setMembershipLevel(String.valueOf(membershipModel.getLevel()));
-            double investFeeRate = membershipPrivilegePurchaseService.obtainServiceFee(investModel.getLoginName());
-            userInvestRepayResponseDataDto.setServiceFeeDesc(ServiceFeeReduce.getDescriptionByRate(investFeeRate));
+            userInvestRepayResponseDataDto.setServiceFeeDesc(ServiceFeeReduce.getDescriptionByRate(investModel.getInvestFeeRate()));
             List<UserCouponModel> userCouponModels = userCouponMapper.findByInvestId(investModel.getId());
 
-            List<String> usedCoupons = Lists.transform(userCouponModels, new Function<UserCouponModel, String>() {
-                @Override
-                public String apply(UserCouponModel input) {
-
-                    return generateUsedCouponName(couponMapper.findById(input.getCouponId()));
-                }
-            });
+            List<String> usedCoupons = Lists.transform(userCouponModels, input -> generateUsedCouponName(couponMapper.findById(input.getCouponId())));
             userInvestRepayResponseDataDto.setUsedCoupons(usedCoupons);
 
             responseDto.setCode(ReturnMessage.SUCCESS.getCode());
