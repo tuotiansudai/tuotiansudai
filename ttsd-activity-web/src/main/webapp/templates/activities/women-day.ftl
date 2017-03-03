@@ -59,7 +59,7 @@
 				            <script type="text/html" id="myRecordTpl">
 				            {{if myrecord.length>0}}
 				            	{{each myrecord}}
-					            	<li><span class="time-text">{{$value.lotteryTime}}</span><span class="text-name">获<strong>{{$value.prizeValue}}</strong>元红包</span></li>
+					            	<li><span class="time-text">{{$value.lotteryTime}}</span><span class="text-name">获得<strong>{{$value.prizeValue}}</strong></span></li>
 					            {{/each}}
 					        {{else}}
 					        	<li class="record-img">
