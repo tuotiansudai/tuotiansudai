@@ -3,15 +3,20 @@ package com.tuotiansudai.mq.consumer.loan;
 import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.client.AnxinWrapperClient;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
+import com.tuotiansudai.dto.AnxinQueryContractDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.message.LoanOutSuccessMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
+import com.tuotiansudai.repository.mapper.InvestMapper;
+import com.tuotiansudai.repository.mapper.InvestRepayMapper;
+import com.tuotiansudai.repository.model.AnxinContractType;
+import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.util.JsonConverter;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
@@ -23,6 +28,7 @@ import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.List;
 
+
 @Component
 public class LoanOutSuccessCreateAnXinContractMessageConsumer implements MessageConsumer {
     private static Logger logger = LoggerFactory.getLogger(LoanOutSuccessCreateAnXinContractMessageConsumer.class);
@@ -31,13 +37,19 @@ public class LoanOutSuccessCreateAnXinContractMessageConsumer implements Message
     private SmsWrapperClient smsWrapperClient;
 
     @Autowired
-    private PayWrapperClient payWrapperClient;
+    private AnxinWrapperClient anxinWrapperClient;
 
     @Autowired
     private MQWrapperClient mqWrapperClient;
 
     @Autowired
     private RedisWrapperClient redisWrapperClient;
+
+    @Autowired
+    private InvestMapper investMapper;
+
+    @Autowired
+    private InvestRepayMapper investRepayMapper;
 
     private long DEFAULT_MINUTE = 1000 * 60 * 2;
 
@@ -73,7 +85,16 @@ public class LoanOutSuccessCreateAnXinContractMessageConsumer implements Message
             return;
         }
 
+        //检查invest_repay数据生成
         long loanId = loanOutInfo.getLoanId();
+        List<InvestModel> successInvests = investMapper.findSuccessInvestsByLoanId(loanId);
+        for (InvestModel investModel : successInvests) {
+            if (CollectionUtils.isEmpty(investRepayMapper.findByInvestId(investModel.getId()))) {
+                mqWrapperClient.sendMessage(MessageQueue.LoanOutSuccess_GenerateAnXinContract, new LoanOutSuccessMessage(loanId));
+                return;
+            }
+        }
+
         List<String> fatalSmsList = Lists.newArrayList();
         logger.info("[标的放款MQ] LoanOutSuccess_GenerateAnXinContract ready to consume message , loanId:{}", loanId);
 
@@ -84,9 +105,16 @@ public class LoanOutSuccessCreateAnXinContractMessageConsumer implements Message
             executeCount++;
         }
 
+        try {
+            Thread.sleep(DEFAULT_MINUTE);
+            logger.info("[标的放款MQ] LoanOutSuccess_GenerateAnXinContract createLoanContracts sleep 2 minute.");
+        } catch (InterruptedException e) {
+            logger.info("[标的放款MQ] LoanOutSuccess_GenerateAnXinContract createLoanContracts sleep 2 minute fail.");
+        }
+
         if (executeCount == 1) {
-            logger.info("[标的放款MQ] LoanOutSuccess_GenerateAnXinContract createLoanContracts is executing, loanId:{}", loanId);
-            BaseDto baseDto = payWrapperClient.createAnXinContract(loanId);
+            logger.info("[标的放款MQ] LoanOutSuccess_GenerateAnXinContract createLoanContracts is executing, loanId:{}", String.valueOf(loanId));
+            BaseDto baseDto = anxinWrapperClient.createLoanContract(loanId);
             if (!baseDto.isSuccess()) {
                 logger.error(MessageFormat.format("[标的放款MQ] LoanOutSuccess_GenerateAnXinContract is fail. loanId:{0}", String.valueOf(loanId)));
                 smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("生成安心签失败"));
@@ -97,14 +125,8 @@ public class LoanOutSuccessCreateAnXinContractMessageConsumer implements Message
             return;
         }
 
-        try {
-            Thread.sleep(DEFAULT_MINUTE);
-            logger.info("[标的放款MQ] LoanOutSuccess_GenerateAnXinContract createLoanContracts sleep 2 minute.");
-        } catch (InterruptedException e) {
-            logger.info("[标的放款MQ] LoanOutSuccess_GenerateAnXinContract createLoanContracts sleep 2 minute fail.");
-        }
 
-
+        //等待安心签生成合同
         if (executeCount < 6) {
             logger.info("[标的放款MQ] LoanOutSuccess_GenerateAnXinContract executeCount:{}", executeCount);
             redisWrapperClient.setex(redisKey, LOAN_ID_LIFT_TIME, String.valueOf(executeCount));
@@ -113,7 +135,7 @@ public class LoanOutSuccessCreateAnXinContractMessageConsumer implements Message
         }
 
         logger.info("[标的放款MQ] LoanOutSuccess_GenerateAnXinContract queryLoanContracts start .");
-        BaseDto baseDto = payWrapperClient.queryAnXinContract(loanId);
+        BaseDto baseDto = anxinWrapperClient.queryContract(new AnxinQueryContractDto(loanId, AnxinContractType.LOAN_CONTRACT));
         if (baseDto == null || !baseDto.isSuccess()) {
             fatalSmsList.add("查询安心签失败");
             logger.error(MessageFormat.format("[标的放款MQ] LoanOutSuccess_GenerateAnXinContract queryLoanContracts is fail. loanId:{0}", String.valueOf(loanId)));

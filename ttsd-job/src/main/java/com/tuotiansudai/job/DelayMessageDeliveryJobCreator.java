@@ -1,31 +1,16 @@
 package com.tuotiansudai.job;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.tuotiansudai.message.AnxinContractQueryMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
-import com.tuotiansudai.util.JsonConverter;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.quartz.SchedulerException;
 
 import java.util.Date;
-import java.util.List;
 
 public class DelayMessageDeliveryJobCreator {
     private static Logger logger = Logger.getLogger(DelayMessageDeliveryJobCreator.class);
 
-    private final static int ANXIN_CONTRACT_QUERY_DELAY_SECONDS = 10 * 60;
     private final static int AUTO_LOAN_OUT_DELAY_SECONDS = 30 * 60;
-
-    public static void createAnxinContractQueryDelayJob(JobManager jobManager, long businessId, String anxinContractType, List<String> batchNo) {
-        try {
-            AnxinContractQueryMessage message = new AnxinContractQueryMessage(businessId, batchNo, anxinContractType);
-            String messageBody = JsonConverter.writeValueAsString(message);
-            create(jobManager, ANXIN_CONTRACT_QUERY_DELAY_SECONDS, MessageQueue.QueryAnxinContract, messageBody);
-        } catch (JsonProcessingException e) {
-            logger.error("create query contract job for loan/transfer[" + businessId + "] fail", e);
-        }
-    }
 
     public static void createAutoLoanOutDelayJob(JobManager jobManager, long loanId) {
         String messageBody = String.valueOf(loanId);
