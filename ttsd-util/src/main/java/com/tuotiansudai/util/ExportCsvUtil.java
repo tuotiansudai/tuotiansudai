@@ -54,7 +54,10 @@ public class ExportCsvUtil {
                 for (Object item : (List) fieldObject) {
                     fieldString += String.valueOf(item);
                 }
-            } else {
+            } else if(fieldObject instanceof Boolean) {
+                fieldString = (boolean) fieldObject ? "是" : "否";
+            }
+            else {
                 fieldString = String.valueOf(fieldObject);
             }
             dtoStrings.add(fieldString);

@@ -1,6 +1,7 @@
 package com.tuotiansudai.console.controller;
 
 import com.tuotiansudai.console.bi.dto.RoleStage;
+import com.tuotiansudai.console.dto.RemainUserDto;
 import com.tuotiansudai.console.dto.UserItemDataDto;
 import com.tuotiansudai.console.repository.model.UserMicroModelView;
 import com.tuotiansudai.console.repository.model.UserOperation;
@@ -15,6 +16,7 @@ import com.tuotiansudai.point.repository.model.PointPrizeWinnerViewDto;
 import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.point.service.ProductService;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.CalculateUtil;
 import com.tuotiansudai.util.CsvHeaderType;
 import com.tuotiansudai.util.ExportCsvUtil;
@@ -23,6 +25,7 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,6 +33,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -266,11 +270,13 @@ public class ExportController {
                                @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date endTime,
                                @RequestParam(value = "status", required = false) RechargeStatus status,
                                @RequestParam(value = "source", required = false) RechargeSource source,
-                               @RequestParam(value = "channel", required = false) String channel, HttpServletResponse response) throws IOException {
+                               @RequestParam(value = "channel", required = false) String channel,
+                               @RequestParam(value = "role", required = false) Role role,
+                               HttpServletResponse response) throws IOException {
         fillExportResponse(response, CsvHeaderType.ConsoleRecharge.getDescription());
         int index = 1;
         int pageSize = Integer.MAX_VALUE;
-        BaseDto<BasePaginationDataDto<RechargePaginationItemDataDto>> baseDto = consoleRechargeService.findRechargePagination(rechargeId, mobile, source, status, channel, index, pageSize, startTime, endTime);
+        BaseDto<BasePaginationDataDto<RechargePaginationItemDataDto>> baseDto = consoleRechargeService.findRechargePagination(rechargeId, mobile, source, status, channel, index, pageSize, startTime, endTime, role);
         List<List<String>> rechargeData = exportService.buildRecharge(baseDto.getData().getRecords());
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleRecharge, rechargeData, response.getOutputStream());
     }
@@ -281,11 +287,13 @@ public class ExportController {
                                @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date startTime,
                                @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date endTime,
                                @RequestParam(value = "status", required = false) WithdrawStatus status,
-                               @RequestParam(value = "source", required = false) Source source, HttpServletResponse response) throws IOException {
+                               @RequestParam(value = "source", required = false) Source source,
+                               @RequestParam(value = "role", required = false) Role role,
+                               HttpServletResponse response) throws IOException {
         fillExportResponse(response, CsvHeaderType.ConsoleWithdraw.getDescription());
         int index = 1;
         int pageSize = Integer.MAX_VALUE;
-        BaseDto<BasePaginationDataDto<WithdrawPaginationItemDataDto>> baseDto = consoleWithdrawService.findWithdrawPagination(withdrawId, mobile, status, source, index, pageSize, startTime, endTime);
+        BaseDto<BasePaginationDataDto<WithdrawPaginationItemDataDto>> baseDto = consoleWithdrawService.findWithdrawPagination(withdrawId, mobile, status, source, index, pageSize, startTime, endTime, role);
         List<List<String>> withdrawData = exportService.buildWithdraw(baseDto.getData().getRecords());
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleWithdraw, withdrawData, response.getOutputStream());
     }
@@ -472,5 +480,39 @@ public class ExportController {
         List<UserMicroModelView> userMicroModelViewList = baseDto.getData().getRecords();
         List<List<String>> userMicroModelDtoList = exportService.buildUserMicroModelDtoList(userMicroModelViewList);
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.UserMicroModelHeader, userMicroModelDtoList, response.getOutputStream());
+    }
+
+    @RequestMapping(value = "/remain-users", method = RequestMethod.GET)
+    public void remainUser(@RequestParam(value = "loginName", required = false) String loginName,
+                           @RequestParam(value = "mobile", required = false) String mobile,
+                           @RequestParam(value = "registerStartTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date registerStartTime,
+                           @RequestParam(value = "registerEndTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date registerEndTime,
+                           @RequestParam(value = "useExperienceCoupon", required = false) Boolean useExperienceCoupon,
+                           @RequestParam(value = "experienceStartTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date experienceStartTime,
+                           @RequestParam(value = "experienceEndTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date experienceEndTime,
+                           @RequestParam(value = "investCountLowLimit", required = false) Integer investCountLowLimit,
+                           @RequestParam(value = "investCountHighLimit", required = false) Integer investCountHighLimit,
+                           @RequestParam(value = "investSumLowLimit", required = false) String investSumLowLimit,
+                           @RequestParam(value = "investSumHighLimit", required = false) String investSumHighLimit,
+                           @RequestParam(value = "firstInvestStartTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date firstInvestStartTime,
+                           @RequestParam(value = "firstInvestEndTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date firstInvestEndTime,
+                           @RequestParam(value = "secondInvestStartTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date secondInvestStartTime,
+                           @RequestParam(value = "secondInvestEndTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date secondInvestEndTime,
+                           HttpServletResponse response) throws IOException {
+        final int index = 1;
+        final int pageSize = 99999999;
+
+        fillExportResponse(response, CsvHeaderType.UserRemainHeader.getDescription());
+
+        BasePaginationDataDto<RemainUserDto> data = consoleUserService.findRemainUsers(loginName, mobile, registerStartTime,
+                registerEndTime, useExperienceCoupon, experienceStartTime, experienceEndTime, investCountLowLimit, investCountHighLimit,
+                StringUtils.isEmpty(investSumLowLimit) ? null : AmountConverter.convertStringToCent(investSumLowLimit),
+                StringUtils.isEmpty(investSumHighLimit) ? null : AmountConverter.convertStringToCent(investSumHighLimit),
+                firstInvestStartTime, firstInvestEndTime, secondInvestStartTime, secondInvestEndTime, index, pageSize);
+        List<List<String>> csvData = new ArrayList<>();
+        for(RemainUserDto dto : data.getRecords()) {
+            csvData.add(ExportCsvUtil.dtoToStringList(dto));
+        }
+        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.UserRemainHeader, csvData, response.getOutputStream());
     }
 }

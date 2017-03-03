@@ -19,7 +19,7 @@
     </@security.authorize>
 </#macro>
 
-<#macro main pageCss pageJavascript="" activeNav="拓天问答" staticServer="${staticServer}" title="拓天速贷" keywords="" activeLeftNav=""  description="">
+<#macro main pageCss pageJavascript="" activeNav="拓天问答" staticServer="${commonStaticServer}" title="拓天速贷" keywords="" activeLeftNav=""  description="">
     <#local mainMenus=[
     {"title":"首页", "url":"${webServer}","category":"16顶部导航","navigation":"true"},
     {"title":"我要投资", "url":"${webServer}/loan-list","category":"17顶部导航","navigation":"true","leftNavs":[
@@ -46,7 +46,6 @@
         {"title":"团队介绍", "url":"${webServer}/about/team"},
         {"title":"拓天公告", "url":"${webServer}/about/notice"},
         {"title":"媒体报道", "url":"${webServer}/about/media"},
-        {"title":"推荐奖励", "url":"${webServer}/about/refer-reward"},
         {"title":"服务费用", "url":"${webServer}/about/service-fee"},
         {"title":"联系我们", "url":"${webServer}/about/contact"},
         {"title":"运营数据", "url":"${webServer}/about/operational"}
@@ -79,13 +78,12 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
     <meta name="_csrf" content="${(_csrf.token)!}"/>
     <meta name="_csrf_header" content="${(_csrf.headerName)!}"/>
-    <link href="${staticServer}/images/favicon.ico" rel="shortcut icon" type="image/x-icon"/>
-    <link rel="stylesheet" type="text/css" href="${staticServer}${css.global_page!}" charset="utf-8"/>
+    <link href="${commonStaticServer}/images/favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+    <link rel="stylesheet" type="text/css" href="${css.globalFun_page!}" charset="utf-8"/>
     <#if pageCss?? && pageCss != "">
-        <link rel="stylesheet" type="text/css" href="${staticServer}${pageCss}" charset="utf-8"/>
+        <link rel="stylesheet" type="text/css" href="${pageCss}" charset="utf-8"/>
     </#if>
 
-    <#include "../cnzz.ftl"/>
     <!-- growing io -->
     <#include "../growing-io.ftl"/>
 </head>
@@ -143,12 +141,11 @@
 
     <#include "../pageLayout/footer.ftl" />
 <script>
-    window.staticServer='${staticServer}';
+    window.staticServer='${commonStaticServer}';
 </script>
-<script src="${staticServer}${js.jquery}"></script>
-<script src="${staticServer}${js.global_page!}"></script>
-<script src="${staticServer}${pageJavascript}" type="text/javascript"></script>
-
+<script src="${js.jquerydll}" ></script>
+<script src="${js.globalFun_page!}" ></script>
+<script src="${pageJavascript}" type="text/javascript"></script>
 </body>
 </html>
 </#macro>

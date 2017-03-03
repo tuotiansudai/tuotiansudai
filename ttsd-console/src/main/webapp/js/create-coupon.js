@@ -5,9 +5,23 @@ require(['jquery', 'layerWrapper', 'template', 'csrf','bootstrap', 'bootstrapDat
             $dateEnd = $('#endTime'), //结束时间
             $errorDom = $('.form-error'), //错误提示节点
             $submitBtn = $('#btnSave'), //提交按钮
+            $businessType = $('#businessType'),  // 业务类型
             $couponForm = $('.form-list'),
             boolFlag = false, //校验布尔变量值
             currentErrorObj = null;
+
+        // 业务类型切换
+        $businessType.on('change', function() {
+            if ($businessType.val() == '0') {
+                window.location.href ='/activity-manage/coupon';
+            }else if($businessType.val() == '1'){
+                window.location.href ='/activity-manage/interest-coupon';
+            }else if($businessType.val() == '2'){
+                window.location.href ='/activity-manage/red-envelope';
+            }else if($businessType.val() == '3'){
+                window.location.href ='/activity-manage/birthday-coupon';
+            }
+        });
 
         //渲染select表单
         $selectDom.selectpicker();
@@ -176,19 +190,11 @@ require(['jquery', 'layerWrapper', 'template', 'csrf','bootstrap', 'bootstrapDat
             if(couponType == "INVEST_COUPON"){
                 if (userGroup != 'EXCHANGER_CODE') {
                     if(userGroup != "IMPORT_USER" && userGroup != 'AGENT' && userGroup != 'CHANNEL'){
-                        $.get('/activity-manage/coupon/user-group/'+userGroup+'/estimate',function(data){
-                            $('.give-number').val(data);
-                        })
-                    } else if (userGroup == 'AGENT') {
-                        $.get('/user-manage/user/agents', function(data) {
-                            if (data.length > 0 ) {
-                                $('.coupon-deposit').show();
-                            }
-                            for (var i=0; i < data.length; i++) {
-                                $('.coupon-agent-channel').append('<label><input type="checkbox" class="agent" name="agents" value="'+data[i]+'">'+data[i]+'</label>');
-                            }
-                        })
-                        $('.give-number').val('0');
+                        if (userGroup != null) {
+                            $.get('/activity-manage/coupon/user-group/'+userGroup+'/estimate',function(data){
+                                $('.give-number').val(data);
+                            })
+                        }
                     } else if (userGroup == 'CHANNEL') {
                         $.get('/user-manage/user/channels', function(data) {
                             if (data.length > 0) {

@@ -183,7 +183,7 @@ public class LoanListController {
                 return baseDto;
             }
 
-            batchStr = redisWrapperClient.get(AnxinSignServiceImpl.LOAN_BATCH_NO_LIST_KEY + businessId);
+            batchStr = redisWrapperClient.get(AnxinSignServiceImpl.LOAN_BATCH_NO_LIST_KEY + String.valueOf(businessId));
         } else {
             TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(businessId);
             if (transferApplicationModel == null) {

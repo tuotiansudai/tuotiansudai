@@ -46,7 +46,6 @@
         {"title":"团队介绍", "url":"/about/team"},
         {"title":"拓天公告", "url":"/about/notice"},
         {"title":"媒体报道", "url":"/about/media"},
-        {"title":"推荐奖励", "url":"/about/refer-reward"},
         {"title":"服务费用", "url":"/about/service-fee"},
         {"title":"联系我们", "url":"/about/contact"},
         {"title":"运营数据", "url":"/about/operational"}
@@ -82,16 +81,11 @@
     <meta name="_csrf" content="${(_csrf.token)!}"/>
     <meta name="_csrf_header" content="${(_csrf.headerName)!}"/>
     <meta name="360-site-verification" content="8f78c77592779bad6fb5acc422271b6f" />
-    <link href="${staticServer}/images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-    <link rel="stylesheet" type="text/css" href="${staticServer}${cssPath}${css.global}" charset="utf-8" />
+    <link  id="icoFavicon" rel="shortcut icon" type="image/x-icon" />
+    <link rel="stylesheet" type="text/css" href="${css.globalFun_page!}" charset="utf-8"/>
     <#if pageCss?? && pageCss != "">
-    <link rel="stylesheet" type="text/css" href="${staticServer}${cssPath}${pageCss}" charset="utf-8" />
+        <link rel="stylesheet" type="text/css" href="${pageCss}" charset="utf-8"/>
     </#if>
-    <!--[if lte IE 8]>
-        <link rel="stylesheet" href="${staticServer}${cssPath}ie_hack_grid.css">
-    <![endif]-->
-    <!-- -->
-    <#include "../pageLayout/cnzz.ftl"/>
     <!-- growing io -->
     <#include "../pageLayout/growing-io.ftl"/>
 
@@ -128,26 +122,18 @@
     </#switch>
 </#if>
 
-<script type="text/javascript" charset="utf-8">
-    var staticServer = '${staticServer}';
-    <@security.authorize access="isAuthenticated()">
-    document.getElementById("logout-link").onclick = function () {
-        document.getElementById("logout-form").submit();
-    };
-    </@security.authorize>
+<#--<#include "../pageLayout/statistic.ftl" />-->
+<script>
+    window.staticServer='${commonStaticServer}';
+    <#--window.pluginsJSON={-->
+        <#--underscore:'${js.underscore}'-->
+    <#--}-->
 
 </script>
-<script type="text/javascript" src="${staticServer}${jsPath}${js.global_page}"></script>
-<script src="${staticServer}${jsPath}${js.config}" type="text/javascript" charset="utf-8"></script>
 
-<#if pageJavascript?? && pageJavascript?length gt 0>
-<script src="${staticServer}/js/libs/require-2.1.20.min.js" type="text/javascript" charset="utf-8" defer="defer" async="async"
-        data-main="${staticServer}${jsPath}${pageJavascript}">
-
-</script>
-</#if>
-
-<#include "../pageLayout/statistic.ftl" />
+<script src="${js.jquerydll}" ></script>
+<script src="${js.globalFun_page!}" ></script>
+<script src="${pageJavascript}" type="text/javascript" id="currentScript"></script>
 </body>
 </html>
 </#macro>

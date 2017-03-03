@@ -1,5 +1,5 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="${css.auto_invest}" pageJavascript="${js.auto_repay}" activeNav="我的账户" activeLeftNav="我的借款" title="自动还款">
+<@global.main pageCss="${css.auto_repay}" pageJavascript="${js.auto_repay}" activeNav="我的账户" activeLeftNav="我的借款" title="自动还款">
 <div class="content-container auto-repay" id="autoRepayFrame">
     <h4 class="column-title"><em class="tc">自动还款</em></h4>
 

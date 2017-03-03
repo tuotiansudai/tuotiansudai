@@ -7,6 +7,7 @@ import feign.Request;
 import feign.Retryer;
 import feign.jackson.JacksonDecoder;
 import feign.jackson.JacksonEncoder;
+import feign.jaxrs.JAXRSContract;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
@@ -22,10 +23,11 @@ public class RestClientScannerConfigurer implements BeanDefinitionRegistryPostPr
     private final JacksonEncoder jacksonEncoder;
     private final RestErrorDecoder restErrorDecoder;
     private final RequestHeaderInterceptor requestHeaderInterceptor;
+    private final JAXRSContract jaxrsContract;
     private ApplicationContext applicationContext;
     private String[] basePackages;
 
-    public RestClientScannerConfigurer(Request.Options options, Client client, Retryer retryer, JacksonDecoder jacksonDecoder, JacksonEncoder jacksonEncoder, RestErrorDecoder restErrorDecoder, RequestHeaderInterceptor requestHeaderInterceptor) {
+    public RestClientScannerConfigurer(Request.Options options, Client client, Retryer retryer, JacksonDecoder jacksonDecoder, JacksonEncoder jacksonEncoder, RestErrorDecoder restErrorDecoder, RequestHeaderInterceptor requestHeaderInterceptor, JAXRSContract jaxrsContract) {
         this.options = options;
         this.client = client;
         this.retryer = retryer;
@@ -33,11 +35,12 @@ public class RestClientScannerConfigurer implements BeanDefinitionRegistryPostPr
         this.jacksonEncoder = jacksonEncoder;
         this.restErrorDecoder = restErrorDecoder;
         this.requestHeaderInterceptor = requestHeaderInterceptor;
+        this.jaxrsContract = jaxrsContract;
     }
 
     @Override
     public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) throws BeansException {
-        RestClientScanner scanner = new RestClientScanner(registry, options, client, retryer, applicationContext, jacksonDecoder, jacksonEncoder, restErrorDecoder, requestHeaderInterceptor);
+        RestClientScanner scanner = new RestClientScanner(registry, options, client, retryer, applicationContext, jacksonDecoder, jacksonEncoder, restErrorDecoder, requestHeaderInterceptor, jaxrsContract);
         scanner.scan(basePackages);
     }
 

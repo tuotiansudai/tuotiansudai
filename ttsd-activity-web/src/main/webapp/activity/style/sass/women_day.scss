@@ -1,0 +1,517 @@
+@import "module/register_common";
+@import 'module/gift_circle_draw';
+@import "module/login_tip";
+
+.main-frame {
+	width: 100%;
+	margin: 0;
+}
+.women-day-container {
+	background: #ff94bc;
+	.layui-layer{
+		border-radius:10px;
+		overflow:hidden;
+	}
+	.loading-item{
+		float:left;
+		width:100%;
+		line-height:40px;
+		text-align:center;
+		font-size:16px;
+		color:#f85382;
+		display:none;
+	}
+	.layer-tip-item{
+		float:left;
+		width:100%;
+		height:100%;
+		text-align:center;
+		background:#fff url('/activity/images/women-day/tip-bg.jpg') center bottom no-repeat;
+		background-size:100%;
+		box-sizing:border-box;
+		display:none;
+		p{
+			font-size:16px;
+			color:#f85382;
+			@media (max-width:700px) {
+				font-size:14px;
+			}
+			&.gift-text{
+				margin-top:20px;
+			}
+			&.gift-info{
+				font-size:24px;
+				margin:30px 0;
+				@media (max-width:700px) {
+					font-size:16px;
+					margin:15px 0;
+				}
+				&.tip-text{
+					margin-top:60px;
+					@media (max-width:700px) {
+						margin-top:30px;
+					}
+				}
+				span{
+					color:#672124;
+				}
+			}
+			&.gift-btn{
+				text-align:center;
+				.close-tip{
+					display:inline-block;
+					width:180px;
+					height:40px;
+					line-height:40px;
+					font-size:24px;
+					color:#fff;
+					background:#f85382;
+					border-radius:40px;
+					@media (max-width:700px) {
+						width:130px;
+						height:35px;
+						line-height:35px;
+						font-size: 18px;
+					}
+				}
+			}
+		}
+	}
+	.media-pc {
+		display: block;
+
+		@media (max-width:700px) {
+			display: none;
+		}
+	}
+	.media-phone {
+		display: none;
+
+		@media (max-width:700px) {
+			display: block;
+		}
+	}
+	.wp {
+		width: 1000px;
+		margin: 0 auto;
+		position: relative;
+		z-index: 9;
+
+		@media (max-width:700px) {
+			width: 100%;
+			box-sizing: border-box;
+			padding: 0 10px;
+		}
+		.content-item {
+			float: left;
+			width: 100%;
+			box-sizing: border-box;
+			margin-bottom: 20px;
+			position: relative;
+
+			@media (max-width:700px) {
+				margin-bottom: 10px;
+			}
+			.title-item {
+				float: left;
+				width: 100%;
+				text-align: center;
+
+				@media (max-width:700px) {
+					img {
+						width: 100%;
+					}
+				}
+			}
+			.tip-item {
+				float: left;
+				width: 100%;
+				margin: 20px 0;
+
+				@media (max-width:700px) {
+					margin: 10px 0;
+				}
+				.tip-text-item {
+					float: left;
+					width: 100%;
+					font-size: 14px;
+					color: #fff;
+					padding: 10px 0;
+					background: #f8646c;
+					border-radius: 60px;
+					padding: 10px 30px;
+					box-sizing: border-box;
+
+					@media (max-width:700px) {
+						border-radius: 10px;
+						padding: 5px 15px;
+						font-size: 12px;
+					}
+					&.top-tip {
+						float: none;
+						display: inline-block;
+						width: 650px;
+
+						@media (max-width:700px) {
+							width: 100%;
+						}
+					}
+					span {
+						font-size: 24px;
+						color: #f9ff5c;
+
+						@media (max-width:700px) {
+							font-size: 14px;
+						}
+					}
+				}
+			}
+			.machine-item {
+				float: left;
+				width: 100%;
+				background: url('/activity/images/women-day/machine-item-bg.png') center no-repeat;
+				background-size: 100%;
+
+				.machine-lottery {
+					display: inline-block;
+					width: 530px;
+					height: 760px;
+					background: url('/activity/images/women-day/machine-bg.png') center no-repeat;
+					background-size: 100%;
+					padding-top: 405px;
+					box-sizing: border-box;
+
+					@media (max-width:700px) {
+						width:300px;
+						height:500px;
+						padding-top:240px;
+						background: url('/activity/images/women-day/machine-bg-phone.png') center no-repeat;
+						background-size: 100%;
+					}
+					.sign-btn {
+						float: left;
+						width: 100%;
+						text-align: center;
+
+						span {
+							display: inline-block;
+							width: 150px;
+							height: 121px;
+							cursor: pointer;
+							background: url('/activity/images/women-day/sign-btn.png') center no-repeat;
+							background-size: 100%;
+							position: relative;
+
+							@media (max-width:700px) {
+								width:75px;
+								height:60px;
+							}
+							&.sign-active {
+								top: 10px;
+								background: url('/activity/images/women-day/sign-active.png') center no-repeat;
+								background-size: 100%;
+							}
+							&.sign-already {
+								top: 10px;
+								background: url('/activity/images/women-day/sign-already.png') center no-repeat;
+								background-size: 100%;
+							}
+							&.no-time {
+								top: 10px;
+								background: url('/activity/images/women-day/no-time.png') center no-repeat;
+								background-size: 100%;
+							}
+						}
+					}
+					.lottery-group {
+						float: left;
+						width: 350px;
+						margin: 10px 90px 0;
+						background: #6513bf;
+						border-radius: 10px;
+
+						@media (max-width:700px) {
+							width:90%;
+							margin:0 5%;
+						}
+						.menu-switch {
+							float: left;
+							width: 100%;
+							border-radius: 10px;
+							overflow: hidden;
+
+							span {
+								float: left;
+								width: 50%;
+								color: #fff;
+								text-align: center;
+								cursor: pointer;
+								background: #8144e6;
+
+								&.active {
+									background: #6513bf;
+								}
+							}
+						}
+						.record-group {
+							float: left;
+							width: 100%;
+							height: 170px;
+							overflow: hidden;
+
+							@media (max-width:700px) {
+								height:155px;
+							}
+							.record-item {
+								float: left;
+								width: 100%;
+
+								&.own-record {
+									height: 170px;
+									overflow: hidden;
+									overflow-y: scroll;
+									@media (max-width:700px) {
+										padding:0;
+									}
+								}
+								li {
+									float: left;
+									width: 100%;
+									padding: 0 50px;
+									box-sizing: border-box;
+
+									@media (max-width:700px) {
+										padding:0;
+									}
+									&.record-img {
+										padding-top: 60px;
+										text-align: center;
+
+										@media (max-width:700px) {
+											padding:30px 25px 0;
+										}
+										p {
+											font-size: 14px;
+											color: #fff;
+											margin-top: 10px;
+											margin-bottom: 0;
+										}
+									}
+									span {
+										font-size: 12px;
+										color: #fff;
+
+										&.time-text {
+											float: left;
+										}
+										&.text-name {
+											float: right;
+										}
+										strong {
+											font-weight: normal;
+											color: #fecc1a;
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			.loan-gift {
+				float: left;
+				width: 100%;
+				box-sizing: border-box;
+				padding: 0 10px;
+				background: #ffeaf2;
+				border-radius: 10px;
+
+				@media (max-width:700px) {
+					display: none;
+				}
+				li {
+					float: left;
+					width: 190px;
+					margin: 10px 68px;
+
+					p {
+						font-size: 14px;
+						color: #672124;
+						text-align: center;
+					}
+				}
+			}
+			.flower-rule {
+				float: left;
+				width: 565px;
+				height: 190px;
+				border-radius: 10px;
+				background: #ffeaf2;
+				box-sizing: border-box;
+				padding: 10px 20px;
+
+				@media (max-width:700px) {
+					width: 100%;
+					height: auto;
+					background: #fff;
+				}
+				dt {
+					font-size: 16px;
+					color: #f8646c;
+				}
+				dd {
+					font-size: 12px;
+					color: #672124;
+					line-height: 26px;
+				}
+			}
+			.flower-info {
+				float: left;
+				width: 425px;
+				height: 190px;
+				margin-left: 10px;
+				border-radius: 10px;
+				background: #ffeaf2;
+				box-sizing: border-box;
+				padding: 10px 20px;
+
+				@media (max-width:700px) {
+					width: 100%;
+					height: auto;
+					background: #fff;
+					margin-left: 0;
+					margin-top: 10px;
+				}
+				p {
+					font-size: 18px;
+					color: #672124;
+					margin-bottom: 0;
+
+					@media (max-width:700px) {
+						font-size:14px;
+					}
+					&.title-text {
+						font-size: 16px;
+						color: #f8646c;
+						margin-bottom: 10px;
+					}
+					span {
+						color: #f8646c;
+					}
+					a {
+						display: inline-block;
+						width: 145px;
+						height: 30px;
+						line-height: 30px;
+						text-align: center;
+						font-size: 14px;
+						color: #fff;
+						background: #f8646c;
+						border-radius: 30px;
+						margin-top: 15px;
+					}
+				}
+			}
+			.flower-gift {
+				float: left;
+				margin: 0 -40px;
+
+				@media (max-width:700px) {
+					display: none;
+				}
+				li {
+					float: left;
+					width: 190px;
+					margin: 20px 40px 0;
+
+					p {
+						text-align: center;
+						margin-bottom: 10px;
+
+						span {
+							display: inline-block;
+							width: 100%;
+							font-size: 14px;
+							color: #672124;
+							line-height: 16px;
+
+							&.gift-info {
+								color: #fff;
+							}
+						}
+					}
+				}
+			}
+			.table-item{
+				float:left;
+				width:100%;
+				display:none;
+				&.flower-table{
+					margin-top:10px;
+					li>span{
+						width:100%;
+						text-align:center;
+					}
+				}
+				@media (max-width:700px) {
+					display:block;
+				}
+				li{
+					float:left;
+					width:100%;
+					background: #fff;
+					border-radius:30px;
+				    box-sizing: border-box;
+					padding: 0 15px;
+					&:nth-child(even){
+						background: #ffe6f0;
+					}
+					span{
+						font-size:12px;
+						color:#672124;
+						&.text-item{
+							float:left;
+						}
+						&.info-item{
+							float:right;
+						}
+					}
+				}
+			}
+		}
+		.rule-item {
+			float: left;
+			width: 100%;
+			background: #f8646c;
+			margin-bottom: 45px;
+			box-sizing: border-box;
+			padding: 20px;
+			border-radius: 15px;
+
+			@media (max-width:700px) {
+				display: block;
+				margin-bottom: 20px;
+				padding: 5px 15px;
+				background:#fa6e81;
+			}
+			dt {
+				font-size: 18px;
+				color: #fff;
+				margin-bottom: 10px;
+
+				@media (max-width:700px) {
+					font-size: 14px;
+					margin-bottom: 0;
+				}
+			}
+			dd {
+				font-size: 14px;
+				color: #fff;
+
+				@media (max-width:700px) {
+					font-size: 12px;
+				}
+			}
+		}
+	}
+}

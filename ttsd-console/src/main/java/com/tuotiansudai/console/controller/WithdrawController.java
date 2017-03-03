@@ -5,6 +5,7 @@ import com.tuotiansudai.console.service.ConsoleWithdrawService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.WithdrawPaginationItemDataDto;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.enums.WithdrawStatus;
 import com.tuotiansudai.repository.model.Source;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,14 +33,15 @@ public class WithdrawController {
                                         @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date endTime,
                                         @RequestParam(value = "status", required = false) WithdrawStatus status,
                                         @RequestParam(value = "source", required = false) Source source,
+                                        @RequestParam(value = "role", required = false) Role role,
                                         @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
         int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/withdraw");
-        BaseDto<BasePaginationDataDto<WithdrawPaginationItemDataDto>> baseDto = consoleWithdrawService.findWithdrawPagination(withdrawId, mobile, status, source, index, pageSize, startTime, endTime);
+        BaseDto<BasePaginationDataDto<WithdrawPaginationItemDataDto>> baseDto = consoleWithdrawService.findWithdrawPagination(withdrawId, mobile, status, source, index, pageSize, startTime, endTime, role);
 
-        long sumAmount = consoleWithdrawService.findSumWithdrawAmount(withdrawId, mobile, status, source, startTime, endTime);
+        long sumAmount = consoleWithdrawService.findSumWithdrawAmount(withdrawId, mobile, status, source, startTime, endTime, role);
 
-        long sumFee = consoleWithdrawService.findSumWithdrawFee(withdrawId, mobile, status, source, startTime, endTime);
+        long sumFee = consoleWithdrawService.findSumWithdrawFee(withdrawId, mobile, status, source, startTime, endTime, role);
 
         modelAndView.addObject("baseDto", baseDto);
         modelAndView.addObject("sumAmount", sumAmount);
@@ -57,6 +59,7 @@ public class WithdrawController {
         if (status != null) {
             modelAndView.addObject("withdrawStatus", status);
         }
+        modelAndView.addObject("role", role);
         return modelAndView;
 
     }

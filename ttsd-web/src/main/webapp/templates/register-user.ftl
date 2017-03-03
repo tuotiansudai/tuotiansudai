@@ -1,5 +1,5 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="${css.register}" pageJavascript="${js.register_user}" activeLeftNav="" title="拓天速贷注册_用户注册_拓天速贷" keywords="拓天速贷,拓天速贷会员,拓天速贷注册，用户注册" description="拓天速贷会员注册为您提供规范、专业、安全有保障的互联网金融信息服务." >
+<@global.main pageCss="${css.register_user}" pageJavascript="${js.register_user}" activeLeftNav="" title="拓天速贷注册_用户注册_拓天速贷" keywords="拓天速贷,拓天速贷会员,拓天速贷注册，用户注册" description="拓天速贷会员注册为您提供规范、专业、安全有保障的互联网金融信息服务." >
 
 <div class="register-container page-width">
     <div class="step-register-head">
@@ -9,7 +9,7 @@
     <nav></nav>
     <div class="register-box">
         <div id="summary"></div>
-        <form class="register-user-form" action="/register/user" method="post" autocomplete="off" >
+        <form class="register-user-form" id="registerUserForm" action="/register/user" method="post" autocomplete="off" >
         <ul class="reg-list tl register-step-one">
                 <li>
                     <i class="sprite-register-ic-mobile"></i>
@@ -23,15 +23,14 @@
                 <li>
                     <i class="sprite-register-ic-captcha"></i>
                     <span class="captcha-tag">
+                         <button type="button" class="fetch-captcha" disabled="disabled" id="fetchCaptcha">获取验证码</button>
                         <input type="text" name="captcha" class="captcha" autocomplete="off" autocorrect="off" autocapitalize="off" placeholder="请输入验证码"  maxlength="6" value="${(originalFormData.captcha)!}"/>
-                        <button type="button" class="fetch-captcha" disabled="disabled">获取验证码</button>
                     </span>
                 </li>
                 <li class="referrer-open"> <i class="sprite-register-arrow-right"></i>请输入推荐人（此项选填）</li>
                 <li class="hide">
                     <i class="sprite-register-ic-referrer"></i>
                     <input type="text" name="referrer" maxlength="25" class="referrer" value="${(referrer)!(originalFormData.referrer)!}"/>
-                    <label id="referrerError" class="error" style="display: none"></label>
                 </li>
                 <li class="agree-last">
                     <label class="check-label checked" >同意拓天速贷<a href="javascript:void(0);" class="show-agreement">《服务协议》</a></label>
@@ -46,6 +45,7 @@
                 <#if success?? && success == false>
                     <div class="error">注册失败，请检查您提交的信息是否正确！</div>
                 </#if>
+                <div class="error-box"></div>
                 <input type="submit" class="register-user btn-success" disabled value="立即注册" />
             </div>
 
@@ -131,15 +131,19 @@
     <p>12.4本网站对本协议享有最终解释权。本协议及本网站有关页面的相关名词可互相引用参照，如有不同理解，则以本协议条款为准。</p>
 </div>
 <div class="image-captcha-dialog" style="display: none;">
-    <form class="image-captcha-form" action="/register/user/send-register-captcha" method="post">
+    <form class="image-captcha-form" id="imageCaptchaForm" >
             <div class="image-captcha-inner">
-                <i class="sprite-register-ic-img-code"></i>
-            <img src="/register/user/image-captcha" alt="" class="image-captcha"/>
+            <img src="" alt="" class="image-captcha"/>
             <input type="text" class="image-captcha-text" name="imageCaptcha" maxlength="5" placeholder="请输入图形验证码"/>
+            <input type="hidden" name="mobile">
+
+                <div class="tc">
+                    <div class="error-box tl"></div>
+                    <input type="submit" class="image-captcha-confirm btn-normal" value="确定"/>
+                </div>
+
             </div>
-        <div class="tc">
-            <input type="submit" class="image-captcha-confirm btn-normal" value="确定"/>
-        </div>
+
         </form>
 </div>
 </@global.main>

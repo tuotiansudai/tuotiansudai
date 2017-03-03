@@ -50,7 +50,7 @@
 					<input type="hidden" id="skipCheck" value="true">
 					<input type="hidden" value="${formData.anxinAuthenticationRequired?c}" id="isAnxinAuthenticationRequired">
 					<input type="hidden" value="${formData.anxinUser?c}" id="isAnxinUser">
-					<span>我已阅读并同意<strong><a href="${staticServer}/pdf/transferAgreementSample.pdf" target="view">债权转让协议书（范本）</a>
+					<span>我已阅读并同意<strong><a href="${commonStaticServer}/images/pdf/transferAgreementSample.pdf" target="view">债权转让协议书（范本）</a>
 
 					<@global.role hasRole="'INVESTOR'">
                     <#if formData.anxinUser != true>

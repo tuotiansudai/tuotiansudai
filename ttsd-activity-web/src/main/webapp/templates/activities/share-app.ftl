@@ -82,7 +82,7 @@
         <div class="image-steps tc">
             <img src="${staticServer}/activity/images/sign/actor/landingpage/newbie-step4-1.png">
             <img src="${staticServer}/activity/images/sign/actor/landingpage/newbie-step4-2.png">
-            <img src="${staticServer}/activity/images/sign/actor/landingpage/newbie-step4-3.png">
+            <img src="${staticServer}/activity/images/sign/actor/landingpage/newbie-step4-3-new.png">
         </div>
     </div>
     <div class="newbie-step-five tc">
