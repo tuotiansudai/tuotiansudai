@@ -93,7 +93,7 @@ function submitData() {
                 title: '投资提示',
                 shadeClose: false,
                 btn: ['取消', '确认'],
-                area: ['300px', '160px'],
+                area: ['300px'],
                 content: '<p class="pad-m-tb tc">确认投资？</p>',
                 btn1: function() {
                     layer.closeAll();

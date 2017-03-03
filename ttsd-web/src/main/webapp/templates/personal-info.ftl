@@ -126,9 +126,10 @@
         <dl>
             <dt class="requireOpt">请输入邮箱</dt>
             <dd><input type="email" name="email" class="input-control" placeholder="请输入邮箱">
-                <div class="error-box tl"></div>
+
             </dd>
         </dl>
+        <div class="error-box tl"></div>
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
         <button type="submit" class="btn btn-normal">绑定</button>
@@ -151,7 +152,7 @@
     </form>
 </div>
 <div id="turnOffNoPasswordInvestDOM" class="pad-m popLayer" style="display: none; ">
-    <form id="imageCaptchaForm" name="imageCaptchaForm" action="${requestContext.getContextPath()}/no-password-invest/send-captcha" method="post">
+    <form id="imageCaptchaForm" name="imageCaptchaForm"  method="post">
         <dl>
             <dt>推荐您开通免密投资功能，简化投资过程，投资快人一步，确认关闭吗？</dt>
             <dd class="mt-20">
@@ -174,9 +175,9 @@
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             </dd>
         </dl>
-        <div class="error-content" style="visibility: visible; height:30px;text-align:left"></div>
+        <div class="error-box" ></div>
         <div class="tc person-info-btn">
-            <button class="btn btn-success btn-cancel">取消</button>
+            <button class="btn btn-success btn-cancel" type="button">取消</button>
             <button class="btn btn-close btn-close-turn-off" type="submit">我要关闭</button>
         </div>
 

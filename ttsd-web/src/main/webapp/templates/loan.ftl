@@ -14,12 +14,6 @@
                             <i class="ic-right"></i>
                         </span>
                     </#if>
-
-                    <div class="fl orange extra-rate">
-                        <i class="fa fa-mobile"></i>
-                        APP专享
-                    </div>
-
                     <#if loan.extraSource?? && loan.extraSource == "MOBILE">
                         <div class="fl orange extra-rate">
                             <i class="fa fa-mobile"></i>
@@ -458,7 +452,7 @@
                                             <div class="scroll-content">
                                                 <div class="row">
                                                     <#list loanTitleRelation.applicationMaterialUrls?split(",") as title>
-                                                        <a class="col" href="${title}" rel="example_group">
+                                                        <a class="col" href="${commonStaticServer}${title}" rel="example_group">
                                                             <img class="img" layer-src="${commonStaticServer}${title}" src="${commonStaticServer}${title}" alt="${loanTitle.title}"/>
                                                         </a>
                                                     </#list>

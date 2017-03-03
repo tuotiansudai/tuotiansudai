@@ -1,6 +1,6 @@
 require('webStyle/forget_password.scss');
 let commonFun=require('publicJs/commonFun');
-let ValidatorForm= require('publicJs/validator');
+let ValidatorObj= require('publicJs/validator');
 let retrieveForm=globalFun.$('#retrieveForm'); //找回密码的form
 let inputPasswordForm=globalFun.$('#inputPasswordForm'); //找回密码的form
 
@@ -19,7 +19,7 @@ function forgetPassword() {
     },'fetchCaptcha');
 
     //忘记密码表单校验
-    let validator = new ValidatorForm();
+    let validator = new ValidatorObj.ValidatorForm();
     validator.newStrategy(retrieveForm.mobile,'isMobileRetrieveExist',function(errorMsg,showErrorAfter) {
         var getResult='',
             that=this,
@@ -32,12 +32,12 @@ function forgetPassword() {
             if(response.data.status) {
                 // 如果为true说明手机已存在
                 getResult='';
-                commonFun.isHaveError.no.apply(that,_arguments);
+                ValidatorObj.isHaveError.no.apply(that,_arguments);
 
             }
             else {
                 getResult=errorMsg;
-                commonFun.isHaveError.yes.apply(that,_arguments);
+                ValidatorObj.isHaveError.yes.apply(that,_arguments);
             }
         });
         return getResult;
@@ -52,7 +52,7 @@ function forgetPassword() {
     },{
         strategy: 'isMobileRetrieveExist',
         errorMsg: '手机号不存在'
-    }]);
+    }],true);
 
     validator.add(retrieveForm.captcha, [{
         strategy: 'isNonEmpty',
@@ -63,20 +63,14 @@ function forgetPassword() {
     },{
         strategy: 'isCaptchaVerify',
         errorMsg: '验证码不正确'
-    }]);
+    }],true);
 
     let reInputs=$(retrieveForm).find('input:text,input:password');
 
     reInputs=Array.from(reInputs);
     for (let el of reInputs) {
         globalFun.addEventHandler(el,"blur", function() {
-            let errorMsg = validator.start(this);
-            if(errorMsg) {
-                errorDom.text(errorMsg).css('visibility','visible');
-            }
-            else {
-                errorDom.text('').css('visibility','hidden');
-            }
+            validator.start(this);
             isDisabledButton();
         })
     }
@@ -100,7 +94,6 @@ function forgetPassword() {
         for(let i=0,len=reInputs.length;i<len;i++) {
             errorMsg = validator.start(reInputs[i]);
             if(errorMsg) {
-                errorDom.text(errorMsg).css('visibility','visible');
                 return;
             }
         }
@@ -128,7 +121,7 @@ function inputPassword() {
     });
 
     //忘记密码表单校验
-    let validatorPass = new ValidatorForm();
+    let validatorPass = new ValidatorObj.ValidatorForm();
     validatorPass.add(inputPasswordForm.password, [{
         strategy: 'isNonEmpty',
         errorMsg: '密码不能为空'

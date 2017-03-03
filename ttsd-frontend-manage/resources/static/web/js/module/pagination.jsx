@@ -29,13 +29,13 @@ $.fn.loadPagination = function (requestData, loadSuccess) {
             self.html(paginatonHtml);
             if (data.hasPreviousPage) {
                 $('.pagination .prev').click(function () {
-                    requestData.index = index - 1;
+                    requestData.index = paramGroup.index - 1;
                     self.loadPagination(requestData, loadSuccess);
                 });
             }
             if (data.hasNextPage) {
                 $('.pagination .next').click(function () {
-                    requestData.index = index + 1;
+                    requestData.index = paramGroup.index + 1;
                     self.loadPagination(requestData, loadSuccess);
                 });
             }

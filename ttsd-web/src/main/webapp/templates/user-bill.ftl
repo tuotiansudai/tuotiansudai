@@ -57,7 +57,7 @@
         %>
         <tr>
             <td><%=item.createdTime%></td>
-            <td><%=item.businessType%>{{businessType}}</td>
+            <td><%=item.businessType%></td>
             <td class="tr">+<%=item.income%></td>
             <td class="tr">-<%=item.cost%></td>
             <td class="tr"><%=item.freeze%></td>
@@ -65,7 +65,7 @@
             <td>编号:<%=item.id%></td>
         </tr>
         <% } %>
-        <%=records?'':'<tr><td colspan="7" class="no-data">暂时没有投资记录</td></tr>'%>
+        <%=records.length?'':'<tr><td colspan="7" class="no-data">暂时没有投资记录</td></tr>'%>
         </tbody>
     </table>
 </script>

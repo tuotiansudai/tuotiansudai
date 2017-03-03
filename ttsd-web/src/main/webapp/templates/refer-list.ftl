@@ -3,11 +3,10 @@
 <div class="content-container invest-list-content" id="investListContent">
     <h4 class="column-title"><em class="tc">推荐送现金</em></h4>
 
-       <div class="bar-top-img">
-           <a href="/activity/share-reward">
-               <img src="${commonStaticServer}/images/sign/aboutus/bar-refer-sign.jpg" alt="推荐送现金">
-            </a>
-       </div>
+   <div class="bar-top-img">
+       <a href="/activity/share-reward">
+        </a>
+   </div>
 
     <div class="invite-friend-box clearfix">
         <div class="invite-friend-inner fl">
@@ -83,7 +82,7 @@
             <td><%=item.registerTime%></td>
         </tr>
         <% } %>
-        <%=records?'':'<tr><td colspan="3" class="no-data">暂时没有推荐记录</td></tr>'%>
+        <%=records.length?'':'<tr><td colspan="3" class="no-data">暂时没有推荐记录</td></tr>'%>
         </tbody>
     </table>
 
@@ -119,7 +118,7 @@
         </tr>
         <% } %>
 
-        <%=records?'':'<tr><td colspan="8" class="no-data">暂时没有推荐人投资记录</td></tr>'%>
+        <%=records.length?'':'<tr><td colspan="8" class="no-data">暂时没有推荐人投资记录</td></tr>'%>
         <tr>
             <td colspan="8" align="center">
                 推荐奖励总收益：<%=totalReward%>元

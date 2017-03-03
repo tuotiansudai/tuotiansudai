@@ -51,6 +51,7 @@
         border:1px solid #ccc;
         border-left:none;
         box-sizing:border-box;
+        background: url('../../images/icons/microphone.png') center center no-repeat;
       }
     }
     .skip-intro{
@@ -131,6 +132,10 @@
     }
     .skip-icon{
       margin-right:10px;
+      width:40px;
+      height:40px;
+      display: inline-block;
+      background: url('../../images/icons/skip-success.png');
     }
   }
 }

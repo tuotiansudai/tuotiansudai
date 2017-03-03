@@ -43,8 +43,7 @@ class fetchCaptchaFun{
         $fetchCaptcha.on('click',function() {
             let mobile=that.DomContainer.mobile.value;
             $errorBox.text('');
-            $imageCaptchaForm[0].imageCaptcha.value
-
+            $imageCaptchaForm[0].imageCaptcha.value=''
             layer.open({
                 type:1,
                 area:['320px','210px'],

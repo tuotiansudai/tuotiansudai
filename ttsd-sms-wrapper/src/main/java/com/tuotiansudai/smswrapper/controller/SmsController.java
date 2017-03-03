@@ -46,12 +46,6 @@ public class SmsController {
         return smsService.sendFatalNotify(notify);
     }
 
-    @RequestMapping(value = "/coupon-notify", method = RequestMethod.POST)
-    @ResponseBody
-    public BaseDto<SmsDataDto> couponNotify(@Valid @RequestBody SmsCouponNotifyDto notifyDto) {
-        return smsService.couponNotify(notifyDto);
-    }
-
     @RequestMapping(value = "/loan-repay-notify", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<SmsDataDto> loanRepayNotify(@Valid @RequestBody RepayNotifyDto notifyDto) {
@@ -92,5 +86,17 @@ public class SmsController {
     @ResponseBody
     public BaseDto<SmsDataDto> loanRaisingCompleteNotify(@RequestBody LoanRaisingCompleteNotifyDto notifyDto) {
         return smsService.loanRaisingCompleteNotify(notifyDto);
+    }
+
+    @RequestMapping(value = "/coupon-assign-success", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<SmsDataDto> couponAssignSuccessNotify(@Valid @RequestBody SmsCouponNotifyDto notifyDto) {
+        return smsService.assignCouponSuccessNotify(notifyDto);
+    }
+
+    @RequestMapping(value = "/coupon-expired-notify", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<SmsDataDto> couponExpiredNotify(@Valid @RequestBody SmsCouponNotifyDto notifyDto) {
+        return smsService.couponExpiredNotify(notifyDto);
     }
 }

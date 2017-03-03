@@ -50,7 +50,6 @@
         {"title":"团队介绍", "url":"/about/team"},
         {"title":"拓天公告", "url":"/about/notice"},
         {"title":"媒体报道", "url":"/about/media"},
-        {"title":"推荐奖励", "url":"/about/refer-reward"},
         {"title":"服务费用", "url":"/about/service-fee"},
         {"title":"常见问题", "url":"/about/qa"},
         {"title":"联系我们", "url":"/about/contact"},

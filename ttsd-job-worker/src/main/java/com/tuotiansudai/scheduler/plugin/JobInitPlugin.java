@@ -29,35 +29,11 @@ public class JobInitPlugin implements SchedulerPlugin {
 
     @Override
     public void start() {
-        if (JobType.CalculateDefaultInterest.name().equalsIgnoreCase(schedulerName)) {
-            deleteCalculateDefaultInterest();
-        }
-        if (JobType.AutoReFreshAreaByMobile.name().equalsIgnoreCase(schedulerName)) {
-            deleteRefreshAreaByMobile();
-        }
-        if (JobType.LoanRepayNotify.name().equalsIgnoreCase(schedulerName)) {
-            deleteLoanRepayNotifyJob();
-        }
-        if (JobType.BirthdayNotify.name().equalsIgnoreCase(schedulerName)) {
-            deleteBirthdayNotifyJob();
-        }
-        if (JobType.ExperienceRepay.name().equals(schedulerName)) {
-            deleteNewbieExperienceRepayJob();
-        }
-        if (JobType.CheckUserBalanceMonthly.name().equals(schedulerName)) {
-            deleteCheckUserBalanceJob();
-        }
         if (JobType.CouponRepayCallBack.name().equalsIgnoreCase(schedulerName)) {
-            createCouponRepayCallBackJobIfNotExist();
+            deleteCouponRepayCallBackJobIfNotExist();
         }
         if (JobType.ExtraRateRepayCallBack.name().equalsIgnoreCase(schedulerName)) {
-            createExtraRateRepayCallBackIfNotExist();
-        }
-        if (JobType.PlatformBalanceLowNotify.name().equals(schedulerName)) {
-            deletePlatformBalanceLowNotifyJob();
-        }
-        if (JobType.EventMessage.name().equals(schedulerName)) {
-            deleteEventMessageJob();
+            deleteExtraRateRepayCallBackIfNotExist();
         }
         if (JobType.SendFirstRedEnvelopSplit.name().equalsIgnoreCase(schedulerName)) {
             createFirstRedEnvelopSplitJob();
@@ -70,40 +46,6 @@ public class JobInitPlugin implements SchedulerPlugin {
     @Override
     public void shutdown() {
 
-    }
-
-    private void createCouponRepayCallBackJobIfNotExist() {
-        final JobType jobType = JobType.CouponRepayCallBack;
-        final String jobGroup = CouponRepayNotifyCallbackJob.JOB_GROUP;
-        final String jobName = CouponRepayNotifyCallbackJob.JOB_NAME;
-        try {
-            jobManager.newJob(jobType, CouponRepayNotifyCallbackJob.class)
-                    .replaceExistingJob(true)
-                    .runWithSchedule(SimpleScheduleBuilder
-                            .repeatSecondlyForever(CouponRepayNotifyCallbackJob.RUN_INTERVAL_SECONDS)
-                            .withMisfireHandlingInstructionIgnoreMisfires())
-                    .withIdentity(jobGroup, jobName)
-                    .submit();
-        } catch (SchedulerException e) {
-            logger.info(e.getLocalizedMessage(), e);
-        }
-    }
-
-    private void createExtraRateRepayCallBackIfNotExist() {
-        final JobType jobType = JobType.ExtraRateRepayCallBack;
-        final String jobGroup = ExtraRateInvestCallbackJob.JOB_GROUP;
-        final String jobName = ExtraRateInvestCallbackJob.JOB_NAME;
-        try {
-            jobManager.newJob(jobType, ExtraRateInvestCallbackJob.class)
-                    .replaceExistingJob(true)
-                    .runWithSchedule(SimpleScheduleBuilder
-                            .repeatSecondlyForever(ExtraRateInvestCallbackJob.RUN_INTERVAL_SECONDS)
-                            .withMisfireHandlingInstructionIgnoreMisfires())
-                    .withIdentity(jobGroup, jobName)
-                    .submit();
-        } catch (SchedulerException e) {
-            logger.info(e.getLocalizedMessage(), e);
-        }
     }
 
     private void createFirstRedEnvelopSplitJob() {
@@ -128,35 +70,12 @@ public class JobInitPlugin implements SchedulerPlugin {
         }
     }
 
-    private void deleteRefreshAreaByMobile() {
-        jobManager.deleteJob(JobType.AutoReFreshAreaByMobile, JobType.AutoReFreshAreaByMobile.name(), JobType.AutoReFreshAreaByMobile.name());
+    private void deleteCouponRepayCallBackJobIfNotExist(){
+        jobManager.deleteJob(JobType.CouponRepayCallBack,"umpay","coupon_repay_call_back");
     }
 
-    private void deleteBirthdayNotifyJob() {
-        jobManager.deleteJob(JobType.BirthdayNotify, JobType.BirthdayNotify.name(), JobType.BirthdayNotify.name());
+    private void deleteExtraRateRepayCallBackIfNotExist() {
+        jobManager.deleteJob(JobType.ExtraRateRepayCallBack, "umpay", "repay_extra_rate_invest_call_back");
     }
-
-    private void deleteCalculateDefaultInterest() {
-        jobManager.deleteJob(JobType.CalculateDefaultInterest, JobType.CalculateDefaultInterest.name(), JobType.CalculateDefaultInterest.name());
-    }
-
-    private void deleteNewbieExperienceRepayJob() {
-        jobManager.deleteJob(JobType.ExperienceRepay, JobType.ExperienceRepay.name(), JobType.ExperienceRepay.name());
-    }
-
-    private void deleteCheckUserBalanceJob() {
-        jobManager.deleteJob(JobType.CheckUserBalanceMonthly, JobType.CheckUserBalanceMonthly.name(), JobType.CheckUserBalanceMonthly.name());
-    }
-
-    private void deleteLoanRepayNotifyJob() {
-        jobManager.deleteJob(JobType.LoanRepayNotify, JobType.LoanRepayNotify.name(), JobType.LoanRepayNotify.name());
-    }
-
-    private void deletePlatformBalanceLowNotifyJob() {
-        jobManager.deleteJob(JobType.PlatformBalanceLowNotify, JobType.PlatformBalanceLowNotify.name(), JobType.PlatformBalanceLowNotify.name());
-    }
-
-    private void deleteEventMessageJob() {
-        jobManager.deleteJob(JobType.EventMessage, JobType.EventMessage.name(), JobType.EventMessage.name());
-    }
+   
 }

@@ -1,6 +1,6 @@
 require.ensure([],function() {
     let commonFun= require('publicJs/commonFun');
-    let ValidatorForm=require('publicJs/validator');
+    let ValidatorObj=require('publicJs/validator');
     var $loginTipBox=$('#loginTip');
     let loginInForm = document.getElementById('loginInForm');
     let errorDom=$(loginInForm).find('.error-box');
@@ -15,7 +15,7 @@ require.ensure([],function() {
         layer.closeAll();
     })
 //验证表单
-    let validator = new ValidatorForm();
+    let validator = new ValidatorObj.ValidatorForm();
     validator.add(loginInForm.username, [{
         strategy: 'isNonEmpty',
         errorMsg: '用户名不能为空'
@@ -70,7 +70,7 @@ require.ensure([],function() {
                 if (data.status) {
                     window.location.reload();
                 } else {
-                    commonFun.refreshCaptcha(loginInForm.imageCaptcha,'/login/captcha');
+                    commonFun.refreshCaptcha(globalFun.$('#imageCaptcha'),'/login/captcha');
                     globalFun.removeClass(thisButton,'loading');
                     errorDom.text(data.message);
                 }

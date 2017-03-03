@@ -1,6 +1,5 @@
 require('webStyle/account/bind_card.scss');
 require('webJs/plugins/autoNumeric');
-
 var $rechargeCon = $(".recharge-bind-card"),
     $rechargeForm = $('.recharge-form', $rechargeCon),
     $fastRechargeForm = $(".fast-recharge-form", $rechargeCon),

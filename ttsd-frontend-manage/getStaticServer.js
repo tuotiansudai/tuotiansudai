@@ -7,7 +7,7 @@ var platCase= PLATFORM && PLATFORM.toUpperCase(),
 
 var configPath='../ttsd-config/src/main/resources/ttsd-env.properties';
 if(platCase) {
-    if(/QA/.test(platCase)) {
+    if(/QA/.test(platCase) || /FT/.test(platCase) || /CI/.test(platCase)) {
         configPath='../ttsd-config/src/main/resources/envs/'+platCase+'.properties';
         ttsdConfigFile=path.resolve(__dirname, configPath);
     } else if(/PROD/.test(platCase)) {

@@ -1,3 +1,5 @@
+
+
 /*about us*/
 .about-us-container {
   background: #fff;
@@ -73,12 +75,15 @@
       float: left;
       vertical-align: bottom;
       display: inline-block;
-
-      img {
+      i {
         border: 1px solid #ccc;
         vertical-align: bottom;
         margin-right: 15px;
+        width:204px;
+        height:204px;
+        background-size: 98%;
       }
+
     }
   }
   .team-box {

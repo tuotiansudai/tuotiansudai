@@ -1,5 +1,5 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="${css.my_account}" pageJavascript="${js.bind_card}" activeNav="我的账户" activeLeftNav="个人资料" title="更换银行卡">
+<@global.main pageCss="${css.bind_card}" pageJavascript="${js.bind_card}" activeNav="我的账户" activeLeftNav="个人资料" title="更换银行卡">
 <div class="content-container">
     <h4 class="column-title"><em class="tc">更换银行卡</em></h4>
     <div class="recharge-bind-card pad-s">

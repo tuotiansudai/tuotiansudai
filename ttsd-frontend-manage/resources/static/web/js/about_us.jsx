@@ -1,14 +1,18 @@
 require('webStyle/about_us.scss');
 require('webJsModule/pagination');
-var paginationElement = $('.pagination');
+let paginationElement = $('.pagination');
 
-if($('#errorContainer').length) {
+let $errorContainer =$('#errorContainer');
+
+if($errorContainer.length) {
+
+    var $jumpTip = $('.jump-tip i',$errorContainer);
     setTimeout(function(){
         window.location="/";
     },10000);
 
     setInterval(function(){
-        $('.jump-tip i').text()<1?window.location="/":$('.jump-tip i').text(function(index,num){return parseInt(num)-1});
+        $jumpTip.text()<1?window.location="/":$jumpTip.text(function(index,num){return parseInt(num)-1});
     },1000);
 }
 
@@ -20,7 +24,9 @@ if($noticeList.length) {
     let ListRender = _.template(noticeTpl);
     let requestData={"index":1,"pageSize":10};
     paginationElement.loadPagination(requestData, function (data) {
-        ListRender(data);
+
+        let html = ListRender(data);
+        $noticeList.html(html);
         $noticeList.find('span').each(function(key,option) {
             var getTime=$(option).text();
             $(option).text(getTime.substr(0,10));

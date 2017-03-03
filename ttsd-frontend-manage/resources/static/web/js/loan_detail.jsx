@@ -16,6 +16,7 @@ let $accountInfo = $('.account-info', $loanDetailContent),
 let amountInputElement = $(".text-input-amount", $loanDetailContent);
 let noPasswordRemind = amountInputElement.data('no-password-remind');
 let noPasswordInvest = amountInputElement.data('no-password-invest');
+let autoInvestOn = amountInputElement.data('auto-invest-on');
 let $ticketList = $('.ticket-list');
 
 let $authorizeAgreement=$('#goAuthorize');
@@ -107,13 +108,13 @@ function investSubmit(){
             title: '免密投资',
             shadeClose:false,
             btn:['取消', '确认'],
-            area: ['300px', '160px'],
+            area: ['300px'],
             content: '<p class="pad-m-tb tc">确认投资？</p>',
             btn1: function(){
                 layer.closeAll();
             },
             btn2:function(){
-                if($isAuthenticationRequired.val()==='false'){//判断是否开启安心签免验
+                if($isAuthenticationRequired.val()==='false'){
                     sendSubmitRequest();
                 }else{
                     getSkipPhoneTip();
@@ -134,24 +135,24 @@ function investSubmit(){
 
 //发送投资提交请求
 function sendSubmitRequest(){
-    $investForm.ajaxSubmit({
-        dataType: 'json',
+
+    commonFun.useAjax({
         url: '/no-password-invest',
+        data: $investForm.serialize(),
+        type: 'POST',
         beforeSubmit: function () {
-            console.log("invest start");
             $investSubmit.addClass("loading");
         },
-        success: function (response) {
-            layer.closeAll();
-            $investSubmit.removeClass("loading");
-            var data = response.data;
-            if (data.status) {
-                location.href = "/invest-success";
-            } else if (data.message == '新手标投资已超上限') {
-                showLayer();
-            } else {
-                showInputErrorTips(data.message);
-            }
+    },function(response) {
+        layer.closeAll();
+        $investSubmit.removeClass("loading");
+        var data = response.data;
+        if (data.status) {
+            location.href = "/invest-success";
+        } else if (data.message == '新手标投资已超上限') {
+            showLayer();
+        } else {
+            showInputErrorTips(data.message);
         }
     });
 }
@@ -159,14 +160,12 @@ function sendSubmitRequest(){
 //is tip B1 or tip B2?
 function markNoPasswordRemind(){
     if (!noPasswordRemind) {
-        $.ajax({
+        commonFun.useAjax({
             url: '/no-password-invest/mark-remind',
-            type: 'POST',
-            dataType: 'json'
-        })
-            .done(function () {
-                noPasswordRemind = true;
-            });
+            type: 'POST'
+        },function() {
+            noPasswordRemind = true;
+        });
     }
     layer.open({
         type: 1,
@@ -175,7 +174,7 @@ function markNoPasswordRemind(){
         title: '免密投资',
         shadeClose: false,
         btn: autoInvestOn ? ['继续投资', '开启免密投资'] : ['继续投资', '前往联动优势授权'],
-        area: ['500px', '160px'],
+        area: ['500px'],
         content: '<p class="pad-m-tb tc">推荐您开通免密投资功能，简化投资过程，理财快人一步！</p>',
         btn1: function () {
             investSubmit();
@@ -183,22 +182,17 @@ function markNoPasswordRemind(){
         },
         btn2: function () {
             if (autoInvestOn) {
-                $.ajax({
+
+                commonFun.useAjax({
                     url: '/no-password-invest/enabled',
-                    type: 'POST',
-                    dataType: 'json'
-                })
-                    .done(function () {
-                        noPasswordInvest = true;
-                        layer.closeAll();
-                        layer.msg('开启成功！', function () {
-                            investSubmit();
-                        });
-                    })
-                    .fail(function () {
-                        layer.closeAll();
-                        layer.msg('开启失败，请重试！');
-                    })
+                    type: 'POST'
+                },function() {
+                    noPasswordInvest = true;
+                    layer.closeAll();
+                    layer.msg('开启成功！', function () {
+                        investSubmit();
+                    });
+                });
             } else {
                 showAuthorizeAgreementOptions();
                 $authorizeAgreement.submit();
@@ -592,7 +586,6 @@ function getSkipPhoneTip(){
 //免密投资
 (function() {
     let $noPasswordTips=$('#noPasswordTips');
-    let autoInvestOn = amountInputElement.data('auto-invest-on');
     $noPasswordTips.on('click', function() {
         layer.open({
             type: 1,
@@ -601,7 +594,7 @@ function getSkipPhoneTip(){
             shadeClose: false,
             title: '免密投资',
             btn: ['不开启', '开启'],
-            area: ['500px', '160px'],
+            area: ['500px'],
             content: '<p class="pad-m-tb tc">您可直接开启免密投资，简化投资过程，理财快人一步，是否开启？</p>',
             btn1: function () {
                 layer.closeAll();

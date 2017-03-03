@@ -31,11 +31,11 @@
 <ul class="fix-nav-list">
 	<li class="cal-btn">
 		<i class="icon-calculator"></i>
-		<span class="nav-text" onclick="cnzzPush.trackClick('62首页','悬浮窗模块','计算器')">投资<br/>计算器</span>
+		<span class="nav-text" >投资<br/>计算器</span>
 	</li>
 	<li>
 		<i class="icon-phone"></i>
-		<span class="nav-text" onclick="cnzzPush.trackClick('63首页','悬浮窗模块','手机APP')">APP<br/>下载</span>
+		<span class="nav-text">APP<br/>下载</span>
 		<div class="fix-nav app-img"></div>
 	</li>
 	<li class="show-feed">
@@ -46,7 +46,7 @@
 <ul class="back-top">
 	<li>
 		<i class="icon-top"></i>
-		<span class="nav-text" onclick="cnzzPush.trackClick('65首页','悬浮窗模块','回到顶部')">返回<br/>顶部</span>
+		<span class="nav-text">返回<br/>顶部</span>
 	</li>
 </ul>
 <div class="feedback-container feedback-model" id="feedbackConatiner">
@@ -77,12 +77,12 @@
 		</div>
 		<div class="content-list">
 			<label class="name-text">验证码：</label>
+            <img src="" id="imageCaptchaFeed">
 			<input type="text" class="code-text int-text" name="captcha" value="" id="captchaText" maxlength="5">
-			<img src="" id="imageCaptchaFeed">
-			<#--<label class="error captcha-error" id="captchaError">验证码错误！</label>-->
+
 		</div>
 		<div class="content-list tc">
-			<div class="error-box tl"></div>
+			<#--<div class="error-box tl"></div>-->
 			<input type="submit" class="btn submit-btn" value="提交意见">
 		</div>
 	</form>

@@ -50,7 +50,7 @@
         %>
         <tr>
             <td><%=item.loanName%></td>
-            <td><%=item.recheckTime%>{{recheckTime}}</td>
+            <td><%=item.recheckTime%></td>
             <td class="tr"><%=item.loanAmount%> 元</td>
             <td class="tr"><%=item.unpaidAmount%> 元</td>
             <td>
@@ -61,7 +61,7 @@
             </td>
         </tr>
         <% } %>
-        <%=records?'':'<tr><td colspan="6" class="no-data">暂时没有记录</td></tr>'%>
+        <%=records.length?'':'<tr><td colspan="6" class="no-data">暂时没有记录</td></tr>'%>
         </tbody>
         <% } %>
             <#--isComplete 状态-->
@@ -93,7 +93,7 @@
         </tr>
         <% } %>
 
-        <%=records?'':'<tr><td colspan="6" class="no-data">暂时没有记录</td></tr>'%>
+        <%=records.length?'':'<tr><td colspan="6" class="no-data">暂时没有记录</td></tr>'%>
         </tbody>
         <% } %>
 
@@ -117,21 +117,22 @@
             <td><%=item.recheckTime%></td>
         </tr>
         <% } %>
-        <%=records?'':'<tr><td colspan="3" class="no-data">暂时没有记录</td></tr>'%>
+        <%=records.length?'':'<tr><td colspan="3" class="no-data">暂时没有记录</td></tr>'%>
         </tbody>
          <% } %>
     </table>
 </script>
 
 <script type="text/template" id="loanRepayTemplate">
+
     <div class="layer-content">
         <div class="pad-s">
-            <% if(isAdvanceRepayEnabled) {
+            <% if(isAdvanceRepayEnabled) { %>
 
             <a class="advanced-repay btn btn-normal" href="javascript:">提前还款</a>
             <span class="repay-total">(还款总额：<%=advanceRepayAmount%> 元) </span>
             <form id="advanced-repay-form" action="/repay" method="post" target="_blank">
-                <input type="hidden" name="loanId" value="{{loanId}}"/>
+                <input type="hidden" name="loanId" value="<%=loanId%>"/>
                 <input type="hidden" name="isAdvanced" value="true"/>
                 <input type="hidden" name="_csrf" value="<%=csrfToken%>"/>
             </form>
@@ -174,20 +175,20 @@
                     </td>
                     <td>
                        <% if(isNormalRepayEnabled) {
-                            if(isEnabled) {
+                            if(item.isEnabled) {
                         %>
 
-                        <a class="normal-repay btn btn-normal btn-sm" href="javascript:"><%=status%></a>
+                        <a class="normal-repay btn btn-normal btn-sm" href="javascript:"><%=item.status%></a>
                         <form id="normal-repay-form" action="/repay" method="post" target="_blank">
-                            <input type="hidden" name="loanId" value="{{loanId}}"/>
-                            <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+                            <input type="hidden" name="loanId" value="<%=loanId%>"/>
+                            <input type="hidden" name="_csrf" value="<%=csrfToken%>"/>
                         </form>
 
                         <% } else { %>
-                        <%=status%>
+                        <%=item.status%>
                         <% } %>
                     <% } else { %>
-                        <%=status%>
+                        <%=item.status%>
                     <% } %>
                     </td>
                 </tr>

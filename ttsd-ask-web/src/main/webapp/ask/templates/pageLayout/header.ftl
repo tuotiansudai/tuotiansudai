@@ -31,10 +31,10 @@
 
         <@global.isAnonymous>
             <li>
-                <a href="${webServer}/login?redirect=${askServer}" onclick="cnzzPush.trackClick('14顶部导航','登录')">登录</a>
+                <a href="${webServer}/login?redirect=${askServer}" >登录</a>
             </li>
             <li>
-                <a href="${webServer}/register/user<#if channel??>?channel=${channel}</#if>" onclick="cnzzPush.trackClick('15顶部导航','注册')">注册</a>
+                <a href="${webServer}/register/user<#if channel??>?channel=${channel}</#if>" >注册</a>
             </li>
         </@global.isAnonymous>
         </ul>

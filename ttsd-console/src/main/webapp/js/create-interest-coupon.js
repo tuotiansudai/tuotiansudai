@@ -5,10 +5,23 @@ require(['jquery','layerWrapper', 'template','bootstrap', 'bootstrapDatetimepick
             $dateEnd = $('#endTime'), //结束时间
             $errorDom = $('.form-error'), //错误提示节点
             $submitBtn = $('#btnSave'), //提交按钮
+            $businessType = $('#businessType'),  // 业务类型
             $couponForm = $('.form-list'),
             boolFlag = false, //校验布尔变量值
             currentErrorObj = null;
 
+        // 业务类型切换
+        $businessType.on('change', function() {
+            if ($businessType.val() == '0') {
+                window.location.href ='/activity-manage/coupon';
+            }else if($businessType.val() == '1'){
+                window.location.href ='/activity-manage/interest-coupon';
+            }else if($businessType.val() == '2'){
+                window.location.href ='/activity-manage/red-envelope';
+            }else if($businessType.val() == '3'){
+                window.location.href ='/activity-manage/birthday-coupon';
+            }
+        });
 
         //渲染select表单
         $selectDom.selectpicker();

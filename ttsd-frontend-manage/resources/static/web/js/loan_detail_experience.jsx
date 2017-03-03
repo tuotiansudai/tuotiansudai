@@ -21,17 +21,16 @@ investForm.onsubmit=function(event) {
         type:'POST',
         url: '/experience-invest',
         data:$(investForm).serialize()
-    },function() {
+    },function(response) {
         var data = response.data;
         if (data.status) {
             layer.open({
                 type: 1,
                 title: '&nbsp',
-                area: ['400px', '205px'],
+                area: ['400px'],
                 content: $('#freeSuccess')
             });
         }
-        self.removeClass("loading");
     });
 }
 $('.close-free',$experienceLoan).on('click', function (event) {

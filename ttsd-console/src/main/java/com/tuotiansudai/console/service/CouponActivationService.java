@@ -4,7 +4,6 @@ import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.coupon.service.ExchangeCodeService;
 import com.tuotiansudai.enums.OperationType;
 import com.tuotiansudai.log.service.AuditLogService;
-import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.CouponMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.CouponModel;
@@ -88,11 +87,6 @@ public class CouponActivationService {
 
         if (couponModel.getUserGroup() == UserGroup.EXCHANGER_CODE) {
             exchangeCodeService.generateExchangeCode(couponModel.getId(), couponModel.getTotalCount().intValue());
-        }
-
-        if (couponModel.isSmsAlert()) {
-            logger.info(MessageFormat.format("coupon active sms alert, couponId:{0}", String.valueOf(couponId)));
-            mqWrapperClient.sendMessage(MessageQueue.CouponSmsNotify, String.valueOf(couponId));
         }
 
         String description = MessageFormat.format("{0} 激活了 {1} 创建的 {2}", auditorRealName, operatorRealName, couponModel.getCouponType().getName());

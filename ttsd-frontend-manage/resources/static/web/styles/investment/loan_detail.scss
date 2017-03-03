@@ -44,134 +44,6 @@ $red: #eb4a3e;
   }
 }
 
-.get-skipphone-tip{
-  float:left;
-  width:100%;
-  height:auto;
-  text-align:center;
-  padding:20px 0 35px;
-  display:none;
-  .tip-item{
-    float:left;
-    width:100%;
-    span{
-      display:inline-block;
-      margin:0 2px;
-      &.skip-error{
-        float:left;
-        font-size:12px;
-        color:#ff0000;
-        margin-left: 50px;
-      }
-      .skip-phone-code{
-        float:left;
-        width:170px;
-        height:30px;
-        font-size:12px;
-        border:1px solid #ccc;
-        box-sizing:border-box;
-        text-indent:1em;
-      }
-      .get-skip-code{
-        float:left;
-        width:100px;
-        height:30px;
-        border:1px solid #ccc;
-        box-sizing:border-box;
-        text-align:center;
-        font-size:12px;
-        color:#4c4c4c;
-        background:#fafafa;
-      }
-      .microphone{
-        float:left;
-        width:30px;
-        height:30px;
-        background:#fafafa;
-        text-align:center;
-        border:1px solid #ccc;
-        border-left:none;
-        box-sizing:border-box;
-      }
-    }
-    .skip-intro{
-      float:right;
-      font-size:12px;
-      color:#4c4c4c;
-      margin-right:40px;
-    }
-    .get-skip-btn{
-      display:inline-block;
-      width:250px;
-      height:35px;
-      line-height:35px;
-      text-align:center;
-      background:#ff752a;
-      color:#fff;
-      font-size:14px;
-      border:none;
-      margin:30px 0 10px;
-      cursor:pointer;
-      .active{
-        background:#ff985d;
-      }
-    }
-    label{
-      display:inline-block;
-      .skip-icon{
-        display:inline-block;
-        width:14px;
-        height:14px;
-        background:url('/images/icons/skip-checkbox.png') no-repeat center;;
-        background-position: 0px 0px;
-        cursor:pointer;
-        vertical-align: middle;
-        &.active{
-          background-position: -24px 0px;
-        }
-      }
-    }
-    .skip-text{
-      display:inline-block;
-      font-size:12px;
-      color:#4d4d4d;
-      span{
-        color:#999999;
-        cursor:pointer;
-        &:hover{
-          text-decoration: underline;
-        }
-      }
-    }
-  }
-}
-.skip-success-tip{
-  position: fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  z-index:999999;
-  display:none;
-  span{
-    width:290px;
-    height:90px;
-    line-height:90px;
-    position: absolute;
-    top:50%;
-    left:50%;
-    margin-top:-45px;
-    margin-left:-145px;
-    font-size:18px;
-    color:#fff;
-    background:rgba(0,0,0,.5);
-    text-align:center;
-    border-radius:10px;
-    .skip-icon{
-      margin-right:10px;
-    }
-  }
-}
 /* loan detail */
 .loan-detail-content {
   color: #8c8c8c;
@@ -389,7 +261,7 @@ $red: #eb4a3e;
                   width: 18px;
                   height: 14px;
                   margin-top: 5px;
-                  background: url(/images/sign/icon-red-sm.png) no-repeat center;
+                  background: url('../../images/sign/icon-red-sm.png') no-repeat center;
                 }
                 span {
                   float: left;
@@ -497,16 +369,16 @@ $red: #eb4a3e;
               cursor: pointer;
               vertical-align: middle;
               &.level2 {
-                background: url(/images/icons/level-v2.png) no-repeat;
+                background: url('../../images/icons/level-v2.png') no-repeat;
               }
               &.level3 {
-                background: url(/images/icons/level-v3.png) no-repeat;
+                background: url('../../images/icons/level-v3.png') no-repeat;
               }
               &.level4 {
-                background: url(/images/icons/level-v4.png) no-repeat;
+                background: url('../../images/icons/level-v4.png') no-repeat;
               }
               &.level5 {
-                background: url(/images/icons/level-v5.png) no-repeat;
+                background: url('../../images/icons/level-v5.png') no-repeat;
               }
             }
           }
@@ -534,7 +406,7 @@ $red: #eb4a3e;
             }
 
             .time-clock {
-              background: url(/images/icons/time-clock.png) center -1px no-repeat;
+              background: url('../../images/icons/time-clock.png') center -1px no-repeat;
               display: inline-block;
               width: 29px;
               height: 27px;
@@ -571,7 +443,7 @@ $red: #eb4a3e;
                 display:inline-block;
                 width:14px;
                 height:14px;
-                background:url('/images/icons/skip-checkbox.png') no-repeat center;;
+                background:url('../../images/icons/skip-checkbox.png') no-repeat center;;
                 background-position: 0px 0px;
                 cursor:pointer;
                 margin-top:5px;
@@ -828,17 +700,17 @@ $red: #eb4a3e;
                 }
                 &.hammer {
                   span {
-                    background: url("/images/icons/hammer.png") no-repeat left 50%;
+                    background: url("../../images/icons/hammer.png") no-repeat left 50%;
                   }
                 }
                 &.king {
                   span {
-                    background: url("/images/icons/king.png") no-repeat left 50%;
+                    background: url("../../images/icons/king.png") no-repeat left 50%;
                   }
                 }
                 &.first {
                   span {
-                    background: url("/images/icons/first.png") no-repeat left 50%;
+                    background: url("../../images/icons/first.png") no-repeat left 50%;
                   }
                 }
               }
@@ -1045,6 +917,7 @@ $red: #eb4a3e;
 }
 
 @media screen and (max-width:700px) {
+  .invest-list-content .col-md-4 { width: 100%;}
   .loan-detail-content {
     .loan-model {
       display: block;
@@ -1057,6 +930,9 @@ $red: #eb4a3e;
       .news-share {
         border-left-width: 0;
         border-bottom-width: 0;
+        height:auto;
+        overflow: auto;
+        padding-bottom: 20px;
       }
       .account-info {
         width: 100%;
@@ -1075,3 +951,4 @@ $red: #eb4a3e;
 
   }
 }
+

@@ -99,7 +99,8 @@ var MyChartsObject={
                         },
                         data: report_data.data
                     }
-                ]
+                ],
+                color: ['rgb(255,117,42)','rgb(119,205,249)','rgb(227,109,213)','rgb(200,200,169)','rgb(131,175,155)']
             };
             var PieOpt=$.extend({}, this.CommonOption, thisOption);
             return PieOpt;

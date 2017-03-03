@@ -22,17 +22,15 @@
                 "header":{"text":"项目管理"},
                 "sidebar":
                 [
-                    {"name":"ALL","text":"所有的借款","link":"/project-manage/loan-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"start","text":"发起借款","link":"/project-manage/loan","role":"'ADMIN','OPERATOR'"},
-                    {"name":"WAITING_VERIFY","text":"初审的借款","link":"/project-manage/loan-list?status=WAITING_VERIFY","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"RAISING","text":"筹款中的借款","link":"/project-manage/loan-list?status=RAISING","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"RECHECK","text":"复审的借款","link":"/project-manage/loan-list?status=RECHECK","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"REPAYING","text":"还款中的借款","link":"/project-manage/loan-list?status=REPAYING","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"COMPLETE","text":"完成还款的借款","link":"/project-manage/loan-list?status=COMPLETE","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"CANCEL","text":"已经流标的借款","link":"/project-manage/loan-list?status=CANCEL","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"OVERDUE","text":"逾期的借款","link":"/project-manage/loan-list?status=OVERDUE","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"repaymentInfoList","text":"项目还款明细表","link":"/project-manage/loan-repay","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"contract","text":"CFCA创建合同","link":"/project-manage/contract","role":"'ADMIN'"}
+                    {"name":"","class":"sub-title-1","text":"直投项目管理","link":"","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
+                        {"name":"ALL","text":"所有的借款","link":"/project-manage/loan-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
+                        {"name":"start","text":"发起借款","link":"/project-manage/loan","role":"'ADMIN','OPERATOR'"},
+                        {"name":"repaymentInfoList","text":"项目还款明细表","link":"/project-manage/loan-repay","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
+                    {"name":"","class":"sub-title-1","text":"转让项目管理","link":"","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE'"},
+                        {"name":"transfer-list","text":"所有的转让项目","link":"/transfer-manage/transfer-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE'"},
+                        {"name":"transfer-rule","text":"转让规则","link":"/transfer-manage/transfer-rule","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
+                    {"name":"","class":"sub-title-1","text":"项目合同","link":"","role":"'ADMIN'"},
+                        {"name":"contract","text":"CFCA创建合同","link":"/project-manage/contract","role":"'ADMIN'"}
                 ]
             },
             {
@@ -83,6 +81,7 @@
                     {"name":"feedbackMan","text":"意见反馈","link":"/announce-manage/feedback","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
                     {"name":"articleMan","text":"拓天资讯","link":"/announce-manage/article/list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','EDITOR'"},
                     {"name":"bannerMan","text":"banner管理","link":"/banner-manage/list","role":"'ADMIN','OPERATOR_ADMIN'"},
+                    {"name":"activityCenter","text":"活动中心","link":"/activity-manage/activity-center-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE'"},
                     {"name":"bookingLoanMan","text":"预约投资管理","link":"/booking-loan-manage/list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"}
                 ]
             },
@@ -100,29 +99,21 @@
                 "name":"activity-manage",
                 "header":{"text":"活动管理"},
                 "sidebar":[
-                    {"name":"createCoupon","text":"创建体验券","link":"/activity-manage/coupon","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"statisticsCoupon","text":"体验券管理","link":"/activity-manage/coupons","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"createInterestCoupon","text":"创建加息劵","link":"/activity-manage/interest-coupon","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"statisticsInterestCoupon","text":"加息券管理","link":"/activity-manage/interest-coupons","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"createRedEnvelope","text":"现金红包创建","link":"/activity-manage/red-envelope","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"statisticsRedEnvelope","text":"现金红包管理","link":"/activity-manage/red-envelopes","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"createBirthdayCoupon","text":"生日月活动创建","link":"/activity-manage/birthday-coupon","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"statisticsBirthdayCoupon","text":"生日月活动管理","link":"/activity-manage/birthday-coupons","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"userTiandou","text":"用户天豆查询","link":"/activity-manage/user-tiandou","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE'"},
-                    {"name":"tiandouPrize","text":"天豆奖品管理","link":"/activity-manage/tiandou-prize","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE'"},
-                    {"name":"pointPrize","text":"财豆奖品管理","link":"/activity-manage/point-prize","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE'"},
-                    {"name":"investAchievement","text":"投资称号管理","link":"/activity-manage/invest-achievement","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE'"},
-                    {"name":"heroRanking","text":"周年庆管理","link":"/activity-console/activity-manage/hero-ranking","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE'"},
-                    {"name":"activityCenter","text":"活动中心","link":"/activity-manage/activity-center-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE'"},
-                    {"name":"travelLuxuryActivity","text":"旅游+奢侈品活动管理","link":"/activity-console/activity-manage/travel/user-travel-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
+                    {"name":"createCoupon","text":"创建优惠券","link":"/activity-manage/red-envelope","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
+                    {"name":"statisticsCoupon","text":"优惠券列表","link":"/activity-manage/red-envelopes","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
                     {"name":"lottery","text":"抽奖数据统计","link":"/activity-console/activity-manage/user-time-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"autumn","text":"中秋活动导出","link":"/activity-console/activity-manage/autumn-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
+                    {"name":"","class":"sub-title-2","text":"活动列表","link":"","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE'"},
+                        {"name":"heroRanking","class":"sub-title-3","text":"周年庆管理","link":"/activity-console/activity-manage/hero-ranking","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE'"},
+                        {"name":"travelLuxuryActivity","class":"sub-title-3","text":"旅游+奢侈品活动管理","link":"/activity-console/activity-manage/travel/user-travel-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
+                        {"name":"autumn","class":"sub-title-3","text":"中秋活动导出","link":"/activity-console/activity-manage/autumn-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
+                        {"name":"iphone7Lottery","class":"sub-title-3","text":"iphone7活动","link":"/activity-console/activity-manage/iphone7-lottery","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
+                        {"name":"annual","class":"sub-title-3","text":"元旦活动", "link":"/activity-console/activity-manage/annual-list", "role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
+                        {"name":"headlinesToday","class":"sub-title-3","text":"今日头条拉新抽奖活动","link":"/activity-console/activity-manage/headlines-today-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
+                        {"name":"notWork","class":"sub-title-3","text":"不上班活动", "link":"/activity-console/activity-manage/not-work-list", "role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
+                        {"name":"womenDay","class":"sub-title-3","text":"妇女节活动", "link":"/activity-console/activity-manage/women-day-list", "role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
+                        {"name":"investAchievement","class":"sub-title-3","text":"投资称号管理","link":"/activity-manage/invest-achievement","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE'"},
                     {"name":"promotion","text":"APP弹窗推送管理","link":"/activity-console/activity-manage/promotion/promotion-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"iphone7Lottery","text":"iphone7活动","link":"/activity-console/activity-manage/iphone7-lottery","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"notWork", "text":"活动投资奖励管理", "link":"/activity-console/activity-manage/not-work-list", "role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"annual", "text":"元旦活动", "link":"/activity-console/activity-manage/annual-list", "role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"headlinesToday","text":"今日头条拉新抽奖活动","link":"/activity-console/activity-manage/headlines-today-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"notWork", "text":"不上班活动", "link":"/activity-console/activity-manage/not-work-list", "role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"}
+                    {"name":"activityCenter","text":"活动中心","link":"/activity-manage/activity-center-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE'"}
                 ]
             },
             {
@@ -163,13 +154,11 @@
                 "name":"point-manage",
                 "header":{"text":"积分管理"},
                 "sidebar":[
-                    {"name":"userPointList","text":"用户积分查询","link":"/point-manage/user-point-list","role":"'ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"createCouponExchange","text":"添加优惠券商品","link":"/point-manage/coupon-exchange","role":"'ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"couponExchangeManage","text":"优惠券商品管理","link":"/point-manage/coupon-exchange-manage","role":"'ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"createVIRTUALProduct","text":"添加虚拟商品","link":"/point-manage/create?type=VIRTUAL","role":"'ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"productVIRTUALManage","text":"虚拟商品管理","link":"/point-manage/product-list?type=VIRTUAL","role":"'ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"createPHYSICALProduct","text":"添加实物商品","link":"/point-manage/create?type=PHYSICAL","role":"'ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"productPHYSICALManage","text":"实物商品管理","link":"/point-manage/product-list?type=PHYSICAL","role":"'ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN'"}
+                    {"name":"","class":"sub-title-1","text":"用户积分管理","link":"","role":"'ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN'"},
+                        {"name":"userPointList","text":"用户积分查询","link":"/point-manage/user-point-list","role":"'ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN'"},
+                    {"name":"","class":"sub-title-1","text":"积分商品管理","link":"","role":"'ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN'"},
+                        {"name":"productCreate","text":"添加商品","link":"/point-manage/coupon-exchange","role":"'ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN'"},
+                        {"name":"productManage","text":"商品管理","link":"/point-manage/coupon-exchange-manage","role":"'ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN'"}
                 ]
             },
             {
@@ -236,7 +225,7 @@
             <ul class="nav navbar-nav">
                 <#list menus as menu>
                     <#list menu.sidebar as item>
-                        <#if item.role??>
+                        <#if item.role?? && item.name?has_content>
                             <@role hasRole=item.role>
                                 <li <#if menu.name == headLab>class="active"</#if>>
                                     <a href="${item.link}">${menu.header.text}</a>
@@ -264,13 +253,15 @@
                             <#list menu.sidebar as item>
                                 <#if item.role??>
                                     <@role hasRole=item.role>
-                                        <li <#if item.name == sideLab>class="active"</#if>>
-                                            <a href="${item.link}">${item.text}</a>
+                                        <li class="${item.class!} <#if item.name == sideLab>active</#if>">
+                                            <#if item.link?has_content><a href="${item.link}">${item.text}</a>
+                                            <#else>${item.text}</#if>
                                         </li>
                                     </@role>
                                 <#else>
-                                    <li <#if item.name == sideLab>class="active"</#if>>
-                                        <a href="${item.link}">${item.text}</a>
+                                    <li class="${item.class!} <#if item.name == sideLab>active</#if>">
+                                        <#if item.link?has_content><a href="${item.link}">${item.text}</a>
+                                        <#else>${item.text}</#if>
                                     </li>
                                 </#if>
                             </#list>

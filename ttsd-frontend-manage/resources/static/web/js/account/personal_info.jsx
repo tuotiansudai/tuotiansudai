@@ -1,6 +1,6 @@
 require('webStyle/account/personal_info.scss');
 let commonFun= require('publicJs/commonFun');
-let ValidatorForm= require('publicJs/validator');
+let ValidatorObj= require('publicJs/validator');
 var $InfoBox = $('#personInfoBox'),
     $changeEmailLayer = $('.setEmail', $InfoBox),
     $updateBankCard = $('#update-bank-card'),
@@ -8,7 +8,7 @@ var $InfoBox = $('#personInfoBox'),
 
 //修改绑定的银行卡
 $updateBankCard.on('click', function(){
-    var url = $(this).attr('data-url');
+    var url = $(this).data('url');
     commonFun.useAjax({
         url: '/bind-card/is-replacing',
         type: 'GET'
@@ -53,7 +53,7 @@ $updateBankCard.on('click', function(){
 
 //绑定邮箱
 require.ensure([],function() {
-    let validatorEmail = new ValidatorForm();
+    let validatorEmail = new ValidatorObj.ValidatorForm();
     let $changeEmailDOM = $('#changeEmailDOM'),
         changeEmailForm=globalFun.$('#changeEmailForm');
     let errorDom=$('.error-box',$changeEmailDOM);
@@ -148,9 +148,9 @@ require.ensure([],function() {
         $btnCloseTurnOnElement = $('.btn-close-turn-on',$turnOnNoPasswordInvestDOM),
         $btnCloseTurnOffElement = $('.btn-close-turn-off', $turnOffNoPasswordInvestDOM),
         turnOffNoPasswordInvestForm= globalFun.$('#turnOffNoPasswordInvestForm'),
-        // $turnOffNoPasswordInvestForm = $('#turnOffNoPasswordInvestForm', $turnOffNoPasswordInvestDOM),
         $codeNumber = $('.code-number',$(turnOffNoPasswordInvestForm)),
         imageCaptchaForm = globalFun.$('#imageCaptchaForm');
+    let errorBox = $('.error-box',$(turnOffNoPasswordInvestForm));
 
     $btnCancelElement.on('click',function(){
         layer.closeAll();
@@ -164,7 +164,7 @@ require.ensure([],function() {
         $getCaptchaElement.html('获取验证码').prop('disabled',true);
         commonFun.refreshCaptcha(globalFun.$('#imageCaptcha'),'/no-password-invest/image-captcha');
         $('.captcha').val('');
-        $('.error-content').html('');
+        errorBox.html('');
         $codeNumber.addClass('code-number-hidden');
     };
 
@@ -234,7 +234,7 @@ require.ensure([],function() {
     });
 
     //关闭免密投资功能
-    let noPassValidator = new ValidatorForm();
+    let noPassValidator = new ValidatorObj.ValidatorForm();
     noPassValidator.add(imageCaptchaForm.imageCaptcha, [{
         strategy: 'isNonEmpty',
         errorMsg: '用户名不能为空'
@@ -253,13 +253,14 @@ require.ensure([],function() {
         }
     });
 
-    $getCaptchaElement.on('click',function(){
-        $(imageCaptchaForm).submit();
+    $getCaptchaElement.on('click',function(event){
+        // $(imageCaptchaForm).submit();
+        event.preventDefault();
         $getCaptchaElement.prop('disabled',true);
         commonFun.useAjax({
             url:"/no-password-invest/send-captcha",
             type:'POST',
-            data:$(turnOffNoPasswordInvestForm).serialize()
+            data:$(imageCaptchaForm).serialize()
         },function(response) {
             $getCaptchaElement.prop('disabled',false);
             var data =response.data;
@@ -275,22 +276,23 @@ require.ensure([],function() {
                     }
                     seconds--;
                 }, 1000);
-                return;
+
             }
 
             if (!data.status && data.isRestricted) {
                 $codeNumber.addClass('code-number-hidden');
-                self.showErrors({imageCaptcha: '短信发送频繁，请稍后再试'});
+                errorBox.html('短信发送频繁，请稍后再试');
             }
 
             if (!data.status && !data.isRestricted) {
                 $codeNumber.addClass('code-number-hidden');
-                self.showErrors({imageCaptcha: '图形验证码不正确'});
+                errorBox.html('图形验证码不正确');
             }
-            self.invalid['imageCaptcha'] = true;
+            errorBox.html('');
             commonFun.refreshCaptcha(globalFun.$('#imageCaptcha'),'/no-password-invest/image-captcha');
 
         });
+        return;
     });
 
     $imageCaptchaElement.click(function () {
@@ -302,7 +304,7 @@ require.ensure([],function() {
         layer.closeAll();
     });
 
-    let turnOffPassValidator = new ValidatorForm();
+    let turnOffPassValidator = new ValidatorObj.ValidatorForm();
     //免密投资验证图形码
     turnOffPassValidator.newStrategy(turnOffNoPasswordInvestForm.captcha,'isNoPasswordCaptchaVerify',function(errorMsg,showErrorAfter) {
         var getResult='',
@@ -319,12 +321,12 @@ require.ensure([],function() {
             if(response.data.status) {
                 // 如果为true说明手机已存在
                 getResult='';
-                commonFun.isHaveError.no.apply(that,_arguments);
+                ValidatorObj.isHaveError.no.apply(that,_arguments);
 
             }
             else {
                 getResult=errorMsg;
-                commonFun.isHaveError.yes.apply(that,_arguments);
+                ValidatorObj.isHaveError.yes.apply(that,_arguments);
             }
         });
         return getResult;
@@ -341,18 +343,25 @@ require.ensure([],function() {
         errorMsg: '验证码不正确'
     }]);
 
+    $(turnOffNoPasswordInvestForm.captcha).on('blur',function(event) {
+        let errorMsg = turnOffPassValidator.start(this);
+        errorBox.html(errorMsg);
+
+    });
+
     turnOffNoPasswordInvestForm.onsubmit=function(event) {
         event.preventDefault();
         let thisForm = this;
-        $(thisForm).find(':submit').prop('disabled', true);
         let errorMsg = turnOffPassValidator.start(thisForm.captcha);
+        errorBox.html(errorMsg);
         if (!errorMsg) {
+            $(thisForm).find(':submit').prop('disabled', true);
             commonFun.useAjax({
                 url: "/no-password-invest/disabled",
                 type: 'POST',
                 data: $(thisForm).serialize()
             }, function (response) {
-                $(thisForm).find(':submit').prop('disabled', true);
+                $(thisForm).find(':submit').prop('disabled', false);
                 var data = response.data;
                 if (data.status) {
                     location.href = "/personal-info";
@@ -385,7 +394,7 @@ require.ensure([],function() {
     });
 
     //修改密码表单验证
-    let passValidator = new ValidatorForm();
+    let passValidator = new ValidatorObj.ValidatorForm();
     //验证原密码是否存在
     passValidator.newStrategy(changePasswordForm.originalPassword,'isNotExistPassword',function(errorMsg,showErrorAfter) {
         var getResult='',
@@ -399,12 +408,12 @@ require.ensure([],function() {
             if(response.data.status) {
                 // 如果为true说明密码存在有效
                 getResult='';
-                commonFun.isHaveError.no.apply(that,_arguments);
+                ValidatorObj.isHaveError.no.apply(that,_arguments);
 
             }
             else {
                 getResult=errorMsg;
-                commonFun.isHaveError.yes.apply(that,_arguments);
+                ValidatorObj.isHaveError.yes.apply(that,_arguments);
             }
         });
         return getResult;
@@ -452,7 +461,6 @@ require.ensure([],function() {
             }
         }
         if (!errorMsg) {
-            changePasswordForm.reset();
             layer.closeAll();
             commonFun.useAjax({
                 url:"/personal-info/change-password",
@@ -466,6 +474,7 @@ require.ensure([],function() {
                     });
                 } else {
                     layer.msg('密码修改失败，请重试！', {type: 1, time: 2000});
+                    changePasswordForm.reset();
                 }
             });
         }
@@ -497,7 +506,7 @@ require.ensure([],function() {
     });
 
     //修改支付密码表单验证
-    let umpayValidator = new ValidatorForm();
+    let umpayValidator = new ValidatorObj.ValidatorForm();
     umpayValidator.add(resetUmpayPasswordForm.identityNumber, [{
         strategy: 'isNonEmpty',
         errorMsg: '请输入身份证'

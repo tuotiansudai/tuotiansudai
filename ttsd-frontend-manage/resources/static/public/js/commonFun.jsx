@@ -2,32 +2,6 @@ function refreshCaptcha(dom,url) {
     let captcha= url +'?'+ new Date().getTime().toString();
     dom.setAttribute('src',captcha);
 }
-function createElement(element,errorMsg) {
-    if(element && element.nextElementSibling) {
-        element.nextElementSibling.innerHTML=errorMsg;
-        return;
-    }
-    var span=document.createElement("span");
-    span.className="error";
-    span.innerHTML=errorMsg;
-    element && element.parentElement.appendChild(span);
-}
-function removeElement(element) {
-    (element && element.nextElementSibling) && element.parentElement.removeChild(element.nextElementSibling);
-}
-
-var isHaveError ={
-    yes(errorMsg,showErrorAfter) {
-        globalFun.addClass(this,'error');
-        showErrorAfter && createElement(this,errorMsg);
-    },
-    no(showErrorAfter) {
-        globalFun.removeClass(this,'error');
-        globalFun.addClass(this,'valid');
-        showErrorAfter && removeElement(this);
-    }
-};
-
 /* init radio style */
 function initRadio($radio,$radioLabel) {
     let numRadio=$radio.length;
@@ -185,14 +159,7 @@ function useAjax(opt,callbackDone,callbackAlways) {
             callbackAlways && callbackAlways();
         });
 }
-function loadJsFile(url,callback) {
-    $.ajax({
-        url:staticServer+url,
-        type:'GET',
-        async: false
-    });
-    callback && callback();
-}
+
 //倒计时
 function countDownLoan(option,callback) {
     let defaultOpt={
@@ -262,9 +229,6 @@ let decrypt={
     },
 };
 
-exports.createElement = createElement;
-exports.removeElement = removeElement;
-exports.isHaveError = isHaveError;
 exports.refreshCaptcha = refreshCaptcha;
 exports.initRadio = initRadio;
 exports.IdentityCodeValid = IdentityCodeValid;
@@ -272,7 +236,6 @@ exports.checkedAge = checkedAge;
 exports.popWindow = popWindow;
 exports.isUserLogin = isUserLogin;
 exports.useAjax = useAjax;
-exports.loadJsFile=loadJsFile;
 exports.countDownLoan = countDownLoan;
 exports.MathDecimal = MathDecimal;
 exports.decrypt = decrypt;

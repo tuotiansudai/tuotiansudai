@@ -1,5 +1,5 @@
 window.UEDITOR_HOME_URL = '/js/libs/ueditor/';
-require(['jquery', 'underscore', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapSelect', 'ueditor', 'jquery-ui', 'csrf'], function ($, _) {
+require(['jquery', 'underscore', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapSelect', 'bootstrapDatetimepicker', 'ueditor', 'jquery-ui', 'csrf'], function ($, _) {
     $(function () {
         var $selectDom = $('.selectpicker'); //select表单
         var $submitBtn = $('.message-save'); //提交按钮
@@ -7,8 +7,12 @@ require(['jquery', 'underscore', 'bootstrap', 'Validform', 'Validform_Datatype',
         var $userGroup = $('input[name="userGroup"]');
         var importUsersFlag = $('#importUsersFlag');
         var pushSwitch = $('#push');
+        var $validStartTime = $('#datepickerBegin');
+        var $validEndTime = $('#datepickerEnd');
         //渲染select表单
         $selectDom.selectpicker();
+        $validStartTime.datetimepicker({format: 'YYYY-MM-DD HH:mm:ss'});
+        $validEndTime.datetimepicker({format: 'YYYY-MM-DD HH:mm:ss'});
 
         pushSwitch.prop('checked') == true ? $('.push-check-item').show() : $('.push-check-item').hide();
 
@@ -67,6 +71,17 @@ require(['jquery', 'underscore', 'bootstrap', 'Validform', 'Validform_Datatype',
                 showErrorMessage("文本内容不能为空");
                 return false;
             }
+
+            if ($('#datepickerBegin').find('.form-control').val() == '') {
+                showErrorMessage("消息发送开始时间不能为空");
+                return false;
+            }
+
+            if ($('#datepickerEnd').find('.form-control').val() == '') {
+                showErrorMessage("消息发送结束时间不能为空");
+                return false;
+            }
+
             return true;
         };
 
@@ -104,7 +119,9 @@ require(['jquery', 'underscore', 'bootstrap', 'Validform', 'Validform_Datatype',
                 "importUsersFlag": $('#importUsersFlag').val(),
                 "messageCategory": $('.messageCategory').val(),
                 "webUrl": $('.message-web-url').val().length == 0 ? null : $('.message-web-url').val(),
-                "appUrl": $('.message-app-url').val()
+                "appUrl": $('.message-app-url').val(),
+                "validStartTime": $('#datepickerBegin').find('.form-control').val(),
+                "validEndTime": $('#datepickerEnd').find('.form-control').val()
             };
 
             if ($('#push').prop('checked')) {
@@ -125,6 +142,8 @@ require(['jquery', 'underscore', 'bootstrap', 'Validform', 'Validform_Datatype',
             }).done(function (res) {
                 if (res.data.status) {
                     location.href = "/message-manage/manual-message-list";
+                } else {
+                    alert("站内信创建失败!");
                 }
             });
         });

@@ -208,8 +208,6 @@ def only_point():
 def generate_git_log_file():
     from paver.shell import sh
 
-    sh('/usr/bin/git ls-tree -r HEAD ttsd-web/src/main/webapp/js | awk \'{print $3,$4}\' > git_version.log')
-    sh('/usr/bin/git ls-tree -r HEAD ttsd-web/src/main/webapp/style | awk \'{print $3,$4}\' >> git_version.log')
     sh('/usr/bin/git ls-tree -r HEAD ttsd-activity-web/src/main/webapp/activity/js | awk \'{print $3,$4}\' >> git_version.log')
     sh('/usr/bin/git ls-tree -r HEAD ttsd-activity-web/src/main/webapp/activity/style | awk \'{print $3,$4}\' >> git_version.log')
     sh('/usr/bin/git ls-tree -r HEAD ttsd-point-web/src/main/webapp/point/js | awk \'{print $3,$4}\' >> git_version.log')
@@ -298,9 +296,6 @@ def jcversion(options):
     Versioning all min js/css files based on git version
     """
     generate_git_log_file()
-    versioning_min_files('ttsd-web/src/main/webapp/js/dest/*.min.js')
-    versioning_min_files('ttsd-web/src/main/webapp/style/dest/*.min.css')
-    replace_min_files_in_config_js_file('ttsd-web/src/main/webapp/js/dest/')
 
     versioning_min_files('ttsd-activity-web/src/main/webapp/activity/js/dest/*.min.js')
     versioning_min_files('ttsd-activity-web/src/main/webapp/activity/style/dest/*.min.css')
@@ -311,6 +306,7 @@ def jcversion(options):
     replace_min_files_in_config_js_file('ttsd-point-web/src/main/webapp/point/js/dest/')
 
     versioning_webpack_files('ttsd-mobile-api/')
+
     versioning_static_resource_files(options)
 
 def get_current_dir():

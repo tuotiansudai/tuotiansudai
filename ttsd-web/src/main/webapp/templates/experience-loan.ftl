@@ -92,7 +92,7 @@
                                     <a class="btn-pay btn-normal" href="/register/user">立即体验</a>
                                 </@global.isAnonymous>
                                 <@global.isNotAnonymous>
-                                    <button id="investSubmit" class="btn-pay btn-normal" type="button"
+                                    <button id="investSubmit" class="btn-pay btn-normal" type="submit"
                                             <#if coupon?? == false>disabled="disabled"</#if>>立即体验
                                     </button>
                                 </@global.isNotAnonymous>

@@ -1,7 +1,7 @@
 require.ensure([],function() {
     require('webJsModule/drag');
     let commonFun= require('publicJs/commonFun');
-    let ValidatorForm=require('publicJs/validator');
+    let ValidatorObj=require('publicJs/validator');
     let $redEnvelopFrame=$('#redEnvelopFloatFrame');
     // 回到顶部
     (function() {
@@ -57,7 +57,7 @@ require.ensure([],function() {
         });
 
         //验证表单
-        let countValidator = new ValidatorForm();
+        let countValidator = new ValidatorObj.ValidatorForm();
 
         countValidator.add(countForm.money, [{
             strategy: 'isNonEmpty',
@@ -172,7 +172,7 @@ require.ensure([],function() {
         });
 
         //验证表单
-        let feedbackValidator = new ValidatorForm();
+        let feedbackValidator = new ValidatorObj.ValidatorForm();
 
         feedbackValidator.add(feedForm.content, [{
             strategy: 'isNonEmpty',
@@ -183,12 +183,12 @@ require.ensure([],function() {
         },{
             strategy: 'maxLength:200',
             errorMsg: '文字限制最大为200！'
-        }]);
+        }],true);
 
         feedbackValidator.add(feedForm.contact, [{
             strategy: 'isMobile',
             errorMsg: '请输入正确的手机号！'
-        }]);
+        }],true);
 
 
         feedbackValidator.add(feedForm.captcha, [{
@@ -197,7 +197,7 @@ require.ensure([],function() {
         }, {
             strategy: 'isNumber:5',
             errorMsg: '请输入5位验证码！'
-        }]);
+        }],true);
 
         let feedInputs=$(feedForm).find('input:text,textarea');
         feedInputs=Array.from(feedInputs);

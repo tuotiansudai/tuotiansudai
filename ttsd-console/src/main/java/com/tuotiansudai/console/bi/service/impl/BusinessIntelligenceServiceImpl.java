@@ -13,6 +13,7 @@ import com.tuotiansudai.console.bi.repository.model.KeyValueModel;
 import com.tuotiansudai.console.bi.service.BusinessIntelligenceService;
 import com.tuotiansudai.console.service.ConsoleInvestService;
 import com.tuotiansudai.console.service.ConsoleUserService;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.util.SerializeUtil;
 import org.apache.commons.collections4.ListUtils;
 import org.apache.commons.collections4.Predicate;
@@ -93,13 +94,13 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
     }
 
     @Override
-    public List<KeyValueModel> queryUserRechargeTrend(Granularity granularity, Date startTime, Date endTime, String province) {
+    public List<KeyValueModel> queryUserRechargeTrend(Granularity granularity, Date startTime, Date endTime, String province, Role role) {
         if (granularity == Granularity.Hourly) {
             endTime = startTime;
         }
         Date queryStartTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
         Date queryEndTime = new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().toDate();
-        List<KeyValueModel> keyValueModels = businessIntelligenceMapper.queryUserRechargeTrend(queryStartTime, queryEndTime, granularity, province);
+        List<KeyValueModel> keyValueModels = businessIntelligenceMapper.queryUserRechargeTrend(queryStartTime, queryEndTime, granularity, province, role);
         if (granularity == Granularity.Hourly) {
             return getHourKeyValueModels(keyValueModels);
         }
@@ -107,13 +108,13 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
     }
 
     @Override
-    public List<KeyValueModel> queryUserWithdrawTrend(Granularity granularity, Date startTime, Date endTime, String province) {
+    public List<KeyValueModel> queryUserWithdrawTrend(Granularity granularity, Date startTime, Date endTime, String province, Role role) {
         if (granularity == Granularity.Hourly) {
             endTime = startTime;
         }
         Date queryStartTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
         Date queryEndTime = new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().toDate();
-        List<KeyValueModel> keyValueModels = businessIntelligenceMapper.queryUserWithdrawTrend(queryStartTime, queryEndTime, granularity, province);
+        List<KeyValueModel> keyValueModels = businessIntelligenceMapper.queryUserWithdrawTrend(queryStartTime, queryEndTime, granularity, province, role);
         if (granularity == Granularity.Hourly) {
             return getHourKeyValueModels(keyValueModels);
         }
@@ -152,6 +153,34 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
     }
 
     @Override
+    public List<KeyValueModel> queryInvestCountViscosity(Date startTime, Date endTime, final String province) {
+        Date queryStartTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
+        Date queryEndTime = new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().toDate();
+        List<KeyValueModel> keyValueModelList = businessIntelligenceMapper.queryInvestCountViscosity(queryStartTime, queryEndTime, province);
+        final KeyValueModel keyValueModel = new KeyValueModel();
+        List<KeyValueModel> top4List = ListUtils.select(keyValueModelList, object -> {
+            int investCount = Integer.valueOf(object.getName());
+            if (investCount <= 4) {
+                return true;
+            } else {
+                keyValueModel.setGroup(object.getGroup());
+                if (keyValueModel.getValue() == null) {
+                    keyValueModel.setValue(object.getValue());
+                } else {
+                    int otherCount = Integer.valueOf(keyValueModel.getValue()) + Integer.valueOf(object.getValue());
+                    keyValueModel.setValue(String.valueOf(otherCount));
+                }
+                return false;
+            }
+        });
+        if (keyValueModel.getGroup() != null) {
+            keyValueModel.setName("5+");
+            top4List.add(keyValueModel);
+        }
+        return top4List;
+    }
+
+    @Override
     public InvestViscosityDetailTableView queryInvestViscosityDetail(Date startTime, Date endTime, final String province, int loanCount, int pageNo, int pageSize) {
         Date queryStartTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
         Date queryEndTime = new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().toDate();
@@ -165,17 +194,29 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
     }
 
     @Override
-    public List<KeyValueModel> queryUserInvestCountTrend(Date startTime, Date endTime, String province) {
+    public InvestViscosityDetailTableView queryInvestCountViscosityDetail(Date startTime, Date endTime, final String province, int loanCount, int pageNo, int pageSize) {
         Date queryStartTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
         Date queryEndTime = new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().toDate();
-        return businessIntelligenceMapper.queryUserInvestCountTrend(queryStartTime, queryEndTime, province);
+
+        long sumAmount = businessIntelligenceMapper.queryInvestCountViscositySumAmount(startTime, endTime, province, loanCount);
+        List<InvestViscosityDetailView> items = businessIntelligenceMapper.queryInvestCountViscosityDetail(startTime, endTime, province, loanCount, (pageNo - 1) * pageSize, pageSize);
+        int totalCount = businessIntelligenceMapper.queryInvestCountViscosityDetailCount(startTime, endTime, province, loanCount);
+
+        return new InvestViscosityDetailTableView(sumAmount, totalCount, items);
     }
 
     @Override
-    public List<KeyValueModel> queryUserInvestAmountTrend(Granularity granularity, Date startTime, Date endTime, String province, RoleStage roleStage, String channel) {
+    public List<KeyValueModel> queryUserInvestCountTrend(Date startTime, Date endTime, String province, Boolean isTransfer) {
+        Date queryStartTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
+        Date queryEndTime = new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().toDate();
+        return businessIntelligenceMapper.queryUserInvestCountTrend(queryStartTime, queryEndTime, province, isTransfer);
+    }
+
+    @Override
+    public List<KeyValueModel> queryUserInvestAmountTrend(Granularity granularity, Date startTime, Date endTime, String province, RoleStage roleStage, String channel, Boolean isTransfer) {
         Date queryStartTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
         Date queryEndTime = new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().plusSeconds(-1).toDate();
-        return businessIntelligenceMapper.queryUserInvestAmountTrend(queryStartTime, queryEndTime, granularity, province, roleStage, channel);
+        return businessIntelligenceMapper.queryUserInvestAmountTrend(queryStartTime, queryEndTime, granularity, province, roleStage, channel, isTransfer);
     }
 
     @Override
@@ -218,10 +259,10 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
     }
 
     @Override
-    public List<KeyValueModel> queryWithdrawUserCountTrend(Date startTime, Date endTime, Granularity granularity) {
+    public List<KeyValueModel> queryWithdrawUserCountTrend(Date startTime, Date endTime, Granularity granularity, Role role) {
         Date queryStartTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
         Date queryEndTime = new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().toDate();
-        return businessIntelligenceMapper.queryWithdrawUserCountTrend(queryStartTime, queryEndTime, granularity);
+        return businessIntelligenceMapper.queryWithdrawUserCountTrend(queryStartTime, queryEndTime, granularity, role);
     }
 
     @Override
