@@ -88,6 +88,7 @@
                     <td>{{$value.createdTime}}</td>
                     <td>{{$value.status}}</td>
                     <td>
+<<<<<<< HEAD
                         {{if $value.nextRepayDate}}
                             {{if $value.productType=='EXPERIENCE'}}
                                 {{$value.nextRepayAmount}}
@@ -96,6 +97,16 @@
                             {{/if}}
                         {{else}}
                             --
+=======
+                        {{if $value.productType=='EXPERIENCE'}}
+                            {{$value.nextRepayAmount}}
+                        {{else}}
+                            {{if $value.nextRepayDate}}
+                                {{$value.nextRepayDate}} / {{$value.nextRepayAmount}}
+                            {{else}}
+                            --
+                            {{/if}}
+>>>>>>> 90724ed7b836e978452fc5d7ac47f0f039cd59ae
                         {{/if}}
                     </td>
                     <td>

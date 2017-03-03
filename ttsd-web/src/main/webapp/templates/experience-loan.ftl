@@ -41,7 +41,6 @@
             <div class="blank-middle"></div>
             <div class="account-info bg-w">
                 <h5 class="l-title">拓天速贷提醒您：投资非存款，投资需谨慎！</h5>
-                <#if loan.loanStatus == 'RAISING'>
                     <form action="/experience-invest" method="post" id="investForm">
                         <dl class="account-list new-text account-list-new">
                             <input type="hidden" name="loanId" value="1"/>
@@ -75,19 +74,7 @@
                         </dl>
 
                     </form>
-                </#if>
-                <#if ["REPAYING", "COMPLETE"]?seq_contains(loan.loanStatus)>
-                    <form action="/loan-list" method="get">
-                        <dl class="account-list">
-                            <dd class="img-status">
-                                <img src="${commonStaticServer}/images/sign/loan/${loan.loanStatus?lower_case}.png" alt=""/>
-                            </dd>
-                            <dd>
-                                <button class="btn-pay btn-normal" type="submit">查看其他项目</button>
-                            </dd>
-                        </dl>
-                    </form>
-                </#if>
+
             </div>
         </div>
 
