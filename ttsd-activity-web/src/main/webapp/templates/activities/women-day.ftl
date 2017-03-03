@@ -39,7 +39,7 @@
 					</div>
 					<div class="lottery-group" id="lotteryList">
 	                    <h3 class="menu-switch">
-	                        <span class="active">中奖纪录</span>
+	                        <span class="active">中奖记录</span>
 	                        <span>我的奖品</span>
 	                    </h3>
 	                    <div class="record-group record-list">
@@ -59,7 +59,7 @@
 				            <script type="text/html" id="myRecordTpl">
 				            {{if myrecord.length>0}}
 				            	{{each myrecord}}
-					            	<li><span class="time-text">{{$value.lotteryTime}}</span><span class="text-name">获<strong>{{$value.prizeValue}}</strong>元红包</span></li>
+					            	<li><span class="time-text">{{$value.lotteryTime}}</span><span class="text-name">获得<strong>{{$value.prizeValue}}</strong></span></li>
 					            {{/each}}
 					        {{else}}
 					        	<li class="record-img">
