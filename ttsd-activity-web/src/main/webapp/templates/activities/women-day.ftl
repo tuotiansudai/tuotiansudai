@@ -39,7 +39,7 @@
 					</div>
 					<div class="lottery-group" id="lotteryList">
 	                    <h3 class="menu-switch">
-	                        <span class="active">中奖纪录</span>
+	                        <span class="active">中奖记录</span>
 	                        <span>我的奖品</span>
 	                    </h3>
 	                    <div class="record-group record-list">
