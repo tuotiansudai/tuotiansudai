@@ -5,6 +5,7 @@ import com.tuotiansudai.console.service.ConsoleRechargeService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.RechargePaginationItemDataDto;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.repository.model.RechargeSource;
 import com.tuotiansudai.repository.model.RechargeStatus;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,13 +35,14 @@ public class RechargeController {
                                         @RequestParam(value = "status", required = false) RechargeStatus status,
                                         @RequestParam(value = "source", required = false) RechargeSource source,
                                         @RequestParam(value = "channel", required = false) String channel,
+                                        @RequestParam(value = "role", required = false) Role role,
                                         @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
         int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/recharge");
         BaseDto<BasePaginationDataDto<RechargePaginationItemDataDto>> baseDto = consoleRechargeService.findRechargePagination(rechargeId, mobile, source,
-                status, channel, index, pageSize, startTime, endTime);
+                status, channel, index, pageSize, startTime, endTime, role);
         List<String> channelList = consoleRechargeService.findAllChannel();
-        long sumAmount = consoleRechargeService.findSumRechargeAmount(rechargeId, mobile, source, status, channel, startTime, endTime);
+        long sumAmount = consoleRechargeService.findSumRechargeAmount(rechargeId, mobile, source, status, channel, startTime, endTime, role);
         modelAndView.addObject("baseDto", baseDto);
         modelAndView.addObject("sumAmount", sumAmount);
         modelAndView.addObject("rechargeStatusList", Lists.newArrayList(RechargeStatus.values()));
@@ -58,6 +60,7 @@ public class RechargeController {
         if (status != null) {
             modelAndView.addObject("rechargeStatus", status);
         }
+        modelAndView.addObject("role", role);
         return modelAndView;
     }
 

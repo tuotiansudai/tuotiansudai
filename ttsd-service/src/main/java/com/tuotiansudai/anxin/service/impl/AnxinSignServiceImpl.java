@@ -157,10 +157,9 @@ public class AnxinSignServiceImpl implements AnxinSignService {
             }
 
             if (hasAnxinAccount(loginName)) {
-                logger.error(loginName + " already have anxin-sign account. can't create anymore.");
+                logger.warn(loginName + " already have anxin-sign account. can't create anymore.");
                 return new BaseDto();
             }
-
 
             Tx3001ResVO tx3001ResVO = anxinSignConnectService.createAccount3001(userModel);
 
