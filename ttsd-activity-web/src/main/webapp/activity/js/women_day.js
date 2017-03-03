@@ -166,11 +166,7 @@ require(['jquery', 'layerWrapper','template','commonFun','jquery.ajax.extension'
 
         $('body').on('click', '.gift-btn .close-tip', function (event) {
             event.preventDefault();
-            if(globalFun.parseURL(location.href).params.source=='app') {
-                location.href = '/activity/women-day?source=app';
-            }else{
-                location.href = '/activity/women-day';
-            }
+            layer.closeAll();
         });
     });
 });
