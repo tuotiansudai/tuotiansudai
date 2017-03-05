@@ -87,11 +87,6 @@
 
                             <p>发标时间，平台活动，投资顾问第一时间通知到您</p>
                         </li>
-                        <li class="birthday-benefits-hui">
-                            <h3>生日福利</h3>
-
-                            <p>V5专享，平台将会在会员生日时送上神秘礼包</p>
-                        </li>
                     <#elseif membershipLevel == 1>
                         <li class="multi-ensuring">
                             <h3>多重保障</h3>
@@ -127,11 +122,6 @@
                             <h3>专享投资顾问</h3>
 
                             <p>发标时间，平台活动，投资顾问第一时间通知到您</p>
-                        </li>
-                        <li class="birthday-benefits-hui">
-                            <h3>生日福利</h3>
-
-                            <p>V5专享，平台将会在会员生日时送上神秘礼包</p>
                         </li>
                     <#elseif membershipLevel == 2>
                         <li class="multi-ensuring">
@@ -169,11 +159,6 @@
 
                             <p>发标时间，平台活动，投资顾问第一时间通知到您</p>
                         </li>
-                        <li class="birthday-benefits-hui">
-                            <h3>生日福利</h3>
-
-                            <p>V5专享，平台将会在会员生日时送上神秘礼包</p>
-                        </li>
                     <#elseif membershipLevel == 3>
                         <li class="multi-ensuring">
                             <h3>多重保障</h3>
@@ -209,11 +194,6 @@
                             <h3>专享投资顾问</h3>
 
                             <p>发标时间，平台活动，投资顾问第一时间通知到您</p>
-                        </li>
-                        <li class="birthday-benefits-hui">
-                            <h3>生日福利</h3>
-
-                            <p>V5专享，平台将会在会员生日时送上神秘礼包</p>
                         </li>
                     <#elseif membershipLevel == 4>
                         <li class="multi-ensuring">
@@ -251,11 +231,6 @@
 
                             <p>发标时间，平台活动，投资顾问第一时间通知到您</p>
                         </li>
-                        <li class="birthday-benefits-hui">
-                            <h3>生日福利</h3>
-
-                            <p>V5专享，平台将会在会员生日时送上神秘礼包</p>
-                        </li>
                     <#elseif membershipLevel == 5>
                         <li class="multi-ensuring">
                             <h3>多重保障</h3>
@@ -291,11 +266,6 @@
                             <h3>专享投资顾问</h3>
 
                             <p>发标时间，平台活动，投资顾问第一时间通知到您</p>
-                        </li>
-                        <li class="birthday-benefits">
-                            <h3>生日福利</h3>
-
-                            <p>V5专享，平台将会在会员生日时送上神秘礼包</p>
                         </li>
                     <#else>
                         <i class="icon multi-ensuring"></i>
@@ -387,11 +357,6 @@
 
                         <p>发标时间，平台活动，投资顾问第一时间通知到您</p>
                     </li>
-                    <li class="birthday-benefits">
-                        <h3>生日福利</h3>
-
-                        <p>V5专享，平台将会在会员生日时送上神秘礼包</p>
-                    </li>
                 </ul>
             </div>
         </div>
@@ -477,15 +442,6 @@
                         <td></td>
                         <td></td>
                         <td><i class="fa fa-check-circle-o" aria-hidden="true"></i></td>
-                        <td><i class="fa fa-check-circle-o" aria-hidden="true"></i></td>
-                    </tr>
-                    <tr>
-                        <td>生日福利</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
                         <td><i class="fa fa-check-circle-o" aria-hidden="true"></i></td>
                     </tr>
                     </tbody>
