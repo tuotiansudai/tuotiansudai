@@ -78,6 +78,9 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
     <meta name="_csrf" content="${(_csrf.token)!}"/>
     <meta name="_csrf_header" content="${(_csrf.headerName)!}"/>
+    <meta name="sogou_site_verification" content="VU3DEpC4Pk"/>
+    <meta name="baidu-site-verification" content="BjgM87K8xU" />
+    <meta name="360-site-verification" content="1ac0e9c5a7659c9cce73ecac8f630a0e" />
     <link href="${commonStaticServer}/images/favicon.ico" rel="shortcut icon" type="image/x-icon"/>
     <link rel="stylesheet" type="text/css" href="${css.globalFun_page!}" charset="utf-8"/>
     <#if pageCss?? && pageCss != "">
