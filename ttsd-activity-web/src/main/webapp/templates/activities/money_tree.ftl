@@ -14,6 +14,7 @@
 
 <div class="money-tree-container">
     <img src="${staticServer}/activity/images/money-tree/app-ewm-img.png" alt="二维码" class="tree-qrcode">
+    <input id="appVersion" type="hidden" value="${appVersion!}"/>
     <div class="btn-shake-bg">
         <a href="javascript:void(0)" class="btn-taketree" id="btn-shake">去摇钱</a>
     </div>
