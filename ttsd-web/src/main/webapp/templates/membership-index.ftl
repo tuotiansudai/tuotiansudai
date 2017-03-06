@@ -62,11 +62,6 @@
 
                             <p>24小时随时提现，16:00点前提现当日到账，16:00后提现次日到账</p>
                         </li>
-                        <li class="birthday-privilege">
-                            <h3>生日特权</h3>
-
-                            <p>生日月投资，投90天产品首期收益翻1.5倍，投180天、360天产品首期收益翻2倍</p>
-                        </li>
                         <li class="membership-giftbag-hui">
                             <h3>会员礼包</h3>
 
@@ -102,11 +97,6 @@
                             <h3>随时提现</h3>
 
                             <p>24小时随时提现，16:00点前提现当日到账，16:00后提现次日到账</p>
-                        </li>
-                        <li class="birthday-privilege">
-                            <h3>生日特权</h3>
-
-                            <p>生日月投资，投90天产品首期收益翻1.5倍，投180天、360天产品首期收益翻2倍</p>
                         </li>
                         <li class="membership-giftbag">
                             <h3>会员礼包</h3>
@@ -144,11 +134,6 @@
 
                             <p>24小时随时提现，16:00点前提现当日到账，16:00后提现次日到账</p>
                         </li>
-                        <li class="birthday-privilege">
-                            <h3>生日特权</h3>
-
-                            <p>生日月投资，投90天产品首期收益翻1.5倍，投180天、360天产品首期收益翻2倍</p>
-                        </li>
                         <li class="membership-giftbag">
                             <h3>会员礼包</h3>
 
@@ -184,11 +169,6 @@
                             <h3>随时提现</h3>
 
                             <p>24小时随时提现，16:00点前提现当日到账，16:00后提现次日到账</p>
-                        </li>
-                        <li class="birthday-privilege">
-                            <h3>生日特权</h3>
-
-                            <p>生日月投资，投90天产品首期收益翻1.5倍，投180天、360天产品首期收益翻2倍</p>
                         </li>
                         <li class="membership-giftbag">
                             <h3>会员礼包</h3>
@@ -226,11 +206,6 @@
 
                             <p>24小时随时提现，16:00点前提现当日到账，16:00后提现次日到账</p>
                         </li>
-                        <li class="birthday-privilege">
-                            <h3>生日特权</h3>
-
-                            <p>生日月投资，投90天产品首期收益翻1.5倍，投180天、360天产品首期收益翻2倍</p>
-                        </li>
                         <li class="membership-giftbag">
                             <h3>会员礼包</h3>
 
@@ -266,11 +241,6 @@
                             <h3>随时提现</h3>
 
                             <p>24小时随时提现，16:00点前提现当日到账，16:00后提现次日到账</p>
-                        </li>
-                        <li class="birthday-privilege">
-                            <h3>生日特权</h3>
-
-                            <p>生日月投资，投90天产品首期收益翻1.5倍，投180天、360天产品首期收益翻2倍</p>
                         </li>
                         <li class="membership-giftbag">
                             <h3>会员礼包</h3>
@@ -362,11 +332,6 @@
 
                         <p>24小时随时提现，16:00点前提现当日到账，16:00后提现次日到账</p>
                     </li>
-                    <li class="birthday-privilege">
-                        <h3>生日特权</h3>
-
-                        <p>生日月投资，投90天产品首期收益翻1.5倍，投180天、360天产品首期收益翻2倍</p>
-                    </li>
                     <li class="membership-giftbag">
                         <h3>会员礼包</h3>
 
@@ -427,15 +392,6 @@
                     </tr>
                     <tr>
                         <td>随时提现</td>
-                        <td><i class="fa fa-check-circle-o" aria-hidden="true"></i></td>
-                        <td><i class="fa fa-check-circle-o" aria-hidden="true"></i></td>
-                        <td><i class="fa fa-check-circle-o" aria-hidden="true"></i></td>
-                        <td><i class="fa fa-check-circle-o" aria-hidden="true"></i></td>
-                        <td><i class="fa fa-check-circle-o" aria-hidden="true"></i></td>
-                        <td><i class="fa fa-check-circle-o" aria-hidden="true"></i></td>
-                    </tr>
-                    <tr>
-                        <td>生日特权</td>
                         <td><i class="fa fa-check-circle-o" aria-hidden="true"></i></td>
                         <td><i class="fa fa-check-circle-o" aria-hidden="true"></i></td>
                         <td><i class="fa fa-check-circle-o" aria-hidden="true"></i></td>
