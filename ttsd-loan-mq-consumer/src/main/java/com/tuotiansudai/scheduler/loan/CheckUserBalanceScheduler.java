@@ -54,6 +54,8 @@ public class CheckUserBalanceScheduler {
 
     private static final int LEFT_SECOND = 60 * 60 * 24 * 90;
 
+    private static final int RETRY_TIMES = 3;
+
     @Scheduled(cron = "0 30 1 * * SUN,SAT", zone = "Asia/Shanghai")
     public void checkUserBalance() {
         logger.info("[checkUserBalance:] start .");
@@ -69,27 +71,38 @@ public class CheckUserBalanceScheduler {
         for (int i = 0; i < accountModelCount; i++) {
             AccountModel account = accountModelList.get(i);
             logger.info("[checkUserBalance:]run to id:{} ", String.valueOf(account.getId()));
-            Map<String, String> balanceMap = payWrapperClient.getUserBalance(account.getLoginName());
+
+            // 如果连接umpay失败，共尝试3次
+            int triedTimes = 1;
+            Map<String, String> balanceMap;
+            do {
+                balanceMap = payWrapperClient.getUserBalance(account.getLoginName());
+                if (balanceMap == null) {
+                    logger.info("[checkUserBalance:]check user balance for user {} fail. triedTimes:{}.", account.getLoginName(), triedTimes);
+                }
+            } while (balanceMap == null && triedTimes++ < RETRY_TIMES);
+
             if (balanceMap == null) {
-                logger.info("[checkUserBalance:]check user balance for user {} fail. skip it.", account.getLoginName());
-                redisWrapperClient.setex(LAST_CHECK_USER_BALANCE_TIME, LEFT_SECOND,DateConvertUtil.format(account.getRegisterTime(),"yyyy-MM-dd HH:mm:ss"));
-                failUserList.add(account.getLoginName());
+                logger.info("[checkUserBalance:]check user balance for user {} fail after retry {} times. skip it.", account.getLoginName(), RETRY_TIMES);
+                redisWrapperClient.setex(LAST_CHECK_USER_BALANCE_TIME, LEFT_SECOND, DateConvertUtil.format(account.getRegisterTime(), "yyyy-MM-dd HH:mm:ss"));
+                failUserList.add(account.getLoginName()); // 重试3次都失败，加入连接失败的名单中
                 continue;
             }
+
             long balance = Long.parseLong(balanceMap.get("balance"));
             if (balance != account.getBalance()) {
                 mismatchUserList.add(account.getLoginName() + "-" + account.getBalance() + "-" + balance);
             }
-            if(i == BATCH_SIZE - 1){
-                logger.info("[checkUserBalance:] last record register time-{},id-{}", DateConvertUtil.format(account.getRegisterTime(),"yyyy-MM-dd HH:mm:ss"),String.valueOf(account.getId()));
-                redisWrapperClient.setex(LAST_CHECK_USER_BALANCE_TIME, LEFT_SECOND,DateConvertUtil.format(account.getRegisterTime(),"yyyy-MM-dd HH:mm:ss"));
+            if (i == BATCH_SIZE - 1) {
+                logger.info("[checkUserBalance:] last record register time-{},id-{}", DateConvertUtil.format(account.getRegisterTime(), "yyyy-MM-dd HH:mm:ss"), String.valueOf(account.getId()));
+                redisWrapperClient.setex(LAST_CHECK_USER_BALANCE_TIME, LEFT_SECOND, DateConvertUtil.format(account.getRegisterTime(), "yyyy-MM-dd HH:mm:ss"));
             }
         }
         logger.info("[checkUserBalance:] cycle end lastCheckUserBalanceTime-{},size-{}", lastCheckUserBalanceTime, accountModelList.size());
 
-        if(accountModelCount > 0 && accountModelCount < BATCH_SIZE){
+        if (accountModelCount > 0 && accountModelCount < BATCH_SIZE) {
             logger.info("[checkUserBalance:] del key last record register time-{},id-{}",
-                    DateConvertUtil.format(accountModelList.get(accountModelCount - 1).getRegisterTime(),"yyyy-MM-dd HH:mm:ss"),
+                    DateConvertUtil.format(accountModelList.get(accountModelCount - 1).getRegisterTime(), "yyyy-MM-dd HH:mm:ss"),
                     String.valueOf(accountModelList.get(accountModelCount - 1).getId()));
             redisWrapperClient.del(LAST_CHECK_USER_BALANCE_TIME);
         }
