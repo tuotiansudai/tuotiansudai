@@ -164,7 +164,7 @@ require(['jquery', 'layerWrapper','template','commonFun','jquery.ajax.extension'
         lottery.myGift();
         lottery.hoverScrollList($('#lotteryList').find('.user-record'),7);
 
-        $('body').on('click', '.gift-btn .close-tip', function (event) {
+        $womenDayContainer.on('click', '.gift-btn .close-tip', function (event) {
             event.preventDefault();
             layer.closeAll();
         });
