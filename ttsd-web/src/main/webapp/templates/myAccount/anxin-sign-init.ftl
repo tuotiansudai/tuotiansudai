@@ -14,13 +14,13 @@
          <span class="init-checkbox-style on">
              <input type="checkbox" id="agreeOpen1" class="default-checkbox" checked>
          </span>
-             <label for="agreeOpen1" class="agreeOpen"><em>我已阅读并同意</em>
-                 <a href="javascript:void(0);" class="anxin_layer link-agree-service" >《安心签平台服务协议》</a>、
-                 <a href="javascript:void(0);" class="anxin_layer link-agree-privacy" >《隐私条款》</a>、
-                 <a href="javascript:void(0);" class="anxin_layer link-agree-number" >《CFCA数字证书服务协议》</a>
-                 和
-                 <a href="javascript:void(0);" class="anxin_layer link-agree-number-authorize" >《CFCA数字证书授权协议》</a>
-             </label>
+         <label for="agreeOpen1" class="agreeOpen"><em>我已阅读并同意</em>
+             <a href="javascript:void(0);" class="anxin_layer link-agree-service" >《安心签平台服务协议》</a>、
+             <a href="javascript:void(0);" class="anxin_layer link-agree-privacy" >《隐私条款》</a>、
+             <a href="javascript:void(0);" class="anxin_layer link-agree-number" >《CFCA数字证书服务协议》</a>
+             和
+             <a href="javascript:void(0);" class="anxin_layer link-agree-number-authorize" >《CFCA数字证书授权协议》</a>
+         </label>
     </div>
 
       <div class="safety-status-box opened tc">

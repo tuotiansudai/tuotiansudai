@@ -91,7 +91,7 @@ $('body').on('click','a',function(event) {
         $this.prop('disabled',true);
         ajaxOuterFun({
             thisDom:$this,
-            url:' /anxinSign/createAccount'
+            url:'/anxinSign/createAccount'
         },function(response) {
             if(!response.success){
                 layer.msg('<span class="layer-msg-tip"><i></i>开启失败：'+response.data.message+'</span>',{
