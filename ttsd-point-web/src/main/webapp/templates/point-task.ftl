@@ -8,7 +8,7 @@
                 <span class="active">新手任务</span>
             </div>
            <div class="notice-tip">
-                <em>任务提醒：快去完成绑定银行卡任务，领取200财豆奖励吧！</em>
+                <em>任务提醒：快去完成绑定银行卡任务，领取100积分奖励吧！</em>
                 <i class="fr fa fa-chevron-up"></i>
             </div>
             <div class="task-frame clearfix" id="taskFrame">
