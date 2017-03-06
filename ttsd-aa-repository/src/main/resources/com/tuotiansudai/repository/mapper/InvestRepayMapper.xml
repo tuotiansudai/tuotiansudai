@@ -116,6 +116,10 @@
         order by period asc
     </select>
 
+    <select id="findByInvestId" parameterType="long"  resultMap="investRepayResultMap">
+        select * from invest_repay where invest_id = #{investId}
+    </select>
+
     <select id="findByInvestIdAndPeriod" parameterType="map" resultMap="investRepayResultMap">
         select * from invest_repay where invest_id = #{investId} and period = #{period}
     </select>

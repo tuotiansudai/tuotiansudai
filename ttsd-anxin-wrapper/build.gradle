@@ -1,0 +1,39 @@
+apply plugin: 'war'
+apply from: 'db_migration.gradle'
+
+dependencies {
+    compile fileTree(dir: 'libs', include: '*.jar'),
+            project(':ttsd-config'),
+            project(":ttsd-aa-repository"),
+            project(":ttsd-user-repository"),
+            project(":ttsd-job"),
+            project(':ttsd-client'),
+            'com.itextpdf:itextpdf:5.5.10',
+            'com.itextpdf:itext-asian:5.2.0'
+
+
+    providedCompile "javax.servlet:javax.servlet-api:3.1.0"
+}
+
+processResources {
+    def innerConfigPath = "${project.projectDir.getPath()}/src/main/resources"
+    def outerConfigPath = "${configPath}/ttsd-anxin-sign"
+    if (new File(outerConfigPath).isDirectory()) {
+        innerConfigPath = outerConfigPath
+    }
+
+    from("${innerConfigPath}/anxinsign.jks") {
+        into '/'
+    }
+}
+
+war {
+    archiveName "ttsd-anxin-wrapper.war"
+    destinationDir = file("war")
+}
+
+task renameWar {
+    doLast {
+        file("${project.projectDir.getPath()}/war/ttsd-anxin-wrapper.war").renameTo(file("${project.projectDir.getPath()}/war/ROOT.war"))
+    }
+}

@@ -3,7 +3,7 @@ package com.tuotiansudai.paywrapper.service.impl;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.anxin.service.AnxinSignService;
+import com.tuotiansudai.client.AnxinWrapperClient;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.*;
@@ -11,7 +11,7 @@ import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.enums.*;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
-import com.tuotiansudai.membership.service.UserMembershipEvaluator;
+import com.tuotiansudai.message.AnxinContractMessage;
 import com.tuotiansudai.message.EventMessage;
 import com.tuotiansudai.message.PushMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
@@ -99,9 +99,6 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
     @Autowired
     private InvestTransferNotifyRequestMapper investTransferNotifyRequestMapper;
 
-    @Autowired
-    private UserMembershipEvaluator userMembershipEvaluator;
-
     @Value("${common.environment}")
     private Environment environment;
 
@@ -109,10 +106,10 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
     private CouponRepayMapper couponRepayMapper;
 
     @Autowired
-    private AnxinSignService anxinSignService;
+    private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
 
     @Autowired
-    private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
+    private AnxinWrapperClient anxinWrapperClient;
 
     @Override
     public BaseDto<PayDataDto> noPasswordPurchase(InvestDto investDto) {
@@ -503,7 +500,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
                 ((InvestTransferPurchaseService) AopContext.currentProxy()).postPurchase(investId);
 
                 logger.info("债权转让：生成合同，转让ID:" + transferApplicationModel.getId());
-                anxinSignService.createTransferContracts(transferApplicationModel.getId());
+                mqWrapperClient.sendMessage(MessageQueue.TransferAnxinContract, new AnxinContractMessage(transferApplicationModel.getId(), AnxinContractType.TRANSFER_CONTRACT.name()));
             }
         } else {
             // 失败的话：更新 invest 状态为投资失败

@@ -61,7 +61,7 @@
 
               (select ifnull(sum(invest.amount), 0)
               from invest join loan on invest.loan_id = loan.id
-              where invest.login_name = #{loginName} and invest.status = 'SUCCESS' and loan.status in ('RAISING', 'RECHECK')) as invest_froze_amount,
+              where invest.login_name = #{loginName} and loan.id != 1 and invest.status = 'SUCCESS' and loan.status in ('RAISING', 'RECHECK')) as invest_froze_amount,
 
               (select ifnull(sum(amount), 0)
               from withdraw where login_name = #{loginName} and status = 'APPLY_SUCCESS') as withdraw_froze_amount,

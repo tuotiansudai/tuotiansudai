@@ -63,5 +63,5 @@ public interface InvestRepayMapper {
                                                                   @Param(value = "month") String month,
                                                                   @Param(value = "day") String day);
 
-
+    List<InvestRepayModel> findByInvestId(long investId);
 }
