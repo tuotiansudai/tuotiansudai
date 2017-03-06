@@ -1,20 +1,25 @@
-require(['jquery','commonFun'], function ($,commonFun) {
+require(['jquery', 'commonFun', 'layerWrapper'], function ($, commonFun, layer) {
 
-    var sourceKind=globalFun.parseURL(location.href);
-    $('#btn-shake').on('click',function() {
+    $appVersion = $('#appVersion');
+    var sourceKind = globalFun.parseURL(location.href);
+    $('#btn-shake').on('click', function () {
 
-        //未登录
-        if(sourceKind.params.source=='app') {
+        if ($appVersion.val() == null || $appVersion.val() < '4.2') {
+            //老版本  提示升级
+            layer.msg("你的APP版本太低，请升级后再来")
+        } else if (sourceKind.params.source == 'app') {
             $.when(commonFun.isUserLogin())
-                .done(function(){
-                    location.href="app/tuotian/shake";
+                .done(function () {
+                    location.href = "app/tuotian/shake";
                 })
-                .fail(function(){
-                    location.href="app/tuotian/login";
+                .fail(function () {
+                    //未登录
+                    location.href = "app/tuotian/login";
                 });
-        }else{
-            location.href="/app/download";
+        } else {
+            location.href = "/app/download";
         }
 
     });
+
 });
