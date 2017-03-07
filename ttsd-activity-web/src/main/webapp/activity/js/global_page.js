@@ -174,7 +174,7 @@ globalFun.prototype={
     closeDownLoadBox:function(e) {
         e.stopPropagation();
         e.preventDefault();
-        e.parentElement.style.display='none';
+        e.currentTarget.parentElement.style.display='none';
     },
     //去体验
     toExperience:function(e) {
