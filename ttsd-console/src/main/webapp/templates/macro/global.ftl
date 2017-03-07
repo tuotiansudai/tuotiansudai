@@ -101,21 +101,21 @@
                 "name":"activity-manage",
                 "header":{"text":"活动管理"},
                 "sidebar":[
-                    {"name":"createCoupon","text":"创建优惠券","link":"/activity-manage/red-envelope","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"statisticsCoupon","text":"优惠券列表","link":"/activity-manage/red-envelopes","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"lottery","text":"抽奖数据统计","link":"/activity-console/activity-manage/user-time-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"","class":"sub-title-2","text":"活动列表","link":"","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE'"},
-                        {"name":"heroRanking","class":"sub-title-3","text":"周年庆管理","link":"/activity-console/activity-manage/hero-ranking","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE'"},
-                        {"name":"travelLuxuryActivity","class":"sub-title-3","text":"旅游+奢侈品活动管理","link":"/activity-console/activity-manage/travel/user-travel-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                        {"name":"autumn","class":"sub-title-3","text":"中秋活动导出","link":"/activity-console/activity-manage/autumn-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                        {"name":"iphone7Lottery","class":"sub-title-3","text":"iphone7活动","link":"/activity-console/activity-manage/iphone7-lottery","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                        {"name":"annual","class":"sub-title-3","text":"元旦活动", "link":"/activity-console/activity-manage/annual-list", "role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                        {"name":"headlinesToday","class":"sub-title-3","text":"今日头条拉新抽奖活动","link":"/activity-console/activity-manage/headlines-today-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                        {"name":"notWork","class":"sub-title-3","text":"不上班活动", "link":"/activity-console/activity-manage/not-work-list", "role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                        {"name":"womenDay","class":"sub-title-3","text":"妇女节活动", "link":"/activity-console/activity-manage/women-day-list", "role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                        {"name":"investAchievement","class":"sub-title-3","text":"投资称号管理","link":"/activity-manage/invest-achievement","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE'"},
-                    {"name":"promotion","text":"APP弹窗推送管理","link":"/activity-console/activity-manage/promotion/promotion-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"activityCenter","text":"活动中心","link":"/activity-manage/activity-center-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE'"}
+                    {"name":"","class":"sub-title-1","text":"优惠券管理","link":"","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
+                        {"name":"createCoupon","text":"创建优惠券","link":"/activity-manage/red-envelope","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
+                        {"name":"statisticsCoupon","text":"优惠券列表","link":"/activity-manage/red-envelopes","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
+                    {"name":"","class":"sub-title-1","text":"活动列表","link":"","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE'"},
+                        {"name":"lottery","text":"抽奖数据统计","link":"/activity-console/activity-manage/user-time-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
+                        {"name":"heroRanking","text":"周年庆管理","link":"/activity-console/activity-manage/hero-ranking","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE'"},
+                        {"name":"travelLuxuryActivity","text":"旅游+奢侈品活动管理","link":"/activity-console/activity-manage/travel/user-travel-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
+                        {"name":"autumn","text":"中秋活动导出","link":"/activity-console/activity-manage/autumn-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
+                        {"name":"iphone7Lottery","text":"iphone7活动","link":"/activity-console/activity-manage/iphone7-lottery","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
+                        {"name":"annual","text":"元旦活动", "link":"/activity-console/activity-manage/annual-list", "role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
+                        {"name":"headlinesToday","text":"今日头条拉新抽奖活动","link":"/activity-console/activity-manage/headlines-today-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
+                        {"name":"notWork","text":"不上班活动", "link":"/activity-console/activity-manage/not-work-list", "role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
+                        {"name":"womenDay","text":"妇女节活动", "link":"/activity-console/activity-manage/women-day-list", "role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
+                        {"name":"investAchievement","text":"投资称号管理","link":"/activity-manage/invest-achievement","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE'"},
+                        {"name":"promotion","text":"APP弹窗推送管理","link":"/activity-console/activity-manage/promotion/promotion-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"}
                 ]
             },
             {
@@ -196,9 +196,10 @@
                 "name":"experience-manage",
                 "header":{"text":"体验金管理"},
                 "sidebar":[
-                    {"name":"experienceBalance","text":"用户体验金余额","link":"/experience-manage/balance","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE','DATA'"},
-                    {"name":"experienceRepay","text":"体验金还款明细","link":"/experience-manage/repay-detail","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE','DATA'"},
-                    {"name":"experienceBill","text":"体验金流水明细","link":"/experience-manage/experience-bill","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE','DATA'"}
+                    {"name":"","class":"sub-title-1","text":"体验金管理","link":"","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE','DATA'"},
+                        {"name":"experienceBalance","text":"用户体验金余额","link":"/experience-manage/balance","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE','DATA'"},
+                        {"name":"experienceRepay","text":"体验金还款明细","link":"/experience-manage/repay-detail","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE','DATA'"},
+                        {"name":"experienceBill","text":"体验金流水明细","link":"/experience-manage/experience-bill","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE','DATA'"}
                 ]
             }
         ]
