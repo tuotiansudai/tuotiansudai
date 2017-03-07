@@ -153,6 +153,6 @@ public class MembershipPrivilegePurchasePayServiceImpl implements MembershipPriv
         mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(MessageEventType.MEMBERSHIP_PRIVILEGE_BUY_SUCCESS,
                 Lists.newArrayList(membershipPrivilegePurchaseModel.getLoginName()), title, content, membershipPrivilegePurchaseModel.getId()));
         mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(Lists.newArrayList(membershipPrivilegePurchaseModel.getLoginName()),
-                PushSource.ALL, PushType.MEMBERSHIP_PRIVILEGE_BUY_SUCCESS, title));
+                PushSource.ALL, PushType.MEMBERSHIP_PRIVILEGE_BUY_SUCCESS, title, AppUrl.MESSAGE_CENTER_LIST));
     }
 }

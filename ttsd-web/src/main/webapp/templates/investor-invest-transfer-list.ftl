@@ -113,7 +113,7 @@
             <td><%=item.investAmountStr%></td>
             <td><%=item.transferTime%></td>
             <td>
-                <%=item.nextRepayDate ? (item.nextRepayDate/item.nextRepayAmountStr):'--'%>
+                <%=item.nextRepayAmountStr ? (item.nextRepayAmountStr):'--'%>
             </td>
             <td>
                 <a class="show-invest-repay" data-url="/investor/invest/<%=item.investId%>/repay-data">回款详情</a>

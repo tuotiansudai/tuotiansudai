@@ -2,7 +2,6 @@ package com.tuotiansudai.console.activity.service;
 
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.activity.repository.mapper.UserLotteryPrizeMapper;
 import com.tuotiansudai.activity.repository.model.ActivityCategory;
 import com.tuotiansudai.activity.repository.model.ActivityDrawLotteryTask;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
@@ -17,6 +16,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -72,6 +73,9 @@ public class ActivityCountDrawLotteryService {
     @Value(value = "${activity.lanternFestival.endTime}")
     private String lanternFestivalEndTime;
 
+    @Value("#{'${activity.money.tree.period}'.split('\\~')}")
+    private List<String> moneyTreeTime = Lists.newArrayList();
+
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.woman.day.startTime}\")}")
     private Date activityWomanDayStartTime;
 
@@ -94,6 +98,9 @@ public class ActivityCountDrawLotteryService {
 
     //春节活动任务
     private final List springFestivalActivityTasks = Lists.newArrayList(ActivityDrawLotteryTask.EACH_ACTIVITY_SIGN_IN);
+
+    //摇钱树活动任务
+    private final List moneyTreeActivityTasks = Lists.newArrayList(ActivityDrawLotteryTask.EACH_REFERRER);
 
     public static final String ACTIVITY_DESCRIPTION = "新年专享";
 
@@ -121,6 +128,8 @@ public class ActivityCountDrawLotteryService {
                 return countDrawLotteryTime(userModel,activityCategory,Lists.newArrayList(ActivityDrawLotteryTask.EACH_INVEST_1000));
             case SPRING_FESTIVAL_ACTIVITY:
                 return countDrawLotteryTime(userModel, activityCategory, springFestivalActivityTasks);
+            case MONEY_TREE:
+                return countDrawLotteryTime(userModel, activityCategory, moneyTreeActivityTasks);
             case WOMAN_DAY_ACTIVITY:
                 return countDrawLotteryTime(userModel, activityCategory, Lists.newArrayList(ActivityDrawLotteryTask.TODAY_ACTIVITY_SIGN_IN));
         }
@@ -142,9 +151,25 @@ public class ActivityCountDrawLotteryService {
                     break;
                 case EACH_REFERRER:
                     List<UserModel> userModels = userMapper.findUsersByRegisterTimeOrReferrer(startTime, endTime, userModel.getLoginName());
-                    for (UserModel referrerUserModel : userModels) {
-                        if (referrerUserModel.getRegisterTime().before(endTime) && referrerUserModel.getRegisterTime().after(startTime)) {
-                            time++;
+                    if(activityCategory.name().startsWith("MONEY_TREE")){
+                        //根据注册时间分组
+                        Map<String, Long> groupByEveryDayCounts = userModels
+                                .stream()
+                                .collect(Collectors.groupingBy(p -> String.format("%tF", p.getRegisterTime()), Collectors.counting()));
+
+                        //单日邀请人数超过3人者，最多给3次摇奖机会
+                        for (Map.Entry<String, Long> entry : groupByEveryDayCounts.entrySet()) {
+                            if (entry.getValue() > 3) {
+                                time += 3;
+                            } else {
+                                time += entry.getValue();
+                            }
+                        }
+                    }else{
+                        for (UserModel referrerUserModel : userModels) {
+                            if (referrerUserModel.getRegisterTime().before(endTime) && referrerUserModel.getRegisterTime().after(startTime)) {
+                                time++;
+                            }
                         }
                     }
                     break;
@@ -169,7 +194,7 @@ public class ActivityCountDrawLotteryService {
                     }
                     break;
                 case RECHARGE:
-                    if (rechargeMapper.findRechargeCount(null, userModel.getMobile(), null, RechargeStatus.SUCCESS, null, startTime, endTime) > 0) {
+                    if (rechargeMapper.findRechargeCount(null, userModel.getMobile(), null, RechargeStatus.SUCCESS, null, startTime, endTime, null) > 0) {
                         time++;
                     }
                     break;
@@ -224,6 +249,20 @@ public class ActivityCountDrawLotteryService {
             case LANTERN_FESTIVAL_ACTIVITY:
                 return Lists.newArrayList(DateTime.parse(lanternFestivalStartTime,DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate(),
                         DateTime.parse(lanternFestivalEndTime,DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate());
+            case MONEY_TREE:
+            case MONEY_TREE_UNDER_1000_ACTIVITY:
+            case MONEY_TREE_UNDER_10000_ACTIVITY:
+            case MONEY_TREE_UNDER_20000_ACTIVITY:
+            case MONEY_TREE_UNDER_30000_ACTIVITY:
+            case MONEY_TREE_UNDER_40000_ACTIVITY:
+            case MONEY_TREE_UNDER_50000_ACTIVITY:
+            case MONEY_TREE_UNDER_60000_ACTIVITY:
+            case MONEY_TREE_UNDER_70000_ACTIVITY:
+            case MONEY_TREE_UNDER_80000_ACTIVITY:
+            case MONEY_TREE_UNDER_90000_ACTIVITY:
+            case MONEY_TREE_UNDER_100000_ACTIVITY:
+            case MONEY_TREE_ABOVE_100000_ACTIVITY:
+                return Lists.newArrayList(DateTime.parse(moneyTreeTime.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate(), DateTime.parse(moneyTreeTime.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate());
             case WOMAN_DAY_ACTIVITY:
                 return Lists.newArrayList(activityWomanDayStartTime, activityWomanDayEndTime);
         }

@@ -1,5 +1,6 @@
 package com.tuotiansudai.message;
 
+import com.tuotiansudai.enums.AppUrl;
 import com.tuotiansudai.enums.PushSource;
 import com.tuotiansudai.enums.PushType;
 
@@ -16,14 +17,17 @@ public class PushMessage implements Serializable {
 
     private String content;
 
+    private AppUrl jumpTo;
+
     public PushMessage() {
     }
 
-    public PushMessage(List<String> loginNames, PushSource pushSource, PushType pushType, String content) {
+    public PushMessage(List<String> loginNames, PushSource pushSource, PushType pushType, String content, AppUrl jumpTo) {
         this.loginNames = loginNames;
         this.pushSource = pushSource;
         this.pushType = pushType;
         this.content = content;
+        this.jumpTo = jumpTo;
     }
 
     public List<String> getLoginNames() {
@@ -56,5 +60,13 @@ public class PushMessage implements Serializable {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public AppUrl getJumpTo() {
+        return jumpTo;
+    }
+
+    public void setJumpTo(AppUrl jumpTo) {
+        this.jumpTo = jumpTo;
     }
 }

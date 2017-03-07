@@ -26,6 +26,7 @@ web:
     - "redis-server"
     - "static-server"
     - "sign-in"
+    - "anxin-wrapper"
 
 console:
   image: "andreptb/tomcat:8-jdk8"
@@ -45,6 +46,7 @@ console:
     - "static-server"
     - "sign-in"
     - "ask-rest-service"
+    - "anxin-wrapper"
 
 activity-console:
   image: "andreptb/tomcat:8-jdk8"
@@ -108,6 +110,7 @@ mobile-api:
     - "sms-wrapper"
     - "redis-server"
     - "sign-in"
+    - "anxin-wrapper"
 
 activity:
   image: "andreptb/tomcat:8-jdk8"
@@ -218,6 +221,7 @@ loan-mq-consumer:
     - "pay-wrapper"
     - "sms-wrapper"
     - "redis-server"
+    - "anxin-wrapper"
 
 message-mq-consumer:
   image: "anapsix/alpine-java:8_jdk"
@@ -367,3 +371,19 @@ ask:
     - "static-server"
     - "sign-in"
     - "ask-rest-service"
+
+anxin-wrapper:
+  image: "andreptb/tomcat:8-jdk8"
+  environment:
+    - "TZ=Asia/Shanghai"
+    - "JAVA_OPTS=-Xmx1024m"
+  ports:
+    - "20021:8080"
+  volumes:
+    - /workspace/deploy-config/ttsd-anxin-wrapper/:/workspace/deploy-config/ttsd-anxin-wrapper
+    - ./ttsd-anxin-wrapper/war:/usr/local/tomcat/webapps
+    - /var/log/tuotian/anxin-wrapper:/usr/local/tomcat/logs
+    - /var/log/tuotian/anxin-wrapper:/var/log/tomcat
+  links:
+    - "sms-wrapper"
+    - "redis-server"

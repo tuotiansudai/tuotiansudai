@@ -49,6 +49,8 @@ public class LoanItemDto {
 
     private boolean activity;
 
+    private long minInvestAmount;
+
     public long getId() {
         return id;
     }
@@ -207,5 +209,13 @@ public class LoanItemDto {
 
     public void setActivity(boolean activity) {
         this.activity = activity;
+    }
+
+    public long getMinInvestAmount() {
+        return minInvestAmount;
+    }
+
+    public void setMinInvestAmount(long minInvestAmount) {
+        this.minInvestAmount = minInvestAmount;
     }
 }

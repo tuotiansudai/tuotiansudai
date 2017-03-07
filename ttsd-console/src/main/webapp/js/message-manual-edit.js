@@ -129,7 +129,8 @@ require(['jquery', 'underscore', 'bootstrap', 'Validform', 'Validform_Datatype',
                     "id": "",
                     "pushType": $('.message-pushType').val(),
                     "pushSource": $('.message-pushSource').val(),
-                    "content": $('.message-title').val()
+                    "content": $('.message-title').val(),
+                    "jumpTo": $('.message-jumpTo').val()
                 }
             }
 
