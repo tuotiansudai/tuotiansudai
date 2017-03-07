@@ -93,6 +93,9 @@
         <if test="mobile != null and mobile != ''">
             and u.mobile = #{mobile}
         </if>
+        <if test="role != null">
+            JOIN (SELECT login_name FROM `user_role` WHERE role = #{role}) temp_role ON temp_role.login_name = u.login_name
+        </if>
         <where>
             <if test="withdrawId != null and withdrawId != ''">
                 and withdraw.id = #{withdrawId}
@@ -119,6 +122,9 @@
         join user on withdraw.login_name = user.login_name
         <if test="mobile != null and mobile != '' ">
             and user.mobile = #{mobile}
+        </if>
+        <if test="role != null">
+            JOIN (SELECT login_name FROM `user_role` WHERE role = #{role}) temp_role ON temp_role.login_name = user.login_name
         </if>
         <where>
             <if test="withdrawId != null and withdrawId != '' ">
@@ -174,6 +180,9 @@
         join user on withdraw.login_name = user.login_name
         <if test="mobile != null and mobile != ''">
             and user.mobile = #{mobile}
+        </if>
+        <if test="role != null">
+            JOIN (SELECT login_name FROM `user_role` WHERE role = #{role}) temp_role ON temp_role.login_name = user.login_name
         </if>
         <where>
             <if test="withdrawId != null and withdrawId != ''">

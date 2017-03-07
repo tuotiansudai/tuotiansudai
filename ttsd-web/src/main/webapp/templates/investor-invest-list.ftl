@@ -27,7 +27,6 @@
     <div class="clear-blank"></div>
     <div class="invest-list" id="investList"></div>
     <script type="text/html" id="investListTpl">
-        <#--art template-->
         <table class="invest-list table-striped">
             <thead>
                 <tr>
@@ -89,14 +88,14 @@
                     <td>{{$value.createdTime}}</td>
                     <td>{{$value.status}}</td>
                     <td>
-                        {{if $value.productType=='EXPERIENCE'}}
-                        {{$value.nextRepayAmount}}(现金红包)
-                        {{else}}
                         {{if $value.nextRepayDate}}
-                        {{$value.nextRepayDate}} / {{$value.nextRepayAmount}}
+                            {{if $value.productType=='EXPERIENCE'}}
+                                {{$value.nextRepayAmount}}
+                            {{else}}
+                                {{$value.nextRepayDate}} / {{$value.nextRepayAmount}}
+                            {{/if}}
                         {{else}}
-                        --
-                        {{/if}}
+                            --
                         {{/if}}
                     </td>
                     <td>
@@ -186,5 +185,49 @@
     </div>
 </script>
 
-<div id="elementInvestRepay" style="display: none"></div>
+<script type="text/template" id="investExperienceRepayTemplate">
+    <div class="layer-content">
+
+        <div class="summary-top clearfix">
+            <span>已收体验金收益 : <em><%=sumActualInterest%></em>元</span>
+            <span>待收体验金收益 : <em><%=sumExpectedInterest%></em>元</span>
+        </div>
+        <table class="table table-repay">
+            <thead>
+            <tr>
+                <th class="tr">到期回款日</th>
+                <th class="tr">应收体验金收益</th>
+                <th class="tr">投资金额(体验金)</th>
+                <th class="tr spec-bg">已收体验金收益</th>
+                <th class="tr spec-bg">回款时间</th>
+                <th class="spec-bg">状态</th>
+            </tr>
+            <tbody>
+            <% for(var i = 0; i < records.length; i++) {
+            var item = records[i];
+            %>
+            <tr>
+                <td><%=item.repayDate%> </td>
+                <td class="tr"><%=item.expectedInterest%> </td>
+                <td class="tr"><%=item.investExperienceAmount%></td>
+                <td class="tr spec-bg">
+                    <%=item.actualInterest ? item.actualInterest : '--'%>
+                </td>
+                <td class="tr spec-bg">
+                    <%=item.actualRepayDate ? item.actualRepayDate : '--'%>
+                </td>
+                <td class="spec-bg">
+                    <%=item.status%>
+                </td>
+            </tr>
+            <% } %>
+
+            </tbody>
+            </thead>
+        </table>
+        <p class="bottom-note">温馨提示：投资体验项目的收益，用户需投资直投项目累计满1000元即可提现（投资债权转让项目除外）；</p>
+
+    </div>
+</script>
+
 </@global.main>

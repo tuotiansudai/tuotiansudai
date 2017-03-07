@@ -207,8 +207,7 @@ def only_point():
 
 def generate_git_log_file():
     from paver.shell import sh
-
-    sh('/usr/bin/git ls-tree -r HEAD ttsd-activity-web/src/main/webapp/activity/js | awk \'{print $3,$4}\' >> git_version.log')
+    sh('/usr/bin/git ls-tree -r HEAD ttsd-activity-web/src/main/webapp/activity/js | awk \'{print $3,$4}\' > git_version.log')
     sh('/usr/bin/git ls-tree -r HEAD ttsd-activity-web/src/main/webapp/activity/style | awk \'{print $3,$4}\' >> git_version.log')
     sh('/usr/bin/git ls-tree -r HEAD ttsd-point-web/src/main/webapp/point/js | awk \'{print $3,$4}\' >> git_version.log')
     sh('/usr/bin/git ls-tree -r HEAD ttsd-point-web/src/main/webapp/point/style | awk \'{print $3,$4}\' >> git_version.log')

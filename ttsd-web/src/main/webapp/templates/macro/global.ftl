@@ -46,7 +46,6 @@
         {"title":"团队介绍", "url":"/about/team"},
         {"title":"拓天公告", "url":"/about/notice"},
         {"title":"媒体报道", "url":"/about/media"},
-        {"title":"推荐奖励", "url":"/about/refer-reward"},
         {"title":"服务费用", "url":"/about/service-fee"},
         {"title":"联系我们", "url":"/about/contact"},
         {"title":"运营数据", "url":"/about/operational"}
@@ -81,7 +80,9 @@
     </#if>
     <meta name="_csrf" content="${(_csrf.token)!}"/>
     <meta name="_csrf_header" content="${(_csrf.headerName)!}"/>
-    <meta name="360-site-verification" content="8f78c77592779bad6fb5acc422271b6f" />
+    <meta name="360-site-verification" content="4b4f989b46ae2f913b70a3c31b0ebe05" />
+    <meta name="sogou_site_verification" content="xIcCp675wk"/>
+    <meta name="baidu-site-verification" content="AsxgHsTlLs" />
     <link  id="icoFavicon" rel="shortcut icon" type="image/x-icon" />
     <link rel="stylesheet" type="text/css" href="${css.globalFun_page!}" charset="utf-8"/>
     <#if pageCss?? && pageCss != "">

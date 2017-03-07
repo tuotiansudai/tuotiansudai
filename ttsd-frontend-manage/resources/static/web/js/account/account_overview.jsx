@@ -1,34 +1,32 @@
 require('webStyle/account/account_overview.scss');
 let commonFun= require('publicJs/commonFun');
 
-var $tMonthBox=$('#tMonthBox'),
+let $accountOverview = $('#accountOverview');
+let $tMonthBox=$('#tMonthBox'),
     $signBtn = $('#signBtn'),
     $signTip = $('#signLayer'),
     $closeSign = $('#closeSign'),
-    $switchMenu=$('ul',$tMonthBox);
-$switchMenu.find('li').last().addClass('current');
-$('table',$tMonthBox).eq(1).show().siblings('table').hide();
-$switchMenu.find('li').click(function(index) {
+    $switchMenu=$('.payment-switch',$tMonthBox);
+
+//本月已收回款，本月待收回款 切换
+$switchMenu.find('em').click(function() {
     var $this=$(this),
-        num=$switchMenu.find('li').index(this);
-    $this.addClass('current').siblings('li').removeClass('current');
+        num=$switchMenu.find('em').index(this);
+    $this.addClass('current').siblings().removeClass('current');
+    $this.siblings('.total').eq(num).addClass('current');
     $('table',$tMonthBox).eq(num).show().siblings('table').hide();
 });
 
-// 资产总额饼状图报表
-require.ensure(['publicJs/load_echarts'],function() {
-    let loadEcharts = require('publicJs/load_echarts');
-    var data = [{ name: '可用金额', value: pydata.balance },
-        { name: '待收投资本金', value: pydata.expectedTotalCorpus },
-        { name: '待收预期收益', value: pydata.expectedTotalInterest}];
-    var option = loadEcharts.ChartOptionTemplates.PieOption(data),
-        opt = loadEcharts.ChartConfig('ReportShow', option);
-    loadEcharts.RenderChart(opt);
-},'myAccountEcharts');
+
+if($('.amount-sum',$accountOverview).find('.icon-has-con').length) {
+    $('.amount-sum h3',$accountOverview).on('click',function() {
+        $(this).parents().toggleClass('open');
+    });
+}
 
 tipshow('#tMonthBox','.month-title',6);
 tipshow('.newProjects','.trade-detail',15);
-$('.birth-icon').on('mouseenter',function() {
+$('.birth-icon',$accountOverview).on('mouseenter',function() {
     layer.closeAll('tips');
     var num = parseFloat($(this).attr('data-benefit'));
     var benefit = num + 1;

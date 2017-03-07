@@ -46,7 +46,7 @@ class fetchCaptchaFun{
             $imageCaptchaForm[0].imageCaptcha.value=''
             layer.open({
                 type:1,
-                area:['320px','210px'],
+                area:['320px'],
                 shadeClose: true,
                 content:$imageCaptchaForm.parents('.image-captcha-dialog')
             });

@@ -32,19 +32,17 @@ public class AccountServiceTest {
     @Autowired
     private AccountService accountService;
     @Autowired
-    private UserBillService userBillService;
-    @Autowired
     private IdGenerator idGenerator;
     @Autowired
     private UserBillMapper userBillMapper;
-    @Autowired
-    private InvestRepayService investRepayService;
     @Autowired
     private InvestRepayMapper investRepayMapper;
     @Autowired
     private InvestMapper investMapper;
     @Autowired
     private LoanMapper loanMapper;
+    @Autowired
+    private UserFundMapper userFundMapper;
 
     @Test
     public void shouldTransferAblerAccountDetailCountIsOk() {
@@ -56,13 +54,15 @@ public class AccountServiceTest {
         createInvestRepay(investModel.getId(), RepayStatus.REPAYING, 150000L, 1000L, 1000L);
         createInvestRepay(investModel.getId(), RepayStatus.COMPLETE, 150000L, 1000L, 1000L);
         long balance = accountService.getBalance(userModel.getLoginName());
-        long collectingPrincipal = investRepayService.findSumRepayingCorpusByLoginName(userModel.getLoginName());
-        long sumRepaying = investRepayService.findSumRepayingInterestByLoginName(userModel.getLoginName());
+
+        UserFundView userFundView = userFundMapper.findByLoginName(userModel.getLoginName());
+        long collectingPrincipal = userFundView.getExpectedTotalCorpus();
+        long sumRepaying = userFundView.getExpectedTotalInterest();
         long freeze = accountService.getFreeze(userModel.getLoginName());
 
         assertEquals(balance, accountModel.getBalance());
         assertEquals(collectingPrincipal, 150000L);
-        assertEquals(sumRepaying, 1000L);
+        assertEquals(sumRepaying, 0L);
         assertEquals(freeze, 1000L);
     }
 
@@ -76,13 +76,14 @@ public class AccountServiceTest {
         createInvestRepay(investModel.getId(), RepayStatus.REPAYING, 150000L, 1000L, 1000L);
         createInvestRepay(investModel.getId(), RepayStatus.COMPLETE, 150000L, 1000L, 1000L);
         long balance = accountService.getBalance(userModel.getLoginName());
-        long collectingPrincipal = investRepayService.findSumRepayingCorpusByLoginName(userModel.getLoginName());
-        long sumRepaying = investRepayService.findSumRepayingInterestByLoginName(userModel.getLoginName());
+        UserFundView userFundView = userFundMapper.findByLoginName(userModel.getLoginName());
+        long collectingPrincipal = userFundView.getExpectedTotalCorpus();
+        long sumRepaying = userFundView.getExpectedTotalInterest();
         long freeze = accountService.getFreeze(userModel.getLoginName());
 
         assertEquals(balance, accountModel.getBalance());
         assertEquals(collectingPrincipal, 150000L);
-        assertEquals(sumRepaying, 1000L);
+        assertEquals(sumRepaying, 0L);
         assertEquals(freeze, 1000L);
     }
 
@@ -97,13 +98,14 @@ public class AccountServiceTest {
         createInvestRepay(investModel.getId(), RepayStatus.REPAYING, 350000L, 2000L, 500L);
         createInvestRepay(investModel.getId(), RepayStatus.COMPLETE, 350000L, 2000L, 500L);
         long balance = accountService.getBalance(userModel.getLoginName());
-        long collectingPrincipal = investRepayService.findSumRepayingCorpusByLoginName(userModel.getLoginName());
-        long sumRepaying = investRepayService.findSumRepayingInterestByLoginName(userModel.getLoginName());
+        UserFundView userFundView = userFundMapper.findByLoginName(userModel.getLoginName());
+        long collectingPrincipal = userFundView.getExpectedTotalCorpus();
+        long sumRepaying = userFundView.getExpectedTotalInterest();
         long freeze = accountService.getFreeze(userModel.getLoginName());
 
         assertEquals(balance, accountModel.getBalance());
         assertEquals(collectingPrincipal, 350000L);
-        assertEquals(sumRepaying, 1500L);
+        assertEquals(sumRepaying, 500L);
         assertEquals(freeze, 1000L);
     }
 
