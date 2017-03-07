@@ -1,6 +1,5 @@
 package com.tuotiansudai.diagnosis.bill;
 
-import com.google.common.base.Strings;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.diagnosis.bill.diagnoses.InvestCouponFeeDiagnosis;
 import com.tuotiansudai.diagnosis.config.DiagnosisConfig;
@@ -19,7 +18,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -36,7 +34,6 @@ class UserBillDiagnosis implements Diagnosis {
     private final long[] sortedKnownBadBills;
     private final Map<UserBillBusinessType, UserBillBusinessDiagnosis> diagnosisMap;
     private final AccountMapper accountMapper;
-
     @Autowired
     private PayWrapperClient payWrapperClient;
 
