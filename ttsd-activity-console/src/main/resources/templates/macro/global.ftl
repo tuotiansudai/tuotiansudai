@@ -63,7 +63,7 @@
                 {"name":"","class":"sub-title-1","text":"系统账户管理","link":"","role":"'ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN'"},
                     {"name":"systemBill","text":"系统账户查询","link":"/finance-manage/system-bill","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
                     {"name":"systemRecharge","text":"平台账户充值","link":"/finance-manage/system-recharge","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                {"name":"","class":"sub-title-1","text":"联动优势账户管理","link":"","role":"'ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN'"},
+                {"name":"","class":"sub-title-1","text":"联动优势账户管理","link":"","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
                     {"name":"realTimeStatus","text":"联动优势余额查询","link":"/finance-manage/real-time-status","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
                     {"name":"transferBill","text":"用户联动优势交易流水","link":"/finance-manage/transfer-bill","role":"'ADMIN'"},
                     {"name":"bankMange","text":"银行卡管理","link":"/finance-manage/bank-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"}
