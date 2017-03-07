@@ -1,21 +1,21 @@
 package com.tuotiansudai.console.controller;
 
 import com.google.common.base.Strings;
-import com.google.common.collect.Lists;
-import com.tuotiansudai.anxin.service.AnxinSignService;
-import com.tuotiansudai.anxin.service.impl.AnxinSignServiceImpl;
-import com.tuotiansudai.cfca.dto.AnxinContractType;
+import com.tuotiansudai.client.AnxinWrapperClient;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.console.service.ConsoleLoanService;
-import com.tuotiansudai.dto.BaseDataDto;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.LoanListDto;
+import com.tuotiansudai.dto.*;
+import com.tuotiansudai.message.AnxinContractMessage;
+import com.tuotiansudai.message.LoanOutSuccessMessage;
+import com.tuotiansudai.mq.client.model.MessageQueue;
+import com.tuotiansudai.repository.mapper.TransferApplicationMapper;
+import com.tuotiansudai.repository.model.AnxinContractType;
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.LoanStatus;
+import com.tuotiansudai.repository.model.TransferApplicationModel;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.service.LoanService;
-import com.tuotiansudai.repository.mapper.TransferApplicationMapper;
-import com.tuotiansudai.repository.model.TransferApplicationModel;
 import com.tuotiansudai.util.CalculateUtil;
 import com.tuotiansudai.util.PaginationUtil;
 import org.apache.commons.collections.CollectionUtils;
@@ -49,13 +49,20 @@ public class LoanListController {
     private RedisWrapperClient redisWrapperClient;
 
     @Autowired
-    private AnxinSignService anxinSignService;
-
-    @Autowired
     private InvestService investService;
 
     @Autowired
     private TransferApplicationMapper transferApplicationMapper;
+
+    @Autowired
+    private MQWrapperClient mqWrapperClient;
+
+    @Autowired
+    private AnxinWrapperClient anxinWrapperClient;
+
+    public static final String LOAN_CONTRACT_IN_CREATING_KEY = "loanContractInCreating:";
+
+    public static final String TRANSFER_CONTRACT_IN_CREATING_KEY = "transferContractInCreating:";
 
     @RequestMapping(value = "/loan-list", method = RequestMethod.GET)
     public ModelAndView ConsoleLoanList(@RequestParam(value = "status", required = false) LoanStatus status,
@@ -100,27 +107,22 @@ public class LoanListController {
 
     @ResponseBody
     @RequestMapping(value = "/generate-contract", method = RequestMethod.POST)
-    public BaseDto<BaseDataDto> generateContract(@RequestParam(value = "businessId", required = true) Long businessId,
-                                                 @RequestParam(value = "anxinContractType", required = true) AnxinContractType anxinContractType) {
-
-        BaseDto baseDto = new BaseDto();
-        baseDto.setSuccess(false);
+    public BaseDto<AnxinDataDto> generateContract(@RequestParam(value = "businessId", required = true) Long businessId,
+                                                  @RequestParam(value = "anxinContractType", required = true) AnxinContractType anxinContractType) {
         BaseDataDto baseDataDto = new BaseDataDto();
-        baseDto.setData(baseDataDto);
-
-        if(businessId == null){
+        BaseDto baseDto = new BaseDto(false, baseDataDto);
+        if (businessId == null) {
             baseDataDto.setMessage("请填写标的ID!");
             return baseDto;
         }
 
         if (anxinContractType.equals(AnxinContractType.LOAN_CONTRACT)) {
-
             if (loanService.findLoanById(businessId) == null) {
                 baseDataDto.setMessage("该标的不存在!");
                 return baseDto;
             }
 
-            if (redisWrapperClient.exists(AnxinSignServiceImpl.LOAN_CONTRACT_IN_CREATING_KEY + businessId)) {
+            if (redisWrapperClient.exists(LOAN_CONTRACT_IN_CREATING_KEY + businessId)) {
                 baseDataDto.setMessage("该标的合同正在生成中,请稍后再试!");
                 return baseDto;
             }
@@ -129,50 +131,42 @@ public class LoanListController {
                 baseDataDto.setMessage("该标的无可生成的合同!");
                 return baseDto;
             }
-
-            return anxinSignService.createLoanContracts(businessId, true);
+            mqWrapperClient.sendMessage(MessageQueue.LoanOutSuccess_GenerateAnXinContract, new LoanOutSuccessMessage(businessId));
+            return new BaseDto<>(true);
         } else {
-
             TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(businessId);
             if (transferApplicationModel == null) {
                 baseDataDto.setMessage("该债权转让不存在!");
                 return baseDto;
             }
 
-            if (redisWrapperClient.exists(AnxinSignServiceImpl.TRANSFER_CONTRACT_IN_CREATING_KEY + businessId)) {
+            if (redisWrapperClient.exists(TRANSFER_CONTRACT_IN_CREATING_KEY + businessId)) {
                 baseDataDto.setMessage("该债权转让合同正在生成中,请稍后再试!");
                 return baseDto;
             }
 
             InvestModel investModel = investService.findById(transferApplicationModel.getInvestId());
-
-            if(investModel == null || !Strings.isNullOrEmpty(investModel.getContractNo())){
+            if (investModel == null || !Strings.isNullOrEmpty(investModel.getContractNo())) {
                 baseDataDto.setMessage("该债权转让无可生成的合同!");
                 return baseDto;
             }
-
-            return anxinSignService.createTransferContracts(businessId);
+            mqWrapperClient.sendMessage(MessageQueue.TransferAnxinContract, new AnxinContractMessage(transferApplicationModel.getId(), AnxinContractType.TRANSFER_CONTRACT.name()));
+            return new BaseDto<>(true, new AnxinDataDto(true, "生成成功！"));
         }
     }
 
     @ResponseBody
     @RequestMapping(value = "/query-contract", method = RequestMethod.POST)
-    public BaseDto<BaseDataDto> queryContract(@RequestParam(value = "businessId", required = true) Long businessId,
-                                              @RequestParam(value = "anxinContractType", required = true) AnxinContractType anxinContractType) {
-
-        BaseDto baseDto = new BaseDto();
-        baseDto.setSuccess(false);
+    public BaseDto<AnxinDataDto> queryContract(@RequestParam(value = "businessId", required = true) Long businessId,
+                                               @RequestParam(value = "anxinContractType", required = true) AnxinContractType anxinContractType) {
         BaseDataDto baseDataDto = new BaseDataDto();
-        baseDto.setData(baseDataDto);
-        String batchStr;
-
-        if(businessId == null){
+        BaseDto baseDto = new BaseDto(false, baseDataDto);
+        if (businessId == null) {
             baseDataDto.setMessage("请填写标的ID!");
             return baseDto;
         }
 
         if (anxinContractType.equals(AnxinContractType.LOAN_CONTRACT)) {
-
             if (loanService.findLoanById(businessId) == null) {
                 baseDataDto.setMessage("该标的不存在!");
                 return baseDto;
@@ -182,8 +176,6 @@ public class LoanListController {
                 baseDataDto.setMessage("该标的合同已经全部生成!");
                 return baseDto;
             }
-
-            batchStr = redisWrapperClient.get(AnxinSignServiceImpl.LOAN_BATCH_NO_LIST_KEY + String.valueOf(businessId));
         } else {
             TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(businessId);
             if (transferApplicationModel == null) {
@@ -192,21 +184,11 @@ public class LoanListController {
             }
 
             InvestModel investModel = investService.findById(transferApplicationModel.getInvestId());
-
             if (investModel == null || !Strings.isNullOrEmpty(investModel.getContractNo())) {
                 baseDataDto.setMessage("该债权转让合同已经全部生成!");
                 return baseDto;
             }
-
-            batchStr = redisWrapperClient.get(AnxinSignServiceImpl.TRANSFER_BATCH_NO_LIST_KEY + businessId);
         }
-
-        if(Strings.isNullOrEmpty(batchStr)){
-            baseDataDto.setMessage("该标的已经超过7天，无法再次［查询合同结果并更新合同编号］");
-            return baseDto;
-        }
-
-        anxinSignService.queryContract(businessId, Lists.newArrayList(batchStr.split(",")), anxinContractType);
-        return new BaseDto<>(true);
+        return anxinWrapperClient.queryContract(new AnxinQueryContractDto(businessId, anxinContractType));
     }
 }

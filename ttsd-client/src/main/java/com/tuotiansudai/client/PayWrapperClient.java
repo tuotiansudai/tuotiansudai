@@ -156,10 +156,6 @@ public class PayWrapperClient extends BaseClient {
         return syncExecute(notifyRequestId, "/job/async_advance_repay_notify", "POST");
     }
 
-    public BaseDto<PayDataDto> extraRateInvestCallback() {
-        return syncExecute(null, "/job/async_extra_rate_invest_notify", "POST");
-    }
-
     public BaseDto<PayDataDto> investTransferCallback(String notifyRequestId) {
         return syncExecute(notifyRequestId, "/job/async_invest_transfer_notify", "POST");
     }
@@ -355,14 +351,6 @@ public class PayWrapperClient extends BaseClient {
         return syncExecute(String.valueOf(loanId), "/loan-out/referrer-reward-after-loan-out", "POST");
     }
 
-    public BaseDto<PayDataDto> createAnXinContract(long loanId){
-        return syncExecute(String.valueOf(loanId), "/loan-out/create-anxin-contract-after-loan-out", "POST");
-    }
-
-    public BaseDto<PayDataDto> queryAnXinContract(long loanId){
-        return syncExecute(String.valueOf(loanId), "/loan-out/query-anxin-contract-after-loan-out", "POST");
-    }
-
     public BaseDto<PayDataDto> generateRepay(long loanId){
         return syncExecute(String.valueOf(loanId), "/loan-out/generate-repay-after-loan-out", "POST");
     }
@@ -387,6 +375,12 @@ public class PayWrapperClient extends BaseClient {
         return syncExecute(String.valueOf(userCouponId), "/loan-out/transfer-red-envelop-callback", "POST");
     }
 
+    public BaseDto<PayDataDto> extraRateRepayAfterRepaySuccess(RepaySuccessMessage repaySuccessMessage){
+        return syncExecute(repaySuccessMessage, "/repay-success/extra-rate-repay", "POST");
+    }
+    public BaseDto<PayDataDto> extraRateRepayCallbackAfterRepaySuccess(long notifyRequestId) {
+        return syncExecute(String.valueOf(notifyRequestId), "/repay-success/async_extra_rate_repay_notify", "POST");
+    }
     public BaseDto<PayDataDto> couponRepayAfterRepaySuccess(RepaySuccessMessage repaySuccessMessage){
         return syncExecute(repaySuccessMessage, "/repay-success/coupon-repay", "POST");
     }

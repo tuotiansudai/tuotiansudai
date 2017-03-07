@@ -71,7 +71,7 @@ if(NODE_ENV=='production') {
 		verbose: true,
 		dry: false,
 		watch:true,
-		exclude: ['plugins','.cache']
+		exclude: ['plugins']
 	}));
 
 	//压缩

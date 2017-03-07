@@ -94,14 +94,4 @@ public class InvestRepayServiceImpl implements InvestRepayService {
         }
         return latestInvestViews;
     }
-
-    @Override
-    public long findSumRepayingInterestByLoginName(String loginName) {
-        return investRepayMapper.findSumRepayingInterestByLoginName(loginName);
-    }
-
-    @Override
-    public long findSumRepayingCorpusByLoginName(String loginName) {
-        return investRepayMapper.findSumRepayingCorpusByLoginName(loginName);
-    }
 }

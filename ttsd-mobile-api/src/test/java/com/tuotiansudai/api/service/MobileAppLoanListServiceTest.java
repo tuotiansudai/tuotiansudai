@@ -87,7 +87,7 @@ public class MobileAppLoanListServiceTest extends ServiceTestBase {
         assertEquals(ProductType._30.getProductLine(), dto.getData().getLoanList().get(0).getLoanType());
         assertEquals(String.valueOf(0.09), dto.getData().getLoanList().get(0).getInvestFeeRate());
 
-        assertEquals(String.valueOf(0.1), dto.getData().getLoanList().get(1).getInvestFeeRate());
+        assertEquals(String.valueOf(0.0), dto.getData().getLoanList().get(1).getInvestFeeRate());
     }
 
 

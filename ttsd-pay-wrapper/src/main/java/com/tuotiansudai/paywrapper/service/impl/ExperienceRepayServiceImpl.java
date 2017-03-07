@@ -123,21 +123,23 @@ public class ExperienceRepayServiceImpl implements ExperienceRepayService {
                 accountModel.getPayAccountId(),
                 String.valueOf(repayAmount));
 
-        if (Strings.isNullOrEmpty(redisWrapperClient.hget(EXPERIENCE_INTEREST_REDIS_KEY, loginName))) {
-            redisWrapperClient.hset(EXPERIENCE_INTEREST_REDIS_KEY, loginName, SyncRequestStatus.READY.name());
+        if (Strings.isNullOrEmpty(redisWrapperClient.hget(EXPERIENCE_INTEREST_REDIS_KEY, String.valueOf(investId)))) {
+            redisWrapperClient.hset(EXPERIENCE_INTEREST_REDIS_KEY, String.valueOf(investId), SyncRequestStatus.READY.name());
         }
 
-        String requestStatus = redisWrapperClient.hget(EXPERIENCE_INTEREST_REDIS_KEY, loginName);
+        String requestStatus = redisWrapperClient.hget(EXPERIENCE_INTEREST_REDIS_KEY, String.valueOf(investId));
         if (SyncRequestStatus.READY.name().equalsIgnoreCase(requestStatus) || SyncRequestStatus.FAILURE.name().equalsIgnoreCase(requestStatus)) {
-            try {
-                redisWrapperClient.hset(EXPERIENCE_INTEREST_REDIS_KEY, loginName, SyncRequestStatus.SENT.name());
-                TransferResponseModel responseModel = paySyncClient.send(TransferMapper.class, requestModel, TransferResponseModel.class);
-                boolean isSuccess = responseModel.isSuccess();
-                redisWrapperClient.hset(EXPERIENCE_INTEREST_REDIS_KEY, loginName, isSuccess ? SyncRequestStatus.SUCCESS.name() : SyncRequestStatus.FAILURE.name());
-                logger.info("[Experience Repay {}] invest repay is success", investModel.getId());
-                return isSuccess;
-            } catch (Exception e) {
-                logger.error(MessageFormat.format("[Experience Repay {0}] invest repay is failed", investModel.getId()), e);
+            if(repayAmount > 0){
+                try {
+                    redisWrapperClient.hset(EXPERIENCE_INTEREST_REDIS_KEY, String.valueOf(investId), SyncRequestStatus.SENT.name());
+                    TransferResponseModel responseModel = paySyncClient.send(TransferMapper.class, requestModel, TransferResponseModel.class);
+                    boolean isSuccess = responseModel.isSuccess();
+                    redisWrapperClient.hset(EXPERIENCE_INTEREST_REDIS_KEY, String.valueOf(investId), isSuccess ? SyncRequestStatus.SUCCESS.name() : SyncRequestStatus.FAILURE.name());
+                    logger.info("[Experience Repay {}] invest repay is success", investModel.getId());
+                    return isSuccess;
+                } catch (Exception e) {
+                    logger.error(MessageFormat.format("[Experience Repay {0}] invest repay is failed", investModel.getId()), e);
+                }
             }
         }
 
@@ -169,7 +171,7 @@ public class ExperienceRepayServiceImpl implements ExperienceRepayService {
     public BaseDto<PayDataDto> postCallback(long investRepayId) throws AmountTransferException {
         InvestRepayModel investRepayModel = investRepayMapper.findById(investRepayId);
         InvestModel investModel = investMapper.findById(investRepayModel.getInvestId());
-        redisWrapperClient.hset(EXPERIENCE_INTEREST_REDIS_KEY, investModel.getLoginName(), SyncRequestStatus.SUCCESS.name());
+        redisWrapperClient.hset(EXPERIENCE_INTEREST_REDIS_KEY, String.valueOf(investModel.getId()), SyncRequestStatus.SUCCESS.name());
 
         investRepayModel.setStatus(RepayStatus.COMPLETE);
         investRepayMapper.update(investRepayModel);

@@ -1,6 +1,5 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
@@ -10,10 +9,7 @@ import com.tuotiansudai.dto.Environment;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
-import com.tuotiansudai.enums.MessageEventType;
-import com.tuotiansudai.enums.PushSource;
-import com.tuotiansudai.enums.PushType;
-import com.tuotiansudai.enums.UserBillBusinessType;
+import com.tuotiansudai.enums.*;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.job.JobManager;
 import com.tuotiansudai.job.JobType;
@@ -187,6 +183,7 @@ public class NormalRepayServiceImpl implements NormalRepayService {
         LoanRepayModel enabledLoanRepay = loanRepayMapper.findEnabledLoanRepayByLoanId(loanId);
         if (enabledLoanRepay == null || enabledLoanRepay.getStatus() == RepayStatus.WAIT_PAY) {
             logger.error(MessageFormat.format("[Normal Repay] There is no enabled loan repay (loanId = {0})", String.valueOf(loanId)));
+            baseDto.getData().setMessage("该标的今天没有待还款，或还款等待支付，请半小时后重试");
             return baseDto;
         }
 
@@ -208,6 +205,7 @@ public class NormalRepayServiceImpl implements NormalRepayService {
             baseDto = payAsyncClient.generateFormData(ProjectTransferMapper.class, requestModel);
         } catch (PayException e) {
             logger.error(MessageFormat.format("[Normal Repay {0}] generate loan repay form data is failed", String.valueOf(enabledLoanRepay.getId())), e);
+            baseDto.getData().setMessage("请求数据失败");
             return baseDto;
         }
 
@@ -321,8 +319,7 @@ public class NormalRepayServiceImpl implements NormalRepayService {
 
         // create payback invest job
         this.createRepayJob(loanRepayId, 2);
-
-        mqWrapperClient.sendMessage(MessageQueue.RepaySuccess_CouponRepay, new RepaySuccessMessage(loanRepayId, false));
+        mqWrapperClient.publishMessage(MessageTopic.RepaySuccess,new RepaySuccessMessage(loanRepayId, false));
         logger.info(MessageFormat.format("[[Normal Repay {0}]: 正常还款成功,发送MQ消息", String.valueOf(loanRepayId)));
 
         return callbackRequest.getResponseData();
@@ -630,7 +627,7 @@ public class NormalRepayServiceImpl implements NormalRepayService {
         String content = MessageFormat.format(MessageEventType.REPAY_SUCCESS.getContentTemplate(), loanModel.getName());
         mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(MessageEventType.REPAY_SUCCESS,
                 Lists.newArrayList(investModel.getLoginName()), title, content, investRepayId));
-        mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(Lists.newArrayList(investModel.getLoginName()), PushSource.ALL, PushType.REPAY_SUCCESS, title));
+        mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(Lists.newArrayList(investModel.getLoginName()), PushSource.ALL, PushType.REPAY_SUCCESS, title, AppUrl.MESSAGE_CENTER_LIST));
     }
 
     private long calculateInvestRepayActualInterest(long investId, InvestRepayModel enabledInvestRepay) {

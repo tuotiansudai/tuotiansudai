@@ -47,6 +47,8 @@ public class UserModel implements Serializable {
 
     private Source lastLoginSource;
 
+    private long experienceBalance;
+
     public long getId() {
         return id;
     }
@@ -213,6 +215,14 @@ public class UserModel implements Serializable {
 
     public void setLastLoginSource(Source lastLoginSource) {
         this.lastLoginSource = lastLoginSource;
+    }
+
+    public long getExperienceBalance() {
+        return experienceBalance;
+    }
+
+    public void setExperienceBalance(long experienceBalance) {
+        this.experienceBalance = experienceBalance;
     }
 
     @Override

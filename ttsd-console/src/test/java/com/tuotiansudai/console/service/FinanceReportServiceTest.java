@@ -212,7 +212,7 @@ public class FinanceReportServiceTest {
         BasePaginationDataDto<FinanceReportDto> basePaginationDataDto = financeReportService.getFinanceReportDtos(null, null, null, null, null, null, 2, 3);
         assertEquals(true, basePaginationDataDto.isHasNextPage());
         assertEquals(true, basePaginationDataDto.isHasPreviousPage());
-        assertEquals(8, basePaginationDataDto.getCount());
+        assertEquals(14, basePaginationDataDto.getCount());
         assertEquals(2, basePaginationDataDto.getIndex());
         assertEquals(3, basePaginationDataDto.getRecords().size());
 
@@ -261,6 +261,6 @@ public class FinanceReportServiceTest {
         prepareData();
 
         List<List<String>> csvData = financeReportService.getFinanceReportCsvData(null, null, null, null, null, null);
-        assertEquals(8, csvData.size());
+        assertEquals(14, csvData.size());
     }
 }
