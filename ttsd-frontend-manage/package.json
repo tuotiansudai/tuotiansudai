@@ -2,13 +2,14 @@
   "name": "frontendmanage",
   "version": "0.1.0",
   "scripts": {
-    "start": "export NODE_ENV=dev && npm run json && webpack-dev-server --inline",
-    "start2": "export NODE_ENV=dev && npm run plugin && webpack  && node getJsonFiles.js",
-    "build": "export NODE_ENV=production && npm run plugin && webpack && node getJsonFiles.js",
+    "start": "export NODE_ENV=dev && npm run json && webpack-dev-server",
+    "start2": "export NODE_ENV=dev && npm run plugin && webpack --progress && node getJsonFiles.js",
+    "build": "export NODE_ENV=production && npm run plugin && webpack --$PLAT && node getJsonFiles.js",
     "test": "export NODE_ENV=production && npm run watchprod && npm run json",
     "watchprod": "webpack --watch --config webpack.production.js&",
     "json": "nodemon -L getJsonFiles.js&",
-    "plugin": "webpack --config  webpack.dll.config.js"
+    "plugin": "webpack --config  webpack.dll.config.js",
+    "server": "node getStaticServer.js $PLAT"
   },
   "devDependencies": {
     "assets-webpack-plugin": "^3.5.0",
@@ -24,6 +25,7 @@
     "extract-text-webpack-plugin": "^1.0.1",
     "file-loader": "^0.8.5",
     "glob": "^7.1.1",
+    "happypack": "^3.0.2",
     "node-sass": "^3.7.0",
     "nodemon": "^1.9.2",
     "object-assign": "^4.1.0",
@@ -35,17 +37,16 @@
     "url-loader": "^0.5.7",
     "webpack": "^1.13.0",
     "webpack-dev-server": "^1.14.1",
-    "webpack-md5-hash": "0.0.5"
+    "webpack-md5-hash": "0.0.5",
+    "webpack-parallel-uglify-plugin": "^0.4.0"
   },
   "dependencies": {
     "art-template": "^3.1.3",
-    "clipboard": "^1.5.16",
     "echarts": "^3.4.0",
-    "fancybox": "^3.0.0",
     "freemarker.js": "^1.2.2",
     "jquery": "~2.1.4",
     "layer": "git+https://github.com/sentsin/layer.git",
-    "md5": "^2.2.1",
+    "moment": "^2.17.1",
     "swiper": "^3.4.1",
     "underscore": "^1.8.3"
   },

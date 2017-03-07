@@ -48,7 +48,7 @@ public enum MessageQueue {
     TransferReferrerRewardCallback("TransferReferrerRewardCallback"),
     TransferRedEnvelopCallback("TransferRedEnvelopCallback"),
     LoginLog("LoginLog"),
-    QueryAnxinContract("QueryAnxinContract"),
+    TransferAnxinContract("TransferAnxinContract"),
     LoanOut("LoanOut"),
     LoanStartRaising("LoanStartRaising"),
     LoanStopRaising("LoanStopRaising"),

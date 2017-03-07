@@ -68,7 +68,7 @@
             font-style: normal;
             &.active {
                 color: #ff473c;
-                border-bottom:1px solid #ff473c;
+                border-bottom:1px solid #ff473c;  /*px*/
             }
             -webkit-transform: translate3d(0, 0, 0);
         }
@@ -142,11 +142,11 @@
                 font-size: 28px;  /*px*/
                 color: #fff;
                 font-style: normal;
-                margin-top: 40px;
                 position:absolute;
                 right:10px;
                 top:50%;
                 margin-top:-35px;/*px*/
+                 border:0px;
             }
 
         .TaskItemCompleteBtn {
@@ -161,14 +161,14 @@
             float: left;
             display: block;
             margin-left:70px;/*px*/
+            text-align: left;
+            margin-top: 25px; /*px*/
+            margin-bottom: 15px;  /*px*/
         }
 
         .TaskItemTitle {
             text-align: left;
             font-size: 32px; /*px*/
-            margin-top: 5%;
-            margin-bottom: 3%;
-            margin-left: 10px;
             color:#525252;
         }
 
@@ -176,7 +176,6 @@
             text-align: left;
             font-size: 26px; /*px*/
             margin-bottom: 10px;
-            margin-left: 10px;
             color:#999;
         }
 
@@ -220,33 +219,36 @@
             float: left;
             width:100%;
             display: block;
-            margin-left: 15px; /*px*/
+            text-align: left;
         }
 
         .TaskAdvanceContent {
-            width: 85%;
+            margin-top: 25px; /*px*/
+            margin-bottom: 15px;  /*px*/
+
+            width: 64%;
             float: left;
             display: block;
-            margin-top: 15px;
-            margin-bottom: 15px;
+            margin-left:70px;/*px*/
         }
 
         .TaskAdvanceItemTitle {
-            float: left;
             text-align: left;
             font-size: 30px; /*px*/
             color: #000;
         }
 
         .TaskAdvanceReward {
-            float: left;
             color: #ffcc00;
             font-size: 24px; /*px*/
             text-align: left;
             margin:15px 0;/*px*/
             border:1px solid #ffcc00;
             border-radius:20px;/*px*/
-            padding:0 5px;/*px*/
+            padding:3px 15px 3px 50px;/*px*/
+            display: inline-block;
+            background: url('money-icon.png') left top no-repeat;
+            background-size: contain;
             span{
                 color:#ff635a;
             }
@@ -272,7 +274,6 @@
             text-align: left;
             font-size: 26px;  /*px*/
             margin-bottom: 15px;
-            margin-left: 15px;/*px*/
             color: #999;
         }
     }

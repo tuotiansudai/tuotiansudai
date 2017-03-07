@@ -24,6 +24,14 @@
         <result column="login_name" property="loginName"></result>
     </resultMap>
 
+    <resultMap id="userLotteryTop10PrizeView" type="com.tuotiansudai.activity.repository.model.UserLotteryTop10PrizeView">
+        <result column="mobile" property="mobile"></result>
+        <result column="user_name" property="userName"></result>
+        <result column="prize" property="prize"></result>
+        <result column="lottery_time" property="lotteryTime"></result>
+        <result column="login_name" property="loginName"></result>
+    </resultMap>
+
     <insert id="create" parameterType="userLotteryPrizeModel" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO `edxactivity`.`user_lottery_prize`(`id`,`mobile`,`login_name`,`user_name`,`prize`,`lottery_time`,`activity_category`)
         VALUES(#{id},#{mobile},#{loginName},#{userName},#{prize},#{lotteryTime},#{activityCategory});
@@ -59,7 +67,7 @@
                 <![CDATA[ and p.lottery_time <= #{endTime} ]]>
             </if>
             <if test="activityCategory != null">
-                and activity_category = #{activityCategory}
+                and activity_category like '${activityCategory}%'
             </if>
         </where>
         order by p.lottery_time DESC
@@ -84,7 +92,7 @@
                 <![CDATA[ and p.lottery_time <= #{endTime} ]]>
             </if>
             <if test="activityCategory != null">
-                and activity_category = #{activityCategory}
+                and activity_category like '${activityCategory}%'
             </if>
         </where>
     </select>
@@ -117,6 +125,29 @@
 
             <if test="activityCategory != null">
                 and activity_category = #{activityCategory}
+            </if>
+        </where>
+        order by lottery_time DESC
+    </select>
+
+    <select id="findMoneyTreeLotteryPrizeTop10" parameterType="map" resultMap="userLotteryTop10PrizeView">
+        select lottery_time, mobile, sum(SUBSTRING(prize,INSTR(prize,'GOLD_') + 5)) as prize from `edxactivity`.`user_lottery_prize`
+        where activity_category like '${activityCategory}%'
+        group by mobile
+		having prize > 0
+        order by prize DESC, lottery_time
+        LIMIT 10
+    </select>
+
+    <select id="findMoneyTreeLotteryPrizeByMobile" parameterType="map" resultMap="userLotteryPrizeView">
+        select lottery_time,mobile,prize from `edxactivity`.`user_lottery_prize`
+        <where>
+            <if test="mobile !=null and mobile !='' ">
+                and mobile = '${mobile}'
+            </if>
+
+            <if test="activityCategory != null">
+                and activity_category like '${activityCategory}%'
             </if>
         </where>
         order by lottery_time DESC

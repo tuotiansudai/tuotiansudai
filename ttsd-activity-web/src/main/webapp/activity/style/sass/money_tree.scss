@@ -1,0 +1,284 @@
+.main-frame {
+  width: 100%;
+  margin: 0 auto;
+  font-size:14px;
+}
+
+.image-banner-slide  {
+  height: 350px;
+  background: #32275f url("/activity/images/money-tree/money-tree-banner.png") center top no-repeat;
+  //background-size: 100%;
+}
+
+.invite-des-container {
+  display: inline-block;
+  width: 100%;
+  height: 290px;
+  background: #32275f;
+
+  .invite-des-box-bg{
+    width: 690px;
+    height: 200px;
+    margin: 40px auto;
+    box-shadow: inset 0px 0px 35px rgba(190,145,87,1), 0px 0px 26px rgba(190,145,87,0.8);
+    border: 3px solid rgb(249,229,204);
+    border-radius: 10px;
+
+    .invite-des-box{
+      margin: 0 auto;
+      height: 90%;
+      padding-top: 10px;
+      padding-bottom: 10px;
+
+      p{
+        font-size: 20px;
+        text-align: center;
+        color:#ffc85b;
+        margin-bottom: 0px;
+      }
+
+      p b{
+        font-size: 30px;
+        color:#FF635A;
+      }
+    }
+  }
+}
+
+.money-tree-container{
+  height: 1295px;
+  background: #ffd75e url("/activity/images/money-tree/money-tree-bg.png") center top no-repeat;
+  margin:0px auto 0px auto;
+  text-align: center;
+  //background-size: 100%;
+
+  .tree-qrcode{
+    display: inline-block;
+    width: 246px;
+    height: 246px;
+    margin: 0 auto;
+    margin-top: 260px;
+  }
+
+  .btn-shake-bg{
+    width: 165px;
+    height: 30px;
+    display: none;
+    .btn-taketree{
+      visibility: visible;
+    }
+  }
+
+  .example-des-box{
+    width: 945px;
+    background: #ffc23d;
+    border-radius: 10px;
+    margin: 0 auto;
+    margin-top: 440px;
+    text-align: center;
+
+    p {
+      text-align: center;
+      font-size: 16px;
+      color: #654d57;
+    }
+
+    p font {
+      font-size: 20px;
+      color: #654d57;
+    }
+
+    p b {
+      font-size: 28px;
+      color: #FF635A;
+    }
+  }
+
+  .tip-des-box{
+    width: 945px;
+    background: #ffc23d;
+    border-radius: 10px;
+    margin: 0 auto;
+    margin-top: 10px;
+    text-align: left;
+    p {
+      font-size: 18px;
+      color: #654d57;
+      margin-left: 20px;
+      margin-bottom: 0px;
+    }
+
+    .tip-text{
+      padding-top: 5px;
+      font-size: 20px;
+      color: #654d57;
+    }
+  }
+}
+
+@media (max-width: 700px) {
+  .image-banner-slide {
+    height: 185px;
+    background:#32275f url("/activity/images/money-tree/money-tree-banner-app.png") center top no-repeat;
+    background-size: 100%;
+  }
+
+  .invite-des-container{
+    display: inline-block;
+    height: auto;
+    .invite-des-box-bg{
+      height: auto;
+      width: auto;
+      margin: 20px 10px 20px 10px;
+
+      .invite-des-box{
+        width: 92%;
+        p{
+          font-size: 13px;
+          display: inline;
+        }
+
+        p b{
+          font-size: 16px;
+          color:#FF635A;
+        }
+
+      }
+
+    }
+  }
+
+  .money-tree-container{
+    height: auto;
+    background: #ffd75e url("/activity/images/money-tree/money-tree-bg-app.png") center top no-repeat;
+    background-size: 100%;
+    display: inline-block;
+
+    .tree-qrcode{
+      display: none;
+    }
+
+    .btn-shake-bg{
+      display: inline-block;
+      margin: 304px auto 0 auto;
+      text-align: center;
+      font-size: 15px;
+      background: #9b3cd0;
+      border-radius: 15px;
+      border: 0px;
+      visibility: visible;
+      box-shadow: 0 5px 0 #333366;
+
+      .btn-taketree{
+        color: #fff;
+        line-height: 30px;
+      }
+    }
+
+
+    .example-des-box{
+      width: auto;
+      height: auto;
+      background: #ffc23d;
+      border-radius: 5px;
+      margin: 24px 10px 0 10px;
+
+      p {
+        padding: 0px 5px 0px 5px;
+        text-align: left;
+        font-size: 13px;
+        color: #654d57;
+      }
+
+      p font {
+        display: none;
+      }
+
+      p b {
+        font-size: 16px;
+        color: #FF635A;
+      }
+    }
+
+    .tip-des-box{
+      height: auto;
+      width: auto;
+      border-radius: 5px;
+      margin: 0px 10px 18px 10px;
+      text-align: left;
+      p {
+        margin-left: 0px;
+        padding: 0px 5px 0px 8px;
+        font-size: 13px;
+      }
+
+      .tip-text{
+        font-size: 15px;
+      }
+    }
+  }
+}
+
+@media (max-width: 400px) {
+  .image-banner-slide {
+    height: 176px;
+    background:#32275f url("/activity/images/money-tree/money-tree-banner-app.png") center top no-repeat;
+    background-size: 100%;
+  }
+
+  .money-tree-container{
+    .btn-shake-bg {
+      margin: 278px auto 0 auto;
+    }
+    .example-des-box{
+      margin: 15px 10px 0 10px;
+    }
+
+    .tip-des-box{
+      margin: 0px 10px 8px 10px;
+      p {
+        line-height: 1.9;
+        padding: 0px 1px 0px 5px;
+        font-size: 13px;
+      }
+
+    }
+  }
+
+}
+
+@media (max-width: 350px) {
+  .image-banner-slide {
+    height: 148px;
+    background:#32275f url("/activity/images/money-tree/money-tree-banner-app.png") center top no-repeat;
+    background-size: 100%;
+  }
+
+  .money-tree-container{
+    .btn-shake-bg {
+      margin: 235px auto 0 auto;
+    }
+
+    .example-des-box{
+      margin: 12px 10px 0 10px;
+
+      p {
+        font-size: 12px;
+      }
+
+      p b {
+        font-size: 14px;
+      }
+    }
+
+    .tip-des-box{
+      margin: 0px 10px 10px 10px;
+
+      p {
+        padding: 0px 5px 0px 5px;
+      }
+    }
+  }
+
+}
+

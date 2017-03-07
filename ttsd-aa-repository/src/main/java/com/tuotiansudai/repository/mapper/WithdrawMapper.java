@@ -28,7 +28,8 @@ public interface WithdrawMapper {
                                                @Param(value = "index") int index,
                                                @Param(value = "pageSize") int pageSize,
                                                @Param(value = "startTime") Date startTime,
-                                               @Param(value = "endTime") Date endTime);
+                                               @Param(value = "endTime") Date endTime,
+                                               @Param(value = "role") Role role);
 
 
     long findSumWithdrawAmount(@Param(value = "withdrawId") String withdrawId,
@@ -45,12 +46,14 @@ public interface WithdrawMapper {
                             @Param(value = "status") WithdrawStatus status,
                             @Param(value = "source") Source source,
                             @Param(value = "startTime") Date startTime,
-                            @Param(value = "endTime") Date endTime);
+                            @Param(value = "endTime") Date endTime,
+                            @Param(value = "role") Role role);
 
     int findWithdrawCount(@Param(value = "withdrawId") String withdrawId,
                           @Param(value = "mobile") String mobile,
                           @Param(value = "status") WithdrawStatus status,
                           @Param(value = "source") Source source,
                           @Param(value = "startTime") Date startTime,
-                          @Param(value = "endTime") Date endTime);
+                          @Param(value = "endTime") Date endTime,
+                          @Param(value = "role") Role role);
 }

@@ -13,5 +13,9 @@ require(['jquery', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicker', 'bootstr
         $('form button[type="reset"]').click(function () {
             location.href = "/user-manage/remain-users";
         });
+
+        $('.down-load').click(function () {
+            location.href = "/export/remain-users?" + $('form').serialize();
+        });
     });
 });

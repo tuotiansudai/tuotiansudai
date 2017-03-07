@@ -1,0 +1,127 @@
+@import "account_common";
+$CK1:#ffac2a #ff7a2a;
+.layui-layer-content{
+  i.fa-check-circle{
+    float:left;
+    font-size: 35px;
+    margin-right: 10px;
+    color: #ff752a;
+  }
+  p{
+    margin-bottom:0;
+  }
+}
+.success-tip{
+  width:400px;
+  height:150px;
+  display:none;
+  i.fa-check-circle{
+    float:left;
+    font-size: 35px;
+    margin-right: 10px;
+    color: #ff752a;
+  }
+  p{
+    margin-bottom:0;
+  }
+}
+.create-transfer-container{
+  float:left;
+  width:100%;
+  h5{
+    font-size:14px;
+    color:#4c4c4c;
+    span{
+      color:#ff7200;
+    }
+  }
+  .info-container{
+    float:left;
+    width:100%;
+    .info-list{
+      float:left;
+      width:100%;
+      margin-top:30px;
+      font-size:12px;
+      color:#000;
+      .agreement {
+        span{
+          strong{
+            color:#999;
+            a{
+              color:#999;
+              &:hover{
+                text-decoration: underline;
+              }
+            }
+          }
+        }
+      }
+      .agree-tip {
+        display: inline-block;
+        margin-left: 154px;
+      }
+      i{
+        cursor:pointer;
+        font-size:16px;
+
+        &.fa-check-square{
+          color:#f24712;
+        }
+        &.fa-square-o{
+          color:#ccc;
+          font-size:18px;
+          vertical-align: middle;
+        }
+
+      }
+      .info-left{
+        float:left;
+        width:120px;
+        padding-right:20px;
+        text-align:right;
+      }
+      .info-right{
+        float:left;
+        width:615px;
+        .fa-question-circle{
+          color:#f24712;
+        }
+        .int-number{
+          padding: 7px 20px;
+        }
+        .tip-text{
+          color:#7f7f7f;
+          margin-left:20px;
+          &.error {
+            color: red;
+          }
+          &.active{
+            color:#f71010;
+          }
+        }
+      }
+
+      .btn-normal {
+        padding: 10px 50px;
+        background: nth($CK1, 2) !important;
+        border: 1px solid nth($CK1, 2) !important;
+        border-color: nth($CK1, 2) !important;
+        letter-spacing: 3px;
+        color: #fff;
+        margin-right:20px;
+        &:disabled {
+          background: #ccc !important;
+          border:1px solid #ccc!important;
+        }
+      }
+      .btn-default{
+        padding:10px 50px;
+        color:#808080!important;
+        border: 1px solid #dedede!important;
+        background: #f1f1f1!important;
+        margin-left:20px;
+      }
+    }
+  }
+}

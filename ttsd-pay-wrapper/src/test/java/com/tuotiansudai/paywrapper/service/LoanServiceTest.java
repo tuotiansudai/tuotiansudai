@@ -2,15 +2,12 @@ package com.tuotiansudai.paywrapper.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.anxin.service.AnxinSignService;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
-import com.tuotiansudai.dto.sms.InvestSmsNotifyDto;
 import com.tuotiansudai.exception.AmountTransferException;
-import com.tuotiansudai.job.AnxinCreateContractJob;
 import com.tuotiansudai.job.JobManager;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.job.LoanOutSuccessHandleJob;
@@ -67,7 +64,6 @@ import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.anyBoolean;
-import static org.mockito.Mockito.anyList;
 import static org.mockito.Mockito.anyObject;
 import static org.mockito.Mockito.*;
 
@@ -111,9 +107,6 @@ public class LoanServiceTest {
 
     @Mock
     private SmsWrapperClient smsWrapperClient;
-
-    @Mock
-    private AnxinSignService anxinSignService;
 
     @Mock
     private PayAsyncClient payAsyncClient;
@@ -260,8 +253,6 @@ public class LoanServiceTest {
         when(loanMapper.findById(anyLong())).thenReturn(loanModel);
         when(redisWrapperClient.hget(anyString(), anyString())).thenReturn("");
         when(redisWrapperClient.hset(anyString(), anyString(), anyString())).thenReturn(1l);
-        when(anxinSignService.createLoanContracts(anyLong(), anyBoolean())).thenReturn(new BaseDto());
-        when(jobManager.newJob(any(JobType.class), eq(AnxinCreateContractJob.class))).thenReturn(triggeredJobBuilder);
         when(payAsyncClient.parseCallbackRequest(any(Map.class), anyString(), any(Class.class), any(Class.class))).thenReturn(baseCallbackRequestModel);
         doNothing().when(mqWrapperClient).publishMessage(any(MessageTopic.class), anyString());
         MerUpdateProjectResponseModel merUpdateProjectResponseModel = new MerUpdateProjectResponseModel();

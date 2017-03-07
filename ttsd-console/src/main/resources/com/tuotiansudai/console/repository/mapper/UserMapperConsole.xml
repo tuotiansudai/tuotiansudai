@@ -26,6 +26,7 @@
         <result column="is_referrer_staff" property="isReferrerStaff"/>
         <result column="last_bill_time" property="lastBillTime"/>
         <result column="fast_pay" property="fastPay"/>
+        <result column="experience_balance" property="experienceBalance"/>
     </resultMap>
 
     <resultMap id="userMicroModelView" type="com.tuotiansudai.console.repository.model.UserMicroModelView">
@@ -745,6 +746,55 @@
             <if test="secondInvestEndTime != null">
                 AND (select invest_time from invest where login_name = user.login_name and loan_id != 1 and status = "SUCCESS" order by invest_time limit 1, 1 ) &lt;= #{secondInvestEndTime}
             </if>
+        </where>
+    </select>
+
+    <select id="findExperienceBalance" resultMap="userViewResultMap" parameterType="map">
+        select * from user
+        <where>
+            <if test = "mobile != null and mobile != ''">
+                and mobile = #{mobile}
+            </if>
+            <if test = "balanceMin != null and balanceMin !=''">
+                and experience_balance >= #{balanceMin}
+            </if>
+            <if test = "balanceMax != null and balanceMax !=''">
+                and experience_balance &lt;= #{balanceMax}
+            </if>
+
+        </where>
+        order by mobile
+        limit #{index}, #{pageSize}
+    </select>
+    <select id="findCountExperienceBalance" resultType="int" parameterType="map">
+        select count(*) from user
+        <where>
+            <if test = "mobile != null and mobile != ''">
+                and mobile = #{mobile}
+            </if>
+            <if test = "balanceMin != null and balanceMin !=''">
+                and experience_balance >= #{balanceMin}
+            </if>
+            <if test = "balanceMax != null and balanceMax !=''">
+                and experience_balance &lt;= #{balanceMax}
+            </if>
+
+        </where>
+    </select>
+
+    <select id="sumExperienceBalance" parameterType="map" resultType="long">
+        select ifnull(sum(experience_balance),0) from user
+        <where>
+            <if test = "mobile != null and mobile != ''">
+                and mobile = #{mobile}
+            </if>
+            <if test = "balanceMin != null and balanceMin !=''">
+                and experience_balance >= #{balanceMin}
+            </if>
+            <if test = "balanceMax != null and balanceMax !=''">
+                and experience_balance &lt;= #{balanceMax}
+            </if>
+
         </where>
     </select>
 </mapper>

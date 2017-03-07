@@ -1,0 +1,776 @@
+/* my treasure*/
+.my-treasure-content {
+  .column-title {
+    em {
+      &.title-navli {
+        border-bottom: 4px solid #999;
+        color: #999;
+        cursor: pointer;
+        margin-right: 40px;
+      }
+      &.active {
+        border-bottom: 4px solid #ff7200;
+        color: #ff7200;
+      }
+    }
+    span {
+      float: right;
+      border-bottom: none;
+      font-size: 14px;
+      font-weight: normal;
+      color: #666;
+      cursor: pointer;
+      &.rule-show{
+        color:#ff7200;
+      }
+    }
+  }
+  .rule-list {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    display: none;
+
+    .rule-com {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin-top: -260px;
+      margin-left: -320px;
+      width: 510px;
+      height: 520px;
+      background: #fff;
+      padding: 10px 60px;
+      border: 1px solid #ccc;
+
+      h3 {
+        font-size: 18px;
+        text-align: center;
+        margin-bottom: 20px;
+
+        span {
+          color: #ff7200;
+          padding: 10px 65px;
+          line-height: 35px;
+          border-bottom: 1px solid #ff7200;
+        }
+      }
+      dl {
+        margin-bottom: 25px;
+
+        dt {
+          font-size: 14px;
+          color: #333;
+        }
+        dd {
+          font-size: 12px;
+          color: #666;
+        }
+      }
+      .close-icon {
+        width: 15px;
+        height: 15px;
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        cursor: pointer;
+        background: url("../../images/sign/close-btn.png") no-repeat center;
+      }
+      .close-text {
+        text-align: center;
+
+        span {
+          padding: 10px 25px;
+          color: #fff;
+          background: #ff7200;
+          border-radius: 5px;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+  .filters-list {
+    float:left;
+    width: 100%;
+    position: relative;
+    li {
+      float:left;
+      color: #4c4c4c;
+      font-size: 12px;
+      padding: 5px 15px;
+      margin-right: 10px;
+      cursor: pointer;
+      &.active {
+        color: #fff;
+        background: #ff752a;
+        border-radius: 5px;
+      }
+    }
+    .get-coupon-code{
+      width:375px;
+      height:35px;
+      position: absolute;
+      top:0;
+      right:0;
+      label{
+        float:right;
+        span{
+          float:left;
+          line-height: 33px;
+        }
+        .coupon-by-code{
+          float:left;
+        }
+        .submit-code{
+          float:left;
+          margin-left:10px;
+          padding: 6px 35px;
+        }
+        p{
+          &.tip-text{
+            position: absolute;
+            top:35px;
+            left:100px;
+            width:160px;
+            display:none;
+          }
+          &.error-color{
+            display:block;
+            color:#ff1010;
+            .fa-times-circle{
+              display:block;
+            }
+          }
+          &.success-color{
+            display:block;
+            color: #2ac30c;
+            .fa-check-circle{
+              display:block;
+            }
+          }
+          i{
+            float:left;
+            margin-top:10px;
+            display:none;
+          }
+        }
+      }
+    }
+  }
+  .model-list {
+    float: left;
+    width: 100%;
+
+    .coupon-com {
+      float: left;
+      width: 100%;
+      display: none;
+
+      &.active {
+        display: block;
+      }
+    }
+    .coupon-list {
+      float: left;
+      width: 100%;
+
+      &.used-card {
+        li {
+          width: 100%;
+          margin-right: 0;
+        }
+      }
+      li {
+        float:left;
+        width: 285px;
+        margin-top: 35px;
+        margin-right: 90px;
+        &.yellow-type {
+          .top-com {
+            .left-name {
+              background: #ff752a;
+              color: #fff;
+
+              i {
+                border: 1px solid #ff752a;
+              }
+            }
+            .right-coupon {
+              border: 1px solid #ff752a;
+              background: url("../../images/sign/yellow-bg.png") no-repeat;
+              background-position: 180px 10px;
+
+              p {
+                color: #ff752a;
+
+                .pro-icon {
+                  border: 1px solid #ff752a;
+
+                  em {
+                    &.circle-com {
+                      background: #ff752a;
+                    }
+                  }
+                }
+              }
+            }
+          }
+          .bottom-time {
+            a {
+              background: #ff752a;
+              cursor: pointer;
+            }
+          }
+          .detail-com {
+            p {
+              &.bottom-line {
+                border-bottom: 1px dashed #ff752a;
+              }
+              span {
+                color: #ff752a;
+              }
+              .see-detail {
+                background: #ff752a;
+              }
+            }
+          }
+        }
+        &.new-type {
+          .top-com {
+            .left-name {
+              background: #ffae00;
+              color: #fff;
+
+              i {
+                border: 1px solid #ffae00;
+              }
+            }
+            .right-coupon {
+              border: 1px solid #ffae00;
+              background: url("../../images/sign/new-bg.png") no-repeat;
+              background-position: 180px 10px;
+
+              p {
+                color: #ffae00;
+
+                .pro-icon {
+                  border: 1px solid #ffae00;
+
+                  em {
+                    &.circle-com {
+                      background: #ffae00;
+                    }
+                  }
+                }
+              }
+            }
+          }
+          .bottom-time {
+            a {
+              background: #ffae00;
+              cursor: pointer;
+            }
+          }
+          .detail-com {
+            p {
+              &.bottom-line {
+                border-bottom: 1px dashed #ffae00;
+              }
+              span {
+                color: #ffae00;
+              }
+              .see-detail {
+                background: #ffae00;
+              }
+            }
+          }
+        }
+        &.bite-type {
+          .top-com {
+            .left-name {
+              background: #ff7b7b;
+              color: #fff;
+
+              i {
+                border: 1px solid #ff7b7b;
+              }
+            }
+            .right-coupon {
+              border: 1px solid #ff7b7b;
+              background: url("../../images/sign/bite-bg.png") no-repeat;
+              background-position: 180px 10px;
+
+              p {
+                color: #ff7b7b;
+
+                .pro-icon {
+                  border: 1px solid #ff7b7b;
+
+                  em {
+                    &.circle-com {
+                      background: #ff7b7b;
+                    }
+                  }
+                }
+              }
+            }
+          }
+          .bottom-time {
+            a {
+              background: #ff7b7b;
+              cursor: pointer;
+            }
+          }
+          .detail-com {
+            p {
+              &.bottom-line {
+                border-bottom: 1px dashed #ff7b7b;
+              }
+              span {
+                color: #ff7b7b;
+              }
+              .see-detail {
+                background: #ff7b7b;
+              }
+            }
+          }
+        }
+        &.birth-type {
+          .top-com {
+            .left-name {
+              background: #ff5984;
+              color: #fff;
+
+              i {
+                border: 1px solid #ff5984;
+              }
+            }
+            .right-coupon {
+              border: 1px solid #ff5984;
+              background: url("../../images/sign/birth-bg.png") no-repeat;
+              background-position: 180px 10px;
+
+              p {
+                color: #ff5984;
+
+                .birth-text {
+                  font-size: 30px;
+                }
+                .pro-icon {
+                  border: 1px solid #ff5984;
+
+                  em {
+                    &.circle-com {
+                      background: #ff5984;
+                    }
+                  }
+                }
+              }
+            }
+          }
+          .bottom-time {
+            a {
+              background: #ff5984;
+              cursor: pointer;
+            }
+          }
+          .detail-com {
+            p {
+              &.bottom-line {
+                border-bottom: 1px dashed #ff5984;
+              }
+              span {
+                color: #ff5984;
+              }
+              .see-detail {
+                background: #ff5984;
+              }
+            }
+          }
+        }
+        &.yellow-type-get {
+          .top-com {
+            .left-name {
+              background: #ff752a;
+              color: #fff;
+
+              i {
+                border: 1px solid #ff752a;
+              }
+            }
+            .right-coupon {
+              border: 1px solid #ff752a;
+              background: url("../../images/sign/yellow-bg-get.png") no-repeat;
+              background-position: 180px 10px;
+
+              p {
+                color: #ff752a;
+
+                .pro-icon {
+                  border: 1px solid #ff752a;
+
+                  em {
+                    &.circle-com {
+                      background: #ff752a;
+                    }
+                  }
+                }
+              }
+            }
+          }
+          .bottom-time {
+            a {
+              background: #ff752a;
+              cursor: pointer;
+            }
+          }
+          .detail-com {
+            p {
+              &.bottom-line {
+                border-bottom: 1px dashed #ff752a;
+              }
+              span {
+                color: #ff752a;
+              }
+              .see-detail {
+                background: #ff752a;
+              }
+            }
+          }
+        }
+        &.new-type-get {
+          .top-com {
+            .left-name {
+              background: #ffae00;
+              color: #fff;
+
+              i {
+                border: 1px solid #ffae00;
+              }
+            }
+            .right-coupon {
+              border: 1px solid #ffae00;
+              background: url("../../images/sign/new-bg-get.png") no-repeat;
+              background-position: 180px 10px;
+
+              p {
+                color: #ffae00;
+
+                .pro-icon {
+                  border: 1px solid #ffae00;
+
+                  em {
+                    &.circle-com {
+                      background: #ffae00;
+                    }
+                  }
+                }
+              }
+            }
+          }
+          .bottom-time {
+            a {
+              background: #ffae00;
+              cursor: pointer;
+            }
+          }
+          .detail-com {
+            p {
+              &.bottom-line {
+                border-bottom: 1px dashed #ffae00;
+              }
+              span {
+                color: #ffae00;
+              }
+              .see-detail {
+                background: #ffae00;
+              }
+            }
+          }
+        }
+        &.bite-type-get {
+          .top-com {
+            .left-name {
+              background: #ff7b7b;
+              color: #fff;
+
+              i {
+                border: 1px solid #ff7b7b;
+              }
+            }
+            .right-coupon {
+              border: 1px solid #ff7b7b;
+              background: url("../../images/sign/bite-bg-get.png") no-repeat;
+              background-position: 180px 10px;
+
+              p {
+                color: #ff7b7b;
+
+                .pro-icon {
+                  border: 1px solid #ff7b7b;
+
+                  em {
+                    &.circle-com {
+                      background: #ff7b7b;
+                    }
+                  }
+                }
+              }
+            }
+          }
+          .bottom-time {
+            a {
+              background: #ff7b7b;
+              cursor: pointer;
+            }
+          }
+          .detail-com {
+            p {
+              &.bottom-line {
+                border-bottom: 1px dashed #ff7b7b;
+              }
+              span {
+                color: #ff7b7b;
+              }
+              .see-detail {
+                background: #ff7b7b;
+              }
+            }
+          }
+        }
+        &.default-type-get {
+          .top-com {
+            .left-name {
+              background: #ccc;
+              color: #fff;
+
+              i {
+                border: 1px solid #ccc;
+              }
+            }
+            .right-coupon {
+              border: 1px solid #ccc;
+              background: url("../../images/sign/default-type-get.png") no-repeat;
+              background-position: 180px 10px;
+
+              p {
+                color: #ccc;
+
+                .pro-icon {
+                  border: 1px solid #ccc;
+
+                  em {
+                    &.circle-com {
+                      background: #ccc;
+                    }
+                  }
+                }
+              }
+            }
+          }
+          .bottom-time {
+            a {
+              background: #ccc;
+              cursor: pointer;
+            }
+          }
+          .detail-com {
+            p {
+              &.bottom-line {
+                border-bottom: 1px dashed #ff752a;
+              }
+              span {
+                color: #ff7b7b;
+              }
+              .see-detail {
+                background: #ff752a;
+              }
+            }
+          }
+        }
+        .top-com {
+          float: left;
+          width: 300px;
+          height: 125px;
+          overflow: hidden;
+
+          .left-name {
+            float: left;
+            width: 50px;
+            height: 125px;
+            background: #ccc;
+            color: #fff;
+            font-size: 16px;
+            text-align: center;
+            line-height: 22px;
+            border-radius: 5px;
+            position: relative;
+
+            span {
+              display: inline-block;
+              vertical-align: middle;
+              width: 30px;
+              margin-left: 5px;
+            }
+            em {
+              display: inline-block;
+              width: 1px;
+              height: 100%;
+              vertical-align: middle;
+            }
+            i {
+              position: absolute;
+              left: 45px;
+              width: 10px;
+              height: 10px;
+              border: 1px solid #ccc;
+              background: #fff;
+              border-radius: 50%;
+
+              &.circle-top {
+                top: -5px;
+              }
+              &.circle-bottom {
+                bottom: -5px;
+              }
+            }
+          }
+          .right-coupon {
+            float: left;
+            width: 227px;
+            height: 123px;
+            padding-left: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background: url("../../images/sign/default-bg.png") no-repeat;
+            background-position: 180px 10px;
+
+            p {
+              margin-bottom: 0;
+              color: #ccc;
+              line-height:20px;
+              &.mt-10 {
+                margin-top: 10px;
+              }
+              span {
+                line-height: 36px;
+
+                &.num-text {
+                  font-size: 40px;
+                }
+                &.unit-text {
+                  font-size: 16px;
+                }
+              }
+              .pro-icon {
+                border: 1px solid #ccc;
+                border-radius: 20px;
+                text-align: center;
+                margin: 0 2px;
+                line-height: 21px;
+                padding: 2px 4px;
+                position: relative;
+                overflow: hidden;
+
+                em {
+                  position: absolute;
+
+                  &.bg-com {
+                    bottom: -7px;
+                    right: -2px;
+                    width: 10px;
+                    height: 10px;
+                    background: #fff;
+                  }
+                  &.circle-com {
+                    bottom: 2px;
+                    right: 1px;
+                    width: 2px;
+                    height: 2px;
+                    background: #ccc;
+                    border-radius: 2px;
+                  }
+                }
+              }
+            }
+          }
+        }
+        .bottom-time {
+          float: left;
+          width: 300px;
+          height: 30px;
+          padding: 15px 0;
+          line-height: 30px;
+
+          span {
+            float: left;
+            width: 190px;
+            text-align: right;
+            font-size: 12px;
+            color: #999;
+          }
+          a {
+            float: left;
+            width: 80px;
+            margin-left: 15px;
+            background: #ccc;
+            font-size: 12px;
+            color: #fff;
+            text-align: center;
+            border-radius: 5px;
+            cursor: no-drop;
+          }
+        }
+        .detail-com {
+          float: left;
+          width: 410px;
+          margin-left: 30px;
+
+          p {
+            float: left;
+            width: 100%;
+            margin-bottom: 0;
+            line-height: 30px;
+
+            &.bottom-line {
+              padding: 10px 0 15px 0;
+              border-bottom: 1px dashed #ff752a;
+              margin-bottom: 10px;
+            }
+            span {
+              font-size: 12px;
+              color: #ff752a;
+
+              &.status-text {
+                float: left;
+                color: #999;
+              }
+              &.left-text {
+                float: left;
+              }
+              &.right-text {
+                float: right;
+              }
+            }
+            .see-detail {
+              float: right;
+              width: 80px;
+              margin-left: 15px;
+              background: #ff752a;
+              font-size: 12px;
+              color: #fff;
+              line-height: 30px;
+              text-align: center;
+              border-radius: 5px;
+              cursor: pointer;
+            }
+          }
+        }
+      }
+    }
+  }
+}
