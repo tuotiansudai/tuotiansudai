@@ -135,7 +135,7 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
         if (accountModel == null) {
             model.setStatus(ReferrerRewardStatus.NO_ACCOUNT);
             investReferrerRewardMapper.update(model);
-            logger.error(MessageFormat.format("referrer has no account, investId={0} referrerLoginName={1} referrerRole={2} amount={3}",
+            logger.warn(MessageFormat.format("referrer has no account, investId={0} referrerLoginName={1} referrerRole={2} amount={3}",
                     String.valueOf(model.getInvestId()),
                     model.getReferrerLoginName(),
                     model.getReferrerRole().name(),
