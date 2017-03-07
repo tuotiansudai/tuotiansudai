@@ -55,7 +55,8 @@ public class CouponServiceImpl implements CouponService {
         double investFeeRate = membershipPrivilegePurchaseService.obtainServiceFee(loginName);
         LoanModel loanModel = loanMapper.findById(loanId);
         if(loanModel != null && ProductType.EXPERIENCE == loanModel.getProductType()){
-            investFeeRate = this.defaultFee;
+            investFeeRate = 0;
+            totalInterest = InterestCalculator.estimateExperienceExpectedInterest(amount, loanModel);
         }
 
         for (Long couponId : couponIds) {
@@ -76,8 +77,10 @@ public class CouponServiceImpl implements CouponService {
         long amount = 0;
         if (CollectionUtils.isNotEmpty(investModelList)) {
             List<UserCouponModel> userCouponModels = userCouponMapper.findByInvestId(investModelList.get(0).getId());
-            CouponModel couponModel = couponMapper.findById(userCouponModels.get(0).getCouponId());
-            amount = new BigDecimal(investModelList.size() % 100).multiply(new BigDecimal(couponModel.getAmount())).setScale(0, BigDecimal.ROUND_DOWN).longValue();
+            if (userCouponModels.size() > 0){
+                CouponModel couponModel = couponMapper.findById(userCouponModels.get(0).getCouponId());
+                amount = new BigDecimal(investModelList.size() % 100).multiply(new BigDecimal(couponModel.getAmount())).setScale(0, BigDecimal.ROUND_DOWN).longValue();
+            }
         }
         return amount;
     }

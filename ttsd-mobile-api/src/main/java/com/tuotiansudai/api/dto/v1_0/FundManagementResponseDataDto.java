@@ -64,6 +64,10 @@ public class FundManagementResponseDataDto extends BaseResponseDataDto {
     @ApiModelProperty(value = "可用金额", dataType = "1999")
     private String availableMoneyCent;
 
+    @ApiModelProperty(value = "是否显示摇钱树", dataType = "1")
+    private String showMoneyTree;
+
+
     public String getTotalAssets() {
         return totalAssets;
     }
@@ -204,5 +208,13 @@ public class FundManagementResponseDataDto extends BaseResponseDataDto {
 
     public void setAvailableMoneyCent(String availableMoneyCent) {
         this.availableMoneyCent = availableMoneyCent;
+    }
+
+    public String getShowMoneyTree() {
+        return showMoneyTree;
+    }
+
+    public void setShowMoneyTree(String showMoneyTree) {
+        this.showMoneyTree = showMoneyTree;
     }
 }

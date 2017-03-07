@@ -11,7 +11,10 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
+import java.time.ZoneId;
 import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
@@ -61,7 +64,7 @@ public class MobileAppUserCouponControllerTest extends ControllerTestBase {
                 .andExpect(jsonPath("$.data.coupons[0].type").value(item.getType().name()))
                 .andExpect(jsonPath("$.data.coupons[0].name").value(item.getName()))
                 .andExpect(jsonPath("$.data.coupons[0].amount").value(item.getAmount()))
-                .andExpect(jsonPath("$.data.coupons[0].startDate").value(new DateTime(item.getStartDate()).toString("yyyy-MM-dd")))
+                .andExpect(jsonPath("$.data.coupons[0].startDate").value(new DateTime(item.getStartDate()).toString("yyyy-MM-dd HH:mm:ss")))
                 .andExpect(jsonPath("$.data.coupons[0].endDate").value(new DateTime(item.getEndDate()).toString("yyyy-MM-dd")))
                 .andExpect(jsonPath("$.data.coupons[0].investLowerLimit").value(item.getInvestLowerLimit()))
                 .andExpect(jsonPath("$.data.coupons[0].productTypes[0]").value("SYL"))

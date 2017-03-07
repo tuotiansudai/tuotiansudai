@@ -91,10 +91,4 @@ public class JobController {
         return loanService.loanOut(loanId);
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/async_extra_rate_invest_notify", method = RequestMethod.POST)
-    public BaseDto<PayDataDto> asyncExtraRateInvestNotify() {
-        return this.extraRateService.asyncExtraRateInvestCallback();
-    }
-
 }

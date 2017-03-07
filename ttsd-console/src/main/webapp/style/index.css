@@ -98,10 +98,20 @@ a:hover {
     padding-left: 25px;
 }
 
-.sidenav li.sub-title {
+.sidenav li.sub-title-1 {
     padding-top: 10px;
     padding-left: 10px;
     font-weight: bold;
+}
+
+.sidenav li.sub-title-2 {
+    padding-top: 10px;
+    padding-left: 25px;
+}
+
+.sidenav li.sub-title-3 {
+    padding-left: 20px;
+    font-style: italic;
 }
 
 table td, table th {

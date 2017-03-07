@@ -17,10 +17,10 @@ require(['jquery', 'csrf', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicker', 
                 data:$('#contractForm').serialize()
             })
             .done(function(res) {
-                if (res.success) {
-                    alert("成功创建合同!");
-                }else{
+                if (res.data.message != '') {
                     alert(res.data.message);
+                }else{
+                    alert("成功创建合同!");
                 }
                 console.log("success");
             })
@@ -43,10 +43,10 @@ require(['jquery', 'csrf', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicker', 
                 data:$('#contractForm').serialize()
             })
                 .done(function(res) {
-                    if (res.success) {
-                        alert("查询合同成功!");
-                    }else{
+                    if (res.data.message != '') {
                         alert(res.data.message);
+                    }else{
+                        alert("查询合同成功!");
                     }
                     console.log("success");
                 })

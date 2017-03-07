@@ -9,10 +9,14 @@ import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.dto.WithdrawDto;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.enums.WithdrawStatus;
 import com.tuotiansudai.repository.mapper.BankCardMapper;
 import com.tuotiansudai.repository.mapper.WithdrawMapper;
-import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.model.BankCardModel;
+import com.tuotiansudai.repository.model.BankCardStatus;
+import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.repository.model.WithdrawModel;
 import com.tuotiansudai.service.BlacklistService;
 import com.tuotiansudai.util.IdGenerator;
 import org.junit.Test;
@@ -85,9 +89,9 @@ public class MobileAppWithdrawServiceTest extends ServiceTestBase {
         List<WithdrawModel> withdrawModels = Lists.newArrayList();
         withdrawModels.add(withdrawModel1);
         withdrawModels.add(withdrawModel2);
-        when(withdrawMapper.findWithdrawCount(anyString(), anyString(), any(WithdrawStatus.class), any(Source.class), any(Date.class), any(Date.class))).thenReturn(2);
+        when(withdrawMapper.findWithdrawCount(anyString(), anyString(), any(WithdrawStatus.class), any(Source.class), any(Date.class), any(Date.class), any(Role.class))).thenReturn(2);
         when(withdrawMapper.findWithdrawPagination(anyString(), anyString(),
-                any(WithdrawStatus.class), any(Source.class), anyInt(), anyInt(), any(Date.class), any(Date.class))).thenReturn(withdrawModels);
+                any(WithdrawStatus.class), any(Source.class), anyInt(), anyInt(), any(Date.class), any(Date.class), any(Role.class))).thenReturn(withdrawModels);
         when(pageValidUtils.validPageSizeLimit(anyInt())).thenReturn(10);
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId("loginName");

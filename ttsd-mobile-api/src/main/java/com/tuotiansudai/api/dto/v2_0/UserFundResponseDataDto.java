@@ -76,14 +76,21 @@ public class UserFundResponseDataDto extends BaseResponseDataDto {
     @ApiModelProperty(value = "增值特权过期日yyyy-MM-dd hh:mm:ss(空表示沒有购买增值特权)", example = "有效期至:2016-11-25")
     private String membershipPrivilegeExpiredDate;
 
+    @ApiModelProperty(value = "用户可用体验金", example = "1000")
+    private long experienceBalance; //用户可用体验金
+
+    @ApiModelProperty(value = "是否显示摇钱树", example = "1")
+    private int showMoneyTree; //是否显示摇钱树
+
     public UserFundResponseDataDto(UserFundView userFundView, long balance, long point, int membershipLevel,
                                    long membershipPoint, int usableUserCouponCount, Date membershipExpiredDate,
-                                   Date membershipPrivilegeExpiredDate) {
+                                   Date membershipPrivilegeExpiredDate, long experienceBalance, int showMoneyTree) {
         this.balance = balance;
         this.actualTotalInterest = userFundView.getActualTotalInterest();
         this.actualTotalExtraInterest = userFundView.getActualTotalExtraInterest();
         this.referRewardAmount = userFundView.getReferRewardAmount();
         this.redEnvelopeAmount = userFundView.getRedEnvelopeAmount();
+        this.totalIncome = this.actualTotalInterest + this.actualTotalExtraInterest + this.referRewardAmount + this.redEnvelopeAmount + this.getActualExperienceInterest();
 
         this.expectedExperienceInterest = userFundView.getExpectedExperienceInterest();
         this.actualExperienceInterest = userFundView.getActualExperienceInterest();
@@ -106,7 +113,9 @@ public class UserFundResponseDataDto extends BaseResponseDataDto {
         this.membershipPoint = membershipPoint;
         this.usableUserCouponCount = usableUserCouponCount;
         this.membershipExpiredDate = membershipExpiredDate != null ? "有效期至:" + new SimpleDateFormat("yyyy-MM-dd").format(membershipExpiredDate) : null;
-        this.membershipPrivilegeExpiredDate = membershipPrivilegeExpiredDate != null ? String.format("有效期至:%s",DateConvertUtil.format(membershipPrivilegeExpiredDate,"yyyy-MM-dd HH:mm:ss")):null;
+        this.membershipPrivilegeExpiredDate = membershipPrivilegeExpiredDate != null ? String.format("有效期至:%s", DateConvertUtil.format(membershipPrivilegeExpiredDate, "yyyy-MM-dd HH:mm:ss")) : null;
+        this.experienceBalance = experienceBalance;
+        this.showMoneyTree = showMoneyTree;
     }
 
     public long getBalance() {
@@ -195,5 +204,13 @@ public class UserFundResponseDataDto extends BaseResponseDataDto {
 
     public String getMembershipPrivilegeExpiredDate() {
         return membershipPrivilegeExpiredDate;
+    }
+
+    public long getExperienceBalance() {
+        return experienceBalance;
+    }
+
+    public int getShowMoneyTree() {
+        return showMoneyTree;
     }
 }

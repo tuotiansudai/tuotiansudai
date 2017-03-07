@@ -154,7 +154,8 @@ public class WithdrawServiceImpl implements WithdrawService {
                 mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(Lists.newArrayList(withdrawModel.getLoginName()),
                         PushSource.ALL,
                         PushType.WITHDRAW_APPLICATION_SUCCESS,
-                        title));
+                        title,
+                        AppUrl.MESSAGE_CENTER_LIST));
             }
         } catch (NumberFormatException e) {
             logger.error(MessageFormat.format("Withdraw callback order is not a number (orderId = {0})", callbackRequestModel.getOrderId()));
@@ -203,7 +204,8 @@ public class WithdrawServiceImpl implements WithdrawService {
                 mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(Lists.newArrayList(withdrawModel.getLoginName()),
                         PushSource.ALL,
                         PushType.WITHDRAW_SUCCESS,
-                        title));
+                        title,
+                        AppUrl.MESSAGE_CENTER_LIST));
             }
         } catch (NumberFormatException e) {
             logger.error(MessageFormat.format("Withdraw callback order is not a number (orderId = {0})", callbackRequestModel.getOrderId()));

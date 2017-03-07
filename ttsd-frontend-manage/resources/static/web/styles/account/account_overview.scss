@@ -1,22 +1,10 @@
-@charset "utf-8";
 $CK1:#ffac2a;
 //Account Overview
 .account-overview {
   padding: 0 !important;
-  .new-user-award {
-    background: #fff1e5;
-    margin-top: 10px;
-    height: 38px;
-    line-height: 38px;
-    border: 1px solid #ff7200;
-    border-radius: 2px;
-    span {
-      background: #ff0000;
-      color: #fff;
-      padding: 3px 8px;
-      border-radius: 10px;
-      margin: 0 10px;
-    }
+  font-size: 14px;
+  .more {
+    padding-right:15px;
   }
   .sign-layer {
     position: fixed;
@@ -121,6 +109,195 @@ $CK1:#ffac2a;
     border-radius: 0;
     background: none;
   }
+
+  .icon-has-con {
+    display: inline-block;
+    width:18px;
+    height: 11px;
+    margin-left: 7px;
+    background: url('../../images/icons/icon-arrow-up.png') right center no-repeat;
+    margin-top: 10px;
+    float: right;
+  }
+  .detail-list {
+    padding:10px 10px 15px 15px;
+    height: auto;
+    overflow: auto;
+    li {
+      float: left;
+      width:30%;
+      line-height: 38px;
+    }
+  }
+
+  .btn-primary, .btn-normal {
+    margin-left: 10px;
+    padding: 8px 20px;
+  }
+  .column-box {
+    border-bottom: 1px solid #f9f9f9;
+    &.profile-box {
+      padding: 15px;
+      .account-profile {
+        margin-right: 10px;
+        width: 78px;
+        height: 78px;
+        display: inline-block;
+        border: 1px solid #e5e5e5;
+        background: #f5fefd url('../../images/myaccount/icon-profile.png') center 19px no-repeat;
+      }
+
+      .welcome-text {
+        font-size: 14px;
+        height: auto;
+        overflow: auto;
+        margin-bottom: 13px;
+        .tip-hello {
+          font-size: 16px;
+        }
+      }
+      .proList {
+        li {
+          a {
+            display: block;
+          }
+          &.fl {
+            font-size: 20px;
+            line-height: 0;
+            margin-top: 14px;
+            margin-right: 3px;
+
+            a {
+              display: block;
+            }
+            &.sign-top {
+              margin-top: 5px !important;
+              padding: 5px 0;
+              background: #ff7200;
+              color: #fff;
+              border-radius: 0px;
+              width: 80px;
+              height: 20px;
+              line-height: 20px;
+              text-align: center;
+
+              &.no-click {
+                background: #ccc;
+              }
+              span {
+                float: left;
+                text-align: center;
+                line-height: 20px;
+                font-size: 14px;
+
+                &.will-sign {
+                  float: left;
+                  width: 60px;
+                  text-align: center;
+                  line-height: 20px;
+                  background: url("../../images/sign/icon-sign.png") no-repeat left;
+                  background-position: 15px 2px;
+                  padding-left: 20px;
+                  font-size: 14px;
+                  cursor: pointer;
+                }
+                &.finish-sign {
+                  width: 100%;
+                  cursor: no-drop;
+                }
+              }
+            }
+            &.fl {
+              font-size: 20px;
+              line-height: 0;
+              margin-top: 14px;
+              margin-right: 3px;
+
+              a {
+                color: $CK1;
+                cursor: pointer;
+
+                &.fa-mobile {
+                  font-size: 24px;
+                  margin-top: -3px;
+                }
+                &.fa-envelope-o {
+                  color: #666;
+                }
+              }
+              &.fa-mobile {
+                font-size: 24px;
+                margin-top: -3px;
+              }
+              &.fa-envelope-o {
+                color: #666;
+              }
+            }
+          }
+
+        }
+      }
+      .vip {
+        display: inline-block;
+        width: 38px;
+        height: 14px;
+        vertical-align: middle;
+        &.vip0 {
+          background: url("../../images/icons/vip/account-vip/v0.png") no-repeat;
+        }
+        &.vip1 {
+          background: url("../../images/icons/vip/account-vip/v1.png") no-repeat;
+        }
+        &.vip2 {
+          background: url("../../images/icons/vip/account-vip/v2.png") no-repeat;
+        }
+        &.vip3 {
+          background: url("../../images/icons/vip/account-vip/v3.png") no-repeat;
+        }
+        &.vip4 {
+          background: url("../../images/icons/vip/account-vip/v4.png") no-repeat;
+        }
+        &.vip5 {
+          background: url("../../images/icons/vip/account-vip/v5.png") no-repeat;
+        }
+      }
+      .user-info {
+        display: inline-block;
+        width: 20px;
+        height: 14px;
+        vertical-align: middle;
+        background: url("../../images/icons/vip/account-vip/user-info.png") no-repeat;
+      }
+    }
+
+    h3 {
+      font-size: 16px;
+      color: #4c4c4c;
+      padding: 10px 15px;
+      cursor: pointer;
+    }
+    &.amount-sum {
+      border: 1px solid #fff;
+      border-bottom:1px solid #f9f9f9;
+      .detail-list {
+        display: none;
+      }
+
+      &.open {
+        border: 1px solid #fbd0ae;
+        .detail-list {
+          display: block;
+        }
+        .icon-has-con {
+          transform: rotate(180deg);
+        }
+        h3 {
+          background: #e7eaee;
+        }
+      }
+    }
+  }
+
   .birth-icon {
     float: left;
     width: 20px;
@@ -131,247 +308,48 @@ $CK1:#ffac2a;
     position: relative;
   }
 
-  .accountImg {
-    margin-right: 10px;
-    width: 71px;
-    height: 71px;
-    display: inline-block;
-    background: url('../../images/sign/profile_20161011.jpg') left top no-repeat;
-  }
-  .proList {
-    margin-top: 4px;
-
-    li {
-      a {
+  .payment-switch {
+    font-size: 16px;
+    color: #808080;
+    em {
+      float: left;
+      padding: 10px 0px;
+      margin:0 20px;
+      font-weight: bold;
+      border-top:3px solid #fff;
+      cursor: pointer;
+      &.current {
+        border-top:3px solid #ff7200;
+        color: #ff7200;
+      }
+    }
+    span.total {
+      font-size: 14px;
+      color: #4c4c4c;
+      padding: 10px;
+      display: none;
+      &.current {
         display: block;
       }
-      &.fl {
-        font-size: 20px;
-        line-height: 0;
-        margin-top: 14px;
-        margin-right: 3px;
-
-        a {
-          display: block;
-        }
-        &.sign-top {
-          margin-top: 5px !important;
-          padding: 5px 0;
-          background: #ff7200;
-          color: #fff;
-          border-radius: 0px;
-          width: 80px;
-          height: 20px;
-          line-height: 20px;
-          text-align: center;
-
-          &.no-click {
-            background: #ccc;
-          }
-          span {
-            float: left;
-            text-align: center;
-            line-height: 20px;
-            font-size: 14px;
-
-            &.will-sign {
-              float: left;
-              width: 60px;
-              text-align: center;
-              line-height: 20px;
-              background: url("../../images/sign/icon-sign.png") no-repeat left;
-              background-position: 15px 2px;
-              padding-left: 20px;
-              font-size: 14px;
-              cursor: pointer;
-            }
-            &.finish-sign {
-              width: 100%;
-              cursor: no-drop;
-            }
-          }
-        }
-        &.beans-number {
-          margin-top: 18px !important;
-          margin-left: 25px !important;
-          font-size: 14px !important;
-          color: #4c4c4c;
-          line-height: 14px !important;
-        }
-        &.fl {
-          font-size: 20px;
-          line-height: 0;
-          margin-top: 14px;
-          margin-right: 3px;
-
-          a {
-            color: $CK1;
-            cursor: pointer;
-
-            &.fa-mobile {
-              font-size: 24px;
-              margin-top: -3px;
-            }
-            &.fa-envelope-o {
-              color: #666;
-            }
-          }
-          &.fa-mobile {
-            font-size: 24px;
-            margin-top: -3px;
-          }
-          &.fa-envelope-o {
-            color: #666;
-          }
-        }
-      }
-      .btn-primary, .btn-normal {
-        margin-left: 10px;
-        padding: 8px 20px;
-      }
     }
   }
-  .vip {
+
+.table tfoot td.last {
+  border-bottom-width:0;
+}
+
+.new-projects {
+  margin-top:15px;
+  .trade-detail {
+    width: 170px;
     display: inline-block;
-    width: 38px;
-    height: 14px;
-    vertical-align: middle;
-    &.vip0 {
-      background: url("../../images/icons/vip/account-vip/v0.png") no-repeat;
-    }
-    &.vip1 {
-      background: url("../../images/icons/vip/account-vip/v1.png") no-repeat;
-    }
-    &.vip2 {
-      background: url("../../images/icons/vip/account-vip/v2.png") no-repeat;
-    }
-    &.vip3 {
-      background: url("../../images/icons/vip/account-vip/v3.png") no-repeat;
-    }
-    &.vip4 {
-      background: url("../../images/icons/vip/account-vip/v4.png") no-repeat;
-    }
-    &.vip5 {
-      background: url("../../images/icons/vip/account-vip/v5.png") no-repeat;
-    }
-  }
-  .user-info {
-    display: inline-block;
-    width: 20px;
-    height: 14px;
-    vertical-align: middle;
-    background: url("../../images/icons/vip/account-vip/user-info.png") no-repeat;
-  }
-
-  .newProjects {
-    &.bRadiusBox {
-      padding: 0;
-      border-bottom-width: 0px;
-
-      caption {
-        border-width: 0px;
-        font-size: 16px;
-        padding-left: 15px;
-
-        .fr {
-          font-size: 13px;
-          padding-top: 5px;
-        }
-      }
-    }
-    .birth-icon {
-      float: left;
-      width: 20px;
-      height: 20px;
-      background: url("../../images/sign/birthday.png") no-repeat center;
-      background-size: 15px;
-      left: 50px;
-      position: relative;
-    }
-    .trade-detail {
-      width: 170px;
-      display: inline-block;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-  }
-  .LastMonth, .tMonthPayment {
-    table {
-      border: 1px solid $CK1;
-
-      caption {
-        border-color: $CK1;
-        color: $CK1;
-      }
-      tr:nth-last-child(1) > td {
-        border-bottom-width: 0;
-      }
-    }
-  }
-  .tMonthPayment {
-    table {
-      tr:nth-last-child(1) > td {
-        border-bottom-width: 0;
-      }
-      tfoot tr td {
-        border-top: 1px solid $CK1;
-        border-bottom: 1px solid $CK1;
-      }
-    }
-  }
-  .assets-box {
     overflow: hidden;
-    box-sizing: border-box;
-
-    .assets-report {
-      width: 39%;
-      height: 142px;
-
-      h3 {
-        line-height: 15px;
-        padding-bottom: 10px;
-      }
-    }
-    .assets-detail {
-      height: 142px;
-      width: 53%;
-
-      .detail-list {
-        margin-top: 5px;
-
-        li {
-          float: left;
-          width: 50%;
-          box-sizing: border-box;
-          padding-left: 20px;
-
-          b {
-            font-weight: normal;
-          }
-          span {
-            display: inline-block;
-            padding-left: 20px;
-            color: $CK1;
-            padding-right: 3px;
-          }
-        }
-      }
-    }
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
-  .PaymentSwitch {
-    li {
-      float: left;
-      font-size: 16px;
-      margin-right: 18px;
-      margin-bottom: 10px;
+}
 
-      a {
-        color: #000;
-      }
-      &.current a {
-        color: $CK1;
-      }
-    }
+  .last-month {
+
   }
 }
