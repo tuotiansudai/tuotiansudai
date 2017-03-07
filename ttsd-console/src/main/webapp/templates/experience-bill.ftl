@@ -29,7 +29,7 @@
             </div>
             <div class="form-group">
                 <label for="control-label">费用类型</label>
-                <select class="selectpicker operationType" data-style="btn-default" name="experienceBillOperationType">
+                <select class="selectpicker operationType" data-style="btn-default" name="operationType" id="operationType">
                     <option value="">全部</option>
                     <#list operationTypeList as operationTypeItem>
                         <option value="${operationTypeItem}"
@@ -39,7 +39,7 @@
             </div>
             <div class="form-group">
                 <label for="control-label">操作类型</label>
-                <select class="selectpicker businessType" data-style="btn-default" name="experienceBusinessType">
+                <select class="selectpicker businessType" data-style="btn-default" name="businessType" id="businessType">
                     <option value="">全部</option>
                     <#list businessTypeList as businessTypeItem>
                         <option value="${businessTypeItem}"
@@ -94,7 +94,7 @@
             <ul class="pagination pull-left">
                 <li>
                     <#if data.hasPreviousPage >
-                    <a href="/experience-manage/experience-bill?mobile=${mobile!}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&experienceBillOperationType=${experienceBillOperationType!}&experienceBusinessType=${experienceBusinessType!}&index=${data.index-1}&pageSize=${data.pageSize}">
+                    <a href="/experience-manage/experience-bill?mobile=${mobile!}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&operationType=${operationType!}&businessType=${businessType!}&index=${data.index-1}&pageSize=${data.pageSize}">
                     <#else>
                     <a href="#">
                     </#if>
@@ -103,7 +103,7 @@
                 <li><a>${data.index}</a></li>
                 <li>
                     <#if data.hasNextPage >
-                    <a href="/experience-manage/experience-bill?mobile=${mobile!}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&experienceBillOperationType=${experienceBillOperationType!}&experienceBusinessType=${experienceBusinessType!}&index=${data.index+1}&pageSize=${data.pageSize}">
+                    <a href="/experience-manage/experience-bill?mobile=${mobile!}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&operationType=${operationType!}&businessType=${businessType!}&index=${data.index+1}&pageSize=${data.pageSize}">
                     <#else>
                     <a href="#">
                     </#if>
