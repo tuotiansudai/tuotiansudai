@@ -70,7 +70,7 @@
     <select id="findExchangeableProductsList" resultMap="productResultMap">
         SELECT * FROM product p
         WHERE p.active = 1
-        AND DATE_FORMAT(now(),'%Y-%m-%d') between p.start_time and  p.end_time
+        AND DATE_FORMAT(#{currentDate},'%Y-%m-%d') between p.start_time and  p.end_time
         <if test="type != null">
             AND p.type = #{type}
         </if>
