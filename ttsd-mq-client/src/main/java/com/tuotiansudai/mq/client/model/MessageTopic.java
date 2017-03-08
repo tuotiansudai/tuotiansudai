@@ -18,6 +18,7 @@ public enum MessageTopic {
             MessageQueue.LoanOutSuccess_GenerateAnXinContract),
 
     RepaySuccess("RepaySuccess",
+            MessageQueue.RepaySuccess_InvestRepay,
             MessageQueue.RepaySuccess_CouponRepay,
             MessageQueue.RepaySuccess_ExtraRateRepay);
 
