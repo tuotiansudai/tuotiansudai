@@ -311,6 +311,7 @@ diagnosis:
   command: bash -c "/opt/worker/ttsd-diagnosis/bin/ttsd-diagnosis"
   links:
     - "redis-server"
+    - "pay-wrapper"
 
 worker-monitor:
   image: "anapsix/alpine-java:8_jdk"

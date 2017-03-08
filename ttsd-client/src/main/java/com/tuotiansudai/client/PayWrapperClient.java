@@ -177,8 +177,8 @@ public class PayWrapperClient extends BaseClient {
     }
 
     public Map<String, String> getUserBalance(String loginName) {
-        String json = this.execute(MessageFormat.format("/real-time/user-balance/{0}", loginName), null, "GET");
         try {
+            String json = this.execute(MessageFormat.format("/real-time/user-balance/{0}", loginName), null, "GET");
             if (json == null)
                 return null;
             else

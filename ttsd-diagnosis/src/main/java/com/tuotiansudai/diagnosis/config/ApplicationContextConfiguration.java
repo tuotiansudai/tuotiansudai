@@ -1,5 +1,6 @@
 package com.tuotiansudai.diagnosis.config;
 
+import com.tuotiansudai.client.PayWrapperClient;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -27,6 +28,11 @@ public class ApplicationContextConfiguration {
         jedis.connect();
         jedis.select(redisDB);
         return jedis;
+    }
+
+    @Bean
+    public PayWrapperClient payWrapperClient(){
+        return new PayWrapperClient();
     }
 
 }

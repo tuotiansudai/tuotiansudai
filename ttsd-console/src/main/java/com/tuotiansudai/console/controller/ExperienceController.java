@@ -77,8 +77,8 @@ public class ExperienceController {
     public ModelAndView experienceBill(@RequestParam(value = "mobile", required = false) String mobile,
                                        @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
                                        @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
-                                       @RequestParam(value = "experienceBillOperationType", required = false) ExperienceBillOperationType operationType,
-                                       @RequestParam(value = "experienceBusinessType", required = false) ExperienceBillBusinessType businessType,
+                                       @RequestParam(value = "operationType", required = false) ExperienceBillOperationType operationType,
+                                       @RequestParam(value = "businessType", required = false) ExperienceBillBusinessType businessType,
                                        @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
         ModelAndView modelAndView = new ModelAndView("/experience-bill");
         int pageSize = 10;
