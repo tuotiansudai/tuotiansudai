@@ -335,13 +335,13 @@ public class PointTaskServiceImpl implements PointTaskService {
                 userPointTaskMapper.create(new UserPointTaskModel(referrer, bankCardTaskModel.getId(), bankCardTaskModel.getPoint(), referrerMaxTaskLevel + 1));
                 String pointBillNote = MessageFormat.format("{0}奖励{1}积分", PointTask.EACH_RECOMMEND_BANK_CARD.getTitle(), String.valueOf(bankCardTaskModel.getPoint()));
                 pointBillService.createTaskPointBill(referrer, bankCardTaskModel.getId(), bankCardTaskModel.getPoint(), pointBillNote);
-                couponId = 385l;
+                couponId = 401l;
                 break;
             case REGISTER:
-                couponId =  384l;
+                couponId =  400l;
                 break;
             case FIRST_INVEST:
-                couponId =  386l;
+                couponId =  402l;
                 break;
         }
 

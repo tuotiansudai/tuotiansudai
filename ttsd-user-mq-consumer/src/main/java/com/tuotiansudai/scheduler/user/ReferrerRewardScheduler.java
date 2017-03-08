@@ -53,15 +53,15 @@ public class ReferrerRewardScheduler {
 
         referrerMaps.forEach((k, count) -> {
             if (2 <= count && count <= 4) {
-                couponAssign(k, 387l);
+                couponAssign(k, 403l);
             } else if (5 <= count && count <= 8) {
-                couponAssign(k, 388l);
+                couponAssign(k, 404l);
             } else if (9 <= count && count <= 10) {
-                couponAssign(k, 389l);
-                couponAssign(k, 390l);
+                couponAssign(k, 405l);
+                couponAssign(k, 406l);
             } else if (10 < count) {
-                couponAssign(k, 391l);
-                couponAssign(k, 392l);
+                couponAssign(k, 407l);
+                couponAssign(k, 408l);
             }
         });
 
