@@ -37,7 +37,7 @@
         <div class="image-title"></div>
         <dl class="new-user-list clearfix">
             <dt class="clearfix tc">新手体验项目</dt>
-            <dd><i>15</i>% <br/><em>预期年化收益</em></dd>
+            <dd><i>13</i>% <br/><em>预期年化收益</em></dd>
             <dd><i>3</i>天 <br/><em>项目期限</em></dd>
         </dl>
     </div>
@@ -54,13 +54,13 @@
         <div class="image-title"></div>
         <div class="subtitle tc">
             <div class="subtitle-container">
-                <i>新人独享13%高息新手标，30天灵活期限，满足您对资金流动性的需求</i>
+                <i>新人独享11%高息新手标，30天灵活期限，满足您对资金流动性的需求</i>
             </div>
         </div>
 
         <dl class="new-user-list clearfix">
             <dt class="clearfix tc">新手专享标</dt>
-            <dd><i>13</i>% <br/><em>预期年化收益</em></dd>
+            <dd><i>11</i>% <br/><em>预期年化收益</em></dd>
             <dd><i>30</i>天 <br/><em>项目期限</em></dd>
         </dl>
     </div>
@@ -104,7 +104,7 @@
     <div class="newbie-step-six">
         <div class="newbie-step-six-box">
             <p>温馨提示</p>
-            <p>1. 平台新注册用户可使用6888元体验金投资新手体验项目，投资周期为3天，到期可获收益7.65元，该笔收益可在 "我的账户"
+            <p>1. 平台新注册用户可使用6888元体验金投资新手体验项目，投资周期为3天，到期可获得收益，该笔收益可在 "我的账户"
                 中查看，投资累计满1000元即可提现（投资债权转让项目除外）；</p>
             <p>2. 30天 "新手专享" 债权每次限投50-10000元，每人仅限投1次；</p>
             <p>3. 用户所获红包及加息券可在 "我的账户-我的宝藏" 查看；</p>
