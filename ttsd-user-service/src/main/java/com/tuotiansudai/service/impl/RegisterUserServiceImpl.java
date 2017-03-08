@@ -3,10 +3,7 @@ package com.tuotiansudai.service.impl;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.enums.MessageEventType;
-import com.tuotiansudai.enums.PushSource;
-import com.tuotiansudai.enums.PushType;
-import com.tuotiansudai.enums.Role;
+import com.tuotiansudai.enums.*;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
@@ -18,6 +15,7 @@ import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserRoleModel;
+import com.tuotiansudai.service.ExperienceBillService;
 import com.tuotiansudai.service.RegisterUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,10 +41,19 @@ public class RegisterUserServiceImpl implements RegisterUserService {
     @Autowired
     private MQWrapperClient mqWrapperClient;
 
+    @Autowired
+    private ExperienceBillService experienceBillService;
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean register(UserModel userModel) {
-        this.userMapper.create(userModel);
+        int result = this.userMapper.create(userModel);
+        if (result <= 0) {
+            return true;
+        }
+
+        //更新体验金
+        experienceBillService.updateUserExperienceBalanceByLoginName(688800, userModel.getLoginName(), ExperienceBillOperationType.IN, ExperienceBillBusinessType.REGISTER);
 
         this.userRoleMapper.create(Lists.newArrayList(new UserRoleModel(userModel.getLoginName(), Role.USER)));
 
@@ -85,7 +92,8 @@ public class RegisterUserServiceImpl implements RegisterUserService {
             mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(Lists.newArrayList(userModel.getReferrer()),
                     PushSource.ALL,
                     PushType.RECOMMEND_SUCCESS,
-                    MessageFormat.format(MessageEventType.RECOMMEND_SUCCESS.getTitleTemplate(), userModel.getMobile())));
+                    MessageFormat.format(MessageEventType.RECOMMEND_SUCCESS.getTitleTemplate(), userModel.getMobile()),
+                    AppUrl.MESSAGE_CENTER_LIST));
         }
     }
 }

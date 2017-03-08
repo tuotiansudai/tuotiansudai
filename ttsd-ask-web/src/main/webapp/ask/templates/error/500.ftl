@@ -5,8 +5,7 @@
 
     <div class="error-tip-container tl">
         <div class="error-info">
-            <img src="${staticServer}/images/icons/error-tip-500.png" class="fl"/>
-
+            <span class="fl error-icon-500"></span>
             <p>
                 <span class="sorry">很抱歉，此页面正在维护中！</span>
                 <span class="jump-tip"><i>10</i>秒后将跳转到首页</span>

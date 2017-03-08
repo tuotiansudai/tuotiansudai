@@ -4,8 +4,8 @@
             <a href="${applicationContext}/" class="logo-bg"></a>
         </div>
         <div class="login-pop-app" id="iphone-app-pop">
-            <em></em>
-            <a href="javascript:" class="text" onclick="cnzzPush.trackClick('13顶部导航','手机APP')"><i>手机APP</i>
+            <em class="img-app-download"></em>
+            <a href="javascript:" class="text"><i>手机APP</i>
                 投资更便利</a>
             <div id="iphone-app-img" class="img-app-pc-top hide"></div>
         </div>
@@ -17,7 +17,7 @@
         <#list mainMenus as menu>
             <#if menu.navigation?? && menu.navigation="true">
                 <li <#if menu.title==activeNav>class="active"</#if>>
-                    <a href="${menu.url}" onclick="cnzzPush.trackClick('${menu.category}','${menu.title}')">
+                    <a href="${menu.url}">
                     ${menu.title}
 
                     <#if menu.leftNavs??>

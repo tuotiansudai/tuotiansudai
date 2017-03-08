@@ -2,15 +2,6 @@
 @import 'reset', 'btn', 'table';
 @import 'page_frame', 'pagination';
 
-/*layer init scroll bar style */
-.layui-layer-page .layui-layer-content {
-  overflow: hidden !important;
-}
-
-.register-skin .layui-layer-content {
-  overflow: auto !important;
-}
-
 .page-col-title, .column-title {
   border-bottom: 1px solid #ccc;
   margin-bottom: 20px;

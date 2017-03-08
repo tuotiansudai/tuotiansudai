@@ -154,4 +154,18 @@ public interface UserMapperConsole {
                               @Param(value = "firstInvestEndTime") Date firstInvestEndTime,
                               @Param(value = "secondInvestStartTime") Date secondInvestStartTime,
                               @Param(value = "secondInvestEndTime") Date secondInvestEndTime);
+
+    List<UserView> findExperienceBalance(@Param(value = "mobile") String mobile,
+                                          @Param(value = "balanceMin") String balanceMin,
+                                          @Param(value = "balanceMax") String balanceMax,
+                                          @Param(value = "index") Integer index,
+                                          @Param(value = "pageSize") Integer pageSize);
+
+    int findCountExperienceBalance(@Param(value = "mobile") String mobile,
+                                   @Param(value = "balanceMin") String balanceMin,
+                                   @Param(value = "balanceMax") String balanceMax);
+
+    long sumExperienceBalance(@Param(value = "mobile") String mobile,
+                              @Param(value = "balanceMin") String balanceMin,
+                              @Param(value = "balanceMax") String balanceMax);
 }

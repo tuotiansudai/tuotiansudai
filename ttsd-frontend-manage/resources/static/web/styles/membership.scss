@@ -1,0 +1,642 @@
+.nav-container {
+  margin-right: 10px;
+  .nav .logo{
+    width:370px;
+  }
+  .nav ul {
+    li{
+      width:90px;
+    }
+    li a.active, li a:hover {
+      color: #428edf;
+      border-top: #428edf 3px solid;
+    }
+  }
+  .go-home {
+    a {
+      margin-top: 21px;
+      color: #fff;
+      background: #428edf;
+      font-size: 16px;
+      display: block;
+      padding: 0 20px;
+      border-radius: 20px;
+    }
+  }
+}
+
+.global-member-ship {
+  $borderColor: #e6e6e6;
+  .icon-avatar {
+    width:127px;
+    height:127px;
+    display: inline-block;
+    background: url("../images/sign/head_20161011.png") left top no-repeat;
+  }
+  .vip-no-bg {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    &.vip-0 {
+      background: url("../images/icons/vip/no-bg/v0-tou.png") no-repeat;
+    }
+    &.vip-1 {
+      background: url("../images/icons/vip/no-bg/v1-tou.png") no-repeat;
+    }
+    &.vip-2 {
+      background: url("../images/icons/vip/no-bg/v2-tou.png") no-repeat;
+    }
+    &.vip-3 {
+      background: url("../images/icons/vip/no-bg/v3-tou.png") no-repeat;
+    }
+    &.vip-4 {
+      background: url("../images/icons/vip/no-bg/v4-tou.png") no-repeat;
+    }
+    &.vip-5 {
+      background: url("../images/icons/vip/no-bg/v5-tou.png") no-repeat;
+    }
+  }
+  .vip-bg {
+    width: 36px;
+    height: 36px;
+    display: inline-block;
+    &.vip-0 {
+      background: url("../images/icons/vip/bg/v0.png") no-repeat;
+    }
+    &.vip-1 {
+      background: url("../images/icons/vip/bg/v1.png") no-repeat;
+    }
+    &.vip-2 {
+      background: url("../images/icons/vip/bg/v2.png") no-repeat;
+    }
+    &.vip-3 {
+      background: url("../images/icons/vip/bg/v3.png") no-repeat;
+    }
+    &.vip-4 {
+      background: url("../images/icons/vip/bg/v4.png") no-repeat;
+    }
+    &.vip-5 {
+      background: url("../images/icons/vip/bg/v5.png") no-repeat;
+    }
+  }
+  .vip-badge {
+    width: 14px;
+    height: 14px;
+    display: inline-block;
+    &.vip-0 {
+      background: url("../images/icons/vip/badge/v0-tu.png") no-repeat;
+    }
+    &.vip-1 {
+      background: url("../images/icons/vip/badge/v1-tu.png") no-repeat;
+    }
+    &.vip-2 {
+      background: url("../images/icons/vip/badge/v2-tu.png") no-repeat;
+    }
+    &.vip-3 {
+      background: url("../images/icons/vip/badge/v3-tu.png") no-repeat;
+    }
+    &.vip-4 {
+      background: url("../images/icons/vip/badge/v4-tu.png") no-repeat;
+    }
+    &.vip-5 {
+      background: url("../images/icons/vip/badge/v5-tu.png") no-repeat;
+    }
+  }
+  .main-title {
+    .inner {
+      border-sizing: border-box;
+      padding: 0 25px;
+      position: relative;
+      &:before {
+        content: "";
+        display: block;
+        width: 3px;
+        height: 80%;
+        border-left: 2px solid #0087e6;
+        position: absolute;
+        left: 0;
+        top: 10%;
+      }
+    }
+    h2 {
+      font-size: 18px;
+      line-height: 40px;
+      padding: 2px 0;
+      border-bottom: 1px solid #e6e6e6;
+    }
+  }
+  .levels {
+    background: #fff;
+    .levels-list {
+      padding: 0 5px;
+      ul {
+        margin: 0 -5px;
+        padding: 15px 0 60px 0;
+      }
+      li {
+        float: left;
+        width: 240px;
+        height: 320px;
+        border: 1px solid #e6e6e6;
+        box-sizing: border-box;
+        margin: 5px;
+        &.anytime-withdraw {
+          background: url("../images/icons/anytime-withdraw-da.png") no-repeat 50% 20px;
+        }
+        &.anytime-withdraw-hui {
+          background: url("../images/icons/anytime-withdraw-hui.png") no-repeat 50% 20px;
+        }
+        &.birthday-benefits {
+          background: url("../images/icons/birthday-benefits-da.png") no-repeat 50% 20px;
+        }
+        &.birthday-benefits-hui {
+          background: url("../images/icons/birthday-benefits-hui.png") no-repeat 50% 20px;
+        }
+        &.membership-giftbag {
+          background: url("../images/icons/membership-giftbug-da.png") no-repeat 50% 20px;
+        }
+        &.membership-giftbag-hui {
+          background: url("../images/icons/membership-giftbug-hui.png") no-repeat 50% 20px;
+        }
+        &.multi-ensuring {
+          background: url("../images/icons/multi-ensuring-da.png") no-repeat 50% 20px;
+        }
+        &.multi-ensuring-hui {
+          background: url("../images/icons/multi-ensuring-hui.png") no-repeat 50% 20px;
+        }
+        &.service-fee-discount {
+          background: url("../images/icons/service-fee-discount-da.png") no-repeat 50% 20px;
+        }
+        &.service-fee-discount-hui {
+          background: url("../images/icons/service-fee-discount-hui.png") no-repeat 50% 20px;
+        }
+        &.vip-service {
+          background: url("../images/icons/vip-service-da.png") no-repeat 50% 20px;
+        }
+        &.vip-service-hui {
+          background: url("../images/icons/vip-service-hui.png") no-repeat 50% 20px;
+        }
+        &.spec-financial-advisor {
+          background: url("../images/icons/spec-financial-advisor-da.png") no-repeat 50% 20px;
+        }
+        &.spec-financial-advisor-hui {
+          background: url("../images/icons/spec-financial-advisor-hui.png") no-repeat 50% 20px;
+        }
+      }
+      h3 {
+        text-align: center;
+        font-size: 20px;
+        color: #4c4c4c;
+        margin-top: 150px;
+      }
+      p {
+        font-size: 14px;
+        color: #808080;
+        padding: 0 1em;
+      }
+    }
+  }
+  .buy-vip {
+    margin-top: 20px;
+    background: #fff;
+    .buy-vip-list {
+      padding-top: 40px;
+      padding-bottom: 40px;
+      width: 700px;
+      margin-left: 35px;
+      table {
+        border-bottom: 1px solid $borderColor;
+        border-left: 1px solid $borderColor;
+        font-size: 16px;
+      }
+      tr {
+        border-top: 1px solid $borderColor;
+        &:nth-of-type(n+2) {
+          td {
+            color: #0090ed;
+            &:first-child {
+              color: #666;
+            }
+          }
+        }
+      }
+      th {
+        background: #0090ed;
+        color: #fff;
+      }
+      td, th {
+        height: 50px;
+        line-height: 50px;
+        padding: 0;
+        border-right: 1px solid $borderColor;
+      }
+    }
+    .text-info {
+      font-size: 16px;
+      margin-top: 20px;
+    }
+  }
+  .level-table {
+    background: #fff;
+    margin-top: 20px;
+    table {
+      border-bottom: 1px solid $borderColor;
+      border-left: 1px solid $borderColor;
+      font-size: 16px;
+    }
+    tr {
+      border-top: 1px solid $borderColor;
+    }
+    th {
+      background: #f4f4f4;
+    }
+    td, th {
+      border-right: 1px solid $borderColor;
+    }
+    td {
+      color: #ff8300;
+      &:first-child {
+        font-size: 12px;
+        color: #666;
+      }
+    }
+    .table {
+      padding: 25px;
+    }
+  }
+  .user-info-block {
+    padding: 30px 25px 0;
+    height: 300px;
+    background: url("../images/membership/user-info-bg.png") no-repeat 50% 50%;
+    position: relative;
+    .avatar {
+      $size: 127px;
+      width: $size;
+      height: $size;
+      margin-right: 30px;
+      position: relative;
+
+      img {
+        width: $size;
+        height: $size;
+        border-radius: 50%;
+      }
+      .vip-no-bg {
+        position: absolute;
+        top: 0;
+        right: 0;
+      }
+    }
+    .text {
+      p {
+        font-size: 14px;
+        color: #570909;
+        &:first-child {
+          margin-top: 10px;
+        }
+      }
+      .my-value {
+        color: #570909;
+        font-size: 20px;
+      }
+      .privilege-time {
+        color: #570909;
+        font-size: 16px;
+        i {
+          background: #feedce;
+          border-radius: 16px;
+          color: #570909;
+          display: inline-block;
+          padding: 2px 14px;
+          margin-right: 10px;
+          border:1px solid #570909;
+        }
+
+      }
+      .orange {
+        color: #ff7400;
+        font-size: 20px;
+        margin-right: 40px;
+      }
+    }
+    .progress {
+      width: 90%;
+      margin: 0 auto;
+      .progress-bar {
+        margin-top: 75px;
+        height: 10px;
+        background: #fbe3ca;
+        position: relative;
+      }
+      .progress-bar-fill {
+        background: #fa9a00;
+        position: absolute;
+        top: 0;
+        left: 0;
+        border-radius: 0 6px 6px 0;
+        width: 50%;
+        height: 100%;
+      }
+      .vip-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        margin-top: -12px;
+        margin-left: -12px;
+        &.active {
+          transform: scale(1.3);
+          -moz-transform: scale(1.3);
+          -webkit-transform: scale(1.3);
+        }
+        &.vip-0 {
+          left: 0;
+        }
+        &.vip-1 {
+          left: 20%;
+        }
+        &.vip-2 {
+          left: 40%;
+        }
+        &.vip-3 {
+          left: 60%;
+        }
+        &.vip-4 {
+          left: 80%;
+        }
+        &.vip-5 {
+          left: 100%;
+        }
+      }
+      .popup {
+        position: absolute;
+        bottom: 35px;
+        background: #fff;
+        font-size: 14px;
+        padding: 0 .5em;
+        strong {
+          font-size: 22px;
+          color: #570909;
+          padding: 0 5px;
+        }
+        .triangle {
+          position: absolute;
+          bottom: -6px;
+          left: 20px;
+          width: 12px;
+          height: 6px;
+          display: block;
+          background: url("../images/membership/triangle.png") no-repeat;
+        }
+        &.popup-0 {
+          left: 0;
+        }
+        &.popup-1 {
+          left: 20%;
+        }
+        &.popup-2 {
+          left: 40%;
+        }
+        &.popup-3 {
+          left: 60%;
+        }
+        &.popup-4 {
+          right: 15%;
+          .triangle {
+            left: auto;
+            right: 20px;
+          }
+        }
+        &.popup-5 {
+          right: -30px;
+          .triangle {
+            left: auto;
+            right: 20px;
+          }
+        }
+      }
+    }
+    .register {
+      position: absolute;
+      top: 0;
+      right: 10px;
+      font-size: 18px;
+      color: #a54e05;
+      a {
+        color: #570909;
+        border-bottom: 1px solid #570909;
+      }
+    }
+    &.no-login {
+      .avatar {
+        margin-left: 350px;
+      }
+      .text {
+        font-size: 18px;
+        padding-top: 20px;
+        color: #a54e05;
+        .btn-normal {
+          padding: 5px 10px;
+        }
+      }
+    }
+    &.structure {
+      height: 350px;
+      .title {
+        position: absolute;
+        top: 5px;
+        left: 0;
+        color: #333;
+        font-size: 18px;
+        padding-left: 20px;
+        border-left: 3px solid #428edf;
+      }
+      .avatar {
+        margin-left: 400px;
+      }
+      .text {
+        float: left;
+        width: 100%;
+        text-align: center;
+        margin-top: 15px;
+        font-size: 16px;
+        color: #50120e;
+        i {
+          margin: 0 15px;
+        }
+      }
+    }
+    .popup-number {
+      position: absolute;
+      top: 40px;
+      left: 0;
+      background: #fff;
+      color: #fa9a00;
+      font-size: 22px;
+      border-radius: 5px;
+      line-height: 1;
+      padding: 5px 10px;
+      &:before {
+        content: '';
+        position: absolute;
+        top: -8px;;
+        left: 50%;
+        margin-left: -8px;
+        width: 15px;
+        height: 8px;
+        background: url("../images/membership/triangle-top.png") no-repeat 50% 50%;
+      }
+      &.vip-0 {
+        margin-left: -10px;
+        left: 0;
+      }
+      &.vip-1 {
+        margin-left: -28px;
+        left: 20%;
+      }
+      &.vip-2 {
+        margin-left: -40px;
+        left: 40%;
+      }
+      &.vip-3 {
+        margin-left: -46px;
+        left: 60%;
+      }
+      &.vip-4 {
+        margin-left: -56px;
+        left: 80%;
+      }
+      &.vip-5 {
+        margin-left: -54px;
+        left: 100%;
+      }
+    }
+    .date-time-item {
+      position: absolute;
+      right: 15px;
+      bottom: 5px;
+      color: #570909;
+      font-size: 14px;
+    }
+  }
+  .my-level {
+    text-align: right;
+    font-size: 16px;
+    padding: 15px 0;
+    color: #999;
+    a {
+      color: #178fe6;
+    }
+    .icon {
+      display: inline-block;
+      width: 35px;
+      height: 35px;
+      vertical-align: middle;
+    }
+    .multi-ensuring {
+      background: url("../images/icons/multi-ensuring.png") no-repeat 50% 50%;
+    }
+    .anytime-withdraw {
+      background: url("../images/icons/anytime-withdraw.png") no-repeat 50% 50%;
+    }
+    .membership-giftbag {
+      background: url("../images/icons/membership-giftbag.png") no-repeat 50% 50%;
+    }
+    .vip-service {
+      background: url("../images/icons/vip-service.png") no-repeat 50% 50%;
+    }
+    .spec-financial-advisor {
+      background: url("../images/icons/spec-financial-advisor.png") no-repeat 50% 50%;
+    }
+    .birthday-benefits {
+      background: url("../images/icons/birthday-benefits.png") no-repeat 50% 50%;
+    }
+    .service-fee-discount {
+      background: url("../images/icons/service-fee-discount.png") no-repeat 50% 50%;
+    }
+  }
+  .instructions {
+    background: #fff;
+    margin-top: 20px;
+    .inner-block {
+      padding: 25px 20px;
+    }
+    .item {
+      height: 43px;
+      overflow: hidden;
+      padding-left: 20px;
+      &.active {
+        height: auto;
+        background: #f5f8fa;
+        .question {
+          color: #428edf;
+        }
+      }
+    }
+    .question {
+      line-height: 42px;
+      font-size: 18px;
+      border-bottom: 1px dashed #e6e6e6;
+    }
+    .answer {
+      padding: 10px 0 10px 2em;
+      text-indent: -2em;
+    }
+  }
+  .structure-detail {
+    background: #fff;
+    margin-top: 20px;
+    padding-bottom: 25px;
+    .inner-block {
+      padding: 0 25px;
+    }
+    .filter-bar {
+      padding: 15px 25px;
+      .buttons {
+        span {
+          color: #808080;
+          font-size: 16px;
+          cursor: pointer;
+          line-height: 35px;
+          padding: 0 10px;
+          display: inline-block;
+          &.active {
+            background: #428edf;
+            color: #fff;
+          }
+        }
+      }
+      label {
+        font-size: 16px;
+        padding-right: 10px;
+      }
+      input {
+        width: 180px;
+      }
+    }
+    .table {
+      border: 1px solid #e6e6e6;
+      tr {
+        border-top: 1px solid #e6e6e6;
+      }
+      th {
+        background: #f4f4f4;
+      }
+      thead {
+        tr {
+          &:first-child {
+            border: none;
+          }
+        }
+      }
+      tbody {
+        td {
+          line-height: 38px;
+          padding: 0;
+          &:last-child {
+            color: #428edf;
+          }
+        }
+      }
+    }
+  }
+}

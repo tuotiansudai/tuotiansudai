@@ -2,22 +2,21 @@
     <div class="footer page-width">
         <ul>
             <li class="f-title">我要投资</li>
-            <li><a href="${webServer}/loan-list" onclick="cnzzPush.trackClick('47底部导航','理财产品')">投资产品</a></li>
-            <li><a href="${webServer}/account" onclick="cnzzPush.trackClick('48底部导航','我的帐户')">我的帐户</a></li>
-            <li><a href="${webServer}/about/notice" onclick="cnzzPush.trackClick('49底部导航','拓天公告')">拓天公告</a></li>
+            <li><a href="${webServer}/loan-list">投资产品</a></li>
+            <li><a href="${webServer}/account">我的帐户</a></li>
+            <li><a href="${webServer}/about/notice">拓天公告</a></li>
         </ul>
         <ul>
             <li class="f-title">关于我们</li>
-            <li><a href="${webServer}/about/company" onclick="cnzzPush.trackClick('50底部导航','公司介绍')">公司介绍</a></li>
-            <li><a href="${webServer}/about/assurance" onclick="cnzzPush.trackClick('51底部导航','安全保障')">安全保障</a></li>
-            <li><a href="${webServer}/about/team" onclick="cnzzPush.trackClick('52底部导航','团队介绍')">团队介绍</a></li>
-            <li><a href="${webServer}/about/refer-reward" onclick="cnzzPush.trackClick('53底部导航','推荐奖励')">推荐奖励</a></li>
+            <li><a href="${webServer}/about/company" >公司介绍</a></li>
+            <li><a href="${webServer}/about/assurance" >安全保障</a></li>
+            <li><a href="${webServer}/about/team" >团队介绍</a></li>
             <li><a href="${webServer}/about/operational">运营数据</a></li>
         </ul>
         <ul>
             <li class="f-title">帮助中心</li>
-            <li><a href="${webServer}/about/guide" onclick="cnzzPush.trackClick('54底部导航','新手指引')">新手指引</a></li>
-            <li><a href="${webServer}/about/service-fee" onclick="cnzzPush.trackClick('55底部导航','服务费用')">服务费用</a></li>
+            <li><a href="${webServer}/about/guide" >新手指引</a></li>
+            <li><a href="${webServer}/about/service-fee" >服务费用</a></li>
         </ul>
         <ul>
             <li class="f-title">联系我们</li>
@@ -53,16 +52,16 @@
     </div>
     <div class="copyright page-width">
         <div class="fl">
-            <a rel="nofollow" href="http://www.itrust.org.cn/yz/pjwx.asp?wm=1335512526" onclick="cnzzPush.trackClick('57底部导航','信用企业')" target="_blank">
+            <a rel="nofollow" href="http://www.itrust.org.cn/yz/pjwx.asp?wm=1335512526" target="_blank">
                 <div class="img-gray img-itrust_logo"></div>
             </a>
-            <a rel="nofollow" href="https://search.szfw.org/cert/l/CX20150616010363010507" onclick="cnzzPush.trackClick('58底部导航','诚信网站')" target="_blank">
+            <a rel="nofollow" href="https://search.szfw.org/cert/l/CX20150616010363010507" target="_blank">
                 <div class="img-gray img-chengxin_logo"></div>
             </a>
-            <a rel="nofollow" href="https://ss.knet.cn/verifyseal.dll?sn=e15071011011759427pzmf000000&pa=500267" onclick="cnzzPush.trackClick('59底部导航','可信网站')" target="_blank">
+            <a rel="nofollow" href="https://ss.knet.cn/verifyseal.dll?sn=e15071011011759427pzmf000000&pa=500267" target="_blank">
                 <div class="img-gray img-knetSealLogo"></div>
             </a>
-            <a rel="nofollow" href="https://seal.digicert.com/seals/popup/?tag=7MzpfEHK&url=tuotiansudai.com&lang=en" onclick="cnzzPush.trackClick('60底部导航','digicert')" target="_blank">
+            <a rel="nofollow" href="https://seal.digicert.com/seals/popup/?tag=7MzpfEHK&url=tuotiansudai.com&lang=en" target="_blank">
                 <div class="img-gray img-digicert"></div>
             </a>
         </div>

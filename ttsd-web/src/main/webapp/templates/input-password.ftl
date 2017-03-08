@@ -1,9 +1,9 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="${css.register}" pageJavascript="${js.input_password}" activeNav="" activeLeftNav="" title="忘记密码">
+<@global.main pageCss="${css.forget_password}" pageJavascript="${js.forget_password}" activeNav="" activeLeftNav="" title="忘记密码">
 
     <div class="forget-phone-box tc" id="inputGetPassword">
 
-        <form action="/mobile-retrieve-password" method="post">
+        <form action="/mobile-retrieve-password" method="post" id="inputPasswordForm">
             <ul class="retrieve-box input-password-box">
                 <li class="re-title">通过认证手机找回密码</li>
                 <li>
@@ -16,9 +16,10 @@
                 </li>
                 <li>
                     <label for="">确认密码：</label>
-                    <input name="repeatPassword" type="password" maxlength="20" placeholder="再次输入密码"/>
-                </li>
+                    <input name="repeatPassword" type="password" class="password-again" maxlength="20" placeholder="再次输入密码"/>
 
+                </li>
+                <i class="error-box"></i>
                 <li class="clear-blank-m tc">
                     <input type="submit" class="btn-send-form-second btn-success" value="确认" >
                 </li>

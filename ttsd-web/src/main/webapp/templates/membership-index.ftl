@@ -1,16 +1,14 @@
 <#import "macro/global.ftl" as global>
 
-<@global.main pageCss="${css.membership}" pageJavascript="${js.membership}" activeNav="我的会员" activeLeftNav="" title="我的会员_会员福利_拓天速贷" keywords="拓天会员,拓天会员积分,拓天保障,拓天速贷" description="拓天速贷会员中心为您提供会员专享投资顾问,会员专属特权,为广大投资用户提供丰富的投资福利." site="membership">
+<@global.main pageCss="${css.membership}" pageJavascript="" activeNav="我的会员" activeLeftNav="" title="我的会员_会员福利_拓天速贷" keywords="拓天会员,拓天会员积分,拓天保障,拓天速贷" description="拓天速贷会员中心为您提供会员专享投资顾问,会员专属特权,为广大投资用户提供丰富的投资福利." site="membership">
 
 <div class="global-member-ship">
     <#if mobile??>
         <div class="user-info-block page-width">
             <div class="info clearfix">
                 <div class="avatar fl">
-                    <img src="${staticServer}/images/sign/head_20161011.png"/>
-
+                    <span class="icon-avatar"></span>
                     <i class="vip-no-bg vip-${membershipLevel!}"></i>
-
                 </div>
                 <div class="text">
                     <p class="my-value">我的成长值：<b>${membershipPoint!}</b></p>
@@ -64,11 +62,6 @@
 
                             <p>24小时随时提现，16:00点前提现当日到账，16:00后提现次日到账</p>
                         </li>
-                        <li class="birthday-privilege">
-                            <h3>生日特权</h3>
-
-                            <p>生日月投资，投90天产品首期收益翻1.5倍，投180天、360天产品首期收益翻2倍</p>
-                        </li>
                         <li class="membership-giftbag-hui">
                             <h3>会员礼包</h3>
 
@@ -104,11 +97,6 @@
                             <h3>随时提现</h3>
 
                             <p>24小时随时提现，16:00点前提现当日到账，16:00后提现次日到账</p>
-                        </li>
-                        <li class="birthday-privilege">
-                            <h3>生日特权</h3>
-
-                            <p>生日月投资，投90天产品首期收益翻1.5倍，投180天、360天产品首期收益翻2倍</p>
                         </li>
                         <li class="membership-giftbag">
                             <h3>会员礼包</h3>
@@ -146,11 +134,6 @@
 
                             <p>24小时随时提现，16:00点前提现当日到账，16:00后提现次日到账</p>
                         </li>
-                        <li class="birthday-privilege">
-                            <h3>生日特权</h3>
-
-                            <p>生日月投资，投90天产品首期收益翻1.5倍，投180天、360天产品首期收益翻2倍</p>
-                        </li>
                         <li class="membership-giftbag">
                             <h3>会员礼包</h3>
 
@@ -186,11 +169,6 @@
                             <h3>随时提现</h3>
 
                             <p>24小时随时提现，16:00点前提现当日到账，16:00后提现次日到账</p>
-                        </li>
-                        <li class="birthday-privilege">
-                            <h3>生日特权</h3>
-
-                            <p>生日月投资，投90天产品首期收益翻1.5倍，投180天、360天产品首期收益翻2倍</p>
                         </li>
                         <li class="membership-giftbag">
                             <h3>会员礼包</h3>
@@ -228,11 +206,6 @@
 
                             <p>24小时随时提现，16:00点前提现当日到账，16:00后提现次日到账</p>
                         </li>
-                        <li class="birthday-privilege">
-                            <h3>生日特权</h3>
-
-                            <p>生日月投资，投90天产品首期收益翻1.5倍，投180天、360天产品首期收益翻2倍</p>
-                        </li>
                         <li class="membership-giftbag">
                             <h3>会员礼包</h3>
 
@@ -268,11 +241,6 @@
                             <h3>随时提现</h3>
 
                             <p>24小时随时提现，16:00点前提现当日到账，16:00后提现次日到账</p>
-                        </li>
-                        <li class="birthday-privilege">
-                            <h3>生日特权</h3>
-
-                            <p>生日月投资，投90天产品首期收益翻1.5倍，投180天、360天产品首期收益翻2倍</p>
                         </li>
                         <li class="membership-giftbag">
                             <h3>会员礼包</h3>
@@ -314,7 +282,7 @@
         <div class="user-info-block page-width no-login">
             <div class="info clearfix">
                 <div class="avatar fl">
-                    <img src="${staticServer}/images/sign/head_20161011.png"/>
+                    <span class="icon-avatar"></span>
                 </div>
                 <div class="text">
                     亲，成为会员可享受多种特权哦~ <br/>
@@ -363,11 +331,6 @@
                         <h3>随时提现</h3>
 
                         <p>24小时随时提现，16:00点前提现当日到账，16:00后提现次日到账</p>
-                    </li>
-                    <li class="birthday-privilege">
-                        <h3>生日特权</h3>
-
-                        <p>生日月投资，投90天产品首期收益翻1.5倍，投180天、360天产品首期收益翻2倍</p>
                     </li>
                     <li class="membership-giftbag">
                         <h3>会员礼包</h3>
@@ -429,15 +392,6 @@
                     </tr>
                     <tr>
                         <td>随时提现</td>
-                        <td><i class="fa fa-check-circle-o" aria-hidden="true"></i></td>
-                        <td><i class="fa fa-check-circle-o" aria-hidden="true"></i></td>
-                        <td><i class="fa fa-check-circle-o" aria-hidden="true"></i></td>
-                        <td><i class="fa fa-check-circle-o" aria-hidden="true"></i></td>
-                        <td><i class="fa fa-check-circle-o" aria-hidden="true"></i></td>
-                        <td><i class="fa fa-check-circle-o" aria-hidden="true"></i></td>
-                    </tr>
-                    <tr>
-                        <td>生日特权</td>
                         <td><i class="fa fa-check-circle-o" aria-hidden="true"></i></td>
                         <td><i class="fa fa-check-circle-o" aria-hidden="true"></i></td>
                         <td><i class="fa fa-check-circle-o" aria-hidden="true"></i></td>

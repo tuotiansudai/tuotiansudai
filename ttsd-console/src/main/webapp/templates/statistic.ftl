@@ -1,5 +1,5 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="statistic.js" headLab="statistic" sideLab="userDate" title="系统首页">
+<@global.main pageCss="" pageJavascript="statistic.js" headLab="statistic" sideLab="userAge" title="系统首页">
 <div class="col-md-10 home-report">
 
     <div class="row">
@@ -63,10 +63,12 @@
                         <span class="over-end-date">结束时间：<input type="text" class="form-control end-date" name="endTime"></span>
                         <select class="form-control" name="province">
                             <option value="">请选择</option>
-                            <option>北京</option>
-                            <option>天津</option>
                         </select>
-
+                        <select class="form-control" name="role">
+                            <option value="">全部</option>
+                            <option value="LOANER">借款人</option>
+                            <option value="INVESTOR">出借人</option>
+                        </select>
 
                         <button class="btn btn-primary" type="button">查询</button>
                     </form>
@@ -97,8 +99,11 @@
                         <span class="over-end-date">结束时间：<input type="text" class="form-control end-date" name="endTime"></span>
                         <select class="form-control" name="province">
                             <option value="">请选择</option>
-                            <option>北京</option>
-                            <option>天津</option>
+                        </select>
+                        <select class="form-control" name="role">
+                            <option value="">全部</option>
+                            <option value="LOANER">借款人</option>
+                            <option value="INVESTOR">出借人</option>
                         </select>
                         <button class="btn btn-primary" type="button">查询</button>
                     </form>
@@ -126,6 +131,11 @@
 
                         开始时间： <input type="text" class="form-control start-date" name="startTime">
                         结束时间：<input type="text" class="form-control end-date" name="endTime">
+                        <select class="form-control" name="role">
+                            <option value="">全部</option>
+                            <option value="LOANER">借款人</option>
+                            <option value="INVESTOR">出借人</option>
+                        </select>
                         <button class="btn btn-primary" type="button">查询</button>
                     </form>
 
@@ -140,7 +150,7 @@
         <div class="col-lg-12 col-sm-12">
             <div class="panel panel-success">
                 <div class="panel-heading">
-                    <h3 class="panel-title">用户续投情况</h3>
+                    <h3 class="panel-title">用户续投情况-投资标的数</h3>
                 </div>
                 <div class="panel-body" id="">
                     <form class="form-inline" id="formUserInvestViscosityReport">
@@ -148,8 +158,6 @@
                         结束时间：<input type="text" class="form-control end-date" name="endTime">
                         <select class="form-control" name="province">
                             <option value="">请选择</option>
-                            <option>北京</option>
-                            <option>天津</option>
                         </select>
                         <button class="btn btn-primary" type="button">查询</button>
                     </form>
@@ -194,6 +202,58 @@
         <div class="col-lg-12 col-sm-12">
             <div class="panel panel-success">
                 <div class="panel-heading">
+                    <h3 class="panel-title">用户续投情况-投资次数</h3>
+                </div>
+                <div class="panel-body" id="">
+                    <form class="form-inline" id="formUserInvestCountViscosityReport">
+                        开始时间： <input type="text" class="form-control start-date" name="startTime">
+                        结束时间：<input type="text" class="form-control end-date" name="endTime">
+                        <select class="form-control" name="province">
+                            <option value="">请选择</option>
+                        </select>
+                        <button class="btn btn-primary" type="button">查询</button>
+                    </form>
+                    <div id="userInvestCountViscosity" style="width:100%; height:400px;">
+                    </div>
+
+                    <div class="row" id="boxUserInvestCount" style="display: none">
+                        <div class="title-list">
+                            <span>合计投资金额： <em class="sumAmount"></em> 元</span>
+                        </div>
+                        <table class="table table-bordered" >
+                            <thead>
+                            <tr>
+                                <th>用户名</th>
+                                <th>真实姓名</th>
+                                <th>电话</th>
+                                <th>推荐人id</th>
+                                <th>推荐人姓名</th>
+                                <th>投资总金额(元)</th>
+                                <th>投资次数</th>
+                                <th>上次投资时间</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <td class="pageNumber" colspan="10">
+                                    <span class="pageBtn"></span>总共<span class="TotalRecords"></span>条
+                                </td>
+                            </tr>
+                            </tfoot>
+                        </table>
+
+                        <button class="btn btn-default pull-left down-load viscosity-export" type="button">导出Excel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 col-sm-12">
+            <div class="panel panel-success">
+                <div class="panel-heading">
                     <h3 class="panel-title">用户投资金额时间分布</h3>
                 </div>
                 <div class="panel-body" id="">
@@ -207,8 +267,6 @@
                         结束时间：<input type="text" class="form-control end-date" name="endTime">
                         <select class="form-control" name="province">
                             <option value="">请选择</option>
-                            <option>北京</option>
-                            <option>天津</option>
                         </select>
                         <select class="form-control" name="roleStage">
                             <option value="ALL" selected>全部用户</option>
@@ -218,6 +276,11 @@
                             <option value="NORMAL_USER">自然用户</option>
                         </select>
                         <select class="form-control" name="channel"></select>
+                        <select class="form-control" name="isTransfer">
+                            <option value="">全部</option>
+                            <option value="true">债权转让</option>
+                            <option value="false">直投项目</option>
+                        </select>
                         <button class="btn btn-primary" type="button">查询</button>
                     </form>
                     <div id="userInvestAmountDistribution" style="width:100%; height:400px;">
@@ -230,7 +293,7 @@
         <div class="col-lg-12 col-sm-12">
             <div class="panel panel-success">
                 <div class="panel-heading">
-                    <h3 class="panel-title">用户投资时间分布</h3>
+                    <h3 class="panel-title">用户投资次数时间分布</h3>
                 </div>
                 <div class="panel-body" id="">
                     <form class="form-inline" id="formUserInvestCountReport">
@@ -241,8 +304,11 @@
                         结束时间：<input type="text" class="form-control end-date" name="endTime">
                         <select class="form-control" name="province">
                             <option value="">请选择</option>
-                            <option>北京</option>
-                            <option>天津</option>
+                        </select>
+                        <select class="form-control" name="isTransfer">
+                            <option value="">全部</option>
+                            <option value="true">债权转让</option>
+                            <option value="false">直投项目</option>
                         </select>
                         <button class="btn btn-primary" type="button">查询</button>
                     </form>

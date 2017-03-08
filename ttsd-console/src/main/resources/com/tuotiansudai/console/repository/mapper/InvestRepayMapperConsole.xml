@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.console.repository.mapper.InvestRepayMapperConsole">
+
+    <cache-ref namespace="com.tuotiansudai.repository.mapper.InvestMapper"/>
+
+    <resultMap id="investRepayExperienceResultMap" type="InvestRepayExperienceView">
+        <result column="mobile" property="mobile"/>
+        <result column="amount" property="amount"/>
+        <result column="repay_date" property="repayDate"/>
+        <result column="actual_repay_date" property="actualRepayDate"/>
+        <result column="expected_interest" property="expectedInterest"/>
+        <result column="repay_amount" property="repayAmount"/>
+        <result column="status" property="status"/>
+    </resultMap>
+
+    <select id="findInvestRepayExperience" parameterType="map" resultMap="investRepayExperienceResultMap">
+        SELECT
+        u.mobile,i.amount,ir.repay_date,ir.actual_repay_date,ir.expected_interest,ir.repay_amount,ir.status
+        FROM
+        invest_repay ir
+        JOIN
+        invest i ON ir.invest_id = i.id AND i.loan_id = 1
+        JOIN
+        user u ON i.login_name = u.login_name
+        <where>
+            <if test="mobile != null and mobile !=''">
+                and u.mobile = #{mobile}
+            </if>
+            <if test="startTime != null">
+                and ir.repay_date >= #{startTime}
+            </if>
+            <if test="endTime != null">
+                and ir.repay_date &lt;= #{endTime}
+            </if>
+            <if test="repayStatus != null">
+                and ir.status = #{repayStatus}
+            </if>
+        </where>
+        ORDER BY ir.repay_date DESC
+        limit #{index},#{pageSize}
+    </select>
+
+    <select id="findCountInvestRepayExperience" parameterType="map" resultType="int">
+        SELECT
+        count(*)
+        FROM
+        invest_repay ir
+        JOIN
+        invest i ON ir.invest_id = i.id AND i.loan_id = 1
+        JOIN
+        user u ON i.login_name = u.login_name
+        <where>
+            <if test="mobile != null and mobile !=''">
+                and u.mobile = #{mobile}
+            </if>
+            <if test="startTime != null">
+                and ir.repay_date >= #{startTime}
+            </if>
+            <if test="endTime != null">
+                and ir.repay_date &lt;= #{endTime}
+            </if>
+            <if test="repayStatus != null">
+                and ir.status = #{repayStatus}
+            </if>
+        </where>
+    </select>
+
+    <select id="findSumExpectedInterestExperience" parameterType="map" resultType="long">
+        SELECT
+        ifnull(sum(ir.expected_interest), 0)
+        FROM
+        invest_repay ir
+        JOIN
+        invest i ON ir.invest_id = i.id AND i.loan_id = 1
+        JOIN
+        user u ON i.login_name = u.login_name
+        <where>
+            <if test="mobile != null and mobile !=''">
+                and u.mobile = #{mobile}
+            </if>
+            <if test="startTime != null">
+                and ir.repay_date >= #{startTime}
+            </if>
+            <if test="endTime != null">
+                and ir.repay_date &lt;= #{endTime}
+            </if>
+            <if test="repayStatus != null">
+                and ir.status = #{repayStatus}
+            </if>
+        </where>
+    </select>
+
+    <select id="findSumActualInterestExperience" parameterType="map" resultType="long">
+        SELECT
+        ifnull(sum(ir.repay_amount), 0)
+        FROM
+        invest_repay ir
+        JOIN
+        invest i ON ir.invest_id = i.id AND i.loan_id = 1
+        JOIN
+        user u ON i.login_name = u.login_name
+        <where>
+            <if test="mobile != null and mobile !=''">
+                and u.mobile = #{mobile}
+            </if>
+            <if test="startTime != null">
+                and ir.repay_date >= #{startTime}
+            </if>
+            <if test="endTime != null">
+                and ir.repay_date &lt;= #{endTime}
+            </if>
+            <if test="repayStatus != null">
+                and ir.status = #{repayStatus}
+            </if>
+        </where>
+    </select>
+</mapper>

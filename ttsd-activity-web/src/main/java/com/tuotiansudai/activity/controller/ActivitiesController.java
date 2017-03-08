@@ -16,6 +16,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Controller
 @RequestMapping(path = "/activity")
 public class ActivitiesController {
@@ -29,20 +31,19 @@ public class ActivitiesController {
     @Autowired
     private AccountService accountService;
 
-    @RequestMapping(path = "/{item:^recruit|material-point|integral-draw|birth-month|rank-list-app|share-reward|app-download|landing-page|invest-achievement|landing-anxin|loan-hike|heavily-courtship|point-update|sign-check|invite-friend$}", method = RequestMethod.GET)
+    @RequestMapping(path = "/{item:^recruit|money_tree|material-point|integral-draw|birth-month|rank-list-app|share-reward|app-download|landing-page|invest-achievement|landing-anxin|loan-hike|heavily-courtship|point-update|sign-check|invite-friend$}", method = RequestMethod.GET)
 
-
-    public ModelAndView activities(@PathVariable String item) {
+    public ModelAndView activities(@PathVariable String item, HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView("/activities/" + item, "responsive", true);
         String loginName = LoginUserInfo.getLoginName();
 
         if (!Strings.isNullOrEmpty(loginName) && userService.loginNameIsExist(loginName.trim())) {
             modelAndView.addObject("referrer", userService.getMobile(loginName));
         }
-
+        modelAndView.addObject("appVersion", request.getHeader("appVersion"));
         modelAndView.addObject("isLogin", null != loginName);
-        AccountModel accountModel = accountService.findByLoginName(loginName);
-        modelAndView.addObject("noAccount", null == accountModel);
+        //AccountModel accountModel = accountService.findByLoginName(loginName);
+        //modelAndView.addObject("noAccount", null == accountModel);
         return modelAndView;
     }
 

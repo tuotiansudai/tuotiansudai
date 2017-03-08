@@ -30,10 +30,8 @@
         values (#{service}, #{signType}, #{sign}, #{merId}, #{version}, #{orderId}, #{merDate}, #{tradeNo}, #{merCheckDate}, #{retCode}, #{retMsg}, #{requestTime}, #{responseTime}, #{requestData}, #{responseData}, 'NOT_DONE')
     </insert>
 
-    <select id="getTodoList" parameterType="map" resultMap="resultMap" resultType="com.tuotiansudai.paywrapper.repository.model.async.callback.CouponRepayNotifyRequestModel">
-        <![CDATA[
-          select * from coupon_repay_notify_request where status='NOT_DONE' order by request_time asc limit #{limitCount};
-         ]]>
+    <select id="findById" parameterType="map" resultMap="resultMap" resultType="com.tuotiansudai.paywrapper.repository.model.async.callback.CouponRepayNotifyRequestModel">
+       select * from coupon_repay_notify_request where status='NOT_DONE' and id = #{id};
     </select>
 
     <update id="updateStatus" keyColumn="id" keyProperty="id" parameterType="map">

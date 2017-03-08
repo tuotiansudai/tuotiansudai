@@ -89,11 +89,14 @@
         id, invest_id, corpus, default_interest, expected_interest, actual_interest, expected_fee, actual_fee, repay_amount, period, repay_date, actual_repay_date, status, is_transferred, created_time, updated_time
     </sql>
 
-    <insert id="create" parameterType = "java.util.List">
+    <insert id="create" parameterType="java.util.List">
         insert into invest_repay ( <include refid="columns"></include> )
         values
         <foreach collection="list" item="item" index="index" separator=",">
-            (#{item.id}, #{item.investId}, #{item.corpus}, #{item.defaultInterest}, #{item.expectedInterest}, #{item.actualInterest}, #{item.expectedFee}, #{item.actualFee}, #{item.repayAmount}, #{item.period}, #{item.repayDate}, #{item.actualRepayDate}, #{item.status}, #{item.isTransferred}, #{item.createdTime}, now())
+            (#{item.id}, #{item.investId}, #{item.corpus}, #{item.defaultInterest}, #{item.expectedInterest},
+            #{item.actualInterest}, #{item.expectedFee}, #{item.actualFee}, #{item.repayAmount}, #{item.period},
+            #{item.repayDate}, #{item.actualRepayDate}, #{item.status}, #{item.isTransferred}, #{item.createdTime},
+            now())
         </foreach>
     </insert>
 
@@ -111,6 +114,10 @@
         where invest_id = #{investId}
         and invest.login_name = #{loginName}
         order by period asc
+    </select>
+
+    <select id="findByInvestId" parameterType="long"  resultMap="investRepayResultMap">
+        select * from invest_repay where invest_id = #{investId}
     </select>
 
     <select id="findByInvestIdAndPeriod" parameterType="map" resultMap="investRepayResultMap">
@@ -194,7 +201,8 @@
           AND #{endTime}
     </select>
 
-    <select id="findByLoginNameAndTimeSuccessInvestRepayList" parameterType="map" resultMap="investRepayResultMapWithLoanResultMap">
+    <select id="findByLoginNameAndTimeSuccessInvestRepayList" parameterType="map"
+            resultMap="investRepayResultMapWithLoanResultMap">
         SELECT
           ir.*,
           t.loanName AS `name`,
@@ -234,7 +242,8 @@
         LIMIT #{startLimit}, #{endLimit}
     </select>
 
-    <select id="findByLoginNameAndTimeNotSuccessInvestRepayList" parameterType="map" resultMap="investRepayResultMapWithLoanResultMap">
+    <select id="findByLoginNameAndTimeNotSuccessInvestRepayList" parameterType="map"
+            resultMap="investRepayResultMapWithLoanResultMap">
         SELECT
           ir.*,
           t.loanName AS `name`,
@@ -357,7 +366,9 @@
     </select>
 
     <select id="findByLoginNameAndStatus" parameterType="map" resultMap="investRepayResultMap">
-        select ir.id, ir.invest_id, ir.corpus, ir.default_interest, ir.expected_interest, ir.actual_interest, ir.expected_fee, ir.actual_fee, ir.repay_amount, ir.period, ir.repay_date, ir.actual_repay_date, ir.status, ir.created_time
+        select ir.id, ir.invest_id, ir.corpus, ir.default_interest, ir.expected_interest, ir.actual_interest,
+        ir.expected_fee, ir.actual_fee, ir.repay_amount, ir.period, ir.repay_date, ir.actual_repay_date, ir.status,
+        ir.created_time
         from invest_repay ir
         inner join invest on invest.id = ir.invest_id
         where invest.login_name = #{loginName}

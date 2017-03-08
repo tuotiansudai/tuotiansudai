@@ -50,6 +50,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserOpLogService userOpLogService;
 
+
+
     private final static int LOGIN_NAME_LENGTH = 8;
 
     @Override
@@ -183,4 +185,12 @@ public class UserServiceImpl implements UserService {
     public UserModel findByMobile(String mobile) {
         return userMapper.findByMobile(mobile);
     }
+
+    @Override
+    public long getExperienceBalanceByLoginName(String loginName) {
+        UserModel userModel = userMapper.findByLoginName(loginName);
+        return userModel != null ? userModel.getExperienceBalance() : 0;
+    }
+
+
 }

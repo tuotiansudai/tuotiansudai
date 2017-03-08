@@ -1,6 +1,7 @@
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="" pageJavascript="user-remain-list.js" headLab="user-manage" sideLab="userRemain" title="留存用户查询">
+    <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 
 <!-- content area begin -->
 <div class="col-md-10">
@@ -172,6 +173,9 @@
                     <span>Next »</span></a>
                 </li>
             </ul>
+            <@security.authorize access="hasAnyAuthority('DATA')">
+                <button class="btn btn-default pull-left down-load" type="button">导出Excel</button>
+            </@security.authorize>
         </nav>
     </div>
 </div>

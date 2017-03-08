@@ -41,7 +41,7 @@ public class NewAnswerAlertDirective implements TemplateDirectiveModel {
         @Override
         public void write(char[] chars, int off, int len) throws IOException {
             String loginName = new String(chars, off, len);
-            boolean isExists = questionService.isNewAnswerExists(loginName);
+            boolean isExists = questionService.isNewAnswerExists();
             out.write(String.valueOf(isExists));
         }
 

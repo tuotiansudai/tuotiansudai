@@ -62,15 +62,13 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
     @Autowired
     private InvestService investService;
 
-    @Autowired
-    private UserCouponMapper userCouponMapper;
-
     public static long DEFAULT_INVEST_AMOUNT = 1000000;
 
     @Override
     public BaseResponseDto<LoanListResponseDataDto> generateIndexLoan(String loginName) {
         List<ProductType> noContainExperienceLoans = Lists.newArrayList(ProductType._30, ProductType._90, ProductType._180, ProductType._360);
         List<ProductType> allProductTypesCondition = Lists.newArrayList(ProductType.EXPERIENCE, ProductType._30, ProductType._90, ProductType._180, ProductType._360);
+        List<ProductType> onlyContainExperienceLoans = Lists.newArrayList(ProductType.EXPERIENCE, ProductType._30, ProductType._90, ProductType._180, ProductType._360);
 
         LoanModel loanModel = null;
         //没登录 or 没投资过任何标
@@ -78,7 +76,7 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
                 investMapper.findCountSuccessByLoginNameAndProductTypes(loginName, allProductTypesCondition) == 0) {
 
             List<LoanModel> loanModels;
-            if (StringUtils.isEmpty(loginName) || (!StringUtils.isEmpty(loginName)) && CollectionUtils.isNotEmpty(userCouponMapper.findUsedExperienceByLoginName(loginName))) {
+            if (StringUtils.isEmpty(loginName) || (!StringUtils.isEmpty(loginName)) && investMapper.findCountSuccessByLoginNameAndProductTypes(loginName, onlyContainExperienceLoans) == 0) {
                 loanModels = loanMapper.findByProductType(LoanStatus.RAISING, Lists.newArrayList(Lists.newArrayList(ProductType.EXPERIENCE)), ActivityType.NEWBIE);
             } else {
                 loanModels = loanMapper.findByProductType(null, noContainExperienceLoans, null);
