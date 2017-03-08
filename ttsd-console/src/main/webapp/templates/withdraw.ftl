@@ -63,6 +63,14 @@
                     </#list>
                 </select>
             </div>
+            <div class="form-group">
+                <label for="control-label">用户角色</label>
+                <select class="selectpicker" name="role">
+                    <option value="">全部</option>
+                    <option value="INVESTOR" <#if role?? && role == "INVESTOR">selected</#if>>出借人</option>
+                    <option value="LOANER" <#if role?? && role == "LOANER">selected</#if>>借款人</option>
+                </select>
+            </div>
 
             <button type="submit" class="btn btn-sm btn-primary">查询</button>
             <button type="reset" class="btn btn-sm btn-default">重置</button>
@@ -132,7 +140,7 @@
             <ul class="pagination pull-left">
                 <li>
                     <#if pagination.hasPreviousPage >
-                    <a href="?withdrawId=${withdrawId!}&mobile=${mobile!}&startTime=${(startTime?string('yyyy-MM-dd HH:mm:ss'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm:ss'))!}&source=${source!}&status=${status!}&pageSize=${pageSize}&index=${index-1}"
+                    <a href="?withdrawId=${withdrawId!}&mobile=${mobile!}&startTime=${(startTime?string('yyyy-MM-dd HH:mm:ss'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm:ss'))!}&source=${source!}&status=${status!}&role=${role!}&index=${index-1}"
                        aria-label="Previous">
                     <#else>
                     <a href="#" aria-label="Previous">
@@ -143,7 +151,7 @@
                 <li><a>${pagination.index}</a></li>
                 <li>
                     <#if pagination.hasNextPage >
-                    <a href="?withdrawId=${withdrawId!}&mobile=${mobile!}&startTime=${(startTime?string('yyyy-MM-dd HH:mm:ss'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm:ss'))!}&source=${source!}&status=${status!}&pageSize=${pageSize}&index=${index+1}"
+                    <a href="?withdrawId=${withdrawId!}&mobile=${mobile!}&startTime=${(startTime?string('yyyy-MM-dd HH:mm:ss'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm:ss'))!}&source=${source!}&status=${status!}&role=${role!}&index=${index+1}"
                        aria-label="Next">
                     <#else>
                     <a href="#" aria-label="Next">

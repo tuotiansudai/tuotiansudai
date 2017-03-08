@@ -26,7 +26,7 @@ public class UserView implements Serializable {
     private boolean isReferrerStaff;
     private Date lastBillTime;
     private boolean fastPay;
-
+    private long experienceBalance;
     public boolean isBindBankCard() {
         return isBindBankCard;
     }
@@ -201,5 +201,13 @@ public class UserView implements Serializable {
 
     public void setFastPay(boolean fastPay) {
         this.fastPay = fastPay;
+    }
+
+    public long getExperienceBalance() {
+        return experienceBalance;
+    }
+
+    public void setExperienceBalance(long experienceBalance) {
+        this.experienceBalance = experienceBalance;
     }
 }

@@ -6,6 +6,7 @@ import com.tuotiansudai.point.repository.model.ProductModel;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -15,9 +16,10 @@ public interface ProductMapper {
 
     void update(ProductModel productModel);
 
-    List<ProductModel> findExchangeableProductsList(@Param(value = "type") GoodsType type,
-                                        @Param(value = "index") int index,
-                                        @Param(value = "pageSize") int pageSize);
+    List<ProductModel> findExchangeableProductsList(@Param(value="currentDate") Date currentDate,
+                                                    @Param(value = "type") GoodsType type,
+                                                    @Param(value = "index") int index,
+                                                    @Param(value = "pageSize") int pageSize);
 
     long findExchangeableProductsCount(@Param(value = "type") GoodsType type);
 

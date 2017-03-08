@@ -2,6 +2,7 @@ package com.tuotiansudai.membership.service;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
+import com.tuotiansudai.enums.AppUrl;
 import com.tuotiansudai.enums.MessageEventType;
 import com.tuotiansudai.enums.PushSource;
 import com.tuotiansudai.enums.PushType;
@@ -100,6 +101,6 @@ public class MembershipInvestService {
                 content,
                 null
         ));
-        mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(Lists.newArrayList(loginName), PushSource.ALL, PushType.MEMBERSHIP_UPGRADE, title));
+        mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(Lists.newArrayList(loginName), PushSource.ALL, PushType.MEMBERSHIP_UPGRADE, title, AppUrl.MESSAGE_CENTER_LIST));
     }
 }

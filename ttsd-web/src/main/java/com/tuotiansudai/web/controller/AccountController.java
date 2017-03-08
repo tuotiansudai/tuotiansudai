@@ -48,6 +48,9 @@ public class AccountController {
     @Autowired
     private UserFundMapper userFundMapper;
 
+    @Autowired
+    private UserService userService;
+
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView account() {
         ModelAndView modelAndView = new ModelAndView("/account");
@@ -60,26 +63,31 @@ public class AccountController {
         modelAndView.addObject("mobile", LoginUserInfo.getMobile());
         modelAndView.addObject("userMembershipLevel", membershipModel != null ? membershipModel.getLevel() : 0);
 
-
         modelAndView.addObject("balance", userFundView.getBalance()); //余额
         modelAndView.addObject("expectedTotalCorpus", userFundView.getExpectedTotalCorpus()); //待收投资本金
-        modelAndView.addObject("expectedTotalInterest", userFundView.getExpectedTotalCorpusInterest() + userFundView.getExpectedTotalExtraInterest()); //待收预期收益
+        modelAndView.addObject("expectedTotalInterest", userFundView.getExpectedTotalInterest()); //待收预期收益
 
         modelAndView.addObject("referRewardAmount", userFundView.getReferRewardAmount()); //已收推荐奖励
         modelAndView.addObject("redEnvelopeAmount", userFundView.getRedEnvelopeAmount()); //已收红包奖励
         modelAndView.addObject("actualTotalInterest", userFundView.getActualTotalInterest()); //已收投资收益
 
+        modelAndView.addObject("actualTotalExtraInterest", userFundView.getActualTotalExtraInterest()); //已收投资奖励
+        modelAndView.addObject("expectedTotalExtraInterest", userFundView.getExpectedTotalExtraInterest()); //待收收投资奖励
+
         modelAndView.addObject("expectedExperienceInterest", userFundView.getExpectedExperienceInterest()); //待收体验金收益
         modelAndView.addObject("actualExperienceInterest", userFundView.getActualExperienceInterest()); //已收体验金收益
 
+        modelAndView.addObject("investFrozeAmount", userFundView.getInvestFrozeAmount());
+        modelAndView.addObject("withdrawFrozeAmount", userFundView.getWithdrawFrozeAmount());
         modelAndView.addObject("freeze", userFundView.getInvestFrozeAmount() + userFundView.getWithdrawFrozeAmount()); //冻结金额
 
-        modelAndView.addObject("totalIncome", userFundView.getTotalIncome()); //已收投资收益
+        //累计收益= 已收投资收益+已收投资奖励+已收红包奖励+已收推荐奖励+已收体验金收益
+        modelAndView.addObject("totalIncome", userFundView.getActualTotalInterest()+userFundView.getActualTotalExtraInterest()+userFundView.getRedEnvelopeAmount()+userFundView.getReferRewardAmount()+userFundView.getActualExperienceInterest());
 
+        modelAndView.addObject("experienceBalance", userService.getExperienceBalanceByLoginName(loginName));
 
         Date firstDateOfMonth = new DateTime().dayOfMonth().withMinimumValue().toDate();
         Date lastDateOfMonth = DateUtils.addMonths(firstDateOfMonth, 1);
-
         if (userRoleService.judgeUserRoleExist(loginName, Role.LOANER)) {
             modelAndView.addObject("expectedRepayAmountOfMonth", loanRepayService.findByLoginNameAndTimeSuccessRepay(loginName, firstDateOfMonth, lastDateOfMonth)); //本月未还款总额
             modelAndView.addObject("repayList", loanRepayService.findLoanRepayInAccount(loginName, firstDateOfMonth, lastDateOfMonth, 0, 6));

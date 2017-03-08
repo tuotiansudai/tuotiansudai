@@ -226,17 +226,18 @@ public class ProductServiceImpl implements ProductService {
 
     private List<ProductShowItemDto> findAllProductsByGoodsType(GoodsType goodsType) {
         List<ProductShowItemDto> productShowItemDtos = new ArrayList<>();
+        Date currentDate = new Date();
         switch (goodsType) {
             case VIRTUAL:
                 productShowItemDtos = productMapper
-                        .findExchangeableProductsList(GoodsType.VIRTUAL, 0, Integer.MAX_VALUE)
+                        .findExchangeableProductsList(currentDate, GoodsType.VIRTUAL, 0, Integer.MAX_VALUE)
                         .stream()
                         .map(p -> new ProductShowItemDto(p, GoodsType.VIRTUAL, ""))
                         .collect(Collectors.toList());
                 break;
             case PHYSICAL:
                 productShowItemDtos = productMapper
-                        .findExchangeableProductsList(GoodsType.PHYSICAL, 0, Integer.MAX_VALUE)
+                        .findExchangeableProductsList(currentDate, GoodsType.PHYSICAL, 0, Integer.MAX_VALUE)
                         .stream()
                         .map(p -> new ProductShowItemDto(p, GoodsType.PHYSICAL, ""))
                         .collect(Collectors.toList());
@@ -245,7 +246,7 @@ public class ProductServiceImpl implements ProductService {
                 // 根据需求，可展示的ExchangeCoupon最多在20-30个左右。
                 final int index = 0;
                 final int pageSize = 100;
-                productShowItemDtos = productMapper.findExchangeableProductsList(goodsType, index, pageSize)
+                productShowItemDtos = productMapper.findExchangeableProductsList(currentDate, goodsType, index, pageSize)
                         .stream()
                         .map(m -> {
                             CouponModel couponModel = couponMapper.findExchangeableCouponById(m.getCouponId());

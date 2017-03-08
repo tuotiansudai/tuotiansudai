@@ -107,12 +107,12 @@ public class MobileAppInvestListsV3ServiceImpl implements MobileAppInvestListsV3
                 dto.setInvestAmount(transferApplicationModel != null ? AmountConverter.convertCentToString(transferApplicationModel.getInvestAmount()) : AmountConverter.convertCentToString(investModel.getAmount()));
                 dto.setTransferInvest(transferApplicationModel != null ? true : false);
 
-                if (loanStatus.equals(LoanStatus.REPAYING) && loanModel.getProductType().equals(ProductType.EXPERIENCE)) {
+                /*if (loanStatus.equals(LoanStatus.REPAYING) && loanModel.getProductType().equals(ProductType.EXPERIENCE)) {
                     List<UserCouponModel> userCouponModelList = userCouponMapper.findByInvestId(investModel.getId());
                     if (CollectionUtils.isNotEmpty(userCouponModelList)) {
                         dto.setInvestAmount(AmountConverter.convertCentToString(couponMapper.findById(userCouponModelList.get(0).getCouponId()).getAmount()));
                     }
-                }
+                }*/
 
                 long actualInterest = 0;
                 long expectedInterest = 0;

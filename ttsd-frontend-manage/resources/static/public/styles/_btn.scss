@@ -54,14 +54,14 @@
     //box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
   }
   &:disabled, &:disabled:hover {
-    background: #ccc !important;
-    border:1px solid #ccc!important;
+    background: #ccc;
+    border:1px solid #ccc;
     cursor: default;
     color: #fff;
   }
   &[disabled], &[disabled]:hover {
-    background: #ccc !important;
-    border:1px solid #ccc!important;
+    background: #ccc;
+    border:1px solid #ccc;
     cursor: default;
     color: #fff;
   }
@@ -77,14 +77,14 @@
     color: #fff;
   }
   &:disabled, &:disabled:hover {
-    background: #ccc !important;
-    border:1px solid #ccc!important;
+    background: #ccc;
+    border:1px solid #ccc;
     cursor: default;
     color: #fff;
   }
   &[disabled], &[disabled]:hover {
-    background: #ccc !important;
-    border:1px solid #ccc!important;
+    background: #ccc;
+    border:1px solid #ccc;
     cursor: default;
     color: #fff;
   }
@@ -109,7 +109,7 @@
   @extend .btn;
   background: rgba(255,172,42,1);
   border:1px solid rgba(255,172,42,1);
-  color: #fff!important;
+  color: #fff;
   &:hover {
     background: rgba(255,172,42,0.8);
     border:1px solid rgba(255,172,42,0.8);
