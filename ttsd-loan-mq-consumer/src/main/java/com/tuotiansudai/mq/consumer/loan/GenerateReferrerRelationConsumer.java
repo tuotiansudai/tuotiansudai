@@ -47,7 +47,7 @@ public class GenerateReferrerRelationConsumer implements MessageConsumer {
         }
 
         if (Strings.isNullOrEmpty(userModel.getReferrer())) {
-            logger.warn("[GenerateReferrerRelation MQ] login name({}) referrer is empty, ", message);
+            logger.info("[GenerateReferrerRelation MQ] login name({}) referrer is empty, ", message);
             return;
         }
 
