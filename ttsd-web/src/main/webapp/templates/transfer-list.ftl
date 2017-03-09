@@ -22,7 +22,7 @@
                 <#list rateKeys as key>
                     <a <#if rateStart == 0 && rateEnd == 0 && key=="">class="active"
                        <#elseif rateStart == 0 && rateEnd == 0.08 && rateMap[key]=="8%以下">class="active"
-                       <#elseif rateStart == 0.08 && rateEnd == 0.1  && rateMap[key]=="8-10">class="active"
+                       <#elseif rateStart == 0.08 && rateEnd == 0.1  && rateMap[key]=="8-10%">class="active"
                        <#elseif rateStart == 0.10 && rateEnd == 0 && rateMap[key]=="10%以上">class="active"
                     </#if>
                        href=${rateUrl?replace("{rateType}",key)}>${rateMap[key]}</a>
