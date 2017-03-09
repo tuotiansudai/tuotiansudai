@@ -165,8 +165,7 @@ require(['jquery', 'underscore', 'layerWrapper', 'commonFun', 'superslide', 'pla
                     dataType: 'json'
                 }).done(function (data) {
                     //姓名的第一个字母用*替换
-                    var showName = '*' + data.substring(1, data.length);
-                    $('.refer-name', $landingContainerBox).text(showName);
+                    $('.refer-name', $landingContainerBox).text(data);
                 });
             }
             else {
