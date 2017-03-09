@@ -41,8 +41,13 @@ public class GenerateReferrerRelationConsumer implements MessageConsumer {
         }
 
         UserModel userModel = userMapper.findByLoginNameOrMobile(message);
-        if (userModel == null || Strings.isNullOrEmpty(userModel.getReferrer())) {
-            logger.error("[GenerateReferrerRelation MQ] login name({}) not found or referrer is empty, ", message);
+        if(userModel == null){
+            logger.error("[GenerateReferrerRelation MQ] login name({}) not found ", message);
+            return;
+        }
+
+        if (Strings.isNullOrEmpty(userModel.getReferrer())) {
+            logger.warn("[GenerateReferrerRelation MQ] login name({}) not found or referrer is empty, ", message);
             return;
         }
 
