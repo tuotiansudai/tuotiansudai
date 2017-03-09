@@ -46,7 +46,7 @@
                     <i class="icon-line top"><span></span></i>
                     <i class="icon-line bottom"><span></span></i>
                     <h3>邀好友拿<span>3</span>重礼包</h3>
-                    <p>您已成功邀请<span>1</span>位好友， 赚取红包<span>100</span>元，赚取现金奖励<span>110</span>元 <a href="">查看邀请详情</a></p>
+                    <p>您已成功邀请<span>${referrerCount}</span>位好友， 赚取红包<span>${referrerRedEnvelop}</span>元，赚取现金奖励<span>${referrerAmount}</span>元 <a href="">查看邀请详情</a></p>
                     <p class="media-item-phone">
                         <a href="/referrer/refer-list" class="invite-btn">马上邀请好友</a>
                     </p>

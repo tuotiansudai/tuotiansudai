@@ -102,6 +102,27 @@ public class UserCouponMapperTest {
         assertEquals(userCouponModelList.get(0).getCoupon().getComment(), couponModel.getComment());
     }
 
+    @Test
+    public void shouldSumCouponAmountIsOk(){
+        UserModel userModel = fakeUserModel();
+        userMapper.create(userModel);
+
+        CouponModel couponModel1 = fakeCouponModel();
+        CouponModel couponModel2 = fakeCouponModel();
+        couponMapper.create(couponModel1);
+        couponMapper.create(couponModel2);
+
+        UserCouponModel userCouponModel1 = fakeUserCouponModel(couponModel1.getId());
+        UserCouponModel userCouponModel2 = fakeUserCouponModel(couponModel2.getId());
+
+        userCouponMapper.create(userCouponModel1);
+        userCouponMapper.create(userCouponModel2);
+
+
+        long couponAmount = userCouponMapper.findSumAmountByCouponId(userModel.getLoginName(), Lists.newArrayList(couponModel1.getId(), couponModel2.getId()));
+        assertEquals(couponAmount, couponModel1.getAmount() + couponModel2.getAmount());
+    }
+
     private UserCouponModel fakeUserCouponModel(long couponId) {
         return new UserCouponModel("couponTest", couponId, new Date(), new Date());
     }
@@ -146,7 +167,7 @@ public class UserCouponMapperTest {
         userModelTest.setLoginName("couponTest");
         userModelTest.setPassword("123abc");
         userModelTest.setEmail("12345@abc.com");
-        userModelTest.setMobile("13900000000");
+        userModelTest.setMobile("13123400000");
         userModelTest.setRegisterTime(new Date());
         userModelTest.setStatus(UserStatus.ACTIVE);
         userModelTest.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));

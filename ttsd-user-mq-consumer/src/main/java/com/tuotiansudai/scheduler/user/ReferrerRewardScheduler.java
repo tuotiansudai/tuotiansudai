@@ -12,6 +12,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import java.text.MessageFormat;
@@ -33,16 +34,19 @@ public class ReferrerRewardScheduler {
     @Autowired
     private InvestMapper investMapper;
 
-    private Date startTime = DateTime.parse("2017-03-07 00:00:00", DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+    @Value(value = "${activity.invite.friend.startTime}")
+    private String activityStartTimeStr;
+
 
     @Scheduled(cron = "0 0 0/3 1/1 * ?", zone = "Asia/Shanghai")
     public void referrerReward() {
         logger.info("[ReferrerRewardScheduler] is start ...");
+        Date activityStartTime = DateTime.parse(activityStartTimeStr, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
         DateTime nowTime = DateTime.now();
         Date endTime = nowTime.withTimeAtStartOfDay().toDate();
         Date registerStartTime = nowTime.plusMonths(-1).plusDays(-15).toDate();
-        if(registerStartTime.before(startTime)){
-            registerStartTime = startTime;
+        if(registerStartTime.before(activityStartTime)){
+            registerStartTime = activityStartTime;
         }
         List<UserModel> registerUsers = userMapper.findUsersByRegisterTimeOrReferrer(registerStartTime, endTime, null);
         Map<String, Integer> referrerMaps = Maps.newConcurrentMap();
