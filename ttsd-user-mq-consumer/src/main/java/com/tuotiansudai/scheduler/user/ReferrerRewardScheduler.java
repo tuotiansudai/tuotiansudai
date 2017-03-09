@@ -8,6 +8,7 @@ import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,17 +33,22 @@ public class ReferrerRewardScheduler {
     @Autowired
     private InvestMapper investMapper;
 
-    @Scheduled(cron = "0 0 8 1 1/1 ?", zone = "Asia/Shanghai")
+    private Date startTime = DateTime.parse("2017-03-07 00:00:00", DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+
+    @Scheduled(cron = "0 0 0/3 1/1 * ?", zone = "Asia/Shanghai")
     public void referrerReward() {
         logger.info("[ReferrerRewardScheduler] is start ...");
         DateTime nowTime = DateTime.now();
-        Date endTime = nowTime.toDate();
-        Date startTime = nowTime.plusMonths(-1).toDate();
-        List<UserModel> registerUsers = userMapper.findUsersByRegisterTimeOrReferrer(startTime, endTime, null);
+        Date endTime = nowTime.withTimeAtStartOfDay().toDate();
+        Date registerStartTime = nowTime.plusMonths(-1).plusDays(-15).toDate();
+        if(registerStartTime.before(startTime)){
+            registerStartTime = startTime;
+        }
+        List<UserModel> registerUsers = userMapper.findUsersByRegisterTimeOrReferrer(registerStartTime, endTime, null);
         Map<String, Integer> referrerMaps = Maps.newConcurrentMap();
         registerUsers.stream()
                 .filter(userModel -> !Strings.isNullOrEmpty(userModel.getReferrer()))
-                .filter(userModel -> investMapper.sumSuccessActivityInvestAmount(userModel.getLoginName(), null, startTime, endTime) > 200000l)
+                .filter(userModel -> investMapper.sumSuccessActivityInvestAmount(userModel.getLoginName(), null, userModel.getRegisterTime(), new DateTime(userModel.getRegisterTime()).plusDays(15).toDate()) > 200l)
                 .forEach(userModel -> {
                     if (referrerMaps.get(userModel.getReferrer()) == null) {
                         referrerMaps.put(userModel.getReferrer(), 1);
@@ -72,4 +78,5 @@ public class ReferrerRewardScheduler {
         logger.info(MessageFormat.format("[ReferrerRewardScheduler] assign coupon. loginName:{0}, couponId:{1}", loginName, String.valueOf(couponId)));
         mqClient.sendMessage(MessageQueue.CouponAssigning, loginName + ":" + couponId);
     }
+
 }
