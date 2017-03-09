@@ -17,36 +17,6 @@
     display:block;
   }
 }
-.pop-personal-win {
-  border-radius: 14px !important;
-  background-color: transparent !important;
-  box-shadow: none !important;
-  @media (max-width:700px) {
-    width: 90% !important;
-  }
-  .pop-layer-out {
-    width: 100%;
-    height: 300px;
-    background-size: 100%;
-    background-position: left 60px;
-    padding: 90px 40px 10px 40px;
-
-    .btn-to-close {
-      width: 25px;
-      height: 60px;
-    }
-    p {
-      font-size: 16px;
-    }
-    a.btn-to-identification {
-      display: inline-block;
-      width: 143px;
-      height: 42px;
-      bottom: 45px;
-      left: 30%;
-    }
-  }
-}
 .for-mobile {
   display: none;
   text-align: center;

@@ -33,7 +33,7 @@
                         <input type="text" class="input-invite"  disabled value="您的好友还不知道您是谁，先来实名认证吧">
                     </dd>
                     <dd>
-                        <a class="btn-copy-link to-identification" href="javascript:void(0);" >实名认证</a>
+                        <a class="btn-copy-link to-identification" href="<#if !isAppSource>/register/account?redirect=/activity/invite-friend<#else>app/tuotian/authentication</#if>" >实名认证</a>
                     </dd>
                 </dl>
             </div>
@@ -261,10 +261,10 @@
                 </li>
                 <li class="money-type free-type">
                     <div class="info-intro">
-                        <span class="number-text"><strong>688</strong>元</span>
+                        <span class="number-text"><strong>668</strong>元</span>
                         <span>现金红包</span>
                     </div>
-                    <div class="info-name">现金红包688元</div>
+                    <div class="info-name">现金红包668元</div>
                 </li>
                 <li class="coupon-type">
                     <div class="info-intro">
@@ -286,13 +286,6 @@
         <dd>7.活动中如发现恶意注册虚假账号、恶意刷奖等违规操作及作弊行为，若判定为违规操作及作弊行为，拓天速贷将取消您的获奖的资格，并有权撤销违规交易；</dd>
         <dd>8.活动遵守拓天速贷法律声明，最终解释权归拓天速贷平台所有。</dd>
     </dl>
-</div>
-
-<div class="pop-layer-out" style="display: none">
-    <div class="btn-to-close"></div>
-    <p>您的好友可能猜不到你是谁<br />先来进行实名认证吧！</p>
-
-    <a href="/register/account?redirect=/activity/share-reward"  class="btn-to-identification"></a>
 </div>
 
 <#include "login-tip.ftl" />

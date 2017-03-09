@@ -3,9 +3,7 @@ require(['jquery','layerWrapper','clipboard','commonFun','logintip','md5','qrcod
 	window['Clipboard']=clipboard;
 
 	var $shareReward=$('#shareRewardContainer'),
-		$inviteFriend=$('.invite-box-friend',$shareReward),
 		$popWid=$('.pop-layer-out'),
-		$toIdentification=$('.to-identification',$shareReward),
 		$copyButton=$('.copy-button',$shareReward);
 
 	$('.btn-to-close',$popWid).on('click',function() {
@@ -28,7 +26,7 @@ require(['jquery','layerWrapper','clipboard','commonFun','logintip','md5','qrcod
 		var md5String=commonFun.compile(md5Mobile,mobile),
 			origin=location.origin;
 
-		$clipboardText.val(origin+'/activity/landing-page?referrer='+md5String);
+		$clipboardText.val(origin+'/activity/invite-friend?referrer='+md5String);
 
 		//动态生成二维码
 		$('.img-code',$shareReward).qrcode(origin+'/activity/app-share?referrerMobile='+mobile);
@@ -46,25 +44,4 @@ require(['jquery','layerWrapper','clipboard','commonFun','logintip','md5','qrcod
 			});
 		})(jQuery);
 	}
-
-	//已登录未认证,去认证
-	$toIdentification.on('click',function() {
-		var $this=$(this);
-			layer.open({
-				type: 1,
-				title: false,
-				closeBtn:0,
-				area: ['550px','410px'],
-				shadeClose: true,
-				move: false,
-				scrollbar: true,
-				skin:'pop-personal-win',
-				content: $popWid
-			});
-	});
-
-	cnzzPush.trackClick('200APP分享', '推荐奖励落地页', '页面加载');
-
-
-
 });
