@@ -33,7 +33,7 @@
                         <input type="text" class="input-invite"  disabled value="您的好友还不知道您是谁，先来实名认证吧">
                     </dd>
                     <dd>
-                        <a class="btn-copy-link to-identification" href="javascript:void(0);" >实名认证</a>
+                        <a class="btn-copy-link to-identification" href="<#if !isAppSource>/register/account?redirect=/activity/invite-friend<#else>app/tuotian/authentication</#if>" >实名认证</a>
                     </dd>
                 </dl>
             </div>
@@ -46,9 +46,9 @@
                     <i class="icon-line top"><span></span></i>
                     <i class="icon-line bottom"><span></span></i>
                     <h3>邀好友拿<span>3</span>重礼包</h3>
-                    <p>您已成功邀请<span>${referrerCount}</span>位好友， 赚取红包<span>${referrerRedEnvelop}</span>元，赚取现金奖励<span>${referrerAmount}</span>元 <a href="">查看邀请详情</a></p>
+                    <p>您已成功邀请<span>${referrerCount}</span>位好友， 赚取红包<span>${referrerRedEnvelop}</span>元，赚取现金奖励<span>${referrerAmount}</span>元 <a href="<#if !isAppSource>/referrer/refer-list<#else>app/tuotian/refer-reward-list</#if>">查看邀请详情</a></p>
                     <p class="media-item-phone">
-                        <a href="/referrer/refer-list" class="invite-btn">马上邀请好友</a>
+                        <a href="app/tuotian/refer-reward-list" class="invite-btn">马上邀请好友</a>
                     </p>
                 </div>
                 <div class="weixin-code">
@@ -199,7 +199,7 @@
         </table>
         <div class="btn-item">
             <p>
-                <span>小贴士：</span>好友在注册后15天内投资额达到2000及以上（新手体验项目及债权转让除外），视为一个有效邀请。
+                <span>小贴士：</span>好友在注册后15天内投资额达到2000及以上（拓天体验金项目及债权转让除外），视为一个有效邀请。
             </p>
             <p class="media-item">
                 <a href="/referrer/refer-list" class="invite-btn">立即邀请好友拿奖励</a>
@@ -240,7 +240,7 @@
                 <dl>
                     <dt>房产抵押借款<span>新手专享</span></dt>
                     <dd>
-                        <span class="bite-text"><strong>13</strong>%</span>
+                        <span class="bite-text"><strong>11</strong>%</span>
                         <span>预期年化收益</span>
                     </dd>
                     <dd>
@@ -255,16 +255,16 @@
             <ul class="info-item free-list">
                 <li class="money-type">
                     <div class="info-intro free-icon">
-                        <img src="${staticServer}/activity/images/invite-friend/free-img.png" width="100%">
+                        <img src="${staticServer}/activity/images/invite-friend/free-img.png" width="80%">
                     </div>
                     <div class="info-name">体验金6888元</div>
                 </li>
                 <li class="money-type free-type">
                     <div class="info-intro">
-                        <span class="number-text"><strong>688</strong>元</span>
+                        <span class="number-text"><strong>668</strong>元</span>
                         <span>现金红包</span>
                     </div>
-                    <div class="info-name">现金红包688元</div>
+                    <div class="info-name">现金红包668元</div>
                 </li>
                 <li class="coupon-type">
                     <div class="info-intro">
@@ -286,13 +286,6 @@
         <dd>7.活动中如发现恶意注册虚假账号、恶意刷奖等违规操作及作弊行为，若判定为违规操作及作弊行为，拓天速贷将取消您的获奖的资格，并有权撤销违规交易；</dd>
         <dd>8.活动遵守拓天速贷法律声明，最终解释权归拓天速贷平台所有。</dd>
     </dl>
-</div>
-
-<div class="pop-layer-out" style="display: none">
-    <div class="btn-to-close"></div>
-    <p>您的好友可能猜不到你是谁<br />先来进行实名认证吧！</p>
-
-    <a href="/register/account?redirect=/activity/share-reward"  class="btn-to-identification"></a>
 </div>
 
 <#include "login-tip.ftl" />
