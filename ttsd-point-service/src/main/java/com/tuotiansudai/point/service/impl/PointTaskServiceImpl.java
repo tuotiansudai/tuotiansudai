@@ -126,6 +126,7 @@ public class PointTaskServiceImpl implements PointTaskService {
                         break;
                     }
                 case EACH_RECOMMEND_REGISTER:
+                    this.sendReferrerReward(loginName, pointTask);
                 case FIRST_REFERRER_INVEST:
                     referrer = userMapper.findByLoginName(loginName).getReferrer();
                     if (Strings.isNullOrEmpty(referrer)) {
@@ -337,7 +338,7 @@ public class PointTaskServiceImpl implements PointTaskService {
                 pointBillService.createTaskPointBill(referrer, bankCardTaskModel.getId(), bankCardTaskModel.getPoint(), pointBillNote);
                 couponId = 401l;
                 break;
-            case REGISTER:
+            case EACH_RECOMMEND_REGISTER:
                 couponId =  400l;
                 break;
             case FIRST_INVEST:
@@ -346,7 +347,7 @@ public class PointTaskServiceImpl implements PointTaskService {
         }
 
         if(couponId != null){
-            logger.info(MessageFormat.format("[推荐奖励] first_invest login_name:{0}, referrer:{1}, couponId:{2}", loginName, referrer, String.valueOf(couponId)));
+            logger.info(MessageFormat.format("[推荐奖励] pointTask:{0} login_name:{1}, referrer:{2}, couponId:{3}",pointTask, loginName, referrer, String.valueOf(couponId)));
             mqWrapperClient.sendMessage(MessageQueue.CouponAssigning, referrer + ":" + couponId);
         }
     }
