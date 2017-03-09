@@ -69,6 +69,6 @@ public class ActivitiesController {
     @RequestMapping(value = "/get-realRealName", method = RequestMethod.GET)
     public String markRemind(@RequestParam(value = "mobile") String mobile) {
         UserModel userModel = userService.findByMobile(mobile);
-        return userModel != null ? "*" + userModel.getUserName().substring(1, userModel.getUserName().length()) : MobileEncoder.encode(mobile);
+        return userModel != null && !Strings.isNullOrEmpty(userModel.getUserName()) ? "*" + userModel.getUserName().substring(1, userModel.getUserName().length()) : MobileEncoder.encode(mobile);
     }
 }
