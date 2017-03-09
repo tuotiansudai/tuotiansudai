@@ -26,7 +26,7 @@
             <div class="actor-model mt-50">
                 <h3><span><i class="left-icon"></i>奖励<i class="right-icon"></i></span></h3>
                 <div class="actor-content mt-30">
-                    <img src="${staticServer}/activity/images/sign/actor/achievement/achievement-list.png" width="100%">
+                    <img src="${staticServer}/activity/images/sign/actor/achievement/achievement-list0309.png" width="100%">
                 </div>
             </div>
             <div class="actor-model mt-50">
@@ -84,7 +84,7 @@
         <div class="actor-model mt-25">
             <h3><span><i class="left-icon"></i>奖励<i class="right-icon"></i></span></h3>
             <div class="actor-content mt-30 tc">
-                <img src="${staticServer}/activity/images/sign/actor/achievement/achievement-list-phone.png" width="60%">
+                <img src="${staticServer}/activity/images/sign/actor/achievement/achievement-list-phone0309.png" width="60%">
             </div>
         </div>
     </div>
