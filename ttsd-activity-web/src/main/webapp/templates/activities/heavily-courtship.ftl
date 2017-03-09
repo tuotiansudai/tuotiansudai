@@ -6,7 +6,7 @@
     <div class="main-content-heavily">
         <div class="bg-line"></div>
         <div class="bg-line"></div>
-        <img src="${staticServer}/activity/images/heavily-courtship/envelop-word.jpg"  class="envelop-word">
+        <img src="${staticServer}/activity/images/heavily-courtship/envelop-word.png"  class="envelop-word">
         <div class="con-inner clearfix">
             <div class="title-column">
                 <img src="${staticServer}/activity/images/heavily-courtship/title01.jpg" alt="获奖条件">
