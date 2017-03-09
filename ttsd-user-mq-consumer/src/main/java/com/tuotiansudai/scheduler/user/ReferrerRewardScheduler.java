@@ -52,7 +52,7 @@ public class ReferrerRewardScheduler {
         Map<String, Integer> referrerMaps = Maps.newConcurrentMap();
         registerUsers.stream()
                 .filter(userModel -> !Strings.isNullOrEmpty(userModel.getReferrer()))
-                .filter(userModel -> investMapper.sumSuccessActivityInvestAmount(userModel.getLoginName(), null, userModel.getRegisterTime(), new DateTime(userModel.getRegisterTime()).plusDays(15).toDate()) > 200l)
+                .filter(userModel -> investMapper.sumSuccessActivityInvestAmount(userModel.getLoginName(), null, userModel.getRegisterTime(), new DateTime(userModel.getRegisterTime()).plusDays(15).toDate()) >= 200l)
                 .forEach(userModel -> {
                     if (referrerMaps.get(userModel.getReferrer()) == null) {
                         referrerMaps.put(userModel.getReferrer(), 1);
