@@ -38,7 +38,7 @@ public class ReferrerRewardScheduler {
     private String activityStartTimeStr;
 
 
-    @Scheduled(cron = "0 0 0/3 1/1 * ?", zone = "Asia/Shanghai")
+    @Scheduled(cron = "0 0 0/1 1/1 * ?", zone = "Asia/Shanghai")
     public void referrerReward() {
         logger.info("[ReferrerRewardScheduler] is start ...");
         Date activityStartTime = DateTime.parse(activityStartTimeStr, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
