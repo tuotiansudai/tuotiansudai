@@ -20,7 +20,7 @@ public class InviteFriendActivityController {
     @RequestMapping(method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView loadPageData() {
         ModelAndView modelAndView = new ModelAndView("/activities/invite-friend", "responsive", true);
-        Map<String, String> activityReferrerParam = inviteFriendActivityService.getActivityReferrer("gaoyinglong");
+        Map<String, String> activityReferrerParam = inviteFriendActivityService.getActivityReferrer(LoginUserInfo.getLoginName());
         modelAndView.addObject("referrerCount", activityReferrerParam.get("referrerCount"));
         modelAndView.addObject("referrerRedEnvelop", activityReferrerParam.get("referrerRedEnvelop"));
         modelAndView.addObject("referrerAmount", activityReferrerParam.get("referrerAmount"));
