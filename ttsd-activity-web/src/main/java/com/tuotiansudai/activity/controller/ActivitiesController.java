@@ -2,14 +2,14 @@ package com.tuotiansudai.activity.controller;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.dto.CouponAlertDto;
 import com.tuotiansudai.coupon.service.CouponAlertService;
+import com.tuotiansudai.dto.CouponAlertDto;
 import com.tuotiansudai.enums.CouponType;
-import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.spring.LoginUserInfo;
+import com.tuotiansudai.util.MobileEncoder;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -69,6 +69,6 @@ public class ActivitiesController {
     @RequestMapping(value = "/get-realRealName", method = RequestMethod.GET)
     public String markRemind(@RequestParam(value = "mobile") String mobile) {
         UserModel userModel = userService.findByMobile(mobile);
-        return userModel != null ? userModel.getUserName() : mobile;
+        return userModel != null && !Strings.isNullOrEmpty(userModel.getUserName()) ? "*" + userModel.getUserName().substring(1, userModel.getUserName().length()) : MobileEncoder.encode(mobile);
     }
 }
