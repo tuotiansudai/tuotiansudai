@@ -12,7 +12,7 @@
             <div class="product-box">
                 <ul>
                     <li>
-                        <img src="${staticServer}/activity/images/birthday-month/pr01.png" alt="90天产品">
+                        <img src="${staticServer}/activity/images/birthday-month/pr022.png" alt="90天产品">
                         <#if !isAppSource>
                             <a href="/loan-list?durationStart=31&durationEnd=90&name=&status=&rateStart=0&rateEnd=0" ></a>
                         <#else>
@@ -21,7 +21,7 @@
 
                     </li>
                     <li>
-                        <img src="${staticServer}/activity/images/birthday-month/pr02.png" alt="180天产品">
+                        <img src="${staticServer}/activity/images/birthday-month/pr01.png" alt="180天产品">
                         <#if !isAppSource>
                             <a href="/loan-list?durationStart=91&durationEnd=180&name=&status=&rateStart=0&rateEnd=0"></a>
                         <#else>
