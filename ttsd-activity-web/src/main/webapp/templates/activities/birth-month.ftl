@@ -4,7 +4,7 @@
 <div class="image-banner-slide"></div>
 <div class="birth-month-container">
 
-        <img src="${staticServer}/activity/images/birthday-month/sc01.png" alt="生日想要什么礼物" class="sc-list">
+        <img src="${staticServer}/activity/images/birthday-month/sc01.png" alt="生日想要什么礼物" class="sc-list" style="margin-top: 30px;">
         <img src="${staticServer}/activity/images/birthday-month/sc02.png" alt="统统都需要" class="sc-list">
         <div class="product-list clearfix" id="productListFrame">
             <i class="arrow-left"></i>
