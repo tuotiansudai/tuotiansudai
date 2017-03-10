@@ -73,6 +73,8 @@ public class ReferrerRewardScheduler {
                 couponAssign(k, 406l);
             } else if (10 < count) {
                 couponAssign(k, 407l);
+                couponAssign(k, 407l);
+                couponAssign(k, 408l);
                 couponAssign(k, 408l);
             }
         });
