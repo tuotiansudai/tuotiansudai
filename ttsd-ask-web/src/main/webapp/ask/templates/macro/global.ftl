@@ -143,6 +143,8 @@
 </div>
 
     <#include "../pageLayout/footer.ftl" />
+
+    <#include "../pageLayout/statistic.ftl" />
 <script>
     window.staticServer='${commonStaticServer}';
 </script>
