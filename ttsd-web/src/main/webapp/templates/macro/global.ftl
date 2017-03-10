@@ -80,10 +80,10 @@
     </#if>
     <meta name="_csrf" content="${(_csrf.token)!}"/>
     <meta name="_csrf_header" content="${(_csrf.headerName)!}"/>
-    <meta name="360-site-verification" content="4b4f989b46ae2f913b70a3c31b0ebe05" />
-    <meta name="sogou_site_verification" content="xIcCp675wk"/>
-    <meta name="baidu-site-verification" content="AsxgHsTlLs" />
-    <link  id="icoFavicon" rel="shortcut icon" type="image/x-icon" />
+    <meta name="360-site-verification" content="a3066008a453e5dfcd9f3e288862c9ef" />
+    <meta name="sogou_site_verification" content="lXIPItRbXy"/>
+    <meta name="baidu-site-verification" content="XVFtcOmhlc" />
+    <link href="${commonStaticServer}/images/favicon.ico" id="icoFavicon" rel="shortcut icon" type="image/x-icon" />
     <link rel="stylesheet" type="text/css" href="${css.globalFun_page!}" charset="utf-8"/>
     <#if pageCss?? && pageCss != "">
         <link rel="stylesheet" type="text/css" href="${pageCss}" charset="utf-8"/>
