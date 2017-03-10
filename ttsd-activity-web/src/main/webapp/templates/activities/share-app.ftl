@@ -97,7 +97,7 @@
                 <p>六重风控，22道手续<br>历史全额兑付，0预期0坏账</p></dd>
             <dd><img src="${staticServer}/activity/images/sign/actor/landingpage/newbie-step5-security.png"><br><i>稳健安全</i>
                 <br/>
-                <p>预期年化收益10%～13%<br>房/车抵押债权安全系数高</p></dd>
+                <p>预期年化收益8%～11%<br>房/车抵押债权安全系数高</p></dd>
         </dl>
 
     </div>
