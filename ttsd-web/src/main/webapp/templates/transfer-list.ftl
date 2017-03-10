@@ -17,13 +17,13 @@
             <li>
                 <span>预期年化收益: </span>
                 <#assign rateUrl = "/transfer-list?transferStatus=${transferStatus!}&{rateType}">
-                <#assign rateMap = {"":"全部","rateStart=0.1&rateEnd=0.12":"10-12%","rateStart=0.12&rateEnd=0.14":"12-14%","rateStart=0.14&rateEnd=0":"14%以上"}>
+                <#assign rateMap = {"":"全部","rateStart=0&rateEnd=0.08":"8%以下","rateStart=0.08&rateEnd=0.1":"8-10%","rateStart=0.1&rateEnd=0":"10%以上"}>
                 <#assign rateKeys = rateMap?keys>
                 <#list rateKeys as key>
                     <a <#if rateStart == 0 && rateEnd == 0 && key=="">class="active"
-                       <#elseif rateStart == 0.1 && rateEnd == 0.12 && rateMap[key]=="10-12%">class="active"
-                       <#elseif rateStart == 0.12 && rateEnd == 0.14 && rateMap[key]=="12-14%">class="active"
-                       <#elseif rateStart == 0.14 && rateEnd == 0 && rateMap[key]=="14%以上">class="active"
+                       <#elseif rateStart == 0 && rateEnd == 0.08 && rateMap[key]=="8%以下">class="active"
+                       <#elseif rateStart == 0.08 && rateEnd == 0.1  && rateMap[key]=="8-10%">class="active"
+                       <#elseif rateStart == 0.10 && rateEnd == 0 && rateMap[key]=="10%以上">class="active"
                     </#if>
                        href=${rateUrl?replace("{rateType}",key)}>${rateMap[key]}</a>
                 </#list>
