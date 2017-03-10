@@ -42,9 +42,9 @@ public class ReferrerRewardScheduler {
     public void referrerReward() {
         logger.info("[ReferrerRewardScheduler] is start ...");
         Date activityStartTime = DateTime.parse(activityStartTimeStr, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
-        DateTime nowTime = DateTime.now();
+        DateTime nowTime = DateTime.now().plusDays(-15);
         Date endTime = nowTime.withTimeAtStartOfDay().toDate();
-        Date registerStartTime = nowTime.plusMonths(-1).plusDays(-15).toDate();
+        Date registerStartTime = nowTime.plusMonths(-1).toDate();
         if(registerStartTime.before(activityStartTime)){
             registerStartTime = activityStartTime;
         }
