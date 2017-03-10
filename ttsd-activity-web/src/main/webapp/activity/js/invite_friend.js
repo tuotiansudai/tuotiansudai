@@ -26,7 +26,7 @@ require(['jquery','layerWrapper','clipboard','commonFun','logintip','md5','qrcod
 		var md5String=commonFun.compile(md5Mobile,mobile),
 			origin=location.origin;
 
-		$clipboardText.val(origin+'/activity/invite-friend?referrer='+md5String);
+		$clipboardText.val(origin+'/activity/landing-page?referrer='+md5String);
 
 		//动态生成二维码
 		$('.img-code',$shareReward).qrcode(origin+'/activity/app-share?referrerMobile='+mobile);
