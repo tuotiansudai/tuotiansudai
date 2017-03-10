@@ -144,7 +144,17 @@
 
     <#include "../pageLayout/footer.ftl" />
 
-    <#include "../pageLayout/statistic.ftl" />
+<#--ask百度统计-->
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?d181b58b93d8babf116049c3dc826443";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
 <script>
     window.staticServer='${commonStaticServer}';
 </script>
