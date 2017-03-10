@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
@@ -42,13 +43,13 @@ public class ReferrerRewardScheduler {
     public void referrerReward() {
         logger.info("[ReferrerRewardScheduler] is start ...");
         Date activityStartTime = DateTime.parse(activityStartTimeStr, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
-        DateTime nowTime = DateTime.now().plusDays(-15);
-        Date endTime = nowTime.withTimeAtStartOfDay().toDate();
-        Date registerStartTime = nowTime.plusMonths(-1).toDate();
-        if(registerStartTime.before(activityStartTime)){
+        DateTime beginningMonthTime = DateTime.now().plusDays(-14).withTimeAtStartOfDay();
+        Date registerEndTime = beginningMonthTime.toDate();
+        Date registerStartTime = beginningMonthTime.plusMonths(-1).toDate();
+        if (registerStartTime.before(activityStartTime)) {
             registerStartTime = activityStartTime;
         }
-        List<UserModel> registerUsers = userMapper.findUsersByRegisterTimeOrReferrer(registerStartTime, endTime, null);
+        List<UserModel> registerUsers = userMapper.findUsersByRegisterTimeOrReferrer(registerStartTime, registerEndTime, null);
         Map<String, Integer> referrerMaps = Maps.newConcurrentMap();
         registerUsers.stream()
                 .filter(userModel -> !Strings.isNullOrEmpty(userModel.getReferrer()))
@@ -78,7 +79,7 @@ public class ReferrerRewardScheduler {
         logger.info("[ReferrerRewardScheduler] is done");
     }
 
-    private void couponAssign(String loginName, long couponId){
+    private void couponAssign(String loginName, long couponId) {
         logger.info(MessageFormat.format("[ReferrerRewardScheduler] assign coupon. loginName:{0}, couponId:{1}", loginName, String.valueOf(couponId)));
         mqClient.sendMessage(MessageQueue.CouponAssigning, loginName + ":" + couponId);
     }
