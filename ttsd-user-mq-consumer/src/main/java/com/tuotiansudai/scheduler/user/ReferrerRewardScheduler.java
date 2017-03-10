@@ -40,7 +40,7 @@ public class ReferrerRewardScheduler {
 
 
     //执行时间需为每月15号，因为涉及到注册后15天内有效投资才算有效推荐
-    @Scheduled(cron = "0 0/30 * 1/1 * ?", zone = "Asia/Shanghai")
+    @Scheduled(cron = "0 0 8 15 1/1 ?", zone = "Asia/Shanghai")
     public void referrerReward() {
         logger.info("[ReferrerRewardScheduler] is start ...");
         Date activityStartTime = DateTime.parse(activityStartTimeStr, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
@@ -54,7 +54,7 @@ public class ReferrerRewardScheduler {
         Map<String, Integer> referrerMaps = Maps.newConcurrentMap();
         registerUsers.stream()
                 .filter(userModel -> !Strings.isNullOrEmpty(userModel.getReferrer()))
-                .filter(userModel -> investMapper.sumSuccessActivityInvestAmount(userModel.getLoginName(), null, userModel.getRegisterTime(), new DateTime(userModel.getRegisterTime()).plusDays(15).toDate()) >= 200l)
+                .filter(userModel -> investMapper.sumSuccessActivityInvestAmount(userModel.getLoginName(), null, userModel.getRegisterTime(), new DateTime(userModel.getRegisterTime()).plusDays(15).toDate()) >= 200000l)
                 .forEach(userModel -> {
                     if (referrerMaps.get(userModel.getReferrer()) == null) {
                         referrerMaps.put(userModel.getReferrer(), 1);
