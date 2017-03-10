@@ -16,7 +16,7 @@
                     <input type="text" class="input-invite" disabled value="您需要登录才可以邀请好友">
                 </dd>
                 <dd>
-                    <a class="btn-copy-link show-login" href="javascript:void(0);">去登陆</a>
+                    <a class="btn-copy-link show-login" href="javascript:void(0);">去登录</a>
                 </dd>
             </dl>
         </div>
