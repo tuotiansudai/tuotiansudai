@@ -373,4 +373,21 @@
         and datediff(user_coupon.end_time, now()) = 5
     </select>
 
+
+    <select id="findSumAmountByCouponId" parameterType="map" resultType="long">
+       SELECT
+            IFNULL(SUM(c.amount), 0)
+        FROM
+            user_coupon u
+                JOIN
+            coupon c ON u.coupon_id = c.id
+        WHERE
+            u.login_name = #{loginName}
+        <if test="couponIdList != null and couponIdList.size != 0">
+            AND u.coupon_id in
+            <foreach collection="couponIdList" item="couponId" open="(" separator="," close=")">
+                #{couponId}
+            </foreach>
+        </if>
+    </select>
 </mapper>
