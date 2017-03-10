@@ -124,7 +124,7 @@
     </#switch>
 </#if>
 
-<#--<#include "../pageLayout/statistic.ftl" />-->
+<#include "../pageLayout/statistic.ftl" />
 <script>
     window.staticServer='${commonStaticServer}';
     <#--window.pluginsJSON={-->
@@ -136,6 +136,7 @@
 <script src="${js.jquerydll}" ></script>
 <script src="${js.globalFun_page!}" ></script>
 <script src="${pageJavascript}" type="text/javascript" id="currentScript"></script>
+
 </body>
 </html>
 </#macro>
