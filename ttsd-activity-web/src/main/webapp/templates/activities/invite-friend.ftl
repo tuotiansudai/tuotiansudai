@@ -33,7 +33,7 @@
                         <input type="text" class="input-invite"  disabled value="您的好友还不知道您是谁，先来实名认证吧">
                     </dd>
                     <dd>
-                        <a class="btn-copy-link to-identification" href="<#if !isAppSource>/register/account?redirect=/activity/invite-friend<#else>app/tuotian/authentication</#if>" >实名认证</a>
+                        <a class="btn-copy-link to-identification" target="_blank" href="<#if !isAppSource>/register/account?redirect=/activity/invite-friend<#else>app/tuotian/authentication</#if>" >实名认证</a>
                     </dd>
                 </dl>
             </div>
@@ -48,7 +48,7 @@
                     <h3>邀好友拿<span>3</span>重礼包</h3>
                     <p>您已成功邀请<span>${referrerCount}</span>位好友， 赚取红包<span>${referrerRedEnvelop}</span>元，赚取现金奖励<span>${referrerAmount}</span>元 <a href="<#if !isAppSource>/referrer/refer-list<#else>app/tuotian/refer-reward-list</#if>">查看邀请详情</a></p>
                     <p class="media-item-phone">
-                        <a href="app/tuotian/refer-reward-list" class="invite-btn">马上邀请好友</a>
+                        <a href="<#if !isAppSource>/referrer/refer-list<#else>app/tuotian/refer-reward-list</#if>" class="invite-btn">马上邀请好友</a>
                     </p>
                 </div>
                 <div class="weixin-code">
@@ -280,7 +280,7 @@
         <dd>1.您要进行实名认证后才能享受推荐奖励；</dd>
         <dd>2.好友需通过你的专属链接注册才能建立推荐关系；</dd>
         <dd>3.注册奖励将于好友完成指定任务时实时发放；</dd>
-        <dd>4.平台将于每月初1-3日统一发放上月的推荐红包奖励，为便于您分散投资，98元及288元红包将根据面额拆分发放，您可以在电脑端“我的账户-我的宝藏”或App端“我的-优惠券”中查看；</dd>
+        <dd>4.平台将于每月15日统一发放上月的推荐红包奖励，为便于您分散投资，98元及288元红包将根据面额拆分发放，您可以在电脑端“我的账户-我的宝藏”或App端“我的-优惠券”中查看；</dd>
         <dd>5.现金奖励额度为推荐的好友投资本金预期年化收益的1%，奖励计算方法：您的奖励=被推荐人投资金额X（1% / 365 X 标的期限）；</dd>
         <dd>6.现金奖励将于好友投资项目放款后，一次性以现金形式直接发放至您的账户，可以在“我的账户”中查询；</dd>
         <dd>7.活动中如发现恶意注册虚假账号、恶意刷奖等违规操作及作弊行为，若判定为违规操作及作弊行为，拓天速贷将取消您的获奖的资格，并有权撤销违规交易；</dd>
