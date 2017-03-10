@@ -33,7 +33,7 @@
                         <input type="text" class="input-invite"  disabled value="您的好友还不知道您是谁，先来实名认证吧">
                     </dd>
                     <dd>
-                        <a class="btn-copy-link to-identification" href="<#if !isAppSource>/register/account?redirect=/activity/invite-friend<#else>app/tuotian/authentication</#if>" >实名认证</a>
+                        <a class="btn-copy-link to-identification" target="_blank" href="<#if !isAppSource>/register/account?redirect=/activity/invite-friend<#else>app/tuotian/authentication</#if>" >实名认证</a>
                     </dd>
                 </dl>
             </div>
@@ -48,7 +48,7 @@
                     <h3>邀好友拿<span>3</span>重礼包</h3>
                     <p>您已成功邀请<span>${referrerCount}</span>位好友， 赚取红包<span>${referrerRedEnvelop}</span>元，赚取现金奖励<span>${referrerAmount}</span>元 <a href="<#if !isAppSource>/referrer/refer-list<#else>app/tuotian/refer-reward-list</#if>">查看邀请详情</a></p>
                     <p class="media-item-phone">
-                        <a href="app/tuotian/refer-reward-list" class="invite-btn">马上邀请好友</a>
+                        <a href="<#if !isAppSource>/referrer/refer-list<#else>app/tuotian/refer-reward-list</#if>" class="invite-btn">马上邀请好友</a>
                     </p>
                 </div>
                 <div class="weixin-code">
