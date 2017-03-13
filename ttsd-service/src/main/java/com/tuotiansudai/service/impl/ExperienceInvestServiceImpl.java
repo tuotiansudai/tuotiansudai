@@ -125,7 +125,7 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
             return false;
         }
 
-        UserModel userModel = userMapper.findByLoginName(investDto.getLoginName());
+        UserModel userModel = userMapper.lockByLoginName(investDto.getLoginName());
         long experienceBalance = userModel != null ? userModel.getExperienceBalance() : 0;
         long amount = Long.parseLong(investDto.getAmount());
         if (experienceBalance < amount) {
