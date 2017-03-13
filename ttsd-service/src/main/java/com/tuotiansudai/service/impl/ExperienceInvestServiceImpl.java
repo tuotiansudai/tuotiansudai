@@ -6,13 +6,13 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.enums.ExperienceBillBusinessType;
 import com.tuotiansudai.enums.ExperienceBillOperationType;
-import com.tuotiansudai.repository.mapper.*;
+import com.tuotiansudai.repository.mapper.InvestMapper;
+import com.tuotiansudai.repository.mapper.InvestRepayMapper;
+import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.ExperienceBillService;
 import com.tuotiansudai.service.ExperienceInvestService;
-import com.tuotiansudai.service.RegisterUserService;
-import com.tuotiansudai.service.UserService;
-import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.InterestCalculator;
 import org.apache.commons.lang3.StringUtils;
@@ -46,6 +46,9 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
     @Autowired
     private ExperienceBillService registerUserService;
 
+    @Autowired
+    private UserMapper userMapper;
+
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
 
@@ -58,6 +61,11 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
         if (!isUserExperienceRequired(investDto)) {
             return dto;
         }
+
+        if (!isEnoughExperienceBalance(investDto)) {
+            return dto;
+        }
+
         this.generateInvest(investDto);
         dataDto.setStatus(true);
         return dto;
@@ -110,4 +118,22 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
 
         return true;
     }
+
+    private boolean isEnoughExperienceBalance(InvestDto investDto) {
+        if (StringUtils.isEmpty(investDto.getLoginName())) {
+            logger.error("[Experience Invest] the login name is null");
+            return false;
+        }
+
+        UserModel userModel = userMapper.findByLoginName(investDto.getLoginName());
+        long experienceBalance = userModel != null ? userModel.getExperienceBalance() : 0;
+        long amount = Long.parseLong(investDto.getAmount());
+        if (experienceBalance < amount) {
+            logger.error(MessageFormat.format("[Experience Invest] experience_balance[0] less investAmount[1]", experienceBalance, amount));
+            return false;
+        }
+
+        return true;
+    }
+
 }
