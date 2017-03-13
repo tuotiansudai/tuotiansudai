@@ -47,11 +47,11 @@ public class ExperienceInvestServiceTest {
 
     @Test
     public void shouldInvestExperienceLoan() throws Exception {
-        UserModel investor = this.getFakeUser("newbieInvestor");
-        LoanModel fakeExperienceLoan = this.getFakeExperienceLoan();
+        UserModel investor = this.getFakeUser("newbieInvestor", 20000);
+        LoanModel fakeExperienceLoan = this.getFakeExperienceLoan(20000);
 
         MockitoAnnotations.initMocks(this);
-        experienceInvestService.invest(this.getFakeInvestDto(investor, fakeExperienceLoan));
+        experienceInvestService.invest(this.getFakeInvestDto(investor, fakeExperienceLoan, "10000"));
 
         List<InvestModel> successInvestModels = investMapper.findByLoanIdAndLoginName(fakeExperienceLoan.getId(), investor.getLoginName());
         assertThat(successInvestModels.size(), is(1));
@@ -65,17 +65,29 @@ public class ExperienceInvestServiceTest {
         assertThat(userModel.getExperienceBalance(), is(10000L));
     }
 
-    private InvestDto getFakeInvestDto(UserModel investor, LoanModel experienceLoanModel) {
+    @Test
+    public void shouldInvestExperienceLoanWhenExperienceBalanceNoSufficient() throws Exception {
+        UserModel investor = this.getFakeUser("newExperienceInvestor", 1000);
+        LoanModel fakeExperienceLoan = this.getFakeExperienceLoan(1000);
+        MockitoAnnotations.initMocks(this);
+        experienceInvestService.invest(this.getFakeInvestDto(investor, fakeExperienceLoan, "2000"));
+
+        List<InvestModel> successInvestModels = investMapper.findByLoanIdAndLoginName(fakeExperienceLoan.getId(), investor.getLoginName());
+        assertThat(successInvestModels.size(), is(0));
+        UserModel userModel = userMapper.findByLoginName(investor.getLoginName());
+        assertThat(userModel.getExperienceBalance(), is(1000L));    }
+
+    private InvestDto getFakeInvestDto(UserModel investor, LoanModel experienceLoanModel, String investAmount) {
         InvestDto dto = new InvestDto();
-        dto.setAmount("10000");
+        dto.setAmount(investAmount);
         dto.setLoginName(investor.getLoginName());
         dto.setSource(Source.WEB);
         dto.setLoanId(String.valueOf(experienceLoanModel.getId()));
         return dto;
     }
 
-    private LoanModel getFakeExperienceLoan() {
-        UserModel loaner = this.getFakeUser("experienceLoaner");
+    private LoanModel getFakeExperienceLoan(long experienceBalance) {
+        UserModel loaner = this.getFakeUser("experienceLoaner", experienceBalance);
         LoanModel fakeLoanModel = new LoanModel();
         fakeLoanModel.setId(idGenerator.generate());
         fakeLoanModel.setName("loanName");
@@ -103,7 +115,7 @@ public class ExperienceInvestServiceTest {
         return fakeLoanModel;
     }
 
-    protected UserModel getFakeUser(String loginName) {
+    protected UserModel getFakeUser(String loginName, long experienceBalance) {
         UserModel fakeUser = new UserModel();
         fakeUser.setLoginName(loginName);
         fakeUser.setPassword("password");
@@ -111,7 +123,7 @@ public class ExperienceInvestServiceTest {
         fakeUser.setRegisterTime(new Date());
         fakeUser.setStatus(UserStatus.ACTIVE);
         fakeUser.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
-        fakeUser.setExperienceBalance(20000);
+        fakeUser.setExperienceBalance(experienceBalance);
         userMapper.create(fakeUser);
         return fakeUser;
     }
