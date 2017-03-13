@@ -91,9 +91,14 @@
             <when test="roleStage == null ">
                 user u
             </when>
-            <when test="roleStage.name() == 'RECOMMENDATION' ">
+            <when test="roleStage.name() == 'SD_STAFF_RECOMMENDATION' ">
                 (select j.* from user j JOIN (select k.login_name from user_role o RIGHT join referrer_relation k on
-                o.login_name = k.referrer_login_name and k.level = 1 where o.role in ('SD_STAFF', 'ZC_STAFF')) gg on j.login_name = gg.login_name)
+                o.login_name = k.referrer_login_name and k.level = 1 where o.role = 'SD_STAFF') gg on j.login_name = gg.login_name)
+                u
+            </when>
+            <when test="roleStage.name() == 'ZC_STAFF_RECOMMENDATION' ">
+                (select j.* from user j JOIN (select k.login_name from user_role o RIGHT join referrer_relation k on
+                o.login_name = k.referrer_login_name and k.level = 1 where o.role = 'ZC_STAFF') gg on j.login_name = gg.login_name)
                 u
             </when>
             <otherwise>
@@ -102,7 +107,7 @@
         </choose>
         left join account a on u.login_name = a.login_name
         <where>
-            <if test="roleStage != null and roleStage.name() != 'RECOMMENDATION'">
+            <if test="roleStage != null and roleStage.name() != 'SD_STAFF_RECOMMENDATION' and roleStage.name() != 'ZC_STAFF_RECOMMENDATION'">
                 and r.role = #{roleStage}
             </if>
             <if test="email !=null and email !='' ">
@@ -162,9 +167,14 @@
             <when test="roleStage == null">
                 user u
             </when>
-            <when test="roleStage.name() == 'RECOMMENDATION' ">
+            <when test="roleStage.name() == 'SD_STAFF_RECOMMENDATION' ">
                 (select j.* from user j JOIN (select k.login_name from user_role o RIGHT join referrer_relation k on
-                o.login_name = k.referrer_login_name and k.level = 1 where o.role in ('SD_STAFF', 'ZC_STAFF')) gg on j.login_name = gg.login_name)
+                o.login_name = k.referrer_login_name and k.level = 1 where o.role = 'SD_STAFF') gg on j.login_name = gg.login_name)
+                u
+            </when>
+            <when test="roleStage.name() == 'ZC_STAFF_RECOMMENDATION' ">
+                (select j.* from user j JOIN (select k.login_name from user_role o RIGHT join referrer_relation k on
+                o.login_name = k.referrer_login_name and k.level = 1 where o.role = 'ZC_STAFF') gg on j.login_name = gg.login_name)
                 u
             </when>
             <otherwise>
@@ -172,7 +182,7 @@
             </otherwise>
         </choose>
         <where>
-            <if test="roleStage !=null and roleStage.name() != 'RECOMMENDATION'">
+            <if test="roleStage != null and roleStage.name() != 'SD_STAFF_RECOMMENDATION' and roleStage.name() != 'ZC_STAFF_RECOMMENDATION'">
                 and r.role = #{roleStage}
             </if>
             <if test="email !=null and email !='' ">
