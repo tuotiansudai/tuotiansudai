@@ -4,6 +4,7 @@ import com.google.common.base.Strings;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
 import com.tuotiansudai.mq.consumer.loan.service.ReferrerRelationService;
+import com.tuotiansudai.mq.consumer.loan.service.StaffRecommendRoleService;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
 import org.slf4j.Logger;
@@ -21,10 +22,13 @@ public class GenerateReferrerRelationConsumer implements MessageConsumer {
 
     private final ReferrerRelationService referrerRelationService;
 
+    private final StaffRecommendRoleService staffRecommendRoleService;
+
     @Autowired
-    public GenerateReferrerRelationConsumer(UserMapper userMapper, ReferrerRelationService referrerRelationService) {
+    public GenerateReferrerRelationConsumer(UserMapper userMapper, ReferrerRelationService referrerRelationService, StaffRecommendRoleService staffRecommendRoleService) {
         this.userMapper = userMapper;
         this.referrerRelationService = referrerRelationService;
+        this.staffRecommendRoleService = staffRecommendRoleService;
     }
 
     @Override
@@ -48,6 +52,7 @@ public class GenerateReferrerRelationConsumer implements MessageConsumer {
 
         try {
             this.referrerRelationService.generateRelation(userModel.getReferrer(), userModel.getLoginName());
+            this.staffRecommendRoleService.generateStaffRole(userModel.getReferrer(), userModel.getLoginName());
         } catch (Exception e) {
             logger.error(MessageFormat.format("[GenerateReferrerRelation MQ] receive message: '{0}', user is {1} new referrer is {2}", message, userModel.getLoginName(), userModel.getReferrer()), e);
         }

@@ -27,10 +27,11 @@
                         </select>
                         <select class="form-control" name="roleStage">
                             <option value="ALL" selected>全部用户</option>
-                            <option value="STAFF">业务员</option>
+                            <option value="ZC_STAFF">资产业务员</option>
+                            <option value="SD_STAFF">速贷业务员</option>
                             <option value="RECOMMENDATION">业务员的一级推荐</option>
                             <option value="AGENT">渠道用户</option>
-                            <option value="NORMAL_USER">自然用户</option>
+                            <option value="NOT_STAFF_RECOMMEND">自然用户</option>
                             <option value="OTHERS">其他用户</option>
                         </select>
                         <select class="form-control" name="channel"></select>
@@ -270,10 +271,11 @@
                         </select>
                         <select class="form-control" name="roleStage">
                             <option value="ALL" selected>全部用户</option>
-                            <option value="STAFF">业务员</option>
+                            <option value="ZC_STAFF">资产业务员</option>
+                            <option value="SD_STAFF">速贷业务员</option>
                             <option value="RECOMMENDATION">业务员的一级推荐</option>
                             <option value="AGENT">渠道用户</option>
-                            <option value="NORMAL_USER">自然用户</option>
+                            <option value="NOT_STAFF_RECOMMEND">自然用户</option>
                         </select>
                         <select class="form-control" name="channel"></select>
                         <select class="form-control" name="isTransfer">

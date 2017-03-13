@@ -1,5 +1,6 @@
 package com.tuotiansudai.console.service;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.repository.mapper.CouponMapper;
 import com.tuotiansudai.repository.mapper.CouponRepayMapper;
 import com.tuotiansudai.repository.mapper.UserCouponMapper;
@@ -106,7 +107,7 @@ public class FinanceReportService {
 
             InvestReferrerRewardModel investReferrerRewardModel = investReferrerRewardMapper.findByInvestIdAndReferrer(financeReportItemView.getInvestId(), financeReportItemView.getReferrer());
             if (investReferrerRewardModel != null) {
-                if (investReferrerRewardModel.getReferrerRole().equals(Role.STAFF)) {
+                if (Lists.newArrayList(Role.SD_STAFF, Role.ZC_STAFF).contains(investReferrerRewardModel.getReferrerRole())) {
                     financeReportDto.setReferrer(financeReportDto.getReferrer() + "(业务员)");
                 }
                 if (1 == financeReportDto.getPeriod()) {

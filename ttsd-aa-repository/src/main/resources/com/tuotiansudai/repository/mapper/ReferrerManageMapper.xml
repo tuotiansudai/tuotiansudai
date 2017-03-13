@@ -95,11 +95,11 @@
             <if test="rewardEndTime != null">
                 <![CDATA[ AND a.`created_time` <= #{rewardEndTime} ]]>
             </if>
-            <if test="role != null and role.name() == 'STAFF'">
+            <if test="role != null and (role.name() == 'SD_STAFF' or role.name() == 'ZC_STAFF')">
                 AND a.`referrer_role` = #{role}
             </if>
-            <if test="role != null and role.name() != 'STAFF'">
-                AND a.`referrer_role` != 'STAFF'
+            <if test="role != null and role.name() != 'SD_STAFF' and role.name() != 'ZC_STAFF'">
+                AND a.`referrer_role` not in ('SD_STAFF', 'ZC_STAFF')
             </if>
             <if test="referrerRewardStatus != null and referrerRewardStatus.name() == 'SUCCESS' ">
                 AND a.`status` = 'SUCCESS'
@@ -189,11 +189,11 @@
             <if test="rewardEndTime != null">
                 <![CDATA[ AND a.`created_time` <= #{rewardEndTime} ]]>
             </if>
-            <if test="role != null and role.name() == 'STAFF'">
+            <if test="role != null and (role.name() == 'SD_STAFF' or role.name() == 'ZC_STAFF')">
                 AND a.`referrer_role` = #{role}
             </if>
-            <if test="role != null and role.name() != 'STAFF'">
-                AND a.`referrer_role` != 'STAFF'
+            <if test="role != null and role.name() != 'SD_STAFF' and role.name() != 'ZC_STAFF'">
+                AND a.`referrer_role` not in ('SD_STAFF', 'ZC_STAFF')
             </if>
             <if test="referrerRewardStatus != null and referrerRewardStatus.name() == 'SUCCESS' ">
                 AND a.`status` = 'SUCCESS'
@@ -290,11 +290,11 @@
             <if test="rewardEndTime != null">
                 <![CDATA[ AND a.`created_time` <= #{rewardEndTime} ]]>
             </if>
-            <if test="role != null and role.name() == 'STAFF'">
+            <if test="role != null and (role.name() == 'SD_STAFF' or role.name() == 'ZC_STAFF')">
                 AND a.`referrer_role` = #{role}
             </if>
-            <if test="role != null and role.name() != 'STAFF'">
-                AND a.`referrer_role` != 'STAFF'
+            <if test="role != null and role.name() != 'SD_STAFF' and role.name() != 'ZC_STAFF'">
+                AND a.`referrer_role` not in ('SD_STAFF', 'ZC_STAFF')
             </if>
         </where>
         ) irr
@@ -385,11 +385,11 @@
             <if test="rewardEndTime != null">
                 <![CDATA[ AND a.`created_time` <= #{rewardEndTime} ]]>
             </if>
-            <if test="role != null and role.name() == 'STAFF'">
+            <if test="role != null and (role.name() == 'SD_STAFF' or role.name() == 'ZC_STAFF')">
                 AND a.`referrer_role` = #{role}
             </if>
-            <if test="role != null and role.name() != 'STAFF'">
-                AND a.`referrer_role` != 'STAFF'
+            <if test="role != null and role.name() != 'SD_STAFF' and role.name() != 'ZC_STAFF'">
+                AND a.`referrer_role` not in ('SD_STAFF', 'ZC_STAFF')
             </if>
         </where>
         ) irr

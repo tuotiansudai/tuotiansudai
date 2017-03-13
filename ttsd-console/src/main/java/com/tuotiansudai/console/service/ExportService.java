@@ -490,7 +490,7 @@ public class ExportService {
             row.add(record.getSource().name());
             row.add(record.getReferrerMobile());
             row.add(record.getReferrerName());
-            row.add(record.getRole() == Role.STAFF ? "是" : "否");
+            row.add(Lists.newArrayList(Role.SD_STAFF, Role.ZC_STAFF).contains(record.getRole()) ? "是" : "否");
             row.add(String.valueOf(record.getLevel()));
             row.add(String.valueOf(new BigDecimal(record.getRewardAmount()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_DOWN).doubleValue()));
             row.add(record.getStatus() == ReferrerRewardStatus.SUCCESS ? "已入账" : "入账失败");

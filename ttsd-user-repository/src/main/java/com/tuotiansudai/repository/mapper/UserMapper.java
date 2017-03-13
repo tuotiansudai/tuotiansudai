@@ -35,13 +35,9 @@ public interface UserMapper {
 
     List<String> findAllUsersByProvinces(Map<String, Object> params);
 
-    List<String> findNaturalUser(Map<String, Object> params);
-
     List<String> findAllRecommendation(Map<String, Object> params);
 
     List<UserModel> findUsersByChannel(Map<String, Object> params);
-
-    List<String> findUsersBirthdayMobile();
 
     List<String> findAllByRole(Map<String, Object> params);
 
@@ -54,10 +50,6 @@ public interface UserMapper {
                                                       @Param(value = "referrer") String referrer);
 
     UserModel findByIdentityNumber(String identityNumber);
-
-    List<String> findBirthMonthUsers();
-
-    List<String> findBirthDayUsers();
 
     List<Integer> findScaleByGender(@Param(value = "endDate") Date endDate);
 
