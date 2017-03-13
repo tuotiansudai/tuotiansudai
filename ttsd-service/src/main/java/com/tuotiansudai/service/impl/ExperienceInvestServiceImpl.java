@@ -120,16 +120,11 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
     }
 
     private boolean isEnoughExperienceBalance(InvestDto investDto) {
-        if (StringUtils.isEmpty(investDto.getLoginName())) {
-            logger.error("[Experience Invest] the login name is null");
-            return false;
-        }
-
         UserModel userModel = userMapper.lockByLoginName(investDto.getLoginName());
         long experienceBalance = userModel != null ? userModel.getExperienceBalance() : 0;
         long amount = Long.parseLong(investDto.getAmount());
         if (experienceBalance < amount) {
-            logger.error(MessageFormat.format("[Experience Invest] experience_balance[0] less investAmount[1]", experienceBalance, amount));
+            logger.warn(MessageFormat.format("[Experience Invest] experience_balance[0] less investAmount[1]", experienceBalance, amount));
             return false;
         }
 
