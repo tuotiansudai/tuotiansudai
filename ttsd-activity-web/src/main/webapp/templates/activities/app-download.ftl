@@ -5,7 +5,7 @@
     <div class="download-one">
         <div class="wp step-one">
             <div class="content-item">
-                <p><img src="${staticServer}/activity/images/download/one-text.png" class="step-one-img"></p>
+                <p><img src="${staticServer}/activity/images/download/one-text0309.png" class="step-one-img"></p>
                 <p>
                     <a href="https://itunes.apple.com/cn/app/ta-tian-su-dai/id1039233966?mt=8" class="ios-btn" target="_blank"></a>
                     <a href="/app/tuotiansudai.apk" class="android-btn" target="_blank"></a>

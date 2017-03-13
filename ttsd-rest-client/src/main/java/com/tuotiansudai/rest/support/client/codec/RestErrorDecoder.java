@@ -17,11 +17,13 @@ public class RestErrorDecoder implements ErrorDecoder {
     @Override
     public Exception decode(String methodKey, Response response) {
         ErrorResponse errorResponse = null;
-        try {
-            errorResponse = objectMapper.readValue(response.body().asInputStream(), ErrorResponse.class);
-        } catch (IOException e) {
-            logger.error("can not parse response body as ErrorResponse: " + response.body().toString());
-        }
+        if (response.body() != null)
+            try {
+                errorResponse = objectMapper.readValue(response.body().asInputStream(), ErrorResponse.class);
+            } catch (IOException e) {
+                logger.error("can not parse response body as ErrorResponse: " + response.body().toString());
+            }
+
         return new RestException(response, errorResponse);
     }
 }

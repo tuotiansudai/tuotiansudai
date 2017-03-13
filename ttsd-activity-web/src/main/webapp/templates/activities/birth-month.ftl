@@ -4,15 +4,15 @@
 <div class="image-banner-slide"></div>
 <div class="birth-month-container">
 
-        <img src="${staticServer}/activity/images/birthday-month/sc01.jpg" alt="生日想要什么礼物" class="sc-list">
-        <img src="${staticServer}/activity/images/birthday-month/sc02.jpg" alt="统统都需要" class="sc-list">
+        <img src="${staticServer}/activity/images/birthday-month/sc01.png" alt="生日想要什么礼物" class="sc-list" style="margin-top: 30px;">
+        <img src="${staticServer}/activity/images/birthday-month/sc02.png" alt="统统都需要" class="sc-list">
         <div class="product-list clearfix" id="productListFrame">
             <i class="arrow-left"></i>
             <i class="arrow-right"></i>
             <div class="product-box">
                 <ul>
                     <li>
-                        <img src="${staticServer}/activity/images/birthday-month/pr01.jpg" alt="90天产品">
+                        <img src="${staticServer}/activity/images/birthday-month/pr01.png" alt="90天产品">
                         <#if !isAppSource>
                             <a href="/loan-list?durationStart=31&durationEnd=90&name=&status=&rateStart=0&rateEnd=0" ></a>
                         <#else>
@@ -21,7 +21,7 @@
 
                     </li>
                     <li>
-                        <img src="${staticServer}/activity/images/birthday-month/pr02.jpg" alt="180天产品">
+                        <img src="${staticServer}/activity/images/birthday-month/pr02.png" alt="180天产品">
                         <#if !isAppSource>
                             <a href="/loan-list?durationStart=91&durationEnd=180&name=&status=&rateStart=0&rateEnd=0"></a>
                         <#else>
@@ -29,7 +29,7 @@
                         </#if>
                     </li>
                     <li>
-                        <img src="${staticServer}/activity/images/birthday-month/pr03.jpg" alt="360天产品">
+                        <img src="${staticServer}/activity/images/birthday-month/pr03.png" alt="360天产品">
                         <#if !isAppSource>
                             <a href="/loan-list?durationStart=181&durationEnd=366&name=&status=&rateStart=0&rateEnd=0"></a>
                         <#else>
@@ -41,7 +41,7 @@
 
         </div>
         <div class="tc btn-activity">
-            <img src="${staticServer}/activity/images/birthday-month/btn-activity.png" alt="拓天速贷活动">
+            <img src="${staticServer}/activity/images/birthday-month/btn-activity0308.png" alt="拓天速贷活动">
         </div>
         <div class="activity-notice">
             1.本活动适用于平台注册用户生日当月（以绑定的身份证为准）； <br/>
