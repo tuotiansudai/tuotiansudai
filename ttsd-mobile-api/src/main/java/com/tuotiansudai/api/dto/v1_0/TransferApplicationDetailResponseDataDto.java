@@ -225,7 +225,8 @@ public class TransferApplicationDetailResponseDataDto extends BaseResponseDataDt
         this.activityRate = decimalFormat.format(transferApplicationDetailDto.getActivityRate());
         this.leftPeriod = transferApplicationDetailDto.getLeftPeriod();
         this.expecedInterest = transferApplicationDetailDto.getExpecedInterest();
-        this.deadline = sdf.format(transferApplicationDetailDto.getDeadLine());
+        //app取得是这个字段
+        this.deadline = sdf.format(transferApplicationDetailDto.getDueDate());
         this.transferStatus = transferApplicationDetailDto.getTransferStatus().name();
         this.countdown = String.valueOf(transferApplicationDetailDto.getCountdown());
     }
