@@ -5,6 +5,8 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.message.LoanOutSuccessMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
@@ -64,8 +66,9 @@ public class LoanOutSuccessGenerateRepayMessageConsumer implements MessageConsum
         List<String> fatalSmsList = Lists.newArrayList();
 
         logger.info("[标的放款MQ] LoanOutSuccess_GenerateRepay ready to consume message: generate repay is executing, loanId:{0}", loanId);
-        if (!payWrapperClient.generateRepay(loanId).isSuccess()) {
-            fatalSmsList.add("生成标的回款计划失败");
+        BaseDto<PayDataDto> baseDto = payWrapperClient.generateRepay(loanId);
+        if (!baseDto.isSuccess()) {
+            fatalSmsList.add(Strings.isNullOrEmpty(baseDto.getData().getMessage()) ? "生成标的回款计划失败" : baseDto.getData().getMessage());
             logger.error(MessageFormat.format("[标的放款MQ] LoanOutSuccess_GenerateRepay is fail. loanId:{0}", String.valueOf(loanId)));
         }
 
