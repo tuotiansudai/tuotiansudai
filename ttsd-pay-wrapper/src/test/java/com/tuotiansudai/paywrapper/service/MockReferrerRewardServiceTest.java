@@ -1,34 +1,28 @@
 package com.tuotiansudai.paywrapper.service;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.loanout.impl.ReferrerRewardServiceImpl;
-import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferMapper;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.TransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.*;
@@ -89,6 +83,7 @@ public class MockReferrerRewardServiceTest {
         referrerRewardService.rewardReferrer(1);
 
         verify(paySyncClient, never()).send(eq(ProjectTransferMapper.class), any(TransferRequestModel.class), eq(ProjectTransferResponseModel.class));
+        verify(investReferrerRewardMapper, times(1)).create(any(InvestReferrerRewardModel.class));
     }
 
     @Test
@@ -113,5 +108,6 @@ public class MockReferrerRewardServiceTest {
         referrerRewardService.rewardReferrer(1);
 
         verify(paySyncClient, never()).send(eq(ProjectTransferMapper.class), any(TransferRequestModel.class), eq(ProjectTransferResponseModel.class));
+        verify(investReferrerRewardMapper, times(1)).create(any(InvestReferrerRewardModel.class));
     }
 }

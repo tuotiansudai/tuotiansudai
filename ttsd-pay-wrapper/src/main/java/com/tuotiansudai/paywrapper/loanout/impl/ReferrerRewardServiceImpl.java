@@ -106,7 +106,7 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
                     }
                     Role role = this.getReferrerPriorityRole(referrerLoginName);
                     if (role == null) {
-                        logger.warn(MessageFormat.format("[标的放款] 发送推荐人奖励, 推荐人:{0}, 投资ID:{1} 推荐人属于资产业务员或者资产系用户，不发放推荐奖励", referrerLoginName, String.valueOf(invest.getId())));
+                        logger.warn(MessageFormat.format("[标的放款] 发送推荐人奖励, 推荐人:{0}, 投资ID:{1} 推荐人角色检查失败", referrerLoginName, String.valueOf(invest.getId())));
                         continue;
                     }
 
@@ -131,11 +131,21 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
         long orderId = model.getId();
         long amount = model.getAmount();
 
+        if (Lists.newArrayList(Role.ZC_STAFF, Role.ZC_STAFF_RECOMMEND).contains(model.getReferrerRole())) {
+            model.setStatus(ReferrerRewardStatus.FORBIDDEN);
+            investReferrerRewardMapper.update(model);
+            logger.warn(MessageFormat.format("[标的放款] 推荐人角色禁止发放奖励, investId={0} referrerLoginName={1} referrerRole={2}",
+                    String.valueOf(model.getInvestId()),
+                    model.getReferrerLoginName(),
+                    model.getReferrerRole().name()));
+            return false;
+        }
+
         AccountModel accountModel = accountMapper.findByLoginName(referrerLoginName);
         if (accountModel == null) {
             model.setStatus(ReferrerRewardStatus.NO_ACCOUNT);
             investReferrerRewardMapper.update(model);
-            logger.warn(MessageFormat.format("referrer has no account, investId={0} referrerLoginName={1} referrerRole={2} amount={3}",
+            logger.warn(MessageFormat.format("[标的放款] 推荐人没有实名认证, investId={0} referrerLoginName={1} referrerRole={2} amount={3}",
                     String.valueOf(model.getInvestId()),
                     model.getReferrerLoginName(),
                     model.getReferrerRole().name(),
@@ -243,6 +253,10 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
     }
 
     private long calculateReferrerReward(long amount, int loanDuration, int level, Role role) {
+        if (Lists.newArrayList(Role.ZC_STAFF, Role.ZC_STAFF_RECOMMEND).contains(role)) {
+            return 0;
+        }
+
         BigDecimal amountBigDecimal = new BigDecimal(amount);
 
         double rewardRate = this.getRewardRate(level, Role.SD_STAFF == role);
@@ -270,8 +284,12 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
             return null;
         }
 
-        if (userRoleModels.stream().anyMatch(userRoleModel -> Lists.newArrayList(Role.ZC_STAFF, Role.ZC_STAFF_RECOMMEND).contains(userRoleModel.getRole()))) {
-            return null;
+        if (userRoleModels.stream().anyMatch(userRoleModel -> userRoleModel.getRole() == Role.ZC_STAFF)) {
+            return Role.ZC_STAFF;
+        }
+
+        if (userRoleModels.stream().anyMatch(userRoleModel -> userRoleModel.getRole() == Role.ZC_STAFF_RECOMMEND)) {
+            return Role.ZC_STAFF_RECOMMEND;
         }
 
         if (userRoleModels.stream().anyMatch(userRoleModel -> userRoleModel.getRole() == Role.SD_STAFF)) {
