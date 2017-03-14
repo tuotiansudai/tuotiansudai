@@ -323,6 +323,14 @@ public class ConsoleLoanCreateService {
             return new BaseDto<>(new BaseDataDto(false, "代理用户不存在"));
         }
 
+        if (loanCreateRequestDto.getLoan().getOriginalDuration() < 1) {
+            return new BaseDto<>(new BaseDataDto(false, "原借款期限不能小于1天"));
+        }
+
+        if (loanCreateRequestDto.getLoan().getDeadline() == null || loanCreateRequestDto.getLoan().getDeadline().before(new Date())) {
+            return new BaseDto<>(new BaseDataDto(false, "借款截止时间不能为过去的时间"));
+        }
+
         AnxinSignPropertyModel anxinProp = anxinSignPropertyMapper.findByLoginName(loanCreateRequestDto.getLoan().getAgent());
         if (anxinProp == null || !anxinProp.isSkipAuth()) {
             return new BaseDto<>(new BaseDataDto(false, "代理/借款 用户未开通安心签免短信验证"));
