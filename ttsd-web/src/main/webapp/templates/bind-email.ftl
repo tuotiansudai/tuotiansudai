@@ -1,5 +1,5 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="${css.my_account}" pageJavascript="${js.personal_info}" activeNav="我的账户" activeLeftNav="个人资料" title="个人资料">
+<@global.main pageCss="${css.personal_info}" pageJavascript="${js.personal_info}" activeNav="我的账户" activeLeftNav="个人资料" title="个人资料">
 <div class="content-container auto-height personal-info">
     <h4 class="column-title"><em class="tc long-title">绑定邮箱提示</em></h4>
     <div class="pad-s tc">
