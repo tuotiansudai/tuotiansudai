@@ -23,6 +23,7 @@ import java.text.DecimalFormat;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -200,7 +201,7 @@ public class ContractServiceImpl implements ContractService {
         LoanModel loanModel = loanMapper.findById(loanId);
         UserModel agentModel = userMapper.findByLoginName(loanModel.getAgentLoginName());
         UserModel investorModel = userMapper.findByLoginName(investorLoginName);
-        InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(investId, loanModel.getPeriods());
+        List<InvestRepayModel> investRepayModelList = investRepayMapper.findByInvestId(investId);
         LoanerDetailsModel loanerDetailsModel = loanerDetailsMapper.getByLoanId(loanId);
         InvestModel investModel = investMapper.findById(investId);
         dataModel.put("agentMobile", agentModel.getMobile());
@@ -211,12 +212,16 @@ public class ContractServiceImpl implements ContractService {
         dataModel.put("loanerIdentityNumber", loanerDetailsModel == null ? "" : loanerDetailsModel.getIdentityNumber());
         dataModel.put("loanAmount", AmountConverter.convertCentToString(loanModel.getLoanAmount()));
         dataModel.put("investAmount", AmountConverter.convertCentToString(investModel.getAmount()));
-        dataModel.put("agentPeriods", String.valueOf(loanModel.getPeriods() * 30) + "天");
-        dataModel.put("leftPeriods", String.valueOf(loanModel.getPeriods()) + "期");
+        dataModel.put("agentPeriods", String.valueOf(loanModel.getOriginalDuration()) + "天");
+        dataModel.put("leftPeriods", investRepayModelList.size() + "期");
         DecimalFormat decimalFormat = new DecimalFormat("######0.##");
         dataModel.put("totalRate", decimalFormat.format((loanModel.getBaseRate() + loanModel.getActivityRate()) * 100) + "%");
-        dataModel.put("recheckTime", simpleDateFormat.format(loanModel.getRecheckTime()));
-        dataModel.put("endTime", simpleDateFormat.format(investRepayModel.getRepayDate()));
+        if(loanModel.getType().getInterestInitiateType() == InterestInitiateType.INTEREST_START_AT_INVEST){
+            dataModel.put("recheckTime", simpleDateFormat.format(investModel.getTradingTime()));
+        }else if(loanModel.getType().getInterestInitiateType() == InterestInitiateType.INTEREST_START_AT_LOAN){
+            dataModel.put("recheckTime", simpleDateFormat.format(loanModel.getRecheckTime()));
+        }
+        dataModel.put("endTime", simpleDateFormat.format(loanModel.getDeadline()));
         dataModel.put("investId", String.valueOf(investId));
         if (loanModel.getPledgeType().equals(PledgeType.HOUSE)) {
             dataModel.put("pledge", "房屋");
