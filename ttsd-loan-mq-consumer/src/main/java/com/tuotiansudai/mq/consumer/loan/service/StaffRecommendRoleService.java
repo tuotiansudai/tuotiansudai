@@ -31,22 +31,22 @@ public class StaffRecommendRoleService {
     public void generateStaffRole(String newReferrerLoginName, String loginName) {
         logger.info(MessageFormat.format("[StaffRecommendRole] referrer:{0}, user:{1}", newReferrerLoginName, loginName));
         Role role = Role.NOT_STAFF_RECOMMEND;
-        if (!Strings.isNullOrEmpty(newReferrerLoginName)) {
-            List<Role> newReferrerRoles = userRoleMapper.findByLoginName(newReferrerLoginName).stream().map(UserRoleModel::getRole).collect(Collectors.toList());
-            if (newReferrerRoles.contains(Role.ZC_STAFF) || newReferrerRoles.contains(Role.ZC_STAFF_RECOMMEND)) {
-                role = Role.ZC_STAFF_RECOMMEND;
-            }
-
-            if (newReferrerRoles.contains(Role.SD_STAFF) || newReferrerRoles.contains(Role.SD_STAFF_RECOMMEND)) {
-                role = Role.SD_STAFF_RECOMMEND;
-            }
-        } else {
+        if (Strings.isNullOrEmpty(newReferrerLoginName)) {
             List<Role> userRoles = userRoleMapper.findByLoginName(loginName).stream().map(UserRoleModel::getRole).collect(Collectors.toList());
             if (userRoles.contains(Role.ZC_STAFF)) {
                 role = Role.ZC_STAFF_RECOMMEND;
             }
 
             if (userRoles.contains(Role.SD_STAFF)) {
+                role = Role.SD_STAFF_RECOMMEND;
+            }
+        } else {
+            List<Role> newReferrerRoles = userRoleMapper.findByLoginName(newReferrerLoginName).stream().map(UserRoleModel::getRole).collect(Collectors.toList());
+            if (newReferrerRoles.contains(Role.ZC_STAFF) || newReferrerRoles.contains(Role.ZC_STAFF_RECOMMEND)) {
+                role = Role.ZC_STAFF_RECOMMEND;
+            }
+
+            if (newReferrerRoles.contains(Role.SD_STAFF) || newReferrerRoles.contains(Role.SD_STAFF_RECOMMEND)) {
                 role = Role.SD_STAFF_RECOMMEND;
             }
         }
