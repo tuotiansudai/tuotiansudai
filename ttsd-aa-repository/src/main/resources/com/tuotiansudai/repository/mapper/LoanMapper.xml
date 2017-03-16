@@ -15,6 +15,7 @@
         <result column="loaner_identity_number" property="loanerIdentityNumber"/>
         <result column="type" property="type"/>
         <result column="periods" property="periods"/>
+        <result column="original_duration" property="originalDuration"/>
         <result column="duration" property="duration"/>
         <result column="description_text" property="descriptionText"/>
         <result column="description_html" property="descriptionHtml"/>
@@ -30,6 +31,7 @@
         <result column="contract_id" property="contractId"/>
         <result column="fundraising_start_time" property="fundraisingStartTime"/>
         <result column="fundraising_end_time" property="fundraisingEndTime"/>
+        <result column="deadline" property="deadline"/>
         <result column="raising_complete_time" property="raisingCompleteTime"/>
         <result column="show_on_home" property="showOnHome"/>
         <result column="created_time" property="createdTime"/>
@@ -71,14 +73,14 @@
 
     <insert id="create" parameterType="com.tuotiansudai.repository.model.LoanModel">
         insert into loan(id, name, agent_login_name, loaner_login_name, loaner_user_name, loaner_identity_number, type,
-        periods, duration, description_text, description_html, pledge_type, base_rate, loan_amount, min_invest_amount,
+        periods, original_duration, duration, description_text, description_html, pledge_type, base_rate, loan_amount, min_invest_amount,
         invest_increasing_amount, max_invest_amount, activity_type, product_type, activity_rate, contract_id, fundraising_start_time,
-        fundraising_end_time, show_on_home, created_time, created_login_name, verify_time, verify_login_name, recheck_time,
+        fundraising_end_time, deadline, show_on_home, created_time, created_login_name, verify_time, verify_login_name, recheck_time,
         recheck_login_name, status, update_time)
         values(#{id}, #{name}, #{agentLoginName}, #{loanerLoginName}, #{loanerUserName}, #{loanerIdentityNumber}, #{type},
-        #{periods}, #{duration}, '', '', #{pledgeType}, #{baseRate}, #{loanAmount}, #{minInvestAmount},
+        #{periods}, #{originalDuration}, #{duration}, '', '', #{pledgeType}, #{baseRate}, #{loanAmount}, #{minInvestAmount},
         #{investIncreasingAmount}, #{maxInvestAmount}, #{activityType}, #{productType}, #{activityRate}, #{contractId}, #{fundraisingStartTime},
-        #{fundraisingEndTime}, #{showOnHome}, #{createdTime}, #{createdLoginName}, #{verifyTime}, #{verifyLoginName},
+        #{fundraisingEndTime}, #{deadline}, #{showOnHome}, #{createdTime}, #{createdLoginName}, #{verifyTime}, #{verifyLoginName},
         #{recheckTime}, #{recheckLoginName}, #{status}, #{updateTime})
     </insert>
 
@@ -323,7 +325,10 @@
             <if test="type !=null">
                 type = #{type},
             </if>
-            <if test="periods !=null and periods!=''">
+            <if test="originalDuration != null">
+                original_duration = #{originalDuration},
+            </if>
+            <if test="periods != null and periods!=''">
                 periods = #{periods},
                 duration = #{duration},
             </if>
@@ -362,6 +367,9 @@
             </if>
             <if test="fundraisingEndTime !=null">
                 fundraising_end_time = #{fundraisingEndTime},
+            </if>
+            <if test="deadline !=null">
+                deadline = #{deadline},
             </if>
             <if test="raisingCompleteTime !=null">
                 raising_complete_time = #{raisingCompleteTime},
@@ -422,6 +430,9 @@
             <if test="type !=null">
                 type = #{type},
             </if>
+            <if test="originalDuration != null">
+                original_duration = #{originalDuration},
+            </if>
             <if test="periods !=null and periods!=''">
                 periods = #{periods},
                 duration = #{duration},
@@ -461,6 +472,9 @@
             </if>
             <if test="fundraisingEndTime !=null">
                 fundraising_end_time = #{fundraisingEndTime},
+            </if>
+            <if test="deadline !=null">
+                deadline = #{deadline},
             </if>
             <if test="raisingCompleteTime !=null">
                 raising_complete_time = #{raisingCompleteTime},
