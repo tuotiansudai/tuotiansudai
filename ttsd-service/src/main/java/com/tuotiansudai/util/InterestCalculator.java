@@ -56,7 +56,8 @@ public class InterestCalculator {
     }
 
     public static long estimateExpectedInterest(LoanModel loanModel, long amount) {
-        return InterestCalculator.calculateInterest(loanModel, amount * loanModel.getDuration());
+        //包含当前天和项目截止时间当天
+        return InterestCalculator.calculateInterest(loanModel, amount * LoanPeriodCalculator.calculateDuration(new Date(), loanModel.getDeadline()));
     }
 
     public static long estimateCouponRepayExpectedInterest(InvestModel investModel, LoanModel loanModel, CouponModel couponModel, DateTime currentRepayDate, DateTime lastRepayDate) {
@@ -86,7 +87,7 @@ public class InterestCalculator {
                         .divide(new BigDecimal(DAYS_OF_YEAR), 0, BigDecimal.ROUND_DOWN).longValue();
                 break;
             case INTEREST_COUPON:
-                expectedInterest = new BigDecimal( periodDuration * investAmount)
+                expectedInterest = new BigDecimal(periodDuration * investAmount)
                         .multiply(new BigDecimal(couponModel.getRate()))
                         .divide(new BigDecimal(DAYS_OF_YEAR), 0, BigDecimal.ROUND_DOWN).longValue();
                 break;
@@ -107,8 +108,7 @@ public class InterestCalculator {
         if (loanModel == null || couponModel == null) {
             return 0;
         }
-        int duration = loanModel.getDuration();
-        return getCouponExpectedInterest(loanModel, couponModel, investAmount, duration);
+        return getCouponExpectedInterest(loanModel, couponModel, investAmount, LoanPeriodCalculator.calculateDuration(new Date(), loanModel.getDeadline()));
     }
 
     public static long calculateCouponActualInterest(long investAmount, CouponModel couponModel, UserCouponModel userCouponModel, LoanModel loanModel, LoanRepayModel currentLoanRepayModel, List<LoanRepayModel> loanRepayModels) {
@@ -218,13 +218,13 @@ public class InterestCalculator {
         for (int i = transferApplicationModel.getPeriod() - 1; i < investRepayModels.size(); i++) {
             totalExpectedInterestAmount += investRepayModels.get(i).getExpectedInterest() - investRepayModels.get(i).getExpectedFee();
         }
-        if(transferApplicationModel.getInvestAmount() != transferApplicationModel.getTransferAmount()){
+        if (transferApplicationModel.getInvestAmount() != transferApplicationModel.getTransferAmount()) {
             totalExpectedInterestAmount += transferApplicationModel.getInvestAmount() - transferApplicationModel.getTransferAmount();
         }
         return totalExpectedInterestAmount;
     }
 
-    public static long calculateTransferInterest(TransferApplicationModel transferApplicationModel, List<InvestRepayModel> investRepayModels,double fee) {
+    public static long calculateTransferInterest(TransferApplicationModel transferApplicationModel, List<InvestRepayModel> investRepayModels, double fee) {
         long totalExpectedInterestAmount = 0;
         for (int i = transferApplicationModel.getPeriod() - 1; i < investRepayModels.size(); i++) {
             totalExpectedInterestAmount += investRepayModels.get(i).getExpectedInterest();
@@ -258,5 +258,6 @@ public class InterestCalculator {
                 .multiply(new BigDecimal(loanModel.getBaseRate()).add(new BigDecimal(loanModel.getActivityRate())))
                 .divide(new BigDecimal(InterestCalculator.DAYS_OF_YEAR), 0, BigDecimal.ROUND_DOWN).longValue();
     }
+
 
 }
