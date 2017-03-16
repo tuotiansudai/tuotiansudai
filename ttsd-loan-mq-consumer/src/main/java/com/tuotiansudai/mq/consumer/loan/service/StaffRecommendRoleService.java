@@ -12,11 +12,13 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class StaffRecommendRoleService {
+
     private final static Logger logger = Logger.getLogger(StaffRecommendRoleService.class);
 
     @Autowired
@@ -27,6 +29,7 @@ public class StaffRecommendRoleService {
 
     // 更新 NOT_STAFF_RECOMMEND SD_STAFF_RECOMMEND ZC_STAFF_RECOMMEND
     public void generateStaffRole(String newReferrerLoginName, String loginName) {
+        logger.info(MessageFormat.format("[StaffRecommendRole] referrer:{0}, user:{1}", newReferrerLoginName, loginName));
         Role role = Role.NOT_STAFF_RECOMMEND;
         if (!Strings.isNullOrEmpty(newReferrerLoginName)) {
             List<Role> newReferrerRoles = userRoleMapper.findByLoginName(newReferrerLoginName).stream().map(UserRoleModel::getRole).collect(Collectors.toList());
@@ -76,6 +79,7 @@ public class StaffRecommendRoleService {
             userRoleMapper.deleteByLoginNameAndRole(user, Role.ZC_STAFF_RECOMMEND);
             userRoleMapper.deleteByLoginNameAndRole(user, Role.SD_STAFF_RECOMMEND);
             userRoleModels.add(new UserRoleModel(user, role));
+            logger.info(MessageFormat.format("[StaffRecommendRole] user:{0}, lower user:{1}, role:{2}", loginName, user, role.name()));
         }
 
         userRoleMapper.create(userRoleModels);

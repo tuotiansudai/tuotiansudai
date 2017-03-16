@@ -50,11 +50,6 @@ public class GenerateReferrerRelationConsumer implements MessageConsumer {
             return;
         }
 
-        if (Strings.isNullOrEmpty(userModel.getReferrer())) {
-            logger.info("[GenerateReferrerRelation MQ] login name({}) referrer is empty, ", message);
-            return;
-        }
-
         try {
             this.referrerRelationService.generateRelation(userModel.getReferrer(), userModel.getLoginName());
             this.staffRecommendRoleService.generateStaffRole(userModel.getReferrer(), userModel.getLoginName());
