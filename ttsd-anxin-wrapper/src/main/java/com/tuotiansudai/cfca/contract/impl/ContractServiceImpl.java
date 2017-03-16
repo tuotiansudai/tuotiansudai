@@ -201,7 +201,6 @@ public class ContractServiceImpl implements ContractService {
         LoanModel loanModel = loanMapper.findById(loanId);
         UserModel agentModel = userMapper.findByLoginName(loanModel.getAgentLoginName());
         UserModel investorModel = userMapper.findByLoginName(investorLoginName);
-        List<InvestRepayModel> investRepayModelList = investRepayMapper.findByInvestId(investId);
         LoanerDetailsModel loanerDetailsModel = loanerDetailsMapper.getByLoanId(loanId);
         InvestModel investModel = investMapper.findById(investId);
         dataModel.put("agentMobile", agentModel.getMobile());
@@ -213,14 +212,11 @@ public class ContractServiceImpl implements ContractService {
         dataModel.put("loanAmount", AmountConverter.convertCentToString(loanModel.getLoanAmount()));
         dataModel.put("investAmount", AmountConverter.convertCentToString(investModel.getAmount()));
         dataModel.put("agentPeriods", String.valueOf(loanModel.getOriginalDuration()) + "天");
-        dataModel.put("leftPeriods", investRepayModelList.size() + "期");
+        dataModel.put("leftPeriods", loanModel.getPeriods() + "期");
         DecimalFormat decimalFormat = new DecimalFormat("######0.##");
         dataModel.put("totalRate", decimalFormat.format((loanModel.getBaseRate() + loanModel.getActivityRate()) * 100) + "%");
-        if(loanModel.getType().getInterestInitiateType() == InterestInitiateType.INTEREST_START_AT_INVEST){
-            dataModel.put("recheckTime", simpleDateFormat.format(investModel.getTradingTime()));
-        }else if(loanModel.getType().getInterestInitiateType() == InterestInitiateType.INTEREST_START_AT_LOAN){
-            dataModel.put("recheckTime", simpleDateFormat.format(loanModel.getRecheckTime()));
-        }
+        dataModel.put("recheckTime", loanModel.getType().getInterestInitiateType() == InterestInitiateType.INTEREST_START_AT_INVEST ?
+                simpleDateFormat.format(investModel.getTradingTime()) : simpleDateFormat.format(loanModel.getRecheckTime()));
         dataModel.put("endTime", simpleDateFormat.format(loanModel.getDeadline()));
         dataModel.put("investId", String.valueOf(investId));
         if (loanModel.getPledgeType().equals(PledgeType.HOUSE)) {
@@ -262,8 +258,8 @@ public class ContractServiceImpl implements ContractService {
         return null;
     }
 
-    private AcroFields fillPdfTemplate(AnxinContractType contractType,AcroFields fields, Map<String, String> dataMap) throws IOException, DocumentException {
-        if(contractType.equals(AnxinContractType.LOAN_CONTRACT)){
+    private AcroFields fillPdfTemplate(AnxinContractType contractType, AcroFields fields, Map<String, String> dataMap) throws IOException, DocumentException {
+        if (contractType.equals(AnxinContractType.LOAN_CONTRACT)) {
             fields.setField("agentUserName", userMapper.findByLoginNameOrMobile(dataMap.get("agentMobile")).getUserName());
             fields.setField("agentMobile", dataMap.get("agentMobile"));
             fields.setField("agentIdentityNumber", dataMap.get("agentIdentityNumber"));
@@ -282,7 +278,7 @@ public class ContractServiceImpl implements ContractService {
             fields.setField("endTime1", dataMap.get("endTime"));
             fields.setField("endTime2", dataMap.get("endTime"));
             fields.setField("pledge", dataMap.get("pledge"));
-        }else{
+        } else {
             fields.setField("transferUserName", userMapper.findByLoginNameOrMobile(dataMap.get("transferMobile")).getUserName());
             fields.setField("transferMobile", dataMap.get("transferMobile"));
             fields.setField("transferIdentity", dataMap.get("transferIdentityNumber"));
