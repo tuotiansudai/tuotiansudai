@@ -67,7 +67,7 @@ public class LoanOutSuccessGenerateRepayMessageConsumer implements MessageConsum
 
         logger.info("[标的放款MQ] LoanOutSuccess_GenerateRepay ready to consume message: generate repay is executing, loanId:{0}", loanId);
         BaseDto<PayDataDto> baseDto = payWrapperClient.generateRepay(loanId);
-        if (!baseDto.isSuccess()) {
+        if (!baseDto.getData().getStatus()) {
             fatalSmsList.add(Strings.isNullOrEmpty(baseDto.getData().getMessage()) ? "生成标的回款计划失败" : baseDto.getData().getMessage());
             logger.error(MessageFormat.format("[标的放款MQ] LoanOutSuccess_GenerateRepay is fail. loanId:{0}", String.valueOf(loanId)));
         }

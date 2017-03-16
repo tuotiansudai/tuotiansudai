@@ -90,7 +90,7 @@ public class RepayGeneratorServiceImpl implements RepayGeneratorService {
                     continue;
                 }
 
-                long expectedInvestInterest = InterestCalculator.calculateInvestRepayInterest(loanModel, successInvestModel, lastRepayDate, currentRepayDate);
+                long expectedInvestInterest = InterestCalculator.calculateInvestRepayInterest(loanModel, successInvestModel.getAmount(), successInvestModel.getTradingTime(), lastRepayDate, currentRepayDate);
                 long expectedFee = new BigDecimal(expectedInvestInterest).setScale(0, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(successInvestModel.getInvestFeeRate())).longValue();
 
                 InvestRepayModel investRepayModel = new InvestRepayModel(idGenerator.generate(),
