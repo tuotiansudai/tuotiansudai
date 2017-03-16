@@ -83,10 +83,8 @@
                 <select class="selectpicker referrerRewardStatus" data-style="btn-default">
                     <option value="">全部</option>
                     <#list referrerRewardStatuses as referrerRewardStatusItem>
-                        <#if referrerRewardStatusItem != 'NO_ACCOUNT'>
                             <option value="${referrerRewardStatusItem.name()}"
-                                    <#if (referrerRewardStatus?has_content && referrerRewardStatus == referrerRewardStatusItem.name()) >selected</#if>>${referrerRewardStatusItem.name()}</option>
-                        </#if>
+                                    <#if (referrerRewardStatus?has_content && referrerRewardStatus == referrerRewardStatusItem)>selected</#if>>${referrerRewardStatusItem.getDescription()}</option>
                     </#list>
                 </select>
             </div>
@@ -132,11 +130,19 @@
                     <td>${referrerManageView.source}</td>
                     <td>${referrerManageView.referrerMobile!}</td>
                     <td>${referrerManageView.referrerName!}</td>
-                    <td><#if referrerManageView.role?? && (referrerManageView.role == 'ZC_STAFF' || referrerManageView.role == 'SD_STAFF')>是<#else>否</#if></td>
+                    <td>
+                        <#switch referrerManageView.role>
+                            <#case 'ZC_STAFF'>
+                            <#case 'SD_STAFF'>
+                                ${referrerManageView.role.getDescription()}
+                                <#break>
+                            <#default>
+                                否
+                        </#switch>
+                    </td>
                     <td>${referrerManageView.level?string('0')}</td>
                     <td>${referrerManageView.rewardAmount/100}</td>
-                    <td><#if referrerManageView.status?? && referrerManageView.status == 'SUCCESS'>已入账<#else>
-                        入账失败</#if></td>
+                    <td>${referrerManageView.status.getDescription()}</td>
                     <td>${referrerManageView.rewardTime?string('yyyy-MM-dd HH:mm:ss')}</td>
                 </tr>
                 </#list>

@@ -101,11 +101,8 @@
             <if test="role != null and role.name() != 'SD_STAFF' and role.name() != 'ZC_STAFF'">
                 AND a.`referrer_role` not in ('SD_STAFF', 'ZC_STAFF')
             </if>
-            <if test="referrerRewardStatus != null and referrerRewardStatus.name() == 'SUCCESS' ">
-                AND a.`status` = 'SUCCESS'
-            </if>
-            <if test="referrerRewardStatus != null and referrerRewardStatus.name() != 'SUCCESS' ">
-                AND a.`status` in ('FAILURE','NO_ACCOUNT')
+            <if test="referrerRewardStatus != null">
+                AND a.`status` = #{referrerRewardStatus}
             </if>
         </where>
         ) irr
@@ -195,11 +192,8 @@
             <if test="role != null and role.name() != 'SD_STAFF' and role.name() != 'ZC_STAFF'">
                 AND a.`referrer_role` not in ('SD_STAFF', 'ZC_STAFF')
             </if>
-            <if test="referrerRewardStatus != null and referrerRewardStatus.name() == 'SUCCESS' ">
-                AND a.`status` = 'SUCCESS'
-            </if>
-            <if test="referrerRewardStatus != null and referrerRewardStatus.name() != 'SUCCESS' ">
-                AND a.`status` in ('FAILURE','NO_ACCOUNT')
+            <if test="referrerRewardStatus != null">
+                AND a.`status` = #{referrerRewardStatus}
             </if>
         </where>
         ) irr
