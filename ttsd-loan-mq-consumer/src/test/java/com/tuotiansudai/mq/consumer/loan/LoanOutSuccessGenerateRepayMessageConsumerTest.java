@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.message.LoanOutSuccessMessage;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
@@ -41,9 +42,9 @@ public class LoanOutSuccessGenerateRepayMessageConsumerTest {
     @Transactional
     public void shouldConsumeIsOk() throws JsonProcessingException {
         LoanOutSuccessMessage loanOutSuccessMessage = buildMockedLoanOutSuccessMessage();
-        when(payWrapperClient.generateRepay(anyLong())).thenReturn(new BaseDto<>(true));
-        when(payWrapperClient.generateCouponRepay(anyLong())).thenReturn(new BaseDto<>(true));
-        when(payWrapperClient.generateExtraRate(anyLong())).thenReturn(new BaseDto<>(true));
+        when(payWrapperClient.generateRepay(anyLong())).thenReturn(new BaseDto<>(new PayDataDto(true)));
+        when(payWrapperClient.generateCouponRepay(anyLong())).thenReturn(new BaseDto<>(new PayDataDto(true)));
+        when(payWrapperClient.generateExtraRate(anyLong())).thenReturn(new BaseDto<>(new PayDataDto(true)));
 
         consumer.consume(JsonConverter.writeValueAsString(loanOutSuccessMessage));
         verify(smsWrapperClient, times(0)).sendFatalNotify(any(SmsFatalNotifyDto.class));
@@ -53,9 +54,9 @@ public class LoanOutSuccessGenerateRepayMessageConsumerTest {
     @Transactional
     public void shouldConsumeIsFail() throws JsonProcessingException {
         LoanOutSuccessMessage loanOutSuccessMessage = buildMockedLoanOutSuccessMessage();
-        when(payWrapperClient.generateRepay(anyLong())).thenReturn(new BaseDto<>(false));
-        when(payWrapperClient.generateCouponRepay(anyLong())).thenReturn(new BaseDto<>(false));
-        when(payWrapperClient.generateExtraRate(anyLong())).thenReturn(new BaseDto<>(false));
+        when(payWrapperClient.generateRepay(anyLong())).thenReturn(new BaseDto<>(new PayDataDto(false)));
+        when(payWrapperClient.generateCouponRepay(anyLong())).thenReturn(new BaseDto<>(new PayDataDto(false)));
+        when(payWrapperClient.generateExtraRate(anyLong())).thenReturn(new BaseDto<>(new PayDataDto(false)));
 
         try {
             consumer.consume(JsonConverter.writeValueAsString(loanOutSuccessMessage));
