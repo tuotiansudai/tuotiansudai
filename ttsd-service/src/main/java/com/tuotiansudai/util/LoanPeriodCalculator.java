@@ -13,7 +13,7 @@ public class LoanPeriodCalculator {
 
     // 放款当天到借款截止时间之间的天数以30天为一期
     public static int calculateLoanPeriods(Date recheckTime, Date deadline, LoanType loanType) {
-        int duration = LoanPeriodCalculator.calculateLoanDuration(recheckTime, deadline);
+        int duration = LoanPeriodCalculator.calculateDuration(recheckTime, deadline);
         if (duration < 1) {
             return 0;
         }
@@ -22,7 +22,7 @@ public class LoanPeriodCalculator {
     }
 
     public static List<Integer> calculateDaysOfPerPeriod(Date recheckTime, Date deadline, LoanType loanType) {
-        int loanDuration = LoanPeriodCalculator.calculateLoanDuration(recheckTime, deadline);
+        int loanDuration = LoanPeriodCalculator.calculateDuration(recheckTime, deadline);
         if (loanDuration == 0) {
             return Lists.newArrayList();
         }
@@ -45,10 +45,10 @@ public class LoanPeriodCalculator {
     }
 
     // 放款当天到借款截止时间之间的天数（包括放款当天和借款截止时间当天）
-    private static int calculateLoanDuration(Date recheckTime, Date deadline) {
-        if (recheckTime == null || deadline == null || recheckTime.after(deadline)) {
+    public static int calculateDuration(Date startTime, Date endTime) {
+        if (startTime == null || endTime == null || startTime.after(endTime)) {
             return 0;
         }
-        return Days.daysBetween(new DateTime(recheckTime).withTimeAtStartOfDay(), new DateTime(deadline)).getDays() + 1;
+        return Days.daysBetween(new DateTime(startTime).withTimeAtStartOfDay(), new DateTime(endTime)).getDays() + 1;
     }
 }

@@ -57,8 +57,7 @@ public class InterestCalculator {
 
     public static long estimateExpectedInterest(LoanModel loanModel, long amount) {
         //包含当前天和项目截止时间当天
-        int periodDuration = Days.daysBetween(new DateTime().withTimeAtStartOfDay(), new DateTime(loanModel.getDeadline()).withTimeAtStartOfDay().plusDays(1)).getDays();
-        return InterestCalculator.calculateInterest(loanModel, amount * periodDuration);
+        return InterestCalculator.calculateInterest(loanModel, amount * LoanPeriodCalculator.calculateDuration(new Date(), loanModel.getDeadline()));
     }
 
     public static long estimateCouponRepayExpectedInterest(InvestModel investModel, LoanModel loanModel, CouponModel couponModel, DateTime currentRepayDate, DateTime lastRepayDate) {
@@ -109,8 +108,7 @@ public class InterestCalculator {
         if (loanModel == null || couponModel == null) {
             return 0;
         }
-        int duration = Days.daysBetween(new DateTime().withTimeAtStartOfDay(), new DateTime(loanModel.getDeadline()).withTimeAtStartOfDay().plusDays(1)).getDays();
-        return getCouponExpectedInterest(loanModel, couponModel, investAmount, duration);
+        return getCouponExpectedInterest(loanModel, couponModel, investAmount, LoanPeriodCalculator.calculateDuration(new Date(), loanModel.getDeadline()));
     }
 
     public static long calculateCouponActualInterest(long investAmount, CouponModel couponModel, UserCouponModel userCouponModel, LoanModel loanModel, LoanRepayModel currentLoanRepayModel, List<LoanRepayModel> loanRepayModels) {
