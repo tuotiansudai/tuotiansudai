@@ -56,7 +56,14 @@ public class InterestCalculator {
     }
 
     public static long estimateExpectedInterest(LoanModel loanModel, long amount) {
-        return InterestCalculator.calculateInterest(loanModel, amount * loanModel.getDuration());
+        boolean isMaxInterest = (loanModel.getStatus() == LoanStatus.RECHECK
+                || loanModel.getStatus() == LoanStatus.REPAYING
+                || loanModel.getStatus() == LoanStatus.OVERDUE
+                || loanModel.getStatus() == LoanStatus.COMPLETE)
+                || loanModel.getProductType() == ProductType.EXPERIENCE ? true:false;
+
+        int periodDuration = isMaxInterest ? loanModel.getDuration() : Days.daysBetween(new DateTime().withTimeAtStartOfDay(), new DateTime(loanModel.getDeadline()).withTimeAtStartOfDay().plusDays(1)).getDays();
+        return InterestCalculator.calculateInterest(loanModel, amount * periodDuration);
     }
 
     public static long estimateCouponRepayExpectedInterest(InvestModel investModel, LoanModel loanModel, CouponModel couponModel, DateTime currentRepayDate, DateTime lastRepayDate) {
@@ -86,7 +93,7 @@ public class InterestCalculator {
                         .divide(new BigDecimal(DAYS_OF_YEAR), 0, BigDecimal.ROUND_DOWN).longValue();
                 break;
             case INTEREST_COUPON:
-                expectedInterest = new BigDecimal( periodDuration * investAmount)
+                expectedInterest = new BigDecimal(periodDuration * investAmount)
                         .multiply(new BigDecimal(couponModel.getRate()))
                         .divide(new BigDecimal(DAYS_OF_YEAR), 0, BigDecimal.ROUND_DOWN).longValue();
                 break;
@@ -218,13 +225,13 @@ public class InterestCalculator {
         for (int i = transferApplicationModel.getPeriod() - 1; i < investRepayModels.size(); i++) {
             totalExpectedInterestAmount += investRepayModels.get(i).getExpectedInterest() - investRepayModels.get(i).getExpectedFee();
         }
-        if(transferApplicationModel.getInvestAmount() != transferApplicationModel.getTransferAmount()){
+        if (transferApplicationModel.getInvestAmount() != transferApplicationModel.getTransferAmount()) {
             totalExpectedInterestAmount += transferApplicationModel.getInvestAmount() - transferApplicationModel.getTransferAmount();
         }
         return totalExpectedInterestAmount;
     }
 
-    public static long calculateTransferInterest(TransferApplicationModel transferApplicationModel, List<InvestRepayModel> investRepayModels,double fee) {
+    public static long calculateTransferInterest(TransferApplicationModel transferApplicationModel, List<InvestRepayModel> investRepayModels, double fee) {
         long totalExpectedInterestAmount = 0;
         for (int i = transferApplicationModel.getPeriod() - 1; i < investRepayModels.size(); i++) {
             totalExpectedInterestAmount += investRepayModels.get(i).getExpectedInterest();
