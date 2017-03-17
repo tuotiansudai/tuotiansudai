@@ -1,23 +1,24 @@
 require(['jquery', 'layerWrapper', 'jquery.ajax.extension'], function ($, layer) {
 	$(function() {
-		var $countList=$('.count-list'),
+		var $pointDetail = $('#pointDetail');
+		var $countList=$('.count-list',$pointDetail),
 			$numText=$countList.find('.num-text'),
 			$bigText = $countList.find('.total-num i'),
 			$getBtn = $('#getBtn');
 
-		$countList.on('click', '.low-btn', function(event) {//减号
-			event.preventDefault();
-			if ($bigText.text() > 0) {
-				$numText.val() > 1 ? $numText.val(function (index, num) {
-					return parseInt(num) - 1
-				}) : $numText.val('1');
+		$countList.on('click',function(event) {
+			var target = event.target;
+			var overplus = parseInt($bigText.text());  //剩余商品的数量
+			var current = parseInt($numText.val());  //目前已选商品
+			if(overplus<1) {
+				return;
 			}
-		}).on('click', '.add-btn', function(event) {//加号
-			event.preventDefault();
-			if ($bigText.text() > 0) {
-				$numText.val() < parseInt($bigText.text()) ? $numText.val(function (index, num) {
-					return parseInt(num) + 1
-				}) : $numText.val($bigText.text());
+			//点击减少－
+			if(/low-btn/.test(target.className) && current>1) {
+				$numText.val(current-1);
+
+			} else if(/add-btn/.test(target.className) && current < overplus) {
+				$numText.val(current+1);
 			}
 		});
 

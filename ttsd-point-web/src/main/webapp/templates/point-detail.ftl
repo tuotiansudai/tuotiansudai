@@ -1,7 +1,7 @@
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="${css.point_detail}" pageJavascript="${js.point_detail}" activeNav="商品详情" activeLeftNav="" title="商品详情">
 
-<div class="global-member-detail">
+<div class="global-member-detail" id="pointDetail">
 	<div class="wp clearfix detail-model">
 		<div class="container-detail">
 			<div class="detail-top">
