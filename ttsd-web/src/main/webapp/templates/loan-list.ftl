@@ -134,7 +134,7 @@
 
                             <dl>
                                 <dt>项目期限</dt>
-                                <dd><em>${loanItem.duration}</em>天</dd>
+                                <dd><#if loanItem.activityType == 'NORMAL'>最长</#if><em>${loanItem.duration}</em>天</dd>
                             </dl>
                             <dl>
                                 <#if loanItem.productType == 'EXPERIENCE'>
