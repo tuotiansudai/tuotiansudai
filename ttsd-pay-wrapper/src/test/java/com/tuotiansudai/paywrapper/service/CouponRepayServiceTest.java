@@ -562,7 +562,8 @@ public class CouponRepayServiceTest {
         loanModel.setLoanerUserName("借款人");
         loanModel.setLoanerIdentityNumber("111111111111111111");
         loanModel.setDuration(ProductType._90.getDuration());
-        loanModel.setRecheckTime(new DateTime().minusDays(10).withTimeAtStartOfDay().toDate());
+        loanModel.setDeadline(new DateTime().plusDays(90).toDate());
+        loanModel.setRecheckTime(new DateTime().plusDays(1).withTimeAtStartOfDay().toDate());
         return loanModel;
     }
 
