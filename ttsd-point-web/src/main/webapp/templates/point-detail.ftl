@@ -63,6 +63,8 @@
 						<#else>
                             <a href="javascript:void(0)" class="btn get-btn" data-id="${productShowItem.id?c!0}"
                                data-type="${productShowItem.goodsType.name()}" id="getBtn">立即兑换</a>
+
+							<span class="tip">本月您还可以兑换3个</span>
 						</#if>
 
 					</div>

@@ -96,7 +96,7 @@
                                 <span>${discountShow!}</span>
                             </i>
                         </#if>
-                        <p class="num-text">剩余${virtualProduct.leftCount?c!"0"}件/每月最多可兑换3个</p>
+                        <p class="num-text">剩余${virtualProduct.leftCount?c!"0"}件 /每人每月最多可兑换3个</p>
 
                         <p><img src="${staticServer}${virtualProduct.imageUrl}" width="160" height="100"></p>
                         <p class="convert-btn">
