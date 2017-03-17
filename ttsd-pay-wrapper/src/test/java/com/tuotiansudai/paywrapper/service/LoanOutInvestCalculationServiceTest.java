@@ -151,6 +151,7 @@ public class LoanOutInvestCalculationServiceTest {
         loanModel.setLoanerIdentityNumber("111111111111111111");
         loanModel.setRecheckTime(new Date());
         loanModel.setDuration(90);
+        loanModel.setDeadline(new DateTime().plusDays(90).toDate());
         loanModel.setPledgeType(PledgeType.HOUSE);
         return loanModel;
     }
