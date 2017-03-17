@@ -71,7 +71,7 @@ public class MobileAppLoanDetailV2ServiceTest extends ServiceTestBase{
         BaseResponseDto<LoanDetailV2ResponseDataDto>  loanDetail = mobileAppLoanDetailV2Service.findLoanDetail(loanDetailV2RequestDto);
         assertTrue(loanDetail.getData().isNonTransferable());
         assertEquals(loanDetail.getData().getContent(),"个人经营借款理财项目，总额10001元期限30天，年化利率28%，先到先抢！！！");
-        assertTrue(Long.parseLong(loanDetail.getData().getInterestPerTenThousands()) == 22883);
+        assertTrue(Long.parseLong(loanDetail.getData().getInterestPerTenThousands()) == 29787);
     }
 
     private LoanDetailsModel createLoanDetails(long loanId){
@@ -147,6 +147,7 @@ public class MobileAppLoanDetailV2ServiceTest extends ServiceTestBase{
         loanDto.setRecheckTime(DateTime.now().toDate());
         LoanModel loanModel = new LoanModel(loanDto);
         loanModel.setStatus(LoanStatus.RAISING);
+        loanModel.setDeadline(new DateTime().plusDays(10).toDate());
         return loanModel;
     }
 

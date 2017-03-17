@@ -56,8 +56,12 @@ public class InterestCalculator {
     }
 
     public static long estimateExpectedInterest(LoanModel loanModel, long amount) {
-        //包含当前天和项目截止时间当天
-        return InterestCalculator.calculateInterest(loanModel, amount * LoanPeriodCalculator.calculateDuration(new Date(), loanModel.getDeadline()));
+        List soldOutLoanList = Lists.newArrayList("RECHECK","REPAYING","OVERDUE","COMPLETE");
+        boolean isRealTimeInterest = soldOutLoanList.contains(loanModel.getStatus()) || loanModel.getProductType() == ProductType.EXPERIENCE ? true : false;
+
+        //包含当前天和项目截止时间当天,拓天体验项目和已售罄的项目仍然显示原来的利息收益
+        int periodDuration = isRealTimeInterest ? loanModel.getDuration() : LoanPeriodCalculator.calculateDuration(new Date(), loanModel.getDeadline());
+        return InterestCalculator.calculateInterest(loanModel, amount * periodDuration);
     }
 
     public static long estimateCouponRepayExpectedInterest(InvestModel investModel, LoanModel loanModel, CouponModel couponModel, DateTime currentRepayDate, DateTime lastRepayDate) {
