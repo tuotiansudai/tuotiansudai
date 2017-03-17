@@ -13,6 +13,7 @@ public class ProductModel implements Serializable {
     private String imageUrl;
     private String description;
     private long totalCount;
+    private long monthLimit;
     private long usedCount;
     private long points;
     private long actualPoints;
@@ -29,7 +30,7 @@ public class ProductModel implements Serializable {
     public ProductModel() {
     }
 
-    public ProductModel(String loginName, GoodsType type, long couponId, String name, Integer seq, String imageUrl, String description, long totalCount, long points, Date startTime, Date endTime) {
+    public ProductModel(String loginName, GoodsType type, long couponId, String name, Integer seq, String imageUrl, String description, long totalCount, long monthLimit, long points, Date startTime, Date endTime) {
         this.type = type;
         this.name = name;
         this.couponId = couponId;
@@ -37,6 +38,7 @@ public class ProductModel implements Serializable {
         this.imageUrl = imageUrl;
         this.description = description;
         this.totalCount = totalCount;
+        this.monthLimit = monthLimit;
         this.points = points;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -114,6 +116,14 @@ public class ProductModel implements Serializable {
 
     public void setTotalCount(long totalCount) {
         this.totalCount = totalCount;
+    }
+
+    public long getMonthLimit() {
+        return monthLimit;
+    }
+
+    public void setMonthLimit(long monthLimit) {
+        this.monthLimit = monthLimit;
     }
 
     public long getUsedCount() {

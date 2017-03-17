@@ -12,6 +12,8 @@ public class ExchangeCouponView {
 
     private long productId;
 
+    private long monthLimit = 0;
+
     private CouponModel couponModel;
 
     public ExchangeCouponView() {
@@ -50,6 +52,14 @@ public class ExchangeCouponView {
         this.productId = productId;
     }
 
+    public long getMonthLimit() {
+        return monthLimit;
+    }
+
+    public void setMonthLimit(long monthLimit) {
+        this.monthLimit = monthLimit;
+    }
+
     public CouponModel getCouponModel() {
         return couponModel;
     }
@@ -66,12 +76,13 @@ public class ExchangeCouponView {
         this.actualPoints = actualPoints;
     }
 
-    public ExchangeCouponView(Long exchangePoint, long actualPoints, Integer seq, String imageUrl, long productId, CouponModel couponModel){
+    public ExchangeCouponView(Long exchangePoint, long actualPoints, Integer seq, String imageUrl, long productId, long monthLimit, CouponModel couponModel){
         this.exchangePoint = exchangePoint;
         this.actualPoints = actualPoints;
         this.seq = seq;
         this.imageUrl = imageUrl;
         this.productId = productId;
+        this.monthLimit = monthLimit;
         this.couponModel = couponModel;
     }
 
