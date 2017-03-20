@@ -1,4 +1,5 @@
 var fs = require('fs');
+var _ =require('underscore');
 var path = require('path');
 var basePath = path.join(__dirname, '../../resources'),
     staticPath = path.join(basePath, 'static'),
@@ -9,12 +10,30 @@ var basePath = path.join(__dirname, '../../resources'),
     mobileImagePath=path.join(staticPath, 'mobile/images'),
     publicImagePath=path.join(staticPath, 'public/images'); //默认打包路径
 var staticServer ='http://localhost:3008/';
-var packfolderPath = path.join(basePath,'develop/images')
+var packfolderPath = path.join(basePath,'develop/images'); //打包图片文件夹路径
 
-function getImagesFiles(devfolderPath,packfolderPath)
+
+/**
+ *删除数组指定下标或指定对象
+ */
+Array.prototype.remove=function(obj){
+    for(var i =0;i <this.length;i++){
+        var temp = this[i];
+        if(!isNaN(obj)){
+            temp=i;
+        }
+        if(temp == obj){
+            for(var j = i;j <this.length;j++){
+                this[j]=this[j+1];
+            }
+            this.length = this.length-1;
+        }
+    }
+}
+
+function getImagesFiles(devfolderPath)
 {
     this.devfolderPath=devfolderPath; //开发图片文件夹路径
-    this.packfolderPath=packfolderPath; // 打包图片文件夹路径
     this.devImagesList = [];  //开发文件里的 图片
     this.packImagesList = [];  //打包文件里的图片
     this.toolSrc = basePath+'/tools/';
@@ -31,12 +50,14 @@ getImagesFiles.prototype.readImgFile =function(path) {
         else {
             //创建一个对象保存信息
             var obj = new Object();
-            obj.size = parseFloat(states.size/1024).toFixed(2)+'K';//文件大小，以字节为单位
+            obj.size = parseFloat(states.size/1024).toFixed(2);//文件大小，以字节为单位
             obj.name = file;//文件名
             obj.path = path+'/'+file; //文件绝对路径
             this.devImagesList.push(obj);
         }
     }.bind(this));
+
+    // console.log(this.devImagesList);
 }
 
 //项目中已经用到的图片
@@ -55,38 +76,83 @@ getImagesFiles.prototype.readPackImages = function(path) {
             //创建一个对象保存信息
             var objImg = new Object();
             objImg.name = file;//文件名
+            objImg.size = parseFloat(states.size/1024).toFixed(2);//文件大小，以字节为单位
             objImg.path = path+'/'+file; //文件绝对路径
             this.packImagesList.push(objImg);
         }
     }.bind(this));
+
+    // console.dir(this.packImagesList);
 }
 
 //遍历删除多余的图片,inlineImages,layer,fancybox插件里用到的图片不做处理
 getImagesFiles.prototype.removeUselessImgs = function() {
     var devImagesList = this.devImagesList;
-    var packImagesList = this.packImagesList;
-    console.log(packImagesList)
+    var packNameList = _.pluck(this.packImagesList, 'name');
+    var newPackName=[];
+
+    packNameList.forEach(function(img) {
+        var splitImg = img.split('.');
+        var splitLen = splitImg.length;
+        if(splitLen>2 && splitImg[splitLen-2].length ==8) {
+            splitImg.remove(splitLen-2);
+            newPackName.push(splitImg.join('.'));
+        }
+        else {
+            newPackName.push(img);
+        }
+
+    });
+    // console.log(packNameList.length);
+    // console.log(newPackName.length);
+    //开发中需要用的图片
     devImagesList.forEach(function (imgFile) {
-        console.log(imgFile);
+        var imageName = imgFile.name;
+        var imageSize = imgFile.size;
+        // 5120是在module的loader中配置的
+        if(imageSize>5120/1024) {
+            console.log(imageName);
+            var isBool = _.contains(newPackName, imageName);
+            if(!isBool) {
+                fs.unlink(imgFile.path, function(err) {
+                    if (err) throw err;
+                    console.log(imageName + '文件删除成功');
+                });
+            }
+        }
     })
 }
 
 getImagesFiles.prototype.init=function() {
     var that=this;
     //判断打包的时候文件路径是否存在
-    fs.exists(this.devfolderPath, function (exists) {
-        if(exists) {
-            that.readImgFile(that.devfolderPath);
-        }
-    });
-    fs.exists(this.packfolderPath, function (exists) {
-        if(exists) {
-            that.readPackImages(that.packfolderPath);
-        }
-    });
+
+    this.readImgFile(that.devfolderPath);
+    this.readPackImages(packfolderPath);
+    this.removeUselessImgs();
 }
 
 //读取ask里的图片
 var askListImgs=new getImagesFiles(askImagePath);
 askListImgs.init();
+
+// //读取web里的图片
+// var webListImg=new getImagesFiles(webImagePath);
+// webListImg.init();
+
+//读取public里的图片
+var publicListImg=new getImagesFiles(publicImagePath);
+publicListImg.init();
+
+// //读取activity里的图片
+// var activityListImg=new getImagesFiles(activityImagePath);
+// activityListImg.init();
+//
+// //读取point里的图片
+// var pointListImg=new getImagesFiles(pointImagePath);
+// pointListImg.init();
+//
+// //读取point里的图片
+// var mobileListImg=new getImagesFiles(mobileImagePath);
+// mobileListImg.init();
 
