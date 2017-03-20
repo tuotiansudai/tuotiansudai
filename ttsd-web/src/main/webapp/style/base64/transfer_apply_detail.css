@@ -1,0 +1,311 @@
+.coupon-alert {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 9999; }
+  .coupon-alert .coupon-model-list {
+    float: left;
+    width: 590px;
+    height: 546px;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    margin-top: -273px;
+    margin-left: -295px;
+    background: url("/images/sign/red-bag/coupon-bag-info.png") no-repeat center;
+    background-size: 80%; }
+    .coupon-alert .coupon-model-list .coupon-close {
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+      position: absolute;
+      top: 50px;
+      right: 20px;
+      background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC4AAAAuCAMAAABgZ9sFAAABGlBMVEX76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kT76kRBbNQQAAAAXXRSTlMAAQQFBgcICQoLDA4PEBESExUXGBwhIiorLzBGSUpLTk9QUVtcY2ZoaXBxcn+LjJaYmZqbnJ60tbe4ubrAwcjKy8zNzs/Q0dfY2drb3N3f4OTl5u3u8fb3+Pn6/P4d3MTvAAACLklEQVRIx42VW0PaQBCFD8hNKzelYhEsmGIiN5VeKEWxJaRKA1opFRDO//8bfUgJCewG5ik7+2Vnd3ZnDrBi0fe11sNoOh09tGr5KDwtqHyd0WGzphKUwuHyb3J6Uzk7jgcC8eOzys2UfC6HxXS2T+rncacrdq6T/awADl2SRs636vZlDfIytOo++M5xyS8K6r8Ys3Pg9h2ZNDOyM2VMmm+djtQj75LyhCXafEwthxGd7T2vBO+1qUfsUZ1m0vtCkiY/Lr5zHGewwTJj5v6nsM8SNlqZAyudJRr+zbj/p7Vo8HkRBvBdq25IvbIv7pTDEACFum955rmLV+es20vpVAA0WbSntbmLV+eca/aoyCYQnU32IebdNPYnsyjyvHWGd/CamwZumUeVFQj5NRoV1vCFBYj4dRoFNtBjGgJeQCPNHv4yAQEvoJHgH5ABCHgBjQCnclwV4vLNqKLNiI+qyY4qTKQmTWRNcE2a/JoEj0CTPIIb5gVPTBMOgDeTWWz9AWuSn1HkNwAKO46W4A6vOcoDP/gBQGjIE7ti6ivJ0Op2pZ1YxYcSu9uUtsGy1TgG2zSO0qJxIMeXjW3p3QtPF9+ftml6n5cttcv2rhe922Y34mjYT2wnPBv2U8olBwP+kstBj4Mjt+uww/GFXGwO16TsmjQEGpc1yKuQYJmcSCg7EqEEEC4PLRlOx3Z2YmlLhocyGQYQVFpukW95iLwVv1Bt3I9eX0f3jWohtjr7D7D/k3HOtaf4AAAAAElFTkSuQmCC") no-repeat center;
+      background-size: 100%; }
+    .coupon-alert .coupon-model-list .coupon-text {
+      width: 227px;
+      height: 84px;
+      position: absolute;
+      top: 100px;
+      left: 180px;
+      text-align: center;
+      color: #ec4d35;
+      line-height: 84px; }
+      .coupon-alert .coupon-model-list .coupon-text span.text-number {
+        font-size: 40px; }
+      .coupon-alert .coupon-model-list .coupon-text span.text-unit {
+        font-size: 30px; }
+    .coupon-alert .coupon-model-list .coupon-name {
+      width: 227px;
+      height: 26px;
+      position: absolute;
+      top: 190px;
+      left: 180px;
+      text-align: center;
+      color: #ff752a;
+      line-height: 26px;
+      font-size: 20px;
+      letter-spacing: 8px; }
+    .coupon-alert .coupon-model-list .coupon-tip {
+      width: 227px;
+      position: absolute;
+      top: 280px;
+      left: 182px;
+      text-align: center;
+      color: #fbea44;
+      font-size: 22px;
+      line-height: 32px; }
+    .coupon-alert .coupon-model-list .coupon-place {
+      width: 290px;
+      position: absolute;
+      top: 360px;
+      left: 150px;
+      text-align: center;
+      color: #fff9c0;
+      font-size: 12px;
+      line-height: 25px;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 26px; }
+    .coupon-alert .coupon-model-list .coupon-link {
+      width: 180px;
+      height: 40px;
+      position: absolute;
+      top: 415px;
+      left: 200px;
+      background: #fbea44;
+      color: #f9212c;
+      font-size: 18px;
+      text-align: center;
+      line-height: 40px;
+      border-radius: 5px; }
+
+.main-frame .layui-layer-content {
+  color: #4c4c4c; }
+
+.get-skipphone-tip {
+  float: left;
+  width: 100%;
+  height: auto;
+  text-align: center;
+  padding: 20px 0 35px;
+  display: none; }
+  .get-skipphone-tip .tip-item {
+    float: left;
+    width: 100%; }
+    .get-skipphone-tip .tip-item span {
+      display: inline-block;
+      margin: 0 2px; }
+      .get-skipphone-tip .tip-item span.skip-error {
+        float: left;
+        font-size: 12px;
+        color: #ff0000;
+        margin-left: 50px; }
+      .get-skipphone-tip .tip-item span .skip-phone-code {
+        float: left;
+        width: 170px;
+        height: 30px;
+        font-size: 12px;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+        text-indent: 1em; }
+      .get-skipphone-tip .tip-item span .get-skip-code {
+        float: left;
+        width: 100px;
+        height: 30px;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+        text-align: center;
+        font-size: 12px;
+        color: #4c4c4c;
+        background: #fafafa; }
+      .get-skipphone-tip .tip-item span .microphone {
+        float: left;
+        width: 30px;
+        height: 30px;
+        background: #fafafa;
+        text-align: center;
+        border: 1px solid #ccc;
+        border-left: none;
+        box-sizing: border-box; }
+    .get-skipphone-tip .tip-item .skip-intro {
+      float: right;
+      font-size: 12px;
+      color: #4c4c4c;
+      margin-right: 40px; }
+    .get-skipphone-tip .tip-item .get-skip-btn {
+      display: inline-block;
+      width: 250px;
+      height: 35px;
+      line-height: 35px;
+      text-align: center;
+      background: #ff752a;
+      color: #fff;
+      font-size: 14px;
+      border: none;
+      margin: 30px 0 10px;
+      cursor: pointer; }
+      .get-skipphone-tip .tip-item .get-skip-btn .active {
+        background: #ff985d; }
+    .get-skipphone-tip .tip-item label {
+      display: inline-block; }
+      .get-skipphone-tip .tip-item label .skip-icon {
+        display: inline-block;
+        width: 14px;
+        height: 14px;
+        background: url("/images/icons/skip-checkbox.png") no-repeat center;
+        background-position: 0px 0px;
+        cursor: pointer;
+        vertical-align: middle; }
+        .get-skipphone-tip .tip-item label .skip-icon.active {
+          background-position: -24px 0px; }
+    .get-skipphone-tip .tip-item .skip-text {
+      display: inline-block;
+      font-size: 12px;
+      color: #4d4d4d; }
+      .get-skipphone-tip .tip-item .skip-text span {
+        color: #999999;
+        cursor: pointer; }
+        .get-skipphone-tip .tip-item .skip-text span:hover {
+          text-decoration: underline; }
+
+.skip-success-tip {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 999999;
+  display: none; }
+  .skip-success-tip span {
+    width: 290px;
+    height: 90px;
+    line-height: 90px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -45px;
+    margin-left: -145px;
+    font-size: 18px;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.5);
+    text-align: center;
+    border-radius: 10px; }
+    @media (max-width: 700px) {
+      .skip-success-tip span {
+        width: 140px; } }
+    .skip-success-tip span .skip-icon {
+      margin-right: 10px; }
+
+.layui-layer-btn {
+  text-align: center !important; }
+  .layui-layer-btn .layui-layer-btn0 {
+    padding: 3px 35px;
+    background: #ff7a2a !important;
+    border-radius: 4px;
+    border: 1px solid #ff7a2a !important;
+    border-color: #ff7a2a !important;
+    letter-spacing: 3px;
+    color: #fff; }
+  .layui-layer-btn .layui-layer-btn1 {
+    padding: 3px 35px;
+    color: #808080 !important;
+    border: 1px solid #dedede !important;
+    background: #f1f1f1 !important;
+    border-radius: 4px; }
+
+.layui-layer-content i.fa-check-circle {
+  float: left;
+  font-size: 35px;
+  margin-right: 10px;
+  color: #ff752a; }
+.layui-layer-content p {
+  margin-bottom: 0; }
+
+.success-tip {
+  float: left;
+  width: 400px;
+  height: 150px;
+  display: none; }
+  .success-tip i.fa-check-circle {
+    float: left;
+    font-size: 35px;
+    margin-right: 10px;
+    color: #ff752a; }
+  .success-tip p {
+    margin-bottom: 0; }
+
+.create-transfer-container {
+  float: left;
+  width: 100%; }
+  .create-transfer-container h5 {
+    font-size: 14px;
+    color: #4c4c4c; }
+    .create-transfer-container h5 span {
+      color: #ff7200; }
+  .create-transfer-container .info-container {
+    float: left;
+    width: 100%; }
+    .create-transfer-container .info-container .info-list {
+      float: left;
+      width: 100%;
+      margin-top: 30px;
+      font-size: 12px;
+      color: #000; }
+      .create-transfer-container .info-container .info-list .agreement span strong {
+        color: #999; }
+        .create-transfer-container .info-container .info-list .agreement span strong a {
+          color: #999; }
+          .create-transfer-container .info-container .info-list .agreement span strong a:hover {
+            text-decoration: underline; }
+      .create-transfer-container .info-container .info-list .agree-tip {
+        display: inline-block;
+        margin-left: 154px; }
+      .create-transfer-container .info-container .info-list i {
+        cursor: pointer;
+        font-size: 16px; }
+        .create-transfer-container .info-container .info-list i.fa-check-square {
+          color: #f24712; }
+        .create-transfer-container .info-container .info-list i.fa-square-o {
+          color: #ccc;
+          font-size: 18px;
+          vertical-align: middle; }
+      .create-transfer-container .info-container .info-list .info-left {
+        float: left;
+        width: 120px;
+        padding-right: 20px;
+        text-align: right; }
+      .create-transfer-container .info-container .info-list .info-right {
+        float: left;
+        width: 615px; }
+        .create-transfer-container .info-container .info-list .info-right .fa-question-circle {
+          color: #f24712; }
+        .create-transfer-container .info-container .info-list .info-right .int-number {
+          padding: 7px 20px; }
+        .create-transfer-container .info-container .info-list .info-right .tip-text {
+          color: #7f7f7f;
+          margin-left: 20px; }
+          .create-transfer-container .info-container .info-list .info-right .tip-text.active {
+            color: #f71010; }
+      .create-transfer-container .info-container .info-list .btn-normal {
+        padding: 10px 50px;
+        background: #ff7a2a !important;
+        border: 1px solid #ff7a2a !important;
+        border-color: #ff7a2a !important;
+        letter-spacing: 3px;
+        color: #fff;
+        margin-right: 20px; }
+        .create-transfer-container .info-container .info-list .btn-normal:disabled {
+          background: #ccc !important;
+          border: 1px solid #ccc !important; }
+      .create-transfer-container .info-container .info-list .btn-default {
+        padding: 10px 50px;
+        color: #808080 !important;
+        border: 1px solid #dedede !important;
+        background: #f1f1f1 !important;
+        margin-left: 20px; }
+
+/*# sourceMappingURL=transfer_apply_detail.css.map */
