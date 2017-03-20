@@ -3,22 +3,24 @@ require(['jquery', 'layerWrapper', 'jquery.ajax.extension'], function ($, layer)
 		var $pointDetail = $('#pointDetail');
 		var $countList=$('.count-list',$pointDetail),
 			$numText=$countList.find('.num-text'),
-			$bigText = $countList.find('.total-num i'),
+			currentNum=parseInt($numText.val()), //目前已选商品的个数
 			$getBtn = $('#getBtn');
 
 		$countList.on('click',function(event) {
 			var target = event.target;
-			var overplus = parseInt($bigText.text());  //剩余商品的数量
-			var current = parseInt($numText.val());  //目前已选商品
+			var overplus = parseInt($countList.data('overplus'));  //剩余商品的数量
+			var myLimit = parseInt($countList.data('mylimit')); //本月我可以兑换商品的数量
+			currentNum=parseInt($numText.val());
+			var compareNum = (myLimit==0) ? overplus :Math.min(overplus,myLimit);
 			if(overplus<1) {
 				return;
 			}
 			//点击减少－
-			if(/low-btn/.test(target.className) && current>1) {
-				$numText.val(current-1);
+			if(/low-btn/.test(target.className) && currentNum>1) {
+				$numText.val(--currentNum);
 
-			} else if(/add-btn/.test(target.className) && current < overplus) {
-				$numText.val(current+1);
+			} else if(/add-btn/.test(target.className) && currentNum < compareNum) {
+				$numText.val(++currentNum);
 			}
 		});
 
@@ -38,7 +40,6 @@ require(['jquery', 'layerWrapper', 'jquery.ajax.extension'], function ($, layer)
 				}
 			})
 				.done(function (data) {
-					console.log(data);
 					if (data.data.status) {
 						location.href = '/point-shop/order/' + idString + '/' + typeString + '/' + $numText.val();
 					} else {

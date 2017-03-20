@@ -47,11 +47,11 @@
 							数量：
 						</div>
 						<div class="info-content">
-							<div class="count-list">
+							<div class="count-list" data-overplus="${productShowItem.leftCount?c!0}" data-mylimit="${productShowItem.monthLimit}">
 								<span class="count-btn low-btn">-</span>
 								<input type="text" value="1" class="num-text" readonly="readonly">
 								<span class="count-btn add-btn">+</span>
-								<span class="total-num">
+								<span class="total-num" id="productNumber" >
 									剩余<i>${productShowItem.leftCount?c!0}</i>件
 								</span>
 							</div>
@@ -64,7 +64,10 @@
                             <a href="javascript:void(0)" class="btn get-btn" data-id="${productShowItem.id?c!0}"
                                data-type="${productShowItem.goodsType.name()}" id="getBtn">立即兑换</a>
 
-							<span class="tip">本月您还可以兑换3个</span>
+							<#if productShowItem.monthLimit!=0>
+                                <span class="tip">本月您还可以兑换${productShowItem.monthLimit}个</span>
+							</#if>
+
 						</#if>
 
 					</div>

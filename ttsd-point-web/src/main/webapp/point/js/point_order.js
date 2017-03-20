@@ -1,34 +1,38 @@
 require(['jquery', 'layerWrapper','template', 'jquery.validate', 'jquery.ajax.extension'], function($, layer,tpl) {
 	$(function() {
-		var $countList = $('.order-number'),
+		var $pointOrder = $('#pointOrder');
+		var $countList = $('.order-number',$pointOrder),
 			$numText = $countList.find('.num-text'),
-			$bigText = $countList.find('.total-num i'),
+			currentNum=parseInt($numText.val()), //目前已选商品的个数
 			$orderBtn = $('#orderBtn'),
 			$addPlace = $('#addPlace'),
 			$updatePlace = $('#updatePlace'),
 			$addressForm = $('#addressForm');
 
-		$countList.on('click', '.low-btn', function(event) { //减号
-			event.preventDefault();
-			if ($bigText.text() > 0) {
-				$numText.val() > 1 ? $numText.val(function(index, num) {
-					return parseInt(num) - 1
-				}) && changeCount() : $numText.val('1');
+		$countList.on('click',function(event) {
+			var target = event.target;
+			var overplus = parseInt($countList.data('overplus'));  //剩余商品的数量
+			var myLimit = parseInt($countList.data('mylimit')); //本月我可以兑换商品的数量
+			var compareNum = (myLimit==0) ? overplus :Math.min(overplus,myLimit);
+			currentNum=parseInt($numText.val());
+			if(overplus<1) {
+				return;
 			}
-		}).on('click', '.add-btn', function(event) { //加号
-			event.preventDefault();
-			if ($bigText.text() > 0) {
-				$numText.val() < parseInt($bigText.text()) ? $numText.val(function(index, num) {
-					return parseInt(num) + 1
-				}) && changeCount() : $numText.val($bigText.text());
+			//点击减少－
+			if(/low-btn/.test(target.className) && currentNum>1) {
+				$numText.val(--currentNum);
+
+			} else if(/add-btn/.test(target.className) && currentNum < compareNum) {
+				$numText.val(++currentNum);
 			}
+			changeCount();
 		});
+
 		changeCount();
 
 		function changeCount() {
-			$('.count-num').each(function(index, el) {
-				$(this).text(parseInt($(this).attr('data-num')) * parseInt($numText.val()));
-			});
+			var totalPoint = parseInt($('.count-num',$pointOrder).data('num')) * currentNum;
+			$('.count-num',$pointOrder).text(totalPoint);
 		}
 
 		$orderBtn.on('click', function(event) { //立即兑换
