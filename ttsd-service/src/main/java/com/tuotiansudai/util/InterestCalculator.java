@@ -237,20 +237,27 @@ public class InterestCalculator {
     }
 
     public static long calculateExtraLoanRateInterest(LoanModel loanModel, double extraRate, InvestModel investModel, Date endTime) {
-        DateTime startTime;
+        Date startTime;
         if (InterestInitiateType.INTEREST_START_AT_INVEST == loanModel.getType().getInterestInitiateType()) {
-            startTime = new DateTime(investModel.getInvestTime()).withTimeAtStartOfDay().minusDays(1);
+            startTime = investModel.getTradingTime();
         } else {
-            startTime = new DateTime(loanModel.getRecheckTime()).withTimeAtStartOfDay();
+            startTime = loanModel.getRecheckTime();
         }
-        int periodDuration = Days.daysBetween(startTime, new DateTime(endTime).withTimeAtStartOfDay()).getDays();
+
+        int periodDuration = LoanPeriodCalculator.calculateDuration(startTime, endTime);
+
         return new BigDecimal(investModel.getAmount()).multiply(new BigDecimal(extraRate)).multiply(new BigDecimal(periodDuration)).
                 divide(new BigDecimal(DAYS_OF_YEAR), 0, BigDecimal.ROUND_DOWN).longValue();
     }
 
     public static long calculateExtraLoanRateExpectedInterest(double extraRate, long amount, int periodDuration, double investFeeRate) {
-        return new BigDecimal(amount).multiply(new BigDecimal(extraRate)).multiply(new BigDecimal(periodDuration)).
+        long expectedInterest = new BigDecimal(amount).multiply(new BigDecimal(extraRate)).multiply(new BigDecimal(periodDuration)).
                 divide(new BigDecimal(DAYS_OF_YEAR), 0, BigDecimal.ROUND_DOWN).longValue();
+
+        long expectedFee = new BigDecimal(investFeeRate).multiply(new BigDecimal(expectedInterest)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
+
+        return expectedInterest - expectedFee;
+
     }
 
     public static long estimateExperienceExpectedInterest(long investAmount, LoanModel loanModel) {

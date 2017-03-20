@@ -81,7 +81,7 @@ public class InvestServiceTest {
         loanDto.setFundraisingStartTime(new Date());
         loanDto.setInvestIncreasingAmount("1");
         loanDto.setLoanAmount("10000");
-        loanDto.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
+        loanDto.setType(LoanType.INVEST_INTEREST_LUMP_SUM_REPAY);
         loanDto.setMaxInvestAmount("100000000000");
         loanDto.setMinInvestAmount("0");
         loanDto.setCreatedTime(new Date());
@@ -242,8 +242,11 @@ public class InvestServiceTest {
         userMembershipMapper.create(userMembershipModel4);
         assertEquals(2, investService.calculateMembershipPreference("testUser", LOAN_ID, Lists.newArrayList(10000L), 10000L, Source.WEB));
 
-        UserMembershipModel userMembershipModel5 = new UserMembershipModel("testUser", membershipMapper.findByLevel(4).getId(), DateTime.parse("2099-06-30T01:20").toDate(), UserMembershipType.GIVEN);
+        UserMembershipModel userMembershipModel5 = new UserMembershipModel("testUser", membershipMapper.findByLevel(5).getId(), DateTime.parse("2099-06-30T01:20").toDate(), UserMembershipType.GIVEN);
         userMembershipMapper.create(userMembershipModel5);
-        assertEquals(2, investService.calculateMembershipPreference("testUser", LOAN_ID, Lists.newArrayList(10000L), 10000L, Source.WEB));
+        extraLoanRateMapper.create(createExtraLoanRate(LOAN_ID));
+        loanDetailsMapper.create(createLoanDetails(LOAN_ID));
+        long expectedInterest = investService.calculateMembershipPreference("testUser", LOAN_ID, Lists.newArrayList(10000L), 1000000L, Source.WEB);
+        assertEquals(505, expectedInterest);
     }
 }

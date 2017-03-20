@@ -68,9 +68,9 @@ public class LoanOutInvestCalculationServiceTest {
 
     @Test
     @Transactional
-    public void loanOutInvestCalculation() {
+    public void loanOutInvestWithLoanTypeIsLoanInterestLumpSumRepayCalculation() {
         UserModel userModel = createFakeUser("buildbox123123131", "13612341234");
-        LoanModel loanModel = fakeLoanModel(userModel);
+        LoanModel loanModel = fakeLoanModel(userModel, LoanType.LOAN_INTEREST_LUMP_SUM_REPAY);
         loanMapper.create(loanModel);
         LoanDetailsModel loanDetailsModel = fakeLoanLoanDetailsModel(loanModel);
         loanDetailsMapper.create(loanDetailsModel);
@@ -94,12 +94,59 @@ public class LoanOutInvestCalculationServiceTest {
 
         InvestExtraRateModel test1investExtraRateModel = investExtraRateMapper.findByInvestId(test1InvestModel.getId());
 
-        assertTrue(new DateTime(loanModel.getRecheckTime()).plusDays(loanModel.getDuration()).toString("yyyy-MM-dd")
-                .equals(new DateTime(test1investExtraRateModel.getRepayDate()).toString("yyyy-MM-dd")));
+        assertThat(new DateTime(loanModel.getDeadline()).toString("yyyy-MM-dd"),
+                is(new DateTime(test1investExtraRateModel.getRepayDate()).toString("yyyy-MM-dd")));
         assertThat(test1investExtraRateModel.getExpectedInterest(), is(24l));
         assertThat(test1investExtraRateModel.getExpectedFee(), is(2l));
 
         InvestExtraRateModel test2investExtraRateModel = investExtraRateMapper.findByInvestId(test2InvestModel.getId());
+        assertThat(new DateTime(loanModel.getDeadline()).toString("yyyy-MM-dd"),
+                is(new DateTime(test2investExtraRateModel.getRepayDate()).toString("yyyy-MM-dd")));
+        assertThat(test2investExtraRateModel.getExpectedInterest(), is(61l));
+        assertThat(test2investExtraRateModel.getExpectedFee(), is(6l));
+
+        loanOutInvestCalculationService.rateIncreases(loanModel.getId());
+    }
+
+
+    @Test
+    @Transactional
+    public void loanOutInvestWithLoanTypeIsInvestInterestLumpSumRepayCalculation() {
+        UserModel userModel = createFakeUser("buildbox123123131", "13612341234");
+        LoanModel loanModel = fakeLoanModel(userModel, LoanType.INVEST_INTEREST_LUMP_SUM_REPAY);
+        loanMapper.create(loanModel);
+        LoanDetailsModel loanDetailsModel = fakeLoanLoanDetailsModel(loanModel);
+        loanDetailsMapper.create(loanDetailsModel);
+
+        List<ExtraLoanRateModel> extraLoanRateModels = fakeExtraLoanRate(loanModel);
+        extraLoanRateMapper.create(extraLoanRateModels);
+
+        UserModel test1Model = createFakeUser("test0001", "13333333333");
+        InvestModel test1InvestModel = new InvestModel(idGenerator.generate(), loanModel.getId(), null, 25000, test1Model.getLoginName(),
+                new Date(), Source.WEB, "tuotiansudai", 0.1);
+        test1InvestModel.setTradingTime(new Date());
+        test1InvestModel.setStatus(InvestStatus.SUCCESS);
+        investMapper.create(test1InvestModel);
+
+        UserModel test2Model = createFakeUser("test0002", "18999999999");
+        InvestModel test2InvestModel = new InvestModel(idGenerator.generate(), loanModel.getId(), null, 31000, test2Model.getLoginName(),
+                new Date(), Source.WEB, "tuotiansudai", 0.1);
+        test2InvestModel.setTradingTime(new Date());
+        test2InvestModel.setStatus(InvestStatus.SUCCESS);
+        investMapper.create(test2InvestModel);
+
+        loanOutInvestCalculationService.rateIncreases(loanModel.getId());
+
+        InvestExtraRateModel test1investExtraRateModel = investExtraRateMapper.findByInvestId(test1InvestModel.getId());
+
+        assertThat(new DateTime(loanModel.getDeadline()).toString("yyyy-MM-dd"),
+                is(new DateTime(test1investExtraRateModel.getRepayDate()).toString("yyyy-MM-dd")));
+        assertThat(test1investExtraRateModel.getExpectedInterest(), is(24l));
+        assertThat(test1investExtraRateModel.getExpectedFee(), is(2l));
+
+        InvestExtraRateModel test2investExtraRateModel = investExtraRateMapper.findByInvestId(test2InvestModel.getId());
+        assertThat(new DateTime(loanModel.getDeadline()).toString("yyyy-MM-dd"),
+                is(new DateTime(test2investExtraRateModel.getRepayDate()).toString("yyyy-MM-dd")));
         assertThat(test2investExtraRateModel.getExpectedInterest(), is(61l));
         assertThat(test2investExtraRateModel.getExpectedFee(), is(6l));
 
@@ -122,7 +169,7 @@ public class LoanOutInvestCalculationServiceTest {
         return model;
     }
 
-    private LoanModel fakeLoanModel(UserModel userModel) {
+    private LoanModel fakeLoanModel(UserModel userModel,LoanType loanType) {
         LoanModel loanModel = new LoanModel();
         loanModel.setAgentLoginName(userModel.getLoginName());
         loanModel.setBaseRate(16.00);
@@ -141,7 +188,7 @@ public class LoanOutInvestCalculationServiceTest {
         loanModel.setFundraisingStartTime(new Date());
         loanModel.setInvestIncreasingAmount(1);
         loanModel.setLoanAmount(100000L);
-        loanModel.setType(LoanType.LOAN_INTEREST_MONTHLY_REPAY);
+        loanModel.setType(loanType);
         loanModel.setMaxInvestAmount(100000000000L);
         loanModel.setMinInvestAmount(1);
         loanModel.setCreatedTime(new Date());
@@ -151,6 +198,7 @@ public class LoanOutInvestCalculationServiceTest {
         loanModel.setLoanerIdentityNumber("111111111111111111");
         loanModel.setRecheckTime(new Date());
         loanModel.setDuration(90);
+        loanModel.setDeadline(new DateTime().plusDays(89).toDate());
         loanModel.setPledgeType(PledgeType.HOUSE);
         return loanModel;
     }
