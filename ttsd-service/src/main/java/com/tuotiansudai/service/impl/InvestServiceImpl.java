@@ -465,7 +465,7 @@ public class InvestServiceImpl implements InvestService {
         List<ExtraLoanRateModel> extraLoanRateModels = extraLoanRateMapper.findByLoanId(loanId);
         LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loanId);
         long extraLoanRateExpectedInterest = 0L;
-        if (CollectionUtils.isNotEmpty(extraLoanRateModels) && !StringUtils.isEmpty(loanDetailsModel) && loanDetailsModel.getExtraSource().contains(source.name())) {
+        if (CollectionUtils.isNotEmpty(extraLoanRateModels) && !StringUtils.isEmpty(loanDetailsModel) && loanDetailsModel.getExtraSource().contains(source)) {
             for (ExtraLoanRateModel extraLoanRateModel : extraLoanRateModels) {
                 if ((extraLoanRateModel.getMinInvestAmount() <= investAmount && investAmount < extraLoanRateModel.getMaxInvestAmount()) ||
                         (extraLoanRateModel.getMaxInvestAmount() == 0 && extraLoanRateModel.getMinInvestAmount() <= investAmount)) {
@@ -483,7 +483,7 @@ public class InvestServiceImpl implements InvestService {
             if (loanModel == null || couponModel == null) {
                 continue;
             } else {
-                expectedInterest = (couponModel.getCouponType() == CouponType.INTEREST_COUPON || couponModel.getCouponType() == CouponType.BIRTHDAY_COUPON) ? InterestCalculator.getCouponExpectedInterest(loanModel, couponModel, investAmount, loanModel.getDuration()) : 0;
+                expectedInterest = (couponModel.getCouponType() == CouponType.INTEREST_COUPON || couponModel.getCouponType() == CouponType.BIRTHDAY_COUPON) ? InterestCalculator.getCouponExpectedInterest(loanModel, couponModel, investAmount, LoanPeriodCalculator.calculateDuration(new Date(), loanModel.getDeadline())) : 0;
             }
         }
         long interest = InterestCalculator.estimateExpectedInterest(loanModel, investAmount);
