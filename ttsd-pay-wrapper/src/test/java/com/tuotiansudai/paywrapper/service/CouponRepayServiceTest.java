@@ -199,7 +199,7 @@ public class CouponRepayServiceTest {
 
         ArgumentCaptor<UserCouponModel> userCouponModelArgumentCaptor = ArgumentCaptor.forClass(UserCouponModel.class);
         verify(userCouponMapper, times(1)).update(userCouponModelArgumentCaptor.capture());
-//        assertEquals("4", String.valueOf(userCouponModelArgumentCaptor.getValue().getActualFee()));
+        assertEquals("4", String.valueOf(userCouponModelArgumentCaptor.getValue().getActualFee()));
         assertEquals("45", String.valueOf(userCouponModelArgumentCaptor.getValue().getActualInterest()));
         assertEquals(RepayStatus.REPAYING, couponRepayModel.getStatus());
         verify(paySyncClient, times(1)).send(eq(TransferMapper.class), any(TransferRequestModel.class), eq(TransferResponseModel.class));
@@ -338,7 +338,7 @@ public class CouponRepayServiceTest {
 
         ArgumentCaptor<UserCouponModel> userCouponModelArgumentCaptor = ArgumentCaptor.forClass(UserCouponModel.class);
         verify(userCouponMapper, times(1)).update(userCouponModelArgumentCaptor.capture());
-//        assertEquals("4", String.valueOf(userCouponModelArgumentCaptor.getValue().getActualFee()));
+        assertEquals("4", String.valueOf(userCouponModelArgumentCaptor.getValue().getActualFee()));
         assertEquals("45", String.valueOf(userCouponModelArgumentCaptor.getValue().getActualInterest()));
         assertEquals(RepayStatus.REPAYING,  couponRepayModel.getStatus());
         verify(paySyncClient, times(1)).send(eq(TransferMapper.class), any(TransferRequestModel.class), eq(TransferResponseModel.class));
