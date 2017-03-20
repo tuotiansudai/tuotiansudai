@@ -551,6 +551,7 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
         transferApplicationDetailDto.setLeftPeriod(transferApplicationModel.getLeftPeriod());
         transferApplicationDetailDto.setExpecedInterest("1000");
         transferApplicationDetailDto.setDeadLine(transferApplicationModel.getDeadline());
+        transferApplicationDetailDto.setDueDate(new Date());
         transferApplicationDetailDto.setTransferStatus(transferApplicationModel.getStatus());
         return transferApplicationDetailDto;
     }
