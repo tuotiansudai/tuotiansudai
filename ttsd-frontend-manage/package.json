@@ -11,7 +11,8 @@
     "plugin": "webpack --config  webpack.dll.config.js",
     "server": "node getStaticServer.js $PLAT",
     "mock":"nodemon -L resources/static/public/mock/express.js",
-    "showimage":"nodemon -L resources/tools/showImages.js"
+    "showimage":"node resources/tools/showImages.js",
+    "removeUselessImgs":"node resources/tools/deleteUselessImgs.js"
   },
   "devDependencies": {
     "assets-webpack-plugin": "^3.5.0",

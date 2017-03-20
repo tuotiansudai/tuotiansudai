@@ -4,9 +4,12 @@ var basePath = path.join(__dirname, '../../resources'),
 	staticPath = path.join(basePath, 'static'),
 	askImagePath=path.join(staticPath, 'ask/images'),
 	webImagePath=path.join(staticPath, 'web/images'),
+	activityImagePath=path.join(staticPath, 'activity/images'),
+	pointImagePath=path.join(staticPath, 'point/images'),
+	mobileImagePath=path.join(staticPath, 'mobile/images'),
 	publicImagePath=path.join(staticPath, 'public/images'); //默认打包路径
 var staticServer ='http://localhost:3008/';
-//遍历文件夹，获取所有文件夹里面的文件信息
+
 function geFileList(folderPath,fileName)
 {
 	this.folderPath=folderPath; //文件夹路径
@@ -50,7 +53,7 @@ function geFileList(folderPath,fileName)
 			that.filesList.forEach(function(imgUrl) {
 				var itemPath = staticServer+ imgUrl.path.match(/ttsd-frontend-manage\/resources\/(\S*)/)[1];
 				console.log(itemPath);
-				imageObg.push('<img src="'+itemPath+'" size="'+imgUrl.size+'"> <br/>');
+				imageObg.push('<img src="'+itemPath+'" size="'+imgUrl.size+'" style="margin:20px;">');
 			});
 
 			 var getHtml = imageObg.join('');
@@ -61,26 +64,10 @@ function geFileList(folderPath,fileName)
 				if(err) {
 					throw err;
 				}
-				console.log('ask图片文件生成成功');
+				console.log(that.filename+'图片文件生成成功');
 			});
 
 		})
-	}
-	//写入文件utf-8格式
-	// this.writeFile=function(data) {
-	// 	// fs.writeFile(this.fileName,data,'utf-8',function() {
-	// 	// 	console.log("文件生成成功");
-	// 	// });
-	// }
-	this.formatHandler=function() {
-		var filesList=this.filesList;
-		var strJSON={
-			"src":{}
-		};
-
-
-		// var strJsonObj=JSON.stringify(strJSON);
-		// this.writeFile(strJsonObj);
 	}
 	this.init=function() {
 		var that=this;
@@ -89,12 +76,10 @@ function geFileList(folderPath,fileName)
 			if(exists) {
 				that.readFile(that.folderPath);
 				that.ImportHtml();
-				// that.formatHandler();
 			}
 		});
 	}
 }
-
 
 //读取ask里的图片
 var askListImg=new geFileList(askImagePath,'image-ask.html');
@@ -107,6 +92,22 @@ webListImg.init();
 //读取public里的图片
 var publicListImg=new geFileList(publicImagePath,'image-public.html');
 publicListImg.init();
+
+//读取activity里的图片
+var activityListImg=new geFileList(activityImagePath,'image-activity.html');
+activityListImg.init();
+
+//读取point里的图片
+var pointListImg=new geFileList(pointImagePath,'image-activity.html');
+pointListImg.init();
+
+//读取point里的图片
+var mobileListImg=new geFileList(mobileImagePath,'image-activity.html');
+mobileListImg.init();
+
+
+
+
 
 
 
