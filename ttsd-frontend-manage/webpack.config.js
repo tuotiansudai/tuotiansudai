@@ -204,7 +204,7 @@ var myObject = objectAssign(commonOptions, {
 			loader: ExtractTextPlugin.extract("style", "happypack/loader?id=sass")
 		},{
 			test: /\.(png|jpg|gif|woff|woff2)$/,
-			loader: 'url-loader?limit=5120&name=images/[name].[hash:8].[ext]'
+			loader: 'url-loader?limit=3072&name=images/[name].[hash:8].[ext]'
 		}]
 	},
 	resolve: {

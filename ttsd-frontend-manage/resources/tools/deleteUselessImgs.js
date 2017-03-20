@@ -9,9 +9,8 @@ var basePath = path.join(__dirname, '../../resources'),
     pointImagePath=path.join(staticPath, 'point/images'),
     mobileImagePath=path.join(staticPath, 'mobile/images'),
     publicImagePath=path.join(staticPath, 'public/images'); //默认打包路径
-var staticServer ='http://localhost:3008/';
-var packfolderPath = path.join(basePath,'develop/images'); //打包图片文件夹路径
 
+var packfolderPath = path.join(basePath,'develop/images'); //打包图片文件夹路径
 
 /**
  *删除数组指定下标或指定对象
@@ -101,7 +100,6 @@ getImagesFiles.prototype.removeUselessImgs = function() {
         else {
             newPackName.push(img);
         }
-
     });
     // console.log(packNameList.length);
     // console.log(newPackName.length);
@@ -109,8 +107,8 @@ getImagesFiles.prototype.removeUselessImgs = function() {
     devImagesList.forEach(function (imgFile) {
         var imageName = imgFile.name;
         var imageSize = imgFile.size;
-        // 5120是在module的loader中配置的
-        if(imageSize>5120/1024) {
+        // 3072是在module的loader中配置的
+        if(imageSize>3072/1024) {
             console.log(imageName);
             var isBool = _.contains(newPackName, imageName);
             if(!isBool) {
@@ -121,6 +119,12 @@ getImagesFiles.prototype.removeUselessImgs = function() {
             }
         }
     })
+}
+
+//清空图片文件以后，如果图片文件夹为空就删除
+getImagesFiles.prototype.removeEmptyFolder=function() {
+    //只需要操作开发的目录
+
 }
 
 getImagesFiles.prototype.init=function() {
@@ -137,22 +141,22 @@ var askListImgs=new getImagesFiles(askImagePath);
 askListImgs.init();
 
 // //读取web里的图片
-// var webListImg=new getImagesFiles(webImagePath);
-// webListImg.init();
+var webListImg=new getImagesFiles(webImagePath);
+webListImg.init();
 
 //读取public里的图片
 var publicListImg=new getImagesFiles(publicImagePath);
 publicListImg.init();
 
-// //读取activity里的图片
-// var activityListImg=new getImagesFiles(activityImagePath);
-// activityListImg.init();
-//
-// //读取point里的图片
-// var pointListImg=new getImagesFiles(pointImagePath);
-// pointListImg.init();
-//
-// //读取point里的图片
-// var mobileListImg=new getImagesFiles(mobileImagePath);
-// mobileListImg.init();
+//读取activity里的图片
+var activityListImg=new getImagesFiles(activityImagePath);
+activityListImg.init();
+
+//读取point里的图片
+var pointListImg=new getImagesFiles(pointImagePath);
+pointListImg.init();
+
+//读取point里的图片
+var mobileListImg=new getImagesFiles(mobileImagePath);
+mobileListImg.init();
 

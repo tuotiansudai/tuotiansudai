@@ -52,7 +52,7 @@ function geFileList(folderPath,fileName)
 
 			that.filesList.forEach(function(imgUrl) {
 				var itemPath = staticServer+ imgUrl.path.match(/ttsd-frontend-manage\/resources\/(\S*)/)[1];
-				console.log(itemPath);
+				// console.log(itemPath);
 				imageObg.push('<img src="'+itemPath+'" size="'+imgUrl.size+'" style="margin:20px;">');
 			});
 
