@@ -80,7 +80,7 @@ public class ProductServiceImpl implements ProductService {
 
     private static final int COUNT_LIFE_TIME = 60 * 60 * 24 * 32; // 32天
 
-    private static final ThreadLocal<SimpleDateFormat> SDF_LOCAL = ThreadLocal.withInitial(() -> new SimpleDateFormat("yyyy-MM-dd"));
+    private static final ThreadLocal<SimpleDateFormat> SDF_LOCAL = ThreadLocal.withInitial(() -> new SimpleDateFormat("yyyy-MM"));
 
     @Override
     @Transactional
