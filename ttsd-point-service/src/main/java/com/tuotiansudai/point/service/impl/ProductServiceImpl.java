@@ -360,7 +360,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public BaseDto<BaseDataDto> buyProduct(String loginName, long id, GoodsType goodsType, int amount, Long addressId) {
+        public BaseDto<BaseDataDto> buyProduct(String loginName, long id, GoodsType goodsType, int amount, Long addressId) {
         ProductModel productModel = productMapper.lockById(id);
         AccountModel accountModel = accountMapper.lockByLoginName(loginName);
 

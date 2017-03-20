@@ -75,7 +75,8 @@ public class InterestCalculator {
             lastInvestRepayDate = new DateTime(investModel.getTradingTime()).withTimeAtStartOfDay().minusDays(1);
         }
         // 2015-01-01 ~ 2015-01-31: 30
-        int periodDuration = Days.daysBetween(lastInvestRepayDate, currentRepayDate.withTimeAtStartOfDay()).getDays();
+        int periodDuration = LoanPeriodCalculator.calculateDuration(lastInvestRepayDate.toDate(), currentRepayDate.toDate());
+        //Days.daysBetween(lastInvestRepayDate, currentRepayDate.withTimeAtStartOfDay()).getDays();
 
         return getCouponExpectedInterest(loanModel, couponModel, investAmount, periodDuration);
     }
