@@ -146,7 +146,11 @@
                             </i>
                         </#if>
 
-                        <p class="num-text">剩余${physicalProduct.leftCount?c!"0"}件/每月最多可兑换3个</p>
+                        <p class="num-text">剩余${physicalProduct.leftCount?c!"0"}件
+                            <#if physicalProduct.monthLimit!=0>
+                                /每人每月最多可兑换${physicalProduct.monthLimit}个
+                            </#if>
+                        </p>
 
                         <p class="mater-img picture-item">
                             <img src="${staticServer}${physicalProduct.imageUrl}" width="160" height="100"/>

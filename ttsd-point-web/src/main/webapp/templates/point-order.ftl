@@ -92,6 +92,9 @@
 						<p>
 							<span class="total-num">
 								剩余<i>${productShowItem.leftCount?c!0}</i>件
+								<#if productShowItem.monthLimit!=0>
+                                    <span class="tip">本月您还可以兑换${productShowItem.monthLimit}个</span>
+								</#if>
 							</span>
 						</p>
 					</div>
