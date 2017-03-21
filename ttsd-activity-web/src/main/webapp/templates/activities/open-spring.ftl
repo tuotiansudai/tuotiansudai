@@ -2,8 +2,8 @@
 <@global.main pageCss="${css.open_spring}" pageJavascript="${js.open_spring}" activeNav="" activeLeftNav="" title="开春开好投_活动中心_拓天速贷" keywords="拓天速贷,阶梯加息,投资增息,实物奖励" description="拓天速贷开春活动用户投资'开春专享标'可享阶梯加息,投资增息可达1.7%,加送iPad实物奖励大礼.">
 <div class="women-day-container clearfix" id="womenDayContainer">
 	<div class="top-item">
-		<img src="${staticServer}/activity/images/open-spring/top-img.png" width="100%" class="media-pc">
-		<img src="${staticServer}/activity/images/open-spring/top-img-phone.png" width="100%" class="media-phone">
+		<img src="${staticServer}/activity/images/open-spring/top-img0321.png" width="100%" class="media-pc">
+		<img src="${staticServer}/activity/images/open-spring/top-img-phone0321.png" width="100%" class="media-phone">
 	</div>
 	<div class="content-item one-bg">
 		<div class="wp clearfix">
