@@ -89,3 +89,6 @@ getJsonAskList.init();
 
 var getJsonWebList=new getJsonFileList('web','json-web.json');
 getJsonWebList.init();
+
+var getJsonPointList=new getJsonFileList('point','json-point.json');
+getJsonPointList.init();
