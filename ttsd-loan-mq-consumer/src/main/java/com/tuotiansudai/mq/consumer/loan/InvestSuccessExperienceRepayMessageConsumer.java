@@ -28,7 +28,7 @@ public class InvestSuccessExperienceRepayMessageConsumer implements MessageConsu
 
     private final static Logger logger = LoggerFactory.getLogger(InvestSuccessExperienceRepayMessageConsumer.class);
 
-    private final static long INVEST_LIMIT = 100000L;
+    private final static long INVEST_LIMIT = 100L;
 
     @Autowired
     private InvestMapper investMapper;
