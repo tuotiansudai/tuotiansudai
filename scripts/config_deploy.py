@@ -26,7 +26,7 @@ def deploy(build_params, source_folder, dist_file):
             if l and not l.startswith("#"):
                 key_value = l.split("=")
                 key = key_value[0].strip()
-                value =  get_build_params_value_by_key(key) \
+                value =  get_build_params_value_by_key(build_params, key) \
                          or (sec_prop[key] if sec_prop.has_key(key) else False) \
                          or (env_prop[key] if env_prop.has_key(key) else False) \
                          or (qa_common_prop[key] if qa_common_prop.has_key(key) else False) \
