@@ -1,9 +1,9 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.open_spring}" pageJavascript="${js.open_spring}" activeNav="" activeLeftNav="" title="开春开好投_活动中心_拓天速贷" keywords="拓天速贷,阶梯加息,投资增息,实物奖励" description="拓天速贷开春活动用户投资'开春专享标'可享阶梯加息,投资增息可达1.5%,加送iPad实物奖励大礼.">
+<@global.main pageCss="${css.open_spring}" pageJavascript="${js.open_spring}" activeNav="" activeLeftNav="" title="开春开好投_活动中心_拓天速贷" keywords="拓天速贷,阶梯加息,投资增息,实物奖励" description="拓天速贷开春活动用户投资'开春专享标'可享阶梯加息,投资增息可达1.7%,加送iPad实物奖励大礼.">
 <div class="women-day-container clearfix" id="womenDayContainer">
 	<div class="top-item">
-		<img src="${staticServer}/activity/images/open-spring/top-img.png" width="100%" class="media-pc">
-		<img src="${staticServer}/activity/images/open-spring/top-img-phone.png" width="100%" class="media-phone">
+		<img src="${staticServer}/activity/images/open-spring/top-img0321.png" width="100%" class="media-pc">
+		<img src="${staticServer}/activity/images/open-spring/top-img-phone0321.png" width="100%" class="media-phone">
 	</div>
 	<div class="content-item one-bg">
 		<div class="wp clearfix">
@@ -244,7 +244,7 @@
 	        	<div class="line-item"></div>
 	        	<div class="module-content rule-content tc">
 	        		<div class="code-item">
-	        			听说加息标跟优惠券一起用更配哦！扫码关注“拓天速贷财富”，回复“我要”，即送0.5%加息券，数量有限先到先得！
+	        			听说加息标跟优惠券一起用更配哦！扫码关注微信号，回复“我要”，即送0.5%加息券，数量有限先到先得！
 	        		</div>
 	        		<div class="code-img">
 	        			<img src="${staticServer}/activity/images/open-spring/code-img.jpg" width="100%">
@@ -257,11 +257,10 @@
 	        	<div class="module-content rule-content">
 	        		<dl class="rule-item">
 						<dt>温馨提示：</dt>
-						<dd>1. 本活动仅限90天、180天、360天抵押类产品，债权转让及新手专享项目不参与累计；</dd>
-						<dd>2. 体验金奖励将于活动结束后1个工作日内统一发放，用户可在App端“我的-我的体验金”中查看；</dd>
-						<dd>3. 实物奖品将于活动结束后7个工作日内统一联系发放，请获奖用户保持联系方式畅通，若在7个工作日内无法联系，将视为自动放弃奖励；</dd>
-						<dd>4. 活动中如有使用虚假账号、恶意刷奖等违规行为，一经查出拓天速贷有权撤销您的获奖资格；</dd>
-						<dd>5. 活动遵循拓天速贷法律声明，最终解释权归拓天速贷所有。</dd>
+						<dd>1. 本活动仅限直投项目，债权转让及新手专享项目不参与累计；</dd>
+						<dd>2. 实物奖品将于活动结束后7个工作日内统一联系发放，请获奖用户保持联系方式畅通，若在7个工作日内无法联系，将视为自动放弃奖励；</dd>
+						<dd>3. 活动中如有使用虚假账号、恶意刷奖等违规行为，一经查出拓天速贷有权撤销您的获奖资格；</dd>
+						<dd>4. 活动遵循拓天速贷法律声明，最终解释权归拓天速贷所有。</dd>
 					</dl>
 	        	</div>
 	        	<div class="line-footer"></div>
