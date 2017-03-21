@@ -1,13 +1,13 @@
 import React from "react";
 import ReactDom from "react-dom";
 import {Route, Router, hashHistory, Redirect, IndexRoute} from "react-router";
-import "components/lib-flexible/lib-flexible";
-import "./index.scss";
+import "./components/lib-flexible";
+import "mobileStyle/base.scss";
 import injectTapEventPlugin from "react-tap-event-plugin";
-import MediaList from "components/licaiCircle/MediaList";
-import Article from "components/licaiCircle/Article";
-import messageCenter from "components/messageCenter/messageCenter";
-import taskCenter from "components/taskCenter/taskCenter";
+import MediaList from "./MediaList";
+import Article from "./Article";
+import messageCenter from "./messageCenter";
+import taskCenter from "./taskCenter";
 injectTapEventPlugin({
 shouldRejectClick: function (lastTouchEventTimestamp, clickEventTimestamp) {
     return true;

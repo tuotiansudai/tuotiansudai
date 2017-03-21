@@ -1,14 +1,14 @@
+import { main ,spinner } from 'mobileStyle/taskCenter.scss';
 import React from 'react';
-import { main ,spinner } from './taskCenter.scss';
-import changeTitle from 'utils/changeTitle';
-import ajax from 'utils/ajax';
+import changeTitle from 'mobileJs/components/changeTitle';
+import ajax from "mobileJs/components/ajax";
 import IScroll from 'iscroll/build/iscroll-probe';
 import imagesLoaded from 'imagesloaded';
 import classNames from 'classnames';
-import titleOne from './title-one.png';
-import titleTwo from './title-two.png';
-import task_banner from './task-banner.png';
-import moneyIcon from './money-icon.png';
+import titleOne from 'mobileImages/title-one.png';
+import titleTwo from 'mobileImages/title-two.png';
+import task_banner from 'mobileImages/task-banner.png';
+import moneyIcon from 'mobileImages/money-icon.png';
 
 const pageSize = 10;
 const MenuData = {

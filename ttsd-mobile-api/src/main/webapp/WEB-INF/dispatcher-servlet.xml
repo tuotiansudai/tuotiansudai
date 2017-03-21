@@ -52,9 +52,10 @@
     </bean>
 
     <bean id="staticResourceVersionMap" class="com.tuotiansudai.web.config.freemarker.FreeMarkerVariablesMap">
+        <property name="staticResourceDiscoveryUrl" value="${static.resource.discovery.url}/json-mobile.json"/>
         <property name="singleton" value="true"/>
-        <property name="javascriptLocation" value="${mobile.js.path}"/>
-        <property name="cssLocation" value="${mobile.css.path}"/>
+        <!--<property name="javascriptLocation" value="${mobile.js.path}"/>-->
+        <!--<property name="cssLocation" value="${mobile.css.path}"/>-->
         <property name="sourceMap">
             <map>
                 <entry key="staticServer" value="${mobile.static.server}"/>

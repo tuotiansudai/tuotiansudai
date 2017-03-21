@@ -1,15 +1,16 @@
+import { main, spinner } from 'mobileStyle/MediaList.scss';
 import React from 'react';
 import { hashHistory } from 'react-router';
-import changeTitle from 'utils/changeTitle';
-import { main, spinner } from './MediaList.scss';
 import IScroll from 'iscroll'; 
 import imagesLoaded from 'imagesloaded';
-import Praise from 'components/licaiCircle/Praise';
 import classNames from 'classnames';
-import ajax from 'utils/ajax';
 import Immutable from 'seamless-immutable';
 import shallowCompare from 'react-addons-shallow-compare';
-import Carousel from 'components/carousel/Carousel';
+import changeTitle from 'mobileJs/components/changeTitle';
+import Praise from 'mobileJs/components/Praise';
+import ajax from 'mobileJs/components/ajax';
+import Carousel from 'mobileJs/components/Carousel';
+
 
 const pageSize = 10;
 const data = {

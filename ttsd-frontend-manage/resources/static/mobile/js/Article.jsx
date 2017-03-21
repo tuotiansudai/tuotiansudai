@@ -1,10 +1,10 @@
+import { main } from 'mobileStyle/Article.scss';
 import React from 'react';
-import changeTitle from 'utils/changeTitle';
-import { main } from './Article.scss';
+import changeTitle from './components/changeTitle';
 import IScroll from 'iscroll';
 import imagesLoaded from 'imagesloaded';
-import Praise from 'components/licaiCircle/Praise';
-import ajax from 'utils/ajax';
+import Praise from './components/Praise';
+import ajax from './components/ajax';
 
 class Article extends React.Component {
 	state = {

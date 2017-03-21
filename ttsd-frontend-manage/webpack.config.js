@@ -104,7 +104,7 @@ else if(NODE_ENV=='dev') {
 		verbose: true,
 		dry: false,
 		watch:true,
-		exclude: ['public','json-ask.json','json-web.json']
+		exclude: ['public','json-ask.json','json-web.json','json-point.json']
 	}));
 
 	//开发环境
@@ -216,7 +216,8 @@ var myObject = objectAssign(commonOptions, {
 			pointStyle:path.join(pointPath, 'styles'),
 
 			mobileJs:path.join(mobilePath, 'js'),
-			mobileStyle:path.join(mobilePath, 'styles')
+			mobileStyle:path.join(mobilePath, 'styles'),
+			mobileImages:path.join(mobilePath, 'images'),
 
 		}
 	},

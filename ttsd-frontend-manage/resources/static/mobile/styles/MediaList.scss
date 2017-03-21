@@ -3,12 +3,10 @@
 	:global {
 		.swiper-wrapper  a {
 			display: block;
-
 		}
 		.swiper-wrapper a img {
 			width:100%;
 		}
-
 		.tab-header {
 			font-size: 30px;/*px*/
 			background: #fff;
@@ -86,7 +84,7 @@
 	}
 	@keyframes spinner {
 		0% {
-			transform: rotate(0)
+			transform: rotate(0deg)
 		}
 		100% {
 			transform: rotate(360deg)

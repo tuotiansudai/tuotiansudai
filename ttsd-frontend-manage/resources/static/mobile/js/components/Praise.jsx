@@ -1,5 +1,5 @@
 import React from 'react';
-import ajax from 'utils/ajax';
+import ajax from "mobileJs/components/ajax";
 
 class Praise extends React.Component {
 	static defaultProps = {

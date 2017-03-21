@@ -8,7 +8,8 @@ var basePath = path.join(__dirname, 'resources'),
 
 module.exports = {
     entry: {
-        'jquery': ['jquery','layer','underscore']
+        'jquery': ['jquery','layer','underscore'],
+        'react':['react','react-dom','react-router','react-tap-event-plugin','react-addons-shallow-compare','classnames']
     },
     output: {
         path: path.join(publicPath, 'js/dllplugins'),
@@ -24,6 +25,10 @@ module.exports = {
             "window.jQuery": "jquery"
         }),
         new webpack.DllPlugin({
+            path: path.join(publicPath, 'js/dllplugins', '[name]-manifest.json'),
+            name: '[name]_library',
+            context: __dirname
+        },{
             path: path.join(publicPath, 'js/dllplugins', '[name]-manifest.json'),
             name: '[name]_library',
             context: __dirname

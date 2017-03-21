@@ -58,10 +58,9 @@
     "radium": "^0.17.1",
     "react": "^15.0.2",
     "react-addons-shallow-compare": "^15.0.2",
-    "react-bootstrap": "^0.29.4",
     "react-dom": "^15.0.2",
     "react-router": "^2.4.0",
-    "react-tap-event-plugin": "^1.0.0",
+    "react-tap-event-plugin": "^2.0.0",
     "seamless-immutable": "^6.1.0"
   },
   "description": "",

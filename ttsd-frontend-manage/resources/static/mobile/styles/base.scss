@@ -1,12 +1,4 @@
 @charset "UTF-8";
-/**
- *
- * @authors  (belen)
- * @date    2015-08-25 12:31:46
- * @version $Id$
- */
-
-/*>>>>>>>>>>>>>>>| 全局基础 |<<<<<<<<<<<<<<<*/
 html,div,span,em,img,strong,sub,sup,tt,label,table,caption,tbody,tfoot,thead,tr,
 body,h1,h2,h3,h4,h5,h6,hr,p,blockquote,dl,dt,dd,ul,ol,li,pre,blockquote,form,fieldset,legend,button,input,textarea,dl,dt,dd,ul,ol,li,th,td{margin:0px;padding:0px;}
 h1,h2,h3,h4,h5,h6{font-size:100%;}
@@ -16,4 +8,39 @@ img{width:auto\9;height:auto;max-width:100%;vertical-align:middle;border:0;-ms-i
 div,p,form,html,dt
 ,header,footer,nav,article,hgroup,section,figcaption,aside,map,dt,details,figure{display:block;}
 audio,canvas,video {display:inline-block;*display:inline;*zoom:1;}
+
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+html {
+    color: #2f3034;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    user-select: none;
+    line-height: 1.5;
+}
+a {
+    color: #2f3034;
+    text-decoration: none;
+&:hover, &:active {
+              text-decoration: none;
+          }
+}
+img {
+    max-width: 100%;
+}
+.pull-left {
+    float: left;
+}
+.pull-right {
+    float: right;
+}
+.clearfix:before,
+.clearfix:after {
+    content: " ";
+    display: table;
+}
+.clearfix:after {
+    clear: both;
+}
 

@@ -1,9 +1,9 @@
+import { main } from "mobileStyle/messageCenter.scss";
 import React from "react";
-import changeTitle from "utils/changeTitle";
-import { main } from "./messageCenter.scss";
 import IScroll from "iscroll";
 import imagesLoaded from "imagesloaded";
-import ajax from "utils/ajax";
+import changeTitle from 'mobileJs/components/changeTitle';
+import ajax from "mobileJs/components/ajax";
 
 class messageCenter extends React.Component {
     state = {
