@@ -48,8 +48,6 @@
     <bean id="staticResourceVersionMap" class="com.tuotiansudai.web.config.freemarker.FreeMarkerVariablesMap">
         <property name="singleton" value="true"/>
         <property name="staticResourceDiscoveryUrl" value="${static.resource.discovery.url}/json-point.json"/>
-        <property name="javascriptLocation" value="${point.js.path}"/>
-        <property name="cssLocation" value="${point.css.path}"/>
         <property name="sourceMap">
             <map>
                 <entry key="webServer" value="${web.server}"/>
