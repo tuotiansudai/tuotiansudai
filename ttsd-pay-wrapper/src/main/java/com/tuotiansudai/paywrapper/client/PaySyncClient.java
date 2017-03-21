@@ -58,6 +58,8 @@ public class PaySyncClient implements ApplicationContextAware {
             String value = field.get(key);
             formEncodingBuilder.add(key, value);
         }
+
+        logger.info(reqData.getUrl());
         Request request = new Request.Builder().url(reqData.getUrl()).post(formEncodingBuilder.build()).build();
 
         String responseBodyString;
