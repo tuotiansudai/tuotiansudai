@@ -53,5 +53,5 @@ def get_build_params_value_by_key(build_params, key):
     split = key.split('.')
     value = build_params
     for item in split:
-        value = value[item] if value and value.has_key(item) else None
+        value = value[item] if isinstance(value, dict) and value.has_key(item) else None
     return value
