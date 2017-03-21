@@ -1,3 +1,4 @@
+@import "module/register_common";
 .main-frame {
 	width: 100%;
 	margin: 0;
@@ -350,10 +351,16 @@
 				    bottom: -45px;
 				}
 				&.circle-left{
-					left:2%;
+					left:-15%;
+					@media (max-width:700px) {
+						left:2%;
+					}
 				}
 				&.circle-right{
-					right:2%;
+					right:-15%;
+					@media (max-width:700px) {
+						right:2%;
+					}
 				}
 			}
 		}

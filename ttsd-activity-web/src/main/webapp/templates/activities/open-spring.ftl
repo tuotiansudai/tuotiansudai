@@ -1,5 +1,5 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.open_spring}" pageJavascript="" activeNav="" activeLeftNav="" title="女神节活动_活动中心_拓天速贷" keywords="拓天速贷,妇女节活动,女神节,少女节" description="拓天速贷3月8日推出女神节活动,少女总动员,开启全民抓娃娃,参与幸运女神时光机,集花瓣赢礼盒等投资活动获得相应蜜汁礼盒.">
+<@global.main pageCss="${css.open_spring}" pageJavascript="${js.open_spring}" activeNav="" activeLeftNav="" title="开春开好投_活动中心_拓天速贷" keywords="拓天速贷,阶梯加息,投资增息,实物奖励" description="拓天速贷开春活动用户投资'开春专享标'可享阶梯加息,投资增息可达1.5%,加送iPad实物奖励大礼.">
 <div class="women-day-container clearfix" id="womenDayContainer">
 	<div class="top-item">
 		<img src="${staticServer}/activity/images/open-spring/top-img.png" width="100%" class="media-pc">
