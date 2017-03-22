@@ -1,10 +1,8 @@
-/**
- * [nine lottery]
- * @xuqiang  
- * @2017-02-13
- */
-define(['jquery', 'layerWrapper', 'template', 'jquery.ajax.extension'], function($,layer, tpl) {
-    (function ($) {
+require('webStyle/nine_lottery.scss');
+let tpl = require('art-template/dist/template');
+
+
+
         var $pointContainerFrame = $('#pointContainer'),
             tipGroupObj = {};
         //点击切换按钮
@@ -255,6 +253,3 @@ define(['jquery', 'layerWrapper', 'template', 'jquery.ajax.extension'], function
         lottery.giftRecord();
         lottery.myGift();
         lottery.hoverScrollList($('#lotteryList').find('.user-record'),10);
-        
-	})($);
-})
