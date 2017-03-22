@@ -1,5 +1,5 @@
 import { main } from 'mobileStyle/Article.scss';
-import React from 'react';
+// import React from 'react';
 import changeTitle from './components/changeTitle';
 import IScroll from 'iscroll';
 import imagesLoaded from 'imagesloaded';

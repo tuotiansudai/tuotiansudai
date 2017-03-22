@@ -1,4 +1,4 @@
-import React from 'react';
+// import React from 'react';
 import ajax from "mobileJs/components/ajax";
 
 class Praise extends React.Component {

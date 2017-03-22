@@ -1,11 +1,11 @@
 import { main, spinner } from 'mobileStyle/MediaList.scss';
-import React from 'react';
-import { hashHistory } from 'react-router';
+// import React from 'react';
+// import { hashHistory } from 'react-router';
 import IScroll from 'iscroll'; 
 import imagesLoaded from 'imagesloaded';
-import classNames from 'classnames';
+// import classNames from 'classnames';
 import Immutable from 'seamless-immutable';
-import shallowCompare from 'react-addons-shallow-compare';
+// import shallowCompare from 'react-addons-shallow-compare';
 import changeTitle from 'mobileJs/components/changeTitle';
 import Praise from 'mobileJs/components/Praise';
 import ajax from 'mobileJs/components/ajax';

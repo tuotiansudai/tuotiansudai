@@ -9,7 +9,7 @@ var basePath = path.join(__dirname, 'resources'),
 module.exports = {
     entry: {
         'jquery': ['jquery','layer','underscore'],
-        'react':['react','react-dom','react-router','react-tap-event-plugin','react-addons-shallow-compare','classnames']
+        'react':['react','react-dom','react-router','react-tap-event-plugin','react-addons-shallow-compare','classnames','iscroll','imagesloaded']
     },
     output: {
         path: path.join(publicPath, 'js/dllplugins'),

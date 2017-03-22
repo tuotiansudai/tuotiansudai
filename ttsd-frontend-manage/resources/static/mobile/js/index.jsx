@@ -1,9 +1,9 @@
-import React from "react";
-import ReactDom from "react-dom";
-import {Route, Router, hashHistory, Redirect, IndexRoute} from "react-router";
+// import React from "react";
+// import ReactDom from "react-dom";
+// import {Route, Router, hashHistory, Redirect, IndexRoute} from "react-router";
 import "./components/lib-flexible";
 import "mobileStyle/base.scss";
-import injectTapEventPlugin from "react-tap-event-plugin";
+// import injectTapEventPlugin from "react-tap-event-plugin";
 import MediaList from "./MediaList";
 import Article from "./Article";
 import messageCenter from "./messageCenter";
