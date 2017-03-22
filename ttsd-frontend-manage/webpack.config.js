@@ -133,7 +133,6 @@ else if(NODE_ENV=='dev') {
 }
 plugins.push(new CopyWebpackPlugin([
 	{ from: publicPathJS+'/dllplugins',to: 'public/dllplugins'},
-	// { from: publicPathJS+'/plugins',to: 'public/plugins'},
 	{ from: staticPath+'/inlineImages',to: 'images'},
 	{ from: publicPath+'/styles/plugins/skin',to: 'public/skin'}
 ]));
@@ -156,7 +155,10 @@ plugins.push(new webpack.DllReferencePlugin({
 	context: __dirname,
 	manifest: require(publicPathJS+'/dllplugins/jquery-manifest.json')
 }));
-
+plugins.push(new webpack.DllReferencePlugin({
+	context: __dirname,
+	manifest: require(publicPathJS+'/dllplugins/react-manifest.json')
+}));
 
 function createHappyPlugin(id, loaders) {
 	return new HappyPack({

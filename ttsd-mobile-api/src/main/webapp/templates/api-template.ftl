@@ -13,7 +13,13 @@
 </head>
 <body>
 <div id="app"></div>
-<script src="${js.index}" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+    window.staticServer='${commonStaticServer}';
+</script>
+<script src="${js.reactdll}" ></script>
+<script src="${pageJavascript}" type="text/javascript" id="currentScript"></script>
+
+<#--<script src="${js.index}" type="text/javascript" charset="utf-8"></script>-->
 
 </body>
 </html>
