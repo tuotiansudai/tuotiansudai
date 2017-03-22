@@ -435,7 +435,7 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
 
     private static final String PRODUCT_USER_BUY_COUNT_KEY = "{0}:{1}:{2}";
 
-    private static final ThreadLocal<SimpleDateFormat> SDF_LOCAL = ThreadLocal.withInitial(() -> new SimpleDateFormat("yyyy-MM-dd-HH"));
+    private static final ThreadLocal<SimpleDateFormat> SDF_LOCAL = ThreadLocal.withInitial(() -> new SimpleDateFormat("yyyy-MM"));
 
     private String generateCountKey(long productId, String loginName) {
         String today = SDF_LOCAL.get().format(new Date());
