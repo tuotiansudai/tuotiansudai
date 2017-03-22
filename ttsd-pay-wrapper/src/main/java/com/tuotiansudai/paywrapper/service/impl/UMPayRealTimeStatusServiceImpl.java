@@ -2,6 +2,7 @@ package com.tuotiansudai.paywrapper.service.impl;
 
 import com.google.common.collect.Maps;
 import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.Environment;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
@@ -24,6 +25,7 @@ import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.InvestModel;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,6 +35,9 @@ import java.util.Map;
 public class UMPayRealTimeStatusServiceImpl implements UMPayRealTimeStatusService {
 
     static Logger logger = Logger.getLogger(UMPayRealTimeStatusServiceImpl.class);
+
+    @Value("${common.environment}")
+    private Environment environment;
 
     @Autowired
     private AccountMapper accountMapper;
@@ -101,6 +106,11 @@ public class UMPayRealTimeStatusServiceImpl implements UMPayRealTimeStatusServic
     public BaseDto<PayDataDto> checkLoanAmount(long loanId, long investAmountSum) {
         PayDataDto dataDto = new PayDataDto();
         BaseDto<PayDataDto> dto = new BaseDto<>(dataDto);
+
+        if (environment == Environment.SMOKE) {
+            dataDto.setStatus(true);
+            return dto;
+        }
 
         try {
             ProjectAccountSearchResponseModel responseModel = paySyncClient.send(ProjectAccountSearchMapper.class, new ProjectAccountSearchRequestModel(String.valueOf(loanId)), ProjectAccountSearchResponseModel.class);

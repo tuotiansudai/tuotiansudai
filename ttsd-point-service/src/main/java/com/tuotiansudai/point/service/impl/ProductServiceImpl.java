@@ -80,7 +80,7 @@ public class ProductServiceImpl implements ProductService {
 
     private static final int COUNT_LIFE_TIME = 60 * 60 * 24 * 32; // 32天
 
-    private static final ThreadLocal<SimpleDateFormat> SDF_LOCAL = ThreadLocal.withInitial(() -> new SimpleDateFormat("yyyy-MM"));
+    private static final ThreadLocal<SimpleDateFormat> SDF_LOCAL = ThreadLocal.withInitial(() -> new SimpleDateFormat("yyyy-MM-dd-HH"));
 
     @Override
     @Transactional
@@ -393,7 +393,7 @@ public class ProductServiceImpl implements ProductService {
         int buyCount = buyCountStr == null ? 0 : Integer.parseInt(buyCountStr);
 
         if (productModel.getMonthLimit() != 0 && buyCount + amount > productModel.getMonthLimit()) {
-            return new BaseDto<>(new BaseDataDto(false, "该商品每月最多可以兑换" + productModel.getMonthLimit() + "张（个），已超出兑换上限。"));
+            return new BaseDto<>(new BaseDataDto(false, "该商品每人每月可以兑换" + productModel.getMonthLimit() + "个，已超出兑换上限。"));
         }
 
         if (accountModel.getPoint() < totalPrice) {
