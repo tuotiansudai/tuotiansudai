@@ -1,15 +1,12 @@
-/**
- * [point store index js]
- * @xuqiang  
- * @2017-02-13
- */
 require(['jquery', 'layerWrapper', 'template', 'jquery.ajax.extension','nineLottery'], function($,layer, tpl) {
 	$(function() {
+		var $pointContainer = $('#pointContainer');
 		var $signBtn = $('#signBtn'),
 			$signTip = $('#signLayer'),
 			$closeSign = $('#closeSign'),
-			$materialList = $('.material-list li'),
+			$materialList = $('.material-list li',$pointContainer),
 			$pointRuleTip = $('.point-rule-tip');
+
 		//show sign tip
 		$signBtn.on('click', function(event) {
 			event.preventDefault();
@@ -24,13 +21,15 @@ require(['jquery', 'layerWrapper', 'template', 'jquery.ajax.extension','nineLott
 			$.ajax({
 				url: _this.attr('data-url'),
 				type: 'POST',
-				dataType: 'json',
-				contentType: 'application/json; charset=UTF-8'
+				dataType: 'json'
 			}).done(function(response) {
 				if (response.data.status) {
-					response.data.signIn == true ? $signText.html("您今天已签到") : $signText.html("签到成功");
+					var signInStatus = response.data.signIn ? '您今天已签到' : '签到成功';
+						$signText.html(signInStatus);
+
 					$tomorrowText.html("明日签到可获得" + response.data.nextSignInPoint + "积分");
-                    if(response.data.full == true){
+
+                    if(response.data.full){
                         $introText.html('已连续签到365天，获得全勤奖！');
                         $nextText.html('365元现金红包');
 					}
@@ -57,15 +56,17 @@ require(['jquery', 'layerWrapper', 'template', 'jquery.ajax.extension','nineLott
 			event.preventDefault();
 			location.href = "/point-shop";
 		});
-		//go to detail
-		$materialList.on('click', function(event) { //click all model
-			event.preventDefault();
-			location.href = $(this).attr('data-href');
-		}).on('click', '.get-btn', function(event) { //click btn
-			event.preventDefault();
-			$(this).hasClass('active') ? location.href = $(this).parent('a').attr('href') : false;
+
+		//查看详情 与立即兑换按钮
+		$materialList.on('click', function(event) {
 			event.stopPropagation();
+			var eventCls = event.target.className;
+			if(/active/.test(eventCls)) {
+				return;
+			}
+			location.href = $(this).data('href');
 		});
+
 		//show rule tip
 		$pointRuleTip.on('click', function(event) {
 			event.preventDefault();
