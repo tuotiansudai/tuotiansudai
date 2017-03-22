@@ -209,7 +209,6 @@
                 float:left;
                 width:160px;
                 height:40px;
-                line-height:20px;
                 color:#fff;
                 font-size:16px;
                 text-align:center;
@@ -219,6 +218,10 @@
                 background:#fc4a52;
                 padding: 0;
                 line-height: 40px;
+                &.disabled {
+                  background: #ccc;
+                  color: #fff;
+                }
               }
             }
           }

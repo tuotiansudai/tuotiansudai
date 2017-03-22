@@ -82,7 +82,7 @@
 
                         <p><i>${((productShowItem.points * discount)?round)?string('0')}</i>积分</p>
 					</div>
-					<div class="order-number" data-overplus="${productShowItem.leftCount?c!0}" data-mylimit="${productShowItem.monthLimit}">
+					<div class="order-number" data-overplus="${productShowItem.leftCount?c!0}" data-mylimit="${productShowItem.monthLimit}" data-buycount="${buyCount}">
 						<p class="title-text">商品数量</p>
 						<p class="count-list" >
 							<span class="count-btn low-btn">-</span>
@@ -92,9 +92,7 @@
 						<p>
 							<span class="total-num">
 								剩余<i>${productShowItem.leftCount?c!0}</i>件
-								<#if productShowItem.monthLimit!=0>
-                                    <span class="tip">本月您还可以兑换${productShowItem.monthLimit}个</span>
-								</#if>
+                               <span class="tip" id="exchangeTip">本月您还可以兑换<i></i>个</span>
 							</span>
 						</p>
 					</div>
