@@ -57,6 +57,9 @@ public class ConsoleLoanCreateService {
     private LoanerEnterpriseDetailsMapper loanerEnterpriseDetailsMapper;
 
     @Autowired
+    private LoanerEnterpriseInfoMapper loanerEnterpriseInfoMapper;
+
+    @Autowired
     private PledgeHouseMapper pledgeHouseMapper;
 
     @Autowired
@@ -120,6 +123,10 @@ public class ConsoleLoanCreateService {
             pledgeEnterpriseMapper.create(new PledgeEnterpriseModel(loanId, loanCreateRequestDto.getPledgeEnterprise()));
         }
 
+        if (loanCreateRequestDto.getLoanerEnterpriseInfo() != null) {
+            loanerEnterpriseInfoMapper.create(new LoanerEnterpriseInfoModel(loanId, loanCreateRequestDto.getLoanerEnterpriseInfo(), loanModel.getPledgeType().name()));
+        }
+
         return new BaseDto<>(new BaseDataDto(true));
     }
 
@@ -157,6 +164,7 @@ public class ConsoleLoanCreateService {
 
         loanerDetailsMapper.deleteByLoanId(loanId);
         loanerEnterpriseDetailsMapper.deleteByLoanId(loanId);
+        loanerEnterpriseInfoMapper.deleteByLoanId(loanId);
 
         if (loanCreateRequestDto.getLoanerDetails() != null) {
             loanerDetailsMapper.create(new LoanerDetailsModel(loanId, loanCreateRequestDto.getLoanerDetails()));
@@ -179,6 +187,10 @@ public class ConsoleLoanCreateService {
 
         if (loanCreateRequestDto.getLoanerEnterpriseDetails() != null) {
             pledgeEnterpriseMapper.create(new PledgeEnterpriseModel(loanId, loanCreateRequestDto.getPledgeEnterprise()));
+        }
+
+        if (loanCreateRequestDto.getLoanerEnterpriseInfo() != null) {
+            loanerEnterpriseInfoMapper.create(new LoanerEnterpriseInfoModel(loanId, loanCreateRequestDto.getLoanerEnterpriseInfo(), loanModel.getPledgeType().name()));
         }
 
         if (fundraisingEndTimeChanged) {
@@ -224,6 +236,10 @@ public class ConsoleLoanCreateService {
         if (PledgeType.ENTERPRISE == loanModel.getPledgeType()) {
             loanCreateRequestDto.setLoanerEnterpriseDetails(new LoanCreateLoanerEnterpriseDetailsDto(loanerEnterpriseDetailsMapper.getByLoanId(loanId)));
             loanCreateRequestDto.setPledgeEnterprise(new LoanCreatePledgeEnterpriseRequestDto(pledgeEnterpriseMapper.getByLoanId(loanId)));
+        }
+
+        if (PledgeType.ENTERPRISE_FACTORING == loanModel.getPledgeType() || PledgeType.ENTERPRISE_BILL == loanModel.getPledgeType()) {
+            loanCreateRequestDto.setLoanerEnterpriseInfo(new LoanCreateLoanerEnterpriseInfoDto(loanerEnterpriseInfoMapper.getByLoanId(loanId)));
         }
 
         return loanCreateRequestDto;
@@ -370,6 +386,20 @@ public class ConsoleLoanCreateService {
             if (loanCreateRequestDto.getPledgeEnterprise() == null) {
                 return new BaseDto<>(new BaseDataDto(false, "企业抵押信息不完整"));
             }
+        }
+
+        if (PledgeType.ENTERPRISE_FACTORING == loanCreateRequestDto.getLoan().getPledgeType()) {
+            if (loanCreateRequestDto.getLoanerEnterpriseInfo() == null) {
+                return new BaseDto<>(new BaseDataDto(false, "企业借款人信息不完整"));
+            }
+
+        }
+
+        if (PledgeType.ENTERPRISE_BILL == loanCreateRequestDto.getLoan().getPledgeType()) {
+            if (loanCreateRequestDto.getLoanerEnterpriseInfo() == null) {
+                return new BaseDto<>(new BaseDataDto(false, "企业借款人信息不完整"));
+            }
+
         }
 
         return new BaseDto<>(new BaseDataDto(true));
