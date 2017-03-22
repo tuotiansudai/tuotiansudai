@@ -1,6 +1,7 @@
 require(['jquery', 'layerWrapper','template', 'jquery.validate', 'jquery.ajax.extension'], function($, layer,tpl) {
 	$(function() {
 		var $pointOrder = $('#pointOrder');
+		var $exchangeTip = $('#exchangeTip');
 		var $countList = $('.order-number',$pointOrder),
 			$numText = $countList.find('.num-text'),
 			currentNum=parseInt($numText.val()), //目前已选商品的个数
@@ -9,11 +10,22 @@ require(['jquery', 'layerWrapper','template', 'jquery.validate', 'jquery.ajax.ex
 			$updatePlace = $('#updatePlace'),
 			$addressForm = $('#addressForm');
 
+		//该用户总共可以兑换商品的数量
+		var myLimit = parseInt($countList.data('mylimit'));
+		//该用户本月已兑换的数量
+		var buyCount = parseInt($countList.data('buycount'));
+		//本月该用户剩下能兑换的数量
+		var myRest = myLimit-buyCount;
+		$exchangeTip.find('i').text(myRest);
+		if(myRest==0) {
+			$orderBtn.prop('disabled',true);
+		}
+
 		$countList.on('click',function(event) {
 			var target = event.target;
 			var overplus = parseInt($countList.data('overplus'));  //剩余商品的数量
-			var myLimit = parseInt($countList.data('mylimit')); //本月我可以兑换商品的数量
-			var compareNum = (myLimit==0) ? overplus :Math.min(overplus,myLimit);
+
+			var compareNum = (myRest==0) ? overplus :Math.min(overplus,myRest);
 			currentNum=parseInt($numText.val());
 			if(overplus<1) {
 				return;
