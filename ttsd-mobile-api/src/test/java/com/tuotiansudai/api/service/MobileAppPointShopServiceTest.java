@@ -290,7 +290,7 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase {
     }
 
     private ProductModel getProductModel(String loginName, GoodsType goodsType, long totalCount, long couponId) {
-        ProductModel productModel = new ProductModel("test", goodsType, 0, "50元充值卡", 1, "upload/images/11.png", "50yuan", totalCount, 200, new Date(), new DateTime().plusDays(7).toDate());
+        ProductModel productModel = new ProductModel("test", goodsType, 0, "50元充值卡", 1, "upload/images/11.png", "50yuan", totalCount, 0, 200, new Date(), new DateTime().plusDays(7).toDate());
 
         productModel.setCouponId(couponId);
         productModel.setActive(true);

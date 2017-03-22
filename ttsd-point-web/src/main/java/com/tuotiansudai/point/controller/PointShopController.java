@@ -110,6 +110,7 @@ public class PointShopController {
         ProductShowItemDto productShowItemDto = productService.findProductShowItemDto(id, goodsType);
         modelAndView.addObject("productShowItem", productShowItemDto);
         modelAndView.addObject("discount", productService.discountRate(loginName));
+        modelAndView.addObject("buyCount", productService.getUserBuyCountInMonth(id, loginName));
         modelAndView.addObject("responsive", true);
         return modelAndView;
     }
@@ -145,7 +146,7 @@ public class PointShopController {
         }
 
         modelAndView.addObject("discount", productService.discountRate(loginName));
-
+        modelAndView.addObject("buyCount", productService.getUserBuyCountInMonth(id, loginName));
         modelAndView.addObject("responsive", true);
         return modelAndView;
     }

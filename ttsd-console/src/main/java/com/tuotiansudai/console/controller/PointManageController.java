@@ -242,6 +242,7 @@ public class PointManageController {
                                 exchangeCouponDto.getImageUrl(),
                                 exchangeCouponDto.getExchangePoint(),
                                 exchangeCouponDto.getTotalCount(),
+                                exchangeCouponDto.getMonthLimit(),
                                 exchangeCouponDto.getStartTime(),
                                 exchangeCouponDto.getEndTime());
                 productService.updateProduct(productDto);
@@ -255,6 +256,7 @@ public class PointManageController {
                         exchangeCouponDtoView.getImageUrl(),
                         exchangeCouponDtoView.getExchangePoint(),
                         exchangeCouponDtoView.getTotalCount(),
+                        exchangeCouponDtoView.getMonthLimit(),
                         exchangeCouponDtoView.getStartTime(),
                         exchangeCouponDtoView.getEndTime(),
                         loginName);

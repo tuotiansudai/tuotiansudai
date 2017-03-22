@@ -61,4 +61,6 @@ public interface ProductService {
     String discountShowInfo(String loginName);
 
     double discountRate(String loginName);
+
+    int getUserBuyCountInMonth(long productId, String loginName);
 }
