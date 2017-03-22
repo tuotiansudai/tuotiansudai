@@ -12,14 +12,11 @@ require(['jquery', 'layerWrapper', 'template', 'csrf','bootstrap', 'bootstrapDat
 
         // 业务类型切换
         $businessType.on('change', function() {
-            if ($businessType.val() == '0') {
-                window.location.href ='/activity-manage/coupon';
-            }else if($businessType.val() == '1'){
+            if($businessType.val() == 'INTEREST_COUPON'){
                 window.location.href ='/activity-manage/interest-coupon';
-            }else if($businessType.val() == '2'){
+            }
+            if($businessType.val() == 'RED_ENVELOPE'){
                 window.location.href ='/activity-manage/red-envelope';
-            }else if($businessType.val() == '3'){
-                window.location.href ='/activity-manage/birthday-coupon';
             }
         });
 

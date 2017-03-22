@@ -1,6 +1,5 @@
 package com.tuotiansudai.console.service;
 
-import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.*;
@@ -20,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ConsoleLoanCreateService {
@@ -331,6 +331,10 @@ public class ConsoleLoanCreateService {
             return new BaseDto<>(new BaseDataDto(false, "借款截止时间不能为过去的时间"));
         }
 
+        if (!Lists.newArrayList(LoanType.INVEST_INTEREST_MONTHLY_REPAY, LoanType.INVEST_INTEREST_LUMP_SUM_REPAY).contains(loanCreateRequestDto.getLoan().getLoanType())) {
+            return new BaseDto<>(new BaseDataDto(false, "标的类型不正确"));
+        }
+
         AnxinSignPropertyModel anxinProp = anxinSignPropertyMapper.findByLoginName(loanCreateRequestDto.getLoan().getAgent());
         if (anxinProp == null || !anxinProp.isSkipAuth()) {
             return new BaseDto<>(new BaseDataDto(false, "代理/借款 用户未开通安心签免短信验证"));
@@ -390,16 +394,13 @@ public class ConsoleLoanCreateService {
             return;
         }
 
-        extraLoanRateMapper.create(Lists.transform(extraRateIds, new Function<Long, ExtraLoanRateModel>() {
-            @Override
-            public ExtraLoanRateModel apply(Long extraRateRuleId) {
-                ExtraLoanRateRuleModel extraLoanRateRuleModel = extraLoanRateRuleMapper.findById(extraRateRuleId);
-                return new ExtraLoanRateModel(loanId,
-                        extraRateRuleId,
-                        extraLoanRateRuleModel.getMinInvestAmount(),
-                        extraLoanRateRuleModel.getMaxInvestAmount(),
-                        extraLoanRateRuleModel.getRate());
-            }
-        }));
+        extraLoanRateMapper.create(extraRateIds.stream().map(extraRateId -> {
+            ExtraLoanRateRuleModel extraLoanRateRuleModel = extraLoanRateRuleMapper.findById(extraRateId);
+            return new ExtraLoanRateModel(loanId,
+                    extraRateId,
+                    extraLoanRateRuleModel.getMinInvestAmount(),
+                    extraLoanRateRuleModel.getMaxInvestAmount(),
+                    extraLoanRateRuleModel.getRate());
+        }).collect(Collectors.toList()));
     }
 }
