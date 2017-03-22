@@ -2,31 +2,31 @@
 	<div class="lottery-left-group">
 		<ul class="lottery-item" id="lotteryBox">
 			<li class="lottery-unit lottery-unit-0" data-unit="0">
-				<img src="${staticServer}/point/images/nine-lottery/gift-one.png">
+				<img src="${commonStaticServer}/static/point/images/nine-lottery/gift-one.png">
 			</li>
 			<li class="lottery-unit lottery-unit-1" data-unit="1">
-				<img src="${staticServer}/point/images/nine-lottery/gift-two.png">
+				<img src="${commonStaticServer}/static/point/images/nine-lottery/gift-two.png">
 			</li>
 			<li class="lottery-unit lottery-unit-2" data-unit="2">
-				<img src="${staticServer}/point/images/nine-lottery/gift-three.png">
+				<img src="${commonStaticServer}/static/point/images/nine-lottery/gift-three.png">
 			</li>
 			<li class="lottery-unit lottery-unit-7" data-unit="7">
-				<img src="${staticServer}/point/images/nine-lottery/gift-eight.png">
+				<img src="${commonStaticServer}/static/point/images/nine-lottery/gift-eight.png">
 			</li>
 			<li class="lottery-btn">
-				<img src="${staticServer}/point/images/nine-lottery/lottery-btn.png" width="100%">
+				<img src="${commonStaticServer}/static/point/images/nine-lottery/lottery-btn.png" width="100%">
 			</li>
 			<li class="lottery-unit lottery-unit-3" data-unit="3">
-				<img src="${staticServer}/point/images/nine-lottery/gift-four.png">
+				<img src="${commonStaticServer}/static/point/images/nine-lottery/gift-four.png">
 			</li>
 			<li class="lottery-unit lottery-unit-6" data-unit="6">
-				<img src="${staticServer}/point/images/nine-lottery/gift-seven.png">
+				<img src="${commonStaticServer}/static/point/images/nine-lottery/gift-seven.png">
 			</li>
 			<li class="lottery-unit lottery-unit-5" data-unit="5">
-				<img src="${staticServer}/point/images/nine-lottery/gift-six.png">
+				<img src="${commonStaticServer}/static/point/images/nine-lottery/gift-six.png">
 			</li>
 			<li class="lottery-unit lottery-unit-4" data-unit="4">
-				<img src="${staticServer}/point/images/nine-lottery/gift-five.png">
+				<img src="${commonStaticServer}/static/point/images/nine-lottery/gift-five.png">
 			</li>
 		</ul>
 	</div>
@@ -44,7 +44,7 @@
             {{/each}}
             {{else}}
             	<li class="record-img">
-            		<img src="${staticServer}/point/images/nine-lottery/record-img.png">
+            		<img src="${commonStaticServer}/static/point/images/nine-lottery/record-img.png">
             		<p>还没有奖品呢，快去抽奖吧！</p>
             	</li>
             {{/if}}
@@ -57,7 +57,7 @@
 	            {{/each}}
 	        {{else}}
 	        	<li class="record-img">
-            		<img src="${staticServer}/point/images/nine-lottery/record-img.png">
+            		<img src="${commonStaticServer}/static/point/images/nine-lottery/record-img.png">
             		<p>还没有奖品呢，快去抽奖吧！</p>
             	</li>
 	        {{/if}}

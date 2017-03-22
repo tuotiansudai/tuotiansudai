@@ -1,0 +1,107 @@
+.main-frame{
+  width:100%;
+  margin:0;
+  .global-member-integral {
+    float:left;
+    width:100%;
+    .wp{
+      width:1000px;
+      margin:0 auto;
+      position: relative;
+      .detail-top{
+        float:left;
+        width:100%;
+        color:#808080;
+        font-size:16px;
+        margin-top:10px;
+        margin-bottom:20px;
+        a{
+          color:#808080;
+        }
+        span{
+          color:#fc4a52;
+        }
+      }
+      .container-detail{
+        float:left;
+        background:#fff;
+        width:100%;
+        .type-list{
+          float:left;
+          width:100%;
+          margin-bottom:10px;
+          span{
+            float:left;
+            padding:10px 0;
+            &.active{
+              border-bottom:3px solid #fc4a52;
+              a{
+                color:#fc4a52;
+              }
+            }
+            a{
+              float:left;
+              width:100px;
+              font-size:16px;
+              color:#808080;
+              text-align:center;
+            }
+          }
+        }
+        .item-block {
+          float:left;
+          width:960px;
+          padding:0 20px;
+          margin: 10px 0 20px 0;
+          line-height: 30px;
+          font-size: 16px;
+          color:#808080;
+          .select-item {
+            display: inline-block;
+            padding: 0 10px;
+            margin-left: 10px;
+            color: #808080;
+            cursor: pointer;
+            &.current {
+              background: #fc4a52;
+              color: #fff;
+              border-radius: 3px;
+            }
+          }
+        }
+        .data-list{
+          table>thead>tr>th{
+            font-size:16px;
+            color:#4c4c4c;
+          }
+          table>tbody>tr>td{
+            font-size:14px;
+            color:#808080;
+          }
+        }
+      }
+      .pagination{
+        float:left;
+        width:100%;
+        span{
+          font-size:16px;
+          &.count{
+            color:#4c4c4c;
+          }
+        }
+      }
+    }
+    .container-ad{
+      float:left;
+      width:100%;
+      height:80px;
+      background:url("/point/images/ad-img.jpg") no-repeat center;
+    }
+  }
+}
+
+
+
+
+
+

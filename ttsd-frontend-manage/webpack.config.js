@@ -225,7 +225,9 @@ var myObject = objectAssign(commonOptions, {
 			activityStyle:path.join(activityPath, 'styles'),
 
 			pointJs:path.join(pointPath, 'js'),
+            pointJsModule:path.join(pointPath, 'js/module'),
 			pointStyle:path.join(pointPath, 'styles'),
+            pointImages:path.join(pointPath, 'images'),
 
 			mobileJs:path.join(mobilePath, 'js'),
 			mobileStyle:path.join(mobilePath, 'styles')
