@@ -365,6 +365,9 @@
               border: none;
               cursor: pointer;
               background: #fc4a52;
+              &[disabled] {
+                background: #ccc;
+              }
             }
           }
         }
