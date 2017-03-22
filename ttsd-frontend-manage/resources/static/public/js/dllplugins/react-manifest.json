@@ -1,6 +1,7 @@
 {
   "name": "react_library",
   "content": {
+    "./node_modules/jquery/dist/jquery.js": 1,
     "./node_modules/react/react.js": 4,
     "./node_modules/react/lib/React.js": 5,
     "./node_modules/webpack/node_modules/node-libs-browser/node_modules/process/browser.js": 6,
@@ -258,6 +259,8 @@
     "./node_modules/classnames/index.js": 258,
     "./node_modules/iscroll/build/iscroll.js": 259,
     "./node_modules/imagesloaded/imagesloaded.js": 260,
-    "./node_modules/imagesloaded/node_modules/ev-emitter/ev-emitter.js": 261
+    "./node_modules/imagesloaded/node_modules/ev-emitter/ev-emitter.js": 261,
+    "./node_modules/seamless-immutable/src/seamless-immutable.js": 262,
+    "./node_modules/swiper/dist/js/swiper.js": 263
   }
 }

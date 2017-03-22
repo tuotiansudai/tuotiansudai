@@ -37,9 +37,9 @@ class MediaList extends React.Component {
 	}
 	fetchData(index = 1, section = 'ALL', callback = function() {}) {
 		let sendData = {
-			"index": index,//当前页面
-			"pageSize": pageSize,
-			"section": section
+		    "index": index,//当前页面
+		    "pageSize": pageSize,
+		    "section": section
 		};
 		if (section === 'ALL') {
 			delete sendData.section;
@@ -148,8 +148,8 @@ class MediaList extends React.Component {
 		this.destroyIscroll.call(this);
 	}
 	shouldComponentUpdate(nextProps, nextState) {
-		return shallowCompare(this, nextProps, nextState);
-	}
+   		return shallowCompare(this, nextProps, nextState);
+  	}
 	render() {
 		let loading = null;
 		if (this.state.isShowLoading) {

@@ -1,7 +1,7 @@
 import { main } from 'mobileStyle/Carousel.scss';
 // import React from 'react';
-import swiper from 'swiper';
-import imagesLoaded from 'imagesloaded';
+// import swiper from 'swiper';
+// import imagesLoaded from 'imagesloaded';
 
 // import { hashHistory } from 'react-router';
 

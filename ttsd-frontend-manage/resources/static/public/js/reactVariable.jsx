@@ -11,3 +11,9 @@ window.injectTapEventPlugin = window.react_library(248);
 window.classNames = window.react_library(258);
 window.shallowCompare = window.react_library(255);
 
+window.IScroll = window.react_library(259);
+window.imagesLoaded = window.react_library(260);
+
+window.Immutable = window.react_library(262);
+window.swiper = window.react_library(263);
+
