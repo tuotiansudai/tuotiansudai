@@ -72,7 +72,7 @@ public class InterestCalculator {
         DateTime loanOutDate = new DateTime(loanModel.getRecheckTime()).withTimeAtStartOfDay();
         DateTime lastInvestRepayDate = lastRepayDate.withTimeAtStartOfDay();
         if (lastRepayDate.isBefore(loanOutDate) && InterestInitiateType.INTEREST_START_AT_INVEST == loanModel.getType().getInterestInitiateType()) {
-            lastInvestRepayDate = new DateTime(investModel.getInvestTime()).withTimeAtStartOfDay().minusDays(1);
+            lastInvestRepayDate = new DateTime(investModel.getTradingTime()).withTimeAtStartOfDay().minusDays(1);
         }
         // 2015-01-01 ~ 2015-01-31: 30
         int periodDuration = Days.daysBetween(lastInvestRepayDate, currentRepayDate.withTimeAtStartOfDay()).getDays();
