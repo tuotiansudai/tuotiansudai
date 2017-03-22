@@ -381,7 +381,6 @@ public class ProductServiceImpl implements ProductService {
         }
 
         ProductShowItemDto productShowItemDto = findProductShowItemDto(id, goodsType);
-        long totalPrice = Math.round(new BigDecimal(productShowItemDto.getPoints()).multiply(new BigDecimal(discount)).multiply(new BigDecimal(amount)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
         if (null == productShowItemDto) {
             return new BaseDto<>(new BaseDataDto(false, "该商品或该商品类型不存在"));
         }
@@ -389,24 +388,30 @@ public class ProductServiceImpl implements ProductService {
             return new BaseDto<>(new BaseDataDto(false, "商品数量不足"));
         }
 
-        String buyCountStr = redisWrapperClient.get(generateCountKey(productModel.getId(), loginName));
-        int buyCount = buyCountStr == null ? 0 : Integer.parseInt(buyCountStr);
+        String key = generateCountKey(productModel.getId(), loginName);
+        long buyCount = redisWrapperClient.incrEx(key, COUNT_LIFE_TIME, amount);
 
-        if (productModel.getMonthLimit() != 0 && buyCount + amount > productModel.getMonthLimit()) {
+        if (productModel.getMonthLimit() != 0 && buyCount > productModel.getMonthLimit()) {
+            redisWrapperClient.decrEx(key, COUNT_LIFE_TIME, amount);
             return new BaseDto<>(new BaseDataDto(false, "该商品每人每月可以兑换" + productModel.getMonthLimit() + "个，已超出兑换上限。"));
         }
 
+        long totalPrice = Math.round(new BigDecimal(productShowItemDto.getPoints()).multiply(new BigDecimal(discount)).multiply(new BigDecimal(amount)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+
         if (accountModel.getPoint() < totalPrice) {
+            redisWrapperClient.decrEx(key, COUNT_LIFE_TIME, amount);
             return new BaseDto<>(new BaseDataDto(false, "积分不足"));
         }
 
         UserAddressModel userAddressModel = null;
         if (GoodsType.PHYSICAL == goodsType) {
             if (null == addressId) {
+                redisWrapperClient.decrEx(key, COUNT_LIFE_TIME, amount);
                 return new BaseDto<>(new BaseDataDto(false, "地址不存在"));
             }
             userAddressModel = userAddressMapper.findByLoginNameAndId(addressId, loginName);
             if (null == userAddressModel) {
+                redisWrapperClient.decrEx(key, COUNT_LIFE_TIME, amount);
                 return new BaseDto<>(new BaseDataDto(false, "地址不存在"));
             }
         }
@@ -428,8 +433,6 @@ public class ProductServiceImpl implements ProductService {
 
         productModel.setUsedCount(productModel.getUsedCount() + amount);
         productMapper.update(productModel);
-
-        redisWrapperClient.incrEx(generateCountKey(productModel.getId(), loginName), COUNT_LIFE_TIME, amount);
 
         return new BaseDto<>(new BaseDataDto(true));
     }

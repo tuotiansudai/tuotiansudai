@@ -302,6 +302,17 @@ public class RedisWrapperClient extends AbstractRedisWrapperClient {
         });
     }
 
+    public Long decrEx(final String key, int seconds, final long decrement) {
+        return execute(new JedisAction<Long>() {
+            @Override
+            public Long action(Jedis jedis) {
+                long val = jedis.decrBy(key, decrement);
+                jedis.expire(key, seconds);
+                return val;
+            }
+        });
+    }
+
     public boolean hexists(final String key, final String field) {
         return execute(new JedisAction<Boolean>() {
             @Override
