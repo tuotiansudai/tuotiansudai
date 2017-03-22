@@ -10,19 +10,17 @@ import com.tuotiansudai.activity.service.LotteryDrawActivityService;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppPointShopService;
 import com.tuotiansudai.api.util.PageValidUtils;
-import com.tuotiansudai.repository.mapper.CouponMapper;
-import com.tuotiansudai.repository.model.CouponModel;
-import com.tuotiansudai.repository.model.ExchangeCouponView;
+import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.point.repository.mapper.*;
-import com.tuotiansudai.point.repository.mapper.ProductMapper;
-import com.tuotiansudai.point.repository.mapper.ProductOrderMapper;
-import com.tuotiansudai.point.repository.mapper.UserAddressMapper;
 import com.tuotiansudai.point.repository.model.*;
 import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.point.service.ProductService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.CouponMapper;
 import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.CouponModel;
+import com.tuotiansudai.repository.model.ExchangeCouponView;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
@@ -33,10 +31,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.text.MessageFormat;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Service
 public class MobileAppPointShopServiceImpl implements MobileAppPointShopService {
@@ -81,6 +77,10 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
 
     @Autowired
     private PointBillService pointBillService;
+
+    @Autowired
+    RedisWrapperClient redisWrapperClient;
+
 
     @Override
     public BaseResponseDto updateUserAddress(UserAddressRequestDto userAddressRequestDto) {
@@ -329,6 +329,15 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
             return new BaseResponseDto(ReturnMessage.INSUFFICIENT_PRODUCT_NUM.getCode(), ReturnMessage.INSUFFICIENT_PRODUCT_NUM.getMsg());
         }
 
+        String buyCountStr = redisWrapperClient.get(generateCountKey(productModel.getId(), accountModel.getLoginName()));
+        int buyCount = buyCountStr == null ? 0 : Integer.parseInt(buyCountStr);
+
+        if (productModel.getMonthLimit() != 0 && buyCount + productDetailRequestDto.getNum() > productModel.getMonthLimit()) {
+            logger.info(MessageFormat.format("Reach the exchange limit this month, (userId = {0}, productId = {1}, monthLimit={2}, buyCount={3}, alreadyBuy={4})",
+                    productDetailRequestDto.getBaseParam().getUserId(), String.valueOf(productModel.getId()), productModel.getMonthLimit(), productDetailRequestDto.getNum(), buyCount));
+            return new BaseResponseDto(ReturnMessage.REACH_MONTH_LIMIT_THIS_MONTH.getCode(), MessageFormat.format(ReturnMessage.REACH_MONTH_LIMIT_THIS_MONTH.getMsg(), productModel.getMonthLimit()));
+        }
+
         long points = productModel.getPoints() * productDetailRequestDto.getNum();
         if (accountModel == null || accountModel.getPoint() < points) {
             logger.info(MessageFormat.format("Insufficient points (userId = {0},productPoints = {2})", productDetailRequestDto.getBaseParam().getUserId(), points));
@@ -422,6 +431,15 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
                 userAddressRequestDto.getMobile(),
                 userAddressRequestDto.getAddress(),
                 userAddressRequestDto.getBaseParam().getUserId());
+    }
+
+    private static final String PRODUCT_USER_BUY_COUNT_KEY = "{0}:{1}:{2}";
+
+    private static final ThreadLocal<SimpleDateFormat> SDF_LOCAL = ThreadLocal.withInitial(() -> new SimpleDateFormat("yyyy-MM-dd-HH"));
+
+    private String generateCountKey(long productId, String loginName) {
+        String today = SDF_LOCAL.get().format(new Date());
+        return MessageFormat.format(PRODUCT_USER_BUY_COUNT_KEY, today, productId, loginName);
     }
 
 }
