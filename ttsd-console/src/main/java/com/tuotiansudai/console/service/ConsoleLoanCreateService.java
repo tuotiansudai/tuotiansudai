@@ -90,6 +90,9 @@ public class ConsoleLoanCreateService {
         long loanId = idGenerator.generate();
 
         LoanModel loanModel = new LoanModel(loanId, loanCreateRequestDto);
+        if(loanModel.getPledgeType() == PledgeType.ENTERPRISE_FACTORING || loanModel.getPledgeType() == PledgeType.ENTERPRISE_BILL){
+            loanModel.setName(loanModel.getName().indexOf("—") > 0 ? loanModel.getName().substring(0, loanModel.getName().indexOf("—")) : loanModel.getName());
+        }
         loanMapper.create(loanModel);
 
         if (CollectionUtils.isNotEmpty(loanCreateRequestDto.getLoan().getLoanTitles())) {

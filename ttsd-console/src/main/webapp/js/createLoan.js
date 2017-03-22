@@ -66,7 +66,7 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
             }
 
             if ('企业经营性借款—票据' === loanName) {
-                pledgeTypeElement.val("ENTERPRISE_BIll");
+                pledgeTypeElement.val("ENTERPRISE_BILL");
                 sectionTwoElement.html(Mustache.render(loanerEnterpriseInfoTemplate));
                 sectionThreeElement.html(Mustache.render(''));
             }

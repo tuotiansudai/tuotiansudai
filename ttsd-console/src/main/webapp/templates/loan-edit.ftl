@@ -32,8 +32,8 @@
                             <option value="房产抵押借款" <#if loan.loan.name == "房产抵押借款">selected</#if>>房产抵押借款</option>
                             <option value="车辆抵押借款" <#if loan.loan.name == "车辆抵押借款">selected</#if>>车辆抵押借款</option>
                             <option value="税易经营性借款" <#if loan.loan.name == "税易经营性借款">selected</#if>>税易经营性借款</option>
-                            <option value="企业经营性借款—保理" <#if loan.loan.name == "企业经营性借款—保理">selected</#if>>企业经营性借款—保理</option>
-                            <option value="企业经营性借款—票据" <#if loan.loan.name == "企业经营性借款—票据">selected</#if>>企业经营性借款—票据</option>
+                            <option value="企业经营性借款—保理" <#if loan.loan.pledgeType == "ENTERPRISE_FACTORING">selected</#if>>企业经营性借款—保理</option>
+                            <option value="企业经营性借款—票据" <#if loan.loan.pledgeType == "ENTERPRISE_BILL">selected</#if>>企业经营性借款—票据</option>
                         </select>
                     </div>
                 </div>

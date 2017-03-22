@@ -218,7 +218,10 @@ public class LoanModel implements Serializable {
 
     public LoanModel updateLoan(LoanCreateRequestDto loanCreateRequestDto) {
         LoanCreateBaseRequestDto baseRequestDto = loanCreateRequestDto.getLoan();
-        this.name = this.status == LoanStatus.WAITING_VERIFY ? baseRequestDto.getName() : this.name;
+        if(baseRequestDto.getPledgeType() == PledgeType.ENTERPRISE_BILL || baseRequestDto.getPledgeType() == PledgeType.ENTERPRISE_FACTORING){
+            baseRequestDto.setName(baseRequestDto.getName().indexOf("—") > 0 ? baseRequestDto.getName().substring(0, baseRequestDto.getName().indexOf("—")) : baseRequestDto.getName());
+        }
+        this.name = this.status == LoanStatus.WAITING_VERIFY ? baseRequestDto.getName(): this.name;
         this.agentLoginName = this.status == LoanStatus.WAITING_VERIFY ? baseRequestDto.getAgent() : this.agentLoginName;
         this.loanerUserName = loanCreateRequestDto.getLoanerDetails() != null ? loanCreateRequestDto.getLoanerDetails().getUserName() : "";
         this.loanerIdentityNumber = loanCreateRequestDto.getLoanerDetails() != null ? loanCreateRequestDto.getLoanerDetails().getIdentityNumber() : "";
