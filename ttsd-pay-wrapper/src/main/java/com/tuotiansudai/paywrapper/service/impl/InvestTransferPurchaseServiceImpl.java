@@ -27,7 +27,7 @@ import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackR
 import com.tuotiansudai.paywrapper.repository.model.async.callback.InvestNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.ProjectTransferNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferRequestModel;
-import com.tuotiansudai.paywrapper.repository.model.sync.request.ProjectTransferNopwdRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferNopwdRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferNopwdResponseModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
 import com.tuotiansudai.paywrapper.service.InvestTransferPurchaseService;
@@ -359,7 +359,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
         long transferFee = transferApplicationModel.getTransferFee();
 
         try {
-            ProjectTransferRequestModel feeRequestModel = ProjectTransferRequestModel.newTransferFeeRequest(String.valueOf(transferInvestModel.getLoanId()),
+            ProjectTransferRequestModel feeRequestModel = ProjectTransferRequestModel.newRepayTransferFeeRequest(String.valueOf(transferInvestModel.getLoanId()),
                     MessageFormat.format(REPAY_ORDER_ID_TEMPLATE, String.valueOf(transferApplicationId), String.valueOf(new Date().getTime())),
                     String.valueOf(transferFee));
 
@@ -524,7 +524,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
         try {
             String overInvestPaybackOrderId = MessageFormat.format(REPAY_ORDER_ID_TEMPLATE, String.valueOf(investId), String.valueOf(System.currentTimeMillis()));
             AccountModel accountModel = accountMapper.findByLoginName(investModel.getLoginName());
-            ProjectTransferRequestModel requestModel = ProjectTransferRequestModel.overInvestPaybackRequest(String.valueOf(investModel.getLoanId()),
+            ProjectTransferRequestModel requestModel = ProjectTransferRequestModel.newOverInvestPaybackRequest(String.valueOf(investModel.getLoanId()),
                     overInvestPaybackOrderId,
                     accountModel.getPayUserId(),
                     String.valueOf(transferAmount));

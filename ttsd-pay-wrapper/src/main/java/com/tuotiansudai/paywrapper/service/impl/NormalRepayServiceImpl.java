@@ -12,7 +12,6 @@ import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.enums.*;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.job.JobManager;
-import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.message.EventMessage;
 import com.tuotiansudai.message.PushMessage;
 import com.tuotiansudai.message.RepaySuccessAsyncCallBackMessage;
@@ -32,7 +31,7 @@ import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackR
 import com.tuotiansudai.paywrapper.repository.model.async.callback.NormalRepayNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.ProjectTransferNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferRequestModel;
-import com.tuotiansudai.paywrapper.repository.model.sync.request.ProjectTransferNopwdRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferNopwdRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.SyncRequestStatus;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferNopwdResponseModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
@@ -43,8 +42,6 @@ import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.AmountTransfer;
 import org.apache.log4j.Logger;
-import org.joda.time.DateTime;
-import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -98,9 +95,6 @@ public class NormalRepayServiceImpl implements NormalRepayService {
 
     @Autowired
     private LoanService loanService;
-
-    @Autowired
-    private JobManager jobManager;
 
     @Autowired
     private RedisWrapperClient redisWrapperClient;
@@ -355,9 +349,8 @@ public class NormalRepayServiceImpl implements NormalRepayService {
 
             if (Lists.newArrayList(SyncRequestStatus.READY, SyncRequestStatus.FAILURE).contains(syncRequestStatus)) {
                 if (investRepayModel.getRepayAmount() > 0) {
-                    // transfer investor interest(callback url: repay_payback_notify)
                     try {
-                        ProjectTransferRequestModel repayPaybackRequest = ProjectTransferRequestModel.newRepayPaybackRequest(String.valueOf(loanId),
+                        ProjectTransferRequestModel repayPaybackRequest = ProjectTransferRequestModel.newNormalRepayPaybackRequest(String.valueOf(loanId),
                                 MessageFormat.format(REPAY_ORDER_ID_TEMPLATE, String.valueOf(investRepayModel.getId()), String.valueOf(new Date().getTime())),
                                 accountMapper.findByLoginName(investModel.getLoginName()).getPayUserId(),
                                 String.valueOf(investRepayModel.getRepayAmount()));
@@ -398,9 +391,8 @@ public class NormalRepayServiceImpl implements NormalRepayService {
         if (Lists.newArrayList(SyncRequestStatus.READY, SyncRequestStatus.FAILURE).contains(syncRequestStatus)) {
 
             if (feeAmount > 0) {
-                // transfer investor fee(callback url: repay_invest_fee_notify)
                 try {
-                    ProjectTransferRequestModel repayInvestFeeRequest = ProjectTransferRequestModel.newRepayInvestFeeRequest(String.valueOf(loanId),
+                    ProjectTransferRequestModel repayInvestFeeRequest = ProjectTransferRequestModel.newNormalRepayInvestFeeRequest(String.valueOf(loanId),
                             MessageFormat.format(REPAY_ORDER_ID_TEMPLATE, String.valueOf(loanRepayId), String.valueOf(new Date().getTime())),
                             String.valueOf(feeAmount));
 

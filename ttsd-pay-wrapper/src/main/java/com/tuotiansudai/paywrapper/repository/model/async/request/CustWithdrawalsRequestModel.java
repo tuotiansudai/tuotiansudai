@@ -1,5 +1,6 @@
 package com.tuotiansudai.paywrapper.repository.model.async.request;
 
+import com.tuotiansudai.enums.AsyncUmPayService;
 import com.tuotiansudai.repository.model.Source;
 
 import java.text.MessageFormat;
@@ -24,16 +25,16 @@ public class CustWithdrawalsRequestModel extends BaseAsyncRequestModel {
     public CustWithdrawalsRequestModel() {
     }
 
-    public CustWithdrawalsRequestModel(String orderId, String userId, String amount,Source source) {
-        super(source,"cust_withdrawals");
-        this.service = "cust_withdrawals";
+    public CustWithdrawalsRequestModel(String orderId, String userId, String amount, Source source) {
+        super(source, AsyncUmPayService.CUST_WITHDRAWALS);
+        this.service = AsyncUmPayService.CUST_WITHDRAWALS.getServiceName();
         this.applyNotifyFlag = "1";
         this.orderId = orderId;
         this.userId = userId;
         this.amount = amount;
         this.comAmtType = "1"; //1 前向手续费：交易方承担 2 前向手续费：平台商户（手续费账户）承担
         this.merDate = new SimpleDateFormat("yyyyMMdd").format(new Date());
-        this.notifyUrl = MessageFormat.format("{0}/{1}", CALLBACK_HOST_PROPS.get("pay.callback.back.host"), "withdraw_notify");
+        this.notifyUrl = MessageFormat.format("{0}/{1}", CALLBACK_HOST_PROPS.get("pay.callback.back.host"), AsyncUmPayService.CUST_WITHDRAWALS.getNotifyCallbackPath());
 
     }
 

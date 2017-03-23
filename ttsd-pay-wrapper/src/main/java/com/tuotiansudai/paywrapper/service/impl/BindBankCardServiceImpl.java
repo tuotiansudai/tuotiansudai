@@ -12,7 +12,6 @@ import com.tuotiansudai.paywrapper.repository.mapper.BankCardApplyNotifyMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.BankCardNotifyMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.PtpMerBindCardMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.PtpMerReplaceCardMapper;
-import com.tuotiansudai.paywrapper.repository.model.async.callback.AsyncServiceType;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BankCardApplyNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BankCardNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
@@ -125,11 +124,8 @@ public class BindBankCardServiceImpl implements BindBankCardService {
         }
 
         try {
-            String service = callbackRequest.getService();
-            if (AsyncServiceType.MER_BIND_CARD_NOTIFY.getCode().equals(service)) {
-                this.postReplaceBankCardCallback((BankCardNotifyRequestModel) callbackRequest);
-            }
-        } catch (AmountTransferException e) {
+            this.postReplaceBankCardCallback((BankCardNotifyRequestModel) callbackRequest);
+        } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
         }
 
@@ -146,9 +142,10 @@ public class BindBankCardServiceImpl implements BindBankCardService {
             return null;
         }
 
-        String service = callbackRequest.getService();
-        if (AsyncServiceType.MER_BIND_CARD_NOTIFY.getCode().equals(service)) {
+        try {
             this.postBindBankCardCallback((BankCardNotifyRequestModel) callbackRequest);
+        } catch (Exception e) {
+            logger.error(e.getLocalizedMessage(), e);
         }
 
         return callbackRequest.getResponseData();

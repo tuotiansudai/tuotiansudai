@@ -62,9 +62,6 @@ public class MobileAppTransferServiceTest extends ServiceTestBase {
     @Mock
     private RandomUtils randomUtils;
 
-    @Value("${pay.callback.app.web.host}")
-    private String domainName;
-
     @Mock
     private PageValidUtils pageValidUtils;
 

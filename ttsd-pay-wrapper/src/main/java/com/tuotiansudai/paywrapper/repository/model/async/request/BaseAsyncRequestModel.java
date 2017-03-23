@@ -1,5 +1,6 @@
 package com.tuotiansudai.paywrapper.repository.model.async.request;
 
+import com.tuotiansudai.enums.AsyncUmPayService;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.BaseSyncRequestModel;
 import com.tuotiansudai.repository.model.Source;
 import org.apache.log4j.Logger;
@@ -13,7 +14,7 @@ import java.util.Properties;
 
 public abstract class BaseAsyncRequestModel extends BaseSyncRequestModel {
 
-    static Logger logger = Logger.getLogger(BaseAsyncRequestModel.class);
+    private final static Logger logger = Logger.getLogger(BaseAsyncRequestModel.class);
 
     protected static Properties CALLBACK_HOST_PROPS = new Properties();
 
@@ -50,30 +51,12 @@ public abstract class BaseAsyncRequestModel extends BaseSyncRequestModel {
     }
 
     public BaseAsyncRequestModel() {
-
     }
 
-    public BaseAsyncRequestModel(Source source, String payFrontServiceName) {
-        this.retUrl = MessageFormat.format("{0}/callback/{1}", getCallbackPortalHost(), payFrontServiceName);
-        if (source != Source.WEB) {
-            this.setSourceV("HTML5");
-            this.retUrl = MessageFormat.format("{0}/callback/{1}", getCallbackMobileHost(), payFrontServiceName);
-        }
-    }
-
-    public static String getCallbackBackHost() {
-        return (String) CALLBACK_HOST_PROPS.get("pay.callback.back.host");
-    }
-
-    public static String getCallbackPortalHost() {
-        return (String) CALLBACK_HOST_PROPS.get("pay.callback.web.host");
-    }
-
-    public static String getCallbackConsoleHost() {
-        return (String) CALLBACK_HOST_PROPS.get("pay.callback.console.host");
-    }
-
-    public static String getCallbackMobileHost() {
-        return (String) CALLBACK_HOST_PROPS.get("pay.callback.app.web.host");
+    public BaseAsyncRequestModel(Source source, AsyncUmPayService service) {
+        this.retUrl = Source.WEB == source ?
+                MessageFormat.format("{0}/{1}", CALLBACK_HOST_PROPS.get("pay.callback.web.host"), service.getWebRetCallbackPath())
+                : MessageFormat.format("{0}/{1}", CALLBACK_HOST_PROPS.get("pay.callback.app.web.host"), service.getMobileRetCallbackPath());
+        this.setSourceV(source == Source.WEB ? null : "HTML5");
     }
 }

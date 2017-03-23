@@ -293,7 +293,7 @@ public class InvestTransferControllerTest {
 
     private void overInvestPaybackNotify(long orderId, String retCode) throws Exception {
         // 超投返款回调
-        this.mockMvc.perform(get("/callback/over_invest_transfer_payback_notify?mer_check_date=20150902&" +
+        this.mockMvc.perform(get("/callback/over_invest_payback_notify?mer_check_date=20150902&" +
                 "mer_date=20150902&mer_id=7099088&order_id={order_id}&ret_code={ret_code}&" +
                 "ret_msg=%E4%BA%A4%E6%98%93%E6%88%90%E5%8A%9F%E3%80%82&service=project_tranfer_notify&" +
                 "trade_no=1509025074065552&version=4.0&" +

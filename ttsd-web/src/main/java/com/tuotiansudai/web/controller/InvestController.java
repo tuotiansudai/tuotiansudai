@@ -20,6 +20,8 @@ import com.tuotiansudai.util.CaptchaGenerator;
 import com.tuotiansudai.util.RequestIPParser;
 import nl.captcha.Captcha;
 import nl.captcha.servlet.CaptchaServletUtil;
+import org.joda.time.DateTime;
+import org.joda.time.Seconds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -210,7 +212,8 @@ public class InvestController {
             return modelAndView;
         }
 
-        if (latestSuccessInvest.getStatus() == InvestStatus.SUCCESS) {
+        if (latestSuccessInvest.getStatus() == InvestStatus.SUCCESS
+                && Seconds.secondsBetween(new DateTime(latestSuccessInvest.getTradingTime()), new DateTime()).getSeconds() < 10) {
             modelAndView.setViewName("/invest-success");
             modelAndView.addObject("amount", AmountConverter.convertCentToString(latestSuccessInvest.getAmount()));
         }

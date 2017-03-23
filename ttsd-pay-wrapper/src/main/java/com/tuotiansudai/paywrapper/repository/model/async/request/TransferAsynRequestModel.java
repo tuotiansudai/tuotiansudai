@@ -1,8 +1,7 @@
 package com.tuotiansudai.paywrapper.repository.model.async.request;
 
-import com.google.common.collect.Lists;
+import com.tuotiansudai.enums.AsyncUmPayService;
 import com.tuotiansudai.repository.model.Source;
-import com.tuotiansudai.util.MobileFrontCallbackService;
 
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
@@ -31,30 +30,24 @@ public class TransferAsynRequestModel extends BaseAsyncRequestModel {
     }
 
     public static TransferAsynRequestModel createMembershipPrivilegePurchaseRequestModel(String orderId, String payUserId, String payAccountId, String amount, Source source) {
-        String retUrl = MessageFormat.format("{0}/callback/{1}", getCallbackMobileHost(), MobileFrontCallbackService.MEMBERSHIP_PRIVILEGE_PURCHASE.getServiceName());
-        String notifyUrl = MessageFormat.format("{0}/{1}", getCallbackBackHost(), "membership-privilege-purchase-notify");
-        TransferAsynRequestModel asynRequestModel = new TransferAsynRequestModel(orderId, payUserId,payAccountId,amount, retUrl, notifyUrl);
-        if (Lists.newArrayList(Source.ANDROID, Source.IOS).contains(source)) {
-            asynRequestModel.setSourceV("HTML5");
-        }
-        return asynRequestModel;
+        return new TransferAsynRequestModel(orderId, payUserId, payAccountId, amount, source, AsyncUmPayService.MEMBERSHIP_PRIVILEGE_PURCHASE_TRANSFER_ASYN);
     }
 
-    public static TransferAsynRequestModel createSystemRechargeRequestModel(String orderId, String payUserId, String payAccountId,String amount) {
-        String retUrl = MessageFormat.format("{0}/finance-manage/system-bill", getCallbackConsoleHost());
-        String notifyUrl = MessageFormat.format("{0}/{1}", getCallbackBackHost(), "system_recharge_notify");
-        return new TransferAsynRequestModel(orderId, payUserId,payAccountId, amount, retUrl, notifyUrl);
+    public static TransferAsynRequestModel createSystemRechargeRequestModel(String orderId, String payUserId, String payAccountId, String amount) {
+        TransferAsynRequestModel transferAsynRequestModel = new TransferAsynRequestModel(orderId, payUserId, payAccountId, amount, Source.WEB, AsyncUmPayService.SYSTEM_RECHARGE_TRANSFER_ASYN);
+        transferAsynRequestModel.setRetUrl(MessageFormat.format("{0}/{1}", CALLBACK_HOST_PROPS.get("pay.callback.console.host"), AsyncUmPayService.SYSTEM_RECHARGE_TRANSFER_ASYN.getMobileRetCallbackPath()));
+        return transferAsynRequestModel;
     }
 
-    private TransferAsynRequestModel(String orderId, String payUserId,String payAccountId, String amount, String retUrl, String notifyUrl) {
-        this.service = "transfer_asyn";
+    private TransferAsynRequestModel(String orderId, String payUserId, String payAccountId, String amount, Source source, AsyncUmPayService asyncUmPayService) {
+        super(source, asyncUmPayService);
+        this.service = asyncUmPayService.getServiceName();
         this.orderId = orderId;
         this.merDate = new SimpleDateFormat("yyyyMMdd").format(new Date());
         this.particUserId = payUserId;
         this.particAccountId = payAccountId;
         this.amount = amount;
-        this.retUrl = retUrl;
-        this.notifyUrl = notifyUrl;
+        this.notifyUrl = MessageFormat.format("{0}/{1}", CALLBACK_HOST_PROPS.get("pay.callback.back.host"), asyncUmPayService.getNotifyCallbackPath());
     }
 
     @Override

@@ -7,7 +7,7 @@ import com.tuotiansudai.paywrapper.loanout.CouponLoanOutService;
 import com.tuotiansudai.paywrapper.loanout.CouponRepayService;
 import com.tuotiansudai.paywrapper.loanout.LoanService;
 import com.tuotiansudai.paywrapper.loanout.ReferrerRewardService;
-import com.tuotiansudai.paywrapper.repository.model.UmPayService;
+import com.tuotiansudai.enums.AsyncUmPayService;
 import com.tuotiansudai.paywrapper.service.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -123,8 +123,7 @@ public class PayCallbackController {
     public ModelAndView bindBankCard(HttpServletRequest request) {
         Map<String, String> paramsMap = this.parseRequestParameters(request);
         String responseData;
-        String service = paramsMap.get("service");
-        if (UmPayService.NOTIFY_MER_BIND_CARD_APPLY.getServiceName().equals(service)) {
+        if ("mer_bind_card_apply_notify".equalsIgnoreCase(paramsMap.get("service"))) {
             responseData = this.bindBankCardService.bindBankCardApplyCallback(paramsMap, request.getQueryString());
         } else {
             responseData = this.bindBankCardService.bindBankCardCallback(paramsMap, request.getQueryString());
@@ -136,19 +135,11 @@ public class PayCallbackController {
     public ModelAndView replaceBankCard(HttpServletRequest request) {
         Map<String, String> paramsMap = this.parseRequestParameters(request);
         String responseData;
-        String service = paramsMap.get("service");
-        if (UmPayService.NOTIFY_MER_BIND_CARD_APPLY.getServiceName().equals(service)) {
+        if ("mer_bind_card_apply_notify".equalsIgnoreCase(paramsMap.get("service"))) {
             responseData = this.bindBankCardService.bindBankCardApplyCallback(paramsMap, request.getQueryString());
         } else {
             responseData = bindBankCardService.replaceBankCardCallback(paramsMap, request.getQueryString());
         }
-        return new ModelAndView("/callback_response", "content", responseData);
-    }
-
-    @RequestMapping(value = "/mer_bind_card_apply_notify", method = RequestMethod.GET)
-    public ModelAndView bindBankCardNotify(HttpServletRequest request) {
-        Map<String, String> paramsMap = this.parseRequestParameters(request);
-        String responseData = this.bindBankCardService.bindBankCardCallback(paramsMap, request.getQueryString());
         return new ModelAndView("/callback_response", "content", responseData);
     }
 
@@ -185,8 +176,8 @@ public class PayCallbackController {
         return new ModelAndView("/callback_response", "content", "");
     }
 
-    @RequestMapping(value = "/repay_payback_notify", method = RequestMethod.GET)
-    public ModelAndView repayPaybackNotify(HttpServletRequest request) {
+    @RequestMapping(value = "/normal_repay_payback_notify", method = RequestMethod.GET)
+    public ModelAndView normalRepayPaybackNotify(HttpServletRequest request) {
         Map<String, String> paramsMap = this.parseRequestParameters(request);
         try {
             String responseData = this.normalRepayService.investPaybackCallback(paramsMap, request.getQueryString());
@@ -197,7 +188,7 @@ public class PayCallbackController {
         return new ModelAndView("/callback_response", "content", "");
     }
 
-    @RequestMapping(value = "/repay_invest_fee_notify", method = RequestMethod.GET)
+    @RequestMapping(value = "/normal_repay_invest_fee_notify", method = RequestMethod.GET)
     public ModelAndView repayInvestFeeNotify(HttpServletRequest request) {
         Map<String, String> paramsMap = this.parseRequestParameters(request);
         String responseData = this.normalRepayService.investFeeCallback(paramsMap, request.getQueryString());
@@ -242,14 +233,7 @@ public class PayCallbackController {
         return new ModelAndView("/callback_response", "content", responseData);
     }
 
-    @RequestMapping(value = "/over_invest_transfer_payback_notify", method = RequestMethod.GET)
-    public ModelAndView overInvestTransferPaybackNotify(HttpServletRequest request) {
-        Map<String, String> paramsMap = this.parseRequestParameters(request);
-        String responseData = this.investTransferPurchaseService.overInvestTransferPaybackCallback(paramsMap, request.getQueryString());
-        return new ModelAndView("/callback_response", "content", responseData);
-    }
-
-    @RequestMapping(value = "/cancel_pay_back_notify", method = RequestMethod.GET)
+    @RequestMapping(value = "/loan_cancel_pay_back_notify", method = RequestMethod.GET)
     public ModelAndView cancelPayBackNotify(HttpServletRequest request) {
         Map<String, String> paramsMap = this.parseRequestParameters(request);
         String responseData = loanService.cancelPayBackCallback(paramsMap, request.getQueryString());
@@ -301,17 +285,17 @@ public class PayCallbackController {
     public ModelAndView transferReferrerReward(HttpServletRequest request) {
         logger.info("[标的放款] transfer_referrer_reward_notify start");
         Map<String, String> paramsMap = this.parseRequestParameters(request);
-        String responseData =  this.referrerRewardService.transferReferrerRewardNotify(paramsMap, request.getQueryString());
+        String responseData = this.referrerRewardService.transferReferrerRewardNotify(paramsMap, request.getQueryString());
         logger.info(MessageFormat.format("[标的放款] transfer_referrer_reward_notify end , responseData:{0}", responseData));
         return new ModelAndView("/callback_response", "content", responseData);
     }
 
-    @RequestMapping(value = "/transfer_coupon_notify", method = RequestMethod.GET)
+    @RequestMapping(value = "/red_envelope_notify", method = RequestMethod.GET)
     public ModelAndView transferRedEnvelopCallBack(HttpServletRequest request) {
-        logger.info("[标的放款] transfer_coupon_notify start");
+        logger.info("[标的放款] red_envelope_notify start");
         Map<String, String> paramsMap = this.parseRequestParameters(request);
-        String responseData =  this.couponLoanOutService.transferRedEnvelopNotify(paramsMap, request.getQueryString());
-        logger.info(MessageFormat.format("[标的放款] transfer_referrer_reward_notify end , responseData:{0}", responseData));
+        String responseData = this.couponLoanOutService.transferRedEnvelopNotify(paramsMap, request.getQueryString());
+        logger.info(MessageFormat.format("[标的放款] red_envelope_notify end , responseData:{0}", responseData));
         return new ModelAndView("/callback_response", "content", responseData);
     }
 

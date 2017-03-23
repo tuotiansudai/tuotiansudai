@@ -479,6 +479,6 @@ public class InvestServiceTest {
         investDto.setSource(Source.IOS);
         BaseDto<PayFormDataDto> baseDto = investService.invest(investDto);
         assertTrue(baseDto.getData().getStatus());
-        assertEquals(MessageFormat.format("{0}/callback/{1}", appRetUrl, "project_transfer_invest"), baseDto.getData().getFields().get("ret_url"));
+        assertEquals(MessageFormat.format("{0}/{1}", appRetUrl, "project_transfer_invest"), baseDto.getData().getFields().get("ret_url"));
     }
 }

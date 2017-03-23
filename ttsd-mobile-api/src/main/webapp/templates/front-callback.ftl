@@ -6,77 +6,93 @@
           content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
     <title>拓天速贷</title>
     <link rel="stylesheet" type="text/css" href="${staticServer}${cssPath}success.css" charset="utf-8"/>
-    <#--<link rel="stylesheet" type="text/css" href="../api/style/success.css" charset="utf-8"/>-->
 </head>
 <body>
+
 <div class="success-info-container">
     <p>
         <i class="success-icon"></i>
     </p>
-    <p>${message}</p>
-    <ul class="info-item">
-        <#if service == 'ptp_mer_bind_card'>
+    <p>${(values.message)!}</p>
+<#switch service>
+    <#case 'ptp_mer_bind_card'>
+        <ul class="info-item">
             <li>
                 <span class="info-title">开户银行</span>
-                <span class="info-text"><#if bankName??>${bankName}</#if></span>
+                <span class="info-text">${(values.bankName)!}</span>
             </li>
             <li>
                 <span class="info-title">银行卡号:</span>
-                <span class="info-text"><#if cardNumber??>${cardNumber?replace("^(\\d{4}).*(\\d{4})$","$1****$2","r")}</#if></span>
+                <span class="info-text">${values.cardNumber!}</span>
             </li>
-        <#elseif service == 'mer_recharge_person'>
+        </ul>
+        <#break>
+    <#case 'ptp_mer_replace_card'>
+        <p>换卡申请最快两小时处理完成</p>
+        <#break>
+    <#case 'mer_recharge_person'>
+        <ul class="info-item">
             <li>
-                <span class="info-title">所用卡号</span>
-                <span class="info-text"><#if bankName??>${bankName}</#if> <#if cardNumber??>${cardNumber?replace("^(\\d{4}).*(\\d{4})$","$1****$2","r")}</#if></span>
+                <span class="info-title">充值卡号</span>
+                <span class="info-text">${(values.bankName)!} ${values.cardNumber!}</span>
             </li>
             <li>
                 <span class="info-title">充值金额</span>
-                <span class="info-text">${rechargeAmount}元</span>
+                <span class="info-text">${(values.rechargeAmount)!}元</span>
             </li>
             <li>
                 <span class="info-title">订单号</span>
-                <span class="info-text">${orderId}</span>
+                <span class="info-text">${(values.orderId)!}</span>
             </li>
-        <#elseif service == 'cust_withdrawals'>
+        </ul>
+        <#break>
+    <#case 'cust_withdrawals'>
+        <ul class="info-item">
             <li>
                 <span class="info-title">到账卡号</span>
-                <span class="info-text"><#if bankName??>${bankName}</#if> <#if cardNumber??>${cardNumber?replace("^(\\d{4}).*(\\d{4})$","$1****$2","r")}</#if></span>
+                <span class="info-text">${(values.bankName)!}</span>
             </li>
             <li>
                 <span class="info-title">提取金额</span>
-                <span class="info-text">${withdrawAmount}元</span>
+                <span class="info-text">${values.withdrawAmount}元</span>
             </li>
             <li>
                 <span class="info-title">订单号</span>
-                <span class="info-text">${orderId}</span>
+                <span class="info-text">${(values.orderId)!}</span>
             </li>
-        <#elseif ["project_transfer_invest","project_transfer_transfer",
-        "project_transfer_no_password_invest","project_transfer_no_password_transfer"]?seq_contains(service)>
+        </ul>
+        <#break>
+    <#case 'invest_project_transfer'>
+    <#case 'invest_transfer_project_transfer'>
+    <#case 'invest_project_transfer_nopwd'>
+    <#case 'invest_transfer_project_transfer_nopwd'>
+        <ul class="info-item">
             <li>
                 <span class="info-title">投资金额</span>
-                <span class="info-text">${investAmount}元</span>
+                <span class="info-text">${(values.investAmount)!}元</span>
             </li>
             <li>
                 <span class="info-title">所投项目</span>
-                <span class="info-text">${investName!}</span>
+                <span class="info-text">${(values.loanName)!}</span>
             </li>
             <li>
                 <span class="info-title">项目编号</span>
-                <span class="info-text">${loanId}</span>
+                <span class="info-text">${(values.loanId)!}</span>
             </li>
-        <#elseif service == 'ptp_mer_replace_card'>
-            <li><em class="col-info text-card">${replaceCardContent!}</em></li>
-        </#if>
-    </ul>
-    <#if ["cust_withdrawals","mer_recharge_person","ptp_mer_bind_card"]?seq_contains(service)>
-        <p class="fix-nav">客服电话：400-169-1188（服务时间：9:00-20:00）</p>
-    </#if>
+        </ul>
+        <#break>
+    <#case 'membership_privilege_purchase_transfer_asyn'>
+        <p>您已成功购买增值特权</p>
+        <p>投资时将享受服务费7折优惠</p>
+    <#break>
+</#switch>
+    <p class="fix-nav">客服电话：400-169-1188（服务时间：9:00-20:00）</p>
 </div>
 <a href="${href}" class="btn-disabled" id="Btn">3s</a>
 
 <script>
     var num = 3,
-        href = document.getElementById('Btn').getAttribute('href');
+            href = document.getElementById('Btn').getAttribute('href');
     function countTime() {
         if (num == 0) {
             document.getElementById('Btn').innerHTML = '确定';

@@ -327,7 +327,6 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
 
             if (Lists.newArrayList(SyncRequestStatus.READY, SyncRequestStatus.FAILURE).contains(syncRequestStatus)) {
                 if (investRepayModel.getRepayAmount() > 0) {
-                    // transfer investor interest(callback url: advance_repay_payback_notify)
                     try {
                         ProjectTransferRequestModel repayPaybackRequest = ProjectTransferRequestModel.newAdvanceRepayPaybackRequest(String.valueOf(loanId),
                                 MessageFormat.format(REPAY_ORDER_ID_TEMPLATE, String.valueOf(investRepayModel.getId()), String.valueOf(new Date().getTime())),
@@ -370,7 +369,6 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
                 String.valueOf(loanRepayId), syncRequestStatus.name(), String.valueOf(feeAmount)));
         if (Lists.newArrayList(SyncRequestStatus.READY, SyncRequestStatus.FAILURE).contains(syncRequestStatus)) {
             if (feeAmount > 0) {
-                // transfer investor fee(callback url: advance_repay_invest_fee_notify)
                 try {
                     ProjectTransferRequestModel repayInvestFeeRequest = ProjectTransferRequestModel.newAdvanceRepayInvestFeeRequest(String.valueOf(loanId),
                             MessageFormat.format(REPAY_ORDER_ID_TEMPLATE, String.valueOf(loanRepayId), String.valueOf(new Date().getTime())),

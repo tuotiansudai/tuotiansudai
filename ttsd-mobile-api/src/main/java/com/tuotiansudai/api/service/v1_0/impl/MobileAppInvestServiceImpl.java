@@ -9,7 +9,9 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
+import com.tuotiansudai.enums.AsyncUmPayService;
 import com.tuotiansudai.exception.InvestException;
+import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.util.AmountConverter;
@@ -37,26 +39,21 @@ public class MobileAppInvestServiceImpl implements MobileAppInvestService {
     private String domainName;
 
     @Override
-    public BaseResponseDto noPasswordInvest(InvestRequestDto investRequestDto) {
-        BaseResponseDto<InvestNoPassResponseDataDto> responseDto = new BaseResponseDto<>();
-        InvestDto investDto = convertInvestDto(investRequestDto);
+    public BaseResponseDto<InvestNoPassResponseDataDto> noPasswordInvest(InvestRequestDto investRequestDto) {
         try {
+            InvestDto investDto = convertInvestDto(investRequestDto);
             BaseDto<PayDataDto> baseDto = investService.noPasswordInvest(investDto);
-            if (!baseDto.getData().getStatus()) {
-                responseDto.setCode(ReturnMessage.INVEST_FAILED.getCode());
-                responseDto.setMessage(ReturnMessage.INVEST_FAILED.getMsg() + ":" + baseDto.getData().getMessage());
 
-            } else {
-                responseDto.setCode(ReturnMessage.SUCCESS.getCode());
-                responseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
+            if (baseDto.getData().getStatus()) {
+                BaseResponseDto<InvestNoPassResponseDataDto> responseDto = new BaseResponseDto<>(ReturnMessage.SUCCESS);
+                InvestModel latestSuccessInvest = investService.findLatestSuccessInvest(investDto.getLoginName());
+                responseDto.setData(new InvestNoPassResponseDataDto(MessageFormat.format("{0}/{1}?order_id={2}", domainName, AsyncUmPayService.INVEST_PROJECT_TRANSFER_NOPWD.getMobileRetCallbackPath(), String.valueOf(latestSuccessInvest.getId()))));
+                return responseDto;
             }
-
-            responseDto.setData(new InvestNoPassResponseDataDto(MessageFormat.format("{0}/callback/project_transfer_no_password_invest?ret_code={1}&message={2}&order_id={3}&amount={4}", domainName, responseDto.getCode(), responseDto.getMessage(), investDto.getLoanId(), Long.toString(AmountConverter.convertStringToCent(investDto.getAmount())))));
-
+            return new BaseResponseDto<>(ReturnMessage.INVEST_FAILED.getCode(), ReturnMessage.INVEST_FAILED.getMsg() + ":" + baseDto.getData().getMessage());
         } catch (InvestException e) {
-            return this.convertExceptionToDto(e);
+            return new BaseResponseDto<>(ReturnMessage.ERROR.getCode(), e.getType().getDescription());
         }
-        return responseDto;
     }
 
     @Override
@@ -95,7 +92,7 @@ public class MobileAppInvestServiceImpl implements MobileAppInvestService {
                 responseDto.setMessage(ReturnMessage.INVEST_FAILED.getMsg() + ":" + formDto.getData().getMessage());
             }
         } catch (InvestException e) {
-            responseDto = convertExceptionToDto(e);
+            responseDto = new BaseResponseDto<>(ReturnMessage.ERROR.getCode(), e.getType().getDescription());
         } catch (UnsupportedEncodingException e) {
             responseDto.setCode(ReturnMessage.UMPAY_INVEST_MESSAGE_INVALID.getCode());
             responseDto.setMessage(ReturnMessage.UMPAY_INVEST_MESSAGE_INVALID.getMsg());
@@ -113,12 +110,5 @@ public class MobileAppInvestServiceImpl implements MobileAppInvestService {
         investDto.setChannel(mobileAppChannelService.obtainChannelBySource(investRequestDto.getBaseParam()));
         investDto.setUserCouponIds(investRequestDto.getUserCouponIds());
         return investDto;
-    }
-
-    private BaseResponseDto<InvestResponseDataDto> convertExceptionToDto(InvestException e) {
-        BaseResponseDto<InvestResponseDataDto> baseResponseDto = new BaseResponseDto<>();
-        baseResponseDto.setCode(ReturnMessage.ERROR.getCode());
-        baseResponseDto.setMessage(e.getType().getDescription());
-        return baseResponseDto;
     }
 }
