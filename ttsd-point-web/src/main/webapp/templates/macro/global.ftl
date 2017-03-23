@@ -110,7 +110,7 @@
 
 <script src="${js.jquerydll}" ></script>
 <script src="${js.globalFun_page!}" ></script>
-<#--<script src="${pageJavascript}" type="text/javascript" id="currentScript"></script>-->
+<script src="${pageJavascript}" type="text/javascript" id="currentScript"></script>
 <#include "../statistic.ftl" />
 </body>
 </html>

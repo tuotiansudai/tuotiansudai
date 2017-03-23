@@ -109,7 +109,7 @@
                         </#if>
 
 
-                        <p><img src="${staticServer}${virtualProduct.imageUrl}" width="160" height="100"></p>
+                        <p><img src="${staticServer}/${virtualProduct.imageUrl}" width="160" height="100"></p>
                         <p class="convert-btn">
                             <span class="name-text">${virtualProduct.name}</span>
                             <span class="price-text">
@@ -160,7 +160,7 @@
                         </p>
 
                         <p class="mater-img picture-item">
-                            <img src="${staticServer}${physicalProduct.imageUrl}" width="160" height="100"/>
+                            <img src="${staticServer}/${physicalProduct.imageUrl}" width="160" height="100"/>
                         </p>
 
                         <p class="convert-btn">

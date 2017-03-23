@@ -1,5 +1,8 @@
-// require(['jquery', 'layerWrapper','template', 'jquery.validate', 'jquery.ajax.extension'], function($, layer,tpl) {
-// 	$(function() {
+
+require('pointStyle/point_order.scss');
+let tpl = require('art-template/dist/template');
+let ValidatorObj= require('publicJs/validator');
+
 		var $pointOrder = $('#pointOrder');
 		var $exchangeTip = $('#exchangeTip');
 		var $countList = $('.order-number',$pointOrder),
@@ -213,5 +216,3 @@
 				content: $('#errorTip')
 			});
 		}
-// 	});
-// })

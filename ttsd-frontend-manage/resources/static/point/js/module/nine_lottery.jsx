@@ -6,7 +6,6 @@ define([], function () {
         tipGroupObj = {};
     //点击切换按钮
     $('.lottery-right-group').find('h3 span').on('click', function() {
-        console.log(1);
         var $this = $(this),
             index = $this.index(),
             contentCls = $(this).parent().siblings('.record-list').find('.record-item');

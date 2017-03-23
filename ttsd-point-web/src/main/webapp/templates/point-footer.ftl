@@ -9,7 +9,6 @@
         <dl class="list-normal">
             <dt>积分消费</dt>
             <dd><a href="/point-shop">积分商城</a></dd>
-            <!-- <dd><a href="/membership/lottery">积分抽奖</a></dd> -->
         </dl>
         <dl class="list-normal">
             <dt>赚取积分</dt>

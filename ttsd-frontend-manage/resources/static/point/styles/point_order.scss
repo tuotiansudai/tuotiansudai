@@ -70,7 +70,7 @@
                 margin-top: -20px;
                 margin-left: -70px;
                 cursor:pointer;
-                background:url("/point/images/add-place.png") no-repeat 5% 50%;
+                background:url("../images/add-place.png") no-repeat 5% 50%;
               }
               .address-set{
                 width:40px;
@@ -216,7 +216,7 @@
                     width: 140px;
                     height: 42px;
                     padding:36px 0;
-                    background:url("/point/images/coupon-bg.png") no-repeat center;
+                    background:url("../images/coupon-bg.png") no-repeat center;
                     background-size:100%;
                     span{
                       float:left;
@@ -235,7 +235,7 @@
                     width: 140px;
                     height: 60px;
                     padding: 27px 0;
-                    background:url("/point/images/bag-bg.png") no-repeat center;
+                    background:url("../images/bag-bg.png") no-repeat center;
                     background-size:100%;
                     span{
                       float:left;
@@ -253,7 +253,7 @@
                     width: 140px;
                     height: 42px;
                     padding: 36px 0;
-                    background: url("/point/images/jia-bg.png") no-repeat center;
+                    background: url("/../images/jia-bg.png") no-repeat center;
                     background-size:100%;
                     span {
                       float: left;
@@ -377,7 +377,7 @@
       float:left;
       width:100%;
       height:80px;
-      background:url("/point/images/bottom-img.jpg") no-repeat center;
+      background:url("../images/bottom-img.jpg") no-repeat center;
     }
     .error-tip{
       float:left;
@@ -389,7 +389,7 @@
         font-size:20px;
         text-align:center;
         color:#ff9c1b;
-        background: url("/point/images/error-tip.png") no-repeat 30% 50%;
+        background: url("../images/error-tip.png") no-repeat 30% 50%;
       }
       p{
         font-size:16px;

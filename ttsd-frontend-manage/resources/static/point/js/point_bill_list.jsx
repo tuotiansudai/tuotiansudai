@@ -1,5 +1,12 @@
-// require(['jquery', 'mustache', 'text!/tpl/point-bill-table.mustache', 'moment', 'pagination', 'layerWrapper', 'daterangepicker'], function ($, Mustache, pointBillListTemplate, moment, pagination, layer) {
-    var today = moment().format('YYYY-MM-DD'), // 今天
+require('pointStyle/point_bill.scss');
+require('publicJs/plugins/daterangepicker.scss');
+let tpl = require('art-template/dist/template');
+let moment = require('moment');
+require('webJsModule/pagination');
+require('publicJs/plugins/jquery.daterangepicker-0.0.7.js');
+
+
+var today = moment().format('YYYY-MM-DD'), // 今天
         week = moment().subtract(1, 'week').format('YYYY-MM-DD'),
         month = moment().subtract(1, 'month').format('YYYY-MM-DD'),
         sixMonths = moment().subtract(6, 'month').format('YYYY-MM-DD'),
@@ -82,4 +89,3 @@
         loadPointBillData();
         $(".date-filter .select-item").removeClass("current");
     });
-// });

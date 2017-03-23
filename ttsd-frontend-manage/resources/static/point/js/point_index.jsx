@@ -3,7 +3,6 @@ require('pointJsModule/nine_lottery');
 let tpl = require('art-template/dist/template');
 
 
-
 		var $pointContainer = $('#pointContainer');
 		var $signBtn = $('#signBtn'),
 			$signTip = $('#signLayer'),
