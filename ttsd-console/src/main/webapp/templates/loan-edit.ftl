@@ -61,7 +61,7 @@
                     <label class="col-sm-2 control-label">原借款期限（天）: </label>
 
                     <div class="col-sm-3">
-                        <input name="originalDuration" type="text" class="form-control"
+                        <input name="originalDuration" type="text" class="form-control" value="${loan.loan.originalDuration?c}"
                                datatype="/^\d+$/"
                                errormsg="原借款期限需要正确填写">
                     </div>
@@ -72,7 +72,8 @@
 
                     <div class="col-sm-3">
                         <div class='input-group date' id='deadline'>
-                            <input name="deadline" type='text' class="form-control" datatype="date"
+                            <input name="deadline" type='text' class="form-control" datatype="date" value="${(loan.loan.deadline?string('yyyy-MM-dd'))!}"
+                                   <#if !(["PREHEAT", "WAITING_VERIFY"]?seq_contains(loan.loan.status))>disabled="disabled"</#if>
                                    errormsg="借款截止时间需要正确填写"/>
                             <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-calendar"></span>
