@@ -14,7 +14,7 @@
 <body>ss
 <div id="app"></div>
 <script type="text/javascript">
-    <#--window.staticServer='${commonStaticServer}';-->
+    window.staticServer='${commonStaticServer}';
 </script>
 <script src="${js.reactdll}" ></script>
 <script src="${pageJavascript}" type="text/javascript" id="currentScript"></script>
