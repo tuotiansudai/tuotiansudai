@@ -1,9 +1,13 @@
-require('mobileJsModule/lib-flexible');
-require('mobileStyle/base.scss');
-let MediaList = require('mobileJs/page/MediaList');
-let Article = require('mobileJs/page/Article');
-let messageCenter =require('mobileJs/page/messageCenter');
-let taskCenter =require('mobileJs/page/taskCenter');
+import React from "react";
+import ReactDom from "react-dom";
+import {Route, Router, hashHistory, Redirect, IndexRoute} from "react-router";
+import injectTapEventPlugin from "react-tap-event-plugin";
+import 'mobileJsModule/lib-flexible';
+import 'mobileStyle/base.scss';
+import MediaList from 'mobileJs/page/MediaList';
+import Article from 'mobileJs/page/Article';
+import messageCenter from 'mobileJs/page/messageCenter';
+import taskCenter from 'mobileJs/page/taskCenter';
 
 injectTapEventPlugin({
     shouldRejectClick: function (lastTouchEventTimestamp, clickEventTimestamp) {

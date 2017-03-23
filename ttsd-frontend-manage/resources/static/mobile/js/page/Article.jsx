@@ -1,6 +1,10 @@
 import { main } from 'mobileStyle/Article.scss';
+import React from 'react';
 import {mobileCommon} from 'mobileJsModule/mobileCommon';
 import Praise from 'mobileJsModule/Praise';
+import IScroll from 'iscroll';
+import imagesLoaded from 'imagesloaded';
+
 
 class Article extends React.Component {
 	state = {
@@ -55,7 +59,7 @@ class Article extends React.Component {
 	}
 	render() {
 		return (
-		    <div ref="scrollWrap" className={main}>
+		    <div ref="scrollWrap" className="article-frame" >
 				<article>
 					<h1>{this.state.data.title}</h1>
 					<section className="meta">
@@ -78,4 +82,5 @@ class Article extends React.Component {
 	}
 }
 
-export default Article;
+// export default Article;
+module.exports = Article;

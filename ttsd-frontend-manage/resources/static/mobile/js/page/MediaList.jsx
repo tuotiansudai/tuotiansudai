@@ -1,7 +1,16 @@
-import { main, spinner } from 'mobileStyle/MediaList.scss';
+import 'mobileStyle/MediaList.scss';
+
+import React from 'react';
+import { hashHistory } from 'react-router';
+import IScroll from 'iscroll';
+import imagesLoaded from 'imagesloaded';
+import classNames from 'classnames';
+import Immutable from 'seamless-immutable';
+import shallowCompare from 'react-addons-shallow-compare';
 import {mobileCommon} from 'mobileJsModule/mobileCommon';
 import Praise from 'mobileJsModule/Praise';
 import Carousel from 'mobileJsModule/Carousel';
+
 
 const pageSize = 10;
 const data = {
@@ -155,7 +164,7 @@ class MediaList extends React.Component {
 			loading = <li style={{textAlign: 'center', fontSize: 50}}><i className={spinner + ' fa fa-spinner'} aria-hidden="true"></i></li>;
 		}
 		return (
-			<section className={main}>
+			<section className='media-center-frame'>
 				<div className="banner" ref="banner">
 					<Carousel data={this.state.bannerData} />
 				</div>
@@ -192,5 +201,5 @@ class MediaList extends React.Component {
 		);
 	}
 }
-
-export default MediaList;
+module.exports = MediaList;
+// export default MediaList;

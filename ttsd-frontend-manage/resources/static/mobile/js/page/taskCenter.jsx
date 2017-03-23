@@ -1,8 +1,13 @@
-import { main ,spinner } from 'mobileStyle/taskCenter.scss';
+import React from 'react';
+import IScroll from 'iscroll/build/iscroll-probe';
+import imagesLoaded from 'imagesloaded';
+import classNames from 'classnames';
+import 'mobileStyle/taskCenter.scss';
 import {mobileCommon} from 'mobileJsModule/mobileCommon';
 import titleOne from 'mobileImages/title-one.png';
 import titleTwo from 'mobileImages/title-two.png';
 import task_banner from 'mobileImages/task-banner.png';
+
 
 const pageSize = 10;
 const MenuData = {
@@ -28,10 +33,10 @@ class ButtonStatus extends React.Component {
         let description=this.props.description;
 
         if(!isComplete) {
-            button=<a className={description? 'TaskItemBtn' : 'TaskItemBtn column-one'} url={url} onTouchTap={this.jumpToWhere.bind(this)} data-value={value} data-url={url} >去完成</a>;
+            button=<a className="btn-action" onTouchTap={this.jumpToWhere.bind(this)} data-value={value} data-url={url} >去完成</a>;
         }
         else  {
-           button=<button className={description? 'TaskItemCompleteBtn' : 'TaskItemCompleteBtn column-one'}  disabled>已完成</button>;
+           button=<a href="javascript:void(0)" className="btn-action disabled">已完成</a>;
         }
         return button;
     }
@@ -46,31 +51,28 @@ class NewbieTaskGroup extends React.Component {
         let rows=[];
         let jumto=this.props.jumpToEvent;
         let keyNum;
+        // debugger
         if(newbieTasks) {
             newbieTasks.forEach(function(option,key) {
             keyNum=key+1;
-            rows.push(<div className={option.completed ? 'TaskItemNewbie completed-tasks' : 'TaskItemNewbie'} key={key} >
-                        <div className="SerialNum" >0{keyNum}</div>
-                            <div className="TaskContent">
-                            <div className="TaskItemTitle">{option.title}</div>
-                            <div className="TaskAdvanceReward"> 奖励 {option.point} 积分</div>
-                            <div className="TaskItemDes" dangerouslySetInnerHTML={{__html: option.description}} ></div>
-                            <div className="TaskItemLine"></div>
-                        </div>
-                        <ButtonStatus stocked={option.completed} description={option.description} value={option.number} location={option.url} />
-                   </div>);
+            rows.push(<li className={option.completed ? 'completed' : 'working'}  key={key}>
+                        <i className="serial">0{keyNum}</i>
+                         <span className="detail">
+                            <b>{option.title}</b>
+                             <em className="reward">奖励 {option.point} 积分</em>
+                             <i className="info" dangerouslySetInnerHTML={{__html: option.description}}></i>
+                        </span>
+                    <ButtonStatus stocked={option.completed} description={option.description} value={option.number} location={option.url} />
+                </li>);
             });
             return (
-                <div className="NewbieTaskGroup">
-                    <div className="HeaderGroup">
-                    <img src={titleOne} />
-                </div>
-                    <div className="scroll-wrap clearfix">
-                    {rows}
-                    </div>
+                <div className="task-box">
+                    <div className="title-newer"></div>
+                    <ul className="task-list">
+                        {rows}
+                    </ul>
                 </div>
             );
-
         }
         else {
             return (<div></div>);
@@ -85,29 +87,22 @@ class AdvanceTaskGroup extends React.Component {
         if(AdvanceData) {
             AdvanceData.forEach(function(option,key) {
                 let keyNum=key+1;
-            rows.push(<div className="TaskItemNewbie" key={key}>
-
-                    <div className="TaskAdvanceContent">
-                        <div className="TaskAdvanceRewardGroup">
-                            <div className="TaskAdvanceItemTitle">{option.title}</div>
-                            <div className="TaskAdvanceReward"> 奖励 {option.point} 积分</div>
-                        </div>
-                        <div className="TaskAdvanceItemDes" dangerouslySetInnerHTML={{__html: option.description}} data-hyb="xxx" aria-ybs="true"></div>
-                    </div>
-                    <ButtonStatus stocked={option.completed} description={option.description} value={option.number} location={option.url} />
-                </div>);
+            rows.push(<li className="advance-task" key={key}>
+                        <span className="detail">
+                            <b>{option.title}</b>
+                             <em className="reward">奖励 {option.point} 积分</em>
+                             <i className="info" dangerouslySetInnerHTML={{__html: option.description}}></i>
+                        </span>
+                        <ButtonStatus stocked={option.completed} description={option.description} value={option.number} location={option.url} />
+                 </li>);
         });
 
         return (
-            <div className="AdvanceTaskGroup">
-                <div className="HeaderGroup" ref="HeaderGroup">
-                <img src={titleTwo} />
-            </div>
-
-                <div className="scroll-wrap clearfix">
-               {rows}
-            </div>
-            
+            <div className="task-box">
+                <div className="title-finished"></div>
+                <ul className="task-list">
+                    {rows}
+                </ul>
             </div>
             );
         }
@@ -117,9 +112,7 @@ class AdvanceTaskGroup extends React.Component {
     };
 }
 
-
 class taskCenter extends React.Component {
-
         state = {
             active: MenuData.tabHeader[0].value,
             isShowLoading: true,
@@ -257,9 +250,7 @@ class taskCenter extends React.Component {
                     }
                 }
             });
-
         }
-
     }
 
 	componentWillUnmount() {
@@ -268,10 +259,10 @@ class taskCenter extends React.Component {
 	render() { 
         let loading = null;
   		return (
-			<div className={main} >
+			<div className="task-center-frame" >
                 <div className="bodyCon" ref='mainConWrap'>
                 <div className="clearfix">
-                    <div className="imageTopHead" id="imageTopHead" ref="imageTopHead">
+                    <div className="image-top-head" id="imageTopHead" ref="imageTopHead">
                         <img src={task_banner}/>
                     </div>
                     <div className={classNames({'MenuBox': true})} ref="tabHeader" id="tabHeaderDom">
@@ -285,15 +276,14 @@ class taskCenter extends React.Component {
                             })}
                         </ul>
                     </div>
-    			<div className="ContentBox" ref="scrollWrap">
+    			<div className="content-box" ref="scrollWrap">
     			     <div id="OngoingBox" className="OngoingBox clearfix" >
-                {loading}
-    			<NewbieTaskGroup data={this.state.listData.newbieTasks} jumpToEvent={this.jumpTo} />
-
-    			<AdvanceTaskGroup data={this.state.listData.advancedTasks} jumpToEvent={this.jumpTo} />
+                    {loading}
+    			    <NewbieTaskGroup data={this.state.listData.newbieTasks} jumpToEvent={this.jumpTo} />
+    			    <AdvanceTaskGroup data={this.state.listData.advancedTasks} jumpToEvent={this.jumpTo} />
                 
     			     </div>
-                     </div>
+                  </div>
     			</div>
                 </div>
 			</div>	    
@@ -303,7 +293,9 @@ class taskCenter extends React.Component {
         }
 	}
 }
-export default taskCenter;
+
+module.exports = taskCenter;
+// export default taskCenter;
 
 
 

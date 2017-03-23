@@ -1,9 +1,8 @@
-.main {
+.article-frame {
 	position: absolute;
 	width: 100%;
 	height: 100%;
 	overflow: hidden;
-	:global {
 		.back-link{
 			position: fixed;
 			top:30px;/*px*/
@@ -62,5 +61,4 @@
 				color: #103d70;
 			}
 		}
-	}
 }

@@ -1,3 +1,4 @@
+import React from 'react';
 import {mobileCommon} from "mobileJsModule/mobileCommon";
 
 class Praise extends React.Component {

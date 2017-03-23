@@ -9,6 +9,9 @@ div,p,form,html,dt
 ,header,footer,nav,article,hgroup,section,figcaption,aside,map,dt,details,figure{display:block;}
 audio,canvas,video {display:inline-block;*display:inline;*zoom:1;}
 
+i {
+    font-style: normal;
+}
 * {
     box-sizing: border-box;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
@@ -43,4 +46,16 @@ img {
 .clearfix:after {
     clear: both;
 }
+
+.clearfix:after,.clearfix:before,
+.clear:after,.clear:before{
+    content: ".";
+    display: block;
+    clear: both;
+    visibility: hidden;
+    line-height: 0;
+    height: 0;
+    font-size:0;
+}
+
 

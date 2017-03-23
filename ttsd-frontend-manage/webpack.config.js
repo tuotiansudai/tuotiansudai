@@ -155,10 +155,10 @@ plugins.push(new webpack.DllReferencePlugin({
 	context: __dirname,
 	manifest: require(publicPathJS+'/dllplugins/jquery-manifest.json')
 }));
-plugins.push(new webpack.DllReferencePlugin({
-	context: __dirname,
-	manifest: require(publicPathJS+'/dllplugins/react-manifest.json')
-}));
+// plugins.push(new webpack.DllReferencePlugin({
+// 	context: __dirname,
+// 	manifest: require(publicPathJS+'/dllplugins/react-manifest.json')
+// }));
 
 function createHappyPlugin(id, loaders) {
 	return new HappyPack({

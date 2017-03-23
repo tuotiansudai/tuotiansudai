@@ -1,117 +1,81 @@
-.main {
-    margin: 0;
-    background-color: #ffefaf;
-    height: auto;
-    overflow: auto;
-    :global { 
-        .clearfix:after,.clearfix:before,
-        .clear:after,.clear:before{
-          content: ".";
-          display: block;
-          clear: both;
-          visibility: hidden;
-          line-height: 0;
-          height: 0;
-          font-size:0;
+.task-center-frame {
+    background: #ffefaf;
+    .bodyCon {
+        height:auto;
+        overflow: auto;
+        transform:translate3d(0,0,0);
+    }
+    .loading {
+        text-align:center;
+        font-size:30px;
+        i { color:#fff;}
+    }
+    .title-newer {
+        height:60px;
+        background: url('../images/title-one.png') center center no-repeat;
+        background-size: 100%;
+        margin-bottom:20px;
+    }
+    .title-finished {
+        height:60px;
+        background: url('../images/title-two.png') center center no-repeat;
+        background-size: 100%;
+        margin-bottom:20px;
+    }
+    .image-top-head {
+        width: 100%;
+        img {
+            width: 100%;
         }
-        .bodyCon {
+    }
+    .MenuBox {
+        width:50%;
+        z-index:100;
+        height: 90px; /*px*/
+        line-height: 90px;/*px*/
+        margin: 0 auto;
+    }
+    .MenuBox ul {
+        border-radius: 5px;
+        height: 100%;
+        width:100%;
+        margin: 0px auto;
+    }
+    .MenuBox ul .MenuBoxItemNormal {
+        float: left;
+        display: block;
+        cursor: pointer;
+        width: 50%;
+        height:100%;
+        text-align: center;
+        color: #808080;
+        background-color: #fff;
+        font-size: 26px;  /*px*/
+        font-style: normal;
+        &.active {
+            color: #ff473c;
+            border-bottom:1px solid #ff473c;  /*px*/
+        }
+        -webkit-transform: translate3d(0, 0, 0);
+    }
+    .content-box {
+        margin:0 20px;
+    }
+    .task-box {
+        margin-top:0.5rem;
+    }
+
+    .task-list {
+        li {
+            position: relative;
             height:auto;
             overflow: auto;
-            transform:translate3d(0,0,0);
-        }
-        
-        .loading {
-            text-align:center;
-            font-size:30px;
-            i { color:#fff;}
-        }
-        div {
-            font-size: 20px; /*px*/
-            text-align: center;
-        }
-        p {
-            font-size: 13px;
-            color: #0f3d70;
-            text-indent: 2em;
-            line-height: 20px;
             text-align: left;
-        }
-        .imageTopHead {
-            width: 100%;
-          img {
-            width: 100%;
-          }
-        }
-        .MenuBox {
-            width:50%;
-            z-index:100;
-            height: 90px; /*px*/
-            line-height: 90px;/*px*/
-            margin: 0 auto;
-        }
-        .MenuBox ul {
-            border-radius: 5px;
-            height: 100%;
-            width:100%;
-            margin: 0px auto;
-        }
-        .MenuBox ul .MenuBoxItemNormal {
-            float: left;
-            display: block;
-            cursor: pointer;
-            width: 50%;
-            height:100%;
-            text-align: center;
-            color: #808080;
-            background-color: #fff;
-            font-size: 26px;  /*px*/
-            font-style: normal;
-            &.active {
-                color: #ff473c;
-                border-bottom:1px solid #ff473c;  /*px*/
-            }
-            -webkit-transform: translate3d(0, 0, 0);
-        }
-        .ContentBox {
-            height: auto;
-            overflow: auto;
-            margin-left: 3%;
-            margin-right: 3%;
-        }
-
-        .HeaderGroup {
-            margin-top: 40px;
+            background: #fff;
+            border-radius: 20px;
             margin-bottom: 20px;
-            border-radius: 15px;
-            font-style: normal;
-            -webkit-transform: translate3d(0, 0, 0);
-        }
 
-        .HeaderTitle {
-            color: #ffffff;
-            font-size: 28px; /*px*/
-            background-color: #ff5959;
-            margin-bottom: 30px;
-            padding: 15px 18px;
-            border-radius: 0.5rem;
-            margin-left: 15px;
-            margin-right: 15px;
-        }
-
-        .TaskItemNewbie {
-            -webkit-transform: translate3d(0, 0, 0);
-            width: 100%;
-            margin-top: 10px;
-            margin-bottom: 20px;
-            background-color: #ffffff;
-            border-radius: 15px;
-            color: #ffffff;
-            font-size: 16px;
-            position:relative;
-            height:auto;
-            overflow:auto;
-            
-            .SerialNum {
+            .serial {
                 position: absolute;
                 top:0;
                 left:0;
@@ -119,20 +83,60 @@
                 height:70px;/*px*/
                 color: #fff;
                 font-size: 36px; /*px*/
-                background:#ff635a;
+
                 border-bottom-right-radius: 70px;/*px*/
                 text-align: left;
                 padding-left: 10px;/*px*/
                 box-sizing: border-box;
             }
-            &.completed-tasks {
-                .SerialNum {
+            &.completed {
+                .serial {
                     background:#e5e5e5;
                 }
             }
-
-             .TaskItemBtn,.TaskItemCompleteBtn {
-              
+            &.working {
+                .serial {
+                    background:#ff635a;
+                }
+            }
+            .detail {
+                display: inline-block;
+                padding: 0.2rem 0 0.2rem 1rem;
+                color: #999;
+                text-align: left;
+                font-size: 26px; /*px*/
+                b {
+                    font-size: 32px; /*px*/
+                    display: block;
+                    color: #525252;
+                }
+                em.reward {
+                    color: #ffcc00;
+                    font-size: 24px; /*px*/
+                    text-align: left;
+                    margin:15px 0;/*px*/
+                    border:1px solid #ffcc00;
+                    border-radius:20px;/*px*/
+                    padding:3px 15px 3px 50px;/*px*/
+                    display: block;
+                    background: url('../images/money-icon.png') left top no-repeat;
+                    background-size: contain;
+                    span{
+                        color:#ff635a;
+                    }
+                    img{
+                        vertical-align: middle;
+                        margin-right:5px;/*px*/
+                        margin-bottom: 4px;/*px*/
+                    }
+                }
+            }
+            &.advance-task {
+                .detail {
+                    padding-left:0.4rem;
+                }
+            }
+            .btn-action {
                 display: inline-block;
                 width: 150px;
                 height: 70px;
@@ -143,143 +147,15 @@
                 color: #fff;
                 font-style: normal;
                 position:absolute;
-                right:10px;
-                top:50%;
-                margin-top:-35px;/*px*/
-                 border:0px;
-            }
-
-        .TaskItemCompleteBtn {
-        
-            background-color: #cccccc;
-        }
-
-        }
-
-        .TaskContent {
-            width: 64%;
-            float: left;
-            display: block;
-            margin-left:70px;/*px*/
-            text-align: left;
-            margin-top: 25px; /*px*/
-            margin-bottom: 15px;  /*px*/
-        }
-
-        .TaskItemTitle {
-            text-align: left;
-            font-size: 32px; /*px*/
-            color:#525252;
-        }
-
-        .TaskItemDes {
-            text-align: left;
-            font-size: 26px; /*px*/
-            margin-bottom: 10px;
-            color:#999;
-        }
-
-        .TaskRewardGroup {
-            width:100%;
-            display:inline-block;
-            text-align: left;
-            margin-top: 5px;
-        }
-
-        .TaskReward {
-            float: left;
-            display: inline-block;
-            color: #ffcc00;
-            font-size: 24px; /*px*/
-            text-align: left;
-            margin-top: 5px;
-            margin-bottom: 10px;
-            margin-left: 10px;
-            border:1px solid #ffcc00;
-            border-radius:20px;/*px*/
-            padding:0 5px;/*px*/
-            span{
-                color:#ff635a;
-            }
-            img{
-                vertical-align: middle;
-                margin-right:5px;/*px*/
-                margin-bottom: 4px;/*px*/
-            }
-        }
-        
-        .TaskBeanImg {
-            width: 30px;
-            height: 26px;
-            margin-top: 3px;
-            margin-left: 5px;
-        }
-
-        .TaskAdvanceRewardGroup {
-            float: left;
-            width:100%;
-            display: block;
-            text-align: left;
-        }
-
-        .TaskAdvanceContent {
-            margin-top: 25px; /*px*/
-            margin-bottom: 15px;  /*px*/
-
-            width: 64%;
-            float: left;
-            display: block;
-            margin-left:70px;/*px*/
-        }
-
-        .TaskAdvanceItemTitle {
-            text-align: left;
-            font-size: 30px; /*px*/
-            color: #000;
-        }
-
-        .TaskAdvanceReward {
-            color: #ffcc00;
-            font-size: 24px; /*px*/
-            text-align: left;
-            margin:15px 0;/*px*/
-            border:1px solid #ffcc00;
-            border-radius:20px;/*px*/
-            padding:3px 15px 3px 50px;/*px*/
-            display: inline-block;
-            background: url('../images/money-icon.png') left top no-repeat;
-            background-size: contain;
-            span{
-                color:#ff635a;
-            }
-            img{
-                vertical-align: middle;
-                margin-right:5px;/*px*/
-                margin-bottom: 4px;/*px*/
+                right: 20px;
+                top: 30%;
+                border:0px;
+                text-align: center;
+                &.disabled {
+                    background-color: #cccccc;
+                }
             }
         }
 
-        .TaskAdvanceBeanImg {
-            float: left;
-            display: inline-block;
-            width: 40px;
-            height: 34px;
-            margin-top: 5%;
-            margin-left: 6px;
-        }
-
-        .TaskAdvanceItemDes {
-            float: left;
-            width: 100%;
-            text-align: left;
-            font-size: 26px;  /*px*/
-            margin-bottom: 15px;
-            color: #999;
-        }
     }
-
-
 }
-
-
-        
