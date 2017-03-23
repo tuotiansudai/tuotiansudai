@@ -71,7 +71,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">借款期限（天）: </label>
+                    <label class="col-sm-2 control-label">映射旧版本期限（天）: </label>
 
                     <div class="col-sm-2">
                         <select name="productType" class="selectpicker">
