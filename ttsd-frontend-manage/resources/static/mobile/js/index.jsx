@@ -1,5 +1,6 @@
-import "mobileJs/components/lib-flexible";
-import "mobileStyle/base.scss";
-import {MediaList} from "mobileJs/components/MediaList"
+require('mobileJsModule/lib-flexible');
+require('mobileStyle/base.scss');
+require('mobileJs/page/MediaList');
+
 
 

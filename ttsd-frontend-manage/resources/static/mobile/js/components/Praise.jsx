@@ -1,5 +1,4 @@
-// import React from 'react';
-import ajax from "mobileJs/components/ajax";
+import {mobileCommon} from "mobileJsModule/mobileCommon";
 
 class Praise extends React.Component {
 	static defaultProps = {

@@ -1,9 +1,5 @@
 import { main } from "mobileStyle/messageCenter.scss";
-// import React from "react";
-// import IScroll from "iscroll";
-// import imagesLoaded from "imagesloaded";
-import changeTitle from 'mobileJs/components/changeTitle';
-import ajax from "mobileJs/components/ajax";
+import {mobileCommon} from 'mobileJsModule/mobileCommon';
 
 class messageCenter extends React.Component {
     state = {
@@ -25,8 +21,8 @@ class messageCenter extends React.Component {
     }
 
     componentDidMount() {
-        changeTitle('消息中心');
-        ajax({
+        mobileCommon.changeTitle('消息中心');
+        mobileCommon.ajax({
             url: `/message-center/userMessage/${this.props.params.id}`,
             type: 'get',
             done: function (data) {

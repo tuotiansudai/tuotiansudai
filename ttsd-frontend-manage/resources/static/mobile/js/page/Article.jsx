@@ -1,10 +1,6 @@
 import { main } from 'mobileStyle/Article.scss';
-// import React from 'react';
-import changeTitle from 'mobileJs/components/changeTitle';
-// import IScroll from 'iscroll';
-// import imagesLoaded from 'imagesloaded';
-import Praise from 'mobileJs/components/Praise';
-import ajax from 'mobileJs/components/ajax';
+import {mobileCommon} from 'mobileJsModule/mobileCommon';
+import Praise from 'mobileJsModule/Praise';
 
 class Article extends React.Component {
 	state = {
@@ -31,8 +27,8 @@ class Article extends React.Component {
 		}
 	}
 	componentDidMount() {
-		changeTitle('文章详情');
-		ajax({
+		mobileCommon.changeTitle('文章详情');
+		mobileCommon.ajax({
 			url: `/media-center/article-detail/${this.props.params.id}`,
 			type: 'get',
 			done: function(data) {

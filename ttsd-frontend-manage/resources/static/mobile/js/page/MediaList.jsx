@@ -1,8 +1,7 @@
 import { main, spinner } from 'mobileStyle/MediaList.scss';
-import changeTitle from 'mobileJs/components/changeTitle';
-import Praise from 'mobileJs/components/Praise';
-import ajax from 'mobileJs/components/ajax';
-import Carousel from 'mobileJs/components/Carousel';
+import {mobileCommon} from 'mobileJsModule/mobileCommon';
+import Praise from 'mobileJsModule/Praise';
+import Carousel from 'mobileJsModule/Carousel';
 
 const pageSize = 10;
 const data = {
@@ -44,7 +43,7 @@ class MediaList extends React.Component {
 		if (section === 'ALL') {
 			delete sendData.section;
 		}
-		ajax({
+		mobileCommon.ajax({
 			url: '/media-center/article-list',
 			data: sendData,
 			done: callback
@@ -88,7 +87,7 @@ class MediaList extends React.Component {
 		})
 	}
 	componentDidMount() {
-		changeTitle('媒体中心');
+		mobileCommon.changeTitle('媒体中心');
 		let isComplete = 0;
 		let listData = [];
 		let bannerData = [];
@@ -108,7 +107,7 @@ class MediaList extends React.Component {
 			listData = response.data.articleList;
 			fn(++isComplete);
 		});
-		ajax({
+		mobileCommon.ajax({
 			url: '/media-center/banner',
 			done: function(response) {
 				bannerData = response.data.articleList.map((value) => {

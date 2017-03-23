@@ -1,4 +1,6 @@
-let ajax = function(json) {
+ let mobileCommon={};
+
+ mobileCommon.ajax = function(json) {
 	let opt = {
 		"url": "",  //发生的链接地址
 		"done": function() {}, //成功后执行的方法
@@ -59,4 +61,20 @@ let ajax = function(json) {
 	}
 };
 
-export default ajax;
+ mobileCommon.changeTitle=function(title){
+	 let body = document.getElementsByTagName('body')[0];
+	 document.title = title;
+	 let iframe = document.createElement("iframe");
+	 iframe.style.display = 'none';
+	 iframe.setAttribute("src", "");
+	 let fn = function() {
+		 setTimeout(function() {
+			 iframe.removeEventListener('load', fn);
+			 document.body.removeChild(iframe);
+		 }, 0);
+	 };
+	 iframe.addEventListener('load', fn);
+	 document.body.appendChild(iframe);
+ }
+
+export {mobileCommon};

@@ -1,10 +1,5 @@
 import { main ,spinner } from 'mobileStyle/taskCenter.scss';
-// import React from 'react';
-import changeTitle from 'mobileJs/components/changeTitle';
-import ajax from "mobileJs/components/ajax";
-// import IScroll from 'iscroll/build/iscroll-probe';
-// import imagesLoaded from 'imagesloaded';
-// import classNames from 'classnames';
+import {mobileCommon} from 'mobileJsModule/mobileCommon';
 import titleOne from 'mobileImages/title-one.png';
 import titleTwo from 'mobileImages/title-two.png';
 import task_banner from 'mobileImages/task-banner.png';
@@ -142,7 +137,7 @@ class taskCenter extends React.Component {
     }
    
     fetchData(url , callback = function() {}) {
-        ajax({
+        mobileCommon.ajax({
             url: url,
             type: 'get',
             done: callback
@@ -212,7 +207,7 @@ class taskCenter extends React.Component {
         }  
 
 	componentDidMount() {
-		changeTitle('任务中心');
+        mobileCommon.changeTitle('任务中心');
 		let isComplete = 0;
         let listData = [];
         

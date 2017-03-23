@@ -218,9 +218,9 @@ var myObject = objectAssign(commonOptions, {
 			pointStyle:path.join(pointPath, 'styles'),
 
 			mobileJs:path.join(mobilePath, 'js'),
+			mobileJsModule:path.join(mobilePath, 'js/components'),
 			mobileStyle:path.join(mobilePath, 'styles'),
-			mobileImages:path.join(mobilePath, 'images'),
-
+			mobileImages:path.join(mobilePath, 'images')
 		}
 	},
 	postcss: function() {
