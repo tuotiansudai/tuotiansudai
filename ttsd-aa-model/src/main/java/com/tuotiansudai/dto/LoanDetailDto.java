@@ -70,6 +70,8 @@ public class LoanDetailDto extends BaseDataDto {
 
     private Map<String, String> pledgeEnterpriseDetail;
 
+    private Map<String, String> enterpriseInfo;
+
     private String declaration;
 
     private String basicInfo;
@@ -243,6 +245,14 @@ public class LoanDetailDto extends BaseDataDto {
 
     public Map<String, String> getPledgeEnterpriseDetail() {
         return pledgeEnterpriseDetail;
+    }
+
+    public Map<String, String> getEnterpriseInfo() {
+        return enterpriseInfo;
+    }
+
+    public void setEnterpriseInfo(Map<String, String> enterpriseInfo) {
+        this.enterpriseInfo = enterpriseInfo;
     }
 
     public void setPledgeEnterpriseDetail(Map<String, String> pledgeEnterpriseDetail) {

@@ -381,6 +381,40 @@
                             </div>
                         </#if>
 
+                        <#if loan.pledgeType == "ENTERPRISE_FACTORING">
+                            <div class="subtitle">
+                                <h3>借款企业基本信息</h3>
+                            </div>
+                            <div class="container-fluid list-block clearfix">
+                                <div class="row">
+                                    <#if loan.enterpriseInfo??>
+                                        <#list ['借款企业名称', '借款企业营业地址', '借款用途','保理公司名称','保理公司简介'] as key>
+                                            <#if loan.enterpriseInfo[key]?? && loan.enterpriseInfo[key] != ''>
+                                                <div class="col-md-4">${key}：${loan.enterpriseInfo[key]}</div>
+                                            </#if>
+                                        </#list>
+                                    </#if>
+                                </div>
+                            </div>
+                        </#if>
+
+                        <#if loan.pledgeType == "ENTERPRISE_BILL">
+                            <div class="subtitle">
+                                <h3>借款企业基本信息</h3>
+                            </div>
+                            <div class="container-fluid list-block clearfix">
+                                <div class="row">
+                                    <#if loan.enterpriseInfo??>
+                                        <#list ['借款企业名称', '借款企业营业地址', '借款用途'] as key>
+                                            <#if loan.enterpriseInfo[key]?? && loan.enterpriseInfo[key] != ''>
+                                                <div class="col-md-4">${key}：${loan.enterpriseInfo[key]}</div>
+                                            </#if>
+                                        </#list>
+                                    </#if>
+                                </div>
+                            </div>
+                        </#if>
+
                         <div class="subtitle">
                             <h3>风控审核</h3>
                         </div>
