@@ -79,7 +79,7 @@ public class LoanController {
         }
         ModelAndView modelAndView = new ModelAndView("/loan-edit");
         modelAndView.addObject("productTypes", Lists.newArrayList(Lists.newArrayList(ProductType._30, ProductType._90, ProductType._180, ProductType._360)));
-        modelAndView.addObject("loanTypes", Lists.newArrayList(INVEST_INTEREST_MONTHLY_REPAY, INVEST_INTEREST_LUMP_SUM_REPAY));
+        modelAndView.addObject("loanTypes", LoanType.values());
         modelAndView.addObject("activityTypes", Lists.newArrayList(ActivityType.NORMAL, ActivityType.NEWBIE));
         modelAndView.addObject("extraSources", Lists.newArrayList(Source.WEB, Source.MOBILE));
         modelAndView.addObject("loan", consoleLoanCreateService.getEditLoanDetails(loanId));

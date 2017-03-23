@@ -76,7 +76,7 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="title">项目期限</div>
-                                <div class="number">${loan.duration}<span>天</span></div>
+                                <div class="number"><span>最长</span>${loan.duration}<span>天</span></div>
                             </div>
                             <div class="col-md-4">
                                 <div class="title">项目金额</div>
