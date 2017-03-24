@@ -1,34 +1,50 @@
 require(['jquery', 'layerWrapper','template', 'jquery.validate', 'jquery.ajax.extension'], function($, layer,tpl) {
 	$(function() {
-		var $countList = $('.order-number'),
+		var $pointOrder = $('#pointOrder');
+		var $exchangeTip = $('#exchangeTip');
+		var $countList = $('.order-number',$pointOrder),
 			$numText = $countList.find('.num-text'),
-			$bigText = $countList.find('.total-num i'),
+			currentNum=parseInt($numText.val()), //目前已选商品的个数
 			$orderBtn = $('#orderBtn'),
 			$addPlace = $('#addPlace'),
 			$updatePlace = $('#updatePlace'),
 			$addressForm = $('#addressForm');
 
-		$countList.on('click', '.low-btn', function(event) { //减号
-			event.preventDefault();
-			if ($bigText.text() > 0) {
-				$numText.val() > 1 ? $numText.val(function(index, num) {
-					return parseInt(num) - 1
-				}) && changeCount() : $numText.val('1');
+		//该用户总共可以兑换商品的数量
+		var myLimit = parseInt($countList.data('mylimit'));
+		//该用户本月已兑换的数量
+		var buyCount = parseInt($countList.data('buycount'));
+		//本月该用户剩下能兑换的数量
+		var myRest = myLimit-buyCount;
+		$exchangeTip.find('i').text(myRest);
+		if(myRest==0) {
+			$orderBtn.prop('disabled',true);
+		}
+
+		$countList.on('click',function(event) {
+			var target = event.target;
+			var overplus = parseInt($countList.data('overplus'));  //剩余商品的数量
+
+			var compareNum = (myRest==0) ? overplus :Math.min(overplus,myRest);
+			currentNum=parseInt($numText.val());
+			if(overplus<1) {
+				return;
 			}
-		}).on('click', '.add-btn', function(event) { //加号
-			event.preventDefault();
-			if ($bigText.text() > 0) {
-				$numText.val() < parseInt($bigText.text()) ? $numText.val(function(index, num) {
-					return parseInt(num) + 1
-				}) && changeCount() : $numText.val($bigText.text());
+			//点击减少－
+			if(/low-btn/.test(target.className) && currentNum>1) {
+				$numText.val(--currentNum);
+
+			} else if(/add-btn/.test(target.className) && currentNum < compareNum) {
+				$numText.val(++currentNum);
 			}
+			changeCount();
 		});
+
 		changeCount();
 
 		function changeCount() {
-			$('.count-num').each(function(index, el) {
-				$(this).text(parseInt($(this).attr('data-num')) * parseInt($numText.val()));
-			});
+			var totalPoint = parseInt($('.count-num',$pointOrder).data('num')) * currentNum;
+			$('.count-num',$pointOrder).text(totalPoint);
 		}
 
 		$orderBtn.on('click', function(event) { //立即兑换

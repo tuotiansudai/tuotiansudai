@@ -109,6 +109,18 @@ else if(NODE_ENV=='dev') {
 
 	//开发环境
 	plugins.push(new webpack.HotModuleReplacementPlugin());
+
+	// 接口代理
+	var proxyList = ['/media-center/*'];
+	var proxyObj = {};
+	proxyList.forEach(function(value) {
+		proxyObj[value] = {
+			target: 'http://localhost:3009',
+			changeOrigin: true,
+			secure: false
+		};
+	});
+
 	webpackdevServer={
 		contentBase: basePath,
 		historyApiFallback: true,
@@ -121,12 +133,12 @@ else if(NODE_ENV=='dev') {
 		stats: {
 			chunks: false,
 			colors: true
-		}
+		},
+		proxy:proxyObj
 		// proxy: {
-		// 	'*': {
+		// 	"/media-center/*": {
 		// 		secure: false,
-		// 		changeOrigin: true,
-		// 		target: 'http://localhost:8080/'
+		// 		target: 'http://localhost:3009'
 		// 	}
 		// }
 	};
@@ -194,7 +206,7 @@ var myObject = objectAssign(commonOptions, {
 			loader: ExtractTextPlugin.extract("style", "happypack/loader?id=sass")
 		},{
 			test: /\.(png|jpg|gif|woff|woff2)$/,
-			loader: 'url-loader?limit=5120&name=images/[name].[hash:8].[ext]'
+			loader: 'url-loader?limit=3072&name=images/[name].[hash:8].[ext]'
 		}]
 	},
 	resolve: {
