@@ -4,12 +4,8 @@ import imagesLoaded from 'imagesloaded';
 import classNames from 'classnames';
 import 'mobileStyle/taskCenter.scss';
 import {mobileCommon} from 'mobileJsModule/mobileCommon';
-import titleOne from 'mobileImages/title-one.png';
-import titleTwo from 'mobileImages/title-two.png';
 import task_banner from 'mobileImages/task-banner.png';
 
-
-const pageSize = 10;
 const MenuData = {
     tabHeader: [{
         label: '进行中',
@@ -77,7 +73,6 @@ class NewbieTaskGroup extends React.Component {
         else {
             return (<div></div>);
         }
-
     }
 }
 class AdvanceTaskGroup extends React.Component {
@@ -86,7 +81,6 @@ class AdvanceTaskGroup extends React.Component {
         let rows=[];
         if(AdvanceData) {
             AdvanceData.forEach(function(option,key) {
-                let keyNum=key+1;
             rows.push(<li className="advance-task" key={key}>
                         <span className="detail">
                             <b>{option.title}</b>
@@ -157,65 +151,47 @@ class taskCenter extends React.Component {
         else if (scrollY && scrollY < conOffsetTop) {
             tabHeaderDom.removeAttribute('style');
         }
-
     }
+
+    showListData(value) {
+        let taskUrl;
+        this.setState({
+            active: value,
+            isShowLoading:true
+        });
+        if(value == 'ONGOING') {
+            taskUrl = 'http://localhost:3009/task-center/tasks';
+        } else if(value == 'FINISHED') {
+            taskUrl = 'http://localhost:3009/task-center/completed-tasks';
+        }
+        // taskUrl = 'task-center/tasks';
+        mobileCommon.ajax({
+            url: taskUrl,
+            type: 'get',
+            done: function(response) {
+                this.setState((previousState) => {
+                    return {
+                        isShowLoading:false,
+                        listData: {
+                            newbieTasks: response.data.newbieTasks,
+                            advancedTasks: response.data.advancedTasks
+                        }
+                    };
+                });
+            }.bind(this)
+        });
+    }
+    //切换任务列别状态
     tabHeaderClickHandler(event) {
-        let value = event.target.dataset.value;
         if(/active/.test(event.target.className) ) {
             return;
         }
-        this.setState({
-          active: value,
-          isShowLoading:true
-        });
-        this.fixTopMenu();
-
-        if(value=='ONGOING') {
-            this.fetchData('/task-center/tasks',(response) => {
-
-            this.setState((previousState) => {
-                return {
-                    isShowLoading:false,
-                    listData: {
-                        newbieTasks: response.data.newbieTasks,
-                        advancedTasks: response.data.advancedTasks
-                    }
-                };
-            });
-         });
-        }
-        else if(value=='FINISHED') {
-           this.fetchData('/task-center/completed-tasks',(response) => {
-            this.setState((previousState) => {
-                return {
-                    isShowLoading:false,
-                    listData: {
-                        newbieTasks: response.data.newbieTasks,
-                        advancedTasks: response.data.advancedTasks
-                    }
-                };
-            });
-        }); 
-        }
-        }  
+       this.showListData(event.target.dataset.value);
+    }
 
 	componentDidMount() {
         mobileCommon.changeTitle('任务中心');
-		let isComplete = 0;
-        let listData = [];
-        
-        this.fetchData('/task-center/tasks',(response) => {
-            this.setState((previousState) => {
-                return {
-                    isShowLoading:false,
-                    listData: {
-                        newbieTasks: response.data.newbieTasks,
-                        advancedTasks: response.data.advancedTasks
-                    }
-                };
-            });
-         });
-
+        this.showListData('ONGOING');
 	}
     componentDidUpdate() {
         //数据加载完成后

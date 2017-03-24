@@ -111,7 +111,7 @@ else if(NODE_ENV=='dev') {
 	plugins.push(new webpack.HotModuleReplacementPlugin());
 
 	// 接口代理
-	var proxyList = ['/media-center/*'];
+	var proxyList = ['media-center/*'];
 	var proxyObj = {};
 	proxyList.forEach(function(value) {
 		proxyObj[value] = {
