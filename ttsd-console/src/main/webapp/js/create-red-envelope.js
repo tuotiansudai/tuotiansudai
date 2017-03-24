@@ -63,7 +63,7 @@ require(['jquery', 'layerWrapper', 'template', 'csrf','bootstrap', 'bootstrapDat
             var _this = $(this),
                 text = _this.val();
             if (number_reg.test(text)) {
-                _this.val(parseInt(parseFloat(text)*100)/100).removeClass('Validform_error');
+                _this.val(parseInt((parseFloat(text)*100).toFixed(2))/100).removeClass('Validform_error');
             }else {
                 _this.val('').addClass('Validform_error');
             }
