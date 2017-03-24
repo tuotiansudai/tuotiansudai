@@ -160,11 +160,10 @@ class taskCenter extends React.Component {
             isShowLoading:true
         });
         if(value == 'ONGOING') {
-            taskUrl = 'http://localhost:3009/task-center/tasks';
+            taskUrl = 'task-center/tasks';
         } else if(value == 'FINISHED') {
-            taskUrl = 'http://localhost:3009/task-center/completed-tasks';
+            taskUrl = 'task-center/completed-tasks';
         }
-        // taskUrl = 'task-center/tasks';
         mobileCommon.ajax({
             url: taskUrl,
             type: 'get',
