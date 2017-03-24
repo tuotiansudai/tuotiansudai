@@ -43,7 +43,7 @@ public class AmountDirective implements TemplateDirectiveModel {
             if (amount.compareTo(TEN_THOUSANDS) != -1){
                 returnAmount = amount.divide(TEN_THOUSANDS, 2, BigDecimal.ROUND_HALF_UP).toString().replaceAll("0+?$", "").replaceAll("[.]$", "")+" 万";
             } else {
-                returnAmount = amount.divide(ONE_HUNDRED, 2, BigDecimal.ROUND_HALF_UP).toString().replaceAll("0+?$", "").replaceAll("[.]$", "");
+                returnAmount = amount.divide(ONE_HUNDRED, 2, BigDecimal.ROUND_HALF_UP).toString().replaceAll("\\.00$", "");
             }
             out.write(returnAmount);
         }
