@@ -129,7 +129,7 @@
                 </#list>
             </ul>
             <#else>
-                <p class="no-material"><img src="${commonStaticServer}/static/point/images/no-material.png"></p>
+                <p class="no-material"></p>
                 <p class="no-product">商品即将上线，敬请期待！</p>
             </#if>
         </div>
@@ -181,7 +181,7 @@
                 </#list>
             </ul>
             <#else>
-                <p class="no-material"><img src="${commonStaticServer}/static/point/images/no-material.png"></p>
+                <p class="no-material"></p>
                 <p class="no-product">商品即将上线，敬请期待！</p>
             </#if>
         </div>

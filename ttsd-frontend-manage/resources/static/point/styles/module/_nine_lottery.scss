@@ -38,6 +38,13 @@
 
 				&.lottery-btn {
 					cursor: pointer;
+					.gift-btn{
+						display:inline-block;
+						width:100%;
+						height:100%;
+						background: url('../../images/nine-lottery/lottery-btn.png') no-repeat center;
+						background-size:100%;
+					}
 				}
 				&.lottery-unit {
 					text-align: center;
@@ -49,6 +56,43 @@
 						background: #fff;
 						border-bottom: none;
 						border: 3px solid #ff1552;
+					}
+					i{
+						display:inline-block;
+						width:100%;
+						height:100%;
+						&.gift-one{
+							background: url('../../images/nine-lottery/gift-one.png') no-repeat center;
+							background-size:50%;
+						}
+						&.gift-two{
+							background: url('../../images/nine-lottery/gift-two.png') no-repeat center;
+							background-size:30%;
+						}
+						&.gift-three{
+							background: url('../../images/nine-lottery/gift-three.png') no-repeat center;
+							background-size:50%;
+						}
+						&.gift-four{
+							background: url('../../images/nine-lottery/gift-four.png') no-repeat center;
+							background-size:50%;
+						}
+						&.gift-five{
+							background: url('../../images/nine-lottery/gift-five.png') no-repeat center;
+							background-size:50%;
+						}
+						&.gift-six{
+							background: url('../../images/nine-lottery/gift-six.png') no-repeat center;
+							background-size:50%;
+						}
+						&.gift-seven{
+							background: url('../../images/nine-lottery/gift-seven.png') no-repeat center;
+							background-size:40%;
+						}
+						&.gift-eight{
+							background: url('../../images/nine-lottery/gift-eight.png') no-repeat center;
+							background-size:50%;
+						}
 					}
 				}
 			}
@@ -138,6 +182,10 @@
 							color:#4c4c4c;
 							margin-top:10px;
 							margin-bottom:0;
+							&.empty-img{
+								height:130px;
+								background: url('../../images/nine-lottery/record-img.png') no-repeat center;
+							}
 						}
 					}
 					span {

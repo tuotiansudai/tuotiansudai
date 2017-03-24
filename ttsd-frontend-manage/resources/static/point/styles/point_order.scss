@@ -138,7 +138,7 @@
                       border:1px solid #178fe6;
                     }
                   }
-                  label.error{
+                  span.error{
                     position: absolute;
                     left:0;
                     bottom:-18px;
@@ -166,6 +166,12 @@
                   background:#178fe6;
                   border: 1px solid #178fe6;
                   border-radius:0;
+                  color:#fff;
+                  &:disabled{
+                    border: 1px solid #ccc;
+                    background:#ccc;
+                    color:#fff;
+                  }
                 }
               }
             }
