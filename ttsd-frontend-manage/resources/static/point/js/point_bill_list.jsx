@@ -5,6 +5,7 @@ let moment = require('moment');
 require('webJsModule/pagination');
 require('publicJs/plugins/jquery.daterangepicker-0.0.7.js');
 
+var $dataList = $('#dataList');
 
 var today = moment().format('YYYY-MM-DD'), // 今天
         week = moment().subtract(1, 'week').format('YYYY-MM-DD'),
@@ -66,8 +67,7 @@ var today = moment().format('YYYY-MM-DD'), // 今天
                     }
                 });
             }
-            var html = Mustache.render(pointBillListTemplate, data);
-            $('.point-bill-list').html(html);
+            $dataList.html(tpl('dataListTpl', data));
         });
     };
 
