@@ -78,14 +78,20 @@ def qa(options):
     from scripts.deployment import Deployment
 
     deployment = Deployment()
-    deployment.deploy(options.env)
+    build_params = options.get('qa') if options.has_key('qa') else {}
+
+    if build_params.has_key('env'):
+        deployment.deploy(build_params)
+
+    print 'env is missing!'
+
 
 @task
 def dev():
     from scripts.deployment import Deployment
 
     deployment = Deployment()
-    deployment.deploy('DEV')
+    deployment.deploy({'env': 'DEV'})
 
 
 @task
