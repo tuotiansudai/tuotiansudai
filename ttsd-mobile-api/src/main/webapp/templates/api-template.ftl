@@ -17,8 +17,6 @@
 <script type="text/javascript">
     window.staticServer='${commonStaticServer}';
 </script>
-<#--<script src="${js.reactdll}" ></script>-->
-
 <script src="${js.index!}" ></script>
 
 </body>

@@ -5,10 +5,9 @@
     <meta name="viewport"
           content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
     <title>拓天速贷</title>
-    <link rel="stylesheet" type="text/css" href="${staticServer}${cssPath}success.css" charset="utf-8"/>
-    <#--<link rel="stylesheet" type="text/css" href="../api/style/success.css" charset="utf-8"/>-->
+    <link rel="stylesheet" type="text/css" href="${css.index!}" charset="utf-8"/>
 </head>
-<body>
+<body class="success-body">
 <div class="success-info-container">
     <p>
         <i class="success-icon"></i>
