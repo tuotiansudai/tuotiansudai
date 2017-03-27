@@ -34,8 +34,6 @@ public class CustWithdrawalsRequestModel extends BaseAsyncRequestModel {
         this.amount = amount;
         this.comAmtType = "1"; //1 前向手续费：交易方承担 2 前向手续费：平台商户（手续费账户）承担
         this.merDate = new SimpleDateFormat("yyyyMMdd").format(new Date());
-        this.notifyUrl = MessageFormat.format("{0}/{1}", CALLBACK_HOST_PROPS.get("pay.callback.back.host"), AsyncUmPayService.CUST_WITHDRAWALS.getNotifyCallbackPath());
-
     }
 
     @Override

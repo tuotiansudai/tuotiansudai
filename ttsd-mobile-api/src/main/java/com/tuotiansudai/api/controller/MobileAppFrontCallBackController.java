@@ -58,20 +58,27 @@ public class MobileAppFrontCallBackController {
 
         Map<String, String> params = parseRequestParameters(request);
 
-        PayDataDto data = payWrapperClient.validateFrontCallback(params).getData();
-
         AsyncUmPayService asyncUmPayService = AsyncUmPayService.valueOf(service.toUpperCase());
+
+        PayDataDto data = new PayDataDto();
+        data.setStatus(true);
+
+        if (!Lists.newArrayList(AsyncUmPayService.INVEST_PROJECT_TRANSFER_NOPWD, AsyncUmPayService.INVEST_TRANSFER_PROJECT_TRANSFER_NOPWD).contains(asyncUmPayService)) {
+            data = payWrapperClient.validateFrontCallback(params).getData();
+        }
+
+
         ModelAndView modelAndView = new ModelAndView("/front-callback", "message", data.getMessage());
 
         if (!data.getStatus() && Strings.isNullOrEmpty(data.getCode())) {
-            modelAndView.addObject("message", MessageFormat.format(asyncUmPayService.getMobileLink(), "fail") );
-            modelAndView.addObject("href", MessageFormat.format(asyncUmPayService.getMobileLink(), "fail") );
+            modelAndView.addObject("message", MessageFormat.format(asyncUmPayService.getMobileLink(), "fail"));
+            modelAndView.addObject("href", MessageFormat.format(asyncUmPayService.getMobileLink(), "fail"));
             return modelAndView;
         }
 
         modelAndView.addObject("service", service);
         modelAndView.addObject("values", this.generateBindValues(asyncUmPayService, Strings.isNullOrEmpty(params.get("order_id")) ? null : Long.valueOf(params.get("order_id"))));
-        modelAndView.addObject("href", MessageFormat.format(asyncUmPayService.getMobileLink(), "success") );
+        modelAndView.addObject("href", MessageFormat.format(asyncUmPayService.getMobileLink(), "success"));
         return modelAndView;
     }
 

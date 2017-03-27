@@ -103,7 +103,7 @@ public class RechargeServiceImpl implements RechargeService {
     }
 
     private BaseDto<PayFormDataDto> generatePublicRechargeFormData(RechargeModel rechargeModel) {
-        MerRechargeRequestModel requestModel = MerRechargeRequestModel.newRecharge(String.valueOf(rechargeModel.getId()),
+        MerRechargeRequestModel requestModel = new MerRechargeRequestModel(String.valueOf(rechargeModel.getId()),
                 String.valueOf(rechargeModel.getAmount()),
                 rechargeModel.getBankCode());
 

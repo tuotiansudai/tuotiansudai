@@ -41,7 +41,7 @@ public class FrontCallbackController {
         }
 
         try {
-            AsyncUmPayService asyncUmPayService = AsyncUmPayService.valueOf(service);
+            AsyncUmPayService asyncUmPayService = AsyncUmPayService.valueOf(service.toUpperCase());
             if (Strings.isNullOrEmpty(asyncUmPayService.getWebRetCallbackPath())) {
                 return new ModelAndView("/error/404");
             }

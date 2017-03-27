@@ -32,35 +32,27 @@ public class MerRechargePersonRequestModel extends BaseAsyncRequestModel {
 
     }
 
-    public MerRechargePersonRequestModel(Source source) {
+    private MerRechargePersonRequestModel(String orderId, String userId, String amount, Source source) {
         super(source, AsyncUmPayService.MER_RECHARGE_PERSON);
+        this.service = AsyncUmPayService.MER_RECHARGE_PERSON.getServiceName();
+        this.orderId = orderId;
+        this.userId = userId;
+        this.amount = amount;
+        this.comAmtType = "2"; //1 前向手续费：交易方承担 2 前向手续费：平台商户（手续费账户）承担
+        this.merDate = new SimpleDateFormat("yyyyMMdd").format(new Date());
+
     }
 
     public static MerRechargePersonRequestModel newRecharge(String orderId, String userId, String amount, String gateId) {
-        MerRechargePersonRequestModel model = new MerRechargePersonRequestModel();
-        model.setService(AsyncUmPayService.MER_RECHARGE_PERSON.getServiceName());
-        model.setOrderId(orderId);
-        model.setUserId(userId);
-        model.setAmount(amount);
-        model.setGateId(gateId);
-        model.setComAmtType("2"); //1 前向手续费：交易方承担 2 前向手续费：平台商户（手续费账户）承担
+        MerRechargePersonRequestModel model = new MerRechargePersonRequestModel(orderId, userId, amount, Source.WEB);
         model.setPayType(NORMAL_PAY);
-        model.setMerDate(new SimpleDateFormat("yyyyMMdd").format(new Date()));
-        model.setRetUrl(MessageFormat.format("{0}/callback/{1}", CALLBACK_HOST_PROPS.get("pay.callback.web.host"), AsyncUmPayService.MER_RECHARGE_PERSON.getMobileRetCallbackPath()));
-        model.setNotifyUrl(MessageFormat.format("{0}/{1}", CALLBACK_HOST_PROPS.get("pay.callback.back.host"), AsyncUmPayService.MER_RECHARGE_PERSON.getNotifyCallbackPath()));
+        model.setGateId(gateId);
         return model;
     }
 
     public static MerRechargePersonRequestModel newFastRecharge(String orderId, String userId, String amount, Source source) {
-        MerRechargePersonRequestModel model = new MerRechargePersonRequestModel(source);
-        model.setService(AsyncUmPayService.MER_RECHARGE_PERSON.getServiceName());
-        model.setOrderId(orderId);
-        model.setUserId(userId);
-        model.setComAmtType("2"); //1 前向手续费：交易方承担 2 前向手续费：平台商户（手续费账户）承担
-        model.setAmount(amount);
+        MerRechargePersonRequestModel model = new MerRechargePersonRequestModel(orderId, userId, amount, source);
         model.setPayType(FAST_PAY);
-        model.setMerDate(new SimpleDateFormat("yyyyMMdd").format(new Date()));
-        model.setNotifyUrl(MessageFormat.format("{0}/{1}", CALLBACK_HOST_PROPS.get("pay.callback.back.host"), AsyncUmPayService.MER_RECHARGE_PERSON.getNotifyCallbackPath()));
         return model;
     }
 

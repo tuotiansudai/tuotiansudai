@@ -43,7 +43,6 @@ public class PtpMerBindCardRequestModel extends BaseAsyncRequestModel {
         this.accountName = userName;
         this.identityCode = identityNumber;
         this.isOpenFastPayment = isOpenFastPayment?"1":"0";
-        this.notifyUrl = MessageFormat.format("{0}/{1}", CALLBACK_HOST_PROPS.get("pay.callback.back.host"), AsyncUmPayService.PTP_MER_BIND_CARD.getNotifyCallbackPath());
     }
 
     @Override

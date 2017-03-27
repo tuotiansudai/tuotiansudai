@@ -47,7 +47,6 @@ public class TransferAsynRequestModel extends BaseAsyncRequestModel {
         this.particUserId = payUserId;
         this.particAccountId = payAccountId;
         this.amount = amount;
-        this.notifyUrl = MessageFormat.format("{0}/{1}", CALLBACK_HOST_PROPS.get("pay.callback.back.host"), asyncUmPayService.getNotifyCallbackPath());
     }
 
     @Override

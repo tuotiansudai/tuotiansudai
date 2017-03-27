@@ -1,6 +1,7 @@
 package com.tuotiansudai.paywrapper.repository.model.async.request;
 
 import com.tuotiansudai.enums.AsyncUmPayService;
+import com.tuotiansudai.repository.model.Source;
 
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
@@ -28,22 +29,19 @@ public class MerRechargeRequestModel extends BaseAsyncRequestModel {
     private String comAmtType;
 
     public MerRechargeRequestModel() {
-
     }
 
-    public static MerRechargeRequestModel newRecharge(String orderId, String amount, String gateId) {
-        MerRechargeRequestModel model = new MerRechargeRequestModel();
-        model.setService(AsyncUmPayService.MER_RECHARGE.getServiceName());
-        model.setOrderId(orderId);
-        model.setRechargeMerId(UMP_PROPS.getProperty("mer_id"));
-        model.setAccountType("01"); // 01 现金账户
-        model.setAmount(amount);
-        model.setGateId(gateId);
-        model.setComAmtType("2"); //1 前向手续费：交易方承担 2 前向手续费：平台商户（手续费账户）承担
-        model.setPayType(NORMAL_PAY);
-        model.setMerDate(new SimpleDateFormat("yyyyMMdd").format(new Date()));
-        model.setNotifyUrl(MessageFormat.format("{0}/{1}", CALLBACK_HOST_PROPS.get("pay.callback.back.host"), AsyncUmPayService.MER_RECHARGE.getNotifyCallbackPath()));
-        return model;
+    public MerRechargeRequestModel(String orderId, String amount, String gateId) {
+        super(Source.WEB, AsyncUmPayService.MER_RECHARGE);
+        this.service = AsyncUmPayService.MER_RECHARGE.getServiceName();
+        this.orderId = orderId;
+        this.rechargeMerId = UMP_PROPS.getProperty("mer_id");
+        this.accountType = "01"; // 01 现金账户
+        this.amount = amount;
+        this.gateId = gateId;
+        this.comAmtType = "2"; //1 前向手续费：交易方承担 2 前向手续费：平台商户（手续费账户）承担
+        this.payType = NORMAL_PAY;
+        this.merDate = new SimpleDateFormat("yyyyMMdd").format(new Date());
     }
 
     @Override

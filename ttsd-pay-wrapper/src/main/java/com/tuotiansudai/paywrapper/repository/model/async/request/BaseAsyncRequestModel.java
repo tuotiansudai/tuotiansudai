@@ -57,6 +57,7 @@ public abstract class BaseAsyncRequestModel extends BaseSyncRequestModel {
         this.retUrl = Source.WEB == source ?
                 MessageFormat.format("{0}/{1}", CALLBACK_HOST_PROPS.get("pay.callback.web.host"), service.getWebRetCallbackPath())
                 : MessageFormat.format("{0}/{1}", CALLBACK_HOST_PROPS.get("pay.callback.app.web.host"), service.getMobileRetCallbackPath());
+        this.notifyUrl = MessageFormat.format("{0}/{1}", CALLBACK_HOST_PROPS.get("pay.callback.back.host"), service.getNotifyCallbackPath());
         this.setSourceV(source == Source.WEB ? null : "HTML5");
     }
 }
