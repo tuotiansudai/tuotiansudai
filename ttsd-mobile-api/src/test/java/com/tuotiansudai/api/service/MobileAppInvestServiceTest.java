@@ -11,6 +11,7 @@ import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.exception.InvestExceptionType;
 import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.InvestService;
 import org.junit.Test;
@@ -49,6 +50,9 @@ public class MobileAppInvestServiceTest extends ServiceTestBase {
         baseDto.setData(payDataDto);
 
         when(investService.noPasswordInvest(any(InvestDto.class))).thenReturn(baseDto);
+        InvestModel successInvest = new InvestModel();
+        successInvest.setId(1);
+        when(investService.findLatestSuccessInvest(anyString())).thenReturn(successInvest);
         when(channelService.obtainChannelBySource(any(BaseParam.class))).thenReturn(null);
         AccountModel accountModel = new AccountModel();
         accountModel.setAutoInvest(true);
@@ -71,6 +75,9 @@ public class MobileAppInvestServiceTest extends ServiceTestBase {
         baseDto.setData(payDataDto);
 
         when(investService.noPasswordInvest(any(InvestDto.class))).thenReturn(baseDto);
+        InvestModel successInvest = new InvestModel();
+        successInvest.setId(1);
+        when(investService.findLatestSuccessInvest(anyString())).thenReturn(successInvest);
         AccountModel accountModel = new AccountModel();
         accountModel.setAutoInvest(true);
         accountModel.setNoPasswordInvest(false);

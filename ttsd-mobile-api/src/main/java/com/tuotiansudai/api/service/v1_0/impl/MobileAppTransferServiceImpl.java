@@ -87,9 +87,11 @@ public class MobileAppTransferServiceImpl implements MobileAppTransferService {
 
             if (payDataDto.getData().getStatus()) {
                 BaseResponseDto<InvestNoPassResponseDataDto> baseResponseDto = new BaseResponseDto<>(ReturnMessage.SUCCESS);
+
                 InvestModel latestSuccessInvest = investMapper.findLatestSuccessInvest(investDto.getLoginName());
                 String url = MessageFormat.format("{0}/{1}?order_id={2}", domainName, AsyncUmPayService.INVEST_TRANSFER_PROJECT_TRANSFER_NOPWD.getMobileRetCallbackPath(), String.valueOf(latestSuccessInvest.getId()));
-                baseResponseDto.getData().setUrl(url);
+                baseResponseDto.setData(new InvestNoPassResponseDataDto(url));
+                return baseResponseDto;
             }
 
             return new BaseResponseDto<>(payDataDto.getData().getCode(), payDataDto.getData().getMessage());

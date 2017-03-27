@@ -3,6 +3,7 @@ package com.tuotiansudai.paywrapper.service;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
 import com.tuotiansudai.dto.*;
+import com.tuotiansudai.enums.AsyncUmPayService;
 import com.tuotiansudai.membership.repository.mapper.MembershipExperienceBillMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
@@ -479,6 +480,6 @@ public class InvestServiceTest {
         investDto.setSource(Source.IOS);
         BaseDto<PayFormDataDto> baseDto = investService.invest(investDto);
         assertTrue(baseDto.getData().getStatus());
-        assertEquals(MessageFormat.format("{0}/{1}", appRetUrl, "project_transfer_invest"), baseDto.getData().getFields().get("ret_url"));
+        assertEquals(MessageFormat.format("{0}/{1}", appRetUrl, AsyncUmPayService.INVEST_PROJECT_TRANSFER.getMobileRetCallbackPath()), baseDto.getData().getFields().get("ret_url"));
     }
 }
