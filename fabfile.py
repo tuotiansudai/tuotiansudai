@@ -72,7 +72,6 @@ def mk_rest_service():
 def mk_static_zip():
     local('cd ./ttsd-mobile-api/src/main/webapp && zip -r static_api.zip api/')
     local('cd ./ttsd-activity-web/src/main/webapp && zip -r static_activity.zip activity/')
-    local('cd ./ttsd-point-web/src/main/webapp && zip -r static_point.zip point/')
     local('cd ./ttsd-frontend-manage/resources/prod && zip -r static_all.zip *')
 
 
@@ -105,13 +104,11 @@ def check_worker_status():
 def deploy_static():
     upload_project(local_dir='./ttsd-mobile-api/src/main/webapp/static_api.zip', remote_dir='/workspace')
     upload_project(local_dir='./ttsd-activity-web/src/main/webapp/static_activity.zip', remote_dir='/workspace')
-    upload_project(local_dir='./ttsd-point-web/src/main/webapp/static_point.zip', remote_dir='/workspace')
     upload_project(local_dir='./ttsd-frontend-manage/resources/prod/static_all.zip', remote_dir='/workspace')
     with cd('/workspace'):
         sudo('rm -rf static/')
         sudo('unzip static_api.zip -d static')
         sudo('unzip static_activity.zip -d static')
-        sudo('unzip static_point.zip -d static')
         sudo('unzip static_all.zip -d static')
         sudo('service nginx restart')
 
