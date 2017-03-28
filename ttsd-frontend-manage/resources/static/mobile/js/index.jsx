@@ -20,8 +20,8 @@ class App extends React.Component {
         return (
             <Router history={hashHistory}>
                 <Route path="media-center" component={MediaList} />
-                <Route path="task-center" component={taskCenter} />
                 <Route path="media-center/article/:id" component={Article} />
+                <Route path="task-center" component={taskCenter} />
                 <Route path="message-center/:id" component={messageCenter}/>
                 <Redirect from="/" to="media-center" />
             </Router>

@@ -269,8 +269,8 @@ class taskCenter extends React.Component {
 	}
 }
 
-module.exports = taskCenter;
-// export default taskCenter;
+// module.exports = taskCenter;
+export default taskCenter;
 
 
 

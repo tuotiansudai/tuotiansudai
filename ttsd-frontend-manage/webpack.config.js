@@ -163,16 +163,12 @@ plugins.push(new AssetsPlugin({
 //happypack利用缓存使rebuild更快
 plugins.push(createHappyPlugin('jsx', ['babel']));
 
-plugins.push(createHappyPlugin('sass', ['css?modules!postcss!sass?outputStyle=expanded']));
-
+// plugins.push(createHappyPlugin('sass', ['css?modules!postcss!sass?outputStyle=expanded']));
+plugins.push(createHappyPlugin('sass', ['css-loader?modules!postcss-loader!sass-loader?outputStyle=expanded']));
 plugins.push(new webpack.DllReferencePlugin({
 	context: __dirname,
 	manifest: require(publicPathJS+'/dllplugins/jquery-manifest.json')
 }));
-// plugins.push(new webpack.DllReferencePlugin({
-// 	context: __dirname,
-// 	manifest: require(publicPathJS+'/dllplugins/react-manifest.json')
-// }));
 
 function createHappyPlugin(id, loaders) {
 	return new HappyPack({

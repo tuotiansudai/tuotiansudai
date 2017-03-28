@@ -73,5 +73,4 @@ class messageCenter extends React.Component {
         );
     }
 }
-module.exports = messageCenter;
-// export default messageCenter;
+export default messageCenter;

@@ -201,5 +201,4 @@ class MediaList extends React.Component {
 		);
 	}
 }
-module.exports = MediaList;
-// export default MediaList;
+export default MediaList;
