@@ -1,4 +1,4 @@
-.main {
+.carousel-box {
 	:global {
 		.swiper-container {
 			width: 100%;
@@ -6,7 +6,7 @@
 		}
 		.swiper-slide {
 			img {
-				width: 10rem;
+				width: 100%;
 				display: block;
 			}
 		}

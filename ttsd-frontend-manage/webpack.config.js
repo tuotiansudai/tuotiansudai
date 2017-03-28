@@ -1,6 +1,5 @@
 var path = require('path');
 var glob=require('glob');
-var px2rem = require('postcss-px2rem');
 var AssetsPlugin = require('assets-webpack-plugin');
 var webpack = require('webpack');
 var objectAssign = require('object-assign');
@@ -163,7 +162,7 @@ plugins.push(new AssetsPlugin({
 //happypack利用缓存使rebuild更快
 plugins.push(createHappyPlugin('jsx', ['babel']));
 
-plugins.push(createHappyPlugin('sass', ['css?modules!postcss!sass?outputStyle=expanded']));
+plugins.push(createHappyPlugin('sass', ['css!sass']));
 // plugins.push(createHappyPlugin('sass', ['css-loader?modules!postcss-loader!sass-loader?outputStyle=expanded']));
 plugins.push(new webpack.DllReferencePlugin({
 	context: __dirname,
@@ -237,8 +236,7 @@ var myObject = objectAssign(commonOptions, {
 		return [
 			require('autoprefixer')({
 				browsers: ['last 2 versions']
-			}),
-			px2rem({remUnit: 75})
+			})
 		];
 	},
 	cache: true,

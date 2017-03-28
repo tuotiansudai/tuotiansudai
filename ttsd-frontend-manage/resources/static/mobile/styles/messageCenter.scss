@@ -1,42 +1,42 @@
-.main {
+.message-center-frame {
   position: absolute;
   width: 100%;
   height: 100%;
   overflow: hidden;
   :global {
     article {
-      font-size: 28px;/*px*/
+      font-size: 14px;
       position: relative;
     }
     .meta {
-      padding-top:42px;/*px*/
-      height:180px;/*px*/
+      padding-top:20px;/*px*/
+      height:90px;/*px*/
       h1 {
         text-align:center;
         font-weight: 100;
-        font-size: 30px;/*px*/
+        font-size: 15px;/*px*/
         color:#FF635A;
         a{
           color:#FF635A;
         }
       }
       time {
-        margin-top:26px;/*px*/
+        margin-top:13px;/*px*/
         margin-right: 2em;
-        font-size:24px;/*px*/
+        font-size:12px;/*px*/
         color:#A2A2A2;
       }
     }
     .line{
-      height:1px;/*px*/
+      height:1px;
       background: #ccc;
     }
     .content {
-      margin-top: 40px;/*px*/
+      margin-top: 20px;
       padding:0 2em;
-      font-size:28px;/*px*/
+      font-size:14px;
       color:#808080;
-      padding-bottom:120px;/*px*/
+      padding-bottom:60px;
       p:first-child {
         margin-top: 0;
       }
@@ -56,14 +56,14 @@
       width:100%;
       background: #ff473c;
       text-align:center;
-      box-shadow: 0 0 40px 0 #CCC;/*px*/
+      box-shadow: 0 0 20px 0 #CCC;/*px*/
       a {
         display:inline-block;
         width:100%;
-        height:110px;/*px*/
-        line-height:110px;/*px*/
+        height:55px;/*px*/
+        line-height:55px;/*px*/
         color: #fff;
-        font-size:36px;/*px*/
+        font-size:18px;/*px*/
         background:#FF635A;
       }
     }

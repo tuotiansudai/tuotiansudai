@@ -3,7 +3,6 @@ import React from "react";
 import ReactDom from "react-dom";
 import {Route, Router, hashHistory, Redirect, IndexRoute} from "react-router";
 import injectTapEventPlugin from "react-tap-event-plugin";
-import 'mobileJsModule/lib-flexible';
 import MediaList from 'mobileJs/page/MediaList';
 import Article from 'mobileJs/page/Article';
 import messageCenter from 'mobileJs/page/messageCenter';

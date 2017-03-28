@@ -1,4 +1,4 @@
-import { main } from 'mobileStyle/Carousel.scss';
+import 'mobileStyle/Carousel.scss';
 import React from 'react';
 import swiper from 'swiper';
 import imagesLoaded from 'imagesloaded';
@@ -40,7 +40,7 @@ class Carousel extends React.Component {
 	}
 	render() {
 		return (
-		    <div className={main}>
+		    <div className='carousel-box'>
 				<section ref="scrollWrap" className="swiper-container">
 					<ul className="swiper-wrapper">
 						{this.props.data.map((value, index) => {

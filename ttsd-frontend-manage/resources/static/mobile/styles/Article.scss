@@ -1,4 +1,4 @@
-.main {
+.article-frame {
 	position: absolute;
 	width: 100%;
 	height: 100%;
@@ -7,41 +7,41 @@
 
 		.back-link{
 			position: fixed;
-			top:30px;/*px*/
-			left:20px;/*px*/
+			top:15px;/*px*/
+			left:10px;/*px*/
 			background:url('../images/back-icon.png') no-repeat center;
 			background-size:100%;
-			width:80px;/*px*/
-			height:80px;/*px*/
-			line-height:80px;/*px*/
+			width:40px;/*px*/
+			height:40px;/*px*/
+			line-height:40px;/*px*/
 			text-align:center;
-			border-radius:80px;/*px*/
-			font-size:40px;/*px*/
+			border-radius:40px;/*px*/
+			font-size:20px;/*px*/
 			color:#fff;
 		}
 		article {
-			padding: 40px 30px;
+			padding: 20px 15px;
 			font-size: 28px;/*px*/
 		}
 		h1 {
 			font-weight: 100;
-			font-size: 36px;/*px*/
+			font-size: 18px;/*px*/
 		}
 		.meta {
-			margin-top: 25px;
+			margin-top: 12px;
 			color: #5c5f66;
 			time {
 				margin-left: 2em;
 			}
 		}
 		.show-picture {
-			margin-top: 40px;
+			margin-top: 20px;
 			img {
-				width: 10rem;
+				width: 100%;
 			}
 		}
 		.content {
-			margin-top: 40px;
+			margin-top: 20px;
 			p:first-child {
 				margin-top: 0;
 			}
@@ -49,7 +49,7 @@
 				margin-top: 0;
 			}
 			img {
-				margin: 40px auto;
+				margin: 20px auto;
 				display: block;
 			}
 			p, div, section {
@@ -58,7 +58,7 @@
 			}
 		}
 		.info {
-			padding-top: 50px;
+			padding-top: 25px;
 			.readed {
 				color: #103d70;
 			}

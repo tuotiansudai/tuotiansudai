@@ -59,7 +59,7 @@ class Article extends React.Component {
 	}
 	render() {
 		return (
-		    <div ref="scrollWrap" className={main} >
+		    <div ref="scrollWrap" className='article-frame' >
 				<article>
 					<h1>{this.state.data.title}</h1>
 					<section className="meta">
