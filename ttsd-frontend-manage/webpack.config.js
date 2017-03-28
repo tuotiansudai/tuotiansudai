@@ -1,5 +1,6 @@
 var path = require('path');
 var glob=require('glob');
+var px2rem = require('postcss-px2rem');
 var AssetsPlugin = require('assets-webpack-plugin');
 var webpack = require('webpack');
 var objectAssign = require('object-assign');
