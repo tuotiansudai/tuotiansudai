@@ -108,9 +108,9 @@
                     </#if>
                 </li>
             </ul>
-            <#--<@security.authorize access="hasAnyAuthority('DATA')">-->
+            <@security.authorize access="hasAnyAuthority('ASK_ADMIN')">
                 <button class="btn btn-default pull-left down-load" type="button">导出Excel</button>
-            <#--</@security.authorize>-->
+            </@security.authorize>
         </#if>
     </nav>
     <!-- pagination -->
