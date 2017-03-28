@@ -59,7 +59,7 @@ public class ConsoleLinkExchangeService {
                 linkExchangeDto.setNoFollow(false);
             }
             //WebSiteTypes是后加入的字段，需要判断长度用来兼容旧数据
-            if(linkExchangeDtaValues.length < 6 ){
+            if(linkExchangeDtaValues.length < 7 ){
                 linkExchangeDto.setWebSiteTypes("");
             }else{
                 linkExchangeDto.setWebSiteTypes(linkExchangeDtaValues[6]);
@@ -115,7 +115,7 @@ public class ConsoleLinkExchangeService {
                 linkExchangeDto.setNoFollow(false);
             }
             //WebSiteTypes是后加入的字段，需要判断长度用来兼容旧数据
-            if(values.length < 6 ){
+            if(values.length < 7 ){
                 linkExchangeDto.setWebSiteTypes("");
             }else{
                 linkExchangeDto.setWebSiteTypes(values[6]);

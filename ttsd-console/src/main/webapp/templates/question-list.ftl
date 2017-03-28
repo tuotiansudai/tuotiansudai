@@ -77,7 +77,7 @@
                 </tr>
                 <#else>
                 <tr>
-                    <td colspan="8">暂无数据</td>
+                    <td colspan="9">暂无数据</td>
                 </tr>
                 </#list>
             </tbody>
@@ -108,6 +108,9 @@
                     </#if>
                 </li>
             </ul>
+            <#--<@security.authorize access="hasAnyAuthority('DATA')">-->
+                <button class="btn btn-default pull-left down-load" type="button">导出Excel</button>
+            <#--</@security.authorize>-->
         </#if>
     </nav>
     <!-- pagination -->
@@ -128,4 +131,5 @@
         </div>
     </div>
 </div>
+
 </@global.main>

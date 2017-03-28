@@ -3,6 +3,7 @@ package com.tuotiansudai.console.service;
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.ask.repository.model.QuestionModel;
 import com.tuotiansudai.console.dto.UserItemDataDto;
 import com.tuotiansudai.console.repository.model.UserMicroModelView;
 import com.tuotiansudai.dto.*;
@@ -577,6 +578,18 @@ public class ExportService {
             row.add(userMicroModelView.getLastLoginToNow() != null ? String.valueOf(userMicroModelView.getLastLoginToNow()) : "-");
             row.add(userMicroModelView.getLastLoginSource() != null ? userMicroModelView.getLastLoginSource().name() : "-");
 
+            rows.add(row);
+        }
+        return rows;
+    }
+
+
+    public List<List<String>> buildQuestionsList(List<QuestionModel> records) {
+        List<List<String>> rows = Lists.newArrayList();
+        for (QuestionModel record : records) {
+            List<String> row = Lists.newArrayList();
+            row.add(record.getQuestion());
+            row.add("http://ask.tuotiansudai.com/question/"+record.getId());
             rows.add(row);
         }
         return rows;
