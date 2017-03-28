@@ -70,6 +70,7 @@ public class LinkExchangeServiceImpl implements LinkExchangeService {
             } else {
                 linkExchangeDto.setNoFollow(false);
             }
+            linkExchangeDto.setWebSiteTypes(values[6]);
             linkExchangeDtoList.add(linkExchangeDto);
         }
         Collections.sort(linkExchangeDtoList, (o1, o2) -> Longs.compare(o2.getId(), o1.getId()));

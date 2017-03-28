@@ -50,12 +50,19 @@ public class ConsoleLinkExchangeService {
             linkExchangeDto.setLinkUrl(linkExchangeDtaValues[2]);
             linkExchangeDto.setUpdateTime(new Date());
             linkExchangeDto.setCreatedTime(strToDate(linkExchangeDtaValues[4]));
+
             final int linkExchangeDtoStringOriginSize = 5;  //旧数据长度是5
             //noFollow字段是后加入的，需要判断长度用来兼容旧数据
             if (linkExchangeDtoStringOriginSize < linkExchangeDtaValues.length) {
                 linkExchangeDto.setNoFollow(Boolean.valueOf(linkExchangeDtaValues[5]));
             } else {
                 linkExchangeDto.setNoFollow(false);
+            }
+            //WebSiteTypes是后加入的字段，需要判断长度用来兼容旧数据
+            if(linkExchangeDtaValues.length < 6 ){
+                linkExchangeDto.setWebSiteTypes("");
+            }else{
+                linkExchangeDto.setWebSiteTypes(linkExchangeDtaValues[6]);
             }
         }
         return linkExchangeDto;
@@ -106,6 +113,12 @@ public class ConsoleLinkExchangeService {
                 linkExchangeDto.setNoFollow(Boolean.valueOf(values[5]));
             } else {
                 linkExchangeDto.setNoFollow(false);
+            }
+            //WebSiteTypes是后加入的字段，需要判断长度用来兼容旧数据
+            if(values.length < 6 ){
+                linkExchangeDto.setWebSiteTypes("");
+            }else{
+                linkExchangeDto.setWebSiteTypes(values[6]);
             }
             linkExchangeDtoList.add(linkExchangeDto);
         }

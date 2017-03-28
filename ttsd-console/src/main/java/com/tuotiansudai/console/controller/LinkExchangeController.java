@@ -4,6 +4,7 @@ import com.tuotiansudai.console.service.ConsoleLinkExchangeService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LinkExchangeDto;
 import com.tuotiansudai.dto.PayDataDto;
+import com.tuotiansudai.enums.WebSiteType;
 import com.tuotiansudai.service.LinkExchangeService;
 import com.tuotiansudai.util.PaginationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,13 +43,16 @@ public class LinkExchangeController {
 
     @RequestMapping(value = "/link-exchange/add", method = RequestMethod.GET)
     public ModelAndView linkExchange() {
-        return new ModelAndView("/link-exchange-edit");
+        ModelAndView modelAndView = new ModelAndView("/link-exchange-edit");
+        modelAndView.addObject("webSiteTypeList", WebSiteType.values());
+        return modelAndView;
     }
 
     @RequestMapping(value = "/link-exchange/edit/{id}", method = RequestMethod.GET)
     public ModelAndView editLinkExchange(@PathVariable String id) {
         ModelAndView modelAndView = new ModelAndView("/link-exchange-edit");
         modelAndView.addObject("linkExchange", this.consoleLinkExchangeService.getLinkExchangeById(id));
+        modelAndView.addObject("webSiteTypeList", WebSiteType.values());
         return modelAndView;
     }
 
