@@ -7,6 +7,7 @@ import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackR
 import com.umpay.api.exception.VerifyException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -26,7 +27,7 @@ public class FrontCallbackValidatorController {
 
     @RequestMapping(value = "/validate-front-callback", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<PayDataDto> validate(Map<String, String> params) {
+    public BaseDto<PayDataDto> validate(@RequestBody Map<String, String> params) {
         PayDataDto payDataDto = new PayDataDto();
         BaseDto<PayDataDto> baseDto = new BaseDto<>(payDataDto);
 
