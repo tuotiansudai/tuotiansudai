@@ -55,22 +55,31 @@ require(['jquery', 'layerWrapper', 'template', 'csrf','bootstrap', 'bootstrapDat
             $errorDom.append(html);
         }
 
-        // 充值金额保留小数点后2位
-        var rep = /^\d+$/;
-        var rep_point2 = /^[0-9]+\.[0-9]*$/;
 
-        $('.coupon-number, .give-number').blur(function () {
+        var number_reg = /^\d+(\.\d+)?$/;
+
+        // 金额保留小数点后2位
+        $('.coupon-number').blur(function () {
             var _this = $(this),
-                text = _this.val(),
-                num = text.replace(rep, "$1");
-            if (rep.test(text)) {
-                _this.val(text).removeClass('Validform_error');
-            }else if (rep_point2.test(text)) {
+                text = _this.val();
+            if (number_reg.test(text)) {
+                _this.val(parseInt((parseFloat(text)*100).toFixed(2))/100).removeClass('Validform_error');
+            }else {
+                _this.val('').addClass('Validform_error');
+            }
+        });
+
+        // 发放张数为整数
+        $('.give-number, .coupon-deadline').blur(function () {
+            var _this = $(this),
+                text = _this.val();
+            if (number_reg.test(text)) {
                 _this.val(parseInt(text)).removeClass('Validform_error');
             }else {
                 _this.val('').addClass('Validform_error');
             }
         });
+
         //表单校验初始化参数
         $(".form-list").Validform({
             btnSubmit: '#btnSave',
