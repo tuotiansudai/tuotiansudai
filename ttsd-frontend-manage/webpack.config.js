@@ -162,7 +162,7 @@ plugins.push(new AssetsPlugin({
 
 //happypack利用缓存使rebuild更快
 plugins.push(createHappyPlugin('jsx', ['babel']));
-plugins.push(createHappyPlugin('sass', ['css!sass']));
+plugins.push(createHappyPlugin('sass', ['css!postcss!sass']));
 
 plugins.push(new webpack.DllReferencePlugin({
 	context: __dirname,
@@ -201,7 +201,7 @@ var myObject = objectAssign(commonOptions, {
 			exclude: /node_modules/
 		},{
 			test: /\.css$/,
-			loader: ExtractTextPlugin.extract("style-loader", "css-loader")
+			loader: ExtractTextPlugin.extract("style-loader", "css-loadermodules!postcss-loader")
 		},{
 			test: /\.scss$/,
 			loader: ExtractTextPlugin.extract("style", "happypack/loader?id=sass")
