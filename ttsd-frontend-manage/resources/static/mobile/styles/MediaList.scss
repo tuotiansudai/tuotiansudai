@@ -1,5 +1,6 @@
-.media-center-frame {
+.main {
 	background: #f5f5f5;
+	:global {
 		.swiper-wrapper  a {
 			display: block;
 		}
@@ -80,6 +81,7 @@
 			height: 600px;/*px*/
 			overflow: hidden;
 		}
+	}
 
 	@keyframes spinner {
 		0% {

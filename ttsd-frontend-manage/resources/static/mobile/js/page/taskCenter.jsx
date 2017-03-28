@@ -1,8 +1,8 @@
+import { main } from 'mobileStyle/taskCenter.scss';
 import React from 'react';
 import IScroll from 'iscroll/build/iscroll-probe';
 import imagesLoaded from 'imagesloaded';
 import classNames from 'classnames';
-import 'mobileStyle/taskCenter.scss';
 import {mobileCommon} from 'mobileJsModule/mobileCommon';
 import task_banner from 'mobileImages/task-banner.png';
 
@@ -234,7 +234,7 @@ class taskCenter extends React.Component {
 	render() { 
         let loading = null;
   		return (
-			<div className="task-center-frame" >
+			<div className={main} >
                 <div className="bodyCon" ref='mainConWrap'>
                 <div className="clearfix">
                     <div className="image-top-head" id="imageTopHead" ref="imageTopHead">

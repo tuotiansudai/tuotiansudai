@@ -1,8 +1,9 @@
-.message-center-frame {
+.main {
   position: absolute;
   width: 100%;
   height: 100%;
   overflow: hidden;
+  :global {
     article {
       font-size: 28px;/*px*/
       position: relative;
@@ -66,5 +67,5 @@
         background:#FF635A;
       }
     }
-
+  }
 }

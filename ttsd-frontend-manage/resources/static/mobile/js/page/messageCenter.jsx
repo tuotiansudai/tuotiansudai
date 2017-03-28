@@ -1,4 +1,5 @@
-import "mobileStyle/messageCenter.scss";
+import { main } from "mobileStyle/messageCenter.scss";
+
 import React from "react";
 import IScroll from "iscroll";
 import imagesLoaded from "imagesloaded";
@@ -58,7 +59,7 @@ class messageCenter extends React.Component {
             btn=<section className="info clearfix"><a onTouchTap={this.goTo.bind(this)} data-href={this.state.data.appUrl}>去看看</a></section>;
         }
         return (
-            <div ref="scrollWrap" className="message-center-frame">
+            <div ref="scrollWrap" className={main}>
                 <article>
                     <section className="meta">
                         <h1 dangerouslySetInnerHTML={{__html: this.state.data.title}}></h1>

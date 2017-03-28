@@ -1,161 +1,167 @@
-.task-center-frame {
-    background: #ffefaf;
-    .bodyCon {
-        height:auto;
-        overflow: auto;
-        transform:translate3d(0,0,0);
-    }
-    .loading {
-        text-align:center;
-        font-size:30px;
-        i { color:#fff;}
-    }
-    .title-newer {
-        height:60px;
-        background: url('../images/title-one.png') center center no-repeat;
-        background-size: 100%;
-        margin-bottom:20px;
-    }
-    .title-finished {
-        height:60px;
-        background: url('../images/title-two.png') center center no-repeat;
-        background-size: 100%;
-        margin-bottom:20px;
-    }
-    .image-top-head {
-        width: 100%;
-        img {
-            width: 100%;
-        }
-    }
-    .MenuBox {
-        width:50%;
-        z-index:100;
-        height: 90px; /*px*/
-        line-height: 90px;/*px*/
-        margin: 0 auto;
-    }
-    .MenuBox ul {
-        border-radius: 5px;
-        height: 100%;
-        width:100%;
-        margin: 0px auto;
-    }
-    .MenuBox ul .MenuBoxItemNormal {
-        float: left;
-        display: block;
-        cursor: pointer;
-        width: 50%;
-        height:100%;
-        text-align: center;
-        color: #808080;
-        background-color: #fff;
-        font-size: 26px;  /*px*/
-        font-style: normal;
-        &.active {
-            color: #ff473c;
-            border-bottom:1px solid #ff473c;  /*px*/
-        }
-        -webkit-transform: translate3d(0, 0, 0);
-    }
-    .content-box {
-        margin:0 20px;
-    }
-    .task-box {
-        margin-top:0.5rem;
-    }
-
-    .task-list {
-        li {
-            position: relative;
+.main {
+    margin: 0;
+    background-color: #ffefaf;
+    height: auto;
+    overflow: auto;
+    :global {
+        .bodyCon {
             height:auto;
             overflow: auto;
-            text-align: left;
-            background: #fff;
-            border-radius: 20px;
-            margin-bottom: 20px;
+            transform:translate3d(0,0,0);
+        }
 
-            .serial {
-                position: absolute;
-                top:0;
-                left:0;
-                width:70px;/*px*/
-                height:70px;/*px*/
-                color: #fff;
-                font-size: 36px; /*px*/
+        .loading {
+            text-align:center;
+            font-size:30px;
+            i { color:#fff;}
+        }
+        .title-newer {
+            height:60px;
+            background: url('../images/title-one.png') center center no-repeat;
+            background-size: 100%;
+            margin-bottom:20px;
+        }
+        .title-finished {
+            height:60px;
+            background: url('../images/title-two.png') center center no-repeat;
+            background-size: 100%;
+            margin-bottom:20px;
+        }
+        .image-top-head {
+            width: 100%;
+            img {
+                width: 100%;
+            }
+        }
+        .MenuBox {
+            width:50%;
+            z-index:100;
+            height: 90px; /*px*/
+            line-height: 90px;/*px*/
+            margin: 0 auto;
+        }
+        .MenuBox ul {
+            border-radius: 5px;
+            height: 100%;
+            width:100%;
+            margin: 0px auto;
+        }
+        .MenuBox ul .MenuBoxItemNormal {
+            float: left;
+            display: block;
+            cursor: pointer;
+            width: 50%;
+            height:100%;
+            text-align: center;
+            color: #808080;
+            background-color: #fff;
+            font-size: 26px;  /*px*/
+            font-style: normal;
+            &.active {
+                color: #ff473c;
+                border-bottom:1px solid #ff473c;  /*px*/
+            }
+            -webkit-transform: translate3d(0, 0, 0);
+        }
+        .content-box {
+            margin:0 20px;
+        }
+        .task-box {
+            margin-top:0.5rem;
+        }
 
-                border-bottom-right-radius: 70px;/*px*/
+        .task-list {
+            li {
+                position: relative;
+                height:auto;
+                overflow: auto;
                 text-align: left;
-                padding-left: 10px;/*px*/
-                box-sizing: border-box;
-            }
-            &.completed {
+                background: #fff;
+                border-radius: 20px;
+                margin-bottom: 20px;
+
                 .serial {
-                    background:#e5e5e5;
-                }
-            }
-            &.working {
-                .serial {
-                    background:#ff635a;
-                }
-            }
-            .detail {
-                display: inline-block;
-                padding: 0.2rem 0 0.2rem 1rem;
-                color: #999;
-                text-align: left;
-                font-size: 26px; /*px*/
-                b {
-                    font-size: 32px; /*px*/
-                    display: block;
-                    color: #525252;
-                }
-                em.reward {
-                    color: #ffcc00;
-                    font-size: 24px; /*px*/
+                    position: absolute;
+                    top:0;
+                    left:0;
+                    width:70px;/*px*/
+                    height:70px;/*px*/
+                    color: #fff;
+                    font-size: 36px; /*px*/
+
+                    border-bottom-right-radius: 70px;/*px*/
                     text-align: left;
-                    margin:15px 0;/*px*/
-                    border:1px solid #ffcc00;
-                    border-radius:20px;/*px*/
-                    padding:3px 15px 3px 50px;/*px*/
-                    display: block;
-                    background: url('../images/money-icon.png') left top no-repeat;
-                    background-size: contain;
-                    span{
-                        color:#ff635a;
-                    }
-                    img{
-                        vertical-align: middle;
-                        margin-right:5px;/*px*/
-                        margin-bottom: 4px;/*px*/
+                    padding-left: 10px;/*px*/
+                    box-sizing: border-box;
+                }
+                &.completed {
+                    .serial {
+                        background:#e5e5e5;
                     }
                 }
-            }
-            &.advance-task {
+                &.working {
+                    .serial {
+                        background:#ff635a;
+                    }
+                }
                 .detail {
-                    padding-left:0.4rem;
+                    display: inline-block;
+                    padding: 0.2rem 0 0.2rem 1rem;
+                    color: #999;
+                    text-align: left;
+                    font-size: 26px; /*px*/
+                    b {
+                        font-size: 32px; /*px*/
+                        display: block;
+                        color: #525252;
+                    }
+                    em.reward {
+                        color: #ffcc00;
+                        font-size: 24px; /*px*/
+                        text-align: left;
+                        margin:15px 0;/*px*/
+                        border:1px solid #ffcc00;
+                        border-radius:20px;/*px*/
+                        padding:3px 15px 3px 50px;/*px*/
+                        display: block;
+                        background: url('../images/money-icon.png') left top no-repeat;
+                        background-size: contain;
+                        span{
+                            color:#ff635a;
+                        }
+                        img{
+                            vertical-align: middle;
+                            margin-right:5px;/*px*/
+                            margin-bottom: 4px;/*px*/
+                        }
+                    }
                 }
-            }
-            .btn-action {
-                display: inline-block;
-                width: 150px;
-                height: 70px;
-                line-height: 70px;
-                background-color: #ff5959;
-                border-radius: 0.15rem;
-                font-size: 28px;  /*px*/
-                color: #fff;
-                font-style: normal;
-                position:absolute;
-                right: 20px;
-                top: 30%;
-                border:0px;
-                text-align: center;
-                &.disabled {
-                    background-color: #cccccc;
+                &.advance-task {
+                    .detail {
+                        padding-left:0.4rem;
+                    }
+                }
+                .btn-action {
+                    display: inline-block;
+                    width: 150px;
+                    height: 70px;
+                    line-height: 70px;
+                    background-color: #ff5959;
+                    border-radius: 0.15rem;
+                    font-size: 28px;  /*px*/
+                    color: #fff;
+                    font-style: normal;
+                    position:absolute;
+                    right: 20px;
+                    top: 30%;
+                    border:0px;
+                    text-align: center;
+                    &.disabled {
+                        background-color: #cccccc;
+                    }
                 }
             }
         }
-
     }
+
 }

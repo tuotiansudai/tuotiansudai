@@ -1,5 +1,4 @@
-import 'mobileStyle/MediaList.scss';
-
+import { main, spinner } from 'mobileStyle/MediaList.scss';
 import React from 'react';
 import { hashHistory } from 'react-router';
 import IScroll from 'iscroll';
@@ -164,7 +163,7 @@ class MediaList extends React.Component {
 			loading = <li style={{textAlign: 'center', fontSize: 50}}><i className={spinner + ' fa fa-spinner'} aria-hidden="true"></i></li>;
 		}
 		return (
-			<section className='media-center-frame'>
+			<section className={main}>
 				<div className="banner" ref="banner">
 					<Carousel data={this.state.bannerData} />
 				</div>
