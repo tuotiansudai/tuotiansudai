@@ -2,7 +2,9 @@ package com.tuotiansudai.paywrapper.service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.base.Joiner;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.*;
@@ -231,6 +233,9 @@ public class InvestServiceImpl implements InvestService {
                     ProjectTransferNopwdResponseModel.class);
             payDataDto.setStatus(responseModel.isSuccess());
             payDataDto.setCode(responseModel.getRetCode());
+            payDataDto.setExtraValues(Maps.newHashMap(ImmutableMap.<String, String>builder()
+                    .put("order_id", String.valueOf(investModel.getId()))
+                    .build()));
             payDataDto.setMessage(responseModel.getRetMsg());
         } catch (PayException e) {
             logger.error(e.getLocalizedMessage(), e);

@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.text.MessageFormat;
 import java.util.List;
@@ -92,30 +91,25 @@ public class TransferApplicationController {
     }
 
     @RequestMapping(path = "/purchase", method = RequestMethod.POST)
-    public ModelAndView purchase(@Valid @ModelAttribute InvestDto investDto, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
+    public ModelAndView purchase(@Valid @ModelAttribute InvestDto investDto, RedirectAttributes redirectAttributes) {
         ModelAndView modelAndView = new ModelAndView("/error/404", "responsive", true);
-        String errorMessage = "投资失败，请联系客服！";
         AccountModel accountModel = accountMapper.findByLoginName(LoginUserInfo.getLoginName());
-        TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(Long.parseLong(investDto.getTransferInvestId()));
+        TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(Long.parseLong(investDto.getTransferApplicationId()));
         investDto.setAmount(String.valueOf(transferApplicationModel.getTransferAmount()));
         if (accountModel.isNoPasswordInvest()) {
             try {
                 investDto.setLoginName(LoginUserInfo.getLoginName());
                 BaseDto<PayDataDto> baseDto = transferService.noPasswordTransferPurchase(investDto);
                 if (baseDto.getData().getStatus()) {
-                    httpServletRequest.getSession().setAttribute("noPasswordInvestSuccess", true);
-                    return new ModelAndView("redirect:/transfer/transfer-invest-success");
+                    return new ModelAndView(MessageFormat.format("redirect:/callback/transfer-invest-success?order_id={0}", baseDto.getData().getExtraValues().get("order_id")));
                 }
-                if (baseDto.getData() != null) {
-                    errorMessage = baseDto.getData().getMessage();
-                }
+                redirectAttributes.addFlashAttribute("errorMessage", baseDto.getData().getMessage());
             } catch (InvestException e) {
-                errorMessage = e.getMessage();
+                redirectAttributes.addFlashAttribute("errorMessage", "投资失败，请联系客服！");
             }
 
-            redirectAttributes.addFlashAttribute("errorMessage", errorMessage);
             redirectAttributes.addFlashAttribute("investAmount", investDto.getAmount());
-            modelAndView.setViewName(MessageFormat.format("redirect:/transfer/{0}", investDto.getTransferInvestId()));
+            modelAndView.setViewName(MessageFormat.format("redirect:/transfer/{0}", investDto.getTransferApplicationId()));
         } else {
             try {
                 investDto.setLoginName(LoginUserInfo.getLoginName());
@@ -123,26 +117,16 @@ public class TransferApplicationController {
                 if (baseDto.isSuccess() && baseDto.getData().getStatus()) {
                     return new ModelAndView("/pay", "pay", baseDto);
                 }
-                if (baseDto.getData() != null) {
-                    errorMessage = baseDto.getData().getMessage();
-                }
+
+                redirectAttributes.addFlashAttribute("errorMessage", baseDto.getData().getMessage());
             } catch (InvestException e) {
-                errorMessage = e.getMessage();
+                redirectAttributes.addFlashAttribute("errorMessage", "投资失败，请联系客服！");
             }
 
-            redirectAttributes.addFlashAttribute("errorMessage", errorMessage);
             redirectAttributes.addFlashAttribute("investAmount", investDto.getAmount());
-            modelAndView.setViewName(MessageFormat.format("redirect:/transfer/{0}", investDto.getTransferInvestId()));
+            modelAndView.setViewName(MessageFormat.format("redirect:/transfer/{0}", investDto.getTransferApplicationId()));
 
         }
         return modelAndView;
     }
-
-    @RequestMapping(path = "/transfer-invest-success", method = RequestMethod.GET)
-    public ModelAndView transferInvestSuccess() {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("/transfer-invest-success");
-        return modelAndView;
-    }
-
 }

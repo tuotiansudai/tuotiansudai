@@ -1,10 +1,13 @@
 package com.tuotiansudai.web.controller;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.enums.AsyncUmPayService;
+import com.tuotiansudai.service.InvestService;
+import com.tuotiansudai.util.AmountConverter;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,29 +29,40 @@ public class FrontCallbackController {
 
     private final PayWrapperClient payWrapperClient;
 
+    private final InvestService investService;
+
     @Autowired
-    public FrontCallbackController(PayWrapperClient payWrapperClient) {
+    public FrontCallbackController(PayWrapperClient payWrapperClient, InvestService investService) {
         this.payWrapperClient = payWrapperClient;
+        this.investService = investService;
     }
 
     @RequestMapping(value = "/{service}", method = RequestMethod.GET)
     public ModelAndView parseCallback(@PathVariable String service, HttpServletRequest request) {
         logger.info(MessageFormat.format("front callback url: {0}", request.getRequestURL()));
 
-        PayDataDto data = payWrapperClient.validateFrontCallback(parseRequestParameters(request)).getData();
-        if (!data.getStatus() && Strings.isNullOrEmpty(data.getCode())) {
-            return new ModelAndView("/error/404");
-        }
+        Map<String, String> params = parseRequestParameters(request);
+
+        PayDataDto data = new PayDataDto();
+        data.setStatus(true);
 
         try {
             AsyncUmPayService asyncUmPayService = AsyncUmPayService.valueOf(service.toUpperCase());
-            if (Strings.isNullOrEmpty(asyncUmPayService.getWebRetCallbackPath())) {
+
+            if (!Lists.newArrayList(AsyncUmPayService.INVEST_PROJECT_TRANSFER_NOPWD, AsyncUmPayService.INVEST_TRANSFER_PROJECT_TRANSFER_NOPWD).contains(asyncUmPayService)) {
+                data = payWrapperClient.validateFrontCallback(params).getData();
+            }
+
+            if (Strings.isNullOrEmpty(asyncUmPayService.getWebRetCallbackPath()) || (!data.getStatus() && Strings.isNullOrEmpty(data.getCode()))) {
                 return new ModelAndView("/error/404");
             }
 
             ModelAndView modelAndView = new ModelAndView("/front-callback-success");
             modelAndView.addObject("error", data.getStatus() ? null : data.getMessage());
             modelAndView.addObject("service", asyncUmPayService.getServiceName());
+            if (Lists.newArrayList(AsyncUmPayService.INVEST_PROJECT_TRANSFER, AsyncUmPayService.INVEST_PROJECT_TRANSFER_NOPWD).contains(asyncUmPayService)) {
+                modelAndView.addObject("amount", AmountConverter.convertCentToString(investService.findById(Long.valueOf(params.get("order_id"))).getAmount()));
+            }
 
             return modelAndView;
         } catch (IllegalArgumentException e) {

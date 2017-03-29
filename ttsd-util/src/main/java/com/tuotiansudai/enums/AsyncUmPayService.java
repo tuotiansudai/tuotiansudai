@@ -18,10 +18,6 @@ public enum AsyncUmPayService {
      */
     NO_PASSWORD_INVEST_PTP_MER_BIND_AGREEMENT("ptp_mer_bind_agreement", "account", "callback/no_password_invest_ptp_mer_bind_agreement", "no_password_invest_notify", "tuotian://sign/{0}"),
     /**
-     * 签约自动投资协议
-     */
-    AUTO_INVEST_PTP_MER_BIND_AGREEMENT("ptp_mer_bind_agreement", "account", "callback/auto_invest_ptp_mer_bind_agreement", "auto_invest_notify", "tuotian://sign/{0}"),
-    /**
      * 签约自动还款协议
      */
     AUTO_REPAY_PTP_MER_BIND_AGREEMENT("ptp_mer_bind_agreement", "account", "callback/auto_repay_ptp_mer_bind_agreement", "auto_repay_notify", "tuotian://sign/{0}"),
@@ -38,7 +34,7 @@ public enum AsyncUmPayService {
     /**
      * 验密投资标的转账
      */
-    INVEST_PROJECT_TRANSFER("project_transfer", "invest-success", "callback/invest_project_transfer", "invest_notify", "tuotian://invest/{0}"),
+    INVEST_PROJECT_TRANSFER("project_transfer", "callback/invest_project_transfer", "callback/invest_project_transfer", "invest_notify", "tuotian://invest/{0}"),
     /**
      * 直投(债权购买)超投标的转账
      */
@@ -74,7 +70,7 @@ public enum AsyncUmPayService {
     /**
      * 债权购买标的转账
      */
-    INVEST_TRANSFER_PROJECT_TRANSFER("project_transfer", "account", "callback/invest_transfer_project_transfer", "invest_transfer_notify", "tuotian://invest-transfer/{0}"),
+    INVEST_TRANSFER_PROJECT_TRANSFER("project_transfer", "callback/invest_transfer_project_transfer", "callback/invest_transfer_project_transfer", "invest_transfer_notify", "tuotian://invest-transfer/{0}"),
     /**
      * 债权购买返款标的转账
      */
@@ -88,11 +84,11 @@ public enum AsyncUmPayService {
     /**
      * 无密投资标的转入
      */
-    INVEST_PROJECT_TRANSFER_NOPWD("project_transfer_nopwd", "invest-success", "callback/invest_project_transfer_nopwd", "invest_notify", "tuotian://invest/{0}"),
+    INVEST_PROJECT_TRANSFER_NOPWD("project_transfer_nopwd", "callback/invest_project_transfer_nopwd", "callback/invest_project_transfer_nopwd", "invest_notify", "tuotian://invest/{0}"),
     /**
      * 无密债权购买标的转入
      */
-    INVEST_TRANSFER_PROJECT_TRANSFER_NOPWD("project_transfer_nopwd", "invest-success", "callback/invest_transfer_project_transfer_nopwd", "invest_transfer_notify", "tuotian://invest-transfer/{0}"),
+    INVEST_TRANSFER_PROJECT_TRANSFER_NOPWD("project_transfer_nopwd", "callback/invest_transfer_project_transfer_nopwd", "callback/invest_transfer_project_transfer_nopwd", "invest_transfer_notify", "tuotian://invest-transfer/{0}"),
     /**
      * 无密还款标的转入
      */

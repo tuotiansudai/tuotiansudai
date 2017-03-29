@@ -46,8 +46,7 @@ public class MobileAppInvestServiceImpl implements MobileAppInvestService {
 
             if (baseDto.getData().getStatus()) {
                 BaseResponseDto<InvestNoPassResponseDataDto> responseDto = new BaseResponseDto<>(ReturnMessage.SUCCESS);
-                InvestModel latestSuccessInvest = investService.findLatestSuccessInvest(investDto.getLoginName());
-                responseDto.setData(new InvestNoPassResponseDataDto(MessageFormat.format("{0}/{1}?order_id={2}", domainName, AsyncUmPayService.INVEST_PROJECT_TRANSFER_NOPWD.getMobileRetCallbackPath(), String.valueOf(latestSuccessInvest.getId()))));
+                responseDto.setData(new InvestNoPassResponseDataDto(MessageFormat.format("{0}/{1}?order_id={2}", domainName, AsyncUmPayService.INVEST_PROJECT_TRANSFER_NOPWD.getMobileRetCallbackPath(), baseDto.getData().getExtraValues().get("order_id"))));
                 return responseDto;
             }
             return new BaseResponseDto<>(ReturnMessage.INVEST_FAILED.getCode(), ReturnMessage.INVEST_FAILED.getMsg() + ":" + baseDto.getData().getMessage());
@@ -69,8 +68,8 @@ public class MobileAppInvestServiceImpl implements MobileAppInvestService {
                     userCouponIds += String.valueOf(userCouponId);
                 }
                 logger.error(MessageFormat.format("[MobileAppInvestServiceImpl][invest] invest failed!Maybe service cannot connect to payWrapper. " +
-                                "investDto:loanId:{0}, transferInvestId:{1}, loginName:{2}, amount:{3}, userCouponIds:{4} channel:{5}, source:{6}, noPassword:{7}",
-                        investDto.getLoanId(), investDto.getTransferInvestId(), investDto.getLoginName(), investDto.getAmount(), userCouponIds, investDto.getChannel(),
+                                "investDto:loanId:{0}, transferApplicationInvestId:{1}, loginName:{2}, amount:{3}, userCouponIds:{4} channel:{5}, source:{6}, noPassword:{7}",
+                        investDto.getLoanId(), investDto.getTransferApplicationId(), investDto.getLoginName(), investDto.getAmount(), userCouponIds, investDto.getChannel(),
                         investDto.getSource(), investDto.isNoPassword()));
                 responseDto.setCode(ReturnMessage.NO_MATCHING_OBJECTS_EXCEPTION.getCode());
                 responseDto.setMessage(ReturnMessage.NO_MATCHING_OBJECTS_EXCEPTION.getMsg());

@@ -23,9 +23,7 @@ public class PtpMerBindAgreementRequestModel extends BaseAsyncRequestModel {
         this.service = asyncUmPayService.getServiceName();
         this.userId = userId;
         this.setNotifyUrl(MessageFormat.format("{0}/{1}", CALLBACK_HOST_PROPS.get("pay.callback.back.host"), asyncUmPayService.getNotifyCallbackPath()));
-        if (dto.isAutoInvest() || dto.isNoPasswordInvest()) {
-            this.userBindAgreementList = AgreementType.ZTBB0G00;
-        } else if (dto.isFastPay()) {
+        if (dto.isFastPay()) {
             this.userBindAgreementList = AgreementType.ZKJP0700;
         } else if (dto.isAutoRepay()) {
             this.userBindAgreementList = AgreementType.ZHKB0H01;
@@ -45,9 +43,6 @@ public class PtpMerBindAgreementRequestModel extends BaseAsyncRequestModel {
     private static AsyncUmPayService getService(AgreementDto dto) {
         if (dto.isNoPasswordInvest()) {
             return AsyncUmPayService.NO_PASSWORD_INVEST_PTP_MER_BIND_AGREEMENT;
-        }
-        if (dto.isAutoInvest() && !dto.isNoPasswordInvest()) {
-            return AsyncUmPayService.AUTO_INVEST_PTP_MER_BIND_AGREEMENT;
         }
         if (dto.isAutoRepay()) {
             return AsyncUmPayService.AUTO_REPAY_PTP_MER_BIND_AGREEMENT;

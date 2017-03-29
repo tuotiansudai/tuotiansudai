@@ -88,8 +88,7 @@ public class MobileAppTransferServiceImpl implements MobileAppTransferService {
             if (payDataDto.getData().getStatus()) {
                 BaseResponseDto<InvestNoPassResponseDataDto> baseResponseDto = new BaseResponseDto<>(ReturnMessage.SUCCESS);
 
-                InvestModel latestSuccessInvest = investMapper.findLatestSuccessInvest(investDto.getLoginName());
-                String url = MessageFormat.format("{0}/{1}?order_id={2}", domainName, AsyncUmPayService.INVEST_TRANSFER_PROJECT_TRANSFER_NOPWD.getMobileRetCallbackPath(), String.valueOf(latestSuccessInvest.getId()));
+                String url = MessageFormat.format("{0}/{1}?order_id={2}", domainName, AsyncUmPayService.INVEST_TRANSFER_PROJECT_TRANSFER_NOPWD.getMobileRetCallbackPath(), payDataDto.getData().getExtraValues().get("order_id"));
                 baseResponseDto.setData(new InvestNoPassResponseDataDto(url));
                 return baseResponseDto;
             }
@@ -145,7 +144,7 @@ public class MobileAppTransferServiceImpl implements MobileAppTransferService {
         investDto.setLoanId(String.valueOf(transferApplicationModel.getLoanId()));
         investDto.setLoginName(transferPurchaseRequestDto.getBaseParam().getUserId());
         investDto.setChannel(mobileAppChannelService.obtainChannelBySource(transferPurchaseRequestDto.getBaseParam()));
-        investDto.setTransferInvestId(transferPurchaseRequestDto.getTransferApplicationId());
+        investDto.setTransferApplicationId(transferPurchaseRequestDto.getTransferApplicationId());
         return investDto;
     }
 

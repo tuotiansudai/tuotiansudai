@@ -158,7 +158,6 @@ public class MobileAppFrontCallBackController {
                 .put(AsyncUmPayService.INVEST_TRANSFER_PROJECT_TRANSFER_NOPWD, investValuesGenerator)
                 .put(AsyncUmPayService.MEMBERSHIP_PRIVILEGE_PURCHASE_TRANSFER_ASYN, memberPrivilegePurchaseValuesGenerator)
                 .put(AsyncUmPayService.NO_PASSWORD_INVEST_PTP_MER_BIND_AGREEMENT, bindAgreementValuesGenerator)
-                .put(AsyncUmPayService.AUTO_INVEST_PTP_MER_BIND_AGREEMENT, bindAgreementValuesGenerator)
                 .put(AsyncUmPayService.AUTO_REPAY_PTP_MER_BIND_AGREEMENT, bindAgreementValuesGenerator)
                 .put(AsyncUmPayService.FAST_PAY_MER_BIND_AGREEMENT, bindAgreementValuesGenerator)
                 .build());

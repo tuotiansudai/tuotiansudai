@@ -83,15 +83,11 @@ public class InvestController {
 
     @RequestMapping(path = "/no-password-invest", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<PayDataDto> invest(HttpServletRequest httpServletRequest, @Valid @ModelAttribute InvestDto investDto) {
+    public BaseDto<PayDataDto> invest(@Valid @ModelAttribute InvestDto investDto) {
         try {
             investDto.setSource(Source.WEB);
             investDto.setLoginName(LoginUserInfo.getLoginName());
-            BaseDto<PayDataDto> dto = investService.noPasswordInvest(investDto);
-            if (dto.getData().getStatus()) {
-                httpServletRequest.getSession().setAttribute("noPasswordInvestSuccess", true);
-            }
-            return dto;
+            return investService.noPasswordInvest(investDto);
         } catch (InvestException e) {
             BaseDto<PayDataDto> dto = new BaseDto<>();
             PayDataDto payDataDto = new PayDataDto();
@@ -186,39 +182,6 @@ public class InvestController {
         String loginName = LoginUserInfo.getLoginName();
         long expectedInterest = couponService.estimateCouponExpectedInterest(loginName, loanId, couponIds, amount);
         return AmountConverter.convertCentToString(expectedInterest);
-    }
-
-    @RequestMapping(path = "/invest-success", method = RequestMethod.GET)
-    public ModelAndView investSuccess(HttpServletRequest httpServletRequest) {
-        ModelAndView modelAndView = new ModelAndView("/error/404", "responsive", true);
-
-        InvestModel latestSuccessInvest = investService.findLatestSuccessInvest(LoginUserInfo.getLoginName());
-        if (latestSuccessInvest == null) {
-            return modelAndView;
-        }
-
-        String referer = httpServletRequest.getHeader("Referer");
-
-        if (!Strings.isNullOrEmpty(referer) && referer.equalsIgnoreCase("http://pay.soopay.net/spay/pay/p2pProjectTransfer.do")) {
-            modelAndView.setViewName("/invest-success");
-            modelAndView.addObject("amount", AmountConverter.convertCentToString(latestSuccessInvest.getAmount()));
-            return modelAndView;
-        }
-
-        if (httpServletRequest.getSession().getAttribute("noPasswordInvestSuccess") != null) {
-            httpServletRequest.getSession().removeAttribute("noPasswordInvestSuccess");
-            modelAndView.setViewName("/invest-success");
-            modelAndView.addObject("amount", AmountConverter.convertCentToString(latestSuccessInvest.getAmount()));
-            return modelAndView;
-        }
-
-        if (latestSuccessInvest.getStatus() == InvestStatus.SUCCESS
-                && Seconds.secondsBetween(new DateTime(latestSuccessInvest.getTradingTime()), new DateTime()).getSeconds() < 10) {
-            modelAndView.setViewName("/invest-success");
-            modelAndView.addObject("amount", AmountConverter.convertCentToString(latestSuccessInvest.getAmount()));
-        }
-
-        return modelAndView;
     }
 
     @RequestMapping(path = "/get-membership-preference", method = RequestMethod.GET)

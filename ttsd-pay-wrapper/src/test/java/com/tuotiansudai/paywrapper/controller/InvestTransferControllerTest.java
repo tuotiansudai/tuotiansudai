@@ -178,7 +178,7 @@ public class InvestTransferControllerTest {
         investDto.setLoanId("11111");
         investDto.setAmount("10000");
         investDto.setLoginName(mockInvestLoginName);
-        investDto.setTransferInvestId(String.valueOf(transferInvestId));
+        investDto.setTransferApplicationId(String.valueOf(transferInvestId));
         investDto.setSource(Source.WEB);
 
         String requestJson = objectMapper.writeValueAsString(investDto);
