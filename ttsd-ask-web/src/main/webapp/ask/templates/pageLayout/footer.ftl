@@ -43,7 +43,7 @@
             <#list linkExchangeList as linkExchange>
                 <#if linkExchange.webSiteTypes?contains("ASK")>
                     <li><a href="${linkExchange.linkUrl}" <#if linkExchange.noFollow>rel="nofollow"</#if>
-                       target="_blank" title="${linkExchange.title}">${linkExchange.title}</a></li>
+                       target="_blank" title="${linkExchange.title}${linkExchange.webSiteTypes!}">${linkExchange.title}</a></li>
                 </#if>
             </#list>
         </#if>
