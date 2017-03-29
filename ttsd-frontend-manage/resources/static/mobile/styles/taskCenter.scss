@@ -36,8 +36,8 @@
         .MenuBox {
             width:50%;
             z-index:100;
-            height: 45px; /*px*/
-            line-height: 45px;/*px*/
+            height: 45px;
+            line-height: 45px;
             margin: 0 auto;
         }
         .MenuBox ul {
@@ -55,11 +55,11 @@
             text-align: center;
             color: #808080;
             background-color: #fff;
-            font-size: 13px;  /*px*/
+            font-size: 13px;
             font-style: normal;
             &.active {
                 color: #ff473c;
-                border-bottom:1px solid #ff473c;  /*px*/
+                border-bottom:1px solid #ff473c;
             }
             -webkit-transform: translate3d(0, 0, 0);
         }
@@ -67,7 +67,7 @@
             margin:0 10px;
         }
         .task-box {
-            margin-top:0.5rem;
+            margin-top:0px;
         }
 
         .task-list {
@@ -84,14 +84,14 @@
                     position: absolute;
                     top:0;
                     left:0;
-                    width:35px;/*px*/
-                    height:35px;/*px*/
+                    width:35px;
+                    height:35px;
                     color: #fff;
-                    font-size: 18px; /*px*/
+                    font-size: 18px;
 
-                    border-bottom-right-radius: 70px;/*px*/
+                    border-bottom-right-radius: 70px;
                     text-align: left;
-                    padding-left: 5px;/*px*/
+                    padding-left: 5px;
                     box-sizing: border-box;
                 }
                 &.completed {
@@ -106,24 +106,27 @@
                 }
                 .detail {
                     display: inline-block;
-                    padding: 0.2rem 0 0.2rem 1rem;
+                    padding: 10px 0px 10px 32px;
                     color: #999;
                     text-align: left;
-                    font-size: 13px; /*px*/
+                    font-size: 13px;
+                    i {
+                        display: block;
+                    }
                     b {
-                        font-size: 16px; /*px*/
+                        font-size: 16px;
                         display: block;
                         color: #525252;
                     }
                     em.reward {
                         color: #ffcc00;
-                        font-size: 12px; /*px*/
+                        font-size: 12px;
                         text-align: left;
-                        margin:8px 0;/*px*/
+                        margin:8px 0;
                         border:1px solid #ffcc00;
-                        border-radius:10px;/*px*/
-                        padding:2px 7px 2px 25px;/*px*/
-                        display: block;
+                        border-radius:10px;
+                        padding:2px 7px 2px 25px;
+                        display: inline-block;
                         background: url('../images/money-icon.png') left top no-repeat;
                         background-size: contain;
                         span{
@@ -131,24 +134,24 @@
                         }
                         img{
                             vertical-align: middle;
-                            margin-right:5px;/*px*/
-                            margin-bottom: 4px;/*px*/
+                            margin-right:5px;
+                            margin-bottom: 4px;
                         }
                     }
                 }
                 &.advance-task {
                     .detail {
-                        padding-left:0.4rem;
+                        padding-left:12px;
                     }
                 }
                 .btn-action {
                     display: inline-block;
-                    width: 750px;
+                    padding: 0 10px;
                     height: 35px;
                     line-height: 35px;
                     background-color: #ff5959;
                     border-radius: 8px;
-                    font-size: 14px;  /*px*/
+                    font-size: 14px;
                     color: #fff;
                     font-style: normal;
                     position:absolute;

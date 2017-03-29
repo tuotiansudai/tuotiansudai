@@ -111,11 +111,11 @@ else if(NODE_ENV=='dev') {
 	plugins.push(new webpack.HotModuleReplacementPlugin());
 
 	// 接口代理
-	var proxyList = ['media-center/*'];
+	var proxyList = ['media-center/*','task-center/*'];
 	var proxyObj = {};
 	proxyList.forEach(function(value) {
 		proxyObj[value] = {
-			target: 'http://localhost:3009',
+			target: 'http://localhost:9080',
 			changeOrigin: true,
 			secure: false
 		};

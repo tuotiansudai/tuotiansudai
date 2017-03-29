@@ -138,15 +138,15 @@ class taskCenter extends React.Component {
         let OngoingBoxTop = document.getElementById('OngoingBox').offsetTop;
         if (!scrollY && tabHeaderDom.getAttribute('style')) {
 
-            let menuScrollTop = OngoingBoxTop - tabHeaderDom.offsetHeight * 0.27;
+            let menuScrollTop = OngoingBoxTop - tabHeaderDom.offsetHeight * 0.26;
             let conScrollTop = OngoingBoxTop - tabHeaderDom.offsetHeight;
 
             this.myScroll.scrollTo(0, -conScrollTop, 0);
-            tabHeaderDom.setAttribute('style', 'position:absolute;top:' + menuScrollTop + 'px;width:100%;left:0;height:1rem; line-height:1rem');
+            tabHeaderDom.setAttribute('style', 'position:absolute;top:' + menuScrollTop + 'px;width:100%;left:0;');
         }
         else if (scrollY && scrollY >= conOffsetTop) {
-            let yTop = scrollY + tabHeaderDom.offsetHeight * 0.30;
-            tabHeaderDom.setAttribute('style', 'position:absolute;top:' + yTop + 'px;width:100%;left:0;height:1rem; line-height:1rem');
+            let yTop = scrollY + tabHeaderDom.offsetHeight * 0.26;
+            tabHeaderDom.setAttribute('style', 'position:absolute;top:' + yTop + 'px;width:100%;left:0;');
         }
         else if (scrollY && scrollY < conOffsetTop) {
             tabHeaderDom.removeAttribute('style');
