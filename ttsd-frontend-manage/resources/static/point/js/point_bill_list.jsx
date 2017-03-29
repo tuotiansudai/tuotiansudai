@@ -2,6 +2,7 @@ require('pointStyle/point_bill.scss');
 require('publicJs/plugins/daterangepicker.scss');
 let tpl = require('art-template/dist/template');
 let moment = require('moment');
+let commonFun= require('publicJs/commonFun');
 require('webJsModule/pagination');
 require('publicJs/plugins/jquery.daterangepicker-0.0.7.js');
 

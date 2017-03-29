@@ -1,4 +1,5 @@
 require('pointStyle/point_detail.scss');
+let commonFun= require('publicJs/commonFun');
 var $pointDetail = $('#pointDetail');
 var $exchangeTip = $('#exchangeTip');
 var $countList=$('.count-list',$pointDetail),
@@ -44,24 +45,19 @@ $getBtn.on('click', function (event) {
 	if($self.hasClass('disabled')) {
 		return;
 	}
-	$.ajax({
-		url: '/point-shop/hasEnoughGoods',
-		type: 'POST',
-		dataType: 'json',
-		data: {
-			id: idString,
-			goodsType: typeString,
-			amount: $numText.val()
-		}
-	})
-		.done(function (data) {
-			if (data.data.status) {
-				location.href = '/point-shop/order/' + idString + '/' + typeString + '/' + $numText.val();
-			} else {
-				layer.msg(data.data.message);
-			}
-		})
-		.fail(function (data) {
-			layer.msg('请求失败，请重试！');
-		});
+    commonFun.useAjax({
+        url:'/point-shop/hasEnoughGoods',
+        data: {
+            id: idString,
+            goodsType: typeString,
+            amount: $numText.val()
+        },
+        type:'POST',
+    },function(data){
+        if (data.data.status) {
+            location.href = '/point-shop/order/' + idString + '/' + typeString + '/' + $numText.val();
+        } else {
+            layer.msg(data.data.message);
+        }
+    });
 });

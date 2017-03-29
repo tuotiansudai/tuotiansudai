@@ -2,6 +2,7 @@ define([], function () {
     require('pointStyle/module/_nine_lottery.scss');
     require('pointStyle/module/_gift_circle_tip.scss');
     let tpl = require('art-template/dist/template');
+    let commonFun= require('publicJs/commonFun');
     var $pointContainerFrame = $('#pointContainer'),
         tipGroupObj = {};
     //点击切换按钮
@@ -88,123 +89,105 @@ define([], function () {
             return false;
         },
         getLottery:function(){
-            $.ajax({
+            commonFun.useAjax({
                 url: '/activity/point-draw/draw',
-                type: 'POST',
-                dataType: 'json',
-                data: {
-                    'activityCategory': 'POINT_SHOP_DRAW_1000'
-                }
-            })
-                .done(function(data) {
-                    if (data.returnCode == 0) {
+                data: {'activityCategory': 'POINT_SHOP_DRAW_1000'},
+                type: 'POST'
+            },function(data) {
+                if (data.returnCode == 0) {
 
-                        switch (data.prize) {
-                            case 'POINT_SHOP_INTEREST_COUPON_2': //0.2加息券
-                                lottery.prizeKind = 7;
-                                break;
-                            case 'POINT_SHOP_RED_ENVELOPE_10': //10元投资红包
-                                lottery.prizeKind = 0;
-                                break;
-                            case 'POINT_SHOP_POINT_500': //500积分
-                                lottery.prizeKind = 1;
-                                break;
-                            case 'POINT_SHOP_PHONE_CHARGE_10': //10元话费
-                                lottery.prizeKind = 5;
-                                break;
-                            case 'OINT_SHOP_JD_100': //100元京东卡
-                                lottery.prizeKind = 2;
-                                break;
-                            case 'POINT_SHOP_POINT_3000': //3000积分
-                                lottery.prizeKind = 6;
-                                break;
-                            case 'POINT_SHOP_INTEREST_COUPON_5': //0.5加息券
-                                lottery.prizeKind = 4;
-                                break;
-                            case 'POINT_SHOP_RED_ENVELOPE_50': //50元投资红包
-                                lottery.prizeKind = 3;
-                                break;
-                        }
-
-                        var prizeType = data.prizeType.toLowerCase();
-                        $(tipGroupObj[prizeType]).find('.prizeValue').text(data.prizeValue);
-                        lottery.speed=100;
-                        lottery.stop();
-                        lottery.click=true;
-                        lottery.prizeType=$(tipGroupObj[prizeType]);
-
-                    } else if (data.returnCode == 1) {
-                        //没有抽奖机会
-                        layer.open({
-                            type: 1,
-                            closeBtn:0,
-                            move:false,
-                            area:['460px','370px'],
-                            title:false,
-                            content: $('#nochance')
-                        });
-                    } else if (data.returnCode == 2) {
-                        //未登录
-                        location.href='/login';
-
-                    } else if (data.returnCode == 3) {
-                        //不在活动时间范围内！
-                        layer.open({
-                            type: 1,
-                            closeBtn:0,
-                            move:false,
-                            area:['460px','370px'],
-                            title:false,
-                            content: $('#expired')
-                        });
-                    } else if (data.returnCode == 4) {
-                        //实名认证
-                        layer.open({
-                            type: 1,
-                            closeBtn:0,
-                            move:false,
-                            area:['460px','370px'],
-                            title:false,
-                            content: $('#authentication')
-                        });
+                    switch (data.prize) {
+                        case 'POINT_SHOP_INTEREST_COUPON_2': //0.2加息券
+                            lottery.prizeKind = 7;
+                            break;
+                        case 'POINT_SHOP_RED_ENVELOPE_10': //10元投资红包
+                            lottery.prizeKind = 0;
+                            break;
+                        case 'POINT_SHOP_POINT_500': //500积分
+                            lottery.prizeKind = 1;
+                            break;
+                        case 'POINT_SHOP_PHONE_CHARGE_10': //10元话费
+                            lottery.prizeKind = 5;
+                            break;
+                        case 'OINT_SHOP_JD_100': //100元京东卡
+                            lottery.prizeKind = 2;
+                            break;
+                        case 'POINT_SHOP_POINT_3000': //3000积分
+                            lottery.prizeKind = 6;
+                            break;
+                        case 'POINT_SHOP_INTEREST_COUPON_5': //0.5加息券
+                            lottery.prizeKind = 4;
+                            break;
+                        case 'POINT_SHOP_RED_ENVELOPE_50': //50元投资红包
+                            lottery.prizeKind = 3;
+                            break;
                     }
-                })
-                .fail(function() {
-                    layer.msg('请求失败，请重试！');
-                });
+
+                    var prizeType = data.prizeType.toLowerCase();
+                    $(tipGroupObj[prizeType]).find('.prizeValue').text(data.prizeValue);
+                    lottery.speed=100;
+                    lottery.stop();
+                    lottery.click=true;
+                    lottery.prizeType=$(tipGroupObj[prizeType]);
+
+                } else if (data.returnCode == 1) {
+                    //没有抽奖机会
+                    layer.open({
+                        type: 1,
+                        closeBtn:0,
+                        move:false,
+                        area:['460px','370px'],
+                        title:false,
+                        content: $('#nochance')
+                    });
+                } else if (data.returnCode == 2) {
+                    //未登录
+                    location.href='/login';
+
+                } else if (data.returnCode == 3) {
+                    //不在活动时间范围内！
+                    layer.open({
+                        type: 1,
+                        closeBtn:0,
+                        move:false,
+                        area:['460px','370px'],
+                        title:false,
+                        content: $('#expired')
+                    });
+                } else if (data.returnCode == 4) {
+                    //实名认证
+                    layer.open({
+                        type: 1,
+                        closeBtn:0,
+                        move:false,
+                        area:['460px','370px'],
+                        title:false,
+                        content: $('#authentication')
+                    });
+                }
+            });
         },
         giftRecord:function(){
-            $.ajax({
-                url: '/activity/point-draw/all-list',
-                type: 'GET',
-                dataType: 'json',
-                data: {
+            commonFun.useAjax({
+                url:'/activity/point-draw/all-list',
+                data:{
                     'activityCategory': 'POINT_SHOP_DRAW_1000'
-                }
-            })
-                .done(function(data) {
-                    $('#recordList').html(tpl('recordListTpl',{'recordlist':data}));
-                })
-                .fail(function() {
-                    layer.msg('请求失败，请重试！');
-                });
-
+                },
+                type:'GET',
+            },function(data){
+                $('#recordList').html(tpl('recordListTpl',{'recordlist':data}));
+            });
         },
         myGift:function(){
-            $.ajax({
-                url: '/activity/point-draw/user-list',
-                type: 'GET',
-                dataType: 'json',
-                data: {
+            commonFun.useAjax({
+                url:'/activity/point-draw/user-list',
+                data:{
                     'activityCategory': 'POINT_SHOP_DRAW_1000'
-                }
-            })
-                .done(function(data) {
-                    $('#myRecord').html(tpl('myRecordTpl',{'myrecord':data}));
-                })
-                .fail(function() {
-                    layer.msg('请求失败，请重试！');
-                });
+                },
+                type:'GET',
+            },function(data){
+                $('#myRecord').html(tpl('myRecordTpl',{'myrecord':data}));
+            });
         },
         scrollList:function(domName,length) {
             var $self=domName;

@@ -1,4 +1,5 @@
 require('pointStyle/point_task.scss');
+let commonFun= require('publicJs/commonFun');
 var $taskFrame=$('#taskFrame');
 var $taskBox=$('#taskFrame').find('.task-box'),
     $taskStatusMenu=$('#taskStatusMenu'),

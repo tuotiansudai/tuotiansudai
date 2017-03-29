@@ -1,4 +1,3 @@
-
 require('pointStyle/point_order.scss');
 let tpl = require('art-template/dist/template');
 let ValidatorObj= require('publicJs/validator');
@@ -59,31 +58,26 @@ $orderBtn.on('click', function(event) { //立即兑换
 	var $self = $(this),
 		idString = $self.attr('data-id'),
 		typeString = $self.attr('data-type');
-	$.ajax({
-			url: '/point-shop/order',
-			type: 'POST',
-			dataType: 'json',
-			data: {
-				id: idString,
-				goodsType: typeString,
-				number: $numText.val(),
-				userAddressId: $('#updatePlace').attr('data-id')
-			}
-		})
-		.done(function(data) {
-			if (data.data.status) {
-				layer.msg('兑换成功！3秒后自动跳转到兑换记录页面。');
-				setTimeout(function(){
-					location.href = '/point-shop/record';
-				},3000)
+    commonFun.useAjax({
+        url:'/point-shop/order',
+        data: {
+            id: idString,
+            goodsType: typeString,
+            number: $numText.val(),
+            userAddressId: $('#updatePlace').attr('data-id')
+        },
+        type:'POST',
+    },function(data){
+        if (data.data.status) {
+            layer.msg('兑换成功！3秒后自动跳转到兑换记录页面。');
+            setTimeout(function(){
+                location.href = '/point-shop/record';
+            },3000)
 
-			} else {
-				errorTip(data.data);
-			}
-		})
-		.fail(function(data) {
-			layer.msg('请求失败，请重试！');
-		});
+        } else {
+            errorTip(data.data);
+        }
+    });
 });
 //add adress
 $addPlace.on('click', function(event) {

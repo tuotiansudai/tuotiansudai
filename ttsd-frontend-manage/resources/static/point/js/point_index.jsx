@@ -1,5 +1,6 @@
 require('pointStyle/point_index.scss');
 require('pointJsModule/nine_lottery');
+let commonFun= require('publicJs/commonFun');
 let tpl = require('art-template/dist/template');
 
 
@@ -21,38 +22,37 @@ let tpl = require('art-template/dist/template');
 				$nextText = $('.next-text'),
 				$signBtn = $("#signBtn");
 
-			$.ajax({
-				url: _this.attr('data-url'),
-				type: 'POST',
-				dataType: 'json'
-			}).done(function(response) {
-				if (response.data.status) {
-					var signInStatus = response.data.signIn ? '您今天已签到' : '签到成功';
-						$signText.html(signInStatus);
+            commonFun.useAjax({
+                url: _this.attr('data-url'),
+                type: 'POST'
+            },function(response) {
+                if (response.data.status) {
+                    var signInStatus = response.data.signIn ? '您今天已签到' : '签到成功';
+                    $signText.html(signInStatus);
 
-					$tomorrowText.html("明日签到可获得" + response.data.nextSignInPoint + "积分");
+                    $tomorrowText.html("明日签到可获得" + response.data.nextSignInPoint + "积分");
 
                     if(response.data.full){
                         $introText.html('已连续签到365天，获得全勤奖！');
                         $nextText.html('365元现金红包');
-					}
-					else{
+                    }
+                    else{
                         $introText.html(response.data.currentRewardDesc);
                         $nextText.html(response.data.nextRewardDesc);
-					}
-					$signBtn.addClass("no-click").html("已签到");
-					$signPoint.find('span').html('+'+response.data.signInPoint);
-					$signTip.fadeIn('fast');
-				} else {
-					$('#errorTip').html(tpl('errorTipTpl', response.data));
-					layer.open({
-						type: 1,
-						title: false,
-						area: ['300px', '180px'],
-						content: $('#errorTip')
-					});
-				}
-			})
+                    }
+                    $signBtn.addClass("no-click").html("已签到");
+                    $signPoint.find('span').html('+'+response.data.signInPoint);
+                    $signTip.fadeIn('fast');
+                } else {
+                    $('#errorTip').html(tpl('errorTipTpl', response.data));
+                    layer.open({
+                        type: 1,
+                        title: false,
+                        area: ['300px', '180px'],
+                        content: $('#errorTip')
+                    });
+                }
+            });
 		});
 		//hide sign tip
 		$closeSign.on('click', function(event) {
