@@ -59,7 +59,7 @@ public class FrontCallbackController {
 
             ModelAndView modelAndView = new ModelAndView("/front-callback-success");
             modelAndView.addObject("error", data.getStatus() ? null : data.getMessage());
-            modelAndView.addObject("service", asyncUmPayService.getServiceName());
+            modelAndView.addObject("service", asyncUmPayService.name());
             if (Lists.newArrayList(AsyncUmPayService.INVEST_PROJECT_TRANSFER, AsyncUmPayService.INVEST_PROJECT_TRANSFER_NOPWD).contains(asyncUmPayService)) {
                 modelAndView.addObject("amount", AmountConverter.convertCentToString(investService.findById(Long.valueOf(params.get("order_id"))).getAmount()));
             }
