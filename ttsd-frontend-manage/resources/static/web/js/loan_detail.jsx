@@ -148,7 +148,7 @@ function sendSubmitRequest(){
         $investSubmit.removeClass("loading");
         let data = response.data;
         if (data.status) {
-            location.href = "/invest-success?" + $.param(data.extraValues);
+            location.href = "/callback/invest_project_transfer_nopwd?" + $.param(data.extraValues);
         } else if (data.message == '新手标投资已超上限') {
             showLayer();
         } else {
