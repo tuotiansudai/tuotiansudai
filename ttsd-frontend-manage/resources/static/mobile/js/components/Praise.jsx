@@ -30,7 +30,7 @@ class Praise extends React.Component {
 		if (this.state.isLike) {
 			return false;
 		}
-		ajax({
+		mobileCommon.ajax({
 			url: `/media-center/${this.props.id}/like`,
 			done: (response) => {
 				this.setState((previousState) => {
