@@ -129,6 +129,11 @@
                         display: inline-block;
                         background: url('../images/money-icon.png') left top no-repeat;
                         background-size: contain;
+                        s {
+                            color: #ff635a;
+                            display: inline-block;
+                            text-decoration: none;
+                        }
                         span{
                             color:#ff635a;
                         }

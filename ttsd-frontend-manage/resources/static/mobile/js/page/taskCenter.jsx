@@ -55,7 +55,7 @@ class NewbieTaskGroup extends React.Component {
                         <i className="serial">0{keyNum}</i>
                          <span className="detail">
                             <b>{option.title}</b>
-                             <em className="reward">奖励 {option.point} 积分</em>
+                             <em className="reward">奖励 <s>{option.point}</s> 积分</em>
                              <i className="info" dangerouslySetInnerHTML={{__html: option.description}}></i>
                         </span>
                     <ButtonStatus stocked={option.completed} description={option.description} value={option.number} location={option.url} />
@@ -84,7 +84,7 @@ class AdvanceTaskGroup extends React.Component {
             rows.push(<li className="advance-task" key={key}>
                         <span className="detail">
                             <b>{option.title}</b>
-                             <em className="reward">奖励 {option.point} 积分</em>
+                             <em className="reward">奖励 <s>{option.point}</s> 积分</em>
                              <i className="info" dangerouslySetInnerHTML={{__html: option.description}}></i>
                         </span>
                         <ButtonStatus stocked={option.completed} description={option.description} value={option.number} location={option.url} />
