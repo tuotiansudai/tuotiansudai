@@ -110,25 +110,27 @@ $updatePlace.on('click', function(event) {
 		content: $('#fixAdress')
 	});
 });
+if(orderPlaceForm){
+    let validator = new ValidatorObj.ValidatorForm();
+    validator.add(orderPlaceForm.Recipient, [{
+        strategy: 'isNonEmpty',
+        errorMsg: '请输入收件人',
+    }],true);
 
-let validator = new ValidatorObj.ValidatorForm();
-validator.add(orderPlaceForm.Recipient, [{
-    strategy: 'isNonEmpty',
-    errorMsg: '请输入收件人',
-}],true);
+    validator.add(orderPlaceForm.Phone, [{
+        strategy: 'isNonEmpty',
+        errorMsg: '请输入手机号码',
+    },{
+        strategy:'isMobile',
+        errorMsg: '请输入正确的手机号码'
+    }],true);
 
-validator.add(orderPlaceForm.Phone, [{
-    strategy: 'isNonEmpty',
-    errorMsg: '请输入手机号码',
-},{
-    strategy:'isMobile',
-    errorMsg: '请输入正确的手机号码'
-}],true);
+    validator.add(orderPlaceForm.AddRess, [{
+        strategy: 'isNonEmpty',
+        errorMsg: '请输入收货地址',
+    }],true);
+}
 
-validator.add(orderPlaceForm.AddRess, [{
-    strategy: 'isNonEmpty',
-    errorMsg: '请输入收货地址',
-}],true);
 
 let reInputs=$(orderPlaceForm).find('.int-text');
 
