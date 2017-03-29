@@ -29,9 +29,9 @@
                     <label class="col-sm-2 control-label">借款项目名称:</label>
                     <div class="col-sm-4">
                         <select name="name" class="selectpicker" <#if loan.loan.status != "WAITING_VERIFY">disabled="disabled"</#if>>
-                            <option value="房产抵押借款" <#if loan.loan.name == "房产抵押借款">selected</#if>>房产抵押借款</option>
-                            <option value="车辆抵押借款" <#if loan.loan.name == "车辆抵押借款">selected</#if>>车辆抵押借款</option>
-                            <option value="税易经营性借款" <#if loan.loan.name == "税易经营性借款">selected</#if>>税易经营性借款</option>
+                            <option value="房产抵押借款" <#if loan.loan.name?contains("房产抵押借款")>selected</#if>>房产抵押借款</option>
+                            <option value="车辆抵押借款" <#if loan.loan.name?contains("车辆抵押借款")>selected</#if>>车辆抵押借款</option>
+                            <option value="税易经营性借款" <#if loan.loan.name?contains("税易经营性借款")>selected</#if>>税易经营性借款</option>
                         </select>
                     </div>
                 </div>
