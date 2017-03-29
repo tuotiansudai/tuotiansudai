@@ -425,7 +425,7 @@ public class InvestServiceTest {
         investDto.setSource(Source.WEB);
         BaseDto<PayFormDataDto> baseDto = investService.invest(investDto);
         assertTrue(baseDto.getData().getStatus());
-        assertEquals(MessageFormat.format("{0}/invest-success", webRetUrl), baseDto.getData().getFields().get("ret_url"));
+        assertEquals(MessageFormat.format("{0}/{1}", webRetUrl, AsyncUmPayService.INVEST_PROJECT_TRANSFER.getWebRetCallbackPath()), baseDto.getData().getFields().get("ret_url"));
 
     }
 

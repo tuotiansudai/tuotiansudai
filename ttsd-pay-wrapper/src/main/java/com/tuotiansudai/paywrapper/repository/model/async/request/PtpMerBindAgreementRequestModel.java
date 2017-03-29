@@ -23,7 +23,9 @@ public class PtpMerBindAgreementRequestModel extends BaseAsyncRequestModel {
         this.service = asyncUmPayService.getServiceName();
         this.userId = userId;
         this.setNotifyUrl(MessageFormat.format("{0}/{1}", CALLBACK_HOST_PROPS.get("pay.callback.back.host"), asyncUmPayService.getNotifyCallbackPath()));
-        if (dto.isFastPay()) {
+        if (dto.isNoPasswordInvest()) {
+            this.userBindAgreementList = AgreementType.ZTBB0G00;
+        } else if (dto.isFastPay()) {
             this.userBindAgreementList = AgreementType.ZKJP0700;
         } else if (dto.isAutoRepay()) {
             this.userBindAgreementList = AgreementType.ZHKB0H01;

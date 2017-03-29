@@ -180,7 +180,9 @@ public class AgreementServiceTest {
         agreementDto.setLoginName(userId);
         agreementDto.setNoPasswordInvest(true);
         agreementDto.setIp("127.0.0.1");
+
         BaseDto<PayFormDataDto> baseDto = agreementService.agreement(agreementDto);
+
         assertTrue(baseDto.getData().getStatus());
         assertThat(baseDto.getData().getFields().get("user_bind_agreement_list"), is(AgreementType.ZTBB0G00.name()));
 

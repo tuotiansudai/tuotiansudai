@@ -1,5 +1,7 @@
 package com.tuotiansudai.api.service;
 
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 import com.tuotiansudai.api.dto.*;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppChannelService;
@@ -47,12 +49,10 @@ public class MobileAppInvestServiceTest extends ServiceTestBase {
         baseDto.setSuccess(true);
         PayDataDto payDataDto = new PayDataDto();
         payDataDto.setStatus(true);
+        payDataDto.setExtraValues(Maps.newHashMap(ImmutableMap.<String, String>builder().put("order_id", "order_id").build()));
         baseDto.setData(payDataDto);
 
         when(investService.noPasswordInvest(any(InvestDto.class))).thenReturn(baseDto);
-        InvestModel successInvest = new InvestModel();
-        successInvest.setId(1);
-        when(investService.findLatestSuccessInvest(anyString())).thenReturn(successInvest);
         when(channelService.obtainChannelBySource(any(BaseParam.class))).thenReturn(null);
         AccountModel accountModel = new AccountModel();
         accountModel.setAutoInvest(true);
@@ -61,28 +61,6 @@ public class MobileAppInvestServiceTest extends ServiceTestBase {
         BaseResponseDto baseResponseDto = mobileAppInvestService.noPasswordInvest(investRequestDto);
         assertThat(baseResponseDto.isSuccess(), is(true));
         assertThat(baseResponseDto.getCode(), is("0000"));
-    }
-
-    @Test
-    public void shouldNoPasswordInvestFailedInvestorNotOpen() throws Exception {
-        InvestRequestDto investRequestDto = new InvestRequestDto();
-        investRequestDto.setBaseParam(BaseParamTest.getInstance());
-
-        BaseDto<PayDataDto> baseDto = new BaseDto<>();
-        baseDto.setSuccess(true);
-        PayDataDto payDataDto = new PayDataDto();
-        payDataDto.setStatus(true);
-        baseDto.setData(payDataDto);
-
-        when(investService.noPasswordInvest(any(InvestDto.class))).thenReturn(baseDto);
-        InvestModel successInvest = new InvestModel();
-        successInvest.setId(1);
-        when(investService.findLatestSuccessInvest(anyString())).thenReturn(successInvest);
-        AccountModel accountModel = new AccountModel();
-        accountModel.setAutoInvest(true);
-        accountModel.setNoPasswordInvest(false);
-        BaseResponseDto baseResponseDto = mobileAppInvestService.noPasswordInvest(investRequestDto);
-        assertThat(baseResponseDto.isSuccess(), is(true));
     }
 
     @Test
