@@ -26,7 +26,7 @@ public class MobileAppPromotionListsV2ServiceImpl implements MobileAppPromotionL
     @Autowired
     private PromotionMapper promotionMapper;
 
-    @Value("${mobile.static.server}")
+    @Value("${common.static.server}")
     private String staticServer;
 
     @Autowired

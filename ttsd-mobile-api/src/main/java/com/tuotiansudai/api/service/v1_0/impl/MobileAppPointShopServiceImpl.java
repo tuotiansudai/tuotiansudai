@@ -57,7 +57,7 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
     @Autowired
     private CouponService couponService;
 
-    @Value("${mobile.static.server}")
+    @Value("${common.static.server}")
     private String bannerServer;
 
     @Autowired

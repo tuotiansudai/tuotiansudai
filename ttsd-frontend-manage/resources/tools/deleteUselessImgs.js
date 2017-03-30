@@ -109,7 +109,7 @@ getImagesFiles.prototype.removeUselessImgs = function() {
         var imageSize = imgFile.size;
         // 3072是在module的loader中配置的
         if(imageSize>3072/1024) {
-            console.log(imageName);
+            // console.log(imageName);
             var isBool = _.contains(newPackName, imageName);
             if(!isBool) {
                 fs.unlink(imgFile.path, function(err) {
@@ -147,16 +147,16 @@ webListImg.init();
 //读取public里的图片
 var publicListImg=new getImagesFiles(publicImagePath);
 publicListImg.init();
+//
+// //读取activity里的图片
+// var activityListImg=new getImagesFiles(activityImagePath);
+// activityListImg.init();
+//
+// //读取point里的图片
+// var pointListImg=new getImagesFiles(pointImagePath);
+// pointListImg.init();
 
-//读取activity里的图片
-var activityListImg=new getImagesFiles(activityImagePath);
-activityListImg.init();
-
-//读取point里的图片
-var pointListImg=new getImagesFiles(pointImagePath);
-pointListImg.init();
-
-//读取point里的图片
+//读取mobile里的图片
 var mobileListImg=new getImagesFiles(mobileImagePath);
 mobileListImg.init();
 
