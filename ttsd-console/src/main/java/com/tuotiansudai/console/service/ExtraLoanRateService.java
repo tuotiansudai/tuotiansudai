@@ -20,7 +20,6 @@ public class ExtraLoanRateService {
         ExtraLoanRateRuleDto extraLoanRateRuleDto = new ExtraLoanRateRuleDto();
         BaseDto<ExtraLoanRateRuleDto> baseDto = new BaseDto<>(extraLoanRateRuleDto);
         //标的名称添加的序号规则为年的后两位加3位数字（如17019）
-        loanName = (loanName.indexOf("1") >= 0 || loanName.indexOf("2") >= 0) ? loanName.substring(0, loanName.length() - 5) : loanName;
         List<ExtraLoanRateRuleModel> extraLoanRateRuleModels = extraLoanRateRuleMapper.findExtraLoanRateRuleByNameAndProductType(loanName, productType);
         extraLoanRateRuleDto.setStatus(true);
         extraLoanRateRuleDto.setExtraLoanRateRuleModels(extraLoanRateRuleModels);

@@ -8,7 +8,6 @@ public class LoanerEnterpriseInfoModel implements Serializable {
     private long id;
     private long loanId;
     private String companyName;
-    private EnterpriseInfoType enterpriseType;
     private String address;
     private String purpose;
     private String factoringCompanyName;
@@ -17,9 +16,8 @@ public class LoanerEnterpriseInfoModel implements Serializable {
     public LoanerEnterpriseInfoModel() {
     }
 
-    public LoanerEnterpriseInfoModel(long loanId, LoanCreateLoanerEnterpriseInfoDto dto, String type) {
+    public LoanerEnterpriseInfoModel(long loanId, LoanCreateLoanerEnterpriseInfoDto dto) {
         this.loanId = loanId;
-        this.enterpriseType = EnterpriseInfoType.valueOf(type);
         this.companyName = dto.getCompanyName();
         this.factoringCompanyName = dto.getFactoringCompanyName();
         this.factoringCompanyDesc = dto.getFactoringCompanyDesc();
@@ -49,14 +47,6 @@ public class LoanerEnterpriseInfoModel implements Serializable {
 
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
-    }
-
-    public EnterpriseInfoType getEnterpriseType() {
-        return enterpriseType;
-    }
-
-    public void setEnterpriseType(EnterpriseInfoType enterpriseType) {
-        this.enterpriseType = enterpriseType;
     }
 
     public String getAddress() {

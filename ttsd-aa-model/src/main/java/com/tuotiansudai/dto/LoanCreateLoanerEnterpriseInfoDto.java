@@ -1,15 +1,11 @@
 package com.tuotiansudai.dto;
 
-import com.tuotiansudai.repository.model.EnterpriseInfoType;
 import com.tuotiansudai.repository.model.LoanerEnterpriseInfoModel;
 import org.hibernate.validator.constraints.NotEmpty;
 
 public class LoanCreateLoanerEnterpriseInfoDto {
     @NotEmpty
     private String companyName;
-
-    @NotEmpty
-    private EnterpriseInfoType enterpriseType;
 
     @NotEmpty
     private String address;
@@ -26,7 +22,6 @@ public class LoanCreateLoanerEnterpriseInfoDto {
 
     public LoanCreateLoanerEnterpriseInfoDto(LoanerEnterpriseInfoModel loanerEnterpriseInfoModel) {
         this.companyName = loanerEnterpriseInfoModel.getCompanyName();
-        this.enterpriseType = loanerEnterpriseInfoModel.getEnterpriseType();
         this.address = loanerEnterpriseInfoModel.getAddress();
         this.purpose = loanerEnterpriseInfoModel.getPurpose();
         this.factoringCompanyName = loanerEnterpriseInfoModel.getFactoringCompanyName();
@@ -39,14 +34,6 @@ public class LoanCreateLoanerEnterpriseInfoDto {
 
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
-    }
-
-    public EnterpriseInfoType getEnterpriseType() {
-        return enterpriseType;
-    }
-
-    public void setEnterpriseType(EnterpriseInfoType enterpriseType) {
-        this.enterpriseType = enterpriseType;
     }
 
     public String getAddress() {

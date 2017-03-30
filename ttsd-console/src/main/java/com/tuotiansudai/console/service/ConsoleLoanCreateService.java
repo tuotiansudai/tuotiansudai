@@ -133,7 +133,7 @@ public class ConsoleLoanCreateService {
         }
 
         if (loanCreateRequestDto.getLoanerEnterpriseInfo() != null) {
-            loanerEnterpriseInfoMapper.create(new LoanerEnterpriseInfoModel(loanId, loanCreateRequestDto.getLoanerEnterpriseInfo(), loanModel.getPledgeType().name()));
+            loanerEnterpriseInfoMapper.create(new LoanerEnterpriseInfoModel(loanId, loanCreateRequestDto.getLoanerEnterpriseInfo()));
         }
 
         return new BaseDto<>(new BaseDataDto(true));
@@ -202,7 +202,7 @@ public class ConsoleLoanCreateService {
         }
 
         if (loanCreateRequestDto.getLoanerEnterpriseInfo() != null) {
-            loanerEnterpriseInfoMapper.create(new LoanerEnterpriseInfoModel(loanId, loanCreateRequestDto.getLoanerEnterpriseInfo(), loanModel.getPledgeType().name()));
+            loanerEnterpriseInfoMapper.create(new LoanerEnterpriseInfoModel(loanId, loanCreateRequestDto.getLoanerEnterpriseInfo()));
         }
 
         if (fundraisingEndTimeChanged) {

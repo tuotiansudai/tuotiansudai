@@ -449,7 +449,7 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
 
         var checkedExtraRate = function () {
             clearErrorMessage();
-            if (pledgeTypeElement.val() === 'ENTERPRISE') {
+            if (pledgeTypeElement.val() === 'ENTERPRISE' || pledgeTypeElement.val() === 'ENTERPRISE_FACTORING' || pledgeTypeElement.val() === 'ENTERPRISE_BILL') {
                 showErrorMessage('项目不支持', extraElement);
                 extraElement.prop('checked', false);
                 return;
