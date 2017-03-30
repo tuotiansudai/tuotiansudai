@@ -19,6 +19,8 @@
                             <option value="房产抵押借款" selected="selected">房产抵押借款</option>
                             <option value="车辆抵押借款">车辆抵押借款</option>
                             <option value="税易经营性借款">税易经营性借款</option>
+                            <option value="企业经营性借款—保理">企业经营性借款—保理</option>
+                            <option value="企业经营性借款—票据">企业经营性借款—票据</option>
                         </select>
                     </div>
                 </div>

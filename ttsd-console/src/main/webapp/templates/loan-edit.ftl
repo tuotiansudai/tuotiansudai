@@ -32,6 +32,8 @@
                             <option value="房产抵押借款" <#if loan.loan.name == "房产抵押借款">selected</#if>>房产抵押借款</option>
                             <option value="车辆抵押借款" <#if loan.loan.name == "车辆抵押借款">selected</#if>>车辆抵押借款</option>
                             <option value="税易经营性借款" <#if loan.loan.name == "税易经营性借款">selected</#if>>税易经营性借款</option>
+                            <option value="企业经营性借款—保理" <#if loan.loan.pledgeType == "ENTERPRISE_FACTORING">selected</#if>>企业经营性借款—保理</option>
+                            <option value="企业经营性借款—票据" <#if loan.loan.pledgeType == "ENTERPRISE_BILL">selected</#if>>企业经营性借款—票据</option>
                         </select>
                     </div>
                 </div>
@@ -255,6 +257,11 @@
             <#if 'ENTERPRISE' == loan.loan.pledgeType>
                 <#include 'loan-edit-loaner-enterprise-details.ftl'>
             </#if>
+
+            <#if ['ENTERPRISE_FACTORING', 'ENTERPRISE_BILL']?seq_contains(loan.loan.pledgeType)>
+                <#include 'loan-edit-loaner-enterprise-info.ftl'>
+            </#if>
+
         </section>
 
         <section id="section-three">
@@ -269,6 +276,10 @@
             <#if 'ENTERPRISE' == loan.loan.pledgeType>
                 <#include 'loan-edit-pledge-enterprise.ftl'>
             </#if>
+
+            <#if 'ENTERPRISE_FACTORING' == loan.loan.pledgeType>
+            <#include 'loan-edit-loaner-enterprise-factoring-info.ftl'>
+        </#if>
         </section>
 
         <h3><span>声明</span></h3>

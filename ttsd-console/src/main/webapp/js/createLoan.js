@@ -1,5 +1,5 @@
-require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 'text!/tpl/loaner-enterprise-details.mustache', 'text!/tpl/pledge-house.mustache', 'text!/tpl/pledge-vehicle.mustache', 'text!/tpl/pledge-enterprise.mustache', 'text!/tpl/loan-extra-rate.mustache', 'text!/tpl/loan-title-template.template', 'text!/tpl/loan-title-select-template.template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicker', 'bootstrapSelect', 'moment', 'fileinput', 'fileinput_locale_zh', 'Validform', 'Validform_Datatype', 'csrf'],
-    function ($, template, Mustache, loanerDetailsTemplate, loanerEnterpriseDetailsTemplate, pledgeHouseTemplate, pledgeVehicleTemplate, pledgeEnterpriseTemplate, loanExtraRateTemplate, loanTitleTemplate, loanTitleSelectTemplate) {
+require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 'text!/tpl/loaner-enterprise-details.mustache', 'text!/tpl/pledge-house.mustache', 'text!/tpl/pledge-vehicle.mustache', 'text!/tpl/pledge-enterprise.mustache', 'text!/tpl/loan-extra-rate.mustache', 'text!/tpl/loan-title-template.template', 'text!/tpl/loan-title-select-template.template', 'text!/tpl/loaner-enterprise-info.mustache', 'text!/tpl/loaner-enterprise-factoring-info.mustache', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicker', 'bootstrapSelect', 'moment', 'fileinput', 'fileinput_locale_zh', 'Validform', 'Validform_Datatype', 'csrf'],
+    function ($, template, Mustache, loanerDetailsTemplate, loanerEnterpriseDetailsTemplate, pledgeHouseTemplate, pledgeVehicleTemplate, pledgeEnterpriseTemplate, loanExtraRateTemplate, loanTitleTemplate, loanTitleSelectTemplate, loanerEnterpriseInfoTemplate, loanerEnterpriseFactoringInfoTemplate) {
         var loanParam = ['id', 'name', 'agent', 'productType', 'pledgeType', 'loanType', 'pledgeType', 'activityType',
             'loanAmount', 'baseRate', 'activityRate', 'minInvestAmount', 'maxInvestAmount', 'investIncreasingAmount',
             'fundraisingStartTime', 'fundraisingEndTime', 'contractId', 'status'];
@@ -9,6 +9,10 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
         var loanerDetailsParam = ['userName', 'identityNumber', 'gender', 'age', 'marriage', 'region', 'income', 'employmentStatus', 'purpose'];
 
         var loanerEnterpriseDetailsParam = ['juristicPerson', 'shareholder', 'address', 'purpose'];
+
+        var loanerEnterpriseInfoParam = ['companyName', 'address', 'purpose'];
+
+        var loanerEnterpriseFactoringInfoParam = ['factoringCompanyName','factoringCompanyDesc']
 
         var pledgeHouseParam = ['pledgeLocation', 'estimateAmount', 'pledgeLoanAmount', 'square', 'propertyCardId', 'estateRegisterId', 'authenticAct'];
 
@@ -53,6 +57,18 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
                 pledgeTypeElement.val("ENTERPRISE");
                 sectionTwoElement.html(Mustache.render(loanerEnterpriseDetailsTemplate));
                 sectionThreeElement.html(Mustache.render(pledgeEnterpriseTemplate));
+            }
+
+            if ('企业经营性借款—保理' === loanName) {
+                pledgeTypeElement.val("ENTERPRISE_FACTORING");
+                sectionTwoElement.html(Mustache.render(loanerEnterpriseInfoTemplate));
+                sectionThreeElement.html(Mustache.render(loanerEnterpriseFactoringInfoTemplate));
+            }
+
+            if ('企业经营性借款—票据' === loanName) {
+                pledgeTypeElement.val("ENTERPRISE_BILL");
+                sectionTwoElement.html(Mustache.render(loanerEnterpriseInfoTemplate));
+                sectionThreeElement.html(Mustache.render(''));
             }
 
             $('.selectpicker').selectpicker();
@@ -370,6 +386,20 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
                     'loanDetails': loanDetailsParam,
                     'loanerEnterpriseDetails': loanerEnterpriseDetailsParam,
                     'pledgeEnterprise': pledgeEnterpriseParam
+                });
+            }
+            if ("企业经营性借款—保理" == value) {
+                requestData = generateRequestParams({
+                    'loan': loanParam,
+                    'loanDetails': loanDetailsParam,
+                    'loanerEnterpriseInfo': loanerEnterpriseInfoParam + loanerEnterpriseFactoringInfoParam
+                });
+            }
+            if ("企业经营性借款—票据" == value) {
+                requestData = generateRequestParams({
+                    'loan': loanParam,
+                    'loanDetails': loanDetailsParam,
+                    'loanerEnterpriseInfo': loanerEnterpriseInfoParam
                 });
             }
             $.ajax(
