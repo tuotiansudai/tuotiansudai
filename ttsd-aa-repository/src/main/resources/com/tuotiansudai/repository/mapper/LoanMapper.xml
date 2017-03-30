@@ -785,4 +785,9 @@
         CASE WHEN loan.status in ('RAISING','PREHEAT','RECHECK') THEN created_time END DESC,
         CASE WHEN loan.status in ('REPAYING','OVERDUE','COMPLETE') THEN recheck_time END DESC
     </select>
+
+    <select id="findLoanCountByYear" parameterType="string" resultType="long">
+        SELECT COUNT(id) FROM loan WHERE DATE_FORMAT(created_time,'%Y') = #{createdTime}
+    </select>
+
 </mapper>

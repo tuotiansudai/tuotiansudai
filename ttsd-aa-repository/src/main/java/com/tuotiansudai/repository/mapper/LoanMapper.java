@@ -103,4 +103,6 @@ public interface LoanMapper {
                                       @Param("productTypeList") List<ProductType> productTypeList,
                                       @Param(value = "activityType") ActivityType activityType);
 
+    long findLoanCountByYear(@Param(value = "createdTime") String createdTime);
+
 }
