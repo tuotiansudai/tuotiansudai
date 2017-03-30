@@ -15,12 +15,12 @@
                     <label class="col-sm-2 control-label">借款项目名称: </label>
 
                     <div class="col-sm-2">
-                        <select name="name" class="selectpicker">
-                            <option value="房产抵押借款" selected="selected">房产抵押借款</option>
-                            <option value="车辆抵押借款">车辆抵押借款</option>
-                            <option value="税易经营性借款">税易经营性借款</option>
-                            <option value="企业经营性借款—保理">企业经营性借款—保理</option>
-                            <option value="企业经营性借款—票据">企业经营性借款—票据</option>
+                        <select name="name" class="selectpicker" id="projectName">
+                            <option value="房产抵押借款" selected="selected" data-pledgeType="HOUSE">房产抵押借款</option>
+                            <option value="车辆抵押借款" data-pledgeType="VEHICLE">车辆抵押借款</option>
+                            <option value="税易经营性借款" data-pledgeType="ENTERPRISE">税易经营性借款</option>
+                            <option value="企业经营性借款" data-pledgeType="ENTERPRISE_FACTORING">企业经营性借款—保理</option>
+                            <option value="企业经营性借款" data-pledgeType="ENTERPRISE_BILL">企业经营性借款—票据</option>
                         </select>
                     </div>
                 </div>

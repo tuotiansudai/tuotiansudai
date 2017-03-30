@@ -28,12 +28,12 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label">借款项目名称:</label>
                     <div class="col-sm-4">
-                        <select name="name" class="selectpicker" <#if loan.loan.status != "WAITING_VERIFY">disabled="disabled"</#if>>
-                            <option value="房产抵押借款" <#if loan.loan.name?contains("房产抵押借款")>selected</#if>>房产抵押借款</option>
-                            <option value="车辆抵押借款" <#if loan.loan.name?contains("车辆抵押借款")>selected</#if>>车辆抵押借款</option>
-                            <option value="税易经营性借款" <#if loan.loan.name?contains("税易经营性借款")>selected</#if>>税易经营性借款</option>
-                            <option value="企业经营性借款—保理" <#if loan.loan.pledgeType == "ENTERPRISE_FACTORING">selected</#if>>企业经营性借款—保理</option>
-                            <option value="企业经营性借款—票据" <#if loan.loan.pledgeType == "ENTERPRISE_BILL">selected</#if>>企业经营性借款—票据</option>
+                        <select name="name" class="selectpicker" id="projectName" <#if loan.loan.status != "WAITING_VERIFY">disabled="disabled"</#if>>
+                            <option value="房产抵押借款" data-pledgeType="HOUSE" <#if loan.loan.pledgeType == "HOUSE">selected</#if>>房产抵押借款</option>
+                            <option value="车辆抵押借款" data-pledgeType="VEHICLE" <#if loan.loan.pledgeType == "VEHICLE">selected</#if>>车辆抵押借款</option>
+                            <option value="税易经营性借款" data-pledgeType="ENTERPRISE" <#if loan.loan.pledgeType == "ENTERPRISE">selected</#if>>税易经营性借款</option>
+                            <option value="企业经营性借款" data-pledgeType="ENTERPRISE_FACTORING" <#if loan.loan.pledgeType == "ENTERPRISE_FACTORING">selected</#if>>企业经营性借款—保理</option>
+                            <option value="企业经营性借款" data-pledgeType="ENTERPRISE_BILL" <#if loan.loan.pledgeType == "ENTERPRISE_BILL">selected</#if>>企业经营性借款—票据</option>
                         </select>
                     </div>
                 </div>

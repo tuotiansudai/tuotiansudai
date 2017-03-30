@@ -59,13 +59,13 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
                 sectionThreeElement.html(Mustache.render(pledgeEnterpriseTemplate));
             }
 
-            if ('企业经营性借款—保理' === loanName) {
+            if ('企业经营性借款' === loanName && $('#projectName option:selected').attr('data-pledgetype') === 'ENTERPRISE_FACTORING') {
                 pledgeTypeElement.val("ENTERPRISE_FACTORING");
                 sectionTwoElement.html(Mustache.render(loanerEnterpriseInfoTemplate));
                 sectionThreeElement.html(Mustache.render(loanerEnterpriseFactoringInfoTemplate));
             }
 
-            if ('企业经营性借款—票据' === loanName) {
+            if ('企业经营性借款' === loanName && $('#projectName option:selected').attr('data-pledgetype') === 'ENTERPRISE_BILL') {
                 pledgeTypeElement.val("ENTERPRISE_BILL");
                 sectionTwoElement.html(Mustache.render(loanerEnterpriseInfoTemplate));
                 sectionThreeElement.html(Mustache.render(''));
@@ -388,14 +388,14 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
                     'pledgeEnterprise': pledgeEnterpriseParam
                 });
             }
-            if ("企业经营性借款—保理" == value) {
+            if ("企业经营性借款" == value && $('#projectName option:selected').attr('data-pledgetype') == 'ENTERPRISE_FACTORING') {
                 requestData = generateRequestParams({
                     'loan': loanParam,
                     'loanDetails': loanDetailsParam,
                     'loanerEnterpriseInfo': loanerEnterpriseInfoParam + loanerEnterpriseFactoringInfoParam
                 });
             }
-            if ("企业经营性借款—票据" == value) {
+            if ("企业经营性借款" == value && $('#projectName option:selected').attr('data-pledgetype') == 'ENTERPRISE_BILL') {
                 requestData = generateRequestParams({
                     'loan': loanParam,
                     'loanDetails': loanDetailsParam,

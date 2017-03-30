@@ -95,9 +95,6 @@ public class ConsoleLoanCreateService {
         long loanId = idGenerator.generate();
 
         LoanModel loanModel = new LoanModel(loanId, loanCreateRequestDto);
-        if(loanModel.getPledgeType() == PledgeType.ENTERPRISE_FACTORING || loanModel.getPledgeType() == PledgeType.ENTERPRISE_BILL){
-            loanModel.setName(loanModel.getName().indexOf("—") > 0 ? loanModel.getName().substring(0, loanModel.getName().indexOf("—")) : loanModel.getName());
-        }
         loanModel.setName(generateLoanName(loanModel.getName()));
         loanMapper.create(loanModel);
 
@@ -162,7 +159,8 @@ public class ConsoleLoanCreateService {
             loanTitleRelationMapper.create(loanCreateRequestDto.getLoan().getLoanTitles());
         }
 
-        loanMapper.update(loanModel.updateLoan(loanCreateRequestDto, loanNameSeq));
+        loanCreateRequestDto.getLoan().setName(loanCreateRequestDto.getLoan().getName() + loanNameSeq);
+        loanMapper.update(loanModel.updateLoan(loanCreateRequestDto));
 
         if (Lists.newArrayList(LoanStatus.WAITING_VERIFY, LoanStatus.PREHEAT).contains(loanModel.getStatus())) {
             this.updateExtraRate(loanId, loanCreateRequestDto.getLoanDetails().getExtraRateRuleIds());
@@ -400,14 +398,7 @@ public class ConsoleLoanCreateService {
             }
         }
 
-        if (PledgeType.ENTERPRISE_FACTORING == loanCreateRequestDto.getLoan().getPledgeType()) {
-            if (loanCreateRequestDto.getLoanerEnterpriseInfo() == null) {
-                return new BaseDto<>(new BaseDataDto(false, "企业借款人信息不完整"));
-            }
-
-        }
-
-        if (PledgeType.ENTERPRISE_BILL == loanCreateRequestDto.getLoan().getPledgeType()) {
+        if (PledgeType.ENTERPRISE_FACTORING == loanCreateRequestDto.getLoan().getPledgeType() || PledgeType.ENTERPRISE_BILL == loanCreateRequestDto.getLoan().getPledgeType()) {
             if (loanCreateRequestDto.getLoanerEnterpriseInfo() == null) {
                 return new BaseDto<>(new BaseDataDto(false, "企业借款人信息不完整"));
             }
