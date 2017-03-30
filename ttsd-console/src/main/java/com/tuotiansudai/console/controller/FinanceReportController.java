@@ -57,8 +57,8 @@ public class FinanceReportController {
     public ModelAndView exportFinanceReport(@RequestParam(value = "loanId", defaultValue = "", required = false) Long loanId,
                                             @RequestParam(value = "period", defaultValue = "", required = false) Integer period,
                                             @RequestParam(value = "investLoginName", defaultValue = "", required = false) String investLoginName,
-                                            @RequestParam(value = "investStartTime", defaultValue = "", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date investStartTime,
-                                            @RequestParam(value = "investEndTime", defaultValue = "", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date investEndTime,
+                                            @RequestParam(value = "investStartTime", defaultValue = "", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date investStartTime,
+                                            @RequestParam(value = "investEndTime", defaultValue = "", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date investEndTime,
                                             @RequestParam(value = "usedPreferenceType", defaultValue = "", required = false) PreferenceType preferenceType,
                                             @RequestParam(value = "index", defaultValue = "1", required = true) int index,
                                             HttpServletResponse httpServletResponse) throws IOException {
