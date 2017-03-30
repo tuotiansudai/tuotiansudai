@@ -216,9 +216,9 @@ public class LoanModel implements Serializable {
         this.showOnHome = true;
     }
 
-    public LoanModel updateLoan(LoanCreateRequestDto loanCreateRequestDto) {
+    public LoanModel updateLoan(LoanCreateRequestDto loanCreateRequestDto, String oldLoanNameSeq) {
         LoanCreateBaseRequestDto baseRequestDto = loanCreateRequestDto.getLoan();
-        this.name = this.status == LoanStatus.WAITING_VERIFY ? baseRequestDto.getName() : this.name;
+        this.name = this.status == LoanStatus.WAITING_VERIFY ? baseRequestDto.getName() + oldLoanNameSeq : this.name;
         this.agentLoginName = this.status == LoanStatus.WAITING_VERIFY ? baseRequestDto.getAgent() : this.agentLoginName;
         this.loanerUserName = loanCreateRequestDto.getLoanerDetails() != null ? loanCreateRequestDto.getLoanerDetails().getUserName() : "";
         this.loanerIdentityNumber = loanCreateRequestDto.getLoanerDetails() != null ? loanCreateRequestDto.getLoanerDetails().getIdentityNumber() : "";
