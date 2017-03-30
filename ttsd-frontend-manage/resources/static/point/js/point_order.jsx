@@ -102,7 +102,6 @@ $updatePlace.on('click', function(event) {
 	$('#Phone').val(phone),
 	$('#AddRess').val(address)
 	$addressForm.attr('data-type', 'update');
-    isDisabledButton();
 	layer.open({
 		type: 1,
 		title: '添加地址',
