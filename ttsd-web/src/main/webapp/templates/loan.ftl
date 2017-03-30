@@ -422,7 +422,7 @@
                                     <#if loan.enterpriseInfo??>
                                         <#list ['借款企业名称', '借款企业营业地址', '借款用途'] as key>
                                             <#if loan.enterpriseInfo[key]?? && loan.enterpriseInfo[key] != ''>
-                                                <div class="col-md-4">${key}：${loan.enterpriseInfo[key]}</div>
+                                                <div class="col-md-12">${key}：${loan.enterpriseInfo[key]}</div>
                                             </#if>
                                         </#list>
                                     </#if>
