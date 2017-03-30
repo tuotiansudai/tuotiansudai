@@ -215,6 +215,7 @@ public class PointManageController {
         exchangeCouponDto.setSeq(productModel.getSeq());
         exchangeCouponDto.setExchangePoint(productModel.getPoints());
         exchangeCouponDto.setImageUrl(productModel.getImageUrl());
+        exchangeCouponDto.setMonthLimit(productModel.getMonthLimit());
         ModelAndView modelAndView = new ModelAndView("/coupon-exchange-edit");
         modelAndView.addObject("exchangeCouponDto", exchangeCouponDto);
         modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));

@@ -24,7 +24,7 @@ import java.util.List;
 public class MobileAppMediaCenterServiceImpl implements MobileAppMediaCenterService{
     @Autowired
     private LicaiquanArticleMapper licaiquanArticleMapper;
-    @Value("${mobile.static.server}")
+    @Value("${common.static.server}")
     private String domainName;
     @Autowired
     private LiCaiQuanArticleService liCaiQuanArticleService;
