@@ -1,7 +1,7 @@
 require('pointStyle/point_record.scss');
 let tpl = require('art-template/dist/template');
 let commonFun= require('publicJs/commonFun');
-require('webJsModule/pagination');
+require('publicJs/pagination');
 
 let $dataList=$('#dataList');
 if($dataList.length) {

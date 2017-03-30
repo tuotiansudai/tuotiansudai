@@ -1,5 +1,5 @@
 require('webStyle/about_us.scss');
-require('webJsModule/pagination');
+require('publicJs/pagination');
 let paginationElement = $('.pagination');
 
 let $errorContainer =$('#errorContainer');

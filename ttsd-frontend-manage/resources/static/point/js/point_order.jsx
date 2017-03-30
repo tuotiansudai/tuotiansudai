@@ -129,41 +129,43 @@ if(orderPlaceForm){
         strategy: 'isNonEmpty',
         errorMsg: '请输入收货地址',
     }],true);
-}
 
+    let reInputs=$(orderPlaceForm).find('.int-text');
 
-let reInputs=$(orderPlaceForm).find('.int-text');
-
-reInputs=Array.from(reInputs);
-for (var el of reInputs) {
-    globalFun.addEventHandler(el,"keyup", "blur", function() {
-        validator.start(this);
-        isDisabledButton();
-    })
-}
+    reInputs=Array.from(reInputs);
+    for (var el of reInputs) {
+        globalFun.addEventHandler(el,"keyup", "blur", function() {
+            validator.start(this);
+            isDisabledButton();
+        })
+    }
 //用来判断按钮 是否可点击
-function isDisabledButton() {
-    let Recipient = orderPlaceForm.Recipient,
-        Phone = orderPlaceForm.Phone,
-        AddRess = orderPlaceForm.AddRess;
+    function isDisabledButton() {
+        let Recipient = orderPlaceForm.Recipient,
+            Phone = orderPlaceForm.Phone,
+            AddRess = orderPlaceForm.AddRess;
 
-    let isRecipientValid=!globalFun.hasClass(Recipient,'error') && Recipient.value;
-    let isPhoneValid = !globalFun.hasClass(Phone,'error') && Phone.value;
-    let isAddRessValid=!globalFun.hasClass(AddRess,'error') && AddRess.value;
-    if(isRecipientValid && isPhoneValid && isAddRessValid) {
-        $btnAddressSubit.prop('disabled',false);
+        let isRecipientValid=!globalFun.hasClass(Recipient,'error') && Recipient.value;
+        let isPhoneValid = !globalFun.hasClass(Phone,'error') && Phone.value;
+        let isAddRessValid=!globalFun.hasClass(AddRess,'error') && AddRess.value;
+        if(isRecipientValid && isPhoneValid && isAddRessValid) {
+            $btnAddressSubit.prop('disabled',false);
+        }
+        else {
+            $btnAddressSubit.prop('disabled',true);
+        }
     }
-    else {
-        $btnAddressSubit.prop('disabled',true);
-    }
-}
 
 //点击立即注册按钮
-orderPlaceForm.onsubmit = function(event) {
-    event.preventDefault();
-    $btnAddressSubit.prop('disabled', true);
-    submitPlace($(orderPlaceForm).attr('data-type'));
+    orderPlaceForm.onsubmit = function(event) {
+        event.preventDefault();
+        $btnAddressSubit.prop('disabled', true);
+        submitPlace($(orderPlaceForm).attr('data-type'));
+    }
+
 }
+
+
 
 
 $('body').on('click', '.close-layer',function(event) {
