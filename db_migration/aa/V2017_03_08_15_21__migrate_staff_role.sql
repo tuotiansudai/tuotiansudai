@@ -26,7 +26,6 @@ INSERT INTO user_role (login_name, role, created_time) SELECT
                                                          '13717657702',
                                                          '15133400090',
                                                          '18611617265',
-                                                         '15566606581',
                                                          '18611449300',
                                                          '13261678542',
                                                          '15942880658',
@@ -112,8 +111,8 @@ INSERT INTO user_role (login_name, role, created_time) SELECT
                                                          '13842681897',
                                                          '18342294411',
                                                          '13840938887',
-                                                         '18840919006',
                                                          '13130462908',
+                                                         '18840919006',
                                                          '15041190369',
                                                          '13079891599',
                                                          '18343178287',
@@ -176,7 +175,9 @@ INSERT INTO user_role (login_name, role, created_time) SELECT
                                                          '18612888336',
                                                          '18611146171',
                                                          '15010705486',
-                                                         '13641351408'
+                                                         '13641351408',
+                                                         '13911270858',
+                                                         '18600436931'
                                                        ) AND NOT EXISTS(SELECT 1
                                                                         FROM user_role
                                                                         WHERE
@@ -207,17 +208,6 @@ INSERT INTO user_role (login_name, role, created_time) SELECT
                                                                           user.login_name = user_role.login_name AND
                                                                           user_role.role = 'STAFF');
 
-
-INSERT INTO user_role (login_name, role, created_time) SELECT
-                                                         login_name,
-                                                         'NOT_STAFF_RECOMMEND',
-                                                         now()
-                                                       FROM user
-                                                       WHERE NOT EXISTS(SELECT 1
-                                                                        FROM user_role
-                                                                        WHERE user.login_name = user_role.login_name AND
-                                                                              user_role.role = 'STAFF');
-
 # 更新已有资产业务员角色
 UPDATE user_role
 SET role = 'ZC_STAFF'
@@ -236,6 +226,9 @@ WHERE role = 'STAFF' AND
                '13833402959',
                '15617091496',
                '15233405833',
+               '13261812982',
+               '13718302462',
+               '13552022903',
                '13833406287',
                '15932406687',
                '13911309210',
@@ -582,6 +575,7 @@ WHERE role = 'STAFF' AND
                '15910608948',
                '18911343396'));
 
+# 更新已有速贷业务员角色
 UPDATE user_role
 SET role = 'SD_STAFF'
 WHERE role = 'STAFF' AND
@@ -632,7 +626,20 @@ WHERE role = 'STAFF' AND
                '13699248263',
                '13050298448'));
 
+# 其他人更新为自然用户
+INSERT INTO user_role (login_name, role, created_time) SELECT
+                                                         login_name,
+                                                         'NOT_STAFF_RECOMMEND',
+                                                         now()
+                                                       FROM user
+                                                       WHERE NOT EXISTS(SELECT 1
+                                                                        FROM user_role
+                                                                        WHERE user.login_name = user_role.login_name AND
+                                                                              user_role.role IN
+                                                                              ('STAFF', 'SD_STAFF', 'ZC_STAFF'));
 
+
+# 更新资产系
 UPDATE user_role
 SET user_role.role = 'ZC_STAFF_RECOMMEND'
 WHERE user_role.role = 'NOT_STAFF_RECOMMEND' AND
@@ -661,7 +668,6 @@ WHERE user_role.role = 'NOT_STAFF_RECOMMEND' AND
                                                                               '13717657702',
                                                                               '15133400090',
                                                                               '18611617265',
-                                                                              '15566606581',
                                                                               '18611449300',
                                                                               '13261678542',
                                                                               '15942880658',
@@ -747,8 +753,8 @@ WHERE user_role.role = 'NOT_STAFF_RECOMMEND' AND
                                                                               '13842681897',
                                                                               '18342294411',
                                                                               '13840938887',
-                                                                              '18840919006',
                                                                               '13130462908',
+                                                                              '18840919006',
                                                                               '15041190369',
                                                                               '13079891599',
                                                                               '18343178287',
@@ -812,6 +818,8 @@ WHERE user_role.role = 'NOT_STAFF_RECOMMEND' AND
                                                                               '18611146171',
                                                                               '15010705486',
                                                                               '13641351408',
+                                                                              '13911270858',
+                                                                              '18600436931',
                                                                               '18311407273',
                                                                               '13552661098',
                                                                               '15225223605',
@@ -823,6 +831,9 @@ WHERE user_role.role = 'NOT_STAFF_RECOMMEND' AND
                                                                               '13833402959',
                                                                               '15617091496',
                                                                               '15233405833',
+                                                                              '13261812982',
+                                                                              '13718302462',
+                                                                              '13552022903',
                                                                               '13833406287',
                                                                               '15932406687',
                                                                               '13911309210',
@@ -1169,6 +1180,7 @@ WHERE user_role.role = 'NOT_STAFF_RECOMMEND' AND
                                                                               '15910608948',
                                                                               '18911343396')));
 
+# 更新资产系
 UPDATE user_role
 SET user_role.role = 'ZC_STAFF_RECOMMEND'
 WHERE user_role.role = 'NOT_STAFF_RECOMMEND' AND user_role.login_name IN (SELECT login_name
@@ -1199,7 +1211,6 @@ WHERE user_role.role = 'NOT_STAFF_RECOMMEND' AND user_role.login_name IN (SELECT
                                                                                           '13717657702',
                                                                                           '15133400090',
                                                                                           '18611617265',
-                                                                                          '15566606581',
                                                                                           '18611449300',
                                                                                           '13261678542',
                                                                                           '15942880658',
@@ -1285,8 +1296,8 @@ WHERE user_role.role = 'NOT_STAFF_RECOMMEND' AND user_role.login_name IN (SELECT
                                                                                           '13842681897',
                                                                                           '18342294411',
                                                                                           '13840938887',
-                                                                                          '18840919006',
                                                                                           '13130462908',
+                                                                                          '18840919006',
                                                                                           '15041190369',
                                                                                           '13079891599',
                                                                                           '18343178287',
@@ -1350,6 +1361,8 @@ WHERE user_role.role = 'NOT_STAFF_RECOMMEND' AND user_role.login_name IN (SELECT
                                                                                           '18611146171',
                                                                                           '15010705486',
                                                                                           '13641351408',
+                                                                                          '13911270858',
+                                                                                          '18600436931',
                                                                                           '18311407273',
                                                                                           '13552661098',
                                                                                           '15225223605',
@@ -1361,6 +1374,9 @@ WHERE user_role.role = 'NOT_STAFF_RECOMMEND' AND user_role.login_name IN (SELECT
                                                                                           '13833402959',
                                                                                           '15617091496',
                                                                                           '15233405833',
+                                                                                          '13261812982',
+                                                                                          '13718302462',
+                                                                                          '13552022903',
                                                                                           '13833406287',
                                                                                           '15932406687',
                                                                                           '13911309210',
@@ -1709,6 +1725,7 @@ WHERE user_role.role = 'NOT_STAFF_RECOMMEND' AND user_role.login_name IN (SELECT
                                                                                        AND
                                                                                        referrer_relation.level = 4));
 
+# 更新速贷系
 UPDATE user_role
 SET user_role.role = 'SD_STAFF_RECOMMEND'
 WHERE user_role.role = 'NOT_STAFF_RECOMMEND' AND
