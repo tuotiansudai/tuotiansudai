@@ -16,6 +16,7 @@ public class ProductShowItemDto {
     private String description;
     private String imageUrl;
     private long leftCount;
+    private long monthLimit = 0;
     private long points;
     private long actualPoints;
     private String pictureDescription;
@@ -32,18 +33,20 @@ public class ProductShowItemDto {
         this.description = productModel.getDescription();
         this.imageUrl = productModel.getImageUrl();
         this.leftCount = productModel.getTotalCount() - productModel.getUsedCount();
+        this.monthLimit = productModel.getMonthLimit();
         this.points = productModel.getPoints();
         this.actualPoints = productModel.getActualPoints();
         this.pictureDescription = pictureDescription;
         this.updatedTime = productModel.getUpdatedTime();
     }
 
-    public ProductShowItemDto(long totalCount, long usedCount, long points, long actualPoints, Integer seq, String imageUrl, CouponType couponType, long amount , double rate, long productId){
+    public ProductShowItemDto(long totalCount, long usedCount, long monthLimit, long points, long actualPoints, Integer seq, String imageUrl, CouponType couponType, long amount, double rate, long productId) {
         this.id = productId;
         this.seq = seq;
         this.imageUrl = imageUrl;
         this.goodsType = GoodsType.COUPON;
         this.leftCount = totalCount - usedCount;
+        this.monthLimit = monthLimit;
         this.points = points;
         this.actualPoints = actualPoints;
         switch (couponType) {
@@ -52,7 +55,7 @@ public class ProductShowItemDto {
                 this.pictureDescription = String.valueOf(amount);
                 break;
             case INVEST_COUPON:
-                this.name = String.format( "%s 元投资体验券", AmountConverter.convertCentToString(amount));
+                this.name = String.format("%s 元投资体验券", AmountConverter.convertCentToString(amount));
                 this.pictureDescription = String.valueOf(amount);
                 break;
             case INTEREST_COUPON:
@@ -124,6 +127,14 @@ public class ProductShowItemDto {
 
     public void setLeftCount(long leftCount) {
         this.leftCount = leftCount;
+    }
+
+    public long getMonthLimit() {
+        return monthLimit;
+    }
+
+    public void setMonthLimit(long monthLimit) {
+        this.monthLimit = monthLimit;
     }
 
     public String getPictureDescription() {

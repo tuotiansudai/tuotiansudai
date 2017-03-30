@@ -262,6 +262,15 @@ public class RedisWrapperClient extends AbstractRedisWrapperClient {
         });
     }
 
+    public Long incr(final String key, final long increasement) {
+        return execute(new JedisAction<Long>() {
+            @Override
+            public Long action(Jedis jedis) {
+                return jedis.incrBy(key, increasement);
+            }
+        });
+    }
+
     public Long incrEx(final String key, int seconds) {
         return execute(new JedisAction<Long>() {
             @Override
@@ -273,11 +282,13 @@ public class RedisWrapperClient extends AbstractRedisWrapperClient {
         });
     }
 
-    public Long incr(final String key, final long increasement) {
+    public Long incrEx(final String key, int seconds, final long increasement) {
         return execute(new JedisAction<Long>() {
             @Override
             public Long action(Jedis jedis) {
-                return jedis.incrBy(key, increasement);
+                long val = jedis.incrBy(key, increasement);
+                jedis.expire(key, seconds);
+                return val;
             }
         });
     }
@@ -287,6 +298,17 @@ public class RedisWrapperClient extends AbstractRedisWrapperClient {
             @Override
             public Long action(Jedis jedis) {
                 return jedis.decr(key);
+            }
+        });
+    }
+
+    public Long decrEx(final String key, int seconds, final long decrement) {
+        return execute(new JedisAction<Long>() {
+            @Override
+            public Long action(Jedis jedis) {
+                long val = jedis.decrBy(key, decrement);
+                jedis.expire(key, seconds);
+                return val;
             }
         });
     }

@@ -162,6 +162,7 @@ public enum ReturnMessage {
     POINTS_PRODUCT_NUM_IS_NOT_NULL("0111", "商品数量不能为空"),
     INSUFFICIENT_POINTS_BALANCE("0112", "积分余额不足"),
     INSUFFICIENT_PRODUCT_NUM("0113", "商品剩余数量不足"),
+    REACH_MONTH_LIMIT_THIS_MONTH("0116", "该商品每人每月可以兑换{0}个，已超出兑换上限。"),
     USER_ADDRESS_IS_NOT_NULL("0115", "收货地址不可以为空"),
 
     USER_IS_NOT_EXISTS("0120", "用户不存在"),

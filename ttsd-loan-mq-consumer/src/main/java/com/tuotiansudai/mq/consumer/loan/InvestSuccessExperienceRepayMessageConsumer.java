@@ -99,6 +99,6 @@ public class InvestSuccessExperienceRepayMessageConsumer implements MessageConsu
 
         return investRepayModel != null
                 && investRepayModel.getStatus() == RepayStatus.REPAYING
-                && new DateTime(investRepayModel.getRepayDate()).withTimeAtStartOfDay().isEqual(new DateTime().withTimeAtStartOfDay());
+                && new DateTime(investRepayModel.getRepayDate()).isBefore(new DateTime().withTimeAtStartOfDay().plusDays(1));
     }
 }
