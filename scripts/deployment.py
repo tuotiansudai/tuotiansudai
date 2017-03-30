@@ -86,6 +86,7 @@ class Deployment(object):
         sh('mv ./ttsd-mobile-api/src/main/webapp/static_api.zip  ./ttsd-web/build/')
         sh('cd ./ttsd-web/build && unzip static_api.zip -d static')
 
+
         sh('cd ./ttsd-frontend-manage/resources/prod && zip -r static_all.zip *')
         sh('mv ./ttsd-frontend-manage/resources/prod/static_all.zip  ./ttsd-web/build/')
         sh('cd ./ttsd-web/build && unzip static_all.zip -d static')

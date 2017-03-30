@@ -104,18 +104,18 @@ else if(NODE_ENV=='dev') {
 		verbose: true,
 		dry: false,
 		watch:true,
-		exclude: ['public','json-ask.json','json-web.json']
+		exclude: ['public','json-ask.json','json-web.json','json-point.json']
 	}));
 
 	//开发环境
 	plugins.push(new webpack.HotModuleReplacementPlugin());
 
 	// 接口代理
-	var proxyList = ['/media-center/*'];
+	var proxyList = ['media-center/*','task-center/*'];
 	var proxyObj = {};
 	proxyList.forEach(function(value) {
 		proxyObj[value] = {
-			target: 'http://localhost:3009',
+			target: 'http://localhost:9080',
 			changeOrigin: true,
 			secure: false
 		};
@@ -145,7 +145,6 @@ else if(NODE_ENV=='dev') {
 }
 plugins.push(new CopyWebpackPlugin([
 	{ from: publicPathJS+'/dllplugins',to: 'public/dllplugins'},
-	// { from: publicPathJS+'/plugins',to: 'public/plugins'},
 	{ from: staticPath+'/inlineImages',to: 'images'},
 	{ from: publicPath+'/styles/plugins/skin',to: 'public/skin'}
 ]));
@@ -162,13 +161,13 @@ plugins.push(new AssetsPlugin({
 
 //happypack利用缓存使rebuild更快
 plugins.push(createHappyPlugin('jsx', ['babel']));
-plugins.push(createHappyPlugin('sass', ['css!sass']));
 
+plugins.push(createHappyPlugin('sass', ['css!sass']));
+// plugins.push(createHappyPlugin('sass', ['css-loader?modules!postcss-loader!sass-loader?outputStyle=expanded']));
 plugins.push(new webpack.DllReferencePlugin({
 	context: __dirname,
 	manifest: require(publicPathJS+'/dllplugins/jquery-manifest.json')
 }));
-
 
 function createHappyPlugin(id, loaders) {
 	return new HappyPack({
@@ -198,7 +197,7 @@ var myObject = objectAssign(commonOptions, {
 			exclude: /node_modules/
 		},{
 			test: /\.css$/,
-			loader: ExtractTextPlugin.extract("style-loader", "css-loader")
+			loader: ExtractTextPlugin.extract("style-loader", "css-loader?modules!postcss-loader")
 		},{
 			test: /\.scss$/,
 			loader: ExtractTextPlugin.extract("style", "happypack/loader?id=sass")
@@ -230,16 +229,16 @@ var myObject = objectAssign(commonOptions, {
             pointImages:path.join(pointPath, 'images'),
 
 			mobileJs:path.join(mobilePath, 'js'),
-			mobileStyle:path.join(mobilePath, 'styles')
-
+			mobileJsModule:path.join(mobilePath, 'js/components'),
+			mobileStyle:path.join(mobilePath, 'styles'),
+			mobileImages:path.join(mobilePath, 'images')
 		}
 	},
 	postcss: function() {
 		return [
 			require('autoprefixer')({
 				browsers: ['last 2 versions']
-			}),
-			px2rem({remUnit: 75})
+			})
 		];
 	},
 	cache: true,
