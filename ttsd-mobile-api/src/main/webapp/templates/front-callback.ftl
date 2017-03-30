@@ -50,7 +50,7 @@
         <ul class="info-item">
             <li>
                 <span class="info-title">到账卡号</span>
-                <span class="info-text">${(values.bankName)!}</span>
+                <span class="info-text">${(values.bankName)!} ${values.cardNumber!}</span>
             </li>
             <li>
                 <span class="info-title">提取金额</span>
@@ -82,9 +82,8 @@
         </ul>
         <#break>
     <#case 'membership_privilege_purchase_transfer_asyn'>
-        <p>您已成功购买增值特权</p>
         <p>投资时将享受服务费7折优惠</p>
-    <#break>
+        <#break>
 </#switch>
     <p class="fix-nav">客服电话：400-169-1188（服务时间：9:00-20:00）</p>
 </div>

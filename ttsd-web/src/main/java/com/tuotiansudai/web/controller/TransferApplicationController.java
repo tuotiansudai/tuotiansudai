@@ -101,7 +101,7 @@ public class TransferApplicationController {
                 investDto.setLoginName(LoginUserInfo.getLoginName());
                 BaseDto<PayDataDto> baseDto = transferService.noPasswordTransferPurchase(investDto);
                 if (baseDto.getData().getStatus()) {
-                    return new ModelAndView(MessageFormat.format("redirect:/callback/transfer-invest-success?order_id={0}", baseDto.getData().getExtraValues().get("order_id")));
+                    return new ModelAndView(MessageFormat.format("redirect:/callback/invest_transfer_project_transfer_nopwd?order_id={0}", baseDto.getData().getExtraValues().get("order_id")));
                 }
                 redirectAttributes.addFlashAttribute("errorMessage", baseDto.getData().getMessage());
             } catch (InvestException e) {

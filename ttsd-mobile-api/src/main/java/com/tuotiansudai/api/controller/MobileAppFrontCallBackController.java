@@ -140,7 +140,7 @@ public class MobileAppFrontCallBackController {
         };
 
         Function<Long, Map<String, String>> memberPrivilegePurchaseValuesGenerator = (Long replaceCardOrderId) -> Maps.newHashMap(ImmutableMap.<String, String>builder()
-                .put("message", "购买成功")
+                .put("message", "成功购买增值特权")
                 .build());
 
         Function<Long, Map<String, String>> bindAgreementValuesGenerator = (Long replaceCardOrderId) -> Maps.newHashMap(ImmutableMap.<String, String>builder()

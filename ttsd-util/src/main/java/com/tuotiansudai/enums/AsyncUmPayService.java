@@ -136,11 +136,11 @@ public enum AsyncUmPayService {
 
 
     /**
-     * 普通会员购买转账验密接口
+     * 普通会员购买转账验密
      */
     MEMBERSHIP_PRIVILEGE_PURCHASE_TRANSFER_ASYN("transfer_asyn", "", "callback/membership_privilege_purchase_transfer_asyn", "membership-privilege-purchase-notify", "tuotian://membership/{0}"),
     /**
-     * 普通会员购买转账验密接口
+     * 平台充值普通转账验密
      */
     SYSTEM_RECHARGE_TRANSFER_ASYN("transfer_asyn", "finance-manage/system-bill", "", "system_recharge_notify", "");
 
