@@ -89,3 +89,8 @@ getJsonAskList.init();
 
 var getJsonWebList=new getJsonFileList('web','json-web.json');
 getJsonWebList.init();
+
+var getJsonMobileList=new getJsonFileList('mobile','json-mobile.json');
+getJsonMobileList.init();
+
+

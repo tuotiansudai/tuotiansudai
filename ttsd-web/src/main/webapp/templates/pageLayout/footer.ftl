@@ -41,8 +41,10 @@
         <ul id="linkList">
             <#if linkExchangeList??>
                 <#list linkExchangeList as linkExchange>
-                    <li><a href="${linkExchange.linkUrl}" <#if linkExchange.noFollow>rel="nofollow"</#if>
-                           target="_blank" title="${linkExchange.title}">${linkExchange.title}</a></li>
+                    <#if linkExchange.webSiteTypes?contains("WEB")>
+                        <li><a href="${linkExchange.linkUrl}" <#if linkExchange.noFollow>rel="nofollow"</#if>
+                               target="_blank" title="${linkExchange.title}">${linkExchange.title}</a></li>
+                    </#if>
                 </#list>
             </#if>
         </ul>

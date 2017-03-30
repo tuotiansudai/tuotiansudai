@@ -27,9 +27,20 @@
                 <label class="col-sm-1 control-label">noFollow: </label>
 
                 <div class="col-sm-4">
-                    <input type="checkbox" class="form-control jq-noFollow" name="noFollow"
+                    <input type="checkbox" class="jq-noFollow" name="noFollow"
                            <#if ((linkExchange.noFollow)!true)>value="true" checked="checked"
                            <#else>value="false"</#if>>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-1 control-label">显示位置: </label>
+                <div class="col-sm-4">
+                    <#list webSiteTypeList as webSiteType>
+                        <input type="checkbox" class="jq-webSiteType" name="webSiteTypes"
+                               <#if linkExchange?? && linkExchange.webSiteTypes?contains(webSiteType.name())>checked="checked"</#if>
+                               value="${webSiteType.name()}">${webSiteType.name()}
+                    </#list>
                 </div>
             </div>
             <div class="form-group">
