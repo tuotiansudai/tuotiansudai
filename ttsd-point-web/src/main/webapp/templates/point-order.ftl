@@ -63,7 +63,7 @@
 				<div class="order-table">
 					<div class="order-picture">
                         <p class="mater-img picture-item">
-                            <img src="${staticServer}/${productShowItem.imageUrl}" width="140" height="90"/>
+                            <img src="${commonStaticServer}/${productShowItem.imageUrl}" width="140" height="90"/>
                         </p>
 					</div>
 					<div class="order-name">
@@ -92,7 +92,9 @@
 						<p>
 							<span class="total-num">
 								剩余<i>${productShowItem.leftCount?c!0}</i>件
-                               <span class="tip" id="exchangeTip">本月您还可以兑换<i></i>个</span>
+								<#if productShowItem.monthLimit!=0>
+                               		<span class="tip" id="exchangeTip">本月您还可以兑换<i></i>个</span>
+								</#if>
 							</span>
 						</p>
 					</div>
