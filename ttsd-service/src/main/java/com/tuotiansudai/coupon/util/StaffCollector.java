@@ -22,7 +22,10 @@ public class StaffCollector implements UserCollector{
 
     @Override
     public List<String> collect(long couponId) {
-        return userMapper.findAllByRole(Maps.newHashMap(ImmutableMap.<String, Object>builder().put("role", Role.STAFF).put("districtName", Lists.newArrayList()).build()));
+        List<String> roles = Lists.newArrayList();
+        roles.addAll(userMapper.findAllByRole(Maps.newHashMap(ImmutableMap.<String, Object>builder().put("role", Role.ZC_STAFF).put("districtName", Lists.newArrayList()).build())));
+        roles.addAll(userMapper.findAllByRole(Maps.newHashMap(ImmutableMap.<String, Object>builder().put("role", Role.SD_STAFF).put("districtName", Lists.newArrayList()).build())));
+        return roles;
     }
 
     @Override
@@ -31,8 +34,10 @@ public class StaffCollector implements UserCollector{
             return false;
         }
 
-        List<String> userRoleModels = userMapper.findAllByRole(Maps.newHashMap(ImmutableMap.<String, Object>builder().put("role", Role.STAFF).put("districtName", Lists.newArrayList()).build()));;
-        return CollectionUtils.isNotEmpty(userRoleModels) && Iterators.any(userRoleModels.iterator(), input -> input.equalsIgnoreCase(userModel.getLoginName()));
+        List<String> roles = Lists.newArrayList();
+        roles.addAll(userMapper.findAllByRole(Maps.newHashMap(ImmutableMap.<String, Object>builder().put("role", Role.ZC_STAFF).put("districtName", Lists.newArrayList()).build())));
+        roles.addAll(userMapper.findAllByRole(Maps.newHashMap(ImmutableMap.<String, Object>builder().put("role", Role.SD_STAFF).put("districtName", Lists.newArrayList()).build())));
+        return CollectionUtils.isNotEmpty(roles) && Iterators.any(roles.iterator(), input -> input.equalsIgnoreCase(userModel.getLoginName()));
     }
 
 }

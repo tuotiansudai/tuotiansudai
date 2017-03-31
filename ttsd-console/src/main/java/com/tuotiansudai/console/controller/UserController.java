@@ -46,6 +46,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping(value = "/user-manage")
@@ -95,11 +96,16 @@ public class UserController {
     public ModelAndView editUser(@PathVariable String loginName, Model model) throws Exception {
         String taskId = OperationType.USER + "-" + loginName;
         ModelAndView modelAndView = new ModelAndView("/user-edit");
+        List<Role> roles = Lists.newArrayList(Role.values())
+                .stream()
+                .filter(role -> !Lists.newArrayList(Role.NOT_STAFF_RECOMMEND, Role.SD_STAFF_RECOMMEND, Role.ZC_STAFF_RECOMMEND).contains(role))
+                .collect(Collectors.toList());
+
         if (!redisWrapperClient.hexistsSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId)) {
             if (!model.containsAttribute("user")) {
                 EditUserDto editUserDto = consoleUserService.getEditUser(loginName);
                 modelAndView.addObject("user", editUserDto);
-                modelAndView.addObject("roles", Role.values());
+                modelAndView.addObject("roles", roles);
                 modelAndView.addObject("showCommit", true);
             }
             return modelAndView;
@@ -120,7 +126,7 @@ public class UserController {
             editUserDto.setIdentityNumber(userModel == null || Strings.isNullOrEmpty(userModel.getUserName()) ? "" : userModel.getIdentityNumber());
             editUserDto.setUserName(userModel == null || Strings.isNullOrEmpty(userModel.getUserName()) ? "" : userModel.getUserName());
             modelAndView.addObject("user", editUserDto);
-            modelAndView.addObject("roles", Role.values());
+            modelAndView.addObject("roles", roles);
             modelAndView.addObject("taskId", taskId);
             modelAndView.addObject("sender", task.getSender());
             modelAndView.addObject("showCommit", LoginUserInfo.getLoginName().equals(task.getSender()));
