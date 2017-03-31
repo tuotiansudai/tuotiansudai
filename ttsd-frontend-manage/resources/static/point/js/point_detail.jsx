@@ -26,9 +26,7 @@ if(myLimit) {
 $countList.on('click',function(event) {
 	var target = event.target;
 	var overplus = parseInt($countList.data('overplus'));  //剩余商品的数量
-
 	currentNum=parseInt($numText.val());
-
 	var compareNum = (myRest==0) ? overplus :Math.min(overplus,myRest);
 	if(overplus<1) {
 		return;
