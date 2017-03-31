@@ -58,6 +58,16 @@
         </div>
 
         <div class="form-group">
+            <label class="col-sm-2 control-label">兑换限制</label>
+
+            <div class="col-sm-4">
+                <input type="text" class="form-control total-count" name="monthLimit" placeholder=""
+                       <#if product??>value="${product.monthLimit?string('0')!}"</#if> datatype="n"
+                       errormsg="兑换限制只能为数字"> 个/人/月（0表示无限制）
+            </div>
+        </div>
+
+        <div class="form-group">
             <label class="col-sm-2 control-label">商品介绍</label>
 
             <div class="col-sm-4">

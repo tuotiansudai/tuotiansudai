@@ -64,7 +64,7 @@
 
             <div class="col-sm-4">
                 <input type="text" class="form-control total-count" name="monthLimit" placeholder="" datatype="n"
-                       errormsg="兑换限制只能为数字"> 个/人/月
+                       errormsg="兑换限制只能为数字"> 个/人/月（0表示无限制）
             </div>
         </div>
 
