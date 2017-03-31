@@ -107,8 +107,6 @@
                                 </#if>
                             </p>
                         </#if>
-
-
                         <p><img src="${commonStaticServer}/${virtualProduct.imageUrl}" width="160" height="100"></p>
                         <p class="convert-btn">
                             <span class="name-text">${virtualProduct.name}</span>

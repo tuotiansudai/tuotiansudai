@@ -92,7 +92,9 @@
 						<p>
 							<span class="total-num">
 								剩余<i>${productShowItem.leftCount?c!0}</i>件
-                               <span class="tip" id="exchangeTip">本月您还可以兑换<i></i>个</span>
+								<#if productShowItem.monthLimit!=0>
+                               		<span class="tip" id="exchangeTip">本月您还可以兑换<i></i>个</span>
+								</#if>
 							</span>
 						</p>
 					</div>
