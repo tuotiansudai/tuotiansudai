@@ -1,5 +1,7 @@
 package com.tuotiansudai.console.controller;
 
+import com.tuotiansudai.ask.repository.model.QuestionModel;
+import com.tuotiansudai.ask.repository.model.QuestionStatus;
 import com.tuotiansudai.console.bi.dto.RoleStage;
 import com.tuotiansudai.console.dto.RemainUserDto;
 import com.tuotiansudai.console.dto.UserItemDataDto;
@@ -16,6 +18,7 @@ import com.tuotiansudai.point.repository.model.PointPrizeWinnerViewDto;
 import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.point.service.ProductService;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.rest.client.AskRestClient;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.CalculateUtil;
 import com.tuotiansudai.util.CsvHeaderType;
@@ -94,6 +97,9 @@ public class ExportController {
 
     @Autowired
     private ConsoleReferrerManageService consoleReferrerManageService;
+
+    @Autowired
+    private AskRestClient askRestClient;
 
     @RequestMapping(value = "/coupons", method = RequestMethod.GET)
     public void exportCoupons(HttpServletResponse response) throws IOException {
@@ -514,5 +520,18 @@ public class ExportController {
             csvData.add(ExportCsvUtil.dtoToStringList(dto));
         }
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.UserRemainHeader, csvData, response.getOutputStream());
+    }
+
+    @RequestMapping(value = "/questions", method = RequestMethod.GET)
+    public void exportUserPoint(@RequestParam(value = "question", required = false) String question,
+                                @RequestParam(value = "mobile", required = false) String mobile,
+                                @RequestParam(value = "status", required = false) QuestionStatus status, HttpServletResponse response) throws IOException {
+        final int index = 1;
+        final int pageSize = Integer.MAX_VALUE;
+
+        fillExportResponse(response, CsvHeaderType.QuestionsHeader.getDescription());
+        BaseDto<BasePaginationDataDto<QuestionModel>> data = askRestClient.findQuestionsForConsole(question, mobile, status, index, pageSize);
+        List<List<String>> csvData = exportService.buildQuestionsList(data.getData().getRecords());
+        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.QuestionsHeader, csvData, response.getOutputStream());
     }
 }
