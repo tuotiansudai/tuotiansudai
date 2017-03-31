@@ -9,7 +9,7 @@ require.ensure([],function() {
     require('publicJs/plugins/jquery.qrcode.min');
     let commonFun= require('publicJs/commonFun');
     let moment = require('moment');
-    require('webJsModule/pagination');
+    require('publicJs/pagination');
 
     var $investListContent=$('#investListContent'),
         $clipboardText=$('#clipboard_text');

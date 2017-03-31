@@ -1,4 +1,12 @@
+window.jQuery = window.$ = window.jquery_library(1);
+window.layer = window.jquery_library(2);
+window.layer.config({
+    path: staticServer+'/public/'
+});
+window._ = window.jquery_library(3);
+window.$.fn=window.$.prototype;
 require("publicStyle/global.scss");
+require('publicJs/error');
 //ie8不支持bind方法，这里做兼容处理
 if (!Function.prototype.bind) {
     Function.prototype.bind = function (oThis) {
@@ -294,16 +302,7 @@ var Proxy_GlobalFun=function() {
 window.globalFun =new Proxy_GlobalFun();
 window.globalFun.init();
 
-window.jQuery = window.$ = window.jquery_library(1);
 
-window.layer = window.jquery_library(2);
-
-window.layer.config({
-    path: staticServer+'/public/'
-});
-window._ = window.jquery_library(3);
-
-window.$.fn=window.$.prototype;
 
 
 

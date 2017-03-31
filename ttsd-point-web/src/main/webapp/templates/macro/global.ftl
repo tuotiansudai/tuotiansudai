@@ -19,7 +19,7 @@
     </@security.authorize>
 </#macro>
 
-<#macro main pageCss pageJavascript="" activeNav="" activeLeftNav="" title="拓天速贷" keywords="" description="" site='main'>
+<#macro main pageCss pageJavascript="" activeNav="" staticServer="${commonStaticServer}" activeLeftNav="" title="拓天速贷" keywords="" description="" site='main'>
     <#local mainMenus=[
     {"title":"首页", "url":"/","category":"16顶部导航"},
     {"title":"我要投资", "url":"/loan-list","category":"17顶部导航","leftNavs":[
@@ -69,24 +69,17 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
     <title>${title}</title>
     <meta name="keywords" content="${keywords}">
-
     <meta name="description" content="${description}">
     <#if responsive??>
         <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
     </#if>
     <meta name="_csrf" content="${(_csrf.token)!}"/>
     <meta name="_csrf_header" content="${(_csrf.headerName)!}"/>
-
-    <link href="${staticServer}/images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-    <link rel="stylesheet" type="text/css" href="${css.global}" charset="utf-8" />
+    <link href="${commonStaticServer}/images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <link rel="stylesheet" type="text/css" href="${css.globalFun_page!}" charset="utf-8" />
     <#if pageCss?? && pageCss != "">
         <link rel="stylesheet" type="text/css" href="${pageCss}" charset="utf-8" />
     </#if>
-    <!--[if lte IE 8]>
-    <link rel="stylesheet" href="${staticServer}${cssPath}ie_hack_grid.css">
-    <![endif]-->
-
-    <#include "../cnzz.ftl"/>
     <!-- growing io -->
     <#include "../growing-io.ftl"/>
 </head>
@@ -98,7 +91,6 @@
     </#if>
 
 <div class="main-frame full-screen clearfix">
-
     <#nested>
 </div>
 
@@ -107,7 +99,8 @@
     </#if>
 
 <script type="text/javascript" charset="utf-8">
-    var staticServer = '${staticServer}';
+    <#--var staticServer = '${staticServer}';-->
+    window.staticServer='${commonStaticServer}';
         <@security.authorize access="isAuthenticated()">
         document.getElementById("logout-link").onclick=function (event) {
             document.getElementById("logout-form").submit();
@@ -115,16 +108,10 @@
         </@security.authorize>
 </script>
 
-<script src="${js.config}" type="text/javascript" charset="utf-8"></script>
-<script src="${js.global_page}" type="text/javascript" charset="utf-8"></script>
-    <#if pageJavascript?? && pageJavascript?length gt 0>
-    <script src="${staticServer}/point/js/libs/require-2.1.20.min.js" type="text/javascript" charset="utf-8" defer="defer" async="async"
-            data-main="${pageJavascript}">
-
-    </script>
-    </#if>
-
-    <#include "../statistic.ftl" />
+<script src="${js.jquerydll}" ></script>
+<script src="${js.globalFun_page!}" ></script>
+<script src="${pageJavascript}" type="text/javascript" id="currentScript"></script>
+<#include "../statistic.ftl" />
 </body>
 </html>
 </#macro>
