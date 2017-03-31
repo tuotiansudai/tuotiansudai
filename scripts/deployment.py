@@ -82,21 +82,14 @@ class Deployment(object):
         sh('mv ./ttsd-web/src/main/webapp/static.zip  ./ttsd-web/build/')
         sh('cd ./ttsd-web/build && unzip static.zip -d static')
 
-        sh('cd ./ttsd-mobile-api/src/main/webapp && zip -r static_api.zip api/')
-        sh('mv ./ttsd-mobile-api/src/main/webapp/static_api.zip  ./ttsd-web/build/')
-        sh('cd ./ttsd-web/build && unzip static_api.zip -d static')
 
-        sh('cd ./ttsd-frontend-manage/resources/prod && zip -r static_ask.zip *')
-        sh('mv ./ttsd-frontend-manage/resources/prod/static_ask.zip  ./ttsd-web/build/')
-        sh('cd ./ttsd-web/build && unzip static_ask.zip -d static')
+        sh('cd ./ttsd-frontend-manage/resources/prod && zip -r static_all.zip *')
+        sh('mv ./ttsd-frontend-manage/resources/prod/static_all.zip  ./ttsd-web/build/')
+        sh('cd ./ttsd-web/build && unzip static_all.zip -d static')
 
         sh('cd ./ttsd-activity-web/src/main/webapp && zip -r static_activity.zip activity/')
         sh('mv ./ttsd-activity-web/src/main/webapp/static_activity.zip  ./ttsd-web/build/')
         sh('cd ./ttsd-web/build && unzip static_activity.zip -d static')
-
-        sh('cd ./ttsd-point-web/src/main/webapp && zip -r static_point.zip point/')
-        sh('mv ./ttsd-point-web/src/main/webapp/static_point.zip  ./ttsd-web/build/')
-        sh('cd ./ttsd-web/build && unzip static_point.zip -d static')
 
     def init_docker(self):
         print "Initialing docker..."

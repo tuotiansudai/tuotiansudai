@@ -8,11 +8,25 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'jquery-ui','cs
             } else {
                 operate = 'create';
             }
+
+            var getWebSiteTypes = function() {
+                var obj=[];
+                $('.jq-webSiteType').each(function(key,option) {
+
+                    if(option.checked) {
+                        obj.push(option.value);
+                    }
+                })
+                return obj.join(',');
+            }
+
+
             var dataForm = JSON.stringify({
                 "id":$('.jq-id').val(),
                 "title":$('.jq-title').val(),
                 "linkUrl": $('.jq-linkurl').val(),
-                "noFollow": $('.jq-noFollow').val()
+                "noFollow": $('.jq-noFollow').val(),
+                "webSiteTypes": getWebSiteTypes()
             });
             if($('.jq-title').val() == ''
                 || $('.jq-linkurl').val().trim() == ''){
@@ -22,6 +36,16 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'jquery-ui','cs
                 showErrorMessage("网址格式不正确,请以http://或 https://开始");
                 return false;
             }
+
+            var len= $('input[name="webSiteTypes"]').filter(function(key,option) {
+                return $(option).is(':checked');
+            }).length;
+
+            if(len <= 0){
+                showErrorMessage("请选择显示位置");
+                return false;
+            }
+
             $.ajax({
                 url: '/link-exchange-manage/link-exchange/'+operate,
                 type: 'POST',

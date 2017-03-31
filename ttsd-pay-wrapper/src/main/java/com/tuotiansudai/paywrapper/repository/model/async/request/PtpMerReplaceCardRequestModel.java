@@ -37,7 +37,6 @@ public class PtpMerReplaceCardRequestModel extends BaseAsyncRequestModel{
         this.userId = payUserId;
         this.accountName = userName;
         this.identityCode = identityNumber;
-        this.retUrl = MessageFormat.format("{0}/callback/{1}", CALLBACK_HOST_PROPS.get("pay.callback.web.host"), FrontCallbackService.PTP_MER_REPLACE_CARD.getServiceName());
         this.notifyUrl = MessageFormat.format("{0}/{1}", CALLBACK_HOST_PROPS.get("pay.callback.back.host"), "mer_replace_card_notify");
     }
 
