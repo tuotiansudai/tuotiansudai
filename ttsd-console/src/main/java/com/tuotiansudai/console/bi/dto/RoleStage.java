@@ -6,11 +6,15 @@ public enum RoleStage {
     USER("注册用户"),
     INVESTOR("出借人"),
     LOANER("借款人"),
-    STAFF("业务员"),
+    SD_STAFF("速贷业务员"),
+    ZC_STAFF("资产业务员"),
+    NOT_STAFF_RECOMMEND("自然用户"), //用户上溯邀请人为非业务员角色，或该用户没有邀请人，则该用户为自然用户
+    SD_STAFF_RECOMMEND("速贷系用户"), //用户上溯邀请人的终点为速贷业务员时，该用户为速贷系
+    ZC_STAFF_RECOMMEND("资产系用户"), //用户上溯邀请人的终点为资产业务员时，该用户为资产系
     CUSTOMER_SERVICE("客服"),
     AGENT("渠道用户"),
-    NORMAL_USER("自然用户"),
-    RECOMMENDATION("业务员的一级推荐"),
+    SD_STAFF_RECOMMENDATION("速贷业务员的一级推荐"),
+    ZC_STAFF_RECOMMENDATION("资产业务员的一级推荐"),
     ADMIN("管理员"),
     OTHERS("其他用户");
 

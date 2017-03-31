@@ -489,6 +489,7 @@ public class ProductServiceImpl implements ProductService {
                     exchangeCouponDto.setExchangePoint(productModel.getPoints());
                     exchangeCouponDto.setSeq(productModel.getSeq());
                     exchangeCouponDto.setImageUrl(productModel.getImageUrl());
+                    exchangeCouponDto.setMonthLimit(productModel.getMonthLimit());
                     return exchangeCouponDto;
                 }).collect(Collectors.toList());
     }

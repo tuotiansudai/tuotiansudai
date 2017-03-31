@@ -64,8 +64,9 @@
                 <label for="control-label">推荐人角色</label>
                 <select class="selectpicker role" data-style="btn-default">
                     <option value="" <#if role?has_content><#else>selected</#if>>全部</option>
-                    <option value="STAFF" <#if role?has_content && role == 'STAFF'>selected</#if>>业务员</option>
-                    <option value="USER" <#if role?has_content && role != 'STAFF'>selected</#if>>用户(非业务员)</option>
+                    <option value="ZC_STAFF" <#if role?has_content && role == 'ZC_STAFF'>selected</#if>>资产业务员</option>
+                    <option value="SD_STAFF" <#if role?has_content && role == 'SD_STAFF'>selected</#if>>速贷业务员</option>
+                    <option value="USER" <#if role?has_content && role != 'ZC_STAFF' && role != 'SD_STAFF'>selected</#if>>用户(非业务员)</option>
                 </select>
             </div>
             <div class="form-group">
@@ -82,10 +83,8 @@
                 <select class="selectpicker referrerRewardStatus" data-style="btn-default">
                     <option value="">全部</option>
                     <#list referrerRewardStatuses as referrerRewardStatusItem>
-                        <#if referrerRewardStatusItem != 'NO_ACCOUNT'>
                             <option value="${referrerRewardStatusItem.name()}"
-                                    <#if (referrerRewardStatus?has_content && referrerRewardStatus == referrerRewardStatusItem.name()) >selected</#if>>${referrerRewardStatusItem.name()}</option>
-                        </#if>
+                                    <#if (referrerRewardStatus?has_content && referrerRewardStatus == referrerRewardStatusItem)>selected</#if>>${referrerRewardStatusItem.getDescription()}</option>
                     </#list>
                 </select>
             </div>
@@ -131,11 +130,19 @@
                     <td>${referrerManageView.source}</td>
                     <td>${referrerManageView.referrerMobile!}</td>
                     <td>${referrerManageView.referrerName!}</td>
-                    <td><#if referrerManageView.role?? && referrerManageView.role == 'STAFF'>是<#else>否</#if></td>
+                    <td>
+                        <#switch referrerManageView.role>
+                            <#case 'ZC_STAFF'>
+                            <#case 'SD_STAFF'>
+                                ${referrerManageView.role.getDescription()}
+                                <#break>
+                            <#default>
+                                否
+                        </#switch>
+                    </td>
                     <td>${referrerManageView.level?string('0')}</td>
                     <td>${referrerManageView.rewardAmount/100}</td>
-                    <td><#if referrerManageView.status?? && referrerManageView.status == 'SUCCESS'>已入账<#else>
-                        入账失败</#if></td>
+                    <td>${referrerManageView.status.getDescription()}</td>
                     <td>${referrerManageView.rewardTime?string('yyyy-MM-dd HH:mm:ss')}</td>
                 </tr>
                 </#list>

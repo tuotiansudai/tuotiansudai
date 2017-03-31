@@ -35,5 +35,7 @@
         delete from user_role where login_name = #{loginName};
     </delete>
 
-
+    <delete id="deleteByLoginNameAndRole" parameterType="map">
+        delete from user_role where login_name = #{loginName} and role = #{role};
+    </delete>
 </mapper>

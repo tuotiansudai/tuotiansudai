@@ -62,7 +62,7 @@ public class UserMapperTest {
         userMapper.create(userModel);
         userModel.setProvince("北京");
         userMapper.updateUser(userModel);
-        UserRoleModel userRoleModel = new UserRoleModel("helloworld", Role.STAFF);
+        UserRoleModel userRoleModel = new UserRoleModel("helloworld", Role.SD_STAFF);
         userRoleMapper.create(Lists.newArrayList(userRoleModel));
 
         UserModel userModelTest = new UserModel();
@@ -79,7 +79,7 @@ public class UserMapperTest {
         UserRoleModel userRoleModelTest = new UserRoleModel("hellokitty", Role.AGENT);
         userRoleMapper.create(Lists.newArrayList(userRoleModelTest));
 
-        List<String> staffList = userMapper.findAllByRole(Maps.newHashMap(ImmutableMap.<String, Object>builder().put("role", Role.STAFF).put("districtName", Lists.newArrayList("北京")).build()));
+        List<String> staffList = userMapper.findAllByRole(Maps.newHashMap(ImmutableMap.<String, Object>builder().put("role", Role.SD_STAFF).put("districtName", Lists.newArrayList("北京")).build()));
 
         assertThat(staffList.get(0), is("helloworld"));
 
