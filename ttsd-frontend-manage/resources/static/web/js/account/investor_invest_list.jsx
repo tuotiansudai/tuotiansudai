@@ -1,7 +1,7 @@
 //投资记录--直投项目
 require('webStyle/account/loan_list.scss');
 require('publicJs/plugins/daterangepicker.scss');
-require('webJsModule/pagination');
+require('publicJs/pagination');
 let moment = require('moment');
 let tpl = require('art-template/dist/template');
 require('publicJs/plugins/jquery.daterangepicker-0.0.7.js');

@@ -60,7 +60,7 @@
                             <p class="next-text"></p>
                             <p class="sign-reward"><a href="/activity/sign-check">查看连续签到奖励</a></p>
                         </div>
-                        
+
                     </div>
                 </div>
             </div>
@@ -107,9 +107,7 @@
                                 </#if>
                             </p>
                         </#if>
-
-
-                        <p><img src="${staticServer}${virtualProduct.imageUrl}" width="160" height="100"></p>
+                        <p><img src="${commonStaticServer}/${virtualProduct.imageUrl}" width="160" height="100"></p>
                         <p class="convert-btn">
                             <span class="name-text">${virtualProduct.name}</span>
                             <span class="price-text">
@@ -129,7 +127,7 @@
                 </#list>
             </ul>
             <#else>
-                <p class="no-material"><img src="${staticServer}/point/images/no-material.png"></p>
+                <p class="no-material"></p>
                 <p class="no-product">商品即将上线，敬请期待！</p>
             </#if>
         </div>
@@ -160,7 +158,7 @@
                         </p>
 
                         <p class="mater-img picture-item">
-                            <img src="${staticServer}${physicalProduct.imageUrl}" width="160" height="100"/>
+                            <img src="${commonStaticServer}/${physicalProduct.imageUrl}" width="160" height="100"/>
                         </p>
 
                         <p class="convert-btn">
@@ -181,7 +179,7 @@
                 </#list>
             </ul>
             <#else>
-                <p class="no-material"><img src="${staticServer}/point/images/no-material.png"></p>
+                <p class="no-material"></p>
                 <p class="no-product">商品即将上线，敬请期待！</p>
             </#if>
         </div>

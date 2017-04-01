@@ -1,7 +1,7 @@
 //债券转让
 require('webStyle/account/transfer.scss');
 require('webJsModule/coupon_alert');
-require('webJsModule/pagination');
+require('publicJs/pagination');
 let commonFun= require('publicJs/commonFun');
 var activeIndex=$('.filters-list li.active').index(),
 	$ruleList = $('#ruleList'),

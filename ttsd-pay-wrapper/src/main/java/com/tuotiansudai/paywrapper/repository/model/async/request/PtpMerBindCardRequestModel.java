@@ -29,11 +29,7 @@ public class PtpMerBindCardRequestModel extends BaseAsyncRequestModel {
     public PtpMerBindCardRequestModel() {
     }
 
-    public PtpMerBindCardRequestModel(String orderId, String cardNumber, String payUserId, String userName, String identityNumber, Source source) {
-        this(orderId, cardNumber, payUserId, userName, identityNumber, source, false);
-    }
-
-    public PtpMerBindCardRequestModel(String orderId, String cardNumber, String payUserId, String userName, String identityNumber,Source source, boolean isOpenFastPayment) {
+    public PtpMerBindCardRequestModel(String orderId, String cardNumber, String payUserId, String userName, String identityNumber, Source source, boolean isOpenFastPayment) {
         super(source, AsyncUmPayService.PTP_MER_BIND_CARD);
         this.service = AsyncUmPayService.PTP_MER_BIND_CARD.getServiceName();
         this.orderId = orderId;
@@ -42,7 +38,7 @@ public class PtpMerBindCardRequestModel extends BaseAsyncRequestModel {
         this.userId = payUserId;
         this.accountName = userName;
         this.identityCode = identityNumber;
-        this.isOpenFastPayment = isOpenFastPayment?"1":"0";
+        this.isOpenFastPayment = isOpenFastPayment ? "1" : "0";
     }
 
     @Override

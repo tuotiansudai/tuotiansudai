@@ -179,7 +179,7 @@ public class FinanceReportServiceTest {
         LoanModel loanModel = createLoanModel(1000, "房产", agentUserModel, loanerAccountModel, LoanType.INVEST_INTEREST_LUMP_SUM_REPAY, LoanStatus.COMPLETE);
         InvestModel investModel = createInvestModel(1, loanModel.getId(), investorWithReferrerAccountModel, DateTime.parse("2016-10-12T01:20").toDate());
         InvestRepayModel investRepayModel = createInvestRepayModel(investModel.getId(), 1, RepayStatus.COMPLETE);
-        InvestReferrerRewardModel investReferrerRewardModel = createInvestReferrerRewardModel(1, "referrer", Role.STAFF);
+        InvestReferrerRewardModel investReferrerRewardModel = createInvestReferrerRewardModel(1, "referrer", Role.SD_STAFF);
         financeReportItemViews.add(combineFinanceReportModel(loanModel, investModel, investorWithReferrerUserModel, investRepayModel));
         investRepayModel = createInvestRepayModel(investModel.getId(), 2, RepayStatus.COMPLETE);
         financeReportItemViews.add(combineFinanceReportModel(loanModel, investModel, investorWithReferrerUserModel, investRepayModel));

@@ -1,6 +1,6 @@
 require('webStyle/investment/loan_detail.scss');
 require('webJs/plugins/autoNumeric');
-require('webJsModule/pagination');
+require('publicJs/pagination');
 require('webJsModule/coupon_alert');
 require('webJsModule/assign_coupon');
 //投资计算器和意见反馈
