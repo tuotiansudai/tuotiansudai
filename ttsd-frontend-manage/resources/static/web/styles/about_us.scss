@@ -224,16 +224,15 @@
           width:170px;
           height:80px;
           border: 1px solid #e5e5e5;
-          background-image: url("../images/icons/icon-list.jpg");
         }
         &.logo-one{
-          background-position: -170px 0;
+          background: url("../images/global/logo-lian.png") center center no-repeat;
         }
         &.logo-two{
-          background-position: 0 0;
+          background: url("../images/global/logo-jing.png") center center no-repeat;
         }
         &.logo-three{
-          background-image: url("../images/homepage/logo-cfca.png");
+          background-image: url("../images/global/logo-cfca.png");
           background-size:100%;
         }
         &.partner-intro{
