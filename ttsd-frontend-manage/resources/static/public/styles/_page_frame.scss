@@ -612,7 +612,6 @@
     }
     .nav-menu {
       width: 100%;
-      //display: none;
         background: #fff;
         position: absolute;
         top: 53px;
@@ -668,12 +667,12 @@
       padding: 10px!important;
     }
     .left-nav{
-      width:640px;
       margin:0;
       li{
         float: left;
-        width:16.666666%;
+
         &:nth-child(4) {
+          //隐藏媒体报道
           display: none;
         }
       }

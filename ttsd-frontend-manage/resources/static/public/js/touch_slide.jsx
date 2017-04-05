@@ -4,8 +4,8 @@ var sliderObj = {
 
     //判断设备是否支持touch事件
     isTouch:('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch,
-    sliderDom: document.getElementById('sliderFrame'),
     options:{
+        sliderDom:document.getElementById('sliderFrame'),
         startPos:0,
         endPos:0,
         isHorizontal:false,
@@ -20,7 +20,7 @@ var sliderObj = {
     //数判断是垂直滚动还是水平滚动,
     //true为垂直方向，false为水平方向
 
-    isVertical:function() {
+    isVertical:function(event) {
 
         //当屏幕有多个touch或者页面被缩放过，就不执行move操作
         if(event.targetTouches.length > 1 || event.scale && event.scale !== 1) return;
@@ -36,8 +36,9 @@ var sliderObj = {
         return isBool;
     },
 
-    handleEvent:function(event) {
+    handleEvent:function(event,callback) {
         var event = event || window.event;
+
         switch(event.type){
             case "touchstart":
                 var touch = event.targetTouches[0];
@@ -46,7 +47,11 @@ var sliderObj = {
             case "touchend":
                 //阻止触摸事件的默认行为，即阻止滚屏
                 event.preventDefault();
-                var isScrolling = sliderObj.isVertical();
+                sliderObj.finish();
+                break;
+            case "touchmove":
+                event.preventDefault();
+                var isScrolling = sliderObj.isVertical(event);
                 if(isScrolling){
                     //垂直
                     sliderObj.verticalAxisMove(event);
@@ -54,9 +59,6 @@ var sliderObj = {
                     //水平方向
                     sliderObj.horizontalAxisMove(event);
                 }
-                break;
-            case "touchmove":
-                event.preventDefault();
 
                 break;
         }
@@ -109,11 +111,17 @@ var sliderObj = {
                 btt:true
             }
         }
+    },
+    finish:function() { },
+    init:function() {
+        this.options.sliderDom.addEventListener('touchstart',sliderObj.handleEvent, false);
+        this.options.sliderDom.addEventListener('touchmove',sliderObj.handleEvent, false);
+        this.options.sliderDom.addEventListener('touchend',sliderObj.handleEvent, false);
     }
 };
 
-document.addEventListener('touchstart',sliderObj.handleEvent, false);
-document.addEventListener('touchmove',sliderObj.handleEvent, false);
-document.addEventListener('touchend',sliderObj.handleEvent, false);
+module.exports = sliderObj;
+
+
 
 

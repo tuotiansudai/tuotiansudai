@@ -1,6 +1,46 @@
 require('webStyle/about_us.scss');
 require('publicJs/pagination');
+
 let paginationElement = $('.pagination');
+
+let leftMenuBox = globalFun.$('#leftMenuBox');
+//手机端菜单滑动
+require.ensure([],function() {
+
+    let browser = globalFun.browserRedirect();
+    let menuLen = $(leftMenuBox).find('li:visible').length;
+    let screenW = $(window).width(),
+        showMenuNum = 3, //希望一屏展示3个菜单
+        someLiW = screenW/showMenuNum,
+        totalWidth = someLiW * menuLen;
+    $(leftMenuBox).find('ul').width(totalWidth);
+    $(leftMenuBox).find('li').css({"width":someLiW});
+
+    if(browser=='mobile') {
+        let touchSlide = require('publicJs/touch_slide');
+        let num=0;
+        touchSlide.options.sliderDom = leftMenuBox;
+        touchSlide.finish = function() {
+            let direction = touchSlide.options.moveDirection,
+                moveDistance;
+
+            if(direction.rtl && num<menuLen-showMenuNum) {
+                //从右到左
+                num++;
+
+            } else if(direction.ltr && num>0) {
+                //从左到右
+                num--;
+            }
+            moveDistance = - someLiW*num + 'px';
+            $(leftMenuBox).find('ul').css({
+                '-webkit-transform':"translate("+moveDistance+")",
+                '-webkit-transition':'500ms linear'
+            });
+        }
+        touchSlide.init();
+    }
+},'slide-left-menu');
 
 //拓天公告
 var $noticeList=$('#noticeList'),
