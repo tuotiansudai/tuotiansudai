@@ -27,16 +27,15 @@ var sliderObj = {
 
         var touch = event.targetTouches[0];
         sliderObj.options.endPos = {
-            x:touch.pageX - sliderObj.options.startPos.x,
-            y:touch.pageY - sliderObj.options.startPos.y
+            x:touch.pageX,
+            y:touch.pageY
         };
 
         var isBool = Math.abs(sliderObj.options.endPos.x) < Math.abs(sliderObj.options.endPos.y) ? true:false;
-
         return isBool;
     },
 
-    handleEvent:function(event,callback) {
+    handleEvent:function(event) {
         var event = event || window.event;
 
         switch(event.type){
@@ -54,22 +53,21 @@ var sliderObj = {
                 var isScrolling = sliderObj.isVertical(event);
                 if(isScrolling){
                     //垂直
-                    sliderObj.verticalAxisMove(event);
+                    sliderObj.verticalAxisMove();
                 } else {
                     //水平方向
-                    sliderObj.horizontalAxisMove(event);
+                    sliderObj.horizontalAxisMove();
                 }
 
                 break;
         }
     },
     //水平方向移动
-    horizontalAxisMove:function(event) {
+    horizontalAxisMove:function() {
 
         var x_start = sliderObj.options.startPos.x,
             x_end = sliderObj.options.endPos.x,
             duration = this.options.duration;
-
         if(x_start + duration < x_end) {
             //从左往右的方向
             this.options.moveDirection = {
@@ -89,7 +87,7 @@ var sliderObj = {
         }
     },
     //垂直方向移动
-    verticalAxisMove:function(event) {
+    verticalAxisMove:function() {
         var y_start = sliderObj.options.startPos.y,
             y_end = sliderObj.options.endPos.y,
             duration = this.options.duration;
