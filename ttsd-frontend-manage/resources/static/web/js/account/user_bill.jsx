@@ -2,7 +2,7 @@
 require('webStyle/account/loan_list.scss');
 require('publicJs/plugins/daterangepicker.scss');
 let moment = require('moment');
-require('webJsModule/pagination');
+require('publicJs/pagination');
 require('publicJs/plugins/jquery.daterangepicker-0.0.7.js');
 
 //初始化页面

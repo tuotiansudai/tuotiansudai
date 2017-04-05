@@ -2,31 +2,31 @@
 	<div class="lottery-left-group">
 		<ul class="lottery-item" id="lotteryBox">
 			<li class="lottery-unit lottery-unit-0" data-unit="0">
-				<img src="${staticServer}/point/images/nine-lottery/gift-one.png">
+                <i class="gift-one"></i>
 			</li>
 			<li class="lottery-unit lottery-unit-1" data-unit="1">
-				<img src="${staticServer}/point/images/nine-lottery/gift-two.png">
+                <i class="gift-two"></i>
 			</li>
 			<li class="lottery-unit lottery-unit-2" data-unit="2">
-				<img src="${staticServer}/point/images/nine-lottery/gift-three.png">
+                <i class="gift-three"></i>
 			</li>
 			<li class="lottery-unit lottery-unit-7" data-unit="7">
-				<img src="${staticServer}/point/images/nine-lottery/gift-eight.png">
+                <i class="gift-eight"></i>
 			</li>
 			<li class="lottery-btn">
-				<img src="${staticServer}/point/images/nine-lottery/lottery-btn.png" width="100%">
+                <i class="gift-btn"></i>
 			</li>
 			<li class="lottery-unit lottery-unit-3" data-unit="3">
-				<img src="${staticServer}/point/images/nine-lottery/gift-four.png">
+                <i class="gift-four"></i>
 			</li>
 			<li class="lottery-unit lottery-unit-6" data-unit="6">
-				<img src="${staticServer}/point/images/nine-lottery/gift-seven.png">
+                <i class="gift-seven"></i>
 			</li>
 			<li class="lottery-unit lottery-unit-5" data-unit="5">
-				<img src="${staticServer}/point/images/nine-lottery/gift-six.png">
+                <i class="gift-six"></i>
 			</li>
 			<li class="lottery-unit lottery-unit-4" data-unit="4">
-				<img src="${staticServer}/point/images/nine-lottery/gift-five.png">
+                <i class="gift-five"></i>
 			</li>
 		</ul>
 	</div>
@@ -44,7 +44,7 @@
             {{/each}}
             {{else}}
             	<li class="record-img">
-            		<img src="${staticServer}/point/images/nine-lottery/record-img.png">
+                    <p class="empty-img"></p>
             		<p>还没有奖品呢，快去抽奖吧！</p>
             	</li>
             {{/if}}
@@ -57,7 +57,7 @@
 	            {{/each}}
 	        {{else}}
 	        	<li class="record-img">
-            		<img src="${staticServer}/point/images/nine-lottery/record-img.png">
+                    <p class="empty-img"></p>
             		<p>还没有奖品呢，快去抽奖吧！</p>
             	</li>
 	        {{/if}}

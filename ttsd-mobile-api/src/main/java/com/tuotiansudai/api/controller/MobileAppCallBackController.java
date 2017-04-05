@@ -45,7 +45,7 @@ public class MobileAppCallBackController {
             case PTP_MER_REPLACE_CARD:
             case MEMBERSHIP_PRIVILEGE_PURCHASE:
             case PTP_MER_NO_PASSWORD_INVEST:
-                mv = new ModelAndView("/success");
+                mv = new ModelAndView("/api-success");
                 break;
             case PROJECT_TRANSFER_INVEST:
             case PROJECT_TRANSFER_NOPASSWORD_INVEST:
@@ -54,10 +54,10 @@ public class MobileAppCallBackController {
             case PTP_MER_BIND_CARD:
             case MER_RECHARGE_PERSON:
             case CUST_WITHDRAWALS:
-                mv = new ModelAndView("/success-info");
+                mv = new ModelAndView("/api-success-info");
                 break;
             default:
-                mv = new ModelAndView("/success");
+                mv = new ModelAndView("/api-success");
         }
 
         MobileFrontCallbackService mobileFrontCallbackService = MobileFrontCallbackService.getService(service);

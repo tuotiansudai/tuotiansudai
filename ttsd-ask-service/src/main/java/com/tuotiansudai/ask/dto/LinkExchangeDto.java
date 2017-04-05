@@ -12,6 +12,8 @@ public class LinkExchangeDto {
 
     private boolean noFollow;
 
+    private String webSiteTypes;
+
     private Date createdTime = new Date();
 
     private Date updateTime = new Date();
@@ -85,7 +87,15 @@ public class LinkExchangeDto {
         this.dfs = dfs;
     }
 
+    public String getWebSiteTypes() {
+        return webSiteTypes;
+    }
+
+    public void setWebSiteTypes(String webSiteTypes) {
+        this.webSiteTypes = webSiteTypes;
+    }
+
     public String convertToString() {
-        return id + "|" + title.trim() + "|" + linkUrl.trim() + "|" + dfs.format(updateTime) + "|" + dfs.format(createdTime) + "|" + noFollow;
+        return id + "|" + title.trim() + "|" + linkUrl.trim() + "|" + dfs.format(updateTime) + "|" + dfs.format(createdTime) + "|" + noFollow + "|" +webSiteTypes;
     }
 }

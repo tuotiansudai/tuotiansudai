@@ -5,7 +5,7 @@
         <span>APP客户端重磅来袭<br/>更便捷更安全</span>
         <a href="#" class="btn-normal fr" id="btnExperience">立即体验</a>
     </div>
-    <div class="header page-width">
+    <div class="header-top page-width">
         <span class="fl service-time">客服电话：400-169-1188<time>（服务时间：9:00－20:00）</time></span>
         <ul class="fr">
             <li class="membership-store">

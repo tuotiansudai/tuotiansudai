@@ -1,0 +1,100 @@
+.media-center-frame {
+	background: #f5f5f5;
+	:global {
+		.swiper-wrapper  a {
+			display: block;
+		}
+		.swiper-wrapper a img {
+			width:100%;
+		}
+		.tab-header {
+			font-size: 14px;
+			background: #fff;
+			text-align: center;
+			border-top: 1px solid #e6e6e6;
+			border-bottom: 1px solid #e6e6e6;
+			li {
+				width: 25%;
+				line-height: 40px;
+				border-right: 1px solid #e6e6e6;
+				&:last-child {
+					border-right: none;
+				}
+				&.active {
+					background: #f5f5f5;
+				}
+			}
+		}
+		.tab-body {
+			margin-top: 10px;
+		}
+		.list {
+			li {
+				margin-top: 10px;
+				background: #fff;
+				padding: 12px;
+				position: relative;
+				&:first-child {
+					margin-top: 0;
+				}
+			}
+			a {
+				position: relative;
+				z-index: 10;
+			}
+			img {
+				width: 70px;
+				height: 70px;
+				display: block;
+				margin-right: 10px;
+			}
+			h3 {
+				font-size: 15px;
+				font-weight: normal;
+				color:#2f3034;
+			}
+			.bottom-block {
+				position: absolute;
+				bottom: 15px;
+				left: 0;
+				width: 100%;
+				padding-left: 70px + 10px + 12px;
+				padding-right: 12px;
+				white-space: nowrap;
+			}
+			time {
+				color: #8b8f9a;
+				font-size: 13px;
+			}
+			.readed {
+				display: inline-block;
+				color: #8b8f9a;
+				font-size: 13px;
+			}
+			.praise {
+				display: inline-block;
+				color: #8b8f9a;
+				font-size: 13px;
+				margin-left: 22px;
+			}
+		}
+		.scroll-wrap {
+			height: 300px;
+			overflow: hidden;
+		}
+	}
+
+	@keyframes spinner {
+		0% {
+			transform: rotate(0deg)
+		}
+		100% {
+			transform: rotate(360deg)
+		}
+	}
+	.spinner {
+		animation: spinner 1s infinite;
+		text-align: center;
+		font-size: 25px;
+	}
+}
