@@ -112,9 +112,12 @@ var sliderObj = {
     },
     finish:function() { },
     init:function() {
-        this.options.sliderDom.addEventListener('touchstart',sliderObj.handleEvent, false);
-        this.options.sliderDom.addEventListener('touchmove',sliderObj.handleEvent, false);
-        this.options.sliderDom.addEventListener('touchend',sliderObj.handleEvent, false);
+        if(!!this.isTouch) {
+            this.options.sliderDom.addEventListener('touchstart',sliderObj.handleEvent, false);
+            this.options.sliderDom.addEventListener('touchmove',sliderObj.handleEvent, false);
+            this.options.sliderDom.addEventListener('touchend',sliderObj.handleEvent, false);
+        }
+
     }
 };
 
