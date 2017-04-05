@@ -56,12 +56,6 @@ public class RechargeServiceImpl implements RechargeService {
     private AmountTransfer amountTransfer;
 
     @Autowired
-    private SystemBillService systemBillService;
-
-    @Autowired
-    private PaySyncClient paySyncClient;
-
-    @Autowired
     private MQWrapperClient mqWrapperClient;
 
     @Override
@@ -156,11 +150,9 @@ public class RechargeServiceImpl implements RechargeService {
 
             String loginName = rechargeModel.getLoginName();
             rechargeMapper.updateStatus(orderId, RechargeStatus.SUCCESS);
-            if (rechargeModel.isPublicPay()) {
-                this.postPublicRechargeCallback(orderId, loginName, amount);
-            } else {
-                this.postRechargeCallback(orderId, loginName, amount);
-            }
+
+            this.postRechargeCallback(orderId, loginName, amount);
+
             mqWrapperClient.sendMessage(MessageQueue.RechargeSuccess_CompletePointTask, rechargeModel.getLoginName());
 
         } catch (NumberFormatException e) {
@@ -174,27 +166,6 @@ public class RechargeServiceImpl implements RechargeService {
             amountTransfer.transferInBalance(loginName, orderId, amount, UserBillBusinessType.RECHARGE_SUCCESS, null, null);
         } catch (AmountTransferException e) {
             logger.error(MessageFormat.format("recharge transfer in balance failed (orderId = {0})", String.valueOf(orderId)), e);
-        }
-    }
-
-    private void postPublicRechargeCallback(long orderId, String loginName, long amount) {
-        systemBillService.transferIn(orderId,
-                amount,
-                SystemBillBusinessType.PUBLIC_RECHARGE_SUCCESS,
-                MessageFormat.format(SystemBillDetailTemplate.PUBLIC_RECHARGE_DETAIL_TEMPLATE.getTemplate(), loginName, String.valueOf(amount), String.valueOf(orderId)));
-        try {
-            AccountModel accountModel = accountMapper.findByLoginName(loginName);
-            TransferRequestModel requestModel = TransferRequestModel.newRequest(String.valueOf(orderId), accountModel.getPayUserId(), String.valueOf(amount));
-            TransferResponseModel responseModel = paySyncClient.send(TransferMapper.class, requestModel, TransferResponseModel.class);
-            if (responseModel.isSuccess()) {
-                systemBillService.transferOut(orderId,
-                        amount,
-                        SystemBillBusinessType.PUBLIC_RECHARGE_SUCCESS,
-                        MessageFormat.format(SystemBillDetailTemplate.PUBLIC_RECHARGE_DETAIL_TEMPLATE.getTemplate(), loginName, String.valueOf(amount), String.valueOf(orderId)));
-                amountTransfer.transferInBalance(loginName, orderId, amount, UserBillBusinessType.RECHARGE_SUCCESS, null, null);
-            }
-        } catch (PayException | AmountTransferException e) {
-            logger.error(MessageFormat.format("public recharge transfer in balance failed (orderId = {0})", String.valueOf(orderId)), e);
         }
     }
 }

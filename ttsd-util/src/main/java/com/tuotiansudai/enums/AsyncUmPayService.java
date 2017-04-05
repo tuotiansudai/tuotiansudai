@@ -133,6 +133,10 @@ public enum AsyncUmPayService {
      * 推荐人奖励普通转账
      */
     RED_ENVELOPE_TRANSFER("transfer", "", "", "red_envelope_notify", ""),
+    /**
+     * 抽奖现金奖励普通转账
+     */
+    LOTTERY_REWARD_TRANSFER("transfer", "", "", "lottery_reward_notify", ""),
 
 
     /**

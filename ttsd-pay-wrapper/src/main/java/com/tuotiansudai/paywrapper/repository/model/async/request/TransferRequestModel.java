@@ -42,16 +42,8 @@ public class TransferRequestModel extends BaseAsyncRequestModel {
         this.transAction = UmPayTransAction.OUT.getCode();
     }
 
-    public static TransferRequestModel newRequest(String orderId, String payUserId, String amount) {
-        TransferRequestModel model = new TransferRequestModel();
-        model.service = "transfer";
-        model.orderId = orderId;
-        model.particUserId = payUserId;
-        model.amount = amount;
-        model.particAccType = UmPayParticAccType.INDIVIDUAL.getCode();
-        model.transAction = UmPayTransAction.OUT.getCode();
-        model.merDate = new SimpleDateFormat("yyyyMMdd").format(new Date());
-        return model;
+    public static TransferRequestModel newLotteryReward(String orderId, String payUserId, String particAccountId, String amount) {
+        return new TransferRequestModel(orderId, payUserId, particAccountId, amount, AsyncUmPayService.LOTTERY_REWARD_TRANSFER);
     }
 
     public static TransferRequestModel newReferrerRewardTransferRequest(String orderId, String payUserId, String particAccountId, String amount) {

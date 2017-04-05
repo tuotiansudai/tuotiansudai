@@ -23,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.text.MessageFormat;
 
 @Service
-public class TransferCashServiceImpl implements TransferCashService{
+public class TransferCashServiceImpl implements TransferCashService {
 
     static Logger logger = Logger.getLogger(TransferCashServiceImpl.class);
 
@@ -42,12 +42,11 @@ public class TransferCashServiceImpl implements TransferCashService{
     @Override
     @Transactional
     public BaseDto<PayDataDto> transferCash(TransferCashDto transferCashDto) {
-        BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto payDataDto = new PayDataDto();
-        baseDto.setData(payDataDto);
-        AccountModel accountModel = accountMapper.findByLoginName(transferCashDto.getLoginName());
+        BaseDto<PayDataDto> baseDto = new BaseDto<>(payDataDto);
         try {
-            TransferRequestModel requestModel = TransferRequestModel.newRequest(transferCashDto.getOrderId(), accountModel.getPayUserId(), transferCashDto.getAmount());
+            AccountModel accountModel = accountMapper.findByLoginName(transferCashDto.getLoginName());
+            TransferRequestModel requestModel = TransferRequestModel.newLotteryReward(transferCashDto.getOrderId(), accountModel.getPayUserId(), accountModel.getPayAccountId(), transferCashDto.getAmount());
             TransferResponseModel responseModel = paySyncClient.send(TransferMapper.class, requestModel, TransferResponseModel.class);
             if (responseModel.isSuccess()) {
                 amountTransfer.transferInBalance(transferCashDto.getLoginName(), Long.parseLong(transferCashDto.getOrderId()), Long.parseLong(transferCashDto.getAmount()),
