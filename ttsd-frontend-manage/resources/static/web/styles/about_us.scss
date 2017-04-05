@@ -339,11 +339,15 @@
     }
 
     .real-attention {
-      li i {
-        width: 80%;
-        height:138px;
-        border:0;
-        display: block;
+      li {
+        text-align: center;
+        i {
+          width: 50%;
+          height:138px;
+          border:0;
+          display: block;
+          margin:0 auto;
+        }
       }
     }
 
