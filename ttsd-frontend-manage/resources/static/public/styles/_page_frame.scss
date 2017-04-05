@@ -666,11 +666,15 @@
     .content-container {
       padding: 10px!important;
     }
+
     .left-nav{
       margin:0;
       li{
         float: left;
 
+        a:hover {
+          background: transparent;
+        }
         &:nth-child(4) {
           //隐藏媒体报道
           display: none;

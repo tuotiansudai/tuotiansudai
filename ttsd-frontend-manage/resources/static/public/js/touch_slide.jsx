@@ -14,11 +14,13 @@ var sliderObj = {
             ltr:false,
             rtl:false,
             ttb:false,
-            btt:false
+            btt:false,
+            horizontalNo:false,
+            verticalNo:false  //代表没有任何滑动
         }
     },
     //数判断是垂直滚动还是水平滚动,
-    //true为垂直方向，false为水平方向
+    //true为水平方向，false为垂直方向
 
     isVertical:function(event) {
 
@@ -30,9 +32,14 @@ var sliderObj = {
             x:touch.pageX,
             y:touch.pageY
         };
+        let xx01 = Math.abs(sliderObj.options.endPos.x),
+            xx02=Math.abs(sliderObj.options.endPos.y),
+            duration=this.options.duration;
 
-        var isBool = Math.abs(sliderObj.options.endPos.x) < Math.abs(sliderObj.options.endPos.y) ? true:false;
+        var isBool = xx02 - xx01 > duration;
+        console.log(isBool);
         return isBool;
+
     },
 
     handleEvent:function(event) {
@@ -44,19 +51,19 @@ var sliderObj = {
                 sliderObj.options.startPos = {x:touch.pageX,y:touch.pageY,time:+new Date};
                 break;
             case "touchend":
-                //阻止触摸事件的默认行为，即阻止滚屏
-                event.preventDefault();
                 sliderObj.finish();
                 break;
             case "touchmove":
+                //阻止触摸事件的默认行为，即阻止滚屏
                 event.preventDefault();
                 var isScrolling = sliderObj.isVertical(event);
                 if(isScrolling){
-                    //垂直
-                    sliderObj.verticalAxisMove();
-                } else {
                     //水平方向
                     sliderObj.horizontalAxisMove();
+
+                } else {
+                    //垂直
+                    sliderObj.verticalAxisMove();
                 }
 
                 break;
@@ -65,52 +72,65 @@ var sliderObj = {
     //水平方向移动
     horizontalAxisMove:function() {
 
-        var x_start = sliderObj.options.startPos.x,
+        let x_start = sliderObj.options.startPos.x,
             x_end = sliderObj.options.endPos.x,
             duration = this.options.duration;
+        let boolObj ={
+            ltr:false,
+            rtl:false,
+            horizontalNo:false
+        };
+
         if(x_start + duration < x_end) {
             //从左往右的方向
-            this.options.moveDirection = {
-                ltr:true,
-                rtl:false,
-                ttb:false,
-                btt:false
-            }
+            boolObj.ltr = true;
+
         } else if(x_start -duration > x_end) {
             //从右往左的方向
-            this.options.moveDirection = {
-                ltr:false,
-                rtl:true,
-                ttb:false,
-                btt:false
-            }
+            boolObj.rtl = true;
+        } else  {
+            boolObj.horizontalNo = true;
         }
+
+        this.options.moveDirection = $.extend({},this.options.moveDirection,{
+            ltr:boolObj.ltr,
+            rtl:boolObj.rtl,
+            horizontalNo:boolObj.horizontalNo
+        })
+
     },
     //垂直方向移动
     verticalAxisMove:function() {
         var y_start = sliderObj.options.startPos.y,
             y_end = sliderObj.options.endPos.y,
             duration = this.options.duration;
+        let boolObj ={
+            ttb:false,
+            btt:false,
+            verticalNo:false
+        };
 
          if(y_start + duration < y_end) {
             //从上往下的方向
-            this.options.moveDirection = {
-                ltr:false,
-                rtl:false,
-                ttb:true,
-                btt:false
-            }
+             boolObj.ttb = true;
+
         } else if(y_start -duration > y_end) {
             //从下往上的方向
-            this.options.moveDirection = {
-                ltr:false,
-                rtl:true,
-                ttb:false,
-                btt:true
-            }
-        }
+             boolObj.btt = true;
+
+        } else {
+             boolObj.verticalNo = true;
+         }
+
+        this.options.moveDirection = $.extend({},this.options.moveDirection,{
+            ttb:boolObj.ttb,
+            btt:boolObj.btt,
+            verticalNo:boolObj.verticalNo
+        })
     },
-    finish:function() { },
+    finish:function() {
+
+    },
     init:function() {
         if(!!this.isTouch) {
             this.options.sliderDom.addEventListener('touchstart',sliderObj.handleEvent, false);
