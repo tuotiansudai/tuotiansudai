@@ -9,7 +9,7 @@ var sliderObj = {
         startPos:0,
         endPos:0,
         isHorizontal:false,
-        duration:10,  //判断是左移还是右移，当偏移量大于10时执行
+        duration:6,  //判断是左移还是右移，当偏移量大于10时执行
         moveDirection:{
             ltr:false,
             rtl:false,
