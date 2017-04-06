@@ -11,12 +11,14 @@ import com.tuotiansudai.console.dto.RemainUserDto;
 import com.tuotiansudai.console.dto.UserItemDataDto;
 import com.tuotiansudai.console.repository.model.UserMicroModelView;
 import com.tuotiansudai.console.repository.model.UserOperation;
+import com.tuotiansudai.console.service.ConsoleRiskEstimateService;
 import com.tuotiansudai.console.service.ConsoleUserService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.EditUserDto;
 import com.tuotiansudai.enums.OperationType;
 import com.tuotiansudai.enums.Role;
+import com.tuotiansudai.enums.riskestimation.*;
 import com.tuotiansudai.exception.BaseException;
 import com.tuotiansudai.log.service.AuditLogService;
 import com.tuotiansudai.membership.service.UserMembershipService;
@@ -81,6 +83,9 @@ public class UserController {
 
     @Autowired
     private UserMembershipService userMembershipService;
+
+    @Autowired
+    private ConsoleRiskEstimateService consoleRiskEstimateService;
 
     private final static long MEMBERSHIP_V0 = 0;
     private final static long MEMBERSHIP_V1 = 1;
@@ -423,5 +428,33 @@ public class UserController {
 
         return modelAndView;
     }
+
+
+    @RequestMapping(value = "/risk-estimate", method = RequestMethod.GET)
+    public ModelAndView riskEstimate(@RequestParam(value = "selectedEstimate", required = false) Estimate selectedEstimate,
+                                     @RequestParam(value = "selectedIncome", required = false) Income selectedIncome,
+                                     @RequestParam(value = "selectedRate", required = false) Rate selectedRate,
+                                     @RequestParam(value = "selectedDuration", required = false) Duration selectedDuration,
+                                     @RequestParam(value = "selectedAge", required = false) Age selectedAge,
+                                     @RequestParam(value = "index", required = false, defaultValue = "1") int index) {
+
+        ModelAndView modelAndView = new ModelAndView("/risk-estimate");
+        modelAndView.addObject("estimateOptions", Estimate.values());
+        modelAndView.addObject("incomeOptions", Income.values());
+        modelAndView.addObject("rateOptions", Rate.values());
+        modelAndView.addObject("durationOptions", Duration.values());
+        modelAndView.addObject("ageOptions", Age.values());
+
+        modelAndView.addObject("selectedEstimate", selectedEstimate);
+        modelAndView.addObject("selectedIncome", selectedIncome);
+        modelAndView.addObject("selectedRate", selectedRate);
+        modelAndView.addObject("selectedDuration", selectedDuration);
+        modelAndView.addObject("selectedAge", selectedAge);
+
+        modelAndView.addObject("pagination", consoleRiskEstimateService.listRiskEstimate(selectedEstimate, selectedIncome, selectedRate, selectedDuration, selectedAge, index));
+
+        return modelAndView;
+    }
+
 
 }
