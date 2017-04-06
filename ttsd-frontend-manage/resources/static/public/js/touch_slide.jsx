@@ -10,38 +10,17 @@ var sliderObj = {
         endPos:0,
         isHorizontal:false,
         duration:6,  //判断是左移还是右移，当偏移量大于10时执行
+        leftSide:true, //是非滑到左边缘
+        rightSide:false,  //是非滑到右边缘
         moveDirection:{
             ltr:false,
             rtl:false,
             ttb:false,
             btt:false,
-            horizontalNo:false,
-            verticalNo:false  //代表没有任何滑动
+            horizontal:false, //代表水平没有任何滑动
+            vertical:false   //代表垂直没有任何滑动
         }
     },
-    //数判断是垂直滚动还是水平滚动,
-    //true为水平方向，false为垂直方向
-
-    isVertical:function(event) {
-
-        //当屏幕有多个touch或者页面被缩放过，就不执行move操作
-        if(event.targetTouches.length > 1 || event.scale && event.scale !== 1) return;
-
-        var touch = event.targetTouches[0];
-        sliderObj.options.endPos = {
-            x:touch.pageX,
-            y:touch.pageY
-        };
-        let xx01 = Math.abs(sliderObj.options.endPos.x),
-            xx02=Math.abs(sliderObj.options.endPos.y),
-            duration=this.options.duration;
-
-        var isBool = xx02 - xx01 > duration;
-        console.log(isBool);
-        return isBool;
-
-    },
-
     handleEvent:function(event) {
         var event = event || window.event;
 
@@ -56,31 +35,27 @@ var sliderObj = {
             case "touchmove":
                 //阻止触摸事件的默认行为，即阻止滚屏
                 event.preventDefault();
-                var isScrolling = sliderObj.isVertical(event);
-                if(isScrolling){
-                    //水平方向
-                    sliderObj.horizontalAxisMove();
-
-                } else {
-                    //垂直
-                    sliderObj.verticalAxisMove();
-                }
-
+                sliderObj.AxisMoveing();
                 break;
         }
     },
     //水平方向移动
-    horizontalAxisMove:function() {
-
+    AxisMoveing:function() {
+        let touchChanged = event.changedTouches[0];
+        sliderObj.options.endPos = {x:touchChanged.pageX,y:touchChanged.pageY,time:+new Date};
         let x_start = sliderObj.options.startPos.x,
             x_end = sliderObj.options.endPos.x,
+            y_start = sliderObj.options.startPos.y,
+            y_end = sliderObj.options.endPos.y,
             duration = this.options.duration;
         let boolObj ={
             ltr:false,
             rtl:false,
-            horizontalNo:false
+            ttb:false,
+            btt:false,
+            horizontal:false,
+            vertical:false
         };
-
         if(x_start + duration < x_end) {
             //从左往右的方向
             boolObj.ltr = true;
@@ -88,46 +63,35 @@ var sliderObj = {
         } else if(x_start -duration > x_end) {
             //从右往左的方向
             boolObj.rtl = true;
-        } else  {
-            boolObj.horizontalNo = true;
+        } else if(Math.abs(x_end - x_start)< duration || Math.abs(x_end - x_start) == duration) {
+            //水平方向没有任何移动
+            boolObj.horizontal = true;
+        }
+
+        if(y_start + duration < y_end) {
+            //从上往下的方向
+            boolObj.ttb = true;
+
+        } else if(y_start -duration > y_end) {
+            //从下往上的方向
+            boolObj.btt = true;
+
+        } else if(Math.abs(y_end-y_start) < duration || Math.abs(y_end-y_start) == duration ) {
+            //上下方向没有任何移动
+            boolObj.vertical = true;
         }
 
         this.options.moveDirection = $.extend({},this.options.moveDirection,{
             ltr:boolObj.ltr,
             rtl:boolObj.rtl,
+            ttb:boolObj.ttb,
+            btt:boolObj.btt,
+            verticalNo:boolObj.verticalNo,
             horizontalNo:boolObj.horizontalNo
         })
 
     },
-    //垂直方向移动
-    verticalAxisMove:function() {
-        var y_start = sliderObj.options.startPos.y,
-            y_end = sliderObj.options.endPos.y,
-            duration = this.options.duration;
-        let boolObj ={
-            ttb:false,
-            btt:false,
-            verticalNo:false
-        };
 
-         if(y_start + duration < y_end) {
-            //从上往下的方向
-             boolObj.ttb = true;
-
-        } else if(y_start -duration > y_end) {
-            //从下往上的方向
-             boolObj.btt = true;
-
-        } else {
-             boolObj.verticalNo = true;
-         }
-
-        this.options.moveDirection = $.extend({},this.options.moveDirection,{
-            ttb:boolObj.ttb,
-            btt:boolObj.btt,
-            verticalNo:boolObj.verticalNo
-        })
-    },
     finish:function() {
 
     },

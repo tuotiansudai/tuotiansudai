@@ -5,7 +5,9 @@ let paginationElement = $('.pagination');
 
 let leftMenuBox = globalFun.$('#leftMenuBox');
 //手机端菜单滑动
-require.ensure([],function() {
+
+
+(function(){
     let browser = globalFun.browserRedirect();
     if(browser=='mobile') {
         let menuLen = $(leftMenuBox).find('li:visible').length;
@@ -44,7 +46,7 @@ require.ensure([],function() {
             let direction = touchSlide.options.moveDirection,
                 moveDistance;
             //如果没有任何滑动迹象，不左处理
-            if(this.options.moveDirection.horizontalNo) {
+            if(this.options.moveDirection.horizontal) {
                 return;
             }
             if(direction.rtl && num<menuLen-showMenuNum) {
@@ -64,7 +66,7 @@ require.ensure([],function() {
         }
         touchSlide.init();
     }
-},'slide_left_menu');
+}());
 
 //拓天公告
 var $noticeList=$('#noticeList'),
