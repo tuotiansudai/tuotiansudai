@@ -5,7 +5,15 @@ window.layer.config({
 });
 window._ = window.jquery_library(3);
 window.$.fn=window.$.prototype;
+
+require('publicStyle/reset');
+require('publicStyle/btn');
+require('publicStyle/table');
+require('publicStyle/page_frame');
+require('publicStyle/pagination');
+require('publicStyle/error');
 require("publicStyle/global.scss");
+
 require('publicJs/error');
 //ie8不支持bind方法，这里做兼容处理
 if (!Function.prototype.bind) {
