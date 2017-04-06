@@ -5,7 +5,12 @@ require(['jquery', 'underscore', 'layerWrapper','placeholder', 'jquery.validate'
             $phoneDom = $('#mobile',$registerFrame),
             $fetchCaptcha = $('.fetch-captcha',$registerFrame),
             $changecode = $('.img-change',$registerFrame),
-            $appCaptcha = $('#appCaptcha',$registerFrame);
+            $appCaptcha = $('#appCaptcha',$registerFrame),
+            $registerContainer=$('#registerContainer'),
+            $getbagContainer=$('#getbagContainer'),
+            $successContainer=$('#successContainer'),
+            $getBag=$('#getBag',$getbagContainer);
+
 
         var bCategory = globalFun.browserRedirect();
 
@@ -15,6 +20,11 @@ require(['jquery', 'underscore', 'layerWrapper','placeholder', 'jquery.validate'
 
         $('input[type="text"],input[type="password"]', $registerForm).placeholder();
 
+        $getBag.on('click', function(event) {
+        	event.preventDefault();
+        	$getbagContainer.hide();
+        	$registerContainer.show();
+        });
         //form validate
         $registerForm.validate({
             focusInvalid: false,
@@ -76,7 +86,6 @@ require(['jquery', 'underscore', 'layerWrapper','placeholder', 'jquery.validate'
                 }
             },
             submitHandler: function (form) {
-                // form.submit();
                 $.ajax({
                 	url: '/register/user',
                 	type: 'POST',
@@ -84,7 +93,8 @@ require(['jquery', 'underscore', 'layerWrapper','placeholder', 'jquery.validate'
                 	data: $registerForm.serialize()
                 })
                 .done(function(data) {
-                	console.log('sdasdsad');
+                	$registerContainer.hide();
+                	$successContainer.show();
                 })
                 .fail(function(data) {
                 	layer.msg('请求失败，请重试！');

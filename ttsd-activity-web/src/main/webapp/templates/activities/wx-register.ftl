@@ -1,6 +1,6 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.wx_register}" pageJavascript="${js.wx_register}" activeNav="" activeLeftNav="" title="iphone7活动_活动中心_拓天速贷" keywords="投资活动,APP投资,iphone7,拓天速贷" description="参与拓天速贷'厚惠有7'投资活动的用户即可获得128Giphone7一部，使用APP投资还可获得投资红包大奖">
-<div class="activity-container">
+<@global.main pageCss="${css.wx_register}" pageJavascript="${js.wx_register}" activeNav="" activeLeftNav="" title="拓天速贷注册_用户注册_拓天速贷" keywords="拓天速贷,拓天速贷会员,拓天速贷注册，用户注册" description="拓天速贷会员注册为您提供规范、专业、安全有保障的互联网金融信息服务.">
+<div class="activity-container" id="registerContainer">
 	<div class="actor-content-group">
 		<div class="wp clearfix">
 			<div class="register-item">
@@ -21,14 +21,12 @@
 						                <ul class="reg-list tl register-step-one">
 						                    <li>
 						                        <label for="" class="reg-title">手机号:</label>
-						                        <i class="sprite-register-ic-mobile"></i>
 						                        <input type="text" id="mobile" name="mobile" class="mobile long" placeholder="手机号"
 						                               maxlength="11" value="">
 						                    </li>
 						                    <li id="mobileErr" class="height"></li>
 						                    <li>
 						                        <label for="" class="reg-title">密码:</label>
-						                        <i class="sprite-register-ic-password"></i>
 						                        <input type="password" id="password" name="password" placeholder="密码" maxlength="20"
 						                               class="password long" value="">
 						                    </li>
@@ -36,7 +34,6 @@
 
 						                    <li class="code">
 						                        <label for="" class="reg-title">验证码:</label>
-						                        <i class="sprite-register-ic-img-code"></i>
 						                        <input type="text" id="appCaptcha" name="appCaptcha" placeholder="验证码" maxlength="5"
 						                               class="appCaptcha" value="">
 						                        <em class="image-captcha">
@@ -47,7 +44,6 @@
 						                    <li id="appCaptchaErr" class="height appCaptchaErr"></li>
 						                    <li>
 						                        <label for="captcha" class="reg-title">手机验证码:</label>
-						                        <i class="sprite-register-ic-captcha"></i>
 						                            <span class="captcha-tag" id="pcCaptcha">
 						                                <input type="text" class="captcha" autocomplete="off" name="captcha" id="captcha"
 						                                       autocorrect="off" autocapitalize="off" placeholder="手机验证码" maxlength="6">
@@ -287,7 +283,31 @@
 		</div>
 	</div>
 </div>
-<div class="getbag-container">
-	
+<div class="getbag-container" id="getbagContainer">
+	<p class="get-bag">
+		<img src="${staticServer}/activity/images/wx-register/get-btn.png" width="60%" id="getBag">
+	</p>
+</div>
+<div class="success-container" id="successContainer">
+	<p class="success-title">
+		<img src="${staticServer}/activity/images/wx-register/success-title.png" width="100%">
+	</p>
+	<p class="info-text">
+		所有奖励已发放至您的账户
+	</p>
+	<p class="info-text">
+		快来下载APP投资查看吧
+	</p>
+	<p class="logo-item">
+		<span class="logo-icon"></span>
+	</p>
+	<p>
+		<a href="/app/download">
+			<img src="${staticServer}/activity/images/wx-register/download-btn.png" width="80%">
+		</a>
+	</p>
+	<p class="footer-text">
+		活动解释权归拓天速贷所有
+	</p>
 </div>
 </@global.main>
