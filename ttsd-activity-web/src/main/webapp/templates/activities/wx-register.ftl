@@ -302,7 +302,7 @@
 		<span class="logo-icon"></span>
 	</p>
 	<p>
-		<a href="/app/download">
+		<a href="javascript:void(0)" id="btnExperience">
 			<img src="${staticServer}/activity/images/wx-register/download-btn.png" width="80%">
 		</a>
 	</p>

@@ -9,7 +9,8 @@ require(['jquery', 'underscore', 'layerWrapper','placeholder', 'jquery.validate'
             $registerContainer=$('#registerContainer'),
             $getbagContainer=$('#getbagContainer'),
             $successContainer=$('#successContainer'),
-            $getBag=$('#getBag',$getbagContainer);
+            $getBag=$('#getBag',$getbagContainer),
+            $btnExperience=$('#btnExperience',$successContainer);
 
 
         var bCategory = globalFun.browserRedirect();
@@ -24,6 +25,10 @@ require(['jquery', 'underscore', 'layerWrapper','placeholder', 'jquery.validate'
         	event.preventDefault();
         	$getbagContainer.hide();
         	$registerContainer.show();
+        });
+        $btnExperience.on('click', function(event) {
+        	event.preventDefault();
+        	globalFun.toExperience(event);
         });
         //form validate
         $registerForm.validate({
