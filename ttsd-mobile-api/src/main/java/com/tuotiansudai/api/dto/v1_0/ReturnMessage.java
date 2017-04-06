@@ -41,6 +41,7 @@ public enum ReturnMessage {
 
     /******手机端标的详情******/
     LOAN_NOT_FOUND("0024","标的不存在"),
+    LOAN_PLEDGE_TYPE_OF_ENTERPRISE("0400","标的是税易经营性借款或企业经营性借款"),
     /******手机端标的详情******/
 
     /******手机端投资******/

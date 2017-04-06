@@ -100,6 +100,8 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
 
     private String content = "个人经营借款理财项目，总额{0}元期限{1}天，年化利率{2}%，先到先抢！！！";
 
+    private static final String APP_VERSION = "4.3";
+
     @Override
     public BaseResponseDto<LoanDetailV2ResponseDataDto> findLoanDetail(LoanDetailV2RequestDto requestDto) {
         BaseResponseDto<LoanDetailV2ResponseDataDto> responseDto = new BaseResponseDto<>();
@@ -108,6 +110,12 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
         if (loanModel == null) {
             logger.warn("标的详情" + ReturnMessage.LOAN_NOT_FOUND.getCode() + ":" + ReturnMessage.LOAN_NOT_FOUND.getMsg());
             return new BaseResponseDto<>(ReturnMessage.LOAN_NOT_FOUND.getCode(), ReturnMessage.LOAN_NOT_FOUND.getMsg());
+        }
+        List<PledgeType> pledgeTypeList = Lists.newArrayList(PledgeType.ENTERPRISE, PledgeType.ENTERPRISE_BILL, PledgeType.ENTERPRISE_FACTORING);
+        String currentAppVersion = requestDto.getBaseParam().getAppVersion().substring(0,3);
+        if(new BigDecimal(currentAppVersion).compareTo(new BigDecimal(APP_VERSION)) <= 0 && pledgeTypeList.contains(loanModel.getPledgeType())){
+            logger.warn("标的详情" + ReturnMessage.LOAN_PLEDGE_TYPE_OF_ENTERPRISE.getCode() + ":" + ReturnMessage.LOAN_PLEDGE_TYPE_OF_ENTERPRISE.getMsg());
+            return new BaseResponseDto<>(ReturnMessage.LOAN_PLEDGE_TYPE_OF_ENTERPRISE.getCode(), ReturnMessage.LOAN_PLEDGE_TYPE_OF_ENTERPRISE.getMsg());
         }
         responseDto.setCode(ReturnMessage.SUCCESS.getCode());
         responseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
