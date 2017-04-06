@@ -95,7 +95,7 @@
         1 = 1
         and temp.status not in ('WAITING_VERIFY','CANCEL')
         <if test="name !=null and name!=''">
-            and temp.name = #{name}
+            and temp.name LIKE CONCAT(CONCAT('%', #{name}),'%')
         </if>
         <if test="status != null">
             and temp.status = #{status}
@@ -136,7 +136,7 @@
         select * from loan t
         where 1=1
         <if test="name !=null and name != ''">
-            and t.name = #{name}
+            and t.name LIKE CONCAT(CONCAT('%', #{name}),'%')
         </if>
         <if test="status != null">
             and t.status = #{status}
