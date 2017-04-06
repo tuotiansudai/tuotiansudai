@@ -663,11 +663,15 @@
     display:block;
   }
   .main-frame{
+    overflow-x: hidden;
     .content-container {
       padding: 10px!important;
     }
 
-    .swiper-container { overflow: hidden; }
+    .swiper-container {
+      overflow: hidden;
+      width:100%;
+    }
     .left-nav{
       margin:0;
       li{

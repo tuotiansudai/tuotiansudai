@@ -64,7 +64,7 @@ require.ensure([],function() {
         }
         touchSlide.init();
     }
-},'slide-left-menu');
+},'slide_left_menu');
 
 //拓天公告
 var $noticeList=$('#noticeList'),
