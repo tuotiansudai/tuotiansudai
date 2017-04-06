@@ -13,7 +13,12 @@
     border-bottom: 1px solid rgba(0,0,0,0.2);
     .icon-close {
       margin-right: 10px;
-      width:16px;
+      width:18px;
+      height:18px;
+      float: left;
+      margin-top: 18px;
+      background: url('../images/icons/close01.png') center center no-repeat;
+      background-size: 100%;
     }
     span {
       line-height: 1.8;
