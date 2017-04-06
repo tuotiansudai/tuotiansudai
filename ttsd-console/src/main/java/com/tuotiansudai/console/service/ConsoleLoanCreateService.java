@@ -95,7 +95,7 @@ public class ConsoleLoanCreateService {
         long loanId = idGenerator.generate();
 
         LoanModel loanModel = new LoanModel(loanId, loanCreateRequestDto);
-        loanModel.setName(generateLoanName(loanModel.getName()));
+        loanModel.setName(generateLoanName(loanModel.getName(), loanModel.getPledgeType()));
         loanMapper.create(loanModel);
 
         if (CollectionUtils.isNotEmpty(loanCreateRequestDto.getLoan().getLoanTitles())) {
@@ -428,10 +428,10 @@ public class ConsoleLoanCreateService {
         }));
     }
 
-    protected String generateLoanName(String loanName) {
+    protected String generateLoanName(String loanName, PledgeType pledgeType) {
         String date = new DateTime().toString("yy");
         String createdTime = new DateTime().toString("yyyy");
-        String number = String.format("%03d", loanMapper.findLoanCountByYear(createdTime) + 1);
+        String number = String.format("%03d", loanMapper.findLoanCountByYear(createdTime, pledgeType) + 1);
         return MessageFormat.format(generateLoanName, loanName, date + number);
     }
 
