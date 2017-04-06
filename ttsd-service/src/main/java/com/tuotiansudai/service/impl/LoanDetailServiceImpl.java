@@ -44,6 +44,9 @@ public class LoanDetailServiceImpl implements LoanDetailService {
     private LoanerEnterpriseDetailsMapper loanerEnterpriseDetailsMapper;
 
     @Autowired
+    private LoanerEnterpriseInfoMapper loanerEnterpriseInfoMapper;
+
+    @Autowired
     private PledgeHouseMapper pledgeHouseMapper;
 
     @Autowired
@@ -237,6 +240,26 @@ public class LoanDetailServiceImpl implements LoanDetailService {
             loanDto.setBasicInfo(loanerEnterpriseDetailsModel.getPurpose());
         }
 
+        LoanerEnterpriseInfoModel loanerEnterpriseInfoModel = loanerEnterpriseInfoMapper.getByLoanId(loanModel.getId());
+        if (loanerEnterpriseInfoModel != null) {
+            if(loanDto.getPledgeType() == PledgeType.ENTERPRISE_FACTORING){
+                loanDto.setEnterpriseInfo(ImmutableMap.<String, String>builder()
+                        .put("借款企业名称", loanerEnterpriseInfoModel.getCompanyName())
+                        .put("借款企业营业地址", loanerEnterpriseInfoModel.getAddress())
+                        .put("借款用途", loanerEnterpriseInfoModel.getPurpose())
+                        .put("保理公司名称", loanerEnterpriseInfoModel.getFactoringCompanyName() == null ? "" : loanerEnterpriseInfoModel.getFactoringCompanyName())
+                        .put("保理公司简介", loanerEnterpriseInfoModel.getFactoringCompanyDesc() == null ? "" : loanerEnterpriseInfoModel.getFactoringCompanyDesc())
+                        .build());
+            }
+            else{
+                loanDto.setEnterpriseInfo(ImmutableMap.<String, String>builder()
+                        .put("借款企业名称", loanerEnterpriseInfoModel.getCompanyName())
+                        .put("借款企业营业地址", loanerEnterpriseInfoModel.getAddress())
+                        .put("借款用途", loanerEnterpriseInfoModel.getPurpose())
+                        .build());
+            }
+        }
+
         if (loanModel.getActivityType() == ActivityType.NEWBIE) {
             double newbieInterestCouponRate = 0;
             final List<CouponModel> allActiveCoupons = couponMapper.findAllActiveCoupons();
@@ -260,7 +283,7 @@ public class LoanDetailServiceImpl implements LoanDetailService {
             }
             if (loanModel.getMaxAmountAchievementId() != null) {
                 InvestModel maxInvest = investMapper.findById(loanModel.getMaxAmountAchievementId());
-                long amount = investMapper.sumSuccessInvestAmountByLoginName(loanModel.getId(), maxInvest.getLoginName(),true);
+                long amount = investMapper.sumSuccessInvestAmountByLoginName(loanModel.getId(), maxInvest.getLoginName(), true);
                 achievementDto.setMaxAmountAchievementAmount(AmountConverter.convertCentToString(amount));
                 achievementDto.setMaxAmountAchievementMobile(randomUtils.encryptMobile(loginName, maxInvest.getLoginName()));
             }
@@ -276,7 +299,7 @@ public class LoanDetailServiceImpl implements LoanDetailService {
     }
 
     private long calculateMaxAvailableInvestAmount(String loginName, LoanModel loanModel, long investedAmount) {
-        long sumSuccessInvestAmount = investMapper.sumSuccessInvestAmountByLoginName(loanModel.getId(), loginName,true);
+        long sumSuccessInvestAmount = investMapper.sumSuccessInvestAmountByLoginName(loanModel.getId(), loginName, true);
         long balance = Strings.isNullOrEmpty(loginName) || accountMapper.findByLoginName(loginName) == null ? 0 : accountMapper.findByLoginName(loginName).getBalance();
 
         long maxAvailableInvestAmount = NumberUtils.min(balance, loanModel.getLoanAmount() - investedAmount, loanModel.getMaxInvestAmount() - sumSuccessInvestAmount);

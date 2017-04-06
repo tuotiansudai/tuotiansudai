@@ -1,0 +1,218 @@
+@import "module/register_common";
+
+.main-frame {
+	width: 100%;
+	margin: 0;
+}
+.poster-main {
+	display:inline-block;
+	position: relative;
+	width:100%;
+	height:350px;
+	overflow: hidden;
+	@media (max-width:700px) {
+	    margin-left: -10px;
+	}
+	a, img {
+		display: block;
+	}
+	.poster-list {
+
+		.poster-item {
+			position: absolute;
+			left: 0px;
+			top: 0px;
+		}
+	}
+	.poster-btn {
+		position: absolute;
+		height: 100%;
+		width: 100px;
+		top: 0px;
+		z-index: 10;
+
+		&.poster-prev-btn {
+			left: 0px;
+			background: url('/activity/images/minsheng/left-btn.png') no-repeat center center;
+			@media (max-width:700px) {
+			    background-size: 30%;
+			}
+		}
+		&.poster-next-btn {
+			right: 0px;
+			background: url('/activity/images/minsheng/right-btn.png') no-repeat center center;
+			@media (max-width:700px) {
+			    background-size: 30%;
+			}
+		}
+	}
+}
+.women-day-container {
+	background: #fff;
+
+	.media-pc {
+		display: block;
+
+		@media (max-width:700px) {
+			display: none;
+		}
+	}
+	.media-phone {
+		display: none;
+
+		@media (max-width:700px) {
+			display: block;
+		}
+	}
+	.ml-25 {
+		margin-left: 25px;
+		@media (max-width:700px) {
+			margin-left:0;
+			margin-top: 15px;
+		}
+	}
+	.content-item {
+		float: left;
+		width: 100%;
+		background: #fff;
+
+		&.odd-bg {
+			background: #f0f6ff;
+		}
+		.wp {
+			width: 1000px;
+			margin: 0 auto;
+			box-sizing: border-box;
+			position: relative;
+
+			@media (max-width:700px) {
+				width: 100%;
+				padding: 0 20px;
+				margin: 0 auto;
+			}
+			.one-item {
+				float: left;
+				width: 100%;
+				padding: 30px 54px 20px;
+				box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.07), -1px -1px 8px rgba(0, 0, 0, 0.07);
+				box-sizing: border-box;
+				margin-bottom: 30px;
+				margin-top: -100px;
+				background: #fff;
+				@media (max-width:700px) {
+					padding:15px 10px 10px;
+					margin-top:-20px;
+				}
+				&.normal-item {
+					background: none;
+					margin-top: 0;
+					box-shadow: none;
+					padding: 30px 0 20px;
+
+					.intro-item {
+						.intro-text {
+							width: 725px;
+							@media (max-width:700px) {
+								width:100%;
+							}
+						}
+					}
+				}
+				.title-item {
+					float: left;
+					width: 100%;
+					margin-bottom: 30px;
+					text-align: center;
+					@media (max-width:700px) {
+						margin-bottom: 15px;
+					}
+
+					span {
+						display: inline-block;
+						line-height: 40px;
+						padding: 0 15px 20px;
+						box-sizing: border-box;
+						position: relative;
+						text-align: center;
+						font-size: 22px;
+						color: #1061ba;
+						font-weight: bold;
+						background: url('/activity/images/minsheng/text-icon.png') no-repeat left bottom;
+						@media (max-width:700px) {
+							font-size:16px;
+						}
+						i {
+							position: absolute;
+							background: #1061ba;
+
+							&.line-top {
+								width: 27px;
+								height: 1px;
+								top: 0;
+								left: 0;
+							}
+							&.line-left {
+								width: 1px;
+								height: 19px;
+								top: 0;
+								left: 0;
+							}
+							&.line-right {
+								width: 1px;
+								height: 19px;
+								bottom: 20px;
+								right: 0;
+							}
+							&.line-bottom {
+								width: 27px;
+								height: 1px;
+								bottom: 20px;
+								right: 0;
+							}
+						}
+					}
+				}
+				.intro-item {
+					float: left;
+					width: 100%;
+
+					.intro-img {
+						float: left;
+						width: 250px;
+						height: 210px;
+						@media (max-width:700px) {
+							width:100%;
+							height:auto;
+						}
+					}
+					.intro-text {
+						float: left;
+						width: 565px;
+						&.last-item{
+							padding:60px 0;
+							@media (max-width:700px) {
+								padding:0;
+							}
+						}
+						@media (max-width:700px) {
+							width:100%;
+						}
+						p {
+							font-size: 14px;
+							color: #000;
+							text-indent: 2em;
+							@media (max-width:700px) {
+								font-size:12px;
+								color:#4c4c4c;
+							}
+
+							&:last-child {
+								margin-bottom: 0;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
