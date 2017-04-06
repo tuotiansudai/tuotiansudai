@@ -99,13 +99,7 @@
     </#if>
 
 <script type="text/javascript" charset="utf-8">
-    <#--var staticServer = '${staticServer}';-->
     window.staticServer='${commonStaticServer}';
-        <@security.authorize access="isAuthenticated()">
-        document.getElementById("logout-link").onclick=function (event) {
-            document.getElementById("logout-form").submit();
-        };
-        </@security.authorize>
 </script>
 
 <script src="${js.jquerydll}" ></script>

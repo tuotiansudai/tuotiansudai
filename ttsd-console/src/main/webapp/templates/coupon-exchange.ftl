@@ -120,7 +120,7 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">兑换限制: </label>
             <div class="col-sm-4">
-                <input type="text" class="form-control give-number" name="monthLimit" placeholder="" datatype="n" errormsg="兑换限制需要填写数字"/> 个/人/月
+                <input type="text" class="form-control give-number" name="monthLimit" placeholder="" datatype="n" errormsg="兑换限制需要填写数字"/> 个/人/月（0表示无限制）
             </div>
         </div>
 

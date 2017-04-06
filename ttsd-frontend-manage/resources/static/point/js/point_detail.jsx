@@ -11,17 +11,21 @@ var $countList=$('.count-list',$pointDetail),
 var myLimit = parseInt($countList.data('mylimit'));
 //该用户本月已兑换的数量
 var buyCount = parseInt($countList.data('buycount'));
-//本月该用户剩下能兑换的数量
-var myRest = myLimit-buyCount;
-$exchangeTip.find('i').text(myRest);
-if(myRest==0) {
-	$getBtn.addClass('disabled');
+var myRest;
+if(myLimit) {
+	//本月该用户剩下能兑换的数量
+	 myRest = myLimit-buyCount;
+	$exchangeTip.find('i').text(myRest);
+	if(myRest==0) {
+		$getBtn.addClass('disabled');
+	}
+} else {
+	myRest = parseInt($countList.data('overplus'));
 }
 
 $countList.on('click',function(event) {
 	var target = event.target;
 	var overplus = parseInt($countList.data('overplus'));  //剩余商品的数量
-
 	currentNum=parseInt($numText.val());
 	var compareNum = (myRest==0) ? overplus :Math.min(overplus,myRest);
 	if(overplus<1) {
