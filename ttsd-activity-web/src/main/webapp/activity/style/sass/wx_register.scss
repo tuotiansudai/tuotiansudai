@@ -21,17 +21,171 @@
         clear: both;
         display: block;
       }
-      .top-intro-img {
-        float: left;
-        width: 100%;
-      }
-      .reg-tag-current{
+      .register-item{
         float:left;
         width:100%;
+        margin-top: 10px;
+        min-height:530px;
+        background:url('/activity/images/wx-register/register-bg.png') no-repeat center;
+        background-size:100%;
+        @media (min-width:321px) and (max-width:375px) {
+          min-height:625px;
+        }
+        .top-intro-img {
+          float: left;
+          width: 100%;
+          margin-bottom: 35px;
+          p{
+            margin-bottom: 0;
+            &.big-title{
+              font-size:25px;
+              color:#7d0019;
+              line-height:30px;
+              margin-top:10px;
+            }
+            &.intro-text{
+              font-size:15px;
+              color:#fc7018;
+              line-height: 30px;
+              margin: 5px 0;
+              span{
+                font-size:25px;
+                color:#ff0000;
+              }
+            }
+          }
+        }
+        .reg-tag-current{
+          float:left;
+          width:100%;
+          margin-top:70px;
+          @media (min-width:321px) and (max-width:375px) {
+            margin-top:150px;
+          }
+          .register-box{
+            background:none;
+            label.error{
+              color:#f4e823;
+            }
+            .register-user-form{
+              padding:0 10px;
+              @media (min-width:321px) and (max-width:375px) {
+                padding:0 40px;
+              }
+            }
+            ul.reg-list{
+              li{
+                &.mobile-agreement{
+                  color:#f4e823;
+                  font-size:14px;
+                  a{
+                    color:#f4e823;
+                  }
+                }
+                i{
+                  display:none;
+                }
+                input[type="password"],input[type="text"]{
+                  padding:5px 15px;
+                  line-height: 23px;
+                  width:100%;
+                  background: #fefcec;
+                  border-radius: 5px;
+                }
+                .long{
+                  width:100%;
+                }
+                .register-user{
+                  width:100%;
+                  text-indent:-9999em;
+                  background:url('/activity/images/wx-register/submit-bg.png') no-repeat center;
+                  background-size:100%;
+                }
+                .captcha-tag{
+                   .fetch-captcha{
+                    height:100%;
+                    position: absolute;
+                    right:0;
+                    top:0;
+                    border-radius:0;
+                    border-left:1px solid #ccc;
+                   }
+                }
+                .image-captcha{
+                  position: absolute;
+                  right:0;
+                  top:0;
+                  height:35px;
+                  width:105px;
+                  img{
+                    width:100%;
+                    height:35px;
+                  }
+                }
+                .img-change{
+                  position: absolute;
+                  right:0;
+                  top:0;
+                  height:35px;
+                  width:105px;
+                  z-index:99;
+                  text-indent:-9999em;
+                }
+              }
+            }
+          }
+        }
       }
       .intro-group{
         float:left;
         width:100%;
+        dt{
+          float:left;
+          width:100%;
+          margin: 20px 0 10px;
+        }
+        dd{
+          float:left;
+          width:100%;
+          margin-bottom: 10px;
+          i{
+            float:left;
+            width:100px;
+            height:50px;
+            &.icon-one{
+              background:url('/activity/images/wx-register/icon-one.png') no-repeat center;
+              background-size:100%;
+            }
+            &.icon-two{
+              background:url('/activity/images/wx-register/icon-two.png') no-repeat center;
+              background-size:100%;
+            }
+            &.icon-three{
+              background:url('/activity/images/wx-register/icon-three.png') no-repeat center;
+              background-size:100%;
+            }
+            &.icon-four{
+              background:url('/activity/images/wx-register/icon-four.png') no-repeat center;
+              background-size:100%;
+            }
+            &.icon-five{
+              background:url('/activity/images/wx-register/icon-five.png') no-repeat center;
+              background-size:100%;
+            }
+            &.icon-six{
+              background:url('/activity/images/wx-register/icon-six.png') no-repeat center;
+              background-size:100%;
+            }
+          }
+          span{
+            float:left;
+            width:auto;
+            padding-left:20px;
+            font-size:20px;
+            line-height:50px;
+            color:#cd2e34;
+          }
+        }
       }
     }
   }
