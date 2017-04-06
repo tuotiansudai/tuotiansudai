@@ -1,0 +1,41 @@
+@import "module/register_common";
+.main-frame {
+  width: 100%;
+  margin: 0;
+  background: #fffbe3;
+}
+.activity-container {
+  float: left;
+  width: 100%;
+  padding-bottom: 30px;
+  
+  .actor-content-group {
+    float: left;
+    width: 100%;
+
+    .wp {
+      width: 100%;
+      padding: 0 10px;
+      box-sizing: border-box;
+      &:after {
+        clear: both;
+        display: block;
+      }
+      .top-intro-img {
+        float: left;
+        width: 100%;
+      }
+      .reg-tag-current{
+        float:left;
+        width:100%;
+      }
+      .intro-group{
+        float:left;
+        width:100%;
+      }
+    }
+  }
+}
+.header-container,.nav-container,.footer-container{
+  display:none;
+}
