@@ -230,14 +230,19 @@ public class LoanDetailServiceImpl implements LoanDetailService {
         LoanerEnterpriseDetailsModel loanerEnterpriseDetailsModel = loanerEnterpriseDetailsMapper.getByLoanId(loanModel.getId());
         if (pledgeEnterpriseModel != null && loanerEnterpriseDetailsModel != null) {
             loanDto.setPledgeEnterpriseDetail(ImmutableMap.<String, String>builder()
-                    .put("公司法人", MessageFormat.format("{0}某", loanerEnterpriseDetailsModel.getJuristicPerson().substring(0, 1)))
-                    .put("公司最高持股人", MessageFormat.format("{0}某", loanerEnterpriseDetailsModel.getShareholder().substring(0, 1)))
+                    .put("借款人", loanerEnterpriseDetailsModel.getJuristicPerson())
                     .put("公司所在地", loanerEnterpriseDetailsModel.getAddress())
+                    .put("企业借款用途描述", loanerEnterpriseDetailsModel.getPurpose())
                     .put("担保方式", pledgeEnterpriseModel.getGuarantee())
                     .put("抵押物估值", pledgeEnterpriseModel.getEstimateAmount())
                     .put("抵押物所在地", pledgeEnterpriseModel.getPledgeLocation())
                     .build());
-            loanDto.setBasicInfo(loanerEnterpriseDetailsModel.getPurpose());
+        }else{
+            loanDto.setPledgeEnterpriseDetail(ImmutableMap.<String, String>builder()
+                    .put("借款人", loanerEnterpriseDetailsModel.getJuristicPerson())
+                    .put("公司所在地", loanerEnterpriseDetailsModel.getAddress())
+                    .put("企业借款用途描述", loanerEnterpriseDetailsModel.getPurpose())
+                    .build());
         }
 
         LoanerEnterpriseInfoModel loanerEnterpriseInfoModel = loanerEnterpriseInfoMapper.getByLoanId(loanModel.getId());
