@@ -107,12 +107,17 @@ public class LoanListController {
 
     @ResponseBody
     @RequestMapping(value = "/generate-contract", method = RequestMethod.POST)
-    public BaseDto<AnxinDataDto> generateContract(@RequestParam(value = "businessId", required = true) Long businessId,
-                                                  @RequestParam(value = "anxinContractType", required = true) AnxinContractType anxinContractType) {
-        BaseDataDto baseDataDto = new BaseDataDto();
-        BaseDto baseDto = new BaseDto(false, baseDataDto);
+    public BaseDto<AnxinDataDto> generateContract(@RequestParam(value = "businessId") Long businessId,
+                                                  @RequestParam(value = "anxinContractType") AnxinContractType anxinContractType) {
+        AnxinDataDto baseDataDto = new AnxinDataDto();
+        BaseDto<AnxinDataDto> baseDto = new BaseDto<>(baseDataDto);
         if (businessId == null) {
             baseDataDto.setMessage("请填写标的ID!");
+            return baseDto;
+        }
+
+        if (anxinContractType == null) {
+            baseDataDto.setMessage("请填写合同类型!");
             return baseDto;
         }
 
@@ -132,8 +137,9 @@ public class LoanListController {
                 return baseDto;
             }
             mqWrapperClient.sendMessage(MessageQueue.LoanOutSuccess_GenerateAnXinContract, new LoanOutSuccessMessage(businessId));
-            return new BaseDto<>(true);
-        } else {
+        }
+
+        if (anxinContractType.equals(AnxinContractType.TRANSFER_CONTRACT)) {
             TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(businessId);
             if (transferApplicationModel == null) {
                 baseDataDto.setMessage("该债权转让不存在!");
@@ -151,18 +157,25 @@ public class LoanListController {
                 return baseDto;
             }
             mqWrapperClient.sendMessage(MessageQueue.TransferAnxinContract, new AnxinContractMessage(transferApplicationModel.getId(), AnxinContractType.TRANSFER_CONTRACT.name()));
-            return new BaseDto<>(true, new AnxinDataDto(true, "生成成功！"));
         }
+
+        return new BaseDto<>(new AnxinDataDto(true, "生成成功！"));
     }
 
     @ResponseBody
     @RequestMapping(value = "/query-contract", method = RequestMethod.POST)
-    public BaseDto<AnxinDataDto> queryContract(@RequestParam(value = "businessId", required = true) Long businessId,
-                                               @RequestParam(value = "anxinContractType", required = true) AnxinContractType anxinContractType) {
-        BaseDataDto baseDataDto = new BaseDataDto();
-        BaseDto baseDto = new BaseDto(false, baseDataDto);
+    public BaseDto<AnxinDataDto> queryContract(@RequestParam(value = "businessId") Long businessId,
+                                               @RequestParam(value = "anxinContractType") AnxinContractType anxinContractType) {
+        AnxinDataDto baseDataDto = new AnxinDataDto();
+        BaseDto<AnxinDataDto> baseDto = new BaseDto<>(baseDataDto);
+
         if (businessId == null) {
             baseDataDto.setMessage("请填写标的ID!");
+            return baseDto;
+        }
+
+        if (anxinContractType == null) {
+            baseDataDto.setMessage("请填写合同类型!");
             return baseDto;
         }
 
@@ -176,7 +189,9 @@ public class LoanListController {
                 baseDataDto.setMessage("该标的合同已经全部生成!");
                 return baseDto;
             }
-        } else {
+        }
+
+        if (anxinContractType.equals(AnxinContractType.TRANSFER_CONTRACT)) {
             TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(businessId);
             if (transferApplicationModel == null) {
                 baseDataDto.setMessage("该债权转让不存在!");
@@ -184,11 +199,12 @@ public class LoanListController {
             }
 
             InvestModel investModel = investService.findById(transferApplicationModel.getInvestId());
-            if (investModel == null || !Strings.isNullOrEmpty(investModel.getContractNo())) {
+            if (investModel != null && !Strings.isNullOrEmpty(investModel.getContractNo())) {
                 baseDataDto.setMessage("该债权转让合同已经全部生成!");
                 return baseDto;
             }
         }
+
         return anxinWrapperClient.queryContract(new AnxinQueryContractDto(businessId, anxinContractType));
     }
 }

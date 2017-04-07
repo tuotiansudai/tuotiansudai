@@ -19,6 +19,7 @@ import com.tuotiansudai.service.HomeService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
 import com.tuotiansudai.transfer.service.TransferService;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -48,13 +49,7 @@ public class HomeController {
     private CouponAlertService couponAlertService;
 
     @Autowired
-    private InvestMapper investMapper;
-
-    @Autowired
     private LoanMapper loanMapper;
-
-    @Autowired
-    private CouponService couponService;
 
     @Autowired
     private BannerMapper bannerMapper;
@@ -65,27 +60,25 @@ public class HomeController {
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView index() {
         ModelAndView modelAndView = new ModelAndView("/index", "responsive", true);
-        modelAndView.addObject("normalLoans", homeService.getNormalLoans());
-        modelAndView.addObject("newbieLoans", homeService.getNewbieLoans());
-        modelAndView.addObject("announces", announceService.getAnnouncementList(1, 3).getData().getRecords());
-        modelAndView.addObject("couponAlert", this.couponAlertService.getCouponAlert(LoginUserInfo.getLoginName(), Lists.newArrayList(CouponType.NEWBIE_COUPON, CouponType.RED_ENVELOPE)));
-        long experienceLoanId = 1;
-        Date beginTime = new DateTime(new Date()).withTimeAtStartOfDay().toDate();
-        Date endTime = new DateTime(new Date()).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
-        List<InvestModel> investModelList = investMapper.countSuccessInvestByInvestTime(experienceLoanId, beginTime, endTime);
-        ExperienceLoanDto experienceLoanDto = new ExperienceLoanDto(loanMapper.findById(experienceLoanId), investModelList.size() % 100, couponService.findExperienceInvestAmount(investModelList));
-        modelAndView.addObject("experienceLoanDto", experienceLoanDto);
-        List<BannerModel> bannerModelList = bannerMapper.findBannerIsAuthenticatedOrderByOrder(!Strings.isNullOrEmpty(LoginUserInfo.getLoginName()), Source.WEB);
-        bannerModelList.forEach(bannerModel -> logger.info(MessageFormat.format("[index]url:{0}", bannerModel.getUrl())));
-        modelAndView.addObject("bannerList", bannerModelList);
+
+        modelAndView.addObject("bannerList", bannerMapper.findBannerIsAuthenticatedOrderByOrder(!Strings.isNullOrEmpty(LoginUserInfo.getLoginName()), Source.WEB)); //banner
+
+        modelAndView.addObject("announces", announceService.getAnnouncementList(1, 3).getData().getRecords()); //公告
+
+        modelAndView.addObject("experienceLoan", new ExperienceLoanDto(loanMapper.findById(1), 0, 0)); //体验标
+        modelAndView.addObject("newbieLoan", homeService.getNewbieLoan()); //新手专享
+        modelAndView.addObject("normalLoans", homeService.getNormalLoans()); //优选债权
+
         //债权转让列表显示前两项
-        BasePaginationDataDto<TransferApplicationPaginationItemDataDto> transferApplicationItemList = transferService.findAllTransferApplicationPaginationList(null, 0, 0, 1, 2);
-        modelAndView.addObject("transferApplications", transferApplicationItemList.getRecords());
+        modelAndView.addObject("transferApplications", transferService.findAllTransferApplicationPaginationList(null, 0, 0, 1, 2).getRecords());
+
         //企业贷款
         List<HomeLoanDto> enterpriseLoans = homeService.getEnterpriseLoans();
-        if (enterpriseLoans.size() > 0) {
-            modelAndView.addObject("enterpriseLoans", homeService.getEnterpriseLoans());
-        }
+        modelAndView.addObject("enterpriseLoans", CollectionUtils.isNotEmpty(enterpriseLoans) ? enterpriseLoans : null);
+
+        //优惠券提醒
+        modelAndView.addObject("couponAlert", this.couponAlertService.getCouponAlert(LoginUserInfo.getLoginName(), Lists.newArrayList(CouponType.NEWBIE_COUPON, CouponType.RED_ENVELOPE)));
+
         modelAndView.addObject("siteMapList", homeService.siteMapData());
 
         return modelAndView;
@@ -93,7 +86,7 @@ public class HomeController {
 
     @RequestMapping(value = "/isLogin", method = RequestMethod.GET)
     public ModelAndView isLogin() {
-        if(!StringUtils.isEmpty(LoginUserInfo.getLoginName())) {
+        if (!StringUtils.isEmpty(LoginUserInfo.getLoginName())) {
             return null;
         } else {
             return new ModelAndView("/csrf");

@@ -311,9 +311,6 @@ public class InvestServiceImpl implements InvestService {
             return;
         }
 
-        //设置交易时间
-        investModel.setTradingTime(new Date());
-
         String loginName = investModel.getLoginName();
         if (callbackRequestModel.isSuccess()) {
             long loanId = investModel.getLoanId();
@@ -515,6 +512,8 @@ public class InvestServiceImpl implements InvestService {
         }
         // 改invest 本身状态为投资成功
         investModel.setStatus(InvestStatus.SUCCESS);
+        //设置交易时间
+        investModel.setTradingTime(new Date());
         investMapper.update(investModel);
 
         this.investAchievementService.awardAchievement(investModel);

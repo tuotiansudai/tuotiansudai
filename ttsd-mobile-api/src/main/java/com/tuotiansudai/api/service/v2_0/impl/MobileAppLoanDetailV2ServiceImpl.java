@@ -4,19 +4,19 @@ package com.tuotiansudai.api.service.v2_0.impl;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
-import com.tuotiansudai.api.dto.v1_0.LoanStatus;
 import com.tuotiansudai.api.dto.v2_0.*;
 import com.tuotiansudai.api.service.v2_0.MobileAppLoanDetailV2Service;
 import com.tuotiansudai.api.service.v3_0.impl.MobileAppLoanListV3ServiceImpl;
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.coupon.service.CouponService;
-import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.LoanPeriodCalculator;
 import com.tuotiansudai.util.RandomUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -62,9 +62,6 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
 
     @Autowired
     private PledgeVehicleMapper pledgeVehicleMapper;
-
-    @Autowired
-    private UserMembershipEvaluator userMembershipEvaluator;
 
     @Autowired
     private LoanTitleRelationMapper loanTitleRelationMapper;
@@ -125,9 +122,11 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
         dataDto.setPledgeType(loanModel.getPledgeType());
         dataDto.setRepayTypeCode("");
         dataDto.setDuration(loanModel.getDuration());
+        dataDto.setAvailableDuration(LoanPeriodCalculator.calculateDuration(new Date(), loanModel.getDeadline()));
+        dataDto.setDeadline(new DateTime(loanModel.getDeadline()).toString("yyyy-MM-dd"));
         String repayTypeName = loanModel.getType().getRepayType();
         dataDto.setRepayTypeName(repayTypeName);
-        dataDto.setNonTransferable(loanDetailsModelActivity != null ? loanDetailsModelActivity.getNonTransferable() : false);
+        dataDto.setNonTransferable(loanDetailsModelActivity != null && loanDetailsModelActivity.getNonTransferable());
 
         long expectedInterest = investService.estimateInvestIncome(loanModel.getId(), loginName, MobileAppLoanListV3ServiceImpl.DEFAULT_INVEST_AMOUNT);
         dataDto.setInterestPerTenThousands(String.valueOf(expectedInterest));
@@ -147,7 +146,7 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
         dataDto.setActivityType(loanModel.getActivityType());
         if (loanModel.getStatus().equals(LoanStatus.PREHEAT)) {
             dataDto.setLoanStatus(LoanStatus.RAISING.name().toLowerCase());
-            dataDto.setLoanStatusDesc(LoanStatus.RAISING.getMessage());
+            dataDto.setLoanStatusDesc(LoanStatus.RAISING.getDescription());
         } else {
             dataDto.setLoanStatus(loanModel.getStatus().name().toLowerCase());
             dataDto.setLoanStatusDesc(loanModel.getStatus().getDescription());
