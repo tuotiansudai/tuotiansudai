@@ -86,7 +86,7 @@
               padding: 0 10px;
 
               @media (min-width:321px) and (max-width:414px) {
-                padding: 0 40px;
+                padding: 0 30px;
               }
             }
             ul.reg-list {
@@ -122,7 +122,7 @@
                   width: 100%;
                   text-indent: -9999em;
                   background: url('/activity/images/wx-register/submit-bg.png') no-repeat center;
-                  background-size: 90%;
+                  background-size: 80%;
                 }
                 .captcha-tag {
                   .fetch-captcha {
@@ -228,6 +228,7 @@
   background: #fffbe3 url('/activity/images/wx-register/red-bag.png') no-repeat center;
   background-size:100%;
   .get-bag{
+    width:100%;
     position: absolute;
     top:50%;
     left:50%;
