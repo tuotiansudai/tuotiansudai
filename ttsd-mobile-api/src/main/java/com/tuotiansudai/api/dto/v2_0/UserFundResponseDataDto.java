@@ -67,6 +67,12 @@ public class UserFundResponseDataDto extends BaseResponseDataDto {
     @ApiModelProperty(value = "待收体验金收益(分)", example = "764")
     private long expectedExperienceInterest;
 
+    @ApiModelProperty(value = "待收优惠券收益(分)", example = "764")
+    private long expectedTotalCouponInterest;
+
+    @ApiModelProperty(value = "已收优惠券收益(分)", example = "764")
+    private long actualTotalCouponInterest;
+
     @ApiModelProperty(value = "已收体验金收益(分)", example = "764")
     private long actualExperienceInterest;
 
@@ -88,18 +94,19 @@ public class UserFundResponseDataDto extends BaseResponseDataDto {
         this.balance = balance;
         this.actualTotalInterest = userFundView.getActualTotalInterest();
         this.actualTotalExtraInterest = userFundView.getActualTotalExtraInterest();
+        this.actualTotalCouponInterest = userFundView.getActualCouponInterest() + userFundView.getRedEnvelopeAmount();
         this.referRewardAmount = userFundView.getReferRewardAmount();
         this.redEnvelopeAmount = userFundView.getRedEnvelopeAmount();
-        this.totalIncome = this.actualTotalInterest + this.actualTotalExtraInterest + this.referRewardAmount + this.redEnvelopeAmount + this.getActualExperienceInterest();
 
         this.expectedExperienceInterest = userFundView.getExpectedExperienceInterest();
         this.actualExperienceInterest = userFundView.getActualExperienceInterest();
-        this.totalIncome = this.actualTotalInterest + this.actualTotalExtraInterest + this.referRewardAmount + this.redEnvelopeAmount + this.actualExperienceInterest;
+        this.totalIncome = this.actualTotalInterest + this.actualTotalExtraInterest + this.referRewardAmount + this.actualTotalCouponInterest + this.actualExperienceInterest;
 
         this.expectedTotalCorpus = userFundView.getExpectedTotalCorpus();
         this.expectedTotalInterest = userFundView.getExpectedTotalInterest();
         this.expectedTotalExtraInterest = userFundView.getExpectedTotalExtraInterest();
-        this.expectedTotalCorpusInterest = this.expectedTotalCorpus + this.expectedTotalInterest + this.expectedTotalExtraInterest + this.expectedExperienceInterest;
+        this.expectedTotalCouponInterest = userFundView.getExpectedCouponInterest();
+        this.expectedTotalCorpusInterest = this.expectedTotalCorpus + this.expectedTotalInterest + this.expectedTotalExtraInterest + this.expectedExperienceInterest+this.expectedTotalCouponInterest;
 
         this.investFrozeAmount = userFundView.getInvestFrozeAmount();
         this.withdrawFrozeAmount = userFundView.getWithdrawFrozeAmount();
@@ -212,5 +219,13 @@ public class UserFundResponseDataDto extends BaseResponseDataDto {
 
     public int getShowMoneyTree() {
         return showMoneyTree;
+    }
+
+    public long getExpectedTotalCouponInterest() {
+        return expectedTotalCouponInterest;
+    }
+
+    public long getActualTotalCouponInterest() {
+        return actualTotalCouponInterest;
     }
 }

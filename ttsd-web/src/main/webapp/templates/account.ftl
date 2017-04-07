@@ -53,7 +53,7 @@
             <li>已收投资收益：<span>${((actualTotalInterest)/100)?string('0.00')!}</span>元</li>
             <li>已收投资奖励：<span>${((actualTotalExtraInterest)/100)?string('0.00')!}</span>元</li>
             <li>已收推荐奖励：<span>${((referRewardAmount/100)?string('0.00'))!}</span>元</li>
-            <li>已收红包奖励：<span>${((redEnvelopeAmount/100)?string('0.00'))!}</span>元</li>
+            <li>已收优惠券奖励：<span>${((actualCouponInterest/100)?string('0.00'))!}</span>元</li>
             <li>已收体验金奖励：<span>${((actualExperienceInterest/100)?string('0.00'))!}</span>元</li>
         </ul>
     </div>
@@ -64,6 +64,7 @@
             <li>待收投资本金：<span>${((expectedTotalCorpus/100)?string('0.00'))!}</span>元</li>
             <li>待收预期收益：<span>${((expectedTotalInterest/100)?string('0.00'))!}</span>元</li>
             <li>待收投资奖励：<span>${((expectedTotalExtraInterest/100)?string('0.00'))!}</span>元</li>
+            <li>待收优惠券奖励：<span>${((expectedCouponInterest/100)?string('0.00'))!}</span>元</li>
             <li>待收体验金收益：<span>${((expectedExperienceInterest/100)?string('0.00'))!}</span>元</li>
             </ul>
     </div>
