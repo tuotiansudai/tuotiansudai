@@ -163,6 +163,9 @@ public class LoanDetailV2ResponseDataDto extends BaseResponseDataDto {
     @ApiModelProperty(value = "企业借款人", example = "model")
     private EnterpriseDto enterprise;
 
+    @ApiModelProperty(value = "企业借款人信息", example = "model")
+    private EnterpriseInfoDto enterpriseInfo;
+
     @ApiModelProperty(value = "企业抵押", example = "model")
     private PledgeEnterpriseDto pledgeEnterpriseDto;
 
@@ -570,6 +573,14 @@ public class LoanDetailV2ResponseDataDto extends BaseResponseDataDto {
 
     public void setEnterprise(EnterpriseDto enterprise) {
         this.enterprise = enterprise;
+    }
+
+    public EnterpriseInfoDto getEnterpriseInfo() {
+        return enterpriseInfo;
+    }
+
+    public void setEnterpriseInfo(EnterpriseInfoDto enterpriseInfo) {
+        this.enterpriseInfo = enterpriseInfo;
     }
 
     public PledgeEnterpriseDto getPledgeEnterpriseDto() {

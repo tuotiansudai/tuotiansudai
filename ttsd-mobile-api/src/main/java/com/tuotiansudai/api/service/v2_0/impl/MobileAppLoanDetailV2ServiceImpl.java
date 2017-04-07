@@ -73,6 +73,9 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
     private LoanerEnterpriseDetailsMapper loanerEnterpriseDetailsMapper;
 
     @Autowired
+    private LoanerEnterpriseInfoMapper loanerEnterpriseInfoMapper;
+
+    @Autowired
     private PledgeEnterpriseMapper pledgeEnterpriseMapper;
 
     @Autowired
@@ -223,6 +226,14 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
             }
         }
 
+        if (loanModel.getPledgeType() == PledgeType.ENTERPRISE_FACTORING || loanModel.getPledgeType() == PledgeType.ENTERPRISE_BILL) {
+            LoanerEnterpriseInfoModel loanerEnterpriseInfoModel = loanerEnterpriseInfoMapper.getByLoanId(loanModel.getId());
+            if (loanerEnterpriseInfoModel != null) {
+                EnterpriseInfoDto enterpriseInfoDto = new EnterpriseInfoDto(loanerEnterpriseInfoModel);
+                dataDto.setEnterpriseInfo(enterpriseInfoDto);
+            }
+        }
+
         double investFeeRate = membershipPrivilegePurchaseService.obtainServiceFee(loginName);
         if (loanModel != null && ProductType.EXPERIENCE == loanModel.getProductType()) {
             investFeeRate = this.defaultFee;
@@ -262,6 +273,8 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
             List<ExtraLoanRateDto> extraLoanRateDtos = fillExtraLoanRateDto(extraLoanRateModels);
             dataDto.setExtraRates(extraLoanRateDtos);
         }
+
+
         return dataDto;
     }
 
