@@ -17,18 +17,11 @@ require(['jquery', 'csrf', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicker', 
                 data:$('#contractForm').serialize()
             })
             .done(function(res) {
-                if (res.data.message != '') {
-                    alert(res.data.message);
-                }else{
+                if (res.data.status) {
                     alert("成功创建合同!");
+                }else{
+                    alert(res.data.message);
                 }
-                console.log("success");
-            })
-            .fail(function() {
-                console.log("error");
-            })
-            .always(function() {
-                console.log("complete");
             });
         });
 

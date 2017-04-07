@@ -21,6 +21,9 @@ public class LoanResponseDataDto {
     @ApiModelProperty(value = "借款天数", example = "360")
     private String duration;
 
+    @ApiModelProperty(value = "从当前时间到借款截止时间天数", example = "360")
+    private String availableDuration;
+
     @ApiModelProperty(value = "基础利率", example = "10")
     private String baseRatePercent;
 
@@ -120,6 +123,14 @@ public class LoanResponseDataDto {
 
     public void setDuration(String duration) {
         this.duration = duration;
+    }
+
+    public String getAvailableDuration() {
+        return availableDuration;
+    }
+
+    public void setAvailableDuration(String availableDuration) {
+        this.availableDuration = availableDuration;
     }
 
     public String getBaseRatePercent() {
