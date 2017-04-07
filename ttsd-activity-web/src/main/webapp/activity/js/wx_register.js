@@ -98,12 +98,10 @@ require(['jquery', 'underscore', 'layerWrapper','placeholder', 'jquery.validate'
                 	data: $registerForm.serialize()
                 })
                 .done(function(data) {
-                    console.log(data);
                 	$registerContainer.hide();
                 	$successContainer.show();
                 })
                 .fail(function(data) {
-                    console.log(data);
                 	layer.msg('请求失败，请重试！');
                 });
                 

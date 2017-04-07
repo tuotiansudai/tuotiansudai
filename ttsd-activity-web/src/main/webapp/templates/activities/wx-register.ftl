@@ -52,7 +52,7 @@
 						                    </li>
 						                    <li id="captchaErr" class="height"></li>
 						                    <li class="agree-last">
-						                        <input type="checkbox" name="agreement" id="agreementInput" class="agreement-check" checked>
+						                        <input type="hidden" name="agreement" id="agreementInput" class="agreement-check" value="true">
 						                        <label for="agreementInput" class="check-label">同意拓天速贷<a href="javascript:void(0);" class="show-agreement">《服务协议》</a></label>
 						                    </li>
 						                    <li id="agreementInputErr" class="height hide"></li>
