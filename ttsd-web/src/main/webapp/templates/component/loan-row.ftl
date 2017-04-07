@@ -22,7 +22,7 @@
             </#if>
             </em>
         </div>
-        <div class="table-row"><i class="duration-day">${loan.duration}</i>天</div>
+        <div class="table-row">最长<i class="duration-day">${loan.duration}</i>天</div>
         <div class="table-row progress-column">
 
             <div class="progress-bar">

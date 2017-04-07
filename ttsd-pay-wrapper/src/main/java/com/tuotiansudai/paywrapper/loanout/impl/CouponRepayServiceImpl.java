@@ -38,6 +38,7 @@ import com.tuotiansudai.repository.mapper.LoanRepayMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.InterestCalculator;
+import com.tuotiansudai.util.LoanPeriodCalculator;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -235,15 +236,33 @@ public class CouponRepayServiceImpl implements CouponRepayService {
             logger.error(MessageFormat.format("(invest record is exist (loanId = {0}))", String.valueOf(loanId)));
             return false;
         }
+
         LoanModel loanModel = loanMapper.findById(loanId);
-        boolean isPeriodUnitDay = LoanPeriodUnit.DAY == loanModel.getType().getLoanPeriodUnit();
-        int totalPeriods = loanModel.getPeriods();
+        if(loanModel == null){
+            logger.error(MessageFormat.format("[Generate_Coupon_Repay:] loanId:{0} 优惠券回款计划生成失败，标的不存在", String.valueOf(loanId)));
+            return false;
+        }
+
+        int totalPeriods = LoanPeriodCalculator.calculateLoanPeriods(loanModel.getRecheckTime(), loanModel.getDeadline(), loanModel.getType());
+        if (totalPeriods == 0) {
+            logger.error(MessageFormat.format("[Generate_Coupon_Repay:] loanId:{0} recheckTime is null or deadline is null or recheckTime is after deadline", String.valueOf(loanId)));
+            return false;
+        }
+
+        List<Integer> daysOfPerPeriod = LoanPeriodCalculator.calculateDaysOfPerPeriod(loanModel.getRecheckTime(), loanModel.getDeadline(), loanModel.getType());
+        if (CollectionUtils.isEmpty(daysOfPerPeriod)) {
+            logger.error(MessageFormat.format("[Generate_Coupon_Repay:] loanId:{0} 计算标的每期天数失败", String.valueOf(loanId)));
+            return false;
+        }
+
         DateTime lastRepayDate = new DateTime(loanModel.getRecheckTime()).withTimeAtStartOfDay().minusSeconds(1);
 
+        for (int index = 0; index < totalPeriods; index++) {
 
-        for (int period = 1; period <= totalPeriods; period++) {
-            int currentPeriodDuration = isPeriodUnitDay ? loanModel.getDuration() : InterestCalculator.DAYS_OF_MONTH;
-            DateTime currentRepayDate = lastRepayDate.plusDays(currentPeriodDuration);
+            int period = index + 1; //当前计算的期数
+            int currentPeriodDuration = daysOfPerPeriod.get(index); //当期的借款天数
+            DateTime currentRepayDate = lastRepayDate.plusDays(currentPeriodDuration); //当前回款时间
+
             for (InvestModel successInvestModel : successInvestModels) {
                 List<UserCouponModel> userCouponModels = userCouponMapper.findUserCouponSuccessAndCouponTypeByInvestId(successInvestModel.getId(), COUPON_TYPE_LIST);
                 for (UserCouponModel userCouponModel : userCouponModels) {
@@ -280,7 +299,10 @@ public class CouponRepayServiceImpl implements CouponRepayService {
                                 String.valueOf(period)));
                     } catch (Exception e) {
                         result = false;
-                        logger.error(e.getLocalizedMessage(), e);
+                        logger.error(MessageFormat.format("generate coupon repay is fail, user={0}, userCouponId={1}, period={2}",
+                                successInvestModel.getLoginName(),
+                                String.valueOf(userCouponModel.getId()),
+                                String.valueOf(period)));
                     }
                 }
             }

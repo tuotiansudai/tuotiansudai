@@ -40,7 +40,7 @@ import java.util.Map;
 @Service
 public class ReferrerRewardServiceImpl implements ReferrerRewardService {
 
-    static Logger logger = Logger.getLogger(ReferrerRewardServiceImpl.class);
+    private final static Logger logger = Logger.getLogger(ReferrerRewardServiceImpl.class);
 
     @Autowired
     private UserMapper userMapper;
@@ -65,9 +65,6 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
 
     @Autowired
     private ReferrerRelationMapper referrerRelationMapper;
-
-    @Autowired
-    private AgentLevelRateMapper agentLevelRateMapper;
 
     @Autowired
     private InvestReferrerRewardMapper investReferrerRewardMapper;
@@ -102,27 +99,30 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
             List<ReferrerRelationModel> referrerRelationList = referrerRelationMapper.findByLoginName(invest.getLoginName());
             for (ReferrerRelationModel referrerRelationModel : referrerRelationList) {
                 String referrerLoginName = referrerRelationModel.getReferrerLoginName();
-                if (investReferrerRewardMapper.findByInvestIdAndReferrer(invest.getId(), referrerLoginName) == null) {
-                    try {
-                        Role role = this.getReferrerPriorityRole(referrerLoginName);
-                        if (role != null) {
-                            long reward = this.calculateReferrerReward(invest.getAmount(), loanDuration, referrerRelationModel.getLevel(), role, referrerLoginName);
-                            InvestReferrerRewardModel model = new InvestReferrerRewardModel(idGenerator.generate(), invest.getId(), reward, referrerLoginName, role);
-                            investReferrerRewardMapper.create(model);
-                            boolean status = this.transferReferrerReward(model);
-                            if (status) {
-                                this.sendMessage(invest.getLoginName(), referrerLoginName, reward, model.getId());
-                            }
-                        }
-                    } catch (Exception e) {
-                        logger.error(MessageFormat.format("Referrer reward is failed (investId={0} referrerLoginName={1})",
-                                String.valueOf(invest.getId()),
-                                referrerLoginName));
-                        result = false;
+
+                try {
+                    if (investReferrerRewardMapper.findByInvestIdAndReferrer(invest.getId(), referrerLoginName) != null) {
+                        continue;
                     }
+                    Role role = this.getReferrerPriorityRole(referrerLoginName);
+                    if (role == null) {
+                        logger.warn(MessageFormat.format("[标的放款] 发送推荐人奖励, 推荐人:{0}, 投资ID:{1} 推荐人角色检查失败", referrerLoginName, String.valueOf(invest.getId())));
+                        continue;
+                    }
+
+                    long reward = this.calculateReferrerReward(invest.getAmount(), loanDuration, referrerRelationModel.getLevel(), role);
+                    InvestReferrerRewardModel model = new InvestReferrerRewardModel(idGenerator.generate(), invest.getId(), reward, referrerLoginName, role);
+                    investReferrerRewardMapper.create(model);
+                    if (this.transferReferrerReward(model)) {
+                        this.sendMessage(invest.getLoginName(), referrerLoginName, reward, model.getId());
+                    }
+                } catch (Exception e) {
+                    logger.error(MessageFormat.format("[标的放款] 发送推荐人奖励失败 (investId={0} referrerLoginName={1})", String.valueOf(invest.getId()), referrerLoginName), e);
+                    result = false;
                 }
             }
         }
+
         return result;
     }
 
@@ -131,11 +131,21 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
         long orderId = model.getId();
         long amount = model.getAmount();
 
+        if (Lists.newArrayList(Role.ZC_STAFF, Role.ZC_STAFF_RECOMMEND).contains(model.getReferrerRole())) {
+            model.setStatus(ReferrerRewardStatus.FORBIDDEN);
+            investReferrerRewardMapper.update(model);
+            logger.warn(MessageFormat.format("[标的放款] 推荐人角色禁止发放奖励, investId={0} referrerLoginName={1} referrerRole={2}",
+                    String.valueOf(model.getInvestId()),
+                    model.getReferrerLoginName(),
+                    model.getReferrerRole().name()));
+            return false;
+        }
+
         AccountModel accountModel = accountMapper.findByLoginName(referrerLoginName);
         if (accountModel == null) {
             model.setStatus(ReferrerRewardStatus.NO_ACCOUNT);
             investReferrerRewardMapper.update(model);
-            logger.warn(MessageFormat.format("referrer has no account, investId={0} referrerLoginName={1} referrerRole={2} amount={3}",
+            logger.warn(MessageFormat.format("[标的放款] 推荐人没有实名认证, investId={0} referrerLoginName={1} referrerRole={2} amount={3}",
                     String.valueOf(model.getInvestId()),
                     model.getReferrerLoginName(),
                     model.getReferrerRole().name(),
@@ -242,10 +252,14 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
         return true;
     }
 
-    private long calculateReferrerReward(long amount, int loanDuration, int level, Role role, String referrerLoginName) {
+    private long calculateReferrerReward(long amount, int loanDuration, int level, Role role) {
+        if (Lists.newArrayList(Role.ZC_STAFF, Role.ZC_STAFF_RECOMMEND).contains(role)) {
+            return 0;
+        }
+
         BigDecimal amountBigDecimal = new BigDecimal(amount);
 
-        double rewardRate = this.getRewardRate(level, Role.STAFF == role, referrerLoginName);
+        double rewardRate = this.getRewardRate(level, Role.SD_STAFF == role);
 
         return amountBigDecimal
                 .multiply(new BigDecimal(rewardRate))
@@ -270,8 +284,16 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
             return null;
         }
 
-        if (userRoleModels.stream().anyMatch(userRoleModel -> userRoleModel.getRole() == Role.STAFF)) {
-            return Role.STAFF;
+        if (userRoleModels.stream().anyMatch(userRoleModel -> userRoleModel.getRole() == Role.ZC_STAFF)) {
+            return Role.ZC_STAFF;
+        }
+
+        if (userRoleModels.stream().anyMatch(userRoleModel -> userRoleModel.getRole() == Role.ZC_STAFF_RECOMMEND)) {
+            return Role.ZC_STAFF_RECOMMEND;
+        }
+
+        if (userRoleModels.stream().anyMatch(userRoleModel -> userRoleModel.getRole() == Role.SD_STAFF)) {
+            return Role.SD_STAFF;
         }
 
         if (userRoleModels.stream().anyMatch(userRoleModel -> userRoleModel.getRole() == Role.INVESTOR)) {
@@ -285,15 +307,8 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
         return null;
     }
 
-    private double getRewardRate(int level, boolean isStaff, String referrerLoginName) {
-        if (isStaff) {
-            AgentLevelRateModel agentLevelRateModel = agentLevelRateMapper.findAgentLevelRateByLoginNameAndLevel(referrerLoginName, level);
-            if (agentLevelRateModel != null) {
-                double agentRewardRate = agentLevelRateModel.getRate();
-                if (agentRewardRate > 0) {
-                    return agentRewardRate;
-                }
-            }
+    private double getRewardRate(int level, boolean isSDStaff) {
+        if (isSDStaff) {
             return level > this.referrerStaffRoleReward.size() ? 0 : this.referrerStaffRoleReward.get(level - 1);
         }
 

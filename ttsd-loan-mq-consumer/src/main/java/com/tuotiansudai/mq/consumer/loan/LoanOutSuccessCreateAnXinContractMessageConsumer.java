@@ -7,6 +7,7 @@ import com.tuotiansudai.client.AnxinWrapperClient;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
+import com.tuotiansudai.dto.AnxinDataDto;
 import com.tuotiansudai.dto.AnxinQueryContractDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
@@ -114,8 +115,8 @@ public class LoanOutSuccessCreateAnXinContractMessageConsumer implements Message
 
         if (executeCount == 1) {
             logger.info("[标的放款MQ] LoanOutSuccess_GenerateAnXinContract createLoanContracts is executing, loanId:{}", String.valueOf(loanId));
-            BaseDto baseDto = anxinWrapperClient.createLoanContract(loanId);
-            if (!baseDto.isSuccess()) {
+            BaseDto<AnxinDataDto> baseDto = anxinWrapperClient.createLoanContract(loanId);
+            if (!baseDto.getData().getStatus()) {
                 logger.error(MessageFormat.format("[标的放款MQ] LoanOutSuccess_GenerateAnXinContract is fail. loanId:{0}", String.valueOf(loanId)));
                 smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("生成安心签失败"));
                 return;
@@ -136,7 +137,7 @@ public class LoanOutSuccessCreateAnXinContractMessageConsumer implements Message
 
         logger.info("[标的放款MQ] LoanOutSuccess_GenerateAnXinContract queryLoanContracts start .");
         BaseDto baseDto = anxinWrapperClient.queryContract(new AnxinQueryContractDto(loanId, AnxinContractType.LOAN_CONTRACT));
-        if (baseDto == null || !baseDto.isSuccess()) {
+        if (!baseDto.getData().getStatus()) {
             fatalSmsList.add("查询安心签失败");
             logger.error(MessageFormat.format("[标的放款MQ] LoanOutSuccess_GenerateAnXinContract queryLoanContracts is fail. loanId:{0}", String.valueOf(loanId)));
         }

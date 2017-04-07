@@ -49,7 +49,31 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">借款期限（天）: </label>
+                    <label class="col-sm-2 control-label">原借款期限（天）: </label>
+
+                    <div class="col-sm-3">
+                        <input name="originalDuration" type="text" class="form-control"
+                               datatype="/^\d+$/"
+                               errormsg="原借款期限需要正确填写">
+                    </div>
+                </div>
+
+                <div class="form-group input-append">
+                    <label class="col-sm-2 control-label">借款截止时间: </label>
+
+                    <div class="col-sm-3">
+                        <div class='input-group date' id='deadline'>
+                            <input name="deadline" type='text' class="form-control" datatype="date"
+                                   errormsg="借款截止时间需要正确填写"/>
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">映射旧版本期限（天）: </label>
 
                     <div class="col-sm-2">
                         <select name="productType" class="selectpicker">
@@ -60,7 +84,6 @@
                             </#list>
                         </select>
                     </div>
-
                 </div>
 
                 <div class="form-group">

@@ -47,11 +47,11 @@ public class InvestPaginationItemDataDto implements Serializable {
         this.investorLoginName = view.getInvestorLoginName();
         this.investorUserName = view.getInvestorUserName();
         this.investorMobile = view.getInvestorMobile();
-        this.investorStaff = view.getInvestorRoleList().contains(Role.STAFF);
+        this.investorStaff = view.getInvestorRoleList().contains(Role.SD_STAFF) || view.getInvestorRoleList().contains(Role.ZC_STAFF);
         this.referrerLoginName = view.getReferrerLoginName();
         this.referrerUserName = view.getReferrerUserName();
         this.referrerMobile = view.getReferrerMobile();
-        this.referrerStaff = view.getReferrerRoleList().contains(Role.STAFF);
+        this.referrerStaff = view.getReferrerRoleList().contains(Role.SD_STAFF) || view.getReferrerRoleList().contains(Role.ZC_STAFF);
         this.channel = view.getChannel();
         this.source = view.getSource();
         this.investTime = view.getInvestTime();

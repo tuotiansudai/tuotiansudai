@@ -46,8 +46,6 @@ public interface LoanMapper {
     //不再支持descriptionText, descriptionHtml创建
     void update(LoanModel loanModel);
 
-    void updateWithoutStatus(LoanModel loanModel);
-
     List<LoanModel> findByStatus(@Param(value = "status") LoanStatus status);
 
     void updateStatus(@Param(value = "loanId") long loanId, @Param(value = "status") LoanStatus status);
@@ -91,7 +89,9 @@ public interface LoanMapper {
     void updateRaisingCompleteTime(@Param(value = "loanId") long loanId,
                                    @Param(value = "raisingCompleteTime") Date raisingCompleteTime);
 
-    List<LoanModel> findHomeLoan();
+    LoanModel findHomeNewbieLoan();
+
+    List<LoanModel> findHomePreferableLoans();
 
     List<LoanModel> findHomeEnterpriseLoan();
 

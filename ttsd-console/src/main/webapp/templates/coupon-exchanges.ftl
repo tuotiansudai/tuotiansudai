@@ -42,6 +42,9 @@
                     总数量
                 </th>
                 <th>
+                    兑换限制（个/人/月）
+                </th>
+                <th>
                     已兑换数量
                 </th>
                 <th>
@@ -91,6 +94,9 @@
                     </td>
                     <td>
                     ${exchangeCoupon.totalCount?string('0')}
+                    </td>
+                    <td>
+                    ${exchangeCoupon.monthLimit?string('0')}
                     </td>
                     <td>
                     ${exchangeCoupon.issuedCount?string('0')}

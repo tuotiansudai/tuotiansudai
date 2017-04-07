@@ -118,6 +118,9 @@ public class LoanDetailV2ResponseDataDto extends BaseResponseDataDto {
     @ApiModelProperty(value = "借款天数", example = "360")
     private Integer duration;
 
+    @ApiModelProperty(value = "从当前时间到借款截止时间天数", example = "360")
+    private Integer availableDuration;
+
     @ApiModelProperty(value = "标的类型", example = "_30,_90,_180,_360")
     private String productNewType;
 
@@ -458,6 +461,14 @@ public class LoanDetailV2ResponseDataDto extends BaseResponseDataDto {
 
     public void setDuration(Integer duration) {
         this.duration = duration;
+    }
+
+    public Integer getAvailableDuration() {
+        return availableDuration;
+    }
+
+    public void setAvailableDuration(Integer availableDuration) {
+        this.availableDuration = availableDuration;
     }
 
     public String getProductNewType() {

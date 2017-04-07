@@ -21,4 +21,7 @@ public interface UserRoleMapper {
 
     void deleteByLoginName(@Param("loginName") String loginName);
 
+    void deleteByLoginNameAndRole(@Param("loginName") String loginName,
+                                  @Param("role") Role role);
+
 }

@@ -87,6 +87,7 @@ public class AdvanceRepayGenerateFormDataTest extends RepayBaseTest {
 
         InvestModel invest = new InvestModel(idGenerator.generate(), loan.getId(), null, loan.getLoanAmount(), investor.getLoginName(), recheckTime.minusDays(1).toDate(), Source.WEB, null, 0.1);
         invest.setStatus(InvestStatus.SUCCESS);
+        invest.setTradingTime(invest.getInvestTime());
         invest.setInvestFeeRate(membershipModel.getFee());
         investMapper.create(invest);
         InvestRepayModel investRepay1 = new InvestRepayModel(idGenerator.generate(), invest.getId(), 1, 0, loanRepay1ExpectedInterest, 100, loanRepay1.getRepayDate(), RepayStatus.REPAYING);

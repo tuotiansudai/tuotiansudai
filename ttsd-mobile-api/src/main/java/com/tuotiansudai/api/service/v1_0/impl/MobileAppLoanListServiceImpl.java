@@ -21,6 +21,7 @@ import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.InterestCalculator;
+import com.tuotiansudai.util.LoanPeriodCalculator;
 import org.apache.commons.collections4.CollectionUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,7 +91,7 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
             loanListResponseDataDto.setLoanList(loanDtoList);
             dto.setData(loanListResponseDataDto);
         } else {
-            loanListResponseDataDto.setLoanList(new ArrayList<LoanResponseDataDto>());
+            loanListResponseDataDto.setLoanList(Lists.newArrayList());
             dto.setData(loanListResponseDataDto);
         }
 
@@ -143,6 +144,7 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
             loanResponseDataDto.setBaseRatePercent(decimalFormat.format(loan.getBaseRate() * 100));
             loanResponseDataDto.setActivityRatePercent(decimalFormat.format(loan.getActivityRate() * 100));
             loanResponseDataDto.setDuration(String.valueOf(loan.getDuration()));
+            loanResponseDataDto.setAvailableDuration(String.valueOf(LoanPeriodCalculator.calculateDuration(new Date(), loan.getDeadline())));
             loanResponseDataDto.setProductNewType(loan.getProductType() != null ? loan.getProductType().name() : "");
             loanResponseDataDto.setActivityType(loan.getActivityType() != null ? loan.getActivityType().name() : "");
 

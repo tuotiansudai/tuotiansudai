@@ -369,7 +369,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public BaseDto<BaseDataDto> buyProduct(String loginName, long id, GoodsType goodsType, int amount, Long addressId) {
+        public BaseDto<BaseDataDto> buyProduct(String loginName, long id, GoodsType goodsType, int amount, Long addressId) {
         ProductModel productModel = productMapper.lockById(id);
         AccountModel accountModel = accountMapper.lockByLoginName(loginName);
 
@@ -489,6 +489,7 @@ public class ProductServiceImpl implements ProductService {
                     exchangeCouponDto.setExchangePoint(productModel.getPoints());
                     exchangeCouponDto.setSeq(productModel.getSeq());
                     exchangeCouponDto.setImageUrl(productModel.getImageUrl());
+                    exchangeCouponDto.setMonthLimit(productModel.getMonthLimit());
                     return exchangeCouponDto;
                 }).collect(Collectors.toList());
     }

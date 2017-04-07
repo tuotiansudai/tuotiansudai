@@ -33,7 +33,7 @@ public class MobileAppMediaCenterServiceTest extends ServiceTestBase {
     private LicaiquanArticleMapper licaiquanArticleMapper;
     @Autowired
     private UserMapper userMapper;
-    @Value("${mobile.static.server}")
+    @Value("${common.static.server}")
     private String domainName;
 
     @Test

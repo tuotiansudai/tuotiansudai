@@ -83,8 +83,6 @@ def qa(options):
     if build_params.has_key('env'):
         deployment.deploy(build_params)
 
-    print 'env is missing!'
-
 
 @task
 def dev():
@@ -272,17 +270,6 @@ def replace_min_files_in_config_js_file(path):
     replace_versioned_config_file(name2path, path)
 
 
-def versioning_webpack_files(path):
-    from paver.shell import sh
-
-    owd = os.getcwd()
-    try:
-        os.chdir(path)
-        sh('/usr/bin/npm install')
-        sh('/usr/bin/npm run dist')
-    finally:
-        os.chdir(owd)
-
 def versioning_static_resource_files(options):
     from paver.shell import sh
 
@@ -309,8 +296,6 @@ def jcversion(options):
     versioning_min_files('ttsd-point-web/src/main/webapp/point/js/dest/*.min.js')
     versioning_min_files('ttsd-point-web/src/main/webapp/point/style/dest/*.min.css')
     replace_min_files_in_config_js_file('ttsd-point-web/src/main/webapp/point/js/dest/')
-
-    versioning_webpack_files('ttsd-mobile-api/')
 
     versioning_static_resource_files(options)
 

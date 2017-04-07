@@ -79,7 +79,7 @@ public class InviteFriendActivityService {
 
         List<UserRoleModel> userRoleModelList = userRoleMapper.findByLoginName(loginName);
         for (UserRoleModel model : userRoleModelList) {
-            if (model.getRole().equals(Role.STAFF)) {
+            if (Lists.newArrayList(Role.ZC_STAFF, Role.SD_STAFF).contains(model.getRole())) {
                 level = merLevel > level ? merLevel : level;
             } else if (model.getRole().equals(Role.USER)) {
                 level = userLevel > level ? userLevel : level;

@@ -102,7 +102,7 @@ var pointListImg=new geFileList(pointImagePath,'image-activity.html');
 pointListImg.init();
 
 //读取point里的图片
-var mobileListImg=new geFileList(mobileImagePath,'image-activity.html');
+var mobileListImg=new geFileList(mobileImagePath,'image-mobile.html');
 mobileListImg.init();
 
 

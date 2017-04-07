@@ -21,6 +21,7 @@ import javax.validation.Valid;
 @RestController
 @Api(description = "V2.0标的详情")
 public class MobileAppLoanDetailV2Controller extends MobileAppBaseController {
+
     static Logger logger = Logger.getLogger(MobileAppLoanDetailV2Controller.class);
 
     @Autowired
@@ -32,7 +33,7 @@ public class MobileAppLoanDetailV2Controller extends MobileAppBaseController {
         if (bindingResult.hasErrors()) {
             String errorCode = bindingResult.getFieldError().getDefaultMessage();
             String errorMessage = ReturnMessage.getErrorMsgByCode(errorCode);
-            return new BaseResponseDto(errorCode, errorMessage);
+            return new BaseResponseDto<>(errorCode, errorMessage);
         }
         requestDto.getBaseParam().setUserId(getLoginName());
         return mobileAppLoanDetailV2Service.findLoanDetail(requestDto);
