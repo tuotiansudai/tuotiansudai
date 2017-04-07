@@ -91,20 +91,7 @@ require(['jquery', 'underscore', 'layerWrapper','placeholder', 'jquery.validate'
                 }
             },
             submitHandler: function (form) {
-                $.ajax({
-                	url: '/register/user',
-                	type: 'POST',
-                	dataType: 'json',
-                	data: $registerForm.serialize()
-                })
-                .done(function(data) {
-                	$registerContainer.hide();
-                	$successContainer.show();
-                })
-                .fail(function(data) {
-                	layer.msg('请求失败，请重试！');
-                });
-                
+                form.submit();
             }
         });
         var refreshCapt = function () {
