@@ -35,6 +35,9 @@
         @media (min-width:321px) and (max-width:375px) {
           min-height: 625px;
         }
+        @media (min-width:376px) and (max-width:414px) {
+          min-height: 695px;
+        }
         .top-intro-img {
           float: left;
           width: 100%;
@@ -70,6 +73,9 @@
           @media (min-width:321px) and (max-width:375px) {
             margin-top: 150px;
           }
+          @media (min-width:376px) and (max-width:414px) {
+            margin-top: 180px;
+          }
           .register-box {
             background: none;
 
@@ -79,7 +85,7 @@
             .register-user-form {
               padding: 0 10px;
 
-              @media (min-width:321px) and (max-width:375px) {
+              @media (min-width:321px) and (max-width:414px) {
                 padding: 0 40px;
               }
             }
