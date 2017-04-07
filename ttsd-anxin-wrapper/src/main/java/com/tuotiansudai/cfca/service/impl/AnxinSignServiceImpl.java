@@ -32,10 +32,12 @@ import java.io.FileNotFoundException;
 import java.text.MessageFormat;
 import java.util.*;
 
+import static com.tuotiansudai.constants.AnxinContractCreateRedisKey.*;
+
 @Service
 public class AnxinSignServiceImpl implements AnxinSignService {
 
-    static Logger logger = Logger.getLogger(AnxinSignServiceImpl.class);
+    private static Logger logger = Logger.getLogger(AnxinSignServiceImpl.class);
 
     @Autowired
     private RedisWrapperClient redisWrapperClient;
@@ -77,13 +79,9 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
     private static final String TEMP_PROJECT_CODE_KEY = "temp_project_code:";
 
-    public static final String LOAN_CONTRACT_IN_CREATING_KEY = "loanContractInCreating:";
+    private static final String LOAN_BATCH_NO_LIST_KEY = "loanBathNoList:";
 
-    public static final String LOAN_BATCH_NO_LIST_KEY = "loanBathNoList:";
-
-    public static final String TRANSFER_CONTRACT_IN_CREATING_KEY = "transferContractInCreating:";
-
-    public static final String TRANSFER_BATCH_NO_LIST_KEY = "transferBathNoList:";
+    private static final String TRANSFER_BATCH_NO_LIST_KEY = "transferBathNoList:";
 
     private static final int TEMP_PROJECT_CODE_EXPIRE_TIME = 60 * 30; // 验证码30分钟过期
 
@@ -271,7 +269,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
                 anxinProp.setAuthTime(new Date());
                 anxinProp.setAuthIp(ip);
                 anxinSignPropertyMapper.update(anxinProp);
-                return new BaseDto(true, new BaseDataDto(true, skipAuth ? "skipAuth" : ""));
+                return new BaseDto<>(true, new BaseDataDto(true, skipAuth ? "skipAuth" : ""));
             } else {
                 if (tx3102ResVO == null) {
                     logger.error("verify anxin captcha code failed. result is null.");
@@ -306,7 +304,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
     }
 
     private BaseDto<AnxinDataDto> failBaseDto(String errorMessage) {
-        return new BaseDto(false, new AnxinDataDto(false, errorMessage));
+        return new BaseDto<>(false, new AnxinDataDto(false, errorMessage));
     }
 
     private boolean isSuccess(Tx3ResVO tx3ResVO) {
@@ -351,8 +349,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         List<InvestModel> investModels = investMapper.findNoContractNoInvest(loanId);
         List<CreateContractVO> createContractVOs = new ArrayList<>();
 
-        for (int i = 0; i < investModels.size(); i++) {
-            InvestModel investModel = investModels.get(i);
+        for (InvestModel investModel : investModels) {
             CreateContractVO createContractVO = createInvestorContractVo(loanId, investModel);
             if (createContractVO == null) {
                 continue;
@@ -588,15 +585,15 @@ public class AnxinSignServiceImpl implements AnxinSignService {
     @Override
     public BaseDto<AnxinDataDto> queryContract(AnxinQueryContractDto anxinQueryContractDto) {
         if (anxinQueryContractDto == null) {
-            return new BaseDto(true, new AnxinDataDto(true, ""));
+            return new BaseDto<>(true, new AnxinDataDto(true, ""));
         }
         String batchNo;
         if (anxinQueryContractDto.getAnxinContractType().equals(AnxinContractType.LOAN_CONTRACT)) {
             batchNo = redisWrapperClient.get(LOAN_BATCH_NO_LIST_KEY + anxinQueryContractDto.getBusinessId());
-            redisWrapperClient.del(AnxinSignServiceImpl.LOAN_CONTRACT_IN_CREATING_KEY + anxinQueryContractDto.getBusinessId());
+            redisWrapperClient.del(LOAN_CONTRACT_IN_CREATING_KEY + anxinQueryContractDto.getBusinessId());
         } else {
             batchNo = redisWrapperClient.get(TRANSFER_BATCH_NO_LIST_KEY + anxinQueryContractDto.getBusinessId());
-            redisWrapperClient.del(AnxinSignServiceImpl.TRANSFER_CONTRACT_IN_CREATING_KEY + anxinQueryContractDto.getBusinessId());
+            redisWrapperClient.del(TRANSFER_CONTRACT_IN_CREATING_KEY + anxinQueryContractDto.getBusinessId());
         }
         logger.info(MessageFormat.format("[安心签] queryContract executing , batchStr:{0}", batchNo));
 
@@ -604,22 +601,19 @@ public class AnxinSignServiceImpl implements AnxinSignService {
             return failBaseDto(BATCH_NO_IS_INVALID);
         }
 
-        try {
-            List<String> waitingBatchNo = this.queryContract(anxinQueryContractDto.getBusinessId(), Lists.newArrayList(batchNo.split(",")), anxinQueryContractDto.getAnxinContractType());
-            if (CollectionUtils.isNotEmpty(waitingBatchNo)) {
-                // 没有待处理的 batchNo 了，检查该 businessId 下的投资是否已经全部成功
-                List<InvestModel> contractFailList = investMapper.findNoContractNoInvest(anxinQueryContractDto.getBusinessId());
-                if (CollectionUtils.isNotEmpty(contractFailList)) {
-                    logger.error(MessageFormat.format("some batch is fail. send sms. businessId:{0}", String.valueOf(anxinQueryContractDto.getBusinessId())));
-                    // 有失败的，发短信
-                    smsWrapperClient.sendGenerateContractErrorNotify(new GenerateContractErrorNotifyDto(mobileList, anxinQueryContractDto.getBusinessId()));
-                }
+        List<String> waitingBatchNo = this.queryContract(anxinQueryContractDto.getBusinessId(), Lists.newArrayList(batchNo.split(",")), anxinQueryContractDto.getAnxinContractType());
+        if (CollectionUtils.isEmpty(waitingBatchNo)) {
+            // 没有待处理的 batchNo 了，检查该 businessId 下的投资是否已经全部成功
+            List<InvestModel> contractFailList = investMapper.findNoContractNoInvest(anxinQueryContractDto.getBusinessId());
+            if (CollectionUtils.isNotEmpty(contractFailList)) {
+                logger.error(MessageFormat.format("some batch is fail. send sms. businessId:{0}", String.valueOf(anxinQueryContractDto.getBusinessId())));
+                // 有失败的，发短信
+                smsWrapperClient.sendGenerateContractErrorNotify(new GenerateContractErrorNotifyDto(mobileList, anxinQueryContractDto.getBusinessId()));
+                return new BaseDto<>(false, new AnxinDataDto(true, "fail"));
             }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            logger.info("query anXin contract fail," + ex);
-            return new BaseDto(false, new AnxinDataDto(true, ex.getMessage()));
+        } else {
+            return new BaseDto<>(false, new AnxinDataDto(true, "fail"));
         }
-        return new BaseDto(true, new AnxinDataDto(true, "success"));
+        return new BaseDto<>(true, new AnxinDataDto(true, "success"));
     }
 }
