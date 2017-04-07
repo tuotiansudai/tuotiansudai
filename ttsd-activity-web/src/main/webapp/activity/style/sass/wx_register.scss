@@ -94,10 +94,15 @@
                 &.mobile-agreement {
                   color: #f4e823;
                   font-size: 14px;
-
+                  @media(max-width:320px){
+                    font-size:12px;
+                  }
                   a {
                     color: #f4e823;
                   }
+                }
+                &.appCaptchaErr{
+                  color: #f4e823;
                 }
                 i {
                   display: none;
