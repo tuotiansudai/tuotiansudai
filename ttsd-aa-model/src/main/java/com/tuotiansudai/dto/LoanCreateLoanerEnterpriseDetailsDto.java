@@ -7,7 +7,6 @@ public class LoanCreateLoanerEnterpriseDetailsDto {
     @NotEmpty
     private String juristicPerson;
 
-    @NotEmpty
     private String shareholder;
 
     @NotEmpty

@@ -212,7 +212,7 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
                     }
             }
         }
-        if (loanModel.getPledgeType() == PledgeType.ENTERPRISE) {
+        if (loanModel.getPledgeType() == PledgeType.ENTERPRISE_CREDIT || loanModel.getPledgeType() == PledgeType.ENTERPRISE_PLEDGE) {
             LoanerEnterpriseDetailsModel loanerEnterpriseDetailsModel = loanerEnterpriseDetailsMapper.getByLoanId(loanModel.getId());
             if (loanerEnterpriseDetailsModel != null) {
                 EnterpriseDto enterpriseDto = new EnterpriseDto(loanerEnterpriseDetailsModel);
@@ -221,6 +221,9 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
 
                 dataDto.setEnterprise(enterpriseDto);
             }
+
+        }
+        if (loanModel.getPledgeType() == PledgeType.ENTERPRISE_PLEDGE){
             PledgeEnterpriseModel pledgeEnterpriseModel = pledgeEnterpriseMapper.getByLoanId(loanModel.getId());
             if (pledgeEnterpriseModel != null) {
                 dataDto.setPledgeEnterpriseDto(new PledgeEnterpriseDto(pledgeEnterpriseModel));

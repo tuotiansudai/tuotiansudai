@@ -53,19 +53,25 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
                 sectionThreeElement.html(Mustache.render(pledgeVehicleTemplate));
             }
 
-            if ('税易经营性借款' === loanName) {
-                pledgeTypeElement.val("ENTERPRISE");
+            if ('经营性借款' === loanName && $('#projectName option:selected').attr('data-pledgetype') === 'ENTERPRISE_CREDIT') {
+                pledgeTypeElement.val("ENTERPRISE_CREDIT");
+                sectionTwoElement.html(Mustache.render(loanerEnterpriseDetailsTemplate));
+                sectionThreeElement.html(Mustache.render(''));
+            }
+
+            if ('经营性借款' === loanName && $('#projectName option:selected').attr('data-pledgetype') === 'ENTERPRISE_PLEDGE') {
+                pledgeTypeElement.val("ENTERPRISE_PLEDGE");
                 sectionTwoElement.html(Mustache.render(loanerEnterpriseDetailsTemplate));
                 sectionThreeElement.html(Mustache.render(pledgeEnterpriseTemplate));
             }
 
-            if ('企业经营性借款' === loanName && $('#projectName option:selected').attr('data-pledgetype') === 'ENTERPRISE_FACTORING') {
+            if ('经营性借款' === loanName && $('#projectName option:selected').attr('data-pledgetype') === 'ENTERPRISE_FACTORING') {
                 pledgeTypeElement.val("ENTERPRISE_FACTORING");
                 sectionTwoElement.html(Mustache.render(loanerEnterpriseInfoTemplate));
                 sectionThreeElement.html(Mustache.render(loanerEnterpriseFactoringInfoTemplate));
             }
 
-            if ('企业经营性借款' === loanName && $('#projectName option:selected').attr('data-pledgetype') === 'ENTERPRISE_BILL') {
+            if ('经营性借款' === loanName && $('#projectName option:selected').attr('data-pledgetype') === 'ENTERPRISE_BILL') {
                 pledgeTypeElement.val("ENTERPRISE_BILL");
                 sectionTwoElement.html(Mustache.render(loanerEnterpriseInfoTemplate));
                 sectionThreeElement.html(Mustache.render(''));
@@ -380,7 +386,14 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
                     'pledgeVehicle': pledgeVehicleParam
                 });
             }
-            if ("税易经营性借款" == value) {
+            if ("经营性借款" == value && $('#projectName option:selected').attr('data-pledgetype') == 'ENTERPRISE_CREDIT') {
+                requestData = generateRequestParams({
+                    'loan': loanParam,
+                    'loanDetails': loanDetailsParam,
+                    'loanerEnterpriseDetails': loanerEnterpriseDetailsParam
+                });
+            }
+            if ("经营性借款" == value && $('#projectName option:selected').attr('data-pledgetype') == 'ENTERPRISE_PLEDGE') {
                 requestData = generateRequestParams({
                     'loan': loanParam,
                     'loanDetails': loanDetailsParam,
@@ -388,14 +401,14 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
                     'pledgeEnterprise': pledgeEnterpriseParam
                 });
             }
-            if ("企业经营性借款" == value && $('#projectName option:selected').attr('data-pledgetype') == 'ENTERPRISE_FACTORING') {
+            if ("经营性借款" == value && $('#projectName option:selected').attr('data-pledgetype') == 'ENTERPRISE_FACTORING') {
                 requestData = generateRequestParams({
                     'loan': loanParam,
                     'loanDetails': loanDetailsParam,
                     'loanerEnterpriseInfo': loanerEnterpriseInfoParam + loanerEnterpriseFactoringInfoParam
                 });
             }
-            if ("企业经营性借款" == value && $('#projectName option:selected').attr('data-pledgetype') == 'ENTERPRISE_BILL') {
+            if ("经营性借款" == value && $('#projectName option:selected').attr('data-pledgetype') == 'ENTERPRISE_BILL') {
                 requestData = generateRequestParams({
                     'loan': loanParam,
                     'loanDetails': loanDetailsParam,
@@ -449,7 +462,7 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
 
         var checkedExtraRate = function () {
             clearErrorMessage();
-            if (pledgeTypeElement.val() === 'ENTERPRISE' || pledgeTypeElement.val() === 'ENTERPRISE_FACTORING' || pledgeTypeElement.val() === 'ENTERPRISE_BILL') {
+            if (pledgeTypeElement.val() === 'ENTERPRISE_CREDIT' || pledgeTypeElement.val() === 'ENTERPRISE_PLEDGE' || pledgeTypeElement.val() === 'ENTERPRISE_FACTORING' || pledgeTypeElement.val() === 'ENTERPRISE_BILL') {
                 showErrorMessage('项目不支持', extraElement);
                 extraElement.prop('checked', false);
                 return;

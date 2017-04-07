@@ -792,8 +792,8 @@
         <if test="pledgeType != null and (pledgeType.name() == 'HOUSE' or pledgeType.name() == 'VEHICLE')">
             and pledge_type = #{pledgeType}
         </if>
-        <if test="pledgeType != null and (pledgeType.name() == 'ENTERPRISE_FACTORING' or pledgeType.name() == 'ENTERPRISE_BILL' or pledgeType.name() == 'ENTERPRISE')">
-            and pledge_type in ('ENTERPRISE_FACTORING','ENTERPRISE_BILL','ENTERPRISE')
+        <if test="pledgeType != null and (pledgeType.name() == 'ENTERPRISE_FACTORING' or pledgeType.name() == 'ENTERPRISE_BILL' or pledgeType.name() == 'ENTERPRISE_CREDIT' or pledgeType.name() == 'ENTERPRISE_PLEDGE')">
+            and pledge_type in ('ENTERPRISE_FACTORING', 'ENTERPRISE_BILL', 'ENTERPRISE_PLEDGE', 'ENTERPRISE_CREDIT')
         </if>
     </select>
 
