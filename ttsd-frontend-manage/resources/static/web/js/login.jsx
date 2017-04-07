@@ -6,6 +6,22 @@ let loginForm=globalFun.$('#formLogin');
 let loginSubmit=$(loginForm).find('.login-submit');
 let imageCaptcha=globalFun.$('#imageCaptcha');
 
+var func = function(param) {
+    console.log(2);
+    console.log(param);
+};
+var funcInit = func.before(function(param) {
+    console.log(param);
+    param.b = 'b';
+    console.log(1);
+
+}).after(function() {
+
+    console.log(3);
+});
+
+funcInit({a: 'a'});
+
 commonFun.refreshCaptcha(imageCaptcha,'/login/captcha?');
 //刷新验证码
 $('#imageCaptcha').on('click',function() {
@@ -45,10 +61,8 @@ Array.prototype.forEach.call(loginInputs,function(el) {
     })
 });
 
-loginForm.onsubmit = function(event) {
-    event.preventDefault();
+let validateLogin = function() {
     let errorMsg;
-
     for(let i=0,len=loginInputs.length;i<len;i++) {
         errorMsg = validator.start(loginInputs[i]);
         if(errorMsg) {
@@ -56,9 +70,13 @@ loginForm.onsubmit = function(event) {
             break;
         }
     }
-    if (!errorMsg) {
-        loginSubmit.addClass('loading').prop('disabled',true);
-        commonFun.useAjax({
+    return errorMsg?true:false;
+}
+
+var formSubmit =function() {
+
+    loginSubmit.addClass('loading').prop('disabled',true);
+    commonFun.useAjax({
             url:"/login",
             type:'POST',
             data:$(loginForm).serialize()
@@ -66,7 +84,7 @@ loginForm.onsubmit = function(event) {
             loginSubmit.removeClass('loading').prop('disabled',false);
             let redirectUrl=$(loginForm).data('redirect-url');
             if (data.status) {
-                 //用户角色里是否包含USER角色
+                //用户角色里是否包含USER角色
                 let hasUserRole = _.contains(data.roles, 'USER');
                 location.href = hasUserRole ? redirectUrl : "/register/account";
             } else {
@@ -74,7 +92,13 @@ loginForm.onsubmit = function(event) {
                 commonFun.refreshCaptcha(imageCaptcha,'/login/captcha?');
                 errorDom.text(data.message).css('visibility','visible');
             }
-         }
-        );
-    }
+        }
+    );
+}
+formSubmit = formSubmit.before(validateLogin);
+
+loginForm.onsubmit = function(event) {
+    event.preventDefault();
+    formSubmit();
+
 };
