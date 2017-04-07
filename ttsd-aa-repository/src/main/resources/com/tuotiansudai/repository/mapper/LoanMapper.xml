@@ -95,7 +95,7 @@
         1 = 1
         and temp.status not in ('WAITING_VERIFY','CANCEL')
         <if test="name !=null and name!=''">
-            and temp.name = #{name}
+            and temp.name LIKE CONCAT(CONCAT('%', #{name}),'%')
         </if>
         <if test="status != null">
             and temp.status = #{status}
@@ -136,7 +136,7 @@
         select * from loan t
         where 1=1
         <if test="name !=null and name != ''">
-            and t.name = #{name}
+            and t.name LIKE CONCAT(CONCAT('%', #{name}),'%')
         </if>
         <if test="status != null">
             and t.status = #{status}
@@ -785,4 +785,16 @@
         CASE WHEN loan.status in ('RAISING','PREHEAT','RECHECK') THEN created_time END DESC,
         CASE WHEN loan.status in ('REPAYING','OVERDUE','COMPLETE') THEN recheck_time END DESC
     </select>
+
+    <select id="findLoanCountByYear" resultType="long">
+        SELECT COUNT(id) FROM loan
+        WHERE DATE_FORMAT(created_time,'%Y') = #{createdTime}
+        <if test="pledgeType != null and (pledgeType.name() == 'HOUSE' or pledgeType.name() == 'VEHICLE')">
+            and pledge_type = #{pledgeType}
+        </if>
+        <if test="pledgeType != null and (pledgeType.name() == 'ENTERPRISE_FACTORING' or pledgeType.name() == 'ENTERPRISE_BILL' or pledgeType.name() == 'ENTERPRISE')">
+            and pledge_type in ('ENTERPRISE_FACTORING','ENTERPRISE_BILL','ENTERPRISE')
+        </if>
+    </select>
+
 </mapper>
