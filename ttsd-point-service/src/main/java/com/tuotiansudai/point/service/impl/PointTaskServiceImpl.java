@@ -5,6 +5,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
+import com.tuotiansudai.enums.AppUrl;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.point.repository.dto.PointTaskDto;
 import com.tuotiansudai.point.repository.mapper.PointTaskMapper;
@@ -218,7 +219,7 @@ public class PointTaskServiceImpl implements PointTaskService {
             case EACH_RECOMMEND_INVEST:
                 return "/referrer/refer-list";
             case FIRST_TURN_ON_NO_PASSWORD_INVEST:
-                return "/personal-info";
+                return AppUrl.SETTING.getPath();
 
         }
         return null;
