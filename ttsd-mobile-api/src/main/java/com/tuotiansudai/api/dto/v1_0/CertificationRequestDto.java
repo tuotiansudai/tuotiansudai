@@ -1,6 +1,8 @@
 package com.tuotiansudai.api.dto.v1_0;
 
+import com.google.common.base.Strings;
 import com.tuotiansudai.dto.RegisterAccountDto;
+import com.tuotiansudai.repository.model.UserModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -23,6 +25,7 @@ public class CertificationRequestDto extends BaseParamDto {
 
     /**
      * 用户真实姓名
+     *
      * @return
      */
     public String getUserRealName() {
@@ -31,6 +34,7 @@ public class CertificationRequestDto extends BaseParamDto {
 
     /**
      * 用户真实姓名
+     *
      * @param userRealName
      */
     public void setUserRealName(String userRealName) {
@@ -39,6 +43,7 @@ public class CertificationRequestDto extends BaseParamDto {
 
     /**
      * 用户身份证号码
+     *
      * @return
      */
     public String getUserIdCardNumber() {
@@ -47,18 +52,19 @@ public class CertificationRequestDto extends BaseParamDto {
 
     /**
      * 用户身份证号码
+     *
      * @param userIdCardNumber
      */
     public void setUserIdCardNumber(String userIdCardNumber) {
         this.userIdCardNumber = userIdCardNumber;
     }
 
-    public RegisterAccountDto convertToRegisterAccountDto(){
+    public RegisterAccountDto convertToRegisterAccountDto(UserModel userModel) {
         RegisterAccountDto registerAccountDto = new RegisterAccountDto();
         registerAccountDto.setIdentityNumber(this.getUserIdCardNumber());
         registerAccountDto.setUserName(this.getUserRealName());
         registerAccountDto.setLoginName(this.getBaseParam().getUserId());
-        registerAccountDto.setMobile(this.getBaseParam().getPhoneNum());
+        registerAccountDto.setMobile(userModel.getMobile());
         return registerAccountDto;
 
     }
