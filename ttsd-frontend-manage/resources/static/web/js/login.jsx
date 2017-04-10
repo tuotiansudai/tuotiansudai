@@ -32,7 +32,7 @@ validator.add(loginForm.captcha, [{
     errorMsg: '验证码不能为空'
 }]);
 
-let loginInputs=$(loginForm).find('input:visible');
+let loginInputs=$(loginForm).find('input[validate]');
 Array.prototype.forEach.call(loginInputs,function(el) {
     globalFun.addEventHandler(el,'blur',function() {
         let errorMsg = validator.start(this);
