@@ -133,7 +133,6 @@
 </script>
 
 <script src="${js.jquerydll}" defer></script>
-<script src="http://localhost:3008/public/publicCommon.js" defer></script>
 <script src="${js.globalFun_page!}" defer></script>
 <script src="${pageJavascript}" type="text/javascript" id="currentScript" defer></script>
 

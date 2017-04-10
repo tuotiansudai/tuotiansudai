@@ -144,11 +144,6 @@ else if(NODE_ENV=='dev') {
 	};
 }
 
-plugins.push(new webpack.optimize.CommonsChunkPlugin({
-	name: "publicCommon",
-	filename: "public/publicCommon.js"
-}));
-
 plugins.push(new CopyWebpackPlugin([
 	{ from: publicPathJS+'/dllplugins',to: 'public/dllplugins'},
 	{ from: staticPath+'/inlineImages',to: 'images'},

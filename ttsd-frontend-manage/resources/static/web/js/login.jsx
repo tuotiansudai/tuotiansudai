@@ -1,7 +1,6 @@
 require('webStyle/login.scss');
 let ValidatorObj= require('publicJs/validator');
 let commonFun= require('publicJs/commonFun');
-let Middleware= require('publicJs/middleware');
 
 let loginForm=globalFun.$('#formLogin');
 let imageCaptcha=globalFun.$('#imageCaptcha');
