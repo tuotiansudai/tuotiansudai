@@ -55,10 +55,8 @@ let validateLogin = function(options, next) {
             break;
         }
     }
-    if(errorMsg) {
-        return;
-    }
-    next();
+    return errorMsg ? false : true;
+    //返回false代表表单验证没有通过
 }
 
 //login表单提交函数
@@ -88,12 +86,6 @@ let formSubmit =function() {
 loginForm.onsubmit = function(event) {
     event.preventDefault();
     //提交之前得先执行validateLogin验证表单是否通过验证
-
-    let submitFormFun = new Middleware();
-    submitFormFun
-        .use(validateLogin)
-        .use(formSubmit);
-
-    submitFormFun.handleRequest();
+    formSubmit.before(validateLogin)();
 
 };
