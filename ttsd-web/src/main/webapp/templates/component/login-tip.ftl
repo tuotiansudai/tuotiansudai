@@ -1,4 +1,4 @@
-<div class="login-tip" id="loginTip" >
+<div class="login-tip" id="loginTip" style="display: none">
     <i class="close-btn"></i>
     <div class="login-box">
         <h3>欢迎登录拓天速贷</h3>

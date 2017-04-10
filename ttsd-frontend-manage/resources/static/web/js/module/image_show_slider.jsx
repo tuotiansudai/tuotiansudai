@@ -192,7 +192,6 @@ function cloneObj(oldObj) { //复制对象方法
                 var touch = e.touches[0];
                 this.touchX = touch.pageX;
                 this.ready_moved = false;
-                console.log(this.play);
                 clearInterval(this.play); //触摸图片开始就终止图片的循环播放
             }
         },

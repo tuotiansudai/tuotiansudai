@@ -130,12 +130,11 @@
     <#--window.pluginsJSON={-->
         <#--underscore:'${js.underscore}'-->
     <#--}-->
-
 </script>
 
-<script src="${js.jquerydll}" ></script>
-<script src="${js.globalFun_page!}" ></script>
-<script src="${pageJavascript}" type="text/javascript" id="currentScript"></script>
+<script src="${js.jquerydll}" defer></script>
+<script src="${js.globalFun_page!}" defer></script>
+<script src="${pageJavascript}" type="text/javascript" id="currentScript" defer></script>
 
 </body>
 </html>

@@ -140,7 +140,8 @@ public interface UserMapperConsole {
                                          @Param(value = "secondInvestEndTime") Date secondInvestEndTime,
                                          @Param(value = "index") int index, @Param(value = "pageSize") int pageSize);
 
-    long findRemainUsersCount(@Param(value = "loginName") String loginName, @Param(value = "mobile") String mobile,
+    long findRemainUsersCount(@Param(value = "loginName") String loginName,
+                              @Param(value = "mobile") String mobile,
                               @Param(value = "registerStartTime") Date registerStartTime,
                               @Param(value = "registerEndTime") Date registerEndTime,
                               @Param(value = "useExperienceCoupon") Boolean useExperienceCoupon,
