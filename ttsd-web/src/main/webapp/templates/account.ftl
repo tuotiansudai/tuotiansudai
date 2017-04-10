@@ -59,7 +59,7 @@
     </div>
 
     <div class="column-box bg-w clearfix amount-sum ">
-        <h3> <b>待收回款：</b><span>${(((expectedTotalCorpus+expectedTotalInterest+expectedTotalExtraInterest+expectedExperienceInterest)/100)?string('0.00'))!}</span>元 <i class="icon-has-con"></i></h3>
+        <h3> <b>待收回款：</b><span>${(((expectedTotalCorpus+expectedTotalInterest+expectedTotalExtraInterest+expectedExperienceInterest+expectedCouponInterest)/100)?string('0.00'))!}</span>元 <i class="icon-has-con"></i></h3>
         <ul class="detail-list">
             <li>待收投资本金：<span>${((expectedTotalCorpus/100)?string('0.00'))!}</span>元</li>
             <li>待收预期收益：<span>${((expectedTotalInterest/100)?string('0.00'))!}</span>元</li>
