@@ -71,6 +71,7 @@
             <a href="#" class="btn-item" id="toResult">提交</a>
         </div>
     </div>
+
     <div class="result-item">
         <div class="title-text">您的投资偏好为</div>
         <div class="result-text">进取型</div>

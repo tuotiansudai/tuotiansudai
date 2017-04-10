@@ -17,7 +17,8 @@ import java.util.List;
 @Service
 public class RiskEstimateServiceImpl implements RiskEstimateService {
 
-    public static final String ESTIMATE_ALERT_REDIS_KEY = "estimate:alert";
+    private static final String ESTIMATE_ALERT_REDIS_KEY = "estimate:alert";
+
     private final RiskEstimateMapper riskEstimateMapper;
 
     private final ExperienceBillService experienceBillService;
@@ -29,6 +30,12 @@ public class RiskEstimateServiceImpl implements RiskEstimateService {
         this.riskEstimateMapper = riskEstimateMapper;
         this.experienceBillService = experienceBillService;
         this.redisWrapperClient = redisWrapperClient;
+    }
+
+    @Override
+    public Estimate getEstimate(String loginName) {
+        RiskEstimateModel estimateModel = riskEstimateMapper.findByLoginName(loginName);
+        return estimateModel != null ? estimateModel.getEstimate() : null;
     }
 
     @Override
