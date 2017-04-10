@@ -93,7 +93,7 @@
                 </div>
 
                 <div class="col-sm-3">
-                    <@security.authorize access="hasAnyAuthority('OPERATOR')">
+                    <@security.authorize access="hasAnyAuthority('OPERATOR', 'ADMIN')">
                         <button type="button" class="btn jq-btn-form btn-primary promotion-confirm">确定</button>
                         <button type="button" class="btn jq-btn-form btn-primary promotion-cancel">取消</button>
                     </@security.authorize>
