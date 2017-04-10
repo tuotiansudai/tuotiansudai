@@ -55,9 +55,10 @@ let validateLogin = function(options, next) {
             break;
         }
     }
-    if(!errorMsg) {
-        next();
+    if(errorMsg) {
+        return;
     }
+    next();
 }
 
 //login表单提交函数
