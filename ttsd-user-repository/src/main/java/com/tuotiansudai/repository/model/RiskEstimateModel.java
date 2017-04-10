@@ -2,10 +2,11 @@ package com.tuotiansudai.repository.model;
 
 import com.tuotiansudai.enums.riskestimation.*;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class RiskEstimateModel {
+public class RiskEstimateModel implements Serializable {
     private long id;
 
     private String loginName;

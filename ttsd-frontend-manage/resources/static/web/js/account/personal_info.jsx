@@ -18,7 +18,7 @@ commonFun.useAjax({
     url: '/risk-estimate/alert',
     type: 'GET'
 },function(data) {
-    if(data.status){
+    if(data.data.status){
         layer.open({
             type: 1,
             title:false,

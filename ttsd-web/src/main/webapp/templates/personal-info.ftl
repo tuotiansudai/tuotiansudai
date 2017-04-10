@@ -76,16 +76,19 @@
                 </span>
             </#if>
         </li>
-        <li><span class="info-title">投资偏好</span>
+        <li>
+            <span class="info-title">投资偏好</span>
+            <#if estimate??>
+                <em class="info">经评估，您的投资偏好为${estimate.type}</em>
+                <span class="binding-set">
+                    <i class="fa fa-check-circle ok"></i>已评估<a class="setlink" href="/risk-estimate">重置</a>
+                </span>
+            <#else>
                 <em class="info">还未进行过投资偏好测评，评估一下更了解自己哦！</em>
                 <span class="binding-set">
                     <i class="fa fa-times-circle no"></i>未评估<a class="setlink" href="/risk-estimate">评估</a>
                 </span>
-                <em class="info">经评估，您的投资偏好为进取型，风险承受能力较高</em>
-                <span class="binding-set">
-                    <i class="fa fa-check-circle ok"></i>已评估<a class="setlink" href="/risk-estimate">重置</a>
-                </span>
-
+            </#if>
         </li>
     </ul>
 </div>
