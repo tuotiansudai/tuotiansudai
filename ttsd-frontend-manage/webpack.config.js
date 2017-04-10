@@ -54,7 +54,7 @@ files.forEach(function(file){
 		newEntries[substr] = file;
 	}
 });
-// console.log(newEntries);
+
 commonOptions.entry = newEntries;
 
 if(NODE_ENV=='production') {
@@ -115,7 +115,7 @@ else if(NODE_ENV=='dev') {
 	var proxyObj = {};
 	proxyList.forEach(function(value) {
 		proxyObj[value] = {
-			target: 'http://localhost:9080',
+			target: 'http://localhost:3009',
 			changeOrigin: true,
 			secure: false
 		};
@@ -143,6 +143,12 @@ else if(NODE_ENV=='dev') {
 		// }
 	};
 }
+
+plugins.push(new webpack.optimize.CommonsChunkPlugin({
+	name: "publicCommon",
+	filename: "public/publicCommon.js"
+}));
+
 plugins.push(new CopyWebpackPlugin([
 	{ from: publicPathJS+'/dllplugins',to: 'public/dllplugins'},
 	{ from: staticPath+'/inlineImages',to: 'images'},

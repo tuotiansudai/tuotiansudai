@@ -1,6 +1,7 @@
 require('webStyle/login.scss');
 let ValidatorObj= require('publicJs/validator');
 let commonFun= require('publicJs/commonFun');
+let Middleware= require('publicJs/middleware');
 
 let loginForm=globalFun.$('#formLogin');
 let imageCaptcha=globalFun.$('#imageCaptcha');
@@ -46,7 +47,7 @@ Array.prototype.forEach.call(loginInputs,function(el) {
 });
 
 //提交表单前验证表单函数
-let validateLogin = function() {
+let validateLogin = function(options, next) {
     let errorMsg;
     for(let i=0,len=loginInputs.length;i<len;i++) {
         errorMsg = validator.start(loginInputs[i]);
@@ -55,8 +56,9 @@ let validateLogin = function() {
             break;
         }
     }
-    return errorMsg?false:true;
-    //返回true说明验证未通过
+    if(!errorMsg) {
+        next();
+    }
 }
 
 //login表单提交函数
@@ -82,10 +84,16 @@ let formSubmit =function() {
         }
     );
 }
-formSubmit = formSubmit.before(validateLogin);
 
 loginForm.onsubmit = function(event) {
     event.preventDefault();
-    formSubmit();
+    //提交之前得先执行validateLogin验证表单是否通过验证
+
+    let submitFormFun = new Middleware();
+    submitFormFun
+        .use(validateLogin)
+        .use(formSubmit);
+
+    submitFormFun.handleRequest();
 
 };

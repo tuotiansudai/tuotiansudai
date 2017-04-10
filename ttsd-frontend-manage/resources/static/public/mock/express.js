@@ -11,6 +11,24 @@ app.use(function(req, res, next) {
 	next();
 });
 
+app.use(function(req, res, next) {
+
+	setTimeout(function() {
+		console.log('数据统计');
+	},3000);
+	next();
+});
+
+app.use(function(req, res, next) {
+	console.log('日志统计');
+	next();
+});
+
+app.get('/hello',function(req, res) {
+	res.send('hello world');
+})
+
+
 //mobile api
 app.get('/task-center/completed-tasks', function(req, res) {
 	res.send({
