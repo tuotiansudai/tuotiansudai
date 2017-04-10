@@ -46,7 +46,7 @@ Array.prototype.forEach.call(loginInputs,function(el) {
 });
 
 //提交表单前验证表单函数
-let validateLogin = function(options, next) {
+let validateLogin = function() {
     let errorMsg;
     for(let i=0,len=loginInputs.length;i<len;i++) {
         errorMsg = validator.start(loginInputs[i]);
@@ -61,7 +61,6 @@ let validateLogin = function(options, next) {
 
 //login表单提交函数
 let formSubmit =function() {
-
     loginSubmit.addClass('loading').prop('disabled',true);
     commonFun.useAjax({
             url:"/login",
