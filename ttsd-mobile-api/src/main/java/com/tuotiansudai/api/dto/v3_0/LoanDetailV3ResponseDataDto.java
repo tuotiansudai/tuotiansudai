@@ -528,6 +528,14 @@ public class LoanDetailV3ResponseDataDto extends BaseResponseDataDto {
         this.pledgeType = pledgeType;
     }
 
+    public List<DisclosureDto> getDisclosures() {
+        return disclosures;
+    }
+
+    public void setDisclosures(List<DisclosureDto> disclosures) {
+        this.disclosures = disclosures;
+    }
+
     public String getInterestPerTenThousands() {
         return interestPerTenThousands;
     }

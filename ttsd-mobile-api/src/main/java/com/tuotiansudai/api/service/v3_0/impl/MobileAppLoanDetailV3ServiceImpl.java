@@ -211,6 +211,9 @@ public class MobileAppLoanDetailV3ServiceImpl implements MobileAppLoanDetailV3Se
         if (loanModel.getPledgeType() == PledgeType.ENTERPRISE_CREDIT || loanModel.getPledgeType() == PledgeType.ENTERPRISE_PLEDGE) {
             LoanerEnterpriseDetailsModel loanerEnterpriseDetailsModel = loanerEnterpriseDetailsMapper.getByLoanId(loanModel.getId());
             if (loanerEnterpriseDetailsModel != null) {
+                DisclosureDto loanerEnterpriseInfoPurposeDisclosureDto = convertLoanerEnterpriseDetailsPurposeFromLoan(loanerEnterpriseDetailsModel);
+                disclosureDtoList.add(loanerEnterpriseInfoPurposeDisclosureDto);
+
                 DisclosureDto loanerEnterpriseDetailsDisclosureDto = convertLoanerEnterpriseDetailsFromLoan(loanerEnterpriseDetailsModel);
                 disclosureDtoList.add(loanerEnterpriseDetailsDisclosureDto);
             }
@@ -242,6 +245,7 @@ public class MobileAppLoanDetailV3ServiceImpl implements MobileAppLoanDetailV3Se
             }
         }
 
+        dataDto.setDisclosures(disclosureDtoList);
         double investFeeRate = membershipPrivilegePurchaseService.obtainServiceFee(loginName);
         if (loanModel != null && ProductType.EXPERIENCE == loanModel.getProductType()) {
             investFeeRate = this.defaultFee;
@@ -446,42 +450,51 @@ public class MobileAppLoanDetailV3ServiceImpl implements MobileAppLoanDetailV3Se
 
         ItemDto juristicPersonItemDto = new ItemDto();
         juristicPersonItemDto.setLabel("借款人");
-        juristicPersonItemDto.setValue(StringUtils.rightPad(StringUtils.left(model.getJuristicPerson(), 1), 2, "某"));
+        juristicPersonItemDto.setValue(model.getJuristicPerson());
         itemDtoList.add(juristicPersonItemDto);
 
         ItemDto addressItemDto = new ItemDto();
-        addressItemDto.setLabel("企业运营地址");
+        addressItemDto.setLabel("公司所在地");
         addressItemDto.setValue(model.getAddress());
         itemDtoList.add(addressItemDto);
+
+        LoanerEnterpriseDetailsDisclosureDto.setItems(itemDtoList);
+        return LoanerEnterpriseDetailsDisclosureDto;
+    }
+
+    private DisclosureDto convertLoanerEnterpriseDetailsPurposeFromLoan(LoanerEnterpriseDetailsModel model){
+        DisclosureDto LoanerEnterpriseDetailsPurposeDisclosureDto = new DisclosureDto();
+        LoanerEnterpriseDetailsPurposeDisclosureDto.setTitle("借款用途描述");
+        List<ItemDto> itemDtoList = Lists.newArrayList();
 
         ItemDto purposeItemDto = new ItemDto();
         purposeItemDto.setLabel("借款用途");
         purposeItemDto.setValue(model.getPurpose());
         itemDtoList.add(purposeItemDto);
 
-        LoanerEnterpriseDetailsDisclosureDto.setItems(itemDtoList);
-        return LoanerEnterpriseDetailsDisclosureDto;
+        LoanerEnterpriseDetailsPurposeDisclosureDto.setItems(itemDtoList);
+        return LoanerEnterpriseDetailsPurposeDisclosureDto;
     }
 
     private DisclosureDto convertLoanerPledgeEnterpriseFromLoan(PledgeEnterpriseModel model){
         DisclosureDto LoanerPledgeEnterprisesDisclosureDto = new DisclosureDto();
-        LoanerPledgeEnterprisesDisclosureDto.setTitle("抵押物基本信息");
+        LoanerPledgeEnterprisesDisclosureDto.setTitle("抵押物信息");
         List<ItemDto> itemDtoList = Lists.newArrayList();
 
-        ItemDto pledgeLocationItemDto = new ItemDto();
-        pledgeLocationItemDto.setLabel("地址");
-        pledgeLocationItemDto.setValue(model.getPledgeLocation());
-        itemDtoList.add(pledgeLocationItemDto);
+        ItemDto guaranteeItemDto = new ItemDto();
+        guaranteeItemDto.setLabel("担保方式");
+        guaranteeItemDto.setValue(model.getGuarantee());
+        itemDtoList.add(guaranteeItemDto);
 
         ItemDto estimateAmountItemDto = new ItemDto();
-        estimateAmountItemDto.setLabel("估价");
+        estimateAmountItemDto.setLabel("抵押物估值");
         estimateAmountItemDto.setValue(model.getEstimateAmount());
         itemDtoList.add(estimateAmountItemDto);
 
-        ItemDto guaranteeItemDto = new ItemDto();
-        guaranteeItemDto.setLabel("担保人");
-        guaranteeItemDto.setValue(model.getGuarantee());
-        itemDtoList.add(guaranteeItemDto);
+        ItemDto pledgeLocationItemDto = new ItemDto();
+        pledgeLocationItemDto.setLabel("抵押物所在地");
+        pledgeLocationItemDto.setValue(model.getPledgeLocation());
+        itemDtoList.add(pledgeLocationItemDto);
 
         LoanerPledgeEnterprisesDisclosureDto.setItems(itemDtoList);
         return LoanerPledgeEnterprisesDisclosureDto;
@@ -489,16 +502,16 @@ public class MobileAppLoanDetailV3ServiceImpl implements MobileAppLoanDetailV3Se
 
     private DisclosureDto convertLoanerEnterpriseInfoFromLoan(LoanerEnterpriseInfoModel model) {
         DisclosureDto LoanerEnterpriseInfoDisclosureDto = new DisclosureDto();
-        LoanerEnterpriseInfoDisclosureDto.setTitle("借款人基本信息");
+        LoanerEnterpriseInfoDisclosureDto.setTitle("借款企业基本信息");
         List<ItemDto> itemDtoList = Lists.newArrayList();
 
         ItemDto companyNameItemDto = new ItemDto();
-        companyNameItemDto.setLabel("借款企业名称");
+        companyNameItemDto.setLabel("企业名称");
         companyNameItemDto.setValue(model.getCompanyName());
         itemDtoList.add(companyNameItemDto);
 
         ItemDto addressItemDto = new ItemDto();
-        addressItemDto.setLabel("借款人营业地址");
+        addressItemDto.setLabel("经营地址");
         addressItemDto.setValue(model.getAddress());
         itemDtoList.add(addressItemDto);
 
@@ -517,12 +530,12 @@ public class MobileAppLoanDetailV3ServiceImpl implements MobileAppLoanDetailV3Se
         List<ItemDto> itemDtoList = Lists.newArrayList();
 
         ItemDto companyNameItemDto = new ItemDto();
-        companyNameItemDto.setLabel("保理公司名称");
+        companyNameItemDto.setLabel("公司名称");
         companyNameItemDto.setValue(model.getFactoringCompanyName());
         itemDtoList.add(companyNameItemDto);
 
         ItemDto addressItemDto = new ItemDto();
-        addressItemDto.setLabel("保理公司简介");
+        addressItemDto.setLabel("公司简介");
         addressItemDto.setValue(model.getFactoringCompanyDesc());
         itemDtoList.add(addressItemDto);
 

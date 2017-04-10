@@ -48,6 +48,7 @@
         <intercept-url pattern="/v1.0/get/index" access="permitAll()"/>
         <intercept-url pattern="/v2.0/get/index" access="permitAll()"/>
         <intercept-url pattern="/v3.0/get/index" access="permitAll()"/>
+        <intercept-url pattern="/v3.0/get/loan" access="permitAll()"/>
         <intercept-url pattern="/v2.0/get/loan" access="permitAll()"/>
         <intercept-url pattern="/v1.0/get/transfer-application" access="permitAll()"/>
         <intercept-url pattern="/v1.0/get/transfer-application-list" access="permitAll()"/>
