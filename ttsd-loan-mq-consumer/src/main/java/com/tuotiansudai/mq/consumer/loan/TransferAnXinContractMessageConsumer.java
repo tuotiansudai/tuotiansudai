@@ -2,7 +2,6 @@ package com.tuotiansudai.mq.consumer.loan;
 
 import com.google.common.base.Strings;
 import com.tuotiansudai.client.AnxinWrapperClient;
-import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
@@ -36,9 +35,6 @@ public class TransferAnXinContractMessageConsumer implements MessageConsumer {
 
     @Autowired
     private AnxinWrapperClient anxinWrapperClient;
-
-    @Autowired
-    private MQWrapperClient mqWrapperClient;
 
     @Autowired
     private JobManager jobManager;
@@ -82,7 +78,6 @@ public class TransferAnXinContractMessageConsumer implements MessageConsumer {
             smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("生成安心签失败"));
             return;
         }
-        mqWrapperClient.sendMessage(MessageQueue.TransferAnxinContract, messageBody);
         DelayMessageDeliveryJobCreator.createAnxinContractQueryDelayJob(jobManager, transferId, AnxinContractType.TRANSFER_CONTRACT.name());
 
         logger.info("[债权转让] TransferAnxinContract consume TransferAnxinContract success.");
