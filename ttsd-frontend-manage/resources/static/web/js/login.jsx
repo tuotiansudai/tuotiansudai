@@ -3,24 +3,8 @@ let ValidatorObj= require('publicJs/validator');
 let commonFun= require('publicJs/commonFun');
 
 let loginForm=globalFun.$('#formLogin');
-let loginSubmit=$(loginForm).find('.login-submit');
 let imageCaptcha=globalFun.$('#imageCaptcha');
-
-var func = function(param) {
-    console.log(2);
-    console.log(param);
-};
-var funcInit = func.before(function(param) {
-    console.log(param);
-    param.b = 'b';
-    console.log(1);
-
-}).after(function() {
-
-    console.log(3);
-});
-
-funcInit({a: 'a'});
+let loginSubmit=$(loginForm).find('.login-submit');
 
 commonFun.refreshCaptcha(imageCaptcha,'/login/captcha?');
 //刷新验证码
@@ -71,7 +55,8 @@ let validateLogin = function() {
             break;
         }
     }
-    return errorMsg?true:false;
+    return errorMsg?false:true;
+    //返回true说明验证未通过
 }
 
 //login表单提交函数
