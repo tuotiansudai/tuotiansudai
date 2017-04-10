@@ -22,7 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
-@RequestMapping(path = "/investment-preferences")
+@RequestMapping(path = "/personal-info")
 public class PersonalInfoController {
 
     @Autowired
@@ -39,7 +39,7 @@ public class PersonalInfoController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView personalInfo() {
-        ModelAndView mv = new ModelAndView("/investment-preferences");
+        ModelAndView mv = new ModelAndView("/personal-info");
         UserModel userModel = userMapper.findByLoginName(LoginUserInfo.getLoginName());
 
         AccountModel accountModel = accountService.findByLoginName(userModel.getLoginName());
