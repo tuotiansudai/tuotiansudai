@@ -86,7 +86,7 @@
         select <include refid="columns"></include>,
         u.user_name,
         u.mobile,
-        IFNULL((select 1 from user_role ur where ur.login_name = withdraw.login_name and ur.role = 'STAFF'),0) as is_staff
+        IFNULL((select 1 from user_role ur where ur.login_name = withdraw.login_name and ur.role in ('SD_STAFF', 'ZC_STAFF')),0) as is_staff
         from withdraw
         join bank_card on withdraw.bank_card_id = bank_card.id
         JOIN `user` u on withdraw.login_name = u.login_name

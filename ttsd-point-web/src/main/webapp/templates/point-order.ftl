@@ -35,23 +35,23 @@
 							<div class="input-group box-item">
 								<label><em>*</em> 收件人：</label>
 								<div class="input-box">
-									<input class="text-input" type="text" name="Recipient" id="Recipient" value="">
+									<input class="int-text text-input" type="text" name="Recipient" id="Recipient" value="">
 								</div>
 							</div>
 							<div class="input-group box-item">
 								<label><em>*</em> 手机号码：</label>
 								<div class="input-box">
-									<input class="text-input" type="text" name="Phone" id="Phone" value="">
+									<input class="int-text text-input" type="text" name="Phone" id="Phone" value="">
 								</div>
 							</div>
 							<div class="input-group">
 								<label><em>*</em> 收件地址：</label>
 								<div class="input-box">
-									<textarea class="text-area" type="text" name="AddRess"  id="AddRess" maxlength="100"></textarea>
+									<textarea class="int-text text-area" type="text" name="AddRess"  id="AddRess" maxlength="100"></textarea>
 								</div>
 							</div>
 							<div class="btn-group">
-								<input type="submit" class="btn btn-save" value="保存收货地址" id="btnAddressSubit">
+								<input type="submit" class="btn btn-save" value="保存收货地址" id="btnAddressSubit" disabled>
 							</div>
 						</form>
 						</div>
@@ -63,7 +63,7 @@
 				<div class="order-table">
 					<div class="order-picture">
                         <p class="mater-img picture-item">
-                            <img src="${staticServer}${productShowItem.imageUrl}" width="140" height="90"/>
+                            <img src="${commonStaticServer}/${productShowItem.imageUrl}" width="140" height="90"/>
                         </p>
 					</div>
 					<div class="order-name">
@@ -92,7 +92,9 @@
 						<p>
 							<span class="total-num">
 								剩余<i>${productShowItem.leftCount?c!0}</i>件
-                               <span class="tip" id="exchangeTip">本月您还可以兑换<i></i>个</span>
+								<#if productShowItem.monthLimit!=0>
+                               		<span class="tip" id="exchangeTip">本月您还可以兑换<i></i>个</span>
+								</#if>
 							</span>
 						</p>
 					</div>

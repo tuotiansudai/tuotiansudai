@@ -10,7 +10,7 @@
 			<div class="detail-info">
 				<div class="detail-left">
                     <p class="mater-img picture-item">
-                        <img src="${staticServer}${productShowItem.imageUrl}" width="300" height="200"/>
+                        <img src="${commonStaticServer}/${productShowItem.imageUrl}" width="300" height="200"/>
                     </p>
 				</div>
 				<div class="detail-right">
@@ -64,7 +64,9 @@
                             <a href="javascript:void(0)" class="btn get-btn" data-id="${productShowItem.id?c!0}"
                                data-type="${productShowItem.goodsType.name()}" id="getBtn">立即兑换</a>
 							<@global.isNotAnonymous>
-                            <span class="tip" id="exchangeTip">本月您还可以兑换<i></i>个</span>
+								<#if productShowItem.monthLimit!=0>
+                           	 <span class="tip" id="exchangeTip">本月您还可以兑换<i></i>个</span>
+								</#if>
 							</@global.isNotAnonymous>
 						</#if>
 

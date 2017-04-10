@@ -85,7 +85,7 @@ public class ReferrerRelationServiceTest {
         UserModel user4 = getFakeUser("user4");
         UserModel user5 = getFakeUser("user5");
         UserModel user6 = getFakeUser("user6");
-        generateUserRole(user1.getLoginName(), Lists.newArrayList(Role.USER, Role.STAFF));
+        generateUserRole(user1.getLoginName(), Lists.newArrayList(Role.USER, Role.SD_STAFF));
         generateUserRole(user2.getLoginName(), Lists.newArrayList(Role.USER));
         generateUserRole(user3.getLoginName(), Lists.newArrayList(Role.USER));
         generateUserRole(user4.getLoginName(), Lists.newArrayList(Role.USER));
@@ -113,7 +113,7 @@ public class ReferrerRelationServiceTest {
         UserModel user4 = getFakeUser("user4");
         UserModel user5 = getFakeUser("user5");
         UserModel user6 = getFakeUser("user6");
-        generateUserRole(user1.getLoginName(), Lists.newArrayList(Role.USER, Role.STAFF));
+        generateUserRole(user1.getLoginName(), Lists.newArrayList(Role.USER, Role.SD_STAFF));
         generateUserRole(user2.getLoginName(), Lists.newArrayList(Role.USER));
         generateUserRole(user3.getLoginName(), Lists.newArrayList(Role.USER));
         generateUserRole(user4.getLoginName(), Lists.newArrayList(Role.USER));
@@ -148,7 +148,7 @@ public class ReferrerRelationServiceTest {
         UserModel user4 = getFakeUser("user4");
         UserModel user5 = getFakeUser("user5");
         UserModel user6 = getFakeUser("user6");
-        generateUserRole(user1.getLoginName(), Lists.newArrayList(Role.USER, Role.STAFF));
+        generateUserRole(user1.getLoginName(), Lists.newArrayList(Role.USER, Role.SD_STAFF));
         generateUserRole(user2.getLoginName(), Lists.newArrayList(Role.USER));
         generateUserRole(user3.getLoginName(), Lists.newArrayList(Role.USER));
         generateUserRole(user4.getLoginName(), Lists.newArrayList(Role.USER));
@@ -183,7 +183,7 @@ public class ReferrerRelationServiceTest {
         UserModel user4 = getFakeUser("user4");
         UserModel user5 = getFakeUser("user5");
         UserModel user6 = getFakeUser("user6");
-        generateUserRole(user1.getLoginName(), Lists.newArrayList(Role.USER, Role.STAFF));
+        generateUserRole(user1.getLoginName(), Lists.newArrayList(Role.USER, Role.SD_STAFF));
         generateUserRole(user2.getLoginName(), Lists.newArrayList(Role.USER));
         generateUserRole(user3.getLoginName(), Lists.newArrayList(Role.USER));
         generateUserRole(user4.getLoginName(), Lists.newArrayList(Role.USER));

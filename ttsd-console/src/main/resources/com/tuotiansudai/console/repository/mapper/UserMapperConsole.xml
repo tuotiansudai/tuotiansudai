@@ -80,8 +80,8 @@
         u.identity_number as identity_number,
         (select mobile from user referrer where referrer.login_name = u.referrer) AS referrer_mobile,
         IF(exists (select 1 from auto_invest_plan au where u.login_name = au.login_name and enabled is TRUE), "0", "1") as auto_invest_status,
-        IF(exists (select 1 from user_role referrer_role where referrer_role.login_name = u.referrer and referrer_role.role = 'STAFF'), TRUE, FALSE) as is_referrer_staff,
-        IF(exists (select 1 from user_role where user_role.login_name = u.login_name and user_role.role = 'STAFF'), TRUE, FALSE) as is_staff,
+        IF(exists (select 1 from user_role referrer_role where referrer_role.login_name = u.referrer and referrer_role.role in ('SD_STAFF', 'ZC_STAFF')), TRUE, FALSE) as is_referrer_staff,
+        IF(exists (select 1 from user_role where user_role.login_name = u.login_name and user_role.role in ('SD_STAFF', 'ZC_STAFF')), TRUE, FALSE) as is_staff,
         IF(exists (select 1 from bank_card where bank_card.login_name = u.login_name and bank_card.status = 'PASSED'),
         TRUE, FALSE) as is_bind_bank_card,
         IF(exists (select 1 from bank_card where bank_card.login_name = u.login_name and bank_card.status = 'PASSED' and
@@ -91,37 +91,14 @@
             <when test="roleStage == null ">
                 user u
             </when>
-            <when test="roleStage.name() == 'NORMAL_USER' ">
-                (SELECT
-                j.*
-                FROM
-                user j
-                WHERE
-                NOT EXISTS( SELECT
-                1
-                FROM
-                (SELECT
-                ff.login_name
-                FROM
-                (SELECT
-                k.login_name
-                FROM
-                user_role o
-                RIGHT JOIN referrer_relation k ON o.login_name = k.referrer_login_name
-                AND k.level = 1
-                WHERE
-                o.role = 'STAFF' UNION SELECT
-                h.login_name
-                FROM
-                user_role h
-                WHERE
-                h.role IN ('STAFF' , 'AGENT')) ff) gg
-                WHERE
-                gg.login_name = j.login_name) and EXISTS(select 1 from invest i where j.login_name = i.login_name) ) u
-            </when>
-            <when test="roleStage.name() == 'RECOMMENDATION' ">
+            <when test="roleStage.name() == 'SD_STAFF_RECOMMENDATION' ">
                 (select j.* from user j JOIN (select k.login_name from user_role o RIGHT join referrer_relation k on
-                o.login_name = k.referrer_login_name and k.level = 1 where o.role = 'STAFF') gg on j.login_name = gg.login_name)
+                o.login_name = k.referrer_login_name and k.level = 1 where o.role = 'SD_STAFF') gg on j.login_name = gg.login_name)
+                u
+            </when>
+            <when test="roleStage.name() == 'ZC_STAFF_RECOMMENDATION' ">
+                (select j.* from user j JOIN (select k.login_name from user_role o RIGHT join referrer_relation k on
+                o.login_name = k.referrer_login_name and k.level = 1 where o.role = 'ZC_STAFF') gg on j.login_name = gg.login_name)
                 u
             </when>
             <otherwise>
@@ -130,7 +107,7 @@
         </choose>
         left join account a on u.login_name = a.login_name
         <where>
-            <if test="roleStage !=null and roleStage.name() != 'RECOMMENDATION' and  roleStage.name()!='NORMAL_USER' ">
+            <if test="roleStage != null and roleStage.name() != 'SD_STAFF_RECOMMENDATION' and roleStage.name() != 'ZC_STAFF_RECOMMENDATION'">
                 and r.role = #{roleStage}
             </if>
             <if test="email !=null and email !='' ">
@@ -190,37 +167,14 @@
             <when test="roleStage == null">
                 user u
             </when>
-            <when test="roleStage.name() == 'NORMAL_USER' ">
-                (SELECT
-                j.*
-                FROM
-                user j
-                WHERE
-                NOT EXISTS( SELECT
-                1
-                FROM
-                (SELECT
-                ff.login_name
-                FROM
-                (SELECT
-                k.login_name
-                FROM
-                user_role o
-                RIGHT JOIN referrer_relation k ON o.login_name = k.referrer_login_name
-                AND k.level = 1
-                WHERE
-                o.role = 'STAFF' UNION SELECT
-                h.login_name
-                FROM
-                user_role h
-                WHERE
-                h.role IN ('STAFF' , 'AGENT')) ff) gg
-                WHERE
-                gg.login_name = j.login_name) and EXISTS(select 1 from invest i where j.login_name = i.login_name) ) u
-            </when>
-            <when test="roleStage.name() == 'RECOMMENDATION' ">
+            <when test="roleStage.name() == 'SD_STAFF_RECOMMENDATION' ">
                 (select j.* from user j JOIN (select k.login_name from user_role o RIGHT join referrer_relation k on
-                o.login_name = k.referrer_login_name and k.level = 1 where o.role = 'STAFF') gg on j.login_name = gg.login_name)
+                o.login_name = k.referrer_login_name and k.level = 1 where o.role = 'SD_STAFF') gg on j.login_name = gg.login_name)
+                u
+            </when>
+            <when test="roleStage.name() == 'ZC_STAFF_RECOMMENDATION' ">
+                (select j.* from user j JOIN (select k.login_name from user_role o RIGHT join referrer_relation k on
+                o.login_name = k.referrer_login_name and k.level = 1 where o.role = 'ZC_STAFF') gg on j.login_name = gg.login_name)
                 u
             </when>
             <otherwise>
@@ -228,7 +182,7 @@
             </otherwise>
         </choose>
         <where>
-            <if test="roleStage !=null and roleStage.name() != 'RECOMMENDATION' and  roleStage.name()!='NORMAL_USER' ">
+            <if test="roleStage != null and roleStage.name() != 'SD_STAFF_RECOMMENDATION' and roleStage.name() != 'ZC_STAFF_RECOMMENDATION'">
                 and r.role = #{roleStage}
             </if>
             <if test="email !=null and email !='' ">
@@ -320,7 +274,7 @@
         user.mobile as mobile,
         user.province as province,
         user.city as city,
-        IF(exists (select 1 from user_role where user_role.login_name = user.login_name and user_role.role = 'STAFF'), TRUE, FALSE) as is_staff,
+        IF(exists (select 1 from user_role where user_role.login_name = user.login_name and user_role.role in ('SD_STAFF', 'ZC_STAFF')), TRUE, FALSE) as is_staff,
         user.register_time as register_time,
         user.status as status,
         user.user_name as user_name,
@@ -388,7 +342,7 @@
         select login_name
         from user
         where user.login_name like CONCAT(CONCAT('%', #{loginName}), '%')
-        and exists(select 1 from user_role where user_role.login_name = user.login_name and user_role.role = 'STAFF')
+        and exists(select 1 from user_role where user_role.login_name = user.login_name and user_role.role in ('SD_STAFF', 'ZC_STAFF'))
     </select>
 
     <select id="findMobileLike" parameterType="string" resultType="string">
@@ -627,8 +581,8 @@
 
     <select id="findRemainUsers" resultMap="remainUserViewResultMap">
         SELECT login_name, mobile, user_name, register_time,
-        (select invest_time is not null from invest where loan_id = 1 and invest.login_name = user.login_name and status = "SUCCESS") as use_experience_coupon,
-        (select invest_time from invest where loan_id = 1 and invest.login_name = user.login_name) as experience_time,
+        (select count(1) > 0 from invest where loan_id = 1 and invest.login_name = user.login_name and status = "SUCCESS") as use_experience_coupon,
+        (select invest_time from invest where loan_id = 1 and invest.login_name = user.login_name and status = "SUCCESS" order by invest_time desc limit 1) as experience_time,
         (select count(1) from invest where login_name = user.login_name and loan_id != 1 and status = "SUCCESS") as invest_count,
         (select sum(amount) from invest where login_name = user.login_name and status = "SUCCESS") as invest_sum,
         (select invest_time from invest where login_name = user.login_name and loan_id != 1 and status = "SUCCESS"order by invest_time limit 1) as first_invest_time,

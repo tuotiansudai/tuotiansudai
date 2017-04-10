@@ -106,6 +106,7 @@ mobile-api:
     - /var/log/tuotian/mobile-api:/usr/local/tomcat/logs
     - /var/log/tuotian/mobile-api:/var/log/tomcat
   links:
+    - "static-server"
     - "pay-wrapper"
     - "sms-wrapper"
     - "redis-server"

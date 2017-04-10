@@ -101,7 +101,7 @@ public class TransferAnXinContractMessageConsumer implements MessageConsumer {
         if (executeCount == 1) {
             logger.info("[债权转让] TransferAnxinContract createLoanContracts is executing, transferId:{}", String.valueOf(loanId));
             BaseDto baseDto = anxinWrapperClient.createTransferContract(loanId);
-            if (!baseDto.isSuccess()) {
+            if (!baseDto.getData().getStatus()) {
                 logger.error(MessageFormat.format("[债权转让] LoanOutSuccess_GenerateAnXinContract is fail. transferId:{0}", String.valueOf(loanId)));
                 smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("生成安心签失败"));
                 return;
@@ -122,7 +122,7 @@ public class TransferAnXinContractMessageConsumer implements MessageConsumer {
         List<String> fatalSmsList = Lists.newArrayList();
         logger.info("[债权转让] TransferAnxinContract queryLoanContracts start .");
         BaseDto baseDto = anxinWrapperClient.queryContract(new AnxinQueryContractDto(loanId, AnxinContractType.TRANSFER_CONTRACT));
-        if (baseDto == null || !baseDto.isSuccess()) {
+        if (!baseDto.getData().getStatus()) {
             fatalSmsList.add("查询安心签失败");
             logger.error(MessageFormat.format("[债权转让] TransferAnxinContract queryLoanContracts is fail. transferId:{0}", String.valueOf(loanId)));
         }

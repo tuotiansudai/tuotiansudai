@@ -1,10 +1,8 @@
 package com.tuotiansudai.console.service;
 
-import com.google.common.base.Function;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.job.DelayMessageDeliveryJobCreator;
@@ -23,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ConsoleLoanCreateService {
@@ -352,6 +351,18 @@ public class ConsoleLoanCreateService {
             return new BaseDto<>(new BaseDataDto(false, "代理用户不存在"));
         }
 
+        if (loanCreateRequestDto.getLoan().getOriginalDuration() < 1) {
+            return new BaseDto<>(new BaseDataDto(false, "原借款期限不能小于1天"));
+        }
+
+        if (loanCreateRequestDto.getLoan().getDeadline() == null || loanCreateRequestDto.getLoan().getDeadline().before(new Date())) {
+            return new BaseDto<>(new BaseDataDto(false, "借款截止时间不能为过去的时间"));
+        }
+
+        if (!Lists.newArrayList(LoanType.INVEST_INTEREST_MONTHLY_REPAY, LoanType.INVEST_INTEREST_LUMP_SUM_REPAY).contains(loanCreateRequestDto.getLoan().getLoanType())) {
+            return new BaseDto<>(new BaseDataDto(false, "标的类型不正确"));
+        }
+
         AnxinSignPropertyModel anxinProp = anxinSignPropertyMapper.findByLoginName(loanCreateRequestDto.getLoan().getAgent());
         if (anxinProp == null || !anxinProp.isSkipAuth()) {
             return new BaseDto<>(new BaseDataDto(false, "代理/借款 用户未开通安心签免短信验证"));
@@ -420,17 +431,14 @@ public class ConsoleLoanCreateService {
             return;
         }
 
-        extraLoanRateMapper.create(Lists.transform(extraRateIds, new Function<Long, ExtraLoanRateModel>() {
-            @Override
-            public ExtraLoanRateModel apply(Long extraRateRuleId) {
-                ExtraLoanRateRuleModel extraLoanRateRuleModel = extraLoanRateRuleMapper.findById(extraRateRuleId);
-                return new ExtraLoanRateModel(loanId,
-                        extraRateRuleId,
-                        extraLoanRateRuleModel.getMinInvestAmount(),
-                        extraLoanRateRuleModel.getMaxInvestAmount(),
-                        extraLoanRateRuleModel.getRate());
-            }
-        }));
+        extraLoanRateMapper.create(extraRateIds.stream().map(extraRateId -> {
+            ExtraLoanRateRuleModel extraLoanRateRuleModel = extraLoanRateRuleMapper.findById(extraRateId);
+            return new ExtraLoanRateModel(loanId,
+                    extraRateId,
+                    extraLoanRateRuleModel.getMinInvestAmount(),
+                    extraLoanRateRuleModel.getMaxInvestAmount(),
+                    extraLoanRateRuleModel.getRate());
+        }).collect(Collectors.toList()));
     }
 
     protected String generateLoanName(String loanName, PledgeType pledgeType) {
@@ -444,7 +452,7 @@ public class ConsoleLoanCreateService {
         String loanNameSeq = "";
         if (Strings.isNullOrEmpty(loanName))
             return loanNameSeq;
-        if(loanName.indexOf("1") >= 0 || loanName.indexOf("2") >= 0){
+        if(loanName.contains("1") || loanName.contains("2")){
             loanNameSeq = loanName.substring(loanName.length() - 5, loanName.length());
         }
        return loanNameSeq;

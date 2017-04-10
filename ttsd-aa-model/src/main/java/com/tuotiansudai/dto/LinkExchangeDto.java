@@ -1,8 +1,11 @@
 package com.tuotiansudai.dto;
 
+import com.tuotiansudai.enums.WebSiteType;
+
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 public class LinkExchangeDto implements Serializable{
 
@@ -17,6 +20,8 @@ public class LinkExchangeDto implements Serializable{
     private Date createdTime = new Date();
 
     private Date updateTime = new Date();
+
+    private String webSiteTypes;
 
     private SimpleDateFormat dfs = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -86,7 +91,16 @@ public class LinkExchangeDto implements Serializable{
         this.dfs = dfs;
     }
 
+    public String getWebSiteTypes() {
+        return webSiteTypes;
+    }
+
+    public void setWebSiteTypes(String webSiteTypes) {
+        this.webSiteTypes = webSiteTypes;
+    }
+
+
     public String convertToString() {
-        return id + "|" + title.trim() + "|" + linkUrl.trim() + "|" + dfs.format(updateTime) + "|" + dfs.format(createdTime) + "|" + noFollow;
+        return id + "|" + title.trim() + "|" + linkUrl.trim() + "|" + dfs.format(updateTime) + "|" + dfs.format(createdTime) + "|" + noFollow + "|" + webSiteTypes;
     }
 }

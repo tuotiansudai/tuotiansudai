@@ -1,8 +1,8 @@
 require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 'text!/tpl/loaner-enterprise-details.mustache', 'text!/tpl/pledge-house.mustache', 'text!/tpl/pledge-vehicle.mustache', 'text!/tpl/pledge-enterprise.mustache', 'text!/tpl/loan-extra-rate.mustache', 'text!/tpl/loan-title-template.template', 'text!/tpl/loan-title-select-template.template', 'text!/tpl/loaner-enterprise-info.mustache', 'text!/tpl/loaner-enterprise-factoring-info.mustache', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicker', 'bootstrapSelect', 'moment', 'fileinput', 'fileinput_locale_zh', 'Validform', 'Validform_Datatype', 'csrf'],
     function ($, template, Mustache, loanerDetailsTemplate, loanerEnterpriseDetailsTemplate, pledgeHouseTemplate, pledgeVehicleTemplate, pledgeEnterpriseTemplate, loanExtraRateTemplate, loanTitleTemplate, loanTitleSelectTemplate, loanerEnterpriseInfoTemplate, loanerEnterpriseFactoringInfoTemplate) {
         var loanParam = ['id', 'name', 'agent', 'productType', 'pledgeType', 'loanType', 'pledgeType', 'activityType',
-            'loanAmount', 'baseRate', 'activityRate', 'minInvestAmount', 'maxInvestAmount', 'investIncreasingAmount',
-            'fundraisingStartTime', 'fundraisingEndTime', 'contractId', 'status'];
+            'loanAmount', 'baseRate', 'activityRate', 'originalDuration', 'minInvestAmount', 'maxInvestAmount', 'investIncreasingAmount',
+            'fundraisingStartTime', 'fundraisingEndTime', 'deadline', 'contractId', 'status'];
 
         var loanDetailsParam = ['declaration', 'extraRateRuleIds', 'extraSource', 'activity', 'activityDesc','nonTransferable', 'pushMessage'];
 
@@ -108,6 +108,11 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
         });
         fundraisingEndTimeElement.on("dp.change", function (e) {
             fundraisingStartTimeElement.data("DateTimePicker").maxDate(e.date);
+        });
+
+        var deadlineElement = $('#deadline');
+        deadlineElement.datetimepicker({
+            format: 'YYYY-MM-DD'
         });
 
         //初始化数据

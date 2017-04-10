@@ -1,8 +1,6 @@
 @charset "utf-8";
 @import 'plugins/font_awesome';
-@import 'reset', 'btn', 'table';
-@import 'page_frame', 'pagination';
-@import "error";
+@import 'reset';
 
 //用来兼容ie8
 @import 'ie_hack_grid';

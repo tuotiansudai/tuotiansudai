@@ -5,6 +5,8 @@ import com.tuotiansudai.dto.LoanCreateBaseRequestDto;
 import com.tuotiansudai.dto.LoanCreateRequestDto;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.util.AmountConverter;
+import org.joda.time.DateTime;
+import org.joda.time.Days;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -44,7 +46,10 @@ public class LoanModel implements Serializable {
      * 借款期数
      ***/
     private int periods;
-
+    /***
+     * 原始借款期限
+     ***/
+    private int originalDuration;
     /**
      * 借款天数
      */
@@ -105,6 +110,10 @@ public class LoanModel implements Serializable {
      * 筹款截止时间
      ***/
     private Date fundraisingEndTime;
+    /***
+     * 借款截止时间
+     ***/
+    private Date deadline;
     /***
      * 筹款完成时间
      ***/
@@ -202,11 +211,13 @@ public class LoanModel implements Serializable {
         this.activityRate = Double.parseDouble(rateStrDivideOneHundred(baseRequestDto.getActivityRate()));
         this.fundraisingStartTime = baseRequestDto.getFundraisingStartTime();
         this.fundraisingEndTime = baseRequestDto.getFundraisingEndTime();
+        this.deadline = new DateTime(baseRequestDto.getDeadline()).plusDays(1).minusSeconds(1).toDate();
         this.investIncreasingAmount = AmountConverter.convertStringToCent(baseRequestDto.getInvestIncreasingAmount());
         this.maxInvestAmount = AmountConverter.convertStringToCent(baseRequestDto.getMaxInvestAmount());
         this.minInvestAmount = AmountConverter.convertStringToCent(baseRequestDto.getMinInvestAmount());
         this.periods = baseRequestDto.getLoanType().getLoanPeriodUnit() == LoanPeriodUnit.DAY ? 1 : baseRequestDto.getProductType().getPeriods();
-        this.duration = baseRequestDto.getProductType().getDuration();
+        this.originalDuration = baseRequestDto.getOriginalDuration();
+        this.duration = Days.daysBetween(new DateTime(this.fundraisingStartTime).withTimeAtStartOfDay(), new DateTime(this.deadline).withTimeAtStartOfDay()).getDays() + 1;
         this.status = loanCreateRequestDto.getLoan().getStatus();
         this.createdLoginName = baseRequestDto.getCreatedBy();
         this.contractId = baseRequestDto.getContractId();
@@ -231,11 +242,13 @@ public class LoanModel implements Serializable {
         this.activityRate = Lists.newArrayList(LoanStatus.WAITING_VERIFY, LoanStatus.PREHEAT).contains(this.status) ? Double.parseDouble(rateStrDivideOneHundred(baseRequestDto.getActivityRate())) : this.activityRate;
         this.fundraisingStartTime = this.status == LoanStatus.WAITING_VERIFY ? baseRequestDto.getFundraisingStartTime() : this.getFundraisingStartTime();
         this.fundraisingEndTime = Lists.newArrayList(LoanStatus.WAITING_VERIFY, LoanStatus.PREHEAT, LoanStatus.RAISING, LoanStatus.RECHECK).contains(this.status) ? baseRequestDto.getFundraisingEndTime() : this.getFundraisingEndTime();
+        this.deadline = Lists.newArrayList(LoanStatus.WAITING_VERIFY, LoanStatus.PREHEAT).contains(this.status) ? new DateTime(baseRequestDto.getDeadline()).plusDays(1).minusSeconds(1).toDate() : this.deadline;
         this.investIncreasingAmount = AmountConverter.convertStringToCent(baseRequestDto.getInvestIncreasingAmount());
         this.minInvestAmount = AmountConverter.convertStringToCent(baseRequestDto.getMinInvestAmount());
         this.maxInvestAmount = AmountConverter.convertStringToCent(baseRequestDto.getMaxInvestAmount());
         this.periods = Lists.newArrayList(LoanStatus.WAITING_VERIFY, LoanStatus.PREHEAT).contains(this.status) ? (baseRequestDto.getLoanType().getLoanPeriodUnit() == LoanPeriodUnit.DAY ? 1 : baseRequestDto.getProductType().getPeriods()) : this.periods;
-        this.duration = Lists.newArrayList(LoanStatus.WAITING_VERIFY, LoanStatus.PREHEAT).contains(this.status) ? baseRequestDto.getProductType().getDuration() : this.duration;
+        this.originalDuration = baseRequestDto.getOriginalDuration();
+        this.duration = Lists.newArrayList(LoanStatus.WAITING_VERIFY, LoanStatus.PREHEAT).contains(this.status) ? this.duration = Days.daysBetween(new DateTime(this.fundraisingStartTime).withTimeAtStartOfDay(), new DateTime(this.deadline).withTimeAtStartOfDay()).getDays() + 1 : this.duration;
         this.contractId = baseRequestDto.getContractId();
         this.updateTime = new Date();
         return this;
@@ -336,6 +349,14 @@ public class LoanModel implements Serializable {
 
     public void setPeriods(int periods) {
         this.periods = periods;
+    }
+
+    public int getOriginalDuration() {
+        return originalDuration;
+    }
+
+    public void setOriginalDuration(int originalDuration) {
+        this.originalDuration = originalDuration;
     }
 
     public int getDuration() {
@@ -448,6 +469,14 @@ public class LoanModel implements Serializable {
 
     public void setFundraisingEndTime(Date fundraisingEndTime) {
         this.fundraisingEndTime = fundraisingEndTime;
+    }
+
+    public Date getDeadline() {
+        return deadline;
+    }
+
+    public void setDeadline(Date deadline) {
+        this.deadline = deadline;
     }
 
     public Date getRaisingCompleteTime() {

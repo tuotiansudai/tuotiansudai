@@ -36,8 +36,8 @@ public class UMPayRealTimeStatusServiceImpl implements UMPayRealTimeStatusServic
 
     static Logger logger = Logger.getLogger(UMPayRealTimeStatusServiceImpl.class);
 
-    @Value("${common.environment}")
-    private Environment environment;
+    @Value("${pay.fake}")
+    private boolean isFakeUMPay;
 
     @Autowired
     private AccountMapper accountMapper;
@@ -107,7 +107,7 @@ public class UMPayRealTimeStatusServiceImpl implements UMPayRealTimeStatusServic
         PayDataDto dataDto = new PayDataDto();
         BaseDto<PayDataDto> dto = new BaseDto<>(dataDto);
 
-        if (environment == Environment.SMOKE) {
+        if (isFakeUMPay) {
             dataDto.setStatus(true);
             return dto;
         }

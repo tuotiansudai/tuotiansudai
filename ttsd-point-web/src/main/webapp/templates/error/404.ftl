@@ -1,10 +1,10 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.full_screen}" pageJavascript="${js.about_us}" activeNav="" activeLeftNav="" title="页面出错了">
+<@global.main pageCss="" pageJavascript="" activeNav="" activeLeftNav="" title="页面出错了">
 <div class="bg-w tc" id="errorContainer">
 
     <div class="error-tip-container tl">
         <div class="error-info">
-            <img src="${staticServer}/point/images/icons/error-tip-404.png" class="fl error"/>
+            <span class="fl error-icon-404"></span>
 
             <p>
                 <span class="sorry">很抱歉，您访问的页面不存在！</span>
