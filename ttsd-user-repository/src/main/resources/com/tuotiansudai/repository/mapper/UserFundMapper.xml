@@ -8,11 +8,13 @@
         <result column="balance" property="balance"/>
         <result column="actual_total_interest" property="actualTotalInterest"/>
         <result column="actual_total_extra_interest" property="actualTotalExtraInterest"/>
+        <result column="actual_coupon_interest" property="actualCouponInterest"/>
         <result column="refer_reward_amount" property="referRewardAmount"/>
         <result column="red_envelope_amount" property="redEnvelopeAmount"/>
         <result column="expected_total_corpus" property="expectedTotalCorpus"/>
         <result column="expected_total_interest" property="expectedTotalInterest"/>
         <result column="expected_total_extra_interest" property="expectedTotalExtraInterest"/>
+        <result column="expected_coupon_interest" property="expectedCouponInterest"/>
         <result column="invest_froze_amount" property="investFrozeAmount"/>
         <result column="withdraw_froze_amount" property="withdrawFrozeAmount"/>
         <result column="current_month_invest_repay_count" property="currentMonthInvestRepayCount"/>
@@ -33,8 +35,16 @@
               from coupon_repay
               where is_transferred is false and login_name = #{loginName} and status = 'COMPLETE') as actual_total_interest,
 
+              (select ifnull(sum(actual_interest), 0) - ifnull(sum(actual_fee), 0)
+              from coupon_repay
+              where is_transferred is false and login_name = #{loginName} and status = 'COMPLETE') as actual_coupon_interest,
+
               (select ifnull(sum(invest_extra_rate.actual_interest), 0) - ifnull(sum(invest_extra_rate.actual_fee), 0)
-              from invest_extra_rate where login_name = #{loginName} and is_transfer is false) as actual_total_extra_interest,
+              from invest_extra_rate where login_name = #{loginName} and is_transfer is false)
+               +
+              (select ifnull(sum(amount), 0)
+              from user_bill
+              where business_type='INVEST_CASH_BACK' and login_name = #{loginName}) as actual_total_extra_interest,
 
               (select ifnull(sum(amount), 0) from invest_referrer_reward
               where referrer_login_name = #{loginName} and status = 'SUCCESS') as refer_reward_amount,
@@ -54,6 +64,10 @@
               (select ifnull(sum(coupon_repay.expected_interest), 0) - ifnull(sum(coupon_repay.expected_fee), 0)
               from coupon_repay
               where login_name = #{loginName} and status = 'REPAYING') as expected_total_interest,
+
+              (select ifnull(sum(coupon_repay.expected_interest), 0) - ifnull(sum(coupon_repay.expected_fee), 0)
+              from coupon_repay
+              where login_name = #{loginName} and status = 'REPAYING') as expected_coupon_interest,
 
               (select ifnull(sum(expected_interest), 0) - ifnull(sum(expected_fee), 0)
               from invest_extra_rate
