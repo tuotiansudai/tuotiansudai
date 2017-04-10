@@ -118,6 +118,9 @@ public class LoanDetailV2ResponseDataDto extends BaseResponseDataDto {
     @ApiModelProperty(value = "借款天数", example = "360")
     private Integer duration;
 
+    @ApiModelProperty(value = "从当前时间到借款截止时间天数", example = "360")
+    private Integer availableDuration;
+
     @ApiModelProperty(value = "标的类型", example = "_30,_90,_180,_360")
     private String productNewType;
 
@@ -159,6 +162,9 @@ public class LoanDetailV2ResponseDataDto extends BaseResponseDataDto {
 
     @ApiModelProperty(value = "企业借款人", example = "model")
     private EnterpriseDto enterprise;
+
+    @ApiModelProperty(value = "企业借款人信息", example = "model")
+    private EnterpriseInfoDto enterpriseInfo;
 
     @ApiModelProperty(value = "企业抵押", example = "model")
     private PledgeEnterpriseDto pledgeEnterpriseDto;
@@ -457,6 +463,14 @@ public class LoanDetailV2ResponseDataDto extends BaseResponseDataDto {
         this.duration = duration;
     }
 
+    public Integer getAvailableDuration() {
+        return availableDuration;
+    }
+
+    public void setAvailableDuration(Integer availableDuration) {
+        this.availableDuration = availableDuration;
+    }
+
     public String getProductNewType() {
         return productNewType;
     }
@@ -559,6 +573,14 @@ public class LoanDetailV2ResponseDataDto extends BaseResponseDataDto {
 
     public void setEnterprise(EnterpriseDto enterprise) {
         this.enterprise = enterprise;
+    }
+
+    public EnterpriseInfoDto getEnterpriseInfo() {
+        return enterpriseInfo;
+    }
+
+    public void setEnterpriseInfo(EnterpriseInfoDto enterpriseInfo) {
+        this.enterpriseInfo = enterpriseInfo;
     }
 
     public PledgeEnterpriseDto getPledgeEnterpriseDto() {

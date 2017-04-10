@@ -14,7 +14,7 @@
     </div>
 
     <div class="table-responsive">
-        <@security.authorize access="hasAnyAuthority('OPERATOR')">
+        <@security.authorize access="hasAnyAuthority('OPERATOR', 'ADMIN')">
             <a class="btn btn-default btn-primary" href="/activity-console/activity-manage/promotion/create" role="button">添加活动弹窗</a>
         </@security.authorize>
         <div></div>
@@ -41,7 +41,7 @@
                         <td style="text-align:center;vertical-align:middle;">${promotion.startTime?string('yyyy-MM-dd')!} 至 ${promotion.endTime?string('yyyy-MM-dd')!}</td>
                         <td style="text-align:center;vertical-align:middle;"><#if "APPROVED" == promotion.status>已生效<#else>未生效</#if></td>
                         <td style="text-align:center;vertical-align:middle;">
-                            <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN')">
+                            <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN', 'ADMIN')">
                                 <#if "APPROVED" == promotion.status>
                                     <button class="btn-link promotion-delete" data-link="" data-operator=""></button>
                                 <#else>
@@ -51,7 +51,7 @@
                                 <button class="btn-link promotion-delete" data-link="/activity-console/activity-manage/promotion/${promotion.id?c}" data-operator="delete">删除</button>
                             </@security.authorize>
 
-                            <@security.authorize access="hasAnyAuthority('OPERATOR')">
+                            <@security.authorize access="hasAnyAuthority('OPERATOR', 'ADMIN')">
                                 <#if "APPROVED" == promotion.status>
                                    --
                                 <#else>

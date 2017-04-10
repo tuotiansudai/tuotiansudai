@@ -1,14 +1,18 @@
-require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 'text!/tpl/loaner-enterprise-details.mustache', 'text!/tpl/pledge-house.mustache', 'text!/tpl/pledge-vehicle.mustache', 'text!/tpl/pledge-enterprise.mustache', 'text!/tpl/loan-extra-rate.mustache', 'text!/tpl/loan-title-template.template', 'text!/tpl/loan-title-select-template.template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicker', 'bootstrapSelect', 'moment', 'fileinput', 'fileinput_locale_zh', 'Validform', 'Validform_Datatype', 'csrf'],
-    function ($, template, Mustache, loanerDetailsTemplate, loanerEnterpriseDetailsTemplate, pledgeHouseTemplate, pledgeVehicleTemplate, pledgeEnterpriseTemplate, loanExtraRateTemplate, loanTitleTemplate, loanTitleSelectTemplate) {
+require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 'text!/tpl/loaner-enterprise-details.mustache', 'text!/tpl/pledge-house.mustache', 'text!/tpl/pledge-vehicle.mustache', 'text!/tpl/pledge-enterprise.mustache', 'text!/tpl/loan-extra-rate.mustache', 'text!/tpl/loan-title-template.template', 'text!/tpl/loan-title-select-template.template', 'text!/tpl/loaner-enterprise-info.mustache', 'text!/tpl/loaner-enterprise-factoring-info.mustache', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicker', 'bootstrapSelect', 'moment', 'fileinput', 'fileinput_locale_zh', 'Validform', 'Validform_Datatype', 'csrf'],
+    function ($, template, Mustache, loanerDetailsTemplate, loanerEnterpriseDetailsTemplate, pledgeHouseTemplate, pledgeVehicleTemplate, pledgeEnterpriseTemplate, loanExtraRateTemplate, loanTitleTemplate, loanTitleSelectTemplate, loanerEnterpriseInfoTemplate, loanerEnterpriseFactoringInfoTemplate) {
         var loanParam = ['id', 'name', 'agent', 'productType', 'pledgeType', 'loanType', 'pledgeType', 'activityType',
-            'loanAmount', 'baseRate', 'activityRate', 'minInvestAmount', 'maxInvestAmount', 'investIncreasingAmount',
-            'fundraisingStartTime', 'fundraisingEndTime', 'contractId', 'status'];
+            'loanAmount', 'baseRate', 'activityRate', 'originalDuration', 'minInvestAmount', 'maxInvestAmount', 'investIncreasingAmount',
+            'fundraisingStartTime', 'fundraisingEndTime', 'deadline', 'contractId', 'status'];
 
         var loanDetailsParam = ['declaration', 'extraRateRuleIds', 'extraSource', 'activity', 'activityDesc','nonTransferable', 'pushMessage'];
 
         var loanerDetailsParam = ['userName', 'identityNumber', 'gender', 'age', 'marriage', 'region', 'income', 'employmentStatus', 'purpose'];
 
         var loanerEnterpriseDetailsParam = ['juristicPerson', 'shareholder', 'address', 'purpose'];
+
+        var loanerEnterpriseInfoParam = ['companyName', 'address', 'purpose'];
+
+        var loanerEnterpriseFactoringInfoParam = ['factoringCompanyName','factoringCompanyDesc']
 
         var pledgeHouseParam = ['pledgeLocation', 'estimateAmount', 'pledgeLoanAmount', 'square', 'propertyCardId', 'estateRegisterId', 'authenticAct'];
 
@@ -55,6 +59,18 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
                 sectionThreeElement.html(Mustache.render(pledgeEnterpriseTemplate));
             }
 
+            if ('企业经营性借款' === loanName && $('#projectName option:selected').attr('data-pledgetype') === 'ENTERPRISE_FACTORING') {
+                pledgeTypeElement.val("ENTERPRISE_FACTORING");
+                sectionTwoElement.html(Mustache.render(loanerEnterpriseInfoTemplate));
+                sectionThreeElement.html(Mustache.render(loanerEnterpriseFactoringInfoTemplate));
+            }
+
+            if ('企业经营性借款' === loanName && $('#projectName option:selected').attr('data-pledgetype') === 'ENTERPRISE_BILL') {
+                pledgeTypeElement.val("ENTERPRISE_BILL");
+                sectionTwoElement.html(Mustache.render(loanerEnterpriseInfoTemplate));
+                sectionThreeElement.html(Mustache.render(''));
+            }
+
             $('.selectpicker').selectpicker();
         };
 
@@ -86,6 +102,11 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
         });
         fundraisingEndTimeElement.on("dp.change", function (e) {
             fundraisingStartTimeElement.data("DateTimePicker").maxDate(e.date);
+        });
+
+        var deadlineElement = $('#deadline');
+        deadlineElement.datetimepicker({
+            format: 'YYYY-MM-DD'
         });
 
         //初始化数据
@@ -372,6 +393,20 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
                     'pledgeEnterprise': pledgeEnterpriseParam
                 });
             }
+            if ("企业经营性借款" == value && $('#projectName option:selected').attr('data-pledgetype') == 'ENTERPRISE_FACTORING') {
+                requestData = generateRequestParams({
+                    'loan': loanParam,
+                    'loanDetails': loanDetailsParam,
+                    'loanerEnterpriseInfo': loanerEnterpriseInfoParam + loanerEnterpriseFactoringInfoParam
+                });
+            }
+            if ("企业经营性借款" == value && $('#projectName option:selected').attr('data-pledgetype') == 'ENTERPRISE_BILL') {
+                requestData = generateRequestParams({
+                    'loan': loanParam,
+                    'loanDetails': loanDetailsParam,
+                    'loanerEnterpriseInfo': loanerEnterpriseInfoParam
+                });
+            }
             $.ajax(
                 {
                     url: url,
@@ -419,7 +454,7 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
 
         var checkedExtraRate = function () {
             clearErrorMessage();
-            if (pledgeTypeElement.val() === 'ENTERPRISE') {
+            if (pledgeTypeElement.val() === 'ENTERPRISE' || pledgeTypeElement.val() === 'ENTERPRISE_FACTORING' || pledgeTypeElement.val() === 'ENTERPRISE_BILL') {
                 showErrorMessage('项目不支持', extraElement);
                 extraElement.prop('checked', false);
                 return;

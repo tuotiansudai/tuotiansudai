@@ -81,7 +81,7 @@ public class InvestServiceTest {
         loanDto.setFundraisingStartTime(new Date());
         loanDto.setInvestIncreasingAmount("1");
         loanDto.setLoanAmount("10000");
-        loanDto.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
+        loanDto.setType(LoanType.INVEST_INTEREST_LUMP_SUM_REPAY);
         loanDto.setMaxInvestAmount("100000000000");
         loanDto.setMinInvestAmount("0");
         loanDto.setCreatedTime(new Date());
@@ -89,6 +89,7 @@ public class InvestServiceTest {
         loanDto.setProductType(ProductType._30);
         loanDto.setPledgeType(PledgeType.HOUSE);
         LoanModel loanModel = new LoanModel(loanDto);
+        loanModel.setDeadline(new DateTime().plusDays(10).toDate());
         loanMapper.create(loanModel);
     }
 
@@ -172,13 +173,13 @@ public class InvestServiceTest {
 
         long amount = investService.estimateInvestIncome(loanId, loginName, 100000);
         assertNotNull(amount);
-        assertTrue(amount == 2810);
+        assertTrue(amount == 1498);
         amount = investService.estimateInvestIncome(loanId, loginName, 1000000);
         assertNotNull(amount);
-        assertTrue(amount == 42904);
+        assertTrue(amount == 29787);
         amount = investService.estimateInvestIncome(loanId, loginName, 5000000);
         assertNotNull(amount);
-        assertTrue(amount == 288494);
+        assertTrue(amount == 222904);
     }
 
     private List<ExtraLoanRateModel> createExtraLoanRate(long loanId) {
@@ -231,18 +232,21 @@ public class InvestServiceTest {
 
         UserMembershipModel userMembershipModel2 = new UserMembershipModel("testUser", membershipMapper.findByLevel(2).getId(), DateTime.parse("2099-06-30T01:20").toDate(), UserMembershipType.GIVEN);
         userMembershipMapper.create(userMembershipModel2);
-        assertEquals(3, investService.calculateMembershipPreference("testUser", LOAN_ID, Lists.newArrayList(10000L), 10000L, Source.WEB));
+        assertEquals(1, investService.calculateMembershipPreference("testUser", LOAN_ID, Lists.newArrayList(10000L), 10000L, Source.WEB));
 
         UserMembershipModel userMembershipModel3 = new UserMembershipModel("testUser", membershipMapper.findByLevel(3).getId(), DateTime.parse("2099-06-30T01:20").toDate(), UserMembershipType.GIVEN);
         userMembershipMapper.create(userMembershipModel3);
-        assertEquals(5, investService.calculateMembershipPreference("testUser", LOAN_ID, Lists.newArrayList(10000L), 10000L, Source.WEB));
+        assertEquals(2, investService.calculateMembershipPreference("testUser", LOAN_ID, Lists.newArrayList(10000L), 10000L, Source.WEB));
 
         UserMembershipModel userMembershipModel4 = new UserMembershipModel("testUser", membershipMapper.findByLevel(4).getId(), DateTime.parse("2099-06-30T01:20").toDate(), UserMembershipType.GIVEN);
         userMembershipMapper.create(userMembershipModel4);
-        assertEquals(5, investService.calculateMembershipPreference("testUser", LOAN_ID, Lists.newArrayList(10000L), 10000L, Source.WEB));
+        assertEquals(2, investService.calculateMembershipPreference("testUser", LOAN_ID, Lists.newArrayList(10000L), 10000L, Source.WEB));
 
-        UserMembershipModel userMembershipModel5 = new UserMembershipModel("testUser", membershipMapper.findByLevel(4).getId(), DateTime.parse("2099-06-30T01:20").toDate(), UserMembershipType.GIVEN);
+        UserMembershipModel userMembershipModel5 = new UserMembershipModel("testUser", membershipMapper.findByLevel(5).getId(), DateTime.parse("2099-06-30T01:20").toDate(), UserMembershipType.GIVEN);
         userMembershipMapper.create(userMembershipModel5);
-        assertEquals(5, investService.calculateMembershipPreference("testUser", LOAN_ID, Lists.newArrayList(10000L), 10000L, Source.WEB));
+        extraLoanRateMapper.create(createExtraLoanRate(LOAN_ID));
+        loanDetailsMapper.create(createLoanDetails(LOAN_ID));
+        long expectedInterest = investService.calculateMembershipPreference("testUser", LOAN_ID, Lists.newArrayList(10000L), 1000000L, Source.WEB);
+        assertEquals(505, expectedInterest);
     }
 }

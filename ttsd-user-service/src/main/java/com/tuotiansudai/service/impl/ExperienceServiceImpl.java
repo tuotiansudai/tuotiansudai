@@ -27,7 +27,7 @@ public class ExperienceServiceImpl implements ExperienceBillService {
     @Override
     @Transactional
     public void updateUserExperienceBalanceByLoginName(long experienceAmount, String loginName, ExperienceBillOperationType experienceBillOperationType, ExperienceBillBusinessType experienceBusinessType) {
-        UserModel userModel = userMapper.findByLoginName(loginName);
+        UserModel userModel = userMapper.lockByLoginName(loginName);
         long experienceBalance = userModel.getExperienceBalance();
         experienceBalance = experienceBillOperationType == ExperienceBillOperationType.IN ? experienceBalance + experienceAmount : experienceBalance - experienceAmount;
         userModel.setExperienceBalance(experienceBalance);
@@ -37,23 +37,10 @@ public class ExperienceServiceImpl implements ExperienceBillService {
                 experienceBillOperationType,
                 experienceAmount,
                 experienceBusinessType,
-                MessageFormat.format(this.experienceBillNote(experienceBusinessType),
+                MessageFormat.format(experienceBusinessType.getNote(),
                         AmountConverter.convertCentToString(experienceAmount),
                         new Date()));
 
         experienceBillMapper.create(experienceBillModel);
-    }
-
-    private String experienceBillNote(ExperienceBillBusinessType experienceBusinessType) {
-        switch (experienceBusinessType) {
-            case INVEST_LOAN:
-                return "您投资了拓天体验金项目，投资体验金金额：{0}元, 投资时间：{1}";
-            case REGISTER:
-                return "新手注册成功，获得体验金：{0}元, 注册时间：{1}";
-            case MONEY_TREE:
-                return "恭喜您在摇钱树活动中摇中了：{0}元体验金，摇奖时间：{1}";
-        }
-        return "";
-
     }
 }
