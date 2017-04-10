@@ -7,13 +7,13 @@ import com.tuotiansudai.service.RiskEstimateService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.List;
+import java.util.Arrays;
 
 @Controller
 @RequestMapping(path = "/risk-estimate")
@@ -27,14 +27,15 @@ public class RiskEstimateController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public ModelAndView show() {
-        return new ModelAndView("/risk-estimate", "estimate", riskEstimateService.getEstimate(LoginUserInfo.getLoginName()));
+    public ModelAndView show(@RequestParam(value = "retry", required = false) Boolean retry) {
+        Estimate estimate = riskEstimateService.getEstimate(LoginUserInfo.getLoginName());
+        return estimate == null || (retry != null && retry) ? new ModelAndView("/risk-estimate") : new ModelAndView("/risk-estimate-result", "estimate", estimate);
     }
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<BaseDataDto> estimate(@RequestBody List<Integer> answers) {
-        Estimate estimate = riskEstimateService.estimate(LoginUserInfo.getLoginName(), answers);
+    public BaseDto<BaseDataDto> estimate(@RequestParam(value = "answers[]") Integer[] answers) {
+        Estimate estimate = riskEstimateService.estimate(LoginUserInfo.getLoginName(), Arrays.asList(answers));
         return new BaseDto<>(new BaseDataDto(estimate != null));
     }
 

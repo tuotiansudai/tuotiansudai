@@ -18,27 +18,26 @@ $toResult.on('click', function(event) {
 	let $self=$(this),
 		$problemList=$('.problem-list',$investmentBox),
 		scoreArry=[];
-	// $problemList.find('dl').each(function(index, el) {
-	// 	if(!$(this).find('dd').hasClass('active')){
-	// 		$(this).find('dt').addClass('on');
-	// 	}else{
-	// 		scoreArry.push($(this).find('dd.active').attr('data-score'));
-	// 	}
-	// });
-	// if($('.problem-list dt.on').length>0){
-	// 	$('body,html').animate({scrollTop:$('.problem-list dt.on').eq(0).offset().top},'fast')
-	// }else{
-		console.log(scoreArry);
+	$problemList.find('dl').each(function(index, el) {
+		if(!$(this).find('dd').hasClass('active')){
+			$(this).find('dt').addClass('on');
+		}else{
+			scoreArry.push($(this).find('dd.active').attr('data-score'));
+		}
+	});
+	if($('.problem-list dt.on').length>0){
+		$('body,html').animate({scrollTop:$('.problem-list dt.on').eq(0).offset().top},'fast')
+	}else{
 		commonFun.useAjax({
 		    url: '/risk-estimate',
-		    data:[1,2,1,1,1,1,1,1],
+		    data: {answers: scoreArry},
 		    type: 'POST'
 		},function(data) {
 		    if(data.data.status){
-		        location.href='/risk-estimate-result';
+		        location.href='/risk-estimate';
 		    }
 		});
-	// }
+	}
 });
 
 
