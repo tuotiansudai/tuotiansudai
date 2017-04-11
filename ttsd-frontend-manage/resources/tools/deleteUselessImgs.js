@@ -10,7 +10,7 @@ var basePath = path.join(__dirname, '../../resources'),
     mobileImagePath=path.join(staticPath, 'mobile/images'),
     publicImagePath=path.join(staticPath, 'public/images'); //默认打包路径
 
-var packfolderPath = path.join(basePath,'prod/images'); //打包图片文件夹路径
+var packfolderPath = path.join(basePath,'develop/images'); //打包图片文件夹路径
 
 /**
  *删除数组指定下标或指定对象
