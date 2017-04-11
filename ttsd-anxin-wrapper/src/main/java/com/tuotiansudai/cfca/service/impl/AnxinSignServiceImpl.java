@@ -601,19 +601,19 @@ public class AnxinSignServiceImpl implements AnxinSignService {
             return failBaseDto(BATCH_NO_IS_INVALID);
         }
 
-        List<String> waitingBatchNo = this.queryContract(anxinQueryContractDto.getBusinessId(), Lists.newArrayList(batchNo.split(",")), anxinQueryContractDto.getAnxinContractType());
-        if (CollectionUtils.isEmpty(waitingBatchNo)) {
-            // 没有待处理的 batchNo 了，检查该 businessId 下的投资是否已经全部成功
-            List<InvestModel> contractFailList = investMapper.findNoContractNoInvest(anxinQueryContractDto.getBusinessId());
-            if (CollectionUtils.isNotEmpty(contractFailList)) {
-                logger.error(MessageFormat.format("some batch is fail. send sms. businessId:{0}", String.valueOf(anxinQueryContractDto.getBusinessId())));
-                // 有失败的，发短信
-                smsWrapperClient.sendGenerateContractErrorNotify(new GenerateContractErrorNotifyDto(mobileList, anxinQueryContractDto.getBusinessId()));
-                return new BaseDto<>(false, new AnxinDataDto(true, "fail"));
-            }
-        } else {
+        this.queryContract(anxinQueryContractDto.getBusinessId(), Lists.newArrayList(batchNo.split(",")), anxinQueryContractDto.getAnxinContractType());
+//        if (CollectionUtils.isEmpty(waitingBatchNo)) {
+        // 没有待处理的 batchNo 了，检查该 businessId 下的投资是否已经全部成功
+        List<InvestModel> contractFailList = investMapper.findNoContractNoInvest(anxinQueryContractDto.getBusinessId());
+        if (CollectionUtils.isNotEmpty(contractFailList)) {
+            logger.error(MessageFormat.format("[安心签] query anxin contract fail. businessId:{0}", String.valueOf(anxinQueryContractDto.getBusinessId())));
+            // 有失败的，发短信
+//                smsWrapperClient.sendGenerateContractErrorNotify(new GenerateContractErrorNotifyDto(mobileList, anxinQueryContractDto.getBusinessId()));
             return new BaseDto<>(false, new AnxinDataDto(true, "fail"));
         }
+//        } else {
+//            return new BaseDto<>(false, new AnxinDataDto(true, "fail"));
+//        }
         return new BaseDto<>(true, new AnxinDataDto(true, "success"));
     }
 }
