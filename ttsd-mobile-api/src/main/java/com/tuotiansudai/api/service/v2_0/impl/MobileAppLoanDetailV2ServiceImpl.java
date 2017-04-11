@@ -33,6 +33,7 @@ import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Service {
@@ -97,15 +98,26 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
 
     private String content = "个人经营借款理财项目，总额{0}元期限{1}天，年化利率{2}%，先到先抢！！！";
 
+    private static final String APP_VERSION = "4.3";
+
     @Override
     public BaseResponseDto<LoanDetailV2ResponseDataDto> findLoanDetail(LoanDetailV2RequestDto requestDto) {
         BaseResponseDto<LoanDetailV2ResponseDataDto> responseDto = new BaseResponseDto<>();
         String loanId = requestDto.getLoanId();
         LoanModel loanModel = loanMapper.findById(Long.parseLong(loanId));
+
+
         if (loanModel == null) {
             logger.warn("标的详情" + ReturnMessage.LOAN_NOT_FOUND.getCode() + ":" + ReturnMessage.LOAN_NOT_FOUND.getMsg());
             return new BaseResponseDto<>(ReturnMessage.LOAN_NOT_FOUND.getCode(), ReturnMessage.LOAN_NOT_FOUND.getMsg());
         }
+
+        String currentAppVersion = requestDto.getBaseParam().getAppVersion().substring(0,3);
+        if(new BigDecimal(currentAppVersion).compareTo(new BigDecimal(APP_VERSION)) < 0 ){
+            logger.warn("标的详情" + ReturnMessage.LOAN_NOT_FOUND.getCode() + ":" + ReturnMessage.LOAN_NOT_FOUND.getMsg());
+            return new BaseResponseDto<>(ReturnMessage.APP_VERSION_NOT_LATEST.getCode(), ReturnMessage.APP_VERSION_NOT_LATEST.getMsg());
+        }
+
         responseDto.setCode(ReturnMessage.SUCCESS.getCode());
         responseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
         String loginName = requestDto.getBaseParam().getUserId();
