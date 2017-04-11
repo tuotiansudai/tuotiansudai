@@ -4,6 +4,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppLoanListService;
+import com.tuotiansudai.api.util.AppVersionUtil;
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.api.util.PageValidUtils;
 import com.tuotiansudai.api.util.ProductTypeConverter;
@@ -66,8 +67,6 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
     @Autowired
     private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
 
-    private static final String APP_VERSION = "4.3";
-
     @Override
     public BaseResponseDto<LoanListResponseDataDto> generateLoanList(LoanListRequestDto loanListRequestDto) {
         BaseResponseDto<LoanListResponseDataDto> dto = new BaseResponseDto<>();
@@ -81,8 +80,7 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
         List<LoanModel> loanModels = loanMapper.findLoanListMobileApp(ProductTypeConverter.stringConvertTo(loanListRequestDto.getProductType()), null, loanListRequestDto.getLoanStatus(), loanListRequestDto.getRateLower(), loanListRequestDto.getRateUpper(), index, pageSize);
 
         List<PledgeType> pledgeTypeList = Lists.newArrayList(PledgeType.HOUSE, PledgeType.VEHICLE, PledgeType.NONE);
-        String currentAppVersion = loanListRequestDto.getBaseParam().getAppVersion().substring(0,3);
-        if(new BigDecimal(currentAppVersion).compareTo(new BigDecimal(APP_VERSION)) < 0 ){
+        if(AppVersionUtil.compareVersion() == -1 ){
             loanModels = loanModels.stream().filter(n -> pledgeTypeList.contains(n.getPledgeType())).collect(Collectors.toList());
         }
 
@@ -111,8 +109,6 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
     private List<LoanResponseDataDto> convertLoanDto(List<LoanModel> loanList, String loginName) {
         List<LoanResponseDataDto> loanDtoList = Lists.newArrayList();
         DecimalFormat decimalFormat = new DecimalFormat("######0.##");
-
-
 
         for (LoanModel loan : loanList) {
 

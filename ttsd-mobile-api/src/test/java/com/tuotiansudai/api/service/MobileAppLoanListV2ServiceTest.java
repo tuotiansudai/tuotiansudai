@@ -51,7 +51,7 @@ public class MobileAppLoanListV2ServiceTest extends ServiceTestBase {
         investMapper.create(investModel);
         LoanModel loanModel1 = getFakeLoan(loginName, ActivityType.NEWBIE, ProductType.EXPERIENCE, LoanStatus.RAISING);
         loanMapper.create(loanModel1);
-        BaseResponseDto<LoanListResponseDataDto> dto = mobileAppLoanListV2Service.generateIndexLoan(this.getFakeBaseParamDto(), null);
+        BaseResponseDto<LoanListResponseDataDto> dto = mobileAppLoanListV2Service.generateIndexLoan(null);
         assertTrue(dto.getData().getLoanList().get(0).getProductNewType().equals("EXPERIENCE"));
     }
 
@@ -67,7 +67,7 @@ public class MobileAppLoanListV2ServiceTest extends ServiceTestBase {
         loanMapper.create(loanModel1);
         InvestModel investModel1 = getInvestModel(loginName, loanModel1.getId());
         investMapper.create(investModel1);
-        BaseResponseDto<LoanListResponseDataDto> dto = mobileAppLoanListV2Service.generateIndexLoan(this.getFakeBaseParamDto(), loginName);
+        BaseResponseDto<LoanListResponseDataDto> dto = mobileAppLoanListV2Service.generateIndexLoan(loginName);
         assertTrue(!dto.getData().getLoanList().get(0).getProductNewType().equals("EXPERIENCE"));
         assertTrue(!dto.getData().getLoanList().get(0).getActivityType().equals("NEWBIE"));
     }
@@ -85,7 +85,7 @@ public class MobileAppLoanListV2ServiceTest extends ServiceTestBase {
         InvestModel investModel1 = getInvestModel(loginName, loanModel1.getId());
         investModel1.setInvestTime(DateTime.parse("2016-06-12").toDate());
         investMapper.create(investModel1);
-        BaseResponseDto<LoanListResponseDataDto> dto = mobileAppLoanListV2Service.generateIndexLoan(this.getFakeBaseParamDto(), loginName);
+        BaseResponseDto<LoanListResponseDataDto> dto = mobileAppLoanListV2Service.generateIndexLoan(loginName);
         assertTrue(!dto.getData().getLoanList().get(0).getProductNewType().equals("NEWBIE"));
     }
 
@@ -106,7 +106,7 @@ public class MobileAppLoanListV2ServiceTest extends ServiceTestBase {
         loanMapper.create(loanModel2);
         InvestModel investModel2 = getInvestModel(loginName, loanModel1.getId());
         investMapper.create(investModel2);
-        BaseResponseDto<LoanListResponseDataDto> dto = mobileAppLoanListV2Service.generateIndexLoan(this.getFakeBaseParamDto(), loginName);
+        BaseResponseDto<LoanListResponseDataDto> dto = mobileAppLoanListV2Service.generateIndexLoan(loginName);
         assertTrue(dto.getData().getLoanList().get(0).getActivityType().equals("NORMAL"));
     }
 
@@ -149,13 +149,5 @@ public class MobileAppLoanListV2ServiceTest extends ServiceTestBase {
         fakeLoanModel.setActivityType(activityType);
         fakeLoanModel.setPledgeType(PledgeType.HOUSE);
         return fakeLoanModel;
-    }
-
-    private BaseParamDto getFakeBaseParamDto() {
-        BaseParamDto baseParamDto = new BaseParamDto();
-        BaseParam baseParam = new BaseParam();
-        baseParam.setAppVersion("4.2.2");
-        baseParamDto.setBaseParam(baseParam);
-        return baseParamDto;
     }
 }

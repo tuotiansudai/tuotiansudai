@@ -7,8 +7,6 @@ public class LoanCreateLoanerEnterpriseDetailsDto {
     @NotEmpty
     private String juristicPerson;
 
-    private String shareholder;
-
     @NotEmpty
     private String address;
 
@@ -20,7 +18,6 @@ public class LoanCreateLoanerEnterpriseDetailsDto {
 
     public LoanCreateLoanerEnterpriseDetailsDto(LoanerEnterpriseDetailsModel loanerEnterpriseDetailsModel) {
         this.juristicPerson = loanerEnterpriseDetailsModel.getJuristicPerson();
-        this.shareholder = loanerEnterpriseDetailsModel.getShareholder();
         this.address = loanerEnterpriseDetailsModel.getAddress();
         this.purpose = loanerEnterpriseDetailsModel.getPurpose();
     }
@@ -31,14 +28,6 @@ public class LoanCreateLoanerEnterpriseDetailsDto {
 
     public void setJuristicPerson(String juristicPerson) {
         this.juristicPerson = juristicPerson;
-    }
-
-    public String getShareholder() {
-        return shareholder;
-    }
-
-    public void setShareholder(String shareholder) {
-        this.shareholder = shareholder;
     }
 
     public String getAddress() {

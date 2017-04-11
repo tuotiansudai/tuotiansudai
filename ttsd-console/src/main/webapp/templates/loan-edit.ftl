@@ -282,7 +282,7 @@
                 <#include 'loan-edit-loaner-details.ftl'>
             </#if>
 
-            <#if 'ENTERPRISE' == loan.loan.pledgeType>
+            <#if ['ENTERPRISE_CREDIT', 'ENTERPRISE_PLEDGE']?seq_contains(loan.loan.pledgeType)>
                 <#include 'loan-edit-loaner-enterprise-details.ftl'>
             </#if>
 
@@ -301,7 +301,7 @@
                 <#include 'loan-edit-pledge-vehicle.ftl'>
             </#if>
 
-            <#if 'ENTERPRISE' == loan.loan.pledgeType>
+            <#if 'ENTERPRISE_PLEDGE' == loan.loan.pledgeType>
                 <#include 'loan-edit-pledge-enterprise.ftl'>
             </#if>
 

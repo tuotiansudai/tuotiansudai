@@ -27,7 +27,7 @@ public class MobileAppHomeV2ControllerTest extends ControllerTestBase {
 
     @Test
     public void shouldQueryLoanListIsOk() throws Exception {
-        when(service.generateIndexLoan(any(BaseParamDto.class), anyString())).thenReturn(null);
+        when(service.generateIndexLoan(anyString())).thenReturn(null);
         //LoanListRequestDto requestDto = new LoanListRequestDto();
         //doRequestWithServiceMockedTest("/get/index", requestDto);
     }

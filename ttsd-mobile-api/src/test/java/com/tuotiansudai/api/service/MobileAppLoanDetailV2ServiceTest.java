@@ -66,7 +66,6 @@ public class MobileAppLoanDetailV2ServiceTest extends ServiceTestBase{
         extraLoanRateMapper.create(extraLoanRateModels);
 
         BaseParam baseParam = new BaseParam();
-        baseParam.setAppVersion("4.3");
         baseParam.setUserId(fakeUserModel.getLoginName());
         loanDetailV2RequestDto.setBaseParam(baseParam);
         BaseResponseDto<LoanDetailV2ResponseDataDto>  loanDetail = mobileAppLoanDetailV2Service.findLoanDetail(loanDetailV2RequestDto);

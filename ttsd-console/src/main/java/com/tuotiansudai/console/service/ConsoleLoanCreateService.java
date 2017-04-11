@@ -194,7 +194,7 @@ public class ConsoleLoanCreateService {
             pledgeVehicleMapper.create(new PledgeVehicleModel(loanId, loanCreateRequestDto.getPledgeVehicle()));
         }
 
-        if (loanCreateRequestDto.getLoanerEnterpriseDetails() != null) {
+        if (loanCreateRequestDto.getLoanerEnterpriseDetails() != null  && loanCreateRequestDto.getLoan().getPledgeType() == PledgeType.ENTERPRISE_PLEDGE) {
             pledgeEnterpriseMapper.create(new PledgeEnterpriseModel(loanId, loanCreateRequestDto.getPledgeEnterprise()));
         }
 

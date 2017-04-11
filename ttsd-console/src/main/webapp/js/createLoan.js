@@ -467,11 +467,7 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
 
         var checkedExtraRate = function () {
             clearErrorMessage();
-            // if (pledgeTypeElement.val() === 'ENTERPRISE_CREDIT' || pledgeTypeElement.val() === 'ENTERPRISE_PLEDGE' || pledgeTypeElement.val() === 'ENTERPRISE_FACTORING' || pledgeTypeElement.val() === 'ENTERPRISE_BILL') {
-            //     showErrorMessage('项目不支持', extraElement);
-            //     extraElement.prop('checked', false);
-            //     return;
-            // }
+
             if (['_90', '_180', '_360'].indexOf(productTypeElement.val()) === -1) {
                 showErrorMessage('借款期限未选择或选择为30天，不能操作此选项', extraElement);
                 extraElement.prop('checked', false);

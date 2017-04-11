@@ -2,20 +2,11 @@
 <hr class="top-line">
 <div>
     <div class="form-group">
-        <label class="col-sm-2 control-label">公司法人: </label>
+        <label class="col-sm-2 control-label">借款人: </label>
 
         <div class="col-sm-3">
             <input name="juristicPerson" value="${loan.loanerEnterpriseDetails.juristicPerson}" type="text" class="form-control"
-                                     datatype="*" errormsg="公司法人不能为空">
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label class="col-sm-2 control-label">公司最高持股人: </label>
-
-        <div class="col-sm-3">
-            <input name="shareholder" value="${loan.loanerEnterpriseDetails.shareholder}" type="text" class="form-control"
-                                     datatype="*" errormsg="公司最高持股人不能为空">
+                                     datatype="*" errormsg="借款人不能为空">
         </div>
     </div>
 
@@ -32,7 +23,7 @@
         <label class="col-sm-2 control-label">企业借款用途描述: </label>
 
         <div class="col-sm-3">
-            <input name="purpose" value="${loan.loanerEnterpriseDetails.purpose}" type="text" class="form-control" datatype="*"
+            <input name="purpose" value="${loan.loanerEnterpriseDetails.purpose}" type="text" class="form-control" maxlength="100" datatype="*"
                    errormsg="企业借款用途描述不能为空">
         </div>
     </div>

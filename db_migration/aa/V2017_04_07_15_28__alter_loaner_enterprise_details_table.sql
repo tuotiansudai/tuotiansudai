@@ -1,1 +1,1 @@
-ALTER TABLE `loaner_enterprise_details` MODIFY  shareholder VARCHAR(20) NULL;
+ALTER TABLE `loaner_enterprise_details` DROP COLUMN shareholder;

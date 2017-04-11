@@ -23,11 +23,8 @@
         <label class="col-sm-2 control-label">借款用途: </label>
 
         <div class="col-sm-3">
-            <textarea name="purpose"
-                      class="form-control"
-                      datatype="*"
-                      maxlength="100"
-                      errormsg="借款用途不能为空">${loan.loanerEnterpriseInfo.purpose}</textarea>
+            <input name="purpose" value="${loan.loanerEnterpriseInfo.purpose}" type="text" class="form-control" maxlength="100" datatype="*"
+                   errormsg="借款用途不能为空">
         </div>
     </div>
 </div>

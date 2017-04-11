@@ -151,13 +151,6 @@ public class InvestServiceImpl implements InvestService {
         double rate = membershipPrivilegePurchaseService.obtainServiceFee(loginName);
 
         InvestModel investModel = new InvestModel(idGenerator.generate(), Long.parseLong(dto.getLoanId()), null, AmountConverter.convertStringToCent(dto.getAmount()), dto.getLoginName(), new Date(), dto.getSource(), dto.getChannel(), rate);
-        LoanModel loanModel = loanMapper.findById(Long.parseLong(dto.getLoanId()));
-
-        /*可以进行债券转让*/
-        /*List<PledgeType> pledgeTypeList = Lists.newArrayList(PledgeType.ENTERPRISE_FACTORING, PledgeType.ENTERPRISE_BILL, PledgeType.ENTERPRISE_CREDIT, PledgeType.ENTERPRISE_PLEDGE);
-        if (pledgeTypeList.contains(loanModel.getPledgeType())) {
-            investModel.setTransferStatus(TransferStatus.NONTRANSFERABLE);
-        }*/
         investMapper.create(investModel);
 
         logger.info(MessageFormat.format("[Invest Request Data] user={0}, loan={1}, invest={2}, amount={3}, userCoupon={4}, source={5}",
@@ -196,12 +189,6 @@ public class InvestServiceImpl implements InvestService {
         double rate = membershipPrivilegePurchaseService.obtainServiceFee(loginName);
 
         InvestModel investModel = new InvestModel(idGenerator.generate(), loanId, null, amount, loginName, new Date(), source, channel, rate);
-        LoanModel loanModel = loanMapper.findById(loanId);
-        /*可以进行债券转让*/
-        /*List<PledgeType> pledgeTypeList = Lists.newArrayList(PledgeType.ENTERPRISE_FACTORING, PledgeType.ENTERPRISE_BILL, PledgeType.ENTERPRISE_CREDIT, PledgeType.ENTERPRISE_PLEDGE);
-        if (pledgeTypeList.contains(loanModel.getPledgeType())) {
-            investModel.setTransferStatus(TransferStatus.NONTRANSFERABLE);
-        }*/
         try {
             investModel.setNoPasswordInvest(true);
             investMapper.create(investModel);
