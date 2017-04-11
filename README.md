@@ -106,12 +106,12 @@
     `npm run json` 生成所有打包文件的json文件，并根据项目生成  json-ask.json， json-web.json ， json-mobile.json ， json-point.json, json-activity.json</br>
     `npm run plugin`    用DllPlugin打包插件文件  </br>
     `npm run mock`  开启node express 服务器，用来模拟假数据 </br>
+    `npm run showimage` </br>
 
-
-    `npm run json` 和 `npm run plugin` 已经集成在 npm run build 和 npm start里，无需额外执行</br></br>
+    `npm run json` 和 `npm run plugin`以及 `npm run showimage`已经集成在 npm run build 和 npm start里，无需额外执行</br></br>
 
     生成项目图片文件：  进入<根目录></br>
-    `npm run showimage` </br>
+
 
     清除项目中无用的图片</br>
     `npm run start2` </br>
