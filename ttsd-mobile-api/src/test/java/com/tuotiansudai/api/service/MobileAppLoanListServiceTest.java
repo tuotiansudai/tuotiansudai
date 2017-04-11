@@ -78,6 +78,7 @@ public class MobileAppLoanListServiceTest extends ServiceTestBase {
         LoanListRequestDto loanListRequestDto = new LoanListRequestDto();
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId("testLoan");
+        baseParam.setAppVersion("4.2.2");
         loanListRequestDto.setBaseParam(baseParam);
         loanListRequestDto.setIndex(1);
         loanListRequestDto.setPageSize(10);
