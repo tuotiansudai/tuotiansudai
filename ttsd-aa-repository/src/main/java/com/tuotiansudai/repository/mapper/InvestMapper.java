@@ -218,6 +218,11 @@ public interface InvestMapper {
                                                        @Param(value = "activityBeginTime") String activityBeginTime,
                                                        @Param(value = "activityEndTime") String activityEndTime);
 
+    List<HeroRankingView> findNewmanTyrantByTradingTime(@Param(value = "tradingTime") Date tradingTime,
+                                                        @Param(value = "activityBeginTime") String activityBeginTime,
+                                                        @Param(value = "activityEndTime") String activityEndTime,
+                                                        @Param(value = "isNewman") boolean isNewman);
+
     List<HeroRankingView> findHeroRankingByReferrer(@Param(value = "tradingTime") Date tradingTime,
                                                     @Param(value = "activityBeginTime") String activityBeginTime,
                                                     @Param(value = "activityEndTime") String activityEndTime,
@@ -278,9 +283,10 @@ public interface InvestMapper {
                                         @Param(value = "endTime") Date endTime);
 
     int sumDrawCountByLoginName(@Param(value = "loginName") String loginName,
-                                 @Param(value = "startTime") Date startTime,
-                                 @Param(value = "endTime") Date endTime,
-                                 @Param(value = "baseAmount") long baseAmount);
+                                @Param(value = "startTime") Date startTime,
+                                @Param(value = "endTime") Date endTime,
+                                @Param(value = "baseAmount") long baseAmount);
+
     List<Map<String, String>> findInvestAmountScaleTop3(@Param(value = "endDate") Date endDate);
 
     long findInvestAmountScale(@Param(value = "endDate") Date endDate);

@@ -623,6 +623,31 @@
         ORDER BY sumAmount DESC , MAX(invest.trading_time)
     </select>
 
+    <select id="findNewmanTyrantByTradingTime" parameterType="map" resultMap="heroRankingView">
+        SELECT
+        invest.login_name,
+        SUM(invest.amount) sumAmount,
+        user.user_name,
+        user.mobile
+        FROM
+        invest
+        INNER JOIN
+        user ON invest.login_name = user.login_name
+        WHERE
+        invest.status = 'SUCCESS'
+        AND invest.transfer_invest_id IS NULL
+        AND DATE_FORMAT(invest.trading_time, '%Y-%m-%d') = DATE_FORMAT(#{tradingTime},'%Y-%m-%d')
+        AND invest.trading_time BETWEEN #{activityBeginTime} AND #{activityEndTime}
+        <if test="isNewman == true">
+          AND user.register_time BETWEEN #{activityBeginTime} AND #{activityEndTime}
+        </if>
+        <if test="isNewman == false">
+          AND user.register_time not BETWEEN #{activityBeginTime} AND #{activityEndTime}
+        </if>
+        GROUP BY login_name , user.user_name , user.mobile
+        ORDER BY sumAmount DESC , MAX(invest.trading_time)
+    </select>
+
     <select id="findHeroRankingByReferrer" parameterType="map" resultMap="heroRankingView">
         SELECT
           rr.`referrer_login_name` AS login_name,
