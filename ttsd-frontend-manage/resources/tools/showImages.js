@@ -50,7 +50,6 @@ function geFileList(folderPath,fileName)
 	//读取html内容
 	this.ImportHtml =function() {
 		var that = this;
-		console.log(this.toolSrc+this.filename);
 		fs.readFile(this.toolSrc+this.filename,{
 			//需要制定编码方式，否则返回原生buffer
 			encoding:'utf8'

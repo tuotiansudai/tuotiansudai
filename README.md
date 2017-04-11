@@ -111,11 +111,10 @@
     `npm run json` 和 `npm run plugin` 已经集成在 npm run build 和 npm start里，无需额外执行</br></br>
 
     生成项目图片文件：  进入<根目录></br>
-    `npm run start2` </br>
-    `npm run showimage` </br></br>
+    `npm run showimage` </br>
 
     清除项目中无用的图片</br>
-    `npm run prod` </br>
+    `npm run start2` </br>
     `npm run removeUselessImgs` </br></br>
 
     上线发布的： 进入<根目录></br>
