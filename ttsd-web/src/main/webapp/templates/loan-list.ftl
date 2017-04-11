@@ -22,7 +22,7 @@
             <li class="project-kind">
                 <span>项目类型: </span>
                 <#assign nametUrl = "/loan-list?name={name}&status=${status!}&rateStart=${rateStart!}&rateEnd=${rateEnd!}&durationStart=${durationStart!}&durationEnd=${durationEnd!}">
-                <#assign nameMap = {"":"全部","房产抵押借款":"房产抵押借款","车辆抵押借款":"车辆抵押借款"}>
+                <#assign nameMap = {"":"全部","房产抵押借款":"房产抵押借款","车辆抵押借款":"车辆抵押借款","经营性借款":"经营性借款"}>
                 <#assign nameKeys = nameMap?keys>
                 <#list nameKeys as key>
                     <a <#if name?? && name == key>class="active"

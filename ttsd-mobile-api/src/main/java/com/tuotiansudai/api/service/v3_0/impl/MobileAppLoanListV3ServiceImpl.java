@@ -3,15 +3,13 @@ package com.tuotiansudai.api.service.v3_0.impl;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
+import com.tuotiansudai.api.dto.v2_0.BaseParamDto;
 import com.tuotiansudai.api.dto.v2_0.ExtraRateListResponseDataDto;
 import com.tuotiansudai.api.dto.v3_0.LoanListResponseDataDto;
 import com.tuotiansudai.api.dto.v3_0.LoanResponseDataDto;
 import com.tuotiansudai.api.service.v3_0.MobileAppLoanListV3Service;
 import com.tuotiansudai.api.util.CommonUtils;
-import com.tuotiansudai.repository.mapper.UserCouponMapper;
-import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
-import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.ExtraLoanRateMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanDetailsMapper;
@@ -23,19 +21,19 @@ import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.LoanPeriodCalculator;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
-import org.joda.time.DateTime;
-import org.joda.time.Days;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Service {
@@ -68,12 +66,13 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
 
     public static long DEFAULT_INVEST_AMOUNT = 1000000;
 
+    private static final String APP_VERSION = "4.3";
+
     @Override
-    public BaseResponseDto<LoanListResponseDataDto> generateIndexLoan(String loginName) {
+    public BaseResponseDto<LoanListResponseDataDto> generateIndexLoan(BaseParamDto baseParamDto, String loginName) {
         List<ProductType> noContainExperienceLoans = Lists.newArrayList(ProductType._30, ProductType._90, ProductType._180, ProductType._360);
         List<ProductType> allProductTypesCondition = Lists.newArrayList(ProductType.EXPERIENCE, ProductType._30, ProductType._90, ProductType._180, ProductType._360);
         List<ProductType> onlyContainExperienceLoans = Lists.newArrayList(ProductType.EXPERIENCE, ProductType._30, ProductType._90, ProductType._180, ProductType._360);
-
         LoanModel loanModel = null;
         //没登录 or 没投资过任何标
         if (StringUtils.isEmpty(loginName) ||
@@ -160,7 +159,7 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
 
         BaseResponseDto<LoanListResponseDataDto> dto = new BaseResponseDto<>();
         LoanListResponseDataDto loanListResponseDataDto = new LoanListResponseDataDto();
-        loanListResponseDataDto.setLoanList(convertLoanDto(loginName, Lists.newArrayList(loanModel)));
+        loanListResponseDataDto.setLoanList(convertLoanDto(baseParamDto, loginName, Lists.newArrayList(loanModel)));
         dto.setData(loanListResponseDataDto);
         dto.setCode(ReturnMessage.SUCCESS.getCode());
         dto.setMessage(ReturnMessage.SUCCESS.getMsg());
@@ -168,12 +167,19 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
         return dto;
     }
 
-    private List<LoanResponseDataDto> convertLoanDto(String loginName, List<LoanModel> loanList) {
+    private List<LoanResponseDataDto> convertLoanDto(BaseParamDto baseParamDto, String loginName, List<LoanModel> loanList) {
         List<LoanResponseDataDto> loanDtoList = Lists.newArrayList();
         DecimalFormat decimalFormat = new DecimalFormat("######0.##");
         if(CollectionUtils.isEmpty(loanList)){
             return loanDtoList;
         }
+
+        List<PledgeType> pledgeTypeList = Lists.newArrayList(PledgeType.HOUSE, PledgeType.VEHICLE, PledgeType.NONE);
+        String currentAppVersion = baseParamDto.getBaseParam().getAppVersion().substring(0,3);
+        if(new BigDecimal(currentAppVersion).compareTo(new BigDecimal(APP_VERSION)) < 0 ){
+            loanList = loanList.stream().filter(n -> pledgeTypeList.contains(n.getPledgeType())).collect(Collectors.toList());
+        }
+
         for (LoanModel loan : loanList) {
             LoanResponseDataDto loanResponseDataDto = new LoanResponseDataDto();
             loanResponseDataDto.setLoanId("" + loan.getId());

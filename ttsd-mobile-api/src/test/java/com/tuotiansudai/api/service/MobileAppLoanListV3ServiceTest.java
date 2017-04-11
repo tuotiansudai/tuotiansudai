@@ -1,6 +1,8 @@
 package com.tuotiansudai.api.service;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.api.dto.v1_0.BaseParam;
+import com.tuotiansudai.api.dto.v2_0.BaseParamDto;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.dto.v3_0.LoanListResponseDataDto;
@@ -121,10 +123,14 @@ public class MobileAppLoanListV3ServiceTest extends ServiceTestBase {
         getFakeExperienceLoan("loaner");
         CouponModel fakeNewbieCoupon = getFakeNewbieCoupon(user);
         getFakeUserCoupon(user, fakeNewbieCoupon);
+        BaseParamDto baseParamDto = new BaseParamDto();
+        BaseParam baseParam = new BaseParam();
+        baseParam.setAppVersion("4.2.2");
+        baseParamDto.setBaseParam(baseParam);
         //数据库中默认有新手体验标
         final long experienceLoanId = 1L;
         //没有投资过的
-        BaseResponseDto baseResponseDto = mobileAppLoanListV3Service.generateIndexLoan(user.getLoginName());
+        BaseResponseDto baseResponseDto = mobileAppLoanListV3Service.generateIndexLoan(baseParamDto, user.getLoginName());
         LoanListResponseDataDto loanListResponseDataDto = (LoanListResponseDataDto) baseResponseDto.getData();
         assertEquals(ReturnMessage.SUCCESS.getCode(), baseResponseDto.getCode());
         assertEquals(ReturnMessage.SUCCESS.getMsg(), baseResponseDto.getMessage());
@@ -132,7 +138,7 @@ public class MobileAppLoanListV3ServiceTest extends ServiceTestBase {
         assertEquals(ProductType.EXPERIENCE.name(), loanResponseDataDto.getProductNewType());
         assertEquals(ActivityType.NEWBIE.name(), loanResponseDataDto.getActivityType());
         //参数为空
-        baseResponseDto = mobileAppLoanListV3Service.generateIndexLoan(null);
+        baseResponseDto = mobileAppLoanListV3Service.generateIndexLoan(baseParamDto,null);
         loanListResponseDataDto = (LoanListResponseDataDto) baseResponseDto.getData();
         assertEquals(ReturnMessage.SUCCESS.getCode(), baseResponseDto.getCode());
         assertEquals(ReturnMessage.SUCCESS.getMsg(), baseResponseDto.getMessage());
@@ -140,7 +146,7 @@ public class MobileAppLoanListV3ServiceTest extends ServiceTestBase {
         assertEquals(ProductType.EXPERIENCE.name(), loanResponseDataDto.getProductNewType());
         assertEquals(ActivityType.NEWBIE.name(), loanResponseDataDto.getActivityType());
 
-        baseResponseDto = mobileAppLoanListV3Service.generateIndexLoan("");
+        baseResponseDto = mobileAppLoanListV3Service.generateIndexLoan(baseParamDto,"");
         loanListResponseDataDto = (LoanListResponseDataDto) baseResponseDto.getData();
         assertEquals(ReturnMessage.SUCCESS.getCode(), baseResponseDto.getCode());
         assertEquals(ReturnMessage.SUCCESS.getMsg(), baseResponseDto.getMessage());
@@ -156,7 +162,7 @@ public class MobileAppLoanListV3ServiceTest extends ServiceTestBase {
         LoanModel loanModel = createLoan("loaner", ActivityType.NORMAL, ProductType._360, LoanStatus.COMPLETE, now);
 
         InvestModel investModel = getInvestModel(user.getLoginName(), experienceLoanId);
-        baseResponseDto = mobileAppLoanListV3Service.generateIndexLoan(user.getLoginName());
+        baseResponseDto = mobileAppLoanListV3Service.generateIndexLoan(baseParamDto, user.getLoginName());
         loanListResponseDataDto = (LoanListResponseDataDto) baseResponseDto.getData();
         assertEquals(ReturnMessage.SUCCESS.getCode(), baseResponseDto.getCode());
         assertEquals(ReturnMessage.SUCCESS.getMsg(), baseResponseDto.getMessage());
@@ -165,7 +171,7 @@ public class MobileAppLoanListV3ServiceTest extends ServiceTestBase {
         //没有可投标 && 投资过其它标
         investModel.setLoanId(loanModel.getId());
         investMapper.update(investModel);
-        baseResponseDto = mobileAppLoanListV3Service.generateIndexLoan(user.getLoginName());
+        baseResponseDto = mobileAppLoanListV3Service.generateIndexLoan(baseParamDto, user.getLoginName());
         assertEquals(ReturnMessage.SUCCESS.getCode(), baseResponseDto.getCode());
         assertEquals(ReturnMessage.SUCCESS.getMsg(), baseResponseDto.getMessage());
 
@@ -175,7 +181,7 @@ public class MobileAppLoanListV3ServiceTest extends ServiceTestBase {
         createLoan("loaner", ActivityType.NORMAL, ProductType._90, LoanStatus.RAISING, newDate);
         createLoan("loaner", ActivityType.NORMAL, ProductType._360, LoanStatus.RAISING, newDate);
 
-        baseResponseDto = mobileAppLoanListV3Service.generateIndexLoan(user.getLoginName());
+        baseResponseDto = mobileAppLoanListV3Service.generateIndexLoan(baseParamDto, user.getLoginName());
         loanListResponseDataDto = (LoanListResponseDataDto) baseResponseDto.getData();
         assertEquals(ReturnMessage.SUCCESS.getCode(), baseResponseDto.getCode());
         assertEquals(ReturnMessage.SUCCESS.getMsg(), baseResponseDto.getMessage());
@@ -186,7 +192,7 @@ public class MobileAppLoanListV3ServiceTest extends ServiceTestBase {
         investModel.setLoanId(experienceLoanId);
         investMapper.update(investModel);
 
-        baseResponseDto = mobileAppLoanListV3Service.generateIndexLoan(user.getLoginName());
+        baseResponseDto = mobileAppLoanListV3Service.generateIndexLoan(baseParamDto, user.getLoginName());
         loanListResponseDataDto = (LoanListResponseDataDto) baseResponseDto.getData();
         assertEquals(ReturnMessage.SUCCESS.getCode(), baseResponseDto.getCode());
         assertEquals(ReturnMessage.SUCCESS.getMsg(), baseResponseDto.getMessage());
@@ -198,6 +204,10 @@ public class MobileAppLoanListV3ServiceTest extends ServiceTestBase {
     @Test
     public void shouldValidInterestPerTenThousandsIsOk(){
         String loginName = "testExtraRate";
+        BaseParamDto baseParamDto = new BaseParamDto();
+        BaseParam baseParam = new BaseParam();
+        baseParam.setAppVersion("4.2.2");
+        baseParamDto.setBaseParam(baseParam);
         long loanId = idGenerator.generate();
         UserModel userModel = getUserModelTest(loginName);
         userMapper.create(userModel);
@@ -209,7 +219,7 @@ public class MobileAppLoanListV3ServiceTest extends ServiceTestBase {
         InvestModel model = new InvestModel(idGenerator.generate(), loanModel.getId(), null, 1000000L, loginName, new DateTime().withTimeAtStartOfDay().toDate(), Source.WEB, null, 0.1);
         model.setStatus(InvestStatus.SUCCESS);
         investMapper.create(model);
-        BaseResponseDto<LoanListResponseDataDto> dto = mobileAppLoanListV3Service.generateIndexLoan(loginName);
+        BaseResponseDto<LoanListResponseDataDto> dto = mobileAppLoanListV3Service.generateIndexLoan(baseParamDto, loginName);
 
         List<LoanResponseDataDto> loanList = dto.getData().getLoanList();
         assertTrue(CollectionUtils.isNotEmpty(loanList));

@@ -435,7 +435,7 @@
 
                         <#if loan.pledgeType == "ENTERPRISE_FACTORING">
                             <div class="subtitle">
-                                <h3>借款企业基本信息</h3>
+                                <h3>借款企业信息</h3>
                             </div>
                             <div class="container-fluid list-block clearfix">
                                 <div class="row">
@@ -467,7 +467,7 @@
 
                         <#if loan.pledgeType == "ENTERPRISE_BILL">
                             <div class="subtitle">
-                                <h3>借款企业基本信息</h3>
+                                <h3>借款企业信息</h3>
                             </div>
                             <div class="container-fluid list-block clearfix">
                                 <div class="row">

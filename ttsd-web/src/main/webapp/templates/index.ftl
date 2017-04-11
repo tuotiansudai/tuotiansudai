@@ -162,7 +162,7 @@
 
         <#if enterpriseLoans??>
             <div class="main-column-title">
-                <i class="icon-title"></i>税易经营性借款
+                <i class="icon-title"></i>经营性借款
                 <a href="/loan-list" class="hot-more">更多></a>
             </div>
 

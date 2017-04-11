@@ -251,17 +251,17 @@ public class LoanDetailServiceImpl implements LoanDetailService {
         if (loanerEnterpriseInfoModel != null) {
             if(loanDto.getPledgeType() == PledgeType.ENTERPRISE_FACTORING){
                 loanDto.setEnterpriseInfo(ImmutableMap.<String, String>builder()
-                        .put("借款企业名称", loanerEnterpriseInfoModel.getCompanyName())
-                        .put("借款企业营业地址", loanerEnterpriseInfoModel.getAddress())
+                        .put("企业名称", loanerEnterpriseInfoModel.getCompanyName())
+                        .put("经营地址", loanerEnterpriseInfoModel.getAddress())
                         .put("借款用途", loanerEnterpriseInfoModel.getPurpose())
-                        .put("保理公司名称", loanerEnterpriseInfoModel.getFactoringCompanyName() == null ? "" : loanerEnterpriseInfoModel.getFactoringCompanyName())
-                        .put("保理公司简介", loanerEnterpriseInfoModel.getFactoringCompanyDesc() == null ? "" : loanerEnterpriseInfoModel.getFactoringCompanyDesc())
+                        .put("公司名称", loanerEnterpriseInfoModel.getFactoringCompanyName() == null ? "" : loanerEnterpriseInfoModel.getFactoringCompanyName())
+                        .put("公司简介", loanerEnterpriseInfoModel.getFactoringCompanyDesc() == null ? "" : loanerEnterpriseInfoModel.getFactoringCompanyDesc())
                         .build());
             }
             else{
                 loanDto.setEnterpriseInfo(ImmutableMap.<String, String>builder()
-                        .put("借款企业名称", loanerEnterpriseInfoModel.getCompanyName())
-                        .put("借款企业营业地址", loanerEnterpriseInfoModel.getAddress())
+                        .put("企业名称", loanerEnterpriseInfoModel.getCompanyName())
+                        .put("经营地址", loanerEnterpriseInfoModel.getAddress())
                         .put("借款用途", loanerEnterpriseInfoModel.getPurpose())
                         .build());
             }

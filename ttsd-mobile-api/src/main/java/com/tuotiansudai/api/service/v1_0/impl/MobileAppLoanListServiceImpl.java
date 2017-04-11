@@ -80,11 +80,10 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
 
         List<LoanModel> loanModels = loanMapper.findLoanListMobileApp(ProductTypeConverter.stringConvertTo(loanListRequestDto.getProductType()), null, loanListRequestDto.getLoanStatus(), loanListRequestDto.getRateLower(), loanListRequestDto.getRateUpper(), index, pageSize);
 
-
         List<PledgeType> pledgeTypeList = Lists.newArrayList(PledgeType.HOUSE, PledgeType.VEHICLE, PledgeType.NONE);
         String currentAppVersion = loanListRequestDto.getBaseParam().getAppVersion().substring(0,3);
         if(new BigDecimal(currentAppVersion).compareTo(new BigDecimal(APP_VERSION)) < 0 ){
-            loanModels.stream().filter(n -> pledgeTypeList.contains(n.getPledgeType())).collect(Collectors.toList());
+            loanModels = loanModels.stream().filter(n -> pledgeTypeList.contains(n.getPledgeType())).collect(Collectors.toList());
         }
 
         List<LoanResponseDataDto> loanDtoList = Lists.newArrayList();
@@ -112,6 +111,9 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
     private List<LoanResponseDataDto> convertLoanDto(List<LoanModel> loanList, String loginName) {
         List<LoanResponseDataDto> loanDtoList = Lists.newArrayList();
         DecimalFormat decimalFormat = new DecimalFormat("######0.##");
+
+
+
         for (LoanModel loan : loanList) {
 
             LoanResponseDataDto loanResponseDataDto = new LoanResponseDataDto();

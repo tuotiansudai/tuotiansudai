@@ -112,6 +112,7 @@ public class MobileAppLoanListServiceTest extends ServiceTestBase {
         LoanListRequestDto loanListRequestDto = new LoanListRequestDto();
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId("testLoan");
+        baseParam.setAppVersion("4.2.2");
         loanListRequestDto.setBaseParam(baseParam);
         loanListRequestDto.setIndex(1);
         loanListRequestDto.setPageSize(10);
@@ -148,6 +149,7 @@ public class MobileAppLoanListServiceTest extends ServiceTestBase {
         loanModel.setLoanerUserName("借款人");
         loanModel.setLoanerIdentityNumber("111111111111111111");
         loanModel.setProductType(productType);
+        loanModel.setPledgeType(PledgeType.NONE);
 
         return loanModel;
     }

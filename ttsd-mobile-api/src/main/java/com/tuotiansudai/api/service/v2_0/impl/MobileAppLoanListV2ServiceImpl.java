@@ -4,30 +4,30 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
+import com.tuotiansudai.api.dto.v2_0.BaseParamDto;
 import com.tuotiansudai.api.dto.v2_0.ExtraRateListResponseDataDto;
 import com.tuotiansudai.api.dto.v2_0.LoanListResponseDataDto;
 import com.tuotiansudai.api.dto.v2_0.LoanResponseDataDto;
 import com.tuotiansudai.api.service.v2_0.MobileAppLoanListV2Service;
 import com.tuotiansudai.api.util.CommonUtils;
-import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
-import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.ExtraLoanRateMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanDetailsMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.ExperienceLoanDetailService;
-import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class MobileAppLoanListV2ServiceImpl implements MobileAppLoanListV2Service {
@@ -53,8 +53,10 @@ public class MobileAppLoanListV2ServiceImpl implements MobileAppLoanListV2Servic
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
 
+    private static final String APP_VERSION = "4.3";
+
     @Override
-    public BaseResponseDto<LoanListResponseDataDto> generateIndexLoan(String loginName) {
+    public BaseResponseDto<LoanListResponseDataDto> generateIndexLoan(BaseParamDto baseParamDto, String loginName) {
         List<LoanModel> loanModels = Lists.newArrayList();
         List<ProductType> allProductTypesCondition = Lists.newArrayList(ProductType._30, ProductType._90, ProductType._180, ProductType._360, ProductType.EXPERIENCE);
         List<ProductType> noContainExperienceCondition = Lists.newArrayList(ProductType._30, ProductType._90, ProductType._180, ProductType._360);
@@ -82,16 +84,23 @@ public class MobileAppLoanListV2ServiceImpl implements MobileAppLoanListV2Servic
 
         BaseResponseDto<LoanListResponseDataDto> dto = new BaseResponseDto<>();
         LoanListResponseDataDto loanListResponseDataDto = new LoanListResponseDataDto();
-        loanListResponseDataDto.setLoanList(convertLoanDto(loginName, loanModels));
+        loanListResponseDataDto.setLoanList(convertLoanDto(baseParamDto, loginName, loanModels));
         dto.setData(loanListResponseDataDto);
         dto.setCode(ReturnMessage.SUCCESS.getCode());
         dto.setMessage(ReturnMessage.SUCCESS.getMsg());
         return dto;
     }
 
-    private List<LoanResponseDataDto> convertLoanDto(String loginName, List<LoanModel> loanList) {
+    private List<LoanResponseDataDto> convertLoanDto(BaseParamDto baseParamdto, String loginName, List<LoanModel> loanList) {
         List<LoanResponseDataDto> loanDtoList = Lists.newArrayList();
         DecimalFormat decimalFormat = new DecimalFormat("######0.##");
+
+        List<PledgeType> pledgeTypeList = Lists.newArrayList(PledgeType.HOUSE, PledgeType.VEHICLE, PledgeType.NONE);
+        String currentAppVersion = baseParamdto.getBaseParam().getAppVersion().substring(0,3);
+        if(new BigDecimal(currentAppVersion).compareTo(new BigDecimal(APP_VERSION)) < 0 ){
+            loanList = loanList.stream().filter(n -> pledgeTypeList.contains(n.getPledgeType())).collect(Collectors.toList());
+        }
+
         for (LoanModel loan : loanList) {
             LoanResponseDataDto loanResponseDataDto = new LoanResponseDataDto();
             loanResponseDataDto.setLoanId("" + loan.getId());
