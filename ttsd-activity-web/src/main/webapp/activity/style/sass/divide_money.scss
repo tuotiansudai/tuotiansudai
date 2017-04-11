@@ -97,6 +97,39 @@
       padding:15px 10px;
     }
   }
+  .actor-info{
+    float:left;
+    width:100%;
+    color:#fff;
+    padding: 0 40px;
+    @media (max-width:700px) {
+      padding:0 10px;
+    }
+    h3{
+      font-weight:bold;
+      font-size:24px;
+      @media (max-width:700px) {
+        font-size:16px;
+        text-align: center;
+      }
+    }
+    p{
+      font-size:16px;
+      color:#fff;
+      @media (max-width:700px) {
+        font-size:12px;
+        margin-bottom: 0;
+      }
+      span{
+        font-size:20px;
+        color:#fdd500;
+        font-style: italic;
+        @media (max-width:700px) {
+          font-size:16px;
+        }
+      }
+    }
+  }
   .invite-box-friend {
     font-size: 22px;
     text-align: left;
@@ -104,67 +137,31 @@
       font-size: 14px;
       clear: left;
     }
-    dl {
-      dt, dd {
-        display: inline-block;
-      }
-    }
-    .input-invite {
-      width: 100%;
-      height: 40px;
-      background: #e5f8ff;
-      color: #4d4d4d;
+    .link-item{
+      float:left;
+      width:520px;
+      margin-left: 50px;
       @media (max-width:700px) {
-        width: 100%;
-      }
-    }
-    .btn-copy-link {
-      display: inline-block;
-      width: 185px;
-      height: 40px;
-      line-height:40px;
-      text-align: center;
-      background: #fff1c7;
-      color: #f7494c;
-      font-size: 16px;
-      vertical-align: middle;
-      @media (max-width:700px) {
-        margin-top: 10px;
-      }
-    }
-    &.anonymous{
-      text-align:center;
-      padding: 50px 0;
-      @media (max-width:700px) {
-        text-align:left;
-        padding:10px 0;
-      }
-      dl{
-        dt{
-          line-height: 40px;
-          color:#6d221e;
-        }
-        dd{
-          .input-invite{
-            width:300px;
-          }
-        }
-      }
-    }
-    &.non-anonymous {
-      @media (max-width:700px) {
-        width: 100%;
-        clear: both;
+        display:none;
       }
       dl {
-        width: 430px;
+        padding:18px 45px;
+        text-align: center;
+        border:1px dotted #fff;
+        width: 100%;
         float: left;
-        @media (max-width:700px) {
-          display: none;
-        }
+        position: relative;
         dt {
-          line-height: 40px;
-          margin-top:10px;
+          width:60px;
+          height:30px;
+          line-height:30px;
+          position: absolute;
+          top:-15px;
+          left:50%;
+          margin-left:-30px;
+          font-size:14px;
+          color:#fff;
+          background:#d4393c;
         }
         dd {
           width: 100%;
@@ -174,260 +171,129 @@
           line-height: 20px;
         }
       }
-      .weixin-code {
+      .info-text{
+        font-size: 12px;
+        color:#fff;
+        text-align: center;
+        line-height: 20px;
+        margin: 10px 0 0;
         float: left;
-        width: 260px;
-        margin-right: 20px;
-        text-align:center;
-        @media (max-width:700px) {
-          display: none;
-        }
-        .img-code {
-          display: inline-block;
-          width: 120px;
-          height: 120px;
-          padding:5px;
-          background:#fff;
-          canvas {
-            width: 100%;
-          }
-        }
-        span {
-          display: block;
-          font-size: 16px;
-          color:#6d221e;
-          text-align: center;
-          line-height: 20px;
-        }
+        width: 100%;
       }
     }
-    .invite-list{
-      float:left;
-      width:100%;
-      margin-bottom:20px;
-      border-top:3px solid #6d221e;
-      border-bottom:3px solid #6d221e;
+    .weixin-code {
+      float: left;
+      width: 200px;
+      margin-right: 20px;
+      text-align:center;
       position: relative;
       @media (max-width:700px) {
-        padding-top:15px;
-        border-top:2px solid #6d221e;
-        border-bottom:2px solid #6d221e;
+        display:none;
       }
-      .icon-line{
+      .title-code{
+        width:60px;
+        height:30px;
+        line-height:30px;
         position: absolute;
-        width:50px;
-        height:4px;
-        box-sizing:border-box;
-        padding:0 20px;
-        background:#f64b49;
-        @media (max-width:700px) {
-          width:30px;
-          padding:0 10px;
-          height:3px;
-        }
-        &.top{
-          top:-3px;
-          left:280px;
-          @media (max-width:700px) {
-            left:20%;
-          }
-        }
-        &.bottom{
-          bottom:-3px;
-          right:280px;
-          @media (max-width:700px) {
-            right:20%;
-          }
-        }
-        span{
-          float:left;
-          width:100%;
-          height:3px;
-          background: #6d221e;
+        top:-15px;
+        left:50%;
+        margin-left:-30px;
+        font-size:14px;
+        color:#fff;
+        background:#d4393c;
+      }
+      .img-code {
+        display: inline-block;
+        width: 200px;
+        height: 200px;
+        padding:20px;
+        border:1px dotted #fff;
+        canvas {
+          width: 100%;
+          padding:5px;
+          background:#fff;
         }
       }
-      h3{
-        font-size:22px;
+      span {
+        display: block;
+        font-size :12px;
         color:#fff;
-        text-align:center;
-        @media (max-width:700px) {
-          display: none;
-        }
-        span{
-          color:#fede69;
-        }
+        text-align: center;
+        line-height: 20px;
+      }
+    }
+    .input-invite {
+      width: 100%;
+      height: 40px;
+      font-size:14px;
+      background: #fff6d4;
+      color: #4d4d4d;
+      @media (max-width:700px) {
+        width: 100%;
+      }
+    }
+    .info-link{
+      float:left;
+      width:100%;
+      text-align:center;
+      padding: 0 170px;
+      @media (max-width:700px) {
+        padding:0;
       }
       p{
+        border:2px solid #00ffff;
+        line-height:55px;
+        border-radius:55px;
         font-size:16px;
         color:#fff;
-        text-align:center;
-        span{
-          color:#fede69;
-        }
-        a{
-          color:#fede69;
-          text-decoration:underline;
-        }
+        margin-bottom:0;
+      }
+    }
+    .btn-copy-link {
+      display: inline-block;
+      width: 410px;
+      height: 100px;
+      line-height:100px;
+      text-align: center;
+      background: url('/activity/images/divide-money/login-bg.png') no-repeat center;
+      background-size:100%;
+      color: #f64b49;
+      font-size: 36px;
+      vertical-align: middle;
+      margin:70px 0 30px;
+      @media (max-width:700px) {
+        width:205px;
+        height:50px;
+        line-height:50px;
+        font-size:18px;
+        margin:10px 0;
+      }
+      &.copy-button{
+        width:240px;
+        height: 58px;
+        line-height: 58px;
+        font-size: 20px;
+        margin-top:15px;
       }
     }
   }
   .titel-item{
     float:left;
     width:100%;
-    margin-bottom:15px;
+    margin:30px 0;
     text-align:center;
     @media (max-width:700px) {
-      margin-bottom:0;
+      margin:15px 0;
     }
     .title-text{
       display:inline-block;
       padding:0 30px;
+      @media (max-width:700px) {
+        padding:0 50px;
+      }
       span{
         display:inline-block;
         width:100%;
-        line-height:38px;
-        font-size:22px;
-        color:#fff;
-        @media (max-width:700px) {
-          font-size:12px;
-          line-height:30px;
-        }
-      }
-    }
-  }
-  .tip-item{
-    float:left;
-    width:100%;
-    text-align:center;
-    font-size:16px;
-    color:#925c1f;
-    @media (max-width:700px) {
-      color:#732022;
-      font-size:12px;
-    }
-  }
-  .info-item{
-    float:left;
-    width:100%;
-    text-align:center;
-    &.info-list{
-      li{
-        margin:0 10px;
-      }
-    }
-    &.free-list{
-      background:#fee589;
-      border-radius: 10px;
-      padding:10px 0;
-      @media (max-width:700px) {
-        background:none;
-        border-radius:0;
-      }
-      li{
-        &.free-type{
-          margin:0 20px 0 80px;
-          @media (max-width:700px) {
-            margin:0;
-          }
-        }
-      }
-    }
-    li{
-      display:inline-block;
-      margin:0 30px;
-      .info-intro{
-        float:left;
-        width:100%;
-        height:120px;
-        @media (max-width:700px) {
-          height:80px;
-        }
-        span{
-          float:left;
-          width:100%;
-        }
-      }
-      .info-name{
-        float:left;
-        width:100%;
-        margin-top:20px;
-        font-size:16px;
-        color:#925c1f;
-        text-align:center;
-        @media (max-width:700px) {
-          font-size:12px;
-          margin-top:0;
-        }
-      }
-      &.money-type{
-        width:180px;
-        @media (max-width:700px) {
-          float: left;
-          width: 33.333333%;
-          margin: 0;
-        }
-        .info-intro{
-          background:url('/activity/images/invite-friend/money-bg.png') center no-repeat;
-          background-size:80%;
-          &.free-icon{
-            background:none;
-            @media (max-width:700px) {
-              padding-top:10px;
-            }
-          }
-          span{
-            font-size:16px;
-            color:#fff;
-            @media (max-width:700px) {
-              font-size:12px;
-            }
-            &.number-text{
-              margin-bottom:10px;
-              @media (max-width:700px) {
-                margin-bottom: 5px;
-                font-size: 12px;
-                margin-top: 12px;
-              }
-              strong{
-                font-size:34px;
-                @media (max-width:700px) {
-                  font-size:14px;
-                }
-              }
-            }
-          }
-        }
-      }
-      &.coupon-type{
-        width:240px;
-        @media (max-width:700px) {
-          width:33.333333%;
-          margin:0;
-        }
-        .info-intro{
-          background:url('/activity/images/invite-friend/coupon-bg.png') center no-repeat;
-          background-size:80%;
-          @media (max-width:700px) {
-            background-size:100%;
-          }
-          span{
-            font-size:28px;
-            color:#ff635a;
-            line-height: 110px;
-            padding-right: 65px;
-            @media (max-width:700px) {
-              line-height:80px;
-              font-size:14px;
-              padding-right:30px;
-            }
-            strong{
-              font-size:40px;
-              @media (max-width:700px) {
-                font-size:28px;
-              }
-            }
-          }
-        }
       }
     }
   }
@@ -498,26 +364,6 @@
       }
     }
   }
-  .icon-item{
-    float:left;
-    width:100%;
-    margin:10px 0;
-    text-align:center;
-    @media (max-width:700px) {
-      margin:0;
-    }
-    span{
-      display:inline-block;
-      width:50px;
-      height:50px;
-      background:url('/activity/images/invite-friend/and-icon.png') no-repeat center;
-      background-size:100%;
-      @media (max-width:700px) {
-        width:30px;
-        height:30px;
-      }
-    }
-  }
   .reward-item{
     float:left;
     width:100%;
@@ -527,9 +373,8 @@
     color: #fff;
     margin:30px 0 20px;
     @media (max-width:700px) {
-      padding: 20px;
-      margin-top: 10px;
-      color:#732022;
+      padding: 0;
+      margin: 0;
     }
     li {
       font-size:14px;

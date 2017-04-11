@@ -5,100 +5,64 @@
 
 <div class="share-reward-container page-width" id="shareRewardContainer">
     
-    <div class="bg-column-normal">
-        <div class="titel-item">
-            <div class="title-text">
-                <span>二重礼：一大波红包加码，有情更有益</span>
-            </div>
-        </div>
-        <div class="tip-item">
-            邀请好友注册投资，每月有效邀请人数越多，红包越多。
-        </div>
-        <ul class="info-item info-list media-item">
-            <li class="money-type">
-                <div class="info-intro">
-                    <span class="number-text"><strong>18</strong>元</span>
-                    <span>现金红包</span>
-                </div>
-                <div class="info-name">有效邀请2～4人可得</div>
-            </li>
-            <li class="money-type">
-                <div class="info-intro">
-                    <span class="number-text"><strong>48</strong>元</span>
-                    <span>现金红包</span>
-                </div>
-                <div class="info-name">有效邀请5～8人可得</div>
-            </li>
-            <li class="money-type">
-                <div class="info-intro">
-                    <span class="number-text"><strong>98</strong>元</span>
-                    <span>现金红包</span>
-                </div>
-                <div class="info-name">有效邀请9～10人可得</div>
-            </li>
-            <li class="money-type">
-                <div class="info-intro">
-                    <span class="number-text"><strong>288</strong>元</span>
-                    <span>现金红包</span>
-                </div>
-                <div class="info-name">有效邀请10人以上可得</div>
-            </li>
-        </ul>
-        <div class="btn-item">
-            <p>
-                <span>小贴士：</span>好友在注册后15天内投资额达到2000及以上（拓天体验金项目及债权转让除外），视为一个有效邀请。
-            </p>
+    <div class="titel-item">
+        <div class="title-text">
+            <span><img src="${staticServer}/activity/images/divide-money/title-one.png" width="100%"></span>
         </div>
     </div>
     <div class="bg-column-normal">
-        <div class="titel-item">
-            <div class="title-text">
-                <span>三重礼：好友投资拿现金，双赢双收益</span>
-            </div>
+        <div class="actor-info">
+            <h3>“老”有所得</h3>
+            <p>4月13日前注册的老用户，在活动期间投资并邀请好友完成注册，即可获得与活动期间累计投资额等额的体验金奖励！</p>
+            <h3>“新”有所享</h3>
+            <p>4月13日之后（含4月13日）新注册的用户，在活动期间投资并邀请好友完成注册，即可获得活动期间累计投资额<span>双倍的体验金</span>奖励！</p>
         </div>
+    </div>
+    <div class="titel-item">
+        <div class="title-text">
+            <span><img src="${staticServer}/activity/images/divide-money/title-two.png" width="100%"></span>
+        </div>
+    </div>
+    <div class="bg-column-normal">
         <div class="reward-item">
             <img src="${staticServer}/activity/images/divide-money/reward-img.png" width="100%" class="media-item">
             <img src="${staticServer}/activity/images/divide-money/reward-img-phone.png" width="100%" class="media-item-phone">
         </div>
         <div class="btn-item">
             <p>
-                <span>小贴士：</span>好友在注册后15天内投资额达到2000及以上（拓天体验金项目及债权转让除外），视为一个有效邀请。
+                <span>小贴士：</span>体验金投资年化收益13%，到期可提现，投的越多，得到越多哦！
             </p>
         </div>
     </div>
     <div class="bg-column-normal">
+        <div class="titel-item">
+            <div class="title-text">
+                <span><img src="${staticServer}/activity/images/divide-money/title-four.png" width="100%"></span>
+            </div>
+        </div>
      <@global.isAnonymous>
-        <div class="invite-box-friend anonymous">
-            <dl>
-                <dt>向好友发送您的邀请链接：</dt>
-                <dd>
-                    <input type="text" class="input-invite" disabled value="您需要登录才可以邀请好友">
-                </dd>
-                <dd>
-                    <a class="btn-copy-link show-login" href="javascript:void(0);">去登录</a>
-                </dd>
-            </dl>
+        <div class="invite-box-friend clearfix">
+            <div class="info-link">
+                <p>登陆后显示邀请链接</p>
+                <a class="btn-copy-link show-login" href="javascript:void(0);">立即登录</a>
+            </div>
         </div>
     </@global.isAnonymous>
     <@global.isNotAnonymous>
         <@global.noRole hasNoRole="'INVESTOR'">
            <#--已登录未认证-->
-            <div class="invite-box-friend anonymous">
-                <dl>
-                    <dt>向好友发送您的邀请链接：</dt>
-                    <dd>
-                        <input type="text" class="input-invite"  disabled value="您的好友还不知道您是谁，先来实名认证吧">
-                    </dd>
-                    <dd>
-                        <a class="btn-copy-link to-identification" target="_blank" href="<#if !isAppSource>/register/account?redirect=/activity/divide-money<#else>app/tuotian/authentication</#if>" >实名认证</a>
-                    </dd>
-                </dl>
+            <div class="invite-box-friend clearfix">
+                <div class="info-link">
+                    <p>登陆后显示邀请链接</p>
+                    <a class="btn-copy-link to-identification" target="_blank" href="<#if !isAppSource>/register/account?redirect=/activity/divide-money<#else>app/tuotian/authentication</#if>" >实名认证</a>
+                </div>
             </div>
         </@global.noRole>
         <@global.role hasRole="'INVESTOR','LOANER'">
         <#--已登录已认证-->
-            <div class="invite-box-friend clearfix non-anonymous yes-identification">
+            <div class="invite-box-friend clearfix">
                 <div class="weixin-code">
+                    <span class="title-code">方式1</span>
                     <em class="img-code">
                         <!--[if gte IE 8]>
                         <span style="font-size:12px">请使用更高版本浏览器查看</span>
@@ -106,23 +70,29 @@
                     </em>
                     <span>将扫码后的页面分享给好友即可邀请</span>
                 </div>
-                <dl>
-                    <dd>
-                        <input type="text" class="input-invite" id="clipboard_text1"  readonly data-mobile="<@global.security.authentication property='principal.mobile' />" >
-                    </dd>
-                    <dt class="clearfix"><a href="javascript:void(0);" class="btn-copy-link fl copy-button" id="copy_btn2"  data-clipboard-action="copy" data-clipboard-target="#clipboard_text1" >复制链接发送给好友</a></dt>
-                    <dd>好友通过您发送的链接完成注册即邀请成功</dd>
-                </dl>
+                <div class="link-item">
+                    <dl>
+                        <dt>方式2</dt>
+                        <dd>
+                            <input type="text" class="input-invite" id="clipboard_text1"  readonly data-mobile="<@global.security.authentication property='principal.mobile' />" >
+                        </dd>
+                        <dd class="clearfix tc"><a href="javascript:void(0);" class="btn-copy-link  copy-button" id="copy_btn2"  data-clipboard-action="copy" data-clipboard-target="#clipboard_text1" >复制链接发送给好友</a></dd>
+                    </dl>
+                    <p class="info-text">好友通过您发送的链接完成注册即邀请成功</p>
+                </div>
+                <div class="info-link">
+                    <a class="btn-copy-link" target="_blank" href="<#if !isAppSource>/referrer/refer-list<#else>app/tuotian/refer-reward-list</#if>">马上邀请好友</a>
+                </div>
             </div>
         </@global.role>
     </@global.isNotAnonymous>
     </div>
-    <div class="bg-column-normal">
-        <div class="titel-item">
-            <div class="title-text">
-                <span>三重礼：好友投资拿现金，双赢双收益</span>
-            </div>
+    <div class="titel-item">
+        <div class="title-text">
+            <span><img src="${staticServer}/activity/images/divide-money/title-three.png" width="100%"></span>
         </div>
+    </div>
+    <div class="bg-column-normal">
         <ul class="activity-rules">
             <li>1.用户所获体验金将于活动结束后3个工作日内统一发放，用户可在App端“我的-我的体验金”或PC端“我的账户”中查看；</li>
             <li>2.获得的体验金仅限于投资拓天体验金项目，项目到期后，平台回收体验金，收益归用户所有；</li>
