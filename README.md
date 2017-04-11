@@ -95,7 +95,7 @@
 	`brew install node`</br>
 	安装成功后在终端输入`node -v`和`npm -v`会显示版本信息
 	2. 根目录路径： ~/Work/tuotian/ttsd-frontend-manage ，以下简称<根目录>
-	安装前端所需插件 `cd <根目录>`</br>
+	`cd <根目录>`</br>
 	`npm install --registry=https://registry.npm.taobao.org`</br>
 	安装成功后，执行 `npm start` 启动虚拟服务器 ，再启动tomcat项目，注意先后顺序，会看到服务成功运行 </br>
 
