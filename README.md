@@ -115,7 +115,7 @@
     `npm run showimage` </br></br>
 
     清除项目中无用的图片</br>
-    `npm run start2` </br>
+    `npm run prod` </br>
     `npm run removeUselessImgs` </br></br>
 
     上线发布的： 进入<根目录></br>
