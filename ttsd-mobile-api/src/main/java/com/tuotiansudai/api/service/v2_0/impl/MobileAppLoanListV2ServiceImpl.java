@@ -93,7 +93,7 @@ public class MobileAppLoanListV2ServiceImpl implements MobileAppLoanListV2Servic
         DecimalFormat decimalFormat = new DecimalFormat("######0.##");
 
         List<PledgeType> pledgeTypeList = Lists.newArrayList(PledgeType.HOUSE, PledgeType.VEHICLE, PledgeType.NONE);
-        if(AppVersionUtil.compareVersion() == -1 ){
+        if(AppVersionUtil.compareVersion() == AppVersionUtil.low ){
             loanList = loanList.stream().filter(n -> pledgeTypeList.contains(n.getPledgeType())).collect(Collectors.toList());
         }
 

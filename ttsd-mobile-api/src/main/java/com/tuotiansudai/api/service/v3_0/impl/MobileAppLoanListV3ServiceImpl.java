@@ -172,7 +172,7 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
         }
 
         List<PledgeType> pledgeTypeList = Lists.newArrayList(PledgeType.HOUSE, PledgeType.VEHICLE, PledgeType.NONE);
-        if(AppVersionUtil.compareVersion() == -1 ){
+        if(AppVersionUtil.compareVersion() == AppVersionUtil.low ){
             loanList = loanList.stream().filter(n -> pledgeTypeList.contains(n.getPledgeType())).collect(Collectors.toList());
         }
 

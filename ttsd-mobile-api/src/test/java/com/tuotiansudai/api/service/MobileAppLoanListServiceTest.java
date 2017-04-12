@@ -4,25 +4,23 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.impl.MobileAppLoanListServiceImpl;
 import com.tuotiansudai.api.util.PageValidUtils;
-import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
-import com.tuotiansudai.repository.mapper.UserCouponMapper;
-import com.tuotiansudai.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.service.CouponService;
-import com.tuotiansudai.membership.repository.model.MembershipModel;
+import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
-import com.tuotiansudai.repository.mapper.ExtraLoanRateMapper;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.LoanDetailsMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.util.IdGenerator;
 import org.joda.time.DateTime;
+import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
 
 import java.util.Date;
 import java.util.List;
@@ -54,6 +52,17 @@ public class MobileAppLoanListServiceTest extends ServiceTestBase {
     private PageValidUtils pageValidUtils;
     @Mock
     private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
+    @Mock
+    private RequestAttributes attrs;
+
+    @Before
+    public void before() {
+        MockitoAnnotations.initMocks(this);
+        BaseParam baseParam = new BaseParam();
+        baseParam.setAppVersion("4.2");
+        attrs.setAttribute("BaseParam",baseParam,100);
+        RequestContextHolder.setRequestAttributes(attrs);
+    }
 
     @Test
     public void shouldGenerateLoanListIsOk() {
@@ -75,10 +84,10 @@ public class MobileAppLoanListServiceTest extends ServiceTestBase {
         UserCouponModel userCouponModel = new UserCouponModel();
         userCouponModel.setEndTime(DateTime.now().toDate());
         when(userCouponMapper.findUsedExperienceByLoginName(anyString())).thenReturn(Lists.newArrayList(userCouponModel));
+
         LoanListRequestDto loanListRequestDto = new LoanListRequestDto();
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId("testLoan");
-        baseParam.setAppVersion("4.2.2");
         loanListRequestDto.setBaseParam(baseParam);
         loanListRequestDto.setIndex(1);
         loanListRequestDto.setPageSize(10);
@@ -113,7 +122,7 @@ public class MobileAppLoanListServiceTest extends ServiceTestBase {
         LoanListRequestDto loanListRequestDto = new LoanListRequestDto();
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId("testLoan");
-        baseParam.setAppVersion("4.2.2");
+        baseParam.setAppVersion("4.2");
         loanListRequestDto.setBaseParam(baseParam);
         loanListRequestDto.setIndex(1);
         loanListRequestDto.setPageSize(10);

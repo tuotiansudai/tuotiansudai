@@ -2,7 +2,6 @@ package com.tuotiansudai.api.service;
 
 import com.tuotiansudai.api.dto.v1_0.BaseParam;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
-import com.tuotiansudai.api.dto.v2_0.BaseParamDto;
 import com.tuotiansudai.api.dto.v2_0.LoanListResponseDataDto;
 import com.tuotiansudai.api.service.v2_0.impl.MobileAppLoanListV2ServiceImpl;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
@@ -12,12 +11,16 @@ import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
 import org.joda.time.DateTime;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
 
 import java.util.Date;
 import java.util.UUID;
@@ -40,6 +43,17 @@ public class MobileAppLoanListV2ServiceTest extends ServiceTestBase {
     private UserMapper userMapper;
     @Mock
     private UserMembershipEvaluator userMembershipEvaluator;
+    @Mock
+    private RequestAttributes attrs;
+
+    @Before
+    public void before() {
+        MockitoAnnotations.initMocks(this);
+        BaseParam baseParam = new BaseParam();
+        baseParam.setAppVersion("4.2");
+        attrs.setAttribute("BaseParam",baseParam,100);
+        RequestContextHolder.setRequestAttributes(attrs);
+    }
 
     @Test
     public void shouldNoLoginNameGenerateIndexLoanIsOk() {

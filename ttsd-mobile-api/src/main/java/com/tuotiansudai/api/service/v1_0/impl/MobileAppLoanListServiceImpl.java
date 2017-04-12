@@ -80,7 +80,7 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
         List<LoanModel> loanModels = loanMapper.findLoanListMobileApp(ProductTypeConverter.stringConvertTo(loanListRequestDto.getProductType()), null, loanListRequestDto.getLoanStatus(), loanListRequestDto.getRateLower(), loanListRequestDto.getRateUpper(), index, pageSize);
 
         List<PledgeType> pledgeTypeList = Lists.newArrayList(PledgeType.HOUSE, PledgeType.VEHICLE, PledgeType.NONE);
-        if(AppVersionUtil.compareVersion() == -1 ){
+        if(AppVersionUtil.compareVersion() == AppVersionUtil.low ){
             loanModels = loanModels.stream().filter(n -> pledgeTypeList.contains(n.getPledgeType())).collect(Collectors.toList());
         }
 
