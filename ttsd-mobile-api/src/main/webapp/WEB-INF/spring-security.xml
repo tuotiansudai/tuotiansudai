@@ -17,7 +17,7 @@
 
         <custom-filter ref="mobileAppAuthenticationTokenProcessingFilter" position="PRE_AUTH_FILTER"/>
 
-        <form-login login-processing-url="/login" authentication-details-source-ref="myWebAuthenticationDetailsSource"
+        <form-login login-page="/404" login-processing-url="/login" authentication-details-source-ref="myWebAuthenticationDetailsSource"
                     authentication-success-handler-ref="myMobileSimpleUrlAuthenticationSuccessHandler"
                     authentication-failure-handler-ref="myMobileSimpleUrlAuthenticationFailureHandler"/>
 

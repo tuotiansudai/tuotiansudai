@@ -14,6 +14,32 @@ require("publicStyle/error.scss");
 require("publicStyle/global.scss");
 
 require('publicJs/error');
+
+window.Middleware= require('publicJs/middleware');
+
+Function.prototype.before = function(beforefn) {
+    var self = this; // 保存原函数的引用
+
+    // 返回包含了原函数和新函数的"代理"函数
+    return function() {
+        var check = beforefn.apply(this, arguments); // 执行新函数,修正 this
+        if(check) {
+            self.apply(this, arguments); // 执行原函数
+        }
+    }
+};
+
+Function.prototype.after = function(afterfn) {
+
+    var self = this;  //保存原函数的引用，这里指向before里的回调部分
+
+    return function() {
+        var ret = self.apply(this, arguments);  //执行原函数,这里指向before里的回调部分
+        afterfn.apply(this, arguments);  //执行新函数
+        return ret;
+    }
+};
+
 //ie8不支持bind方法，这里做兼容处理
 if (!Function.prototype.bind) {
     Function.prototype.bind = function (oThis) {
