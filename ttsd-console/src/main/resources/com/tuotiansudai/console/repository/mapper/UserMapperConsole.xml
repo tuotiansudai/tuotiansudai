@@ -38,6 +38,8 @@
         <result column="no_invest_period" property="noInvestPeriod"/>
         <result column="invested" property="invested"/>
         <result column="total_invest_amount" property="totalInvestAmount"/>
+        <result column="total_withdraw_amount" property="totalWithdrawAmount"/>
+        <result column="user_balance" property="userBalance"/>
         <result column="invest_count" property="investCount"/>
         <result column="loan_count" property="loanCount"/>
         <result column="transform_period" property="transformPeriod"/>
@@ -46,6 +48,8 @@
         <result column="last_invest_time" property="lastInvestTime"/>
         <result column="total_repaying_amount" property="totalRepayingAmount"/>
         <result column="last_login_time" property="lastLoginTime"/>
+        <result column="last_repay_time" property="lastRepayTime"/>
+        <result column="last_withdraw_time" property="lastWithdrawTime"/>
         <result column="last_login_source" property="lastLoginSource"/>
     </resultMap>
 
@@ -396,6 +400,18 @@
             <if test="totalInvestAmountEnd != null and totalInvestAmountEnd != '' ">
                 AND (select sum(amount) from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id != 1) &lt;= #{totalInvestAmountEnd}
             </if>
+            <if test="totalWithdrawAmountStart != null and totalWithdrawAmountStart != '' ">
+                AND (select sum(amount) from withdraw w where w.login_name=u.login_name and w.status='SUCCESS') >= #{totalWithdrawAmountStart}
+            </if>
+            <if test="totalWithdrawAmountEnd != null and totalWithdrawAmountEnd != '' ">
+                AND (select sum(amount) from withdraw w where w.login_name=u.login_name and w.status='SUCCESS') &lt;= #{totalWithdrawAmountEnd}
+            </if>
+            <if test="userBalanceStart != null and userBalanceStart != '' ">
+                AND (select balance from account a where a.login_name=u.login_name) >= #{userBalanceStart}
+            </if>
+            <if test="userBalanceEnd != null and userBalanceEnd != '' ">
+                AND (select balance from account a where a.login_name=u.login_name) &lt;= #{userBalanceEnd}
+            </if>
             <if test="investCountStart != null and investCountStart >= 0 ">
                 AND (select count(1) from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id != 1) >= #{investCountStart}
             </if>
@@ -437,6 +453,18 @@
             </if>
             <if test="lastInvestTimeEnd != null">
                 AND (select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id != 1 order by i.created_time desc limit 1) &lt; #{lastInvestTimeEnd}
+            </if>
+            <if test="lastRepayTimeStart != null">
+                AND (select max(ir.repay_date) from invest_repay ir join invest i on i.id=ir.invest_id where i.login_name=u.login_name) > #{lastRepayTimeStart}
+            </if>
+            <if test="lastRepayTimeEnd != null">
+                AND (select max(ir.repay_date) from invest_repay ir join invest i on i.id=ir.invest_id where i.login_name=u.login_name) &lt; #{lastRepayTimeEnd}
+            </if>
+            <if test="lastWithdrawTimeStart != null">
+                AND (select max(created_time) from withdraw where login_name=u.login_name) > #{lastWithdrawTimeStart}
+            </if>
+            <if test="lastWithdrawTimeEnd != null">
+                AND (select max(created_time) from withdraw where login_name=u.login_name) &lt; #{lastWithdrawTimeEnd}
             </if>
             <if test="repayingAmountStart != null and repayingAmountStart >= 0 ">
                 AND (IFNULL((select sum(ir.corpus+ir.expected_interest+ir.default_interest-ir.expected_fee) from invest_repay ir, invest i where i.login_name=u.login_name and i.id=ir.invest_id and ir.status='REPAYING' and i.status='SUCCESS'),0) +
@@ -471,6 +499,8 @@
                 u.register_time) as no_invest_period,
             EXISTS (select 1 from invest i where i.login_name=u.login_name and i.status='SUCCESS' and loan_id != 1 order by i.created_time asc limit 1) as invested,
             (select sum(amount) from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id != 1) as total_invest_amount,
+            (select sum(amount) from withdraw w where w.login_name=u.login_name and w.status='SUCCESS') as total_withdraw_amount,
+            (select balance from account a where a.login_name=u.login_name) as user_balance,
             (select count(1) from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id != 1) as invest_count,
             (select count(distinct l.id) from loan l, invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id = l.id and l.id != 1) as loan_count,
             DATEDIFF((select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id != 1 order by i.created_time asc limit 1),
@@ -480,6 +510,8 @@
             DATEDIFF((select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id != 1 order by i.created_time asc limit 2,1),
             (select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id != 1 order by i.created_time asc limit 1)) as invest_1st_3rd_timing,
             (select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id != 1 order by i.created_time desc limit 1) as last_invest_time,
+            (select max(ir.repay_date) from invest_repay ir join invest i on i.id=ir.invest_id where i.login_name=u.login_name) as last_repay_time,
+            (select max(created_time) from withdraw where login_name=u.login_name) as last_withdraw_time,
             (IFNULL((select sum(ir.corpus+ir.expected_interest+ir.default_interest-ir.expected_fee) from invest_repay ir, invest i where i.login_name=u.login_name and i.id=ir.invest_id and ir.status='REPAYING' and i.status='SUCCESS'),0) +
             IFNULL((select sum(cr.expected_interest-cr.expected_fee) from coupon_repay cr, invest i where i.login_name=u.login_name and i.id=cr.invest_id and cr.status='REPAYING' and i.status='SUCCESS'),0) +
             IFNULL((select sum(ier.expected_interest-ier.expected_fee) from invest_extra_rate ier, invest i where i.login_name=u.login_name and i.id=ier.invest_id and ier.status='REPAYING' and i.status='SUCCESS'),0)) as total_repaying_amount,
@@ -513,6 +545,18 @@
             </if>
             <if test="totalInvestAmountEnd != null and totalInvestAmountEnd != '' ">
                 AND (select sum(amount) from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id != 1) &lt;= #{totalInvestAmountEnd}
+            </if>
+            <if test="totalWithdrawAmountStart != null and totalWithdrawAmountStart != '' ">
+                AND (select sum(amount) from withdraw w where w.login_name=u.login_name and w.status='SUCCESS') >= #{totalWithdrawAmountStart}
+            </if>
+            <if test="totalWithdrawAmountEnd != null and totalWithdrawAmountEnd != '' ">
+                AND (select sum(amount) from withdraw w where w.login_name=u.login_name and w.status='SUCCESS') &lt;= #{totalWithdrawAmountEnd}
+            </if>
+            <if test="userBalanceStart != null and userBalanceStart != '' ">
+                AND (select balance from account a where a.login_name=u.login_name) >= #{userBalanceStart}
+            </if>
+            <if test="userBalanceEnd != null and userBalanceEnd != '' ">
+                AND (select balance from account a where a.login_name=u.login_name) &lt;= #{userBalanceEnd}
             </if>
             <if test="investCountStart != null and investCountStart >= 0 ">
                 AND (select count(1) from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id != 1) >= #{investCountStart}
@@ -555,6 +599,18 @@
             </if>
             <if test="lastInvestTimeEnd != null">
                 AND (select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id != 1 order by i.created_time desc limit 1) &lt; #{lastInvestTimeEnd}
+            </if>
+            <if test="lastRepayTimeStart != null">
+                AND (select max(ir.repay_date) from invest_repay ir join invest i on i.id=ir.invest_id where i.login_name=u.login_name) > #{lastRepayTimeStart}
+            </if>
+            <if test="lastRepayTimeEnd != null">
+                AND (select max(ir.repay_date) from invest_repay ir join invest i on i.id=ir.invest_id where i.login_name=u.login_name) &lt; #{lastRepayTimeEnd}
+            </if>
+            <if test="lastWithdrawTimeStart != null">
+                AND (select max(created_time) from withdraw where login_name=u.login_name) > #{lastWithdrawTimeStart}
+            </if>
+            <if test="lastWithdrawTimeEnd != null">
+                AND (select max(created_time) from withdraw where login_name=u.login_name) &lt; #{lastWithdrawTimeEnd}
             </if>
             <if test="repayingAmountStart != null and repayingAmountStart >= 0 ">
                 AND (IFNULL((select sum(ir.corpus+ir.expected_interest+ir.default_interest-ir.expected_fee) from invest_repay ir, invest i where i.login_name=u.login_name and i.id=ir.invest_id and ir.status='REPAYING' and i.status='SUCCESS'),0) +
