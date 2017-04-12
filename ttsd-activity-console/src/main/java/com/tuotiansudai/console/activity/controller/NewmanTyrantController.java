@@ -3,6 +3,7 @@ package com.tuotiansudai.console.activity.controller;
 import com.tuotiansudai.activity.repository.dto.NewmanTyrantPrizeDto;
 import com.tuotiansudai.console.activity.service.ActivityConsoleNewmanTyrantService;
 import com.tuotiansudai.repository.model.HeroRankingView;
+import com.tuotiansudai.repository.model.NewmanTyrantHistoryView;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -36,19 +37,15 @@ public class NewmanTyrantController {
 
         List<HeroRankingView> tyrantViews = activityConsoleNewmanTyrantService.obtainTyrant(tradingTime);
 
-        long avgNewmanInvestAmount = newmanViews.stream().mapToLong(heroRankingView -> heroRankingView.getSumAmount()).sum();
-
-        long avgTyrantInvestAmount = tyrantViews.stream().mapToLong(heroRankingView -> heroRankingView.getSumAmount()).sum();
-
+        List<NewmanTyrantHistoryView> newmanTyrantHistoryViews = activityConsoleNewmanTyrantService.obtainNewmanTyrantHistoryRanking(tradingTime);
         modelAndView.addObject("tradingTime", tradingTime);
 
         modelAndView.addObject("newmanViews", newmanViews);
 
         modelAndView.addObject("tyrantViews", tyrantViews);
 
-        modelAndView.addObject("avgNewmanInvestAmount", new BigDecimal(avgNewmanInvestAmount).divide(new BigDecimal(newmanViews.size() == 0 ? 1:newmanViews.size()),0,RoundingMode.DOWN));
-
-        modelAndView.addObject("avgTyrantInvestAmount", new BigDecimal(avgTyrantInvestAmount).divide(new BigDecimal(tyrantViews.size() == 0 ? 1:tyrantViews.size()),0,RoundingMode.DOWN));
+        modelAndView.addObject("avgNewmanInvestAmount", String.valueOf(newmanTyrantHistoryViews.size() > 0 ? newmanTyrantHistoryViews.get(0).getAvgNewmanInvestAmount() : 0));
+        modelAndView.addObject("avgTyrantInvestAmount", String.valueOf(newmanTyrantHistoryViews.size() > 0 ? newmanTyrantHistoryViews.get(0).getAvgTyrantInvestAmount() : 0));
 
         modelAndView.addObject("todayDto", activityConsoleNewmanTyrantService.obtainPrizeDto(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))));
         modelAndView.addObject("tomorrowDto", activityConsoleNewmanTyrantService.obtainPrizeDto(LocalDate.now().plusDays(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))));
