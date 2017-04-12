@@ -1,4 +1,4 @@
-package com.tuotiansudai.api.service.v2_0.impl;
+package com.tuotiansudai.api.service.v3_0.impl;
 
 
 import com.google.common.base.Function;
@@ -8,9 +8,11 @@ import com.tuotiansudai.api.dto.v1_0.EvidenceResponseDataDto;
 import com.tuotiansudai.api.dto.v1_0.ExtraLoanRateDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.dto.v2_0.*;
-import com.tuotiansudai.api.service.v2_0.MobileAppLoanDetailV2Service;
-import com.tuotiansudai.api.service.v3_0.impl.MobileAppLoanListV3ServiceImpl;
-import com.tuotiansudai.api.util.AppVersionUtil;
+import com.tuotiansudai.api.dto.v3_0.DisclosureDto;
+import com.tuotiansudai.api.dto.v3_0.ItemDto;
+import com.tuotiansudai.api.dto.v3_0.LoanDetailV3RequestDto;
+import com.tuotiansudai.api.dto.v3_0.LoanDetailV3ResponseDataDto;
+import com.tuotiansudai.api.service.v3_0.MobileAppLoanDetailV3Service;
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
@@ -37,9 +39,9 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Service {
+public class MobileAppLoanDetailV3ServiceImpl implements MobileAppLoanDetailV3Service {
 
-    private static final Logger logger = Logger.getLogger(MobileAppLoanDetailV2ServiceImpl.class);
+    private static final Logger logger = Logger.getLogger(MobileAppLoanDetailV3ServiceImpl.class);
 
     @Autowired
     private LoanMapper loanMapper;
@@ -100,29 +102,25 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
     private String content = "个人经营借款理财项目，总额{0}元期限{1}天，年化利率{2}%，先到先抢！！！";
 
     @Override
-    public BaseResponseDto<LoanDetailV2ResponseDataDto> findLoanDetail(LoanDetailV2RequestDto requestDto) {
-        BaseResponseDto<LoanDetailV2ResponseDataDto> responseDto = new BaseResponseDto<>();
+    public BaseResponseDto<LoanDetailV3ResponseDataDto> findLoanDetail(LoanDetailV3RequestDto requestDto) {
+        BaseResponseDto<LoanDetailV3ResponseDataDto> responseDto = new BaseResponseDto<>();
         String loanId = requestDto.getLoanId();
         LoanModel loanModel = loanMapper.findById(Long.parseLong(loanId));
         if (loanModel == null) {
             logger.warn("标的详情" + ReturnMessage.LOAN_NOT_FOUND.getCode() + ":" + ReturnMessage.LOAN_NOT_FOUND.getMsg());
             return new BaseResponseDto<>(ReturnMessage.LOAN_NOT_FOUND.getCode(), ReturnMessage.LOAN_NOT_FOUND.getMsg());
         }
-        if (AppVersionUtil.compareVersion() == AppVersionUtil.low ) {
-            logger.warn("标的详情" + ReturnMessage.LOAN_NOT_FOUND.getCode() + ":" + ReturnMessage.LOAN_NOT_FOUND.getMsg());
-            return new BaseResponseDto<>(ReturnMessage.APP_VERSION_NOT_LATEST.getCode(), ReturnMessage.APP_VERSION_NOT_LATEST.getMsg());
-        }
         responseDto.setCode(ReturnMessage.SUCCESS.getCode());
         responseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
         String loginName = requestDto.getBaseParam().getUserId();
-        LoanDetailV2ResponseDataDto dataDto = convertLoanDetailFromLoan(loanModel, loginName);
+        LoanDetailV3ResponseDataDto dataDto = convertLoanDetailFromLoan(loanModel, loginName);
         responseDto.setData(dataDto);
         return responseDto;
     }
 
-    private LoanDetailV2ResponseDataDto convertLoanDetailFromLoan(LoanModel loanModel, String loginName) {
+    private LoanDetailV3ResponseDataDto convertLoanDetailFromLoan(LoanModel loanModel, String loginName) {
         DecimalFormat decimalFormat = new DecimalFormat("######0.##");
-        LoanDetailV2ResponseDataDto dataDto = new LoanDetailV2ResponseDataDto();
+        LoanDetailV3ResponseDataDto dataDto = new LoanDetailV3ResponseDataDto();
         dataDto.setLoanId(loanModel.getId());
         dataDto.setLoanType(loanModel.getProductType() != null ? loanModel.getProductType().getProductLine() : "");
         LoanDetailsModel loanDetailsModelActivity = loanDetailsMapper.getByLoanId(loanModel.getId());
@@ -200,47 +198,54 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
             dataDto.setRaiseCompletedTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(loanModel.getRaisingCompleteTime()));
         }
         LoanerDetailsModel loanerDetailsModel = loanerDetailsMapper.getByLoanId(loanModel.getId());
+
+        List<DisclosureDto> disclosureDtoList = Lists.newArrayList();
+
         if (loanerDetailsModel != null) {
-            LoanerDto loanerDto = new LoanerDto(loanerDetailsModel);
-            loanerDto.setOverdueRate(MessageFormat.format("{0}%", new BigDecimal(loanRepayMapper.calculateOverdueRate(loanModel.getAgentLoginName()) * 100).setScale(0, BigDecimal.ROUND_DOWN).toString()));
-            dataDto.setLoaner(loanerDto);
-            switch (loanModel.getPledgeType()) {
-                case HOUSE:
-                    PledgeHouseModel pledgeHouseModel = pledgeHouseMapper.getByLoanId(loanModel.getId());
-                    if (pledgeHouseModel != null) {
-                        dataDto.setPledgeHouse(new PledgeHouseDto(pledgeHouseModel));
-                    }
-                case VEHICLE:
-                    PledgeVehicleModel pledgeVehicleModel = pledgeVehicleMapper.getByLoanId(loanModel.getId());
-                    if (pledgeVehicleModel != null) {
-                        dataDto.setPledgeVehicle(new PledgeVehicleDto(pledgeVehicleModel));
-                    }
-            }
+            String overdueRate = MessageFormat.format("{0}%", new BigDecimal(loanRepayMapper.calculateOverdueRate(loanModel.getAgentLoginName()) * 100).setScale(0, BigDecimal.ROUND_DOWN).toString());
+            DisclosureDto loanerDisclosureDto = convertLoanerInfoFromLoan(loanerDetailsModel, overdueRate);
+            disclosureDtoList.add(loanerDisclosureDto);
+            DisclosureDto pledgeDisclosureDto = convertPledgeInfoFromLoan(loanModel);
+            disclosureDtoList.add(pledgeDisclosureDto);
         }
         if (loanModel.getPledgeType() == PledgeType.ENTERPRISE_CREDIT || loanModel.getPledgeType() == PledgeType.ENTERPRISE_PLEDGE) {
             LoanerEnterpriseDetailsModel loanerEnterpriseDetailsModel = loanerEnterpriseDetailsMapper.getByLoanId(loanModel.getId());
             if (loanerEnterpriseDetailsModel != null) {
-                EnterpriseDto enterpriseDto = new EnterpriseDto(loanerEnterpriseDetailsModel);
-                enterpriseDto.setJuristicPerson(StringUtils.rightPad(StringUtils.left(enterpriseDto.getJuristicPerson(), 1), 2, "某"));
-                dataDto.setEnterprise(enterpriseDto);
-            }
+                DisclosureDto loanerEnterpriseInfoPurposeDisclosureDto = convertLoanerEnterpriseDetailsPurposeFromLoan(loanerEnterpriseDetailsModel);
+                disclosureDtoList.add(loanerEnterpriseInfoPurposeDisclosureDto);
 
+                DisclosureDto loanerEnterpriseDetailsDisclosureDto = convertLoanerEnterpriseDetailsFromLoan(loanerEnterpriseDetailsModel);
+                disclosureDtoList.add(loanerEnterpriseDetailsDisclosureDto);
+            }
         }
-        if (loanModel.getPledgeType() == PledgeType.ENTERPRISE_PLEDGE) {
+        if (loanModel.getPledgeType() == PledgeType.ENTERPRISE_PLEDGE){
             PledgeEnterpriseModel pledgeEnterpriseModel = pledgeEnterpriseMapper.getByLoanId(loanModel.getId());
             if (pledgeEnterpriseModel != null) {
-                dataDto.setPledgeEnterpriseDto(new PledgeEnterpriseDto(pledgeEnterpriseModel));
+                DisclosureDto loanerPledgeEnterpriseDisclosureDto = convertLoanerPledgeEnterpriseFromLoan(pledgeEnterpriseModel);
+                disclosureDtoList.add(loanerPledgeEnterpriseDisclosureDto);
             }
         }
 
-        if (loanModel.getPledgeType() == PledgeType.ENTERPRISE_FACTORING || loanModel.getPledgeType() == PledgeType.ENTERPRISE_BILL) {
+        if (loanModel.getPledgeType() == PledgeType.ENTERPRISE_BILL) {
             LoanerEnterpriseInfoModel loanerEnterpriseInfoModel = loanerEnterpriseInfoMapper.getByLoanId(loanModel.getId());
             if (loanerEnterpriseInfoModel != null) {
-                EnterpriseInfoDto enterpriseInfoDto = new EnterpriseInfoDto(loanerEnterpriseInfoModel);
-                dataDto.setEnterpriseInfo(enterpriseInfoDto);
+                DisclosureDto loanerEnterpriseInfoDisclosureDto = convertLoanerEnterpriseInfoFromLoan(loanerEnterpriseInfoModel);
+                disclosureDtoList.add(loanerEnterpriseInfoDisclosureDto);
             }
         }
 
+        if (loanModel.getPledgeType() == PledgeType.ENTERPRISE_FACTORING) {
+            LoanerEnterpriseInfoModel loanerEnterpriseInfoModel = loanerEnterpriseInfoMapper.getByLoanId(loanModel.getId());
+            if (loanerEnterpriseInfoModel != null) {
+                DisclosureDto loanerEnterpriseInfoDisclosureDto = convertLoanerEnterpriseInfoFromLoan(loanerEnterpriseInfoModel);
+                disclosureDtoList.add(loanerEnterpriseInfoDisclosureDto);
+
+                DisclosureDto loanerEnterpriseFactoringInfoDisclosureDto = convertLoanerEnterpriseFactoringInfoFromLoan(loanerEnterpriseInfoModel);
+                disclosureDtoList.add(loanerEnterpriseFactoringInfoDisclosureDto);
+            }
+        }
+
+        dataDto.setDisclosures(disclosureDtoList);
         double investFeeRate = membershipPrivilegePurchaseService.obtainServiceFee(loginName);
         if (loanModel != null && ProductType.EXPERIENCE == loanModel.getProductType()) {
             investFeeRate = this.defaultFee;
@@ -250,17 +255,17 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
         dataDto.setEvidence(evidence);
         List<InvestModel> investAchievements = investMapper.findInvestAchievementsByLoanId(loanModel.getId());
         StringBuffer marqueeTitle = new StringBuffer();
-        if (CollectionUtils.isEmpty(investAchievements) && Lists.newArrayList(com.tuotiansudai.repository.model.LoanStatus.RAISING, com.tuotiansudai.repository.model.LoanStatus.PREHEAT).contains(loanModel.getStatus())) {
+        if (CollectionUtils.isEmpty(investAchievements) && Lists.newArrayList(LoanStatus.RAISING, LoanStatus.PREHEAT).contains(loanModel.getStatus())) {
             marqueeTitle.append("第一个投资者将获得“拓荒先锋”称号及0.2％加息券＋50元红包    ");
         } else {
             for (InvestModel investModel : investAchievements) {
                 String investorLoginName = randomUtils.encryptMobile(loginName, investModel.getLoginName(), investModel.getId());
-                if (investModel.getAchievements().contains(InvestAchievement.MAX_AMOUNT) && loanModel.getStatus() == com.tuotiansudai.repository.model.LoanStatus.RAISING) {
-                    marqueeTitle.append(investorLoginName + " 以累计投资" + AmountConverter.convertCentToString(investMapper.sumSuccessInvestAmountByLoginName(loanModel.getId(), investModel.getLoginName(), true)) + "元暂居标王，快来争夺吧    ");
+                if (investModel.getAchievements().contains(InvestAchievement.MAX_AMOUNT) && loanModel.getStatus() == LoanStatus.RAISING) {
+                    marqueeTitle.append(investorLoginName + " 以累计投资" + AmountConverter.convertCentToString(investMapper.sumSuccessInvestAmountByLoginName(loanModel.getId(), investModel.getLoginName(),true)) + "元暂居标王，快来争夺吧    ");
                     marqueeTitle.append("目前项目剩余" + AmountConverter.convertCentToString(loanModel.getLoanAmount() - investedAmount) + "元，快来一锤定音获取奖励吧    ");
                 }
-                if (investModel.getAchievements().contains(InvestAchievement.MAX_AMOUNT) && loanModel.getStatus() != com.tuotiansudai.repository.model.LoanStatus.RAISING) {
-                    marqueeTitle.append("恭喜" + investorLoginName + " 以累计投资" + AmountConverter.convertCentToString(investMapper.sumSuccessInvestAmountByLoginName(loanModel.getId(), investModel.getLoginName(), true)) + "元夺得标王，奖励0.5％加息券＋100元红包    ");
+                if (investModel.getAchievements().contains(InvestAchievement.MAX_AMOUNT) && loanModel.getStatus() != LoanStatus.RAISING) {
+                    marqueeTitle.append("恭喜" + investorLoginName + " 以累计投资" + AmountConverter.convertCentToString(investMapper.sumSuccessInvestAmountByLoginName(loanModel.getId(), investModel.getLoginName(),true)) + "元夺得标王，奖励0.5％加息券＋100元红包    ");
                 }
                 if (investModel.getAchievements().contains(InvestAchievement.FIRST_INVEST)) {
                     marqueeTitle.append("恭喜" + investorLoginName + " " + new DateTime(investModel.getTradingTime()).toString("yyyy-MM-dd HH:mm:ss") + "占领先锋，奖励0.2％加息券＋50元红包    ");
@@ -285,12 +290,12 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
         return dataDto;
     }
 
-    private String calculateRemainTime(Date fundraisingEndTime, com.tuotiansudai.repository.model.LoanStatus status) {
+    private String calculateRemainTime(Date fundraisingEndTime, LoanStatus status) {
 
         Long time = (fundraisingEndTime.getTime() - System
                 .currentTimeMillis()) / 1000;
 
-        if (time < 0 || !status.equals(com.tuotiansudai.repository.model.LoanStatus.RAISING)) {
+        if (time < 0 || !status.equals(LoanStatus.RAISING)) {
             return "已到期";
         }
         long days = time / 3600 / 24;
@@ -334,4 +339,208 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
             }
         });
     }
+
+
+    private DisclosureDto convertLoanerInfoFromLoan(LoanerDetailsModel model, String overdueRate){
+        DisclosureDto loanerDisclosureDto = new DisclosureDto();
+        loanerDisclosureDto.setTitle("借款人基本信息");
+        List<ItemDto> itemDtoList = Lists.newArrayList();
+
+        ItemDto genderItemDto = new ItemDto();
+        genderItemDto.setLabel("性别");
+        genderItemDto.setValue(model.getGender().getDescription());
+        itemDtoList.add(genderItemDto);
+
+        ItemDto ageItemDto = new ItemDto();
+        ageItemDto.setLabel("年龄");
+        ageItemDto.setValue(String.valueOf(model.getAge()));
+        itemDtoList.add(ageItemDto);
+
+        ItemDto marriageItemDto = new ItemDto();
+        marriageItemDto.setLabel("婚姻状况");
+        marriageItemDto.setValue(model.getMarriage().getDescription());
+        itemDtoList.add(marriageItemDto);
+
+        ItemDto employmentStatusItemDto = new ItemDto();
+        employmentStatusItemDto.setLabel("从业情况");
+        employmentStatusItemDto.setValue(model.getEmploymentStatus());
+        itemDtoList.add(employmentStatusItemDto);
+
+        ItemDto incomeItemDto = new ItemDto();
+        incomeItemDto.setLabel("年收入");
+        incomeItemDto.setValue(model.getIncome());
+        itemDtoList.add(incomeItemDto);
+
+        ItemDto purposeItemDto = new ItemDto();
+        purposeItemDto.setLabel("借款用途");
+        purposeItemDto.setValue(model.getPurpose());
+        itemDtoList.add(purposeItemDto);
+
+        ItemDto overdueRateItemDto = new ItemDto();
+        overdueRateItemDto.setLabel("逾期率");
+        overdueRateItemDto.setValue(overdueRate);
+        itemDtoList.add(overdueRateItemDto);
+
+        loanerDisclosureDto.setItems(itemDtoList);
+        return loanerDisclosureDto;
+    }
+
+    private DisclosureDto convertPledgeInfoFromLoan(LoanModel loanModel){
+        DisclosureDto pledgeDisclosureDto = new DisclosureDto();
+        pledgeDisclosureDto.setTitle("抵押档案");
+        List<ItemDto> itemDtoList = Lists.newArrayList();
+
+        switch (loanModel.getPledgeType()) {
+            case HOUSE:
+                PledgeHouseModel pledgeHouseModel = pledgeHouseMapper.getByLoanId(loanModel.getId());
+                if (pledgeHouseModel != null) {
+                    ItemDto pledgeLocationItemDto = new ItemDto();
+                    pledgeLocationItemDto.setLabel("抵押房屋所在地");
+                    pledgeLocationItemDto.setValue(pledgeHouseModel.getPledgeLocation());
+                    itemDtoList.add(pledgeLocationItemDto);
+
+                    ItemDto squareItemDto = new ItemDto();
+                    squareItemDto.setLabel("房屋面积");
+                    squareItemDto.setValue(pledgeHouseModel.getSquare());
+                    itemDtoList.add(squareItemDto);
+
+                    ItemDto estimateAmountItemDto = new ItemDto();
+                    estimateAmountItemDto.setLabel("房产估值");
+                    estimateAmountItemDto.setValue(pledgeHouseModel.getEstimateAmount());
+                    itemDtoList.add(estimateAmountItemDto);
+
+                    ItemDto loanAmountItemDto = new ItemDto();
+                    loanAmountItemDto.setLabel("借款公正金额");
+                    loanAmountItemDto.setValue(pledgeHouseModel.getPledgeLocation());
+                    itemDtoList.add(loanAmountItemDto);
+                }
+            case VEHICLE:
+                PledgeVehicleModel pledgeVehicleModel = pledgeVehicleMapper.getByLoanId(loanModel.getId());
+                if (pledgeVehicleModel != null) {
+                    ItemDto brandItemDto = new ItemDto();
+                    brandItemDto.setLabel("抵押车辆品牌");
+                    brandItemDto.setValue(pledgeVehicleModel.getBrand());
+                    itemDtoList.add(brandItemDto);
+
+                    ItemDto modelItemDto = new ItemDto();
+                    modelItemDto.setLabel("车辆型号");
+                    modelItemDto.setValue(pledgeVehicleModel.getModel());
+                    itemDtoList.add(modelItemDto);
+
+                    ItemDto estimateAmountItemDto = new ItemDto();
+                    estimateAmountItemDto.setLabel("车辆估值");
+                    estimateAmountItemDto.setValue(pledgeVehicleModel.getEstimateAmount());
+                    itemDtoList.add(estimateAmountItemDto);
+
+                    ItemDto loanAmountItemDto = new ItemDto();
+                    loanAmountItemDto.setLabel("借款公正金额");
+                    loanAmountItemDto.setValue(pledgeVehicleModel.getPledgeLocation());
+                    itemDtoList.add(loanAmountItemDto);
+                }
+        }
+
+        pledgeDisclosureDto.setItems(itemDtoList);
+        return pledgeDisclosureDto;
+    }
+
+    private DisclosureDto convertLoanerEnterpriseDetailsFromLoan(LoanerEnterpriseDetailsModel model){
+        DisclosureDto LoanerEnterpriseDetailsDisclosureDto = new DisclosureDto();
+        LoanerEnterpriseDetailsDisclosureDto.setTitle("借款人基本信息");
+        List<ItemDto> itemDtoList = Lists.newArrayList();
+
+        ItemDto juristicPersonItemDto = new ItemDto();
+        juristicPersonItemDto.setLabel("借款人");
+        juristicPersonItemDto.setValue(model.getJuristicPerson());
+        itemDtoList.add(juristicPersonItemDto);
+
+        ItemDto addressItemDto = new ItemDto();
+        addressItemDto.setLabel("公司所在地");
+        addressItemDto.setValue(model.getAddress());
+        itemDtoList.add(addressItemDto);
+
+        LoanerEnterpriseDetailsDisclosureDto.setItems(itemDtoList);
+        return LoanerEnterpriseDetailsDisclosureDto;
+    }
+
+    private DisclosureDto convertLoanerEnterpriseDetailsPurposeFromLoan(LoanerEnterpriseDetailsModel model){
+        DisclosureDto LoanerEnterpriseDetailsPurposeDisclosureDto = new DisclosureDto();
+        LoanerEnterpriseDetailsPurposeDisclosureDto.setTitle("借款用途描述");
+        List<ItemDto> itemDtoList = Lists.newArrayList();
+
+        ItemDto purposeItemDto = new ItemDto();
+        purposeItemDto.setLabel("借款用途");
+        purposeItemDto.setValue(model.getPurpose());
+        itemDtoList.add(purposeItemDto);
+
+        LoanerEnterpriseDetailsPurposeDisclosureDto.setItems(itemDtoList);
+        return LoanerEnterpriseDetailsPurposeDisclosureDto;
+    }
+
+    private DisclosureDto convertLoanerPledgeEnterpriseFromLoan(PledgeEnterpriseModel model){
+        DisclosureDto LoanerPledgeEnterprisesDisclosureDto = new DisclosureDto();
+        LoanerPledgeEnterprisesDisclosureDto.setTitle("抵押物信息");
+        List<ItemDto> itemDtoList = Lists.newArrayList();
+
+        ItemDto guaranteeItemDto = new ItemDto();
+        guaranteeItemDto.setLabel("担保方式");
+        guaranteeItemDto.setValue(model.getGuarantee());
+        itemDtoList.add(guaranteeItemDto);
+
+        ItemDto estimateAmountItemDto = new ItemDto();
+        estimateAmountItemDto.setLabel("抵押物估值");
+        estimateAmountItemDto.setValue(model.getEstimateAmount());
+        itemDtoList.add(estimateAmountItemDto);
+
+        ItemDto pledgeLocationItemDto = new ItemDto();
+        pledgeLocationItemDto.setLabel("抵押物所在地");
+        pledgeLocationItemDto.setValue(model.getPledgeLocation());
+        itemDtoList.add(pledgeLocationItemDto);
+
+        LoanerPledgeEnterprisesDisclosureDto.setItems(itemDtoList);
+        return LoanerPledgeEnterprisesDisclosureDto;
+    }
+
+    private DisclosureDto convertLoanerEnterpriseInfoFromLoan(LoanerEnterpriseInfoModel model) {
+        DisclosureDto LoanerEnterpriseInfoDisclosureDto = new DisclosureDto();
+        LoanerEnterpriseInfoDisclosureDto.setTitle("借款企业基本信息");
+        List<ItemDto> itemDtoList = Lists.newArrayList();
+
+        ItemDto companyNameItemDto = new ItemDto();
+        companyNameItemDto.setLabel("企业名称");
+        companyNameItemDto.setValue(model.getCompanyName());
+        itemDtoList.add(companyNameItemDto);
+
+        ItemDto addressItemDto = new ItemDto();
+        addressItemDto.setLabel("经营地址");
+        addressItemDto.setValue(model.getAddress());
+        itemDtoList.add(addressItemDto);
+
+        ItemDto purposeItemDto = new ItemDto();
+        purposeItemDto.setLabel("借款用途");
+        purposeItemDto.setValue(model.getPurpose());
+        itemDtoList.add(purposeItemDto);
+
+        LoanerEnterpriseInfoDisclosureDto.setItems(itemDtoList);
+        return LoanerEnterpriseInfoDisclosureDto;
+    }
+
+    private DisclosureDto convertLoanerEnterpriseFactoringInfoFromLoan(LoanerEnterpriseInfoModel model) {
+        DisclosureDto LoanerEnterpriseInfoDisclosureDto = new DisclosureDto();
+        LoanerEnterpriseInfoDisclosureDto.setTitle("保理公司基本信息");
+        List<ItemDto> itemDtoList = Lists.newArrayList();
+
+        ItemDto companyNameItemDto = new ItemDto();
+        companyNameItemDto.setLabel("公司名称");
+        companyNameItemDto.setValue(model.getFactoringCompanyName());
+        itemDtoList.add(companyNameItemDto);
+
+        ItemDto addressItemDto = new ItemDto();
+        addressItemDto.setLabel("公司简介");
+        addressItemDto.setValue(model.getFactoringCompanyDesc());
+        itemDtoList.add(addressItemDto);
+
+        LoanerEnterpriseInfoDisclosureDto.setItems(itemDtoList);
+        return LoanerEnterpriseInfoDisclosureDto;
+    }
+
 }

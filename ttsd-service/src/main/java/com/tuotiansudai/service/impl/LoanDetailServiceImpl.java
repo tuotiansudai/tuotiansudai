@@ -228,33 +228,40 @@ public class LoanDetailServiceImpl implements LoanDetailService {
 
         PledgeEnterpriseModel pledgeEnterpriseModel = pledgeEnterpriseMapper.getByLoanId(loanModel.getId());
         LoanerEnterpriseDetailsModel loanerEnterpriseDetailsModel = loanerEnterpriseDetailsMapper.getByLoanId(loanModel.getId());
-        if (pledgeEnterpriseModel != null && loanerEnterpriseDetailsModel != null) {
-            loanDto.setPledgeEnterpriseDetail(ImmutableMap.<String, String>builder()
-                    .put("公司法人", MessageFormat.format("{0}某", loanerEnterpriseDetailsModel.getJuristicPerson().substring(0, 1)))
-                    .put("公司最高持股人", MessageFormat.format("{0}某", loanerEnterpriseDetailsModel.getShareholder().substring(0, 1)))
-                    .put("公司所在地", loanerEnterpriseDetailsModel.getAddress())
-                    .put("担保方式", pledgeEnterpriseModel.getGuarantee())
-                    .put("抵押物估值", pledgeEnterpriseModel.getEstimateAmount())
-                    .put("抵押物所在地", pledgeEnterpriseModel.getPledgeLocation())
-                    .build());
-            loanDto.setBasicInfo(loanerEnterpriseDetailsModel.getPurpose());
+        if (loanerEnterpriseDetailsModel != null) {
+            if(loanDto.getPledgeType() == PledgeType.ENTERPRISE_PLEDGE){
+                loanDto.setPledgeEnterpriseDetail(ImmutableMap.<String, String>builder()
+                        .put("借款人", loanerEnterpriseDetailsModel.getJuristicPerson())
+                        .put("公司所在地", loanerEnterpriseDetailsModel.getAddress())
+                        .put("企业借款用途描述", loanerEnterpriseDetailsModel.getPurpose())
+                        .put("担保方式", pledgeEnterpriseModel.getGuarantee())
+                        .put("抵押物估值", pledgeEnterpriseModel.getEstimateAmount())
+                        .put("抵押物所在地", pledgeEnterpriseModel.getPledgeLocation())
+                        .build());
+            }else{
+                loanDto.setPledgeEnterpriseDetail(ImmutableMap.<String, String>builder()
+                        .put("借款人", loanerEnterpriseDetailsModel.getJuristicPerson())
+                        .put("公司所在地", loanerEnterpriseDetailsModel.getAddress())
+                        .put("企业借款用途描述", loanerEnterpriseDetailsModel.getPurpose())
+                        .build());
+            }
         }
 
         LoanerEnterpriseInfoModel loanerEnterpriseInfoModel = loanerEnterpriseInfoMapper.getByLoanId(loanModel.getId());
         if (loanerEnterpriseInfoModel != null) {
             if(loanDto.getPledgeType() == PledgeType.ENTERPRISE_FACTORING){
                 loanDto.setEnterpriseInfo(ImmutableMap.<String, String>builder()
-                        .put("借款企业名称", loanerEnterpriseInfoModel.getCompanyName())
-                        .put("借款企业营业地址", loanerEnterpriseInfoModel.getAddress())
+                        .put("企业名称", loanerEnterpriseInfoModel.getCompanyName())
+                        .put("经营地址", loanerEnterpriseInfoModel.getAddress())
                         .put("借款用途", loanerEnterpriseInfoModel.getPurpose())
-                        .put("保理公司名称", loanerEnterpriseInfoModel.getFactoringCompanyName() == null ? "" : loanerEnterpriseInfoModel.getFactoringCompanyName())
-                        .put("保理公司简介", loanerEnterpriseInfoModel.getFactoringCompanyDesc() == null ? "" : loanerEnterpriseInfoModel.getFactoringCompanyDesc())
+                        .put("公司名称", loanerEnterpriseInfoModel.getFactoringCompanyName() == null ? "" : loanerEnterpriseInfoModel.getFactoringCompanyName())
+                        .put("公司简介", loanerEnterpriseInfoModel.getFactoringCompanyDesc() == null ? "" : loanerEnterpriseInfoModel.getFactoringCompanyDesc())
                         .build());
             }
             else{
                 loanDto.setEnterpriseInfo(ImmutableMap.<String, String>builder()
-                        .put("借款企业名称", loanerEnterpriseInfoModel.getCompanyName())
-                        .put("借款企业营业地址", loanerEnterpriseInfoModel.getAddress())
+                        .put("企业名称", loanerEnterpriseInfoModel.getCompanyName())
+                        .put("经营地址", loanerEnterpriseInfoModel.getAddress())
                         .put("借款用途", loanerEnterpriseInfoModel.getPurpose())
                         .build());
             }

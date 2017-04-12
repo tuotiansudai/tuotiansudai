@@ -151,10 +151,6 @@ public class InvestServiceImpl implements InvestService {
         double rate = membershipPrivilegePurchaseService.obtainServiceFee(loginName);
 
         InvestModel investModel = new InvestModel(idGenerator.generate(), Long.parseLong(dto.getLoanId()), null, AmountConverter.convertStringToCent(dto.getAmount()), dto.getLoginName(), new Date(), dto.getSource(), dto.getChannel(), rate);
-        LoanModel loanModel = loanMapper.findById(Long.parseLong(dto.getLoanId()));
-        if (loanModel.getPledgeType() == PledgeType.ENTERPRISE) {
-            investModel.setTransferStatus(TransferStatus.NONTRANSFERABLE);
-        }
         investMapper.create(investModel);
 
         logger.info(MessageFormat.format("[Invest Request Data] user={0}, loan={1}, invest={2}, amount={3}, userCoupon={4}, source={5}",
@@ -193,10 +189,6 @@ public class InvestServiceImpl implements InvestService {
         double rate = membershipPrivilegePurchaseService.obtainServiceFee(loginName);
 
         InvestModel investModel = new InvestModel(idGenerator.generate(), loanId, null, amount, loginName, new Date(), source, channel, rate);
-        LoanModel loanModel = loanMapper.findById(loanId);
-        if (loanModel.getPledgeType() == PledgeType.ENTERPRISE) {
-            investModel.setTransferStatus(TransferStatus.NONTRANSFERABLE);
-        }
         try {
             investModel.setNoPasswordInvest(true);
             investMapper.create(investModel);

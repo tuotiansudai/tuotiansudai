@@ -31,9 +31,10 @@
                         <select name="name" class="selectpicker" id="projectName" <#if loan.loan.status != "WAITING_VERIFY">disabled="disabled"</#if>>
                             <option value="房产抵押借款" data-pledgeType="HOUSE" <#if loan.loan.pledgeType == "HOUSE">selected</#if>>房产抵押借款</option>
                             <option value="车辆抵押借款" data-pledgeType="VEHICLE" <#if loan.loan.pledgeType == "VEHICLE">selected</#if>>车辆抵押借款</option>
-                            <option value="税易经营性借款" data-pledgeType="ENTERPRISE" <#if loan.loan.pledgeType == "ENTERPRISE">selected</#if>>税易经营性借款</option>
-                            <option value="企业经营性借款" data-pledgeType="ENTERPRISE_FACTORING" <#if loan.loan.pledgeType == "ENTERPRISE_FACTORING">selected</#if>>企业经营性借款—保理</option>
-                            <option value="企业经营性借款" data-pledgeType="ENTERPRISE_BILL" <#if loan.loan.pledgeType == "ENTERPRISE_BILL">selected</#if>>企业经营性借款—票据</option>
+                            <option value="经营性借款" data-pledgeType="ENTERPRISE_CREDIT" <#if loan.loan.pledgeType == "ENTERPRISE_CREDIT">selected</#if>>税易经营性借款信用类</option>
+                            <option value="经营性借款" data-pledgeType="ENTERPRISE_PLEDGE" <#if loan.loan.pledgeType == "ENTERPRISE_PLEDGE">selected</#if>>税易经营性借款抵押类</option>
+                            <option value="经营性借款" data-pledgeType="ENTERPRISE_FACTORING" <#if loan.loan.pledgeType == "ENTERPRISE_FACTORING">selected</#if>>企业经营性借款—保理</option>
+                            <option value="经营性借款" data-pledgeType="ENTERPRISE_BILL" <#if loan.loan.pledgeType == "ENTERPRISE_BILL">selected</#if>>企业经营性借款—票据</option>
                         </select>
                     </div>
                 </div>
@@ -281,7 +282,7 @@
                 <#include 'loan-edit-loaner-details.ftl'>
             </#if>
 
-            <#if 'ENTERPRISE' == loan.loan.pledgeType>
+            <#if ['ENTERPRISE_CREDIT', 'ENTERPRISE_PLEDGE']?seq_contains(loan.loan.pledgeType)>
                 <#include 'loan-edit-loaner-enterprise-details.ftl'>
             </#if>
 
@@ -300,7 +301,7 @@
                 <#include 'loan-edit-pledge-vehicle.ftl'>
             </#if>
 
-            <#if 'ENTERPRISE' == loan.loan.pledgeType>
+            <#if 'ENTERPRISE_PLEDGE' == loan.loan.pledgeType>
                 <#include 'loan-edit-pledge-enterprise.ftl'>
             </#if>
 

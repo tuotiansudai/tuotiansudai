@@ -1,8 +1,10 @@
 package com.tuotiansudai.api.service;
 
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.BaseParam;
+import com.tuotiansudai.api.dto.v1_0.BaseParamDto;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v2_0.LoanDetailV2RequestDto;
 import com.tuotiansudai.api.dto.v2_0.LoanDetailV2ResponseDataDto;
@@ -14,13 +16,20 @@ import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
+import net.sf.json.JSON;
 import org.joda.time.DateTime;
+import org.json.simple.JSONValue;
+import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.util.Date;
 import java.util.List;
@@ -52,7 +61,19 @@ public class MobileAppLoanDetailV2ServiceTest extends ServiceTestBase{
     @Autowired
     private ExtraLoanRateMapper extraLoanRateMapper;
 
+    @Before
+    public void before() {
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        BaseParamDto baseParamDto = new BaseParamDto();
+        BaseParam baseParam = new BaseParam();
+        baseParam.setAppVersion("4.2");
+        baseParam.setUserId("userId");
+        baseParamDto.setBaseParam(baseParam);
+        request.setAttribute("baseParam",baseParamDto);
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+    }
 
+    @Ignore
     @Test
     public void shouldFindLoanDetailIsOk(){
         UserModel fakeUserModel = this.getUserModelTest();

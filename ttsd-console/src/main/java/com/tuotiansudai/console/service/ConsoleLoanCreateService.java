@@ -124,7 +124,7 @@ public class ConsoleLoanCreateService {
             pledgeVehicleMapper.create(new PledgeVehicleModel(loanId, loanCreateRequestDto.getPledgeVehicle()));
         }
 
-        if (loanCreateRequestDto.getLoanerEnterpriseDetails() != null) {
+        if (loanCreateRequestDto.getLoanerEnterpriseDetails() != null && loanCreateRequestDto.getLoan().getPledgeType() == PledgeType.ENTERPRISE_PLEDGE) {
             pledgeEnterpriseMapper.create(new PledgeEnterpriseModel(loanId, loanCreateRequestDto.getPledgeEnterprise()));
         }
 
@@ -194,7 +194,7 @@ public class ConsoleLoanCreateService {
             pledgeVehicleMapper.create(new PledgeVehicleModel(loanId, loanCreateRequestDto.getPledgeVehicle()));
         }
 
-        if (loanCreateRequestDto.getLoanerEnterpriseDetails() != null) {
+        if (loanCreateRequestDto.getLoanerEnterpriseDetails() != null  && loanCreateRequestDto.getLoan().getPledgeType() == PledgeType.ENTERPRISE_PLEDGE) {
             pledgeEnterpriseMapper.create(new PledgeEnterpriseModel(loanId, loanCreateRequestDto.getPledgeEnterprise()));
         }
 
@@ -242,9 +242,12 @@ public class ConsoleLoanCreateService {
             }
         }
 
-        if (PledgeType.ENTERPRISE == loanModel.getPledgeType()) {
+        if (PledgeType.ENTERPRISE_PLEDGE == loanModel.getPledgeType()) {
             loanCreateRequestDto.setLoanerEnterpriseDetails(new LoanCreateLoanerEnterpriseDetailsDto(loanerEnterpriseDetailsMapper.getByLoanId(loanId)));
             loanCreateRequestDto.setPledgeEnterprise(new LoanCreatePledgeEnterpriseRequestDto(pledgeEnterpriseMapper.getByLoanId(loanId)));
+        }
+        if (PledgeType.ENTERPRISE_CREDIT == loanModel.getPledgeType()) {
+            loanCreateRequestDto.setLoanerEnterpriseDetails(new LoanCreateLoanerEnterpriseDetailsDto(loanerEnterpriseDetailsMapper.getByLoanId(loanId)));
         }
 
         if (PledgeType.ENTERPRISE_FACTORING == loanModel.getPledgeType() || PledgeType.ENTERPRISE_BILL == loanModel.getPledgeType()) {
@@ -399,11 +402,13 @@ public class ConsoleLoanCreateService {
             }
         }
 
-        if (PledgeType.ENTERPRISE == loanCreateRequestDto.getLoan().getPledgeType()) {
+        if (PledgeType.ENTERPRISE_CREDIT == loanCreateRequestDto.getLoan().getPledgeType() || PledgeType.ENTERPRISE_PLEDGE == loanCreateRequestDto.getLoan().getPledgeType()) {
             if (loanCreateRequestDto.getLoanerEnterpriseDetails() == null) {
                 return new BaseDto<>(new BaseDataDto(false, "企业借款人信息不完整"));
             }
+        }
 
+        if(PledgeType.ENTERPRISE_PLEDGE == loanCreateRequestDto.getLoan().getPledgeType()){
             if (loanCreateRequestDto.getPledgeEnterprise() == null) {
                 return new BaseDto<>(new BaseDataDto(false, "企业抵押信息不完整"));
             }

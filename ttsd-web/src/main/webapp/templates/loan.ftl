@@ -348,7 +348,7 @@
                             </div>
                         </#if>
 
-                        <#if ["HOUSE", "VEHICLE", "ENTERPRISE"]?seq_contains(loan.pledgeType)>
+                        <#if ["HOUSE", "VEHICLE"]?seq_contains(loan.pledgeType)>
                             <div class="subtitle">
                                 <h3>抵押档案</h3>
                             </div>
@@ -370,10 +370,62 @@
                                         </#list>
                                     </#if>
 
+                                </div>
+                            </div>
+                        </#if>
+
+                        <#if "ENTERPRISE_CREDIT" == loan.pledgeType>
+                            <div class="subtitle">
+                                <h3>借款人基本信息</h3>
+                            </div>
+                            <div class="container-fluid list-block clearfix">
+                                <div class="row">
                                     <#if loan.pledgeEnterpriseDetail??>
-                                        <#list ['公司法人', '公司最高持股人', '公司所在地', '担保方式', '抵押物估值', '抵押物所在地'] as key>
+                                        <#list ['借款人', '公司所在地'] as key>
                                             <#if loan.pledgeEnterpriseDetail[key]?? && loan.pledgeEnterpriseDetail[key] != ''>
-                                                <div class="col-md-4">${key}：${loan.pledgeEnterpriseDetail[key]}</div>
+                                                <div class="col-md-6">${key}：${loan.pledgeEnterpriseDetail[key]}</div>
+                                            </#if>
+                                        </#list>
+                                        <#list ['企业借款用途描述'] as key>
+                                            <#if loan.pledgeEnterpriseDetail[key]?? && loan.pledgeEnterpriseDetail[key] != ''>
+                                                <div class="col-md-12">${key}：${loan.pledgeEnterpriseDetail[key]}</div>
+                                            </#if>
+                                        </#list>
+                                    </#if>
+                                </div>
+                            </div>
+                        </#if>
+
+                        <#if "ENTERPRISE_PLEDGE" == loan.pledgeType>
+                            <div class="subtitle">
+                                <h3>借款人基本信息</h3>
+                            </div>
+                            <div class="container-fluid list-block clearfix">
+                                <div class="row">
+                                    <#if loan.pledgeEnterpriseDetail??>
+                                        <#list ['借款人', '公司所在地'] as key>
+                                            <#if loan.pledgeEnterpriseDetail[key]?? && loan.pledgeEnterpriseDetail[key] != ''>
+                                                <div class="col-md-6">${key}：${loan.pledgeEnterpriseDetail[key]}</div>
+                                            </#if>
+                                        </#list>
+                                        <#list ['企业借款用途描述'] as key>
+                                            <#if loan.pledgeEnterpriseDetail[key]?? && loan.pledgeEnterpriseDetail[key] != ''>
+                                                <div class="col-md-12">${key}：${loan.pledgeEnterpriseDetail[key]}</div>
+                                            </#if>
+                                        </#list>
+                                    </#if>
+                                </div>
+                            </div>
+
+                            <div class="subtitle">
+                                <h3>抵押物信息</h3>
+                            </div>
+                            <div class="container-fluid list-block clearfix">
+                                <div class="row">
+                                    <#if loan.pledgeEnterpriseDetail??>
+                                        <#list ['担保方式', '抵押物估值', '抵押物所在地'] as key>
+                                            <#if loan.pledgeEnterpriseDetail[key]?? && loan.pledgeEnterpriseDetail[key] != ''>
+                                                <div class="col-md-12">${key}：${loan.pledgeEnterpriseDetail[key]}</div>
                                             </#if>
                                         </#list>
                                     </#if>
@@ -383,12 +435,12 @@
 
                         <#if loan.pledgeType == "ENTERPRISE_FACTORING">
                             <div class="subtitle">
-                                <h3>借款企业基本信息</h3>
+                                <h3>借款企业信息</h3>
                             </div>
                             <div class="container-fluid list-block clearfix">
                                 <div class="row">
                                     <#if loan.enterpriseInfo??>
-                                        <#list ['借款企业名称', '借款企业营业地址', '借款用途'] as key>
+                                        <#list ['企业名称', '经营地址', '借款用途'] as key>
                                             <#if loan.enterpriseInfo[key]?? && loan.enterpriseInfo[key] != ''>
                                                 <div class="col-md-12">${key}：${loan.enterpriseInfo[key]}</div>
                                             </#if>
@@ -398,12 +450,12 @@
                             </div>
 
                             <div class="subtitle">
-                                <h3>保理公司介绍</h3>
+                                <h3>保理公司基本信息</h3>
                             </div>
                             <div class="container-fluid list-block clearfix">
                                 <div class="row">
                                     <#if loan.enterpriseInfo??>
-                                        <#list ['保理公司名称','保理公司简介'] as key>
+                                        <#list ['公司名称','公司简介'] as key>
                                             <#if loan.enterpriseInfo[key]?? && loan.enterpriseInfo[key] != ''>
                                                 <div class="col-md-12">${key}：${loan.enterpriseInfo[key]}</div>
                                             </#if>
@@ -415,12 +467,12 @@
 
                         <#if loan.pledgeType == "ENTERPRISE_BILL">
                             <div class="subtitle">
-                                <h3>借款企业基本信息</h3>
+                                <h3>借款企业信息</h3>
                             </div>
                             <div class="container-fluid list-block clearfix">
                                 <div class="row">
                                     <#if loan.enterpriseInfo??>
-                                        <#list ['借款企业名称', '借款企业营业地址', '借款用途'] as key>
+                                        <#list ['企业名称', '经营地址', '借款用途'] as key>
                                             <#if loan.enterpriseInfo[key]?? && loan.enterpriseInfo[key] != ''>
                                                 <div class="col-md-12">${key}：${loan.enterpriseInfo[key]}</div>
                                             </#if>
@@ -435,7 +487,7 @@
                         </div>
                         <div class="container-fluid danger-control clearfix">
                             <div class="row">
-                                <#if loan.pledgeType == 'ENTERPRISE'>
+                                <#if loan.pledgeType == 'ENTERPRISE_CREDIT' || loan.pledgeType == 'ENTERPRISE_PLEDGE' >
                                     <div class="col-md-6">
                                         <div class="container-fluid table">
                                             <div class="row">
