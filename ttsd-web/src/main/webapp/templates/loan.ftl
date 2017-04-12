@@ -440,7 +440,12 @@
                             <div class="container-fluid list-block clearfix">
                                 <div class="row">
                                     <#if loan.enterpriseInfo??>
-                                        <#list ['企业名称', '经营地址', '借款用途'] as key>
+                                        <#list ['企业名称', '经营地址'] as key>
+                                            <#if loan.enterpriseInfo[key]?? && loan.enterpriseInfo[key] != ''>
+                                                <div class="col-md-6">${key}：${loan.enterpriseInfo[key]}</div>
+                                            </#if>
+                                        </#list>
+                                        <#list ['借款用途'] as key>
                                             <#if loan.enterpriseInfo[key]?? && loan.enterpriseInfo[key] != ''>
                                                 <div class="col-md-12">${key}：${loan.enterpriseInfo[key]}</div>
                                             </#if>
@@ -472,7 +477,12 @@
                             <div class="container-fluid list-block clearfix">
                                 <div class="row">
                                     <#if loan.enterpriseInfo??>
-                                        <#list ['企业名称', '经营地址', '借款用途'] as key>
+                                        <#list ['企业名称', '经营地址'] as key>
+                                            <#if loan.enterpriseInfo[key]?? && loan.enterpriseInfo[key] != ''>
+                                                <div class="col-md-6">${key}：${loan.enterpriseInfo[key]}</div>
+                                            </#if>
+                                        </#list>
+                                        <#list ['借款用途'] as key>
                                             <#if loan.enterpriseInfo[key]?? && loan.enterpriseInfo[key] != ''>
                                                 <div class="col-md-12">${key}：${loan.enterpriseInfo[key]}</div>
                                             </#if>
