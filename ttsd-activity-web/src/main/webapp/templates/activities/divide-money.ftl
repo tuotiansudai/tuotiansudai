@@ -81,7 +81,7 @@
                     <p class="info-text">好友通过您发送的链接完成注册即邀请成功</p>
                 </div>
                 <div class="info-link">
-                    <a class="btn-copy-link" target="_blank" href="<#if !isAppSource>/referrer/refer-list<#else>app/tuotian/refer-reward-list</#if>">马上邀请好友</a>
+                    <a class="btn-copy-link" target="_blank" href="<#if !isAppSource>/referrer/refer-list<#else>app/tuotian/refer-reward</#if>">马上邀请好友</a>
                 </div>
             </div>
         </@global.role>
