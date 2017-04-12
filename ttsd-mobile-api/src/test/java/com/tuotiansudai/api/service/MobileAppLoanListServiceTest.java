@@ -16,11 +16,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.util.ReflectionTestUtils;
-import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.util.Date;
 import java.util.List;
@@ -52,16 +52,17 @@ public class MobileAppLoanListServiceTest extends ServiceTestBase {
     private PageValidUtils pageValidUtils;
     @Mock
     private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
-    @Mock
-    private RequestAttributes attrs;
 
     @Before
     public void before() {
-        MockitoAnnotations.initMocks(this);
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        BaseParamDto baseParamDto = new BaseParamDto();
         BaseParam baseParam = new BaseParam();
         baseParam.setAppVersion("4.2");
-        attrs.setAttribute("BaseParam",baseParam,100);
-        RequestContextHolder.setRequestAttributes(attrs);
+        baseParam.setUserId("userId");
+        baseParamDto.setBaseParam(baseParam);
+        request.setAttribute("baseParam",baseParamDto);
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
     }
 
     @Test

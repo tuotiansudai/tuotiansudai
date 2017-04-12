@@ -2,6 +2,7 @@ package com.tuotiansudai.api.service;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.BaseParam;
+import com.tuotiansudai.api.dto.v1_0.BaseParamDto;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.dto.v3_0.LoanListResponseDataDto;
@@ -18,12 +19,11 @@ import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -61,6 +61,18 @@ public class MobileAppLoanListV3ServiceTest extends ServiceTestBase {
 
     @Autowired
     private UserCouponMapper userCouponMapper;
+
+    @Before
+    public void before() {
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        BaseParamDto baseParamDto = new BaseParamDto();
+        BaseParam baseParam = new BaseParam();
+        baseParam.setAppVersion("4.2");
+        baseParam.setUserId("userId");
+        baseParamDto.setBaseParam(baseParam);
+        request.setAttribute("baseParam",baseParamDto);
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+    }
 
     private UserModel createUser(String loginName) {
         UserModel userModel = new UserModel();
@@ -113,7 +125,6 @@ public class MobileAppLoanListV3ServiceTest extends ServiceTestBase {
         return investModel;
     }
 
-    @Ignore
     @Test
     public void testGenerateIndexLoan() throws Exception {
         UserModel user = createUser("testUser");
@@ -195,7 +206,6 @@ public class MobileAppLoanListV3ServiceTest extends ServiceTestBase {
         assertEquals(LoanStatus.RAISING.name().toLowerCase(), loanResponseDataDto.getLoanStatus());
     }
 
-    @Ignore
     @Test
     public void shouldValidInterestPerTenThousandsIsOk(){
         String loginName = "testExtraRate";

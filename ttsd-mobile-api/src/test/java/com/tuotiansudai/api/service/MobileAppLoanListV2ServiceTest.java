@@ -1,6 +1,7 @@
 package com.tuotiansudai.api.service;
 
 import com.tuotiansudai.api.dto.v1_0.BaseParam;
+import com.tuotiansudai.api.dto.v1_0.BaseParamDto;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v2_0.LoanListResponseDataDto;
 import com.tuotiansudai.api.service.v2_0.impl.MobileAppLoanListV2ServiceImpl;
@@ -17,10 +18,12 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.util.Date;
 import java.util.UUID;
@@ -41,18 +44,17 @@ public class MobileAppLoanListV2ServiceTest extends ServiceTestBase {
     private MobileAppLoanListV2ServiceImpl mobileAppLoanListV2Service;
     @Autowired
     private UserMapper userMapper;
-    @Mock
-    private UserMembershipEvaluator userMembershipEvaluator;
-    @Mock
-    private RequestAttributes attrs;
 
     @Before
     public void before() {
-        MockitoAnnotations.initMocks(this);
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        BaseParamDto baseParamDto = new BaseParamDto();
         BaseParam baseParam = new BaseParam();
         baseParam.setAppVersion("4.2");
-        attrs.setAttribute("BaseParam",baseParam,100);
-        RequestContextHolder.setRequestAttributes(attrs);
+        baseParam.setUserId("userId");
+        baseParamDto.setBaseParam(baseParam);
+        request.setAttribute("baseParam",baseParamDto);
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
     }
 
     @Test
