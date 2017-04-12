@@ -637,8 +637,8 @@
 
     <select id="findRemainUsers" resultMap="remainUserViewResultMap">
         SELECT login_name, mobile, user_name, register_time,
-        (select invest_time is not null from invest where loan_id = 1 and invest.login_name = user.login_name and status = "SUCCESS") as use_experience_coupon,
-        (select invest_time from invest where loan_id = 1 and invest.login_name = user.login_name) as experience_time,
+        (select count(1) > 0 from invest where loan_id = 1 and invest.login_name = user.login_name and status = "SUCCESS") as use_experience_coupon,
+        (select invest_time from invest where loan_id = 1 and invest.login_name = user.login_name and status = "SUCCESS" order by invest_time desc limit 1) as experience_time,
         (select count(1) from invest where login_name = user.login_name and loan_id != 1 and status = "SUCCESS") as invest_count,
         (select sum(amount) from invest where login_name = user.login_name and status = "SUCCESS") as invest_sum,
         (select invest_time from invest where login_name = user.login_name and loan_id != 1 and status = "SUCCESS"order by invest_time limit 1) as first_invest_time,

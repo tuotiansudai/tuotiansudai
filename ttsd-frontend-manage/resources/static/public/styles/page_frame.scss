@@ -13,7 +13,12 @@
     border-bottom: 1px solid rgba(0,0,0,0.2);
     .icon-close {
       margin-right: 10px;
-      width:16px;
+      width:18px;
+      height:18px;
+      float: left;
+      margin-top: 18px;
+      background: url('../images/icons/close01.png') center center no-repeat;
+      background-size: 100%;
     }
     span {
       line-height: 1.8;
@@ -612,7 +617,6 @@
     }
     .nav-menu {
       width: 100%;
-      //display: none;
         background: #fff;
         position: absolute;
         top: 53px;
@@ -664,16 +668,24 @@
     display:block;
   }
   .main-frame{
+    overflow-x: hidden;
     .content-container {
       padding: 10px!important;
     }
+    .swiper-container {
+      overflow: hidden;
+      width:100%;
+    }
     .left-nav{
-      width:640px;
       margin:0;
       li{
         float: left;
-        width:16.666666%;
+
+        a:hover {
+          background: transparent;
+        }
         &:nth-child(4) {
+          //隐藏媒体报道
           display: none;
         }
       }
