@@ -66,7 +66,7 @@ public class ConsoleWithdrawService {
                                    Source source,
                                    Date startTime,
                                    Date endTime,
-                                   Role role) {
+                                   String role) {
 
         return withdrawMapper.findSumWithdrawFee(withdrawId, mobile, status, source, startTime, endTime, role);
     }

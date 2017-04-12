@@ -69,7 +69,7 @@
                         <select class="form-control" name="role">
                             <option value="">全部</option>
                             <option value="LOANER">代理人</option>
-                            <option value="INVESTOR">非代理人</option>
+                            <option value="UN_LOANER">非代理人</option>
                         </select>
 
                         <button class="btn btn-primary" type="button">查询</button>
@@ -105,7 +105,7 @@
                         <select class="form-control" name="role">
                             <option value="">全部</option>
                             <option value="LOANER">代理人</option>
-                            <option value="INVESTOR">非代理人</option>
+                            <option value="UN_LOANER">非代理人</option>
                         </select>
                         <button class="btn btn-primary" type="button">查询</button>
                     </form>
@@ -136,7 +136,7 @@
                         <select class="form-control" name="role">
                             <option value="">全部</option>
                             <option value="LOANER">代理人</option>
-                            <option value="INVESTOR">非代理人</option>
+                            <option value="UN_LOANER">非代理人</option>
                         </select>
                         <button class="btn btn-primary" type="button">查询</button>
                     </form>

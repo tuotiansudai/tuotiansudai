@@ -47,7 +47,7 @@ public interface WithdrawMapper {
                             @Param(value = "source") Source source,
                             @Param(value = "startTime") Date startTime,
                             @Param(value = "endTime") Date endTime,
-                            @Param(value = "role") Role role);
+                            @Param(value = "role") String role);
 
     int findWithdrawCount(@Param(value = "withdrawId") String withdrawId,
                           @Param(value = "mobile") String mobile,
