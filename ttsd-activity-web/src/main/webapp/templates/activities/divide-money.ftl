@@ -53,7 +53,7 @@
            <#--已登录未认证-->
             <div class="invite-box-friend clearfix">
                 <div class="info-link">
-                    <p>登陆后显示邀请链接</p>
+                    <p>认证后显示邀请链接</p>
                     <a class="btn-copy-link to-identification" target="_blank" href="<#if !isAppSource>/register/account?redirect=/activity/divide-money<#else>app/tuotian/authentication</#if>" >实名认证</a>
                 </div>
             </div>
