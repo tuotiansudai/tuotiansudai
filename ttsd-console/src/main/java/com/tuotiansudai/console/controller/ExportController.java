@@ -277,7 +277,7 @@ public class ExportController {
                                @RequestParam(value = "status", required = false) RechargeStatus status,
                                @RequestParam(value = "source", required = false) RechargeSource source,
                                @RequestParam(value = "channel", required = false) String channel,
-                               @RequestParam(value = "role", required = false) Role role,
+                               @RequestParam(value = "role", required = false) String role,
                                HttpServletResponse response) throws IOException {
         fillExportResponse(response, CsvHeaderType.ConsoleRecharge.getDescription());
         int index = 1;

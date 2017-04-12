@@ -46,9 +46,14 @@
         IFNULL((select 1 from user_role ur where ur.login_name = r.login_name and ur.role in ('SD_STAFF', 'ZC_STAFF')),0) as is_staff
         from recharge r
         JOIN `user` u on r.login_name = u.login_name
-        <if test="role != null">
+        <if test="role != null and role == 'LOANER' ">
             JOIN (SELECT login_name FROM `user_role` WHERE role = #{role}) temp_role ON r.login_name = temp_role.login_name
         </if>
+
+        <if test="role != null and role == 'UN_LOANER' ">
+            JOIN (SELECT login_name FROM `user_role` WHERE role &lt;> #{role}) temp_role ON r.login_name = temp_role.login_name
+        </if>
+
         <if test="mobile !=null and mobile != '' ">
             and u.mobile = #{mobile}
         </if>
@@ -81,8 +86,12 @@
         <if test="mobile !=null and mobile != '' ">
             and user.mobile = #{mobile}
         </if>
-        <if test="role != null">
+        <if test="role != null and role == 'LOANER' ">
             JOIN (SELECT login_name FROM `user_role` WHERE role = #{role}) temp_role ON recharge.login_name = temp_role.login_name
+        </if>
+
+        <if test="role != null and role == 'UN_LOANER' ">
+            JOIN (SELECT login_name FROM `user_role` WHERE role &lt;> #{role}) temp_role ON recharge.login_name = temp_role.login_name
         </if>
         <where>
             <if test="rechargeId !=null and rechargeId !='' ">
@@ -115,8 +124,12 @@
         <if test="mobile !=null and mobile != '' ">
             and u.mobile = #{mobile}
         </if>
-        <if test="role !=null">
-            join user_role ur on re.login_name = ur.login_name and ur.role= #{role}
+        <if test="role != null and role == 'LOANER' ">
+            join user_role ur on re.login_name = ur.login_name and ur.role = #{role}
+        </if>
+
+        <if test="role != null and role == 'UN_LOANER' ">
+            join user_role ur on re.login_name = ur.login_name and ur.role &lt;> #{role}
         </if>
         <where>
             <if test="rechargeId !=null and rechargeId !='' ">

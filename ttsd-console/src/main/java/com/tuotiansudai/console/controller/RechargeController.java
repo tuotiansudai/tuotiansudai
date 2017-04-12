@@ -35,7 +35,7 @@ public class RechargeController {
                                         @RequestParam(value = "status", required = false) RechargeStatus status,
                                         @RequestParam(value = "source", required = false) RechargeSource source,
                                         @RequestParam(value = "channel", required = false) String channel,
-                                        @RequestParam(value = "role", required = false) Role role,
+                                        @RequestParam(value = "role", required = false) String role,
                                         @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
         int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/recharge");

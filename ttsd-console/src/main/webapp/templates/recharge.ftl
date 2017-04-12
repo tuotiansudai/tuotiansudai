@@ -76,7 +76,7 @@
                 <select class="selectpicker" name="role">
                     <option value="">全部</option>
                     <option value="LOANER" <#if role?? && role == "LOANER">selected</#if>>代理人</option>
-                    <option value="INVESTOR" <#if role?? && role == "INVESTOR">selected</#if>>非代理人</option>
+                    <option value="UN_LOANER" <#if role?? && role == "UN_LOANER">selected</#if>>非代理人</option>
                 </select>
             </div>
 
