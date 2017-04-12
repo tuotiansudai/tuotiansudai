@@ -40,7 +40,7 @@ public class StaffRecommendRoleServiceTest {
     private StaffRecommendRoleService staffRecommendRoleService;
 
     @Test
-    public void shouldGenerateRecommendRoleWhenUserHasNoReferrer() {
+    public void shouldGenerateRecommendRoleWhenUserIsNotStaffRecommendAndHasNoReferrer() {
         UserModel user = getFakeUser("fakeUser");
         generateUserRole(user.getLoginName(), Lists.newArrayList(Role.USER));
         referrerRelationService.generateRelation(null, user.getLoginName());
@@ -50,6 +50,20 @@ public class StaffRecommendRoleServiceTest {
         assertNull(userRoleMapper.findByLoginNameAndRole(user.getLoginName(), Role.ZC_STAFF_RECOMMEND));
         assertNull(userRoleMapper.findByLoginNameAndRole(user.getLoginName(), Role.SD_STAFF_RECOMMEND));
         assertNotNull(userRoleMapper.findByLoginNameAndRole(user.getLoginName(), Role.NOT_STAFF_RECOMMEND));
+    }
+
+    @Test
+    public void shouldGenerateRecommendRoleWhenUserIsSDStaffAndHasNoReferrer() {
+        UserModel user = getFakeUser("fakeUser");
+        generateUserRole(user.getLoginName(), Lists.newArrayList(Role.USER));
+        generateUserRole(user.getLoginName(), Lists.newArrayList(Role.SD_STAFF));
+        referrerRelationService.generateRelation(null, user.getLoginName());
+
+        staffRecommendRoleService.generateStaffRole(null, user.getLoginName());
+
+        assertNull(userRoleMapper.findByLoginNameAndRole(user.getLoginName(), Role.ZC_STAFF_RECOMMEND));
+        assertNull(userRoleMapper.findByLoginNameAndRole(user.getLoginName(), Role.SD_STAFF_RECOMMEND));
+        assertNull(userRoleMapper.findByLoginNameAndRole(user.getLoginName(), Role.NOT_STAFF_RECOMMEND));
     }
 
     @Test
