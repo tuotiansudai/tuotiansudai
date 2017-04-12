@@ -98,7 +98,7 @@ public class UserController {
         ModelAndView modelAndView = new ModelAndView("/user-edit");
         List<Role> roles = Lists.newArrayList(Role.values())
                 .stream()
-                .filter(role -> !Lists.newArrayList(Role.NOT_STAFF_RECOMMEND, Role.SD_STAFF_RECOMMEND, Role.ZC_STAFF_RECOMMEND).contains(role))
+                .filter(role -> !Lists.newArrayList(Role.NOT_STAFF_RECOMMEND, Role.SD_STAFF_RECOMMEND, Role.ZC_STAFF_RECOMMEND, Role.AGENT).contains(role))
                 .collect(Collectors.toList());
 
         if (!redisWrapperClient.hexistsSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId)) {
