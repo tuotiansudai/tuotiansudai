@@ -106,7 +106,8 @@ public class QueryAnxinContractMessageConsumer implements MessageConsumer {
         logger.info(MessageFormat.format("trigger anxin contract handle job, loanId:{0}, anxin contract type:{1}", String.valueOf(businessId), anxinContractType.name()));
 
         if (result == null || !result.isSuccess()) {
-            logger.info(MessageFormat.format("query anxin contract failed. businessId:{0}, anxin ContractType:{1}", String.valueOf(businessId), anxinContractType));
+            logger.info(MessageFormat.format("query anxin contract failed. businessId:{0}, anxin ContractType:{1}, times:{2}", String.valueOf(businessId), anxinContractType),
+                    redisWrapperClient.get(ANXIN_CONTRACT_QUERY_TRY_TIMES_KEY + businessId));
             DelayMessageDeliveryJobCreator.createAnxinContractQueryDelayJob(jobManager, businessId, anxinContractType.name());
         } else {
             // 查询结束，清空计数器
@@ -118,7 +119,7 @@ public class QueryAnxinContractMessageConsumer implements MessageConsumer {
             if (anxinContractType == AnxinContractType.LOAN_CONTRACT) {
                 List<InvestModel> contractFailList = investService.findContractFailInvest(businessId);
                 if (CollectionUtils.isNotEmpty(contractFailList)) {
-                    logger.error(MessageFormat.format("some batch is fail. send sms. businessId:{0}", String.valueOf(businessId)));
+                    logger.error(MessageFormat.format("some batch is fail. send sms. businessId:{0}, type:{1}", String.valueOf(businessId), anxinContractType));
                     // 有失败的，发短信
                     smsWrapperClient.sendGenerateContractErrorNotify(new GenerateContractErrorNotifyDto(mobileList, businessId));
                 }
@@ -128,7 +129,7 @@ public class QueryAnxinContractMessageConsumer implements MessageConsumer {
                 TransferApplicationModel applicationModel = transferApplicationMapper.findById(businessId);
                 InvestModel investModel = investService.findById(applicationModel.getInvestId());
                 if (investModel != null && StringUtils.isEmpty(investModel.getContractNo())) {
-                    logger.error(MessageFormat.format("some batch is fail. send sms. businessId:{0}", String.valueOf(businessId)));
+                    logger.error(MessageFormat.format("some batch is fail. send sms. businessId:{0}, type:{1}", String.valueOf(businessId), anxinContractType));
                     // 失败了，发短信
                     smsWrapperClient.sendGenerateContractErrorNotify(new GenerateContractErrorNotifyDto(mobileList, businessId));
                 }

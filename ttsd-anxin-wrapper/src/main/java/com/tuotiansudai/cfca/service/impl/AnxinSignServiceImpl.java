@@ -19,7 +19,6 @@ import com.tuotiansudai.dto.sms.GenerateContractErrorNotifyDto;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.UUIDGenerator;
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -32,7 +31,8 @@ import java.io.FileNotFoundException;
 import java.text.MessageFormat;
 import java.util.*;
 
-import static com.tuotiansudai.constants.AnxinContractCreateRedisKey.*;
+import static com.tuotiansudai.constants.AnxinContractCreateRedisKey.LOAN_CONTRACT_IN_CREATING_KEY;
+import static com.tuotiansudai.constants.AnxinContractCreateRedisKey.TRANSFER_CONTRACT_IN_CREATING_KEY;
 
 @Service
 public class AnxinSignServiceImpl implements AnxinSignService {
@@ -562,24 +562,22 @@ public class AnxinSignServiceImpl implements AnxinSignService {
     }
 
     @Override
-    public List<String> queryContract(long businessId, List<String> batchNoList, AnxinContractType anxinContractType) {
+    public boolean queryContract(long businessId, List<String> batchNoList, AnxinContractType anxinContractType) {
 
         logger.info(MessageFormat.format("[安心签] queryContract executing , businessId:{0}", String.valueOf(businessId)));
-        //查询合同创建结果，以及处理中的batchNo
-        List[] lists = anxinSignConnectService.queryContract(businessId, batchNoList, anxinContractType);
 
-        // 合同还没有生成完毕的batchNo
-        List<String> waitingBatchNoList = lists[0];
-        logger.info(MessageFormat.format("[安心签] queryContract executing , waitingBatchNo:{0}", waitingBatchNoList));
-
-        // 处理结果
-        List<ContractResponseView> contractResponseViews = lists[1];
+        // 查询合同创建结果
+        List<ContractResponseView> contractResponseViews = anxinSignConnectService.queryContract(businessId, batchNoList, anxinContractType);
+        if (contractResponseViews == null) {
+            logger.error(MessageFormat.format("[安心签] queryContract fail, , businessId:{0}", String.valueOf(businessId)));
+            return false;
+        }
 
         // 把合同号更新到 invest 或 transferApplication 表
         contractResponseViews.stream().filter(resView -> resView.getRetCode().equals(AnxinRetCode.SUCCESS))
                 .forEach(resView -> investMapper.updateContractNoById(resView.getInvestId(), resView.getContractNo()));
 
-        return waitingBatchNoList;
+        return true;
     }
 
     @Override
@@ -601,19 +599,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
             return failBaseDto(BATCH_NO_IS_INVALID);
         }
 
-        this.queryContract(anxinQueryContractDto.getBusinessId(), Lists.newArrayList(batchNo.split(",")), anxinQueryContractDto.getAnxinContractType());
-//        if (CollectionUtils.isEmpty(waitingBatchNo)) {
-        // 没有待处理的 batchNo 了，检查该 businessId 下的投资是否已经全部成功
-        List<InvestModel> contractFailList = investMapper.findNoContractNoInvest(anxinQueryContractDto.getBusinessId());
-        if (CollectionUtils.isNotEmpty(contractFailList)) {
-            logger.error(MessageFormat.format("[安心签] query anxin contract fail. businessId:{0}", String.valueOf(anxinQueryContractDto.getBusinessId())));
-            // 有失败的，发短信
-//                smsWrapperClient.sendGenerateContractErrorNotify(new GenerateContractErrorNotifyDto(mobileList, anxinQueryContractDto.getBusinessId()));
-            return new BaseDto<>(false, new AnxinDataDto(true, "fail"));
-        }
-//        } else {
-//            return new BaseDto<>(false, new AnxinDataDto(true, "fail"));
-//        }
-        return new BaseDto<>(true, new AnxinDataDto(true, "success"));
+        boolean result = this.queryContract(anxinQueryContractDto.getBusinessId(), Lists.newArrayList(batchNo.split(",")), anxinQueryContractDto.getAnxinContractType());
+        return new BaseDto<>(result, new AnxinDataDto(true, "success"));
     }
 }
