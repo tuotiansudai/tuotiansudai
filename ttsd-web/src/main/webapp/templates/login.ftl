@@ -8,15 +8,15 @@
             <form class="form-login" id="formLogin"  data-redirect-url="${redirect}">
                 <label>
                     <em class="name">账<i></i>号:</em>
-                    <input class="login-name unlock" type="text" value="" name="username" placeholder="请输入账号/手机号" maxlength="25"/>
+                    <input validate class="login-name unlock" type="text" value="" name="username" placeholder="请输入账号/手机号" maxlength="25"/>
                 </label>
                 <label>
                     <em class="name">密<i></i>码:</em>
-                    <input class="password unlock" type="password" value="" name="password" placeholder="请输入密码"/>
+                    <input validate class="password unlock" type="password" value="" name="password" placeholder="请输入密码"/>
                 </label>
                 <label>
                     <em class="name">验证码:</em>
-                    <input class="captcha unlock" type="text" value="" name="captcha" placeholder="请输入验证码" maxlength="5"/>
+                    <input validate class="captcha unlock" type="text" value="" name="captcha" placeholder="请输入验证码" maxlength="5"/>
                     <em class="image-captcha"><img src="" id="imageCaptcha"/></em>
                 </label>
                 <input type="hidden" name="source" value="WEB" />
