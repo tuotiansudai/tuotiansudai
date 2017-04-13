@@ -67,15 +67,15 @@ require.ensure([],function() {
             errorMsg: '请输入有效的数字！'
         }]);
 
-        countValidator.add(countForm.month, [{
+        countValidator.add(countForm.day, [{
             strategy: 'isNonEmpty',
-            errorMsg: '请输入投资时长！'
+            errorMsg: '请输入投资期限！'
         }, {
             strategy: 'isNumber',
             errorMsg: '请输入有效的数字！'
         }]);
 
-        countValidator.add(countForm.bite, [{
+        countValidator.add(countForm.rate, [{
             strategy: 'isNonEmpty',
             errorMsg: '请输入年化利率！'
         }, {
@@ -109,11 +109,22 @@ require.ensure([],function() {
             }
             if (!errorMsg) {
                 //计算本息
-                var moneyNum=Math.round(countForm.money.value),
-                    monthNum=Math.round(countForm.month.value),
-                    biteNum=Math.round(countForm.bite.value)/100,
-                    $resultNum=$('#resultNum'),
-                    resultNum=moneyNum+moneyNum*monthNum*biteNum*30*0.9/365;
+                var moneyNum = Math.round(countForm.money.value * 100),
+                    dayNum = Math.round(countForm.day.value),
+                    rateNum = Math.round(countForm.rate.value * 10),
+                    $resultNum = $('#resultNum');
+
+                var period = dayNum % 30 == 0 ? 30 : dayNum % 30,
+                    resultNum = parseFloat((moneyNum / 100).toFixed(2)),
+                    interest, fee;
+
+                while (dayNum > 0) {
+                    interest = parseFloat((Math.round(moneyNum * rateNum * period / 365000) / 100).toFixed(2));
+                    fee = parseFloat((Math.round(interest * 10) / 100).toFixed(2));
+                    resultNum += (interest - fee);
+                    dayNum -= period;
+                    period = 30;
+                }
                 $resultNum.text(resultNum.toFixed(2));
             }
         }
