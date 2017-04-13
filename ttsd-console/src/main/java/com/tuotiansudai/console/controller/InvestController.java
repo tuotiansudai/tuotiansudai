@@ -58,7 +58,7 @@ public class InvestController {
         InvestPaginationDataDto dataDto = consoleInvestService.getInvestPagination(loanId, investorMobile, channel, source, role,
                 startTime == null ? new DateTime(0).toDate() : new DateTime(startTime).withTimeAtStartOfDay().toDate(),
                 endTime == null ? CalculateUtil.calculateMaxDate() : new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate(),
-                investStatus, preferenceType, index, pageSize);
+                investStatus, preferenceType, null, index, pageSize);
         List<String> channelList = consoleInvestService.findAllChannel();
         ModelAndView mv = new ModelAndView("/invest-list");
         mv.addObject("data", dataDto);
