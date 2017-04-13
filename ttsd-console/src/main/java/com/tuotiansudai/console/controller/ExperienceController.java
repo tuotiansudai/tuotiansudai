@@ -118,32 +118,24 @@ public class ExperienceController {
     @RequestMapping(value = "experience-record", method = RequestMethod.GET)
     public ModelAndView experienceInvestCount(@RequestParam(name = "loanId", required = false) Long loanId,
                                               @RequestParam(name = "mobile", required = false) String investorMobile,
-                                              @RequestParam(name = "usedPreferenceType", required = false) PreferenceType preferenceType,
-                                              @RequestParam(name = "channel", required = false) String channel,
                                               @RequestParam(name = "source", required = false) Source source,
-                                              @RequestParam(name = "role", required = false) Role role,
-                                              @RequestParam(name = "investStatus", required = false) InvestStatus investStatus,
                                               @RequestParam(name = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
                                               @RequestParam(name = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
                                               @Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index) {
         int pageSize = 10;
-        InvestPaginationDataDto dataDto = consoleInvestService.getInvestPagination(loanId, investorMobile, channel, source, role,
+        InvestPaginationDataDto dataDto = consoleInvestService.getInvestPagination(loanId, investorMobile, null, source, null,
                 startTime == null ? new DateTime(0).toDate() : new DateTime(startTime).withTimeAtStartOfDay().toDate(),
                 endTime == null ? CalculateUtil.calculateMaxDate() : new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate(),
-                investStatus, preferenceType, ProductType.EXPERIENCE, index, pageSize);
+                null, null, ProductType.EXPERIENCE, index, pageSize);
         List<String> channelList = consoleInvestService.findAllChannel();
         ModelAndView mv = new ModelAndView("/experience-record-list");
         mv.addObject("data", dataDto);
         mv.addObject("mobile", investorMobile);
-        mv.addObject("channel", channel);
         mv.addObject("loanId", loanId);
         mv.addObject("source", source);
-        mv.addObject("role", role);
         mv.addObject("preferenceTypes", PreferenceType.values());
-        mv.addObject("selectedPreferenceType", preferenceType);
         mv.addObject("startTime", startTime);
         mv.addObject("endTime", endTime);
-        mv.addObject("investStatus", investStatus);
         mv.addObject("investStatusList", InvestStatus.values());
         mv.addObject("channelList", channelList);
         mv.addObject("sourceList", Source.values());
