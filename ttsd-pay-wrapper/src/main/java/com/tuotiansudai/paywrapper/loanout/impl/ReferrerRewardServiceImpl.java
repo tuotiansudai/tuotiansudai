@@ -107,12 +107,12 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
                         continue;
                     }
 
-                    if (invest.getInvestTime() == null) {
-                        logger.warn(MessageFormat.format("[标的放款] 发送推荐人奖励, 推荐人:{0}, 投资ID:{1} 投资时间为空", referrerLoginName, String.valueOf(invest.getId())));
+                    if (invest.getTradingTime() == null) {
+                        logger.warn(MessageFormat.format("[标的放款] 发送推荐人奖励, 推荐人:{0}, 投资ID:{1} 交易时间为空", referrerLoginName, String.valueOf(invest.getId())));
                         continue;
                     }
 
-                    long reward = this.calculateReferrerReward(invest.getAmount(), invest.getInvestTime(), loanDealLine, referrerRelationModel.getLevel(), role);
+                    long reward = this.calculateReferrerReward(invest.getAmount(), invest.getTradingTime(), loanDealLine, referrerRelationModel.getLevel(), role);
                     InvestReferrerRewardModel model = new InvestReferrerRewardModel(idGenerator.generate(), invest.getId(), reward, referrerLoginName, role);
                     investReferrerRewardMapper.create(model);
                     if (this.transferReferrerReward(model)) {
