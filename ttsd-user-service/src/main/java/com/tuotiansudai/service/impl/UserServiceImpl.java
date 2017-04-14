@@ -14,7 +14,7 @@ import com.tuotiansudai.service.RegisterUserService;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.util.MyShaPasswordEncoder;
-import com.tuotiansudai.util.RandomStringGenerator;
+import com.tuotiansudai.service.LoginNameGenerator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,7 +34,6 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private SmsCaptchaService smsCaptchaService;
 
-
     @Autowired
     private SmsWrapperClient smsWrapperClient;
 
@@ -50,9 +49,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserOpLogService userOpLogService;
 
-
-
-    private final static int LOGIN_NAME_LENGTH = 8;
+    @Autowired
+    private LoginNameGenerator loginNameGenerator;
 
     @Override
     public String getMobile(String loginName) {
@@ -111,31 +109,8 @@ public class UserServiceImpl implements UserService {
             return false;
         }
 
-
-        String loginName = dto.getLoginName();
-        boolean autoGenerateLoginName = Strings.isNullOrEmpty(loginName);
-
-        if (!autoGenerateLoginName && this.loginNameIsExist(loginName)) {
-            logger.error(MessageFormat.format("[Register User {0}] login name ({1}) is existed", dto.getMobile(), loginName));
-            return false;
-        }
-
-        if (autoGenerateLoginName) {
-            int tryTimes = 0;
-            do {
-                tryTimes += 1;
-                if (tryTimes > 20) {
-                    logger.info(MessageFormat.format("[Register User {0}] auto generate login name reach max times", dto.getMobile()));
-                    return false;
-                }
-                loginName = RandomStringGenerator.generate(LOGIN_NAME_LENGTH);
-            } while (this.loginNameIsExist(loginName));
-            dto.setLoginName(loginName);
-        }
-
-
         UserModel userModel = new UserModel();
-        userModel.setLoginName(loginName);
+        userModel.setLoginName(loginNameGenerator.generate());
         userModel.setMobile(dto.getMobile());
         userModel.setSource(dto.getSource());
         userModel.setReferrer(referrerUserModel != null ? referrerUserModel.getLoginName() : null);
@@ -191,6 +166,4 @@ public class UserServiceImpl implements UserService {
         UserModel userModel = userMapper.findByLoginName(loginName);
         return userModel != null ? userModel.getExperienceBalance() : 0;
     }
-
-
 }
