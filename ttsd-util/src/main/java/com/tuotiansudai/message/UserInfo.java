@@ -7,6 +7,14 @@ public class UserInfo {
     private String mobile;
     private String userName;
 
+    public UserInfo(){}
+
+    public UserInfo(String loginName,String userName,String mobile){
+        this.loginName = loginName;
+        this.mobile = mobile;
+        this.userName = userName;
+    }
+
     public String getLoginName() {
         return loginName;
     }

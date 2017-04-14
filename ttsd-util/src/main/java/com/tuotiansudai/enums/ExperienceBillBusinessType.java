@@ -3,6 +3,7 @@ package com.tuotiansudai.enums;
 public enum ExperienceBillBusinessType {
     REGISTER("新手注册"),
     INVEST_LOAN("投资体验金项目"),
+    NEWMAN_TYRANT("新贵富豪争霸赛"),
     MONEY_TREE("摇钱树活动");
 
     private final String description;

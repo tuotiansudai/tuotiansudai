@@ -1,9 +1,9 @@
 package com.tuotiansudai.console.activity.controller;
 
 import com.tuotiansudai.activity.repository.dto.NewmanTyrantPrizeDto;
+import com.tuotiansudai.activity.repository.model.NewmanTyrantView;
 import com.tuotiansudai.console.activity.service.ActivityConsoleNewmanTyrantService;
-import com.tuotiansudai.repository.model.HeroRankingView;
-import com.tuotiansudai.repository.model.NewmanTyrantHistoryView;
+import com.tuotiansudai.activity.repository.model.NewmanTyrantHistoryView;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -11,8 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -33,9 +31,9 @@ public class NewmanTyrantController {
             tradingTime = new Date();
         }
 
-        List<HeroRankingView> newmanViews = activityConsoleNewmanTyrantService.obtainNewman(tradingTime);
+        List<NewmanTyrantView> newmanViews = activityConsoleNewmanTyrantService.obtainNewman(tradingTime);
 
-        List<HeroRankingView> tyrantViews = activityConsoleNewmanTyrantService.obtainTyrant(tradingTime);
+        List<NewmanTyrantView> tyrantViews = activityConsoleNewmanTyrantService.obtainTyrant(tradingTime);
 
         List<NewmanTyrantHistoryView> newmanTyrantHistoryViews = activityConsoleNewmanTyrantService.obtainNewmanTyrantHistoryRanking(tradingTime);
         modelAndView.addObject("tradingTime", tradingTime);

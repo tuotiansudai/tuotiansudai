@@ -52,6 +52,8 @@ public class ExperienceServiceImpl implements ExperienceBillService {
                 return "新手注册成功，获得体验金：{0}元, 注册时间：{1}";
             case MONEY_TREE:
                 return "恭喜您在摇钱树活动中摇中了：{0}元体验金，摇奖时间：{1}";
+            case NEWMAN_TYRANT:
+                return "恭喜您在新贵富豪争霸赛活动中获得体验金：{0}元体验金，获奖时间：{1}";
         }
         return "";
 

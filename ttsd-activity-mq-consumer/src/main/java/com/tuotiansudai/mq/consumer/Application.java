@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.freemarker.FreeMarkerAutoConfiguration;
 import org.springframework.context.annotation.Import;
 
+
 @SpringBootApplication(exclude = {FreeMarkerAutoConfiguration.class})
 @Import({MQConsumerConfig.class, MQProducerConfig.class})
 public class Application {

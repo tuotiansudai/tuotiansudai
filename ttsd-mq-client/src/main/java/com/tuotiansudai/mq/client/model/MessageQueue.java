@@ -21,6 +21,8 @@ public enum MessageQueue {
     InvestSuccess_CouponUpdate("InvestSuccess-CouponUpdate"),
     InvestSuccess_MembershipUpdate("InvestSuccess-MembershipUpdate"),
     InvestSuccess_ActivityReward("InvestSuccess-ActivityReward"),
+    InvestSuccess_InvestNewmanTyrant("InvestSuccess-InvestNewmanTyrant"),
+    InvestNewmanTyrant_AssignExperience("InvestNewmanTyrant-AssignExperience"),
     InvestSuccess_ExperienceRepay("InvestSuccess-ExperienceRepay"),
     InvestSuccess_ExperienceAssignInterestCoupon("InvestSuccess-ExperienceAssignInterestCoupon"),
     RechargeSuccess_CompletePointTask("RechargeSuccess-CompletePointTask"),

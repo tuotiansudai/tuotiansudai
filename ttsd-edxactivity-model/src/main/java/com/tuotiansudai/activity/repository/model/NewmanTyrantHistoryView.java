@@ -1,25 +1,33 @@
-package com.tuotiansudai.repository.model;
+package com.tuotiansudai.activity.repository.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
-public class NewmanTyrantHistoryView implements Serializable{
-    private String currentDate;
+public class NewmanTyrantHistoryView implements Serializable {
+    private Date currentDate;
     private long avgNewmanInvestAmount;
     private long avgTyrantInvestAmount;
 
-    public NewmanTyrantHistoryView(){}
+    public enum type {
+        NEWMAN,
+        TYRANT,
+        NEWMAN_TYRANT
+    }
 
-    public NewmanTyrantHistoryView(String currentDate,long avgNewmanInvestAmount,long avgTyrantInvestAmount){
+    public NewmanTyrantHistoryView() {
+    }
+
+    public NewmanTyrantHistoryView(Date currentDate, long avgNewmanInvestAmount, long avgTyrantInvestAmount) {
         this.currentDate = currentDate;
         this.avgNewmanInvestAmount = avgNewmanInvestAmount;
         this.avgTyrantInvestAmount = avgTyrantInvestAmount;
     }
 
-    public String getCurrentDate() {
+    public Date getCurrentDate() {
         return currentDate;
     }
 
-    public void setCurrentDate(String currentDate) {
+    public void setCurrentDate(Date currentDate) {
         this.currentDate = currentDate;
     }
 
@@ -38,4 +46,15 @@ public class NewmanTyrantHistoryView implements Serializable{
     public void setAvgTyrantInvestAmount(long avgTyrantInvestAmount) {
         this.avgTyrantInvestAmount = avgTyrantInvestAmount;
     }
+
+    public type obtainNewmanTyrantType() {
+        if (this.avgTyrantInvestAmount > this.avgNewmanInvestAmount) return type.TYRANT;
+
+        if (this.avgTyrantInvestAmount > this.avgNewmanInvestAmount) return type.NEWMAN;
+
+        return type.NEWMAN_TYRANT;
+
+    }
+
+
 }
