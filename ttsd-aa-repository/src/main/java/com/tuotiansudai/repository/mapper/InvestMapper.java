@@ -295,7 +295,7 @@ public interface InvestMapper {
                                                   @Param(value = "loanStatus") LoanStatus loanStatus);
 
 
-    int findFirstInvestAmountByLoginName(@Param(value = "loginName") String loginName,
+    long findFirstInvestAmountByLoginName(@Param(value = "loginName") String loginName,
                                 @Param(value = "startTime") Date startTime,
                                 @Param(value = "endTime") Date endTime);
 }

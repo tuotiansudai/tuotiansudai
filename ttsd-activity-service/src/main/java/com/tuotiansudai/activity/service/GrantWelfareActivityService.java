@@ -14,7 +14,7 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class GrantWelfareService {
+public class GrantWelfareActivityService {
 
     @Autowired
     private UserMapper userMapper;
@@ -35,7 +35,7 @@ public class GrantWelfareService {
         List<UserModel> userModels = userMapper.findUsersByRegisterTimeOrReferrer(startTime, endTime, loginName);
         for (UserModel referrerUserModel : userModels) {
             if (referrerUserModel.getRegisterTime().before(endTime) && referrerUserModel.getRegisterTime().after(startTime)) {
-                long investAmount = investMapper.findFirstInvestAmountByLoginName(loginName, startTime, endTime);
+                long investAmount = investMapper.findFirstInvestAmountByLoginName(referrerUserModel.getLoginName(), startTime, endTime);
                 if (investAmount >= 500000) {
                     ReferrerCount++;
                 }
@@ -54,7 +54,7 @@ public class GrantWelfareService {
         List<UserModel> userModels = userMapper.findUsersByRegisterTimeOrReferrer(startTime, endTime, loginName);
         for (UserModel referrerUserModel : userModels) {
             if (referrerUserModel.getRegisterTime().before(endTime) && referrerUserModel.getRegisterTime().after(startTime)) {
-                ReferrerSumInvestAmount += investMapper.sumSuccessActivityInvestAmount(loginName, null, startTime, endTime);
+                ReferrerSumInvestAmount += investMapper.sumSuccessActivityInvestAmount(referrerUserModel.getLoginName(), null, startTime, endTime);
             }
         }
         return ReferrerSumInvestAmount;
