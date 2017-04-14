@@ -14,6 +14,7 @@ import com.tuotiansudai.util.MobileEncryptor;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -90,9 +91,9 @@ public class NewmanTyrantService {
     private List<Date> obtainActivityDays(Date tradingTime) {
         tradingTime = new DateTime(tradingTime).withTimeAtStartOfDay().toDate();
         List<Date> dates = Lists.newArrayList();
-        Date activityBeginTime = DateConvertUtil.withTimeAtStartOfDay(newmanTyrantActivityPeriod.get(0), "yyyy-MM-dd");
-        Date activityEndTime = DateConvertUtil.withTimeAtStartOfDay(newmanTyrantActivityPeriod.get(1),"yyyy-MM-dd");
-        while (tradingTime.compareTo(activityBeginTime) > -1 && tradingTime.compareTo(activityEndTime) == -1) {
+        Date activityBeginTime = DateTime.parse(newmanTyrantActivityPeriod.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+        Date activityEndTime = DateTime.parse(newmanTyrantActivityPeriod.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+        while (tradingTime.compareTo(activityBeginTime) > -1 && tradingTime.compareTo(activityEndTime) <= 0) {
             dates.add(tradingTime);
             tradingTime = new DateTime(tradingTime).minusDays(1).withTimeAtStartOfDay().toDate();
         }
