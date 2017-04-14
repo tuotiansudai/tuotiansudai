@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 @Component
 public class HTrackingClient {
@@ -25,6 +26,8 @@ public class HTrackingClient {
 
     private OkHttpClient buildOkHttpClient() {
         OkHttpClient okHttpClient = new OkHttpClient();
+        okHttpClient.setConnectTimeout(5, TimeUnit.SECONDS);
+        okHttpClient.setReadTimeout(5, TimeUnit.SECONDS);
         OkHttpLoggingInterceptor loggingInterceptor = new OkHttpLoggingInterceptor(message -> logger.info(message));
         okHttpClient.interceptors().add(loggingInterceptor);
         return okHttpClient;
