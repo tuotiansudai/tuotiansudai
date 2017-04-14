@@ -38,7 +38,7 @@ public class HTrackingClient {
         return execute(HTracking_Recharge, mobile);
     }
 
-    protected String execute(String path, String... param) {
+    protected String execute(String path, Object... param) {
         ResponseBody responseBody = newCall(path, param);
         try {
             return responseBody != null ? responseBody.string() : null;
@@ -48,7 +48,7 @@ public class HTrackingClient {
         }
     }
 
-    protected ResponseBody newCall(String hTrackingUrl, String... param){
+    protected ResponseBody newCall(String hTrackingUrl, Object... param){
         String url = MessageFormat.format(hTrackingUrl, param);
 
         Request request = new Request.Builder()
