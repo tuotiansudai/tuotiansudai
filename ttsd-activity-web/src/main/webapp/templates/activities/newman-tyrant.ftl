@@ -44,15 +44,15 @@
                 <i class="two-bg"></i>
                 <h3 class="rank-title">新贵VS富豪排行榜</h3>
                 <ul class="rank-info">
-                    <li class="info-date">
+                    <li class="info-date" id="infoDate" data-date="${currentTime?string('yyyy-MM-dd')}">
                         <#if currentTime??>${currentTime?string('yyyy-MM-dd')}</#if>
                     </li>
                     <li class="info-rank">
-                        <@global.isAnonymous>我的排名：登录后查看</@global.isAnonymous>
+                        <@global.isAnonymous>我的排名：<span class="show-login">登录后查看</span></@global.isAnonymous>
                         <@global.isNotAnonymous><#if investRanking &gt; 20 || investRanking == 0>未上榜<#else>我的排名：${investRanking}</#if></@global.isNotAnonymous>
                     </li>
                     <li class="info-money">
-                        <@global.isAnonymous></@global.isAnonymous>
+                        <@global.isAnonymous>今日投资额：<span class="show-login">登录后查看</span></@global.isAnonymous>
                         <@global.isNotAnonymous>今日投资额：<span>${(investAmount/100)?string('0.00')}</span>元</@global.isNotAnonymous>
                     </li>
                 </ul>
@@ -86,7 +86,7 @@
                                         {{else if $index==2}}
                                         <td class="three">3</td>
                                         {{else}}
-                                            <td>{{$index}}</td>
+                                            <td>{{$index+1}}</td>
                                         {{/if}}
                                         <td>{{$value.loginName}}</td>
                                         <td>{{$value.centSumAmount}}</td>
@@ -107,8 +107,8 @@
                         </div>
                     </div>
                     <div class="board-btn">
-                        <span>查看后一天结果</span>
-                        <span>查看后一天结果</span>
+                        <span id="heroPre">查看前一天结果</span>
+                        <span id="heroNext">查看后一天结果</span>
                     </div>
                     <div class="link-btn">
                         <a href="/loan-list">立即投资抢排行</a>
@@ -170,6 +170,11 @@
                     <dd>6、拓天速贷在法律范围内保留对本活动的最终解释权。</dd>
                 </dl>
             </div>
+        </div>
+    </div>
+    <div class="tip-container" id="tipContainer">
+        <div class="tip-content">
+            <h3>双榜对抗赛</h3>
         </div>
     </div>
 </div>

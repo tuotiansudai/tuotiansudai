@@ -36,7 +36,7 @@ public class NewmanTyrantController {
         List<NewmanTyrantView> tyrantViews = newmanTyrantService.obtainTyrant(new Date());
         List<NewmanTyrantView> newmanTyrantViews = CollectionUtils.isEmpty(newmanViews) ? tyrantViews : newmanViews;
         int investRanking = CollectionUtils.isNotEmpty(newmanTyrantViews) ?
-                Iterators.indexOf(newmanTyrantViews.iterator(), input -> loginName.equalsIgnoreCase(input.getLoginName())) + 1 : 0;
+                Iterators.indexOf(newmanTyrantViews.iterator(), input -> input.getLoginName().equalsIgnoreCase(loginName)) + 1 : 0;
         long investAmount = investRanking > 0 ? newmanTyrantViews.get(investRanking - 1).getSumAmount() : 0;
 
         List<NewmanTyrantHistoryView> newmanTyrantHistoryViews = newmanTyrantService.obtainNewmanTyrantHistoryRanking(new Date());
