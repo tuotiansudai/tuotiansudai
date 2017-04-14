@@ -32,7 +32,7 @@ public class ActivitiesController {
     private AccountService accountService;
 
 
-    @RequestMapping(path = "/{item:^recruit|money_tree|material-point|integral-draw|birth-month|rank-list-app|share-reward|app-download|landing-page|invest-achievement|landing-anxin|loan-hike|heavily-courtship|point-update|sign-check|open-spring|wx-register|divide-money|regal-list$}", method = RequestMethod.GET)
+    @RequestMapping(path = "/{item:^recruit|money_tree|material-point|integral-draw|birth-month|rank-list-app|share-reward|app-download|landing-page|invest-achievement|landing-anxin|loan-hike|heavily-courtship|point-update|sign-check|open-spring|wx-register|divide-money$}", method = RequestMethod.GET)
 
     public ModelAndView activities(@PathVariable String item, HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView("/activities/" + item, "responsive", true);

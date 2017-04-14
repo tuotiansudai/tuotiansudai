@@ -1,5 +1,5 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.regal_list}" pageJavascript="${js.regal_list}" activeNav="" activeLeftNav="" title="新贵富豪争霸赛_活动中心_拓天速贷" keywords="拓天速贷,投资排行榜,实物大奖,体验金奖励" description="拓天速贷新贵富豪争霸赛活动,新用户每日累计投资额形成'新贵打擂榜'老用户每日累计投资额形成'富豪守擂榜'上榜者可获实物大奖,加息劵,体验金奖励.">
+<@global.main pageCss="${css.newman_tyrant}" pageJavascript="${js.newman_tyrant}" activeNav="" activeLeftNav="" title="新贵富豪争霸赛_活动中心_拓天速贷" keywords="拓天速贷,投资排行榜,实物大奖,体验金奖励" description="拓天速贷新贵富豪争霸赛活动,新用户每日累计投资额形成'新贵打擂榜'老用户每日累计投资额形成'富豪守擂榜'上榜者可获实物大奖,加息劵,体验金奖励.">
 <div class="regal-list-container">
     <div class="top-container">
     </div>

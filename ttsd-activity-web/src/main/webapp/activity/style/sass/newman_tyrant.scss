@@ -25,10 +25,10 @@
 .regal-list-container{
   .top-container{
     height: 350px;
-    background: url("/activity/images/regal-list/top-img.jpg") center top no-repeat;
+    background: url("/activity/images/newman-tyrant/top-img.jpg") center top no-repeat;
     @media (max-width:700px) {
       height: 175px;
-      background: url("/activity/images/regal-list/top-img-phone.jpg") center top no-repeat;
+      background: url("/activity/images/newman-tyrant/top-img-phone.jpg") center top no-repeat;
       background-size: contain;
     }
   }
@@ -52,7 +52,7 @@
         position: absolute;
         top:60px;
         left:-58px;
-        background: url('/activity/images/regal-list/rule-one.png') no-repeat center;
+        background: url('/activity/images/newman-tyrant/rule-one.png') no-repeat center;
         background-size:120%;
         background-position: 10px 0;
       }
@@ -62,7 +62,7 @@
         position: absolute;
         top: 120px;
         right: -55px;
-        background: url(/activity/images/regal-list/rule-two.png) no-repeat center;
+        background: url('/activity/images/newman-tyrant/rule-two.png') no-repeat center;
         background-size: 120%;
         background-position: -25px 0;
       }
@@ -72,7 +72,7 @@
         position: absolute;
         top:400px;
         left:-40px;
-        background: url('/activity/images/regal-list/rule-three.png') no-repeat center;
+        background: url('/activity/images/newman-tyrant/rule-three.png') no-repeat center;
         background-size:120%;
         background-position: 10px 0;
       }
@@ -96,7 +96,7 @@
           font-size:24px;
           color:#fff600;
           font-weight:bold;
-          background: url("/activity/images/regal-list/rule-title.png") center no-repeat;
+          background: url("/activity/images/newman-tyrant/rule-title.png") center no-repeat;
           background-size: contain;
         }
         .rule-text{
@@ -147,11 +147,11 @@
               padding-left:70px;
               margin-top:15px;
               &.icon-first{
-                background: url('/activity/images/regal-list/icon-first.png') no-repeat;
+                background: url('/activity/images/newman-tyrant/icon-first.png') no-repeat;
                 background-position: 20px 0;
               }
               &.icon-twice{
-                background: url('/activity/images/regal-list/icon-twice.png') no-repeat;
+                background: url('/activity/images/newman-tyrant/icon-twice.png') no-repeat;
                 background-position: 20px 0;
               }
             }
@@ -175,7 +175,7 @@
           height:82px;
           top:5px;
           left:-150px;
-          background: url('/activity/images/regal-list/rank-one.png') no-repeat center;
+          background: url('/activity/images/newman-tyrant/rank-one.png') no-repeat center;
           background-size: 100%;
         }
         &.two-bg{
@@ -183,7 +183,7 @@
           height:104px;
           top:360px;
           right:-105px;
-          background: url('/activity/images/regal-list/rank-two.png') no-repeat center;
+          background: url('/activity/images/newman-tyrant/rank-two.png') no-repeat center;
           background-size: 100%;
         }
       }
@@ -194,7 +194,7 @@
         top:-10px;
         left:50%;
         margin-left:-180px;
-        background:url('/activity/images/regal-list/title-bg.png') no-repeat center;
+        background:url('/activity/images/newman-tyrant/title-bg.png') no-repeat center;
         background-size:100%;
         font-size:30px;
         color:#5b5800;
@@ -214,13 +214,13 @@
           color:#fff;
           padding-left: 50px;
           &.info-date{
-            background:url('/activity/images/regal-list/icon-date.png') no-repeat center left;
+            background:url('/activity/images/newman-tyrant/icon-date.png') no-repeat center left;
           }
           &.info-rank{
-            background:url('/activity/images/regal-list/icon-rank.png') no-repeat center left;
+            background:url('/activity/images/newman-tyrant/icon-rank.png') no-repeat center left;
           }
           &.info-money{
-            background:url('/activity/images/regal-list/icon-money.png') no-repeat center left;
+            background:url('/activity/images/newman-tyrant/icon-money.png') no-repeat center left;
           }
           span{
             color:#fff600;
@@ -256,13 +256,13 @@
                 line-height:46px;
                 text-align:center;
                 margin:0 5px;
-                background:url('/activity/images/regal-list/tab-bg.png') no-repeat center;
+                background:url('/activity/images/newman-tyrant/tab-bg.png') no-repeat center;
                 background-size:100%;
                 cursor:pointer;
                 font-size:18px;
                 color:#d7d596;
                 &.active{
-                  background:url('/activity/images/regal-list/tab-bg-hover.png') no-repeat center;
+                  background:url('/activity/images/newman-tyrant/tab-bg-hover.png') no-repeat center;
                   background-size:100%;
                   color:#fff600;
                 }
@@ -284,15 +284,15 @@
                 line-height:55px;
                 &.one{
                   text-indent: -9999em;
-                  background: url('/activity/images/regal-list/rank-first.png') no-repeat center;
+                  background: url('/activity/images/newman-tyrant/rank-first.png') no-repeat center;
                 }
                 &.two{
                   text-indent: -9999em;
-                  background: url('/activity/images/regal-list/rank-twice.png') no-repeat center;
+                  background: url('/activity/images/newman-tyrant/rank-twice.png') no-repeat center;
                 }
                 &.three{
                   text-indent: -9999em;
-                  background: url('/activity/images/regal-list/rank-three.png') no-repeat center;
+                  background: url('/activity/images/newman-tyrant/rank-three.png') no-repeat center;
                 }
               }
             }
@@ -340,7 +340,7 @@
     }
   }
   .dare-container{
-    background: #fff8e7 url('/activity/images/regal-list/dare-bg.png') no-repeat center top;
+    background: #fff8e7 url('/activity/images/newman-tyrant/dare-bg.png') no-repeat center top;
     background-size:100%;
     .dare-content{
       float:left;
@@ -354,7 +354,7 @@
         top:-10px;
         left:50%;
         margin-left:-180px;
-        background:url('/activity/images/regal-list/title-bg.png') no-repeat center;
+        background:url('/activity/images/newman-tyrant/title-bg.png') no-repeat center;
         background-size:100%;
         font-size:30px;
         color:#5b5800;
@@ -427,7 +427,7 @@
           float:left;
           width:180px;
           height:275px;
-          background:url('/activity/images/regal-list/vs.png') no-repeat center;
+          background:url('/activity/images/newman-tyrant/vs.png') no-repeat center;
           background-size:90%;
         }
       }
@@ -481,7 +481,7 @@
             font-size:24px;
             color:#fff600;
             font-weight:bold;
-            background: url("/activity/images/regal-list/rule-bg.png") center no-repeat;
+            background: url("/activity/images/newman-tyrant/rule-bg.png") center no-repeat;
             background-size: contain;
           }
           .actor-text{

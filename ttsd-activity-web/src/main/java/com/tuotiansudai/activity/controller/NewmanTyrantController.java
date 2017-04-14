@@ -30,7 +30,7 @@ public class NewmanTyrantController {
     @RequestMapping(method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView newmanTyrant(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date tradingTime) {
         tradingTime = tradingTime == null ? new Date() : tradingTime;
-        ModelAndView modelAndView = new ModelAndView("/activities/hero-standings", "responsive", true);
+        ModelAndView modelAndView = new ModelAndView("/activities/newman-tyrant", "responsive", true);
         String loginName = LoginUserInfo.getLoginName();
 
         List<NewmanTyrantView> newmanViews = newmanTyrantService.obtainNewman(tradingTime);
