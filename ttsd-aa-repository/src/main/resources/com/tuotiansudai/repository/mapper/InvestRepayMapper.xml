@@ -224,20 +224,15 @@
               l.`periods`,
               l.`duration`,
               l.`id` as loan_id,
-        l.`type`,
-        l.product_type
-            FROM
-              invest i
-              JOIN loan l
-                ON i.`loan_id` = l.`id`
-        AND l.`status` IN ('COMPLETE', 'REPAYING') or (l.product_type='EXPERIENCE' and TO_DAYS(now()) -
-        TO_DAYS(invest_time) &gt; l.duration)
-        WHERE i.`login_name` = #{loginName} and i.`status` = 'SUCCESS'
-        ) t
+              l.`type`,
+              l.product_type
+            FROM invest i JOIN loan l ON i.`loan_id` = l.`id`
+              AND (l.`status` IN ('COMPLETE', 'REPAYING') or (l.product_type='EXPERIENCE' and TO_DAYS(now()) - TO_DAYS(invest_time) &gt; l.duration))
+            WHERE i.`login_name` = #{loginName} and i.`status` = 'SUCCESS'
+            ) t
             ON ir.`invest_id` = t.investId
         WHERE ir.`status` = 'COMPLETE'
-          AND ir.`actual_repay_date` BETWEEN #{startTime}
-          AND #{endTime}
+          AND ir.`actual_repay_date` BETWEEN #{startTime} AND #{endTime}
         ORDER BY ir.`actual_repay_date` DESC
         LIMIT #{startLimit}, #{endLimit}
     </select>
