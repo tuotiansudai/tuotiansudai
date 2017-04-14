@@ -293,7 +293,9 @@ public class InvestServiceImpl implements InvestService {
         long extraRateInterest = 0;
         long extraRateFee = 0;
         if (loanDetailsModel != null && !CollectionUtils.isEmpty(loanDetailsModel.getExtraSource()) && loanDetailsModel.getExtraSource().contains(Source.WEB)) {
-            extraRateInterest = getExtraRate(loanId, amount, loanModel.getDuration());
+            //计算出当前时间到借款截止时间当天的天数（包含当前时间和借款截止时间当天）
+            int periodDuration = LoanPeriodCalculator.calculateDuration(new Date(), loanModel.getDeadline());
+            extraRateInterest = getExtraRate(loanId, amount, periodDuration);
             extraRateFee = new BigDecimal(extraRateInterest).multiply(new BigDecimal(investFeeRate)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
         }
 
