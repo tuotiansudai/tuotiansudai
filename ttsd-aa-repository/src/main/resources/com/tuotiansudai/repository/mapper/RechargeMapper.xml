@@ -51,7 +51,13 @@
         </if>
 
         <if test="role != null and role == 'UN_LOANER' ">
-            JOIN (SELECT login_name FROM `user_role` WHERE role &lt;> 'LOANER') temp_role ON r.login_name = temp_role.login_name
+            join (SELECT
+            login_name, GROUP_CONCAT(role) AS role
+            FROM
+            user_role
+            GROUP BY login_name) ur
+            ON ur.login_name = r.login_name
+            AND ur.role NOT LIKE '%LOANER%'
         </if>
 
         <if test="mobile !=null and mobile != '' ">
@@ -91,7 +97,13 @@
         </if>
 
         <if test="role != '' and role == 'UN_LOANER' ">
-            JOIN (SELECT login_name FROM `user_role` WHERE role &lt;> 'LOANER') temp_role ON recharge.login_name = temp_role.login_name
+            join (SELECT
+            login_name, GROUP_CONCAT(role) AS role
+            FROM
+            user_role
+            GROUP BY login_name) ur
+            ON ur.login_name = recharge.login_name
+            AND ur.role NOT LIKE '%LOANER%'
         </if>
         <where>
             <if test="rechargeId !=null and rechargeId !='' ">
@@ -124,12 +136,18 @@
         <if test="mobile !=null and mobile != '' ">
             and u.mobile = #{mobile}
         </if>
-        <if test="role != '' and role != 'UN_LOANER' ">
+        <if test="role != null and role != '' and role != 'UN_LOANER' ">
             join user_role ur on re.login_name = ur.login_name and ur.role = #{role}
         </if>
 
-        <if test="role != '' and role == 'UN_LOANER' ">
-            join user_role ur on re.login_name = ur.login_name and ur.role &lt;> 'LOANER'
+        <if test="role != null and role == 'UN_LOANER' ">
+            join (SELECT
+                login_name, GROUP_CONCAT(role) AS role
+                FROM
+                user_role
+                GROUP BY login_name) ur
+            ON ur.login_name = re.login_name
+            AND ur.role NOT LIKE '%LOANER%'
         </if>
         <where>
             <if test="rechargeId !=null and rechargeId !='' ">

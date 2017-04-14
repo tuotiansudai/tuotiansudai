@@ -375,7 +375,13 @@
             JOIN (SELECT login_name FROM user_role WHERE role = #{role}) AS temp_role ON temp_role.login_name = us.login_name
         </if>
         <if test="role != '' and role == 'UN_LOANER' ">
-            JOIN (SELECT login_name FROM user_role WHERE role &lt;> 'LOANER') AS temp_role ON temp_role.login_name = us.login_name
+            JOIN (SELECT
+            login_name, GROUP_CONCAT(role) AS role
+            FROM
+            user_role
+            GROUP BY login_name) ur
+            ON ur.login_name = us.login_name
+            AND ur.role NOT LIKE '%LOANER%'
         </if>
         WHERE
         us.user_name IS NOT NULL
@@ -393,7 +399,13 @@
                 JOIN (SELECT login_name FROM user_role WHERE role = #{role}) AS temp_role_1 ON temp_role_1.login_name = temp_user_1.login_name
             </if>
             <if test="role != '' and role == 'UN_LOANER' ">
-                JOIN (SELECT login_name FROM user_role WHERE role &lt;> 'LOANER') AS temp_role_1 ON temp_role_1.login_name = temp_user_1.login_name
+                JOIN (SELECT
+                login_name, GROUP_CONCAT(role) AS role
+                FROM
+                user_role
+                GROUP BY login_name) ur
+                ON ur.login_name = temp_user_1.login_name
+                AND ur.role NOT LIKE '%LOANER%'
             </if>
             WHERE temp_user_1.user_name IS NOT NULL
             GROUP BY temp_user_1.province
@@ -425,7 +437,13 @@
                 JOIN (SELECT login_name FROM user_role WHERE role = #{role}) AS temp_role ON temp_role.login_name = us.login_name
             </if>
             <if test="role != '' and role == 'UN_LOANER' ">
-                JOIN (SELECT login_name FROM user_role WHERE role &lt;> 'LOANER') AS temp_role ON temp_role.login_name = us.login_name
+                JOIN (SELECT
+                login_name, GROUP_CONCAT(role) AS role
+                FROM
+                user_role
+                GROUP BY login_name) ur
+                ON ur.login_name = us.login_name
+                AND ur.role NOT LIKE '%LOANER%'
             </if>
             WHERE
             us.user_name IS NOT NULL
@@ -438,7 +456,13 @@
                 JOIN (SELECT login_name FROM user_role WHERE role = #{role}) AS temp_role_2 ON temp_role_2.login_name = temp_user_2.login_name
             </if>
             <if test="role != '' and role == 'UN_LOANER' ">
-                JOIN (SELECT login_name FROM user_role WHERE role &lt;> 'LOANER') AS temp_role_2 ON temp_role_2.login_name = temp_user_2.login_name
+                JOIN (SELECT
+                login_name, GROUP_CONCAT(role) AS role
+                FROM
+                user_role
+                GROUP BY login_name) ur
+                ON ur.login_name = temp_user_2.login_name
+                AND ur.role NOT LIKE '%LOANER%'
             </if>
             WHERE temp_user_2.user_name IS NOT NULL
             GROUP BY temp_user_2.province
@@ -470,7 +494,13 @@
             JOIN (SELECT login_name FROM user_role WHERE role = #{role}) AS temp_role ON temp_role.login_name = us.login_name
         </if>
         <if test="role != '' and role == 'UN_LOANER' ">
-            JOIN (SELECT login_name FROM user_role WHERE role &lt;> 'LOANER') AS temp_role ON temp_role.login_name = us.login_name
+            JOIN (SELECT
+            login_name, GROUP_CONCAT(role) AS role
+            FROM
+            user_role
+            GROUP BY login_name) ur
+            ON ur.login_name = us.login_name
+            AND ur.role NOT LIKE '%LOANER%'
         </if>
         WHERE
         us.user_name IS NOT NULL
@@ -488,7 +518,13 @@
                 JOIN (SELECT login_name FROM user_role WHERE role = #{role}) AS temp_role_1 ON temp_role_1.login_name = temp_user_1.login_name
             </if>
             <if test="role != '' and role == 'UN_LOANER' ">
-                JOIN (SELECT login_name FROM user_role WHERE role &lt;> 'LOANER') AS temp_role_1 ON temp_role_1.login_name = temp_user_1.login_name
+                JOIN (SELECT
+                login_name, GROUP_CONCAT(role) AS role
+                FROM
+                user_role
+                GROUP BY login_name) ur
+                ON ur.login_name = temp_user_1.login_name
+                AND ur.role NOT LIKE '%LOANER%'
             </if>
             WHERE temp_user_1.user_name IS NOT NULL
             GROUP BY temp_user_1.province
@@ -520,7 +556,13 @@
                 JOIN (SELECT login_name FROM user_role WHERE role = #{role}) AS temp_role ON temp_role.login_name = us.login_name
             </if>
             <if test="role != '' and role == 'UN_LOANER' ">
-                JOIN (SELECT login_name FROM user_role WHERE role &lt;> 'LOANER') AS temp_role ON temp_role.login_name = us.login_name
+                JOIN (SELECT
+                login_name, GROUP_CONCAT(role) AS role
+                FROM
+                user_role
+                GROUP BY login_name) ur
+                ON ur.login_name = us.login_name
+                AND ur.role NOT LIKE '%LOANER%'
             </if>
             WHERE
             us.user_name IS NOT NULL
@@ -533,7 +575,13 @@
                 JOIN (SELECT login_name FROM user_role WHERE role = #{role}) AS temp_role_2 ON temp_role_2.login_name = temp_user_2.login_name
             </if>
             <if test="role != '' and role == 'UN_LOANER' ">
-                JOIN (SELECT login_name FROM user_role WHERE role &lt;> 'LOANER') AS temp_role_2 ON temp_role_2.login_name = temp_user_2.login_name
+                JOIN (SELECT
+                login_name, GROUP_CONCAT(role) AS role
+                FROM
+                user_role
+                GROUP BY login_name) ur
+                ON ur.login_name = temp_user_2.login_name
+                AND ur.role NOT LIKE '%LOANER%'
             </if>
             WHERE temp_user_2.user_name IS NOT NULL
             GROUP BY temp_user_2.province
@@ -1417,7 +1465,13 @@
             join (select login_name from `user_role` where role = #{role}) temp_role on temp_role.login_name = `withdraw`.login_name
         </if>
         <if test="role != '' and role == 'UN_LOANER' ">
-            join (select login_name from `user_role` where role &lt;> 'LOANER') temp_role on temp_role.login_name = `withdraw`.login_name
+            JOIN (SELECT
+            login_name, GROUP_CONCAT(role) AS role
+            FROM
+            user_role
+            GROUP BY login_name) ur
+            ON ur.login_name = withdraw.login_name
+            AND ur.role NOT LIKE '%LOANER%'
         </if>
 
         where status = 'SUCCESS'
