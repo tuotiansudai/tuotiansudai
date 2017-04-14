@@ -6,11 +6,8 @@ import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
 import com.google.common.primitives.Ints;
-import com.tuotiansudai.repository.model.CouponModel;
-import com.tuotiansudai.repository.model.UserCouponModel;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.repository.model.TransferApplicationModel;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 
@@ -55,13 +52,18 @@ public class InterestCalculator {
         return InterestCalculator.calculateInterest(loanModel, corpusMultiplyPeriodDays);
     }
 
-    public static long estimateExpectedInterest(LoanModel loanModel, long amount) {
-        List soldOutLoanList = Lists.newArrayList("RECHECK","REPAYING","OVERDUE","COMPLETE");
+    public static List<Long> estimateExpectedInterest(LoanModel loanModel, long amount) {
+        List<Long> expectedInterestList = Lists.newArrayList();
+        List soldOutLoanList = Lists.newArrayList("RECHECK", "REPAYING", "OVERDUE", "COMPLETE");
         boolean isRealTimeInterest = soldOutLoanList.contains(loanModel.getStatus()) || loanModel.getProductType() == ProductType.EXPERIENCE ? true : false;
-
-        //包含当前天和项目截止时间当天,拓天体验项目和已售罄的项目仍然显示原来的利息收益
-        int periodDuration = isRealTimeInterest ? loanModel.getDuration() : LoanPeriodCalculator.calculateDuration(new Date(), loanModel.getDeadline());
-        return InterestCalculator.calculateInterest(loanModel, amount * periodDuration);
+        if (isRealTimeInterest) {
+            expectedInterestList.add(InterestCalculator.calculateInterest(loanModel, amount * loanModel.getDuration()));
+        }
+        List<Integer> daysOfPeriodList = LoanPeriodCalculator.calculateDaysOfPerPeriod(new Date(), loanModel.getDeadline(), loanModel.getType());
+        for (Integer daysOfPeriod : daysOfPeriodList) {
+            expectedInterestList.add(InterestCalculator.calculateInterest(loanModel, amount * daysOfPeriod));
+        }
+        return expectedInterestList;
     }
 
     public static long estimateCouponRepayExpectedInterest(InvestModel investModel, LoanModel loanModel, CouponModel couponModel, DateTime currentRepayDate, DateTime lastRepayDate) {

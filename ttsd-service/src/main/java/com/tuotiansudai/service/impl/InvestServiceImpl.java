@@ -41,6 +41,7 @@ import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class InvestServiceImpl implements InvestService {
@@ -193,7 +194,7 @@ public class InvestServiceImpl implements InvestService {
             throw new InvestException(InvestExceptionType.EXCEED_MONEY_NEED_RAISED);
         }
 
-        long userInvestAmount = investMapper.sumSuccessInvestAmountByLoginName(loanId, investDto.getLoginName(),true);
+        long userInvestAmount = investMapper.sumSuccessInvestAmountByLoginName(loanId, investDto.getLoginName(), true);
 
         // 不满足单用户投资限额
         if (investAmount > userInvestMaxAmount - userInvestAmount) {
@@ -278,10 +279,14 @@ public class InvestServiceImpl implements InvestService {
         LoanModel loanModel = loanMapper.findById(loanId);
 
         //根据loginName查询出会员的相关信息
-        long expectedInterest = InterestCalculator.estimateExpectedInterest(loanModel, amount);
-
+        List<Long> expectedInterestList = InterestCalculator.estimateExpectedInterest(loanModel, amount);
         double investFeeRate = membershipPrivilegePurchaseService.obtainServiceFee(loginName);
-        long expectedFee = new BigDecimal(expectedInterest).multiply(new BigDecimal(investFeeRate)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
+
+        long expectedInterest = 0L;
+        for (Long expectedInterestOfPerPeriod : expectedInterestList) {
+            long expectedOfPerPeriodFee = new BigDecimal(expectedInterest).multiply(new BigDecimal(investFeeRate)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
+            expectedInterest += (expectedInterestOfPerPeriod - expectedOfPerPeriodFee);
+        }
 
         LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loanId);
 
@@ -292,7 +297,7 @@ public class InvestServiceImpl implements InvestService {
             extraRateFee = new BigDecimal(extraRateInterest).multiply(new BigDecimal(investFeeRate)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
         }
 
-        return loanModel.getProductType() == ProductType.EXPERIENCE ? expectedInterest : (expectedInterest - expectedFee) + (extraRateInterest - extraRateFee);
+        return loanModel.getProductType() == ProductType.EXPERIENCE ? expectedInterest : expectedInterest + (extraRateInterest - extraRateFee);
     }
 
     @Override
@@ -486,7 +491,13 @@ public class InvestServiceImpl implements InvestService {
                 expectedInterest = (couponModel.getCouponType() == CouponType.INTEREST_COUPON || couponModel.getCouponType() == CouponType.BIRTHDAY_COUPON) ? InterestCalculator.getCouponExpectedInterest(loanModel, couponModel, investAmount, LoanPeriodCalculator.calculateDuration(new Date(), loanModel.getDeadline())) : 0;
             }
         }
-        long interest = InterestCalculator.estimateExpectedInterest(loanModel, investAmount);
+
+        long interest = 0L;
+        List<Long> perPeriodInterestList = InterestCalculator.estimateExpectedInterest(loanModel, investAmount);
+        for(Long perPeriodInterest: perPeriodInterestList){
+            interest += perPeriodInterest;
+        }
+
         long originFee = new BigDecimal(interest).multiply(new BigDecimal(defaultFee)).longValue();
         long membershipFee = new BigDecimal(interest).multiply(new BigDecimal(investFeeRate)).longValue();
         long originCouponFee = new BigDecimal(expectedInterest).multiply(new BigDecimal(defaultFee)).longValue();
