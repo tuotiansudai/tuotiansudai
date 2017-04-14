@@ -33,6 +33,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sun.plugin2.message.Message;
 
 import java.text.MessageFormat;
 import java.util.Map;
@@ -176,7 +177,8 @@ public class RechargeServiceImpl implements RechargeService {
 
             UserModel userModel = userMapper.findByLoginName(loginName);
             if(userModel.getChannel().toLowerCase().trim().equals(HTRACKING_CHANNEL)){
-                hTrackingClient.hTrackingRecharge(userModel.getMobile());
+                logger.info(MessageFormat.format("[recharge callback] send hTrackingRecharge, loginName:{0}", userModel.getLoginName()));
+                hTrackingClient.hTrackingRecharge(userModel.getLoginName());
             }
         } catch (NumberFormatException e) {
             logger.error(MessageFormat.format("Recharge callback order is not a number (orderId = {0})", callbackRequestModel.getOrderId()));
