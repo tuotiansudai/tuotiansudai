@@ -21,10 +21,7 @@ import com.tuotiansudai.paywrapper.repository.model.sync.response.TransferRespon
 import com.tuotiansudai.paywrapper.service.SystemBillService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.util.AmountConverter;
-import com.tuotiansudai.util.AmountTransfer;
-import com.tuotiansudai.util.IdGenerator;
-import com.tuotiansudai.util.InterestCalculator;
+import com.tuotiansudai.util.*;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -268,7 +265,7 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
 
         return amountBigDecimal
                 .multiply(new BigDecimal(rewardRate))
-                .multiply(new BigDecimal((dealLine.getTime() - investTime.getTime()) / (1000 * 3600 * 24)))
+                .multiply(new BigDecimal(LoanPeriodCalculator.calculateDuration(investTime, dealLine)))
                 .divide(new BigDecimal(InterestCalculator.DAYS_OF_YEAR), 0, BigDecimal.ROUND_DOWN)
                 .longValue();
     }
