@@ -54,8 +54,8 @@ public class GenerateReferrerRelationConsumer implements MessageConsumer {
             this.referrerRelationService.generateRelation(userModel.getReferrer(), userModel.getLoginName());
             this.staffRecommendRoleService.generateStaffRole(userModel.getReferrer(), userModel.getLoginName());
         } catch (Exception e) {
-            logger.error(MessageFormat.format("[GenerateReferrerRelation MQ] receive message: '{0}', user is {1} new referrer is {2}", message, userModel.getLoginName(), userModel.getReferrer()), e);
+            logger.error(MessageFormat.format("[GenerateReferrerRelation MQ] receive message: {0}, user is {1} new referrer is {2}", message, userModel.getLoginName(), userModel.getReferrer()), e);
         }
-        logger.info("[GenerateReferrerRelation MQ] receive message: '{0}'. finished", message);
+        logger.info("[GenerateReferrerRelation MQ] receive message: '{}'. finished", message);
     }
 }

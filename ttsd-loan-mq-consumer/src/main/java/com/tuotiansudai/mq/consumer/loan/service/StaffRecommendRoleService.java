@@ -82,6 +82,8 @@ public class StaffRecommendRoleService {
             logger.info(MessageFormat.format("[StaffRecommendRole] user:{0}, lower user:{1}, role:{2}", loginName, user, role.name()));
         }
 
-        userRoleMapper.create(userRoleModels);
+        if (CollectionUtils.isNotEmpty(userRoleModels)) {
+            userRoleMapper.create(userRoleModels);
+        }
     }
 }
