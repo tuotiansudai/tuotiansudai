@@ -18,18 +18,18 @@
                     <ul class="gift-list">
                         <li>
                             <div class="gift-item">
-                                <img src="http://placehold.it/202x202" alt="金奖" width="100%">
+                                <img src="<#if prizeDto??>${staticServer}${prizeDto.goldImageUrl}</#if>" alt="金奖" width="100%">
                             </div>
                             <div class="gift-num icon-first">
-                                金奖：xxxxxx
+                                金奖：<#if prizeDto??>${prizeDto.goldPrizeName}</#if>
                             </div>
                         </li>
                         <li>
                             <div class="gift-item">
-                                <img src="http://placehold.it/202x202" alt="银奖" width="100%">
+                                <img src="<#if prizeDto??>${staticServer}${prizeDto.silverImageUrl}</#if>" alt="银奖" width="100%">
                             </div>
                             <div class="gift-num icon-twice">
-                                银奖：xxxxxxx
+                                银奖：<#if prizeDto??>${prizeDto.silverPrizeName}</#if>
                             </div>
                         </li>
                     </ul>
@@ -45,13 +45,15 @@
                 <h3 class="rank-title">新贵VS富豪排行榜</h3>
                 <ul class="rank-info">
                     <li class="info-date">
-                        2017-3-29
+                        <#if currentTime??>${currentTime?string('yyyy-MM-dd')}</#if>
                     </li>
                     <li class="info-rank">
-                        我的排名：<span>未上榜</span>
+                        <@global.isAnonymous>我的排名：登录后查看</@global.isAnonymous>
+                        <@global.isNotAnonymous><#if investRanking &gt; 20 || investRanking == 0>未上榜<#else>我的排名：${investRanking}</#if></@global.isNotAnonymous>
                     </li>
                     <li class="info-money">
-                        今日投资金额 : <span>6660.66</span>元
+                        <@global.isAnonymous></@global.isAnonymous>
+                        <@global.isNotAnonymous>今日投资额：<span>${(investAmount/100)?string('0.00')}</span>元</@global.isNotAnonymous>
                     </li>
                 </ul>
                 <div class="rank-board">
@@ -130,7 +132,7 @@
                             <i class="icon-line left"></i>
                             <i class="icon-line right"></i>
                             <div class="number-bg">
-                                56,234.23元
+                            ${(avgTyrantInvestAmount/100)?string('0.00')}元
                             </div>
                         </div>
                     </div>
@@ -142,7 +144,7 @@
                             <i class="icon-line left"></i>
                             <i class="icon-line right"></i>
                             <div class="number-bg">
-                            156,234.23元
+                                ${(avgNewmanInvestAmount/100)?string('0.00')}元
                             </div>
                         </div>
                     </div>

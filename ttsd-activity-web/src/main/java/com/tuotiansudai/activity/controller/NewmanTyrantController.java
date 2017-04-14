@@ -42,8 +42,8 @@ public class NewmanTyrantController {
         List<NewmanTyrantHistoryView> newmanTyrantHistoryViews = newmanTyrantService.obtainNewmanTyrantHistoryRanking(new Date());
 
         modelAndView.addObject("prizeDto", newmanTyrantService.obtainPrizeDto(new DateTime().toString("yyyy-MM-dd")));
-        modelAndView.addObject("investRanking", String.valueOf(investRanking));
-        modelAndView.addObject("investAmount", String.valueOf(investAmount));
+        modelAndView.addObject("investRanking", investRanking);
+        modelAndView.addObject("investAmount", investAmount);
         modelAndView.addObject("currentTime", new DateTime().withTimeAtStartOfDay().toDate());
         modelAndView.addObject("yesterdayTime", DateUtils.addDays(new DateTime().withTimeAtStartOfDay().toDate(), -1));
         modelAndView.addObject("avgNewmanInvestAmount", newmanTyrantHistoryViews.size() > 0 ? newmanTyrantHistoryViews.get(0).getAvgNewmanInvestAmount() : 0);
