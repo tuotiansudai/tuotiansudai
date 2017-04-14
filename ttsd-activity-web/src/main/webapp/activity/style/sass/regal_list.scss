@@ -168,6 +168,25 @@
       width:100%;
       position: relative;
       padding:85px 0;
+      i{
+        position: absolute;
+        &.one-bg{
+          width:83px;
+          height:82px;
+          top:5px;
+          left:-150px;
+          background: url('/activity/images/regal-list/rank-one.png') no-repeat center;
+          background-size: 100%;
+        }
+        &.two-bg{
+          width:106px;
+          height:104px;
+          top:360px;
+          right:-105px;
+          background: url('/activity/images/regal-list/rank-two.png') no-repeat center;
+          background-size: 100%;
+        }
+      }
       .rank-title{
         width:360px;
         height:60px;
@@ -185,13 +204,319 @@
       .rank-info{
         float:left;
         width:100%;
-        padding:20px 0;
+        padding:20px 50px;
         background: #ff333c;
+        li{
+          float:left;
+          width:33.333333%;
+          line-height:35px;
+          font-size:16px;
+          color:#fff;
+          padding-left: 50px;
+          &.info-date{
+            background:url('/activity/images/regal-list/icon-date.png') no-repeat center left;
+          }
+          &.info-rank{
+            background:url('/activity/images/regal-list/icon-rank.png') no-repeat center left;
+          }
+          &.info-money{
+            background:url('/activity/images/regal-list/icon-money.png') no-repeat center left;
+          }
+          span{
+            color:#fff600;
+          }
+        }
+      }
+      .rank-board{
+        float:left;
+        width:100%;
+        text-align:center;
+        margin-top:40px;
+        .board-line{
+          display:inline-block;
+          width:750px;
+          border:5px solid #ffcb61;
+          border-radius:10px;
+          .board-item{
+            float:left;
+            width:100%;
+            height:660px;
+            border:6px solid #feb83f;
+            background:#fff;
+            border-radius:5px;
+            .board-tab{
+              float:left;
+              width:100%;
+              text-align:center;
+              margin-top:-10px;
+              span{
+                display:inline-block;
+                width:160px;
+                height:46px;
+                line-height:46px;
+                text-align:center;
+                margin:0 5px;
+                background:url('/activity/images/regal-list/tab-bg.png') no-repeat center;
+                background-size:100%;
+                cursor:pointer;
+                font-size:18px;
+                color:#d7d596;
+                &.active{
+                  background:url('/activity/images/regal-list/tab-bg-hover.png') no-repeat center;
+                  background-size:100%;
+                  color:#fff600;
+                }
+              }
+            }
+            .rank-table{
+              th{
+                background:none;
+                font-size:18px;
+                color:#333;
+                font-weight:bold;
+                padding:0;
+                line-height:55px;
+              }
+              td{
+                font-size:18px;
+                color:#333;
+                padding:0;
+                line-height:55px;
+                &.one{
+                  text-indent: -9999em;
+                  background: url('/activity/images/regal-list/rank-first.png') no-repeat center;
+                }
+                &.two{
+                  text-indent: -9999em;
+                  background: url('/activity/images/regal-list/rank-twice.png') no-repeat center;
+                }
+                &.three{
+                  text-indent: -9999em;
+                  background: url('/activity/images/regal-list/rank-three.png') no-repeat center;
+                }
+              }
+            }
+          }
+        }
+        .board-btn{
+          float:left;
+          width:100%;
+          text-align:center;
+          margin:30px 0 50px;
+          span{
+            display:inline-block;
+            padding:10px 20px;
+            border:2px solid #feb83f;
+            border-radius:10px;
+            color:#fff;
+            font-size:16px;
+            margin:0 15px;
+            line-height: 16px;
+            cursor:pointer;
+          }
+        }
+        .link-btn{
+          float:left;
+          width:100%;
+          text-align:center;
+          a{
+            display:inline-block;
+            width:240px;
+            height:56px;
+            background:#ffe500;
+            text-align:center;
+            border-bottom:4px solid #cc8800;
+            border-radius:10px;
+            font-size:24px;
+            color:#b71015;
+            position: relative;
+            &:hover{
+              top:2px;
+              border-bottom:2px solid #cc8800;
+            }
+          }
+        }
       }
     }
   }
   .dare-container{
-    background:-webkit-linear-gradient(to bottom, #fff0d0, #ffecc0); 
-    background:linear-gradient(to bottom,#fff0d0, #ffecc0);
+    background: #fff8e7 url('/activity/images/regal-list/dare-bg.png') no-repeat center top;
+    background-size:100%;
+    .dare-content{
+      float:left;
+      width:100%;
+      position: relative;
+      padding:80px 0 30px;
+      .dare-title{
+        width:360px;
+        height:60px;
+        position: absolute;
+        top:-10px;
+        left:50%;
+        margin-left:-180px;
+        background:url('/activity/images/regal-list/title-bg.png') no-repeat center;
+        background-size:100%;
+        font-size:30px;
+        color:#5b5800;
+        text-align:center;
+        font-weight:bold;
+      }
+      .dare-intro{
+        float:left;
+        width:100%;
+        padding:0 180px;
+        font-size:16px;
+        color:#333;
+      }
+      .dare-list{
+        float:left;
+        width:100%;
+        margin:50px 0 0;
+        .list-content{
+          float:left;
+          width:410px;
+          &.new-rank{
+            .list-title{
+              color:#ffe500;
+              background: #ff474c;
+            }
+            .list-number{
+              color:#ffe500;
+              background: #ff474c;
+              .number-bg{
+                color:#ffe500;
+                background: #ff4349;
+                border:1px solid #ff7e78;
+              }
+            }
+          }
+          .list-title{
+            float:left;
+            width:100%;
+            height:80px;
+            line-height:80px;
+            background:#ffd709;
+            font-size:26px;
+            color:#ff4349;
+            text-align:center;
+            border-radius:10px;
+            margin-bottom:10px;
+          }
+          .list-number{
+            float:left;
+            width:100%;
+            background:#ffd709;
+            border-radius:10px;
+            padding:10px;
+            box-shadow: 0px 15px 30px #e8e2d1;
+            .number-bg{
+              float:left;
+              width:100%;
+              height:160px;
+              line-height:160px;
+              background:#f9d100;
+              font-size:48px;
+              color:#ff4349;
+              text-align:center;
+              border-radius:10px;
+              border:1px solid #fddd00;
+            }
+          }
+        }
+        .list-icon{
+          float:left;
+          width:180px;
+          height:275px;
+          background:url('/activity/images/regal-list/vs.png') no-repeat center;
+          background-size:90%;
+        }
+      }
+      .list-btn{
+        float:left;
+        width:100%;
+        text-align:center;
+        margin:80px 0;
+        span{
+          display:inline-block;
+          width:240px;
+          height:56px;
+          background:#ffe500;
+          text-align:center;
+          border-bottom:4px solid #cc8800;
+          border-radius:10px;
+          font-size:24px;
+          color:#b71015;
+          position: relative;
+          cursor:pointer;
+          &:hover{
+            top:2px;
+            border-bottom:2px solid #cc8800;
+          }
+        }
+      }
+      .actor-content{
+        float:left;
+        width:100%;
+        border:5px solid #ff4149;
+        border-radius:10px;
+        margin:0 0 50px;
+        position: relative;
+        .content-item{
+          float:left;
+          width:100%;
+          background:#fff;
+          border-radius:5px;
+          position: relative;
+          border:7px solid #f1192d;
+          padding: 50px 20px 20px;
+          h3{
+            position: absolute;
+            left:50%;
+            top:-10px;
+            margin-left:-165px;
+            width:330px;
+            height:40px;
+            line-height:40px;
+            text-align:center;
+            font-size:24px;
+            color:#fff600;
+            font-weight:bold;
+            background: url("/activity/images/regal-list/rule-bg.png") center no-repeat;
+            background-size: contain;
+          }
+          .actor-text{
+            float:left;
+            width:100%;
+            font-size:18px;
+            color:#000;
+            p{
+              padding:0 120px;
+              line-height: 30px;
+              span{
+                font-size:22px;
+                color:#ff4349;
+              }
+            }
+          }
+        }
+      }
+      .actor-rule{
+        float:left;
+        width:100%;
+        padding:0 25px;
+        dt{
+          float:left;
+          width:100%;
+          font-size:20px;
+          color:#ff152f;
+        }
+        dd{
+          float:left;
+          width:100%;
+          font-size:12px;
+          color:#ff152f;
+        }
+      }
+    }
   }
 }
