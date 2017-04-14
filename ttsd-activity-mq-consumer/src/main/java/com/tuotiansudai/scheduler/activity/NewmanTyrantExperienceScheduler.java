@@ -1,16 +1,17 @@
-package com.tuotiansudai.scheduler;
+package com.tuotiansudai.scheduler.activity;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.activity.repository.model.NewmanTyrantHistoryView;
 import com.tuotiansudai.activity.repository.model.NewmanTyrantView;
-import com.tuotiansudai.activity.service.NewmanTyrantService;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.message.NewmanTyrantMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
+import com.tuotiansudai.mq.consumer.activity.service.NewmanTyrantService;
 import com.tuotiansudai.util.DateConvertUtil;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,14 +36,12 @@ public class NewmanTyrantExperienceScheduler {
 
     private static final String NEWMAN_TYRANT_GRANTED_LIST = "NEWMAN_TYRANT_GRANTED_LIST";
 
-
-
-    @Scheduled(cron = "0 39 18 * * ?", zone = "Asia/Shanghai")
+    @Scheduled(cron = "0 35 18 * * ?", zone = "Asia/Shanghai")
     public void grantNewmanTyrantExperience() {
 
-        Date grantDate = new DateTime(new Date()).minusDays(1).withTimeAtStartOfDay().toDate();
-        Date activityBeginTime = DateConvertUtil.withTimeAtStartOfDay(newmanTyrantActivityPeriod.get(0), "yyyy-MM-dd");
-        Date activityEndTime = DateConvertUtil.withTimeAtStartOfDay(newmanTyrantActivityPeriod.get(1), "yyyy-MM-dd");
+        Date grantDate = new DateTime(new Date()).withTimeAtStartOfDay().minusMillis(1).toDate();
+        Date activityBeginTime = DateTime.parse(newmanTyrantActivityPeriod.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+        Date activityEndTime = DateTime.parse(newmanTyrantActivityPeriod.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
         if (grantDate.compareTo(activityBeginTime)== -1 || grantDate.compareTo(activityEndTime) == 1){
             logger.info(String.format("[NewmanTyrantExperienceScheduler %s] activity is over", DateFormatUtils.format(grantDate, "yyyy-MM-dd")));
             return;
