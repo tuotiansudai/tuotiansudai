@@ -94,10 +94,32 @@
 	1. 安装nodejs和npm
 	`brew install node`</br>
 	安装成功后在终端输入`node -v`和`npm -v`会显示版本信息
-	2. 安装前端所需插件
-	`cd ~/Work/tuotian/ttsd-frontend-manage`</br>
+	2. 根目录路径： ~/Work/tuotian/ttsd-frontend-manage ，以下简称<根目录>
+	`cd <根目录>`</br>
 	`npm install --registry=https://registry.npm.taobao.org`</br>
-	安装成功后输入`npm start`，会看到服务成功运行
+	安装成功后，执行 `npm start` 启动虚拟服务器 ，再启动tomcat项目，注意先后顺序，会看到服务成功运行 </br>
+
+	打包本地文件：</br>
+    `npm run start2` </br>
+
+    package.json里script里的命令： </br>
+    `npm run json` 生成所有打包文件的json文件，并根据项目生成  json-ask.json， json-web.json ， json-mobile.json ， json-point.json, json-activity.json</br>
+    `npm run plugin`    用DllPlugin打包插件文件  </br>
+    `npm run mock`  开启node express 服务器，用来模拟假数据 </br>
+    `npm run showimage` </br>
+
+    `npm run json` 和 `npm run plugin`以及 `npm run showimage`已经集成在 npm run build 和 npm start里，无需额外执行</br></br>
+
+    生成项目图片文件：  进入<根目录></br>
+
+
+    清除项目中无用的图片</br>
+    `npm run start2` </br>
+    `npm run removeUselessImgs` </br></br>
+
+    上线发布的： 进入<根目录></br>
+    `npm install --registry=https://registry.npm.taobao.org` </br>
+    `npm run build` </br>
 
 * 安装Java
 	1. 下载安装包
