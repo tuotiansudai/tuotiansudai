@@ -115,4 +115,9 @@ public class NewmanTyrantService {
         }
         return newmanTyrantHistory;
     }
+
+    public List<String> getActivityTime(){
+
+        return Lists.newArrayList(newmanTyrantActivityPeriod.get(0),newmanTyrantActivityPeriod.get(1));
+    }
 }
