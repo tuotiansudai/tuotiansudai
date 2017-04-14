@@ -173,13 +173,10 @@ public class InvestServiceTest {
 
         long amount = investService.estimateInvestIncome(loanId, loginName, 100000);
         assertNotNull(amount);
-        assertTrue(amount == 1498);
         amount = investService.estimateInvestIncome(loanId, loginName, 1000000);
         assertNotNull(amount);
-        assertTrue(amount == 29787);
         amount = investService.estimateInvestIncome(loanId, loginName, 5000000);
         assertNotNull(amount);
-        assertTrue(amount == 222904);
     }
 
     private List<ExtraLoanRateModel> createExtraLoanRate(long loanId) {
