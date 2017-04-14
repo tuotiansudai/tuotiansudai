@@ -28,19 +28,18 @@ public class NewmanTyrantController {
     private NewmanTyrantService newmanTyrantService;
 
     @RequestMapping(method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView newmanTyrant(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date tradingTime) {
-        tradingTime = tradingTime == null ? new Date() : tradingTime;
+    public ModelAndView newmanTyrant() {
         ModelAndView modelAndView = new ModelAndView("/activities/newman-tyrant", "responsive", true);
         String loginName = LoginUserInfo.getLoginName();
 
-        List<NewmanTyrantView> newmanViews = newmanTyrantService.obtainNewman(tradingTime);
-        List<NewmanTyrantView> tyrantViews = newmanTyrantService.obtainTyrant(tradingTime);
+        List<NewmanTyrantView> newmanViews = newmanTyrantService.obtainNewman(new Date());
+        List<NewmanTyrantView> tyrantViews = newmanTyrantService.obtainTyrant(new Date());
         List<NewmanTyrantView> newmanTyrantViews = CollectionUtils.isEmpty(newmanViews) ? tyrantViews : newmanViews;
         int investRanking = CollectionUtils.isNotEmpty(newmanTyrantViews) ?
                 Iterators.indexOf(newmanTyrantViews.iterator(), input -> loginName.equalsIgnoreCase(input.getLoginName())) + 1 : 0;
         long investAmount = investRanking > 0 ? newmanTyrantViews.get(investRanking - 1).getSumAmount() : 0;
 
-        List<NewmanTyrantHistoryView> newmanTyrantHistoryViews = newmanTyrantService.obtainNewmanTyrantHistoryRanking(tradingTime);
+        List<NewmanTyrantHistoryView> newmanTyrantHistoryViews = newmanTyrantService.obtainNewmanTyrantHistoryRanking(new Date());
 
         modelAndView.addObject("prizeDto", newmanTyrantService.obtainPrizeDto(new DateTime().toString("yyyy-MM-dd")));
         modelAndView.addObject("investRanking", String.valueOf(investRanking));
