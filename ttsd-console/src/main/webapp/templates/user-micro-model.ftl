@@ -57,6 +57,18 @@
         </div>
 
         <div class="form-group">
+            <label for="project">累计提现金额：</label>
+            <input type="text" class="form-control total-withdraw-amount-start" name="totalWithdrawAmountStart" value="${(totalWithdrawAmountStart?c)!}" onblur="this.value=this.value.replace(/\D/g,'')" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">~
+            <input type="text" class="form-control total-withdraw-amount-end" name="totalWithdrawAmountEnd" value="${(totalWithdrawAmountEnd?c)!}" onblur="this.value=this.value.replace(/\D/g,'')" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
+        </div>
+
+        <div class="form-group">
+            <label for="project">账户余额：</label>
+            <input type="text" class="form-control user-balance-start" name="userBalanceStart" value="${(userBalanceStart?c)!}" onblur="this.value=this.value.replace(/\D/g,'')" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">~
+            <input type="text" class="form-control user-balance-end" name="userBalanceEnd" value="${(userBalanceEnd?c)!}" onblur="this.value=this.value.replace(/\D/g,'')" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
+        </div>
+
+        <div class="form-group">
             <label for="project">投资次数：</label>
             <input type="text" class="form-control invest-count-start" name="investCountStart" value="${(investCountStart?c)!}" onblur="this.value=this.value.replace(/\D/g,'')" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">~
             <input type="text" class="form-control invest-count-end" name="investCountEnd" value="${(investCountEnd?c)!}" onblur="this.value=this.value.replace(/\D/g,'')" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
@@ -144,6 +156,44 @@
             </select>
         </div>
 
+        <div class="form-group">
+            <label for="number">最后一笔回款时间：</label>
+            <div class='input-group date' id='lastRepayTimeStart'>
+                <input type='text' class="form-control" name="lastRepayTimeStart"
+                       value="${(lastRepayTimeStart?string('yyyy-MM-dd HH:mm:ss'))!}"/>
+                <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+            </div>
+            -
+            <div class='input-group date' id='lastRepayTimeEnd'>
+                <input type='text' class="form-control" name="lastRepayTimeEnd"
+                       value="${(lastRepayTimeEnd?string('yyyy-MM-dd HH:mm:ss'))!}"/>
+                <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="number">最后一笔提现时间：</label>
+            <div class='input-group date' id='lastWithdrawTimeStart'>
+                <input type='text' class="form-control" name="lastWithdrawTimeStart"
+                       value="${(lastWithdrawTimeStart?string('yyyy-MM-dd HH:mm:ss'))!}"/>
+                <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+            </div>
+            -
+            <div class='input-group date' id='lastWithdrawTimeEnd'>
+                <input type='text' class="form-control" name="lastWithdrawTimeEnd"
+                       value="${(lastWithdrawTimeEnd?string('yyyy-MM-dd HH:mm:ss'))!}"/>
+                <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+            </div>
+        </div>
+
         <button type="submit" class="btn btn-sm btn-primary">查询</button>
         <button type="reset" class="btn btn-sm btn-default">重置</button>
     </form>
@@ -168,7 +218,11 @@
                 <th>首二间隔（天）</th>
                 <th>首三间隔（天）</th>
                 <th>最后一次投资时间</th>
+                <th>最后一笔回款时间</th>
+                <th>最后一笔提现时间</th>
                 <th>待收回款（元）</th>
+                <th>账户余额（元）</th>
+                <th>累计提现金额（元）</th>
                 <th>最后一次登录时间</th>
                 <th>最后一次登录时间距今（天）</th>
                 <th>最后一次登录来源</th>
@@ -192,7 +246,11 @@
                     <td>${userItem.invest1st2ndTiming!}</td>
                     <td>${userItem.invest1st3rdTiming!}</td>
                     <td>${(userItem.lastInvestTime?string('yyyy-MM-dd HH:mm:ss'))!}</td>
+                    <td>${(userItem.lastRepayTime?string('yyyy-MM-dd'))!}</td>
+                    <td>${(userItem.lastWithdrawTime?string('yyyy-MM-dd HH:mm:ss'))!}</td>
                     <td>${((userItem.totalRepayingAmount/100)?string["0.##"])!}</td>
+                    <td>${((userItem.userBalance/100)?string["0.##"])!}</td>
+                    <td>${((userItem.totalWithdrawAmount/100)?string["0.##"])!}</td>
                     <td>${(userItem.lastLoginTime?string('yyyy-MM-dd HH:mm:ss'))!}</td>
                     <td>${userItem.lastLoginToNow!}</td>
                     <td>${userItem.lastLoginSource!}</td>
