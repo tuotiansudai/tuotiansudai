@@ -99,28 +99,6 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapDat
 
         };
 
-        // //表单校验初始化参数
-        // $(".prize-form").Validform({
-        //     btnSubmit: '.tomorrow-prize-save,.today-prize-save',
-        //     tipSweep: true, //表单提交时触发显示
-        //     focusOnError: false,
-        //     ignoreHidden: true,
-        //     tiptype: function (msg, o, cssctl) {
-        //         // if (o.type == 3) {
-        //         //     var msg = o.obj.attr('errormsg') || msg;
-        //         //     showErrorMessage(msg, o.obj);
-        //         // }
-        //     },
-        //     beforeCheck: function (curform) {
-        //
-        //         $errorDom.html('');
-        //
-        //     },
-        //     callback: function (form) {
-        //         boolFlag = true;
-        //         return false;
-        //     }
-        // });
 
         //关闭警告提示
         $('body').on('click', '.form-error', function () {
