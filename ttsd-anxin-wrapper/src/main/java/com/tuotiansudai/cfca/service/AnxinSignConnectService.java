@@ -3,6 +3,7 @@ package com.tuotiansudai.cfca.service;
 import cfca.sadk.algorithm.common.PKIException;
 import cfca.trustsign.common.vo.cs.CreateContractVO;
 import cfca.trustsign.common.vo.response.tx3.*;
+import com.tuotiansudai.cfca.dto.ContractResponseView;
 import com.tuotiansudai.repository.model.AnxinContractType;
 import com.tuotiansudai.repository.model.UserModel;
 
@@ -23,6 +24,6 @@ public interface AnxinSignConnectService {
 
     byte[] downLoanContractByBatchNo(String contractNo) throws PKIException, FileNotFoundException;
 
-    List[] queryContract(long businessId, List<String> batchNoList, AnxinContractType anxinContractType);
+    List<ContractResponseView> queryContract(long businessId, List<String> batchNoList, AnxinContractType anxinContractType);
 
 }

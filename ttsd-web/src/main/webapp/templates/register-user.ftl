@@ -13,24 +13,24 @@
         <ul class="reg-list tl register-step-one">
                 <li>
                     <i class="sprite-register-ic-mobile"></i>
-                    <input type="text" name="mobile" class="mobile" preValue='' placeholder="请输入手机号" maxlength="11"
+                    <input validate type="text" name="mobile" class="mobile" placeholder="请输入手机号" maxlength="11"
                            value="${(originalFormData.mobile)!}"/>
                 </li>
                 <li>
                     <i class="sprite-register-ic-password"></i>
-                    <input type="password" name="password" placeholder="请输入密码" maxlength="20" class="password" value="${(originalFormData.password)!}"/>
+                    <input validate type="password" name="password" placeholder="请输入密码" maxlength="20" class="password" value="${(originalFormData.password)!}"/>
                 </li>
                 <li>
                     <i class="sprite-register-ic-captcha"></i>
                     <span class="captcha-tag">
                          <button type="button" class="fetch-captcha" disabled="disabled" id="fetchCaptcha">获取验证码</button>
-                        <input type="text" name="captcha" class="captcha" autocomplete="off" autocorrect="off" autocapitalize="off" placeholder="请输入验证码"  maxlength="6" value="${(originalFormData.captcha)!}"/>
+                        <input validate type="text" name="captcha" class="captcha" autocomplete="off" autocorrect="off" autocapitalize="off" placeholder="请输入验证码"  maxlength="6" value="${(originalFormData.captcha)!}"/>
                     </span>
                 </li>
                 <li class="referrer-open"> <i class="sprite-register-arrow-right"></i>请输入推荐人（此项选填）</li>
                 <li class="hide">
                     <i class="sprite-register-ic-referrer"></i>
-                    <input type="text" name="referrer" maxlength="25" class="referrer" value="${(referrer)!(originalFormData.referrer)!}"/>
+                    <input validate type="text" name="referrer" maxlength="25" class="referrer" value="${(referrer)!(originalFormData.referrer)!}"/>
                 </li>
                 <li class="agree-last">
                     <label class="check-label checked" >同意拓天速贷<a href="javascript:void(0);" class="show-agreement">《服务协议》</a></label>

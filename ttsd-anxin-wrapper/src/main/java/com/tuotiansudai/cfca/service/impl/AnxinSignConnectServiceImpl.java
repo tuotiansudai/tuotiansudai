@@ -199,15 +199,14 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
 
 
     @Override
-    public List[] queryContract(long businessId, List<String> batchNoList, AnxinContractType anxinContractType) {
+    public List<ContractResponseView> queryContract(long businessId, List<String> batchNoList, AnxinContractType anxinContractType) {
 
         // 合同还没有生成完毕的batchNo
-        List<String> waitingBatchNoList = new ArrayList<>();
         List<ContractResponseView> contractResponseViews = new ArrayList<>();
 
         if (CollectionUtils.isEmpty(batchNoList)) {
             logger.info("[安心签] Query contract response error, batchNoList is empty, businessId: " + businessId);
-            return new List[]{waitingBatchNoList, contractResponseViews};
+            return contractResponseViews;
         }
 
         for (String batchNo : batchNoList) {
@@ -215,32 +214,21 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
 
             try {
                 tx3211ResVO = queryContractBatch3211(businessId, batchNo);
-                if (tx3211ResVO == null) {
-                    continue;
+                if (tx3211ResVO == null || !isSuccess(tx3211ResVO)) {
+                    logger.error(MessageFormat.format("[安心签] Query contract response error. businessId:{0}, batchNo:{1}.", String.valueOf(businessId), batchNo));
+                    return null;
                 }
             } catch (PKIException e) {
-                logger.error(MessageFormat.format("[安心签] Query contract response error, loan/transfer Id:{0}, batchNo:{1}", String.valueOf(businessId) + "", batchNo), e);
-                continue;
+                logger.error(MessageFormat.format("[安心签] Query contract response error, businessId:{0}, batchNo:{1}", String.valueOf(businessId) + "", batchNo), e);
+                return null;
             }
 
-            if (isSuccess(tx3211ResVO)) {
-                for (CreateContractVO createContractVO : tx3211ResVO.getCreateContracts()) {
-                    contractResponseViews.add(new ContractResponseView(Long.parseLong(createContractVO.getInvestmentInfo().get("orderId")),
-                            createContractVO.getContractNo(), createContractVO.getCode()));
-                }
-            } else {
-                // 60030407 = 该批次还没有执行完毕，请稍后再试
-                if (AnxinRetCode.CONTRACT_IN_CREATING.equals(tx3211ResVO.getHead().getRetCode())) {
-                    waitingBatchNoList.add(batchNo);
-                    logger.info(MessageFormat.format("[安心签] Query contract response fail. businessId:{0}, batchNo:{1}, errorCode:{2}, errorMessage:{3}",
-                            businessId + "", batchNo, tx3211ResVO.getHead().getRetCode(), tx3211ResVO.getHead().getRetMessage()));
-                } else {
-                    logger.error(MessageFormat.format("[安心签] Query contract response error. businessId:{0}, batchNo:{1}, errorCode:{2}, errorMessage:{3}",
-                            businessId + "", batchNo, tx3211ResVO.getHead().getRetCode(), tx3211ResVO.getHead().getRetMessage()));
-                }
+            for (CreateContractVO createContractVO : tx3211ResVO.getCreateContracts()) {
+                contractResponseViews.add(new ContractResponseView(Long.parseLong(createContractVO.getInvestmentInfo().get("orderId")),
+                        createContractVO.getContractNo(), createContractVO.getCode()));
             }
         }
-        return new List[]{waitingBatchNoList, contractResponseViews};
+        return contractResponseViews;
     }
 
     @Override
