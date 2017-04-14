@@ -546,7 +546,8 @@
   }
   .tip-container{
     float:left;
-    width:600px;
+    width:100%;
+    display: none;
     .tip-content{
       float:left;
       width:100%;

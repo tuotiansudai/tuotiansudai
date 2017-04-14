@@ -6,7 +6,8 @@ require(['jquery','layerWrapper', 'template', 'logintip', 'jquery.ajax.extension
 			todayDate=$.trim($infoDate.attr('data-date')).replace(/-/gi,''),
 			$boardBtn=$('.board-btn span',$newmanTyrant),
 			$heroNext=$('#heroNext'),
-			$heroPre=$('#heroPre');
+			$heroPre=$('#heroPre'),
+			$getHistory=$('#getHistory');
 			
 		if(todayDate==20170420) {
 	        $heroPre.hide();
@@ -96,5 +97,30 @@ require(['jquery','layerWrapper', 'template', 'logintip', 'jquery.ajax.extension
 		});
 
 		getBoard('tyrant',$.trim($infoDate.text()));
+
+
+		$getHistory.on('click', function(event) {
+			event.preventDefault();
+			$.ajax({
+				url: '/activity/newman-tyrant/history',
+				type: 'GET',
+				dataType: 'json'
+			})
+			.done(function(data) {
+				console.log("success");
+			})
+			.fail(function() {
+				layer.msg('请求失败，请重试！');
+			});
+			
+		});
+		layer.open({
+          type: 1,
+          closeBtn:0,
+          move:false,
+          area:$(window).width()>700?['600px','auto']:['300px','auto'],
+          title:false,
+          content: $('#tipContainer')
+        });
 	});
 });

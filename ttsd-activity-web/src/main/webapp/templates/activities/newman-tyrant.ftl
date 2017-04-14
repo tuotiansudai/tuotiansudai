@@ -150,7 +150,7 @@
                     </div>
                 </div>
                 <div class="list-btn">
-                    <span>查看历史比赛结果</span>
+                    <span id="getHistory">查看历史比赛结果</span>
                 </div>
                 <div class="actor-content">
                     <div class="content-item">
