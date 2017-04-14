@@ -26,7 +26,7 @@ public class ConsoleRechargeService {
     }
 
     public BaseDto<BasePaginationDataDto<RechargePaginationItemDataDto>> findRechargePagination(String rechargeId, String mobile, RechargeSource source,
-                                                                                                RechargeStatus status, String channel, int index, int pageSize, Date startTime, Date endTime, Role role) {
+                                                                                                RechargeStatus status, String channel, int index, int pageSize, Date startTime, Date endTime, String role) {
         if (index < 1) {
             index = 1;
         }
@@ -59,7 +59,7 @@ public class ConsoleRechargeService {
                                       String channel,
                                       Date startTime,
                                       Date endTime,
-                                      Role role) {
+                                      String role) {
         return rechargeMapper.findSumRechargeAmount(rechargeId, mobile, source, status, channel, role, startTime, endTime);
     }
 }
