@@ -33,11 +33,9 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sun.plugin2.message.Message;
 
 import java.text.MessageFormat;
 import java.util.Map;
-import java.util.stream.Stream;
 
 @Service
 public class RechargeServiceImpl implements RechargeService {
@@ -177,7 +175,7 @@ public class RechargeServiceImpl implements RechargeService {
 
             UserModel userModel = userMapper.findByLoginName(loginName);
             logger.info("[rechargeCallback111.............................]");
-            if(userModel.getChannel().toLowerCase().trim().equals(HTRACKING_CHANNEL)){
+            if (userModel.getChannel().toLowerCase().trim().equals(HTRACKING_CHANNEL)) {
                 logger.info(MessageFormat.format("[recharge callback] send hTrackingRecharge, loginName:{0}", userModel.getLoginName()));
                 hTrackingClient.hTrackingRecharge(userModel.getLoginName());
             }
