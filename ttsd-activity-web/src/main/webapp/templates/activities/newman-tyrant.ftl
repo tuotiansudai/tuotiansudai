@@ -1,6 +1,6 @@
 <#import "../macro/global.ftl" as global>
 <@global.main pageCss="${css.newman_tyrant}" pageJavascript="${js.newman_tyrant}" activeNav="" activeLeftNav="" title="新贵富豪争霸赛_活动中心_拓天速贷" keywords="拓天速贷,投资排行榜,实物大奖,体验金奖励" description="拓天速贷新贵富豪争霸赛活动,新用户每日累计投资额形成'新贵打擂榜'老用户每日累计投资额形成'富豪守擂榜'上榜者可获实物大奖,加息劵,体验金奖励.">
-<div class="regal-list-container">
+<div class="regal-list-container" id="newmanTyrant">
     <div class="top-container">
     </div>
     <div class="rule-container clearfix">
@@ -58,8 +58,8 @@
                     <div class="board-line">
                         <div class="board-item">
                             <div class="board-tab">
-                                <span class="active">富豪排行榜</span>
-                                <span>新贵排行榜</span>
+                                <span class="active" data-type="tyrant">富豪排行榜</span>
+                                <span data-type="newman">新贵排行榜</span>
                             </div>
                             <table class="rank-table">
                                 <thead>
@@ -70,68 +70,37 @@
                                         <th>奖励</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="one">1</td>
-                                        <td>133****4567</td>
-                                        <td>500,000.00</td>
-                                        <td>“金/银”实物大奖</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="two">1</td>
-                                        <td>133****4567</td>
-                                        <td>500,000.00</td>
-                                        <td>“金/银”实物大奖</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="three">1</td>
-                                        <td>133****4567</td>
-                                        <td>500,000.00</td>
-                                        <td>“金/银”实物大奖</td>
-                                    </tr>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>133****4567</td>
-                                        <td>500,000.00</td>
-                                        <td>“金/银”实物大奖</td>
-                                    </tr>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>133****4567</td>
-                                        <td>500,000.00</td>
-                                        <td>“金/银”实物大奖</td>
-                                    </tr>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>133****4567</td>
-                                        <td>500,000.00</td>
-                                        <td>“金/银”实物大奖</td>
-                                    </tr>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>133****4567</td>
-                                        <td>500,000.00</td>
-                                        <td>“金/银”实物大奖</td>
-                                    </tr>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>133****4567</td>
-                                        <td>500,000.00</td>
-                                        <td>“金/银”实物大奖</td>
-                                    </tr>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>133****4567</td>
-                                        <td>500,000.00</td>
-                                        <td>“金/银”实物大奖</td>
-                                    </tr>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>133****4567</td>
-                                        <td>500,000.00</td>
-                                        <td>“金/银”实物大奖</td>
-                                    </tr>
+                                <tbody id="rankTable">
+                                    
                                 </tbody>
+                                <script type="text/html" id="rankTableTpl">
+                                {{if records.length>0}}
+                                    {{each records}}
+                                    <tr>
+                                        {{if $index==0}}
+                                        <td class="one">1</td>
+                                        {{else if $index==1}}
+                                        <td class="two">2</td>
+                                        {{else if $index==2}}
+                                        <td class="three">3</td>
+                                        {{else}}
+                                            <td>{{$index}}</td>
+                                        {{/if}}
+                                        <td>{{$value.loginName}}</td>
+                                        <td>{{$value.centSumAmount}}</td>
+                                        {{if $index==0}}
+                                        <td>“金/银”实物大奖</td>
+                                        {{else if $index==1}}
+                                        <td>1%加息券</td>
+                                        {{else if $index==2}}
+                                        <td>1%加息券</td>
+                                        {{else}}
+                                            <td>100元红包</td>
+                                        {{/if}}
+                                    </tr>
+                                    {{/each}}
+                                {{/if}}
+                                </script>
                             </table>
                         </div>
                     </div>
@@ -155,8 +124,11 @@
                 </div>
                 <div class="dare-list">
                     <div class="list-content">
-                        <div class="list-title">富豪排行榜今日投资均值</div>
+                        <div class="list-title">富豪排行榜今日投资均值
+                        </div>
                         <div class="list-number">
+                            <i class="icon-line left"></i>
+                            <i class="icon-line right"></i>
                             <div class="number-bg">
                                 56,234.23元
                             </div>
@@ -164,8 +136,11 @@
                     </div>
                     <div class="list-icon"></div>
                     <div class="list-content new-rank">
-                        <div class="list-title">新贵排行榜今日投资均值</div>
+                        <div class="list-title">新贵排行榜今日投资均值
+                        </div>
                         <div class="list-number">
+                            <i class="icon-line left"></i>
+                            <i class="icon-line right"></i>
                             <div class="number-bg">
                             156,234.23元
                             </div>
@@ -196,4 +171,5 @@
         </div>
     </div>
 </div>
+<#include "login-tip.ftl" />
 </@global.main>

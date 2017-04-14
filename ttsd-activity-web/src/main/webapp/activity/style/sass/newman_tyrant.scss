@@ -383,6 +383,10 @@
             .list-number{
               color:#ffe500;
               background: #ff474c;
+              .icon-line{
+                background:url('/activity/images/newman-tyrant/icon-line-vs.png') no-repeat center;
+                background-size:100%;
+              }
               .number-bg{
                 color:#ffe500;
                 background: #ff4349;
@@ -409,6 +413,21 @@
             border-radius:10px;
             padding:10px;
             box-shadow: 0px 15px 30px #e8e2d1;
+            position: relative;
+            .icon-line{
+              width:16px;
+              height:62px;
+              position: absolute;
+              top:-35px;
+              background:url('/activity/images/newman-tyrant/icon-line.png') no-repeat center;
+              background-size:100%;
+              &.left{
+                left:30px;
+              }
+              &.right{
+                right:30px;
+              }
+            }
             .number-bg{
               float:left;
               width:100%;
@@ -490,8 +509,9 @@
             font-size:18px;
             color:#000;
             p{
-              padding:0 120px;
+              padding:0 90px;
               line-height: 30px;
+              margin-bottom: 0;
               span{
                 font-size:22px;
                 color:#ff4349;
