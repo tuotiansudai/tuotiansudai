@@ -27,7 +27,7 @@
     <insert id="create" parameterType="UserRoleModel">
         insert into user_role (login_name, role, created_time) values
         <foreach collection="userRoles" item="item" index="index" separator=",">
-            (#{item.loginName},#{item.role},#{item.createdTime})
+            (#{item.loginName}, #{item.role}, #{item.createdTime})
         </foreach>
     </insert>
 

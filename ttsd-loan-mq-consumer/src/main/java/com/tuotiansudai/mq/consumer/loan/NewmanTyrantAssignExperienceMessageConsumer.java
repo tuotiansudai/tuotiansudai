@@ -23,7 +23,10 @@ public class NewmanTyrantAssignExperienceMessageConsumer implements MessageConsu
     private NewmanTyrantAssignExperienceService newmanTyrantAssignExperienceService;
     @Autowired
     private RedisWrapperClient redisWrapperClient;
+
     private static final String NEWMAN_TYRANT_GRANTED_LIST = "NEWMAN_TYRANT_GRANTED_LIST";
+
+    private int lifeSecond = 5184000;
 
     @Override
     public MessageQueue queue() {
@@ -48,7 +51,7 @@ public class NewmanTyrantAssignExperienceMessageConsumer implements MessageConsu
             String loginNameList = redisWrapperClient.hget(NEWMAN_TYRANT_GRANTED_LIST,DateFormatUtils.format(newmanTyrantMessage.getCurrentDate(), "yyyy-MM-dd"));
             redisWrapperClient.hset(NEWMAN_TYRANT_GRANTED_LIST,
                     DateFormatUtils.format(newmanTyrantMessage.getCurrentDate(), "yyyy-MM-dd"),
-                    MessageFormat.format("{0},{1}",loginNameList,newmanTyrantMessage.getLoginName()));
+                    MessageFormat.format("{0},{1}",loginNameList,newmanTyrantMessage.getLoginName()),lifeSecond);
         }
 
         logger.info("[新贵富豪争霸活动发放体验金MQ] newman tyrant assign experience success.");

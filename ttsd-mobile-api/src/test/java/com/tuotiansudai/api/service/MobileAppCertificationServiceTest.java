@@ -46,6 +46,8 @@ public class MobileAppCertificationServiceTest extends ServiceTestBase {
         certificationRequestDto.setUserIdCardNumber("370405199112286014");
         certificationRequestDto.setUserRealName("拓天");
         certificationRequestDto.setBaseParam(BaseParamTest.getInstance());
+        UserModel userModel = new UserModel();
+        userModel.setMobile("12900000000");
         PayDataDto payDataDto = new PayDataDto();
         payDataDto.setCode("0000");
         payDataDto.setMessage("");
@@ -54,6 +56,7 @@ public class MobileAppCertificationServiceTest extends ServiceTestBase {
         payDataDto.setStatus(true);
 
         when(accountService.registerAccount(any(RegisterAccountDto.class))).thenReturn(baseDto);
+        when(userMapper.findByLoginName(anyString())).thenReturn(userModel);
 
         BaseResponseDto<CertificationResponseDataDto> baseResponseDto = mobileAppCertificationService.validateUserCertificationInfo(certificationRequestDto);
         assertEquals(ReturnMessage.SUCCESS.getCode(), baseResponseDto.getCode());

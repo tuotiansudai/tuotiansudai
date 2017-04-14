@@ -218,11 +218,6 @@ public interface InvestMapper {
                                                        @Param(value = "activityBeginTime") String activityBeginTime,
                                                        @Param(value = "activityEndTime") String activityEndTime);
 
-    List<HeroRankingView> findNewmanTyrantByTradingTime(@Param(value = "tradingTime") Date tradingTime,
-                                                        @Param(value = "activityBeginTime") String activityBeginTime,
-                                                        @Param(value = "activityEndTime") String activityEndTime,
-                                                        @Param(value = "isNewman") boolean isNewman);
-
     List<HeroRankingView> findHeroRankingByReferrer(@Param(value = "tradingTime") Date tradingTime,
                                                     @Param(value = "activityBeginTime") String activityBeginTime,
                                                     @Param(value = "activityEndTime") String activityEndTime,
