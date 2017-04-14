@@ -69,7 +69,7 @@ public class InvestSuccessNewmanTyrantMessageConsumer implements MessageConsumer
         Date startTime = DateTime.parse(newmanTyrantActivityPeriod.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
         Date endTime = DateTime.parse(newmanTyrantActivityPeriod.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
         Date nowDate = DateTime.now().toDate();
-        return startTime.before(nowDate) && endTime.after(nowDate);
+        return startTime.compareTo(nowDate) <= 0 && endTime.compareTo(nowDate) >=0;
 
     }
 

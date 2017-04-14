@@ -1,15 +1,11 @@
-package com.tuotiansudai.activity.service;
+package com.tuotiansudai.mq.consumer.activity.service;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.activity.repository.dto.NewmanTyrantPrizeDto;
 import com.tuotiansudai.activity.repository.mapper.InvestNewmanTyrantMapper;
 import com.tuotiansudai.activity.repository.model.NewmanTyrantHistoryView;
 import com.tuotiansudai.activity.repository.model.NewmanTyrantView;
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.util.DateConvertUtil;
-import com.tuotiansudai.util.JsonConverter;
-import com.tuotiansudai.util.MobileEncryptor;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -18,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Date;
@@ -61,26 +56,6 @@ public class NewmanTyrantService {
         List<NewmanTyrantView> tyrantViews = investNewmanTyrantMapper.findNewmanTyrantByTradingTime(tradingTime, newmanTyrantActivityPeriod.get(0), newmanTyrantActivityPeriod.get(1), false);
 
         return CollectionUtils.isNotEmpty(tyrantViews) && tyrantViews.size() > 10 ? tyrantViews.subList(0, 10) : tyrantViews;
-    }
-
-    public String encryptMobileForWeb(String loginName,String encryptLoginName, String encryptMobile) {
-        if (encryptLoginName.equalsIgnoreCase(loginName)) {
-            return "您的位置";
-        }
-        return MobileEncryptor.encryptMiddleMobile(encryptMobile);
-    }
-
-    public NewmanTyrantPrizeDto obtainPrizeDto(String prizeDate) {
-        logger.info("prizeDate: " + prizeDate);
-        if (redisWrapperClient.hexists(NEWMAN_TYRANT_PRIZE_KEY, prizeDate)) {
-            try {
-                NewmanTyrantPrizeDto newmanTyrantPrizeDto = JsonConverter.readValue(redisWrapperClient.hget(NEWMAN_TYRANT_PRIZE_KEY, prizeDate), NewmanTyrantPrizeDto.class);
-                return newmanTyrantPrizeDto;
-            } catch (IOException e) {
-                logger.error("obtainPrizeDto Json format error", e);
-            }
-        }
-        return null;
     }
 
     private List<Date> obtainActivityDays(Date tradingTime) {

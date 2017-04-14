@@ -58,7 +58,7 @@ public class NewmanTyrantController {
         BasePaginationDataDto<NewmanTyrantView> baseListDataDto = new BasePaginationDataDto<>();
         List<NewmanTyrantView> newmanTyrantViews = newmanTyrantService.obtainNewman(tradingTime);
 
-        newmanTyrantViews.stream().forEach(newmanTyrantView -> newmanTyrantView.setLoginName(newmanTyrantService.encryptMobileForWeb(loginName, newmanTyrantView.getLoginName())));
+        newmanTyrantViews.stream().forEach(newmanTyrantView -> newmanTyrantView.setLoginName(newmanTyrantService.encryptMobileForWeb(loginName, newmanTyrantView.getLoginName(),newmanTyrantView.getMobile())));
         baseListDataDto.setRecords(newmanTyrantViews);
 
         baseListDataDto.setStatus(true);
@@ -72,10 +72,26 @@ public class NewmanTyrantController {
         BasePaginationDataDto<NewmanTyrantView> baseListDataDto = new BasePaginationDataDto<>();
         List<NewmanTyrantView> newmanTyrantViews = newmanTyrantService.obtainTyrant(tradingTime);
 
-        newmanTyrantViews.stream().forEach(newmanTyrantView -> newmanTyrantView.setLoginName(newmanTyrantService.encryptMobileForWeb(loginName, newmanTyrantView.getLoginName())));
+        newmanTyrantViews.stream().forEach(newmanTyrantView -> newmanTyrantView.setLoginName(newmanTyrantService.encryptMobileForWeb(loginName, newmanTyrantView.getLoginName(),newmanTyrantView.getMobile())));
         baseListDataDto.setRecords(newmanTyrantViews);
 
         baseListDataDto.setStatus(true);
         return baseListDataDto;
     }
+    @RequestMapping(value = "/history", method = RequestMethod.GET)
+    @ResponseBody
+    public BasePaginationDataDto<NewmanTyrantHistoryView> obtainNewmanTyrantHistory() {
+        BasePaginationDataDto<NewmanTyrantHistoryView> baseListDataDto = new BasePaginationDataDto<>();
+        List<NewmanTyrantHistoryView> newmanTyrantHistoryViews = newmanTyrantService.obtainNewmanTyrantHistoryRanking(new Date());
+
+        baseListDataDto.setRecords(newmanTyrantHistoryViews);
+
+        baseListDataDto.setStatus(true);
+        return baseListDataDto;
+    }
+
+
+
+
+
 }
