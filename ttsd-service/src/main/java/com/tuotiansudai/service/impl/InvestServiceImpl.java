@@ -284,7 +284,7 @@ public class InvestServiceImpl implements InvestService {
 
         long expectedInterest = 0L;
         for (Long expectedInterestOfPerPeriod : expectedInterestList) {
-            long expectedOfPerPeriodFee = new BigDecimal(expectedInterest).multiply(new BigDecimal(investFeeRate)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
+            long expectedOfPerPeriodFee = new BigDecimal(expectedInterestOfPerPeriod).multiply(new BigDecimal(investFeeRate)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
             expectedInterest += (expectedInterestOfPerPeriod - expectedOfPerPeriodFee);
         }
 
