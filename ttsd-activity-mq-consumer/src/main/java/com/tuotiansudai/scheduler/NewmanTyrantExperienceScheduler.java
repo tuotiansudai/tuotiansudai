@@ -1,4 +1,4 @@
-package com.tuotiansudai.Scheduler;
+package com.tuotiansudai.scheduler;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.activity.repository.model.NewmanTyrantHistoryView;
@@ -20,7 +20,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class NewmanTyrantExperienceScheduler {
