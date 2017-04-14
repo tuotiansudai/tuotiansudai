@@ -174,7 +174,6 @@ public class RechargeServiceImpl implements RechargeService {
             mqWrapperClient.sendMessage(MessageQueue.RechargeSuccess_CompletePointTask, rechargeModel.getLoginName());
 
             UserModel userModel = userMapper.findByLoginName(loginName);
-            logger.info("[rechargeCallback111.............................]");
             if (userModel.getChannel().toLowerCase().trim().equals(HTRACKING_CHANNEL)) {
                 logger.info(MessageFormat.format("[recharge callback] send hTrackingRecharge, loginName:{0}", userModel.getLoginName()));
                 hTrackingClient.hTrackingRecharge(userModel.getLoginName());
