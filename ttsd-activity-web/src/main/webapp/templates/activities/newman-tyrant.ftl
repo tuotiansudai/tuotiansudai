@@ -45,13 +45,15 @@
                 <h3 class="rank-title">新贵VS富豪排行榜</h3>
                 <ul class="rank-info">
                     <li class="info-date">
-                        2017-3-29
+                        <#if currentTime??>${currentTime?string('yyyy-MM-dd')}</#if>
                     </li>
                     <li class="info-rank">
-                        我的排名：<span>未上榜</span>
+                        <@global.isAnonymous>我的排名：登录后查看</@global.isAnonymous>
+                        <@global.isNotAnonymous><#if investRanking &gt; 20 || investRanking == 0>未上榜<#else>我的排名：${investRanking}</#if></@global.isNotAnonymous>
                     </li>
                     <li class="info-money">
-                        今日投资金额 : <span>6660.66</span>元
+                        <@global.isAnonymous></@global.isAnonymous>
+                        <@global.isNotAnonymous>今日投资额：<span>${(investAmount/100)?string('0.00')}</span>元</@global.isNotAnonymous>
                     </li>
                 </ul>
                 <div class="rank-board">
@@ -158,7 +160,7 @@
                         <div class="list-title">富豪排行榜今日投资均值</div>
                         <div class="list-number">
                             <div class="number-bg">
-                                56,234.23元
+                            ${(avgTyrantInvestAmount/100)?string('0.00')}元
                             </div>
                         </div>
                     </div>
@@ -167,7 +169,7 @@
                         <div class="list-title">新贵排行榜今日投资均值</div>
                         <div class="list-number">
                             <div class="number-bg">
-                            156,234.23元
+                                ${(avgNewmanInvestAmount/100)?string('0.00')}元
                             </div>
                         </div>
                     </div>
