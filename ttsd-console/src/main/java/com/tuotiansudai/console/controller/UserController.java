@@ -302,6 +302,10 @@ public class UserController {
             @RequestParam(value = "invested", required = false) String invested,
             @RequestParam(value = "totalInvestAmountStart", required = false) Long totalInvestAmountStart,
             @RequestParam(value = "totalInvestAmountEnd", required = false) Long totalInvestAmountEnd,
+            @RequestParam(value = "totalWithdrawAmountStart", required = false) Long totalWithdrawAmountStart,
+            @RequestParam(value = "totalWithdrawAmountEnd", required = false) Long totalWithdrawAmountEnd,
+            @RequestParam(value = "userBalanceStart", required = false) Long userBalanceStart,
+            @RequestParam(value = "userBalanceEnd", required = false) Long userBalanceEnd,
             @RequestParam(value = "investCountStart", required = false) Integer investCountStart,
             @RequestParam(value = "investCountEnd", required = false) Integer investCountEnd,
             @RequestParam(value = "loanCountStart", required = false) Integer loanCountStart,
@@ -319,6 +323,10 @@ public class UserController {
             @RequestParam(value = "lastLoginTimeStart", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date lastLoginTimeStart,
             @RequestParam(value = "lastLoginTimeEnd", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date lastLoginTimeEnd,
             @RequestParam(value = "lastLoginSource", required = false) Source lastLoginSource,
+            @RequestParam(value = "lastRepayTimeStart", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date lastRepayTimeStart,
+            @RequestParam(value = "lastRepayTimeEnd", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date lastRepayTimeEnd,
+            @RequestParam(value = "lastWithdrawTimeStart", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date lastWithdrawTimeStart,
+            @RequestParam(value = "lastWithdrawTimeEnd", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date lastWithdrawTimeEnd,
             @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
 
         int pageSize = 10;
@@ -329,6 +337,10 @@ public class UserController {
                 invested,
                 totalInvestAmountStart == null ? null : totalInvestAmountStart * 100,
                 totalInvestAmountEnd == null ? null : totalInvestAmountEnd * 100,
+                totalWithdrawAmountStart == null ? null : totalWithdrawAmountStart * 100,
+                totalWithdrawAmountEnd == null ? null : totalWithdrawAmountEnd * 100,
+                userBalanceStart == null ? null : userBalanceStart * 100,
+                userBalanceEnd == null ? null : userBalanceEnd * 100,
                 investCountStart,
                 investCountEnd,
                 loanCountStart,
@@ -346,6 +358,10 @@ public class UserController {
                 lastLoginTimeStart,
                 lastLoginTimeEnd,
                 lastLoginSource,
+                lastRepayTimeStart,
+                lastRepayTimeEnd,
+                lastWithdrawTimeStart,
+                lastWithdrawTimeEnd,
                 index,
                 pageSize);
 
@@ -358,6 +374,10 @@ public class UserController {
         mv.addObject("invested", invested);
         mv.addObject("totalInvestAmountStart", totalInvestAmountStart);
         mv.addObject("totalInvestAmountEnd", totalInvestAmountEnd);
+        mv.addObject("totalWithdrawAmountStart", totalWithdrawAmountStart);
+        mv.addObject("totalWithdrawAmountEnd", totalWithdrawAmountEnd);
+        mv.addObject("userBalanceStart", userBalanceStart);
+        mv.addObject("userBalanceEnd", userBalanceEnd);
         mv.addObject("investCountStart", investCountStart);
         mv.addObject("investCountEnd", investCountEnd);
         mv.addObject("loanCountStart", loanCountStart);
@@ -375,6 +395,10 @@ public class UserController {
         mv.addObject("lastLoginTimeStart", lastLoginTimeStart);
         mv.addObject("lastLoginTimeEnd", lastLoginTimeEnd);
         mv.addObject("lastLoginSource", lastLoginSource);
+        mv.addObject("lastRepayTimeStart", lastRepayTimeStart);
+        mv.addObject("lastRepayTimeEnd", lastRepayTimeEnd);
+        mv.addObject("lastWithdrawTimeStart", lastWithdrawTimeStart);
+        mv.addObject("lastWithdrawTimeEnd", lastWithdrawTimeEnd);
         mv.addObject("index", index);
         mv.addObject("pageSize", pageSize);
 
