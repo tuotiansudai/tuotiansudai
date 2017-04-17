@@ -778,6 +778,17 @@
           padding:0;
           height:230px;
         }
+        p{
+          color:#ffd600;
+          margin-bottom: 0;
+          font-size:46px;
+          text-align:center;
+          line-height:380px;
+          @media (max-width:700px) {
+            line-height: 190px;
+            font-size: 23px;
+          }
+        }
         table{
           th{
             background:none;
