@@ -36,7 +36,7 @@ public class NewmanTyrantExperienceScheduler {
 
     private static final String NEWMAN_TYRANT_GRANTED_LIST = "NEWMAN_TYRANT_GRANTED_LIST";
 
-    @Scheduled(cron = "0 0/2 19 * * ?", zone = "Asia/Shanghai")
+    @Scheduled(cron = "0 27 12 * * ?", zone = "Asia/Shanghai")
 //    @Scheduled(cron = "0 30 * * * ?", zone = "Asia/Shanghai")
     public void grantNewmanTyrantExperience() {
 

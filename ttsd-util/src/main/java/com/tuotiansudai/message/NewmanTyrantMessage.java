@@ -13,6 +13,7 @@ public class NewmanTyrantMessage implements Serializable {
         this.currentDate = currentDate;
         this.loginName = loginName;
     }
+    public NewmanTyrantMessage(){}
 
     public Date getCurrentDate() {
         return currentDate;

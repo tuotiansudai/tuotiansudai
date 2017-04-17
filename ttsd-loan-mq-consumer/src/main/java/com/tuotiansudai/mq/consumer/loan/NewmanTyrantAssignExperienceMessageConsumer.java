@@ -1,5 +1,6 @@
 package com.tuotiansudai.mq.consumer.loan;
 
+import com.google.common.base.Strings;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.message.NewmanTyrantMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
@@ -41,17 +42,27 @@ public class NewmanTyrantAssignExperienceMessageConsumer implements MessageConsu
             newmanTyrantMessage = JsonConverter.readValue(message, NewmanTyrantMessage.class);
         } catch (IOException e) {
             logger.error("[新贵富豪争霸活动发放体验金MQ] json convert investSuccessNewmanTyrantMessage is fail, message:{}", message);
-            return;
+            throw new RuntimeException(e);
         }
         logger.info("[新贵富豪争霸活动发放体验金MQ] ready to consume message: newman tyrant assign experience.");
-        if(!redisWrapperClient.hexists(NEWMAN_TYRANT_GRANTED_LIST, DateFormatUtils.format(newmanTyrantMessage.getCurrentDate(), "yyyy-MM-dd"))
-                || newmanTyrantMessage.getLoginName().indexOf(redisWrapperClient.hget(NEWMAN_TYRANT_GRANTED_LIST,DateFormatUtils.format(newmanTyrantMessage.getCurrentDate(), "yyyy-MM-dd"))) == -1){
+        if (redisWrapperClient.hexists(NEWMAN_TYRANT_GRANTED_LIST, DateFormatUtils.format(newmanTyrantMessage.getCurrentDate(), "yyyy-MM-dd"))
+                && redisWrapperClient.hget(NEWMAN_TYRANT_GRANTED_LIST, DateFormatUtils.format(newmanTyrantMessage.getCurrentDate(), "yyyy-MM-dd")).indexOf(newmanTyrantMessage.getLoginName()) > -1) {
+            logger.info(MessageFormat.format("loginName:{0} had granted experience {1}", newmanTyrantMessage.getLoginName(), DateFormatUtils.format(newmanTyrantMessage.getCurrentDate(), "yyyy-MM-dd")));
+            return;
+        }
+        try{
+
             newmanTyrantAssignExperienceService.grantExperience(newmanTyrantMessage);
 
-            String loginNameList = redisWrapperClient.hget(NEWMAN_TYRANT_GRANTED_LIST,DateFormatUtils.format(newmanTyrantMessage.getCurrentDate(), "yyyy-MM-dd"));
+            String loginNameList = redisWrapperClient.hget(NEWMAN_TYRANT_GRANTED_LIST, DateFormatUtils.format(newmanTyrantMessage.getCurrentDate(), "yyyy-MM-dd"));
             redisWrapperClient.hset(NEWMAN_TYRANT_GRANTED_LIST,
                     DateFormatUtils.format(newmanTyrantMessage.getCurrentDate(), "yyyy-MM-dd"),
-                    MessageFormat.format("{0},{1}",loginNameList,newmanTyrantMessage.getLoginName()),lifeSecond);
+                    MessageFormat.format("{0},{1}", Strings.isNullOrEmpty(loginNameList)?"":loginNameList, newmanTyrantMessage.getLoginName()), lifeSecond);
+        }catch (Exception e){
+            logger.error("[新贵富豪争霸活动发放体验金MQ] {0} grant experience fail {1}, errorMessage:{2}",
+                    newmanTyrantMessage.getLoginName(),DateFormatUtils.format(newmanTyrantMessage.getCurrentDate(),
+                            "yyyy-MM-dd"), e.getLocalizedMessage());
+            return;
         }
 
         logger.info("[新贵富豪争霸活动发放体验金MQ] newman tyrant assign experience success.");
