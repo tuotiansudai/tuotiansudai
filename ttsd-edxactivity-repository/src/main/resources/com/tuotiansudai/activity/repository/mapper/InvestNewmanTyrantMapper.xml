@@ -32,7 +32,7 @@
         `invest_amount`,
         `newman`,
         `created_time`)
-        VALUES(#{investId},#{loginName},#{userName},#{mobile},#{investAmount},#{investType},#{createdTime})
+        VALUES(#{investId},#{loginName},#{userName},#{mobile},#{investAmount},#{newman},#{createdTime})
     </insert>
 
     <select id="findNewmanTyrantByTradingTime" parameterType="map" resultMap="newmanTyrantView">

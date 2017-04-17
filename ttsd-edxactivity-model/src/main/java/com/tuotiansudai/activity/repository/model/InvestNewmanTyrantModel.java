@@ -5,8 +5,8 @@ import java.util.Date;
 
 public class InvestNewmanTyrantModel implements Serializable {
     private long id;
-    private long invest_id;
-    private String login_name;
+    private long investId;
+    private String loginName;
     private String userName;
     private String mobile;
     private long investAmount;
@@ -15,14 +15,14 @@ public class InvestNewmanTyrantModel implements Serializable {
 
     public InvestNewmanTyrantModel(){}
 
-    public InvestNewmanTyrantModel(long invest_id,
-                                   String login_name,
+    public InvestNewmanTyrantModel(long investId,
+                                   String loginName,
                                    String userName,
                                    String mobile,
                                    long investAmount,
                                    boolean newman){
-        this.invest_id = invest_id;
-        this.login_name = login_name;
+        this.investId = investId;
+        this.loginName = loginName;
         this.userName = userName;
         this.mobile = mobile;
         this.investAmount = investAmount;
@@ -38,20 +38,12 @@ public class InvestNewmanTyrantModel implements Serializable {
         this.id = id;
     }
 
-    public long getInvest_id() {
-        return invest_id;
+    public long getInvestId() {
+        return investId;
     }
 
-    public void setInvest_id(long invest_id) {
-        this.invest_id = invest_id;
-    }
-
-    public String getLogin_name() {
-        return login_name;
-    }
-
-    public void setLogin_name(String login_name) {
-        this.login_name = login_name;
+    public void setInvestId(long investId) {
+        this.investId = investId;
     }
 
     public String getUserName() {
@@ -92,5 +84,13 @@ public class InvestNewmanTyrantModel implements Serializable {
 
     public void setNewman(boolean newman) {
         this.newman = newman;
+    }
+
+    public String getLoginName() {
+        return loginName;
+    }
+
+    public void setLoginName(String loginName) {
+        this.loginName = loginName;
     }
 }
