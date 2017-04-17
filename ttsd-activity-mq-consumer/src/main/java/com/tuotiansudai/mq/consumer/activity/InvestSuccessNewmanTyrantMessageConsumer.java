@@ -3,9 +3,7 @@ package com.tuotiansudai.mq.consumer.activity;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.activity.repository.mapper.InvestNewmanTyrantMapper;
 import com.tuotiansudai.activity.repository.model.InvestNewmanTyrantModel;
-import com.tuotiansudai.message.InvestInfo;
-import com.tuotiansudai.message.InvestSuccessMessage;
-import com.tuotiansudai.message.UserInfo;
+import com.tuotiansudai.message.*;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
 import com.tuotiansudai.util.JsonConverter;
@@ -40,14 +38,14 @@ public class InvestSuccessNewmanTyrantMessageConsumer implements MessageConsumer
     @Override
     public void consume(String message) {
         logger.info("[MQ] receive message: {}: {}.", this.queue(), message);
-        InvestSuccessMessage investSuccessMessage;
+        InvestSuccessNewmanTyrantMessage investSuccessNewmanTyrantMessage;
         try {
-            investSuccessMessage = JsonConverter.readValue(message, InvestSuccessMessage.class);
+            investSuccessNewmanTyrantMessage = JsonConverter.readValue(message, InvestSuccessNewmanTyrantMessage.class);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        UserInfo userInfo = investSuccessMessage.getUserInfo();
-        InvestInfo investInfo = investSuccessMessage.getInvestInfo();
+        UserInfoActivity userInfo = investSuccessNewmanTyrantMessage.getUserInfoActivity();
+        InvestInfo investInfo = investSuccessNewmanTyrantMessage.getInvestInfo();
         if (isActivityPeriod()
                 && !investInfo.getTransferStatus().equals("SUCCESS")
                 && investInfo.getStatus().equals("SUCCESS")) {
@@ -56,7 +54,7 @@ public class InvestSuccessNewmanTyrantMessageConsumer implements MessageConsumer
                     userInfo.getUserName(),
                     userInfo.getMobile(),
                     investInfo.getAmount(),
-                    isActivityPeriod()
+                    isNewman(userInfo.getRegisterTime())
 
             );
             investNewmanTyrantMapper.create(investNewmanTyrantModel);
@@ -71,6 +69,12 @@ public class InvestSuccessNewmanTyrantMessageConsumer implements MessageConsumer
         Date nowDate = DateTime.now().toDate();
         return startTime.compareTo(nowDate) <= 0 && endTime.compareTo(nowDate) >=0;
 
+    }
+    private boolean isNewman(Date registerTime){
+        Date startTime = DateTime.parse(newmanTyrantActivityPeriod.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+        Date endTime = DateTime.parse(newmanTyrantActivityPeriod.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+        Date newManStartTime = new DateTime(startTime).minusDays(30).toDate();
+        return newManStartTime.compareTo(registerTime) <= 0 && endTime.compareTo(registerTime) >=0;
     }
 
 
