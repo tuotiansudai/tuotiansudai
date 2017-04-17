@@ -71,5 +71,9 @@ require(['jquery', 'underscore', 'jquery-ui', 'bootstrap', 'bootstrapSelect', 'c
                 });
             });
         });
+
+        $('.down-load').click(function () {
+            location.href = "/export/questions?" + $('form').serialize();
+        });
     });
 });

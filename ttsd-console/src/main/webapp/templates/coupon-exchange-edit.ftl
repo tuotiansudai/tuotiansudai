@@ -113,6 +113,12 @@
                 <input type="text" class="form-control give-number" name="totalCount" <#if exchangeCouponDto??>value="${exchangeCouponDto.totalCount?string('0')!}"</#if> placeholder="" datatype="n" errormsg="总数量需要填写数字" >
             </div>
         </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">兑换限制: </label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control give-number" name="monthLimit" <#if exchangeCouponDto??>value="${exchangeCouponDto.monthLimit?string('0')!}"</#if>placeholder="" datatype="n" errormsg="兑换限制需要填写数字"/> 个/人/月（0表示无限制）
+            </div>
+        </div>
 
         <div class="form-group">
             <label  class="col-sm-2 control-label">可投资标的: </label>

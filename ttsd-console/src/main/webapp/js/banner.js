@@ -137,8 +137,8 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapSel
                 return false;
             }
 
-            if(appUrl != ''){
-                $('.jump-link-text').val('' );
+            if (appUrl != '') {
+                $('.jump-link-text').val('');
             }
 
 
@@ -176,7 +176,8 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapSel
 
             if (boolFlag) {
                 if (confirm("确认提交审核?")) {
-                    $('.sharedUrl').val($('.sharedUrl').val() + "?source=app");
+                    var sharedUrl = $('.sharedUrl').val();
+                    $('.sharedUrl').val(sharedUrl);
                     $self.attr('disabled', 'disabled');
                     var operate;
                     if ($('.jq-id').val() != null && $('.jq-id').val() != '') {
@@ -202,6 +203,23 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapSel
             }
         }
 
+        function appendSourceParameter(url) {
+            var url_parts = url.split('?');
+            if (url_parts.length > 1) {
+                if (url_parts[1].length > 0) {
+                    if (url_parts[1].indexOf('source=app') >= 0) {
+                        return url;
+                    } else {
+                        return url + '&source=app';
+                    }
+                } else {
+                    return url + 'source=app';
+                }
+
+            } else {
+                return url + '?source=app';
+            }
+        }
     });
 
 });

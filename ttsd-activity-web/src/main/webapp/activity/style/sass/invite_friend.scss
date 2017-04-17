@@ -1,0 +1,639 @@
+@import "module/login_tip";
+
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.media-item{
+  display:block;
+  @media (max-width:700px) {
+    display:none;
+  }
+}
+.media-item-phone{
+  display:none;
+  @media (max-width:700px) {
+    display:block;
+  }
+}
+.for-mobile {
+  display: none;
+  text-align: center;
+  font-size: 12px;
+  color: #005e80;
+  margin: 0 auto;
+  margin-bottom: 0;
+  width: 93%;
+  line-height: 20px;
+  @media (max-width:700px) {
+    display: block;
+  }
+}
+.main-frame {
+  width: 100%;
+  margin: 0 auto;
+  background: #f64b49 url("/activity/images/invite-friend/bag-bg.png") center top no-repeat;
+  background-size: 135%;
+}
+.pop-layer-out {
+  background: url("/activity/images/invite-friend/bg-pop-window.png") left bottom no-repeat;
+  width: 550px;
+  height: 410px;
+  border-radius: 10px;
+  position: relative;
+  padding: 160px 60px 10px 60px;
+  text-align: center;
+
+  .btn-to-close {
+    background: url("../../images/invite-friend/btn-close.png") left top no-repeat;
+    width: 48px;
+    height: 109px;
+    background-size: 100%;
+    position: absolute;
+    right: 0;
+    top: 0;
+    cursor: pointer;
+  }
+  p {
+    color: #fff85f;
+    font-size: 28px;
+  }
+  a.btn-to-identification {
+    display: inline-block;
+    width: 193px;
+    height: 44px;
+    position: absolute;
+    bottom: 20px;
+    left: 180px;
+  }
+}
+.tour-slide {
+  height: 350px;
+  background: url("/activity/images/invite-friend/top-img.jpg") center top no-repeat;
+  @media (max-width:700px) {
+    height: 175px;
+    background: url("/activity/images/invite-friend/top-img-phone.jpg") center top no-repeat;
+    background-size: contain;
+  }
+}
+.share-reward-container {
+  margin: 0px auto;
+  padding-top:20px;
+  @media (max-width:700px) {
+    padding: 0px 10px;
+  }
+  .bg-column-normal {
+    float:left;
+    width:100%;
+    background: #fff1c7;
+    border: 3px solid #6d221e;
+    position: relative;
+    padding: 15px 80px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    @media (max-width:700px) {
+      border:2px solid #6d221e;
+      border-radius: 5px;
+      padding:15px 10px;
+    }
+    &.invite-line {
+      border: none;
+      background: none;
+      padding:0;
+    }
+  }
+  .invite-table{
+    display:none;
+    width:100%;
+    @media (max-width:700px) {
+      display: inline-table;
+    }
+    th{
+      background: #ffe18e;
+      font-size:14px;
+      color:#732022;
+      border-bottom:none;
+    }
+    tr{
+      background: #fff8e4;
+      &:nth-child(even)>td{
+        background: #fff;
+      }
+      td{
+        font-size:14px;
+        color:#732022;
+        border-bottom:none;
+      }
+    }
+  }
+  .invite-box-friend {
+    font-size: 22px;
+    text-align: left;
+    @media (max-width:700px) {
+      font-size: 14px;
+      clear: left;
+    }
+    dl {
+      dt, dd {
+        display: inline-block;
+      }
+    }
+    .input-invite {
+      width: 100%;
+      height: 40px;
+      background: #e5f8ff;
+      color: #4d4d4d;
+      @media (max-width:700px) {
+        width: 100%;
+      }
+    }
+    .btn-copy-link {
+      display: inline-block;
+      width: 185px;
+      height: 40px;
+      line-height:40px;
+      text-align: center;
+      background: #fff1c7;
+      color: #f7494c;
+      font-size: 16px;
+      vertical-align: middle;
+      @media (max-width:700px) {
+        margin-top: 10px;
+      }
+    }
+    &.anonymous{
+      text-align:center;
+      padding: 50px 0;
+      @media (max-width:700px) {
+        text-align:left;
+        padding:10px 0;
+      }
+      dl{
+        dt{
+          line-height: 40px;
+          color:#6d221e;
+        }
+        dd{
+          .input-invite{
+            width:300px;
+          }
+        }
+      }
+    }
+    &.non-anonymous {
+      @media (max-width:700px) {
+        width: 100%;
+        clear: both;
+      }
+      dl {
+        width: 640px;
+        float: left;
+        @media (max-width:700px) {
+          display: none;
+        }
+        dt {
+          line-height: 40px;
+          margin-top:10px;
+        }
+        dd {
+          width: 100%;
+          margin-top:10px;
+          font-size: 16px;
+          color:#6d221e;
+          line-height: 20px;
+        }
+      }
+      .and-text{
+        float:left;
+        width:80px;
+        text-align:center;
+        line-height:110px;
+        @media (max-width:700px) {
+          display: none;
+        }
+        span{
+          display:inline-block;
+          width:50px;
+          height:50px;
+          line-height:50px;
+          border-radius:50%;
+          background:#6d221e;
+          color:#fff;
+          font-size:30px;
+          text-align:center;
+        }
+      }
+      .weixin-code {
+        float: left;
+        width: 260px;
+        margin-right: 20px;
+        text-align:center;
+        @media (max-width:700px) {
+          display: none;
+        }
+        .img-code {
+          display: inline-block;
+          width: 120px;
+          height: 120px;
+          padding:5px;
+          background:#fff;
+          canvas {
+            width: 100%;
+          }
+        }
+        span {
+          display: block;
+          font-size: 16px;
+          color:#6d221e;
+          text-align: center;
+          line-height: 20px;
+        }
+      }
+    }
+    .invite-list{
+      float:left;
+      width:100%;
+      margin-bottom:20px;
+      border-top:3px solid #6d221e;
+      border-bottom:3px solid #6d221e;
+      position: relative;
+      @media (max-width:700px) {
+        padding-top:15px;
+        border-top:2px solid #6d221e;
+        border-bottom:2px solid #6d221e;
+      }
+      .icon-line{
+        position: absolute;
+        width:50px;
+        height:4px;
+        box-sizing:border-box;
+        padding:0 20px;
+        background:#f64b49;
+        @media (max-width:700px) {
+          width:30px;
+          padding:0 10px;
+          height:3px;
+        }
+        &.top{
+          top:-3px;
+          left:280px;
+          @media (max-width:700px) {
+            left:20%;
+          }
+        }
+        &.bottom{
+          bottom:-3px;
+          right:280px;
+          @media (max-width:700px) {
+            right:20%;
+          }
+        }
+        span{
+          float:left;
+          width:100%;
+          height:3px;
+          background: #6d221e;
+        }
+      }
+      h3{
+        font-size:22px;
+        color:#fff;
+        text-align:center;
+        @media (max-width:700px) {
+          display: none;
+        }
+        span{
+          color:#fede69;
+        }
+      }
+      p{
+        font-size:16px;
+        color:#fff;
+        text-align:center;
+        span{
+          color:#fede69;
+        }
+        a{
+          color:#fede69;
+          text-decoration:underline;
+          &.invite-btn{
+            display: inline-block;
+            width: 180px;
+            height: 40px;
+            line-height: 40px;
+            font-size: 16px;
+            color: #f7494c;
+            background: #fff1c7;
+            border-radius: 10px;
+            text-decoration:none;
+          }
+        }
+      }
+    }
+  }
+  .titel-item{
+    float:left;
+    width:100%;
+    margin-bottom:15px;
+    text-align:center;
+    @media (max-width:700px) {
+      margin-bottom:0;
+    }
+    .title-text{
+      display:inline-block;
+      padding:0 30px;
+      background:#ffae1f;
+      border:3px solid #ffd02c;
+      border-radius:10px;
+      position: relative;
+      i{
+        width:6px;
+        height:6px;
+        border-radius:50%;
+        position: absolute;
+        top:50%;
+        margin-top:-3px;
+        background:#fff;
+        border:2px solid #b97e16;
+        box-sizing:border-box;
+        &.left-icon{
+          left:10px;
+        }
+        &.right-icon{
+          right:10px;
+        }
+      }
+      span{
+        display:inline-block;
+        width:100%;
+        line-height:38px;
+        font-size:22px;
+        color:#fff;
+        @media (max-width:700px) {
+          font-size:12px;
+          line-height:30px;
+        }
+      }
+    }
+  }
+  .tip-item{
+    float:left;
+    width:100%;
+    text-align:center;
+    font-size:16px;
+    color:#925c1f;
+    @media (max-width:700px) {
+      color:#732022;
+      font-size:12px;
+    }
+  }
+  .info-item{
+    float:left;
+    width:100%;
+    text-align:center;
+    &.info-list{
+      li{
+        margin:0 10px;
+      }
+    }
+    &.free-list{
+      background:#fee589;
+      border-radius: 10px;
+      padding:10px 0;
+      @media (max-width:700px) {
+        background:none;
+        border-radius:0;
+      }
+      li{
+        &.free-type{
+          margin:0 20px 0 80px;
+          @media (max-width:700px) {
+            margin:0;
+          }
+        }
+      }
+    }
+    li{
+      display:inline-block;
+      margin:0 30px;
+      .info-intro{
+        float:left;
+        width:100%;
+        height:120px;
+        @media (max-width:700px) {
+          height:80px;
+        }
+        span{
+          float:left;
+          width:100%;
+        }
+      }
+      .info-name{
+        float:left;
+        width:100%;
+        margin-top:20px;
+        font-size:16px;
+        color:#925c1f;
+        text-align:center;
+        @media (max-width:700px) {
+          font-size:12px;
+          margin-top:0;
+        }
+      }
+      &.money-type{
+        width:180px;
+        @media (max-width:700px) {
+          float: left;
+          width: 33.333333%;
+          margin: 0;
+        }
+        .info-intro{
+          background:url('/activity/images/invite-friend/money-bg.png') center no-repeat;
+          background-size:80%;
+          &.free-icon{
+            background:none;
+            @media (max-width:700px) {
+              padding-top:10px;
+            }
+          }
+          span{
+            font-size:16px;
+            color:#fff;
+            @media (max-width:700px) {
+              font-size:12px;
+            }
+            &.number-text{
+              margin-bottom:10px;
+              @media (max-width:700px) {
+                margin-bottom: 5px;
+                font-size: 12px;
+                margin-top: 12px;
+              }
+              strong{
+                font-size:34px;
+                @media (max-width:700px) {
+                  font-size:14px;
+                }
+              }
+            }
+          }
+        }
+      }
+      &.coupon-type{
+        width:240px;
+        @media (max-width:700px) {
+          width:33.333333%;
+          margin:0;
+        }
+        .info-intro{
+          background:url('/activity/images/invite-friend/coupon-bg.png') center no-repeat;
+          background-size:80%;
+          @media (max-width:700px) {
+            background-size:100%;
+          }
+          span{
+            font-size:28px;
+            color:#ff635a;
+            line-height: 110px;
+            padding-right: 65px;
+            @media (max-width:700px) {
+              line-height:80px;
+              font-size:14px;
+              padding-right:30px;
+            }
+            strong{
+              font-size:40px;
+              @media (max-width:700px) {
+                font-size:28px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  .btn-item{
+    float:left;
+    width:100%;
+    p{
+      font-size:12px;
+      color:#925c1f;
+      margin:20px 0 0;
+      text-align:center;
+      span{
+        color:#f64b49;
+      }
+      .invite-btn{
+        display:inline-block;
+        width:180px;
+        height:40px;
+        line-height:40px;
+        font-size:16px;
+        color:#fff1c7;
+        background:#f7494c;
+        border-radius:10px;
+      }
+    }
+  }
+  .loan-item{
+    float:left;
+    width:100%;
+    text-align:center;
+    .loan-content{
+      display:inline-block;
+      width:400px;
+      background:#fff;
+      padding:0 100px;
+      @media (max-width:700px) {
+        width:100%;
+        padding:0 50px;
+      }
+      dl{
+        float:left;
+        width:100%;
+        padding:5px 0;
+        dt{
+          float:left;
+          width:100%;
+          font-size:16px;
+          color:#525252;
+          span{
+            font-size:14px;
+            color:#ff473c;
+            border:1px solid #ff473c;
+            padding:0 5px;
+            border-radius:5px;
+            margin-left:10px;
+          }
+        }
+        dd{
+          float:left;
+          width:50%;
+          span{
+            float:left;
+            width:100%;
+            font-size:14px;
+            text-align:center;
+            color:#a2a2a2;
+            &.bite-text{
+              font-size:16px;
+              color:#ff473c;
+              line-height:44px;
+              strong{
+                font-size:32px;
+                font-weight:normal;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  .icon-item{
+    float:left;
+    width:100%;
+    margin:10px 0;
+    text-align:center;
+    @media (max-width:700px) {
+      margin:0;
+    }
+    span{
+      display:inline-block;
+      width:50px;
+      height:50px;
+      background:url('/activity/images/invite-friend/and-icon.png') no-repeat center;
+      background-size:100%;
+      @media (max-width:700px) {
+        width:30px;
+        height:30px;
+      }
+    }
+  }
+  .reward-item{
+    float:left;
+    width:100%;
+    margin-top: 10px;
+  }
+  .activity-rules {
+    color: #fede69;
+    margin:30px 0 20px;
+    @media (max-width:700px) {
+      padding: 20px;
+      margin-top: 10px;
+      color:#732022;
+    }
+    dt {
+      font-size: 18px;
+      @media (max-width:700px) {
+        font-size:16px;
+      }
+    }
+    dd {
+      font-size:14px;
+      @media (max-width:700px) {
+        font-size:12px;
+      }
+    }
+  }
+}

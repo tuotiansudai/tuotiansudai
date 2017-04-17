@@ -46,6 +46,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping(value = "/user-manage")
@@ -95,11 +96,16 @@ public class UserController {
     public ModelAndView editUser(@PathVariable String loginName, Model model) throws Exception {
         String taskId = OperationType.USER + "-" + loginName;
         ModelAndView modelAndView = new ModelAndView("/user-edit");
+        List<Role> roles = Lists.newArrayList(Role.values())
+                .stream()
+                .filter(role -> !Lists.newArrayList(Role.NOT_STAFF_RECOMMEND, Role.SD_STAFF_RECOMMEND, Role.ZC_STAFF_RECOMMEND, Role.AGENT).contains(role))
+                .collect(Collectors.toList());
+
         if (!redisWrapperClient.hexistsSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId)) {
             if (!model.containsAttribute("user")) {
                 EditUserDto editUserDto = consoleUserService.getEditUser(loginName);
                 modelAndView.addObject("user", editUserDto);
-                modelAndView.addObject("roles", Role.values());
+                modelAndView.addObject("roles", roles);
                 modelAndView.addObject("showCommit", true);
             }
             return modelAndView;
@@ -120,7 +126,7 @@ public class UserController {
             editUserDto.setIdentityNumber(userModel == null || Strings.isNullOrEmpty(userModel.getUserName()) ? "" : userModel.getIdentityNumber());
             editUserDto.setUserName(userModel == null || Strings.isNullOrEmpty(userModel.getUserName()) ? "" : userModel.getUserName());
             modelAndView.addObject("user", editUserDto);
-            modelAndView.addObject("roles", Role.values());
+            modelAndView.addObject("roles", roles);
             modelAndView.addObject("taskId", taskId);
             modelAndView.addObject("sender", task.getSender());
             modelAndView.addObject("showCommit", LoginUserInfo.getLoginName().equals(task.getSender()));
@@ -291,6 +297,10 @@ public class UserController {
             @RequestParam(value = "invested", required = false) String invested,
             @RequestParam(value = "totalInvestAmountStart", required = false) Long totalInvestAmountStart,
             @RequestParam(value = "totalInvestAmountEnd", required = false) Long totalInvestAmountEnd,
+            @RequestParam(value = "totalWithdrawAmountStart", required = false) Long totalWithdrawAmountStart,
+            @RequestParam(value = "totalWithdrawAmountEnd", required = false) Long totalWithdrawAmountEnd,
+            @RequestParam(value = "userBalanceStart", required = false) Long userBalanceStart,
+            @RequestParam(value = "userBalanceEnd", required = false) Long userBalanceEnd,
             @RequestParam(value = "investCountStart", required = false) Integer investCountStart,
             @RequestParam(value = "investCountEnd", required = false) Integer investCountEnd,
             @RequestParam(value = "loanCountStart", required = false) Integer loanCountStart,
@@ -308,6 +318,10 @@ public class UserController {
             @RequestParam(value = "lastLoginTimeStart", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date lastLoginTimeStart,
             @RequestParam(value = "lastLoginTimeEnd", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date lastLoginTimeEnd,
             @RequestParam(value = "lastLoginSource", required = false) Source lastLoginSource,
+            @RequestParam(value = "lastRepayTimeStart", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date lastRepayTimeStart,
+            @RequestParam(value = "lastRepayTimeEnd", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date lastRepayTimeEnd,
+            @RequestParam(value = "lastWithdrawTimeStart", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date lastWithdrawTimeStart,
+            @RequestParam(value = "lastWithdrawTimeEnd", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date lastWithdrawTimeEnd,
             @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
 
         int pageSize = 10;
@@ -318,6 +332,10 @@ public class UserController {
                 invested,
                 totalInvestAmountStart == null ? null : totalInvestAmountStart * 100,
                 totalInvestAmountEnd == null ? null : totalInvestAmountEnd * 100,
+                totalWithdrawAmountStart == null ? null : totalWithdrawAmountStart * 100,
+                totalWithdrawAmountEnd == null ? null : totalWithdrawAmountEnd * 100,
+                userBalanceStart == null ? null : userBalanceStart * 100,
+                userBalanceEnd == null ? null : userBalanceEnd * 100,
                 investCountStart,
                 investCountEnd,
                 loanCountStart,
@@ -335,6 +353,10 @@ public class UserController {
                 lastLoginTimeStart,
                 lastLoginTimeEnd,
                 lastLoginSource,
+                lastRepayTimeStart,
+                lastRepayTimeEnd,
+                lastWithdrawTimeStart,
+                lastWithdrawTimeEnd,
                 index,
                 pageSize);
 
@@ -347,6 +369,10 @@ public class UserController {
         mv.addObject("invested", invested);
         mv.addObject("totalInvestAmountStart", totalInvestAmountStart);
         mv.addObject("totalInvestAmountEnd", totalInvestAmountEnd);
+        mv.addObject("totalWithdrawAmountStart", totalWithdrawAmountStart);
+        mv.addObject("totalWithdrawAmountEnd", totalWithdrawAmountEnd);
+        mv.addObject("userBalanceStart", userBalanceStart);
+        mv.addObject("userBalanceEnd", userBalanceEnd);
         mv.addObject("investCountStart", investCountStart);
         mv.addObject("investCountEnd", investCountEnd);
         mv.addObject("loanCountStart", loanCountStart);
@@ -364,6 +390,10 @@ public class UserController {
         mv.addObject("lastLoginTimeStart", lastLoginTimeStart);
         mv.addObject("lastLoginTimeEnd", lastLoginTimeEnd);
         mv.addObject("lastLoginSource", lastLoginSource);
+        mv.addObject("lastRepayTimeStart", lastRepayTimeStart);
+        mv.addObject("lastRepayTimeEnd", lastRepayTimeEnd);
+        mv.addObject("lastWithdrawTimeStart", lastWithdrawTimeStart);
+        mv.addObject("lastWithdrawTimeEnd", lastWithdrawTimeEnd);
         mv.addObject("index", index);
         mv.addObject("pageSize", pageSize);
 

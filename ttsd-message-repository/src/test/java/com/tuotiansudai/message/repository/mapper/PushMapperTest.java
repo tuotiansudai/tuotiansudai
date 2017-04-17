@@ -1,5 +1,6 @@
 package com.tuotiansudai.message.repository.mapper;
 
+import com.tuotiansudai.enums.AppUrl;
 import com.tuotiansudai.enums.PushSource;
 import com.tuotiansudai.enums.PushType;
 import com.tuotiansudai.message.repository.model.PushModel;
@@ -15,7 +16,7 @@ public class PushMapperTest extends BaseMapperTest {
 
     @Test
     public void shouldCreatePush() {
-        PushModel pushModel = new PushModel("user", PushType.BIRTHDAY, PushSource.ALL, "content");
+        PushModel pushModel = new PushModel("user", PushType.BIRTHDAY, PushSource.ALL, "content", AppUrl.MESSAGE_CENTER_LIST);
         pushMapper.create(pushModel);
 
         assertNotNull(pushMapper.findById(pushModel.getId()));

@@ -2,19 +2,21 @@ package com.tuotiansudai.activity.controller;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.dto.CouponAlertDto;
 import com.tuotiansudai.coupon.service.CouponAlertService;
+import com.tuotiansudai.dto.CouponAlertDto;
 import com.tuotiansudai.enums.CouponType;
-import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.spring.LoginUserInfo;
+import com.tuotiansudai.util.MobileEncoder;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping(path = "/activity")
@@ -29,20 +31,19 @@ public class ActivitiesController {
     @Autowired
     private AccountService accountService;
 
-    @RequestMapping(path = "/{item:^recruit|material-point|integral-draw|birth-month|rank-list-app|share-reward|app-download|landing-page|invest-achievement|landing-anxin|loan-hike|heavily-courtship|point-update|sign-check$}", method = RequestMethod.GET)
+    @RequestMapping(path = "/{item:^recruit|money_tree|material-point|integral-draw|birth-month|rank-list-app|share-reward|app-download|landing-page|invest-achievement|landing-anxin|loan-hike|heavily-courtship|point-update|sign-check|open-spring|wx-register|divide-money$}", method = RequestMethod.GET)
 
-
-    public ModelAndView activities(@PathVariable String item) {
+    public ModelAndView activities(@PathVariable String item, HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView("/activities/" + item, "responsive", true);
         String loginName = LoginUserInfo.getLoginName();
 
         if (!Strings.isNullOrEmpty(loginName) && userService.loginNameIsExist(loginName.trim())) {
             modelAndView.addObject("referrer", userService.getMobile(loginName));
         }
-
+        modelAndView.addObject("appVersion", request.getHeader("appVersion"));
         modelAndView.addObject("isLogin", null != loginName);
-        AccountModel accountModel = accountService.findByLoginName(loginName);
-        modelAndView.addObject("noAccount", null == accountModel);
+        //AccountModel accountModel = accountService.findByLoginName(loginName);
+        //modelAndView.addObject("noAccount", null == accountModel);
         return modelAndView;
     }
 
@@ -68,6 +69,6 @@ public class ActivitiesController {
     @RequestMapping(value = "/get-realRealName", method = RequestMethod.GET)
     public String markRemind(@RequestParam(value = "mobile") String mobile) {
         UserModel userModel = userService.findByMobile(mobile);
-        return userModel != null ? userModel.getUserName() : mobile;
+        return userModel != null && !Strings.isNullOrEmpty(userModel.getUserName()) ? "*" + userModel.getUserName().substring(1, userModel.getUserName().length()) : MobileEncoder.encode(mobile);
     }
 }

@@ -78,14 +78,20 @@ def qa(options):
     from scripts.deployment import Deployment
 
     deployment = Deployment()
-    deployment.deploy(options.env)
+    build_params = options.get('qa') if options.has_key('qa') else {}
+
+    if build_params.has_key('env'):
+        deployment.deploy(build_params)
+
+    print 'env is missing!'
+
 
 @task
 def dev():
     from scripts.deployment import Deployment
 
     deployment = Deployment()
-    deployment.deploy('DEV')
+    deployment.deploy({'env': 'DEV'})
 
 
 @task
@@ -207,8 +213,7 @@ def only_point():
 
 def generate_git_log_file():
     from paver.shell import sh
-
-    sh('/usr/bin/git ls-tree -r HEAD ttsd-activity-web/src/main/webapp/activity/js | awk \'{print $3,$4}\' >> git_version.log')
+    sh('/usr/bin/git ls-tree -r HEAD ttsd-activity-web/src/main/webapp/activity/js | awk \'{print $3,$4}\' > git_version.log')
     sh('/usr/bin/git ls-tree -r HEAD ttsd-activity-web/src/main/webapp/activity/style | awk \'{print $3,$4}\' >> git_version.log')
     sh('/usr/bin/git ls-tree -r HEAD ttsd-point-web/src/main/webapp/point/js | awk \'{print $3,$4}\' >> git_version.log')
     sh('/usr/bin/git ls-tree -r HEAD ttsd-point-web/src/main/webapp/point/style | awk \'{print $3,$4}\' >> git_version.log')
@@ -267,17 +272,6 @@ def replace_min_files_in_config_js_file(path):
     replace_versioned_config_file(name2path, path)
 
 
-def versioning_webpack_files(path):
-    from paver.shell import sh
-
-    owd = os.getcwd()
-    try:
-        os.chdir(path)
-        sh('/usr/bin/npm install')
-        sh('/usr/bin/npm run dist')
-    finally:
-        os.chdir(owd)
-
 def versioning_static_resource_files(options):
     from paver.shell import sh
 
@@ -304,8 +298,6 @@ def jcversion(options):
     versioning_min_files('ttsd-point-web/src/main/webapp/point/js/dest/*.min.js')
     versioning_min_files('ttsd-point-web/src/main/webapp/point/style/dest/*.min.css')
     replace_min_files_in_config_js_file('ttsd-point-web/src/main/webapp/point/js/dest/')
-
-    versioning_webpack_files('ttsd-mobile-api/')
 
     versioning_static_resource_files(options)
 

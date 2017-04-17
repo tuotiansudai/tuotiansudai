@@ -58,6 +58,12 @@ public class ExchangeLinkService {
             } else {
                 linkExchangeDto.setNoFollow(false);
             }
+            //WebSiteTypes是后加入的字段，需要判断长度用来兼容旧数据
+            if(values.length < 7 ){
+                linkExchangeDto.setWebSiteTypes("");
+            }else{
+                linkExchangeDto.setWebSiteTypes(values[6]);
+            }
             linkExchangeDtoList.add(linkExchangeDto);
         }
         Collections.sort(linkExchangeDtoList, new Comparator<LinkExchangeDto>() {

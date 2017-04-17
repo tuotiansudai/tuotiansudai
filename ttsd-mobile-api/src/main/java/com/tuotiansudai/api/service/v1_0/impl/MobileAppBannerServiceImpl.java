@@ -28,7 +28,7 @@ public class MobileAppBannerServiceImpl implements MobileAppBannerService {
     @Value("${web.server}")
     private String domainName;
 
-    @Value("${mobile.static.server}")
+    @Value("${common.static.server}")
     private String bannerServer;
 
     @Override

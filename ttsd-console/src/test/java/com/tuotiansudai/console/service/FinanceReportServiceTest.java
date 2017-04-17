@@ -179,7 +179,7 @@ public class FinanceReportServiceTest {
         LoanModel loanModel = createLoanModel(1000, "房产", agentUserModel, loanerAccountModel, LoanType.INVEST_INTEREST_LUMP_SUM_REPAY, LoanStatus.COMPLETE);
         InvestModel investModel = createInvestModel(1, loanModel.getId(), investorWithReferrerAccountModel, DateTime.parse("2016-10-12T01:20").toDate());
         InvestRepayModel investRepayModel = createInvestRepayModel(investModel.getId(), 1, RepayStatus.COMPLETE);
-        InvestReferrerRewardModel investReferrerRewardModel = createInvestReferrerRewardModel(1, "referrer", Role.STAFF);
+        InvestReferrerRewardModel investReferrerRewardModel = createInvestReferrerRewardModel(1, "referrer", Role.SD_STAFF);
         financeReportItemViews.add(combineFinanceReportModel(loanModel, investModel, investorWithReferrerUserModel, investRepayModel));
         investRepayModel = createInvestRepayModel(investModel.getId(), 2, RepayStatus.COMPLETE);
         financeReportItemViews.add(combineFinanceReportModel(loanModel, investModel, investorWithReferrerUserModel, investRepayModel));
@@ -212,7 +212,7 @@ public class FinanceReportServiceTest {
         BasePaginationDataDto<FinanceReportDto> basePaginationDataDto = financeReportService.getFinanceReportDtos(null, null, null, null, null, null, 2, 3);
         assertEquals(true, basePaginationDataDto.isHasNextPage());
         assertEquals(true, basePaginationDataDto.isHasPreviousPage());
-        assertEquals(8, basePaginationDataDto.getCount());
+        assertEquals(14, basePaginationDataDto.getCount());
         assertEquals(2, basePaginationDataDto.getIndex());
         assertEquals(3, basePaginationDataDto.getRecords().size());
 
@@ -261,6 +261,6 @@ public class FinanceReportServiceTest {
         prepareData();
 
         List<List<String>> csvData = financeReportService.getFinanceReportCsvData(null, null, null, null, null, null);
-        assertEquals(8, csvData.size());
+        assertEquals(14, csvData.size());
     }
 }

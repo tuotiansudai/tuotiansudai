@@ -125,7 +125,7 @@ public class ConsoleUserService {
             editUserDto.setBankCardNumber(bankCard.getCardNumber());
         }
 
-        if (userRoleMapper.findByLoginNameAndRole(userModel.getReferrer(), Role.STAFF) != null) {
+        if (userRoleMapper.findByLoginNameAndRole(userModel.getReferrer(), Role.SD_STAFF) != null) {
             editUserDto.setReferrerStaff(true);
         }
         return editUserDto;
@@ -233,7 +233,7 @@ public class ConsoleUserService {
             throw new EditUserException("该手机号已经存在");
         }
 
-        if (editUserDto.getRoles().contains(Role.STAFF) && !Strings.isNullOrEmpty(editUserDto.getReferrer())) {
+        if ((editUserDto.getRoles().contains(Role.SD_STAFF) || editUserDto.getRoles().contains(Role.ZC_STAFF)) && !Strings.isNullOrEmpty(editUserDto.getReferrer())) {
             throw new EditUserException("业务员不能设置推荐人");
         }
 
@@ -245,6 +245,10 @@ public class ConsoleUserService {
 
         if (loginName.equalsIgnoreCase(newReferrerLoginName)) {
             throw new EditUserException("不能将推荐人设置为自己");
+        }
+
+        if (editUserDto.getRoles().contains(Role.SD_STAFF) && editUserDto.getRoles().contains(Role.ZC_STAFF)) {
+            throw new EditUserException("不能同时设置速贷业务员和资产业务员");
         }
 
         // 是否新推荐人是该用户推荐的
@@ -266,6 +270,10 @@ public class ConsoleUserService {
                                                                                  String invested,
                                                                                  Long totalInvestAmountStart,
                                                                                  Long totalInvestAmountEnd,
+                                                                                 Long totalWithdrawAmountStart,
+                                                                                 Long totalWithdrawAmountEnd,
+                                                                                 Long userBalanceStart,
+                                                                                 Long userBalanceEnd,
                                                                                  Integer investCountStart,
                                                                                  Integer investCountEnd,
                                                                                  Integer loanCountStart,
@@ -283,6 +291,10 @@ public class ConsoleUserService {
                                                                                  Date lastLoginTimeStart,
                                                                                  Date lastLoginTimeEnd,
                                                                                  Source lastLoginSource,
+                                                                                 Date lastRepayTimeStart,
+                                                                                 Date lastRepayTimeEnd,
+                                                                                 Date lastWithdrawTimeStart,
+                                                                                 Date lastWithdrawTimeEnd,
                                                                                  int index,
                                                                                  int pageSize) {
 
@@ -294,31 +306,10 @@ public class ConsoleUserService {
                 invested,
                 totalInvestAmountStart,
                 totalInvestAmountEnd,
-                investCountStart,
-                investCountEnd,
-                loanCountStart,
-                loanCountEnd,
-                transformPeriodStart,
-                transformPeriodEnd,
-                invest1st2ndTimingStart,
-                invest1st2ndTimingEnd,
-                invest1st3ndTimingStart,
-                invest1st3ndTimingEnd,
-                lastInvestTimeStart,
-                lastInvestTimeEnd,
-                repayingAmountStart,
-                repayingAmountEnd,
-                lastLoginTimeStart,
-                lastLoginTimeEnd,
-                lastLoginSource);
-
-        List<UserMicroModelView> userMicroModelViewList = userMapperConsole.queryUserMicroModel(mobile,
-                registerTimeStart,
-                registerTimeEnd,
-                hasCertify,
-                invested,
-                totalInvestAmountStart,
-                totalInvestAmountEnd,
+                totalWithdrawAmountStart,
+                totalWithdrawAmountEnd,
+                userBalanceStart,
+                userBalanceEnd,
                 investCountStart,
                 investCountEnd,
                 loanCountStart,
@@ -336,6 +327,43 @@ public class ConsoleUserService {
                 lastLoginTimeStart,
                 lastLoginTimeEnd,
                 lastLoginSource,
+                lastRepayTimeStart,
+                lastRepayTimeEnd,
+                lastWithdrawTimeStart,
+                lastWithdrawTimeEnd);
+
+        List<UserMicroModelView> userMicroModelViewList = userMapperConsole.queryUserMicroModel(mobile,
+                registerTimeStart,
+                registerTimeEnd,
+                hasCertify,
+                invested,
+                totalInvestAmountStart,
+                totalInvestAmountEnd,
+                totalWithdrawAmountStart,
+                totalWithdrawAmountEnd,
+                userBalanceStart,
+                userBalanceEnd,
+                investCountStart,
+                investCountEnd,
+                loanCountStart,
+                loanCountEnd,
+                transformPeriodStart,
+                transformPeriodEnd,
+                invest1st2ndTimingStart,
+                invest1st2ndTimingEnd,
+                invest1st3ndTimingStart,
+                invest1st3ndTimingEnd,
+                lastInvestTimeStart,
+                lastInvestTimeEnd,
+                repayingAmountStart,
+                repayingAmountEnd,
+                lastLoginTimeStart,
+                lastLoginTimeEnd,
+                lastLoginSource,
+                lastRepayTimeStart,
+                lastRepayTimeEnd,
+                lastWithdrawTimeStart,
+                lastWithdrawTimeEnd,
                 (index - 1) * pageSize,
                 pageSize);
 
@@ -357,10 +385,10 @@ public class ConsoleUserService {
     }
 
     public BasePaginationDataDto<RemainUserDto> findRemainUsers(String loginName, String mobile, Date registerStartTime, Date registerEndTime,
-                                               Boolean useExperienceCoupon, Date experienceStartTime, Date experienceEndTime,
-                                               Integer investCountLowLimit, Integer investCountHighLimit, Long investSumLowLimit,
-                                               Long investSumHighLimit, Date firstInvestStartTime, Date firstInvestEndTime,
-                                               Date secondInvestStartTime, Date secondInvestEndTime, int index, int pageSize) {
+                                                                Boolean useExperienceCoupon, Date experienceStartTime, Date experienceEndTime,
+                                                                Integer investCountLowLimit, Integer investCountHighLimit, Long investSumLowLimit,
+                                                                Long investSumHighLimit, Date firstInvestStartTime, Date firstInvestEndTime,
+                                                                Date secondInvestStartTime, Date secondInvestEndTime, int index, int pageSize) {
         long count = userMapperConsole.findRemainUsersCount(loginName, mobile, registerStartTime,
                 registerEndTime, useExperienceCoupon, experienceStartTime, experienceEndTime, investCountLowLimit,
                 investCountHighLimit, investSumLowLimit, investSumHighLimit, firstInvestStartTime, firstInvestEndTime,

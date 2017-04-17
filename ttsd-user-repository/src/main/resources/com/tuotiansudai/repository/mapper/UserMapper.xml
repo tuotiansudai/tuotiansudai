@@ -28,6 +28,7 @@
         <result column="sign_in_count" property="signInCount"/>
         <result column="last_login_time" property="lastLoginTime"/>
         <result column="last_login_source" property="lastLoginSource"/>
+        <result column="experience_balance" property="experienceBalance"/>
     </resultMap>
 
     <resultMap id="userViewResultMap" type="UserView">
@@ -49,8 +50,8 @@
     </resultMap>
 
     <insert id="create" parameterType="UserModel" useGeneratedKeys="true" keyProperty="id">
-        insert ignore into user (login_name, password, mobile, user_name, identity_number, email, register_time, last_modified_time, referrer, status, salt, channel, source, sign_in_count)
-        value(#{loginName}, #{password}, #{mobile}, #{userName}, #{identityNumber}, #{email}, #{registerTime}, #{lastModifiedTime}, #{referrer}, #{status}, #{salt}, #{channel}, #{source}, #{signInCount})
+        insert ignore into user (login_name, password, mobile, user_name, identity_number, email, register_time, last_modified_time, referrer, status, salt, channel, source, sign_in_count, experience_balance)
+        value(#{loginName}, #{password}, #{mobile}, #{userName}, #{identityNumber}, #{email}, #{registerTime}, #{lastModifiedTime}, #{referrer}, #{status}, #{salt}, #{channel}, #{source}, #{signInCount}, #{experienceBalance})
     </insert>
 
     <update id="updateUser" parameterType="com.tuotiansudai.repository.model.UserModel">
@@ -67,7 +68,8 @@
         city = #{city},
         sign_in_count = #{signInCount},
         last_login_time = #{lastLoginTime},
-        last_login_source = #{lastLoginSource}
+        last_login_source = #{lastLoginSource},
+        experience_balance = #{experienceBalance}
         where id = #{id}
     </update>
 
@@ -130,39 +132,6 @@
         </if>
     </select>
 
-    <select id="findNaturalUser" resultType="string">
-        SELECT
-        us.login_name
-        FROM
-        user us
-        JOIN invest t
-        ON us.`login_name` = t.`login_name`
-        and t.`status` = 'SUCCESS'
-        where NOT EXISTS
-        (SELECT
-        1
-        FROM
-        referrer_relation r
-        JOIN user_role u
-        ON r.`referrer_login_name` = u.`login_name`
-        AND u.`role` = 'STAFF'
-        WHERE r.`level` = '1'
-        AND t.`login_name` = r.`login_name`)
-        AND NOT EXISTS
-        (SELECT
-        1
-        FROM
-        user_role ur
-        WHERE ur.role IN ('STAFF', 'AGENT')
-        AND t.`login_name` = ur.`login_name`)
-        <if test="districtName != null and districtName.size != 0">
-            and us.province in
-            <foreach item="item" index="index" collection="districtName" open="(" separator="," close=")">
-                #{item}
-            </foreach>
-        </if>
-    </select>
-
     <select id="findAllRecommendation" resultType="java.lang.String">
         SELECT
         r.login_name
@@ -170,7 +139,7 @@
         referrer_relation r
         JOIN user_role u
         ON r.`referrer_login_name` = u.`login_name`
-        AND u.`role` = 'STAFF'
+        AND u.`role` in ('SD_STAFF', 'ZC_STAFF')
         <if test="districtName != null and districtName.size != 0">
             join user ur on ur.login_name = r.login_name
             and ur.province in
@@ -189,14 +158,6 @@
                 #{item}
             </foreach>
         </if>
-    </select>
-
-    <select id="findUsersBirthdayMobile" resultType="string">
-        select user.mobile
-        from user
-        inner join account on user.login_name = account.login_name
-        where if(length(identity_number)=18, substring(identity_number,11,2), substring(identity_number,9,2)) - date_format(now(),'%m') = 0
-        and exists(select 1 from invest where invest.login_name = user.login_name and invest.status = 'SUCCESS');
     </select>
 
     <select id="findAllByRole" parameterType="map" resultType="string">
@@ -233,18 +194,6 @@
 
     <select id="findByIdentityNumber" parameterType="string" resultMap="userResultMap">
         select * from user where identity_number = #{identityNumber}
-    </select>
-
-    <select id="findBirthDayUsers" resultType="string">
-        select login_name
-        from user
-        where (if(length(identity_number) = 18, substring(identity_number,11,4), substring(identity_number,9,4))) = DATE_FORMAT(now(),'%m%d')
-    </select>
-
-    <select id="findBirthMonthUsers" resultType="string">
-        select login_name
-        from account
-        where (if(length(identity_number) = 18, substring(identity_number,11,2), substring(identity_number,9,2))) = DATE_FORMAT(now(),'%m')
     </select>
 
     <select id="findScaleByGender" parameterType="map" resultType="int">

@@ -80,8 +80,10 @@
     </#if>
     <meta name="_csrf" content="${(_csrf.token)!}"/>
     <meta name="_csrf_header" content="${(_csrf.headerName)!}"/>
-    <meta name="360-site-verification" content="8f78c77592779bad6fb5acc422271b6f" />
-    <link  id="icoFavicon" rel="shortcut icon" type="image/x-icon" />
+    <meta name="360-site-verification" content="a3066008a453e5dfcd9f3e288862c9ef" />
+    <meta name="sogou_site_verification" content="lXIPItRbXy"/>
+    <meta name="baidu-site-verification" content="XVFtcOmhlc" />
+    <link href="${commonStaticServer}/images/favicon.ico" id="icoFavicon" rel="shortcut icon" type="image/x-icon" />
     <link rel="stylesheet" type="text/css" href="${css.globalFun_page!}" charset="utf-8"/>
     <#if pageCss?? && pageCss != "">
         <link rel="stylesheet" type="text/css" href="${pageCss}" charset="utf-8"/>
@@ -122,18 +124,18 @@
     </#switch>
 </#if>
 
-<#--<#include "../pageLayout/statistic.ftl" />-->
+<#include "../pageLayout/statistic.ftl" />
 <script>
     window.staticServer='${commonStaticServer}';
     <#--window.pluginsJSON={-->
         <#--underscore:'${js.underscore}'-->
     <#--}-->
-
 </script>
 
-<script src="${js.jquerydll}" ></script>
-<script src="${js.globalFun_page!}" ></script>
-<script src="${pageJavascript}" type="text/javascript" id="currentScript"></script>
+<script src="${js.jquerydll}" defer></script>
+<script src="${js.globalFun_page!}" defer></script>
+<script src="${pageJavascript}" type="text/javascript" id="currentScript" defer></script>
+
 </body>
 </html>
 </#macro>

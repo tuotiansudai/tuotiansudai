@@ -1,0 +1,1 @@
+alter table user add column experience_balance BIGINT UNSIGNED default 0 NOT NULL;

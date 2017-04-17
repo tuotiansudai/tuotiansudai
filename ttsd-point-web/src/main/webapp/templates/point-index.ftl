@@ -20,7 +20,6 @@
                         <a href="${webServer}/login?redirect=${pointServer}"
                            class="login-btn">立即登录</a>
                     </p>
-
                     <p>
                         <a href="${webServer}/register/user" class="regist-btn">新用户注册></a>
                     </p>
@@ -61,7 +60,7 @@
                             <p class="next-text"></p>
                             <p class="sign-reward"><a href="/activity/sign-check">查看连续签到奖励</a></p>
                         </div>
-                        
+
                     </div>
                 </div>
             </div>
@@ -96,10 +95,19 @@
                             <i class="hot-icon">
                                 <span>${discountShow!}</span>
                             </i>
+                            <p class="num-text pad">剩余${virtualProduct.leftCount?c!"0"}件
+                                <#if virtualProduct.monthLimit!=0>
+                                    /每人每月最多可兑换${virtualProduct.monthLimit}个
+                                </#if>
+                            </p>
+                        <#else>
+                            <p class="num-text">剩余${virtualProduct.leftCount?c!"0"}件
+                                <#if virtualProduct.monthLimit!=0>
+                                    /每人每月最多可兑换${virtualProduct.monthLimit}个
+                                </#if>
+                            </p>
                         </#if>
-                        <p class="num-text">剩余${virtualProduct.leftCount?c!"0"}件 </p>
-
-                        <p><img src="${staticServer}${virtualProduct.imageUrl}" width="160" height="100"></p>
+                        <p><img src="${commonStaticServer}/${virtualProduct.imageUrl}" width="160" height="100"></p>
                         <p class="convert-btn">
                             <span class="name-text">${virtualProduct.name}</span>
                             <span class="price-text">
@@ -109,18 +117,17 @@
                                 </#if>
                             </span>
                             <#if virtualProduct?? && virtualProduct.leftCount ==0 >
-                                <span class="fl get-btn">已售罄</span>
+                                <span class="get-btn">已售罄</span>
                             <#else>
-                                <a class="fl"
-                                   href="/point-shop/order/${virtualProduct.id?c}/${virtualProduct.goodsType.name()}/1"><span
-                                        class="fl get-btn active">立即兑换</span></a>
+                                <a href="/point-shop/order/${virtualProduct.id?c}/${virtualProduct.goodsType.name()}/1"><span
+                                        class="get-btn active">立即兑换</span></a>
                             </#if>
                         </p>
                     </li>
                 </#list>
             </ul>
             <#else>
-                <p class="no-material"><img src="${staticServer}/point/images/no-material.png"></p>
+                <p class="no-material"></p>
                 <p class="no-product">商品即将上线，敬请期待！</p>
             </#if>
         </div>
@@ -144,10 +151,14 @@
                             </i>
                         </#if>
 
-                        <p class="num-text">剩余${physicalProduct.leftCount?c!"0"}件</p>
+                        <p class="num-text">剩余${physicalProduct.leftCount?c!"0"}件
+                            <#if physicalProduct.monthLimit!=0>
+                                /每人每月最多可兑换${physicalProduct.monthLimit}个
+                            </#if>
+                        </p>
 
                         <p class="mater-img picture-item">
-                            <img src="${staticServer}${physicalProduct.imageUrl}" width="160" height="100"/>
+                            <img src="${commonStaticServer}/${physicalProduct.imageUrl}" width="160" height="100"/>
                         </p>
 
                         <p class="convert-btn">
@@ -158,7 +169,7 @@
                                 </#if>
                             </span>
                             <#if physicalProduct?? && physicalProduct.leftCount ==0 >
-                                <span class="fl get-btn">已售罄</span>
+                                <span class="get-btn">已售罄</span>
                             <#else>
                                 <a href="/point-shop/order/${physicalProduct.id?c}/${physicalProduct.goodsType.name()}/1"><span
                                         class="get-btn active">立即兑换</span></a>
@@ -168,7 +179,7 @@
                 </#list>
             </ul>
             <#else>
-                <p class="no-material"><img src="${staticServer}/point/images/no-material.png"></p>
+                <p class="no-material"></p>
                 <p class="no-product">商品即将上线，敬请期待！</p>
             </#if>
         </div>

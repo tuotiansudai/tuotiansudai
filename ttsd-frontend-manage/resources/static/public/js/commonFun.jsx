@@ -206,8 +206,7 @@ let decrypt={
     //加密
     compile:function (strId,realId) {
         let realIdStr=realId+'';
-        let strIdObj=realIdStr.split(''),
-            realLen=realIdStr.length;
+        let strIdObj=strId.split('');
         for(let i=0;i<11;i++) {
             strIdObj[2*i+2]=realIdStr[i]?realIdStr[i]:'a';
         }

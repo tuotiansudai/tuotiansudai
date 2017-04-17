@@ -110,6 +110,7 @@ public class PointShopController {
         ProductShowItemDto productShowItemDto = productService.findProductShowItemDto(id, goodsType);
         modelAndView.addObject("productShowItem", productShowItemDto);
         modelAndView.addObject("discount", productService.discountRate(loginName));
+        modelAndView.addObject("buyCount", productService.getUserBuyCountInMonth(id, loginName));
         modelAndView.addObject("responsive", true);
         return modelAndView;
     }
@@ -145,7 +146,7 @@ public class PointShopController {
         }
 
         modelAndView.addObject("discount", productService.discountRate(loginName));
-
+        modelAndView.addObject("buyCount", productService.getUserBuyCountInMonth(id, loginName));
         modelAndView.addObject("responsive", true);
         return modelAndView;
     }
@@ -197,7 +198,7 @@ public class PointShopController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/record-list", method = RequestMethod.GET, consumes = "application/json; charset=UTF-8", produces = "application/json; charset=UTF-8")
+    @RequestMapping(value = "/record-list", method = RequestMethod.GET)
     @ResponseBody
     public BaseDto<BasePaginationDataDto> pointSystemRecordDetail(@Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index) {
 
@@ -214,7 +215,7 @@ public class PointShopController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/bill-list", method = RequestMethod.GET, consumes = "application/json; charset=UTF-8", produces = "application/json; charset=UTF-8")
+    @RequestMapping(value = "/bill-list", method = RequestMethod.GET)
     @ResponseBody
     public BaseDto<BasePaginationDataDto> pointBillListData(@Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index,
                                                             @RequestParam(name = "pointType", required = false) String pointType,

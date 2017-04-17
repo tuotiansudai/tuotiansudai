@@ -1,17 +1,10 @@
 package com.tuotiansudai.paywrapper.controller;
 
 
-import com.tuotiansudai.anxin.service.AnxinSignService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.exception.AmountTransferException;
-import com.tuotiansudai.paywrapper.loanout.AchievementCouponService;
-import com.tuotiansudai.paywrapper.loanout.CouponLoanOutService;
-import com.tuotiansudai.paywrapper.loanout.CouponRepayService;
-import com.tuotiansudai.paywrapper.loanout.LoanOutInvestCalculationService;
-import com.tuotiansudai.paywrapper.loanout.LoanService;
-import com.tuotiansudai.paywrapper.loanout.ReferrerRewardService;
-import com.tuotiansudai.paywrapper.loanout.RepayGeneratorService;
+import com.tuotiansudai.paywrapper.loanout.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,9 +20,6 @@ public class LoanOutSuccessController {
     private CouponLoanOutService couponLoanOutService;
 
     @Autowired
-    private LoanService loanService;
-
-    @Autowired
     private ReferrerRewardService referrerRewardService;
 
     @Autowired
@@ -37,9 +27,6 @@ public class LoanOutSuccessController {
 
     @Autowired
     private CouponRepayService couponRepayService;
-
-    @Autowired
-    private AnxinSignService anxinSignService;
 
     @Autowired
     private LoanOutInvestCalculationService loanOutInvestCalculationService;
@@ -59,39 +46,12 @@ public class LoanOutSuccessController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/create-anxin-contract-after-loan-out", method = RequestMethod.POST)
-    public BaseDto<PayDataDto> createAnXinContract(@RequestBody long loanId) {
-        BaseDto baseDto;
-        try{
-            baseDto = anxinSignService.createLoanContracts(loanId, false);
-        }catch (Exception e){
-            baseDto = new BaseDto(false);
-        }
-        BaseDto<PayDataDto> dto = new BaseDto<>();
-        PayDataDto dataDto = new PayDataDto();
-        dto.setData(dataDto);
-        dataDto.setStatus(baseDto.isSuccess());
-        return dto;
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/query-anxin-contract-after-loan-out", method = RequestMethod.POST)
-    public BaseDto<PayDataDto> queryAnXinContract(@RequestBody long loanId) {
-        boolean result = anxinSignService.queryContract(loanId);
-        BaseDto<PayDataDto> dto = new BaseDto<>();
-        PayDataDto dataDto = new PayDataDto();
-        dto.setData(dataDto);
-        dataDto.setStatus(result);
-        return dto;
-    }
-
-    @ResponseBody
     @RequestMapping(value = "/generate-repay-after-loan-out", method = RequestMethod.POST)
     public BaseDto<PayDataDto> generateRepay(@RequestBody long loanId) {
         boolean isSuccess = true;
         try {
             repayGeneratorService.generateRepay(loanId);
-        }catch (Exception e){
+        } catch (Exception e) {
             isSuccess = false;
         }
         BaseDto<PayDataDto> dto = new BaseDto<>();

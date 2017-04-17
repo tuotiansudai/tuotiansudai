@@ -1,6 +1,7 @@
 package com.tuotiansudai.service.impl;
 
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.repository.mapper.ReferrerManageMapper;
@@ -72,7 +73,7 @@ public class ReferrerManageServiceImpl implements ReferrerManageService {
 
         List<UserRoleModel> userRoleModelList = userRoleMapper.findByLoginName(loginName);
         for (UserRoleModel model : userRoleModelList) {
-            if (model.getRole().equals(Role.STAFF)) {
+            if (Lists.newArrayList(Role.ZC_STAFF, Role.SD_STAFF).contains(model.getRole())) {
                 level = merLevel > level ? merLevel : level;
             } else if (model.getRole().equals(Role.USER)) {
                 level = userLevel > level ? userLevel : level;

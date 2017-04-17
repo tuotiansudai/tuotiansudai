@@ -9,10 +9,10 @@ class Deployment(object):
     _dockerCompose='/usr/local/bin/docker-compose'
     _paver='/usr/bin/paver'
 
-    def deploy(self, env):
+    def deploy(self, build_params):
         self.clean()
-        self.config_file(env)
-        self.jcversion(env)
+        self.config_file(build_params)
+        self.jcversion(build_params)
         self.compile()
         self.build_and_unzip_worker()
         self.build_mq_consumer()
@@ -27,9 +27,9 @@ class Deployment(object):
         print self._gradle
         sh('/usr/bin/git clean -fd', ignore_error=True)
 
-    def config_file(self, env):
+    def config_file(self, build_params):
         print "Generate config file..."
-        config_deploy.deploy(env, "./ttsd-config/src/main/resources/", "{0}/ttsd-config/ttsd-env.properties".format(self._config_path))
+        config_deploy.deploy(build_params, "./ttsd-config/src/main/resources/", "{0}/ttsd-config/ttsd-env.properties".format(self._config_path))
 
     def compile(self):
         print "Compiling..."
@@ -82,21 +82,14 @@ class Deployment(object):
         sh('mv ./ttsd-web/src/main/webapp/static.zip  ./ttsd-web/build/')
         sh('cd ./ttsd-web/build && unzip static.zip -d static')
 
-        sh('cd ./ttsd-mobile-api/src/main/webapp && zip -r static_api.zip api/')
-        sh('mv ./ttsd-mobile-api/src/main/webapp/static_api.zip  ./ttsd-web/build/')
-        sh('cd ./ttsd-web/build && unzip static_api.zip -d static')
 
-        sh('cd ./ttsd-frontend-manage/resources/prod && zip -r static_ask.zip *')
-        sh('mv ./ttsd-frontend-manage/resources/prod/static_ask.zip  ./ttsd-web/build/')
-        sh('cd ./ttsd-web/build && unzip static_ask.zip -d static')
+        sh('cd ./ttsd-frontend-manage/resources/prod && zip -r static_all.zip *')
+        sh('mv ./ttsd-frontend-manage/resources/prod/static_all.zip  ./ttsd-web/build/')
+        sh('cd ./ttsd-web/build && unzip static_all.zip -d static')
 
         sh('cd ./ttsd-activity-web/src/main/webapp && zip -r static_activity.zip activity/')
         sh('mv ./ttsd-activity-web/src/main/webapp/static_activity.zip  ./ttsd-web/build/')
         sh('cd ./ttsd-web/build && unzip static_activity.zip -d static')
-
-        sh('cd ./ttsd-point-web/src/main/webapp && zip -r static_point.zip point/')
-        sh('mv ./ttsd-point-web/src/main/webapp/static_point.zip  ./ttsd-web/build/')
-        sh('cd ./ttsd-web/build && unzip static_point.zip -d static')
 
     def init_docker(self):
         print "Initialing docker..."
@@ -113,6 +106,6 @@ class Deployment(object):
     def _start_new_container(self, sudoer):
         sh('{0} {1} -f dev.yml up -d'.format(sudoer, self._dockerCompose))
 
-    def jcversion(self, env):
+    def jcversion(self, build_params):
         print "Starting jcmin..."
-        sh('{0} jcversion.env={1} jcversion'.format(self._paver, env))
+        sh('{0} jcversion.env={1} jcversion'.format(self._paver, build_params.get('env')))

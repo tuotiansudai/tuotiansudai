@@ -2,6 +2,7 @@ package com.tuotiansudai.point.service.impl;
 
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.ExchangeCouponDto;
 import com.tuotiansudai.repository.mapper.CouponMapper;
 import com.tuotiansudai.repository.model.CouponModel;
@@ -34,6 +35,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -71,13 +73,20 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private UserMembershipEvaluator userMembershipEvaluator;
 
+    @Autowired
+    RedisWrapperClient redisWrapperClient;
+
+    private static final String PRODUCT_USER_BUY_COUNT_KEY = "{0}:{1}:{2}";
+
+    private static final int COUNT_LIFE_TIME = 60 * 60 * 24 * 32; // 32天
+
+    private static final ThreadLocal<SimpleDateFormat> SDF_LOCAL = ThreadLocal.withInitial(() -> new SimpleDateFormat("yyyy-MM"));
+
     @Override
     @Transactional
     public void createProduct(ProductDto productDto) {
         if (GoodsType.COUPON.equals(productDto.getType())) {
-            ProductDto convertProductDto = convertProductDtoToCouponType(productDto);
-            productDto.setName(convertProductDto.getName());
-            productDto.setDescription(convertProductDto.getDescription());
+            setNameAndDescriptionForCouponProduct(productDto);
         }
         ProductModel productModel = new ProductModel(
                 productDto.getLoginName(),
@@ -88,6 +97,7 @@ public class ProductServiceImpl implements ProductService {
                 productDto.getImageUrl(),
                 productDto.getDescription(),
                 productDto.getTotalCount(),
+                productDto.getMonthLimit(),
                 productDto.getPoints(),
                 productDto.getStartTime(),
                 productDto.getEndTime());
@@ -187,9 +197,7 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     public BaseDataDto updateProduct(ProductDto productDto) {
         if (GoodsType.COUPON.equals(productDto.getType())) {
-            ProductDto convertProductDto = convertProductDtoToCouponType(productDto);
-            productDto.setName(convertProductDto.getName());
-            productDto.setDescription(convertProductDto.getDescription());
+            setNameAndDescriptionForCouponProduct(productDto);
         }
         ProductModel productModel = productMapper.findById(productDto.getId());
         productModel.setSeq(productDto.getSeq());
@@ -198,45 +206,45 @@ public class ProductServiceImpl implements ProductService {
         productModel.setEndTime(productDto.getEndTime());
         productModel.setPoints(productDto.getPoints());
         productModel.setTotalCount(productDto.getTotalCount());
+        productModel.setMonthLimit(productDto.getMonthLimit());
         productModel.setUpdatedBy(productDto.getLoginName());
         productModel.setUpdatedTime(new Date());
         productMapper.update(productModel);
         return new BaseDataDto(true, null);
     }
 
-    private ProductDto convertProductDtoToCouponType(ProductDto productDto) {
-        ProductDto convertProductDto = new ProductDto();
+    private void setNameAndDescriptionForCouponProduct(ProductDto productDto) {
         CouponModel couponModel = couponMapper.findById(productDto.getCouponId());
         switch (couponModel.getCouponType()) {
             case RED_ENVELOPE:
-                convertProductDto.setName(AmountConverter.convertCentToString(couponModel.getAmount()) + "元现金红包");
-                convertProductDto.setDescription(String.valueOf(couponModel.getAmount()));
+                productDto.setName(AmountConverter.convertCentToString(couponModel.getAmount()) + "元现金红包");
+                productDto.setDescription(String.valueOf(couponModel.getAmount()));
                 break;
             case INVEST_COUPON:
-                convertProductDto.setName(AmountConverter.convertCentToString(couponModel.getAmount()) + "元投资体验券");
-                convertProductDto.setDescription(String.valueOf(couponModel.getAmount()));
+                productDto.setName(AmountConverter.convertCentToString(couponModel.getAmount()) + "元投资体验券");
+                productDto.setDescription(String.valueOf(couponModel.getAmount()));
                 break;
             case INTEREST_COUPON:
-                convertProductDto.setName(couponModel.getRate() * 100 + "%加息券");
-                convertProductDto.setDescription(String.valueOf(couponModel.getRate() * 100));
+                productDto.setName(couponModel.getRate() * 100 + "%加息券");
+                productDto.setDescription(String.valueOf(couponModel.getRate() * 100));
                 break;
         }
-        return convertProductDto;
     }
 
     private List<ProductShowItemDto> findAllProductsByGoodsType(GoodsType goodsType) {
         List<ProductShowItemDto> productShowItemDtos = new ArrayList<>();
+        Date currentDate = new Date();
         switch (goodsType) {
             case VIRTUAL:
                 productShowItemDtos = productMapper
-                        .findExchangeableProductsList(GoodsType.VIRTUAL, 0, Integer.MAX_VALUE)
+                        .findExchangeableProductsList(currentDate, GoodsType.VIRTUAL, 0, Integer.MAX_VALUE)
                         .stream()
                         .map(p -> new ProductShowItemDto(p, GoodsType.VIRTUAL, ""))
                         .collect(Collectors.toList());
                 break;
             case PHYSICAL:
                 productShowItemDtos = productMapper
-                        .findExchangeableProductsList(GoodsType.PHYSICAL, 0, Integer.MAX_VALUE)
+                        .findExchangeableProductsList(currentDate, GoodsType.PHYSICAL, 0, Integer.MAX_VALUE)
                         .stream()
                         .map(p -> new ProductShowItemDto(p, GoodsType.PHYSICAL, ""))
                         .collect(Collectors.toList());
@@ -245,11 +253,12 @@ public class ProductServiceImpl implements ProductService {
                 // 根据需求，可展示的ExchangeCoupon最多在20-30个左右。
                 final int index = 0;
                 final int pageSize = 100;
-                productShowItemDtos = productMapper.findExchangeableProductsList(goodsType, index, pageSize)
+                productShowItemDtos = productMapper.findExchangeableProductsList(currentDate, goodsType, index, pageSize)
                         .stream()
                         .map(m -> {
                             CouponModel couponModel = couponMapper.findExchangeableCouponById(m.getCouponId());
-                            return new ExchangeCouponView(m.getPoints(), m.getActualPoints(), m.getSeq(), m.getImageUrl(), m.getId(), couponModel);
+                            return new ExchangeCouponView(m.getPoints(), m.getActualPoints(), m.getSeq(), m.getImageUrl(),
+                                    m.getId(), m.getMonthLimit(), couponModel);
                         })
                         .map(this::convertProductShowItemDto)
                         .collect(Collectors.toList());
@@ -298,6 +307,7 @@ public class ProductServiceImpl implements ProductService {
                                 productModelCoupon.getSeq(),
                                 productModelCoupon.getImageUrl(),
                                 id,
+                                productModelCoupon.getMonthLimit(),
                                 couponModel);
                         productShowItemDto = convertProductShowItemDto(exchangeCouponView);
                     }
@@ -371,7 +381,6 @@ public class ProductServiceImpl implements ProductService {
         }
 
         ProductShowItemDto productShowItemDto = findProductShowItemDto(id, goodsType);
-        long totalPrice = Math.round(new BigDecimal(productShowItemDto.getPoints()).multiply(new BigDecimal(discount)).multiply(new BigDecimal(amount)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
         if (null == productShowItemDto) {
             return new BaseDto<>(new BaseDataDto(false, "该商品或该商品类型不存在"));
         }
@@ -379,23 +388,35 @@ public class ProductServiceImpl implements ProductService {
             return new BaseDto<>(new BaseDataDto(false, "商品数量不足"));
         }
 
+        String key = generateCountKey(productModel.getId(), loginName);
+        long buyCount = redisWrapperClient.incrEx(key, COUNT_LIFE_TIME, amount);
+
+        if (productModel.getMonthLimit() != 0 && buyCount > productModel.getMonthLimit()) {
+            redisWrapperClient.decrEx(key, COUNT_LIFE_TIME, amount);
+            return new BaseDto<>(new BaseDataDto(false, "该商品每人每月可以兑换" + productModel.getMonthLimit() + "个，已超出兑换上限。"));
+        }
+
+        long totalPrice = Math.round(new BigDecimal(productShowItemDto.getPoints()).multiply(new BigDecimal(discount)).multiply(new BigDecimal(amount)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+
         if (accountModel.getPoint() < totalPrice) {
+            redisWrapperClient.decrEx(key, COUNT_LIFE_TIME, amount);
             return new BaseDto<>(new BaseDataDto(false, "积分不足"));
         }
 
         UserAddressModel userAddressModel = null;
         if (GoodsType.PHYSICAL == goodsType) {
             if (null == addressId) {
+                redisWrapperClient.decrEx(key, COUNT_LIFE_TIME, amount);
                 return new BaseDto<>(new BaseDataDto(false, "地址不存在"));
             }
             userAddressModel = userAddressMapper.findByLoginNameAndId(addressId, loginName);
             if (null == userAddressModel) {
+                redisWrapperClient.decrEx(key, COUNT_LIFE_TIME, amount);
                 return new BaseDto<>(new BaseDataDto(false, "地址不存在"));
             }
         }
 
         ProductOrderModel productOrderModel = generateOrder(accountModel, productShowItemDto, amount, userAddressModel, discount);
-
 
         pointBillService.createPointBill(loginName, productShowItemDto.getId(), PointBusinessType.EXCHANGE, (-totalPrice), productShowItemDto.getName());
         logger.info(MessageFormat.format("[ProductServiceImpl][buyProduct] User:{0} buy product {1} product type {2}, amount:{3}, use point {4}",
@@ -408,13 +429,17 @@ public class ProductServiceImpl implements ProductService {
             }
             logger.info(MessageFormat.format("[ProductServiceImpl][buyProduct] User:{0} buy coupon {1} product type {2}.amount{3}. coupon has been assigned",
                     accountModel.getLoginName(), productShowItemDto.getId(), productShowItemDto.getGoodsType().getDescription(), amount));
-
         }
 
         productModel.setUsedCount(productModel.getUsedCount() + amount);
         productMapper.update(productModel);
 
         return new BaseDto<>(new BaseDataDto(true));
+    }
+
+    private String generateCountKey(long productId, String loginName) {
+        String today = SDF_LOCAL.get().format(new Date());
+        return MessageFormat.format(PRODUCT_USER_BUY_COUNT_KEY, today, productId, loginName);
     }
 
     @Override
@@ -464,6 +489,7 @@ public class ProductServiceImpl implements ProductService {
                     exchangeCouponDto.setExchangePoint(productModel.getPoints());
                     exchangeCouponDto.setSeq(productModel.getSeq());
                     exchangeCouponDto.setImageUrl(productModel.getImageUrl());
+                    exchangeCouponDto.setMonthLimit(productModel.getMonthLimit());
                     return exchangeCouponDto;
                 }).collect(Collectors.toList());
     }
@@ -486,6 +512,7 @@ public class ProductServiceImpl implements ProductService {
         ProductShowItemDto productShowItemDto = new ProductShowItemDto(
                 exchangeCouponView.getCouponModel().getTotalCount(),
                 exchangeCouponView.getCouponModel().getIssuedCount(),
+                exchangeCouponView.getMonthLimit(),
                 exchangeCouponView.getExchangePoint(),
                 exchangeCouponView.getActualPoints(),
                 exchangeCouponView.getSeq(),
@@ -514,4 +541,11 @@ public class ProductServiceImpl implements ProductService {
         MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
         return MembershipDiscount.getMembershipDiscountByLevel(membershipModel == null ? 0 : membershipModel.getLevel());
     }
+
+    public int getUserBuyCountInMonth(long productId, String loginName) {
+        String key = generateCountKey(productId, loginName);
+        String buyCount = redisWrapperClient.get(key);
+        return buyCount == null ? 0 : Integer.parseInt(buyCount);
+    }
+
 }

@@ -16,6 +16,7 @@ public class ProductDto implements Serializable {
     private String imageUrl;
     private String description;
     private long totalCount;
+    private long monthLimit;
     private long points;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -27,7 +28,7 @@ public class ProductDto implements Serializable {
 
     }
 
-    public ProductDto(GoodsType goodsType, long couponId, String name, Integer seq, String imageUrl, long points, long totalCount, Date startTime, Date endTime, String loginName) {
+    public ProductDto(GoodsType goodsType, long couponId, String name, Integer seq, String imageUrl, long points, long totalCount, long monthLimit, Date startTime, Date endTime, String loginName) {
         this.type = goodsType;
         this.loginName = loginName;
         this.couponId = couponId;
@@ -36,12 +37,13 @@ public class ProductDto implements Serializable {
         this.imageUrl = imageUrl;
         this.points = points;
         this.totalCount = totalCount;
+        this.monthLimit = monthLimit;
         this.startTime = startTime;
         this.endTime = endTime;
         this.loginName = loginName;
     }
 
-    public ProductDto(long id, GoodsType goodsType, String loginName, long couponId, String name, Integer seq, String imageUrl, long points, long totalCount, Date startTime, Date endTime){
+    public ProductDto(long id, GoodsType goodsType, String loginName, long couponId, String name, Integer seq, String imageUrl, long points, long totalCount, long monthLimit, Date startTime, Date endTime) {
         this.id = id;
         this.type = goodsType;
         this.loginName = loginName;
@@ -51,6 +53,7 @@ public class ProductDto implements Serializable {
         this.imageUrl = imageUrl;
         this.points = points;
         this.totalCount = totalCount;
+        this.monthLimit = monthLimit;
         this.startTime = startTime;
         this.endTime = endTime;
     }
@@ -133,6 +136,14 @@ public class ProductDto implements Serializable {
 
     public void setTotalCount(long totalCount) {
         this.totalCount = totalCount;
+    }
+
+    public long getMonthLimit() {
+        return monthLimit;
+    }
+
+    public void setMonthLimit(long monthLimit) {
+        this.monthLimit = monthLimit;
     }
 
     public Date getStartTime() {

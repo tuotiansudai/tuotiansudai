@@ -292,7 +292,7 @@ public class InvestServiceImpl implements InvestService {
             extraRateFee = new BigDecimal(extraRateInterest).multiply(new BigDecimal(investFeeRate)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
         }
 
-        return (expectedInterest - expectedFee) + (extraRateInterest - extraRateFee);
+        return loanModel.getProductType() == ProductType.EXPERIENCE ? expectedInterest : (expectedInterest - expectedFee) + (extraRateInterest - extraRateFee);
     }
 
     @Override
@@ -382,7 +382,7 @@ public class InvestServiceImpl implements InvestService {
         }
 
         // 发送用户行为日志 MQ消息
-        userOpLogService.sendUserOpLogMQ(loginName, ip, Source.WEB.name(), "", UserOpType.AUTO_INVEST,"Turn On.");
+        userOpLogService.sendUserOpLogMQ(loginName, ip, Source.WEB.name(), "", UserOpType.AUTO_INVEST, "Turn On.");
         return true;
     }
 
@@ -395,7 +395,7 @@ public class InvestServiceImpl implements InvestService {
         autoInvestPlanMapper.disable(loginName);
 
         // 发送用户行为日志 MQ消息
-        userOpLogService.sendUserOpLogMQ(loginName, ip, Source.WEB.name(), "", UserOpType.AUTO_INVEST,"Turn Off.");
+        userOpLogService.sendUserOpLogMQ(loginName, ip, Source.WEB.name(), "", UserOpType.AUTO_INVEST, "Turn Off.");
         return true;
     }
 

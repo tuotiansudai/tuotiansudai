@@ -12,6 +12,9 @@ import com.tuotiansudai.activity.repository.model.UserLotteryTimeView;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.util.DateUtil;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -19,6 +22,7 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -60,14 +64,23 @@ public class ActivityConsoleUserLotteryService {
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.christmas.endTime}\")}")
     private Date activityChristmasEndTime;
 
+    @Value("#{'${activity.money.tree.period}'.split('\\~')}")
+    private List<String> moneyTreeTime = Lists.newArrayList();
+
     public List<UserLotteryTimeView> findUserLotteryTimeViews(String mobile, final ActivityCategory prizeType, Integer index, Integer pageSize) {
         List<UserModel> userModels = userMapper.findUserModelByMobile(mobile, index, pageSize);
 
         Iterator<UserLotteryTimeView> transform = Iterators.transform(userModels.iterator(), input -> {
             UserLotteryTimeView model = new UserLotteryTimeView(input.getMobile(), input.getLoginName());
             model.setUseCount(userLotteryPrizeMapper.findUserLotteryPrizeCountViews(input.getMobile(), null, prizeType, null, null));
-            int unUserCount = commonCountTimeService.countDrawLotteryTime(model.getMobile(), prizeType) - model.getUseCount();
-            model.setUnUseCount(unUserCount < 0 ? 0 :unUserCount);
+            int unUserCount = 0;
+            if (prizeType.name().startsWith("MONEY_TREE")) {
+                int referrerLotteryChance = commonCountTimeService.countDrawLotteryTime(model.getMobile(), prizeType);
+                unUserCount = moneyTreeLeftLotteryTimes(mobile, referrerLotteryChance, model.getUseCount());
+            } else {
+                unUserCount = commonCountTimeService.countDrawLotteryTime(model.getMobile(), prizeType) - model.getUseCount();
+            }
+            model.setUnUseCount(unUserCount < 0 ? 0 : unUserCount);
             return model;
         });
 
@@ -93,7 +106,7 @@ public class ActivityConsoleUserLotteryService {
                 }).collect(Collectors.toList());
     }
 
-    public boolean isSpecialAuthType(String authenticationType, UserLotteryPrizeView userLotteryPrizeView){
+    public boolean isSpecialAuthType(String authenticationType, UserLotteryPrizeView userLotteryPrizeView) {
         switch (authenticationType) {
             case "0":
                 return Strings.isNullOrEmpty(userLotteryPrizeView.getUserName());
@@ -105,5 +118,34 @@ public class ActivityConsoleUserLotteryService {
 
     public int findUserLotteryPrizeCountViews(String mobile, LotteryPrize selectPrize, ActivityCategory prizeType, Date startTime, Date endTime) {
         return userLotteryPrizeMapper.findUserLotteryPrizeCountViews(mobile, selectPrize, prizeType, startTime, endTime);
+    }
+
+    private int moneyTreeLeftLotteryTimes(String mobile, int referrerLotteryTimes, int usedLotteryTimes){
+        int lotteryTimes = 0;
+        UserModel userModel = userMapper.findByMobile(mobile);
+        if (userModel == null) {
+            return 0;
+        }
+
+        //判断当天是否参与过摇奖，没有参与过给一次机会
+        int isLottery = userLotteryPrizeMapper.findUserLotteryPrizeCountViews(userModel.getMobile(), null, ActivityCategory.MONEY_TREE, new DateTime(new Date()).withTimeAtStartOfDay().toDate(), new DateTime(new Date()).withTimeAtStartOfDay().plusHours(23).plusMinutes(59).plusSeconds(59).toDate());
+        if (isLottery == 0) {
+            lotteryTimes = 1;
+        }
+
+        int usedEveryDayLotteryTimes = 0;
+        Date startTime = DateTime.parse(moneyTreeTime.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+        Date endTime = new Date();
+
+        //查询活动开始后，每天的摇奖次数（如果每天都有摇将，则记录每天一次的总和）
+        long countDays = DateUtil.differenceDay(startTime, endTime);
+
+        for (int i = 0; i <= countDays; i++) {
+            int isEveryDayLottery = userLotteryPrizeMapper.findUserLotteryPrizeCountViews(userModel.getMobile(), null, ActivityCategory.MONEY_TREE, new DateTime(startTime).plusDays(i).withTimeAtStartOfDay().toDate(), new DateTime(startTime).plusDays(i).withTimeAtStartOfDay().plusHours(23).plusMinutes(59).plusSeconds(59).toDate());
+            usedEveryDayLotteryTimes += isEveryDayLottery > 0 ? 1 : 0;
+        }
+
+        lotteryTimes = (lotteryTimes + referrerLotteryTimes) - (usedLotteryTimes - usedEveryDayLotteryTimes);
+        return lotteryTimes;
     }
 }

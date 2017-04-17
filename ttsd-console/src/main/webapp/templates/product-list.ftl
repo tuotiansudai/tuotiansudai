@@ -28,6 +28,7 @@
                 <th>商品图片</th>
                 <th>商品介绍</th>
                 <th>总数量</th>
+                <th>兑换限制（个/人/月）</th>
                 <th>已兑换数量</th>
                 <th>商品价格</th>
                 <th>商品有效期限</th>
@@ -43,6 +44,7 @@
                     <td><img src="${staticServer}${product.imageUrl}" width="100px" height="50px"></td>
                     <td>${product.description}</td>
                     <td>${product.totalCount?string('0')}</td>
+                    <td>${product.monthLimit?string('0')}</td>
                     <td>${product.usedCount?string('0')}</td>
                     <td>${product.points?string('0')}</td>
                     <td>${(product.startTime?string('yyyy-MM-dd'))!}至${(product.endTime?string('yyyy-MM-dd'))!}</td>

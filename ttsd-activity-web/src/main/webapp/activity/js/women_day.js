@@ -144,7 +144,11 @@ require(['jquery', 'layerWrapper','template','commonFun','jquery.ajax.extension'
                     lottery.getLottery();
                 })
                 .fail(function(){
-                    $('.no-login-text', $womenDayContainer).trigger('click'); //弹框登录
+                    if(globalFun.parseURL(location.href).params.source=='app'){
+                        location.href='app/tuotian/login';
+                    }else{
+                        $('.no-login-text', $womenDayContainer).trigger('click'); //弹框登录
+                    }
                 });
 
             }
@@ -164,10 +168,9 @@ require(['jquery', 'layerWrapper','template','commonFun','jquery.ajax.extension'
         lottery.myGift();
         lottery.hoverScrollList($('#lotteryList').find('.user-record'),7);
 
-        $('body').on('click', '.gift-btn .close-tip', function (event) {
+        $womenDayContainer.on('click', '.gift-btn .close-tip', function (event) {
             event.preventDefault();
             layer.closeAll();
-            location.reload();
         });
     });
 });

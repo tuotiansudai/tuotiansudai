@@ -13,6 +13,8 @@ public class ExchangeCouponDto extends CouponDto implements Serializable{
 
     private String imageUrl;
 
+    private long monthLimit;
+
     public Long getExchangePoint() {
         return exchangePoint;
     }
@@ -35,6 +37,14 @@ public class ExchangeCouponDto extends CouponDto implements Serializable{
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public long getMonthLimit() {
+        return monthLimit;
+    }
+
+    public void setMonthLimit(long monthLimit) {
+        this.monthLimit = monthLimit;
     }
 
     public ExchangeCouponDto() {

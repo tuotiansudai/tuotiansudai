@@ -1,6 +1,6 @@
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="headlines-today-list.js" headLab="activity-manage" sideLab="lottery" title="抽奖数据统计">
+<@global.main pageCss="" pageJavascript="headlines-today-list.js" headLab="activity-manage" sideLab="headlinesToday" title="抽奖数据统计">
 
 <div class="col-md-10">
 

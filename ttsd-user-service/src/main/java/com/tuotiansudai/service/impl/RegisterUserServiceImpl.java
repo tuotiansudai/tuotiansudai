@@ -3,10 +3,7 @@ package com.tuotiansudai.service.impl;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.enums.MessageEventType;
-import com.tuotiansudai.enums.PushSource;
-import com.tuotiansudai.enums.PushType;
-import com.tuotiansudai.enums.Role;
+import com.tuotiansudai.enums.*;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
@@ -18,6 +15,7 @@ import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserRoleModel;
+import com.tuotiansudai.service.ExperienceBillService;
 import com.tuotiansudai.service.RegisterUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,6 +41,9 @@ public class RegisterUserServiceImpl implements RegisterUserService {
     @Autowired
     private MQWrapperClient mqWrapperClient;
 
+    @Autowired
+    private ExperienceBillService experienceBillService;
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean register(UserModel userModel) {
@@ -50,6 +51,9 @@ public class RegisterUserServiceImpl implements RegisterUserService {
         if (result <= 0) {
             return true;
         }
+
+        //更新体验金
+        experienceBillService.updateUserExperienceBalanceByLoginName(688800, userModel.getLoginName(), ExperienceBillOperationType.IN, ExperienceBillBusinessType.REGISTER);
 
         this.userRoleMapper.create(Lists.newArrayList(new UserRoleModel(userModel.getLoginName(), Role.USER)));
 
@@ -73,9 +77,9 @@ public class RegisterUserServiceImpl implements RegisterUserService {
                 MessageEventType.REGISTER_USER_SUCCESS.getContentTemplate(),
                 null));
 
-        if (!Strings.isNullOrEmpty(userModel.getReferrer())) {
-            mqWrapperClient.sendMessage(MessageQueue.GenerateReferrerRelation, userModel.getLoginName());
+        mqWrapperClient.sendMessage(MessageQueue.GenerateReferrerRelation, userModel.getLoginName());
 
+        if (!Strings.isNullOrEmpty(userModel.getReferrer())) {
             //Title:您推荐的好友 {0} 已成功注册
             //AppTitle:您推荐的好友 {0} 已成功注册
             //Content:尊敬的用户，您推荐的好友 {0} 已成功注册，【邀请好友投资】您还能再拿1%现金奖励哦！
@@ -88,7 +92,8 @@ public class RegisterUserServiceImpl implements RegisterUserService {
             mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(Lists.newArrayList(userModel.getReferrer()),
                     PushSource.ALL,
                     PushType.RECOMMEND_SUCCESS,
-                    MessageFormat.format(MessageEventType.RECOMMEND_SUCCESS.getTitleTemplate(), userModel.getMobile())));
+                    MessageFormat.format(MessageEventType.RECOMMEND_SUCCESS.getTitleTemplate(), userModel.getMobile()),
+                    AppUrl.MESSAGE_CENTER_LIST));
         }
     }
 }

@@ -1,6 +1,6 @@
 //消息中心
 require('webStyle/account/message_list.scss');
-require('webJsModule/pagination');
+require('publicJs/pagination');
 let commonFun= require('publicJs/commonFun');
 let $userMessageList=$('#userMessageList'),
     $userMessageDetail=$('#userMessageDetail');

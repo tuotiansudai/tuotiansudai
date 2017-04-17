@@ -26,6 +26,7 @@ web:
     - "redis-server"
     - "static-server"
     - "sign-in"
+    - "anxin-wrapper"
 
 console:
   image: "andreptb/tomcat:8-jdk8"
@@ -45,21 +46,7 @@ console:
     - "static-server"
     - "sign-in"
     - "ask-rest-service"
-
-activity-console:
-  image: "andreptb/tomcat:8-jdk8"
-  environment:
-    - "TZ=Asia/Shanghai"
-    - "JAVA_OPTS=-Xmx1024m"
-  ports:
-    - "20019:8080"
-  volumes:
-    - ./ttsd-activity-console/war:/usr/local/tomcat/webapps
-    - /var/log/tuotian/activity-console:/usr/local/tomcat/logs
-    - /var/log/tuotian/activity-console:/var/log/tomcat
-  links:
-    - "redis-server"
-    - "sign-in"
+    - "anxin-wrapper"
 
 pay-wrapper:
   image: "andreptb/tomcat:8-jdk8"
@@ -104,10 +91,12 @@ mobile-api:
     - /var/log/tuotian/mobile-api:/usr/local/tomcat/logs
     - /var/log/tuotian/mobile-api:/var/log/tomcat
   links:
+    - "static-server"
     - "pay-wrapper"
     - "sms-wrapper"
     - "redis-server"
     - "sign-in"
+    - "anxin-wrapper"
 
 activity:
   image: "andreptb/tomcat:8-jdk8"
@@ -125,6 +114,47 @@ activity:
     - "static-server"
     - "sign-in"
 
+nginx-server_web:
+  image: "nginx"
+  volumes:
+    - ./scripts/docker/ttsd-web-nginx-rewrite.conf:/etc/nginx/conf.d/default.conf
+  ports:
+    - "20008:6002"
+  links:
+    - "activity"
+    - "web"
+    - "ask"
+    - "point"
+
+ask:
+  image: "andreptb/tomcat:8-jdk8"
+  environment:
+    - "TZ=Asia/Shanghai"
+    - "JAVA_OPTS=-Xmx1024m"
+  ports:
+    - "20009:8080"
+  volumes:
+    - ./ttsd-ask-web/war:/usr/local/tomcat/webapps
+    - /var/log/tuotian/ask-web:/usr/local/tomcat/logs
+    - /var/log/tuotian/ask-web:/var/log/tomcat
+  links:
+    - "redis-server"
+    - "static-server"
+    - "sign-in"
+    - "ask-rest-service"
+
+redis-server:
+  image: "grokzen/redis-cluster"
+  ports:
+    - "20010:7000"
+    - "20011:7001"
+    - "20012:7002"
+    - "20013:7003"
+    - "20014:7004"
+    - "20015:7005"
+    - "20016:7006"
+    - "20017:7007"
+
 point:
   image: "andreptb/tomcat:8-jdk8"
   environment:
@@ -141,17 +171,54 @@ point:
     - "static-server"
     - "sign-in"
 
-redis-server:
-  image: "grokzen/redis-cluster"
+activity-console:
+  image: "andreptb/tomcat:8-jdk8"
+  environment:
+    - "TZ=Asia/Shanghai"
+    - "JAVA_OPTS=-Xmx1024m"
   ports:
-    - "20010:7000"
-    - "20011:7001"
-    - "20012:7002"
-    - "20013:7003"
-    - "20014:7004"
-    - "20015:7005"
-    - "20016:7006"
-    - "20017:7007"
+    - "20019:8080"
+  volumes:
+    - ./ttsd-activity-console/war:/usr/local/tomcat/webapps
+    - /var/log/tuotian/activity-console:/usr/local/tomcat/logs
+    - /var/log/tuotian/activity-console:/var/log/tomcat
+  links:
+    - "redis-server"
+    - "sign-in"
+
+static-server:
+  image: "nginx"
+  volumes:
+    - ./ttsd-web/build/static:/usr/share/nginx/html:ro
+    - ./scripts/docker/ttsd-test-nginx.conf:/etc/nginx/conf.d/default.conf
+  ports:
+    - "20020:80"
+
+anxin-wrapper:
+  image: "andreptb/tomcat:8-jdk8"
+  environment:
+    - "TZ=Asia/Shanghai"
+    - "JAVA_OPTS=-Xmx1024m"
+  ports:
+    - "20021:8080"
+  volumes:
+    - /workspace/deploy-config/ttsd-anxin-wrapper/:/workspace/deploy-config/ttsd-anxin-wrapper
+    - ./ttsd-anxin-wrapper/war:/usr/local/tomcat/webapps
+    - /var/log/tuotian/anxin-wrapper:/usr/local/tomcat/logs
+    - /var/log/tuotian/anxin-wrapper:/var/log/tomcat
+  links:
+    - "sms-wrapper"
+    - "redis-server"
+
+nginx-server_console:
+  image: "nginx"
+  volumes:
+    - ./scripts/docker/ttsd-console-nginx-rewrite.conf:/etc/nginx/conf.d/default.conf
+  ports:
+    - "30008:6003"
+  links:
+    - "console"
+    - "activity-console"
 
 worker-all:
   image: "anapsix/alpine-java:8_jdk"
@@ -218,6 +285,7 @@ loan-mq-consumer:
     - "pay-wrapper"
     - "sms-wrapper"
     - "redis-server"
+    - "anxin-wrapper"
 
 message-mq-consumer:
   image: "anapsix/alpine-java:8_jdk"
@@ -307,6 +375,7 @@ diagnosis:
   command: bash -c "/opt/worker/ttsd-diagnosis/bin/ttsd-diagnosis"
   links:
     - "redis-server"
+    - "pay-wrapper"
 
 worker-monitor:
   image: "anapsix/alpine-java:8_jdk"
@@ -320,50 +389,3 @@ worker-monitor:
   links:
     - "redis-server"
     - "sms-wrapper"
-
-static-server:
-  image: "nginx"
-  volumes:
-    - ./ttsd-web/build/static:/usr/share/nginx/html:ro
-    - ./scripts/docker/ttsd-test-nginx.conf:/etc/nginx/conf.d/default.conf
-  ports:
-    - "20020:80"
-
-nginx-server_web:
-  image: "nginx"
-  volumes:
-    - ./scripts/docker/ttsd-web-nginx-rewrite.conf:/etc/nginx/conf.d/default.conf
-  ports:
-    - "20008:6002"
-  links:
-    - "activity"
-    - "web"
-    - "ask"
-    - "point"
-
-nginx-server_console:
-  image: "nginx"
-  volumes:
-    - ./scripts/docker/ttsd-console-nginx-rewrite.conf:/etc/nginx/conf.d/default.conf
-  ports:
-    - "30008:6003"
-  links:
-    - "console"
-    - "activity-console"
-
-ask:
-  image: "andreptb/tomcat:8-jdk8"
-  environment:
-    - "TZ=Asia/Shanghai"
-    - "JAVA_OPTS=-Xmx1024m"
-  ports:
-    - "20009:8080"
-  volumes:
-    - ./ttsd-ask-web/war:/usr/local/tomcat/webapps
-    - /var/log/tuotian/ask-web:/usr/local/tomcat/logs
-    - /var/log/tuotian/ask-web:/var/log/tomcat
-  links:
-    - "redis-server"
-    - "static-server"
-    - "sign-in"
-    - "ask-rest-service"

@@ -482,7 +482,6 @@ $pointColor:#ff5400;
         position: absolute;
         top:-5px;
         right:0;
-        background:#fff url('../images/homepage/icon-newer.png') right 0 no-repeat;
 
       }
       &.hack-newbie {
@@ -586,13 +585,13 @@ $pointColor:#ff5400;
         text-align: center;
         position: relative;
         &.logo-lian {
-          background: url('../images/homepage/logo-lian.png') center center no-repeat;
+          background: url('../images/global/logo-lian.png') center center no-repeat;
         }
         &.logo-jing {
-          background: url('../images/homepage/logo-jing.png') center center no-repeat;
+          background: url('../images/global/logo-jing.png') center center no-repeat;
         }
         &.logo-cfca {
-          background: url('../images/homepage/logo-cfca.png') center center no-repeat;
+          background: url('../images/global/logo-cfca.png') center center no-repeat;
         }
         &:hover {
           box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.07), -1px -1px 8px rgba(0, 0, 0,0.07);

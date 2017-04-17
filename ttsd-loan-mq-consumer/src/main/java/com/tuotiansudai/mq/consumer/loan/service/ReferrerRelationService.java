@@ -21,7 +21,7 @@ import java.util.Map;
 @Service
 public class ReferrerRelationService {
 
-    static Logger logger = Logger.getLogger(ReferrerRelationService.class);
+    private final static Logger logger = Logger.getLogger(ReferrerRelationService.class);
 
     @Autowired
     private UserRoleMapper userRoleMapper;
@@ -41,7 +41,7 @@ public class ReferrerRelationService {
         Map<String, Integer> allLowerRelations = this.findAllLowerRelations(loginName);
 
         // 查找所有 loginName 的推荐人关系
-        Map<String, Integer>  allUpperRelations = this.findAllUpperRelations(loginName);
+        Map<String, Integer> allUpperRelations = this.findAllUpperRelations(loginName);
 
         // 删除推荐关系
         for (String upperReferrer : allUpperRelations.keySet()) {
@@ -54,7 +54,7 @@ public class ReferrerRelationService {
             String userLoginName = lowerUserRelation.getKey();
             if (!loginName.equalsIgnoreCase(userLoginName)) {
                 List<UserRoleModel> roleModels = userRoleMapper.findByLoginName(loginName);
-                boolean isStaff = roleModels.stream().anyMatch(roleModel -> roleModel.getRole() == Role.STAFF);
+                boolean isStaff = roleModels.stream().anyMatch(roleModel -> Lists.newArrayList(Role.ZC_STAFF, Role.SD_STAFF).contains(roleModel.getRole()));
                 int maxLevel = isStaff ? this.referrerStaffRoleReward.size() : this.referrerUserRoleReward.size();
                 if (lowerUserRelation.getValue() <= maxLevel) {
                     ReferrerRelationModel newRelation = new ReferrerRelationModel();
@@ -78,7 +78,7 @@ public class ReferrerRelationService {
                 String userLoginName = lowerUserRelation.getKey();
                 if (!referrerLoginName.equalsIgnoreCase(userLoginName)) {
                     List<UserRoleModel> roleModels = userRoleMapper.findByLoginName(referrerLoginName);
-                    boolean isStaff = roleModels.stream().anyMatch(roleModel -> roleModel.getRole() == Role.STAFF);
+                    boolean isStaff = roleModels.stream().anyMatch(roleModel -> Lists.newArrayList(Role.ZC_STAFF, Role.SD_STAFF).contains(roleModel.getRole()));
                     int maxLevel = isStaff ? this.referrerStaffRoleReward.size() : this.referrerUserRoleReward.size();
                     int level = newUpperRelation.getValue() + lowerUserRelation.getValue() + 1;
                     if (level <= maxLevel) {

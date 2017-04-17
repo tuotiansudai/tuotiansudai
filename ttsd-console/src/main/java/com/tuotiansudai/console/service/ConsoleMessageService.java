@@ -104,7 +104,8 @@ public class ConsoleMessageService {
                     messageModel.getUserGroup() == MessageUserGroup.IMPORT_USER ? (List<String>) redisWrapperClient.hgetSeri(MESSAGE_IMPORT_USER_KEY, String.valueOf(messageModel.getId())) : null,
                     pushModel.getPushSource(),
                     pushModel.getPushType(),
-                    pushModel.getContent()));
+                    pushModel.getContent(),
+                    pushModel.getJumpTo()));
         }
         return new BaseDto<>(new BaseDataDto(true));
     }
@@ -223,7 +224,7 @@ public class ConsoleMessageService {
         }
 
         if (pushCreateDto.getId() == null) {
-            PushModel pushModel = new PushModel(createdOrUpdatedBy, pushCreateDto.getPushType(), pushCreateDto.getPushSource(), pushCreateDto.getContent());
+            PushModel pushModel = new PushModel(createdOrUpdatedBy, pushCreateDto.getPushType(), pushCreateDto.getPushSource(), pushCreateDto.getContent(), pushCreateDto.getJumpTo());
             pushMapper.create(pushModel);
             return pushModel.getId();
         }
@@ -233,6 +234,7 @@ public class ConsoleMessageService {
         pushModel.setUpdatedTime(new Date());
         pushModel.setPushSource(pushCreateDto.getPushSource());
         pushModel.setPushType(pushCreateDto.getPushType());
+        pushModel.setJumpTo(pushCreateDto.getJumpTo());
         pushMapper.update(pushModel);
         return pushModel.getId();
     }

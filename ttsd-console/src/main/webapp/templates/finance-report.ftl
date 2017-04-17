@@ -158,7 +158,7 @@
                 </a>
                 </li>
             </ul>
-            <@security.authorize access="hasAnyAuthority('DATA')">
+            <@security.authorize access="hasAnyAuthority('ADMIN', 'DATA')">
                 <button class="btn btn-default pull-left down-load" type="button">导出Excel</button>
             </@security.authorize>
         </#if>

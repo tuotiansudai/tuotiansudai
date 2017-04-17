@@ -1,5 +1,6 @@
 package com.tuotiansudai.console.activity.service;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.activity.repository.model.WomanDayRecordView;
@@ -70,11 +71,11 @@ public class ActivityWomanDayService {
     private Map<String, WomanDayRecordView> setInvestRecord(Map<String, WomanDayRecordView> womanDayAllRecordMap, String loginName) {
         List<InvestModel> investModels = investMapper.findSuccessInvestByInvestTime(loginName, activityWomanDayStartTime, activityWomanDayEndTime);
         Map<String, Long> investAmountMaps = Maps.newConcurrentMap();
-        for(InvestModel investModel : investModels){
-            if(investModel.getLoanId() == 1 || investModel.getTransferInvestId() != null)
+        for (InvestModel investModel : investModels) {
+            if (investModel.getLoanId() == 1 || investModel.getTransferInvestId() != null)
                 continue;
 
-            if(investAmountMaps.get(investModel.getLoginName()) == null){
+            if (investAmountMaps.get(investModel.getLoginName()) == null) {
                 investAmountMaps.put(investModel.getLoginName(), investModel.getAmount());
                 continue;
             }
@@ -82,8 +83,8 @@ public class ActivityWomanDayService {
         }
 
         investAmountMaps.forEach((k, v) -> {
-            if(v / EACH_INVEST_AMOUNT_10000 > 0){
-                this.putParam(womanDayAllRecordMap, k, RewardType.INVEST_REWARD , (int) (v / EACH_INVEST_AMOUNT_10000));
+            if (v / EACH_INVEST_AMOUNT_10000 > 0) {
+                this.putParam(womanDayAllRecordMap, k, RewardType.INVEST_REWARD, (int) (v / EACH_INVEST_AMOUNT_10000));
             }
         });
         return womanDayAllRecordMap;
@@ -91,7 +92,7 @@ public class ActivityWomanDayService {
 
     private Map<String, WomanDayRecordView> setReferrerRecord(Map<String, WomanDayRecordView> womanDayAllRecordMap, String loginName) {
         List<UserModel> referrerUsers = userMapper.findUsersByRegisterTimeOrReferrer(activityWomanDayStartTime, activityWomanDayEndTime, loginName);
-        referrerUsers.stream().filter(userModel -> investMapper.sumSuccessActivityInvestAmount(userModel.getLoginName(),null, activityWomanDayStartTime, activityWomanDayEndTime) >= 5000)
+        referrerUsers.stream().filter(userModel -> !Strings.isNullOrEmpty(userModel.getReferrer())).filter(userModel -> investMapper.sumSuccessActivityInvestAmount(userModel.getLoginName(), null, activityWomanDayStartTime, activityWomanDayEndTime) >= 5000)
                 .forEach(userModel -> this.putParam(womanDayAllRecordMap, userModel.getReferrer(), RewardType.REFERRER_REWARD, 5));
         return womanDayAllRecordMap;
     }

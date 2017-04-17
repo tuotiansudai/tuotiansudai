@@ -60,13 +60,13 @@
             <li>
                 <span>预期年化收益: </span>
                 <#assign rateUrl = "/loan-list?{rateType}&status=${status!}&productType=${productType!}&durationStart=${durationStart!}&durationEnd=${durationEnd!}">
-                <#assign rateMap = {"":"全部","rateStart=0.1&rateEnd=0.12":"10-12%","rateStart=0.12&rateEnd=0.14":"12-14%","rateStart=0.14&rateEnd=0":"14%以上"}>
+                <#assign rateMap = {"":"全部","rateStart=0&rateEnd=0.08":"8%以下","rateStart=0.08&rateEnd=0.1":"8-10%","rateStart=0.1&rateEnd=0":"10%以上"}>
                 <#assign rateKeys = rateMap?keys>
                 <#list rateKeys as key>
                     <a <#if rateStart == 0 && rateEnd == 0 && key=="">class="active"
-                       <#elseif rateStart == 0.1 && rateEnd == 0.12 && rateMap[key]=="10-12%">class="active"
-                       <#elseif rateStart == 0.12 && rateEnd == 0.14 && rateMap[key]=="12-14%">class="active"
-                       <#elseif rateStart == 0.14 && rateEnd == 0 && rateMap[key]=="14%以上">class="active"
+                       <#elseif rateStart == 0 && rateEnd == 0.08 && rateMap[key]=="8%以下">class="active"
+                       <#elseif rateStart == 0.08 && rateEnd == 0.1 && rateMap[key]=="8-10%">class="active"
+                       <#elseif rateStart == 0.10 && rateEnd == 0 && rateMap[key]=="10%以上">class="active"
                     </#if>
                        href=${rateUrl?replace("{rateType}",key)}>${rateMap[key]}</a>
                 </#list>
@@ -94,13 +94,13 @@
                                     <i class="ic-right"></i>
                                 </span>
                             </#if>
+
                             <span class="l-way fr">
                                 <#if loanItem.productType == 'EXPERIENCE'>
                                     按天计息，即投即生息
                                 <#else>
                                     ${loanItem.type.getName()}
                                 </#if>
-
                             </span>
                         </div>
                         <div class="loan-info-dl">
@@ -137,10 +137,18 @@
                                 <dd><em>${loanItem.duration}</em>天</dd>
                             </dl>
                             <dl>
-                                <dt>招募金额</dt>
-                                <dd>
-                                    <em><@amount>${loanItem.loanAmount?string.computer}</@amount></em>元<#if loanItem.productType == 'EXPERIENCE'>
-                                    (体验金)</#if></dd>
+                                <#if loanItem.productType == 'EXPERIENCE'>
+                                    <dt>起投金额</dt>
+                                    <dd>
+                                        <em><@amount>${loanItem.minInvestAmount?string.computer}</@amount></em>元(体验金)
+                                    </dd>
+                                <#else>
+                                    <dt>招募金额</dt>
+                                    <dd>
+                                        <em><@amount>${loanItem.loanAmount?string.computer}</@amount></em>元
+                                    </dd>
+                                </#if>
+
                             </dl>
                         </div>
                     </div>
@@ -159,6 +167,27 @@
                             </div>
 
                             <div class="pro">
+                                <#if loanItem.productType != 'EXPERIENCE'>
+                                    <div class="p-title">
+                                        <span class="fl">项目进度</span>
+                                        <span class="point fr">${loanItem.progress?string("0.00")} %</span>
+                                    </div>
+                                    <div class="process-percent">
+                                        <div class="percent" style="width:${loanItem.progress}%"></div>
+                                    </div>
+                                    <div class="rest-amount">
+                                        <span>可投额度：<i>${loanItem.alert}</i></span>
+                                        <i class="btn-invest btn-normal">马上投资</i>
+                                    </div>
+                                <#else>
+                                    <div class="rest-amount">
+                                        <i class="btn-invest btn-normal">马上投资</i>
+                                    </div>
+                                </#if>
+                            </div>
+                        </#if>
+                        <#if loanItem.status== 'RAISING'>
+                            <#if loanItem.productType != 'EXPERIENCE'>
                                 <div class="p-title">
                                     <span class="fl">项目进度</span>
                                     <span class="point fr">${loanItem.progress?string("0.00")} %</span>
@@ -170,20 +199,12 @@
                                     <span>可投额度：<i>${loanItem.alert}</i></span>
                                     <i class="btn-invest btn-normal">马上投资</i>
                                 </div>
-                            </div>
-                        </#if>
-                        <#if loanItem.status== 'RAISING'>
-                            <div class="p-title">
-                                <span class="fl">项目进度</span>
-                                <span class="point fr">${loanItem.progress?string("0.00")} %</span>
-                            </div>
-                            <div class="process-percent">
-                                <div class="percent" style="width:${loanItem.progress}%"></div>
-                            </div>
-                            <div class="rest-amount">
-                                <span>可投额度：<i>${loanItem.alert}</i><#if loanItem.productType == 'EXPERIENCE'>(体验金)</#if></span>
-                                <i class="btn-invest btn-normal">马上投资</i>
-                            </div>
+                            <#else>
+                                <div class="rest-amount">
+                                    <br/>
+                                    <i class="btn-invest btn-normal">马上投资</i>
+                                </div>
+                            </#if>
                         </#if>
                         <#if ['RECHECK', 'REPAYING', 'OVERDUE', 'COMPLETE']?seq_contains(loanItem.status)>
                             <div class="p-title">

@@ -20,6 +20,7 @@ import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.CalculateUtil;
 import com.tuotiansudai.util.PaginationUtil;
+import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,7 +35,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class PointBillServiceImpl implements PointBillService {
-
+    static Logger logger = Logger.getLogger(PointBillServiceImpl.class);
     @Autowired
     private UserMapper userMapper;
 
@@ -57,6 +58,10 @@ public class PointBillServiceImpl implements PointBillService {
     @Transactional
     public void createPointBill(String loginName, Long orderId, PointBusinessType businessType, long point) {
         AccountModel accountModel = accountMapper.lockByLoginName(loginName);
+        if(accountModel == null){
+            logger.info(String.format("createPointBill:%s no account", loginName));
+            return;
+        }
         accountModel.setPoint(accountModel.getPoint() + point);
         String note = this.generatePointBillNote(businessType, orderId);
         pointBillMapper.create(new PointBillModel(loginName, orderId, point, businessType, note));
@@ -67,6 +72,10 @@ public class PointBillServiceImpl implements PointBillService {
     @Transactional
     public void createPointBill(String loginName, Long orderId, PointBusinessType businessType, long point, String note) {
         AccountModel accountModel = accountMapper.lockByLoginName(loginName);
+        if(accountModel == null){
+            logger.info(String.format("createPointBill:%s no account", loginName));
+            return;
+        }
         accountModel.setPoint(accountModel.getPoint() + point);
         pointBillMapper.create(new PointBillModel(loginName, orderId, point, businessType, note));
         accountMapper.update(accountModel);
@@ -76,6 +85,10 @@ public class PointBillServiceImpl implements PointBillService {
     @Transactional
     public void createTaskPointBill(String loginName, long pointTaskId, long point, String note) {
         AccountModel accountModel = accountMapper.lockByLoginName(loginName);
+        if(accountModel == null){
+            logger.info(String.format("createTaskPointBill: %s no account", loginName));
+            return;
+        }
         accountModel.setPoint(accountModel.getPoint() + point);
         pointBillMapper.create(new PointBillModel(loginName, pointTaskId, point, PointBusinessType.TASK, note));
         accountMapper.update(accountModel);

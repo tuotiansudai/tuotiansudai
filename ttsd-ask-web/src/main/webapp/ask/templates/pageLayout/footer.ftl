@@ -41,8 +41,10 @@
         <ul id="linkList">
         <#if linkExchangeList??>
             <#list linkExchangeList as linkExchange>
-                <li><a href="${linkExchange.linkUrl}" <#if linkExchange.noFollow>rel="nofollow"</#if>
-                       target="_blank" title="${linkExchange.title}">${linkExchange.title}</a></li>
+                <#if linkExchange.webSiteTypes?contains("ASK")>
+                    <li><a href="${linkExchange.linkUrl}" <#if linkExchange.noFollow>rel="nofollow"</#if>
+                       target="_blank" title="${linkExchange.title}${linkExchange.webSiteTypes!}">${linkExchange.title}</a></li>
+                </#if>
             </#list>
         </#if>
         </ul>
@@ -66,7 +68,7 @@
             </a>
         </div>
         <div class="fr tr">
-            <span>京ICP备15035567号-1 <br/>
+            <span>京ICP备15035567号-3<br/>
             拓天伟业(北京)金融信息服务有限公司 版权所有</span>
         </div>
     </div>

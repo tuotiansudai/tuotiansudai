@@ -1,7 +1,7 @@
 //投资记录--直投项目
 require('webStyle/account/loan_list.scss');
 require('publicJs/plugins/daterangepicker.scss');
-require('webJsModule/pagination');
+require('publicJs/pagination');
 let moment = require('moment');
 let tpl = require('art-template/dist/template');
 require('publicJs/plugins/jquery.daterangepicker-0.0.7.js');
@@ -63,7 +63,8 @@ $('body').on('click','.show-invest-repay',function (event) {
         data.csrfToken = $("meta[name='_csrf']").attr("content");
         if (data.status) {
             _.each(data.records, function (item) {
-                data.loanId = item.loanId;
+                data.loanId = item.loan ? item.loan.id : '';
+
                 switch (item.loanRepayStatus) {
                     case 'REPAYING':
                         item.status = '待还';
@@ -80,21 +81,20 @@ $('body').on('click','.show-invest-repay',function (event) {
             let $investRepayTemplate=$('#investRepayTemplate'),
                 investTpl=$investRepayTemplate.html();
 
-            let elementInvestRepay = $('#elementInvestRepay');
+            let experienceTpl=$('#investExperienceRepayTemplate').html();
+            let tplHtml = (data.loanId == 1) ? experienceTpl : investTpl;
 
             // 解析模板, 返回解析后的内容
-            var render = _.template(investTpl);
+            var render = _.template(tplHtml);
             var html = render(data);
             // 将解析后的内容填充到渲染元素
-            elementInvestRepay.html(html);
-
             layer.open({
                 type: 1,
                 title: '回款详情',
                 skin:'repay-layer-pop',
                 area: ['1000px'],
                 shadeClose: true,
-                content: elementInvestRepay
+                content: html
             });
 
         }

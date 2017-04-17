@@ -1,7 +1,7 @@
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="${css.point_order}" pageJavascript="${js.point_order}" activeNav="订单确认" activeLeftNav="" title="订单确认" site="membership">
 
-<div class="global-member-order">
+<div class="global-member-order" id="pointOrder">
 	<div class="wp clearfix">
 		<div class="order-top">
             您所在的位置：<a href="/point-shop">积分商城</a> > <a
@@ -35,23 +35,23 @@
 							<div class="input-group box-item">
 								<label><em>*</em> 收件人：</label>
 								<div class="input-box">
-									<input class="text-input" type="text" name="Recipient" id="Recipient" value="">
+									<input class="int-text text-input" type="text" name="Recipient" id="Recipient" value="">
 								</div>
 							</div>
 							<div class="input-group box-item">
 								<label><em>*</em> 手机号码：</label>
 								<div class="input-box">
-									<input class="text-input" type="text" name="Phone" id="Phone" value="">
+									<input class="int-text text-input" type="text" name="Phone" id="Phone" value="">
 								</div>
 							</div>
 							<div class="input-group">
 								<label><em>*</em> 收件地址：</label>
 								<div class="input-box">
-									<textarea class="text-area" type="text" name="AddRess"  id="AddRess" maxlength="100"></textarea>
+									<textarea class="int-text text-area" type="text" name="AddRess"  id="AddRess" maxlength="100"></textarea>
 								</div>
 							</div>
 							<div class="btn-group">
-								<input type="submit" class="btn btn-save" value="保存收货地址" id="btnAddressSubit">
+								<input type="submit" class="btn btn-save" value="保存收货地址" id="btnAddressSubit" disabled>
 							</div>
 						</form>
 						</div>
@@ -63,7 +63,7 @@
 				<div class="order-table">
 					<div class="order-picture">
                         <p class="mater-img picture-item">
-                            <img src="${staticServer}${productShowItem.imageUrl}" width="140" height="90"/>
+                            <img src="${commonStaticServer}/${productShowItem.imageUrl}" width="140" height="90"/>
                         </p>
 					</div>
 					<div class="order-name">
@@ -82,9 +82,9 @@
 
                         <p><i>${((productShowItem.points * discount)?round)?string('0')}</i>积分</p>
 					</div>
-					<div class="order-number">
+					<div class="order-number" data-overplus="${productShowItem.leftCount?c!0}" data-mylimit="${productShowItem.monthLimit}" data-buycount="${buyCount}">
 						<p class="title-text">商品数量</p>
-						<p class="count-list">
+						<p class="count-list" >
 							<span class="count-btn low-btn">-</span>
                             <input type="text" value="${number}" class="num-text" readonly="readonly">
 							<span class="count-btn add-btn">+</span>
@@ -92,6 +92,9 @@
 						<p>
 							<span class="total-num">
 								剩余<i>${productShowItem.leftCount?c!0}</i>件
+								<#if productShowItem.monthLimit!=0>
+                               		<span class="tip" id="exchangeTip">本月您还可以兑换<i></i>个</span>
+								</#if>
 							</span>
 						</p>
 					</div>

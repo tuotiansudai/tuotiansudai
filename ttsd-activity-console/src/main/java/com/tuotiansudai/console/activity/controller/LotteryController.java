@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -86,7 +87,7 @@ public class LotteryController {
         modelAndView.addObject("startTime", startTime);
         modelAndView.addObject("endTime", endTime);
         modelAndView.addObject("selectPrizeType", activityCategory == null ? "" : activityCategory);
-        modelAndView.addObject("prizeTypes", Lists.newArrayList(ActivityCategory.values()));
+        modelAndView.addObject("prizeTypes", Lists.newArrayList(Arrays.stream(ActivityCategory.values()).filter(n -> n != ActivityCategory.MONEY_TREE).collect(Collectors.toList())));
         modelAndView.addObject("lotteryPrizes", LotteryPrize.getActivityPrize(activityCategory));
         return modelAndView;
     }

@@ -3,10 +3,11 @@ package com.tuotiansudai.transfer.service.impl;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.anxin.service.AnxinSignService;
+import com.tuotiansudai.client.AnxinWrapperClient;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.*;
+import com.tuotiansudai.enums.AppUrl;
 import com.tuotiansudai.enums.MessageEventType;
 import com.tuotiansudai.enums.PushSource;
 import com.tuotiansudai.enums.PushType;
@@ -75,7 +76,8 @@ public class InvestTransferServiceImpl implements InvestTransferService {
     private AnxinSignPropertyMapper anxinSignPropertyMapper;
 
     @Autowired
-    private AnxinSignService anxinSignService;
+    private AnxinWrapperClient anxinWrapperClient;
+
 
     protected final static String TRANSFER_APPLY_NAME = "ZR{0}-{1}";
 
@@ -129,7 +131,7 @@ public class InvestTransferServiceImpl implements InvestTransferService {
 
         return new TransferApplicationFormDto(investId, investModel.getAmount(), transferAmountLower, transferFeeRate, transferFee, expiredDate, holdDays,
                 anxinProp != null && anxinProp.isAnxinUser(),
-                anxinSignService.isAuthenticationRequired(investModel.getLoginName()));
+                anxinWrapperClient.isAuthenticationRequired(investModel.getLoginName()).getData().getStatus());
     }
 
     @Override
@@ -226,7 +228,8 @@ public class InvestTransferServiceImpl implements InvestTransferService {
         mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(Lists.newArrayList(transferApplicationModel.getLoginName()),
                 PushSource.ALL,
                 PushType.TRANSFER_FAIL,
-                MessageEventType.TRANSFER_FAIL.getTitleTemplate()));
+                MessageEventType.TRANSFER_FAIL.getTitleTemplate(),
+                AppUrl.MESSAGE_CENTER_LIST));
 
         return true;
     }

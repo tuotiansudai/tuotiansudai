@@ -1,8 +1,8 @@
 package com.tuotiansudai.repository.mapper;
 
+import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.repository.model.UserCouponModel;
 import com.tuotiansudai.repository.model.UserCouponView;
-import com.tuotiansudai.enums.CouponType;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -66,4 +66,6 @@ public interface UserCouponMapper {
     List<UserCouponModel> findUsedExperienceByLoginName(@Param("loginName") String loginName);
 
     List<UserCouponModel> findExpireAfterFiveDays();
+
+    long findSumAmountByCouponId(@Param("loginName") String loginName, @Param("couponIdList") List<Long> couponIdList);
 }

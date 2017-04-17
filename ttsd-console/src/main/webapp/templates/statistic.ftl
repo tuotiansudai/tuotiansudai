@@ -1,5 +1,5 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="statistic.js" headLab="statistic" sideLab="userDate" title="系统首页">
+<@global.main pageCss="" pageJavascript="statistic.js" headLab="statistic" sideLab="userAge" title="系统首页">
 <div class="col-md-10 home-report">
 
     <div class="row">
@@ -27,10 +27,12 @@
                         </select>
                         <select class="form-control" name="roleStage">
                             <option value="ALL" selected>全部用户</option>
-                            <option value="STAFF">业务员</option>
-                            <option value="RECOMMENDATION">业务员的一级推荐</option>
+                            <option value="ZC_STAFF">资产业务员</option>
+                            <option value="SD_STAFF">速贷业务员</option>
+                            <option value="SD_STAFF_RECOMMENDATION">速贷业务员的一级推荐</option>
+                            <option value="ZC_STAFF_RECOMMENDATION">资产业务员的一级推荐</option>
                             <option value="AGENT">渠道用户</option>
-                            <option value="NORMAL_USER">自然用户</option>
+                            <option value="NOT_STAFF_RECOMMEND">自然用户</option>
                             <option value="OTHERS">其他用户</option>
                         </select>
                         <select class="form-control" name="channel"></select>
@@ -66,8 +68,8 @@
                         </select>
                         <select class="form-control" name="role">
                             <option value="">全部</option>
-                            <option value="LOANER">借款人</option>
-                            <option value="INVESTOR">出借人</option>
+                            <option value="LOANER">代理人</option>
+                            <option value="UN_LOANER">非代理人</option>
                         </select>
 
                         <button class="btn btn-primary" type="button">查询</button>
@@ -102,8 +104,8 @@
                         </select>
                         <select class="form-control" name="role">
                             <option value="">全部</option>
-                            <option value="LOANER">借款人</option>
-                            <option value="INVESTOR">出借人</option>
+                            <option value="LOANER">代理人</option>
+                            <option value="UN_LOANER">非代理人</option>
                         </select>
                         <button class="btn btn-primary" type="button">查询</button>
                     </form>
@@ -133,8 +135,8 @@
                         结束时间：<input type="text" class="form-control end-date" name="endTime">
                         <select class="form-control" name="role">
                             <option value="">全部</option>
-                            <option value="LOANER">借款人</option>
-                            <option value="INVESTOR">出借人</option>
+                            <option value="LOANER">代理人</option>
+                            <option value="UN_LOANER">非代理人</option>
                         </select>
                         <button class="btn btn-primary" type="button">查询</button>
                     </form>
@@ -270,10 +272,12 @@
                         </select>
                         <select class="form-control" name="roleStage">
                             <option value="ALL" selected>全部用户</option>
-                            <option value="STAFF">业务员</option>
-                            <option value="RECOMMENDATION">业务员的一级推荐</option>
+                            <option value="ZC_STAFF">资产业务员</option>
+                            <option value="SD_STAFF">速贷业务员</option>
+                            <option value="SD_STAFF_RECOMMENDATION">速贷业务员的一级推荐</option>
+                            <option value="ZC_STAFF_RECOMMENDATION">资产业务员的一级推荐</option>
                             <option value="AGENT">渠道用户</option>
-                            <option value="NORMAL_USER">自然用户</option>
+                            <option value="NOT_STAFF_RECOMMEND">自然用户</option>
                         </select>
                         <select class="form-control" name="channel"></select>
                         <select class="form-control" name="isTransfer">

@@ -41,6 +41,26 @@ public abstract class BaseClient {
     }
 
     protected String execute(String path, String requestJson, String method) {
+        ResponseBody responseBody = newCall(path, requestJson, method);
+        try {
+            return responseBody != null ? responseBody.string() : null;
+        } catch (IOException e) {
+            logger.error(e.getLocalizedMessage(), e);
+            return null;
+        }
+    }
+
+    protected byte[] downPdf(String path, String requestJson, String method) {
+        ResponseBody responseBody = newCall(path, requestJson, method);
+        try {
+            return responseBody != null ? responseBody.bytes() : null;
+        } catch (IOException e) {
+            logger.error(e.getLocalizedMessage(), e);
+            return null;
+        }
+    }
+
+    protected ResponseBody newCall(String path, String requestJson, String method){
         String url = URL_TEMPLATE.replace("{host}", this.getHost()).replace("{port}", this.getPort()).replace("{applicationContext}", getApplicationContext()).replace("{uri}", path);
         RequestBody requestBody = RequestBody.create(JSON, !Strings.isNullOrEmpty(requestJson) ? requestJson : "");
         if ("GET".equalsIgnoreCase(method)) {
@@ -61,7 +81,7 @@ public abstract class BaseClient {
         try {
             Response response = okHttpClient.newCall(request).execute();
             if (response.isSuccessful()) {
-                return response.body().string();
+                return response.body();
             }
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage(), e);

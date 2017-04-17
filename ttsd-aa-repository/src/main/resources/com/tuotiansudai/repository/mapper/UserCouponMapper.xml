@@ -57,6 +57,7 @@
         <result column="shared" property="shared"/>
         <result column="start_time" property="startTime"/>
         <result column="end_time" property="endTime"/>
+        <result column="created_time" property="createdTime"/>
         <result column="loan_product_type" property="loanProductType"/>
         <result column="product_types" property="productTypeList"
                 typeHandler="com.tuotiansudai.repository.mybatis.ProductTypeListTypeHandler"/>
@@ -167,6 +168,7 @@
             c.rate as rate,
             c.product_types as product_types,
             uc.end_time as end_time,
+            uc.created_time as created_time,
             c.birthday_benefit as birthday_benefit,
             c.invest_lower_limit as invest_lower_limit,
             uc.status as status,
@@ -186,6 +188,7 @@
             c.shared as shared,
             uc.start_time as start_time,
             uc.end_time as end_time,
+            uc.created_time as created_time,
             c.amount as coupon_amount,
             c.rate as rate,
             c.product_types as product_types,
@@ -219,7 +222,8 @@
             c.rate as rate,
             c.product_types as product_types,
             uc.end_time as end_time,
-        c.birthday_benefit as birthday_benefit,
+            uc.created_time as created_time,
+            c.birthday_benefit as birthday_benefit,
             c.invest_lower_limit as invest_lower_limit,
             uc.status as status,
             c.user_group,
@@ -369,4 +373,21 @@
         and datediff(user_coupon.end_time, now()) = 5
     </select>
 
+
+    <select id="findSumAmountByCouponId" parameterType="map" resultType="long">
+       SELECT
+            IFNULL(SUM(c.amount), 0)
+        FROM
+            user_coupon u
+                JOIN
+            coupon c ON u.coupon_id = c.id
+        WHERE
+            u.login_name = #{loginName}
+        <if test="couponIdList != null and couponIdList.size != 0">
+            AND u.coupon_id in
+            <foreach collection="couponIdList" item="couponId" open="(" separator="," close=")">
+                #{couponId}
+            </foreach>
+        </if>
+    </select>
 </mapper>
