@@ -135,7 +135,7 @@ body {
       z-index: 2;
     }
     .inner-progress-active {
-      width:5%;
+      width:0%;
       z-index: 3;
       background: #ffd41d;
     }
@@ -203,6 +203,13 @@ body {
 
     &.JD-CARD {
       background: #ffeea7;
+
+      .inner-progress-active {
+        background: #fb3a3a;
+      }
+       b {
+        color: #fb3a3a;
+      }
       .investment-box-pc {
         .inner-progress-active {
           background: #fb3a3a;
@@ -241,11 +248,11 @@ body {
       }
 
       .step-option {
-        &.current {
-          .square {
+        .current {
+          &.square {
             background: url("/activity/images/heavy-benefits/square03.png") left top no-repeat;
           }
-          .step-text {
+          &.step-text {
             background: #fb3a3a;
             color: #fff;
           }
@@ -360,10 +367,12 @@ body {
       position: absolute;
       border-radius:25px;
       width: 100%;
-      .inner-progress {
+      .inner-progress,.inner-progress-active {
         width: 88%;
         left: 6%;
-
+      }
+      .inner-progress-active {
+        width:0%;
       }
       .step-option {
         position: absolute;
@@ -397,11 +406,14 @@ body {
         border-radius: 0px;
         right: -1px;
         top: 25px;
-        .inner-progress {
+        .inner-progress,.inner-progress-active {
           width: 8px;
           height: 100%;
           left:43%;
           top: 0;
+        }
+        .inner-progress-active {
+          height:0%;
         }
           .step-three {
             right: 39px;
@@ -420,6 +432,10 @@ body {
       }
       &:nth-child(3) {
         top:219px;
+        .inner-progress-active {
+          left: auto;
+          right: 6%;
+        }
         .step-option {
           &.step-four {
             left: 52%;
@@ -438,11 +454,14 @@ body {
         border-radius: 0px;
         left: -1px;
         top: 240px;
-        .inner-progress {
+        .inner-progress,.inner-progress-active {
           width: 8px;
           height: 100%;
           left:40%;
           top: 0;
+        }
+        .inner-progress-active {
+          height:0%;
         }
         .step-option {
           &.step-five {
@@ -461,7 +480,7 @@ body {
         top:437px;
         .step-option {
           &.step-six {
-            left: 4%;
+            left: 42%;
             .step-text {
               left:-20px;
             }
