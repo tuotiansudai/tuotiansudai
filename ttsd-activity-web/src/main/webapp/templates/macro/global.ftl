@@ -102,19 +102,13 @@
 </#if>
 
 <script type="text/javascript" charset="utf-8">
-    var staticServer = '${commonStaticServer}';
-    <@security.authorize access="isAuthenticated()">
-    document.getElementById("logout-link").onclick=function (event) {
-        event.preventDefault();
-        document.getElementById("logout-form").submit();
-    };
-    </@security.authorize>
+    window.staticServer = '${commonStaticServer}';
 
 </script>
 
-<script src="${js.jquerydll}" ></script>
-<script src="${js.globalFun_page!}" ></script>
-<script src="${pageJavascript}" type="text/javascript" id="currentScript"></script>
+<script src="${js.jquerydll}" defer></script>
+<script src="${js.globalFun_page!}" defer></script>
+<script src="${pageJavascript}" type="text/javascript" id="currentScript" defer></script>
 
 <#include "../pageLayout/statistic.ftl" />
 </body>
