@@ -24,15 +24,6 @@
         where id = #{id}
     </update>
 
-    <select id="findHTrackingUserModels" parameterType="string" resultMap="hTrackingUserModel">
-        select * from htracking_user
-        <where>
-            <if test="status != null and status != ''">
-                and status = #{status}
-            </if>
-        </where>
-    </select>
-
     <select id="findByMobileAndDeviceId" parameterType="map" resultMap="hTrackingUserModel">
         select * from htracking_user
         <where>
@@ -46,6 +37,5 @@
 
         </where>
     </select>
-
 
 </mapper>

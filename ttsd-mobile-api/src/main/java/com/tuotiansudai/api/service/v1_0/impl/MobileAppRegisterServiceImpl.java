@@ -21,6 +21,8 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.MessageFormat;
+
 @Service
 public class MobileAppRegisterServiceImpl implements MobileAppRegisterService {
 
@@ -109,6 +111,7 @@ public class MobileAppRegisterServiceImpl implements MobileAppRegisterService {
                 UserModel userModel = userMapper.findByLoginNameOrMobile(dto.getMobile());
                 userModel.setChannel(HTRACKING_CHANNEL);
                 userMapper.updateUser(userModel);
+                log.info(MessageFormat.format("[mobile register] send hTrackingRegister, loginName:{0}, deviceId:{1}", userModel.getLoginName(), registerRequestDto.getBaseParam().getDeviceId()));
                 hTrackingClient.hTrackingRegister(userModel.getMobile(), registerRequestDto.getBaseParam().getDeviceId());
             }
         }

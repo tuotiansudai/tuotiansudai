@@ -2,6 +2,8 @@ package com.tuotiansudai.service.impl;
 
 import com.google.common.base.Strings;
 import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.repository.mapper.HTrackingUserMapper;
+import com.tuotiansudai.repository.model.HTrackingUserModel;
 import com.tuotiansudai.service.HTrackingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,8 +13,6 @@ public class HTrackingServiceImpl implements HTrackingService {
 
     @Autowired
     private HTrackingUserMapper hTrackingUserMapper;
-
-    private final static String HTRACKING_CHANNEL = "htracking";
 
     @Override
     public BaseDto save(String mobile, String deviceId) {
