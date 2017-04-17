@@ -263,7 +263,7 @@ public class ExportController {
         int index = 1;
         int pageSize = Integer.MAX_VALUE;
         InvestPaginationDataDto investPagination = consoleInvestService.getInvestPagination(loanId, investorMobile, channel, source,
-                role, startTime, endTime, investStatus, preferenceType, index, pageSize);
+                role, startTime, endTime, investStatus, preferenceType, null, index, pageSize);
         List<InvestPaginationItemDataDto> records = investPagination.getRecords();
         List<List<String>> investsData = exportService.buildInvests(records);
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleInvests, investsData, response.getOutputStream());
@@ -277,7 +277,7 @@ public class ExportController {
                                @RequestParam(value = "status", required = false) RechargeStatus status,
                                @RequestParam(value = "source", required = false) RechargeSource source,
                                @RequestParam(value = "channel", required = false) String channel,
-                               @RequestParam(value = "role", required = false) Role role,
+                               @RequestParam(value = "role", required = false) String role,
                                HttpServletResponse response) throws IOException {
         fillExportResponse(response, CsvHeaderType.ConsoleRecharge.getDescription());
         int index = 1;
@@ -294,7 +294,7 @@ public class ExportController {
                                @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date endTime,
                                @RequestParam(value = "status", required = false) WithdrawStatus status,
                                @RequestParam(value = "source", required = false) Source source,
-                               @RequestParam(value = "role", required = false) Role role,
+                               @RequestParam(value = "role", required = false) String role,
                                HttpServletResponse response) throws IOException {
         fillExportResponse(response, CsvHeaderType.ConsoleWithdraw.getDescription());
         int index = 1;

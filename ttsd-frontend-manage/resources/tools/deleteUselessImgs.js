@@ -152,9 +152,9 @@ publicListImg.init();
 // var activityListImg=new getImagesFiles(activityImagePath);
 // activityListImg.init();
 //
-// //读取point里的图片
-// var pointListImg=new getImagesFiles(pointImagePath);
-// pointListImg.init();
+//读取point里的图片
+var pointListImg=new getImagesFiles(pointImagePath);
+pointListImg.init();
 
 //读取mobile里的图片
 var mobileListImg=new getImagesFiles(mobileImagePath);
