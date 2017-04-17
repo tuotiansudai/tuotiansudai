@@ -4,7 +4,7 @@
     <div class="top-container">
     </div>
     <div class="rule-container clearfix">
-        <div class="wp">
+        <div class="wp clearfix">
             <div class="rule-content">
                 <i class="rule-one"></i>
                 <i class="rule-two"></i>
@@ -174,6 +174,7 @@
     </div>
     <div class="tip-container" id="tipContainer">
         <div class="tip-content">
+            <i class="close-tip"></i>
             <h3>双榜对抗赛</h3>
             <div class="history-item" id="historyContent">
             </div>
@@ -191,8 +192,28 @@
                         {{each records}}
                         <tr>
                             <td>{{$value.currentDate.substr(0,10)}}</td>
-                            <td class="icon-item">{{$value.avgTyrantInvestAmount}}</td>
-                            <td class="icon-item">{{$value.avgNewmanInvestAmount}}</td>
+                            {{if $value.avgTyrantInvestAmount>$value.avgNewmanInvestAmount}}
+                            <td class="icon-item icon-win">
+                            {{else if $value.avgTyrantInvestAmount==$value.avgNewmanInvestAmount}}
+                            <td class="icon-item icon-equal">
+                            {{else if $value.avgTyrantInvestAmount<$value.avgNewmanInvestAmount}}
+                            <td class="icon-item icon-lowser">
+                            {{else}}
+                            <td class="icon-item">
+                            {{/if}}
+                            {{$value.avgTyrantInvestAmount}}元
+                            </td>
+                            {{if $value.avgTyrantInvestAmount<$value.avgNewmanInvestAmount}}
+                            <td class="icon-item icon-win">
+                            {{else if $value.avgTyrantInvestAmount==$value.avgNewmanInvestAmount}}
+                            <td class="icon-item icon-equal">
+                            {{else if $value.avgTyrantInvestAmount>$value.avgNewmanInvestAmount}}
+                            <td class="icon-item icon-lowser">
+                            {{else}}
+                            <td class="icon-item">
+                            {{/if}}
+                            {{$value.avgNewmanInvestAmount}}元
+                            </td>
                         </tr>
                         {{/each}}
                     </tbody>
