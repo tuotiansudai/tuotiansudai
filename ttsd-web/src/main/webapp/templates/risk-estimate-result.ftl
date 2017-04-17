@@ -5,7 +5,7 @@
     <div class="result-item">
         <div class="title-text">您的投资偏好为</div>
         <div class="result-text">${estimate.getType()}</div>
-        <div class="intro-text">
+        <div class="intro-text tl">
             ${estimate.getDescription()}
         </div>
         <div class="link-item">
