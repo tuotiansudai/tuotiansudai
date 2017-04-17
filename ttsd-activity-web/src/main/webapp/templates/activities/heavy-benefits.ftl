@@ -113,8 +113,9 @@
         </em>
 
         <p>活动期间邀请好友注册投资，当所有受邀好友们在活动期间累计投资达到指定金额，您可获得<b>最高3000元的京东E卡</b>（奖品不可累计获得）。</p>
-        <span class="note-text">我的好友们已累计投资  <b class="jd-card-amount">${referrerSumInvestAmount}</b>  元 </span>
+        <span class="note-text">我的好友们已累计投资  <b class="jd-card-amount">${referrerSumInvestAmount!}</b>  元 </span>
 
+        <#assign referrerSumInvestAmount=referrerSumInvestAmount?number!/>
         <div class="investment-box-pc clearfix">
 
             <div class="inner-progress"></div>
