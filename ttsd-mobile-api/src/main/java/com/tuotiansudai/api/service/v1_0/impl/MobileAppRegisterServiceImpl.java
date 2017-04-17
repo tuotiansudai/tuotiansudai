@@ -4,11 +4,15 @@ import com.google.common.base.Strings;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppChannelService;
 import com.tuotiansudai.api.service.v1_0.MobileAppRegisterService;
+import com.tuotiansudai.client.HTrackingClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.RegisterUserDto;
 import com.tuotiansudai.dto.SmsDataDto;
+import com.tuotiansudai.repository.mapper.HTrackingUserMapper;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.CaptchaType;
 import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.spring.security.MyAuthenticationUtil;
@@ -33,6 +37,17 @@ public class MobileAppRegisterServiceImpl implements MobileAppRegisterService {
 
     @Autowired
     private MyAuthenticationUtil myAuthenticationUtil;
+
+    @Autowired
+    private HTrackingUserMapper hTrackingUserMapper;
+
+    @Autowired
+    private UserMapper userMapper;
+
+    @Autowired
+    private HTrackingClient hTrackingClient;
+
+    private final static String HTRACKING_CHANNEL = "htracking";
 
     @Override
     public BaseResponseDto sendRegisterByMobileNumberSMS(String mobileNumber, String remoteIp) {
@@ -89,7 +104,14 @@ public class MobileAppRegisterServiceImpl implements MobileAppRegisterService {
             return new BaseResponseDto(ReturnMessage.SMS_CAPTCHA_ERROR.getCode(), ReturnMessage.SMS_CAPTCHA_ERROR.getMsg());
         }
 
-        userService.registerUser(dto);
+        if (userService.registerUser(dto) && dto.getSource() != null && dto.getSource().equals(Source.IOS)) {
+            if (hTrackingUserMapper.findByMobileAndDeviceId(dto.getMobile(), registerRequestDto.getBaseParam().getDeviceId()) != null) {
+                UserModel userModel = userMapper.findByLoginNameOrMobile(dto.getMobile());
+                userModel.setChannel(HTRACKING_CHANNEL);
+                userMapper.updateUser(userModel);
+                hTrackingClient.hTrackingRegister(userModel.getMobile(), registerRequestDto.getBaseParam().getDeviceId());
+            }
+        }
 
         BaseResponseDto<RegisterResponseDataDto> baseResponseDto = new BaseResponseDto<>(ReturnMessage.SUCCESS.getCode(), ReturnMessage.SUCCESS.getMsg());
         RegisterResponseDataDto registerDataDto = new RegisterResponseDataDto();

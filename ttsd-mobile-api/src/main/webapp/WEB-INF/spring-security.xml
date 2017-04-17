@@ -26,7 +26,6 @@
         <intercept-url pattern="/login" access="permitAll()"/>
         <intercept-url pattern="/usermember/logout" access="permitAll()"/>
 
-        <intercept-url pattern="/htracking/**" access="permitAll()"/>
         <intercept-url pattern="/api/**" access="permitAll()"/>
         <intercept-url pattern="/api-template" access="permitAll()"/>
         <intercept-url pattern="/media-center/**" access="permitAll()"/>

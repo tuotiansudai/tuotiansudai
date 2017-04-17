@@ -124,6 +124,7 @@
     <beans:bean id="csrfSecurityRequestMatcher" class="com.tuotiansudai.spring.CsrfSecurityRequestMatcher">
         <beans:property name="excludedUrls">
             <beans:list>
+                <beans:value>/htracking/callback</beans:value>
             </beans:list>
         </beans:property>
     </beans:bean>

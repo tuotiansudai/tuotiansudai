@@ -7,27 +7,30 @@
     <resultMap id="hTrackingUserModel" type="HTrackingUserModel">
         <result column="mobile" property="mobile"/>
         <result column="device_id" property="deviceId"/>
-        <result column="status" property="status"/>
         <result column="updated_time" property="updatedTime"/>
         <result column="created_time" property="createdTime"/>
     </resultMap>
 
     <insert id="create" parameterType="HTrackingUserModel">
-        insert into htracking_user (mobile, device_id, status, created_time)
-        value(#{mobile}, #{deviceId}, #{status}, now())
+        insert into htracking_user (mobile, device_id, created_time)
+        value(#{mobile}, #{deviceId}, now())
     </insert>
 
 
     <update id="update" parameterType="HTrackingUserModel">
         update htracking_user set mobile = #{mobile},
         device_id = #{deviceId},
-        status = #{status},
         updated_time = now(),
         where id = #{id}
     </update>
 
     <select id="findHTrackingUserModels" parameterType="string" resultMap="hTrackingUserModel">
-        select * from htracking_user where mobile = #{mobile}
+        select * from htracking_user
+        <where>
+            <if test="status != null and status != ''">
+                and status = #{status}
+            </if>
+        </where>
     </select>
 
     <select id="findByMobileAndDeviceId" parameterType="map" resultMap="hTrackingUserModel">

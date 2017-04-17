@@ -7,16 +7,14 @@ public class HTrackingUserModel implements Serializable{
 
     private String mobile;
     private String deviceId;
-    private HTrackingStatus status;
     private Date updatedTime;
     private Date createdTime;
 
     public HTrackingUserModel(){}
 
-    public HTrackingUserModel(String mobile, String deviceId, HTrackingStatus hTrackingStatus) {
+    public HTrackingUserModel(String mobile, String deviceId) {
         this.mobile = mobile;
         this.deviceId = deviceId;
-        this.status = hTrackingStatus;
     }
 
     public String getMobile() {
@@ -33,14 +31,6 @@ public class HTrackingUserModel implements Serializable{
 
     public void setDeviceId(String deviceId) {
         this.deviceId = deviceId;
-    }
-
-    public HTrackingStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(HTrackingStatus status) {
-        this.status = status;
     }
 
     public Date getUpdatedTime() {
