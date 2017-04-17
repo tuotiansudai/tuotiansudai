@@ -1,5 +1,5 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.heavy_benefits}" pageJavascript="${js.heavy_benefits}" activeNav="" activeLeftNav="" title="拓天奢品_奢品活动_拓天速贷" keywords="拓天大奖,大奖活动,投资活动,拓天速贷" description="拓天速贷奢华投资活动,海量奢品拓手可得,拓天大奖活动让您左手投资赚收益,右手白拿奢侈品.">
+<@global.main pageCss="${css.heavy_benefits}" pageJavascript="${js.heavy_benefits}" activeNav="" activeLeftNav="" title="邀好友活动_活动中心_拓天速贷" keywords="拓天速贷,邀请好友,话费奖励,京东E卡" description="拓天速贷活动期间邀请好友注册投资,当所有受邀好友们在活动期间首投或累计投资达到指定金额,邀请人领取最高220元话费奖励+3000元京东E卡.">
 
 <div class="tour-slide" id="topHeader"></div>
 
@@ -193,13 +193,17 @@
                     <em class="step-text"><i class="count">300000</i> <br/>
 600元京东E卡</em>
                 </span>
+            </div>
+
+            <div class="align-box">
+                <div class="inner-progress"></div>
 
                 <span class="step-option step-five">
                      <i class="square "></i>
                     <em class="step-text"><i class="count">500000</i> <br/>
 1000元京东E卡</em>
                 </span>
-            </div>
+                </div>
 
             <div class="align-box">
                 <div class="inner-progress"></div>
@@ -214,7 +218,7 @@
                     <em class="step-text"><i class="count">1000000</i> <br/>
 3000元京东E卡</em>
                 </span>
-                </div>
+            </div>
 
             </div>
 

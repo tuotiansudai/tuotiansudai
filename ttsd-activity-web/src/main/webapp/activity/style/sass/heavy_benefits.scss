@@ -286,7 +286,6 @@ body {
       font-weight: bold;
     }
   }
-
 }
 
 @media screen and(max-width: 700px) {
@@ -312,8 +311,12 @@ body {
     }
 
     .box-column {
-      padding: 90px 20px 20px 20px;
+      padding: 70px 20px 20px 20px;
       margin-bottom: 15px;
+      .step-text {
+        width: 90px;
+        font-size: 12px;
+      }
       .investment-box-mobile {
         display: block;
         height: 332px;
@@ -321,18 +324,20 @@ body {
         margin-top: 10px;
       }
       .title-one {
-        background-size: 48%;
-        left: -10px;
+        background-size: 65%;
+        left: -18px;
+        top: 10px;
       }
       .title-two {
-        background-size: 70%;
-        left: -10px;
+        background-size: 79%;
+        left: -14px;
+        top: 15px;
       }
       .sector {
-        width:80px;
-        height:80px;
+        width:60px;
+        height:60px;
         .pr-mobile {
-          background-size:60% ;
+          background-size:70% ;
         }
 
       }
@@ -341,6 +346,10 @@ body {
           .pr-card {
             background-size:60% ;
           }
+        }
+
+        .investment-box-mobile {
+          height:550px;
         }
       }
     }
@@ -354,6 +363,7 @@ body {
       .inner-progress {
         width: 88%;
         left: 6%;
+
       }
       .step-option {
         position: absolute;
@@ -383,20 +393,23 @@ body {
       }
       &:nth-child(2) {
         width: 50px;
-        height: 214px;
+        height: 222px;
         border-radius: 0px;
-        right: 0;
+        right: -1px;
         top: 25px;
         .inner-progress {
           width: 8px;
           height: 100%;
-          left:40%;
+          left:43%;
           top: 0;
         }
           .step-three {
             right: 39px;
             left: auto;
             top: 49%;
+            .square {
+              left: -2px;
+            }
             .step-text {
               left: auto;
               right: 20px;
@@ -406,10 +419,10 @@ body {
 
       }
       &:nth-child(3) {
-        top:220px;
+        top:219px;
         .step-option {
           &.step-four {
-            left: 49%;
+            left: 52%;
           }
           &.step-five {
             left: 5%;
@@ -419,8 +432,77 @@ body {
           }
         }
       }
-    }
+      &:nth-child(4) {
+        width: 50px;
+        height: 225px;
+        border-radius: 0px;
+        left: -1px;
+        top: 240px;
+        .inner-progress {
+          width: 8px;
+          height: 100%;
+          left:40%;
+          top: 0;
+        }
+        .step-option {
+          &.step-five {
+            left: 26%;
+            top: 45%;
+            .step-text {
+              left: 50px;
+              top: 0px;
+            }
+          }
+        }
 
+      }
+
+      &:nth-child(5) {
+        top:437px;
+        .step-option {
+          &.step-six {
+            left: 4%;
+            .step-text {
+              left:-20px;
+            }
+          }
+          &.step-seven {
+            left: 87%;
+            .step-text {
+              right: -49px;
+              left: auto;
+            }
+          }
+        }
+      }
+    }
+    .note-box {
+      dt {
+        padding-bottom: 5px;
+        margin-bottom: 10px;
+      }
+    }
   }
 
+}
+
+//iphone 4
+@media screen and(max-width: 330px) {
+  .heavy-benefits-container .align-box .inner-progress {
+    width: 85%;
+    left: 8%;
+
+  }
+  .heavy-benefits-container .align-box:nth-child(2) .step-three {
+    right: 34px;
+  }
+  .heavy-benefits-container .align-box:nth-child(4) {
+    left: 0px;
+  }
+}
+
+@media screen and(max-width: 415px) {
+  .heavy-benefits-container .align-box:nth-child(2) .step-three {
+    right:35px;
+  }
 }
