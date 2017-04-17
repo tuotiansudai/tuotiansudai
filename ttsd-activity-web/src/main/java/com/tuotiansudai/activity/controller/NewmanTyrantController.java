@@ -31,7 +31,7 @@ public class NewmanTyrantController {
     public ModelAndView newmanTyrant() {
         ModelAndView modelAndView = new ModelAndView("/activities/newman-tyrant", "responsive", true);
         String loginName = LoginUserInfo.getLoginName();
-
+        List<String> activityTime = newmanTyrantService.getActivityTime();
         List<NewmanTyrantView> newmanViews = newmanTyrantService.obtainNewman(new Date());
         List<NewmanTyrantView> tyrantViews = newmanTyrantService.obtainTyrant(new Date());
         List<NewmanTyrantView> newmanTyrantViews = CollectionUtils.isEmpty(newmanViews) ? tyrantViews : newmanViews;
@@ -44,6 +44,8 @@ public class NewmanTyrantController {
         modelAndView.addObject("prizeDto", newmanTyrantService.obtainPrizeDto(new DateTime().toString("yyyy-MM-dd")));
         modelAndView.addObject("investRanking", investRanking);
         modelAndView.addObject("investAmount", investAmount);
+        modelAndView.addObject("activityStartTime", activityTime.get(0));
+        modelAndView.addObject("activityEndTime", activityTime.get(1));
         modelAndView.addObject("currentTime", new DateTime().withTimeAtStartOfDay().toDate());
         modelAndView.addObject("yesterdayTime", DateUtils.addDays(new DateTime().withTimeAtStartOfDay().toDate(), -1));
         modelAndView.addObject("avgNewmanInvestAmount", newmanTyrantHistoryViews.size() > 0 ? newmanTyrantHistoryViews.get(0).getAvgNewmanInvestAmount() : 0);
