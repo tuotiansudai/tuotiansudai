@@ -18,8 +18,8 @@ public class HTrackingController {
     private HTrackingService hTrackingService;
 
     @ResponseBody
-    @RequestMapping(value = "/callback", method = RequestMethod.GET)
-    public BaseDto callback(@RequestParam String uid, @RequestParam String idfa) {
+    @RequestMapping(value = "/pre-reg", method = RequestMethod.GET)
+    public BaseDto reg(@RequestParam String uid, @RequestParam String idfa) {
         return hTrackingService.save(uid, idfa);
     }
 
