@@ -1,5 +1,6 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
+import com.google.common.base.Strings;
 import com.tuotiansudai.client.HTrackingClient;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
@@ -174,7 +175,7 @@ public class RechargeServiceImpl implements RechargeService {
             mqWrapperClient.sendMessage(MessageQueue.RechargeSuccess_CompletePointTask, rechargeModel.getLoginName());
 
             UserModel userModel = userMapper.findByLoginName(loginName);
-            if (userModel.getChannel().toLowerCase().trim().equals(HTRACKING_CHANNEL)) {
+            if (!Strings.isNullOrEmpty(userModel.getChannel()) && userModel.getChannel().toLowerCase().trim().equals(HTRACKING_CHANNEL)) {
                 logger.info(MessageFormat.format("[recharge callback] send hTrackingRecharge, loginName:{0}", userModel.getLoginName()));
                 hTrackingClient.hTrackingRecharge(userModel.getLoginName());
             }
