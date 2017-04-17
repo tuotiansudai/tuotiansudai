@@ -17,7 +17,7 @@
 
         <div class="form-group">
             <label for="project">家庭年收入</label>
-            <select class="selectpicker" name="selectedAge">
+            <select class="selectpicker" name="selectedIncome">
                 <option value="">全部</option>
                 <#list incomeOptions as incomeOption>
                     <option value="${incomeOption.name()}" <#if (selectedIncome?? && incomeOption == selectedIncome)>selected</#if>>${incomeOption.getDesc()}</option>
