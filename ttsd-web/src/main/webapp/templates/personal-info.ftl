@@ -79,7 +79,7 @@
         <li>
             <span class="info-title">投资偏好</span>
             <#if estimate??>
-                <em class="info">经评估，您的投资偏好为${estimate.type}</em>
+                <em class="info">${estimate.type}：${estimate.summary}</em>
                 <span class="binding-set">
                     <i class="fa fa-check-circle ok"></i>已评估<a class="setlink" href="/risk-estimate">重置</a>
                 </span>

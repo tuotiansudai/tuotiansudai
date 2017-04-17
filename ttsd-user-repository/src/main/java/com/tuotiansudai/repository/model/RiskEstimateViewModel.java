@@ -25,11 +25,11 @@ public class RiskEstimateViewModel implements Serializable {
 
     private Rate rate;
 
-    private long expectedInvestAmount;
-
     private Duration duration;
 
     private Age age;
+
+    private Investment investment;
 
     public long getId() {
         return id;
@@ -103,14 +103,6 @@ public class RiskEstimateViewModel implements Serializable {
         this.rate = rate;
     }
 
-    public long getExpectedInvestAmount() {
-        return expectedInvestAmount;
-    }
-
-    public void setExpectedInvestAmount(long expectedInvestAmount) {
-        this.expectedInvestAmount = expectedInvestAmount;
-    }
-
     public Duration getDuration() {
         return duration;
     }
@@ -125,5 +117,13 @@ public class RiskEstimateViewModel implements Serializable {
 
     public void setAge(Age age) {
         this.age = age;
+    }
+
+    public Investment getInvestment() {
+        return investment;
+    }
+
+    public void setInvestment(Investment investment) {
+        this.investment = investment;
     }
 }

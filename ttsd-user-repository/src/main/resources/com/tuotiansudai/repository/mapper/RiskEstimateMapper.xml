@@ -34,6 +34,7 @@
         <result column="rate" property="rate"/>
         <result column="duration" property="duration"/>
         <result column="age" property="age"/>
+        <result column="investment" property="investment"/>
     </resultMap>
 
     <insert id="create" parameterType="RiskEstimateModel" useGeneratedKeys="true" keyProperty="id">
@@ -88,12 +89,13 @@
         user.mobile as mobile,
         user.user_name as user_name,
         user.register_time as register_time,
-        (select ifnull(sum(invest.amount), 0) from invest where invest.loan_id != 1 and invest.status = 'SUCCESS' and exists (select 1 from loan where loan.id = invest.loan_id and loan.status in ('RAISING', 'RECHECK', 'REPAYING'))) as investing_amount,
+        (select ifnull(sum(invest.amount), 0) from invest where invest.login_name = user.login_name and invest.loan_id != 1 and invest.status = 'SUCCESS' and exists (select 1 from loan where loan.id = invest.loan_id and loan.status in ('RAISING', 'RECHECK', 'REPAYING')) limit 1) as investing_amount,
         risk_estimate.estimate as estimate,
         risk_estimate.income as income,
         risk_estimate.rate as rate,
         risk_estimate.duration as duration,
-        risk_estimate.age as age
+        risk_estimate.age as age,
+        risk_estimate.investment as investment
         from risk_estimate join user on risk_estimate.login_name = user.login_name
         <where>
             <if test="estimate != null">

@@ -19,8 +19,8 @@
             <label for="project">家庭年收入</label>
             <select class="selectpicker" name="selectedAge">
                 <option value="">全部</option>
-                <#list ageOptions as ageOption>
-                    <option value="${ageOption.name()}" <#if (selectedAge?? && ageOption == selectedAge)>selected</#if>>${ageOption.getDesc()}</option>
+                <#list incomeOptions as incomeOption>
+                    <option value="${incomeOption.name()}" <#if (selectedIncome?? && incomeOption == selectedIncome)>selected</#if>>${incomeOption.getDesc()}</option>
                 </#list>
             </select>
         </div>
@@ -65,7 +65,7 @@
             <tr>
                 <th>用户名</th>
                 <th>手机号</th>
-                <th>真实姓名</th>
+                <th>姓名</th>
                 <th>注册时间</th>
                 <th>用户在投金额</th>
                 <th>风险偏好类型</th>
@@ -83,11 +83,11 @@
                     <td>${(item.mobile)!}</td>
                     <td>${(item.userName)!}</td>
                     <td>${item.registerTime?string('yyyy-MM-dd HH:mm')}</td>
-                    <td>${(item.investingAmount/100)?string["0.##"]}</td>
+                    <td>${(item.investingAmount/100)?string["0.##"]} 元</td>
                     <td>${item.estimate.getType()}</td>
                     <td>${item.income.getDesc()}</td>
                     <td>${item.rate.getDesc()}</td>
-                    <td>${(item.expectedInvestAmount/100)?string["0.##"]}</td>
+                    <td>${(item.investment.value * item.income.value)} 万元</td>
                     <td>${item.duration.getDesc()}</td>
                     <td>${item.age.getDesc()}</td>
                 </tr>
