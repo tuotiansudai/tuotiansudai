@@ -15,7 +15,11 @@ function geFileList(folderPath,fileName)
 	this.folderPath=folderPath; //文件夹路径
 	this.filesList = [];
 	this.filename = fileName;
+<<<<<<< Updated upstream
 	this.toolSrc = basePath+'/tools/';
+=======
+	this.toolSrc = outputPath+'/';
+>>>>>>> Stashed changes
 	//遍历读取图片文件
 	this.readFile=function(path) {
 		var filesList=this.filesList;
