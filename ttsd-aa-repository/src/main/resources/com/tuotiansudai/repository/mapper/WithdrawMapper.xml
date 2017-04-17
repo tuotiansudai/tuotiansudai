@@ -93,9 +93,21 @@
         <if test="mobile != null and mobile != ''">
             and u.mobile = #{mobile}
         </if>
-        <if test="role != null">
+
+        <if test="role != '' and role != 'UN_LOANER' ">
             JOIN (SELECT login_name FROM `user_role` WHERE role = #{role}) temp_role ON temp_role.login_name = u.login_name
         </if>
+
+        <if test="role == 'UN_LOANER' ">
+            JOIN (SELECT
+            login_name, GROUP_CONCAT(role) AS role
+            FROM
+            user_role
+            GROUP BY login_name) ur
+            ON ur.login_name = u.login_name
+            AND ur.role NOT LIKE '%LOANER%'
+        </if>
+
         <where>
             <if test="withdrawId != null and withdrawId != ''">
                 and withdraw.id = #{withdrawId}
@@ -123,9 +135,21 @@
         <if test="mobile != null and mobile != '' ">
             and user.mobile = #{mobile}
         </if>
-        <if test="role != null">
+
+        <if test="role != '' and role != 'UN_LOANER' ">
             JOIN (SELECT login_name FROM `user_role` WHERE role = #{role}) temp_role ON temp_role.login_name = user.login_name
         </if>
+
+        <if test="role == 'UN_LOANER' ">
+            JOIN (SELECT
+            login_name, GROUP_CONCAT(role) AS role
+            FROM
+            user_role
+            GROUP BY login_name) ur
+            ON ur.login_name = user.login_name
+            AND ur.role NOT LIKE '%LOANER%'
+        </if>
+
         <where>
             <if test="withdrawId != null and withdrawId != '' ">
                 and withdraw.id = #{withdrawId}
@@ -152,9 +176,21 @@
         <if test="mobile != null and mobile != ''">
             and user.mobile = #{mobile}
         </if>
-        <if test="role !=null">
-            join user_role ur on withdraw.login_name = ur.login_name and ur.role= #{role}
+
+        <if test="role != '' and role != 'UN_LOANER' ">
+            join user_role ur on withdraw.login_name = ur.login_name and ur.role = #{role}
         </if>
+
+        <if test="role == 'UN_LOANER' ">
+            JOIN (SELECT
+            login_name, GROUP_CONCAT(role) AS role
+            FROM
+            user_role
+            GROUP BY login_name) ur
+            ON ur.login_name = withdraw.login_name
+            AND ur.role NOT LIKE '%LOANER%'
+        </if>
+
         <where>
             <if test="withdrawId != null and withdrawId != ''">
                 and withdraw.id = #{withdrawId}
@@ -181,9 +217,21 @@
         <if test="mobile != null and mobile != ''">
             and user.mobile = #{mobile}
         </if>
-        <if test="role != null">
+
+        <if test="role != '' and role != 'UN_LOANER'">
             JOIN (SELECT login_name FROM `user_role` WHERE role = #{role}) temp_role ON temp_role.login_name = user.login_name
         </if>
+
+        <if test="role == 'UN_LOANER' ">
+            JOIN (SELECT
+            login_name, GROUP_CONCAT(role) AS role
+            FROM
+            user_role
+            GROUP BY login_name) ur
+            ON ur.login_name = user.login_name
+            AND ur.role NOT LIKE '%LOANER%'
+        </if>
+
         <where>
             <if test="withdrawId != null and withdrawId != ''">
                 and withdraw.id = #{withdrawId}
