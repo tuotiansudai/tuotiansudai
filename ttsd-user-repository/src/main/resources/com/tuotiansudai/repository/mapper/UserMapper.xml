@@ -69,7 +69,8 @@
         sign_in_count = #{signInCount},
         last_login_time = #{lastLoginTime},
         last_login_source = #{lastLoginSource},
-        experience_balance = #{experienceBalance}
+        experience_balance = #{experienceBalance},
+        channel = #{channel}
         where id = #{id}
     </update>
 
