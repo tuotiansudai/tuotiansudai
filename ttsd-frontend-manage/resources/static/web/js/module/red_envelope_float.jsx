@@ -109,9 +109,9 @@ require.ensure([],function() {
             }
             if (!errorMsg) {
                 //计算本息
-                var moneyNum = Math.round(countForm.money.value * 100),
-                    dayNum = Math.round(countForm.day.value),
-                    rateNum = Math.round(countForm.rate.value * 10),
+                var moneyNum = Math.floor(countForm.money.value * 100),
+                    dayNum = Math.floor(countForm.day.value),
+                    rateNum = Math.floor(countForm.rate.value * 10),
                     $resultNum = $('#resultNum');
 
                 var period = dayNum % 30 == 0 ? 30 : dayNum % 30,
@@ -119,8 +119,8 @@ require.ensure([],function() {
                     interest, fee;
 
                 while (dayNum > 0) {
-                    interest = parseFloat((Math.round(moneyNum * rateNum * period / 365000) / 100).toFixed(2));
-                    fee = parseFloat((Math.round(interest * 10) / 100).toFixed(2));
+                    interest = parseFloat((Math.floor(moneyNum * rateNum * period / 365000) / 100).toFixed(2));
+                    fee = parseFloat((Math.floor(interest * 10) / 100).toFixed(2));
                     resultNum += (interest - fee);
                     dayNum -= period;
                     period = 30;
