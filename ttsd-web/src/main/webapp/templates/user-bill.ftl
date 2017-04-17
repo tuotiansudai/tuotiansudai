@@ -31,6 +31,7 @@
         <span class="select-item" data-status="NORMAL_REPAY,ADVANCE_REPAY">本息</span>
         <span class="select-item" data-status="INVEST_SUCCESS">投标</span>
         <span class="select-item" data-status="NEWBIE_COUPON,INVEST_COUPON,INTEREST_COUPON,RED_ENVELOPE,BIRTHDAY_COUPON">宝藏</span>
+        <span class="select-item" data-status="INVEST_CASH_BACK">现金补贴</span>
     </div>
 
     <div class="clear-blank"></div>
