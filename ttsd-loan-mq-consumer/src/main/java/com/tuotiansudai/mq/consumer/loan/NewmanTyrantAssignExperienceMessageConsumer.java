@@ -27,7 +27,7 @@ public class NewmanTyrantAssignExperienceMessageConsumer implements MessageConsu
 
     private static final String NEWMAN_TYRANT_GRANTED_LIST = "NEWMAN_TYRANT_GRANTED_LIST";
 
-    private int lifeSecond = 5184000;
+    private int lifeSecond = 10378000;
 
     @Override
     public MessageQueue queue() {
