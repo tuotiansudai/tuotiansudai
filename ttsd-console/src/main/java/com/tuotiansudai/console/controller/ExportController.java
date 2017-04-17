@@ -263,7 +263,7 @@ public class ExportController {
         int index = 1;
         int pageSize = Integer.MAX_VALUE;
         InvestPaginationDataDto investPagination = consoleInvestService.getInvestPagination(loanId, investorMobile, channel, source,
-                role, startTime, endTime, investStatus, preferenceType, index, pageSize);
+                role, startTime, endTime, investStatus, preferenceType, null, index, pageSize);
         List<InvestPaginationItemDataDto> records = investPagination.getRecords();
         List<List<String>> investsData = exportService.buildInvests(records);
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleInvests, investsData, response.getOutputStream());
