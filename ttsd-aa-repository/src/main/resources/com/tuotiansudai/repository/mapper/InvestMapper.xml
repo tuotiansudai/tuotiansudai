@@ -1031,8 +1031,8 @@
         </if>
     </select>
 
-    <select id="findFirstInvestAmountByLoginName" parameterType="map" resultType="long">
-        SELECT IFNULL(amount,0)
+    <select id="findFirstInvestAmountByLoginName" parameterType="map" resultMap="investResultMap">
+        SELECT invest.*
         FROM invest
         JOIN loan ON invest.loan_id = loan.id
         WHERE invest.login_name = #{loginName}
@@ -1042,6 +1042,5 @@
         ORDER BY trading_time ASC
         LIMIT 1
     </select>
-
 
 </mapper>
