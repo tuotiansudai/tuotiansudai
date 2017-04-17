@@ -569,6 +569,38 @@
         text-align: center;
         font-weight: bold;
       }
+      .history-item{
+        float:left;
+        width:100%;
+        padding:0 50px;
+        table{
+          th{
+            background:none;
+            font-size:18px;
+            color:#fff;
+            padding:0;
+            line-height:55px;
+          }
+          td{
+            font-size:16px;
+            color:#fff;
+            padding:0;
+            line-height:55px;
+            &.icon-item{
+              padding-right: 70px;
+              &.icon-equal{
+                background:url('/activity/images/newman-tyrant/icon-equal.png') no-repeat center right;
+              }
+              &.icon-lowser{
+                background:url('/activity/images/newman-tyrant/icon-lowser.png') no-repeat center right;
+              }
+              &.icon-win{
+                background:url('/activity/images/newman-tyrant/icon-win.png') no-repeat center right;
+              }
+            }
+          }
+        }
+      }
     }
   }
 }

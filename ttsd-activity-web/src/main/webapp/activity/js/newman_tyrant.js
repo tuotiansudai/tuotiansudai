@@ -4,20 +4,22 @@ require(['jquery','layerWrapper', 'template', 'logintip', 'jquery.ajax.extension
 			$boardTab=$('.board-tab span',$newmanTyrant),
 			$infoDate=$('#infoDate'),
 			todayDate=$.trim($infoDate.attr('data-date')).replace(/-/gi,''),
+			startTime=$.trim($infoDate.attr('data-startTime')).replace(/-/gi,''),
+			endTime=$.trim($infoDate.attr('data-endTime')).replace(/-/gi,''),
 			$boardBtn=$('.board-btn span',$newmanTyrant),
 			$heroNext=$('#heroNext'),
 			$heroPre=$('#heroPre'),
 			$getHistory=$('#getHistory');
 			
-		if(todayDate==20170420) {
+		if(todayDate==startTime) {
 	        $heroPre.hide();
 	        $heroNext.hide();
-	    }else if(todayDate==20170509){
+	    }else if(todayDate==endTime){
 	        $heroNext.hide();
-	    }else if(todayDate>20170420 && todayDate<20170509){
+	    }else if(todayDate>startTime && todayDate<endTime){
 	        $heroPre.show();
 	        $heroNext.hide();
-	    }else if(todayDate>20170509){
+	    }else if(todayDate>endTime){
 			$heroPre.show();
 	        $heroNext.hide();
 	    }else{
@@ -73,16 +75,16 @@ require(['jquery','layerWrapper', 'template', 'logintip', 'jquery.ajax.extension
 			}
 
 
-			if(currDate.replace(/-/gi,'')==20170420) {
+			if(currDate.replace(/-/gi,'')==startTime) {
 	            $heroPre.hide();
 	            $heroNext.show();
-	        }else if(currDate.replace(/-/gi,'')==todayDate && currDate.replace(/-/gi,'')>20170420){
+	        }else if(currDate.replace(/-/gi,'')==todayDate && currDate.replace(/-/gi,'')>startTime){
 	            $heroPre.show();
 	            $heroNext.hide();
-	        }else if(currDate.replace(/-/gi,'')==20170509 && currDate.replace(/-/gi,'')==todayDate){
+	        }else if(currDate.replace(/-/gi,'')==endTime && currDate.replace(/-/gi,'')==todayDate){
 	            $heroPre.show();
 	            $heroNext.hide();
-	        }else if(currDate.replace(/-/gi,'')>20170420 && currDate.replace(/-/gi,'')<todayDate){
+	        }else if(currDate.replace(/-/gi,'')>startTime && currDate.replace(/-/gi,'')<todayDate){
 	            $heroPre.show();
 	            $heroNext.show();
 	        }
@@ -101,26 +103,32 @@ require(['jquery','layerWrapper', 'template', 'logintip', 'jquery.ajax.extension
 
 		$getHistory.on('click', function(event) {
 			event.preventDefault();
-			$.ajax({
-				url: '/activity/newman-tyrant/history',
-				type: 'GET',
-				dataType: 'json'
-			})
-			.done(function(data) {
-				console.log("success");
-			})
-			.fail(function() {
-				layer.msg('请求失败，请重试！');
-			});
+			if(todayDate<startTime){
+				layer.msg('活动暂未开始！');
+			}else{
+				$.ajax({
+					url: '/activity/newman-tyrant/history',
+					type: 'GET',
+					dataType: 'json'
+				})
+				.done(function(data) {
+					console.log(data);
+					$('#historyContent').html(tpl('historyContentTpl',data));
+					layer.open({
+			          type: 1,
+			          closeBtn:0,
+			          move:false,
+			          area:$(window).width()>700?['600px','auto']:['300px','auto'],
+			          title:false,
+			          content: $('#tipContainer')
+			        });
+				})
+				.fail(function() {
+					layer.msg('请求失败，请重试！');
+				});
+			}
 			
 		});
-		layer.open({
-          type: 1,
-          closeBtn:0,
-          move:false,
-          area:$(window).width()>700?['600px','auto']:['300px','auto'],
-          title:false,
-          content: $('#tipContainer')
-        });
+		
 	});
 });

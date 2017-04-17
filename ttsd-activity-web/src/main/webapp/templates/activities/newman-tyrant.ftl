@@ -44,7 +44,7 @@
                 <i class="two-bg"></i>
                 <h3 class="rank-title">新贵VS富豪排行榜</h3>
                 <ul class="rank-info">
-                    <li class="info-date" id="infoDate" data-date="${currentTime?string('yyyy-MM-dd')}">
+                    <li class="info-date" id="infoDate" data-date="${currentTime?string('yyyy-MM-dd')}" data-startTime="${activityStartTime!}" data-endTime="${activityEndTime!}">
                         <#if currentTime??>${currentTime?string('yyyy-MM-dd')}</#if>
                     </li>
                     <li class="info-rank">
@@ -175,6 +175,33 @@
     <div class="tip-container" id="tipContainer">
         <div class="tip-content">
             <h3>双榜对抗赛</h3>
+            <div class="history-item" id="historyContent">
+            </div>
+            <script type="text/html" id="historyContentTpl">
+            {{if records.length>0}}
+                <table class="history-table">
+                    <thead>
+                        <tr>
+                            <th>日期</th>
+                            <th>富豪排行榜投资均值</th>
+                            <th>新贵排行榜投资均值</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{each records}}
+                        <tr>
+                            <td>{{$value.currentDate.substr(0,10)}}</td>
+                            <td class="icon-item">{{$value.avgTyrantInvestAmount}}</td>
+                            <td class="icon-item">{{$value.avgNewmanInvestAmount}}</td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            {{else}}
+            <p>比赛进行中，暂无结果</p>
+            {{/if}} 
+            </script>
+            
         </div>
     </div>
 </div>
