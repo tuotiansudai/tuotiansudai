@@ -58,6 +58,9 @@ public class CheckUserBalanceScheduler {
 
     @Scheduled(cron = "0 30 1 * * SUN,SAT", zone = "Asia/Shanghai")
     public void checkUserBalance() {
+        if (Environment.PRODUCTION != environment) {
+            return;
+        }
         logger.info("[checkUserBalance:] start .");
 
         List<String> mismatchUserList = Lists.newArrayList();
