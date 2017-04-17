@@ -4,6 +4,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.AmountConverter;
 import org.joda.time.DateTime;
@@ -38,8 +39,8 @@ public class GrantWelfareActivityService {
         List<UserModel> userModels = userMapper.findUsersByRegisterTimeOrReferrer(startTime, endTime, loginName);
         for (UserModel referrerUserModel : userModels) {
             if (referrerUserModel.getRegisterTime().before(endTime) && referrerUserModel.getRegisterTime().after(startTime)) {
-                long investAmount = investMapper.findFirstInvestAmountByLoginName(referrerUserModel.getLoginName(), startTime, endTime);
-                if (investAmount >= 500000) {
+                InvestModel investModel = investMapper.findFirstInvestAmountByLoginName(referrerUserModel.getLoginName(), startTime, endTime);
+                if (investModel != null && investModel.getAmount() >= 500000) {
                     ReferrerCount++;
                 }
             }
