@@ -98,14 +98,14 @@ if(NODE_ENV=='production') {
 else if(NODE_ENV=='dev') {
 	plugins.push(new ExtractTextPlugin("[name].css"));
 
-	//打包之前先删除打包文件里的文件方便重新打包
-	plugins.push(new CleanWebpackPlugin(['develop'], {
-		root: basePath,
-		verbose: true,
-		dry: false,
-		watch:true,
-		exclude: ['public','json-ask.json','json-web.json','json-point.json']
-	}));
+	//打包之前先删除打包文件里的图片文件方便重新打包
+	// plugins.push(new CleanWebpackPlugin(['develop'], {
+	// 	root: basePath,
+	// 	verbose: true,
+	// 	dry: false,
+	// 	watch:true,
+	// 	exclude: ['public','json-ask.json','json-web.json','json-point.json']
+	// }));
 
 	//开发环境
 	plugins.push(new webpack.HotModuleReplacementPlugin());
