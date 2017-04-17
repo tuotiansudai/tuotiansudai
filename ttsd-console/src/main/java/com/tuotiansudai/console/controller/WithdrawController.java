@@ -33,7 +33,7 @@ public class WithdrawController {
                                         @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date endTime,
                                         @RequestParam(value = "status", required = false) WithdrawStatus status,
                                         @RequestParam(value = "source", required = false) Source source,
-                                        @RequestParam(value = "role", required = false) Role role,
+                                        @RequestParam(value = "role", defaultValue = "", required = false) String role,
                                         @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
         int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/withdraw");

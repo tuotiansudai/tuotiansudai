@@ -277,7 +277,7 @@ public class ExportController {
                                @RequestParam(value = "status", required = false) RechargeStatus status,
                                @RequestParam(value = "source", required = false) RechargeSource source,
                                @RequestParam(value = "channel", required = false) String channel,
-                               @RequestParam(value = "role", required = false) Role role,
+                               @RequestParam(value = "role", required = false) String role,
                                HttpServletResponse response) throws IOException {
         fillExportResponse(response, CsvHeaderType.ConsoleRecharge.getDescription());
         int index = 1;
@@ -294,7 +294,7 @@ public class ExportController {
                                @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date endTime,
                                @RequestParam(value = "status", required = false) WithdrawStatus status,
                                @RequestParam(value = "source", required = false) Source source,
-                               @RequestParam(value = "role", required = false) Role role,
+                               @RequestParam(value = "role", required = false) String role,
                                HttpServletResponse response) throws IOException {
         fillExportResponse(response, CsvHeaderType.ConsoleWithdraw.getDescription());
         int index = 1;
@@ -435,6 +435,10 @@ public class ExportController {
             @RequestParam(value = "invested", required = false) String invested,
             @RequestParam(value = "totalInvestAmountStart", required = false) Long totalInvestAmountStart,
             @RequestParam(value = "totalInvestAmountEnd", required = false) Long totalInvestAmountEnd,
+            @RequestParam(value = "totalWithdrawAmountStart", required = false) Long totalWithdrawAmountStart,
+            @RequestParam(value = "totalWithdrawAmountEnd", required = false) Long totalWithdrawAmountEnd,
+            @RequestParam(value = "userBalanceStart", required = false) Long userBalanceStart,
+            @RequestParam(value = "userBalanceEnd", required = false) Long userBalanceEnd,
             @RequestParam(value = "investCountStart", required = false) Integer investCountStart,
             @RequestParam(value = "investCountEnd", required = false) Integer investCountEnd,
             @RequestParam(value = "loanCountStart", required = false) Integer loanCountStart,
@@ -452,6 +456,10 @@ public class ExportController {
             @RequestParam(value = "lastLoginTimeStart", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date lastLoginTimeStart,
             @RequestParam(value = "lastLoginTimeEnd", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date lastLoginTimeEnd,
             @RequestParam(value = "lastLoginSource", required = false) Source lastLoginSource,
+            @RequestParam(value = "lastRepayTimeStart", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date lastRepayTimeStart,
+            @RequestParam(value = "lastRepayTimeEnd", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date lastRepayTimeEnd,
+            @RequestParam(value = "lastWithdrawTimeStart", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date lastWithdrawTimeStart,
+            @RequestParam(value = "lastWithdrawTimeEnd", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date lastWithdrawTimeEnd,
             HttpServletResponse response) throws IOException {
         fillExportResponse(response, CsvHeaderType.UserMicroModelHeader.getDescription());
         int index = 1;
@@ -464,6 +472,10 @@ public class ExportController {
                 invested,
                 totalInvestAmountStart == null ? null : totalInvestAmountStart * 100,
                 totalInvestAmountEnd == null ? null : totalInvestAmountEnd * 100,
+                totalWithdrawAmountStart == null ? null : totalWithdrawAmountStart * 100,
+                totalWithdrawAmountEnd == null ? null : totalWithdrawAmountEnd * 100,
+                userBalanceStart == null ? null : userBalanceStart * 100,
+                userBalanceEnd == null ? null : userBalanceEnd * 100,
                 investCountStart,
                 investCountEnd,
                 loanCountStart,
@@ -481,6 +493,10 @@ public class ExportController {
                 lastLoginTimeStart,
                 lastLoginTimeEnd,
                 lastLoginSource,
+                lastRepayTimeStart,
+                lastRepayTimeEnd,
+                lastWithdrawTimeStart,
+                lastWithdrawTimeEnd,
                 index,
                 pageSize);
         List<UserMicroModelView> userMicroModelViewList = baseDto.getData().getRecords();
@@ -516,7 +532,7 @@ public class ExportController {
                 StringUtils.isEmpty(investSumHighLimit) ? null : AmountConverter.convertStringToCent(investSumHighLimit),
                 firstInvestStartTime, firstInvestEndTime, secondInvestStartTime, secondInvestEndTime, index, pageSize);
         List<List<String>> csvData = new ArrayList<>();
-        for(RemainUserDto dto : data.getRecords()) {
+        for (RemainUserDto dto : data.getRecords()) {
             csvData.add(ExportCsvUtil.dtoToStringList(dto));
         }
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.UserRemainHeader, csvData, response.getOutputStream());

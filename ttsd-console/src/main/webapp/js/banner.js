@@ -177,7 +177,7 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapSel
             if (boolFlag) {
                 if (confirm("确认提交审核?")) {
                     var sharedUrl = $('.sharedUrl').val();
-                    $('.sharedUrl').val(appendSourceParameter(sharedUrl));
+                    $('.sharedUrl').val(sharedUrl);
                     $self.attr('disabled', 'disabled');
                     var operate;
                     if ($('.jq-id').val() != null && $('.jq-id').val() != '') {

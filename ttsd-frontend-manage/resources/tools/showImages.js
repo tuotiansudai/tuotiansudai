@@ -8,14 +8,21 @@ var basePath = path.join(__dirname, '../../resources'),
 	pointImagePath=path.join(staticPath, 'point/images'),
 	mobileImagePath=path.join(staticPath, 'mobile/images'),
 	publicImagePath=path.join(staticPath, 'public/images'); //默认打包路径
-var staticServer ='http://localhost:3008/';
 
+var outputPath=path.join(basePath, 'develop'); //默认打包路径
+
+var NODE_ENV=process.env.NODE_ENV;
+var staticServer = require('../../getStaticServer.js');
+
+if(NODE_ENV=='production') {
+	outputPath=path.join(basePath, 'prod');
+}
 function geFileList(folderPath,fileName)
 {
 	this.folderPath=folderPath; //文件夹路径
 	this.filesList = [];
 	this.filename = fileName;
-	this.toolSrc = basePath+'/tools/';
+	this.toolSrc = outputPath+'/public/';
 	//遍历读取图片文件
 	this.readFile=function(path) {
 		var filesList=this.filesList;
@@ -43,7 +50,7 @@ function geFileList(folderPath,fileName)
 	//读取html内容
 	this.ImportHtml =function() {
 		var that = this;
-		fs.readFile(this.toolSrc+'/'+this.filename,{
+		fs.readFile(this.toolSrc+this.filename,{
 			//需要制定编码方式，否则返回原生buffer
 			encoding:'utf8'
 		},function (err, htmlData) {
@@ -51,8 +58,7 @@ function geFileList(folderPath,fileName)
 			var imageObg =[];
 
 			that.filesList.forEach(function(imgUrl) {
-				var itemPath = staticServer+ imgUrl.path.match(/ttsd-frontend-manage\/resources\/(\S*)/)[1];
-				// console.log(itemPath);
+				var itemPath = staticServer + '/'+imgUrl.path.match(/ttsd-frontend-manage\/resources\/(\S*)/)[1];
 				imageObg.push('<img src="'+itemPath+'" size="'+imgUrl.size+'" style="margin:20px;">');
 			});
 

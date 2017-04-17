@@ -28,7 +28,7 @@ public interface RechargeMapper {
                                                @Param(value = "pageSize") int pageSize,
                                                @Param(value = "startTime") Date startTime,
                                                @Param(value = "endTime") Date endTime,
-                                               @Param(value = "role") Role role);
+                                               @Param(value = "role") String role);
 
 
     long findSumRechargeAmount(@Param(value = "rechargeId") String rechargeId,
@@ -36,7 +36,7 @@ public interface RechargeMapper {
                                @Param(value = "source") RechargeSource source,
                                @Param(value = "status") RechargeStatus status,
                                @Param(value = "channel") String channel,
-                               @Param(value = "role") Role role,
+                               @Param(value = "role") String role,
                                @Param(value = "startTime") Date startTime,
                                @Param(value = "endTime") Date endTime);
 
@@ -47,7 +47,7 @@ public interface RechargeMapper {
                           @Param(value = "channel") String channel,
                           @Param(value = "startTime") Date startTime,
                           @Param(value = "endTime") Date endTime,
-                          @Param(value = "role") Role role);
+                          @Param(value = "role") String role);
 
     long findSumSuccessRechargeByLoginName(String loginName);
 

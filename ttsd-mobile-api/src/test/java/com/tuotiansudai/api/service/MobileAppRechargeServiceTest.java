@@ -87,7 +87,7 @@ public class MobileAppRechargeServiceTest extends ServiceTestBase {
 
         when(bankMapper.findBankList(0L, 0L)).thenReturn(Lists.newArrayList(bankModel, bankModel));
         when(bankMapper.findByBankCode("ICBC")).thenReturn(bankModel);
-        when(rechargeMapper.findSumRechargeAmount(anyString(), anyString(), any(RechargeSource.class), any(RechargeStatus.class), anyString(), any(Role.class), any(Date.class),
+        when(rechargeMapper.findSumRechargeAmount(anyString(), anyString(), any(RechargeSource.class), any(RechargeStatus.class), anyString(), anyString(), any(Date.class),
                 any(Date.class))).thenReturn(5000L);
 
         BankLimitRequestDto bankLimitRequestDto = new BankLimitRequestDto();
