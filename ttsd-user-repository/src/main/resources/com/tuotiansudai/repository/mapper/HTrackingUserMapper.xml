@@ -5,13 +5,13 @@
 <mapper namespace="com.tuotiansudai.repository.mapper.HTrackingUserMapper">
 
     <resultMap id="hTrackingUserModel" type="HTrackingUserModel">
+        <result column="id" property="id"/>
         <result column="mobile" property="mobile"/>
         <result column="device_id" property="deviceId"/>
-        <result column="updated_time" property="updatedTime"/>
         <result column="created_time" property="createdTime"/>
     </resultMap>
 
-    <insert id="create" parameterType="HTrackingUserModel">
+    <insert id="create" parameterType="HTrackingUserModel" useGeneratedKeys="true" keyProperty="id">
         insert into htracking_user (mobile, device_id, created_time)
         value(#{mobile}, #{deviceId}, now())
     </insert>
@@ -19,8 +19,7 @@
 
     <update id="update" parameterType="HTrackingUserModel">
         update htracking_user set mobile = #{mobile},
-        device_id = #{deviceId},
-        updated_time = now(),
+        device_id = #{deviceId}
         where id = #{id}
     </update>
 
@@ -36,6 +35,10 @@
             </if>
 
         </where>
+    </select>
+
+    <select id="findById" parameterType="long" resultMap="hTrackingUserModel">
+        select * from htracking_user where id = #{id}
     </select>
 
 </mapper>

@@ -1,7 +1,6 @@
 package com.tuotiansudai.service.impl;
 
 import com.google.common.base.Strings;
-import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.repository.mapper.HTrackingUserMapper;
 import com.tuotiansudai.repository.model.HTrackingUserModel;
 import com.tuotiansudai.service.HTrackingService;
@@ -15,15 +14,13 @@ public class HTrackingServiceImpl implements HTrackingService {
     private HTrackingUserMapper hTrackingUserMapper;
 
     @Override
-    public BaseDto save(String mobile, String deviceId) {
+    public void save(String mobile, String deviceId) {
         if (Strings.isNullOrEmpty(mobile) || Strings.isNullOrEmpty(deviceId)) {
-            return new BaseDto(false);
+            return;
         }
 
         if (hTrackingUserMapper.findByMobileAndDeviceId(mobile, deviceId) == null) {
             hTrackingUserMapper.create(new HTrackingUserModel(mobile, deviceId));
         }
-
-        return new BaseDto();
     }
 }

@@ -106,14 +106,9 @@ public class MobileAppRegisterServiceImpl implements MobileAppRegisterService {
             return new BaseResponseDto(ReturnMessage.SMS_CAPTCHA_ERROR.getCode(), ReturnMessage.SMS_CAPTCHA_ERROR.getMsg());
         }
 
-        if (userService.registerUser(dto) && dto.getSource() != null && dto.getSource().equals(Source.IOS)) {
-            if (hTrackingUserMapper.findByMobileAndDeviceId(dto.getMobile(), registerRequestDto.getBaseParam().getDeviceId()) != null) {
-                UserModel userModel = userMapper.findByLoginNameOrMobile(dto.getMobile());
-                userModel.setChannel(HTRACKING_CHANNEL);
-                userMapper.updateUser(userModel);
-                log.info(MessageFormat.format("[mobile register] send hTrackingRegister, loginName:{0}, deviceId:{1}", userModel.getLoginName(), registerRequestDto.getBaseParam().getDeviceId()));
-                hTrackingClient.hTrackingRegister(userModel.getMobile(), registerRequestDto.getBaseParam().getDeviceId());
-            }
+        boolean result = userService.registerUser(dto);
+        if (result && dto.getSource() == Source.IOS) {
+            this.hTrackingRegister(dto.getMobile(), registerRequestDto.getBaseParam().getDeviceId());
         }
 
         BaseResponseDto<RegisterResponseDataDto> baseResponseDto = new BaseResponseDto<>(ReturnMessage.SUCCESS.getCode(), ReturnMessage.SUCCESS.getMsg());
@@ -129,6 +124,16 @@ public class MobileAppRegisterServiceImpl implements MobileAppRegisterService {
         boolean mobileIsExist = userService.mobileIsExist(requestDto.getMobile());
         return mobileIsExist ? new BaseResponseDto(ReturnMessage.SUCCESS.getCode(), ReturnMessage.SUCCESS.getMsg()) :
                 new BaseResponseDto(ReturnMessage.MOBILE_NUMBER_NOT_EXIST.getCode(), ReturnMessage.MOBILE_NUMBER_NOT_EXIST.getMsg());
+    }
+
+    private void hTrackingRegister(String mobile, String deviceId) {
+        if (hTrackingUserMapper.findByMobileAndDeviceId(mobile, deviceId) != null) {
+            UserModel userModel = userMapper.findByLoginNameOrMobile(mobile);
+            userModel.setChannel(HTRACKING_CHANNEL);
+            userMapper.updateUser(userModel);
+            log.info(MessageFormat.format("[mobile register] send hTrackingRegister, loginName:{0}, deviceId:{1}", userModel.getLoginName(), deviceId));
+            hTrackingClient.hTrackingRegister(userModel.getMobile(), deviceId);
+        }
     }
 
 }

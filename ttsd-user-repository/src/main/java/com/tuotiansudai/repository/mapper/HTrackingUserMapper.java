@@ -11,6 +11,8 @@ public interface HTrackingUserMapper {
 
     void update(HTrackingUserModel hTrackingUserModel);
 
+    HTrackingUserModel findbyId(long id);
+
     HTrackingUserModel findByMobileAndDeviceId(@Param(value = "mobile") String mobile,
                                                @Param(value = "deviceId") String deviceId);
 }

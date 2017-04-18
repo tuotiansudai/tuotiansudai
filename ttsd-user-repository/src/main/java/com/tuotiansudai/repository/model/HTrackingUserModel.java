@@ -5,9 +5,9 @@ import java.util.Date;
 
 public class HTrackingUserModel implements Serializable{
 
+    private long id;
     private String mobile;
     private String deviceId;
-    private Date updatedTime;
     private Date createdTime;
 
     public HTrackingUserModel(){}
@@ -15,6 +15,14 @@ public class HTrackingUserModel implements Serializable{
     public HTrackingUserModel(String mobile, String deviceId) {
         this.mobile = mobile;
         this.deviceId = deviceId;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getMobile() {
@@ -31,14 +39,6 @@ public class HTrackingUserModel implements Serializable{
 
     public void setDeviceId(String deviceId) {
         this.deviceId = deviceId;
-    }
-
-    public Date getUpdatedTime() {
-        return updatedTime;
-    }
-
-    public void setUpdatedTime(Date updatedTime) {
-        this.updatedTime = updatedTime;
     }
 
     public Date getCreatedTime() {

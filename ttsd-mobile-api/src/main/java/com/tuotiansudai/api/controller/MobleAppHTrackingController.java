@@ -1,7 +1,6 @@
-package com.tuotiansudai.web.controller;
+package com.tuotiansudai.api.controller;
 
 
-import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.service.HTrackingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,15 +11,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping(value = "/htracking")
-public class HTrackingController {
+public class MobleAppHTrackingController {
 
     @Autowired
     private HTrackingService hTrackingService;
 
     @ResponseBody
     @RequestMapping(value = "/pre-reg", method = RequestMethod.GET)
-    public BaseDto reg(@RequestParam String uid, @RequestParam String idfa) {
-        return hTrackingService.save(uid, idfa);
+    public void reg(@RequestParam String uid, @RequestParam String idfa) {
+        hTrackingService.save(uid, idfa);
     }
 
 }
