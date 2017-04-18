@@ -2,6 +2,8 @@ package com.tuotiansudai.service;
 
 public interface WeChatService {
 
+    String fetchToken();
+
     String findByOpenid(String openid);
 
     String fetchOpenid(String sessionId, String state, String code);

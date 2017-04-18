@@ -34,6 +34,8 @@ public class WeChatServiceImpl implements WeChatService {
 
     private static Logger logger = Logger.getLogger(WeChatServiceImpl.class);
 
+    private final static String TOKEN_URL_TEMPLATE = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={0}&secret={1}";
+
     private final static String AUTHORIZE_URL_TEMPLATE = "https://open.weixin.qq.com/connect/oauth2/authorize?appid={0}&redirect_uri={1}&response_type=code&scope=snsapi_base&state={2}#wechat_redirect";
 
     private final static String ACCESS_TOKEN_URL_TEMPLATE = "https://api.weixin.qq.com/sns/oauth2/access_token?appid={0}&secret={1}&code={2}&grant_type=authorization_code";
@@ -68,6 +70,41 @@ public class WeChatServiceImpl implements WeChatService {
         this.client.setConnectTimeout(5, TimeUnit.SECONDS);
         this.objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         this.weChatUserMapper = weChatUserMapper;
+    }
+
+    @Override
+    public String fetchToken() {
+        String token = redisWrapperClient.get("wechat:token");
+        if (!Strings.isNullOrEmpty(token)) {
+            return token;
+        }
+
+        try {
+            Request request = new Request.Builder()
+                    .url(MessageFormat.format(TOKEN_URL_TEMPLATE, appId, appSecret))
+                    .get().build();
+            Response response = client.newCall(request).execute();
+
+            if (!HttpStatus.valueOf(response.code()).is2xxSuccessful()) {
+                return null;
+            }
+
+            String responseString = response.body().string();
+            Map<String, String> result = objectMapper.readValue(responseString, new TypeReference<HashMap<String, String>>() {
+            });
+
+            if (result.containsKey("errcode")) {
+                logger.error(MessageFormat.format("fetch access_token failed, response: {0}", responseString));
+                return null;
+            }
+
+            token = result.get("access_token");
+            redisWrapperClient.setex("wechat:token", Integer.parseInt(result.get("access_token")) - 60, token);
+        } catch (Exception e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+
+        return token;
     }
 
     @Override
