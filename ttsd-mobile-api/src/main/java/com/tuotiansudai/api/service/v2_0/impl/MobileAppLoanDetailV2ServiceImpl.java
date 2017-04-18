@@ -3,20 +3,22 @@ package com.tuotiansudai.api.service.v2_0.impl;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.api.dto.v1_0.*;
-import com.tuotiansudai.api.dto.v1_0.LoanStatus;
+import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
+import com.tuotiansudai.api.dto.v1_0.EvidenceResponseDataDto;
+import com.tuotiansudai.api.dto.v1_0.ExtraLoanRateDto;
+import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.dto.v2_0.*;
 import com.tuotiansudai.api.service.v2_0.MobileAppLoanDetailV2Service;
 import com.tuotiansudai.api.service.v3_0.impl.MobileAppLoanListV3ServiceImpl;
+import com.tuotiansudai.api.util.AppVersionUtil;
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.coupon.service.CouponService;
-import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
-import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.LoanPeriodCalculator;
 import com.tuotiansudai.util.RandomUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -64,9 +66,6 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
     private PledgeVehicleMapper pledgeVehicleMapper;
 
     @Autowired
-    private UserMembershipEvaluator userMembershipEvaluator;
-
-    @Autowired
     private LoanTitleRelationMapper loanTitleRelationMapper;
 
     @Autowired
@@ -74,6 +73,9 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
 
     @Autowired
     private LoanerEnterpriseDetailsMapper loanerEnterpriseDetailsMapper;
+
+    @Autowired
+    private LoanerEnterpriseInfoMapper loanerEnterpriseInfoMapper;
 
     @Autowired
     private PledgeEnterpriseMapper pledgeEnterpriseMapper;
@@ -106,6 +108,10 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
             logger.warn("标的详情" + ReturnMessage.LOAN_NOT_FOUND.getCode() + ":" + ReturnMessage.LOAN_NOT_FOUND.getMsg());
             return new BaseResponseDto<>(ReturnMessage.LOAN_NOT_FOUND.getCode(), ReturnMessage.LOAN_NOT_FOUND.getMsg());
         }
+        if (AppVersionUtil.compareVersion() == AppVersionUtil.low ) {
+            logger.warn("标的详情" + ReturnMessage.LOAN_NOT_FOUND.getCode() + ":" + ReturnMessage.LOAN_NOT_FOUND.getMsg());
+            return new BaseResponseDto<>(ReturnMessage.APP_VERSION_NOT_LATEST.getCode(), ReturnMessage.APP_VERSION_NOT_LATEST.getMsg());
+        }
         responseDto.setCode(ReturnMessage.SUCCESS.getCode());
         responseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
         String loginName = requestDto.getBaseParam().getUserId();
@@ -125,9 +131,11 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
         dataDto.setPledgeType(loanModel.getPledgeType());
         dataDto.setRepayTypeCode("");
         dataDto.setDuration(loanModel.getDuration());
+        dataDto.setAvailableDuration(LoanPeriodCalculator.calculateDuration(new Date(), loanModel.getDeadline()));
+        dataDto.setDeadline(new DateTime(loanModel.getDeadline()).toString("yyyy-MM-dd"));
         String repayTypeName = loanModel.getType().getRepayType();
         dataDto.setRepayTypeName(repayTypeName);
-        dataDto.setNonTransferable(loanDetailsModelActivity != null ? loanDetailsModelActivity.getNonTransferable() : false);
+        dataDto.setNonTransferable(loanDetailsModelActivity != null && loanDetailsModelActivity.getNonTransferable());
 
         long expectedInterest = investService.estimateInvestIncome(loanModel.getId(), loginName, MobileAppLoanListV3ServiceImpl.DEFAULT_INVEST_AMOUNT);
         dataDto.setInterestPerTenThousands(String.valueOf(expectedInterest));
@@ -147,7 +155,7 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
         dataDto.setActivityType(loanModel.getActivityType());
         if (loanModel.getStatus().equals(LoanStatus.PREHEAT)) {
             dataDto.setLoanStatus(LoanStatus.RAISING.name().toLowerCase());
-            dataDto.setLoanStatusDesc(LoanStatus.RAISING.getMessage());
+            dataDto.setLoanStatusDesc(LoanStatus.RAISING.getDescription());
         } else {
             dataDto.setLoanStatus(loanModel.getStatus().name().toLowerCase());
             dataDto.setLoanStatusDesc(loanModel.getStatus().getDescription());
@@ -209,18 +217,27 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
                     }
             }
         }
-        if (loanModel.getPledgeType() == PledgeType.ENTERPRISE) {
+        if (loanModel.getPledgeType() == PledgeType.ENTERPRISE_CREDIT || loanModel.getPledgeType() == PledgeType.ENTERPRISE_PLEDGE) {
             LoanerEnterpriseDetailsModel loanerEnterpriseDetailsModel = loanerEnterpriseDetailsMapper.getByLoanId(loanModel.getId());
             if (loanerEnterpriseDetailsModel != null) {
                 EnterpriseDto enterpriseDto = new EnterpriseDto(loanerEnterpriseDetailsModel);
-                enterpriseDto.setShareholder(StringUtils.rightPad(StringUtils.left(enterpriseDto.getShareholder(), 1), 2, "某"));
                 enterpriseDto.setJuristicPerson(StringUtils.rightPad(StringUtils.left(enterpriseDto.getJuristicPerson(), 1), 2, "某"));
-
                 dataDto.setEnterprise(enterpriseDto);
             }
+
+        }
+        if (loanModel.getPledgeType() == PledgeType.ENTERPRISE_PLEDGE) {
             PledgeEnterpriseModel pledgeEnterpriseModel = pledgeEnterpriseMapper.getByLoanId(loanModel.getId());
             if (pledgeEnterpriseModel != null) {
                 dataDto.setPledgeEnterpriseDto(new PledgeEnterpriseDto(pledgeEnterpriseModel));
+            }
+        }
+
+        if (loanModel.getPledgeType() == PledgeType.ENTERPRISE_FACTORING || loanModel.getPledgeType() == PledgeType.ENTERPRISE_BILL) {
+            LoanerEnterpriseInfoModel loanerEnterpriseInfoModel = loanerEnterpriseInfoMapper.getByLoanId(loanModel.getId());
+            if (loanerEnterpriseInfoModel != null) {
+                EnterpriseInfoDto enterpriseInfoDto = new EnterpriseInfoDto(loanerEnterpriseInfoModel);
+                dataDto.setEnterpriseInfo(enterpriseInfoDto);
             }
         }
 
@@ -239,11 +256,11 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
             for (InvestModel investModel : investAchievements) {
                 String investorLoginName = randomUtils.encryptMobile(loginName, investModel.getLoginName(), investModel.getId());
                 if (investModel.getAchievements().contains(InvestAchievement.MAX_AMOUNT) && loanModel.getStatus() == com.tuotiansudai.repository.model.LoanStatus.RAISING) {
-                    marqueeTitle.append(investorLoginName + " 以累计投资" + AmountConverter.convertCentToString(investMapper.sumSuccessInvestAmountByLoginName(loanModel.getId(), investModel.getLoginName(),true)) + "元暂居标王，快来争夺吧    ");
+                    marqueeTitle.append(investorLoginName + " 以累计投资" + AmountConverter.convertCentToString(investMapper.sumSuccessInvestAmountByLoginName(loanModel.getId(), investModel.getLoginName(), true)) + "元暂居标王，快来争夺吧    ");
                     marqueeTitle.append("目前项目剩余" + AmountConverter.convertCentToString(loanModel.getLoanAmount() - investedAmount) + "元，快来一锤定音获取奖励吧    ");
                 }
                 if (investModel.getAchievements().contains(InvestAchievement.MAX_AMOUNT) && loanModel.getStatus() != com.tuotiansudai.repository.model.LoanStatus.RAISING) {
-                    marqueeTitle.append("恭喜" + investorLoginName + " 以累计投资" + AmountConverter.convertCentToString(investMapper.sumSuccessInvestAmountByLoginName(loanModel.getId(), investModel.getLoginName(),true)) + "元夺得标王，奖励0.5％加息券＋100元红包    ");
+                    marqueeTitle.append("恭喜" + investorLoginName + " 以累计投资" + AmountConverter.convertCentToString(investMapper.sumSuccessInvestAmountByLoginName(loanModel.getId(), investModel.getLoginName(), true)) + "元夺得标王，奖励0.5％加息券＋100元红包    ");
                 }
                 if (investModel.getAchievements().contains(InvestAchievement.FIRST_INVEST)) {
                     marqueeTitle.append("恭喜" + investorLoginName + " " + new DateTime(investModel.getTradingTime()).toString("yyyy-MM-dd HH:mm:ss") + "占领先锋，奖励0.2％加息券＋50元红包    ");
@@ -263,6 +280,8 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
             List<ExtraLoanRateDto> extraLoanRateDtos = fillExtraLoanRateDto(extraLoanRateModels);
             dataDto.setExtraRates(extraLoanRateDtos);
         }
+
+
         return dataDto;
     }
 

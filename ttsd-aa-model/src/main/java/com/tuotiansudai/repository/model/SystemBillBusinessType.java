@@ -36,6 +36,8 @@ public enum SystemBillBusinessType {
 
     EXPERIENCE_INTEREST("体验金项目回款"),
 
+    INVEST_CASH_BACK("现金补贴"),
+
     MEMBERSHIP_PRIVILEGE_PURCHASE("购买增值特权");
 
     private final String description;

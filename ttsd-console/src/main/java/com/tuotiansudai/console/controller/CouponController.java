@@ -146,25 +146,6 @@ public class CouponController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/coupon", method = RequestMethod.GET)
-    public ModelAndView coupon() {
-        ModelAndView modelAndView = new ModelAndView("/coupon");
-        modelAndView.addObject("couponTypes", Lists.newArrayList(CouponType.values()));
-        modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));
-        modelAndView.addObject("userGroups", Lists.newArrayList(UserGroup.ALL_USER, UserGroup.IMPORT_USER, UserGroup.CHANNEL,
-                UserGroup.EXCHANGER_CODE, UserGroup.MEMBERSHIP_V0, UserGroup.MEMBERSHIP_V1, UserGroup.MEMBERSHIP_V2,
-                UserGroup.MEMBERSHIP_V3, UserGroup.MEMBERSHIP_V4, UserGroup.MEMBERSHIP_V5, UserGroup.FIRST_INVEST_ACHIEVEMENT,
-                UserGroup.MAX_AMOUNT_ACHIEVEMENT, UserGroup.LAST_INVEST_ACHIEVEMENT));
-        long initNum = consoleCouponService.findEstimatedCount(UserGroup.ALL_USER);
-        modelAndView.addObject("initNum", initNum);
-        return modelAndView;
-    }
-
-    @RequestMapping(value = "/birthday-coupon", method = RequestMethod.GET)
-    public ModelAndView birthdayCoupon() {
-        return new ModelAndView("/birthday-coupon", "productTypes", Lists.newArrayList(ProductType.values()));
-    }
-
     @RequestMapping(value = "/coupon", method = RequestMethod.POST)
     @ResponseBody
     public ModelAndView createCoupon(@Valid @ModelAttribute ExchangeCouponDto exchangeCouponDto, RedirectAttributes redirectAttributes) {
@@ -181,10 +162,6 @@ public class CouponController {
                 modelAndView.setViewName("redirect:/activity-manage/interest-coupons");
             } else if (exchangeCouponDto.getCouponType() == CouponType.RED_ENVELOPE) {
                 modelAndView.setViewName("redirect:/activity-manage/red-envelopes");
-            } else if (exchangeCouponDto.getCouponType() == CouponType.BIRTHDAY_COUPON) {
-                modelAndView.setViewName("redirect:/activity-manage/birthday-coupons");
-            } else {
-                modelAndView.setViewName("redirect:/activity-manage/coupons");
             }
             return modelAndView;
         } catch (CreateCouponException e) {
@@ -195,10 +172,6 @@ public class CouponController {
                     modelAndView.setViewName("redirect:/activity-manage/interest-coupon");
                 } else if (exchangeCouponDto.getCouponType() == CouponType.RED_ENVELOPE) {
                     modelAndView.setViewName("redirect:/activity-manage/red-envelope");
-                } else if (exchangeCouponDto.getCouponType() == CouponType.BIRTHDAY_COUPON) {
-                    modelAndView.setViewName("redirect:/activity-manage/birthday-coupon");
-                } else {
-                    modelAndView.setViewName("redirect:/activity-manage/coupon");
                 }
             }
             redirectAttributes.addFlashAttribute("coupon", exchangeCouponDto);
@@ -225,19 +198,13 @@ public class CouponController {
     @ResponseBody
     public ModelAndView edit(@PathVariable long id, Model model) {
         CouponModel couponModel = consoleCouponService.findCouponById(id);
-        ModelAndView modelAndView;
+        ModelAndView modelAndView = new ModelAndView();
         switch (couponModel.getCouponType()) {
             case INTEREST_COUPON:
                 modelAndView = new ModelAndView("/interest-coupon-edit");
                 break;
             case RED_ENVELOPE:
                 modelAndView = new ModelAndView("/red-envelope-edit");
-                break;
-            case BIRTHDAY_COUPON:
-                modelAndView = new ModelAndView("/birthday-coupon-edit");
-                break;
-            default:
-                modelAndView = new ModelAndView("/coupon-edit");
                 break;
         }
         if (!model.containsAttribute("coupon")) {

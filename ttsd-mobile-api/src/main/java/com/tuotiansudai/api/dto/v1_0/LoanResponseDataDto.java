@@ -78,6 +78,9 @@ public class LoanResponseDataDto {
     @ApiModelProperty(value = "借款天数", example = "360")
     private String duration;
 
+    @ApiModelProperty(value = "从当前时间到借款截止时间天数", example = "360")
+    private String availableDuration;
+
     @ApiModelProperty(value = "标的类型", example = "_30,_90,_180,_360")
     private String productNewType;
 
@@ -293,6 +296,14 @@ public class LoanResponseDataDto {
     public String getDuration() { return duration; }
 
     public void setDuration(String duration) { this.duration = duration; }
+
+    public String getAvailableDuration() {
+        return availableDuration;
+    }
+
+    public void setAvailableDuration(String availableDuration) {
+        this.availableDuration = availableDuration;
+    }
 
     public String getProductNewType() {
         return productNewType;

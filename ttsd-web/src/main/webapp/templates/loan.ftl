@@ -76,7 +76,7 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="title">项目期限</div>
-                                <div class="number">${loan.duration}<span>天</span></div>
+                                <div class="number"><span>最长</span>${loan.duration}<span>天</span></div>
                             </div>
                             <div class="col-md-4">
                                 <div class="title">项目金额</div>
@@ -201,9 +201,15 @@
                                                             </i>
                                                             <#if !(coupon.productTypeList?seq_contains(loan.productType))>
                                                                 <br/>
-                                                                <i class="ticket-term"
-                                                                   title="[适用于<#list coupon.productTypeList as productType>${productType.getName()}<#if productType_has_next> 、</#if></#list>可用]">[适用于<#list coupon.productTypeList as productType>${productType.getName()}<#if productType_has_next>
-                                                                    、</#if></#list>可用]</i>
+                                                                <#assign minProductType=361>
+                                                                <#list coupon.productTypeList as productType>
+                                                                    <#if productType.getDuration() < minProductType>
+                                                                        <#assign minProductType=productType.getDuration()>
+                                                                    </#if>
+                                                                </#list>
+                                                                <#if minProductType=90><#assign couponTips='[适用于60天以上项目可用]'></#if>
+                                                                <#if minProductType=180><#assign couponTips='[适用于120天以上项目可用]'></#if>
+                                                                <i class="ticket-term" title="${couponTips}">${couponTips}</i>
                                                             <#else>
                                                                 <br/>
                                                                 <#if coupon.investLowerLimit!=0>
@@ -348,42 +354,156 @@
                             </div>
                         </#if>
 
-                        <div class="subtitle">
-                            <h3>抵押档案</h3>
-                        </div>
-                        <div class="container-fluid list-block clearfix">
-                            <div class="row">
-                                <#if loan.pledgeHouseDetail??>
-                                    <#list ['抵押物所在地', '抵押物估值', '房屋面积', '房产证编号', '不动产登记证明', '公证书编号', '抵押物借款金额'] as key>
-                                        <#if loan.pledgeHouseDetail[key]?? && loan.pledgeHouseDetail[key] != ''>
-                                            <div class="col-md-4">${key}：${loan.pledgeHouseDetail[key]}</div>
-                                        </#if>
-                                    </#list>
-                                </#if>
-
-                                <#if loan.pledgeVehicleDetail??>
-                                    <#list ['抵押物所在地', '车辆品牌', '车辆型号', '抵押物估值', '抵押物借款金额'] as key>
-                                        <#if loan.pledgeVehicleDetail[key]?? && loan.pledgeVehicleDetail[key] != ''>
-                                            <div class="col-md-4">${key}：${loan.pledgeVehicleDetail[key]}</div>
-                                        </#if>
-                                    </#list>
-                                </#if>
-
-                                <#if loan.pledgeEnterpriseDetail??>
-                                    <#list ['公司法人', '公司最高持股人', '公司所在地', '担保方式', '抵押物估值', '抵押物所在地'] as key>
-                                        <#if loan.pledgeEnterpriseDetail[key]?? && loan.pledgeEnterpriseDetail[key] != ''>
-                                            <div class="col-md-4">${key}：${loan.pledgeEnterpriseDetail[key]}</div>
-                                        </#if>
-                                    </#list>
-                                </#if>
+                        <#if ["HOUSE", "VEHICLE"]?seq_contains(loan.pledgeType)>
+                            <div class="subtitle">
+                                <h3>抵押档案</h3>
                             </div>
-                        </div>
+                            <div class="container-fluid list-block clearfix">
+                                <div class="row">
+                                    <#if loan.pledgeHouseDetail??>
+                                        <#list ['抵押物所在地', '抵押物估值', '房屋面积', '房产证编号', '不动产登记证明', '公证书编号', '抵押物借款金额'] as key>
+                                            <#if loan.pledgeHouseDetail[key]?? && loan.pledgeHouseDetail[key] != ''>
+                                                <div class="col-md-4">${key}：${loan.pledgeHouseDetail[key]}</div>
+                                            </#if>
+                                        </#list>
+                                    </#if>
+
+                                    <#if loan.pledgeVehicleDetail??>
+                                        <#list ['抵押物所在地', '车辆品牌', '车辆型号', '抵押物估值', '抵押物借款金额'] as key>
+                                            <#if loan.pledgeVehicleDetail[key]?? && loan.pledgeVehicleDetail[key] != ''>
+                                                <div class="col-md-4">${key}：${loan.pledgeVehicleDetail[key]}</div>
+                                            </#if>
+                                        </#list>
+                                    </#if>
+
+                                </div>
+                            </div>
+                        </#if>
+
+                        <#if "ENTERPRISE_CREDIT" == loan.pledgeType>
+                            <div class="subtitle">
+                                <h3>借款人基本信息</h3>
+                            </div>
+                            <div class="container-fluid list-block clearfix">
+                                <div class="row">
+                                    <#if loan.pledgeEnterpriseDetail??>
+                                        <#list ['借款人', '公司所在地'] as key>
+                                            <#if loan.pledgeEnterpriseDetail[key]?? && loan.pledgeEnterpriseDetail[key] != ''>
+                                                <div class="col-md-6">${key}：${loan.pledgeEnterpriseDetail[key]}</div>
+                                            </#if>
+                                        </#list>
+                                        <#list ['企业借款用途描述'] as key>
+                                            <#if loan.pledgeEnterpriseDetail[key]?? && loan.pledgeEnterpriseDetail[key] != ''>
+                                                <div class="col-md-12">${key}：${loan.pledgeEnterpriseDetail[key]}</div>
+                                            </#if>
+                                        </#list>
+                                    </#if>
+                                </div>
+                            </div>
+                        </#if>
+
+                        <#if "ENTERPRISE_PLEDGE" == loan.pledgeType>
+                            <div class="subtitle">
+                                <h3>借款人基本信息</h3>
+                            </div>
+                            <div class="container-fluid list-block clearfix">
+                                <div class="row">
+                                    <#if loan.pledgeEnterpriseDetail??>
+                                        <#list ['借款人', '公司所在地'] as key>
+                                            <#if loan.pledgeEnterpriseDetail[key]?? && loan.pledgeEnterpriseDetail[key] != ''>
+                                                <div class="col-md-6">${key}：${loan.pledgeEnterpriseDetail[key]}</div>
+                                            </#if>
+                                        </#list>
+                                        <#list ['企业借款用途描述'] as key>
+                                            <#if loan.pledgeEnterpriseDetail[key]?? && loan.pledgeEnterpriseDetail[key] != ''>
+                                                <div class="col-md-12">${key}：${loan.pledgeEnterpriseDetail[key]}</div>
+                                            </#if>
+                                        </#list>
+                                    </#if>
+                                </div>
+                            </div>
+
+                            <div class="subtitle">
+                                <h3>抵押物信息</h3>
+                            </div>
+                            <div class="container-fluid list-block clearfix">
+                                <div class="row">
+                                    <#if loan.pledgeEnterpriseDetail??>
+                                        <#list ['担保方式', '抵押物估值', '抵押物所在地'] as key>
+                                            <#if loan.pledgeEnterpriseDetail[key]?? && loan.pledgeEnterpriseDetail[key] != ''>
+                                                <div class="col-md-12">${key}：${loan.pledgeEnterpriseDetail[key]}</div>
+                                            </#if>
+                                        </#list>
+                                    </#if>
+                                </div>
+                            </div>
+                        </#if>
+
+                        <#if loan.pledgeType == "ENTERPRISE_FACTORING">
+                            <div class="subtitle">
+                                <h3>借款企业信息</h3>
+                            </div>
+                            <div class="container-fluid list-block clearfix">
+                                <div class="row">
+                                    <#if loan.enterpriseInfo??>
+                                        <#list ['企业名称', '经营地址'] as key>
+                                            <#if loan.enterpriseInfo[key]?? && loan.enterpriseInfo[key] != ''>
+                                                <div class="col-md-6">${key}：${loan.enterpriseInfo[key]}</div>
+                                            </#if>
+                                        </#list>
+                                        <#list ['借款用途'] as key>
+                                            <#if loan.enterpriseInfo[key]?? && loan.enterpriseInfo[key] != ''>
+                                                <div class="col-md-12">${key}：${loan.enterpriseInfo[key]}</div>
+                                            </#if>
+                                        </#list>
+                                    </#if>
+                                </div>
+                            </div>
+
+                            <div class="subtitle">
+                                <h3>保理公司基本信息</h3>
+                            </div>
+                            <div class="container-fluid list-block clearfix">
+                                <div class="row">
+                                    <#if loan.enterpriseInfo??>
+                                        <#list ['公司名称','公司简介'] as key>
+                                            <#if loan.enterpriseInfo[key]?? && loan.enterpriseInfo[key] != ''>
+                                                <div class="col-md-12">${key}：${loan.enterpriseInfo[key]}</div>
+                                            </#if>
+                                        </#list>
+                                    </#if>
+                                </div>
+                            </div>
+                        </#if>
+
+                        <#if loan.pledgeType == "ENTERPRISE_BILL">
+                            <div class="subtitle">
+                                <h3>借款企业信息</h3>
+                            </div>
+                            <div class="container-fluid list-block clearfix">
+                                <div class="row">
+                                    <#if loan.enterpriseInfo??>
+                                        <#list ['企业名称', '经营地址'] as key>
+                                            <#if loan.enterpriseInfo[key]?? && loan.enterpriseInfo[key] != ''>
+                                                <div class="col-md-6">${key}：${loan.enterpriseInfo[key]}</div>
+                                            </#if>
+                                        </#list>
+                                        <#list ['借款用途'] as key>
+                                            <#if loan.enterpriseInfo[key]?? && loan.enterpriseInfo[key] != ''>
+                                                <div class="col-md-12">${key}：${loan.enterpriseInfo[key]}</div>
+                                            </#if>
+                                        </#list>
+                                    </#if>
+                                </div>
+                            </div>
+                        </#if>
+
                         <div class="subtitle">
                             <h3>风控审核</h3>
                         </div>
                         <div class="container-fluid danger-control clearfix">
                             <div class="row">
-                                <#if loan.pledgeType == 'ENTERPRISE'>
+                                <#if loan.pledgeType == 'ENTERPRISE_CREDIT' || loan.pledgeType == 'ENTERPRISE_PLEDGE' >
                                     <div class="col-md-6">
                                         <div class="container-fluid table">
                                             <div class="row">
@@ -412,6 +532,66 @@
                                             </div>
                                         </div>
                                     </div>
+                                <#elseif loan.pledgeType == 'ENTERPRISE_FACTORING'>
+                                    <div class="col-md-6">
+                                        <div class="container-fluid table">
+                                            <div class="row">
+                                                <div class="col-xs-6 bg">实地认证</div>
+                                                <div class="col-xs-6 br-r"><i class="fa fa-check-circle-o" aria-hidden="true"></i>已认证</div>
+                                                <div class="col-xs-6 bg">应收账质押合同</div>
+                                                <div class="col-xs-6 br-r"><i class="fa fa-check-circle-o" aria-hidden="true"></i>已认证</div>
+                                                <div class="col-xs-6 br-b bg">企业征信报告</div>
+                                                <div class="col-xs-6 br-r br-b"><i class="fa fa-check-circle-o" aria-hidden="true"></i>已认证</div>
+                                                <div class="col-xs-6 br-b bg">验资报告</div>
+                                                <div class="col-xs-6 br-r br-b"><i class="fa fa-check-circle-o" aria-hidden="true"></i>已认证</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="container-fluid table">
+                                            <div class="row">
+                                                <div class="col-xs-6 bg">不动产明细</div>
+                                                <div class="col-xs-6 br-r"><i class="fa fa-check-circle-o" aria-hidden="true"></i>已认证</div>
+                                                <div class="col-xs-6 bg">企业授信余额</div>
+                                                <div class="col-xs-6 br-r"><i class="fa fa-check-circle-o" aria-hidden="true"></i>已认证</div>
+                                                <div class="col-xs-6 br-b bg">银行流水查证</div>
+                                                <div class="col-xs-6 br-r br-b"><i class="fa fa-check-circle-o" aria-hidden="true"></i>已认证</div>
+                                                <div class="col-xs-6 br-b bg">税务缴纳</div>
+                                                <div class="col-xs-6 br-r br-b"><i class="fa fa-check-circle-o" aria-hidden="true"></i>已认证</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                <#elseif loan.pledgeType == 'ENTERPRISE_BILL'>
+                                    <div class="col-md-6">
+                                        <div class="container-fluid table">
+                                            <div class="row">
+                                                <div class="col-xs-6 bg">实地认证</div>
+                                                <div class="col-xs-6 br-r"><i class="fa fa-check-circle-o" aria-hidden="true"></i>已认证</div>
+                                                <div class="col-xs-6 bg">商业汇票</div>
+                                                <div class="col-xs-6 br-r"><i class="fa fa-check-circle-o" aria-hidden="true"></i>已认证</div>
+                                                <div class="col-xs-6 br-b bg">企业征信报告</div>
+                                                <div class="col-xs-6 br-r br-b"><i class="fa fa-check-circle-o" aria-hidden="true"></i>已认证</div>
+                                                <div class="col-xs-6 br-b bg">验资报告</div>
+                                                <div class="col-xs-6 br-r br-b"><i class="fa fa-check-circle-o" aria-hidden="true"></i>已认证</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="container-fluid table">
+                                            <div class="row">
+                                                <div class="col-xs-6 bg">不动产明细</div>
+                                                <div class="col-xs-6 br-r"><i class="fa fa-check-circle-o" aria-hidden="true"></i>已认证</div>
+                                                <div class="col-xs-6 bg">企业授信余额</div>
+                                                <div class="col-xs-6 br-r"><i class="fa fa-check-circle-o" aria-hidden="true"></i>已认证</div>
+                                                <div class="col-xs-6 br-b bg">银行流水查证</div>
+                                                <div class="col-xs-6 br-r br-b"><i class="fa fa-check-circle-o" aria-hidden="true"></i>已认证</div>
+                                                <div class="col-xs-6 br-b bg">税务缴纳</div>
+                                                <div class="col-xs-6 br-r br-b"><i class="fa fa-check-circle-o" aria-hidden="true"></i>已认证</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 <#else>
                                     <div class="col-md-6">
                                         <div class="container-fluid table">

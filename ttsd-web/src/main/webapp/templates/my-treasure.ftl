@@ -105,17 +105,17 @@
                                 </p>
 
                                 <p>
-                                    <#if (coupon.productTypeList?size)  == 4>
-                                        全部产品均可使用
+                                    <#if (coupon.productTypeList?size) == 4>
+                                        全部项目可用
                                     <#else>
+                                        <#assign minProductType=361>
                                         <#list coupon.productTypeList as productType>
-                                            <#if productType_index == (coupon.productTypeList?size - 1)>
-                                            ${productType.getName()}
-                                            <#else>
-                                            ${productType.getName()},
+                                            <#if productType.getDuration() < minProductType>
+                                                <#assign minProductType=productType.getDuration()>
                                             </#if>
                                         </#list>
-                                        产品可用
+                                        <#if minProductType=90>60天以上项目可用</#if>
+                                        <#if minProductType=180>120天以上项目可用</#if>
                                     </#if>
                                 </p>
 
@@ -193,17 +193,17 @@
                                 </p>
 
                                 <p>
-                                    <#if (record.productTypeList?size)  == 4>
-                                        全部产品均可使用
+                                    <#if (record.productTypeList?size) == 4>
+                                        全部项目可用
                                     <#else>
+                                        <#assign minProductType=361>
                                         <#list record.productTypeList as productType>
-                                            <#if productType_index == (record.productTypeList?size - 1)>
-                                            ${productType.getName()}
-                                            <#else>
-                                            ${productType.getName()},
+                                            <#if productType.getDuration() < minProductType>
+                                                <#assign minProductType=productType.getDuration()>
                                             </#if>
                                         </#list>
-                                        产品可用
+                                        <#if minProductType=90>60天以上项目可用</#if>
+                                        <#if minProductType=180>120天以上项目可用</#if>
                                     </#if>
                                 </p>
 
@@ -272,17 +272,17 @@
                                 </p>
 
                                 <p>
-                                    <#if (coupon.productTypeList?size)  == 4>
-                                        全部产品均可使用
+                                    <#if (coupon.productTypeList?size) == 4>
+                                        全部项目可用
                                     <#else>
+                                        <#assign minProductType=361>
                                         <#list coupon.productTypeList as productType>
-                                            <#if productType_index == (coupon.productTypeList?size - 1)>
-                                            ${productType.getName()}
-                                            <#else>
-                                            ${productType.getName()},
+                                            <#if productType.getDuration() < minProductType>
+                                                <#assign minProductType=productType.getDuration()>
                                             </#if>
                                         </#list>
-                                        产品可用
+                                        <#if minProductType=90>60天以上项目可用</#if>
+                                        <#if minProductType=180>120天以上项目可用</#if>
                                     </#if>
                                 </p>
 
