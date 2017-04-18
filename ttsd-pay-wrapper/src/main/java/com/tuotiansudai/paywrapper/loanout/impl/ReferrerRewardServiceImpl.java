@@ -253,13 +253,9 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
     }
 
     private long calculateReferrerReward(long amount, int loanDuration, int level, Role role) {
-        if (Lists.newArrayList(Role.ZC_STAFF, Role.ZC_STAFF_RECOMMEND).contains(role)) {
-            return 0;
-        }
-
         BigDecimal amountBigDecimal = new BigDecimal(amount);
 
-        double rewardRate = this.getRewardRate(level, Role.SD_STAFF == role);
+        double rewardRate = this.getRewardRate(level, (Role.SD_STAFF == role || Role.ZC_STAFF == role));
 
         return amountBigDecimal
                 .multiply(new BigDecimal(rewardRate))
