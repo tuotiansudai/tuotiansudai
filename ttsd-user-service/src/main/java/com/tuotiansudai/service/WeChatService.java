@@ -6,7 +6,7 @@ public interface WeChatService {
 
     String fetchOpenid(String sessionId, String state, String code);
 
-    String generateAuthorizeURL(String sessionId);
+    String generateAuthorizeURL(String sessionId, String redirect);
 
     boolean isWeChatUserBound(String openid);
 

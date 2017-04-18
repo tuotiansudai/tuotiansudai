@@ -10,11 +10,8 @@ import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.CaptchaType;
 import com.tuotiansudai.repository.model.PrepareUserModel;
 import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.service.RegisterUserService;
-import com.tuotiansudai.service.SmsCaptchaService;
-import com.tuotiansudai.service.UserService;
+import com.tuotiansudai.service.*;
 import com.tuotiansudai.util.MyShaPasswordEncoder;
-import com.tuotiansudai.service.LoginNameGenerator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -51,6 +48,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private LoginNameGenerator loginNameGenerator;
+
+    @Autowired
+    private WeChatService weChatService;
 
     @Override
     public String getMobile(String loginName) {
@@ -119,7 +119,13 @@ public class UserServiceImpl implements UserService {
         userModel.setSalt(salt);
         userModel.setPassword(myShaPasswordEncoder.encodePassword(dto.getPassword(), salt));
         userModel.setLastModifiedTime(new Date());
-        return registerUserService.register(userModel);
+        boolean register = registerUserService.register(userModel);
+
+        if (!Strings.isNullOrEmpty(dto.getOpenid())) {
+            weChatService.bind(dto.getMobile(), dto.getOpenid());
+        }
+
+        return register;
     }
 
     @Transactional

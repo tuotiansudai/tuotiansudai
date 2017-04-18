@@ -49,7 +49,7 @@ public class WeChatServiceImpl implements WeChatService {
     private String appSecret;
 
     @Value(value = "${wechat.redirect}")
-    private String redirect;
+    private String defaultRedirect;
 
     private final UserMapper userMapper;
 
@@ -120,8 +120,10 @@ public class WeChatServiceImpl implements WeChatService {
     }
 
     @Override
-    public String generateAuthorizeURL(String sessionId) {
-        return MessageFormat.format(AUTHORIZE_URL_TEMPLATE, appId, redirect, this.generateAuthorizeState(sessionId));
+    public String generateAuthorizeURL(String sessionId, String redirect) {
+        return MessageFormat.format(AUTHORIZE_URL_TEMPLATE, appId,
+                Strings.isNullOrEmpty(redirect) ? this.defaultRedirect : MessageFormat.format("{0}?redirect={1}", this.defaultRedirect, redirect),
+                this.generateAuthorizeState(sessionId));
     }
 
     @Override
@@ -132,14 +134,20 @@ public class WeChatServiceImpl implements WeChatService {
     }
 
     @Override
-    public boolean bind(String mobile, String weChatUserLoginName) {
+    public boolean bind(String mobile, String openid) {
         UserModel userModel = userMapper.findByMobile(mobile);
-        WeChatUserModel weChatUserModel = weChatUserMapper.findByLoginName(weChatUserLoginName);
+        WeChatUserModel weChatUserModel = weChatUserMapper.findByOpenid(openid);
+        if (weChatUserModel == null) {
+            return false;
+        }
+
         weChatUserModel.setLoginName(userModel.getLoginName());
         weChatUserModel.setBound(true);
         weChatUserModel.setLatestLoginTime(new Date());
 
         weChatUserMapper.update(weChatUserModel);
+
+        logger.info(MessageFormat.format("wechat bind successfully. mobile: {0} openid: {1}", mobile, openid));
 
         return true;
     }

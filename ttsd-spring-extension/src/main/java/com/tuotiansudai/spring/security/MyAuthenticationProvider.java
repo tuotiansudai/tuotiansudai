@@ -1,10 +1,10 @@
 package com.tuotiansudai.spring.security;
 
-import com.google.common.base.Function;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.SignInResult;
 import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.service.WeChatService;
 import com.tuotiansudai.spring.MyUser;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +30,9 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
     @Autowired
     private SignInClient signInClient;
 
+    @Autowired
+    private WeChatService weChatService;
+
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         MyWebAuthenticationDetails details = (MyWebAuthenticationDetails) authentication.getDetails();
@@ -48,7 +51,9 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
             throw new BadCredentialsException(signInResult != null ? signInResult.getMessage() : "登录异常");
         }
 
-        List<GrantedAuthority> grantedAuthorities = Lists.transform(signInResult.getUserInfo().getRoles(), (Function<String, GrantedAuthority>) SimpleGrantedAuthority::new);
+        this.weChatService.bind(details.getMobile(), details.getOpenid()); //登录成功绑定微信号
+
+        List<GrantedAuthority> grantedAuthorities = Lists.transform(signInResult.getUserInfo().getRoles(), SimpleGrantedAuthority::new);
 
         UsernamePasswordAuthenticationToken result = new UsernamePasswordAuthenticationToken(
                 new MyUser(signInResult.getToken(), signInResult.getUserInfo().getLoginName(), authentication.getCredentials().toString(), true, true, true, true, grantedAuthorities, signInResult.getUserInfo().getMobile()),

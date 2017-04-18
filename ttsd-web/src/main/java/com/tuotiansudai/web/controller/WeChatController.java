@@ -29,12 +29,14 @@ public class WeChatController {
     }
 
     @RequestMapping(path = "/authorize", method = RequestMethod.GET)
-    public ModelAndView authorize(HttpServletRequest httpServletRequest) {
-        return new ModelAndView(MessageFormat.format("redirect:{0}", weChatService.generateAuthorizeURL(httpServletRequest.getSession().getId())));
+    public ModelAndView authorize(HttpServletRequest httpServletRequest,
+                                  @RequestParam(name = "redirect", required = false) String redirect) {
+        return new ModelAndView(MessageFormat.format("redirect:{0}", weChatService.generateAuthorizeURL(httpServletRequest.getSession().getId(), redirect)));
     }
 
     @RequestMapping(path = "/openid", method = RequestMethod.GET)
     public ModelAndView openid(HttpServletRequest httpServletRequest,
+                               @RequestParam(name = "redirect", required = false) String redirect,
                                @RequestParam(name = "code") String code,
                                @RequestParam(name = "state") String state) {
         String openid = weChatService.fetchOpenid(httpServletRequest.getSession().getId(), state, code);
@@ -50,11 +52,6 @@ public class WeChatController {
             httpServletRequest.getSession().setAttribute("weChatUserLoginName", loginName);
         }
 
-        return new ModelAndView("redirect:/");
-    }
-
-    @RequestMapping(path = "/bind", method = RequestMethod.POST)
-    public ModelAndView bind(HttpServletRequest httpServletRequest) {
-        return new ModelAndView(MessageFormat.format("redirect:{0}", weChatService.generateAuthorizeURL(httpServletRequest.getSession().getId())));
+        return new ModelAndView(Strings.isNullOrEmpty(redirect) ? "redirect:/" : MessageFormat.format("redirect:{0}", redirect));
     }
 }
