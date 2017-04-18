@@ -61,13 +61,15 @@ a.anxin-button {
       border:1px solid #b6c6de;
       height:235px;
       background: #e6ecf4;
-
+      &.jigou-img{
+        background:#e6ecf4 url("../images/anxin_landing/jigou.jpg") no-repeat center ;
+        @media(max-width:700px){
+          height:120px;
+        }
+      }
       p {
         padding: 20px 10px 2px 10px;
         text-align: left;
-      }
-      .organize {
-        margin-top:35px;
       }
     }
   }
@@ -196,10 +198,6 @@ a.anxin-button {
       dd {
         height:auto;
         padding-bottom:15px;
-        .organize {
-          width:94%;
-          margin-top: 20px;
-        }
       }
     }
     .CFCA-do-what {
