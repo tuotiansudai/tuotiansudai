@@ -929,7 +929,7 @@
         WHERE
         status = 'SUCCESS' AND login_name = #{loginName} AND transfer_invest_id IS NULL
         <if test="startTime != null &amp;&amp; endTime != null">
-            and created_time between #{startTime} and #{endTime}
+            and trading_time between #{startTime} and #{endTime}
         </if>
         <if test="activityDesc != null">
             AND loan_id IN (
