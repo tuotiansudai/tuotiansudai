@@ -16,7 +16,7 @@
                     <div class="activity-box" data-href="${activityItem.webActivityUrl}">
                         <div class="activity-img">
                             <div class="img-inner">
-                                <img src="${staticServer}${activityItem.webPictureUrl}" alt="${activityItem.description}">
+                                <img src="${commonStaticServer}${activityItem.webPictureUrl}" alt="${activityItem.description}">
                             </div>
                         </div>
                         <i class="icon-going"><span class="hide">进行中</span></i>
@@ -43,7 +43,7 @@
                     <div class="activity-box" data-href="${activityItem.webActivityUrl}">
                         <div class="activity-img">
                             <div class="img-inner">
-                                <img src="${staticServer}${activityItem.webPictureUrl}" alt="${activityItem.description}">
+                                <img src="${commonStaticServer}${activityItem.webPictureUrl}" alt="${activityItem.description}">
                             </div>
                         </div>
                         <i class="icon-finished"><span class="hide">已结束</span></i>

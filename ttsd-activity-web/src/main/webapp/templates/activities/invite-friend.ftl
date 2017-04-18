@@ -215,8 +215,6 @@
             </div>
         </div>
         <div class="reward-item">
-            <img src="${staticServer}/activity/images/invite-friend/reward-img.png" width="100%" class="media-item">
-            <img src="${staticServer}/activity/images/invite-friend/reward-img-phone.png" width="100%" class="media-item-phone">
         </div>
         <div class="btn-item media-item">
             <p>
@@ -255,7 +253,6 @@
             <ul class="info-item free-list">
                 <li class="money-type">
                     <div class="info-intro free-icon">
-                        <img src="${staticServer}/activity/images/invite-friend/free-img.png" width="80%">
                     </div>
                     <div class="info-name">体验金6888元</div>
                 </li>
