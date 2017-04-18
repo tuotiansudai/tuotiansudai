@@ -115,10 +115,18 @@ public class InterestCalculator {
         if (loanModel == null || couponModel == null) {
             return 0;
         }
-        List<Integer> daysOfPeriodList = LoanPeriodCalculator.calculateDaysOfPerPeriod(new Date(), loanModel.getDeadline(), loanModel.getType());
-        for (Integer daysOfPeriod : daysOfPeriodList) {
-            couponExpectedInterest += getCouponExpectedInterest(loanModel, couponModel, investAmount, daysOfPeriod);
+        switch (couponModel.getCouponType()) {
+            case INTEREST_COUPON:
+                List<Integer> daysOfPeriodList = LoanPeriodCalculator.calculateDaysOfPerPeriod(new Date(), loanModel.getDeadline(), loanModel.getType());
+                for (Integer daysOfPeriod : daysOfPeriodList) {
+                    couponExpectedInterest += getCouponExpectedInterest(loanModel, couponModel, investAmount, daysOfPeriod);
+                }
+                break;
+            case RED_ENVELOPE:
+                couponExpectedInterest = getCouponExpectedInterest(loanModel, couponModel, investAmount, loanModel.getDuration());
+                break;
         }
+
         return couponExpectedInterest;
     }
 
