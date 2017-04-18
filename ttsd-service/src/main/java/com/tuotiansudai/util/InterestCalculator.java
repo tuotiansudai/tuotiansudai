@@ -111,10 +111,15 @@ public class InterestCalculator {
     }
 
     public static long estimateCouponExpectedInterest(long investAmount, LoanModel loanModel, CouponModel couponModel) {
+        long couponExpectedInterest = 0;
         if (loanModel == null || couponModel == null) {
             return 0;
         }
-        return getCouponExpectedInterest(loanModel, couponModel, investAmount, LoanPeriodCalculator.calculateDuration(new Date(), loanModel.getDeadline()));
+        List<Integer> daysOfPeriodList = LoanPeriodCalculator.calculateDaysOfPerPeriod(new Date(), loanModel.getDeadline(), loanModel.getType());
+        for (Integer daysOfPeriod : daysOfPeriodList) {
+            couponExpectedInterest += getCouponExpectedInterest(loanModel, couponModel, investAmount, daysOfPeriod);
+        }
+        return couponExpectedInterest;
     }
 
     public static long calculateCouponActualInterest(long investAmount, CouponModel couponModel, UserCouponModel userCouponModel, LoanModel loanModel, LoanRepayModel currentLoanRepayModel, List<LoanRepayModel> loanRepayModels) {
@@ -172,10 +177,12 @@ public class InterestCalculator {
     }
 
     public static long estimateCouponExpectedFee(LoanModel loanModel, CouponModel couponModel, long amount, double investFeeRate) {
-        long estimateCouponExpectedInterest = estimateCouponExpectedInterest(amount, loanModel, couponModel);
         long expectedFee = 0;
-        if (Lists.newArrayList(CouponType.NEWBIE_COUPON, CouponType.INVEST_COUPON, CouponType.INTEREST_COUPON, CouponType.BIRTHDAY_COUPON).contains(couponModel.getCouponType())) {
-            expectedFee = new BigDecimal(estimateCouponExpectedInterest).multiply(new BigDecimal(investFeeRate)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
+        List<Integer> daysOfPeriodList = LoanPeriodCalculator.calculateDaysOfPerPeriod(new Date(), loanModel.getDeadline(), loanModel.getType());
+        for (Integer daysOfPeriod : daysOfPeriodList) {
+            if (Lists.newArrayList(CouponType.NEWBIE_COUPON, CouponType.INVEST_COUPON, CouponType.INTEREST_COUPON, CouponType.BIRTHDAY_COUPON).contains(couponModel.getCouponType())) {
+                expectedFee += new BigDecimal(getCouponExpectedInterest(loanModel, couponModel, amount, daysOfPeriod)).multiply(new BigDecimal(investFeeRate)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
+            }
         }
         return expectedFee;
     }
