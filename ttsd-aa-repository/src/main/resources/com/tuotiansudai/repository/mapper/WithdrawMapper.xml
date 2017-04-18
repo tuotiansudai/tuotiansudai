@@ -177,11 +177,11 @@
             and user.mobile = #{mobile}
         </if>
 
-        <if test="role != '' and role != 'UN_LOANER' ">
+        <if test="role != null and role != '' and role != 'UN_LOANER' ">
             join user_role ur on withdraw.login_name = ur.login_name and ur.role = #{role}
         </if>
 
-        <if test="role == 'UN_LOANER' ">
+        <if test="role != null and role == 'UN_LOANER' ">
             JOIN (SELECT
             login_name, GROUP_CONCAT(role) AS role
             FROM
