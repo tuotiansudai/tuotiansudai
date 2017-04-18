@@ -23,12 +23,17 @@ public class ExperienceAssigningMessage implements Serializable {
         this.loginName = loginName;
     }
 
-    public ExperienceAssigningMessage(String loginName, long experienceAmount, ExperienceBillOperationType experienceBillOperationType, ExperienceBillBusinessType experienceBillBusinessType) {
+    public ExperienceAssigningMessage(String loginName, long experienceAmount, ExperienceBillOperationType experienceBillOperationType, ExperienceBillBusinessType experienceBillBusinessType, String note) {
         this.loginName = loginName;
         this.experienceAmount = experienceAmount;
         this.experienceBillOperationType = experienceBillOperationType;
         this.experienceBillBusinessType = experienceBillBusinessType;
-        this.note = MessageFormat.format(experienceBillBusinessType.getContentTemplate(), AmountConverter.convertCentToString(experienceAmount), new Date());
+        this.note = note;
+    }
+
+    public ExperienceAssigningMessage(String loginName, long experienceAmount, ExperienceBillOperationType experienceBillOperationType, ExperienceBillBusinessType experienceBillBusinessType) {
+        this(loginName, experienceAmount, experienceBillOperationType, experienceBillBusinessType,
+                MessageFormat.format(experienceBillBusinessType.getContentTemplate(), AmountConverter.convertCentToString(experienceAmount), new Date());
     }
 
     public Date getCurrentDate() {
