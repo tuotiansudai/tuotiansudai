@@ -201,9 +201,15 @@
                                                             </i>
                                                             <#if !(coupon.productTypeList?seq_contains(loan.productType))>
                                                                 <br/>
-                                                                <i class="ticket-term"
-                                                                   title="[适用于<#list coupon.productTypeList as productType>${productType.getName()}<#if productType_has_next> 、</#if></#list>可用]">[适用于<#list coupon.productTypeList as productType>${productType.getName()}<#if productType_has_next>
-                                                                    、</#if></#list>可用]</i>
+                                                                <#assign minProductType=361>
+                                                                <#list coupon.productTypeList as productType>
+                                                                    <#if productType.getDuration() < minProductType>
+                                                                        <#assign minProductType=productType.getDuration()>
+                                                                    </#if>
+                                                                </#list>
+                                                                <#if minProductType=90><#assign couponTips='[适用于60天以上项目可用]'></#if>
+                                                                <#if minProductType=180><#assign couponTips='[适用于120天以上项目可用]'></#if>
+                                                                <i class="ticket-term" title="${couponTips}">${couponTips}</i>
                                                             <#else>
                                                                 <br/>
                                                                 <#if coupon.investLowerLimit!=0>
