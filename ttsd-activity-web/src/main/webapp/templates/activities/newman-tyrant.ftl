@@ -89,7 +89,7 @@
                                             <td>{{$index+1}}</td>
                                         {{/if}}
                                         <td>{{$value.loginName}}</td>
-                                        <td>{{$value.sumAmount}}</td>
+                                        <td>{{$value.centSumAmount}}</td>
                                         {{if $index==0}}
                                         <td>“金/银”实物大奖</td>
                                         {{else if $index==1}}
