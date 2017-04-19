@@ -642,6 +642,7 @@
         ORDER BY sumAmount DESC , MAX(invest.trading_time)
     </select>
 
+
     <select id="findHeroRankingByReferrer" parameterType="map" resultMap="heroRankingView">
         SELECT
           rr.`referrer_login_name` AS login_name,

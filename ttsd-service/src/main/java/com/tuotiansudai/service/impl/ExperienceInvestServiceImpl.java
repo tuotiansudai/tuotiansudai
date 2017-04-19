@@ -13,6 +13,7 @@ import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.ExperienceBillService;
 import com.tuotiansudai.service.ExperienceInvestService;
+import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.InterestCalculator;
 import org.apache.commons.lang3.StringUtils;
@@ -84,8 +85,10 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
 
         InvestRepayModel investRepayModel = new InvestRepayModel(idGenerator.generate(), investModel.getId(), 1, 0, expectedInterest, 0, repayDate, RepayStatus.REPAYING);
         investRepayMapper.create(Lists.newArrayList(investRepayModel));
-
-        registerUserService.updateUserExperienceBalanceByLoginName(Long.parseLong(investDto.getAmount()), investDto.getLoginName(), ExperienceBillOperationType.OUT, ExperienceBillBusinessType.INVEST_LOAN);
+        String note = MessageFormat.format(ExperienceBillBusinessType.INVEST_LOAN.getContentTemplate(),
+                AmountConverter.convertCentToString(Long.parseLong(investDto.getAmount())),
+                new Date());
+        registerUserService.updateUserExperienceBalanceByLoginName(Long.parseLong(investDto.getAmount()), investDto.getLoginName(), ExperienceBillOperationType.OUT, ExperienceBillBusinessType.INVEST_LOAN,note);
         return investModel;
     }
 
