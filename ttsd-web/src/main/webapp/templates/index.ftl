@@ -116,7 +116,7 @@
                                     <@percentFraction>${newbieLoan.newbieInterestCouponRate}</@percentFraction>%
                                 </#if></span>预期年化收益
                             </li>
-                            <li><em class="duration-day">${newbieLoan.duration}</em>天<br>项目期限</li>
+                            <li>最长<em class="duration-day">${newbieLoan.duration}</em>天<br>项目期限</li>
                         </ul>
                         <#if newbieLoan.status== 'RAISING'>
                         <#--筹款-->
