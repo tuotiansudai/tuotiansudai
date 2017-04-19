@@ -217,8 +217,8 @@ public class RepayServiceImpl implements RepayService {
 
                 investRepayDataItemDto.setExpectedFee(AmountConverter.convertCentToString(expectedFee));
                 investRepayDataItemDto.setCouponExpectedInterest(AmountConverter.convertCentToString(couponExpectedInterest));
-                if (couponExpectedInterest > 0) {
-                    investRepayDataItemDto.setAmount(AmountConverter.convertCentToString(expectedAmount + couponExpectedInterest));
+                if (sumExpectedInterest > 0) {
+                    investRepayDataItemDto.setAmount(AmountConverter.convertCentToString(expectedAmount + sumExpectedInterest));
                 }
                 sumActualInterest += repayAmount;
                 if (!investRepayModel.getStatus().equals(RepayStatus.COMPLETE)) {
