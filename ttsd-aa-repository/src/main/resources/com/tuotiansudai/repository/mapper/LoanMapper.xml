@@ -467,7 +467,6 @@
         select * from loan
         where loan.status not in ('WAITING_VERIFY', 'CANCEL')
         and loan.activity_type = 'NEWBIE'
-        and pledge_type in ('HOUSE', 'VEHICLE')
         order by
         case loan.status
         when 'RAISING' then 1
