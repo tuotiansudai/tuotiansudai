@@ -13,36 +13,6 @@
 
 </head>
 <body>
-<div class="weChat-container" id="weChatStartContainer">
-    <h2 class="note">请填写手机号码，以补全您的拓天速贷账户信息。</h2>
-
-    <form id="formStart">
-        <input validate class="login-name" type="text" value="" name="username" placeholder="请输入账号/手机号" maxlength="25"/>
-        <div class="error-box">sdsd</div>
-        <button type="submit" class="btn-normal">下一步</button>
-    </form>
-
-    <div class="notice-tip">
-        <b>温馨提示:</b>
-        <p>若您输入的手机号码已被注册，需输入相应的登录密码补全账户信息；若未被注册需要设置密码补全信息。</p>
-    </div>
-</div>
-
-
-<div class="weChat-container weChat-login">
-    <h2 class="note">您输入的<i class="mobile">186****7529</i>手机号已经注册速贷账户</h2>
-    <form id="formLogin" class="form-login">
-        <input validate class="password" type="password"  placeholder="请输入登录密码"/>
-        <input validate class="captcha" type="text"  placeholder="请输入图形验证码"/>
-        <img src="https://tuotiansudai.com/login/captcha??1492589585943" class="image-captcha" id="imageCaptcha"/>
-
-        <div class="error-box">sdsd</div>
-        <button type="submit" class="btn-normal">下一步</button>
-    </form>
-</div>
-
-
-
 <div class="weChat-container weChat-register">
 
     <form id="formRegister" class="form-register">
@@ -61,14 +31,6 @@
     </form>
 </div>
 
-
-<div class="weChat-container success-box">
-    <span class="result-ok">
-        <i class="icon-sucess"></i>
-        <em>登录成功</em>
-    </span>
-    <button type="button" class="btn-normal">确认</button>
-</div>
 <script>
     window.staticServer='${commonStaticServer}';
 </script>

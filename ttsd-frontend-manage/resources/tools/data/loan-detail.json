@@ -1,0 +1,9 @@
+{
+  "css": {
+    "loanDetail": "loan_detail.css"
+  },
+  "js": {
+    "loanDetail": "loan_detail1.js"
+  },
+  "staticServer": "http://localhost:8088"
+}

@@ -1,0 +1,13 @@
+{
+	"css": {
+		"account_mybean": "account_mybean.css"
+	},
+	"js": {
+		"point": "point.js"
+	},
+	"linkExchangeList": [{
+		"linkUrl": 1212,
+		"noFollow": true,
+		"title": 121212
+	}]
+}
