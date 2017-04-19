@@ -434,7 +434,7 @@ body {
         top:219px;
         .inner-progress-active {
           left: auto;
-          right: 6%;
+          right: 7%;
         }
         .step-option {
           &.step-four {
@@ -505,6 +505,16 @@ body {
 
 }
 
+//iphone 5
+@media screen and(max-width: 415px) {
+  .heavy-benefits-container .align-box:nth-child(2) .step-three {
+    right:35px;
+  }
+  .heavy-benefits-container .align-box .inner-progress-active {
+    left: 7%;
+  }
+}
+
 //iphone 4
 @media screen and(max-width: 330px) {
   .heavy-benefits-container .align-box .inner-progress {
@@ -512,16 +522,27 @@ body {
     left: 8%;
 
   }
+
+  .heavy-benefits-container .align-box:nth-child(2) {
+    right: -2px;
+  }
   .heavy-benefits-container .align-box:nth-child(2) .step-three {
     right: 34px;
   }
   .heavy-benefits-container .align-box:nth-child(4) {
     left: 0px;
   }
-}
-
-@media screen and(max-width: 415px) {
-  .heavy-benefits-container .align-box:nth-child(2) .step-three {
-    right:35px;
+  .heavy-benefits-container .align-box:nth-child(4) .inner-progress-active {
+    left: 32%;
+  }
+  .heavy-benefits-container .align-box:nth-child(4) .step-option.step-five {
+    left: 14%;
+  }
+  .heavy-benefits-container .align-box .inner-progress-active {
+    left: 6%;
+  }
+  .heavy-benefits-container .align-box:nth-child(5) .step-option.step-six .step-text {
+    left: -40px;
   }
 }
+

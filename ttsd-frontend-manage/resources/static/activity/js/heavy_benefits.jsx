@@ -61,6 +61,9 @@ function investAmount(currentAmount) {
             '7':function() {
                 var nowPercent = (percent[6]-percent[5]) * (currentAmount - initNum*16)/(initNum*4)+percent[5] ;
                 return nowPercent;
+            },
+            '8':function() {
+                return '0.95';
             }
         }
         return Stall[kind]();
@@ -106,29 +109,29 @@ if(browser=='mobile') {
         if(kind =='3' ) {
             $alignBoxC.eq(0).find('.inner-progress-active').css({'width':'50%'});
         } else if(kind =='4') {
-            $alignBoxC.eq(0).find('.inner-progress-active').css({'width':'88%'});
+            $alignBoxC.eq(0).find('.inner-progress-active').css({'width':'87%'});
             $alignBoxC.eq(1).find('.inner-progress-active').css({'height':'50%'});
         } else if(kind == '5') {
-            $alignBoxC.eq(0).find('.inner-progress-active').css({'width':'88%'});
+            $alignBoxC.eq(0).find('.inner-progress-active').css({'width':'87%'});
             $alignBoxC.eq(1).find('.inner-progress-active').css({'height':'100%'});
             $alignBoxC.eq(2).find('.inner-progress-active').css({'width':'40%'});
         } else if(kind == '6') {
-            $alignBoxC.eq(0).find('.inner-progress-active').css({'width':'88%'});
+            $alignBoxC.eq(0).find('.inner-progress-active').css({'width':'87%'});
             $alignBoxC.eq(1).find('.inner-progress-active').css({'height':'100%'});
-            $alignBoxC.eq(2).find('.inner-progress-active').css({'width':'88%'});
+            $alignBoxC.eq(2).find('.inner-progress-active').css({'width':'87%'});
             $alignBoxC.eq(3).find('.inner-progress-active').css({'height':'50%'});
         } else if(kind == '7') {
-            $alignBoxC.eq(0).find('.inner-progress-active').css({'width':'88%'});
+            $alignBoxC.eq(0).find('.inner-progress-active').css({'width':'87%'});
             $alignBoxC.eq(1).find('.inner-progress-active').css({'height':'100%'});
-            $alignBoxC.eq(2).find('.inner-progress-active').css({'width':'88%'});
+            $alignBoxC.eq(2).find('.inner-progress-active').css({'width':'87%'});
             $alignBoxC.eq(3).find('.inner-progress-active').css({'height':'100%'});
             $alignBoxC.eq(4).find('.inner-progress-active').css({'width':'42%'});
         } else if(kind=='8') {
-            $alignBoxC.eq(0).find('.inner-progress-active').css({'width':'88%'});
+            $alignBoxC.eq(0).find('.inner-progress-active').css({'width':'87%'});
             $alignBoxC.eq(1).find('.inner-progress-active').css({'height':'100%'});
-            $alignBoxC.eq(2).find('.inner-progress-active').css({'width':'88%'});
+            $alignBoxC.eq(2).find('.inner-progress-active').css({'width':'87%'});
             $alignBoxC.eq(3).find('.inner-progress-active').css({'height':'100%'});
-            $alignBoxC.eq(4).find('.inner-progress-active').css({'width':'88%'});
+            $alignBoxC.eq(4).find('.inner-progress-active').css({'width':'87%'});
         }
     })();
 } else if(browser=='pc') {
