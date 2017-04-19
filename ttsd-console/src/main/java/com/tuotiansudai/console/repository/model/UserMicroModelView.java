@@ -23,6 +23,10 @@ public class UserMicroModelView implements Serializable {
 
     private long totalInvestAmount;
 
+    private long totalWithdrawAmount;
+
+    private long userBalance;
+
     private int investCount;
 
     private Double averageInvestAmount;
@@ -42,6 +46,10 @@ public class UserMicroModelView implements Serializable {
     private long totalRepayingAmount;
 
     private Date lastLoginTime;
+
+    private Date lastRepayTime;
+
+    private Date lastWithdrawTime;
 
     private Integer lastLoginToNow = null;
 
@@ -109,6 +117,22 @@ public class UserMicroModelView implements Serializable {
 
     public void setTotalInvestAmount(long totalInvestAmount) {
         this.totalInvestAmount = totalInvestAmount;
+    }
+
+    public long getTotalWithdrawAmount() {
+        return totalWithdrawAmount;
+    }
+
+    public void setTotalWithdrawAmount(long totalWithdrawAmount) {
+        this.totalWithdrawAmount = totalWithdrawAmount;
+    }
+
+    public long getUserBalance() {
+        return userBalance;
+    }
+
+    public void setUserBalance(long userBalance) {
+        this.userBalance = userBalance;
     }
 
     public int getInvestCount() {
@@ -189,6 +213,22 @@ public class UserMicroModelView implements Serializable {
 
     public void setLastLoginTime(Date lastLoginTime) {
         this.lastLoginTime = lastLoginTime;
+    }
+
+    public Date getLastRepayTime() {
+        return lastRepayTime;
+    }
+
+    public void setLastRepayTime(Date lastRepayTime) {
+        this.lastRepayTime = lastRepayTime;
+    }
+
+    public Date getLastWithdrawTime() {
+        return lastWithdrawTime;
+    }
+
+    public void setLastWithdrawTime(Date lastWithdrawTime) {
+        this.lastWithdrawTime = lastWithdrawTime;
     }
 
     public Integer getLastLoginToNow() {

@@ -615,6 +615,8 @@ public class InvestServiceImpl implements InvestService {
         }
         try {
             mqWrapperClient.publishMessage(MessageTopic.InvestSuccess, new InvestSuccessMessage(investInfo, loanDetailInfo, userInfo));
+            UserInfoActivity userInfoActivity = new UserInfoActivity(userInfo,userModel.getRegisterTime());
+            mqWrapperClient.sendMessage(MessageQueue.InvestSuccess_InvestNewmanTyrant,new InvestSuccessNewmanTyrantMessage(investInfo,userInfoActivity));
         } catch (JsonProcessingException e) {
             // 记录日志，发短信通知管理员
             fatalLog("[MQ] invest success, but send mq message fail", String.valueOf(investInfo.getInvestId()), investInfo.getAmount(), investInfo.getLoginName(), investModel.getLoanId(), e);

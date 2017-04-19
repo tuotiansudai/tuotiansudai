@@ -23,7 +23,7 @@ public class ConsoleWithdrawService {
 
     public BaseDto<BasePaginationDataDto<WithdrawPaginationItemDataDto>> findWithdrawPagination(String withdrawId, String mobile,
                                                                                                 WithdrawStatus status, Source source,
-                                                                                                int index, int pageSize, Date startTime, Date endTime, Role role) {
+                                                                                                int index, int pageSize, Date startTime, Date endTime, String role) {
         if (index < 1) {
             index = 1;
         }
@@ -55,7 +55,7 @@ public class ConsoleWithdrawService {
                                       Source source,
                                       Date startTime,
                                       Date endTime,
-                                      Role role) {
+                                      String role) {
 
         return withdrawMapper.findSumWithdrawAmount(withdrawId, mobile, status, source, role, startTime, endTime);
     }
@@ -66,7 +66,7 @@ public class ConsoleWithdrawService {
                                    Source source,
                                    Date startTime,
                                    Date endTime,
-                                   Role role) {
+                                   String role) {
 
         return withdrawMapper.findSumWithdrawFee(withdrawId, mobile, status, source, startTime, endTime, role);
     }
