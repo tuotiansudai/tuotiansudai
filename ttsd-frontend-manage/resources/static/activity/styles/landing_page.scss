@@ -97,7 +97,7 @@ form label.error {
   .landing-top-banner {
     position: relative;
     height: 350px;
-    background: url("/activity/images/sign/actor/landingpage/newbie-banner.png") center top no-repeat;
+    background: url("../images/landingpage/newbie-banner.png") center top no-repeat;
 
     .img-app-banner {
       width: 100%;
@@ -111,7 +111,7 @@ form label.error {
     margin-top: 30px;
     padding-bottom: 40px;
     .image-title {
-      background: url("/activity/images/sign/actor/landingpage/newbie-step1-title.png") center top no-repeat;
+      background: url("../images/landingpage/newbie-step1-title.png") center top no-repeat;
       height: 40px;
     }
   }
@@ -131,17 +131,17 @@ form label.error {
       width: 100%;
       height: 184px;
       position: absolute;
-      background: url("/activity/images/sign/actor/landingpage/newbie-decoration-bg.png") center top no-repeat;
+      background: url("../images/landingpage/newbie-decoration-bg.png") center top no-repeat;
       top: -60px;
     }
 
     .image-title {
-      background: url("/activity/images/sign/actor/landingpage/newbie-step2-title.png") center top no-repeat;
+      background: url("../images/landingpage/newbie-step2-title.png") center top no-repeat;
       height: 40px;
     }
 
     .image-red-envelope {
-      background: url("/activity/images/sign/actor/landingpage/newbie-step2-red-envelope.png") center top no-repeat;
+      background: url("../images/landingpage/newbie-step2-red-envelope.png") center top no-repeat;
       height: 173px;
       margin-top: 20px;
       margin-bottom: 30px;
@@ -160,7 +160,7 @@ form label.error {
     padding-top: 30px;
 
     .image-title {
-      background: url("/activity/images/sign/actor/landingpage/newbie-step3-title-new.png") center top no-repeat;
+      background: url("../images/landingpage/newbie-step3-title-new.png") center top no-repeat;
       height: 40px;
     }
 
@@ -196,12 +196,12 @@ form label.error {
       width: 100%;
       height: 184px;
       position: absolute;
-      background: url("/activity/images/sign/actor/landingpage/newbie-decoration-bg.png") center top no-repeat;
+      background: url("../images/landingpage/newbie-decoration-bg.png") center top no-repeat;
       top: -60px;
     }
 
     .image-title {
-      background: url("/activity/images/sign/actor/landingpage/newbie-step4-title.png") center top no-repeat;
+      background: url("../images/landingpage/newbie-step4-title.png") center top no-repeat;
       height: 40px;
     }
 
@@ -222,7 +222,7 @@ form label.error {
 
     .image-coupon {
       margin-top: 20px;
-      background: url("/activity/images/sign/actor/landingpage/newbie-step4-coupon.png") center top no-repeat;
+      background: url("../images/landingpage/newbie-step4-coupon.png") center top no-repeat;
       height: 153px;
     }
 
@@ -341,27 +341,27 @@ form label.error {
         .newbie-register-ic-mobile {
           width: 23px;
           height: 23px;
-          background: url("/activity/images/sign/actor/landingpage/newbie-icon-phone.png") center left no-repeat;
+          background: url("../images/landingpage/newbie-icon-phone.png") center left no-repeat;
         }
 
         .newbie-register-ic-password {
           width: 23px;
           height: 23px;
-          background: url("/activity/images/sign/actor/landingpage/newbie-icon-pwd.png") center left no-repeat;
+          background: url("../images/landingpage/newbie-icon-pwd.png") center left no-repeat;
         }
 
         .newbie-register-ic-img-captcha {
           width: 23px;
           height: 23px;
           margin-top: 3px;
-          background: url("/activity/images/sign/actor/landingpage/newbie-icon-img-captcha.png") center left no-repeat;
+          background: url("../images/landingpage/newbie-icon-img-captcha.png") center left no-repeat;
         }
 
         .newbie-register-ic-captcha {
           width: 23px;
           height: 18px;
           margin-top: 3px;
-          background: url("/activity/images/sign/actor/landingpage/newbie-icon-captcha.png") center left no-repeat;
+          background: url("../images/landingpage/newbie-icon-captcha.png") center left no-repeat;
         }
 
         font-size: 10px;
@@ -555,7 +555,7 @@ form label.error {
       padding-top: -10px;
       padding-bottom: 30px;
       .image-title {
-        background: url("/activity/images/sign/actor/landingpage/newbie-step1-title-app.png") center top no-repeat;
+        background: url("../images/landingpage/newbie-step1-title-app.png") center top no-repeat;
         height: 50px;
         background-size: auto 50px;
       }
@@ -565,7 +565,7 @@ form label.error {
       padding-top: 20px;
       padding-bottom: 20px;
       .image-title {
-        background: url("/activity/images/sign/actor/landingpage/newbie-step2-title-app.png") center top no-repeat;
+        background: url("../images/landingpage/newbie-step2-title-app.png") center top no-repeat;
         height: 50px;
         background-size: auto 50px;
       }
@@ -580,7 +580,7 @@ form label.error {
         height: 116px;
         position: absolute;
         left: 0;
-        background: url("/activity/images/sign/actor/landingpage/newbie-decoration-bg-app-l.png");
+        background: url("../images/landingpage/newbie-decoration-bg-app-l.png");
         background-size: auto 116px;
         top: -20px;
 
@@ -591,7 +591,7 @@ form label.error {
         height: 145px;
         position: absolute;
         right: 0;
-        background: url("/activity/images/sign/actor/landingpage/newbie-decoration-bg-app-r.png");
+        background: url("../images/landingpage/newbie-decoration-bg-app-r.png");
         background-size: auto 145px;
         top: -20px;
       }
@@ -599,7 +599,7 @@ form label.error {
       .image-red-envelope {
         margin-top: 15px;
         margin-bottom: 20px;
-        background: url("/activity/images/sign/actor/landingpage/newbie-step2-red-envelope.png") center top no-repeat;
+        background: url("../images/landingpage/newbie-step2-red-envelope.png") center top no-repeat;
         height: 114px;
         background-size: auto 114px;
       }
@@ -610,7 +610,7 @@ form label.error {
       padding-bottom: 20px;
 
       .image-title {
-        background: url("/activity/images/sign/actor/landingpage/newbie-step3-title-app-new.png") center top no-repeat;
+        background: url("../images/landingpage/newbie-step3-title-app-new.png") center top no-repeat;
         height: 50px;
         background-size: auto 50px;
       }
@@ -647,7 +647,7 @@ form label.error {
         height: 116px;
         position: absolute;
         left: 0;
-        background: url("/activity/images/sign/actor/landingpage/newbie-decoration-bg-app-l.png");
+        background: url("../images/landingpage/newbie-decoration-bg-app-l.png");
         background-size: auto 116px;
         top: -20px;
 
@@ -658,13 +658,13 @@ form label.error {
         height: 145px;
         position: absolute;
         right: 0;
-        background: url("/activity/images/sign/actor/landingpage/newbie-decoration-bg-app-r.png");
+        background: url("../images/landingpage/newbie-decoration-bg-app-r.png");
         background-size: auto 145px;
         top: -20px;
       }
 
       .image-title {
-        background: url("/activity/images/sign/actor/landingpage/newbie-step4-title-app.png") center top no-repeat;
+        background: url("../images/landingpage/newbie-step4-title-app.png") center top no-repeat;
         height: 50px;
         background-size: auto 50px;
       }
@@ -687,7 +687,7 @@ form label.error {
 
       .image-coupon {
         margin-top: 20px;
-        background: url("/activity/images/sign/actor/landingpage/newbie-step4-coupon.png") center top no-repeat;
+        background: url("../images/landingpage/newbie-step4-coupon.png") center top no-repeat;
         height: 132px;
         background-size: auto 132px;
       }
