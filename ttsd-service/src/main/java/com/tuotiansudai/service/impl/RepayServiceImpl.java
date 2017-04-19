@@ -209,7 +209,7 @@ public class RepayServiceImpl implements RepayService {
                         }
 
                         if (investExtraRateModel.getExpectedInterest() > 0) {
-                            investRepayDataItemDto.setAmount(AmountConverter.convertCentToString(AmountConverter.convertStringToCent(investRepayDataItemDto.getAmount()) + investExtraRateModel.getExpectedInterest()));
+                            investRepayDataItemDto.setAmount(AmountConverter.convertCentToString(AmountConverter.convertStringToCent(investRepayDataItemDto.getAmount()) + investExtraRateModel.getExpectedInterest() - investExtraRateModel.getExpectedFee()));
                         }
                     }
                 }
