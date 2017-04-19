@@ -33,7 +33,7 @@ public class ExperienceAssigningMessage implements Serializable {
 
     public ExperienceAssigningMessage(String loginName, long experienceAmount, ExperienceBillOperationType experienceBillOperationType, ExperienceBillBusinessType experienceBillBusinessType) {
         this(loginName, experienceAmount, experienceBillOperationType, experienceBillBusinessType,
-                MessageFormat.format(experienceBillBusinessType.getContentTemplate(), AmountConverter.convertCentToString(experienceAmount), new Date());
+                MessageFormat.format(experienceBillBusinessType.getContentTemplate(), AmountConverter.convertCentToString(experienceAmount), new Date()));
     }
 
     public Date getCurrentDate() {
