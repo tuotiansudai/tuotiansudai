@@ -1,0 +1,807 @@
+form label.error:before {
+  padding-right: 5px;
+  content: "\f057";
+  font: normal normal normal 14px/1 FontAwesome;
+  display: none;
+  font-size: 16px;
+}
+
+.btn-normal {
+  background: #ff635a;
+  font-size: 25px;
+  width: 300px;
+  height: 30px;
+  box-shadow: 0px 5px 0px #ff473c;
+  border-radius: 25px;
+}
+
+.header-container {
+  display: none;
+}
+
+.nav-container {
+  display: none;
+}
+
+.footer-container {
+  margin-top: 0;
+
+  .footer {
+    display: none;
+  }
+  .link-list {
+    display: none;
+  }
+}
+
+.full-screen {
+  width: 100% !important;
+  margin: 0;
+}
+
+form label.error {
+  font-size: 10px;
+  color: #f71010;
+  padding: 0;
+  vertical-align: middle;
+}
+
+.landing-container {
+  position: relative;
+  min-height: 500px;
+
+  .landing-header-nav {
+    width: 1200px;
+    height: 90px;
+    text-align: center;
+    margin: 0 auto;
+    background: url("../images/global/logo-index.png") left center no-repeat;
+    a {
+      display: inline-block;
+      float: right;
+      font-size: 16px;
+      color: #fff;
+      border-radius: 20px;
+      width: 160px;
+      height: 40px;
+      line-height: 40px;
+      margin-top: 25px;
+      background-color: #f1a03f;
+    }
+  }
+
+  .new-user-list {
+    color: #ff473c;
+    line-height: 31px;
+    margin-bottom: 35px;
+    dt {
+      font-size: 26px;
+      margin-top: 30px;
+      margin-bottom: 40px;
+    }
+    dd {
+      width: 50%;
+      float: left;
+      font-size: 30px;
+      text-align: center;
+      i {
+        font-size: 60px;
+      }
+      em {
+        color: #a2a2a2;
+        font-size: 16px;
+      }
+    }
+  }
+
+  .landing-top-banner {
+    position: relative;
+    height: 350px;
+    background: url("../images/landingpage/newbie-banner.png") center top no-repeat;
+    @media (max-width:700px) {
+      height:150px;
+      background: url("../images/landingpage/newbie-banner-app.png") center top no-repeat;
+      background-size: 100%;
+    }
+  }
+
+  .newbie-step-one {
+    color: #ff473c;
+    margin-top: 30px;
+    padding-bottom: 40px;
+    .image-title {
+      background: url("../images/landingpage/newbie-step1-title.png") center top no-repeat;
+      height: 40px;
+    }
+  }
+  .newbie-step-two {
+    position: relative;
+    background-color: #362d50;
+    padding-bottom: 30px;
+    padding-top: 30px;
+
+    .image-decoration-bg-app-l {
+      display: none;
+    }
+    .image-decoration-bg-app-r {
+      display: none;
+    }
+    .image-decoration-bg {
+      width: 100%;
+      height: 184px;
+      position: absolute;
+      background: url("../images/landingpage/newbie-decoration-bg.png") center top no-repeat;
+      top: -60px;
+    }
+
+    .image-title {
+      background: url("../images/landingpage/newbie-step2-title.png") center top no-repeat;
+      height: 40px;
+    }
+
+    .image-red-envelope {
+      background: url("../images/landingpage/newbie-step2-red-envelope.png") center top no-repeat;
+      height: 173px;
+      margin-top: 20px;
+      margin-bottom: 30px;
+    }
+
+    .btn-normal {
+      color: #803c04 !important;
+      background: #ffe500;
+      border: #ffe500 1px solid;
+      box-shadow: 0px 5px 0px #ffad08;
+    }
+  }
+  .newbie-step-three {
+    background-color: #ffffff;
+    padding-bottom: 40px;
+    padding-top: 30px;
+
+    .image-title {
+      background: url("../images/landingpage/newbie-step3-title-new.png") center top no-repeat;
+      height: 40px;
+    }
+
+    .subtitle {
+      margin-top: 25px;
+      .subtitle-container {
+        display: inline-block;
+        background-color: #ffe500;
+        padding: 5px 40px 5px 40px;
+        border-top-left-radius: 20px;
+        border-bottom-right-radius: 20px;
+        i {
+          font-size: 20px;
+          color: #803c04;
+        }
+      }
+    }
+  }
+
+  .newbie-step-four {
+    position: relative;
+    background-color: #362d50;
+    padding-bottom: 30px;
+    padding-top: 30px;
+
+    .image-decoration-bg-app-l {
+      display: none;
+    }
+    .image-decoration-bg-app-r {
+      display: none;
+    }
+    .image-decoration-bg {
+      width: 100%;
+      height: 184px;
+      position: absolute;
+      background: url("../images/landingpage/newbie-decoration-bg.png") center top no-repeat;
+      top: -60px;
+    }
+
+    .image-title {
+      background: url("../images/landingpage/newbie-step4-title.png") center top no-repeat;
+      height: 40px;
+    }
+
+    .subtitle {
+      margin-top: 25px;
+      .subtitle-container {
+        display: inline-block;
+        background-color: #ffe500;
+        padding: 5px 40px 5px 40px;
+        border-top-left-radius: 20px;
+        border-bottom-right-radius: 20px;
+        i {
+          font-size: 20px;
+          color: #803c04;
+        }
+      }
+    }
+
+    .image-coupon {
+      margin-top: 20px;
+      background: url("../images/landingpage/newbie-step4-coupon.png") center top no-repeat;
+      height: 153px;
+    }
+
+    .image-steps {
+      margin-top: 30px;
+      margin-bottom: 30px;
+
+      .arrow {
+        margin-left: 15px;
+        margin-right: 15px;
+      }
+    }
+    .btn-normal {
+      color: #803c04 !important;
+      background: #ffe500;
+      border: #ffe500 1px solid;
+      box-shadow: 0px 5px 0px #ffad08;
+    }
+  }
+
+  .newbie-step-five {
+    padding-top: 30px;
+    padding-bottom: 20px;
+    text-align: center;
+
+    .newbie-step-five-dl {
+      color: #525252;
+      line-height: 31px;
+
+      dt {
+        font-size: 24px;
+        margin-bottom: 40px;
+      }
+      dd {
+        width: 33%;
+        float: left;
+        font-size: 18px;
+        color: #525252;
+        text-align: center;
+
+        img {
+          margin-bottom: 20px;
+        }
+
+        p {
+          margin-top: 10px;
+          color: #808080;
+          font-size: 14px;
+          line-height: 22px;
+        }
+      }
+    }
+  }
+
+  .newbie-step-six {
+    width: 100%;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    background: #362d50;
+    text-align: center;
+
+    .newbie-step-six-box {
+      width: 50%;
+      min-width: 800px;
+      display: inline-block;
+
+      p {
+        text-align: left;
+        color: #ffe500;
+        font-size: 14px;
+        line-height: 20px;
+        margin: 10px 0;
+        font-weight: lighter;
+      }
+    }
+  }
+
+  .newbie-step-register {
+    position: absolute;
+    left: 0;
+    right:0;
+    margin:0 auto;
+    top: 90px;
+    padding-top: 12px;
+    width:1000px;
+    height: 350px;
+    text-align: right;
+
+    .register-box {
+      position: absolute;
+      padding: 25px 25px 25px 25px;
+      right: 0px;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 5px;
+      height: auto;
+      overflow: auto;
+
+      .refer-person-info {
+        width: 300px;
+        text-align: center;
+        margin-top: 0px;
+        margin-bottom: 3px;
+        font-size: 14px;
+        line-height: 14px;
+        span {
+          color: red;
+        }
+      }
+      .register-user-form {
+        position: relative;
+        width: 300px;
+      }
+
+      ul.reg-list {
+
+        .newbie-register-ic-mobile {
+          width: 23px;
+          height: 23px;
+          background: url("../images/landingpage/newbie-icon-phone.png") center left no-repeat;
+        }
+
+        .newbie-register-ic-password {
+          width: 23px;
+          height: 23px;
+          background: url("../images/landingpage/newbie-icon-pwd.png") center left no-repeat;
+        }
+
+        .newbie-register-ic-img-captcha {
+          width: 23px;
+          height: 23px;
+          margin-top: 3px;
+          background: url("../images/landingpage/newbie-icon-img-captcha.png") center left no-repeat;
+        }
+
+        .newbie-register-ic-captcha {
+          width: 23px;
+          height: 18px;
+          margin-top: 3px;
+          background: url("../images/landingpage/newbie-icon-captcha.png") center left no-repeat;
+        }
+
+        font-size: 10px;
+        .err-height {
+          height: 15px;
+          top: -2px;
+        }
+        .appCaptchaErr {
+          font-size: 10px;
+          color: #f71010;
+          padding: 0;
+          vertical-align: middle;
+        }
+        li {
+          clear: both;
+          position: relative;
+
+          .image-captcha {
+            margin-top: 3px;
+            margin-left: 3px;
+            margin-right: 3px;
+          }
+
+          .img-change {
+            cursor: pointer;
+            font-size: 12px;
+            color: #808080;
+          }
+          i {
+            display: inline-block;
+            position: absolute;
+            left: 10px;
+            top: 4px;
+            z-index: 20;
+            filter: alpha(opacity=80);
+            -moz-opacity: 0.8;
+          }
+
+          .captcha-tag {
+            position: relative;
+            display: inline-block;
+            width: 90%;
+
+            .fetch-captcha {
+              width: 100px;
+              height: 30px;
+              padding-left: 18px;
+              letter-spacing: 0;
+              position: absolute;
+              left: 190px;
+              top: 0px;
+              font-size: 12px;
+              border-radius: 15px;
+              background: #ff0000;
+              &:hover {
+                color: #fff;
+              }
+            }
+          }
+          .input-width {
+            width: 247px;
+          }
+          input[type="text"], input[type="password"] {
+            color: #999;
+            border: #e6e6e6 1px solid;
+            padding: 5px 2px 5px 40px;
+            background-color: #fff;
+            &.appCaptcha {
+              width: 110px;
+            }
+            &.captcha {
+              width: 130px;
+            }
+
+          }
+          .agreement {
+            display: inline-block;
+            width: 300px;
+          }
+          input.valid + .agreement + label.error {
+            &:before {
+              content: "\f058";
+              color: #6bc21e;
+            }
+          }
+          &.agree-register-protocol {
+            position: relative;
+            margin-left: 0;
+
+            .check-label {
+              position: absolute;
+              top: 1px;
+              left: 20px;
+              font-size: 14px;
+              color: #4c4c4c;
+            }
+            .show-agreement {
+              font-size: 14px;
+              color: #ff635a;
+            }
+            .agreement-check {
+              margin-right: 280px;
+              margin-top: 7px;
+            }
+          }
+          &.mobile-agreement {
+            display: none;
+          }
+
+          .register-user {
+            width: 100%;
+            background: #ff635a;
+            border-radius: 3px;
+            margin-top: 3px;
+            text-align: center;
+            font-size: 16px;
+            color: #fff;
+            border: 0;
+            cursor: pointer;
+          }
+        }
+      }
+      label.error {
+        display: block;
+      }
+    }
+  }
+}
+
+//手机屏幕适配
+@media screen and (max-width: 700px) {
+
+  .landing-container {
+
+    .btn-normal {
+      background: #ff635a;
+      font-size: 15px;
+      width: 150px;
+      height: 15px;
+      box-shadow: 0px 3px 0px #ff473c;
+      border-radius: 25px;
+      padding: 10px 30px 10px 30px;
+    }
+
+    .new-user-list {
+      color: #ff473c;
+      line-height: 15px;
+      margin-bottom: 20px;
+
+      dt {
+        font-size: 15px;
+        margin-top: 15px;
+        margin-bottom: 20px;
+      }
+      dd {
+        width: 50%;
+        float: left;
+        font-size: 15px;
+        text-align: center;
+        i {
+          font-size: 30px;
+        }
+        em {
+          line-height: 20px;
+          color: #a2a2a2;
+          font-size: 11px;
+        }
+      }
+    }
+
+    .landing-header-nav {
+      width: 100%;
+      height: 50px;
+      background: url("../images/icons/logo.png") left center no-repeat;
+      background-size: 180px 25px;
+      background-position-x: 15px;
+      a {
+        display: none;
+      }
+    }
+
+    .newbie-step-one {
+      color: #ff473c;
+      padding-top: -10px;
+      padding-bottom: 30px;
+      .image-title {
+        background: url("../images/landingpage/newbie-step1-title-app.png") center top no-repeat;
+        height: 50px;
+        background-size: auto 50px;
+      }
+    }
+
+    .newbie-step-two {
+      padding-top: 20px;
+      padding-bottom: 20px;
+      .image-title {
+        background: url("../images/landingpage/newbie-step2-title-app.png") center top no-repeat;
+        height: 50px;
+        background-size: auto 50px;
+      }
+
+      .image-decoration-bg {
+        display: none;
+      }
+
+      .image-decoration-bg-app-l {
+        display: block;
+        width: 110px;
+        height: 116px;
+        position: absolute;
+        left: 0;
+        background: url("../images/landingpage/newbie-decoration-bg-app-l.png");
+        background-size: auto 116px;
+        top: -20px;
+
+      }
+      .image-decoration-bg-app-r {
+        display: block;
+        width: 106px;
+        height: 145px;
+        position: absolute;
+        right: 0;
+        background: url("../images/landingpage/newbie-decoration-bg-app-r.png");
+        background-size: auto 145px;
+        top: -20px;
+      }
+
+      .image-red-envelope {
+        margin-top: 15px;
+        margin-bottom: 20px;
+        background: url("../images/landingpage/newbie-step2-red-envelope.png") center top no-repeat;
+        height: 114px;
+        background-size: auto 114px;
+      }
+    }
+
+    .newbie-step-three {
+      padding-top: 20px;
+      padding-bottom: 20px;
+
+      .image-title {
+        background: url("../images/landingpage/newbie-step3-title-app-new.png") center top no-repeat;
+        height: 50px;
+        background-size: auto 50px;
+      }
+
+      .subtitle {
+        height: 80px;
+        margin-top: 15px;
+
+        .subtitle-container {
+          margin-left: 25px;
+          margin-right: 25px;
+          padding: 5px 30px 5px 30px;
+          border-top-left-radius: 20px;
+          border-bottom-right-radius: 20px;
+          i {
+            line-height: 15px;
+            font-size: 15px;
+          }
+        }
+      }
+    }
+
+    .newbie-step-four {
+      padding-bottom: 20px;
+      padding-top: 15px;
+
+      .image-decoration-bg {
+        display: none;
+      }
+
+      .image-decoration-bg-app-l {
+        display: block;
+        width: 110px;
+        height: 116px;
+        position: absolute;
+        left: 0;
+        background: url("../images/landingpage/newbie-decoration-bg-app-l.png");
+        background-size: auto 116px;
+        top: -20px;
+
+      }
+      .image-decoration-bg-app-r {
+        display: block;
+        width: 106px;
+        height: 145px;
+        position: absolute;
+        right: 0;
+        background: url("../images/landingpage/newbie-decoration-bg-app-r.png");
+        background-size: auto 145px;
+        top: -20px;
+      }
+
+      .image-title {
+        background: url("../images/landingpage/newbie-step4-title-app.png") center top no-repeat;
+        height: 50px;
+        background-size: auto 50px;
+      }
+
+      .subtitle {
+        margin-top: 25px;
+        z-index: -1;
+        .subtitle-container {
+          margin-left: 25px;
+          margin-right: 25px;
+          padding: 5px 30px 5px 30px;
+          border-top-left-radius: 20px;
+          border-bottom-right-radius: 20px;
+          i {
+            line-height: 15px;
+            font-size: 15px;
+          }
+        }
+      }
+
+      .image-coupon {
+        margin-top: 20px;
+        background: url("../images/landingpage/newbie-step4-coupon.png") center top no-repeat;
+        height: 132px;
+        background-size: auto 132px;
+      }
+
+      .image-steps {
+        margin-bottom: 30px;
+
+        img {
+          margin-top: 15px;
+          width: 70%;
+        }
+        .arrow {
+          display: none;
+        }
+      }
+    }
+
+    .newbie-step-five {
+      padding-top: 20px;
+      padding-bottom: 5px;
+
+      .newbie-step-five-dl {
+        line-height: 31px;
+
+        dt {
+          font-size: 17px;
+          margin-bottom: 20px;
+        }
+        dd {
+          width: 100%;
+          margin-bottom: 15px;
+
+          img {
+            margin-bottom: 15px;
+          }
+
+          p {
+            margin-top: 10px;
+            line-height: 22px;
+          }
+        }
+      }
+    }
+
+    .newbie-step-six {
+      padding-top: 15px;
+      padding-bottom: 1px;
+
+      .newbie-step-six-box {
+        width: 92%;
+        min-width: 20px;
+        padding-left: 15px;
+        padding-right: 15px;
+        display: inline-block;
+      }
+    }
+
+    .newbie-step-register {
+      position: static;
+      display: block;
+      width: 100%;
+      left: 0;
+      top: 0;
+      padding-top: 0;
+      min-width: 320px;
+      height: auto;
+      text-align: center;
+      background: #362d50;
+
+      .register-box {
+        position: static;
+        display: inline-block;
+        padding: 25px 0px 25px 0px;
+        background: #362d50;
+        width: 300px;
+
+        .refer-person-info {
+          margin-bottom: 15px;
+          color: #ff635a;
+          span {
+            color: #ffe500;
+          }
+        }
+
+        ul.reg-list {
+          .reg-icon {
+            display: none;
+          }
+
+          li.reg-row-container {
+            background: white;
+            border: solid 2px #ffe500;
+            border-radius: 5px;
+
+            input {
+              border: rgba(0, 0, 0, 0) 1px solid;
+              padding: 7px 2px 7px 15px;
+              border-radius: 5px;
+
+              &.appCaptcha {
+                width: 130px;
+              }
+            }
+          }
+
+          .fetch-captcha {
+            margin-top: 2px;
+          }
+          .agree-register-protocol {
+            .check-label {
+              color: white !important;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .footer-container {
+    display: none;
+  }
+}
+
+
+

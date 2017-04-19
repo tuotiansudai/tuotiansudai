@@ -126,7 +126,8 @@ public interface InvestMapper {
                                    @Param(value = "startTime") Date startTime,
                                    @Param(value = "endTime") Date endTime,
                                    @Param(value = "investStatus") InvestStatus investStatus,
-                                   @Param(value = "preferenceType") PreferenceType preferenceType);
+                                   @Param(value = "preferenceType") PreferenceType preferenceType,
+                                   @Param(value = "productType") ProductType productType);
 
     List<InvestPaginationItemView> findInvestPagination(@Param(value = "loanId") Long loanId,
                                                         @Param(value = "investorLoginName") String investorLoginName,
@@ -137,6 +138,7 @@ public interface InvestMapper {
                                                         @Param(value = "endTime") Date endTime,
                                                         @Param(value = "investStatus") InvestStatus investStatus,
                                                         @Param(value = "preferenceType") PreferenceType preferenceType,
+                                                        @Param(value = "productType") ProductType productType,
                                                         @Param(value = "index") int index,
                                                         @Param(value = "pageSize") int pageSize);
 
@@ -158,7 +160,8 @@ public interface InvestMapper {
                                 @Param(value = "startTime") Date startTime,
                                 @Param(value = "endTime") Date endTime,
                                 @Param(value = "investStatus") InvestStatus investStatus,
-                                @Param(value = "preferenceType") PreferenceType preferenceType);
+                                @Param(value = "preferenceType") PreferenceType preferenceType,
+                                @Param(value = "productType") ProductType productType);
 
     long sumInvestAmountRanking(@Param(value = "startTime") Date startTime,
                                 @Param(value = "endTime") Date endTime);

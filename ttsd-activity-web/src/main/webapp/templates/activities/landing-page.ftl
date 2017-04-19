@@ -8,8 +8,6 @@
         </div>
 
         <div class="landing-top-banner">
-            <img class="img-app-banner"
-                 src="${staticServer}/activity/images/sign/actor/landingpage/newbie-banner-app.png">
         </div>
 
         <div class="newbie-step-one page-width">

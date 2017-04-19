@@ -198,7 +198,8 @@
                     {"name":"","class":"sub-title-1","text":"体验金管理","link":"","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE','DATA'"},
                         {"name":"experienceBalance","text":"用户体验金余额","link":"/experience-manage/balance","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE','DATA'"},
                         {"name":"experienceRepay","text":"体验金还款明细","link":"/experience-manage/repay-detail","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE','DATA'"},
-                        {"name":"experienceBill","text":"体验金流水明细","link":"/experience-manage/experience-bill","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE','DATA'"}
+                        {"name":"experienceBill","text":"体验金流水明细","link":"/experience-manage/experience-bill","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE','DATA'"},
+                        {"name":"experienceRecord","text":"体验金投资记录","link":"/experience-manage/experience-record","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE','DATA'"}
                 ]
             }
         ]

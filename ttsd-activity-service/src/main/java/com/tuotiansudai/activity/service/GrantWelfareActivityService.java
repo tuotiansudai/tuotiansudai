@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class GrantWelfareActivityService {
@@ -29,7 +30,7 @@ public class GrantWelfareActivityService {
     private List<String> grantWelfarePeriod = Lists.newArrayList();
 
     public int findReferrerCountByLoginName(String loginName) {
-        int ReferrerCount = 0;
+        int referrerCount = 0;
         if (Strings.isNullOrEmpty(loginName)) {
             return 0;
         }
@@ -37,19 +38,19 @@ public class GrantWelfareActivityService {
         Date startTime = DateTime.parse(grantWelfarePeriod.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
         Date endTime = DateTime.parse(grantWelfarePeriod.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
         List<UserModel> userModels = userMapper.findUsersByRegisterTimeOrReferrer(startTime, endTime, loginName);
-        for (UserModel referrerUserModel : userModels) {
-            if (referrerUserModel.getRegisterTime().before(endTime) && referrerUserModel.getRegisterTime().after(startTime)) {
-                InvestModel investModel = investMapper.findFirstInvestAmountByLoginName(referrerUserModel.getLoginName(), startTime, endTime);
-                if (investModel != null && investModel.getAmount() >= 500000) {
-                    ReferrerCount++;
-                }
-            }
-        }
-        return ReferrerCount;
+
+        referrerCount = Integer.parseInt(String.valueOf(userModels.stream()
+                .filter(n -> (n.getRegisterTime().before(endTime) && n.getRegisterTime().after(startTime)))
+                .filter((n) -> {
+                    InvestModel investModel = investMapper.findFirstInvestAmountByLoginName(n.getLoginName(), startTime, endTime);
+                    return investModel != null && investModel.getAmount() >=500000;
+                }).count()));
+
+        return referrerCount;
     }
 
     public String findReferrerSumInvestAmountByLoginName(String loginName) {
-        long ReferrerSumInvestAmount = 0L;
+        long referrerSumInvestAmount = 0L;
         if (Strings.isNullOrEmpty(loginName)) {
             return "0";
         }
@@ -59,10 +60,10 @@ public class GrantWelfareActivityService {
         List<UserModel> userModels = userMapper.findUsersByRegisterTimeOrReferrer(startTime, endTime, loginName);
         for (UserModel referrerUserModel : userModels) {
             if (referrerUserModel.getRegisterTime().before(endTime) && referrerUserModel.getRegisterTime().after(startTime)) {
-                ReferrerSumInvestAmount += investMapper.sumSuccessActivityInvestAmount(referrerUserModel.getLoginName(), null, startTime, endTime);
+                referrerSumInvestAmount += investMapper.sumSuccessActivityInvestAmount(referrerUserModel.getLoginName(), null, startTime, endTime);
             }
         }
-        return AmountConverter.convertCentToString(ReferrerSumInvestAmount);
+        return AmountConverter.convertCentToString(referrerSumInvestAmount);
     }
 
 }
