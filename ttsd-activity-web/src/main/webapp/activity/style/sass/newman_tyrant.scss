@@ -152,6 +152,9 @@
           width:100%;
           text-align:center;
           padding:0 98px;
+          @media(max-width:700px){
+            padding:0;
+          }
           li{
             float:left;
             width:210px;
