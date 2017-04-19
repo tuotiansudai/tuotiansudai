@@ -40,7 +40,12 @@ public class NewmanTyrantController {
                 Iterators.indexOf(newmanTyrantViews.iterator(), input -> input.getLoginName().equalsIgnoreCase(loginName)) + 1 : 0;
         long investAmount = investRanking > 0 ? newmanTyrantViews.get(investRanking - 1).getSumAmount() : 0;
 
-        List<NewmanTyrantHistoryView> newmanTyrantHistoryViews = newmanTyrantService.obtainNewmanTyrantHistoryRanking(new Date());
+        List<NewmanTyrantHistoryView> newmanTyrantHistoryViews = newmanTyrantService
+                .obtainNewmanTyrantHistoryRanking(new Date())
+                .stream()
+                .filter(n -> n.getCurrentDate().compareTo(new DateTime(new Date()).withTimeAtStartOfDay().toDate()) == 0)
+                .collect(Collectors.toList());
+
 
         modelAndView.addObject("prizeDto", newmanTyrantService.obtainPrizeDto(new DateTime().toString("yyyy-MM-dd")));
         modelAndView.addObject("investRanking", investRanking);
