@@ -7,6 +7,7 @@ import com.tuotiansudai.service.WeChatService;
 import com.tuotiansudai.spring.security.MyAuthenticationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -53,5 +54,10 @@ public class WeChatController {
         }
 
         return new ModelAndView(Strings.isNullOrEmpty(redirect) ? "redirect:/" : MessageFormat.format("redirect:{0}", redirect));
+    }
+
+    @RequestMapping(path = "/entry-point/{item}", method = RequestMethod.GET)
+    public ModelAndView entryPoint(@PathVariable String item) {
+        return new ModelAndView(MessageFormat.format("/weChat/{0}", item));
     }
 }

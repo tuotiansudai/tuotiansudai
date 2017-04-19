@@ -134,7 +134,8 @@ public class WeChatClient {
         return null;
     }
 
-    public void sendTemplateMessage(WeChatMessageType weChatMessageType, Map<String, String> params) {
+    public void sendTemplateMessage(String openid, WeChatMessageType weChatMessageType, Map<String, String> params) {
+
 
     }
 }
