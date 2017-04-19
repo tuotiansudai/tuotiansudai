@@ -2,6 +2,7 @@ package com.tuotiansudai.dto;
 
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.CalculateUtil;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
 import org.joda.time.PeriodType;
@@ -82,6 +83,8 @@ public class LoanDetailDto extends BaseDataDto {
 
     private String activityDesc;
 
+    private int fundraisingDuration;
+
     public LoanDetailDto(LoanModel loanModel, LoanDetailsModel loanDetails, long investedAmount, List<LoanTitleModel> loanTitleModels, List<LoanTitleRelationModel> loanTitleRelationModels, InvestorDto investorDto) {
         this.id = loanModel.getId();
         this.name = loanModel.getName();
@@ -109,6 +112,7 @@ public class LoanDetailDto extends BaseDataDto {
         this.activity = loanDetails == null ? false : loanDetails.isActivity();
         this.activityDesc = loanDetails == null ? "" : loanDetails.getActivityDesc();
         this.pledgeType = loanModel.getPledgeType();
+        this.fundraisingDuration = CalculateUtil.calculateDuration(loanModel.getFundraisingStartTime(), loanModel.getFundraisingEndTime());
     }
 
     public long getId() {
@@ -293,5 +297,13 @@ public class LoanDetailDto extends BaseDataDto {
 
     public void setActivity(boolean activity) {
         this.activity = activity;
+    }
+
+    public int getFundraisingDuration() {
+        return fundraisingDuration;
+    }
+
+    public void setFundraisingDuration(int fundraisingDuration) {
+        this.fundraisingDuration = fundraisingDuration;
     }
 }
