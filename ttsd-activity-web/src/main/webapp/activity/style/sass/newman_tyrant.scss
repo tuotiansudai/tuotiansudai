@@ -24,6 +24,7 @@
 }
 .regal-list-container{
   background:#ffdb01;
+  overflow: hidden;
   .top-container{
     height: 350px;
     background: url("/activity/images/newman-tyrant/top-img.jpg") center top no-repeat;
@@ -39,7 +40,6 @@
     @media (max-width:700px) {
       width:100%;
       padding:0 10px;
-      overflow: hidden;
     }
   }
   .rule-container{
