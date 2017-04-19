@@ -19,7 +19,7 @@
     <form id="formLogin" class="form-login">
         <input validate class="password" type="password"  placeholder="请输入登录密码"/>
         <input validate class="captcha" type="text"  placeholder="请输入图形验证码"/>
-        <img src="https://tuotiansudai.com/login/captcha??1492589585943" class="image-captcha" id="imageCaptcha"/>
+        <img src="/login/captcha" class="image-captcha" id="imageCaptcha"/>
 
         <div class="error-box">sdsd</div>
         <button type="submit" class="btn-normal">下一步</button>

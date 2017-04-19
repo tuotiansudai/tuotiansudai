@@ -24,8 +24,6 @@
 
         <input validate class="password" type="password"  placeholder="请设置登录密码"/>
 
-        <input validate class="password" type="password"  placeholder="再次输入登录密码"/>
-
         <div class="error-box">sdsd</div>
         <button type="submit" class="btn-normal">下一步</button>
     </form>
