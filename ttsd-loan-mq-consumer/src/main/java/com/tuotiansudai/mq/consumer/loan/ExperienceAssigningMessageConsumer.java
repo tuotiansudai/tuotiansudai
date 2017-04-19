@@ -25,9 +25,9 @@ import java.text.MessageFormat;
 
 
 @Component
-public class ExperienceGrantMessageConsumer implements MessageConsumer {
+public class ExperienceAssigningMessageConsumer implements MessageConsumer {
 
-    private final static Logger logger = LoggerFactory.getLogger(ExperienceGrantMessageConsumer.class);
+    private final static Logger logger = LoggerFactory.getLogger(ExperienceAssigningMessageConsumer.class);
 
     @Autowired
     private ExperienceBillService experienceBillService;
