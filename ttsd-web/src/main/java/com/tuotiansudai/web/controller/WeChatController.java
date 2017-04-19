@@ -2,6 +2,7 @@ package com.tuotiansudai.web.controller;
 
 import com.google.common.base.Strings;
 import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.repository.model.WeChatUserModel;
 import com.tuotiansudai.service.WeChatService;
 import com.tuotiansudai.spring.security.MyAuthenticationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,22 +35,21 @@ public class WeChatController {
         return new ModelAndView(MessageFormat.format("redirect:{0}", weChatService.generateAuthorizeURL(httpServletRequest.getSession().getId(), redirect)));
     }
 
-    @RequestMapping(path = "/openid", method = RequestMethod.GET)
+    @RequestMapping(path = "/authorize-success", method = RequestMethod.GET)
     public ModelAndView openid(HttpServletRequest httpServletRequest,
                                @RequestParam(name = "redirect", required = false) String redirect,
                                @RequestParam(name = "code") String code,
                                @RequestParam(name = "state") String state) {
-        String openid = weChatService.fetchOpenid(httpServletRequest.getSession().getId(), state, code);
-        if (Strings.isNullOrEmpty(openid)) {
-            new ModelAndView("/404");
+        WeChatUserModel weChatUserModel = weChatService.parseWeChatUserStatus(httpServletRequest.getSession().getId(), state, code);
+        if (weChatUserModel == null) {
+            return new ModelAndView("/404");
         }
-        boolean isBound = weChatService.isWeChatUserBound(openid);
-        String loginName = weChatService.findByOpenid(openid);
-        if (isBound) {
-            myAuthenticationUtil.createAuthentication(loginName, Source.WE_CHAT);
+
+        if (weChatUserModel.isBound()) {
+            myAuthenticationUtil.createAuthentication(weChatUserModel.getLoginName(), Source.WE_CHAT);
             httpServletRequest.getSession().removeAttribute("weChatUserLoginName");
         } else {
-            httpServletRequest.getSession().setAttribute("weChatUserLoginName", loginName);
+            httpServletRequest.getSession().setAttribute("weChatUserLoginName", weChatUserModel.getLoginName());
         }
 
         return new ModelAndView(Strings.isNullOrEmpty(redirect) ? "redirect:/" : MessageFormat.format("redirect:{0}", redirect));

@@ -1,13 +1,8 @@
 package com.tuotiansudai.service.impl;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
 import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.client.WeChatClient;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.mapper.WeChatUserMapper;
 import com.tuotiansudai.repository.model.UserModel;
@@ -16,42 +11,25 @@ import com.tuotiansudai.service.LoginNameGenerator;
 import com.tuotiansudai.service.WeChatService;
 import com.tuotiansudai.util.UUIDGenerator;
 import org.apache.log4j.Logger;
-import org.joda.time.DateTime;
-import org.joda.time.Days;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 @Service
 public class WeChatServiceImpl implements WeChatService {
 
     private static Logger logger = Logger.getLogger(WeChatServiceImpl.class);
 
-    private final static String TOKEN_URL_TEMPLATE = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={0}&secret={1}";
-
     private final static String AUTHORIZE_URL_TEMPLATE = "https://open.weixin.qq.com/connect/oauth2/authorize?appid={0}&redirect_uri={1}&response_type=code&scope=snsapi_base&state={2}#wechat_redirect";
-
-    private final static String ACCESS_TOKEN_URL_TEMPLATE = "https://api.weixin.qq.com/sns/oauth2/access_token?appid={0}&secret={1}&code={2}&grant_type=authorization_code";
-
-    private final OkHttpClient client = new OkHttpClient();
-
-    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Value(value = "${wechat.appId}")
     private String appId;
 
-    @Value(value = "${wechat.appSecret}")
-    private String appSecret;
-
     @Value(value = "${wechat.redirect}")
-    private String defaultRedirect;
+    private String authorizeCallback;
 
     private final UserMapper userMapper;
 
@@ -61,113 +39,44 @@ public class WeChatServiceImpl implements WeChatService {
 
     private final LoginNameGenerator loginNameGenerator;
 
+    private final WeChatClient weChatClient;
+
     @Autowired
-    public WeChatServiceImpl(UserMapper userMapper, RedisWrapperClient redisWrapperClient, WeChatUserMapper weChatUserMapper, LoginNameGenerator loginNameGenerator) {
+    public WeChatServiceImpl(UserMapper userMapper, RedisWrapperClient redisWrapperClient, WeChatUserMapper weChatUserMapper, LoginNameGenerator loginNameGenerator, WeChatClient weChatClient) {
         this.userMapper = userMapper;
         this.redisWrapperClient = redisWrapperClient;
         this.loginNameGenerator = loginNameGenerator;
-        this.client.setReadTimeout(5, TimeUnit.SECONDS);
-        this.client.setConnectTimeout(5, TimeUnit.SECONDS);
-        this.objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        this.weChatClient = weChatClient;
         this.weChatUserMapper = weChatUserMapper;
     }
 
     @Override
-    public String fetchToken() {
-        String token = redisWrapperClient.get("wechat:token");
-        if (!Strings.isNullOrEmpty(token)) {
-            return token;
-        }
+    public WeChatUserModel parseWeChatUserStatus(String sessionId, String state, String code) {
+        String openid = weChatClient.fetchOpenid(sessionId, state, code);
 
-        try {
-            Request request = new Request.Builder()
-                    .url(MessageFormat.format(TOKEN_URL_TEMPLATE, appId, appSecret))
-                    .get().build();
-            Response response = client.newCall(request).execute();
-
-            if (!HttpStatus.valueOf(response.code()).is2xxSuccessful()) {
-                return null;
-            }
-
-            String responseString = response.body().string();
-            Map<String, String> result = objectMapper.readValue(responseString, new TypeReference<HashMap<String, String>>() {
-            });
-
-            if (result.containsKey("errcode")) {
-                logger.error(MessageFormat.format("fetch access_token failed, response: {0}", responseString));
-                return null;
-            }
-
-            token = result.get("access_token");
-            redisWrapperClient.setex("wechat:token", Integer.parseInt(result.get("access_token")) - 60, token);
-        } catch (Exception e) {
-            logger.error(e.getLocalizedMessage(), e);
-        }
-
-        return token;
-    }
-
-    @Override
-    public String findByOpenid(String openid) {
-        return weChatUserMapper.findByOpenid(openid).getLoginName();
-    }
-
-    @Override
-    public String fetchOpenid(String sessionId, String state, String code) {
-        if (Strings.isNullOrEmpty(redisWrapperClient.get(sessionId)) || Strings.isNullOrEmpty(state) || !state.equals(redisWrapperClient.get(sessionId))) {
+        if (Strings.isNullOrEmpty(openid)) {
             return null;
         }
 
-        redisWrapperClient.del(sessionId);
-
-        try {
-            Request request = new Request.Builder()
-                    .url(MessageFormat.format(ACCESS_TOKEN_URL_TEMPLATE, appId, appSecret, code))
-                    .get().build();
-            Response response = client.newCall(request).execute();
-
-            if (!HttpStatus.valueOf(response.code()).is2xxSuccessful()) {
-                return null;
-            }
-
-            String responseString = response.body().string();
-            Map<String, String> result = objectMapper.readValue(responseString, new TypeReference<HashMap<String, String>>() {
-            });
-
-            if (result.containsKey("errcode")) {
-                logger.error(MessageFormat.format("fetch openid failed, response: {0}", responseString));
-                return null;
-            }
-
-            String openid = result.get("openid");
-            WeChatUserModel weChatUserModel = weChatUserMapper.findByOpenid(openid);
-            if (weChatUserModel == null) {
-                weChatUserMapper.create(new WeChatUserModel(loginNameGenerator.generate(), openid));
-            } else {
-                weChatUserModel.setLatestLoginTime(new Date());
-                weChatUserMapper.update(weChatUserModel);
-            }
-
-            return openid;
-        } catch (Exception e) {
-            logger.error(e.getLocalizedMessage(), e);
+        WeChatUserModel weChatUserModel = weChatUserMapper.findByOpenid(openid);
+        if (weChatUserModel == null) {
+            weChatUserMapper.create(new WeChatUserModel(loginNameGenerator.generate(), openid));
+        } else {
+            weChatUserModel.setLatestLoginTime(new Date());
+            weChatUserMapper.update(weChatUserModel);
         }
-
-        return null;
+        return weChatUserModel;
     }
 
     @Override
     public String generateAuthorizeURL(String sessionId, String redirect) {
-        return MessageFormat.format(AUTHORIZE_URL_TEMPLATE, appId,
-                Strings.isNullOrEmpty(redirect) ? this.defaultRedirect : MessageFormat.format("{0}?redirect={1}", this.defaultRedirect, redirect),
-                this.generateAuthorizeState(sessionId));
-    }
+        String state = UUIDGenerator.generate();
+        redisWrapperClient.setex(sessionId, 10, state);
 
-    @Override
-    public boolean isWeChatUserBound(String openid) {
-        WeChatUserModel weChatUserModel = weChatUserMapper.findByOpenid(openid);
-
-        return weChatUserModel != null && weChatUserModel.isBound() && Days.daysBetween(new DateTime(weChatUserModel.getLatestLoginTime()), new DateTime()).getDays() < 30;
+        return MessageFormat.format(AUTHORIZE_URL_TEMPLATE,
+                appId,
+                Strings.isNullOrEmpty(redirect) ? this.authorizeCallback : MessageFormat.format("{0}?redirect={1}", this.authorizeCallback, redirect),
+                state);
     }
 
     @Override
@@ -187,11 +96,5 @@ public class WeChatServiceImpl implements WeChatService {
         logger.info(MessageFormat.format("wechat bind successfully. mobile: {0} openid: {1}", mobile, openid));
 
         return true;
-    }
-
-    private String generateAuthorizeState(String sessionId) {
-        String state = UUIDGenerator.generate();
-        redisWrapperClient.setex(sessionId, 10, state);
-        return state;
     }
 }
