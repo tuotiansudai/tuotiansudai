@@ -201,7 +201,7 @@
                             {{else}}
                             <td class="icon-item">
                             {{/if}}
-                            {{$value.avgTyrantInvestAmount}}元
+                            {{(($value.avgTyrantInvestAmount)/100).toFixed(2)}}元
                             </td>
                             {{if $value.avgTyrantInvestAmount<$value.avgNewmanInvestAmount}}
                             <td class="icon-item icon-win">
@@ -212,7 +212,7 @@
                             {{else}}
                             <td class="icon-item">
                             {{/if}}
-                            {{$value.avgNewmanInvestAmount}}元
+                            {{(($value.avgNewmanInvestAmount)/100).toFixed(2)}}元
                             </td>
                         </tr>
                         {{/each}}
