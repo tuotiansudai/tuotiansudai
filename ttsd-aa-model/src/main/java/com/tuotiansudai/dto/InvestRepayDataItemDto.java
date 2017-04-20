@@ -7,6 +7,7 @@ import com.tuotiansudai.repository.model.RepayStatus;
 import com.tuotiansudai.repository.model.TransferStatus;
 import com.tuotiansudai.util.AmountConverter;
 import org.joda.time.DateTime;
+import org.joda.time.Days;
 
 import java.util.Date;
 
@@ -62,7 +63,9 @@ public class InvestRepayDataItemDto {
             this.actualInterest = AmountConverter.convertCentToString(model.getActualInterest());
             this.actualRepayDate = model.getActualRepayDate();
             if(model.getRepayAmount() > 0) this.actualAmount = AmountConverter.convertCentToString(model.getRepayAmount());
-            if((RepayStatus.OVERDUE == model.getStatus() || RepayStatus.COMPLETE == model.getStatus()) && model.getActualRepayDate() != null) this.overdueDay = String.valueOf((model.getActualRepayDate().getTime() - model.getRepayDate().getTime()) / (1000 * 60 * 60 * 24));
+            if((RepayStatus.OVERDUE == model.getStatus() || RepayStatus.COMPLETE == model.getStatus()) && model.getActualRepayDate() != null) {
+                this.overdueDay = String.valueOf(Days.daysBetween(new DateTime(model.getRepayDate()).withTimeAtStartOfDay(), new DateTime(model.getActualRepayDate()).withTimeAtStartOfDay()).getDays());
+            }
         }
         this.investId = model.getInvestId();
         if(model.getDefaultInterest() > 0) this.defaultInterest = AmountConverter.convertCentToString(model.getDefaultInterest());
