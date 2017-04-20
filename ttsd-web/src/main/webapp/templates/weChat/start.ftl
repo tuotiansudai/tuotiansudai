@@ -18,7 +18,7 @@
     <h2 class="note">请填写手机号码，以补全您的拓天速贷账户信息。</h2>
 
     <form id="formStart">
-        <input validate class="login-name" type="text" value="" name="username" placeholder="请输入账号/手机号" maxlength="25"/>
+        <input validate  type="text"  name="mobile" placeholder="请输入账号/手机号" maxlength="25"/>
         <div class="error-box">sdsd</div>
         <button type="submit" class="btn-normal">下一步</button>
     </form>

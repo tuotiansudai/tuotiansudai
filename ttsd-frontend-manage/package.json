@@ -4,7 +4,7 @@
   "scripts": {
     "start": "export NODE_ENV=dev && npm run json  && webpack-dev-server",
     "start2": "export NODE_ENV=dev && npm run plugin && webpack --progress && node getJsonFiles.js && npm run showimage",
-    "build": "export NODE_ENV=production && npm run plugin && webpack --$PLAT && node getJsonFiles.js && npm run showimage",
+    "build": "export NODE_ENV=production && npm run plugin && webpack --$PLAT && node getJsonFiles.js",
     "test": "export NODE_ENV=production && npm run watchprod && npm run json",
     "watchprod": "webpack --watch --config webpack.production.js&",
     "json": "nodemon -L getJsonFiles.js&",
