@@ -17,11 +17,13 @@ import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserRoleModel;
 import com.tuotiansudai.service.ExperienceBillService;
 import com.tuotiansudai.service.RegisterUserService;
+import com.tuotiansudai.util.AmountConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
+import java.util.Date;
 
 @Service
 public class RegisterUserServiceImpl implements RegisterUserService {
@@ -53,7 +55,10 @@ public class RegisterUserServiceImpl implements RegisterUserService {
         }
 
         //更新体验金
-        experienceBillService.updateUserExperienceBalanceByLoginName(688800, userModel.getLoginName(), ExperienceBillOperationType.IN, ExperienceBillBusinessType.REGISTER);
+        experienceBillService.updateUserExperienceBalanceByLoginName(688800, userModel.getLoginName(), ExperienceBillOperationType.IN, ExperienceBillBusinessType.REGISTER,
+                MessageFormat.format(ExperienceBillBusinessType.REGISTER.getContentTemplate(),
+                        AmountConverter.convertCentToString(688800),
+                        new Date()));
 
         this.userRoleMapper.create(Lists.newArrayList(new UserRoleModel(userModel.getLoginName(), Role.USER)));
 
