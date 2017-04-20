@@ -1,0 +1,451 @@
+.main-frame{
+  width:100%;
+  margin:0 auto;
+}
+
+.download-container{
+  float:left;
+  width:100%;
+  .wp{
+    width:1200px;
+    padding:0 100px;
+    margin:0 auto;
+    box-sizing:border-box;
+    @media (max-width:700px) {
+      width:100%;
+      padding:0 10px;
+    }
+    &:after{
+      content:'';
+      display:block;
+      clear:both;
+    }
+  }
+  .download-one{
+    background:#ff7201;
+    .step-one{
+      background: url(/activity/images/download/step-one.png) no-repeat;
+      background-position: 720px 40px;
+      @media (max-width:700px) {
+        background: url(/activity/images/download/phone-one.png) no-repeat bottom;
+        background-size:100%;
+      }
+      .content-item{
+        float:left;
+        margin-left:70px;
+        @media (max-width:700px) {
+          margin-left:0;
+        }
+        p{
+          margin-top:60px;
+          @media (max-width:700px) {
+            margin-top:30px;
+            .step-one-img{
+              width:50%;
+            }
+          }
+        }
+        .ios-btn{
+          display:inline-block;
+          width:120px;
+          height:36px;
+          background:url('/activity/images/download/iphone-btn.png') no-repeat center;
+          background-size:100%;
+          position: relative;
+          bottom: 30px;
+          @media (max-width:700px) {
+            width:50px;
+            height:20px;
+            bottom:15px;
+            margin: 0;
+          }
+        }
+        .android-btn{
+          display:inline-block;
+          width:120px;
+          height:36px;
+          background:url('/activity/images/download/android-btn.png') no-repeat center;
+          background-size:100%;
+          position: relative;
+          bottom: 30px;
+          margin: 0 15px;
+          @media (max-width:700px) {
+            width:50px;
+            height:20px;
+            bottom:15px;
+            margin: 0;
+          }
+        }
+        .wx-code{
+          display:inline-block;
+          width:110px;
+          height:110px;
+          background:url('/activity/images/download/wx-code.png') no-repeat center;
+          background-size:100%;
+          @media (max-width:700px) {
+            width:55px;
+            height:55px;
+          }
+        }
+      }
+    }
+  }
+  .download-two{
+    background:#fcfcfc;
+    .step-two{
+      background:url('/activity/images/download/step-two-bg.png') no-repeat;
+      background-position:0 160px;
+      @media (max-width:700px) {
+        background-size: 55%;
+        background-position: -35px 85px;
+      }
+      .title-icon{
+        text-align:center;
+        @media (max-width:700px) {
+          .step-two-img{
+            width:100%;
+          }
+        }
+      }
+      .content-item{
+        float:right;
+        margin:30px 0 40px;
+        @media (max-width:700px) {
+          margin:15px 0 20px;
+        }
+        p{
+          font-size:20px;
+          color:#b2b2b2;
+          margin-bottom:0;
+          @media (max-width:700px) {
+            font-size:12px;
+          }
+          &.title-text{
+            color:#3e3f50;
+            font-size:40px;
+            margin-bottom:60px;
+            @media (max-width:700px) {
+              font-size:16px;
+              margin-bottom:0;
+            }
+          }
+          .time-icon{
+            display:inline-block;
+            width:80px;
+            height:60px;
+            text-align:center;
+            margin-top:50px;
+            @media (max-width:700px) {
+              width:30px;
+              height:30px;
+              margin: 10px 10px 0;
+              img{
+                width:100%;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  .download-three{
+    background:#fbf3e9;
+    .step-three{
+      background:url('/activity/images/download/date-icon.png') no-repeat;
+      background-position: 150px 245px;
+      @media (max-width:700px) {
+        background-position: 60px 140px;
+        background-size: 80%;
+      }
+      .title-icon{
+        text-align:center;
+        img{
+          margin-top: -10px;
+          @media (max-width:700px) {
+            width:6%;
+            margin-top:-18px;
+          }
+        }
+      }
+      .content-item{
+        float:left;
+        margin:100px 0 70px;
+        @media (max-width:700px) {
+          margin:5px 0 35px;
+        }
+        p{
+          font-size:20px;
+          color:#ee7c2f;
+          margin-bottom:0;
+          @media (max-width:700px) {
+            font-size:12px;
+          }
+          &.title-text{
+            color:#3e3f50;
+            font-size:40px;
+            margin-bottom:60px;
+            @media (max-width:700px) {
+              font-size:16px;
+              margin-bottom:0;
+            }
+          }
+          .time-icon{
+            display:inline-block;
+            width:80px;
+            height:60px;
+            text-align:center;
+            margin-top:50px;
+            @media (max-width:700px) {
+              width:30px;
+              height:30px;
+              margin: 25px 10px 0;
+              img{
+                width:100%;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  .download-four{
+    background:url('/activity/images/download/step-four-bg.jpg') no-repeat;
+    background-position: -200px 0;
+    @media (max-width:700px) {
+      background:url('/activity/images/download/four-phone-bg.jpg') no-repeat;
+      background-position: 0 0;
+      background-size: 100%;
+    }
+    .step-four{
+      .content-item{
+        float:right;
+        width:400px;
+        height:415px;
+        background:rgba(29, 61, 108, .5);
+        margin:0 0 80px;
+        padding: 0 40px;
+        box-sizing: border-box;
+        @media (max-width:700px) {
+          width: 200px;
+          height: 180px;
+          padding: 0 20px;
+          margin: 0 0 30px;
+        }
+        p{
+          font-size:20px;
+          color:#fff;
+          margin-bottom:0;
+          @media (max-width:700px) {
+            font-size:12px;
+          }
+          &.title-text{
+            font-size:40px;
+            margin:40px 0 60px;
+            @media (max-width:700px) {
+              font-size:16px;
+              margin:10px 0 20px;
+            }
+          }
+          .time-icon{
+            display:inline-block;
+            width:80px;
+            height:60px;
+            text-align:center;
+            margin-top:50px;
+            @media (max-width:700px) {
+              width:30px;
+              height:30px;
+              margin: 10px 10px 0;
+              img{
+                width:100%;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  .download-five{
+    background:#fbf3e9;
+    .step-five{
+      background:url('/activity/images/download/five-bg.png') no-repeat;
+      background-position:690px 40px;
+      @media (max-width:700px) {
+        background:url('/activity/images/download/phone-five.png') no-repeat right center;
+        background-size:80%;
+      }
+      .content-item{
+        float:left;
+        margin:60px 0;
+        @media (max-width:700px) {
+          margin:30px 0;
+        }
+        p{
+          font-size:20px;
+          color:#ee7c2f;
+          margin-bottom:0;
+          @media (max-width:700px) {
+            font-size:12px;
+          }
+          &.title-text{
+            color:#3e3f50;
+            font-size:40px;
+            margin-bottom:60px;
+            @media (max-width:700px) {
+              font-size:16px;
+              margin-bottom:10px;
+            }
+          }
+          .time-icon{
+            display:inline-block;
+            width:80px;
+            height:60px;
+            text-align:center;
+            margin-top:50px;
+            @media (max-width:700px) {
+              width:30px;
+              height:30px;
+              margin: 10px 10px 0;
+              img{
+                width:100%;
+              }
+            }
+          }
+          .data-icon{
+            display:inline-block;
+            width:140px;
+            height:60px;
+            text-align:center;
+            margin-top:50px;
+            @media (max-width:700px) {
+              width:60px;
+              height:35px;
+              margin: 10px 10px 0;
+              img{
+                width:50%;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  .download-six{
+    background:#fff;
+    .step-six{
+      background:url('/activity/images/download/six-bg.png') no-repeat;
+      background-position:90px 100px;
+      @media (max-width:700px) {
+        background:url('/activity/images/download/phone-six.png') no-repeat left bottom;
+        background-size: 80%;
+      }
+      .title-icon{
+        text-align:center;
+        img{
+          margin-top: -10px;
+          @media (max-width:700px) {
+            width:6%;
+            margin-top:-18px;
+          }
+        }
+      }
+      .content-item{
+        float:right;
+        margin:30px 0 40px;
+        @media (max-width:700px) {
+          margin:15px 0 20px;
+        }
+        p{
+          font-size:20px;
+          color:#b2b2b2;
+          margin-bottom:0;
+          @media (max-width:700px) {
+            font-size:12px;
+          }
+          &.title-text{
+            color:#3e3f50;
+            font-size:40px;
+            margin-bottom:60px;
+            @media (max-width:700px) {
+              font-size:16px;
+              margin-bottom:10px;
+            }
+          }
+          .time-icon{
+            display:inline-block;
+            width:80px;
+            height:60px;
+            text-align:center;
+            margin-top:50px;
+            @media (max-width:700px) {
+              width:30px;
+              height:30px;
+              margin: 10px 10px 0;
+              img{
+                width:100%;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  .download-seven{
+    background:#869cb3;
+    height:360px;
+    box-sizing:border-box;
+    @media (max-width:700px) {
+      display:none;
+    }
+    .content-item{
+      width:750px;
+      height:100%;
+      margin:0 auto;
+      position: relative;
+      p{
+        display:inline-block;
+        width:100%;
+        font-size:26px;
+        color:#3e3f50;
+        margin-bottom:0;
+        &.wx-text{
+          margin-top:120px;
+        }
+        &.des-text{
+          font-size:22px;
+          color:#fff;
+        }
+      }
+      .ios-download{
+        width:160px;
+        height:60px;
+        position: absolute;
+        top:50%;
+        margin-top:10px;
+        right:220px;
+        background:url('/activity/images/download/apple-download.png') no-repeat center;
+        background-size:100%;
+      }
+      .android-download{
+        width:160px;
+        height:60px;
+        position: absolute;
+        top:50%;
+        margin-top:-60px;
+        right:220px;
+        background:url('/activity/images/download/android-download.png') no-repeat center;
+        background-size:100%;
+      }
+      .wx-footer{
+        width:200px;
+        height:200px;
+        position: absolute;
+        top:50%;
+        right:0;
+        margin-top:-100px;
+        background:url('/activity/images/download/wx-code-footer.png') no-repeat center;
+        background-size:100%;
+      }
+    }
+  }
+}

@@ -55,7 +55,7 @@ form label.error {
     height: 90px;
     text-align: center;
     margin: 0 auto;
-    background: url("../images/global/logo-index.png") left center no-repeat;
+    background: url("../images/landingpage/logo-index.png") left center no-repeat;
     a {
       display: inline-block;
       float: right;
@@ -391,7 +391,7 @@ form label.error {
         li {
           clear: both;
           position: relative;
-
+          margin-bottom:10px;
           .image-captcha {
             margin-top: 3px;
             margin-left: 3px;

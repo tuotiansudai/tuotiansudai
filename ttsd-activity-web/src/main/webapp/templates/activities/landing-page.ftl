@@ -136,12 +136,13 @@
                             <li class="code reg-row-container">
                             <#--验证码:-->
                                 <i class="newbie-register-ic-img-captcha reg-icon"></i>
-                                <input validate type="text" id="appCaptcha" name="appCaptcha" placeholder="验证码" maxlength="5"
-                                       class="appCaptcha" value="">
+                                
                                 <em class="image-captcha">
                                     <img src="" alt=""/>
                                 </em>
                                 <span class="img-change">换一张</span>
+                                <input validate type="text" id="appCaptcha" name="appCaptcha" placeholder="验证码" maxlength="5"
+                                       class="appCaptcha fl" value="">
                             </li>
                         
                             <li class="reg-row-container">
