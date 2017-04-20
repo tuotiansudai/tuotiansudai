@@ -147,7 +147,7 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
                 soldLoanModels.addAll(loanMapper.findByStatus(LoanStatus.REPAYING));
                 //版本号小于4.3过滤掉经营性借款
                 if(AppVersionUtil.compareVersion() == AppVersionUtil.low){
-                    soldLoanModels = raisingLoanModels.stream().filter(n -> pledgeTypeList.contains(n.getPledgeType())).collect(Collectors.toList());
+                    soldLoanModels = soldLoanModels.stream().filter(n -> pledgeTypeList.contains(n.getPledgeType())).collect(Collectors.toList());
                 }
                 if (soldLoanModels.size() > 0) {
                     loanModel = soldLoanModels.get(0);

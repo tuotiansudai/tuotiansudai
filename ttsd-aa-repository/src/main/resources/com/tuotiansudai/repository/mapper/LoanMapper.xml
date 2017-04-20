@@ -467,6 +467,7 @@
         select * from loan
         where loan.status not in ('WAITING_VERIFY', 'CANCEL')
         and loan.activity_type = 'NEWBIE'
+        and loan.id != 1
         order by
         case loan.status
         when 'RAISING' then 1
