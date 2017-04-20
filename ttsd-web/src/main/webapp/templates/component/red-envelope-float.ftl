@@ -10,11 +10,11 @@
 			<span class="unit-text">元</span>
 		</div>
 		<div class="form-text">
-			<input type="text" placeholder="投资时长" class="int-text" name="month" id="monthNum">
-			<span class="unit-text">期</span>
+			<input type="text" placeholder="投资期限" class="int-text" name="day" id="dayNum">
+			<span class="unit-text">天</span>
 		</div>
 		<div class="form-text">
-			<input type="text" placeholder="年化利率" class="int-text" name="bite" id="biteNum">
+			<input type="text" placeholder="年化利率" class="int-text" name="rate" id="rateNum">
 			<span class="unit-text">%</span>
 		</div>
 		<div class="form-text">

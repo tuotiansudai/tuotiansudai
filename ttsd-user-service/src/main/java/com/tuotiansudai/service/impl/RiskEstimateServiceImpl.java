@@ -9,9 +9,12 @@ import com.tuotiansudai.repository.mapper.RiskEstimateMapper;
 import com.tuotiansudai.repository.model.RiskEstimateModel;
 import com.tuotiansudai.service.ExperienceBillService;
 import com.tuotiansudai.service.RiskEstimateService;
+import com.tuotiansudai.util.AmountConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.MessageFormat;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -47,7 +50,10 @@ public class RiskEstimateServiceImpl implements RiskEstimateService {
         RiskEstimateModel model = new RiskEstimateModel(loginName, answers);
         if (riskEstimateMapper.findByLoginName(loginName) == null) {
             riskEstimateMapper.create(model);
-            experienceBillService.updateUserExperienceBalanceByLoginName(100000, loginName, ExperienceBillOperationType.IN, ExperienceBillBusinessType.RISK_ESTIMATE);
+            experienceBillService.updateUserExperienceBalanceByLoginName(100000, loginName, ExperienceBillOperationType.IN, ExperienceBillBusinessType.RISK_ESTIMATE,
+                    MessageFormat.format(ExperienceBillBusinessType.RISK_ESTIMATE.getContentTemplate(),
+                            AmountConverter.convertCentToString(100000),
+                            new Date()));
         } else {
             riskEstimateMapper.update(model);
         }

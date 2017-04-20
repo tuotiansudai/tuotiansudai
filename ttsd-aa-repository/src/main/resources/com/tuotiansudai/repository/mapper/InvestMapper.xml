@@ -284,6 +284,12 @@
         invest join loan on invest.loan_id = loan.id
         <where>
             invest.transfer_invest_id IS NULL
+            <if test="productType == null">
+                AND loan.product_type &lt;&gt; 'EXPERIENCE'
+            </if>
+            <if test="productType != null">
+                AND loan.product_type = #{productType}
+            </if>
             <if test="loanId != null">
                 AND invest.loan_id = #{loanId}
             </if>
@@ -317,7 +323,7 @@
             </if>
         </where>
         ORDER BY CASE invest.trading_time WHEN NULL THEN invest.created_time ELSE invest.trading_time END DESC, invest.id ASC
-        limit #{index}, #{pageSize};
+        limit #{index}, #{pageSize}
     </select>
 
     <select id="findInvestorInvestPagination" parameterType="map" resultMap="investResultMap">
@@ -370,9 +376,15 @@
     </select>
 
     <select id="findCountInvestPagination" parameterType="map" resultType="long">
-        SELECT COUNT(1) FROM invest
+        SELECT COUNT(1) FROM invest JOIN loan ON invest.loan_id = loan.id
         <where>
             invest.transfer_invest_id IS NULL
+            <if test="productType == null">
+                AND loan.product_type &lt;&gt; 'EXPERIENCE'
+            </if>
+            <if test="productType != null">
+                AND loan.product_type = #{productType}
+            </if>
             <if test="loanId != null">
                 AND invest.loan_id = #{loanId}
             </if>
@@ -440,9 +452,16 @@
     </select>
 
     <select id="sumInvestAmountConsole" resultType="long">
-        SELECT IFNULL(sum(amount), 0) FROM invest
+        SELECT IFNULL(sum(amount), 0) FROM invest JOIN loan ON invest.loan_id = loan.id
         <where>
             invest.transfer_invest_id IS NULL
+            <if test="productType == null">
+                AND loan.product_type &lt;&gt; 'EXPERIENCE'
+            </if>
+
+            <if test="productType != null">
+                AND loan.product_type = #{productType}
+            </if>
             <if test="loanId != null">
                 AND invest.loan_id = #{loanId}
             </if>
@@ -622,6 +641,7 @@
         GROUP BY login_name , user.user_name , user.mobile
         ORDER BY sumAmount DESC , MAX(invest.trading_time)
     </select>
+
 
     <select id="findHeroRankingByReferrer" parameterType="map" resultMap="heroRankingView">
         SELECT

@@ -16,9 +16,9 @@ public interface BusinessIntelligenceService {
 
     List<KeyValueModel> queryUserRegisterTrend(Granularity granularity, Date startTime, Date endTime, String province,UserStage userStage,RoleStage roleStage, String channel);
 
-    List<KeyValueModel> queryUserRechargeTrend(Granularity granularity, Date startTime, Date endTime, String province, Role role);
+    List<KeyValueModel> queryUserRechargeTrend(Granularity granularity, Date startTime, Date endTime, String province, String role);
 
-    List<KeyValueModel> queryUserWithdrawTrend(Granularity granularity, Date startTime, Date endTime, String province, Role role);
+    List<KeyValueModel> queryUserWithdrawTrend(Granularity granularity, Date startTime, Date endTime, String province, String role);
 
     List<KeyValueModel> queryInvestViscosity(Date startTime, Date endTime, String province);
 
@@ -38,7 +38,7 @@ public interface BusinessIntelligenceService {
 
     List<KeyValueModel> queryLoanRaisingTimeCostingTrend(Date startTime, Date endTime);
 
-    List<KeyValueModel> queryWithdrawUserCountTrend(Date startTime, Date endTime,Granularity granularity, Role role);
+    List<KeyValueModel> queryWithdrawUserCountTrend(Date startTime, Date endTime,Granularity granularity, String role);
 
     List<KeyValueModel> queryPlatformSumRepay(Date startTime, Date endTime,Granularity granularity);
 

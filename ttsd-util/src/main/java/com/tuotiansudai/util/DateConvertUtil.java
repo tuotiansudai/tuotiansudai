@@ -1,6 +1,7 @@
 package com.tuotiansudai.util;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -24,5 +25,15 @@ public class DateConvertUtil {
     public static String format(Date date, String pattern) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
         return DateConvertUtil.dateToLocalDateTime(date).format(formatter);
+    }
+    public static Date localDateToDate(LocalDate localDate) {
+
+        return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+    }
+
+    public static Date withTimeAtStartOfDay(String str,String pattern){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+        LocalDate dateTime = LocalDate.parse(str, formatter);
+        return DateConvertUtil.localDateToDate(dateTime);
     }
 }
