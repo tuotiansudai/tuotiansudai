@@ -121,9 +121,7 @@ public class UserServiceImpl implements UserService {
         userModel.setLastModifiedTime(new Date());
         boolean register = registerUserService.register(userModel);
 
-        if (!Strings.isNullOrEmpty(dto.getOpenid())) {
-            weChatService.bind(dto.getMobile(), dto.getOpenid());
-        }
+        weChatService.bind(dto.getMobile(), dto.getOpenid()); //登录成功绑定微信号
 
         return register;
     }

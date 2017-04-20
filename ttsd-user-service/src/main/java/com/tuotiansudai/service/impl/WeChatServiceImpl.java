@@ -1,8 +1,11 @@
 package com.tuotiansudai.service.impl;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.WeChatClient;
+import com.tuotiansudai.enums.WeChatMessageType;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.mapper.WeChatUserMapper;
 import com.tuotiansudai.repository.model.UserModel;
@@ -14,6 +17,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
 import java.util.Date;
@@ -28,7 +32,7 @@ public class WeChatServiceImpl implements WeChatService {
     @Value(value = "${wechat.appId}")
     private String appId;
 
-    @Value(value = "${wechat.redirect}")
+    @Value(value = "${wechat.authorize.callbck}")
     private String authorizeCallback;
 
     private final UserMapper userMapper;
@@ -51,6 +55,17 @@ public class WeChatServiceImpl implements WeChatService {
     }
 
     @Override
+    public String generateAuthorizeURL(String sessionId, String redirect) {
+        String state = UUIDGenerator.generate();
+        redisWrapperClient.setex(sessionId, 10, state);
+
+        return MessageFormat.format(AUTHORIZE_URL_TEMPLATE,
+                appId,
+                Strings.isNullOrEmpty(redirect) ? this.authorizeCallback : MessageFormat.format("{0}?redirect={1}", this.authorizeCallback, redirect),
+                state);
+    }
+
+    @Override
     public WeChatUserModel parseWeChatUserStatus(String sessionId, String state, String code) {
         String openid = weChatClient.fetchOpenid(sessionId, state, code);
 
@@ -69,23 +84,33 @@ public class WeChatServiceImpl implements WeChatService {
     }
 
     @Override
-    public String generateAuthorizeURL(String sessionId, String redirect) {
-        String state = UUIDGenerator.generate();
-        redisWrapperClient.setex(sessionId, 10, state);
-
-        return MessageFormat.format(AUTHORIZE_URL_TEMPLATE,
-                appId,
-                Strings.isNullOrEmpty(redirect) ? this.authorizeCallback : MessageFormat.format("{0}?redirect={1}", this.authorizeCallback, redirect),
-                state);
-    }
-
-    @Override
-    public boolean bind(String mobile, String openid) {
+    @Transactional
+    public void bind(String mobile, String openid) {
         UserModel userModel = userMapper.findByMobile(mobile);
         WeChatUserModel weChatUserModel = weChatUserMapper.findByOpenid(openid);
-        if (weChatUserModel == null) {
-            return false;
+
+        if (userModel == null || weChatUserModel == null) {
+            return;
         }
+
+        weChatUserMapper.findByLoginName(userModel.getLoginName())
+                .stream()
+                .filter(boundUser -> boundUser.getOpenid().equals(openid)
+                        && !boundUser.getLoginName().equals(userModel.getLoginName())
+                        && boundUser.isBound())
+                .forEach(boundUser -> {
+                    boundUser.setBound(false);
+                    weChatUserMapper.update(boundUser);
+                    weChatClient.sendTemplateMessage(WeChatMessageType.BOUND_TO_OTHER_USER, Maps.newHashMap(ImmutableMap.<String, String>builder()
+                            .put("openid", boundUser.getOpenid())
+                            .put("first", "first")
+                            .put("keyword1", "keyword1")
+                            .put("keyword2", "keyword2")
+                            .put("remark", "remark")
+                            .build()));
+                    logger.info(MessageFormat.format("wechat unbound previous use successfully. user: {0}, openid: {1}, previous user: {2}", userModel.getLoginName(), openid, boundUser.getLoginName()));
+                });
+
 
         weChatUserModel.setLoginName(userModel.getLoginName());
         weChatUserModel.setBound(true);
@@ -93,8 +118,6 @@ public class WeChatServiceImpl implements WeChatService {
 
         weChatUserMapper.update(weChatUserModel);
 
-        logger.info(MessageFormat.format("wechat bind successfully. mobile: {0} openid: {1}", mobile, openid));
-
-        return true;
+        logger.info(MessageFormat.format("wechat bind successfully. user: {0}, openid: {1}", userModel.getLoginName(), openid));
     }
 }

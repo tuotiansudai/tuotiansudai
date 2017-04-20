@@ -33,14 +33,17 @@ public class WeChatController {
     @RequestMapping(path = "/authorize", method = RequestMethod.GET)
     public ModelAndView authorize(HttpServletRequest httpServletRequest,
                                   @RequestParam(name = "redirect", required = false) String redirect) {
-        return new ModelAndView(MessageFormat.format("redirect:{0}", weChatService.generateAuthorizeURL(httpServletRequest.getSession().getId(), redirect)));
+        String sessionId = httpServletRequest.getSession().getId();
+        return new ModelAndView(MessageFormat.format("redirect:{0}", weChatService.generateAuthorizeURL(sessionId, redirect)));
     }
 
-    @RequestMapping(path = "/authorize-success", method = RequestMethod.GET)
+    @RequestMapping(path = "/authorize-callback", method = RequestMethod.GET)
     public ModelAndView openid(HttpServletRequest httpServletRequest,
-                               @RequestParam(name = "redirect", required = false) String redirect,
                                @RequestParam(name = "code") String code,
-                               @RequestParam(name = "state") String state) {
+                               @RequestParam(name = "state") String state,
+                               @RequestParam(name = "redirect", required = false) String redirect) {
+        httpServletRequest.getSession().removeAttribute("weChatUserLoginName");
+
         WeChatUserModel weChatUserModel = weChatService.parseWeChatUserStatus(httpServletRequest.getSession().getId(), state, code);
         if (weChatUserModel == null) {
             return new ModelAndView("/404");
@@ -48,7 +51,6 @@ public class WeChatController {
 
         if (weChatUserModel.isBound()) {
             myAuthenticationUtil.createAuthentication(weChatUserModel.getLoginName(), Source.WE_CHAT);
-            httpServletRequest.getSession().removeAttribute("weChatUserLoginName");
         } else {
             httpServletRequest.getSession().setAttribute("weChatUserLoginName", weChatUserModel.getLoginName());
         }

@@ -3,11 +3,11 @@ package com.tuotiansudai.client;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Charsets;
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
+import com.google.common.io.Resources;
+import com.squareup.okhttp.*;
 import com.tuotiansudai.enums.WeChatMessageType;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.util.HashMap;
@@ -32,6 +33,8 @@ public class WeChatClient {
     private final static String TOKEN_URL_TEMPLATE = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={0}&secret={1}";
 
     private final static String ACCESS_TOKEN_URL_TEMPLATE = "https://api.weixin.qq.com/sns/oauth2/access_token?appid={0}&secret={1}&code={2}&grant_type=authorization_code";
+
+    private final static String MESSAGE_URL_TEMPLATE = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token={0}";
 
     private final OkHttpClient client = new OkHttpClient();
 
@@ -91,7 +94,7 @@ public class WeChatClient {
             }
 
             token = result.get("access_token");
-            redisWrapperClient.setex("wechat:token", Integer.parseInt(result.get("access_token")) - 60, token);
+            redisWrapperClient.setex("wechat:token", Integer.parseInt(result.get("expires_in")) - 60, token);
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
         }
@@ -134,8 +137,49 @@ public class WeChatClient {
         return null;
     }
 
-    public void sendTemplateMessage(String openid, WeChatMessageType weChatMessageType, Map<String, String> params) {
+    public void sendTemplateMessage(WeChatMessageType weChatMessageType, Map<String, String> params) {
+        String token = this.fetchToken();
+        if (Strings.isNullOrEmpty(token)) {
+            logger.error("fetch token failed");
+            return;
+        }
+
+        try {
+            URL resource = WeChatClient.class.getClassLoader().getResource(weChatMessageType.getJsonFile());
+            if (resource == null) {
+                logger.error(MessageFormat.format("load request json failed, json file: {0}", weChatMessageType.getJsonFile()));
+                return;
+            }
+            String bodyTemplate = Resources.toString(resource, Charsets.UTF_8);
 
 
+            for (String key : params.keySet()) {
+                bodyTemplate = bodyTemplate.replace("{{" + key + "}}", params.get(key));
+            }
+
+            bodyTemplate = bodyTemplate.replace("{{template_id}}", TEMPLATE_MAP.get(weChatMessageType));
+
+            Request request = new Request.Builder()
+                    .url(MessageFormat.format(MESSAGE_URL_TEMPLATE, token))
+                    .post(RequestBody.create(MediaType.parse("application/json; charset=utf-8"), bodyTemplate))
+                    .build();
+
+            Response response = client.newCall(request).execute();
+
+            if (!HttpStatus.valueOf(response.code()).is2xxSuccessful()) {
+                logger.error(MessageFormat.format("send message failed, response code: {0}", response.code()));
+                return;
+            }
+
+            String responseString = response.body().string();
+            Map<String, String> result = objectMapper.readValue(responseString, new TypeReference<HashMap<String, String>>() {
+            });
+
+            if (!"0".equals(result.get("errcode"))) {
+                logger.error(MessageFormat.format("send message failed, response: {0}", responseString));
+            }
+        } catch (Exception e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
     }
 }
