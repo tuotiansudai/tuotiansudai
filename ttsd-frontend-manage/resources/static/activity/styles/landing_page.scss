@@ -227,11 +227,13 @@ form label.error {
 
     .image-steps {
       margin-top: 30px;
+      height:100px;
       margin-bottom: 30px;
-
-      .arrow {
-        margin-left: 15px;
-        margin-right: 15px;
+      background: url("../images/landingpage/newbie-step4.png") center no-repeat;
+      @media (max-width:700px) {
+        height:300px;
+        background: url("../images/landingpage/newbie-step4-phone.png") center no-repeat;
+        background-size:80%;
       }
     }
     .btn-normal {
@@ -261,11 +263,23 @@ form label.error {
         font-size: 18px;
         color: #525252;
         text-align: center;
-
-        img {
-          margin-bottom: 20px;
+        .newbie-step5{
+          display:inline-block;
+          width:70px;
+          height:70px;
+          &.icon-one{
+            background:url('../images/landingpage/newbie-step5-cfca.png') no-repeat center;
+            background-size:100%;
+          }
+          &.icon-two{
+            background:url('../images/landingpage/newbie-step5-control.png') no-repeat center;
+            background-size:100%;
+          }
+          &.icon-three{
+            background:url('../images/landingpage/newbie-step5-security.png') no-repeat center;
+            background-size:100%;
+          }
         }
-
         p {
           margin-top: 10px;
           color: #808080;
@@ -415,7 +429,11 @@ form label.error {
               font-size: 12px;
               border-radius: 15px;
               background: #ff0000;
-              &:hover {
+              color: #fff;
+              &:disabled{
+                background: #ccc;
+                border: 1px solid #ccc;
+                cursor: default;
                 color: #fff;
               }
             }
@@ -682,18 +700,6 @@ form label.error {
         background: url("../images/landingpage/newbie-step4-coupon.png") center top no-repeat;
         height: 132px;
         background-size: auto 132px;
-      }
-
-      .image-steps {
-        margin-bottom: 30px;
-
-        img {
-          margin-top: 15px;
-          width: 70%;
-        }
-        .arrow {
-          display: none;
-        }
       }
     }
 
