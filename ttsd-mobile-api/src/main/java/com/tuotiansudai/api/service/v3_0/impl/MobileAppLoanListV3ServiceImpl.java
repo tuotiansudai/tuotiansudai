@@ -96,6 +96,10 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
             //登录 && 投资过标
             //目前同一时间可投标不超过100个
             List<LoanModel> raisingLoanModels = loanMapper.findByProductType(LoanStatus.RAISING, noContainExperienceLoans, null);
+            //有可投标的,版本号小于4.3过滤掉经营性借款
+            if(AppVersionUtil.compareVersion() == AppVersionUtil.low){
+                raisingLoanModels = raisingLoanModels.stream().filter(n -> pledgeTypeList.contains(n.getPledgeType())).collect(Collectors.toList());
+            }
             if (raisingLoanModels.size() != 0) {
                 Collections.sort(raisingLoanModels, new Comparator<LoanModel>() {
                     @Override
@@ -120,10 +124,6 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
                     }
                 });
 
-                //有可投标的,版本号小于4.3过滤掉经营性借款
-                if(AppVersionUtil.compareVersion() == AppVersionUtil.low){
-                    raisingLoanModels = raisingLoanModels.stream().filter(n -> pledgeTypeList.contains(n.getPledgeType())).collect(Collectors.toList());
-                }
                 if (0 == investMapper.findCountSuccessByLoginNameAndProductTypes(loginName, noContainExperienceLoans)) {
                     //登录 && 投资过标 && 没投资过体验标外的任何标 = 登录 && 只投资过体验标
                     loanModel = raisingLoanModels.get(0);
