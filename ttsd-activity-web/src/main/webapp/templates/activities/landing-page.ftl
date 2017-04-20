@@ -120,51 +120,53 @@
                             <li class="reg-row-container">
                             <#--手机号:-->
                                 <i class="newbie-register-ic-mobile reg-icon"></i>
-                                <input type="text" id="mobile" name="mobile" class="mobile input-width"
+                                <input validate type="text" id="mobile" name="mobile" class="mobile input-width"
                                        placeholder="手机号"
                                        maxlength="11" value="">
                             </li>
-                            <li id="mobileErr" class="err-height"></li>
+                        
                             <li class="reg-row-container">
                             <#--密码:-->
                                 <i class="newbie-register-ic-password reg-icon"></i>
-                                <input type="password" id="password" name="password" placeholder="密码" maxlength="20"
+                                <input validate type="password" id="password" name="password" placeholder="密码" maxlength="20"
                                        class="password input-width" value="">
                             </li>
-                            <li id="passwordErr" class="err-height"></li>
+                        
 
                             <li class="code reg-row-container">
                             <#--验证码:-->
                                 <i class="newbie-register-ic-img-captcha reg-icon"></i>
-                                <input type="text" id="appCaptcha" name="appCaptcha" placeholder="验证码" maxlength="5"
+                                <input validate type="text" id="appCaptcha" name="appCaptcha" placeholder="验证码" maxlength="5"
                                        class="appCaptcha" value="">
                                 <em class="image-captcha">
                                     <img src="" alt=""/>
                                 </em>
                                 <span class="img-change">换一张</span>
                             </li>
-                            <li id="appCaptchaErr" class="err-height appCaptchaErr"></li>
+                        
                             <li class="reg-row-container">
                             <#--手机验证码:-->
                                 <i class="newbie-register-ic-captcha reg-icon"></i>
                                 <span class="captcha-tag" id="pcCaptcha">
-                                <input type="text" class="captcha" autocomplete="off" name="captcha" id="captcha"
-                                       autocorrect="off" autocapitalize="off" placeholder="手机验证码" maxlength="6">
                                 <button type="button" class="fetch-captcha btn" disabled="disabled" id="fetchCaptcha">获取验证码</button>
+                                <input validate type="text" class="captcha" autocomplete="off" name="captcha" id="captcha"
+                                       autocorrect="off" autocapitalize="off" placeholder="手机验证码" maxlength="6">
                             </span>
                             </li>
-                            <li id="captchaErr" class="err-height"></li>
+                    
                             <li class="agree-register-protocol">
                                 <input type="checkbox" name="agreement" id="agreementInput" class="agreement-check"
                                        checked>
                                 <label for="agreementInput" class="check-label">同意拓天速贷<a href="javascript:void(0);"
                                                                                          class="show-agreement">《服务协议》</a></label>
                             </li>
-                            <li id="agreementInputErr" class="err-height"></li>
                             <li class="tc">
                                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                                 <input type="hidden" name="referrer" value="">
-                                <input type="submit" class="register-user" value="立即注册">
+                                <#if success?? && success == false>
+                                    <div class="error">注册失败，请检查您提交的信息是否正确！</div>
+                                </#if>
+                                <input type="submit" class="register-user" value="立即注册" disabled>
                             </li>
                             <@global.isAnonymous>
                                 <li class="tc mobile-agreement">

@@ -397,6 +397,10 @@ form label.error {
             margin-left: 3px;
             margin-right: 3px;
           }
+          span.error{
+            display: inline-block;
+            width: 100%;
+          }
 
           .img-change {
             cursor: pointer;
@@ -498,6 +502,12 @@ form label.error {
             color: #fff;
             border: 0;
             cursor: pointer;
+            &:disabled{
+              background: #ccc;
+              border: 1px solid #ccc;
+              cursor: default;
+              color: #fff;
+            }
           }
         }
       }

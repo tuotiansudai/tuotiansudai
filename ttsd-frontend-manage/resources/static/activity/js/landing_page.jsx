@@ -71,6 +71,7 @@ function showReferrerInfoIfNeeded() {
         //无推荐人
         $('.refer-person-info', $landingContainerBox).hide();
     }
+    isDisabledButton();
 }
 showReferrerInfoIfNeeded();
 
@@ -96,7 +97,45 @@ $('#appCaptcha').on('focusout', function (event) {
         $fetchCaptcha.prop('disabled', true);
     }
 });
-            
+
+//获取短信验证码
+$fetchCaptcha.on('click', function(event) {
+    event.preventDefault();
+    getSmsCaptcha();
+});
+function getSmsCaptcha() {
+    var captchaVal = $('#appCaptcha').val();
+    var mobileNum = $('#mobile').val();
+
+    commonFun.useAjax({
+        url: '/register/user/send-register-captcha',
+        type: 'POST',
+        dataType: 'json',
+        data: {imageCaptcha: captchaVal, mobile: mobileNum}
+    },function(data) {
+        var countdown = 60;
+        if (data.data.status && !data.data.isRestricted) {
+            var timer = setInterval(function () {
+                $fetchCaptcha.prop('disabled', true).text(countdown + '秒后重发');
+                countdown--;
+                if (countdown == 0) {
+                    clearInterval(timer);
+                    countdown = 60;
+                    $fetchCaptcha.prop('disabled', false).text('重新发送');
+                }
+            }, 1000);
+            return;
+        }
+        if (!data.data.status && data.data.isRestricted) {
+            $('#appCaptchaErr').html('短信发送频繁,请稍后再试');
+        }
+
+        if (!data.data.status && !data.data.isRestricted) {
+            $('#appCaptchaErr').html('图形验证码错误');
+        }
+        refreshImgCaptcha();
+    });
+}
 //用户注册表单校验
 let validator = new ValidatorObj.ValidatorForm();
 //验证码是否正确
@@ -147,6 +186,10 @@ validator.add(registerForm.password, [{
     strategy: 'checkPassword',
     errorMsg: '密码为6位至20位，不能全是数字'
 }],true);
+validator.add(registerForm.appCaptcha, [{
+    strategy: 'isNonEmpty',
+    errorMsg: '验证码不能为空'
+}],true);
 validator.add(registerForm.captcha, [{
     strategy: 'isNonEmpty',
     errorMsg: '验证码不能为空'
@@ -180,23 +223,12 @@ function isDisabledButton() {
 
     let isDisabledCaptcha = isMobileValid && isPwdValid;
 
-    //按钮上有样式名count-downing，说明正在倒计时
-    if ($fetchCaptcha.prop('disabled')==true) {
-        $fetchCaptcha.prop('disabled',true);
-    }
-    else {
-        $fetchCaptcha.prop('disabled',!isDisabledCaptcha);
-    }
-    //给验证码弹框中的mobile隐藏域赋值
-    isDisabledCaptcha && (globalFun.$('#imageCaptchaForm').mobile.value = mobile.value);
     //通过获取验证码按钮来判断
     !isDisabledCaptcha && $registerSubmit.prop('disabled',true);
 
     let captchaValid = !$(captcha).hasClass('error') && captcha.value;
 
-    
-
-    let isDisabledSubmit= isMobileValid && isPwdValid && captchaValid  && agreementValid;
+    let isDisabledSubmit= isMobileValid && isPwdValid && captchaValid  && $('#agreementInput').prop('checked');
     $registerSubmit.prop('disabled',!isDisabledSubmit);
 
 }
