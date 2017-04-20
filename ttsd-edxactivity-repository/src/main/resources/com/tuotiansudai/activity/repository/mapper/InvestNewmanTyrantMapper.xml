@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.activity.repository.mapper.InvestNewmanTyrantMapper">
+
+    <resultMap id="investNewmanTyrantResultMap" type="com.tuotiansudai.activity.repository.model.InvestNewmanTyrantModel">
+        <id column="id" property="id"></id>
+        <result column="invest_id" property="investId"></result>
+        <result column="login_name" property="loginName"></result>
+        <result column="user_name" property="userName"></result>
+        <result column="mobile" property="mobile"></result>
+        <result column="invest_amount" property="investAmount"></result>
+        <result column="newman" property="newman"></result>
+        <result column="created_time" property="createdTime"></result>
+
+    </resultMap>
+
+    <resultMap id="newmanTyrantView" type="NewmanTyrantView">
+        <result column="login_name" property="loginName"/>
+        <result column="sumAmount" property="sumAmount"/>
+        <result column="user_name" property="userName"/>
+        <result column="mobile" property="mobile"/>
+    </resultMap>
+
+    <insert id="create" parameterType="investNewmanTyrantModel" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `edxactivity`.`invest_newman_tyrant`
+        (`invest_id`,
+        `login_name`,
+        `user_name`,
+        `mobile`,
+        `invest_amount`,
+        `newman`,
+        `created_time`)
+        VALUES(#{investId},#{loginName},#{userName},#{mobile},#{investAmount},#{newman},#{createdTime})
+    </insert>
+
+    <select id="findNewmanTyrantByTradingTime" parameterType="map" resultMap="newmanTyrantView">
+        SELECT
+        nt.login_name,
+        SUM(nt.invest_amount) sumAmount,
+        nt.user_name,
+        nt.mobile
+        FROM
+        invest_newman_tyrant nt
+        <where>
+            DATE_FORMAT(nt.created_time, '%Y-%m-%d') = DATE_FORMAT(#{tradingTime},'%Y-%m-%d')
+            AND nt.created_time BETWEEN #{activityBeginTime} AND #{activityEndTime}
+            and nt.newman = #{isNewman}
+        </where>
+        GROUP BY nt.login_name , nt.user_name , nt.mobile
+        ORDER BY sumAmount DESC , MAX(nt.created_time)
+    </select>
+
+
+</mapper>

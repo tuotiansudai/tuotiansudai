@@ -5,7 +5,6 @@ import com.tuotiansudai.console.service.ConsoleRechargeService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.RechargePaginationItemDataDto;
-import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.repository.model.RechargeSource;
 import com.tuotiansudai.repository.model.RechargeStatus;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +34,7 @@ public class RechargeController {
                                         @RequestParam(value = "status", required = false) RechargeStatus status,
                                         @RequestParam(value = "source", required = false) RechargeSource source,
                                         @RequestParam(value = "channel", required = false) String channel,
-                                        @RequestParam(value = "role", required = false) Role role,
+                                        @RequestParam(value = "role", defaultValue = "", required = false) String role,
                                         @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
         int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/recharge");

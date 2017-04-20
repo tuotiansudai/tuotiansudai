@@ -94,7 +94,7 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
     }
 
     @Override
-    public List<KeyValueModel> queryUserRechargeTrend(Granularity granularity, Date startTime, Date endTime, String province, Role role) {
+    public List<KeyValueModel> queryUserRechargeTrend(Granularity granularity, Date startTime, Date endTime, String province, String role) {
         if (granularity == Granularity.Hourly) {
             endTime = startTime;
         }
@@ -108,7 +108,7 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
     }
 
     @Override
-    public List<KeyValueModel> queryUserWithdrawTrend(Granularity granularity, Date startTime, Date endTime, String province, Role role) {
+    public List<KeyValueModel> queryUserWithdrawTrend(Granularity granularity, Date startTime, Date endTime, String province, String role) {
         if (granularity == Granularity.Hourly) {
             endTime = startTime;
         }
@@ -259,7 +259,7 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
     }
 
     @Override
-    public List<KeyValueModel> queryWithdrawUserCountTrend(Date startTime, Date endTime, Granularity granularity, Role role) {
+    public List<KeyValueModel> queryWithdrawUserCountTrend(Date startTime, Date endTime, Granularity granularity, String role) {
         Date queryStartTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
         Date queryEndTime = new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().toDate();
         return businessIntelligenceMapper.queryWithdrawUserCountTrend(queryStartTime, queryEndTime, granularity, role);
