@@ -97,7 +97,7 @@
                                         {{else if $index==2}}
                                         <td>1%加息券</td>
                                         {{else}}
-                                            <td>100元红包</td>
+                                            <td>0.8%加息券</td>
                                         {{/if}}
                                     </tr>
                                     {{/each}}
