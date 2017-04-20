@@ -39,6 +39,9 @@ public class UMPayRealTimeStatusServiceImpl implements UMPayRealTimeStatusServic
     @Value("${pay.fake}")
     private boolean isFakeUMPay;
 
+    @Value("${common.environment}")
+    private Environment environment;
+
     @Autowired
     private AccountMapper accountMapper;
 
