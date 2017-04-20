@@ -4,6 +4,8 @@ import com.tuotiansudai.repository.model.WeChatUserModel;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface WeChatUserMapper {
 
@@ -11,7 +13,7 @@ public interface WeChatUserMapper {
 
     WeChatUserModel findByOpenid(@Param(value = "openid") String openid);
 
-    WeChatUserModel findByLoginName(@Param(value = "loginName") String loginName);
+    List<WeChatUserModel> findByLoginName(@Param(value = "loginName") String loginName);
 
     int update(WeChatUserModel model);
 }

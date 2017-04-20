@@ -8,5 +8,5 @@ public interface WeChatService {
 
     String generateAuthorizeURL(String sessionId, String redirect);
 
-    boolean bind(String mobile, String weChatUserLoginName);
+    void bind(String mobile, String weChatUserLoginName);
 }
