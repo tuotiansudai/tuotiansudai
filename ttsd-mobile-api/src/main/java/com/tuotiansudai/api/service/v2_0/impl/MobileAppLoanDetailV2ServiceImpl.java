@@ -108,7 +108,8 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
             logger.warn("标的详情" + ReturnMessage.LOAN_NOT_FOUND.getCode() + ":" + ReturnMessage.LOAN_NOT_FOUND.getMsg());
             return new BaseResponseDto<>(ReturnMessage.LOAN_NOT_FOUND.getCode(), ReturnMessage.LOAN_NOT_FOUND.getMsg());
         }
-        if (AppVersionUtil.compareVersion() == AppVersionUtil.low ) {
+        List<PledgeType> pledgeTypeList = Lists.newArrayList(PledgeType.ENTERPRISE_CREDIT, PledgeType.ENTERPRISE_BILL, PledgeType.ENTERPRISE_FACTORING, PledgeType.ENTERPRISE_PLEDGE);
+        if (AppVersionUtil.compareVersion() == AppVersionUtil.low && pledgeTypeList.contains(loanModel.getPledgeType())) {
             logger.warn("标的详情" + ReturnMessage.LOAN_NOT_FOUND.getCode() + ":" + ReturnMessage.LOAN_NOT_FOUND.getMsg());
             return new BaseResponseDto<>(ReturnMessage.APP_VERSION_NOT_LATEST.getCode(), ReturnMessage.APP_VERSION_NOT_LATEST.getMsg());
         }
