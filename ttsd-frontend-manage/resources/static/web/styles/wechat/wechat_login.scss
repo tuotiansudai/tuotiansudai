@@ -75,26 +75,35 @@ textarea::-webkit-input-placeholder {
   }
 }
 
-.form-register {
+.form-captcha {
   position: relative;
   .image-captcha {
     position: absolute;
     right:10px;
     top:10px;
   }
+}
+.form-register {
+  position: relative;
+
   .get-captcha {
     border: 0px;
     position: absolute;
     right: 10px;
-    top: 75px;
+    top: 15px;
     border-left:1px solid #E5E5E5;
     height: 20px;
     vertical-align: middle;
     line-height: 20px;
     padding: 0px 0px 0px 10px;
+    width:80px;
+    &:disabled {
+      color: #ccc;
+    }
   }
 }
 .success-box {
+  padding-top:100px;
   .icon-sucess {
     width:40px;
     height:40px;
@@ -105,11 +114,18 @@ textarea::-webkit-input-placeholder {
   }
   .result-ok {
     display: block;
+    margin-bottom:60px;
 
     em {
       display: block;
       text-align: center;
       padding-top:10px;
+    }
+  }
+
+  .down-time {
+    i {
+      color: #ff635a;
     }
   }
 }
