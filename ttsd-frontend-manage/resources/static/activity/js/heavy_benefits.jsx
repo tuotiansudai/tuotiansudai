@@ -87,15 +87,15 @@ if(browser=='mobile') {
         if(totalCalls>=4 && totalCalls<6) {
             $alignBox.eq(0).find('.inner-progress-active').css({'width':'50%'});
         } else if(totalCalls>=6 && totalCalls<9) {
-            $alignBox.eq(0).find('.inner-progress-active').css({'width':'89%'});
+            $alignBox.eq(0).find('.inner-progress-active').css({'width':'85%'});
             $alignBox.eq(1).find('.inner-progress-active').css({'height':'50%'});
         } else if(totalCalls>=9 && totalCalls<11) {
-            $alignBox.eq(0).find('.inner-progress-active').css({'width':'89%'});
+            $alignBox.eq(0).find('.inner-progress-active').css({'width':'85%'});
             $alignBox.eq(1).find('.inner-progress-active').css({'height':'100%'});
             $alignBox.eq(2).find('.inner-progress-active').css({'width':'39%'});
 
         } else if(totalCalls>=11) {
-            $alignBox.eq(0).find('.inner-progress-active').css({'width':'89%'});
+            $alignBox.eq(0).find('.inner-progress-active').css({'width':'85%'});
             $alignBox.eq(1).find('.inner-progress-active').css({'height':'100%'});
             $alignBox.eq(2).find('.inner-progress-active').css({'width':'88%'});
         }
