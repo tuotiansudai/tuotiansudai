@@ -23,8 +23,12 @@ public class MobileAppRechargeListServiceImpl implements MobileAppRechargeListSe
 
     @Override
     public BaseResponseDto<RechargeListResponseDataDto> generateRechargeList(RechargeListRequestDto requestDto) {
-        Integer index = requestDto.getIndex() == null ? 1 : requestDto.getIndex();
+        Integer index = requestDto.getIndex();
         Integer pageSize = pageValidUtils.validPageSizeLimit(requestDto.getPageSize());
+
+        if (index == null || index <= 0) {
+            index = 1;
+        }
         Integer offset = (index - 1) * pageSize;
 
         List<RechargeModel> rechargeModels = rechargeMapper.findRechargePagination(null, requestDto.getBaseParam().getPhoneNum(), null, null, null, offset, pageSize, null, null, "");
