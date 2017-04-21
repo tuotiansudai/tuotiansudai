@@ -66,13 +66,7 @@
             <div class="image-coupon"></div>
 
             <div class="image-steps tc">
-                <img src="${staticServer}/activity/images/sign/actor/landingpage/newbie-step4-1.png">
-                <img class="arrow"
-                     src="${staticServer}/activity/images/sign/actor/landingpage/newbie-step4-arrow.png">
-                <img src="${staticServer}/activity/images/sign/actor/landingpage/newbie-step4-2.png">
-                <img class="arrow"
-                     src="${staticServer}/activity/images/sign/actor/landingpage/newbie-step4-arrow.png">
-                <img src="${staticServer}/activity/images/sign/actor/landingpage/newbie-step4-3-new.png">
+                
             </div>
             <div class="tc"><a href="#" class="btn-normal" id="btn-get-coupon">立即注册领取</a></div>
 
@@ -80,13 +74,20 @@
         <div class="newbie-step-five tc">
             <dl class="newbie-step-five-dl clearfix">
                 <dt class="clearfix tc">拓天速贷为您的资金安全保驾护航</dt>
-                <dd><img src="${staticServer}/activity/images/sign/actor/landingpage/newbie-step5-cfca.png"><br><i>CFCA权威认证</i>
+                <dd>
+                    <span class="newbie-step5 icon-one"></span>
+                <br>
+                <i>CFCA权威认证</i>
                     <br/>
                     <p>携手中国金融认证中心<br>投资合同受法律保护</p></dd>
-                <dd><img src="${staticServer}/activity/images/sign/actor/landingpage/newbie-step5-control.png"><br><i>风控严谨</i>
+                <dd>
+                <span class="newbie-step5 icon-two"></span>
+                <br><i>风控严谨</i>
                     <br/>
                     <p>六重风控，22道手续<br>历史全额兑付，0逾期0坏账</p></dd>
-                <dd><img src="${staticServer}/activity/images/sign/actor/landingpage/newbie-step5-security.png"><br><i>稳健安全</i>
+                <dd>
+                <span class="newbie-step5 icon-three"></span>
+                <br><i>稳健安全</i>
                     <br/>
                     <p>预期年化收益8%～11%<br>房/车抵押债权安全系数高</p></dd>
             </dl>
@@ -113,57 +114,60 @@
             <div class="newbie-step-register">
                 <div class="register-box">
                     <div class="refer-person-info">您的好友<span class="refer-name"></span>邀请您领取投资大礼包</div>
-                    <form class="register-user-form" action="/register/user" method="post" autocomplete="off"
+                    <form class="register-user-form" id="registerUserForm" action="/register/user" method="post" autocomplete="off"
                           novalidate="novalidate">
                         <ul class="reg-list tl register-ul">
                             <li class="reg-row-container">
                             <#--手机号:-->
                                 <i class="newbie-register-ic-mobile reg-icon"></i>
-                                <input type="text" id="mobile" name="mobile" class="mobile input-width"
+                                <input validate type="text" id="mobile" name="mobile" class="mobile input-width"
                                        placeholder="手机号"
                                        maxlength="11" value="">
                             </li>
-                            <li id="mobileErr" class="err-height"></li>
+                        
                             <li class="reg-row-container">
                             <#--密码:-->
                                 <i class="newbie-register-ic-password reg-icon"></i>
-                                <input type="password" id="password" name="password" placeholder="密码" maxlength="20"
+                                <input validate type="password" id="password" name="password" placeholder="密码" maxlength="20"
                                        class="password input-width" value="">
                             </li>
-                            <li id="passwordErr" class="err-height"></li>
+                        
 
                             <li class="code reg-row-container">
                             <#--验证码:-->
                                 <i class="newbie-register-ic-img-captcha reg-icon"></i>
-                                <input type="text" id="appCaptcha" name="appCaptcha" placeholder="验证码" maxlength="5"
-                                       class="appCaptcha" value="">
+                                
                                 <em class="image-captcha">
                                     <img src="" alt=""/>
                                 </em>
                                 <span class="img-change">换一张</span>
+                                <input validate type="text" id="appCaptcha" name="appCaptcha" placeholder="验证码" maxlength="5"
+                                       class="appCaptcha fl" value="">
                             </li>
-                            <li id="appCaptchaErr" class="err-height appCaptchaErr"></li>
+                        
                             <li class="reg-row-container">
                             <#--手机验证码:-->
                                 <i class="newbie-register-ic-captcha reg-icon"></i>
                                 <span class="captcha-tag" id="pcCaptcha">
-                                <input type="text" class="captcha" autocomplete="off" name="captcha" id="captcha"
+                                <button type="button" class="fetch-captcha btn" disabled="disabled" id="fetchCaptcha">获取验证码</button>
+                                <input validate type="text" class="captcha" autocomplete="off" name="captcha" id="captcha"
                                        autocorrect="off" autocapitalize="off" placeholder="手机验证码" maxlength="6">
-                                <button type="button" class="fetch-captcha btn" disabled="disabled">获取验证码</button>
                             </span>
                             </li>
-                            <li id="captchaErr" class="err-height"></li>
+                    
                             <li class="agree-register-protocol">
                                 <input type="checkbox" name="agreement" id="agreementInput" class="agreement-check"
                                        checked>
                                 <label for="agreementInput" class="check-label">同意拓天速贷<a href="javascript:void(0);"
                                                                                          class="show-agreement">《服务协议》</a></label>
                             </li>
-                            <li id="agreementInputErr" class="err-height"></li>
                             <li class="tc">
                                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                                 <input type="hidden" name="referrer" value="">
-                                <input type="submit" class="register-user" value="立即注册">
+                                <#if success?? && success == false>
+                                    <div class="error">注册失败，请检查您提交的信息是否正确！</div>
+                                </#if>
+                                <input type="submit" class="register-user" value="立即注册" disabled>
                             </li>
                             <@global.isAnonymous>
                                 <li class="tc mobile-agreement">
@@ -180,12 +184,14 @@
 </div>
 
 <div class="image-captcha-dialog" style="display: none;">
-    <form class="image-captcha-form" action="/register/user/send-register-captcha" method="post">
+    <form class="image-captcha-form" id="imageCaptchaForm" >
         <div class="image-captcha-inner">
-            <img src="/register/user/image-captcha" alt="" class="image-captcha"/>
-            <input type="text" class="image-captcha-text" name="imageCaptcha" maxlength="5" placeholder="请输入图形验证码"/>
+        <img src="" alt="" class="image-captcha"/>
+        <input type="text" class="image-captcha-text" name="imageCaptcha" maxlength="5" placeholder="请输入图形验证码"/>
+        <input type="hidden" name="mobile">
 
             <div class="tc">
+                <div class="error-box tl"></div>
                 <input type="submit" class="image-captcha-confirm btn-normal" value="确定"/>
             </div>
         </div>

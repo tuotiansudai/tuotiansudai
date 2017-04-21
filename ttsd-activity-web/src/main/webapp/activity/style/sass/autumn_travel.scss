@@ -1,0 +1,745 @@
+@charset "utf-8";
+@import "module/register_common";
+@import 'module/gift_circle_draw';
+
+body {
+  background: #a1e9f8 url("/activity/images/autumn-tour/bg-yun.png") center 775px no-repeat;
+  overflow-x: hidden;
+}
+
+.main-frame {
+  width: 100%;
+  margin: 0 auto;
+}
+.customized-button {
+  margin-top:40px;
+  .btn-normal {
+    border-bottom:4px solid #c75f28;
+    font-size:22px;
+    border-radius: 0;
+    letter-spacing: 0;
+    font-weight: bold;
+    padding: 12px 50px;
+  }
+}
+.tour-slide  {
+  height: 678px;
+  background: url("/activity/images/autumn-tour/tour-top-bar2.jpg") center top no-repeat;
+  .page-width {
+    position: relative;
+    height:100%;
+    .activity-date {
+      position: absolute;
+      bottom: 209px;
+      left: 36%;
+      color: #fff;
+      font-size: 25px;
+      font-weight: bold;
+    }
+  }
+}
+.autumn-tour-frame {
+  width:1100px;
+  margin:-10px auto 0 auto;
+  position: relative;
+  .vertical-line {
+    z-index: 100;
+    width:10px;
+    height:40px;
+    position: absolute;
+    background: url("/activity/images/autumn-tour/vertical-dot.png") left top no-repeat;
+  }
+
+  .bg-box {
+    background: rgba(113,207,207,0.2);
+    margin-bottom:20px;
+    padding:10px 50px;
+    height:auto;
+    overflow: auto;
+  }
+  .title-normal-box {
+    text-align: center;
+    padding-top: 25px;
+    color: #146566;
+    .title-normal-title01,.title-normal-title02 {
+      width: 985px;
+      height: 85px;
+      margin: 0 auto;
+
+    }
+    .title-normal-title01 {
+      background: url("/activity/images/autumn-tour/m-title01.png") center bottom no-repeat;
+      background-size: 100%;
+    }
+    .title-normal-title02 {
+      background: url("/activity/images/autumn-tour/m-title02.png") center bottom no-repeat;
+      background-size: 100%;
+    }
+    .box-inner-content {
+      background: #e6fbff;
+      border-radius:10px;
+      border:6px solid #71cfcf;
+      font-size: 16px;
+      line-height: 28px;
+      padding:10px;
+      position: relative;
+      .vertical-line {
+        &:nth-child(1) {
+          left: 40px;
+          bottom: -44px;
+        }
+        &:nth-child(2) {
+          left: 268px;
+          bottom: -44px;
+        }
+        &:nth-child(3) {
+          left: 382px;
+          bottom: -44px;
+        }
+        &:nth-child(4) {
+          right: 382px;
+          bottom: -44px;
+        }
+        &:nth-child(5) {
+          right: 268px;
+          bottom: -44px;
+        }
+        &:nth-child(6) {
+          right: 40px;
+          bottom: -44px;
+        }
+      }
+      h1 {
+        font-size: 20px;
+        line-height: 45px;
+        font-weight: bold;
+      }
+      p {
+        color: #146566;
+        text-align: left;
+        font-weight: bold;
+        width: 65%;
+        display: block;
+        margin: 10px auto;
+        em {
+          color: #ed702c;
+        }
+      }
+    }
+  &.steps-box {
+    .steps-list {
+      margin-left:60px;
+      margin-bottom:20px;
+      li {
+        width:137px;
+        height:60px;
+        border:1px solid #8fb3b3;
+        border-left-width: 0;
+        border-right-width: 0;
+        position: relative;
+        float: left;
+        margin-right:32px;
+        i,em,s {
+          display: block;
+          float: left;
+          height:100%;
+        }
+        i,s {
+          width:0px;
+          height:0px;
+          border:31px solid transparent;
+          border-left:31px solid #8fb3b3;
+          &.arrow-left {
+            border:29px solid transparent;
+            border-left:29px solid #e6fbff;
+            position: absolute;
+            left: 0;
+            top: 1px;
+            z-index: 5;
+          }
+          &.arrow-right {
+            position: absolute;
+            z-index: 2;
+            top: -1px;
+            left:0;
+          }
+        }
+        s {
+          &.arrow-left {
+            right: -58px;
+            top: 1px;
+            left: auto;
+          }
+          &.arrow-right {
+            right: -62px;
+            top: -1px;
+            left: auto;
+          }
+        }
+        em {
+          position: absolute;
+          left:30px;
+          top:0;
+          line-height: 60px;
+          width:106px;
+          z-index: 10;
+
+        }
+        &.to-finish {
+          border-color: #ed702c;
+          s{
+            border-left: 30px solid #ed702c;
+            &.arrow-left {
+              right: -58px;
+            }
+            &.arrow-right {
+              right: -60px;
+            }
+          }
+          i {
+            border: 30px solid #ed702c;
+            border-left: 30px solid #e6fbff;
+          }
+          em {
+            background: #ed702c;
+            color: #fff;
+            a{
+              color:#fff;
+              text-decoration:none;
+            }
+          }
+        }
+        &.finished {
+          border-color: #a3e2ee;
+          s {
+            border-left: 30px solid #a3e2ee;
+            &.arrow-left {
+              right: -58px;
+            }
+            &.arrow-right {
+              right: -60px;
+            }
+          }
+          i {
+            border: 30px solid #a3e2ee;
+            border-left: 30px solid #e6fbff;
+          }
+          em {
+            background: #a3e2ee;
+          }
+        }
+      }
+    }
+    .activity-text {
+      display: inline-block;
+      padding:30px;
+    }
+    .customized-button {
+      margin-top:0px;
+      .detail {
+        color: #146566;
+      }
+    }
+  }
+  }
+  .prize-kind {
+    .prize-box {
+      width:320px;
+      background: #71cfcf;
+      border-radius: 10px;
+      margin-top:20px;
+      padding-top: 13px;
+      float: left;
+      text-align: center;
+      &:nth-child(2) {
+        margin-left:19px;
+        margin-right:19px;
+      }
+      .pk-title {
+        display: block;
+        background: #e6fbff;
+        color: #ed702c;
+        font-size: 14px;
+        margin: 18px 18px 0 18px;
+        padding: 6px 0;
+        span {
+          display: inline-block;
+          width: 45%;
+          float: left;
+          padding-left:5%;
+          text-align: left;
+          line-height: 22px;
+          em {
+            display: block;
+          }
+          i {
+            font-size:20px;
+          }
+          &:nth-child(1) {
+            width: 42%;
+            border-right: 1px solid #ed702c;
+          }
+        }
+
+
+      }
+      .img-info {
+        margin:18px;
+        margin-top:0;
+        border:1px solid #fff;
+        position: relative;
+        img {
+          width: 100%;
+        }
+        .kind-text {
+          position: absolute;
+          top: 128px;
+          height: 32px;
+          background: rgba(0,0,0,0.2);
+          width: 100%;
+          left: 0;
+          line-height: 32px;
+          color: #fff;
+        }
+        .kind-bottom {
+          padding:0 10px;
+          height:57px;
+          line-height: 57px;
+          background: #e6fbff;
+          color: #808080;
+          font-size: 14px;
+          .btn-normal {
+            border-radius: 0;
+            margin-top: 10px;
+            font-size: 18px;
+            letter-spacing: 0;
+            padding:8px 15px;
+          }
+          span {
+            text-decoration: line-through;
+          }
+          em {
+            font-size: 20px;
+          }
+        }
+
+      }
+      &:hover {
+        box-shadow: 0 0 20px rgba(0,0,0,0.3);
+      }
+    }
+  }
+
+  .award-records {
+    margin-top:20px;
+    .award-box {
+      width:480px;
+      height: 270px;
+      background: #e6fbff;
+      border:1px solid #3f8f89;
+      border-radius: 10px;
+      overflow: hidden;
+
+      .scan-code {
+        padding: 47px;
+        img {
+          float: left;
+          margin-right:30px;
+          border:1px solid #3f8f89;
+        }
+        span {
+          color: #3f8f89;
+          font-weight: bold;
+          display: inline-block;
+          padding-top:35px;
+          font-size: 20px;
+        }
+      }
+    }
+    .customized-button {
+      margin-top: 110px;
+    }
+  }
+  .tour-theme {
+    .lottery-right {
+      width:340px;
+      .chance-number {
+        width:100%;
+        height:58px;
+        line-height: 58px;
+        text-align: center;
+        font-weight: bold;
+        color: #146566;
+        font-size: 20px;
+        margin-bottom:20px;
+      }
+      .chance-list {
+        width:100%;
+        height:415px;
+      }
+      .award-list {
+        text-align: left;
+        line-height: 35px;
+        padding-left: 20px;
+        height: 360px;
+        color: #ed702c;
+        padding-top:10px;
+      }
+    }
+    .leader-container {
+        background:none;
+        margin:30px 0 0 0;
+        .leader-list{
+          padding:40px 0 0 0;
+          .lottery-circle{
+            h3{
+              background:#e6fbff;
+              color:#146566;
+              width: 60%;
+              margin:10% 20%;
+              border:1px solid #009289;
+              border-radius: 10px;
+              box-sizing:border-box;
+            }
+            .circle-shade{
+              background: url("/activity/images/sign/actor/circle/tour-bg.png") no-repeat center;
+              background-size:100%;
+              .rotate-btn{
+                background: url("/activity/images/sign/actor/circle/tour-gift.png") no-repeat center;
+                background-size: contain;
+              }
+            }
+          }
+          .lottery-detail{
+            float:left;
+            width:340px;
+            height:520px;
+            margin-top:30px;
+
+            h3{
+              background:#e6fbff;
+              color:#146566;
+              border:1px solid #009289;
+              border-radius: 20px;
+              box-sizing:border-box;
+            }
+            .gift-record{
+              background:#71cfcf;
+              border-bottom:1px solid #009289;
+              border-radius: 20px 20px 0 0;
+              overflow:hidden;
+              li{
+                background:#71cfcf;
+                color:#3f8f89;
+                &.active{
+                  color:#ed702c;
+                  background:#e6fbff;
+                  border-radius: 20px 20px 0 0;
+                  box-sizing: border-box;
+                }
+              }
+            }
+            .record-list{
+              background:#e6fbff;
+              .record-model{
+                &.user-record{
+                  li{
+                    color:#ed702c;
+                  }
+                }
+                &.own-record{
+                  li{
+                    span{
+                      color:#ed702c;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+    .tip-list {
+      .tip-dom {
+        background:#fffdee url("/activity/images/sign/actor/circle/tour-tip.jpg") no-repeat center top;
+        background-size: contain;
+      }
+      .close-btn {
+        background: url(/activity/images/sign/actor/circle/close-tour.png) no-repeat center top;
+        background-size: contain;
+      }
+    }
+  }
+
+.activity-rule {
+  background: rgba(255,255,255,0.4);
+  margin-bottom:40px;
+  b {
+    display: block;
+    font-weight: bold;
+    font-size:24px;
+    padding: 20px 0;
+  }
+  color: #3f8f89;
+  font-size:12px;
+  line-height: 27px;
+}
+  .pc {
+    display: block;
+  }
+  .mobile {
+    display: none;
+  }
+
+  //抽奖
+  .gift-circle-frame {
+    .gift-circle-out {
+      background: url(/activity/images/integral-draw/bg-integral-circle.jpg) no-repeat center;
+      .rotate-btn{
+        background: url(/activity/images/integral-draw/integral-draw-one.jpg) no-repeat center;
+      }
+      .pointer-img {
+        background: url(/activity/images/integral-draw/pointer.png) no-repeat center;
+      }
+    }
+  }
+  //弹框
+  .tip-list {
+    background: url(/activity/images/integral-draw/bg-pop-point.jpg) no-repeat left top;
+  }
+}
+
+
+@media (max-width: 700px) {
+
+  * {
+    transition: All 0.4s ease-in-out;
+    -webkit-transition: All 0.4s ease-in-out;
+    -moz-transition: All 0.4s ease-in-out;
+    -o-transition: All 0.4s ease-in-out;
+  }
+  body {
+    background: #a3e2ee;
+  }
+  .lottery-draw {
+    float: none;
+  }
+
+  .tour-slide  {
+    height: 327px;
+    background: url("/activity/images/autumn-tour/bar-app2.jpg") center top no-repeat;
+    background-size: cover;
+    .page-width {
+      .activity-date {
+        position: absolute;
+        bottom: 99px;
+        left: 31%;
+        color: #fff;
+        font-size: 13px;
+        font-weight: normal;
+        line-height: 20px;
+      }
+    }
+  }
+  .autumn-tour-frame {
+   width:100%;
+    margin:0 auto;
+    .vertical-line {
+      display: none;
+    }
+    .bg-box {
+      padding:0px;
+      box-sizing: border-box;
+    }
+    .title-normal-box {
+      text-align: left;
+      padding-top: 0px;
+      .title-normal-title01,.title-normal-title02 {
+        width: 100%;
+        height: 45px;
+        margin: 0 auto;
+
+      }
+      .title-normal-title01 {
+        background: url("/activity/images/autumn-tour/m-title-p01.jpg") center bottom no-repeat;
+        background-size: 100%;
+      }
+      .title-normal-title02 {
+        background: url("/activity/images/autumn-tour/m-title-p02.jpg") center bottom no-repeat;
+        background-size: 100%;
+      }
+
+      img {
+        width:96%;
+      }
+      .box-inner-content {
+        font-size:12px;
+        h1 {
+          font-size:15px;
+          line-height: 24px;
+          text-align: center;
+          font-weight: bold;
+        }
+        p {
+          width:100%;
+        }
+        .steps-list {
+          display: none;
+        }
+      }
+      .activity-text {
+        text-align: left;
+        padding:15px!important;
+      }
+    }
+    .prize-kind {
+      margin:10px;
+      overflow: hidden;
+      .swiper-wrapper {
+        width: 108%;
+        width: calc(100% + 30px);
+      }
+      .prize-box {
+        width:45%;
+        margin-right: 10px!important;
+        margin-bottom: 10px!important;
+        margin-left:0!important;
+        padding-top:0;
+        margin-top:10px;
+        &.code-item-box {
+          display: none;
+        }
+        .pk-title {
+          margin:0;
+          span {
+            font-size:13px;
+            i {
+              font-size:14px;
+            }
+            &:nth-child(1) {
+              width: 35%;
+            }
+            &:nth-child(2) {
+              width: 48%;
+            }
+          }
+        }
+        .img-info  {
+          margin:0;
+          a {
+            display: block;
+          }
+          .kind-text {
+            top: auto;
+            bottom: 30px
+          }
+          .kind-bottom {
+            font-size:11px;
+            height: 30px;
+            line-height: 30px;
+            em {
+              font-size: 14px;
+            }
+            .btn-normal {
+              display: none;
+            }
+          }
+        }
+
+        &:nth-child(1) {
+          width:100%;
+        }
+      }
+
+    }
+    .award-records {
+      .award-box {
+        width:100%;
+        display: none;
+        &.fl {
+          float: none;
+        }
+        &.fr {
+          display: none;
+        }
+      }
+      .customized-button {
+        margin-top:0px;
+      }
+    }
+
+    .lottery-draw {
+      .fl,.fr {
+        float: none;
+      }
+      .lottery-right {
+        width:100%;
+        .chance-number {
+          margin:10px auto;
+          width: 85%;
+          height:50px;
+          line-height: 50px;
+        }
+        .chance-list {
+          margin:10px auto;
+          width: 85%;
+        }
+      }
+    }
+    .activity-rule {
+      font-size:11px;
+      padding:10px;
+      b {
+        font-size:12px;
+        padding:10px 0;
+      }
+
+    }
+    .pc {
+      display: none;
+    }
+    .mobile {
+      display: block;
+    }
+
+    .customized-button {
+      margin-top:20px;
+      .btn-normal {
+        border-bottom:2px solid #c75f28;
+        font-size:13px;
+        border-radius: 0;
+        letter-spacing: 0;
+        font-weight: bold;
+        padding: 10px 20px;
+      }
+    }
+
+    .tour-theme {
+      .leader-container {
+        float: none;
+        .leader-list {
+          padding:0;
+          width: 100%;
+          .lottery-circle {
+            margin-top:0;
+            float: none;
+            height: auto;
+            overflow: auto;
+            h3 {
+              float: none;
+              margin: 0 auto 30px auto;
+            }
+          }
+          .lottery-detail{
+            float: none;
+            width:100%;
+            height:auto;
+          }
+        }
+      }
+    }
+  }
+
+
+}
