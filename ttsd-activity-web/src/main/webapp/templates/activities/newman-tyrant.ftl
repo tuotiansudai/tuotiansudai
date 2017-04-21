@@ -18,7 +18,7 @@
                     <ul class="gift-list">
                         <li>
                             <div class="gift-item">
-                                <img src="<#if prizeDto??>${staticServer}${prizeDto.goldImageUrl}</#if>" alt="金奖" width="100%">
+                                <img src="<#if prizeDto??>${commonStaticServer}${prizeDto.goldImageUrl}</#if>" alt="金奖" width="100%">
                             </div>
                             <div class="gift-num icon-first">
                                 金奖：<#if prizeDto??>${prizeDto.goldPrizeName}</#if>
@@ -26,7 +26,7 @@
                         </li>
                         <li>
                             <div class="gift-item">
-                                <img src="<#if prizeDto??>${staticServer}${prizeDto.silverImageUrl}</#if>" alt="银奖" width="100%">
+                                <img src="<#if prizeDto??>${commonStaticServer}${prizeDto.silverImageUrl}</#if>" alt="银奖" width="100%">
                             </div>
                             <div class="gift-num icon-twice">
                                 银奖：<#if prizeDto??>${prizeDto.silverPrizeName}</#if>
@@ -226,5 +226,5 @@
         </div>
     </div>
 </div>
-<#include "login-tip.ftl" />
+<#include "module/login-tip.ftl" />
 </@global.main>
