@@ -8,5 +8,9 @@ commonFun.countDownLoan({
     isAfterText:'',
     textCounting: 's'
 }, function () {
-    window.location = "/";
+    window.location = $downTime.data('redirect');
+});
+
+$('.btn-normal').click(function () {
+    window.location = $downTime.data('redirect');
 });

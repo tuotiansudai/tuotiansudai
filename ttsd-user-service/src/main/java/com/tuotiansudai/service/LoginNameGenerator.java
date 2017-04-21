@@ -2,6 +2,7 @@ package com.tuotiansudai.service;
 
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.mapper.WeChatUserMapper;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +29,7 @@ public class LoginNameGenerator {
 
     public String generate() {
         String loginName = generateLoginName();
-        while (userMapper.findByLoginName(loginName) != null || weChatUserMapper.findByLoginName(loginName) != null) {
+        while (userMapper.findByLoginName(loginName) != null || CollectionUtils.isNotEmpty(weChatUserMapper.findByLoginName(loginName))) {
             loginName = generateLoginName();
         }
         return loginName;
