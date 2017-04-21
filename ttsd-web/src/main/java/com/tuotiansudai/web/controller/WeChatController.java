@@ -45,6 +45,7 @@ public class WeChatController {
                                @RequestParam(name = "state") String state,
                                @RequestParam(name = "redirect", required = false) String redirect) {
         httpServletRequest.getSession().removeAttribute("weChatUserLoginName");
+        httpServletRequest.getSession().removeAttribute("weChatUserOpenid");
 
         WeChatUserModel weChatUserModel = weChatService.parseWeChatUserStatus(httpServletRequest.getSession().getId(), state, code);
         if (weChatUserModel == null) {
@@ -80,7 +81,11 @@ public class WeChatController {
     }
 
     @RequestMapping(path = "/bind-success", method = RequestMethod.GET)
-    public ModelAndView bindSuccess(@RequestParam(name = "redirect", required = false, defaultValue = "/") String redirect) {
+    public ModelAndView bindSuccess(HttpServletRequest httpServletRequest,
+                                    @RequestParam(name = "redirect", required = false, defaultValue = "/") String redirect) {
+        httpServletRequest.getSession().removeAttribute("weChatUserLoginName");
+        httpServletRequest.getSession().removeAttribute("weChatUserOpenid");
+        
         return new ModelAndView("/wechat/wechat-bind-success", "redirect", redirect);
     }
 }
