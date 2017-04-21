@@ -1,5 +1,6 @@
 require("activityStyle/newman_tyrant.scss");
 require('publicJs/login_tip');
+let commonFun= require('publicJs/commonFun');
 let tpl = require('art-template/dist/template');
 
 
@@ -12,7 +13,8 @@ var $newmanTyrant=$('#newmanTyrant'),
 	$boardBtn=$('.board-btn span',$newmanTyrant),
 	$heroNext=$('#heroNext'),
 	$heroPre=$('#heroPre'),
-	$getHistory=$('#getHistory');
+	$getHistory=$('#getHistory'),
+	$showLogin=$('.show-login',$newmanTyrant);
 	
 if(todayDate==startTime) {
     $heroPre.hide();
@@ -46,7 +48,7 @@ function getBoard(type,date){
         type:'GET',
         dataType: 'json',
         url:'/activity/newman-tyrant/'+type+'/'+date
-    },function(response) {
+    },function(data) {
         if(data.status) {
 			$('#rankTable').html(tpl('rankTableTpl',data));
 		}
@@ -91,6 +93,18 @@ $boardBtn.on('click',function(event) {
 	getBoard($('.board-tab span.active').attr('data-type'),$.trim($infoDate.text()));
 
 });
+
+$showLogin.on('click', function(event) {
+	event.preventDefault();
+	layer.open({
+		type: 1,
+		title: false,
+		closeBtn: 0,
+		area: ['auto', 'auto'],
+		content: $('#loginTip')
+	});
+});
+
 //关闭弹框
 $('body').on('click', '.close-tip', function(event) {
 	event.preventDefault();
@@ -111,7 +125,7 @@ $getHistory.on('click', function(event) {
 	        type:'GET',
 	        dataType: 'json',
 	        url:'/activity/newman-tyrant/history'
-	    },function(response) {
+	    },function(data) {
 	        $('#historyContent').html(tpl('historyContentTpl',data));
 			layer.open({
 	          type: 1,
