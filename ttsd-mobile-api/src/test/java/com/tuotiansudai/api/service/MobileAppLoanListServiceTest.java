@@ -4,25 +4,23 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.impl.MobileAppLoanListServiceImpl;
 import com.tuotiansudai.api.util.PageValidUtils;
-import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
-import com.tuotiansudai.repository.mapper.UserCouponMapper;
-import com.tuotiansudai.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.service.CouponService;
-import com.tuotiansudai.membership.repository.model.MembershipModel;
+import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
-import com.tuotiansudai.repository.mapper.ExtraLoanRateMapper;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.LoanDetailsMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.util.IdGenerator;
 import org.joda.time.DateTime;
+import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.util.Date;
 import java.util.List;
@@ -55,6 +53,18 @@ public class MobileAppLoanListServiceTest extends ServiceTestBase {
     @Mock
     private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
 
+    @Before
+    public void before() {
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        BaseParamDto baseParamDto = new BaseParamDto();
+        BaseParam baseParam = new BaseParam();
+        baseParam.setAppVersion("4.2");
+        baseParam.setUserId("userId");
+        baseParamDto.setBaseParam(baseParam);
+        request.setAttribute("baseParam",baseParamDto);
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+    }
+
     @Test
     public void shouldGenerateLoanListIsOk() {
         ReflectionTestUtils.setField(mobileAppLoanListService, "defaultFee", 0.1);
@@ -75,6 +85,7 @@ public class MobileAppLoanListServiceTest extends ServiceTestBase {
         UserCouponModel userCouponModel = new UserCouponModel();
         userCouponModel.setEndTime(DateTime.now().toDate());
         when(userCouponMapper.findUsedExperienceByLoginName(anyString())).thenReturn(Lists.newArrayList(userCouponModel));
+
         LoanListRequestDto loanListRequestDto = new LoanListRequestDto();
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId("testLoan");
@@ -112,6 +123,7 @@ public class MobileAppLoanListServiceTest extends ServiceTestBase {
         LoanListRequestDto loanListRequestDto = new LoanListRequestDto();
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId("testLoan");
+        baseParam.setAppVersion("4.2");
         loanListRequestDto.setBaseParam(baseParam);
         loanListRequestDto.setIndex(1);
         loanListRequestDto.setPageSize(10);
@@ -148,6 +160,7 @@ public class MobileAppLoanListServiceTest extends ServiceTestBase {
         loanModel.setLoanerUserName("借款人");
         loanModel.setLoanerIdentityNumber("111111111111111111");
         loanModel.setProductType(productType);
+        loanModel.setPledgeType(PledgeType.NONE);
 
         return loanModel;
     }

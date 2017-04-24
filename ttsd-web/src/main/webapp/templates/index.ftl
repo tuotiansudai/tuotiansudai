@@ -92,61 +92,61 @@
             <div class="newer-experience clearfix" data-url="/loan/1">
                 <#--<i class="tag-icon"></i>-->
                 <div class="con-inner">
-                    <b class="newer-title">${experienceLoanDto.name} <span>限体验金投资</span></b>
+                    <b class="newer-title">${experienceLoan.name} <span>限体验金投资</span></b>
                     <ul class="loan-info clearfix">
-                        <li><span class="percent-number"> <i>${experienceLoanDto.baseRate}</i>%</span>预期年化收益</li>
-                        <li><em class="duration-day">${experienceLoanDto.duration}</em>天<br>项目期限</li>
+                        <li><span class="percent-number"> <i>${experienceLoan.baseRate}</i>%</span>预期年化收益</li>
+                        <li><em class="duration-day">${experienceLoan.duration}</em>天<br>项目期限</li>
                     </ul>
                     <a href="/loan/1" class="btn-invest btn-normal">立即购买</a>
                 </div>
 
             </div>
-            <#list newbieLoans as loan>
-                <div class="newer-experience clearfix hack-newbie" data-url="/loan/${loan.id?c}">
+            <#if newbieLoan??>
+                <div class="newer-experience clearfix hack-newbie" data-url="/loan/${newbieLoan.id?c}">
                     <i class="tag-icon"></i>
                     <div class="con-inner">
-                        <b class="newer-title">${loan.name}</b>
+                        <b class="newer-title">${newbieLoan.name}</b>
                         <ul class="loan-info clearfix">
                             <li><span class="percent-number">
-                                    <i><@percentInteger>${loan.baseRate+loan.activityRate}</@percentInteger></i>
-                                <@percentFraction>${loan.baseRate+loan.activityRate}</@percentFraction>%
-                                <#if (loan.newbieInterestCouponRate > 0)>
+                                    <i><@percentInteger>${newbieLoan.baseRate+newbieLoan.activityRate}</@percentInteger></i>
+                                <@percentFraction>${newbieLoan.baseRate+newbieLoan.activityRate}</@percentFraction>%
+                                <#if (newbieLoan.newbieInterestCouponRate > 0)>
                                     <s class="sign-plus">+</s>
-                                    <i><@percentInteger>${loan.newbieInterestCouponRate}</@percentInteger></i>
-                                    <@percentFraction>${loan.newbieInterestCouponRate}</@percentFraction>%
+                                    <i><@percentInteger>${newbieLoan.newbieInterestCouponRate}</@percentInteger></i>
+                                    <@percentFraction>${newbieLoan.newbieInterestCouponRate}</@percentFraction>%
                                 </#if></span>预期年化收益
                             </li>
-                            <li><em class="duration-day">${loan.duration}</em>天<br>项目期限</li>
+                            <li>最长<em class="duration-day">${newbieLoan.duration}</em>天<br>项目期限</li>
                         </ul>
-                        <#if loan.status== 'RAISING'>
+                        <#if newbieLoan.status== 'RAISING'>
                         <#--筹款-->
                             <a href="javascript:void(0)" class="btn-invest btn-normal">立即购买</a>
                         </#if>
-                        <#if loan.status== 'PREHEAT'>
+                        <#if newbieLoan.status== 'PREHEAT'>
                         <#--预热中-->
                             <a href="javascript:void(0)" class="btn-invest btn-normal preheat-btn">
-                                <#if loan.preheatSeconds lte 1800>
+                                <#if newbieLoan.preheatSeconds lte 1800>
 
-                                    <span class="preheat" data-time="${loan.preheatSeconds?string.computer}">
+                                    <span class="preheat" data-time="${newbieLoan.preheatSeconds?string.computer}">
                                         <i class="minute_show"></i>分
                                         <i class="second_show"></i>秒后开标
                                     </span>
                                 <#else>
-                                ${(loan.fundraisingStartTime?string("yyyy-MM-dd HH时mm分"))!}放标
+                                ${(newbieLoan.fundraisingStartTime?string("yyyy-MM-dd HH时mm分"))!}放标
                                 </#if>
                             </a>
                         </#if>
-                        <#if ['RECHECK', 'REPAYING', 'OVERDUE', 'COMPLETE']?seq_contains(loan.status)>
+                        <#if ['RECHECK', 'REPAYING', 'OVERDUE', 'COMPLETE']?seq_contains(newbieLoan.status)>
                         <#--已售罄-->
                             <button class="btn-normal" disabled="">已售罄</button>
                         </#if>
                     </div>
                 </div>
-            </#list>
+            </#if>
             <a href="/activity/landing-page" target="_blank" class="hot-bag"></a>
         </div>
 
-    <#--优选债权-->
+        <#--优选债权-->
         <div class="main-column-title">
             <i class="icon-title"></i>优选债权
             <a href="/loan-list"  class="hot-more">更多></a>
@@ -162,7 +162,7 @@
 
         <#if enterpriseLoans??>
             <div class="main-column-title">
-                <i class="icon-title"></i>税易经营性借款
+                <i class="icon-title"></i>经营性借款
                 <a href="/loan-list" class="hot-more">更多></a>
             </div>
 

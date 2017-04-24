@@ -151,10 +151,6 @@ public class InvestServiceImpl implements InvestService {
         double rate = membershipPrivilegePurchaseService.obtainServiceFee(loginName);
 
         InvestModel investModel = new InvestModel(idGenerator.generate(), Long.parseLong(dto.getLoanId()), null, AmountConverter.convertStringToCent(dto.getAmount()), dto.getLoginName(), new Date(), dto.getSource(), dto.getChannel(), rate);
-        LoanModel loanModel = loanMapper.findById(Long.parseLong(dto.getLoanId()));
-        if (loanModel.getPledgeType() == PledgeType.ENTERPRISE) {
-            investModel.setTransferStatus(TransferStatus.NONTRANSFERABLE);
-        }
         investMapper.create(investModel);
 
         logger.info(MessageFormat.format("[Invest Request Data] user={0}, loan={1}, invest={2}, amount={3}, userCoupon={4}, source={5}",
@@ -193,10 +189,6 @@ public class InvestServiceImpl implements InvestService {
         double rate = membershipPrivilegePurchaseService.obtainServiceFee(loginName);
 
         InvestModel investModel = new InvestModel(idGenerator.generate(), loanId, null, amount, loginName, new Date(), source, channel, rate);
-        LoanModel loanModel = loanMapper.findById(loanId);
-        if (loanModel.getPledgeType() == PledgeType.ENTERPRISE) {
-            investModel.setTransferStatus(TransferStatus.NONTRANSFERABLE);
-        }
         try {
             investModel.setNoPasswordInvest(true);
             investMapper.create(investModel);
@@ -310,9 +302,6 @@ public class InvestServiceImpl implements InvestService {
             logger.error(MessageFormat.format("invest callback process fail, because this invest has already succeed. (orderId = {0}, InvestId={1})", callbackRequestModel.getOrderId(), investModel.getId()));
             return;
         }
-
-        //设置交易时间
-        investModel.setTradingTime(new Date());
 
         String loginName = investModel.getLoginName();
         if (callbackRequestModel.isSuccess()) {
@@ -515,6 +504,8 @@ public class InvestServiceImpl implements InvestService {
         }
         // 改invest 本身状态为投资成功
         investModel.setStatus(InvestStatus.SUCCESS);
+        //设置交易时间
+        investModel.setTradingTime(new Date());
         investMapper.update(investModel);
 
         this.investAchievementService.awardAchievement(investModel);

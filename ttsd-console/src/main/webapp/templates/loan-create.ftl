@@ -14,11 +14,14 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label">借款项目名称: </label>
 
-                    <div class="col-sm-2">
-                        <select name="name" class="selectpicker">
-                            <option value="房产抵押借款" selected="selected">房产抵押借款</option>
-                            <option value="车辆抵押借款">车辆抵押借款</option>
-                            <option value="税易经营性借款">税易经营性借款</option>
+                    <div class="col-sm-4">
+                        <select name="name" class="selectpicker" id="projectName">
+                            <option value="房产抵押借款" selected="selected" data-pledgeType="HOUSE">房产抵押借款</option>
+                            <option value="车辆抵押借款" data-pledgeType="VEHICLE">车辆抵押借款</option>
+                            <option value="经营性借款" data-pledgeType="ENTERPRISE_CREDIT">税易经营性借款信用类</option>
+                            <option value="经营性借款" data-pledgeType="ENTERPRISE_PLEDGE">税易经营性借款抵押类</option>
+                            <option value="经营性借款" data-pledgeType="ENTERPRISE_FACTORING">企业经营性借款—保理</option>
+                            <option value="经营性借款" data-pledgeType="ENTERPRISE_BILL">企业经营性借款—票据</option>
                         </select>
                     </div>
                 </div>
@@ -47,7 +50,31 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">借款期限（天）: </label>
+                    <label class="col-sm-2 control-label">原借款期限（天）: </label>
+
+                    <div class="col-sm-3">
+                        <input name="originalDuration" type="text" class="form-control"
+                               datatype="/^\d+$/"
+                               errormsg="原借款期限需要正确填写">
+                    </div>
+                </div>
+
+                <div class="form-group input-append">
+                    <label class="col-sm-2 control-label">借款截止时间: </label>
+
+                    <div class="col-sm-3">
+                        <div class='input-group date' id='deadline'>
+                            <input name="deadline" type='text' class="form-control" datatype="date"
+                                   errormsg="借款截止时间需要正确填写"/>
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">映射旧版本期限（天）: </label>
 
                     <div class="col-sm-2">
                         <select name="productType" class="selectpicker">
@@ -58,7 +85,6 @@
                             </#list>
                         </select>
                     </div>
-
                 </div>
 
                 <div class="form-group">

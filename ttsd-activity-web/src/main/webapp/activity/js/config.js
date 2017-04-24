@@ -38,6 +38,7 @@ var require = {
         'placeholder':staticServer+'/activity/js/libs/jquery.enplaceholder',
         'superslide': staticServer+'/activity/js/libs/jquery.SuperSlide.2.1.1',
         'endTime': staticServer+'/activity/js/dest/actor_time.min',
+        'carousel': staticServer+'/activity/js/libs/jquery.carousel',
 
         /*module*/
         'drawCircle': staticServer+'/activity/js/dest/gift_circle_draw.min',
@@ -68,7 +69,8 @@ var require = {
         'superslide': ['jquery'],
         'md5':['jquery'],
         'qrcode':['jquery'],
-        'clipboard':['jquery']
+        'clipboard':['jquery'],
+        'carousel':['jquery']
     },
     config: {
         text: {
