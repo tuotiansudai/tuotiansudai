@@ -1,5 +1,5 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.tt_guarantee}" pageJavascript="${js.tt_guarantee}" activeNav="" activeLeftNav="" title="邀好友活动_活动中心_拓天速贷" keywords="拓天速贷,邀请好友,话费奖励,京东E卡" description="拓天速贷活动期间邀请好友注册投资,当所有受邀好友们在活动期间首投或累计投资达到指定金额,邀请人领取最高220元话费奖励+3000元京东E卡.">
+<@global.main pageCss="${css.tt_guarantee}" pageJavascript="${js.tt_guarantee}" activeNav="" activeLeftNav="" title="拓天担保_保障投资安全_拓天速贷" keywords="拓天担保,担保服务,风控,合规性建设" description="拓天速贷携手拓天担保,投资安全再上新台阶,提供担保服务,风控,合规性建设等指导意见,保障投资人权益.">
 
 <div class="tour-slide" id="topHeader"></div>
 
