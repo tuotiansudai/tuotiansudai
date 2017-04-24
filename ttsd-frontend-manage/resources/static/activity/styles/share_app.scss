@@ -1,0 +1,429 @@
+$width:640px;
+
+input[type="button"],
+input[type="submit"],
+input[type="reset"]{
+   -webkit-appearance: none;
+}
+textarea {
+	-webkit-appearance: none;
+} 
+
+
+@mixin mobilehide () {
+	@media (max-width: $width) {
+		display: none;
+	}
+}
+@mixin PChide () {
+	@media (min-width: $width + 1px) {
+		display: none;
+	}
+}
+.layui-layer-wrap{
+  display:none;
+}
+.layui-layer-page .layui-layer-content {
+    overflow-y: auto !important;
+}
+.nav-container,.footer-container{
+	display: none;
+}
+.tip-item{
+	padding:20px;
+	p{
+		text-align:left;
+		font-size:14px;
+		color:#4c4c4c;
+	}
+	a{
+		display:inline-block;
+		width:150px;
+		height:30px;
+		text-align:center;
+		color:#fff;
+		font-size:14px;
+		background:#ff7633;
+	}
+}
+.header-container{
+	@media (min-width: $width + 1px){
+		width:375px;
+		margin:0 auto;
+	}
+	.header-download{
+		display:block;
+	}
+	.header{
+		@include PChide;
+		@include mobilehide;
+	}
+}
+.main-frame{
+	@media (max-width: $width) {
+		width:100%;
+	}
+	@media (min-width: $width + 1px) {
+		width:375px;
+		margin:0 auto;
+	}
+}
+.share-app-container{
+	background:#fffbe5;
+	@media (max-width: $width) {
+		width:100%;
+	}
+	@media (min-width: $width + 1px) {
+	  width: 375px;
+	}
+	.share-container{
+		float:left;
+		width:100%;
+		background: #362c51;
+		.share-item{
+			float:left;
+			width:90%;
+			margin:0 5%;
+			.item-tel{
+				float:left;
+				width:100%;
+				margin-top:30px;
+				text-align:center;
+				span{
+					display:inline-block;
+					padding:0 30px;
+					text-align:center;
+					font-size:25px;
+					color:#ffe500;
+					line-height:40px;
+				}
+			}
+			.item-intro{
+				float:left;
+				width:100%;
+				margin-top:20px;
+				font-size:18px;
+				color:#ff635a;
+				text-align:center;
+				span{
+					color:#ffe500;
+				}
+			}
+			.item-form{
+				float:left;
+				width:100%;
+				margin-top:30px;
+				.item-int{
+					float:left;
+					width:100%;
+					margin-bottom:15px;
+					position: relative;
+					&:last-child{
+						margin-bottom:0;
+					}
+					label.error{
+						float:left;
+						width:100%;
+						color:#fff700;
+						&:before {
+						    color: #fff700;
+						}
+					}
+					.item-text{
+						float:left;
+						width:100%;
+						border:3px solid #ffe500;
+						border-radius:10px;
+						background:#fff;
+						color:#4c4c4c;
+						font-size:16px;
+						line-height:36px;
+						box-sizing: border-box;
+					}
+					.item-submit{
+						float:left;
+						width:100%;
+						border:none;
+						color:#fff;
+						font-size:20px;
+						line-height:50px;
+						background:#ff635a;
+						box-sizing: border-box;
+					}
+					.get-code{
+						position: absolute;
+						top: 13px;
+						right: 13px;
+						height: 30px;
+						color: #fff;
+						border: none;
+						background: #ff635a;
+						border-radius: 26px;
+						padding: 0 10px;
+						&[disabled] {
+							background: #666;
+						}
+					}
+					label{
+						&.agree{
+							color:#fff;
+							font-size:14px;
+							span{
+								color:#ff635a;
+							}
+						}
+					}
+					p{
+						font-size:14px;
+						color:#fff;
+						margin-bottom:0;
+						span{
+							color:#fff700;
+						}
+					}
+				}
+			}
+		}
+	}
+	.newbie-step-one {
+		float:left;
+		width:100%;
+		background:#fff;
+		color: #ff473c;
+		padding-top: 40px;
+		padding-bottom: 40px;
+		.image-title {
+			background: url("../images/landingpage/newbie-step1-title-app.png") center top no-repeat;
+			height: 50px;
+			background-size: auto 50px;
+		}
+	}
+	.newbie-step-two {
+		float:left;
+		width:100%;
+		position: relative;
+		background-color: #362d50;
+		padding-top: 20px;
+		padding-bottom: 20px;
+
+		.image-decoration-bg-app-l {
+			width: 110px;
+			height: 116px;
+			position: absolute;
+			left: 0;
+			background: url("../images/landingpage/newbie-decoration-bg-app-l.png");
+			background-size: auto 116px;
+			top: -20px;
+		}
+		.image-decoration-bg-app-r {
+			width: 106px;
+			height: 145px;
+			position: absolute;
+			right: 0;
+			background: url("../images/landingpage/newbie-decoration-bg-app-r.png");
+			background-size: auto 145px;
+			top: -20px;
+		}
+		.image-title {
+			background: url("../images/landingpage/newbie-step2-title-app.png") center top no-repeat;
+			height: 50px;
+			background-size: auto 50px;
+		}
+
+		.image-red-envelope {
+			margin-top: 15px;
+			margin-bottom: 20px;
+			background: url("../images/landingpage/newbie-step2-red-envelope.png") center top no-repeat;
+			height: 114px;
+			background-size: auto 114px;
+		}
+	}
+	.newbie-step-three {
+		float:left;
+		width:100%;
+		background-color: #ffffff;
+		padding-top: 20px;
+		padding-bottom: 20px;
+
+		.image-title {
+			background: url("../images/landingpage/newbie-step3-title-app-new.png") center top no-repeat;
+			height: 50px;
+			background-size: auto 50px;
+		}
+
+		.subtitle {
+			height: 80px;
+			margin-top: 15px;
+			.subtitle-container {
+				display: inline-block;
+				margin-left: 25px;
+				margin-right: 25px;
+				background-color: #ffe500;
+				padding: 5px 30px 5px 30px;
+				border-top-left-radius: 20px;
+				border-bottom-right-radius: 20px;
+				i {
+					color: #803c04;
+					line-height: 15px;
+					font-size: 15px;
+				}
+			}
+		}
+	}
+
+	.newbie-step-four {
+		float:left;
+		width:100%;
+		position: relative;
+		background-color: #362d50;
+		padding-bottom: 20px;
+		padding-top: 15px;
+
+		.image-decoration-bg-app-l {
+			width: 110px;
+			height: 116px;
+			position: absolute;
+			left: 0;
+			background: url("../images/landingpage/newbie-decoration-bg-app-l.png");
+			background-size: auto 116px;
+			top: -20px;
+
+		}
+		.image-decoration-bg-app-r {
+			width: 106px;
+			height: 145px;
+			position: absolute;
+			right: 0;
+			background: url("../images/landingpage/newbie-decoration-bg-app-r.png");
+			background-size: auto 145px;
+			top: -20px;
+		}
+
+		.image-title {
+			background: url("../images/landingpage/newbie-step4-title-app.png") center top no-repeat;
+			height: 50px;
+			background-size: auto 50px;
+		}
+
+		.subtitle {
+			margin-top: 25px;
+			z-index: -1;
+			.subtitle-container {
+				display: inline-block;
+				background-color: #ffe500;
+				margin-left: 25px;
+				margin-right: 25px;
+				padding: 5px 30px 5px 30px;
+				border-top-left-radius: 20px;
+				border-bottom-right-radius: 20px;
+				i {
+					line-height: 15px;
+					font-size: 15px;
+					color: #803c04;
+				}
+			}
+		}
+
+		.image-coupon {
+			margin-top: 20px;
+			background: url("../images/landingpage/newbie-step4-coupon.png") center top no-repeat;
+			height: 132px;
+			background-size: auto 132px;
+		}
+		.image-steps {
+			margin-bottom: 30px;
+			margin-bottom: 30px;
+			img {
+				margin-top: 15px;
+				margin-right: 15px;
+				width: 70%;
+			}
+		}
+	}
+
+	.newbie-step-five {
+		float:left;
+		width:100%;
+		padding-top: 20px;
+		padding-bottom: 5px;
+		text-align: center;
+		background:#fff;
+		.newbie-step-five-dl {
+			color: #525252;
+			line-height: 31px;
+
+			dt {
+				font-size: 17px;
+				margin-bottom: 20px;
+			}
+			dd {
+				float: left;
+				width: 100%;
+				margin-bottom: 15px;
+				font-size: 18px;
+				color: #525252;
+				text-align: center;
+
+				img {
+					margin-bottom: 15px;
+				}
+
+				p {
+					margin-top: 10px;
+					color: #808080;
+					font-size: 14px;
+					line-height: 22px;
+				}
+			}
+		}
+	}
+
+	.newbie-step-six {
+		float:left;
+		width: 100%;
+		padding-top: 15px;
+		background: #362d50;
+		text-align: center;
+
+		.newbie-step-six-box {
+			width: 92%;
+			min-width: 20px;
+			display: inline-block;
+			padding-left: 15px;
+			padding-right: 15px;
+			p {
+				text-align: left;
+				color: #ffe500;
+				font-size: 14px;
+				line-height: 20px;
+				margin: 10px 0;
+				font-weight: lighter;
+			}
+		}
+	}
+	.new-user-list {
+		color: #ff473c;
+		line-height: 15px;
+		margin-bottom: 20px;
+
+		dt {
+			font-size: 15px;
+			margin-top: 15px;
+			margin-bottom: 20px;
+		}
+		dd {
+			width: 50%;
+			float: left;
+			font-size: 15px;
+			text-align: center;
+			i {
+				font-size: 30px;
+			}
+			em {
+				line-height: 20px;
+				color: #a2a2a2;
+				font-size: 11px;
+			}
+		}
+	}
+}
