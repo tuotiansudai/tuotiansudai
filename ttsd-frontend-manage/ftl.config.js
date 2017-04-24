@@ -10,24 +10,15 @@ var basePath = path.join(__dirname, 'resources'),
 var toolsUrl = path.join(basePath, 'tools');
 
 module.exports = {
-    public: outputPath,
+    public: outputPath, //静态文件目录
     port: '3010',
     hot: true,
     // watch: [require.resolve('weChat/start'), 'E:\\ftlServer\page.mock'],
     //配置freemarker的解析
     ftl: {
-        base: webTemplatePath,
+        base: activityTemplatePath,
         // dataFiles: ['testdata.ftl'],
-        global: { },
-        'app-download.ftl': function(req, res) {
-            return {
-                saleActivityMap: {
-                    "000008": {
-                        activityStatus: 'actived'
-                    }
-                }
-            }
-        }
+        global: { }
 
     },
     mock:[toolsUrl+'/mock.js'],
