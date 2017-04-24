@@ -1,5 +1,7 @@
 package com.tuotiansudai.api.service;
 
+import com.tuotiansudai.api.dto.v1_0.BaseParam;
+import com.tuotiansudai.api.dto.v1_0.BaseParamDto;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v2_0.LoanListResponseDataDto;
 import com.tuotiansudai.api.service.v2_0.impl.MobileAppLoanListV2ServiceImpl;
@@ -10,12 +12,18 @@ import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
 import org.joda.time.DateTime;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.util.Date;
 import java.util.UUID;
@@ -24,7 +32,7 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
-public class MobileAppLoanListV2ServiceTest extends ServiceTestBase{
+public class MobileAppLoanListV2ServiceTest extends ServiceTestBase {
 
     @Autowired
     private LoanMapper loanMapper;
@@ -36,14 +44,24 @@ public class MobileAppLoanListV2ServiceTest extends ServiceTestBase{
     private MobileAppLoanListV2ServiceImpl mobileAppLoanListV2Service;
     @Autowired
     private UserMapper userMapper;
-    @Mock
-    private UserMembershipEvaluator userMembershipEvaluator;
+
+    @Before
+    public void before() {
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        BaseParamDto baseParamDto = new BaseParamDto();
+        BaseParam baseParam = new BaseParam();
+        baseParam.setAppVersion("4.2");
+        baseParam.setUserId("userId");
+        baseParamDto.setBaseParam(baseParam);
+        request.setAttribute("baseParam",baseParamDto);
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+    }
 
     @Test
-    public void shouldNoLoginNameGenerateIndexLoanIsOk(){
+    public void shouldNoLoginNameGenerateIndexLoanIsOk() {
         String loginName = "testHomeFindName";
         userMapper.create(getUserModelTest(loginName));
-        LoanModel loanModel = getFakeLoan(loginName,ActivityType.NORMAL,ProductType._90,LoanStatus.RAISING);
+        LoanModel loanModel = getFakeLoan(loginName, ActivityType.NORMAL, ProductType._90, LoanStatus.RAISING);
         loanMapper.create(loanModel);
         InvestModel investModel = getInvestModel(loginName, loanModel.getId());
         investMapper.create(investModel);
@@ -54,10 +72,10 @@ public class MobileAppLoanListV2ServiceTest extends ServiceTestBase{
     }
 
     @Test
-    public void shouldLoginInvestExperienceGenerateIndexLoanIsOk(){
+    public void shouldLoginInvestExperienceGenerateIndexLoanIsOk() {
         String loginName = "testHomeFindName";
         userMapper.create(getUserModelTest(loginName));
-        LoanModel loanModel = getFakeLoan(loginName,ActivityType.NORMAL,ProductType._90,LoanStatus.RAISING);
+        LoanModel loanModel = getFakeLoan(loginName, ActivityType.NORMAL, ProductType._90, LoanStatus.RAISING);
         loanMapper.create(loanModel);
         InvestModel investModel = getInvestModel(loginName, loanModel.getId());
         investMapper.create(investModel);
@@ -71,7 +89,7 @@ public class MobileAppLoanListV2ServiceTest extends ServiceTestBase{
     }
 
     @Test
-    public void shouldLoginInvestNewBieGenerateIndexLoanIsOk(){
+    public void shouldLoginInvestNewBieGenerateIndexLoanIsOk() {
         String loginName = "testHomeFindName";
         userMapper.create(getUserModelTest(loginName));
         LoanModel loanModel = getFakeLoan(loginName, ActivityType.NORMAL, ProductType._90, LoanStatus.RAISING);
@@ -88,10 +106,10 @@ public class MobileAppLoanListV2ServiceTest extends ServiceTestBase{
     }
 
     @Test
-    public void shouldLoginNormalGenerateIndexLoanIsOk(){
+    public void shouldLoginNormalGenerateIndexLoanIsOk() {
         String loginName = "testHomeFindName";
         userMapper.create(getUserModelTest(loginName));
-        LoanModel loanModel = getFakeLoan(loginName,ActivityType.NORMAL,ProductType._90,LoanStatus.RAISING);
+        LoanModel loanModel = getFakeLoan(loginName, ActivityType.NORMAL, ProductType._90, LoanStatus.RAISING);
         loanMapper.create(loanModel);
         InvestModel investModel = getInvestModel(loginName, loanModel.getId());
         investMapper.create(investModel);
@@ -102,14 +120,14 @@ public class MobileAppLoanListV2ServiceTest extends ServiceTestBase{
         investMapper.create(investModel1);
         LoanModel loanModel2 = getFakeLoan(loginName, ActivityType.NEWBIE, ProductType.EXPERIENCE, LoanStatus.RAISING);
         loanMapper.create(loanModel2);
-        InvestModel investModel2 = getInvestModel(loginName,loanModel1.getId());
+        InvestModel investModel2 = getInvestModel(loginName, loanModel1.getId());
         investMapper.create(investModel2);
         BaseResponseDto<LoanListResponseDataDto> dto = mobileAppLoanListV2Service.generateIndexLoan(loginName);
         assertTrue(dto.getData().getLoanList().get(0).getActivityType().equals("NORMAL"));
     }
 
-    private InvestModel getInvestModel(String loginName,long loanId){
-        InvestModel investModel = new InvestModel(idGenerator.generate(), loanId, null, 1, loginName, new Date(), Source.WEB, null,0.1);
+    private InvestModel getInvestModel(String loginName, long loanId) {
+        InvestModel investModel = new InvestModel(idGenerator.generate(), loanId, null, 1, loginName, new Date(), Source.WEB, null, 0.1);
         investModel.setStatus(InvestStatus.SUCCESS);
         return investModel;
     }
@@ -126,7 +144,7 @@ public class MobileAppLoanListV2ServiceTest extends ServiceTestBase{
         return userModelTest;
     }
 
-    private LoanModel getFakeLoan(String loanerLoginName,ActivityType activityType,ProductType productType,LoanStatus loanStatus) {
+    private LoanModel getFakeLoan(String loanerLoginName, ActivityType activityType, ProductType productType, LoanStatus loanStatus) {
         LoanModel fakeLoanModel = new LoanModel();
         fakeLoanModel.setId(idGenerator.generate());
         fakeLoanModel.setName(loanerLoginName);
@@ -148,5 +166,4 @@ public class MobileAppLoanListV2ServiceTest extends ServiceTestBase{
         fakeLoanModel.setPledgeType(PledgeType.HOUSE);
         return fakeLoanModel;
     }
-
 }

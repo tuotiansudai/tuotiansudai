@@ -10,7 +10,7 @@ public interface HomeService {
 
     List<HomeLoanDto> getNormalLoans();
 
-    List<HomeLoanDto> getNewbieLoans();
+    HomeLoanDto getNewbieLoan();
 
     List<HomeLoanDto> getEnterpriseLoans();
 

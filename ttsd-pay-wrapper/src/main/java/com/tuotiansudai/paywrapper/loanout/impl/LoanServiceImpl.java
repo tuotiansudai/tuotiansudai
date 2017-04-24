@@ -44,6 +44,7 @@ import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountTransfer;
+import com.tuotiansudai.util.LoanPeriodCalculator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -230,6 +231,7 @@ public class LoanServiceImpl implements LoanService {
             if (updateSuccess) {
                 if (Lists.newArrayList(LoanStatus.REPAYING, LoanStatus.CANCEL).contains(loanStatus)) {
                     loanModel.setRecheckTime(new Date());
+                    loanModel.setPeriods(LoanPeriodCalculator.calculateLoanPeriods(loanModel.getRecheckTime(), loanModel.getDeadline(), loanModel.getType()));
                 }
                 loanModel.setStatus(loanStatus);
                 loanMapper.update(loanModel);
@@ -261,7 +263,6 @@ public class LoanServiceImpl implements LoanService {
                 redisWrapperClient.del(LOAN_OUT_IN_PROCESS_KEY + loanId);
             }
 
-            this.sendMessage(loanId);
         } else {
             payDataDto.setStatus(true);
             payDataDto.setCode(BaseSyncResponseModel.SUCCESS_CODE);
@@ -499,6 +500,7 @@ public class LoanServiceImpl implements LoanService {
             fatalLog(loanId, "发送MQ消息失败", e);
         }
 
+        this.sendMessage(loanId);
         return callbackRequest.getResponseData();
     }
 

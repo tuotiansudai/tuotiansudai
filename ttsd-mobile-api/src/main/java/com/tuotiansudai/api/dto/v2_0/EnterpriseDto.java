@@ -8,11 +8,8 @@ import java.io.Serializable;
 
 public class EnterpriseDto implements Serializable {
 
-    @ApiModelProperty(value = "法人", example = "wangtuotian")
+    @ApiModelProperty(value = "借款人", example = "wangtuotian")
     private String juristicPerson;
-
-    @ApiModelProperty(value = "股东", example = "wangtuotian")
-    private String shareholder;
 
     @ApiModelProperty(value = "地址", example = "beijing")
     private String address;
@@ -24,7 +21,6 @@ public class EnterpriseDto implements Serializable {
 
     public EnterpriseDto(LoanerEnterpriseDetailsModel loanerEnterpriseDetailsModel){
         this.juristicPerson = loanerEnterpriseDetailsModel.getJuristicPerson();
-        this.shareholder = loanerEnterpriseDetailsModel.getShareholder();
         this.address = loanerEnterpriseDetailsModel.getAddress();
         this.purpose = loanerEnterpriseDetailsModel.getPurpose();
     }
@@ -35,14 +31,6 @@ public class EnterpriseDto implements Serializable {
 
     public void setJuristicPerson(String juristicPerson) {
         this.juristicPerson = juristicPerson;
-    }
-
-    public String getShareholder() {
-        return shareholder;
-    }
-
-    public void setShareholder(String shareholder) {
-        this.shareholder = shareholder;
     }
 
     public String getAddress() {

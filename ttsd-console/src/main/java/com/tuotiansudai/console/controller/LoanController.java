@@ -18,6 +18,8 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+import static com.tuotiansudai.repository.model.LoanType.*;
+
 @Controller
 @RequestMapping(value = "/project-manage/loan")
 public class LoanController {
@@ -42,7 +44,7 @@ public class LoanController {
     public ModelAndView createLoan() {
         ModelAndView modelAndView = new ModelAndView("/loan-create");
         modelAndView.addObject("productTypes", Lists.newArrayList(ProductType._30, ProductType._90, ProductType._180, ProductType._360));
-        modelAndView.addObject("loanTypes", Lists.newArrayList(LoanType.values()));
+        modelAndView.addObject("loanTypes", Lists.newArrayList(INVEST_INTEREST_MONTHLY_REPAY, INVEST_INTEREST_LUMP_SUM_REPAY));
         modelAndView.addObject("activityTypes", Lists.newArrayList(ActivityType.NORMAL, ActivityType.NEWBIE));
         modelAndView.addObject("extraSources", Lists.newArrayList(Source.WEB, Source.MOBILE));
         modelAndView.addObject("contractId", DEFAULT_CONTRACT_ID);
@@ -77,7 +79,7 @@ public class LoanController {
         }
         ModelAndView modelAndView = new ModelAndView("/loan-edit");
         modelAndView.addObject("productTypes", Lists.newArrayList(Lists.newArrayList(ProductType._30, ProductType._90, ProductType._180, ProductType._360)));
-        modelAndView.addObject("loanTypes", Lists.newArrayList(LoanType.values()));
+        modelAndView.addObject("loanTypes", LoanType.values());
         modelAndView.addObject("activityTypes", Lists.newArrayList(ActivityType.NORMAL, ActivityType.NEWBIE));
         modelAndView.addObject("extraSources", Lists.newArrayList(Source.WEB, Source.MOBILE));
         modelAndView.addObject("loan", consoleLoanCreateService.getEditLoanDetails(loanId));
@@ -127,7 +129,7 @@ public class LoanController {
 
     @RequestMapping(value = "/extra-rate-rule", method = RequestMethod.GET)
     @ResponseBody
-    public BaseDto<ExtraLoanRateRuleDto> extraRateRule(@RequestParam(value = "loanName", required = true) String loanName, @RequestParam(value = "productType", required = true) ProductType productType) {
+    public BaseDto<ExtraLoanRateRuleDto> extraRateRule(@RequestParam(value = "loanName") String loanName, @RequestParam(value = "productType") ProductType productType) {
         return extraLoanRateService.findExtraLoanRateRuleByNameAndProductType(loanName, productType);
     }
 }

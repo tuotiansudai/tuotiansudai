@@ -7,11 +7,9 @@ import com.tuotiansudai.api.dto.v2_0.ExtraRateListResponseDataDto;
 import com.tuotiansudai.api.dto.v3_0.LoanListResponseDataDto;
 import com.tuotiansudai.api.dto.v3_0.LoanResponseDataDto;
 import com.tuotiansudai.api.service.v3_0.MobileAppLoanListV3Service;
+import com.tuotiansudai.api.util.AppVersionUtil;
 import com.tuotiansudai.api.util.CommonUtils;
-import com.tuotiansudai.repository.mapper.UserCouponMapper;
-import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
-import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.ExtraLoanRateMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanDetailsMapper;
@@ -20,6 +18,7 @@ import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.ExperienceLoanDetailService;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.LoanPeriodCalculator;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +30,9 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Service {
@@ -69,8 +70,10 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
         List<ProductType> noContainExperienceLoans = Lists.newArrayList(ProductType._30, ProductType._90, ProductType._180, ProductType._360);
         List<ProductType> allProductTypesCondition = Lists.newArrayList(ProductType.EXPERIENCE, ProductType._30, ProductType._90, ProductType._180, ProductType._360);
         List<ProductType> onlyContainExperienceLoans = Lists.newArrayList(ProductType.EXPERIENCE, ProductType._30, ProductType._90, ProductType._180, ProductType._360);
-
         LoanModel loanModel = null;
+
+        List<PledgeType> pledgeTypeList = Lists.newArrayList(PledgeType.HOUSE, PledgeType.VEHICLE, PledgeType.NONE);
+
         //没登录 or 没投资过任何标
         if (StringUtils.isEmpty(loginName) ||
                 investMapper.findCountSuccessByLoginNameAndProductTypes(loginName, allProductTypesCondition) == 0) {
@@ -93,8 +96,11 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
             //登录 && 投资过标
             //目前同一时间可投标不超过100个
             List<LoanModel> raisingLoanModels = loanMapper.findByProductType(LoanStatus.RAISING, noContainExperienceLoans, null);
+            //有可投标的,版本号小于4.3过滤掉经营性借款
+            if(AppVersionUtil.compareVersion() == AppVersionUtil.low){
+                raisingLoanModels = raisingLoanModels.stream().filter(n -> pledgeTypeList.contains(n.getPledgeType())).collect(Collectors.toList());
+            }
             if (raisingLoanModels.size() != 0) {
-                //有可投标的
                 Collections.sort(raisingLoanModels, new Comparator<LoanModel>() {
                     @Override
                     public int compare(LoanModel o1, LoanModel o2) {
@@ -117,6 +123,7 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
                         }
                     }
                 });
+
                 if (0 == investMapper.findCountSuccessByLoginNameAndProductTypes(loginName, noContainExperienceLoans)) {
                     //登录 && 投资过标 && 没投资过体验标外的任何标 = 登录 && 只投资过体验标
                     loanModel = raisingLoanModels.get(0);
@@ -138,6 +145,10 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
                 //没有可投标的
                 List<LoanModel> soldLoanModels = loanMapper.findByStatus(LoanStatus.COMPLETE);
                 soldLoanModels.addAll(loanMapper.findByStatus(LoanStatus.REPAYING));
+                //版本号小于4.3过滤掉经营性借款
+                if(AppVersionUtil.compareVersion() == AppVersionUtil.low){
+                    soldLoanModels = soldLoanModels.stream().filter(n -> pledgeTypeList.contains(n.getPledgeType())).collect(Collectors.toList());
+                }
                 if (soldLoanModels.size() > 0) {
                     loanModel = soldLoanModels.get(0);
                     for (LoanModel curLoanModel : soldLoanModels) {
@@ -164,12 +175,15 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
         return dto;
     }
 
-    private List<LoanResponseDataDto> convertLoanDto(String loginName, List<LoanModel> loanList) {
+    private List<LoanResponseDataDto> convertLoanDto( String loginName, List<LoanModel> loanList) {
         List<LoanResponseDataDto> loanDtoList = Lists.newArrayList();
         DecimalFormat decimalFormat = new DecimalFormat("######0.##");
         if(CollectionUtils.isEmpty(loanList)){
             return loanDtoList;
         }
+
+
+
         for (LoanModel loan : loanList) {
             LoanResponseDataDto loanResponseDataDto = new LoanResponseDataDto();
             loanResponseDataDto.setLoanId("" + loan.getId());
@@ -180,6 +194,7 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
             loanResponseDataDto.setActivityDesc(loanDetailsModelActivity != null ? loanDetailsModelActivity.getActivityDesc() : "");
             loanResponseDataDto.setPledgeType(loan.getPledgeType());
             loanResponseDataDto.setDuration(String.valueOf(loan.getDuration()));
+            loanResponseDataDto.setAvailableDuration(String.valueOf(LoanPeriodCalculator.calculateDuration(new Date(), loan.getDeadline())));
             loanResponseDataDto.setBaseRatePercent(decimalFormat.format(loan.getBaseRate() * 100));
             loanResponseDataDto.setActivityRatePercent(decimalFormat.format(loan.getActivityRate() * 100));
             loanResponseDataDto.setLoanAmount(AmountConverter.convertCentToString(loan.getLoanAmount()));
