@@ -83,42 +83,4 @@ public class WeChatServiceImpl implements WeChatService {
         }
         return weChatUserModel;
     }
-
-    @Override
-    @Transactional
-    public void bind(String mobile, String openid) {
-        UserModel userModel = userMapper.findByMobile(mobile);
-        WeChatUserModel weChatUserModel = weChatUserMapper.findByOpenid(openid);
-
-        if (userModel == null || weChatUserModel == null) {
-            return;
-        }
-
-        weChatUserMapper.findByLoginName(userModel.getLoginName())
-                .stream()
-                .filter(boundUser -> boundUser.getOpenid().equals(openid)
-                        && !boundUser.getLoginName().equals(userModel.getLoginName())
-                        && boundUser.isBound())
-                .forEach(boundUser -> {
-                    boundUser.setBound(false);
-                    weChatUserMapper.update(boundUser);
-                    weChatClient.sendTemplateMessage(WeChatMessageType.BOUND_TO_OTHER_USER, Maps.newHashMap(ImmutableMap.<String, String>builder()
-                            .put("openid", boundUser.getOpenid())
-                            .put("first", "first")
-                            .put("keyword1", "keyword1")
-                            .put("keyword2", "keyword2")
-                            .put("remark", "remark")
-                            .build()));
-                    logger.info(MessageFormat.format("wechat unbound previous use successfully. user: {0}, openid: {1}, previous user: {2}", userModel.getLoginName(), openid, boundUser.getLoginName()));
-                });
-
-
-        weChatUserModel.setLoginName(userModel.getLoginName());
-        weChatUserModel.setBound(true);
-        weChatUserModel.setLatestLoginTime(new Date());
-
-        weChatUserMapper.update(weChatUserModel);
-
-        logger.info(MessageFormat.format("wechat bind successfully. user: {0}, openid: {1}", userModel.getLoginName(), openid));
-    }
 }

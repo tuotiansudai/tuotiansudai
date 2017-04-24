@@ -57,7 +57,8 @@ public enum MessageQueue {
     LoanStopRaising("LoanStopRaising"),
     CancelTransferApplication("CancelTransferApplication"),
     CouponSmsAssignNotify("CouponSmsAssignNotify"),
-    CouponSmsExpiredNotify("CouponSmsExpiredNotify");
+    CouponSmsExpiredNotify("CouponSmsExpiredNotify"),
+    WeChatBoundNotify("WeChatBoundNotify");
 
     private final String queueName;
 

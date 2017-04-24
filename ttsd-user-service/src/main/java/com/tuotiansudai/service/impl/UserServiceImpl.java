@@ -1,10 +1,13 @@
 package com.tuotiansudai.service.impl;
 
 import com.google.common.base.Strings;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.RegisterUserDto;
 import com.tuotiansudai.enums.UserOpType;
 import com.tuotiansudai.log.service.UserOpLogService;
+import com.tuotiansudai.message.WeChatBoundMessage;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.PrepareUserMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.CaptchaType;
@@ -50,7 +53,7 @@ public class UserServiceImpl implements UserService {
     private LoginNameGenerator loginNameGenerator;
 
     @Autowired
-    private WeChatService weChatService;
+    private MQWrapperClient mqWrapperClient;
 
     @Override
     public String getMobile(String loginName) {
@@ -121,7 +124,7 @@ public class UserServiceImpl implements UserService {
         userModel.setLastModifiedTime(new Date());
         boolean register = registerUserService.register(userModel);
 
-        weChatService.bind(dto.getMobile(), dto.getOpenid()); //登录成功绑定微信号
+        mqWrapperClient.sendMessage(MessageQueue.WeChatBoundNotify, new WeChatBoundMessage(dto.getMobile(), dto.getOpenid()));//登录成功绑定微信号
 
         return register;
     }
