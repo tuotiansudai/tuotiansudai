@@ -87,8 +87,10 @@ public class AccountController {
         modelAndView.addObject("totalIncome", userFundView.getActualTotalInterest()
                 + userFundView.getActualTotalExtraInterest()
                 + userFundView.getActualCouponInterest()
+                + userFundView.getRedEnvelopeAmount()
                 + userFundView.getReferRewardAmount()
                 + userFundView.getActualExperienceInterest());
+
 
         modelAndView.addObject("experienceBalance", userService.getExperienceBalanceByLoginName(loginName));
 
