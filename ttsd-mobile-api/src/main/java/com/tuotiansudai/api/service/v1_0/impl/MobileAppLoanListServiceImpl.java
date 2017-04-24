@@ -4,6 +4,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppLoanListService;
+import com.tuotiansudai.api.util.AppVersionUtil;
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.api.util.PageValidUtils;
 import com.tuotiansudai.api.util.ProductTypeConverter;
@@ -21,17 +22,20 @@ import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.InterestCalculator;
+import com.tuotiansudai.util.LoanPeriodCalculator;
 import org.apache.commons.collections4.CollectionUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
@@ -75,6 +79,11 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
 
         List<LoanModel> loanModels = loanMapper.findLoanListMobileApp(ProductTypeConverter.stringConvertTo(loanListRequestDto.getProductType()), null, loanListRequestDto.getLoanStatus(), loanListRequestDto.getRateLower(), loanListRequestDto.getRateUpper(), index, pageSize);
 
+        List<PledgeType> pledgeTypeList = Lists.newArrayList(PledgeType.HOUSE, PledgeType.VEHICLE, PledgeType.NONE);
+        if(AppVersionUtil.compareVersion() == AppVersionUtil.low ){
+            loanModels = loanModels.stream().filter(n -> pledgeTypeList.contains(n.getPledgeType())).collect(Collectors.toList());
+        }
+
         List<LoanResponseDataDto> loanDtoList = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(loanModels)) {
             loanDtoList = convertLoanDto(loanModels, loanListRequestDto.getBaseParam().getUserId());
@@ -90,7 +99,7 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
             loanListResponseDataDto.setLoanList(loanDtoList);
             dto.setData(loanListResponseDataDto);
         } else {
-            loanListResponseDataDto.setLoanList(new ArrayList<LoanResponseDataDto>());
+            loanListResponseDataDto.setLoanList(Lists.newArrayList());
             dto.setData(loanListResponseDataDto);
         }
 
@@ -100,6 +109,7 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
     private List<LoanResponseDataDto> convertLoanDto(List<LoanModel> loanList, String loginName) {
         List<LoanResponseDataDto> loanDtoList = Lists.newArrayList();
         DecimalFormat decimalFormat = new DecimalFormat("######0.##");
+
         for (LoanModel loan : loanList) {
 
             LoanResponseDataDto loanResponseDataDto = new LoanResponseDataDto();
@@ -143,6 +153,7 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
             loanResponseDataDto.setBaseRatePercent(decimalFormat.format(loan.getBaseRate() * 100));
             loanResponseDataDto.setActivityRatePercent(decimalFormat.format(loan.getActivityRate() * 100));
             loanResponseDataDto.setDuration(String.valueOf(loan.getDuration()));
+            loanResponseDataDto.setAvailableDuration(String.valueOf(LoanPeriodCalculator.calculateDuration(new Date(), loan.getDeadline())));
             loanResponseDataDto.setProductNewType(loan.getProductType() != null ? loan.getProductType().name() : "");
             loanResponseDataDto.setActivityType(loan.getActivityType() != null ? loan.getActivityType().name() : "");
 

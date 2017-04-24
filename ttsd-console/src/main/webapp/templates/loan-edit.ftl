@@ -28,10 +28,13 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label">借款项目名称:</label>
                     <div class="col-sm-4">
-                        <select name="name" class="selectpicker" <#if loan.loan.status != "WAITING_VERIFY">disabled="disabled"</#if>>
-                            <option value="房产抵押借款" <#if loan.loan.name == "房产抵押借款">selected</#if>>房产抵押借款</option>
-                            <option value="车辆抵押借款" <#if loan.loan.name == "车辆抵押借款">selected</#if>>车辆抵押借款</option>
-                            <option value="税易经营性借款" <#if loan.loan.name == "税易经营性借款">selected</#if>>税易经营性借款</option>
+                        <select name="name" class="selectpicker" id="projectName" <#if loan.loan.status != "WAITING_VERIFY">disabled="disabled"</#if>>
+                            <option value="房产抵押借款" data-pledgeType="HOUSE" <#if loan.loan.pledgeType == "HOUSE">selected</#if>>房产抵押借款</option>
+                            <option value="车辆抵押借款" data-pledgeType="VEHICLE" <#if loan.loan.pledgeType == "VEHICLE">selected</#if>>车辆抵押借款</option>
+                            <option value="经营性借款" data-pledgeType="ENTERPRISE_CREDIT" <#if loan.loan.pledgeType == "ENTERPRISE_CREDIT">selected</#if>>税易经营性借款信用类</option>
+                            <option value="经营性借款" data-pledgeType="ENTERPRISE_PLEDGE" <#if loan.loan.pledgeType == "ENTERPRISE_PLEDGE">selected</#if>>税易经营性借款抵押类</option>
+                            <option value="经营性借款" data-pledgeType="ENTERPRISE_FACTORING" <#if loan.loan.pledgeType == "ENTERPRISE_FACTORING">selected</#if>>企业经营性借款—保理</option>
+                            <option value="经营性借款" data-pledgeType="ENTERPRISE_BILL" <#if loan.loan.pledgeType == "ENTERPRISE_BILL">selected</#if>>企业经营性借款—票据</option>
                         </select>
                     </div>
                 </div>
@@ -58,7 +61,32 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">借款期限（天）:</label>
+                    <label class="col-sm-2 control-label">原借款期限（天）: </label>
+
+                    <div class="col-sm-3">
+                        <input name="originalDuration" type="text" class="form-control" value="${loan.loan.originalDuration?c}"
+                               datatype="/^\d+$/"
+                               errormsg="原借款期限需要正确填写">
+                    </div>
+                </div>
+
+                <div class="form-group input-append">
+                    <label class="col-sm-2 control-label">借款截止时间: </label>
+
+                    <div class="col-sm-3">
+                        <div class='input-group date' id='deadline'>
+                            <input name="deadline" type='text' class="form-control" datatype="date" value="${(loan.loan.deadline?string('yyyy-MM-dd'))!}"
+                                   <#if !(["PREHEAT", "WAITING_VERIFY"]?seq_contains(loan.loan.status))>disabled="disabled"</#if>
+                                   errormsg="借款截止时间需要正确填写"/>
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">映射旧版本期限（天）:</label>
 
                     <div class="col-sm-4">
                         <select name="productType" class="selectpicker b-width" <#if !(["PREHEAT", "WAITING_VERIFY"]?seq_contains(loan.loan.status))>disabled="disabled"</#if>>
@@ -198,17 +226,6 @@
                     </label>
                 </div>
             </div>
-            <div class="form-group">
-                <label class="col-sm-2 control-label">是否允许债权转让:</label>
-
-                <div class="col-sm-4 checkbox">
-                    <label for="extra">
-                        <input type="checkbox" id="nonTransferable" name="nonTransferable"
-                               <#if !(["PREHEAT", "WAITING_VERIFY"]?seq_contains(loan.loan.status))>disabled="disabled"</#if>
-                               <#if loan.loanDetails?? && loan.loanDetails.nonTransferable>checked="checked"</#if> value="true" />（选中后投资此标的不允许债权转让）
-                    </label>
-                </div>
-            </div>
 
             <div class="form-group extra-rate <#if !(extraLoanRates?has_content)>hidden</#if>">
                 <label class="col-sm-2 control-label"></label>
@@ -245,6 +262,19 @@
                     </#list>
                 </div>
             </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">是否允许债权转让:</label>
+
+                <div class="col-sm-4 checkbox">
+                    <label for="extra">
+                        <input type="checkbox" id="nonTransferable" name="nonTransferable"
+                               <#if !(["PREHEAT", "WAITING_VERIFY"]?seq_contains(loan.loan.status))>disabled="disabled"</#if>
+                               <#if loan.loanDetails?? && loan.loanDetails.nonTransferable>checked="checked"</#if> value="true" />（选中后投资此标的不允许债权转让）
+                    </label>
+                </div>
+            </div>
+
         </section>
 
         <section id="section-two">
@@ -252,9 +282,14 @@
                 <#include 'loan-edit-loaner-details.ftl'>
             </#if>
 
-            <#if 'ENTERPRISE' == loan.loan.pledgeType>
+            <#if ['ENTERPRISE_CREDIT', 'ENTERPRISE_PLEDGE']?seq_contains(loan.loan.pledgeType)>
                 <#include 'loan-edit-loaner-enterprise-details.ftl'>
             </#if>
+
+            <#if ['ENTERPRISE_FACTORING', 'ENTERPRISE_BILL']?seq_contains(loan.loan.pledgeType)>
+                <#include 'loan-edit-loaner-enterprise-info.ftl'>
+            </#if>
+
         </section>
 
         <section id="section-three">
@@ -266,9 +301,13 @@
                 <#include 'loan-edit-pledge-vehicle.ftl'>
             </#if>
 
-            <#if 'ENTERPRISE' == loan.loan.pledgeType>
+            <#if 'ENTERPRISE_PLEDGE' == loan.loan.pledgeType>
                 <#include 'loan-edit-pledge-enterprise.ftl'>
             </#if>
+
+            <#if 'ENTERPRISE_FACTORING' == loan.loan.pledgeType>
+            <#include 'loan-edit-loaner-enterprise-factoring-info.ftl'>
+        </#if>
         </section>
 
         <h3><span>声明</span></h3>

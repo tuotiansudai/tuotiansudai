@@ -15,5 +15,7 @@ $listBtn.on('click',  function(event) {
 	event.preventDefault();
 	var $self=$(this),
 		hrefUrl=$self.attr('data-href');
-	location.href=hrefUrl;
+	if(hrefUrl){
+        location.href=hrefUrl;
+	}
 });

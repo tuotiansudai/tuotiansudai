@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.RiskEstimateMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
+
+    <resultMap id="riskEstimateResultMap" type="RiskEstimateModel">
+        <id column="id" property="id"/>
+        <result column="login_name" property="loginName"/>
+        <result column="age" property="age"/>
+        <result column="income" property="income"/>
+        <result column="investment" property="investment"/>
+        <result column="experience" property="experience"/>
+        <result column="attitude" property="attitude"/>
+        <result column="duration" property="duration"/>
+        <result column="loss" property="loss"/>
+        <result column="rate" property="rate"/>
+        <result column="estimate" property="estimate"/>
+        <result column="created_time" property="createdTime"/>
+        <result column="updated_time" property="updatedTime"/>
+    </resultMap>
+
+    <resultMap id="riskEstimateViewResultMap" type="RiskEstimateViewModel">
+        <id column="id" property="id"/>
+        <result column="login_name" property="loginName"/>
+        <result column="mobile" property="mobile"/>
+        <result column="user_name" property="userName"/>
+        <result column="register_time" property="registerTime"/>
+        <result column="investing_amount" property="investingAmount"/>
+        <result column="estimate" property="estimate"/>
+        <result column="income" property="income"/>
+        <result column="rate" property="rate"/>
+        <result column="duration" property="duration"/>
+        <result column="age" property="age"/>
+        <result column="investment" property="investment"/>
+    </resultMap>
+
+    <insert id="create" parameterType="RiskEstimateModel" useGeneratedKeys="true" keyProperty="id">
+        insert into risk_estimate (login_name, age, income, investment, experience, attitude, duration, loss, rate, estimate, created_time, updated_time)
+        value(#{loginName}, #{age}, #{income}, #{investment}, #{experience}, #{attitude}, #{duration}, #{loss}, #{rate}, #{estimate}, now(), now())
+    </insert>
+
+    <select id="findByLoginName" parameterType="string" resultMap="riskEstimateResultMap">
+        select * from risk_estimate where login_name = #{loginName}
+    </select>
+
+    <update id="update" parameterType="RiskEstimateModel">
+        update risk_estimate set
+          age = #{age},
+          income = #{income},
+          investment = #{investment},
+          experience = #{experience},
+          attitude = #{attitude},
+          duration = #{duration},
+          loss = #{loss},
+          rate = #{rate},
+          estimate = #{estimate},
+          updated_time = now()
+        where login_name = #{loginName}
+    </update>
+
+    <select id="countByConsole" parameterType="map" resultType="long">
+        select count(1) from risk_estimate
+        <where>
+            <if test="estimate != null">
+                AND risk_estimate.estimate = #{estimate}
+            </if>
+            <if test="age != null">
+                AND risk_estimate.age = #{age}
+            </if>
+            <if test="rate != null">
+                AND risk_estimate.rate = #{rate}
+            </if>
+            <if test="duration != null">
+                AND risk_estimate.duration = #{duration}
+            </if>
+            <if test="income != null">
+                AND risk_estimate.income = #{income}
+            </if>
+        </where>
+    </select>
+
+    <select id="findByConsole" parameterType="map" resultMap="riskEstimateViewResultMap">
+        select
+        risk_estimate.id as id,
+        risk_estimate.login_name as login_name,
+        user.mobile as mobile,
+        user.user_name as user_name,
+        user.register_time as register_time,
+        (select ifnull(sum(invest.amount), 0) from invest where invest.login_name = user.login_name and invest.loan_id != 1 and invest.status = 'SUCCESS' and exists (select 1 from loan where loan.id = invest.loan_id and loan.status in ('RAISING', 'RECHECK', 'REPAYING', 'OVERDUE') limit 1)) as investing_amount,
+        risk_estimate.estimate as estimate,
+        risk_estimate.income as income,
+        risk_estimate.rate as rate,
+        risk_estimate.duration as duration,
+        risk_estimate.age as age,
+        risk_estimate.investment as investment
+        from risk_estimate join user on risk_estimate.login_name = user.login_name
+        <where>
+            <if test="estimate != null">
+                and risk_estimate.estimate = #{estimate}
+            </if>
+            <if test="age != null">
+                and risk_estimate.age = #{age}
+            </if>
+            <if test="rate != null">
+                and risk_estimate.rate = #{rate}
+            </if>
+            <if test="duration != null">
+                and risk_estimate.duration = #{duration}
+            </if>
+            <if test="income != null">
+                and risk_estimate.income = #{income}
+            </if>
+        </where>
+        order by risk_estimate.updated_time desc
+        limit #{offset}, 10
+    </select>
+</mapper>

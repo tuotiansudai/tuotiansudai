@@ -8,6 +8,7 @@ import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.service.v1_0.MobileAppPersonalInfoService;
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.api.util.DistrictUtil;
+import com.tuotiansudai.enums.riskestimation.Estimate;
 import com.tuotiansudai.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.repository.model.UserCouponModel;
 import com.tuotiansudai.repository.mapper.*;
@@ -42,9 +43,12 @@ public class MobileAppPersonalInfoServiceImpl implements MobileAppPersonalInfoSe
     @Autowired
     private UserCouponMapper userCouponMapper;
 
+    @Autowired
+    private RiskEstimateMapper riskEstimateMapper;
+
     @Override
     public BaseResponseDto<PersonalInfoResponseDataDto> getPersonalInfoData(PersonalInfoRequestDto personalInfoRequestDto) {
-        BaseResponseDto<PersonalInfoResponseDataDto> dto = new BaseResponseDto();
+        BaseResponseDto<PersonalInfoResponseDataDto> dto = new BaseResponseDto<>();
         String loginName = personalInfoRequestDto.getUserName();
 
         UserModel userModel = userMapper.findByLoginNameOrMobile(loginName);
@@ -112,18 +116,11 @@ public class MobileAppPersonalInfoServiceImpl implements MobileAppPersonalInfoSe
             personalInfoDataDto.setHasAuthed(false);
         }
 
-        List<UserCouponModel> userCouponModels = userCouponMapper.findUsedExperienceByLoginName(user.getLoginName());
-        if (CollectionUtils.isNotEmpty(userCouponModels)) {
-            personalInfoDataDto.setIsExperienceEnable(true);
-        } else {
-            personalInfoDataDto.setIsExperienceEnable(false);
-        }
-        if (investMapper.sumSuccessInvestCountByLoginName(user.getLoginName()) > 0) {
-            personalInfoDataDto.setIsNewbieEnable(false);
-        } else {
-            personalInfoDataDto.setIsNewbieEnable(true);
-        }
-
+        personalInfoDataDto.setIsExperienceEnable(CollectionUtils.isNotEmpty(userCouponMapper.findUsedExperienceByLoginName(user.getLoginName())));
+        personalInfoDataDto.setIsNewbieEnable(investMapper.sumSuccessInvestCountByLoginName(user.getLoginName()) == 0);
+        RiskEstimateModel riskEstimateModel = riskEstimateMapper.findByLoginName(user.getLoginName());
+        personalInfoDataDto.setRiskEstimate(riskEstimateModel != null ? riskEstimateModel.getEstimate().getType() : "");
+        personalInfoDataDto.setRiskEstimateDesc(riskEstimateModel != null ? riskEstimateModel.getEstimate().getDescription() : "");
         return personalInfoDataDto;
     }
 }

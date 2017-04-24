@@ -2,11 +2,13 @@ package com.tuotiansudai.api.controller;
 
 
 import com.tuotiansudai.api.controller.v2_0.MobileAppHomeV2Controller;
+import com.tuotiansudai.api.dto.v2_0.BaseParamDto;
 import com.tuotiansudai.api.service.v2_0.MobileAppLoanListV2Service;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 

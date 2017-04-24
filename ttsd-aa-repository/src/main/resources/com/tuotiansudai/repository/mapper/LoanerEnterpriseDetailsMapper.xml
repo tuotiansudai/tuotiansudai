@@ -10,14 +10,13 @@
         <id column="id" property="id"/>
         <result column="loan_id" property="loanId"/>
         <result column="juristic_person" property="juristicPerson"/>
-        <result column="shareholder" property="shareholder"/>
         <result column="address" property="address"/>
         <result column="purpose" property="purpose"/>
     </resultMap>
 
     <insert id="create" parameterType="LoanerEnterpriseDetailsModel" useGeneratedKeys="true" keyProperty="id">
-        insert into loaner_enterprise_details (loan_id, juristic_person, shareholder, address, purpose)
-        values (#{loanId}, #{juristicPerson}, #{shareholder}, #{address}, #{purpose})
+        insert into loaner_enterprise_details (loan_id, juristic_person, address, purpose)
+        values (#{loanId}, #{juristicPerson}, #{address}, #{purpose})
     </insert>
 
     <select id="getByLoanId" resultMap="resultMap" parameterType="map">

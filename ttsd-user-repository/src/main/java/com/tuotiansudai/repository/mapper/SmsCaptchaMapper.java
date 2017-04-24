@@ -14,5 +14,5 @@ public interface SmsCaptchaMapper {
 
     void update(SmsCaptchaModel smsCaptchaModel);
 
-    SmsCaptchaModel findByMobileAndCaptchaType(@Param(value = "mobile") String mobile,@Param(value = "captchaType")CaptchaType captchaType);
+    SmsCaptchaModel findByMobileAndCaptchaType(@Param(value = "mobile") String mobile, @Param(value = "captchaType") CaptchaType captchaType);
 }

@@ -83,8 +83,6 @@ def qa(options):
     if build_params.has_key('env'):
         deployment.deploy(build_params)
 
-    print 'env is missing!'
-
 
 @task
 def dev():

@@ -25,13 +25,17 @@ public class MobileAppRechargeListServiceImpl implements MobileAppRechargeListSe
     public BaseResponseDto<RechargeListResponseDataDto> generateRechargeList(RechargeListRequestDto requestDto) {
         Integer index = requestDto.getIndex();
         Integer pageSize = pageValidUtils.validPageSizeLimit(requestDto.getPageSize());
-        Integer offset = (index-1)*pageSize;
 
-        List<RechargeModel> rechargeModels = rechargeMapper.findRechargePagination(null, requestDto.getBaseParam().getPhoneNum(), null, null, null, offset, pageSize, null, null, null);
-        int count = rechargeMapper.findRechargeCount(null, requestDto.getBaseParam().getPhoneNum(), null, null, null, null, null, null);
+        if (index == null || index <= 0) {
+            index = 1;
+        }
+        Integer offset = (index - 1) * pageSize;
+
+        List<RechargeModel> rechargeModels = rechargeMapper.findRechargePagination(null, requestDto.getBaseParam().getPhoneNum(), null, null, null, offset, pageSize, null, null, "");
+        int count = rechargeMapper.findRechargeCount(null, requestDto.getBaseParam().getPhoneNum(), null, null, null, null, null, "");
 
         List<RechargeDetailResponseDataDto> rechargeResponseList = Lists.newArrayList();
-        if(rechargeModels != null) {
+        if (rechargeModels != null) {
             for (RechargeModel recharge : rechargeModels) {
                 rechargeResponseList.add(new RechargeDetailResponseDataDto(recharge));
             }
