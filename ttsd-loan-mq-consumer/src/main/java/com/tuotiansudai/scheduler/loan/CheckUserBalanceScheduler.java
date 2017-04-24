@@ -61,63 +61,68 @@ public class CheckUserBalanceScheduler {
         if (Environment.PRODUCTION != environment) {
             return;
         }
-        logger.info("[checkUserBalance:] start .");
+        try {
+            logger.info("[checkUserBalance:] start .");
 
-        List<String> mismatchUserList = Lists.newArrayList();
-        List<String> failUserList = Lists.newArrayList();
+            List<String> mismatchUserList = Lists.newArrayList();
+            List<String> failUserList = Lists.newArrayList();
 
-        String startTime = new DateTime().toString("yyyy-MM-dd HH:mm:ss");
-        String lastCheckUserBalanceTime = redisWrapperClient.exists(LAST_CHECK_USER_BALANCE_TIME) ? redisWrapperClient.get(LAST_CHECK_USER_BALANCE_TIME) : null;
-        List<AccountModel> accountModelList = accountMapper.findAccountWithBalance(lastCheckUserBalanceTime, BATCH_SIZE);
-        int accountModelCount = accountModelList.size();
-        logger.info("[checkUserBalance:] cycle start lastCheckUserBalanceTime-{},size-{}", lastCheckUserBalanceTime, accountModelList.size());
-        for (int i = 0; i < accountModelCount; i++) {
-            AccountModel account = accountModelList.get(i);
-            logger.info("[checkUserBalance:]run to id:{} ", String.valueOf(account.getId()));
+            String startTime = new DateTime().toString("yyyy-MM-dd HH:mm:ss");
+            String lastCheckUserBalanceTime = redisWrapperClient.exists(LAST_CHECK_USER_BALANCE_TIME) ? redisWrapperClient.get(LAST_CHECK_USER_BALANCE_TIME) : null;
+            List<AccountModel> accountModelList = accountMapper.findAccountWithBalance(lastCheckUserBalanceTime, BATCH_SIZE);
+            int accountModelCount = accountModelList.size();
+            logger.info("[checkUserBalance:] cycle start lastCheckUserBalanceTime-{},size-{}", lastCheckUserBalanceTime, accountModelList.size());
+            for (int i = 0; i < accountModelCount; i++) {
+                AccountModel account = accountModelList.get(i);
+                logger.info("[checkUserBalance:]run to id:{} ", String.valueOf(account.getId()));
 
-            // 如果连接umpay失败，共尝试3次
-            int triedTimes = 1;
-            Map<String, String> balanceMap;
-            do {
-                balanceMap = payWrapperClient.getUserBalance(account.getLoginName());
+                // 如果连接umpay失败，共尝试3次
+                int triedTimes = 1;
+                Map<String, String> balanceMap;
+                do {
+                    balanceMap = payWrapperClient.getUserBalance(account.getLoginName());
+                    if (balanceMap == null) {
+                        logger.info("[checkUserBalance:]check user balance for user {} fail. triedTimes:{}.", account.getLoginName(), triedTimes);
+                    }
+                } while (balanceMap == null && triedTimes++ < RETRY_TIMES);
+
                 if (balanceMap == null) {
-                    logger.info("[checkUserBalance:]check user balance for user {} fail. triedTimes:{}.", account.getLoginName(), triedTimes);
+                    logger.info("[checkUserBalance:]check user balance for user {} fail after retry {} times. skip it.", account.getLoginName(), RETRY_TIMES);
+                    redisWrapperClient.setex(LAST_CHECK_USER_BALANCE_TIME, LEFT_SECOND, DateConvertUtil.format(account.getRegisterTime(), "yyyy-MM-dd HH:mm:ss"));
+                    failUserList.add(account.getLoginName()); // 重试3次都失败，加入连接失败的名单中
+                    continue;
                 }
-            } while (balanceMap == null && triedTimes++ < RETRY_TIMES);
 
-            if (balanceMap == null) {
-                logger.info("[checkUserBalance:]check user balance for user {} fail after retry {} times. skip it.", account.getLoginName(), RETRY_TIMES);
-                redisWrapperClient.setex(LAST_CHECK_USER_BALANCE_TIME, LEFT_SECOND, DateConvertUtil.format(account.getRegisterTime(), "yyyy-MM-dd HH:mm:ss"));
-                failUserList.add(account.getLoginName()); // 重试3次都失败，加入连接失败的名单中
-                continue;
+                long balance = Long.parseLong(balanceMap.get("balance"));
+                if (balance != account.getBalance()) {
+                    mismatchUserList.add(account.getLoginName() + "-" + account.getBalance() + "-" + balance);
+                }
+                if (i == BATCH_SIZE - 1) {
+                    logger.info("[checkUserBalance:] last record register time-{},id-{}", DateConvertUtil.format(account.getRegisterTime(), "yyyy-MM-dd HH:mm:ss"), String.valueOf(account.getId()));
+                    redisWrapperClient.setex(LAST_CHECK_USER_BALANCE_TIME, LEFT_SECOND, DateConvertUtil.format(account.getRegisterTime(), "yyyy-MM-dd HH:mm:ss"));
+                }
+            }
+            logger.info("[checkUserBalance:] cycle end lastCheckUserBalanceTime-{},size-{}", lastCheckUserBalanceTime, accountModelList.size());
+
+            if (accountModelCount > 0 && accountModelCount < BATCH_SIZE) {
+                logger.info("[checkUserBalance:] del key last record register time-{},id-{}",
+                        DateConvertUtil.format(accountModelList.get(accountModelCount - 1).getRegisterTime(), "yyyy-MM-dd HH:mm:ss"),
+                        String.valueOf(accountModelList.get(accountModelCount - 1).getId()));
+                redisWrapperClient.del(LAST_CHECK_USER_BALANCE_TIME);
             }
 
-            long balance = Long.parseLong(balanceMap.get("balance"));
-            if (balance != account.getBalance()) {
-                mismatchUserList.add(account.getLoginName() + "-" + account.getBalance() + "-" + balance);
-            }
-            if (i == BATCH_SIZE - 1) {
-                logger.info("[checkUserBalance:] last record register time-{},id-{}", DateConvertUtil.format(account.getRegisterTime(), "yyyy-MM-dd HH:mm:ss"), String.valueOf(account.getId()));
-                redisWrapperClient.setex(LAST_CHECK_USER_BALANCE_TIME, LEFT_SECOND, DateConvertUtil.format(account.getRegisterTime(), "yyyy-MM-dd HH:mm:ss"));
-            }
+            Map<String, Object> resultMap = Maps.newHashMap(ImmutableMap.<String, Object>builder()
+                    .put("failList", failUserList)
+                    .put("userList", mismatchUserList)
+                    .put("startTime", startTime)
+                    .put("endTime", new DateTime().toString("yyyy-MM-dd HH:mm:ss"))
+                    .build());
+
+            this.sendUserBalanceCheckingResult(notifyEmailAddressList, resultMap);
+        }catch (Exception e){
+            logger.error("[checkUserBalance] job execution is failed.", e);
         }
-        logger.info("[checkUserBalance:] cycle end lastCheckUserBalanceTime-{},size-{}", lastCheckUserBalanceTime, accountModelList.size());
 
-        if (accountModelCount > 0 && accountModelCount < BATCH_SIZE) {
-            logger.info("[checkUserBalance:] del key last record register time-{},id-{}",
-                    DateConvertUtil.format(accountModelList.get(accountModelCount - 1).getRegisterTime(), "yyyy-MM-dd HH:mm:ss"),
-                    String.valueOf(accountModelList.get(accountModelCount - 1).getId()));
-            redisWrapperClient.del(LAST_CHECK_USER_BALANCE_TIME);
-        }
-
-        Map<String, Object> resultMap = Maps.newHashMap(ImmutableMap.<String, Object>builder()
-                .put("failList", failUserList)
-                .put("userList", mismatchUserList)
-                .put("startTime", startTime)
-                .put("endTime", new DateTime().toString("yyyy-MM-dd HH:mm:ss"))
-                .build());
-
-        this.sendUserBalanceCheckingResult(notifyEmailAddressList, resultMap);
 
         logger.info("[checkUserBalance:] end .");
     }

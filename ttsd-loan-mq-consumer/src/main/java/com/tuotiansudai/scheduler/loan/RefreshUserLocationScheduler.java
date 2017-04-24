@@ -5,6 +5,8 @@ import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.MobileLocationUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -16,18 +18,24 @@ import java.util.List;
 
 @Component
 public class RefreshUserLocationScheduler {
+    private static Logger logger = LoggerFactory.getLogger(RefreshUserLocationScheduler.class);
     @Autowired
     private UserMapper userMapper;
 
     @Scheduled(cron = "0 0 2 * * ?", zone = "Asia/Shanghai")
     public void refreshUserLocation() {
-        while (true) {
-            List<UserModel> userModels = userMapper.findUsersByProvince();
-            if (CollectionUtils.isEmpty(userModels)) {
-                break;
+        try {
+            while (true) {
+                List<UserModel> userModels = userMapper.findUsersByProvince();
+                if (CollectionUtils.isEmpty(userModels)) {
+                    break;
+                }
+                ((RefreshUserLocationScheduler) AopContext.currentProxy()).refreshUserLocation(userModels);
             }
-            ((RefreshUserLocationScheduler) AopContext.currentProxy()).refreshUserLocation(userModels);
+        }catch (Exception e){
+            logger.error("[RefreshUserLocationScheduler:] job execution is failed.", e);
         }
+
     }
 
     @Transactional
