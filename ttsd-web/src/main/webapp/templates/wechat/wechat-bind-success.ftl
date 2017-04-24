@@ -7,6 +7,6 @@
     </span>
 
     <span class="down-time"><i id="downTime" data-redirect="${redirect!('/')}"></i>后自动跳转</span>
-    <button type="button" class="btn-normal">确认</button>
+    <button type="button" class="btn-normal" id="okButton">确认</button>
 </div>
 </@global.main>

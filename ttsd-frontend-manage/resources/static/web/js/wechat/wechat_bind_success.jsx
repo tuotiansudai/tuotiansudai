@@ -11,6 +11,6 @@ commonFun.countDownLoan({
     window.location = $downTime.data('redirect');
 });
 
-$('.btn-normal').click(function () {
+$('#okButton').click(function () {
     window.location = $downTime.data('redirect');
 });
