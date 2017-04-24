@@ -184,12 +184,12 @@ public class MobileAppUserFundV2ServiceTest extends ServiceTestBase {
 
         UserFundResponseDataDto data = userFund.getData();
 
-        assertThat(data.getActualTotalInterest(), is(18L));
+        assertThat(data.getActualTotalInterest(), is(9L));
         assertThat(data.getActualTotalExtraInterest(), is(9L));
         assertThat(data.getReferRewardAmount(), is(10L));
         assertThat(data.getRedEnvelopeAmount(), is(10L));
         assertThat(data.getExpectedTotalCorpus(), is(1L));
-        assertThat(data.getExpectedTotalInterest(), is(36L));
+        assertThat(data.getExpectedTotalInterest(), is(18L));
         assertThat(data.getExpectedTotalExtraInterest(), is(18L));
         assertThat(data.getInvestFrozeAmount(), is(2L));
         assertThat(data.getWithdrawFrozeAmount(), is(100L));

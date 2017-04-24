@@ -1,14 +1,18 @@
-require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 'text!/tpl/loaner-enterprise-details.mustache', 'text!/tpl/pledge-house.mustache', 'text!/tpl/pledge-vehicle.mustache', 'text!/tpl/pledge-enterprise.mustache', 'text!/tpl/loan-extra-rate.mustache', 'text!/tpl/loan-title-template.template', 'text!/tpl/loan-title-select-template.template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicker', 'bootstrapSelect', 'moment', 'fileinput', 'fileinput_locale_zh', 'Validform', 'Validform_Datatype', 'csrf'],
-    function ($, template, Mustache, loanerDetailsTemplate, loanerEnterpriseDetailsTemplate, pledgeHouseTemplate, pledgeVehicleTemplate, pledgeEnterpriseTemplate, loanExtraRateTemplate, loanTitleTemplate, loanTitleSelectTemplate) {
+require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 'text!/tpl/loaner-enterprise-details.mustache', 'text!/tpl/pledge-house.mustache', 'text!/tpl/pledge-vehicle.mustache', 'text!/tpl/pledge-enterprise.mustache', 'text!/tpl/loan-extra-rate.mustache', 'text!/tpl/loan-title-template.template', 'text!/tpl/loan-title-select-template.template', 'text!/tpl/loaner-enterprise-info.mustache', 'text!/tpl/loaner-enterprise-factoring-info.mustache', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicker', 'bootstrapSelect', 'moment', 'fileinput', 'fileinput_locale_zh', 'Validform', 'Validform_Datatype', 'csrf'],
+    function ($, template, Mustache, loanerDetailsTemplate, loanerEnterpriseDetailsTemplate, pledgeHouseTemplate, pledgeVehicleTemplate, pledgeEnterpriseTemplate, loanExtraRateTemplate, loanTitleTemplate, loanTitleSelectTemplate, loanerEnterpriseInfoTemplate, loanerEnterpriseFactoringInfoTemplate) {
         var loanParam = ['id', 'name', 'agent', 'productType', 'pledgeType', 'loanType', 'pledgeType', 'activityType',
-            'loanAmount', 'baseRate', 'activityRate', 'minInvestAmount', 'maxInvestAmount', 'investIncreasingAmount',
-            'fundraisingStartTime', 'fundraisingEndTime', 'contractId', 'status'];
+            'loanAmount', 'baseRate', 'activityRate', 'originalDuration', 'minInvestAmount', 'maxInvestAmount', 'investIncreasingAmount',
+            'fundraisingStartTime', 'fundraisingEndTime', 'deadline', 'contractId', 'status'];
 
         var loanDetailsParam = ['declaration', 'extraRateRuleIds', 'extraSource', 'activity', 'activityDesc','nonTransferable', 'pushMessage'];
 
         var loanerDetailsParam = ['userName', 'identityNumber', 'gender', 'age', 'marriage', 'region', 'income', 'employmentStatus', 'purpose'];
 
         var loanerEnterpriseDetailsParam = ['juristicPerson', 'shareholder', 'address', 'purpose'];
+
+        var loanerEnterpriseInfoParam = ['companyName', 'address', 'purpose'];
+
+        var loanerEnterpriseFactoringInfoParam = ['factoringCompanyName','factoringCompanyDesc']
 
         var pledgeHouseParam = ['pledgeLocation', 'estimateAmount', 'pledgeLoanAmount', 'square', 'propertyCardId', 'estateRegisterId', 'authenticAct'];
 
@@ -49,10 +53,28 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
                 sectionThreeElement.html(Mustache.render(pledgeVehicleTemplate));
             }
 
-            if ('税易经营性借款' === loanName) {
-                pledgeTypeElement.val("ENTERPRISE");
+            if ('经营性借款' === loanName && $('#projectName option:selected').attr('data-pledgetype') === 'ENTERPRISE_CREDIT') {
+                pledgeTypeElement.val("ENTERPRISE_CREDIT");
+                sectionTwoElement.html(Mustache.render(loanerEnterpriseDetailsTemplate));
+                sectionThreeElement.html(Mustache.render(''));
+            }
+
+            if ('经营性借款' === loanName && $('#projectName option:selected').attr('data-pledgetype') === 'ENTERPRISE_PLEDGE') {
+                pledgeTypeElement.val("ENTERPRISE_PLEDGE");
                 sectionTwoElement.html(Mustache.render(loanerEnterpriseDetailsTemplate));
                 sectionThreeElement.html(Mustache.render(pledgeEnterpriseTemplate));
+            }
+
+            if ('经营性借款' === loanName && $('#projectName option:selected').attr('data-pledgetype') === 'ENTERPRISE_FACTORING') {
+                pledgeTypeElement.val("ENTERPRISE_FACTORING");
+                sectionTwoElement.html(Mustache.render(loanerEnterpriseInfoTemplate));
+                sectionThreeElement.html(Mustache.render(loanerEnterpriseFactoringInfoTemplate));
+            }
+
+            if ('经营性借款' === loanName && $('#projectName option:selected').attr('data-pledgetype') === 'ENTERPRISE_BILL') {
+                pledgeTypeElement.val("ENTERPRISE_BILL");
+                sectionTwoElement.html(Mustache.render(loanerEnterpriseInfoTemplate));
+                sectionThreeElement.html(Mustache.render(''));
             }
 
             $('.selectpicker').selectpicker();
@@ -86,6 +108,11 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
         });
         fundraisingEndTimeElement.on("dp.change", function (e) {
             fundraisingStartTimeElement.data("DateTimePicker").maxDate(e.date);
+        });
+
+        var deadlineElement = $('#deadline');
+        deadlineElement.datetimepicker({
+            format: 'YYYY-MM-DD'
         });
 
         //初始化数据
@@ -364,12 +391,33 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
                     'pledgeVehicle': pledgeVehicleParam
                 });
             }
-            if ("税易经营性借款" == value) {
+            if ("经营性借款" == value && $('#projectName option:selected').attr('data-pledgetype') == 'ENTERPRISE_CREDIT') {
+                requestData = generateRequestParams({
+                    'loan': loanParam,
+                    'loanDetails': loanDetailsParam,
+                    'loanerEnterpriseDetails': loanerEnterpriseDetailsParam
+                });
+            }
+            if ("经营性借款" == value && $('#projectName option:selected').attr('data-pledgetype') == 'ENTERPRISE_PLEDGE') {
                 requestData = generateRequestParams({
                     'loan': loanParam,
                     'loanDetails': loanDetailsParam,
                     'loanerEnterpriseDetails': loanerEnterpriseDetailsParam,
                     'pledgeEnterprise': pledgeEnterpriseParam
+                });
+            }
+            if ("经营性借款" == value && $('#projectName option:selected').attr('data-pledgetype') == 'ENTERPRISE_FACTORING') {
+                requestData = generateRequestParams({
+                    'loan': loanParam,
+                    'loanDetails': loanDetailsParam,
+                    'loanerEnterpriseInfo': loanerEnterpriseInfoParam + loanerEnterpriseFactoringInfoParam
+                });
+            }
+            if ("经营性借款" == value && $('#projectName option:selected').attr('data-pledgetype') == 'ENTERPRISE_BILL') {
+                requestData = generateRequestParams({
+                    'loan': loanParam,
+                    'loanDetails': loanDetailsParam,
+                    'loanerEnterpriseInfo': loanerEnterpriseInfoParam
                 });
             }
             $.ajax(
@@ -419,11 +467,7 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
 
         var checkedExtraRate = function () {
             clearErrorMessage();
-            if (pledgeTypeElement.val() === 'ENTERPRISE') {
-                showErrorMessage('项目不支持', extraElement);
-                extraElement.prop('checked', false);
-                return;
-            }
+
             if (['_90', '_180', '_360'].indexOf(productTypeElement.val()) === -1) {
                 showErrorMessage('借款期限未选择或选择为30天，不能操作此选项', extraElement);
                 extraElement.prop('checked', false);

@@ -56,7 +56,7 @@
         %>
         <tr>
             <td>
-                <a href="/loan/{{loanId}}" class="project-name"><%=item.loanName%></a>
+                <a href="/loan/<%=item.loanId%>" class="project-name"><%=item.loanName%></a>
             </td>
             <td><%=item.amount%></td>
             <td><%=item.sumRate%>%</td>

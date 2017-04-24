@@ -5,7 +5,35 @@ let ValidatorObj= require('publicJs/validator');
 var $InfoBox = $('#personInfoBox'),
     $changeEmailLayer = $('.setEmail', $InfoBox),
     $updateBankCard = $('#update-bank-card'),
-    countTimer;
+    countTimer,
+    $riskTip=$('#riskTip'),
+    $closeRisk=$('.close-risk',$riskTip);
+
+
+
+
+
+//判断是否显示评估弹框
+commonFun.useAjax({
+    url: '/risk-estimate/alert',
+    type: 'GET'
+},function(data) {
+    if(data.data.status){
+        layer.open({
+            type: 1,
+            title:false,
+            closeBtn: 0,
+            area: ['600px', '310px'],
+            shadeClose: true,
+            content: $riskTip
+        });
+    }
+});
+
+$closeRisk.on('click', function(event) {
+    event.preventDefault();
+    layer.closeAll();
+});
 
 //修改绑定的银行卡
 $updateBankCard.on('click', function(){

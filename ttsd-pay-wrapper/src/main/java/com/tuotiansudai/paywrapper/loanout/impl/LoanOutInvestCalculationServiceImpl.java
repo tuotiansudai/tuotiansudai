@@ -47,7 +47,7 @@ public class LoanOutInvestCalculationServiceImpl implements LoanOutInvestCalcula
         LoanDetailsModel loanDetailsModel =  loanDetailsMapper.getByLoanId(loanId);
 
         LoanModel loanModel = loanMapper.findById(loanId);
-        Date repayDate = new DateTime(loanModel.getRecheckTime()).plusDays(loanModel.getDuration()).toDate();
+        Date repayDate = loanModel.getDeadline();
         List<InvestModel> investModels = investMapper.findSuccessInvestsByLoanId(loanId);
         for (InvestModel investModel : investModels) {
             for (ExtraLoanRateModel extraLoanRateModel : extraLoanRateModels) {

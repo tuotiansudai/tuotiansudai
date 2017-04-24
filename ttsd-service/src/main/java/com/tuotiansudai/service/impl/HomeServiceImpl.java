@@ -49,48 +49,44 @@ public class HomeServiceImpl implements HomeService {
     private static final String CMS_CATEGORY = "cms:sitemap:category:{0}";
 
     public List<HomeLoanDto> getNormalLoans() {
-        return getLoans().stream().filter(loan -> !loan.getProductType().equals(ProductType._30) && !loan.getActivityType().equals(ActivityType.NEWBIE)).collect(Collectors.toList());
+        List<LoanModel> homePreferableLoans = loanMapper.findHomePreferableLoans();
+        return homePreferableLoans.stream().map(loanModel -> {
+            long investAmount = investMapper.sumSuccessInvestAmount(loanModel.getId());
+            List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(loanModel.getId());
+            LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loanModel.getId());
+
+            return new HomeLoanDto(null,
+                    loanModel,
+                    investAmount,
+                    loanRepayModels,
+                    extraLoanRateMapper.findMaxRateByLoanId(loanModel.getId()),
+                    loanDetailsModel.getExtraSource(), loanDetailsModel.isActivity(), loanDetailsModel.getActivityDesc());
+        }).collect(Collectors.toList());
     }
 
-    public List<HomeLoanDto> getNewbieLoans() {
-        return getLoans().stream().filter(loan -> loan.getProductType().equals(ProductType._30) || loan.getActivityType().equals(ActivityType.NEWBIE)).collect(Collectors.toList());
-    }
+    public HomeLoanDto getNewbieLoan() {
+        LoanModel homeNewbieLoan = loanMapper.findHomeNewbieLoan();
+        long investAmount = investMapper.sumSuccessInvestAmount(homeNewbieLoan.getId());
+        List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(homeNewbieLoan.getId());
+        LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(homeNewbieLoan.getId());
 
-    private List<HomeLoanDto> getLoans() {
         final List<CouponModel> allActiveCoupons = couponMapper.findAllActiveCoupons();
-
-        List<LoanModel> loanModels = loanMapper.findHomeLoan();
-
-        loanModels.forEach(loanModel -> logger.info(MessageFormat.format("[home loan] loanId:{0}", loanModel.getId())));
-
-        return Lists.transform(loanModels, new Function<LoanModel, HomeLoanDto>() {
-            @Override
-            public HomeLoanDto apply(LoanModel loan) {
-                long investAmount = investMapper.sumSuccessInvestAmount(loan.getId());
-
-                CouponModel newbieInterestCouponModel = null;
-                for (CouponModel activeCoupon : allActiveCoupons) {
-                    if (activeCoupon.getCouponType() == CouponType.INTEREST_COUPON
-                            && activeCoupon.getUserGroup() == UserGroup.NEW_REGISTERED_USER
-                            && activeCoupon.getProductTypes().contains(ProductType._30)
-                            && (newbieInterestCouponModel == null || activeCoupon.getRate() > newbieInterestCouponModel.getRate())) {
-                        newbieInterestCouponModel = activeCoupon;
-                    }
-                }
-
-                List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(loan.getId());
-                LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loan.getId());
-                List<Source> extraSource = Lists.newArrayList();
-                boolean activity = false;
-                String activityDesc = "";
-                if (loanDetailsModel != null) {
-                    extraSource = loanDetailsModel.getExtraSource();
-                    activity = loanDetailsModel.isActivity();
-                    activityDesc = loanDetailsModel.getActivityDesc();
-                }
-                return new HomeLoanDto(newbieInterestCouponModel, loan, investAmount, loanRepayModels, extraLoanRateMapper.findMaxRateByLoanId(loan.getId()), extraSource, activity, activityDesc);
+        CouponModel newbieInterestCouponModel = null;
+        for (CouponModel activeCoupon : allActiveCoupons) {
+            if (activeCoupon.getCouponType() == CouponType.INTEREST_COUPON
+                    && activeCoupon.getUserGroup() == UserGroup.NEW_REGISTERED_USER
+                    && activeCoupon.getProductTypes().contains(ProductType._30)
+                    && (newbieInterestCouponModel == null || activeCoupon.getRate() > newbieInterestCouponModel.getRate())) {
+                newbieInterestCouponModel = activeCoupon;
             }
-        });
+        }
+
+        return new HomeLoanDto(newbieInterestCouponModel,
+                homeNewbieLoan,
+                investAmount,
+                loanRepayModels,
+                extraLoanRateMapper.findMaxRateByLoanId(homeNewbieLoan.getId()),
+                loanDetailsModel.getExtraSource(), loanDetailsModel.isActivity(), loanDetailsModel.getActivityDesc());
     }
 
     @Override
