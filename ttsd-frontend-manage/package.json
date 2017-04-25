@@ -10,7 +10,6 @@
     "json": "nodemon -L getJsonFiles.js&",
     "plugin": "webpack --config  webpack.dll.config.js",
     "server": "node getStaticServer.js $PLAT",
-    "mock":"nodemon -L resources/static/public/mock/express.js",
     "showimage":"node resources/tools/showImages.js",
     "removeUselessImgs":"node resources/tools/deleteUselessImgs.js"
   },
