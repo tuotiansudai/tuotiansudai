@@ -15,11 +15,22 @@
 		display: block;
 	}
 	.poster-list {
-
 		.poster-item {
 			position: absolute;
 			left: 0px;
 			top: 0px;
+			&.poster-one{
+				background: url('../images/minsheng/company-one.jpg') no-repeat center;
+				background-size:100%;
+			}
+			&.poster-two{
+				background: url('../images/minsheng/company-two.jpg') no-repeat center;
+				background-size:100%;
+			}
+			&.poster-three{
+				background: url('../images/minsheng/company-three.jpg') no-repeat center;
+				background-size:100%;
+			}
 		}
 	}
 	.poster-btn {
@@ -67,6 +78,18 @@
 		@media (max-width:700px) {
 			margin-left:0;
 			margin-top: 15px;
+		}
+	}
+	.top-item{
+		float:left;
+		width:100%;
+		height:350px;
+		background:url('../images/minsheng/top-img.jpg') no-repeat center;
+		background-size:100%;
+		@media (max-width:700px) {
+			height:150px;
+			background:url('../images/minsheng/top-img-phone.jpg') no-repeat center;
+			background-size:100%;
 		}
 	}
 	.content-item {
@@ -181,6 +204,30 @@
 						@media (max-width:700px) {
 							width:100%;
 							height:auto;
+						}
+						&.intro-one{
+							background: url('../images/minsheng/img-one.jpg') no-repeat center;
+							background-size:100%;
+							@media (max-width:700px) {
+								background: url('../images/minsheng/img-one-phone.jpg') no-repeat center;
+								background-size:100%;
+							}
+						}
+						&.intro-two{
+							background: url('../images/minsheng/img-two.jpg') no-repeat center;
+							background-size:100%;
+							@media (max-width:700px) {
+								background: url('../images/minsheng/img-two-phone.jpg') no-repeat center;
+								background-size:100%;
+							}
+						}
+						&.intro-three{
+							background: url('../images/minsheng/img-three.jpg') no-repeat center;
+							background-size:100%;
+							@media (max-width:700px) {
+								background: url('../images/minsheng/img-three-phone.jpg') no-repeat center;
+								background-size:100%;
+							}
 						}
 					}
 					.intro-text {
