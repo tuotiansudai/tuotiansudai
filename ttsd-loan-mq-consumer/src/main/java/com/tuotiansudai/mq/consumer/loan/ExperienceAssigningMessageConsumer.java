@@ -59,6 +59,7 @@ public class ExperienceAssigningMessageConsumer implements MessageConsumer {
         }
 
         if (experienceAssigningMessage == null) {
+            logger.error("[发放体验金MQ] ExperienceAssigningMessage is empty.");
             return;
         }
 
@@ -68,8 +69,14 @@ public class ExperienceAssigningMessageConsumer implements MessageConsumer {
         }
 
         logger.info("[发放体验金MQ] ready to consume message: tyrant assign experience.");
-        experienceBillService.updateUserExperienceBalanceByLoginName(experienceAssigningMessage.getExperienceAmount(), experienceAssigningMessage.getLoginName(),
-                experienceAssigningMessage.getExperienceBillOperationType(), experienceAssigningMessage.getExperienceBillBusinessType(), experienceAssigningMessage.getNote());
+        try {
+            experienceBillService.updateUserExperienceBalanceByLoginName(experienceAssigningMessage.getExperienceAmount(), experienceAssigningMessage.getLoginName(),
+                    experienceAssigningMessage.getExperienceBillOperationType(), experienceAssigningMessage.getExperienceBillBusinessType(), experienceAssigningMessage.getNote());
+        } catch (Exception e) {
+            logger.error("[新贵富豪争霸活动发放体验金MQ] {0} grant experience fail {1}, errorMessage:{2}",
+                    experienceAssigningMessage.getLoginName(), DateFormatUtils.format(experienceAssigningMessage.getCurrentDate(),
+                            "yyyy-MM-dd"), e.getLocalizedMessage());
+        }
     }
 
     private void newmanTyrantAssignExperience(ExperienceAssigningMessage experienceAssigningMessage) {
@@ -88,7 +95,7 @@ public class ExperienceAssigningMessageConsumer implements MessageConsumer {
             mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(MessageEventType.NEWMAN_TYRANT,
                     Lists.newArrayList(experienceAssigningMessage.getLoginName()),
                     MessageEventType.NEWMAN_TYRANT.getTitleTemplate(),
-                    MessageFormat.format(MessageEventType.NEWMAN_TYRANT.getContentTemplate(), org.apache.commons.lang3.time.DateFormatUtils.format(experienceAssigningMessage.getCurrentDate(),"yyyy-MM-dd")),
+                    MessageFormat.format(MessageEventType.NEWMAN_TYRANT.getContentTemplate(), org.apache.commons.lang3.time.DateFormatUtils.format(experienceAssigningMessage.getCurrentDate(), "yyyy-MM-dd")),
                     null));
             logger.info(String.format("[新贵富豪争霸活动发放体验金MQ %s] grant %s experience end ...",
                     org.apache.commons.lang3.time.DateFormatUtils.format(experienceAssigningMessage.getCurrentDate(), "yyyy-MM-dd"),

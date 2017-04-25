@@ -14,7 +14,6 @@ import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.service.ExperienceBillService;
 import com.tuotiansudai.service.ExperienceInvestService;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.InterestCalculator;
@@ -45,9 +44,6 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
 
     @Autowired
     private IdGenerator idGenerator;
-
-    @Autowired
-    private ExperienceBillService registerUserService;
 
     @Autowired
     private UserMapper userMapper;
