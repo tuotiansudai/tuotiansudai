@@ -2,56 +2,55 @@ package com.tuotiansudai.client;
 
 import com.google.common.base.Strings;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.exceptions.JedisConnectionException;
 
 import java.text.MessageFormat;
+import java.util.ResourceBundle;
 
-@Component
 public abstract class AbstractRedisWrapperClient {
 
     private static Logger logger = Logger.getLogger(AbstractRedisWrapperClient.class);
 
-    @Value("${common.redis.host}")
-    private String redisHost;
+    private static String REDIS_HOST;
 
-    @Value("${common.redis.port}")
-    private int redisPort;
+    private static int REDIS_PORT;
 
-    @Value("${common.redis.password}")
-    private String redisPassword;
+    private static String REDIS_PASSWORD;
 
-    @Value("${mobile.jedis.pool.maxTotal}")
-    private int maxTotal;
+    private static int MAX_WAIT_MILLIS;
 
-    @Value("${common.jedis.pool.maxWaitMillis}")
-    private int maxWaitMillis;
+    private static JedisPool JEDIS_POOL;
 
-    @Autowired
-    private JedisPoolConfig jedisPoolConfig;
+    static {
+        ResourceBundle bundle = ResourceBundle.getBundle("ttsd-env");
+        REDIS_HOST = bundle.getString("common.redis.host");
+        REDIS_PORT = Integer.parseInt(bundle.getString("common.redis.port"));
+        REDIS_PASSWORD = bundle.getString("common.redis.password");
+        MAX_WAIT_MILLIS = Integer.parseInt(bundle.getString("common.jedis.pool.maxWaitMillis"));
+        JedisPoolConfig poolConfig = new JedisPoolConfig();
+        poolConfig.setMaxTotal(300);
+        poolConfig.setMaxWaitMillis(MAX_WAIT_MILLIS);
+        JEDIS_POOL = new JedisPool(poolConfig, REDIS_HOST, REDIS_PORT);
+    }
 
-    private static JedisPool jedisPool;
-
-    protected Jedis getJedis(int db) {
+    Jedis getJedis(int db) {
         int timeoutCount = 0;
         Jedis jedis;
         while (true) {
             try {
-                jedis = getJedisPool().getResource();
-                if (!Strings.isNullOrEmpty(getRedisPassword())) {
-                    jedis.auth(getRedisPassword());
+                jedis = JEDIS_POOL.getResource();
+                if (!Strings.isNullOrEmpty(REDIS_PASSWORD)) {
+                    jedis.auth(REDIS_PASSWORD);
                 }
                 jedis.select(db);
                 break;
             } catch (JedisConnectionException e) {
                 logger.warn(MessageFormat.format("fetch jedis failed on {0} times", String.valueOf(timeoutCount + 1)), e);
                 if (++timeoutCount >= 3) {
-                    logger.error("Get Redis pool failure more than 3 times.",e);
+                    logger.error("Get Redis pool failure more than 3 times.", e);
                     throw e;
                 }
             }
@@ -59,52 +58,13 @@ public abstract class AbstractRedisWrapperClient {
         return jedis;
     }
 
-    protected JedisPool getJedisPool() {
-        if (jedisPool == null) {
-
-            jedisPoolConfig.setMaxTotal(maxTotal);
-            jedisPoolConfig.setMaxWaitMillis(maxWaitMillis);
-            logger.info("redisHost=" + redisHost);
-            logger.info("redisPort=" + redisPort);
-            logger.info("maxTotal=" + jedisPoolConfig.getMaxTotal());
-            logger.info("MaxWaitMillis=" + jedisPoolConfig.getMaxWaitMillis());
-            jedisPool = new JedisPool(jedisPoolConfig, redisHost, redisPort);
-        }
-        return jedisPool;
-    }
-
     public interface JedisAction<T> {
         T action(Jedis jedis);
     }
 
-    protected void closeResource(Jedis jedis) {
+    void closeResource(Jedis jedis) {
         if (jedis != null) {
             jedis.close();
         }
     }
-
-    public String getRedisHost() {
-        return redisHost;
-    }
-
-    public void setRedisHost(String redisHost) {
-        this.redisHost = redisHost;
-    }
-
-    public int getRedisPort() {
-        return redisPort;
-    }
-
-    public String getRedisPassword() {
-        return redisPassword;
-    }
-
-    public void setRedisPassword(String redisPassword) {
-        this.redisPassword = redisPassword;
-    }
-
-    public void setRedisPort(int redisPort) {
-        this.redisPort = redisPort;
-    }
-
 }

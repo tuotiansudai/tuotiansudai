@@ -13,10 +13,11 @@ import java.text.MessageFormat;
  * DO NOT MODIFY!!!
  */
 
-@Component
 public class IdGenerator {
 
     static Logger logger = Logger.getLogger(IdGenerator.class);
+
+    private final static RedisWrapperClient redisWrapperClient = new RedisWrapperClient();
 
     private final static String ID_GENERATOR_REDIS_KEY = "common:id";
 
@@ -50,8 +51,7 @@ public class IdGenerator {
     // 上一个毫秒数
     private long lastTimestamp = -1L;
 
-    @Autowired
-    public IdGenerator(RedisWrapperClient redisWrapperClient) {
+    public IdGenerator() {
         this.workerId = redisWrapperClient.incr(ID_GENERATOR_REDIS_KEY).intValue() % MAX_WORKER_ID;
         // 最大2^WORKER_ID_BITS个节点
         if (workerId > MAX_WORKER_ID || workerId < 0) {

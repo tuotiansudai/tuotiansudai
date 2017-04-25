@@ -67,7 +67,5 @@
         <property name="maxTotal" value="${ask.jedis.pool.maxTotal}"/>
     </bean>
 
-    <bean class="com.tuotiansudai.client.MybatisRedisCacheWrapperClient"/>
-
     <bean id="httpClient" class="com.squareup.okhttp.OkHttpClient"/>
 </beans>

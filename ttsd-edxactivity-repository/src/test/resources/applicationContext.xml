@@ -103,7 +103,4 @@
     </bean>
 
     <bean id="httpClient" class="com.squareup.okhttp.OkHttpClient"/>
-
-    <bean class="com.tuotiansudai.client.MybatisRedisCacheWrapperClient"/>
-
 </beans>

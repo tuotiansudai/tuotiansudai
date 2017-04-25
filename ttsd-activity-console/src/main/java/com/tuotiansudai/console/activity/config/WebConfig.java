@@ -85,7 +85,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Bean
     public IdGenerator idGenerator(RedisWrapperClient redisWrapperClient) {
-        return new IdGenerator(redisWrapperClient);
+        return new IdGenerator(new RedisWrapperClient());
     }
 
     @Bean

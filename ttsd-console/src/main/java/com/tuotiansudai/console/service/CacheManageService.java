@@ -1,17 +1,15 @@
 package com.tuotiansudai.console.service;
 
-import com.tuotiansudai.client.RedisWrapperClient;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.tuotiansudai.client.MybatisRedisCacheWrapperClient;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CacheManageService {
 
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
+    private MybatisRedisCacheWrapperClient mybatisRedisCacheWrapperClient = new MybatisRedisCacheWrapperClient();
 
     public String clearMybatisCache() {
-        return redisWrapperClient.clearMybatisCache();
+        return mybatisRedisCacheWrapperClient.clearMybatisCache();
     }
 
 }

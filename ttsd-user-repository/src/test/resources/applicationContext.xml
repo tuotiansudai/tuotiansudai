@@ -96,8 +96,6 @@
         <property name="maxTotal" value="300"/>
     </bean>
 
-    <bean class="com.tuotiansudai.client.MybatisRedisCacheWrapperClient"/>
-
     <bean class="com.tuotiansudai.client.RedisWrapperClient"/>
 
     <bean class="com.tuotiansudai.util.IdGenerator"/>
