@@ -285,5 +285,5 @@
     </dl>
 </div>
 
-<#include "login-tip.ftl" />
+<#include "../module/login-tip.ftl" />
 </@global.main>
