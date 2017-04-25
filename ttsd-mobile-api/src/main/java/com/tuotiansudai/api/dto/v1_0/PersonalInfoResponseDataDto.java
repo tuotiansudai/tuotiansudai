@@ -68,6 +68,12 @@ public class PersonalInfoResponseDataDto extends BaseResponseDataDto {
     @ApiModelProperty(value = "是否可投新手体验标", example = "true")
     private boolean isExperienceEnable;
 
+    @ApiModelProperty(value = "投资偏好", example = "进取型")
+    private String riskEstimate;
+
+    @ApiModelProperty(value = "投资偏好说明", example = "进取型")
+    private String riskEstimateDesc;
+
 
     public boolean getCertificationFlag() {
         return certificationFlag;
@@ -234,5 +240,21 @@ public class PersonalInfoResponseDataDto extends BaseResponseDataDto {
 
     public void setHasAuthed(boolean hasAuthed) {
         this.hasAuthed = hasAuthed;
+    }
+
+    public String getRiskEstimate() {
+        return riskEstimate;
+    }
+
+    public void setRiskEstimate(String riskEstimate) {
+        this.riskEstimate = riskEstimate;
+    }
+
+    public String getRiskEstimateDesc() {
+        return riskEstimateDesc;
+    }
+
+    public void setRiskEstimateDesc(String riskEstimateDesc) {
+        this.riskEstimateDesc = riskEstimateDesc;
     }
 }

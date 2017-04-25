@@ -21,10 +21,7 @@ import com.tuotiansudai.paywrapper.repository.model.sync.response.TransferRespon
 import com.tuotiansudai.paywrapper.service.SystemBillService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.util.AmountConverter;
-import com.tuotiansudai.util.AmountTransfer;
-import com.tuotiansudai.util.IdGenerator;
-import com.tuotiansudai.util.InterestCalculator;
+import com.tuotiansudai.util.*;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.text.MessageFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -92,8 +90,7 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
         boolean result = true;
         LoanModel loanModel = loanMapper.findById(loanId);
         List<InvestModel> successInvestList = investMapper.findSuccessInvestsByLoanId(loanId);
-
-        int loanDuration = this.calculateLoanDuration(loanModel);
+        Date loanDealLine = loanModel.getDeadline();
 
         for (InvestModel invest : successInvestList) {
             List<ReferrerRelationModel> referrerRelationList = referrerRelationMapper.findByLoginName(invest.getLoginName());
@@ -110,7 +107,12 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
                         continue;
                     }
 
-                    long reward = this.calculateReferrerReward(invest.getAmount(), loanDuration, referrerRelationModel.getLevel(), role);
+                    if (invest.getTradingTime() == null) {
+                        logger.warn(MessageFormat.format("[标的放款] 发送推荐人奖励, 推荐人:{0}, 投资ID:{1} 交易时间为空", referrerLoginName, String.valueOf(invest.getId())));
+                        continue;
+                    }
+
+                    long reward = this.calculateReferrerReward(invest.getAmount(), invest.getTradingTime(), loanDealLine, referrerRelationModel.getLevel(), role);
                     InvestReferrerRewardModel model = new InvestReferrerRewardModel(idGenerator.generate(), invest.getId(), reward, referrerLoginName, role);
                     investReferrerRewardMapper.create(model);
                     if (this.transferReferrerReward(model)) {
@@ -252,25 +254,20 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
         return true;
     }
 
-    private long calculateReferrerReward(long amount, int loanDuration, int level, Role role) {
+    private long calculateReferrerReward(long amount, Date investTime, Date dealLine, int level, Role role) {
+        if (Lists.newArrayList(Role.ZC_STAFF, Role.ZC_STAFF_RECOMMEND).contains(role)) {
+            return 0;
+        }
+
         BigDecimal amountBigDecimal = new BigDecimal(amount);
 
         double rewardRate = this.getRewardRate(level, (Role.SD_STAFF == role || Role.ZC_STAFF == role));
 
         return amountBigDecimal
                 .multiply(new BigDecimal(rewardRate))
-                .multiply(new BigDecimal(loanDuration))
+                .multiply(new BigDecimal(LoanPeriodCalculator.calculateDuration(investTime, dealLine)))
                 .divide(new BigDecimal(InterestCalculator.DAYS_OF_YEAR), 0, BigDecimal.ROUND_DOWN)
                 .longValue();
-    }
-
-    private int calculateLoanDuration(LoanModel loanModel) {
-        if (loanModel.getType().getLoanPeriodUnit() == LoanPeriodUnit.DAY) {
-            return loanModel.getPeriods();
-        }
-
-        int periods = loanModel.getPeriods();
-        return periods * InterestCalculator.DAYS_OF_MONTH;
     }
 
     private Role getReferrerPriorityRole(String referrerLoginName) {
@@ -320,4 +317,5 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
                 Lists.newArrayList(referrerLoginName), title, content, businessId));
         mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(Lists.newArrayList(referrerLoginName), PushSource.ALL, PushType.RECOMMEND_AWARD_SUCCESS, title, AppUrl.MESSAGE_CENTER_LIST));
     }
+
 }

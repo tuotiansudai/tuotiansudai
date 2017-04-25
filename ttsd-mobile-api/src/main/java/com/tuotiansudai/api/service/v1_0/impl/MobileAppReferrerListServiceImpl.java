@@ -33,12 +33,12 @@ public class MobileAppReferrerListServiceImpl implements MobileAppReferrerListSe
     public BaseResponseDto<ReferrerListResponseDataDto> generateReferrerList(ReferrerListRequestDto referrerListRequestDto) {
         BaseResponseDto dto = new BaseResponseDto();
         String referrerId = referrerListRequestDto.getReferrerId();
-        Integer pageSize = pageValidUtils.validPageSizeLimit(referrerListRequestDto.getPageSize());
         String level = referrerManageService.getUserRewardDisplayLevel(referrerId);
         int count = referrerManageMapper.findReferRelationCount(referrerId, null, null, null, level);
-        int index =  PaginationUtil.validateIndex(referrerListRequestDto.getIndex(), pageSize, count);
+        Integer index = referrerListRequestDto.getIndex() <= 0 ? 1 : referrerListRequestDto.getIndex();
+        Integer pageSize = pageValidUtils.validPageSizeLimit(referrerListRequestDto.getPageSize());
 
-        List<ReferrerRelationView> referrerRelationDtos = referrerManageMapper.findReferRelationList(referrerId,null,null,null,level,(index - 1) * pageSize,pageSize);
+        List<ReferrerRelationView> referrerRelationDtos = referrerManageMapper.findReferRelationList(referrerId, null, null, null, level, (index - 1) * pageSize, pageSize);
 
         List<ReferrerResponseDataDto> referrerResponseDataDtos = Lists.transform(referrerRelationDtos, input -> {
             UserModel userModel = userMapper.findByLoginName(input.getLoginName());

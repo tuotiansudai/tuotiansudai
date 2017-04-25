@@ -8,7 +8,6 @@ public class LoanerEnterpriseDetailsModel implements Serializable {
     private long id;
     private long loanId;
     private String juristicPerson;
-    private String shareholder;
     private String address;
     private String purpose;
 
@@ -18,7 +17,6 @@ public class LoanerEnterpriseDetailsModel implements Serializable {
     public LoanerEnterpriseDetailsModel(long loanId, LoanCreateLoanerEnterpriseDetailsDto dto) {
         this.loanId = loanId;
         this.juristicPerson = dto.getJuristicPerson();
-        this.shareholder = dto.getShareholder();
         this.address = dto.getAddress();
         this.purpose = dto.getPurpose();
     }
@@ -45,14 +43,6 @@ public class LoanerEnterpriseDetailsModel implements Serializable {
 
     public void setJuristicPerson(String juristicPerson) {
         this.juristicPerson = juristicPerson;
-    }
-
-    public String getShareholder() {
-        return shareholder;
-    }
-
-    public void setShareholder(String shareholder) {
-        this.shareholder = shareholder;
     }
 
     public String getAddress() {

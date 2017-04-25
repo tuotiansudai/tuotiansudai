@@ -44,6 +44,9 @@ public class LoanDetailServiceImpl implements LoanDetailService {
     private LoanerEnterpriseDetailsMapper loanerEnterpriseDetailsMapper;
 
     @Autowired
+    private LoanerEnterpriseInfoMapper loanerEnterpriseInfoMapper;
+
+    @Autowired
     private PledgeHouseMapper pledgeHouseMapper;
 
     @Autowired
@@ -225,16 +228,43 @@ public class LoanDetailServiceImpl implements LoanDetailService {
 
         PledgeEnterpriseModel pledgeEnterpriseModel = pledgeEnterpriseMapper.getByLoanId(loanModel.getId());
         LoanerEnterpriseDetailsModel loanerEnterpriseDetailsModel = loanerEnterpriseDetailsMapper.getByLoanId(loanModel.getId());
-        if (pledgeEnterpriseModel != null && loanerEnterpriseDetailsModel != null) {
-            loanDto.setPledgeEnterpriseDetail(ImmutableMap.<String, String>builder()
-                    .put("公司法人", MessageFormat.format("{0}某", loanerEnterpriseDetailsModel.getJuristicPerson().substring(0, 1)))
-                    .put("公司最高持股人", MessageFormat.format("{0}某", loanerEnterpriseDetailsModel.getShareholder().substring(0, 1)))
-                    .put("公司所在地", loanerEnterpriseDetailsModel.getAddress())
-                    .put("担保方式", pledgeEnterpriseModel.getGuarantee())
-                    .put("抵押物估值", pledgeEnterpriseModel.getEstimateAmount())
-                    .put("抵押物所在地", pledgeEnterpriseModel.getPledgeLocation())
-                    .build());
-            loanDto.setBasicInfo(loanerEnterpriseDetailsModel.getPurpose());
+        if (loanerEnterpriseDetailsModel != null) {
+            if(loanDto.getPledgeType() == PledgeType.ENTERPRISE_PLEDGE){
+                loanDto.setPledgeEnterpriseDetail(ImmutableMap.<String, String>builder()
+                        .put("借款人", loanerEnterpriseDetailsModel.getJuristicPerson())
+                        .put("公司所在地", loanerEnterpriseDetailsModel.getAddress())
+                        .put("企业借款用途描述", loanerEnterpriseDetailsModel.getPurpose())
+                        .put("担保方式", pledgeEnterpriseModel.getGuarantee())
+                        .put("抵押物估值", pledgeEnterpriseModel.getEstimateAmount())
+                        .put("抵押物所在地", pledgeEnterpriseModel.getPledgeLocation())
+                        .build());
+            }else{
+                loanDto.setPledgeEnterpriseDetail(ImmutableMap.<String, String>builder()
+                        .put("借款人", loanerEnterpriseDetailsModel.getJuristicPerson())
+                        .put("公司所在地", loanerEnterpriseDetailsModel.getAddress())
+                        .put("企业借款用途描述", loanerEnterpriseDetailsModel.getPurpose())
+                        .build());
+            }
+        }
+
+        LoanerEnterpriseInfoModel loanerEnterpriseInfoModel = loanerEnterpriseInfoMapper.getByLoanId(loanModel.getId());
+        if (loanerEnterpriseInfoModel != null) {
+            if(loanDto.getPledgeType() == PledgeType.ENTERPRISE_FACTORING){
+                loanDto.setEnterpriseInfo(ImmutableMap.<String, String>builder()
+                        .put("企业名称", loanerEnterpriseInfoModel.getCompanyName())
+                        .put("经营地址", loanerEnterpriseInfoModel.getAddress())
+                        .put("借款用途", loanerEnterpriseInfoModel.getPurpose())
+                        .put("公司名称", loanerEnterpriseInfoModel.getFactoringCompanyName() == null ? "" : loanerEnterpriseInfoModel.getFactoringCompanyName())
+                        .put("公司简介", loanerEnterpriseInfoModel.getFactoringCompanyDesc() == null ? "" : loanerEnterpriseInfoModel.getFactoringCompanyDesc())
+                        .build());
+            }
+            else{
+                loanDto.setEnterpriseInfo(ImmutableMap.<String, String>builder()
+                        .put("企业名称", loanerEnterpriseInfoModel.getCompanyName())
+                        .put("经营地址", loanerEnterpriseInfoModel.getAddress())
+                        .put("借款用途", loanerEnterpriseInfoModel.getPurpose())
+                        .build());
+            }
         }
 
         if (loanModel.getActivityType() == ActivityType.NEWBIE) {
@@ -260,7 +290,7 @@ public class LoanDetailServiceImpl implements LoanDetailService {
             }
             if (loanModel.getMaxAmountAchievementId() != null) {
                 InvestModel maxInvest = investMapper.findById(loanModel.getMaxAmountAchievementId());
-                long amount = investMapper.sumSuccessInvestAmountByLoginName(loanModel.getId(), maxInvest.getLoginName(),true);
+                long amount = investMapper.sumSuccessInvestAmountByLoginName(loanModel.getId(), maxInvest.getLoginName(), true);
                 achievementDto.setMaxAmountAchievementAmount(AmountConverter.convertCentToString(amount));
                 achievementDto.setMaxAmountAchievementMobile(randomUtils.encryptMobile(loginName, maxInvest.getLoginName()));
             }
@@ -276,7 +306,7 @@ public class LoanDetailServiceImpl implements LoanDetailService {
     }
 
     private long calculateMaxAvailableInvestAmount(String loginName, LoanModel loanModel, long investedAmount) {
-        long sumSuccessInvestAmount = investMapper.sumSuccessInvestAmountByLoginName(loanModel.getId(), loginName,true);
+        long sumSuccessInvestAmount = investMapper.sumSuccessInvestAmountByLoginName(loanModel.getId(), loginName, true);
         long balance = Strings.isNullOrEmpty(loginName) || accountMapper.findByLoginName(loginName) == null ? 0 : accountMapper.findByLoginName(loginName).getBalance();
 
         long maxAvailableInvestAmount = NumberUtils.min(balance, loanModel.getLoanAmount() - investedAmount, loanModel.getMaxInvestAmount() - sumSuccessInvestAmount);

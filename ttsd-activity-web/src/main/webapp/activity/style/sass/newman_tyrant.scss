@@ -1,0 +1,848 @@
+@import "module/login_tip";
+
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.media-item{
+  display:block;
+  @media (max-width:700px) {
+    display:none;
+  }
+}
+.media-item-phone{
+  display:none;
+  @media (max-width:700px) {
+    display:block;
+  }
+}
+
+.main-frame {
+  width: 100%;
+  margin: 0 auto;
+}
+.regal-list-container{
+  background:#ffdb01;
+  overflow: hidden;
+  .top-container{
+    height: 350px;
+    background: url("/activity/images/newman-tyrant/top-img.jpg") center top no-repeat;
+    @media (max-width:700px) {
+      height: 175px;
+      background: url("/activity/images/newman-tyrant/top-img-phone.jpg") center top no-repeat;
+      background-size: contain;
+    }
+  }
+  .wp{
+    width:1000px;
+    margin:0 auto;
+    @media (max-width:700px) {
+      width:100%;
+      padding:0 10px;
+    }
+  }
+  .rule-container{
+    background:-webkit-linear-gradient(to bottom, #ffdb01, #ffed7d); 
+    background:linear-gradient(to bottom,#ffdb01, #ffed7d);
+    .rule-content{
+      float:left;
+      width:100%;
+      border:5px solid #ff4149;
+      border-radius:10px;
+      margin:85px 0 50px;
+      position: relative;
+      @media (max-width:700px) {
+        margin: 10px 0 35px 0;
+        border: 3px solid #ff4149;
+        border-radius: 8px;
+      }
+      .rule-one{
+        width:54px;
+        height:85px;
+        position: absolute;
+        top:60px;
+        left:-58px;
+        background: url('/activity/images/newman-tyrant/rule-one.png') no-repeat center;
+        background-size:120%;
+        background-position: 10px 0;
+      }
+      .rule-two{
+        width: 50px;
+        height: 45px;
+        position: absolute;
+        top: 120px;
+        right: -55px;
+        background: url('/activity/images/newman-tyrant/rule-two.png') no-repeat center;
+        background-size: 120%;
+        background-position: -25px 0;
+      }
+      .rule-three{
+        width:36px;
+        height:55px;
+        position: absolute;
+        top:400px;
+        left:-40px;
+        background: url('/activity/images/newman-tyrant/rule-three.png') no-repeat center;
+        background-size:120%;
+        background-position: 10px 0;
+      }
+      .content-item{
+        float:left;
+        width:100%;
+        background:#fff;
+        border-radius:5px;
+        position: relative;
+        border:7px solid #f1192d;
+        padding: 50px 20px 20px;
+        @media (max-width:700px) {
+          border: 5px solid #f1192d;
+          border-radius: 5px;
+          padding: 35px 10px 10px;
+        }
+        h3{
+          position: absolute;
+          left:50%;
+          top:-10px;
+          margin-left:-113px;
+          width:226px;
+          height:40px;
+          line-height:40px;
+          text-align:center;
+          font-size:24px;
+          color:#fff600;
+          font-weight:bold;
+          background: url("/activity/images/newman-tyrant/rule-title.png") center no-repeat;
+          background-size: contain;
+          @media (max-width:700px) {
+            line-height: 30px;
+            height: 30px;
+            font-size: 16px;
+            top:-5px;
+          }
+        }
+        .rule-text{
+          float:left;
+          width:100%;
+          font-size:16px;
+          color:#000;
+          p{
+            padding-left:40px;
+            position: relative;
+            @media (max-width:700px) {
+              padding-left:25px;
+              font-size:14px;
+            }
+            i{
+              position: absolute;
+              top:5px;
+              left:0;
+              width:20px;
+              height:20px;
+              line-height:20px;
+              border-radius:50%;
+              background:#f1192d;
+              color:#fff600;
+              font-size:16px;
+              text-align:center;
+            }
+          }
+        }
+        .gift-list{
+          float:left;
+          width:100%;
+          text-align:center;
+          padding:0 98px;
+          @media(max-width:700px){
+            padding:0;
+          }
+          li{
+            float:left;
+            width:210px;
+            margin:0 80px;
+            @media (max-width:700px) {
+              float:left;
+              width:48%;
+              margin:0 1%;
+            }
+            .gift-item{
+              float:left;
+              width:100%;
+              height:210px;
+              background: #fffca4;
+              border:4px solid #ff0000;
+              border-radius:20px;
+              overflow:hidden;
+              @media (max-width:700px) {
+                height:auto;
+                border:2px solid #ff0000;
+                border-radius:10px;
+              }
+            }
+            .gift-num{
+              float:left;
+              width:100%;
+              font-size:14px;
+              color:#333;
+              padding-left:40px;
+              margin-top:15px;
+              text-align: left;
+              @media (max-width:700px) {
+                padding-left:35px;
+                font-size:12px;
+              }
+              &.icon-first{
+                background: url('/activity/images/newman-tyrant/icon-first.png') no-repeat;
+                background-position: 5px 0;
+                background-size: 15%;
+                @media (max-width:700px) {
+                  background-position: 6px 4px;
+                  background-size: 20%;
+                }
+              }
+              &.icon-twice{
+                background: url('/activity/images/newman-tyrant/icon-twice.png') no-repeat;
+                background-position: 5px 0;
+                background-size: 15%;
+                @media (max-width:700px) {
+                  background-position: 6px 4px;
+                  background-size: 20%;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  .rank-container{
+    background:-webkit-linear-gradient(to right, #fd2f1f, #ff2b22,#fd2f1f); 
+    background:linear-gradient(to right, #fd2f1f, #ff2b22,#fd2f1f);
+    .rank-content{
+      float:left;
+      width:100%;
+      position: relative;
+      padding:85px 0;
+      @media (max-width:700px) {
+        padding:40px 0;
+      }
+      i{
+        position: absolute;
+        &.one-bg{
+          width:83px;
+          height:82px;
+          top:5px;
+          left:-150px;
+          background: url('/activity/images/newman-tyrant/rank-one.png') no-repeat center;
+          background-size: 100%;
+        }
+        &.two-bg{
+          width:106px;
+          height:104px;
+          top:360px;
+          right:-105px;
+          background: url('/activity/images/newman-tyrant/rank-two.png') no-repeat center;
+          background-size: 100%;
+        }
+      }
+      .rank-title{
+        width:360px;
+        height:60px;
+        position: absolute;
+        top:-10px;
+        left:50%;
+        margin-left:-180px;
+        background:url('/activity/images/newman-tyrant/title-bg.png') no-repeat center;
+        background-size:100%;
+        font-size:30px;
+        color:#5b5800;
+        text-align:center;
+        font-weight:bold;
+        @media (max-width:700px) {
+          width:180px;
+          height:30px;
+          line-height:30px;
+          margin-left: -90px;
+          font-size:14px;
+        }
+      }
+      .rank-info{
+        float:left;
+        width:100%;
+        padding:20px 50px;
+        background: #ff333c;
+        @media (max-width:700px) {
+          padding:5px 10px;
+        }
+        li{
+          float:left;
+          width:33.333333%;
+          line-height:35px;
+          font-size:16px;
+          color:#fff;
+          padding-left: 50px;
+          @media (max-width:700px) {
+            width:100%;
+            font-size:14px;
+          }
+          &.info-date{
+            background:url('/activity/images/newman-tyrant/icon-date.png') no-repeat center left;
+            @media (max-width:700px) {
+              background-size: 10%;
+            }
+          }
+          &.info-rank{
+            background:url('/activity/images/newman-tyrant/icon-rank.png') no-repeat center left;
+            @media (max-width:700px) {
+              background-size: 10%;
+            }
+          }
+          &.info-money{
+            background:url('/activity/images/newman-tyrant/icon-money.png') no-repeat center left;
+            @media (max-width:700px) {
+              background-size: 10%;
+            }
+          }
+          span{
+            color:#fff600;
+            &.show-login{
+              color:#fff;
+              cursor:pointer;
+            }
+          }
+        }
+      }
+      .rank-board{
+        float:left;
+        width:100%;
+        text-align:center;
+        margin-top:40px;
+        @media (max-width:700px) {
+          margin-top:20px;
+        }
+        .board-line{
+          display:inline-block;
+          width:750px;
+          border:5px solid #ffcb61;
+          border-radius:10px;
+          @media (max-width:700px) {
+            width:100%;
+            border:3px solid #ffcb61;
+            border-radius:8px;
+          }
+          .board-item{
+            float:left;
+            width:100%;
+            border:6px solid #feb83f;
+            background:#fff;
+            border-radius:5px;
+            .board-tab{
+              float:left;
+              width:100%;
+              text-align:center;
+              margin-top:-10px;
+              span{
+                display:inline-block;
+                width:160px;
+                height:46px;
+                line-height:46px;
+                text-align:center;
+                margin:0 5px;
+                background:url('/activity/images/newman-tyrant/tab-bg.png') no-repeat center;
+                background-size:100%;
+                cursor:pointer;
+                font-size:18px;
+                color:#d7d596;
+                @media (max-width:700px) {
+                  width:110px;
+                  height:35px;
+                  line-height:35px;
+                  font-size:14px;
+                }
+                &.active{
+                  background:url('/activity/images/newman-tyrant/tab-bg-hover.png') no-repeat center;
+                  background-size:100%;
+                  color:#fff600;
+                }
+              }
+            }
+            .rank-table{
+              th{
+                background:none;
+                font-size:18px;
+                color:#333;
+                font-weight:bold;
+                padding:0;
+                line-height:55px;
+                @media (max-width:700px) {
+                  font-size:14px;
+                }
+              }
+              td{
+                font-size:18px;
+                color:#333;
+                padding:0;
+                line-height:55px;
+                @media (max-width:700px) {
+                  font-size:12px;
+                }
+                &.one{
+                  text-indent: -9999em;
+                  background: url('/activity/images/newman-tyrant/rank-first.png') no-repeat center;
+                }
+                &.two{
+                  text-indent: -9999em;
+                  background: url('/activity/images/newman-tyrant/rank-twice.png') no-repeat center;
+                }
+                &.three{
+                  text-indent: -9999em;
+                  background: url('/activity/images/newman-tyrant/rank-three.png') no-repeat center;
+                }
+              }
+            }
+          }
+        }
+        .board-btn{
+          float:left;
+          width:100%;
+          text-align:center;
+          margin:30px 0 50px;
+          @media (max-width:700px) {
+            margin:15px 0 25px;
+          }
+          span{
+            display:inline-block;
+            padding:10px 20px;
+            border:2px solid #feb83f;
+            border-radius:10px;
+            color:#fff;
+            font-size:16px;
+            margin:0 15px;
+            line-height: 16px;
+            cursor:pointer;
+            @media (max-width:700px) {
+              padding:5px 10px;
+              border-radius:5px;
+              font-size:14px;
+              margin:0 10px;
+            }
+          }
+        }
+        .link-btn{
+          float:left;
+          width:100%;
+          text-align:center;
+          a{
+            display:inline-block;
+            width:240px;
+            height:56px;
+            background:#ffe500;
+            text-align:center;
+            border-bottom:4px solid #cc8800;
+            border-radius:10px;
+            font-size:24px;
+            color:#b71015;
+            position: relative;
+            @media (max-width:700px) {
+              width: 160px;
+              height: 40px;
+              font-size: 16px;
+              line-height: 40px;
+              border-radius: 5px;
+              border-bottom: 3px solid #cc8800;
+            }
+            &:hover{
+              top:2px;
+              border-bottom:2px solid #cc8800;
+            }
+          }
+        }
+      }
+    }
+  }
+  .dare-container{
+    background: #fff8e7 url('/activity/images/newman-tyrant/dare-bg.png') no-repeat center top;
+    background-size:100%;
+    .dare-content{
+      float:left;
+      width:100%;
+      position: relative;
+      padding:80px 0 30px;
+      .dare-title{
+        width:360px;
+        height:60px;
+        position: absolute;
+        top:-10px;
+        left:50%;
+        margin-left:-180px;
+        background:url('/activity/images/newman-tyrant/title-bg.png') no-repeat center;
+        background-size:100%;
+        font-size:30px;
+        color:#5b5800;
+        text-align:center;
+        font-weight:bold;
+        @media (max-width:700px) {
+          width: 180px;
+          height: 30px;
+          line-height: 30px;
+          margin-left: -90px;
+          font-size: 14px;
+        }
+      }
+      .dare-intro{
+        float:left;
+        width:100%;
+        padding:0 180px;
+        font-size:16px;
+        color:#333;
+        @media (max-width:700px) {
+          padding:0 10px;
+          font-size:14px;
+        }
+      }
+      .dare-list{
+        float:left;
+        width:100%;
+        margin:50px 0 0;
+        @media (max-width:700px) {
+          margin:25px 0 0;
+        }
+        .list-content{
+          float:left;
+          width:410px;
+          @media (max-width:700px) {
+            width:45%;
+          }
+          &.new-rank{
+            .list-title{
+              color:#ffe500;
+              background: #ff474c;
+            }
+            .list-number{
+              color:#ffe500;
+              background: #ff474c;
+              .icon-line{
+                background:url('/activity/images/newman-tyrant/icon-line-vs.png') no-repeat center;
+                background-size:100%;
+              }
+              .number-bg{
+                color:#ffe500;
+                background: #ff4349;
+                border:1px solid #ff7e78;
+              }
+            }
+          }
+          .list-title{
+            float:left;
+            width:100%;
+            height:80px;
+            line-height:80px;
+            background:#ffd709;
+            font-size:26px;
+            color:#ff4349;
+            text-align:center;
+            border-radius:10px;
+            margin-bottom:10px;
+            @media (max-width:700px) {
+              height: 40px;
+              line-height: 40px;
+              font-size: 12px;
+            }
+          }
+          .list-number{
+            float:left;
+            width:100%;
+            background:#ffd709;
+            border-radius:10px;
+            padding:10px;
+            box-shadow: 0px 15px 30px #e8e2d1;
+            position: relative;
+            .icon-line{
+              width:16px;
+              height:62px;
+              position: absolute;
+              top:-35px;
+              background:url('/activity/images/newman-tyrant/icon-line.png') no-repeat center;
+              background-size:100%;
+              @media (max-width:700px) {
+                width:8px;
+                height:33px;
+                top:-22px;
+              }
+              &.left{
+                left:30px;
+              }
+              &.right{
+                right:30px;
+              }
+            }
+            .number-bg{
+              float:left;
+              width:100%;
+              height:160px;
+              line-height:160px;
+              background:#f9d100;
+              font-size:48px;
+              color:#ff4349;
+              text-align:center;
+              border-radius:10px;
+              border:1px solid #fddd00;
+              @media (max-width:700px) {
+                height:80px;
+                line-height:80px;
+                font-size: 12px;
+              }
+            }
+          }
+        }
+        .list-icon{
+          float:left;
+          width:180px;
+          height:275px;
+          background:url('/activity/images/newman-tyrant/vs.png') no-repeat center;
+          background-size:90%;
+          @media (max-width:700px) {
+            width:10%;
+            height:150px;
+            background-size:100%;
+          }
+        }
+      }
+      .list-btn{
+        float:left;
+        width:100%;
+        text-align:center;
+        margin:80px 0;
+        @media (max-width:700px) {
+          margin:40px 0;
+        }
+        span{
+          display:inline-block;
+          width:240px;
+          height:56px;
+          background:#ffe500;
+          text-align:center;
+          border-bottom:4px solid #cc8800;
+          border-radius:10px;
+          font-size:24px;
+          color:#b71015;
+          position: relative;
+          cursor:pointer;
+          @media (max-width:700px) {
+            width: 160px;
+            height: 40px;
+            font-size: 16px;
+            line-height: 40px;
+            border-radius: 5px;
+            border-bottom: 3px solid #cc8800;
+          }
+          &:hover{
+            top:2px;
+            border-bottom:2px solid #cc8800;
+          }
+        }
+      }
+      .actor-content{
+        float:left;
+        width:100%;
+        border:5px solid #ff4149;
+        border-radius:10px;
+        margin:0 0 50px;
+        position: relative;
+        @media (max-width:700px) {
+          margin:0 0 10px;
+        }
+        .content-item{
+          float:left;
+          width:100%;
+          background:#fff;
+          border-radius:5px;
+          position: relative;
+          border:7px solid #f1192d;
+          padding: 50px 20px 20px;
+          h3{
+            position: absolute;
+            left:50%;
+            top:-10px;
+            margin-left:-165px;
+            width:330px;
+            height:40px;
+            line-height:40px;
+            text-align:center;
+            font-size:24px;
+            color:#fff600;
+            font-weight:bold;
+            background: url("/activity/images/newman-tyrant/rule-bg.png") center no-repeat;
+            background-size: contain;
+            @media (max-width:700px) {
+              line-height: 30px;
+              height: 30px;
+              font-size: 16px;
+              top:-5px;
+            }
+          }
+          .actor-text{
+            float:left;
+            width:100%;
+            font-size:18px;
+            color:#000;
+            @media (max-width:700px) {
+              font-size:14px;
+            }
+            p{
+              padding:0 90px;
+              line-height: 30px;
+              margin-bottom: 0;
+              @media (max-width:700px) {
+                padding:0 10px;
+              }
+              span{
+                font-size:22px;
+                color:#ff4349;
+                @media (max-width:700px) {
+                  font-size:16px;
+                }
+              }
+            }
+          }
+        }
+      }
+      .actor-rule{
+        float:left;
+        width:100%;
+        padding:0 25px;
+        @media (max-width:700px) {
+          padding:0 10px;
+        }
+        dt{
+          float:left;
+          width:100%;
+          font-size:20px;
+          color:#ff152f;
+        }
+        dd{
+          float:left;
+          width:100%;
+          font-size:12px;
+          color:#ff152f;
+        }
+      }
+    }
+  }
+  .tip-container{
+    float:left;
+    width:100%;
+    display: none;
+    .tip-content{
+      float:left;
+      width:100%;
+      position: relative;
+      border:5px solid #ffe500;
+      background:#ff343a;
+      padding-top:80px;
+      .close-tip{
+        width:28px;
+        height:28px;
+        position: absolute;
+        top:20px;
+        right:20px;
+        cursor:pointer;
+        background:url('/activity/images/newman-tyrant/close-tip.png') no-repeat center;
+        background-size:100%;
+        @media (max-width:700px) {
+          width:14px;
+          height:14px;
+        }
+      }
+      h3{
+        width: 360px;
+        height: 60px;
+        position: absolute;
+        top: -10px;
+        left: 50%;
+        margin-left: -180px;
+        background: url(/activity/images/newman-tyrant/title-bg.png) no-repeat center;
+        background-size: 100%;
+        font-size: 30px;
+        color: #5b5800;
+        text-align: center;
+        font-weight: bold;
+        @media (max-width:700px) {
+          width: 180px;
+          height: 30px;
+          line-height: 30px;
+          margin-left: -90px;
+          font-size: 14px;
+        }
+      }
+      .history-item{
+        float:left;
+        width:100%;
+        padding:0 50px;
+        height:460px;
+        overflow-y:scroll; 
+        @media (max-width:700px) {
+          padding:0;
+          height:230px;
+        }
+        p{
+          color:#ffd600;
+          margin-bottom: 0;
+          font-size:46px;
+          text-align:center;
+          line-height:380px;
+          @media (max-width:700px) {
+            line-height: 190px;
+            font-size: 23px;
+          }
+        }
+        table{
+          th{
+            background:none;
+            font-size:18px;
+            color:#fff;
+            padding:0;
+            line-height:55px;
+            @media (max-width:700px) {
+              font-size:12px;
+            }
+          }
+          td{
+            font-size:16px;
+            color:#fff;
+            padding:0;
+            line-height:55px;
+            @media (max-width:700px) {
+              font-size:12px;
+              line-height:34px;
+            }
+            &.icon-item{
+              padding-right: 65px;
+              @media (max-width:700px) {
+                padding-right:35px;
+              }
+              &.icon-equal{
+                background:url('/activity/images/newman-tyrant/icon-equal.png') no-repeat center right;
+                @media (max-width:700px) {
+                  background-size:30%;
+                }
+              }
+              &.icon-lowser{
+                background:url('/activity/images/newman-tyrant/icon-lowser.png') no-repeat center right;
+                @media (max-width:700px) {
+                  background-size:30%;
+                }
+              }
+              &.icon-win{
+                background:url('/activity/images/newman-tyrant/icon-win.png') no-repeat center right;
+                @media (max-width:700px) {
+                  background-size:30%;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

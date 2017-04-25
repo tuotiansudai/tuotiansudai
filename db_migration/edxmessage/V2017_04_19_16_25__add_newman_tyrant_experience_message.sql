@@ -1,0 +1,3 @@
+BEGIN;
+INSERT INTO `message` (`title`,`template`,`template_txt`,`type`,`event_type`,`user_group`,`channels`,`message_category`,`web_url`,`app_url`,`status`,`read_count`,`push_id`,`activated_by`,`activated_time`,`valid_start_time`,`valid_end_time`,`created_by`,`created_time`,`updated_by`,`updated_time`,`deleted`) VALUES ('新贵富豪争霸赛','恭喜您获得活动奖励5888元体验金！','{0}您在“新贵富豪争霸赛”活动中获得胜利，奖励5888元体验金已发送到您的账户中。请在“我的-我的体验金”中查看！','EVENT','NEWMAN_TYRANT','ALL_USER','WEBSITE,APP_MESSAGE','SYSTEM',null,null,'APPROVED',0,NULL,'sidneygao','2017-04-19 00:00:00','0001-01-01 00:00:00','9999-12-31 23:59:59','sidneygao','2017-04-19 00:00:00','sidneygao','2017-04-19 00:00:00',0);
+COMMIT;
