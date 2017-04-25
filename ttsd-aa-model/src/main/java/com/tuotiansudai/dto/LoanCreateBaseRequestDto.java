@@ -40,6 +40,8 @@ public class LoanCreateBaseRequestDto {
     @NotEmpty
     private String activityRate;
 
+    private int originalDuration;
+
     @NotEmpty
     private String minInvestAmount;
 
@@ -56,6 +58,10 @@ public class LoanCreateBaseRequestDto {
     @NotEmpty
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "GMT+8")
     private Date fundraisingEndTime;
+
+    @NotEmpty
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date deadline;
 
     @NotEmpty
     private long contractId;
@@ -91,11 +97,13 @@ public class LoanCreateBaseRequestDto {
         this.loanAmount = AmountConverter.convertCentToString(loanModel.getLoanAmount());
         this.baseRate = String.valueOf(loanModel.getBaseRate());
         this.activityRate = String.valueOf(loanModel.getActivityRate());
+        this.originalDuration = loanModel.getOriginalDuration();
         this.minInvestAmount = AmountConverter.convertCentToString(loanModel.getMinInvestAmount());
         this.maxInvestAmount = AmountConverter.convertCentToString(loanModel.getMaxInvestAmount());
         this.investIncreasingAmount = AmountConverter.convertCentToString(loanModel.getInvestIncreasingAmount());
         this.fundraisingStartTime = loanModel.getFundraisingStartTime();
         this.fundraisingEndTime = loanModel.getFundraisingEndTime();
+        this.deadline = loanModel.getDeadline();
         this.contractId = loanModel.getContractId();
         this.status = loanModel.getStatus();
         this.loanTitles = loanModel.getLoanTitles();
@@ -186,6 +194,14 @@ public class LoanCreateBaseRequestDto {
         this.activityRate = activityRate;
     }
 
+    public int getOriginalDuration() {
+        return originalDuration;
+    }
+
+    public void setOriginalDuration(int originalDuration) {
+        this.originalDuration = originalDuration;
+    }
+
     public String getMinInvestAmount() {
         return minInvestAmount;
     }
@@ -224,6 +240,14 @@ public class LoanCreateBaseRequestDto {
 
     public void setFundraisingEndTime(Date fundraisingEndTime) {
         this.fundraisingEndTime = fundraisingEndTime;
+    }
+
+    public Date getDeadline() {
+        return deadline;
+    }
+
+    public void setDeadline(Date deadline) {
+        this.deadline = deadline;
     }
 
     public long getContractId() {

@@ -5,14 +5,17 @@
 <!-- content area begin -->
 <div class="col-md-10">
 
-    <select class="jq-b-type" id="businessType">
-        <option value="0">创建体验券</option>
-        <option value="1" selected>创建加息券</option>
-        <option value="2">创建现金红包</option>
-        <option value="3">创建生日月活动</option>
-    </select>
-
     <form action="/activity-manage/coupon" method="post" class="form-horizontal form-list">
+        <div class="form-group">
+            <label class="col-sm-2 control-label"></label>
+            <div class="col-sm-4">
+                <select class="selectpicker jq-b-type" id="businessType">
+                    <option value="INTEREST_COUPON" selected>创建加息券</option>
+                    <option value="RED_ENVELOPE">创建现金红包</option>
+                </select>
+            </div>
+        </div>
+
         <div class="form-group">
             <label class="col-sm-2 control-label">加息券名称:</label>
             <div class="col-sm-4">
@@ -108,14 +111,11 @@
         <div class="form-group">
             <label  class="col-sm-2 control-label">可投资标的: </label>
             <div class="col-sm-3">
-                <#list productTypes as productType>
-                    <#if productType.name() != 'EXPERIENCE'>
-                    <label><input type="checkbox" name="productTypes" class="productType"
-                                  <#if productType_index == 0>checked="checked"</#if>
-                                  value="${productType.name()}">${productType.getName()}
-                    </label>
-                    </#if>
-                </#list>
+                <label>
+                    <input type="radio" name="productTypes" class="productType" value="_30,_90,_180,_360">全部
+                    <input type="radio" name="productTypes" class="productType" value="_90,_180,_360">大于60天
+                    <input type="radio" name="productTypes" class="productType" value="_180,_360">大于120天
+                </label>
             </div>
         </div>
 

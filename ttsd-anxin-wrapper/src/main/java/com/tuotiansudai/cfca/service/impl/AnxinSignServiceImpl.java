@@ -329,7 +329,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
 
     @Override
-    public BaseDto createLoanContracts(long loanId) {
+    public BaseDto<AnxinDataDto> createLoanContracts(long loanId) {
         logger.info(MessageFormat.format("[安心签]: createLoanContracts loanId:{0}", String.valueOf(loanId)));
         redisWrapperClient.setex(LOAN_CONTRACT_IN_CREATING_KEY + loanId, CREATE_CONTRACT_MAX_IN_DOING_TIME, "1");
 
@@ -340,15 +340,15 @@ public class AnxinSignServiceImpl implements AnxinSignService {
             investMapper.updateAllContractNoByLoanId(loanId, ContractNoStatus.OLD.name());
             logger.error(MessageFormat.format("[安心签] create contract error, agent has not signed, loanid:{0}, userId:{1}",
                     String.valueOf(loanId), loanModel.getAgentLoginName()));
-            return failBaseDto(AGENT_IS_NOT_SIGN);
+            return new BaseDto<>(new AnxinDataDto(false, AGENT_IS_NOT_SIGN));
         }
 
-        List<String> batchNoList = new ArrayList<>();
-        boolean processResult = true;
+        List<String> batchNoList = Lists.newArrayList();
+        List<CreateContractVO> createContractVOs = Lists.newArrayList();
 
         List<InvestModel> investModels = investMapper.findNoContractNoInvest(loanId);
-        List<CreateContractVO> createContractVOs = new ArrayList<>();
 
+        boolean processResult = true;
         for (InvestModel investModel : investModels) {
             CreateContractVO createContractVO = createInvestorContractVo(loanId, investModel);
             if (createContractVO == null) {
@@ -363,19 +363,18 @@ public class AnxinSignServiceImpl implements AnxinSignService {
             }
         }
         // 循环结束，如果列表里还有未处理的，则给它们创建合同
-        if (!createContractVOs.isEmpty()) {
-            if (!createContractBatch(loanId, createContractVOs, batchNoList)) {
-                processResult = false;
-            }
+        if (!createContractVOs.isEmpty() && !createContractBatch(loanId, createContractVOs, batchNoList)) {
+            processResult = false;
         }
 
         if (!processResult) {
             logger.error("[安心签]: create contract error. loanId:" + String.valueOf(loanId));
             smsWrapperClient.sendGenerateContractErrorNotify(new GenerateContractErrorNotifyDto(mobileList, loanId));
+            return new BaseDto<>(new AnxinDataDto(false, MessageFormat.format("标的{0}安心签合同创建失败", String.valueOf(loanId))));
         }
 
         redisWrapperClient.setex(LOAN_BATCH_NO_LIST_KEY + loanId, BATCH_NO_LIFT_TIME, String.join(",", batchNoList));
-        return new BaseDto(true);
+        return new BaseDto<>(new AnxinDataDto(true, "success"));
     }
 
     private Boolean createContractBatch(long loanId, List<CreateContractVO> createContractVOs, List<String> batchNoList) {
@@ -397,7 +396,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
     }
 
     @Override
-    public BaseDto createTransferContracts(long transferApplicationId) {
+    public BaseDto<AnxinDataDto> createTransferContracts(long transferApplicationId) {
         redisWrapperClient.setex(TRANSFER_CONTRACT_IN_CREATING_KEY + transferApplicationId, CREATE_CONTRACT_MAX_IN_DOING_TIME, "1");
 
         CreateContractVO createContractVO = createTransferContractVo(transferApplicationId);
@@ -405,24 +404,26 @@ public class AnxinSignServiceImpl implements AnxinSignService {
             return failBaseDto(CREATE_CONTRACT_TEMPLATE_FAIL);
         }
         List<CreateContractVO> createContractVOs = Lists.newArrayList(createContractVO);
-        BaseDto baseDto = new BaseDto();
+        AnxinDataDto anxinDataDto = new AnxinDataDto();
+        BaseDto<AnxinDataDto> baseDto = new BaseDto<>(anxinDataDto);
         String batchNo = UUIDGenerator.generate();
         try {
             logger.info(MessageFormat.format("[安心签] create transfer contract begin, transferId:{0}, batchNo:{1}", transferApplicationId, batchNo));
             //创建合同
             Tx3202ResVO tx3202ResVO = anxinSignConnectService.createContractBatch3202(transferApplicationId, batchNo, AnxinContractType.TRANSFER_CONTRACT, createContractVOs);
 
-            baseDto.setSuccess(isSuccess(tx3202ResVO));
+            anxinDataDto.setStatus(isSuccess(tx3202ResVO));
         } catch (PKIException e) {
             smsWrapperClient.sendGenerateContractErrorNotify(new GenerateContractErrorNotifyDto(mobileList, transferApplicationId));
-            baseDto.setSuccess(false);
+            anxinDataDto.setStatus(false);
+            anxinDataDto.setMessage(e.getLocalizedMessage());
             logger.error(MessageFormat.format("[安心签] create transfer contract error, transferId:{0}", transferApplicationId), e);
         }
         createContractVOs.clear();
 
         redisWrapperClient.setex(TRANSFER_BATCH_NO_LIST_KEY + transferApplicationId, BATCH_NO_LIFT_TIME, batchNo);
 
-        if (!baseDto.isSuccess()) {
+        if (!anxinDataDto.getStatus()) {
             logger.error("[安心签]: create transfer contract error, ready send sms. transferId:" + transferApplicationId);
             smsWrapperClient.sendGenerateContractErrorNotify(new GenerateContractErrorNotifyDto(mobileList, transferApplicationId));
         }
@@ -585,8 +586,9 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         if (anxinQueryContractDto == null) {
             return new BaseDto<>(true, new AnxinDataDto(true, ""));
         }
+
         String batchNo;
-        if (anxinQueryContractDto.getAnxinContractType().equals(AnxinContractType.LOAN_CONTRACT)) {
+        if (anxinQueryContractDto.getAnxinContractType() == AnxinContractType.LOAN_CONTRACT) {
             batchNo = redisWrapperClient.get(LOAN_BATCH_NO_LIST_KEY + anxinQueryContractDto.getBusinessId());
             redisWrapperClient.del(LOAN_CONTRACT_IN_CREATING_KEY + anxinQueryContractDto.getBusinessId());
         } else {
@@ -596,7 +598,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         logger.info(MessageFormat.format("[安心签] queryContract executing , batchStr:{0}", batchNo));
 
         if (Strings.isNullOrEmpty(batchNo)) {
-            return failBaseDto(BATCH_NO_IS_INVALID);
+            return new BaseDto<>(new AnxinDataDto(false, "batchNo不存在"));
         }
 
         boolean result = this.queryContract(anxinQueryContractDto.getBusinessId(), Lists.newArrayList(batchNo.split(",")), anxinQueryContractDto.getAnxinContractType());

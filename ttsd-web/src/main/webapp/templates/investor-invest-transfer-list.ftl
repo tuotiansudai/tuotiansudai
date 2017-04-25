@@ -107,7 +107,7 @@
         %>
         <tr>
             <td>
-                <a href="/transfer/{{id}}" class="project-name"><%=item.loanName%> </a>
+                <a href="/transfer/<%=item.id%>" class="project-name"><%=item.loanName%> </a>
             </td>
             <td><%=item.transferAmountStr%></td>
             <td><%=item.investAmountStr%></td>

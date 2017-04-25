@@ -68,7 +68,7 @@ public class MockReferrerRewardServiceTest {
         when(loanMapper.findById(anyLong())).thenReturn(loanModel);
 
         List<InvestModel> successInvestList = Lists.newArrayList();
-        successInvestList.add(new InvestModel(idGenerator.generate(), 10000, null, 1000L, "investor", new Date(), Source.WEB, null, 0.1));
+        successInvestList.add(fakeInvestModel());
         when(investMapper.findSuccessInvestsByLoanId(anyLong())).thenReturn(successInvestList);
 
         ReferrerRelationModel referrerRelationModel = new ReferrerRelationModel();
@@ -93,7 +93,7 @@ public class MockReferrerRewardServiceTest {
         when(loanMapper.findById(anyLong())).thenReturn(loanModel);
 
         List<InvestModel> successInvestList = Lists.newArrayList();
-        successInvestList.add(new InvestModel(idGenerator.generate(), 10000, null, 1000L, "investor", new Date(), Source.WEB, null, 0.1));
+        successInvestList.add(fakeInvestModel());
         when(investMapper.findSuccessInvestsByLoanId(anyLong())).thenReturn(successInvestList);
 
         ReferrerRelationModel referrerRelationModel = new ReferrerRelationModel();
@@ -109,5 +109,11 @@ public class MockReferrerRewardServiceTest {
 
         verify(paySyncClient, never()).send(eq(ProjectTransferMapper.class), any(TransferRequestModel.class), eq(ProjectTransferResponseModel.class));
         verify(investReferrerRewardMapper, times(1)).create(any(InvestReferrerRewardModel.class));
+    }
+
+    private InvestModel fakeInvestModel(){
+        InvestModel investModel = new InvestModel(idGenerator.generate(), 10000, null, 1000L, "investor", new Date(), Source.WEB, null, 0.1);
+        investModel.setTradingTime(new Date());
+        return investModel;
     }
 }

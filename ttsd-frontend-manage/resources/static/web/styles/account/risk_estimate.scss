@@ -1,0 +1,135 @@
+.invetsment-preferences{
+  .edit-item{
+    float:left;
+    width:100%;
+    .title-name{
+      float:left;
+      width:100%;
+      font-size:18px;
+      color:#4c4c4c;
+      text-align:center;
+      font-weight:bold;
+      margin:30px 0;
+    }
+    .intro-item{
+      float:left;
+      width:100%;
+      font-size:14px;
+      color:#4c4c4c;
+    }
+    .problem-list{
+      float:left;
+      width:100%;
+      dl{
+        float:left;
+        width:100%;
+        font-size:16px;
+        color:#4c4c4c;
+        dt{
+          float:left;
+          width:100%;
+          font-weight:bold;
+          margin-top:50px;
+          &.on{
+            span>strong{
+              display:block;
+            }
+          }
+          span{
+            float:left;
+            position: relative;
+            strong{
+              position: absolute;
+              top: 0;
+              width: 150px;
+              right: -210px;
+              padding-left: 48px;
+              font-size: 14px;
+              color: #ffa053;
+              font-weight: normal;
+              background:url('../../images/myaccount/empty-tip.png') no-repeat left center;
+              display:none;
+            }
+          }
+        }
+        dd{
+          float:left;
+          margin:30px 50px 0 0;
+          background:url('../../images/myaccount/select-icon.png') no-repeat left center;
+          &:last-child{
+            margin-right:0;
+          }
+          &.long{
+            width:100%;
+          }
+          &.active{
+            background:url('../../images/myaccount/select-hover.png') no-repeat left center;
+          }
+          span{
+            float:left;
+            cursor:pointer;
+            padding-left:30px;
+          }
+        }
+      }
+    }
+    .invetsment-btn{
+      float:left;
+      width:100%;
+      text-align:center;
+      margin-top:60px;
+      .btn-item{
+        display:inline-block;
+        width:140px;
+        height:35px;
+        line-height:35px;
+        font-size:14px;
+        color:#fff;
+        background:#ff752a;
+      }
+    }
+  }
+  .result-item{
+    float:left;
+    width:100%;
+    text-align:center;
+    .title-text{
+      float:left;
+      width:100%;
+      font-size:24px;
+      color:#4c4c4c;
+      margin-top:50px;
+    }
+    .result-text{
+      float:left;
+      width:100%;
+      font-size:24px;
+      color:#ff752a;
+      margin:20px 0;
+    }
+    .intro-text{
+      float:left;
+      width:100%;
+      font-size:14px;
+      color:#4c4c4c;
+    }
+    .link-item{
+      float:left;
+      width:100%;
+      margin-top:50px;
+      .btn-item{
+        display:inline-block;
+        width:140px;
+        height:35px;
+        line-height:35px;
+        font-size:14px;
+        color:#fff;
+        background:#ff752a;
+        margin:0 10px;
+        &.to-risk{
+          background:#ccc;
+        }
+      }
+    }
+  }
+}

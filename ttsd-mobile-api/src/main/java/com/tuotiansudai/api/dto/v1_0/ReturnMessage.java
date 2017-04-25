@@ -41,6 +41,7 @@ public enum ReturnMessage {
 
     /******手机端标的详情******/
     LOAN_NOT_FOUND("0024","标的不存在"),
+    APP_VERSION_NOT_LATEST("0400","您的app版本不支持查看此标的详情，请升级至最新版"),
     /******手机端标的详情******/
 
     /******手机端投资******/
@@ -173,6 +174,9 @@ public enum ReturnMessage {
     MEMBERSHIP_PRIVILEGE_PURCHASE_FAILED("0200", "增值特权购买失败"),
     MEMBERSHIP_PRIVILEGE_IS_PURCHASED("0201", "增值特权已购买，请勿重复购买"),
     MEMBERSHIP_PRIVILEGE_PURCHASE_NO_ENOUGH_AMOUNT("0202", "账户金额不足，请充值"),
+
+    /******增值特权购买******/
+    RISK_ESTIMATE_FAILED("0203", "投资偏好测评失败，请检查您提交的答卷是否完整"),
 
     /******回款日历******/
     REPAY_CALENDAR_QUERY_FAILED("0114", "没有更多回款信息了哦");

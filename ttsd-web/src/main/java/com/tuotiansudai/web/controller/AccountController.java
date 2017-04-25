@@ -68,21 +68,29 @@ public class AccountController {
         modelAndView.addObject("expectedTotalInterest", userFundView.getExpectedTotalInterest()); //待收预期收益
 
         modelAndView.addObject("referRewardAmount", userFundView.getReferRewardAmount()); //已收推荐奖励
-        modelAndView.addObject("redEnvelopeAmount", userFundView.getRedEnvelopeAmount()); //已收红包奖励
         modelAndView.addObject("actualTotalInterest", userFundView.getActualTotalInterest()); //已收投资收益
+        //已收优惠券奖励 = 已收红包奖励+已收加息券奖励
+        modelAndView.addObject("actualCouponInterest", userFundView.getActualCouponInterest() + userFundView.getRedEnvelopeAmount());
 
-        modelAndView.addObject("actualTotalExtraInterest", userFundView.getActualTotalExtraInterest()); //已收投资奖励
+        modelAndView.addObject("actualTotalExtraInterest", userFundView.getActualTotalExtraInterest()); //已收投资奖励=阶梯加息+现金补贴
         modelAndView.addObject("expectedTotalExtraInterest", userFundView.getExpectedTotalExtraInterest()); //待收收投资奖励
 
         modelAndView.addObject("expectedExperienceInterest", userFundView.getExpectedExperienceInterest()); //待收体验金收益
+        modelAndView.addObject("expectedCouponInterest", userFundView.getExpectedCouponInterest()); //待收优惠券收益
         modelAndView.addObject("actualExperienceInterest", userFundView.getActualExperienceInterest()); //已收体验金收益
 
         modelAndView.addObject("investFrozeAmount", userFundView.getInvestFrozeAmount());
         modelAndView.addObject("withdrawFrozeAmount", userFundView.getWithdrawFrozeAmount());
         modelAndView.addObject("freeze", userFundView.getInvestFrozeAmount() + userFundView.getWithdrawFrozeAmount()); //冻结金额
 
-        //累计收益= 已收投资收益+已收投资奖励+已收红包奖励+已收推荐奖励+已收体验金收益
-        modelAndView.addObject("totalIncome", userFundView.getActualTotalInterest()+userFundView.getActualTotalExtraInterest()+userFundView.getRedEnvelopeAmount()+userFundView.getReferRewardAmount()+userFundView.getActualExperienceInterest());
+        //累计收益(分)=已收投资收益+已收投资奖励(阶梯加息+现金补贴)+已收优惠券奖励(已收红包奖励+已收加息券奖励)+已收推荐奖励+已收体验金收益
+        modelAndView.addObject("totalIncome", userFundView.getActualTotalInterest()
+                + userFundView.getActualTotalExtraInterest()
+                + userFundView.getActualCouponInterest()
+                + userFundView.getRedEnvelopeAmount()
+                + userFundView.getReferRewardAmount()
+                + userFundView.getActualExperienceInterest());
+
 
         modelAndView.addObject("experienceBalance", userService.getExperienceBalanceByLoginName(loginName));
 
