@@ -165,6 +165,8 @@ public class LotteryDrawActivityService {
             getCouponId(lotteryPrize).stream().forEach(couponId -> couponAssignmentService.assignUserCoupon(mobile, couponId));
         } else if (lotteryPrize.equals(LotteryPrize.MEMBERSHIP_V5)) {
             createUserMembershipModel(userModel.getLoginName(), MembershipLevel.V5.getLevel());
+        } else if (lotteryPrize.getPrizeType().equals(PrizeType.EXPERIENCE)) {
+
         }
 
         AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
@@ -185,7 +187,7 @@ public class LotteryDrawActivityService {
         }
 
         //长期活动不执行
-        if(!longTermActivity){
+        if (!longTermActivity) {
             Date nowDate = DateTime.now().toDate();
             List<String> activityTime = getActivityTime(activityCategory);
             Date activityStartTime = DateTime.parse(activityTime.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
@@ -297,6 +299,11 @@ public class LotteryDrawActivityService {
                 .put(LotteryPrize.WOMAN_DAY_ACTIVITY_ENVELOP_38, Lists.newArrayList(397L))
                 .put(LotteryPrize.WOMAN_DAY_ACTIVITY_ENVELOP_38_100, Lists.newArrayList(398L, 397L))
                 .put(LotteryPrize.WOMAN_DAY_ACTIVITY_INTEREST_COUPON_5, Lists.newArrayList(399L))
+                .put(LotteryPrize.MOTHERS_DAY_ACTIVITY_ENVELOP_5, Lists.newArrayList(409L))
+                .put(LotteryPrize.MOTHERS_DAY_ACTIVITY_ENVELOP_10, Lists.newArrayList(410L))
+                .put(LotteryPrize.MOTHERS_DAY_ACTIVITY_ENVELOP_20, Lists.newArrayList(411L))
+                .put(LotteryPrize.MOTHERS_DAY_ACTIVITY_INTEREST_COUPON_5, Lists.newArrayList(412L))
+                .put(LotteryPrize.MOTHERS_DAY_ACTIVITY_INTEREST_COUPON_1, Lists.newArrayList(413L))
                 .build()).get(lotteryPrize);
     }
 
@@ -334,15 +341,13 @@ public class LotteryDrawActivityService {
         } else if (lotteryPrize.equals(LotteryPrize.MEMBERSHIP_V5)) {
             prizeType = PrizeType.MEMBERSHIP;
             createUserMembershipModel(loginName, MembershipLevel.V5.getLevel());
-        }
-        else if (lotteryPrize.equals(LotteryPrize.POINT_SHOP_POINT_500)) {
+        } else if (lotteryPrize.equals(LotteryPrize.POINT_SHOP_POINT_500)) {
             prizeType = PrizeType.POINT;
             createPointBillModel(loginName, 500, lotteryPrize);
             AccountModel accountModel = accountMapper.findByLoginName(loginName);
             accountModel.setPoint(accountModel.getPoint() + 500);
             accountMapper.update(accountModel);
-        }
-        else if (lotteryPrize.equals(LotteryPrize.POINT_SHOP_POINT_3000)) {
+        } else if (lotteryPrize.equals(LotteryPrize.POINT_SHOP_POINT_3000)) {
             prizeType = PrizeType.POINT;
             createPointBillModel(loginName, 3000, lotteryPrize);
             AccountModel accountModel = accountMapper.findByLoginName(loginName);
@@ -373,6 +378,8 @@ public class LotteryDrawActivityService {
                 return countDrawLotteryTime(userModel, activityCategory, springFestivalTasks);
             case WOMAN_DAY_ACTIVITY:
                 return countDrawLotteryTime(userModel, activityCategory, womanDayTasks);
+            case MOTHERS_DAY_ACTIVITY:
+                return countDrawLotteryTime(userModel, activityCategory, Lists.newArrayList(ActivityDrawLotteryTask.EACH_EVERY_DAY));
         }
         return lotteryTime;
     }
@@ -432,7 +439,7 @@ public class LotteryDrawActivityService {
                     time += pointBillMapper.findCountPointBillPagination(userModel.getLoginName(), null, startTime, endTime, Lists.newArrayList(PointBusinessType.SIGN_IN));
                     break;
                 case TODAY_ACTIVITY_SIGN_IN:
-                    if(DateTime.now().toDate().before(endTime) && DateTime.now().toDate().after(startTime)){
+                    if (DateTime.now().toDate().before(endTime) && DateTime.now().toDate().after(startTime)) {
                         time += pointBillMapper.findCountPointBillPagination(userModel.getLoginName(), null, DateTime.now().withTimeAtStartOfDay().toDate(),
                                 DateTime.now().plusDays(1).withTimeAtStartOfDay().plusMillis(-1).toDate(), Lists.newArrayList(PointBusinessType.SIGN_IN));
 
@@ -459,7 +466,12 @@ public class LotteryDrawActivityService {
                     time = time >= 10 ? 10 : time;
                     break;
                 case EACH_INVEST_1000:
-                    time = investMapper.sumDrawCountByLoginName(userModel.getLoginName(),startTime,endTime,100000);
+                    time = investMapper.sumDrawCountByLoginName(userModel.getLoginName(), startTime, endTime, 100000);
+                    break;
+
+                case EACH_EVERY_DAY:
+                    time = userLotteryPrizeMapper.findUserLotteryPrizeCountViews(userModel.getMobile(), null, activityCategory,
+                            DateTime.now().withTimeAtStartOfDay().toDate(), DateTime.now().plusDays(1).withTimeAtStartOfDay().plusMillis(-1).toDate()) == 0 ? 1 : 0;
                     break;
             }
         }
