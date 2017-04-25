@@ -10,12 +10,17 @@ import com.google.common.collect.Maps;
 import com.tuotiansudai.activity.repository.dto.DrawLotteryResultDto;
 import com.tuotiansudai.activity.repository.mapper.UserLotteryPrizeMapper;
 import com.tuotiansudai.activity.repository.model.*;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
+import com.tuotiansudai.enums.ExperienceBillBusinessType;
+import com.tuotiansudai.enums.ExperienceBillOperationType;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipLevel;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipType;
+import com.tuotiansudai.message.ExperienceAssigningMessage;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.point.repository.model.PointBillModel;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
@@ -69,6 +74,9 @@ public class LotteryDrawActivityService {
 
     @Autowired
     private PointBillMapper pointBillMapper;
+
+    @Autowired
+    private MQWrapperClient mqWrapperClient;
 
     @Value("#{'${activity.point.draw.period}'.split('\\~')}")
     private List<String> pointTime = Lists.newArrayList();
@@ -166,7 +174,7 @@ public class LotteryDrawActivityService {
         } else if (lotteryPrize.equals(LotteryPrize.MEMBERSHIP_V5)) {
             createUserMembershipModel(userModel.getLoginName(), MembershipLevel.V5.getLevel());
         } else if (lotteryPrize.getPrizeType().equals(PrizeType.EXPERIENCE)) {
-
+            grantExperience(userModel.getLoginName(), lotteryPrize);
         }
 
         AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
@@ -545,6 +553,24 @@ public class LotteryDrawActivityService {
     public int toDayIsDrawByMobile(String mobile, ActivityCategory activityCategory) {
         return userLotteryPrizeMapper.findUserLotteryPrizeCountViews(mobile, null, activityCategory,
                 DateTime.now().withTimeAtStartOfDay().toDate(), DateTime.now().plusDays(1).withTimeAtStartOfDay().plusMillis(-1).toDate());
+    }
+
+    private void grantExperience(String loginName, LotteryPrize lotteryPrize) {
+        long experienceAmount = 0l;
+        if (LotteryPrize.MOTHERS_DAY_ACTIVITY_EXPERIENCE_GOLD_888.equals(lotteryPrize)) {
+            experienceAmount = 88800l;
+        }
+
+        if (LotteryPrize.MOTHERS_DAY_ACTIVITY_EXPERIENCE_GOLD_8888.equals(lotteryPrize)) {
+            experienceAmount = 888800l;
+        }
+
+        if (experienceAmount == 0) {
+            return;
+        }
+
+        mqWrapperClient.sendMessage(MessageQueue.ExperienceAssigning,
+                new ExperienceAssigningMessage(loginName, experienceAmount, ExperienceBillOperationType.IN, ExperienceBillBusinessType.MOTHERS_TREE));
     }
 
 }
