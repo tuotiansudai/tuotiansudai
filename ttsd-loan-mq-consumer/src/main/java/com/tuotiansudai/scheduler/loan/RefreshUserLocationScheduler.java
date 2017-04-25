@@ -22,8 +22,7 @@ public class RefreshUserLocationScheduler {
     @Autowired
     private UserMapper userMapper;
 
-    //@Scheduled(cron = "0 0 2 * * ?", zone = "Asia/Shanghai")
-    @Scheduled(cron = "0 20 19 * * ?", zone = "Asia/Shanghai")
+    @Scheduled(cron = "0 0 2 * * ?", zone = "Asia/Shanghai")
     public void refreshUserLocation() {
         logger.info("RefreshUserLocationScheduler start ...");
         try {
