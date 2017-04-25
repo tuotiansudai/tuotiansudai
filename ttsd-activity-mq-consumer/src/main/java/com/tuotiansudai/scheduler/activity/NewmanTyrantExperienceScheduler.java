@@ -5,10 +5,9 @@ import com.tuotiansudai.activity.repository.model.NewmanTyrantHistoryView;
 import com.tuotiansudai.activity.repository.model.NewmanTyrantView;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.message.NewmanTyrantMessage;
+import com.tuotiansudai.message.ExperienceAssigningMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.activity.service.NewmanTyrantService;
-import com.tuotiansudai.util.DateConvertUtil;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -79,7 +78,7 @@ public class NewmanTyrantExperienceScheduler {
                 DateFormatUtils.format(newmanTyrantHistoryView.getCurrentDate(), "yyyy-MM-dd"),
                 newmanTyrantView.getLoginName()));
 
-        mqWrapperClient.sendMessage(MessageQueue.InvestNewmanTyrant_AssignExperience,new NewmanTyrantMessage(newmanTyrantHistoryView.getCurrentDate(),
+        mqWrapperClient.sendMessage(MessageQueue.ExperienceAssigning,new ExperienceAssigningMessage(newmanTyrantHistoryView.getCurrentDate(),
                 newmanTyrantView.getLoginName()));
 
         logger.info(String.format("[NewmanTyrantExperienceScheduler %s] grant %s experience  success ...",
