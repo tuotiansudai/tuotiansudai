@@ -36,9 +36,6 @@ public class UMPayRealTimeStatusServiceImpl implements UMPayRealTimeStatusServic
 
     static Logger logger = Logger.getLogger(UMPayRealTimeStatusServiceImpl.class);
 
-    @Value("${common.environment}")
-    private Environment environment;
-
     @Value("${pay.fake}")
     private boolean isFakeUMPay;
 
