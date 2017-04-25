@@ -22,8 +22,10 @@ public class RefreshUserLocationScheduler {
     @Autowired
     private UserMapper userMapper;
 
-    @Scheduled(cron = "0 0 2 * * ?", zone = "Asia/Shanghai")
+    //@Scheduled(cron = "0 0 2 * * ?", zone = "Asia/Shanghai")
+    @Scheduled(cron = "0 30 11 * * ?", zone = "Asia/Shanghai")
     public void refreshUserLocation() {
+        logger.info("RefreshUserLocationScheduler start ...");
         try {
             while (true) {
                 List<UserModel> userModels = userMapper.findUsersByProvince();
@@ -32,9 +34,10 @@ public class RefreshUserLocationScheduler {
                 }
                 ((RefreshUserLocationScheduler) AopContext.currentProxy()).refreshUserLocation(userModels);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error("[RefreshUserLocationScheduler:] job execution is failed.", e);
         }
+        logger.info("RefreshUserLocationScheduler end ...");
 
     }
 
