@@ -255,7 +255,7 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
     }
 
     private long calculateReferrerReward(long amount, Date investTime, Date dealLine, int level, Role role) {
-        if (Lists.newArrayList(Role.ZC_STAFF, Role.ZC_STAFF_RECOMMEND).contains(role)) {
+        if (Lists.newArrayList(Role.ZC_STAFF_RECOMMEND).contains(role)) {
             return 0;
         }
 
