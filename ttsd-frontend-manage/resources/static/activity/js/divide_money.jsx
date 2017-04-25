@@ -1,4 +1,4 @@
-require("activityStyle/invite_friend.scss");
+require("activityStyle/divide_money.scss");
 require('publicJs/login_tip');
 require('publicJs/plugins/jQuery.md5');
 let Clipboard= require('publicJs/plugins/clipboard');
@@ -6,28 +6,15 @@ require('publicJs/plugins/jquery.qrcode.min');
 let commonFun= require('publicJs/commonFun');
 
 
+
 window['Clipboard']=Clipboard;
 
 var $shareReward=$('#shareRewardContainer'),
-	$isLogin=$('.show-login',$shareReward),
+	$popWid=$('.pop-layer-out'),
 	$copyButton=$('.copy-button',$shareReward);
 
-
-$isLogin.on('click', function(event) {
-	event.preventDefault();
-	$.when(commonFun.isUserLogin())
-		.done(function() {
-		})
-		.fail(function() {
-			//判断是否需要弹框登陆
-			layer.open({
-				type: 1,
-				title: false,
-				closeBtn: 0,
-				area: ['auto', 'auto'],
-				content: $('#loginTip')
-			});
-		});
+$('.btn-to-close',$popWid).on('click',function() {
+	layer.closeAll();
 });
 if($copyButton.length) {
 	//已登录已认证,复制功能
@@ -37,7 +24,7 @@ if($copyButton.length) {
 
     if (window["context"] == undefined) {
         if (!window.location.origin) {
-            window.location.origin = window.location.protocol + '//' + window.location.hostname+ (window.location.port ? ':' + window.location.port: '');
+            window.location.origin = window.location.protocol + "//" + window.location.hostname+ (window.location.port ? ':' + window.location.port: '');
         }
     }
 
