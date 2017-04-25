@@ -50,7 +50,7 @@ public class NewmanTyrantHistoryView implements Serializable {
     public type obtainNewmanTyrantType() {
         if (this.avgTyrantInvestAmount > this.avgNewmanInvestAmount) return type.TYRANT;
 
-        if (this.avgTyrantInvestAmount > this.avgNewmanInvestAmount) return type.NEWMAN;
+        if (this.avgNewmanInvestAmount > this.avgTyrantInvestAmount) return type.NEWMAN;
 
         return type.NEWMAN_TYRANT;
 

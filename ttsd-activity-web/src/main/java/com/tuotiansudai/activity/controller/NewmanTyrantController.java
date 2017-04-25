@@ -20,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping(value = "/activity/newman-tyrant")
@@ -34,12 +35,17 @@ public class NewmanTyrantController {
         List<String> activityTime = newmanTyrantService.getActivityTime();
         List<NewmanTyrantView> newmanViews = newmanTyrantService.obtainNewman(new Date());
         List<NewmanTyrantView> tyrantViews = newmanTyrantService.obtainTyrant(new Date());
-        List<NewmanTyrantView> newmanTyrantViews = CollectionUtils.isEmpty(newmanViews) ? tyrantViews : newmanViews;
+        List<NewmanTyrantView> newmanTyrantViews = newmanViews.stream().filter(n -> n.getLoginName().equalsIgnoreCase(loginName)).collect(Collectors.toList()).size() > 0 ? newmanViews : tyrantViews;
         int investRanking = CollectionUtils.isNotEmpty(newmanTyrantViews) ?
                 Iterators.indexOf(newmanTyrantViews.iterator(), input -> input.getLoginName().equalsIgnoreCase(loginName)) + 1 : 0;
         long investAmount = investRanking > 0 ? newmanTyrantViews.get(investRanking - 1).getSumAmount() : 0;
 
-        List<NewmanTyrantHistoryView> newmanTyrantHistoryViews = newmanTyrantService.obtainNewmanTyrantHistoryRanking(new Date());
+        List<NewmanTyrantHistoryView> newmanTyrantHistoryViews = newmanTyrantService
+                .obtainNewmanTyrantHistoryRanking(new Date())
+                .stream()
+                .filter(n -> n.getCurrentDate().compareTo(new DateTime(new Date()).withTimeAtStartOfDay().toDate()) == 0)
+                .collect(Collectors.toList());
+
 
         modelAndView.addObject("prizeDto", newmanTyrantService.obtainPrizeDto(new DateTime().toString("yyyy-MM-dd")));
         modelAndView.addObject("investRanking", investRanking);
@@ -60,7 +66,7 @@ public class NewmanTyrantController {
         BasePaginationDataDto<NewmanTyrantView> baseListDataDto = new BasePaginationDataDto<>();
         List<NewmanTyrantView> newmanTyrantViews = newmanTyrantService.obtainNewman(tradingTime);
 
-        newmanTyrantViews.stream().forEach(newmanTyrantView -> newmanTyrantView.setLoginName(newmanTyrantService.encryptMobileForWeb(loginName, newmanTyrantView.getLoginName(),newmanTyrantView.getMobile())));
+        newmanTyrantViews.stream().forEach(newmanTyrantView -> newmanTyrantView.setLoginName(newmanTyrantService.encryptMobileForWeb(loginName, newmanTyrantView.getLoginName(), newmanTyrantView.getMobile())));
         baseListDataDto.setRecords(newmanTyrantViews);
 
         baseListDataDto.setStatus(true);
@@ -74,12 +80,13 @@ public class NewmanTyrantController {
         BasePaginationDataDto<NewmanTyrantView> baseListDataDto = new BasePaginationDataDto<>();
         List<NewmanTyrantView> newmanTyrantViews = newmanTyrantService.obtainTyrant(tradingTime);
 
-        newmanTyrantViews.stream().forEach(newmanTyrantView -> newmanTyrantView.setLoginName(newmanTyrantService.encryptMobileForWeb(loginName, newmanTyrantView.getLoginName(),newmanTyrantView.getMobile())));
+        newmanTyrantViews.stream().forEach(newmanTyrantView -> newmanTyrantView.setLoginName(newmanTyrantService.encryptMobileForWeb(loginName, newmanTyrantView.getLoginName(), newmanTyrantView.getMobile())));
         baseListDataDto.setRecords(newmanTyrantViews);
 
         baseListDataDto.setStatus(true);
         return baseListDataDto;
     }
+
     @RequestMapping(value = "/history", method = RequestMethod.GET)
     @ResponseBody
     public BasePaginationDataDto<NewmanTyrantHistoryView> obtainNewmanTyrantHistory() {
@@ -91,9 +98,6 @@ public class NewmanTyrantController {
         baseListDataDto.setStatus(true);
         return baseListDataDto;
     }
-
-
-
 
 
 }

@@ -114,7 +114,6 @@ require(['jquery','layerWrapper', 'template', 'logintip', 'jquery.ajax.extension
 					dataType: 'json'
 				})
 				.done(function(data) {
-					data.records.length=0;
 					$('#historyContent').html(tpl('historyContentTpl',data));
 					layer.open({
 			          type: 1,

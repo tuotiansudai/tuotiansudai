@@ -1,5 +1,7 @@
 package com.tuotiansudai.activity.repository.model;
 
+import com.tuotiansudai.util.AmountConverter;
+
 import java.io.Serializable;
 
 public class NewmanTyrantView implements Serializable {
@@ -7,6 +9,7 @@ public class NewmanTyrantView implements Serializable {
     private long sumAmount;
     private String userName;
     private String mobile;
+    private String centSumAmount;
 
     public String getLoginName() {
         return loginName;
@@ -38,6 +41,10 @@ public class NewmanTyrantView implements Serializable {
 
     public void setMobile(String mobile) {
         this.mobile = mobile;
+    }
+
+    public String getCentSumAmount() {
+        return AmountConverter.convertCentToString(this.sumAmount);
     }
 
 }

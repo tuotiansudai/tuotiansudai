@@ -24,6 +24,7 @@
 }
 .regal-list-container{
   background:#ffdb01;
+  overflow: hidden;
   .top-container{
     height: 350px;
     background: url("/activity/images/newman-tyrant/top-img.jpg") center top no-repeat;
@@ -151,10 +152,14 @@
           float:left;
           width:100%;
           text-align:center;
+          padding:0 98px;
+          @media(max-width:700px){
+            padding:0;
+          }
           li{
-            display:inline-block;
+            float:left;
             width:210px;
-            margin:0 60px;
+            margin:0 80px;
             @media (max-width:700px) {
               float:left;
               width:48%;
@@ -177,18 +182,19 @@
             .gift-num{
               float:left;
               width:100%;
-              font-size:18px;
+              font-size:14px;
               color:#333;
-              padding-left:70px;
+              padding-left:40px;
               margin-top:15px;
               text-align: left;
               @media (max-width:700px) {
                 padding-left:35px;
-                font-size:14px;
+                font-size:12px;
               }
               &.icon-first{
                 background: url('/activity/images/newman-tyrant/icon-first.png') no-repeat;
-                background-position: 20px 0;
+                background-position: 5px 0;
+                background-size: 15%;
                 @media (max-width:700px) {
                   background-position: 6px 4px;
                   background-size: 20%;
@@ -196,7 +202,8 @@
               }
               &.icon-twice{
                 background: url('/activity/images/newman-tyrant/icon-twice.png') no-repeat;
-                background-position: 20px 0;
+                background-position: 5px 0;
+                background-size: 15%;
                 @media (max-width:700px) {
                   background-position: 6px 4px;
                   background-size: 20%;
