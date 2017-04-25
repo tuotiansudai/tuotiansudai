@@ -16,6 +16,8 @@ public class LoanCreateRequestDto {
 
     private LoanCreatePledgeEnterpriseRequestDto pledgeEnterprise;
 
+    private LoanCreateLoanerEnterpriseInfoDto loanerEnterpriseInfo;
+
     public LoanCreateBaseRequestDto getLoan() {
         return loan;
     }
@@ -70,5 +72,13 @@ public class LoanCreateRequestDto {
 
     public void setPledgeEnterprise(LoanCreatePledgeEnterpriseRequestDto pledgeEnterprise) {
         this.pledgeEnterprise = pledgeEnterprise;
+    }
+
+    public LoanCreateLoanerEnterpriseInfoDto getLoanerEnterpriseInfo() {
+        return loanerEnterpriseInfo;
+    }
+
+    public void setLoanerEnterpriseInfo(LoanCreateLoanerEnterpriseInfoDto loanerEnterpriseInfo) {
+        this.loanerEnterpriseInfo = loanerEnterpriseInfo;
     }
 }

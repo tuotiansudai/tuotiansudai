@@ -78,6 +78,10 @@ public interface UserMapperConsole {
                                 @Param(value = "invested") String invested,
                                 @Param(value = "totalInvestAmountStart") Long totalInvestAmountStart,
                                 @Param(value = "totalInvestAmountEnd") Long totalInvestAmountEnd,
+                                @Param(value = "totalWithdrawAmountStart") Long totalWithdrawAmountStart,
+                                @Param(value = "totalWithdrawAmountEnd") Long totalWithdrawAmountEnd,
+                                @Param(value = "userBalanceStart") Long userBalanceStart,
+                                @Param(value = "userBalanceEnd") Long userBalanceEnd,
                                 @Param(value = "investCountStart") Integer investCountStart,
                                 @Param(value = "investCountEnd") Integer investCountEnd,
                                 @Param(value = "loanCountStart") Integer loanCountStart,
@@ -94,7 +98,11 @@ public interface UserMapperConsole {
                                 @Param(value = "repayingAmountEnd") Long repayingAmountEnd,
                                 @Param(value = "lastLoginTimeStart") Date lastLoginTimeStart,
                                 @Param(value = "lastLoginTimeEnd") Date lastLoginTimeEnd,
-                                @Param(value = "lastLoginSource") Source lastLoginSource);
+                                @Param(value = "lastLoginSource") Source lastLoginSource,
+                                @Param(value = "lastRepayTimeStart") Date lastRepayTimeStart,
+                                @Param(value = "lastRepayTimeEnd") Date lastRepayTimeEnd,
+                                @Param(value = "lastWithdrawTimeStart") Date lastWithdrawTimeStart,
+                                @Param(value = "lastWithdrawTimeEnd") Date lastWithdrawTimeEnd);
 
     List<UserMicroModelView> queryUserMicroModel(@Param(value = "mobile") String mobile,
                                                  @Param(value = "registerTimeStart") Date registerTimeStart,
@@ -103,6 +111,10 @@ public interface UserMapperConsole {
                                                  @Param(value = "invested") String invested,
                                                  @Param(value = "totalInvestAmountStart") Long totalInvestAmountStart,
                                                  @Param(value = "totalInvestAmountEnd") Long totalInvestAmountEnd,
+                                                 @Param(value = "totalWithdrawAmountStart") Long totalWithdrawAmountStart,
+                                                 @Param(value = "totalWithdrawAmountEnd") Long totalWithdrawAmountEnd,
+                                                 @Param(value = "userBalanceStart") Long userBalanceStart,
+                                                 @Param(value = "userBalanceEnd") Long userBalanceEnd,
                                                  @Param(value = "investCountStart") Integer investCountStart,
                                                  @Param(value = "investCountEnd") Integer investCountEnd,
                                                  @Param(value = "loanCountStart") Integer loanCountStart,
@@ -120,6 +132,10 @@ public interface UserMapperConsole {
                                                  @Param(value = "lastLoginTimeStart") Date lastLoginTimeStart,
                                                  @Param(value = "lastLoginTimeEnd") Date lastLoginTimeEnd,
                                                  @Param(value = "lastLoginSource") Source lastLoginSource,
+                                                 @Param(value = "lastRepayTimeStart") Date lastRepayTimeStart,
+                                                 @Param(value = "lastRepayTimeEnd") Date lastRepayTimeEnd,
+                                                 @Param(value = "lastWithdrawTimeStart") Date lastWithdrawTimeStart,
+                                                 @Param(value = "lastWithdrawTimeEnd") Date lastWithdrawTimeEnd,
                                                  @Param(value = "index") int index,
                                                  @Param(value = "pageSize") int pageSize);
 

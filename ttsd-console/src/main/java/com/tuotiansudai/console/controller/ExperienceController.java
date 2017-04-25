@@ -5,12 +5,17 @@ import com.tuotiansudai.console.dto.ExperienceBalancePaginationItemDto;
 import com.tuotiansudai.console.dto.ExperienceBillPaginationItemDto;
 import com.tuotiansudai.console.dto.InvestRepayExperiencePaginationItemDto;
 import com.tuotiansudai.console.service.ConsoleExperienceService;
+import com.tuotiansudai.console.service.ConsoleInvestService;
 import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.enums.ExperienceBillOperationType;
+import com.tuotiansudai.dto.InvestPaginationDataDto;
 import com.tuotiansudai.enums.ExperienceBillBusinessType;
-import com.tuotiansudai.repository.model.RepayStatus;
+import com.tuotiansudai.enums.ExperienceBillOperationType;
+import com.tuotiansudai.enums.Role;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.LoanService;
+import com.tuotiansudai.util.CalculateUtil;
 import com.tuotiansudai.util.InterestCalculator;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -19,7 +24,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.constraints.Min;
 import java.util.Date;
+import java.util.List;
 
 
 @Controller
@@ -30,6 +37,9 @@ public class ExperienceController {
 
     @Autowired
     private LoanService loanService;
+
+    @Autowired
+    private ConsoleInvestService consoleInvestService;
 
     @RequestMapping(value = "/balance", method = RequestMethod.GET)
     public ModelAndView balance(@RequestParam(value = "mobile", required = false) String mobile,
@@ -104,5 +114,33 @@ public class ExperienceController {
         return modelAndView;
     }
 
+
+    @RequestMapping(value = "experience-record", method = RequestMethod.GET)
+    public ModelAndView experienceInvestCount(@RequestParam(name = "loanId", required = false) Long loanId,
+                                              @RequestParam(name = "mobile", required = false) String investorMobile,
+                                              @RequestParam(name = "source", required = false) Source source,
+                                              @RequestParam(name = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
+                                              @RequestParam(name = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
+                                              @Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index) {
+        int pageSize = 10;
+        InvestPaginationDataDto dataDto = consoleInvestService.getInvestPagination(loanId, investorMobile, null, source, null,
+                startTime == null ? new DateTime(0).toDate() : new DateTime(startTime).withTimeAtStartOfDay().toDate(),
+                endTime == null ? CalculateUtil.calculateMaxDate() : new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate(),
+                null, null, ProductType.EXPERIENCE, index, pageSize);
+        List<String> channelList = consoleInvestService.findAllChannel();
+        ModelAndView mv = new ModelAndView("/experience-record-list");
+        mv.addObject("data", dataDto);
+        mv.addObject("mobile", investorMobile);
+        mv.addObject("loanId", loanId);
+        mv.addObject("source", source);
+        mv.addObject("preferenceTypes", PreferenceType.values());
+        mv.addObject("startTime", startTime);
+        mv.addObject("endTime", endTime);
+        mv.addObject("investStatusList", InvestStatus.values());
+        mv.addObject("channelList", channelList);
+        mv.addObject("sourceList", Source.values());
+        mv.addObject("roleList", Role.values());
+        return mv;
+    }
 
 }

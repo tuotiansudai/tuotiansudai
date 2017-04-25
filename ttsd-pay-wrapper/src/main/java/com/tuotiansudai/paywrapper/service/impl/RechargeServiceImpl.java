@@ -1,5 +1,7 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
+import com.google.common.base.Strings;
+import com.tuotiansudai.client.HTrackingClient;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;
@@ -24,6 +26,7 @@ import com.tuotiansudai.paywrapper.service.RechargeService;
 import com.tuotiansudai.paywrapper.service.SystemBillService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.RechargeMapper;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.IdGenerator;
@@ -57,6 +60,14 @@ public class RechargeServiceImpl implements RechargeService {
 
     @Autowired
     private MQWrapperClient mqWrapperClient;
+
+    @Autowired
+    private UserMapper userMapper;
+
+    @Autowired
+    private HTrackingClient hTrackingClient;
+
+    private final static String HTRACKING_CHANNEL = "htracking";
 
     @Override
     @Transactional
@@ -155,6 +166,11 @@ public class RechargeServiceImpl implements RechargeService {
 
             mqWrapperClient.sendMessage(MessageQueue.RechargeSuccess_CompletePointTask, rechargeModel.getLoginName());
 
+            UserModel userModel = userMapper.findByLoginName(loginName);
+            if (!Strings.isNullOrEmpty(userModel.getChannel()) && userModel.getChannel().toLowerCase().trim().equals(HTRACKING_CHANNEL)) {
+                logger.info(MessageFormat.format("[recharge callback] send hTrackingRecharge, loginName:{0}", userModel.getLoginName()));
+                hTrackingClient.hTrackingRecharge(userModel.getLoginName());
+            }
         } catch (NumberFormatException e) {
             logger.error(MessageFormat.format("Recharge callback order is not a number (orderId = {0})", callbackRequestModel.getOrderId()));
             logger.error(e.getLocalizedMessage(), e);

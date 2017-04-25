@@ -48,16 +48,16 @@ public class LoanOutSuccessController {
     @ResponseBody
     @RequestMapping(value = "/generate-repay-after-loan-out", method = RequestMethod.POST)
     public BaseDto<PayDataDto> generateRepay(@RequestBody long loanId) {
-        boolean isSuccess = true;
+        PayDataDto dataDto = new PayDataDto();
+        dataDto.setStatus(true);
+        BaseDto<PayDataDto> dto = new BaseDto<>(dataDto);
         try {
             repayGeneratorService.generateRepay(loanId);
         } catch (Exception e) {
-            isSuccess = false;
+            dataDto.setStatus(false);
+            dataDto.setMessage(e.getLocalizedMessage());
         }
-        BaseDto<PayDataDto> dto = new BaseDto<>();
-        PayDataDto dataDto = new PayDataDto();
-        dto.setData(dataDto);
-        dataDto.setStatus(isSuccess);
+
         return dto;
     }
 

@@ -2,12 +2,14 @@ package com.tuotiansudai.web.controller;
 
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.enums.riskestimation.Estimate;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.BankCardModel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.BindBankCardService;
+import com.tuotiansudai.service.RiskEstimateService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.util.RequestIPParser;
 import com.tuotiansudai.spring.LoginUserInfo;
@@ -37,6 +39,9 @@ public class PersonalInfoController {
     @Autowired
     private BindBankCardService bindBankCardService;
 
+    @Autowired
+    private RiskEstimateService riskEstimateService;
+
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView personalInfo() {
         ModelAndView mv = new ModelAndView("/personal-info");
@@ -49,6 +54,7 @@ public class PersonalInfoController {
         mv.addObject("email", userModel.getEmail());
         mv.addObject("noPasswordInvest", accountModel != null && accountModel.isNoPasswordInvest());
         mv.addObject("autoInvest", accountModel != null && accountModel.isAutoInvest());
+        mv.addObject("estimate", riskEstimateService.getEstimate(LoginUserInfo.getLoginName()));
 
         if (accountModel != null) {
             mv.addObject("userName", userModel.getUserName());

@@ -11,12 +11,14 @@ import com.tuotiansudai.console.dto.RemainUserDto;
 import com.tuotiansudai.console.dto.UserItemDataDto;
 import com.tuotiansudai.console.repository.model.UserMicroModelView;
 import com.tuotiansudai.console.repository.model.UserOperation;
+import com.tuotiansudai.console.service.ConsoleRiskEstimateService;
 import com.tuotiansudai.console.service.ConsoleUserService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.EditUserDto;
 import com.tuotiansudai.enums.OperationType;
 import com.tuotiansudai.enums.Role;
+import com.tuotiansudai.enums.riskestimation.*;
 import com.tuotiansudai.exception.BaseException;
 import com.tuotiansudai.log.service.AuditLogService;
 import com.tuotiansudai.membership.service.UserMembershipService;
@@ -82,6 +84,9 @@ public class UserController {
     @Autowired
     private UserMembershipService userMembershipService;
 
+    @Autowired
+    private ConsoleRiskEstimateService consoleRiskEstimateService;
+
     private final static long MEMBERSHIP_V0 = 0;
     private final static long MEMBERSHIP_V1 = 1;
     private final static long MEMBERSHIP_V2 = 2;
@@ -98,7 +103,7 @@ public class UserController {
         ModelAndView modelAndView = new ModelAndView("/user-edit");
         List<Role> roles = Lists.newArrayList(Role.values())
                 .stream()
-                .filter(role -> !Lists.newArrayList(Role.NOT_STAFF_RECOMMEND, Role.SD_STAFF_RECOMMEND, Role.ZC_STAFF_RECOMMEND).contains(role))
+                .filter(role -> !Lists.newArrayList(Role.NOT_STAFF_RECOMMEND, Role.SD_STAFF_RECOMMEND, Role.ZC_STAFF_RECOMMEND, Role.AGENT).contains(role))
                 .collect(Collectors.toList());
 
         if (!redisWrapperClient.hexistsSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId)) {
@@ -297,6 +302,10 @@ public class UserController {
             @RequestParam(value = "invested", required = false) String invested,
             @RequestParam(value = "totalInvestAmountStart", required = false) Long totalInvestAmountStart,
             @RequestParam(value = "totalInvestAmountEnd", required = false) Long totalInvestAmountEnd,
+            @RequestParam(value = "totalWithdrawAmountStart", required = false) Long totalWithdrawAmountStart,
+            @RequestParam(value = "totalWithdrawAmountEnd", required = false) Long totalWithdrawAmountEnd,
+            @RequestParam(value = "userBalanceStart", required = false) Long userBalanceStart,
+            @RequestParam(value = "userBalanceEnd", required = false) Long userBalanceEnd,
             @RequestParam(value = "investCountStart", required = false) Integer investCountStart,
             @RequestParam(value = "investCountEnd", required = false) Integer investCountEnd,
             @RequestParam(value = "loanCountStart", required = false) Integer loanCountStart,
@@ -314,6 +323,10 @@ public class UserController {
             @RequestParam(value = "lastLoginTimeStart", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date lastLoginTimeStart,
             @RequestParam(value = "lastLoginTimeEnd", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date lastLoginTimeEnd,
             @RequestParam(value = "lastLoginSource", required = false) Source lastLoginSource,
+            @RequestParam(value = "lastRepayTimeStart", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date lastRepayTimeStart,
+            @RequestParam(value = "lastRepayTimeEnd", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date lastRepayTimeEnd,
+            @RequestParam(value = "lastWithdrawTimeStart", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date lastWithdrawTimeStart,
+            @RequestParam(value = "lastWithdrawTimeEnd", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date lastWithdrawTimeEnd,
             @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
 
         int pageSize = 10;
@@ -324,6 +337,10 @@ public class UserController {
                 invested,
                 totalInvestAmountStart == null ? null : totalInvestAmountStart * 100,
                 totalInvestAmountEnd == null ? null : totalInvestAmountEnd * 100,
+                totalWithdrawAmountStart == null ? null : totalWithdrawAmountStart * 100,
+                totalWithdrawAmountEnd == null ? null : totalWithdrawAmountEnd * 100,
+                userBalanceStart == null ? null : userBalanceStart * 100,
+                userBalanceEnd == null ? null : userBalanceEnd * 100,
                 investCountStart,
                 investCountEnd,
                 loanCountStart,
@@ -341,6 +358,10 @@ public class UserController {
                 lastLoginTimeStart,
                 lastLoginTimeEnd,
                 lastLoginSource,
+                lastRepayTimeStart,
+                lastRepayTimeEnd,
+                lastWithdrawTimeStart,
+                lastWithdrawTimeEnd,
                 index,
                 pageSize);
 
@@ -353,6 +374,10 @@ public class UserController {
         mv.addObject("invested", invested);
         mv.addObject("totalInvestAmountStart", totalInvestAmountStart);
         mv.addObject("totalInvestAmountEnd", totalInvestAmountEnd);
+        mv.addObject("totalWithdrawAmountStart", totalWithdrawAmountStart);
+        mv.addObject("totalWithdrawAmountEnd", totalWithdrawAmountEnd);
+        mv.addObject("userBalanceStart", userBalanceStart);
+        mv.addObject("userBalanceEnd", userBalanceEnd);
         mv.addObject("investCountStart", investCountStart);
         mv.addObject("investCountEnd", investCountEnd);
         mv.addObject("loanCountStart", loanCountStart);
@@ -370,6 +395,10 @@ public class UserController {
         mv.addObject("lastLoginTimeStart", lastLoginTimeStart);
         mv.addObject("lastLoginTimeEnd", lastLoginTimeEnd);
         mv.addObject("lastLoginSource", lastLoginSource);
+        mv.addObject("lastRepayTimeStart", lastRepayTimeStart);
+        mv.addObject("lastRepayTimeEnd", lastRepayTimeEnd);
+        mv.addObject("lastWithdrawTimeStart", lastWithdrawTimeStart);
+        mv.addObject("lastWithdrawTimeEnd", lastWithdrawTimeEnd);
         mv.addObject("index", index);
         mv.addObject("pageSize", pageSize);
 
@@ -423,5 +452,33 @@ public class UserController {
 
         return modelAndView;
     }
+
+
+    @RequestMapping(value = "/risk-estimate", method = RequestMethod.GET)
+    public ModelAndView riskEstimate(@RequestParam(value = "selectedEstimate", required = false) Estimate selectedEstimate,
+                                     @RequestParam(value = "selectedIncome", required = false) Income selectedIncome,
+                                     @RequestParam(value = "selectedRate", required = false) Rate selectedRate,
+                                     @RequestParam(value = "selectedDuration", required = false) Duration selectedDuration,
+                                     @RequestParam(value = "selectedAge", required = false) Age selectedAge,
+                                     @RequestParam(value = "index", required = false, defaultValue = "1") int index) {
+
+        ModelAndView modelAndView = new ModelAndView("/risk-estimate");
+        modelAndView.addObject("estimateOptions", Estimate.values());
+        modelAndView.addObject("incomeOptions", Income.values());
+        modelAndView.addObject("rateOptions", Rate.values());
+        modelAndView.addObject("durationOptions", Duration.values());
+        modelAndView.addObject("ageOptions", Age.values());
+
+        modelAndView.addObject("selectedEstimate", selectedEstimate);
+        modelAndView.addObject("selectedIncome", selectedIncome);
+        modelAndView.addObject("selectedRate", selectedRate);
+        modelAndView.addObject("selectedDuration", selectedDuration);
+        modelAndView.addObject("selectedAge", selectedAge);
+
+        modelAndView.addObject("pagination", consoleRiskEstimateService.listRiskEstimate(selectedEstimate, selectedIncome, selectedRate, selectedDuration, selectedAge, index));
+
+        return modelAndView;
+    }
+
 
 }

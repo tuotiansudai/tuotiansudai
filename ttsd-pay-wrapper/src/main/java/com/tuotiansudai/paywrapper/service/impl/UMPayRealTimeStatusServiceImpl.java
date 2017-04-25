@@ -20,15 +20,12 @@ import com.tuotiansudai.paywrapper.repository.model.sync.response.TransferSearch
 import com.tuotiansudai.paywrapper.repository.model.sync.response.UserSearchResponseModel;
 import com.tuotiansudai.paywrapper.service.UMPayRealTimeStatusService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.InvestModel;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Map;
 
 @Service
@@ -37,7 +34,10 @@ public class UMPayRealTimeStatusServiceImpl implements UMPayRealTimeStatusServic
     static Logger logger = Logger.getLogger(UMPayRealTimeStatusServiceImpl.class);
 
     @Value("${pay.fake}")
-    private boolean fakePay;
+    private boolean isFakeUMPay;
+
+    @Value("${common.environment}")
+    private Environment environment;
 
     @Autowired
     private AccountMapper accountMapper;
@@ -107,7 +107,7 @@ public class UMPayRealTimeStatusServiceImpl implements UMPayRealTimeStatusServic
         PayDataDto dataDto = new PayDataDto();
         BaseDto<PayDataDto> dto = new BaseDto<>(dataDto);
 
-        if (fakePay) {
+        if (isFakeUMPay) {
             dataDto.setStatus(true);
             return dto;
         }
@@ -126,6 +126,10 @@ public class UMPayRealTimeStatusServiceImpl implements UMPayRealTimeStatusServic
 
     @Override
     public Map<String, String> getUserBalance(String loginName) {
+        if (Environment.PRODUCTION != environment) {
+            return null;
+        }
+
         AccountModel model = accountMapper.findByLoginName(loginName);
         if (model == null) {
             return null;

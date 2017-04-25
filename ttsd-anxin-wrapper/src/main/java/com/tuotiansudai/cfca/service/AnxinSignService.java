@@ -27,11 +27,11 @@ public interface AnxinSignService {
 
     byte[] downContractByContractNo(String contractNo);
 
-    BaseDto createLoanContracts(long loanId);
+    BaseDto<AnxinDataDto> createLoanContracts(long loanId);
 
-    BaseDto createTransferContracts(long transferApplicationId);
+    BaseDto<AnxinDataDto> createTransferContracts(long transferApplicationId);
 
-    List<String> queryContract(long businessId, List<String> batchNoList, AnxinContractType anxinContractType);
+    boolean queryContract(long businessId, List<String> batchNoList, AnxinContractType anxinContractType);
 
     BaseDto<AnxinDataDto> queryContract(AnxinQueryContractDto anxinQueryContractDto);
 

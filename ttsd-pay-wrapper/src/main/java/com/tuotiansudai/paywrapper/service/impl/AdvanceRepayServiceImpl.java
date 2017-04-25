@@ -1,8 +1,5 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
-import com.google.common.base.Optional;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
@@ -55,6 +52,7 @@ import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class AdvanceRepayServiceImpl implements AdvanceRepayService {
@@ -143,19 +141,15 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
         }
 
         List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(loanId);
-        Optional<LoanRepayModel> enabledAdvanceLoanRepayOptional = Iterators.tryFind(loanRepayModels.iterator(), new Predicate<LoanRepayModel>() {
-            @Override
-            public boolean apply(LoanRepayModel input) {
-                return input.getStatus() == RepayStatus.REPAYING;
-            }
-        });
 
-        if (!enabledAdvanceLoanRepayOptional.isPresent()) {
+        Optional<LoanRepayModel> enabledLoanRepayOptional = loanRepayModels.stream().filter(loanRepayModel -> loanRepayModel.getStatus() == RepayStatus.REPAYING).findFirst();
+
+        if (!enabledLoanRepayOptional.isPresent()) {
             logger.error(MessageFormat.format("[Advance Repay] There is no enabled loan repay (loanId = {0})", String.valueOf(loanId)));
             return baseDto;
         }
 
-        LoanRepayModel enabledLoanRepay = enabledAdvanceLoanRepayOptional.get();
+        LoanRepayModel enabledLoanRepay = enabledLoanRepayOptional.get();
 
         DateTime currentRepayDate = new DateTime();
         List<InvestModel> successInvests = investMapper.findSuccessInvestsByLoanId(loanId);
@@ -261,7 +255,9 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
                 continue;
             }
             //实际利息
-            long actualInterest = InterestCalculator.calculateInvestRepayInterest(loanModel, investModel, lastRepayDate, currentRepayDate);
+            InvestModel transferInvestModel = investMapper.findById(investModel.getTransferInvestId());
+            long actualInterest = InterestCalculator.calculateInvestRepayInterest(loanModel, investModel.getAmount(),
+                    transferInvestModel == null ? investModel.getTradingTime() : transferInvestModel.getTradingTime(), lastRepayDate, currentRepayDate);
             //实际手续费
             long actualFee = new BigDecimal(actualInterest).setScale(0, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(investModel.getInvestFeeRate())).longValue();
             //实收金额

@@ -17,7 +17,7 @@
 
         <custom-filter ref="mobileAppAuthenticationTokenProcessingFilter" position="PRE_AUTH_FILTER"/>
 
-        <form-login login-processing-url="/login" authentication-details-source-ref="myWebAuthenticationDetailsSource"
+        <form-login login-page="/404" login-processing-url="/login" authentication-details-source-ref="myWebAuthenticationDetailsSource"
                     authentication-success-handler-ref="myMobileSimpleUrlAuthenticationSuccessHandler"
                     authentication-failure-handler-ref="myMobileSimpleUrlAuthenticationFailureHandler"/>
 
@@ -48,6 +48,7 @@
         <intercept-url pattern="/v1.0/get/index" access="permitAll()"/>
         <intercept-url pattern="/v2.0/get/index" access="permitAll()"/>
         <intercept-url pattern="/v3.0/get/index" access="permitAll()"/>
+        <intercept-url pattern="/v3.0/get/loan" access="permitAll()"/>
         <intercept-url pattern="/v2.0/get/loan" access="permitAll()"/>
         <intercept-url pattern="/v1.0/get/transfer-application" access="permitAll()"/>
         <intercept-url pattern="/v1.0/get/transfer-application-list" access="permitAll()"/>
