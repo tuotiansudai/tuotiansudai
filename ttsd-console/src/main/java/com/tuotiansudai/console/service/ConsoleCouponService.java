@@ -285,10 +285,14 @@ public class ConsoleCouponService {
             LoanModel loanModel = userCouponModel.getLoanId() != null ? loanMapper.findById(userCouponModel.getLoanId()) : null;
             userCouponModel.setInvestAmount(userCouponModel.getInvestId() != null ? investMapper.findById(userCouponModel.getInvestId()).getAmount() : null);
             long interest = 0;
-            if(userCouponModel.getUsedTime() != null && loanModel != null){
+
+            if(userCouponModel.getStatus() == InvestStatus.SUCCESS && loanModel != null){
                 interest = investService.estimateInvestIncome(loanModel.getId(), loginName, userCouponModel.getInvestAmount());
+                couponDetailsDtoList.add(new CouponDetailsDto(userCouponModel.getLoginName(), userCouponModel.getUsedTime(), userCouponModel.getInvestAmount(),
+                        userCouponModel.getLoanId(), loanModel != null ? loanModel.getName() : "", loanModel != null ? loanModel.getProductType() : null, interest, userCouponModel.getEndTime()));
+                continue;
             }
-            couponDetailsDtoList.add(new CouponDetailsDto(userCouponModel.getLoginName(), userCouponModel.getUsedTime(), userCouponModel.getInvestAmount(),
+            couponDetailsDtoList.add(new CouponDetailsDto(userCouponModel.getLoginName(), null, userCouponModel.getInvestAmount(),
                     userCouponModel.getLoanId(), loanModel != null ? loanModel.getName() : "", loanModel != null ? loanModel.getProductType() : null, interest, userCouponModel.getEndTime()));
         }
         return couponDetailsDtoList;

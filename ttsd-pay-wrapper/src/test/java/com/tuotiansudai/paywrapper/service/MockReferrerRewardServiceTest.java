@@ -18,6 +18,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
@@ -28,7 +29,7 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml","classpath:dispatcher-servlet.xml"})
+@ContextConfiguration(locations = {"classpath:applicationContext.xml", "classpath:dispatcher-servlet.xml"})
 @Transactional
 public class MockReferrerRewardServiceTest {
 
@@ -54,7 +55,7 @@ public class MockReferrerRewardServiceTest {
     private InvestMapper investMapper;
 
     @Before
-    public void init(){
+    public void init() {
         MockitoAnnotations.initMocks(this);
     }
 
@@ -76,6 +77,8 @@ public class MockReferrerRewardServiceTest {
         when(referrerRelationMapper.findByLoginName("investor")).thenReturn(referrerRelationModels);
         when(investReferrerRewardMapper.findByInvestIdAndReferrer(anyLong(), anyString())).thenReturn(null);
         when(userRoleMapper.findByLoginName("referrer")).thenReturn(Lists.newArrayList(new UserRoleModel("referrer", Role.ZC_STAFF)));
+        ReflectionTestUtils.setField(referrerRewardService, "referrerStaffRoleReward", Lists.newArrayList(0.01, 0.01, 0.01, 0.01));
+        ReflectionTestUtils.setField(referrerRewardService, "referrerUserRoleReward", Lists.newArrayList(0.01, 0.01));
 
         referrerRewardService.rewardReferrer(1);
 

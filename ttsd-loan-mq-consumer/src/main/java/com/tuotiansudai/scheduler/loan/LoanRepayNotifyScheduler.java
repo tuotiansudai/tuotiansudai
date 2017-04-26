@@ -39,48 +39,53 @@ public class LoanRepayNotifyScheduler {
     @Scheduled(cron = "0 0 14 * * ?", zone = "Asia/Shanghai")
     public void loanRepayNotify() {
         String today = DateFormatUtils.format(new Date(), "yyyy-MM-dd");
-        List<LoanRepayNotifyModel> loanRepayNotifyModelList = loanRepayMapper.findLoanRepayNotifyToday(today);
+        try{
+            List<LoanRepayNotifyModel> loanRepayNotifyModelList = loanRepayMapper.findLoanRepayNotifyToday(today);
 
-        Map<String, Long> notifyMap = new HashMap<>();
-        for (String mobile : repayRemindMobileList) {
-            notifyMap.put(mobile, 0L);
-        }
+            Map<String, Long> notifyMap = new HashMap<>();
+            for (String mobile : repayRemindMobileList) {
+                notifyMap.put(mobile, 0L);
+            }
 
-        for (LoanRepayNotifyModel model : loanRepayNotifyModelList) {
-            try {
-                BaseDto<PayDataDto> response = payWrapperClient.autoRepay(model.getId());
-                if (response.isSuccess() && response.getData().getStatus()) {
-                    logger.info("auto repay success, loanRepayId: " + model.getId() + ", continue to next.");
+            for (LoanRepayNotifyModel model : loanRepayNotifyModelList) {
+                try {
+                    BaseDto<PayDataDto> response = payWrapperClient.autoRepay(model.getId());
+                    if (response.isSuccess() && response.getData().getStatus()) {
+                        logger.info("auto repay success, loanRepayId: " + model.getId() + ", continue to next.");
+                        continue;
+                    }
+                } catch (Exception e) {
+                    logger.error(e.getLocalizedMessage(), e);
                     continue;
                 }
-            } catch (Exception e) {
-                logger.error(e.getLocalizedMessage(), e);
-                continue;
+                for (String mobile : repayRemindMobileList) {
+                    notifyMap.put(mobile, notifyMap.get(mobile) + model.getRepayAmount());
+                }
+                if (notifyMap.get(model.getMobile()) == null) {
+                    notifyMap.put(model.getMobile(), model.getRepayAmount());
+                } else {
+                    notifyMap.put(model.getMobile(), notifyMap.get(model.getMobile()) + model.getRepayAmount());
+                }
+                logger.info("notify count: " + notifyMap.size());
             }
-            for (String mobile : repayRemindMobileList) {
-                notifyMap.put(mobile, notifyMap.get(mobile) + model.getRepayAmount());
-            }
-            if (notifyMap.get(model.getMobile()) == null) {
-                notifyMap.put(model.getMobile(), model.getRepayAmount());
-            } else {
-                notifyMap.put(model.getMobile(), notifyMap.get(model.getMobile()) + model.getRepayAmount());
-            }
-            logger.info("notify count: " + notifyMap.size());
-        }
 
-        if (loanRepayNotifyModelList.size() > 0) {
-            for (Map.Entry entry : notifyMap.entrySet()) {
-                long amount = (Long) entry.getValue();
-                logger.info("will send loanRepay notify, mobile: " + entry.getKey() + ", amount: " + amount);
-                if (amount > 0) {
-                    logger.info("sent loan repay notify sms message to " + entry.getKey() + ", money:" + entry.getValue());
-                    RepayNotifyDto dto = new RepayNotifyDto();
-                    dto.setMobile(((String) entry.getKey()).trim());
-                    dto.setRepayAmount(AmountConverter.convertCentToString(amount));
-                    smsWrapperClient.sendLoanRepayNotify(dto);
+            if (loanRepayNotifyModelList.size() > 0) {
+                for (Map.Entry entry : notifyMap.entrySet()) {
+                    long amount = (Long) entry.getValue();
+                    logger.info("will send loanRepay notify, mobile: " + entry.getKey() + ", amount: " + amount);
+                    if (amount > 0) {
+                        logger.info("sent loan repay notify sms message to " + entry.getKey() + ", money:" + entry.getValue());
+                        RepayNotifyDto dto = new RepayNotifyDto();
+                        dto.setMobile(((String) entry.getKey()).trim());
+                        dto.setRepayAmount(AmountConverter.convertCentToString(amount));
+                        smsWrapperClient.sendLoanRepayNotify(dto);
+                    }
                 }
             }
+        }catch (Exception e){
+            logger.error("[LoanRepayNotifyScheduler:] job execution is failed.", e);
         }
+
     }
 
 }
