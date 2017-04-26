@@ -119,7 +119,7 @@
                             </#if>
                         </td>
                         <td>
-                            <#if userCoupon.endTime??>
+                            <#if userCoupon.endTime?? && userCoupon.usedTime??>
                             ${userCoupon.endTime?string('yyyy-MM-dd HH:mm')}
                             <#else>
                                 未使用
