@@ -23,7 +23,7 @@ public class ExperienceServiceImpl implements ExperienceBillService {
     @Override
     @Transactional
     public void updateUserExperienceBalanceByLoginName(long experienceAmount, String loginName, ExperienceBillOperationType experienceBillOperationType, ExperienceBillBusinessType experienceBusinessType, String note) {
-        UserModel userModel = userMapper.findByLoginName(loginName);
+        UserModel userModel = userMapper.lockByLoginName(loginName);
         long experienceBalance = userModel.getExperienceBalance();
         experienceBalance = experienceBillOperationType == ExperienceBillOperationType.IN ? experienceBalance + experienceAmount : experienceBalance - experienceAmount;
         userModel.setExperienceBalance(experienceBalance);
