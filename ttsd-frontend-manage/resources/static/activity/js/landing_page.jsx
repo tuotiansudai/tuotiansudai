@@ -62,7 +62,7 @@ function showReferrerInfoIfNeeded() {
             type:'GET',
             dataType: 'json',
             url:"/activity/get-realRealName?mobile=" + mobileNum
-        },function(response) {
+        },function(data) {
             //姓名的第一个字母用*替换
             $('.refer-name', $landingContainerBox).text(data);
         });
