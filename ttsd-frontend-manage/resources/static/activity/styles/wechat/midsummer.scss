@@ -1,0 +1,66 @@
+body {
+  background: #FFDB60;
+}
+.entry-point-container {
+
+  margin: 4%;
+  background: url("../../images/wechat/midsummer/bg-point.png") center top no-repeat;
+  background-size: cover;
+  position: relative;
+  border-radius: 20px;
+  text-align: center;
+
+  .column-box {
+    display: inline-block;
+    width:120px;
+    height:120px;
+    background: #FFDB60;
+    border-radius: 50%;
+    text-align: center;
+    font-size: 34px;
+    line-height: 42px;
+    margin-top: 87px;
+  }
+  .red-key-box {
+    color: #FFDB60;
+    font-size: 25px;
+    line-height: 30px;
+    position: absolute;
+    top:54%;
+    left:0;
+    width: 100%;
+
+    text-align: center;
+    em {
+      font-size: 100px;
+    }
+    span {
+      font-size: 20px;
+      color: #691B18;
+      display: block;
+    }
+  }
+  .button-layer {
+    position: absolute;
+    top:80%;
+    width:100%;
+    text-align: center;
+    .bind-card {
+      width:80%;
+      padding:10px 0;
+      background: #FFDB60;
+      border-radius:30px;
+      color: #691B18;
+      font-size: 20px;
+      letter-spacing: 0;
+
+    }
+    .note {
+      color: #691B18;
+      font-size:14px;
+      display: block;
+      text-align: center;
+      padding-top:15px;
+    }
+  }
+}

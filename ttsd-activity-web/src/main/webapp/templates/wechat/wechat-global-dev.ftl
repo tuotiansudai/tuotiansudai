@@ -17,11 +17,7 @@
 
 </head>
 <body>
-<div class="main-frame full-screen clearfix">
-
     <#nested>
-</div>
-
 <script>
     window.staticServer = '${commonStaticServer}';
 </script>

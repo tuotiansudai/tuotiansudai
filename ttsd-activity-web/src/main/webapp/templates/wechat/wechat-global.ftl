@@ -14,11 +14,7 @@
     <link rel="stylesheet" type="text/css" href="${pageCss}" charset="utf-8"/>
 </head>
 <body>
-<div class="main-frame full-screen clearfix">
-
-    <#nested>
-</div>
-
+ <#nested>
 <script>
     window.staticServer = '${commonStaticServer}';
 </script>
