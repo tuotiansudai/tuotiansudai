@@ -41,6 +41,9 @@ public class JobInitPlugin implements SchedulerPlugin {
         if (JobType.SendSecondRedEnvelopSplit.name().equalsIgnoreCase(schedulerName)) {
             createSecondRedEnvelopSplitJob();
         }
+        if (JobType.AssignMothersDayExperienceJob.name().equalsIgnoreCase(schedulerName)) {
+            createAssignMothersDayExperienceJob();
+        }
     }
 
     @Override
@@ -76,6 +79,17 @@ public class JobInitPlugin implements SchedulerPlugin {
 
     private void deleteExtraRateRepayCallBackIfNotExist() {
         jobManager.deleteJob(JobType.ExtraRateRepayCallBack, "umpay", "repay_extra_rate_invest_call_back");
+    }
+
+    private void createAssignMothersDayExperienceJob() {
+        try {
+            jobManager.newJob(JobType.AssignMothersDayExperienceJob, AssignSecondRedEnvelopSplitJob.class)
+                    .withIdentity(JobType.AssignMothersDayExperienceJob.name(), JobType.AssignMothersDayExperienceJob.name())
+                    .replaceExistingJob(true)
+                    .runOnceAt(DateTime.parse(AssignMothersDayExperienceJob.JOB_EXECUTE_TIME, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate()).submit();
+        } catch (Exception e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
     }
    
 }

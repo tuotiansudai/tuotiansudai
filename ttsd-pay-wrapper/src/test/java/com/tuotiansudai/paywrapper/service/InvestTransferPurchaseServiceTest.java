@@ -111,16 +111,6 @@ public class InvestTransferPurchaseServiceTest {
     @Autowired
     private UserCouponMapper userCouponMapper;
 
-    @Autowired
-    private MQWrapperClient mqWrapperClient;
-
-    @Test
-    public void testMQ(){
-        //发放体验金
-        mqWrapperClient.sendMessage(MessageQueue.ExperienceAssigning,
-                new ExperienceAssigningMessage("gaoyinglong", 100000l, ExperienceBillOperationType.IN, ExperienceBillBusinessType.REGISTER));
-    }
-
     @Before
     public void setUp() throws Exception {
         this.mockPayServer = new MockWebServer();
