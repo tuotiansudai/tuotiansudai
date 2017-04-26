@@ -44,6 +44,7 @@ public class MQWrapperClient {
             return;
         }
         if (TransactionSynchronizationManager.isSynchronizationActive()) {
+            logger.info("[transfer] aaaaaa");
             TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronizationAdapter() {
                 @Override
                 public void afterCommit() {
@@ -51,6 +52,7 @@ public class MQWrapperClient {
                 }
             });
         } else {
+            logger.info("[transfer] bbbbbbb");
             runnable.run();
         }
     }
