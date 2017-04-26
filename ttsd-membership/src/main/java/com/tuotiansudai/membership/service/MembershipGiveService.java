@@ -142,9 +142,7 @@ public class MembershipGiveService {
         List<MembershipGiveModel> membershipGiveModels = membershipGiveMapper.findAllCurrentNewUserGivePlans();
         giveUsersMemberships(Lists.newArrayList(loginName), membershipGiveModels);
 
-        UserModel userModel = userMapper.findByLoginName(loginName);
-        logger.info(MessageFormat.format("[userRegisterTransfer] loginName:{0} experience:{1}", userModel.getLoginName(), userModel.getExperienceBalance()));
-        String mobile = userModel.getMobile();
+        String mobile = userMapper.findByLoginName(loginName).getMobile();
         for (MembershipGiveModel membershipGiveModel : membershipGiveModels) {
             if (membershipGiveModel.isSmsNotify()) {
                 sendReceiveMembershipSmsNotify(mobile, membershipGiveModel, MembershipUserGroup.NEW_REGISTERED_USER);
