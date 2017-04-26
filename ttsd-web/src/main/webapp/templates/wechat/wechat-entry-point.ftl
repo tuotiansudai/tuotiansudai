@@ -1,5 +1,5 @@
 <#import "wechat-global.ftl" as global>
-<@global.main pageCss="${css.wechat_entry_point}" pageJavascript="${js.wechat_entry_point}">
+<@global.main pageCss="${css.wechat_entry_point}" pageJavascript="${js.wechat_entry_point}" title="完善账户信息">
 <div class="weChat-container" id="weChatStartContainer">
     <h2 class="note">请填写手机号码，以补全您的拓天速贷账户信息。</h2>
 

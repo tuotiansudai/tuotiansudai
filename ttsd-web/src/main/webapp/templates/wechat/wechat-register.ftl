@@ -1,5 +1,5 @@
 <#import "wechat-global.ftl" as global>
-<@global.main pageCss="${css.wechat_entry_point}" pageJavascript="${js.wechat_register}">
+<@global.main pageCss="${css.wechat_entry_point}" pageJavascript="${js.wechat_register}" title="完善用户信息">
 <div class="weChat-container weChat-register" id="weChatRegister">
 
     <form id="formCaptcha" class="form-captcha">
