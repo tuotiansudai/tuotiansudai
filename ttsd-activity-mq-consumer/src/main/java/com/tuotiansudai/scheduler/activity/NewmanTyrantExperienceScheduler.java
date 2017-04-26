@@ -4,11 +4,10 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.activity.repository.model.NewmanTyrantHistoryView;
 import com.tuotiansudai.activity.repository.model.NewmanTyrantView;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.message.NewmanTyrantMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.activity.service.NewmanTyrantService;
-import com.tuotiansudai.util.DateConvertUtil;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -25,12 +24,15 @@ import java.util.List;
 @Component
 public class NewmanTyrantExperienceScheduler {
     static Logger logger = LoggerFactory.getLogger(NewmanTyrantExperienceScheduler.class);
+
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
+
     @Value("#{'${activity.newmanTyrant.activity.period}'.split('\\~')}")
     private List<String> newmanTyrantActivityPeriod = Lists.newArrayList();
+
     @Autowired
     private NewmanTyrantService newmanTyrantService;
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
+
     @Autowired
     private MQWrapperClient mqWrapperClient;
 

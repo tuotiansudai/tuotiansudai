@@ -1,19 +1,18 @@
 package com.tuotiansudai.service;
 
 
-import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.activity.repository.dto.DrawLotteryDto;
 import com.tuotiansudai.activity.repository.dto.UserTianDouRecordDto;
 import com.tuotiansudai.activity.repository.model.TianDouPrize;
+import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
 import com.tuotiansudai.service.impl.RankingActivityServiceImpl;
 import com.tuotiansudai.util.RandomUtils;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.log4j.Logger;
@@ -31,19 +30,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import static org.junit.Assert.assertEquals;
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
 @Transactional
 public class RankingActivityServiceTest {
 
     private static Logger logger = Logger.getLogger(RankingActivityServiceTest.class);
-    @Autowired
-    RankingActivityService rankingActivityService;
+
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
     @Autowired
-    private RedisWrapperClient redisWrapperClient;
+    private RankingActivityService rankingActivityService;
 
     @Autowired
     private UserMapper userMapper;

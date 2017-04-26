@@ -29,22 +29,20 @@ public class MobileAppUserBillListServiceServiceTest extends ServiceTestBase{
     private MobileAppUserBillListServiceImpl mobileAppUserBillListService;
     @Mock
     private UserBillMapper userBillMapper;
-    @Autowired
-    private IdGenerator idGenerator;
     @Mock
     private PageValidUtils pageValidUtils;
 
     @Test
     public void shouldQueryUserBillListIsOk(){
         UserBillModel userBillModel = new UserBillModel();
-        userBillModel.setId(idGenerator.generate());
+        userBillModel.setId(IdGenerator.generate());
         userBillModel.setAmount(1000L);
         userBillModel.setBalance(1100L);
         userBillModel.setFreeze(1200l);
         userBillModel.setBusinessType(UserBillBusinessType.RECHARGE_SUCCESS);
         userBillModel.setOperationType(UserBillOperationType.TI_BALANCE);
         userBillModel.setLoginName("admin");
-        userBillModel.setOrderId(idGenerator.generate());
+        userBillModel.setOrderId(IdGenerator.generate());
 
         List<UserBillModel> userBillModelList = Lists.newArrayList();
         userBillModelList.add(userBillModel);

@@ -42,9 +42,6 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
     private InvestRepayMapper investRepayMapper;
 
     @Autowired
-    private IdGenerator idGenerator;
-
-    @Autowired
     private ExperienceBillService registerUserService;
 
     @Autowired
@@ -76,14 +73,14 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
         LoanModel loanModel = loanMapper.findById(Long.parseLong(investDto.getLoanId()));
         long amount = Long.parseLong(investDto.getAmount());
 
-        InvestModel investModel = new InvestModel(idGenerator.generate(), Long.parseLong(investDto.getLoanId()), null, amount, investDto.getLoginName(), new Date(), investDto.getSource(), investDto.getChannel(), defaultFee);
+        InvestModel investModel = new InvestModel(IdGenerator.generate(), Long.parseLong(investDto.getLoanId()), null, amount, investDto.getLoginName(), new Date(), investDto.getSource(), investDto.getChannel(), defaultFee);
         investModel.setStatus(InvestStatus.SUCCESS);
         investModel.setTransferStatus(TransferStatus.NONTRANSFERABLE);
         investMapper.create(investModel);
         Date repayDate = new DateTime().plusDays(loanModel.getDuration()).withTimeAtStartOfDay().minusSeconds(1).toDate();
         long expectedInterest = InterestCalculator.estimateExperienceExpectedInterest(amount, loanModel);
 
-        InvestRepayModel investRepayModel = new InvestRepayModel(idGenerator.generate(), investModel.getId(), 1, 0, expectedInterest, 0, repayDate, RepayStatus.REPAYING);
+        InvestRepayModel investRepayModel = new InvestRepayModel(IdGenerator.generate(), investModel.getId(), 1, 0, expectedInterest, 0, repayDate, RepayStatus.REPAYING);
         investRepayMapper.create(Lists.newArrayList(investRepayModel));
         String note = MessageFormat.format(ExperienceBillBusinessType.INVEST_LOAN.getContentTemplate(),
                 AmountConverter.convertCentToString(Long.parseLong(investDto.getAmount())),

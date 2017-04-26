@@ -10,7 +10,7 @@ import com.tuotiansudai.api.dto.v2_0.PromotionListResponseDataDto;
 import com.tuotiansudai.api.dto.v2_0.PromotionRecordResponseDataDto;
 import com.tuotiansudai.api.dto.v2_0.PromotionRequestDto;
 import com.tuotiansudai.api.service.v2_0.MobileAppPromotionListsV2Service;
-import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,17 +23,17 @@ import java.util.List;
 @Service
 public class MobileAppPromotionListsV2ServiceImpl implements MobileAppPromotionListsV2Service {
 
+    private static final String PROMOTION_ALERT_KEY = "app:promotion:pop";
+
+    private static final String DEVICEID_PROMOTION_ID_KEY = "deviceId:{0}:promotionId:{1}";
+
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
+
     @Autowired
     private PromotionMapper promotionMapper;
 
     @Value("${common.static.server}")
     private String staticServer;
-
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
-
-    private static final String PROMOTION_ALERT_KEY = "app:promotion:pop";
-    private static final String DEVICEID_PROMOTION_ID_KEY = "deviceId:{0}:promotionId:{1}";
 
     @Override
     public BaseResponseDto<PromotionListResponseDataDto> generatePromotionList(PromotionRequestDto promotionRequestDto) {

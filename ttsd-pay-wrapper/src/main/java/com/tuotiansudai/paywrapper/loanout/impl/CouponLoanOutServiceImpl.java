@@ -3,7 +3,6 @@ package com.tuotiansudai.paywrapper.loanout.impl;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.message.TransferRedEnvelopCallbackMessage;
@@ -28,6 +27,7 @@ import com.tuotiansudai.repository.model.SystemBillBusinessType;
 import com.tuotiansudai.repository.model.SystemBillDetailTemplate;
 import com.tuotiansudai.repository.model.UserCouponModel;
 import com.tuotiansudai.util.AmountTransfer;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,7 +42,11 @@ public class CouponLoanOutServiceImpl implements CouponLoanOutService {
 
     static Logger logger = Logger.getLogger(CouponLoanOutServiceImpl.class);
 
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
+
     private static final String COUPON_ORDER_ID_TEMPLATE = "{0}X{1}";
+
+    private final static String SEND_RED_ENVELOP = "SEND_RED_ENVELOP";
 
     @Autowired
     private AccountMapper accountMapper;
@@ -67,11 +71,6 @@ public class CouponLoanOutServiceImpl implements CouponLoanOutService {
 
     @Autowired
     private MQWrapperClient mqWrapperClient;
-
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
-
-    private final static String SEND_RED_ENVELOP = "SEND_RED_ENVELOP";
 
     @Override
     public boolean sendRedEnvelope(long loanId) {

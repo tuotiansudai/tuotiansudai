@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.joda.time.DateTime;
 import org.junit.Ignore;
@@ -30,9 +31,6 @@ import static org.junit.Assert.*;
 public class InvestRepayMapperTest {
 
     @Autowired
-    private IdGenerator idGenerator;
-
-    @Autowired
     private InvestRepayMapper investRepayMapper;
 
     @Autowired
@@ -50,7 +48,7 @@ public class InvestRepayMapperTest {
         investMapper.create(investModel);
         List<InvestRepayModel> investRepayModels = Lists.newArrayList();
         InvestRepayModel investRepayModel = new InvestRepayModel();
-        investRepayModel.setId(idGenerator.generate());
+        investRepayModel.setId(IdGenerator.generate());
         investRepayModel.setInvestId(investModel.getId());
         investRepayModel.setPeriod(1);
         investRepayModel.setStatus(RepayStatus.REPAYING);
@@ -69,14 +67,14 @@ public class InvestRepayMapperTest {
         investMapper.create(investModel);
 
         InvestRepayModel investRepayModel1 = new InvestRepayModel();
-        investRepayModel1.setId(idGenerator.generate());
+        investRepayModel1.setId(IdGenerator.generate());
         investRepayModel1.setInvestId(investModel.getId());
         investRepayModel1.setPeriod(1);
         investRepayModel1.setStatus(RepayStatus.REPAYING);
         investRepayModel1.setRepayDate(new Date());
 
         InvestRepayModel investRepayModel2 = new InvestRepayModel();
-        investRepayModel2.setId(idGenerator.generate());
+        investRepayModel2.setId(IdGenerator.generate());
         investRepayModel2.setInvestId(investModel.getId());
         investRepayModel2.setPeriod(2);
         investRepayModel2.setStatus(RepayStatus.REPAYING);
@@ -96,14 +94,14 @@ public class InvestRepayMapperTest {
         investMapper.create(investModel);
 
         InvestRepayModel investRepayModel1 = new InvestRepayModel();
-        investRepayModel1.setId(idGenerator.generate());
+        investRepayModel1.setId(IdGenerator.generate());
         investRepayModel1.setInvestId(investModel.getId());
         investRepayModel1.setPeriod(1);
         investRepayModel1.setStatus(RepayStatus.REPAYING);
         investRepayModel1.setRepayDate(new Date());
 
         InvestRepayModel investRepayModel2 = new InvestRepayModel();
-        investRepayModel2.setId(idGenerator.generate());
+        investRepayModel2.setId(IdGenerator.generate());
         investRepayModel2.setInvestId(investModel.getId());
         investRepayModel2.setPeriod(2);
         investRepayModel2.setStatus(RepayStatus.COMPLETE);
@@ -123,7 +121,7 @@ public class InvestRepayMapperTest {
         Date actualRepayDate = new Date();
         investMapper.create(investModel);
         InvestRepayModel investRepayModel = new InvestRepayModel();
-        investRepayModel.setId(idGenerator.generate());
+        investRepayModel.setId(IdGenerator.generate());
         investRepayModel.setInvestId(investModel.getId());
         investRepayModel.setPeriod(1);
         investRepayModel.setStatus(RepayStatus.REPAYING);
@@ -151,7 +149,7 @@ public class InvestRepayMapperTest {
         List<InvestRepayModel> investRepayModels = new ArrayList<>();
         for (int i = 0; i < 30; i++) {
             InvestRepayModel investRepayModel = new InvestRepayModel();
-            investRepayModel.setId(idGenerator.generate());
+            investRepayModel.setId(IdGenerator.generate());
             investRepayModel.setInvestId(fakeInvestModel.getId());
             investRepayModel.setPeriod(i + 1);
             investRepayModel.setRepayDate(new DateTime().withDate(2015, 1, i + 1).withTimeAtStartOfDay().toDate());
@@ -183,7 +181,7 @@ public class InvestRepayMapperTest {
         List<InvestRepayModel> investRepayModels = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
             InvestRepayModel investRepayModel = new InvestRepayModel();
-            investRepayModel.setId(idGenerator.generate());
+            investRepayModel.setId(IdGenerator.generate());
             investRepayModel.setInvestId(fakeInvestModel.getId());
             investRepayModel.setPeriod(i + 1);
             investRepayModel.setRepayDate(new DateTime().withDate(2015, 1, i + 1).withTimeAtStartOfDay().toDate());
@@ -202,7 +200,7 @@ public class InvestRepayMapperTest {
         fakeUserModel.setLoginName("loginName");
         fakeUserModel.setPassword("password");
         fakeUserModel.setEmail("12345@abc.com");
-        fakeUserModel.setMobile("13900000000");
+        fakeUserModel.setMobile(RandomStringUtils.randomNumeric(11));
         fakeUserModel.setRegisterTime(new Date());
         fakeUserModel.setStatus(UserStatus.ACTIVE);
         fakeUserModel.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
@@ -212,7 +210,7 @@ public class InvestRepayMapperTest {
     private LoanModel getFakeLoanModel() {
         UserModel fakeUserModel = getFakeUserModel();
         LoanModel fakeLoanModel = new LoanModel();
-        fakeLoanModel.setId(idGenerator.generate());
+        fakeLoanModel.setId(IdGenerator.generate());
         fakeLoanModel.setName("name");
         fakeLoanModel.setAgentLoginName(fakeUserModel.getLoginName());
         fakeLoanModel.setLoanerLoginName(fakeUserModel.getLoginName());
@@ -235,7 +233,7 @@ public class InvestRepayMapperTest {
         LoanModel fakeLoanModel = this.getFakeLoanModel();
         userMapper.create(fakeUserModel);
         loanMapper.create(fakeLoanModel);
-        InvestModel fakeInvestModel = new InvestModel(idGenerator.generate(), fakeLoanModel.getId(), null, 0L, fakeUserModel.getLoginName(), new Date(), Source.WEB, null, 0.1);
+        InvestModel fakeInvestModel = new InvestModel(IdGenerator.generate(), fakeLoanModel.getId(), null, 0L, fakeUserModel.getLoginName(), new Date(), Source.WEB, null, 0.1);
         fakeInvestModel.setStatus(InvestStatus.SUCCESS);
         return fakeInvestModel;
     }
@@ -250,7 +248,7 @@ public class InvestRepayMapperTest {
         userMapper.create(fakeUserModel);
         loanMapper.create(loanModel);
         InvestModel investModel = new InvestModel();
-        investModel.setId(idGenerator.generate());
+        investModel.setId(IdGenerator.generate());
         investModel.setLoginName(fakeUserModel.getLoginName());
         investModel.setLoanId(loanModel.getId());
         investModel.setStatus(InvestStatus.SUCCESS);
@@ -261,7 +259,7 @@ public class InvestRepayMapperTest {
         Date endTime = DateUtils.addMonths(startTime, 1);
         InvestRepayModel investRepayModel = new InvestRepayModel();
         investRepayModel.setInvestId(investModel.getId());
-        investRepayModel.setId(idGenerator.generate());
+        investRepayModel.setId(IdGenerator.generate());
         investRepayModel.setStatus(RepayStatus.COMPLETE);
         investRepayModel.setActualRepayDate(new Date());
         investRepayModel.setRepayDate(new Date());
@@ -282,7 +280,7 @@ public class InvestRepayMapperTest {
         userMapper.create(fakeUserModel);
         loanMapper.create(loanModel);
         InvestModel investModel = new InvestModel();
-        investModel.setId(idGenerator.generate());
+        investModel.setId(IdGenerator.generate());
         investModel.setLoginName(fakeUserModel.getLoginName());
         investModel.setLoanId(loanModel.getId());
         investModel.setStatus(InvestStatus.SUCCESS);
@@ -293,7 +291,7 @@ public class InvestRepayMapperTest {
         Date endTime = DateUtils.addMonths(startTime, 1);
         InvestRepayModel investRepayModel = new InvestRepayModel();
         investRepayModel.setInvestId(investModel.getId());
-        investRepayModel.setId(idGenerator.generate());
+        investRepayModel.setId(IdGenerator.generate());
         investRepayModel.setStatus(RepayStatus.REPAYING);
         investRepayModel.setActualRepayDate(new Date());
         investRepayModel.setRepayDate(new Date());

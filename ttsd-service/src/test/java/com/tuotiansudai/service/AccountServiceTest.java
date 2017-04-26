@@ -32,8 +32,6 @@ public class AccountServiceTest {
     @Autowired
     private AccountService accountService;
     @Autowired
-    private IdGenerator idGenerator;
-    @Autowired
     private UserBillMapper userBillMapper;
     @Autowired
     private InvestRepayMapper investRepayMapper;
@@ -119,7 +117,7 @@ public class AccountServiceTest {
 
     private LoanModel getFakeLoan(String loanerLoginName, String agentLoginName, LoanStatus loanStatus) {
         LoanModel fakeLoanModel = new LoanModel();
-        fakeLoanModel.setId(idGenerator.generate());
+        fakeLoanModel.setId(IdGenerator.generate());
         fakeLoanModel.setName("loanName");
         fakeLoanModel.setLoanerLoginName(loanerLoginName);
         fakeLoanModel.setLoanerUserName("借款人");
@@ -143,7 +141,7 @@ public class AccountServiceTest {
 
     public InvestModel createInvest(String loginName, long loanId, TransferStatus transferStatus) {
         InvestModel investModel = new InvestModel();
-        investModel.setId(idGenerator.generate());
+        investModel.setId(IdGenerator.generate());
         investModel.setAmount(1000);
         investModel.setInvestTime(new Date());
         investModel.setLoginName(loginName);
@@ -160,7 +158,7 @@ public class AccountServiceTest {
         List<InvestRepayModel> list = new ArrayList<>();
         for (int i = 0; i < 1; i++) {
             InvestRepayModel investRepayModel = new InvestRepayModel();
-            investRepayModel.setId(idGenerator.generate());
+            investRepayModel.setId(IdGenerator.generate());
             investRepayModel.setInvestId(investId);
             investRepayModel.setPeriod(i + 1);
             investRepayModel.setRepayDate(new Date());
@@ -190,14 +188,14 @@ public class AccountServiceTest {
 
     private UserBillModel createUserBillModel(String loginName) {
         UserBillModel userBillModel = new UserBillModel();
-        userBillModel.setId(idGenerator.generate());
+        userBillModel.setId(IdGenerator.generate());
         userBillModel.setAmount(1000L);
         userBillModel.setBalance(1100L);
         userBillModel.setFreeze(1200l);
         userBillModel.setBusinessType(UserBillBusinessType.ACTIVITY_REWARD);
         userBillModel.setOperationType(UserBillOperationType.TI_BALANCE);
         userBillModel.setLoginName(loginName);
-        userBillModel.setOrderId(idGenerator.generate());
+        userBillModel.setOrderId(IdGenerator.generate());
         userBillModel.setOperatorLoginName(loginName);
         userBillMapper.create(userBillModel);
         return userBillModel;

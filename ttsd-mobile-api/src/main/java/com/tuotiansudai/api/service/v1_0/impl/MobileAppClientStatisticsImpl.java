@@ -2,9 +2,8 @@ package com.tuotiansudai.api.service.v1_0.impl;
 
 import com.tuotiansudai.api.dto.v1_0.BaseParam;
 import com.tuotiansudai.api.service.v1_0.MobileAppClientStatistics;
-import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
@@ -17,8 +16,7 @@ public class MobileAppClientStatisticsImpl implements MobileAppClientStatistics 
     private static final String MOBILE_APP_STAT_PARAM_ALL_KEY_FORMAT =
             "Mobile:{platform}:{appVersion}:{osVersion}:{deviceId}:{deviceModel}:{screenW}:{screenH}";
 
-    @Autowired
-    RedisWrapperClient redis;
+    private RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
     @Override
     public void statClientParams(BaseParam param) {
@@ -35,11 +33,11 @@ public class MobileAppClientStatisticsImpl implements MobileAppClientStatistics 
 
     private void increase(String key, String hkey) {
         String newValue = "1";
-        String oldValue = redis.hget(key, hkey);
+        String oldValue = redisWrapperClient.hget(key, hkey);
         if (StringUtils.isNumeric(oldValue)) {
             newValue = String.valueOf(Integer.parseInt(oldValue) + 1);
         }
-        redis.hset(key, hkey, newValue);
+        redisWrapperClient.hset(key, hkey, newValue);
     }
 
     private String generateKey() {

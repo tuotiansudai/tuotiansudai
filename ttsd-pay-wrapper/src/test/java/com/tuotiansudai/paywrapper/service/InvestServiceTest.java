@@ -41,9 +41,6 @@ import static org.junit.Assert.*;
 public class InvestServiceTest {
 
     @Autowired
-    private IdGenerator idGenerator;
-
-    @Autowired
     private UserMapper userMapper;
 
     @Autowired
@@ -105,7 +102,7 @@ public class InvestServiceTest {
         model.setRetentionAmount(200);
         model.setAutoInvestPeriods(periods);
         model.setCreatedTime(DateUtils.addDays(new Date(), diffDays));
-        model.setId(idGenerator.generate());
+        model.setId(IdGenerator.generate());
         model.setMaxInvestAmount(1000);
         model.setMinInvestAmount(100);
         autoInvestPlanMapper.create(model);
@@ -185,7 +182,7 @@ public class InvestServiceTest {
 
     @Test
     public void shouldAutoInvest() {
-        long loanId = this.idGenerator.generate();
+        long loanId = IdGenerator.generate();
         this.createUserByUserId("testLoan");
         this.createUserByUserId("testInvest");
         this.createUserByUserId("testInvest1");
@@ -225,7 +222,7 @@ public class InvestServiceTest {
         LoanModel loanModel = new LoanModel(loanDto);
         loanMapper.create(loanModel);
 
-        InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, 100L, "testInvest", new Date(), Source.WEB, null, 1.0);
+        InvestModel model = new InvestModel(IdGenerator.generate(), loanId, null, 100L, "testInvest", new Date(), Source.WEB, null, 1.0);
         model.setStatus(InvestStatus.SUCCESS);
         investMapper.create(model);
 
@@ -262,7 +259,7 @@ public class InvestServiceTest {
         LoanModel loanModel = createLoanModel();
         loanMapper.create(loanModel);
 
-        InvestModel modelOld = new InvestModel(idGenerator.generate(), loanModelOld.getId(), null, 100L, "testInvest", new Date(), Source.WEB, null, 1.0);
+        InvestModel modelOld = new InvestModel(IdGenerator.generate(), loanModelOld.getId(), null, 100L, "testInvest", new Date(), Source.WEB, null, 1.0);
         modelOld.setStatus(InvestStatus.SUCCESS);
         investMapper.create(modelOld);
         createUserAutoInvestPlan("testInvest", AutoInvestMonthPeriod.Month_1.getPeriodValue(), -1);
@@ -283,7 +280,7 @@ public class InvestServiceTest {
     }
 
     private LoanModel createLoanModel() {
-        long loanId = this.idGenerator.generate();
+        long loanId = IdGenerator.generate();
         LoanDto loanDto = new LoanDto();
         loanDto.setLoanerLoginName("testLoan");
         loanDto.setLoanerUserName("借款人");
@@ -317,7 +314,7 @@ public class InvestServiceTest {
 
     @Test
     public void shouldNoPasswordInvest() {
-        long loanId = this.idGenerator.generate();
+        long loanId = IdGenerator.generate();
         this.createUserByUserId("testLoan");
         LoanDto loanDto = new LoanDto();
         loanDto.setLoanerLoginName("testLoan");
@@ -375,7 +372,7 @@ public class InvestServiceTest {
 
     @Test
     public void shouldInvestWebRetUrlIsSuccess() {
-        long loanId = this.idGenerator.generate();
+        long loanId = IdGenerator.generate();
         this.createUserByUserId("testLoan");
         LoanDto loanDto = new LoanDto();
         loanDto.setLoanerLoginName("testLoan");
@@ -430,7 +427,7 @@ public class InvestServiceTest {
 
     @Test
     public void shouldInvestRetAppUrlIsSuccess() {
-        long loanId = this.idGenerator.generate();
+        long loanId = IdGenerator.generate();
         this.createUserByUserId("testLoan");
         LoanDto loanDto = new LoanDto();
         loanDto.setLoanerLoginName("testLoan");

@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,9 +33,6 @@ public class UserCouponMapperTest {
 
     @Autowired
     private UserMapper userMapper;
-
-    @Autowired
-    private IdGenerator idGenerator;
 
     @Test
     public void shouldCreateUserCoupon() {
@@ -129,7 +127,7 @@ public class UserCouponMapperTest {
 
     private CouponModel fakeCouponModel() {
         CouponModel couponModel = new CouponModel();
-        couponModel.setId(idGenerator.generate());
+        couponModel.setId(IdGenerator.generate());
         couponModel.setAmount(1000L);
         couponModel.setRate(0.1);
         couponModel.setBirthdayBenefit(0.5);
@@ -167,7 +165,7 @@ public class UserCouponMapperTest {
         userModelTest.setLoginName("couponTest");
         userModelTest.setPassword("123abc");
         userModelTest.setEmail("12345@abc.com");
-        userModelTest.setMobile("13900000000");
+        userModelTest.setMobile(RandomStringUtils.randomNumeric(11));
         userModelTest.setRegisterTime(new Date());
         userModelTest.setStatus(UserStatus.ACTIVE);
         userModelTest.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));

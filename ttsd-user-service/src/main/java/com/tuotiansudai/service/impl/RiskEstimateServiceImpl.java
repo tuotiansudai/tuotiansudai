@@ -1,7 +1,6 @@
 package com.tuotiansudai.service.impl;
 
 import com.google.common.base.Strings;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.enums.ExperienceBillBusinessType;
 import com.tuotiansudai.enums.ExperienceBillOperationType;
 import com.tuotiansudai.enums.riskestimation.Estimate;
@@ -10,6 +9,7 @@ import com.tuotiansudai.repository.model.RiskEstimateModel;
 import com.tuotiansudai.service.ExperienceBillService;
 import com.tuotiansudai.service.RiskEstimateService;
 import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,13 +26,12 @@ public class RiskEstimateServiceImpl implements RiskEstimateService {
 
     private final ExperienceBillService experienceBillService;
 
-    private final RedisWrapperClient redisWrapperClient;
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
     @Autowired
-    public RiskEstimateServiceImpl(RiskEstimateMapper riskEstimateMapper, ExperienceBillService experienceBillService, RedisWrapperClient redisWrapperClient) {
+    public RiskEstimateServiceImpl(RiskEstimateMapper riskEstimateMapper, ExperienceBillService experienceBillService) {
         this.riskEstimateMapper = riskEstimateMapper;
         this.experienceBillService = experienceBillService;
-        this.redisWrapperClient = redisWrapperClient;
     }
 
     @Override

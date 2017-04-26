@@ -198,12 +198,8 @@
         <property name="basePackage" value="com.tuotiansudai.message.repository.mapper"/>
     </bean>
 
-    <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
-        <property name="maxTotal" value="${web.jedis.pool.maxTotal}"/>
-        <property name="maxWaitMillis" value="${common.jedis.pool.maxWaitMillis}"/>
-    </bean>
-
     <bean id="okHttpClient" class="com.squareup.okhttp.OkHttpClient" />
+
     <bean class="com.tuotiansudai.mq.config.MQProducerConfig"/>
 
 </beans>

@@ -68,9 +68,6 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
     private InvestReferrerRewardMapper investReferrerRewardMapper;
 
     @Autowired
-    private IdGenerator idGenerator;
-
-    @Autowired
     private LoanMapper loanMapper;
 
     @Autowired
@@ -113,7 +110,7 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
                     }
 
                     long reward = this.calculateReferrerReward(invest.getAmount(), invest.getTradingTime(), loanDealLine, referrerRelationModel.getLevel(), role);
-                    InvestReferrerRewardModel model = new InvestReferrerRewardModel(idGenerator.generate(), invest.getId(), reward, referrerLoginName, role);
+                    InvestReferrerRewardModel model = new InvestReferrerRewardModel(IdGenerator.generate(), invest.getId(), reward, referrerLoginName, role);
                     investReferrerRewardMapper.create(model);
                     if (this.transferReferrerReward(model)) {
                         this.sendMessage(invest.getLoginName(), referrerLoginName, reward, model.getId());
@@ -255,13 +252,13 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
     }
 
     private long calculateReferrerReward(long amount, Date investTime, Date dealLine, int level, Role role) {
-        if (Lists.newArrayList(Role.ZC_STAFF, Role.ZC_STAFF_RECOMMEND).contains(role)) {
+        if (Lists.newArrayList(Role.ZC_STAFF_RECOMMEND).contains(role)) {
             return 0;
         }
 
         BigDecimal amountBigDecimal = new BigDecimal(amount);
 
-        double rewardRate = this.getRewardRate(level, Role.SD_STAFF == role);
+        double rewardRate = this.getRewardRate(level, (Role.SD_STAFF == role || Role.ZC_STAFF == role));
 
         return amountBigDecimal
                 .multiply(new BigDecimal(rewardRate))

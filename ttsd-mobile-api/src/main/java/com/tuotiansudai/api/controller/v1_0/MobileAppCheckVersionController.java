@@ -7,14 +7,13 @@ import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.util.GsonUtil;
 import com.tuotiansudai.api.util.HttpClientUtil;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.Environment;
 import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.util.RedisWrapperClient;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,8 +35,7 @@ public class MobileAppCheckVersionController extends MobileAppBaseController {
     private static final int APP_VERSION_INFO_EXPIRE_SECONDS = 60 * 60;
     static Logger log = Logger.getLogger(MobileAppCheckVersionController.class);
 
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
     @Value("${common.environment}")
     private Environment environment;

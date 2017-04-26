@@ -28,9 +28,6 @@ import static org.junit.Assert.assertThat;
 public class NormalRepayGenerateFormDataTest extends RepayBaseTest {
 
     @Autowired
-    private IdGenerator idGenerator;
-
-    @Autowired
     private UserMapper userMapper;
 
     @Autowired
@@ -52,11 +49,11 @@ public class NormalRepayGenerateFormDataTest extends RepayBaseTest {
         userMapper.create(loaner);
         accountMapper.create(loanerAccount);
 
-        LoanModel loan = this.getFakeNormalLoan(idGenerator.generate(), LoanType.INVEST_INTEREST_MONTHLY_REPAY, 10000, 2, 0.12, 0, 0.1, loaner.getLoginName(), new Date());
+        LoanModel loan = this.getFakeNormalLoan(IdGenerator.generate(), LoanType.INVEST_INTEREST_MONTHLY_REPAY, 10000, 2, 0.12, 0, 0.1, loaner.getLoginName(), new Date());
         long loanRepay1ExpectedInterest = 1000;
         long loanRepay2ExpectedInterest = 2000;
-        LoanRepayModel loanRepay1 = this.getFakeLoanRepayModel(idGenerator.generate(), loan.getId(), 1, 0, loanRepay1ExpectedInterest, new DateTime().withTime(23, 59, 59, 0).toDate(), null, RepayStatus.REPAYING);
-        LoanRepayModel loanRepay2 = this.getFakeLoanRepayModel(idGenerator.generate(), loan.getId(), 2, loan.getLoanAmount(), loanRepay2ExpectedInterest, new DateTime().plusDays(30).withTime(23, 59, 59, 0).toDate(), null, RepayStatus.REPAYING);
+        LoanRepayModel loanRepay1 = this.getFakeLoanRepayModel(IdGenerator.generate(), loan.getId(), 1, 0, loanRepay1ExpectedInterest, new DateTime().withTime(23, 59, 59, 0).toDate(), null, RepayStatus.REPAYING);
+        LoanRepayModel loanRepay2 = this.getFakeLoanRepayModel(IdGenerator.generate(), loan.getId(), 2, loan.getLoanAmount(), loanRepay2ExpectedInterest, new DateTime().plusDays(30).withTime(23, 59, 59, 0).toDate(), null, RepayStatus.REPAYING);
         loanMapper.create(loan);
         loanRepayMapper.create(Lists.newArrayList(loanRepay1, loanRepay2));
 
@@ -79,11 +76,11 @@ public class NormalRepayGenerateFormDataTest extends RepayBaseTest {
         userMapper.create(loaner);
         accountMapper.create(loanerAccount);
 
-        LoanModel loan = this.getFakeNormalLoan(idGenerator.generate(), LoanType.INVEST_INTEREST_MONTHLY_REPAY, 10000, 2, 0.12, 0, 0.1, loaner.getLoginName(), new Date());
+        LoanModel loan = this.getFakeNormalLoan(IdGenerator.generate(), LoanType.INVEST_INTEREST_MONTHLY_REPAY, 10000, 2, 0.12, 0, 0.1, loaner.getLoginName(), new Date());
         long loanRepay1ExpectedInterest = 1000;
         long loanRepay2ExpectedInterest = 2000;
-        LoanRepayModel loanRepay1 = this.getFakeLoanRepayModel(idGenerator.generate(), loan.getId(), 1, 0, loanRepay1ExpectedInterest, new DateTime().minusDays(30).withTime(23, 59, 59, 0).toDate(), new DateTime().minusDays(30).toDate(), RepayStatus.COMPLETE);
-        LoanRepayModel loanRepay2 = this.getFakeLoanRepayModel(idGenerator.generate(), loan.getId(), 2, loan.getLoanAmount(), loanRepay2ExpectedInterest, new DateTime().withTime(23, 59, 59, 0).toDate(), null, RepayStatus.REPAYING);
+        LoanRepayModel loanRepay1 = this.getFakeLoanRepayModel(IdGenerator.generate(), loan.getId(), 1, 0, loanRepay1ExpectedInterest, new DateTime().minusDays(30).withTime(23, 59, 59, 0).toDate(), new DateTime().minusDays(30).toDate(), RepayStatus.COMPLETE);
+        LoanRepayModel loanRepay2 = this.getFakeLoanRepayModel(IdGenerator.generate(), loan.getId(), 2, loan.getLoanAmount(), loanRepay2ExpectedInterest, new DateTime().withTime(23, 59, 59, 0).toDate(), null, RepayStatus.REPAYING);
         loanMapper.create(loan);
         loanRepayMapper.create(Lists.newArrayList(loanRepay1, loanRepay2));
 
@@ -106,14 +103,14 @@ public class NormalRepayGenerateFormDataTest extends RepayBaseTest {
         userMapper.create(loaner);
         accountMapper.create(loanerAccount);
 
-        LoanModel loan = this.getFakeNormalLoan(idGenerator.generate(), LoanType.INVEST_INTEREST_MONTHLY_REPAY, 10000, 2, 0.12, 0, 0.1, loaner.getLoginName(), new Date());
+        LoanModel loan = this.getFakeNormalLoan(IdGenerator.generate(), LoanType.INVEST_INTEREST_MONTHLY_REPAY, 10000, 2, 0.12, 0, 0.1, loaner.getLoginName(), new Date());
         loan.setStatus(LoanStatus.OVERDUE);
         long loanRepay1ExpectedInterest = 1000;
         long loanRepay1OverdueInterest = 10;
         long loanRepay2ExpectedInterest = 2000;
-        LoanRepayModel loanRepay1 = this.getFakeLoanRepayModel(idGenerator.generate(), loan.getId(), 1, 0, loanRepay1ExpectedInterest, new DateTime().minusDays(1).withTime(23, 59, 59, 0).toDate(), null, RepayStatus.OVERDUE);
+        LoanRepayModel loanRepay1 = this.getFakeLoanRepayModel(IdGenerator.generate(), loan.getId(), 1, 0, loanRepay1ExpectedInterest, new DateTime().minusDays(1).withTime(23, 59, 59, 0).toDate(), null, RepayStatus.OVERDUE);
         loanRepay1.setDefaultInterest(loanRepay1OverdueInterest);
-        LoanRepayModel loanRepay2 = this.getFakeLoanRepayModel(idGenerator.generate(), loan.getId(), 2, loan.getLoanAmount(), loanRepay2ExpectedInterest, new DateTime().plusDays(30).withTime(23, 59, 59, 0).toDate(), null, RepayStatus.REPAYING);
+        LoanRepayModel loanRepay2 = this.getFakeLoanRepayModel(IdGenerator.generate(), loan.getId(), 2, loan.getLoanAmount(), loanRepay2ExpectedInterest, new DateTime().plusDays(30).withTime(23, 59, 59, 0).toDate(), null, RepayStatus.REPAYING);
         loanMapper.create(loan);
         loanRepayMapper.create(Lists.newArrayList(loanRepay1, loanRepay2));
 
@@ -136,14 +133,14 @@ public class NormalRepayGenerateFormDataTest extends RepayBaseTest {
         userMapper.create(loaner);
         accountMapper.create(loanerAccount);
 
-        LoanModel loan = this.getFakeNormalLoan(idGenerator.generate(), LoanType.INVEST_INTEREST_MONTHLY_REPAY, 10000, 2, 0.12, 0, 0.1, loaner.getLoginName(), new Date());
+        LoanModel loan = this.getFakeNormalLoan(IdGenerator.generate(), LoanType.INVEST_INTEREST_MONTHLY_REPAY, 10000, 2, 0.12, 0, 0.1, loaner.getLoginName(), new Date());
         loan.setStatus(LoanStatus.OVERDUE);
         long loanRepay1ExpectedInterest = 1000;
         long loanRepay1OverdueInterest = 20;
         long loanRepay2ExpectedInterest = 2000;
-        LoanRepayModel loanRepay1 = this.getFakeLoanRepayModel(idGenerator.generate(), loan.getId(), 1, 0, loanRepay1ExpectedInterest, new DateTime().minusDays(30).withTime(23, 59, 59, 0).toDate(), null, RepayStatus.OVERDUE);
+        LoanRepayModel loanRepay1 = this.getFakeLoanRepayModel(IdGenerator.generate(), loan.getId(), 1, 0, loanRepay1ExpectedInterest, new DateTime().minusDays(30).withTime(23, 59, 59, 0).toDate(), null, RepayStatus.OVERDUE);
         loanRepay1.setDefaultInterest(loanRepay1OverdueInterest);
-        LoanRepayModel loanRepay2 = this.getFakeLoanRepayModel(idGenerator.generate(), loan.getId(), 2, loan.getLoanAmount(), loanRepay2ExpectedInterest, new DateTime().minusDays(1).withTime(23, 59, 59, 0).toDate(), null, RepayStatus.OVERDUE);
+        LoanRepayModel loanRepay2 = this.getFakeLoanRepayModel(IdGenerator.generate(), loan.getId(), 2, loan.getLoanAmount(), loanRepay2ExpectedInterest, new DateTime().minusDays(1).withTime(23, 59, 59, 0).toDate(), null, RepayStatus.OVERDUE);
         loanMapper.create(loan);
         loanRepayMapper.create(Lists.newArrayList(loanRepay1, loanRepay2));
 

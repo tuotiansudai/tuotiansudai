@@ -112,16 +112,16 @@ else if(NODE_ENV=='dev') {
 	//开发环境
 	plugins.push(new webpack.HotModuleReplacementPlugin());
 
-	// 接口代理
-	var proxyList = ['media-center/*','task-center/*'];
-	var proxyObj = {};
-	proxyList.forEach(function(value) {
-		proxyObj[value] = {
-			target: 'http://localhost:3009',
-			changeOrigin: true,
-			secure: false
-		};
-	});
+	// 接口代理,目前用ftl-server模拟假数据
+	// var proxyList = ['media-center/*','task-center/*'];
+	// var proxyObj = {};
+	// proxyList.forEach(function(value) {
+	// 	proxyObj[value] = {
+	// 		target: 'http://localhost:3009',
+	// 		changeOrigin: true,
+	// 		secure: false
+	// 	};
+	// });
 
 	webpackdevServer={
 		contentBase: basePath,
@@ -136,13 +136,7 @@ else if(NODE_ENV=='dev') {
 			chunks: false,
 			colors: true
 		},
-		proxy:proxyObj
-		// proxy: {
-		// 	"/media-center/*": {
-		// 		secure: false,
-		// 		target: 'http://localhost:3009'
-		// 	}
-		// }
+		// proxy:proxyObj
 	};
 }
 

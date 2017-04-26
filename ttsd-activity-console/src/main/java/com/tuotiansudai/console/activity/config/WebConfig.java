@@ -3,8 +3,6 @@ package com.tuotiansudai.console.activity.config;
 import com.fasterxml.jackson.core.JsonParser;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.web.config.handler.HandlerExceptionLoggingResolver;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -81,11 +79,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         settings.setProperty("template_exception_handler", "RETHROW");
         configurer.setFreemarkerSettings(settings);
         return configurer;
-    }
-
-    @Bean
-    public IdGenerator idGenerator(RedisWrapperClient redisWrapperClient) {
-        return new IdGenerator(redisWrapperClient);
     }
 
     @Bean

@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.coupon.service.CouponAlertService;
 import com.tuotiansudai.dto.CouponAlertDto;
 import com.tuotiansudai.enums.CouponType;
@@ -14,6 +13,7 @@ import com.tuotiansudai.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.repository.model.CouponModel;
 import com.tuotiansudai.repository.model.UserCouponModel;
 import com.tuotiansudai.repository.model.UserGroup;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,14 +32,13 @@ public class CouponAlertServiceImpl implements CouponAlertService {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
+
     @Autowired
     private CouponMapper couponMapper;
 
     @Autowired
     private UserCouponMapper userCouponMapper;
-
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
 
     @Override
     public CouponAlertDto getCouponAlert(String loginName, List<CouponType> couponTypes) {

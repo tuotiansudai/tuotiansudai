@@ -5,7 +5,6 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.ReplaceBankCardDto;
 import com.tuotiansudai.repository.mapper.BankCardMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
@@ -13,6 +12,7 @@ import com.tuotiansudai.repository.model.BankCardModel;
 import com.tuotiansudai.repository.model.BankCardStatus;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.BandCardManagerService;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,14 +24,13 @@ import java.util.Map;
 @Service
 public class BandCardManagerServiceImpl implements BandCardManagerService {
 
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
+
     @Autowired
     private BankCardMapper bankCardMapper;
 
     @Autowired
     private UserMapper userMapper;
-
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
 
     private static String BANK_CARD_REMARK_TEMPLATE = "bank_card_remark_id:{0}";
 

@@ -2,7 +2,6 @@ package com.tuotiansudai.paywrapper.service.impl;
 
 import com.google.common.base.Strings;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.enums.UserBillBusinessType;
@@ -25,7 +24,7 @@ import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountTransfer;
-import org.apache.commons.collections.CollectionUtils;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +33,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 @Service
@@ -43,6 +41,8 @@ public class ExperienceRepayServiceImpl implements ExperienceRepayService {
     private static Logger logger = LoggerFactory.getLogger(ExperienceRepayServiceImpl.class);
 
     private final static String EXPERIENCE_INTEREST_REDIS_KEY = "SEND_EXPERIENCE_INTEREST";
+
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
     @Autowired
     private LoanMapper loanMapper;
@@ -70,9 +70,6 @@ public class ExperienceRepayServiceImpl implements ExperienceRepayService {
 
     @Autowired
     private MQWrapperClient mqWrapperClient;
-
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
 
     @Override
     public boolean repay(long investId) {

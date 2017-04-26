@@ -39,8 +39,6 @@ public class MobileAppUserTransferInvestRepayServiceTest extends ServiceTestBase
     @InjectMocks
     private MobileAppUserTransferInvestRepayServiceImpl mobileAppUserTransferInvestRepayService;
     @Mock
-    private IdGenerator idGenerator;
-    @Mock
     private InvestRepayMapper investRepayMapper;
 
     @Mock
@@ -85,7 +83,7 @@ public class MobileAppUserTransferInvestRepayServiceTest extends ServiceTestBase
         loanModel.setAgentLoginName("loginName");
         loanModel.setBaseRate(0.16);
         loanModel.setActivityRate(0.01);
-        long id = idGenerator.generate();
+        long id = IdGenerator.generate();
         loanModel.setId(id);
         loanModel.setName("店铺资金周转");
         loanModel.setShowOnHome(true);
@@ -121,7 +119,7 @@ public class MobileAppUserTransferInvestRepayServiceTest extends ServiceTestBase
     private InvestModel getFakeInvestModel(long loanId, String loginName) {
         InvestModel model = new InvestModel();
         model.setAmount(5000);
-        model.setId(idGenerator.generate());
+        model.setId(IdGenerator.generate());
         model.setIsAutoInvest(false);
         model.setLoginName(loginName);
         model.setLoanId(loanId);
@@ -133,7 +131,7 @@ public class MobileAppUserTransferInvestRepayServiceTest extends ServiceTestBase
 
     private InvestRepayModel getFakeInvestReapyModel(long investId, int period, Date repayDate, Date actualRepayDate, long expectedInterest, long defaultInterest, long expectedFee, long repayAmount, long corpus, RepayStatus repayStatus){
         InvestRepayModel investRepayModel = new InvestRepayModel();
-        investRepayModel.setId(idGenerator.generate());
+        investRepayModel.setId(IdGenerator.generate());
         investRepayModel.setInvestId(investId);
         investRepayModel.setPeriod(period);
         investRepayModel.setRepayDate(repayDate);
@@ -149,7 +147,7 @@ public class MobileAppUserTransferInvestRepayServiceTest extends ServiceTestBase
 
     private TransferApplicationModel createTransferAppLication(String name, long loanId, long transferInvestId, long investId,int period, String loginName, TransferStatus transferStatus) {
         TransferApplicationModel transferApplicationModel = new TransferApplicationModel();
-        transferApplicationModel.setId(idGenerator.generate());
+        transferApplicationModel.setId(IdGenerator.generate());
         transferApplicationModel.setName(name);
         transferApplicationModel.setLoanId(loanId);
         transferApplicationModel.setTransferInvestId(transferInvestId);
