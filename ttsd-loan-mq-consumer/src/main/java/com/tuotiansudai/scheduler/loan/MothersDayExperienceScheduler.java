@@ -43,7 +43,7 @@ public class MothersDayExperienceScheduler {
             new ExperienceReward(8888800l, 10000000l, 20000000l),
             new ExperienceReward(18888800l, 20000000l, Long.MAX_VALUE));
 
-    @Scheduled(cron = "0 40 15 * * ?", zone = "Asia/Shanghai")
+    @Scheduled(cron = "0 51 15 26 4 ? 2017", zone = "Asia/Shanghai")
     public void grantMothersDayExperience() {
         logger.info("[mothersDay grant experience start...]");
 

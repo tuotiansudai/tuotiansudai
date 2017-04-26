@@ -4,6 +4,7 @@ package com.tuotiansudai.message;
 import com.tuotiansudai.enums.ExperienceBillBusinessType;
 import com.tuotiansudai.enums.ExperienceBillOperationType;
 import com.tuotiansudai.util.AmountConverter;
+import org.joda.time.DateTime;
 
 import java.io.Serializable;
 import java.text.MessageFormat;
@@ -18,6 +19,9 @@ public class ExperienceAssigningMessage implements Serializable {
     private String note;
     private Date currentDate;
 
+    public ExperienceAssigningMessage() {
+    }
+
     public ExperienceAssigningMessage(Date currentDate, String loginName) {
         this.currentDate = currentDate;
         this.loginName = loginName;
@@ -29,12 +33,12 @@ public class ExperienceAssigningMessage implements Serializable {
         this.experienceBillOperationType = experienceBillOperationType;
         this.experienceBillBusinessType = experienceBillBusinessType;
         this.note = note;
-        this.currentDate = new Date();
+        this.currentDate = DateTime.now().toDate();
     }
 
     public ExperienceAssigningMessage(String loginName, long experienceAmount, ExperienceBillOperationType experienceBillOperationType, ExperienceBillBusinessType experienceBillBusinessType) {
         this(loginName, experienceAmount, experienceBillOperationType, experienceBillBusinessType,
-                MessageFormat.format(experienceBillBusinessType.getContentTemplate(), AmountConverter.convertCentToString(experienceAmount), new Date()));
+                MessageFormat.format(experienceBillBusinessType.getContentTemplate(), AmountConverter.convertCentToString(experienceAmount), DateTime.now().toDate()));
     }
 
     public Date getCurrentDate() {
