@@ -36,6 +36,9 @@ public class MobileAppInvestListsV3ServiceTest extends ServiceTestBase{
     private MobileAppInvestListsV3ServiceImpl mobileAppInvestListsV3Service;
 
     @Mock
+    private InvestTransferService investTransferService; // Do not remove
+
+    @Mock
     private InvestMapper investMapper;
 
     @Mock

@@ -35,16 +35,28 @@ public class MobileAppTransferApplicationV2ServiceTest extends ServiceTestBase {
 
     @InjectMocks
     private MobileAppTransferApplicationV2ServiceImpl mobileAppTransferApplicationV2Service;
+
+    @Mock
+    private TransferApplicationMapper transferApplicationMapper; //Do not remove
+
+    @Mock
+    private LoanRepayMapper loanRepayMapper; //Do not remove
+
     @Mock
     private InvestMapper investMapper;
+
     @Mock
     private LoanMapper loanMapper;
+
     @Mock
     private TransferRuleMapper transferRuleMapper;
+
     @Mock
     private InvestRepayMapper investRepayMapper;
+
     @Mock
     private InvestService investService;
+
     @Mock
     private PageValidUtils pageValidUtils;
 

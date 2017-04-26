@@ -30,11 +30,9 @@ public class SiteMapRedisWrapperClient {
     @Value("${cms.redis.password}")
     private String redisPassword;
 
-    @Value("${mobile.jedis.pool.maxTotal}")
-    private int maxTotal;
+    private final static int maxTotal = 300;
 
-    @Value("${cms.jedis.pool.maxWaitMillis}")
-    private int maxWaitMillis;
+    private final static int maxWaitMillis = 5000;
 
     private static JedisPool jedisPool;
 
