@@ -15,7 +15,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
                 "com.tuotiansudai.scheduler.loan"
         },
         exclude = {FreeMarkerAutoConfiguration.class})
-@EnableScheduling
 @Import({MQConsumerConfig.class, MQProducerConfig.class})
 public class Application {
     public static void main(String[] args) {

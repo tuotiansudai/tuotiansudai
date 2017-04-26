@@ -13,6 +13,8 @@ import com.tuotiansudai.repository.model.UserGroup;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.AmountConverter;
 import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -22,6 +24,7 @@ import java.util.List;
 
 @Component
 public class CouponExpiredNotifyScheduler {
+    static Logger logger = LoggerFactory.getLogger(CouponExpiredNotifyScheduler.class);
 
     @Autowired
     private CouponMapper couponMapper;
@@ -37,26 +40,31 @@ public class CouponExpiredNotifyScheduler {
 
     @Scheduled(cron = "0 0 10 * * ?", zone = "Asia/Shanghai")
     private void couponExpiredAfterFiveDays() {
-        final List<UserGroup> notifyUserGroups = Lists.newArrayList(UserGroup.IMPORT_USER, UserGroup.CHANNEL,
-                UserGroup.FIRST_INVEST_ACHIEVEMENT, UserGroup.MAX_AMOUNT_ACHIEVEMENT, UserGroup.LAST_INVEST_ACHIEVEMENT);
+        try {
+            final List<UserGroup> notifyUserGroups = Lists.newArrayList(UserGroup.IMPORT_USER, UserGroup.CHANNEL,
+                    UserGroup.FIRST_INVEST_ACHIEVEMENT, UserGroup.MAX_AMOUNT_ACHIEVEMENT, UserGroup.LAST_INVEST_ACHIEVEMENT);
 
-        List<UserCouponModel> expireAfterFiveDays = userCouponMapper.findExpireAfterFiveDays();
-        for (UserCouponModel userCouponModel : expireAfterFiveDays) {
-            CouponModel couponModel = couponMapper.findById(userCouponModel.getCouponId());
-            if (!notifyUserGroups.contains(couponModel.getUserGroup())) {
-                continue;
+            List<UserCouponModel> expireAfterFiveDays = userCouponMapper.findExpireAfterFiveDays();
+            for (UserCouponModel userCouponModel : expireAfterFiveDays) {
+                CouponModel couponModel = couponMapper.findById(userCouponModel.getCouponId());
+                if (!notifyUserGroups.contains(couponModel.getUserGroup())) {
+                    continue;
+                }
+
+                UserModel userModel = userMapper.findByLoginName(userCouponModel.getLoginName());
+
+                SmsCouponNotifyDto notifyDto = new SmsCouponNotifyDto();
+                notifyDto.setMobile(userModel.getMobile());
+                notifyDto.setAmount(AmountConverter.convertCentToString(couponModel.getAmount()));
+                notifyDto.setRate(new BigDecimal(couponModel.getRate() * 100).setScale(0, BigDecimal.ROUND_UP).toString());
+                notifyDto.setCouponType(couponModel.getCouponType());
+                notifyDto.setExpiredDate(DateTime.now().plusDays(couponModel.getDeadline()).withTimeAtStartOfDay().toString("yyyy年MM月dd日"));
+
+                mqWrapperClient.sendMessage(MessageQueue.CouponSmsExpiredNotify, notifyDto);
             }
-
-            UserModel userModel = userMapper.findByLoginName(userCouponModel.getLoginName());
-
-            SmsCouponNotifyDto notifyDto = new SmsCouponNotifyDto();
-            notifyDto.setMobile(userModel.getMobile());
-            notifyDto.setAmount(AmountConverter.convertCentToString(couponModel.getAmount()));
-            notifyDto.setRate(new BigDecimal(couponModel.getRate() * 100).setScale(0, BigDecimal.ROUND_UP).toString());
-            notifyDto.setCouponType(couponModel.getCouponType());
-            notifyDto.setExpiredDate(DateTime.now().plusDays(couponModel.getDeadline()).withTimeAtStartOfDay().toString("yyyy年MM月dd日"));
-
-            mqWrapperClient.sendMessage(MessageQueue.CouponSmsExpiredNotify, notifyDto);
+        }catch (Exception e){
+            logger.error("[CouponExpiredNotifyScheduler:] job execution is failed.", e);
         }
+
     }
 }
