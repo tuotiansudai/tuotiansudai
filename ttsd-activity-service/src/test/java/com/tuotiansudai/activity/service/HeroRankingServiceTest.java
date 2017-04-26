@@ -40,8 +40,6 @@ public class HeroRankingServiceTest {
     @Autowired
     private UserMapper userMapper;
     @Autowired
-    private IdGenerator idGenerator;
-    @Autowired
     private LoanMapper loanMapper;
     @Autowired
     private ReferrerRelationMapper referrerRelationMapper;
@@ -77,7 +75,7 @@ public class HeroRankingServiceTest {
         referrerRelationModel2.setLoginName(investor3.getLoginName());
         referrerRelationMapper.create(referrerRelationModel2);
 
-        LoanModel loanModel = createLoan(loaner.getLoginName(),idGenerator.generate() , ActivityType.NORMAL,LoanStatus.REPAYING);
+        LoanModel loanModel = createLoan(loaner.getLoginName(),IdGenerator.generate() , ActivityType.NORMAL,LoanStatus.REPAYING);
         loanMapper.create(loanModel);
 
         InvestModel investModel2 = this.getFakeInvestModelByLoginName(investor2.getLoginName(),loanModel.getId());
@@ -111,7 +109,7 @@ public class HeroRankingServiceTest {
         AccountModel accountModel3 = new AccountModel(investor3.getLoginName(), "payUserId3", "payAccountId3", new Date());
         accountMapper.create(accountModel3);
 
-        LoanModel loanModel = createLoan(loaner.getLoginName(), idGenerator.generate(), ActivityType.NORMAL, LoanStatus.REPAYING);
+        LoanModel loanModel = createLoan(loaner.getLoginName(), IdGenerator.generate(), ActivityType.NORMAL, LoanStatus.REPAYING);
         loanMapper.create(loanModel);
 
         InvestModel investModel1 = this.getFakeInvestModelByLoginName(investor1.getLoginName(),loanModel.getId());
@@ -197,7 +195,7 @@ public class HeroRankingServiceTest {
     }
 
     private InvestModel getFakeInvestModelByLoginName(String loginName,long loanId){
-        InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, 1000l, loginName, new DateTime().withTimeAtStartOfDay().toDate(), Source.WEB, null,0.1);
+        InvestModel model = new InvestModel(IdGenerator.generate(), loanId, null, 1000l, loginName, new DateTime().withTimeAtStartOfDay().toDate(), Source.WEB, null,0.1);
         model.setStatus(InvestStatus.SUCCESS);
         return model;
     }

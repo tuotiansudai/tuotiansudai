@@ -20,8 +20,6 @@ import java.util.UUID;
 @ContextConfiguration(locations = {"classpath:applicationContext.xml", "classpath:spring-session.xml"})
 @Transactional
 public abstract class ServiceTestBase {
-    @Autowired
-    private IdGenerator idGenerator;
 
     @Before
     public void baseSetup() {
@@ -40,16 +38,9 @@ public abstract class ServiceTestBase {
         return fakeUser;
     }
 
-    protected AccountModel getFakeAccount(UserModel userModel) {
-        AccountModel fakeAccount = new AccountModel(userModel.getLoginName(), "payUserId", "payAccountId", new Date());
-        fakeAccount.setBalance(1000000);
-        fakeAccount.setMembershipPoint(50001);
-        return fakeAccount;
-    }
-
     public CouponModel fakeCouponModel(UserModel userModel, CouponType couponType) {
         CouponModel couponModel = new CouponModel();
-        couponModel.setId(idGenerator.generate());
+        couponModel.setId(IdGenerator.generate());
         couponModel.setAmount(1000L);
         couponModel.setRate(0.1);
         couponModel.setBirthdayBenefit(0.5);

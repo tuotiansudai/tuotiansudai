@@ -199,10 +199,6 @@
         <constructor-arg ref="schedulerBuilder"/>
     </bean>
 
-    <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
-        <property name="maxTotal" value="${activity.jedis.pool.maxTotal}"/>
-    </bean>
-
     <bean id="httpClient" class="com.squareup.okhttp.OkHttpClient"/>
 
     <bean id="experienceBillService" class="com.tuotiansudai.service.impl.ExperienceServiceImpl"/>

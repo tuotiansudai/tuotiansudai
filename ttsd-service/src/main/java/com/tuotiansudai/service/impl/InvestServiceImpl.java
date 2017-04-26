@@ -5,12 +5,6 @@ import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.PayWrapperClient;
-import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.dto.UserCouponDto;
-import com.tuotiansudai.repository.mapper.CouponMapper;
-import com.tuotiansudai.repository.mapper.UserCouponMapper;
-import com.tuotiansudai.repository.model.CouponModel;
-import com.tuotiansudai.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.CouponType;
@@ -18,11 +12,7 @@ import com.tuotiansudai.enums.UserOpType;
 import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.exception.InvestExceptionType;
 import com.tuotiansudai.log.service.UserOpLogService;
-import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
-import com.tuotiansudai.membership.repository.model.MembershipModel;
-import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
-import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
@@ -41,7 +31,6 @@ import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class InvestServiceImpl implements InvestService {
@@ -49,6 +38,8 @@ public class InvestServiceImpl implements InvestService {
     static Logger logger = Logger.getLogger(InvestServiceImpl.class);
 
     private final static String INVEST_NO_PASSWORD_REMIND_MAP = "invest_no_password_remind_map";
+
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
     @Value(value = "${web.coupon.lock.seconds}")
     private int couponLockSeconds;
@@ -58,9 +49,6 @@ public class InvestServiceImpl implements InvestService {
 
     @Autowired
     private AccountMapper accountMapper;
-
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
 
     @Autowired
     private LoanMapper loanMapper;
@@ -75,9 +63,6 @@ public class InvestServiceImpl implements InvestService {
     private AutoInvestPlanMapper autoInvestPlanMapper;
 
     @Autowired
-    private IdGenerator idGenerator;
-
-    @Autowired
     private UserCouponMapper userCouponMapper;
 
     @Autowired
@@ -85,9 +70,6 @@ public class InvestServiceImpl implements InvestService {
 
     @Autowired
     private InvestRepayMapper investRepayMapper;
-
-    @Autowired
-    private UserMembershipEvaluator userMembershipEvaluator;
 
     @Autowired
     private InvestExtraRateMapper investExtraRateMapper;
@@ -377,7 +359,7 @@ public class InvestServiceImpl implements InvestService {
             autoInvestPlanMapper.update(model);
         } else {
             AutoInvestPlanModel autoInvestPlanModel = new AutoInvestPlanModel();
-            autoInvestPlanModel.setId(idGenerator.generate());
+            autoInvestPlanModel.setId(IdGenerator.generate());
             autoInvestPlanModel.setLoginName(loginName);
             autoInvestPlanModel.setMinInvestAmount(AmountConverter.convertStringToCent(dto.getMinInvestAmount()));
             autoInvestPlanModel.setMaxInvestAmount(AmountConverter.convertStringToCent(dto.getMaxInvestAmount()));

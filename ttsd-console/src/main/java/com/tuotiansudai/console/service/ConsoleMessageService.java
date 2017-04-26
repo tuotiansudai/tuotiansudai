@@ -3,7 +3,6 @@ package com.tuotiansudai.console.service;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
@@ -17,6 +16,7 @@ import com.tuotiansudai.message.repository.mapper.PushMapper;
 import com.tuotiansudai.message.repository.model.*;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.util.PaginationUtil;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,14 +43,13 @@ public class ConsoleMessageService {
 
     private static Logger logger = Logger.getLogger(ConsoleMessageService.class);
 
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
+
     @Autowired
     private MessageMapper messageMapper;
 
     @Autowired
     private PushMapper pushMapper;
-
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
 
     @Autowired
     private MQWrapperClient mqWrapperClient;

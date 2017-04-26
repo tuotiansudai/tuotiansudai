@@ -39,16 +39,7 @@ public class MobileAppPointServiceTest extends ServiceTestBase {
     private PointBillMapper pointBillMapper;
 
     @Mock
-    private PointTaskMapper pointTaskMapper;
-
-    @Autowired
-    private IdGenerator idGenerator;
-
-    @Mock
     private AccountMapper accountMapper;
-
-    @Mock
-    private UserPointTaskMapper userPointTaskMapper;
 
     @Mock
     private SignInService signInService;
@@ -59,12 +50,12 @@ public class MobileAppPointServiceTest extends ServiceTestBase {
     @Test
     public void shouldQueryPointBillsIsOk() {
         PointBillModel pointBillModel = new PointBillModel();
-        pointBillModel.setId(idGenerator.generate());
+        pointBillModel.setId(IdGenerator.generate());
         pointBillModel.setLoginName("admin");
         pointBillModel.setBusinessType(PointBusinessType.TASK);
         pointBillModel.setCreatedTime(new Date());
         pointBillModel.setPoint(1000);
-        pointBillModel.setOrderId(idGenerator.generate());
+        pointBillModel.setOrderId(IdGenerator.generate());
         pointBillModel.setNote("11111");
 
         List<PointBillModel> pointBillModelList = Lists.newArrayList();

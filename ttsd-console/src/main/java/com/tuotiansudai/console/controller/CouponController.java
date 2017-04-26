@@ -4,7 +4,6 @@ import com.google.common.base.Function;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.console.dto.ImportExcelDto;
 import com.tuotiansudai.console.service.ConsoleCouponService;
 import com.tuotiansudai.console.service.ConsoleUserService;
@@ -55,6 +54,8 @@ import java.util.Map;
 @RequestMapping(value = "/activity-manage")
 public class CouponController {
 
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
+
     static Logger logger = Logger.getLogger(CouponController.class);
 
     @Autowired
@@ -62,9 +63,6 @@ public class CouponController {
 
     @Autowired
     private CouponActivationService couponActivationService;
-
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
 
     @Autowired
     private UserMapper userMapper;

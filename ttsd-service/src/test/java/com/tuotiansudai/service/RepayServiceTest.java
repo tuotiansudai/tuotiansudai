@@ -45,9 +45,6 @@ public class RepayServiceTest {
     private UserMapper userMapper;
 
     @Autowired
-    private IdGenerator idGenerator;
-
-    @Autowired
     private LoanMapper loanMapper;
 
     @Autowired
@@ -129,7 +126,7 @@ public class RepayServiceTest {
 
     private UserCouponModel getUserCouponModel(String loginName,long couponId,long investId,long loanId){
         UserCouponModel userCouponModel = new UserCouponModel();
-        userCouponModel.setId(idGenerator.generate());
+        userCouponModel.setId(IdGenerator.generate());
         userCouponModel.setActualFee(100);
         userCouponModel.setActualInterest(200);
         userCouponModel.setCouponId(couponId);
@@ -171,7 +168,7 @@ public class RepayServiceTest {
     private InvestRepayModel getInvestRepayModel(long investId,int period,Date date,RepayStatus repayStatus,TransferStatus transferStatus,long expectedInterest){
         List<InvestRepayModel> investRepayModels = Lists.newArrayList();
         InvestRepayModel investRepayModel = new InvestRepayModel();
-        investRepayModel.setId(idGenerator.generate());
+        investRepayModel.setId(IdGenerator.generate());
         investRepayModel.setInvestId(investId);
         investRepayModel.setPeriod(period);
         investRepayModel.setStatus(repayStatus);
@@ -188,7 +185,7 @@ public class RepayServiceTest {
     }
 
     private InvestModel getFakeInvestModel(long loanId,String loginName,TransferStatus transferStatus) {
-        InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, 1000000L, loginName, new DateTime().withTimeAtStartOfDay().toDate(), Source.WEB, null, 0.1);
+        InvestModel model = new InvestModel(IdGenerator.generate(), loanId, null, 1000000L, loginName, new DateTime().withTimeAtStartOfDay().toDate(), Source.WEB, null, 0.1);
         model.setStatus(InvestStatus.SUCCESS);
         model.setTransferStatus(transferStatus);
         investMapper.create(model);
@@ -197,7 +194,7 @@ public class RepayServiceTest {
 
     private LoanModel getFakeLoan(String loanerLoginName, String agentLoginName, LoanStatus loanStatus, ActivityType activityType) {
         LoanModel fakeLoanModel = new LoanModel();
-        fakeLoanModel.setId(idGenerator.generate());
+        fakeLoanModel.setId(IdGenerator.generate());
         fakeLoanModel.setName("loanName");
         fakeLoanModel.setLoanerLoginName(loanerLoginName);
         fakeLoanModel.setLoanerUserName("借款人");

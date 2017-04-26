@@ -39,9 +39,6 @@ public class ConsoleInvestTransferServiceTest {
     private InvestMapper investMapper;
 
     @Autowired
-    private IdGenerator idGenerator;
-
-    @Autowired
     private TransferApplicationMapper transferApplicationMapper;
 
     @Autowired
@@ -95,7 +92,7 @@ public class ConsoleInvestTransferServiceTest {
     }
 
     private InvestModel createInvest(String loginName, long loanId) {
-        InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, 1, loginName, new Date(), Source.WEB, null, 0.1);
+        InvestModel model = new InvestModel(IdGenerator.generate(), loanId, null, 1, loginName, new Date(), Source.WEB, null, 0.1);
         model.setStatus(InvestStatus.SUCCESS);
         investMapper.create(model);
         return model;
@@ -103,7 +100,7 @@ public class ConsoleInvestTransferServiceTest {
 
     @Test
     public void shouldFindTransferApplicationPaginationListIsSuccess(){
-        long loanId = idGenerator.generate();
+        long loanId = IdGenerator.generate();
         UserModel transferrerModel = createUserByUserId("transferrerTestuser");
         UserModel transfereeModel = createUserByUserId("transfereeTestUser");
         LoanModel loanModel = createLoanByUserId("transferrerTestUser", loanId);

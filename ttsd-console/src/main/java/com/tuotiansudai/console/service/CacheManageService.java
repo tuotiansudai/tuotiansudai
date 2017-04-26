@@ -1,6 +1,6 @@
 package com.tuotiansudai.console.service;
 
-import com.tuotiansudai.client.MybatisRedisCacheWrapperClient;
+import com.tuotiansudai.util.MybatisRedisCacheWrapperClient;
 import org.springframework.stereotype.Service;
 
 @Service

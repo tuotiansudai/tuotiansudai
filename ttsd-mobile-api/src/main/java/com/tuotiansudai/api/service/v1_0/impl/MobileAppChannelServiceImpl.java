@@ -4,10 +4,9 @@ import com.google.common.base.Strings;
 import com.tuotiansudai.api.dto.v1_0.AccessSource;
 import com.tuotiansudai.api.dto.v1_0.BaseParam;
 import com.tuotiansudai.api.service.v1_0.MobileAppChannelService;
-import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,8 +20,7 @@ public class MobileAppChannelServiceImpl implements MobileAppChannelService {
     private static final String INVALID_MAC = "02:00:00:00:00:00";
     private static final String INVALID_MAC_MD5 = DigestUtils.md5Hex(INVALID_MAC);
 
-    @Autowired
-    private RedisWrapperClient redis;
+    private RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
     private MobileAppChannelDomobService domobService = new MobileAppChannelDomobService(MOBILE_APP_ID);
 
@@ -30,7 +28,7 @@ public class MobileAppChannelServiceImpl implements MobileAppChannelService {
     public boolean recordDeviceId(String type, String data, String channel, String subChannel) {
         if (isValidDeviceId(type, data)) {
             if (!isExistDeviceId(type, data)) {
-                redis.hset(MOBILE_APP_CHANNEL_KEY,
+                redisWrapperClient.hset(MOBILE_APP_CHANNEL_KEY,
                         generateDeviceKey(type, data),
                         new AppChannel(channel, subChannel, false).toString());
                 return true;
@@ -67,12 +65,12 @@ public class MobileAppChannelServiceImpl implements MobileAppChannelService {
             }
 
             appChannel.hasNotified = true;
-            redis.hset(MOBILE_APP_CHANNEL_KEY, generateDeviceKey("ifa", ifa), appChannel.toString());
+            redisWrapperClient.hset(MOBILE_APP_CHANNEL_KEY, generateDeviceKey("ifa", ifa), appChannel.toString());
         }
     }
 
     private AppChannel findChannelByIfa(String ifa) {
-        String fullChannel = redis.hget(MOBILE_APP_CHANNEL_KEY, generateDeviceKey("ifa", ifa));
+        String fullChannel = redisWrapperClient.hget(MOBILE_APP_CHANNEL_KEY, generateDeviceKey("ifa", ifa));
         if (StringUtils.isEmpty(fullChannel)) {
             return null;
         } else {
@@ -91,7 +89,7 @@ public class MobileAppChannelServiceImpl implements MobileAppChannelService {
 
     private boolean isExistDeviceId(String type, String data) {
         return !Strings.isNullOrEmpty(
-                redis.hget(MOBILE_APP_CHANNEL_KEY, generateDeviceKey(type, data)));
+                redisWrapperClient.hget(MOBILE_APP_CHANNEL_KEY, generateDeviceKey(type, data)));
     }
 
     private String generateDeviceKey(String type, String data) {

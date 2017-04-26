@@ -61,9 +61,6 @@ public class AgreementServiceTest {
     @Autowired
     private PayAsyncClient payAsyncClient;
 
-    @Autowired
-    private IdGenerator idGenerator;
-
     private BankCardModel createBankCardByUserId(long id, String userId) {
         BankCardModel bankCardModel = new BankCardModel();
         bankCardModel.setId(id);
@@ -149,7 +146,7 @@ public class AgreementServiceTest {
         String userId = "testAutoInvestFastPay";
         createUserByUserId(userId);
         createAccountByUserId(userId);
-        long id = idGenerator.generate();
+        long id = IdGenerator.generate();
         createBankCardByUserId(id, userId);
         AgreementDto agreementDto = new AgreementDto();
         agreementDto.setLoginName(userId);

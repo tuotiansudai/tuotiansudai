@@ -23,9 +23,6 @@ public class UserOpLogService {
     private static Logger logger = Logger.getLogger(UserOpLogService.class);
 
     @Autowired
-    private IdGenerator idGenerator;
-
-    @Autowired
     private MQWrapperClient mqWrapperClient;
 
     @Autowired
@@ -33,7 +30,7 @@ public class UserOpLogService {
 
     public void sendUserOpLogMQ(String loginName, String ip, String platform, String deviceId, UserOpType userOpType, String description) {
         UserOpLogModel logModel = new UserOpLogModel();
-        logModel.setId(idGenerator.generate());
+        logModel.setId(IdGenerator.generate());
         logModel.setLoginName(loginName);
         logModel.setMobile(getMobile(loginName));
         logModel.setIp(ip);

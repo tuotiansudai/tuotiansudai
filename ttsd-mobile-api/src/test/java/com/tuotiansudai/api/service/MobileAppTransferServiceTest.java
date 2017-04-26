@@ -47,9 +47,6 @@ public class MobileAppTransferServiceTest extends ServiceTestBase {
     @Mock
     private InvestMapper investMapper;
 
-    @Autowired
-    private IdGenerator idGenerator;
-
     @Mock
     private TransferService transferService;
 
@@ -70,8 +67,8 @@ public class MobileAppTransferServiceTest extends ServiceTestBase {
 
     @Test
     public void shouldGetTransferTransferee() {
-        long transferApplicationId = idGenerator.generate();
-        long investId = idGenerator.generate();
+        long transferApplicationId = IdGenerator.generate();
+        long investId = IdGenerator.generate();
         TransferTransfereeRequestDto transferTransfereeRequestDto = new TransferTransfereeRequestDto();
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId("test");
@@ -105,11 +102,11 @@ public class MobileAppTransferServiceTest extends ServiceTestBase {
     public void shouldTransferNoPasswordPurchaseSuccess() throws Exception {
         TransferPurchaseRequestDto transferPurchaseRequestDto = new TransferPurchaseRequestDto();
         transferPurchaseRequestDto.setBaseParam(BaseParamTest.getInstance());
-        transferPurchaseRequestDto.setTransferApplicationId(String.valueOf(idGenerator.generate()));
+        transferPurchaseRequestDto.setTransferApplicationId(String.valueOf(IdGenerator.generate()));
 
         TransferApplicationModel transferApplicationModel = new TransferApplicationModel();
         transferApplicationModel.setTransferAmount(100000);
-        transferApplicationModel.setLoanId(idGenerator.generate());
+        transferApplicationModel.setLoanId(IdGenerator.generate());
         when(transferApplicationMapper.findById(anyLong())).thenReturn(transferApplicationModel);
         when(channelService.obtainChannelBySource(any(BaseParam.class))).thenReturn(null);
 
@@ -134,11 +131,11 @@ public class MobileAppTransferServiceTest extends ServiceTestBase {
     public void shouldTransferNoPasswordPurchaseFailedInvestorNotOpen() throws Exception {
         TransferPurchaseRequestDto transferPurchaseRequestDto = new TransferPurchaseRequestDto();
         transferPurchaseRequestDto.setBaseParam(BaseParamTest.getInstance());
-        transferPurchaseRequestDto.setTransferApplicationId(String.valueOf(idGenerator.generate()));
+        transferPurchaseRequestDto.setTransferApplicationId(String.valueOf(IdGenerator.generate()));
 
         TransferApplicationModel transferApplicationModel = new TransferApplicationModel();
         transferApplicationModel.setTransferAmount(100000);
-        transferApplicationModel.setLoanId(idGenerator.generate());
+        transferApplicationModel.setLoanId(IdGenerator.generate());
         when(transferApplicationMapper.findById(anyLong())).thenReturn(transferApplicationModel);
         when(channelService.obtainChannelBySource(any(BaseParam.class))).thenReturn(null);
 
@@ -159,7 +156,7 @@ public class MobileAppTransferServiceTest extends ServiceTestBase {
     public void shouldPurchaseSuccess() throws Exception{
         TransferPurchaseRequestDto transferPurchaseRequestDto = new TransferPurchaseRequestDto();
         transferPurchaseRequestDto.setBaseParam(BaseParamTest.getInstance());
-        transferPurchaseRequestDto.setTransferApplicationId(String.valueOf(idGenerator.generate()));
+        transferPurchaseRequestDto.setTransferApplicationId(String.valueOf(IdGenerator.generate()));
         PayFormDataDto payFormDataDto = new PayFormDataDto();
         payFormDataDto.setStatus(true);
         payFormDataDto.setUrl("url");
@@ -168,7 +165,7 @@ public class MobileAppTransferServiceTest extends ServiceTestBase {
         successResponseDto.setData(payFormDataDto);
         TransferApplicationModel transferApplicationModel = new TransferApplicationModel();
         transferApplicationModel.setTransferAmount(100000);
-        transferApplicationModel.setLoanId(idGenerator.generate());
+        transferApplicationModel.setLoanId(IdGenerator.generate());
         when(transferApplicationMapper.findById(anyLong())).thenReturn(transferApplicationModel);
         when(transferService.transferPurchase(any(InvestDto.class))).thenReturn(successResponseDto);
         when(channelService.obtainChannelBySource(any(BaseParam.class))).thenReturn(null);

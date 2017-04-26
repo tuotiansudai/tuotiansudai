@@ -1,11 +1,9 @@
 package com.tuotiansudai.spring.security;
 
 import com.google.common.base.Strings;
-import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.dto.Environment;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -27,8 +25,7 @@ public class CaptchaHelper {
 
     private final static String IMAGE_CAPTCHA_REDIS_KEY = "image.captcha:{0}";
 
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
+    private RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
     @Value("${mobile.login.interval.seconds}")
     private int ipLeftSecond;

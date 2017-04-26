@@ -36,9 +36,6 @@ public class MockReferrerRewardServiceTest {
     private ReferrerRewardServiceImpl referrerRewardService;
 
     @Mock
-    private IdGenerator idGenerator;
-
-    @Mock
     private LoanMapper loanMapper;
 
     @Mock
@@ -112,7 +109,7 @@ public class MockReferrerRewardServiceTest {
     }
 
     private InvestModel fakeInvestModel(){
-        InvestModel investModel = new InvestModel(idGenerator.generate(), 10000, null, 1000L, "investor", new Date(), Source.WEB, null, 0.1);
+        InvestModel investModel = new InvestModel(IdGenerator.generate(), 10000, null, 1000L, "investor", new Date(), Source.WEB, null, 0.1);
         investModel.setTradingTime(new Date());
         return investModel;
     }

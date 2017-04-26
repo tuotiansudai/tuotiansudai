@@ -36,21 +36,9 @@ public class MobileAppTransferApplicationV2ServiceTest extends ServiceTestBase {
     @InjectMocks
     private MobileAppTransferApplicationV2ServiceImpl mobileAppTransferApplicationV2Service;
     @Mock
-    private TransferApplicationMapper transferApplicationMapper;
-    @Mock
-    private InvestTransferService investTransferService;
-    @Mock
-    private TransferService transferService;
-    @Mock
     private InvestMapper investMapper;
     @Mock
     private LoanMapper loanMapper;
-    @Mock
-    private LoanRepayMapper loanRepayMapper;
-    @Mock
-    private AccountMapper accountMapper;
-    @Autowired
-    private IdGenerator idGenerator;
     @Mock
     private TransferRuleMapper transferRuleMapper;
     @Mock
@@ -82,7 +70,7 @@ public class MobileAppTransferApplicationV2ServiceTest extends ServiceTestBase {
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId("testuser");
         transferableInvestRequestDto.setBaseParam(baseParam);
-        long loanId = idGenerator.generate();
+        long loanId = IdGenerator.generate();
         LoanModel loanModel = createLoanByUserId("testuser", loanId);
         InvestModel investModel = createInvest("testuser", loanId);
         InvestRepayModel investRepayModel = createInvestRepay(investModel.getId(), 2, 0, 10, 0, new DateTime().plus(2).toDate(), RepayStatus.REPAYING);
@@ -132,13 +120,13 @@ public class MobileAppTransferApplicationV2ServiceTest extends ServiceTestBase {
     }
 
     private InvestModel createInvest(String loginName, long loanId) {
-        InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, 10000, loginName, new Date(), Source.WEB, null, 0.1);
+        InvestModel model = new InvestModel(IdGenerator.generate(), loanId, null, 10000, loginName, new Date(), Source.WEB, null, 0.1);
         model.setStatus(com.tuotiansudai.repository.model.InvestStatus.SUCCESS);
         return model;
     }
 
     private InvestRepayModel createInvestRepay(long investId, int period, long corpus, long expectedInterest, long expectedFee, Date repayDate, RepayStatus status) {
-        InvestRepayModel model = new InvestRepayModel(idGenerator.generate(), investId, period, corpus, expectedInterest,expectedFee, repayDate, status);
+        InvestRepayModel model = new InvestRepayModel(IdGenerator.generate(), investId, period, corpus, expectedInterest,expectedFee, repayDate, status);
         return model;
     }
 

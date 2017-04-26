@@ -2,6 +2,7 @@ package com.tuotiansudai.repository.mapper;
 
 
 import com.tuotiansudai.repository.model.*;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,7 +82,7 @@ public class SystemRechargeMapperTest {
         userModelTest.setLoginName("tuotian");
         userModelTest.setPassword("123abc");
         userModelTest.setEmail("12345@abc.com");
-        userModelTest.setMobile("13900000000");
+        userModelTest.setMobile(RandomStringUtils.randomNumeric(11));
         userModelTest.setRegisterTime(new Date());
         userModelTest.setStatus(UserStatus.ACTIVE);
         userModelTest.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));

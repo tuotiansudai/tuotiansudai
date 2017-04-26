@@ -36,9 +36,6 @@ public class SiteMapRedisWrapperClient {
     @Value("${cms.jedis.pool.maxWaitMillis}")
     private int maxWaitMillis;
 
-    @Autowired
-    private JedisPoolConfig jedisPoolConfig;
-
     private static JedisPool jedisPool;
 
     private <T> T execute(JedisAction<T> jedisAction) {
@@ -120,7 +117,7 @@ public class SiteMapRedisWrapperClient {
             } catch (JedisConnectionException e) {
                 logger.warn(MessageFormat.format("fetch jedis failed on {0} times", String.valueOf(timeoutCount + 1)), e);
                 if (++timeoutCount >= 3) {
-                    logger.error("Get Redis pool failure more than 3 times.",e);
+                    logger.error("Get Redis pool failure more than 3 times.", e);
                     throw e;
                 }
             }
@@ -130,13 +127,14 @@ public class SiteMapRedisWrapperClient {
 
     protected JedisPool getJedisPool() {
         if (jedisPool == null) {
-
+            JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
             jedisPoolConfig.setMaxTotal(maxTotal);
             jedisPoolConfig.setMaxWaitMillis(maxWaitMillis);
             logger.info("redisHost=" + redisHost);
             logger.info("redisPort=" + redisPort);
             logger.info("maxTotal=" + jedisPoolConfig.getMaxTotal());
             logger.info("MaxWaitMillis=" + jedisPoolConfig.getMaxWaitMillis());
+
             jedisPool = new JedisPool(jedisPoolConfig, redisHost, redisPort);
         }
         return jedisPool;

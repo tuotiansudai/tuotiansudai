@@ -91,12 +91,4 @@
             </bean>
         </constructor-arg>
     </bean>
-
-    <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
-        <property name="maxTotal" value="300"/>
-    </bean>
-
-    <bean class="com.tuotiansudai.client.RedisWrapperClient"/>
-
-    <bean class="com.tuotiansudai.util.IdGenerator"/>
 </beans>

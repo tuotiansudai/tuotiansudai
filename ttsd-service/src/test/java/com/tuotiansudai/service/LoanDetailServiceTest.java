@@ -30,9 +30,6 @@ public class LoanDetailServiceTest {
     private LoanDetailService loanDetailService;
 
     @Autowired
-    private IdGenerator idGenerator;
-
-    @Autowired
     private LoanMapper loanMapper;
 
     @Autowired
@@ -74,7 +71,7 @@ public class LoanDetailServiceTest {
 
     private void createTestInvests(long loanId, String loginName, int count){
         for(int i=0;i<count;i++) {
-            InvestModel investModel = this.getFakeInvestModel(idGenerator.generate(), loginName);
+            InvestModel investModel = this.getFakeInvestModel(IdGenerator.generate(), loginName);
             investModel.setLoanId(loanId);
             investModel.setStatus(InvestStatus.SUCCESS);
             investModel.setCreatedTime(DateUtils.addHours(new Date(), -i));
@@ -93,7 +90,7 @@ public class LoanDetailServiceTest {
         LoanModel loanModel = new LoanModel();
         loanModel.setAgentLoginName(fakeUserName);
         loanModel.setBaseRate(16.00);
-        long id = idGenerator.generate();
+        long id = IdGenerator.generate();
         loanModel.setId(id);
         loanModel.setName("店铺资金周转");
         loanModel.setActivityRate(12);
@@ -117,13 +114,13 @@ public class LoanDetailServiceTest {
         loanModel.setPledgeType(PledgeType.HOUSE);
         loanModel.setLoanerIdentityNumber("111111111111111111");
         loanMapper.create(loanModel);
-        LoanTitleModel loanTitleModel = new LoanTitleModel(idGenerator.generate(), LoanTitleType.BASE_TITLE_TYPE, "身份证");
+        LoanTitleModel loanTitleModel = new LoanTitleModel(IdGenerator.generate(), LoanTitleType.BASE_TITLE_TYPE, "身份证");
         loanTitleMapper.create(loanTitleModel);
 
         List<LoanTitleRelationModel> loanTitleRelationModelList = new ArrayList<LoanTitleRelationModel>();
         for (int i = 0; i < 1; i++) {
             LoanTitleRelationModel loanTitleRelationModel = new LoanTitleRelationModel();
-            loanTitleRelationModel.setId(idGenerator.generate());
+            loanTitleRelationModel.setId(IdGenerator.generate());
             loanTitleRelationModel.setLoanId(id);
             loanTitleRelationModel.setTitleId(loanTitleModel.getId());
             loanTitleRelationModel.setApplicationMaterialUrls("https://github.com/tuotiansudai/tuotian/pull/279,https://github.com/tuotiansudai/tuotian/pull/279");
@@ -148,7 +145,7 @@ public class LoanDetailServiceTest {
     }
 
     private InvestModel getFakeInvestModel(long loanId, String loginName) {
-        return new InvestModel(idGenerator.generate(), loanId, null, 50, loginName, null, Source.WEB, null, 0.1);
+        return new InvestModel(IdGenerator.generate(), loanId, null, 50, loginName, null, Source.WEB, null, 0.1);
     }
 
     private void createMockUser(String loginName){

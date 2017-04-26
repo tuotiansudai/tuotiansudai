@@ -1,4 +1,4 @@
-package com.tuotiansudai.client;
+package com.tuotiansudai.util;
 
 import org.apache.log4j.Logger;
 import redis.clients.jedis.Jedis;

@@ -2,7 +2,6 @@ package com.tuotiansudai.membership.service;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
@@ -20,6 +19,7 @@ import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.PaginationUtil;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -39,6 +39,8 @@ public class MembershipGiveService {
 
     static Logger logger = Logger.getLogger(MembershipGiveService.class);
 
+    private RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
+
     @Autowired
     private MembershipGiveMapper membershipGiveMapper;
 
@@ -56,9 +58,6 @@ public class MembershipGiveService {
 
     @Autowired
     private AccountMapper accountMapper;
-
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
 
     @Autowired
     private SmsWrapperClient smsWrapperClient;

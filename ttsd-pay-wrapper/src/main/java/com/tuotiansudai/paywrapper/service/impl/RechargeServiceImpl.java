@@ -53,9 +53,6 @@ public class RechargeServiceImpl implements RechargeService {
     private RechargeMapper rechargeMapper;
 
     @Autowired
-    private IdGenerator idGenerator;
-
-    @Autowired
     private AmountTransfer amountTransfer;
 
     @Autowired
@@ -80,7 +77,7 @@ public class RechargeServiceImpl implements RechargeService {
     public BaseDto<PayFormDataDto> recharge(RechargeDto dto) {
         AccountModel accountModel = accountMapper.findByLoginName(dto.getLoginName());
         RechargeModel rechargeModel = new RechargeModel(dto);
-        rechargeModel.setId(idGenerator.generate());
+        rechargeModel.setId(IdGenerator.generate());
 
         if (dto.isPublicPay()) {
             return this.generatePublicRechargeFormData(rechargeModel);

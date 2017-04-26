@@ -1,6 +1,5 @@
-package com.tuotiansudai.client;
+package com.tuotiansudai.util;
 
-import com.tuotiansudai.util.SerializeUtil;
 import org.apache.log4j.Logger;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.Tuple;
@@ -16,11 +15,20 @@ public class RedisWrapperClient extends AbstractRedisWrapperClient {
 
     static Logger logger = Logger.getLogger(RedisWrapperClient.class);
 
+    private final static RedisWrapperClient redisWrapperClient = new RedisWrapperClient();
+
     private static int COMMON_REDIS_DB;
 
     static {
         ResourceBundle bundle = ResourceBundle.getBundle("ttsd-env");
-        COMMON_REDIS_DB = Integer.parseInt(bundle.getString("common.redis.host"));
+        COMMON_REDIS_DB = Integer.parseInt(bundle.getString("common.redis.db"));
+    }
+
+    private RedisWrapperClient() {
+    }
+
+    public static RedisWrapperClient getInstance() {
+        return redisWrapperClient;
     }
 
     private <T> T execute(JedisAction<T> jedisAction) {

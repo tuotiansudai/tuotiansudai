@@ -1,4 +1,4 @@
-package com.tuotiansudai.client;
+package com.tuotiansudai.util;
 
 import com.google.common.base.Strings;
 import org.apache.log4j.Logger;

@@ -14,11 +14,10 @@ import com.tuotiansudai.activity.repository.model.LuxuryPrizeModel;
 import com.tuotiansudai.activity.repository.model.TravelPrizeModel;
 import com.tuotiansudai.activity.repository.model.UserLuxuryPrizeModel;
 import com.tuotiansudai.activity.repository.model.UserTravelPrizeModel;
-import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.MobileEncoder;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.commons.collections4.CollectionUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,8 +30,7 @@ import java.util.List;
 @Service
 public class AutumnPrizeService {
 
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
     @Autowired
     private TravelPrizeMapper travelPrizeMapper;

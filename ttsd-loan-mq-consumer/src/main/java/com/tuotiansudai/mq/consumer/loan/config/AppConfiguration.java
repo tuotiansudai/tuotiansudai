@@ -1,7 +1,6 @@
 package com.tuotiansudai.mq.consumer.loan.config;
 
 import com.squareup.okhttp.OkHttpClient;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.job.JobManager;
 import com.tuotiansudai.quartz.JobStoreBuilder;
 import com.tuotiansudai.quartz.SchedulerBuilder;
@@ -20,10 +19,8 @@ import javax.sql.DataSource;
         "com.tuotiansudai.client",
         "com.tuotiansudai.coupon",
         "com.tuotiansudai.membership",
-        "com.tuotiansudai.log",
-        "com.tuotiansudai.anxin",
-        "com.tuotiansudai.contract",
-        "com.tuotiansudai.cfca"})
+        "com.tuotiansudai.log"
+        })
 @PropertySource(ignoreResourceNotFound = true, value = {"classpath:ttsd-env.properties", "classpath:ttsd-biz.properties"})
 @EnableAspectJAutoProxy(exposeProxy = true)
 public class AppConfiguration {
@@ -31,11 +28,6 @@ public class AppConfiguration {
     @Bean
     public PropertySourcesPlaceholderConfigurer propertyConfigurer() {
         return new PropertySourcesPlaceholderConfigurer();
-    }
-
-    @Bean
-    public RedisWrapperClient redisWrapperClient(PropertySourcesPlaceholderConfigurer configurer) {
-        return new RedisWrapperClient();
     }
 
     @Bean
@@ -56,13 +48,5 @@ public class AppConfiguration {
     @Bean
     public JobManager jobManager(SchedulerBuilder schedulerBuilder) {
         return new JobManager(schedulerBuilder);
-    }
-
-    @Bean
-    public JedisPoolConfig jedisPoolConfig() {
-        JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
-        jedisPoolConfig.setMaxTotal(10);
-        jedisPoolConfig.setMaxWaitMillis(5000);
-        return jedisPoolConfig;
     }
 }

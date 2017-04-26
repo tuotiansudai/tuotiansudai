@@ -8,13 +8,13 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.UnmodifiableIterator;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppExchangeService;
-import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.coupon.service.CouponAssignmentService;
+import com.tuotiansudai.coupon.service.ExchangeCodeService;
 import com.tuotiansudai.repository.mapper.CouponMapper;
 import com.tuotiansudai.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.repository.model.CouponModel;
 import com.tuotiansudai.repository.model.UserCouponModel;
-import com.tuotiansudai.coupon.service.CouponAssignmentService;
-import com.tuotiansudai.coupon.service.ExchangeCodeService;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,14 +29,15 @@ import java.util.List;
 public class MobileAppExchangeServiceImpl implements MobileAppExchangeService{
 
     static Logger logger = Logger.getLogger(MobileAppExchangeServiceImpl.class);
+
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
+
     @Autowired
     private ExchangeCodeService exchangeCodeService;
     @Autowired
     private CouponMapper couponMapper;
     @Autowired
     private CouponAssignmentService couponAssignmentService;
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
     @Autowired
     private UserCouponMapper userCouponMapper;
 

@@ -51,9 +51,6 @@ public class CouponLoanOutServiceAspectTest {
     private UserMapper userMapper;
 
     @Autowired
-    private IdGenerator idGenerator;
-
-    @Autowired
     private AccountMapper accountMapper;
 
     @Autowired
@@ -194,7 +191,7 @@ public class CouponLoanOutServiceAspectTest {
 
     private void mockUser(String loginName, String mobile, String email) {
         UserModel um = new UserModel();
-        um.setId(idGenerator.generate());
+        um.setId(IdGenerator.generate());
         um.setLoginName(loginName);
         um.setMobile(mobile);
         um.setEmail(email);
@@ -213,7 +210,7 @@ public class CouponLoanOutServiceAspectTest {
     private void mockAccount(String loginName, long initAmount) throws AmountTransferException {
         AccountModel am = new AccountModel(loginName, loginName, loginName, new Date());
         accountMapper.create(am);
-        amountTransfer.transferInBalance(loginName, idGenerator.generate(), initAmount, UserBillBusinessType.RECHARGE_SUCCESS, null, null);
+        amountTransfer.transferInBalance(loginName, IdGenerator.generate(), initAmount, UserBillBusinessType.RECHARGE_SUCCESS, null, null);
     }
 
     private void mockLoan(long loanId, String loanerLoginName) {
@@ -243,7 +240,7 @@ public class CouponLoanOutServiceAspectTest {
     }
 
     private long mockInvest(long loanId, String loginName, long amount) throws AmountTransferException {
-        InvestModel im = new InvestModel(idGenerator.generate(), loanId, null, amount, loginName, new Date(), Source.WEB, null, 0.1);
+        InvestModel im = new InvestModel(IdGenerator.generate(), loanId, null, amount, loginName, new Date(), Source.WEB, null, 0.1);
         im.setStatus(InvestStatus.SUCCESS);
         investMapper.create(im);
 
