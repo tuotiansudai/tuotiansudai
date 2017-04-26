@@ -25,8 +25,6 @@ commonFun.refreshCaptcha(imageCaptcha, captchaSrc);
         };
         commonFun.useAjax(ajaxOption, function (responseData) {
             $getCaptcha.prop('disabled', false);
-            //刷新验证码
-            commonFun.refreshCaptcha(imageCaptcha, captchaSrc);
 
             let data = responseData.data;
             if (data.status && !data.isRestricted) {
@@ -35,6 +33,9 @@ commonFun.refreshCaptcha(imageCaptcha, captchaSrc);
                     btnDom: $getCaptcha,
                     isAfterText: '获取验证码',
                     textCounting: 's'
+                },function() {
+                    //倒计时结束后刷新验证码
+                    commonFun.refreshCaptcha(imageCaptcha, captchaSrc);
                 });
 
             } else if (!data.status && data.isRestricted) {
