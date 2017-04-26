@@ -11,6 +11,7 @@
     <form id="formRegister" class="form-register" action="/register/user" method="post">
         <input type="hidden" name="mobile" value="${mobile}">
         <input type="hidden" name="openid" value="${openid}">
+        <input type="hidden" name="source" value="WE_CHAT">
         <input type="hidden" name="agreement" value="true"/>
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <input type="hidden" name="redirectToAfterRegisterSuccess" value="/we-chat/bind-success?redirect=${redirect!('/')}">
