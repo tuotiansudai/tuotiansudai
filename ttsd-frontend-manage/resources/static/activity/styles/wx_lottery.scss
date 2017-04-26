@@ -1,0 +1,18 @@
+.main-frame {
+  width: 100%;
+  margin: 0;
+  background: #fffbe3;
+}
+.wx-lottery-container{
+  float: left;
+  width: 100%;
+  .wp {
+    width: 100%;
+    padding: 0 10px;
+    box-sizing: border-box;
+    &:after {
+      clear: both;
+      display: block;
+    }
+  }
+}
