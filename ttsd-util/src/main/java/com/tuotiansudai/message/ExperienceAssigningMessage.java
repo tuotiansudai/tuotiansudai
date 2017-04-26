@@ -19,6 +19,9 @@ public class ExperienceAssigningMessage implements Serializable {
     private String note;
     private Date currentDate;
 
+    public ExperienceAssigningMessage() {
+    }
+
     public ExperienceAssigningMessage(Date currentDate, String loginName) {
         this.currentDate = currentDate;
         this.loginName = loginName;
