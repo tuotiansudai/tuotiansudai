@@ -29,6 +29,7 @@ public class ExperienceAssigningMessage implements Serializable {
         this.experienceBillOperationType = experienceBillOperationType;
         this.experienceBillBusinessType = experienceBillBusinessType;
         this.note = note;
+        this.currentDate = new Date();
     }
 
     public ExperienceAssigningMessage(String loginName, long experienceAmount, ExperienceBillOperationType experienceBillOperationType, ExperienceBillBusinessType experienceBillBusinessType) {
