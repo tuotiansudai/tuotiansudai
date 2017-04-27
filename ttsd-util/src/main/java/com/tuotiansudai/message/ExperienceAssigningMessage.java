@@ -23,7 +23,7 @@ public class ExperienceAssigningMessage implements Serializable {
     }
 
     public ExperienceAssigningMessage(Date currentDate, String loginName) {
-        this(loginName, 0, ExperienceBillOperationType.IN, ExperienceBillBusinessType.MONEY_TREE, "");
+        this(loginName, 588800l, ExperienceBillOperationType.IN, ExperienceBillBusinessType.NEWMAN_TYRANT, "");
         this.currentDate = currentDate;
     }
 
