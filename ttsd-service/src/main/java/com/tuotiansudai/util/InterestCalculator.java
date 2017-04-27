@@ -54,14 +54,15 @@ public class InterestCalculator {
 
     public static List<Long> estimateExpectedInterest(LoanModel loanModel, long amount) {
         List<Long> expectedInterestList = Lists.newArrayList();
-        List soldOutLoanList = Lists.newArrayList("RECHECK", "REPAYING", "OVERDUE", "COMPLETE");
+        List<LoanStatus> soldOutLoanList = Lists.newArrayList(LoanStatus.RECHECK, LoanStatus.REPAYING, LoanStatus.OVERDUE, LoanStatus.COMPLETE);
         boolean isRealTimeInterest = soldOutLoanList.contains(loanModel.getStatus()) || loanModel.getProductType() == ProductType.EXPERIENCE ? true : false;
         if (isRealTimeInterest) {
             expectedInterestList.add(InterestCalculator.calculateInterest(loanModel, amount * loanModel.getDuration()));
-        }
-        List<Integer> daysOfPeriodList = LoanPeriodCalculator.calculateDaysOfPerPeriod(new Date(), loanModel.getDeadline(), loanModel.getType());
-        for (Integer daysOfPeriod : daysOfPeriodList) {
-            expectedInterestList.add(InterestCalculator.calculateInterest(loanModel, amount * daysOfPeriod));
+        } else {
+            List<Integer> daysOfPeriodList = LoanPeriodCalculator.calculateDaysOfPerPeriod(new Date(), loanModel.getDeadline(), loanModel.getType());
+            for (Integer daysOfPeriod : daysOfPeriodList) {
+                expectedInterestList.add(InterestCalculator.calculateInterest(loanModel, amount * daysOfPeriod));
+            }
         }
         return expectedInterestList;
     }
