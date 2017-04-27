@@ -1,5 +1,5 @@
 <#import "wechat-global.ftl" as global>
-<@global.main pageCss="${css.wechat_entry_point}" pageJavascript="${js.wechat_bind_success}">
+<@global.main pageCss="${css.wechat_entry_point}" pageJavascript="${js.wechat_bind_success}" title="登录成功">
 <div class="weChat-container success-box">
     <span class="result-ok">
         <i class="icon-sucess"></i>

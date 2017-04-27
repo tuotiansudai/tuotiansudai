@@ -1,5 +1,5 @@
 <#import "wechat-global.ftl" as global>
-<@global.main pageCss="${css.wechat_entry_point}" pageJavascript="${js.wechat_login}">
+<@global.main pageCss="${css.wechat_entry_point}" pageJavascript="${js.wechat_login}" title="登录账户">
 <div class="weChat-container weChat-login" id="weChatLogin">
     <h2 class="note">您输入的<i class="mobile">${mobile[0..2]}****${mobile[7..]}</i>手机号已经注册速贷账户</h2>
 
