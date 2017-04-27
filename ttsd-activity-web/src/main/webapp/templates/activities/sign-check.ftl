@@ -1,14 +1,11 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.sign_check}" pageJavascript="" activeNav="" activeLeftNav="" title="会员签到_积分商城_拓天速贷" keywords="签到赢积分,签到领红包,红包大奖,拓天速贷" description="拓天速贷会员每日签到赢积分,连续签到积分阶梯递增,累计签到领红包,连续签到365天,可额外获得365元现金红包大奖.">
+<@global.main pageCss="${css.sign_check}" pageJavascript="${js.sign_check}" activeNav="" activeLeftNav="" title="会员签到_积分商城_拓天速贷" keywords="签到赢积分,签到领红包,红包大奖,拓天速贷" description="拓天速贷会员每日签到赢积分,连续签到积分阶梯递增,累计签到领红包,连续签到365天,可额外获得365元现金红包大奖.">
 <div class="sign-check-container">
 	<div class="top-item">
-		<img src="${staticServer}/activity/images/sign-check/top-img.png" width="100%" class="media-pc">
-		<img src="${staticServer}/activity/images/sign-check/top-img-phone.png" width="100%" class="media-phone">
 	</div>
 	<div class="wp clearfix">
 		<div class="content-item">
-			<div class="title-item">
-				<img src="${staticServer}/activity/images/sign-check/title-one.png" width="100%">
+			<div class="title-item title-one">
 			</div>
 			<div class="intro-text">
 				<p>每日签到可获取积分奖励，连续签到积分阶梯递增，</p>
@@ -63,7 +60,7 @@
 					<dd><span class="name-text">连续签到一年</span><span class="point-text">10780积分</span></dd>
 				</dl>
 				<div class="app-item">
-					<img src="${staticServer}/activity/images/sign-check/app-img.jpg">
+					<i class="app-code"></i>
 					<p>下载APP，坚持打卡更简单</p>
 				</div>
 			</div>
@@ -79,8 +76,7 @@
 			</div>
 		</div>
 		<div class="content-item">
-			<div class="title-item">
-				<img src="${staticServer}/activity/images/sign-check/title-two.png" width="100%">
+			<div class="title-item title-two">
 			</div>
 			<div class="intro-text">
 				用户累计签到一定天数，即可领取惊喜现金红包。
@@ -128,14 +124,12 @@
 			</div>
 		</div>
 		<div class="content-item">
-			<div class="title-item">
-				<img src="${staticServer}/activity/images/sign-check/title-three.png" width="100%">
+			<div class="title-item title-three">
 			</div>
 			<div class="intro-text">
 				连续签到365天，可额外获得365元现金红包。
 			</div>
 			<div class="gift-item">
-				<img src="${staticServer}/activity/images/sign-check/red-bag.png">
 			</div>
 		</div>
 		<dl class="rule-item">

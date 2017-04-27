@@ -70,7 +70,6 @@ def mk_rest_service():
 
 
 def mk_static_zip():
-    local('cd ./ttsd-activity-web/src/main/webapp && zip -r static_activity.zip activity/')
     local('cd ./ttsd-frontend-manage/resources/prod && zip -r static_all.zip *')
 
 
