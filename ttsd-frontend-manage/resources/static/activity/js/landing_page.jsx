@@ -127,11 +127,11 @@ function getSmsCaptcha() {
             return;
         }
         if (!data.data.status && data.data.isRestricted) {
-            $('#appCaptchaErr').html('短信发送频繁,请稍后再试');
+            layer.msg('短信发送频繁,请稍后再试');
         }
 
         if (!data.data.status && !data.data.isRestricted) {
-            $('#appCaptchaErr').html('图形验证码错误');
+            layer.msg('图形验证码错误');
         }
         refreshImgCaptcha();
     });
