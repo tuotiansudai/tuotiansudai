@@ -75,6 +75,15 @@ textarea::-webkit-input-placeholder {
     right:10px;
     top:70px;
   }
+  .get-password {
+    display: block;
+    text-align: left;
+    width: 80%;
+    margin: -20px auto 20px auto;
+    a {
+      color: #808080;
+    }
+  }
 }
 
 .form-captcha {
