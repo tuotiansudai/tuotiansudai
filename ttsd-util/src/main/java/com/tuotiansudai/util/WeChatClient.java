@@ -1,4 +1,4 @@
-package com.tuotiansudai.client;
+package com.tuotiansudai.util;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -10,27 +10,23 @@ import com.google.common.io.Resources;
 import com.squareup.okhttp.*;
 import com.tuotiansudai.enums.WeChatMessageType;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Component;
 
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
+import java.util.ResourceBundle;
 import java.util.concurrent.TimeUnit;
 
-@Component
 public class WeChatClient {
 
     private static Logger logger = Logger.getLogger(WeChatClient.class);
 
+    private final static WeChatClient instance = new WeChatClient();
+
     private final static String TOKEN_URL_TEMPLATE = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={0}&secret={1}";
+
+    private final static String JS_API_TICKET_URL_TEMPLATE = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token={0}&type=jsapi";
 
     private final static String ACCESS_TOKEN_URL_TEMPLATE = "https://api.weixin.qq.com/sns/oauth2/access_token?appid={0}&secret={1}&code={2}&grant_type=authorization_code";
 
@@ -42,64 +38,32 @@ public class WeChatClient {
 
     private final static Map<WeChatMessageType, String> TEMPLATE_MAP = Maps.newHashMap();
 
-    @Value(value = "${wechat.appId}")
-    private String appId;
+    private static String APP_ID;
 
-    @Value(value = "${wechat.appSecret}")
-    private String appSecret;
+    private static String APP_SECRET;
 
-    private final RedisWrapperClient redisWrapperClient;
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
     static {
-        try (InputStreamReader reader = new InputStreamReader(WeChatClient.class.getClassLoader().getResourceAsStream("ttsd-env.properties"), StandardCharsets.UTF_8.name())) {
-            Properties config = new Properties();
-            config.load(reader);
-            TEMPLATE_MAP.put(WeChatMessageType.BOUND_TO_OTHER_USER, config.getProperty("wechat.template1.id"));
-        } catch (IOException e) {
-            logger.error(e.getLocalizedMessage(), e);
-        }
+        ResourceBundle bundle = ResourceBundle.getBundle("ttsd-env");
+        APP_ID = bundle.getString("wechat.appId");
+        APP_SECRET = bundle.getString("wechat.appSecret");
+        TEMPLATE_MAP.put(WeChatMessageType.BOUND_TO_OTHER_USER, bundle.getString("wechat.template1.id"));
+
     }
 
-    @Autowired
-    public WeChatClient(RedisWrapperClient redisWrapperClient) {
-        this.redisWrapperClient = redisWrapperClient;
+    public static WeChatClient getClient() {
+        return instance;
+    }
+
+    private WeChatClient() {
         this.client.setReadTimeout(5, TimeUnit.SECONDS);
         this.client.setConnectTimeout(5, TimeUnit.SECONDS);
         this.objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
-    private String fetchToken() {
-        String token = redisWrapperClient.get("wechat:token");
-        if (!Strings.isNullOrEmpty(token)) {
-            return token;
-        }
-
-        try {
-            Request request = new Request.Builder()
-                    .url(MessageFormat.format(TOKEN_URL_TEMPLATE, appId, appSecret))
-                    .get().build();
-            Response response = client.newCall(request).execute();
-
-            if (!HttpStatus.valueOf(response.code()).is2xxSuccessful()) {
-                return null;
-            }
-
-            String responseString = response.body().string();
-            Map<String, String> result = objectMapper.readValue(responseString, new TypeReference<HashMap<String, String>>() {
-            });
-
-            if (result.containsKey("errcode")) {
-                logger.error(MessageFormat.format("fetch access_token failed, response: {0}", responseString));
-                return null;
-            }
-
-            token = result.get("access_token");
-            redisWrapperClient.setex("wechat:token", Integer.parseInt(result.get("expires_in")) - 60, token);
-        } catch (Exception e) {
-            logger.error(e.getLocalizedMessage(), e);
-        }
-
-        return token;
+    public String getAppid() {
+        return APP_ID;
     }
 
     public String fetchOpenid(String sessionId, String state, String code) {
@@ -112,11 +76,11 @@ public class WeChatClient {
 
         try {
             Request request = new Request.Builder()
-                    .url(MessageFormat.format(ACCESS_TOKEN_URL_TEMPLATE, appId, appSecret, code))
+                    .url(MessageFormat.format(ACCESS_TOKEN_URL_TEMPLATE, APP_ID, APP_SECRET, code))
                     .get().build();
             Response response = client.newCall(request).execute();
 
-            if (!HttpStatus.valueOf(response.code()).is2xxSuccessful()) {
+            if (response.code() != 200) {
                 return null;
             }
 
@@ -166,7 +130,7 @@ public class WeChatClient {
 
             Response response = client.newCall(request).execute();
 
-            if (!HttpStatus.valueOf(response.code()).is2xxSuccessful()) {
+            if (response.code() != 200) {
                 logger.error(MessageFormat.format("send message failed, response code: {0}", response.code()));
                 return;
             }
@@ -181,5 +145,79 @@ public class WeChatClient {
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
         }
+    }
+
+    public String fetchJSAPITicket() {
+        String ticket = redisWrapperClient.get("wechat:jsapi:ticket");
+
+        if (!Strings.isNullOrEmpty(ticket)) {
+            return ticket;
+        }
+
+        String token = this.fetchToken();
+
+        if (Strings.isNullOrEmpty(token)) {
+            return null;
+        }
+
+        try {
+            Request request = new Request.Builder()
+                    .url(MessageFormat.format(JS_API_TICKET_URL_TEMPLATE, token))
+                    .get().build();
+            Response response = client.newCall(request).execute();
+
+            if (response.code() != 200) {
+                return null;
+            }
+
+            String responseString = response.body().string();
+            Map<String, String> result = objectMapper.readValue(responseString, new TypeReference<HashMap<String, String>>() {
+            });
+
+            if (!"0".equals(result.get("errcode"))) {
+                logger.error(MessageFormat.format("fetch js api ticket failed, response: {0}", responseString));
+            }
+
+            token = result.get("ticket");
+            redisWrapperClient.setex("wechat:jsapi:ticket", Integer.parseInt(result.get("expires_in")) - 60, token);
+        } catch (Exception e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+
+        return ticket;
+    }
+
+    private String fetchToken() {
+        String token = redisWrapperClient.get("wechat:token");
+        if (!Strings.isNullOrEmpty(token)) {
+            return token;
+        }
+
+        try {
+            Request request = new Request.Builder()
+                    .url(MessageFormat.format(TOKEN_URL_TEMPLATE, APP_ID, APP_SECRET))
+                    .get().build();
+            Response response = client.newCall(request).execute();
+
+            if (response.code() != 200) {
+                return null;
+            }
+
+            String responseString = response.body().string();
+            Map<String, String> result = objectMapper.readValue(responseString, new TypeReference<HashMap<String, String>>() {
+            });
+
+            if (result.containsKey("errcode")) {
+                logger.error(MessageFormat.format("fetch access_token failed, response: {0}", responseString));
+                return null;
+            }
+
+            token = result.get("access_token");
+            redisWrapperClient.setex("wechat:token", Integer.parseInt(result.get("expires_in")) - 60, token);
+        } catch (Exception e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+
+        return token;
     }
 }

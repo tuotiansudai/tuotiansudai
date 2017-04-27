@@ -84,8 +84,7 @@ public class WeChatController {
     public ModelAndView bindSuccess(HttpServletRequest httpServletRequest,
                                     @RequestParam(name = "redirect", required = false, defaultValue = "/") String redirect) {
         httpServletRequest.getSession().removeAttribute("weChatUserLoginName");
-        httpServletRequest.getSession().removeAttribute("weChatUserOpenid");
-        
+
         return new ModelAndView("/wechat/wechat-bind-success", "redirect", redirect);
     }
 }
