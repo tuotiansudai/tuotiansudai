@@ -3,13 +3,6 @@ let $entryPointCon=$('#entryPointCon');
 
 let $inviteBoxFriend=$('#inviteBoxFriend');
 
-if($entryPointCon.length) {
-    //获取手机屏幕高度
-    let winHeight = screen.height,
-        winWidth = screen.width;
-    $entryPointCon.css({"width":winWidth * 0.92,"height":winHeight*0.92});
-}
-
 if($inviteBoxFriend.length) {
 
     let $inviteHeader = $('#inviteHeader');
