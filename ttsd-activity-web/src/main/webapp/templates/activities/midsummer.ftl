@@ -1,5 +1,5 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.midsummer}" pageJavascript="${js.midsummer}" activeLeftNav="" title="点燃仲夏_活动中心_拓天速贷" keywords="拓天速贷,邀请好友,我要点燃,红包奖励" description="拓天速贷点燃仲夏活动,扫码关注拓天速贷服务号,回复我要点燃获得50元红包奖励,邀请好友助力升温降低起投金额.">
+<@global.main pageCss="${css.midsummer}" pageJavascript="${js.midsummer}" activeLeftNav="" title="点燃一夏_活动中心_拓天速贷" keywords="拓天速贷,邀请好友,我要点燃,红包奖励" description="拓天速贷点燃仲夏活动,扫码关注拓天速贷服务号,回复我要点燃获得50元红包奖励,邀请好友助力升温降低起投金额.">
 
 <div class="tour-slide" id="topHeader"></div>
 
