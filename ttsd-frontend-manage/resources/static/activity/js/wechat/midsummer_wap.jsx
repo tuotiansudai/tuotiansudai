@@ -34,17 +34,17 @@ if($inviteBoxFriend.length) {
         '2':{
             temp:'60',
             amount:'5000',
-            progress:'64%'
+            progress:'62%'
         },
         '3':{
             temp:'80',
             amount:'2000',
-            progress:'80%'
+            progress:'77%'
         },
         '4':{
             temp:'100',
             amount:'50',
-            progress:'96%'
+            progress:'93%'
         }
     };
 
@@ -82,6 +82,9 @@ if($inviteBoxFriend.length) {
 
     })
 }
+
+
+
 
 
 

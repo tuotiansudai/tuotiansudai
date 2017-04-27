@@ -101,7 +101,7 @@ body {
 }
 
 .invite-friend-container {
-  padding: 50px 20px 20px;
+  padding: 50px 10px 10px;
   color: #691B18;
   height: auto;
   overflow: auto;
@@ -166,7 +166,8 @@ body {
       .temp-progress {
         height: 15px;
         width: 7%;
-        border-radius: 10px;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
         position: absolute;
         top: 15px;
         background: #F25757;
@@ -178,7 +179,7 @@ body {
         width:90%;
         background: url('../../images/wechat/midsummer/line-scale.png') left bottom no-repeat;
         left: 30px;
-        bottom: 0;
+        bottom: -14px;
         background-size: 100%;
       }
 
@@ -206,6 +207,22 @@ body {
     }
   }
 }
+.note-box {
+  margin-top:30px;
+  font-size:13px;
+  background: url('../../images/wechat/midsummer/bg-yun.png') left top no-repeat;
+  background-size: 100%;
+  color: #691B18;
+  .note-inner {
+    background: #fff;
+    margin-top:45px;
+    padding:10px;
+  }
+  b {
+    display: block;
+    font-size: 15px;
+  }
+}
 
 @media screen and (max-width:350px) {
 
@@ -231,6 +248,10 @@ body {
         .temp-number {
           font-size:25px;
         }
+        sub {
+          margin-left: -5px;
+          margin-right: 10px;
+        }
       }
     }
   }
@@ -241,4 +262,5 @@ body {
      font-size: 15px;
     }
   }
+
 }
