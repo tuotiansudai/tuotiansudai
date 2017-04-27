@@ -67,12 +67,12 @@ public class WeChatClient {
     }
 
     public String fetchOpenid(String sessionId, String state, String code) {
-        if (Strings.isNullOrEmpty(redisWrapperClient.get(sessionId)) || Strings.isNullOrEmpty(state) || !state.equals(redisWrapperClient.get(sessionId))) {
-            redisWrapperClient.del(sessionId);
+        String originalState = redisWrapperClient.get(MessageFormat.format("{0}:wechat:state", sessionId));
+        redisWrapperClient.del(MessageFormat.format("{0}:wechat:state", sessionId));
+
+        if (Strings.isNullOrEmpty(state) || !state.equals(originalState)) {
             return null;
         }
-
-        redisWrapperClient.del(sessionId);
 
         try {
             Request request = new Request.Builder()

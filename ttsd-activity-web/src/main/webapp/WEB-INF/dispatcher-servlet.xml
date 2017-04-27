@@ -35,6 +35,7 @@
 
     <mvc:interceptors>
         <bean class="com.tuotiansudai.web.config.interceptors.ChannelInterceptor"/>
+        <bean class="com.tuotiansudai.web.config.interceptors.WeChatJSAPISignInterceptor"/>
         <bean class="com.tuotiansudai.activity.interceptors.AppTokenInterceptor"/>
         <bean class="com.tuotiansudai.activity.interceptors.LinkExchangeInterceptor"/>
     </mvc:interceptors>

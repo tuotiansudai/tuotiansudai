@@ -1,4 +1,4 @@
-<#macro main pageCss pageJavascript="" title="拓天速贷登录授权">
+<#macro main pageCss pageJavascript="" title="">
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,6 +17,21 @@
     <#nested>
 <script>
     window.staticServer = '${commonStaticServer}';
+</script>
+
+<script src="https://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+<script>
+    wx.config({
+        debug: true,
+        appId: '${(wxConfig.appId)!}',
+        timestamp: '${(wxConfig.timestamp)!}',
+        nonceStr: '${(wxConfig.nonceStr)!}',
+        signature: '${(wxConfig.signature)!}',
+        jsApiList: [
+            'onMenuShareAppMessage',
+            'onMenuShareTimeline'
+        ]
+    });
 </script>
 
 <script src="${js.jquerydll}" type="text/javascript" defer></script>

@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class WeChatServiceImpl implements WeChatService {
@@ -44,7 +45,7 @@ public class WeChatServiceImpl implements WeChatService {
     @Override
     public String generateAuthorizeURL(String sessionId, String redirect) {
         String state = UUIDGenerator.generate();
-        redisWrapperClient.setex(sessionId, 10, state);
+        redisWrapperClient.setex(MessageFormat.format("{0}:wechat:state", sessionId), 60, state);
 
         return MessageFormat.format(AUTHORIZE_URL_TEMPLATE,
                 weChatClient.getAppid(),
@@ -69,5 +70,11 @@ public class WeChatServiceImpl implements WeChatService {
             weChatUserMapper.update(weChatUserModel);
         }
         return weChatUserModel;
+    }
+
+    @Override
+    public boolean isBound(String loginName) {
+        List<WeChatUserModel> weChatUserModels = weChatUserMapper.findByLoginName(loginName);
+        return weChatUserModels.stream().filter(WeChatUserModel::isBound).count() > 0;
     }
 }

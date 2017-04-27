@@ -1,4 +1,5 @@
 require("activityStyle/wechat/midsummer.scss");
+
 let $entryPointCon=$('#entryPointCon');
 
 let $inviteBoxFriend=$('#inviteBoxFriend');
