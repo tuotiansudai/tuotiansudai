@@ -74,8 +74,8 @@
     <#if !isAppSource>
         <meta name = "format-detection" content = "telephone=no">
     </#if>
-    <link href="${staticServer}/images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-    <link rel="stylesheet" type="text/css" href="${css.global}" charset="utf-8" />
+    <link href="${commonStaticServer}/images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <link rel="stylesheet" type="text/css" href="${css.globalFun_page}" charset="utf-8" />
     <#if pageCss?? && pageCss != "">
     <link rel="stylesheet" type="text/css" href="${pageCss}" charset="utf-8" />
     </#if>
@@ -101,24 +101,13 @@
 </#if>
 
 <script type="text/javascript" charset="utf-8">
-    var staticServer = '${staticServer}';
-    <@security.authorize access="isAuthenticated()">
-    document.getElementById("logout-link").onclick=function (event) {
-        event.preventDefault();
-        document.getElementById("logout-form").submit();
-    };
-    </@security.authorize>
+    window.staticServer = '${commonStaticServer}';
 
 </script>
-<script src="${js.global_page}" type="text/javascript"  charset="utf-8"></script>
-<script src="${js.config}" type="text/javascript" charset="utf-8"></script>
 
-<#if pageJavascript?? && pageJavascript?length gt 0>
-<script src="${staticServer}/activity/js/libs/require-2.1.20.min.js" type="text/javascript" charset="utf-8" defer="defer" async="async"
-        data-main="${pageJavascript}">
-
-</script>
-</#if>
+<script src="${js.jquerydll}" defer></script>
+<script src="${js.globalFun_page!}" defer></script>
+<script src="${pageJavascript}" type="text/javascript" id="currentScript" defer></script>
 
 <#include "../pageLayout/statistic.ftl" />
 </body>

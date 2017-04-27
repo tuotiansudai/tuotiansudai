@@ -1,0 +1,266 @@
+body {
+  background: #FFDB60;
+}
+.entry-point-container {
+  height:95vh;
+  margin: 4%;
+  background: url("../../images/wechat/midsummer/bg-point.png") center top no-repeat;
+  background-size: cover;
+  position: relative;
+  border-radius: 20px;
+  text-align: center;
+
+  .column-box {
+    display: inline-block;
+    width:120px;
+    height:120px;
+    background: #FFDB60;
+    border-radius: 50%;
+    text-align: center;
+    font-size: 34px;
+    line-height: 42px;
+    margin-top: 87px;
+  }
+  .red-key-box {
+    color: #FFDB60;
+    font-size: 25px;
+    line-height: 30px;
+    position: absolute;
+    top:54%;
+    left:0;
+    width: 100%;
+
+    text-align: center;
+    em {
+      font-size: 100px;
+    }
+    span {
+      font-size: 20px;
+      color: #691B18;
+      display: block;
+    }
+  }
+  .button-layer {
+    position: absolute;
+    top:80%;
+    width:100%;
+    text-align: center;
+    .bind-card {
+      width:80%;
+      padding:10px 0;
+      background: #FFDB60;
+      border-radius:30px;
+      color: #691B18;
+      font-size: 20px;
+      letter-spacing: 0;
+
+    }
+    .note {
+      color: #691B18;
+      font-size:14px;
+      display: block;
+      text-align: center;
+      padding-top: 10px;
+    }
+  }
+
+}
+
+.invite-header {
+  font-size: 18px;
+  position: relative;
+  .invite-text {
+    position: absolute;
+    bottom: 0;
+    display: block;
+    text-align: center;
+    width: 100%;
+    line-height: 30px;
+    i {
+      display: block;
+    }
+    b {
+      font-size: 27px;
+      color: #F25757;
+    }
+  }
+}
+
+.button-layer-bottom {
+  margin-top:30px;
+  text-align: center;
+
+  .btn-normal {
+    padding: 10px 20px;
+    background: #F25757;
+    border-radius:30px;
+    font-size: 20px;
+    letter-spacing: 0;
+    color: #fff;
+  }
+}
+
+.invite-friend-container {
+  padding: 50px 10px 10px;
+  color: #691B18;
+  height: auto;
+  overflow: auto;
+  .from-invest {
+    color: #F25757;
+  }
+  .temperature-box {
+    background: #fff;
+    height:50px;
+    border-radius: 30px;
+    position: relative;
+
+    .temp-out-square {
+
+      background: #fff;
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      position: absolute;
+      left: 0;
+      top: -25px;
+      text-align: center;
+      color: #fff;
+      line-height: 80px;
+      z-index: 20;
+      .temp-inner-square {
+        width: 75px;
+        height: 75px;
+        border-radius: 50%;
+        background: #F25757;
+        position: absolute;
+        left:0;
+        right:0;
+        top:0;
+        bottom:0;
+        margin:auto;
+        .temp-number {
+          font-size: 30px;
+        }
+        sub {
+          font-size:14px;
+          letter-spacing: -6px;
+          vertical-align: bottom;
+          display: inline-block;
+          &:before {
+            content:'。';
+            vertical-align: top;
+            margin-bottom: 10px;
+            line-height: 66px;
+          }
+        }
+      }
+
+    }
+    .temp-progress-box {
+      position: absolute;
+      bottom: 0;
+      right: 6%;
+      width: 76%;
+      height: 100%;
+      z-index: 20;
+      .temp-progress {
+        height: 15px;
+        width: 7%;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+        position: absolute;
+        top: 15px;
+        background: #F25757;
+        left: 14px;
+      }
+      .temp-scale-line {
+        position: absolute;
+        height:40px;
+        width:90%;
+        background: url('../../images/wechat/midsummer/line-scale.png') left bottom no-repeat;
+        left: 30px;
+        bottom: -14px;
+        background-size: 100%;
+      }
+
+    }
+
+  }
+
+  .invest-detail-box {
+    margin-top:50px;
+    font-size: 15px;
+    p {
+      color: #691B18;
+    }
+    .table-invest {
+
+      th,td {
+        background: #FFCC1C;
+        border:3px solid #FFDB60;
+        padding: 6px 0;
+        color: #691B18;
+      }
+      td {
+        background: #FFD442;
+      }
+    }
+  }
+}
+.note-box {
+  margin-top:30px;
+  font-size:13px;
+  background: url('../../images/wechat/midsummer/bg-yun.png') left top no-repeat;
+  background-size: 100%;
+  color: #691B18;
+  .note-inner {
+    background: #fff;
+    margin-top:45px;
+    padding:10px;
+  }
+  b {
+    display: block;
+    font-size: 15px;
+  }
+}
+
+@media screen and (max-width:350px) {
+
+  .invite-friend-container .temperature-box {
+    height: 40px;
+    border-radius: 20px;
+    .temp-progress-box {
+      width: 73%;
+      .temp-progress {
+        top:10px;
+      }
+      .temp-scale-line {
+        width:88%;
+      }
+    }
+    .temp-out-square {
+      width:90px;
+      height:90px;
+      .temp-inner-square {
+        width:70px;
+        height:70px;
+        line-height: 70px;
+        .temp-number {
+          font-size:25px;
+        }
+        sub {
+          margin-left: -5px;
+          margin-right: 10px;
+        }
+      }
+    }
+  }
+
+  .button-layer-bottom {
+
+    .btn-normal {
+     font-size: 15px;
+    }
+  }
+
+}

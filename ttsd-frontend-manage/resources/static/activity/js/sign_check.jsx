@@ -1,0 +1,1 @@
+require("activityStyle/sign_check.scss");

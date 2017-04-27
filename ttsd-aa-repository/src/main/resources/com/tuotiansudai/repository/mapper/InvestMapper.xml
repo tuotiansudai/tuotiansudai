@@ -949,7 +949,7 @@
         WHERE
         status = 'SUCCESS' AND login_name = #{loginName} AND transfer_invest_id IS NULL
         <if test="startTime != null &amp;&amp; endTime != null">
-            and created_time between #{startTime} and #{endTime}
+            and trading_time between #{startTime} and #{endTime}
         </if>
         <if test="activityDesc != null">
             AND loan_id IN (
@@ -1051,5 +1051,16 @@
         </if>
     </select>
 
+    <select id="findFirstInvestAmountByLoginName" parameterType="map" resultMap="investResultMap">
+        SELECT invest.*
+        FROM invest
+        JOIN loan ON invest.loan_id = loan.id
+        WHERE invest.login_name = #{loginName}
+        AND invest.status = 'SUCCESS'
+        AND invest.transfer_invest_id IS NULL
+        AND invest.trading_time BETWEEN #{startTime} AND #{endTime}
+        ORDER BY trading_time ASC
+        LIMIT 1
+    </select>
 
 </mapper>

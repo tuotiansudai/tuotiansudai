@@ -102,12 +102,14 @@ public class InvestMapperTest {
     private InvestModel getFakeInvestModel() {
         InvestModel model = new InvestModel(IdGenerator.generate(), Loan_ID, null, 1000000L, User_ID, new DateTime().withTimeAtStartOfDay().toDate(), Source.WEB, null, 0.1);
         model.setStatus(InvestStatus.SUCCESS);
+        model.setTradingTime(new DateTime().withTimeAtStartOfDay().toDate());
         return model;
     }
 
     private InvestModel getFakeInvestModelByLoginName(String loginName) {
         InvestModel model = new InvestModel(IdGenerator.generate(), Loan_ID, null, 1000000L, loginName, new DateTime().withTimeAtStartOfDay().toDate(), Source.WEB, null, 0.1);
         model.setStatus(InvestStatus.SUCCESS);
+        model.setTradingTime(new DateTime().withTimeAtStartOfDay().toDate());
         return model;
     }
 

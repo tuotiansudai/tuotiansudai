@@ -1,0 +1,118 @@
+.main-frame .layui-layer-content {
+  color: #4c4c4c; }
+
+.get-skipphone-tip {
+  float: left;
+  width: 100%;
+  height: auto;
+  text-align: center;
+  padding: 20px 0 35px;
+  display: none; }
+  .get-skipphone-tip .tip-item {
+    float: left;
+    width: 100%; }
+    .get-skipphone-tip .tip-item span {
+      display: inline-block;
+      margin: 0 2px; }
+      .get-skipphone-tip .tip-item span.skip-error {
+        float: left;
+        font-size: 12px;
+        color: #ff0000;
+        margin-left: 50px; }
+      .get-skipphone-tip .tip-item span .skip-phone-code {
+        float: left;
+        width: 170px;
+        height: 30px;
+        font-size: 12px;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+        text-indent: 1em; }
+      .get-skipphone-tip .tip-item span .get-skip-code {
+        float: left;
+        width: 100px;
+        height: 30px;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+        text-align: center;
+        font-size: 12px;
+        color: #4c4c4c;
+        background: #fafafa; }
+      .get-skipphone-tip .tip-item span .microphone {
+        float: left;
+        width: 30px;
+        height: 30px;
+        background: #fafafa;
+        text-align: center;
+        border: 1px solid #ccc;
+        border-left: none;
+        box-sizing: border-box; }
+    .get-skipphone-tip .tip-item .skip-intro {
+      float: right;
+      font-size: 12px;
+      color: #4c4c4c;
+      margin-right: 40px; }
+    .get-skipphone-tip .tip-item .get-skip-btn {
+      display: inline-block;
+      width: 250px;
+      height: 35px;
+      line-height: 35px;
+      text-align: center;
+      background: #ff752a;
+      color: #fff;
+      font-size: 14px;
+      border: none;
+      margin: 30px 0 10px;
+      cursor: pointer; }
+      .get-skipphone-tip .tip-item .get-skip-btn .active {
+        background: #ff985d; }
+    .get-skipphone-tip .tip-item label {
+      display: inline-block; }
+      .get-skipphone-tip .tip-item label .skip-icon {
+        display: inline-block;
+        width: 14px;
+        height: 14px;
+        background: url("/images/icons/skip-checkbox.png") no-repeat center;
+        background-position: 0px 0px;
+        cursor: pointer;
+        vertical-align: middle; }
+        .get-skipphone-tip .tip-item label .skip-icon.active {
+          background-position: -24px 0px; }
+    .get-skipphone-tip .tip-item .skip-text {
+      display: inline-block;
+      font-size: 12px;
+      color: #4d4d4d; }
+      .get-skipphone-tip .tip-item .skip-text span {
+        color: #999999;
+        cursor: pointer; }
+        .get-skipphone-tip .tip-item .skip-text span:hover {
+          text-decoration: underline; }
+
+.skip-success-tip {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 999999;
+  display: none; }
+  .skip-success-tip span {
+    width: 290px;
+    height: 90px;
+    line-height: 90px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -45px;
+    margin-left: -145px;
+    font-size: 18px;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.5);
+    text-align: center;
+    border-radius: 10px; }
+    @media (max-width: 700px) {
+      .skip-success-tip span {
+        width: 140px; } }
+    .skip-success-tip span .skip-icon {
+      margin-right: 10px; }
+
+/*# sourceMappingURL=anxin_qian.css.map */
