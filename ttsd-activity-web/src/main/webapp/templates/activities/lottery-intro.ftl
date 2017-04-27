@@ -1,12 +1,12 @@
 <#import "../macro/global-dev.ftl" as global>
 
-<#assign jsName = 'wx_lottery' >
+<#assign jsName = 'lottery_intro' >
 
 <#assign js = {"${jsName}":"http://localhost:3008/activity/js/${jsName}.js"} >
 <#assign css = {"${jsName}":"http://localhost:3008/activity/js/${jsName}.css"}>
 
 
-<@global.main pageCss="${css.wx_lottery}" pageJavascript="${js.wx_lottery}" activeNav="" activeLeftNav="" title="拓天速贷注册_用户注册_拓天速贷" keywords="拓天速贷,拓天速贷会员,拓天速贷注册，用户注册" description="拓天速贷会员注册为您提供规范、专业、安全有保障的互联网金融信息服务.">
+<@global.main pageCss="${css.lottery_intro}" pageJavascript="${js.lottery_intro}" activeNav="" activeLeftNav="" title="拓天速贷注册_用户注册_拓天速贷" keywords="拓天速贷,拓天速贷会员,拓天速贷注册，用户注册" description="拓天速贷会员注册为您提供规范、专业、安全有保障的互联网金融信息服务.">
 <div class="wx-lottery-container">
 	<div class="top-item"></div>
 	<div class="wp">
@@ -14,6 +14,11 @@
 			<h3>
 				<span>关注微信，参与活动</span>
 			</h3>
+			<div class="tip-item">
+				在活动期间，凡新手用户（含活动前注册未投资的用户），扫码关注拓天速贷微信服务号（微信号：<span>ttsdgw</span>）即可参与活动哦。
+			</div>
+			<div class="code-item">
+			</div>
 		</div>
 		<div class="content-item">
 			<h3>

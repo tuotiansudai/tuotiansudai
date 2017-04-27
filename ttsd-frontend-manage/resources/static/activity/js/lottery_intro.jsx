@@ -1,2 +1,2 @@
-require("activityStyle/wx_lottery.scss");
+require("activityStyle/lottery_intro.scss");
 let commonFun= require('publicJs/commonFun');
