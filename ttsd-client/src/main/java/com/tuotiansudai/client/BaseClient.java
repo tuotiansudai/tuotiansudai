@@ -44,7 +44,7 @@ public abstract class BaseClient {
         ResponseBody responseBody = newCall(path, requestJson, method);
         try {
             return responseBody != null ? responseBody.string() : null;
-        } catch (IOException e) {
+        } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
             return null;
         }
