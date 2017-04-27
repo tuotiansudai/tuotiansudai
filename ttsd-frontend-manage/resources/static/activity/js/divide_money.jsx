@@ -10,12 +10,27 @@ let commonFun= require('publicJs/commonFun');
 window['Clipboard']=Clipboard;
 
 var $shareReward=$('#shareRewardContainer'),
-	$popWid=$('.pop-layer-out'),
+    $isLogin=$('.show-login',$shareReward),
 	$copyButton=$('.copy-button',$shareReward);
 
-$('.btn-to-close',$popWid).on('click',function() {
-	layer.closeAll();
+
+$isLogin.on('click', function(event) {
+    event.preventDefault();
+    $.when(commonFun.isUserLogin())
+        .done(function() {
+        })
+        .fail(function() {
+            //判断是否需要弹框登陆
+            layer.open({
+                type: 1,
+                title: false,
+                closeBtn: 0,
+                area: ['auto', 'auto'],
+                content: $('#loginTip')
+            });
+        });
 });
+
 if($copyButton.length) {
 	//已登录已认证,复制功能
 	var $clipboardText=$('.input-invite',$shareReward);
