@@ -81,10 +81,10 @@ $appCaptcha.on('keyup',function(event) {
 $fetchCaptcha.on('touchstart', function (event) {
     var $this=$(this);
     event.preventDefault();
-    // if($this.prop('disabled')) {
-    //     return;
-    // }
-    // $fetchCaptcha.prop('disabled', true);
+    if($this.prop('disabled')) {
+        return;
+    }
+    $fetchCaptcha.prop('disabled', true);
     var captchaVal = $appCaptcha.val(),
         mobile = $phoneDom.val();
 
@@ -93,12 +93,11 @@ $fetchCaptcha.on('touchstart', function (event) {
         type: 'POST',
         dataType: 'json',
         data: {imageCaptcha: captchaVal, mobile: mobile}
-    },function(data) {
+    },function(response) {
         var data = response.data;
         var countdown = 60,timer;
         if (data.status && !data.isRestricted) {
             timer = setInterval(function () {
-                console.log(1);
                 $fetchCaptcha.prop('disabled', true).text(countdown + '秒后重发');
                 countdown--;
                 if (countdown == 0) {
