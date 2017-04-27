@@ -1,5 +1,7 @@
 $width:640px;
-
+form .error {
+	color: #fff700;
+}
 input[type="button"],
 input[type="submit"],
 input[type="reset"]{
@@ -121,14 +123,7 @@ textarea {
 					&:last-child{
 						margin-bottom:0;
 					}
-					label.error{
-						float:left;
-						width:100%;
-						color:#fff700;
-						&:before {
-						    color: #fff700;
-						}
-					}
+
 					.item-text{
 						float:left;
 						width:100%;

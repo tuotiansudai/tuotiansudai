@@ -1,6 +1,6 @@
 <#import "../macro/global.ftl" as global>
 <@global.main pageCss="${css.share_app}" pageJavascript="${js.share_app}" activeNav="" activeLeftNav="" title="新手福利_拓天新手投资_拓天速贷" keywords="拓天速贷,新手投资,新手加息券,新手红包" description="拓天速贷是中国P2P互联网金融信息服务平台,为广大投资、贷款的用户提供多元化的投资选择和优质的综合理财服务,新手注册可领取5888体验金，体验再得红包大奖和3%的新手加息券.">
-<div class="share-app-container clearfix">
+<div class="share-app-container clearfix" id="shareAppContainer">
 	<div class="share-container">
 		<div class="share-item">
 			<div class="item-tel">
@@ -10,19 +10,19 @@
                 送你<span>6888元</span>体验金+<span>668元</span>现金红包
 			</div>
 			<div class="item-form">
-				<form action="#" method="post" id="androidForm">
+				<form action="#" method="post" id="registerForm">
 					<div class="item-int">
-						<input type="text" class="item-text" name="mobile" placeholder="请输入您的手机号码" id="mobile">
+						<input type="text" validate class="item-text" name="mobile" placeholder="请输入您的手机号码" id="mobile">
 					</div>
 					<div class="item-int">
-						<input type="password" class="item-text" name="password" placeholder="请输入您的密码" id="password">
+						<input type="password" validate class="item-text" name="password" placeholder="请输入您的密码" id="password">
 					</div>
 					<div class="item-int">
-						<input type="text" class="item-text" name="captcha" placeholder="请输入验证码" id="captcha">
-						<input type="button" class="ignore get-code" value="获取验证码" id="androidBtn">
+						<input type="text" validate class="item-text" name="captcha" placeholder="请输入验证码" id="captcha">
+						<input type="button" class="ignore get-code" value="获取验证码" id="getCaptchaBtn">
 					</div>
 					<div class="item-int">
-	      				<input type="checkbox" class="checkbox" id="agreement" name="agreement" checked>
+	      				<input type="checkbox" validate class="checkbox" id="agreement" name="agreement" checked>
 						<label for="agreement" class="agree">同意拓天速贷<span id="agreeRule">《服务协议》</span></label>
 					</div>
                     <div class="item-int">
