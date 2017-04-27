@@ -52,6 +52,7 @@
         font-size:16px;
         color:#333333;
         margin:40px 0;
+        line-height: 32px;
         span{
           color:#e85454;
           font-size:24px;
@@ -62,6 +63,89 @@
         width:100%;
         height:470px;
         background:url('../images/lottery-intro/code-img.png') no-repeat center;
+      }
+      .intro-item{
+        float:left;
+        width:100%;
+        padding: 0 110px;
+        box-sizing: border-box;
+        dt{
+          float:left;
+          width:100%;
+          margin-bottom:15px;
+          span{
+            float:left;
+            width:50%;
+            font-size:26px;
+            color:#333333;
+            text-align:center;
+          }
+        }
+        dd{
+          float:left;
+          width:100%;
+          background:url('../images/lottery-intro/icon-bag.png') no-repeat center;
+          background-size:100%;
+          margin-bottom:15px;
+          span{
+            float:left;
+            width:50%;
+            font-size:36px;
+            color:#fff;
+            line-height: 80px;
+            text-align:left;
+            box-sizing: border-box;
+            &.left-item{
+              padding-left:145px;
+            }
+            &.right-item{
+              padding-left:180px;
+            }
+          }
+        }
+      }
+      .gift-list{
+        float:left;
+        margin:0 -8px;
+        li{
+          float:left;
+          width:178px;
+          margin:0 8px;
+          box-sizing:border-box;
+          p{
+            float:left;
+            width:100%;
+            margin-bottom: 0;
+            text-align:center;
+            &.img-item{
+              height:178px;
+              border:1px solid #f9d95e;
+              border-radius:10px;
+              color:#333;
+              &.gift-one{
+                background: #fff url('../images/lottery-intro/gift-one.png') no-repeat center;
+              }
+              &.gift-two{
+                background: #fff url('../images/lottery-intro/gift-two.png') no-repeat center;
+              }
+              &.gift-three{
+                background: #fff url('../images/lottery-intro/gift-three.png') no-repeat center;
+              }
+              &.gift-four{
+                background: #fff url('../images/lottery-intro/gift-four.png') no-repeat center;
+              }
+              &.gift-five{
+                background: #fff url('../images/lottery-intro/gift-five.png') no-repeat center;
+              }
+            }
+            &.title-name{
+              font-size:16px;
+            }
+            &.info-text{
+              font-size:14px;
+            }
+          }
+        }
       }
     }
     .rule-item{

@@ -24,11 +24,50 @@
 			<h3>
 				<span>一重礼 投资送现金</span>
 			</h3>
+			<div class="tip-item">
+				在活动期间，凡新手用户关注拓天速贷微信服务号，<span>通过微信服务号投资直投项目</span>（不含体新手体验和转让项目），单笔投资达到指定金额，可获得不同等额的现金奖励。
+			</div>
+			<dl class="intro-item">
+				<dt><span>单笔投资金额</span><span>现金奖励</span></dt>
+				<dd><span class="left-item">5000元</span><span class="right-item">18元</span></dd>
+				<dd><span class="left-item">10000元</span><span class="right-item">38元</span></dd>
+				<dd><span class="left-item">20000元</span><span class="right-item">88元</span></dd>
+			</dl>
 		</div>
 		<div class="content-item">
 			<h3>
 				<span>二重礼 幸运大抽奖</span>
 			</h3>
+			<div class="tip-item">
+				在活动期间，凡新手用户关注拓天速贷微信服务号，通过微信服务号单笔投资每满5000元(不含新手体验和转让项目）即可获得一次抽奖机会，1万可获得两次，以此累加，<span>所有100%中奖！</span>点击菜单中“幸运抽奖”后即可进行抽奖。大奖如下:
+			</div>
+			<ul class="gift-list">
+				<li>
+					<p class="img-item gift-one"></p>
+					<p class="title-name">一等奖</p>
+					<p class="info-text">欧式奢华贡缎床品四件套</p>
+				</li>
+				<li>
+					<p class="img-item gift-two"></p>
+					<p class="title-name">二等奖</p>
+					<p class="info-text">时尚百搭真皮子母包</p>
+				</li>
+				<li>
+					<p class="img-item gift-three"></p>
+					<p class="title-name">三等奖</p>
+					<p class="info-text">简约吊坠百搭锁骨链</p>
+				</li>
+				<li>
+					<p class="img-item gift-four"></p>
+					<p class="title-name">四等奖</p>
+					<p class="info-text">精品定制毛巾礼盒</p>
+				</li>
+				<li>
+					<p class="img-item gift-five"></p>
+					<p class="title-name">五等奖</p>
+					<p class="info-text">20元红包</p>
+				</li>
+			</ul>
 		</div>
 		<dl class="rule-item">
 			<dt>温馨提示：</dt>
