@@ -81,6 +81,10 @@
         select * from user where login_name = #{loginName} for update
     </select>
 
+    <select id="findExperienceByLoginName" parameterType="string" resultType="long" useCache="false">
+        select IFNULL(experience_balance,0) as experienceAmount from user where login_name = #{loginName}
+    </select>
+
     <select id="findByMobile" parameterType="string" resultMap="userResultMap">
         select * from user where mobile = #{mobile}
     </select>

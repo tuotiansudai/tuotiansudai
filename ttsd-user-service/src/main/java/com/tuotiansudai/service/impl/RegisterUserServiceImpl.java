@@ -9,6 +9,7 @@ import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.message.EventMessage;
+import com.tuotiansudai.message.ExperienceAssigningMessage;
 import com.tuotiansudai.message.PushMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.UserMapper;
@@ -17,13 +18,11 @@ import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserRoleModel;
 import com.tuotiansudai.service.ExperienceBillService;
 import com.tuotiansudai.service.RegisterUserService;
-import com.tuotiansudai.util.AmountConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
-import java.util.Date;
 
 @Service
 public class RegisterUserServiceImpl implements RegisterUserService {
@@ -46,6 +45,8 @@ public class RegisterUserServiceImpl implements RegisterUserService {
     @Autowired
     private ExperienceBillService experienceBillService;
 
+    private static final long EXPERIENCE_AMOUNT = 688800l;
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean register(UserModel userModel) {
@@ -54,11 +55,9 @@ public class RegisterUserServiceImpl implements RegisterUserService {
             return true;
         }
 
-        //更新体验金
-        experienceBillService.updateUserExperienceBalanceByLoginName(688800, userModel.getLoginName(), ExperienceBillOperationType.IN, ExperienceBillBusinessType.REGISTER,
-                MessageFormat.format(ExperienceBillBusinessType.REGISTER.getContentTemplate(),
-                        AmountConverter.convertCentToString(688800),
-                        new Date()));
+        //发放体验金
+        mqWrapperClient.sendMessage(MessageQueue.ExperienceAssigning,
+                new ExperienceAssigningMessage(userModel.getLoginName(), EXPERIENCE_AMOUNT, ExperienceBillOperationType.IN, ExperienceBillBusinessType.REGISTER));
 
         this.userRoleMapper.create(Lists.newArrayList(new UserRoleModel(userModel.getLoginName(), Role.USER)));
 

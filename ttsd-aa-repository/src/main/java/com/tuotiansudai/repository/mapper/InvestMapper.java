@@ -300,4 +300,8 @@ public interface InvestMapper {
 
     int countInvestBeforeDate(@Param(value = "loginName") String loginName,
                               @Param(value = "datePoint") Date datePoint);
+
+    InvestModel findFirstInvestAmountByLoginName(@Param(value = "loginName") String loginName,
+                                @Param(value = "startTime") Date startTime,
+                                @Param(value = "endTime") Date endTime);
 }
