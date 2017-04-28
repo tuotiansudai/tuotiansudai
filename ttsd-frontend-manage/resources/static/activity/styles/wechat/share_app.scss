@@ -103,7 +103,7 @@ textarea {
 				color:#ff635a;
 				text-align:center;
 				&.share-old {
-					background: url('../images/landingpage/share-old.png') center top no-repeat;
+					background: url('../../images/shareapp/share-old.png') center top no-repeat;
 					height: 86px;
 					background-size: 90%;
 				}
@@ -125,7 +125,7 @@ textarea {
 						display: inline-block;
 						height:220px;
 						width: 100%;
-						background: url('../images/shareapp/gift-icon.png') center top no-repeat;
+						background: url('../../images/shareapp/gift-icon.png') center top no-repeat;
 						background-size: contain;
 					}
 					&:last-child{
@@ -196,7 +196,7 @@ textarea {
 		padding-top: 40px;
 		padding-bottom: 40px;
 		.image-title {
-			background: url("../images/landingpage/newbie-step1-title-app.png") center top no-repeat;
+			background: url("../../images/landingpage/newbie-step1-title-app.png") center top no-repeat;
 			height: 50px;
 			background-size: auto 50px;
 		}
@@ -214,7 +214,7 @@ textarea {
 			height: 116px;
 			position: absolute;
 			left: 0;
-			background: url("../images/landingpage/newbie-decoration-bg-app-l.png");
+			background: url("../../images/landingpage/newbie-decoration-bg-app-l.png");
 			background-size: auto 116px;
 			top: -20px;
 		}
@@ -223,12 +223,12 @@ textarea {
 			height: 145px;
 			position: absolute;
 			right: 0;
-			background: url("../images/landingpage/newbie-decoration-bg-app-r.png");
+			background: url("../../images/landingpage/newbie-decoration-bg-app-r.png");
 			background-size: auto 145px;
 			top: -20px;
 		}
 		.image-title {
-			background: url("../images/landingpage/newbie-step2-title-app.png") center top no-repeat;
+			background: url("../../images/landingpage/newbie-step2-title-app.png") center top no-repeat;
 			height: 50px;
 			background-size: auto 50px;
 		}
@@ -236,7 +236,7 @@ textarea {
 		.image-red-envelope {
 			margin-top: 15px;
 			margin-bottom: 20px;
-			background: url("../images/landingpage/newbie-step2-red-envelope.png") center top no-repeat;
+			background: url("../../images/landingpage/newbie-step2-red-envelope.png") center top no-repeat;
 			height: 114px;
 			background-size: auto 114px;
 		}
@@ -249,7 +249,7 @@ textarea {
 		padding-bottom: 20px;
 
 		.image-title {
-			background: url("../images/landingpage/newbie-step3-title-app-new.png") center top no-repeat;
+			background: url("../../images/landingpage/newbie-step3-title-app-new.png") center top no-repeat;
 			height: 50px;
 			background-size: auto 50px;
 		}
@@ -287,7 +287,7 @@ textarea {
 			height: 116px;
 			position: absolute;
 			left: 0;
-			background: url("../images/landingpage/newbie-decoration-bg-app-l.png");
+			background: url("../../images/landingpage/newbie-decoration-bg-app-l.png");
 			background-size: auto 116px;
 			top: -20px;
 
@@ -297,13 +297,13 @@ textarea {
 			height: 145px;
 			position: absolute;
 			right: 0;
-			background: url("../images/landingpage/newbie-decoration-bg-app-r.png");
+			background: url("../../images/landingpage/newbie-decoration-bg-app-r.png");
 			background-size: auto 145px;
 			top: -20px;
 		}
 
 		.image-title {
-			background: url("../images/landingpage/newbie-step4-title-app.png") center top no-repeat;
+			background: url("../../images/landingpage/newbie-step4-title-app.png") center top no-repeat;
 			height: 50px;
 			background-size: auto 50px;
 		}
@@ -329,7 +329,7 @@ textarea {
 
 		.image-coupon {
 			margin-top: 20px;
-			background: url("../images/landingpage/newbie-step4-coupon.png") center top no-repeat;
+			background: url("../../images/landingpage/newbie-step4-coupon.png") center top no-repeat;
 			height: 132px;
 			background-size: auto 132px;
 		}
@@ -368,13 +368,13 @@ textarea {
 				padding-top: 80px;
 				margin-bottom: 22px;
 				&.one {
-					background: url('../images/landingpage/newbie-step5-cfca.png') center top no-repeat;
+					background: url('../../images/landingpage/newbie-step5-cfca.png') center top no-repeat;
 				}
 				&.two {
-					background: url('../images/landingpage/newbie-step5-control.png') center top no-repeat;
+					background: url('../../images/landingpage/newbie-step5-control.png') center top no-repeat;
 				}
 				&.three {
-					background: url('../images/landingpage/newbie-step5-security.png') center top no-repeat;
+					background: url('../../images/landingpage/newbie-step5-security.png') center top no-repeat;
 				}
 
 				p {

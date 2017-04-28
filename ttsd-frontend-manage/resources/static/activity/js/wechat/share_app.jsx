@@ -1,4 +1,4 @@
-require('activityStyle/share_app.scss');
+require('activityStyle/wechat/share_app.scss');
 let commonFun= require('publicJs/commonFun');
 let ValidatorObj= require('publicJs/validator');
 
