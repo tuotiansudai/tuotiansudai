@@ -11,31 +11,45 @@
     <div class="top-item"></div>
     <div class="actor-content-group">
         <div class="wp clearfix">
-            <div class="tree-model">
+            <div class="wechat-model">
                 <div class="info-item">
-                    活动期间投资额每满1000元即可获得一次摇一摇机会，如单笔投资10000元，可直接获得10次摇一摇机会，用户每日最多可获得20次摇一摇机会，当日超出部分的投资额不予累计。
+                    在活动期间，凡新手用户单笔投资每满5000元(不含新手体验和转让项目）即可获得一次抽奖机会，1万可获得两次，以此累加，所有100%中奖！点击转盘开始抽奖哦！
                 </div>
-                <div class="gift-item text-c reward-gift-box">
-                    <div class="time-item">
-                        我的抽奖机会:<span class="draw-time">0</span>次
-                    </div>
-                    <div class="rotate-btn pointer-img"></div>
-                    <div class="record-list-box">
-                        <div class="menu-switch">
-                            <span class="active">中奖记录</span>
-                            <span>我的奖品</span>
-                        </div>
-                        <div class="record-list">
-                            <i class="icon-left"></i><i class="icon-right"></i>
-                            <ul class="user-record" id="userRecordList">
-                            </ul>
-                            <ul class="own-record" id="ownRecordList" style="display: none">
-                            </ul>
-                        </div>
-                    </div>
+                <div class="gift-item text-c">
+                    <div class="gift-circle-frame clearfix">
+					    <div class="gift-circle-out">
+					            <div class="pointer-img"></div>
+					            <div class="rotate-btn"></div>
+					    </div>
+					    <div class="lottery-times">
+					    	当前剩余<span> 2 </span>次抽奖机会
+					    </div>
+					    <a href="/loan-list" class="loan-btn">立即投资赢取更多机会</a>
+					    <div class="gift-circle-detail">
+					        <div class="gift-info-box">
+					            <ul class="gift-record clearfix">
+					                <li class="active"><span>中奖记录</span></li>
+					                <li><span>我的奖品</span></li>
+					            </ul>
+					            <div class="record-list">
+					                <ul class="record-model user-record" ></ul>
+					                <ul class="record-model own-record" style="display: none"></ul>
+					            </div>
+					        </div>
+					    </div>
+					</div>
                 </div>
             </div>
         </div>
+        <dl class="rule-item">
+        	<dt>温馨提示：</dt>
+        	<dd>1.本活动仅限直投项目，债权转让及新手专享项目不参与累计；</dd>
+        	<dd>2.在活动中，抽奖获得的实物奖品，将在活动结束后7个工作内为您寄出；</dd>
+        	<dd>3.在活动中，抽奖获得的红包，会实时发放到您的账户中，可登陆后在“我的-优惠券”中进行查看；</dd>
+        	<dd>4.如有疑问，欢迎致电拓天速贷客服中心400-169-1188，或微信关注“拓天速贷服务号”进行在线咨询。（工作时间：9:00—20:00）；</dd>
+        	<dd>5.活动中如有使用虚假账号、恶意刷奖等违规行为，一经查出拓天速贷有权撤销您的获奖资格；</dd>
+        	<dd>6.活动遵循拓天速贷法律声明，最终解释权归拓天速贷所有。</dd>
+        </dl>
     </div>
 
     <#include "../module/login-tip.ftl" />
