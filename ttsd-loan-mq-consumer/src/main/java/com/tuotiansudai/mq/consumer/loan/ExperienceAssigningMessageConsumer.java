@@ -73,8 +73,10 @@ public class ExperienceAssigningMessageConsumer implements MessageConsumer {
             experienceBillService.updateUserExperienceBalanceByLoginName(experienceAssigningMessage.getExperienceAmount(), experienceAssigningMessage.getLoginName(),
                     experienceAssigningMessage.getExperienceBillOperationType(), experienceAssigningMessage.getExperienceBillBusinessType(), experienceAssigningMessage.getNote());
         } catch (Exception e) {
-            logger.error(MessageFormat.format("[发放体验金MQ] {0} grant experience fail {1}, errorMessage:{2}", experienceAssigningMessage.getLoginName(), DateFormatUtils.format(experienceAssigningMessage.getCurrentDate(),
-                    "yyyy-MM-dd"), e.getLocalizedMessage(), e);
+            logger.error(MessageFormat.format("[发放体验金MQ] {0} grant experience fail {1}, errorMessage:{2}",
+                    experienceAssigningMessage.getLoginName(),
+                    DateFormatUtils.format(experienceAssigningMessage.getCurrentDate(), "yyyy-MM-dd"),
+                    e.getLocalizedMessage()), e);
         }
     }
 
