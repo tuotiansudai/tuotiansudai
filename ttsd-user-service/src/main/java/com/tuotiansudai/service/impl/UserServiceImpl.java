@@ -51,7 +51,6 @@ public class UserServiceImpl implements UserService {
     private UserOpLogService userOpLogService;
 
 
-
     private final static int LOGIN_NAME_LENGTH = 8;
 
     @Override
@@ -92,6 +91,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public boolean registerUser(RegisterUserDto dto) {
         if (this.mobileIsExist(dto.getMobile())) {
             logger.warn(MessageFormat.format("[Register User {0}] mobile is existed", dto.getMobile()));
@@ -188,9 +188,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public long getExperienceBalanceByLoginName(String loginName) {
-        UserModel userModel = userMapper.findByLoginName(loginName);
-        return userModel != null ? userModel.getExperienceBalance() : 0;
+        Long experienceBalance = userMapper.findExperienceByLoginName(loginName);
+        return experienceBalance != null ? experienceBalance : 0;
     }
-
 
 }

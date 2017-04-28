@@ -164,4 +164,18 @@ public class UserMapperTest {
         long userCount = userMapper.findUsersCount();
         assertTrue(userCount > 0);
     }
+
+    @Test
+    public void shouldFindExperienceIsOk(){
+        UserModel userModel = this.getUserModelTest();
+        userModel.setLoginName("testExperience");
+        userModel.setExperienceBalance(100l);
+        userModel.setMobile("10000000000");
+        userMapper.create(userModel);
+
+        Long experience = userMapper.findExperienceByLoginName(userModel.getLoginName());
+        assertTrue(experience == userModel.getExperienceBalance());
+
+
+    }
 }

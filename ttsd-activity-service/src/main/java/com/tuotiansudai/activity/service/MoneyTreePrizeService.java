@@ -5,14 +5,16 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.activity.repository.dto.DrawLotteryResultDto;
 import com.tuotiansudai.activity.repository.mapper.UserLotteryPrizeMapper;
 import com.tuotiansudai.activity.repository.model.*;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.enums.ExperienceBillBusinessType;
 import com.tuotiansudai.enums.ExperienceBillOperationType;
+import com.tuotiansudai.message.ExperienceAssigningMessage;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.ExperienceBillService;
-import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.DateUtil;
 import com.tuotiansudai.util.MobileEncryptor;
 import org.apache.commons.lang3.StringUtils;
@@ -24,7 +26,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -50,9 +51,11 @@ public class MoneyTreePrizeService {
     @Autowired
     private ExperienceBillService experienceBillService;
 
+    @Autowired
+    private MQWrapperClient mqWrapperClient;
+
     @Value("#{'${activity.money.tree.period}'.split('\\~')}")
     private List<String> moneyTreeTime = Lists.newArrayList();
-
 
     private static final long MONEY_TREE_EXPERIENCE_BILL_AMOUNT_50 = 5000;
     private static final long MONEY_TREE_EXPERIENCE_BILL_AMOUNT_100 = 10000;
@@ -228,13 +231,7 @@ public class MoneyTreePrizeService {
             case MONEY_TREE_90000_EXPERIENCE_GOLD_50:
             case MONEY_TREE_100000_EXPERIENCE_GOLD_50:
             case MONEY_TREE_ABOVE_100000_EXPERIENCE_GOLD_50:
-                experienceBillService.updateUserExperienceBalanceByLoginName(MONEY_TREE_EXPERIENCE_BILL_AMOUNT_50,
-                        loginName,
-                        experienceBillOperationType,
-                        experienceBillBusinessType,
-                        MessageFormat.format(ExperienceBillBusinessType.MONEY_TREE.getContentTemplate(),
-                                AmountConverter.convertCentToString(MONEY_TREE_EXPERIENCE_BILL_AMOUNT_50),
-                                new Date()));
+                this.grantExperience(loginName, MONEY_TREE_EXPERIENCE_BILL_AMOUNT_50, experienceBillOperationType, experienceBillBusinessType);
                 break;
             case MONEY_TREE_20000_EXPERIENCE_GOLD_100:
             case MONEY_TREE_30000_EXPERIENCE_GOLD_100:
@@ -246,13 +243,7 @@ public class MoneyTreePrizeService {
             case MONEY_TREE_90000_EXPERIENCE_GOLD_100:
             case MONEY_TREE_100000_EXPERIENCE_GOLD_100:
             case MONEY_TREE_ABOVE_100000_EXPERIENCE_GOLD_100:
-                experienceBillService.updateUserExperienceBalanceByLoginName(MONEY_TREE_EXPERIENCE_BILL_AMOUNT_100,
-                        loginName,
-                        experienceBillOperationType,
-                        experienceBillBusinessType,
-                        MessageFormat.format(ExperienceBillBusinessType.MONEY_TREE.getContentTemplate(),
-                                AmountConverter.convertCentToString(MONEY_TREE_EXPERIENCE_BILL_AMOUNT_100),
-                                new Date()));
+                this.grantExperience(loginName, MONEY_TREE_EXPERIENCE_BILL_AMOUNT_100, experienceBillOperationType, experienceBillBusinessType);
                 break;
             case MONEY_TREE_20000_EXPERIENCE_GOLD_200:
             case MONEY_TREE_30000_EXPERIENCE_GOLD_200:
@@ -264,13 +255,7 @@ public class MoneyTreePrizeService {
             case MONEY_TREE_90000_EXPERIENCE_GOLD_200:
             case MONEY_TREE_100000_EXPERIENCE_GOLD_200:
             case MONEY_TREE_ABOVE_100000_EXPERIENCE_GOLD_200:
-                experienceBillService.updateUserExperienceBalanceByLoginName(MONEY_TREE_EXPERIENCE_BILL_AMOUNT_200,
-                        loginName,
-                        experienceBillOperationType,
-                        experienceBillBusinessType,
-                        MessageFormat.format(ExperienceBillBusinessType.MONEY_TREE.getContentTemplate(),
-                                AmountConverter.convertCentToString(MONEY_TREE_EXPERIENCE_BILL_AMOUNT_200),
-                                new Date()));
+                this.grantExperience(loginName, MONEY_TREE_EXPERIENCE_BILL_AMOUNT_200, experienceBillOperationType, experienceBillBusinessType);
                 break;
             case MONEY_TREE_30000_EXPERIENCE_GOLD_300:
             case MONEY_TREE_40000_EXPERIENCE_GOLD_300:
@@ -281,13 +266,7 @@ public class MoneyTreePrizeService {
             case MONEY_TREE_90000_EXPERIENCE_GOLD_300:
             case MONEY_TREE_100000_EXPERIENCE_GOLD_300:
             case MONEY_TREE_ABOVE_100000_EXPERIENCE_GOLD_300:
-                experienceBillService.updateUserExperienceBalanceByLoginName(MONEY_TREE_EXPERIENCE_BILL_AMOUNT_300,
-                        loginName,
-                        experienceBillOperationType,
-                        experienceBillBusinessType,
-                        MessageFormat.format(ExperienceBillBusinessType.MONEY_TREE.getContentTemplate(),
-                                AmountConverter.convertCentToString(MONEY_TREE_EXPERIENCE_BILL_AMOUNT_300),
-                                new Date()));
+                this.grantExperience(loginName, MONEY_TREE_EXPERIENCE_BILL_AMOUNT_300, experienceBillOperationType, experienceBillBusinessType);
                 break;
             case MONEY_TREE_50000_EXPERIENCE_GOLD_500:
             case MONEY_TREE_60000_EXPERIENCE_GOLD_500:
@@ -296,13 +275,7 @@ public class MoneyTreePrizeService {
             case MONEY_TREE_90000_EXPERIENCE_GOLD_500:
             case MONEY_TREE_100000_EXPERIENCE_GOLD_500:
             case MONEY_TREE_ABOVE_100000_EXPERIENCE_GOLD_500:
-                experienceBillService.updateUserExperienceBalanceByLoginName(MONEY_TREE_EXPERIENCE_BILL_AMOUNT_500,
-                        loginName,
-                        experienceBillOperationType,
-                        experienceBillBusinessType,
-                        MessageFormat.format(ExperienceBillBusinessType.MONEY_TREE.getContentTemplate(),
-                                AmountConverter.convertCentToString(MONEY_TREE_EXPERIENCE_BILL_AMOUNT_500),
-                                new Date()));
+                this.grantExperience(loginName, MONEY_TREE_EXPERIENCE_BILL_AMOUNT_500, experienceBillOperationType, experienceBillBusinessType);
                 break;
             case MONEY_TREE_60000_EXPERIENCE_GOLD_600:
             case MONEY_TREE_70000_EXPERIENCE_GOLD_600:
@@ -310,35 +283,28 @@ public class MoneyTreePrizeService {
             case MONEY_TREE_90000_EXPERIENCE_GOLD_600:
             case MONEY_TREE_100000_EXPERIENCE_GOLD_600:
             case MONEY_TREE_ABOVE_100000_EXPERIENCE_GOLD_600:
-                experienceBillService.updateUserExperienceBalanceByLoginName(MONEY_TREE_EXPERIENCE_BILL_AMOUNT_600, loginName, experienceBillOperationType, experienceBillBusinessType,
-                        MessageFormat.format(ExperienceBillBusinessType.MONEY_TREE.getContentTemplate(),
-                                AmountConverter.convertCentToString(MONEY_TREE_EXPERIENCE_BILL_AMOUNT_600),
-                                new Date()));
+                this.grantExperience(loginName, MONEY_TREE_EXPERIENCE_BILL_AMOUNT_600, experienceBillOperationType, experienceBillBusinessType);
                 break;
             case MONEY_TREE_80000_EXPERIENCE_GOLD_800:
             case MONEY_TREE_90000_EXPERIENCE_GOLD_800:
             case MONEY_TREE_100000_EXPERIENCE_GOLD_800:
             case MONEY_TREE_ABOVE_100000_EXPERIENCE_GOLD_800:
-                experienceBillService.updateUserExperienceBalanceByLoginName(MONEY_TREE_EXPERIENCE_BILL_AMOUNT_800, loginName, experienceBillOperationType, experienceBillBusinessType,
-                        MessageFormat.format(ExperienceBillBusinessType.MONEY_TREE.getContentTemplate(),
-                                AmountConverter.convertCentToString(MONEY_TREE_EXPERIENCE_BILL_AMOUNT_800),
-                                new Date()));
+                this.grantExperience(loginName, MONEY_TREE_EXPERIENCE_BILL_AMOUNT_800, experienceBillOperationType, experienceBillBusinessType);
                 break;
             case MONEY_TREE_90000_EXPERIENCE_GOLD_1000:
             case MONEY_TREE_100000_EXPERIENCE_GOLD_1000:
             case MONEY_TREE_ABOVE_100000_EXPERIENCE_GOLD_1000:
-                experienceBillService.updateUserExperienceBalanceByLoginName(MONEY_TREE_EXPERIENCE_BILL_AMOUNT_1000, loginName, experienceBillOperationType, experienceBillBusinessType,
-                        MessageFormat.format(ExperienceBillBusinessType.MONEY_TREE.getContentTemplate(),
-                                AmountConverter.convertCentToString(MONEY_TREE_EXPERIENCE_BILL_AMOUNT_1000),
-                                new Date()));
+                this.grantExperience(loginName, MONEY_TREE_EXPERIENCE_BILL_AMOUNT_1000, experienceBillOperationType, experienceBillBusinessType);
                 break;
             case MONEY_TREE_ABOVE_100000_EXPERIENCE_GOLD_2000:
-                experienceBillService.updateUserExperienceBalanceByLoginName(MONEY_TREE_EXPERIENCE_BILL_AMOUNT_2000, loginName, experienceBillOperationType, experienceBillBusinessType,
-                        MessageFormat.format(ExperienceBillBusinessType.MONEY_TREE.getContentTemplate(),
-                                AmountConverter.convertCentToString(MONEY_TREE_EXPERIENCE_BILL_AMOUNT_2000),
-                                new Date()));
+                this.grantExperience(loginName, MONEY_TREE_EXPERIENCE_BILL_AMOUNT_2000, experienceBillOperationType, experienceBillBusinessType);
                 break;
         }
 
+    }
+
+    private void grantExperience(String loginName, long experienceAmount, ExperienceBillOperationType experienceBillOperationType, ExperienceBillBusinessType experienceBillBusinessType) {
+        mqWrapperClient.sendMessage(MessageQueue.ExperienceAssigning,
+                new ExperienceAssigningMessage(loginName, experienceAmount, experienceBillOperationType, experienceBillBusinessType));
     }
 }
