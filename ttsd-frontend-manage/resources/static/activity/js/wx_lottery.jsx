@@ -12,7 +12,7 @@ var $oneThousandPoints=$('.gift-item',$lanternFrame);
 var $MobileNumber=$('#MobileNumber'),
     pointAllList='/activity/point-draw/all-list',  //中奖记录接口地址
     pointUserList='/activity/point-draw/user-list',   //我的奖品接口地址
-    drawURL='/activity/point-draw/draw';    //抽奖的接口链接
+    drawURL='/wechat/lottery/draw';    //抽奖的接口链接
 
 var oneData={
     "activityCategory":"POINT_DRAW_1000"

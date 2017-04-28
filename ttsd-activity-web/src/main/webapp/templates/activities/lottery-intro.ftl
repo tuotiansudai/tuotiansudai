@@ -1,5 +1,5 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.lottery_intro}" pageJavascript="${js.lottery_intro}" activeNav="" activeLeftNav="" title="拓天速贷注册_用户注册_拓天速贷" keywords="拓天速贷,拓天速贷会员,拓天速贷注册，用户注册" description="拓天速贷会员注册为您提供规范、专业、安全有保障的互联网金融信息服务.">
+<@global.main pageCss="${css.lottery_intro}" pageJavascript="${js.lottery_intro}" activeNav="" activeLeftNav="" title="微信活动_活动中心_拓天速贷" keywords="拓天速贷,现金奖励,实物大奖,注册用户,微信活动" description="活动期间新注册用户,及平台所有注册后未投资过的用户,投资直投项目,可获得不同等额的现金奖励和抽奖机会,100%抽取实物大奖.">
 <div class="wx-lottery-container">
 	<div class="top-item"></div>
 	<div class="wp">

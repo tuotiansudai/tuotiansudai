@@ -151,6 +151,19 @@
               font-size:16px;
               color:#fff;
               margin-top:20px;
+              position: relative;
+              &:after{
+                width:24px;
+                height:12px;
+                content:'';
+                display:block;
+                position: absolute;
+                bottom:-24px;
+                left:50%;
+                margin-left:-12px;
+                background: url('../images/wx-lottery/line-icon.png') no-repeat center;
+                background-size: 100%;
+              }
               span{
                 color:#fef43d;
               }
@@ -177,6 +190,7 @@
               display:inline-block;
               width:300px;
               margin-top: 20px;
+              position: relative;
               .gift-info-box{
                 float:left;
                 width:100%;
@@ -186,18 +200,7 @@
                   background:#ff8b84;
                   border-radius:5px;
                   border:1px dotted #fffc0b;
-                  overflow:hidden;
                   position: relative;
-                  &:before{
-                    display:block;
-                    width:5px;
-                    height:48px;
-                    content:'';
-                    position: absolute;
-                    top:0;
-                    left:0;
-                    background:url('../images/wx-lottery/line-item.png') no-repeat center;
-                  }
                   li{
                     float:left;
                     width:50%;
@@ -213,6 +216,50 @@
                     &:last-child.active{
                       border-right:none;
                       border-left:1px dotted #fffc0b;
+                    }
+                  }
+                }
+                .trim-strip {
+                  height:60px;
+                  width:100%;
+                  position: absolute;
+                  top:25px;
+                  .icon-square {
+                    width:8px;
+                    height: 8px;
+                    border-radius:50%;
+                    background: #e0211a;
+                    position: absolute;
+
+                    &:nth-child(1) {
+                      top:0px;
+                      left:10px;
+                    }
+                    &:nth-child(2) {
+                      top:46px;
+                      left:10px;
+                    }
+                    &:nth-child(3) {
+                      top:0px;
+                      right:10px;
+                    }
+                    &:nth-child(4) {
+                      top:46px;
+                      right:10px;
+                    }
+                  }
+                  .icon-vertical-line {
+                    width:0;
+                    height:48px;
+                    border-left:2px dashed #ffe718;
+                    position: absolute;
+                    &:nth-child(5) {
+                      left: 13px;
+                      top: 3px;
+                    }
+                    &:nth-child(6) {
+                      right:13px;
+                      top: 3px;
                     }
                   }
                 }
