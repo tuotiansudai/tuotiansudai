@@ -23,9 +23,9 @@ module.exports = {
     },
     mock:[toolsUrl+'/mock.js'],
 
-    proxy: [{
-        path: '/register',       //表示需要反向代理的请求path
-        target: 'http://localhost:8080'  //表示代理的目标地址
-    }]
+    // proxy: [{
+    //     path: '/register',       //表示需要反向代理的请求path
+    //     target: 'http://localhost:8080'  //表示代理的目标地址
+    // }]
 
 }
