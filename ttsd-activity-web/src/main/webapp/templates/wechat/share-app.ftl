@@ -21,7 +21,6 @@
 			<div class="item-form">
 				<div class="item-int tc">
                     <span class="gift-icon"></span>
-					<#--<img src="${staticServer}/activity/images/sign/actor/shareapp/gift-icon.png" width="50%">-->
 				</div>
 				<div class="item-int tc">
 					<a href="/app/download" class="btn item-submit" >礼包到手下载APP赚钱</a>
