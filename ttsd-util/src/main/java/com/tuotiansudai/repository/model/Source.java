@@ -23,5 +23,9 @@ public enum Source {
     /**
      * 自动投资
      */
-    AUTO
+    AUTO,
+    /**
+     * 微信
+     */
+    WECHAT
 }

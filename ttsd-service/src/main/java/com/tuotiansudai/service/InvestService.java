@@ -44,4 +44,6 @@ public interface InvestService {
     long calculateMembershipPreference(String loginName, long loanId, List<Long> couponIds, long investAmount, Source source);
 
     List<InvestModel> findContractFailInvest(long loanId);
+
+    boolean isNewUserForWechatLottery(String loginName);
 }

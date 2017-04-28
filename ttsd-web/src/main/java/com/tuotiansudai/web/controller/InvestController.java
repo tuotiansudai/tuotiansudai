@@ -55,8 +55,12 @@ public class InvestController {
     private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
 
     @RequestMapping(value = "/invest", method = RequestMethod.POST)
-    public ModelAndView invest(@Valid @ModelAttribute InvestDto investDto, RedirectAttributes redirectAttributes) {
-        investDto.setSource(Source.WEB);
+    public ModelAndView invest(@Valid @ModelAttribute InvestDto investDto, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+        if (!StringUtils.isEmpty(request.getSession().getAttribute("weChatUserOpenid"))) {
+            investDto.setSource(Source.WECHAT);
+        } else {
+            investDto.setSource(Source.WEB);
+        }
         String errorMessage = "投资失败，请联系客服！";
         String errorType = "";
         try {
