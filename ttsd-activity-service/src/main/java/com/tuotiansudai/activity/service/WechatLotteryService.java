@@ -8,7 +8,9 @@ import com.tuotiansudai.dto.BaseDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class WechatLotteryService {
 
     private static final Logger logger = LoggerFactory.getLogger(WechatLotteryService.class);
@@ -87,7 +89,7 @@ public class WechatLotteryService {
 
     public int getLeftDrawCount(String loginName) {
         String count = redisWrapperClient.get(WECHAT_LOTTERY_COUNT_KEY + loginName);
-        return Integer.parseInt(count);
+        return count == null ? 0 : Integer.parseInt(count);
     }
 
 }

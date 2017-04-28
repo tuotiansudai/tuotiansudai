@@ -21,7 +21,7 @@ public class WechatLotteryController {
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView wechatLotteryPage() {
         String loginName = LoginUserInfo.getLoginName();
-        ModelAndView mav = new ModelAndView("/wechat-lottery");
+        ModelAndView mav = new ModelAndView("/activities/wx-lottery");
         mav.addObject("leftDrawCount", wechatLotteryService.getLeftDrawCount(loginName));
         return mav;
     }
@@ -30,6 +30,8 @@ public class WechatLotteryController {
     @RequestMapping(value = "/draw", method = RequestMethod.POST)
     public BaseDto<WechatLotteryDto> drawLottery() {
         String loginName = LoginUserInfo.getLoginName();
-        return wechatLotteryService.drawLottery(loginName);
+        BaseDto<WechatLotteryDto> baseDto = wechatLotteryService.drawLottery(loginName);
+        baseDto.getData().setLeftDrawCount(wechatLotteryService.getLeftDrawCount(loginName));
+        return baseDto;
     }
 }

@@ -9,9 +9,7 @@
     <title>${title}</title>
     <meta name="keywords" content="${keywords}">
     <meta name="description" content="${description}">
-    <#if responsive??>
     <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
-    </#if>
     <meta name="_csrf" content="f60ab1bf-cb28-4ea9-9023-2ac992109c0c"/>
     <meta name="_csrf_header" content="X-CSRF-TOKEN"/>
     <meta name="360-site-verification" content="a3066008a453e5dfcd9f3e288862c9ef" />

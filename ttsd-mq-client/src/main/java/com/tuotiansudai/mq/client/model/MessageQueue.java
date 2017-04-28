@@ -59,7 +59,8 @@ public enum MessageQueue {
     CancelTransferApplication("CancelTransferApplication"),
     CouponSmsAssignNotify("CouponSmsAssignNotify"),
     CouponSmsExpiredNotify("CouponSmsExpiredNotify"),
-    ExperienceAssigning("ExperienceAssigning");
+    ExperienceAssigning("ExperienceAssigning"),
+    WeChatBoundNotify("WeChatBoundNotify");
 
     private final String queueName;
 
