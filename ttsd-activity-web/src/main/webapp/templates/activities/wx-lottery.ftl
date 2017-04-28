@@ -1,6 +1,6 @@
-<#import "../macro/global.ftl" as global>
 <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<@global.main pageCss="${css.wx_lottery}" pageJavascript="${js.wx_lottery}" activeNav="" activeLeftNav="" title="拓天速贷注册_用户注册_拓天速贷" keywords="拓天速贷,拓天速贷会员,拓天速贷注册，用户注册" description="拓天速贷会员注册为您提供规范、专业、安全有保障的互联网金融信息服务.">
+<#import "../macro/global.ftl" as global>
+<@global.main pageCss="${css.wx_lottery}" pageJavascript="${js.wx_lottery}" activeNav="" activeLeftNav="" title="微信活动_活动中心_拓天速贷" keywords="拓天速贷,现金奖励,实物大奖,注册用户,微信活动" description="活动期间新注册用户,及平台所有注册后未投资过的用户,投资直投项目,可获得不同等额的现金奖励和抽奖机会,100%抽取实物大奖.">
 <div class="activity-container" id="lanternFrame">
     <div class="top-item"></div>
     <div class="actor-content-group">
@@ -16,15 +16,23 @@
 					            <div class="rotate-btn"></div>
 					    </div>
 					    <div class="lottery-times">
-					    	当前剩余<span> 2 </span>次抽奖机会
+					    	当前剩余<span>${leftDrawCount}</span>次抽奖机会
 					    </div>
 					    <a href="/loan-list" class="loan-btn">立即投资赢取更多机会</a>
 					    <div class="gift-circle-detail">
 					        <div class="gift-info-box">
-					            <ul class="gift-record clearfix">
+					            <ul class="gift-record">
 					                <li class="active"><span>中奖记录</span></li>
 					                <li><span>我的奖品</span></li>
 					            </ul>
+					            <div class="trim-strip">
+						            <i class="icon-square"></i>
+						            <i class="icon-square"></i>
+						            <i class="icon-square"></i>
+						            <i class="icon-square"></i>
+						            <i class="icon-vertical-line"></i>
+						            <i class="icon-vertical-line"></i>
+						        </div>
 					            <div class="record-list">
 					                <ul class="record-model user-record" ></ul>
 					                <ul class="record-model own-record" style="display: none"></ul>

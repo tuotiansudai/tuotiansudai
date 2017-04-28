@@ -12,7 +12,7 @@ var $oneThousandPoints=$('.gift-item',$lanternFrame);
 var $MobileNumber=$('#MobileNumber'),
     pointAllList='/activity/point-draw/all-list',  //中奖记录接口地址
     pointUserList='/activity/point-draw/user-list',   //我的奖品接口地址
-    drawURL='/activity/point-draw/draw';    //抽奖的接口链接
+    drawURL='/wechat/lottery/draw';    //抽奖的接口链接
 
 var oneData={
     "activityCategory":"POINT_DRAW_1000"
@@ -41,6 +41,7 @@ $lanternFrame.find('.tip-list-frame .tip-list').each(function (key, option) {
     //开始抽奖
 
     $pointerBtn.on('click', function(event) {
+        drawCircleOne.rotateFn(52,tipGroupObj['nochance']);
         drawCircleOne.beginLuckDraw(function(data) {
             //抽奖接口成功后奖品指向位置
             if (data.returnCode == 0) {
@@ -66,11 +67,11 @@ $lanternFrame.find('.tip-list-frame .tip-list').each(function (key, option) {
                 var prizeType=data.prizeType.toLowerCase();
                 $(tipGroupObj[prizeType]).find('.prizeValue').text(data.prizeValue);
 
-                drawCircle.rotateFn(angleNum,tipGroupObj[prizeType]);
+                drawCircleOne.rotateFn(angleNum,tipGroupObj[prizeType]);
 
             } else if(data.returnCode == 1) {
                 //积分不足
-                drawCircle.tipWindowPop(tipGroupObj['nopoint']);
+                drawCircleOne.tipWindowPop(tipGroupObj['nopoint']);
             }
             else if (data.returnCode == 2) {
                 //未登录
@@ -79,11 +80,11 @@ $lanternFrame.find('.tip-list-frame .tip-list').each(function (key, option) {
 
             } else if(data.returnCode == 3){
                 //不在活动时间范围内！
-                drawCircle.tipWindowPop(tipGroupObj['expired']);
+                drawCircleOne.tipWindowPop(tipGroupObj['expired']);
 
             } else if(data.returnCode == 4){
                 //实名认证
-                drawCircle.tipWindowPop(tipGroupObj['authentication']);
+                drawCircleOne.tipWindowPop(tipGroupObj['authentication']);
             }
         });
     });
