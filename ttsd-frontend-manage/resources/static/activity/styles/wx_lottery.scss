@@ -245,6 +245,23 @@
                   .record-model{
                     float:left;
                     width:100%;
+                    &.own-record{
+                      li{
+                        float:left;
+                        width:100%;
+                        text-align:left;
+                        box-sizing:border-box;
+                        time{
+                          float:right;
+                        }
+                      }
+                    }
+                    li{
+                      float:left;
+                      width:100%;
+                      padding:0 20px;
+                      box-sizing:border-box;
+                    }
                   }
                 }
               }
