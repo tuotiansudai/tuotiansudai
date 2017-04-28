@@ -1,13 +1,13 @@
 package com.tuotiansudai.activity.repository.dto;
 
-import com.tuotiansudai.activity.repository.model.WechatLotteryPrize;
+import com.tuotiansudai.activity.repository.model.LotteryPrize;
 import com.tuotiansudai.dto.BaseDataDto;
 
 public class WechatLotteryDto extends BaseDataDto {
 
     private int returnCode;
 
-    private WechatLotteryPrize wechatLotteryPrize;
+    private LotteryPrize wechatLotteryPrize;
 
     private int leftDrawCount;
 
@@ -19,11 +19,11 @@ public class WechatLotteryDto extends BaseDataDto {
         this.returnCode = returnCode;
     }
 
-    public WechatLotteryPrize getWechatLotteryPrize() {
+    public LotteryPrize getWechatLotteryPrize() {
         return wechatLotteryPrize;
     }
 
-    public void setWechatLotteryPrize(WechatLotteryPrize wechatLotteryPrize) {
+    public void setWechatLotteryPrize(LotteryPrize wechatLotteryPrize) {
         this.wechatLotteryPrize = wechatLotteryPrize;
     }
 

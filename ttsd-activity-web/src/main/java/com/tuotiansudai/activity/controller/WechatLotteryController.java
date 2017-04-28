@@ -1,6 +1,7 @@
 package com.tuotiansudai.activity.controller;
 
 import com.tuotiansudai.activity.repository.dto.WechatLotteryDto;
+import com.tuotiansudai.activity.repository.model.UserLotteryPrizeView;
 import com.tuotiansudai.activity.service.WechatLotteryService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.spring.LoginUserInfo;
@@ -11,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.List;
+
 @Controller
-@RequestMapping(value = "/wechat/lottery")
+@RequestMapping(value = "/activity/wechat/lottery")
 public class WechatLotteryController {
 
     @Autowired
@@ -34,4 +37,18 @@ public class WechatLotteryController {
         baseDto.getData().setLeftDrawCount(wechatLotteryService.getLeftDrawCount(loginName));
         return baseDto;
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/getLotteryList", method = RequestMethod.GET)
+    public List<UserLotteryPrizeView> getLotteryListTop20() {
+        return wechatLotteryService.getLotteryListTop20();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getMyLotteryList", method = RequestMethod.GET)
+    public List<UserLotteryPrizeView> getMyLotteryList() {
+        String mobile = LoginUserInfo.getMobile();
+        return wechatLotteryService.getMyLotteryList(mobile);
+    }
+
 }
