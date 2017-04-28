@@ -9,6 +9,8 @@ public class WechatLotteryDto extends BaseDataDto {
 
     private WechatLotteryPrize wechatLotteryPrize;
 
+    private int leftDrawCount;
+
     public int getReturnCode() {
         return returnCode;
     }
@@ -23,5 +25,13 @@ public class WechatLotteryDto extends BaseDataDto {
 
     public void setWechatLotteryPrize(WechatLotteryPrize wechatLotteryPrize) {
         this.wechatLotteryPrize = wechatLotteryPrize;
+    }
+
+    public int getLeftDrawCount() {
+        return leftDrawCount;
+    }
+
+    public void setLeftDrawCount(int leftDrawCount) {
+        this.leftDrawCount = leftDrawCount;
     }
 }
