@@ -31,12 +31,18 @@
         </@global.isNotAnonymous>
 
         <@global.isAnonymous>
-            <li class="header-login">
-                <a href="/login" onclick="cnzzPush.trackClick('14顶部导航','登录')">登录</a>
-            </li>
-            <li class="header-register">
-                <a href="/register/user<#if channel??>?channel=${channel}</#if>" onclick="cnzzPush.trackClick('15顶部导航','注册')">注册</a>
-            </li>
+            <#if Session.weChatUserLoginName??>
+                <li class="header-login">
+                    <a class="personal-info-link" href="/personal-info">wexin-${Session.weChatUserLoginName}</a>
+                </li>
+            <#else>
+                <li class="header-login">
+                    <a href="/login">登录</a>
+                </li>
+                <li class="header-register">
+                    <a href="<#if channel??>/register/user?channel=${channel}<#else>/register/user</#if>">注册</a>
+                </li>
+            </#if>
         </@global.isAnonymous>
         </ul>
 

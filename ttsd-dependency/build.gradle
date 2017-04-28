@@ -23,7 +23,7 @@ dependencies {
             "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion",
             "org.slf4j:slf4j-log4j12:$slf4jVersion",
             "org.slf4j:slf4j-api:$slf4jVersion",
-            'com.google.guava:guava:19.0',
+            'com.google.guava:guava:21.0',
             'org.apache.commons:commons-lang3:3.4',
             'org.apache.commons:commons-collections4:4.0',
             'redis.clients:jedis:2.7.3',

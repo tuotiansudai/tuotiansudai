@@ -54,7 +54,7 @@ public class InvestSuccessWechatLotteryConsumer implements MessageConsumer {
 
             InvestModel invesetModel = investService.findById(ism.getInvestInfo().getInvestId());
 
-            if (investService.isNewUserForWechatLottery(loginName) && invesetModel.getSource() == Source.WECHAT && loanId != 1 && investAmount >= 500000) {
+            if (investService.isNewUserForWechatLottery(loginName) && invesetModel.getSource() == Source.WE_CHAT && loanId != 1 && investAmount >= 500000) {
                 redisWrapperClient.incr(WECHAT_LOTTERY_COUNT_KEY + loginName, investAmount / 500000);
                 sendCashPrize(loginName, investAmount);
             }
