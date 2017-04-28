@@ -8,13 +8,10 @@
 
 <@global.main pageCss="${css.wx_lottery}" pageJavascript="${js.wx_lottery}" activeNav="" activeLeftNav="" title="拓天速贷注册_用户注册_拓天速贷" keywords="拓天速贷,拓天速贷会员,拓天速贷注册，用户注册" description="拓天速贷会员注册为您提供规范、专业、安全有保障的互联网金融信息服务.">
 <div class="activity-container" id="lanternFrame">
-    <div class="top-intro-img img-item"></div>
-    <div class="top-intro-img img-item-phone"></div>
-    <div class="actor-content-group bg-one">
+    <div class="top-item"></div>
+    <div class="actor-content-group">
         <div class="wp clearfix">
             <div class="tree-model">
-                <h3 class="img-item"></h3>
-                <h3 class="img-item-phone"></h3>
                 <div class="info-item">
                     活动期间投资额每满1000元即可获得一次摇一摇机会，如单笔投资10000元，可直接获得10次摇一摇机会，用户每日最多可获得20次摇一摇机会，当日超出部分的投资额不予累计。
                 </div>
@@ -23,18 +20,6 @@
                         我的抽奖机会:<span class="draw-time">0</span>次
                     </div>
                     <div class="rotate-btn pointer-img"></div>
-                     <div class="gift-circle">
-                    <div class="max-gift">
-                        <#--id="pointerTdPhone"-->
-                        <div class="pointer-img actor-finish"  data-is-login="<@global.isNotAnonymous>true</@global.isNotAnonymous>">
-                            <img src="${staticServer}/activity/images/sign/actor/ranklist/pointer.png" width="100%" alt="pointer"/>
-                        </div>
-                        <div class="rotate-btn">
-                            <img id="rotateTdPhone" src="${staticServer}/activity/images/sign/actor/ranklist/turntable.png"
-                                 width="100%" alt="turntable"/>
-                        </div>
-                    </div>
-                </div>
                     <div class="record-list-box">
                         <div class="menu-switch">
                             <span class="active">中奖记录</span>
