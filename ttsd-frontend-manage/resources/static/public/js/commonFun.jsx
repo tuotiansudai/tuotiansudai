@@ -165,24 +165,38 @@ function countDownLoan(option,callback) {
     let defaultOpt={
         btnDom:'',
         time:60,
-        textCounting:'秒后重新发送'
+        textCounting:'秒后重新发送',
+        isAfterText:'重新发送'
     };
     let options = $.extend({},defaultOpt,option),
         downtimer;
     let $countBtn= options.btnDom;
 
     let countDownStart=function() {
-        $countBtn.text(options.time-- + options.textCounting).prop('disabled',true).addClass('count-downing');
+        let isInputButton = $countBtn[0].tagName.toUpperCase()=='INPUT';
+        if(isInputButton) {
+            $countBtn.val(options.time+ options.textCounting).prop('disabled',true).addClass('count-downing');
+        } else {
+            $countBtn.text(options.time + options.textCounting).prop('disabled',true).addClass('count-downing');
+        }
+
         if(options.time==0) {
             //结束倒计时
             clearInterval(downtimer);
             callback && callback();
-            $countBtn.text('重新发送').prop('disabled',false).removeClass('count-downing');
+            if(isInputButton) {
+                $countBtn.val(options.isAfterText);
+            } else {
+                $countBtn.text(options.isAfterText);
+            }
+            $countBtn.prop('disabled',false).removeClass('count-downing');
+        } else {
+            options.time = options.time -1;
         }
+
     }
     if(options.time>0) {
         countDownStart();//立即调用一次，解决延迟加载的问题
-        $countBtn.val(options.textCounting);
         downtimer=setInterval(function () {
             countDownStart();
         },1000);

@@ -28,7 +28,9 @@ public class ActivitiesController {
     @Autowired
     private CouponAlertService couponAlertService;
 
-    @RequestMapping(path = "/{item:^recruit|money_tree|material-point|integral-draw|birth-month|rank-list-app|share-reward|app-download|landing-page|invest-achievement|landing-anxin|loan-hike|heavily-courtship|point-update|sign-check|open-spring|wx-register|divide-money|minsheng|guarantee$}", method = RequestMethod.GET)
+    //    midsummer: 助力升温，点燃仲夏活动:活动时间 5月12到5月25
+
+    @RequestMapping(path = "/{item:^recruit|money_tree|material-point|integral-draw|birth-month|rank-list-app|share-reward|app-download|landing-page|invest-achievement|landing-anxin|loan-hike|heavily-courtship|point-update|sign-check|open-spring|wx-register|divide-money|minsheng|guarantee|midsummer$}", method = RequestMethod.GET)
 
     public ModelAndView activities(@PathVariable String item, HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView("/activities/" + item, "responsive", true);

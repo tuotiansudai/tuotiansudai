@@ -282,7 +282,12 @@ require(['jquery', 'layerWrapper', 'underscore', 'jquery.validate', 'jquery.vali
 					dataType: 'json'
 				})
 				.done(function(data) {
-					sendSms.anCaptcha(data.data.status);
+					if(data.data.status) {
+						sendSms.anCaptcha(data.data.status);
+					} else {
+
+					}
+
 				})
 				.fail(function(data) {
 					layer.msg('请求失败，请重试');

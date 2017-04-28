@@ -1,35 +1,39 @@
-<#import "../macro/global.ftl" as global>
+<#import "wechat-global.ftl" as global>
+<#include "../pageLayout/header.ftl" />
 <@global.main pageCss="${css.share_app}" pageJavascript="${js.share_app}" activeNav="" activeLeftNav="" title="新手福利_拓天新手投资_拓天速贷" keywords="拓天速贷,新手投资,新手加息券,新手红包" description="拓天速贷是中国P2P互联网金融信息服务平台,为广大投资、贷款的用户提供多元化的投资选择和优质的综合理财服务,新手注册可领取5888体验金，体验再得红包大奖和3%的新手加息券.">
-<div class="share-app-container clearfix">
-	<div class="share-container" id="shareAPP">
+<div class="share-app-container clearfix" id="shareAppContainer">
+	<div class="share-container">
 		<div class="share-item">
-				<#if isOldUser?? && isOldUser>
-                    <!-- 老用户信息 start -->
-                    <div class="item-intro">
-                        <img src="${staticServer}/activity/images/sign/actor/shareapp/share-old.png" width="100%">
-                    </div>
-                    <!-- 老用户信息  end -->
-				<#else>
-                    <div class="item-tel">
-                        <span>${referrerInfo!}</span>
-                    </div>
-                    <div class="item-intro">
-                        送你<span>6888元</span>体验金+<span>668元</span>现金红包
-                    </div>
-				</#if>
-
-
+			<div class="item-tel">
+                <span data-referrer="" id="referrer">${referrerInfo!}</span>
+			</div>
+			<div class="item-intro">
+                送你<span>6888元</span>体验金+<span>668元</span>现金红包
+			</div>
 			<div class="item-form">
-				<div class="item-int tc">
-					<img src="${staticServer}/activity/images/sign/actor/shareapp/gift-icon.png" width="50%">
-				</div>
-				<div class="item-int tc">
-					<a href="/app/download" class="btn item-submit" onclick="cnzzPush.trackClick('207APP分享', '注册或者预注册成功页面', '礼包到手下载APP赚钱')">礼包到手下载APP赚钱</a>
-				</div>
-                <div class="item-int">
-                    <p class="tc">好友<span>${referrerInfo!}</span>邀请你来拓天速贷投资</p>
-                    <p class="tc">新手活动收益高，奖不停，拿红包到手软！</p>
-                </div>
+				<form action="#" method="post" id="registerForm">
+					<div class="item-int">
+						<input type="text" validate class="item-text" name="mobile" placeholder="请输入您的手机号码" id="mobile">
+					</div>
+					<div class="item-int">
+						<input type="password" validate class="item-text" name="password" placeholder="请输入您的密码" id="password">
+					</div>
+					<div class="item-int">
+						<input type="text" validate class="item-text" name="captcha" placeholder="请输入验证码" id="captcha">
+						<input type="button" class="ignore get-code" value="获取验证码" id="getCaptchaBtn">
+					</div>
+					<div class="item-int">
+	      				<input type="checkbox" validate class="checkbox" id="agreement" name="agreement" checked>
+						<label for="agreement" class="agree">同意拓天速贷<span id="agreeRule">《服务协议》</span></label>
+					</div>
+                    <div class="item-int">
+                        <input type="submit" class="item-submit" value="注册领取6888元体验金">
+                    </div>
+					<div class="item-int">
+						<p class="tc">好友<span>${referrerInfo!}</span>邀请你来拓天速贷投资</p>
+						<p class="tc">新手活动收益高，奖不停，拿红包到手软！</p>
+					</div>
+				</form>
 			</div>
 		</div>
 	</div>
@@ -80,23 +84,22 @@
         <div class="image-coupon"></div>
 
         <div class="image-steps tc">
-            <img src="${staticServer}/activity/images/sign/actor/landingpage/newbie-step4-1.png">
-            <img src="${staticServer}/activity/images/sign/actor/landingpage/newbie-step4-2.png">
-            <img src="${staticServer}/activity/images/sign/actor/landingpage/newbie-step4-3-new.png">
+            <span class="step-one"></span>
+            <span class="step-two"></span>
+            <span class="step-three"></span>
         </div>
     </div>
     <div class="newbie-step-five tc">
         <dl class="newbie-step-five-dl clearfix">
             <dt class="clearfix tc">拓天速贷为您的资金安全保驾护航</dt>
-            <dd><img src="${staticServer}/activity/images/sign/actor/landingpage/newbie-step5-cfca.png"><br><i>CFCA权威认证</i>
-                <br/>
+            <dd class="one">
+                <i>CFCA权威认证</i>
                 <p>携手中国金融认证中心<br>投资合同受法律保护</p></dd>
-            <dd><img
-                    src="${staticServer}/activity/images/sign/actor/landingpage/newbie-step5-control.png"><br><i>风控严谨</i>
-                <br/>
+            <dd class="two">
+                <i>风控严谨</i>
                 <p>六重风控，22道手续<br>历史全额兑付，0预期0坏账</p></dd>
-            <dd><img src="${staticServer}/activity/images/sign/actor/landingpage/newbie-step5-security.png"><br><i>稳健安全</i>
-                <br/>
+            <dd class="three">
+                <i>稳健安全</i>
                 <p>预期年化收益8%～11%<br>房/车抵押债权安全系数高</p></dd>
         </dl>
 
@@ -117,5 +120,7 @@
         </div>
 
     </div>
+
 </div>
+<#include '../module/register-agreement.ftl'>
 </@global.main>
