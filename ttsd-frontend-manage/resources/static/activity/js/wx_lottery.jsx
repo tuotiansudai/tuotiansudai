@@ -7,7 +7,7 @@ let commonFun = require('publicJs/commonFun');
 
 let $lanternFrame = $('#lanternFrame'),
     tipGroupObj = {};
-var $pointerOne = $('.pointer-img',$lanternFrame);
+var $pointerBtn = $('.pointer-img',$lanternFrame);
 var $oneThousandPoints=$('.gift-item',$lanternFrame);
 var $MobileNumber=$('#MobileNumber'),
     pointAllList='/activity/point-draw/all-list',  //中奖记录接口地址
@@ -40,27 +40,27 @@ $lanternFrame.find('.tip-list-frame .tip-list').each(function (key, option) {
 
     //开始抽奖
 
-    $pointerOne.on('click', function(event) {
+    $pointerBtn.on('click', function(event) {
         drawCircleOne.beginLuckDraw(function(data) {
             //抽奖接口成功后奖品指向位置
             if (data.returnCode == 0) {
                 var angleNum=0;
                 $myPropertyPoint.text(data.myPoint);
                 switch (data.prize) {
-                    case 'BICYCLE_XM':  //平衡车
-                        angleNum=45*1-20;
+                    case 'BICYCLE_XM':  
+                        angleNum=72*1-20;
                         break;
-                    case 'MASK': //口罩
-                        angleNum=45*7-20;
+                    case 'MASK': 
+                        angleNum=72*2-20;
                         break;
-                    case 'LIPSTICK':  //唇膏
-                        angleNum=45*5-20;
+                    case 'LIPSTICK':  
+                        angleNum=72*3-20;
                         break;
-                    case 'PORCELAIN_CUP_BY_1000':  //杯子
-                        angleNum=45*2-20;
+                    case 'PORCELAIN_CUP_BY_1000':  
+                        angleNum=72*4-20;
                         break;
-                    case 'PHONE_BRACKET':  //手机支架
-                        angleNum=45*8-20;
+                    case 'PHONE_BRACKET': 
+                        angleNum=72*5-20;
                         break;
                 }
                 var prizeType=data.prizeType.toLowerCase();
