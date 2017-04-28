@@ -3,11 +3,12 @@
 <div class="share-app-container clearfix" id="shareAppContainer">
 	<div class="share-container" >
 		<div class="share-item">
+
+
+
 				<#if isOldUser?? && isOldUser>
                     <!-- 老用户信息 start -->
-                    <div class="item-intro">
-                        <img src="${staticServer}/activity/images/sign/actor/shareapp/share-old.png" width="100%">
-                    </div>
+                    <div class="item-intro share-old"></div>
                     <!-- 老用户信息  end -->
 				<#else>
                     <div class="item-tel">
@@ -21,12 +22,13 @@
 
 			<div class="item-form">
 				<div class="item-int tc">
-					<img src="${staticServer}/activity/images/sign/actor/shareapp/gift-icon.png" width="50%">
+                    <span class="gift-icon"></span>
+					<#--<img src="${staticServer}/activity/images/sign/actor/shareapp/gift-icon.png" width="50%">-->
 				</div>
 				<div class="item-int tc">
-					<a href="/app/download" class="btn item-submit" onclick="cnzzPush.trackClick('207APP分享', '注册或者预注册成功页面', '礼包到手下载APP赚钱')">礼包到手下载APP赚钱</a>
+					<a href="/app/download" class="btn item-submit" >礼包到手下载APP赚钱</a>
 				</div>
-                <div class="item-int">
+                <div class="item-int pad-m-tb">
                     <p class="tc">好友<span>${referrerInfo!}</span>邀请你来拓天速贷投资</p>
                     <p class="tc">新手活动收益高，奖不停，拿红包到手软！</p>
                 </div>
@@ -80,23 +82,22 @@
         <div class="image-coupon"></div>
 
         <div class="image-steps tc">
-            <img src="${staticServer}/activity/images/sign/actor/landingpage/newbie-step4-1.png">
-            <img src="${staticServer}/activity/images/sign/actor/landingpage/newbie-step4-2.png">
-            <img src="${staticServer}/activity/images/sign/actor/landingpage/newbie-step4-3-new.png">
+            <img>
+            <img>
+            <img>
         </div>
     </div>
     <div class="newbie-step-five tc">
         <dl class="newbie-step-five-dl clearfix">
             <dt class="clearfix tc">拓天速贷为您的资金安全保驾护航</dt>
-            <dd><img src="${staticServer}/activity/images/sign/actor/landingpage/newbie-step5-cfca.png"><br><i>CFCA权威认证</i>
-                <br/>
+            <dd class="one">
+                <i>CFCA权威认证</i>
                 <p>携手中国金融认证中心<br>投资合同受法律保护</p></dd>
-            <dd><img
-                    src="${staticServer}/activity/images/sign/actor/landingpage/newbie-step5-control.png"><br><i>风控严谨</i>
-                <br/>
+            <dd class="two">
+                <i>风控严谨</i>
                 <p>六重风控，22道手续<br>历史全额兑付，0预期0坏账</p></dd>
-            <dd><img src="${staticServer}/activity/images/sign/actor/landingpage/newbie-step5-security.png"><br><i>稳健安全</i>
-                <br/>
+            <dd class="three">
+                <i>稳健安全</i>
                 <p>预期年化收益8%～11%<br>房/车抵押债权安全系数高</p></dd>
         </dl>
 

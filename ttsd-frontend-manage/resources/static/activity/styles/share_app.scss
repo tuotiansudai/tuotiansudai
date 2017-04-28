@@ -22,12 +22,7 @@ textarea {
 		display: none;
 	}
 }
-.layui-layer-wrap{
-  display:none;
-}
-.layui-layer-page .layui-layer-content {
-    overflow-y: auto !important;
-}
+
 .nav-container,.footer-container{
 	display: none;
 }
@@ -107,6 +102,12 @@ textarea {
 				font-size:18px;
 				color:#ff635a;
 				text-align:center;
+				&.share-old {
+					background: url('../images/landingpage/share-old.png') center top no-repeat;
+					height: 86px;
+					background-size: 90%;
+				}
+
 				span{
 					color:#ffe500;
 				}
@@ -120,6 +121,13 @@ textarea {
 					width:100%;
 					margin-bottom:15px;
 					position: relative;
+					.gift-icon {
+						display: inline-block;
+						height:220px;
+						width: 100%;
+						background: url('../images/shareapp/gift-icon.png') center top no-repeat;
+						background-size: contain;
+					}
 					&:last-child{
 						margin-bottom:0;
 					}
@@ -352,15 +360,21 @@ textarea {
 				margin-bottom: 20px;
 			}
 			dd {
-				float: left;
 				width: 100%;
 				margin-bottom: 15px;
 				font-size: 18px;
 				color: #525252;
 				text-align: center;
-
-				img {
-					margin-bottom: 15px;
+				padding-top: 80px;
+				margin-bottom: 22px;
+				&.one {
+					background: url('../images/landingpage/newbie-step5-cfca.png') center top no-repeat;
+				}
+				&.two {
+					background: url('../images/landingpage/newbie-step5-control.png') center top no-repeat;
+				}
+				&.three {
+					background: url('../images/landingpage/newbie-step5-security.png') center top no-repeat;
 				}
 
 				p {
