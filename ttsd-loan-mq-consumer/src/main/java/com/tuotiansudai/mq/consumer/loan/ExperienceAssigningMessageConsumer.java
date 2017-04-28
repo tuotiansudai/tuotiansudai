@@ -73,16 +73,17 @@ public class ExperienceAssigningMessageConsumer implements MessageConsumer {
             experienceBillService.updateUserExperienceBalanceByLoginName(experienceAssigningMessage.getExperienceAmount(), experienceAssigningMessage.getLoginName(),
                     experienceAssigningMessage.getExperienceBillOperationType(), experienceAssigningMessage.getExperienceBillBusinessType(), experienceAssigningMessage.getNote());
         } catch (Exception e) {
-            logger.error("[新贵富豪争霸活动发放体验金MQ] {0} grant experience fail {1}, errorMessage:{2}",
-                    experienceAssigningMessage.getLoginName(), DateFormatUtils.format(experienceAssigningMessage.getCurrentDate(),
-                            "yyyy-MM-dd"), e.getLocalizedMessage());
+            logger.error(MessageFormat.format("[发放体验金MQ] {0} grant experience fail {1}, errorMessage:{2}",
+                    experienceAssigningMessage.getLoginName(),
+                    DateFormatUtils.format(experienceAssigningMessage.getCurrentDate(), "yyyy-MM-dd"),
+                    e.getLocalizedMessage()), e);
         }
     }
 
     private void newmanTyrantAssignExperience(ExperienceAssigningMessage experienceAssigningMessage) {
         logger.info("[新贵富豪争霸活动发放体验金MQ] ready to consume message: newman tyrant assign experience.");
         if (redisWrapperClient.hexists(NEWMAN_TYRANT_GRANTED_LIST, DateFormatUtils.format(experienceAssigningMessage.getCurrentDate(), "yyyy-MM-dd"))
-                && redisWrapperClient.hget(NEWMAN_TYRANT_GRANTED_LIST, DateFormatUtils.format(experienceAssigningMessage.getCurrentDate(), "yyyy-MM-dd")).indexOf(experienceAssigningMessage.getLoginName()) > -1) {
+                && redisWrapperClient.hget(NEWMAN_TYRANT_GRANTED_LIST, DateFormatUtils.format(experienceAssigningMessage.getCurrentDate(), "yyyy-MM-dd")).contains(experienceAssigningMessage.getLoginName())) {
             logger.info(MessageFormat.format("loginName:{0} had granted experience {1}", experienceAssigningMessage.getLoginName(), DateFormatUtils.format(experienceAssigningMessage.getCurrentDate(), "yyyy-MM-dd")));
             return;
         }
@@ -109,8 +110,6 @@ public class ExperienceAssigningMessageConsumer implements MessageConsumer {
             logger.error("[新贵富豪争霸活动发放体验金MQ] {0} grant experience fail {1}, errorMessage:{2}",
                     experienceAssigningMessage.getLoginName(), DateFormatUtils.format(experienceAssigningMessage.getCurrentDate(),
                             "yyyy-MM-dd"), e.getLocalizedMessage());
-            return;
         }
-
     }
 }
