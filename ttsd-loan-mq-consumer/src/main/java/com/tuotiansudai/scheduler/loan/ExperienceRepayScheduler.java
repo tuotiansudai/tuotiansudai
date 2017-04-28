@@ -32,17 +32,21 @@ public class ExperienceRepayScheduler {
     @Scheduled(cron = "0 0 16 * * ?", zone = "Asia/Shanghai")
     public void evaluateExperienceRepay() {
         logger.info("[ExperienceRepayScheduler] start...");
+        try {
+            List<InvestRepayModel> investRepayModels = investRepayMapper.findByLoanId(1);
+            investRepayModels.stream()
+                    .filter(investRepayModel -> new DateTime(investRepayModel.getRepayDate()).isBefore(new DateTime().plusDays(1).withTimeAtStartOfDay()))
+                    .collect(Collectors.toList())
+                    .forEach(investRepayModel -> {
+                        InvestInfo investInfo = new InvestInfo();
+                        investInfo.setInvestId(investRepayModel.getInvestId());
+                        mqWrapperClient.sendMessage(MessageQueue.InvestSuccess_ExperienceRepay, new InvestSuccessMessage(investInfo, null, null));
+                        logger.info("[ExperienceRepayScheduler] {} experience invest repay", investRepayModel.getInvestId());
+                    });
+        }catch (Exception e){
+            logger.error("[ExperienceRepayScheduler:] job execution is failed.", e);
+        }
 
-        List<InvestRepayModel> investRepayModels = investRepayMapper.findByLoanId(1);
-        investRepayModels.stream()
-                .filter(investRepayModel -> new DateTime(investRepayModel.getRepayDate()).isBefore(new DateTime().plusDays(1).withTimeAtStartOfDay()))
-                .collect(Collectors.toList())
-                .forEach(investRepayModel -> {
-                    InvestInfo investInfo = new InvestInfo();
-                    investInfo.setInvestId(investRepayModel.getInvestId());
-                    mqWrapperClient.sendMessage(MessageQueue.InvestSuccess_ExperienceRepay, new InvestSuccessMessage(investInfo, null, null));
-                    logger.info("[ExperienceRepayScheduler] {} experience invest repay", investRepayModel.getInvestId());
-                });
 
         logger.info("[ExperienceRepayScheduler] done");
     }
