@@ -336,6 +336,26 @@ textarea {
 		.image-steps {
 			margin-bottom: 30px;
 			margin-bottom: 30px;
+			span {
+				display: block;
+				height:100px;
+				width:100%;
+				margin-top: 20px;
+				&.step-one {
+					background: url('../../images/landingpage/newbie-step4-1.png') center top no-repeat;
+					background-size:contain;
+				}
+				&.step-two {
+					background: url('../../images/landingpage/newbie-step4-2.png') center top no-repeat;
+					background-size:contain;
+				}
+				&.step-three {
+					background: url('../../images/landingpage/newbie-step4-3.png') center top no-repeat;
+					background-size:contain;
+				}
+			}
+
+
 			img {
 				margin-top: 15px;
 				margin-right: 15px;

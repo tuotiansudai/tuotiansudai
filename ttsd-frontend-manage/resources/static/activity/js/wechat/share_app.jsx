@@ -6,20 +6,6 @@ let $shareAppContainer = $('#shareAppContainer'),
 	registerForm = globalFun.$('#registerForm'),
 	$fetchCaptcha = $('#getCaptchaBtn');
 
-(function(){
-
-	// 页面中加载图片
-	//
-	let step0 = require('../../images/landingpage/newbie-step4-1.png'),
-	 	step1 = require('../../images/landingpage/newbie-step4-2.png'),
-	 	step2 = require('../../images/landingpage/newbie-step4-3.png');
-	let $imageSteps = $('.image-steps',$shareAppContainer);
-
-	$imageSteps.find('img').eq(0).attr('src',step0);
-	$imageSteps.find('img').eq(1).attr('src',step1);
-	$imageSteps.find('img').eq(2).attr('src',step2);
-
-})();
 //判断终端是ios 还是 android
 let equipment = globalFun.equipment(),
 	isIos = equipment.ios,
