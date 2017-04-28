@@ -1,4 +1,32 @@
-<#macro main pageCss pageJavascript="" title="拓天速贷登录授权">
+<#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
+<#assign applicationContext=requestContext.getContextPath() />
+
+<#macro role hasRole>
+    <@security.authorize access="hasAnyAuthority(${hasRole})">
+        <#nested>
+    </@security.authorize>
+</#macro>
+
+<#macro noRole hasNoRole>
+    <@security.authorize access="!hasAuthority(${hasNoRole})">
+        <#nested>
+    </@security.authorize>
+</#macro>
+
+<#macro isAnonymous>
+    <@security.authorize access="!isAuthenticated()">
+        <#nested>
+    </@security.authorize>
+</#macro>
+
+<#macro isNotAnonymous>
+    <@security.authorize access="isAuthenticated()">
+        <#nested>
+    </@security.authorize>
+</#macro>
+
+<#macro main pageCss pageJavascript="" activeNav="" activeLeftNav="" title="拓天速贷" keywords="" description="">
+
 <!DOCTYPE html>
 <html>
 <head>
