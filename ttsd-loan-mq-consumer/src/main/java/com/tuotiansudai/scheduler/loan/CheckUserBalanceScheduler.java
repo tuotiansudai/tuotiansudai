@@ -48,7 +48,7 @@ public class CheckUserBalanceScheduler {
     @Autowired
     private RedisWrapperClient redisWrapperClient;
 
-    private static final int BATCH_SIZE = 5;
+    private static final int BATCH_SIZE = 50000;
 
     private static final String LAST_CHECK_USER_BALANCE_TIME = "last_check_user_balance_time";
 
