@@ -48,7 +48,7 @@ public class CheckUserBalanceScheduler {
     @Autowired
     private RedisWrapperClient redisWrapperClient;
 
-    private static final int BATCH_SIZE = 50000;
+    private static final int BATCH_SIZE = 5;
 
     private static final String LAST_CHECK_USER_BALANCE_TIME = "last_check_user_balance_time";
 
@@ -56,7 +56,7 @@ public class CheckUserBalanceScheduler {
 
     private static final int RETRY_TIMES = 3;
 
-    @Scheduled(cron = "0 30 1 * * SUN,SAT", zone = "Asia/Shanghai")
+    @Scheduled(cron = "0 30 1 * * ?", zone = "Asia/Shanghai")
     public void checkUserBalance() {
         logger.info("[checkUserBalance:] start .");
         if (Environment.PRODUCTION != environment) {
