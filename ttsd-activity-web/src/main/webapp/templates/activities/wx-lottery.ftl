@@ -16,7 +16,7 @@
 					            <div class="rotate-btn"></div>
 					    </div>
 					    <div class="lottery-times">
-					    	当前剩余<span>${leftDrawCount}</span>次抽奖机会
+					    	当前剩余<span id="leftDrawCount">${leftDrawCount}</span>次抽奖机会
 					    </div>
 					    <a href="/loan-list" class="loan-btn">立即投资赢取更多机会</a>
 					    <div class="gift-circle-detail">
@@ -56,36 +56,24 @@
 
     <#include "../module/login-tip.ftl" />
     <div class="tip-list-frame">
-    <#--真实奖品的提示-->
+    <#--奖品的提示-->
         <div class="tip-list" data-return="concrete">
             <div class="close-btn go-close"></div>
             <div class="text-tip">
-                <p class="success-text">恭喜您！</p>
-                <p class="reward-text">抽中了<em class="prizeValue"></em>！</p>
-                <p class="des-text">拓天客服将在7个工作日内联系您发放奖品</p>
+                <p class="success-text">恭喜您抽中了 <span class="prizeValue"></span></p>
+                <p class="reward-text"></p>
+                <p class="des-text"></p>
             </div>
             <div class="btn-list"><a href="javascript:void(0)" class="go-on go-close">继续抽奖</a></div>
         </div>
-
-    <#--虚拟奖品的提示-->
-        <div class="tip-list" data-return="virtual">
-            <div class="close-btn go-close"></div>
-            <div class="text-tip">
-                <p class="success-text">恭喜您！</p>
-                <p class="reward-text">抽中了<em class="prizeValue"></em>！</p>
-                <p class="des-text">奖品已发放至“我的宝藏”当中。</p>
-            </div>
-            <div class="btn-list"><a href="javascript:void(0)" class="go-on go-close">继续抽奖</a></div>
-        </div>
-
     <#--没有抽奖机会-->
         <div class="tip-list" data-return="nochance">
             <div class="close-btn go-close"></div>
             <div class="text-tip">
-                <p class="login-text">您暂无抽奖机会啦～</p>
-                <p class="des-text">赢取机会后再来抽奖吧！</p>
+                <p class="nochance-img"></p>
+                <p class="nochance-text">凡新手用户单笔投资每满<span>5000元</span>(不含新手体验和转让项目）即可获得一次抽奖机会。</p>
             </div>
-            <div class="btn-list"><a href="javascript:void(0)" class="go-close">知道了</a></div>
+            <div class="btn-list"><a href="/loan-list">立即投资</a></div>
         </div>
 
     <#--不在活动时间范围内-->

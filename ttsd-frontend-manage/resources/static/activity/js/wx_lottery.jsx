@@ -10,16 +10,15 @@ let $lanternFrame = $('#lanternFrame'),
 var $pointerBtn = $('.pointer-img',$lanternFrame);
 var $oneThousandPoints=$('.gift-item',$lanternFrame);
 var $MobileNumber=$('#MobileNumber'),
-    pointAllList='/activity/point-draw/all-list',  //中奖记录接口地址
-    pointUserList='/activity/point-draw/user-list',   //我的奖品接口地址
-    drawURL='/wechat/lottery/draw';    //抽奖的接口链接
+    pointAllList='/activity/wechat/lottery/getLotteryList',  //中奖记录接口地址
+    pointUserList='/activity/wechat/lottery/getMyLotteryList',   //我的奖品接口地址
+    drawURL='/activity/wechat/lottery/draw';    //抽奖的接口链接
 
-var oneData={
-    "activityCategory":"POINT_DRAW_1000"
-};
+var oneData='',
+$leftDrawCount=$('#leftDrawCount');
 
 $lanternFrame.find('.tip-list-frame .tip-list').each(function (key, option) {
-    let kind = $(option).data('return');
+    let kind = $(option).attr('data-return');
     tipGroupObj[kind] = option;
 });
 
@@ -41,48 +40,60 @@ $lanternFrame.find('.tip-list-frame .tip-list').each(function (key, option) {
     //开始抽奖
 
     $pointerBtn.on('click', function(event) {
-        drawCircleOne.rotateFn(52,tipGroupObj['nochance']);
+        
         drawCircleOne.beginLuckDraw(function(data) {
             //抽奖接口成功后奖品指向位置
-            if (data.returnCode == 0) {
+            if (data.data.returnCode == 0) {
                 var angleNum=0;
-                $myPropertyPoint.text(data.myPoint);
-                switch (data.prize) {
-                    case 'BICYCLE_XM':  
-                        angleNum=72*1-20;
-                        break;
-                    case 'MASK': 
-                        angleNum=72*2-20;
-                        break;
-                    case 'LIPSTICK':  
-                        angleNum=72*3-20;
-                        break;
-                    case 'PORCELAIN_CUP_BY_1000':  
-                        angleNum=72*4-20;
-                        break;
-                    case 'PHONE_BRACKET': 
+                $leftDrawCount.text(data.data.leftDrawCount);
+                switch (data.data.wechatLotteryPrize) {
+                    case 'WECHAT_LOTTERY_BEDCLOTHES': //欧式奢华贡缎床品四件套 
                         angleNum=72*5-20;
+                        $(tipGroupObj['concrete']).find('.prizeValue').text('一等奖')
+                        .parent().siblings('.des-text').text('欧式奢华贡缎床品四件套')
+                        .siblings('.reward-text').addClass('gift-one');
+                        break;
+                    case 'WECHAT_LOTTERY_BAG': //时尚百搭真皮子母包
+                        angleNum=72*4-20;
+                        $(tipGroupObj['concrete']).find('.prizeValue').text('二等奖')
+                        .parent().siblings('.des-text').text('时尚百搭真皮子母包')
+                        .siblings('.reward-text').addClass('gift-two');
+                        break;
+                    case 'WECHAT_LOTTERY_HEADGEAR':  //简约吊坠百搭锁骨链
+                        angleNum=72*3-20;
+                         $(tipGroupObj['concrete']).find('.prizeValue').text('三等奖')
+                         .parent().siblings('.des-text').text('简约吊坠百搭锁骨链')
+                        .siblings('.reward-text').addClass('gift-three');
+                        break;
+                    case 'WECHAT_LOTTERY_TOWEL':  //精品定制毛巾礼盒
+                        angleNum=72*2-20;
+                         $(tipGroupObj['concrete']).find('.prizeValue').text('四等奖')
+                         .parent().siblings('.des-text').text('精品定制毛巾礼盒')
+                        .siblings('.reward-text').addClass('gift-four');
+                        break;
+                    case 'WECHAT_LOTTERY_RED_ENVELOP_20': //20元红包
+                        angleNum=72*1-20;
+                         $(tipGroupObj['concrete']).find('.prizeValue').text('五等奖')
+                         .parent().siblings('.des-text').text('20元红包')
+                        .siblings('.reward-text').addClass('gift-five');
                         break;
                 }
-                var prizeType=data.prizeType.toLowerCase();
-                $(tipGroupObj[prizeType]).find('.prizeValue').text(data.prizeValue);
+                drawCircleOne.rotateFn(angleNum,tipGroupObj['concrete']);
 
-                drawCircleOne.rotateFn(angleNum,tipGroupObj[prizeType]);
-
-            } else if(data.returnCode == 1) {
-                //积分不足
-                drawCircleOne.tipWindowPop(tipGroupObj['nopoint']);
+            } else if(data.data.returnCode == 1) {
+                //抽奖次数不足
+                drawCircleOne.tipWindowPop(tipGroupObj['nochance']);
             }
-            else if (data.returnCode == 2) {
+            else if (data.data.returnCode == 2) {
                 //未登录
 
                 $('.no-login-text',$integralDrawPage).trigger('click');  //弹框登录
 
-            } else if(data.returnCode == 3){
+            } else if(data.data.returnCode == 3){
                 //不在活动时间范围内！
                 drawCircleOne.tipWindowPop(tipGroupObj['expired']);
 
-            } else if(data.returnCode == 4){
+            } else if(data.data.returnCode == 4){
                 //实名认证
                 drawCircleOne.tipWindowPop(tipGroupObj['authentication']);
             }

@@ -1,33 +1,73 @@
 .tip-list-frame {
   display: none;
 }
+.shade-body-mask{
+  z-index:99;
+}
 
 .tip-list {
   width: 300px !important;
-  height: 240px !important;
+  height: 280px !important;
   top: 50% !important;
   left: 50% !important;
   margin-left: -150px !important;
-  margin-top: -120px !important;
+  margin-top: -140px !important;
   border: 2px solid #fff;
   background:#fff;
   z-index:999;
   .text-tip {
     height: auto;
     p {
+      color:#333;
+      &.nochance-img{
+        height:60px;
+        margin-top:20px;
+        background:url('../images/wx-lottery/no-chance.png') no-repeat center;
+        background-size:90%;
+      }
+      &.nochance-text{
+        font-size:12px;
+        line-height: 22px;
+        padding: 0 30px;
+        margin: 20px 0;
+        span{
+          font-size:14px;
+        }
+      }
       &.success-text {
+        color:#f91a00;
         font-size: 20px;
         line-height: 35px;
       }
       &.reward-text {
-        font-size: 20px;
-        line-height: 35px;
+        height:100px;
+        &.gift-one{
+          background:url('../images/wx-lottery/gift-one.png') no-repeat center;
+          background-size:50%;
+        }
+        &.gift-two{
+          background:url('../images/wx-lottery/gift-two.png') no-repeat center;
+          background-size:50%;
+        }
+        &.gift-three{
+          background:url('../images/wx-lottery/gift-three.png') no-repeat center;
+          background-size:50%;
+        }
+        &.gift-four{
+          background:url('../images/wx-lottery/gift-four.png') no-repeat center;
+          background-size:50%;
+        }
+        &.gift-five{
+          background:url('../images/wx-lottery/gift-five.png') no-repeat center;
+          background-size:50%;
+        }
       }
       &.login-text {
         font-size: 20px;
-        padding-top: 30px;
+        padding-top: 70px;
       }
       &.des-text {
+        color:#333;
         font-size: 14px;
       }
     }
@@ -35,18 +75,21 @@
   .close-btn {
     width: 28px;
     height: 28px;
-    top: -15px;
-    right: -5px;
+    top: -40px;
+    left: 50%;
+    margin-left: -14px;
     background: url('../images/wx-lottery/close-tip.png') no-repeat center;
     background-size: 100%;
   }
   .btn-list {
     a {
-      background: #f7bf0d;
-      color: #970000;
-      padding: 8px 30px;
+      background: #ffe718;
+      color: #ff001e;
+      padding: 10px 70px;
       font-size: 16px;
-      box-shadow: 0 4px 0 #ff9600;
+      border-radius: 5px;
+      box-shadow: 0 4px 0 #ffd612;
+      margin: 10px 0;
     }
   }
 }
