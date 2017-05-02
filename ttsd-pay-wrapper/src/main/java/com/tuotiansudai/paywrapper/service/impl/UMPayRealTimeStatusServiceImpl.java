@@ -129,9 +129,9 @@ public class UMPayRealTimeStatusServiceImpl implements UMPayRealTimeStatusServic
 
     @Override
     public Map<String, String> getUserBalance(String loginName) {
-//        if (Environment.PRODUCTION != environment) {
-//            return null;
-//        }
+        if (Environment.PRODUCTION != environment) {
+            return null;
+        }
 
         AccountModel model = accountMapper.findByLoginName(loginName);
         if (model == null) {
