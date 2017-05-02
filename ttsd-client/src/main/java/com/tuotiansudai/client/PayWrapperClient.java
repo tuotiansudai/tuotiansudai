@@ -38,6 +38,8 @@ public class PayWrapperClient extends BaseClient {
     @Value("${pay.application.context}")
     protected String applicationContext;
 
+    private OkHttpClient checkUserBalanceHttpClient = buildOkHttpClient(60,60,60);
+
     private final static String registerPath = "/register";
 
     private final static String systemRechargePath = "/system-recharge";
@@ -190,8 +192,7 @@ public class PayWrapperClient extends BaseClient {
 
     public Map<String, String> getUserBalance(String loginName) {
         try {
-            OkHttpClient okHttpClient = buildOkHttpClient(60,60,60);
-            String json = this.execute(MessageFormat.format("/real-time/user-balance/{0}", loginName), null, "GET",okHttpClient);
+            String json = this.execute(MessageFormat.format("/real-time/user-balance/{0}", loginName), null, "GET",checkUserBalanceHttpClient);
             if (json == null)
                 return null;
             else

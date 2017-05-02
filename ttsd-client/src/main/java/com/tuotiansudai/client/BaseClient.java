@@ -41,13 +41,7 @@ public abstract class BaseClient {
     }
 
     protected String execute(String path, String requestJson, String method) {
-        ResponseBody responseBody = newCall(path, requestJson, method, null);
-        try {
-            return responseBody != null ? responseBody.string() : null;
-        } catch (Exception e) {
-            logger.error(e.getLocalizedMessage(), e);
-            return null;
-        }
+        return execute(path, requestJson, method, null);
     }
 
     protected String execute(String path, String requestJson, String method, OkHttpClient okHttpClient) {
