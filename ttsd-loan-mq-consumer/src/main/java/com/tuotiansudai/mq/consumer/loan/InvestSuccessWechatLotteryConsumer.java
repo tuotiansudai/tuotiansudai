@@ -85,6 +85,6 @@ public class InvestSuccessWechatLotteryConsumer implements MessageConsumer {
         long orderId = idGenerator.generate();
         TransferCashDto transferCashDto = new TransferCashDto(loginName, String.valueOf(orderId), String.valueOf(prizeAmount));
         BaseDto<PayDataDto> response = payWrapperClient.transferCash(transferCashDto);
-        logger.info("send wechat invest cash prize, response:{0}", response.getData().getMessage());
+        logger.info("send wechat invest cash prize, loginName:{0}, response:{1}", loginName, response.getData().getMessage());
     }
 }
