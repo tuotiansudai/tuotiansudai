@@ -98,7 +98,6 @@
 
         <intercept-url pattern="/activity/draw-tiandou" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/activity/point-lottery" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
-        <intercept-url pattern="/activity/wechat/lottery" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
 
         <intercept-url pattern="/**" access="permitAll()"/>
 
