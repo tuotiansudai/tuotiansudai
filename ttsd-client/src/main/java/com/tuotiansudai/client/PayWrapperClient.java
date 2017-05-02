@@ -38,7 +38,7 @@ public class PayWrapperClient extends BaseClient {
     @Value("${pay.application.context}")
     protected String applicationContext;
 
-    private OkHttpClient checkUserBalanceHttpClient = buildOkHttpClient(60,60,60);
+    private OkHttpClient checkUserBalanceHttpClient = buildCheckUserBalanceOKHttpClient();
 
     private final static String registerPath = "/register";
 
@@ -76,13 +76,13 @@ public class PayWrapperClient extends BaseClient {
 
     private final static String transferCashPath = "/transfer-cash";
 
-    private OkHttpClient buildOkHttpClient(long readTimeOut, long writeTimeOut, long connectTimeOut) {
+    private OkHttpClient buildCheckUserBalanceOKHttpClient() {
         OkHttpClient okHttpClient = new OkHttpClient();
         OkHttpLoggingInterceptor loggingInterceptor = new OkHttpLoggingInterceptor(message -> logger.info(message));
         okHttpClient.interceptors().add(loggingInterceptor);
-        okHttpClient.setReadTimeout(readTimeOut, TimeUnit.SECONDS);
-        okHttpClient.setWriteTimeout(writeTimeOut, TimeUnit.SECONDS);
-        okHttpClient.setConnectTimeout(connectTimeOut, TimeUnit.SECONDS);
+        okHttpClient.setReadTimeout(10, TimeUnit.SECONDS);
+        okHttpClient.setWriteTimeout(10, TimeUnit.SECONDS);
+        okHttpClient.setConnectTimeout(10, TimeUnit.SECONDS);
         return okHttpClient;
     }
 

@@ -41,7 +41,7 @@ public abstract class BaseClient {
     }
 
     protected String execute(String path, String requestJson, String method) {
-        return execute(path, requestJson, method, null);
+        return execute(path, requestJson, method, okHttpClient);
     }
 
     protected String execute(String path, String requestJson, String method, OkHttpClient okHttpClient) {
