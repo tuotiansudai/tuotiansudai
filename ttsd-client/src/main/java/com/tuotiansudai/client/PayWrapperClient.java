@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.squareup.okhttp.OkHttpClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
@@ -21,6 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 @Component
 public class PayWrapperClient extends BaseClient {
@@ -71,6 +73,16 @@ public class PayWrapperClient extends BaseClient {
     private final static String noPasswordInvestPath = "/no-password-invest";
 
     private final static String transferCashPath = "/transfer-cash";
+
+    private OkHttpClient buildOkHttpClient(long readTimeOut, long writeTimeOut, long connectTimeOut) {
+        OkHttpClient okHttpClient = new OkHttpClient();
+        OkHttpLoggingInterceptor loggingInterceptor = new OkHttpLoggingInterceptor(message -> logger.info(message));
+        okHttpClient.interceptors().add(loggingInterceptor);
+        okHttpClient.setReadTimeout(readTimeOut, TimeUnit.SECONDS);
+        okHttpClient.setWriteTimeout(writeTimeOut, TimeUnit.SECONDS);
+        okHttpClient.setConnectTimeout(connectTimeOut, TimeUnit.SECONDS);
+        return okHttpClient;
+    }
 
     public BaseDto<PayDataDto> transferCash(Object transferCashDto) {
         return syncExecute(transferCashDto, transferCashPath, "POST");
@@ -178,7 +190,8 @@ public class PayWrapperClient extends BaseClient {
 
     public Map<String, String> getUserBalance(String loginName) {
         try {
-            String json = this.execute(MessageFormat.format("/real-time/user-balance/{0}", loginName), null, "GET");
+            OkHttpClient okHttpClient = buildOkHttpClient(60,60,60);
+            String json = this.execute(MessageFormat.format("/real-time/user-balance/{0}", loginName), null, "GET",okHttpClient);
             if (json == null)
                 return null;
             else
