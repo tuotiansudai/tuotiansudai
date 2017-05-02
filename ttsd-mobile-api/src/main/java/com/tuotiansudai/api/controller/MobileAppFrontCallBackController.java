@@ -97,7 +97,6 @@ public class MobileAppFrontCallBackController {
         Function<Long, Map<String, String>> bindCardValuesGenerator = (Long bindCardOrderId) -> {
             BankCardModel bankCardModel = bindCardOrderId != null ? bindBankCardService.getBankCardById(bindCardOrderId) : null;
             return Maps.newHashMap(ImmutableMap.<String, String>builder()
-                    .put("bankName", bankCardModel != null ? BankCardUtil.getBankName(bankCardModel.getBankCode()) : "")
                     .put("cardNumber", bankCardModel != null ? bankCardModel.getCardNumber().replaceAll("^(\\d{4}).*(\\d{4})$", "$1****$2") : "")
                     .put("message", "绑卡申请成功")
                     .build());

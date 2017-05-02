@@ -33,7 +33,6 @@ public class ProjectTransferRequestModel extends BaseAsyncRequestModel {
 
     public static ProjectTransferRequestModel newLoanCancelPayBackRequest(String projectId, String orderId, String userId, String amount) {
         ProjectTransferRequestModel model = new ProjectTransferRequestModel(projectId, orderId, userId, amount, UmPayParticAccType.INDIVIDUAL, Source.WEB, AsyncUmPayService.LOAN_CANCEL_PAYBACK_PROJECT_TRANSFER);
-        model.notifyUrl = MessageFormat.format("{0}/{1}", CALLBACK_HOST_PROPS.get("pay.callback.back.host"), "cancel_pay_back_notify");
         model.servType = UmPayServType.TRANSFER_OUT_CANCEL_PAYBACK.getCode();
         model.transAction = UmPayTransAction.OUT.getCode();
         model.particType = UmPayParticType.INVESTOR.getCode();

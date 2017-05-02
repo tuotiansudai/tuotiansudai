@@ -18,10 +18,6 @@
     <#case 'ptp_mer_bind_card'>
         <ul class="info-item">
             <li>
-                <span class="info-title">开户银行</span>
-                <span class="info-text">${(values.bankName)!}</span>
-            </li>
-            <li>
                 <span class="info-title">银行卡号:</span>
                 <span class="info-text">${values.cardNumber!}</span>
             </li>
