@@ -38,7 +38,8 @@ var NODE_ENV=process.env.NODE_ENV;
 
 var files = glob.sync(path.join(staticPath, '*/js/*.jsx'));
 var Accountfiles = glob.sync(path.join(staticPath, '*/js/account/*.jsx'));
-files=files.concat(Accountfiles);
+var wechatfiles = glob.sync(path.join(staticPath, '*/js/wechat/*.jsx'));
+files=files.concat(Accountfiles).concat(wechatfiles);
 var newEntries = {};
 
 files.forEach(function(file){
@@ -98,14 +99,14 @@ if(NODE_ENV=='production') {
 else if(NODE_ENV=='dev') {
 	plugins.push(new ExtractTextPlugin("[name].css"));
 
-	//打包之前先删除打包文件里的文件方便重新打包
-	plugins.push(new CleanWebpackPlugin(['develop'], {
-		root: basePath,
-		verbose: true,
-		dry: false,
-		watch:true,
-		exclude: ['public','json-ask.json','json-web.json','json-point.json']
-	}));
+	//打包之前先删除打包文件里的图片文件方便重新打包
+	// plugins.push(new CleanWebpackPlugin(['develop'], {
+	// 	root: basePath,
+	// 	verbose: true,
+	// 	dry: false,
+	// 	watch:true,
+	// 	exclude: ['public','json-ask.json','json-web.json','json-point.json']
+	// }));
 
 	//开发环境
 	plugins.push(new webpack.HotModuleReplacementPlugin());
@@ -216,6 +217,7 @@ var myObject = objectAssign(commonOptions, {
 			webImages:path.join(webPath, 'images'),
 
 			activityJs:path.join(activityPath, 'js'),
+			activityJsModule:path.join(activityPath, 'js/module'),
 			activityStyle:path.join(activityPath, 'styles'),
 
 			pointJs:path.join(pointPath, 'js'),

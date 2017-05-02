@@ -2,15 +2,11 @@
 <@global.main pageCss="${css.point_update}" pageJavascript="" activeNav="" activeLeftNav="" title="积分体系_积分商城_拓天速贷" keywords="会员积分,投资积分,签到积分,邀好友积分,拓天速贷" description="拓天速贷积分体系豪华升级,投资得积分,邀好友送积分,签到攒积分,做任务赢积分,会员积分兑好礼,五大秘籍玩转积分商城.">
 <div class="point-update-container">
 	<div class="top-item">
-		<img src="${staticServer}/activity/images/point-update/top-img.png" width="100%" class="media-pc">
-		<img src="${staticServer}/activity/images/point-update/top-img-phone.png" width="100%" class="media-phone">
 	</div>
 	<div class="wp clearfix">
 		<div class="content-item">
 			<div class="item-icon"></div>
-			<h3 class="title-one">
-				<img src="${staticServer}/activity/images/point-update/title-one.png">
-			</h3>
+			<h3 class="title-one"></h3>
 			<ul class="get-point-item">
 				<li>
 					<div class="title-name">
@@ -134,9 +130,7 @@
 		</div>
 		<div class="content-item media-phone">
 			<div class="item-icon"></div>
-			<h3 class="title-two">
-				<img src="${staticServer}/activity/images/point-update/title-two.png">
-			</h3>
+			<h3 class="title-two"></h3>
 			<ul class="get-point-item">
 				<li>
 					<table>
@@ -200,9 +194,7 @@
 		</div>
 		<div class="content-item media-pc">
 			<div class="item-icon"></div>
-			<h3 class="title-two">
-				<img src="${staticServer}/activity/images/point-update/title-two.png">
-			</h3>
+			<h3 class="title-two"></h3>
 			<ul class="task-point-item">
 				<li>
 					<table>
@@ -282,9 +274,7 @@
 		</div>
 		<div class="content-item left-item">
 			<div class="item-icon"></div>
-			<h3 class="title-three">
-				<img src="${staticServer}/activity/images/point-update/title-three.png">
-			</h3>
+			<h3 class="title-three"></h3>
 			<div class="vip-info">
 				成为拓天速贷尊贵会员，兑换积分商城商品专享不同程度优惠。
 			</div>
@@ -327,9 +317,7 @@
 		</div>
 		<div class="content-item right-item">
 			<div class="item-icon"></div>
-			<h3 class="title-four">
-				<img src="${staticServer}/activity/images/point-update/title-four.png">
-			</h3>
+			<h3 class="title-four"></h3>
 			<ul class="point-item">
 				<li class="one">
 					<p class="title-name">小积分抽大奖</p>

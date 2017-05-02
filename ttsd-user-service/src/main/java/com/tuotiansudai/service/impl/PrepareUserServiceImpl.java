@@ -37,8 +37,9 @@ public class PrepareUserServiceImpl implements PrepareUserService {
         boolean referrerMobileIsExist = userService.mobileIsExist(requestDto.getReferrerMobile());
         boolean mobileIsExist = userService.mobileIsExist(requestDto.getMobile());
         boolean verifyCaptchaFailed = !this.smsCaptchaService.verifyMobileCaptcha(requestDto.getMobile(), requestDto.getCaptcha(), CaptchaType.REGISTER_CAPTCHA);
+        boolean prepareUserExist = prepareUserMapper.findByMobile(requestDto.getMobile()) != null;
 
-        if (!referrerMobileIsExist || mobileIsExist || verifyCaptchaFailed) {
+        if (!referrerMobileIsExist || mobileIsExist || verifyCaptchaFailed || prepareUserExist) {
             return new BaseDataDto(false, null);
         }
 

@@ -16,8 +16,7 @@
             </dl>
             <dl class="CFCA-box fr">
                 <dt>权威机构主管</dt>
-                <dd>
-                    <img src="${staticServer}/activity/images/anxin_landing/jigou.jpg" alt="权威机构主管" class="organize">
+                <dd class="jigou-img">
                 </dd>
             </dl>
         </div>

@@ -1,0 +1,381 @@
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.media-item{
+  display:block;
+  @media (max-width:700px) {
+    display:none;
+  }
+}
+.media-item-phone{
+  display:none;
+  @media (max-width:700px) {
+    display:block;
+  }
+}
+.for-mobile {
+  display: none;
+  text-align: center;
+  font-size: 12px;
+  color: #005e80;
+  margin: 0 auto;
+  margin-bottom: 0;
+  width: 93%;
+  line-height: 20px;
+  @media (max-width:700px) {
+    display: block;
+  }
+}
+.main-frame {
+  width: 100%;
+  margin: 0 auto;
+  background: #dd454d;
+}
+.tour-slide {
+  height: 350px;
+  background: url("../images/divide-money/top-img.jpg") center top no-repeat;
+  @media (max-width:700px) {
+    height: 175px;
+    background: url("../images/divide-money/top-img-phone.jpg") center top no-repeat;
+    background-size: contain;
+  }
+}
+.share-reward-container {
+  margin: 0px auto;
+  padding-top:20px;
+  @media (max-width:700px) {
+    padding: 0px 10px;
+  }
+  .bg-column-normal {
+    float:left;
+    width:100%;
+    background: #d4393c;
+    border: 3px solid #fdd500;
+    position: relative;
+    padding: 15px 80px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    @media (max-width:700px) {
+      border:2px solid #fdd500;
+      border-radius: 5px;
+      padding:15px 10px;
+    }
+  }
+  .actor-info{
+    float:left;
+    width:100%;
+    color:#fff;
+    padding: 0 40px;
+    @media (max-width:700px) {
+      padding:0 10px;
+    }
+    h3{
+      font-weight:bold;
+      font-size:24px;
+      @media (max-width:700px) {
+        font-size:16px;
+        text-align: center;
+      }
+    }
+    p{
+      font-size:16px;
+      color:#fff;
+      @media (max-width:700px) {
+        font-size:12px;
+        margin-bottom: 0;
+      }
+      span{
+        font-size:20px;
+        color:#fdd500;
+        font-style: italic;
+        @media (max-width:700px) {
+          font-size:16px;
+        }
+      }
+    }
+  }
+  .invite-box-friend {
+    font-size: 22px;
+    text-align: left;
+    @media (max-width:700px) {
+      font-size: 14px;
+      clear: left;
+    }
+    .link-item{
+      float:left;
+      width:520px;
+      margin-left: 50px;
+      @media (max-width:700px) {
+        display:none;
+      }
+      dl {
+        padding:18px 45px;
+        text-align: center;
+        border:1px dotted #fff;
+        width: 100%;
+        float: left;
+        position: relative;
+        dt {
+          width:60px;
+          height:30px;
+          line-height:30px;
+          position: absolute;
+          top:-15px;
+          left:50%;
+          margin-left:-30px;
+          font-size:14px;
+          color:#fff;
+          background:#d4393c;
+        }
+        dd {
+          width: 100%;
+          margin-top:10px;
+          font-size: 16px;
+          color:#6d221e;
+          line-height: 20px;
+        }
+      }
+      .info-text{
+        font-size: 12px;
+        color:#fff;
+        text-align: center;
+        line-height: 20px;
+        margin: 10px 0 0;
+        float: left;
+        width: 100%;
+      }
+    }
+    .weixin-code {
+      float: left;
+      width: 200px;
+      margin-right: 20px;
+      text-align:center;
+      position: relative;
+      @media (max-width:700px) {
+        display:none;
+      }
+      .title-code{
+        width:60px;
+        height:30px;
+        line-height:30px;
+        position: absolute;
+        top:-15px;
+        left:50%;
+        margin-left:-30px;
+        font-size:14px;
+        color:#fff;
+        background:#d4393c;
+      }
+      .img-code {
+        display: inline-block;
+        width: 200px;
+        height: 200px;
+        padding:20px;
+        border:1px dotted #fff;
+        canvas {
+          width: 100%;
+          padding:5px;
+          background:#fff;
+        }
+      }
+      span {
+        display: block;
+        font-size :12px;
+        color:#fff;
+        text-align: center;
+        line-height: 20px;
+      }
+    }
+    .input-invite {
+      width: 100%;
+      height: 40px;
+      font-size:14px;
+      background: #fff6d4;
+      color: #4d4d4d;
+      @media (max-width:700px) {
+        width: 100%;
+      }
+    }
+    .info-link{
+      float:left;
+      width:100%;
+      text-align:center;
+      padding: 0 170px;
+      @media (max-width:700px) {
+        padding:0;
+      }
+      p{
+        border:2px solid #00ffff;
+        line-height:55px;
+        border-radius:55px;
+        font-size:16px;
+        color:#fff;
+        margin-bottom:0;
+      }
+    }
+    .btn-copy-link {
+      display: inline-block;
+      width: 410px;
+      height: 100px;
+      line-height:100px;
+      text-align: center;
+      background: url('../images/divide-money/login-bg.png') no-repeat center;
+      background-size:100%;
+      color: #f64b49;
+      font-size: 36px;
+      vertical-align: middle;
+      margin:70px 0 30px;
+      @media (max-width:700px) {
+        width:205px;
+        height:50px;
+        line-height:50px;
+        font-size:18px;
+        margin:10px 0;
+      }
+      &.copy-button{
+        width:240px;
+        height: 58px;
+        line-height: 58px;
+        font-size: 20px;
+        margin-top:15px;
+      }
+    }
+  }
+  .titel-item{
+    float:left;
+    width:100%;
+    margin:30px 0;
+    text-align:center;
+    @media (max-width:700px) {
+      margin:15px 0;
+    }
+    .title-text{
+      display:inline-block;
+      padding:0 30px;
+      @media (max-width:700px) {
+        padding:0 50px;
+      }
+      span{
+        display:inline-block;
+        width:360px;
+        height:55px;
+        @media (max-width:700px) {
+          width:200px;
+          height:30px;
+        }
+        &.title-one{
+          background: url('../images/divide-money/title-one.png') no-repeat center;
+          background-size:100%;
+        }
+        &.title-two{
+          background: url('../images/divide-money/title-two.png') no-repeat center;
+          background-size:100%;
+        }
+        &.title-four{
+          background: url('../images/divide-money/title-four.png') no-repeat center;
+          background-size:100%;
+        }
+        &.title-three{
+          background: url('../images/divide-money/title-four.png') no-repeat center;
+          background-size:100%;
+        }
+      }
+    }
+  }
+  .btn-item{
+    float:left;
+    width:100%;
+    p{
+      font-size:12px;
+      color:#fff;
+      margin:20px 0 0;
+      text-align:center;
+      span{
+        color:#fff;
+      }
+    }
+  }
+  .loan-item{
+    float:left;
+    width:100%;
+    text-align:center;
+    .loan-content{
+      display:inline-block;
+      width:400px;
+      background:#fff;
+      padding:0 100px;
+      @media (max-width:700px) {
+        width:100%;
+        padding:0 50px;
+      }
+      dl{
+        float:left;
+        width:100%;
+        padding:5px 0;
+        dt{
+          float:left;
+          width:100%;
+          font-size:16px;
+          color:#525252;
+          span{
+            font-size:14px;
+            color:#ff473c;
+            border:1px solid #ff473c;
+            padding:0 5px;
+            border-radius:5px;
+            margin-left:10px;
+          }
+        }
+        dd{
+          float:left;
+          width:50%;
+          span{
+            float:left;
+            width:100%;
+            font-size:14px;
+            text-align:center;
+            color:#a2a2a2;
+            &.bite-text{
+              font-size:16px;
+              color:#ff473c;
+              line-height:44px;
+              strong{
+                font-size:32px;
+                font-weight:normal;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  .reward-item{
+    float:left;
+    width:100%;
+    height:500px;
+    margin-top: 10px;
+    background:url('../images/divide-money/reward-img.png') no-repeat center;
+    background-size:100%;
+    @media (max-width:700px) {
+      height:240px;
+      background:url('../images/divide-money/reward-img-phone.png') no-repeat center;
+      background-size:100%;
+    }
+  }
+  .activity-rules {
+    color: #fff;
+    margin:30px 0 20px;
+    @media (max-width:700px) {
+      padding: 0;
+      margin: 0;
+    }
+    li {
+      font-size:14px;
+      @media (max-width:700px) {
+        font-size:12px;
+      }
+    }
+  }
+}

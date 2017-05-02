@@ -6,7 +6,10 @@ import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.repository.mapper.ReferrerManageMapper;
 import com.tuotiansudai.repository.mapper.UserRoleMapper;
-import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.model.ReferrerManageView;
+import com.tuotiansudai.repository.model.ReferrerRelationView;
+import com.tuotiansudai.repository.model.ReferrerRewardStatus;
+import com.tuotiansudai.repository.model.UserRoleModel;
 import com.tuotiansudai.service.ReferrerManageService;
 import com.tuotiansudai.util.AmountConverter;
 import org.joda.time.DateTime;
@@ -37,7 +40,7 @@ public class ReferrerManageServiceImpl implements ReferrerManageService {
         String level = getUserRewardDisplayLevel(referrerLoginName);
         referEndTime = new DateTime(referEndTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
         List<ReferrerRelationView> referRelationList = referrerManageMapper.findReferRelationList(referrerLoginName, loginName, referStartTime, referEndTime, level, (index - 1) * pageSize, pageSize);
-        for(ReferrerRelationView referrerRelationView : referRelationList){
+        for (ReferrerRelationView referrerRelationView : referRelationList) {
             referrerRelationView.setMobile(referrerRelationView.getMobile());
         }
         int count = referrerManageMapper.findReferRelationCount(referrerLoginName, loginName, referStartTime, referEndTime, level);
@@ -61,7 +64,13 @@ public class ReferrerManageServiceImpl implements ReferrerManageService {
     private void formatAmount(List<ReferrerManageView> referrerManageViewList) {
         for (ReferrerManageView view : referrerManageViewList) {
             view.setInvestAmountStr(AmountConverter.convertCentToString(view.getInvestAmount()));
-            view.setRewardAmountStr(AmountConverter.convertCentToString(view.getRewardAmount()));
+            if(ReferrerRewardStatus.FORBIDDEN == view.getStatus()) {
+                view.setRewardAmount(0);
+                view.setRewardAmountStr("0.00");
+                view.setRewardTime(null);
+            }else{
+                view.setRewardAmountStr(AmountConverter.convertCentToString(view.getRewardAmount()));
+            }
         }
     }
 
