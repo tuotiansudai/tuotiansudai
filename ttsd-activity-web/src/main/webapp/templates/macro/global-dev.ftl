@@ -8,11 +8,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
     <title>${title}</title>
     <meta name="keywords" content="${keywords}">
-
     <meta name="description" content="${description}">
-    <#if responsive??>
     <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
-    </#if>
     <meta name="_csrf" content="f60ab1bf-cb28-4ea9-9023-2ac992109c0c"/>
     <meta name="_csrf_header" content="X-CSRF-TOKEN"/>
     <link rel="stylesheet" type="text/css" href="http://localhost:3008/public/globalFun_page.css" charset="utf-8"/>
