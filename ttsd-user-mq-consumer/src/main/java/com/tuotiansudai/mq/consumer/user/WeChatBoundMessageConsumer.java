@@ -74,9 +74,7 @@ public class WeChatBoundMessageConsumer implements MessageConsumer {
 
         weChatUserMapper.findByLoginName(userModel.getLoginName())
                 .stream()
-                .filter(boundUser -> boundUser.getOpenid().equals(openid)
-                        && !boundUser.getLoginName().equals(userModel.getLoginName())
-                        && boundUser.isBound())
+                .filter(boundUser -> !boundUser.getOpenid().equals(openid) && boundUser.isBound())
                 .forEach(boundUser -> {
                     boundUser.setBound(false);
                     weChatUserMapper.update(boundUser);

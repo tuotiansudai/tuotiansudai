@@ -19,7 +19,7 @@
 <body>
     <#nested>
 <script>
-    window.staticServer = '${commonStaticServer}';
+    window.commonStaticServer = '${commonStaticServer}';
 </script>
 
 <script src="http://localhost:3008/public/dllplugins/jquery.dll.js" defer></script>

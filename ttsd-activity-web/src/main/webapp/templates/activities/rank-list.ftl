@@ -2,7 +2,7 @@
 <@global.main pageCss="${css.company_activity}" pageJavascript="${js.rank_list}" activeNav="" activeLeftNav="" title="拓天排行榜_拓天活动_拓天速贷" keywords="拓天速贷,拓天排行榜,拓天天豆,投资拓天,霸道总裁" description="拓天速贷二期活动,投资送天豆,参与抽大奖,拓天速贷霸道总裁送您钱,车,房.">
 <div class="rank-list-container">
     <div class="rank-phone-model">
-        <img src="${staticServer}/activity/images/sign/actor/ranklist/rank-list-top.png" width="100%">
+        <img src="${commonStaticServer}/activity/images/sign/actor/ranklist/rank-list-top.png" width="100%">
     </div>
     <div class="wp clearfix actor-intro">
         <div class="left-bg"></div>
@@ -135,7 +135,7 @@
             </div>
             <div class="leader-list">
                 <div class="table-gift">
-                    <img src="${staticServer}/activity/images/sign/actor/ranklist/gift-table-newer.png" width="100%">
+                    <img src="${commonStaticServer}/activity/images/sign/actor/ranklist/gift-table-newer.png" width="100%">
                 </div>
             </div>
         </div>
@@ -166,10 +166,10 @@
                     <div class="circle-shade">
                         <#--id="pointerTd"-->
                         <div class="pointer-img actor-finish"data-is-login="<@global.isNotAnonymous>true</@global.isNotAnonymous>">
-                            <img src="${staticServer}/activity/images/sign/actor/ranklist/pointer.png" alt="pointer"/>
+                            <img src="${commonStaticServer}/activity/images/sign/actor/ranklist/pointer.png" alt="pointer"/>
                         </div>
                         <div class="rotate-btn">
-                            <img id="rotateTd" src="${staticServer}/activity/images/sign/actor/ranklist/turntable.png"
+                            <img id="rotateTd" src="${commonStaticServer}/activity/images/sign/actor/ranklist/turntable.png"
                                  alt="turntable"/>
                         </div>
                     </div>
@@ -243,10 +243,10 @@
                     <div class="circle-shade">
                         <#--id="pointerCd"-->
                         <div class="pointer-img actor-finish"  data-is-login="<@global.isNotAnonymous>true</@global.isNotAnonymous>">
-                            <img src="${staticServer}/activity/images/sign/actor/ranklist/pointer.png" alt="pointer"/>
+                            <img src="${commonStaticServer}/activity/images/sign/actor/ranklist/pointer.png" alt="pointer"/>
                         </div>
                         <div class="rotate-btn">
-                            <img id="rotateCd" src="${staticServer}/activity/images/sign/actor/ranklist/gift-list-cd-new.png"
+                            <img id="rotateCd" src="${commonStaticServer}/activity/images/sign/actor/ranklist/gift-list-cd-new.png"
                                  alt="turntable"/>
                         </div>
                     </div>
@@ -307,7 +307,7 @@
 			<div class="close-btn go-close"></div>
 			<div class="text-tip">
 				<p>恭喜你抽中了</p>
-				<p><img src="${staticServer}/activity/images/sign/actor/ranklist/macbook-air.png" width="50%"></p>
+				<p><img src="${commonStaticServer}/activity/images/sign/actor/ranklist/macbook-air.png" width="50%"></p>
 				<p>拓天客服将会在7个工作日内联系您发放奖品</p>
 			</div>
 			<div class="btn-list">
@@ -318,7 +318,7 @@
             <div class="close-btn go-close"></div>
             <div class="text-tip">
                 <p>恭喜你抽中了</p>
-                <p><img src="${staticServer}/activity/images/sign/actor/ranklist/iPhone6sp.png" width="50%"></p>
+                <p><img src="${commonStaticServer}/activity/images/sign/actor/ranklist/iPhone6sp.png" width="50%"></p>
                 <p>拓天客服将会在7个工作日内联系您发放奖品</p>
             </div>
             <div class="btn-list">
@@ -329,7 +329,7 @@
             <div class="close-btn go-close"></div>
             <div class="text-tip">
                 <p>恭喜你抽中了</p>
-                <p><img src="${staticServer}/activity/images/sign/actor/ranklist/jiaxi-two.png" width="50%"></p>
+                <p><img src="${commonStaticServer}/activity/images/sign/actor/ranklist/jiaxi-two.png" width="50%"></p>
                 <p>奖金已发放至“我的宝藏”当中</p>
             </div>
             <div class="btn-list">
@@ -341,7 +341,7 @@
             <div class="close-btn go-close"></div>
             <div class="text-tip">
                 <p>恭喜你抽中了</p>
-                <p><img src="${staticServer}/activity/images/sign/actor/ranklist/jdcard.png" width="50%"></p>
+                <p><img src="${commonStaticServer}/activity/images/sign/actor/ranklist/jdcard.png" width="50%"></p>
                 <p>拓天客服将会在7个工作日内联系您发放奖品</p>
             </div>
             <div class="btn-list">
@@ -352,7 +352,7 @@
             <div class="close-btn go-close"></div>
             <div class="text-tip">
                 <p>恭喜你抽中了</p>
-                <p><img src="${staticServer}/activity/images/sign/actor/ranklist/20rmb.png" width="50%"></p>
+                <p><img src="${commonStaticServer}/activity/images/sign/actor/ranklist/20rmb.png" width="50%"></p>
                 <p>奖金已发放到您的账户！</p>
             </div>
             <div class="btn-list">
@@ -413,7 +413,7 @@
             <div class="close-btn go-close"></div>
             <div class="text-tip">
                 <p>恭喜你抽中了</p>
-                <p><img src="${staticServer}/activity/images/sign/actor/ranklist/5rmb_new.png" width="50%"></p>
+                <p><img src="${commonStaticServer}/activity/images/sign/actor/ranklist/5rmb_new.png" width="50%"></p>
                 <p>拓天客服将会在7个工作日内联系您发放奖品</p>
             </div>
             <div class="btn-list">
@@ -424,7 +424,7 @@
             <div class="close-btn go-close"></div>
             <div class="text-tip">
                 <p>恭喜你抽中了</p>
-                <p><img src="${staticServer}/activity/images/sign/actor/ranklist/baowen.png" width="50%"></p>
+                <p><img src="${commonStaticServer}/activity/images/sign/actor/ranklist/baowen.png" width="50%"></p>
                 <p>拓天客服将会在7个工作日内联系您发放奖品</p>
             </div>
             <div class="btn-list">
@@ -435,7 +435,7 @@
             <div class="close-btn go-close"></div>
             <div class="text-tip">
                 <p>恭喜你抽中了</p>
-                <p><img src="${staticServer}/activity/images/sign/actor/ranklist/mangguo.png" width="50%"></p>
+                <p><img src="${commonStaticServer}/activity/images/sign/actor/ranklist/mangguo.png" width="50%"></p>
                 <p>拓天客服将会在7个工作日内联系您发放奖品</p>
             </div>
             <div class="btn-list">
@@ -447,7 +447,7 @@
             <div class="text-tip">
                 <p>恭喜你抽中了</p>
 
-                <p><img src="${staticServer}/activity/images/sign/actor/ranklist/2rmb-new.png" width="50%"></p>
+                <p><img src="${commonStaticServer}/activity/images/sign/actor/ranklist/2rmb-new.png" width="50%"></p>
 
                 <p>奖品已发放至"我的宝藏"当中 ！</p>
             </div>
@@ -459,7 +459,7 @@
             <div class="close-btn go-close"></div>
             <div class="text-tip">
                 <p>恭喜你抽中了</p>
-                <p><img src="${staticServer}/activity/images/sign/actor/ranklist/jiaxi-one.png" width="50%"></p>
+                <p><img src="${commonStaticServer}/activity/images/sign/actor/ranklist/jiaxi-one.png" width="50%"></p>
                 <p>奖金已发放至“我的宝藏”当中</p>
             </div>
             <div class="btn-list">
@@ -471,7 +471,7 @@
             <div class="close-btn go-close"></div>
             <div class="text-tip">
                 <p>恭喜你抽中了</p>
-                <p><img src="${staticServer}/activity/images/sign/actor/ranklist/percentTwo.png" width="50%"></p>
+                <p><img src="${commonStaticServer}/activity/images/sign/actor/ranklist/percentTwo.png" width="50%"></p>
                 <p>奖金已发放至“我的宝藏”当中</p>
             </div>
             <div class="btn-list">
@@ -483,10 +483,10 @@
 </div>
 <div class="rank-list-phone">
     <div class="rank-phone-model">
-        <img src="${staticServer}/activity/images/sign/actor/ranklist/top-title.png" width="100%">
+        <img src="${commonStaticServer}/activity/images/sign/actor/ranklist/top-title.png" width="100%">
     </div>
     <div class="rank-phone-intro">
-        <img src="${staticServer}/activity/images/sign/actor/ranklist/actor-intro-app.png" width="100%" class="actor-intro">
+        <img src="${commonStaticServer}/activity/images/sign/actor/ranklist/actor-intro-app.png" width="100%" class="actor-intro">
     </div>
     <div class="login-btn-phone">
     <@global.isAnonymous>
@@ -546,10 +546,10 @@
                     <div class="max-gift">
                         <#--id="pointerTdPhone"-->
                         <div class="pointer-img actor-finish"  data-is-login="<@global.isNotAnonymous>true</@global.isNotAnonymous>">
-                            <img src="${staticServer}/activity/images/sign/actor/ranklist/pointer.png" width="100%" alt="pointer"/>
+                            <img src="${commonStaticServer}/activity/images/sign/actor/ranklist/pointer.png" width="100%" alt="pointer"/>
                         </div>
                         <div class="rotate-btn">
-                            <img id="rotateTdPhone" src="${staticServer}/activity/images/sign/actor/ranklist/turntable.png"
+                            <img id="rotateTdPhone" src="${commonStaticServer}/activity/images/sign/actor/ranklist/turntable.png"
                                  width="100%" alt="turntable"/>
                         </div>
                     </div>
@@ -616,10 +616,10 @@
                     <div class="max-gift">
                         <#--id="pointerCdPhone"-->
                         <div class="pointer-img actor-finish"  data-is-login="<@global.isNotAnonymous>true</@global.isNotAnonymous>">
-                            <img src="${staticServer}/activity/images/sign/actor/ranklist/pointer.png" width="100%" alt="pointer"/>
+                            <img src="${commonStaticServer}/activity/images/sign/actor/ranklist/pointer.png" width="100%" alt="pointer"/>
                         </div>
                         <div class="rotate-btn">
-                            <img id="rotateCdPhone" src="${staticServer}/activity/images/sign/actor/ranklist/gift-list-cd-new.png"
+                            <img id="rotateCdPhone" src="${commonStaticServer}/activity/images/sign/actor/ranklist/gift-list-cd-new.png"
                                  width="100%" alt="turntable"/>
                         </div>
                     </div>
@@ -653,8 +653,8 @@
         </div>
     </div>
     <div class="rank-phone-intro">
-        <span class="fl" style="padding:0 30px;"><img src="${staticServer}/activity/images/sign/actor/ranklist/share-button.png" width="100%" class="fl share-btn"></span>
-        <img src="${staticServer}/activity/images/sign/actor/ranklist/share-intro-phone.png" width="100%">
+        <span class="fl" style="padding:0 30px;"><img src="${commonStaticServer}/activity/images/sign/actor/ranklist/share-button.png" width="100%" class="fl share-btn"></span>
+        <img src="${commonStaticServer}/activity/images/sign/actor/ranklist/share-intro-phone.png" width="100%">
     </div>
 
     <div class="share-list">
@@ -700,7 +700,7 @@
     </div>
     <#if !isAppSource>
     <div class="rank-phone-intro">
-        <a href="/loan-list"><img src="${staticServer}/activity/images/sign/actor/ranklist/to-loan.png" width="100%" class="share-intro"></a>
+        <a href="/loan-list"><img src="${commonStaticServer}/activity/images/sign/actor/ranklist/to-loan.png" width="100%" class="share-intro"></a>
     </div>
     </#if>
     <dl class="actor-rule">
@@ -723,7 +723,7 @@
             <div class="close-btn go-close"></div>
             <div class="text-tip">
                 <p>恭喜你抽中了</p>
-                <p><img src="${staticServer}/activity/images/sign/actor/ranklist/macbook-air.png" width="50%"></p>
+                <p><img src="${commonStaticServer}/activity/images/sign/actor/ranklist/macbook-air.png" width="50%"></p>
                 <p>拓天客服将会在7个工作日内联系您发放奖品</p>
             </div>
             <div class="btn-list">
@@ -734,7 +734,7 @@
             <div class="close-btn go-close"></div>
             <div class="text-tip">
                 <p>恭喜你抽中了</p>
-                <p><img src="${staticServer}/activity/images/sign/actor/ranklist/iPhone6sp.png" width="50%"></p>
+                <p><img src="${commonStaticServer}/activity/images/sign/actor/ranklist/iPhone6sp.png" width="50%"></p>
                 <p>拓天客服将会在7个工作日内联系您发放奖品</p>
             </div>
             <div class="btn-list">
@@ -745,7 +745,7 @@
             <div class="close-btn go-close"></div>
             <div class="text-tip">
                 <p>恭喜你抽中了</p>
-                <p><img src="${staticServer}/activity/images/sign/actor/ranklist/jiaxi-two.png" width="50%"></p>
+                <p><img src="${commonStaticServer}/activity/images/sign/actor/ranklist/jiaxi-two.png" width="50%"></p>
                 <p>奖金已发放至“我的宝藏”当中</p>
             </div>
             <div class="btn-list">
@@ -756,7 +756,7 @@
             <div class="close-btn go-close"></div>
             <div class="text-tip">
                 <p>恭喜你抽中了</p>
-                <p><img src="${staticServer}/activity/images/sign/actor/ranklist/jdcard.png" width="50%"></p>
+                <p><img src="${commonStaticServer}/activity/images/sign/actor/ranklist/jdcard.png" width="50%"></p>
                 <p>拓天客服将会在7个工作日内联系您发放奖品</p>
             </div>
             <div class="btn-list">
@@ -767,7 +767,7 @@
             <div class="close-btn go-close"></div>
             <div class="text-tip">
                 <p>恭喜你抽中了</p>
-                <p><img src="${staticServer}/activity/images/sign/actor/ranklist/20rmb.png" width="50%"></p>
+                <p><img src="${commonStaticServer}/activity/images/sign/actor/ranklist/20rmb.png" width="50%"></p>
                 <p>奖金已发放到您的账户！</p>
             </div>
             <div class="btn-list">
@@ -821,7 +821,7 @@
             <div class="close-btn go-close"></div>
             <div class="text-tip">
                 <p>恭喜你抽中了</p>
-                <p><img src="${staticServer}/activity/images/sign/actor/ranklist/5rmb_new.png" width="50%"></p>
+                <p><img src="${commonStaticServer}/activity/images/sign/actor/ranklist/5rmb_new.png" width="50%"></p>
                 <p>奖金已发放到您的账户！</p>
             </div>
             <div class="btn-list">
@@ -832,7 +832,7 @@
             <div class="close-btn go-close"></div>
             <div class="text-tip">
                 <p>恭喜你抽中了</p>
-                <p><img src="${staticServer}/activity/images/sign/actor/ranklist/baowen.png" width="50%"></p>
+                <p><img src="${commonStaticServer}/activity/images/sign/actor/ranklist/baowen.png" width="50%"></p>
                 <p>拓天客服将会在7个工作日内联系您发放奖品</p>
             </div>
             <div class="btn-list">
@@ -843,7 +843,7 @@
             <div class="close-btn go-close"></div>
             <div class="text-tip">
                 <p>恭喜你抽中了</p>
-                <p><img src="${staticServer}/activity/images/sign/actor/ranklist/mangguo.png" width="50%"></p>
+                <p><img src="${commonStaticServer}/activity/images/sign/actor/ranklist/mangguo.png" width="50%"></p>
                 <p>奖金已发放到您的账户！</p>
             </div>
             <div class="btn-list">
@@ -855,7 +855,7 @@
             <div class="text-tip">
                 <p>恭喜你抽中了</p>
 
-                <p><img src="${staticServer}/activity/images/sign/actor/ranklist/2rmb-new.png" width="50%"></p>
+                <p><img src="${commonStaticServer}/activity/images/sign/actor/ranklist/2rmb-new.png" width="50%"></p>
 
                 <p>奖品已发放至"我的宝藏"当中 ！</p>
             </div>
@@ -867,7 +867,7 @@
             <div class="close-btn go-close"></div>
             <div class="text-tip">
                 <p>恭喜你抽中了</p>
-                <p><img src="${staticServer}/activity/images/sign/actor/ranklist/jiaxi-one.png" width="50%"></p>
+                <p><img src="${commonStaticServer}/activity/images/sign/actor/ranklist/jiaxi-one.png" width="50%"></p>
                 <p>奖金已发放至“我的宝藏”当中</p>
             </div>
             <div class="btn-list">
@@ -878,7 +878,7 @@
             <div class="close-btn go-close"></div>
             <div class="text-tip">
                 <p>恭喜你抽中了</p>
-                <p><img src="${staticServer}/activity/images/sign/actor/ranklist/percentTwo.png" width="50%"></p>
+                <p><img src="${commonStaticServer}/activity/images/sign/actor/ranklist/percentTwo.png" width="50%"></p>
                 <p>奖金已发放至“我的宝藏”当中</p>
             </div>
             <div class="btn-list">

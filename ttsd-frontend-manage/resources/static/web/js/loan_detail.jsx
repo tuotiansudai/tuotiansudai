@@ -487,6 +487,10 @@ function getSkipPhoneTip(){
         //click invest submit btn
         $investSubmit.on('click', function(event) {
             event.preventDefault();
+            if ($('.header-login').data('wechat-login-name')) {
+                location.href = '/login?redirect=' + location.href;
+                return;
+            }
             $.when(commonFun.isUserLogin())
                 .done(function() {
                     if (isInvestor) {

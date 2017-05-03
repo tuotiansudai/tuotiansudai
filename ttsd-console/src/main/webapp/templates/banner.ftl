@@ -33,7 +33,7 @@
             <div class="col-sm-4" style="margin-left: 10%;">
                 <div class="webImageUrlImage">
                     <#if banner?? && banner.webImageUrl??>
-                        <img style="width:100%" src="${staticServer}${banner.webImageUrl!}" alt="缩略图"/>
+                        <img style="width:100%" src="${commonStaticServer}${banner.webImageUrl!}" alt="缩略图"/>
                     </#if>
                 </div>
             </div>
@@ -56,7 +56,7 @@
             <div class="col-sm-4" style="margin-left: 10%;">
                 <div class="appImageUrlImage">
                     <#if banner?? && banner.appImageUrl??>
-                        <img style="width:100%" src="${staticServer}${banner.appImageUrl!}" alt="缩略图"/>
+                        <img style="width:100%" src="${commonStaticServer}${banner.appImageUrl!}" alt="缩略图"/>
                     </#if>
                 </div>
             </div>

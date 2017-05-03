@@ -19,7 +19,7 @@
     </div>
  <div class="section-outer">
         <div class="section-title">
-            <img src="${staticServer}/activity/images/national-day/title001.png">
+            <img src="${commonStaticServer}/activity/images/national-day/title001.png">
         </div>
         <div class="dotted-line-title"></div>
         <div class="section-inner">
@@ -65,7 +65,7 @@
 
 <div class="section-outer">
     <div class="section-title">
-        <img src="${staticServer}/activity/images/national-day/title002.png">
+        <img src="${commonStaticServer}/activity/images/national-day/title002.png">
     </div>
     <div class="dotted-line-title"></div>
     <div class="section-inner">
@@ -76,7 +76,7 @@
         <div class="bg-box-normal">
             <dl class="example-show">
                 <dt>活动期间投资即可获得双倍积分。</dt>
-                <dd>举个栗子：<img src="${staticServer}/activity/images/national-day/icon-example.png" class="main-title" alt="">
+                <dd>举个栗子：<img src="${commonStaticServer}/activity/images/national-day/icon-example.png" class="main-title" alt="">
                     <br/>
                     您在活动期间投资360天标的20000元，将获得20000X2=40,000的积分（活动结束后投资只能获得1倍的积分）
                 </dd>
@@ -90,7 +90,7 @@
         <div class="bg-box-normal">
             <dl class="example-show">
                 <dt>活动期间邀请好友注册并投资，可额外获得好友年化投资额的0.1倍积分，上不封顶。</dt>
-                <dd>举个栗子：<img src="${staticServer}/activity/images/national-day/icon-example.png" class="main-title" alt="">
+                <dd>举个栗子：<img src="${commonStaticServer}/activity/images/national-day/icon-example.png" class="main-title" alt="">
                     <br/>
                     您邀请好友注册，好友投资360天标的2万元，您可获得2000积分
                 </dd>
@@ -110,7 +110,7 @@
 
 <div class="section-outer">
     <div class="section-title">
-        <img src="${staticServer}/activity/images/national-day/title003.png">
+        <img src="${commonStaticServer}/activity/images/national-day/title003.png">
     </div>
     <div class="dotted-line-title"></div>
     <div class="section-inner clearfix">
@@ -204,7 +204,7 @@
         </dl>
 
         <div class="ms-code tc">
-            <img src="${staticServer}/activity/images/national-day/ms-code.png"  /> <br/>
+            <img src="${commonStaticServer}/activity/images/national-day/ms-code.png"  /> <br/>
             <span>如何抽到更多好礼？扫码教你</span>
         </div>
     </div>

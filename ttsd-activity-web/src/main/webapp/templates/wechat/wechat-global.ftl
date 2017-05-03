@@ -42,7 +42,7 @@
 <body>
     <#nested>
 <script>
-    window.staticServer = '${commonStaticServer}';
+    window.commonStaticServer = '${commonStaticServer}';
 </script>
 
 <script src="https://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>

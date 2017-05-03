@@ -49,12 +49,14 @@ public class WeChatController {
 
         WeChatUserModel weChatUserModel = weChatService.parseWeChatUserStatus(httpServletRequest.getSession().getId(), state, code);
         if (weChatUserModel == null) {
+            myAuthenticationUtil.removeAuthentication();
             return new ModelAndView("/error/404");
         }
 
         if (weChatUserModel.isBound()) {
             myAuthenticationUtil.createAuthentication(weChatUserModel.getLoginName(), Source.WE_CHAT);
         } else {
+            myAuthenticationUtil.removeAuthentication();
             httpServletRequest.getSession().setAttribute("weChatUserLoginName", weChatUserModel.getLoginName());
             httpServletRequest.getSession().setAttribute("weChatUserOpenid", weChatUserModel.getOpenid());
         }

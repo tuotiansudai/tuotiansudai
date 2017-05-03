@@ -12,7 +12,7 @@ var node_modules = path.resolve(__dirname, 'node_modules');
 var HappyPack = require('happypack');
 var happyThreadPool = HappyPack.ThreadPool({ size: 5 });
 
-var staticServer = require('./getStaticServer.js');
+var commonStaticServer = require('./getStaticServer.js');
 var basePath = path.join(__dirname, 'resources'),
 	staticPath = path.join(basePath, 'static'),
 	publicPath=path.join(staticPath, 'public'),
@@ -25,7 +25,7 @@ var basePath = path.join(__dirname, 'resources'),
 var publicPathJS=path.join(publicPath, 'js');
 
 var outputPath=path.join(basePath, 'develop'),//打包文件路径
-	devServerPath=staticServer+'/',
+	devServerPath=commonStaticServer+'/',
 	commonOptions={},
 	webpackdevServer='',
 	plugins=[];

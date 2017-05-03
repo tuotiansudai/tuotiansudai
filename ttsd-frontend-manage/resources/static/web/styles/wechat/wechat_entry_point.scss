@@ -59,9 +59,11 @@ textarea::-webkit-input-placeholder {
     padding:0 15px;
     b {
       color: #525252;
+      font-size: 13px;
     }
     p {
       color: #A2A2A2;
+      font-size: 12px;
     }
 
   }
@@ -72,6 +74,15 @@ textarea::-webkit-input-placeholder {
     position: absolute;
     right:10px;
     top:70px;
+  }
+  .get-password {
+    display: block;
+    text-align: left;
+    width: 80%;
+    margin: -20px auto 20px auto;
+    a {
+      color: #808080;
+    }
   }
 }
 

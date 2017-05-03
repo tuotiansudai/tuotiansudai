@@ -31,9 +31,9 @@
                     <tr>
                         <td>${banner.order!}</td>
                         <td>${banner.name!}</td>
-                        <td><span class="webImg"><img id="webUrl" src="${staticServer}${banner.webImageUrl!}" width="100" height="30"/></span>
+                        <td><span class="webImg"><img id="webUrl" src="${commonStaticServer}${banner.webImageUrl!}" width="100" height="30"/></span>
                         </td>
-                        <td><span class="appImg"><img id="appUrl" src="${staticServer}${banner.appImageUrl!}" width="100" height="30"/>
+                        <td><span class="appImg"><img id="appUrl" src="${commonStaticServer}${banner.appImageUrl!}" width="100" height="30"/>
                         </td>
                         <td><a href="${banner.url!}" target="_blank">${banner.url!}</td>
                         <td>${banner.authenticated?then('登录后可见','非登录可见')}</td>

@@ -51,14 +51,11 @@
     <bean id="staticResourceVersionMap" class="com.tuotiansudai.web.config.freemarker.FreeMarkerVariablesMap">
         <property name="singleton" value="true"/>
         <property name="staticResourceDiscoveryUrl" value="${static.resource.discovery.url}/json-activity.json"/>
-        <property name="javascriptLocation" value="${activity.js.path}"/>
-        <property name="cssLocation" value="${activity.css.path}"/>
         <property name="sourceMap">
             <map>
                 <entry key="webServer" value="${web.server}"/>
                 <entry key="askServer" value="${ask.server}"/>
                 <entry key="commonStaticServer" value="${common.static.server}"/>
-                <entry key="staticServer" value="${activity.static.server}"/>
                 <entry key="percentFraction">
                     <bean class="com.tuotiansudai.web.config.freemarker.directive.PercentFractionDirective"/>
                 </entry>

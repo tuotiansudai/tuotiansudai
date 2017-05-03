@@ -95,7 +95,7 @@ public class MobileAppLoanDetailV3ServiceImpl implements MobileAppLoanDetailV3Se
     private double defaultFee;
 
     @Value("${common.static.server}")
-    private String staticServer;
+    private String commonStaticServer;
 
     private String title = "拓天速贷引领投资热，开启互金新概念";
 
@@ -319,7 +319,7 @@ public class MobileAppLoanDetailV3ServiceImpl implements MobileAppLoanDetailV3Se
             String materialUrl = loanTitleRelationModel.getApplicationMaterialUrls();
             if (StringUtils.isNotEmpty(materialUrl)) {
                 for (String url : materialUrl.split(",")) {
-                    String tempUrl = staticServer + url;
+                    String tempUrl = commonStaticServer + url;
                     imageUrlList.add(tempUrl);
                 }
             }

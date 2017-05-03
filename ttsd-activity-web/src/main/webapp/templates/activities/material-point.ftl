@@ -11,6 +11,6 @@
     }
 </style>
 <body>
-<img src="${staticServer}/activity/images/point-material-page.jpg" width="100%">
+<img src="${commonStaticServer}/activity/images/point-material-page.jpg" width="100%">
 </body>
 </html>
