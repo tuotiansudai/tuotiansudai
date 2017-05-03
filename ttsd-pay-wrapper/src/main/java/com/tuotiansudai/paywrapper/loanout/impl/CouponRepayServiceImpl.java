@@ -4,36 +4,27 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
-import com.tuotiansudai.mq.client.model.MessageQueue;
-import com.tuotiansudai.repository.mapper.CouponMapper;
-import com.tuotiansudai.repository.mapper.CouponRepayMapper;
-import com.tuotiansudai.repository.mapper.UserCouponMapper;
-import com.tuotiansudai.repository.model.CouponModel;
-import com.tuotiansudai.repository.model.CouponRepayModel;
-import com.tuotiansudai.repository.model.UserCouponModel;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.Environment;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.enums.UserBillBusinessType;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
-import com.tuotiansudai.paywrapper.loanout.CouponRepayService;
 import com.tuotiansudai.paywrapper.exception.PayException;
+import com.tuotiansudai.paywrapper.loanout.CouponRepayService;
 import com.tuotiansudai.paywrapper.repository.mapper.CouponRepayNotifyRequestMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.TransferMapper;
 import com.tuotiansudai.paywrapper.repository.model.NotifyProcessStatus;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.CouponRepayNotifyRequestModel;
-import com.tuotiansudai.paywrapper.repository.model.async.request.TransferWithNotifyRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.async.request.TransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.SyncRequestStatus;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.TransferResponseModel;
 import com.tuotiansudai.paywrapper.service.SystemBillService;
-import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.LoanRepayMapper;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.InterestCalculator;
@@ -184,7 +175,7 @@ public class CouponRepayServiceImpl implements CouponRepayService {
 
             if (transferAmount > 0) {
                 try {
-                    TransferWithNotifyRequestModel requestModel = TransferWithNotifyRequestModel.newCouponRepayRequest(MessageFormat.format(COUPON_ORDER_ID_TEMPLATE, String.valueOf(couponRepayModel.getId()), String.valueOf(new Date().getTime())),
+                    TransferRequestModel requestModel = TransferRequestModel.newCouponRepayRequest(MessageFormat.format(COUPON_ORDER_ID_TEMPLATE, String.valueOf(couponRepayModel.getId()), String.valueOf(new Date().getTime())),
                             accountMapper.findByLoginName(userCouponModel.getLoginName()).getPayUserId(),
                             accountMapper.findByLoginName(userCouponModel.getLoginName()).getPayAccountId(),
                             String.valueOf(transferAmount));

@@ -13,7 +13,7 @@ import com.tuotiansudai.paywrapper.repository.mapper.ExperienceInterestNotifyReq
 import com.tuotiansudai.paywrapper.repository.mapper.TransferMapper;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.ExperienceInterestNotifyRequestModel;
-import com.tuotiansudai.paywrapper.repository.model.async.request.TransferWithNotifyRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.async.request.TransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.SyncRequestStatus;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.TransferResponseModel;
 import com.tuotiansudai.paywrapper.service.ExperienceRepayService;
@@ -114,7 +114,7 @@ public class ExperienceRepayServiceImpl implements ExperienceRepayService {
         investRepayModel.setActualRepayDate(new Date());
         investRepayMapper.update(investRepayModel);
 
-        TransferWithNotifyRequestModel requestModel = TransferWithNotifyRequestModel.experienceInterestRequest(
+        TransferRequestModel requestModel = TransferRequestModel.experienceInterestRequest(
                 MessageFormat.format("{0}X{1}", String.valueOf(investRepayModel.getId()), String.valueOf(new Date().getTime())),
                 accountModel.getPayUserId(),
                 accountModel.getPayAccountId(),

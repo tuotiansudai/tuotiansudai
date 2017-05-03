@@ -1,5 +1,7 @@
 package com.tuotiansudai.repository.mapper;
 
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
@@ -10,10 +12,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertNotNull;

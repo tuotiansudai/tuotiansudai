@@ -2,7 +2,7 @@ package com.tuotiansudai.paywrapper.repository.mapper;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import com.tuotiansudai.paywrapper.repository.model.sync.request.TransferRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.async.request.TransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.TransferResponseModel;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,7 +25,7 @@ public class TransferMapperTest {
 
     @Test
     public void shouldCreateTransferRequest() {
-        TransferRequestModel model = TransferRequestModel.newRequest(String.valueOf(System.currentTimeMillis()), "payUserId", "1");
+        TransferRequestModel model = TransferRequestModel.newLotteryReward(String.valueOf(System.currentTimeMillis()), "payUserId", "payAccountId", "1");
         model.setMerDate("2015-05-05");
         model.setSign("sign");
         model.setRequestUrl("url");
@@ -38,7 +38,7 @@ public class TransferMapperTest {
 
     @Test
     public void shouldCreateTransferResponse(){
-        TransferRequestModel model = TransferRequestModel.newRequest(String.valueOf(System.currentTimeMillis()), "payUserId", "1");
+        TransferRequestModel model = TransferRequestModel.newLotteryReward(String.valueOf(System.currentTimeMillis()), "payUserId", "payAccountId", "1");
         model.setMerDate("2015-05-05");
         model.setSign("sign");
         model.setRequestUrl("url");

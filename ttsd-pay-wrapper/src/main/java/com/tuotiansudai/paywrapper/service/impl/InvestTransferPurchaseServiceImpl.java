@@ -1,8 +1,10 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
 import com.google.common.base.Predicate;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.tuotiansudai.client.AnxinWrapperClient;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
@@ -27,7 +29,7 @@ import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackR
 import com.tuotiansudai.paywrapper.repository.model.async.callback.InvestNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.ProjectTransferNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferRequestModel;
-import com.tuotiansudai.paywrapper.repository.model.sync.request.ProjectTransferNopwdRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferNopwdRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferNopwdResponseModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
 import com.tuotiansudai.paywrapper.service.InvestTransferPurchaseService;
@@ -105,9 +107,6 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
     @Autowired
     private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
 
-    @Autowired
-    private AnxinWrapperClient anxinWrapperClient;
-
     @Override
     public BaseDto<PayDataDto> noPasswordPurchase(InvestDto investDto) {
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
@@ -116,8 +115,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
 
         String loginName = investDto.getLoginName();
         AccountModel accountModel = accountMapper.lockByLoginName(loginName);
-        long transferInvestId = Long.parseLong(investDto.getTransferInvestId());
-        TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(transferInvestId);
+        TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(Long.parseLong(investDto.getTransferApplicationId()));
         if (transferApplicationModel == null || transferApplicationModel.getStatus() != TransferStatus.TRANSFERRING || transferApplicationModel.getTransferAmount() > accountModel.getBalance()) {
             return baseDto;
         }
@@ -147,6 +145,9 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
                     ProjectTransferNopwdResponseModel.class);
             payDataDto.setStatus(responseModel.isSuccess());
             payDataDto.setCode(responseModel.getRetCode());
+            payDataDto.setExtraValues(Maps.newHashMap(ImmutableMap.<String, String>builder()
+                    .put("order_id", String.valueOf(investModel.getId()))
+                    .build()));
             payDataDto.setMessage(responseModel.getRetMsg());
         } catch (PayException e) {
             investModel.setStatus(InvestStatus.FAIL);
@@ -165,12 +166,11 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
 
         String transferee = investDto.getLoginName();
         AccountModel transfereeAccount = accountMapper.findByLoginName(transferee);
-        long transferInvestId = Long.parseLong(investDto.getTransferInvestId());
 
         BaseDto<PayFormDataDto> dto = new BaseDto<>();
         PayFormDataDto payFormDataDto = new PayFormDataDto();
         dto.setData(payFormDataDto);
-        TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(transferInvestId);
+        TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(Long.parseLong(investDto.getTransferApplicationId()));
         if (transferApplicationModel == null || transferApplicationModel.getStatus() != TransferStatus.TRANSFERRING || transferApplicationModel.getTransferAmount() > transfereeAccount.getBalance()) {
             return dto;
         }
@@ -356,7 +356,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
         long transferFee = transferApplicationModel.getTransferFee();
 
         try {
-            ProjectTransferRequestModel feeRequestModel = ProjectTransferRequestModel.newTransferFeeRequest(String.valueOf(transferInvestModel.getLoanId()),
+            ProjectTransferRequestModel feeRequestModel = ProjectTransferRequestModel.newRepayTransferFeeRequest(String.valueOf(transferInvestModel.getLoanId()),
                     MessageFormat.format(REPAY_ORDER_ID_TEMPLATE, String.valueOf(transferApplicationId), String.valueOf(new Date().getTime())),
                     String.valueOf(transferFee));
 
@@ -521,7 +521,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
         try {
             String overInvestPaybackOrderId = MessageFormat.format(REPAY_ORDER_ID_TEMPLATE, String.valueOf(investId), String.valueOf(System.currentTimeMillis()));
             AccountModel accountModel = accountMapper.findByLoginName(investModel.getLoginName());
-            ProjectTransferRequestModel requestModel = ProjectTransferRequestModel.overInvestPaybackRequest(String.valueOf(investModel.getLoanId()),
+            ProjectTransferRequestModel requestModel = ProjectTransferRequestModel.newOverInvestPaybackRequest(String.valueOf(investModel.getLoanId()),
                     overInvestPaybackOrderId,
                     accountModel.getPayUserId(),
                     String.valueOf(transferAmount));

@@ -133,7 +133,7 @@ public class InvestTransferPurchaseServiceTest {
 
         InvestDto investDto = new InvestDto();
         investDto.setLoginName(transferee.getLoginName());
-        investDto.setTransferInvestId(String.valueOf(fakeTransferApplication.getId()));
+        investDto.setTransferApplicationId(String.valueOf(fakeTransferApplication.getId()));
         investDto.setSource(Source.WEB);
 
         UserMembershipModel userMembershipModel = new UserMembershipModel(investDto.getLoginName(), 1, new DateTime(2200, 1, 1, 1, 1).toDate(), UserMembershipType.UPGRADE);

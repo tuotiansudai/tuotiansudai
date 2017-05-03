@@ -16,16 +16,13 @@ import com.tuotiansudai.paywrapper.repository.mapper.TransferMapper;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.ProjectTransferNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.SyncRequestStatus;
-import com.tuotiansudai.paywrapper.repository.model.sync.request.TransferRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.async.request.TransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.TransferResponseModel;
 import com.tuotiansudai.paywrapper.service.SystemBillService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.CouponMapper;
 import com.tuotiansudai.repository.mapper.UserCouponMapper;
-import com.tuotiansudai.repository.model.CouponModel;
-import com.tuotiansudai.repository.model.SystemBillBusinessType;
-import com.tuotiansudai.repository.model.SystemBillDetailTemplate;
-import com.tuotiansudai.repository.model.UserCouponModel;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.log4j.Logger;
@@ -89,8 +86,10 @@ public class CouponLoanOutServiceImpl implements CouponLoanOutService {
                 CouponModel couponModel = this.couponMapper.findById(userCouponModel.getCouponId());
                 long transferAmount = couponModel.getAmount();
                 if (transferAmount > 0) {
-                    TransferRequestModel requestModel = TransferRequestModel.newTransferCouponRequest(MessageFormat.format(COUPON_ORDER_ID_TEMPLATE, String.valueOf(userCouponModel.getId()), String.valueOf(new Date().getTime())),
-                            accountMapper.findByLoginName(userCouponModel.getLoginName()).getPayUserId(),
+                    AccountModel accountModel = accountMapper.findByLoginName(userCouponModel.getLoginName());
+                    TransferRequestModel requestModel = TransferRequestModel.newRedEnvelopeCouponRequest(MessageFormat.format(COUPON_ORDER_ID_TEMPLATE, String.valueOf(userCouponModel.getId()), String.valueOf(new Date().getTime())),
+                            accountModel.getPayUserId(),
+                            accountModel.getPayAccountId(),
                             String.valueOf(transferAmount));
                     try {
                         TransferResponseModel responseModel = paySyncClient.send(TransferMapper.class, requestModel, TransferResponseModel.class);

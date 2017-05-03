@@ -8,8 +8,6 @@ public class AgreementDto implements Serializable {
 
     private String loginName;
 
-    private boolean autoInvest;
-
     private boolean fastPay;
 
     private boolean autoRepay;
@@ -28,14 +26,6 @@ public class AgreementDto implements Serializable {
 
     public void setLoginName(String loginName) {
         this.loginName = loginName;
-    }
-
-    public boolean isAutoInvest() {
-        return autoInvest;
-    }
-
-    public void setAutoInvest(boolean autoInvest) {
-        this.autoInvest = autoInvest;
     }
 
     public boolean isFastPay() {
