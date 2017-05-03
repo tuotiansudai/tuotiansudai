@@ -31,8 +31,8 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     @Value("${web.server}")
     private String webServer;
 
-    @Value("${web.static.server}")
-    private String staticServer;
+    @Value("${common.static.server}")
+    private String commonStaticServer;
 
     @Bean
     public RequestContextListener requestContextListener() {
@@ -75,7 +75,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         configurer.setTemplateLoaderPath("classpath:/templates/");
         configurer.setFreemarkerVariables(Maps.newHashMap(new ImmutableMap.Builder<String, Object>()
                 .put("webServer", webServer)
-                .put("staticServer", staticServer)
+                .put("commonStaticServer", commonStaticServer)
                 .build()));
         Properties settings = new Properties();
         settings.setProperty("template_exception_handler", "RETHROW");

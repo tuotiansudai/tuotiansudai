@@ -3,31 +3,31 @@
 		<h3>我的抽奖机会：<span>${myCount}</span>次</h3>
 		<ul class="lottery-item" id="lottery">
 			<li class="lottery-unit lottery-unit-0" data-unit="0">
-				<img src="${staticServer}/activity/images/model/double-eleven/gift-one.png">
+				<img src="${commonStaticServer}/activity/images/model/double-eleven/gift-one.png">
 			</li>
 			<li class="lottery-unit lottery-unit-1" data-unit="1">
-				<img src="${staticServer}/activity/images/model/double-eleven/gift-two.png">
+				<img src="${commonStaticServer}/activity/images/model/double-eleven/gift-two.png">
 			</li>
 			<li class="lottery-unit lottery-unit-2" data-unit="2">
-				<img src="${staticServer}/activity/images/model/double-eleven/gift-three.png">
+				<img src="${commonStaticServer}/activity/images/model/double-eleven/gift-three.png">
 			</li>
 			<li class="lottery-unit lottery-unit-7" data-unit="7">
-				<img src="${staticServer}/activity/images/model/double-eleven/gift-eight.png">
+				<img src="${commonStaticServer}/activity/images/model/double-eleven/gift-eight.png">
 			</li>
 			<li class="lottery-btn">
-				<img src="${staticServer}/activity/images/model/double-eleven/lottery-btn.png">
+				<img src="${commonStaticServer}/activity/images/model/double-eleven/lottery-btn.png">
 			</li>
 			<li class="lottery-unit lottery-unit-3" data-unit="3">
-				<img src="${staticServer}/activity/images/model/double-eleven/gift-four.png">
+				<img src="${commonStaticServer}/activity/images/model/double-eleven/gift-four.png">
 			</li>
 			<li class="lottery-unit lottery-unit-6" data-unit="6">
-				<img src="${staticServer}/activity/images/model/double-eleven/gift-seven.png">
+				<img src="${commonStaticServer}/activity/images/model/double-eleven/gift-seven.png">
 			</li>
 			<li class="lottery-unit lottery-unit-5" data-unit="5">
-				<img src="${staticServer}/activity/images/model/double-eleven/gift-six.png">
+				<img src="${commonStaticServer}/activity/images/model/double-eleven/gift-six.png">
 			</li>
 			<li class="lottery-unit lottery-unit-4" data-unit="4">
-				<img src="${staticServer}/activity/images/model/double-eleven/gift-five.png">
+				<img src="${commonStaticServer}/activity/images/model/double-eleven/gift-five.png">
 			</li>
 		</ul>
 	</div>
@@ -64,11 +64,11 @@
 			<div class="text-list">
 			{{if returnCode == 0}}
 				{{if prizeType=='CONCRETE'}}
-                	<p class="title-text"><img src="${staticServer}/activity/images/model/double-eleven/title-bg.png" width="25%"></p>
+                	<p class="title-text"><img src="${commonStaticServer}/activity/images/model/double-eleven/title-bg.png" width="25%"></p>
 					<p class="intro-text">抽中了{{prizeValue}}</p>
 					<p class="info-text">拓天客服将会在7个工作日内联系您发放奖品！</p>
 				{{else if prizeType=='VIRTUAL'}}
-					<p class="title-text"><img src="${staticServer}/activity/images/model/double-eleven/title-bg.png" width="25%"></p>
+					<p class="title-text"><img src="${commonStaticServer}/activity/images/model/double-eleven/title-bg.png" width="25%"></p>
 					<p class="intro-text">抽中了{{prizeValue}}</p>
 					<p class="info-text">奖品已发放至“我的宝藏”当中。</p>
 				{{else}}

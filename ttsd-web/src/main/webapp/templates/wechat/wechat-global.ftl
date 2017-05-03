@@ -16,7 +16,7 @@
 <body>
     <#nested>
 <script>
-    window.staticServer = '${commonStaticServer}';
+    window.commonStaticServer = '${commonStaticServer}';
 </script>
 
 <script src="${js.jquerydll}" type="text/javascript" defer></script>

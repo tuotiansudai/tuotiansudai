@@ -41,7 +41,7 @@
 
                 <div class="imageUrlImage" style="margin-top: 10px">
                     <#if exchangeCouponDto?? && exchangeCouponDto.imageUrl??>
-                        <img style="width:100%" src="${staticServer}${exchangeCouponDto.imageUrl!}" alt="缩略图" width="542"
+                        <img style="width:100%" src="${commonStaticServer}${exchangeCouponDto.imageUrl!}" alt="缩略图" width="542"
                              height="340"/>
                     </#if>
                 </div>

@@ -12,6 +12,11 @@ let captchaSrc = '/register/user/image-captcha';
 
 commonFun.refreshCaptcha(imageCaptcha, captchaSrc);
 
+$('#imageCaptcha').on('click', function () {
+    commonFun.refreshCaptcha(this, '/login/captcha');
+    formRegister.captcha.value = '';
+});
+
 //获取验证码
 (function () {
     let formCaptcha = globalFun.$('#formCaptcha');

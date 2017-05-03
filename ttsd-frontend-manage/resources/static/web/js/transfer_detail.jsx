@@ -31,6 +31,10 @@ if ($errorTip.length > 0 && $errorTip.text() != '') {
 
 $('#transferSubmit').on('click', function(event) {
     event.preventDefault();
+    if ($('.header-login').data('wechat-login-name')) {
+        location.href = '/login?redirect=' + location.href;
+        return;
+    }
     $.when(commonFun.isUserLogin())
         .fail(function() {
             //判断是否需要弹框登陆

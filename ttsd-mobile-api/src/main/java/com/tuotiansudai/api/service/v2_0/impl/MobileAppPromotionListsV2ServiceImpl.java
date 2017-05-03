@@ -27,7 +27,7 @@ public class MobileAppPromotionListsV2ServiceImpl implements MobileAppPromotionL
     private PromotionMapper promotionMapper;
 
     @Value("${common.static.server}")
-    private String staticServer;
+    private String commonStaticServer;
 
     @Autowired
     private RedisWrapperClient redisWrapperClient;
@@ -62,7 +62,7 @@ public class MobileAppPromotionListsV2ServiceImpl implements MobileAppPromotionL
                     continue;
                 }
                 PromotionRecordResponseDataDto dto = new PromotionRecordResponseDataDto();
-                dto.setImgUrl(staticServer + promotionModel.getImageUrl());
+                dto.setImgUrl(commonStaticServer + promotionModel.getImageUrl());
                 dto.setLinkUrl(Strings.isNullOrEmpty(promotionModel.getLinkUrl()) ? promotionModel.getJumpToLink() : promotionModel.getLinkUrl());
                 list.add(dto);
 

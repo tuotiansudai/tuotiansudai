@@ -12,7 +12,7 @@ var basePath = path.join(__dirname, '../../resources'),
 var outputPath=path.join(basePath, 'develop'); //默认打包路径
 
 var NODE_ENV=process.env.NODE_ENV;
-var staticServer = require('../../getStaticServer.js');
+var commonStaticServer = require('../../getStaticServer.js');
 
 if(NODE_ENV=='production') {
 	outputPath=path.join(basePath, 'prod');
@@ -58,7 +58,7 @@ function geFileList(folderPath,fileName)
 			var imageObg =[];
 
 			that.filesList.forEach(function(imgUrl) {
-				var itemPath = staticServer + '/'+imgUrl.path.match(/ttsd-frontend-manage\/resources\/(\S*)/)[1];
+				var itemPath = commonStaticServer + '/'+imgUrl.path.match(/ttsd-frontend-manage\/resources\/(\S*)/)[1];
 				imageObg.push('<img src="'+itemPath+'" size="'+imgUrl.size+'" style="margin:20px;">');
 			});
 

@@ -2,18 +2,18 @@
 <@global.main pageCss="${css.hero_ranking}" pageJavascript="${js.hero_ranking}" activeNav="" activeLeftNav="" title="周年庆活动_拓天活动_拓天速贷" keywords="拓天速贷,拓天活动.生日活动,生日月特权" description="拓天速贷专属生日月特权,生日月投资收益翻倍,拓天速贷专属活动超高收益等你拿.">
 <div class="anniversary-container">
     <div class="container clearfix">
-        <img src="${staticServer}/activity/images/sign/actor/anniver/top.jpg" width="100%" class="responsive-pc">
-        <img src="${staticServer}/activity/images/app-banner/anniversary-mobile.jpg" width="100%" class="responsive-phone">
+        <img src="${commonStaticServer}/activity/images/sign/actor/anniver/top.jpg" width="100%" class="responsive-pc">
+        <img src="${commonStaticServer}/activity/images/app-banner/anniversary-mobile.jpg" width="100%" class="responsive-phone">
         <div class="wp actor-bg clearfix">
             <div class="step-section-one">
                 <div class="box-square-out">
-                    <div class="square-title"><img src="${staticServer}/activity/images/sign/actor/anniver/head-title01.png" alt="投资抢排行，赢取每日神秘大奖"></div>
+                    <div class="square-title"><img src="${commonStaticServer}/activity/images/sign/actor/anniver/head-title01.png" alt="投资抢排行，赢取每日神秘大奖"></div>
                     <p class="description clearfix">活动期间，每日根据用户当日的累计投资金额进行排名。第一名可得当日神秘大奖，前十名获得丰厚奖励</p>
                     <div class="clearfix">
                         <div class="fl tc">
                             <div class="dotted-normal-box">
                                 <h2>今日大奖</h2>
-                                <img src="${staticServer}/activity/images/sign/actor/anniver/reward-07-31.jpg" alt="神秘大奖" class="mysterious-img">
+                                <img src="${commonStaticServer}/activity/images/sign/actor/anniver/reward-07-31.jpg" alt="神秘大奖" class="mysterious-img">
                                 <span class="reward-name"><em><#if mysteriousPrizeDto??>${mysteriousPrizeDto.prizeName}</#if></em></span>
                             </div>
                             <div class="tc">
@@ -105,10 +105,10 @@
 
             <div class="step-section-two clearfix">
                 <div class="step-two-title">
-                    <img src="${staticServer}/activity/images/sign/actor/anniver/step02.png">
+                    <img src="${commonStaticServer}/activity/images/sign/actor/anniver/step02.png">
                 </div>
                 <div class="box-square-out">
-                    <div class="square-title"><img src="${staticServer}/activity/images/sign/actor/anniver/head-title02.png" alt="投资抢排行，赢取每日神秘大奖"></div>
+                    <div class="square-title"><img src="${commonStaticServer}/activity/images/sign/actor/anniver/head-title02.png" alt="投资抢排行，赢取每日神秘大奖"></div>
                     <p class="description clearfix">推荐好友投资，拿1%奖金。活动期间，每日直接推荐进行投资的前三名，还可获得现金红包奖励！</p>
                     <div class="clearfix">
                         <div class="fl">
@@ -153,7 +153,7 @@
                         </div>
                         <div class="fr tc">
                             <div class="dotted-normal-box">
-                                <img src="${staticServer}/activity/images/sign/actor/anniver/reward-img.png">
+                                <img src="${commonStaticServer}/activity/images/sign/actor/anniver/reward-img.png">
                             </div>
                         </div>
 
@@ -165,20 +165,20 @@
             </div>
             <div class="step-section-three">
                 <div class="step-two-title">
-                    <img src="${staticServer}/activity/images/sign/actor/anniver/step03.png">
+                    <img src="${commonStaticServer}/activity/images/sign/actor/anniver/step03.png">
                 </div>
                 <div class="box-square-out">
-                    <div class="square-title"><img src="${staticServer}/activity/images/sign/actor/anniver/head-title03.png" alt="投资抢排行，赢取每日神秘大奖"></div>
+                    <div class="square-title"><img src="${commonStaticServer}/activity/images/sign/actor/anniver/head-title03.png" alt="投资抢排行，赢取每日神秘大奖"></div>
                     <p class="description clearfix">活动期间，所有新注册认证用户以及所有投资满1000元用户均可免费领取V5会员</p>
                     <div class="clearfix">
                         <div class="fl">
                             <div class="dotted-normal-box">
-                                <img src="${staticServer}/activity/images/sign/actor/anniver/zounian01.png">
+                                <img src="${commonStaticServer}/activity/images/sign/actor/anniver/zounian01.png">
                             </div>
                         </div>
                         <div class="fr">
                             <div class="dotted-normal-box">
-                                <img src="${staticServer}/activity/images/sign/actor/anniver/zounian02.png">
+                                <img src="${commonStaticServer}/activity/images/sign/actor/anniver/zounian02.png">
                             </div>
                         </div>
                     </div>
@@ -193,7 +193,7 @@
 
             <div class="step-section-four">
                 <div class="box-square-out">
-                    <div class="square-title"><img src="${staticServer}/activity/images/sign/actor/anniver/head-title03.png" alt="投资抢排行，赢取每日神秘大奖"></div>
+                    <div class="square-title"><img src="${commonStaticServer}/activity/images/sign/actor/anniver/head-title03.png" alt="投资抢排行，赢取每日神秘大奖"></div>
 
                     <div class="dotted-normal-box tl">
                         1. 每天24点将计算当日新增投资及新增直接推荐投资的排名，投资者在当日24点之前进行的多次投资，金额可累计计算；投资英雄榜仅限于直投项目，其余投资不计入今日投资金额中; <br/>
