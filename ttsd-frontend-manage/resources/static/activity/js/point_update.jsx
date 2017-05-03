@@ -1,0 +1,1 @@
+require('activityStyle/point_update.scss');

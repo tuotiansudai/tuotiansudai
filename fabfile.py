@@ -70,7 +70,6 @@ def mk_rest_service():
 
 
 def mk_static_zip():
-    local('cd ./ttsd-activity-web/src/main/webapp && zip -r static_activity.zip activity/')
     local('cd ./ttsd-frontend-manage/resources/prod && zip -r static_all.zip *')
 
 
@@ -101,11 +100,9 @@ def check_worker_status():
 
 @roles('static')
 def deploy_static():
-    upload_project(local_dir='./ttsd-activity-web/src/main/webapp/static_activity.zip', remote_dir='/workspace')
     upload_project(local_dir='./ttsd-frontend-manage/resources/prod/static_all.zip', remote_dir='/workspace')
     with cd('/workspace'):
         sudo('rm -rf static/')
-        sudo('unzip static_activity.zip -d static')
         sudo('unzip static_all.zip -d static')
         sudo('service nginx restart')
 

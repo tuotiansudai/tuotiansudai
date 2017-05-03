@@ -60,7 +60,7 @@ public class AppShareController {
 
         if (!StringUtils.isEmpty(registerMobile)) {
             if(userService.mobileIsRegister(registerMobile)){
-                ModelAndView modelAndView = new ModelAndView("/activities/share-app");
+                ModelAndView modelAndView = new ModelAndView("/wechat/share-app");
                 modelAndView.addObject("responsive", true);
                 modelAndView.addObject("referrerInfo", getReferrerInfo(referrer));
                 return modelAndView;
@@ -86,7 +86,7 @@ public class AppShareController {
         UserModel userModel = userMapper.findByMobile(mobile);
         boolean isOldUser = userModel != null && !"shareAB".equals(userModel.getChannel()) && prepareUserMapper.findByMobile(mobile) == null;
         modelAndView.addObject("isOldUser",isOldUser);
-        modelAndView.setViewName("/activities/share-app");
+        modelAndView.setViewName("/wechat/share-app");
         modelAndView.addObject("responsive", true);
         modelAndView.addObject("referrerInfo", getReferrerInfo(referrer));
         return modelAndView;
@@ -101,10 +101,10 @@ public class AppShareController {
             }
         });
         if(index >= 0){
-            return "/activities/share-app-ios";
+            return "/wechat/share-app-ios";
         }
 
-        return "/activities/share-app-android";
+        return "/wechat/share-app-android";
     }
 
     private String getReferrerInfo(UserModel referrer) {

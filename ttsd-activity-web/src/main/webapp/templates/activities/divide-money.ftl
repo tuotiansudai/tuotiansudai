@@ -7,7 +7,7 @@
     
     <div class="titel-item">
         <div class="title-text">
-            <span><img src="${staticServer}/activity/images/divide-money/title-one.png" width="100%"></span>
+            <span class="title-one"></span>
         </div>
     </div>
     <div class="bg-column-normal">
@@ -20,13 +20,11 @@
     </div>
     <div class="titel-item">
         <div class="title-text">
-            <span><img src="${staticServer}/activity/images/divide-money/title-two.png" width="100%"></span>
+            <span class="title-two"></span>
         </div>
     </div>
     <div class="bg-column-normal">
         <div class="reward-item">
-            <img src="${staticServer}/activity/images/divide-money/reward-img.png" width="100%" class="media-item">
-            <img src="${staticServer}/activity/images/divide-money/reward-img-phone.png" width="100%" class="media-item-phone">
         </div>
         <div class="btn-item">
             <p>
@@ -37,7 +35,7 @@
     <div class="bg-column-normal">
         <div class="titel-item">
             <div class="title-text">
-                <span><img src="${staticServer}/activity/images/divide-money/title-four.png" width="100%"></span>
+                <span class="title-four"></span>
             </div>
         </div>
      <@global.isAnonymous>
@@ -89,7 +87,7 @@
     </div>
     <div class="titel-item">
         <div class="title-text">
-            <span><img src="${staticServer}/activity/images/divide-money/title-three.png" width="100%"></span>
+            <span class="title-three"></span>
         </div>
     </div>
     <div class="bg-column-normal">
@@ -103,5 +101,5 @@
     </div>
 </div>
 
-<#include "login-tip.ftl" />
+<#include "../module/login-tip.ftl" />
 </@global.main>
