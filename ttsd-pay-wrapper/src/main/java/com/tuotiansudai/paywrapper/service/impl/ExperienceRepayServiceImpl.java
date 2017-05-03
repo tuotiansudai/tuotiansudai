@@ -14,7 +14,7 @@ import com.tuotiansudai.paywrapper.repository.mapper.ExperienceInterestNotifyReq
 import com.tuotiansudai.paywrapper.repository.mapper.TransferMapper;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.ExperienceInterestNotifyRequestModel;
-import com.tuotiansudai.paywrapper.repository.model.async.request.TransferWithNotifyRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.async.request.TransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.SyncRequestStatus;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.TransferResponseModel;
 import com.tuotiansudai.paywrapper.service.ExperienceRepayService;
@@ -25,7 +25,6 @@ import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountTransfer;
-import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +33,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 @Service
@@ -117,7 +115,7 @@ public class ExperienceRepayServiceImpl implements ExperienceRepayService {
         investRepayModel.setActualRepayDate(new Date());
         investRepayMapper.update(investRepayModel);
 
-        TransferWithNotifyRequestModel requestModel = TransferWithNotifyRequestModel.experienceInterestRequest(
+        TransferRequestModel requestModel = TransferRequestModel.experienceInterestRequest(
                 MessageFormat.format("{0}X{1}", String.valueOf(investRepayModel.getId()), String.valueOf(new Date().getTime())),
                 accountModel.getPayUserId(),
                 accountModel.getPayAccountId(),

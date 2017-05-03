@@ -8,9 +8,8 @@ import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.extrarate.service.InvestRateService;
 import com.tuotiansudai.paywrapper.extrarate.service.impl.ExtraRateServiceImpl;
 import com.tuotiansudai.paywrapper.repository.mapper.TransferMapper;
-import com.tuotiansudai.paywrapper.repository.model.async.request.TransferWithNotifyRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.async.request.TransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.SyncRequestStatus;
-import com.tuotiansudai.paywrapper.repository.model.sync.request.TransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.TransferResponseModel;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
@@ -191,11 +190,11 @@ public class ExtraRateServiceIdempotentTest {
         when(investExtraRateMapper.findByLoanId(loan.getId())).thenReturn(Lists.newArrayList(investExtraRateModel));
         doNothing().when(investExtraRateMapper).update(any(InvestExtraRateModel.class));
         when(redisWrapperClient.hget(redisKey, String.valueOf(investExtraRateModel.getId()))).thenReturn(null);
-        when(paySyncClient.send(eq(TransferMapper.class), any(TransferWithNotifyRequestModel.class), eq(TransferResponseModel.class))).thenReturn(responseModel);
+        when(paySyncClient.send(eq(TransferMapper.class), any(TransferRequestModel.class), eq(TransferResponseModel.class))).thenReturn(responseModel);
 
         extraRateService.advanceRepay(loanRepay2.getId());
 
-        verify(paySyncClient, times(1)).send(eq(TransferMapper.class), any(TransferWithNotifyRequestModel.class), eq(TransferResponseModel.class));
+        verify(paySyncClient, times(1)).send(eq(TransferMapper.class), any(TransferRequestModel.class), eq(TransferResponseModel.class));
         ArgumentCaptor<String> syncRequestStatusArgumentCaptor = ArgumentCaptor.forClass(String.class);
         verify(redisWrapperClient, times(2)).hset(anyString(), anyString(), syncRequestStatusArgumentCaptor.capture());
         syncRequestStatusArgumentCaptor.getAllValues();
@@ -229,11 +228,11 @@ public class ExtraRateServiceIdempotentTest {
         when(investMapper.findById(investModel.getId())).thenReturn(investModel);
         when(investExtraRateMapper.findByLoanId(loan.getId())).thenReturn(Lists.newArrayList(investExtraRateModel));
         when(redisWrapperClient.hget(redisKey, String.valueOf(investExtraRateModel.getId()))).thenReturn(SyncRequestStatus.SUCCESS.name());
-        when(paySyncClient.send(eq(TransferMapper.class), any(TransferWithNotifyRequestModel.class), eq(TransferResponseModel.class))).thenReturn(responseModel);
+        when(paySyncClient.send(eq(TransferMapper.class), any(TransferRequestModel.class), eq(TransferResponseModel.class))).thenReturn(responseModel);
 
         extraRateService.advanceRepay(loanRepay2.getId());
 
-        verify(paySyncClient, never()).send(eq(TransferMapper.class), any(TransferWithNotifyRequestModel.class), eq(TransferResponseModel.class));
+        verify(paySyncClient, never()).send(eq(TransferMapper.class), any(TransferRequestModel.class), eq(TransferResponseModel.class));
         ArgumentCaptor<String> syncRequestStatusArgumentCaptor = ArgumentCaptor.forClass(String.class);
         verify(redisWrapperClient, never()).hset(anyString(), anyString(), syncRequestStatusArgumentCaptor.capture());
     }

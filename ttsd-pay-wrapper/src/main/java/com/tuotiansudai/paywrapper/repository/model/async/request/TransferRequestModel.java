@@ -1,13 +1,10 @@
-package com.tuotiansudai.paywrapper.repository.model.sync.request;
+package com.tuotiansudai.paywrapper.repository.model.async.request;
 
 import cn.jpush.api.utils.StringUtils;
-import com.google.common.base.Strings;
-import com.tuotiansudai.paywrapper.repository.model.UmPayParticAccType;
-import com.tuotiansudai.paywrapper.repository.model.UmPayService;
-import com.tuotiansudai.paywrapper.repository.model.UmPayTransAction;
-import com.tuotiansudai.paywrapper.repository.model.async.request.BaseAsyncRequestModel;
+import com.tuotiansudai.enums.AsyncUmPayService;
+import com.tuotiansudai.paywrapper.repository.model.*;
+import com.tuotiansudai.repository.model.Source;
 
-import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
@@ -33,28 +30,40 @@ public class TransferRequestModel extends BaseAsyncRequestModel {
     public TransferRequestModel() {
     }
 
-    public static TransferRequestModel newRequest(String orderId, String payUserId, String amount) {
-        TransferRequestModel model = new TransferRequestModel();
-        model.service = UmPayService.TRANSFER.getServiceName();
-        model.orderId = orderId;
-        model.particUserId = payUserId;
-        model.amount = amount;
-        model.particAccType = UmPayParticAccType.INDIVIDUAL.getCode();
-        model.transAction = UmPayTransAction.OUT.getCode();
-        model.merDate = new SimpleDateFormat("yyyyMMdd").format(new Date());
-        return model;
+    private TransferRequestModel(String orderId, String payUserId, String particAccountId, String amount, AsyncUmPayService asyncUmPayService) {
+        super(Source.WEB, asyncUmPayService);
+        this.service = asyncUmPayService.getServiceName();
+        this.orderId = orderId;
+        this.particUserId = payUserId;
+        this.particAccountId = particAccountId;
+        this.amount = amount;
+        this.merDate = new SimpleDateFormat("yyyyMMdd").format(new Date());
+        this.particAccType = UmPayParticAccType.INDIVIDUAL.getCode();
+        this.transAction = UmPayTransAction.OUT.getCode();
     }
 
-    public static TransferRequestModel newTransferReferrerRewardRequest(String orderId, String payUserId, String amount) {
-        TransferRequestModel model = newRequest(orderId, payUserId, amount);
-        model.notifyUrl = MessageFormat.format("{0}/{1}", CALLBACK_HOST_PROPS.get("pay.callback.back.host"), "transfer_referrer_reward_notify");
-        return model;
+    public static TransferRequestModel newLotteryReward(String orderId, String payUserId, String particAccountId, String amount) {
+        return new TransferRequestModel(orderId, payUserId, particAccountId, amount, AsyncUmPayService.LOTTERY_REWARD_TRANSFER);
     }
 
-    public static TransferRequestModel newTransferCouponRequest(String orderId, String payUserId, String amount) {
-        TransferRequestModel model = newRequest(orderId, payUserId, amount);
-        model.notifyUrl = MessageFormat.format("{0}/{1}", CALLBACK_HOST_PROPS.get("pay.callback.back.host"), "transfer_coupon_notify");
-        return model;
+    public static TransferRequestModel newReferrerRewardTransferRequest(String orderId, String payUserId, String particAccountId, String amount) {
+        return new TransferRequestModel(orderId, payUserId, particAccountId, amount, AsyncUmPayService.REFERRER_REWARD_TRANSFER);
+    }
+
+    public static TransferRequestModel newRedEnvelopeCouponRequest(String orderId, String payUserId, String particAccountId, String amount) {
+        return new TransferRequestModel(orderId, payUserId, particAccountId, amount, AsyncUmPayService.RED_ENVELOPE_TRANSFER);
+    }
+
+    public static TransferRequestModel newCouponRepayRequest(String orderId, String payUserId, String particAccountId, String amount) {
+        return new TransferRequestModel(orderId, payUserId, particAccountId, amount, AsyncUmPayService.COUPON_REPAY_TRANSFER);
+    }
+
+    public static TransferRequestModel newExtraRateRequest(String orderId, String payUserId, String particAccountId, String amount) {
+        return new TransferRequestModel(orderId, payUserId, particAccountId, amount, AsyncUmPayService.EXTRA_RATE_TRANSFER);
+    }
+
+    public static TransferRequestModel experienceInterestRequest(String orderId, String payUserId, String particAccountId, String amount) {
+        return new TransferRequestModel(orderId, payUserId, particAccountId, amount, AsyncUmPayService.EXPERIENCE_INTEREST_TRANSFER);
     }
 
     @Override
@@ -66,7 +75,7 @@ public class TransferRequestModel extends BaseAsyncRequestModel {
         payRequestData.put("partic_user_id", this.particUserId);
         payRequestData.put("amount", this.amount);
         payRequestData.put("mer_date", this.merDate);
-        if(StringUtils.isNotEmpty(this.notifyUrl)){
+        if (StringUtils.isNotEmpty(this.notifyUrl)) {
             payRequestData.put("notify_url", this.notifyUrl);
         }
         return payRequestData;

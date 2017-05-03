@@ -83,7 +83,7 @@
                     <input type="hidden" id="amount" name="amount" value="${transferApplication.transferAmount}"/>
                     <input type="hidden" id="userBalance" name="userBalance" value="${transferApplication.balance!}"/>
                     <input type="hidden" id="loanId" name="loanId" value="${transferApplication.loanId?string.computer}"/>
-                    <input type="hidden" id="transferInvestId" name="transferInvestId" value="${transferApplication.id?string.computer}"/>
+                    <input type="hidden" id="transferApplicationId" name="transferApplicationId" value="${transferApplication.id?string.computer}"/>
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     <p><button id="transferSubmit" class="btn-pay btn-normal" type="button">马上投资</button></p>
                     <input type="hidden" value="${anxinAuthenticationRequired?c}" id="isAnxinAuthenticationRequired">

@@ -91,11 +91,9 @@ public class WithdrawServiceImpl implements WithdrawService {
             withdrawMapper.create(withdrawModel);
             return baseDto;
         } catch (PayException e) {
-            BaseDto<PayFormDataDto> baseDto = new BaseDto<>();
             PayFormDataDto payFormDataDto = new PayFormDataDto();
-            payFormDataDto.setStatus(false);
-            payFormDataDto.setMessage(e.getMessage());
-            baseDto.setData(payFormDataDto);
+            BaseDto<PayFormDataDto> baseDto = new BaseDto<>(payFormDataDto);
+            payFormDataDto.setMessage(e.getLocalizedMessage());
             return baseDto;
         }
     }

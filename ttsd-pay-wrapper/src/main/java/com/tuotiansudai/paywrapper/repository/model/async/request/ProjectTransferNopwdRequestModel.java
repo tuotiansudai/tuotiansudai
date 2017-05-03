@@ -1,45 +1,40 @@
-package com.tuotiansudai.paywrapper.repository.model.sync.request;
+package com.tuotiansudai.paywrapper.repository.model.async.request;
 
+import com.tuotiansudai.enums.AsyncUmPayService;
 import com.tuotiansudai.paywrapper.repository.model.*;
-import com.tuotiansudai.paywrapper.repository.model.async.request.BaseAsyncRequestModel;
+import com.tuotiansudai.repository.model.Source;
 
-import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 
 public class ProjectTransferNopwdRequestModel extends BaseAsyncRequestModel {
+
     private String orderId;
+
     private String merDate;
+
     private String projectId;
+
     private String servType;
+
     private String transAction;
+
     private String particType;
+
     private String particAccType;
+
     private String userId;
+
     private String amount;
 
     public ProjectTransferNopwdRequestModel() {
 
     }
 
-    public static ProjectTransferNopwdRequestModel newInvestNopwdRequest(String projectId, String orderId, String userId, String amount) {
-        ProjectTransferNopwdRequestModel model = new ProjectTransferNopwdRequestModel(projectId, orderId, userId, amount, UmPayServType.TRANSFER_IN_INVEST, UmPayParticType.INVESTOR, "invest_notify");
-        return model;
-    }
-
-    public static ProjectTransferNopwdRequestModel newPurchaseNopwdRequest(String projectId, String orderId, String userId, String amount) {
-        ProjectTransferNopwdRequestModel model = new ProjectTransferNopwdRequestModel(projectId, orderId, userId, amount, UmPayServType.TRANSFER_IN_TRANSFER, UmPayParticType.INVESTOR, "invest_transfer_notify");
-        return model;
-    }
-
-    public static ProjectTransferNopwdRequestModel newRepayNopwdRequest(String projectId, String orderId, String userId, String amount) {
-        return new ProjectTransferNopwdRequestModel(projectId, orderId, userId, amount, UmPayServType.TRANSFER_IN_REPAY, UmPayParticType.LOANER, "repay_notify");
-    }
-
-    private ProjectTransferNopwdRequestModel(String projectId, String orderId, String userId, String amount, UmPayServType umPayServType, UmPayParticType umPayParticType, String url) {
-        super();
-        this.service = UmPayService.PROJECT_TRANSFER_NOPWD.getServiceName();
+    private ProjectTransferNopwdRequestModel(String projectId, String orderId, String userId, String amount, UmPayServType umPayServType, UmPayParticType umPayParticType, AsyncUmPayService asyncUmPayService) {
+        super(Source.WEB, asyncUmPayService);
+        this.service = asyncUmPayService.getServiceName();
         this.servType = umPayServType.getCode();
         this.transAction = UmPayTransAction.IN.getCode();
         this.orderId = orderId;
@@ -49,7 +44,18 @@ public class ProjectTransferNopwdRequestModel extends BaseAsyncRequestModel {
         this.merDate = new SimpleDateFormat("yyyyMMdd").format(new Date());
         this.particAccType = UmPayParticAccType.INDIVIDUAL.getCode();
         this.particType = umPayParticType.getCode();
-        this.notifyUrl = MessageFormat.format("{0}/{1}", CALLBACK_HOST_PROPS.get("pay.callback.back.host"), url);
+    }
+
+    public static ProjectTransferNopwdRequestModel newInvestNopwdRequest(String projectId, String orderId, String userId, String amount) {
+        return new ProjectTransferNopwdRequestModel(projectId, orderId, userId, amount, UmPayServType.TRANSFER_IN_INVEST, UmPayParticType.INVESTOR, AsyncUmPayService.INVEST_PROJECT_TRANSFER_NOPWD);
+    }
+
+    public static ProjectTransferNopwdRequestModel newPurchaseNopwdRequest(String projectId, String orderId, String userId, String amount) {
+        return new ProjectTransferNopwdRequestModel(projectId, orderId, userId, amount, UmPayServType.TRANSFER_IN_TRANSFER, UmPayParticType.INVESTOR, AsyncUmPayService.INVEST_TRANSFER_PROJECT_TRANSFER_NOPWD);
+    }
+
+    public static ProjectTransferNopwdRequestModel newRepayNopwdRequest(String projectId, String orderId, String userId, String amount) {
+        return new ProjectTransferNopwdRequestModel(projectId, orderId, userId, amount, UmPayServType.TRANSFER_IN_REPAY, UmPayParticType.LOANER, AsyncUmPayService.NORMAL_REPAY_PROJECT_TRANSFER_NOPWD);
     }
 
     public Map<String, String> generatePayRequestData() {

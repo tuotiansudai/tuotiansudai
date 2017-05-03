@@ -32,7 +32,7 @@ public class MobileAppTransferController extends MobileAppBaseController {
     @RequestMapping(value = "/transfer-no-password-purchase", method = RequestMethod.POST)
     @ResponseBody
     @ApiOperation("我的债权转让记录")
-    public BaseResponseDto transferNoPasswordPurchase(@RequestBody TransferPurchaseRequestDto transferPurchaseRequestDto) {
+    public BaseResponseDto<InvestNoPassResponseDataDto> transferNoPasswordPurchase(@RequestBody TransferPurchaseRequestDto transferPurchaseRequestDto) {
         return mobileAppTransferService.transferNoPasswordPurchase(transferPurchaseRequestDto);
     }
 
