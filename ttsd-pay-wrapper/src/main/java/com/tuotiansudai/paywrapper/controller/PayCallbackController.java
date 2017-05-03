@@ -281,12 +281,12 @@ public class PayCallbackController {
         return new ModelAndView("/callback_response", "content", responseData);
     }
 
-    @RequestMapping(value = "/transfer_referrer_reward_notify", method = RequestMethod.GET)
+    @RequestMapping(value = "/referrer_reward_notify", method = RequestMethod.GET)
     public ModelAndView transferReferrerReward(HttpServletRequest request) {
-        logger.info("[标的放款] transfer_referrer_reward_notify start");
+        logger.info("[标的放款] referrer_reward_notify start");
         Map<String, String> paramsMap = this.parseRequestParameters(request);
         String responseData = this.referrerRewardService.transferReferrerRewardNotify(paramsMap, request.getQueryString());
-        logger.info(MessageFormat.format("[标的放款] transfer_referrer_reward_notify end , responseData:{0}", responseData));
+        logger.info(MessageFormat.format("[标的放款] referrer_reward_notify end , responseData:{0}", responseData));
         return new ModelAndView("/callback_response", "content", responseData);
     }
 
