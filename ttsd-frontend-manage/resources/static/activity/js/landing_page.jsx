@@ -55,14 +55,14 @@ function showReferrerInfoIfNeeded() {
 
     if (referNum) {
         //有推荐人
-        var mobileNum = commonFun.uncompile(referNum);
+        var mobileNum = commonFun.decrypt.uncompile(referNum);
         $('input[name="referrer"]', $landingContainerBox).val(mobileNum);
         //通过手机号得到用户名
         commonFun.useAjax({
             type:'GET',
             dataType: 'json',
             url:"/activity/get-realRealName?mobile=" + mobileNum
-        },function(response) {
+        },function(data) {
             //姓名的第一个字母用*替换
             $('.refer-name', $landingContainerBox).text(data);
         });
@@ -127,11 +127,11 @@ function getSmsCaptcha() {
             return;
         }
         if (!data.data.status && data.data.isRestricted) {
-            $('#appCaptchaErr').html('短信发送频繁,请稍后再试');
+            layer.msg('短信发送频繁,请稍后再试');
         }
 
         if (!data.data.status && !data.data.isRestricted) {
-            $('#appCaptchaErr').html('图形验证码错误');
+            layer.msg('图形验证码错误');
         }
         refreshImgCaptcha();
     });
@@ -204,7 +204,7 @@ validator.add(registerForm.captcha, [{
 let reInputs=$(registerForm).find('input[validate]');
 reInputs=Array.from(reInputs);
 for (var el of reInputs) {
-    globalFun.addEventHandler(el,"keyup", "blur", function() {
+    globalFun.addEventHandler(el,"keyup", "focusout", function() {
         let errorMsg=validator.start(this);
         isDisabledButton();
     })

@@ -1,20 +1,19 @@
 package com.tuotiansudai.service.impl;
 
 import com.google.common.base.Strings;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.enums.ExperienceBillBusinessType;
 import com.tuotiansudai.enums.ExperienceBillOperationType;
 import com.tuotiansudai.enums.riskestimation.Estimate;
+import com.tuotiansudai.message.ExperienceAssigningMessage;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.RiskEstimateMapper;
 import com.tuotiansudai.repository.model.RiskEstimateModel;
-import com.tuotiansudai.service.ExperienceBillService;
 import com.tuotiansudai.service.RiskEstimateService;
-import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.RedisWrapperClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.MessageFormat;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -22,16 +21,16 @@ public class RiskEstimateServiceImpl implements RiskEstimateService {
 
     private static final String ESTIMATE_ALERT_REDIS_KEY = "estimate:alert";
 
-    private final RiskEstimateMapper riskEstimateMapper;
+    private final MQWrapperClient mqWrapperClient;
 
-    private final ExperienceBillService experienceBillService;
+    private final RiskEstimateMapper riskEstimateMapper;
 
     private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
     @Autowired
-    public RiskEstimateServiceImpl(RiskEstimateMapper riskEstimateMapper, ExperienceBillService experienceBillService) {
+    public RiskEstimateServiceImpl(MQWrapperClient mqWrapperClient, RiskEstimateMapper riskEstimateMapper) {
+        this.mqWrapperClient = mqWrapperClient;
         this.riskEstimateMapper = riskEstimateMapper;
-        this.experienceBillService = experienceBillService;
     }
 
     @Override
@@ -49,10 +48,8 @@ public class RiskEstimateServiceImpl implements RiskEstimateService {
         RiskEstimateModel model = new RiskEstimateModel(loginName, answers);
         if (riskEstimateMapper.findByLoginName(loginName) == null) {
             riskEstimateMapper.create(model);
-            experienceBillService.updateUserExperienceBalanceByLoginName(100000, loginName, ExperienceBillOperationType.IN, ExperienceBillBusinessType.RISK_ESTIMATE,
-                    MessageFormat.format(ExperienceBillBusinessType.RISK_ESTIMATE.getContentTemplate(),
-                            AmountConverter.convertCentToString(100000),
-                            new Date()));
+            mqWrapperClient.sendMessage(MessageQueue.ExperienceAssigning,
+                    new ExperienceAssigningMessage(loginName, 100000, ExperienceBillOperationType.IN, ExperienceBillBusinessType.RISK_ESTIMATE));
         } else {
             riskEstimateMapper.update(model);
         }

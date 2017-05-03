@@ -4,7 +4,7 @@ body {
 .entry-point-container {
   height:95vh;
   margin: 4%;
-  background: url("../../images/wechat/midsummer/bg-point.png") center top no-repeat;
+  background: url("../../images/midsummer/bg-point.png") center top no-repeat;
   background-size: cover;
   position: relative;
   border-radius: 20px;
@@ -70,6 +70,7 @@ body {
   font-size: 18px;
   position: relative;
   .invite-text {
+    color: #691B18;
     position: absolute;
     bottom: 0;
     display: block;
@@ -177,7 +178,7 @@ body {
         position: absolute;
         height:40px;
         width:90%;
-        background: url('../../images/wechat/midsummer/line-scale.png') left bottom no-repeat;
+        background: url('../../images/midsummer/line-scale.png') left bottom no-repeat;
         left: 30px;
         bottom: -14px;
         background-size: 100%;
@@ -210,7 +211,7 @@ body {
 .note-box {
   margin-top:30px;
   font-size:13px;
-  background: url('../../images/wechat/midsummer/bg-yun.png') left top no-repeat;
+  background: url('../../images/midsummer/bg-yun.png') left top no-repeat;
   background-size: 100%;
   color: #691B18;
   .note-inner {

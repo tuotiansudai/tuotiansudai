@@ -40,7 +40,7 @@
         <div class="actor-list">
             <#list data as activityItem>
                 <#if activityItem.longTerm == 'notLongTerm' && activityItem.expiredTime??&&activityItem.expiredTime?date lt .now?date>
-                    <div class="activity-box">
+                    <div class="activity-box" data-href="${activityItem.webActivityUrl}">
                         <div class="activity-img">
                             <div class="img-inner">
                                 <img src="${commonStaticServer}${activityItem.webPictureUrl}" alt="${activityItem.description}">
@@ -55,7 +55,7 @@
                             </#if>
                         </span>
                     <span class="button-pos">
-                        <a class="btn" href="javascript:void(0)">查看详情</a>
+                        <a class="btn" href="${activityItem.webActivityUrl}">查看详情</a>
                         <i class="fa fa-angle-right hide"></i>
                     </span>
                     </div>

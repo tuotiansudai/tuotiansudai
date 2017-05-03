@@ -8,7 +8,7 @@ if($inviteBoxFriend.length) {
 
     let $inviteHeader = $('#inviteHeader');
     let topImg = new Image();
-    topImg.src = require('../../images/wechat/midsummer/img-top.jpg');
+    topImg.src = require('../../images/midsummer/img-top.jpg');
     topImg.onload = function() {
         $inviteHeader.append(topImg);
     }

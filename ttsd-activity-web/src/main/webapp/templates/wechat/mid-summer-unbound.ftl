@@ -1,5 +1,4 @@
 <#import "wechat-global.ftl" as global>
-
 <@global.main pageCss="${css.midsummer_wap}" pageJavascript="${js.midsummer_wap}"  title="助力好友抢红包" >
 
 <div class="entry-point-container" id="entryPointCon">

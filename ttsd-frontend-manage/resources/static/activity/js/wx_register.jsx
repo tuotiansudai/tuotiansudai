@@ -38,70 +38,6 @@ $btnExperience.on('click', function(event) {
 	event.preventDefault();
 	globalFun.toExperience(event);
 });
-//form validate
-// $registerForm.validate({
-//     focusInvalid: false,
-//     errorPlacement: function (error, element) {
-//         error.appendTo($('#' + element.attr('id') + 'Err'));
-//     },
-//     rules: {
-//         mobile: {
-//             required: true,
-//             digits: true,
-//             isPhone: true,
-//             minlength: 11,
-//             maxlength: 11,
-//             isExist: "/register/user/mobile/{0}/is-exist"
-//         },
-//         password: {
-//             required: true,
-//             regex: /^(?=.*[^\d])(.{6,20})$/
-//         },
-//         appCaptcha: {
-//             required: true
-//         },
-//         captcha: {
-//             required: true,
-//             digits: true,
-//             maxlength: 6,
-//             minlength: 6,
-//             checkCaptcha:true
-//         },
-//         agreement: {
-//             required: true
-//         }
-//     },
-//     messages: {
-//         mobile: {
-//             required: '请输入手机号',
-//             digits: '必须是数字',
-//             minlength: '手机格式不正确',
-//             isPhone: '请输入正确的手机号码',
-//             maxlength: '手机格式不正确',
-//             isExist: '手机号已存在'
-//         },
-//         password: {
-//             required: "请输入密码",
-//             regex: '6位至20位，不能全是数字'
-//         },
-//         appCaptcha: {
-//             required: '请输入验证码'
-//         },
-//         captcha: {
-//             required: '请输入手机验证码',
-//             digits: '验证码格式不正确',
-//             maxlength: '验证码格式不正确',
-//             minlength: '验证码格式不正确',
-//             checkCaptcha:'验证码不正确'
-//         },
-//         agreement: {
-//             required: "请同意服务协议"
-//         }
-//     },
-//     submitHandler: function (form) {
-//         form.submit();
-//     }
-// });
 
 var refreshCapt = function () {
     $('#image-captcha-image').attr('src','/register/user/image-captcha?' + new Date().getTime().toString());
@@ -145,10 +81,10 @@ $appCaptcha.on('keyup',function(event) {
 $fetchCaptcha.on('touchstart', function (event) {
     var $this=$(this);
     event.preventDefault();
-    // if($this.prop('disabled')) {
-    //     return;
-    // }
-    // $fetchCaptcha.prop('disabled', true);
+    if($this.prop('disabled')) {
+        return;
+    }
+    $fetchCaptcha.prop('disabled', true);
     var captchaVal = $appCaptcha.val(),
         mobile = $phoneDom.val();
 
@@ -157,12 +93,11 @@ $fetchCaptcha.on('touchstart', function (event) {
         type: 'POST',
         dataType: 'json',
         data: {imageCaptcha: captchaVal, mobile: mobile}
-    },function(data) {
+    },function(response) {
         var data = response.data;
         var countdown = 60,timer;
         if (data.status && !data.isRestricted) {
             timer = setInterval(function () {
-                console.log(1);
                 $fetchCaptcha.prop('disabled', true).text(countdown + '秒后重发');
                 countdown--;
                 if (countdown == 0) {
@@ -173,11 +108,11 @@ $fetchCaptcha.on('touchstart', function (event) {
             return;
         }
         if (!data.status && data.isRestricted) {
-            $('#appCaptchaErr').html('短信发送频繁,请稍后再试');
+            layer.msg('短信发送频繁,请稍后再试');
         }
 
         if (!data.status && !data.isRestricted) {
-            $('#appCaptchaErr').html('图形验证码错误');
+            layer.msg('图形验证码错误');
         }
         refreshCapt();
     });
@@ -254,7 +189,7 @@ validator.add(registerForm.captcha, [{
 let reInputs=$(registerForm).find('input[validate]');
 reInputs=Array.from(reInputs);
 for (var el of reInputs) {
-    globalFun.addEventHandler(el,"keyup", "blur", function() {
+    globalFun.addEventHandler(el,"keyup", "focusout", function() {
         let errorMsg=validator.start(this);
         isDisabledButton();
     })

@@ -36,7 +36,7 @@ public class MidSummerController {
         ModelAndView modelAndView = new ModelAndView("/wechat/mid-summer-bound");
         modelAndView.addObject("sharedUser", true);
         modelAndView.addObject("mobile", LoginUserInfo.getMobile());
-        modelAndView.addObject("invitedCount", midSummerService.getInvitedCount(loginName))
+        modelAndView.addObject("invitedCount", midSummerService.getInvitedCount(loginName));
 
         return modelAndView;
     }

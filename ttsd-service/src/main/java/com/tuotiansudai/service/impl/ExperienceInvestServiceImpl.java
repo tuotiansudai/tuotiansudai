@@ -1,19 +1,20 @@
 package com.tuotiansudai.service.impl;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.enums.ExperienceBillBusinessType;
 import com.tuotiansudai.enums.ExperienceBillOperationType;
+import com.tuotiansudai.message.ExperienceAssigningMessage;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.service.ExperienceBillService;
 import com.tuotiansudai.service.ExperienceInvestService;
-import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.InterestCalculator;
 import org.apache.commons.lang3.StringUtils;
@@ -42,10 +43,10 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
     private InvestRepayMapper investRepayMapper;
 
     @Autowired
-    private ExperienceBillService registerUserService;
+    private UserMapper userMapper;
 
     @Autowired
-    private UserMapper userMapper;
+    private MQWrapperClient mqWrapperClient;
 
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
@@ -82,10 +83,9 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
 
         InvestRepayModel investRepayModel = new InvestRepayModel(IdGenerator.generate(), investModel.getId(), 1, 0, expectedInterest, 0, repayDate, RepayStatus.REPAYING);
         investRepayMapper.create(Lists.newArrayList(investRepayModel));
-        String note = MessageFormat.format(ExperienceBillBusinessType.INVEST_LOAN.getContentTemplate(),
-                AmountConverter.convertCentToString(Long.parseLong(investDto.getAmount())),
-                new Date());
-        registerUserService.updateUserExperienceBalanceByLoginName(Long.parseLong(investDto.getAmount()), investDto.getLoginName(), ExperienceBillOperationType.OUT, ExperienceBillBusinessType.INVEST_LOAN,note);
+
+        mqWrapperClient.sendMessage(MessageQueue.ExperienceAssigning,
+                new ExperienceAssigningMessage(investDto.getLoginName(), Long.parseLong(investDto.getAmount()), ExperienceBillOperationType.OUT, ExperienceBillBusinessType.INVEST_LOAN));
         return investModel;
     }
 

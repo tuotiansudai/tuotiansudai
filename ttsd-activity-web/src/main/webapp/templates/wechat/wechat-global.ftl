@@ -1,11 +1,37 @@
+<#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
+<#assign applicationContext=requestContext.getContextPath() />
+
+<#macro role hasRole>
+    <@security.authorize access="hasAnyAuthority(${hasRole})">
+        <#nested>
+    </@security.authorize>
+</#macro>
+
+<#macro noRole hasNoRole>
+    <@security.authorize access="!hasAuthority(${hasNoRole})">
+        <#nested>
+    </@security.authorize>
+</#macro>
+
+<#macro isAnonymous>
+    <@security.authorize access="!isAuthenticated()">
+        <#nested>
+    </@security.authorize>
+</#macro>
+
+<#macro isNotAnonymous>
+    <@security.authorize access="isAuthenticated()">
+        <#nested>
+    </@security.authorize>
+</#macro>
+
 <#macro main pageCss pageJavascript="" title="">
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport"
-          content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
     <title>${title}</title>
     <meta name="_csrf" content="${(_csrf.token)!}"/>
     <meta name="_csrf_header" content="${(_csrf.headerName)!}"/>
