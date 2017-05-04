@@ -17,7 +17,7 @@ public class GHBSecurity {
     public static String buildMessageDigest(String messageBody) {
         String md5 = MD5.hash(messageBody);
         String sign = RSA.sign(md5);
-        return String.format("%8d%s", sign.length(), sign);
+        return String.format("%08d%s", sign.length(), sign);
     }
 
     public static String buildMessage(String messageBody) {
@@ -49,12 +49,5 @@ public class GHBSecurity {
         } else {
             throw new GHBSecurityException("验签失败, message:\r\n\r\n" + message + "\r\n\r\n");
         }
-    }
-
-    public static void main(String[] args) {
-        String body = "<body>hello every one</body>";
-        String message = buildMessage(body);
-        System.out.println(message);
-        decodeMessageBody(message);
     }
 }
