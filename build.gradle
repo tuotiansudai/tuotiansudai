@@ -13,7 +13,7 @@ subprojects {
         mavenCentral()
         maven { url "http://repo.spring.io/snapshot" }
         maven { url "http://repo.spring.io/milestone" }
-        maven { url "http://central.maven.org/maven2/" }
+        maven { url "http://maven.aliyun.com/nexus/content/groups/public/" }
     }
 
     def configPath = System.getenv('TTSD_CONFIG_PATH')
