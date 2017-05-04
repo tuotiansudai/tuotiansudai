@@ -98,7 +98,6 @@ tabElement.click(function (index) {
         $fastRecharge = $('.fast-recharge', $rechargeCon),
         $bankRecharge = $('.e-bank-recharge', $rechargeCon);
     self.addClass("active").siblings('li').removeClass('active');
-    $rechargeForm.find("form input[name='publicPay']").val($('li.e-bank-public-recharge-tab').hasClass('active') ? 'true' : 'false');
     if (num == 0) {
         $fastRecharge.addClass('active');
         $bankRecharge.removeClass('active');

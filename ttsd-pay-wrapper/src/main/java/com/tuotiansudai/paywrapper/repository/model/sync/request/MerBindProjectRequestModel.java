@@ -1,5 +1,7 @@
 package com.tuotiansudai.paywrapper.repository.model.sync.request;
 
+import com.tuotiansudai.enums.SyncUmPayService;
+
 import java.util.Map;
 
 public class MerBindProjectRequestModel extends BaseSyncRequestModel {
@@ -13,7 +15,7 @@ public class MerBindProjectRequestModel extends BaseSyncRequestModel {
 
     public MerBindProjectRequestModel(String loanUserId, String loanAmount, String projectId, String projectName) {
         super();
-        this.service = "mer_bind_project";
+        this.service = SyncUmPayService.MER_BIND_PROJECT.getServiceName();
         this.projectId = projectId;
         this.projectName = projectName;
         this.projectAmount = loanAmount;

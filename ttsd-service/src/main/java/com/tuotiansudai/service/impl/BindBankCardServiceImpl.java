@@ -34,9 +34,6 @@ public class BindBankCardServiceImpl implements BindBankCardService {
     private AccountMapper accountMapper;
 
     @Autowired
-    private InvestRepayService investRepayService;
-
-    @Autowired
     private UserOpLogService userOpLogService;
 
     @Autowired
