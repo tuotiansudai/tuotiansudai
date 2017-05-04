@@ -5,7 +5,7 @@
     <form id="formCaptcha" class="form-captcha">
         <input class="captcha" type="text" name="imageCaptcha" placeholder="请输入图形验证码" maxlength="5"/>
         <input type="hidden" name="mobile" class="mobile" value="${mobile}">
-        <img src="/register/user/image-captcha" class="image-captcha" id="imageCaptcha"/>
+        <img src="/register/user/image-captcha?${.now?long?c}" class="image-captcha" id="imageCaptcha"/>
     </form>
 
     <form id="formRegister" class="form-register" action="/register/user" method="post">
