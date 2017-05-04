@@ -392,7 +392,7 @@ public class LoanServiceImpl implements LoanService {
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto payDataDto = new PayDataDto();
         AccountModel accountModel = accountMapper.findByLoginName(dto.getLoginName());
-        ProjectTransferRequestModel requestModel = ProjectTransferRequestModel.newCancelPayBackRequest(dto.getLoanId(),
+        ProjectTransferRequestModel requestModel = ProjectTransferRequestModel.newLoanCancelPayBackRequest(dto.getLoanId(),
                 MessageFormat.format(CANCEL_INVEST_PAY_BACK_ORDER_ID_TEMPLATE, String.valueOf(investId), String.valueOf(System.currentTimeMillis())),
                 accountModel.getPayUserId(), String.valueOf(dto.getAmount()));
         try {

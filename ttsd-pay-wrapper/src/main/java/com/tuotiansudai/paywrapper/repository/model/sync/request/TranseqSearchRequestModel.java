@@ -1,5 +1,7 @@
 package com.tuotiansudai.paywrapper.repository.model.sync.request;
 
+import com.tuotiansudai.enums.SyncUmPayService;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
@@ -21,7 +23,7 @@ public class TranseqSearchRequestModel extends BaseSyncRequestModel {
 
     public TranseqSearchRequestModel(String accountId, int pageNum, Date startDate, Date endDate) {
         super();
-        this.service = "transeq_search";
+        this.service = SyncUmPayService.TRANSEQ_SEARCH.getServiceName();
         this.accountId = accountId;
         this.accountType = "01";
         this.startDate = new SimpleDateFormat("yyyyMMdd").format(startDate);

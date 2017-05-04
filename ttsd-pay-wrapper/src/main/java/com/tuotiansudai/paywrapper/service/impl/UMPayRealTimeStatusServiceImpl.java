@@ -20,15 +20,12 @@ import com.tuotiansudai.paywrapper.repository.model.sync.response.TransferSearch
 import com.tuotiansudai.paywrapper.repository.model.sync.response.UserSearchResponseModel;
 import com.tuotiansudai.paywrapper.service.UMPayRealTimeStatusService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.InvestModel;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Map;
 
 @Service

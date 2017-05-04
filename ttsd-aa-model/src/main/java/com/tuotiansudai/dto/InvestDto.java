@@ -13,7 +13,7 @@ public class InvestDto implements Serializable {
     @Pattern(regexp = "^\\d+$")
     private String loanId;
 
-    private String transferInvestId;
+    private String transferApplicationId;
 
     private String loginName;
 
@@ -37,12 +37,12 @@ public class InvestDto implements Serializable {
         this.loanId = loanId;
     }
 
-    public String getTransferInvestId() {
-        return transferInvestId;
+    public String getTransferApplicationId() {
+        return transferApplicationId;
     }
 
-    public void setTransferInvestId(String transferInvestId) {
-        this.transferInvestId = transferInvestId;
+    public void setTransferApplicationId(String transferApplicationId) {
+        this.transferApplicationId = transferApplicationId;
     }
 
     public String getLoginName() {

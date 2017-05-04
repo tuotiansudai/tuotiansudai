@@ -52,7 +52,7 @@ $('#transferSubmit').on('click', function(event) {
 });
 
 function submitData() {
-    var transferApplicationId = parseInt($("#transferInvestId").val()),
+    var transferApplicationId = parseInt($("#transferApplicationId").val()),
         transferAmount = $("#amount").val(),
         userBalance = $("#userBalance").val(),
         $transferDetail = $('.transfer-detail-content');

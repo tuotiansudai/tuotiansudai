@@ -81,26 +81,8 @@ public class PayAsyncClient implements ApplicationContextAware {
                                                          Class<? extends BaseCallbackMapper> baseMapperClass,
                                                          Class<? extends BaseCallbackRequestModel> callbackRequestModel) {
         try {
-            // 解密
-            Map<String, String> platNotifyData = payGateWrapper.getPlatNotifyData(paramsMap);
-            // aa_bb_cc to aaBbCc
-            Map<String, String> newPlatNotifyData = Maps.newHashMap();
-            for (String key : platNotifyData.keySet()) {
-                StringBuilder newKeyBuilder = new StringBuilder();
-                String[] splits = key.split("_");
-                for (String split : splits) {
-                    newKeyBuilder.append(StringUtils.capitalize(split));
-                }
-                String newKey = StringUtils.uncapitalize(newKeyBuilder.toString());
-                newPlatNotifyData.put(newKey, platNotifyData.get(key));
-            }
-
-            // Map to Json String
-            String json = objectMapper.writeValueAsString(newPlatNotifyData);
-            // Json String to model
-            BaseCallbackRequestModel model = objectMapper.readValue(json, callbackRequestModel);
+            BaseCallbackRequestModel model = parseParamsToModel(paramsMap, callbackRequestModel);
             model.setRequestData(originalQueryString);
-
             // 生成返回值，并对其加密，然后将model写库
             return this.createCallbackRequest(baseMapperClass, model);
         } catch (VerifyException | IOException e) {
@@ -108,6 +90,27 @@ public class PayAsyncClient implements ApplicationContextAware {
             logger.error(e.getLocalizedMessage(), e);
         }
         return null;
+    }
+
+    public BaseCallbackRequestModel parseParamsToModel(Map<String, String> paramsMap, Class<? extends BaseCallbackRequestModel> callbackRequestModel) throws VerifyException, IOException {
+        // 解密
+        Map<String, String> platNotifyData = payGateWrapper.getPlatNotifyData(paramsMap);
+        // aa_bb_cc to aaBbCc
+        Map<String, String> newPlatNotifyData = Maps.newHashMap();
+        for (String key : platNotifyData.keySet()) {
+            StringBuilder newKeyBuilder = new StringBuilder();
+            String[] splits = key.split("_");
+            for (String split : splits) {
+                newKeyBuilder.append(StringUtils.capitalize(split));
+            }
+            String newKey = StringUtils.uncapitalize(newKeyBuilder.toString());
+            newPlatNotifyData.put(newKey, platNotifyData.get(key));
+        }
+
+        // Map to Json String
+        String json = objectMapper.writeValueAsString(newPlatNotifyData);
+        // Json String to model
+        return objectMapper.readValue(json, callbackRequestModel);
     }
 
     @Transactional(value = "payTransactionManager")
