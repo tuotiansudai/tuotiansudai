@@ -6,14 +6,10 @@ import com.google.common.base.Strings;
 import com.tuotiansudai.dto.AnxinDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import org.apache.log4j.Logger;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.text.MessageFormat;
-import java.util.Date;
-import java.util.Map;
 
 @Component
 public class AnxinWrapperClient extends BaseClient {
@@ -80,7 +76,7 @@ public class AnxinWrapperClient extends BaseClient {
 
     public byte[] printContract(Object requestData) {
         try {
-            return this.downPdf(printContract, requestData != null ? objectMapper.writeValueAsString(requestData) : null, "POST");
+            return this.downPdf(printContract, requestData != null ? objectMapper.writeValueAsString(requestData) : null);
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
@@ -88,7 +84,7 @@ public class AnxinWrapperClient extends BaseClient {
     }
 
     public byte[] printAnxinContract(Object requestData) {
-        return this.downPdf(printAnxinContract, requestData != null ? requestData.toString() : null, "POST");
+        return this.downPdf(printAnxinContract, requestData != null ? requestData.toString() : null);
     }
 
     private BaseDto<AnxinDataDto> parsePayResponseJson(String json) {
