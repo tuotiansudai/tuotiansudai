@@ -25,6 +25,9 @@ public class WeChatJSAPISignInterceptor extends HandlerInterceptorAdapter {
 
     private final WeChatClient weChatClient = WeChatClient.getClient();
 
+    @Value("${common.environment}")
+    private Environment environment;
+
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
         super.postHandle(request, response, handler, modelAndView);
@@ -43,6 +46,7 @@ public class WeChatJSAPISignInterceptor extends HandlerInterceptorAdapter {
 
     public Map<String, String> sign(String url) {
         Map<String, String> ret = Maps.newHashMap(ImmutableMap.<String, String>builder()
+                .put("debug", String.valueOf(environment == Environment.DEV))
                 .put("appId", weChatClient.getAppid())
                 .put("nonceStr", UUID.randomUUID().toString())
                 .put("timestamp", String.valueOf(System.currentTimeMillis() / 1000))

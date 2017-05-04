@@ -1,5 +1,6 @@
 <#import "wechat-global.ftl" as global>
 <@global.main pageCss="${css.midsummer_wap}" pageJavascript="${js.midsummer_wap}"  title="助力好友抢红包" >
+<#assign invitedMap = { "0": 20000, "1":10000, "2":5000, "3":2000} >
 
 <div class="invite-header" id="inviteHeader">
 <#--如果是自己打开页面-->
@@ -16,11 +17,11 @@
 
 <div class="invite-friend-container" id="inviteBoxFriend">
 
-    <input type="hidden" value="4" class="invite-number">
+    <input type="hidden" value="${invitedCount}" class="invite-number">
     <div class="temperature-box">
         <div class="temp-out-square">
             <div class="temp-inner-square">
-                <span class="temp-number">60</span>
+                <span class="temp-number">0</span>
                 <sub>C</sub>
             </div>
         </div>
@@ -32,7 +33,7 @@
     </div>
 
     <div class="invest-detail-box">
-        <p>红包当前起投金额：<i class="from-invest"></i>元</p>
+        <p>红包当前起投金额：<i class="from-invest"><#if 4 <= invitedCount>50<#else>${invitedMap[invitedCount?string]}</#if></i>元</p>
         <p>点击按钮邀请好友助力升温，好友注册并累计投资200元即可降低红包起投金额，最低降至50元起投！</p>
 
         <table class="table-invest">
@@ -84,12 +85,10 @@
 <script>
     wx.ready(function () {
         wx.onMenuShareAppMessage({
-            title: '', // 分享标题
-            desc: '', // 分享描述
+            title: '是朋友就帮我一起把夏季燃爆', // 分享标题
+            desc: '领取投资红包50元，最低50元起投', // 分享描述
             link: '${webServer}/activity/mid-summer/invited-user?mobile=${mobile}', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-            imgUrl: '', // 分享图标
-            type: '', // 分享类型,music、video或link，不填默认为link
-            dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+            imgUrl: '${commonStaticServer}/images/icons/logo-tip.png', // 分享图标
             success: function () {
                 // 用户确认分享后执行的回调函数
             },
@@ -98,9 +97,9 @@
             }
         });
         wx.onMenuShareTimeline({
-            title: '', // 分享标题
+            title: '是朋友就帮我一起把夏季燃爆', // 分享标题
             link: '${webServer}/activity/mid-summer/invited-user?mobile=${mobile}', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-            imgUrl: '', // 分享图标
+            imgUrl: '${commonStaticServer}/images/icons/logo-tip.png', // 分享图标
             success: function () {
                 // 用户确认分享后执行的回调函数
             },

@@ -2,6 +2,8 @@ package com.tuotiansudai.activity.controller;
 
 import com.google.common.base.Strings;
 import com.tuotiansudai.activity.service.MidSummerService;
+import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.service.WeChatService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,14 +40,20 @@ public class MidSummerController {
         modelAndView.addObject("mobile", LoginUserInfo.getMobile());
         modelAndView.addObject("invitedCount", midSummerService.getInvitedCount(loginName));
 
+        midSummerService.saveSharedUser(loginName);
+
         return modelAndView;
     }
 
     @RequestMapping(path = "/invited-user", method = RequestMethod.GET)
     public ModelAndView invitedUserHome(@RequestParam(name = "mobile") String mobile) {
+        if (!midSummerService.isUserShared(mobile)) {
+            return new ModelAndView("/error/404");
+        }
         ModelAndView modelAndView = new ModelAndView("/wechat/mid-summer-bound");
         modelAndView.addObject("sharedUser", false);
         modelAndView.addObject("mobile", mobile);
+        modelAndView.addObject("invitedCount", midSummerService.getInvitedCount(mobile));
         return modelAndView;
     }
 }

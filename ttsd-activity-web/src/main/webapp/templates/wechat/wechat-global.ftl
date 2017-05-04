@@ -38,17 +38,16 @@
     <link href="${commonStaticServer}/images/favicon.ico" id="icoFavicon" rel="shortcut icon" type="image/x-icon"/>
     <link rel="stylesheet" type="text/css" href="${css.globalFun_page!}" charset="utf-8"/>
     <link rel="stylesheet" type="text/css" href="${pageCss}" charset="utf-8"/>
+    <script src="https://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
 </head>
 <body>
     <#nested>
+
+
 <script>
     window.commonStaticServer = '${commonStaticServer}';
-</script>
-
-<script src="https://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
-<script>
     wx.config({
-        debug: true,
+        debug: ${(wxConfig.debug)!},
         appId: '${(wxConfig.appId)!}',
         timestamp: '${(wxConfig.timestamp)!}',
         nonceStr: '${(wxConfig.nonceStr)!}',
