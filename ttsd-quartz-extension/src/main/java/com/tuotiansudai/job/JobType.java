@@ -16,7 +16,6 @@ public enum JobType {
     AutoInvest("自动投资"),
     CouponRepayCallBack("还款时优惠券收益回调处理"),
     ExtraRateRepayCallBack("还款时阶梯加息收益回调处理"),
-    CalculateDefaultInterest("计算逾期罚息"),
     AutoReFreshAreaByMobile("获取手机归属地"),
     NormalRepay("正常还款"),
     LoanRepayNotify("还款提醒"),

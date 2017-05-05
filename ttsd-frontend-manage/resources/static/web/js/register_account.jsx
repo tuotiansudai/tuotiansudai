@@ -62,14 +62,13 @@ registerAccountForm.onsubmit = function(event) {
     },function(response) {
         if(response.data.status) {
             $buttonLayer.find('.status').removeClass('error').html('认证成功');
-            location.href = '/callback/register_account?ret_code=0000';
-        }
-        else {
+            location.href = '/register/account/success';
+        } else {
             $buttonLayer.find('.status').addClass('error').html('认证失败，请检查');
             $btnSubmit.prop('disabled', false);
         }
     });
-}
+};
 
 
 

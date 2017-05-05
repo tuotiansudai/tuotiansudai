@@ -1,5 +1,7 @@
 package com.tuotiansudai.paywrapper.repository.model.sync.request;
 
+import com.tuotiansudai.enums.SyncUmPayService;
+
 import java.util.Map;
 
 public class TransferSearchRequestModel extends BaseSyncRequestModel {
@@ -14,8 +16,7 @@ public class TransferSearchRequestModel extends BaseSyncRequestModel {
     }
 
     public TransferSearchRequestModel(String orderId, String merDate, String busiType) {
-        super();
-        this.service = "transfer_search";
+        this.service = SyncUmPayService.TRANSFER_SEARCH.getServiceName();
         this.orderId = orderId;
         this.merDate = merDate;
         this.busiType = busiType;

@@ -23,8 +23,8 @@ public class ExperienceAssigningMessage implements Serializable {
     }
 
     public ExperienceAssigningMessage(Date currentDate, String loginName) {
+        this(loginName, 588800l, ExperienceBillOperationType.IN, ExperienceBillBusinessType.NEWMAN_TYRANT, "");
         this.currentDate = currentDate;
-        this.loginName = loginName;
     }
 
     public ExperienceAssigningMessage(String loginName, long experienceAmount, ExperienceBillOperationType experienceBillOperationType, ExperienceBillBusinessType experienceBillBusinessType, String note) {

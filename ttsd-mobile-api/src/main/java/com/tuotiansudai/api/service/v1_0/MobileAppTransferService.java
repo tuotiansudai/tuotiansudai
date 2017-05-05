@@ -9,6 +9,6 @@ public interface MobileAppTransferService {
 
     BaseResponseDto<InvestResponseDataDto> transferPurchase(TransferPurchaseRequestDto transferPurchaseRequestDto);
 
-    BaseResponseDto transferNoPasswordPurchase(TransferPurchaseRequestDto transferPurchaseRequestDto);
+    BaseResponseDto<InvestNoPassResponseDataDto> transferNoPasswordPurchase(TransferPurchaseRequestDto transferPurchaseRequestDto);
 
 }

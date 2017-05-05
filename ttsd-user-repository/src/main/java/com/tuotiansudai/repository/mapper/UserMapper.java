@@ -61,4 +61,6 @@ public interface UserMapper {
 
     int findCountByMobile(@Param(value = "mobile") String mobile);
 
+    Long findExperienceByLoginName(String loginName);
+
 }

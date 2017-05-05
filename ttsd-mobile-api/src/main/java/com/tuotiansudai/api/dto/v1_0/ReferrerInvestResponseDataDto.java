@@ -1,6 +1,7 @@
 package com.tuotiansudai.api.dto.v1_0;
 
 import com.tuotiansudai.repository.model.ReferrerManageView;
+import com.tuotiansudai.repository.model.ReferrerRewardStatus;
 import com.tuotiansudai.util.AmountConverter;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -130,8 +131,13 @@ public class ReferrerInvestResponseDataDto {
         this.investMoney = AmountConverter.convertCentToString(input.getInvestAmount());
         this.deadline = "" + input.getPeriods();
         this.investTime = simpleDateFormat.format(input.getInvestTime());
-        this.rewardMoney = AmountConverter.convertCentToString(input.getRewardAmount());
-        this.rewardTime = simpleDateFormat.format(input.getRewardTime());
+        if(ReferrerRewardStatus.FORBIDDEN == input.getStatus()){
+            this.rewardMoney = "0.00";
+            this.rewardTime = "";
+        }else {
+            this.rewardMoney = AmountConverter.convertCentToString(input.getRewardAmount());
+            this.rewardTime = simpleDateFormat.format(input.getRewardTime());
+        }
         this.loanId = input.getLoanId();
         this.productNewType = input.getProductType() != null ? input.getProductType().name() : "";
     }

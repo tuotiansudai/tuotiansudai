@@ -1,5 +1,7 @@
 package com.tuotiansudai.paywrapper.repository.model.sync.request;
 
+import com.tuotiansudai.enums.SyncUmPayService;
+
 import java.util.Map;
 
 public class UserSearchRequestModel extends BaseSyncRequestModel {
@@ -14,7 +16,7 @@ public class UserSearchRequestModel extends BaseSyncRequestModel {
 
     public UserSearchRequestModel(String payUserId) {
         super();
-        this.service = "user_search";
+        this.service = SyncUmPayService.USER_SEARCH.getServiceName();
         this.userId = payUserId;
         this.isFindAccount = "01"; //查询余额
         this.isSelectAgreement = "1"; //查询授权协议

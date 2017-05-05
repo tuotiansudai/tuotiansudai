@@ -1,0 +1,123 @@
+@charset "utf-8";
+body {
+  background: #ffd96b;
+  overflow-x: hidden;
+}
+
+.main-frame {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.tour-slide  {
+  height: 456px;
+  background: url("../images/midsummer/zl-head.jpg") center top no-repeat;
+
+}
+
+.midsummer-container {
+  color: #6f191d;
+  font-size: 14px;
+  background: #ffd96b;
+  .text-info {
+    text-align: center;
+    color: #6f191d;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    .text {
+      font-size: 16px;
+      display: block;
+
+      em {
+        color: #ff535e;
+      }
+    }
+  }
+
+  .weChat-code-box {
+    width:242px;
+    background:  url('../images/midsummer/red-bag-money.png') center top no-repeat;
+    margin: 0px auto;
+    padding-top:53px;
+    .weChat-img {
+      margin-top:50px;
+      background: #ff535e url('../images/midsummer/code-wechat.png') center center no-repeat;
+      height:200px;
+      border-radius: 10px;
+    }
+  }
+
+  .reminder-tip {
+    background:  url('../images/midsummer/bg-yun-pc.png') center top no-repeat;
+    position: relative;
+    left: 0;
+    top: -65px;
+    margin-bottom: -65px;
+    padding-top: 200px;
+
+    .note-list {
+      background: #fff ;
+      padding-bottom:60px;
+      dt {
+        position: relative;
+        border-bottom:1px solid #6f191d;
+        margin-bottom:40px;
+        span {
+          display: inline-block;
+          width:245px;
+          height:37px;
+          background: url('../images/midsummer/zl-title.png') left center no-repeat;
+          position: absolute;
+          top:-20px;
+          left:45%;
+        }
+      }
+      dd {
+        font-weight: bold;
+        line-height: 35px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 700px){
+
+  .tour-slide  {
+    height: auto;
+    img {
+      width:100%;
+    }
+  }
+  .midsummer-container {
+    overflow: hidden;
+  .text-info {
+
+  }
+    .br {
+      display: block;
+    }
+    .reminder-tip {
+      background:  url('../images/midsummer/bg-yun-mobile.png') center top no-repeat;
+      background-size:100%;
+      top: -14px;
+      margin-bottom: -15px;
+      padding-top: 49px;
+      .note-list {
+        padding-bottom: 20px;
+        padding-top: 20px;
+        dt {
+          margin-bottom: 20px;
+          span {
+            top: -18px;
+            left: 32%;
+          }
+        }
+        dd {
+          padding:15px;
+        }
+
+      }
+    }
+  }
+
+}

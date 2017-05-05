@@ -16,7 +16,7 @@ import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferNotifyMapper
 import com.tuotiansudai.paywrapper.repository.mapper.TransferMapper;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.ProjectTransferNotifyRequestModel;
-import com.tuotiansudai.paywrapper.repository.model.sync.request.TransferRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.async.request.TransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.TransferResponseModel;
 import com.tuotiansudai.paywrapper.service.SystemBillService;
 import com.tuotiansudai.repository.mapper.*;
@@ -166,7 +166,7 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
 
         if (amount > 0) {
             try {
-                TransferRequestModel requestModel = TransferRequestModel.newTransferReferrerRewardRequest(String.valueOf(orderId), accountModel.getPayUserId(), String.valueOf(amount));
+                TransferRequestModel requestModel = TransferRequestModel.newReferrerRewardTransferRequest(String.valueOf(orderId), accountModel.getPayUserId(), accountModel.getPayAccountId(), String.valueOf(amount));
                 TransferResponseModel responseModel = paySyncClient.send(TransferMapper.class, requestModel, TransferResponseModel.class);
                 logger.info(MessageFormat.format("[标的放款] pay sync transfer referrer reward, result:{0}, investReferrerRewardId:{1}, loginName:{2}", responseModel.isSuccess(),
                         String.valueOf(orderId), accountModel.getLoginName()));
@@ -255,13 +255,13 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
     }
 
     private long calculateReferrerReward(long amount, Date investTime, Date dealLine, int level, Role role) {
-        if (Lists.newArrayList(Role.ZC_STAFF, Role.ZC_STAFF_RECOMMEND).contains(role)) {
+        if (Lists.newArrayList(Role.ZC_STAFF_RECOMMEND).contains(role)) {
             return 0;
         }
 
         BigDecimal amountBigDecimal = new BigDecimal(amount);
 
-        double rewardRate = this.getRewardRate(level, Role.SD_STAFF == role);
+        double rewardRate = this.getRewardRate(level, (Role.SD_STAFF == role || Role.ZC_STAFF == role));
 
         return amountBigDecimal
                 .multiply(new BigDecimal(rewardRate))
