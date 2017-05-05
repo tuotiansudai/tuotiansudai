@@ -24,11 +24,8 @@ public class MobileAppHelpCenterSearchResultServiceTest extends ServiceTestBase 
     @Autowired
     MobileAppHelpCenterSearchService mobileAppHelpCenterSearchService;
 
-    @Autowired
-    IdGenerator idGenerator;
-
     private HelpCenterModel createHelpCenterModel(String title, String content, HelpCategory helpCategory, boolean hot) {
-        HelpCenterModel helpCenterModel = new HelpCenterModel(idGenerator.generate(), title, content, helpCategory, hot);
+        HelpCenterModel helpCenterModel = new HelpCenterModel(IdGenerator.generate(), title, content, helpCategory, hot);
         helpCenterMapper.create(helpCenterModel);
         return helpCenterModel;
     }

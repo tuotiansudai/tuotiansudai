@@ -16,8 +16,8 @@
     <bean class="org.springframework.session.data.redis.config.annotation.web.http.RedisHttpSessionConfiguration"/>
 
     <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
-        <property name="maxTotal" value="${mobile.jedis.pool.maxTotal}"/>
-        <property name="maxWaitMillis" value="${common.jedis.pool.maxWaitMillis}"/>
+        <property name="maxTotal" value="300"/>
+        <property name="maxWaitMillis" value="5000"/>
     </bean>
 
     <bean id="jedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"

@@ -42,8 +42,6 @@ import java.util.Map;
 public class MembershipPrivilegePurchasePayServiceImpl implements MembershipPrivilegePurchasePayService {
 
     static Logger logger = Logger.getLogger(MembershipPrivilegePurchasePayServiceImpl.class);
-    @Autowired
-    private IdGenerator idGenerator;
 
     @Autowired
     private AccountMapper accountMapper;
@@ -68,7 +66,7 @@ public class MembershipPrivilegePurchasePayServiceImpl implements MembershipPriv
 
     @Override
     public BaseDto<PayFormDataDto> purchase(MembershipPrivilegePurchaseDto dto) {
-        MembershipPrivilegePurchaseModel purchaseModel = new MembershipPrivilegePurchaseModel(idGenerator.generate(), dto);
+        MembershipPrivilegePurchaseModel purchaseModel = new MembershipPrivilegePurchaseModel(IdGenerator.generate(), dto);
 
         AccountModel accountModel = accountMapper.findByLoginName(dto.getLoginName());
 

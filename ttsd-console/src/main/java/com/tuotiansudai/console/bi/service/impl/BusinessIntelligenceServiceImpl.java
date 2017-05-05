@@ -2,7 +2,6 @@ package com.tuotiansudai.console.bi.service.impl;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.console.bi.dto.Granularity;
 import com.tuotiansudai.console.bi.dto.RoleStage;
 import com.tuotiansudai.console.bi.dto.UserStage;
@@ -13,7 +12,7 @@ import com.tuotiansudai.console.bi.repository.model.KeyValueModel;
 import com.tuotiansudai.console.bi.service.BusinessIntelligenceService;
 import com.tuotiansudai.console.service.ConsoleInvestService;
 import com.tuotiansudai.console.service.ConsoleUserService;
-import com.tuotiansudai.enums.Role;
+import com.tuotiansudai.util.RedisWrapperClient;
 import com.tuotiansudai.util.SerializeUtil;
 import org.apache.commons.collections4.ListUtils;
 import org.apache.commons.collections4.Predicate;
@@ -32,10 +31,9 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
 
     public static final String PLATFORM_REPAY_KEY = "console:platformRepay:list";
 
-    static Logger logger = Logger.getLogger(BusinessIntelligenceServiceImpl.class);
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
+    static Logger logger = Logger.getLogger(BusinessIntelligenceServiceImpl.class);
 
     @Autowired
     private BusinessIntelligenceMapper businessIntelligenceMapper;

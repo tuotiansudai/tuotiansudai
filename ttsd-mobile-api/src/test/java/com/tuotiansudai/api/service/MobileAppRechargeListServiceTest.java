@@ -28,8 +28,6 @@ public class MobileAppRechargeListServiceTest extends ServiceTestBase {
     private MobileAppRechargeListServiceImpl mobileAppRechargeListService;
     @Mock
     private RechargeMapper rechargeMapper;
-    @Autowired
-    private IdGenerator idGenerator;
     @Mock
     private PageValidUtils pageValidUtils;
 
@@ -63,7 +61,7 @@ public class MobileAppRechargeListServiceTest extends ServiceTestBase {
 
     private RechargeModel fakeRechargeModel(String loginName) {
         RechargeModel rechargeModel = new RechargeModel();
-        rechargeModel.setId(idGenerator.generate());
+        rechargeModel.setId(IdGenerator.generate());
         rechargeModel.setLoginName("loginName");
         rechargeModel.setAmount(1200l);
         rechargeModel.setBankCode("CMB");

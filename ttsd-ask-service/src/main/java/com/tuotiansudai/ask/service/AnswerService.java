@@ -15,13 +15,13 @@ import com.tuotiansudai.ask.repository.model.QuestionModel;
 import com.tuotiansudai.ask.repository.model.QuestionStatus;
 import com.tuotiansudai.ask.utils.FakeMobileUtil;
 import com.tuotiansudai.ask.utils.SensitiveWordsFilter;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.MobileEncoder;
 import com.tuotiansudai.util.PaginationUtil;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,9 +36,11 @@ import java.util.List;
 @Service
 public class AnswerService {
 
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
+
     private static final Logger logger = Logger.getLogger(AnswerService.class);
 
-    public static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     @Value(value = "${newAnswerAdoptedAlert}")
     private String newAnswerAdoptedAlertKey;
@@ -54,9 +56,6 @@ public class AnswerService {
 
     @Autowired
     private CaptchaHelperService captchaHelperService;
-
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
 
     public AnswerResultDataDto createAnswer(String loginName, AnswerRequestDto answerRequestDto) {
         AnswerResultDataDto answerResultDataDto = new AnswerResultDataDto();

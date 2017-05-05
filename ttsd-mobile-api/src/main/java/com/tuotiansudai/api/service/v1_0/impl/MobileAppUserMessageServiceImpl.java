@@ -5,24 +5,27 @@ import com.google.common.base.Strings;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppUserMessageService;
 import com.tuotiansudai.api.util.PageValidUtils;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.enums.MessageType;
 import com.tuotiansudai.message.repository.mapper.MessageMapper;
 import com.tuotiansudai.message.repository.mapper.UserMessageMapper;
-import com.tuotiansudai.message.repository.model.*;
+import com.tuotiansudai.message.repository.model.MessageChannel;
+import com.tuotiansudai.message.repository.model.MessageModel;
+import com.tuotiansudai.message.repository.model.UserMessageModel;
 import com.tuotiansudai.message.service.UserMessageService;
 import com.tuotiansudai.spring.LoginUserInfo;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageService {
+
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
     @Autowired
     private UserMessageService userMessageServices;
@@ -32,9 +35,6 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
 
     @Autowired
     private MessageMapper messageMapper;
-
-    @Autowired
-    private RedisWrapperClient redisClient;
 
     public static final String UNREAD_MESSAGE_COUNT_ID_KEY = "app:unread:message:count:ids:{0}";
 
@@ -91,14 +91,14 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
 
     private boolean existUnreadMessage(String loginName, long currentUnreadMessageCount) {
         String unreadMessageKey = MessageFormat.format(UNREAD_MESSAGE_COUNT_ID_KEY, loginName);
-        String unreadMessageCountValue = redisClient.get(unreadMessageKey);
+        String unreadMessageCountValue = redisWrapperClient.get(unreadMessageKey);
 
         long lastUnreadMessageCount = StringUtils.isEmpty(unreadMessageCountValue) ? 0 : Long.parseLong(unreadMessageCountValue);
 
         if (lastUnreadMessageCount == currentUnreadMessageCount) {
             return false;
         } else {
-            redisClient.set(unreadMessageKey, String.valueOf(currentUnreadMessageCount));
+            redisWrapperClient.set(unreadMessageKey, String.valueOf(currentUnreadMessageCount));
             return true;
         }
     }

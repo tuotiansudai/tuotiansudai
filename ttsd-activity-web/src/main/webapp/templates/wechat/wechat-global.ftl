@@ -41,8 +41,7 @@
     <link rel="stylesheet" type="text/css" href="${pageCss}" charset="utf-8"/>
 </head>
 <body>
- <#nested>
-
+    <#nested>
 <script>
     window.commonStaticServer = '${commonStaticServer}';
 </script>

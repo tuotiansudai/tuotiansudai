@@ -32,13 +32,10 @@ public class MobileAppExperienceServiceTest extends ServiceTestBase {
     @Mock
     private PageValidUtils pageValidUtils;
 
-    @Autowired
-    private IdGenerator idGenerator;
-
     @Test
     public void shouldQueryExperienceBillsIsOk() {
         ExperienceBillModel experienceBillModel = new ExperienceBillModel();
-        experienceBillModel.setId(idGenerator.generate());
+        experienceBillModel.setId(IdGenerator.generate());
         experienceBillModel.setLoginName("admin");
         experienceBillModel.setOperationType(ExperienceBillOperationType.IN);
         experienceBillModel.setBusinessType(ExperienceBillBusinessType.REGISTER);

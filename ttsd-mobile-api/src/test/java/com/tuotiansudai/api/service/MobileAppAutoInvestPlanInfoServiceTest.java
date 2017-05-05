@@ -35,9 +35,6 @@ public class MobileAppAutoInvestPlanInfoServiceTest extends ServiceTestBase {
     private UserMapper userMapper;
 
     @Autowired
-    private IdGenerator idGenerator;
-
-    @Autowired
     private AutoInvestPlanMapper autoInvestPlanMapper;
 
     @Autowired
@@ -89,7 +86,7 @@ public class MobileAppAutoInvestPlanInfoServiceTest extends ServiceTestBase {
         model.setRetentionAmount(10000);
         model.setAutoInvestPeriods(periods);
         model.setCreatedTime(new Date());
-        model.setId(idGenerator.generate());
+        model.setId(IdGenerator.generate());
         model.setMaxInvestAmount(1000000);
         model.setMinInvestAmount(50000);
         autoInvestPlanMapper.create(model);

@@ -5,7 +5,6 @@ import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.AnxinWrapperClient;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.repository.mapper.*;
@@ -14,6 +13,7 @@ import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.service.LoanDetailService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.RandomUtils;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -30,6 +30,8 @@ import java.util.List;
 public class LoanDetailServiceImpl implements LoanDetailService {
 
     private final static String INVEST_NO_PASSWORD_REMIND_MAP = "invest_no_password_remind_map";
+
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
     @Autowired
     private LoanMapper loanMapper;
@@ -84,9 +86,6 @@ public class LoanDetailServiceImpl implements LoanDetailService {
 
     @Autowired
     private AnxinSignPropertyMapper anxinSignPropertyMapper;
-
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
 
     @Autowired
     private RandomUtils randomUtils;

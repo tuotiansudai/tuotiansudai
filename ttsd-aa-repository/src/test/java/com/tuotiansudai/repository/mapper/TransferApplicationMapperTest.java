@@ -27,22 +27,25 @@ import static org.junit.Assert.assertNotNull;
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
 @Transactional
 public class TransferApplicationMapperTest {
+
     @Autowired
     private TransferApplicationMapper transferApplicationMapper;
+
     @Autowired
     private LoanMapper loanMapper;
+
     @Autowired
     private UserMapper userMapper;
-    @Autowired
-    private IdGenerator idGenerator;
+
     @Autowired
     private InvestMapper investMapper;
+
     @Value("#{'${web.heroRanking.activity.period}'.split('\\~')}")
     private List<String> heroRankingActivityPeriod;
 
     @Test
     public void shouldFindTransferApplicationListIsSuccess(){
-        long loanId = idGenerator.generate();
+        long loanId = IdGenerator.generate();
         UserModel transferrerModel = createUserByUserId("transferrerTestuser");
         UserModel transfereeModel = createUserByUserId("transfereeTestUser");
         LoanModel loanModel = createLoanByUserId("transferrerTestUser", loanId);
@@ -76,7 +79,7 @@ public class TransferApplicationMapperTest {
 
     @Test
     public void shouldFindTransferApplicationPaginationByLoginNameIsSuccess(){
-        long loanId = idGenerator.generate();
+        long loanId = IdGenerator.generate();
         UserModel userModel = createUserByUserId("testuser");
         LoanModel loanModel = createLoanByUserId("testuser", loanId);
         InvestModel investModel = createInvest("testuser", loanId);
@@ -108,7 +111,7 @@ public class TransferApplicationMapperTest {
 
     @Test
     public void shouldFindCountTransferApplicationPaginationIsSuccess(){
-        long loanId = idGenerator.generate();
+        long loanId = IdGenerator.generate();
         UserModel transferModel = createUserByUserId("transfer");
         UserModel transfereeModel = createUserByUserId("transferee");
         LoanModel loanModel = createLoanByUserId("transfer", loanId);
@@ -144,7 +147,7 @@ public class TransferApplicationMapperTest {
     }
     @Test
     public void shouldFindTransfereeApplicationPaginationByLoginNameIsSuccess(){
-        long loanId = idGenerator.generate();
+        long loanId = IdGenerator.generate();
         UserModel transferModel = createUserByUserId("transfer");
         UserModel transfereeModel = createUserByUserId("transferee");
         LoanModel loanModel = createLoanByUserId("transfer", loanId);
@@ -179,7 +182,7 @@ public class TransferApplicationMapperTest {
 
     @Test
     public void shouldFindCountTransfereeApplicationPaginationByLoginNameIsSuccess(){
-        long loanId = idGenerator.generate();
+        long loanId = IdGenerator.generate();
         UserModel transferModel = createUserByUserId("transfer");
         UserModel transfereeModel = createUserByUserId("transferee");
         LoanModel loanModel = createLoanByUserId("transfer", loanId);
@@ -207,7 +210,7 @@ public class TransferApplicationMapperTest {
     }
 
     private InvestModel createInvest(String loginName, long loanId) {
-        InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, 1, loginName, new Date(), Source.WEB, null, 0.1);
+        InvestModel model = new InvestModel(IdGenerator.generate(), loanId, null, 1, loginName, new Date(), Source.WEB, null, 0.1);
         model.setStatus(InvestStatus.SUCCESS);
         investMapper.create(model);
         return model;
@@ -259,7 +262,7 @@ public class TransferApplicationMapperTest {
 
     @Test
     public void shouldFindCountTransferApplicationByApplicationTimeIsSuccess(){
-        long loanId = idGenerator.generate();
+        long loanId = IdGenerator.generate();
         UserModel transferModel = createUserByUserId("transfer");
         UserModel transfereeModel = createUserByUserId("transferee");
         LoanModel loanModel = createLoanByUserId("transfer", loanId);
@@ -290,7 +293,7 @@ public class TransferApplicationMapperTest {
 
     @Test
     public void testFindAllTransferringApplicationsByLoanId() throws Exception {
-        long loanId = idGenerator.generate();
+        long loanId = IdGenerator.generate();
         UserModel transferModel = createUserByUserId("transfer");
         UserModel transfereeModel = createUserByUserId("transferee");
         LoanModel loanModel = createLoanByUserId("transfer", loanId);

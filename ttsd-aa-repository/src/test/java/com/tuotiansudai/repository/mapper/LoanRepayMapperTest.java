@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.joda.time.DateTime;
 import org.junit.Test;
@@ -27,9 +28,6 @@ import static org.junit.Assert.*;
 public class LoanRepayMapperTest {
 
     @Autowired
-    private IdGenerator idGenerator;
-
-    @Autowired
     private LoanRepayMapper loanRepayMapper;
 
     @Autowired
@@ -46,7 +44,7 @@ public class LoanRepayMapperTest {
         loanMapper.create(fakeLoanModel);
         List<LoanRepayModel> loanRepayModels = Lists.newArrayList();
         LoanRepayModel loanRepayModel = new LoanRepayModel();
-        loanRepayModel.setId(idGenerator.generate());
+        loanRepayModel.setId(IdGenerator.generate());
         loanRepayModel.setDefaultInterest(0);
         loanRepayModel.setActualInterest(0);
         loanRepayModel.setPeriod(1);
@@ -71,7 +69,7 @@ public class LoanRepayMapperTest {
         loanMapper.create(fakeLoanModel);
         List<LoanRepayModel> loanRepayModels = Lists.newArrayList();
         LoanRepayModel loanRepayModel = new LoanRepayModel();
-        loanRepayModel.setId(idGenerator.generate());
+        loanRepayModel.setId(IdGenerator.generate());
         loanRepayModel.setDefaultInterest(0);
         loanRepayModel.setActualInterest(0);
         loanRepayModel.setPeriod(1);
@@ -271,7 +269,7 @@ public class LoanRepayMapperTest {
         loanMapper.create(fakeLoanModel);
         List<LoanRepayModel> loanRepayModels = Lists.newArrayList();
         LoanRepayModel loanRepayModel = new LoanRepayModel();
-        loanRepayModel.setId(idGenerator.generate());
+        loanRepayModel.setId(IdGenerator.generate());
         loanRepayModel.setDefaultInterest(0);
         loanRepayModel.setActualInterest(0);
         loanRepayModel.setPeriod(1);
@@ -324,7 +322,7 @@ public class LoanRepayMapperTest {
         fakeUserModel.setLoginName("loginName");
         fakeUserModel.setPassword("password");
         fakeUserModel.setEmail("12345@abc.com");
-        fakeUserModel.setMobile("13900000000");
+        fakeUserModel.setMobile(RandomStringUtils.randomNumeric(11));
         fakeUserModel.setRegisterTime(new Date());
         fakeUserModel.setStatus(UserStatus.ACTIVE);
         fakeUserModel.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
@@ -334,7 +332,7 @@ public class LoanRepayMapperTest {
     private LoanModel getFakeLoanModel(LoanStatus loanStatus) {
         UserModel fakeUserModel = getFakeUserModel();
         LoanModel fakeLoanModel = new LoanModel();
-        fakeLoanModel.setId(idGenerator.generate());
+        fakeLoanModel.setId(IdGenerator.generate());
         fakeLoanModel.setName("name");
         fakeLoanModel.setAgentLoginName(fakeUserModel.getLoginName());
         fakeLoanModel.setLoanerLoginName(fakeUserModel.getLoginName());
@@ -362,7 +360,7 @@ public class LoanRepayMapperTest {
                                                  long actualInterest,
                                                  long defaultInterest) {
         LoanRepayModel fakeLoanRepayModel = new LoanRepayModel();
-        fakeLoanRepayModel.setId(idGenerator.generate());
+        fakeLoanRepayModel.setId(IdGenerator.generate());
         fakeLoanRepayModel.setPeriod(period);
         fakeLoanRepayModel.setStatus(repayStatus);
         fakeLoanRepayModel.setLoanId(fakeLoanModel.getId());

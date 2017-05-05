@@ -5,7 +5,6 @@ import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.console.bi.dto.RoleStage;
 import com.tuotiansudai.console.dto.RemainUserDto;
 import com.tuotiansudai.console.dto.UserItemDataDto;
@@ -33,6 +32,7 @@ import com.tuotiansudai.spring.security.SignInClient;
 import com.tuotiansudai.task.OperationTask;
 import com.tuotiansudai.task.TaskConstant;
 import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.RedisWrapperClient;
 import com.tuotiansudai.util.RequestIPParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -54,6 +54,8 @@ import java.util.stream.Collectors;
 @RequestMapping(value = "/user-manage")
 public class UserController {
 
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
+
     @Autowired
     private UserService userService;
 
@@ -65,9 +67,6 @@ public class UserController {
 
     @Autowired
     private BindBankCardService bindBankCardService;
-
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
 
     @Autowired
     private UserMapper userMapper;

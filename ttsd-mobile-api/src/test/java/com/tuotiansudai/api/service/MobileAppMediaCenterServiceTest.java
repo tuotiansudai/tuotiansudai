@@ -28,8 +28,6 @@ public class MobileAppMediaCenterServiceTest extends ServiceTestBase {
     @Autowired
     private MobileAppMediaCenterService mobileAppAgreementService;
     @Autowired
-    private IdGenerator idGenerator;
-    @Autowired
     private LicaiquanArticleMapper licaiquanArticleMapper;
     @Autowired
     private UserMapper userMapper;
@@ -85,7 +83,7 @@ public class MobileAppMediaCenterServiceTest extends ServiceTestBase {
         UserModel userModel = getUserModelTest();
         userMapper.create(userModel);
         LicaiquanArticleModel licaiquanArticleModel = new LicaiquanArticleModel();
-        licaiquanArticleModel.setId(idGenerator.generate());
+        licaiquanArticleModel.setId(IdGenerator.generate());
         licaiquanArticleModel.setTitle("title");
         licaiquanArticleModel.setAuthor("author");
         licaiquanArticleModel.setCarousel(true);

@@ -24,8 +24,6 @@ import static org.junit.Assert.*;
 public class LoanTitleRelationMapperTest {
     @Autowired
     LoanTitleRelationMapper loanTitleRelationMapper;
-    @Autowired
-    private IdGenerator idGenerator;
 
     @Autowired
     private LoanTitleMapper loanTitleMapper;
@@ -52,7 +50,7 @@ public class LoanTitleRelationMapperTest {
     public void createLoanTitleTest(){
         createMockUser("xiangjie");
         LoanTitleModel loanTitleModel = new LoanTitleModel();
-        long titleId = idGenerator.generate();
+        long titleId = IdGenerator.generate();
         loanTitleModel.setId(titleId);
         loanTitleModel.setType(LoanTitleType.BASE_TITLE_TYPE);
         loanTitleModel.setTitle("房产证");
@@ -63,7 +61,7 @@ public class LoanTitleRelationMapperTest {
         loanDto.setLoanerIdentityNumber("111111111111111111");
         loanDto.setAgentLoginName("xiangjie");
         loanDto.setBasicRate("16.00");
-        long loanId = idGenerator.generate();
+        long loanId = IdGenerator.generate();
         loanDto.setId(loanId);
         loanDto.setProjectName("店铺资金周转");
         loanDto.setActivityRate("12");
@@ -89,7 +87,7 @@ public class LoanTitleRelationMapperTest {
         List<LoanTitleRelationModel> loanTitleRelationModels = new ArrayList<LoanTitleRelationModel>();
         for (int i = 0; i < 1; i++) {
             LoanTitleRelationModel loanTitleRelationModel = new LoanTitleRelationModel();
-            loanTitleRelationModel.setId(idGenerator.generate());
+            loanTitleRelationModel.setId(IdGenerator.generate());
             loanTitleRelationModel.setLoanId(loanId);
             loanTitleRelationModel.setTitleId(titleId);
             loanTitleRelationModel.setApplicationMaterialUrls("https://github.com/tuotiansudai/tuotian/pull/279,https://github.com/tuotiansudai/tuotian/pull/279");
@@ -103,7 +101,7 @@ public class LoanTitleRelationMapperTest {
     public void findLoanTitlesTest(){
         createMockUser("xiangjie");
         LoanTitleModel loanTitleModel = new LoanTitleModel();
-        long titleId = idGenerator.generate();
+        long titleId = IdGenerator.generate();
         loanTitleModel.setId(titleId);
         loanTitleModel.setType(LoanTitleType.BASE_TITLE_TYPE);
         loanTitleModel.setTitle("房产证");
@@ -114,7 +112,7 @@ public class LoanTitleRelationMapperTest {
         loanDto.setLoanerIdentityNumber("111111111111111111");
         loanDto.setAgentLoginName("xiangjie");
         loanDto.setBasicRate("16.00");
-        long loanId = idGenerator.generate();
+        long loanId = IdGenerator.generate();
         loanDto.setId(loanId);
         loanDto.setProjectName("店铺资金周转");
         loanDto.setActivityRate("12");
@@ -140,7 +138,7 @@ public class LoanTitleRelationMapperTest {
         List<LoanTitleRelationModel> loanTitleRelationModels = new ArrayList<LoanTitleRelationModel>();
         for (int i = 0; i < 1; i++) {
             LoanTitleRelationModel loanTitleRelationModel = new LoanTitleRelationModel();
-            loanTitleRelationModel.setId(idGenerator.generate());
+            loanTitleRelationModel.setId(IdGenerator.generate());
             loanTitleRelationModel.setLoanId(loanId);
             loanTitleRelationModel.setTitleId(titleId);
             loanTitleRelationModel.setApplicationMaterialUrls("https://github.com/tuotiansudai/tuotian/pull/279,https://github.com/tuotiansudai/tuotian/pull/279");
@@ -156,7 +154,7 @@ public class LoanTitleRelationMapperTest {
     public void deleteTest(){
         createMockUser("xiangjie");
         LoanTitleModel loanTitleModel = new LoanTitleModel();
-        long titleId = idGenerator.generate();
+        long titleId = IdGenerator.generate();
         loanTitleModel.setId(titleId);
         loanTitleModel.setType(LoanTitleType.BASE_TITLE_TYPE);
         loanTitleModel.setTitle("房产证");
@@ -167,7 +165,7 @@ public class LoanTitleRelationMapperTest {
         loanDto.setLoanerIdentityNumber("111111111111111111");
         loanDto.setAgentLoginName("xiangjie");
         loanDto.setBasicRate("16.00");
-        long loanId = idGenerator.generate();
+        long loanId = IdGenerator.generate();
         loanDto.setId(loanId);
         loanDto.setProjectName("店铺资金周转");
         loanDto.setActivityRate("12");
@@ -193,7 +191,7 @@ public class LoanTitleRelationMapperTest {
         List<LoanTitleRelationModel> loanTitleRelationModels = new ArrayList<LoanTitleRelationModel>();
         for (int i = 0; i < 1; i++) {
             LoanTitleRelationModel loanTitleRelationModel = new LoanTitleRelationModel();
-            loanTitleRelationModel.setId(idGenerator.generate());
+            loanTitleRelationModel.setId(IdGenerator.generate());
             loanTitleRelationModel.setLoanId(loanId);
             loanTitleRelationModel.setTitleId(titleId);
             loanTitleRelationModel.setApplicationMaterialUrls("https://github.com/tuotiansudai/tuotian/pull/279,https://github.com/tuotiansudai/tuotian/pull/279");
@@ -208,12 +206,12 @@ public class LoanTitleRelationMapperTest {
     public void findLoanTitleRelationAndTitleByLoanIdText(){
         createMockUser("xiaoming");
         LoanTitleModel loanTitleModel1 = new LoanTitleModel();
-        long loanTitleModel1Id = idGenerator.generate();
+        long loanTitleModel1Id = IdGenerator.generate();
         loanTitleModel1.setId(loanTitleModel1Id);
         loanTitleModel1.setType(LoanTitleType.BASE_TITLE_TYPE);
         loanTitleModel1.setTitle("身份证");
         LoanTitleModel loanTitleModel2 = new LoanTitleModel();
-        long loanTitleModel2Id = idGenerator.generate();
+        long loanTitleModel2Id = IdGenerator.generate();
         loanTitleModel2.setId(loanTitleModel2Id);
         loanTitleModel2.setType(LoanTitleType.BASE_TITLE_TYPE);
         loanTitleModel2.setTitle("房产证");
@@ -225,7 +223,7 @@ public class LoanTitleRelationMapperTest {
         loanDto.setLoanerIdentityNumber("111111111111111111");
         loanDto.setAgentLoginName("xiaoming");
         loanDto.setBasicRate("16.00");
-        long loanId = idGenerator.generate();
+        long loanId = IdGenerator.generate();
         loanDto.setId(loanId);
         loanDto.setProjectName("店铺资金周转");
         loanDto.setActivityRate("12");
@@ -249,7 +247,7 @@ public class LoanTitleRelationMapperTest {
         LoanModel loanModel = new LoanModel(loanDto);
         loanMapper.create(loanModel);
         LoanTitleRelationModel loanTitleRelationModel = new LoanTitleRelationModel();
-        Long loanTitleRelationModelId = idGenerator.generate();
+        Long loanTitleRelationModelId = IdGenerator.generate();
         loanTitleRelationModel.setId(loanTitleRelationModelId);
         loanTitleRelationModel.setTitleId(loanTitleModel1Id);
         loanTitleRelationModel.setApplicationMaterialUrls("ceshi/20160409/text.jpg");
@@ -257,7 +255,7 @@ public class LoanTitleRelationMapperTest {
         LoanTitleRelationModel loanTitleRelationModelT = new LoanTitleRelationModel();
         loanTitleRelationModelT.setTitleId(loanTitleModel2Id);
         loanTitleRelationModelT.setApplicationMaterialUrls("ceshi/20160409/fangchan.jpg");
-        loanTitleRelationModelT.setId(idGenerator.generate());
+        loanTitleRelationModelT.setId(IdGenerator.generate());
         loanTitleRelationModelT.setLoanId(loanId);
         List<LoanTitleRelationModel> LoanTitleRelationModel = new ArrayList<>();
         LoanTitleRelationModel.add(loanTitleRelationModel);

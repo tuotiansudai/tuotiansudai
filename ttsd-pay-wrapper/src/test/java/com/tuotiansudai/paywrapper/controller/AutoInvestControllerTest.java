@@ -35,9 +35,6 @@ public class AutoInvestControllerTest {
     @Mock
     private InvestService investService;
 
-    @Autowired
-    private IdGenerator idGenerator;
-
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
@@ -50,7 +47,7 @@ public class AutoInvestControllerTest {
 
         this.mockMvc.perform(post("/auto-invest").
                 contentType(MediaType.APPLICATION_JSON_VALUE).
-                content(String.valueOf(idGenerator.generate())))
+                content(String.valueOf(IdGenerator.generate())))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json; charset=UTF-8"))
                 .andExpect(jsonPath("$.success").value(true))

@@ -3,7 +3,6 @@ package com.tuotiansudai.mq.consumer.loan;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.enums.ExperienceBillBusinessType;
 import com.tuotiansudai.enums.ExperienceBillOperationType;
 import com.tuotiansudai.enums.MessageEventType;
@@ -14,6 +13,7 @@ import com.tuotiansudai.mq.consumer.MessageConsumer;
 import com.tuotiansudai.service.ExperienceBillService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.JsonConverter;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,18 +29,17 @@ public class ExperienceAssigningMessageConsumer implements MessageConsumer {
 
     private final static Logger logger = LoggerFactory.getLogger(ExperienceAssigningMessageConsumer.class);
 
+    private static final String NEWMAN_TYRANT_GRANTED_LIST = "NEWMAN_TYRANT_GRANTED_LIST";
+
+    private final int lifeSecond = 10378000;
+
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
+
     @Autowired
     private ExperienceBillService experienceBillService;
 
     @Autowired
-    private RedisWrapperClient redisWrapperClient;
-
-    @Autowired
     private MQWrapperClient mqWrapperClient;
-
-    private static final String NEWMAN_TYRANT_GRANTED_LIST = "NEWMAN_TYRANT_GRANTED_LIST";
-
-    private int lifeSecond = 10378000;
 
     @Override
     public MessageQueue queue() {

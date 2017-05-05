@@ -11,7 +11,6 @@ dependencies {
     compile "org.springframework:spring-context-support:$springVersion"
     compile "org.slf4j:slf4j-api:$slf4jVersion"
     compile "com.aliyun.mns:aliyun-sdk-mns:1.1.7.1"
-    compile "redis.clients:jedis:2.8.2"
 }
 
 task initMQ(dependsOn: ':ttsd-config:classes', type: JavaExec) {

@@ -54,9 +54,6 @@ public class TransferServiceTest {
     private AccountMapper accountMapper;
 
     @Autowired
-    private IdGenerator idGenerator;
-
-    @Autowired
     private TransferService transferService;
 
     @Autowired
@@ -158,11 +155,11 @@ public class TransferServiceTest {
     }
 
     private void createInvestRepay(long investId) {
-        InvestRepayModel model1 = new InvestRepayModel(idGenerator.generate(), investId, 1, 0, 100, 10, strToDate("2016-02-29 23:59:59"), RepayStatus.COMPLETE);
-        InvestRepayModel model2 = new InvestRepayModel(idGenerator.generate(), investId, 2, 0, 100, 10, strToDate("2016-03-29 23:59:59"), RepayStatus.REPAYING);
-        InvestRepayModel model3 = new InvestRepayModel(idGenerator.generate(), investId, 3, 0, 100, 10, strToDate("2016-04-29 23:59:59"), RepayStatus.REPAYING);
-        InvestRepayModel model4 = new InvestRepayModel(idGenerator.generate(), investId, 4, 0, 100, 10, strToDate("2016-05-29 23:59:59"), RepayStatus.REPAYING);
-        InvestRepayModel model5 = new InvestRepayModel(idGenerator.generate(), investId, 5, 10000, 100, 10, strToDate("2016-06-29 23:59:59"), RepayStatus.REPAYING);
+        InvestRepayModel model1 = new InvestRepayModel(IdGenerator.generate(), investId, 1, 0, 100, 10, strToDate("2016-02-29 23:59:59"), RepayStatus.COMPLETE);
+        InvestRepayModel model2 = new InvestRepayModel(IdGenerator.generate(), investId, 2, 0, 100, 10, strToDate("2016-03-29 23:59:59"), RepayStatus.REPAYING);
+        InvestRepayModel model3 = new InvestRepayModel(IdGenerator.generate(), investId, 3, 0, 100, 10, strToDate("2016-04-29 23:59:59"), RepayStatus.REPAYING);
+        InvestRepayModel model4 = new InvestRepayModel(IdGenerator.generate(), investId, 4, 0, 100, 10, strToDate("2016-05-29 23:59:59"), RepayStatus.REPAYING);
+        InvestRepayModel model5 = new InvestRepayModel(IdGenerator.generate(), investId, 5, 10000, 100, 10, strToDate("2016-06-29 23:59:59"), RepayStatus.REPAYING);
         List<InvestRepayModel> investRepayModels = new ArrayList<InvestRepayModel>();
         investRepayModels.add(model1);
         investRepayModels.add(model2);
@@ -269,12 +266,12 @@ public class TransferServiceTest {
 
     @Test
     public void shouldGenerateTransferableInvestIsSuccess() {
-        long loanId = idGenerator.generate();
+        long loanId = IdGenerator.generate();
         UserModel investorModel = createUserByUserId("investorModelRound2Test");
         UserModel loanerModel = createUserByUserId("loanerModelRound2Test");
         LoanModel loanModel = createLoanByUserId(loanerModel.getLoginName(), loanId);
         this.createLoanDetailsByLoanId(loanModel);
-        InvestModel investModel = createInvests(investorModel.getLoginName(), loanId, idGenerator.generate());
+        InvestModel investModel = createInvests(investorModel.getLoginName(), loanId, IdGenerator.generate());
         LoanRepayModel loanRepayModel = getFakeLoanRepayModel(loanModel, 1, RepayStatus.REPAYING, new DateTime().plusDays(6).toDate(), new DateTime().plusDays(6).toDate(), 1000l, 2000l, 3000l, 4000l);
         loanRepayMapper.create(Lists.newArrayList(loanRepayModel));
         InvestRepayModel investRepayModel = getFakeInvestRepayModel(investModel, 1, RepayStatus.REPAYING, new DateTime().plusDays(6).toDate(), new DateTime().plusDays(6).toDate(), 0l, 2000l, 3000l, 4000l);
@@ -305,7 +302,7 @@ public class TransferServiceTest {
                                                  long defaultInterest
     ) {
         LoanRepayModel fakeLoanRepayModel = new LoanRepayModel();
-        fakeLoanRepayModel.setId(idGenerator.generate());
+        fakeLoanRepayModel.setId(IdGenerator.generate());
         fakeLoanRepayModel.setPeriod(period);
         fakeLoanRepayModel.setStatus(repayStatus);
         fakeLoanRepayModel.setLoanId(fakeLoanModel.getId());
@@ -329,7 +326,7 @@ public class TransferServiceTest {
                                                      long defaultInterest
     ) {
         InvestRepayModel fakeInvestRepayModel = new InvestRepayModel();
-        fakeInvestRepayModel.setId(idGenerator.generate());
+        fakeInvestRepayModel.setId(IdGenerator.generate());
         fakeInvestRepayModel.setPeriod(period);
         fakeInvestRepayModel.setStatus(repayStatus);
         fakeInvestRepayModel.setInvestId(fakeInvestModel.getId());

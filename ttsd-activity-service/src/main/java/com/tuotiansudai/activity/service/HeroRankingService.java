@@ -6,7 +6,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.activity.repository.dto.MysteriousPrizeDto;
 import com.tuotiansudai.activity.repository.model.ActivityCategory;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
@@ -14,6 +13,7 @@ import com.tuotiansudai.repository.model.HeroRankingView;
 import com.tuotiansudai.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.MobileEncryptor;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -32,6 +32,8 @@ public class HeroRankingService {
 
     static Logger logger = Logger.getLogger(HeroRankingService.class);
 
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
+
     @Autowired
     private UserMapper userMapper;
 
@@ -40,9 +42,6 @@ public class HeroRankingService {
 
     @Autowired
     private TransferApplicationMapper transferApplicationMapper;
-
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
 
     private final static String MYSTERIOUSREDISKEY = "console:mysteriousPrize";
 

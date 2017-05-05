@@ -1,17 +1,6 @@
 package com.tuotiansudai.service;
 
-import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.dto.ArticleStatus;
-import com.tuotiansudai.dto.LiCaiQuanArticleDto;
-import com.tuotiansudai.repository.mapper.LicaiquanArticleMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.ArticleSectionType;
-import com.tuotiansudai.repository.model.LicaiquanArticleModel;
-import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.repository.model.UserStatus;
-import com.tuotiansudai.util.IdGenerator;
-import org.apache.commons.lang.RandomStringUtils;
-import org.joda.time.DateTime;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,11 +9,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.Map;
-import java.util.UUID;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -34,8 +19,7 @@ public class LiCaiQuanArticleServiceTest {
     @Autowired
     private LiCaiQuanArticleService liCaiQuanArticleService;
 
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
+    private RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
     private final static String articleCommentRedisKey = "console:article:comment";
     private final static String articleLikeCounterKey = "console:article:likeCounter";

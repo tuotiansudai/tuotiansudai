@@ -26,7 +26,6 @@ dependencies {
             'com.google.guava:guava:21.0',
             'org.apache.commons:commons-lang3:3.4',
             'org.apache.commons:commons-collections4:4.0',
-            'redis.clients:jedis:2.7.3',
             'org.hibernate:hibernate-validator:5.2.4.Final',
             'com.squareup.okhttp:okhttp:2.4.0',
             'com.zaxxer:HikariCP:2.4.7',

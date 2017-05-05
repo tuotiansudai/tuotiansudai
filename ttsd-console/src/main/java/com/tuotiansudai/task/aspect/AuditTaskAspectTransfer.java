@@ -3,19 +3,19 @@ package com.tuotiansudai.task.aspect;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.log.service.AuditLogService;
-import com.tuotiansudai.repository.mapper.UserRoleMapper;
+import com.tuotiansudai.dto.TransferRuleDto;
+import com.tuotiansudai.enums.OperationType;
 import com.tuotiansudai.enums.Role;
+import com.tuotiansudai.log.service.AuditLogService;
+import com.tuotiansudai.repository.mapper.TransferRuleMapper;
+import com.tuotiansudai.repository.mapper.UserRoleMapper;
+import com.tuotiansudai.repository.model.TransferRuleModel;
 import com.tuotiansudai.repository.model.UserRoleModel;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.task.OperationTask;
-import com.tuotiansudai.enums.OperationType;
 import com.tuotiansudai.task.TaskConstant;
 import com.tuotiansudai.task.TaskType;
-import com.tuotiansudai.dto.TransferRuleDto;
-import com.tuotiansudai.repository.mapper.TransferRuleMapper;
-import com.tuotiansudai.repository.model.TransferRuleModel;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -30,8 +30,7 @@ import java.util.Date;
 @Component
 public class AuditTaskAspectTransfer {
 
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
     @Autowired
     private TransferRuleMapper transferRuleMapper;

@@ -1,7 +1,6 @@
 package com.tuotiansudai.paywrapper.service;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
@@ -17,7 +16,7 @@ import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanRepayMapper;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.util.AmountTransfer;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,6 +28,8 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.Date;
 import java.util.List;
 
@@ -61,12 +62,6 @@ public class AdvanceRepayPaybackInvestMockTest {
     private AccountMapper accountMapper;
 
     @Mock
-    private MembershipModel membershipModel;
-
-    @Mock
-    private AmountTransfer amountTransfer;
-
-    @Mock
     private PaySyncClient paySyncClient;
 
     @Mock
@@ -76,8 +71,14 @@ public class AdvanceRepayPaybackInvestMockTest {
     private RedisWrapperClient redisWrapperClient;
 
     @Before
-    public void init() {
+    public void init() throws Exception {
         MockitoAnnotations.initMocks(this);
+        Field redisWrapperClientField = this.advanceRepayService.getClass().getDeclaredField("redisWrapperClient");
+        redisWrapperClientField.setAccessible(true);
+        Field modifiersField = Field.class.getDeclaredField("modifiers");
+        modifiersField.setAccessible(true);
+        modifiersField.setInt(redisWrapperClientField, redisWrapperClientField.getModifiers() & ~Modifier.FINAL);
+        redisWrapperClientField.set(this.advanceRepayService, this.redisWrapperClient);
     }
 
     @Test
