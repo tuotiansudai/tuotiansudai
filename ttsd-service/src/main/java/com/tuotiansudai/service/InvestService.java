@@ -46,4 +46,6 @@ public interface InvestService {
     List<InvestModel> findContractFailInvest(long loanId);
 
     boolean isNewUserForWechatLottery(String loginName);
+
+    boolean isFirstInvest(String loginName, Date investTime);
 }

@@ -530,4 +530,10 @@ public class InvestServiceImpl implements InvestService {
         return count <= 0;
     }
 
+    @Override
+    public boolean isFirstInvest(String loginName, Date investTime) {
+        int count = investMapper.countInvestBeforeDate(loginName, investTime);
+        return count == 1;
+    }
+
 }

@@ -1052,7 +1052,7 @@
     </select>
 
     <select id="countInvestBeforeDate" resultType="int" parameterType="map">
-        select count(1) from invest where login_name = #{loginName} and trading_time &lt; #{datePoint}
+        select count(1) from invest where login_name = #{loginName} and status = 'SUCCESS' and loan_id > 1 and trading_time &lt;= #{datePoint}
     </select>
 
     <select id="findFirstInvestAmountByLoginName" parameterType="map" resultMap="investResultMap">

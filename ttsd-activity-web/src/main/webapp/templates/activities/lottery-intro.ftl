@@ -18,10 +18,10 @@
 				<span>一重礼 投资送现金</span>
 			</h3>
 			<div class="tip-item">
-				在活动期间，凡新手用户关注拓天速贷微信服务号，<span>通过微信服务号投资直投项目</span>（不含体新手体验和转让项目），单笔投资达到指定金额，可获得不同等额的现金奖励。
+				在活动期间，凡新手用户关注拓天速贷微信服务号，<span>通过微信服务号投资直投项目</span>（不含体新手体验和转让项目），首笔投资达到指定金额，可获得不同等额的现金奖励。
 			</div>
 			<dl class="intro-item">
-				<dt><span>单笔投资金额</span><span>现金奖励</span></dt>
+				<dt><span>首笔投资金额</span><span>现金奖励</span></dt>
 				<dd><span class="left-item">5000元</span><span class="right-item">18元</span></dd>
 				<dd><span class="left-item">10000元</span><span class="right-item">38元</span></dd>
 				<dd><span class="left-item">20000元</span><span class="right-item">88元</span></dd>
