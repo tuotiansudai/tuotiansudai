@@ -40,8 +40,9 @@ public class InvestSuccessMembershipUpdateMessageConsumerTest {
         final ArgumentCaptor<String> loginNameCaptor = ArgumentCaptor.forClass(String.class);
         final ArgumentCaptor<Long> amountCaptor = ArgumentCaptor.forClass(Long.class);
         final ArgumentCaptor<Long> investIdCaptor = ArgumentCaptor.forClass(Long.class);
+        final ArgumentCaptor<String> loanNameCaptor = ArgumentCaptor.forClass(String.class);
 
-        doNothing().when(membershipInvestService).afterInvestSuccess(loginNameCaptor.capture(), amountCaptor.capture(), investIdCaptor.capture(), "测试标的");
+        doNothing().when(membershipInvestService).afterInvestSuccess(loginNameCaptor.capture(), amountCaptor.capture(), investIdCaptor.capture(), loanNameCaptor.capture());
 
         try {
             consumer.consume(JsonConverter.writeValueAsString(investSuccessMessage));
