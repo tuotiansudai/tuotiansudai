@@ -21,8 +21,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-@Controller
-@RequestMapping(value = "/activity/app-share")
+
 public class AppShareController {
 
     @Autowired

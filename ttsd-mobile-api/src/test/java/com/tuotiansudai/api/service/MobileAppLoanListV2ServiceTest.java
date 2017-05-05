@@ -39,8 +39,6 @@ public class MobileAppLoanListV2ServiceTest extends ServiceTestBase {
     @Autowired
     private InvestMapper investMapper;
     @Autowired
-    private IdGenerator idGenerator;
-    @Autowired
     private MobileAppLoanListV2ServiceImpl mobileAppLoanListV2Service;
     @Autowired
     private UserMapper userMapper;
@@ -127,7 +125,7 @@ public class MobileAppLoanListV2ServiceTest extends ServiceTestBase {
     }
 
     private InvestModel getInvestModel(String loginName, long loanId) {
-        InvestModel investModel = new InvestModel(idGenerator.generate(), loanId, null, 1, loginName, new Date(), Source.WEB, null, 0.1);
+        InvestModel investModel = new InvestModel(IdGenerator.generate(), loanId, null, 1, loginName, new Date(), Source.WEB, null, 0.1);
         investModel.setStatus(InvestStatus.SUCCESS);
         return investModel;
     }
@@ -146,7 +144,7 @@ public class MobileAppLoanListV2ServiceTest extends ServiceTestBase {
 
     private LoanModel getFakeLoan(String loanerLoginName, ActivityType activityType, ProductType productType, LoanStatus loanStatus) {
         LoanModel fakeLoanModel = new LoanModel();
-        fakeLoanModel.setId(idGenerator.generate());
+        fakeLoanModel.setId(IdGenerator.generate());
         fakeLoanModel.setName(loanerLoginName);
         fakeLoanModel.setLoanerLoginName(loanerLoginName);
         fakeLoanModel.setLoanerUserName(loanerLoginName);

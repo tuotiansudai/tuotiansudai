@@ -35,9 +35,6 @@ public class MobileAppNodeListServiceTest extends ServiceTestBase{
     @Mock
     private AnnounceMapper announceMapper;
 
-    @Autowired
-    private IdGenerator idGenerator;
-
     @Mock
     private PageValidUtils pageValidUtils;
 
@@ -65,7 +62,7 @@ public class MobileAppNodeListServiceTest extends ServiceTestBase{
 
     private AnnounceModel fakeAnnounceModel(){
         AnnounceModel announceModel = new AnnounceModel();
-        announceModel.setId(idGenerator.generate());
+        announceModel.setId(IdGenerator.generate());
         announceModel.setTitle("tile");
         announceModel.setContent("content");
         announceModel.setCreatedTime(new Date());

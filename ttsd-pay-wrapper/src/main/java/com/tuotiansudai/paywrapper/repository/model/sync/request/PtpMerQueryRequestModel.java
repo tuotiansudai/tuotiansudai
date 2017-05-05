@@ -1,5 +1,7 @@
 package com.tuotiansudai.paywrapper.repository.model.sync.request;
 
+import com.tuotiansudai.enums.SyncUmPayService;
+
 import java.util.Map;
 
 public class PtpMerQueryRequestModel extends BaseSyncRequestModel {
@@ -9,8 +11,7 @@ public class PtpMerQueryRequestModel extends BaseSyncRequestModel {
     private String accountType;
 
     public PtpMerQueryRequestModel() {
-        super();
-        this.service = "ptp_mer_query";
+        this.service = SyncUmPayService.PTP_MER_QUERY.getServiceName();
         this.queryMerId = UMP_PROPS.getProperty("mer_id");
         this.accountType = "01"; //现金账户
     }

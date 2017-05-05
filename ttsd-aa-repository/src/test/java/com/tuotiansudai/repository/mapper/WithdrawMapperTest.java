@@ -3,6 +3,7 @@ package com.tuotiansudai.repository.mapper;
 import com.tuotiansudai.enums.WithdrawStatus;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,16 +30,13 @@ public class WithdrawMapperTest {
     @Autowired
     private WithdrawMapper withdrawMapper;
 
-    @Autowired
-    private IdGenerator idGenerator;
-
     @Test
     public void shouldCreateWithdraw() throws Exception {
         UserModel fakeUserModel = this.getFakeUserModel();
         userMapper.create(fakeUserModel);
 
         BankCardModel bankCardModel = new BankCardModel();
-        bankCardModel.setId(idGenerator.generate());
+        bankCardModel.setId(IdGenerator.generate());
         bankCardModel.setLoginName(fakeUserModel.getLoginName());
         bankCardModel.setBankCode("code");
         bankCardModel.setCardNumber("number");
@@ -46,7 +44,7 @@ public class WithdrawMapperTest {
         bankCardMapper.create(bankCardModel);
 
         WithdrawModel withdrawModel = new WithdrawModel();
-        withdrawModel.setId(idGenerator.generate());
+        withdrawModel.setId(IdGenerator.generate());
         withdrawModel.setBankCardId(bankCardModel.getId());
         withdrawModel.setLoginName(fakeUserModel.getLoginName());
         withdrawModel.setAmount(1L);
@@ -66,7 +64,7 @@ public class WithdrawMapperTest {
         userMapper.create(fakeUserModel);
 
         BankCardModel bankCardModel = new BankCardModel();
-        bankCardModel.setId(idGenerator.generate());
+        bankCardModel.setId(IdGenerator.generate());
         bankCardModel.setLoginName(fakeUserModel.getLoginName());
         bankCardModel.setBankCode("code");
         bankCardModel.setCardNumber("number");
@@ -74,7 +72,7 @@ public class WithdrawMapperTest {
         bankCardMapper.create(bankCardModel);
 
         WithdrawModel withdrawModel = new WithdrawModel();
-        withdrawModel.setId(idGenerator.generate());
+        withdrawModel.setId(IdGenerator.generate());
         withdrawModel.setBankCardId(bankCardModel.getId());
         withdrawModel.setLoginName(fakeUserModel.getLoginName());
         withdrawModel.setAmount(1L);
@@ -95,7 +93,7 @@ public class WithdrawMapperTest {
         userModelTest.setLoginName("helloworld");
         userModelTest.setPassword("123abc");
         userModelTest.setEmail("12345@abc.com");
-        userModelTest.setMobile("13900000000");
+        userModelTest.setMobile(RandomStringUtils.randomNumeric(11));
         userModelTest.setRegisterTime(new Date());
         userModelTest.setStatus(UserStatus.ACTIVE);
         userModelTest.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));

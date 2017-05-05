@@ -35,9 +35,6 @@ import static org.junit.Assert.*;
 public class PointTaskServiceTest {
 
     @Autowired
-    private IdGenerator idGenerator;
-
-    @Autowired
     private UserMapper userMapper;
 
     @Autowired
@@ -323,7 +320,7 @@ public class PointTaskServiceTest {
 
     private InvestModel createFakeInvest(String loginName, long loanId, long amount) {
         InvestModel investModel = new InvestModel();
-        investModel.setId(idGenerator.generate());
+        investModel.setId(IdGenerator.generate());
         investModel.setLoanId(loanId);
         investModel.setLoginName(loginName);
         investModel.setAmount(amount);
@@ -355,7 +352,7 @@ public class PointTaskServiceTest {
     private LoanModel createFakeLoan(ProductType productType) {
         UserModel loaner = this.createFakeUser("loaner", null);
         LoanDto loanDto = new LoanDto();
-        loanDto.setId(idGenerator.generate());
+        loanDto.setId(IdGenerator.generate());
         loanDto.setLoanerLoginName("loaner");
         loanDto.setLoanerUserName("借款人");
         loanDto.setLoanerIdentityNumber("id");

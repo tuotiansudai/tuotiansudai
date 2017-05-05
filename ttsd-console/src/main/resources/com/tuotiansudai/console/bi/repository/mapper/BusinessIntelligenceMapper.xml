@@ -1129,6 +1129,7 @@
                           on uu.login_name=ii.login_name
                         where
                           ii.status='SUCCESS'
+                          and ii.loan_id > 1
                           and ii.created_time between #{startTime} and #{endTime}
                         group by province
                         order by amount desc
@@ -1139,6 +1140,7 @@
             </otherwise>
         </choose>
         and i.status='SUCCESS'
+        and i.loan_id > 1
         and i.created_time between #{startTime} and #{endTime}
         <if test="channel !=null and channel != '' and channel != '其他' ">
             and u.channel = #{channel}
@@ -1343,6 +1345,7 @@
                     on uu.login_name=ii.login_name
                     where
                         ii.status='SUCCESS'
+                        and ii.loan_id > 1
                         and ii.created_time between #{startTime} and #{endTime}
                         <if test="isTransfer != null">
                             <if test="isTransfer == true">
@@ -1359,6 +1362,7 @@
                 where temp.province=u.province
             )
             and i.status='SUCCESS'
+            and i.loan_id > 1
             and i.created_time between #{startTime} and #{endTime}
             <if test="channel !=null and channel != '' and channel != '其他' ">
                 and u.channel = #{channel}

@@ -212,10 +212,6 @@
     <!--for test-->
     <bean id="httpServletRequest" class="org.springframework.mock.web.MockHttpServletRequest"/>
 
-    <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
-        <property name="maxTotal" value="300"/>
-    </bean>
-
     <bean id="okHttpClient" class="com.squareup.okhttp.OkHttpClient" />
 
     <bean class="com.tuotiansudai.mq.config.MQProducerConfig"/>

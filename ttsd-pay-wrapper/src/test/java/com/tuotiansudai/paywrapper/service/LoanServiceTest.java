@@ -3,14 +3,12 @@ package com.tuotiansudai.paywrapper.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.job.JobManager;
 import com.tuotiansudai.job.JobType;
-import com.tuotiansudai.job.LoanOutSuccessHandleJob;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.client.model.MessageTopic;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
@@ -36,6 +34,7 @@ import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.util.RedisWrapperClient;
 import com.umpay.api.exception.ReqDataException;
 import org.joda.time.DateTime;
 import org.junit.Before;
@@ -51,6 +50,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -115,8 +116,15 @@ public class LoanServiceTest {
     private MQWrapperClient mqWrapperClient;
 
     @Before
-    public void init() {
+    public void init() throws Exception {
         MockitoAnnotations.initMocks(this);
+
+        Field redisWrapperClientField = this.loanService.getClass().getDeclaredField("redisWrapperClient");
+        redisWrapperClientField.setAccessible(true);
+        Field modifiersField = Field.class.getDeclaredField("modifiers");
+        modifiersField.setAccessible(true);
+        modifiersField.setInt(redisWrapperClientField, redisWrapperClientField.getModifiers() & ~Modifier.FINAL);
+        redisWrapperClientField.set(this.loanService, this.redisWrapperClient);
     }
 
     @Test
@@ -211,7 +219,6 @@ public class LoanServiceTest {
         when(redisWrapperClient.hset(anyString(), anyString(), anyString())).thenReturn(1l);
         when(accountMapper.findByLoginName(anyString())).thenReturn(accountModel);
         when(paySyncClient.send(eq(MerUpdateProjectMapper.class), any(MerUpdateProjectRequestModel.class), eq(MerUpdateProjectResponseModel.class))).thenReturn(merUpdateProjectResponseModel);
-        when(jobManager.newJob(any(JobType.class), eq(LoanOutSuccessHandleJob.class))).thenReturn(triggeredJobBuilder);
         doNothing().when(mqWrapperClient).sendMessage(any(MessageQueue.class), anyObject());
 
         BaseDto<PayDataDto> baseDto1 = loanService.loanOut(loanModel.getId());

@@ -34,8 +34,6 @@ public class SystemRechargeServiceImpl implements SystemRechargeService {
 
     static Logger logger = Logger.getLogger(SystemRechargeServiceImpl.class);
     @Autowired
-    private IdGenerator idGenerator;
-    @Autowired
     private AccountMapper accountMapper;
     @Autowired
     private PayAsyncClient payAsyncClient;
@@ -54,7 +52,7 @@ public class SystemRechargeServiceImpl implements SystemRechargeService {
     public BaseDto<PayFormDataDto> systemRecharge(SystemRechargeDto dto) {
         UserModel userModel = userMapper.findByMobile(dto.getMobile());
         SystemRechargeModel systemRechargeModel = new SystemRechargeModel(dto, userModel.getLoginName());
-        systemRechargeModel.setId(idGenerator.generate());
+        systemRechargeModel.setId(IdGenerator.generate());
 
         AccountModel accountModel = accountMapper.findByLoginName(systemRechargeModel.getLoginName());
 

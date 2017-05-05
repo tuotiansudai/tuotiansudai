@@ -28,15 +28,11 @@ public class MobileAppRetrievePasswordServiceTest extends ServiceTestBase {
     private MobileAppRetrievePasswordServiceImpl mobileAppRetrievePasswordService;
 
     @Mock
-    private UserService userService;
-
-    @Mock
     private SmsCaptchaService smsCaptchaService;
+
     @Mock
     private UserMapper userMapper;
 
-    @Autowired
-    private IdGenerator idGenerator;
     @Mock
     private MyShaPasswordEncoder myShaPasswordEncoder;
 
@@ -69,7 +65,7 @@ public class MobileAppRetrievePasswordServiceTest extends ServiceTestBase {
 
     private UserModel getFakeUser(){
         UserModel user1 = new UserModel();
-        user1.setId(idGenerator.generate());
+        user1.setId(IdGenerator.generate());
         user1.setLoginName("test1");
         user1.setPassword("123");
         user1.setMobile("13900000000");

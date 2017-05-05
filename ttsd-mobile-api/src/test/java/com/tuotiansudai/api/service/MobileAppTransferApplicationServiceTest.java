@@ -60,8 +60,6 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
     private LoanRepayMapper loanRepayMapper;
     @Mock
     private AccountMapper accountMapper;
-    @Autowired
-    private IdGenerator idGenerator;
     @Mock
     private TransferRuleMapper transferRuleMapper;
     @Mock
@@ -82,7 +80,7 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
         transferApplicationRequestDto.setPageSize(10);
         transferApplicationRequestDto.setIndex(1);
         transferApplicationRequestDto.setTransferStatus(Lists.newArrayList(TransferStatus.TRANSFERRING));
-        LoanModel loanModel = createLoanByUserId("test", idGenerator.generate());
+        LoanModel loanModel = createLoanByUserId("test", IdGenerator.generate());
         InvestRepayModel investRepayModel = createInvestRepayModel(transferApplicationRecordDto.getTransferInvestId(), loanModel.getPeriods());
         List<TransferApplicationRecordView> transferApplicationRecordDtos = Lists.newArrayList(transferApplicationRecordDto);
 
@@ -146,8 +144,8 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
 
     private TransferApplicationRecordView createTransferApplicationRecordView() {
         TransferApplicationRecordView transferApplicationRecordView = new TransferApplicationRecordView();
-        transferApplicationRecordView.setLoanId(idGenerator.generate());
-        transferApplicationRecordView.setTransferInvestId(idGenerator.generate());
+        transferApplicationRecordView.setLoanId(IdGenerator.generate());
+        transferApplicationRecordView.setTransferInvestId(IdGenerator.generate());
         transferApplicationRecordView.setName("name");
         transferApplicationRecordView.setTransferAmount(1000);
         transferApplicationRecordView.setInvestAmount(1200);
@@ -162,7 +160,7 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
 
     @Test
     public void shouldTransferApplyIsSuccess() throws Exception {
-        long loanId = idGenerator.generate();
+        long loanId = IdGenerator.generate();
         TransferRuleModel transferRuleModel = new TransferRuleModel();
         transferRuleModel.setLevelOneFee(0.01);
         transferRuleModel.setLevelOneLower(1);
@@ -200,7 +198,7 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
 
     @Test
     public void shouldTransferApplyValidIsSuccess() throws Exception {
-        long loanId = idGenerator.generate();
+        long loanId = IdGenerator.generate();
         TransferRuleModel transferRuleModel = new TransferRuleModel();
         transferRuleModel.setLevelOneFee(0.01);
         transferRuleModel.setLevelOneLower(1);
@@ -249,8 +247,8 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
 
     @Test
     public void shouldTransferPurchaseIsSuccess() throws Exception {
-        long transferApplicationId = idGenerator.generate();
-        long investId = idGenerator.generate();
+        long transferApplicationId = IdGenerator.generate();
+        long investId = IdGenerator.generate();
 
         AccountModel accountModel = createAccountByUserId("testuser");
         TransferPurchaseRequestDto transferPurchaseRequestDto = new TransferPurchaseRequestDto();
@@ -301,7 +299,7 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
 
     @Test
     public void shouldTransferApplyQueryIsSuccess() {
-        long loanId = idGenerator.generate();
+        long loanId = IdGenerator.generate();
         UserModel userModel = createUserByUserId("testuser");
         LoanModel loanModel = createLoanByUserId("testuser", loanId);
         InvestModel investModel = createInvest("testuser", loanId);
@@ -426,7 +424,7 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
 
     private TransferApplicationModel createTransferAppLication(String name, long loanId, long transferInvestId, long investId,int period, String loginName, TransferStatus transferStatus) {
         TransferApplicationModel transferApplicationModel = new TransferApplicationModel();
-        transferApplicationModel.setId(idGenerator.generate());
+        transferApplicationModel.setId(IdGenerator.generate());
         transferApplicationModel.setName(name);
         transferApplicationModel.setLoanId(loanId);
         transferApplicationModel.setTransferInvestId(transferInvestId);
@@ -444,7 +442,7 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
     }
 
     private InvestModel createInvest(String loginName, long loanId) {
-        InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, 10000, loginName, new Date(), Source.WEB, null, 0.1);
+        InvestModel model = new InvestModel(IdGenerator.generate(), loanId, null, 10000, loginName, new Date(), Source.WEB, null, 0.1);
         model.setStatus(com.tuotiansudai.repository.model.InvestStatus.SUCCESS);
         return model;
     }
@@ -452,7 +450,7 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
 
     private InvestRepayModel createInvestRepay(String loginName, long InvestId, long corpus, int period) {
         InvestRepayModel investRepayModel = new InvestRepayModel();
-        investRepayModel.setId(idGenerator.generate());
+        investRepayModel.setId(IdGenerator.generate());
         investRepayModel.setInvestId(InvestId);
         investRepayModel.setCorpus(corpus);
         investRepayModel.setExpectedInterest(12);
@@ -490,7 +488,7 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
                                                  long defaultInterest
     ) {
         LoanRepayModel fakeLoanRepayModel = new LoanRepayModel();
-        fakeLoanRepayModel.setId(idGenerator.generate());
+        fakeLoanRepayModel.setId(IdGenerator.generate());
         fakeLoanRepayModel.setPeriod(period);
         fakeLoanRepayModel.setStatus(repayStatus);
         fakeLoanRepayModel.setLoanId(fakeLoanModel.getId());

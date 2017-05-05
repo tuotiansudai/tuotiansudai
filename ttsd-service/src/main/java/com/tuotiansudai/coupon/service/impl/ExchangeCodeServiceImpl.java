@@ -5,7 +5,6 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.collect.UnmodifiableIterator;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.repository.mapper.CouponMapper;
 import com.tuotiansudai.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.repository.model.CouponModel;
@@ -13,6 +12,7 @@ import com.tuotiansudai.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.coupon.service.ExchangeCodeService;
 import com.tuotiansudai.dto.BaseDataDto;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.log4j.Logger;
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
@@ -28,8 +28,7 @@ public class ExchangeCodeServiceImpl implements ExchangeCodeService {
 
     private static Logger logger = Logger.getLogger(ExchangeCodeServiceImpl.class);
 
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
     @Autowired
     private CouponMapper couponMapper;

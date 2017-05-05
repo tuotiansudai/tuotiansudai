@@ -33,8 +33,6 @@ public class MobileAppInvestCouponServiceTest extends ServiceTestBase {
     private MobileAppInvestCouponService mobileAppInvestCouponService;
     @Autowired
     private LoanMapper loanMapper;
-    @Autowired
-    private IdGenerator idGenerator;
 
     @Test
     public void shouldGetInvestCouponsIsSuccess() {
@@ -77,7 +75,7 @@ public class MobileAppInvestCouponServiceTest extends ServiceTestBase {
 
     private LoanModel getFakeLoan(LoanStatus loanStatus, ActivityType activityType, String agentLoginName) {
         LoanModel fakeLoanModel = new LoanModel();
-        fakeLoanModel.setId(idGenerator.generate());
+        fakeLoanModel.setId(IdGenerator.generate());
         fakeLoanModel.setName("loanName");
         fakeLoanModel.setLoanerLoginName("loanerLoginName");
         fakeLoanModel.setLoanerUserName("借款人");

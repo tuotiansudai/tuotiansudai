@@ -41,9 +41,6 @@ public abstract class BaseMapperTest {
     @Autowired
     private UserCouponMapper userCouponMapper;
 
-    @Autowired
-    private IdGenerator idGenerator;
-
     public UserModel createFakeUser(String loginName) {
         if (userMapper.findByLoginName(loginName) != null) {
             return userMapper.findByLoginName(loginName);
@@ -62,7 +59,7 @@ public abstract class BaseMapperTest {
 
     public LoanModel createFakeLoan(String loaner, ProductType productType, long amount, LoanStatus loanStatus) {
         LoanModel fakeLoanModel = new LoanModel();
-        fakeLoanModel.setId(idGenerator.generate());
+        fakeLoanModel.setId(IdGenerator.generate());
         fakeLoanModel.setName("Fake Loan");
         fakeLoanModel.setLoanerLoginName(userMapper.findByLoginName(loaner) != null ? loaner : createFakeUser(loaner).getLoginName());
         fakeLoanModel.setLoanerUserName("借款人");
@@ -90,7 +87,7 @@ public abstract class BaseMapperTest {
     }
 
     public InvestModel createFakeInvest(long loanId, long amount, String loginName) {
-        InvestModel fakeInvestModel = new InvestModel(idGenerator.generate(), loanId, null, amount, loginName, new Date(), Source.WEB, null, 0.1);
+        InvestModel fakeInvestModel = new InvestModel(IdGenerator.generate(), loanId, null, amount, loginName, new Date(), Source.WEB, null, 0.1);
         fakeInvestModel.setTradingTime(new Date());
         fakeInvestModel.setStatus(InvestStatus.SUCCESS);
         investMapper.create(fakeInvestModel);

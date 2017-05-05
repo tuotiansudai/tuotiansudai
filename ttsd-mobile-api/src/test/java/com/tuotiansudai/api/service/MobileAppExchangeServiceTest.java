@@ -3,16 +3,16 @@ package com.tuotiansudai.api.service;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.impl.MobileAppExchangeServiceImpl;
-import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.repository.mapper.CouponMapper;
-import com.tuotiansudai.repository.mapper.UserCouponMapper;
-import com.tuotiansudai.repository.model.CouponModel;
-import com.tuotiansudai.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.coupon.service.ExchangeCodeService;
 import com.tuotiansudai.enums.CouponType;
+import com.tuotiansudai.repository.mapper.CouponMapper;
+import com.tuotiansudai.repository.mapper.UserCouponMapper;
+import com.tuotiansudai.repository.model.CouponModel;
 import com.tuotiansudai.repository.model.ProductType;
+import com.tuotiansudai.repository.model.UserCouponModel;
 import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -38,9 +38,9 @@ public class MobileAppExchangeServiceTest extends ServiceTestBase{
     @Mock
     private CouponAssignmentService couponAssignmentService;
     @Mock
-    private RedisWrapperClient redisWrapperClient;
-    @Mock
     private UserCouponMapper userCouponMapper;
+    @Mock
+    private RedisWrapperClient redisWrapperClient;
 
 
     @Test

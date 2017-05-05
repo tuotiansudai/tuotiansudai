@@ -53,9 +53,6 @@ public class MobileAppLoanDetailV2ServiceTest extends ServiceTestBase{
     private LoanMapper loanMapper;
 
     @Autowired
-    private IdGenerator idGenerator;
-
-    @Autowired
     private LoanDetailsMapper loanDetailsMapper;
 
     @Autowired
@@ -97,7 +94,7 @@ public class MobileAppLoanDetailV2ServiceTest extends ServiceTestBase{
 
     private LoanDetailsModel createLoanDetails(long loanId){
         LoanDetailsModel loanDetailsModel = new LoanDetailsModel();
-        loanDetailsModel.setId(idGenerator.generate());
+        loanDetailsModel.setId(IdGenerator.generate());
         loanDetailsModel.setDeclaration("声明材料");
         loanDetailsModel.setExtraSource(Lists.newArrayList(Source.WEB));
         loanDetailsModel.setLoanId(loanId);
@@ -143,7 +140,7 @@ public class MobileAppLoanDetailV2ServiceTest extends ServiceTestBase{
         loanDto.setLoanerIdentityNumber("111111111111111111");
         loanDto.setAgentLoginName(agentLoginName);
         loanDto.setBasicRate("16.00");
-        loanDto.setId(idGenerator.generate());
+        loanDto.setId(IdGenerator.generate());
         loanDto.setProjectName("店铺资金周转");
         loanDto.setActivityRate("12");
         loanDto.setShowOnHome(true);

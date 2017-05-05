@@ -68,9 +68,5 @@
         <property name="basePackage" value="com.tuotiansudai.repository.mapper"/>
     </bean>
 
-    <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
-        <property name="maxTotal" value="300"/>
-    </bean>
-
     <bean class="com.tuotiansudai.mq.config.MQProducerConfig"/>
 </beans>

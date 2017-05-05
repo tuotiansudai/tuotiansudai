@@ -47,9 +47,6 @@ public class InvestRepayServiceTest {
     @Autowired
     private InvestRepayMapper investRepayMapper;
 
-    @Autowired
-    private IdGenerator idGenerator;
-
     private void createLoanByUserId(String userId, long loanId) {
         LoanDto loanDto = new LoanDto();
         loanDto.setLoanerLoginName(userId);
@@ -103,7 +100,7 @@ public class InvestRepayServiceTest {
 
     private void createInvestRepay(long investId, RepayStatus repayStatus, int period) {
         List<InvestRepayModel> investRepayModelList = Lists.newArrayList();
-        InvestRepayModel investRepayModel = new InvestRepayModel(idGenerator.generate(), investId, period, 100, 100, 100, new DateTime().withTimeAtStartOfDay().plusDays(1).minusSeconds(1).toDate(), repayStatus);
+        InvestRepayModel investRepayModel = new InvestRepayModel(IdGenerator.generate(), investId, period, 100, 100, 100, new DateTime().withTimeAtStartOfDay().plusDays(1).minusSeconds(1).toDate(), repayStatus);
         investRepayModel.setActualInterest(100);
         investRepayModel.setActualFee(100);
         investRepayModel.setDefaultInterest(100);
@@ -114,10 +111,10 @@ public class InvestRepayServiceTest {
 
     @Before
     public void init() throws Exception {
-        long loanId = idGenerator.generate();
+        long loanId = IdGenerator.generate();
         createUserByUserId("testuser123");
         createLoanByUserId("testuser123", loanId);
-        long investId = idGenerator.generate();
+        long investId = IdGenerator.generate();
         createInvest("testuser123", loanId, investId);
         createInvestRepay(investId, RepayStatus.COMPLETE, 1);
         createInvestRepay(investId,RepayStatus.OVERDUE,2);

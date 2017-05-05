@@ -13,8 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Date;
 
-@Controller
-@RequestMapping(path = "/activity/not-work")
+
 public class NotWorkController {
     @Autowired
     private NotWorkService notWorkService;

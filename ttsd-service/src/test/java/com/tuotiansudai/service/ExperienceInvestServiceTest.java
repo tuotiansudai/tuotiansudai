@@ -40,9 +40,6 @@ public class ExperienceInvestServiceTest {
     private UserMapper userMapper;
 
     @Autowired
-    private IdGenerator idGenerator;
-
-    @Autowired
     private ExperienceInvestService experienceInvestService;
 
     @Test
@@ -77,7 +74,7 @@ public class ExperienceInvestServiceTest {
     private LoanModel getFakeExperienceLoan() {
         UserModel loaner = this.getFakeUser("experienceLoaner");
         LoanModel fakeLoanModel = new LoanModel();
-        fakeLoanModel.setId(idGenerator.generate());
+        fakeLoanModel.setId(IdGenerator.generate());
         fakeLoanModel.setName("loanName");
         fakeLoanModel.setLoanAmount(10000L);
         fakeLoanModel.setLoanerLoginName(loaner.getLoginName());

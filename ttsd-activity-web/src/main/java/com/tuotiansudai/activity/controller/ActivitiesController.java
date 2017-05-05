@@ -6,7 +6,6 @@ import com.tuotiansudai.coupon.service.CouponAlertService;
 import com.tuotiansudai.dto.CouponAlertDto;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.MobileEncoder;
@@ -28,8 +27,7 @@ public class ActivitiesController {
     @Autowired
     private CouponAlertService couponAlertService;
 
-    @RequestMapping(path = "/{item:^recruit|money_tree|material-point|integral-draw|birth-month|rank-list-app|share-reward|app-download|landing-page|invest-achievement|landing-anxin|loan-hike|heavily-courtship|point-update|sign-check|open-spring|wx-register|divide-money|minsheng|guarantee|midsummer|lottery-intro$}", method = RequestMethod.GET)
-    //    midsummer: 助力升温，点燃仲夏活动:活动时间 5月12到5月25
+    @RequestMapping(path = "/{item:^money_tree|landing-page|invest-achievement|landing-anxin|point-update|sign-check|wx-register|divide-money|minsheng|guarantee|midsummer|lottery-intro$}", method = RequestMethod.GET)
 
     public ModelAndView activities(@PathVariable String item, HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView("/activities/" + item, "responsive", true);

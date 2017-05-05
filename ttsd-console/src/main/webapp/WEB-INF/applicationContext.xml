@@ -291,11 +291,6 @@
 
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
 
-    <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
-        <property name="maxTotal" value="${console.jedis.pool.maxTotal}"/>
-        <property name="maxWaitMillis" value="${common.jedis.pool.maxWaitMillis}"/>
-    </bean>
-
     <bean class="com.tuotiansudai.mq.config.MQProducerConfig"/>
 
     <bean class="com.tuotiansudai.rest.FeignClientConfig"/>

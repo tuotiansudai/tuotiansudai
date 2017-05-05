@@ -1,7 +1,6 @@
 package com.tuotiansudai.paywrapper.service;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
@@ -9,13 +8,14 @@ import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.loanout.impl.CouponRepayServiceImpl;
 import com.tuotiansudai.paywrapper.repository.mapper.TransferMapper;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.SyncRequestStatus;
-import com.tuotiansudai.paywrapper.repository.model.sync.request.TransferRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.async.request.TransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.TransferResponseModel;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.InterestCalculator;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.commons.collections.CollectionUtils;
 import org.joda.time.DateTime;
 import org.junit.Before;
@@ -25,12 +25,13 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
@@ -59,9 +60,6 @@ public class CouponRepayServiceTest {
     @Mock
     private LoanRepayMapper loanRepayMapper;
 
-    @Autowired
-    private IdGenerator idGenerator;
-
     @Mock
     private LoanMapper loanMapper;
 
@@ -84,13 +82,7 @@ public class CouponRepayServiceTest {
     private PaySyncClient paySyncClient;
 
     @Mock
-    private AmountTransfer amountTransfer;
-
-    @Mock
     private SystemBillService systemBillService;
-
-    @Mock
-    private UserBillMapper userBillMapper;
 
     @Mock
     private RedisWrapperClient redisWrapperClient;
@@ -98,20 +90,27 @@ public class CouponRepayServiceTest {
     private final static String REPAY_REDIS_KEY_TEMPLATE = "COUPON_REPAY:{0}";
 
     @Before
-    public void init() {
+    public void init() throws Exception {
         MockitoAnnotations.initMocks(this);
+
+        Field redisWrapperClientField = this.couponRepayService.getClass().getDeclaredField("redisWrapperClient");
+        redisWrapperClientField.setAccessible(true);
+        Field modifiersField = Field.class.getDeclaredField("modifiers");
+        modifiersField.setAccessible(true);
+        modifiersField.setInt(redisWrapperClientField, redisWrapperClientField.getModifiers() & ~Modifier.FINAL);
+        redisWrapperClientField.set(this.couponRepayService, this.redisWrapperClient);
     }
 
     @Test
     public void shouldNormalRepayCouponRepayIsComplete() throws PayException, AmountTransferException {
         UserModel userModel = mockUser("testCouponRepay", "13900880000", "12311@abc");
         LoanModel loanModel = fakeLoanModel(userModel.getLoginName());
-        LoanRepayModel loanRepay = this.getFakeLoanRepayModel(idGenerator.generate(), loanModel.getId(), 1, 0, 100000, new DateTime().withMillisOfSecond(0).toDate(), new DateTime().withMillisOfSecond(0).toDate(), RepayStatus.REPAYING);
+        LoanRepayModel loanRepay = this.getFakeLoanRepayModel(IdGenerator.generate(), loanModel.getId(), 1, 0, 100000, new DateTime().withMillisOfSecond(0).toDate(), new DateTime().withMillisOfSecond(0).toDate(), RepayStatus.REPAYING);
         List<LoanRepayModel> loanRepayModels = Lists.newArrayList(loanRepay);
         CouponModel couponModel1 = mockCoupon(userModel.getLoginName(), 200000l);
         CouponModel couponModel2 = mockCoupon(userModel.getLoginName(), 800000l);
         AccountModel accountModel = mockAccountModel(userModel.getLoginName());
-        InvestModel investModel = mockInvest(idGenerator.generate(), userModel.getLoginName(), 50000l);
+        InvestModel investModel = mockInvest(IdGenerator.generate(), userModel.getLoginName(), 50000l);
         UserCouponModel userCouponModel1 = mockUserCoupon(userModel.getLoginName(), couponModel1.getId(), loanModel.getId(), investModel.getId());
         UserCouponModel userCouponModel2 = mockUserCoupon(userModel.getLoginName(), couponModel2.getId(), loanModel.getId(), investModel.getId());
         List<UserCouponModel> userCouponModels = Lists.newArrayList(userCouponModel1,userCouponModel2);
@@ -163,11 +162,11 @@ public class CouponRepayServiceTest {
     public void shouldNormalRepayCouponRepayIsSuccess() throws PayException, AmountTransferException {
         UserModel userModel = mockUser("testCouponRepay", "13900880000", "12311@abc");
         LoanModel loanModel = fakeLoanModel(userModel.getLoginName());
-        LoanRepayModel loanRepay = this.getFakeLoanRepayModel(idGenerator.generate(), loanModel.getId(), 1, 0, 100000, new DateTime().withMillisOfSecond(0).toDate(), new DateTime().withMillisOfSecond(0).toDate(), RepayStatus.REPAYING);
+        LoanRepayModel loanRepay = this.getFakeLoanRepayModel(IdGenerator.generate(), loanModel.getId(), 1, 0, 100000, new DateTime().withMillisOfSecond(0).toDate(), new DateTime().withMillisOfSecond(0).toDate(), RepayStatus.REPAYING);
         List<LoanRepayModel> loanRepayModels = Lists.newArrayList(loanRepay);
         CouponModel couponModel = mockCoupon(userModel.getLoginName(), 200000l);
         AccountModel accountModel = mockAccountModel(userModel.getLoginName());
-        InvestModel investModel = mockInvest(idGenerator.generate(), userModel.getLoginName(), 50000l);
+        InvestModel investModel = mockInvest(IdGenerator.generate(), userModel.getLoginName(), 50000l);
         UserCouponModel userCouponModel = mockUserCoupon(userModel.getLoginName(), couponModel.getId(), loanModel.getId(), investModel.getId());
         List<UserCouponModel> userCouponModels = Lists.newArrayList(userCouponModel);
         TransferResponseModel responseModel = new TransferResponseModel();
@@ -214,11 +213,11 @@ public class CouponRepayServiceTest {
     public void shouldNormalRepayCouponRepayWhenNoInterestIsSuccess() throws PayException, AmountTransferException {
         UserModel userModel = mockUser("testCouponRepay", "13900880000", "12311@abc");
         LoanModel loanModel = fakeLoanModel(userModel.getLoginName());
-        LoanRepayModel loanRepay = this.getFakeLoanRepayModel(idGenerator.generate(), loanModel.getId(), 1, 0, 100000, new DateTime().withMillisOfSecond(0).toDate(), new DateTime().withMillisOfSecond(0).toDate(), RepayStatus.REPAYING);
+        LoanRepayModel loanRepay = this.getFakeLoanRepayModel(IdGenerator.generate(), loanModel.getId(), 1, 0, 100000, new DateTime().withMillisOfSecond(0).toDate(), new DateTime().withMillisOfSecond(0).toDate(), RepayStatus.REPAYING);
         List<LoanRepayModel> loanRepayModels = Lists.newArrayList(loanRepay);
         CouponModel couponModel = mockCoupon(userModel.getLoginName(), 200000l);
         AccountModel accountModel = mockAccountModel(userModel.getLoginName());
-        InvestModel investModel = mockInvest(idGenerator.generate(), userModel.getLoginName(), 50l);
+        InvestModel investModel = mockInvest(IdGenerator.generate(), userModel.getLoginName(), 50l);
         UserCouponModel userCouponModel = mockUserCoupon(userModel.getLoginName(), couponModel.getId(), loanModel.getId(), investModel.getId());
         List<UserCouponModel> userCouponModels = Lists.newArrayList(userCouponModel);
         TransferResponseModel responseModel = new TransferResponseModel();
@@ -262,11 +261,11 @@ public class CouponRepayServiceTest {
     public void shouldNormalRepayCouponRepayIsIdempotentSuccess() throws PayException, AmountTransferException {
         UserModel userModel = mockUser("testCouponRepay", "13900880000", "12311@abc");
         LoanModel loanModel = fakeLoanModel(userModel.getLoginName());
-        LoanRepayModel loanRepay = this.getFakeLoanRepayModel(idGenerator.generate(), loanModel.getId(), 1, 0, 100000, new DateTime().withMillisOfSecond(0).toDate(), new DateTime().withMillisOfSecond(0).toDate(), RepayStatus.REPAYING);
+        LoanRepayModel loanRepay = this.getFakeLoanRepayModel(IdGenerator.generate(), loanModel.getId(), 1, 0, 100000, new DateTime().withMillisOfSecond(0).toDate(), new DateTime().withMillisOfSecond(0).toDate(), RepayStatus.REPAYING);
         List<LoanRepayModel> loanRepayModels = Lists.newArrayList(loanRepay);
         CouponModel couponModel = mockCoupon(userModel.getLoginName(), 200000l);
         AccountModel accountModel = mockAccountModel(userModel.getLoginName());
-        InvestModel investModel = mockInvest(idGenerator.generate(), userModel.getLoginName(), 50000l);
+        InvestModel investModel = mockInvest(IdGenerator.generate(), userModel.getLoginName(), 50000l);
         UserCouponModel userCouponModel = mockUserCoupon(userModel.getLoginName(), couponModel.getId(), loanModel.getId(), investModel.getId());
         List<UserCouponModel> userCouponModels = Lists.newArrayList(userCouponModel);
         TransferResponseModel responseModel = new TransferResponseModel();
@@ -303,11 +302,11 @@ public class CouponRepayServiceTest {
     public void shouldAdvanceRepayCouponRepayIsSuccess() throws PayException, AmountTransferException {
         UserModel userModel = mockUser("testCouponRepay", "13900880000", "12311@abc");
         LoanModel loanModel = fakeLoanModel(userModel.getLoginName());
-        LoanRepayModel currentLoanRepay = this.getFakeLoanRepayModel(idGenerator.generate(), loanModel.getId(), 1, 0, 100000, new DateTime().minusDays(10).toDate(), new DateTime().withMillisOfSecond(0).toDate(), RepayStatus.COMPLETE);
+        LoanRepayModel currentLoanRepay = this.getFakeLoanRepayModel(IdGenerator.generate(), loanModel.getId(), 1, 0, 100000, new DateTime().minusDays(10).toDate(), new DateTime().withMillisOfSecond(0).toDate(), RepayStatus.COMPLETE);
         List<LoanRepayModel> loanRepayModels = Lists.newArrayList(currentLoanRepay);
         CouponModel couponModel = mockCoupon(userModel.getLoginName(), 200000l);
         AccountModel accountModel = mockAccountModel(userModel.getLoginName());
-        InvestModel investModel = mockInvest(idGenerator.generate(), userModel.getLoginName(), 50000l);
+        InvestModel investModel = mockInvest(IdGenerator.generate(), userModel.getLoginName(), 50000l);
         UserCouponModel userCouponModel = mockUserCoupon(userModel.getLoginName(), couponModel.getId(), loanModel.getId(), investModel.getId());
         List<UserCouponModel> userCouponModels = Lists.newArrayList(userCouponModel);
         TransferResponseModel responseModel = new TransferResponseModel();
@@ -354,11 +353,11 @@ public class CouponRepayServiceTest {
     public void shouldAdvanceRepayCouponRepayWhenNoInterestIsSuccess() throws PayException, AmountTransferException {
         UserModel userModel = mockUser("testCouponRepay", "13900880000", "12311@abc");
         LoanModel loanModel = fakeLoanModel(userModel.getLoginName());
-        LoanRepayModel currentLoanRepay = this.getFakeLoanRepayModel(idGenerator.generate(), loanModel.getId(), 1, 0, 100000, new DateTime().minusDays(10).toDate(), new DateTime().withMillisOfSecond(0).toDate(), RepayStatus.COMPLETE);
+        LoanRepayModel currentLoanRepay = this.getFakeLoanRepayModel(IdGenerator.generate(), loanModel.getId(), 1, 0, 100000, new DateTime().minusDays(10).toDate(), new DateTime().withMillisOfSecond(0).toDate(), RepayStatus.COMPLETE);
         List<LoanRepayModel> loanRepayModels = Lists.newArrayList(currentLoanRepay);
         CouponModel couponModel = mockCoupon(userModel.getLoginName(), 200000l);
         AccountModel accountModel = mockAccountModel(userModel.getLoginName());
-        InvestModel investModel = mockInvest(idGenerator.generate(), userModel.getLoginName(), 100l);
+        InvestModel investModel = mockInvest(IdGenerator.generate(), userModel.getLoginName(), 100l);
         UserCouponModel userCouponModel = mockUserCoupon(userModel.getLoginName(), couponModel.getId(), loanModel.getId(), investModel.getId());
         List<UserCouponModel> userCouponModels = Lists.newArrayList(userCouponModel);
         TransferResponseModel responseModel = new TransferResponseModel();
@@ -401,11 +400,11 @@ public class CouponRepayServiceTest {
     public void shouldAdvanceRepayCouponRepayIsIdempotentSuccess() throws PayException, AmountTransferException {
         UserModel userModel = mockUser("testCouponRepay", "13900880000", "12311@abc");
         LoanModel loanModel = fakeLoanModel(userModel.getLoginName());
-        LoanRepayModel currentLoanRepay = this.getFakeLoanRepayModel(idGenerator.generate(), loanModel.getId(), 1, 0, 100000, new DateTime().minusDays(10).toDate(), new DateTime().withMillisOfSecond(0).toDate(), RepayStatus.COMPLETE);
+        LoanRepayModel currentLoanRepay = this.getFakeLoanRepayModel(IdGenerator.generate(), loanModel.getId(), 1, 0, 100000, new DateTime().minusDays(10).toDate(), new DateTime().withMillisOfSecond(0).toDate(), RepayStatus.COMPLETE);
         List<LoanRepayModel> loanRepayModels = Lists.newArrayList(currentLoanRepay);
         CouponModel couponModel = mockCoupon(userModel.getLoginName(), 200000l);
         AccountModel accountModel = mockAccountModel(userModel.getLoginName());
-        InvestModel investModel = mockInvest(idGenerator.generate(), userModel.getLoginName(), 50000l);
+        InvestModel investModel = mockInvest(IdGenerator.generate(), userModel.getLoginName(), 50000l);
         UserCouponModel userCouponModel = mockUserCoupon(userModel.getLoginName(), couponModel.getId(), loanModel.getId(), investModel.getId());
         List<UserCouponModel> userCouponModels = Lists.newArrayList(userCouponModel);
         TransferResponseModel responseModel = new TransferResponseModel();
@@ -443,7 +442,7 @@ public class CouponRepayServiceTest {
         UserModel testGenerateUser = mockUser("testGenerateUser", "18911239999", "18911239999@163.com");
         LoanModel loanModel = fakeLoanModel(testGenerateUser.getLoginName());
         CouponModel couponModel = mockCoupon(testGenerateUser.getLoginName(), 200000l);
-        InvestModel investModel = mockInvest(idGenerator.generate(), testGenerateUser.getLoginName(), 50000l);
+        InvestModel investModel = mockInvest(IdGenerator.generate(), testGenerateUser.getLoginName(), 50000l);
         UserCouponModel userCouponModel = mockUserCoupon(testGenerateUser.getLoginName(), couponModel.getId(), loanModel.getId(), investModel.getId());
 
         when(investMapper.findSuccessInvestsByLoanId(anyLong())).thenReturn(Lists.newArrayList(investModel));
@@ -471,7 +470,7 @@ public class CouponRepayServiceTest {
     public void shouldUnusedCouponGenerateCouponRepayIsOk(){
         UserModel testGenerateUser = mockUser("testGenerateUser", "18911239999", "18911239999@163.com");
         LoanModel loanModel = fakeLoanModel(testGenerateUser.getLoginName());
-        InvestModel investModel = mockInvest(idGenerator.generate(), testGenerateUser.getLoginName(), 50000l);
+        InvestModel investModel = mockInvest(IdGenerator.generate(), testGenerateUser.getLoginName(), 50000l);
 
         when(investMapper.findSuccessInvestsByLoanId(anyLong())).thenReturn(Lists.newArrayList(investModel));
         when(loanMapper.findById(anyLong())).thenReturn(loanModel);
@@ -489,7 +488,7 @@ public class CouponRepayServiceTest {
         UserModel testGenerateUser = mockUser("testGenerateUser", "18911239999", "18911239999@163.com");
         LoanModel loanModel = fakeLoanModel(testGenerateUser.getLoginName());
         CouponModel couponModel = mockCoupon(testGenerateUser.getLoginName(), 200000l);
-        InvestModel investModel = mockInvest(idGenerator.generate(), testGenerateUser.getLoginName(), 50000l);
+        InvestModel investModel = mockInvest(IdGenerator.generate(), testGenerateUser.getLoginName(), 50000l);
         UserCouponModel userCouponModel = mockUserCoupon(testGenerateUser.getLoginName(), couponModel.getId(), loanModel.getId(), investModel.getId());
 
         when(investMapper.findSuccessInvestsByLoanId(anyLong())).thenReturn(Lists.newArrayList(investModel));
@@ -530,7 +529,7 @@ public class CouponRepayServiceTest {
         LoanModel loanModel = new LoanModel();
         loanModel.setAgentLoginName("loginName");
         loanModel.setBaseRate(16.00);
-        long id = idGenerator.generate();
+        long id = IdGenerator.generate();
         loanModel.setId(id);
         loanModel.setName("店铺资金周转");
         loanModel.setActivityRate(12);
@@ -560,7 +559,7 @@ public class CouponRepayServiceTest {
 
     private CouponModel mockCoupon(String loginName, long amount) {
         CouponModel couponModel = new CouponModel();
-        couponModel.setId(idGenerator.generate());
+        couponModel.setId(IdGenerator.generate());
         couponModel.setAmount(amount);
         couponModel.setTotalCount(1L);
         couponModel.setActive(true);
@@ -575,7 +574,7 @@ public class CouponRepayServiceTest {
 
     private UserCouponModel mockUserCoupon(String loginName, long couponId, long loanId, long investId) {
         UserCouponModel userCouponModel = new UserCouponModel(loginName, couponId, new Date(), new Date());
-        userCouponModel.setId(idGenerator.generate());
+        userCouponModel.setId(IdGenerator.generate());
         userCouponModel.setLoanId(loanId);
         userCouponModel.setUsedTime(new DateTime().minusDays(10).toDate());
         userCouponModel.setInvestId(investId);
@@ -585,7 +584,7 @@ public class CouponRepayServiceTest {
 
     private UserModel mockUser(String loginName, String mobile, String email) {
         UserModel um = new UserModel();
-        um.setId(idGenerator.generate());
+        um.setId(IdGenerator.generate());
         um.setLoginName(loginName);
         um.setMobile(mobile);
         um.setEmail(email);
@@ -596,7 +595,7 @@ public class CouponRepayServiceTest {
     }
 
     private InvestModel mockInvest(long loanId, String loginName, long amount) {
-        InvestModel im = new InvestModel(idGenerator.generate(), loanId, null, amount, loginName, new Date(), Source.WEB, null, 0.1);
+        InvestModel im = new InvestModel(IdGenerator.generate(), loanId, null, amount, loginName, new Date(), Source.WEB, null, 0.1);
         im.setTradingTime(new Date());
         im.setStatus(InvestStatus.SUCCESS);
         return im;

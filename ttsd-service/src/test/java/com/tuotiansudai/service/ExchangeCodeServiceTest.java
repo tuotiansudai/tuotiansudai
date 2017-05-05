@@ -1,7 +1,6 @@
 package com.tuotiansudai.service;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.ExchangeCouponDto;
 import com.tuotiansudai.repository.mapper.CouponMapper;
 import com.tuotiansudai.repository.mapper.UserCouponMapper;
@@ -17,6 +16,7 @@ import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,6 +37,8 @@ import static org.junit.Assert.assertThat;
 @Transactional
 public class ExchangeCodeServiceTest {
 
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
+
     @Autowired
     private UserMapper userMapper;
 
@@ -45,9 +47,6 @@ public class ExchangeCodeServiceTest {
 
     @Autowired
     private ExchangeCodeService exchangeCodeService;
-
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
 
     @Autowired
     private UserCouponMapper userCouponMapper;

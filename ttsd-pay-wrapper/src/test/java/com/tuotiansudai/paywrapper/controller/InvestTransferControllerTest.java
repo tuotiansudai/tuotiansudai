@@ -70,10 +70,8 @@ public class InvestTransferControllerTest {
     private PaySyncClient paySyncClient;
 
     private ObjectMapper objectMapper;
-    private MockWebServer mockServer;
 
-    @Autowired
-    private IdGenerator idGenerator;
+    private MockWebServer mockServer;
 
     @Autowired
     private UserMapper userMapper;
@@ -178,7 +176,7 @@ public class InvestTransferControllerTest {
         investDto.setLoanId("11111");
         investDto.setAmount("10000");
         investDto.setLoginName(mockInvestLoginName);
-        investDto.setTransferInvestId(String.valueOf(transferInvestId));
+        investDto.setTransferApplicationId(String.valueOf(transferInvestId));
         investDto.setSource(Source.WEB);
 
         String requestJson = objectMapper.writeValueAsString(investDto);
@@ -225,7 +223,7 @@ public class InvestTransferControllerTest {
     private LoanModel createFakeLoan(LoanType loanType, long amount, int periods, double baseRate, Date recheckTime) {
         UserModel loaner = this.createFakeUser("loaner", 0, 0);
         LoanModel fakeLoanModel = new LoanModel();
-        fakeLoanModel.setId(idGenerator.generate());
+        fakeLoanModel.setId(IdGenerator.generate());
         fakeLoanModel.setName("loanName");
         fakeLoanModel.setLoanAmount(amount);
         fakeLoanModel.setLoanerLoginName(loaner.getLoginName());
@@ -248,7 +246,7 @@ public class InvestTransferControllerTest {
     }
 
     private InvestModel createFakeInvest(long loanId, Long transferInvestId, long amount, String loginName, InvestStatus investStatus, TransferStatus transferStatus) {
-        InvestModel fakeInvestModel = new InvestModel(idGenerator.generate(), loanId, transferInvestId, amount, loginName, new Date(), Source.WEB, null, 0.1);
+        InvestModel fakeInvestModel = new InvestModel(IdGenerator.generate(), loanId, transferInvestId, amount, loginName, new Date(), Source.WEB, null, 0.1);
         fakeInvestModel.setStatus(investStatus);
         fakeInvestModel.setTransferStatus(transferStatus);
         investMapper.create(fakeInvestModel);
@@ -256,7 +254,7 @@ public class InvestTransferControllerTest {
     }
 
     private InvestRepayModel createFakeInvestRepay(long investId, int period, long corpus, long expectedInterest, long expectedFee, Date expectedRepayDate, Date actualRepayDate, RepayStatus repayStatus) {
-        InvestRepayModel fakeInvestRepayModel = new InvestRepayModel(idGenerator.generate(), investId, period, corpus, expectedInterest, expectedFee, expectedRepayDate, repayStatus);
+        InvestRepayModel fakeInvestRepayModel = new InvestRepayModel(IdGenerator.generate(), investId, period, corpus, expectedInterest, expectedFee, expectedRepayDate, repayStatus);
         fakeInvestRepayModel.setActualRepayDate(actualRepayDate);
         investRepayMapper.create(Lists.newArrayList(fakeInvestRepayModel));
         return fakeInvestRepayModel;
@@ -293,7 +291,7 @@ public class InvestTransferControllerTest {
 
     private void overInvestPaybackNotify(long orderId, String retCode) throws Exception {
         // 超投返款回调
-        this.mockMvc.perform(get("/callback/over_invest_transfer_payback_notify?mer_check_date=20150902&" +
+        this.mockMvc.perform(get("/callback/over_invest_payback_notify?mer_check_date=20150902&" +
                 "mer_date=20150902&mer_id=7099088&order_id={order_id}&ret_code={ret_code}&" +
                 "ret_msg=%E4%BA%A4%E6%98%93%E6%88%90%E5%8A%9F%E3%80%82&service=project_tranfer_notify&" +
                 "trade_no=1509025074065552&version=4.0&" +

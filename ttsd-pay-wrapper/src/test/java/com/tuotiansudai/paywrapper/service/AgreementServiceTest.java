@@ -61,9 +61,6 @@ public class AgreementServiceTest {
     @Autowired
     private PayAsyncClient payAsyncClient;
 
-    @Autowired
-    private IdGenerator idGenerator;
-
     private BankCardModel createBankCardByUserId(long id, String userId) {
         BankCardModel bankCardModel = new BankCardModel();
         bankCardModel.setId(id);
@@ -149,7 +146,7 @@ public class AgreementServiceTest {
         String userId = "testAutoInvestFastPay";
         createUserByUserId(userId);
         createAccountByUserId(userId);
-        long id = idGenerator.generate();
+        long id = IdGenerator.generate();
         createBankCardByUserId(id, userId);
         AgreementDto agreementDto = new AgreementDto();
         agreementDto.setLoginName(userId);
@@ -172,38 +169,17 @@ public class AgreementServiceTest {
     }
 
     @Test
-    public void shouldAgreementAutoInvest() {
-        String userId = "testAgreementAutoInvest";
-        createUserByUserId(userId);
-        createAccountByUserId(userId);
-        AgreementDto agreementDto = new AgreementDto();
-        agreementDto.setLoginName(userId);
-        agreementDto.setAutoInvest(true);
-        agreementDto.setIp("127.0.0.1");
-        BaseDto<PayFormDataDto> baseDto = agreementService.agreement(agreementDto);
-        assertTrue(baseDto.getData().getStatus());
-        assertThat(baseDto.getData().getFields().get("user_bind_agreement_list"), is(AgreementType.ZTBB0G00.name()));
-
-        this.generateMockResponse(10);
-        agreementService.agreementCallback(getFakeCallbackParamsMap(AgreementType.ZTBB0G00, userId), "", AgreementBusinessType.AUTO_INVEST);
-
-        AccountModel accountModel = accountMapper.findByLoginName(userId);
-        assertTrue(accountModel.isAutoInvest());
-        assertFalse(accountModel.isAutoRepay());
-        assertFalse(accountModel.isNoPasswordInvest());
-    }
-
-    @Test
     public void shouldAgreementNoPasswordInvest() {
         String userId = "testNoPasswordInvest";
         createUserByUserId(userId);
         createAccountByUserId(userId);
         AgreementDto agreementDto = new AgreementDto();
         agreementDto.setLoginName(userId);
-        agreementDto.setAutoInvest(true);
         agreementDto.setNoPasswordInvest(true);
         agreementDto.setIp("127.0.0.1");
+
         BaseDto<PayFormDataDto> baseDto = agreementService.agreement(agreementDto);
+
         assertTrue(baseDto.getData().getStatus());
         assertThat(baseDto.getData().getFields().get("user_bind_agreement_list"), is(AgreementType.ZTBB0G00.name()));
 

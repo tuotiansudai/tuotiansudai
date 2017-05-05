@@ -3,9 +3,9 @@ package com.tuotiansudai.console.activity.service;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.activity.repository.dto.MysteriousPrizeDto;
 import com.tuotiansudai.activity.repository.model.ActivityCategory;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.model.HeroRankingView;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -24,8 +24,7 @@ public class ActivityConsoleHeroRankingService {
     @Autowired
     private InvestMapper investMapper;
 
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
     private final static String MYSTERIOUSREDISKEY = "console:mysteriousPrize";
 
