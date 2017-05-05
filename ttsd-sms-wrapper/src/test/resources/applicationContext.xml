@@ -66,10 +66,4 @@
         <property name="basePackage" value="com.tuotiansudai.smswrapper.repository.mapper"/>
     </bean>
 
-    <bean class="com.tuotiansudai.client.RedisWrapperClient"/>
-
-    <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
-        <property name="maxTotal" value="300"/>
-    </bean>
-
 </beans>

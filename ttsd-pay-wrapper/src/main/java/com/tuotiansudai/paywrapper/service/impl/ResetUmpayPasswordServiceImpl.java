@@ -31,16 +31,13 @@ public class ResetUmpayPasswordServiceImpl implements ResetUmpayPasswordService 
     private UserMapper userMapper;
 
     @Autowired
-    private IdGenerator idGenerator;
-
-    @Autowired
     private PaySyncClient paySyncClient;
 
     @Override
     public BaseDto<PayDataDto> resetUmpayPassword(ResetUmpayPasswordDto resetUmpayPasswordDto) {
         UserModel userModel = userMapper.findByLoginName(resetUmpayPasswordDto.getLoginName());
         AccountModel accountModel = accountMapper.findByLoginName(resetUmpayPasswordDto.getLoginName());
-        String orderId = String.valueOf(idGenerator.generate());
+        String orderId = String.valueOf(IdGenerator.generate());
         MerSendSmsPwdRequestModel merSendSmsPwdRequestModel = new MerSendSmsPwdRequestModel(accountModel.getPayUserId(),
                 userModel.getIdentityNumber(),
                 orderId);

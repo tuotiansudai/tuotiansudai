@@ -1,6 +1,5 @@
 package com.tuotiansudai.console.service;
 
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.ArticleStatus;
 import com.tuotiansudai.dto.LiCaiQuanArticleDto;
 import com.tuotiansudai.repository.mapper.LicaiquanArticleMapper;
@@ -9,8 +8,8 @@ import com.tuotiansudai.repository.model.ArticleSectionType;
 import com.tuotiansudai.repository.model.LicaiquanArticleModel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
-import com.tuotiansudai.service.LiCaiQuanArticleService;
 import com.tuotiansudai.util.IdGenerator;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.commons.lang.RandomStringUtils;
 import org.joda.time.DateTime;
 import org.junit.After;
@@ -32,14 +31,10 @@ import static org.junit.Assert.*;
 @Transactional
 public class ConsoleLiCaiQuanArticleServiceTest {
 
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
+
     @Autowired
     private ConsoleLiCaiQuanArticleService consoleLiCaiQuanArticleService;
-
-    @Autowired
-    private IdGenerator idGenerator;
-
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
 
     @Autowired
     private UserMapper userMapper;
@@ -92,7 +87,7 @@ public class ConsoleLiCaiQuanArticleServiceTest {
     @Test
     public void shouldObtainEditArticleDtoFromDbIsSuccess() {
         prepareUsers();
-        long articleId = idGenerator.generate();
+        long articleId = IdGenerator.generate();
         LicaiquanArticleModel licaiquanArticleModel = createLicaiquanArticleModel(articleId);
 
         licaiquanArticleMapper.createArticle(licaiquanArticleModel);
@@ -146,7 +141,7 @@ public class ConsoleLiCaiQuanArticleServiceTest {
 
     private LiCaiQuanArticleDto fakeLiCaiQuanArticleDto() {
         LiCaiQuanArticleDto liCaiQuanArticleDto = new LiCaiQuanArticleDto();
-        liCaiQuanArticleDto.setArticleId(idGenerator.generate());
+        liCaiQuanArticleDto.setArticleId(IdGenerator.generate());
         liCaiQuanArticleDto.setTitle("tile");
         liCaiQuanArticleDto.setAuthor("author");
         liCaiQuanArticleDto.setCarousel(true);

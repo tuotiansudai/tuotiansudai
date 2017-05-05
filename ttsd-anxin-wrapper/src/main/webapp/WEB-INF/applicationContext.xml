@@ -133,11 +133,6 @@
 
     <bean id="httpClient" class="com.squareup.okhttp.OkHttpClient"/>
 
-    <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
-        <property name="maxTotal" value="${pay.jedis.pool.maxTotal}"/>
-        <property name="maxWaitMillis" value="${common.jedis.pool.maxWaitMillis}"/>
-    </bean>
-
     <bean class="com.tuotiansudai.mq.config.MQProducerConfig"/>
 
 </beans>

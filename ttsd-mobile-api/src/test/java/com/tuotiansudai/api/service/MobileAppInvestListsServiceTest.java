@@ -34,9 +34,6 @@ public class MobileAppInvestListsServiceTest extends ServiceTestBase{
     @InjectMocks
     private MobileAppInvestListsServiceImpl mobileAppInvestListsService;
 
-    @Autowired
-    private IdGenerator idGenerator;
-
     @Mock
     private InvestTransferService investTransferService;
 
@@ -98,7 +95,7 @@ public class MobileAppInvestListsServiceTest extends ServiceTestBase{
 
     private InvestRepayModel getFakeInvestRepay(long investId, int period) {
         InvestRepayModel investRepayModel = new InvestRepayModel();
-        investRepayModel.setId(idGenerator.generate());
+        investRepayModel.setId(IdGenerator.generate());
         investRepayModel.setInvestId(investId);
         investRepayModel.setDefaultInterest(0);
         investRepayModel.setActualFee(0);
@@ -114,7 +111,7 @@ public class MobileAppInvestListsServiceTest extends ServiceTestBase{
 
     private InvestModel generateMockedInvestModel(long loanId,String loginName) {
         InvestModel investModel = new InvestModel();
-        investModel.setId(idGenerator.generate());
+        investModel.setId(IdGenerator.generate());
         investModel.setAmount(1000);
         investModel.setInvestTime(new Date());
         investModel.setInvestTime(new Date());
@@ -129,7 +126,7 @@ public class MobileAppInvestListsServiceTest extends ServiceTestBase{
 
     @Test
     public void shouldGenerateUserInvestList() {
-        long loanId = idGenerator.generate();
+        long loanId = IdGenerator.generate();
         LoanModel loanModel = getFakeLoanModel("loaner", loanId);
         InvestModel investModel = generateMockedInvestModel(loanId, "investor");
         List<InvestModel> investModels = Lists.newArrayList(investModel);

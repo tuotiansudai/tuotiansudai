@@ -7,11 +7,9 @@ import com.tuotiansudai.activity.repository.model.UserLotteryPrizeView;
 import com.tuotiansudai.activity.service.AutumnPrizeService;
 import com.tuotiansudai.activity.service.LotteryActivityService;
 import com.tuotiansudai.activity.service.LotteryDrawActivityService;
-import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.service.AccountService;
-import com.tuotiansudai.service.BindBankCardService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -25,14 +23,13 @@ import java.util.List;
 @RequestMapping(path = "/activity/autumn")
 public class AutumnPrizeController {
 
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
+
     @Value(value = "${activity.autumn.invest.channel}")
     private String activityAutumnInvestChannelKey;
 
     @Autowired
     private AutumnPrizeService autumnPrizeService;
-
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
 
     @Autowired
     private LotteryActivityService lotteryActivityService;

@@ -40,8 +40,6 @@ public class LotteryActivityServiceTest {
     @Autowired
     private ReferrerRelationMapper referrerRelationMapper;
     @Autowired
-    private IdGenerator idGenerator;
-    @Autowired
     private InvestMapper investMapper;
     @Autowired
     private LoanMapper loanMapper;
@@ -135,7 +133,7 @@ public class LotteryActivityServiceTest {
 
     private RechargeModel getRechargeModel(String loginName){
         RechargeModel model = new RechargeModel();
-        model.setId(idGenerator.generate());
+        model.setId(IdGenerator.generate());
         model.setLoginName(loginName);
         model.setBankCode("bank");
         model.setCreatedTime(new Date());
@@ -154,7 +152,7 @@ public class LotteryActivityServiceTest {
     }
 
     private InvestModel getFakeInvestModel(long loanId,String loginName) {
-        InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, 1000000L, loginName, DateTime.now().toDate(), Source.WEB, null, 0.1);
+        InvestModel model = new InvestModel(IdGenerator.generate(), loanId, null, 1000000L, loginName, DateTime.now().toDate(), Source.WEB, null, 0.1);
         model.setStatus(InvestStatus.SUCCESS);
         investMapper.create(model);
         return model;
@@ -162,7 +160,7 @@ public class LotteryActivityServiceTest {
 
     private LoanModel getFakeLoan(String loanerLoginName, String agentLoginName) {
         LoanModel fakeLoanModel = new LoanModel();
-        fakeLoanModel.setId(idGenerator.generate());
+        fakeLoanModel.setId(IdGenerator.generate());
         fakeLoanModel.setName("loanName");
         fakeLoanModel.setLoanerLoginName(loanerLoginName);
         fakeLoanModel.setLoanerUserName("借款人");

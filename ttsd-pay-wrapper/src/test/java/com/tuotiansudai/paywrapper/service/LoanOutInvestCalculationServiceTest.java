@@ -42,9 +42,6 @@ public class LoanOutInvestCalculationServiceTest {
     private UserMapper userMapper;
 
     @Autowired
-    private IdGenerator idGenerator;
-
-    @Autowired
     private ExtraLoanRateMapper extraLoanRateMapper;
 
     @Autowired
@@ -79,13 +76,13 @@ public class LoanOutInvestCalculationServiceTest {
         extraLoanRateMapper.create(extraLoanRateModels);
 
         UserModel test1Model = createFakeUser("test0001", "13333333333");
-        InvestModel test1InvestModel = new InvestModel(idGenerator.generate(), loanModel.getId(), null, 25000, test1Model.getLoginName(),
+        InvestModel test1InvestModel = new InvestModel(IdGenerator.generate(), loanModel.getId(), null, 25000, test1Model.getLoginName(),
                 new Date(), Source.WEB, "tuotiansudai", 0.1);
         test1InvestModel.setStatus(InvestStatus.SUCCESS);
         investMapper.create(test1InvestModel);
 
         UserModel test2Model = createFakeUser("test0002", "18999999999");
-        InvestModel test2InvestModel = new InvestModel(idGenerator.generate(), loanModel.getId(), null, 31000, test2Model.getLoginName(),
+        InvestModel test2InvestModel = new InvestModel(IdGenerator.generate(), loanModel.getId(), null, 31000, test2Model.getLoginName(),
                 new Date(), Source.WEB, "tuotiansudai", 0.1);
         test2InvestModel.setStatus(InvestStatus.SUCCESS);
         investMapper.create(test2InvestModel);
@@ -122,14 +119,14 @@ public class LoanOutInvestCalculationServiceTest {
         extraLoanRateMapper.create(extraLoanRateModels);
 
         UserModel test1Model = createFakeUser("test0001", "13333333333");
-        InvestModel test1InvestModel = new InvestModel(idGenerator.generate(), loanModel.getId(), null, 25000, test1Model.getLoginName(),
+        InvestModel test1InvestModel = new InvestModel(IdGenerator.generate(), loanModel.getId(), null, 25000, test1Model.getLoginName(),
                 new Date(), Source.WEB, "tuotiansudai", 0.1);
         test1InvestModel.setTradingTime(new Date());
         test1InvestModel.setStatus(InvestStatus.SUCCESS);
         investMapper.create(test1InvestModel);
 
         UserModel test2Model = createFakeUser("test0002", "18999999999");
-        InvestModel test2InvestModel = new InvestModel(idGenerator.generate(), loanModel.getId(), null, 31000, test2Model.getLoginName(),
+        InvestModel test2InvestModel = new InvestModel(IdGenerator.generate(), loanModel.getId(), null, 31000, test2Model.getLoginName(),
                 new Date(), Source.WEB, "tuotiansudai", 0.1);
         test2InvestModel.setTradingTime(new Date());
         test2InvestModel.setStatus(InvestStatus.SUCCESS);
@@ -173,7 +170,7 @@ public class LoanOutInvestCalculationServiceTest {
         LoanModel loanModel = new LoanModel();
         loanModel.setAgentLoginName(userModel.getLoginName());
         loanModel.setBaseRate(16.00);
-        long id = idGenerator.generate();
+        long id = IdGenerator.generate();
         loanModel.setId(id);
         loanModel.setProductType(ProductType._90);
         loanModel.setName("房产抵押借款");
@@ -234,7 +231,7 @@ public class LoanOutInvestCalculationServiceTest {
 
     private LoanDetailsModel fakeLoanLoanDetailsModel(LoanModel loanModel) {
         LoanDetailsModel loanDetailsModel = new LoanDetailsModel();
-        long id = idGenerator.generate();
+        long id = IdGenerator.generate();
         loanDetailsModel.setId(id);
         loanDetailsModel.setLoanId(loanModel.getId());
         loanDetailsModel.setDeclaration("材料声明");

@@ -53,9 +53,6 @@ public class ConsoleCouponServiceTest {
     private UserCouponMapper userCouponMapper;
 
     @Autowired
-    private IdGenerator idGenerator;
-
-    @Autowired
     private CouponService couponService;
 
     @Test
@@ -180,7 +177,7 @@ public class ConsoleCouponServiceTest {
 
     private CouponModel fakeCouponModel(String loginName, UserGroup userGroup) {
         CouponModel couponModel = new CouponModel();
-        couponModel.setId(idGenerator.generate());
+        couponModel.setId(IdGenerator.generate());
         couponModel.setAmount(1000L);
         couponModel.setRate(0.1);
         couponModel.setBirthdayBenefit(0.5);

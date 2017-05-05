@@ -49,9 +49,6 @@ public class BindBankCardServiceImpl implements BindBankCardService {
     private AccountMapper accountMapper;
 
     @Autowired
-    private IdGenerator idGenerator;
-
-    @Autowired
     private BankCardMapper bankCardMapper;
 
     @Autowired
@@ -63,7 +60,7 @@ public class BindBankCardServiceImpl implements BindBankCardService {
         AccountModel accountModel = accountMapper.findByLoginName(dto.getLoginName());
 
         BankCardModel bankCardModel = new BankCardModel(dto);
-        bankCardModel.setId(idGenerator.generate());
+        bankCardModel.setId(IdGenerator.generate());
         bankCardModel.setStatus(BankCardStatus.UNCHECKED);
 
         PtpMerBindCardRequestModel requestModel = new PtpMerBindCardRequestModel(String.valueOf(bankCardModel.getId()),
@@ -92,7 +89,7 @@ public class BindBankCardServiceImpl implements BindBankCardService {
         UserModel userModel = userMapper.findByLoginName(dto.getLoginName());
         AccountModel accountModel = accountMapper.findByLoginName(dto.getLoginName());
         BankCardModel bankCardModel = new BankCardModel(dto);
-        bankCardModel.setId(idGenerator.generate());
+        bankCardModel.setId(IdGenerator.generate());
         bankCardModel.setStatus(BankCardStatus.UNCHECKED);
         bankCardModel.setIsFastPayOn(bankCardMapper.findByLoginNameAndIsFastPayOn(dto.getLoginName()) != null);
         PtpMerReplaceCardRequestModel requestModel = new PtpMerReplaceCardRequestModel(String.valueOf(bankCardModel.getId()),

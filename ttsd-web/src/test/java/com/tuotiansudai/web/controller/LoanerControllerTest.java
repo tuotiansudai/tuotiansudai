@@ -58,9 +58,6 @@ public class LoanerControllerTest extends BaseControllerTest {
     private LoanMapper loanMapper;
 
     @Autowired
-    private IdGenerator idGenerator;
-
-    @Autowired
     private LoanRepayMapper loanRepayMapper;
 
     @Before
@@ -295,7 +292,7 @@ public class LoanerControllerTest extends BaseControllerTest {
 
     private LoanModel getFakeLoan(String loanerLoginName, String agentLoginName, LoanStatus loanStatus) {
         LoanModel fakeLoanModel = new LoanModel();
-        fakeLoanModel.setId(idGenerator.generate());
+        fakeLoanModel.setId(IdGenerator.generate());
         fakeLoanModel.setName("loanName");
         fakeLoanModel.setLoanerLoginName(loanerLoginName);
         fakeLoanModel.setLoanerUserName("借款人");
@@ -325,7 +322,7 @@ public class LoanerControllerTest extends BaseControllerTest {
                                                  long defaultInterest
     ) {
         LoanRepayModel fakeLoanRepayModel = new LoanRepayModel();
-        fakeLoanRepayModel.setId(idGenerator.generate());
+        fakeLoanRepayModel.setId(IdGenerator.generate());
         fakeLoanRepayModel.setPeriod(period);
         fakeLoanRepayModel.setStatus(repayStatus);
         fakeLoanRepayModel.setLoanId(fakeLoanModel.getId());

@@ -9,20 +9,20 @@ import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v2_0.PromotionListResponseDataDto;
 import com.tuotiansudai.api.dto.v2_0.PromotionRequestDto;
 import com.tuotiansudai.api.service.v2_0.impl.MobileAppPromotionListsV2ServiceImpl;
-import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.mq.client.model.MessageQueue;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.joda.time.DateTime;
+import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
-import java.text.MessageFormat;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.*;
@@ -39,6 +39,16 @@ public class MobileAppPromotionServiceTest extends ServiceTestBase {
     private RedisWrapperClient redisWrapperClient;
 
     private static final String PROMOTION_ALERT_KEY = "app:promotion:pop";
+
+    @Before
+    public void setUp() throws Exception {
+        Field redisWrapperClientField = this.mobileAppPromotionListsV2Service.getClass().getDeclaredField("redisWrapperClient");
+        redisWrapperClientField.setAccessible(true);
+        Field modifiersField = Field.class.getDeclaredField("modifiers");
+        modifiersField.setAccessible(true);
+        modifiersField.setInt(redisWrapperClientField, redisWrapperClientField.getModifiers() & ~Modifier.FINAL);
+        redisWrapperClientField.set(this.mobileAppPromotionListsV2Service, this.redisWrapperClient);
+    }
 
     @Test
     public void shouldWhenOnlyOnePromotionNotCache() {

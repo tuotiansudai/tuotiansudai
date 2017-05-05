@@ -63,11 +63,5 @@
         <property name="basePackage" value="com.tuotiansudai.message.repository.mapper"/>
     </bean>
 
-    <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
-        <property name="maxTotal" value="${ask.jedis.pool.maxTotal}"/>
-    </bean>
-
-    <bean class="com.tuotiansudai.client.MybatisRedisCacheWrapperClient"/>
-
     <bean id="httpClient" class="com.squareup.okhttp.OkHttpClient"/>
 </beans>

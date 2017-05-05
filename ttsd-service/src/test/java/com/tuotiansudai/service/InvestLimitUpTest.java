@@ -33,9 +33,6 @@ public class InvestLimitUpTest {
     private UserMapper userMapper;
 
     @Autowired
-    private IdGenerator idGenerator;
-
-    @Autowired
     private InvestMapper investMapper;
 
     @Autowired
@@ -97,7 +94,7 @@ public class InvestLimitUpTest {
         InvestModel model = new InvestModel();
         model.setAmount(10);
         model.setInvestTime(new Date());
-        model.setId(idGenerator.generate());
+        model.setId(IdGenerator.generate());
         model.setIsAutoInvest(false);
         model.setLoginName(loginName);
         model.setLoanId(loanId);
@@ -136,7 +133,7 @@ public class InvestLimitUpTest {
         UserModel userModelLoaner = createUserByUserId("testUserLoaner");
         this.createAnxinPropertyByLoginName("testUserInvest");
         createAccountByUserId(userModelInvest.getLoginName());
-        long loanId = idGenerator.generate();
+        long loanId = IdGenerator.generate();
         LoanModel loanModel = createLoanByUserId(userModelLoaner.getLoginName(), loanId);
         InvestModel investModel = createInvest(userModelInvest.getLoginName(), loanId);
         InvestDto investDto = new InvestDto();
@@ -158,7 +155,7 @@ public class InvestLimitUpTest {
         UserModel userModelLoaner = createUserByUserId("testUserLoaner");
         createAccountByUserId(userModelInvest.getLoginName());
         this.createAnxinPropertyByLoginName("testUserInvest");
-        long loanId = idGenerator.generate();
+        long loanId = IdGenerator.generate();
         LoanModel loanModel = createLoanByUserId(userModelLoaner.getLoginName(), loanId);
         InvestModel investModel = createInvest(userModelInvest.getLoginName(), loanId);
         InvestDto investDto = new InvestDto();

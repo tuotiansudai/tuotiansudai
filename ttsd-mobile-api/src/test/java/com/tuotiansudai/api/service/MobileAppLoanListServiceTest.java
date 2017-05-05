@@ -37,10 +37,6 @@ public class MobileAppLoanListServiceTest extends ServiceTestBase {
     @Mock
     private InvestMapper investMapper;
     @Mock
-    private UserMembershipEvaluator userMembershipEvaluator;
-    @Autowired
-    private IdGenerator idGenerator;
-    @Mock
     private CouponService couponService;
     @Mock
     private ExtraLoanRateMapper extraLoanRateMapper;
@@ -137,7 +133,7 @@ public class MobileAppLoanListServiceTest extends ServiceTestBase {
         LoanModel loanModel = new LoanModel();
         loanModel.setAgentLoginName(fakeUserName);
         loanModel.setBaseRate(0.16);
-        long id = idGenerator.generate();
+        long id = IdGenerator.generate();
         loanModel.setId(id);
         loanModel.setName("店铺资金周转");
         loanModel.setActivityRate(0.12);

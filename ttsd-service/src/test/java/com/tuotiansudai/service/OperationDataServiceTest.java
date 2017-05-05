@@ -1,6 +1,5 @@
 package com.tuotiansudai.service;
 
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.dto.OperationDataDto;
 import com.tuotiansudai.repository.mapper.AccountMapper;
@@ -10,6 +9,7 @@ import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.IdGenerator;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -46,16 +46,12 @@ public class OperationDataServiceTest {
     private AccountMapper accountMapper;
 
     @Autowired
-    private IdGenerator idGenerator;
-
-    @Autowired
     private InvestMapper investMapper;
 
     @Autowired
-    OperationDataService operationDataService;
+    private OperationDataService operationDataService;
 
-    @Autowired
-    RedisWrapperClient redisWrapperClient;
+    private RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
     private final String REDIS_INFO_PUBLISH_CHART_KEY_TEMPLATE = "web:info:publish:chart:{0}";
     private final String REDIS_INFO_PUBLISH_TABLE_KEY_TEMPLATE = "web:info:publish:table:{0}";
@@ -136,7 +132,7 @@ public class OperationDataServiceTest {
         InvestModel model = new InvestModel();
         model.setAmount(amount);
         model.setCreatedTime(createTime);
-        model.setId(idGenerator.generate());
+        model.setId(IdGenerator.generate());
         model.setIsAutoInvest(false);
         model.setLoginName(loginName);
         model.setLoanId(loanId);
@@ -151,7 +147,7 @@ public class OperationDataServiceTest {
         InvestModel model = new InvestModel();
         model.setAmount(amount);
         model.setCreatedTime(createTime);
-        model.setId(idGenerator.generate());
+        model.setId(IdGenerator.generate());
         model.setIsAutoInvest(false);
         model.setLoginName(loginName);
         model.setInvestTime(investTime);

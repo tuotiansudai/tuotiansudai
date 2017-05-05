@@ -8,6 +8,7 @@ import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.joda.time.DateTime;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -58,7 +59,7 @@ public class CouponMapperTest {
         userModelTest.setLoginName("couponTest");
         userModelTest.setPassword("123abc");
         userModelTest.setEmail("12345@abc.com");
-        userModelTest.setMobile("13900000000");
+        userModelTest.setMobile(RandomStringUtils.randomNumeric(11));
         userModelTest.setRegisterTime(new Date());
         userModelTest.setStatus(UserStatus.ACTIVE);
         userModelTest.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));

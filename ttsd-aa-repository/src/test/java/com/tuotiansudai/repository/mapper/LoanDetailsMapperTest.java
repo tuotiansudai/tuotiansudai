@@ -2,6 +2,7 @@ package com.tuotiansudai.repository.mapper;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.repository.model.*;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ public class LoanDetailsMapperTest {
     private UserModel createUserModel() {
         UserModel userModel = new UserModel();
         userModel.setLoginName("loginName");
-        userModel.setMobile("13900000000");
+        userModel.setMobile(RandomStringUtils.randomNumeric(11));
         userModel.setPassword("password");
         userModel.setSalt("salt");
         userModel.setRegisterTime(new Date());
