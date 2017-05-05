@@ -49,35 +49,37 @@ $pointerBtn.on('click', function(event) {
         if (data.returnCode == 0) {
             var angleNum=0;
             switch (data.wechatLotteryPrize) {
-                case 'WECHAT_LOTTERY_BEDCLOTHES': //欧式奢华贡缎床品四件套 
-                    angleNum=72*5-20;
-                    $(tipGroupObj['concrete']).find('.prizeValue').text('一等奖')
-                    .parent().siblings('.des-text').text('欧式奢华贡缎床品四件套')
-                    .siblings('.reward-text').addClass('gift-one');
+                case 'MOTHERS_DAY_ACTIVITY_BEDDING': //纯棉四件套 
+                    angleNum=45*1-20;
+                    $(tipGroupObj['concrete']).find('.prizeValue').text('纯棉四件套');
                     break;
                 case 'WECHAT_LOTTERY_BAG': //时尚百搭真皮子母包
                     angleNum=72*4-20;
-                    $(tipGroupObj['concrete']).find('.prizeValue').text('二等奖')
-                    .parent().siblings('.des-text').text('时尚百搭真皮子母包')
-                    .siblings('.reward-text').addClass('gift-two');
+                    $(tipGroupObj['concrete']).find('.prizeValue').text('二等奖');
                     break;
                 case 'WECHAT_LOTTERY_HEADGEAR':  //简约吊坠百搭锁骨链
                     angleNum=72*3-20;
-                     $(tipGroupObj['concrete']).find('.prizeValue').text('三等奖')
-                     .parent().siblings('.des-text').text('简约吊坠百搭锁骨链')
-                    .siblings('.reward-text').addClass('gift-three');
+                     $(tipGroupObj['concrete']).find('.prizeValue').text('三等奖');
                     break;
                 case 'WECHAT_LOTTERY_TOWEL':  //精品定制毛巾礼盒
                     angleNum=72*2-20;
-                     $(tipGroupObj['concrete']).find('.prizeValue').text('四等奖')
-                     .parent().siblings('.des-text').text('精品定制毛巾礼盒')
-                    .siblings('.reward-text').addClass('gift-four');
+                     $(tipGroupObj['concrete']).find('.prizeValue').text('四等奖');
                     break;
                 case 'WECHAT_LOTTERY_RED_ENVELOP_20': //20元红包
                     angleNum=72*1-20;
-                     $(tipGroupObj['concrete']).find('.prizeValue').text('五等奖')
-                     .parent().siblings('.des-text').text('20元红包')
-                    .siblings('.reward-text').addClass('gift-five');
+                     $(tipGroupObj['concrete']).find('.prizeValue').text('五等奖');
+                    break;
+                case 'WECHAT_LOTTERY_RED_ENVELOP_20': //20元红包
+                    angleNum=72*1-20;
+                     $(tipGroupObj['concrete']).find('.prizeValue').text('五等奖');
+                    break;
+                case 'WECHAT_LOTTERY_RED_ENVELOP_20': //20元红包
+                    angleNum=72*1-20;
+                     $(tipGroupObj['concrete']).find('.prizeValue').text('五等奖');
+                    break;
+                case 'WECHAT_LOTTERY_RED_ENVELOP_20': //20元红包
+                    angleNum=72*1-20;
+                     $(tipGroupObj['concrete']).find('.prizeValue').text('五等奖');
                     break;
             }
             drawCircleOne.rotateFn(angleNum,tipGroupObj['concrete']);
