@@ -38,7 +38,7 @@ public class AssignMothersDayExperienceJob implements Job {
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.mothers.day.endTime}\")}")
     private Date activityEndTimeStr;
 
-    public static final String JOB_EXECUTE_TIME = "2017-04-26 17:20:00";
+    public static final String JOB_EXECUTE_TIME = "2017-05-05 18:30:00";
 
     private final List<ExperienceReward> mothersRewards = Lists.newArrayList(
             new ExperienceReward(688800l, 1000000l, 5000000l),
