@@ -82,7 +82,14 @@
 			<div class="detail-bg">
 				<div class="detail-item">
 					<div class="gift-title">
-						<span>我的累计投资金额: <strong>登录后查看</strong></span>
+						<span>我的累计投资金额: 
+						<@global.isAnonymous>
+						<strong id="isLogin">登录后查看</strong>
+						</@global.isAnonymous>
+						<@global.isNotAnonymous>
+						<strong>${investAmount}</strong>元
+						</@global.isNotAnonymous>
+						</span>
 					</div>
 					<div class="gift-img">
 					</div>
