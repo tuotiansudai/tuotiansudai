@@ -58,6 +58,7 @@ public class InvestSuccessMembershipUpdateMessageConsumerTest {
     private InvestSuccessMessage buildMockedInvestSuccessMessage() {
         InvestInfo investInfo = new InvestInfo();
         LoanDetailInfo loanDetailInfo = new LoanDetailInfo();
+        loanDetailInfo.setLoanId(1);
 
         investInfo.setInvestId(1);
         investInfo.setLoginName("loginName");
