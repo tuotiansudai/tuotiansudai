@@ -114,6 +114,12 @@ public class LotteryDrawActivityService {
     @Value(value = "${activity.woman.day.endTime}")
     private String activityWomanDayEndTime;
 
+    @Value(value = "${activity.mothers.day.startTime}")
+    private String activityMothersStartTime;
+
+    @Value(value = "${activity.mothers.day.endTime}")
+    private String activityMothersEndTime;
+
     //往期活动任务
     private final List activityTasks = Lists.newArrayList(ActivityDrawLotteryTask.REGISTER, ActivityDrawLotteryTask.EACH_REFERRER,
             ActivityDrawLotteryTask.EACH_REFERRER_INVEST, ActivityDrawLotteryTask.CERTIFICATION, ActivityDrawLotteryTask.BANK_CARD,
@@ -522,6 +528,7 @@ public class LotteryDrawActivityService {
                 .put(ActivityCategory.LANTERN_FESTIVAL_ACTIVITY, Lists.newArrayList(lanternFestivalStartTime, lanternFestivalEndTime))
                 .put(ActivityCategory.SPRING_FESTIVAL_ACTIVITY, springFestivalTime)
                 .put(ActivityCategory.WOMAN_DAY_ACTIVITY, Lists.newArrayList(activityWomanDayStartTime, activityWomanDayEndTime))
+                .put(ActivityCategory.MOTHERS_DAY_ACTIVITY, Lists.newArrayList(activityMothersStartTime, activityMothersEndTime))
                 .build()).get(activityCategory);
     }
 

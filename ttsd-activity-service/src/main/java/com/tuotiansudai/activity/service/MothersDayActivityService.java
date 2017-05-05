@@ -15,12 +15,12 @@ public class MothersDayActivityService {
     private InvestMapper investMapper;
 
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.mothers.day.startTime}\")}")
-    private Date activityStartTimeStr;
+    private Date activityStartTime;
 
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.mothers.day.endTime}\")}")
-    private Date activityEndTimeStr;
+    private Date activityEndTime;
 
     public String getInvestByLoginName(String loginName) {
-        return AmountConverter.convertCentToString(investMapper.sumInvestAmount(null, loginName, null, null, null, activityStartTimeStr, activityEndTimeStr, InvestStatus.SUCCESS, null));
+        return AmountConverter.convertCentToString(investMapper.sumInvestAmount(null, loginName, null, null, null, activityStartTime, activityEndTime, InvestStatus.SUCCESS, null));
     }
 }
