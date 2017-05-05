@@ -74,13 +74,12 @@ public class AgreementServiceImpl implements AgreementService {
     }
 
     private UserOpType getUserOpType(AgreementDto dto) {
-        if (dto.isAutoInvest() || dto.isNoPasswordInvest()) {
+        if (dto.isNoPasswordInvest()) {
             return UserOpType.NO_PASSWORD_AGREEMENT; // 开通免密支付协议
         } else if (dto.isFastPay()) {
             return UserOpType.FAST_PAY_AGREEMENT; // 开通快捷支付协议
-        } else {
-            return null;
         }
+        return null;
     }
 
     @Override

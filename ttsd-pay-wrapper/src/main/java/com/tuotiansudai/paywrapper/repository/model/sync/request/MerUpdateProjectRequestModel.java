@@ -1,5 +1,7 @@
 package com.tuotiansudai.paywrapper.repository.model.sync.request;
 
+import com.tuotiansudai.enums.SyncUmPayService;
+
 import java.util.Map;
 
 public class MerUpdateProjectRequestModel extends BaseSyncRequestModel {
@@ -12,7 +14,7 @@ public class MerUpdateProjectRequestModel extends BaseSyncRequestModel {
 
 
     public MerUpdateProjectRequestModel(String projectId, String projectState) {
-        this.service = "mer_update_project";
+        this.service = SyncUmPayService.MER_UPDATE_PROJECT.getServiceName();
         this.projectId = projectId;
         this.changeType = "01"; //更新标的
         this.projectState = projectState;

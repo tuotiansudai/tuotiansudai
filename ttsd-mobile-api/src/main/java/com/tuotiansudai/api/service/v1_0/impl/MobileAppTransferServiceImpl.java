@@ -10,6 +10,7 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
+import com.tuotiansudai.enums.AsyncUmPayService;
 import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.model.InvestModel;
@@ -78,25 +79,24 @@ public class MobileAppTransferServiceImpl implements MobileAppTransferService {
     }
 
     @Override
-    public BaseResponseDto transferNoPasswordPurchase(TransferPurchaseRequestDto transferPurchaseRequestDto) {
-        BaseResponseDto<InvestNoPassResponseDataDto> responseDto = new BaseResponseDto<>();
-        InvestDto investDto = convertInvestDto(transferPurchaseRequestDto);
-        investDto.setNoPassword(true);
-        String code = "";
-        String message = "";
+    public BaseResponseDto<InvestNoPassResponseDataDto> transferNoPasswordPurchase(TransferPurchaseRequestDto transferPurchaseRequestDto) {
         try {
+            InvestDto investDto = convertInvestDto(transferPurchaseRequestDto);
+            investDto.setNoPassword(true);
             BaseDto<PayDataDto> payDataDto = transferService.noPasswordTransferPurchase(investDto);
-            if (payDataDto.getData() != null) {
-                code = payDataDto.getData().getCode() != null ? payDataDto.getData().getCode() : ReturnMessage.SUCCESS.getCode();
-                message = payDataDto.getData().getMessage() != null ? payDataDto.getData().getMessage() : ReturnMessage.SUCCESS.getMsg();
+
+            if (payDataDto.getData().getStatus()) {
+                BaseResponseDto<InvestNoPassResponseDataDto> baseResponseDto = new BaseResponseDto<>(ReturnMessage.SUCCESS);
+
+                String url = MessageFormat.format("{0}/{1}?order_id={2}", domainName, AsyncUmPayService.INVEST_TRANSFER_PROJECT_TRANSFER_NOPWD.getMobileRetCallbackPath(), payDataDto.getData().getExtraValues().get("order_id"));
+                baseResponseDto.setData(new InvestNoPassResponseDataDto(url));
+                return baseResponseDto;
             }
-            responseDto.setCode(code);
-            responseDto.setMessage(message);
-            responseDto.setData(new InvestNoPassResponseDataDto(MessageFormat.format("{0}/callback/project_transfer_no_password_transfer?ret_code={1}&order_id={2}&amount={3}", domainName, code, investDto.getLoanId(), investDto.getAmount())));
+
+            return new BaseResponseDto<>(payDataDto.getData().getCode(), payDataDto.getData().getMessage());
         } catch (InvestException e) {
-            return this.convertExceptionToDto(e);
+            return new BaseResponseDto<>(this.convertExceptionToDto(e));
         }
-        return responseDto;
     }
 
     @Override
@@ -130,7 +130,7 @@ public class MobileAppTransferServiceImpl implements MobileAppTransferService {
             responseDto.setCode(ReturnMessage.UMPAY_INVEST_MESSAGE_INVALID.getCode());
             responseDto.setMessage(ReturnMessage.UMPAY_INVEST_MESSAGE_INVALID.getMsg());
         } catch (InvestException e) {
-            responseDto = convertExceptionToDto(e);
+            return new BaseResponseDto<>(this.convertExceptionToDto(e));
         }
         return responseDto;
     }
@@ -144,35 +144,24 @@ public class MobileAppTransferServiceImpl implements MobileAppTransferService {
         investDto.setLoanId(String.valueOf(transferApplicationModel.getLoanId()));
         investDto.setLoginName(transferPurchaseRequestDto.getBaseParam().getUserId());
         investDto.setChannel(mobileAppChannelService.obtainChannelBySource(transferPurchaseRequestDto.getBaseParam()));
-        investDto.setTransferInvestId(transferPurchaseRequestDto.getTransferApplicationId());
+        investDto.setTransferApplicationId(transferPurchaseRequestDto.getTransferApplicationId());
         return investDto;
     }
 
-    private BaseResponseDto<InvestResponseDataDto> convertExceptionToDto(InvestException e) {
-        BaseResponseDto<InvestResponseDataDto> baseResponseDto = new BaseResponseDto<>();
+    private ReturnMessage convertExceptionToDto(InvestException e) {
         switch (e.getType()) {
             case ILLEGAL_LOAN_STATUS:
-                baseResponseDto.setCode(ReturnMessage.ILLEGAL_LOAN_STATUS.getCode());
-                baseResponseDto.setMessage(ReturnMessage.ILLEGAL_LOAN_STATUS.getMsg());
-                break;
+                return ReturnMessage.ILLEGAL_LOAN_STATUS;
             case NOT_ENOUGH_BALANCE:
-                baseResponseDto.setCode(ReturnMessage.NOT_ENOUGH_BALANCE.getCode());
-                baseResponseDto.setMessage(ReturnMessage.NOT_ENOUGH_BALANCE.getMsg());
-                break;
+                return ReturnMessage.NOT_ENOUGH_BALANCE;
             case PASSWORD_INVEST_OFF:
-                baseResponseDto.setCode(ReturnMessage.PASSWORD_INVEST_OFF.getCode());
-                baseResponseDto.setMessage(ReturnMessage.PASSWORD_INVEST_OFF.getMsg());
-                break;
+                return ReturnMessage.PASSWORD_INVEST_OFF;
             case LOAN_NOT_FOUND:
-                baseResponseDto.setCode(ReturnMessage.LOAN_NOT_FOUND.getCode());
-                baseResponseDto.setMessage(ReturnMessage.LOAN_NOT_FOUND.getMsg());
-                break;
+                return ReturnMessage.LOAN_NOT_FOUND;
             case INVESTOR_IS_LOANER:
-                baseResponseDto.setCode(ReturnMessage.APPLICATION_IS_HIS_OWN.getCode());
-                baseResponseDto.setMessage(ReturnMessage.APPLICATION_IS_HIS_OWN.getMsg());
-                break;
+                return ReturnMessage.APPLICATION_IS_HIS_OWN;
         }
-        return baseResponseDto;
+        return ReturnMessage.ERROR;
     }
 
 }

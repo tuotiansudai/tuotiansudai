@@ -9,7 +9,6 @@ import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.job.JobManager;
 import com.tuotiansudai.job.JobType;
-import com.tuotiansudai.job.LoanOutSuccessHandleJob;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.client.model.MessageTopic;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
@@ -220,7 +219,6 @@ public class LoanServiceTest {
         when(redisWrapperClient.hset(anyString(), anyString(), anyString())).thenReturn(1l);
         when(accountMapper.findByLoginName(anyString())).thenReturn(accountModel);
         when(paySyncClient.send(eq(MerUpdateProjectMapper.class), any(MerUpdateProjectRequestModel.class), eq(MerUpdateProjectResponseModel.class))).thenReturn(merUpdateProjectResponseModel);
-        when(jobManager.newJob(any(JobType.class), eq(LoanOutSuccessHandleJob.class))).thenReturn(triggeredJobBuilder);
         doNothing().when(mqWrapperClient).sendMessage(any(MessageQueue.class), anyObject());
 
         BaseDto<PayDataDto> baseDto1 = loanService.loanOut(loanModel.getId());

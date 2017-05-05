@@ -1,6 +1,8 @@
 package com.tuotiansudai.api.service;
 
 
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 import com.tuotiansudai.api.dto.*;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.impl.MobileAppTransferServiceImpl;
@@ -59,9 +61,6 @@ public class MobileAppTransferServiceTest extends ServiceTestBase {
     @Mock
     private RandomUtils randomUtils;
 
-    @Value("${pay.callback.app.web.host}")
-    private String domainName;
-
     @Mock
     private PageValidUtils pageValidUtils;
 
@@ -118,6 +117,7 @@ public class MobileAppTransferServiceTest extends ServiceTestBase {
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         baseDto.setSuccess(true);
         PayDataDto payDataDto = new PayDataDto();
+        payDataDto.setExtraValues(Maps.newHashMap(ImmutableMap.<String, String>builder().put("order_id", "order_id").build()));
         payDataDto.setStatus(true);
         baseDto.setData(payDataDto);
         when(transferService.noPasswordTransferPurchase(any(InvestDto.class))).thenReturn(baseDto);
@@ -144,9 +144,13 @@ public class MobileAppTransferServiceTest extends ServiceTestBase {
         accountModel.setNoPasswordInvest(false);
         when(accountService.findByLoginName(anyString())).thenReturn(accountModel);
 
-        BaseDto<PayDataDto> baseDto = new BaseDto<>();
+        BaseDto<PayDataDto> baseDto = new BaseDto<>(new PayDataDto());
         baseDto.setSuccess(false);
         when(transferService.noPasswordTransferPurchase(any(InvestDto.class))).thenReturn(baseDto);
+
+        InvestModel successInvest = new InvestModel();
+        successInvest.setId(1);
+        when(investMapper.findLatestSuccessInvest(anyString())).thenReturn(successInvest);
 
         BaseResponseDto<InvestNoPassResponseDataDto> baseResponseDto = mobileAppTransferServiceImpl.transferNoPasswordPurchase(transferPurchaseRequestDto);
         assertFalse(baseResponseDto.isSuccess());

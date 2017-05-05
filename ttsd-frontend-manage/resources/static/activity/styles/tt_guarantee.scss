@@ -1,0 +1,132 @@
+@charset "utf-8";
+body {
+  background: #f8f9fb;
+  overflow-x: hidden;
+}
+
+.main-frame {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.tour-slide  {
+  height: 350px;
+  background: url("../images/guarantee/db-top.jpg") center top no-repeat;
+
+}
+
+.guarantee-container {
+  .content-column {
+    padding:30px 0;
+    color: #333;
+    font-size:16px;
+    &:nth-last-child(1) {
+      padding-bottom:80px;
+    }
+    h2 {
+      color: #333;
+      font-size: 24px;
+      text-align: center;
+      padding-bottom:25px;
+      padding-top:20px;
+      font-weight: bold;
+    }
+    .reason-list {
+      text-align: center;
+      padding-bottom:30px;
+      dd {
+        width:33%;
+        float: left;
+        padding-top:135px;
+        &.reason01 {
+          background: url('../images/guarantee/icon-assure01.png') center top no-repeat;
+        }
+        &.reason02 {
+          background: url('../images/guarantee/icon-assure02.png') center top no-repeat;
+        }
+        &.reason03 {
+          background: url('../images/guarantee/icon-assure03.png') center top no-repeat;
+        }
+        b {
+          display: block;
+          padding-top: 25px;
+          font-size:18px;
+        }
+      }
+    }
+  }
+
+}
+
+@media screen and(max-width: 700px) {
+  .tour-slide {
+    background: transparent;
+    height:auto;
+    img {
+      width:100%;
+    }
+  }
+
+  .guarantee-container {
+    .content-column {
+      font-size:12px;
+      padding: 10px;
+      h2 {
+        font-size: 16px;
+        padding-bottom: 15px;
+        padding-top: 10px;
+      }
+      .reason-list {
+        padding-bottom:10px;
+        margin-left: 5px;
+        margin-right: 5px;
+        dd {
+          padding-top: 60px;
+          &.reason01 {
+            background-size:60%;
+            background-position: left top;
+            b {
+              text-align: left;
+              padding-left:14px;
+            }
+          }
+          &.reason02 {
+            background-size:60%;
+          }
+          &.reason03 {
+            background-size:60%;
+            background-position: right top;
+            b {
+              text-align: right;
+              padding-right: 10px;
+            }
+          }
+          b {
+            font-size:12px;
+          }
+        }
+      }
+      &:nth-last-child(1) {
+        padding-bottom:30px;
+      }
+      .relationship-map {
+        text-align: center;
+        img {
+          width:98%;
+        }
+      }
+    }
+  }
+}
+
+@media screen and(max-width: 400px) {
+  .guarantee-container .content-column .reason-list dd {
+    &.reason01 b {
+      padding-left: 5px;
+    }
+
+    &.reason03 b {
+      padding-right: 0px;
+    }
+  }
+}

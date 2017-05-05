@@ -505,6 +505,7 @@
             i.created_time AS invest_time,
             irr.amount AS reward_amount,
             irr.created_time AS reward_time,
+            irr.status  AS status,
             l.product_type AS product_type
         from
             invest_referrer_reward irr

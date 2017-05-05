@@ -4,12 +4,16 @@ import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.RegisterAccountDto;
+import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.spring.security.MyAuthenticationUtil;
 import com.tuotiansudai.util.IdentityNumberValidator;
+import org.joda.time.DateTime;
+import org.joda.time.Minutes;
+import org.joda.time.Seconds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -63,5 +67,14 @@ public class RegisterAccountController {
         PayDataDto dataDto = new PayDataDto();
         baseDto.setData(dataDto);
         return baseDto;
+    }
+
+    @RequestMapping(path = "/success", method = RequestMethod.GET)
+    public ModelAndView registerAccountSuccess() {
+        AccountModel accountModel = accountService.findByLoginName(LoginUserInfo.getLoginName());
+        if (Seconds.secondsBetween(new DateTime(accountModel.getRegisterTime()), new DateTime()).getSeconds() > 10) {
+            return new ModelAndView("/error/404");
+        }
+        return new ModelAndView("/register-account-success");
     }
 }

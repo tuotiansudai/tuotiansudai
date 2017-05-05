@@ -1,8 +1,7 @@
 package com.tuotiansudai.paywrapper.repository.model.async.request;
 
-import com.tuotiansudai.paywrapper.repository.model.UmPayService;
+import com.tuotiansudai.enums.AsyncUmPayService;
 import com.tuotiansudai.repository.model.Source;
-import com.tuotiansudai.util.FrontCallbackService;
 
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
@@ -30,21 +29,16 @@ public class PtpMerBindCardRequestModel extends BaseAsyncRequestModel {
     public PtpMerBindCardRequestModel() {
     }
 
-    public PtpMerBindCardRequestModel(String orderId, String cardNumber, String payUserId, String userName, String identityNumber, Source source) {
-        this(orderId, cardNumber, payUserId, userName, identityNumber, source, false);
-    }
-
-    public PtpMerBindCardRequestModel(String orderId, String cardNumber, String payUserId, String userName, String identityNumber,Source source, boolean isOpenFastPayment) {
-        super(source,"ptp_mer_bind_card");
-        this.service = "ptp_mer_bind_card";
+    public PtpMerBindCardRequestModel(String orderId, String cardNumber, String payUserId, String userName, String identityNumber, Source source, boolean isOpenFastPayment) {
+        super(source, AsyncUmPayService.PTP_MER_BIND_CARD);
+        this.service = AsyncUmPayService.PTP_MER_BIND_CARD.getServiceName();
         this.orderId = orderId;
         this.merDate = new SimpleDateFormat("yyyyMMdd").format(new Date());
         this.cardId = cardNumber;
         this.userId = payUserId;
         this.accountName = userName;
         this.identityCode = identityNumber;
-        this.isOpenFastPayment = isOpenFastPayment?"1":"0";
-        this.notifyUrl = MessageFormat.format("{0}/{1}", CALLBACK_HOST_PROPS.get("pay.callback.back.host"), UmPayService.NOTIFY_MER_BIND_CARD.getServiceName());
+        this.isOpenFastPayment = isOpenFastPayment ? "1" : "0";
     }
 
     @Override

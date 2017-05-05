@@ -33,7 +33,7 @@ public class MobileAppCheckVersionController extends MobileAppBaseController {
     private static final String VERSION_CONFIG_FILE = "version.json";
     private static final String APP_VERSION_INFO_REDIS_KEY = "app:version:info";
     private static final int APP_VERSION_INFO_EXPIRE_SECONDS = 60 * 60;
-    static Logger log = Logger.getLogger(MobileAppCheckVersionController.class);
+    private static final Logger log = Logger.getLogger(MobileAppCheckVersionController.class);
 
     private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
@@ -82,7 +82,7 @@ public class MobileAppCheckVersionController extends MobileAppBaseController {
             }
             return dto;
         } catch (Exception e) {
-            log.error(e);
+            log.error("getLatestVersionInfo failed. ", e);
         }
         return null;
     }

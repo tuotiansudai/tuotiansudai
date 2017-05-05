@@ -96,7 +96,7 @@
         <table class="table table-bordered table-hover">
             <thead>
             <tr>
-                <th colspan="18">合计投资金额：${data.sumAmount/100} 元</th>
+                <th colspan="18">合计投资金额：${data.sumAmount/100} 元 (本统计不包含债权转让投资)</th>
             </tr>
             <tr>
                 <th>项目编号</th>

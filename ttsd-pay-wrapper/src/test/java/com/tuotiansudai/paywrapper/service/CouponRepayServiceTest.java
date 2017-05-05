@@ -8,7 +8,7 @@ import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.loanout.impl.CouponRepayServiceImpl;
 import com.tuotiansudai.paywrapper.repository.mapper.TransferMapper;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.SyncRequestStatus;
-import com.tuotiansudai.paywrapper.repository.model.sync.request.TransferRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.async.request.TransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.TransferResponseModel;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
