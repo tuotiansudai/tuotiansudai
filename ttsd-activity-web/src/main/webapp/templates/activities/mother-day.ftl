@@ -1,9 +1,4 @@
-<#import "../macro/global-dev.ftl" as global>
-<#assign jsName = 'mother_day' >
-
-<#assign js = {"${jsName}":"http://localhost:3008/activity/js/${jsName}.js"} >
-<#assign css = {"${jsName}":"http://localhost:3008/activity/js/${jsName}.css"}>
-
+<#import "../macro/global.ftl" as global>
 <@global.main pageCss="${css.mother_day}" pageJavascript="${js.mother_day}" activeNav="" activeLeftNav="" title="母亲节活动_活动中心_拓天速贷" keywords="拓天速贷,母亲节活动,转盘抽奖,体验金,实物大奖" description="拓天速贷感恩母亲节,活动期间可转动转盘参加抽奖,投资可享188888元体验金福利和128G中国红iphone7等实物大奖.">
 <div class="mother-day-container" id="motherDayContainer">
 	<div class="top-item">
