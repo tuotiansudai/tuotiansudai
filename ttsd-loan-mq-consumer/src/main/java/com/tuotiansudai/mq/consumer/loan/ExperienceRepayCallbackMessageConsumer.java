@@ -20,7 +20,7 @@ public class ExperienceRepayCallbackMessageConsumer implements MessageConsumer {
 
     private final PayWrapperClient payWrapperClient;
 
-    @Value("common.environment")
+    @Value("${common.environment}")
     private Environment env;
 
     @Autowired
