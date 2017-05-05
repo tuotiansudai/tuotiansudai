@@ -52,7 +52,7 @@ public class MidSummerService {
     }
 
     public boolean isUserShared(String mobile) {
-        return userMapper.findByLoginName(mobile) != null && midSummerSharedUsersMapper.findByLoginName(userMapper.findByLoginName(mobile).getLoginName()) != null;
+        return userMapper.findByMobile(mobile) != null && midSummerSharedUsersMapper.findByLoginName(userMapper.findByMobile(mobile).getLoginName()) != null;
     }
 }
 
