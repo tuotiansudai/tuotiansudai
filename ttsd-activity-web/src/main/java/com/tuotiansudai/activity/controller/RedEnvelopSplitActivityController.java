@@ -25,8 +25,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.text.MessageFormat;
 
-@Controller
-@RequestMapping(value = "/activity/red-envelop-split")
+
 public class RedEnvelopSplitActivityController {
 
     private final static Logger logger = Logger.getLogger(RedEnvelopSplitActivityController.class);
