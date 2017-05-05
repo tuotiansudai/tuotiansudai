@@ -24,7 +24,7 @@ import java.util.Map;
 @Component
 public class AdvertisementUtils {
 
-    @Value("${web.static.server}")
+    @Value("${common.static.server}")
     private String staticDomainName;
 
     private static Logger logger = Logger.getLogger(MobileAppAdvertisementServiceImpl.class);
