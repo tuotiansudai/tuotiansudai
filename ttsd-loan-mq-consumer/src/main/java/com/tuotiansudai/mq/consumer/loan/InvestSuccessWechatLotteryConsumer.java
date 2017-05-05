@@ -1,7 +1,6 @@
 package com.tuotiansudai.mq.consumer.loan;
 
 import com.tuotiansudai.client.PayWrapperClient;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.TransferCashDto;
@@ -13,6 +12,7 @@ import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.JsonConverter;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +21,7 @@ public class InvestSuccessWechatLotteryConsumer implements MessageConsumer {
 
     private static final Logger logger = LoggerFactory.getLogger(InvestSuccessWechatLotteryConsumer.class);
 
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
+    private RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
     @Autowired
     private InvestService investService;
