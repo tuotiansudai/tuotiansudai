@@ -21,8 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.Date;
 import java.util.List;
 
-@Controller
-@RequestMapping(path = "/activity/autumn")
+
 public class AutumnPrizeController {
 
     @Value(value = "${activity.autumn.invest.channel}")
