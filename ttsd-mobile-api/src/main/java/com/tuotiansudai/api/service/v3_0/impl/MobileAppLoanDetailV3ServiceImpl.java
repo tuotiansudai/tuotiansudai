@@ -433,8 +433,8 @@ public class MobileAppLoanDetailV3ServiceImpl implements MobileAppLoanDetailV3Se
                     itemDtoList.add(estimateAmountItemDto);
 
                     ItemDto loanAmountItemDto = new ItemDto();
-                    loanAmountItemDto.setLabel("借款公正金额");
-                    loanAmountItemDto.setValue(pledgeVehicleModel.getPledgeLocation());
+                    loanAmountItemDto.setLabel("借款公证金额");
+                    loanAmountItemDto.setValue(pledgeVehicleModel.getLoanAmount());
                     itemDtoList.add(loanAmountItemDto);
                 }
         }
