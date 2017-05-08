@@ -50,9 +50,6 @@ public class TransferCashServiceTest {
     private TransferCashService transferCashService;
 
     @Autowired
-    private IdGenerator idGenerator;
-
-    @Autowired
     private AccountMapper accountMapper;
 
     @Autowired
@@ -117,7 +114,7 @@ public class TransferCashServiceTest {
     public void shouldTransferCash() {
         this.createUserByUserId("testTransferCash");
         this.createAccountByUserId("testTransferCash");
-        long orderId = idGenerator.generate();
+        long orderId = IdGenerator.generate();
         String amount = "1";
         TransferCashDto transferCashDto = new TransferCashDto("testTransferCash",String.valueOf(orderId),amount);
         BaseDto<PayDataDto> baseDto = transferCashService.transferCash(transferCashDto);

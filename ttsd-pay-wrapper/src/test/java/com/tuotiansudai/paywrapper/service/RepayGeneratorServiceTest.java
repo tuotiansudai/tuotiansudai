@@ -36,9 +36,6 @@ public class RepayGeneratorServiceTest {
     private LoanMapper loanMapper;
 
     @Autowired
-    private IdGenerator idGenerator;
-
-    @Autowired
     private LoanRepayMapper loanRepayMapper;
 
     @Autowired
@@ -438,7 +435,7 @@ public class RepayGeneratorServiceTest {
 
     private LoanModel getFakeNormalLoan(LoanType loanType, long amount, int periods, double baseRate, double activityRate, String loginName, Date recheckTime, Date deadline) {
         LoanModel fakeLoanModel = new LoanModel();
-        fakeLoanModel.setId(idGenerator.generate());
+        fakeLoanModel.setId(IdGenerator.generate());
         fakeLoanModel.setName("loanName");
         fakeLoanModel.setLoanAmount(amount);
         fakeLoanModel.setLoanerLoginName(loginName);
@@ -462,7 +459,7 @@ public class RepayGeneratorServiceTest {
     }
 
     private InvestModel getFakeInvestModel(long loanId, long amount, String loginName, Date investTime) {
-        InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, amount, loginName, investTime, Source.WEB, null, 0.1);
+        InvestModel model = new InvestModel(IdGenerator.generate(), loanId, null, amount, loginName, investTime, Source.WEB, null, 0.1);
         model.setTradingTime(investTime);
         model.setStatus(InvestStatus.SUCCESS);
         model.setInvestFeeRate(0.1);

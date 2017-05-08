@@ -1,6 +1,5 @@
 package com.tuotiansudai.mq.consumer.activity.config;
 
-import com.tuotiansudai.client.RedisWrapperClient;
 import org.springframework.context.annotation.*;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import redis.clients.jedis.JedisPoolConfig;
@@ -23,18 +22,4 @@ public class AppConfiguration {
     public PropertySourcesPlaceholderConfigurer propertyConfigurer() {
         return new PropertySourcesPlaceholderConfigurer();
     }
-
-    @Bean
-    public RedisWrapperClient redisWrapperClient(PropertySourcesPlaceholderConfigurer configurer) {
-        return new RedisWrapperClient();
-    }
-
-    @Bean
-    public JedisPoolConfig jedisPoolConfig() {
-        JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
-        jedisPoolConfig.setMaxTotal(10);
-        jedisPoolConfig.setMaxWaitMillis(5000);
-        return jedisPoolConfig;
-    }
-
 }

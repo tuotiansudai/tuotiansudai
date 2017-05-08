@@ -41,8 +41,6 @@ public class MobileAppWithdrawServiceTest extends ServiceTestBase {
     private PayWrapperClient payWrapperClient;
     @Mock
     private BlacklistService blacklistService;
-    @Autowired
-    private IdGenerator idGenerator;
     @Mock
     private WithdrawMapper withdrawMapper;
     @Mock
@@ -106,7 +104,7 @@ public class MobileAppWithdrawServiceTest extends ServiceTestBase {
 
     private WithdrawModel fakeWithDrawModel() {
         WithdrawModel withdrawModel = new WithdrawModel();
-        withdrawModel.setId(idGenerator.generate());
+        withdrawModel.setId(IdGenerator.generate());
         withdrawModel.setLoginName("loginName");
         withdrawModel.setAmount(40000L);
         withdrawModel.setApplyNotifyMessage("verify_message");

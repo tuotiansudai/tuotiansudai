@@ -3,7 +3,6 @@ package com.tuotiansudai.paywrapper.extrarate.service.impl;
 
 import com.google.common.base.Strings;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.Environment;
@@ -20,12 +19,13 @@ import com.tuotiansudai.paywrapper.repository.mapper.TransferMapper;
 import com.tuotiansudai.paywrapper.repository.model.NotifyProcessStatus;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.ExtraRateNotifyRequestModel;
-import com.tuotiansudai.paywrapper.repository.model.async.request.TransferWithNotifyRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.async.request.TransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.SyncRequestStatus;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.TransferResponseModel;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.InterestCalculator;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -41,6 +41,8 @@ import java.util.Map;
 public class ExtraRateServiceImpl implements ExtraRateService {
 
     static Logger logger = Logger.getLogger(ExtraRateServiceImpl.class);
+
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
     @Autowired
     private LoanRepayMapper loanRepayMapper;
@@ -62,9 +64,6 @@ public class ExtraRateServiceImpl implements ExtraRateService {
 
     @Autowired
     private LoanMapper loanMapper;
-
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
 
     @Autowired
     private InvestRateService investRateService;
@@ -137,7 +136,7 @@ public class ExtraRateServiceImpl implements ExtraRateService {
 
             String orderId = investExtraRateModel.getInvestId() + "X" + System.currentTimeMillis();
             try {
-                TransferWithNotifyRequestModel requestModel = TransferWithNotifyRequestModel.newExtraRateRequest(
+                TransferRequestModel requestModel = TransferRequestModel.newExtraRateRequest(
                         String.valueOf(orderId),
                         accountModel.getPayUserId(),
                         accountModel.getPayAccountId(),

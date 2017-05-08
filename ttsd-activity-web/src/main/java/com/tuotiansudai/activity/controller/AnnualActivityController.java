@@ -14,8 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Map;
 
-@Controller
-@RequestMapping(path = "/activity/annual")
+
 public class AnnualActivityController {
 
     @Autowired

@@ -1,5 +1,7 @@
 package com.tuotiansudai.paywrapper.repository.model.sync.request;
 
+import com.tuotiansudai.enums.SyncUmPayService;
+
 import java.util.Map;
 
 public class ProjectAccountSearchRequestModel extends BaseSyncRequestModel {
@@ -10,8 +12,7 @@ public class ProjectAccountSearchRequestModel extends BaseSyncRequestModel {
     }
 
     public ProjectAccountSearchRequestModel(String projectId) {
-        super();
-        this.service = "project_account_search";
+        this.service = SyncUmPayService.PROJECT_ACCOUNT_SEARCH.getServiceName();
         this.projectId = projectId;
     }
 

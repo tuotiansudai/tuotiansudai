@@ -34,9 +34,6 @@ public class MobileAppUserFundV2ServiceTest extends ServiceTestBase {
     private MobileAppUserFundV2Service mobileAppUserFundV2Service;
 
     @Autowired
-    private IdGenerator idGenerator;
-
-    @Autowired
     private UserMapper userMapper;
 
     @Autowired
@@ -120,12 +117,12 @@ public class MobileAppUserFundV2ServiceTest extends ServiceTestBase {
         userRedEnvelopeCouponModel.setActualFee(0);
         userCouponMapper.update(userRedEnvelopeCouponModel);
 
-        InvestReferrerRewardModel investReferrerRewardModel = new InvestReferrerRewardModel(idGenerator.generate(), fakeInvest1.getId(), 10, myUserFund.getLoginName(), Role.INVESTOR);
+        InvestReferrerRewardModel investReferrerRewardModel = new InvestReferrerRewardModel(IdGenerator.generate(), fakeInvest1.getId(), 10, myUserFund.getLoginName(), Role.INVESTOR);
         investReferrerRewardModel.setStatus(ReferrerRewardStatus.SUCCESS);
         investReferrerRewardMapper.create(investReferrerRewardModel);
 
         InvestExtraRateModel investExtraRateModel1 = new InvestExtraRateModel();
-        investExtraRateModel1.setId(idGenerator.generate());
+        investExtraRateModel1.setId(IdGenerator.generate());
         investExtraRateModel1.setLoanId(fakeLoanModel1.getId());
         investExtraRateModel1.setInvestId(fakeInvest1.getId());
         investExtraRateModel1.setRepayDate(new Date());
@@ -136,7 +133,7 @@ public class MobileAppUserFundV2ServiceTest extends ServiceTestBase {
         investExtraRateMapper.create(investExtraRateModel1);
 
         InvestExtraRateModel investExtraRateModel2 = new InvestExtraRateModel();
-        investExtraRateModel2.setId(idGenerator.generate());
+        investExtraRateModel2.setId(IdGenerator.generate());
         investExtraRateModel2.setLoanId(fakeLoanModel1.getId());
         investExtraRateModel2.setInvestId(fakeInvest1.getId());
         investExtraRateModel2.setRepayDate(new Date());
@@ -156,7 +153,7 @@ public class MobileAppUserFundV2ServiceTest extends ServiceTestBase {
         bankCardMapper.create(bankCardModel);
 
         WithdrawModel withdrawModel = new WithdrawModel();
-        withdrawModel.setId(idGenerator.generate());
+        withdrawModel.setId(IdGenerator.generate());
         withdrawModel.setBankCardId(bankCardModel.getId());
         withdrawModel.setLoginName(myUserFund.getLoginName());
         withdrawModel.setAmount(100);
@@ -201,7 +198,7 @@ public class MobileAppUserFundV2ServiceTest extends ServiceTestBase {
     private LoanModel createFakeLoanModel(String loginName, LoanStatus loanStatus) {
         LoanModel loanModel = new LoanModel();
         loanModel.setAgentLoginName(loginName);
-        loanModel.setId(idGenerator.generate());
+        loanModel.setId(IdGenerator.generate());
         loanModel.setName("name");
         loanModel.setBaseRate(0);
         loanModel.setActivityRate(0);
@@ -243,7 +240,7 @@ public class MobileAppUserFundV2ServiceTest extends ServiceTestBase {
     }
 
     private InvestModel createFakeInvest(long loanId, long amount, String loginName, InvestStatus investStatus, TransferStatus transferStatus) {
-        InvestModel fakeInvestModel = new InvestModel(idGenerator.generate(), loanId, null, amount, loginName, new Date(), Source.WEB, null, 0.1);
+        InvestModel fakeInvestModel = new InvestModel(IdGenerator.generate(), loanId, null, amount, loginName, new Date(), Source.WEB, null, 0.1);
         fakeInvestModel.setStatus(investStatus);
         fakeInvestModel.setTransferStatus(transferStatus);
         investMapper.create(fakeInvestModel);
@@ -251,7 +248,7 @@ public class MobileAppUserFundV2ServiceTest extends ServiceTestBase {
     }
 
     private InvestRepayModel createFakeInvestRepay(long investId, int period, long corpus, long expectedInterest, long expectedFee, Date expectedRepayDate, Date actualRepayDate, RepayStatus repayStatus) {
-        InvestRepayModel fakeInvestRepayModel = new InvestRepayModel(idGenerator.generate(), investId, period, corpus, expectedInterest, expectedFee, expectedRepayDate, repayStatus);
+        InvestRepayModel fakeInvestRepayModel = new InvestRepayModel(IdGenerator.generate(), investId, period, corpus, expectedInterest, expectedFee, expectedRepayDate, repayStatus);
         fakeInvestRepayModel.setActualRepayDate(actualRepayDate);
         investRepayMapper.create(Lists.newArrayList(fakeInvestRepayModel));
         return fakeInvestRepayModel;
@@ -279,7 +276,7 @@ public class MobileAppUserFundV2ServiceTest extends ServiceTestBase {
 
     private UserBillModel createFakeUserBillModel(String loginName, long amount){
         UserBillModel userBillModel = new UserBillModel();
-        userBillModel.setId(idGenerator.generate());
+        userBillModel.setId(IdGenerator.generate());
         userBillModel.setOperationType(UserBillOperationType.TO_BALANCE);
         userBillModel.setOrderId(32323223L);
         userBillModel.setLoginName(loginName);

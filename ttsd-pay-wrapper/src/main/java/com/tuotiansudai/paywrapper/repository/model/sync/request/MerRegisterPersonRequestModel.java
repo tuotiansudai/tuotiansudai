@@ -1,5 +1,7 @@
 package com.tuotiansudai.paywrapper.repository.model.sync.request;
 
+import com.tuotiansudai.enums.SyncUmPayService;
+
 import java.util.Map;
 
 public class MerRegisterPersonRequestModel extends BaseSyncRequestModel {
@@ -20,8 +22,7 @@ public class MerRegisterPersonRequestModel extends BaseSyncRequestModel {
     }
 
     public MerRegisterPersonRequestModel(String orderId, String loginName, String userName, String identityNumber, String mobile) {
-        super();
-        this.service = "mer_register_person";
+        this.service = SyncUmPayService.MER_REGISTER_PERSON.getServiceName();
         this.orderId = orderId;
         this.loginName = loginName;
         this.userName = userName;

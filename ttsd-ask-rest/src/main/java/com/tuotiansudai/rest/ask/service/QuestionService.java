@@ -12,7 +12,6 @@ import com.tuotiansudai.ask.repository.model.AnswerModel;
 import com.tuotiansudai.ask.repository.model.QuestionModel;
 import com.tuotiansudai.ask.repository.model.QuestionStatus;
 import com.tuotiansudai.ask.repository.model.Tag;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.repository.mapper.UserMapper;
@@ -21,6 +20,7 @@ import com.tuotiansudai.rest.ask.utils.FakeMobileUtil;
 import com.tuotiansudai.rest.ask.utils.SensitiveWordsFilter;
 import com.tuotiansudai.util.MobileEncoder;
 import com.tuotiansudai.util.PaginationUtil;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +36,11 @@ import java.util.stream.Collectors;
 @Service
 public class QuestionService {
 
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
+
     private static final Logger logger = LoggerFactory.getLogger(QuestionService.class);
+
+    private static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     private final QuestionMapper questionMapper;
 
@@ -44,21 +48,16 @@ public class QuestionService {
 
     private final AnswerMapper answerMapper;
 
-    private final RedisWrapperClient redisWrapperClient;
-
     @Value(value = "${newAnswerAlert}")
     private String newAnswerAlertKey;
 
     private static final int PAGE_SIZE = 10;
 
-    public static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
     @Autowired
-    public QuestionService(QuestionMapper questionMapper, UserMapper userMapper, AnswerMapper answerMapper, RedisWrapperClient redisWrapperClient) {
+    public QuestionService(QuestionMapper questionMapper, UserMapper userMapper, AnswerMapper answerMapper) {
         this.questionMapper = questionMapper;
         this.userMapper = userMapper;
         this.answerMapper = answerMapper;
-        this.redisWrapperClient = redisWrapperClient;
     }
 
     public QuestionModel create(QuestionRequestDto questionRequestDto, String loginName) {

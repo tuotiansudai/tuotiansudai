@@ -1,11 +1,10 @@
 package com.tuotiansudai.console.service;
 
 import com.google.common.primitives.Longs;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.LinkExchangeDto;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
@@ -17,12 +16,11 @@ import java.util.*;
 @Service
 public class ConsoleLinkExchangeService {
 
-    static Logger logger = Logger.getLogger(ConsoleLinkExchangeService.class);
+    private static Logger logger = Logger.getLogger(ConsoleLinkExchangeService.class);
 
-    public static final String LINK_EXCHANGE_KEY = "console:link:list";
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
+    private static final String LINK_EXCHANGE_KEY = "console:link:list";
 
     public int findCountByTitle(String title) {
         if (StringUtils.isNotEmpty(title)) {

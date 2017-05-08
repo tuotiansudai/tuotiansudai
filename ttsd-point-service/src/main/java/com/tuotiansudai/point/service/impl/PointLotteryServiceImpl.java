@@ -1,6 +1,5 @@
 package com.tuotiansudai.point.service.impl;
 
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.point.repository.dto.UserPointPrizeDto;
 import com.tuotiansudai.point.repository.mapper.PointPrizeMapper;
@@ -12,8 +11,8 @@ import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.point.service.PointLotteryService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.util.RandomUtils;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -44,14 +43,13 @@ public class PointLotteryServiceImpl implements PointLotteryService {
 
     private final static String LAST_EXPIRY_TIME = " 23:59:59";
 
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
+
     @Autowired
     private PointPrizeMapper pointPrizeMapper;
 
     @Autowired
     private UserPointPrizeMapper userPointPrizeMapper;
-
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
 
     @Autowired
     private PointBillService pointBillService;

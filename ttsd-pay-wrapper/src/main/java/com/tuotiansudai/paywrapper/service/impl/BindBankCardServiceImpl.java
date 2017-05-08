@@ -12,7 +12,6 @@ import com.tuotiansudai.paywrapper.repository.mapper.BankCardApplyNotifyMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.BankCardNotifyMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.PtpMerBindCardMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.PtpMerReplaceCardMapper;
-import com.tuotiansudai.paywrapper.repository.model.async.callback.AsyncServiceType;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BankCardApplyNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BankCardNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
@@ -50,9 +49,6 @@ public class BindBankCardServiceImpl implements BindBankCardService {
     private AccountMapper accountMapper;
 
     @Autowired
-    private IdGenerator idGenerator;
-
-    @Autowired
     private BankCardMapper bankCardMapper;
 
     @Autowired
@@ -64,7 +60,7 @@ public class BindBankCardServiceImpl implements BindBankCardService {
         AccountModel accountModel = accountMapper.findByLoginName(dto.getLoginName());
 
         BankCardModel bankCardModel = new BankCardModel(dto);
-        bankCardModel.setId(idGenerator.generate());
+        bankCardModel.setId(IdGenerator.generate());
         bankCardModel.setStatus(BankCardStatus.UNCHECKED);
 
         PtpMerBindCardRequestModel requestModel = new PtpMerBindCardRequestModel(String.valueOf(bankCardModel.getId()),
@@ -93,7 +89,7 @@ public class BindBankCardServiceImpl implements BindBankCardService {
         UserModel userModel = userMapper.findByLoginName(dto.getLoginName());
         AccountModel accountModel = accountMapper.findByLoginName(dto.getLoginName());
         BankCardModel bankCardModel = new BankCardModel(dto);
-        bankCardModel.setId(idGenerator.generate());
+        bankCardModel.setId(IdGenerator.generate());
         bankCardModel.setStatus(BankCardStatus.UNCHECKED);
         bankCardModel.setIsFastPayOn(bankCardMapper.findByLoginNameAndIsFastPayOn(dto.getLoginName()) != null);
         PtpMerReplaceCardRequestModel requestModel = new PtpMerReplaceCardRequestModel(String.valueOf(bankCardModel.getId()),
@@ -125,11 +121,8 @@ public class BindBankCardServiceImpl implements BindBankCardService {
         }
 
         try {
-            String service = callbackRequest.getService();
-            if (AsyncServiceType.MER_BIND_CARD_NOTIFY.getCode().equals(service)) {
-                this.postReplaceBankCardCallback((BankCardNotifyRequestModel) callbackRequest);
-            }
-        } catch (AmountTransferException e) {
+            this.postReplaceBankCardCallback((BankCardNotifyRequestModel) callbackRequest);
+        } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
         }
 
@@ -146,9 +139,10 @@ public class BindBankCardServiceImpl implements BindBankCardService {
             return null;
         }
 
-        String service = callbackRequest.getService();
-        if (AsyncServiceType.MER_BIND_CARD_NOTIFY.getCode().equals(service)) {
+        try {
             this.postBindBankCardCallback((BankCardNotifyRequestModel) callbackRequest);
+        } catch (Exception e) {
+            logger.error(e.getLocalizedMessage(), e);
         }
 
         return callbackRequest.getResponseData();

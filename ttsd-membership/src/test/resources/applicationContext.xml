@@ -69,10 +69,6 @@
 
     <bean id="httpClient" class="com.squareup.okhttp.OkHttpClient" />
 
-    <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
-        <property name="maxTotal" value="300"/>
-    </bean>
-
     <bean class="com.tuotiansudai.mq.config.MQProducerConfig"/>
 
 </beans>

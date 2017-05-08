@@ -2,7 +2,6 @@ package com.tuotiansudai.service.impl;
 
 import com.google.common.base.Strings;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.enums.ExperienceBillBusinessType;
 import com.tuotiansudai.enums.ExperienceBillOperationType;
 import com.tuotiansudai.enums.riskestimation.Estimate;
@@ -10,35 +9,28 @@ import com.tuotiansudai.message.ExperienceAssigningMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.RiskEstimateMapper;
 import com.tuotiansudai.repository.model.RiskEstimateModel;
-import com.tuotiansudai.service.ExperienceBillService;
 import com.tuotiansudai.service.RiskEstimateService;
-import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.MessageFormat;
-import java.util.Date;
 import java.util.List;
 
 @Service
 public class RiskEstimateServiceImpl implements RiskEstimateService {
 
-    @Autowired
-    private MQWrapperClient mqWrapperClient;
-
     private static final String ESTIMATE_ALERT_REDIS_KEY = "estimate:alert";
+
+    private final MQWrapperClient mqWrapperClient;
 
     private final RiskEstimateMapper riskEstimateMapper;
 
-    private final ExperienceBillService experienceBillService;
-
-    private final RedisWrapperClient redisWrapperClient;
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
     @Autowired
-    public RiskEstimateServiceImpl(RiskEstimateMapper riskEstimateMapper, ExperienceBillService experienceBillService, RedisWrapperClient redisWrapperClient) {
+    public RiskEstimateServiceImpl(MQWrapperClient mqWrapperClient, RiskEstimateMapper riskEstimateMapper) {
+        this.mqWrapperClient = mqWrapperClient;
         this.riskEstimateMapper = riskEstimateMapper;
-        this.experienceBillService = experienceBillService;
-        this.redisWrapperClient = redisWrapperClient;
     }
 
     @Override

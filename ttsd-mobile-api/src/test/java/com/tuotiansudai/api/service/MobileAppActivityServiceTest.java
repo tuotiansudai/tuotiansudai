@@ -40,9 +40,6 @@ public class MobileAppActivityServiceTest extends ServiceTestBase {
     @Autowired
     MobileAppActivityService mobileAppActivityService;
 
-    @Autowired
-    IdGenerator idGenerator;
-
     private UserModel createUserModel(String loginName) {
         UserModel userModel = new UserModel();
         userModel.setLoginName(loginName);
@@ -96,7 +93,7 @@ public class MobileAppActivityServiceTest extends ServiceTestBase {
         cal.add(Calendar.SECOND, -98);
         for (int i = 10000000; i < 10099000; i += 1000) {
             cal.add(Calendar.SECOND, 1);
-            InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, 1, loginName, new Date(), Source.WEB, null, 0.1);
+            InvestModel model = new InvestModel(IdGenerator.generate(), loanId, null, 1, loginName, new Date(), Source.WEB, null, 0.1);
             model.setStatus(InvestStatus.SUCCESS);
             investMapper.create(model);
         }
@@ -133,7 +130,7 @@ public class MobileAppActivityServiceTest extends ServiceTestBase {
 
     private List<ActivityModel> prepareData() {
         UserModel userModel = createUserModel("testUser1");
-        long loanId = idGenerator.generate();
+        long loanId = IdGenerator.generate();
         createLoanModel(userModel.getLoginName(), loanId);
         createInvests(userModel.getLoginName(), loanId);
 

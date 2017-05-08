@@ -21,9 +21,6 @@ public class AuditLogService {
     private static Logger logger = Logger.getLogger(AuditLogService.class);
 
     @Autowired
-    private IdGenerator idGenerator;
-
-    @Autowired
     private MQWrapperClient mqWrapperClient;
 
     @Autowired
@@ -36,7 +33,7 @@ public class AuditLogService {
         String description = operatorLoginName + operation + "了用户［" + getRealName(loginName) + "］。";
 
         AuditLogModel log = new AuditLogModel();
-        log.setId(idGenerator.generate());
+        log.setId(IdGenerator.generate());
         log.setTargetId(loginName);
         log.setOperatorLoginName(operatorLoginName);
         log.setOperatorMobile(this.getMobile(operatorLoginName));
@@ -48,7 +45,7 @@ public class AuditLogService {
 
     public void createAuditLog(String auditorLoginName, String operatorLoginName, OperationType operationType, String targetId, String description, String auditorIp) {
         AuditLogModel log = new AuditLogModel();
-        log.setId(idGenerator.generate());
+        log.setId(IdGenerator.generate());
         log.setOperatorLoginName(operatorLoginName);
         log.setOperatorMobile(this.getMobile(operatorLoginName));
         log.setAuditorLoginName(auditorLoginName);

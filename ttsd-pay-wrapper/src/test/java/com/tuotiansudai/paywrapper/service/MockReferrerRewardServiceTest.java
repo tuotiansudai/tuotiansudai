@@ -5,7 +5,7 @@ import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.loanout.impl.ReferrerRewardServiceImpl;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferMapper;
-import com.tuotiansudai.paywrapper.repository.model.sync.request.TransferRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.async.request.TransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
@@ -35,9 +35,6 @@ public class MockReferrerRewardServiceTest {
 
     @InjectMocks
     private ReferrerRewardServiceImpl referrerRewardService;
-
-    @Mock
-    private IdGenerator idGenerator;
 
     @Mock
     private LoanMapper loanMapper;
@@ -114,8 +111,8 @@ public class MockReferrerRewardServiceTest {
         verify(investReferrerRewardMapper, times(1)).create(any(InvestReferrerRewardModel.class));
     }
 
-    private InvestModel fakeInvestModel() {
-        InvestModel investModel = new InvestModel(idGenerator.generate(), 10000, null, 1000L, "investor", new Date(), Source.WEB, null, 0.1);
+    private InvestModel fakeInvestModel(){
+        InvestModel investModel = new InvestModel(IdGenerator.generate(), 10000, null, 1000L, "investor", new Date(), Source.WEB, null, 0.1);
         investModel.setTradingTime(new Date());
         return investModel;
     }

@@ -92,7 +92,7 @@ public class TransferServiceImpl implements TransferService {
         AccountModel accountModel = accountMapper.findByLoginName(investDto.getLoginName());
 
         long loanId = Long.parseLong(investDto.getLoanId());
-        TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(Long.parseLong(investDto.getTransferInvestId()));
+        TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(Long.parseLong(investDto.getTransferApplicationId()));
         if (transferApplicationModel.getLoginName().equals(investDto.getLoginName())) {
             throw new InvestException(InvestExceptionType.INVESTOR_IS_LOANER);
         }

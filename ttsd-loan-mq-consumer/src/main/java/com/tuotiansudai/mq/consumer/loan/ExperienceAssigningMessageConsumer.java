@@ -3,7 +3,6 @@ package com.tuotiansudai.mq.consumer.loan;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.enums.ExperienceBillBusinessType;
 import com.tuotiansudai.enums.ExperienceBillOperationType;
 import com.tuotiansudai.enums.MessageEventType;
@@ -14,6 +13,7 @@ import com.tuotiansudai.mq.consumer.MessageConsumer;
 import com.tuotiansudai.service.ExperienceBillService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.JsonConverter;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,18 +29,17 @@ public class ExperienceAssigningMessageConsumer implements MessageConsumer {
 
     private final static Logger logger = LoggerFactory.getLogger(ExperienceAssigningMessageConsumer.class);
 
+    private static final String NEWMAN_TYRANT_GRANTED_LIST = "NEWMAN_TYRANT_GRANTED_LIST";
+
+    private final int lifeSecond = 10378000;
+
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
+
     @Autowired
     private ExperienceBillService experienceBillService;
 
     @Autowired
-    private RedisWrapperClient redisWrapperClient;
-
-    @Autowired
     private MQWrapperClient mqWrapperClient;
-
-    private static final String NEWMAN_TYRANT_GRANTED_LIST = "NEWMAN_TYRANT_GRANTED_LIST";
-
-    private int lifeSecond = 10378000;
 
     @Override
     public MessageQueue queue() {
@@ -73,16 +72,17 @@ public class ExperienceAssigningMessageConsumer implements MessageConsumer {
             experienceBillService.updateUserExperienceBalanceByLoginName(experienceAssigningMessage.getExperienceAmount(), experienceAssigningMessage.getLoginName(),
                     experienceAssigningMessage.getExperienceBillOperationType(), experienceAssigningMessage.getExperienceBillBusinessType(), experienceAssigningMessage.getNote());
         } catch (Exception e) {
-            logger.error("[新贵富豪争霸活动发放体验金MQ] {0} grant experience fail {1}, errorMessage:{2}",
-                    experienceAssigningMessage.getLoginName(), DateFormatUtils.format(experienceAssigningMessage.getCurrentDate(),
-                            "yyyy-MM-dd"), e.getLocalizedMessage());
+            logger.error(MessageFormat.format("[发放体验金MQ] {0} grant experience fail {1}, errorMessage:{2}",
+                    experienceAssigningMessage.getLoginName(),
+                    DateFormatUtils.format(experienceAssigningMessage.getCurrentDate(), "yyyy-MM-dd"),
+                    e.getLocalizedMessage()), e);
         }
     }
 
     private void newmanTyrantAssignExperience(ExperienceAssigningMessage experienceAssigningMessage) {
         logger.info("[新贵富豪争霸活动发放体验金MQ] ready to consume message: newman tyrant assign experience.");
         if (redisWrapperClient.hexists(NEWMAN_TYRANT_GRANTED_LIST, DateFormatUtils.format(experienceAssigningMessage.getCurrentDate(), "yyyy-MM-dd"))
-                && redisWrapperClient.hget(NEWMAN_TYRANT_GRANTED_LIST, DateFormatUtils.format(experienceAssigningMessage.getCurrentDate(), "yyyy-MM-dd")).indexOf(experienceAssigningMessage.getLoginName()) > -1) {
+                && redisWrapperClient.hget(NEWMAN_TYRANT_GRANTED_LIST, DateFormatUtils.format(experienceAssigningMessage.getCurrentDate(), "yyyy-MM-dd")).contains(experienceAssigningMessage.getLoginName())) {
             logger.info(MessageFormat.format("loginName:{0} had granted experience {1}", experienceAssigningMessage.getLoginName(), DateFormatUtils.format(experienceAssigningMessage.getCurrentDate(), "yyyy-MM-dd")));
             return;
         }
@@ -109,8 +109,6 @@ public class ExperienceAssigningMessageConsumer implements MessageConsumer {
             logger.error("[新贵富豪争霸活动发放体验金MQ] {0} grant experience fail {1}, errorMessage:{2}",
                     experienceAssigningMessage.getLoginName(), DateFormatUtils.format(experienceAssigningMessage.getCurrentDate(),
                             "yyyy-MM-dd"), e.getLocalizedMessage());
-            return;
         }
-
     }
 }

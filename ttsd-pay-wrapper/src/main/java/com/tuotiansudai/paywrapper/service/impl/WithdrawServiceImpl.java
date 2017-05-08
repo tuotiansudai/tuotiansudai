@@ -57,9 +57,6 @@ public class WithdrawServiceImpl implements WithdrawService {
     private BankCardMapper bankCardMapper;
 
     @Autowired
-    private IdGenerator idGenerator;
-
-    @Autowired
     private AmountTransfer amountTransfer;
 
     @Autowired
@@ -81,7 +78,7 @@ public class WithdrawServiceImpl implements WithdrawService {
         WithdrawModel withdrawModel = new WithdrawModel(withdrawDto);
         withdrawModel.setFee(withdrawFee);
         withdrawModel.setBankCardId(bankCardModel.getId());
-        withdrawModel.setId(idGenerator.generate());
+        withdrawModel.setId(IdGenerator.generate());
         CustWithdrawalsRequestModel requestModel = new CustWithdrawalsRequestModel(String.valueOf(withdrawModel.getId()),
                 accountModel.getPayUserId(),
                 String.valueOf(withdrawModel.getAmount() - withdrawModel.getFee()),
@@ -91,11 +88,9 @@ public class WithdrawServiceImpl implements WithdrawService {
             withdrawMapper.create(withdrawModel);
             return baseDto;
         } catch (PayException e) {
-            BaseDto<PayFormDataDto> baseDto = new BaseDto<>();
             PayFormDataDto payFormDataDto = new PayFormDataDto();
-            payFormDataDto.setStatus(false);
-            payFormDataDto.setMessage(e.getMessage());
-            baseDto.setData(payFormDataDto);
+            BaseDto<PayFormDataDto> baseDto = new BaseDto<>(payFormDataDto);
+            payFormDataDto.setMessage(e.getLocalizedMessage());
             return baseDto;
         }
     }

@@ -40,17 +40,11 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
     @InjectMocks
     private MobileAppInvestListServiceImpl mobileAppInvestListService;
 
-    @Autowired
-    private IdGenerator idGenerator;
-
     @Mock
     private InvestMapper investMapper;
 
     @Mock
     private InvestService investService;
-
-    @Mock
-    private LoanService loanService;
 
     @Mock
     private RandomUtils randomUtils;
@@ -85,10 +79,10 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
         investModel1.setAmount(1000000L);
         investModel1.setInvestTime(new Date());
         investModel1.setInvestTime(new Date());
-        investModel1.setId(idGenerator.generate());
+        investModel1.setId(IdGenerator.generate());
         investModel1.setIsAutoInvest(false);
         investModel1.setLoginName("loginName1");
-        investModel1.setLoanId(idGenerator.generate());
+        investModel1.setLoanId(IdGenerator.generate());
         investModel1.setSource(Source.ANDROID);
         investModel1.setStatus(InvestStatus.SUCCESS);
         investModel1.setAchievements(Lists.newArrayList(InvestAchievement.MAX_AMOUNT));
@@ -97,10 +91,10 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
         investModel2.setAmount(1100000L);
         investModel2.setInvestTime(new Date());
         investModel2.setInvestTime(new Date());
-        investModel2.setId(idGenerator.generate());
+        investModel2.setId(IdGenerator.generate());
         investModel2.setIsAutoInvest(false);
         investModel2.setLoginName("loginName2");
-        investModel2.setLoanId(idGenerator.generate());
+        investModel2.setLoanId(IdGenerator.generate());
         investModel2.setSource(Source.WEB);
         investModel2.setStatus(InvestStatus.SUCCESS);
         investModel2.setAchievements(Lists.newArrayList(InvestAchievement.LAST_INVEST));
@@ -109,10 +103,10 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
         investModel3.setAmount(1200000L);
         investModel3.setInvestTime(new Date());
         investModel3.setInvestTime(new Date());
-        investModel3.setId(idGenerator.generate());
+        investModel3.setId(IdGenerator.generate());
         investModel3.setIsAutoInvest(false);
         investModel3.setLoginName("loginName3");
-        investModel3.setLoanId(idGenerator.generate());
+        investModel3.setLoanId(IdGenerator.generate());
         investModel3.setSource(Source.IOS);
         investModel3.setStatus(InvestStatus.SUCCESS);
         investModel3.setAchievements(Lists.newArrayList(InvestAchievement.FIRST_INVEST));
@@ -166,7 +160,7 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
 
     private InvestModel generateMockedInvestModel() {
         InvestModel investModel = new InvestModel();
-        investModel.setId(idGenerator.generate());
+        investModel.setId(IdGenerator.generate());
         investModel.setAmount(1000);
         investModel.setInvestTime(new Date());
         investModel.setInvestTime(new Date());
@@ -183,7 +177,7 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
         loanModel.setStatus(LoanStatus.RAISING);
         loanModel.setName("test loan name");
         loanModel.setCreatedTime(new Date());
-        loanModel.setId(idGenerator.generate());
+        loanModel.setId(IdGenerator.generate());
         return loanModel;
     }
 
@@ -222,10 +216,10 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
         investModel1.setAmount(1000000L);
         investModel1.setInvestTime(new Date());
         investModel1.setInvestTime(new Date());
-        investModel1.setId(idGenerator.generate());
+        investModel1.setId(IdGenerator.generate());
         investModel1.setIsAutoInvest(false);
         investModel1.setLoginName("loginName1");
-        investModel1.setLoanId(idGenerator.generate());
+        investModel1.setLoanId(IdGenerator.generate());
         investModel1.setSource(Source.ANDROID);
         investModel1.setStatus(InvestStatus.SUCCESS);
         investModel1.setAchievements(Lists.newArrayList(InvestAchievement.MAX_AMOUNT));
@@ -235,10 +229,10 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
         investModel2.setAmount(1100000L);
         investModel2.setInvestTime(new Date());
         investModel2.setInvestTime(new Date());
-        investModel2.setId(idGenerator.generate());
+        investModel2.setId(IdGenerator.generate());
         investModel2.setIsAutoInvest(false);
         investModel2.setLoginName("loginName2");
-        investModel2.setLoanId(idGenerator.generate());
+        investModel2.setLoanId(IdGenerator.generate());
         investModel2.setSource(Source.WEB);
         investModel2.setStatus(InvestStatus.SUCCESS);
         investModel2.setAchievements(Lists.newArrayList(InvestAchievement.LAST_INVEST));
@@ -248,10 +242,10 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
         investModel3.setAmount(1200000L);
         investModel3.setInvestTime(new Date());
         investModel3.setInvestTime(new Date());
-        investModel3.setId(idGenerator.generate());
+        investModel3.setId(IdGenerator.generate());
         investModel3.setIsAutoInvest(false);
         investModel3.setLoginName("loginName3");
-        investModel3.setLoanId(idGenerator.generate());
+        investModel3.setLoanId(IdGenerator.generate());
         investModel3.setSource(Source.IOS);
         investModel3.setStatus(InvestStatus.SUCCESS);
         investModel3.setAchievements(Lists.newArrayList(InvestAchievement.FIRST_INVEST));
@@ -329,10 +323,10 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
         investModel1.setAmount(1000000L);
         investModel1.setInvestTime(new Date());
         investModel1.setInvestTime(new Date());
-        investModel1.setId(idGenerator.generate());
+        investModel1.setId(IdGenerator.generate());
         investModel1.setIsAutoInvest(false);
         investModel1.setLoginName("loginName1");
-        investModel1.setLoanId(idGenerator.generate());
+        investModel1.setLoanId(IdGenerator.generate());
         investModel1.setSource(Source.ANDROID);
         investModel1.setStatus(InvestStatus.SUCCESS);
         investModel1.setAchievements(Lists.newArrayList(InvestAchievement.MAX_AMOUNT));
@@ -341,10 +335,10 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
         investModel2.setAmount(1100000L);
         investModel2.setInvestTime(new Date());
         investModel2.setInvestTime(new Date());
-        investModel2.setId(idGenerator.generate());
+        investModel2.setId(IdGenerator.generate());
         investModel2.setIsAutoInvest(false);
         investModel2.setLoginName("loginName2");
-        investModel2.setLoanId(idGenerator.generate());
+        investModel2.setLoanId(IdGenerator.generate());
         investModel2.setSource(Source.WEB);
         investModel2.setStatus(InvestStatus.SUCCESS);
         investModel2.setAchievements(Lists.newArrayList(InvestAchievement.LAST_INVEST));
@@ -353,10 +347,10 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
         investModel3.setAmount(1200000L);
         investModel3.setInvestTime(new Date());
         investModel3.setInvestTime(new Date());
-        investModel3.setId(idGenerator.generate());
+        investModel3.setId(IdGenerator.generate());
         investModel3.setIsAutoInvest(false);
         investModel3.setLoginName("loginName3");
-        investModel3.setLoanId(idGenerator.generate());
+        investModel3.setLoanId(IdGenerator.generate());
         investModel3.setSource(Source.IOS);
         investModel3.setStatus(InvestStatus.SUCCESS);
         investModel3.setAchievements(Lists.newArrayList(InvestAchievement.FIRST_INVEST));

@@ -3,11 +3,10 @@ package com.tuotiansudai.console.activity.service;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.activity.repository.dto.NewmanTyrantPrizeDto;
 import com.tuotiansudai.activity.repository.mapper.InvestNewmanTyrantMapper;
-import com.tuotiansudai.activity.repository.model.NewmanTyrantView;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.activity.repository.model.NewmanTyrantHistoryView;
-import com.tuotiansudai.util.DateConvertUtil;
+import com.tuotiansudai.activity.repository.model.NewmanTyrantView;
 import com.tuotiansudai.util.JsonConverter;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -27,8 +26,9 @@ import java.util.List;
 public class ActivityConsoleNewmanTyrantService {
 
     static Logger logger = Logger.getLogger(ActivityConsoleNewmanTyrantService.class);
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
+
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
+
     @Autowired
     private InvestNewmanTyrantMapper investNewmanTyrantMapper;
 

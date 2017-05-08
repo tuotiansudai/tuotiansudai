@@ -29,9 +29,6 @@ public class ConsoleLoanCreateService {
     private static Logger logger = Logger.getLogger(ConsoleLoanCreateService.class);
 
     @Autowired
-    private IdGenerator idGenerator;
-
-    @Autowired
     private LoanTitleMapper loanTitleMapper;
 
     @Autowired
@@ -91,7 +88,7 @@ public class ConsoleLoanCreateService {
             return dto;
         }
 
-        long loanId = idGenerator.generate();
+        long loanId = IdGenerator.generate();
 
         LoanModel loanModel = new LoanModel(loanId, loanCreateRequestDto);
         loanModel.setName(generateLoanName(loanModel.getName(), loanModel.getPledgeType()));
@@ -100,7 +97,7 @@ public class ConsoleLoanCreateService {
         if (CollectionUtils.isNotEmpty(loanCreateRequestDto.getLoan().getLoanTitles())) {
             for (LoanTitleRelationModel loanTitleRelationModel : loanCreateRequestDto.getLoan().getLoanTitles()) {
                 loanTitleRelationModel.setLoanId(loanId);
-                loanTitleRelationModel.setId(idGenerator.generate());
+                loanTitleRelationModel.setId(IdGenerator.generate());
             }
             loanTitleRelationMapper.create(loanCreateRequestDto.getLoan().getLoanTitles());
         }
@@ -152,7 +149,7 @@ public class ConsoleLoanCreateService {
         loanTitleRelationMapper.delete(loanId);
         if (CollectionUtils.isNotEmpty(loanCreateRequestDto.getLoan().getLoanTitles())) {
             for (LoanTitleRelationModel loanTitleRelationModel : loanCreateRequestDto.getLoan().getLoanTitles()) {
-                loanTitleRelationModel.setId(idGenerator.generate());
+                loanTitleRelationModel.setId(IdGenerator.generate());
                 loanTitleRelationModel.setLoanId(loanId);
             }
             loanTitleRelationMapper.create(loanCreateRequestDto.getLoan().getLoanTitles());
@@ -211,7 +208,7 @@ public class ConsoleLoanCreateService {
     }
 
     public LoanTitleModel createTitle(LoanTitleDto loanTitleDto) {
-        LoanTitleModel loanTitleModel = new LoanTitleModel(idGenerator.generate(), LoanTitleType.NEW_TITLE_TYPE, loanTitleDto.getTitle());
+        LoanTitleModel loanTitleModel = new LoanTitleModel(IdGenerator.generate(), LoanTitleType.NEW_TITLE_TYPE, loanTitleDto.getTitle());
         loanTitleMapper.create(loanTitleModel);
         return loanTitleModel;
     }

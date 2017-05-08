@@ -1,6 +1,8 @@
 package com.tuotiansudai.paywrapper.repository.model.sync.request;
 
 
+import com.tuotiansudai.enums.SyncUmPayService;
+
 import java.util.Map;
 
 public class MerSendSmsPwdRequestModel extends BaseSyncRequestModel {
@@ -15,7 +17,7 @@ public class MerSendSmsPwdRequestModel extends BaseSyncRequestModel {
     }
 
     public MerSendSmsPwdRequestModel(String userId, String identityCode, String orderId) {
-        this.service = "mer_send_sms_pwd";
+        this.service = SyncUmPayService.MER_SEND_SMS_PWD.getServiceName();
         this.userId = userId;
         this.identityCode = identityCode;
         this.orderId = orderId;

@@ -98,10 +98,6 @@
         <property name="basePackage" value="com.tuotiansudai.ask.repository.mapper"/>
     </bean>
 
-    <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
-        <property name="maxTotal" value="${ask.jedis.pool.maxTotal}"/>
-    </bean>
-
     <bean id="httpClient" class="com.squareup.okhttp.OkHttpClient"/>
 
     <!--for test-->
