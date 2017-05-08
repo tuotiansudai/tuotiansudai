@@ -53,8 +53,8 @@ public class InvestSuccessWechatLotteryConsumer implements MessageConsumer {
 
             InvestModel invesetModel = investService.findById(ism.getInvestInfo().getInvestId());
 
-            if (investService.isNewUserForWechatLottery(loginName) && invesetModel.getSource() == Source.WE_CHAT && loanId != 1 && investAmount >= 500000) {
-                redisWrapperClient.incr(WECHAT_LOTTERY_COUNT_KEY + loginName, investAmount / 500000);
+            if (investService.isNewUserForWechatLottery(loginName) && invesetModel.getSource() == Source.WE_CHAT && loanId != 1 && investAmount >= 500) {
+                redisWrapperClient.incr(WECHAT_LOTTERY_COUNT_KEY + loginName, investAmount / 500);
                 if (investService.isFirstInvest(loginName, invesetModel.getTradingTime())) {
                     sendCashPrize(loginName, investAmount);
                 }
@@ -70,19 +70,35 @@ public class InvestSuccessWechatLotteryConsumer implements MessageConsumer {
     private void sendCashPrize(String loginName, long investAmount) {
         logger.info("send wechat invest cash prize, loginName:{0}, investAmount:{1}", loginName, investAmount);
 
-        if (investAmount < 500000) {
+//        if (investAmount < 500000) {
+//            logger.info("invest amount is less than 5000, no prize.");
+//            return;
+//        }
+//
+//        long prizeAmount;
+//        if (investAmount < 1000000) {
+//            prizeAmount = 1800;
+//        } else if (investAmount < 2000000) {
+//            prizeAmount = 3800;
+//        } else {
+//            prizeAmount = 8800;
+//        }
+
+        if (investAmount < 500) {
             logger.info("invest amount is less than 5000, no prize.");
             return;
         }
 
         long prizeAmount;
-        if (investAmount < 1000000) {
-            prizeAmount = 1800;
-        } else if (investAmount < 2000000) {
-            prizeAmount = 3800;
+        if (investAmount < 1000) {
+            prizeAmount = 180;
+        } else if (investAmount < 1500) {
+            prizeAmount = 380;
         } else {
-            prizeAmount = 8800;
+            prizeAmount = 880;
         }
+
+
         long orderId = idGenerator.generate();
         TransferCashDto transferCashDto = new TransferCashDto(loginName, String.valueOf(orderId), String.valueOf(prizeAmount));
         BaseDto<PayDataDto> response = payWrapperClient.transferCash(transferCashDto);
