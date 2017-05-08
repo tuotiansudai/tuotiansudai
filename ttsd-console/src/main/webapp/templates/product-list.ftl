@@ -41,7 +41,7 @@
                     <td>${type.description!}</td>
                     <td><#if type.name() =="VIRTUAL">1<#else>2</#if>-${product.seq?string('0')!}</td>
                     <td>${product.name}</td>
-                    <td><img src="${staticServer}${product.imageUrl}" width="100px" height="50px"></td>
+                    <td><img src="${commonStaticServer}${product.imageUrl}" width="100px" height="50px"></td>
                     <td>${product.description}</td>
                     <td>${product.totalCount?string('0')}</td>
                     <td>${product.monthLimit?string('0')}</td>

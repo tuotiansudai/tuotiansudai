@@ -22,7 +22,7 @@ require(['jquery','drawCircle','logintip','register_common'], function ($,drawCi
             $activitySlide.addClass('pc-img');
         }
         else if(redirect=='mobile'){
-            $activitySlide.html('<img src='+staticServer+'/activity/images/christmas-day/app-top.jpg>');
+            $activitySlide.html('<img src='+commonStaticServer+'/activity/images/christmas-day/app-top.jpg>');
 
             // 是否加载快速注册的功能
             var urlObj=globalFun.parseURL(location.href);

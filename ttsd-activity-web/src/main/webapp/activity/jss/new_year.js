@@ -70,7 +70,7 @@ require(['jquery','drawCircle','commonFun','logintip','register_common'], functi
                 $activitySlide.addClass('pc-img');
             }
             else {
-                $activitySlide.html('<img src='+staticServer+'/activity/images/new-year/app-top.jpg>');
+                $activitySlide.html('<img src='+commonStaticServer+'/activity/images/new-year/app-top.jpg>');
 
                 // 是否加载快速注册的功能
                var urlObj=globalFun.parseURL(location.href);

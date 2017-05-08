@@ -23,15 +23,9 @@ import java.util.concurrent.TimeUnit;
 
 public class FreeMarkerVariablesMap extends MapFactoryBean implements ResourceLoaderAware {
 
-    private static final int PROD_VERSION_LENGTH = 4;
-
     private ResourceLoader resourceLoader = new DefaultResourceLoader();
 
     private OkHttpClient okHttpClient;
-
-    private String javascriptLocation;
-
-    private String cssLocation;
 
     private String staticResourceDiscoveryUrl;
 
@@ -44,20 +38,10 @@ public class FreeMarkerVariablesMap extends MapFactoryBean implements ResourceLo
     protected Map<Object, Object> createInstance() {
         Map<Object, Object> map = super.createInstance();
 
-        map.put("jsPath", javascriptLocation);
-        map.put("cssPath", cssLocation);
-
         StaticResourceDto staticResourceDto = this.discoverStaticResource(map.get("commonStaticServer"));
 
         Map<String, String> javascriptResource = staticResourceDto.getJsFile();
-        if (!Strings.isNullOrEmpty(javascriptLocation)) {
-            javascriptResource.putAll(buildStaticFiles(map.get("staticServer").toString(), javascriptLocation, ".js"));
-        }
-
         Map<String, String> cssResource = staticResourceDto.getCssFile();
-        if (!Strings.isNullOrEmpty(cssLocation)) {
-            cssResource.putAll(buildStaticFiles(map.get("staticServer").toString(), cssLocation, ".css"));
-        }
 
         map.put("js", javascriptResource);
         map.put("css", cssResource);
@@ -65,42 +49,6 @@ public class FreeMarkerVariablesMap extends MapFactoryBean implements ResourceLo
         logger.info(MessageFormat.format("css mapping: {0}", cssResource.toString()));
 
         return map;
-    }
-
-    private Map<String, String> buildStaticFiles(String staticServer, String filePath, final String extension) {
-        FilenameFilter filenameFilter = (dir, name) -> name.toLowerCase().endsWith(extension);
-
-        try {
-            Resource staticResource = resourceLoader.getResource(filePath);
-            File staticFolder = staticResource.getFile();
-            if (staticFolder.isDirectory()) {
-                File[] staticFiles = staticFolder.listFiles(filenameFilter);
-                return this.generateVersionMap(staticServer, filePath, staticFiles);
-            }
-        } catch (IOException e) {
-            logger.error("Generate Static Resource Version Map Failed: ", e);
-        }
-        return Collections.emptyMap();
-    }
-
-    private Map<String, String> generateVersionMap(String staticServer, String filePath, File[] staticFiles) {
-        Map<String, String> versionMap = Maps.newHashMap();
-
-        for (File file : staticFiles) {
-            String fileName = file.getName();
-            String[] split = fileName.split("\\.");
-            String filePrefix = split[0];
-
-            if (!versionMap.containsKey(filePrefix)) {
-                versionMap.put(filePrefix, MessageFormat.format("{0}{1}{2}", staticServer, filePath, fileName));
-            }
-
-            if (split.length == PROD_VERSION_LENGTH) {
-                versionMap.put(filePrefix, MessageFormat.format("{0}{1}{2}", staticServer, filePath, fileName));
-            }
-
-        }
-        return versionMap;
     }
 
     private StaticResourceDto discoverStaticResource(Object commonStaticServer) {
@@ -142,14 +90,6 @@ public class FreeMarkerVariablesMap extends MapFactoryBean implements ResourceLo
     @Override
     public void setResourceLoader(ResourceLoader resourceLoader) {
         this.resourceLoader = resourceLoader;
-    }
-
-    public void setJavascriptLocation(String javascriptLocation) {
-        this.javascriptLocation = javascriptLocation;
-    }
-
-    public void setCssLocation(String cssLocation) {
-        this.cssLocation = cssLocation;
     }
 
     public void setStaticResourceDiscoveryUrl(String staticResourceDiscoveryUrl) {

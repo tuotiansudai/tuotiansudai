@@ -1,5 +1,5 @@
 <#macro main pageCss pageJavascript="" activeNav="" activeLeftNav="" title="拓天速贷" keywords="" description="" site='main'>
-    <#assign staticServer = "http://localhost:3008/">
+    <#assign commonStaticServer = "http://localhost:3008/">
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -142,7 +142,7 @@
 </div>
     <#include "../pageLayout/footer.ftl" />
 <script>
-    window.staticServer='http://localhost:3008';
+    window.commonStaticServer='http://localhost:3008';
 </script>
 
 

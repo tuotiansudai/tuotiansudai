@@ -41,6 +41,8 @@ public class WeChatClient {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
+
     private final static Map<WeChatMessageType, String> TEMPLATE_MAP = Maps.newHashMap();
 
     @Value(value = "${wechat.appId}")
@@ -48,8 +50,6 @@ public class WeChatClient {
 
     @Value(value = "${wechat.appSecret}")
     private String appSecret;
-
-    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
     static {
         try (InputStreamReader reader = new InputStreamReader(WeChatClient.class.getClassLoader().getResourceAsStream("ttsd-env.properties"), StandardCharsets.UTF_8.name())) {

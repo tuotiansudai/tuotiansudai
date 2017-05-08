@@ -2,7 +2,6 @@ package com.tuotiansudai.service.impl;
 
 import com.google.common.base.Strings;
 import com.tuotiansudai.client.WeChatClient;
-import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.mapper.WeChatUserMapper;
 import com.tuotiansudai.repository.model.WeChatUserModel;
 import com.tuotiansudai.service.LoginNameGenerator;
@@ -30,8 +29,6 @@ public class WeChatServiceImpl implements WeChatService {
     @Value(value = "${wechat.authorize.callbck}")
     private String authorizeCallback;
 
-    private final UserMapper userMapper;
-
     private final WeChatUserMapper weChatUserMapper;
 
     private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
@@ -41,8 +38,7 @@ public class WeChatServiceImpl implements WeChatService {
     private final WeChatClient weChatClient;
 
     @Autowired
-    public WeChatServiceImpl(UserMapper userMapper, WeChatUserMapper weChatUserMapper, LoginNameGenerator loginNameGenerator, WeChatClient weChatClient) {
-        this.userMapper = userMapper;
+    public WeChatServiceImpl(WeChatUserMapper weChatUserMapper, LoginNameGenerator loginNameGenerator, WeChatClient weChatClient) {
         this.loginNameGenerator = loginNameGenerator;
         this.weChatClient = weChatClient;
         this.weChatUserMapper = weChatUserMapper;

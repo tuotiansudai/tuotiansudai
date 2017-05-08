@@ -82,8 +82,8 @@
                 <#if activityCenterList?? >
                     <#list activityCenterList as activity>
                     <tr>
-                        <td><span class="webImg"><img id="webPicture" src="${staticServer}${activity.webPictureUrl!}"/></span></td>
-                        <td><span class="appImg"><img id="appPicture" src="${staticServer}${activity.appPictureUrl!}"/></span></td>
+                        <td><span class="webImg"><img id="webPicture" src="${commonStaticServer}${activity.webPictureUrl!}"/></span></td>
+                        <td><span class="appImg"><img id="appPicture" src="${commonStaticServer}${activity.appPictureUrl!}"/></span></td>
                         <td>${activity.title!}</td>
                         <td><#if activity.activatedTime??>${activity.activatedTime?string('yyyy-MM-dd')}</#if></td>
                         <td><#if activity.expiredTime??>${activity.expiredTime?string('yyyy-MM-dd HH:mm')}</#if></td>

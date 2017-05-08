@@ -40,7 +40,7 @@
 
         <@global.isAnonymous>
             <#if Session.weChatUserLoginName??>
-                <li class="header-login">
+                <li class="header-login" data-wechat-login-name="${Session.weChatUserLoginName}">
                     <a class="personal-info-link" href="${requestContext.getContextPath()}/personal-info">wexin-${Session.weChatUserLoginName}</a>
                 </li>
             <#else>

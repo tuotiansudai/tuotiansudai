@@ -10,7 +10,10 @@ let $errorBox = $('.error-box', $(formRegister));
 let imageCaptcha = globalFun.$('#imageCaptcha');
 let captchaSrc = '/register/user/image-captcha';
 
-commonFun.refreshCaptcha(imageCaptcha, captchaSrc);
+$('#imageCaptcha').on('click', function () {
+    commonFun.refreshCaptcha(this, '/login/captcha');
+    formRegister.captcha.value = '';
+});
 
 //获取验证码
 (function () {
@@ -37,11 +40,14 @@ commonFun.refreshCaptcha(imageCaptcha, captchaSrc);
                     //倒计时结束后刷新验证码
                     commonFun.refreshCaptcha(imageCaptcha, captchaSrc);
                 });
-
             } else if (!data.status && data.isRestricted) {
+                commonFun.refreshCaptcha(imageCaptcha, '/login/captcha');
+                formRegister.captcha.value = '';
                 layer.msg('短信发送频繁，请稍后再试');
 
             } else if (!data.status && !data.isRestricted) {
+                commonFun.refreshCaptcha(imageCaptcha, '/login/captcha');
+                formRegister.captcha.value = '';
                 layer.msg('图形验证码不正确');
             }
         });
@@ -53,8 +59,7 @@ commonFun.refreshCaptcha(imageCaptcha, captchaSrc);
 
         if (/\d{5}/.test(imageCaptcha)) {
             sendCaptcha();
-        }
-        else {
+        } else {
             layer.msg('请输入正确的图形验证码');
             $getCaptcha.prop('disabled', false);
         }

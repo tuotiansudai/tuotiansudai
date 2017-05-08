@@ -19,7 +19,7 @@
     </@security.authorize>
 </#macro>
 
-<#macro main pageCss pageJavascript="" activeNav="拓天问答" staticServer="${commonStaticServer}" title="拓天速贷" keywords="" activeLeftNav=""  description="">
+<#macro main pageCss pageJavascript="" activeNav="拓天问答" commonStaticServer="${commonStaticServer}" title="拓天速贷" keywords="" activeLeftNav=""  description="">
     <#local mainMenus=[
     {"title":"首页", "url":"${webServer}","category":"16顶部导航","navigation":"true"},
     {"title":"我要投资", "url":"${webServer}/loan-list","category":"17顶部导航","navigation":"true","leftNavs":[
@@ -156,7 +156,7 @@
 </script>
 
 <script>
-    window.staticServer='${commonStaticServer}';
+    window.commonStaticServer='${commonStaticServer}';
 </script>
 <script src="${js.jquerydll}" ></script>
 <script src="${js.globalFun_page!}" ></script>

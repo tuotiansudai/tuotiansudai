@@ -6,10 +6,10 @@
     <div class="main-content-heavily">
         <div class="bg-line"></div>
         <div class="bg-line"></div>
-        <img src="${staticServer}/activity/images/heavily-courtship/envelop-word.png"  class="envelop-word">
+        <img src="${commonStaticServer}/activity/images/heavily-courtship/envelop-word.png"  class="envelop-word">
         <div class="con-inner clearfix">
             <div class="title-column">
-                <img src="${staticServer}/activity/images/heavily-courtship/title01.jpg" alt="获奖条件">
+                <img src="${commonStaticServer}/activity/images/heavily-courtship/title01.jpg" alt="获奖条件">
             </div>
 
             <div class="category-info-frame">
@@ -26,7 +26,7 @@
                         投资的用户
                     </div>
                     <div class="info-img">
-                        <img src="${staticServer}/activity/images/heavily-courtship/sg-01.jpg" alt="每个债权放出后第一个投资的用户">
+                        <img src="${commonStaticServer}/activity/images/heavily-courtship/sg-01.jpg" alt="每个债权放出后第一个投资的用户">
                         <em>浪漫QQ表情抱枕</em>
                     </div>
                 </div>
@@ -43,7 +43,7 @@
                         将标投满的用户
                     </div>
                     <div class="bg-info-img">
-                        <img src="${staticServer}/activity/images/heavily-courtship/chan-01.png" alt="获奖条件">
+                        <img src="${commonStaticServer}/activity/images/heavily-courtship/chan-01.png" alt="获奖条件">
                         <em>小熊（Bear）加湿器</em>
                     </div>
                 </div>
@@ -111,7 +111,7 @@
                             </span>
                             <em class="icon-reward"></em>
                             <div class="bg-info-img">
-                                <img src="${staticServer}/activity/images/heavily-courtship/sp-02.jpg" alt="灰姑凉暖贴">
+                                <img src="${commonStaticServer}/activity/images/heavily-courtship/sp-02.jpg" alt="灰姑凉暖贴">
                                 <em>爱心暖宝宝贴</em>
                             </div>
 
@@ -125,7 +125,7 @@
                             </span>
                             <em class="icon-reward"></em>
                             <div class="bg-info-img">
-                                <img src="${staticServer}/activity/images/heavily-courtship/base-mask.jpg" alt="口罩">
+                                <img src="${commonStaticServer}/activity/images/heavily-courtship/base-mask.jpg" alt="口罩">
                                 <em>3M 口罩一包（3只）</em>
                             </div>
                         </dd>
@@ -139,7 +139,7 @@
                             </span>
                             <em class="icon-reward"></em>
                             <div class="bg-info-img">
-                                <img src="${staticServer}/activity/images/heavily-courtship/sp-card.jpg" alt="京东卡">
+                                <img src="${commonStaticServer}/activity/images/heavily-courtship/sp-card.jpg" alt="京东卡">
                                 <em>100元京东卡</em>
                             </div>
                         </dd>
@@ -161,13 +161,13 @@
                     <i class="line-vertical bottom"></i>
                     <p>征友结束后，拿到奖品最多且奖品数在5个以上的人，可以获得叔送的</p>
                     <em>刘诗诗同款roseonly永生花礼盒</em>
-                    <img src="${staticServer}/activity/images/heavily-courtship/sign-rose.jpg" alt="终极大奖">
+                    <img src="${commonStaticServer}/activity/images/heavily-courtship/sign-rose.jpg" alt="终极大奖">
                 </div>
 
                 <div class="PS-box">
                     <dl class="PS-list clearfix">
                         <dt>PS:</dt>
-                        <dd><img src="${staticServer}/activity/images/heavily-courtship/ps01.jpg" alt="如果你是土豪"></dd>
+                        <dd><img src="${commonStaticServer}/activity/images/heavily-courtship/ps01.jpg" alt="如果你是土豪"></dd>
                     </dl>
                     <dl class="PS-list clearfix">
                         <dt>PS:</dt>
@@ -175,7 +175,7 @@
                             “拓天速贷财富”，回复“怪蜀黍”即可获得上题
                             答案，只要投资顺序与答案相符，也可以获得奖励。</p>
                             <p class="app">扫码回复“怪蜀黍”可获得上题答案</p>
-                            <img class="wechat" src="${staticServer}/activity/images/scan-code/weixin-big.jpg" alt="微信扫码">
+                            <img class="wechat" src="${commonStaticServer}/activity/images/scan-code/weixin-big.jpg" alt="微信扫码">
                         </dd>
                     </dl>
                 </div>

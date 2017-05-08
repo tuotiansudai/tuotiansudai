@@ -52,15 +52,6 @@ public class ActivitiesController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/isLogin", method = RequestMethod.GET)
-    public ModelAndView isLogin() {
-        if (!StringUtils.isEmpty(LoginUserInfo.getLoginName())) {
-            return null;
-        } else {
-            return new ModelAndView("/csrf");
-        }
-    }
-
     @ResponseBody
     @RequestMapping(value = "/get-realRealName", method = RequestMethod.GET)
     public String markRemind(@RequestParam(value = "mobile") String mobile) {
