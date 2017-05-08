@@ -67,4 +67,16 @@
         </where>
     </select>
 
+    <select id="findSumExperienceBillByBusinessType" parameterType="map" resultType="long">
+        select IFNULL(SUM(amount), 0) from experience_bill
+        <where>
+            <if test="loginName != null and loginName != ''">
+                and login_name = #{loginName}
+            </if>
+            <if test="businessType != null and businessType != ''">
+                and business_type = #{businessType}
+            </if>
+        </where>
+    </select>
+
 </mapper>

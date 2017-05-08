@@ -4,6 +4,8 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.activity.repository.model.MothersDayView;
 import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.enums.ExperienceBillBusinessType;
+import com.tuotiansudai.repository.mapper.ExperienceBillMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.InvestModel;
@@ -26,6 +28,9 @@ public class ActivityConsoleMothersService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private ExperienceBillMapper experienceBillMapper;
 
     private final List<MothersReward> mothersRewards = Lists.newArrayList(
             new MothersReward("拓天速贷定制礼盒一", 5000000l, 7000000l),
@@ -74,7 +79,11 @@ public class ActivityConsoleMothersService {
 
         investAmountMaps.forEach((k, v) -> {
             UserModel userModel = userMapper.findByLoginName(k);
-            list.add(new MothersDayView(k, userModel.getUserName(), userModel.getMobile(), AmountConverter.convertCentToString(v), getRewardDescription(v)));
+            list.add(new MothersDayView(k, userModel.getUserName(),
+                    userModel.getMobile(),
+                    AmountConverter.convertCentToString(v),
+                    getRewardDescription(v),
+                    experienceBillMapper.findSumExperienceBillByBusinessType(k, ExperienceBillBusinessType.MOTHERS_DAY.name())));
         });
 
         return list;

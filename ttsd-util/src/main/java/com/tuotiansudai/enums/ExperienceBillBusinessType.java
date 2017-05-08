@@ -6,7 +6,7 @@ public enum ExperienceBillBusinessType {
     NEWMAN_TYRANT("新贵富豪争霸赛", "恭喜您在新贵富豪争霸赛活动中获得体验金：{0}元体验金，获奖时间：{1}"),
     MONEY_TREE("摇钱树活动", "恭喜您在摇钱树活动中摇中了：{0}元体验金，摇奖时间：{1}"),
     RISK_ESTIMATE("投资偏好测评奖励", "首次投资偏好测评，奖励{0}体验金，评测时间：{1}"),
-    MOTHERS_TREE("母亲节活动", "恭喜您在母亲节活动中抽中了：{0}元体验金，摇奖时间：{1}"),
+    MOTHERS_DAY("母亲节活动", "恭喜您在母亲节活动中抽中了：{0}元体验金，摇奖时间：{1}"),
     DIVIDE_MONEY("瓜分体验金活动奖励", "恭喜您在瓜分体验金活动中获得体验金：{0}元体验金，获奖时间：{1}");
 
     private final String description;
