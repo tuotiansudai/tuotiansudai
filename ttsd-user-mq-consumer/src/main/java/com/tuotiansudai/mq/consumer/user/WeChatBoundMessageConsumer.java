@@ -13,6 +13,8 @@ import com.tuotiansudai.repository.mapper.WeChatUserMapper;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.WeChatUserModel;
 import com.tuotiansudai.util.JsonConverter;
+import com.tuotiansudai.util.MobileEncoder;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,10 +83,10 @@ public class WeChatBoundMessageConsumer implements MessageConsumer {
                     weChatUserMapper.update(boundUser);
                     weChatClient.sendTemplateMessage(WeChatMessageType.BOUND_TO_OTHER_USER, Maps.newHashMap(ImmutableMap.<String, String>builder()
                             .put("openid", boundUser.getOpenid())
-                            .put("first", "first")
-                            .put("keyword1", "keyword1")
-                            .put("keyword2", "keyword2")
-                            .put("remark", "remark")
+                            .put("first", "您的拓天速贷账号已被其他微信号绑定，请知悉")
+                            .put("keyword1", MobileEncoder.encode(mobile))
+                            .put("keyword2", new DateTime().toString("yyyy-MM-dd HH:mm:ss"))
+                            .put("remark", "如非您本人操作，请及时联系客服：400-169-1188（客服时间：工作日9:00-20:00）。")
                             .build()));
                     logger.info("[MQ WeChatBoundNotify] wechat unbound previous use successfully. user: {}, openid: {}, previous user: {}", userModel.getLoginName(), openid, boundUser.getLoginName());
                 });

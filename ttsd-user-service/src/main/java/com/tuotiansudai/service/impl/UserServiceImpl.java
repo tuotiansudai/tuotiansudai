@@ -115,6 +115,7 @@ public class UserServiceImpl implements UserService {
 
         UserModel userModel = new UserModel();
         userModel.setLoginName(loginNameGenerator.generate());
+        dto.setLoginName(userModel.getLoginName());
         userModel.setMobile(dto.getMobile());
         userModel.setSource(dto.getSource());
         userModel.setReferrer(referrerUserModel != null ? referrerUserModel.getLoginName() : null);
