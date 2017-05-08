@@ -120,7 +120,7 @@ let reInputs = $(formRegister).find('input[validate]');
 
 reInputs = Array.from(reInputs);
 for (var el of reInputs) {
-    globalFun.addEventHandler(el, "keyup", "blur", function () {
+    globalFun.addEventHandler(el,"keyup",function () {
         let errorMsg = validator.start(this);
         if (errorMsg) {
             $errorBox.text(errorMsg);
