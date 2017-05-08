@@ -30,9 +30,9 @@ public class WechatLotteryService {
 
     private static final int THIRTY_DAYS = 60 * 60 * 24 * 30;
 
-    private static final String WECHAT_PRIZE_1_KEY = "WECHAT_PRIZE_1";
+    private static final String WECHAT_PRIZE_1_KEY = "WECHAT_PRIZE_1"; // 一等奖，只有1个
 
-    private static final String WECHAT_PRIZE_2_KEY = "WECHAT_PRIZE_2";
+    private static final String WECHAT_PRIZE_2_KEY = "WECHAT_PRIZE_2"; // 二等奖，有2个
 
     @Autowired
     private CouponAssignmentService couponAssignmentService;
@@ -66,17 +66,15 @@ public class WechatLotteryService {
         long random = (long) (Math.random() * 1000000);
         long mod = random % 100;
         if (mod == 0) {
-            if (redisWrapperClient.exists(WECHAT_PRIZE_1_KEY)) {
+            if (redisWrapperClient.incrEx(WECHAT_PRIZE_1_KEY, THIRTY_DAYS) > 1) {
                 prize = LotteryPrize.WECHAT_LOTTERY_RED_ENVELOP_20;
             } else {
-                redisWrapperClient.setex(WECHAT_PRIZE_1_KEY, THIRTY_DAYS, "1");
                 prize = LotteryPrize.WECHAT_LOTTERY_BEDCLOTHES;
             }
         } else if (mod == 1 || mod == 2) {
-            if (redisWrapperClient.exists(WECHAT_PRIZE_2_KEY)) {
+            if (redisWrapperClient.incrEx(WECHAT_PRIZE_2_KEY, THIRTY_DAYS) > 2) {
                 prize = LotteryPrize.WECHAT_LOTTERY_RED_ENVELOP_20;
             } else {
-                redisWrapperClient.setex(WECHAT_PRIZE_2_KEY, THIRTY_DAYS, "1");
                 prize = LotteryPrize.WECHAT_LOTTERY_BAG;
             }
         } else if (mod < 10) {
