@@ -1,12 +1,4 @@
-
-<#import "../macro/global-dev.ftl" as global>
-
-<#assign jsName = 'icp_intro' >
-
-<#assign js = {"${jsName}":"http://localhost:3008/activity/js/${jsName}.js"} >
-<#assign css = {"${jsName}":"http://localhost:3008/activity/js/${jsName}.css"}>
-
-
+<#import "../macro/global.ftl" as global>
 <@global.main pageCss="${css.icp_intro}" pageJavascript="${js.icp_intro}" activeNav="" activeLeftNav="" title="女神节活动_活动中心_拓天速贷" keywords="拓天速贷,妇女节活动,女神节,少女节" description="拓天速贷3月8日推出女神节活动,少女总动员,开启全民抓娃娃,参与幸运女神时光机,集花瓣赢礼盒等投资活动获得相应蜜汁礼盒.">
 <div class="icp-intro-container" id="icpIntroContainer">
 	<div class="top-item">
@@ -14,14 +6,22 @@
 		<img src="" width="100%" class="media-phone">
 	</div>
 	<div class="wp clearfix">
+		<h3>拓天速贷正式获得由<span>北京市通信管理局核发的ICP经营许可证</span>，标志着平台在合规化发展道路上又迈进了关键的一步。</h3>
 		<div class="content-item">
 			<div class="title-item">
-				dsd
+				<span>何为“ICP经营许可证”？</span>
+			</div>
+			<div class="intro-content">
+				<p>ICP是英文Internet Content Provider的缩写，意为：网络内容服务商，即向广大用户综合提供互联网信息业务和增值业务的电信运营商。</p>
+				<p>ICP备案和ICP经营许可证是一回事吗？</p>
 			</div>
 		</div>
 		<div class="content-item">
 			<div class="title-item">
-				sds
+				<span>ICP备案和ICP经营许可证是一回事吗？</span>
+			</div>
+			<div class="intro-content">
+				<p>二者完全不是一回事。简单来说，ICP备案是任何网站都需要的，是普遍要求；ICP经营许可证是针对于经营性的网站才需要的，是一种更严格的管理和约束。ICP经营许可证的获批，是一个互联网金融服务平台在合规性方面综合实力最好最充分的证明！</p>
 			</div>
 		</div>
 	</div>

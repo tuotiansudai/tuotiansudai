@@ -30,7 +30,7 @@ public class ActivitiesController {
 
     //    midsummer: 助力升温，点燃仲夏活动:活动时间 5月12到5月25
 
-    @RequestMapping(path = "/{item:^money_tree|landing-page|invest-achievement|landing-anxin|point-update|sign-check|wx-register|divide-money|minsheng|guarantee|midsummer$}", method = RequestMethod.GET)
+    @RequestMapping(path = "/{item:^money_tree|landing-page|invest-achievement|landing-anxin|point-update|sign-check|wx-register|divide-money|minsheng|guarantee|midsummer|icp-intro$}", method = RequestMethod.GET)
 
     public ModelAndView activities(@PathVariable String item, HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView("/activities/" + item, "responsive", true);
