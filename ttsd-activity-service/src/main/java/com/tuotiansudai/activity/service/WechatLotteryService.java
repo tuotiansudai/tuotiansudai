@@ -14,6 +14,7 @@ import com.tuotiansudai.util.RedisWrapperClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -43,6 +44,12 @@ public class WechatLotteryService {
     @Autowired
     private UserLotteryPrizeMapper userLotteryPrizeMapper;
 
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.wechat.lottery.startTime}\")}")
+    private Date wechatLotteryStartTime;
+
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.wechat.lottery.endTime}\")}")
+    private Date wechatLotteryEndTime;
+
     public BaseDto<WechatLotteryDto> drawLottery(String loginName) {
 
         BaseDto<WechatLotteryDto> baseDto = new BaseDto<>();
@@ -51,6 +58,22 @@ public class WechatLotteryService {
         dto.setStatus(true);
         dto.setReturnCode(0);
         baseDto.setData(dto);
+
+        Date now = new Date();
+
+        if (wechatLotteryStartTime.after(now)) {
+            logger.info("wechat lottery activity does not started yet. start time is:{0}", wechatLotteryStartTime);
+            dto.setReturnCode(2);
+            dto.setMessage("活动尚未开始。");
+            dto.setStatus(false);
+            return baseDto;
+        } else if (wechatLotteryEndTime.before(now)) {
+            logger.info("wechat lottery activity is ended. end time is:{0}", wechatLotteryEndTime);
+            dto.setReturnCode(3);
+            dto.setMessage("活动已结束。");
+            dto.setStatus(false);
+            return baseDto;
+        }
 
         Long leftDrawCount = redisWrapperClient.decrEx(WECHAT_LOTTERY_COUNT_KEY + loginName, THIRTY_DAYS, 1);
         if (leftDrawCount < 0) {

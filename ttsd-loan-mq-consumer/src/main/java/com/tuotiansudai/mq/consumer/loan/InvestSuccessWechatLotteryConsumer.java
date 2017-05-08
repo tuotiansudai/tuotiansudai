@@ -16,6 +16,9 @@ import com.tuotiansudai.util.RedisWrapperClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+
+import java.util.Date;
 
 public class InvestSuccessWechatLotteryConsumer implements MessageConsumer {
 
@@ -34,6 +37,12 @@ public class InvestSuccessWechatLotteryConsumer implements MessageConsumer {
 
     private static final String WECHAT_LOTTERY_COUNT_KEY = "WECHAT_LOTTERY_COUNT:";
 
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.wechat.lottery.startTime}\")}")
+    private Date wechatLotteryStartTime;
+
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.wechat.lottery.endTime}\")}")
+    private Date wechatLotteryEndTime;
+
     @Override
     public MessageQueue queue() {
         return MessageQueue.InvestSuccess_WechatLottery;
@@ -43,6 +52,16 @@ public class InvestSuccessWechatLotteryConsumer implements MessageConsumer {
     public void consume(String message) {
 
         logger.info("[MQ] receive message: {}: {}.", this.queue(), message);
+
+        Date now = new Date();
+
+        if (wechatLotteryStartTime.after(now)) {
+            logger.info("wechat lottery activity does not started yet. start time is:{0}", wechatLotteryStartTime);
+            return;
+        } else if (wechatLotteryEndTime.before(now)) {
+            logger.info("wechat lottery activity is ended. end time is:{0}", wechatLotteryEndTime);
+            return;
+        }
 
         try {
             InvestSuccessMessage ism = JsonConverter.readValue(message, InvestSuccessMessage.class);
@@ -66,6 +85,7 @@ public class InvestSuccessWechatLotteryConsumer implements MessageConsumer {
         logger.info("[MQ] consume message done: {}: {}.", this.queue(), message);
 
     }
+
 
     private void sendCashPrize(String loginName, long investAmount) {
         logger.info("send wechat invest cash prize, loginName:{0}, investAmount:{1}", loginName, investAmount);
