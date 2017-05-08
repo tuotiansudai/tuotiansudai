@@ -1,0 +1,1 @@
+require("activityStyle/icp_intro.scss");
