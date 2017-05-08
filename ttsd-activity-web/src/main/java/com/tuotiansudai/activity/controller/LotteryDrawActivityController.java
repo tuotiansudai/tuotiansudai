@@ -21,7 +21,8 @@ import org.springframework.web.servlet.ModelAndView;
 import java.text.MessageFormat;
 import java.util.List;
 
-
+@Controller
+@RequestMapping(value = "/activity/point-draw")
 public class LotteryDrawActivityController {
 
     @Autowired

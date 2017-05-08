@@ -4,6 +4,8 @@ import com.tuotiansudai.membership.service.MembershipInvestService;
 import com.tuotiansudai.message.InvestSuccessMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
+import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.util.JsonConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +22,9 @@ public class InvestSuccessMembershipUpdateMessageConsumer implements MessageCons
 
     @Autowired
     private MembershipInvestService membershipInvestService;
+
+    @Autowired
+    private LoanMapper loanMapper;
 
     @Override
     public MessageQueue queue() {
@@ -42,10 +47,12 @@ public class InvestSuccessMembershipUpdateMessageConsumer implements MessageCons
             String loginName = investSuccessMessage.getInvestInfo().getLoginName();
             long investId = investSuccessMessage.getInvestInfo().getInvestId();
             long amount = investSuccessMessage.getInvestInfo().getAmount();
+            long loanId = investSuccessMessage.getLoanDetailInfo().getLoanId();
+            LoanModel loanModel = loanMapper.findById(loanId);
 
             logger.info("[MQ] ready to consume message: InvestSuccess-MembershipUpdate. loginName:{}, investId:{}", loginName, investId);
 
-            membershipInvestService.afterInvestSuccess(loginName, amount, investId);
+            membershipInvestService.afterInvestSuccess(loginName, amount, investId, loanModel.getName());
         }
         logger.info("[MQ] consume message success.");
     }
