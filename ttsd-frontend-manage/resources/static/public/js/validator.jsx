@@ -43,11 +43,11 @@ function removeElement(element) {
 /*******策略对象********/
 
 var isHaveError ={
-    yes(errorMsg,showErrorAfter) {
+    yes(errorMsg) {
         globalFun.addClass(this,'error');
         arguments[arguments.length-1]==true && createElement(this,errorMsg);
     },
-    no(showErrorAfter) {
+    no() {
         globalFun.removeClass(this,'error');
         globalFun.addClass(this,'valid');
         arguments[arguments.length-1]==true && removeElement(this);
