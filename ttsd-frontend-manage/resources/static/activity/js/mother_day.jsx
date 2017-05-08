@@ -51,7 +51,7 @@ $pointerBtn.on('click', function(event) {
         if (data.returnCode == 0) {
             var angleNum=0;
             switch (data.wechatLotteryPrize) {
-                case 'MOTHERS_DAY_ACTIVITY_BEDDING': //纯棉四件套 
+                case 'MOTHERS_DAY_ACTIVITY_BEDDING': //纯棉四件套
                     angleNum=45*8-20;
                     $(tipGroupObj['concrete']).find('.prizeValue').text('纯棉四件套');
                     break;
