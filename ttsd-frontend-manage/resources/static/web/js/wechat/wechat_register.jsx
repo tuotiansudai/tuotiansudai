@@ -11,7 +11,7 @@ let imageCaptcha = globalFun.$('#imageCaptcha');
 let captchaSrc = '/register/user/image-captcha';
 
 $('#imageCaptcha').on('click', function () {
-    commonFun.refreshCaptcha(this, '/login/captcha');
+    commonFun.refreshCaptcha(this, captchaSrc);
     formRegister.captcha.value = '';
 });
 
@@ -41,12 +41,12 @@ $('#imageCaptcha').on('click', function () {
                     commonFun.refreshCaptcha(imageCaptcha, captchaSrc);
                 });
             } else if (!data.status && data.isRestricted) {
-                commonFun.refreshCaptcha(imageCaptcha, '/login/captcha');
+                commonFun.refreshCaptcha(imageCaptcha, captchaSrc);
                 formRegister.captcha.value = '';
                 layer.msg('短信发送频繁，请稍后再试');
 
             } else if (!data.status && !data.isRestricted) {
-                commonFun.refreshCaptcha(imageCaptcha, '/login/captcha');
+                commonFun.refreshCaptcha(imageCaptcha, captchaSrc);
                 formRegister.captcha.value = '';
                 layer.msg('图形验证码不正确');
             }
