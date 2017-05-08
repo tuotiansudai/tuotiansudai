@@ -47,7 +47,6 @@ drawCircleOne.PrizeSwitch();
 $pointerBtn.on('click', function(event) {
 
     drawCircleOne.beginLuckDraw(function(data) {
-    	data.returnCode=1;
         //抽奖接口成功后奖品指向位置
         if (data.returnCode == 0) {
             var angleNum=0;
