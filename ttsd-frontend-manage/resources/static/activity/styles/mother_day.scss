@@ -110,8 +110,8 @@
 				width: 100%;
 				height: 440px;
 				background: #fcf5d0;
-				font-size: 12px;
-				color: #fff;
+				font-size: 14px;
+				color: #333;
 
 				.record-model {
 					float: left;
@@ -151,7 +151,14 @@
 	background:url('../images/mother-day/tip-bg.png') no-repeat center;
 	background-size:100%;
 	z-index: 999;
-
+	@media (max-width:700px) {
+		width: 300px !important;
+		height: 310px !important;
+		top: 50% !important;
+		left: 50% !important;
+		margin-left: -150px !important;
+		margin-top: -155px !important;
+	}
 	.text-tip {
 		height: auto;
 
@@ -163,21 +170,39 @@
 			    margin: -140px 0 30px;
 				background: url('../images/mother-day/success-title.png') no-repeat center;
 				background-size: 100%;
+				@media (max-width:700px) {
+					height:150px;
+					margin:-40px 0 0;
+				}
 			}
 			&.reward-text {
 				font-size:30px;
+				@media (max-width:700px) {
+			    	font-size: 14px;
+    				line-height: 30px;
+				}
 				em{
 					font-size:34px;
 					color:#ffe973;
+					@media (max-width:700px) {
+				    	font-size: 16px;
+					}
 				}
 			}
 			&.login-text {
 				font-size: 20px;
 				padding-top: 70px;
+				@media (max-width:700px) {
+					padding-top: 90px;
+			    	font-size: 14px;
+				}
 			}
 			&.des-text {
 				color: #fff;
 				font-size: 14px;
+				@media (max-width:700px) {
+			    	font-size: 12px;
+				}
 			}
 		}
 	}
@@ -189,6 +214,10 @@
 		margin-left: -14px;
 		background: url('../images/mother-day/close-tip.png') no-repeat center;
 		background-size: 100%;
+		@media (max-width:700px) {
+		    top: 70px;
+    		right: 10px;
+		}
 	}
 	.btn-list {
 		a {
@@ -198,6 +227,92 @@
 			font-size: 20px;
 			border-radius: 5px;
 			margin: 10px 0;
+			@media (max-width:700px) {
+			    padding: 5px 35px;
+    			font-size: 16px;
+			}
+		}
+	}
+}
+.gift-list-tip{
+	float:left;
+	width:100%;
+	background:#fff;
+	padding:30px;
+	box-sizing:border-box;
+	position: relative;
+	display:none;
+	@media (max-width:700px) {
+		padding:10px;
+	}
+	.close-tip{
+		position: absolute;
+		top:20px;
+		right:20px;
+		width:20px;
+		height:20px;
+		background:url('../images/mother-day/close-btn.png') no-repeat center;
+		background-size:100%;
+		cursor:pointer;
+		@media (max-width:700px) {
+			top:10px;
+			right:10px;
+		}
+	}
+	h3{
+		float:left;
+		width:100%;
+		font-size:24px;
+		color:#333;
+		text-align:center;
+		@media (max-width:700px) {
+			font-size:14px;
+		}
+	}
+	.gift-content{
+		float:left;
+		width:100%;
+		height:500px;
+		overflow:hidden;
+		overflow-y:scroll;
+		@media (max-width:700px) {
+			height:350px;
+		}
+		li{
+			float:left;
+			width:100%;
+			height:1100px;
+			display:none;
+			@media (max-width:770px) {
+				height:770px;
+			}
+			&.active{
+				display:block;
+			}
+			&.gift-one{
+				background:url('../images/mother-day/gift-list-one.jpg') no-repeat center;
+				background-size:100%;
+				@media (max-width:700px) {
+					background:url('../images/mother-day/gift-one-phone.jpg') no-repeat center;
+					background-size:100%;
+				}
+			}
+			&.gift-two{
+				background:url('../images/mother-day/gift-list-two.jpg') no-repeat center;
+				background-size:100%;
+				@media (max-width:700px) {
+					background:url('../images/mother-day/gift-two-phone.jpg') no-repeat center;
+					background-size:100%;
+				}
+			}
+			&.gift-three{
+				background:url('../images/mother-day/gift-list-three.jpg') no-repeat center;
+				background-size:100%;
+				@media (max-width:700px) {
+					background:url('../images/mother-day/gift-three-phone.jpg') no-repeat center;
+					background-size:100%;
+				}
+			}
 		}
 	}
 }
@@ -221,15 +336,7 @@
 	.top-item {
 		float: left;
 		width: 100%;
-		height: 300px;
-		background: url('../images/mother-day/top-img.jpg') no-repeat center top;
-		background-size: 100%;
-
-		@media (max-width:700px) {
-			height: 180px;
-			background: url('../images/mother-day/top-img-phone.jpg') no-repeat center top;
-			background-size: 100%;
-		}
+		margin-bottom: 20px;
 	}
 	.wp {
 		width: 1000px;

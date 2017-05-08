@@ -22,7 +22,10 @@ $motherDayContainer.find('.tip-list-frame .tip-list').each(function (key, option
     tipGroupObj[kind] = option;
 });
 
-
+let topimg = require('../images/mother-day/top-img.jpg');
+let topimgphone = require('../images/mother-day/top-img-phone.jpg');
+$('#topImg').attr('src',topimg);
+$('#topImgPhone').attr('src',topimgphone);
 
 //pointAllList:中奖记录接口地址
 //pointUserList:我的奖品接口地址
@@ -42,43 +45,43 @@ drawCircleOne.PrizeSwitch();
 
 //开始抽奖
 $pointerBtn.on('click', function(event) {
-    // drawCircleOne.rotateFn(45*4-20,tipGroupObj['concrete']);
+
     drawCircleOne.beginLuckDraw(function(data) {
+    	data.returnCode=1;
         //抽奖接口成功后奖品指向位置
-        console.log(data);
         if (data.returnCode == 0) {
             var angleNum=0;
             switch (data.wechatLotteryPrize) {
                 case 'MOTHERS_DAY_ACTIVITY_BEDDING': //纯棉四件套 
-                    angleNum=45*1-20;
+                    angleNum=45*8-20;
                     $(tipGroupObj['concrete']).find('.prizeValue').text('纯棉四件套');
                     break;
                 case 'MOTHERS_DAY_ACTIVITY_EXPERIENCE_GOLD_888': //888元体验金
-                    angleNum=72*4-20;
+                    angleNum=45*7-20;
                     $(tipGroupObj['concrete']).find('.prizeValue').text('888元体验金');
                     break;
                 case 'MOTHERS_DAY_ACTIVITY_ENVELOP_20':  //20元红包
-                    angleNum=72*3-20;
+                    angleNum=45*6-20;
                      $(tipGroupObj['concrete']).find('.prizeValue').text('20元红包');
                     break;
                 case 'MOTHERS_DAY_ACTIVITY_INTEREST_COUPON_1':  //1%加息券
-                    angleNum=72*2-20;
+                    angleNum=45*5-20;
                      $(tipGroupObj['concrete']).find('.prizeValue').text('1%加息券');
                     break;
                 case 'MOTHERS_DAY_ACTIVITY_ENVELOP_10': //10元红包
-                    angleNum=72*1-20;
+                    angleNum=45*4-20;
                      $(tipGroupObj['concrete']).find('.prizeValue').text('10元红包');
                     break;
                 case 'MOTHERS_DAY_ACTIVITY_EXPERIENCE_GOLD_8888': //8888元体验金
-                    angleNum=72*1-20;
+                    angleNum=45*3-20;
                      $(tipGroupObj['concrete']).find('.prizeValue').text('8888元体验金');
                     break;
                 case 'MOTHERS_DAY_ACTIVITY_INTEREST_COUPON_5': //0.5%加息券
-                    angleNum=72*1-20;
+                    angleNum=45*2-20;
                      $(tipGroupObj['concrete']).find('.prizeValue').text('0.5%加息券');
                     break;
                 case 'MOTHERS_DAY_ACTIVITY_ENVELOP_5': //5元红包
-                    angleNum=72*1-20;
+                    angleNum=45*1-20;
                      $(tipGroupObj['concrete']).find('.prizeValue').text('5元红包');
                     break;
             }
@@ -117,6 +120,28 @@ $isLogin.on('click', function(event) {
 		closeBtn: 0,
 		area: ['auto', 'auto'],
 		content: $('#loginTip')
+	});
+});
+
+$('body').on('click','.close-tip', function(event) {
+	event.preventDefault();
+	layer.closeAll();
+	$('#giftList').find('li').removeClass('active');
+});
+
+$('.gift-list li').on('click', function(event) {
+	event.preventDefault();
+	let $self=$(this),
+		index=$self.index(),
+		$giftList=$('#giftList');
+	$giftList.find('li').eq(index).addClass('active');
+	layer.open({
+		type: 1,
+		title: false,
+		closeBtn: 0,
+		scrollbar: false,
+		area: $(window).width()>700?['845px', '610px']:['300px','400px'],
+		content: $giftList
 	});
 });
 

@@ -2,6 +2,8 @@
 <@global.main pageCss="${css.mother_day}" pageJavascript="${js.mother_day}" activeNav="" activeLeftNav="" title="母亲节活动_活动中心_拓天速贷" keywords="拓天速贷,母亲节活动,转盘抽奖,体验金,实物大奖" description="拓天速贷感恩母亲节,活动期间可转动转盘参加抽奖,投资可享188888元体验金福利和128G中国红iphone7等实物大奖.">
 <div class="mother-day-container" id="motherDayContainer">
 	<div class="top-item">
+		<img src="" class="media-pc" id="topImg" width="100%">
+		<img src="" class="media-phone" id="topImgPhone" width="100%">
 	</div>
 	<div class="wp clearfix">
         <div class="reg-tag-current" style="display: none">
@@ -119,12 +121,12 @@
 			<dd>2.活动中所有红包、加息券、体验金奖励将即时发放，用户可在PC端“我的账户”或App端“我的”中进行查看；</dd>
 			<dd>3.实物奖品将于活动结束后7个工作日内统一联系发放，请获奖用户保持联系方式畅通，若在7个工作日内无法联系，将视为自动放弃奖励；</dd>
 			<dd>4.“拓天速贷定制礼盒”将以礼品册的形式发放至您的手中，礼品册中所含20种礼品选项，用户可根据喜好选择一种自行兑换；</dd>
-			<dd>5. 活动中如有使用虚假账号、恶意刷奖等违规行为，一经查出拓天速贷有权撤 销您的获奖资格；</dd>
-			<dd>6. 活动遵循拓天速贷法律声明，最终解释权归拓天速贷所有。</dd>
+			<dd>5.活动中如有使用虚假账号、恶意刷奖等违规行为，一经查出拓天速贷有权撤销您的获奖资格；</dd>
+			<dd>6.活动遵循拓天速贷法律声明，最终解释权归拓天速贷所有。</dd>
 		</dl>
 	</div>
 	<div class="tip-list-frame">
-    <#--真实奖品的提示-->
+    	<!-- 真实奖品的提示 -->
         <div class="tip-list" data-return="concrete">
             <div class="close-btn go-close"></div>
             <div class="text-tip">
@@ -132,10 +134,10 @@
                 <p class="reward-text">恭喜您获得<em class="prizeValue"></em>！</p>
                 <p class="des-text">拓天客服将在7个工作日内联系您发放奖品</p>
             </div>
-            <div class="btn-list"><a href="javascript:void(0)" class="go-on go-close">继续抽奖</a></div>
+            <div class="btn-list"><a href="javascript:void(0)" class="go-on go-close">知道了</a></div>
         </div>
 
-    <#--虚拟奖品的提示-->
+    	<!--虚拟奖品的提示-->
         <div class="tip-list" data-return="virtual">
             <div class="close-btn go-close"></div>
             <div class="text-tip">
@@ -143,20 +145,20 @@
                 <p class="reward-text">恭喜您获得<em class="prizeValue"></em></p>
                 <p class="des-text">奖品已发放至“我的宝藏”当中。</p>
             </div>
-            <div class="btn-list"><a href="javascript:void(0)" class="go-on go-close">继续抽奖</a></div>
+            <div class="btn-list"><a href="javascript:void(0)" class="go-on go-close">知道了</a></div>
         </div>
 
-    <#--没有抽奖机会-->
+    	<!--没有抽奖机会-->
         <div class="tip-list" data-return="nochance">
             <div class="close-btn go-close"></div>
             <div class="text-tip">
                 <p class="login-text">您暂无抽奖机会啦～</p>
-                <p class="des-text">赢取机会后再来抽奖吧！</p>
+                <p class="des-text">明天再来吧~</p>
             </div>
             <div class="btn-list"><a href="javascript:void(0)" class="go-close">知道了</a></div>
         </div>
 
-    <#--不在活动时间范围内-->
+    	<!--不在活动时间范围内-->
         <div class="tip-list" data-return="expired">
             <div class="close-btn go-close"></div>
             <div class="text-tip">
@@ -165,7 +167,7 @@
             <div class="btn-list"><a href="javascript:void(0)" class="go-close">知道了</a></div>
         </div>
 
-    <#--实名认证-->
+    	<!--实名认证-->
         <div class="tip-list" data-return="authentication">
             <div class="close-btn go-close"></div>
             <div class="text-tip">
@@ -175,7 +177,15 @@
             <div class="btn-list"><a href="javascript:void(0)" class="go-close">知道了</a></div>
         </div>
     </div>
-
+	<div class="gift-list-tip" id="giftList">
+		<i class="close-tip"></i>
+		<h3>拓天速贷定制礼盒（20选1）</h3>
+		<ul class="gift-content">
+			<li class="gift-one"></li>
+			<li class="gift-two"></li>
+			<li class="gift-three"></li>
+		</ul>
+	</div>
 </div>
 <#include "../module/login-tip.ftl" />
 </@global.main>
