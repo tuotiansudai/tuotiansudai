@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.WeChatUserMapper">
+
+    <resultMap id="weChatUserResultMap" type="WeChatUserModel">
+        <id column="id" property="id"/>
+        <result column="login_name" property="loginName"/>
+        <result column="openid" property="openid"/>
+        <result column="bound" property="bound"/>
+        <result column="latest_login_time" property="latestLoginTime"/>
+        <result column="created_time" property="createdTime"/>
+    </resultMap>
+
+    <insert id="create" parameterType="WeChatUserModel" useGeneratedKeys="true" keyProperty="id">
+            insert into we_chat_user (login_name, openid, bound, latest_login_time, created_time)
+            values (#{loginName}, #{openid}, #{bound}, #{latestLoginTime}, #{createdTime})
+        </insert>
+
+    <select id="findByOpenid" parameterType="map" resultMap="weChatUserResultMap">
+            select * from we_chat_user where openid = #{openid}
+    </select>
+
+    <select id="findByLoginName" parameterType="map" resultMap="weChatUserResultMap">
+        select * from we_chat_user where login_name = #{loginName}
+    </select>
+
+    <update id="update" parameterType="WeChatUserModel">
+            update we_chat_user set
+            login_name = #{loginName},
+            bound = #{bound},
+            latest_login_time = #{latestLoginTime}
+            where id = #{id}
+    </update>
+</mapper>

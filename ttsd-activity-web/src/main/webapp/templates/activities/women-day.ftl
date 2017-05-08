@@ -2,8 +2,8 @@
 <@global.main pageCss="${css.women_day}" pageJavascript="${js.women_day}" activeNav="" activeLeftNav="" title="女神节活动_活动中心_拓天速贷" keywords="拓天速贷,妇女节活动,女神节,少女节" description="拓天速贷3月8日推出女神节活动,少女总动员,开启全民抓娃娃,参与幸运女神时光机,集花瓣赢礼盒等投资活动获得相应蜜汁礼盒.">
 <div class="women-day-container" id="womenDayContainer">
 	<div class="top-item">
-		<img src="${staticServer}/activity/images/women-day/top-img0301.png" width="100%" class="media-pc">
-		<img src="${staticServer}/activity/images/women-day/top-img-phone0301.png" width="100%" class="media-phone">
+		<img src="${commonStaticServer}/activity/images/women-day/top-img0301.png" width="100%" class="media-pc">
+		<img src="${commonStaticServer}/activity/images/women-day/top-img-phone0301.png" width="100%" class="media-phone">
 	</div>
 	<div class="wp clearfix">
         <div class="reg-tag-current" style="display: none">
@@ -11,7 +11,7 @@
         </div>
 		<div class="content-item">
 			<div class="title-item">
-				<img src="${staticServer}/activity/images/women-day/title-one.png">
+				<img src="${commonStaticServer}/activity/images/women-day/title-one.png">
 			</div>
 			<div class="tip-item tc">
 				<div class="tip-text-item top-tip">
@@ -74,7 +74,7 @@
 		</div>
 		<div class="content-item">
 			<div class="title-item">
-				<img src="${staticServer}/activity/images/women-day/title-two.png">
+				<img src="${commonStaticServer}/activity/images/women-day/title-two.png">
 			</div>
 			<div class="tip-item">
 				<div class="tip-text-item">
@@ -83,27 +83,27 @@
 			</div>
 			<ul class="loan-gift">
 				<li>
-					<p><img src="${staticServer}/activity/images/women-day/loan-one.png"></p>
+					<p><img src="${commonStaticServer}/activity/images/women-day/loan-one.png"></p>
 					<p>8元红包<br/>第1笔投资者奖励</p>
 				</li>
 				<li>
-					<p><img src="${staticServer}/activity/images/women-day/loan-two.png"></p>
+					<p><img src="${commonStaticServer}/activity/images/women-day/loan-two.png"></p>
 					<p>38元红包<br/>第3笔投资者奖励</p>
 				</li>
 				<li>
-					<p><img src="${staticServer}/activity/images/women-day/loan-three.png"></p>
+					<p><img src="${commonStaticServer}/activity/images/women-day/loan-three.png"></p>
 					<p>0.8%加息券<br/>第8笔投资者奖励</p>
 				</li>
 				<li>
-					<p><img src="${staticServer}/activity/images/women-day/loan-four.png"></p>
+					<p><img src="${commonStaticServer}/activity/images/women-day/loan-four.png"></p>
 					<p>金属书签礼盒<br/>第38笔投资者奖励</p>
 				</li>
 				<li>
-					<p><img src="${staticServer}/activity/images/women-day/loan-five.png"></p>
+					<p><img src="${commonStaticServer}/activity/images/women-day/loan-five.png"></p>
 					<p>萌兔子保温杯<br/>第138笔投资者奖励</p>
 				</li>
 				<li>
-					<p><img src="${staticServer}/activity/images/women-day/loan-six.png"></p>
+					<p><img src="${commonStaticServer}/activity/images/women-day/loan-six.png"></p>
 					<p>一年之茶礼盒<br/>最后一笔投资者奖励</p>
 				</li>
 			</ul>
@@ -136,7 +136,7 @@
 		</div>
 		<div class="content-item">
 			<div class="title-item">
-				<img src="${staticServer}/activity/images/women-day/title-three.png">
+				<img src="${commonStaticServer}/activity/images/women-day/title-three.png">
 			</div>
 			<div class="tip-item">
 				<div class="tip-text-item">
@@ -174,56 +174,56 @@
 			</div>
 			<ul class="flower-gift">
 				<li>
-					<p><img src="${staticServer}/activity/images/women-day/flower-one.png"></p>
+					<p><img src="${commonStaticServer}/activity/images/women-day/flower-one.png"></p>
 					<p>
 						<span>0.5%加息券+30元红包</span>
 						<span class="gift-info">9≤累计花瓣数量＜38</span>
 					</p>
 				</li>
 				<li>
-					<p><img src="${staticServer}/activity/images/women-day/flower-two.png"></p>
+					<p><img src="${commonStaticServer}/activity/images/women-day/flower-two.png"></p>
 					<p>
 						<span>20元话费+0.5%加息券+60元红包</span>
 						<span class="gift-info">38≤累计花瓣数量＜78</span>
 					</p>
 				</li>
 				<li>
-					<p><img src="${staticServer}/activity/images/women-day/flower-three.png"></p>
+					<p><img src="${commonStaticServer}/activity/images/women-day/flower-three.png"></p>
 					<p>
 						<span>100元京东E卡+0.5%加息券+160元红包</span>
 						<span class="gift-info">78≤累计花瓣数量＜138</span>
 					</p>
 				</li>
 				<li>
-					<p><img src="${staticServer}/activity/images/women-day/flower-four.png"></p>
+					<p><img src="${commonStaticServer}/activity/images/women-day/flower-four.png"></p>
 					<p>
 						<span>SNP动物面膜+100元京东E卡+0.5%加息券+300元红包</span>
 						<span class="gift-info">138≤累计花瓣数量＜238</span>
 					</p>
 				</li>
 				<li>
-					<p><img src="${staticServer}/activity/images/women-day/flower-five.png"></p>
+					<p><img src="${commonStaticServer}/activity/images/women-day/flower-five.png"></p>
 					<p>
 						<span>阿玛尼小胖丁染唇液+100元京东E卡+0.5%加息券+500元红包</span>
 						<span class="gift-info">238≤累计花瓣数量＜338</span>
 					</p>
 				</li>
 				<li>
-					<p><img src="${staticServer}/activity/images/women-day/flower-six.png"></p>
+					<p><img src="${commonStaticServer}/activity/images/women-day/flower-six.png"></p>
 					<p>
 						<span>SK-II神仙水+100元京东E卡+0.5%加息券+600元红包</span>
 						<span class="gift-info">338≤累计花瓣数量＜438</span>
 					</p>
 				</li>
 				<li>
-					<p><img src="${staticServer}/activity/images/women-day/flower-seven.png"></p>
+					<p><img src="${commonStaticServer}/activity/images/women-day/flower-seven.png"></p>
 					<p>
 						<span>迪奥真我香水+0.8%加息券+600元红包</span>
 						<span class="gift-info">438≤累计花瓣数量＜638</span>
 					</p>
 				</li>
 				<li>
-					<p><img src="${staticServer}/activity/images/women-day/flower-eight.png"></p>
+					<p><img src="${commonStaticServer}/activity/images/women-day/flower-eight.png"></p>
 					<p>
 						<span>雅诗兰黛套装礼盒+0.8%加息券+600元红包</span>
 						<span class="gift-info">累计花瓣数量≥638</span>

@@ -19,7 +19,7 @@
     </@security.authorize>
 </#macro>
 
-<#macro main pageCss pageJavascript="" activeNav="" staticServer="${commonStaticServer}" activeLeftNav="" title="拓天速贷" keywords="" description="" site='main'>
+<#macro main pageCss pageJavascript="" activeNav="" activeLeftNav="" title="拓天速贷" keywords="" description="" site='main'>
     <#local mainMenus=[
     {"title":"首页", "url":"/","category":"16顶部导航"},
     {"title":"我要投资", "url":"/loan-list","category":"17顶部导航","leftNavs":[
@@ -99,7 +99,7 @@
     </#if>
 
 <script type="text/javascript" charset="utf-8">
-    window.staticServer='${commonStaticServer}';
+    window.commonStaticServer='${commonStaticServer}';
 </script>
 
 <script src="${js.jquerydll}" ></script>

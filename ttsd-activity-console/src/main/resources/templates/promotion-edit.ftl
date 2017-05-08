@@ -23,7 +23,7 @@
                     <input type="text" name="imageUrl" readonly value="<#if promotion??>${promotion.imageUrl!}</#if>" class="form-control promotionImageUrl" placeholder="" datatype="*" errormsg="活动图片不能为空">
                     <div class="imageUrl">
                         <#if promotion??&&promotion.imageUrl??>
-                            <img style="width:100%" src="${staticServer}${promotion.imageUrl!}" alt="活动图片"/>
+                            <img style="width:100%" src="${commonStaticServer}${promotion.imageUrl!}" alt="活动图片"/>
                         </#if>
                     </div>
                 </div>

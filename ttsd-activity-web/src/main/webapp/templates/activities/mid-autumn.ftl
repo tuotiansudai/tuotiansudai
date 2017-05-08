@@ -8,7 +8,7 @@
     <div class="frame-box-one clearfix">
         <div class="decorate-bottom"></div>
         <div class="frame-box-one-inner clearfix">
-            <img src="${staticServer}/activity/images/mid-autumn/title-one.png" class="main-title" alt="组团投资“礼”遇全家，赢平板电脑">
+            <img src="${commonStaticServer}/activity/images/mid-autumn/title-one.png" class="main-title" alt="组团投资“礼”遇全家，赢平板电脑">
 
             <div class="normal-border note-box">
                 <div class="note clearfix">
@@ -91,7 +91,7 @@
                 <div class="sub-title">我的家庭累计投资额：${myFamilyTotalInvestAmount}元</div>
 
                 <div class="product-show">
-                    <img src="${staticServer}/activity/images/mid-autumn/product.jpg" alt="">
+                    <img src="${commonStaticServer}/activity/images/mid-autumn/product.jpg" alt="">
                 <span>家庭累计投资排行第一名可获得三星平板电脑 <br/>
                 （由家庭团长获得）</span>
                 </div>
@@ -159,10 +159,10 @@
     <div class="frame-box-two">
         <div class="decorate-bottom"></div>
         <div class="frame-box-two-inner">
-        <img src="${staticServer}/activity/images/mid-autumn/title-two.png" class="main-title" alt="晒张“团圆饭”赏月领大奖">
+        <img src="${commonStaticServer}/activity/images/mid-autumn/title-two.png" class="main-title" alt="晒张“团圆饭”赏月领大奖">
         <p class="note">9月15日-9月17日，关注微信公众号，上传一张“团圆饭”给小编并回复关键词“团圆饭”，即可参与领奖活动！</p>
 
-        <img src="${staticServer}/activity/images/mid-autumn/app-cm.png" class="img-sm"> <br/>
+        <img src="${commonStaticServer}/activity/images/mid-autumn/app-cm.png" class="img-sm"> <br/>
         <span class="to-sao">扫码上传团圆饭</span>
 
         <div class="bill-fee-list clearfix">

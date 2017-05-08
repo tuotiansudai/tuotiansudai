@@ -28,7 +28,7 @@
                 <tr>
                     <td>${item.name}</td>
                     <td>${item.price}</td>
-                    <td><img src="${staticServer}${item.image}"></td>
+                    <td><img src="${commonStaticServer}${item.image}"></td>
                     <td>投资满${item.investAmount/100}</td>
                     <td><a href="/activity-console/activity-manage/travel/${item.id?c}/edit">更新</a></td>
                 </tr>
