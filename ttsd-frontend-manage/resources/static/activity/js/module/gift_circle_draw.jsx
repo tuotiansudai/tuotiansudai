@@ -33,6 +33,7 @@ function giftCircleDraw(allListURL, userListURL, drawURL, paramData, giftCircleF
             data: this.paramData,
             type: 'GET'
         }, function (data) {
+            data=[{"mobile":"135****0001","userName":null,"prize":"MOTHERS_DAY_ACTIVITY_INTEREST_COUPON_5","lotteryTime":"2017-05-08 16:10:31","prizeValue":"0.5%加息券","loginName":null,"investFlag":null},{"mobile":"138****6052","userName":null,"prize":"MOTHERS_DAY_ACTIVITY_ENVELOP_5","lotteryTime":"2017-05-08 16:09:36","prizeValue":"5元红包","loginName":null,"investFlag":null},{"mobile":"135****7762","userName":null,"prize":"MOTHERS_DAY_ACTIVITY_INTEREST_COUPON_5","lotteryTime":"2017-05-08 16:08:23","prizeValue":"0.5%加息券","loginName":null,"investFlag":null},{"mobile":"138****6046","userName":null,"prize":"MOTHERS_DAY_ACTIVITY_ENVELOP_5","lotteryTime":"2017-05-08 11:05:34","prizeValue":"5元红包","loginName":null,"investFlag":null}]
             let UlList = [];
             for (let i = 0, len = data.length; i < len; i++) {
                 UlList.push('<li>恭喜' + data[i].mobile + '抽中了' + data[i].prizeValue + '</li>');
