@@ -61,7 +61,6 @@ public class WeChatClient {
         }
     }
 
-    @Autowired
     public WeChatClient() {
         this.client.setReadTimeout(5, TimeUnit.SECONDS);
         this.client.setConnectTimeout(5, TimeUnit.SECONDS);
