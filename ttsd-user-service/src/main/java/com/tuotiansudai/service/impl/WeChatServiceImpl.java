@@ -1,23 +1,18 @@
 package com.tuotiansudai.service.impl;
 
 import com.google.common.base.Strings;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.WeChatClient;
-import com.tuotiansudai.enums.WeChatMessageType;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.mapper.WeChatUserMapper;
-import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.WeChatUserModel;
 import com.tuotiansudai.service.LoginNameGenerator;
 import com.tuotiansudai.service.WeChatService;
+import com.tuotiansudai.util.RedisWrapperClient;
 import com.tuotiansudai.util.UUIDGenerator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
 import java.util.Date;
@@ -35,20 +30,16 @@ public class WeChatServiceImpl implements WeChatService {
     @Value(value = "${wechat.authorize.callbck}")
     private String authorizeCallback;
 
-    private final UserMapper userMapper;
-
     private final WeChatUserMapper weChatUserMapper;
 
-    private final RedisWrapperClient redisWrapperClient;
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
     private final LoginNameGenerator loginNameGenerator;
 
     private final WeChatClient weChatClient;
 
     @Autowired
-    public WeChatServiceImpl(UserMapper userMapper, RedisWrapperClient redisWrapperClient, WeChatUserMapper weChatUserMapper, LoginNameGenerator loginNameGenerator, WeChatClient weChatClient) {
-        this.userMapper = userMapper;
-        this.redisWrapperClient = redisWrapperClient;
+    public WeChatServiceImpl(WeChatUserMapper weChatUserMapper, LoginNameGenerator loginNameGenerator, WeChatClient weChatClient) {
         this.loginNameGenerator = loginNameGenerator;
         this.weChatClient = weChatClient;
         this.weChatUserMapper = weChatUserMapper;

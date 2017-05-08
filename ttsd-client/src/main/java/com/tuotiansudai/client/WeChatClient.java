@@ -9,6 +9,7 @@ import com.google.common.collect.Maps;
 import com.google.common.io.Resources;
 import com.squareup.okhttp.*;
 import com.tuotiansudai.enums.WeChatMessageType;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -40,6 +41,8 @@ public class WeChatClient {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
+
     private final static Map<WeChatMessageType, String> TEMPLATE_MAP = Maps.newHashMap();
 
     @Value(value = "${wechat.appId}")
@@ -47,8 +50,6 @@ public class WeChatClient {
 
     @Value(value = "${wechat.appSecret}")
     private String appSecret;
-
-    private final RedisWrapperClient redisWrapperClient;
 
     static {
         try (InputStreamReader reader = new InputStreamReader(WeChatClient.class.getClassLoader().getResourceAsStream("ttsd-env.properties"), StandardCharsets.UTF_8.name())) {
@@ -61,8 +62,7 @@ public class WeChatClient {
     }
 
     @Autowired
-    public WeChatClient(RedisWrapperClient redisWrapperClient) {
-        this.redisWrapperClient = redisWrapperClient;
+    public WeChatClient() {
         this.client.setReadTimeout(5, TimeUnit.SECONDS);
         this.client.setConnectTimeout(5, TimeUnit.SECONDS);
         this.objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
