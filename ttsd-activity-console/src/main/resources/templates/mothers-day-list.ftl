@@ -21,6 +21,9 @@
                     活动期内投资金额
                 </th>
                 <th>
+                    获得体验金
+                </th>
+                <th>
                     获得奖励
                 </th>
             </tr>
@@ -39,6 +42,9 @@
                     </td>
                     <td>
                     ${item.investAmount!}
+                    </td>
+                    <td>
+                    ${item.experience!}
                     </td>
                     <td>
                     ${item.reward!}

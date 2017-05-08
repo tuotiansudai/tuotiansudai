@@ -1,5 +1,7 @@
 package com.tuotiansudai.activity.repository.model;
 
+import com.tuotiansudai.util.AmountConverter;
+
 import java.io.Serializable;
 
 public class MothersDayView implements Serializable{
@@ -9,16 +11,26 @@ public class MothersDayView implements Serializable{
     private String mobile;
     private String investAmount;
     private String reward;
+    private String experience;
 
     public MothersDayView() {
     }
 
-    public MothersDayView(String loginName, String name, String mobile, String investAmount, String reward) {
+    public MothersDayView(String loginName, String name, String mobile, String investAmount, String reward, long experience) {
         this.loginName = loginName;
         this.name = name;
         this.mobile = mobile;
         this.investAmount = investAmount;
         this.reward = reward;
+        this.experience = AmountConverter.convertCentToString(experience);
+    }
+
+    public String getExperience() {
+        return experience;
+    }
+
+    public void setExperience(String experience) {
+        this.experience = experience;
     }
 
     public String getLoginName() {

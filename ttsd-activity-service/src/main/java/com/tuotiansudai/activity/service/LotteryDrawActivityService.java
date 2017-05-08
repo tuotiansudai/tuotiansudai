@@ -577,7 +577,7 @@ public class LotteryDrawActivityService {
         }
 
         mqWrapperClient.sendMessage(MessageQueue.ExperienceAssigning,
-                new ExperienceAssigningMessage(loginName, experienceAmount, ExperienceBillOperationType.IN, ExperienceBillBusinessType.MOTHERS_TREE));
+                new ExperienceAssigningMessage(loginName, experienceAmount, ExperienceBillOperationType.IN, ExperienceBillBusinessType.MOTHERS_DAY));
     }
 
 }
