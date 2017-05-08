@@ -53,33 +53,33 @@ $pointerBtn.on('click', function(event) {
                     angleNum=45*1-20;
                     $(tipGroupObj['concrete']).find('.prizeValue').text('纯棉四件套');
                     break;
-                case 'WECHAT_LOTTERY_BAG': //时尚百搭真皮子母包
+                case 'MOTHERS_DAY_ACTIVITY_EXPERIENCE_GOLD_888': //888元体验金
                     angleNum=72*4-20;
-                    $(tipGroupObj['concrete']).find('.prizeValue').text('二等奖');
+                    $(tipGroupObj['concrete']).find('.prizeValue').text('888元体验金');
                     break;
-                case 'WECHAT_LOTTERY_HEADGEAR':  //简约吊坠百搭锁骨链
+                case 'MOTHERS_DAY_ACTIVITY_ENVELOP_20':  //20元红包
                     angleNum=72*3-20;
-                     $(tipGroupObj['concrete']).find('.prizeValue').text('三等奖');
+                     $(tipGroupObj['concrete']).find('.prizeValue').text('20元红包');
                     break;
-                case 'WECHAT_LOTTERY_TOWEL':  //精品定制毛巾礼盒
+                case 'MOTHERS_DAY_ACTIVITY_INTEREST_COUPON_1':  //1%加息券
                     angleNum=72*2-20;
-                     $(tipGroupObj['concrete']).find('.prizeValue').text('四等奖');
+                     $(tipGroupObj['concrete']).find('.prizeValue').text('1%加息券');
                     break;
-                case 'WECHAT_LOTTERY_RED_ENVELOP_20': //20元红包
+                case 'MOTHERS_DAY_ACTIVITY_ENVELOP_10': //10元红包
                     angleNum=72*1-20;
-                     $(tipGroupObj['concrete']).find('.prizeValue').text('五等奖');
+                     $(tipGroupObj['concrete']).find('.prizeValue').text('10元红包');
                     break;
-                case 'WECHAT_LOTTERY_RED_ENVELOP_20': //20元红包
+                case 'MOTHERS_DAY_ACTIVITY_EXPERIENCE_GOLD_8888': //8888元体验金
                     angleNum=72*1-20;
-                     $(tipGroupObj['concrete']).find('.prizeValue').text('五等奖');
+                     $(tipGroupObj['concrete']).find('.prizeValue').text('8888元体验金');
                     break;
-                case 'WECHAT_LOTTERY_RED_ENVELOP_20': //20元红包
+                case 'MOTHERS_DAY_ACTIVITY_INTEREST_COUPON_5': //0.5%加息券
                     angleNum=72*1-20;
-                     $(tipGroupObj['concrete']).find('.prizeValue').text('五等奖');
+                     $(tipGroupObj['concrete']).find('.prizeValue').text('0.5%加息券');
                     break;
-                case 'WECHAT_LOTTERY_RED_ENVELOP_20': //20元红包
+                case 'MOTHERS_DAY_ACTIVITY_ENVELOP_5': //5元红包
                     angleNum=72*1-20;
-                     $(tipGroupObj['concrete']).find('.prizeValue').text('五等奖');
+                     $(tipGroupObj['concrete']).find('.prizeValue').text('5元红包');
                     break;
             }
             drawCircleOne.rotateFn(angleNum,tipGroupObj['concrete']);
