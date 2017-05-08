@@ -1,6 +1,46 @@
 .main-frame {
   width: 100%;
   margin: 0 auto;
-  font-size:14px;
 }
-
+.icp-intro-container{
+  background:#fff;
+  .media-pc{
+    display:block;
+    @media (max-width:700px) {
+      display:none;
+    }
+  }
+  .media-phone{
+    display:none;
+    @media (max-width:700px) {
+      display:block;
+    }
+  }
+  .top-item{
+    float:left;
+    width:100%;
+  }
+  .wp {
+    width:1000px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 9;
+    @media (max-width:700px) {
+      width:100%;
+      box-sizing:border-box;
+      padding:0 10px;
+    }
+    .content-item {
+      float: left;
+      width: 100%;
+      box-sizing: border-box;
+      position: relative;
+      .title-item{
+        float:left;
+        width:100%;
+        @media (max-width:700px) {
+        }
+      }
+    }
+  }
+}
