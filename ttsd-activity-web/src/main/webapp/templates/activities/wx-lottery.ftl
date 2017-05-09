@@ -2,7 +2,9 @@
 <#import "../macro/global.ftl" as global>
 <@global.main pageCss="${css.wx_lottery}" pageJavascript="${js.wx_lottery}" activeNav="" activeLeftNav="" title="微信活动_活动中心_拓天速贷" keywords="拓天速贷,现金奖励,实物大奖,注册用户,微信活动" description="活动期间新注册用户,及平台所有注册后未投资过的用户,投资直投项目,可获得不同等额的现金奖励和抽奖机会,100%抽取实物大奖.">
 <div class="activity-container" id="lanternFrame">
-    <div class="top-item"></div>
+    <div class="top-item">
+        <img src="" width="100%">
+    </div>
     <div class="actor-content-group">
         <div class="wp clearfix">
             <div class="wechat-model">

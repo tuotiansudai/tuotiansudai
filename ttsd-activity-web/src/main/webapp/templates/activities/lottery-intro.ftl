@@ -1,9 +1,11 @@
 <#import "../macro/global.ftl" as global>
 <@global.main pageCss="${css.lottery_intro}" pageJavascript="${js.lottery_intro}" activeNav="" activeLeftNav="" title="微信活动_活动中心_拓天速贷" keywords="拓天速贷,现金奖励,实物大奖,注册用户,微信活动" description="活动期间新注册用户,及平台所有注册后未投资过的用户,投资直投项目,可获得不同等额的现金奖励和抽奖机会,100%抽取实物大奖.">
 <div class="wx-lottery-container">
-	<div class="top-item"></div>
-	<div class="wp">
-		<div class="content-item">
+	<div class="top-item" id="topImg">
+		<img src="" width="100%">
+	</div>
+	<div class="wp clearfix">
+		<div class="content-item top-content">
 			<h3>
 				<span>关注微信，参与活动</span>
 			</h3>
