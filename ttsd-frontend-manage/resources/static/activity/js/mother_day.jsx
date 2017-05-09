@@ -37,8 +37,8 @@ var drawCircleOne=new drawCircle(pointAllList,pointUserList,drawURL,oneData,$one
 //渲染中奖记录
 drawCircleOne.GiftRecord();
 
-drawCircleOne.hoverScrollList($motherDayContainer .find('.user-record'),10);
-drawCircleOne.hoverScrollList($motherDayContainer .find('.own-record'),10);
+drawCircleOne.hoverScrollList($motherDayContainer.find('.user-record'),10);
+drawCircleOne.hoverScrollList($motherDayContainer.find('.own-record'),10);
 
 //渲染我的奖品
 drawCircleOne.MyGift();
