@@ -1,17 +1,14 @@
-<#import "wechat-global.ftl" as global>
-<@global.main pageCss="${css.midsummer_wap}" pageJavascript="${js.midsummer_wap}"  title="助力好友抢红包" >
+<#import "wechat-global-dev.ftl" as global>
 
-<div class="entry-point-container" id="entryPointCon">
-    <div class="red-key-box">
-        <em>50</em>元
-        <span>红包</span>
-    </div>
+<#assign jsName = 'share_coupon' >
 
-    <div class="button-layer">
-        <a href="#" class="btn-normal bind-card">绑定拓天账号立即领取</a>
+<#assign js = {"${jsName}":"http://localhost:3008/activity/js/${jsName}.js"} >
+<#assign css = {"${jsName}":"http://localhost:3008/activity/js/${jsName}.css"}>
 
-        <span class="note">活动解释权归拓天速贷所有</span>
-    </div>
 
+<@global.main pageCss="${css.share_coupon}" pageJavascript="${js.share_coupon}"  title="助力好友抢红包" >
+
+<div class="share-coupon-container" id="shareCoupon">
+    sdfsdfd
 </div>
 </@global.main>
