@@ -31,6 +31,7 @@
             <div class="temp-progress"></div>
             <div class="temp-scale-line"></div>
         </div>
+        <div class="unit">（单位℃）</div>
     </div>
 
     <div class="invest-detail-box">
@@ -58,12 +59,12 @@
     </div>
 
     <div class="button-layer-bottom clearfix" id="buttonLayer">
-        <#--<#if sharedUser>-->
-            <a href="#" class="btn-normal btn-invite fl">邀请微信好友</a>
-            <a href="#" class="btn-normal btn-invite fr">分享至朋友圈</a>
-        <#--<#else>-->
-            <a href="#" class="btn-normal btn-help">帮助TA</a>
-        <#--</#if>-->
+        <#if sharedUser>
+            <a href="javascript:void(0)" class="btn-normal btn-invite fl">邀请微信好友</a>
+            <a href="javascript:void(0)" class="btn-normal btn-invite fr">分享至朋友圈</a>
+        <#else>
+            <a href="javascript:void(0)" class="btn-normal btn-help">帮助TA</a>
+        </#if>
     </div>
 
 </div>
