@@ -32,9 +32,6 @@ public class InvestSuccessWechatLotteryConsumer implements MessageConsumer {
     private InvestService investService;
 
     @Autowired
-    private IdGenerator idGenerator;
-
-    @Autowired
     private PayWrapperClient payWrapperClient;
 
     private static final String WECHAT_LOTTERY_COUNT_KEY = "WECHAT_LOTTERY_COUNT:";
@@ -121,7 +118,7 @@ public class InvestSuccessWechatLotteryConsumer implements MessageConsumer {
         }
 
 
-        long orderId = idGenerator.generate();
+        long orderId = IdGenerator.generate();
         TransferCashDto transferCashDto = new TransferCashDto(loginName, String.valueOf(orderId), String.valueOf(prizeAmount));
         BaseDto<PayDataDto> response = payWrapperClient.transferCash(transferCashDto);
         logger.info("send wechat invest cash prize, loginName:{0}, response:{1}", loginName, response.getData().getMessage());
