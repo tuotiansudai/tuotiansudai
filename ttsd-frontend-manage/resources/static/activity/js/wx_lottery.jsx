@@ -22,7 +22,8 @@ $lanternFrame.find('.tip-list-frame .tip-list').each(function (key, option) {
     tipGroupObj[kind] = option;
 });
 
-
+let topimg=require('../images/wx-lottery/top-img.png');
+$lanternFrame.find('.top-item img').attr('src',topimg);
 
     //pointAllList:中奖记录接口地址
     //pointUserList:我的奖品接口地址
