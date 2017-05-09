@@ -81,7 +81,7 @@ public class ActivityConsoleExportService {
                 List<InvestModel> currentHomeInvestModelList = Lists.newArrayList();
                 for (String loginName : entry1.getValue()) {
                     totalAmount += investMapper.sumInvestAmount(null, loginName, null, null, null, startTime, endTime, InvestStatus.SUCCESS, null);
-                    List<InvestModel> investModelList = investMapper.findSuccessInvestByInvestTime(loginName, startTime, endTime);
+                    List<InvestModel> investModelList = investMapper.findSuccessInvestByInvestTime(loginName, true, true, startTime, endTime);
                     if (investModelList == null || investModelList.size() == 0) {
                         InvestModel investModel = new InvestModel();
                         investModel.setLoginName(loginName);

@@ -1049,4 +1049,76 @@ public class InvestMapperTest {
         List<InvestPaginationItemView> list = investMapper.findInvestPagination(null, User_ID2, null, null, null, null, null, null, null, null, 0, Integer.MAX_VALUE);
         assertEquals(list.size(), 1);
     }
+
+    @Test
+    public void shouldFindSuccessInvestByInvestTimeIsOk(){
+        LoanModel fakeLoanModel = new LoanModel();
+        fakeLoanModel.setId(idGenerator.generate());
+        fakeLoanModel.setName(User_ID);
+        fakeLoanModel.setLoanerLoginName(User_ID);
+        fakeLoanModel.setLoanerUserName(User_ID);
+        fakeLoanModel.setLoanerIdentityNumber("111111111111111111");
+        fakeLoanModel.setAgentLoginName(User_ID);
+        fakeLoanModel.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
+        fakeLoanModel.setPeriods(3);
+        fakeLoanModel.setStatus(LoanStatus.RAISING);
+        fakeLoanModel.setActivityType(ActivityType.NORMAL);
+        fakeLoanModel.setFundraisingStartTime(new Date());
+        fakeLoanModel.setFundraisingEndTime(new Date());
+        fakeLoanModel.setDescriptionHtml("html");
+        fakeLoanModel.setDescriptionText("text");
+        fakeLoanModel.setCreatedTime(new Date());
+        fakeLoanModel.setProductType(ProductType._180);
+        fakeLoanModel.setPledgeType(PledgeType.HOUSE);
+        loanMapper.create(fakeLoanModel);
+
+        LoanModel experienceLoan = new LoanModel();
+        experienceLoan.setId(idGenerator.generate());
+        experienceLoan.setName(User_ID);
+        experienceLoan.setLoanerLoginName(User_ID);
+        experienceLoan.setLoanerUserName(User_ID);
+        experienceLoan.setLoanerIdentityNumber("111111111111111111");
+        experienceLoan.setAgentLoginName(User_ID);
+        experienceLoan.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
+        experienceLoan.setPeriods(3);
+        experienceLoan.setStatus(LoanStatus.RAISING);
+        experienceLoan.setActivityType(ActivityType.NORMAL);
+        experienceLoan.setFundraisingStartTime(new Date());
+        experienceLoan.setFundraisingEndTime(new Date());
+        experienceLoan.setDescriptionHtml("html");
+        experienceLoan.setDescriptionText("text");
+        experienceLoan.setCreatedTime(new Date());
+        experienceLoan.setProductType(ProductType.EXPERIENCE);
+        experienceLoan.setPledgeType(PledgeType.HOUSE);
+        loanMapper.create(experienceLoan);
+
+        InvestModel investModel1 = this.getFakeInvestModel();
+        investModel1.setLoanId(experienceLoan.getId());
+        investModel1.setLoginName(User_ID2);
+        investModel1.setInvestTime(DateTime.now().toDate());
+        investModel1.setStatus(InvestStatus.SUCCESS);
+        investModel1.setInvestTime(DateTime.now().toDate());
+        investMapper.create(investModel1);
+
+        InvestModel investModel2 = this.getFakeInvestModel();
+        investModel2.setTransferInvestId(investModel1.getId());
+        investModel2.setLoanId(fakeLoanModel.getId());
+        investModel2.setLoginName(User_ID2);
+        investModel2.setInvestTime(DateTime.now().toDate());
+        investModel2.setStatus(InvestStatus.SUCCESS);
+        investModel2.setInvestTime(DateTime.now().toDate());
+        investMapper.create(investModel2);
+
+        List<InvestModel> successInvestByInvestTime = investMapper.findSuccessInvestByInvestTime(User_ID2, true, true, DateTime.now().plusDays(-5).toDate(), DateTime.now().plusDays(5).toDate());
+        assertEquals(successInvestByInvestTime.size(), 2);
+
+        successInvestByInvestTime = investMapper.findSuccessInvestByInvestTime(User_ID2, false, true, DateTime.now().plusDays(-5).toDate(), DateTime.now().plusDays(5).toDate());
+        assertEquals(successInvestByInvestTime.size(), 1);
+
+        successInvestByInvestTime = investMapper.findSuccessInvestByInvestTime(User_ID2, true, false, DateTime.now().plusDays(-5).toDate(), DateTime.now().plusDays(5).toDate());
+        assertEquals(successInvestByInvestTime.size(), 1);
+
+        successInvestByInvestTime = investMapper.findSuccessInvestByInvestTime(User_ID2, false, false, DateTime.now().plusDays(-5).toDate(), DateTime.now().plusDays(5).toDate());
+        assertEquals(successInvestByInvestTime.size(), 0);
+    }
 }
