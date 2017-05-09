@@ -19,8 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.Date;
 import java.util.List;
 
-@Controller
-@RequestMapping(path = "/activity/autumn")
+
 public class AutumnPrizeController {
 
     private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
