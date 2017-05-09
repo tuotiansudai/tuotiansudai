@@ -15,12 +15,12 @@ public class RSA {
 
     private static final Log logger = LogFactory.getLog(RSA.class);
 
-    public static final String KEY_ALGORITHM = "RSA";
-    public static final String SIGNATURE_ALGORITHM = "MD5withRSA";
+    private static final String KEY_ALGORITHM = "RSA";
+    private static final String SIGNATURE_ALGORITHM = "MD5withRSA";
 
     // TODO: load key
-    public static final String PUBLIC_KEY = "RSAPublicKey";//公钥 GHB
-    public static final String PRIVATE_KEY = "RSAPrivateKey";//私钥 TUOTIAN
+    private static final String PUBLIC_KEY = "RSAPublicKey";//公钥 GHB
+    private static final String PRIVATE_KEY = "RSAPrivateKey";//私钥 TUOTIAN
 
     private static PrivateKey TUOTIAN_PRIVATE_KEY = loadPrivateKey();
     private static PublicKey GHB_PUBLIC_KEY = loadPublicKey();

@@ -1,8 +1,12 @@
 package com.tuotiansudai.paywrapper.ghb.security.provider;
 
+import com.ctc.wstx.stax.WstxInputFactory;
+import com.ctc.wstx.stax.WstxOutputFactory;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -44,7 +48,10 @@ public class XML {
     private static class ThreadLocalXmlMapper extends ThreadLocal<XmlMapper> {
         @Override
         protected XmlMapper initialValue() {
-            return new XmlMapper();
+            XmlMapper xmlMapper = new XmlMapper(new WstxInputFactory(), new WstxOutputFactory());
+            xmlMapper.configure(ToXmlGenerator.Feature.WRITE_XML_DECLARATION, true);
+            xmlMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            return xmlMapper;
         }
     }
 }

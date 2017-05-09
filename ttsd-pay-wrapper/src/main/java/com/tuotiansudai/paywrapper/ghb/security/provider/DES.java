@@ -27,7 +27,7 @@ public class DES {
         return new String(decryptBytes(encrypted.getBytes(StandardCharsets.UTF_8)), StandardCharsets.UTF_8);
     }
 
-    public static byte[] encryptBytes(byte[] src) {
+    private static byte[] encryptBytes(byte[] src) {
         try {
             SecretKey deskey = new SecretKeySpec(build3DesKey(PASSWORD_CRYPT_KEY), Algorithm);    //生成密钥
             Cipher c1 = Cipher.getInstance(Algorithm);    //实例化负责加密/解密的Cipher工具类
@@ -39,7 +39,7 @@ public class DES {
         }
     }
 
-    public static byte[] decryptBytes(byte[] src) {
+    private static byte[] decryptBytes(byte[] src) {
         try {
             SecretKey deskey = new SecretKeySpec(build3DesKey(PASSWORD_CRYPT_KEY), Algorithm);
             Cipher c1 = Cipher.getInstance(Algorithm);

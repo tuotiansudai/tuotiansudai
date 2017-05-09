@@ -12,6 +12,12 @@ import static org.junit.Assert.assertTrue;
 public class RequestOGW00042Test {
 
     @Test
+    public void name() throws Exception {
+        System.out.println("1".replaceAll("^(.*<1>).*(</1>.*)$", "$1$2"));
+
+    }
+
+    @Test
     public void generateXML() throws Exception {
         RequestMessageContent<RequestOGW00042> pcRequest = new RequestMessageContent<>(new RequestOGW00042(Source.WEB, "userName", "identityNumber", "mobile"));
 
