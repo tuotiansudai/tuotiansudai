@@ -25,7 +25,7 @@
     </@security.authorize>
 </#macro>
 
-<#macro main pageCss pageJavascript="" title="">
+<#macro main pageCss pageJavascript="" title="拓天速贷">
 <!DOCTYPE html>
 <html>
 <head>
@@ -43,7 +43,6 @@
 <body>
     <#nested>
 
-
 <script>
     window.commonStaticServer = '${commonStaticServer}';
     wx.config({
@@ -58,7 +57,6 @@
         ]
     });
 </script>
-
 <script src="${js.jquerydll}" type="text/javascript" defer></script>
 <script src="${js.globalFun_page!}" type="text/javascript" defer></script>
 <script src="${pageJavascript}" type="text/javascript" id="currentScript" defer></script>

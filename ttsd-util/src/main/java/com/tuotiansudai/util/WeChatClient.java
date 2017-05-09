@@ -36,20 +36,19 @@ public class WeChatClient {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
+
     private final static Map<WeChatMessageType, String> TEMPLATE_MAP = Maps.newHashMap();
 
     private static String APP_ID;
 
     private static String APP_SECRET;
 
-    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
-
     static {
         ResourceBundle bundle = ResourceBundle.getBundle("ttsd-env");
         APP_ID = bundle.getString("wechat.appId");
         APP_SECRET = bundle.getString("wechat.appSecret");
         TEMPLATE_MAP.put(WeChatMessageType.BOUND_TO_OTHER_USER, bundle.getString("wechat.template1.id"));
-
     }
 
     public static WeChatClient getClient() {

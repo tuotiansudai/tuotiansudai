@@ -1,12 +1,10 @@
 let commonFun=require('publicJs/commonFun');
-
 function createElement(element,errorMsg) {
     let children = element.parentElement.children,
         childLen = children.length,
         lastTag = children[childLen-1];
 
     //判断最后一个标签是否是span并含有样式名error
-
 
     if( element && childLen>1 && lastTag.tagName.toUpperCase() == 'SPAN' && /error/.test(lastTag.className)) {
         lastTag.innerHTML=errorMsg;
@@ -18,6 +16,7 @@ function createElement(element,errorMsg) {
     span.innerHTML=errorMsg;
     element && element.parentElement.appendChild(span);
 }
+
 function removeElement(element) {
     let children = element.parentElement.children,
         childLen = children.length,
@@ -27,17 +26,31 @@ function removeElement(element) {
         element.parentElement.removeChild(lastTag);
     }
 }
+
+// function createElement(element,errorMsg) {
+//     if(element && element.nextElementSibling) {
+//         element.nextElementSibling.innerHTML=errorMsg;
+//         return;
+//     }
+//     var span=document.createElement("span");
+//     span.className="error";
+//     span.innerHTML=errorMsg;
+//     element && element.parentElement.appendChild(span);
+// }
+// function removeElement(element) {
+//     (element && element.nextElementSibling && globalFun.hasClass(element.nextElementSibling,'error')) && element.parentElement.removeChild(element.nextElementSibling);
+// }
 /*******策略对象********/
 
 var isHaveError ={
-    yes(errorMsg,showErrorAfter) {
+    yes(errorMsg) {
         globalFun.addClass(this,'error');
-        showErrorAfter && createElement(this,errorMsg);
+        arguments[arguments.length-1]==true && createElement(this,errorMsg);
     },
-    no(showErrorAfter) {
+    no() {
         globalFun.removeClass(this,'error');
         globalFun.addClass(this,'valid');
-        showErrorAfter && removeElement(this);
+        arguments[arguments.length-1]==true && removeElement(this);
     }
 };
 

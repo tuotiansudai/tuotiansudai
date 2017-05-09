@@ -29,6 +29,10 @@ public class ExperienceAssigningMessageConsumer implements MessageConsumer {
 
     private final static Logger logger = LoggerFactory.getLogger(ExperienceAssigningMessageConsumer.class);
 
+    private static final String NEWMAN_TYRANT_GRANTED_LIST = "NEWMAN_TYRANT_GRANTED_LIST";
+
+    private final int lifeSecond = 10378000;
+
     private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
     @Autowired
@@ -36,10 +40,6 @@ public class ExperienceAssigningMessageConsumer implements MessageConsumer {
 
     @Autowired
     private MQWrapperClient mqWrapperClient;
-
-    private static final String NEWMAN_TYRANT_GRANTED_LIST = "NEWMAN_TYRANT_GRANTED_LIST";
-
-    private int lifeSecond = 10378000;
 
     @Override
     public MessageQueue queue() {
