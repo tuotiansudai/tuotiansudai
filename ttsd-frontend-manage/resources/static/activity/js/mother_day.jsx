@@ -49,10 +49,7 @@ drawCircleOne.PrizeSwitch();
 //开始抽奖
 $pointerBtn.on('click', function(event) {
 
-    // drawCircleOne.beginLuckDraw(function(data) {
-        var data={};
-        data.returnCode=0;
-        data.wechatLotteryPrize='MOTHERS_DAY_ACTIVITY_BEDDING';
+    drawCircleOne.beginLuckDraw(function(data) {
         //抽奖接口成功后奖品指向位置
         if (data.returnCode == 0) {
             var angleNum=0;
@@ -118,7 +115,7 @@ $pointerBtn.on('click', function(event) {
             //实名认证
             drawCircleOne.tipWindowPop(tipGroupObj['authentication']);
         }
-    // });
+    });
 });
 
 $isLogin.on('click', function(event) {
