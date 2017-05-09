@@ -29,9 +29,6 @@ public class RepayGeneratorServiceImpl implements RepayGeneratorService {
     private final static Logger logger = Logger.getLogger(RepayGeneratorServiceImpl.class);
 
     @Autowired
-    private IdGenerator idGenerator;
-
-    @Autowired
     private InvestMapper investMapper;
 
     @Autowired
@@ -93,7 +90,7 @@ public class RepayGeneratorServiceImpl implements RepayGeneratorService {
                 long expectedInvestInterest = InterestCalculator.calculateInvestRepayInterest(loanModel, successInvestModel.getAmount(), successInvestModel.getTradingTime(), lastRepayDate, currentRepayDate);
                 long expectedFee = new BigDecimal(expectedInvestInterest).setScale(0, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(successInvestModel.getInvestFeeRate())).longValue();
 
-                InvestRepayModel investRepayModel = new InvestRepayModel(idGenerator.generate(),
+                InvestRepayModel investRepayModel = new InvestRepayModel(IdGenerator.generate(),
                         successInvestModel.getId(),
                         period,
                         period == totalPeriods ? successInvestModel.getAmount() : 0,
@@ -115,7 +112,7 @@ public class RepayGeneratorServiceImpl implements RepayGeneratorService {
 
             long expectedLoanInterest = InterestCalculator.calculateLoanRepayInterest(loanModel, successInvestModels, lastRepayDate, currentRepayDate);
 
-            LoanRepayModel loanRepayModel = new LoanRepayModel(idGenerator.generate(), loanModel.getId(), period, currentPeriodCorpus, expectedLoanInterest, currentRepayDate.toDate(), RepayStatus.REPAYING);
+            LoanRepayModel loanRepayModel = new LoanRepayModel(IdGenerator.generate(), loanModel.getId(), period, currentPeriodCorpus, expectedLoanInterest, currentRepayDate.toDate(), RepayStatus.REPAYING);
             loanRepayModels.add(loanRepayModel);
 
             lastRepayDate = currentRepayDate;

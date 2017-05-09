@@ -54,9 +54,9 @@
     </div>
     <div class="my-advantage">
         <div class="adv-title">
-            <img src="${staticServer}/activity/images/landing-app/title.png">
+            <img src="${commonStaticServer}/activity/images/landing-app/title.png">
         </div>
-        <img src="${staticServer}/activity/images/landing-app/advantage.png" class="advantage">
+        <img src="${commonStaticServer}/activity/images/landing-app/advantage.png" class="advantage">
 
         <div class="info-text">
             1. 在当前页面输入手机号等信息，点击“领取5888元体验金”； <br/>
@@ -254,7 +254,7 @@
 </div>
 <#---->
 <div class="pop-win-app" id="popWinBox" style="display: none" data-show-coupon-alert="${couponAlert?string('true', 'false')}">
-    <img src="${staticServer}/activity/images/landing-app/pop-win.png">
+    <img src="${commonStaticServer}/activity/images/landing-app/pop-win.png">
     <div class="app-close"></div>
     <div class="app-button"></div>
 </div>

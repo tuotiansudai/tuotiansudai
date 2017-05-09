@@ -27,9 +27,9 @@
     <div class="box-normal clearfix reward-gift-box">
 
         <div class="draw-area-box">
-            <img src="${staticServer}/activity/images/new-year/panzi.jpg" class="draw">
-            <img src="${staticServer}/activity/images/new-year/egg.png" class="gold-egg">
-            <img src="${staticServer}/activity/images/new-year/chuizi.png" class="gold-hammer">
+            <img src="${commonStaticServer}/activity/images/new-year/panzi.jpg" class="draw">
+            <img src="${commonStaticServer}/activity/images/new-year/egg.png" class="gold-egg">
+            <img src="${commonStaticServer}/activity/images/new-year/chuizi.png" class="gold-hammer">
             <div class="my-chance" >
                 <i></i><span>我的砸蛋机会：<em class="my-times" data-times="${time}">${time} </em>次
                 <input value="${task}" type="hidden" id="rewardTaskStatus">
@@ -130,7 +130,7 @@
                 <div class="reward-detail">
                     <em>累计投资金额：5,000元</em>
                     <div class="reward-img">
-                        <img src="${staticServer}/activity/images/new-year/reward01.png" alt="20元红包2000元激活">
+                        <img src="${commonStaticServer}/activity/images/new-year/reward01.png" alt="20元红包2000元激活">
                     </div>
                      <i>20元红包（2000元激活）</i>
                     <s><span>目标完成</span></s>
@@ -142,7 +142,7 @@
                 <div class="reward-detail">
                     <em>累计投资金额：10,000元</em>
                     <div class="reward-img">
-                    <img src="${staticServer}/activity/images/new-year/reward02.png" alt="爱奇艺会员月卡">
+                    <img src="${commonStaticServer}/activity/images/new-year/reward02.png" alt="爱奇艺会员月卡">
                     </div>
                     <i>爱奇艺会员月卡</i>
                     <s><span>目标完成</span></s>
@@ -154,7 +154,7 @@
                 <div class="reward-detail">
                     <em>累计投资金额：20,000元</em>
                     <div class="reward-img">
-                    <img src="${staticServer}/activity/images/new-year/reward03.png" alt="报销50元电影票">
+                    <img src="${commonStaticServer}/activity/images/new-year/reward03.png" alt="报销50元电影票">
                         </div>
                     <i>报销50元电影票</i>
                     <s><span>目标完成</span></s>
@@ -166,7 +166,7 @@
                 <div class="reward-detail">
                     <em>累计投资金额：30,000元</em>
                     <div class="reward-img">
-                    <img src="${staticServer}/activity/images/new-year/reward04.png" alt="报销50元电影票">
+                    <img src="${commonStaticServer}/activity/images/new-year/reward04.png" alt="报销50元电影票">
                         </div>
                     <i>50元话费</i>
                     <s><span>目标完成</span></s>
@@ -179,7 +179,7 @@
                 <div class="reward-detail">
                     <em>累计投资金额：50,000元</em>
                     <div class="reward-img">
-                    <img src="${staticServer}/activity/images/new-year/reward05.png" alt="100元中国石化加油卡">
+                    <img src="${commonStaticServer}/activity/images/new-year/reward05.png" alt="100元中国石化加油卡">
                         </div>
                     <i>100元中国石化加油卡</i>
                     <s><span>目标完成</span></s>
@@ -192,7 +192,7 @@
                 <div class="reward-detail">
                     <em>累计投资金额：100,000元</em>
                     <div class="reward-img">
-                    <img src="${staticServer}/activity/images/new-year/reward06.png" alt="100元中国石化加油卡">
+                    <img src="${commonStaticServer}/activity/images/new-year/reward06.png" alt="100元中国石化加油卡">
                         </div>
                     <i>报销300元火车票</i>
                     <s><span>目标完成</span></s>
@@ -205,7 +205,7 @@
                 <div class="reward-detail">
                     <em>累计投资金额：200,000元</em>
                     <div class="reward-img">
-                    <img src="${staticServer}/activity/images/new-year/reward07.png" alt="700元京东E卡">
+                    <img src="${commonStaticServer}/activity/images/new-year/reward07.png" alt="700元京东E卡">
                         </div>
                     <i>700元京东E卡</i>
                     <s><span>目标完成</span></s>
@@ -218,7 +218,7 @@
                 <div class="reward-detail">
                     <em>累计投资金额：300,000元</em>
                     <div class="reward-img">
-                    <img src="${staticServer}/activity/images/new-year/reward08.png" alt="800元红包（50元激活）">
+                    <img src="${commonStaticServer}/activity/images/new-year/reward08.png" alt="800元红包（50元激活）">
                         </div>
                     <i>800元红包（50元激活）</i>
                     <s><span>目标完成</span></s>
@@ -231,7 +231,7 @@
                 <div class="reward-detail">
                     <em>累计投资金额：500,000元</em>
                     <div class="reward-img">
-                    <img src="${staticServer}/activity/images/new-year/reward09.png" alt="1600元芒果卡">
+                    <img src="${commonStaticServer}/activity/images/new-year/reward09.png" alt="1600元芒果卡">
                         </div>
                     <i>1600元芒果卡</i>
                     <s><span>目标完成</span></s>
@@ -244,7 +244,7 @@
                 <div class="reward-detail">
                     <em>累计投资金额：700,000元</em>
                     <div class="reward-img">
-                    <img src="${staticServer}/activity/images/new-year/reward10.png" alt="小米手机5">
+                    <img src="${commonStaticServer}/activity/images/new-year/reward10.png" alt="小米手机5">
                         </div>
                     <i>小米手机5</i>
                     <s><span>目标完成</span></s>

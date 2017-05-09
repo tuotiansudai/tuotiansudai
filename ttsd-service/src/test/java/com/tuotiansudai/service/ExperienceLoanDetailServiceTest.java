@@ -49,13 +49,7 @@ public class ExperienceLoanDetailServiceTest {
     private InvestMapper investMapper;
 
     @Mock
-    private CouponMapper couponMapper;
-
-    @Mock
     private CouponService couponService;
-
-    @Autowired
-    private IdGenerator idGenerator;
 
     @Autowired
     private UserMapper userMapper;
@@ -100,7 +94,7 @@ public class ExperienceLoanDetailServiceTest {
         LoanModel loanModel = new LoanModel();
         loanModel.setAgentLoginName(fakeUserName);
         loanModel.setBaseRate(16.00);
-        long id = idGenerator.generate();
+        long id = IdGenerator.generate();
         loanModel.setId(id);
         loanModel.setName("店铺资金周转");
         loanModel.setActivityRate(12);
@@ -139,7 +133,7 @@ public class ExperienceLoanDetailServiceTest {
     }
 
     private InvestModel getFakeInvestModel(long loanId, String loginName) {
-        return new InvestModel(idGenerator.generate(), loanId, null, 50, loginName, null, Source.WEB, null, 0.1);
+        return new InvestModel(IdGenerator.generate(), loanId, null, 50, loginName, null, Source.WEB, null, 0.1);
     }
 
 }

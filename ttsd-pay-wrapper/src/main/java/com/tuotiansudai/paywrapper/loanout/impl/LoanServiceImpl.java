@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.Environment;
@@ -41,10 +40,10 @@ import com.tuotiansudai.paywrapper.service.UMPayRealTimeStatusService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.LoanPeriodCalculator;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -60,7 +59,7 @@ import java.util.stream.Collectors;
 @Service
 public class LoanServiceImpl implements LoanService {
 
-    static Logger logger = Logger.getLogger(LoanServiceImpl.class);
+    private final static Logger logger = Logger.getLogger(LoanServiceImpl.class);
 
     private final static String CANCEL_INVEST_PAY_BACK_ORDER_ID_SEPARATOR = "P";
 
@@ -70,17 +69,18 @@ public class LoanServiceImpl implements LoanService {
 
     private final static String DO_PAY_REQUEST = "DO_PAY_REQUEST";
 
-    private final static String SMS_AND_EMAIL = "SMS_AND_EMAIL";
-
     private final static String TRANSFER_OUT_FREEZE = "TRANSFER_OUT_FREEZE:INVEST:{0}";
 
     private final static String TRANSFER_IN_BALANCE = "TRANSFER_IN_BALANCE";
 
-    @Value("${common.environment}")
-    private Environment environment;
     private final static String LOAN_OUT_IN_PROCESS_KEY = "job:loan-out-in-process:";
 
     private final static String ALREADY_LOAN_OUT_RETURN_CODE = "0001";
+
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
+
+    @Value("${common.environment}")
+    private Environment environment;
 
     @Autowired
     private LoanMapper loanMapper;
@@ -90,9 +90,6 @@ public class LoanServiceImpl implements LoanService {
 
     @Autowired
     private AccountMapper accountMapper;
-
-    @Autowired
-    private UserMapper userMapper;
 
     @Autowired
     private PaySyncClient paySyncClient;
@@ -111,9 +108,6 @@ public class LoanServiceImpl implements LoanService {
 
     @Autowired
     private PayAsyncClient payAsyncClient;
-
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
 
     @Autowired
     private MQWrapperClient mqWrapperClient;

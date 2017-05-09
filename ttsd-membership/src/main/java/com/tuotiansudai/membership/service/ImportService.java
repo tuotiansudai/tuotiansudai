@@ -2,9 +2,8 @@ package com.tuotiansudai.membership.service;
 
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -16,8 +15,7 @@ import java.util.*;
 @Service
 public class ImportService {
 
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
     private final static Set<String> redisKeys = new HashSet<>();
 

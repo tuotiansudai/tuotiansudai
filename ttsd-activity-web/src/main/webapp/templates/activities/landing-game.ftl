@@ -55,11 +55,11 @@
         </form>
     </div>
     <div class="notice-weixin">
-        <img src="${staticServer}/activity/images/landing-app/weixin.png">
+        <img src="${commonStaticServer}/activity/images/landing-app/weixin.png">
         <span>关注微信，一大波红包等你抢！</span>
     </div>
     <div class="my-advantage">
-        <img src="${staticServer}/activity/images/landing-app/bg-advantage.png" class="advantage">
+        <img src="${commonStaticServer}/activity/images/landing-app/bg-advantage.png" class="advantage">
 
         <div class="info-text">
             1. 新用户注册后，即可获得5888元体验金，可投资新手体验项目；<br/>
@@ -257,7 +257,7 @@
 <#---->
 <div class="pop-win-app" id="popWinBox" style="display: none"
      data-show-coupon-alert="${couponAlert?string('true', 'false')}">
-    <img src="${staticServer}/activity/images/landing-app/pop-win.png">
+    <img src="${commonStaticServer}/activity/images/landing-app/pop-win.png">
 
     <div class="app-close"></div>
     <div class="app-button"></div>

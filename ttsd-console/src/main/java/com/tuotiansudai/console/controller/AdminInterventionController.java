@@ -33,9 +33,6 @@ public class AdminInterventionController {
     private AmountTransfer amountTransfer;
 
     @Autowired
-    private IdGenerator idGenerator;
-
-    @Autowired
     private UserMapper userMapper;
 
     @RequestMapping(method = RequestMethod.GET)
@@ -53,7 +50,7 @@ public class AdminInterventionController {
     public ModelAndView intervene(@Valid @ModelAttribute AdminInterventionDto adminInterventionDto, RedirectAttributes redirectAttributes) {
         ModelAndView modelAndView = new ModelAndView("redirect:/finance-manage/admin-intervention");
 
-        long orderId = idGenerator.generate();
+        long orderId = IdGenerator.generate();
 
         try {
             String mobile = adminInterventionDto.getMobile();

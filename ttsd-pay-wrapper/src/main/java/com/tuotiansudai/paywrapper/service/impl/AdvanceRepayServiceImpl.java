@@ -2,7 +2,6 @@ package com.tuotiansudai.paywrapper.service.impl;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.Environment;
@@ -40,6 +39,7 @@ import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.InterestCalculator;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,6 +64,8 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
     protected final static String REPAY_ORDER_ID_TEMPLATE = "{0}" + REPAY_ORDER_ID_SEPARATOR + "{1}";
 
     private final static String REPAY_REDIS_KEY_TEMPLATE = "ADVANCE_REPAY:{0}";
+
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
     @Autowired
     protected AccountMapper accountMapper;
@@ -103,9 +105,6 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
 
     @Autowired
     protected JobManager jobManager;
-
-    @Autowired
-    protected RedisWrapperClient redisWrapperClient;
 
     @Autowired
     protected CouponRepayMapper couponRepayMapper;

@@ -12,8 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Map;
 
-@Controller
-@RequestMapping(value = "/activity/mid-autumn")
+
 public class MidAutumnActivityController {
 
     @Autowired

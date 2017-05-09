@@ -64,9 +64,6 @@ public class InvestServiceImpl implements InvestService {
     static Logger logger = Logger.getLogger(InvestServiceImpl.class);
 
     @Autowired
-    private IdGenerator idGenerator;
-
-    @Autowired
     private AccountMapper accountMapper;
 
     @Autowired
@@ -152,7 +149,7 @@ public class InvestServiceImpl implements InvestService {
         String loginName = dto.getLoginName();
         double rate = membershipPrivilegePurchaseService.obtainServiceFee(loginName);
 
-        InvestModel investModel = new InvestModel(idGenerator.generate(), Long.parseLong(dto.getLoanId()), null, AmountConverter.convertStringToCent(dto.getAmount()), dto.getLoginName(), new Date(), dto.getSource(), dto.getChannel(), rate);
+        InvestModel investModel = new InvestModel(IdGenerator.generate(), Long.parseLong(dto.getLoanId()), null, AmountConverter.convertStringToCent(dto.getAmount()), dto.getLoginName(), new Date(), dto.getSource(), dto.getChannel(), rate);
         investMapper.create(investModel);
 
         logger.info(MessageFormat.format("[Invest Request Data] user={0}, loan={1}, invest={2}, amount={3}, userCoupon={4}, source={5}",
@@ -190,7 +187,7 @@ public class InvestServiceImpl implements InvestService {
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
         double rate = membershipPrivilegePurchaseService.obtainServiceFee(loginName);
 
-        InvestModel investModel = new InvestModel(idGenerator.generate(), loanId, null, amount, loginName, new Date(), source, channel, rate);
+        InvestModel investModel = new InvestModel(IdGenerator.generate(), loanId, null, amount, loginName, new Date(), source, channel, rate);
         try {
             investModel.setNoPasswordInvest(true);
             investMapper.create(investModel);

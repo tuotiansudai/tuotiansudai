@@ -3,7 +3,6 @@ package com.tuotiansudai.paywrapper.loanout.impl;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.Environment;
@@ -30,6 +29,7 @@ import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.InterestCalculator;
 import com.tuotiansudai.util.LoanPeriodCalculator;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -56,6 +56,8 @@ public class CouponRepayServiceImpl implements CouponRepayService {
             CouponType.BIRTHDAY_COUPON);
 
     private static final String COUPON_ORDER_ID_TEMPLATE = "{0}X{1}";
+
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
     @Autowired
     private AccountMapper accountMapper;
@@ -92,9 +94,6 @@ public class CouponRepayServiceImpl implements CouponRepayService {
 
     @Autowired
     private CouponRepayNotifyRequestMapper couponRepayNotifyRequestMapper;
-
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
 
     @Autowired
     private SmsWrapperClient smsWrapperClient;

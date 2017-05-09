@@ -21,18 +21,16 @@ import static org.junit.Assert.assertTrue;
 public class LoanTitleMapperTest {
     @Autowired
     private LoanTitleMapper loanTitleMapper;
-    @Autowired
-    private IdGenerator idGenerator;
 
     @Test
     public void createTitleTest(){
-        LoanTitleModel loanTitleModel = new LoanTitleModel(idGenerator.generate(), LoanTitleType.BASE_TITLE_TYPE, "房产证");
+        LoanTitleModel loanTitleModel = new LoanTitleModel(IdGenerator.generate(), LoanTitleType.BASE_TITLE_TYPE, "房产证");
         assertNotNull(loanTitleModel.getId());
     }
 
     @Test
     public void findAllTitlesTest(){
-        LoanTitleModel loanTitleModel = new LoanTitleModel(idGenerator.generate(), LoanTitleType.BASE_TITLE_TYPE, "身份证");
+        LoanTitleModel loanTitleModel = new LoanTitleModel(IdGenerator.generate(), LoanTitleType.BASE_TITLE_TYPE, "身份证");
         loanTitleMapper.create(loanTitleModel);
         List<LoanTitleModel> loanTitleModels = loanTitleMapper.findAll();
         assertTrue(loanTitleModels.size() >= 0);

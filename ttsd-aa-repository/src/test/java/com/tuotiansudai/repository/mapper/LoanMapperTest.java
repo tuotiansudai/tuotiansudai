@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.lang.time.DateUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,9 +33,6 @@ public class LoanMapperTest {
 
     @Autowired
     private LoanRepayMapper loanRepayMapper;
-
-    @Autowired
-    private IdGenerator idGenerator;
 
     @Test
     public void shouldCreateLoan() {
@@ -222,7 +220,7 @@ public class LoanMapperTest {
 
     private LoanModel getFakeLoan(String loanerLoginName, String agentLoginName, LoanStatus loanStatus,ActivityType activityType) {
         LoanModel fakeLoanModel = new LoanModel();
-        fakeLoanModel.setId(idGenerator.generate());
+        fakeLoanModel.setId(IdGenerator.generate());
         fakeLoanModel.setName("loanName");
         fakeLoanModel.setLoanerLoginName(loanerLoginName);
         fakeLoanModel.setLoanerUserName("借款人");
@@ -252,7 +250,7 @@ public class LoanMapperTest {
                                                  long defaultInterest
     ) {
         LoanRepayModel fakeLoanRepayModel = new LoanRepayModel();
-        fakeLoanRepayModel.setId(idGenerator.generate());
+        fakeLoanRepayModel.setId(IdGenerator.generate());
         fakeLoanRepayModel.setPeriod(period);
         fakeLoanRepayModel.setStatus(repayStatus);
         fakeLoanRepayModel.setLoanId(fakeLoanModel.getId());
@@ -268,7 +266,7 @@ public class LoanMapperTest {
     private UserModel getFakeUserModel() {
         UserModel fakeUserModel = new UserModel();
         fakeUserModel.setLoginName("loginName");
-        fakeUserModel.setMobile("13900000000");
+        fakeUserModel.setMobile(RandomStringUtils.randomNumeric(11));
         fakeUserModel.setPassword("password");
         fakeUserModel.setSalt("salt");
         fakeUserModel.setRegisterTime(new Date());

@@ -6,7 +6,7 @@
     <input type="hidden" id="lotteryTime" value="${lotteryTime!}">
     </@global.isNotAnonymous>
     <div class="top-img-item">
-        <img src="${staticServer}/activity/images/today-headlines/top-img.png" alt="今日头条" width="100%">
+        <img src="${commonStaticServer}/activity/images/today-headlines/top-img.png" alt="今日头条" width="100%">
     </div>
     <div class="wp">
         <div class="intro-text-group">
@@ -21,44 +21,44 @@
             </div>
         </div>
         <div class="title-group">
-            <img src="${staticServer}/activity/images/today-headlines/title-one-1229.png" width="80%">
+            <img src="${commonStaticServer}/activity/images/today-headlines/title-one-1229.png" width="80%">
         </div>
         <div class="lottery-group">
             <ul class="lottery-item" id="lottery">
                 <li class="lottery-unit lottery-unit-0">
-                    <img src="${staticServer}/activity/images/today-headlines/gift-one.png" width="59%" class="gift-img">
-                    <img src="${staticServer}/activity/images/today-headlines/gift-default.png" width="50%" class="hover-bg">
+                    <img src="${commonStaticServer}/activity/images/today-headlines/gift-one.png" width="59%" class="gift-img">
+                    <img src="${commonStaticServer}/activity/images/today-headlines/gift-default.png" width="50%" class="hover-bg">
                 </li>
                 <li class="lottery-unit lottery-unit-1">
-                    <img src="${staticServer}/activity/images/today-headlines/gift-two.png" width="60%" class="gift-img">
-                    <img src="${staticServer}/activity/images/today-headlines/gift-default.png" width="50%" class="hover-bg">
+                    <img src="${commonStaticServer}/activity/images/today-headlines/gift-two.png" width="60%" class="gift-img">
+                    <img src="${commonStaticServer}/activity/images/today-headlines/gift-default.png" width="50%" class="hover-bg">
                 </li>
                 <li class="lottery-unit lottery-unit-2">
-                    <img src="${staticServer}/activity/images/today-headlines/gift-three.png" width="60%" class="gift-img">
-                    <img src="${staticServer}/activity/images/today-headlines/gift-default.png" width="50%" class="hover-bg">
+                    <img src="${commonStaticServer}/activity/images/today-headlines/gift-three.png" width="60%" class="gift-img">
+                    <img src="${commonStaticServer}/activity/images/today-headlines/gift-default.png" width="50%" class="hover-bg">
                 </li>
                 <li class="lottery-unit lottery-unit-7">
-                    <img src="${staticServer}/activity/images/today-headlines/gift-eight.png" width="56%" class="gift-img">
-                    <img src="${staticServer}/activity/images/today-headlines/gift-default.png" width="50%" class="hover-bg">
+                    <img src="${commonStaticServer}/activity/images/today-headlines/gift-eight.png" width="56%" class="gift-img">
+                    <img src="${commonStaticServer}/activity/images/today-headlines/gift-default.png" width="50%" class="hover-bg">
                 </li>
                 <li class="lottery-btn">
-                    <img src="${staticServer}/activity/images/today-headlines/lottery-btn-1229.png" width="100%">
+                    <img src="${commonStaticServer}/activity/images/today-headlines/lottery-btn-1229.png" width="100%">
                 </li>
                 <li class="lottery-unit lottery-unit-3">
-                    <img src="${staticServer}/activity/images/today-headlines/gift-four.png" width="62%" class="gift-img">
-                    <img src="${staticServer}/activity/images/today-headlines/gift-default.png" width="50%" class="hover-bg">
+                    <img src="${commonStaticServer}/activity/images/today-headlines/gift-four.png" width="62%" class="gift-img">
+                    <img src="${commonStaticServer}/activity/images/today-headlines/gift-default.png" width="50%" class="hover-bg">
                 </li>
                 <li class="lottery-unit lottery-unit-6">
-                    <img src="${staticServer}/activity/images/today-headlines/gift-seven.png" width="74%" class="gift-img">
-                    <img src="${staticServer}/activity/images/today-headlines/gift-default.png" width="50%" class="hover-bg">
+                    <img src="${commonStaticServer}/activity/images/today-headlines/gift-seven.png" width="74%" class="gift-img">
+                    <img src="${commonStaticServer}/activity/images/today-headlines/gift-default.png" width="50%" class="hover-bg">
                 </li>
                 <li class="lottery-unit lottery-unit-5">
-                    <img src="${staticServer}/activity/images/today-headlines/gift-six.png" width="75%" class="gift-img">
-                    <img src="${staticServer}/activity/images/today-headlines/gift-default.png" width="50%" class="hover-bg">
+                    <img src="${commonStaticServer}/activity/images/today-headlines/gift-six.png" width="75%" class="gift-img">
+                    <img src="${commonStaticServer}/activity/images/today-headlines/gift-default.png" width="50%" class="hover-bg">
                 </li>
                 <li class="lottery-unit lottery-unit-4">
-                    <img src="${staticServer}/activity/images/today-headlines/gift-five.png" width="63%" class="gift-img">
-                    <img src="${staticServer}/activity/images/today-headlines/gift-default.png" width="50%" class="hover-bg">
+                    <img src="${commonStaticServer}/activity/images/today-headlines/gift-five.png" width="63%" class="gift-img">
+                    <img src="${commonStaticServer}/activity/images/today-headlines/gift-default.png" width="50%" class="hover-bg">
                 </li>
             </ul>
         </div>
@@ -77,7 +77,7 @@
             </div>
         </div>
         <div class="title-group">
-            <img src="${staticServer}/activity/images/today-headlines/title-two.png" width="50%">
+            <img src="${commonStaticServer}/activity/images/today-headlines/title-two.png" width="50%">
         </div>
         <div class="actor-text-group">
             <div class="bg-item">
@@ -85,31 +85,31 @@
                     <ul class="advantage-list">
                         <li>
                             <i class="icon-one">
-                                <img src="${staticServer}/activity/images/today-headlines/icon-one.png" width="50%">
+                                <img src="${commonStaticServer}/activity/images/today-headlines/icon-one.png" width="50%">
                             </i>
                             <span>50元起投</span>
                         </li>
                         <li>
                             <i class="icon-two">
-                                <img src="${staticServer}/activity/images/today-headlines/icon-two.png" width="50%">
+                                <img src="${commonStaticServer}/activity/images/today-headlines/icon-two.png" width="50%">
                             </i>
                             <span>30-360天期限</span>
                         </li>
                         <li>
                             <i class="icon-three">
-                                <img src="${staticServer}/activity/images/today-headlines/icon-three.png" width="50%">
+                                <img src="${commonStaticServer}/activity/images/today-headlines/icon-three.png" width="50%">
                             </i>
                             <span>信息披露透明</span>
                         </li>
                         <li>
                             <i class="icon-four">
-                                <img src="${staticServer}/activity/images/today-headlines/icon-four.png" width="50%">
+                                <img src="${commonStaticServer}/activity/images/today-headlines/icon-four.png" width="50%">
                             </i>
                             <span>第三方托管体系</span>
                         </li>
                         <li>
                             <i class="icon-five">
-                                <img src="${staticServer}/activity/images/today-headlines/icon-five.png" width="50%">
+                                <img src="${commonStaticServer}/activity/images/today-headlines/icon-five.png" width="50%">
                             </i>
                             <span>超额产权抵押</span>
                         </li>
@@ -132,10 +132,10 @@
     <div class="tip-box" id="registerBox">
         <div class="tip-bg">
             <h3>
-                <img src="${staticServer}/activity/images/today-headlines/register-title.png" width="50%">
+                <img src="${commonStaticServer}/activity/images/today-headlines/register-title.png" width="50%">
             </h3>
             <div class="title-tip">
-                <img src="${staticServer}/activity/images/today-headlines/register-tip.png" width="80%">
+                <img src="${commonStaticServer}/activity/images/today-headlines/register-tip.png" width="80%">
             </div>
             <form class="register-form" id="registerForm" action="/register/user" method="post" autocomplete="off" novalidate="novalidate">
                 <ul class="register-list">
@@ -182,7 +182,7 @@
     <div class="tip-box" id="loginBox">
         <div class="tip-bg">
             <div class="title-tip">
-                <img src="${staticServer}/activity/images/today-headlines/login-title.png" width="80%">
+                <img src="${commonStaticServer}/activity/images/today-headlines/login-title.png" width="80%">
             </div>
             <form class="login-form" id="loginForm" action="/login" method="post" autocomplete="off" novalidate="novalidate">
                 <meta name="_csrf" content="${(_csrf.token)!}"/>
@@ -223,7 +223,7 @@
                 <p>客服会在3个工作日内联系您发放奖品</p>
             </div>
             <div class="title-tip">
-                <img src="${staticServer}/activity/images/today-headlines/attest-title.png" width="80%">
+                <img src="${commonStaticServer}/activity/images/today-headlines/attest-title.png" width="80%">
             </div>
             <form class="attest-form" id="attestForm" action="/register/account" method="post" autocomplete="off" novalidate="novalidate">
                 <ul class="register-list mt-b">
@@ -252,7 +252,7 @@
                 <p>客服会在3个工作日内联系您发放奖品</p>
             </div>
             <div class="title-tip">
-                <img src="${staticServer}/activity/images/today-headlines/download-title.png" width="80%">
+                <img src="${commonStaticServer}/activity/images/today-headlines/download-title.png" width="80%">
             </div>
             <ul class="register-list mt-b">
                 <li class="text-c">

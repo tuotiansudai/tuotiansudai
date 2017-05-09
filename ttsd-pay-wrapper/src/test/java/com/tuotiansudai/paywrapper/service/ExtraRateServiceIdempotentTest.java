@@ -1,7 +1,6 @@
 package com.tuotiansudai.paywrapper.service;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
@@ -14,6 +13,7 @@ import com.tuotiansudai.paywrapper.repository.model.sync.response.TransferRespon
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.commons.collections4.map.HashedMap;
 import org.joda.time.DateTime;
 import org.junit.After;
@@ -24,11 +24,12 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
@@ -73,10 +74,6 @@ public class ExtraRateServiceIdempotentTest {
     @Mock
     private InvestRateService investRateService;
 
-    @Autowired
-    private IdGenerator idGenerator;
-
-
     private final static String REPAY_REDIS_KEY_TEMPLATE = "EXTRA_RATE_REPAY:{0}";
 
     private final Map<String, Integer> userMembershipLevelMap = new HashedMap<>();
@@ -85,6 +82,13 @@ public class ExtraRateServiceIdempotentTest {
     public void setup() throws Exception {
         MockitoAnnotations.initMocks(this);
         userMembershipLevelMap.clear();
+
+        Field redisWrapperClientField = this.extraRateService.getClass().getDeclaredField("redisWrapperClient");
+        redisWrapperClientField.setAccessible(true);
+        Field modifiersField = Field.class.getDeclaredField("modifiers");
+        modifiersField.setAccessible(true);
+        modifiersField.setInt(redisWrapperClientField, redisWrapperClientField.getModifiers() & ~Modifier.FINAL);
+        redisWrapperClientField.set(this.extraRateService, this.redisWrapperClient);
     }
 
     @After
@@ -96,9 +100,9 @@ public class ExtraRateServiceIdempotentTest {
         DateTime recheckTime = new DateTime().withDate(2016, 3, 1);
         UserModel loaner = getFakeUser("loaner");
         LoanModel loan = getFakeLoan(loaner, LoanType.LOAN_INTEREST_MONTHLY_REPAY, 1000000, 2, 0.12, recheckTime.toDate());
-        LoanRepayModel loanRepay1 = getFakeLoanRepayModel(idGenerator.generate(), loan.getId(), 1, 0, 1000, new DateTime().withTime(23, 59, 59, 0).toDate(), new DateTime().withMillisOfSecond(0).toDate(), RepayStatus.COMPLETE);
+        LoanRepayModel loanRepay1 = getFakeLoanRepayModel(IdGenerator.generate(), loan.getId(), 1, 0, 1000, new DateTime().withTime(23, 59, 59, 0).toDate(), new DateTime().withMillisOfSecond(0).toDate(), RepayStatus.COMPLETE);
         loanRepay1.setActualInterest(1000);
-        LoanRepayModel loanRepay2 = getFakeLoanRepayModel(idGenerator.generate(), loan.getId(), 2, loan.getLoanAmount(), 1000, new DateTime().plusDays(30).withTime(23, 59, 59, 0).toDate(), loanRepay1.getActualRepayDate(), RepayStatus.REPAYING);
+        LoanRepayModel loanRepay2 = getFakeLoanRepayModel(IdGenerator.generate(), loan.getId(), 2, loan.getLoanAmount(), 1000, new DateTime().plusDays(30).withTime(23, 59, 59, 0).toDate(), loanRepay1.getActualRepayDate(), RepayStatus.REPAYING);
         UserModel investor = getFakeUser("investor");
         AccountModel investorAccount = getFakeAccount(investor.getLoginName(), 0, 0);
         userMembershipLevelMap.put(investor.getLoginName(), 0);
@@ -133,9 +137,9 @@ public class ExtraRateServiceIdempotentTest {
         DateTime recheckTime = new DateTime().withDate(2016, 3, 1);
         UserModel loaner = getFakeUser("loaner");
         LoanModel loan = getFakeLoan(loaner, LoanType.LOAN_INTEREST_MONTHLY_REPAY, 1000000, 2, 0.12, recheckTime.toDate());
-        LoanRepayModel loanRepay1 = getFakeLoanRepayModel(idGenerator.generate(), loan.getId(), 1, 0, 1000, new DateTime().withTime(23, 59, 59, 0).toDate(), new DateTime().withMillisOfSecond(0).toDate(), RepayStatus.COMPLETE);
+        LoanRepayModel loanRepay1 = getFakeLoanRepayModel(IdGenerator.generate(), loan.getId(), 1, 0, 1000, new DateTime().withTime(23, 59, 59, 0).toDate(), new DateTime().withMillisOfSecond(0).toDate(), RepayStatus.COMPLETE);
         loanRepay1.setActualInterest(1000);
-        LoanRepayModel loanRepay2 = getFakeLoanRepayModel(idGenerator.generate(), loan.getId(), 2, loan.getLoanAmount(), 1000, new DateTime().plusDays(30).withTime(23, 59, 59, 0).toDate(), loanRepay1.getActualRepayDate(), RepayStatus.REPAYING);
+        LoanRepayModel loanRepay2 = getFakeLoanRepayModel(IdGenerator.generate(), loan.getId(), 2, loan.getLoanAmount(), 1000, new DateTime().plusDays(30).withTime(23, 59, 59, 0).toDate(), loanRepay1.getActualRepayDate(), RepayStatus.REPAYING);
         UserModel investor = getFakeUser("investor");
         AccountModel investorAccount = getFakeAccount(investor.getLoginName(), 0, 0);
         userMembershipLevelMap.put(investor.getLoginName(), 0);
@@ -168,9 +172,9 @@ public class ExtraRateServiceIdempotentTest {
         DateTime recheckTime = new DateTime().withDate(2016, 3, 1);
         UserModel loaner = getFakeUser("loaner");
         LoanModel loan = getFakeLoan(loaner, LoanType.LOAN_INTEREST_MONTHLY_REPAY, 1000000, 2, 0.12, recheckTime.toDate());
-        LoanRepayModel loanRepay1 = getFakeLoanRepayModel(idGenerator.generate(), loan.getId(), 1, 0, 1000, new DateTime().withTime(23, 59, 59, 0).toDate(), new DateTime().withMillisOfSecond(0).toDate(), RepayStatus.COMPLETE);
+        LoanRepayModel loanRepay1 = getFakeLoanRepayModel(IdGenerator.generate(), loan.getId(), 1, 0, 1000, new DateTime().withTime(23, 59, 59, 0).toDate(), new DateTime().withMillisOfSecond(0).toDate(), RepayStatus.COMPLETE);
         loanRepay1.setActualInterest(1000);
-        LoanRepayModel loanRepay2 = getFakeLoanRepayModel(idGenerator.generate(), loan.getId(), 2, loan.getLoanAmount(), 1000, new DateTime().plusDays(30).withTime(23, 59, 59, 0).toDate(), loanRepay1.getActualRepayDate(), RepayStatus.REPAYING);
+        LoanRepayModel loanRepay2 = getFakeLoanRepayModel(IdGenerator.generate(), loan.getId(), 2, loan.getLoanAmount(), 1000, new DateTime().plusDays(30).withTime(23, 59, 59, 0).toDate(), loanRepay1.getActualRepayDate(), RepayStatus.REPAYING);
         UserModel investor = getFakeUser("investor");
         AccountModel investorAccount = getFakeAccount(investor.getLoginName(), 0, 0);
         userMembershipLevelMap.put(investor.getLoginName(), 0);
@@ -207,9 +211,9 @@ public class ExtraRateServiceIdempotentTest {
         DateTime recheckTime = new DateTime().withDate(2016, 3, 1);
         UserModel loaner = getFakeUser("loaner");
         LoanModel loan = getFakeLoan(loaner, LoanType.LOAN_INTEREST_MONTHLY_REPAY, 1000000, 2, 0.12, recheckTime.toDate());
-        LoanRepayModel loanRepay1 = getFakeLoanRepayModel(idGenerator.generate(), loan.getId(), 1, 0, 1000, new DateTime().withTime(23, 59, 59, 0).toDate(), new DateTime().withMillisOfSecond(0).toDate(), RepayStatus.COMPLETE);
+        LoanRepayModel loanRepay1 = getFakeLoanRepayModel(IdGenerator.generate(), loan.getId(), 1, 0, 1000, new DateTime().withTime(23, 59, 59, 0).toDate(), new DateTime().withMillisOfSecond(0).toDate(), RepayStatus.COMPLETE);
         loanRepay1.setActualInterest(1000);
-        LoanRepayModel loanRepay2 = getFakeLoanRepayModel(idGenerator.generate(), loan.getId(), 2, loan.getLoanAmount(), 1000, new DateTime().plusDays(30).withTime(23, 59, 59, 0).toDate(), loanRepay1.getActualRepayDate(), RepayStatus.REPAYING);
+        LoanRepayModel loanRepay2 = getFakeLoanRepayModel(IdGenerator.generate(), loan.getId(), 2, loan.getLoanAmount(), 1000, new DateTime().plusDays(30).withTime(23, 59, 59, 0).toDate(), loanRepay1.getActualRepayDate(), RepayStatus.REPAYING);
         UserModel investor = getFakeUser("investor");
         AccountModel investorAccount = getFakeAccount(investor.getLoginName(), 0, 0);
         userMembershipLevelMap.put(investor.getLoginName(), 0);
@@ -269,7 +273,7 @@ public class ExtraRateServiceIdempotentTest {
 
     private LoanModel getFakeLoan(UserModel loaner, LoanType loanType, long amount, int periods, double baseRate, Date recheckTime) {
         LoanModel fakeLoanModel = new LoanModel();
-        fakeLoanModel.setId(idGenerator.generate());
+        fakeLoanModel.setId(IdGenerator.generate());
         fakeLoanModel.setName("loanName");
         fakeLoanModel.setLoanAmount(amount);
         fakeLoanModel.setLoanerLoginName(loaner.getLoginName());
@@ -292,7 +296,7 @@ public class ExtraRateServiceIdempotentTest {
     }
 
     private InvestModel getFakeInvest(long loanId, Long transferInvestId, long amount, String loginName, Date investTime, InvestStatus investStatus, TransferStatus transferStatus) {
-        InvestModel fakeInvestModel = new InvestModel(idGenerator.generate(), loanId, transferInvestId, amount, loginName, investTime, Source.WEB, null, 0.1);
+        InvestModel fakeInvestModel = new InvestModel(IdGenerator.generate(), loanId, transferInvestId, amount, loginName, investTime, Source.WEB, null, 0.1);
         fakeInvestModel.setStatus(investStatus);
         fakeInvestModel.setTransferStatus(transferStatus);
         MembershipModel membershipModel = getMembershipModelByLevel(userMembershipLevelMap.get(loginName));

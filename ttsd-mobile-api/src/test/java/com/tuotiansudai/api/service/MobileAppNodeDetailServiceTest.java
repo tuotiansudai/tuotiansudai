@@ -32,9 +32,6 @@ public class MobileAppNodeDetailServiceTest extends ServiceTestBase{
     @Mock
     private AnnounceMapper announceMapper;
 
-    @Autowired
-    private IdGenerator idGenerator;
-
     @Test
     public void shouldGenerateNodeDetailIsOk(){
         ReflectionTestUtils.setField(mobileAppNodeDetailService, "urlPattern", "(\\\\/upload\\\\/).*?(.jpg|.gif|.jpeg|.png)");
@@ -51,7 +48,7 @@ public class MobileAppNodeDetailServiceTest extends ServiceTestBase{
 
     private AnnounceModel fakeAnnounceModel(){
         AnnounceModel announceModel = new AnnounceModel();
-        announceModel.setId(idGenerator.generate());
+        announceModel.setId(IdGenerator.generate());
         announceModel.setTitle("tile");
         announceModel.setContent("content");
         announceModel.setCreatedTime(new Date());

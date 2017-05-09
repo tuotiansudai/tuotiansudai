@@ -44,25 +44,16 @@ public class InvestServicePaybackExceptionTest {
     private InvestServiceImpl investService;
 
     @Mock
-    private IdGenerator idGenerator;
-
-    @Mock
     private AccountMapper accountMapper;
 
     @Mock
     private InvestMapper investMapper;
 
     @Mock
-    private PayAsyncClient payAsyncClient;
-
-    @Mock
     private PaySyncClient paySyncClient;
 
     @Mock
     private LoanMapper loanMapper;
-
-    @Mock
-    private UserBillService userBillService;
 
     @Mock
     private SmsWrapperClient smsWrapperClient;

@@ -1,15 +1,15 @@
 package com.tuotiansudai.task.aspect;
 
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.CouponDto;
-import com.tuotiansudai.repository.model.UserGroup;
 import com.tuotiansudai.enums.CouponType;
+import com.tuotiansudai.enums.OperationType;
 import com.tuotiansudai.enums.Role;
+import com.tuotiansudai.repository.model.UserGroup;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.task.OperationTask;
-import com.tuotiansudai.enums.OperationType;
 import com.tuotiansudai.task.TaskConstant;
 import com.tuotiansudai.task.TaskType;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -23,8 +23,7 @@ import java.util.Date;
 @Component
 public class AuditTaskAspectCoupon {
 
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
     @Autowired
     private UserService userService;

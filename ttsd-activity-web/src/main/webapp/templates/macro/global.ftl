@@ -101,7 +101,7 @@
 </#if>
 
 <script type="text/javascript" charset="utf-8">
-    window.staticServer = '${commonStaticServer}';
+    window.commonStaticServer = '${commonStaticServer}';
 
 </script>
 

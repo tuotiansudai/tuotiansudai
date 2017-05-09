@@ -3,9 +3,11 @@ package com.tuotiansudai.console.controller;
 import com.google.common.base.Strings;
 import com.tuotiansudai.client.AnxinWrapperClient;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.console.service.ConsoleLoanService;
-import com.tuotiansudai.dto.*;
+import com.tuotiansudai.dto.AnxinDataDto;
+import com.tuotiansudai.dto.AnxinQueryContractDto;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.LoanListDto;
 import com.tuotiansudai.message.AnxinContractMessage;
 import com.tuotiansudai.message.LoanOutSuccessMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
@@ -18,6 +20,7 @@ import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.util.CalculateUtil;
 import com.tuotiansudai.util.PaginationUtil;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -39,14 +42,13 @@ public class LoanListController {
 
     static Logger logger = Logger.getLogger(LoanListController.class);
 
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
+
     @Autowired
     private ConsoleLoanService consoleLoanService;
 
     @Autowired
     private LoanService loanService;
-
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
 
     @Autowired
     private InvestService investService;

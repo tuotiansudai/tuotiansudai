@@ -30,13 +30,11 @@ public class ExtraLoanRateMapperTest {
     private LoanMapper loanMapper;
     @Autowired
     private UserMapper userMapper;
-    @Autowired
-    private IdGenerator idGenerator;
 
     @Test
     public void shouldFindMaxRateByLoanIdIsOk() {
         String loginName = "testExtraRate";
-        long loanId = idGenerator.generate();
+        long loanId = IdGenerator.generate();
         createUserByUserId(loginName);
         createLoanByUserId(loginName, loanId);
         List<ExtraLoanRateModel> extraLoanRateModels = createExtraLoanRate(loanId);
@@ -48,7 +46,7 @@ public class ExtraLoanRateMapperTest {
     @Test
     public void shouldFindByLoanIdOrderByRate() {
         String loginName = "testExtraRate";
-        long loanId = idGenerator.generate();
+        long loanId = IdGenerator.generate();
         createUserByUserId(loginName);
         createLoanByUserId(loginName, loanId);
         extraLoanRateMapper.create(createExtraLoanRate(loanId));

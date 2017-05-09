@@ -4,8 +4,8 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.activity.repository.mapper.InvestNewmanTyrantMapper;
 import com.tuotiansudai.activity.repository.model.NewmanTyrantHistoryView;
 import com.tuotiansudai.activity.repository.model.NewmanTyrantView;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.util.DateConvertUtil;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -22,13 +22,9 @@ import java.util.List;
 @Service
 public class NewmanTyrantService {
     static Logger logger = Logger.getLogger(NewmanTyrantService.class);
+
     @Autowired
     private InvestNewmanTyrantMapper investNewmanTyrantMapper;
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
-
-
-    private static final String NEWMAN_TYRANT_PRIZE_KEY = "console:Newman_Tyrant_Prize";
 
     @Value("#{'${activity.newmanTyrant.activity.period}'.split('\\~')}")
     private List<String> newmanTyrantActivityPeriod = Lists.newArrayList();

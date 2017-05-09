@@ -5,7 +5,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.PayWrapperClient;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.Environment;
 import com.tuotiansudai.message.EMailMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
@@ -13,6 +12,7 @@ import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.DateConvertUtil;
+import com.tuotiansudai.util.RedisWrapperClient;
 import com.tuotiansudai.util.SendCloudTemplate;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -30,6 +30,8 @@ import java.util.Map;
 public class CheckUserBalanceScheduler {
     private static Logger logger = LoggerFactory.getLogger(CheckUserBalanceScheduler.class);
 
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
+
     @Autowired
     private PayWrapperClient payWrapperClient;
 
@@ -44,9 +46,6 @@ public class CheckUserBalanceScheduler {
 
     @Value("#{'${check.user.balance.notify.email}'.split('\\|')}")
     private List<String> notifyEmailAddressList;
-
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
 
     private static final int BATCH_SIZE = 50000;
 

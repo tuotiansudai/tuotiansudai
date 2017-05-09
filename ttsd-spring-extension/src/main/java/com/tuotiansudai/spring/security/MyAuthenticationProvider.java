@@ -1,9 +1,11 @@
 package com.tuotiansudai.spring.security;
 
-import com.google.common.base.Function;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.SignInResult;
+import com.tuotiansudai.message.WeChatBoundMessage;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.spring.MyUser;
 import org.apache.log4j.Logger;
@@ -30,6 +32,9 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
     @Autowired
     private SignInClient signInClient;
 
+    @Autowired
+    private MQWrapperClient mqWrapperClient;
+
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         MyWebAuthenticationDetails details = (MyWebAuthenticationDetails) authentication.getDetails();
@@ -48,7 +53,9 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
             throw new BadCredentialsException(signInResult != null ? signInResult.getMessage() : "登录异常");
         }
 
-        List<GrantedAuthority> grantedAuthorities = Lists.transform(signInResult.getUserInfo().getRoles(), (Function<String, GrantedAuthority>) SimpleGrantedAuthority::new);
+        mqWrapperClient.sendMessage(MessageQueue.WeChatBoundNotify, new WeChatBoundMessage(details.getMobile(), details.getOpenid()));
+
+        List<GrantedAuthority> grantedAuthorities = Lists.transform(signInResult.getUserInfo().getRoles(), SimpleGrantedAuthority::new);
 
         UsernamePasswordAuthenticationToken result = new UsernamePasswordAuthenticationToken(
                 new MyUser(signInResult.getToken(), signInResult.getUserInfo().getLoginName(), authentication.getCredentials().toString(), true, true, true, true, grantedAuthorities, signInResult.getUserInfo().getMobile()),
@@ -57,6 +64,7 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
         result.setDetails(authentication.getDetails());
         return result;
     }
+
 
     @Override
     public boolean supports(Class<?> aClass) {

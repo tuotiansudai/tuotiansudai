@@ -25,9 +25,6 @@ import static org.junit.Assert.assertEquals;
 public class LoanServiceTest {
 
     @Autowired
-    private IdGenerator idGenerator;
-
-    @Autowired
     private LoanTitleMapper loanTitleMapper;
 
     @Autowired
@@ -38,7 +35,7 @@ public class LoanServiceTest {
 
     @Before
     public void createLoanTitle(){
-        LoanTitleModel loanTitleModel = new LoanTitleModel(idGenerator.generate(), LoanTitleType.BASE_TITLE_TYPE, "身份证");
+        LoanTitleModel loanTitleModel = new LoanTitleModel(IdGenerator.generate(), LoanTitleType.BASE_TITLE_TYPE, "身份证");
         loanTitleMapper.create(loanTitleModel);
     }
 

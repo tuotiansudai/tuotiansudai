@@ -5,8 +5,8 @@
         <input type="hidden" value="<@global.security.authentication property="principal.mobile" />" id="MobileNumber"/>
     </@global.isNotAnonymous>
     <div class="top-intro-img">
-        <img src="${staticServer}/activity/images/double-eleven/top-intro.jpg" alt="双十一" width="100%" class="top-img">
-        <img src="${staticServer}/activity/images/double-eleven/top-intro-phone.png" alt="双十一" width="100%" class="top-img-phone">
+        <img src="${commonStaticServer}/activity/images/double-eleven/top-intro.jpg" alt="双十一" width="100%" class="top-img">
+        <img src="${commonStaticServer}/activity/images/double-eleven/top-intro-phone.png" alt="双十一" width="100%" class="top-img-phone">
     </div>
     <div class="content-group">
         <div class="wp clearfix">
@@ -17,7 +17,7 @@
                 <div class="content-item after-line">
                     <p class="title-text">清空女票的购物车要多少钱？别报警，拓天速贷此番祭出</p>
                     <p>撩妹神器：</p>
-                    <p><span><img src="${staticServer}/activity/images/double-eleven/info-text.png" width="100%"></span></p>
+                    <p><span><img src="${commonStaticServer}/activity/images/double-eleven/info-text.png" width="100%"></span></p>
                     <p>女神喜欢的香槟玫瑰、法国大餐、星级酒店，统统满足她！所谓“但愿人长久，钱里共婵娟”。兄弟只能帮到这了，接下来你懂得哦！</p>
                 </div>
             </div>
@@ -27,7 +27,7 @@
                         <h3>
                             <span>
                                 <i class="left-line"></i>
-                                <img src="${staticServer}/activity/images/double-eleven/title-one.png" >
+                                <img src="${commonStaticServer}/activity/images/double-eleven/title-one.png" >
                                 <i class="right-line"></i>
                             </span>
                         </h3>
@@ -41,7 +41,7 @@
                         <input type="hidden" id="nowTimeCount" data-time="${now}">
                         <ul id="timeCount">
                             <li>
-                                <p><img src="${staticServer}/activity/images/double-eleven/first-time.png" ></p>
+                                <p><img src="${commonStaticServer}/activity/images/double-eleven/first-time.png" ></p>
                                 <p class="tip-info">即将登场</p>
                                 <p class="time-text">
                                     <span data-date="${today}" data-now="${now}" data-end="11:11:00" data-activityEnd="${activityEnd}">00:00:00</span>
@@ -51,7 +51,7 @@
                                 </p>
                             </li>
                             <li>
-                                <p><img src="${staticServer}/activity/images/double-eleven/twice-time.png" ></p>
+                                <p><img src="${commonStaticServer}/activity/images/double-eleven/twice-time.png" ></p>
                                 <p class="tip-info">即将登场</p>
                                 <p class="time-text">
                                     <span data-date="${today}" data-now="${now}" data-end="13:11:00" data-activityEnd="${activityEnd}">00:00:00</span>
@@ -71,7 +71,7 @@
                         <h3>
                             <span>
                                 <i class="left-line"></i>
-                                <img src="${staticServer}/activity/images/double-eleven/title-two.png" >
+                                <img src="${commonStaticServer}/activity/images/double-eleven/title-two.png" >
                                 <i class="right-line"></i>
                             </span>
                         </h3>
@@ -79,7 +79,7 @@
                         <p>礼包于活动结束后三个工作日内发放，用户可在PC端“我的账户-我的宝藏”或App端“我的财富-我的宝藏”中查看。</p>
                         <div class="coupon-group">
                             <h3>
-                                <img src="${staticServer}/activity/images/double-eleven/bag-title.png" >
+                                <img src="${commonStaticServer}/activity/images/double-eleven/bag-title.png" >
                             </h3>
                             <ul class="coupon-item">
                                 <li>
@@ -108,7 +108,7 @@
                         <h3>
                             <span>
                                 <i class="left-line"></i>
-                                <img src="${staticServer}/activity/images/double-eleven/title-three.png" >
+                                <img src="${commonStaticServer}/activity/images/double-eleven/title-three.png" >
                                 <i class="right-line"></i>
                             </span>
                         </h3>
@@ -183,31 +183,31 @@
                             <h3>我的抽奖机会：<span>0</span>次</h3>
                             <ul class="lottery-item" id="lotteryBox">
                                 <li class="lottery-unit lottery-unit-0" data-unit="0">
-                                    <img src="${staticServer}/activity/images/model/double-eleven/gift-one.png">
+                                    <img src="${commonStaticServer}/activity/images/model/double-eleven/gift-one.png">
                                 </li>
                                 <li class="lottery-unit lottery-unit-1" data-unit="1">
-                                    <img src="${staticServer}/activity/images/model/double-eleven/gift-two.png">
+                                    <img src="${commonStaticServer}/activity/images/model/double-eleven/gift-two.png">
                                 </li>
                                 <li class="lottery-unit lottery-unit-2" data-unit="2">
-                                    <img src="${staticServer}/activity/images/model/double-eleven/gift-three.png">
+                                    <img src="${commonStaticServer}/activity/images/model/double-eleven/gift-three.png">
                                 </li>
                                 <li class="lottery-unit lottery-unit-7" data-unit="7">
-                                    <img src="${staticServer}/activity/images/model/double-eleven/gift-eight.png">
+                                    <img src="${commonStaticServer}/activity/images/model/double-eleven/gift-eight.png">
                                 </li>
                                 <li class="lottery-btn pointer-img">
-                                    <img src="${staticServer}/activity/images/model/double-eleven/lottery-btn.png">
+                                    <img src="${commonStaticServer}/activity/images/model/double-eleven/lottery-btn.png">
                                 </li>
                                 <li class="lottery-unit lottery-unit-3" data-unit="3">
-                                    <img src="${staticServer}/activity/images/model/double-eleven/gift-four.png">
+                                    <img src="${commonStaticServer}/activity/images/model/double-eleven/gift-four.png">
                                 </li>
                                 <li class="lottery-unit lottery-unit-6" data-unit="6">
-                                    <img src="${staticServer}/activity/images/model/double-eleven/gift-seven.png">
+                                    <img src="${commonStaticServer}/activity/images/model/double-eleven/gift-seven.png">
                                 </li>
                                 <li class="lottery-unit lottery-unit-5" data-unit="5">
-                                    <img src="${staticServer}/activity/images/model/double-eleven/gift-six.png">
+                                    <img src="${commonStaticServer}/activity/images/model/double-eleven/gift-six.png">
                                 </li>
                                 <li class="lottery-unit lottery-unit-4" data-unit="4">
-                                    <img src="${staticServer}/activity/images/model/double-eleven/gift-five.png">
+                                    <img src="${commonStaticServer}/activity/images/model/double-eleven/gift-five.png">
                                 </li>
                             </ul>
                         </div>
@@ -234,7 +234,7 @@
                         <dt>温馨提示：</dt>
                         <dd>1、抽奖活动的中奖结果将于次日由客服联系确认，红包在中奖后即时发放，实物奖品及话费、爱奇艺会员将于活动结束后七个工作日内统一安排发放，部分地区邮费自付，详询客服；</dd>
                         <dd>2、活动中如果出现恶意刷量等违规行为，拓天速贷将取消您获得奖励的资格，并有权撤销违规交易，拓天速贷在法律范围内保留对本活动的最终解释权。</dd>
-                        <dd class="wx-code"><img src="${staticServer}/activity/images/double-eleven/wx-code.png" ></dd>
+                        <dd class="wx-code"><img src="${commonStaticServer}/activity/images/double-eleven/wx-code.png" ></dd>
                         <dd class="rule-intro">抢先了解活动攻略，赚钱快人一步</dd>
                     </dl>
                 </div>

@@ -4,13 +4,13 @@ package com.tuotiansudai.api.service;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppUserMessageService;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.enums.MessageType;
 import com.tuotiansudai.message.repository.mapper.MessageMapper;
 import com.tuotiansudai.message.repository.mapper.UserMessageMapper;
 import com.tuotiansudai.message.repository.model.*;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +23,8 @@ import static org.junit.Assert.assertThat;
 
 public class MobileAppUserMessageServiceTest extends ServiceTestBase {
 
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
+
     @Autowired
     private MobileAppUserMessageService mobileAppUserMessageService;
 
@@ -31,9 +33,6 @@ public class MobileAppUserMessageServiceTest extends ServiceTestBase {
 
     @Autowired
     private MessageMapper messageMapper;
-
-    @Autowired
-    private RedisWrapperClient redisClient;
 
     public static final String UNREAD_MESSAGE_COUNT_ID_KEY = "app:unread:message:count:ids:{0}";
 
@@ -71,7 +70,7 @@ public class MobileAppUserMessageServiceTest extends ServiceTestBase {
 
         assertThat("0000", is(messageCountBaseResponseDto.getCode()));
         String unreadMessageKey = MessageFormat.format(UNREAD_MESSAGE_COUNT_ID_KEY, userModel.getLoginName());
-        redisClient.del(unreadMessageKey);
+        redisWrapperClient.del(unreadMessageKey);
     }
 
 
