@@ -1,6 +1,5 @@
 package com.tuotiansudai.web.controller;
 
-import com.google.common.base.Strings;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.InvestException;
@@ -8,8 +7,6 @@ import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.model.CaptchaType;
-import com.tuotiansudai.repository.model.InvestModel;
-import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.service.SmsCaptchaService;
@@ -20,8 +17,6 @@ import com.tuotiansudai.util.CaptchaGenerator;
 import com.tuotiansudai.util.RequestIPParser;
 import nl.captcha.Captcha;
 import nl.captcha.servlet.CaptchaServletUtil;
-import org.joda.time.DateTime;
-import org.joda.time.Seconds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -87,9 +82,13 @@ public class InvestController {
 
     @RequestMapping(path = "/no-password-invest", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<PayDataDto> invest(@Valid @ModelAttribute InvestDto investDto) {
+    public BaseDto<PayDataDto> invest(@Valid @ModelAttribute InvestDto investDto, HttpServletRequest request) {
         try {
-            investDto.setSource(Source.WEB);
+            if (!StringUtils.isEmpty(request.getSession().getAttribute("weChatUserOpenid"))) {
+                investDto.setSource(Source.WE_CHAT);
+            } else {
+                investDto.setSource(Source.WEB);
+            }
             investDto.setLoginName(LoginUserInfo.getLoginName());
             return investService.noPasswordInvest(investDto);
         } catch (InvestException e) {
