@@ -85,12 +85,16 @@
 				<div class="detail-item">
 					<div class="gift-title">
 						<span>我的累计投资金额: 
+						<#if !isAppSource>
 						<@global.isAnonymous>
 						<strong id="isLogin">登录后查看</strong>
 						</@global.isAnonymous>
 						<@global.isNotAnonymous>
 						<strong>${investAmount}</strong>元
 						</@global.isNotAnonymous>
+						<#else>
+						<strong>${investAmount}</strong>元
+						</#if>
 						</span>
 					</div>
 					<div class="gift-img">
