@@ -1,4 +1,5 @@
 <#import "wechat-global.ftl" as global>
+
 <@global.main pageCss="${css.midsummer_wap}" pageJavascript="${js.midsummer_wap}"  title="助力好友抢红包" >
 <#assign invitedMap = { "0": 20000, "1":10000, "2":5000, "3":2000} >
 
@@ -6,7 +7,7 @@
 <#--如果是自己打开页面-->
     <span class="invite-text">
         <#if sharedUser>
-            <i>${mobile}</i>
+            <i class="login-mobile">${mobile}</i>
             恭喜您获得了<b>50</b>元红包
         <#else>
             <i>您的好友${mobile[0..2]}****${mobile[7..]}</i>
@@ -57,12 +58,12 @@
     </div>
 
     <div class="button-layer-bottom clearfix" id="buttonLayer">
-        <#if sharedUser>
+        <#--<#if sharedUser>-->
             <a href="#" class="btn-normal btn-invite fl">邀请微信好友</a>
-            <a href="#" class="btn-normal btn-share fr">分享至朋友圈</a>
-        <#else>
+            <a href="#" class="btn-normal btn-invite fr">分享至朋友圈</a>
+        <#--<#else>-->
             <a href="#" class="btn-normal btn-help">帮助TA</a>
-        </#if>
+        <#--</#if>-->
     </div>
 
 </div>
@@ -72,7 +73,7 @@
         <b>温馨提示：</b>
         <span>
             1.活动时间：5月18日-5月31日 <br/>
-            2.好友在活动期间内完成注册，并完成除体验项目外的200元以上投资，即为助力成功； <br/>
+            2.好友在活动期间内完成注册，并完成除体验项目及债权转让项目外的200元以上投资，即为助力成功； <br/>
             3.50元红包将于活动结束后三个工作日统一发放，用户可在PC端“我的账户”或App端“我的”中进行查看； <br/>
             4.本活动仅限直投项目，债权转让及体验项目不参与累计； <br/>
             5.活动中如有使用虚假账号、恶意刷奖等违规行为，一经查出拓天速贷有权撤销您的获奖资格； <br/>
@@ -80,6 +81,14 @@
         </span>
     </div>
 
+</div>
+
+<div class="floating-box" id="FloatingBox" style="display: none">
+    <i class="icon-arrow"></i>
+    <span class="text">
+        点击右上角， <br/>
+将页面分享给好友即可完成操作
+    </span>
 </div>
 
 <script>

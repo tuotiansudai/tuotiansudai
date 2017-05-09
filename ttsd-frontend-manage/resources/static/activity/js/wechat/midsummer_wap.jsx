@@ -1,10 +1,8 @@
 require("activityStyle/wechat/midsummer.scss");
 
 let $inviteBoxFriend = $('#inviteBoxFriend');
-
+let $inviteHeader = $('#inviteHeader');
 if ($inviteBoxFriend.length) {
-
-    let $inviteHeader = $('#inviteHeader');
     let topImg = new Image();
     topImg.src = require('../../images/midsummer/img-top.jpg');
     topImg.onload = function () {
@@ -42,7 +40,7 @@ if ($inviteBoxFriend.length) {
 
     let inviteNumber = $('.invite-number', $inviteBoxFriend).val();
     let tempProgress = $('.temp-progress', $inviteBoxFriend);
-    if (inviteNumber > 4) {
+    if (inviteNumber > 4 || inviteNumber=='') {
         inviteNumber = '4';
     }
     let currentObj = amountObj[inviteNumber];
@@ -57,7 +55,23 @@ if ($inviteBoxFriend.length) {
     }
 }
 
+//按钮点击呼起好友
+let $buttonLayer = $('#buttonLayer');
 
+$buttonLayer.on('click',function(event) {
+    let targetName = event.target.className;
+
+    if(/btn-invite/.test(targetName)) {
+        //邀请微信好友
+        $('#FloatingBox').show();
+
+    } else if(/btn-help/.test(targetName)) {
+        //帮助TA
+        let mobile = $.trim($inviteHeader.find('.login-mobile').text());
+        location.href='/activity/app-share?referrerMobile='+mobile;
+    }
+
+})
 
 
 

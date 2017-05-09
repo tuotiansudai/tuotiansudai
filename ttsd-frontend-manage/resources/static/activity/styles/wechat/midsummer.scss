@@ -224,6 +224,32 @@ body {
     font-size: 15px;
   }
 }
+.floating-box {
+  background: rgba(0,0,0,0.6);
+  width:100%;
+  height:100%;
+  position: fixed;
+  left:0;
+  top:0;
+  z-index: 100;
+  .icon-arrow {
+    width:100%;
+    height:70px;
+    position: absolute;
+    top:0px;
+    right:25px;
+    background: url('../../images/midsummer/bg-arrow.png') right top no-repeat;
+  }
+  .text {
+    position: absolute;
+    top: 80px;
+    right:25px;
+    color: #fff;
+    font-size: 16px;
+    line-height: 30px;
+    text-align: right;
+  }
+}
 
 @media screen and (max-width:350px) {
 
@@ -256,6 +282,7 @@ body {
       }
     }
   }
+
 
   .button-layer-bottom {
 
