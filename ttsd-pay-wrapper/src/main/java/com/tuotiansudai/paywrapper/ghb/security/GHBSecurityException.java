@@ -1,4 +1,4 @@
-package com.tuotiansudai.paywrapper.security;
+package com.tuotiansudai.paywrapper.ghb.security;
 
 public class GHBSecurityException extends RuntimeException{
     public GHBSecurityException(String message) {

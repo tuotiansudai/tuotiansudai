@@ -1,7 +1,9 @@
 package com.tuotiansudai.paywrapper.ghb.message.request;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.paywrapper.ghb.security.enums.RequestType;
 import com.tuotiansudai.repository.model.Source;
 
 /**
@@ -9,6 +11,9 @@ import com.tuotiansudai.repository.model.Source;
  * 由第三方公司发起，跳转到银行官网完成进行该操作。交易提交我行10分钟后，可通过该接口查询银行处理结果。客户在页面流程操作共不可超过20分钟，否则请求超时。
  */
 public class RequestOGW00042 extends RequestBaseOGW {
+
+    @JsonIgnore
+    protected RequestType requestType = RequestType.ASYNC;
 
     @JacksonXmlProperty(localName = "TTRANS")
     private String ttrans = "6"; //账户开立

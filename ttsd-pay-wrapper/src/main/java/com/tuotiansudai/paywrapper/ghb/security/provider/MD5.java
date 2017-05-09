@@ -1,4 +1,4 @@
-package com.tuotiansudai.paywrapper.security.provider;
+package com.tuotiansudai.paywrapper.ghb.security.provider;
 
 import org.apache.commons.codec.digest.DigestUtils;
 

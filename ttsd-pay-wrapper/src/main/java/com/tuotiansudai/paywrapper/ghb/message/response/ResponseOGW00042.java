@@ -1,11 +1,14 @@
 package com.tuotiansudai.paywrapper.ghb.message.response;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.tuotiansudai.paywrapper.ghb.message.asyncresponse.AsyncResponseMessageBody;
 
 /**
  * 银行发起，只有当成功时候才有返回
  */
 public class ResponseOGW00042 extends ResponseBaseOGW {
+
+    private final String asyncResponseTranscode = "OGWR0001";
 
     @JacksonXmlProperty(localName = "OLDREQSEQNO")
     private String oldreqseqno; //原开户交易流水号
@@ -24,4 +27,9 @@ public class ResponseOGW00042 extends ResponseBaseOGW {
 
     @JacksonXmlProperty(localName = "ACNO")
     private String acno = "拓天速贷"; //商户名称
+
+    @Override
+    protected AsyncResponseMessageBody generateAsyncResponse() {
+        return new AsyncResponseMessageBody(asyncResponseTranscode, oldreqseqno);
+    }
 }

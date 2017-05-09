@@ -23,7 +23,7 @@ public class ResponseMessageHeader {
     private String serverTime; //服务时间 HHmmss
 
     @JacksonXmlProperty(localName = "encryptData")
-    private String encryptData; //加密域 暂时为空
+    private String encryptData = ""; //加密域 暂时为空
 
     @JacksonXmlProperty(localName = "status")
     private String status; //业务状态 0：受理成功 1：受理失败 2：受理中 3：受理超时，不确定

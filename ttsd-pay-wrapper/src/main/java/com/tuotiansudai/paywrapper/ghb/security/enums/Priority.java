@@ -1,4 +1,4 @@
-package com.tuotiansudai.paywrapper.security.ghb.enums;
+package com.tuotiansudai.paywrapper.ghb.security.enums;
 
 public enum Priority {
 

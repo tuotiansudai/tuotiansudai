@@ -1,6 +1,6 @@
-package com.tuotiansudai.paywrapper.security.provider;
+package com.tuotiansudai.paywrapper.ghb.security.provider;
 
-import com.tuotiansudai.paywrapper.security.GHBSecurityException;
+import com.tuotiansudai.paywrapper.ghb.security.GHBSecurityException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 

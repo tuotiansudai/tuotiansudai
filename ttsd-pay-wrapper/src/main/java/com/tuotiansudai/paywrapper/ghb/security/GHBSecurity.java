@@ -1,9 +1,9 @@
-package com.tuotiansudai.paywrapper.security;
+package com.tuotiansudai.paywrapper.ghb.security;
 
-import com.tuotiansudai.paywrapper.security.ghb.enums.Priority;
-import com.tuotiansudai.paywrapper.security.ghb.enums.RequestType;
-import com.tuotiansudai.paywrapper.security.provider.MD5;
-import com.tuotiansudai.paywrapper.security.provider.RSA;
+import com.tuotiansudai.paywrapper.ghb.security.enums.Priority;
+import com.tuotiansudai.paywrapper.ghb.security.enums.RequestType;
+import com.tuotiansudai.paywrapper.ghb.security.provider.MD5;
+import com.tuotiansudai.paywrapper.ghb.security.provider.RSA;
 
 public class GHBSecurity {
     public static String buildMessageHeader(RequestType requestType) {

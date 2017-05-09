@@ -9,7 +9,7 @@ public interface GHBMessageRecordService {
 
     void autoCreateMessageRecordTables();
 
-    <T extends RequestBaseOGW> void saveRequestMessage(RequestMessageContent<T> data, String originXmlpara, String fullMessage);
+    <T extends RequestBaseOGW> void saveRequestMessage(RequestMessageContent<T> data);
 
     <T extends ResponseBaseOGW> void saveResponseMessage(ResponseMessageContent<T> data, String originXmlpara, String fullMessage);
 }

@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.AnnotationConfigurationException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -23,8 +24,8 @@ import java.util.List;
 public class GHBMessageRecordServiceImpl implements GHBMessageRecordService {
 
     private int fieldMaxLength = 4096;
-    private List<Class<?>> REQUEST_MESSAGE_CLASSES = Arrays.asList(RequestOGW00042.class);
-    private List<Class<?>> RESPONSE_MESSAGE_CLASSES = Arrays.asList(ResponseOGW00042.class);
+    private List<Class<?>> REQUEST_MESSAGE_CLASSES = Collections.singletonList(RequestOGW00042.class);
+    private List<Class<?>> RESPONSE_MESSAGE_CLASSES = Collections.singletonList(ResponseOGW00042.class);
 
     @Autowired
     private DynamicTableMapper dynamicTableMapper;
@@ -75,7 +76,8 @@ public class GHBMessageRecordServiceImpl implements GHBMessageRecordService {
     */
 
     @Override
-    public <T extends RequestBaseOGW> void saveRequestMessage(RequestMessageContent<T> data, String originXmlpara, String fullMessage) {
+    @Transactional(transactionManager = "payTransactionManager")
+    public <T extends RequestBaseOGW> void saveRequestMessage(RequestMessageContent<T> data) {
         if (data == null) {
             return;
         }
@@ -86,12 +88,13 @@ public class GHBMessageRecordServiceImpl implements GHBMessageRecordService {
         String tableName = xmlPara.getClass().getSimpleName();
         fillSpecialFieldValues(fieldValueCollection, xmlPara);
 
-        fillCommonLiteralValue(fieldValueCollection, originXmlpara, fullMessage);
+        fillCommonLiteralValue(fieldValueCollection, data.getPlainXMLPARA(), data.getFullMessage());
 
         dynamicTableMapper.insert(tableName, fieldValueCollection.getFields(), fieldValueCollection.getValues());
     }
 
     @Override
+    @Transactional(transactionManager = "payTransactionManager")
     public <T extends ResponseBaseOGW> void saveResponseMessage(ResponseMessageContent<T> data, String originXmlpara, String fullMessage) {
         if (data == null) {
             return;
