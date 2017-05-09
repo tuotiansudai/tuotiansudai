@@ -28,35 +28,37 @@ function giftCircleDraw(allListURL, userListURL, drawURL, paramData, giftCircleF
     //中奖记录
     this.GiftRecord = function (length) {
         let self = this;
-        commonFun.useAjax({
-            url: this.allListURL,
-            data: this.paramData,
-            type: 'GET'
-        }, function (data) {
+        // commonFun.useAjax({
+        //     url: this.allListURL,
+        //     data: this.paramData,
+        //     type: 'GET'
+        // }, function (data) {
+            let data=[{"mobile":"188****6626","userName":null,"prize":"PORCELAIN_CUP_BY_1000","lotteryTime":"2016-10-21 14:20:23","prizeValue":"青花瓷杯子","loginName":null,"investFlag":null},{"mobile":"188****6626","userName":null,"prize":"RED_ENVELOPE_10","lotteryTime":"2016-10-21 14:19:58","prizeValue":"10元投资红包","loginName":null,"investFlag":null},{"mobile":"188****6626","userName":null,"prize":"RED_ENVELOPE_10","lotteryTime":"2016-10-21 12:23:10","prizeValue":"10元投资红包","loginName":null,"investFlag":null},{"mobile":"188****6626","userName":null,"prize":"RED_ENVELOPE_10","lotteryTime":"2016-10-21 12:22:50","prizeValue":"10元投资红包","loginName":null,"investFlag":null},{"mobile":"188****6626","userName":null,"prize":"RED_ENVELOPE_10","lotteryTime":"2016-10-21 12:22:39","prizeValue":"10元投资红包","loginName":null,"investFlag":null},{"mobile":"188****6626","userName":null,"prize":"PORCELAIN_CUP_BY_1000","lotteryTime":"2016-10-21 14:20:23","prizeValue":"青花瓷杯子","loginName":null,"investFlag":null},{"mobile":"188****6626","userName":null,"prize":"RED_ENVELOPE_10","lotteryTime":"2016-10-21 14:19:58","prizeValue":"10元投资红包","loginName":null,"investFlag":null},{"mobile":"188****6626","userName":null,"prize":"RED_ENVELOPE_10","lotteryTime":"2016-10-21 12:23:10","prizeValue":"10元投资红包","loginName":null,"investFlag":null},{"mobile":"188****6626","userName":null,"prize":"RED_ENVELOPE_10","lotteryTime":"2016-10-21 12:22:50","prizeValue":"10元投资红包","loginName":null,"investFlag":null},{"mobile":"188****6626","userName":null,"prize":"RED_ENVELOPE_10","lotteryTime":"2016-10-21 12:22:39","prizeValue":"10元投资红包","loginName":null,"investFlag":null}]
             let UlList = [];
             for (let i = 0, len = data.length; i < len; i++) {
                 UlList.push('<li>恭喜' + data[i].mobile + '抽中了' + data[i].prizeValue + '</li>');
             }
             self.giftCircleFrame.find('.user-record').empty().append(UlList.join(''));
             self.hoverScrollList(self.giftCircleFrame.find('.user-record'), length);
-        });
+        // });
     };
 
     //我的奖品
     this.MyGift = function (length) {
         let self = this;
-        commonFun.useAjax({
-            url: this.userListURL,
-            data: this.paramData,
-            type: 'GET',
-        }, function (data) {
+        // commonFun.useAjax({
+        //     url: this.userListURL,
+        //     data: this.paramData,
+        //     type: 'GET',
+        // }, function (data) {
+            let data=[{"mobile":"188****6626","userName":null,"prize":"RED_ENVELOPE_50_POINT_DRAW","lotteryTime":"2016-10-21 14:20:18","prizeValue":"50元投资红包","loginName":null,"investFlag":null},{"mobile":"188****6626","userName":null,"prize":"PHONE_CHARGE_20","lotteryTime":"2016-10-21 12:23:06","prizeValue":"20元话费","loginName":null,"investFlag":null},{"mobile":"188****6626","userName":null,"prize":"INTEREST_COUPON_5_POINT_DRAW","lotteryTime":"2016-10-21 12:22:53","prizeValue":"0.5%加息券","loginName":null,"investFlag":null},{"mobile":"188****6626","userName":null,"prize":"INTEREST_COUPON_5_POINT_DRAW","lotteryTime":"2016-10-21 12:22:33","prizeValue":"0.5%加息券","loginName":null,"investFlag":null},{"mobile":"188****6626","userName":null,"prize":"HEADREST","lotteryTime":"2016-10-21 12:22:20","prizeValue":"车家两用U型头枕","loginName":null,"investFlag":null},{"mobile":"188****6626","userName":null,"prize":"IQIYI_MEMBERSHIP_30","lotteryTime":"2016-10-21 12:21:21","prizeValue":"爱奇艺会员月卡","loginName":null,"investFlag":null},{"mobile":"188****6626","userName":null,"prize":"RED_ENVELOPE_50_POINT_DRAW","lotteryTime":"2016-10-21 12:21:21","prizeValue":"50元投资红包","loginName":null,"investFlag":null},{"mobile":"188****6626","userName":null,"prize":"INTEREST_COUPON_5_POINT_DRAW","lotteryTime":"2016-10-21 12:21:20","prizeValue":"0.5%加息券","loginName":null,"investFlag":null},{"mobile":"188****6626","userName":null,"prize":"INTEREST_COUPON_5_POINT_DRAW","lotteryTime":"2016-10-21 12:21:18","prizeValue":"0.5%加息券","loginName":null,"investFlag":null},{"mobile":"188****6626","userName":null,"prize":"RED_ENVELOPE_50_POINT_DRAW","lotteryTime":"2016-10-21 14:20:18","prizeValue":"50元投资红包","loginName":null,"investFlag":null},{"mobile":"188****6626","userName":null,"prize":"PHONE_CHARGE_20","lotteryTime":"2016-10-21 12:23:06","prizeValue":"20元话费","loginName":null,"investFlag":null},{"mobile":"188****6626","userName":null,"prize":"INTEREST_COUPON_5_POINT_DRAW","lotteryTime":"2016-10-21 12:22:53","prizeValue":"0.5%加息券","loginName":null,"investFlag":null},{"mobile":"188****6626","userName":null,"prize":"INTEREST_COUPON_5_POINT_DRAW","lotteryTime":"2016-10-21 12:22:33","prizeValue":"0.5%加息券","loginName":null,"investFlag":null},{"mobile":"188****6626","userName":null,"prize":"HEADREST","lotteryTime":"2016-10-21 12:22:20","prizeValue":"车家两用U型头枕","loginName":null,"investFlag":null},{"mobile":"188****6626","userName":null,"prize":"IQIYI_MEMBERSHIP_30","lotteryTime":"2016-10-21 12:21:21","prizeValue":"爱奇艺会员月卡","loginName":null,"investFlag":null},{"mobile":"188****6626","userName":null,"prize":"RED_ENVELOPE_50_POINT_DRAW","lotteryTime":"2016-10-21 12:21:21","prizeValue":"50元投资红包","loginName":null,"investFlag":null},{"mobile":"188****6626","userName":null,"prize":"INTEREST_COUPON_5_POINT_DRAW","lotteryTime":"2016-10-21 12:21:20","prizeValue":"0.5%加息券","loginName":null,"investFlag":null},{"mobile":"188****6626","userName":null,"prize":"INTEREST_COUPON_5_POINT_DRAW","lotteryTime":"2016-10-21 12:21:18","prizeValue":"0.5%加息券","loginName":null,"investFlag":null}];
             let UlList = [];
             for (let i = 0, len = data.length; i < len; i++) {
                 UlList.push('<li>' + data[i].prizeValue + '<time>' + data[i].lotteryTime + '</time></li>');
             }
             self.giftCircleFrame.find('.own-record').empty().append(UlList.join(''));
             self.hoverScrollList(self.giftCircleFrame.find('.own-record'), length);
-        });
+        // });
     }
 }
 
