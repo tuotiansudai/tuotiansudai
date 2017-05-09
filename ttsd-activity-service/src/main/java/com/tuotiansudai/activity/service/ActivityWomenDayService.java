@@ -74,7 +74,7 @@ public class ActivityWomenDayService {
     }
 
     private Map<String, WomanDayRecordView> setInvestRecord(Map<String, WomanDayRecordView> womanDayAllRecordMap, String loginName) {
-        List<InvestModel> investModels = investMapper.findSuccessInvestByInvestTime(loginName, activityWomanDayStartTime, activityWomanDayEndTime);
+        List<InvestModel> investModels = investMapper.findSuccessInvestByInvestTime(loginName, true, true, activityWomanDayStartTime, activityWomanDayEndTime);
         Map<String, Long> investAmountMaps = Maps.newConcurrentMap();
         for (InvestModel investModel : investModels) {
             if (investModel.getLoanId() == 1 || investModel.getTransferInvestId() != null)

@@ -64,7 +64,7 @@ public class ActivityConsoleMothersService {
 
     private List<MothersDayView> getInvestRecord() {
         List<MothersDayView> list = Lists.newArrayList();
-        List<InvestModel> investModels = investMapper.findSuccessInvestByInvestTime(null, activityStartTimeStr, activityEndTimeStr);
+        List<InvestModel> investModels = investMapper.findSuccessInvestByInvestTime(null, false, false, activityStartTimeStr, activityEndTimeStr);
         Map<String, Long> investAmountMaps = Maps.newConcurrentMap();
         for (InvestModel investModel : investModels) {
             if (investModel.getLoanId() == 1 || investModel.getTransferInvestId() != null)

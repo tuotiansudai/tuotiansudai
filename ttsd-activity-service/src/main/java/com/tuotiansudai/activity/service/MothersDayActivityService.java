@@ -1,5 +1,6 @@
 package com.tuotiansudai.activity.service;
 
+import com.google.common.base.Strings;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.util.AmountConverter;
@@ -21,6 +22,9 @@ public class MothersDayActivityService {
     private Date activityEndTime;
 
     public String getInvestByLoginName(String loginName) {
+        if(Strings.isNullOrEmpty(loginName)){
+            return "0";
+        }
         return AmountConverter.convertCentToString(investMapper.sumInvestAmount(null, loginName, null, null, null, activityStartTime, activityEndTime, InvestStatus.SUCCESS, null));
     }
 }
