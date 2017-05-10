@@ -167,7 +167,7 @@ let shareAppFun = {
 
 $fetchCaptcha.on('click',function() {
 	shareAppFun.isRegister();
-})
+});
 
 //点击立即注册按钮
 registerForm.onsubmit = function(event) {

@@ -1,0 +1,41 @@
+.header-container {
+  display: none;
+}
+body {
+  background: #fff7e9;
+}
+
+.marketing-header {
+  height:400px;
+  width:100%;
+  background: url('../../images/app-marketing/bg-register-top.png') left top no-repeat;
+  background-size: 100%;
+  position: relative;
+  text-align: center;
+  .contact {
+    display: inline-block;
+    color: #fff;
+    padding-top:10px;
+    font-size:12px;
+  }
+  .red-bag {
+    position: absolute;
+    width:100%;
+    text-align: center;
+    left:0;
+    top:155px;
+    color: #550014;
+    font-size: 15px;
+    line-height: 25px;
+
+    i {
+      color: #fff55b;
+      font-size:30px;
+    }
+  }
+
+}
+
+.share-container {
+  background: #e53c1d;
+}
