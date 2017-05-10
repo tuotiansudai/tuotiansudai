@@ -26,7 +26,7 @@ function giftCircleDraw(allListURL, userListURL, drawURL, paramData, giftCircleF
     };
 
     //中奖记录
-    this.GiftRecord = function (length) {
+    this.GiftRecord = function () {
         let self = this;
         commonFun.useAjax({
             url: this.allListURL,
@@ -38,12 +38,11 @@ function giftCircleDraw(allListURL, userListURL, drawURL, paramData, giftCircleF
                 UlList.push('<li>恭喜' + data[i].mobile + '抽中了' + data[i].prizeValue + '</li>');
             }
             self.giftCircleFrame.find('.user-record').empty().append(UlList.join(''));
-            self.hoverScrollList(self.giftCircleFrame.find('.user-record'), length);
         });
     };
 
     //我的奖品
-    this.MyGift = function (length) {
+    this.MyGift = function () {
         let self = this;
         commonFun.useAjax({
             url: this.userListURL,
@@ -55,7 +54,6 @@ function giftCircleDraw(allListURL, userListURL, drawURL, paramData, giftCircleF
                 UlList.push('<li>' + data[i].prizeValue + '<time>' + data[i].lotteryTime + '</time></li>');
             }
             self.giftCircleFrame.find('.own-record').empty().append(UlList.join(''));
-            self.hoverScrollList(self.giftCircleFrame.find('.own-record'), length);
         });
     }
 }

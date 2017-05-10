@@ -33,10 +33,13 @@ $lanternFrame.find('.top-item img').attr('src',topimg);
     var drawCircleOne=new drawCircle(pointAllList,pointUserList,drawURL,oneData,$oneThousandPoints);
 
     //渲染中奖记录
-    drawCircleOne.GiftRecord(6);
+    drawCircleOne.GiftRecord();
 
     //渲染我的奖品
-    drawCircleOne.MyGift(6);
+    drawCircleOne.MyGift();
+
+    drawCircleOne.hoverScrollList($lanternFrame.find('.user-record'),6);
+    drawCircleOne.hoverScrollList($lanternFrame.find('.own-record'),6);
 
     //开始抽奖
 
