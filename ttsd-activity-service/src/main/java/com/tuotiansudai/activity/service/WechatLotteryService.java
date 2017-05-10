@@ -108,6 +108,8 @@ public class WechatLotteryService {
             prize = LotteryPrize.WECHAT_LOTTERY_RED_ENVELOP_20;
         }
 
+        logger.info("[wechat lottery] {0} draw a lottery: {1}", loginName, prize);
+
         if (prize == LotteryPrize.WECHAT_LOTTERY_RED_ENVELOP_20) {
             sendRedEnvelopCoupon20(loginName);
         }
