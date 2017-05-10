@@ -42,4 +42,16 @@ public class ResponseMessageBody<T extends ResponseBaseOGW> {
     public T getContent() {
         return content;
     }
+
+    public String getMerchantid() {
+        return merchantid;
+    }
+
+    public String getTranscode() {
+        return transcode;
+    }
+
+    public String getBankid() {
+        return bankid;
+    }
 }

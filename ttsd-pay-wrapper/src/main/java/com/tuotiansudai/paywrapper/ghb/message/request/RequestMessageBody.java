@@ -18,4 +18,8 @@ public class RequestMessageBody<T extends RequestBaseOGW>{
     public T getXmlpara() {
         return xmlpara;
     }
+
+    public String getTranscode() {
+        return transcode;
+    }
 }

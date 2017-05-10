@@ -26,4 +26,12 @@ public class RequestBaseOGW {
     public String getTranscode() {
         return transcode;
     }
+
+    public String getMerchantid() {
+        return merchantid;
+    }
+
+    public String getAppid() {
+        return appid;
+    }
 }

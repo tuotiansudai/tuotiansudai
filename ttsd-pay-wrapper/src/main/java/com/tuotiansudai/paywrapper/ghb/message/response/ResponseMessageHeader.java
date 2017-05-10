@@ -33,4 +33,44 @@ public class ResponseMessageHeader {
 
     @JacksonXmlProperty(localName = "errorMsg")
     private String errorMsg; //错误信息
+
+    public String getChannelCode() {
+        return channelCode;
+    }
+
+    public String getTransCode() {
+        return transCode;
+    }
+
+    public String getChannelFlow() {
+        return channelFlow;
+    }
+
+    public String getServerFlow() {
+        return serverFlow;
+    }
+
+    public String getServerDate() {
+        return serverDate;
+    }
+
+    public String getServerTime() {
+        return serverTime;
+    }
+
+    public String getEncryptData() {
+        return encryptData;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public String getErrorCode() {
+        return errorCode;
+    }
+
+    public String getErrorMsg() {
+        return errorMsg;
+    }
 }

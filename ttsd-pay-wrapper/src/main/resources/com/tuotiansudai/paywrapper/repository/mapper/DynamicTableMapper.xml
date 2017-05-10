@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.paywrapper.repository.mapper.DynamicTableMapper">
+    <select id="findTable" resultType="String">
+        show tables like #{tableName}
+    </select>
+
+    <update id="dropTable">
+        drop table ${tableName}
+    </update>
+
+    <update id="createTable" parameterType="map">
+        CREATE TABLE ${tableName} (
+        `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+        <foreach collection="columns" item="column" open="" separator="" close="">
+            ${column},
+        </foreach>
+        PRIMARY KEY (`id`)
+        <foreach collection="indexColumns" item="indexColumn" open="" separator="" close="">
+            , INDEX ( ${indexColumn} )
+        </foreach>
+        )
+        ENGINE = InnoDB
+        DEFAULT CHARSET = utf8;
+    </update>
+
+    <insert id="insert" parameterType="map">
+        insert into ${tableName}
+        <foreach collection="columns" item="column" open="(" separator="," close=")">
+            ${column}
+        </foreach>
+        values
+        <foreach collection="values" item="value" open="(" separator="," close=")">
+            #{value}
+        </foreach>
+    </insert>
+</mapper>

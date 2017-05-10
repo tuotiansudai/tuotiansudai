@@ -37,4 +37,12 @@ public class RequestMessageContent<T extends RequestBaseOGW> {
         Matcher matcher = compile.matcher(xmlpara);
         return matcher.find() ? matcher.group(1) : null;
     }
+
+    public RequestMessageHeader getHeader() {
+        return header;
+    }
+
+    public RequestMessageBody<T> getBody() {
+        return body;
+    }
 }

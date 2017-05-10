@@ -34,4 +34,24 @@ public class RequestMessageHeader {
                 requestBaseOGW.getTranscode().substring(requestBaseOGW.getTranscode().length() - 3),
                 "orderid");
     }
+
+    public String getChannelCode() {
+        return channelCode;
+    }
+
+    public String getChannelFlow() {
+        return channelFlow;
+    }
+
+    public String getChannelDate() {
+        return channelDate;
+    }
+
+    public String getChannelTime() {
+        return channelTime;
+    }
+
+    public String getEncryptData() {
+        return encryptData;
+    }
 }
