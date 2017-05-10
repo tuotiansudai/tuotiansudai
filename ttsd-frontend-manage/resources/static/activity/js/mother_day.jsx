@@ -3,7 +3,7 @@ let drawCircle = require('activityJsModule/gift_circle_draw');
 require('activityStyle/mother_day.scss');
 let tpl = require('art-template/dist/template');
 let commonFun = require('publicJs/commonFun');
-
+let sourceKind = globalFun.parseURL(location.href);
 
 let $motherDayContainer = $('#motherDayContainer'),
     tipGroupObj = {},
@@ -35,10 +35,13 @@ $('#topImgPhone').attr('src',topimgphone);
 var drawCircleOne=new drawCircle(pointAllList,pointUserList,drawURL,oneData,$oneThousandPoints);
 
 //渲染中奖记录
-drawCircleOne.GiftRecord(10);
+drawCircleOne.GiftRecord();
+
+drawCircleOne.hoverScrollList($motherDayContainer.find('.user-record'),10);
+drawCircleOne.hoverScrollList($motherDayContainer.find('.own-record'),10);
 
 //渲染我的奖品
-drawCircleOne.MyGift(10);
+drawCircleOne.MyGift();
 
 //点击切换按钮
 drawCircleOne.PrizeSwitch();
@@ -92,13 +95,17 @@ $pointerBtn.on('click', function(event) {
         }
         else if (data.returnCode == 2) {
             //未登录
-            layer.open({
-				type: 1,
-				title: false,
-				closeBtn: 0,
-				area: ['auto', 'auto'],
-				content: $('#loginTip')
-			});
+            if (sourceKind.params.source == 'app') {
+                location.href = "app/tuotian/login";
+            }else{
+                layer.open({
+    				type: 1,
+    				title: false,
+    				closeBtn: 0,
+    				area: ['auto', 'auto'],
+    				content: $('#loginTip')
+    			});
+            }
 
         } else if(data.returnCode == 3){
             //不在活动时间范围内！
