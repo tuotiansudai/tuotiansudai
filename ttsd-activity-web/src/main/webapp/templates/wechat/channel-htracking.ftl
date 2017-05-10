@@ -1,9 +1,5 @@
-<#import "wechat-global-dev.ftl" as global>
+<#import "wechat-global.ftl" as global>
 <#include "../pageLayout/header.ftl" />
-<#assign jsName = 'app_marketing' >
-
-<#assign js = {"${jsName}":"http://localhost:3008/activity/js/wechat/${jsName}.js"} >
-<#assign css = {"${jsName}":"http://localhost:3008/activity/js/wechat/${jsName}.css"}>
 <@global.main pageCss="${css.app_marketing}" pageJavascript="${js.app_marketing}"  title="新手福利_拓天新手投资_拓天速贷" >
 
 <div class="app-marketing-container" id="shareAppContainer">
@@ -12,10 +8,13 @@
         <span class="red-bag"><i>688元</i>红包</span>
     </div>
 	<div class="share-container">
-
         <#include '../module/register-app.ftl' />
-
 	</div>
+
+    <dl class="novice-spree">
+        <dt></dt>
+        <dd></dd>
+    </dl>
 
     <#include '../module/register-reason.ftl' />
 
