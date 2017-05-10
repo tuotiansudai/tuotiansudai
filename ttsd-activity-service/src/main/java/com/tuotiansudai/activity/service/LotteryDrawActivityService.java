@@ -36,6 +36,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.plaf.synth.SynthOptionPaneUI;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
@@ -486,7 +487,7 @@ public class LotteryDrawActivityService {
                 case EACH_EVERY_DAY:
                     time = userLotteryPrizeMapper.findUserLotteryPrizeCountViews(userModel.getMobile(), null, activityCategory,
                             DateTime.now().withTimeAtStartOfDay().toDate(), DateTime.now().plusDays(1).withTimeAtStartOfDay().plusMillis(-1).toDate()) == 0 ? 1 : 0;
-                    break;
+                    return time;
             }
         }
 
