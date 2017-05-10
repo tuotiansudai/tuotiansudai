@@ -1,6 +1,5 @@
 package com.tuotiansudai.util;
 
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +15,12 @@ public class RandomUtils {
 
     private final static String REDIS_KEY_TEMPLATE = "webmobile:{0}:{1}:showinvestorname";
 
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
+
     private static final String numberChar = "0123456789";
 
     @Value("#{'${web.random.investor.list}'.split('\\|')}")
     private List<String> showRandomLoginNameList;
-
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
 
     @Autowired
     private UserMapper userMapper;

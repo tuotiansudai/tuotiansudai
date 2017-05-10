@@ -51,7 +51,7 @@ public class MembershipInvestService {
 
 
     @Transactional
-    public void afterInvestSuccess(String loginName, long investAmount, long investId) {
+    public void afterInvestSuccess(String loginName, long investAmount, long investId, String loanName) {
         try {
             if (membershipExperienceBillMapper.findByLoginNameAndInvestId(loginName, investId) != null) {
                 // 检查是否已经处理过，幂等操作
@@ -69,7 +69,7 @@ public class MembershipInvestService {
                     String.valueOf(investId),
                     investMembershipPoint,
                     accountModel.getMembershipPoint(),
-                    MessageFormat.format("您投资了{0}项目{1}元", String.valueOf(investId), AmountConverter.convertCentToString(investAmount)));
+                    MessageFormat.format("您投资了{0}项目{1}元", loanName, AmountConverter.convertCentToString(investAmount)));
 
             membershipExperienceBillMapper.create(billModel);
 

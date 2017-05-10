@@ -41,10 +41,9 @@
     <link rel="stylesheet" type="text/css" href="${pageCss}" charset="utf-8"/>
 </head>
 <body>
- <#nested>
-
+    <#nested>
 <script>
-    window.staticServer = '${commonStaticServer}';
+    window.commonStaticServer = '${commonStaticServer}';
 </script>
 
 <script src="${js.jquerydll}" type="text/javascript" defer></script>

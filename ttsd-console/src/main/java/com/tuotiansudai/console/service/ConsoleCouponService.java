@@ -4,7 +4,6 @@ import com.google.common.base.Function;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.CouponDetailsDto;
 import com.tuotiansudai.dto.CouponDto;
 import com.tuotiansudai.dto.ExchangeCouponDto;
@@ -12,11 +11,10 @@ import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.exception.CreateCouponException;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
-import com.tuotiansudai.point.repository.mapper.ProductMapper;
-import com.tuotiansudai.point.repository.mapper.ProductOrderMapper;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.InvestService;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -34,6 +32,8 @@ public class ConsoleCouponService {
 
     static Logger logger = Logger.getLogger(ConsoleCouponService.class);
 
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
+
     @Autowired
     private CouponMapper couponMapper;
 
@@ -45,9 +45,6 @@ public class ConsoleCouponService {
 
     @Autowired
     private LoanMapper loanMapper;
-
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
 
     @Autowired
     private UserMapper userMapper;
@@ -63,12 +60,6 @@ public class ConsoleCouponService {
 
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
-
-    @Autowired
-    private ProductOrderMapper productOrderMapper;
-
-    @Autowired
-    private ProductMapper productMapper;
 
     private static String redisKeyTemplate = "console:{0}:importcouponuser";
 

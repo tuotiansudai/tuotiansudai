@@ -25,9 +25,6 @@ public class MobileAppAutoInvestPlanServiceImpl implements MobileAppAutoInvestPl
     private AutoInvestPlanMapper autoInvestPlanMapper;
 
     @Autowired
-    private IdGenerator idGenerator;
-
-    @Autowired
     private UserOpLogService userOpLogService;
 
 
@@ -47,7 +44,7 @@ public class MobileAppAutoInvestPlanServiceImpl implements MobileAppAutoInvestPl
 
         if (StringUtils.isEmpty(id)) {
             AutoInvestPlanModel autoInvestPlanModel = dto.convertDtoToModel();
-            autoInvestPlanModel.setId(idGenerator.generate());
+            autoInvestPlanModel.setId(IdGenerator.generate());
             autoInvestPlanModel.setCreatedTime(new Date());
             autoInvestPlanMapper.create(autoInvestPlanModel);
         } else {

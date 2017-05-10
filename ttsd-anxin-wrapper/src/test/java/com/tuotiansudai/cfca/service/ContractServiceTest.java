@@ -44,8 +44,6 @@ public class ContractServiceTest {
     @Autowired
     private AccountMapper accountMapper;
     @Autowired
-    private IdGenerator idGenerator;
-    @Autowired
     private ContractService contractService;
     @Autowired
     private InvestRepayMapper investRepayMapper;
@@ -70,9 +68,9 @@ public class ContractServiceTest {
         transferApplicationMapper.create(transferApplicationModel);
         AccountModel accountModel = getAccountModel(userModel.getLoginName());
         accountMapper.create(accountModel);
-        InvestRepayModel startInvestRepayModel = new InvestRepayModel(idGenerator.generate(), investModel.getId(), 1, 233L, 2000L, 2L,
+        InvestRepayModel startInvestRepayModel = new InvestRepayModel(IdGenerator.generate(), investModel.getId(), 1, 233L, 2000L, 2L,
                 DateTime.parse("2011-1-1").toDate(), RepayStatus.REPAYING);
-        InvestRepayModel endInvestRepayModel = new InvestRepayModel(idGenerator.generate(), investModel.getId(), 3, 233L, 2000L, 2L,
+        InvestRepayModel endInvestRepayModel = new InvestRepayModel(IdGenerator.generate(), investModel.getId(), 3, 233L, 2000L, 2L,
                 DateTime.parse("2011-3-1").toDate(), RepayStatus.REPAYING);
         investRepayMapper.create(Lists.newArrayList(startInvestRepayModel, endInvestRepayModel));
 
@@ -106,9 +104,9 @@ public class ContractServiceTest {
         AccountModel accountModel = getAccountModel(userModel.getLoginName());
         accountMapper.create(accountModel);
 
-        InvestRepayModel startInvestRepayModel = new InvestRepayModel(idGenerator.generate(), transferInvestModel.getId(), 1, 233L, 2000L, 2L,
+        InvestRepayModel startInvestRepayModel = new InvestRepayModel(IdGenerator.generate(), transferInvestModel.getId(), 1, 233L, 2000L, 2L,
                 DateTime.parse("2011-1-1").toDate(), RepayStatus.REPAYING);
-        InvestRepayModel endInvestRepayModel = new InvestRepayModel(idGenerator.generate(), investModel.getId(), 3, 233L, 2000L, 2L,
+        InvestRepayModel endInvestRepayModel = new InvestRepayModel(IdGenerator.generate(), investModel.getId(), 3, 233L, 2000L, 2L,
                 DateTime.parse("2011-3-1").toDate(), RepayStatus.REPAYING);
         investRepayMapper.create(Lists.newArrayList(startInvestRepayModel, endInvestRepayModel));
 
@@ -164,9 +162,9 @@ public class ContractServiceTest {
         AccountModel accountModel = getAccountModel(userModel.getLoginName());
         accountMapper.create(accountModel);
 
-        InvestRepayModel startInvestRepayModel = new InvestRepayModel(idGenerator.generate(), transferInvestModel.getId(), 1, 233L, 2000L, 2L,
+        InvestRepayModel startInvestRepayModel = new InvestRepayModel(IdGenerator.generate(), transferInvestModel.getId(), 1, 233L, 2000L, 2L,
                 DateTime.parse("2011-1-1").toDate(), RepayStatus.REPAYING);
-        InvestRepayModel endInvestRepayModel = new InvestRepayModel(idGenerator.generate(), investModel.getId(), 3, 233L, 2000L, 2L,
+        InvestRepayModel endInvestRepayModel = new InvestRepayModel(IdGenerator.generate(), investModel.getId(), 3, 233L, 2000L, 2L,
                 DateTime.parse("2011-3-1").toDate(), RepayStatus.REPAYING);
         investRepayMapper.create(Lists.newArrayList(startInvestRepayModel, endInvestRepayModel));
 
@@ -197,7 +195,7 @@ public class ContractServiceTest {
 
     private LoanModel getLoanModel(String loginName) throws ParseException {
         LoanModel lm = new LoanModel();
-        lm.setId(idGenerator.generate());
+        lm.setId(IdGenerator.generate());
         lm.setName("12标的");
         lm.setLoanerUserName(loginName);
         lm.setAgentLoginName(loginName);
@@ -237,14 +235,14 @@ public class ContractServiceTest {
     }
 
     private InvestModel getInvest(long loanId, String loginName) throws ParseException {
-        InvestModel investModel = new InvestModel(idGenerator.generate(), loanId, null, 2577, loginName, new Date(), Source.ANDROID, null, 0.1);
+        InvestModel investModel = new InvestModel(IdGenerator.generate(), loanId, null, 2577, loginName, new Date(), Source.ANDROID, null, 0.1);
         investModel.setCreatedTime(new Date());
         return investModel;
     }
 
     private UserModel getUserModel(String loginName, String mobile) throws ParseException {
         UserModel um = new UserModel();
-        um.setId(idGenerator.generate());
+        um.setId(IdGenerator.generate());
         um.setLoginName(loginName);
         um.setUserName("userName");
         um.setIdentityNumber("identityNumber");
@@ -264,7 +262,7 @@ public class ContractServiceTest {
 
     public TransferApplicationModel getTransferApplicationModel(String loginName, long loanId, long transferId, long investId) throws ParseException {
         TransferApplicationModel al = new TransferApplicationModel();
-        al.setId(idGenerator.generate());
+        al.setId(IdGenerator.generate());
         al.setName("测试");
         al.setLoanId(loanId);
         al.setTransferInvestId(transferId);
@@ -289,7 +287,7 @@ public class ContractServiceTest {
 
     public TransferRuleModel getTransferRuleModel() {
         TransferRuleModel tr = new TransferRuleModel();
-        tr.setId(idGenerator.generate());
+        tr.setId(IdGenerator.generate());
         tr.setLevelOneFee(0.01);
         tr.setLevelOneLower(1);
         tr.setLevelOneUpper(29);

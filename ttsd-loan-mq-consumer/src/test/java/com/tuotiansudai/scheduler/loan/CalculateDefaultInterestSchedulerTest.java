@@ -30,9 +30,6 @@ public class CalculateDefaultInterestSchedulerTest {
     private UserMapper userMapper;
 
     @Autowired
-    private IdGenerator idGenerator;
-
-    @Autowired
     private LoanMapper loanMapper;
 
     @Autowired
@@ -62,14 +59,14 @@ public class CalculateDefaultInterestSchedulerTest {
     }
 
     private LoanRepayModel getFakeLoanRepayModel(long loanId, int period, long corpus, Date expectedRepayDate, Date actualRepayDate, RepayStatus repayStatus) {
-        LoanRepayModel fakeLoanRepay = new LoanRepayModel(idGenerator.generate(), loanId, period, 0, 0, expectedRepayDate, repayStatus);
+        LoanRepayModel fakeLoanRepay = new LoanRepayModel(IdGenerator.generate(), loanId, period, 0, 0, expectedRepayDate, repayStatus);
         fakeLoanRepay.setActualRepayDate(actualRepayDate);
         fakeLoanRepay.setCorpus(corpus);
         return fakeLoanRepay;
     }
 
     private InvestRepayModel getFakeInvestRepayModel(long investId, int period, long corpus, Date expectedRepayDate, Date actualRepayDate, RepayStatus repayStatus) {
-        InvestRepayModel fakeInvestRepay = new InvestRepayModel(idGenerator.generate(), investId, period, 0, 0, 0, expectedRepayDate, repayStatus);
+        InvestRepayModel fakeInvestRepay = new InvestRepayModel(IdGenerator.generate(), investId, period, 0, 0, 0, expectedRepayDate, repayStatus);
         fakeInvestRepay.setActualRepayDate(actualRepayDate);
         fakeInvestRepay.setCorpus(corpus);
         return fakeInvestRepay;
@@ -77,7 +74,7 @@ public class CalculateDefaultInterestSchedulerTest {
 
     private LoanModel getFakeNormalLoan(LoanType loanType, long amount, int periods, double baseRate, double activityRate, double investFeeRate, String loginName, Date recheckTime) {
         LoanModel fakeLoanModel = new LoanModel();
-        fakeLoanModel.setId(idGenerator.generate());
+        fakeLoanModel.setId(IdGenerator.generate());
         fakeLoanModel.setName("loanName");
         fakeLoanModel.setLoanAmount(amount);
         fakeLoanModel.setLoanerLoginName(loginName);
@@ -101,7 +98,7 @@ public class CalculateDefaultInterestSchedulerTest {
 
     private InvestModel getFakeInvestModel(long loanId, long amount, String loginName, Date investTime) {
         InvestModel model = new InvestModel();
-        model.setId(idGenerator.generate());
+        model.setId(IdGenerator.generate());
         model.setAmount(amount);
         model.setLoanId(loanId);
         model.setLoginName(loginName);

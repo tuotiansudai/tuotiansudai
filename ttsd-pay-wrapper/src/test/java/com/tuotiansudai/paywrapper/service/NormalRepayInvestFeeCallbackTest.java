@@ -28,9 +28,6 @@ import static org.junit.Assert.assertThat;
 public class NormalRepayInvestFeeCallbackTest extends RepayBaseTest {
 
     @Autowired
-    private IdGenerator idGenerator;
-
-    @Autowired
     private UserMapper userMapper;
 
     @Autowired
@@ -77,24 +74,24 @@ public class NormalRepayInvestFeeCallbackTest extends RepayBaseTest {
 
         MembershipModel membershipModel = membershipMapper.findById(userMembershipModel.getMembershipId());
 
-        LoanModel loan = this.getFakeNormalLoan(idGenerator.generate(), LoanType.INVEST_INTEREST_MONTHLY_REPAY, 10000, 2, 0.12, 0, 0.1, loaner.getLoginName(), new Date());
+        LoanModel loan = this.getFakeNormalLoan(IdGenerator.generate(), LoanType.INVEST_INTEREST_MONTHLY_REPAY, 10000, 2, 0.12, 0, 0.1, loaner.getLoginName(), new Date());
         loanMapper.create(loan);
         long loanRepay1ExpectedInterest = 1000;
         long loanRepay2ExpectedInterest = 1000;
-        LoanRepayModel loanRepay1 = this.getFakeLoanRepayModel(idGenerator.generate(), loan.getId(), 1, 0, loanRepay1ExpectedInterest, new DateTime().withTime(23, 59, 59, 0).toDate(), new Date(), RepayStatus.COMPLETE);
+        LoanRepayModel loanRepay1 = this.getFakeLoanRepayModel(IdGenerator.generate(), loan.getId(), 1, 0, loanRepay1ExpectedInterest, new DateTime().withTime(23, 59, 59, 0).toDate(), new Date(), RepayStatus.COMPLETE);
         loanRepay1.setActualInterest(loanRepay1ExpectedInterest);
         loanRepay1.setActualRepayDate(new Date());
-        LoanRepayModel loanRepay2 = this.getFakeLoanRepayModel(idGenerator.generate(), loan.getId(), 2, loan.getLoanAmount(), loanRepay2ExpectedInterest, new DateTime().plusDays(30).withTime(23, 59, 59, 0).toDate(), null, RepayStatus.REPAYING);
+        LoanRepayModel loanRepay2 = this.getFakeLoanRepayModel(IdGenerator.generate(), loan.getId(), 2, loan.getLoanAmount(), loanRepay2ExpectedInterest, new DateTime().plusDays(30).withTime(23, 59, 59, 0).toDate(), null, RepayStatus.REPAYING);
         loanRepayMapper.create(Lists.newArrayList(loanRepay1, loanRepay2));
 
-        InvestModel invest = new InvestModel(idGenerator.generate(), loan.getId(), null, 10000, investor.getLoginName(), new Date(), Source.WEB, null, membershipModel.getFee());
+        InvestModel invest = new InvestModel(IdGenerator.generate(), loan.getId(), null, 10000, investor.getLoginName(), new Date(), Source.WEB, null, membershipModel.getFee());
         invest.setStatus(InvestStatus.SUCCESS);
         investMapper.create(invest);
-        InvestRepayModel investRepay1 = new InvestRepayModel(idGenerator.generate(), invest.getId(), 1, 0, loanRepay1ExpectedInterest, 100, loanRepay1.getRepayDate(), RepayStatus.COMPLETE);
+        InvestRepayModel investRepay1 = new InvestRepayModel(IdGenerator.generate(), invest.getId(), 1, 0, loanRepay1ExpectedInterest, 100, loanRepay1.getRepayDate(), RepayStatus.COMPLETE);
         investRepay1.setActualInterest(loanRepay1ExpectedInterest);
         investRepay1.setActualFee(investRepay1.getActualFee());
 
-        InvestRepayModel investRepay2 = new InvestRepayModel(idGenerator.generate(), invest.getId(), 2, invest.getAmount(), loanRepay2ExpectedInterest, 100, loanRepay2.getRepayDate(), RepayStatus.REPAYING);
+        InvestRepayModel investRepay2 = new InvestRepayModel(IdGenerator.generate(), invest.getId(), 2, invest.getAmount(), loanRepay2ExpectedInterest, 100, loanRepay2.getRepayDate(), RepayStatus.REPAYING);
         investRepayMapper.create(Lists.newArrayList(investRepay1, investRepay2));
 
         normalRepayService.investFeeCallback(this.getFakeCallbackParamsMap(loanRepay1.getId(),"project_transfer_notify"), "");

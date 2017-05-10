@@ -3,7 +3,6 @@ package com.tuotiansudai.service.impl;
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.OperationDataDto;
 import com.tuotiansudai.enums.AgeDistributionType;
 import com.tuotiansudai.repository.mapper.InvestMapper;
@@ -15,6 +14,7 @@ import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.service.OperationDataService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.CalculateUtil;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
@@ -30,6 +30,8 @@ import java.util.*;
 public class OperationDataServiceImpl implements OperationDataService {
     static Logger logger = Logger.getLogger(OperationDataServiceImpl.class);
 
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
+
     @Autowired
     private InvestMapper investMapper;
 
@@ -41,9 +43,6 @@ public class OperationDataServiceImpl implements OperationDataService {
 
     @Autowired
     private LoanRepayMapper loanRepayMapper;
-
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
 
 
     private static final String CHART_INFO_PUBLISH_KEY_TEMPLATE = "web:info:publish:chart:{0}";

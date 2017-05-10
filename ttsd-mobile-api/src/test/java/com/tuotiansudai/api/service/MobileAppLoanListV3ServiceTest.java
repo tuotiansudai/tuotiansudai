@@ -33,9 +33,6 @@ import static org.junit.Assert.*;
 public class MobileAppLoanListV3ServiceTest extends ServiceTestBase {
 
     @Autowired
-    private IdGenerator idGenerator;
-
-    @Autowired
     private UserMapper userMapper;
 
     @Autowired
@@ -79,7 +76,7 @@ public class MobileAppLoanListV3ServiceTest extends ServiceTestBase {
         userModel.setLoginName(loginName);
         userModel.setPassword("123abc");
         userModel.setEmail("12345@abc.com");
-        userModel.setMobile(String.valueOf(idGenerator.generate()));
+        userModel.setMobile(String.valueOf(IdGenerator.generate()));
         userModel.setRegisterTime(new Date());
         userModel.setStatus(UserStatus.ACTIVE);
         userModel.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
@@ -90,7 +87,7 @@ public class MobileAppLoanListV3ServiceTest extends ServiceTestBase {
 
     private LoanModel createLoan(String loanerLoginName, ActivityType activityType, ProductType productType, LoanStatus loanStatus, Date raisingCompleteTime) {
         LoanModel loanModel = new LoanModel();
-        loanModel.setId(idGenerator.generate());
+        loanModel.setId(IdGenerator.generate());
         loanModel.setName(loanerLoginName);
         loanModel.setLoanerLoginName(loanerLoginName);
         loanModel.setLoanerUserName(loanerLoginName);
@@ -119,7 +116,7 @@ public class MobileAppLoanListV3ServiceTest extends ServiceTestBase {
     }
 
     private InvestModel getInvestModel(String loginName, long loanId) {
-        InvestModel investModel = new InvestModel(idGenerator.generate(), loanId, null, 1, loginName, new Date(), Source.WEB, null, 0.1);
+        InvestModel investModel = new InvestModel(IdGenerator.generate(), loanId, null, 1, loginName, new Date(), Source.WEB, null, 0.1);
         investModel.setStatus(InvestStatus.SUCCESS);
         investMapper.create(investModel);
         return investModel;
@@ -209,7 +206,7 @@ public class MobileAppLoanListV3ServiceTest extends ServiceTestBase {
     @Test
     public void shouldValidInterestPerTenThousandsIsOk(){
         String loginName = "testExtraRate";
-        long loanId = idGenerator.generate();
+        long loanId = IdGenerator.generate();
         UserModel userModel = getUserModelTest(loginName);
         userMapper.create(userModel);
         LoanModel loanModel = createLoanByUserId(loginName, loanId);
@@ -217,7 +214,7 @@ public class MobileAppLoanListV3ServiceTest extends ServiceTestBase {
         extraLoanRateMapper.create(extraLoanRateModels);
         loanDetailsMapper.create(createLoanDetails(loanId));
 
-        InvestModel model = new InvestModel(idGenerator.generate(), loanModel.getId(), null, 1000000L, loginName, new DateTime().withTimeAtStartOfDay().toDate(), Source.WEB, null, 0.1);
+        InvestModel model = new InvestModel(IdGenerator.generate(), loanModel.getId(), null, 1000000L, loginName, new DateTime().withTimeAtStartOfDay().toDate(), Source.WEB, null, 0.1);
         model.setStatus(InvestStatus.SUCCESS);
         investMapper.create(model);
         BaseResponseDto<LoanListResponseDataDto> dto = mobileAppLoanListV3Service.generateIndexLoan(loginName);
@@ -244,7 +241,7 @@ public class MobileAppLoanListV3ServiceTest extends ServiceTestBase {
 
     private LoanDetailsModel createLoanDetails(long loanId){
         LoanDetailsModel loanDetailsModel = new LoanDetailsModel();
-        loanDetailsModel.setId(idGenerator.generate());
+        loanDetailsModel.setId(IdGenerator.generate());
         loanDetailsModel.setDeclaration("声明材料");
         loanDetailsModel.setExtraSource(Lists.newArrayList(Source.WEB));
         loanDetailsModel.setLoanId(loanId);
@@ -318,7 +315,7 @@ public class MobileAppLoanListV3ServiceTest extends ServiceTestBase {
 
     private LoanModel getFakeExperienceLoan(String loginName) {
         LoanModel fakeLoanModel = new LoanModel();
-        fakeLoanModel.setId(idGenerator.generate());
+        fakeLoanModel.setId(IdGenerator.generate());
         fakeLoanModel.setName("loanName");
         fakeLoanModel.setLoanAmount(10000L);
         fakeLoanModel.setLoanerLoginName(loginName);

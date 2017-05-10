@@ -34,12 +34,4 @@ public class AppConfiguration {
     public PropertySourcesPlaceholderConfigurer propertyConfigurer() {
         return new PropertySourcesPlaceholderConfigurer();
     }
-
-    @Bean
-    public JedisPoolConfig jedisPoolConfig(PropertySourcesPlaceholderConfigurer configurer) {
-        JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
-        jedisPoolConfig.setMaxTotal(10);
-        jedisPoolConfig.setMaxWaitMillis(5000);
-        return jedisPoolConfig;
-    }
 }

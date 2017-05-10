@@ -42,9 +42,6 @@ public class FinanceReportMapperTest {
     @Autowired
     InvestRepayMapper investRepayMapper;
 
-    @Autowired
-    IdGenerator idGenerator;
-
     private UserModel createUserModel(String loginName, String referrer) {
         UserModel userModel = new UserModel();
         userModel.setLoginName(loginName);
@@ -102,7 +99,7 @@ public class FinanceReportMapperTest {
     }
 
     private InvestRepayModel createInvestRepayModel(long investId, int period, RepayStatus repayStatus) {
-        InvestRepayModel investRepayModel = new InvestRepayModel(idGenerator.generate(), investId, period, 900L, 9999L, 99L, DateTime.parse("2015-03-12T01:20").toDate(), repayStatus);
+        InvestRepayModel investRepayModel = new InvestRepayModel(IdGenerator.generate(), investId, period, 900L, 9999L, 99L, DateTime.parse("2015-03-12T01:20").toDate(), repayStatus);
         if (RepayStatus.COMPLETE == repayStatus) {
             investRepayModel.setActualFee(2000L);
             investRepayModel.setActualInterest(8000L);

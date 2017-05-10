@@ -2,8 +2,8 @@
 <@global.main pageCss="${css.no_work}" pageJavascript="${js.no_work}" activeNav="" activeLeftNav="" title="拓天发薪季_活动中心_拓天速贷" keywords="拓天发薪,投资活动,推荐奖励,拓天速贷" description="拓天速贷发薪季给投资用户发薪,发大奖,让投资用户带薪休假,邀请好友投资还可获得上不封顶旅游基金,拓工发薪季,好礼送不停。">
 <div class="activity-container">
 	<div class="top-intro-img">
-		<img src="${staticServer}/activity/images/nowork/top-img.png" alt="" width="100%" class="top-img">
-		<img src="${staticServer}/activity/images/nowork/top-img-phone.png" alt="" width="100%" class="top-img-phone">
+		<img src="${commonStaticServer}/activity/images/nowork/top-img.png" alt="" width="100%" class="top-img">
+		<img src="${commonStaticServer}/activity/images/nowork/top-img-phone.png" alt="" width="100%" class="top-img-phone">
 	</div>
 	<div class="actor-content-group">
 		<div class="wp clearfix">
@@ -13,7 +13,7 @@
 			<div class="content-skew-item">
 				<div class="content-item">
 					<h3 class="title-item text-c">
-						<img src="${staticServer}/activity/images/nowork/title-one.png" alt="">
+						<img src="${commonStaticServer}/activity/images/nowork/title-one.png" alt="">
 					</h3>
 					<div class="actor-group">
 						<div class="info-list-item">
@@ -48,7 +48,7 @@
 							<li class="text-type">
 								<div class="text-content-item">
 									<h3>
-										<img src="${staticServer}/activity/images/nowork/rule-title.png" alt="">
+										<img src="${commonStaticServer}/activity/images/nowork/rule-title.png" alt="">
 									</h3>
 									<div class="content-text">
 										<p>月薪5000元，每天工作8小时相当于日薪227元，时薪28.4元。拿着搬砖的工资，操着包工头的心，够了！怎么，想炒掉老板，要搞事情咯？</p>
@@ -63,7 +63,7 @@
                                         <div class="gift-trick <#if investAmount?? && 3000 <= investAmount?number>active</#if>"></div>
 										<h3>20元红包</h3>
 										<p>
-											<img src="${staticServer}/activity/images/nowork/gift-one.png" alt="">
+											<img src="${commonStaticServer}/activity/images/nowork/gift-one.png" alt="">
 										</p>
 									</div>
 								</div>
@@ -81,7 +81,7 @@
                                         <div class="gift-trick <#if investAmount?? && 8000 <= investAmount?number>active</#if>"></div>
 										<h3>30元话费</h3>
 										<p>
-											<img src="${staticServer}/activity/images/nowork/gift-two.png" alt="">
+											<img src="${commonStaticServer}/activity/images/nowork/gift-two.png" alt="">
 										</p>
 									</div>
 								</div>
@@ -99,7 +99,7 @@
                                         <div class="gift-trick <#if investAmount?? && 30000 <= investAmount?number>active</#if>"></div>
 										<h3>京东E卡</h3>
 										<p>
-											<img src="${staticServer}/activity/images/nowork/gift-three.png" alt="">
+											<img src="${commonStaticServer}/activity/images/nowork/gift-three.png" alt="">
 										</p>
 									</div>
 								</div>
@@ -117,7 +117,7 @@
                                         <div class="gift-trick <#if investAmount?? && 50000 <= investAmount?number>active</#if>"></div>
 										<h3>300元旅游基金（芒果卡）</h3>
 										<p>
-											<img src="${staticServer}/activity/images/nowork/gift-four.png" alt="">
+											<img src="${commonStaticServer}/activity/images/nowork/gift-four.png" alt="">
 										</p>
 									</div>
 								</div>
@@ -135,7 +135,7 @@
                                         <div class="gift-trick <#if investAmount?? && 100000 <= investAmount?number>active</#if>"></div>
 										<h3>索尼数码相机</h3>
 										<p>
-											<img src="${staticServer}/activity/images/nowork/gift-five.png" alt="">
+											<img src="${commonStaticServer}/activity/images/nowork/gift-five.png" alt="">
 										</p>
 									</div>
 								</div>
@@ -153,7 +153,7 @@
                                         <div class="gift-trick <#if investAmount?? && 200000 <= investAmount?number>active</#if>"></div>
 										<h3>联想YOGA 平板3代</h3>
 										<p>
-											<img src="${staticServer}/activity/images/nowork/gift-six.png" alt="">
+											<img src="${commonStaticServer}/activity/images/nowork/gift-six.png" alt="">
 										</p>
 									</div>
 								</div>
@@ -171,7 +171,7 @@
                                         <div class="gift-trick <#if investAmount?? && 300000 <= investAmount?number>active</#if>"></div>
 										<h3>CAN看尚42英寸液晶电视</h3>
 										<p>
-											<img src="${staticServer}/activity/images/nowork/gift-seven.png" alt="">
+											<img src="${commonStaticServer}/activity/images/nowork/gift-seven.png" alt="">
 										</p>
 									</div>
 								</div>
@@ -189,7 +189,7 @@
                                         <div class="gift-trick <#if investAmount?? && 520000 <= investAmount?number>active</#if>"></div>
 										<h3>锤子手机M1</h3>
 										<p>
-											<img src="${staticServer}/activity/images/nowork/gift-eight.png" alt="">
+											<img src="${commonStaticServer}/activity/images/nowork/gift-eight.png" alt="">
 										</p>
 									</div>
 								</div>
@@ -207,7 +207,7 @@
                                         <div class="gift-trick <#if investAmount?? && 800000 <= investAmount?number>active</#if>"></div>
 										<h3>浪琴手表康卡斯系列</h3>
 										<p>
-											<img src="${staticServer}/activity/images/nowork/gift-nine.png" alt="">
+											<img src="${commonStaticServer}/activity/images/nowork/gift-nine.png" alt="">
 										</p>
 									</div>
 								</div>
@@ -225,7 +225,7 @@
                                         <div class="gift-trick <#if investAmount?? && 1200000 <= investAmount?number>active</#if>"></div>
 										<h3>Apple MacBook Air</h3>
 										<p>
-											<img src="${staticServer}/activity/images/nowork/gift-ten.png" alt="">
+											<img src="${commonStaticServer}/activity/images/nowork/gift-ten.png" alt="">
 										</p>
 									</div>
 								</div>
@@ -252,7 +252,7 @@
 			<div class="content-skew-item">
 				<div class="content-item">
 					<h3 class="title-item text-c title-two">
-						<img src="${staticServer}/activity/images/nowork/title-two.png" alt="">
+						<img src="${commonStaticServer}/activity/images/nowork/title-two.png" alt="">
 					</h3>
 					<div class="actor-group">
 						<ul class="gift-list-group step-list">

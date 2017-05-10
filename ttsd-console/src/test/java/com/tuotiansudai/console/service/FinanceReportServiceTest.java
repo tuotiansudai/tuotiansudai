@@ -49,9 +49,6 @@ public class FinanceReportServiceTest {
     @Autowired
     InvestReferrerRewardMapper investReferrerRewardMapper;
 
-    @Autowired
-    IdGenerator idGenerator;
-
     private UserModel createUserModel(String loginName, String referrer) {
         UserModel userModel = new UserModel();
         userModel.setLoginName(loginName);
@@ -109,7 +106,7 @@ public class FinanceReportServiceTest {
     }
 
     private InvestRepayModel createInvestRepayModel(long investId, int period, RepayStatus repayStatus) {
-        InvestRepayModel investRepayModel = new InvestRepayModel(idGenerator.generate(), investId, period, 900L, 9999L, 99L, DateTime.parse("2016-12-12T01:20").toDate(), repayStatus);
+        InvestRepayModel investRepayModel = new InvestRepayModel(IdGenerator.generate(), investId, period, 900L, 9999L, 99L, DateTime.parse("2016-12-12T01:20").toDate(), repayStatus);
         if (RepayStatus.COMPLETE == repayStatus) {
             investRepayModel.setActualFee(2000L);
             investRepayModel.setActualInterest(8000L);
@@ -125,7 +122,7 @@ public class FinanceReportServiceTest {
     }
 
     private InvestReferrerRewardModel createInvestReferrerRewardModel(long investId, String referrerLoginName, Role referrerRole) {
-        InvestReferrerRewardModel investReferrerRewardModel = new InvestReferrerRewardModel(idGenerator.generate(),
+        InvestReferrerRewardModel investReferrerRewardModel = new InvestReferrerRewardModel(IdGenerator.generate(),
                 investId, 3000L, referrerLoginName, referrerRole);
         investReferrerRewardMapper.create(investReferrerRewardModel);
         return investReferrerRewardModel;

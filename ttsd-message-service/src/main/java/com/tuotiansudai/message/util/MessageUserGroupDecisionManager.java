@@ -1,10 +1,10 @@
 package com.tuotiansudai.message.util;
 
 import com.google.common.base.Strings;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.message.repository.mapper.MessageMapper;
 import com.tuotiansudai.message.repository.model.MessageModel;
 import com.tuotiansudai.message.repository.model.MessageUserGroup;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,12 +21,11 @@ public class MessageUserGroupDecisionManager {
 
     private final MessageMapper messageMapper;
 
-    private final RedisWrapperClient redisWrapperClient;
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
     @Autowired
-    public MessageUserGroupDecisionManager(MessageMapper messageMapper, RedisWrapperClient redisWrapperClient) {
+    public MessageUserGroupDecisionManager(MessageMapper messageMapper) {
         this.messageMapper = messageMapper;
-        this.redisWrapperClient = redisWrapperClient;
     }
 
     public boolean decide(final String loginName, String mobile, final long messageId) {

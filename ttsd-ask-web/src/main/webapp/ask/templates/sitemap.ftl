@@ -1,4 +1,3 @@
-<body style="word-wrap: break-word; white-space: pre-wrap;">
 http://ask.tuotiansudai.com/question/100527
 http://ask.tuotiansudai.com/question/100528
 http://ask.tuotiansudai.com/question/100529
@@ -2474,4 +2473,3 @@ http://ask.tuotiansudai.com/question/105511
 http://ask.tuotiansudai.com/question/105512
 http://ask.tuotiansudai.com/question/105513
 http://ask.tuotiansudai.com/question/105514
-</body>

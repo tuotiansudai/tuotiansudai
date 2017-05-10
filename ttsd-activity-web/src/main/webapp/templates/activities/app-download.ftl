@@ -5,7 +5,7 @@
     <div class="download-one">
         <div class="wp step-one">
             <div class="content-item">
-                <p><img src="${staticServer}/activity/images/download/one-text0309.png" class="step-one-img"></p>
+                <p><img src="${commonStaticServer}/activity/images/download/one-text0309.png" class="step-one-img"></p>
                 <p>
                     <a href="https://itunes.apple.com/cn/app/ta-tian-su-dai/id1039233966?mt=8" class="ios-btn" target="_blank"></a>
                     <a href="/app/tuotiansudai.apk" class="android-btn" target="_blank"></a>
@@ -17,14 +17,14 @@
     <div class="download-two">
         <div class="wp step-two">
             <p class="title-icon">
-                <img src="${staticServer}/activity/images/download/two-icon.png" class="step-two-img">
+                <img src="${commonStaticServer}/activity/images/download/two-icon.png" class="step-two-img">
             </p>
             <div class="content-item">
                 <p class="title-text">债权上线·早知道</p>
                 <p>最新热门标的实时提醒</p>
                 <p>信息快人一步，收益抢先到手</p>
                 <p>
-                    <i class="time-icon"><img src="${staticServer}/activity/images/download/time-icon.png"></i>
+                    <i class="time-icon"><img src="${commonStaticServer}/activity/images/download/time-icon.png"></i>
                 </p>
                 <p>
                     <span>开标提醒</span>
@@ -35,14 +35,14 @@
     <div class="download-three">
         <div class="wp step-three">
             <p class="title-icon">
-                <img src="${staticServer}/activity/images/download/down-icon.png">
+                <img src="${commonStaticServer}/activity/images/download/down-icon.png">
             </p>
             <div class="content-item">
                 <p class="title-text">资金流转·不站岗</p>
                 <p>精心打磨回款日历</p>
                 <p>每一笔投资尽在掌握，收益数据更直观</p>
                 <p>
-                    <i class="time-icon"><img src="${staticServer}/activity/images/download/cal-icon.png"></i>
+                    <i class="time-icon"><img src="${commonStaticServer}/activity/images/download/cal-icon.png"></i>
                 </p>
                 <p>
                     <span>回款日历</span>
@@ -57,7 +57,7 @@
                 <p>碎片时间做投资</p>
                 <p>随时随地能玩赚，闲钱不停滞</p>
                 <p>
-                    <i class="time-icon"><img src="${staticServer}/activity/images/download/userful-icon.png"></i>
+                    <i class="time-icon"><img src="${commonStaticServer}/activity/images/download/userful-icon.png"></i>
                 </p>
                 <p>
                     <span>便捷投资</span>
@@ -72,8 +72,8 @@
                 <p>数据采用256位加密技术</p>
                 <p>多重密码保护，快捷支付也安全</p>
                 <p>
-                    <i class="time-icon"><img src="${staticServer}/activity/images/download/safe-icon.png"></i>
-                    <i class="data-icon"><img src="${staticServer}/activity/images/download/data-icon.png"></i>
+                    <i class="time-icon"><img src="${commonStaticServer}/activity/images/download/safe-icon.png"></i>
+                    <i class="data-icon"><img src="${commonStaticServer}/activity/images/download/data-icon.png"></i>
                 </p>
                 <p>
                     <span>账户安全</span>
@@ -85,15 +85,15 @@
     <div class="download-six">
         <div class="wp step-six">
             <p class="title-icon">
-                <img src="${staticServer}/activity/images/download/down-img.png">
+                <img src="${commonStaticServer}/activity/images/download/down-img.png">
             </p>
             <div class="content-item">
                 <p class="title-text">一键签到·攒积分</p>
                 <p>不再错过每次签到</p>
                 <p>每日积分翻倍涨，海量商品随心兑</p>
                 <p>
-                    <i class="time-icon"><img src="${staticServer}/activity/images/download/store-icon.png"></i>
-                    <i class="time-icon"><img src="${staticServer}/activity/images/download/click-icon.png"></i>
+                    <i class="time-icon"><img src="${commonStaticServer}/activity/images/download/store-icon.png"></i>
+                    <i class="time-icon"><img src="${commonStaticServer}/activity/images/download/click-icon.png"></i>
                 </p>
                 <p>
                     <span>积分商城</span>

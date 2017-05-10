@@ -1,20 +1,20 @@
 package com.tuotiansudai.service.impl;
 
 import com.google.common.base.Strings;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.RegisterUserDto;
 import com.tuotiansudai.enums.UserOpType;
 import com.tuotiansudai.log.service.UserOpLogService;
+import com.tuotiansudai.message.WeChatBoundMessage;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.PrepareUserMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.CaptchaType;
 import com.tuotiansudai.repository.model.PrepareUserModel;
 import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.service.RegisterUserService;
-import com.tuotiansudai.service.SmsCaptchaService;
-import com.tuotiansudai.service.UserService;
+import com.tuotiansudai.service.*;
 import com.tuotiansudai.util.MyShaPasswordEncoder;
-import com.tuotiansudai.util.RandomStringGenerator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,7 +34,6 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private SmsCaptchaService smsCaptchaService;
 
-
     @Autowired
     private SmsWrapperClient smsWrapperClient;
 
@@ -50,8 +49,11 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserOpLogService userOpLogService;
 
+    @Autowired
+    private LoginNameGenerator loginNameGenerator;
 
-    private final static int LOGIN_NAME_LENGTH = 8;
+    @Autowired
+    private MQWrapperClient mqWrapperClient;
 
     @Override
     public String getMobile(String loginName) {
@@ -111,31 +113,9 @@ public class UserServiceImpl implements UserService {
             return false;
         }
 
-
-        String loginName = dto.getLoginName();
-        boolean autoGenerateLoginName = Strings.isNullOrEmpty(loginName);
-
-        if (!autoGenerateLoginName && this.loginNameIsExist(loginName)) {
-            logger.error(MessageFormat.format("[Register User {0}] login name ({1}) is existed", dto.getMobile(), loginName));
-            return false;
-        }
-
-        if (autoGenerateLoginName) {
-            int tryTimes = 0;
-            do {
-                tryTimes += 1;
-                if (tryTimes > 20) {
-                    logger.info(MessageFormat.format("[Register User {0}] auto generate login name reach max times", dto.getMobile()));
-                    return false;
-                }
-                loginName = RandomStringGenerator.generate(LOGIN_NAME_LENGTH);
-            } while (this.loginNameIsExist(loginName));
-            dto.setLoginName(loginName);
-        }
-
-
         UserModel userModel = new UserModel();
-        userModel.setLoginName(loginName);
+        userModel.setLoginName(loginNameGenerator.generate());
+        dto.setLoginName(userModel.getLoginName());
         userModel.setMobile(dto.getMobile());
         userModel.setSource(dto.getSource());
         userModel.setReferrer(referrerUserModel != null ? referrerUserModel.getLoginName() : null);
@@ -144,7 +124,11 @@ public class UserServiceImpl implements UserService {
         userModel.setSalt(salt);
         userModel.setPassword(myShaPasswordEncoder.encodePassword(dto.getPassword(), salt));
         userModel.setLastModifiedTime(new Date());
-        return registerUserService.register(userModel);
+        boolean register = registerUserService.register(userModel);
+
+        mqWrapperClient.sendMessage(MessageQueue.WeChatBoundNotify, new WeChatBoundMessage(dto.getMobile(), dto.getOpenid()));//登录成功绑定微信号
+
+        return register;
     }
 
     @Transactional
@@ -191,5 +175,4 @@ public class UserServiceImpl implements UserService {
         Long experienceBalance = userMapper.findExperienceByLoginName(loginName);
         return experienceBalance != null ? experienceBalance : 0;
     }
-
 }

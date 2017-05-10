@@ -143,7 +143,7 @@
 
     <#include "../pageLayout/footer.ftl" />
 <script>
-    window.staticServer='http://localhost:3008';
+    window.commonStaticServer='http://localhost:3008';
 </script>
 <script src="http://localhost:3008/public/dllplugins/jquery.dll.js" defer></script>
 <script src="http://localhost:3008/public/globalFun_page.js" defer></script>

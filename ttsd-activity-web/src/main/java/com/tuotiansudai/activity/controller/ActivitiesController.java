@@ -30,7 +30,7 @@ public class ActivitiesController {
 
     //    midsummer: 助力升温，点燃仲夏活动:活动时间 5月12到5月25
 
-    @RequestMapping(path = "/{item:^recruit|money_tree|material-point|integral-draw|birth-month|rank-list-app|share-reward|app-download|landing-page|invest-achievement|landing-anxin|loan-hike|heavily-courtship|point-update|sign-check|open-spring|wx-register|divide-money|minsheng|guarantee|midsummer$}", method = RequestMethod.GET)
+    @RequestMapping(path = "/{item:^money_tree|landing-page|invest-achievement|landing-anxin|point-update|sign-check|wx-register|divide-money|minsheng|guarantee|midsummer$}", method = RequestMethod.GET)
 
     public ModelAndView activities(@PathVariable String item, HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView("/activities/" + item, "responsive", true);
@@ -53,15 +53,6 @@ public class ActivitiesController {
         boolean newbieCouponAlert = couponAlert != null && couponAlert.getCouponIds().size() > 0;
         modelAndView.addObject("couponAlert", newbieCouponAlert);
         return modelAndView;
-    }
-
-    @RequestMapping(value = "/isLogin", method = RequestMethod.GET)
-    public ModelAndView isLogin() {
-        if (!StringUtils.isEmpty(LoginUserInfo.getLoginName())) {
-            return null;
-        } else {
-            return new ModelAndView("/csrf");
-        }
     }
 
     @ResponseBody

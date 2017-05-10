@@ -2,7 +2,6 @@ package com.tuotiansudai.paywrapper.service.impl;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.Environment;
@@ -11,7 +10,6 @@ import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.enums.*;
 import com.tuotiansudai.exception.AmountTransferException;
-import com.tuotiansudai.job.JobManager;
 import com.tuotiansudai.message.EventMessage;
 import com.tuotiansudai.message.PushMessage;
 import com.tuotiansudai.message.RepaySuccessAsyncCallBackMessage;
@@ -30,8 +28,8 @@ import com.tuotiansudai.paywrapper.repository.model.NotifyProcessStatus;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.NormalRepayNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.ProjectTransferNotifyRequestModel;
-import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferNopwdRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.SyncRequestStatus;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferNopwdResponseModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
@@ -41,6 +39,7 @@ import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.AmountTransfer;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -62,6 +61,8 @@ public class NormalRepayServiceImpl implements NormalRepayService {
     private final static String REPAY_ORDER_ID_TEMPLATE = "{0}" + REPAY_ORDER_ID_SEPARATOR + "{1}";
 
     private final static String REPAY_REDIS_KEY_TEMPLATE = "NORMAL_REPAY:{0}";
+
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
     @Autowired
     private AccountMapper accountMapper;
@@ -95,9 +96,6 @@ public class NormalRepayServiceImpl implements NormalRepayService {
 
     @Autowired
     private LoanService loanService;
-
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
 
     @Autowired
     private NormalRepayNotifyMapper normalRepayNotifyMapper;

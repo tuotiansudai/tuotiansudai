@@ -47,7 +47,7 @@
 
             <div class="thumbPictureImage">
                 <#if dto??&&dto.thumbPicture??>
-                    <img style="width:100%" src="${staticServer}${dto.thumbPicture!}" alt="缩略图"/>
+                    <img style="width:100%" src="${commonStaticServer}${dto.thumbPicture!}" alt="缩略图"/>
                 </#if>
             </div>
 
@@ -66,7 +66,7 @@
             </div>
             <div class="showPictureImage">
                 <#if dto??&&dto.showPicture??>
-                    <img style="width:100%" src="${staticServer}${dto.showPicture!}" alt="展示图"/>
+                    <img style="width:100%" src="${commonStaticServer}${dto.showPicture!}" alt="展示图"/>
                 </#if>
             </div>
             <div class="form-group">

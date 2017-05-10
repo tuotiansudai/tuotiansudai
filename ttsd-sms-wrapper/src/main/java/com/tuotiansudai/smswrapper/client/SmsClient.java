@@ -1,7 +1,6 @@
 package com.tuotiansudai.smswrapper.client;
 
 import com.google.common.base.Strings;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.Environment;
 import com.tuotiansudai.dto.SmsDataDto;
@@ -11,6 +10,7 @@ import com.tuotiansudai.smswrapper.exception.SmsSendingException;
 import com.tuotiansudai.smswrapper.provider.SmsProvider;
 import com.tuotiansudai.smswrapper.repository.mapper.BaseMapper;
 import com.tuotiansudai.smswrapper.repository.model.SmsModel;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.BeansException;
@@ -42,14 +42,13 @@ public class SmsClient implements ApplicationContextAware {
 
     private final static int lifeSecond = 172800;
 
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
+
     @Value("${sms.interval.seconds}")
     private int second;
 
     @Value("${common.environment}")
     private String environment;
-
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
 
     @Autowired
     @Qualifier("smsProviderNetease")

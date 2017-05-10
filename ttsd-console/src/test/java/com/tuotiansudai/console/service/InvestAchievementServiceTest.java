@@ -37,9 +37,6 @@ public class InvestAchievementServiceTest {
     private InvestMapper investMapper;
 
     @Autowired
-    private IdGenerator idGenerator;
-
-    @Autowired
     private InvestAchievementService investAchievementService;
 
     private InvestModel createInvest(String loginName, long loanId) {
@@ -47,7 +44,7 @@ public class InvestAchievementServiceTest {
         model.setAmount(10);
         model.setCreatedTime(new Date());
         model.setTradingTime(new Date());
-        model.setId(idGenerator.generate());
+        model.setId(IdGenerator.generate());
         model.setIsAutoInvest(false);
         model.setLoginName(loginName);
         model.setLoanId(loanId);
@@ -110,7 +107,7 @@ public class InvestAchievementServiceTest {
         UserModel userModelLastMan = createUserByUserId("lastMan");
         UserModel userModelMaxMan = createUserByUserId("maxMan");
 
-        long loanId = idGenerator.generate();
+        long loanId = IdGenerator.generate();
         LoanModel loanModel = createLoanByUserId(userModelAgent.getLoginName(), loanId);
 
         InvestModel investModelFirst = createInvest(userModelFirstMan.getLoginName(), loanId);

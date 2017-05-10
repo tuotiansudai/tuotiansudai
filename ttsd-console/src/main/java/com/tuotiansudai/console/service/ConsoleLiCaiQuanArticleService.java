@@ -2,7 +2,6 @@ package com.tuotiansudai.console.service;
 
 import com.google.common.collect.Lists;
 import com.google.common.primitives.Longs;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.mapper.LicaiquanArticleCommentMapper;
 import com.tuotiansudai.repository.mapper.LicaiquanArticleMapper;
@@ -12,6 +11,7 @@ import com.tuotiansudai.repository.model.LicaiquanArticleModel;
 import com.tuotiansudai.service.LiCaiQuanArticleService;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.PaginationUtil;
+import com.tuotiansudai.util.RedisWrapperClient;
 import com.tuotiansudai.util.SerializeUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -27,17 +27,13 @@ public class ConsoleLiCaiQuanArticleService {
 
     private final static Logger logger = Logger.getLogger(ConsoleLiCaiQuanArticleService.class);
 
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
+
     private final static String articleRedisKey = "console:article:key";
     private final static String articleCommentRedisKey = "console:article:comment";
     private final static String articleLikeCounterKey = "console:article:likeCounter";
     private final static String articleReadCounterKey = "console:article:readCounter";
     private final static String articleCheckerKey = "console:article:checker";
-
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
-
-    @Autowired
-    private IdGenerator idGenerator;
 
     @Autowired
     private LicaiquanArticleMapper licaiquanArticleMapper;
@@ -54,7 +50,7 @@ public class ConsoleLiCaiQuanArticleService {
 
     public void createAndEditArticle(LiCaiQuanArticleDto liCaiQuanArticleDto) {
         if (liCaiQuanArticleDto.getArticleId() == null) {
-            long articleId = idGenerator.generate();
+            long articleId = IdGenerator.generate();
             liCaiQuanArticleDto.setArticleId(articleId);
             liCaiQuanArticleDto.setCreateTime(new Date());
         } else {

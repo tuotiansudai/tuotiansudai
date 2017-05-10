@@ -23,8 +23,6 @@ import static org.junit.Assert.assertNotNull;
 public class InvestReferrerRewardMapperTest {
 
     @Autowired
-    private IdGenerator idGenerator;
-    @Autowired
     private UserMapper userMapper;
     @Autowired
     private LoanMapper loanMapper;
@@ -39,7 +37,7 @@ public class InvestReferrerRewardMapperTest {
         LoanModel loanModel = createMockLoan(userModelTest.getLoginName());
         InvestModel model = createMockInvest(userModelTest.getLoginName(), loanModel.getId());
 
-        long id = idGenerator.generate();
+        long id = IdGenerator.generate();
         InvestReferrerRewardModel investReferrerRewardModel = new InvestReferrerRewardModel(id, model.getId(), 100, userModelTest.getLoginName(), Role.INVESTOR);
         investReferrerRewardMapper.create(investReferrerRewardModel);
 
@@ -47,7 +45,7 @@ public class InvestReferrerRewardMapperTest {
     }
 
     private InvestModel createMockInvest(String loginName, long loanId) {
-        InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, 1, loginName, new DateTime().withTimeAtStartOfDay().toDate(), Source.WEB, null, 0.1);
+        InvestModel model = new InvestModel(IdGenerator.generate(), loanId, null, 1, loginName, new DateTime().withTimeAtStartOfDay().toDate(), Source.WEB, null, 0.1);
         model.setStatus(InvestStatus.SUCCESS);
         investMapper.create(model);
         return model;
@@ -76,7 +74,7 @@ public class InvestReferrerRewardMapperTest {
 
     private LoanModel getFakeLoan(String loanerLoginName, String agentLoginName, LoanStatus loanStatus) {
         LoanModel fakeLoanModel = new LoanModel();
-        fakeLoanModel.setId(idGenerator.generate());
+        fakeLoanModel.setId(IdGenerator.generate());
         fakeLoanModel.setName("loanName");
         fakeLoanModel.setLoanerLoginName(loanerLoginName);
         fakeLoanModel.setLoanerUserName("借款人");

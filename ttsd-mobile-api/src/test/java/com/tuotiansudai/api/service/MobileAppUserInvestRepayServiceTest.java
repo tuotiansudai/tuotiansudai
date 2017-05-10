@@ -46,8 +46,6 @@ public class MobileAppUserInvestRepayServiceTest extends ServiceTestBase{
     @InjectMocks
     private MobileAppUserInvestRepayServiceImpl mobileAppUserInvestRepayService;
     @Mock
-    private IdGenerator idGenerator;
-    @Mock
     private InvestRepayMapper investRepayMapper;
 
     @Mock
@@ -209,7 +207,7 @@ public class MobileAppUserInvestRepayServiceTest extends ServiceTestBase{
         loanModel.setAgentLoginName("loginName");
         loanModel.setBaseRate(0.16);
         loanModel.setActivityRate(0.01);
-        long id = idGenerator.generate();
+        long id = IdGenerator.generate();
         loanModel.setId(id);
         loanModel.setName("店铺资金周转");
         loanModel.setShowOnHome(true);
@@ -245,7 +243,7 @@ public class MobileAppUserInvestRepayServiceTest extends ServiceTestBase{
     private InvestModel getFakeInvestModel(long loanId, String loginName) {
         InvestModel model = new InvestModel();
         model.setAmount(5000);
-        model.setId(idGenerator.generate());
+        model.setId(IdGenerator.generate());
         model.setIsAutoInvest(false);
         model.setLoginName(loginName);
         model.setLoanId(loanId);
@@ -257,7 +255,7 @@ public class MobileAppUserInvestRepayServiceTest extends ServiceTestBase{
 
     private InvestRepayModel getFakeInvestReapyModel(long investId, int period, Date repayDate, Date actualRepayDate, long expectedInterest, long defaultInterest, long expectedFee, long repayAmount, long corpus, RepayStatus repayStatus){
         InvestRepayModel investRepayModel = new InvestRepayModel();
-        investRepayModel.setId(idGenerator.generate());
+        investRepayModel.setId(IdGenerator.generate());
         investRepayModel.setInvestId(investId);
         investRepayModel.setPeriod(period);
         investRepayModel.setRepayDate(repayDate);

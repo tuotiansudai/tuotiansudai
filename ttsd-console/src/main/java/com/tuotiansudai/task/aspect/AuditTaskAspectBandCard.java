@@ -2,11 +2,10 @@ package com.tuotiansudai.task.aspect;
 
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Maps;
-import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.enums.Role;
-import com.tuotiansudai.log.service.AuditLogService;
 import com.tuotiansudai.dto.EditUserDto;
 import com.tuotiansudai.enums.OperationType;
+import com.tuotiansudai.enums.Role;
+import com.tuotiansudai.log.service.AuditLogService;
 import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.UserRoleModel;
 import com.tuotiansudai.service.UserService;
@@ -14,6 +13,7 @@ import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.task.OperationTask;
 import com.tuotiansudai.task.TaskConstant;
 import com.tuotiansudai.task.TaskType;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -31,8 +31,7 @@ import java.util.Map;
 @Component
 public class AuditTaskAspectBandCard {
 
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
     @Autowired
     private UserService userService;

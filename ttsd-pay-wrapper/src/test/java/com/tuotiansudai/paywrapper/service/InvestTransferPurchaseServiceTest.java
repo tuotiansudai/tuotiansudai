@@ -70,9 +70,6 @@ public class InvestTransferPurchaseServiceTest {
     private PayAsyncClient payAsyncClient;
 
     @Autowired
-    private IdGenerator idGenerator;
-
-    @Autowired
     private UserMapper userMapper;
 
     @Autowired
@@ -525,7 +522,7 @@ public class InvestTransferPurchaseServiceTest {
     private LoanModel createFakeLoan(LoanType loanType, long amount, int periods, double baseRate, Date recheckTime) {
         UserModel loaner = this.createFakeUser("loaner", 0, 0);
         LoanModel fakeLoanModel = new LoanModel();
-        fakeLoanModel.setId(idGenerator.generate());
+        fakeLoanModel.setId(IdGenerator.generate());
         fakeLoanModel.setName("loanName");
         fakeLoanModel.setLoanAmount(amount);
         fakeLoanModel.setLoanerLoginName(loaner.getLoginName());
@@ -548,7 +545,7 @@ public class InvestTransferPurchaseServiceTest {
     }
 
     private InvestModel createFakeInvest(long loanId, Long transferInvestId, long amount, String loginName, Date investTime, InvestStatus investStatus, TransferStatus transferStatus) {
-        InvestModel fakeInvestModel = new InvestModel(idGenerator.generate(), loanId, transferInvestId, amount, loginName, investTime, Source.WEB, null, 0.1);
+        InvestModel fakeInvestModel = new InvestModel(IdGenerator.generate(), loanId, transferInvestId, amount, loginName, investTime, Source.WEB, null, 0.1);
         fakeInvestModel.setStatus(investStatus);
         fakeInvestModel.setTransferStatus(transferStatus);
         MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
@@ -558,7 +555,7 @@ public class InvestTransferPurchaseServiceTest {
     }
 
     private InvestRepayModel createFakeInvestRepay(long investId, int period, long corpus, long expectedInterest, long expectedFee, Date expectedRepayDate, Date actualRepayDate, RepayStatus repayStatus) {
-        InvestRepayModel fakeInvestRepayModel = new InvestRepayModel(idGenerator.generate(), investId, period, corpus, expectedInterest, expectedFee, expectedRepayDate, repayStatus);
+        InvestRepayModel fakeInvestRepayModel = new InvestRepayModel(IdGenerator.generate(), investId, period, corpus, expectedInterest, expectedFee, expectedRepayDate, repayStatus);
         fakeInvestRepayModel.setActualRepayDate(actualRepayDate);
         investRepayMapper.create(Lists.newArrayList(fakeInvestRepayModel));
         return fakeInvestRepayModel;

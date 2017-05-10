@@ -34,7 +34,7 @@
                 <#if promotionList??>
                     <#list promotionList as promotion>
                     <tr>
-                        <td style="text-align:center;vertical-align:middle;"><span class="imageUrl"><img id="imageUrl" src="${staticServer}${promotion.imageUrl!}" width="40" height="60"/></td>
+                        <td style="text-align:center;vertical-align:middle;"><span class="imageUrl"><img id="imageUrl" src="${commonStaticServer}${promotion.imageUrl!}" width="40" height="60"/></td>
                         <td style="text-align:center;vertical-align:middle;">${promotion.name!}</td>
                         <td style="text-align:center;vertical-align:middle;">${promotion.seq!}</td>
                         <td style="text-align:center;vertical-align:middle;">${promotion.linkUrl!}</td>

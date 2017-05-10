@@ -1,0 +1,142 @@
+body {
+  background: #F4F4F4;
+  color: #808080;
+  font-size:14px;
+  text-align: center;
+}
+
+:-moz-placeholder {
+  color: #C9C9C9;
+}
+
+::-moz-placeholder {
+  color: #C9C9C9;
+}
+
+input:-ms-input-placeholder,
+textarea:-ms-input-placeholder {
+  color: #C9C9C9;
+}
+
+input::-webkit-input-placeholder,
+textarea::-webkit-input-placeholder {
+  color: #C9C9C9;
+}
+
+.weChat-container {
+  padding-top:50px;
+  h2.note {
+    font-size:14px;
+    text-align: center;
+    padding:20px 0;
+  }
+
+  input[type="text"],input[type="password"] {
+    width: 100%;
+    box-sizing: border-box;
+    border: 0;
+    height: 50px;
+    padding-left: 15px;
+    margin-bottom: 10px;
+    font-size: 15px;
+    color:#808080
+  }
+  button[type="submit"],button[type="button"] {
+    margin:30px auto;
+    background: #FF635A;
+    border-radius:20px;
+    height:45px;
+    font-size:20px;
+    width:80%;
+  }
+  .error-box {
+    margin-top:5px;
+    padding-left: 15px;
+  }
+  .notice-tip {
+    text-align: left;
+    color: #A2A2A2;
+    padding:0 15px;
+    b {
+      color: #525252;
+      font-size: 13px;
+    }
+    p {
+      color: #A2A2A2;
+      font-size: 12px;
+    }
+
+  }
+}
+.form-login {
+  position: relative;
+  .image-captcha {
+    position: absolute;
+    right:10px;
+    top:70px;
+  }
+  .get-password {
+    display: block;
+    text-align: left;
+    width: 80%;
+    margin: -20px auto 20px auto;
+    a {
+      color: #808080;
+    }
+  }
+}
+
+.form-captcha {
+  position: relative;
+  .image-captcha {
+    position: absolute;
+    right:10px;
+    top:10px;
+  }
+}
+.form-register {
+  position: relative;
+
+  .get-captcha {
+    border: 0px;
+    position: absolute;
+    right: 10px;
+    top: 15px;
+    border-left:1px solid #E5E5E5;
+    height: 20px;
+    vertical-align: middle;
+    line-height: 20px;
+    padding: 0px 0px 0px 10px;
+    width:80px;
+    &:disabled {
+      color: #ccc;
+    }
+  }
+}
+.success-box {
+  padding-top:100px;
+  .icon-sucess {
+    width:40px;
+    height:40px;
+    background: url('../../../public/images/success-icon.png') no-repeat center center;
+    background-size:100%;
+    margin:10px auto;
+    display: block;
+  }
+  .result-ok {
+    display: block;
+    margin-bottom:60px;
+
+    em {
+      display: block;
+      text-align: center;
+      padding-top:10px;
+    }
+  }
+
+  .down-time {
+    i {
+      color: #ff635a;
+    }
+  }
+}

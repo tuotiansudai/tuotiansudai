@@ -53,9 +53,6 @@ public class ExtraRateServiceTest{
     private ExtraRateService extraRateService;
 
     @Autowired
-    private IdGenerator idGenerator;
-
-    @Autowired
     private LoanMapper loanMapper;
 
     @Autowired
@@ -131,9 +128,9 @@ public class ExtraRateServiceTest{
         LoanModel fakeLoan = this.createFakeLoan(LoanType.LOAN_INTEREST_MONTHLY_REPAY, 1000000, 2, 0.12, recheckTime.toDate());
         long loanRepay1ExpectedInterest = 1000;
         long loanRepay2ExpectedInterest = 1000;
-        LoanRepayModel loanRepay1 = this.getFakeLoanRepayModel(idGenerator.generate(), fakeLoan.getId(), 1, 0, loanRepay1ExpectedInterest, new DateTime().withTime(23, 59, 59, 0).toDate(), new DateTime().withMillisOfSecond(0).toDate(), RepayStatus.COMPLETE);
+        LoanRepayModel loanRepay1 = this.getFakeLoanRepayModel(IdGenerator.generate(), fakeLoan.getId(), 1, 0, loanRepay1ExpectedInterest, new DateTime().withTime(23, 59, 59, 0).toDate(), new DateTime().withMillisOfSecond(0).toDate(), RepayStatus.COMPLETE);
         loanRepay1.setActualInterest(loanRepay1ExpectedInterest);
-        LoanRepayModel loanRepay2 = this.getFakeLoanRepayModel(idGenerator.generate(), fakeLoan.getId(), 2, fakeLoan.getLoanAmount(), loanRepay2ExpectedInterest, new DateTime().plusDays(30).withTime(23, 59, 59, 0).toDate(), loanRepay1.getActualRepayDate(), RepayStatus.REPAYING);
+        LoanRepayModel loanRepay2 = this.getFakeLoanRepayModel(IdGenerator.generate(), fakeLoan.getId(), 2, fakeLoan.getLoanAmount(), loanRepay2ExpectedInterest, new DateTime().plusDays(30).withTime(23, 59, 59, 0).toDate(), loanRepay1.getActualRepayDate(), RepayStatus.REPAYING);
         loanRepayMapper.create(Lists.newArrayList(loanRepay1, loanRepay2));
         UserModel userModel = this.createFakeUser("investor", 1000000, 0);
         InvestModel investModel = this.createFakeInvest(fakeLoan.getId(), null, 1000000, userModel.getLoginName(), recheckTime.minusDays(10).toDate(), InvestStatus.SUCCESS, TransferStatus.TRANSFERABLE);
@@ -154,9 +151,9 @@ public class ExtraRateServiceTest{
         LoanModel fakeLoan = this.createFakeLoan(LoanType.LOAN_INTEREST_MONTHLY_REPAY, 1000000, 2, 0.12, recheckTime.toDate());
         long loanRepay1ExpectedInterest = 1000;
         long loanRepay2ExpectedInterest = 1000;
-        LoanRepayModel loanRepay1 = this.getFakeLoanRepayModel(idGenerator.generate(), fakeLoan.getId(), 1, 0, loanRepay1ExpectedInterest, new DateTime().withTime(23, 59, 59, 0).toDate(), new DateTime().withMillisOfSecond(0).toDate(), RepayStatus.COMPLETE);
+        LoanRepayModel loanRepay1 = this.getFakeLoanRepayModel(IdGenerator.generate(), fakeLoan.getId(), 1, 0, loanRepay1ExpectedInterest, new DateTime().withTime(23, 59, 59, 0).toDate(), new DateTime().withMillisOfSecond(0).toDate(), RepayStatus.COMPLETE);
         loanRepay1.setActualInterest(loanRepay1ExpectedInterest);
-        LoanRepayModel loanRepay2 = this.getFakeLoanRepayModel(idGenerator.generate(), fakeLoan.getId(), 2, fakeLoan.getLoanAmount(), loanRepay2ExpectedInterest, new DateTime().plusDays(30).withTime(23, 59, 59, 0).toDate(), loanRepay1.getActualRepayDate(), RepayStatus.REPAYING);
+        LoanRepayModel loanRepay2 = this.getFakeLoanRepayModel(IdGenerator.generate(), fakeLoan.getId(), 2, fakeLoan.getLoanAmount(), loanRepay2ExpectedInterest, new DateTime().plusDays(30).withTime(23, 59, 59, 0).toDate(), loanRepay1.getActualRepayDate(), RepayStatus.REPAYING);
         loanRepayMapper.create(Lists.newArrayList(loanRepay1, loanRepay2));
         UserModel userModel = this.createFakeUser("investor", 1000000, 0);
         InvestModel investModel = this.createFakeInvest(fakeLoan.getId(), null, 1000000, userModel.getLoginName(), recheckTime.minusDays(10).toDate(), InvestStatus.SUCCESS, TransferStatus.TRANSFERABLE);
@@ -190,9 +187,9 @@ public class ExtraRateServiceTest{
         LoanModel fakeLoan = this.createFakeLoan(LoanType.LOAN_INTEREST_MONTHLY_REPAY, 1000000, 2, 0.12, recheckTime.toDate());
         long loanRepay1ExpectedInterest = 1000;
         long loanRepay2ExpectedInterest = 1000;
-        LoanRepayModel loanRepay1 = this.getFakeLoanRepayModel(idGenerator.generate(), fakeLoan.getId(), 1, 0, loanRepay1ExpectedInterest, new DateTime().withTime(23, 59, 59, 0).toDate(), new DateTime().withMillisOfSecond(0).toDate(), RepayStatus.COMPLETE);
+        LoanRepayModel loanRepay1 = this.getFakeLoanRepayModel(IdGenerator.generate(), fakeLoan.getId(), 1, 0, loanRepay1ExpectedInterest, new DateTime().withTime(23, 59, 59, 0).toDate(), new DateTime().withMillisOfSecond(0).toDate(), RepayStatus.COMPLETE);
         loanRepay1.setActualInterest(loanRepay1ExpectedInterest);
-        LoanRepayModel loanRepay2 = this.getFakeLoanRepayModel(idGenerator.generate(), fakeLoan.getId(), 2, fakeLoan.getLoanAmount(), loanRepay2ExpectedInterest, new DateTime().plusDays(30).withTime(23, 59, 59, 0).toDate(), loanRepay1.getActualRepayDate(), RepayStatus.REPAYING);
+        LoanRepayModel loanRepay2 = this.getFakeLoanRepayModel(IdGenerator.generate(), fakeLoan.getId(), 2, fakeLoan.getLoanAmount(), loanRepay2ExpectedInterest, new DateTime().plusDays(30).withTime(23, 59, 59, 0).toDate(), loanRepay1.getActualRepayDate(), RepayStatus.REPAYING);
         loanRepayMapper.create(Lists.newArrayList(loanRepay1, loanRepay2));
         UserModel userModel = this.createFakeUser("investor", 1000000, 0);
         InvestModel investModel = this.createFakeInvest(fakeLoan.getId(), null, 1000000, userModel.getLoginName(), recheckTime.minusDays(10).toDate(), InvestStatus.SUCCESS, TransferStatus.SUCCESS);
@@ -219,9 +216,9 @@ public class ExtraRateServiceTest{
         LoanModel fakeLoan = this.createFakeLoan(LoanType.LOAN_INTEREST_MONTHLY_REPAY, 1000000, 2, 0.12, recheckTime.toDate());
         long loanRepay1ExpectedInterest = 1000;
         long loanRepay2ExpectedInterest = 1000;
-        LoanRepayModel loanRepay1 = this.getFakeLoanRepayModel(idGenerator.generate(), fakeLoan.getId(), 1, 0, loanRepay1ExpectedInterest, new DateTime().withTime(23, 59, 59, 0).toDate(), new DateTime().withMillisOfSecond(0).toDate(), RepayStatus.REPAYING);
+        LoanRepayModel loanRepay1 = this.getFakeLoanRepayModel(IdGenerator.generate(), fakeLoan.getId(), 1, 0, loanRepay1ExpectedInterest, new DateTime().withTime(23, 59, 59, 0).toDate(), new DateTime().withMillisOfSecond(0).toDate(), RepayStatus.REPAYING);
         loanRepay1.setActualInterest(loanRepay1ExpectedInterest);
-        LoanRepayModel loanRepay2 = this.getFakeLoanRepayModel(idGenerator.generate(), fakeLoan.getId(), 2, fakeLoan.getLoanAmount(), loanRepay2ExpectedInterest, new DateTime().plusDays(30).withTime(23, 59, 59, 0).toDate(), loanRepay1.getActualRepayDate(), RepayStatus.REPAYING);
+        LoanRepayModel loanRepay2 = this.getFakeLoanRepayModel(IdGenerator.generate(), fakeLoan.getId(), 2, fakeLoan.getLoanAmount(), loanRepay2ExpectedInterest, new DateTime().plusDays(30).withTime(23, 59, 59, 0).toDate(), loanRepay1.getActualRepayDate(), RepayStatus.REPAYING);
         loanRepayMapper.create(Lists.newArrayList(loanRepay1, loanRepay2));
         UserModel userModel = this.createFakeUser("investor", 1000000, 0);
         InvestModel investModel = this.createFakeInvest(fakeLoan.getId(), null, 1000000, userModel.getLoginName(), recheckTime.minusDays(10).toDate(), InvestStatus.SUCCESS, TransferStatus.SUCCESS);
@@ -246,9 +243,9 @@ public class ExtraRateServiceTest{
         LoanModel fakeLoan = this.createFakeLoan(LoanType.LOAN_INTEREST_MONTHLY_REPAY, 1000000, 2, 0.12, recheckTime.toDate());
         long loanRepay1ExpectedInterest = 1000;
         long loanRepay2ExpectedInterest = 1000;
-        LoanRepayModel loanRepay1 = this.getFakeLoanRepayModel(idGenerator.generate(), fakeLoan.getId(), 1, 0, loanRepay1ExpectedInterest, new DateTime().withTime(23, 59, 59, 0).toDate(), new DateTime().withMillisOfSecond(0).toDate(), RepayStatus.COMPLETE);
+        LoanRepayModel loanRepay1 = this.getFakeLoanRepayModel(IdGenerator.generate(), fakeLoan.getId(), 1, 0, loanRepay1ExpectedInterest, new DateTime().withTime(23, 59, 59, 0).toDate(), new DateTime().withMillisOfSecond(0).toDate(), RepayStatus.COMPLETE);
         loanRepay1.setActualInterest(loanRepay1ExpectedInterest);
-        LoanRepayModel loanRepay2 = this.getFakeLoanRepayModel(idGenerator.generate(), fakeLoan.getId(), 2, fakeLoan.getLoanAmount(), loanRepay2ExpectedInterest, new DateTime().plusDays(30).withTime(23, 59, 59, 0).toDate(), loanRepay1.getActualRepayDate(), RepayStatus.REPAYING);
+        LoanRepayModel loanRepay2 = this.getFakeLoanRepayModel(IdGenerator.generate(), fakeLoan.getId(), 2, fakeLoan.getLoanAmount(), loanRepay2ExpectedInterest, new DateTime().plusDays(30).withTime(23, 59, 59, 0).toDate(), loanRepay1.getActualRepayDate(), RepayStatus.REPAYING);
         loanRepayMapper.create(Lists.newArrayList(loanRepay1, loanRepay2));
         UserModel userModel = this.createFakeUser("investor", 1000000, 0);
         InvestModel investModel = this.createFakeInvest(fakeLoan.getId(), null, 1000000, userModel.getLoginName(), recheckTime.minusDays(10).toDate(), InvestStatus.SUCCESS, TransferStatus.TRANSFERABLE);
@@ -284,9 +281,9 @@ public class ExtraRateServiceTest{
         LoanModel fakeLoan = this.createFakeLoan(LoanType.LOAN_INTEREST_MONTHLY_REPAY, 1000000, 2, 0.12, recheckTime.toDate());
         long loanRepay1ExpectedInterest = 1000;
         long loanRepay2ExpectedInterest = 1000;
-        LoanRepayModel loanRepay1 = this.getFakeLoanRepayModel(idGenerator.generate(), fakeLoan.getId(), 1, 0, loanRepay1ExpectedInterest, new DateTime().withTime(23, 59, 59, 0).toDate(), new DateTime().withMillisOfSecond(0).toDate(), RepayStatus.COMPLETE);
+        LoanRepayModel loanRepay1 = this.getFakeLoanRepayModel(IdGenerator.generate(), fakeLoan.getId(), 1, 0, loanRepay1ExpectedInterest, new DateTime().withTime(23, 59, 59, 0).toDate(), new DateTime().withMillisOfSecond(0).toDate(), RepayStatus.COMPLETE);
         loanRepay1.setActualInterest(loanRepay1ExpectedInterest);
-        LoanRepayModel loanRepay2 = this.getFakeLoanRepayModel(idGenerator.generate(), fakeLoan.getId(), 2, fakeLoan.getLoanAmount(), loanRepay2ExpectedInterest, new DateTime().plusDays(30).withTime(23, 59, 59, 0).toDate(), loanRepay1.getActualRepayDate(), RepayStatus.REPAYING);
+        LoanRepayModel loanRepay2 = this.getFakeLoanRepayModel(IdGenerator.generate(), fakeLoan.getId(), 2, fakeLoan.getLoanAmount(), loanRepay2ExpectedInterest, new DateTime().plusDays(30).withTime(23, 59, 59, 0).toDate(), loanRepay1.getActualRepayDate(), RepayStatus.REPAYING);
         loanRepayMapper.create(Lists.newArrayList(loanRepay1, loanRepay2));
         UserModel userModel = this.createFakeUser("investor", 1000000, 0);
         InvestModel investModel = this.createFakeInvest(fakeLoan.getId(), null, 1000000, userModel.getLoginName(), recheckTime.minusDays(10).toDate(), InvestStatus.SUCCESS, TransferStatus.SUCCESS);
@@ -330,7 +327,7 @@ public class ExtraRateServiceTest{
     }
 
     private InvestModel createFakeInvest(long loanId, Long transferInvestId, long amount, String loginName, Date investTime, InvestStatus investStatus, TransferStatus transferStatus) {
-        InvestModel fakeInvestModel = new InvestModel(idGenerator.generate(), loanId, transferInvestId, amount, loginName, investTime, Source.WEB, null, 0.1);
+        InvestModel fakeInvestModel = new InvestModel(IdGenerator.generate(), loanId, transferInvestId, amount, loginName, investTime, Source.WEB, null, 0.1);
         fakeInvestModel.setStatus(investStatus);
         fakeInvestModel.setTransferStatus(transferStatus);
         MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
@@ -361,7 +358,7 @@ public class ExtraRateServiceTest{
     private LoanModel createFakeLoan(LoanType loanType, long amount, int periods, double baseRate, Date recheckTime) {
         UserModel loaner = this.createFakeUser("loaner", 0, 0);
         LoanModel fakeLoanModel = new LoanModel();
-        fakeLoanModel.setId(idGenerator.generate());
+        fakeLoanModel.setId(IdGenerator.generate());
         fakeLoanModel.setName("loanName");
         fakeLoanModel.setLoanAmount(amount);
         fakeLoanModel.setLoanerLoginName(loaner.getLoginName());

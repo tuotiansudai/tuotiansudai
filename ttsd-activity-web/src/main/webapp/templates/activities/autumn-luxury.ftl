@@ -21,7 +21,7 @@
         </div>
         <div class="luxury-item clearfix">
             <div class="title-one">
-                <img src="${staticServer}/activity/images/sign/actor/luxury/title-one.png">
+                <img src="${commonStaticServer}/activity/images/sign/actor/luxury/title-one.png">
             </div>
             <div class="title-info clearfix">
                 <h1>简单三步，奖品收益两手拿！</h1>
@@ -178,7 +178,7 @@
                         <div class="code-item">
                             <p>如何获得<span>更多奢侈品</span>？码上教你</p>
                             <p>
-                                <img src="${staticServer}/activity/images/sign/actor/luxury/luxury-code.jpg">
+                                <img src="${commonStaticServer}/activity/images/sign/actor/luxury/luxury-code.jpg">
                             </p>
                             <p>扫码查看活动攻略</p>
                         </div>
@@ -194,7 +194,7 @@
         </div>
         <div class="luxury-item hack clearfix">
             <div class="title-two">
-                <img src="${staticServer}/activity/images/sign/actor/luxury/title-two.png">
+                <img src="${commonStaticServer}/activity/images/sign/actor/luxury/title-two.png">
             </div>
             <div class="step-list">
                 <h5>活动期间，新用户在平台完成注册、实名认证、绑卡、充值、投资均可获得一次抽奖机会。</h5>
@@ -261,7 +261,7 @@
             </div>
             <div class="phone-step">
                 <p>
-                    <img src="${staticServer}/activity/images/sign/actor/luxury/intro-img.png" width="90%">
+                    <img src="${commonStaticServer}/activity/images/sign/actor/luxury/intro-img.png" width="90%">
                 </p>
                 <p>
                     <@global.isAnonymous>

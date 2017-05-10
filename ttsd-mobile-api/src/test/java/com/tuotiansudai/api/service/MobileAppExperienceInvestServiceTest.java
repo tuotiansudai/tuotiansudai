@@ -30,12 +30,9 @@ public class MobileAppExperienceInvestServiceTest extends ServiceTestBase {
     @Mock
     private MobileAppChannelService mobileAppChannelService;
 
-    @Autowired
-    private IdGenerator idGenerator;
-
     @Test
     public void shouldExperienceInvestSuccess() {
-        long loanId = idGenerator.generate();
+        long loanId = IdGenerator.generate();
         InvestRequestDto investRequestDto = new InvestRequestDto();
         investRequestDto.setLoanId(String.valueOf(loanId));
         BaseParam baseParam = new BaseParam();

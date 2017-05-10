@@ -2,7 +2,6 @@ package com.tuotiansudai.paywrapper.service;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.enums.UserBillBusinessType;
@@ -18,6 +17,7 @@ import com.tuotiansudai.paywrapper.service.impl.NormalRepayServiceImpl;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountTransfer;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,6 +29,8 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.Date;
 import java.util.List;
 
@@ -75,8 +77,15 @@ public class NormalRepayPaybackInvestMockTest {
     private MQWrapperClient mqWrapperClient;
 
     @Before
-    public void init() {
+    public void init() throws Exception {
         MockitoAnnotations.initMocks(this);
+
+        Field redisWrapperClientField = this.normalRepayService.getClass().getDeclaredField("redisWrapperClient");
+        redisWrapperClientField.setAccessible(true);
+        Field modifiersField = Field.class.getDeclaredField("modifiers");
+        modifiersField.setAccessible(true);
+        modifiersField.setInt(redisWrapperClientField, redisWrapperClientField.getModifiers() & ~Modifier.FINAL);
+        redisWrapperClientField.set(this.normalRepayService, this.redisWrapperClient);
     }
 
     @Test
@@ -165,8 +174,9 @@ public class NormalRepayPaybackInvestMockTest {
         ArgumentCaptor<String> redisValueArgumentCaptor = ArgumentCaptor.forClass(String.class);
         verify(redisWrapperClient, times(6)).hset(redisKey1ArgumentCaptor.capture(), redisKey2ArgumentCaptor.capture(), redisValueArgumentCaptor.capture());
     }
+
     @Test
-    public void shouldPayBackThePeriodWhenInvestRepayIsComplete() throws Exception{
+    public void shouldPayBackThePeriodWhenInvestRepayIsComplete() throws Exception {
         long loanId = 1;
         LoanRepayModel loanRepay1 = new LoanRepayModel(1, loanId, 1, 10, 10, new DateTime().minusDays(30).withTime(23, 59, 59, 0).toDate(), RepayStatus.REPAYING);
         loanRepay1.setActualInterest(10);

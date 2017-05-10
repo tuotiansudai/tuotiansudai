@@ -56,7 +56,7 @@
         </div>
 
         <div class="title-benefit">
-            <img src="${staticServer}/activity/images/red_envelop_split/title.png">
+            <img src="${commonStaticServer}/activity/images/red_envelop_split/title.png">
         </div>
 
         <div class="benefit-box">
