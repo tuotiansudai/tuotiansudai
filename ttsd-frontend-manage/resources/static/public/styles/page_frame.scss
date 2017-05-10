@@ -1,14 +1,9 @@
 @import  "global_png";
 .header-download {
   display: none;
-  background: #333;
-  color: #fff;
+  padding: 10px 4px;
   border-bottom: 1px solid rgba(0,0,0,0.2);
-  position: fixed;
-  width: 94%;
-  padding: 3%;
-  bottom:0;
-  z-index: 60;
+
   .icon-close {
     margin-right: 10px;
     width:18px;

@@ -78,6 +78,7 @@ $('#agreeRule').on('click', function(event) {
         shadeClose: true,
         move: false,
         scrollbar: true,
+        skin:'register-skin',
         content: $('#agreementBox')
     });
 });
