@@ -10,7 +10,6 @@ import com.tuotiansudai.activity.service.LotteryDrawActivityService;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppPointShopService;
 import com.tuotiansudai.api.util.PageValidUtils;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.point.repository.mapper.*;
 import com.tuotiansudai.point.repository.model.*;
@@ -22,6 +21,7 @@ import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.CouponModel;
 import com.tuotiansudai.repository.model.ExchangeCouponView;
 import com.tuotiansudai.spring.LoginUserInfo;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +38,8 @@ import java.util.*;
 public class MobileAppPointShopServiceImpl implements MobileAppPointShopService {
 
     static Logger logger = Logger.getLogger(MobileAppPointShopServiceImpl.class);
+
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
     @Autowired
     private UserAddressMapper userAddressMapper;
@@ -77,9 +79,6 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
 
     @Autowired
     private PointBillService pointBillService;
-
-    @Autowired
-    RedisWrapperClient redisWrapperClient;
 
 
     @Override

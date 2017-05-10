@@ -144,9 +144,9 @@
                     更新后当日24:00自动生效
                     <div class="tomorrowThumbImage">
                         <#if tomorrowDto??>
-                            <img src="${staticServer}${tomorrowDto.goldImageUrl!}"
+                            <img src="${commonStaticServer}${tomorrowDto.goldImageUrl!}"
                                  alt="金奖缩略图">（金奖）
-                            <img src="${staticServer}${tomorrowDto.silverImageUrl!}"
+                            <img src="${commonStaticServer}${tomorrowDto.silverImageUrl!}"
                                  alt="银奖缩略图">（银奖）
                         </#if>
                     </div>
@@ -161,9 +161,9 @@
                     修改后即时发布到页面,请慎用
                     <div class="todayThumbImage">
                         <#if todayDto??>
-                            <img src="${staticServer}${todayDto.goldImageUrl!}"
+                            <img src="${commonStaticServer}${todayDto.goldImageUrl!}"
                                  alt="金奖缩略图" />（金奖）
-                            <img src="${staticServer}${todayDto.silverImageUrl!}"
+                            <img src="${commonStaticServer}${todayDto.silverImageUrl!}"
                                  alt="银奖缩略图">（银奖）
                         </#if>
                     </div>

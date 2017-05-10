@@ -58,7 +58,7 @@ public class MembershipInvestServiceTest {
 
         long investId = random.nextLong();
 
-        membershipInvestService.afterInvestSuccess(user.getLoginName(), 100L, investId);
+        membershipInvestService.afterInvestSuccess(user.getLoginName(), 100L, investId, "测试标的");
         MembershipModel currentMembership = membershipMapper.findById(userMembershipMapper.findCurrentMaxByLoginName(user.getLoginName()).getMembershipId());
         assertEquals(membershipModelLevel5.getLevel(), currentMembership.getLevel());
     }
@@ -73,7 +73,7 @@ public class MembershipInvestServiceTest {
 
         long investId = random.nextLong();
 
-        membershipInvestService.afterInvestSuccess(user.getLoginName(), 100L, investId);
+        membershipInvestService.afterInvestSuccess(user.getLoginName(), 100L, investId, "测试标的");
         MembershipModel currentMembership = membershipMapper.findById(userMembershipMapper.findCurrentMaxByLoginName(user.getLoginName()).getMembershipId());
         assertEquals(membershipModelLevel2.getLevel(), currentMembership.getLevel());
     }

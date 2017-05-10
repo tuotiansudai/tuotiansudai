@@ -51,7 +51,7 @@ public class MembershipInvestService {
 
 
     @Transactional
-    public void afterInvestSuccess(String loginName, long investAmount, long investId) {
+    public void afterInvestSuccess(String loginName, long investAmount, long investId, String loanName) {
         try {
             if (membershipExperienceBillMapper.findByLoginNameAndInvestId(loginName, investId) != null) {
                 // 检查是否已经处理过，幂等操作
@@ -69,7 +69,7 @@ public class MembershipInvestService {
                     String.valueOf(investId),
                     investMembershipPoint,
                     accountModel.getMembershipPoint(),
-                    MessageFormat.format("您投资了{0}项目{1}元", String.valueOf(investId), AmountConverter.convertCentToString(investAmount)));
+                    MessageFormat.format("您投资了{0}项目{1}元", loanName, AmountConverter.convertCentToString(investAmount)));
 
             membershipExperienceBillMapper.create(billModel);
 
@@ -94,7 +94,7 @@ public class MembershipInvestService {
         //Title:恭喜您会员等级提升至V{0}
         //Content:尊敬的用户，恭喜您会员等级提升至V{0}，拓天速贷为您准备了更多会员特权，快来查看吧。
         String title = MessageFormat.format(MessageEventType.MEMBERSHIP_UPGRADE.getTitleTemplate(), String.valueOf(level));
-        String content = MessageFormat.format(MessageEventType.MEMBERSHIP_UPGRADE.getContentTemplate(), loginName, String.valueOf(level));
+        String content = MessageFormat.format(MessageEventType.MEMBERSHIP_UPGRADE.getContentTemplate(), String.valueOf(level));
         mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(MessageEventType.MEMBERSHIP_UPGRADE,
                 Lists.newArrayList(loginName),
                 title,

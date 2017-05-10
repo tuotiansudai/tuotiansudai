@@ -3,9 +3,9 @@ package com.tuotiansudai.console.controller;
 import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.UserService;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,15 +23,14 @@ import java.util.stream.Collectors;
 @RequestMapping(path = "/anxin-sign")
 public class AnxinSignController {
 
-    static Logger logger = Logger.getLogger(AnxinSignController.class);
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
-    private final RedisWrapperClient redisWrapperClient;
+    static Logger logger = Logger.getLogger(AnxinSignController.class);
 
     private final UserService userService;
 
     @Autowired
-    public AnxinSignController(RedisWrapperClient redisWrapperClient, UserService userService) {
-        this.redisWrapperClient = redisWrapperClient;
+    public AnxinSignController(UserService userService) {
         this.userService = userService;
     }
 

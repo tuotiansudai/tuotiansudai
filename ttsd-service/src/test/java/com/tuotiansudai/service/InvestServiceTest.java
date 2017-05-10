@@ -45,9 +45,6 @@ public class InvestServiceTest {
     private UserMapper userMapper;
 
     @Autowired
-    private IdGenerator idGenerator;
-
-    @Autowired
     private ExtraLoanRateMapper extraLoanRateMapper;
 
     @Autowired
@@ -110,7 +107,7 @@ public class InvestServiceTest {
         cal.add(Calendar.SECOND, -98);
         for (int i = 10000000; i < 10099000; i += 1000) {
             cal.add(Calendar.SECOND, 1);
-            InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, 1, loginName, new Date(), Source.WEB, null, 0.1);
+            InvestModel model = new InvestModel(IdGenerator.generate(), loanId, null, 1, loginName, new Date(), Source.WEB, null, 0.1);
             model.setStatus(InvestStatus.SUCCESS);
             investMapper.create(model);
         }
@@ -118,7 +115,7 @@ public class InvestServiceTest {
 
     @Before
     public void setup() throws Exception {
-        long loanId = idGenerator.generate();
+        long loanId = IdGenerator.generate();
         LOAN_ID = loanId;
         createUserByUserId("testuser");
         createLoanByUserId("testuser", loanId);
@@ -163,7 +160,7 @@ public class InvestServiceTest {
     @Test
     public void shouldEstimateInvestIncomeIsOk() {
         String loginName = "testExtraRate";
-        long loanId = idGenerator.generate();
+        long loanId = IdGenerator.generate();
         createUserByUserId(loginName);
         createLoanByUserId(loginName, loanId);
         List<ExtraLoanRateModel> extraLoanRateModels = createExtraLoanRate(loanId);
@@ -210,7 +207,7 @@ public class InvestServiceTest {
 
     private LoanDetailsModel createLoanDetails(long loanId){
         LoanDetailsModel loanDetailsModel = new LoanDetailsModel();
-        loanDetailsModel.setId(idGenerator.generate());
+        loanDetailsModel.setId(IdGenerator.generate());
         loanDetailsModel.setDeclaration("声明材料");
         loanDetailsModel.setExtraSource(Lists.newArrayList(Source.WEB));
         loanDetailsModel.setLoanId(loanId);

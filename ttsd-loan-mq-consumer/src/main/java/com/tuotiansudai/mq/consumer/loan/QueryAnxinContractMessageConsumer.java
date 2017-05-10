@@ -1,7 +1,6 @@
 package com.tuotiansudai.mq.consumer.loan;
 
 import com.tuotiansudai.client.AnxinWrapperClient;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.AnxinDataDto;
 import com.tuotiansudai.dto.AnxinQueryContractDto;
@@ -18,6 +17,7 @@ import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.TransferApplicationModel;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.util.JsonConverter;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -39,6 +39,8 @@ public class QueryAnxinContractMessageConsumer implements MessageConsumer {
 
     private static Logger logger = LoggerFactory.getLogger(QueryAnxinContractMessageConsumer.class);
 
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
+
     @Autowired
     private AnxinWrapperClient anxinWrapperClient;
 
@@ -53,9 +55,6 @@ public class QueryAnxinContractMessageConsumer implements MessageConsumer {
 
     @Value("#{'${anxin.contract.notify.mobileList}'.split('\\|')}")
     private List<String> mobileList;
-
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
 
     @Autowired
     private TransferApplicationMapper transferApplicationMapper;

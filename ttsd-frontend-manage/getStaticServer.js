@@ -20,8 +20,8 @@ else {
 
 var configFile = fs.readFileSync(ttsdConfigFile, 'utf8');
 
-var staticServer=configFile.split('common.static.server=')[1].split('\n')[0];
+var commonStaticServer=configFile.split('common.static.server=')[1].split('\n')[0];
 
-module.exports=staticServer;
+module.exports=commonStaticServer;
 
 

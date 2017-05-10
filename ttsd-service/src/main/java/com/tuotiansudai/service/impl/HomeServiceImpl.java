@@ -66,6 +66,9 @@ public class HomeServiceImpl implements HomeService {
 
     public HomeLoanDto getNewbieLoan() {
         LoanModel homeNewbieLoan = loanMapper.findHomeNewbieLoan();
+        if (homeNewbieLoan == null) {
+            return null;
+        }
         long investAmount = investMapper.sumSuccessInvestAmount(homeNewbieLoan.getId());
         List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(homeNewbieLoan.getId());
         LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(homeNewbieLoan.getId());

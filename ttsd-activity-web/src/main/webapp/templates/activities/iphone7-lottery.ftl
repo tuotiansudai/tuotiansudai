@@ -2,8 +2,8 @@
 <@global.main pageCss="${css.iphone7_lottery}" pageJavascript="${js.iphone7_lottery}" activeNav="" activeLeftNav="" title="iphone7活动_活动中心_拓天速贷" keywords="投资活动,APP投资,iphone7,拓天速贷" description="参与拓天速贷'厚惠有7'投资活动的用户即可获得128Giphone7一部，使用APP投资还可获得投资红包大奖">
 <div class="activity-container">
 	<div class="top-intro-img">
-		<img src="${staticServer}/activity/images/iphone7/top-intro.png" alt="英豪榜" width="100%" class="top-img">
-		<img src="${staticServer}/activity/images/iphone7/top-intro-phone.png" alt="英豪榜" width="100%" class="top-img-phone">
+		<img src="${commonStaticServer}/activity/images/iphone7/top-intro.png" alt="英豪榜" width="100%" class="top-img">
+		<img src="${commonStaticServer}/activity/images/iphone7/top-intro-phone.png" alt="英豪榜" width="100%" class="top-img-phone">
 	</div>
 	<div class="actor-content-group">
 		<div class="wp clearfix">
@@ -13,14 +13,14 @@
 			<div class="model-group text-c">
 				<i class="icon-laba"></i>
 				<h3>
-				<img src="${staticServer}/activity/images/iphone7/big-event.png" width="90%">
+				<img src="${commonStaticServer}/activity/images/iphone7/big-event.png" width="90%">
 				</h3>
 				<div class="content-item">
 					<p>
 						10月26日-11月4日老板出差,运营汪们私自决定,趁机做一次惊天地泣鬼神的大活动
 					</p>
 					<p>
-						<img src="${staticServer}/activity/images/iphone7/actor-text.png">
+						<img src="${commonStaticServer}/activity/images/iphone7/actor-text.png">
 					</p>
 					<p>
 						我们的口号是：宁被老板罚工资，也为用户谋福利！
@@ -29,11 +29,11 @@
 			</div>
 			<div class="model-group text-c">
 				<h3>
-				<img src="${staticServer}/activity/images/iphone7/statement-title.png" width="90%">
+				<img src="${commonStaticServer}/activity/images/iphone7/statement-title.png" width="90%">
 				</h3>
 				<div class="content-item dashed">
 					<p>
-						<img src="${staticServer}/activity/images/iphone7/title-info.png">
+						<img src="${commonStaticServer}/activity/images/iphone7/title-info.png">
 					</p>
 					<p>
 						活动期间，每次投资都可以获得一个投资码；
@@ -44,11 +44,11 @@
 				</div>
 			</div>
 			<div class="actor-gift-group text-c">
-				<img src="${staticServer}/activity/images/iphone7/gift-picture.png" width="70%">
+				<img src="${commonStaticServer}/activity/images/iphone7/gift-picture.png" width="70%">
 			</div>
 			<div class="model-group">
 				<h3 class="text-c">
-				<img src="${staticServer}/activity/images/iphone7/reward-info.png" width="90%">
+				<img src="${commonStaticServer}/activity/images/iphone7/reward-info.png" width="90%">
 				</h3>
 				<div class="content-item">
 					<div class="tip-item" id="moneyTip">
@@ -93,7 +93,7 @@
 			</div>
 			<div class="model-group">
 				<h3 class="text-c">
-				<img src="${staticServer}/activity/images/iphone7/my-code.png" width="90%">
+				<img src="${commonStaticServer}/activity/images/iphone7/my-code.png" width="90%">
 				</h3>
 				<div class="content-item dashed">
 					<@global.isAnonymous>

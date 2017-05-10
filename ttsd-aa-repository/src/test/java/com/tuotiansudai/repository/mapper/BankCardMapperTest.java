@@ -1,6 +1,7 @@
 package com.tuotiansudai.repository.mapper;
 
 import com.tuotiansudai.repository.model.*;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,7 +91,7 @@ public class BankCardMapperTest {
         model.setLoginName("loginName");
         model.setPassword("password");
         model.setEmail("loginName@abc.com");
-        model.setMobile("13900000000");
+        model.setMobile(RandomStringUtils.randomNumeric(11));
         model.setRegisterTime(new Date());
         model.setStatus(UserStatus.ACTIVE);
         model.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));

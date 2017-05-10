@@ -6,13 +6,12 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.PayWrapperClient;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.console.bi.dto.RoleStage;
 import com.tuotiansudai.console.dto.RemainUserDto;
 import com.tuotiansudai.console.dto.UserItemDataDto;
 import com.tuotiansudai.console.repository.mapper.UserMapperConsole;
-import com.tuotiansudai.console.repository.model.UserMicroModelView;
 import com.tuotiansudai.console.repository.model.RemainUserView;
+import com.tuotiansudai.console.repository.model.UserMicroModelView;
 import com.tuotiansudai.console.repository.model.UserOperation;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.OperationType;
@@ -25,6 +24,7 @@ import com.tuotiansudai.service.BindBankCardService;
 import com.tuotiansudai.task.TaskConstant;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.PaginationUtil;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.commons.collections4.CollectionUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,11 +33,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class ConsoleUserService {
+
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
     @Autowired
     private UserMapper userMapper;
@@ -62,9 +64,6 @@ public class ConsoleUserService {
 
     @Autowired
     private ReferrerRelationMapper referrerRelationMapper;
-
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
 
     @Autowired
     private MQWrapperClient mqWrapperClient;

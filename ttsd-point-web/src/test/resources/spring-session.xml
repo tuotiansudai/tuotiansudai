@@ -18,8 +18,8 @@
     </bean>
 
     <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
-        <property name="maxTotal" value="${point.jedis.pool.maxTotal}"/>
-        <property name="maxWaitMillis" value="${common.jedis.pool.maxWaitMillis}"/>
+        <property name="maxTotal" value="300"/>
+        <property name="maxWaitMillis" value="5000"/>
     </bean>
     <!--<bean class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"/>-->
     <bean id="jedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"

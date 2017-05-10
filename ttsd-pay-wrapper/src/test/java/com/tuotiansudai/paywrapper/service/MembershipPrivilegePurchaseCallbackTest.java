@@ -46,8 +46,6 @@ public class MembershipPrivilegePurchaseCallbackTest extends RepayBaseTest {
     @Autowired
     private AccountMapper accountMapper;
     @Autowired
-    private IdGenerator idGenerator;
-    @Autowired
     private MembershipPrivilegePurchaseMapper membershipPrivilegePurchaseMapper;
     @Autowired
     private UserBillMapper userBillMapper;
@@ -67,7 +65,7 @@ public class MembershipPrivilegePurchaseCallbackTest extends RepayBaseTest {
         AccountModel accountModel = this.getFakeAccount(userModel);
         accountMapper.create(accountModel);
         MembershipPrivilegePurchaseModel membershipPrivilegePurchaseModel
-                = new MembershipPrivilegePurchaseModel(idGenerator.generate(), userModel.getLoginName(),
+                = new MembershipPrivilegePurchaseModel(IdGenerator.generate(), userModel.getLoginName(),
                 userModel.getMobile(),
                 userModel.getUserName(),
                 MembershipPrivilegePriceType._30,

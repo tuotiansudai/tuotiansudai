@@ -2,8 +2,8 @@
 <@global.main pageCss="${css.spring_festival}" pageJavascript="${js.spring_festival}" activeNav="" activeLeftNav="" title="春节活动_活动中心_拓天速贷" keywords="拓天速贷,签到领福袋,投资拆红包,春节投资活动" description="拓天速贷春节投资活动,每日签到领取福袋,点亮窗花拆红包,春节投资拿年货大礼包,累计投资礼包加量,拓天速贷年货派不停.">
 <div class="spring-festival-container">
     <div class="top-container">
-        <img src="${staticServer}/activity/images/spring-festival/top-img.jpg" width="100%" class="top-img">
-        <img src="${staticServer}/activity/images/spring-festival/top-img-phone.jpg" width="100%" class="top-img-phone">
+        <img src="${commonStaticServer}/activity/images/spring-festival/top-img.jpg" width="100%" class="top-img">
+        <img src="${commonStaticServer}/activity/images/spring-festival/top-img-phone.jpg" width="100%" class="top-img-phone">
     </div>
     <div class="wp">
         <div class="model-container">
@@ -14,8 +14,8 @@
             </div>
             <h3 class="title-info">活动期间，每日在本活动页面签到即可领取1个福袋。</h3>
             <div class="bag-item">
-                <img src="${staticServer}/activity/images/spring-festival/bag-img.png" class="bag-img">
-                <img src="${staticServer}/activity/images/spring-festival/bag-icon.png" width="100%" class="bag-icon">
+                <img src="${commonStaticServer}/activity/images/spring-festival/bag-img.png" class="bag-img">
+                <img src="${commonStaticServer}/activity/images/spring-festival/bag-icon.png" width="100%" class="bag-icon">
             </div>
             <div class="btn-item">
                 <#if isActivity?? && !isActivity>
@@ -114,7 +114,7 @@
                                 <p><span>+0.5</span>%</p>
                                 <p>加息券</p>
                             </div>
-                            <img src="${staticServer}/activity/images/spring-festival/gift-one.png">
+                            <img src="${commonStaticServer}/activity/images/spring-festival/gift-one.png">
                         </div>
                     </li>
                     <li>
@@ -132,7 +132,7 @@
                                 <p><span>+0.5</span>%</p>
                                 <p>加息券</p>
                             </div>
-                            <img src="${staticServer}/activity/images/spring-festival/gift-two.png">
+                            <img src="${commonStaticServer}/activity/images/spring-festival/gift-two.png">
                         </div>
                     </li>
                     <li>
@@ -150,7 +150,7 @@
                                 <p><span>+0.5</span>%</p>
                                 <p>加息券</p>
                             </div>
-                            <img src="${staticServer}/activity/images/spring-festival/gift-three.png" class="sky-img">
+                            <img src="${commonStaticServer}/activity/images/spring-festival/gift-three.png" class="sky-img">
                         </div>
                     </li>
                     <li>
@@ -168,7 +168,7 @@
                                 <p><span>+0.5</span>%</p>
                                 <p>加息券</p>
                             </div>
-                            <img src="${staticServer}/activity/images/spring-festival/gift-four.png">
+                            <img src="${commonStaticServer}/activity/images/spring-festival/gift-four.png">
                         </div>
                     </li>
                 </ul>

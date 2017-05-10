@@ -12,12 +12,12 @@ import com.tuotiansudai.cfca.dto.ContractResponseView;
 import com.tuotiansudai.cfca.service.AnxinSignConnectService;
 import com.tuotiansudai.cfca.service.AnxinSignService;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.dto.sms.GenerateContractErrorNotifyDto;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.util.RedisWrapperClient;
 import com.tuotiansudai.util.UUIDGenerator;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -37,10 +37,9 @@ import static com.tuotiansudai.constants.AnxinContractCreateRedisKey.TRANSFER_CO
 @Service
 public class AnxinSignServiceImpl implements AnxinSignService {
 
-    private static Logger logger = Logger.getLogger(AnxinSignServiceImpl.class);
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
+    private static Logger logger = Logger.getLogger(AnxinSignServiceImpl.class);
 
     @Autowired
     private AnxinSignConnectService anxinSignConnectService;

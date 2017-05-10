@@ -1,5 +1,5 @@
 <div class="hide">
-    <#if isProduction>
+    <#if isProduction?? && isProduction>
         <script type="text/javascript">
             window._pt_lt = new Date().getTime();
             window._pt_sp_2 = [];

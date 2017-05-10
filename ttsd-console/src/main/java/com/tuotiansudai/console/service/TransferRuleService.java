@@ -1,13 +1,13 @@
 package com.tuotiansudai.console.service;
 
-import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.dto.TransferRuleDto;
 import com.tuotiansudai.enums.OperationType;
 import com.tuotiansudai.enums.Role;
-import com.tuotiansudai.task.OperationTask;
-import com.tuotiansudai.task.TaskConstant;
-import com.tuotiansudai.dto.TransferRuleDto;
 import com.tuotiansudai.repository.mapper.TransferRuleMapper;
 import com.tuotiansudai.repository.model.TransferRuleModel;
+import com.tuotiansudai.task.OperationTask;
+import com.tuotiansudai.task.TaskConstant;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,12 +15,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class TransferRuleService {
 
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
+
     @Autowired
     private TransferRuleMapper transferRuleMapper;
-
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
-
 
     @SuppressWarnings(value = "unchecked")
     public TransferRuleDto getTransferRule() {

@@ -68,9 +68,6 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
     private InvestReferrerRewardMapper investReferrerRewardMapper;
 
     @Autowired
-    private IdGenerator idGenerator;
-
-    @Autowired
     private LoanMapper loanMapper;
 
     @Autowired
@@ -113,7 +110,7 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
                     }
 
                     long reward = this.calculateReferrerReward(invest.getAmount(), invest.getTradingTime(), loanDealLine, referrerRelationModel.getLevel(), role);
-                    InvestReferrerRewardModel model = new InvestReferrerRewardModel(idGenerator.generate(), invest.getId(), reward, referrerLoginName, role);
+                    InvestReferrerRewardModel model = new InvestReferrerRewardModel(IdGenerator.generate(), invest.getId(), reward, referrerLoginName, role);
                     investReferrerRewardMapper.create(model);
                     if (this.transferReferrerReward(model)) {
                         this.sendMessage(invest.getLoginName(), referrerLoginName, reward, model.getId());

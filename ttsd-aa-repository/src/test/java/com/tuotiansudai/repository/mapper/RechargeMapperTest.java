@@ -3,6 +3,7 @@ package com.tuotiansudai.repository.mapper;
 
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,16 +29,13 @@ public class RechargeMapperTest {
     @Autowired
     private RechargeMapper rechargeMapper;
 
-    @Autowired
-    private IdGenerator idGenerator;
-
     @Test
     public void shouldCreateRecharge() throws Exception {
         UserModel fakeUserModel = this.getFakeUserModel();
         userMapper.create(fakeUserModel);
 
         RechargeModel model = new RechargeModel();
-        model.setId(idGenerator.generate());
+        model.setId(IdGenerator.generate());
         model.setLoginName(fakeUserModel.getLoginName());
         model.setBankCode("bank");
         model.setCreatedTime(new Date());
@@ -56,7 +54,7 @@ public class RechargeMapperTest {
         userMapper.create(fakeUserModel);
 
         RechargeModel model = new RechargeModel();
-        model.setId(idGenerator.generate());
+        model.setId(IdGenerator.generate());
         model.setLoginName(fakeUserModel.getLoginName());
         model.setBankCode("bank");
         model.setCreatedTime(new Date());
@@ -77,7 +75,7 @@ public class RechargeMapperTest {
         userModelTest.setLoginName("helloworld");
         userModelTest.setPassword("123abc");
         userModelTest.setEmail("12345@abc.com");
-        userModelTest.setMobile("13900000000");
+        userModelTest.setMobile(RandomStringUtils.randomNumeric(11));
         userModelTest.setRegisterTime(new Date());
         userModelTest.setStatus(UserStatus.ACTIVE);
         userModelTest.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));

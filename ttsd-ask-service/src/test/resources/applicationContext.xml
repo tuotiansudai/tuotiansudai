@@ -98,10 +98,6 @@
         <property name="basePackage" value="com.tuotiansudai.ask.repository.mapper"/>
     </bean>
 
-    <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
-        <property name="maxTotal" value="${ask.jedis.pool.maxTotal}"/>
-    </bean>
-
     <!--for test-->
     <bean id="httpServletRequest" class="org.springframework.mock.web.MockHttpServletRequest"/>
 

@@ -22,8 +22,7 @@ import java.text.NumberFormat;
 import java.util.List;
 import java.util.Map;
 
-@Controller
-@RequestMapping(path = "/activity/christmas")
+
 public class ChristmasPrizeController {
     @Autowired
     private ChristmasPrizeService christmasPrizeService;
