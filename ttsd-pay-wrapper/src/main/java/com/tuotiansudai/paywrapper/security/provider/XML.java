@@ -1,6 +1,7 @@
 package com.tuotiansudai.paywrapper.security.provider;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -15,7 +16,7 @@ public class XML {
 
     public static String serializer(Object data) {
         try {
-            xmlMapper.get().writeValueAsString(data);
+            return xmlMapper.get().writeValueAsString(data);
         } catch (JsonProcessingException e) {
             logger.warn("serializer xml failed", e);
         }
@@ -25,6 +26,15 @@ public class XML {
     public static <T> T deserializer(String encrypted, Class<T> tClass) {
         try {
             return xmlMapper.get().readValue(encrypted, tClass);
+        } catch (IOException e) {
+            logger.warn("deserializer xml failed", e);
+        }
+        return null;
+    }
+
+    public static <T> T deserializer(String xml, TypeReference<T> typeReference){
+        try {
+            return xmlMapper.get().readValue(xml, typeReference);
         } catch (IOException e) {
             logger.warn("deserializer xml failed", e);
         }
