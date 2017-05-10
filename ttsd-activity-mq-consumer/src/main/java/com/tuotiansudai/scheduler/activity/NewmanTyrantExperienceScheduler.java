@@ -70,7 +70,7 @@ public class NewmanTyrantExperienceScheduler {
             grantList.addAll(newmanTyrantService.obtainTyrant(newmanTyrantHistoryView.getCurrentDate()));
         }
 
-        grantList.stream().forEach(newmanTyrantView -> this.grantExperience(newmanTyrantHistoryView,
+        grantList.forEach(newmanTyrantView -> this.grantExperience(newmanTyrantHistoryView,
                 newmanTyrantView));
 
     }

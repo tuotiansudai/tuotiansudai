@@ -2,6 +2,7 @@ package com.tuotiansudai.paywrapper.service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.base.Joiner;
+import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -431,7 +432,7 @@ public class InvestServiceImpl implements InvestService {
                     logger.info("auto invest was skip, because user [" + autoInvestPlanModel.getLoginName() + "] has auto-invest-ed on this loan : " + loanId);
                     continue;
                 }
-                long availableSelfLoanAmount = loanModel.getMaxInvestAmount() - investMapper.sumSuccessInvestAmountByLoginName(loanId, autoInvestPlanModel.getLoginName(),true);
+                long availableSelfLoanAmount = loanModel.getMaxInvestAmount() - investMapper.sumSuccessInvestAmountByLoginName(loanId, autoInvestPlanModel.getLoginName(), true);
                 if (availableSelfLoanAmount <= 0) {
                     logger.info("auto invest was skip, because amount that user [" + autoInvestPlanModel.getLoginName() + "] has invested was reach max-invest-amount , loanId : " + loanId);
                     continue;
@@ -608,8 +609,11 @@ public class InvestServiceImpl implements InvestService {
         }
         try {
             mqWrapperClient.publishMessage(MessageTopic.InvestSuccess, new InvestSuccessMessage(investInfo, loanDetailInfo, userInfo));
-            UserInfoActivity userInfoActivity = new UserInfoActivity(userInfo,userModel.getRegisterTime());
-            mqWrapperClient.sendMessage(MessageQueue.InvestSuccess_InvestNewmanTyrant,new InvestSuccessNewmanTyrantMessage(investInfo,userInfoActivity));
+            UserInfoActivity userInfoActivity = new UserInfoActivity(userInfo, userModel.getRegisterTime());
+            mqWrapperClient.sendMessage(MessageQueue.InvestSuccess_InvestNewmanTyrant, new InvestSuccessNewmanTyrantMessage(investInfo, userInfoActivity));
+            if (Strings.isNullOrEmpty(userModel.getReferrer())) {
+                mqWrapperClient.sendMessage(MessageQueue.InvestSuccess_MidSummer, new InvestSuccessMidSummerMessage(investModel.getId(), investModel.getLoginName(), userModel.getReferrer(), investModel.getAmount(), investModel.getTradingTime()));
+            }
         } catch (JsonProcessingException e) {
             // 记录日志，发短信通知管理员
             fatalLog("[MQ] invest success, but send mq message fail", String.valueOf(investInfo.getInvestId()), investInfo.getAmount(), investInfo.getLoginName(), investModel.getLoanId(), e);

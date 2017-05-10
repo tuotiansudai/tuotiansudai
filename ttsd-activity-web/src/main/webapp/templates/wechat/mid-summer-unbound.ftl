@@ -8,7 +8,7 @@
     </div>
 
     <div class="button-layer">
-        <a href="#" class="btn-normal bind-card">绑定拓天账号立即领取</a>
+        <a href="/we-chat/entry-point?redirect=/activity/mid-summer/shared-user" class="btn-normal bind-card">绑定拓天账号立即领取</a>
 
         <span class="note">活动解释权归拓天速贷所有</span>
     </div>
