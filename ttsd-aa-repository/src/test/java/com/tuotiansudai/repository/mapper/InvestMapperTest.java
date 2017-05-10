@@ -1051,7 +1051,7 @@ public class InvestMapperTest {
     }
 
     @Test
-    public void shouldFindSuccessInvestByInvestTimeIsOk(){
+    public void shouldFindSumSuccessInvestByInvestTimeIsOk(){
         LoanModel fakeLoanModel = new LoanModel();
         fakeLoanModel.setId(idGenerator.generate());
         fakeLoanModel.setName(User_ID);
