@@ -13,8 +13,7 @@ public class DragonBoatFestivalService {
 
     private static final Logger logger = LoggerFactory.getLogger(DragonBoatFestivalService.class);
 
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
+    private RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
     public String getCouponExchangeCode(String loginName) {
 
