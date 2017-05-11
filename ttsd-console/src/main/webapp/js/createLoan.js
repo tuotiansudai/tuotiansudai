@@ -22,7 +22,7 @@ require(['jquery', 'underscore', 'template', 'mustache', 'text!/tpl/loaner-detai
 
         var arrayParam = ['extraRateIds', 'extraSource'];
 
-        var arrayPldegeParam = ['pledgeHouse', 'pledgeVehicle', 'pledgeEnterprise'];
+        var arrayPledgeParam = ['pledgeHouse', 'pledgeVehicle', 'pledgeEnterprise'];
 
         var loanIdElement = $('input[name="id"]');
         var loanNameElement = $('select[name="name"]'); //标的名称Element
@@ -207,11 +207,14 @@ require(['jquery', 'underscore', 'template', 'mustache', 'text!/tpl/loaner-detai
 
         //添加房产抵押物信息
         $('body').on('click', '.jq-add-house-pledge', function () {
-            sectionThreeElement.append("<div class='house-pledge'><h3><span class='house-title'>抵押物信息</span><button type='button' class='jq-del-house-pledge btn btn-info'>-</button></h3>" + Mustache.render(pledgeHouseTemplate) + '</div>');
-            $("#section-three h3 span").each(function (i) {
-                $(this).text("抵押物信息" + (i + 1));
-            });
-
+            if($('.house-pledge').length > 3){
+                $('#pledge-modal').modal('show');
+            }else{
+                sectionThreeElement.append("<div class='house-pledge'><h3><span class='house-title'>抵押物信息</span><button type='button' class='jq-del-house-pledge btn btn-info'>-</button></h3>" + Mustache.render(pledgeHouseTemplate) + '</div>');
+                $("#section-three h3 span").each(function (i) {
+                    $(this).text("抵押物信息" + (i + 1));
+                });
+            }
         });
 
         // 删除房产抵押物信息
@@ -233,11 +236,14 @@ require(['jquery', 'underscore', 'template', 'mustache', 'text!/tpl/loaner-detai
 
         //添加车辆抵押物信息
         $('body').on('click', '.jq-add-vehicle-pledge', function () {
-            sectionThreeElement.append("<div class='vehicle-pledge'><h3><span class='vehicle-title'>抵押物信息</span><button type='button' class='jq-del-vehicle-pledge btn btn-info'>-</button></h3>" + Mustache.render(pledgeVehicleTemplate) + '</div>');
-            $("#section-three h3 span").each(function (i) {
-                $(this).text("抵押物信息" + (i + 1));
-            });
-
+            if($('.vehicle-pledge').length > 3){
+                $('#pledge-modal').modal('show');
+            }else {
+                sectionThreeElement.append("<div class='vehicle-pledge'><h3><span class='vehicle-title'>抵押物信息</span><button type='button' class='jq-del-vehicle-pledge btn btn-info'>-</button></h3>" + Mustache.render(pledgeVehicleTemplate) + '</div>');
+                $("#section-three h3 span").each(function (i) {
+                    $(this).text("抵押物信息" + (i + 1));
+                });
+            }
         });
 
         // 删除车辆抵押物信息
@@ -260,10 +266,14 @@ require(['jquery', 'underscore', 'template', 'mustache', 'text!/tpl/loaner-detai
 
         //添加税易经营性借款抵押物信息
         $('body').on('click', '.jq-add-enterprise-pledge', function () {
-            sectionThreeElement.append("<div class='enterprise-pledge'><h3><span class='enterprise-title'>抵押物信息</span><button type='button' class='jq-del-enterprise-pledge btn btn-info'>-</button></h3>" + Mustache.render(pledgeEnterpriseTemplate) + '</div>');
-            $("#section-three h3 span").each(function (i) {
-                $(this).text("抵押物信息" + (i + 1));
-            });
+            if($('.enterprise-pledge').length > 3){
+                $('#pledge-modal').modal('show');
+            }else {
+                sectionThreeElement.append("<div class='enterprise-pledge'><h3><span class='enterprise-title'>抵押物信息</span><button type='button' class='jq-del-enterprise-pledge btn btn-info'>-</button></h3>" + Mustache.render(pledgeEnterpriseTemplate) + '</div>');
+                $("#section-three h3 span").each(function (i) {
+                    $(this).text("抵押物信息" + (i + 1));
+                });
+            }
 
         });
 
@@ -500,14 +510,12 @@ require(['jquery', 'underscore', 'template', 'mustache', 'text!/tpl/loaner-detai
                 });
             }
 
-            var data = "{\"loan\":{\"pledgeType\":\"HOUSE\",\"contractId\":\"789098123\",\"status\":\"WAITING_VERIFY\",\"name\":\"房产抵押借款\",\"agent\":\"doujiashun\",\"loanType\":\"INVEST_INTEREST_MONTHLY_REPAY\",\"originalDuration\":\"90\",\"deadline\":\"2017-08-10\",\"productType\":\"_90\",\"loanAmount\":\"111111.0\",\"minInvestAmount\":\"1.0\",\"investIncreasingAmount\":\"1.0\",\"maxInvestAmount\":\"111.0\",\"activityType\":\"NORMAL\",\"baseRate\":\"11.0\",\"activityRate\":\"0.0\",\"fundraisingStartTime\":\"2017-05-11 00:00\",\"fundraisingEndTime\":\"2017-05-20 00:01\",\"loanTitles\":[]},\"loanDetails\":{\"activityDesc\":\"\",\"declaration\":\"22\",\"pushMessage\":\"11\"},\"loanerDetails\":{\"userName\":\"11\",\"gender\":\"MALE\",\"age\":\"21\",\"identityNumber\":\"320921197304157910\",\"marriage\":\"UNMARRIED\",\"region\":\"111\",\"income\":\"11\",\"employmentStatus\":\"11\",\"purpose\":\"11\"},\"pledgeHouse\":[{\"pledgeLocation\":\"111\",\"estateRegisterId\":\"111\",\"propertyCardId\":\"111\",\"square\":\"111\",\"authenticAct\":\"111\",\"estimateAmount\":\"111\",\"pledgeLoanAmount\":\"111\"}]}";
-
             $.ajax(
                 {
                     url: url,
                     type: 'POST',
                     dataType: 'json',
-                    data: data,
+                    data: JSON.stringify(requestData),
                     contentType: 'application/json; charset=UTF-8'
                 }).done(function (res) {
                 $currentFormSubmitBtn.removeAttr('disabled');
@@ -600,7 +608,7 @@ require(['jquery', 'underscore', 'template', 'mustache', 'text!/tpl/loaner-detai
 
         var generateRequestParams = function (requestParams) {
             var requestData = {};
-            var arrName = [];
+            var arrPledgeInfo = [];
             var inputElements = $('form input[type="text"],input[type="hidden"],input[type="checkbox"]:checked,select,textarea');
             $.each(requestParams, function (attr, param) {
                 requestData[attr] = {};
@@ -608,11 +616,10 @@ require(['jquery', 'underscore', 'template', 'mustache', 'text!/tpl/loaner-detai
                     var $element = $(element);
                     var elementName = $element.prop('name');
                     var elementValue = $element.val();
-                    if (arrayPldegeParam.indexOf(attr) !== -1) {
+                    if (arrayPledgeParam.indexOf(attr) !== -1) {
                         if (param.indexOf(elementName) !== -1) {
-                            arrName.push(attr + "_" + elementName + ":" + elementValue);
+                            arrPledgeInfo.push(attr + "_" + elementName + ":" + elementValue);
                         }
-
                     }
                     else {
                         if (param.indexOf(elementName) !== -1) {
@@ -626,55 +633,70 @@ require(['jquery', 'underscore', 'template', 'mustache', 'text!/tpl/loaner-detai
                 });
             });
             requestData['loan']['loanTitles'] = uploadFile;
-            //requestData['pledgeHouse'] = requestDataArray;
 
-            console.log(arrName)
-
-            if (arrName.length > 0) {
-                var pledgeStr = arrName[0].substring(0, arrName[0].indexOf("_"));
-                requestData[pledgeStr] = getArray(arrName, pledgeStr);
+            if (arrPledgeInfo.length > 0) {
+                var pledgeStr = arrPledgeInfo[0].substring(0, arrPledgeInfo[0].indexOf("_"));
+                requestData[pledgeStr] = getArray(arrPledgeInfo, pledgeStr);
             }
-
-            console.log(requestData);
-
             return requestData
         };
 
-
-        var getArray = function (arrName, pledgeType) {
-            var arr = [];
+        var getArray = function (arrPledgeInfo, pledgeType) {
+            var arrPledge = [];
+            var obj1 = {};
+            var obj2 = {};
+            var obj3 = {};
+            var obj4 = {};
             if (pledgeType == "pledgeHouse") {
-                var obj1 = {};
-                var obj2 = {};
-                var obj3 = {};
-                var obj4 = {};
-                for (i in arrName) {
+                for (i in arrPledgeInfo) {
                     if (i < pledgeHouseParam.length) {
-                        obj1[arrName[i].substring(arrName[i].indexOf("_") + 1, arrName[i].indexOf(":"))] = arrName[i].substring(arrName[i].indexOf(":")+1, arrName[i].length);
-                    } else if (i >= pledgeHouseParam.length && pledgeHouseParam.length * 2) {
-                        obj2[arrName[i].substring(arrName[i].indexOf("_") + 1, arrName[i].indexOf(":"))] = arrName[i].substring(arrName[i].indexOf(":")+1, arrName[i].length);
+                        obj1[arrPledgeInfo[i].substring(arrPledgeInfo[i].indexOf("_") + 1, arrPledgeInfo[i].indexOf(":"))] = arrPledgeInfo[i].substring(arrPledgeInfo[i].indexOf(":")+1, arrPledgeInfo[i].length);
+                    } else if (i >= pledgeHouseParam.length && i < pledgeHouseParam.length * 2) {
+                        obj2[arrPledgeInfo[i].substring(arrPledgeInfo[i].indexOf("_") + 1, arrPledgeInfo[i].indexOf(":"))] = arrPledgeInfo[i].substring(arrPledgeInfo[i].indexOf(":")+1, arrPledgeInfo[i].length);
                     }
                     else if (i >= pledgeHouseParam.length * 2 && i < pledgeHouseParam.length * 3) {
-                        obj3[arrName[i].substring(arrName[i].indexOf("_") + 1, arrName[i].indexOf(":"))] = arrName[i].substring(arrName[i].indexOf(":")+1, arrName[i].length);
+                        obj3[arrPledgeInfo[i].substring(arrPledgeInfo[i].indexOf("_") + 1, arrPledgeInfo[i].indexOf(":"))] = arrPledgeInfo[i].substring(arrPledgeInfo[i].indexOf(":")+1, arrPledgeInfo[i].length);
                     }
                     else if (i >= pledgeHouseParam.length * 3 && i < pledgeHouseParam.length * 4) {
-                        obj4[arrName[i].substring(arrName[i].indexOf("_") + 1, arrName[i].indexOf(":"))] = arrName[i].substring(arrName[i].indexOf(":")+1, arrName[i].length);
+                        obj4[arrPledgeInfo[i].substring(arrPledgeInfo[i].indexOf("_") + 1, arrPledgeInfo[i].indexOf(":"))] = arrPledgeInfo[i].substring(arrPledgeInfo[i].indexOf(":")+1, arrPledgeInfo[i].length);
                     }
                 }
-                arr.push(obj1);
-                if (!isEmptyObject(obj2)) arr.push(obj2);
-                if (!isEmptyObject(obj3)) arr.push(obj3);
-                if (!isEmptyObject(obj4)) arr.push(obj4);
             }
             if (pledgeType == "pledgeVehicle") {
-
+                for (i in arrPledgeInfo) {
+                    if (i < pledgeVehicleParam.length) {
+                        obj1[arrPledgeInfo[i].substring(arrPledgeInfo[i].indexOf("_") + 1, arrPledgeInfo[i].indexOf(":"))] = arrPledgeInfo[i].substring(arrPledgeInfo[i].indexOf(":")+1, arrPledgeInfo[i].length);
+                    } else if (i >= pledgeVehicleParam.length && i < pledgeVehicleParam.length * 2) {
+                        obj2[arrPledgeInfo[i].substring(arrPledgeInfo[i].indexOf("_") + 1, arrPledgeInfo[i].indexOf(":"))] = arrPledgeInfo[i].substring(arrPledgeInfo[i].indexOf(":")+1, arrPledgeInfo[i].length);
+                    }
+                    else if (i >= pledgeVehicleParam.length * 2 && i < pledgeVehicleParam.length * 3) {
+                        obj3[arrPledgeInfo[i].substring(arrPledgeInfo[i].indexOf("_") + 1, arrPledgeInfo[i].indexOf(":"))] = arrPledgeInfo[i].substring(arrPledgeInfo[i].indexOf(":")+1, arrPledgeInfo[i].length);
+                    }
+                    else if (i >= pledgeVehicleParam.length * 3 && i < pledgeVehicleParam.length * 4) {
+                        obj4[arrPledgeInfo[i].substring(arrPledgeInfo[i].indexOf("_") + 1, arrPledgeInfo[i].indexOf(":"))] = arrPledgeInfo[i].substring(arrPledgeInfo[i].indexOf(":")+1, arrPledgeInfo[i].length);
+                    }
+                }
             }
             if (pledgeType == "pledgeEnterprise") {
-
+                for (i in arrPledgeInfo) {
+                    if (i < pledgeEnterpriseParam.length) {
+                        obj1[arrPledgeInfo[i].substring(arrPledgeInfo[i].indexOf("_") + 1, arrPledgeInfo[i].indexOf(":"))] = arrPledgeInfo[i].substring(arrPledgeInfo[i].indexOf(":")+1, arrPledgeInfo[i].length);
+                    } else if (i >= pledgeEnterpriseParam.length && i < pledgeEnterpriseParam.length * 2) {
+                        obj2[arrPledgeInfo[i].substring(arrPledgeInfo[i].indexOf("_") + 1, arrPledgeInfo[i].indexOf(":"))] = arrPledgeInfo[i].substring(arrPledgeInfo[i].indexOf(":")+1, arrPledgeInfo[i].length);
+                    }
+                    else if (i >= pledgeEnterpriseParam.length * 2 && i < pledgeEnterpriseParam.length * 3) {
+                        obj3[arrPledgeInfo[i].substring(arrPledgeInfo[i].indexOf("_") + 1, arrPledgeInfo[i].indexOf(":"))] = arrPledgeInfo[i].substring(arrPledgeInfo[i].indexOf(":")+1, arrPledgeInfo[i].length);
+                    }
+                    else if (i >= pledgeEnterpriseParam.length * 3 && i < pledgeEnterpriseParam.length * 4) {
+                        obj4[arrPledgeInfo[i].substring(arrPledgeInfo[i].indexOf("_") + 1, arrPledgeInfo[i].indexOf(":"))] = arrPledgeInfo[i].substring(arrPledgeInfo[i].indexOf(":")+1, arrPledgeInfo[i].length);
+                    }
+                }
             }
-            console.log(arr);
-            return arr;
-
+            arrPledge.push(obj1);
+            if (!isEmptyObject(obj2)) arrPledge.push(obj2);
+            if (!isEmptyObject(obj3)) arrPledge.push(obj3);
+            if (!isEmptyObject(obj4)) arrPledge.push(obj4);
+            return arrPledge;
         };
 
         var isEmptyObject = function isEmptyObject(obj) {

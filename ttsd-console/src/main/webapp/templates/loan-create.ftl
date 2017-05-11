@@ -311,6 +311,21 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="pledge-modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h5>抵押物信息最多添加4项</h5>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 </div>
 <!-- content area end -->
 </@global.main>
