@@ -25,8 +25,8 @@ public class MobileAppActivityServiceImpl implements MobileAppActivityService {
     @Autowired
     ActivityMapper activityMapper;
 
-    @Value("${web.static.server}")
-    private String staticServer;
+    @Value("${common.static.server}")
+    private String commonStaticServer;
 
     @Autowired
     private PageValidUtils pageValidUtils;
@@ -62,8 +62,8 @@ public class MobileAppActivityServiceImpl implements MobileAppActivityService {
         }
         for (ActivityModel activityModel : activityModels) {
             ActivityCenterDataDto activityCenterDataDto = new ActivityCenterDataDto(activityModel);
-            activityCenterDataDto.setImageUrl(staticServer + activityModel.getAppPictureUrl());
-            activityCenterDataDto.setVerticalImageUrl(staticServer + activityModel.getAppVerticalPictureUrl());
+            activityCenterDataDto.setImageUrl(commonStaticServer + activityModel.getAppPictureUrl());
+            activityCenterDataDto.setVerticalImageUrl(commonStaticServer + activityModel.getAppVerticalPictureUrl());
             activityCenterDataDtos.add(activityCenterDataDto);
         }
         ActivityCenterResponseDto activityCenterResponseDto = new ActivityCenterResponseDto();

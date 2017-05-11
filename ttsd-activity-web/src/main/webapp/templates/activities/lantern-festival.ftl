@@ -82,7 +82,7 @@
                 </ul>
                 <div class="today-gift">
                     <div class="gift-img-item">
-                        <img src="<#if mysteriousPrizeDto??>${staticServer}${mysteriousPrizeDto.imageUrl}</#if>">
+                        <img src="<#if mysteriousPrizeDto??>${commonStaticServer}${mysteriousPrizeDto.imageUrl}</#if>">
                     </div>
                     <div class="gift-name">
                         <p class="name-text"><#if mysteriousPrizeDto??>${mysteriousPrizeDto.prizeName}</#if></p>

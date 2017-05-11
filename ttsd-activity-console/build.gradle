@@ -66,8 +66,6 @@ dependencies {
             "org.mybatis.spring.boot:mybatis-spring-boot-starter:1.1.1",
             'mysql:mysql-connector-java:5.1.39',
             'com.zaxxer:HikariCP:2.4.7',
-            'com.google.guava:guava:19.0',
-            'joda-time:joda-time:2.8.1',
             'com.squareup.okhttp:okhttp:2.7.5'
     providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
     testCompile("org.springframework.boot:spring-boot-starter-test")

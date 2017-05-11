@@ -72,7 +72,7 @@
     </div>
 </div>
 <script>
-    window.staticServer='${commonStaticServer}';
+    window.commonStaticServer='${commonStaticServer}';
 </script>
 <script src="${js.jquerydll}" ></script>
 <script src="${js.globalFun_page!}" ></script>

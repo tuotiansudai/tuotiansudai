@@ -7,28 +7,28 @@
         <div class="detail-img">
             <#switch prizeId!"">
                 <#case 1>
-                    <img src="${staticServer}upload/20160910/95571473486174977.jpg" width="100%">
+                    <img src="${commonStaticServer}upload/20160910/95571473486174977.jpg" width="100%">
                     <#break >
                 <#case 2>
-                    <img src="${staticServer}upload/20160910/93931473486149974.jpg" width="100%">
+                    <img src="${commonStaticServer}upload/20160910/93931473486149974.jpg" width="100%">
                     <#break >
                 <#case 3>
-                    <img src="${staticServer}upload/20160910/34671473486198463.jpg" width="100%">
+                    <img src="${commonStaticServer}upload/20160910/34671473486198463.jpg" width="100%">
                     <#break >
                 <#case 4>
-                    <img src="${staticServer}upload/20160910/49071473486061671.jpg" width="100%">
+                    <img src="${commonStaticServer}upload/20160910/49071473486061671.jpg" width="100%">
                     <#break >
                 <#case 5>
-                    <img src="${staticServer}upload/20160910/14001473486090062.jpg" width="100%">
+                    <img src="${commonStaticServer}upload/20160910/14001473486090062.jpg" width="100%">
                     <#break >
                 <#case 6>
-                    <img src="${staticServer}upload/20160910/60391473486032623.jpg" width="100%">
+                    <img src="${commonStaticServer}upload/20160910/60391473486032623.jpg" width="100%">
                     <#break >
                 <#case 7>
-                    <img src="${staticServer}upload/20160910/16411473486130494.jpg" width="100%">
+                    <img src="${commonStaticServer}upload/20160910/16411473486130494.jpg" width="100%">
                     <#break >
                 <#case 8>
-                    <img src="${staticServer}upload/20160910/59501473486109950.jpg" width="100%">
+                    <img src="${commonStaticServer}upload/20160910/59501473486109950.jpg" width="100%">
                     <#break >
             </#switch>
         </div>

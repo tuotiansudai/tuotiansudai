@@ -33,7 +33,7 @@ public class MobileAppPromotionListsV2ServiceImpl implements MobileAppPromotionL
     private PromotionMapper promotionMapper;
 
     @Value("${common.static.server}")
-    private String staticServer;
+    private String commonStaticServer;
 
     @Override
     public BaseResponseDto<PromotionListResponseDataDto> generatePromotionList(PromotionRequestDto promotionRequestDto) {
@@ -62,7 +62,7 @@ public class MobileAppPromotionListsV2ServiceImpl implements MobileAppPromotionL
                     continue;
                 }
                 PromotionRecordResponseDataDto dto = new PromotionRecordResponseDataDto();
-                dto.setImgUrl(staticServer + promotionModel.getImageUrl());
+                dto.setImgUrl(commonStaticServer + promotionModel.getImageUrl());
                 dto.setLinkUrl(Strings.isNullOrEmpty(promotionModel.getLinkUrl()) ? promotionModel.getJumpToLink() : promotionModel.getLinkUrl());
                 list.add(dto);
 

@@ -20,13 +20,13 @@
 <div class="page-width autumn-travel-detail">
     <#switch prizeId!"">
         <#case 1>
-            <img src="${staticServer}upload/20160913/97751473762817444.jpg" width="100%">
+            <img src="${commonStaticServer}upload/20160913/97751473762817444.jpg" width="100%">
             <#break >
         <#case 2>
-            <img src="${staticServer}upload/20160913/90391473762899533.jpg" width="100%">
+            <img src="${commonStaticServer}upload/20160913/90391473762899533.jpg" width="100%">
             <#break >
         <#case 3>
-            <img src="${staticServer}upload/20160913/54491473762873600.jpg" width="100%">
+            <img src="${commonStaticServer}upload/20160913/54491473762873600.jpg" width="100%">
             <#break >
     </#switch>
 
