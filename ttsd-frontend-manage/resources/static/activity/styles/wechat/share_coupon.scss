@@ -6,7 +6,8 @@
 	height:100%;
 	background: #336ded url('../../images/dragon-boat/top-bg.png') no-repeat center top;
 	background-size: 100%;
-
+	padding:0 10px;
+	box-sizing:border-box;
 	&:after {
 		content:'';
 		position: absolute;
@@ -25,24 +26,43 @@
 		color:#fff;
 		line-height:65px;
 		text-align:center;
-		margin-top:10px;
-		background: url('../../images/dragon-boat/title-bg.png') no-repeat center bottom;
+		margin:10px 0;
+		background: url('../../images/dragon-boat/title-bg.png') no-repeat center;
 		background-size: 100%;
 	}
 	.copy-item{
 		float:left;
 		width:100%;
-		padding:0 10px;
-		box-sizing:border-box;
 		.copy-int{
 			float:left;
 			width:68%;
 			margin-right:2%;
+			font-size:13px;
+		    line-height: 20px;
 			box-sizing:border-box;
+			border-radius:5px;
 		}
 		.copy-btn{
 			float:left;
 			width:30%;
+			font-size:13px;
+			color:#fff;
+			line-height:34px;
+			text-align:center;
+			background:#fcc000;
+			border-radius:5px;
 		}
+	}
+	.intro-title{
+		float:left;
+		width:100%;
+		text-align:left;
+		font-size:18px;
+		color:#fff;
+		margin-top:15px;
+	}
+	.intro-container{
+		float:left;
+		width:100%;
 	}
 }
