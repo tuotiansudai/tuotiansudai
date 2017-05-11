@@ -2,8 +2,8 @@
 <@global.main pageCss="${css.open_spring}" pageJavascript="${js.open_spring}" activeNav="" activeLeftNav="" title="开春开好投_活动中心_拓天速贷" keywords="拓天速贷,阶梯加息,投资增息,实物奖励" description="拓天速贷开春活动用户投资'开春专享标'可享阶梯加息,投资增息可达1.7%,加送iPad实物奖励大礼.">
 <div class="women-day-container clearfix" id="womenDayContainer">
 	<div class="top-item">
-		<img src="${staticServer}/activity/images/open-spring/top-img0321.png" width="100%" class="media-pc">
-		<img src="${staticServer}/activity/images/open-spring/top-img-phone0321.png" width="100%" class="media-phone">
+		<img src="${commonStaticServer}/activity/images/open-spring/top-img0321.png" width="100%" class="media-pc">
+		<img src="${commonStaticServer}/activity/images/open-spring/top-img-phone0321.png" width="100%" class="media-phone">
 	</div>
 	<div class="content-item one-bg">
 		<div class="wp clearfix">
@@ -21,7 +21,7 @@
 	        		</div>
 	        		<div class="table-item one-table">
 	        			<div class="title-item">
-	        				<img src="${staticServer}/activity/images/open-spring/title-one.png" width="100%">
+	        				<img src="${commonStaticServer}/activity/images/open-spring/title-one.png" width="100%">
 	        			</div>
 	        			<table>
 	        				<thead>
@@ -74,7 +74,7 @@
 	        		</div>
 	        		<div class="table-item two-table">
 	        			<div class="title-item">
-	        				<img src="${staticServer}/activity/images/open-spring/title-two.png" width="100%">
+	        				<img src="${commonStaticServer}/activity/images/open-spring/title-two.png" width="100%">
 	        			</div>
 	        			<table>
 	        				<thead>
@@ -127,7 +127,7 @@
 	        		</div>
 	        		<div class="table-item three-table">
 	        			<div class="title-item">
-	        				<img src="${staticServer}/activity/images/open-spring/title-three.png" width="100%">
+	        				<img src="${commonStaticServer}/activity/images/open-spring/title-three.png" width="100%">
 	        			</div>
 	        			<table>
 	        				<thead>
@@ -247,7 +247,7 @@
 	        			听说加息标跟优惠券一起用更配哦！扫码关注微信号，回复“我要”，即送0.5%加息券，数量有限先到先得！
 	        		</div>
 	        		<div class="code-img">
-	        			<img src="${staticServer}/activity/images/open-spring/code-img.jpg" width="100%">
+	        			<img src="${commonStaticServer}/activity/images/open-spring/code-img.jpg" width="100%">
 	        		</div>
 	        	</div>
 	        	<div class="line-footer"></div>

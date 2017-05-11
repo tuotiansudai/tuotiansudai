@@ -1,9 +1,12 @@
 package com.tuotiansudai.service;
 
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.RegisterUserDto;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
+import com.tuotiansudai.message.WeChatBoundMessage;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.PrepareUserMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.mapper.UserRoleMapper;
@@ -47,7 +50,13 @@ public class MockUserServiceTest {
     private PrepareUserMapper prepareUserMapper;
 
     @Mock
+    private LoginNameGenerator loginNameGenerator;
+
+    @Mock
     private RegisterUserService registerUserService;
+
+    @Mock
+    private MQWrapperClient mqWrapperClient;
 
 
     @Before
@@ -131,6 +140,8 @@ public class MockUserServiceTest {
         registerUserDto.setCaptcha(captcha);
         registerUserDto.setPassword("password");
         when(userMapper.create(any(UserModel.class))).thenReturn(1);
+        doNothing().when(mqWrapperClient).sendMessage(any(MessageQueue.class), any(WeChatBoundMessage.class));
+        when(loginNameGenerator.generate()).thenReturn(loginName);
         when(userMapper.findByLoginName(loginName)).thenReturn(null);
         when(userMapper.findByMobile(mobile)).thenReturn(null);
         when(smsCaptchaService.verifyMobileCaptcha(mobile, captcha, CaptchaType.REGISTER_CAPTCHA)).thenReturn(true);

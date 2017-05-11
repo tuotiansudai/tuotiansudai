@@ -17,6 +17,7 @@ public class MyWebAuthenticationDetails implements Serializable {
     private final String source;
     private final String deviceId;
     private final String captcha;
+    private final String openid;
 
     // ~ Constructors
     // ===================================================================================================
@@ -38,6 +39,7 @@ public class MyWebAuthenticationDetails implements Serializable {
         this.captcha = request.getParameter("captcha");
         this.source = request.getParameter("source");
         this.deviceId = request.getParameter("deviceId");
+        this.openid = request.getParameter("openid");
 
     }
 
@@ -180,6 +182,10 @@ public class MyWebAuthenticationDetails implements Serializable {
         return username;
     }
 
+    public String getOpenid() {
+        return openid;
+    }
+
     public int hashCode() {
         int code = 7654;
 
@@ -211,6 +217,10 @@ public class MyWebAuthenticationDetails implements Serializable {
             code = code * (this.username.hashCode() % 7);
         }
 
+        if (this.openid != null) {
+            code = code * (this.openid.hashCode() % 7);
+        }
+
         return code;
     }
 
@@ -220,6 +230,7 @@ public class MyWebAuthenticationDetails implements Serializable {
                 "SessionId: " + this.getSessionId() + "; " +
                 "Username: " + this.getUsername() + "; " +
                 "Mobile: " + this.getMobile() + "; " +
+                "Openid: " + this.getOpenid() + "; " +
                 "Captcha: " + this.getCaptcha() + "; " +
                 "Source: " + this.getSource() + "; " +
                 "DeviceId: " + this.getDeviceId();

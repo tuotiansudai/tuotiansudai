@@ -1,7 +1,7 @@
 window.jQuery = window.$ = window.jquery_library(1);
 window.layer = window.jquery_library(2);
 window.layer.config({
-    path: staticServer+'/public/'
+    path: commonStaticServer+'/public/'
 });
 window._ = window.jquery_library(3);
 window.$.fn=window.$.prototype;
@@ -306,7 +306,7 @@ var web_globalFun = (function() {
         createScript:function(url, callback){
             var oScript = document.createElement('script');
             oScript.type = 'text/javascript';
-            oScript.src = staticServer+url;
+            oScript.src = commonStaticServer+url;
             oScript.async = false;
             // IE9及以上浏览器，Firefox，Chrome，Opera ,
 

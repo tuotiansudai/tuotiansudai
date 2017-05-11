@@ -25,10 +25,14 @@ public class LoginController {
     private CaptchaHelper captchaHelper;
 
     @RequestMapping(method = RequestMethod.GET)
-    public ModelAndView login(@RequestParam(name = "redirect", required = false, defaultValue = "/") String redirect) {
-        ModelAndView modelAndView = new ModelAndView("/login", "redirect", redirect);
-        modelAndView.addObject("responsive", true);
-        return modelAndView;
+    public ModelAndView login(HttpServletRequest httpServletRequest,
+                              @RequestParam(name = "redirect", required = false, defaultValue = "/") String redirect) {
+        ModelAndView defaultModelAndView = new ModelAndView("/login", "redirect", redirect);
+        defaultModelAndView.addObject("responsive", true);
+
+        ModelAndView weChatModelAndView = new ModelAndView("/wechat/wechat-entry-point", "redirect", redirect);
+
+        return httpServletRequest.getSession().getAttribute("weChatUserLoginName") == null ? defaultModelAndView : weChatModelAndView;
     }
 
     @RequestMapping(value = "/captcha", method = RequestMethod.GET)

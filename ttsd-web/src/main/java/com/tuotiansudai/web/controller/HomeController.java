@@ -84,7 +84,7 @@ public class HomeController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/isLogin", method = RequestMethod.GET)
+    @RequestMapping(value = "/is-login", method = RequestMethod.GET)
     public ModelAndView isLogin() {
         if (!StringUtils.isEmpty(LoginUserInfo.getLoginName())) {
             return null;

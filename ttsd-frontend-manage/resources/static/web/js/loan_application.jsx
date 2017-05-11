@@ -15,6 +15,10 @@ $topBanner.find('.top-images-phone').attr('src',mobileBanner);
 //show tip
 $loanTip.on('click', function(event) {
 	event.preventDefault();
+    if ($('.header-login').data('wechat-login-name')) {
+        location.href = '/login?redirect=' + location.href;
+        return;
+    }
 	var _title = $(this).attr('data-title'),
 		_holder = $(this).attr('data-holder'),
 		_type = $(this).attr('data-type');

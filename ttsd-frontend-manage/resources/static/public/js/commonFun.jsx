@@ -105,15 +105,14 @@ function popWindow(contentHtml,area) {
 function isUserLogin() {
     let LoginDefer=$.Deferred(); //在函数内部，新建一个Deferred对象
     $.ajax({
-        url: '/isLogin',
+        url: '/is-login',
         type: 'GET'
     })
         .done(function(data) {
             if(data) {
                 //如果data有值，说明token已经过期，用户处于未登陆状态，并且需要更新token
                 LoginDefer.reject(data);
-            }
-            else {
+            } else {
                 //如果data为空，说明用户处于登陆状态，不需要做任何处理
                 LoginDefer.resolve();
             }

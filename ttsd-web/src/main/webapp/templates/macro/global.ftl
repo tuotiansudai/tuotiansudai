@@ -126,7 +126,7 @@
 
 <#include "../pageLayout/statistic.ftl" />
 <script>
-    window.staticServer='${commonStaticServer}';
+    window.commonStaticServer='${commonStaticServer}';
     <#--window.pluginsJSON={-->
         <#--underscore:'${js.underscore}'-->
     <#--}-->

@@ -133,7 +133,7 @@
 
             <div class="award-box fl">
                 <div class="scan-code">
-                    <img src="${staticServer}/activity/images/autumn-tour/wx.png">
+                    <img src="${commonStaticServer}/activity/images/autumn-tour/wx.png">
                 <span>如何说走就走？ <br/>
                     码上教你<br/>
                     扫码查看活动攻略
