@@ -132,11 +132,17 @@ public class WechatLotteryService {
 
 
     public List<UserLotteryPrizeView> getLotteryListTop20() {
-        return userLotteryPrizeMapper.findUserLotteryPrizeViews(null, null, ActivityCategory.WECHAT_FIRST_INVEST_PRIZE, null, null, 0, 20);
+        List<UserLotteryPrizeView> lotteryList = userLotteryPrizeMapper.findUserLotteryPrizeViews(null, null, ActivityCategory.WECHAT_FIRST_INVEST_PRIZE, null, null, 0, 20);
+        for (UserLotteryPrizeView view : lotteryList)
+            view.setPrizeValue(view.getPrize().getDescription());
+        return lotteryList;
     }
 
     public List<UserLotteryPrizeView> getMyLotteryList(String mobile) {
-        return userLotteryPrizeMapper.findUserLotteryPrizeViews(mobile, null, ActivityCategory.WECHAT_FIRST_INVEST_PRIZE, null, null, null, null);
+        List<UserLotteryPrizeView> lotteryList = userLotteryPrizeMapper.findUserLotteryPrizeViews(mobile, null, ActivityCategory.WECHAT_FIRST_INVEST_PRIZE, null, null, null, null);
+        for (UserLotteryPrizeView view : lotteryList)
+            view.setPrizeValue(view.getPrize().getDescription());
+        return lotteryList;
     }
 
 }
