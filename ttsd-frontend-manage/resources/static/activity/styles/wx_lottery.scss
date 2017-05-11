@@ -75,8 +75,9 @@
   .close-btn {
     width: 28px;
     height: 28px;
-    top: -40px;
+    top: 100%;
     left: 50%;
+    margin-top:20px;
     margin-left: -14px;
     background: url('../images/wx-lottery/close-tip.png') no-repeat center;
     background-size: 100%;
