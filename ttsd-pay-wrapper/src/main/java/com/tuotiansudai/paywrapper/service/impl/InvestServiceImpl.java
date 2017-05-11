@@ -45,6 +45,7 @@ import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -704,6 +705,9 @@ public class InvestServiceImpl implements InvestService {
     }
 
     private void mothersDayAssignExperience(String loginName, long investAmount) {
+        if(DateTime.now().toDate().after(activityEndTimeStr) || DateTime.now().toDate().before(activityStartTimeStr)){
+            return;
+        }
         logger.info(MessageFormat.format("[mothers day] assign experience loginName: {0}, investAmount: {1}", loginName, investAmount));
         Optional<ExperienceReward> reward = mothersRewards.stream().filter(mothersReward -> mothersReward.getStartAmount() <= investAmount && investAmount < mothersReward.getEndAmount()).findAny();
         if (reward.isPresent()) {
