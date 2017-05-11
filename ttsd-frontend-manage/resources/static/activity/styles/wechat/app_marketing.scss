@@ -1,20 +1,23 @@
-.header-container {
-  display: none;
-}
+
 body {
   background: #e53c1d;
 }
 
-.header-download {
-  display: block;
-  background: #333;
-  color: #fff;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-  position: fixed;
-  width: 94%;
-  padding: 3%;
-  bottom: 0;
-  z-index: 60;
+.header-container {
+  .header-top {
+    display: none;
+  }
+  .header-download {
+    display: block;
+    background: #333;
+    color: #fff;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    position: fixed;
+    width: 94%;
+    padding: 3%;
+    bottom: 0;
+    z-index: 60;
+  }
 }
 .app-marketing-container {
 

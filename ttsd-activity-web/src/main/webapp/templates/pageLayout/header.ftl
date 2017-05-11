@@ -1,4 +1,10 @@
 <div class="header-container">
+    <div class="header-download">
+        <div id="closeDownloadBox" class="icon-close img-close-tip" ></div>
+        <div class="img-logo-tip" ></div>
+        <span>APP客户端重磅来袭<br/>更便捷更安全</span>
+        <a href="#" class="btn-normal fr" id="btnExperience">立即体验</a>
+    </div>
     <div class="header-top page-width">
         <span class="fl service-time">客服电话：400-169-1188<time>（服务时间：9:00－20:00）</time></span>
         <ul class="fr">
@@ -42,12 +48,7 @@
 
     </div>
 </div>
-<div class="header-download">
-    <div id="closeDownloadBox" class="icon-close img-close-tip" ></div>
-    <div class="img-logo-tip" ></div>
-    <span>APP客户端重磅来袭<br/>更便捷更安全</span>
-    <a href="#" class="btn-normal fr" id="btnExperience">立即体验</a>
-</div>
+
 <#if Session.impersonate?exists && Session.impersonate == '1'>
 <div style="position: fixed; right: 10px; top: 20px; font-size: 35px; color: red; z-index: 10">模拟登录</div>
 <div style="position: fixed; left: 10px; top: 20px; font-size: 35px; color: green; z-index: 10">模拟登录</div>
