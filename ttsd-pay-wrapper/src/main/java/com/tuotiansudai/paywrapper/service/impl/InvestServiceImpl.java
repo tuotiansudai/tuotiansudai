@@ -621,7 +621,7 @@ public class InvestServiceImpl implements InvestService {
             mqWrapperClient.publishMessage(MessageTopic.InvestSuccess, new InvestSuccessMessage(investInfo, loanDetailInfo, userInfo));
             UserInfoActivity userInfoActivity = new UserInfoActivity(userInfo, userModel.getRegisterTime());
             mqWrapperClient.sendMessage(MessageQueue.InvestSuccess_InvestNewmanTyrant, new InvestSuccessNewmanTyrantMessage(investInfo, userInfoActivity));
-            if (Strings.isNullOrEmpty(userModel.getReferrer())) {
+            if (!Strings.isNullOrEmpty(userModel.getReferrer())) {
                 mqWrapperClient.sendMessage(MessageQueue.InvestSuccess_MidSummer, new InvestSuccessMidSummerMessage(investModel.getId(), investModel.getLoginName(), userModel.getReferrer(), investModel.getAmount(), investModel.getTradingTime()));
             }
             mothersDayAssignExperience(investModel.getLoginName(), investModel.getAmount());
