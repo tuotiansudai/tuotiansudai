@@ -1050,7 +1050,7 @@ public class InvestMapperTest {
     @Test
     public void shouldFindSumSuccessInvestByInvestTimeIsOk(){
         LoanModel fakeLoanModel = new LoanModel();
-        fakeLoanModel.setId(idGenerator.generate());
+        fakeLoanModel.setId(IdGenerator.generate());
         fakeLoanModel.setName(User_ID);
         fakeLoanModel.setLoanerLoginName(User_ID);
         fakeLoanModel.setLoanerUserName(User_ID);
@@ -1070,7 +1070,7 @@ public class InvestMapperTest {
         loanMapper.create(fakeLoanModel);
 
         LoanModel experienceLoan = new LoanModel();
-        experienceLoan.setId(idGenerator.generate());
+        experienceLoan.setId(IdGenerator.generate());
         experienceLoan.setName(User_ID);
         experienceLoan.setLoanerLoginName(User_ID);
         experienceLoan.setLoanerUserName(User_ID);
