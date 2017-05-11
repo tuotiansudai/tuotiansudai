@@ -103,16 +103,16 @@ public class PledgeHouseMapperTest {
         pledgeHouseModel.setAuthenticAct("updateAct");
 
         pledgeHouseMapper.updateByLoanId(pledgeHouseModel);
-        PledgeHouseModel findPledgeHouseModel = (PledgeHouseModel) pledgeHouseMapper.getByLoanId(pledgeHouseModel.getLoanId());
+        List<PledgeHouseModel> findPledgeHouseModel = pledgeHouseMapper.getByLoanId(pledgeHouseModel.getLoanId());
         assertNotNull(findPledgeHouseModel);
-        assertEquals(pledgeHouseModel.getLoanId(), findPledgeHouseModel.getLoanId());
-        assertEquals(pledgeHouseModel.getEstimateAmount(), findPledgeHouseModel.getEstimateAmount());
-        assertEquals(pledgeHouseModel.getLoanAmount(), findPledgeHouseModel.getLoanAmount());
-        assertEquals(pledgeHouseModel.getPledgeLocation(), findPledgeHouseModel.getPledgeLocation());
-        assertEquals(pledgeHouseModel.getAuthenticAct(), findPledgeHouseModel.getAuthenticAct());
-        assertEquals(pledgeHouseModel.getEstateRegisterId(), findPledgeHouseModel.getEstateRegisterId());
-        assertEquals(pledgeHouseModel.getPropertyCardId(), findPledgeHouseModel.getPropertyCardId());
-        assertEquals(pledgeHouseModel.getSquare(), findPledgeHouseModel.getSquare());
+        assertEquals(pledgeHouseModel.getLoanId(), findPledgeHouseModel.get(0).getLoanId());
+        assertEquals(pledgeHouseModel.getEstimateAmount(), findPledgeHouseModel.get(0).getEstimateAmount());
+        assertEquals(pledgeHouseModel.getLoanAmount(), findPledgeHouseModel.get(0).getLoanAmount());
+        assertEquals(pledgeHouseModel.getPledgeLocation(), findPledgeHouseModel.get(0).getPledgeLocation());
+        assertEquals(pledgeHouseModel.getAuthenticAct(), findPledgeHouseModel.get(0).getAuthenticAct());
+        assertEquals(pledgeHouseModel.getEstateRegisterId(), findPledgeHouseModel.get(0).getEstateRegisterId());
+        assertEquals(pledgeHouseModel.getPropertyCardId(), findPledgeHouseModel.get(0).getPropertyCardId());
+        assertEquals(pledgeHouseModel.getSquare(), findPledgeHouseModel.get(0).getSquare());
     }
 
     @Test
