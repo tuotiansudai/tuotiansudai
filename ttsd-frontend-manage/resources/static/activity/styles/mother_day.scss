@@ -1,0 +1,600 @@
+.main-frame {
+	width: 100%;
+	margin: 0;
+}
+.tip-list-frame {
+	display: none;
+}
+.shade-body-mask {
+	z-index: 99;
+}
+.gift-circle-frame {
+	float: left;
+	width: 100%;
+	position: relative;
+	@media (max-width: 700px) {
+		text-align:center;
+	}
+	.gift-circle-out {
+		float: left;
+		width: 480px;
+		height: 520px;
+		position: relative;
+		padding: 0px 43px 42px;
+		box-sizing: border-box;
+		background: url('../images/mother-day/lottery-bg.png') no-repeat center top;
+		background-size: 100%;
+		@media (max-width:700px) {
+			float:none;
+			display:inline-block;
+			width:270px;
+		    height: 300px;
+    		padding: 0px 25px 33px;
+		}
+
+		.pointer-img {
+			width: 120px;
+			height: 170px;
+			background: url('../images/mother-day/pointer.png') no-repeat center;
+			background-size: 100%;
+			cursor: pointer;
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			margin-left: -60px;
+			margin-top: -130px;
+			z-index: 8;
+			@media (max-width:700px) {
+			    width: 60px;
+			    height: 86px;
+			    margin-top: -74px;
+			    margin-left: -30px;
+			}
+		}
+		.rotate-btn {
+			float: left;
+			width: 100%;
+			height: 100%;
+			border-radius: 50%;
+			background: url('../images/mother-day/gift-circle.png') no-repeat center;
+			background-size: 100%;
+		}
+	}
+	.gift-circle-detail {
+		float: left;
+		width: 400px;
+		margin-left: 40px;
+		position: relative;
+		padding: 6px 16px 0;
+		box-sizing: border-box;
+		background: url('../images/mother-day/title-bg.png') no-repeat center top;
+		background-size: 100%;
+		@media (max-width:700px) {
+		    float: none;
+		    display: inline-block;
+		    width: 100%;
+		    margin-left: 0;
+		}
+
+		.gift-info-box {
+			float: left;
+			width: 100%;
+		    border: 1px solid #ebdaad;
+		    box-sizing:border-box;
+
+			.gift-record {
+				float: left;
+				width: 100%;
+				background: #ebdaad;
+				position: relative;
+
+				li {
+					float: left;
+					width: 50%;
+					font-size: 16px;
+					color: #ffedbc;
+					line-height: 40px;
+					text-align: center;
+					cursor:pointer;
+					box-sizing: border-box;
+					@media (max-width:700px){
+						font-size: 14px;
+					}
+					&.active {
+						font-size: 18px;
+						color: #a6000e;
+						background: #fcf5d0;
+						@media (max-width:700px){
+							font-size: 16px;
+						}
+					}
+				}
+			}
+			.record-list {
+				float: left;
+				width: 100%;
+				height: 410px;
+				background: #fcf5d0;
+				font-size: 14px;
+				color: #333;
+				overflow:hidden;
+				@media (max-width:700px){
+					height:305px;
+				}
+				.record-model {
+					float: left;
+					width: 100%;
+
+					&.own-record {
+						li {
+							float: left;
+							width: 100%;
+							text-align: left;
+							box-sizing: border-box;
+
+							time {
+								float: right;
+							}
+						}
+					}
+					li {
+						float: left;
+						width: 100%;
+						padding: 0 20px;
+						line-height:40px;
+						box-sizing: border-box;
+						@media (max-width:700px){
+							font-size:12px;
+							line-height:30px;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+.tip-list {
+	width: 470px !important;
+	height: 310px !important;
+	top: 50% !important;
+	left: 50% !important;
+	margin-left: -235px !important;
+	margin-top: -155px !important;
+	border-radius:0px;
+	background:url('../images/mother-day/tip-bg.png') no-repeat center;
+	background-size:100%;
+	z-index: 999;
+	@media (max-width:700px) {
+		width: 300px !important;
+		height: 310px !important;
+		top: 50% !important;
+		left: 50% !important;
+		margin-left: -150px !important;
+		margin-top: -155px !important;
+	}
+	.text-tip {
+		height: auto;
+
+		p {
+			color: #fff;
+			&.success-text {
+		    	height: 220px;
+			    padding-top: 0;
+			    margin: -140px 0 30px;
+				background: url('../images/mother-day/success-title.png') no-repeat center;
+				background-size: 100%;
+				@media (max-width:700px) {
+					height:150px;
+					margin:-40px 0 0;
+				}
+			}
+			&.reward-text {
+				font-size:30px;
+				@media (max-width:700px) {
+			    	font-size: 14px;
+    				line-height: 30px;
+				}
+				em{
+					font-size:34px;
+					color:#ffe973;
+					@media (max-width:700px) {
+				    	font-size: 16px;
+					}
+				}
+			}
+			&.login-text {
+				font-size: 20px;
+				padding-top: 70px;
+				@media (max-width:700px) {
+					padding-top: 90px;
+			    	font-size: 14px;
+				}
+			}
+			&.des-text {
+				color: #fff;
+				font-size: 14px;
+				@media (max-width:700px) {
+			    	font-size: 12px;
+				}
+			}
+		}
+	}
+	.close-btn {
+		width: 20px;
+		height: 20px;
+		top: 20px;
+		right: 20px;
+		margin-left: -14px;
+		background: url('../images/mother-day/close-tip.png') no-repeat center;
+		background-size: 100%;
+		@media (max-width:700px) {
+		    top: 70px;
+    		right: 10px;
+		}
+	}
+	.btn-list {
+		a {
+			background: #ffea77;
+			color: #e34758;
+			padding: 10px 70px;
+			font-size: 20px;
+			border-radius: 5px;
+			margin: 10px 0;
+			@media (max-width:700px) {
+			    padding: 5px 35px;
+    			font-size: 16px;
+			}
+		}
+	}
+}
+.gift-list-tip{
+	float:left;
+	width:100%;
+	background:#fff;
+	padding:30px;
+	box-sizing:border-box;
+	position: relative;
+	display:none;
+	@media (max-width:700px) {
+		padding:10px;
+	}
+	.close-tip{
+		position: absolute;
+		top:20px;
+		right:20px;
+		width:20px;
+		height:20px;
+		background:url('../images/mother-day/close-btn.png') no-repeat center;
+		background-size:100%;
+		cursor:pointer;
+		@media (max-width:700px) {
+			top:10px;
+			right:10px;
+		}
+	}
+	h3{
+		float:left;
+		width:100%;
+		font-size:24px;
+		color:#333;
+		text-align:center;
+		@media (max-width:700px) {
+			font-size:14px;
+		}
+	}
+	.gift-content{
+		float:left;
+		width:100%;
+		height:500px;
+		overflow:hidden;
+		overflow-y:scroll;
+		@media (max-width:700px) {
+			height:350px;
+		}
+		li{
+			float:left;
+			width:100%;
+			height:1100px;
+			display:none;
+			@media (max-width:770px) {
+				height:770px;
+			}
+			&.active{
+				display:block;
+			}
+			&.gift-one{
+				background:url('../images/mother-day/gift-list-one.jpg') no-repeat center;
+				background-size:100%;
+				@media (max-width:700px) {
+					background:url('../images/mother-day/gift-one-phone.jpg') no-repeat center;
+					background-size:100%;
+				}
+			}
+			&.gift-two{
+				background:url('../images/mother-day/gift-list-two.jpg') no-repeat center;
+				background-size:100%;
+				@media (max-width:700px) {
+					background:url('../images/mother-day/gift-two-phone.jpg') no-repeat center;
+					background-size:100%;
+				}
+			}
+			&.gift-three{
+				background:url('../images/mother-day/gift-list-three.jpg') no-repeat center;
+				background-size:100%;
+				@media (max-width:700px) {
+					background:url('../images/mother-day/gift-three-phone.jpg') no-repeat center;
+					background-size:100%;
+				}
+			}
+		}
+	}
+}
+.mother-day-container {
+	background: #fe8c88;
+
+	.media-pc {
+		display: block;
+
+		@media (max-width:700px) {
+			display: none;
+		}
+	}
+	.media-phone {
+		display: none;
+
+		@media (max-width:700px) {
+			display: block;
+		}
+	}
+	.top-item {
+		float: left;
+		width: 100%;
+		margin-bottom: 20px;
+	}
+	.wp {
+		width: 1000px;
+		margin: 0 auto;
+		position: relative;
+		z-index: 9;
+
+		@media (max-width:700px) {
+			width: 100%;
+			box-sizing: border-box;
+			padding: 0 10px;
+		}
+		.content-item {
+			float: left;
+			width: 100%;
+			box-sizing: border-box;
+			margin-bottom: 30px;
+			position: relative;
+
+			@media (max-width:700px) {
+				margin-bottom: 10px;
+			}
+			.title-item {
+				float: left;
+				width: 100%;
+				height: 60px;
+
+				&.title-one {
+					background: url('../images/mother-day/title-one.png') no-repeat center;
+					@media (max-width:700px) {
+						height:40px;
+						background-size:80%;
+					}
+				}
+				&.title-two {
+					background: url('../images/mother-day/title-one.png') no-repeat center;
+					@media (max-width:700px) {
+						height:40px;
+						background-size:80%;
+					}
+				}
+				&.title-three {
+					background: url('../images/mother-day/title-one.png') no-repeat center;
+					@media (max-width:700px) {
+						height:40px;
+						background-size:80%;
+					}
+				}
+			}
+			.tip-item {
+				float: left;
+				width: 100%;
+				font-size: 20px;
+				color: #fef700;
+				margin-bottom: 20px;
+				@media (max-width:700px) {
+					font-size:12px;
+					text-align:left;
+				}
+			}
+			.detail-bg {
+				float: left;
+				width: 100%;
+				border-radius: 15px;
+				padding: 20px;
+				box-sizing: border-box;
+				background: -moz-linear-gradient(top, #fe7144, #ff3837);
+				background: -webkit-linear-gradient(top, #fe7144, #ff3837);
+				background: -o-linear-gradient(top, #fe7144, #ff3837);
+				box-shadow: 0px 5px 10px #b66462;
+				@media (max-width:700px) {
+					padding:5px;
+					border-radius:10px;
+				}
+
+				.detail-item {
+					float: left;
+					width: 100%;
+					background: #fff8c4;
+					border-radius: 15px;
+					padding: 40px 20px;
+					box-sizing: border-box;
+					@media (max-width:700px) {
+						padding:20px 10px;
+						border-radius:10px;
+					}
+					.list-item{
+						float:left;
+						width:100%;
+						th{
+							font-size:24px;
+							color:#333;
+							background:none;
+							border:1px solid #a28f56;
+							@media (max-width:700px) {
+								font-size:14px;
+							}
+						}
+						td{
+							font-size:20px;
+							color:#333;
+							border:1px solid #dcc15c;
+							@media (max-width:700px) {
+								font-size:12px;
+							}
+						}
+					}
+					.gift-title{
+						float:left;
+						width:100%;
+						text-align:center;
+						span{
+							display:inline-block;
+							width:460px;
+							height: 60px;
+							line-height:60px;
+							font-size:20px;
+							color:#fff;
+							box-sizing:border-box;
+							padding-left:120px;
+							background:#fe7144 url('../images/mother-day/user-money.png') no-repeat left center;
+							border-radius:10px;
+							text-align: left;
+						    background-position: 50px 50%;
+						    @media (max-width:700px) {
+								width: 100%;
+								height: 40px;
+								line-height: 40px;
+								font-size: 12px;
+								padding-left: 70px;
+								background-position: 20px 50%;
+								background-size: 10%;
+						    }
+						    strong{
+						    	font-size:24px;
+						    	color:#fef700;
+						    	font-weight:normal;
+						    	cursor:pointer;
+						    	@media (max-width:700px) {
+						    		font-size:14px;
+						    	}
+						    }
+						}
+					}
+					.gift-img{
+						float:left;
+						width:100%;
+						height:400px;
+						margin:10px 0;
+						background: url('../images/mother-day/gift-img.png') no-repeat center;
+						background-size:90%;
+						@media (max-width:700px) {
+							height:400px;
+							background: url('../images/mother-day/gift-img-phone.png') no-repeat center;
+							background-size:80%;
+						}
+					}
+					.gift-box{
+						float:left;
+						width:100%;
+						text-align:center;
+						span{
+							display:inline-block;
+							width:460px;
+							height: 60px;
+							line-height:60px;
+							font-size:24px;
+							color:#fff;
+							box-sizing:border-box;
+							background:url('../images/mother-day/gift-title.png') no-repeat left center;
+							text-align: center;
+							@media (max-width:700px) {
+								width: 100%;
+								height: 40px;
+								line-height: 40px;
+								font-size: 12px;
+								background-size: 100%;
+						    }
+						}
+					}
+					.gift-list{
+						float:left;
+						width:100%;
+						margin-top:50px;
+						@media (max-width:700px) {
+							margin-top:10px;
+						}
+						li{
+							float:left;
+							width:33.333333%;
+							p{
+								float:left;
+								width:100%;
+								margin-bottom: 0;
+								font-size:16px;
+								color:#333;
+								text-align: center;
+								@media (max-width:700px) {
+									font-size:12px;
+								}
+								&.img-item{
+									cursor:pointer;
+									height:250px;
+									background:url('../images/mother-day/img-item.png') no-repeat center;
+									@media (max-width:700px) {
+										height:125px;
+										background-size:80%;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		.rule-item {
+			float: left;
+			width: 100%;
+			margin-bottom: 45px;
+			box-sizing: border-box;
+			padding: 20px;
+
+			@media (max-width:700px) {
+				display: block;
+				margin-bottom: 20px;
+				padding: 5px 15px;
+			}
+			dt {
+				font-size: 18px;
+				color: #fff;
+				margin-bottom: 10px;
+
+				@media (max-width:700px) {
+					font-size: 14px;
+					margin-bottom: 0;
+				}
+			}
+			dd {
+				font-size: 14px;
+				color: #fff;
+
+				@media (max-width:700px) {
+					font-size: 12px;
+				}
+			}
+		}
+	}
+}
