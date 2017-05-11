@@ -10,6 +10,7 @@ import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.util.MobileEncryptor;
 import com.tuotiansudai.util.RedisWrapperClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -133,15 +134,19 @@ public class WechatLotteryService {
 
     public List<UserLotteryPrizeView> getLotteryListTop20() {
         List<UserLotteryPrizeView> lotteryList = userLotteryPrizeMapper.findUserLotteryPrizeViews(null, null, ActivityCategory.WECHAT_FIRST_INVEST_PRIZE, null, null, 0, 20);
-        for (UserLotteryPrizeView view : lotteryList)
+        for (UserLotteryPrizeView view : lotteryList) {
             view.setPrizeValue(view.getPrize().getDescription());
+            view.setMobile(MobileEncryptor.encryptMiddleMobile(view.getMobile()));
+        }
         return lotteryList;
     }
 
     public List<UserLotteryPrizeView> getMyLotteryList(String mobile) {
         List<UserLotteryPrizeView> lotteryList = userLotteryPrizeMapper.findUserLotteryPrizeViews(mobile, null, ActivityCategory.WECHAT_FIRST_INVEST_PRIZE, null, null, null, null);
-        for (UserLotteryPrizeView view : lotteryList)
+        for (UserLotteryPrizeView view : lotteryList) {
             view.setPrizeValue(view.getPrize().getDescription());
+            view.setMobile(MobileEncryptor.encryptMiddleMobile(view.getMobile()));
+        }
         return lotteryList;
     }
 
