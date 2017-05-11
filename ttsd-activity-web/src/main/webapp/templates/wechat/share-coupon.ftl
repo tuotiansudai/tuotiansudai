@@ -10,5 +10,9 @@
 
 <div class="share-coupon-container" id="shareCoupon">
     <h3 class="title-item">恭喜您获得了一个优惠券兑换码</h3>
+    <div class="copy-item">
+    	<input type="text" class="copy-int">
+    	<span class="copy-btn">复制兑换码</span>
+    </div>
 </div>
 </@global.main>

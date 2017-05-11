@@ -23,8 +23,26 @@
 		font-weight:bold;
 		font-size:14px;
 		color:#fff;
+		line-height:65px;
 		text-align:center;
+		margin-top:10px;
 		background: url('../../images/dragon-boat/title-bg.png') no-repeat center bottom;
 		background-size: 100%;
+	}
+	.copy-item{
+		float:left;
+		width:100%;
+		padding:0 10px;
+		box-sizing:border-box;
+		.copy-int{
+			float:left;
+			width:68%;
+			margin-right:2%;
+			box-sizing:border-box;
+		}
+		.copy-btn{
+			float:left;
+			width:30%;
+		}
 	}
 }
