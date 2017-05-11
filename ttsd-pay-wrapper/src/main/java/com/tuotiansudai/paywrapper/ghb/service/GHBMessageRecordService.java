@@ -1,13 +1,13 @@
-package com.tuotiansudai.paywrapper.service.impl;
+package com.tuotiansudai.paywrapper.ghb.service;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.google.common.collect.Lists;
 import com.tuotiansudai.paywrapper.ghb.message.request.*;
 import com.tuotiansudai.paywrapper.ghb.message.response.*;
-import com.tuotiansudai.paywrapper.repository.mapper.DynamicTableMapper;
-import com.tuotiansudai.paywrapper.service.GHBMessageRecordService;
-import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.paywrapper.ghb.repository.mapper.DynamicTableMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.AnnotationConfigurationException;
 import org.springframework.dao.DuplicateKeyException;
@@ -16,21 +16,25 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 @Service
-public class GHBMessageRecordServiceImpl implements GHBMessageRecordService {
+public class GHBMessageRecordService {
 
-    private int fieldMaxLength = 4096;
-    private List<Class<?>> REQUEST_MESSAGE_CLASSES = Collections.singletonList(RequestOGW00042.class);
-    private List<Class<?>> RESPONSE_MESSAGE_CLASSES = Collections.singletonList(ResponseOGW00042.class);
+    private static final int FIELD_MAX_LENGTH = 4096;
+
+    private List<Class<?>> REQUEST_MESSAGE_CLASSES = Lists.newArrayList(RequestOGW00042.class, RequestOGW00043.class);
+    private List<Class<?>> RESPONSE_MESSAGE_CLASSES = Lists.newArrayList(ResponseOGW00042.class, ResponseOGW00043.class);
+
+    private final DynamicTableMapper dynamicTableMapper;
 
     @Autowired
-    private DynamicTableMapper dynamicTableMapper;
+    public GHBMessageRecordService(DynamicTableMapper dynamicTableMapper) {
+        this.dynamicTableMapper = dynamicTableMapper;
+    }
 
-    @Override
     public void autoCreateMessageRecordTables() {
         for (Class<?> cls : REQUEST_MESSAGE_CLASSES) {
             createRequestTableIfNotExist(cls);
@@ -38,45 +42,9 @@ public class GHBMessageRecordServiceImpl implements GHBMessageRecordService {
         for (Class<?> cls : RESPONSE_MESSAGE_CLASSES) {
             createResponseTableIfNotExist(cls);
         }
-
-//        test();
     }
 
-    /*
-    private void test() {
-        RequestOGW00042 requestOGW00042 = new RequestOGW00042(Source.IOS, "zhangzg", "11011011011", "13800138000");
-        RequestMessageContent<RequestOGW00042> requestData = new RequestMessageContent<>(requestOGW00042);
-        saveRequestMessage(requestData, "xxx", "xxxxx");
-
-        ResponseOGW00042 responseOGW00042 = new ResponseOGW00042();
-        responseOGW00042.setAcname("what");
-        responseOGW00042.setAcno("123");
-        responseOGW00042.setIdno("1101231234");
-        responseOGW00042.setIdtype("helloidtype");
-        responseOGW00042.setMobile("13800138000");
-        responseOGW00042.setOldreqseqno("1234335");
-
-        ResponseMessageContent<ResponseOGW00042> responseData = new ResponseMessageContent<>();
-        ResponseMessageHeader responseMessageHeader = new ResponseMessageHeader();
-        responseData.setHeader(responseMessageHeader);
-
-        ResponseOGW00042 content = new ResponseOGW00042();
-        content.setOldreqseqno("1234");
-        content.setIdno("hello");
-
-        ResponseMessageBody<ResponseOGW00042> responseBody = new ResponseMessageBody<>();
-        responseBody.setBankid("bankId");
-        responseBody.setMerchantid("merId");
-        responseBody.setTranscode("trancode");
-        responseBody.setContent(content);
-        responseData.setBody(responseBody);
-
-        saveResponseMessage(responseData, "yyy", "yyyyyyy");
-    }
-    */
-
-    @Override
-    @Transactional(transactionManager = "payTransactionManager")
+    @Transactional(transactionManager = "ghbTransactionManager")
     public <T extends RequestBaseOGW> void saveRequestMessage(RequestMessageContent<T> data) {
         if (data == null) {
             return;
@@ -88,14 +56,13 @@ public class GHBMessageRecordServiceImpl implements GHBMessageRecordService {
         String tableName = xmlPara.getClass().getSimpleName();
         fillSpecialFieldValues(fieldValueCollection, xmlPara);
 
-        fillCommonLiteralValue(fieldValueCollection, data.getPlainXMLPARA(), data.getFullMessage());
+        fillCommonLiteralValue(fieldValueCollection, data.getPlainXMLPARA(), data.getCipherXMLPARA(), data.getFullMessage());
 
         dynamicTableMapper.insert(tableName, fieldValueCollection.getFields(), fieldValueCollection.getValues());
     }
 
-    @Override
-    @Transactional(transactionManager = "payTransactionManager")
-    public <T extends ResponseBaseOGW> void saveResponseMessage(ResponseMessageContent<T> data, String originXmlpara, String fullMessage) {
+    @Transactional(transactionManager = "ghbTransactionManager")
+    public <T extends ResponseBaseOGW> void saveResponseMessage(ResponseMessageContent<T> data) {
         if (data == null) {
             return;
         }
@@ -106,7 +73,7 @@ public class GHBMessageRecordServiceImpl implements GHBMessageRecordService {
         String tableName = content.getClass().getSimpleName();
         fillSpecialFieldValues(fieldValueCollection, content);
 
-        fillCommonLiteralValue(fieldValueCollection, originXmlpara, fullMessage);
+        fillCommonLiteralValue(fieldValueCollection, data.getCipherXMLPARA(), data.getCipherXMLPARA(), data.getFullMessage());
         dynamicTableMapper.insert(tableName, fieldValueCollection.getFields(), fieldValueCollection.getValues());
     }
 
@@ -124,11 +91,15 @@ public class GHBMessageRecordServiceImpl implements GHBMessageRecordService {
             return;
         }
 
-        List<String> fieldDDLs = new ArrayList<>();
+        List<String> fieldDDLs = Lists.newArrayList();
         fillRequestCommonFieldDDLs(fieldDDLs);
         fillFieldDDLs(fieldDDLs, tClass);
         fillCommonFieldDDLs(fieldDDLs);
 
+        if (AsyncRequestBaseOGW.class.isAssignableFrom(tClass)) {
+            fieldDDLs.add("LATEST_RETURN_STATUS varchar(2)");
+            fieldDDLs.add("LATEST_RETURN_STATUS_TIME datetime");
+        }
         dynamicTableMapper.createTable(tableName, fieldDDLs, Collections.emptyList());
     }
 
@@ -150,14 +121,14 @@ public class GHBMessageRecordServiceImpl implements GHBMessageRecordService {
     // Request Message Table DDL
 
     private void fillRequestCommonFieldDDLs(List<String> ddls) {
-        ddls.add(generateFieldDDL("channelCode", 6));
-        ddls.add(generateFieldDDL("channelFlow", 28));
-        ddls.add(generateFieldDDL("channelDate", 8));
-        ddls.add(generateFieldDDL("channelTime", 6));
-        ddls.add(generateFieldDDL("encryptData", 200));
-        ddls.add(generateFieldDDL("TRANSCODE", 8));
-        ddls.add(generateFieldDDL("MERCHANTID", 20));
-        ddls.add(generateFieldDDL("APPID", 3));
+        ddls.add(generateFieldDDL("channelCode", 12, true));
+        ddls.add(generateFieldDDL("channelFlow", 56, true));
+        ddls.add(generateFieldDDL("channelDate", 16, true));
+        ddls.add(generateFieldDDL("channelTime", 12, true));
+        ddls.add(generateFieldDDL("encryptData", 400, true));
+        ddls.add(generateFieldDDL("TRANSCODE", 16, true));
+        ddls.add(generateFieldDDL("MERCHANTID", 40, true));
+        ddls.add(generateFieldDDL("APPID", 6, true));
     }
 
     // Request Message Insert
@@ -179,19 +150,18 @@ public class GHBMessageRecordServiceImpl implements GHBMessageRecordService {
     // Response Message Table DDL
 
     private void fillResponseCommonFieldDDLs(List<String> ddls) {
-        ddls.add(generateFieldDDL("channelCode", 6));
-        ddls.add(generateFieldDDL("transCode", 8));
-        ddls.add(generateFieldDDL("channelFlow", 20));
-        ddls.add(generateFieldDDL("serverFlow", 20));
-        ddls.add(generateFieldDDL("serverDate", 8));
-        ddls.add(generateFieldDDL("serverTime", 6));
-        ddls.add(generateFieldDDL("encryptData", 200));
-        ddls.add(generateFieldDDL("status", 1));
-        ddls.add(generateFieldDDL("errorCode", 12));
-        ddls.add(generateFieldDDL("errorMsg", 300));
-        ddls.add(generateFieldDDL("MERCHANTID", 32));
-        ddls.add(generateFieldDDL("X_TRANSCODE", 8));
-        ddls.add(generateFieldDDL("BANKID", 6));
+        ddls.add(generateFieldDDL("channelCode", 12, true));
+        ddls.add(generateFieldDDL("transCode", 16, true));
+        ddls.add(generateFieldDDL("channelFlow", 40, true));
+        ddls.add(generateFieldDDL("serverFlow", 40, true));
+        ddls.add(generateFieldDDL("serverDate", 16, true));
+        ddls.add(generateFieldDDL("serverTime", 12, true));
+        ddls.add(generateFieldDDL("encryptData", 400, true));
+        ddls.add(generateFieldDDL("status", 2, true));
+        ddls.add(generateFieldDDL("errorCode", 24, true));
+        ddls.add(generateFieldDDL("errorMsg", 600, true));
+        ddls.add(generateFieldDDL("MERCHANTID", 64, true));
+        ddls.add(generateFieldDDL("BANKID", 12, true));
     }
 
     // Response Message Insert
@@ -210,16 +180,16 @@ public class GHBMessageRecordServiceImpl implements GHBMessageRecordService {
         fieldValueCollection.addFieldValue("errorCode", header.getErrorCode());
         fieldValueCollection.addFieldValue("errorMsg", header.getErrorMsg());
         fieldValueCollection.addFieldValue("MERCHANTID", body.getMerchantid());
-        fieldValueCollection.addFieldValue("X_TRANSCODE", body.getTranscode());
         fieldValueCollection.addFieldValue("BANKID", body.getBankid());
     }
 
     // Common Message Table DDL
 
     private void fillCommonFieldDDLs(List<String> ddls) {
-        ddls.add("XML_PARA text");
+        ddls.add("PLAIN_XML_PARA text");
+        ddls.add("CIPHER_XML_PARA text");
         ddls.add("FULL_MESSAGE text");
-        ddls.add("crTime BIGINT UNSIGNED");
+        ddls.add("created_time datetime not null");
     }
 
     private void fillFieldDDLs(List<String> ddls, Class<?> tClass) {
@@ -243,22 +213,23 @@ public class GHBMessageRecordServiceImpl implements GHBMessageRecordService {
         if (lengthProperty == null) {
             throw new AnnotationConfigurationException(String.format("[Length] annotation missed on field [%s]", field.getName()));
         }
-        if (lengthProperty.max() > fieldMaxLength) {
-            throw new AnnotationConfigurationException(String.format("[Length] annotation max value could not be more than %d on field [%s]", fieldMaxLength, field.getName()));
+        if (lengthProperty.max() > FIELD_MAX_LENGTH) {
+            throw new AnnotationConfigurationException(String.format("[Length] annotation max value could not be more than %d on field [%s]", FIELD_MAX_LENGTH, field.getName()));
         }
-        return generateFieldDDL(columnName, lengthProperty.max());
+        return generateFieldDDL(columnName, lengthProperty.max(), field.getAnnotation(NotBlank.class) != null);
     }
 
-    private String generateFieldDDL(String columnName, int maxLength) {
-        return String.format("%s varchar(%d)", columnName, maxLength);
+    private String generateFieldDDL(String columnName, int maxLength, boolean notNull) {
+        return String.format("%s varchar(%d) %s", columnName, maxLength, notNull ? "not null" : "");
     }
 
     // Common Message Insert
 
-    private void fillCommonLiteralValue(FieldValueCollection fieldValueCollection, String originXmlpara, String fullMessage) {
-        fieldValueCollection.addFieldValue("XML_PARA", originXmlpara);
+    private void fillCommonLiteralValue(FieldValueCollection fieldValueCollection, String plainXmlpara, String cipherXmlpara, String fullMessage) {
+        fieldValueCollection.addFieldValue("PLAIN_XML_PARA", plainXmlpara);
+        fieldValueCollection.addFieldValue("CIPHER_XML_PARA", cipherXmlpara);
         fieldValueCollection.addFieldValue("FULL_MESSAGE", fullMessage);
-        fieldValueCollection.addFieldValue("crTime", System.currentTimeMillis());
+        fieldValueCollection.addFieldValue("created_time", new Date());
     }
 
     private void fillSpecialFieldValues(FieldValueCollection fieldValueCollection, Object xmlPara) {
@@ -279,10 +250,10 @@ public class GHBMessageRecordServiceImpl implements GHBMessageRecordService {
     // Helper classes
 
     class FieldValueCollection {
-        private List<String> fields = new ArrayList<>();
-        private List<Object> values = new ArrayList<>();
+        private List<String> fields = Lists.newArrayList();
+        private List<Object> values = Lists.newArrayList();
 
-        public void addFieldValue(String field, Object value) {
+        void addFieldValue(String field, Object value) {
             if (fields.contains(field)) {
                 throw new DuplicateKeyException(String.format("field [%s] has already added", field));
             }
@@ -290,7 +261,7 @@ public class GHBMessageRecordServiceImpl implements GHBMessageRecordService {
             values.add(value);
         }
 
-        public List<String> getFields() {
+        List<String> getFields() {
             return fields;
         }
 

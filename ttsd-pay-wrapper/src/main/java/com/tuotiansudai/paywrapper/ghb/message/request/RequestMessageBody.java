@@ -11,7 +11,7 @@ public class RequestMessageBody<T extends RequestBaseOGW>{
     private T xmlpara; //报文体
 
     public RequestMessageBody(T ogw) {
-        this.transcode = ogw.getTranscode();
+        this.transcode = ogw.transcode;
         this.xmlpara = ogw;
     }
 

@@ -33,9 +33,30 @@
         <constructor-arg>
             <bean class="com.zaxxer.hikari.HikariConfig">
                 <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-                <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/ump_operations?useUnicode=true&amp;characterEncoding=UTF-8"/>
-                <property name="username" value="${common.jdbc.username}"/>
-                <property name="password" value="${common.jdbc.password}"/>
+                <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/${ump.jdbc.schema}?useUnicode=true&amp;characterEncoding=UTF-8"/>
+                <property name="username" value="${ump.jdbc.username}"/>
+                <property name="password" value="${ump.jdbc.password}"/>
+                <property name="minimumIdle" value="1"/>
+                <property name="maximumPoolSize" value="1"/>
+                <property name="idleTimeout" value="${common.jdbc.idleTimeout}"/>
+                <property name="dataSourceProperties">
+                    <props>
+                        <prop key="cachePrepStmts">${common.jdbc.cachePrepStmts}</prop>
+                        <prop key="prepStmtCacheSize">${common.jdbc.prepStmtCacheSize}</prop>
+                        <prop key="prepStmtCacheSqlLimit">${common.jdbc.prepStmtCacheSqlLimit}</prop>
+                    </props>
+                </property>
+            </bean>
+        </constructor-arg>
+    </bean>
+
+    <bean id="ghbHikariCPDataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+        <constructor-arg>
+            <bean class="com.zaxxer.hikari.HikariConfig">
+                <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+                <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/${ghb.jdbc.schema}?useUnicode=true&amp;characterEncoding=UTF-8"/>
+                <property name="username" value="${ghb.jdbc.username}"/>
+                <property name="password" value="${ghb.jdbc.password}"/>
                 <property name="minimumIdle" value="1"/>
                 <property name="maximumPoolSize" value="1"/>
                 <property name="idleTimeout" value="${common.jdbc.idleTimeout}"/>
@@ -97,6 +118,10 @@
         <property name="dataSource" ref="payHikariCPDataSource"/>
     </bean>
 
+    <bean id="ghbTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="ghbHikariCPDataSource"/>
+    </bean>
+
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="hikariCPDataSource"/>
     </bean>
@@ -119,6 +144,11 @@
                   value="com.tuotiansudai.paywrapper.repository.model.sync.request,com.tuotiansudai.paywrapper.repository.model.sync.response,com.tuotiansudai.paywrapper.repository.model.async.request,com.tuotiansudai.paywrapper.repository.model.async.callback"/>
     </bean>
 
+    <bean id="ghbSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="ghbHikariCPDataSource"/>
+        <property name="typeAliasesPackage" value=""/>
+    </bean>
+
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="hikariCPDataSource"/>
         <property name="typeAliasesPackage"
@@ -129,6 +159,11 @@
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="sqlSessionFactoryBeanName" value="paySqlSessionFactory"/>
         <property name="basePackage" value="com.tuotiansudai.paywrapper.repository.mapper"/>
+    </bean>
+
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="sqlSessionFactoryBeanName" value="ghbSqlSessionFactory"/>
+        <property name="basePackage" value="com.tuotiansudai.paywrapper.ghb.repository.mapper"/>
     </bean>
 
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">

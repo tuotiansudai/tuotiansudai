@@ -25,7 +25,7 @@ public class ResponseMessageBody<T extends ResponseBaseOGW> {
 
     @SuppressWarnings(value = "unchecked")
     void decodeXMLPARA(Class<? extends ResponseBaseOGW> bodyClass) throws IOException {
-        this.content = XML.deserializer(MessageFormat.format("<XMLPARA>{0}</XMLPARA>", xmlpara), (Class<T>) bodyClass);
+        this.content =  XML.deserializer(MessageFormat.format("<XMLPARA>{0}</XMLPARA>", xmlpara), (Class<T>) bodyClass);
     }
 
     public T getContent() {

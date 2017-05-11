@@ -2,8 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.tuotiansudai.paywrapper.repository.mapper.DynamicTableMapper">
-    <select id="findTable" resultType="String">
+<mapper namespace="com.tuotiansudai.paywrapper.ghb.repository.mapper.DynamicTableMapper">
+
+    <select id="findTable" resultType="string">
         show tables like #{tableName}
     </select>
 
@@ -36,4 +37,18 @@
             #{value}
         </foreach>
     </insert>
+    
+    <select id="findProcessingRequest" resultType="hashmap">
+        select id, channelFlow, created_time, LATEST_RETURN_STATUS, LATEST_RETURN_STATUS_TIME
+        from ${tableName}
+        where LATEST_RETURN_STATUS is null or LATEST_RETURN_STATUS not in ('S', 'F')
+    </select>
+
+    <update id="updateRequestStatus" parameterType="map">
+        update ${tableName} set
+        LATEST_RETURN_STATUS = #{status},
+        LATEST_RETURN_STATUS_TIME = now()
+        where id = #{id}
+    </update>
+
 </mapper>

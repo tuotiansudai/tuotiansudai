@@ -37,7 +37,7 @@ public class RequestMessageContent<T extends RequestBaseOGW> {
     private String fullMessage;
 
     public RequestMessageContent(T ogw) throws JsonProcessingException {
-        this.header = new RequestMessageHeader(ogw);
+        this.header = new RequestMessageHeader(ogw.transcode, ogw.businessId);
         this.body = new RequestMessageBody<>(ogw);
         this.plainXML = XML.serializer(this);
         this.plainXMLPARA = this.generatePlainXMLPARA();
@@ -50,7 +50,7 @@ public class RequestMessageContent<T extends RequestBaseOGW> {
         Matcher matcher = compile.matcher(this.plainXML);
 
         if (!matcher.find()) {
-            logger.error(MessageFormat.format("XMLPARA is not exist, plain XML: {0}", this.plainXML));
+            logger.error(MessageFormat.format("plain XMLPARA is not exist, plain XML: {0}", this.plainXML));
             return null;
         }
 

@@ -3,9 +3,7 @@ apply plugin: 'java'
 
 dependencies {
     compile project(':ttsd-service'),
-            project(':ttsd-quartz-extension'),
-            project(':ttsd-point-service'),
-            project(':ttsd-edxactivity-repository')
+            project(':ttsd-quartz-extension')
 }
 
 processResources.outputs.upToDateWhen { false }

@@ -2,6 +2,7 @@ package com.tuotiansudai.paywrapper.ghb.message.request;
 
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.google.common.base.Strings;
 import org.joda.time.DateTime;
 
 import java.text.MessageFormat;
@@ -21,18 +22,18 @@ public class RequestMessageHeader {
     private String channelTime; //渠道时间 HHmmss
 
     @JacksonXmlProperty(localName = "encryptData")
-    private String encryptData; //加密域 暂时为空
+    private String encryptData = ""; //加密域 暂时为空
 
-
-    public RequestMessageHeader(RequestBaseOGW requestBaseOGW) {
+    public RequestMessageHeader(String transcode, long businessId) {
         DateTime now = new DateTime();
         this.channelDate = now.toString("yyyyMMdd");
         this.channelTime = now.toString("HHmmss");
+        String ghbId = Long.toString(businessId, 36).toLowerCase();
         this.channelFlow = MessageFormat.format("{0}{1}{2}{3}",
                 this.channelCode,
                 this.channelDate,
-                requestBaseOGW.getTranscode().substring(requestBaseOGW.getTranscode().length() - 3),
-                "orderid");
+                transcode.substring(transcode.length() - 3),
+                MessageFormat.format("{0}{1}", (ghbId.length() < 11 ? Strings.repeat("0", 11 - ghbId.length()) : ""), ghbId));
     }
 
     public String getChannelCode() {

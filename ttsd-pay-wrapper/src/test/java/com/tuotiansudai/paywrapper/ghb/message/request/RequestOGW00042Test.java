@@ -1,8 +1,12 @@
 package com.tuotiansudai.paywrapper.ghb.message.request;
 
+import com.google.common.base.Strings;
 import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.util.IdGenerator;
+import org.joda.time.DateTime;
 import org.junit.Test;
 
+import java.text.MessageFormat;
 import java.util.regex.Pattern;
 
 import static org.hamcrest.core.Is.is;
@@ -13,8 +17,8 @@ public class RequestOGW00042Test {
 
     @Test
     public void name() throws Exception {
-        System.out.println("1".replaceAll("^(.*<1>).*(</1>.*)$", "$1$2"));
-
+        String ghbId = Long.toString(IdGenerator.generate(), 36);
+        System.out.println(MessageFormat.format("{0}{1}", (ghbId.length() < 11 ? Strings.repeat("0", 11 - ghbId.length()) : ""), ghbId));
     }
 
     @Test

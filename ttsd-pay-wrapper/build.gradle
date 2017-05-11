@@ -3,6 +3,7 @@ apply from: 'db_migration.gradle'
 
 dependencies {
     compile fileTree(dir: 'libs', include: '**/*.jar'),
+            project(':ttsd-spring-extension'),
             project(':ttsd-service'),
             project(':ttsd-log-service')
 

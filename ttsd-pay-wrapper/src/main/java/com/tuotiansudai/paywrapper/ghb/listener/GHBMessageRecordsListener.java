@@ -1,14 +1,19 @@
-package com.tuotiansudai.paywrapper.listener;
+package com.tuotiansudai.paywrapper.ghb.listener;
 
-import com.tuotiansudai.paywrapper.service.GHBMessageRecordService;
+import com.tuotiansudai.paywrapper.ghb.service.GHBMessageRecordService;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-//@Component
+@Component
 public class GHBMessageRecordsListener implements InitializingBean {
+
+    private final GHBMessageRecordService ghbMessageRecordService;
+
     @Autowired
-    private GHBMessageRecordService ghbMessageRecordService;
+    public GHBMessageRecordsListener(GHBMessageRecordService ghbMessageRecordService) {
+        this.ghbMessageRecordService = ghbMessageRecordService;
+    }
 
     @Override
     public void afterPropertiesSet() throws Exception {
