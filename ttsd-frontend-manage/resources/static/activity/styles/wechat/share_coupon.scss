@@ -1,0 +1,30 @@
+.share-coupon-container {
+	position: fixed;
+	top:0;
+	left:0;
+	width:100%;
+	height:100%;
+	background: #336ded url('../../images/dragon-boat/top-bg.png') no-repeat center top;
+	background-size: 100%;
+
+	&:after {
+		content:'';
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		height:30px;
+		background: url('../../images/dragon-boat/bottom-bg.png') no-repeat center bottom;
+		background-size: 100%;
+	}
+	.title-item{
+		float:left;
+		width:100%;
+		font-weight:bold;
+		font-size:14px;
+		color:#fff;
+		text-align:center;
+		background: url('../../images/dragon-boat/title-bg.png') no-repeat center bottom;
+		background-size: 100%;
+	}
+}
