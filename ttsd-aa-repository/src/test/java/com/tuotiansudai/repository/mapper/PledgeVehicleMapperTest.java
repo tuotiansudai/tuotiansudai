@@ -117,6 +117,6 @@ public class PledgeVehicleMapperTest {
         assertNotNull(pledgeVehicleMapper.getByLoanId(pledgeVehicleModel.getLoanId()));
 
         pledgeVehicleMapper.deleteByLoanId(pledgeVehicleModel.getLoanId());
-        assertNull(pledgeVehicleMapper.getByLoanId(pledgeVehicleModel.getLoanId()));
+        assertEquals(0,pledgeVehicleMapper.getByLoanId(pledgeVehicleModel.getLoanId()).size());
     }
 }
