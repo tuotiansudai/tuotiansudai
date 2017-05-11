@@ -208,22 +208,23 @@ public class MobileAppLoanDetailV3ServiceImpl implements MobileAppLoanDetailV3Se
 
             if (loanModel.getPledgeType() == PledgeType.HOUSE) {
                 List<PledgeHouseModel> pledgeHouseModelList = pledgeHouseMapper.getByLoanId(loanModel.getId());
+                int seq = 1;
                 for (PledgeHouseModel pledgeHouseModel : pledgeHouseModelList) {
-                    int i = 1;
-                    DisclosureDto pledgeDisclosureDto = convertPledgeInfoFromLoan(loanModel, pledgeHouseModel, null, pledgeHouseModelList.size() > 1 ? String.valueOf(i) : "");
+                    DisclosureDto pledgeDisclosureDto = convertPledgeInfoFromLoan(loanModel, pledgeHouseModel, null, pledgeHouseModelList.size() > 1 ? String.valueOf(seq) : "");
                     disclosureDtoList.add(pledgeDisclosureDto);
+                    seq++;
                 }
             }
 
             if (loanModel.getPledgeType() == PledgeType.VEHICLE) {
                 List<PledgeVehicleModel> pledgeVehicleModelList = pledgeVehicleMapper.getByLoanId(loanModel.getId());
+                int seq = 1;
                 for (PledgeVehicleModel pledgeVehicleModel : pledgeVehicleModelList) {
-                    int i = 1;
-                    DisclosureDto pledgeDisclosureDto = convertPledgeInfoFromLoan(loanModel, null, pledgeVehicleModel, pledgeVehicleModelList.size() > 1 ? String.valueOf(i) : "");
+                    DisclosureDto pledgeDisclosureDto = convertPledgeInfoFromLoan(loanModel, null, pledgeVehicleModel, pledgeVehicleModelList.size() > 1 ? String.valueOf(seq) : "");
                     disclosureDtoList.add(pledgeDisclosureDto);
+                    seq++;
                 }
             }
-
 
         }
         if (loanModel.getPledgeType() == PledgeType.ENTERPRISE_CREDIT || loanModel.getPledgeType() == PledgeType.ENTERPRISE_PLEDGE) {
@@ -239,11 +240,11 @@ public class MobileAppLoanDetailV3ServiceImpl implements MobileAppLoanDetailV3Se
         if (loanModel.getPledgeType() == PledgeType.ENTERPRISE_PLEDGE) {
             List<PledgeEnterpriseModel> pledgeEnterpriseModelList = pledgeEnterpriseMapper.getByLoanId(loanModel.getId());
             if (pledgeEnterpriseModelList.size() > 0) {
+                int seq = 1;
                 for (PledgeEnterpriseModel pledgeEnterpriseModel : pledgeEnterpriseModelList) {
-                    int i = 1;
-                    DisclosureDto loanerPledgeEnterpriseDisclosureDto = convertLoanerPledgeEnterpriseFromLoan(pledgeEnterpriseModel, pledgeEnterpriseModelList.size() > 1 ? String.valueOf(i) : "");
+                    DisclosureDto loanerPledgeEnterpriseDisclosureDto = convertLoanerPledgeEnterpriseFromLoan(pledgeEnterpriseModel, pledgeEnterpriseModelList.size() > 1 ? String.valueOf(seq) : "");
                     disclosureDtoList.add(loanerPledgeEnterpriseDisclosureDto);
-                    i++;
+                    seq++;
                 }
             }
         }
