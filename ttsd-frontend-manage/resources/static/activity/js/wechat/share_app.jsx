@@ -1,4 +1,5 @@
 require('activityStyle/wechat/share_app.scss');
+require('activityStyle/module/app_register_reason.scss');
 let commonFun= require('publicJs/commonFun');
 let ValidatorObj= require('publicJs/validator');
 
