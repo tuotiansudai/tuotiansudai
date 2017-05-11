@@ -114,15 +114,17 @@ public class ConsoleLoanCreateService {
         }
 
         if (loanCreateRequestDto.getPledgeHouse() != null) {
-            pledgeHouseMapper.create(new PledgeHouseModel(loanId, loanCreateRequestDto.getPledgeHouse()));
+           // System.out.println(loanCreateRequestDto.getPledgeHouse()[0]);
+//            pledgeHouseMapper.create(new PledgeHouseModel(loanId, loanCreateRequestDto.getPledgeHouse()));
         }
 
         if (loanCreateRequestDto.getPledgeVehicle() != null) {
-            pledgeVehicleMapper.create(new PledgeVehicleModel(loanId, loanCreateRequestDto.getPledgeVehicle()));
+
+//            pledgeVehicleMapper.create(new PledgeVehicleModel(loanId, loanCreateRequestDto.getPledgeVehicle()));
         }
 
         if (loanCreateRequestDto.getLoanerEnterpriseDetails() != null && loanCreateRequestDto.getLoan().getPledgeType() == PledgeType.ENTERPRISE_PLEDGE) {
-            pledgeEnterpriseMapper.create(new PledgeEnterpriseModel(loanId, loanCreateRequestDto.getPledgeEnterprise()));
+//            pledgeEnterpriseMapper.create(new PledgeEnterpriseModel(loanId, loanCreateRequestDto.getPledgeEnterprise()));
         }
 
         if (loanCreateRequestDto.getLoanerEnterpriseInfo() != null) {
@@ -184,15 +186,15 @@ public class ConsoleLoanCreateService {
         pledgeVehicleMapper.deleteByLoanId(loanId);
         pledgeEnterpriseMapper.deleteByLoanId(loanId);
         if (loanCreateRequestDto.getPledgeHouse() != null) {
-            pledgeHouseMapper.create(new PledgeHouseModel(loanId, loanCreateRequestDto.getPledgeHouse()));
+//            pledgeHouseMapper.create(new PledgeHouseModel(loanId, loanCreateRequestDto.getPledgeHouse()));
         }
 
         if (loanCreateRequestDto.getPledgeVehicle() != null) {
-            pledgeVehicleMapper.create(new PledgeVehicleModel(loanId, loanCreateRequestDto.getPledgeVehicle()));
+//            pledgeVehicleMapper.create(new PledgeVehicleModel(loanId, loanCreateRequestDto.getPledgeVehicle()));
         }
 
         if (loanCreateRequestDto.getLoanerEnterpriseDetails() != null  && loanCreateRequestDto.getLoan().getPledgeType() == PledgeType.ENTERPRISE_PLEDGE) {
-            pledgeEnterpriseMapper.create(new PledgeEnterpriseModel(loanId, loanCreateRequestDto.getPledgeEnterprise()));
+//            pledgeEnterpriseMapper.create(new PledgeEnterpriseModel(loanId, loanCreateRequestDto.getPledgeEnterprise()));
         }
 
         if (loanCreateRequestDto.getLoanerEnterpriseInfo() != null) {
@@ -231,17 +233,18 @@ public class ConsoleLoanCreateService {
             loanCreateRequestDto.setLoanerDetails(new LoanCreateLoanerDetailsRequestDto(loanerDetailsMapper.getByLoanId(loanId)));
 
             if (loanModel.getPledgeType() == PledgeType.HOUSE) {
-                loanCreateRequestDto.setPledgeHouse(new LoanCreatePledgeHouseRequestDto(pledgeHouseMapper.getByLoanId(loanId)));
+
+//                loanCreateRequestDto.setPledgeHouse(new LoanCreatePledgeHouseRequestDto(pledgeHouseMapper.getByLoanId(loanId)));
             }
 
             if (loanModel.getPledgeType() == PledgeType.VEHICLE) {
-                loanCreateRequestDto.setPledgeVehicle(new LoanCreatePledgeVehicleRequestDto(pledgeVehicleMapper.getByLoanId(loanId)));
+//                loanCreateRequestDto.setPledgeVehicle(new LoanCreatePledgeVehicleRequestDto(pledgeVehicleMapper.getByLoanId(loanId)));
             }
         }
 
         if (PledgeType.ENTERPRISE_PLEDGE == loanModel.getPledgeType()) {
             loanCreateRequestDto.setLoanerEnterpriseDetails(new LoanCreateLoanerEnterpriseDetailsDto(loanerEnterpriseDetailsMapper.getByLoanId(loanId)));
-            loanCreateRequestDto.setPledgeEnterprise(new LoanCreatePledgeEnterpriseRequestDto(pledgeEnterpriseMapper.getByLoanId(loanId)));
+//            loanCreateRequestDto.setPledgeEnterprise(new LoanCreatePledgeEnterpriseRequestDto(pledgeEnterpriseMapper.getByLoanId(loanId)));
         }
         if (PledgeType.ENTERPRISE_CREDIT == loanModel.getPledgeType()) {
             loanCreateRequestDto.setLoanerEnterpriseDetails(new LoanCreateLoanerEnterpriseDetailsDto(loanerEnterpriseDetailsMapper.getByLoanId(loanId)));

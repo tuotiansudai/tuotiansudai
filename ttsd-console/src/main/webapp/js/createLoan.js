@@ -1,10 +1,10 @@
-require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 'text!/tpl/loaner-enterprise-details.mustache', 'text!/tpl/pledge-house.mustache', 'text!/tpl/pledge-vehicle.mustache', 'text!/tpl/pledge-enterprise.mustache', 'text!/tpl/loan-extra-rate.mustache', 'text!/tpl/loan-title-template.template', 'text!/tpl/loan-title-select-template.template', 'text!/tpl/loaner-enterprise-info.mustache', 'text!/tpl/loaner-enterprise-factoring-info.mustache', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicker', 'bootstrapSelect', 'moment', 'fileinput', 'fileinput_locale_zh', 'Validform', 'Validform_Datatype', 'csrf'],
-    function ($, template, Mustache, loanerDetailsTemplate, loanerEnterpriseDetailsTemplate, pledgeHouseTemplate, pledgeVehicleTemplate, pledgeEnterpriseTemplate, loanExtraRateTemplate, loanTitleTemplate, loanTitleSelectTemplate, loanerEnterpriseInfoTemplate, loanerEnterpriseFactoringInfoTemplate) {
+require(['jquery', 'underscore', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 'text!/tpl/loaner-enterprise-details.mustache', 'text!/tpl/pledge-house.mustache', 'text!/tpl/pledge-vehicle.mustache', 'text!/tpl/pledge-enterprise.mustache', 'text!/tpl/loan-extra-rate.mustache', 'text!/tpl/loan-title-template.template', 'text!/tpl/loan-title-select-template.template', 'text!/tpl/loaner-enterprise-info.mustache', 'text!/tpl/loaner-enterprise-factoring-info.mustache', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicker', 'bootstrapSelect', 'moment', 'fileinput', 'fileinput_locale_zh', 'Validform', 'Validform_Datatype', 'csrf'],
+    function ($, _, template, Mustache, loanerDetailsTemplate, loanerEnterpriseDetailsTemplate, pledgeHouseTemplate, pledgeVehicleTemplate, pledgeEnterpriseTemplate, loanExtraRateTemplate, loanTitleTemplate, loanTitleSelectTemplate, loanerEnterpriseInfoTemplate, loanerEnterpriseFactoringInfoTemplate) {
         var loanParam = ['id', 'name', 'agent', 'productType', 'pledgeType', 'loanType', 'pledgeType', 'activityType',
             'loanAmount', 'baseRate', 'activityRate', 'originalDuration', 'minInvestAmount', 'maxInvestAmount', 'investIncreasingAmount',
             'fundraisingStartTime', 'fundraisingEndTime', 'deadline', 'contractId', 'status'];
 
-        var loanDetailsParam = ['declaration', 'extraRateRuleIds', 'extraSource', 'activity', 'activityDesc','nonTransferable', 'pushMessage'];
+        var loanDetailsParam = ['declaration', 'extraRateRuleIds', 'extraSource', 'activity', 'activityDesc', 'nonTransferable', 'pushMessage'];
 
         var loanerDetailsParam = ['userName', 'identityNumber', 'gender', 'age', 'marriage', 'region', 'income', 'employmentStatus', 'purpose'];
 
@@ -12,7 +12,7 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
 
         var loanerEnterpriseInfoParam = ['companyName', 'address', 'purpose'];
 
-        var loanerEnterpriseFactoringInfoParam = ['factoringCompanyName','factoringCompanyDesc']
+        var loanerEnterpriseFactoringInfoParam = ['factoringCompanyName', 'factoringCompanyDesc']
 
         var pledgeHouseParam = ['pledgeLocation', 'estimateAmount', 'pledgeLoanAmount', 'square', 'propertyCardId', 'estateRegisterId', 'authenticAct'];
 
@@ -22,6 +22,7 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
 
         var arrayParam = ['extraRateIds', 'extraSource'];
 
+        var arrayPldegeParam = ['pledgeHouse', 'pledgeVehicle', 'pledgeEnterprise'];
 
         var loanIdElement = $('input[name="id"]');
         var loanNameElement = $('select[name="name"]'); //标的名称Element
@@ -44,13 +45,13 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
             if ('房产抵押借款' === loanName) {
                 pledgeTypeElement.val("HOUSE");
                 sectionTwoElement.html(Mustache.render(loanerDetailsTemplate));
-                sectionThreeElement.html(Mustache.render(pledgeHouseTemplate));
+                sectionThreeElement.html("<div class='house-pledge'><h3><span class='house-title'>抵押物信息</span><button type='button' class='jq-add-house-pledge btn btn-info'>+</button></h3>" + Mustache.render(pledgeHouseTemplate) + '</div>');
             }
 
             if ('车辆抵押借款' === loanName) {
                 pledgeTypeElement.val("VEHICLE");
                 sectionTwoElement.html(Mustache.render(loanerDetailsTemplate));
-                sectionThreeElement.html(Mustache.render(pledgeVehicleTemplate));
+                sectionThreeElement.html("<div class='vehicle-pledge'><h3><span class='vehicle-title'>抵押物信息</span><button type='button' class='jq-add-vehicle-pledge btn btn-info'>+</button></h3>" + Mustache.render(pledgeVehicleTemplate) + '</div>');
             }
 
             if ('经营性借款' === loanName && $('#projectName option:selected').attr('data-pledgetype') === 'ENTERPRISE_CREDIT') {
@@ -62,7 +63,7 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
             if ('经营性借款' === loanName && $('#projectName option:selected').attr('data-pledgetype') === 'ENTERPRISE_PLEDGE') {
                 pledgeTypeElement.val("ENTERPRISE_PLEDGE");
                 sectionTwoElement.html(Mustache.render(loanerEnterpriseDetailsTemplate));
-                sectionThreeElement.html(Mustache.render(pledgeEnterpriseTemplate));
+                sectionThreeElement.html("<div class='enterprise-pledge'><h3><span class='enterprise-title'>抵押物信息</span><button type='button' class='jq-add-enterprise-pledge btn btn-info'>+</button></h3>" + Mustache.render(pledgeEnterpriseTemplate) + '</div>');
             }
 
             if ('经营性借款' === loanName && $('#projectName option:selected').attr('data-pledgetype') === 'ENTERPRISE_FACTORING') {
@@ -204,6 +205,84 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
             $(this).closest('.form-group').remove();
         });
 
+        //添加房产抵押物信息
+        $('body').on('click', '.jq-add-house-pledge', function () {
+            sectionThreeElement.append("<div class='house-pledge'><h3><span class='house-title'>抵押物信息</span><button type='button' class='jq-del-house-pledge btn btn-info'>-</button></h3>" + Mustache.render(pledgeHouseTemplate) + '</div>');
+            $("#section-three h3 span").each(function (i) {
+                $(this).text("抵押物信息" + (i + 1));
+            });
+
+        });
+
+        // 删除房产抵押物信息
+        $('body').on('click', '.jq-del-house-pledge', function () {
+            $(this).closest('.house-pledge').remove();
+
+            if ($("#section-three h3 span").length > 1) {
+                $("#section-three h3 span").each(function (i) {
+                    $(this).text("抵押物信息" + (i + 1));
+                });
+            } else {
+                $(this).text("抵押物信息");
+            }
+
+            if ($("#section-three h3 span").text() == "抵押物信息1") {
+                $("#section-three h3 span").text("抵押物信息");
+            }
+        });
+
+        //添加车辆抵押物信息
+        $('body').on('click', '.jq-add-vehicle-pledge', function () {
+            sectionThreeElement.append("<div class='vehicle-pledge'><h3><span class='vehicle-title'>抵押物信息</span><button type='button' class='jq-del-vehicle-pledge btn btn-info'>-</button></h3>" + Mustache.render(pledgeVehicleTemplate) + '</div>');
+            $("#section-three h3 span").each(function (i) {
+                $(this).text("抵押物信息" + (i + 1));
+            });
+
+        });
+
+        // 删除车辆抵押物信息
+        $('body').on('click', '.jq-del-vehicle-pledge', function () {
+            $(this).closest('.vehicle-pledge').remove();
+
+            if ($("#section-three h3 span").length > 1) {
+                $("#section-three h3 span").each(function (i) {
+                    $(this).text("抵押物信息" + (i + 1));
+                });
+            } else {
+                $(this).text("抵押物信息");
+            }
+
+            if ($("#section-three h3 span").text() == "抵押物信息1") {
+                $("#section-three h3 span").text("抵押物信息");
+            }
+        });
+
+
+        //添加税易经营性借款抵押物信息
+        $('body').on('click', '.jq-add-enterprise-pledge', function () {
+            sectionThreeElement.append("<div class='enterprise-pledge'><h3><span class='enterprise-title'>抵押物信息</span><button type='button' class='jq-del-enterprise-pledge btn btn-info'>-</button></h3>" + Mustache.render(pledgeEnterpriseTemplate) + '</div>');
+            $("#section-three h3 span").each(function (i) {
+                $(this).text("抵押物信息" + (i + 1));
+            });
+
+        });
+
+        // 删除税易经营性借款抵押物信息
+        $('body').on('click', '.jq-del-enterprise-pledge', function () {
+            $(this).closest('.enterprise-pledge').remove();
+
+            if ($("#section-three h3 span").length > 1) {
+                $("#section-three h3 span").each(function (i) {
+                    $(this).text("抵押物信息" + (i + 1));
+                });
+            } else {
+                $(this).text("抵押物信息");
+            }
+
+            if ($("#section-three h3 span").text() == "抵押物信息1") {
+                $("#section-three h3 span").text("抵押物信息");
+            }
+        });
 
         $('body').on('click', '.loan-title .dropdown-menu li', function () {
             var _this = $(this);
@@ -258,7 +337,7 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
         });
 
 
-        $('input.amount,input.rate').blur(function() {
+        $('input.amount,input.rate').blur(function () {
             var self = $(this);
             var value = self.val().trim();
             if (!$.isNumeric(value)) {
@@ -292,7 +371,7 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
                     showErrorMessage(errorMessage, $ele);
                 }
             },
-            beforeCheck: function(form) {
+            beforeCheck: function (form) {
                 clearErrorMessage();
             },
             beforeSubmit: function (curform) {
@@ -349,7 +428,7 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
                     }
                 }
             },
-            callback:function(data){
+            callback: function (data) {
                 return false;
             }
         });
@@ -362,7 +441,7 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
             $ele.focus();
         };
 
-        var clearErrorMessage = function() {
+        var clearErrorMessage = function () {
             fromValid = true;
             $('.alert-danger').remove();
             $('.form-group').removeClass('has-error');
@@ -420,14 +499,17 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
                     'loanerEnterpriseInfo': loanerEnterpriseInfoParam
                 });
             }
+
+            var data = "{\"loan\":{\"pledgeType\":\"HOUSE\",\"contractId\":\"789098123\",\"status\":\"WAITING_VERIFY\",\"name\":\"房产抵押借款\",\"agent\":\"doujiashun\",\"loanType\":\"INVEST_INTEREST_MONTHLY_REPAY\",\"originalDuration\":\"90\",\"deadline\":\"2017-08-10\",\"productType\":\"_90\",\"loanAmount\":\"111111.0\",\"minInvestAmount\":\"1.0\",\"investIncreasingAmount\":\"1.0\",\"maxInvestAmount\":\"111.0\",\"activityType\":\"NORMAL\",\"baseRate\":\"11.0\",\"activityRate\":\"0.0\",\"fundraisingStartTime\":\"2017-05-11 00:00\",\"fundraisingEndTime\":\"2017-05-20 00:01\",\"loanTitles\":[]},\"loanDetails\":{\"activityDesc\":\"\",\"declaration\":\"22\",\"pushMessage\":\"11\"},\"loanerDetails\":{\"userName\":\"11\",\"gender\":\"MALE\",\"age\":\"21\",\"identityNumber\":\"320921197304157910\",\"marriage\":\"UNMARRIED\",\"region\":\"111\",\"income\":\"11\",\"employmentStatus\":\"11\",\"purpose\":\"11\"},\"pledgeHouse\":[{\"pledgeLocation\":\"111\",\"estateRegisterId\":\"111\",\"propertyCardId\":\"111\",\"square\":\"111\",\"authenticAct\":\"111\",\"estimateAmount\":\"111\",\"pledgeLoanAmount\":\"111\"}]}";
+
             $.ajax(
                 {
                     url: url,
                     type: 'POST',
                     dataType: 'json',
-                    data: JSON.stringify(requestData),
+                    data: data,
                     contentType: 'application/json; charset=UTF-8'
-            }).done(function (res) {
+                }).done(function (res) {
                 $currentFormSubmitBtn.removeAttr('disabled');
                 $('#confirm-modal').modal('hide');
                 if (res.data.status) {
@@ -474,11 +556,11 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
                 return;
             }
             $.ajax({
-                    url: '/project-manage/loan/extra-rate-rule?loanName=' + loanNameElement.val() + '&productType=' + productTypeElement.val(),
-                    type: 'GET',
-                    dataType: 'json',
-                    contentType: 'application/json; charset=UTF-8'
-                })
+                url: '/project-manage/loan/extra-rate-rule?loanName=' + loanNameElement.val() + '&productType=' + productTypeElement.val(),
+                type: 'GET',
+                dataType: 'json',
+                contentType: 'application/json; charset=UTF-8'
+            })
                 .done(function (res) {
                     if (res.data.status) {
                         var templateDate = [];
@@ -499,8 +581,8 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
                         showErrorMessage('服务端校验失败', extraElement);
                     }
                 }).fail(function () {
-                    showErrorMessage('服务端操作失败', extraElement);
-                });
+                showErrorMessage('服务端操作失败', extraElement);
+            });
         };
 
         extraElement.on('click', function () {
@@ -518,6 +600,7 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
 
         var generateRequestParams = function (requestParams) {
             var requestData = {};
+            var arrName = [];
             var inputElements = $('form input[type="text"],input[type="hidden"],input[type="checkbox"]:checked,select,textarea');
             $.each(requestParams, function (attr, param) {
                 requestData[attr] = {};
@@ -525,16 +608,79 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
                     var $element = $(element);
                     var elementName = $element.prop('name');
                     var elementValue = $element.val();
-                    if (param.indexOf(elementName) !== -1) {
-                        if (requestData[attr][elementName]) {
-                            $.isArray(requestData[attr][elementName]) ? requestData[attr][elementName].push(elementValue) : requestData[attr][elementName] = [requestData[attr][elementName], elementValue];
-                        } else {
-                            requestData[attr][elementName] = arrayParam.indexOf(elementName) !== -1 ? [elementValue] : elementValue;
+                    if (arrayPldegeParam.indexOf(attr) !== -1) {
+                        if (param.indexOf(elementName) !== -1) {
+                            arrName.push(attr + "_" + elementName + ":" + elementValue);
+                        }
+
+                    }
+                    else {
+                        if (param.indexOf(elementName) !== -1) {
+                            if (requestData[attr][elementName]) {
+                                $.isArray(requestData[attr][elementName]) ? requestData[attr][elementName].push(elementValue) : requestData[attr][elementName] = [requestData[attr][elementName], elementValue];
+                            } else {
+                                requestData[attr][elementName] = arrayParam.indexOf(elementName) !== -1 ? [elementValue] : elementValue;
+                            }
                         }
                     }
                 });
             });
             requestData['loan']['loanTitles'] = uploadFile;
+            //requestData['pledgeHouse'] = requestDataArray;
+
+            console.log(arrName)
+
+            if (arrName.length > 0) {
+                var pledgeStr = arrName[0].substring(0, arrName[0].indexOf("_"));
+                requestData[pledgeStr] = getArray(arrName, pledgeStr);
+            }
+
+            console.log(requestData);
+
             return requestData
         };
+
+
+        var getArray = function (arrName, pledgeType) {
+            var arr = [];
+            if (pledgeType == "pledgeHouse") {
+                var obj1 = {};
+                var obj2 = {};
+                var obj3 = {};
+                var obj4 = {};
+                for (i in arrName) {
+                    if (i < pledgeHouseParam.length) {
+                        obj1[arrName[i].substring(arrName[i].indexOf("_") + 1, arrName[i].indexOf(":"))] = arrName[i].substring(arrName[i].indexOf(":")+1, arrName[i].length);
+                    } else if (i >= pledgeHouseParam.length && pledgeHouseParam.length * 2) {
+                        obj2[arrName[i].substring(arrName[i].indexOf("_") + 1, arrName[i].indexOf(":"))] = arrName[i].substring(arrName[i].indexOf(":")+1, arrName[i].length);
+                    }
+                    else if (i >= pledgeHouseParam.length * 2 && i < pledgeHouseParam.length * 3) {
+                        obj3[arrName[i].substring(arrName[i].indexOf("_") + 1, arrName[i].indexOf(":"))] = arrName[i].substring(arrName[i].indexOf(":")+1, arrName[i].length);
+                    }
+                    else if (i >= pledgeHouseParam.length * 3 && i < pledgeHouseParam.length * 4) {
+                        obj4[arrName[i].substring(arrName[i].indexOf("_") + 1, arrName[i].indexOf(":"))] = arrName[i].substring(arrName[i].indexOf(":")+1, arrName[i].length);
+                    }
+                }
+                arr.push(obj1);
+                if (!isEmptyObject(obj2)) arr.push(obj2);
+                if (!isEmptyObject(obj3)) arr.push(obj3);
+                if (!isEmptyObject(obj4)) arr.push(obj4);
+            }
+            if (pledgeType == "pledgeVehicle") {
+
+            }
+            if (pledgeType == "pledgeEnterprise") {
+
+            }
+            console.log(arr);
+            return arr;
+
+        };
+
+        var isEmptyObject = function isEmptyObject(obj) {
+            for (var key in obj) {
+                return false;
+            }
+            return true;
+        }
     });

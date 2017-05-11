@@ -64,11 +64,11 @@ public class LoanDetailDto extends BaseDataDto {
 
     private PledgeType pledgeType;
 
-    private Map<String, String> pledgeHouseDetail;
+    private List<Map<String, String>> pledgeHouseDetailList;
 
-    private Map<String, String> pledgeVehicleDetail;
+    private List<Map<String, String>> pledgeVehicleDetailList;
 
-    private Map<String, String> pledgeEnterpriseDetail;
+    private List<Map<String, String>> pledgeEnterpriseDetailList;
 
     private Map<String, String> enterpriseInfo;
 
@@ -227,24 +227,28 @@ public class LoanDetailDto extends BaseDataDto {
         this.pledgeType = pledgeType;
     }
 
-    public void setPledgeHouseDetail(Map<String, String> pledgeHouseDetail) {
-        this.pledgeHouseDetail = pledgeHouseDetail;
+    public List<Map<String, String>> getPledgeHouseDetailList() {
+        return pledgeHouseDetailList;
     }
 
-    public Map getPledgeHouseDetail() {
-        return pledgeHouseDetail;
+    public void setPledgeHouseDetailList(List<Map<String, String>> pledgeHouseDetailList) {
+        this.pledgeHouseDetailList = pledgeHouseDetailList;
     }
 
-    public void setPledgeVehicleDetail(Map<String, String> pledgeVehicleDetail) {
-        this.pledgeVehicleDetail = pledgeVehicleDetail;
+    public List<Map<String, String>> getPledgeVehicleDetailList() {
+        return pledgeVehicleDetailList;
     }
 
-    public Map<String, String> getPledgeVehicleDetail() {
-        return pledgeVehicleDetail;
+    public void setPledgeVehicleDetailList(List<Map<String, String>> pledgeVehicleDetailList) {
+        this.pledgeVehicleDetailList = pledgeVehicleDetailList;
     }
 
-    public Map<String, String> getPledgeEnterpriseDetail() {
-        return pledgeEnterpriseDetail;
+    public List<Map<String, String>> getPledgeEnterpriseDetailList() {
+        return pledgeEnterpriseDetailList;
+    }
+
+    public void setPledgeEnterpriseDetailList(List<Map<String, String>> pledgeEnterpriseDetailList) {
+        this.pledgeEnterpriseDetailList = pledgeEnterpriseDetailList;
     }
 
     public Map<String, String> getEnterpriseInfo() {
@@ -253,10 +257,6 @@ public class LoanDetailDto extends BaseDataDto {
 
     public void setEnterpriseInfo(Map<String, String> enterpriseInfo) {
         this.enterpriseInfo = enterpriseInfo;
-    }
-
-    public void setPledgeEnterpriseDetail(Map<String, String> pledgeEnterpriseDetail) {
-        this.pledgeEnterpriseDetail = pledgeEnterpriseDetail;
     }
 
     public String getBasicInfo() {
