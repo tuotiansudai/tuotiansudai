@@ -48,7 +48,10 @@ form .error {
       top: 5px;
       background: #fff;
       width: 95px;
-
+      &:disabled {
+        border:1px solid #c9c9c9;
+        color: #808080;
+      }
     }
     .item-submit {
       background: #fff55b;

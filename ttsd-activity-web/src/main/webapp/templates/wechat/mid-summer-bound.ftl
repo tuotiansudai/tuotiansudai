@@ -1,9 +1,8 @@
 <#import "wechat-global.ftl" as global>
-
 <@global.main pageCss="${css.midsummer_wap}" pageJavascript="${js.midsummer_wap}"  title="助力好友抢红包" >
 <#assign invitedMap = { "0": 20000, "1":10000, "2":5000, "3":2000} >
 
-<div class="invite-header" id="inviteHeader">
+<div class="invite-header" id="inviteHeader" data-mobile="${mobile}">
 <#--如果是自己打开页面-->
     <span class="invite-text">
         <#if sharedUser>
@@ -90,6 +89,7 @@
         点击右上角， <br/>
 将页面分享给好友即可完成操作
     </span>
+    <button class="btn-close" type="button">我知道了</button>
 </div>
 
 <script>

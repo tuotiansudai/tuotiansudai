@@ -69,6 +69,9 @@ body {
 .invite-header {
   font-size: 18px;
   position: relative;
+  img {
+    width: 100%;
+  }
   .invite-text {
     color: #691B18;
     position: absolute;
@@ -253,6 +256,16 @@ body {
     font-size: 16px;
     line-height: 30px;
     text-align: right;
+  }
+  .btn-close {
+    border: 1px solid #ccc;
+    color: #fff;
+    position: absolute;
+    right: 26px;
+    top: 158px;
+    background: transparent;
+    padding: 7px 16px;
+    border-radius: 7px;
   }
 }
 

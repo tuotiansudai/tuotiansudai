@@ -9,6 +9,11 @@ if ($inviteBoxFriend.length) {
         $inviteHeader.append(topImg);
     };
 
+    let $FloatingBox = $('#FloatingBox');
+    $FloatingBox.find('.btn-close').on('click',function(event) {
+        $FloatingBox.hide();
+    });
+
 //起投金额
     let amountObj = {
         '0': {
@@ -67,7 +72,7 @@ $buttonLayer.on('click',function(event) {
 
     } else if(/btn-help/.test(targetName)) {
         //帮助TA
-        let mobile = $.trim($inviteHeader.find('.login-mobile').text());
+        let mobile = $.trim($inviteHeader.data('mobile'));
         location.href='/activity/app-share?referrerMobile='+mobile;
     }
 
