@@ -1,6 +1,4 @@
 <#import "wechat-global.ftl" as global>
-<#include "../pageLayout/header.ftl" />
-
 <@global.main pageCss="${css.app_marketing}" pageJavascript="${js.app_marketing}"  title="新手福利_拓天新手投资_拓天速贷" >
 
 <div class="app-marketing-container app-success" id="shareAppSuccess">
@@ -17,6 +15,7 @@
 
     <a href="javascript:void(0)" class="btn-normal item-submit" id="downloadApp">下载APP去使用</a>
 
+    <#include "../pageLayout/header.ftl" />
 </div>
 
 </@global.main>

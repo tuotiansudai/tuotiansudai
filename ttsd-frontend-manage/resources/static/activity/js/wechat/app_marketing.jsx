@@ -10,12 +10,13 @@ let $marketingHeader = $('.marketing-header'),
 
 if($shareAppContainer.length) {
 
-    require('activityJs/module/app_register');
+    let getConfig = require('activityJs/module/app_register');
+    getConfig.redirectToAfterRegisterSuccess = '/activity/channel/htracking/success';
+    getConfig.setRedirectUrl();
+
     require("activityStyle/module/app_register_reason.scss");
     $marketingHeader.height(496 * sw/750);
     $('.red-bag',$shareAppContainer).css({'top': 286 * sw/750 });
-
-    $('input[name="redirectToAfterRegisterSuccess"]',$shareAppContainer).val('/activity/channel/htracking/success');
 
 } else if($shareAppSuccess.length) {
 

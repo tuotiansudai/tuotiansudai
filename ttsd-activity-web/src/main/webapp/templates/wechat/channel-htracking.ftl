@@ -1,5 +1,5 @@
 <#import "wechat-global.ftl" as global>
-<#include "../pageLayout/header.ftl" />
+
 <@global.main pageCss="${css.app_marketing}" pageJavascript="${js.app_marketing}"  title="新手福利_拓天新手投资_拓天速贷" >
 
 <div class="app-marketing-container" id="shareAppContainer">
@@ -17,6 +17,8 @@
     </dl>
 
     <#include '../module/register-reason.ftl' />
+
+    <#include "../pageLayout/header.ftl" />
 
 </div>
 </@global.main>
