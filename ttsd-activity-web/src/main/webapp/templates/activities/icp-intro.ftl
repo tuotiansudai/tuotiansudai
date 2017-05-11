@@ -13,7 +13,7 @@
 			</div>
 			<div class="intro-content">
 				<p>ICP是英文Internet Content Provider的缩写，意为：网络内容服务商，即向广大用户综合提供互联网信息业务和增值业务的电信运营商。</p>
-				<p>ICP备案和ICP经营许可证是一回事吗？</p>
+				<p>ICP经营许可证，即指：互联网信息服务业务经营许可证。</p>
 			</div>
 		</div>
 		<div class="content-item">
