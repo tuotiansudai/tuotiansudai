@@ -2,10 +2,7 @@ package com.tuotiansudai.dto;
 
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountConverter;
-import org.joda.time.DateTime;
-import org.joda.time.Period;
-import org.joda.time.PeriodType;
-import org.joda.time.Seconds;
+import org.joda.time.*;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -52,6 +49,8 @@ public class LoanDetailDto extends BaseDataDto {
 
     private Period raisingPeriod;
 
+    private String raisingDays;
+
     private List<LoanTitleModel> loanTitleDto;
 
     private List<LoanTitleRelationModel> loanTitles;
@@ -69,6 +68,8 @@ public class LoanDetailDto extends BaseDataDto {
     private List<Map<String, String>> pledgeVehicleDetailList;
 
     private List<Map<String, String>> pledgeEnterpriseDetailList;
+
+    private Map<String, String> loanerEnterpriseDetailsInfo;
 
     private Map<String, String> enterpriseInfo;
 
@@ -103,6 +104,8 @@ public class LoanDetailDto extends BaseDataDto {
         this.loanTitleDto = loanTitleModels;
         this.countdown = Seconds.secondsBetween(new DateTime(), new DateTime(loanModel.getFundraisingStartTime())).getSeconds();
         this.raisingPeriod = new Period(new DateTime(), new DateTime(loanModel.getFundraisingEndTime()), PeriodType.dayTime());
+        this.raisingDays = String.valueOf(Days.daysBetween(new DateTime(loanModel.getFundraisingStartTime()).withTimeAtStartOfDay(),
+                new DateTime(loanModel.getFundraisingEndTime()).withTimeAtStartOfDay()).getDays() + 1);
         this.investor = investorDto;
         this.declaration = loanDetails == null ? null : loanDetails.getDeclaration();
         this.extraSource = loanDetails == null ? null : (loanDetails.getExtraSource() != null && loanDetails.getExtraSource().size() == 1 && loanDetails.getExtraSource().contains(Source.MOBILE)) ? Source.MOBILE.name() : null;
@@ -187,6 +190,9 @@ public class LoanDetailDto extends BaseDataDto {
         return raisingPeriod;
     }
 
+    public String getRaisingDays() {
+        return raisingDays;
+    }
     public List<LoanTitleModel> getLoanTitleDto() {
         return loanTitleDto;
     }
@@ -253,6 +259,14 @@ public class LoanDetailDto extends BaseDataDto {
 
     public Map<String, String> getEnterpriseInfo() {
         return enterpriseInfo;
+    }
+
+    public Map<String, String> getLoanerEnterpriseDetailsInfo() {
+        return loanerEnterpriseDetailsInfo;
+    }
+
+    public void setLoanerEnterpriseDetailsInfo(Map<String, String> loanerEnterpriseDetailsInfo) {
+        this.loanerEnterpriseDetailsInfo = loanerEnterpriseDetailsInfo;
     }
 
     public void setEnterpriseInfo(Map<String, String> enterpriseInfo) {
