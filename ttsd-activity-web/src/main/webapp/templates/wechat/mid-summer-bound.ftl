@@ -94,6 +94,7 @@
 
 <script>
     wx.ready(function () {
+//        分享给朋友
         wx.onMenuShareAppMessage({
             title: '是朋友就帮我一起把夏季燃爆', // 分享标题
             desc: '领取投资红包50元，最低50元起投', // 分享描述
@@ -101,20 +102,26 @@
             imgUrl: '${commonStaticServer}/images/icons/logo-tip.png', // 分享图标
             success: function () {
                 // 用户确认分享后执行的回调函数
+                $('#FloatingBox').hide();
             },
             cancel: function () {
                 // 用户取消分享后执行的回调函数
+                $('#FloatingBox').hide();
             }
         });
+
+//        分享到朋友圈
         wx.onMenuShareTimeline({
             title: '是朋友就帮我一起把夏季燃爆', // 分享标题
             link: '${webServer}/activity/mid-summer/invited-user?mobile=${mobile}', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
             imgUrl: '${commonStaticServer}/images/icons/logo-tip.png', // 分享图标
             success: function () {
                 // 用户确认分享后执行的回调函数
+                $('#FloatingBox').hide();
             },
             cancel: function () {
                 // 用户取消分享后执行的回调函数
+                $('#FloatingBox').hide();
             }
         });
     });
