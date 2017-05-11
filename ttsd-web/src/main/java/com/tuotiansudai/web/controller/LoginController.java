@@ -31,7 +31,7 @@ public class LoginController {
         ModelAndView defaultModelAndView = new ModelAndView("/login", "redirect", redirect);
         defaultModelAndView.addObject("responsive", true);
 
-        ModelAndView weChatModelAndView = new ModelAndView(MessageFormat.format("redirect:/wechat/wechat-entry-point?redirect={0}", redirect));
+        ModelAndView weChatModelAndView = new ModelAndView(MessageFormat.format("redirect:/we-chat/entry-point?redirect={0}", redirect));
 
         return httpServletRequest.getSession().getAttribute("weChatUserLoginName") == null ? defaultModelAndView : weChatModelAndView;
     }

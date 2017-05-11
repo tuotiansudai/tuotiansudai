@@ -2,7 +2,6 @@ require('activityStyle/module/gift_circle_tip.scss');
 let rotate = require('publicJs/plugins/jqueryrotate.min');
 let lotteryUnit = require('activityJsModule/lottery_unit');
 let commonFun = require('publicJs/commonFun');
-
 //allListURL： 中奖纪录的接口链接
 //userListURL：我的奖品的接口链接
 //drawURL：抽奖的接口链接
@@ -26,7 +25,7 @@ function giftCircleDraw(allListURL, userListURL, drawURL, paramData, giftCircleF
     };
 
     //中奖记录
-    this.GiftRecord = function (length) {
+    this.GiftRecord = function () {
         let self = this;
         commonFun.useAjax({
             url: this.allListURL,
@@ -38,12 +37,11 @@ function giftCircleDraw(allListURL, userListURL, drawURL, paramData, giftCircleF
                 UlList.push('<li>恭喜' + data[i].mobile + '抽中了' + data[i].prizeValue + '</li>');
             }
             self.giftCircleFrame.find('.user-record').empty().append(UlList.join(''));
-            self.hoverScrollList(self.giftCircleFrame.find('.user-record'), length);
         });
     };
 
     //我的奖品
-    this.MyGift = function (length) {
+    this.MyGift = function () {
         let self = this;
         commonFun.useAjax({
             url: this.userListURL,
@@ -55,7 +53,6 @@ function giftCircleDraw(allListURL, userListURL, drawURL, paramData, giftCircleF
                 UlList.push('<li>' + data[i].prizeValue + '<time>' + data[i].lotteryTime + '</time></li>');
             }
             self.giftCircleFrame.find('.own-record').empty().append(UlList.join(''));
-            self.hoverScrollList(self.giftCircleFrame.find('.own-record'), length);
         });
     }
 }
@@ -133,6 +130,7 @@ giftCircleDraw.prototype.scrollList = function (domName, length) {
 giftCircleDraw.prototype.hoverScrollList = function (domName, length) {
     var thisFun = this,
         scrollTimer;
+
     domName.hover(function () {
         clearInterval(scrollTimer);
     }, function () {
