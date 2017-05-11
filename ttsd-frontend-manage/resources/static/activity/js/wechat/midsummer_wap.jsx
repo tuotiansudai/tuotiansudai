@@ -9,11 +9,6 @@ if ($inviteBoxFriend.length) {
         $inviteHeader.append(topImg);
     };
 
-    let $FloatingBox = $('#FloatingBox');
-    $FloatingBox.find('.btn-close').on('click',function(event) {
-        $FloatingBox.hide();
-    });
-
 //起投金额
     let amountObj = {
         '0': {
@@ -62,13 +57,18 @@ if ($inviteBoxFriend.length) {
 
 //按钮点击呼起好友
 let $buttonLayer = $('#buttonLayer');
+let $FloatingBox = $('#FloatingBox');
+
+$FloatingBox.find('.btn-close').on('click',function(event) {
+    $FloatingBox.hide();
+});
 
 $buttonLayer.on('click',function(event) {
     let targetName = event.target.className;
 
     if(/btn-invite/.test(targetName)) {
         //邀请微信好友
-        $('#FloatingBox').show();
+        $FloatingBox.show();
 
     } else if(/btn-help/.test(targetName)) {
         //帮助TA
