@@ -36,7 +36,7 @@ public class ActivityConsoleMothersService {
             new MothersReward("拓天速贷定制礼盒一", 5000000l, 7000000l),
             new MothersReward("拓天速贷定制礼盒二", 7000000l, 11000000l),
             new MothersReward("拓天速贷定制礼盒三", 11000000l, 25000000l),
-            new MothersReward("瑞士天梭表", 25000000l, 50000000l),
+            new MothersReward("阿玛尼手表", 25000000l, 50000000l),
             new MothersReward("OPPO R9s清新绿", 50000000l, 130000000l),
             new MothersReward("iphone7中国红128G", 130000000l, Long.MAX_VALUE));
 
