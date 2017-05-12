@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.text.MessageFormat;
 import java.util.List;
@@ -33,8 +34,8 @@ public class LotteryDrawActivityController {
     private PointBillService pointBillService;
 
     @RequestMapping(method = {RequestMethod.GET, RequestMethod.POST})
-    public ResponseEntity<Object> loadPageData() {
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ModelAndView loadPageData() {
+        return new ModelAndView("redirect:/error/404");
     }
 
     @ResponseBody
