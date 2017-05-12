@@ -24,7 +24,7 @@ public class WechatLotteryController {
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView wechatLotteryPage() {
         String loginName = LoginUserInfo.getLoginName();
-        ModelAndView mav = new ModelAndView("/activities/wx-lottery", "responsive", false);
+        ModelAndView mav = new ModelAndView("/activities/wx-lottery");
         mav.addObject("leftDrawCount", wechatLotteryService.getLeftDrawCount(loginName));
         return mav;
     }

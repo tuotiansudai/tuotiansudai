@@ -31,6 +31,12 @@ public class ActivitiesController {
 
     public ModelAndView activities(@PathVariable String item, HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView("/activities/" + item, "responsive", true);
+
+        // 微信抽奖活动，没有响应式
+        if ("lottery-intro".equals(item)) {
+            modelAndView.addObject("responsive", false);
+        }
+
         String loginName = LoginUserInfo.getLoginName();
 
         if (!Strings.isNullOrEmpty(loginName) && userService.loginNameIsExist(loginName.trim())) {
