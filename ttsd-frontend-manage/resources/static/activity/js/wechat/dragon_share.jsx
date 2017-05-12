@@ -1,4 +1,4 @@
-require("activityStyle/wechat/share_coupon.scss");
+require("activityStyle/wechat/dragon_share.scss");
 let Clipboard= require('publicJs/plugins/clipboard');
 require('publicJs/plugins/jquery.qrcode.min');
 
