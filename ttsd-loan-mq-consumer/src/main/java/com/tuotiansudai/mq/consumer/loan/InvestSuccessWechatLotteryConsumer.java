@@ -55,10 +55,10 @@ public class InvestSuccessWechatLotteryConsumer implements MessageConsumer {
         Date now = new Date();
 
         if (wechatLotteryStartTime.after(now)) {
-            logger.info("wechat lottery activity does not started yet. start time is:{0}", wechatLotteryStartTime);
+            logger.info("wechat lottery activity does not started yet. start time is:{}", wechatLotteryStartTime);
             return;
         } else if (wechatLotteryEndTime.before(now)) {
-            logger.info("wechat lottery activity is ended. end time is:{0}", wechatLotteryEndTime);
+            logger.info("wechat lottery activity is ended. end time is:{}", wechatLotteryEndTime);
             return;
         }
 
@@ -71,8 +71,8 @@ public class InvestSuccessWechatLotteryConsumer implements MessageConsumer {
 
             InvestModel invesetModel = investService.findById(ism.getInvestInfo().getInvestId());
 
-            if (investService.isNewUserForWechatLottery(loginName) && invesetModel.getSource() == Source.WE_CHAT && loanId != 1 && investAmount >= 500) {
-                redisWrapperClient.incr(WECHAT_LOTTERY_COUNT_KEY + loginName, investAmount / 500);
+            if (investService.isNewUserForWechatLottery(loginName) && invesetModel.getSource() == Source.WE_CHAT && loanId != 1 && investAmount >= 500000) {
+                redisWrapperClient.incr(WECHAT_LOTTERY_COUNT_KEY + loginName, investAmount / 500000);
                 if (investService.isFirstInvest(loginName, invesetModel.getTradingTime())) {
                     sendCashPrize(loginName, investAmount);
                 }
@@ -87,40 +87,25 @@ public class InvestSuccessWechatLotteryConsumer implements MessageConsumer {
 
 
     private void sendCashPrize(String loginName, long investAmount) {
-        logger.info("send wechat invest cash prize, loginName:{0}, investAmount:{1}", loginName, investAmount);
+        logger.info("send wechat invest cash prize, loginName:{}, investAmount:{}", loginName, investAmount);
 
-//        if (investAmount < 500000) {
-//            logger.info("invest amount is less than 5000, no prize.");
-//            return;
-//        }
-//
-//        long prizeAmount;
-//        if (investAmount < 1000000) {
-//            prizeAmount = 1800;
-//        } else if (investAmount < 2000000) {
-//            prizeAmount = 3800;
-//        } else {
-//            prizeAmount = 8800;
-//        }
-
-        if (investAmount < 500) {
+        if (investAmount < 500000) {
             logger.info("invest amount is less than 5000, no prize.");
             return;
         }
 
         long prizeAmount;
-        if (investAmount < 1000) {
-            prizeAmount = 180;
-        } else if (investAmount < 1500) {
-            prizeAmount = 380;
+        if (investAmount < 1000000) {
+            prizeAmount = 1800;
+        } else if (investAmount < 2000000) {
+            prizeAmount = 3800;
         } else {
-            prizeAmount = 880;
+            prizeAmount = 8800;
         }
-
 
         long orderId = IdGenerator.generate();
         TransferCashDto transferCashDto = new TransferCashDto(loginName, String.valueOf(orderId), String.valueOf(prizeAmount));
         BaseDto<PayDataDto> response = payWrapperClient.transferCash(transferCashDto);
-        logger.info("send wechat invest cash prize, loginName:{0}, response:{1}", loginName, response.getData().getMessage());
+        logger.info("send wechat invest cash prize, loginName:{}, response:{}", loginName, response.getData().getMessage());
     }
 }

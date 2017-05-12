@@ -63,13 +63,13 @@ public class WechatLotteryService {
         Date now = new Date();
 
         if (wechatLotteryStartTime.after(now)) {
-            logger.info("wechat lottery activity does not started yet. start time is:{0}", wechatLotteryStartTime);
+            logger.info("wechat lottery activity does not started yet. start time is:{}", wechatLotteryStartTime);
             dto.setReturnCode(2);
             dto.setMessage("活动尚未开始。");
             dto.setStatus(false);
             return baseDto;
         } else if (wechatLotteryEndTime.before(now)) {
-            logger.info("wechat lottery activity is ended. end time is:{0}", wechatLotteryEndTime);
+            logger.info("wechat lottery activity is ended. end time is:{}", wechatLotteryEndTime);
             dto.setReturnCode(3);
             dto.setMessage("活动已结束。");
             dto.setStatus(false);
@@ -79,7 +79,7 @@ public class WechatLotteryService {
         Long leftDrawCount = redisWrapperClient.decrEx(WECHAT_LOTTERY_COUNT_KEY + loginName, THIRTY_DAYS, 1);
         if (leftDrawCount < 0) {
             redisWrapperClient.del(WECHAT_LOTTERY_COUNT_KEY + loginName);
-            logger.error("no draw count left, someone is cheating. loginName:{0}", loginName);
+            logger.error("no draw count left, someone is cheating. loginName:{}", loginName);
             dto.setReturnCode(1);
             dto.setMessage("您的抽奖次数已用完，投资可以获得更多的抽奖机会！");
             dto.setStatus(false);
@@ -109,7 +109,7 @@ public class WechatLotteryService {
             prize = LotteryPrize.WECHAT_LOTTERY_RED_ENVELOP_20;
         }
 
-        logger.info("[wechat lottery] {0} draw a lottery: {1}", loginName, prize);
+        logger.info("[wechat lottery] {} draw a lottery: {}", loginName, prize);
 
         if (prize == LotteryPrize.WECHAT_LOTTERY_RED_ENVELOP_20) {
             sendRedEnvelopCoupon20(loginName);
