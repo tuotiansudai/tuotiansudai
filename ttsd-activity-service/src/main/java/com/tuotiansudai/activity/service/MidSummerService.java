@@ -41,8 +41,9 @@ public class MidSummerService {
         return models.stream()
                 .filter(item -> item.getTradingTime().after(activityStartTime) && item.getTradingTime().before(activityEndTime))
                 .collect(Collectors.groupingBy(MidSummerInvestModel::getLoginName, Collectors.summingLong(MidSummerInvestModel::getAmount)))
-                .entrySet().stream().filter(item -> item.getValue() > 20000)
+                .entrySet().stream().filter(item -> item.getValue() >= 20000)
                 .count();
+
     }
 
     public void saveSharedUser(String loginName) {

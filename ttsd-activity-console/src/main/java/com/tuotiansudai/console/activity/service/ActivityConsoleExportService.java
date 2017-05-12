@@ -57,6 +57,9 @@ public class ActivityConsoleExportService {
     @Autowired
     private ActivityWomanDayService activityWomanDayService;
 
+    @Autowired
+    private ActivityConsoleMothersService activityConsoleMothersService;
+
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.mid.autumn.startTime}\")}")
     private Date activityAutumnStartTime;
 
@@ -78,7 +81,7 @@ public class ActivityConsoleExportService {
                 List<InvestModel> currentHomeInvestModelList = Lists.newArrayList();
                 for (String loginName : entry1.getValue()) {
                     totalAmount += investMapper.sumInvestAmount(null, loginName, null, null, null, startTime, endTime, InvestStatus.SUCCESS, null);
-                    List<InvestModel> investModelList = investMapper.findSuccessInvestByInvestTime(loginName, startTime, endTime);
+                    List<InvestModel> investModelList = investMapper.findSuccessInvestByInvestTime(loginName, true, true, startTime, endTime);
                     if (investModelList == null || investModelList.size() == 0) {
                         InvestModel investModel = new InvestModel();
                         investModel.setLoginName(loginName);
@@ -254,5 +257,9 @@ public class ActivityConsoleExportService {
 
     public List<List<String>> buildWomanDayCsvList() {
         return activityWomanDayService.getWomanDayPrizeRecord(0, Integer.MAX_VALUE, null).getRecords().stream().map(ExportCsvUtil::dtoToStringList).collect(Collectors.toList());
+    }
+
+    public List<List<String>> buildMothersDayCsvList() {
+        return activityConsoleMothersService.list(1, Integer.MAX_VALUE).getRecords().stream().map(ExportCsvUtil::dtoToStringList).collect(Collectors.toList());
     }
 }
