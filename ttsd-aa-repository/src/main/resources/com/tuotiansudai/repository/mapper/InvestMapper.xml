@@ -423,6 +423,7 @@
         select IFNULL(sum(invest.amount), 0) as amount
         from invest join loan on invest.loan_id = loan.id
         <where>
+            loan.id != 1
             <if test="loanId != null">
                 and loan.id = #{loanId}
             </if>
