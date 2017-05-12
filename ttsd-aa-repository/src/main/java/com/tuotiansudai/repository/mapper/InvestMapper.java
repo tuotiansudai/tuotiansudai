@@ -300,6 +300,8 @@ public interface InvestMapper {
     long countInvestorInvestAndTransferPagination(@Param(value = "loginName") String loginName,
                                                   @Param(value = "loanStatus") LoanStatus loanStatus);
 
+    int countInvestBeforeDate(@Param(value = "loginName") String loginName,
+                              @Param(value = "datePoint") Date datePoint);
 
     InvestModel findFirstInvestAmountByLoginName(@Param(value = "loginName") String loginName,
                                 @Param(value = "startTime") Date startTime,

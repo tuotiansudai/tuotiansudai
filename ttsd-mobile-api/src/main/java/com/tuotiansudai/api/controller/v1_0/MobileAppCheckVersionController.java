@@ -29,6 +29,8 @@ import java.io.InputStream;
 @Api(description = "Android版本检测")
 public class MobileAppCheckVersionController extends MobileAppBaseController {
 
+    private static Logger logger = Logger.getLogger(MobileAppCheckVersionController.class);
+
     private static final String APP_VERSION_CHECK_URL = "https://tuotiansudai.com/app/version.json";
     private static final String VERSION_CONFIG_FILE = "version.json";
     private static final String APP_VERSION_INFO_REDIS_KEY = "app:version:info";
@@ -71,8 +73,11 @@ public class MobileAppCheckVersionController extends MobileAppBaseController {
                 redisWrapperClient.setex(APP_VERSION_INFO_REDIS_KEY, APP_VERSION_INFO_EXPIRE_SECONDS, jsonString);
             }
             JsonObject json = GsonUtil.stringToJsonObject(jsonString);
+            logger.info("MobileAppCheckVersionController json = " + json);
             AppVersionResponseDataDto dto = new AppVersionResponseDataDto();
             String jsonKey = platform.toLowerCase();
+            logger.info("MobileAppCheckVersionController jsonKey = " + jsonKey);
+            logger.info("MobileAppCheckVersionController json.get(jsonKey) = " + json.get(jsonKey).getAsJsonObject());
             dto.setForceUpgrade(json.get(jsonKey).getAsJsonObject().get("forceUpgrade").getAsBoolean());
             dto.setMessage(json.get(jsonKey).getAsJsonObject().get("message").getAsString());
             dto.setVersion(json.get(jsonKey).getAsJsonObject().get("version").getAsString());

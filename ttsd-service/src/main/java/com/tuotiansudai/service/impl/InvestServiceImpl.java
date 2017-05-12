@@ -480,7 +480,7 @@ public class InvestServiceImpl implements InvestService {
 
         long interest = 0L;
         List<Long> perPeriodInterestList = InterestCalculator.estimateExpectedInterest(loanModel, investAmount);
-        for(Long perPeriodInterest: perPeriodInterestList){
+        for (Long perPeriodInterest : perPeriodInterestList) {
             interest += perPeriodInterest;
         }
 
@@ -497,6 +497,25 @@ public class InvestServiceImpl implements InvestService {
     @Override
     public List<InvestModel> findContractFailInvest(long loanId) {
         return investMapper.findNoContractNoInvest(loanId);
+    }
+
+
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.wechat.lottery.startTime}\")}")
+    private Date wechatLotteryStartTime;
+
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.wechat.lottery.endTime}\")}")
+    private Date wechatLotteryEndTime;
+
+    @Override
+    public boolean isNewUserForWechatLottery(String loginName) {
+        int count = investMapper.countInvestBeforeDate(loginName, wechatLotteryStartTime);
+        return count <= 0;
+    }
+
+    @Override
+    public boolean isFirstInvest(String loginName, Date investTime) {
+        int count = investMapper.countInvestBeforeDate(loginName, investTime);
+        return count == 1;
     }
 
 }
