@@ -12,12 +12,14 @@ import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.MobileEncryptor;
 import com.tuotiansudai.util.RedisWrapperClient;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -142,6 +144,9 @@ public class WechatLotteryService {
     }
 
     public List<UserLotteryPrizeView> getMyLotteryList(String mobile) {
+        if (StringUtils.isEmpty(mobile)) {
+            return new ArrayList<>();
+        }
         List<UserLotteryPrizeView> lotteryList = userLotteryPrizeMapper.findUserLotteryPrizeViews(mobile, null, ActivityCategory.WECHAT_FIRST_INVEST_PRIZE, null, null, null, null);
         for (UserLotteryPrizeView view : lotteryList) {
             view.setPrizeValue(view.getPrize().getDescription());
