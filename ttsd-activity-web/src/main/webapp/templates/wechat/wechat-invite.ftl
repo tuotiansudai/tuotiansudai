@@ -80,7 +80,7 @@
             <div class="model-item text-model">
                 <i class="icon-check active"></i>
                 <span class="agree-item">同意拓天速贷<strong class="agree-text">《服务协议》</strong></span>
-                <input type="hidden" name="checkbox" id="checkbox" />
+                <input type="hidden" name="checkbox" class="agree-check" value="true"/>
             </div>
 
             <div class="model-item text-model tc">
@@ -107,9 +107,9 @@
                 <span class="fr login-link">注册</span>
             </div>
             <div class="model-item text-model">
-                <i class="icon-check"></i>
+                <i class="icon-check active"></i>
                 <span class="agree-item">同意拓天速贷<strong class="agree-text">《服务协议》</strong></span>
-                <input type="hidden" name="checkbox" id="checkbox" />
+                <input type="hidden" name="checkbox" class="agree-check" value="true"/>
             </div>
 
             <div class="model-item text-model tc">
