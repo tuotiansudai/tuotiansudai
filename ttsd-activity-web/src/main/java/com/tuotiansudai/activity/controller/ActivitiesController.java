@@ -34,7 +34,7 @@ public class ActivitiesController {
 
         // 微信抽奖活动，没有响应式
         if ("lottery-intro".equals(item)) {
-            modelAndView.addObject("responsive", false);
+            modelAndView.addObject("responsive", null);
         }
 
         String loginName = LoginUserInfo.getLoginName();
