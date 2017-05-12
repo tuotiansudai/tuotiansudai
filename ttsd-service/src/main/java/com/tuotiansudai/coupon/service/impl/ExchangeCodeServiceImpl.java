@@ -41,6 +41,8 @@ public class ExchangeCodeServiceImpl implements ExchangeCodeService {
 
     public final static String EXCHANGE_CODE_KEY = "console:exchangeCode:";
 
+    public final static String EXCHANGE_CODE_LIST_KEY = "console:exchangeCode:list:";
+
     private final static int ONE_MONTH_SECOND = 60 * 60 * 24 * 30;
 
     private final static int RANDOM_SIZE = 10;
@@ -97,8 +99,11 @@ public class ExchangeCodeServiceImpl implements ExchangeCodeService {
                 randomCode = genRandomCode(RANDOM_SIZE);
             }
             redisWrapperClient.hset(EXCHANGE_CODE_KEY + couponId, prefix + randomCode, "0", lifeSeconds);
+            // FIXME：only for 端午节优惠券兑换码
+            redisWrapperClient.lpush(EXCHANGE_CODE_LIST_KEY + couponId, prefix + randomCode);
             logger.info("generate exchange code, couponId:" + couponId + ", code:" + prefix + randomCode + ", lifeSeconds:" + lifeSeconds);
         }
+        redisWrapperClient.expire(EXCHANGE_CODE_LIST_KEY + couponId, lifeSeconds);
     }
 
 
