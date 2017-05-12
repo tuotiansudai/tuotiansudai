@@ -506,6 +506,11 @@
 							background: url('../images/mother-day/gift-img-phone.png') no-repeat center;
 							background-size:80%;
 						}
+						@media (min-width:376px) and (max-width:700px) {
+							height:400px;
+							background: url('../images/mother-day/gift-img-phone.png') no-repeat center;
+							background-size:65%;
+						}
 					}
 					.gift-box{
 						float:left;
