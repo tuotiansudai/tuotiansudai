@@ -17,7 +17,7 @@
 <body>
 <div id="app"></div>
 <script type="text/javascript">
-    window.staticServer='${commonStaticServer}';
+    window.commonStaticServer='${commonStaticServer}';
 </script>
 <script src="${js.index!}" ></script>
 

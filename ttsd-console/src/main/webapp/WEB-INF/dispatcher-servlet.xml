@@ -42,7 +42,7 @@
         <property name="sourceMap">
             <map>
                 <entry key="webServer" value="${web.server}"/>
-                <entry key="staticServer" value="${web.static.server}"/>
+                <entry key="commonStaticServer" value="${common.static.server}"/>
             </map>
         </property>
     </bean>

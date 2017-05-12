@@ -27,9 +27,6 @@ public class MobileAppTransferControllerTest extends ControllerTestBase{
     @Mock
     private MobileAppTransferService mobileAppTransferService;
 
-    @Autowired
-    private IdGenerator idGenerator;
-
     @Test
     public void shouldGetTransfereeSuccess() throws Exception{
         TransferTransfereeRequestDto transferTransfereeRequestDto = new TransferTransfereeRequestDto();
@@ -38,7 +35,7 @@ public class MobileAppTransferControllerTest extends ControllerTestBase{
         transferTransfereeRequestDto.setBaseParam(baseParam);
         transferTransfereeRequestDto.setPageSize(10);
         transferTransfereeRequestDto.setIndex(1);
-        transferTransfereeRequestDto.setTransferApplicationId(idGenerator.generate());
+        transferTransfereeRequestDto.setTransferApplicationId(IdGenerator.generate());
         when(mobileAppTransferService.getTransferee(any(TransferTransfereeRequestDto.class))).thenReturn(successResponseDto);
 
         doRequestWithServiceMockedTest("/get/transferee", transferTransfereeRequestDto);

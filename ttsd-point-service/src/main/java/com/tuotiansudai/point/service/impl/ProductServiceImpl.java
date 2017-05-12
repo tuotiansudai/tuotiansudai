@@ -2,7 +2,6 @@ package com.tuotiansudai.point.service.impl;
 
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.ExchangeCouponDto;
 import com.tuotiansudai.repository.mapper.CouponMapper;
 import com.tuotiansudai.repository.model.CouponModel;
@@ -28,6 +27,7 @@ import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,6 +45,14 @@ import java.util.stream.Collectors;
 public class ProductServiceImpl implements ProductService {
 
     private static Logger logger = Logger.getLogger(ProductServiceImpl.class);
+
+    private static final String PRODUCT_USER_BUY_COUNT_KEY = "{0}:{1}:{2}";
+
+    private static final int COUNT_LIFE_TIME = 60 * 60 * 24 * 32; // 32天
+
+    private static final ThreadLocal<SimpleDateFormat> SDF_LOCAL = ThreadLocal.withInitial(() -> new SimpleDateFormat("yyyy-MM"));
+
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
     @Autowired
     private ProductMapper productMapper;
@@ -72,15 +80,6 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private UserMembershipEvaluator userMembershipEvaluator;
-
-    @Autowired
-    RedisWrapperClient redisWrapperClient;
-
-    private static final String PRODUCT_USER_BUY_COUNT_KEY = "{0}:{1}:{2}";
-
-    private static final int COUNT_LIFE_TIME = 60 * 60 * 24 * 32; // 32天
-
-    private static final ThreadLocal<SimpleDateFormat> SDF_LOCAL = ThreadLocal.withInitial(() -> new SimpleDateFormat("yyyy-MM"));
 
     @Override
     @Transactional

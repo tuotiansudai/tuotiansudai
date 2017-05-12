@@ -25,6 +25,8 @@ public class RegisterUserDto implements Serializable {
     @Pattern(regexp = "^(?=.*[^\\d])(.{6,20})$")
     private String password;
 
+    private String openid;
+
     private String referrer;
 
     private String channel;
@@ -69,6 +71,14 @@ public class RegisterUserDto implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getOpenid() {
+        return openid;
+    }
+
+    public void setOpenid(String openid) {
+        this.openid = openid;
     }
 
     public String getReferrer() {

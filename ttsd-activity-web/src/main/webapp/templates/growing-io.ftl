@@ -3,7 +3,7 @@
     var _vds = _vds || [];
     window._vds = _vds;
     (function(){
-        <#if isProduction>
+        <#if isProduction?? && isProduction>
             _vds.push(['setAccountId', 'a1e41737f5d5de60']);
         <#else>
             _vds.push(['setAccountId', '9335179dd4d4c6a2']);

@@ -54,8 +54,9 @@ public abstract class BaseClient {
         }
     }
 
-    protected byte[] downPdf(String path, String requestJson, String method) {
-        ResponseBody responseBody = newCall(path, requestJson, method, null);
+
+    protected byte[] downPdf(String path, String requestJson) {
+        ResponseBody responseBody = newCall(path, requestJson, "POST", null);
         try {
             return responseBody != null ? responseBody.bytes() : null;
         } catch (IOException e) {

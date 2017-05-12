@@ -2,28 +2,25 @@ package com.tuotiansudai.service.impl;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.client.PayWrapperClient;
-import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.coupon.service.CouponAssignmentService;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.TransferCashDto;
 import com.tuotiansudai.activity.repository.dto.DrawLotteryDto;
 import com.tuotiansudai.activity.repository.dto.PrizeWinnerDto;
 import com.tuotiansudai.activity.repository.dto.UserScoreDto;
 import com.tuotiansudai.activity.repository.dto.UserTianDouRecordDto;
 import com.tuotiansudai.activity.repository.model.TianDouPrize;
+import com.tuotiansudai.client.PayWrapperClient;
+import com.tuotiansudai.coupon.service.CouponAssignmentService;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.TransferCashDto;
 import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.LoanModel;
-import com.tuotiansudai.repository.model.LoanStatus;
-import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.RankingActivityService;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.RandomUtils;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.log4j.Logger;
@@ -32,13 +29,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Tuple;
 
-import java.math.BigDecimal;
 import java.util.*;
 
 @Service
 public class RankingActivityServiceImpl implements RankingActivityService {
 
     private static Logger logger = Logger.getLogger(RankingActivityServiceImpl.class);
+
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
     @Autowired
     private UserMapper userMapper;
@@ -50,19 +48,10 @@ public class RankingActivityServiceImpl implements RankingActivityService {
     private CouponAssignmentService couponAssignmentService;
 
     @Autowired
-    private RedisWrapperClient redisWrapperClient;
-
-    @Autowired
     private PayWrapperClient payWrapperClient;
 
     @Autowired
-    private IdGenerator idGenerator;
-
-    @Autowired
     private InvestMapper investMapper;
-
-    @Autowired
-    private LoanMapper loanMapper;
 
     // 抽奖次数计数器。
     public static final String TIAN_DOU_DRAW_COUNTER = "web:ranking:tian_dou_draw_counter";
@@ -187,7 +176,7 @@ public class RankingActivityServiceImpl implements RankingActivityService {
     }
 
     private void sendCash20(String loginName) {
-        long orderId = idGenerator.generate();
+        long orderId = IdGenerator.generate();
         TransferCashDto transferCashDto = new TransferCashDto(loginName, String.valueOf(orderId), "2000");
         payWrapperClient.transferCash(transferCashDto);
     }

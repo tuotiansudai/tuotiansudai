@@ -6,7 +6,7 @@ import com.tuotiansudai.dto.TransferCashDto;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.repository.mapper.TransferMapper;
-import com.tuotiansudai.paywrapper.repository.model.sync.request.TransferRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.async.request.TransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.TransferResponseModel;
 import com.tuotiansudai.paywrapper.service.SystemBillService;
 import com.tuotiansudai.paywrapper.service.TransferCashService;
@@ -23,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.text.MessageFormat;
 
 @Service
-public class TransferCashServiceImpl implements TransferCashService{
+public class TransferCashServiceImpl implements TransferCashService {
 
     static Logger logger = Logger.getLogger(TransferCashServiceImpl.class);
 
@@ -42,16 +42,15 @@ public class TransferCashServiceImpl implements TransferCashService{
     @Override
     @Transactional
     public BaseDto<PayDataDto> transferCash(TransferCashDto transferCashDto) {
-        BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto payDataDto = new PayDataDto();
-        baseDto.setData(payDataDto);
-        AccountModel accountModel = accountMapper.findByLoginName(transferCashDto.getLoginName());
+        BaseDto<PayDataDto> baseDto = new BaseDto<>(payDataDto);
         try {
-            TransferRequestModel requestModel = TransferRequestModel.newRequest(transferCashDto.getOrderId(), accountModel.getPayUserId(), transferCashDto.getAmount());
+            AccountModel accountModel = accountMapper.findByLoginName(transferCashDto.getLoginName());
+            TransferRequestModel requestModel = TransferRequestModel.newLotteryReward(transferCashDto.getOrderId(), accountModel.getPayUserId(), accountModel.getPayAccountId(), transferCashDto.getAmount());
             TransferResponseModel responseModel = paySyncClient.send(TransferMapper.class, requestModel, TransferResponseModel.class);
             if (responseModel.isSuccess()) {
                 amountTransfer.transferInBalance(transferCashDto.getLoginName(), Long.parseLong(transferCashDto.getOrderId()), Long.parseLong(transferCashDto.getAmount()),
-                        UserBillBusinessType.LOTTERY_CASH, null, null);
+                        UserBillBusinessType.INVEST_CASH_BACK, null, null);
                 String detail = MessageFormat.format(SystemBillDetailTemplate.LOTTERY_CASH_DETAIL_TEMPLATE.getTemplate(), transferCashDto.getLoginName(), transferCashDto.getAmount());
                 systemBillService.transferOut(Long.parseLong(transferCashDto.getOrderId()), Long.parseLong(transferCashDto.getAmount()), SystemBillBusinessType.LOTTERY_CASH, detail);
             }

@@ -1,9 +1,9 @@
 package com.tuotiansudai.service;
 
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +25,12 @@ import static org.junit.Assert.*;
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
 @Transactional
 public class BindEmailServiceTest {
+
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
+
     @Autowired
     private BindEmailService bindEmailService;
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
+
     @Autowired
     private UserMapper userMapper;
 

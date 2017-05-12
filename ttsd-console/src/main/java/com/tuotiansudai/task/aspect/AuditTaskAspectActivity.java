@@ -2,14 +2,14 @@ package com.tuotiansudai.task.aspect;
 
 import com.tuotiansudai.activity.repository.dto.ActivityDto;
 import com.tuotiansudai.activity.repository.model.ActivityStatus;
-import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.enums.OperationType;
 import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.log.service.AuditLogService;
-import com.tuotiansudai.enums.OperationType;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.task.OperationTask;
 import com.tuotiansudai.task.TaskConstant;
 import com.tuotiansudai.task.TaskType;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -23,17 +23,15 @@ import java.util.Date;
 @Component
 public class AuditTaskAspectActivity {
 
+    static Logger logger = Logger.getLogger(AuditTaskAspectLoan.class);
+
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
     @Autowired
     private AuditLogService auditLogService;
 
     @Autowired
     private UserService userService;
-
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
-
-    static Logger logger = Logger.getLogger(AuditTaskAspectLoan.class);
 
     @AfterReturning(value = "execution(* com.tuotiansudai.activity.service.ActivityService.saveOrUpdate(..))", returning = "returnValue")
     public void afterCreateEditRecheckActivity(JoinPoint joinPoint, Object returnValue) {

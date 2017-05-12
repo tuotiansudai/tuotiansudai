@@ -43,9 +43,6 @@ public class MobileAppRepayCalendarServiceTest extends ServiceTestBase {
     private UserMapper userMapper;
 
     @Autowired
-    private IdGenerator idGenerator;
-
-    @Autowired
     private InvestMapper investMapper;
 
     @Autowired
@@ -72,7 +69,7 @@ public class MobileAppRepayCalendarServiceTest extends ServiceTestBase {
     @Test
     public void shouldGetYearRepayCalendarByIsOk() {
         String loginName = "testRepayCalender";
-        long loanId = idGenerator.generate();
+        long loanId = IdGenerator.generate();
         createUserByUserId(loginName);
         createAccountByUserId(loginName);
         createLoanByUserId(loginName, loanId);
@@ -123,7 +120,7 @@ public class MobileAppRepayCalendarServiceTest extends ServiceTestBase {
     @Test
     public void shouldGetMonthRepayCalendarByIsOk() {
         String loginName = "testRepayCalender";
-        long loanId = idGenerator.generate();
+        long loanId = IdGenerator.generate();
         createUserByUserId(loginName);
         createAccountByUserId(loginName);
         createLoanByUserId(loginName, loanId);
@@ -168,7 +165,7 @@ public class MobileAppRepayCalendarServiceTest extends ServiceTestBase {
     @Test
     public void shouldGetDateRepayCalendarIsOk() {
         String loginName = "testRepayCalender";
-        long loanId = idGenerator.generate();
+        long loanId = IdGenerator.generate();
         createUserByUserId(loginName);
         createAccountByUserId(loginName);
         createLoanByUserId(loginName, loanId);
@@ -218,7 +215,7 @@ public class MobileAppRepayCalendarServiceTest extends ServiceTestBase {
     @Test
     public void shouldGetDateRepayCalendarIsFault() {
         String loginName = "testRepayCalender";
-        long loanId = idGenerator.generate();
+        long loanId = IdGenerator.generate();
         createUserByUserId(loginName);
         createAccountByUserId(loginName);
         createLoanByUserId(loginName, loanId);
@@ -282,7 +279,7 @@ public class MobileAppRepayCalendarServiceTest extends ServiceTestBase {
 
     private CouponRepayModel createCouponRepay(long investId, long userCouponId, long couponId, String loginName, Date date) {
         CouponRepayModel couponRepayModel = new CouponRepayModel();
-        couponRepayModel.setId(idGenerator.generate());
+        couponRepayModel.setId(IdGenerator.generate());
         couponRepayModel.setInvestId(investId);
         couponRepayModel.setExpectedInterest(1);
         couponRepayModel.setActualFee(0);
@@ -321,7 +318,7 @@ public class MobileAppRepayCalendarServiceTest extends ServiceTestBase {
     private InvestRepayModel createInvestRepay(long investId, Date time) {
         InvestRepayModel investRepayModel = new InvestRepayModel();
         investRepayModel.setInvestId(investId);
-        investRepayModel.setId(idGenerator.generate());
+        investRepayModel.setId(IdGenerator.generate());
         investRepayModel.setStatus(RepayStatus.REPAYING);
         investRepayModel.setRepayDate(time);
         investRepayModel.setExpectedInterest(1);
@@ -381,7 +378,7 @@ public class MobileAppRepayCalendarServiceTest extends ServiceTestBase {
         InvestModel model = new InvestModel();
         model.setAmount(10);
         model.setInvestTime(new Date());
-        model.setId(idGenerator.generate());
+        model.setId(IdGenerator.generate());
         model.setIsAutoInvest(false);
         model.setLoginName(loginName);
         model.setLoanId(loanId);

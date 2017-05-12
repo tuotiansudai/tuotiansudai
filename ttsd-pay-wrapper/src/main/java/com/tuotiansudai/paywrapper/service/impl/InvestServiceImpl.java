@@ -2,7 +2,9 @@ package com.tuotiansudai.paywrapper.service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.base.Joiner;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.*;
@@ -28,8 +30,8 @@ import com.tuotiansudai.paywrapper.repository.model.NotifyProcessStatus;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.InvestNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.ProjectTransferNotifyRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferNopwdRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferRequestModel;
-import com.tuotiansudai.paywrapper.repository.model.sync.request.ProjectTransferNopwdRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferNopwdResponseModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
 import com.tuotiansudai.paywrapper.service.InvestAchievementService;
@@ -43,6 +45,7 @@ import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -51,18 +54,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class InvestServiceImpl implements InvestService {
 
     static Logger logger = Logger.getLogger(InvestServiceImpl.class);
-
-    @Autowired
-    private IdGenerator idGenerator;
 
     @Autowired
     private AccountMapper accountMapper;
@@ -142,6 +139,18 @@ public class InvestServiceImpl implements InvestService {
     @Autowired
     private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
 
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.mothers.day.startTime}\")}")
+    private Date activityStartTimeStr;
+
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.mothers.day.endTime}\")}")
+    private Date activityEndTimeStr;
+
+    private final List<ExperienceReward> mothersRewards = Lists.newArrayList(
+            new ExperienceReward(688800l, 1000000l, 5000000l),
+            new ExperienceReward(3888800l, 5000000l, 10000000l),
+            new ExperienceReward(8888800l, 10000000l, 20000000l),
+            new ExperienceReward(18888800l, 20000000l, Long.MAX_VALUE));
+
     @Override
     @Transactional
     public BaseDto<PayFormDataDto> invest(InvestDto dto) {
@@ -150,7 +159,7 @@ public class InvestServiceImpl implements InvestService {
         String loginName = dto.getLoginName();
         double rate = membershipPrivilegePurchaseService.obtainServiceFee(loginName);
 
-        InvestModel investModel = new InvestModel(idGenerator.generate(), Long.parseLong(dto.getLoanId()), null, AmountConverter.convertStringToCent(dto.getAmount()), dto.getLoginName(), new Date(), dto.getSource(), dto.getChannel(), rate);
+        InvestModel investModel = new InvestModel(IdGenerator.generate(), Long.parseLong(dto.getLoanId()), null, AmountConverter.convertStringToCent(dto.getAmount()), dto.getLoginName(), new Date(), dto.getSource(), dto.getChannel(), rate);
         investMapper.create(investModel);
 
         logger.info(MessageFormat.format("[Invest Request Data] user={0}, loan={1}, invest={2}, amount={3}, userCoupon={4}, source={5}",
@@ -188,7 +197,7 @@ public class InvestServiceImpl implements InvestService {
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
         double rate = membershipPrivilegePurchaseService.obtainServiceFee(loginName);
 
-        InvestModel investModel = new InvestModel(idGenerator.generate(), loanId, null, amount, loginName, new Date(), source, channel, rate);
+        InvestModel investModel = new InvestModel(IdGenerator.generate(), loanId, null, amount, loginName, new Date(), source, channel, rate);
         try {
             investModel.setNoPasswordInvest(true);
             investMapper.create(investModel);
@@ -223,6 +232,9 @@ public class InvestServiceImpl implements InvestService {
                     ProjectTransferNopwdResponseModel.class);
             payDataDto.setStatus(responseModel.isSuccess());
             payDataDto.setCode(responseModel.getRetCode());
+            payDataDto.setExtraValues(Maps.newHashMap(ImmutableMap.<String, String>builder()
+                    .put("order_id", String.valueOf(investModel.getId()))
+                    .build()));
             payDataDto.setMessage(responseModel.getRetMsg());
         } catch (PayException e) {
             logger.error(e.getLocalizedMessage(), e);
@@ -349,7 +361,7 @@ public class InvestServiceImpl implements InvestService {
 
         String newOrderId = orderId + "X" + System.currentTimeMillis();
 
-        ProjectTransferRequestModel requestModel = ProjectTransferRequestModel.overInvestPaybackRequest(
+        ProjectTransferRequestModel requestModel = ProjectTransferRequestModel.newOverInvestPaybackRequest(
                 String.valueOf(loanId), newOrderId, accountModel.getPayUserId(), String.valueOf(investModel.getAmount()));
 
         try {
@@ -429,7 +441,7 @@ public class InvestServiceImpl implements InvestService {
                     logger.info("auto invest was skip, because user [" + autoInvestPlanModel.getLoginName() + "] has auto-invest-ed on this loan : " + loanId);
                     continue;
                 }
-                long availableSelfLoanAmount = loanModel.getMaxInvestAmount() - investMapper.sumSuccessInvestAmountByLoginName(loanId, autoInvestPlanModel.getLoginName(),true);
+                long availableSelfLoanAmount = loanModel.getMaxInvestAmount() - investMapper.sumSuccessInvestAmountByLoginName(loanId, autoInvestPlanModel.getLoginName(), true);
                 if (availableSelfLoanAmount <= 0) {
                     logger.info("auto invest was skip, because amount that user [" + autoInvestPlanModel.getLoginName() + "] has invested was reach max-invest-amount , loanId : " + loanId);
                     continue;
@@ -606,8 +618,9 @@ public class InvestServiceImpl implements InvestService {
         }
         try {
             mqWrapperClient.publishMessage(MessageTopic.InvestSuccess, new InvestSuccessMessage(investInfo, loanDetailInfo, userInfo));
-            UserInfoActivity userInfoActivity = new UserInfoActivity(userInfo,userModel.getRegisterTime());
-            mqWrapperClient.sendMessage(MessageQueue.InvestSuccess_InvestNewmanTyrant,new InvestSuccessNewmanTyrantMessage(investInfo,userInfoActivity));
+            UserInfoActivity userInfoActivity = new UserInfoActivity(userInfo, userModel.getRegisterTime());
+            mqWrapperClient.sendMessage(MessageQueue.InvestSuccess_InvestNewmanTyrant, new InvestSuccessNewmanTyrantMessage(investInfo, userInfoActivity));
+            mothersDayAssignExperience(investModel.getLoginName(), investModel.getAmount());
         } catch (JsonProcessingException e) {
             // 记录日志，发短信通知管理员
             fatalLog("[MQ] invest success, but send mq message fail", String.valueOf(investInfo.getInvestId()), investInfo.getAmount(), investInfo.getLoginName(), investModel.getLoanId(), e);
@@ -689,5 +702,48 @@ public class InvestServiceImpl implements InvestService {
         logger.info("sent invest fatal sms message");
         SmsFatalNotifyDto dto = new SmsFatalNotifyDto(MessageFormat.format("投资业务错误。详细信息：{0}", errMsg));
         smsWrapperClient.sendFatalNotify(dto);
+    }
+
+    private void mothersDayAssignExperience(String loginName, long investAmount) {
+        if(DateTime.now().toDate().after(activityEndTimeStr) || DateTime.now().toDate().before(activityStartTimeStr)){
+            return;
+        }
+        logger.info(MessageFormat.format("[mothers day] assign experience loginName: {0}, investAmount: {1}", loginName, investAmount));
+        Optional<ExperienceReward> reward = mothersRewards.stream().filter(mothersReward -> mothersReward.getStartAmount() <= investAmount && investAmount < mothersReward.getEndAmount()).findAny();
+        if (reward.isPresent()) {
+            mqWrapperClient.sendMessage(MessageQueue.ExperienceAssigning,
+                    new ExperienceAssigningMessage(loginName, reward.get().getExperienceAmount(), ExperienceBillOperationType.IN, ExperienceBillBusinessType.MOTHERS_DAY));
+
+            mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(MessageEventType.ASSIGN_EXPERIENCE_SUCCESS,
+                    Lists.newArrayList(loginName),
+                    MessageFormat.format(MessageEventType.ASSIGN_EXPERIENCE_SUCCESS.getTitleTemplate(), AmountConverter.convertCentToString(reward.get().getExperienceAmount())),
+                    MessageFormat.format(MessageEventType.ASSIGN_EXPERIENCE_SUCCESS.getContentTemplate(), AmountConverter.convertCentToString(investAmount), AmountConverter.convertCentToString(reward.get().getExperienceAmount())),
+                    null));
+        }
+
+    }
+
+    class ExperienceReward {
+        private Long experienceAmount;
+        private Long startAmount;
+        private Long endAmount;
+
+        public ExperienceReward(Long experienceAmount, Long startAmount, Long endAmount) {
+            this.experienceAmount = experienceAmount;
+            this.startAmount = startAmount;
+            this.endAmount = endAmount;
+        }
+
+        public Long getExperienceAmount() {
+            return experienceAmount;
+        }
+
+        public Long getStartAmount() {
+            return startAmount;
+        }
+
+        public Long getEndAmount() {
+            return endAmount;
+        }
     }
 }

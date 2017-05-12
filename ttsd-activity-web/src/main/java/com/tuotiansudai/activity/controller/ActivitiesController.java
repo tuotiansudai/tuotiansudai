@@ -6,7 +6,6 @@ import com.tuotiansudai.coupon.service.CouponAlertService;
 import com.tuotiansudai.dto.CouponAlertDto;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.MobileEncoder;
@@ -28,12 +27,16 @@ public class ActivitiesController {
     @Autowired
     private CouponAlertService couponAlertService;
 
-    //    midsummer: 助力升温，点燃仲夏活动:活动时间 5月12到5月25
-
-    @RequestMapping(path = "/{item:^recruit|money_tree|material-point|integral-draw|birth-month|rank-list-app|share-reward|app-download|landing-page|invest-achievement|landing-anxin|loan-hike|heavily-courtship|point-update|sign-check|open-spring|wx-register|divide-money|minsheng|guarantee|midsummer$}", method = RequestMethod.GET)
+    @RequestMapping(path = "/{item:^money_tree|landing-page|invest-achievement|landing-anxin|point-update|sign-check|wx-register|divide-money|minsheng|guarantee|midsummer|lottery-intro|icp-intro$}", method = RequestMethod.GET)
 
     public ModelAndView activities(@PathVariable String item, HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView("/activities/" + item, "responsive", true);
+
+        // 微信抽奖活动，没有响应式
+        if ("lottery-intro".equals(item)) {
+            modelAndView.addObject("responsive", null);
+        }
+
         String loginName = LoginUserInfo.getLoginName();
 
         if (!Strings.isNullOrEmpty(loginName) && userService.loginNameIsExist(loginName.trim())) {
@@ -53,15 +56,6 @@ public class ActivitiesController {
         boolean newbieCouponAlert = couponAlert != null && couponAlert.getCouponIds().size() > 0;
         modelAndView.addObject("couponAlert", newbieCouponAlert);
         return modelAndView;
-    }
-
-    @RequestMapping(value = "/isLogin", method = RequestMethod.GET)
-    public ModelAndView isLogin() {
-        if (!StringUtils.isEmpty(LoginUserInfo.getLoginName())) {
-            return null;
-        } else {
-            return new ModelAndView("/csrf");
-        }
     }
 
     @ResponseBody

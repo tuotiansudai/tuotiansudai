@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,9 +25,6 @@ import static org.junit.Assert.assertThat;
 public class RepayMapperTest {
 
     @Autowired
-    private IdGenerator idGenerator;
-
-    @Autowired
     private LoanRepayMapper loanRepayMapper;
 
     @Autowired
@@ -44,7 +42,7 @@ public class RepayMapperTest {
         loanMapper.create(loanModel);
         List<LoanRepayModel> loanRepayModels = Lists.newArrayList();
         LoanRepayModel loanRepayModel = new LoanRepayModel();
-        loanRepayModel.setId(idGenerator.generate());
+        loanRepayModel.setId(IdGenerator.generate());
         loanRepayModel.setDefaultInterest(0);
         loanRepayModel.setActualInterest(0);
         loanRepayModel.setPeriod(1);
@@ -70,7 +68,7 @@ public class RepayMapperTest {
         loanMapper.create(loanModel);
         List<LoanRepayModel> loanRepayModels = Lists.newArrayList();
         LoanRepayModel loanRepayModel = new LoanRepayModel();
-        loanRepayModel.setId(idGenerator.generate());
+        loanRepayModel.setId(IdGenerator.generate());
         loanRepayModel.setDefaultInterest(0);
         loanRepayModel.setActualInterest(0);
         loanRepayModel.setPeriod(1);
@@ -82,7 +80,7 @@ public class RepayMapperTest {
         loanRepayModel.setExpectedInterest(0);
         loanRepayModels.add(loanRepayModel);
         LoanRepayModel loanRepayModel1 = new LoanRepayModel();
-        loanRepayModel1.setId(idGenerator.generate());
+        loanRepayModel1.setId(IdGenerator.generate());
         loanRepayModel1.setDefaultInterest(0);
         loanRepayModel1.setActualInterest(0);
         loanRepayModel1.setPeriod(1);
@@ -113,7 +111,7 @@ public class RepayMapperTest {
         loanDto.setLoanerIdentityNumber("111111111111111111");
         loanDto.setAgentLoginName("helloworld");
         loanDto.setBasicRate("16.00");
-        long id = idGenerator.generate();
+        long id = IdGenerator.generate();
         loanDto.setId(id);
         loanDto.setProjectName("店铺资金周转");
         loanDto.setActivityRate("12");
@@ -144,7 +142,7 @@ public class RepayMapperTest {
         userModelTest.setLoginName("helloworld");
         userModelTest.setPassword("123abc");
         userModelTest.setEmail("12345@abc.com");
-        userModelTest.setMobile("13900000000");
+        userModelTest.setMobile(RandomStringUtils.randomNumeric(11));
         userModelTest.setRegisterTime(new Date());
         userModelTest.setStatus(UserStatus.ACTIVE);
         userModelTest.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));

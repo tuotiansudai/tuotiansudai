@@ -59,9 +59,6 @@ public class CouponAssignmentServiceTest {
     private UserCouponMapper userCouponMapper;
 
     @Autowired
-    private IdGenerator idGenerator;
-
-    @Autowired
     private LoanMapper loanMapper;
 
     @Autowired
@@ -323,14 +320,14 @@ public class CouponAssignmentServiceTest {
     }
 
     private InvestModel createInvest(String loginName, long loanId) {
-        InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, 1, loginName, new Date(), Source.WEB, null, 0.1);
+        InvestModel model = new InvestModel(IdGenerator.generate(), loanId, null, 1, loginName, new Date(), Source.WEB, null, 0.1);
         investMapper.create(model);
         return model;
     }
 
     private LoanModel getFakeExperienceLoan(String loginName) {
         LoanModel fakeLoanModel = new LoanModel();
-        fakeLoanModel.setId(idGenerator.generate());
+        fakeLoanModel.setId(IdGenerator.generate());
         fakeLoanModel.setName(loginName);
         fakeLoanModel.setLoanAmount(10000L);
         fakeLoanModel.setLoanerLoginName(loginName);

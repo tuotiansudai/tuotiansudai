@@ -13,10 +13,9 @@ module.exports = {
     public: outputPath, //静态文件目录
     port: '3010',
     hot: true,
-    // watch: [require.resolve('weChat/start'), 'E:\\ftlServer\page.mock'],
     //配置freemarker的解析
     ftl: {
-        base: activityTemplatePath,
+        base: webTemplatePath,
         // dataFiles: ['testdata.ftl'],
         global: { }
 

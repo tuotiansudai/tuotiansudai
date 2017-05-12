@@ -2,10 +2,10 @@ package com.tuotiansudai.coupon.util;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.repository.model.CouponModel;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,13 +15,12 @@ import java.util.List;
 @Service
 public class ImportUserCollector implements UserCollector {
 
+    private final static String IMPORT_COUPON_USER_REDIS_KEY_TEMPLATE = "console:{0}:importcouponuser";
+
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
+
     @Autowired
     private UserMapper userMapper;
-
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
-
-    private final static String IMPORT_COUPON_USER_REDIS_KEY_TEMPLATE = "console:{0}:importcouponuser";
 
     @Override
     public List<String> collect(long couponId) {

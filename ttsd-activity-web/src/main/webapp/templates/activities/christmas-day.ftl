@@ -97,7 +97,7 @@
                     </div>
 
                     <div class="tc" >
-                        <img src="${staticServer}/activity/images/christmas-day/gift.jpg" class="img-gift">
+                        <img src="${commonStaticServer}/activity/images/christmas-day/gift.jpg" class="img-gift">
                     </div>
 
                 </div>
@@ -177,7 +177,7 @@
                     <div class="reward-gift-box">
                         <div class="rotate-btn">
                             <div class="gift-case pointer-img">
-                                <img src="${staticServer}/activity/images/christmas-day/reward-box.png">
+                                <img src="${commonStaticServer}/activity/images/christmas-day/reward-box.png">
                             </div>
                         </div>
 

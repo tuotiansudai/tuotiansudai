@@ -22,6 +22,7 @@ public enum MessageQueue {
     InvestSuccess_MembershipUpdate("InvestSuccess-MembershipUpdate"),
     InvestSuccess_ActivityReward("InvestSuccess-ActivityReward"),
     InvestSuccess_InvestNewmanTyrant("InvestSuccess-InvestNewmanTyrant"),
+    InvestSuccess_WechatLottery("InvestSuccess-WechatLottery"),
     InvestNewmanTyrant_AssignExperience("InvestNewmanTyrant-AssignExperience"),
     InvestSuccess_ExperienceRepay("InvestSuccess-ExperienceRepay"),
     InvestSuccess_ExperienceAssignInterestCoupon("InvestSuccess-ExperienceAssignInterestCoupon"),
@@ -58,7 +59,8 @@ public enum MessageQueue {
     CancelTransferApplication("CancelTransferApplication"),
     CouponSmsAssignNotify("CouponSmsAssignNotify"),
     CouponSmsExpiredNotify("CouponSmsExpiredNotify"),
-    ExperienceAssigning("ExperienceAssigning");
+    ExperienceAssigning("ExperienceAssigning"),
+    WeChatBoundNotify("WeChatBoundNotify");
 
     private final String queueName;
 

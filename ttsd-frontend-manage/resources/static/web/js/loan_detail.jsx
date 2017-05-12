@@ -146,9 +146,9 @@ function sendSubmitRequest(){
     },function(response) {
         layer.closeAll();
         $investSubmit.removeClass("loading");
-        var data = response.data;
+        let data = response.data;
         if (data.status) {
-            location.href = "/invest-success";
+            location.href = "/callback/invest_project_transfer_nopwd?" + $.param(data.extraValues);
         } else if (data.message == '新手标投资已超上限') {
             showLayer();
         } else {
@@ -487,6 +487,10 @@ function getSkipPhoneTip(){
         //click invest submit btn
         $investSubmit.on('click', function(event) {
             event.preventDefault();
+            if ($('.header-login').data('wechat-login-name')) {
+                location.href = '/login?redirect=' + location.href;
+                return;
+            }
             $.when(commonFun.isUserLogin())
                 .done(function() {
                     if (isInvestor) {

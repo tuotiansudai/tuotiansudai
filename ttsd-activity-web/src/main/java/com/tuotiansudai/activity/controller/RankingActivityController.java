@@ -20,8 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 import java.util.Map;
 
-@Controller
-@RequestMapping(value = "/activity")
+
 public class RankingActivityController {
 
     @Autowired

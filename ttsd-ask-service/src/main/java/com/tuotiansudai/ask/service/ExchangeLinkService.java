@@ -2,10 +2,9 @@ package com.tuotiansudai.ask.service;
 
 import com.google.common.primitives.Longs;
 import com.tuotiansudai.ask.dto.LinkExchangeDto;
-import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
@@ -19,8 +18,7 @@ public class ExchangeLinkService {
 
     private static Logger logger = Logger.getLogger(ExchangeLinkService.class);
 
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
+    private RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
     private static final String LINK_EXCHANGE_KEY = "console:link:list";
 

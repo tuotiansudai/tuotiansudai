@@ -1,12 +1,14 @@
 package com.tuotiansudai.scheduler.plugin;
 
-import com.tuotiansudai.job.*;
+import com.tuotiansudai.job.AssignFirstRedEnvelopSplitJob;
+import com.tuotiansudai.job.AssignSecondRedEnvelopSplitJob;
+import com.tuotiansudai.job.JobManager;
+import com.tuotiansudai.job.JobType;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
-import org.quartz.SimpleScheduleBuilder;
 import org.quartz.spi.ClassLoadHelper;
 import org.quartz.spi.SchedulerPlugin;
 
@@ -70,12 +72,12 @@ public class JobInitPlugin implements SchedulerPlugin {
         }
     }
 
-    private void deleteCouponRepayCallBackJobIfNotExist(){
-        jobManager.deleteJob(JobType.CouponRepayCallBack,"umpay","coupon_repay_call_back");
+    private void deleteCouponRepayCallBackJobIfNotExist() {
+        jobManager.deleteJob(JobType.CouponRepayCallBack, "umpay", "coupon_repay_call_back");
     }
 
     private void deleteExtraRateRepayCallBackIfNotExist() {
         jobManager.deleteJob(JobType.ExtraRateRepayCallBack, "umpay", "repay_extra_rate_invest_call_back");
     }
-   
+
 }

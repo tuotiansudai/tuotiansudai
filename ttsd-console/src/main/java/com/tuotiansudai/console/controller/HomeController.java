@@ -1,18 +1,18 @@
 package com.tuotiansudai.console.controller;
 
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.console.service.ConsoleHomeService;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.enums.OperationType;
 import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.log.service.AuditLogService;
 import com.tuotiansudai.service.UserRoleService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.task.OperationTask;
-import com.tuotiansudai.enums.OperationType;
 import com.tuotiansudai.task.TaskConstant;
 import com.tuotiansudai.task.TaskType;
+import com.tuotiansudai.util.RedisWrapperClient;
 import com.tuotiansudai.util.RequestIPParser;
 import com.tuotiansudai.util.SerializeUtil;
 import org.apache.log4j.Logger;
@@ -34,11 +34,10 @@ public class HomeController {
 
     private final static Logger logger = Logger.getLogger(HomeController.class);
 
-    @Autowired
-    private ConsoleHomeService consoleHomeService;
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
     @Autowired
-    RedisWrapperClient redisWrapperClient;
+    private ConsoleHomeService consoleHomeService;
 
     @Autowired
     UserRoleService userRoleService;

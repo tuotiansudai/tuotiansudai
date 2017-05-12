@@ -3,6 +3,11 @@ package com.tuotiansudai.paywrapper.service;
 import com.google.common.collect.Lists;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
+import com.tuotiansudai.client.MQWrapperClient;
+import com.tuotiansudai.enums.ExperienceBillBusinessType;
+import com.tuotiansudai.enums.ExperienceBillOperationType;
+import com.tuotiansudai.message.ExperienceAssigningMessage;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.CouponMapper;
 import com.tuotiansudai.repository.mapper.CouponRepayMapper;
 import com.tuotiansudai.repository.mapper.UserCouponMapper;
@@ -63,9 +68,6 @@ public class InvestTransferPurchaseServiceTest {
 
     @Autowired
     private PayAsyncClient payAsyncClient;
-
-    @Autowired
-    private IdGenerator idGenerator;
 
     @Autowired
     private UserMapper userMapper;
@@ -136,7 +138,7 @@ public class InvestTransferPurchaseServiceTest {
 
         InvestDto investDto = new InvestDto();
         investDto.setLoginName(transferee.getLoginName());
-        investDto.setTransferInvestId(String.valueOf(fakeTransferApplication.getId()));
+        investDto.setTransferApplicationId(String.valueOf(fakeTransferApplication.getId()));
         investDto.setSource(Source.WEB);
 
         UserMembershipModel userMembershipModel = new UserMembershipModel(investDto.getLoginName(), 1, new DateTime(2200, 1, 1, 1, 1).toDate(), UserMembershipType.UPGRADE);
@@ -520,7 +522,7 @@ public class InvestTransferPurchaseServiceTest {
     private LoanModel createFakeLoan(LoanType loanType, long amount, int periods, double baseRate, Date recheckTime) {
         UserModel loaner = this.createFakeUser("loaner", 0, 0);
         LoanModel fakeLoanModel = new LoanModel();
-        fakeLoanModel.setId(idGenerator.generate());
+        fakeLoanModel.setId(IdGenerator.generate());
         fakeLoanModel.setName("loanName");
         fakeLoanModel.setLoanAmount(amount);
         fakeLoanModel.setLoanerLoginName(loaner.getLoginName());
@@ -543,7 +545,7 @@ public class InvestTransferPurchaseServiceTest {
     }
 
     private InvestModel createFakeInvest(long loanId, Long transferInvestId, long amount, String loginName, Date investTime, InvestStatus investStatus, TransferStatus transferStatus) {
-        InvestModel fakeInvestModel = new InvestModel(idGenerator.generate(), loanId, transferInvestId, amount, loginName, investTime, Source.WEB, null, 0.1);
+        InvestModel fakeInvestModel = new InvestModel(IdGenerator.generate(), loanId, transferInvestId, amount, loginName, investTime, Source.WEB, null, 0.1);
         fakeInvestModel.setStatus(investStatus);
         fakeInvestModel.setTransferStatus(transferStatus);
         MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
@@ -553,7 +555,7 @@ public class InvestTransferPurchaseServiceTest {
     }
 
     private InvestRepayModel createFakeInvestRepay(long investId, int period, long corpus, long expectedInterest, long expectedFee, Date expectedRepayDate, Date actualRepayDate, RepayStatus repayStatus) {
-        InvestRepayModel fakeInvestRepayModel = new InvestRepayModel(idGenerator.generate(), investId, period, corpus, expectedInterest, expectedFee, expectedRepayDate, repayStatus);
+        InvestRepayModel fakeInvestRepayModel = new InvestRepayModel(IdGenerator.generate(), investId, period, corpus, expectedInterest, expectedFee, expectedRepayDate, repayStatus);
         fakeInvestRepayModel.setActualRepayDate(actualRepayDate);
         investRepayMapper.create(Lists.newArrayList(fakeInvestRepayModel));
         return fakeInvestRepayModel;

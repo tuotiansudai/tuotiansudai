@@ -24,7 +24,7 @@ public class BannerUtils {
     @Value("${web.server}")
     private String domainName;
 
-    @Value("${web.static.server}")
+    @Value("${common.static.server}")
     private String staticDomainName;
 
     private static Logger logger = Logger.getLogger(MobileAppBannerServiceImpl.class);

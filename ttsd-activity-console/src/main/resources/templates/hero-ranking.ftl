@@ -119,7 +119,7 @@
                     更新后当日24:00自动生效
                     <div class="tomorrowThumbImage">
                         <#if tomorrowMysteriousPrizeDto??>
-                            <img style="width:100%" src="${staticServer}${tomorrowMysteriousPrizeDto.imageUrl!}" alt="神秘大奖缩略图">
+                            <img style="width:100%" src="${commonStaticServer}${tomorrowMysteriousPrizeDto.imageUrl!}" alt="神秘大奖缩略图">
                         </#if>
                     </div>
 
@@ -134,7 +134,7 @@
                     修改后即时发布到页面,请慎用
                     <div class="todayThumbImage">
                         <#if todayMysteriousPrizeDto??>
-                            <img style="width:100%" src="${staticServer}${todayMysteriousPrizeDto.imageUrl!}" alt="神秘大奖缩略图">
+                            <img style="width:100%" src="${commonStaticServer}${todayMysteriousPrizeDto.imageUrl!}" alt="神秘大奖缩略图">
                         </#if>
                     </div>
                 </div>

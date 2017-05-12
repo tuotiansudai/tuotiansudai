@@ -38,9 +38,6 @@ public class MobileAppInvestRepayListServiceTest extends ServiceTestBase {
     @Mock
     private LoanMapper loanMapper;
 
-    @Autowired
-    private IdGenerator idGenerator;
-
     @Mock
     private PageValidUtils pageValidUtils;
 
@@ -67,14 +64,14 @@ public class MobileAppInvestRepayListServiceTest extends ServiceTestBase {
         investModel.setStatus(InvestStatus.SUCCESS);
         investModel.setAmount(3159L);
         investModel.setInvestTime(new Date());
-        investModel.setId(idGenerator.generate());
-        investModel.setLoanId(idGenerator.generate());
+        investModel.setId(IdGenerator.generate());
+        investModel.setLoanId(IdGenerator.generate());
         return investModel;
     }
 
     private LoanModel generateMockedLoanModel() {
         LoanModel loanModel = new LoanModel();
-        loanModel.setId(idGenerator.generate());
+        loanModel.setId(IdGenerator.generate());
         loanModel.setStatus(LoanStatus.REPAYING);
         loanModel.setLoanAmount(543925803L);
         loanModel.setName("test Loan");
@@ -85,7 +82,7 @@ public class MobileAppInvestRepayListServiceTest extends ServiceTestBase {
         List<InvestRepayModel> investRepayModels = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             InvestRepayModel investRepayModel = new InvestRepayModel();
-            investRepayModel.setId(idGenerator.generate());
+            investRepayModel.setId(IdGenerator.generate());
             investRepayModel.setInvestId(31231231L);
             investRepayModel.setPeriod(i + 1);
             investRepayModel.setRepayDate(new Date());

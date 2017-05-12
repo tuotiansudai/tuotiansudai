@@ -25,9 +25,6 @@ import static org.junit.Assert.assertNotNull;
 public class ReferrerManageMapperTest {
 
     @Autowired
-    private IdGenerator idGenerator;
-
-    @Autowired
     private LoanMapper loanMapper;
 
     @Autowired
@@ -48,10 +45,10 @@ public class ReferrerManageMapperTest {
     @Test
     public void shouldGetSomeReferRelationship() throws Exception {
         UserModel user1 = new UserModel();
-        user1.setId(idGenerator.generate());
+        user1.setId(IdGenerator.generate());
         user1.setLoginName("test1");
         user1.setPassword("123");
-        user1.setMobile("13900000000");
+        user1.setMobile(RandomStringUtils.randomNumeric(11));
         user1.setRegisterTime(new Date());
         user1.setLastModifiedTime(new Date());
         user1.setStatus(UserStatus.ACTIVE);
@@ -59,10 +56,10 @@ public class ReferrerManageMapperTest {
         userMapper.create(user1);
 
         UserModel  user2 = new UserModel();
-        user2.setId(idGenerator.generate());
+        user2.setId(IdGenerator.generate());
         user2.setLoginName("test2");
         user2.setPassword("123");
-        user2.setMobile("13900000001");
+        user2.setMobile(RandomStringUtils.randomNumeric(11));
         user2.setRegisterTime(new Date());
         user2.setLastModifiedTime(new Date());
         user2.setStatus(UserStatus.ACTIVE);
@@ -91,10 +88,10 @@ public class ReferrerManageMapperTest {
     public void shouldGetSomeReferInvest() throws Exception {
 
         UserModel user1 = new UserModel();
-        user1.setId(idGenerator.generate());
+        user1.setId(IdGenerator.generate());
         user1.setLoginName("test1");
         user1.setPassword("123");
-        user1.setMobile("13900000000");
+        user1.setMobile(RandomStringUtils.randomNumeric(11));
         user1.setRegisterTime(new Date());
         user1.setLastModifiedTime(new Date());
         user1.setStatus(UserStatus.ACTIVE);
@@ -102,10 +99,10 @@ public class ReferrerManageMapperTest {
         userMapper.create(user1);
 
         UserModel  user2 = new UserModel();
-        user2.setId(idGenerator.generate());
+        user2.setId(IdGenerator.generate());
         user2.setLoginName("test2");
         user2.setPassword("123");
-        user2.setMobile("13900000001");
+        user2.setMobile(RandomStringUtils.randomNumeric(11));
         user2.setRegisterTime(new Date());
         user2.setLastModifiedTime(new Date());
         user2.setStatus(UserStatus.ACTIVE);
@@ -121,7 +118,7 @@ public class ReferrerManageMapperTest {
         LoanModel loanModel = createMockLoan(user2.getLoginName());
         InvestModel investModel = createMockInvest(user2.getLoginName(), loanModel.getId());
 
-        long id = idGenerator.generate();
+        long id = IdGenerator.generate();
         InvestReferrerRewardModel investReferrerRewardModel = new InvestReferrerRewardModel(id, investModel.getId(), 100, user1.getLoginName(), Role.INVESTOR);
         investReferrerRewardMapper.create(investReferrerRewardModel);
 
@@ -140,7 +137,7 @@ public class ReferrerManageMapperTest {
     }
 
     private InvestModel createMockInvest(String loginName, long loanId) {
-        InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, 1, loginName, new DateTime().withTimeAtStartOfDay().toDate(), Source.WEB, null, 0.1);
+        InvestModel model = new InvestModel(IdGenerator.generate(), loanId, null, 1, loginName, new DateTime().withTimeAtStartOfDay().toDate(), Source.WEB, null, 0.1);
         model.setStatus(InvestStatus.SUCCESS);
         investMapper.create(model);
         return model;
@@ -154,7 +151,7 @@ public class ReferrerManageMapperTest {
 
     private LoanModel getFakeLoan(String loanerLoginName, String agentLoginName, LoanStatus loanStatus) {
         LoanModel fakeLoanModel = new LoanModel();
-        fakeLoanModel.setId(idGenerator.generate());
+        fakeLoanModel.setId(IdGenerator.generate());
         fakeLoanModel.setName("loanName");
         fakeLoanModel.setLoanerLoginName(loanerLoginName);
         fakeLoanModel.setLoanerUserName("借款人");
@@ -188,10 +185,10 @@ public class ReferrerManageMapperTest {
         referrerRelationModel.setLoginName(loginName);
         referrerRelationModel.setLevel(1);
         UserModel  user = new UserModel();
-        user.setId(idGenerator.generate());
+        user.setId(IdGenerator.generate());
         user.setLoginName(loginName);
         user.setPassword("123");
-        user.setMobile("13900000000");
+        user.setMobile(RandomStringUtils.randomNumeric(11));
         user.setRegisterTime(new Date());
         user.setLastModifiedTime(new Date());
         user.setStatus(UserStatus.ACTIVE);
@@ -206,7 +203,7 @@ public class ReferrerManageMapperTest {
         userModelTest.setLoginName(loginName);
         userModelTest.setPassword("123abc");
         userModelTest.setEmail("12345@abc.com");
-        userModelTest.setMobile("139" + RandomStringUtils.randomNumeric(8));
+        userModelTest.setMobile(RandomStringUtils.randomNumeric(11));
         userModelTest.setRegisterTime(new Date());
         userModelTest.setStatus(UserStatus.ACTIVE);
         userModelTest.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));

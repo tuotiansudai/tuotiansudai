@@ -30,12 +30,18 @@
         </@global.isNotAnonymous>
 
         <@global.isAnonymous>
-            <li>
-                <a href="${webServer}/login?redirect=${askServer}" >登录</a>
-            </li>
-            <li>
-                <a href="${webServer}/register/user<#if channel??>?channel=${channel}</#if>" >注册</a>
-            </li>
+            <#if Session.weChatUserLoginName??>
+                <li>
+                    <a class="personal-info-link" href="${webServer}/personal-info">wexin-${Session.weChatUserLoginName}</a>
+                </li>
+            <#else>
+                <li>
+                    <a href="${webServer}/login?redirect=${askServer}" >登录</a>
+                </li>
+                <li>
+                    <a href="${webServer}/register/user<#if channel??>?channel=${channel}</#if>">注册</a>
+                </li>
+            </#if>
         </@global.isAnonymous>
         </ul>
 

@@ -37,9 +37,6 @@ public class TransferRuleUtilTest {
     private UserMapper userMapper;
 
     @Autowired
-    private IdGenerator idGenerator;
-
-    @Autowired
     private InvestMapper investMapper;
 
     @Autowired
@@ -47,7 +44,7 @@ public class TransferRuleUtilTest {
 
     @Test
     public void shouldGetTransferFeeInvestInterestLevelOne() {
-        long loanId = idGenerator.generate();
+        long loanId = IdGenerator.generate();
         createUserByUserId("testuser");
         LoanModel loanModel = createLoanByUserId("testuser", loanId, LoanType.INVEST_INTEREST_LUMP_SUM_REPAY, new DateTime().minusDays(29).toDate());
         InvestModel investModel = createInvest("testuser", loanId, 100000, new DateTime().minusDays(20).toDate());
@@ -58,7 +55,7 @@ public class TransferRuleUtilTest {
 
     @Test
     public void shouldGetTransferFeeInvestInterestLevelTwo() {
-        long loanId = idGenerator.generate();
+        long loanId = IdGenerator.generate();
         createUserByUserId("testuser");
         LoanModel loanModel = createLoanByUserId("testuser", loanId, LoanType.INVEST_INTEREST_LUMP_SUM_REPAY, new DateTime().minusDays(90).toDate());
         InvestModel investModel = createInvest("testuser", loanId, 100000, new DateTime().minusDays(70).toDate());
@@ -69,7 +66,7 @@ public class TransferRuleUtilTest {
 
     @Test
     public void shouldGetTransferFeeInvestInterestLevelThree() {
-        long loanId = idGenerator.generate();
+        long loanId = IdGenerator.generate();
         createUserByUserId("testuser");
         LoanModel loanModel = createLoanByUserId("testuser", loanId, LoanType.INVEST_INTEREST_LUMP_SUM_REPAY, new DateTime().minusDays(300).toDate());
         InvestModel investModel = createInvest("testuser", loanId, 100000, new DateTime().minusDays(290).toDate());
@@ -80,7 +77,7 @@ public class TransferRuleUtilTest {
 
     @Test
     public void shouldGetTransferFeeLoanInterestLevelOne() {
-        long loanId = idGenerator.generate();
+        long loanId = IdGenerator.generate();
         createUserByUserId("testuser");
         LoanModel loanModel = createLoanByUserId("testuser", loanId, LoanType.LOAN_INTEREST_LUMP_SUM_REPAY, new DateTime().minusDays(29).toDate());
         InvestModel investModel = createInvest("testuser", loanId, 100000, new DateTime().minusDays(25).toDate());
@@ -91,7 +88,7 @@ public class TransferRuleUtilTest {
 
     @Test
     public void shouldGetTransferFeeLoanInterestLevelTwo() {
-        long loanId = idGenerator.generate();
+        long loanId = IdGenerator.generate();
         createUserByUserId("testuser");
         LoanModel loanModel = createLoanByUserId("testuser", loanId, LoanType.LOAN_INTEREST_LUMP_SUM_REPAY, new DateTime().minusDays(90).toDate());
         InvestModel investModel = createInvest("testuser", loanId, 100000, new DateTime().minusDays(32).toDate());
@@ -102,7 +99,7 @@ public class TransferRuleUtilTest {
 
     @Test
     public void shouldGetTransferFeeLoanInterestLevelThree() {
-        long loanId = idGenerator.generate();
+        long loanId = IdGenerator.generate();
         createUserByUserId("testuser");
         LoanModel loanModel = createLoanByUserId("testuser", loanId, LoanType.LOAN_INTEREST_LUMP_SUM_REPAY, new DateTime().minusDays(300).toDate());
         InvestModel investModel = createInvest("testuser", loanId, 100000, new DateTime().minusDays(91).toDate());
@@ -112,7 +109,7 @@ public class TransferRuleUtilTest {
     }
 
     private InvestModel createInvest(String userId, long loanId, long amount, Date createTime) {
-        InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, amount, userId, createTime, Source.WEB, null, 0.1);
+        InvestModel model = new InvestModel(IdGenerator.generate(), loanId, null, amount, userId, createTime, Source.WEB, null, 0.1);
         model.setCreatedTime(createTime);
         model.setStatus(InvestStatus.SUCCESS);
         investMapper.create(model);

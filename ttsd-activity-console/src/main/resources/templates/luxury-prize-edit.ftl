@@ -41,7 +41,7 @@
 
                     <div class="image">
                         <#if dto??&&dto.image??>
-                            <img style="width:100%" src="${staticServer}${dto.image!}" alt="奖品图片"/>
+                            <img style="width:100%" src="${commonStaticServer}${dto.image!}" alt="奖品图片"/>
                         </#if>
                     </div>
                 </div>
@@ -61,7 +61,7 @@
 
                     <div class="imageIntroduce">
                         <#if dto??&&dto.introduce??>
-                            <img style="width:100%" src="${staticServer}${dto.introduce!}" alt="奖品介绍"/>
+                            <img style="width:100%" src="${commonStaticServer}${dto.introduce!}" alt="奖品介绍"/>
                         </#if>
                     </div>
                 </div>
