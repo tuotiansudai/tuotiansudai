@@ -11,12 +11,13 @@ import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.text.MessageFormat;
 import java.util.List;
@@ -29,17 +30,11 @@ public class LotteryDrawActivityController {
     private LotteryDrawActivityService lotteryDrawActivityService;
 
     @Autowired
-    private AccountService accountService;
-
-    @Autowired
     private PointBillService pointBillService;
 
     @RequestMapping(method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView loadPageData() {
-        ModelAndView modelAndView = new ModelAndView("/activities/integral-draw", "responsive", true);
-        String loginName = LoginUserInfo.getLoginName();
-        modelAndView.addObject("myPoint", accountService.getUserPointByLoginName(loginName));
-        return modelAndView;
+    public ResponseEntity<Object> loadPageData() {
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @ResponseBody
