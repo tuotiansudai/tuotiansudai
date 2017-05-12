@@ -123,7 +123,7 @@ public class WechatLotteryService {
     }
 
     private void sendRedEnvelopCoupon20(String loginName) {
-        couponAssignmentService.assignUserCoupon(loginName, 409L);
+        couponAssignmentService.assignUserCoupon(loginName, 414L);
     }
 
     public int getLeftDrawCount(String loginName) {
