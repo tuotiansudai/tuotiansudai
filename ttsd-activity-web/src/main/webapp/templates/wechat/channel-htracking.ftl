@@ -5,7 +5,7 @@
 <div class="app-marketing-container" id="shareAppContainer">
     <div class="marketing-header">
         <span class="contact">客服热线：400-169-1188（服务时间：9:00－20:00）</span>
-        <span class="red-bag"><i>688元</i>红包</span>
+        <span class="red-bag"><i>668元</i>红包</span>
     </div>
 	<div class="share-container">
         <#include '../module/register-app.ftl' />

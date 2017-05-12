@@ -35,12 +35,12 @@ form .error {
       top:5px;
       right:5px;
       border-radius: 3px;
-      height: 32px;
+      height: 36px;
     }
     .get-captcha {
       border: 1px solid #fe4c4c;
       border-radius: 5px;
-      padding: 8px 0px;
+      padding: 0px;
       font-size: 15px;
       color: #fe4c4c;
       position: absolute;
@@ -48,6 +48,8 @@ form .error {
       top: 5px;
       background: #fff;
       width: 95px;
+      height:36px;
+      box-sizing: border-box;
       &:disabled {
         border:1px solid #c9c9c9;
         color: #808080;
