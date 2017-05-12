@@ -1,4 +1,4 @@
-require("activityStyle/wechat/dragon_login.scss");
+require("activityStyle/wechat/dragon_invite.scss");
 let commonFun= require('publicJs/commonFun');
 let ValidatorObj= require('publicJs/validator');
 
@@ -105,7 +105,6 @@ $('.icon-check',$wechatInvite).on('click', function(event) {
 		$self.addClass('active');
 		$self.siblings('.agree-check').val(true);
 	}
-	isDisabledRegister();
 	isDisabledLogin();
 });
 

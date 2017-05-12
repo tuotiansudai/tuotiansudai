@@ -26,7 +26,7 @@
             </div>
             
             <div class="model-item text-model">
-                <a class="fr login-link">注册</a>
+                <a href="/wechat/dragon-register.ftl" class="fr login-link">注册</a>
             </div>
             <div class="model-item text-model">
                 <i class="icon-check active"></i>

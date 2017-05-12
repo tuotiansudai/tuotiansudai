@@ -1,5 +1,1 @@
-require("activityStyle/wechat/dragon_success.scss");
-
-let $wechatInvite = $('#wechatInvite');
-
-
+require("activityStyle/wechat/dragon_invite.scss");
