@@ -45,13 +45,13 @@ require(['jquery', 'underscore', 'template', 'mustache', 'text!/tpl/loaner-detai
             if ('房产抵押借款' === loanName) {
                 pledgeTypeElement.val("HOUSE");
                 sectionTwoElement.html(Mustache.render(loanerDetailsTemplate));
-                sectionThreeElement.html("<div class='house-pledge'><h3><span class='house-title'>抵押物信息</span><button type='button' class='jq-add-house-pledge btn btn-info'>+</button></h3>" + Mustache.render(pledgeHouseTemplate) + '</div>');
+                sectionThreeElement.html("<div class='house-pledge'><h3><span class='house-title'>抵押物信息</span> <button type='button' class='jq-add-house-pledge btn btn-info' style='margin-left: 10px;'>+</button></h3>" + Mustache.render(pledgeHouseTemplate) + '</div>');
             }
 
             if ('车辆抵押借款' === loanName) {
                 pledgeTypeElement.val("VEHICLE");
                 sectionTwoElement.html(Mustache.render(loanerDetailsTemplate));
-                sectionThreeElement.html("<div class='vehicle-pledge'><h3><span class='vehicle-title'>抵押物信息</span><button type='button' class='jq-add-vehicle-pledge btn btn-info'>+</button></h3>" + Mustache.render(pledgeVehicleTemplate) + '</div>');
+                sectionThreeElement.html("<div class='vehicle-pledge'><h3><span class='vehicle-title'>抵押物信息</span> <button type='button' class='jq-add-vehicle-pledge btn btn-info' style='margin-left: 10px;'>+</button></h3>" + Mustache.render(pledgeVehicleTemplate) + '</div>');
             }
 
             if ('经营性借款' === loanName && $('#projectName option:selected').attr('data-pledgetype') === 'ENTERPRISE_CREDIT') {
@@ -63,7 +63,7 @@ require(['jquery', 'underscore', 'template', 'mustache', 'text!/tpl/loaner-detai
             if ('经营性借款' === loanName && $('#projectName option:selected').attr('data-pledgetype') === 'ENTERPRISE_PLEDGE') {
                 pledgeTypeElement.val("ENTERPRISE_PLEDGE");
                 sectionTwoElement.html(Mustache.render(loanerEnterpriseDetailsTemplate));
-                sectionThreeElement.html("<div class='enterprise-pledge'><h3><span class='enterprise-title'>抵押物信息</span><button type='button' class='jq-add-enterprise-pledge btn btn-info'>+</button></h3>" + Mustache.render(pledgeEnterpriseTemplate) + '</div>');
+                sectionThreeElement.html("<div class='enterprise-pledge'><h3><span class='enterprise-title'>抵押物信息</span> <button type='button' class='jq-add-enterprise-pledge btn btn-info' style='margin-left: 10px;'>+</button></h3>" + Mustache.render(pledgeEnterpriseTemplate) + '</div>');
             }
 
             if ('经营性借款' === loanName && $('#projectName option:selected').attr('data-pledgetype') === 'ENTERPRISE_FACTORING') {
@@ -210,7 +210,7 @@ require(['jquery', 'underscore', 'template', 'mustache', 'text!/tpl/loaner-detai
             if($('.house-pledge').length > 3){
                 $('#pledge-modal').modal('show');
             }else{
-                sectionThreeElement.append("<div class='house-pledge'><h3><span class='house-title'>抵押物信息</span><button type='button' class='jq-del-house-pledge btn btn-info'>-</button></h3>" + Mustache.render(pledgeHouseTemplate) + '</div>');
+                sectionThreeElement.append("<div class='house-pledge'><h3><span class='house-title'>抵押物信息</span> <button type='button' class='jq-add-house-pledge btn btn-info' style='margin-left: 10px;'>+</button> <button type='button' class='jq-del-house-pledge btn btn-info'>-</button></h3>" + Mustache.render(pledgeHouseTemplate) + '</div>');
                 $("#section-three h3 span").each(function (i) {
                     $(this).text("抵押物信息" + (i + 1));
                 });
@@ -239,7 +239,7 @@ require(['jquery', 'underscore', 'template', 'mustache', 'text!/tpl/loaner-detai
             if($('.vehicle-pledge').length > 3){
                 $('#pledge-modal').modal('show');
             }else {
-                sectionThreeElement.append("<div class='vehicle-pledge'><h3><span class='vehicle-title'>抵押物信息</span><button type='button' class='jq-del-vehicle-pledge btn btn-info'>-</button></h3>" + Mustache.render(pledgeVehicleTemplate) + '</div>');
+                sectionThreeElement.append("<div class='vehicle-pledge'><h3><span class='vehicle-title'>抵押物信息</span> <button type='button' class='jq-add-vehicle-pledge btn btn-info' style='margin-left: 10px;'>+</button> <button type='button' class='jq-del-vehicle-pledge btn btn-info'>-</button></h3>" + Mustache.render(pledgeVehicleTemplate) + '</div>');
                 $("#section-three h3 span").each(function (i) {
                     $(this).text("抵押物信息" + (i + 1));
                 });
@@ -269,7 +269,7 @@ require(['jquery', 'underscore', 'template', 'mustache', 'text!/tpl/loaner-detai
             if($('.enterprise-pledge').length > 3){
                 $('#pledge-modal').modal('show');
             }else {
-                sectionThreeElement.append("<div class='enterprise-pledge'><h3><span class='enterprise-title'>抵押物信息</span><button type='button' class='jq-del-enterprise-pledge btn btn-info'>-</button></h3>" + Mustache.render(pledgeEnterpriseTemplate) + '</div>');
+                sectionThreeElement.append("<div class='enterprise-pledge'><h3><span class='enterprise-title'>抵押物信息</span> <button type='button' class='jq-add-enterprise-pledge btn btn-info' style='margin-left: 10px;'>+</button> <button type='button' class='jq-del-enterprise-pledge btn btn-info'>-</button></h3>" + Mustache.render(pledgeEnterpriseTemplate) + '</div>');
                 $("#section-three h3 span").each(function (i) {
                     $(this).text("抵押物信息" + (i + 1));
                 });

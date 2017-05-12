@@ -1,9 +1,9 @@
 <#list loan.pledgeEnterprise as pledgeEnterprise>
     <div class='enterprise-pledge'>
         <#if pledgeEnterprise_index == 0>
-            <h3><span class='enterprise-title'>抵押物信息<#if (loan.pledgeEnterprise?size > 1)>${pledgeEnterprise_index+1}</#if></span><button type='button' class='jq-add-enterprise-pledge btn btn-info'>+</button></h3>
+            <h3><span class='enterprise-title'>抵押物信息<#if (loan.pledgeEnterprise?size > 1)>${pledgeEnterprise_index+1}</#if></span> <button type='button' class='jq-add-enterprise-pledge btn btn-info' style='margin-left: 10px;'>+</button></h3>
         <#else>
-            <h3><span class='enterprise-title'>抵押物信息${pledgeEnterprise_index+1}</span><button type='button' class='jq-del-enterprise-pledge btn btn-info'>-</button></h3>
+            <h3><span class='enterprise-title'>抵押物信息${pledgeEnterprise_index+1}</span> <button type='button' class='jq-add-enterprise-pledge btn btn-info' style='margin-left: 10px;'>+</button> <button type='button' class='jq-del-enterprise-pledge btn btn-info'>-</button></h3>
         </#if>
         <hr class="top-line">
         <div class="form-group"><label class="col-sm-2 control-label">担保方式: </label>
