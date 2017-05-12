@@ -2,7 +2,6 @@ require('activityStyle/module/gift_circle_tip.scss');
 let rotate = require('publicJs/plugins/jqueryrotate.min');
 let lotteryUnit = require('activityJsModule/lottery_unit');
 let commonFun = require('publicJs/commonFun');
-
 //allListURL： 中奖纪录的接口链接
 //userListURL：我的奖品的接口链接
 //drawURL：抽奖的接口链接
@@ -131,6 +130,7 @@ giftCircleDraw.prototype.scrollList = function (domName, length) {
 giftCircleDraw.prototype.hoverScrollList = function (domName, length) {
     var thisFun = this,
         scrollTimer;
+
     domName.hover(function () {
         clearInterval(scrollTimer);
     }, function () {
