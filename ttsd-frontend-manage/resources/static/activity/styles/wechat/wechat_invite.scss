@@ -246,6 +246,12 @@ body{
 					&.login-link{
 						font-size:13px;
 					}
+					&.agree-item{
+						float:left;
+						width:80%;
+						line-height: 20px;
+						margin-left:10px;
+					}
 				}
 				.register-btn{
 					display:inline-block;
@@ -259,6 +265,17 @@ body{
 					border:none;
 					background:#fcc000;
 					margin-top:30px;
+				}
+				.icon-check{
+					float:left;
+					width:20px;
+					height:20px;
+					background:url('../../images/dragon-boat/icon-check.png') no-repeat center;
+					background-position: 0 -24px;
+					background-size:100%;
+					&.active{
+						background-position: 0 0;
+					}
 				}
 			}
 		}
@@ -319,6 +336,12 @@ body{
 					&.login-link{
 						font-size:13px;
 					}
+					&.agree-item{
+						float:left;
+						width:80%;
+						line-height: 20px;
+						margin-left:10px;
+					}
 				}
 				.login-btn{
 					display:inline-block;
@@ -332,6 +355,17 @@ body{
 					border:none;
 					background:#f25757;
 					margin-top:30px;
+				}
+				.icon-check{
+					float:left;
+					width:20px;
+					height:20px;
+					background:url('../../images/dragon-boat/icon-check.png') no-repeat center;
+					background-position: 0 -24px;
+					background-size:100%;
+					&.active{
+						background-position: 0 0;
+					}
 				}
 			}
 		}

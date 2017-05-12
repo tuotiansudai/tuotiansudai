@@ -63,23 +63,24 @@
         <h3 class="title-item">注册完成后现金红包会直接放到您的账户中哦~</h3>
         <form action="#" method="post" class="register-item">
             <div class="model-item">
-                <input type="text" name="name" id="name" value="" tabindex="1"  class="int-item"/>
+                <input type="text" name="name" id="name" value="" tabindex="1"  class="int-item" placeholder="请输入您的手机号" />
             </div>
 
             <div class="model-item">
-                <input type="password" name="name" id="name" value="" tabindex="2"  class="int-item"/>
+                <input type="password" name="name" id="name" value="" tabindex="2"  class="int-item" placeholder="请输入您的密码" />
             </div>
 
             <div class="model-item">
-                <input type="text" name="name" id="name" value="" tabindex="3"  class="int-item"/>
+                <input type="text" name="name" id="name" value="" tabindex="3"  class="int-item" placeholder="请输入短信验证码" />
             </div>
             
             <div class="model-item text-model">
                 <span class="fr login-link">登录</span>
             </div>
             <div class="model-item text-model">
+                <i class="icon-check active"></i>
+                <span class="agree-item">同意拓天速贷<strong class="agree-text">《服务协议》</strong></span>
                 <input type="hidden" name="checkbox" id="checkbox" />
-                <span>同意拓天速贷<strong>《服务协议》</strong></span>
             </div>
 
             <div class="model-item text-model tc">
@@ -106,8 +107,9 @@
                 <span class="fr login-link">注册</span>
             </div>
             <div class="model-item text-model">
+                <i class="icon-check"></i>
+                <span class="agree-item">同意拓天速贷<strong class="agree-text">《服务协议》</strong></span>
                 <input type="hidden" name="checkbox" id="checkbox" />
-                <span>同意拓天速贷<strong>《服务协议》</strong></span>
             </div>
 
             <div class="model-item text-model tc">
@@ -125,4 +127,5 @@
         </div>
     </div>
 </div>
+<#include '../module/register-agreement.ftl' />
 </@global.main>
