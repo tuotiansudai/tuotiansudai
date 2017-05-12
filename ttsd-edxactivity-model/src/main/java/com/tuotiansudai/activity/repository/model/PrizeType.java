@@ -5,6 +5,7 @@ public enum PrizeType {
     CONCRETE("真实奖品"),
     VIRTUAL("虚拟奖品"),
     MEMBERSHIP("会员"),
+    EXPERIENCE("体验金"),
     POINT("积分");
 
     PrizeType(String description) {
