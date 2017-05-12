@@ -264,6 +264,8 @@ public interface InvestMapper {
                                                 @Param(value = "endTime") Date endTime);
 
     List<InvestModel> findSuccessInvestByInvestTime(@Param(value = "loginName") String loginName,
+                                                    @Param(value = "isContainTransfer") boolean isContainTransfer,
+                                                    @Param(value = "isContainExperience") boolean isContainExperience,
                                                     @Param(value = "startTime") Date startTime,
                                                     @Param(value = "endTime") Date endTime);
 
