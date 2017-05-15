@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.activity.repository.mapper.MidSummerSharedUsersMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
+
+    <resultMap id="resultMap" type="MidSummerSharedUsersModel">
+        <id column="id" property="id"/>
+        <result column="login_name" property="loginName"/>
+        <result column="created_time" property="createdTime"/>
+    </resultMap>
+
+    <insert id="create" parameterType="MidSummerSharedUsersModel" useGeneratedKeys="true" keyProperty="id">
+        insert ignore into `mid_summer_shared_users` (`login_name`, `created_time`)
+        values(#{loginName}, #{createdTime})
+    </insert>
+
+    <select id="findByLoginName" parameterType="map" resultMap="resultMap">
+        select * from `mid_summer_shared_users` where login_name = #{loginName}
+    </select>
+
+</mapper>

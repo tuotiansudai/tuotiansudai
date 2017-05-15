@@ -1,4 +1,5 @@
 require('activityStyle/wechat/share_app.scss');
+require('activityStyle/module/app_register_reason.scss');
 let commonFun= require('publicJs/commonFun');
 let ValidatorObj= require('publicJs/validator');
 
@@ -167,7 +168,7 @@ let shareAppFun = {
 
 $fetchCaptcha.on('click',function() {
 	shareAppFun.isRegister();
-})
+});
 
 //点击立即注册按钮
 registerForm.onsubmit = function(event) {

@@ -8,7 +8,8 @@ import redis.clients.jedis.JedisPoolConfig;
 @ComponentScan(basePackages = {
         "com.tuotiansudai.util",
         "com.tuotiansudai.cache",
-        "com.tuotiansudai.client"
+        "com.tuotiansudai.client",
+        "com.tuotiansudai.activity.repository.mapper"
 })
 @PropertySource(
         ignoreResourceNotFound = true, value = {

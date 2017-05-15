@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.activity.repository.mapper.MidSummerInvestMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
+
+    <resultMap id="midSummerInvestResultMap" type="MidSummerInvestModel">
+        <id column="id" property="id"/>
+        <result column="invest_id" property="investId"/>
+        <result column="amount" property="amount"/>
+        <result column="trading_time" property="tradingTime"/>
+        <result column="login_name" property="loginName"/>
+        <result column="referrer_login_name" property="referrerLoginName"/>
+        <result column="created_time" property="createdTime"/>
+    </resultMap>
+
+    <insert id="create" parameterType="MidSummerInvestModel" useGeneratedKeys="true" keyProperty="id">
+        insert into `mid_summer_invest` (`invest_id`, `amount`, `trading_time`, `login_name`, `referrer_login_name`, `created_time`)
+        values(#{investId}, #{amount}, #{tradingTime}, #{loginName}, #{referrerLoginName}, #{createdTime})
+    </insert>
+
+    <select id="findByReferrerLoginName" parameterType="map" resultMap="midSummerInvestResultMap">
+        select * from `mid_summer_invest` where referrer_login_name = #{referrerLoginName}
+    </select>
+
+</mapper>
