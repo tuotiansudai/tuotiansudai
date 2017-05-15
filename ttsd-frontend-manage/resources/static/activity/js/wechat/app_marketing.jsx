@@ -12,15 +12,7 @@ function toExperienceNow() {
 
     globalFun.categoryCodeUrl['android'] = window.commonStaticServer+'/images/apk/tuotiansudai_htracking.apk';
     let equipment=globalFun.equipment();
-    if(equipment.wechat && equipment.kind=='android') {
-        // 微信,并且是安卓，跳到页面
-        location.href = "/app/download";
-        return;
-    }
-    else {
-        //非微信
-        location.href =globalFun.categoryCodeUrl[equipment.kind];
-    }
+    location.href =globalFun.categoryCodeUrl[equipment.kind];
 }
 
 if($shareAppContainer.length) {
