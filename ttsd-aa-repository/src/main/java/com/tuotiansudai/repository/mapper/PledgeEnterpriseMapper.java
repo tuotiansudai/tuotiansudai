@@ -4,6 +4,8 @@ import com.tuotiansudai.repository.model.PledgeEnterpriseModel;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface PledgeEnterpriseMapper {
 
@@ -11,7 +13,7 @@ public interface PledgeEnterpriseMapper {
 
     void update(PledgeEnterpriseModel model);
 
-    PledgeEnterpriseModel getByLoanId(@Param(value = "loanId") long loanId);
+    List<PledgeEnterpriseModel> getByLoanId(@Param(value = "loanId") long loanId);
 
     void deleteByLoanId(@Param(value = "loanId") long loanId);
 }

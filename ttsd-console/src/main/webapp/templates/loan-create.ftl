@@ -2,7 +2,7 @@
 <@global.main pageCss="" pageJavascript="createLoan.js" headLab="project-manage" sideLab="start" title="发起借款">
 <!-- content area begin -->
 <div class="col-md-10">
-    <form class="form-horizontal jq-form">
+    <form class="form-horizontal jq-form" id="formDom">
         <section id="section-one">
             <h3><span>项目信息</span></h3>
             <hr class="top-line">
@@ -311,6 +311,21 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="pledge-modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h5>抵押物信息最多添加4项</h5>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 </div>
 <!-- content area end -->
 </@global.main>
