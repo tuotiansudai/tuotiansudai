@@ -204,6 +204,12 @@ public enum LotteryPrize {
     WOMAN_DAY_ACTIVITY_ENVELOP_38_100("138元红包", PrizeType.VIRTUAL, ActivityCategory.WOMAN_DAY_ACTIVITY, 10),
     WOMAN_DAY_ACTIVITY_INTEREST_COUPON_5("0.5%加息券", PrizeType.VIRTUAL, ActivityCategory.WOMAN_DAY_ACTIVITY, 15),
 
+    // 微信服务号推广抽奖
+    WECHAT_LOTTERY_BEDCLOTHES("奢华贡缎床品四件套", PrizeType.CONCRETE, ActivityCategory.WECHAT_FIRST_INVEST_PRIZE, 1),
+    WECHAT_LOTTERY_BAG("时尚百搭真皮子母包", PrizeType.CONCRETE, ActivityCategory.WECHAT_FIRST_INVEST_PRIZE, 1),
+    WECHAT_LOTTERY_HEADGEAR("简约吊坠百搭锁骨链", PrizeType.CONCRETE, ActivityCategory.WECHAT_FIRST_INVEST_PRIZE, 7),
+    WECHAT_LOTTERY_TOWEL("精品定制毛巾礼盒", PrizeType.CONCRETE, ActivityCategory.WECHAT_FIRST_INVEST_PRIZE, 20),
+    WECHAT_LOTTERY_RED_ENVELOP_20("20元红包", PrizeType.VIRTUAL, ActivityCategory.WECHAT_FIRST_INVEST_PRIZE, 70),
 
     //母亲节
     MOTHERS_DAY_ACTIVITY_ENVELOP_5("5元红包", PrizeType.VIRTUAL, ActivityCategory.MOTHERS_DAY_ACTIVITY, 25),

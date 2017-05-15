@@ -136,7 +136,6 @@
             <div class="text-tip">
                 <p class="success-text"></p>
                 <p class="reward-text">恭喜您获得<em class="prizeValue"></em>！</p>
-                <p class="des-text">拓天客服将在7个工作日内联系您发放奖品</p>
             </div>
             <div class="btn-list"><a href="javascript:void(0)" class="go-on go-close">知道了</a></div>
         </div>
@@ -147,7 +146,6 @@
             <div class="text-tip">
                 <p class="success-text"></p>
                 <p class="reward-text">恭喜您获得<em class="prizeValue"></em></p>
-                <p class="des-text">奖品已发放至“我的宝藏”当中。</p>
             </div>
             <div class="btn-list"><a href="javascript:void(0)" class="go-on go-close">知道了</a></div>
         </div>

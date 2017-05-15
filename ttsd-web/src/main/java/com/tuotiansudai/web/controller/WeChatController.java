@@ -53,12 +53,13 @@ public class WeChatController {
             return new ModelAndView("/error/404");
         }
 
+        httpServletRequest.getSession().setAttribute("weChatUserOpenid", weChatUserModel.getOpenid());
+
         if (weChatUserModel.isBound()) {
             myAuthenticationUtil.createAuthentication(weChatUserModel.getLoginName(), Source.WE_CHAT);
         } else {
             myAuthenticationUtil.removeAuthentication();
             httpServletRequest.getSession().setAttribute("weChatUserLoginName", weChatUserModel.getLoginName());
-            httpServletRequest.getSession().setAttribute("weChatUserOpenid", weChatUserModel.getOpenid());
         }
 
         return new ModelAndView(Strings.isNullOrEmpty(redirect) ? "redirect:/" : MessageFormat.format("redirect:{0}", redirect));
