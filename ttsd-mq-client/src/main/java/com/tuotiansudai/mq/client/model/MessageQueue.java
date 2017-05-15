@@ -59,7 +59,8 @@ public enum MessageQueue {
     CouponSmsAssignNotify("CouponSmsAssignNotify"),
     CouponSmsExpiredNotify("CouponSmsExpiredNotify"),
     WeChatBoundNotify("WeChatBoundNotify"),
-    ExperienceAssigning("ExperienceAssigning");
+    ExperienceAssigning("ExperienceAssigning"),
+    DragonBoatShareLogin("DragonBoatShareLogin"); // 端午节活动分享落地页老用户登录后，发放10元红包，记录老用户邀请数量
 
     private final String queueName;
 

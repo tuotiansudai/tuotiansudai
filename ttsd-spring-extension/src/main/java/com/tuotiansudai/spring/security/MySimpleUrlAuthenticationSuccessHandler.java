@@ -1,8 +1,12 @@
 package com.tuotiansudai.spring.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tuotiansudai.client.MQWrapperClient;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.spring.MyUser;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -12,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.MessageFormat;
 
 @Component
 public class MySimpleUrlAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
@@ -19,6 +24,9 @@ public class MySimpleUrlAuthenticationSuccessHandler extends SimpleUrlAuthentica
     private static Logger logger = Logger.getLogger(MySimpleUrlAuthenticationSuccessHandler.class);
 
     private ObjectMapper objectMapper = new ObjectMapper();
+
+    @Autowired
+    private MQWrapperClient mqWrapperClient;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -37,6 +45,12 @@ public class MySimpleUrlAuthenticationSuccessHandler extends SimpleUrlAuthentica
                 writer.close();
             }
         }
+
+        if (request.getHeader("Referer").indexOf("/dragon/shareLanding") > 0) {
+            logger.info(MessageFormat.format("[Dragon Boat] {} invite an old user {}.", request.getParameter("referrer"), loginDto.getLoginName()));
+            mqWrapperClient.sendMessage(MessageQueue.DragonBoatShareLogin, request.getParameter("referrer") + ":" + loginDto.getLoginName());
+        }
+
         clearAuthenticationAttributes(request);
     }
 }
