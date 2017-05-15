@@ -8,6 +8,21 @@ let $marketingHeader = $('.marketing-header'),
     sw = $(window).width();
 
 
+function toExperienceNow() {
+
+    globalFun.categoryCodeUrl['android'] = window.commonStaticServer+'/images/apk/tuotiansudai_htracking.apk';
+    let equipment=globalFun.equipment();
+    if(equipment.wechat && equipment.kind=='android') {
+        // 微信,并且是安卓，跳到页面
+        location.href = "/app/download";
+        return;
+    }
+    else {
+        //非微信
+        location.href =globalFun.categoryCodeUrl[equipment.kind];
+    }
+}
+
 if($shareAppContainer.length) {
 
     let getConfig = require('activityJs/module/app_register');
@@ -21,8 +36,8 @@ if($shareAppContainer.length) {
 } else if($shareAppSuccess.length) {
 
     $marketingHeader.height(526 * sw/750);
-    let downloadApp=globalFun.$('#downloadApp');
-    globalFun.addEventHandler(downloadApp,'click',globalFun.toExperience.bind(globalFun));
 
 }
+globalFun.addEventHandler($('#downloadApp')[0],'click',toExperienceNow);
+globalFun.addEventHandler($('#btnExperienceNow')[0],'click',toExperienceNow);
 

@@ -16,9 +16,13 @@
         <dd></dd>
     </dl>
 
+    <div class="header-download">
+        <div id="closeDownloadBox" class="icon-close img-close-tip" ></div>
+        <div class="img-logo-tip" ></div>
+        <span>APP客户端重磅来袭<br/>更便捷更安全</span>
+        <a href="#" class="btn-normal fr" id="btnExperienceNow">立即体验</a>
+    </div>
     <#include '../module/register-reason.ftl' />
-
-    <#include "../pageLayout/header.ftl" />
 
 </div>
 </@global.main>
