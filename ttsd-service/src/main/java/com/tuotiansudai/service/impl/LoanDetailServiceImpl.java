@@ -25,6 +25,7 @@ import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class LoanDetailServiceImpl implements LoanDetailService {
@@ -201,54 +202,66 @@ public class LoanDetailServiceImpl implements LoanDetailService {
                     .build());
         }
 
-        PledgeHouseModel pledgeHouseDetail = pledgeHouseMapper.getByLoanId(loanModel.getId());
-        if (pledgeHouseDetail != null) {
-            loanDto.setPledgeHouseDetail(ImmutableMap.<String, String>builder()
-                    .put("抵押物所在地", pledgeHouseDetail.getPledgeLocation())
-                    .put("抵押物估值", pledgeHouseDetail.getEstimateAmount())
-                    .put("房屋面积", pledgeHouseDetail.getSquare())
-                    .put("房产证编号", pledgeHouseDetail.getPropertyCardId())
-                    .put("不动产登记证明", pledgeHouseDetail.getEstateRegisterId())
-                    .put("公证书编号", pledgeHouseDetail.getAuthenticAct())
-                    .put("抵押物借款金额", pledgeHouseDetail.getLoanAmount())
-                    .build());
+        List<PledgeHouseModel> pledgeHouseModelList = pledgeHouseMapper.getByLoanId(loanModel.getId());
+        if (pledgeHouseModelList.size() > 0) {
+            List<Map<String, String>> pledgeHouseDetail = Lists.newArrayList();
+            for (PledgeHouseModel pledgeHouseModel : pledgeHouseModelList) {
+                Map<String, String> stringMap = ImmutableMap.<String, String>builder()
+                        .put("抵押物所在地", pledgeHouseModel.getPledgeLocation())
+                        .put("抵押物估值", pledgeHouseModel.getEstimateAmount())
+                        .put("房屋面积", pledgeHouseModel.getSquare())
+                        .put("房产证编号", pledgeHouseModel.getPropertyCardId())
+                        .put("不动产登记证明", pledgeHouseModel.getEstateRegisterId())
+                        .put("公证书编号", pledgeHouseModel.getAuthenticAct())
+                        .put("抵押物借款金额", pledgeHouseModel.getLoanAmount())
+                        .build();
+                pledgeHouseDetail.add(stringMap);
+            }
+            loanDto.setPledgeHouseDetailList(pledgeHouseDetail);
         }
 
-        PledgeVehicleModel pledgeVehicleModel = pledgeVehicleMapper.getByLoanId(loanModel.getId());
-        if (pledgeVehicleModel != null) {
-            loanDto.setPledgeVehicleDetail(ImmutableMap.<String, String>builder()
-                    .put("抵押物所在地", pledgeVehicleModel.getPledgeLocation())
-                    .put("车辆品牌", pledgeVehicleModel.getBrand())
-                    .put("车辆型号", pledgeVehicleModel.getModel())
-                    .put("抵押物估值", pledgeVehicleModel.getEstimateAmount())
-                    .put("抵押物借款金额", pledgeVehicleModel.getLoanAmount())
-                    .build());
+        List<PledgeVehicleModel> pledgeVehicleModelList = pledgeVehicleMapper.getByLoanId(loanModel.getId());
+        if (pledgeVehicleModelList.size() > 0) {
+            List<Map<String, String>> pledgeVehicleDetail = Lists.newArrayList();
+            for (PledgeVehicleModel pledgeVehicleModel : pledgeVehicleModelList) {
+                Map<String, String> stringMap = ImmutableMap.<String, String>builder()
+                        .put("抵押物所在地", pledgeVehicleModel.getPledgeLocation())
+                        .put("车辆品牌", pledgeVehicleModel.getBrand())
+                        .put("车辆型号", pledgeVehicleModel.getModel())
+                        .put("抵押物估值", pledgeVehicleModel.getEstimateAmount())
+                        .put("抵押物借款金额", pledgeVehicleModel.getLoanAmount())
+                        .build();
+                pledgeVehicleDetail.add(stringMap);
+            }
+            loanDto.setPledgeVehicleDetailList(pledgeVehicleDetail);
         }
 
-        PledgeEnterpriseModel pledgeEnterpriseModel = pledgeEnterpriseMapper.getByLoanId(loanModel.getId());
+        List<PledgeEnterpriseModel> pledgeEnterpriseModelList = pledgeEnterpriseMapper.getByLoanId(loanModel.getId());
         LoanerEnterpriseDetailsModel loanerEnterpriseDetailsModel = loanerEnterpriseDetailsMapper.getByLoanId(loanModel.getId());
         if (loanerEnterpriseDetailsModel != null) {
-            if(loanDto.getPledgeType() == PledgeType.ENTERPRISE_PLEDGE){
-                loanDto.setPledgeEnterpriseDetail(ImmutableMap.<String, String>builder()
-                        .put("借款人", loanerEnterpriseDetailsModel.getJuristicPerson())
-                        .put("公司所在地", loanerEnterpriseDetailsModel.getAddress())
-                        .put("企业借款用途描述", loanerEnterpriseDetailsModel.getPurpose())
-                        .put("担保方式", pledgeEnterpriseModel.getGuarantee())
-                        .put("抵押物估值", pledgeEnterpriseModel.getEstimateAmount())
-                        .put("抵押物所在地", pledgeEnterpriseModel.getPledgeLocation())
-                        .build());
-            }else{
-                loanDto.setPledgeEnterpriseDetail(ImmutableMap.<String, String>builder()
-                        .put("借款人", loanerEnterpriseDetailsModel.getJuristicPerson())
-                        .put("公司所在地", loanerEnterpriseDetailsModel.getAddress())
-                        .put("企业借款用途描述", loanerEnterpriseDetailsModel.getPurpose())
-                        .build());
+            loanDto.setLoanerEnterpriseDetailsInfo(ImmutableMap.<String, String>builder()
+                    .put("借款人", loanerEnterpriseDetailsModel.getJuristicPerson())
+                    .put("公司所在地", loanerEnterpriseDetailsModel.getAddress())
+                    .put("企业借款用途描述", loanerEnterpriseDetailsModel.getPurpose())
+                    .build());
+
+            if (loanDto.getPledgeType() == PledgeType.ENTERPRISE_PLEDGE) {
+                List<Map<String, String>> pledgeEnterpriseDetailList = Lists.newArrayList();
+                for (PledgeEnterpriseModel pledgeEnterpriseModel : pledgeEnterpriseModelList) {
+                    Map<String, String> stringMap = ImmutableMap.<String, String>builder()
+                            .put("担保方式", pledgeEnterpriseModel.getGuarantee())
+                            .put("抵押物估值", pledgeEnterpriseModel.getEstimateAmount())
+                            .put("抵押物所在地", pledgeEnterpriseModel.getPledgeLocation())
+                            .build();
+                    pledgeEnterpriseDetailList.add(stringMap);
+                }
+                loanDto.setPledgeEnterpriseDetailList(pledgeEnterpriseDetailList);
             }
         }
 
         LoanerEnterpriseInfoModel loanerEnterpriseInfoModel = loanerEnterpriseInfoMapper.getByLoanId(loanModel.getId());
         if (loanerEnterpriseInfoModel != null) {
-            if(loanDto.getPledgeType() == PledgeType.ENTERPRISE_FACTORING){
+            if (loanDto.getPledgeType() == PledgeType.ENTERPRISE_FACTORING) {
                 loanDto.setEnterpriseInfo(ImmutableMap.<String, String>builder()
                         .put("企业名称", loanerEnterpriseInfoModel.getCompanyName())
                         .put("经营地址", loanerEnterpriseInfoModel.getAddress())
@@ -256,8 +269,7 @@ public class LoanDetailServiceImpl implements LoanDetailService {
                         .put("公司名称", loanerEnterpriseInfoModel.getFactoringCompanyName() == null ? "" : loanerEnterpriseInfoModel.getFactoringCompanyName())
                         .put("公司简介", loanerEnterpriseInfoModel.getFactoringCompanyDesc() == null ? "" : loanerEnterpriseInfoModel.getFactoringCompanyDesc())
                         .build());
-            }
-            else{
+            } else {
                 loanDto.setEnterpriseInfo(ImmutableMap.<String, String>builder()
                         .put("企业名称", loanerEnterpriseInfoModel.getCompanyName())
                         .put("经营地址", loanerEnterpriseInfoModel.getAddress())
