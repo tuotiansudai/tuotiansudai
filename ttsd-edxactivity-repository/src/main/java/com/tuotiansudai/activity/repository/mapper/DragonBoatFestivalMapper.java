@@ -13,8 +13,6 @@ import java.util.List;
 @Repository
 public interface DragonBoatFestivalMapper {
 
-    void create(DragonBoatFestivalModel dragonBoatFestivalModel);
-
     void addInvestAmount(DragonBoatFestivalModel dragonBoatFestivalModel);
 
     void addExperienceAmount(DragonBoatFestivalModel dragonBoatFestivalModel);

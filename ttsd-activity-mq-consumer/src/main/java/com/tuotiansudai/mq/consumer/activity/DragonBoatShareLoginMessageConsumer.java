@@ -46,7 +46,7 @@ public class DragonBoatShareLoginMessageConsumer implements MessageConsumer {
 
             // 给分享者增加邀请老用户数量
             logger.info(MessageFormat.format("[MQ][Dragon boat: invite old user login] add invite old user count for {}.", referrer));
-            dragonBoatFestivalService.addInviteNewUserCount(referrer);
+            dragonBoatFestivalService.addInviteOldUserCount(referrer);
         }
     }
 }

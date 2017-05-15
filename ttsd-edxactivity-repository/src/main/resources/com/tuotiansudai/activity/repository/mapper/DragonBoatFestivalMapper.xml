@@ -16,19 +16,6 @@
         <result column="created_time" property="createdTime"></result>
     </resultMap>
 
-    <insert id="create" parameterType="dragonBoatFestivalModel" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO `edxactivity`.`dragon_boat_festival`
-        (`login_name`,
-        `user_name`,
-        `mobile`,
-        `invest_amount`,
-        `experience_amount`,
-        `invite_new_user_count`,
-        `invite_old_user_count`,
-        `created_time`)
-        VALUES(#{loginName},#{userName},#{mobile},#{investAmount},#{experienceAmount},#{inviteNewUserCount},#{inviteOldUserCount},#{createdTime})
-    </insert>
-
     <insert id="addInvestAmount" parameterType="dragonBoatFestivalModel" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO `edxactivity`.`dragon_boat_festival` (`login_name`,`user_name`,`mobile`,`invest_amount`,`created_time`)
         VALUES(#{loginName},#{userName},#{mobile},#{investAmount},#{createdTime})

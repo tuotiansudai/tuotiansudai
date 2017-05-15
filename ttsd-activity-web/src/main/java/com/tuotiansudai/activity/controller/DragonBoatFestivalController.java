@@ -1,7 +1,6 @@
 package com.tuotiansudai.activity.controller;
 
 import com.tuotiansudai.activity.service.DragonBoatFestivalService;
-import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.dto.RegisterUserDto;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.UserService;
@@ -35,8 +34,6 @@ public class DragonBoatFestivalController {
     @Autowired
     private MyAuthenticationUtil myAuthenticationUtil;
 
-    @Autowired
-    private CouponAssignmentService couponAssignmentService;
 
     // 微信公众号回复打卡页面
     @RequestMapping(value = "/punchCard", method = RequestMethod.GET)
@@ -85,16 +82,10 @@ public class DragonBoatFestivalController {
         if (isRegisterSuccess) {
             logger.info(MessageFormat.format("[Dragon Boat Register User {}] authenticate starting...", registerUserDto.getMobile()));
             myAuthenticationUtil.createAuthentication(registerUserDto.getMobile(), Source.WEB);
-            logger.info(MessageFormat.format("[Dragon Boat Register User {}] authenticate completed", registerUserDto.getMobile()));
 
-            logger.info(MessageFormat.format("[Dragon Boat Register User {}] assign weiXin share ￥10 red enveloper ", registerUserDto.getMobile()));
-            couponAssignmentService.assignUserCoupon(registerUserDto.getMobile(), 421);
-
-            logger.info(MessageFormat.format("[Dragon Boat Register User {}] add invite-new-user-count for {}", registerUserDto.getMobile(), referrer));
-            dragonBoatFestivalService.addInviteNewUserCount(referrer);
+            dragonBoatFestivalService.afterNewUserRegister(registerUserDto.getMobile(), referrer);
         }
+
         return isRegisterSuccess;
     }
-
-
 }
