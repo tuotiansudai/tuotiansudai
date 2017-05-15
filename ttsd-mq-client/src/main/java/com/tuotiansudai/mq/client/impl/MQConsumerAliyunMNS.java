@@ -2,12 +2,15 @@ package com.tuotiansudai.mq.client.impl;
 
 import com.aliyun.mns.client.CloudQueue;
 import com.aliyun.mns.client.MNSClient;
+import com.aliyun.mns.common.ClientException;
 import com.aliyun.mns.common.ServiceException;
 import com.aliyun.mns.model.Message;
 import com.tuotiansudai.mq.client.MQConsumer;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.client.utils.AliyunMNSUtils;
 import com.tuotiansudai.mq.config.setting.MessageConsumerSetting;
+import com.tuotiansudai.mq.exception.AliyunClientException;
+import com.tuotiansudai.mq.exception.AliyunServiceException;
 import com.tuotiansudai.mq.tools.RedisClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,14 +63,18 @@ public class MQConsumerAliyunMNS extends MQConsumer {
                 logger.info("[MQ] receive no message, try again");
             }
         } catch (ServiceException serviceException) {
+            AliyunServiceException exp = new AliyunServiceException(serviceException);
             // 对于 ServiceException 类型的异常，仅记录异常，但不报告错误
-            logger.error("[MQ] pop message fail", serviceException);
+            logger.error("[MQ] pop message fail", exp);
             // 稍微停一会儿
             try {
                 Thread.sleep(consumerSetting.getMessagePopPeriodSeconds() * 1000);
             } catch (InterruptedException ignored) {
             }
         } catch (Exception e) {
+            if (e instanceof ClientException) {
+                e = new AliyunClientException((ClientException) e);
+            }
             // 其它情况的异常需要报告错误
             logger.error("[MQ] pop message fail", e);
             return false;
@@ -80,6 +87,11 @@ public class MQConsumerAliyunMNS extends MQConsumer {
                 //删除已经取出消费的消息
                 deleteMessage(cloudQueue, message);
             } catch (Exception e) {
+                if (e instanceof ServiceException) {
+                    e = new AliyunServiceException((ServiceException) e);
+                } else if (e instanceof ClientException) {
+                    e = new AliyunClientException((ClientException) e);
+                }
                 logger.error(String.format("[MQ] consume message fail, messageId: %s", message.getMessageId()), e);
                 return false;
             }
@@ -94,6 +106,11 @@ public class MQConsumerAliyunMNS extends MQConsumer {
                 cloudQueue.deleteMessage(message.getReceiptHandle());
                 break;
             } catch (Exception e) {
+                if (e instanceof ServiceException) {
+                    e = new AliyunServiceException((ServiceException) e);
+                } else if (e instanceof ClientException) {
+                    e = new AliyunClientException((ClientException) e);
+                }
                 if (++delete_try_count < 3) {
                     logger.warn(String.format("[MQ] delete message fail [#%d], messageId: %s", delete_try_count, message.getMessageId()), e);
                 } else {
