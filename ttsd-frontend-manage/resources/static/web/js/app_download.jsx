@@ -8,12 +8,11 @@ window.onload=function() {
     if(equipment.android) {
 
         //这里用来做app推广用
-        let location = location.href;
-        let params = globalFun.parseURL(location);
-        if(params.app=='htracking') {
+        let location = window.location.href;
+        let parseURL = globalFun.parseURL(location);
+        if(parseURL.params.app=='htracking') {
             globalFun.categoryCodeUrl['android'] = window.commonStaticServer+'/images/apk/tuotiansudai_htracking.apk';
         }
-
         //安卓机 在支付宝和微信 端都需要指示在浏览器端打开下载，其他的直接下载
         if (equipment.wechat || equipment.alipay) {
             document.getElementById('wechatAndroid').style.display='block';
