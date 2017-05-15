@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.activity.repository.mapper.DragonBoatFestivalMapper">
+
+    <resultMap id="dragonBoatFestivalResultMap" type="com.tuotiansudai.activity.repository.model.DragonBoatFestivalModel">
+        <id column="id" property="id"></id>
+        <result column="login_name" property="loginName"></result>
+        <result column="user_name" property="userName"></result>
+        <result column="mobile" property="mobile"></result>
+        <result column="invest_amount" property="investAmount"></result>
+        <result column="experience_amount" property="experienceAmount"></result>
+        <result column="invite_new_user_count" property="inviteNewUserCount"></result>
+        <result column="invite_old_user_count" property="inviteOldUserCount"></result>
+        <result column="created_time" property="createdTime"></result>
+    </resultMap>
+
+    <insert id="create" parameterType="dragonBoatFestivalModel" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `edxactivity`.`dragon_boat_festival`
+        (`login_name`,
+        `user_name`,
+        `mobile`,
+        `invest_amount`,
+        `experience_amount`,
+        `invite_new_user_count`,
+        `invite_old_user_count`,
+        `created_time`)
+        VALUES(#{loginName},#{userName},#{mobile},#{investAmount},#{experienceAmount},#{inviteNewUserCount},#{inviteOldUserCount},#{createdTime})
+    </insert>
+
+    <insert id="addInvestAmount" parameterType="dragonBoatFestivalModel" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `edxactivity`.`dragon_boat_festival` (`login_name`,`user_name`,`mobile`,`invest_amount`,`created_time`)
+        VALUES(#{loginName},#{userName},#{mobile},#{investAmount},#{createdTime})
+        on duplicate key update invest_amount=invest_amount + #{investAmount};
+    </insert>
+
+    <insert id="addExperienceAmount" parameterType="dragonBoatFestivalModel" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `edxactivity`.`dragon_boat_festival` (`login_name`,`user_name`,`mobile`,`experience_amount`,`created_time`)
+        VALUES(#{loginName},#{userName},#{mobile},#{experienceAmount},#{createdTime})
+        on duplicate key update experience_amount=experience_amount + #{experienceAmount};
+    </insert>
+
+    <insert id="addInviteNewUserCount" parameterType="map" useGeneratedKeys="true">
+        INSERT INTO `edxactivity`.`dragon_boat_festival` (`login_name`,`user_name`,`mobile`,`invite_new_user_count`,`created_time`)
+        VALUES(#{loginName},#{userName},#{mobile},1,now())
+        on duplicate key update invite_new_user_count=invite_new_user_count + 1;
+    </insert>
+
+    <insert id="addInviteOldUserCount" parameterType="map" useGeneratedKeys="true">
+        INSERT INTO `edxactivity`.`dragon_boat_festival` (`login_name`,`user_name`,`mobile`,`invite_old_user_count`,`created_time`)
+        VALUES(#{loginName},#{userName},#{mobile},1,now())
+        on duplicate key update invite_old_user_count=invite_old_user_count + 1;
+    </insert>
+
+    <select id="getDragonBoatFestivalList" parameterType="map" resultMap="dragonBoatFestivalResultMap">
+        SELECT
+        login_name,
+        user_name,
+        mobile,
+        invest_amount,
+        experience_amount,
+        invite_new_user_count,
+        invite_old_user_count
+        FROM
+        dragon_boat_festival
+        ORDER BY created_time ASC
+        limit #{index}, #{pageSize}
+    </select>
+
+</mapper>
