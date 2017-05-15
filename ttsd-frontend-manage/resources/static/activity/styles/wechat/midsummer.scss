@@ -144,12 +144,14 @@ body {
         margin:auto;
         .temp-number {
           font-size: 30px;
+          vertical-align: top;
         }
         sub {
-          font-size:14px;
+          font-size:12px;
           letter-spacing: -6px;
           vertical-align: bottom;
           display: inline-block;
+          margin-top:8px;
           &:before {
             content:'。';
             vertical-align: top;
