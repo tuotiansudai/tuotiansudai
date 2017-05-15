@@ -423,6 +423,7 @@
         select IFNULL(sum(invest.amount), 0) as amount
         from invest join loan on invest.loan_id = loan.id
         <where>
+            invest.loan_id != 1
             <if test="loanId != null">
                 and loan.id = #{loanId}
             </if>
@@ -1055,6 +1056,10 @@
         <if test="loanStatus.name() == 'RAISING' ">
             and loan.status in ('RAISING','RECHECK') and loan.product_type != 'EXPERIENCE'
         </if>
+    </select>
+
+    <select id="countInvestBeforeDate" resultType="int" parameterType="map">
+        select count(1) from invest where login_name = #{loginName} and status = 'SUCCESS' and loan_id > 1 and trading_time &lt;= #{datePoint}
     </select>
 
     <select id="findFirstInvestAmountByLoginName" parameterType="map" resultMap="investResultMap">
