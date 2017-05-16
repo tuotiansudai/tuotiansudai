@@ -1,17 +1,15 @@
-window.jQuery = window.$ = window.jquery_library(1);
-window.layer = window.jquery_library(2);
-window.layer.config({
-    path: commonStaticServer+'/public/'
-});
-window._ = window.jquery_library(3);
-window.$.fn=window.$.prototype;
-
 require("publicStyle/btn.scss");
 require("publicStyle/table.scss");
 require("publicStyle/page_frame.scss");
 require("publicStyle/pagination.scss");
 require("publicStyle/error.scss");
 require("publicStyle/global.scss");
+
+window._ = require('underscore');
+window.layer = require('layer');
+window.layer.config({
+    path: commonStaticServer+'/public/'
+});
 
 require('publicJs/error');
 
@@ -334,6 +332,7 @@ var Proxy_GlobalFun=function() {
 
 window.globalFun =new Proxy_GlobalFun();
 window.globalFun.init();
+
 
 
 

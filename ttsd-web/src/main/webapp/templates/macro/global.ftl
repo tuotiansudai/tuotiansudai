@@ -127,14 +127,12 @@
 <#include "../pageLayout/statistic.ftl" />
 <script>
     window.commonStaticServer='${commonStaticServer}';
-    <#--window.pluginsJSON={-->
-        <#--underscore:'${js.underscore}'-->
-    <#--}-->
+
 </script>
 
-<script src="${js.jquerydll}" defer></script>
-<script src="${js.globalFun_page!}" defer></script>
-<script src="${pageJavascript}" type="text/javascript" id="currentScript" defer></script>
+<script src="http://192.168.60.208:3008/public/vendorFun.js" ></script>
+<script src="${js.globalFun_page!}" ></script>
+<script src="${pageJavascript}" type="text/javascript" id="currentScript" ></script>
 
 </body>
 </html>

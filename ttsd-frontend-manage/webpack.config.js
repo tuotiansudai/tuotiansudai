@@ -76,14 +76,6 @@ if(NODE_ENV=='production') {
 		exclude: ['plugins']
 	}));
 
-	//压缩
-	// plugins.push(new webpack.optimize.UglifyJsPlugin({
-	// 	compress: {
-	// 		warnings: false,
-	// 		drop_debugger: true,
-	// 		drop_console: true
-	// 	}
-	// }));
 	plugins.push(new ParallelUglifyPlugin({
 		cacheDir: outputPath+'/.cache/',
 		uglifyJS:{
@@ -101,13 +93,13 @@ else if(NODE_ENV=='dev') {
 	plugins.push(new ExtractTextPlugin("[name].css"));
 
 	//打包之前先删除打包文件里的图片文件方便重新打包
-	// plugins.push(new CleanWebpackPlugin(['develop'], {
-	// 	root: basePath,
-	// 	verbose: true,
-	// 	dry: false,
-	// 	watch:true,
-	// 	exclude: ['public','json-ask.json','json-web.json','json-point.json']
-	// }));
+	plugins.push(new CleanWebpackPlugin(['develop'], {
+		root: basePath,
+		verbose: true,
+		dry: false,
+		watch:true,
+		exclude: ['public','json-ask.json','json-web.json','json-point.json']
+	}));
 
 	//开发环境
 	plugins.push(new webpack.HotModuleReplacementPlugin());
@@ -140,8 +132,16 @@ else if(NODE_ENV=='dev') {
 	};
 }
 
+plugins.push(new webpack.ProvidePlugin({
+	$: "jquery",
+	jQuery: "jquery",
+	"window.jQuery": "jquery"
+}));
+
+//把入口文件里面的数组打包成vendorFun.js
+plugins.push(new webpack.optimize.CommonsChunkPlugin('/public/vendorFun.js'));
+
 plugins.push(new CopyWebpackPlugin([
-	{ from: publicPathJS+'/dllplugins',to: 'public/dllplugins'},
 	{ from: staticPath+'/inlineImages',to: 'images'},
 	{ from: publicPath+'/styles/plugins/skin',to: 'public/skin'}
 ]));
@@ -161,10 +161,10 @@ plugins.push(createHappyPlugin('jsx', ['babel']));
 
 plugins.push(createHappyPlugin('sass', ['css!sass']));
 // plugins.push(createHappyPlugin('sass', ['css-loader?modules!postcss-loader!sass-loader?outputStyle=expanded']));
-plugins.push(new webpack.DllReferencePlugin({
-	context: __dirname,
-	manifest: require(publicPathJS+'/dllplugins/jquery-manifest.json')
-}));
+// plugins.push(new webpack.DllReferencePlugin({
+// 	context: __dirname,
+// 	manifest: require(publicPathJS+'/dllplugins/jquery-manifest.json')
+// }));
 
 function createHappyPlugin(id, loaders) {
 	return new HappyPack({
