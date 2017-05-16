@@ -57,9 +57,9 @@
         ]
     });
 </script>
-<script src="${js.jquerydll}" type="text/javascript" defer></script>
-<script src="${js.globalFun_page!}" type="text/javascript" defer></script>
-<script src="${pageJavascript}" type="text/javascript" id="currentScript" defer></script>
+<script src="${js.jquerydll}" type="text/javascript" ></script>
+<script src="${js.globalFun_page!}" type="text/javascript" ></script>
+<script src="${pageJavascript}" type="text/javascript" id="currentScript" ></script>
 </body>
 </html>
 </#macro>

@@ -27,13 +27,16 @@ validator.add(registerAccountForm.identityNumber, [{
 }],true);
 
 let reInputs=$(registerAccountForm).find('input:text');
+for(let i=0,len=reInputs.length; i<len;i++) {
+    globalFun.addEventHandler(reInputs[i],"keyup", "blur", function() {
+        validator.start(this);
+        isDisabledButton();
+    })
+}
 
 reInputs=Array.from(reInputs);
 for (var el of reInputs) {
-    globalFun.addEventHandler(el,"keyup", "blur", function() {
-       validator.start(this);
-        isDisabledButton();
-    })
+
 }
 
 //用来判断获取验证码和立即注册按钮 是否可点击
