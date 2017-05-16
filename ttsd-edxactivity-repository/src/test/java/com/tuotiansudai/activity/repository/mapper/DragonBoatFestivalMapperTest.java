@@ -86,7 +86,7 @@ public class DragonBoatFestivalMapperTest {
         dragonBoatFestivalModel.setPkGroup("SWEET");
         dragonBoatFestivalMapper.setPKGroup(dragonBoatFestivalModel);
 
-        dragonBoatFestivalMapper.addPKExperienceAmount("aa", 10000L);
+        dragonBoatFestivalMapper.setPKExperienceAmount("aa", 10000L);
 
         List<DragonBoatFestivalModel> list = dragonBoatFestivalMapper.getDragonBoatFestivalList(0, 10);
         assertNotNull(list);
