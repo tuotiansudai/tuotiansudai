@@ -3,33 +3,28 @@ package com.tuotiansudai.activity.repository.model;
 import java.io.Serializable;
 import java.util.Date;
 
+
 public class DragonBoatFestivalModel implements Serializable {
     private long id;
     private String loginName;
     private String userName;
     private String mobile;
-    private long investAmount;
-    private long experienceAmount;
+    private long totalInvestAmount;
+    private long pkInvestAmount;
+    private String pkGroup;
+    private long inviteExperienceAmount;
+    private long pkExperienceAmount;
     private long inviteNewUserCount;
     private long inviteOldUserCount;
     private Date createdTime;
 
-    public DragonBoatFestivalModel(){}
+    public DragonBoatFestivalModel() {
+    }
 
-    public DragonBoatFestivalModel(String loginName,
-                                   String userName,
-                                   String mobile,
-                                   long investAmount,
-                                   long experienceAmount,
-                                   long inviteNewUserCount,
-                                   long inviteOldUserCount){
+    public DragonBoatFestivalModel(String loginName, String userName, String mobile) {
         this.loginName = loginName;
         this.userName = userName;
         this.mobile = mobile;
-        this.investAmount = investAmount;
-        this.experienceAmount = experienceAmount;
-        this.inviteNewUserCount = inviteNewUserCount;
-        this.inviteOldUserCount = inviteOldUserCount;
         this.createdTime = new Date();
     }
 
@@ -65,20 +60,44 @@ public class DragonBoatFestivalModel implements Serializable {
         this.mobile = mobile;
     }
 
-    public long getInvestAmount() {
-        return investAmount;
+    public long getTotalInvestAmount() {
+        return totalInvestAmount;
     }
 
-    public void setInvestAmount(long investAmount) {
-        this.investAmount = investAmount;
+    public void setTotalInvestAmount(long totalInvestAmount) {
+        this.totalInvestAmount = totalInvestAmount;
     }
 
-    public long getExperienceAmount() {
-        return experienceAmount;
+    public long getPkInvestAmount() {
+        return pkInvestAmount;
     }
 
-    public void setExperienceAmount(long experienceAmount) {
-        this.experienceAmount = experienceAmount;
+    public void setPkInvestAmount(long pkInvestAmount) {
+        this.pkInvestAmount = pkInvestAmount;
+    }
+
+    public String getPkGroup() {
+        return pkGroup;
+    }
+
+    public void setPkGroup(String pkGroup) {
+        this.pkGroup = pkGroup;
+    }
+
+    public long getInviteExperienceAmount() {
+        return inviteExperienceAmount;
+    }
+
+    public void setInviteExperienceAmount(long inviteExperienceAmount) {
+        this.inviteExperienceAmount = inviteExperienceAmount;
+    }
+
+    public long getPkExperienceAmount() {
+        return pkExperienceAmount;
+    }
+
+    public void setPkExperienceAmount(long pkExperienceAmount) {
+        this.pkExperienceAmount = pkExperienceAmount;
     }
 
     public long getInviteNewUserCount() {

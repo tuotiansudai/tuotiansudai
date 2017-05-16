@@ -23,33 +23,75 @@ public class DragonBoatFestivalMapperTest {
     private DragonBoatFestivalMapper dragonBoatFestivalMapper;
 
     @Test
-    public void shouldInsertOrAddInvestAmount() {
-        DragonBoatFestivalModel dragonBoatFestivalModel = new DragonBoatFestivalModel("aa", "aa", "18611110000", 10000, 10000, 10, 10);
-        dragonBoatFestivalMapper.addInvestAmount(dragonBoatFestivalModel);
+    public void shouldUpdateOrAddPKGroup() {
+        DragonBoatFestivalModel dragonBoatFestivalModel = new DragonBoatFestivalModel("aa", "aa", "19877778888");
+        dragonBoatFestivalModel.setPkGroup("SWEET");
+        dragonBoatFestivalMapper.setPKGroup(dragonBoatFestivalModel);
 
         List<DragonBoatFestivalModel> list = dragonBoatFestivalMapper.getDragonBoatFestivalList(0, 10);
         assertNotNull(list);
         DragonBoatFestivalModel model = list.get(0);
-        assertEquals(10000, model.getInvestAmount());
-
-        dragonBoatFestivalMapper.addInvestAmount(dragonBoatFestivalModel);
-        List<DragonBoatFestivalModel> list2 = dragonBoatFestivalMapper.getDragonBoatFestivalList(0, 10);
-        assertEquals(20000, list2.get(0).getInvestAmount());
+        assertEquals("SWEET", model.getPkGroup());
     }
 
     @Test
-    public void shouldInsertOrAddExperienceAmount() {
-        DragonBoatFestivalModel dragonBoatFestivalModel = new DragonBoatFestivalModel("aa", "aa", "18611110000", 10000, 10000, 10, 10);
-        dragonBoatFestivalMapper.addExperienceAmount(dragonBoatFestivalModel);
+    public void shouldInsertOrAddTotalInvestAmount() {
+        DragonBoatFestivalModel dragonBoatFestivalModel = new DragonBoatFestivalModel("aa", "aa", "19877778888");
+        dragonBoatFestivalModel.setTotalInvestAmount(10000L);
+        dragonBoatFestivalMapper.addTotalInvestAmount(dragonBoatFestivalModel);
 
         List<DragonBoatFestivalModel> list = dragonBoatFestivalMapper.getDragonBoatFestivalList(0, 10);
         assertNotNull(list);
         DragonBoatFestivalModel model = list.get(0);
-        assertEquals(10000, model.getExperienceAmount());
+        assertEquals(10000, model.getTotalInvestAmount());
 
-        dragonBoatFestivalMapper.addExperienceAmount(dragonBoatFestivalModel);
+        dragonBoatFestivalMapper.addTotalInvestAmount(dragonBoatFestivalModel);
         List<DragonBoatFestivalModel> list2 = dragonBoatFestivalMapper.getDragonBoatFestivalList(0, 10);
-        assertEquals(20000, list2.get(0).getExperienceAmount());
+        assertEquals(20000, list2.get(0).getTotalInvestAmount());
+    }
+
+    @Test
+    public void shouldAddPKInvestAmount() {
+        DragonBoatFestivalModel dragonBoatFestivalModel = new DragonBoatFestivalModel("aa", "aa", "19877778888");
+        dragonBoatFestivalModel.setPkGroup("SWEET");
+        dragonBoatFestivalMapper.setPKGroup(dragonBoatFestivalModel);
+
+        dragonBoatFestivalMapper.addPKInvestAmount("aa", 10000L);
+
+        List<DragonBoatFestivalModel> list = dragonBoatFestivalMapper.getDragonBoatFestivalList(0, 10);
+        assertNotNull(list);
+        DragonBoatFestivalModel model = list.get(0);
+        assertEquals(10000, model.getPkInvestAmount());
+    }
+
+    @Test
+    public void shouldInsertOrAddInviteExperienceAmount() {
+        DragonBoatFestivalModel dragonBoatFestivalModel = new DragonBoatFestivalModel("aa", "aa", "19877778888");
+        dragonBoatFestivalModel.setInviteExperienceAmount(10000L);
+        dragonBoatFestivalMapper.addInviteExperienceAmount(dragonBoatFestivalModel);
+
+        List<DragonBoatFestivalModel> list = dragonBoatFestivalMapper.getDragonBoatFestivalList(0, 10);
+        assertNotNull(list);
+        DragonBoatFestivalModel model = list.get(0);
+        assertEquals(10000, model.getInviteExperienceAmount());
+
+        dragonBoatFestivalMapper.addInviteExperienceAmount(dragonBoatFestivalModel);
+        List<DragonBoatFestivalModel> list2 = dragonBoatFestivalMapper.getDragonBoatFestivalList(0, 10);
+        assertEquals(20000, list2.get(0).getInviteExperienceAmount());
+    }
+
+    @Test
+    public void shouldAddPKExperienceAmount() {
+        DragonBoatFestivalModel dragonBoatFestivalModel = new DragonBoatFestivalModel("aa", "aa", "19877778888");
+        dragonBoatFestivalModel.setPkGroup("SWEET");
+        dragonBoatFestivalMapper.setPKGroup(dragonBoatFestivalModel);
+
+        dragonBoatFestivalMapper.addPKExperienceAmount("aa", 10000L);
+
+        List<DragonBoatFestivalModel> list = dragonBoatFestivalMapper.getDragonBoatFestivalList(0, 10);
+        assertNotNull(list);
+        DragonBoatFestivalModel model = list.get(0);
+        assertEquals(10000, model.getPkExperienceAmount());
     }
 
     @Test

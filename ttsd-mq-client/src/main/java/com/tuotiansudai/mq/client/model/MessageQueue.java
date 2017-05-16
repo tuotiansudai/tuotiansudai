@@ -25,6 +25,7 @@ public enum MessageQueue {
     InvestNewmanTyrant_AssignExperience("InvestNewmanTyrant-AssignExperience"),
     InvestSuccess_ExperienceRepay("InvestSuccess-ExperienceRepay"),
     InvestSuccess_ExperienceAssignInterestCoupon("InvestSuccess-ExperienceAssignInterestCoupon"),
+    InvestSuccess_DragonBoat("InvestSuccess-DragonBoat"),
     RechargeSuccess_CompletePointTask("RechargeSuccess-CompletePointTask"),
     BindBankCard_CompletePointTask("BindBankCard-CompletePointTask"),
     TurnOnNoPasswordInvest_CompletePointTask("TurnOnNoPasswordInvest-CompletePointTask"),
@@ -60,7 +61,9 @@ public enum MessageQueue {
     CouponSmsExpiredNotify("CouponSmsExpiredNotify"),
     WeChatBoundNotify("WeChatBoundNotify"),
     ExperienceAssigning("ExperienceAssigning"),
-    DragonBoatShareLogin("DragonBoatShareLogin"); // 端午节活动分享落地页老用户登录后，发放10元红包，记录老用户邀请数量
+    DragonBoatShareLogin("DragonBoatShareLogin"), // 端午节活动分享落地页老用户登录后，发放10元红包，记录老用户邀请数量
+    DragonBoatPKEndSendExperience("DragonBoatPKEndSendExperience"), // 端午节PK活动结束后，给PK用户发体验金，
+    DragonBoatChampagneEndSendCoupon("DragonBoatChampagneEndSendCoupon"); // 端午节香槟塔活动结束后，给投资用户发优惠券
 
     private final String queueName;
 

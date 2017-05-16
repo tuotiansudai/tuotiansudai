@@ -6,7 +6,6 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
-import org.quartz.SimpleScheduleBuilder;
 import org.quartz.spi.ClassLoadHelper;
 import org.quartz.spi.SchedulerPlugin;
 
@@ -41,11 +40,39 @@ public class JobInitPlugin implements SchedulerPlugin {
         if (JobType.SendSecondRedEnvelopSplit.name().equalsIgnoreCase(schedulerName)) {
             createSecondRedEnvelopSplitJob();
         }
+        if (JobType.DragonBoatSendPKPrize.name().equalsIgnoreCase(schedulerName)) {
+            createDragonBoatSendPKPrizeJob();
+        }
+        if (JobType.DragonBoatSendChampagnePrize.name().equalsIgnoreCase(schedulerName)) {
+            createDragonBoatSendChampagnePrizeJob();
+        }
     }
 
     @Override
     public void shutdown() {
 
+    }
+
+    private void createDragonBoatSendPKPrizeJob() {
+        try {
+            jobManager.newJob(JobType.DragonBoatSendPKPrize, DragonBoatPKSendExperienceJob.class)
+                    .withIdentity(JobType.DragonBoatSendPKPrize.name(), JobType.DragonBoatSendPKPrize.name())
+                    .replaceExistingJob(true)
+                    .runOnceAt(DragonBoatPKSendExperienceJob.getJobExecuteTime()).submit();
+        } catch (Exception e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+    }
+
+    private void createDragonBoatSendChampagnePrizeJob() {
+        try {
+            jobManager.newJob(JobType.DragonBoatSendChampagnePrize, DragonBoatChampagneSendCouponJob.class)
+                    .withIdentity(JobType.DragonBoatSendChampagnePrize.name(), JobType.DragonBoatSendChampagnePrize.name())
+                    .replaceExistingJob(true)
+                    .runOnceAt(DragonBoatChampagneSendCouponJob.getJobExecuteTime()).submit();
+        } catch (Exception e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
     }
 
     private void createFirstRedEnvelopSplitJob() {

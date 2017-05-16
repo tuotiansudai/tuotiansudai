@@ -85,7 +85,30 @@ public class DragonBoatFestivalController {
 
             dragonBoatFestivalService.afterNewUserRegister(registerUserDto.getMobile(), referrer);
         }
-
         return isRegisterSuccess;
     }
+
+    // pc 活动页
+    @RequestMapping(value = "/pcLanding", method = RequestMethod.GET)
+    public ModelAndView pcLandingPage() {
+        String loginName = LoginUserInfo.getLoginName();
+        String supportGroup = dragonBoatFestivalService.getGroupByLoginName(loginName);
+        long sweetAmount = dragonBoatFestivalService.getGroupInvestAmount("SWEET");
+        long saltyAmount = dragonBoatFestivalService.getGroupInvestAmount("SALTY");
+
+        ModelAndView mav = new ModelAndView("/pc-landing");
+        mav.addObject("supportGroup", supportGroup);
+        mav.addObject("sweetAmount", sweetAmount);
+        mav.addObject("saltyAmount", saltyAmount);
+        return mav;
+    }
+
+    // 加入甜/咸粽派 PK
+    @RequestMapping(value = "/joinPK", method = RequestMethod.POST)
+    @ResponseBody
+    public boolean joinPK(@RequestParam(value = "group") String group) {
+        String loginName = LoginUserInfo.getLoginName();
+        return dragonBoatFestivalService.joinPK(loginName, group);
+    }
+
 }
