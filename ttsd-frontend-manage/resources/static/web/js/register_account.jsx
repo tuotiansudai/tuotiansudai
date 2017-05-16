@@ -33,12 +33,6 @@ for(let i=0,len=reInputs.length; i<len;i++) {
         isDisabledButton();
     })
 }
-
-reInputs=Array.from(reInputs);
-for (var el of reInputs) {
-
-}
-
 //用来判断获取验证码和立即注册按钮 是否可点击
 function isDisabledButton() {
     let userName = registerAccountForm.userName,
