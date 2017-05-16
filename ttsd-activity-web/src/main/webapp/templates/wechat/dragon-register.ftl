@@ -32,6 +32,9 @@
                 <i class="icon-check active"></i>
                 <span class="agree-item">同意拓天速贷<strong class="agree-text">《服务协议》</strong></span>
                 <input type="hidden" name="agreement" class="agree-check" value="true" validate id="agreementRegister"/>
+                <input type="hidden" name="source" value="WEB">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <input type="hidden" name="redirectToAfterRegisterSuccess" value="/">
             </div>
 
             <div class="model-item text-model tc">
