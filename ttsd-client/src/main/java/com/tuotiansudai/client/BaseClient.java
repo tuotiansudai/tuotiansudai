@@ -8,6 +8,7 @@ import org.apache.log4j.MDC;
 
 import java.io.IOException;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 public abstract class BaseClient {
 
@@ -31,21 +32,19 @@ public abstract class BaseClient {
 
     protected ObjectMapper objectMapper = new ObjectMapper();
 
-    private OkHttpClient okHttpClient = buildOkHttpClient();
+    protected OkHttpClient okHttpClient;
 
-    private OkHttpClient buildOkHttpClient() {
-        OkHttpClient okHttpClient = new OkHttpClient();
+    public BaseClient() {
+        this.okHttpClient = new OkHttpClient();
+        this.okHttpClient.setConnectTimeout(10, TimeUnit.SECONDS);
+        this.okHttpClient.setReadTimeout(10, TimeUnit.SECONDS);
+        this.okHttpClient.setWriteTimeout(10, TimeUnit.SECONDS);
         OkHttpLoggingInterceptor loggingInterceptor = new OkHttpLoggingInterceptor(message -> logger.info(message));
         okHttpClient.interceptors().add(loggingInterceptor);
-        return okHttpClient;
     }
 
     protected String execute(String path, String requestJson, String method) {
-        return execute(path, requestJson, method, okHttpClient);
-    }
-
-    protected String execute(String path, String requestJson, String method, OkHttpClient okHttpClient) {
-        ResponseBody responseBody = newCall(path, requestJson, method, okHttpClient);
+        ResponseBody responseBody = newCall(path, requestJson, method);
         try {
             return responseBody != null ? responseBody.string() : null;
         } catch (Exception e) {
@@ -56,7 +55,7 @@ public abstract class BaseClient {
 
 
     protected byte[] downPdf(String path, String requestJson) {
-        ResponseBody responseBody = newCall(path, requestJson, "POST", null);
+        ResponseBody responseBody = newCall(path, requestJson, "POST");
         try {
             return responseBody != null ? responseBody.bytes() : null;
         } catch (IOException e) {
@@ -65,8 +64,7 @@ public abstract class BaseClient {
         }
     }
 
-    protected ResponseBody newCall(String path, String requestJson, String method, OkHttpClient client) {
-        client = client != null ? client : okHttpClient;
+    protected ResponseBody newCall(String path, String requestJson, String method) {
         String url = URL_TEMPLATE.replace("{host}", this.getHost()).replace("{port}", this.getPort()).replace("{applicationContext}", getApplicationContext()).replace("{uri}", path);
         RequestBody requestBody = RequestBody.create(JSON, !Strings.isNullOrEmpty(requestJson) ? requestJson : "");
         if ("GET".equalsIgnoreCase(method)) {
@@ -85,7 +83,7 @@ public abstract class BaseClient {
                 .build();
 
         try {
-            Response response = client.newCall(request).execute();
+            Response response = this.okHttpClient.newCall(request).execute();
             if (response.isSuccessful()) {
                 return response.body();
             }
