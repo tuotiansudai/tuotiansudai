@@ -7,7 +7,6 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 import com.tuotiansudai.cfca.util.SecurityUtil;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -20,14 +19,14 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.security.KeyStore;
 import java.security.SecureRandom;
+import java.util.concurrent.TimeUnit;
 
 @Component
 public class AnxinClient {
 
     private static final Logger logger = Logger.getLogger(AnxinClient.class);
 
-    @Autowired
-    private OkHttpClient httpClient;
+    private final OkHttpClient httpClient;
 
     @Value("${anxin.jks.pwd}")
     private String JKS_PWD;
@@ -51,9 +50,15 @@ public class AnxinClient {
 
     private KeyStore anxinSignKey;
 
+    public AnxinClient() {
+        this.httpClient = new OkHttpClient();
+        this.httpClient.setConnectTimeout(300, TimeUnit.SECONDS);
+        this.httpClient.setReadTimeout(300, TimeUnit.SECONDS);
+        this.httpClient.setWriteTimeout(300, TimeUnit.SECONDS);
+    }
+
     @PostConstruct
     public void initSSL() throws GeneralSecurityException, IOException {
-
         anxinSignKey = SecurityUtil.loadAnxinSignKey(JKS_CLASS_PATH, JKS_PWD);
         logger.info("into AnxinClient initSSl method. Thread id: " + Thread.currentThread().getId());
         KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(DEFAULT_KEY_ALGORITHM);

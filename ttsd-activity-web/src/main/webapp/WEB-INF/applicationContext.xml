@@ -166,7 +166,5 @@
         <property name="basePackage" value="com.tuotiansudai.point.repository.mapper"/>
     </bean>
 
-    <bean id="okHttpClient" class="com.squareup.okhttp.OkHttpClient" />
-
     <bean class="com.tuotiansudai.mq.config.MQProducerConfig"/>
 </beans>

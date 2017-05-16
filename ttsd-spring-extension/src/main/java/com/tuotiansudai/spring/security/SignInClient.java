@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.text.MessageFormat;
+import java.util.concurrent.TimeUnit;
 
 @Component
 public class SignInClient {
@@ -37,6 +38,9 @@ public class SignInClient {
     private HttpServletRequest httpServletRequest;
 
     public SignInClient() {
+        this.okHttpClient.setConnectTimeout(5, TimeUnit.SECONDS);
+        this.okHttpClient.setReadTimeout(5, TimeUnit.SECONDS);
+        this.okHttpClient.setWriteTimeout(5, TimeUnit.SECONDS);
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
