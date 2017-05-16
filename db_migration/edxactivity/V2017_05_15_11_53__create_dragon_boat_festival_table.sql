@@ -15,5 +15,3 @@ CREATE table `dragon_boat_festival` (
   UNIQUE KEY (`login_name`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8;
 
-select user_name, mobile, invest_amount, experience_amount, invite_old_user_count, invite_new_user_count from dragon_boat_activity order by created_time asc;
-
