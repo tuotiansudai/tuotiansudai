@@ -40,10 +40,11 @@ public class DragonBoatFestivalService {
     @Autowired
     private MQWrapperClient mqWrapperClient;
 
-
     private RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
     private static final String DRAGON_BOAT_EXCHANGE_FETCH = "dragon_boat_exchange_fetch:{0}:{1}";
+
+    public static final int ONE_MONTH_SECONDS = 60 * 60 * 24 * 30;
 
     private static final ThreadLocal<SimpleDateFormat> SDF_LOCAL = ThreadLocal.withInitial(() -> new SimpleDateFormat("MM-dd"));
 
@@ -57,8 +58,8 @@ public class DragonBoatFestivalService {
             return null;
         }
 
-        int ramdom = (int) (Math.random() * 100000);
-        int mod = ramdom % 100;
+        int random = (int) (Math.random() * 100000);
+        int mod = random % 100;
 
         DragonBoatPunchCardPrize prize;
 
@@ -122,10 +123,6 @@ public class DragonBoatFestivalService {
             addInviteExperienceAmount(referrer, 500000);
         }
     }
-
-
-    public static final int ONE_MONTH_SECONDS = 60 * 60 * 24 * 30;
-
 
     public boolean joinPK(String loginName, String group) {
         if (getGroupByLoginName(loginName) != null) {
