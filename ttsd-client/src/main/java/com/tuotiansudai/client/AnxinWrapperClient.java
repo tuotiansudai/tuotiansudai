@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 @Component
 public class AnxinWrapperClient extends BaseClient {
@@ -41,6 +42,12 @@ public class AnxinWrapperClient extends BaseClient {
     private final static String printAnxinContract = "/anxin-sign/print-anxin-contract";
 
     private final static String isAuthenticationRequired= "/anxin-sign/is-authentication-required";
+
+    public AnxinWrapperClient() {
+        this.okHttpClient.setConnectTimeout(300, TimeUnit.SECONDS);
+        this.okHttpClient.setReadTimeout(300, TimeUnit.SECONDS);
+        this.okHttpClient.setWriteTimeout(300, TimeUnit.SECONDS);
+    }
 
     public BaseDto<AnxinDataDto> createLoanContract(long loanId) {
         return syncExecute(String.valueOf(loanId), createLoanContract, "POST");

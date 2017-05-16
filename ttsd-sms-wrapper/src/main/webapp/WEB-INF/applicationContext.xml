@@ -66,6 +66,4 @@
         <property name="basePackage" value="com.tuotiansudai.smswrapper.repository.mapper"/>
     </bean>
 
-    <bean id="httpClient" class="com.squareup.okhttp.OkHttpClient"/>
-
 </beans>

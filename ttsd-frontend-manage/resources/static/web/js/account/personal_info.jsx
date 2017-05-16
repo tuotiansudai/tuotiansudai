@@ -472,9 +472,8 @@ require.ensure([],function() {
     }],true);
 
     let reInputs=$(changePasswordForm).find('input:password');
-    reInputs=Array.from(reInputs);
-    for (var el of reInputs) {
-        el.addEventListener("keyup", function() {
+    for(let i=0,len=reInputs.length; i<len;i++) {
+        reInputs[i].addEventListener("keyup", function() {
             passValidator.start(this);
         })
     }

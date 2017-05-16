@@ -113,12 +113,32 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
             logger.warn("标的详情" + ReturnMessage.LOAN_NOT_FOUND.getCode() + ":" + ReturnMessage.LOAN_NOT_FOUND.getMsg());
             return new BaseResponseDto<>(ReturnMessage.APP_VERSION_NOT_LATEST.getCode(), ReturnMessage.APP_VERSION_NOT_LATEST.getMsg());
         }
+        List<PledgeType> multiplePledgeTypeList = Lists.newArrayList(PledgeType.HOUSE, PledgeType.VEHICLE, PledgeType.ENTERPRISE_PLEDGE);
+        if (AppVersionUtil.compareVersion() == AppVersionUtil.low && multiplePledgeTypeList.contains(loanModel.getPledgeType())) {
+            if (multiplePledge(loanModel.getPledgeType(), loanModel.getId())){
+                logger.warn("标的详情" + ReturnMessage.APP_VERSION_NOT_LATEST.getCode() + ":" + ReturnMessage.APP_VERSION_NOT_LATEST.getMsg());
+                return new BaseResponseDto<>(ReturnMessage.APP_VERSION_NOT_LATEST.getCode(), ReturnMessage.APP_VERSION_NOT_LATEST.getMsg());
+            }
+        }
         responseDto.setCode(ReturnMessage.SUCCESS.getCode());
         responseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
         String loginName = requestDto.getBaseParam().getUserId();
         LoanDetailV2ResponseDataDto dataDto = convertLoanDetailFromLoan(loanModel, loginName);
         responseDto.setData(dataDto);
         return responseDto;
+    }
+
+    private boolean multiplePledge(PledgeType pledgeType, long loanId) {
+        switch (pledgeType) {
+            case HOUSE:
+                return pledgeHouseMapper.getByLoanId(loanId).size() > 1;
+            case VEHICLE:
+                return pledgeVehicleMapper.getByLoanId(loanId).size() > 1;
+            case ENTERPRISE_PLEDGE:
+                return pledgeEnterpriseMapper.getByLoanId(loanId).size() >1;
+            default:
+                return false;
+        }
     }
 
     private LoanDetailV2ResponseDataDto convertLoanDetailFromLoan(LoanModel loanModel, String loginName) {
@@ -207,14 +227,14 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
             dataDto.setLoaner(loanerDto);
             switch (loanModel.getPledgeType()) {
                 case HOUSE:
-                    PledgeHouseModel pledgeHouseModel = pledgeHouseMapper.getByLoanId(loanModel.getId());
-                    if (pledgeHouseModel != null) {
-                        dataDto.setPledgeHouse(new PledgeHouseDto(pledgeHouseModel));
+                    List<PledgeHouseModel> pledgeHouseModelList = pledgeHouseMapper.getByLoanId(loanModel.getId());
+                    if (pledgeHouseModelList.size() > 0) {
+                        dataDto.setPledgeHouse(new PledgeHouseDto(pledgeHouseModelList.get(0)));
                     }
                 case VEHICLE:
-                    PledgeVehicleModel pledgeVehicleModel = pledgeVehicleMapper.getByLoanId(loanModel.getId());
-                    if (pledgeVehicleModel != null) {
-                        dataDto.setPledgeVehicle(new PledgeVehicleDto(pledgeVehicleModel));
+                    List<PledgeVehicleModel> pledgeVehicleModelList = pledgeVehicleMapper.getByLoanId(loanModel.getId());
+                    if (pledgeVehicleModelList.size() > 0) {
+                        dataDto.setPledgeVehicle(new PledgeVehicleDto(pledgeVehicleModelList.get(0)));
                     }
             }
         }
@@ -228,9 +248,9 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
 
         }
         if (loanModel.getPledgeType() == PledgeType.ENTERPRISE_PLEDGE) {
-            PledgeEnterpriseModel pledgeEnterpriseModel = pledgeEnterpriseMapper.getByLoanId(loanModel.getId());
-            if (pledgeEnterpriseModel != null) {
-                dataDto.setPledgeEnterpriseDto(new PledgeEnterpriseDto(pledgeEnterpriseModel));
+            List<PledgeEnterpriseModel> pledgeEnterpriseModelList = pledgeEnterpriseMapper.getByLoanId(loanModel.getId());
+            if (pledgeEnterpriseModelList.size() > 0) {
+                dataDto.setPledgeEnterpriseDto(new PledgeEnterpriseDto(pledgeEnterpriseModelList.get(0)));
             }
         }
 

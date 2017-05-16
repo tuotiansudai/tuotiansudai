@@ -1,0 +1,43 @@
+.our-advantage {
+  background: #fff7e9;
+  color: #525252;
+  line-height: 31px;
+  padding-top:20px;
+
+  dt {
+    font-size: 15px;
+    margin-bottom: 20px;
+    color: #fc7c00;
+    background: url('../../images/register-reason/dot.png') left center repeat-x;
+    span {
+      display: inline-block;
+      background: #fff7e9;
+      padding:10px 22px;
+      font-weight: bold;
+    }
+  }
+  dd {
+    width: 100%;
+    font-size: 18px;
+    color: #525252;
+    text-align: center;
+    padding-top: 80px;
+    margin-bottom: 22px;
+    &.one {
+      background: url('../../images/register-reason/newbie-cfca.png') center top no-repeat;
+    }
+    &.two {
+      background: url('../../images/register-reason/newbie-control.png') center top no-repeat;
+    }
+    &.three {
+      background: url('../../images/register-reason/newbie-security.png') center top no-repeat;
+    }
+
+    p {
+      margin-top: 10px;
+      color: #808080;
+      font-size: 14px;
+      line-height: 22px;
+    }
+  }
+}

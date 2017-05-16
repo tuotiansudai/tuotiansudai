@@ -100,8 +100,6 @@
         <property name="basePackage" value="com.tuotiansudai.repository.mapper"/>
     </bean>
 
-    <bean id="httpClient" class="com.squareup.okhttp.OkHttpClient"/>
-
     <bean class="com.tuotiansudai.mq.config.MQProducerConfig"/>
 
 </beans>

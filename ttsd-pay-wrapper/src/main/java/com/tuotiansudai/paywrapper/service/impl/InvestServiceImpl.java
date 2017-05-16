@@ -2,6 +2,7 @@ package com.tuotiansudai.paywrapper.service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.base.Joiner;
+import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -620,6 +621,9 @@ public class InvestServiceImpl implements InvestService {
             mqWrapperClient.publishMessage(MessageTopic.InvestSuccess, new InvestSuccessMessage(investInfo, loanDetailInfo, userInfo));
             UserInfoActivity userInfoActivity = new UserInfoActivity(userInfo, userModel.getRegisterTime());
             mqWrapperClient.sendMessage(MessageQueue.InvestSuccess_InvestNewmanTyrant, new InvestSuccessNewmanTyrantMessage(investInfo, userInfoActivity));
+            if (!Strings.isNullOrEmpty(userModel.getReferrer())) {
+                mqWrapperClient.sendMessage(MessageQueue.InvestSuccess_MidSummer, new InvestSuccessMidSummerMessage(investModel.getId(), investModel.getLoginName(), userModel.getReferrer(), investModel.getAmount(), investModel.getTradingTime()));
+            }
             mothersDayAssignExperience(investModel.getLoginName(), investModel.getAmount());
         } catch (JsonProcessingException e) {
             // 记录日志，发短信通知管理员

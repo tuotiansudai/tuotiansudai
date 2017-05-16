@@ -10,6 +10,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -73,14 +74,14 @@ public class PledgeVehicleMapperTest {
                 "brand", "model");
 
         pledgeVehicleMapper.create(pledgeVehicleModel);
-        PledgeVehicleModel findPledgeVehicleModel = pledgeVehicleMapper.getByLoanId(pledgeVehicleModel.getLoanId());
+        List<PledgeVehicleModel> findPledgeVehicleModel = pledgeVehicleMapper.getByLoanId(pledgeVehicleModel.getLoanId());
         assertNotNull(findPledgeVehicleModel);
-        assertEquals(pledgeVehicleModel.getLoanId(), findPledgeVehicleModel.getLoanId());
-        assertEquals(pledgeVehicleModel.getPledgeLocation(), findPledgeVehicleModel.getPledgeLocation());
-        assertEquals(pledgeVehicleModel.getEstimateAmount(), findPledgeVehicleModel.getEstimateAmount());
-        assertEquals(pledgeVehicleModel.getLoanAmount(), findPledgeVehicleModel.getLoanAmount());
-        assertEquals(pledgeVehicleModel.getBrand(), findPledgeVehicleModel.getBrand());
-        assertEquals(pledgeVehicleModel.getModel(), findPledgeVehicleModel.getModel());
+        assertEquals(pledgeVehicleModel.getLoanId(), findPledgeVehicleModel.get(0).getLoanId());
+        assertEquals(pledgeVehicleModel.getPledgeLocation(), findPledgeVehicleModel.get(0).getPledgeLocation());
+        assertEquals(pledgeVehicleModel.getEstimateAmount(), findPledgeVehicleModel.get(0).getEstimateAmount());
+        assertEquals(pledgeVehicleModel.getLoanAmount(), findPledgeVehicleModel.get(0).getLoanAmount());
+        assertEquals(pledgeVehicleModel.getBrand(), findPledgeVehicleModel.get(0).getBrand());
+        assertEquals(pledgeVehicleModel.getModel(), findPledgeVehicleModel.get(0).getModel());
     }
 
     @Test
@@ -97,14 +98,14 @@ public class PledgeVehicleMapperTest {
         pledgeVehicleModel.setBrand("updateBrand");
 
         pledgeVehicleMapper.updateByLoanId(pledgeVehicleModel);
-        PledgeVehicleModel findPledgeVehicleModel = pledgeVehicleMapper.getByLoanId(pledgeVehicleModel.getLoanId());
+        List<PledgeVehicleModel> findPledgeVehicleModel = pledgeVehicleMapper.getByLoanId(pledgeVehicleModel.getLoanId());
         assertNotNull(findPledgeVehicleModel);
-        assertEquals(pledgeVehicleModel.getLoanId(), findPledgeVehicleModel.getLoanId());
-        assertEquals(pledgeVehicleModel.getPledgeLocation(), findPledgeVehicleModel.getPledgeLocation());
-        assertEquals(pledgeVehicleModel.getEstimateAmount(), findPledgeVehicleModel.getEstimateAmount());
-        assertEquals(pledgeVehicleModel.getLoanAmount(), findPledgeVehicleModel.getLoanAmount());
-        assertEquals(pledgeVehicleModel.getBrand(), findPledgeVehicleModel.getBrand());
-        assertEquals(pledgeVehicleModel.getModel(), findPledgeVehicleModel.getModel());
+        assertEquals(pledgeVehicleModel.getLoanId(), findPledgeVehicleModel.get(0).getLoanId());
+        assertEquals(pledgeVehicleModel.getPledgeLocation(), findPledgeVehicleModel.get(0).getPledgeLocation());
+        assertEquals(pledgeVehicleModel.getEstimateAmount(), findPledgeVehicleModel.get(0).getEstimateAmount());
+        assertEquals(pledgeVehicleModel.getLoanAmount(), findPledgeVehicleModel.get(0).getLoanAmount());
+        assertEquals(pledgeVehicleModel.getBrand(), findPledgeVehicleModel.get(0).getBrand());
+        assertEquals(pledgeVehicleModel.getModel(), findPledgeVehicleModel.get(0).getModel());
     }
 
     @Test
@@ -116,6 +117,6 @@ public class PledgeVehicleMapperTest {
         assertNotNull(pledgeVehicleMapper.getByLoanId(pledgeVehicleModel.getLoanId()));
 
         pledgeVehicleMapper.deleteByLoanId(pledgeVehicleModel.getLoanId());
-        assertNull(pledgeVehicleMapper.getByLoanId(pledgeVehicleModel.getLoanId()));
+        assertEquals(0,pledgeVehicleMapper.getByLoanId(pledgeVehicleModel.getLoanId()).size());
     }
 }

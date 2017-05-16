@@ -202,9 +202,9 @@ validator.add(registerForm.captcha, [{
 }],true);
 
 let reInputs=$(registerForm).find('input[validate]');
-reInputs=Array.from(reInputs);
-for (var el of reInputs) {
-    globalFun.addEventHandler(el,"keyup", "focusout", function() {
+
+for(let i=0,len=reInputs.length; i<len;i++) {
+    globalFun.addEventHandler(reInputs[i],"keyup", "focusout", function() {
         let errorMsg=validator.start(this);
         isDisabledButton();
     })
