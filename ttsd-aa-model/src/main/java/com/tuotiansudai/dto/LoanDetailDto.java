@@ -2,10 +2,7 @@ package com.tuotiansudai.dto;
 
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountConverter;
-import org.joda.time.DateTime;
-import org.joda.time.Period;
-import org.joda.time.PeriodType;
-import org.joda.time.Seconds;
+import org.joda.time.*;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -52,6 +49,8 @@ public class LoanDetailDto extends BaseDataDto {
 
     private Period raisingPeriod;
 
+    private String raisingDays;
+
     private List<LoanTitleModel> loanTitleDto;
 
     private List<LoanTitleRelationModel> loanTitles;
@@ -64,11 +63,13 @@ public class LoanDetailDto extends BaseDataDto {
 
     private PledgeType pledgeType;
 
-    private Map<String, String> pledgeHouseDetail;
+    private List<Map<String, String>> pledgeHouseDetailList;
 
-    private Map<String, String> pledgeVehicleDetail;
+    private List<Map<String, String>> pledgeVehicleDetailList;
 
-    private Map<String, String> pledgeEnterpriseDetail;
+    private List<Map<String, String>> pledgeEnterpriseDetailList;
+
+    private Map<String, String> loanerEnterpriseDetailsInfo;
 
     private Map<String, String> enterpriseInfo;
 
@@ -103,6 +104,8 @@ public class LoanDetailDto extends BaseDataDto {
         this.loanTitleDto = loanTitleModels;
         this.countdown = Seconds.secondsBetween(new DateTime(), new DateTime(loanModel.getFundraisingStartTime())).getSeconds();
         this.raisingPeriod = new Period(new DateTime(), new DateTime(loanModel.getFundraisingEndTime()), PeriodType.dayTime());
+        this.raisingDays = String.valueOf(Days.daysBetween(new DateTime(loanModel.getFundraisingStartTime()).withTimeAtStartOfDay(),
+                new DateTime(loanModel.getFundraisingEndTime()).withTimeAtStartOfDay()).getDays() + 1);
         this.investor = investorDto;
         this.declaration = loanDetails == null ? null : loanDetails.getDeclaration();
         this.extraSource = loanDetails == null ? null : (loanDetails.getExtraSource() != null && loanDetails.getExtraSource().size() == 1 && loanDetails.getExtraSource().contains(Source.MOBILE)) ? Source.MOBILE.name() : null;
@@ -187,6 +190,9 @@ public class LoanDetailDto extends BaseDataDto {
         return raisingPeriod;
     }
 
+    public String getRaisingDays() {
+        return raisingDays;
+    }
     public List<LoanTitleModel> getLoanTitleDto() {
         return loanTitleDto;
     }
@@ -227,36 +233,44 @@ public class LoanDetailDto extends BaseDataDto {
         this.pledgeType = pledgeType;
     }
 
-    public void setPledgeHouseDetail(Map<String, String> pledgeHouseDetail) {
-        this.pledgeHouseDetail = pledgeHouseDetail;
+    public List<Map<String, String>> getPledgeHouseDetailList() {
+        return pledgeHouseDetailList;
     }
 
-    public Map getPledgeHouseDetail() {
-        return pledgeHouseDetail;
+    public void setPledgeHouseDetailList(List<Map<String, String>> pledgeHouseDetailList) {
+        this.pledgeHouseDetailList = pledgeHouseDetailList;
     }
 
-    public void setPledgeVehicleDetail(Map<String, String> pledgeVehicleDetail) {
-        this.pledgeVehicleDetail = pledgeVehicleDetail;
+    public List<Map<String, String>> getPledgeVehicleDetailList() {
+        return pledgeVehicleDetailList;
     }
 
-    public Map<String, String> getPledgeVehicleDetail() {
-        return pledgeVehicleDetail;
+    public void setPledgeVehicleDetailList(List<Map<String, String>> pledgeVehicleDetailList) {
+        this.pledgeVehicleDetailList = pledgeVehicleDetailList;
     }
 
-    public Map<String, String> getPledgeEnterpriseDetail() {
-        return pledgeEnterpriseDetail;
+    public List<Map<String, String>> getPledgeEnterpriseDetailList() {
+        return pledgeEnterpriseDetailList;
+    }
+
+    public void setPledgeEnterpriseDetailList(List<Map<String, String>> pledgeEnterpriseDetailList) {
+        this.pledgeEnterpriseDetailList = pledgeEnterpriseDetailList;
     }
 
     public Map<String, String> getEnterpriseInfo() {
         return enterpriseInfo;
     }
 
-    public void setEnterpriseInfo(Map<String, String> enterpriseInfo) {
-        this.enterpriseInfo = enterpriseInfo;
+    public Map<String, String> getLoanerEnterpriseDetailsInfo() {
+        return loanerEnterpriseDetailsInfo;
     }
 
-    public void setPledgeEnterpriseDetail(Map<String, String> pledgeEnterpriseDetail) {
-        this.pledgeEnterpriseDetail = pledgeEnterpriseDetail;
+    public void setLoanerEnterpriseDetailsInfo(Map<String, String> loanerEnterpriseDetailsInfo) {
+        this.loanerEnterpriseDetailsInfo = loanerEnterpriseDetailsInfo;
+    }
+
+    public void setEnterpriseInfo(Map<String, String> enterpriseInfo) {
+        this.enterpriseInfo = enterpriseInfo;
     }
 
     public String getBasicInfo() {

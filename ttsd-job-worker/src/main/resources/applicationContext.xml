@@ -194,8 +194,6 @@
         <constructor-arg ref="schedulerBuilder"/>
     </bean>
 
-    <bean id="okHttpClient" class="com.squareup.okhttp.OkHttpClient"/>
-
     <bean class="com.tuotiansudai.quartz.AutowiringSpringBeanJobFactory"/>
 
     <bean class="com.tuotiansudai.mq.config.MQProducerConfig"/>

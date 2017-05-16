@@ -1,4 +1,5 @@
 require('activityStyle/wechat/share_app.scss');
+require('activityStyle/module/app_register_reason.scss');
 let commonFun= require('publicJs/commonFun');
 let ValidatorObj= require('publicJs/validator');
 
@@ -78,9 +79,8 @@ validator.add(registerForm.captcha, [{
 }],true);
 
 let reInputs=$(registerForm).find('input[validate]');
-reInputs=Array.from(reInputs);
-for (let el of reInputs) {
-	globalFun.addEventHandler(el,"keyup", function() {
+for(let i=0,len=reInputs.length; i<len;i++) {
+	globalFun.addEventHandler(reInputs[i],"keyup", function() {
 		validator.start(this);
 	});
 }
@@ -167,7 +167,7 @@ let shareAppFun = {
 
 $fetchCaptcha.on('click',function() {
 	shareAppFun.isRegister();
-})
+});
 
 //点击立即注册按钮
 registerForm.onsubmit = function(event) {

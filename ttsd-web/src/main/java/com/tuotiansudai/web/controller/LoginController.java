@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.text.MessageFormat;
 
 @Controller
 @RequestMapping(value = "/login")
@@ -30,7 +31,7 @@ public class LoginController {
         ModelAndView defaultModelAndView = new ModelAndView("/login", "redirect", redirect);
         defaultModelAndView.addObject("responsive", true);
 
-        ModelAndView weChatModelAndView = new ModelAndView("/wechat/wechat-entry-point", "redirect", redirect);
+        ModelAndView weChatModelAndView = new ModelAndView(MessageFormat.format("redirect:/we-chat/entry-point?redirect={0}", redirect));
 
         return httpServletRequest.getSession().getAttribute("weChatUserLoginName") == null ? defaultModelAndView : weChatModelAndView;
     }

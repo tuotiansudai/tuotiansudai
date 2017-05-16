@@ -1,7 +1,6 @@
 package com.tuotiansudai.web.config.freemarker;
 
 import com.google.common.base.Strings;
-import com.google.common.collect.Maps;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -9,15 +8,11 @@ import com.tuotiansudai.util.JsonConverter;
 import org.springframework.beans.factory.config.MapFactoryBean;
 import org.springframework.context.ResourceLoaderAware;
 import org.springframework.core.io.DefaultResourceLoader;
-import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpStatus;
 
-import java.io.File;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.text.MessageFormat;
-import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -32,6 +27,8 @@ public class FreeMarkerVariablesMap extends MapFactoryBean implements ResourceLo
     public FreeMarkerVariablesMap() {
         this.okHttpClient = new OkHttpClient();
         this.okHttpClient.setConnectTimeout(5, TimeUnit.SECONDS);
+        this.okHttpClient.setReadTimeout(5, TimeUnit.SECONDS);
+        this.okHttpClient.setWriteTimeout(5, TimeUnit.SECONDS);
     }
 
     @Override

@@ -10,9 +10,9 @@
     "json": "nodemon -L getJsonFiles.js&",
     "plugin": "webpack --config  webpack.dll.config.js",
     "server": "node getStaticServer.js $PLAT",
-    "showimage":"node resources/tools/showImages.js",
-    "removeUselessImgs":"node resources/tools/deleteUselessImgs.js",
-    "template":"nodemon -L resources/tools/server.js"
+    "showimage": "node resources/tools/showImages.js",
+    "removeUselessImgs": "node resources/tools/deleteUselessImgs.js",
+    "template": "nodemon -L resources/tools/server.js"
   },
   "devDependencies": {
     "assets-webpack-plugin": "^3.5.0",

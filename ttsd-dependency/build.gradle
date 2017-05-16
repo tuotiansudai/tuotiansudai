@@ -27,7 +27,7 @@ dependencies {
             'org.apache.commons:commons-lang3:3.4',
             'org.apache.commons:commons-collections4:4.0',
             'org.hibernate:hibernate-validator:5.2.4.Final',
-            'com.squareup.okhttp:okhttp:2.4.0',
+            'com.squareup.okhttp:okhttp:2.7.5',
             'com.zaxxer:HikariCP:2.4.7',
             'mysql:mysql-connector-java:5.1.39',
             'log4j:log4j:1.2.17',

@@ -101,8 +101,6 @@
         <property name="basePackage" value="com.tuotiansudai.ask.repository.mapper"/>
     </bean>
 
-    <bean id="okHttpClient" class="com.squareup.okhttp.OkHttpClient"/>
-
     <bean class="com.tuotiansudai.mq.config.MQProducerConfig"/>
 
     <bean class="com.tuotiansudai.rest.FeignClientConfig"/>

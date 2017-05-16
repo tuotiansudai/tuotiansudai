@@ -38,8 +38,6 @@ public class PayWrapperClient extends BaseClient {
     @Value("${pay.application.context}")
     protected String applicationContext;
 
-    private OkHttpClient checkUserBalanceHttpClient = buildCheckUserBalanceOKHttpClient();
-
     private final static String registerPath = "/register";
 
     private final static String systemRechargePath = "/system-recharge";
@@ -76,14 +74,10 @@ public class PayWrapperClient extends BaseClient {
 
     private final static String transferCashPath = "/transfer-cash";
 
-    private OkHttpClient buildCheckUserBalanceOKHttpClient() {
-        OkHttpClient okHttpClient = new OkHttpClient();
-        OkHttpLoggingInterceptor loggingInterceptor = new OkHttpLoggingInterceptor(message -> logger.info(message));
-        okHttpClient.interceptors().add(loggingInterceptor);
-        okHttpClient.setReadTimeout(10, TimeUnit.SECONDS);
-        okHttpClient.setWriteTimeout(10, TimeUnit.SECONDS);
-        okHttpClient.setConnectTimeout(10, TimeUnit.SECONDS);
-        return okHttpClient;
+    public PayWrapperClient() {
+        this.okHttpClient.setConnectTimeout(180, TimeUnit.SECONDS);
+        this.okHttpClient.setReadTimeout(180, TimeUnit.SECONDS);
+        this.okHttpClient.setWriteTimeout(180, TimeUnit.SECONDS);
     }
 
     public BaseDto<PayDataDto> transferCash(Object transferCashDto) {
@@ -192,7 +186,7 @@ public class PayWrapperClient extends BaseClient {
 
     public Map<String, String> getUserBalance(String loginName) {
         try {
-            String json = this.execute(MessageFormat.format("/real-time/user-balance/{0}", loginName), null, "GET",checkUserBalanceHttpClient);
+            String json = this.execute(MessageFormat.format("/real-time/user-balance/{0}", loginName), null, "GET");
             if (json == null)
                 return null;
             else

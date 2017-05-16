@@ -212,7 +212,5 @@
     <!--for test-->
     <bean id="httpServletRequest" class="org.springframework.mock.web.MockHttpServletRequest"/>
 
-    <bean id="okHttpClient" class="com.squareup.okhttp.OkHttpClient" />
-
     <bean class="com.tuotiansudai.mq.config.MQProducerConfig"/>
 </beans>

@@ -24,8 +24,16 @@ body {
     color: #6f191d;
     margin-top: 30px;
     margin-bottom: 30px;
+    font-weight: bold;
+    font-size: 16px;
+    b {
+      font-size:24px;
+    }
+    b,em {
+      color: #ff535e;
+    }
     .text {
-      font-size: 16px;
+
       display: block;
 
       em {

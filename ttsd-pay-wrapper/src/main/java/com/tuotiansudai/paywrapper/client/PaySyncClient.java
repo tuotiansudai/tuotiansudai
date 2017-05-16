@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.beans.Introspector;
 import java.io.IOException;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 @Component
 public class PaySyncClient implements ApplicationContextAware {
@@ -31,11 +32,17 @@ public class PaySyncClient implements ApplicationContextAware {
 
     static Logger logger = Logger.getLogger(PaySyncClient.class);
 
-    @Autowired
     private OkHttpClient httpClient;
 
     @Autowired
     PayGateWrapper payGateWrapper;
+
+    public PaySyncClient() {
+        this.httpClient = new OkHttpClient();
+        this.httpClient.setConnectTimeout(10, TimeUnit.SECONDS);
+        this.httpClient.setReadTimeout(10, TimeUnit.SECONDS);
+        this.httpClient.setWriteTimeout(10, TimeUnit.SECONDS);
+    }
 
     @SuppressWarnings(value = "unchecked")
     public <T extends BaseSyncResponseModel> T send(Class<? extends BaseSyncMapper> baseMapperClass, BaseSyncRequestModel requestModel, Class<T> responseModelClass) throws PayException {
