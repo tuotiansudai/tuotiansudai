@@ -11,10 +11,12 @@ import com.tuotiansudai.mq.consumer.MessageConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 // 端午节粽子PK活动结束后，发放体验金
+@Component
 public class DragonBoatPKEndingSendExperienceMessageConsumer implements MessageConsumer {
 
     private static final Logger logger = LoggerFactory.getLogger(DragonBoatPKEndingSendExperienceMessageConsumer.class);
