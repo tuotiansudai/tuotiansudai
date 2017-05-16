@@ -4,29 +4,50 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tuotiansudai.activity.repository.mapper.DragonBoatFestivalMapper">
 
-    <resultMap id="dragonBoatFestivalResultMap" type="com.tuotiansudai.activity.repository.model.DragonBoatFestivalModel">
+    <resultMap id="dragonBoatFestivalResultMap"
+               type="com.tuotiansudai.activity.repository.model.DragonBoatFestivalModel">
         <id column="id" property="id"></id>
         <result column="login_name" property="loginName"></result>
         <result column="user_name" property="userName"></result>
         <result column="mobile" property="mobile"></result>
-        <result column="invest_amount" property="investAmount"></result>
-        <result column="experience_amount" property="experienceAmount"></result>
+        <result column="total_invest_amount" property="totalInvestAmount"></result>
+        <result column="pk_invest_amount" property="pkInvestAmount"></result>
+        <result column="pk_group" property="pkGroup"></result>
+        <result column="invite_experience_amount" property="inviteExperienceAmount"></result>
+        <result column="pk_experience_amount" property="pkExperienceAmount"></result>
         <result column="invite_new_user_count" property="inviteNewUserCount"></result>
         <result column="invite_old_user_count" property="inviteOldUserCount"></result>
         <result column="created_time" property="createdTime"></result>
     </resultMap>
 
-    <insert id="addInvestAmount" parameterType="dragonBoatFestivalModel" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO `edxactivity`.`dragon_boat_festival` (`login_name`,`user_name`,`mobile`,`invest_amount`,`created_time`)
-        VALUES(#{loginName},#{userName},#{mobile},#{investAmount},#{createdTime})
-        on duplicate key update invest_amount=invest_amount + #{investAmount};
+    <insert id="setPKGroup" parameterType="dragonBoatFestivalModel" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `edxactivity`.`dragon_boat_festival` (`login_name`,`user_name`,`mobile`,`pk_group`,`created_time`)
+        VALUES(#{loginName},#{userName},#{mobile},#{pkGroup},#{createdTime})
+        on duplicate key update pk_group = #{pkGroup};
     </insert>
 
-    <insert id="addExperienceAmount" parameterType="dragonBoatFestivalModel" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO `edxactivity`.`dragon_boat_festival` (`login_name`,`user_name`,`mobile`,`experience_amount`,`created_time`)
-        VALUES(#{loginName},#{userName},#{mobile},#{experienceAmount},#{createdTime})
-        on duplicate key update experience_amount=experience_amount + #{experienceAmount};
+    <insert id="addTotalInvestAmount" parameterType="dragonBoatFestivalModel" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `edxactivity`.`dragon_boat_festival` (`login_name`,`user_name`,`mobile`,`total_invest_amount`,`created_time`)
+        VALUES(#{loginName},#{userName},#{mobile},#{totalInvestAmount},#{createdTime})
+        on duplicate key update total_invest_amount=total_invest_amount + #{totalInvestAmount};
     </insert>
+
+    <update id="addPKInvestAmount" parameterType="map">
+        update `dragon_boat_festival`
+        set pk_invest_amount = pk_invest_amount + #{pkInvestAmount}
+        where login_name = #{loginName};
+    </update>
+
+    <insert id="addInviteExperienceAmount" parameterType="dragonBoatFestivalModel" useGeneratedKeys="true"
+            keyProperty="id">
+        INSERT INTO `edxactivity`.`dragon_boat_festival` (`login_name`,`user_name`,`mobile`,`invite_experience_amount`,`created_time`)
+        VALUES(#{loginName},#{userName},#{mobile},#{inviteExperienceAmount},#{createdTime})
+        on duplicate key update invite_experience_amount=invite_experience_amount + #{inviteExperienceAmount};
+    </insert>
+
+    <update id="setPKExperienceAmount" parameterType="map">
+        update `dragon_boat_festival` set pk_experience_amount = #{pkExperienceAmount} where login_name = #{loginName};
+    </update>
 
     <insert id="addInviteNewUserCount" parameterType="map" useGeneratedKeys="true">
         INSERT INTO `edxactivity`.`dragon_boat_festival` (`login_name`,`user_name`,`mobile`,`invite_new_user_count`,`created_time`)
@@ -41,18 +62,23 @@
     </insert>
 
     <select id="getDragonBoatFestivalList" parameterType="map" resultMap="dragonBoatFestivalResultMap">
-        SELECT
-        login_name,
-        user_name,
-        mobile,
-        invest_amount,
-        experience_amount,
-        invite_new_user_count,
-        invite_old_user_count
-        FROM
-        dragon_boat_festival
-        ORDER BY created_time ASC
-        limit #{index}, #{pageSize}
+        SELECT * FROM dragon_boat_festival ORDER BY created_time ASC limit #{index}, #{pageSize}
+    </select>
+
+    <select id="getDragonBoatFestivalPKUserList" parameterType="map" resultMap="dragonBoatFestivalResultMap">
+        SELECT * FROM dragon_boat_festival WHERE pk_group is not NULL ORDER BY pk_invest_amount desc, created_time asc
+    </select>
+
+    <select id="getDragonBoatFestivalChampagneList" parameterType="map" resultMap="dragonBoatFestivalResultMap">
+        SELECT * FROM dragon_boat_festival WHERE total_invest_amount >= 500000 ORDER BY total_invest_amount desc
+    </select>
+
+    <select id="findByLoginName" parameterType="map" resultMap="dragonBoatFestivalResultMap">
+        SELECT * FROM dragon_boat_festival where login_name = #{loginName}
+    </select>
+
+    <select id="getGroupInvestAmount" parameterType="map" resultType="long">
+        SELECT sum(pk_invest_amount) FROM dragon_boat_festival where `group` = #{group}
     </select>
 
 </mapper>

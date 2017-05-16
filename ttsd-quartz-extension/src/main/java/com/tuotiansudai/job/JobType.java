@@ -29,6 +29,8 @@ public enum JobType {
     CreateAnXinContract("创建安心签合同"),
     SendFirstRedEnvelopSplit("红包分裂第一期活动发红包"),
     SendSecondRedEnvelopSplit("红包分裂第二期活动发红包"),
+    DragonBoatSendPKPrize("端午节活动结束后发PK体验金"),
+    DragonBoatSendChampagnePrize("端午节活动结束后发香槟塔优惠券"),
     DelayMessageDelivery("延迟消息投递");
 
     private final String description;
