@@ -27,7 +27,7 @@ public class JobInitPlugin implements SchedulerPlugin {
 
     @Override
     public void start() {
-
+        this.removeUnusedJobs();
     }
 
     @Override
