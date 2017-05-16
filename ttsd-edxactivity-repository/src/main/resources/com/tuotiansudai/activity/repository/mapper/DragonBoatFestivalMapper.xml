@@ -61,6 +61,10 @@
         on duplicate key update invite_old_user_count=invite_old_user_count + 1;
     </insert>
 
+    <select id="countDragonBoatFestival" resultType="long">
+        SELECT count(1) FROM dragon_boat_festival
+    </select>
+
     <select id="getDragonBoatFestivalList" parameterType="map" resultMap="dragonBoatFestivalResultMap">
         SELECT * FROM dragon_boat_festival ORDER BY created_time ASC limit #{index}, #{pageSize}
     </select>
