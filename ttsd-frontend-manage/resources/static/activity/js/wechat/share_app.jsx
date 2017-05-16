@@ -79,9 +79,8 @@ validator.add(registerForm.captcha, [{
 }],true);
 
 let reInputs=$(registerForm).find('input[validate]');
-reInputs=Array.from(reInputs);
-for (let el of reInputs) {
-	globalFun.addEventHandler(el,"keyup", function() {
+for(let i=0,len=reInputs.length; i<len;i++) {
+	globalFun.addEventHandler(reInputs[i],"keyup", function() {
 		validator.start(this);
 	});
 }

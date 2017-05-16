@@ -22,9 +22,9 @@
     window.commonStaticServer = '${commonStaticServer}';
 </script>
 
-<script src="http://localhost:3008/public/dllplugins/jquery.dll.js" defer></script>
-<script src="http://localhost:3008/public/globalFun_page.js" defer></script>
-<script src="${pageJavascript}" type="text/javascript" id="currentScript" defer></script>
+<script src="http://localhost:3008/public/dllplugins/jquery.dll.js" ></script>
+<script src="http://localhost:3008/public/globalFun_page.js" ></script>
+<script src="${pageJavascript}" type="text/javascript" id="currentScript" ></script>
 </body>
 </html>
 </#macro>

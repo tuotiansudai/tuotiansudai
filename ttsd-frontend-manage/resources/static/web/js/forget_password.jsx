@@ -66,10 +66,8 @@ function forgetPassword() {
     }],true);
 
     let reInputs=$(retrieveForm).find('input:text,input:password');
-
-    reInputs=Array.from(reInputs);
-    for (let el of reInputs) {
-        globalFun.addEventHandler(el,"blur", function() {
+    for(let i=0,len=reInputs.length; i<len;i++) {
+        globalFun.addEventHandler(reInputs[i],"blur", function() {
             validator.start(this);
             isDisabledButton();
         })
