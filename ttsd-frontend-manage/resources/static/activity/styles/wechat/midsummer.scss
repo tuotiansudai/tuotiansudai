@@ -69,6 +69,9 @@ body {
 .invite-header {
   font-size: 18px;
   position: relative;
+  img {
+    width: 100%;
+  }
   .invite-text {
     color: #691B18;
     position: absolute;
@@ -141,12 +144,14 @@ body {
         margin:auto;
         .temp-number {
           font-size: 30px;
+          vertical-align: top;
         }
         sub {
-          font-size:14px;
+          font-size:12px;
           letter-spacing: -6px;
           vertical-align: bottom;
           display: inline-block;
+          margin-top:8px;
           &:before {
             content:'。';
             vertical-align: top;
@@ -185,7 +190,12 @@ body {
       }
 
     }
-
+    .unit {
+      position: absolute;
+      top:70px;
+      right:10px;
+      font-size:12px;
+    }
   }
 
   .invest-detail-box {
@@ -224,6 +234,42 @@ body {
     font-size: 15px;
   }
 }
+.floating-box {
+  background: rgba(0,0,0,0.6);
+  width:100%;
+  height:100%;
+  position: fixed;
+  left:0;
+  top:0;
+  z-index: 100;
+  .icon-arrow {
+    width:100%;
+    height:70px;
+    position: absolute;
+    top:0px;
+    right:25px;
+    background: url('../../images/midsummer/bg-arrow.png') right top no-repeat;
+  }
+  .text {
+    position: absolute;
+    top: 80px;
+    right:25px;
+    color: #fff;
+    font-size: 16px;
+    line-height: 30px;
+    text-align: right;
+  }
+  .btn-close {
+    border: 1px solid #ccc;
+    color: #fff;
+    position: absolute;
+    right: 26px;
+    top: 158px;
+    background: transparent;
+    padding: 7px 16px;
+    border-radius: 7px;
+  }
+}
 
 @media screen and (max-width:350px) {
 
@@ -256,6 +302,7 @@ body {
       }
     }
   }
+
 
   .button-layer-bottom {
 

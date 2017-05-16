@@ -25,4 +25,8 @@ public interface ExperienceBillMapper {
 
    long findCountExperienceBillPagination(@Param(value = "loginName") String loginName,
                                           @Param(value = "operationType") String operationType);
+
+    long findSumExperienceBillByBusinessType(@Param(value = "loginName") String loginName,
+                                           @Param(value = "businessType") String businessType);
+
 }

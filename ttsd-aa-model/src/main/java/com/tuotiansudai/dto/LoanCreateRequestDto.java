@@ -1,5 +1,7 @@
 package com.tuotiansudai.dto;
 
+import java.util.List;
+
 public class LoanCreateRequestDto {
 
     private LoanCreateBaseRequestDto loan;
@@ -10,11 +12,11 @@ public class LoanCreateRequestDto {
 
     private LoanCreateLoanerEnterpriseDetailsDto loanerEnterpriseDetails;
 
-    private LoanCreatePledgeHouseRequestDto pledgeHouse;
+    private List<LoanCreatePledgeHouseRequestDto> pledgeHouse;
 
-    private LoanCreatePledgeVehicleRequestDto pledgeVehicle;
+    private List<LoanCreatePledgeVehicleRequestDto> pledgeVehicle;
 
-    private LoanCreatePledgeEnterpriseRequestDto pledgeEnterprise;
+    private List<LoanCreatePledgeEnterpriseRequestDto> pledgeEnterprise;
 
     private LoanCreateLoanerEnterpriseInfoDto loanerEnterpriseInfo;
 
@@ -50,27 +52,27 @@ public class LoanCreateRequestDto {
         this.loanerEnterpriseDetails = loanerEnterpriseDetails;
     }
 
-    public LoanCreatePledgeHouseRequestDto getPledgeHouse() {
+    public List<LoanCreatePledgeHouseRequestDto> getPledgeHouse() {
         return pledgeHouse;
     }
 
-    public void setPledgeHouse(LoanCreatePledgeHouseRequestDto pledgeHouse) {
+    public void setPledgeHouse(List<LoanCreatePledgeHouseRequestDto> pledgeHouse) {
         this.pledgeHouse = pledgeHouse;
     }
 
-    public LoanCreatePledgeVehicleRequestDto getPledgeVehicle() {
+    public List<LoanCreatePledgeVehicleRequestDto> getPledgeVehicle() {
         return pledgeVehicle;
     }
 
-    public void setPledgeVehicle(LoanCreatePledgeVehicleRequestDto pledgeVehicle) {
+    public void setPledgeVehicle(List<LoanCreatePledgeVehicleRequestDto> pledgeVehicle) {
         this.pledgeVehicle = pledgeVehicle;
     }
 
-    public LoanCreatePledgeEnterpriseRequestDto getPledgeEnterprise() {
+    public List<LoanCreatePledgeEnterpriseRequestDto> getPledgeEnterprise() {
         return pledgeEnterprise;
     }
 
-    public void setPledgeEnterprise(LoanCreatePledgeEnterpriseRequestDto pledgeEnterprise) {
+    public void setPledgeEnterprise(List<LoanCreatePledgeEnterpriseRequestDto> pledgeEnterprise) {
         this.pledgeEnterprise = pledgeEnterprise;
     }
 

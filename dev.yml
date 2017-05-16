@@ -230,33 +230,6 @@ worker-all:
     - /var/log/tuotian/worker-all:/var/log/job-worker
   command: bash -c "/opt/worker/ttsd-job-worker-all/bin/ttsd-job-worker"
   links:
-    - "pay-wrapper"
-    - "sms-wrapper"
-    - "redis-server"
-
-worker-jpush:
-  image: "anapsix/alpine-java:8_jdk"
-  environment:
-    - "TZ=Asia/Shanghai"
-    - "JAVA_OPTS=-Xmx1024m"
-  volumes:
-    - ./ttsd-job-worker/build/distributions:/opt/worker
-    - /var/log/tuotian/worker-jpush:/var/log/job-worker
-  command: bash -c "/opt/worker/ttsd-job-worker-jpush/bin/ttsd-job-worker"
-  links:
-    - "redis-server"
-
-worker-repay:
-  image: "anapsix/alpine-java:8_jdk"
-  environment:
-    - "TZ=Asia/Shanghai"
-    - "JAVA_OPTS=-Xmx1024m"
-  volumes:
-    - ./ttsd-job-worker/build/distributions:/opt/worker
-    - /var/log/tuotian/worker-repay:/var/log/job-worker
-  command: bash -c "/opt/worker/ttsd-job-worker-repay/bin/ttsd-job-worker"
-  links:
-    - "pay-wrapper"
     - "sms-wrapper"
     - "redis-server"
 

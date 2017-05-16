@@ -41,8 +41,6 @@ class Deployment(object):
     def build_and_unzip_worker(self):
         print "Making worker build..."
         sh('cd ./ttsd-job-worker && {0} distZip'.format(self._gradle))
-        sh('cd ./ttsd-job-worker && {0} -Pwork=jpush distZip'.format(self._gradle))
-        sh('cd ./ttsd-job-worker && {0} -Pwork=repay distZip'.format(self._gradle))
         sh('cd ./ttsd-job-worker/build/distributions && unzip \*.zip')
 
     def build_mq_consumer(self):

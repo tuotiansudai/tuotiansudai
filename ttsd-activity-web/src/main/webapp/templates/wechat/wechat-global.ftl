@@ -25,8 +25,7 @@
     </@security.authorize>
 </#macro>
 
-<#macro main pageCss pageJavascript="" activeNav="" activeLeftNav="" title="拓天速贷" keywords="" description="">
-
+<#macro main pageCss pageJavascript="" title="拓天速贷">
 <!DOCTYPE html>
 <html>
 <head>
@@ -39,13 +38,25 @@
     <link href="${commonStaticServer}/images/favicon.ico" id="icoFavicon" rel="shortcut icon" type="image/x-icon"/>
     <link rel="stylesheet" type="text/css" href="${css.globalFun_page!}" charset="utf-8"/>
     <link rel="stylesheet" type="text/css" href="${pageCss}" charset="utf-8"/>
+    <script src="https://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
 </head>
 <body>
     <#nested>
+
 <script>
     window.commonStaticServer = '${commonStaticServer}';
+    wx.config({
+        debug: ${(wxConfig.debug)!},
+        appId: '${(wxConfig.appId)!}',
+        timestamp: '${(wxConfig.timestamp)!}',
+        nonceStr: '${(wxConfig.nonceStr)!}',
+        signature: '${(wxConfig.signature)!}',
+        jsApiList: [
+            'onMenuShareAppMessage',
+            'onMenuShareTimeline'
+        ]
+    });
 </script>
-
 <script src="${js.jquerydll}" type="text/javascript" defer></script>
 <script src="${js.globalFun_page!}" type="text/javascript" defer></script>
 <script src="${pageJavascript}" type="text/javascript" id="currentScript" defer></script>

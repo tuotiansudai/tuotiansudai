@@ -1,6 +1,6 @@
 <#import "wechat-global.ftl" as global>
 <#include "../pageLayout/header.ftl" />
-<@global.main pageCss="${css.share_app}" pageJavascript="${js.share_app}" activeNav="" activeLeftNav="" title="新手福利_拓天新手投资_拓天速贷" keywords="拓天速贷,新手投资,新手加息券,新手红包" description="拓天速贷是中国P2P互联网金融信息服务平台,为广大投资、贷款的用户提供多元化的投资选择和优质的综合理财服务,新手注册可领取5888体验金，体验再得红包大奖和3%的新手加息券.">
+<@global.main pageCss="${css.share_app}" pageJavascript="${js.share_app}"  title="新手福利_拓天新手投资_拓天速贷" >
 <div class="share-app-container clearfix" id="shareAppContainer">
 	<div class="share-container">
 		<div class="share-item">
@@ -89,21 +89,8 @@
             <span class="step-three"></span>
         </div>
     </div>
-    <div class="newbie-step-five tc">
-        <dl class="newbie-step-five-dl clearfix">
-            <dt class="clearfix tc">拓天速贷为您的资金安全保驾护航</dt>
-            <dd class="one">
-                <i>CFCA权威认证</i>
-                <p>携手中国金融认证中心<br>投资合同受法律保护</p></dd>
-            <dd class="two">
-                <i>风控严谨</i>
-                <p>六重风控，22道手续<br>历史全额兑付，0预期0坏账</p></dd>
-            <dd class="three">
-                <i>稳健安全</i>
-                <p>预期年化收益8%～11%<br>房/车抵押债权安全系数高</p></dd>
-        </dl>
 
-    </div>
+    <#include '../module/register-reason.ftl' />
 
     <div class="newbie-step-six">
         <div class="newbie-step-six-box">

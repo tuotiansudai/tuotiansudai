@@ -6,7 +6,6 @@ import com.tuotiansudai.coupon.service.CouponAlertService;
 import com.tuotiansudai.dto.CouponAlertDto;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.MobileEncoder;
@@ -28,12 +27,16 @@ public class ActivitiesController {
     @Autowired
     private CouponAlertService couponAlertService;
 
-    //    midsummer: 助力升温，点燃仲夏活动:活动时间 5月12到5月25
-
-    @RequestMapping(path = "/{item:^money_tree|landing-page|invest-achievement|landing-anxin|point-update|sign-check|wx-register|divide-money|minsheng|guarantee|midsummer$}", method = RequestMethod.GET)
+    @RequestMapping(path = "/{item:^money_tree|landing-page|invest-achievement|landing-anxin|point-update|sign-check|wx-register|divide-money|minsheng|guarantee|midsummer|lottery-intro|icp-intro$}", method = RequestMethod.GET)
 
     public ModelAndView activities(@PathVariable String item, HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView("/activities/" + item, "responsive", true);
+
+        // 微信抽奖活动，没有响应式
+        if ("lottery-intro".equals(item)) {
+            modelAndView.addObject("responsive", null);
+        }
+
         String loginName = LoginUserInfo.getLoginName();
 
         if (!Strings.isNullOrEmpty(loginName) && userService.loginNameIsExist(loginName.trim())) {
@@ -44,6 +47,16 @@ public class ActivitiesController {
         //AccountModel accountModel = accountService.findByLoginName(loginName);
         //modelAndView.addObject("noAccount", null == accountModel);
         return modelAndView;
+    }
+
+    @RequestMapping(path="/channel/{channel:^htracking$}")
+    public ModelAndView channels(@PathVariable String channel){
+        return new ModelAndView("wechat/channel-"+channel);
+    }
+
+    @RequestMapping(path="/channel/{channel:^htracking$}/success")
+    public ModelAndView channelsRegisterSuccess(@PathVariable String channel){
+        return new ModelAndView("wechat/channel-"+channel+"-success");
     }
 
     @RequestMapping(path = "/{item:^landing-page-app|landing-tour|landing-bus|landing-game$}", method = RequestMethod.GET)

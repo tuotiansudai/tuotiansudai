@@ -53,15 +53,21 @@ public class WeChatController {
             return new ModelAndView("/error/404");
         }
 
+        httpServletRequest.getSession().setAttribute("weChatUserOpenid", weChatUserModel.getOpenid());
+
         if (weChatUserModel.isBound()) {
             myAuthenticationUtil.createAuthentication(weChatUserModel.getLoginName(), Source.WE_CHAT);
         } else {
             myAuthenticationUtil.removeAuthentication();
             httpServletRequest.getSession().setAttribute("weChatUserLoginName", weChatUserModel.getLoginName());
-            httpServletRequest.getSession().setAttribute("weChatUserOpenid", weChatUserModel.getOpenid());
         }
 
         return new ModelAndView(Strings.isNullOrEmpty(redirect) ? "redirect:/" : MessageFormat.format("redirect:{0}", redirect));
+    }
+
+    @RequestMapping(path = "/entry-point", method = RequestMethod.GET)
+    public ModelAndView entryPoint(@RequestParam(name = "redirect", required = false, defaultValue = "/") String redirect) {
+        return new ModelAndView("/wechat/wechat-entry-point", "redirect", redirect);
     }
 
     @RequestMapping(path = "/entry-point", method = RequestMethod.POST)
@@ -86,8 +92,7 @@ public class WeChatController {
     public ModelAndView bindSuccess(HttpServletRequest httpServletRequest,
                                     @RequestParam(name = "redirect", required = false, defaultValue = "/") String redirect) {
         httpServletRequest.getSession().removeAttribute("weChatUserLoginName");
-        httpServletRequest.getSession().removeAttribute("weChatUserOpenid");
-        
+
         return new ModelAndView("/wechat/wechat-bind-success", "redirect", redirect);
     }
 }

@@ -363,50 +363,6 @@ textarea {
 			}
 		}
 	}
-
-	.newbie-step-five {
-		float:left;
-		width:100%;
-		padding-top: 20px;
-		padding-bottom: 5px;
-		text-align: center;
-		background:#fff;
-		.newbie-step-five-dl {
-			color: #525252;
-			line-height: 31px;
-
-			dt {
-				font-size: 17px;
-				margin-bottom: 20px;
-			}
-			dd {
-				width: 100%;
-				margin-bottom: 15px;
-				font-size: 18px;
-				color: #525252;
-				text-align: center;
-				padding-top: 80px;
-				margin-bottom: 22px;
-				&.one {
-					background: url('../../images/landingpage/newbie-step5-cfca.png') center top no-repeat;
-				}
-				&.two {
-					background: url('../../images/landingpage/newbie-step5-control.png') center top no-repeat;
-				}
-				&.three {
-					background: url('../../images/landingpage/newbie-step5-security.png') center top no-repeat;
-				}
-
-				p {
-					margin-top: 10px;
-					color: #808080;
-					font-size: 14px;
-					line-height: 22px;
-				}
-			}
-		}
-	}
-
 	.newbie-step-six {
 		float:left;
 		width: 100%;

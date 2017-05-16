@@ -1,12 +1,10 @@
 package com.tuotiansudai.scheduler.plugin;
 
-import com.tuotiansudai.job.*;
+import com.tuotiansudai.job.JobManager;
+import com.tuotiansudai.job.JobType;
 import org.apache.log4j.Logger;
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
-import org.quartz.SimpleScheduleBuilder;
 import org.quartz.spi.ClassLoadHelper;
 import org.quartz.spi.SchedulerPlugin;
 
@@ -29,18 +27,7 @@ public class JobInitPlugin implements SchedulerPlugin {
 
     @Override
     public void start() {
-        if (JobType.CouponRepayCallBack.name().equalsIgnoreCase(schedulerName)) {
-            deleteCouponRepayCallBackJobIfNotExist();
-        }
-        if (JobType.ExtraRateRepayCallBack.name().equalsIgnoreCase(schedulerName)) {
-            deleteExtraRateRepayCallBackIfNotExist();
-        }
-        if (JobType.SendFirstRedEnvelopSplit.name().equalsIgnoreCase(schedulerName)) {
-            createFirstRedEnvelopSplitJob();
-        }
-        if (JobType.SendSecondRedEnvelopSplit.name().equalsIgnoreCase(schedulerName)) {
-            createSecondRedEnvelopSplitJob();
-        }
+        this.removeUnusedJobs();
     }
 
     @Override
@@ -48,34 +35,11 @@ public class JobInitPlugin implements SchedulerPlugin {
 
     }
 
-    private void createFirstRedEnvelopSplitJob() {
-        try {
-            jobManager.newJob(JobType.SendFirstRedEnvelopSplit, AssignFirstRedEnvelopSplitJob.class)
-                    .withIdentity(JobType.SendFirstRedEnvelopSplit.name(), JobType.SendFirstRedEnvelopSplit.name())
-                    .replaceExistingJob(true)
-                    .runOnceAt(DateTime.parse(AssignFirstRedEnvelopSplitJob.JOB_EXECUTE_TIME, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate()).submit();
-        } catch (Exception e) {
-            logger.error(e.getLocalizedMessage(), e);
-        }
+    private void removeUnusedJobs() {
+        jobManager.deleteJob(JobType.NormalRepayCallBack, "umpay", "normal_repay_call_back");
+        jobManager.deleteJob(JobType.AdvanceRepayCallBack, "umpay", "advance_repay_call_back");
+        jobManager.deleteJob(JobType.OverInvestPayBack, "umpay", "invest_call_back");
+        jobManager.deleteJob(JobType.AutoJPushNoInvestAlert, "AutoJPushNoInvestAlert", "AutoJPushNoInvestAlert");
+        jobManager.deleteJob(JobType.AutoJPushAlertBirthDay, "AutoJPushAlertBirthDay", "AutoJPushAlertBirthDay");
     }
-
-    private void createSecondRedEnvelopSplitJob() {
-        try {
-            jobManager.newJob(JobType.SendSecondRedEnvelopSplit, AssignSecondRedEnvelopSplitJob.class)
-                    .withIdentity(JobType.SendSecondRedEnvelopSplit.name(), JobType.SendSecondRedEnvelopSplit.name())
-                    .replaceExistingJob(true)
-                    .runOnceAt(DateTime.parse(AssignSecondRedEnvelopSplitJob.JOB_EXECUTE_TIME, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate()).submit();
-        } catch (Exception e) {
-            logger.error(e.getLocalizedMessage(), e);
-        }
-    }
-
-    private void deleteCouponRepayCallBackJobIfNotExist(){
-        jobManager.deleteJob(JobType.CouponRepayCallBack,"umpay","coupon_repay_call_back");
-    }
-
-    private void deleteExtraRateRepayCallBackIfNotExist() {
-        jobManager.deleteJob(JobType.ExtraRateRepayCallBack, "umpay", "repay_extra_rate_invest_call_back");
-    }
-   
 }
