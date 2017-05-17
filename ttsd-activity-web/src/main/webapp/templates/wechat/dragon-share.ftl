@@ -5,7 +5,7 @@
 <div class="share-coupon-container" id="shareCoupon">
     <h3 class="title-item"><#if exchangeCode!=null>恭喜您获得了一个优惠券兑换码<#else>活动暂未开始</#if></h3>
     <div class="copy-item">
-    	<input type="text" class="copy-int" value="${exchangeCode}" readonly id="clipboardText">
+    	<input type="text" class="copy-int" value="${exchangeCode!}" readonly id="clipboardText">
     	<span class="copy-btn" data-clipboard-action="copy" data-clipboard-target="#clipboardText">复制兑换码</span>
     </div>
     <div class="intro-title">
@@ -29,7 +29,7 @@
         wx.onMenuShareAppMessage({
             title: '送你10元现金红包！', // 分享标题
             desc: '我在拓天速贷参加端午节活动，现在送你10元现金红包，快来拿！', // 分享描述
-            link: '${webServer}/we-chat/authorize?redirect=/activity/wechat/dragon/shareLanding?sharer=${loginName}&shareUniqueCode=${shareUniqueCode}', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            link: '${webServer}/we-chat/authorize?redirect=/activity/wechat/dragon/shareLanding?sharer=${loginName}&shareUniqueCode=${shareUniqueCode!}', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
             imgUrl: '${commonStaticServer}/images/icons/logo-tip.png', // 分享图标
             success: function () {
                 // 用户确认分享后执行的回调函数
@@ -44,7 +44,7 @@
         //分享到朋友圈
         wx.onMenuShareTimeline({
             title: '送你10元现金红包！', // 分享标题
-            link: '${webServer}/we-chat/authorize?redirect=/activity/wechat/dragon/shareLanding?sharer=${loginName}&shareUniqueCode=${shareUniqueCode}', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            link: '${webServer}/we-chat/authorize?redirect=/activity/wechat/dragon/shareLanding?sharer=${loginName}&shareUniqueCode=${shareUniqueCode!}', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
             imgUrl: '${commonStaticServer}/images/icons/logo-tip.png', // 分享图标
             success: function () {
                 // 用户确认分享后执行的回调函数

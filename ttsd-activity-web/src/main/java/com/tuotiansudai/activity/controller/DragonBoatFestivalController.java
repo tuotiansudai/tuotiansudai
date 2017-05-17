@@ -46,7 +46,7 @@ public class DragonBoatFestivalController {
         String shareUniqueCode = resStr == null ? null : resStr.split(":")[1];
 
         ModelAndView mav = new ModelAndView("/wechat/dragon-share");
-        mav.addObject("exchangeCode", exchangeCode); // null 表示活动未开始或已结束
+        mav.addObject("exchangeCode", exchangeCode); // null 表示活动未开始或已结束，或者用户未登录
         mav.addObject("loginName", loginName);
         mav.addObject("shareUniqueCode", shareUniqueCode);
         return mav;
