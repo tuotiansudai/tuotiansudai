@@ -5,7 +5,31 @@ form label.error:before {
   display: none;
   font-size: 16px;
 }
-
+.header-download {
+  display: block;
+  background: #333;
+  color: #fff;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  position: fixed;
+  width: 94%;
+  padding: 3%;
+  bottom: 0;
+  z-index: 60;
+  display: none;
+  @media (max-width:700px){
+    display: block;
+  }
+  a.btn-normal{
+    width: auto;
+    height: auto;
+    padding: 5px 8px;
+    font-size: 14px;
+    border-radius: 0;
+    background: #ff752a;
+    border: 1px solid #f46916;
+    color: #fff;
+  }
+}
 .btn-normal {
   background: #ff635a;
   font-size: 25px;
@@ -323,7 +347,9 @@ form label.error {
     width:1000px;
     height: 350px;
     text-align: right;
-
+    @media (max-width:700px){
+      margin-bottom: 50px;
+    }
     .register-box {
       position: absolute;
       padding: 25px 25px 25px 25px;

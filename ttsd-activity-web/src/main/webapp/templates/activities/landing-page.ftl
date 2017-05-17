@@ -19,7 +19,7 @@
             </dl>
 
             <@global.isAnonymous>
-                <div class="tc"><a href="/register/user" class="btn-normal" id="btn-experience">领取6888元体验金</a></div>
+                <div class="tc"><a href="javascript:void(0)" class="btn-normal to-register" id="btn-experience">领取6888元体验金</a></div>
             </@global.isAnonymous>
         </div>
 
@@ -30,7 +30,7 @@
             <div class="image-title"></div>
             <div class="image-red-envelope"></div>
 
-            <div class="tc"><a href="/loan-list?productType=JYF" class="btn-normal" id="btn-red-envelope">立即领取</a></div>
+            <div class="tc"><a href="javascript:void(0)" class="btn-normal to-register" id="btn-red-envelope">立即领取</a></div>
 
         </div>
 
@@ -48,7 +48,7 @@
                 <dd><i>30</i>天 <br/><em>项目期限</em></dd>
             </dl>
 
-            <div class="tc"><a href="/loan-list?productType=JYF" class="btn-normal">立即投资</a></div>
+            <div class="tc"><a href="javascript:void(0)" class="btn-normal to-register">立即投资</a></div>
 
         </div>
 
@@ -68,7 +68,7 @@
             <div class="image-steps tc">
                 
             </div>
-            <div class="tc"><a href="#" class="btn-normal" id="btn-get-coupon">立即注册领取</a></div>
+            <div class="tc"><a href="#" class="btn-normal to-register" id="btn-get-coupon">立即注册领取</a></div>
 
         </div>
         <div class="newbie-step-five tc">
@@ -180,6 +180,12 @@
                 </div>
             </div>
         </#if>
+        <div class="header-download">
+            <div id="closeDownloadBox" class="icon-close img-close-tip" ></div>
+            <div class="img-logo-tip" ></div>
+            <span>APP客户端重磅来袭<br/>更便捷更安全</span>
+            <a href="#" class="btn-normal fr" id="btnExperienceNow">立即体验</a>
+        </div>
     </div>
 </div>
 
