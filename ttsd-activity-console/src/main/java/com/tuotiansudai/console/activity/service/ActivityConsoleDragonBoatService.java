@@ -15,7 +15,7 @@ public class ActivityConsoleDragonBoatService {
     private DragonBoatFestivalMapper dragonBoatFestivalMapper;
 
     public BasePaginationDataDto<DragonBoatFestivalModel> getList(int index, int pageSize) {
-        int count = dragonBoatFestivalMapper.countDragonBoatFestival();
+        long count = dragonBoatFestivalMapper.countDragonBoatFestival();
         List<DragonBoatFestivalModel> list = dragonBoatFestivalMapper.getDragonBoatFestivalList((index - 1) * pageSize, pageSize);
         return new BasePaginationDataDto<>(index, pageSize, count, list);
     }

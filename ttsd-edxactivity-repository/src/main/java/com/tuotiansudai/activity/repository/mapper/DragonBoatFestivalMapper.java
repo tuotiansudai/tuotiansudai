@@ -40,7 +40,7 @@ public interface DragonBoatFestivalMapper {
 
     long getGroupInvestAmount(@Param(value = "group") String group);
 
-    int countDragonBoatFestival();
+    long countDragonBoatFestival();
 
     List<DragonBoatFestivalModel> getDragonBoatFestivalList(@Param(value = "index") int index,
                                                             @Param(value = "pageSize") int pageSize);
