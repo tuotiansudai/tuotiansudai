@@ -311,6 +311,9 @@
         margin: 30px 0;
         padding-left: 30px;
         box-sizing: border-box;
+        @media (min-width:375px) and (max-width:700px) {
+          padding-left: 0;
+        }
         li{
           float:left;
           width:100%;
@@ -377,15 +380,28 @@
             .floor-loan{
               position: absolute;
               top:40%;
-              left:-125px;
+              left:-50px;
               font-size:14px;
               color:#53100b;
               @media (max-width:700px) {
                 font-size:12px;
                 width: 60px;
                 line-height: 18px;
-                left: -60px;
                 top: 15%;
+              }
+              &.active{
+                top: 50%;
+                margin-top: -25px;
+                left: -70px;
+                width:55px;
+                height:51px;
+                text-indent:-99999px;
+                background:url('../images/dragon-boat/finish-icon.png') no-repeat center;
+                background-size:100%;
+                @media (max-width:700px) {
+                  width:28px;
+                  left:-30px;
+                }
               }
               strong{
                 color:#fff;

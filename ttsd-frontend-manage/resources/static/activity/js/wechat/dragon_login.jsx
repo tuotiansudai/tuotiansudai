@@ -31,9 +31,6 @@ validator.add(loginForm.mobile, [{
 }, {
 	strategy: 'isMobile',
 	errorMsg: '手机号格式不正确'
-},{
-	strategy: 'isMobileExist',
-	errorMsg: '手机号已经存在'
 }],true);
 validator.add(loginForm.password, [{
     strategy: 'isNonEmpty',
