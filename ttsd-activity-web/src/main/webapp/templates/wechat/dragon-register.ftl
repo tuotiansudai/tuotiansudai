@@ -15,7 +15,7 @@
             </div>
 
             <div class="model-item">
-                <input type="text" name="captcha" id="captcha" value="" tabindex="3"  class="int-item" maxlength="6" placeholder="请输入短信验证码" validate/>
+                <input type="text" name="appCaptcha" id="appCaptcha" value="" tabindex="3"  class="int-item" maxlength="6" placeholder="请输入短信验证码" validate/>
                 <input type="button" class="ignore get-code" value="获取验证码" id="getCaptchaBtn" disabled>
             </div>
             

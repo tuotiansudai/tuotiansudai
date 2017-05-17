@@ -16,7 +16,7 @@
 
             <div class="model-item">
                 <img id="captchaImg" src="" class="captcha-img"/>
-                <input type="text" name="appCaptcha" id="appCaptcha" value="" tabindex="3"  maxlength="5" class="int-item" placeholder="请输入图形验证码" validate/>
+                <input type="text" name="captcha" id="captcha" value="" tabindex="3"  maxlength="5" class="int-item" placeholder="请输入图形验证码" validate/>
             </div>
             
             <div class="model-item text-model">

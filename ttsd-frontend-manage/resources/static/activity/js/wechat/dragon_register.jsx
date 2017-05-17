@@ -11,13 +11,13 @@ let $wechatInvite = $('#wechatInvite'),
 
 
 //验证码是否正确
-validator.newStrategy(registerForm.captcha,'isCaptchaValid',function(errorMsg,showErrorAfter) {
+validator.newStrategy(registerForm.appCaptcha,'isCaptchaValid',function(errorMsg,showErrorAfter) {
 	var getResult='',
 		that=this,
 		_arguments=arguments;
 
 	var _phone = registerForm.mobile.value,
-		_captcha=registerForm.captcha.value;
+		_captcha=registerForm.appCaptcha.value;
 
 	//先判断手机号格式是否正确
 	if(!/(^1[0-9]{10}$)/.test(_phone)) {
@@ -100,7 +100,7 @@ validator.add(registerForm.password, [{
     strategy: 'checkPassword',
     errorMsg: '密码为6位至20位，不能全是数字'
 }],true);
-validator.add(registerForm.captcha, [{
+validator.add(registerForm.appCaptcha, [{
 	strategy: 'isNonEmpty',
 	errorMsg: '验证码不能为空'
 },{
@@ -125,12 +125,12 @@ for (let el of reInputs) {
 function isDisabledRegister() {
     let mobile=registerForm.mobile,
         password=registerForm.password,
-        captcha=registerForm.captcha;
+        appCaptcha=registerForm.appCaptcha;
 
     
     let isMobileValid=!globalFun.hasClass(mobile,'error') && mobile.value;
     let isPwdValid = !globalFun.hasClass(password,'error') && password.value;
-    let captchaValid = !$(captcha).hasClass('error') && captcha.value;
+    let captchaValid = !$(appCaptcha).hasClass('error') && appCaptcha.value;
     let isDisabledCaptcha = isMobileValid && isPwdValid;
     //获取验证码点亮
     isDisabledCaptcha && $('#getCaptchaBtn').prop('disabled',false);

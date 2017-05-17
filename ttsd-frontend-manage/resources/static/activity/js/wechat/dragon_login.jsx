@@ -39,7 +39,7 @@ validator.add(loginForm.password, [{
     strategy: 'checkPassword',
     errorMsg: '密码为6位至20位，不能全是数字'
 }],true);
-validator.add(loginForm.appCaptcha, [{
+validator.add(loginForm.captcha, [{
 	strategy: 'isNonEmpty',
 	errorMsg: '验证码不能为空'
 }],true);
@@ -59,12 +59,12 @@ for (let el of reInputs) {
 function isDisabledLogin() {
     let mobile=loginForm.mobile,
         password=loginForm.password,
-        appCaptcha=loginForm.appCaptcha;
+        captcha=loginForm.captcha;
 
     //获取验证码点亮
     let isMobileValid=!globalFun.hasClass(mobile,'error') && mobile.value;
     let isPwdValid = !globalFun.hasClass(password,'error') && password.value;
-    let captchaValid = !$(appCaptcha).hasClass('error') && appCaptcha.value;
+    let captchaValid = !$(captcha).hasClass('error') && captcha.value;
 
     let isDisabledSubmit= isMobileValid && isPwdValid && captchaValid  && $('#agreementLogin').val()=='true';
     $loginSubmit.prop('disabled',!isDisabledSubmit);
