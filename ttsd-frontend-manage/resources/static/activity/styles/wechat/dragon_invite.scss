@@ -1,0 +1,516 @@
+body{
+    display: inline-block;
+}
+.wechat-invite-container {
+	float:left;
+	width:100%;
+	.take-red-container{
+		float:left;
+		width:100%;
+		display:none;
+		&.active{
+			display:block;
+		}
+		.take-item{
+			float:left;
+			width:100%;
+			background: #336ded url('../../images/dragon-boat/top-bg.png') no-repeat center top;
+			background-size: 100%;
+			padding:0px 10px 30px;
+			box-sizing:border-box;
+			position: relative;
+			&:after {
+				content:'';
+				position: absolute;
+				bottom: 0;
+				left: 0;
+				width: 100%;
+				height:30px;
+				background: url('../../images/dragon-boat/bottom-bg.png') no-repeat center bottom;
+				background-size: 100%;
+			}
+			.title-item{
+				float:left;
+				width:100%;
+				font-weight:bold;
+				font-size:14px;
+				color:#fff;
+				line-height:65px;
+				text-align:center;
+				margin:10px 0;
+				background: url('../../images/dragon-boat/title-bg.png') no-repeat center;
+				background-size: 100%;
+			}
+			.take-red{
+				float:left;
+				width:100%;
+				margin:10px 0;
+				text-align:center;
+				span{
+					display:inline-block;
+					width:200px;
+					height:130px;
+					background:url('../../images/dragon-boat/take-red.png') no-repeat center;
+					background-size:100%;
+				}
+			}
+		}
+		.intro-item{
+			float:left;
+			width:100%;
+			padding:10px 0;
+			background:#fff;
+			dt{
+				float:left;
+				width:100%;
+				text-align:center;
+				font-size:16px;
+				color:#362c51;
+				margin:20px 0;
+			}
+			dd{
+				float:left;
+				width:100%;
+				margin-bottom: 30px;
+				&:last-child{
+					margin-bottom: 0;
+				}
+				p{
+					margin-bottom: 0;
+					text-align:center;
+					&.name-item{
+						font-size:16px;
+						color:#362c51;
+					}
+					span{
+						display:inline-block;
+						width:65px;
+						height:65px;
+						&.intro-one{
+							background:url('../../images/dragon-boat/intro-one.png') no-repeat center;
+							background-size:100%;
+						}
+						&.intro-two{
+							background:url('../../images/dragon-boat/intro-two.png') no-repeat center;
+							background-size:100%;
+						}
+						&.intro-three{
+							background:url('../../images/dragon-boat/intro-three.png') no-repeat center;
+							background-size:100%;
+						}
+					}
+				}
+			}
+		}
+	}
+	.red-detail-container{
+		position: fixed;
+		top:0;
+		left:0;
+		width:100%;
+		height:100%;
+		background: #336ded url('../../images/dragon-boat/top-bg.png') no-repeat center top;
+		background-size: 100%;
+		padding:0px 10px 30px;
+		box-sizing:border-box;
+		display:none;
+		&.active{
+			display:block;
+		}
+		&:after {
+			content:'';
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			width: 100%;
+			height:30px;
+			background: url('../../images/dragon-boat/bottom-bg.png') no-repeat center bottom;
+			background-size: 100%;
+		}
+		.title-item{
+			float:left;
+			width:100%;
+			font-weight:bold;
+			font-size:14px;
+			color:#fff;
+			line-height:65px;
+			text-align:center;
+			margin:10px 0;
+			background: url('../../images/dragon-boat/title-bg.png') no-repeat center;
+			background-size: 100%;
+		}
+		.take-red{
+			float:left;
+			width:100%;
+			margin:10px 0;
+			text-align:center;
+			p{
+				display:inline-block;
+				width:200px;
+				height:160px;
+				margin-bottom: 0;
+				background:url('../../images/dragon-boat/money-bg.png') no-repeat center;
+				background-size:100%;
+				span{
+					float:left;
+					width:100%;
+					font-size:16px;
+					color:#fcc000;
+					&.money-number{
+						color:#691b18;
+						margin-top: 15px;
+						strong{
+							font-size:24px;
+						}
+					}
+					&.money-type{
+						margin-top: 30px;
+					}
+				}
+			}
+		}
+		.join-item{
+			float:left;
+			width:100%;
+			dt{
+				font-size:14px;
+				color:#fff;
+				text-align:center;
+			}
+			dd{
+				margin-top:25px;
+				text-align:center;
+				a{
+					display:inline-block;
+					width:210px;
+					height:45px;
+					line-height:45px;
+					border-radius:5px;
+					color:#fff;
+					font-size:16px;
+					&.register-link{
+						background:#fcc000;
+					}
+					&.login-link{
+						background:#f25757;
+					}
+				}
+			}
+		}
+	}
+	.register-form-container{
+		position: fixed;
+		top:0;
+		left:0;
+		width:100%;
+		height:100%;
+		background: #336ded url('../../images/dragon-boat/top-bg.png') no-repeat center top;
+		background-size: 100%;
+		padding:0px 0 30px;
+		box-sizing:border-box;
+		&:after {
+			content:'';
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			width: 100%;
+			height:30px;
+			background: url('../../images/dragon-boat/bottom-bg.png') no-repeat center bottom;
+			background-size: 100%;
+		}
+		.title-item{
+			float:left;
+			width:100%;
+			font-weight:bold;
+			font-size:14px;
+			color:#fff;
+			text-align:center;
+			margin-top:40px;
+		}
+		.register-item{
+			float:left;
+			width:100%;
+			.model-item{
+				float:left;
+				width:100%;
+				position: relative;
+				margin-top: 35px;
+				box-sizing:border-box;
+				&.text-model{
+					margin-top: 15px;
+					padding:0 10px;
+				}
+				.int-item{
+					float:left;
+					width:100%;
+					line-height: 36px;
+					border:none;
+					box-sizing:border-box;
+				}
+				.get-code{
+					width:102px;
+					height:28px;
+					padding:0;
+					line-height:28px;
+					text-align:center;
+					position: absolute;
+					top:50%;
+					right:10px;
+					margin-top:-14px;
+					border:1px solid #336ded;
+					font-size:14px;
+					color:#336ded;
+					border-radius:5px;
+					&:disabled{
+						color:#fff;
+						background:#ccc;
+						border:1px solid #ccc;
+					}
+				}
+				span{
+					color:#fff;
+					&.agree-item{
+						float:left;
+						width:80%;
+						line-height: 20px;
+						margin-left:10px;
+					}
+					&.error{
+						width:100%;
+						position: absolute;
+						top:50px;
+						left:0;
+						font-size:13px;
+						color:#fcc000;
+					}
+				}
+				.login-link{
+					color:#fff;
+					font-size:13px;
+				}
+				.register-btn{
+					display:inline-block;
+					width:210px;
+					height:45px;
+					line-height:45px;
+					border-radius:5px;
+					color:#fff;
+					font-size:16px;
+					padding:0;
+					border:none;
+					background:#fcc000;
+					margin-top:30px;
+					&:disabled{
+						color:#fff;
+						background:#ccc;
+					}
+				}
+				.icon-check{
+					float:left;
+					width:20px;
+					height:20px;
+					background:url('../../images/dragon-boat/icon-check.png') no-repeat center;
+					background-position: 0 -24px;
+					background-size:100%;
+					&.active{
+						background-position: 0 0;
+					}
+				}
+			}
+		}
+	}
+	.login-form-container{
+		position: fixed;
+		top:0;
+		left:0;
+		width:100%;
+		height:100%;
+		background: #336ded url('../../images/dragon-boat/top-bg.png') no-repeat center top;
+		background-size: 100%;
+		padding:0px 0 30px;
+		box-sizing:border-box;
+		&:after {
+			content:'';
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			width: 100%;
+			height:30px;
+			background: url('../../images/dragon-boat/bottom-bg.png') no-repeat center bottom;
+			background-size: 100%;
+		}
+		.title-item{
+			float:left;
+			width:100%;
+			font-weight:bold;
+			font-size:14px;
+			color:#fff;
+			text-align:center;
+			margin-top:40px;
+		}
+		.login-item{
+			float:left;
+			width:100%;
+			.model-item{
+				float:left;
+				width:100%;
+				position: relative;
+				margin-top: 35px;
+				box-sizing:border-box;
+				&.text-model{
+					margin-top: 15px;
+					padding:0 10px;
+				}
+				.int-item{
+					float:left;
+					width:100%;
+					line-height: 36px;
+					border:none;
+					box-sizing:border-box;
+				}
+				.captcha-img{
+					width:95px;
+					height:36px;
+					line-height:36px;
+					text-align:center;
+					position: absolute;
+					top:50%;
+					right:10px;
+					margin-top:-18px;
+					font-size:14px;
+					color:#336ded;
+					border-radius:5px;
+					background:#ebebeb;
+					overflow:hidden;
+					&:disabled{
+						color:#fff;
+						background:#ccc;
+					}
+				}
+				span{
+					color:#fff;
+					&.agree-item{
+						float:left;
+						width:80%;
+						line-height: 20px;
+						margin-left:10px;
+					}
+					&.error{
+						width:100%;
+						position: absolute;
+						top:50px;
+						left:0;
+						font-size:13px;
+						color:#fcc000;
+					}
+				}
+				.login-link{
+					color:#fff;
+					font-size:13px;
+				}
+				.login-btn{
+					display:inline-block;
+					width:210px;
+					height:45px;
+					line-height:45px;
+					border-radius:5px;
+					color:#fff;
+					font-size:16px;
+					padding:0;
+					border:none;
+					background:#f25757;
+					margin-top:30px;
+					&:disabled{
+						color:#fff;
+						background:#ccc;
+					}
+				}
+				.icon-check{
+					float:left;
+					width:20px;
+					height:20px;
+					background:url('../../images/dragon-boat/icon-check.png') no-repeat center;
+					background-position: 0 -24px;
+					background-size:100%;
+					&.active{
+						background-position: 0 0;
+					}
+				}
+			}
+		}
+	}
+	.result-container{
+		position: fixed;
+		top:0;
+		left:0;
+		width:100%;
+		height:100%;
+		background: #336ded url('../../images/dragon-boat/top-bg.png') no-repeat center top;
+		background-size: 100%;
+		padding:0px 10px 30px;
+		box-sizing:border-box;
+		&:after {
+			content:'';
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			width: 100%;
+			height:30px;
+			background: url('../../images/dragon-boat/bottom-bg.png') no-repeat center bottom;
+			background-size: 100%;
+		}
+		.title-item{
+			float:left;
+			width:100%;
+			font-weight:bold;
+			font-size:14px;
+			color:#fff;
+			line-height:65px;
+			text-align:center;
+			background: url('../../images/dragon-boat/title-bg.png') no-repeat center;
+			background-size: 100%;
+		}
+		.take-red{
+			float:left;
+			width:100%;
+			text-align:center;
+			p{
+				display:inline-block;
+				width:200px;
+				color:#fff;
+				font-size:13px;
+				margin-bottom: 0;
+				&.tip-text{
+					font-size:16px;
+					margin:10px 0 ;
+				}
+				&.red-bag{
+					height:160px;
+					background:url('../../images/dragon-boat/money-bg.png') no-repeat center;
+					background-size:100%;
+				}
+				&.wechat-code{
+					height:200px;
+					background:url('../../images/dragon-boat/wechat-code.jpg') no-repeat center;
+					background-size:100%;
+				}
+				span{
+					float:left;
+					width:100%;
+					font-size:16px;
+					color:#fcc000;
+					&.money-number{
+						color:#691b18;
+						margin-top: 15px;
+						strong{
+							font-size:24px;
+						}
+					}
+					&.money-type{
+						margin-top: 30px;
+					}
+				}
+			}
+		}
+	}
+}
