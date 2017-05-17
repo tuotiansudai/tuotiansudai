@@ -4,7 +4,13 @@
 
 <div class="wechat-invite-container" id="wechatInvite">
     <div class="result-container">
-        <h3 class="title-item">领取成功！</h3>
+        <h3 class="title-item">
+        <#if hasCoupon=='0'>
+            领取成功！
+        <#else>
+            今日已领取！
+        </#if>
+        </h3>
         <div class="take-red">
             <p class="red-bag">
                 <span class="money-number"><strong>10</strong>元</span>

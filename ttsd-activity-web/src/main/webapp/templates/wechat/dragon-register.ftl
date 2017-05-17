@@ -29,7 +29,7 @@
                 <input type="hidden" name="source" value="WEB">
                 <input type="hidden" name="referrer" value="loginName">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <input type="hidden" name="redirectToAfterRegisterSuccess" value="/">
+                <input type="hidden" name="redirectToAfterRegisterSuccess" value="/activity/wechat/dragon/fetchCoupon">
             </div>
 
             <div class="model-item text-model tc">
