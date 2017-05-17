@@ -1,10 +1,4 @@
-<#import "wechat-global-dev.ftl" as global>
-
-<#assign jsName = 'dragon_register' >
-
-<#assign js = {"${jsName}":"http://localhost:3008/activity/js/wechat/${jsName}.js"} >
-<#assign css = {"${jsName}":"http://localhost:3008/activity/js/wechat/${jsName}.css"}>
-
+<#import "wechat-global.ftl" as global>
 
 <@global.main pageCss="${css.dragon_register}" pageJavascript="${js.dragon_register}"  title="助力好友抢红包" >
 
@@ -33,6 +27,7 @@
                 <span class="agree-item">同意拓天速贷<strong class="agree-text">《服务协议》</strong></span>
                 <input type="hidden" name="agreement" class="agree-check" value="true" validate id="agreementRegister"/>
                 <input type="hidden" name="source" value="WEB">
+                <input type="hidden" name="referrer" value="loginName">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <input type="hidden" name="redirectToAfterRegisterSuccess" value="/">
             </div>

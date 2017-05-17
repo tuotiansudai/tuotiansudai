@@ -77,7 +77,20 @@ isDisabledLogin();
 //点击登录领取按钮
 loginForm.onsubmit = function(event) {
     event.preventDefault();
-    loginForm.submit();
+    $loginSubmit.prop('disabled',true);
+    commonFun.useAjax({
+            url:"/login",
+            type:'POST',
+            data:$(loginForm).serialize()
+        },function(data) {
+            $loginSubmit.prop('disabled',false);
+            if (data.status) {
+                location.href = "/register/account";
+            } else {
+            	layer.msg(data.message);
+            }
+        }
+    );
 }
 
 //显示服务协议
