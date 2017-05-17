@@ -26,6 +26,7 @@
                 <i class="icon-check active"></i>
                 <span class="agree-item">同意拓天速贷<strong class="agree-text">《服务协议》</strong></span>
                 <input type="hidden" name="agreement" class="agree-check" value="true" id="agreementLogin"/>
+                <input type="hidden" name="source" value="WEB">
             </div>
 
             <div class="model-item text-model tc">
