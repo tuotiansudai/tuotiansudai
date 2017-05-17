@@ -82,7 +82,7 @@ loginForm.onsubmit = function(event) {
         },function(data) {
             $loginSubmit.prop('disabled',false);
             if (data.status) {
-                location.href = "/register/account";
+                location.href = "/activity/wechat/dragon/fetchCoupon?unique=${unique}";
             } else {
             	layer.msg(data.message);
             }

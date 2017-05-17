@@ -20,7 +20,7 @@
             </div>
             
             <div class="model-item text-model">
-                <a  href="/activity/wechat/dragon/toLogin?sharer=${sharer}&shareUniqueCode=${shareUniqueCode}" class="fr login-link ">登录</a>
+                <a  href="/activity/wechat/dragon/toLogin?sharerUnique=${sharerUnique}" class="fr login-link ">登录</a>
             </div>
             <div class="model-item text-model">
                 <i class="icon-check active"></i>
@@ -29,7 +29,7 @@
                 <input type="hidden" name="source" value="WEB">
                 <input type="hidden" name="referrer" value="loginName">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <input type="hidden" name="redirectToAfterRegisterSuccess" value="/activity/wechat/dragon/fetchCoupon">
+                <input type="hidden" name="redirectToAfterRegisterSuccess" value="/activity/wechat/dragon/fetchCoupon?unique=${unique}">
             </div>
 
             <div class="model-item text-model tc">

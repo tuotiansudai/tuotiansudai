@@ -46,10 +46,10 @@
         <dl class="join-item">
             <dt>登录/注册成功后现金红包会直接发放倒您的账户</dt>
             <dd>
-                <a href="/activity/wechat/dragon/toRegister?sharer=${sharer}&shareUniqueCode=${shareUniqueCode!}" class="register-link">注册领取</a>
+                <a href="/activity/wechat/dragon/toRegister?sharerUnique=${sharerUnique}" class="register-link">注册领取</a>
             </dd>
             <dd>
-                <a href="/activity/wechat/dragon/toLogin?sharer=${sharer}&shareUniqueCode=${shareUniqueCode!}" class="login-link">登录领取</a>
+                <a href="/activity/wechat/dragon/toLogin?sharerUnique=${sharerUnique}" class="login-link">登录领取</a>
             </dd>
         </dl>
     </div>
