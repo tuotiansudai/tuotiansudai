@@ -8,11 +8,6 @@ let $dragonBoatContainer=$('#dragonBoatContainer'),
 // 顶部banner
 $dragonBoatContainer.find('.top-item .media-pc').attr('src',topImg).siblings('.media-phone').attr('src',topImgphone);
 
-// 香槟塔
-// let floorImg=require('../images/dragon-boat/floor-img.png'),
-// 	floorImgPhone=require('../images/dragon-boat/floor-img-phone.png');
-
-// $dragonBoatContainer.find('.floor-item .media-pc').attr('src',floorImg).siblings('.media-phone').attr('src',floorImgPhone);
 
 let $typeBtn=$('.type-btn',$dragonBoatContainer);
 

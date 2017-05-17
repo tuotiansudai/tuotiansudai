@@ -377,15 +377,28 @@
             .floor-loan{
               position: absolute;
               top:40%;
-              left:-125px;
+              left:-50px;
               font-size:14px;
               color:#53100b;
               @media (max-width:700px) {
                 font-size:12px;
                 width: 60px;
                 line-height: 18px;
-                left: -60px;
                 top: 15%;
+              }
+              &.active{
+                top: 50%;
+                margin-top: -25px;
+                left: -70px;
+                width:55px;
+                height:51px;
+                text-indent:-99999px;
+                background:url('../images/dragon-boat/finish-icon.png') no-repeat center;
+                background-size:100%;
+                @media (max-width:700px) {
+                  width:28px;
+                  left:-30px;
+                }
               }
               strong{
                 color:#fff;

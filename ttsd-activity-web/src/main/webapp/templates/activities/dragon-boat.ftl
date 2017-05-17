@@ -70,27 +70,27 @@
 			<ul class="floor-item tc">
 				<li>
 					<p class="floor-img floor-five">
-						<span class="floor-loan">累计投资<strong>600000元</strong></span>
+						<span class="floor-loan"><strong>60万</strong></span>
 					</p>
 				</li>
 				<li>
 					<p class="floor-img floor-four">
-						<span class="floor-loan">累计投资<strong>300000元</strong></span>
+						<span class="floor-loan"><strong>30万</strong></span>
 					</p>
 				</li>
 				<li>
 					<p class="floor-img floor-three">
-						<span class="floor-loan">累计投资<strong>120000元</strong></span>
+						<span class="floor-loan"><strong>12万</strong></span>
 					</p>
 				</li>
 				<li>
 					<p class="floor-img floor-two">
-						<span class="floor-loan">累计投资<strong>60000元</strong></span>
+						<span class="floor-loan"><strong>6万</strong></span>
 					</p>
 				</li>
 				<li>
 					<p class="floor-img floor-one">
-						<span class="floor-loan">累计投资<strong>5000元</strong></span>
+						<span class="floor-loan active"><strong>5千</strong></span>
 					</p>
 				</li>
 			</ul>
