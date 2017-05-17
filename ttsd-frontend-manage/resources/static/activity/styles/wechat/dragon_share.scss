@@ -29,9 +29,12 @@ body{
 		color:#fff;
 		line-height:65px;
 		text-align:center;
-		margin:10px 0;
+		margin:10px 0 0;
 		background: url('../../images/dragon-boat/title-bg.png') no-repeat center;
 		background-size: 100%;
+		@media (min-width:321px) and (max-width:700px) {
+			margin:10px 0;
+		}
 	}
 	.copy-item{
 		float:left;
@@ -60,25 +63,50 @@ body{
 		float:left;
 		width:100%;
 		text-align:left;
-		font-size:18px;
+		font-size:16px;
 		color:#fff;
-		margin-top:15px;
+		margin-top:10px;
+		@media (min-width:321px) and (max-width:700px) {
+			margin-top:20px;
+		}
 	}
 	.intro-container{
 		float:left;
 		width:100%;
 		p{
 			margin-bottom: 0;
-			font-size:14px;
+			font-size:12px;
 			color:#fff;
 			line-height: 25px;
+			@media (min-width:321px) and (max-width:700px) {
+				font-size:14px;
+			}
 			&.red-item{
 				margin:10px 0;
 			}
 			span{
-				font-size:16px;
+				font-size:14px;
 				color:#fcc000;
+				@media (min-width:321px) and (max-width:700px) {
+					font-size:16px;
+				}
 			}
+		}
+	}
+	.share-btn{
+		float:left;
+		width:100%;
+		text-align:center;
+		margin-top:20px;
+		span{
+			display:inline-block;
+			width:210px;
+			height:45px;
+			line-height:45px;
+			border-radius:5px;
+			color:#6f191d;
+			font-size:16px;
+			background:#fcc000;
 		}
 	}
 	.share-box{

@@ -5,7 +5,8 @@ require('publicJs/plugins/jquery.qrcode.min');
 
 window['Clipboard']=Clipboard;
 let redBag=require('../../images/dragon-boat/red-bag.png'),
-	$redBag=$('#redBag');
+	$redBag=$('#redBag'),
+	$shareBtn=$('#shareBtn');
 
 $redBag.attr('src',redBag);
 
@@ -21,7 +22,11 @@ $redBag.attr('src',redBag);
 	});
 })(jQuery);
 
-
+// 分享红包给好友
+$shareBtn.on('click', function(event) {
+	event.preventDefault();
+	$('#shareBox').show();
+});
 
 
 

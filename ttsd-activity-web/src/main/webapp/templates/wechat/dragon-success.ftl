@@ -1,10 +1,4 @@
-<#import "wechat-global-dev.ftl" as global>
-
-<#assign jsName = 'dragon_success' >
-
-<#assign js = {"${jsName}":"http://localhost:3008/activity/js/wechat/${jsName}.js"} >
-<#assign css = {"${jsName}":"http://localhost:3008/activity/js/wechat/${jsName}.css"}>
-
+<#import "wechat-global.ftl" as global>
 
 <@global.main pageCss="${css.dragon_success}" pageJavascript="${js.dragon_success}"  title="助力好友抢红包" >
 
